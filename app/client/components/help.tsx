@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { LinkButton } from '@guardian/source-react-components';
+import { LinkButton, Stack } from '@guardian/source-react-components';
 import {
 	space,
 	brand,
@@ -153,37 +153,44 @@ const Help = () => {
 			>
 				Visit Help Centre
 			</LinkButton>
-			<p css={pStyle}>
-				If you still can’t find what you need and want to contact us,
-				check{' '}
-				<span
-					css={callCentreToggleSpanStyle(callCentreOpen)}
-					onClick={() => setCallCentreOpen(!callCentreOpen)}
+			<Stack space={5}>
+				<p
+					css={css`
+						${textSans.medium()};
+						margin: 30px 0 0;
+					`}
 				>
-					here
-				</span>
-			</p>
-			{callCentreOpen && (
-				<>
-					<CallCentreEmailAndNumbers />
-					<p css={pStyle}>
-						Or use our contact form to get in touch and we’ll get
-						back to you as soon as possible.
-					</p>
-					<LinkButton
-						href="/help-centre/contact-us/"
-						priority="secondary"
-						onClick={() =>
-							trackEvent({
-								eventCategory: 'help-page',
-								eventAction: 'contact-us-cta-click',
-							})
-						}
+					If you still can’t find what you need and want to contact
+					us, check{' '}
+					<span
+						css={callCentreToggleSpanStyle(callCentreOpen)}
+						onClick={() => setCallCentreOpen(!callCentreOpen)}
 					>
-						Take me to the form
-					</LinkButton>
-				</>
-			)}
+						here
+					</span>
+				</p>
+				{callCentreOpen && (
+					<>
+						<CallCentreEmailAndNumbers />
+						<p css={pStyle}>
+							Or use our contact form to get in touch and we’ll
+							get back to you as soon as possible.
+						</p>
+						<LinkButton
+							href="/help-centre/contact-us/"
+							priority="secondary"
+							onClick={() =>
+								trackEvent({
+									eventCategory: 'help-page',
+									eventAction: 'contact-us-cta-click',
+								})
+							}
+						>
+							Take me to the form
+						</LinkButton>
+					</>
+				)}
+			</Stack>
 		</PageContainer>
 	);
 };

@@ -493,7 +493,6 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				) : null
 			}
 			<ContactUs />
-			<div css={{ height: '10px' }} />
 		</>
 	);
 };

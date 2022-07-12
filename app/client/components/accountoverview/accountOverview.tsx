@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { space, neutral, headline } from '@guardian/source-foundations';
+import { Stack } from '@guardian/source-react-components';
 import { Fragment } from 'react';
 import {
 	CancelledProductDetail,
@@ -88,38 +89,44 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 						<h2 css={subHeadingCss}>
 							My {groupedProductType.groupFriendlyName}
 						</h2>
-						{activeProductsInCategory.map((productDetail) => (
-							<AccountOverviewCard
-								key={productDetail.subscription.subscriptionId}
-								productDetail={productDetail}
-							/>
-						))}
-						{cancelledProductsInCategory.map(
-							(cancelledProductDetail) => (
-								<AccountOverviewCancelledCard
+						<Stack space={6}>
+							{activeProductsInCategory.map((productDetail) => (
+								<AccountOverviewCard
 									key={
-										cancelledProductDetail.subscription
+										productDetail.subscription
 											.subscriptionId
 									}
-									product={cancelledProductDetail}
+									productDetail={productDetail}
 								/>
-							),
-						)}
-						{(groupedProductType.groupFriendlyName ===
-							'membership' ||
-							groupedProductType.groupFriendlyName ===
-								'contribution') &&
-							(cancelledProductsInCategory.length > 0 ||
-								activeProductsInCategory.some((productDetail) =>
-									isCancelled(
-										(productDetail as ProductDetail)
-											.subscription,
-									),
-								)) && (
-								<SupportTheGuardianSection
-									{...groupedProductType.supportTheGuardianSectionProps}
-								/>
+							))}
+							{cancelledProductsInCategory.map(
+								(cancelledProductDetail) => (
+									<AccountOverviewCancelledCard
+										key={
+											cancelledProductDetail.subscription
+												.subscriptionId
+										}
+										product={cancelledProductDetail}
+									/>
+								),
 							)}
+							{(groupedProductType.groupFriendlyName ===
+								'membership' ||
+								groupedProductType.groupFriendlyName ===
+									'contribution') &&
+								(cancelledProductsInCategory.length > 0 ||
+									activeProductsInCategory.some(
+										(productDetail) =>
+											isCancelled(
+												(productDetail as ProductDetail)
+													.subscription,
+											),
+									)) && (
+									<SupportTheGuardianSection
+										{...groupedProductType.supportTheGuardianSectionProps}
+									/>
+								)}
+						</Stack>
 					</Fragment>
 				);
 			})}

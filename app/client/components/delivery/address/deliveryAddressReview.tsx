@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Button } from '@guardian/source-react-components';
+import { Button, Stack } from '@guardian/source-react-components';
 import {
 	space,
 	brand,
@@ -222,32 +222,34 @@ const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 						Go back
 					</Link>
 				</div>
-				<p
-					css={css`
-						${textSans.medium()};
-						margin-top: ${space[12]}px;
-						color: ${neutral[46]};
-					`}
-				>
-					If you need separate delivery addresses for each of your
-					subscriptions, please{' '}
-					<span
+				<Stack space={5}>
+					<p
 						css={css`
-							cursor: pointer;
-							color: ${brand[500]};
-							text-decoration: underline;
+							${textSans.medium()};
+							margin: ${space[12]}px 0 0;
+							color: ${neutral[46]};
 						`}
-						onClick={() =>
-							setTopCallCentreNumbersVisibility(
-								!showTopCallCentreNumbers,
-							)
-						}
 					>
-						contact us
-					</span>
-					.
-				</p>
-				{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
+						If you need separate delivery addresses for each of your
+						subscriptions, please{' '}
+						<span
+							css={css`
+								cursor: pointer;
+								color: ${brand[500]};
+								text-decoration: underline;
+							`}
+							onClick={() =>
+								setTopCallCentreNumbersVisibility(
+									!showTopCallCentreNumbers,
+								)
+							}
+						>
+							contact us
+						</span>
+						.
+					</p>
+					{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
+				</Stack>
 			</div>
 		</>
 	);

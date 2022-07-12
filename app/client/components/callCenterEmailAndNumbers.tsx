@@ -10,7 +10,6 @@ const contactUsStyles = {
 };
 
 const callCenterStyles = css({
-	marginBottom: '10px',
 	display: 'flex',
 	flexWrap: 'wrap',
 	textAlign: 'left',

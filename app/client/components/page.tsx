@@ -230,14 +230,10 @@ const PageNavAndContentContainer = (props: PageNavAndContentContainerProps) => (
 			...gridBase,
 			maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
 			margin: '0 auto',
-			paddingBottom: '1rem',
+			paddingBottom: `${space[12]}px`,
 			[minWidth.desktop]: {
 				...(gridBase[minWidth.desktop] as object),
-				paddingBottom: '9rem',
-			},
-			[minWidth.wide]: {
-				...(gridBase[minWidth.wide] as object),
-				paddingBottom: '12rem',
+				paddingBottom: `${space[24]}px`,
 			},
 		}}
 	>

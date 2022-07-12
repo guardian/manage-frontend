@@ -5,6 +5,7 @@ import {
 	headline,
 	textSans,
 } from '@guardian/source-foundations';
+import { Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import { dateString } from '../../../../shared/dates';
@@ -224,32 +225,36 @@ const AddressConfirmation = (props: ProductType) => {
 							}}
 						/>
 					</div>
-					<p
-						css={css`
-							${textSans.medium()};
-							margin-top: ${space[12]}px;
-							color: ${palette.neutral[46]};
-						`}
-					>
-						If you need separate delivery addresses for each of your
-						subscriptions, please{' '}
-						<span
+					<Stack space={5}>
+						<p
 							css={css`
-								cursor: pointer;
-								color: ${palette.brand[500]};
-								text-decoration: underline;
+								${textSans.medium()};
+								margin: ${space[12]}px 0 0;
+								color: ${palette.neutral[46]};
 							`}
-							onClick={() =>
-								setTopCallCentreNumbersVisibility(
-									!showTopCallCentreNumbers,
-								)
-							}
 						>
-							contact us
-						</span>
-						.
-					</p>
-					{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
+							If you need separate delivery addresses for each of
+							your subscriptions, please{' '}
+							<span
+								css={css`
+									cursor: pointer;
+									color: ${palette.brand[500]};
+									text-decoration: underline;
+								`}
+								onClick={() =>
+									setTopCallCentreNumbersVisibility(
+										!showTopCallCentreNumbers,
+									)
+								}
+							>
+								contact us
+							</span>
+							.
+						</p>
+						{showTopCallCentreNumbers && (
+							<CallCentreEmailAndNumbers />
+						)}
+					</Stack>
 				</>
 			) : (
 				<Navigate to=".." replace />
