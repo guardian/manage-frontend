@@ -1,8 +1,6 @@
-import * as Sentry from '@sentry/browser';
 import { getMainPlan, ProductDetail } from '../../../../shared/productResponse';
 import { trackEvent } from '../../../services/analytics';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
-import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { hrefStyle } from '../cancellationConstants';
 
 const trackCancellationClickEvent = (eventLabel: string) => () =>
@@ -18,10 +16,7 @@ export const voucherCancellationFlowStart = ({
 	const mainPlan = getMainPlan(subscription);
 
 	if (!mainPlan) {
-		Sentry.captureMessage(
-			'mainPlan does not exist in voucherCancellationFlowStart',
-		);
-		return <GenericErrorMessage />;
+		throw 'mainPlan does not exist in voucherCancellationFlowStart';
 	}
 
 	const isEligibleForFreeDigipackAccess =

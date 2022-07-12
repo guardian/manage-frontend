@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/browser';
 import { css } from '@emotion/react';
 import {
 	space,
@@ -106,10 +105,7 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
 										productDetail.subscription,
 									);
 									if (!mainPlan) {
-										Sentry.captureMessage(
-											'mainPlan does not exist for product in billing page',
-										);
-										return null;
+										throw 'mainPlan does not exist for product in billing page';
 									}
 									const groupedProductType =
 										GROUPED_PRODUCT_TYPES[

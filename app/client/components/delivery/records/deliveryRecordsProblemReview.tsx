@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/browser';
 import { css } from '@emotion/react';
 import { Button } from '@guardian/source-react-components';
 import {
@@ -18,7 +17,6 @@ import {
 	isPaidSubscriptionPlan,
 	PaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
-import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import {
@@ -128,10 +126,7 @@ const DeliveryRecordsProblemReviewFC = (
 	) as PaidSubscriptionPlan;
 
 	if (!isPaidSubscriptionPlan(mainPlan)) {
-		Sentry.captureMessage(
-			'mainPlan is not a PaidSubscriptionPlan in deliveryRecordsProblemReview',
-		);
-		return <GenericErrorMessage />;
+		throw 'mainPlan is not a PaidSubscriptionPlan in deliveryRecordsProblemReview';
 	}
 
 	const contactPhoneNumbers = data.contactPhoneNumbers;

@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/browser';
 import { css } from '@emotion/react';
 import { Button } from '@guardian/source-react-components';
 import {
@@ -24,7 +23,6 @@ import {
 	DeliveryProblemType,
 	holidaySuspensionDeliveryProblem,
 } from '../../../../shared/productTypes';
-import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { trackEvent } from '../../../services/analytics';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
@@ -121,10 +119,7 @@ const DeliveryRecords = () => {
 	) as PaidSubscriptionPlan;
 
 	if (!isPaidSubscriptionPlan(mainPlan)) {
-		Sentry.captureMessage(
-			'mainPlan is not a PaidSubscriptionPlan in deliveryRecords',
-		);
-		return <GenericErrorMessage />;
+		throw 'mainPlan is not a PaidSubscriptionPlan in deliveryRecords';
 	}
 
 	const subscriptionCurrency = mainPlan.currency;
