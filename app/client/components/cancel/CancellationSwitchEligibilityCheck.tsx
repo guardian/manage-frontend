@@ -16,6 +16,7 @@ import { WithStandardTopMargin } from '../WithStandardTopMargin';
 import { AvailableProductsResponse } from '../productSwitch/productSwitchApi';
 import { useAB } from '@guardian/ab-react';
 import { ProductMovementTest } from '../../experiments/tests/product-movement-test';
+import { trackEventInOphanOnly } from '../../services/analytics';
 
 const CancellationSwitchEligibilityCheck = () => {
 	const ABTestAPI = useAB();
@@ -74,6 +75,12 @@ const CancellationSwitchEligibilityCheck = () => {
 			</WithStandardTopMargin>
 		);
 	}
+
+	trackEventInOphanOnly({
+		eventCategory: 'pageView',
+		eventAction: 'cancellation_page_1',
+		eventLabel: inABTest ? 'with_product_switch' : 'without_product_switch',
+	});
 
 	return inABTest ? (
 		<CancellationSwitchOffer availableProductsToSwitch={data} />

@@ -20,6 +20,9 @@ import {
 	CancellationRouterState,
 } from '../CancellationContainer';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { trackEventInOphanOnly } from '../../../services/analytics';
+import { ProductMovementTest } from '../../../experiments/tests/product-movement-test';
+import { useAB } from '@guardian/ab-react';
 
 class PerformCancelAsyncLoader extends AsyncLoader<ProductDetail[]> {}
 
@@ -123,6 +126,7 @@ const escalatedConfirmationBody = (
 const ExecuteCancellation = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
+	const ABTestAPI = useAB();
 
 	if (!routerState?.selectedReasonId || !routerState?.caseId) {
 		return <Navigate to="../" />;
@@ -142,6 +146,17 @@ const ExecuteCancellation = () => {
 		hasOutstandingDeliveryProblemCredits:
 			!!routerState.deliveryCredits &&
 			routerState.deliveryCredits.length > 0,
+	});
+
+	const inABTest = ABTestAPI.isUserInVariant(
+		ProductMovementTest.id,
+		ProductMovementTest.variants[1].id,
+	);
+
+	trackEventInOphanOnly({
+		eventCategory: 'pageView',
+		eventAction: 'execute_cancellation',
+		eventLabel: inABTest ? 'with_product_switch' : 'without_product_switch',
 	});
 
 	return (

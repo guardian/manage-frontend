@@ -30,6 +30,7 @@ import {
 } from './productSwitchHelpers';
 import { CancellationRouterState } from '../cancel/CancellationContainer';
 import { headingCss, listCss, standfirstCss } from './productSwitchStyles';
+import { trackEventInOphanOnly } from '../../services/analytics';
 
 const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();
@@ -47,6 +48,11 @@ const CancellationSwitchConfirmed = () => {
 	}
 
 	const newProduct = productSwitchConfirmationInfo.newProduct;
+
+	trackEventInOphanOnly({
+		eventCategory: 'pageView',
+		eventAction: 'product_switch_confirmation',
+	});
 
 	return (
 		<>
