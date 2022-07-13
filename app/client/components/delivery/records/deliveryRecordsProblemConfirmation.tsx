@@ -49,7 +49,9 @@ const renderDeliveryRecordsConfirmation =
 		const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
 
 		if (!mainPlan) {
-			throw 'mainPlan does not exist in deliveryRecordsProblemReview';
+			throw new Error(
+				'mainPlan does not exist in deliveryRecordsProblemReview',
+			);
 		}
 
 		return (

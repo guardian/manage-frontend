@@ -16,7 +16,9 @@ export const voucherCancellationFlowStart = ({
 	const mainPlan = getMainPlan(subscription);
 
 	if (!mainPlan) {
-		throw 'mainPlan does not exist in voucherCancellationFlowStart';
+		throw new Error(
+			'mainPlan does not exist in voucherCancellationFlowStart',
+		);
 	}
 
 	const isEligibleForFreeDigipackAccess =

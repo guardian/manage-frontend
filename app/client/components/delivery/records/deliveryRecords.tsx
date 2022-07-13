@@ -119,7 +119,9 @@ const DeliveryRecords = () => {
 	) as PaidSubscriptionPlan;
 
 	if (!isPaidSubscriptionPlan(mainPlan)) {
-		throw 'mainPlan is not a PaidSubscriptionPlan in deliveryRecords';
+		throw new Error(
+			'mainPlan is not a PaidSubscriptionPlan in deliveryRecords',
+		);
 	}
 
 	const subscriptionCurrency = mainPlan.currency;

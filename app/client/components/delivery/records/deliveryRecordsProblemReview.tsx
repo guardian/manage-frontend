@@ -126,7 +126,9 @@ const DeliveryRecordsProblemReviewFC = (
 	) as PaidSubscriptionPlan;
 
 	if (!isPaidSubscriptionPlan(mainPlan)) {
-		throw 'mainPlan is not a PaidSubscriptionPlan in deliveryRecordsProblemReview';
+		throw new Error(
+			'mainPlan is not a PaidSubscriptionPlan in deliveryRecordsProblemReview',
+		);
 	}
 
 	const contactPhoneNumbers = data.contactPhoneNumbers;
