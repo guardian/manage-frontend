@@ -160,6 +160,7 @@ export interface Subscription {
 	autoRenew: boolean;
 	currentPlans: (SubscriptionPlan | PaidSubscriptionPlan)[];
 	futurePlans: (SubscriptionPlan | PaidSubscriptionPlan)[];
+	plan?: PaidSubscriptionPlan;
 	trialLength: number;
 	readerType: ReaderType;
 	deliveryAddress?: DeliveryAddress;
@@ -202,7 +203,15 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 			);
 		}
 		return subscription.currentPlans[0];
+	} else if (subscription.futurePlans.length > 0) {
+		// fallback to use the first future plan (contributions for example are always future plans)
+		return subscription.futurePlans[0];
 	}
-	// fallback to use the first future plan (contributions for example are always future plans)
-	return subscription.futurePlans?.[0];
+	return {
+		name: null,
+		start: subscription.start,
+		shouldBeVisible: true,
+		currency: subscription.plan?.currency,
+		currencyISO: subscription.plan?.currencyISO,
+	};
 };
