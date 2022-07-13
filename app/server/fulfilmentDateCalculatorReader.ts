@@ -44,6 +44,13 @@ const getDeliveryAddressChangeEffectiveDateForToday = async (
 
 export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday =
 	async (productDetail: ProductDetail) => {
+		const mainPlan = getMainPlan(productDetail.subscription);
+		if (!mainPlan) {
+			const missingMainPlanErrorMsg =
+				'mainPlan does not exist in augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday function (fulfilmentDateCalculatorReader)';
+			log.error(missingMainPlanErrorMsg);
+			Sentry.captureMessage(missingMainPlanErrorMsg);
+		}
 		const productType =
 			GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
 				productDetail,
@@ -54,7 +61,7 @@ export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday 
 			productType.fulfilmentDateCalculator?.explicitSingleDayOfWeek;
 		const maybeDaysOfWeek = maybeExplicitSingleDayOfWeek
 			? [maybeExplicitSingleDayOfWeek]
-			: getMainPlan(productDetail.subscription).daysOfWeek;
+			: mainPlan.daysOfWeek;
 		const maybeDeliveryAddressChangeEffectiveDate =
 			maybeFulfilmentDateCalculatorProductFilenamePart &&
 			maybeDaysOfWeek &&

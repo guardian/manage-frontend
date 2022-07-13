@@ -14,6 +14,7 @@ import { parseDate } from '../../../../shared/dates';
 import {
 	DeliveryRecordApiItem,
 	getMainPlan,
+	isPaidSubscriptionPlan,
 	PaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
 import { maxWidth, minWidth } from '../../../styles/breakpoints';
@@ -123,6 +124,12 @@ const DeliveryRecordsProblemReviewFC = (
 	const mainPlan = getMainPlan(
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
+
+	if (!isPaidSubscriptionPlan(mainPlan)) {
+		throw new Error(
+			'mainPlan is not a PaidSubscriptionPlan in deliveryRecordsProblemReview',
+		);
+	}
 
 	const contactPhoneNumbers = data.contactPhoneNumbers;
 	const apiProductName =

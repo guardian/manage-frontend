@@ -34,6 +34,9 @@ interface AccountOverviewCardProps {
 
 export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 	const mainPlan = getMainPlan(props.productDetail.subscription);
+	if (!mainPlan) {
+		throw new Error('mainPlan does not exist in accountOverviewCard');
+	}
 
 	const hasCancellationPending: boolean =
 		props.productDetail.subscription.cancelledAt;

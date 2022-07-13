@@ -15,8 +15,14 @@ export const voucherCancellationFlowStart = ({
 }: ProductDetail) => {
 	const mainPlan = getMainPlan(subscription);
 
+	if (!mainPlan) {
+		throw new Error(
+			'mainPlan does not exist in voucherCancellationFlowStart',
+		);
+	}
+
 	const isEligibleForFreeDigipackAccess =
-		mainPlan?.name?.indexOf('plus Digi') === -1;
+		mainPlan.name?.indexOf('plus Digi') === -1;
 
 	return (
 		<WithStandardTopMargin>

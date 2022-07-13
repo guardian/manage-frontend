@@ -104,6 +104,11 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
 									const mainPlan = getMainPlan(
 										productDetail.subscription,
 									);
+									if (!mainPlan) {
+										throw new Error(
+											'mainPlan does not exist for product in billing page',
+										);
+									}
 									const groupedProductType =
 										GROUPED_PRODUCT_TYPES[
 											productDetail.mmaCategory

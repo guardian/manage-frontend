@@ -48,6 +48,12 @@ const renderDeliveryRecordsConfirmation =
 	(subscription: Subscription) => (data: DeliveryRecordsResponse) => {
 		const mainPlan = getMainPlan(subscription) as PaidSubscriptionPlan;
 
+		if (!mainPlan) {
+			throw new Error(
+				'mainPlan does not exist in deliveryRecordsProblemReview',
+			);
+		}
+
 		return (
 			<DeliveryRecordsProblemConfirmationFC
 				data={data}

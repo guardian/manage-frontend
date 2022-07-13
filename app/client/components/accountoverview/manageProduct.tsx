@@ -70,6 +70,9 @@ const InnerContent = ({
 	productDetail,
 }: InnerContentProps) => {
 	const mainPlan = getMainPlan(productDetail.subscription);
+	if (!mainPlan) {
+		throw new Error('mainPlan does not exist in manageProduct page');
+	}
 
 	const groupedProductType = manageProductProps.groupedProductType;
 

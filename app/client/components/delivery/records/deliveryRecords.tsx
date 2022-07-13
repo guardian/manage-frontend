@@ -17,6 +17,7 @@ import {
 	isGift,
 	PaidSubscriptionPlan,
 	getMainPlan,
+	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
 import {
 	DeliveryProblemType,
@@ -116,6 +117,12 @@ const DeliveryRecords = () => {
 	const mainPlan = getMainPlan(
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
+
+	if (!isPaidSubscriptionPlan(mainPlan)) {
+		throw new Error(
+			'mainPlan is not a PaidSubscriptionPlan in deliveryRecords',
+		);
+	}
 
 	const subscriptionCurrency = mainPlan.currency;
 	const hasExistingDeliveryProblem = checkForExistingDeliveryProblem(
