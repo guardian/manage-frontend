@@ -4,9 +4,9 @@ import {
 	availableProductMovesResponse,
 	productMoveResponse,
 } from '../../../client/fixtures/productMovement';
-import { abSwitches } from '../../../client/experiments/abSwitches';
+import { featureSwitches } from '../../../shared/featureSwitches';
 
-if (abSwitches.abProductMovementTest) {
+if (featureSwitches.cancellationProductSwitch) {
 	describe('product movement', () => {
 		beforeEach(() => {
 			signInAndAcceptCookies();
