@@ -175,7 +175,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 									border-top: 1px solid ${neutral[86]};
 
 									${from.tablet} {
-										padding: ${space[4]}px;
+										padding: ${space[4]}px ${space[5]}px;
 										display: flex;
 										align-items: center;
 										justify-content: space-between;
@@ -192,8 +192,8 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 											css={css`
 												${textSans.medium({
 													fontWeight: 'bold',
+													lineHeight: 'regular',
 												})};
-
 												margin: 0;
 											`}
 										>
@@ -214,8 +214,9 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 										<div>
 											<div
 												css={css`
-													${textSans.small()};
-
+													${textSans.small({
+														lineHeight: 'regular',
+													})};
 													color: ${neutral[46]};
 												`}
 											>
