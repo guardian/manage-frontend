@@ -70,7 +70,7 @@ const subHeadingCss = css`
 interface PaymentMethodProps {
 	value: PaymentMethod;
 	updatePaymentMethod: (newPaymentMethod: PaymentMethod) => void;
-	directDebitIsAllowed: Boolean
+	directDebitIsAllowed: Boolean;
 }
 
 interface PaymentMethodRadioButtonProps extends PaymentMethodProps {
@@ -220,14 +220,13 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 	const mainPlan = getMainPlan(productDetail.subscription);
 
 	const directDebitIsAllowed =
-		(currentPaymentMethod === PaymentMethod.dd) ||
-		(
-			isPaidSubscriptionPlan(mainPlan) &&
+		currentPaymentMethod === PaymentMethod.dd ||
+		(isPaidSubscriptionPlan(mainPlan) &&
 			mainPlan &&
-			mainPlan.currencyISO === "GBP" &&
+			mainPlan.currencyISO === 'GBP' &&
 			productDetail.subscription.deliveryAddress !== undefined &&
-			productDetail.subscription.deliveryAddress.country === "United Kingdom"
-		);
+			productDetail.subscription.deliveryAddress.country ===
+				'United Kingdom');
 
 	const [paymentUpdateState, setPaymentUpdateState] =
 		useState<PaymentUpdaterStepState>({
