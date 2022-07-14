@@ -19,6 +19,8 @@ import {
 import * as Sentry from '@sentry/browser';
 import * as React from 'react';
 import {
+	getMainPlan,
+	isPaidSubscriptionPlan,
 	ProductDetail,
 	Subscription,
 	WithSubscription,
@@ -215,11 +217,15 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 
 	const currentPaymentMethod = subscriptionToPaymentMethod(productDetail);
 
+	const mainPlan = getMainPlan(productDetail.subscription);
+
 	const directDebitIsAllowed =
-		currentPaymentMethod == PaymentMethod.dd || (
-			productDetail.subscription.plan !== undefined &&
+		currentPaymentMethod === PaymentMethod.dd ||
+		(
+			isPaidSubscriptionPlan(mainPlan) &&
+			mainPlan &&
+			mainPlan.currencyISO === "GBP" &&
 			productDetail.subscription.deliveryAddress !== undefined &&
-			productDetail.subscription.plan.currency === "GBP" &&
 			productDetail.subscription.deliveryAddress.country === "United Kingdom"
 		);
 
