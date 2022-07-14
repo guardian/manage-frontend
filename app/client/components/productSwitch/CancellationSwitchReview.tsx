@@ -16,7 +16,7 @@ import {
 	between,
 	from,
 } from '@guardian/source-foundations';
-import { CardDisplay } from '../payment/cardDisplay';
+import { cardTypeToSVG } from '../payment/cardDisplay';
 import { expanderButtonCss } from '../expanderButton';
 import {
 	CancellationPageTitleContext,
@@ -335,13 +335,21 @@ const CancellationSwitchReview = () => {
 		return (
 			<>
 				{currentSubscription.card && (
-					<CardDisplay
-						inErrorState={false}
-						cssOverrides={css`
-							margin: 0;
+					<div
+						css={css`
+							display: flex;
+							align-items: center;
 						`}
-						{...currentSubscription.card}
-					/>
+					>
+						{cardTypeToSVG(
+							currentSubscription.card.type,
+							css`
+								margin-top: 3px;
+								margin-right: ${space[2]}px;
+							`,
+						)}
+						<span>ending {currentSubscription.card.last4}</span>
+					</div>
 				)}
 				{currentSubscription.mandate && (
 					<DirectDebitDisplay
