@@ -18,9 +18,9 @@ import useScrollToTop from '../services/useScrollToTop';
 import useConsent from '../services/useConsent';
 import ErrorBoundary from './ErrorBoundary';
 import { GenericErrorScreen } from './genericErrorScreen';
-import { initFeatureSwitchUrlParamOveride } from '../../shared/featureSwitches';
+import { initFeatureSwitchUrlParamOverride } from '../../shared/featureSwitches';
 
-initFeatureSwitchUrlParamOveride();
+initFeatureSwitchUrlParamOverride();
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce

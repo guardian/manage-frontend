@@ -2,7 +2,7 @@ interface FeatureSwitches {
 	[x: string]: boolean;
 }
 
-export const initFeatureSwitchUrlParamOveride = () => {
+export const initFeatureSwitchUrlParamOverride = () => {
 	const searchParams = new URLSearchParams(window?.location.search);
 	const param = searchParams.get('withFeature');
 	if (param) {
