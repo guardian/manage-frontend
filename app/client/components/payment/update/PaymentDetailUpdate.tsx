@@ -222,9 +222,9 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 	const directDebitIsAllowed =
 		currentPaymentMethod === PaymentMethod.dd ||
 		(isPaidSubscriptionPlan(mainPlan) &&
-			mainPlan &&
 			mainPlan.currencyISO === 'GBP' &&
-			(productDetail.subscription.deliveryAddress === undefined ||
+			(!productDetail.subscription.deliveryAddress ||
+				!productDetail.subscription.deliveryAddress?.country ||
 				productDetail.subscription.deliveryAddress.country ===
 					'United Kingdom'));
 
