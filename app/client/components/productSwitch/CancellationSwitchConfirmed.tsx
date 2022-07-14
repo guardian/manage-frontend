@@ -30,6 +30,7 @@ import {
 } from './productSwitchHelpers';
 import { CancellationRouterState } from '../cancel/CancellationContainer';
 import {
+	buttonFullWidthOnMobileCss,
 	colour,
 	headingCss,
 	listCss,
@@ -264,6 +265,7 @@ const CancellationSwitchConfirmed = () => {
 					<Button
 						icon={<SvgArrowRightStraight />}
 						iconSide="right"
+						cssOverrides={buttonFullWidthOnMobileCss}
 						onClick={() => {
 							navigate('/');
 						}}

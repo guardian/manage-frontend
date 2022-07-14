@@ -4,6 +4,7 @@ import {
 	palette,
 	space,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
 import { minWidth } from '../../styles/breakpoints';
 
@@ -54,5 +55,21 @@ export const tickListCss = css`
 		flex-shrink: 0;
 		margin-right: ${space[2]}px;
 		fill: ${palette.brand[500]};
+	}
+`;
+
+export const buttonFullWidthOnMobileCss = css`
+	${until.tablet} {
+		width: 100%;
+		justify-content: center;
+	}
+`;
+
+export const buttonHideChevronOnMobileCss = css`
+	${until.tablet} {
+		div,
+		svg {
+			display: none;
+		}
 	}
 `;

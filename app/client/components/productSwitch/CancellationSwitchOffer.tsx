@@ -31,6 +31,8 @@ import {
 	trialCopy,
 } from './productSwitchHelpers';
 import {
+	buttonFullWidthOnMobileCss,
+	buttonHideChevronOnMobileCss,
 	colour,
 	headingCss,
 	listCss,
@@ -246,6 +248,10 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 											icon={<SvgArrowRightStraight />}
 											iconSide="right"
 											nudgeIcon
+											cssOverrides={[
+												buttonFullWidthOnMobileCss,
+												buttonHideChevronOnMobileCss,
+											]}
 											onClick={() => {
 												navigate('./switch', {
 													state: {
@@ -346,6 +352,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 					<Button
 						icon={<SvgArrowRightStraight />}
 						iconSide="right"
+						cssOverrides={buttonFullWidthOnMobileCss}
 						onClick={() =>
 							navigate('./', {
 								state: { ...routerState, dontShowOffer: true },
