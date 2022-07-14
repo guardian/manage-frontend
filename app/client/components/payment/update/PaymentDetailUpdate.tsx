@@ -224,9 +224,9 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 		(isPaidSubscriptionPlan(mainPlan) &&
 			mainPlan &&
 			mainPlan.currencyISO === 'GBP' &&
-			productDetail.subscription.deliveryAddress !== undefined &&
-			productDetail.subscription.deliveryAddress.country ===
-				'United Kingdom');
+			(productDetail.subscription.deliveryAddress === undefined ||
+				productDetail.subscription.deliveryAddress.country ===
+					'United Kingdom'));
 
 	const [paymentUpdateState, setPaymentUpdateState] =
 		useState<PaymentUpdaterStepState>({
