@@ -53,7 +53,7 @@ describe('updatePaymentFlow.tsx', () => {
 				value={PaymentMethod.payPal}
 				currentPaymentMethod={PaymentMethod.payPal}
 				updatePaymentMethod={() => null}
-				directDebitIsAllowed={true}
+				directDebitIsAllowed={false}
 			/>,
 		);
 

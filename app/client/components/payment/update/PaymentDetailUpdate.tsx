@@ -220,7 +220,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 	const mainPlan = getMainPlan(productDetail.subscription);
 
 	const directDebitIsAllowed =
-		currentPaymentMethod === PaymentMethod.dd ||
+		(currentPaymentMethod === PaymentMethod.dd) ||
 		(
 			isPaidSubscriptionPlan(mainPlan) &&
 			mainPlan &&
