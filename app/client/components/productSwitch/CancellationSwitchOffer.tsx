@@ -31,6 +31,7 @@ import {
 	trialCopy,
 } from './productSwitchHelpers';
 import {
+	colour,
 	headingCss,
 	listCss,
 	standfirstCss,
@@ -74,7 +75,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 									display: flex;
 									justify-content: space-between;
 									align-items: flex-end;
-									background-color: #e3edfe;
+									background-color: ${colour.background.hero};
 
 									padding: ${space[4]}px ${space[3]}px;
 

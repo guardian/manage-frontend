@@ -29,7 +29,12 @@ import {
 	productFirstPaymentAmount,
 } from './productSwitchHelpers';
 import { CancellationRouterState } from '../cancel/CancellationContainer';
-import { headingCss, listCss, standfirstCss } from './productSwitchStyles';
+import {
+	colour,
+	headingCss,
+	listCss,
+	standfirstCss,
+} from './productSwitchStyles';
 
 const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();
@@ -67,7 +72,7 @@ const CancellationSwitchConfirmed = () => {
 				>
 					<div
 						css={css`
-							background-color: #e3edfe;
+							background-color: ${colour.background.hero};
 
 							padding: ${space[4]}px ${space[4]}px 0 ${space[4]}px;
 

@@ -7,6 +7,12 @@ import {
 } from '@guardian/source-foundations';
 import { minWidth } from '../../styles/breakpoints';
 
+export const colour = {
+	background: {
+		hero: '#e3edfe',
+	},
+};
+
 export const headingCss = css`
 	border-top: 1px solid ${palette.neutral[86]};
 	${headline.xsmall({ fontWeight: 'bold' })};

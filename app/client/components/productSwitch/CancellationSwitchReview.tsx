@@ -47,6 +47,7 @@ import { PayPalDisplay } from '../payment/paypalDisplay';
 import { SepaDisplay } from '../payment/sepaDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import {
+	colour,
 	headingCss,
 	listCss,
 	standfirstCss,
@@ -508,7 +509,7 @@ const CancellationSwitchReview = () => {
 							css={css`
 								${textSans.medium()};
 								padding: ${space[4]}px;
-								background-color: #e3edfe;
+								background-color: ${colour.background.hero};
 							`}
 						>
 							{chosenProduct.introOffer ? (
