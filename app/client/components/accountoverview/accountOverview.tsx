@@ -25,14 +25,11 @@ import { AccountOverviewCard } from './accountOverviewCard';
 import { EmptyAccountOverview } from './emptyAccountOverview';
 import { SupportTheGuardianSection } from './supportTheGuardianSection';
 import { fetchWithDefaultParameters } from '../../fetch';
-import { initFeatureSwitchUrlParamOveride } from '../../../shared/featureSwitches';
 
 const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 	MembersDataApiItem[],
 	CancelledProductDetail[],
 ]) => {
-	initFeatureSwitchUrlParamOveride();
-
 	const allActiveProductDetails = mdaResponse
 		.filter(isProduct)
 		.sort(sortByJoinDate);
