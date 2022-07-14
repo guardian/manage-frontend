@@ -41,7 +41,7 @@ const CancellationSwitchEligibilityCheck = () => {
 	}
 
 	const cancellationProductSwitchFeatureIsOn =
-		!!featureSwitches.cancellationProductSwitch;
+		featureSwitches.cancellationProductSwitch;
 
 	const { data, error } = useFetch<AvailableProductsResponse[]>(
 		`/api/available-product-moves/${routerState.productDetail.subscription.subscriptionId}`,
