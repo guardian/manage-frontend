@@ -279,7 +279,11 @@ const CancellationSwitchReview = () => {
 		align-items: center;
 		transform: rotate(90deg);
 
-		${from.tablet} {
+		${between.tablet.and.desktop} {
+			transform: none;
+		}
+
+		${from.leftCol} {
 			transform: none;
 		}
 
@@ -393,7 +397,10 @@ const CancellationSwitchReview = () => {
 					`
 						border-bottom: 1px solid ${palette.neutral[60]};
 					`}
-					${from.tablet} {
+					${between.tablet.and.desktop} {
+						min-height: 64px;
+					}
+					${from.leftCol} {
 						min-height: 64px;
 					}
 				`}
@@ -459,7 +466,10 @@ const CancellationSwitchReview = () => {
 									border: none;
 									border-bottom: 1px solid
 										${palette.neutral[86]};
-									${from.tablet} {
+									${between.tablet.and.desktop} {
+										display: block;
+									}
+									${from.leftCol} {
 										display: block;
 									}
 								`}
