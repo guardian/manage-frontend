@@ -307,7 +307,22 @@ const CancellationSwitchReview = () => {
 			margin-top: ${space[4]}px;
 		}
 
-		${from.tablet} {
+		${between.tablet.and.desktop} {
+			flex-direction: row;
+			justify-content: space-between;
+
+			button:first-of-type {
+				margin-top: 0;
+			}
+
+			button:last-of-type {
+				flex-basis: calc(
+					50% - ${(cardLayoutGap + arrowIconWidth) / 2}px
+				);
+			}
+		}
+
+		${from.leftCol} {
 			flex-direction: row;
 			justify-content: space-between;
 
