@@ -1,6 +1,5 @@
 import { AB, ABTest, Participations } from '@guardian/ab-core';
 import { abSwitches } from './abSwitches';
-import { ProductMovementTest } from './tests/product-movement-test';
 
 interface ABTestConfiguration {
 	abTestSwitches: Record<string, boolean>;
@@ -9,8 +8,8 @@ interface ABTestConfiguration {
 	mvtMaxValue: 1000000;
 }
 
-// Add AB tests to run in this array
-export const tests: ABTest[] = [ProductMovementTest];
+// Add AB tests to run in this array (you can import them from ./tests ... then add then to this array)
+export const tests: ABTest[] = [];
 
 const getDefaultABTestConfiguration = (): ABTestConfiguration => ({
 	abTestSwitches: abSwitches,

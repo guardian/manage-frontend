@@ -14,12 +14,9 @@ import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 import { Spinner } from '../spinner';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
 import { AvailableProductsResponse } from '../productSwitch/productSwitchApi';
-import { useAB } from '@guardian/ab-react';
-import { ProductMovementTest } from '../../experiments/tests/product-movement-test';
+import { featureSwitches } from '../../../shared/featureSwitches';
 
 const CancellationSwitchEligibilityCheck = () => {
-	const ABTestAPI = useAB();
-
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const cancellationContext = useContext(
@@ -43,10 +40,8 @@ const CancellationSwitchEligibilityCheck = () => {
 		return <CancellationReasonSelection />;
 	}
 
-	const inABTest = ABTestAPI.isUserInVariant(
-		ProductMovementTest.id,
-		ProductMovementTest.variants[1].id,
-	);
+	const cancellationProductSwitchFeatureIsOn =
+		featureSwitches.cancellationProductSwitch;
 
 	const { data, error } = useFetch<AvailableProductsResponse[]>(
 		`/api/available-product-moves/${routerState.productDetail.subscription.subscriptionId}`,
@@ -75,7 +70,7 @@ const CancellationSwitchEligibilityCheck = () => {
 		);
 	}
 
-	return inABTest ? (
+	return cancellationProductSwitchFeatureIsOn ? (
 		<CancellationSwitchOffer availableProductsToSwitch={data} />
 	) : (
 		<CancellationReasonSelection />

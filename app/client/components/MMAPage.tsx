@@ -36,12 +36,15 @@ import { tests } from '../experiments/abTests';
 import { abSwitches } from '../experiments/abSwitches';
 import { ABProvider, useAB } from '@guardian/ab-react';
 import { getCookie } from '../cookies';
+import { initFeatureSwitchUrlParamOverride } from '../../shared/featureSwitches';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {
 		window.guardian.ophan.record(event);
 	}
 };
+
+initFeatureSwitchUrlParamOverride();
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
