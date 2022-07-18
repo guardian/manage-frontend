@@ -6,6 +6,7 @@ import {
 	textSans,
 	brand,
 	brandAlt,
+	from,
 } from '@guardian/source-foundations';
 import {
 	Button,
@@ -13,7 +14,6 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { useNavigate, Link, useLocation, Navigate } from 'react-router-dom';
-import { minWidth } from '../../styles/breakpoints';
 import GridPicture from '../images/GridPicture';
 import GridImage from '../images/GridImage';
 import { useContext } from 'react';
@@ -29,7 +29,13 @@ import {
 	productFirstPaymentAmount,
 } from './productSwitchHelpers';
 import { CancellationRouterState } from '../cancel/CancellationContainer';
-import { headingCss, listCss, standfirstCss } from './productSwitchStyles';
+import {
+	buttonFullWidthOnMobileCss,
+	colour,
+	headingCss,
+	listCss,
+	standfirstCss,
+} from './productSwitchStyles';
 
 const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();
@@ -67,11 +73,11 @@ const CancellationSwitchConfirmed = () => {
 				>
 					<div
 						css={css`
-							background-color: #e3edfe;
+							background-color: ${colour.background.hero};
 
 							padding: ${space[4]}px ${space[4]}px 0 ${space[4]}px;
 
-							${minWidth.tablet} {
+							${from.tablet} {
 								display: flex;
 								justify-content: space-between;
 								padding: ${space[4]}px ${space[5]}px 0
@@ -91,7 +97,7 @@ const CancellationSwitchConfirmed = () => {
 								display: flex;
 								margin: auto;
 
-								${minWidth.tablet} {
+								${from.tablet} {
 									display: block;
 									margin-right: 42px;
 								}
@@ -174,7 +180,7 @@ const CancellationSwitchConfirmed = () => {
 							align-items: start;
 							background-color: ${brand[400]};
 
-							${minWidth.mobileLandscape} {
+							${from.mobileLandscape} {
 								align-items: center;
 							}
 						`}
@@ -259,6 +265,7 @@ const CancellationSwitchConfirmed = () => {
 					<Button
 						icon={<SvgArrowRightStraight />}
 						iconSide="right"
+						cssOverrides={buttonFullWidthOnMobileCss}
 						onClick={() => {
 							navigate('/');
 						}}

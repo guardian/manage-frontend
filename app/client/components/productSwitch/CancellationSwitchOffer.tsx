@@ -2,12 +2,13 @@ import { css, ThemeProvider } from '@emotion/react';
 import {
 	brand,
 	brandAlt,
+	from,
 	headline,
 	neutral,
 	space,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
-import { maxWidth, minWidth } from '../../styles/breakpoints';
 import GridPicture from '../images/GridPicture';
 import {
 	Button,
@@ -30,6 +31,9 @@ import {
 	trialCopy,
 } from './productSwitchHelpers';
 import {
+	buttonFullWidthOnMobileCss,
+	buttonHideChevronOnMobileCss,
+	colour,
 	headingCss,
 	listCss,
 	standfirstCss,
@@ -73,11 +77,11 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 									display: flex;
 									justify-content: space-between;
 									align-items: flex-end;
-									background-color: #e3edfe;
+									background-color: ${colour.background.hero};
 
 									padding: ${space[4]}px ${space[3]}px;
 
-									${minWidth.tablet} {
+									${from.tablet} {
 										padding: ${space[3]}px ${space[5]}px 0
 											${space[5]}px;
 									}
@@ -91,7 +95,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 
 										margin: 0;
 
-										${minWidth.tablet} {
+										${from.tablet} {
 											padding-bottom: ${space[5]}px;
 											max-width: 67%;
 										}
@@ -108,7 +112,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 											css={css`
 												color: ${brand[500]};
 
-												${minWidth.tablet} {
+												${from.tablet} {
 													display: block;
 												}
 											`}
@@ -147,7 +151,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 										margin-right: 42px;
 										max-width: 220px;
 
-										${maxWidth.tablet} {
+										${until.tablet} {
 											display: none;
 										}
 									`}
@@ -173,8 +177,8 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 										${space[3]}px;
 									border-top: 1px solid ${neutral[86]};
 
-									${minWidth.tablet} {
-										padding: ${space[4]}px;
+									${from.tablet} {
+										padding: ${space[4]}px ${space[5]}px;
 										display: flex;
 										align-items: center;
 										justify-content: space-between;
@@ -191,8 +195,8 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 											css={css`
 												${textSans.medium({
 													fontWeight: 'bold',
+													lineHeight: 'regular',
 												})};
-
 												margin: 0;
 											`}
 										>
@@ -213,8 +217,9 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 										<div>
 											<div
 												css={css`
-													${textSans.small()};
-
+													${textSans.small({
+														lineHeight: 'regular',
+													})};
 													color: ${neutral[46]};
 												`}
 											>
@@ -231,7 +236,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 								<div
 									css={css`
 										margin: ${space[4]}px 0 ${space[5]}px 0;
-										${minWidth.tablet} {
+										${from.tablet} {
 											margin: 0;
 										}
 									`}
@@ -243,6 +248,10 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 											icon={<SvgArrowRightStraight />}
 											iconSide="right"
 											nudgeIcon
+											cssOverrides={[
+												buttonFullWidthOnMobileCss,
+												buttonHideChevronOnMobileCss,
+											]}
 											onClick={() => {
 												navigate('./switch', {
 													state: {
@@ -266,14 +275,14 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 								css={css`
 									padding: 0 ${space[3]}px ${space[6]}px
 										${space[3]}px;
-									${minWidth.tablet} {
+									${from.tablet} {
 										padding: 0 ${space[5]}px;
 									}
 								`}
 							>
 								<div
 									css={css`
-										${minWidth.tablet} {
+										${from.tablet} {
 											border-top: 1px solid ${neutral[86]};
 											padding: ${space[3]}px 0
 												${space[9]}px 0;
@@ -293,7 +302,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 										css={css`
 											padding-top: ${space[6]}px;
 											border-top: 1px solid ${neutral[86]};
-											${minWidth.tablet} {
+											${from.tablet} {
 												display: flex;
 												justify-content: space-between;
 												padding-top: 0;
@@ -309,7 +318,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 													listCss,
 													tickListCss,
 													css`
-														${minWidth.tablet} {
+														${from.tablet} {
 															columns: 2;
 															column-gap: ${space[4]}px;
 														}
@@ -334,7 +343,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 				)}
 				<div
 					css={css`
-						${minWidth.tablet} {
+						${from.tablet} {
 							display: flex;
 							justify-content: flex-end;
 						}
@@ -343,6 +352,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 					<Button
 						icon={<SvgArrowRightStraight />}
 						iconSide="right"
+						cssOverrides={buttonFullWidthOnMobileCss}
 						onClick={() =>
 							navigate('./', {
 								state: { ...routerState, dontShowOffer: true },

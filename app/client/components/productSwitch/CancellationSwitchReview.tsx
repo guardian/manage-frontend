@@ -13,9 +13,10 @@ import {
 	textSans,
 	palette,
 	space,
+	between,
+	from,
 } from '@guardian/source-foundations';
-import { minWidth } from '../../styles/breakpoints';
-import { CardDisplay } from '../payment/cardDisplay';
+import { cardTypeToSVG } from '../payment/cardDisplay';
 import { expanderButtonCss } from '../expanderButton';
 import {
 	CancellationPageTitleContext,
@@ -46,6 +47,7 @@ import { PayPalDisplay } from '../payment/paypalDisplay';
 import { SepaDisplay } from '../payment/sepaDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import {
+	colour,
 	headingCss,
 	listCss,
 	standfirstCss,
@@ -115,9 +117,10 @@ const KeyValueTable = (props: KeyValueTableProps) => {
 		padding: ${space[4]}px;
 		${textSans.medium()};
 
-		${minWidth.tablet} {
+		${from.tablet} {
 			flex-direction: row;
 			flex-wrap: wrap;
+			padding: ${space[3]}px ${space[4]}px;
 		}
 	`;
 
@@ -129,10 +132,10 @@ const KeyValueTable = (props: KeyValueTableProps) => {
 			margin-top: 0;
 		}
 
-		${minWidth.tablet} {
+		${from.tablet} {
 			flex: 0 1 50%;
 			margin-top: 0;
-			padding-top: ${space[2]}px;
+			padding-top: ${space[2] - 1}px;
 			padding-bottom: ${space[2]}px;
 			border-bottom: 1px solid ${palette.neutral[86]};
 
@@ -254,7 +257,15 @@ const CancellationSwitchReview = () => {
 			margin-top: ${space[3]}px;
 		}
 
-		${minWidth.tablet} {
+		${between.tablet.and.desktop} {
+			display: flex;
+			> * + * {
+				margin-top: 0;
+				margin-left: ${cardLayoutGap}px;
+			}
+		}
+
+		${from.leftCol} {
 			display: flex;
 			> * + * {
 				margin-top: 0;
@@ -269,7 +280,11 @@ const CancellationSwitchReview = () => {
 		align-items: center;
 		transform: rotate(90deg);
 
-		${minWidth.tablet} {
+		${between.tablet.and.desktop} {
+			transform: none;
+		}
+
+		${from.leftCol} {
 			transform: none;
 		}
 
@@ -293,7 +308,22 @@ const CancellationSwitchReview = () => {
 			margin-top: ${space[4]}px;
 		}
 
-		${minWidth.tablet} {
+		${between.tablet.and.desktop} {
+			flex-direction: row;
+			justify-content: space-between;
+
+			button:first-of-type {
+				margin-top: 0;
+			}
+
+			button:last-of-type {
+				flex-basis: calc(
+					50% - ${(cardLayoutGap + arrowIconWidth) / 2}px
+				);
+			}
+		}
+
+		${from.leftCol} {
 			flex-direction: row;
 			justify-content: space-between;
 
@@ -325,13 +355,21 @@ const CancellationSwitchReview = () => {
 		return (
 			<>
 				{currentSubscription.card && (
-					<CardDisplay
-						inErrorState={false}
-						cssOverrides={css`
-							margin: 0;
+					<div
+						css={css`
+							display: flex;
+							align-items: center;
 						`}
-						{...currentSubscription.card}
-					/>
+					>
+						{cardTypeToSVG(
+							currentSubscription.card.type,
+							css`
+								margin-top: 3px;
+								margin-right: ${space[2]}px;
+							`,
+						)}
+						<span>ending {currentSubscription.card.last4}</span>
+					</div>
 				)}
 				{currentSubscription.mandate && (
 					<DirectDebitDisplay
@@ -375,7 +413,10 @@ const CancellationSwitchReview = () => {
 					`
 						border-bottom: 1px solid ${palette.neutral[60]};
 					`}
-					${minWidth.tablet} {
+					${between.tablet.and.desktop} {
+						min-height: 64px;
+					}
+					${from.leftCol} {
 						min-height: 64px;
 					}
 				`}
@@ -441,7 +482,10 @@ const CancellationSwitchReview = () => {
 									border: none;
 									border-bottom: 1px solid
 										${palette.neutral[86]};
-									${minWidth.tablet} {
+									${between.tablet.and.desktop} {
+										display: block;
+									}
+									${from.leftCol} {
 										display: block;
 									}
 								`}
@@ -499,7 +543,7 @@ const CancellationSwitchReview = () => {
 							css={css`
 								${textSans.medium()};
 								padding: ${space[4]}px;
-								background-color: #e3edfe;
+								background-color: ${colour.background.hero};
 							`}
 						>
 							{chosenProduct.introOffer ? (
@@ -509,14 +553,24 @@ const CancellationSwitchReview = () => {
 										${introOfferDuration(chosenProduct)}
 									`}
 									paymentFollowOnAmount={
-										<>
+										<span
+											css={css`
+												padding-left: 8ch;
+											`}
+										>
 											{`Then  ${regularPrice(
 												chosenProduct,
 											)} ${regularBillingFrequency(
 												chosenProduct,
 											)}. `}
-											<strong>Cancel anytime.</strong>
-										</>
+											<strong
+												css={css`
+													display: inline-block;
+												`}
+											>
+												Cancel anytime.
+											</strong>
+										</span>
 									}
 									theme="brand"
 								/>
