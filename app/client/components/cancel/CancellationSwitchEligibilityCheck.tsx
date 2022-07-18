@@ -70,7 +70,7 @@ const CancellationSwitchEligibilityCheck = () => {
 		);
 	}
 
-	return cancellationProductSwitchFeatureIsOn ? (
+	return cancellationProductSwitchFeatureIsOn && data.length ? (
 		<CancellationSwitchOffer availableProductsToSwitch={data} />
 	) : (
 		<CancellationReasonSelection />
