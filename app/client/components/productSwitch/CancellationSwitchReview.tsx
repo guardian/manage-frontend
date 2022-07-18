@@ -120,6 +120,7 @@ const KeyValueTable = (props: KeyValueTableProps) => {
 		${from.tablet} {
 			flex-direction: row;
 			flex-wrap: wrap;
+			padding: ${space[3]}px ${space[4]}px;
 		}
 	`;
 
@@ -134,7 +135,7 @@ const KeyValueTable = (props: KeyValueTableProps) => {
 		${from.tablet} {
 			flex: 0 1 50%;
 			margin-top: 0;
-			padding-top: ${space[2]}px;
+			padding-top: ${space[2] - 1}px;
 			padding-bottom: ${space[2]}px;
 			border-bottom: 1px solid ${palette.neutral[86]};
 
