@@ -1,12 +1,11 @@
 import { css } from '@emotion/react';
 import {
-	headline,
+	from,
 	palette,
 	space,
 	textSans,
 	until,
 } from '@guardian/source-foundations';
-import { minWidth } from '../../styles/breakpoints';
 
 export const colour = {
 	background: {
@@ -14,21 +13,11 @@ export const colour = {
 	},
 };
 
-export const headingCss = css`
-	border-top: 1px solid ${palette.neutral[86]};
-	${headline.xsmall({ fontWeight: 'bold' })};
+export const pageTopCss = css`
 	margin-top: ${space[6]}px;
-	margin-bottom: ${space[3]}px;
-	${minWidth.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
+	${from.tablet} {
 		margin-top: ${space[9]}px;
-	} ;
-`;
-
-export const standfirstCss = css`
-	${textSans.medium()};
-	margin: 0;
-	max-width: 60ch;
+	}
 `;
 
 export const listCss = css`
