@@ -75,6 +75,7 @@ const ReturnToAccountButton = () => {
 			cssOverrides={css`
 				margin-top: ${space[5]}px;
 			`}
+			priority="tertiary"
 			onClick={() => navigate('/')}
 		>
 			Return to your account
