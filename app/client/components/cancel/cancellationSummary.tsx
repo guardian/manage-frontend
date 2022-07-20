@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand } from '@guardian/source-foundations';
+import { brand, space } from '@guardian/source-foundations';
 import { cancellationFormatDate } from '../../../shared/dates';
 import { ProductDetail, Subscription } from '../../../shared/productResponse';
 import { ProductType } from '../../../shared/productTypes';
@@ -12,6 +12,7 @@ import { hrefStyle } from './cancellationConstants';
 import { CancellationReasonContext } from './cancellationContexts';
 import { CancellationContributionReminder } from './cancellationContributionReminder';
 import { Link } from 'react-router-dom';
+import { heading, measure } from '../../styles/typography';
 
 const actuallyCancelled = (
 	productType: ProductType,
@@ -23,7 +24,25 @@ const actuallyCancelled = (
 	return (
 		<>
 			<WithStandardTopMargin>
-				<h3>Your {productType.friendlyName} is cancelled.</h3>
+				<h2
+					css={[
+						heading,
+						css`
+							margin-bottom: ${space[6]}px;
+						`,
+					]}
+				>
+					<span
+						css={[
+							css`
+								display: inline-block;
+							`,
+							measure.medium,
+						]}
+					>
+						Your {productType.friendlyName} is cancelled.
+					</span>
+				</h2>
 				{productType.cancellation &&
 					!productType.cancellation.shouldHideSummaryMainPara && (
 						<p>
