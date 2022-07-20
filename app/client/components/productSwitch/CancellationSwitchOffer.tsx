@@ -38,7 +38,8 @@ import {
 	pageTopCss,
 	tickListCss,
 } from './productSwitchStyles';
-import { heading, measure } from '../../styles/typography';
+import { measure } from '../../styles/typography';
+import { Heading } from '../Heading';
 
 interface CancellationSwitchOfferProps {
 	availableProductsToSwitch: AvailableProductsResponse[];
@@ -52,9 +53,9 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 	return (
 		<Stack space={9} cssOverrides={pageTopCss}>
 			<Stack space={3}>
-				<h2 css={heading}>
+				<Heading>
 					We're sorry to hear you're thinking of cancelling
-				</h2>
+				</Heading>
 				<p css={[textSans.medium(), measure.regular]}>
 					Your support means the Guardian can remain editorially
 					independent, free from the influence of billionaire owners

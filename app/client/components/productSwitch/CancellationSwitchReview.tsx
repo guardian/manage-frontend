@@ -53,7 +53,8 @@ import {
 	tickListCss,
 } from './productSwitchStyles';
 import { productBenefits } from './ProductBenefits';
-import { heading, measure } from '../../styles/typography';
+import { measure } from '../../styles/typography';
+import { Heading } from '../Heading';
 
 /**
  * Generic Card container component
@@ -62,7 +63,7 @@ import { heading, measure } from '../../styles/typography';
 
 interface CardProps {
 	heading: string;
-	theme?: 'brand' | undefined;
+	theme?: 'brand';
 	children: ReactNode;
 }
 
@@ -342,6 +343,7 @@ const CancellationSwitchReview = () => {
 	const smallPrintCss = css`
 		${textSans.xsmall()};
 		${measure.regular};
+		margin-top: 0;
 		margin-bottom: 0;
 
 		> a {
@@ -455,9 +457,7 @@ const CancellationSwitchReview = () => {
 	return (
 		<Stack space={9} cssOverrides={pageTopCss}>
 			<Stack space={3}>
-				<h2 css={heading}>
-					Change your support to a {chosenProduct.name}
-				</h2>
+				<Heading>Change your support to a {chosenProduct.name}</Heading>
 				<p css={[textSans.medium(), measure.regular]}>
 					If you decide to change your support to a{' '}
 					{chosenProduct.name} we’ll stop your{' '}
@@ -736,18 +736,20 @@ const CancellationSwitchReview = () => {
 					</Card>
 				</Stack>
 
-				<p css={smallPrintCss}>
-					By proceeding, you are agreeing to our{' '}
-					<a href="https://www.theguardian.com/info/2014/aug/06/guardian-observer-digital-subscriptions-terms-conditions">
-						Terms and Conditions
-					</a>
-					. To find out what personal data we collect and how we use
-					it, please visit our{' '}
-					<a href="https://www.theguardian.com/help/privacy-policy">
-						Privacy Policy
-					</a>
-					.
-				</p>
+				<div>
+					<p css={smallPrintCss}>
+						By proceeding, you are agreeing to our{' '}
+						<a href="https://www.theguardian.com/info/2014/aug/06/guardian-observer-digital-subscriptions-terms-conditions">
+							Terms and Conditions
+						</a>
+						. To find out what personal data we collect and how we
+						use it, please visit our{' '}
+						<a href="https://www.theguardian.com/help/privacy-policy">
+							Privacy Policy
+						</a>
+						.
+					</p>
+				</div>
 			</Stack>
 		</Stack>
 	);

@@ -12,7 +12,7 @@ import { hrefStyle } from './cancellationConstants';
 import { CancellationReasonContext } from './cancellationContexts';
 import { CancellationContributionReminder } from './cancellationContributionReminder';
 import { Link } from 'react-router-dom';
-import { heading, measure } from '../../styles/typography';
+import { Heading } from '../Heading';
 
 const actuallyCancelled = (
 	productType: ProductType,
@@ -24,25 +24,14 @@ const actuallyCancelled = (
 	return (
 		<>
 			<WithStandardTopMargin>
-				<h2
-					css={[
-						heading,
-						css`
-							margin-bottom: ${space[6]}px;
-						`,
-					]}
+				<Heading
+					measure="medium"
+					cssOverrides={css`
+						margin-bottom: ${space[6]}px;
+					`}
 				>
-					<span
-						css={[
-							css`
-								display: inline-block;
-							`,
-							measure.medium,
-						]}
-					>
-						Your {productType.friendlyName} is cancelled.
-					</span>
-				</h2>
+					Your {productType.friendlyName} is cancelled.
+				</Heading>
 				{productType.cancellation &&
 					!productType.cancellation.shouldHideSummaryMainPara && (
 						<p>

@@ -35,7 +35,8 @@ import {
 	listCss,
 	pageTopCss,
 } from './productSwitchStyles';
-import { heading, measure } from '../../styles/typography';
+import { measure } from '../../styles/typography';
+import { Heading } from '../Heading';
 
 const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();
@@ -57,7 +58,7 @@ const CancellationSwitchConfirmed = () => {
 	return (
 		<Stack space={9} cssOverrides={pageTopCss}>
 			<Stack space={3}>
-				<h2 css={heading}>Your {newProduct.name} is now active</h2>
+				<Heading>Your {newProduct.name} is now active</Heading>
 				<p css={[textSans.medium(), measure.regular]}>
 					Your {newProduct.billing.frequency.name}ly{' '}
 					{productSwitchContext.productType.friendlyName} has
