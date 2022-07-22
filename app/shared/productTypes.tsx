@@ -37,6 +37,7 @@ type ProductFriendlyName =
 	| 'newspaper subscription card'
 	| 'newspaper home delivery subscription'
 	| 'digital subscription'
+	| 'supporter plus'
 	| 'Guardian Weekly subscription'
 	| 'subscription'
 	| 'guardian patron';
@@ -48,6 +49,7 @@ type ProductUrlPart =
 	| 'subscriptioncard'
 	| 'homedelivery'
 	| 'digital'
+	| 'supporterplus'
 	| 'guardianweekly'
 	| 'subscriptions'
 	| 'guardianpatron';
@@ -57,6 +59,7 @@ type SfCaseProduct =
 	| 'Voucher Subscriptions'
 	| 'Guardian Weekly'
 	| 'Digital Pack Subscriptions'
+	| 'Supporter Plus'
 	| 'Guardian Patron';
 type AllProductsProductTypeFilterString =
 	| 'Weekly'
@@ -67,6 +70,7 @@ type AllProductsProductTypeFilterString =
 	| 'Contribution'
 	| 'Membership'
 	| 'Digipack'
+	| 'SupporterPlus'
 	| 'ContentSubscription'
 	| 'GuardianPatron';
 
@@ -231,6 +235,7 @@ type ProductTypeKeys =
 	| 'digitalvoucher'
 	| 'guardianweekly'
 	| 'digipack'
+	| 'supporterplus'
 	| 'guardianpatron';
 
 export type GroupedProductTypeKeys =
@@ -566,6 +571,42 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			swapFeedbackAndContactUs: true,
 		},
 	},
+	supporterplus: {
+		productTitle: () => 'Supporter Plus',
+		friendlyName: 'supporter plus',
+		allProductsProductTypeFilterString: 'SupporterPlus',
+		urlPart: 'supporterplus',
+		legacyUrlPart: 'supporterplus',
+		getOphanProductType: () => 'SUPPORTER_PLUS',
+		showTrialRemainingIfApplicable: true,
+		softOptInIDs: [
+			SOFT_OPT_IN_IDS.support_onboarding,
+			// SOFT_OPT_IN_IDS.digi_subscriber_preview, TODO: is there an equivalent of this for the new product?
+			SOFT_OPT_IN_IDS.similar_products,
+			SOFT_OPT_IN_IDS.supporter_newsletter,
+		],
+		cancellation: {
+			linkOnProductPage: true,
+			reasons: digipackCancellationReasons, // TODO: is it ok to reuse these reasons?
+			sfCaseProduct: 'Supporter Plus',
+			startPageBody: digipackCancellationFlowStart, // TODO: cancellation pages
+			summaryReasonSpecificPara: () => undefined,
+			onlyShowSupportSectionIfAlternateText: false,
+			alternateSupportButtonText: (
+				reasonId: OptionalCancellationReasonId,
+			) =>
+				reasonId === 'mma_financial_circumstances'
+					? '/contribute'
+					: undefined,
+			alternateSupportButtonUrlSuffix: (
+				reasonId: OptionalCancellationReasonId,
+			) =>
+				reasonId === 'mma_financial_circumstances'
+					? '/contribute'
+					: undefined,
+			swapFeedbackAndContactUs: true,
+		},
+	},
 	guardianpatron: {
 		productTitle: () => 'Guardian Patron',
 		friendlyName: 'guardian patron',
@@ -635,6 +676,8 @@ export const GROUPED_PRODUCT_TYPES: {
 				return PRODUCT_TYPES.guardianweekly;
 			} else if (productDetail.tier.startsWith('guardianpatron')) {
 				return PRODUCT_TYPES.guardianpatron;
+			} else if (productDetail.tier.startsWith('Supporter Plus')) {
+				return PRODUCT_TYPES.supporterplus;
 			}
 			return GROUPED_PRODUCT_TYPES.subscriptions; // This should never happen!
 		},
