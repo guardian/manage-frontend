@@ -264,6 +264,11 @@ export const helpCentreMoreQuestionsConfig: HelpCentreMoreQuestionsTopic[] = [
 				title: 'Subscribe to our newsletters',
 				link: '/help-centre/article/subscribe-to-our-newsletters-and-emails',
 			},
+			{
+				id: 'q4',
+				title: 'How to identify legitimate emails from the Guardian',
+				link: '/help-centre/article/how-to-identify-legitimate-emails-from-the-guardian',
+			},
 		],
 	},
 	{
