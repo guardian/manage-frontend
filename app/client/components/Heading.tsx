@@ -5,10 +5,11 @@ import { ReactNode } from 'react';
 interface HeadingProps {
 	children: ReactNode;
 	cssOverrides?: SerializedStyles | SerializedStyles[];
+	level?: '1' | '2' | '3' | '4';
 }
 
 export const Heading = (props: HeadingProps) => {
-	const containerStyles = css`
+	const dividerStyles = css`
 		border-top: 1px solid ${palette.neutral[86]};
 	`;
 
@@ -21,9 +22,13 @@ export const Heading = (props: HeadingProps) => {
 		} ;
 	`;
 
+	const HeadingElement: keyof JSX.IntrinsicElements = `h${props.level ?? 2}`;
+
 	return (
-		<div css={containerStyles}>
-			<h2 css={[headingStyles, props.cssOverrides]}>{props.children}</h2>
+		<div css={dividerStyles}>
+			<HeadingElement css={[headingStyles, props.cssOverrides]}>
+				{props.children}
+			</HeadingElement>
 		</div>
 	);
 };
