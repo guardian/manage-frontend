@@ -59,7 +59,7 @@ const CancellationSwitchConfirmed = () => {
 		<Stack space={9} cssOverrides={pageTopCss}>
 			<Stack space={3}>
 				<Heading>Your {newProduct.name} is now active</Heading>
-				<p css={[textSans.medium(), measure.regular]}>
+				<p css={[textSans.medium(), measure.copy]}>
 					Your {newProduct.billing.frequency.name}ly{' '}
 					{productSwitchContext.productType.friendlyName} has
 					successfully been changed to a {newProduct.name}. We’ve

@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 
 export const measure = {
-	regular: css`
+	copy: css`
 		max-width: 60ch;
 	`,
-	medium: css`
+	heading: css`
 		max-width: 30ch;
 	`,
 };

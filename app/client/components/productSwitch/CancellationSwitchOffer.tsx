@@ -56,7 +56,7 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 				<Heading>
 					We're sorry to hear you're thinking of cancelling
 				</Heading>
-				<p css={[textSans.medium(), measure.regular]}>
+				<p css={[textSans.medium(), measure.copy]}>
 					Your support means the Guardian can remain editorially
 					independent, free from the influence of billionaire owners
 					and politicians. This enables us to give a voice to the

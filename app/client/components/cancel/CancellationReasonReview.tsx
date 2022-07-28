@@ -45,6 +45,7 @@ import {
 import { Spinner } from '../spinner';
 import { GenericErrorScreen } from '../genericErrorScreen';
 import { Heading } from '../Heading';
+import { measure } from '../../styles/typography';
 
 const getPatchUpdateCaseFunc =
 	(isTestUser: boolean, caseId: string, feedback: string) => async () =>
@@ -434,10 +435,12 @@ const CancellationReasonReview = () => {
 				) : (
 					<>
 						<Heading
-							measure="medium"
-							cssOverrides={css`
-								margin-bottom: ${space[6]}px;
-							`}
+							cssOverrides={[
+								measure.heading,
+								css`
+									margin-bottom: ${space[6]}px;
+								`,
+							]}
 						>
 							{productType.cancellation.hideReasonTitlePrefix
 								? ''

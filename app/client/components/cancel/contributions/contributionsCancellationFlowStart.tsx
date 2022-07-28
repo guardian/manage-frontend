@@ -1,15 +1,16 @@
 import { Stack } from '@guardian/source-react-components';
 import { featureSwitches } from '../../../../shared/featureSwitches';
+import { measure } from '../../../styles/typography';
 import { Heading } from '../../Heading';
 
 export const contributionsCancellationFlowStart = () =>
 	featureSwitches.cancellationProductSwitch ? (
-		<Heading measure="medium">
+		<Heading cssOverrides={measure.heading}>
 			Please could you take a moment to tell us why you want to cancel?
 		</Heading>
 	) : (
 		<Stack space={4}>
-			<Heading measure="medium">
+			<Heading cssOverrides={measure.heading}>
 				We’re sorry to hear you’re thinking of cancelling your recurring
 				contribution.
 			</Heading>

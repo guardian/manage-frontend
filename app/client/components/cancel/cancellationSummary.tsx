@@ -13,6 +13,7 @@ import { CancellationReasonContext } from './cancellationContexts';
 import { CancellationContributionReminder } from './cancellationContributionReminder';
 import { Link } from 'react-router-dom';
 import { Heading } from '../Heading';
+import { measure } from '../../styles/typography';
 
 const actuallyCancelled = (
 	productType: ProductType,
@@ -25,10 +26,12 @@ const actuallyCancelled = (
 		<>
 			<WithStandardTopMargin>
 				<Heading
-					measure="medium"
-					cssOverrides={css`
-						margin-bottom: ${space[6]}px;
-					`}
+					cssOverrides={[
+						measure.heading,
+						css`
+							margin-bottom: ${space[6]}px;
+						`,
+					]}
 				>
 					Your {productType.friendlyName} is cancelled.
 				</Heading>

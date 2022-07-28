@@ -342,7 +342,7 @@ const CancellationSwitchReview = () => {
 
 	const smallPrintCss = css`
 		${textSans.xsmall()};
-		${measure.regular};
+		${measure.copy};
 		margin-top: 0;
 		margin-bottom: 0;
 
@@ -458,7 +458,7 @@ const CancellationSwitchReview = () => {
 		<Stack space={9} cssOverrides={pageTopCss}>
 			<Stack space={3}>
 				<Heading>Change your support to a {chosenProduct.name}</Heading>
-				<p css={[textSans.medium(), measure.regular]}>
+				<p css={[textSans.medium(), measure.copy]}>
 					If you decide to change your support to a{' '}
 					{chosenProduct.name} we’ll stop your{' '}
 					{chosenProduct.billing.frequency.name}ly{' '}
