@@ -1,6 +1,8 @@
+import { Stack } from '@guardian/source-react-components';
 import { getMainPlan, ProductDetail } from '../../../../shared/productResponse';
 import { trackEvent } from '../../../services/analytics';
-import { WithStandardTopMargin } from '../../WithStandardTopMargin';
+import { measure } from '../../../styles/typography';
+import { Heading } from '../../Heading';
 import { hrefStyle } from '../cancellationConstants';
 
 const trackCancellationClickEvent = (eventLabel: string) => () =>
@@ -25,11 +27,11 @@ export const voucherCancellationFlowStart = ({
 		mainPlan.name?.indexOf('plus Digi') === -1;
 
 	return (
-		<WithStandardTopMargin>
-			<h3>
+		<Stack space={4}>
+			<Heading cssOverrides={measure.heading}>
 				We’re sorry to hear you’re thinking of cancelling your voucher
 				subscription.
-			</h3>
+			</Heading>
 
 			<p>
 				We understand that some of you may have concerns about claiming
@@ -100,6 +102,6 @@ export const voucherCancellationFlowStart = ({
 				Please could you take a moment to tell us why you want to
 				cancel?
 			</p>
-		</WithStandardTopMargin>
+		</Stack>
 	);
 };

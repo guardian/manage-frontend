@@ -1,5 +1,7 @@
+import { Stack } from '@guardian/source-react-components';
 import { trackEvent } from '../../../services/analytics';
-import { WithStandardTopMargin } from '../../WithStandardTopMargin';
+import { measure } from '../../../styles/typography';
+import { Heading } from '../../Heading';
 import { hrefStyle } from '../cancellationConstants';
 
 const trackCancellationClickEvent = (eventLabel: string) => () =>
@@ -10,11 +12,11 @@ const trackCancellationClickEvent = (eventLabel: string) => () =>
 	});
 
 export const gwCancellationFlowStart = () => (
-	<WithStandardTopMargin>
-		<h3>
+	<Stack space={4}>
+		<Heading cssOverrides={measure.heading}>
 			We’re sorry to hear you’re thinking of cancelling your Guardian
 			Weekly subscription.
-		</h3>
+		</Heading>
 
 		<p>
 			Your support means The Guardian can remain editorially independent,
@@ -41,5 +43,5 @@ export const gwCancellationFlowStart = () => (
 		</p>
 
 		<p>Please could you take a moment to tell us why you want to cancel?</p>
-	</WithStandardTopMargin>
+	</Stack>
 );
