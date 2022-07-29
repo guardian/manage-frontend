@@ -6,7 +6,7 @@ import {
 	dateString,
 } from '../../../shared/dates';
 import { ProductTypeWithHolidayStopsFlow } from '../../../shared/productTypes';
-import { maxWidth, queries } from '../../styles/breakpoints';
+import { maxWidth } from '../../styles/breakpoints';
 import { Spinner } from '../spinner';
 import { HolidayAnniversaryDateExplainerModal } from './holidayAnniversaryDateExplainerModal';
 import { HolidayStopDetail, IssuesImpactedPerYear } from './holidayStopApi';
@@ -71,7 +71,7 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
 				</div>
 				<div
 					css={{
-						[queries.maxHeight(600)]: {
+						'@media(max-height: 600px)': {
 							display: 'none',
 						},
 						[maxWidth.desktop]: {
