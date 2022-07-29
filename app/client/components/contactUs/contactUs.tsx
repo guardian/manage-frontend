@@ -4,11 +4,11 @@ import {
 	neutral,
 	headline,
 	textSans,
+	from,
 } from '@guardian/source-foundations';
 import { captureException } from '@sentry/browser';
 import { contactUsConfig } from '../../../shared/contactUsConfig';
 import { ContactUsFormPayload } from '../../../shared/contactUsTypes';
-import { minWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../../services/analytics';
 import { ContactUsForm } from './contactUsForm';
 import { SelfServicePrompt } from './selfServicePrompt';
@@ -170,7 +170,7 @@ const ContactUs = () => {
 						${headline.xxsmall({ fontWeight: 'bold' })};
 						margin: 0;
 						border-top: 1px solid ${neutral[86]};
-						${minWidth.desktop} {
+						${from.desktop} {
 							font-size: 1.75rem;
 							border-top: 0;
 						}

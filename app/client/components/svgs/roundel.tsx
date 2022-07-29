@@ -1,4 +1,4 @@
-import { minWidth } from '../../styles/breakpoints';
+import { from } from '@guardian/source-foundations';
 
 export interface RoundelProps {
 	size?: number;
@@ -13,7 +13,7 @@ export const Roundel = (props: RoundelProps) => (
 			margin: 'auto 0 auto auto',
 			height: `${props.size || 39}px`,
 			textAlign: 'right',
-			[minWidth.desktop]: {
+			[from.desktop]: {
 				width: `${props.size || 51}px`,
 				height: `${props.size || 51}px`,
 			},
@@ -27,7 +27,7 @@ export const Roundel = (props: RoundelProps) => (
 			css={{
 				width: `${props.size || 39}px`,
 				height: `${props.size || 39}px`,
-				[minWidth.desktop]: {
+				[from.desktop]: {
 					width: `${props.size || 51}px`,
 					height: `${props.size || 51}px`,
 				},

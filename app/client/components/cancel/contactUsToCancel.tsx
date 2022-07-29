@@ -5,10 +5,11 @@ import {
 	neutral,
 	headline,
 	textSans,
+	until,
+	from,
 } from '@guardian/source-foundations';
 import { SelfServiceCancellation } from '../../../shared/productResponse';
 import { ProductType } from '../../../shared/productTypes';
-import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { NAV_LINKS } from '../nav/navConfig';
 import { ProductDescriptionListTable } from '../productDescriptionListTable';
@@ -23,7 +24,7 @@ export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
 	const subHeadingTitleCss = `
     ${headline.small()};
     font-weight: bold;
-    ${maxWidth.tablet} {
+    ${until.tablet} {
       font-size: 1.25rem;
       line-height: 1.6;
     };
@@ -72,7 +73,7 @@ export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
 			<LinkButton
 				css={css`
 					margin-top: ${space[3]}px;
-					${minWidth.tablet} {
+					${from.tablet} {
 						margin-top: ${space[5]}px;
 					}
 				`}

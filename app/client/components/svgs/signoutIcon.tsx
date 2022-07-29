@@ -1,5 +1,4 @@
-import { neutral } from '@guardian/source-foundations';
-import { minWidth } from '../../styles/breakpoints';
+import { from, neutral } from '@guardian/source-foundations';
 
 interface SignoutIconProps {
 	overrideFillColor?: string;
@@ -13,7 +12,7 @@ export const SignoutIcon = (props: SignoutIconProps) => (
 		fill="none"
 		css={
 			props.overrideWidthAtDesktop && {
-				[minWidth.desktop]: {
+				[from.desktop]: {
 					width: `${props.overrideWidthAtDesktop}px`,
 				},
 			}

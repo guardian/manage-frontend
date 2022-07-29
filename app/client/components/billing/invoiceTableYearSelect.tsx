@@ -1,8 +1,7 @@
 import { css } from '@emotion/react';
-import { space, neutral, headline } from '@guardian/source-foundations';
+import { space, neutral, headline, until } from '@guardian/source-foundations';
 import { SvgChevronDownSingle } from '@guardian/source-react-components';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { maxWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../../services/analytics';
 
 interface InvoiceTableYearSelectProps {
@@ -25,7 +24,7 @@ export const InvoiceTableYearSelect = (props: InvoiceTableYearSelectProps) => {
 		-webkit-appearance: none;
 		appearance: none;
 		background-color: transparent;
-		${maxWidth.tablet} {
+		${until.tablet} {
 			font-size: 1.0625rem;
 			line-height: 1.6;
 		}

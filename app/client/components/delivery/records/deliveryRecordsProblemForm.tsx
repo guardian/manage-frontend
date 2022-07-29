@@ -6,11 +6,11 @@ import {
 	neutral,
 	news,
 	textSans,
+	from,
 } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { FormEvent, useEffect, useState } from 'react';
 import { DeliveryProblemType } from '../../../../shared/productTypes';
-import { minWidth } from '../../../styles/breakpoints';
 import { ErrorIcon } from '../../svgs/errorIcon';
 
 interface DeliveryRecordProblemFormProps {
@@ -116,7 +116,7 @@ export const DeliveryRecordProblemForm = (
 						background-color: ${neutral['97']};
 						border-bottom: 1px solid ${neutral['86']};
 						${textSans.medium({ fontWeight: 'bold' })};
-						${minWidth.tablet} {
+						${from.tablet} {
 							padding: ${space[3]}px ${space[5]}px;
 						}
 					`}
@@ -136,7 +136,7 @@ export const DeliveryRecordProblemForm = (
 							padding: ${space[3]}px;
 							margin: 0;
 							clear: left;
-							${minWidth.tablet} {
+							${from.tablet} {
 								padding: ${space[5]}px;
 							}
 						`}
@@ -170,7 +170,7 @@ export const DeliveryRecordProblemForm = (
 												display: inline-block;
 												margin-left: 32px;
 												width: calc(100% - 32px);
-												${minWidth.tablet} {
+												${from.tablet} {
 													width: auto;
 													display: block;
 												}
@@ -236,7 +236,7 @@ export const DeliveryRecordProblemForm = (
 														width: 100%;
 														padding: 12px;
 														${textSans.medium()};
-														${minWidth.tablet} {
+														${from.tablet} {
 															max-width: 460px;
 														}
 													`}

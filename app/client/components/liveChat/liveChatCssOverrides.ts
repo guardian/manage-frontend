@@ -1,9 +1,14 @@
 import { css } from '@emotion/react';
-import { space, brand, neutral, textSans } from '@guardian/source-foundations';
-import { maxWidth } from '../../styles/breakpoints';
+import {
+	space,
+	brand,
+	neutral,
+	textSans,
+	until,
+} from '@guardian/source-foundations';
 
 export const liveChatCss = css`
-	${maxWidth.desktop} {
+	${until.desktop} {
 		.embeddedServiceSidebar.layout-docked .dockableContainer,
 		.embeddedServiceSidebar.layout-float .dockableContainer {
 			position: fixed;

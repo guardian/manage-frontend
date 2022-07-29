@@ -1,6 +1,11 @@
 import { css } from '@emotion/react';
-import { textSans, neutral, brand, space } from '@guardian/source-foundations';
-import { minWidth } from '../../../styles/breakpoints';
+import {
+	textSans,
+	neutral,
+	brand,
+	space,
+	from,
+} from '@guardian/source-foundations';
 
 const privacyNoticeLinkCss = css`
 	color: ${brand[500]};
@@ -17,7 +22,7 @@ const ContactUs = () => (
 			margin: 0;
 			padding-top: ${space[4]}px;
 
-			${minWidth.tablet} {
+			${from.tablet} {
 				padding-top: ${space[9]}px;
 			}
 		`}

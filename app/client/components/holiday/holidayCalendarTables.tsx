@@ -4,7 +4,7 @@ import {
 	SvgArrowLeftStraight,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-import { space } from '@guardian/source-foundations';
+import { from, space } from '@guardian/source-foundations';
 import { useContext, useState } from 'react';
 import {
 	dateAddDays,
@@ -13,7 +13,6 @@ import {
 	dateIsSameOrBefore,
 	DateStates,
 } from '../../../shared/dates';
-import { minWidth } from '../../styles/breakpoints';
 import { HolidayCalendarTable } from './holidayCalendarTable';
 import {
 	HolidayDateChooserStateContext,
@@ -72,7 +71,7 @@ export const selectDatesFromRange = (
 
 export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
 	const calendarHoldersCss = css`
-		${minWidth.tablet} {
+		${from.tablet} {
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: space-between;

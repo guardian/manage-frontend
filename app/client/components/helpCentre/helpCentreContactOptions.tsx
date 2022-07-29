@@ -5,9 +5,9 @@ import {
 	neutral,
 	headline,
 	textSans,
+	from,
 } from '@guardian/source-foundations';
 import { useState } from 'react';
-import { minWidth } from '../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { isLiveChatFeatureEnabled } from '../liveChat/liveChatFeatureSwitch';
 import {
@@ -31,7 +31,7 @@ const baseSubtitleStyles = css`
 const subtitleStyles = css`
 	${baseSubtitleStyles}
 	margin-bottom: ${space[6]}px;
-	${minWidth.tablet} {
+	${from.tablet} {
 		margin-bottom: ${space[6]}px;
 		margin-top: 40px;
 	}
@@ -40,7 +40,7 @@ const subtitleStyles = css`
 const liveChatSubtitleStyles = css`
 	${baseSubtitleStyles}
 	margin-bottom: ${space[1]}px;
-	${minWidth.tablet} {
+	${from.tablet} {
 		margin-bottom: 0;
 		margin-top: 40px;
 	}
@@ -50,13 +50,13 @@ const emailAndLiveChatSubheadingCss = css`
 	${textSans.medium()};
 	margin-bottom: ${space[1]}px;
 	max-width: 320px;
-	${minWidth.tablet} {
+	${from.tablet} {
 		max-width: none;
 	}
 `;
 
 const emailAndLiveChatSubheadingWideCss = css`
-	${minWidth.wide} {
+	${from.wide} {
 		display: none;
 	}
 `;
@@ -64,7 +64,7 @@ const emailAndLiveChatSubheadingWideCss = css`
 const contactButtonCss = css`
 	margin-top: ${space[4]}px;
 	margin-bottom: ${space[9]}px;
-	${minWidth.desktop} {
+	${from.desktop} {
 		margin-top: ${space[6]}px;
 		margin-bottom: ${space[12]}px;
 	}

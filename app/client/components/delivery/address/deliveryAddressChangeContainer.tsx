@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { from } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import {
@@ -17,7 +18,6 @@ import {
 	ContactIdToArrayOfProductDetailAndProductType,
 	getValidDeliveryAddressChangeEffectiveDates,
 } from '../../../services/deliveryAddress';
-import { minWidth } from '../../../styles/breakpoints';
 import { COUNTRIES } from '../../identity/models';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { PageContainer } from '../../page';
@@ -134,7 +134,7 @@ const DeliveryAddressChangeContainer = (
 					<span
 						css={css`
 							display: none;
-							${minWidth.tablet} {
+							${from.tablet} {
 								display: inline;
 							}
 						`}

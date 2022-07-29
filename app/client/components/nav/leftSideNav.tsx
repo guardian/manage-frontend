@@ -1,7 +1,12 @@
 import { css } from '@emotion/react';
-import { space, brand, brandAlt, neutral } from '@guardian/source-foundations';
+import {
+	space,
+	brand,
+	brandAlt,
+	neutral,
+	from,
+} from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
-import { minWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
 import {
 	MenuSpecificNavItem,
@@ -38,7 +43,7 @@ const leftNavLinkCss = (isSelected: boolean | undefined) =>
 		background: neutral['100'],
 		color: brand[400],
 
-		[minWidth.desktop]: {
+		[from.desktop]: {
 			borderLeft: `${space[2]}px solid ${
 				isSelected ? brandAlt[400] : neutral['46']
 			}`,
@@ -67,7 +72,7 @@ const leftNavItemCss = (isSelected: boolean | undefined) => ({
 	background: isSelected ? neutral['100'] : neutral['86'],
 	display: 'block',
 	width: '100%',
-	[minWidth.tablet]: {
+	[from.tablet]: {
 		minWidth: '155.5px', // gross hack to make IE11 work
 	},
 });

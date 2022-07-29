@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, neutral, headline } from '@guardian/source-foundations';
+import { space, neutral, headline, until } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { Fragment } from 'react';
 import {
@@ -14,7 +14,6 @@ import {
 	GroupedProductTypeKeys,
 } from '../../../shared/productTypes';
 import { allProductsDetailFetcher } from '../../productUtils';
-import { maxWidth } from '../../styles/breakpoints';
 import AsyncLoader from '../asyncLoader';
 import { isCancelled } from '../cancel/cancellationSummary';
 import { NAV_LINKS } from '../nav/navConfig';
@@ -61,7 +60,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 		margin: ${space[12]}px 0 ${space[6]}px;
 		border-top: 1px solid ${neutral['86']};
 		${headline.small({ fontWeight: 'bold' })};
-		${maxWidth.tablet} {
+		${until.tablet} {
 			font-size: 1.25rem;
 			line-height: 1.6;
 		}

@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import {
 	breakpoints,
+	from,
 	neutral,
 	palette,
 	space,
@@ -9,7 +10,6 @@ import {
 } from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
 import Color from 'color';
-import { minWidth } from '../styles/breakpoints';
 import { gridBase, gridItemPlacement } from '../styles/grid';
 
 interface SectionHeaderProps {
@@ -39,11 +39,11 @@ const containerCss = css`
 	border-left: 1px solid ${palette.neutral[86]};
 	border-right: 1px solid ${palette.neutral[86]};
 
-	${minWidth.desktop} {
-		${{ ...(gridBase[minWidth.desktop] as object) }};
+	${from.desktop} {
+		${{ ...(gridBase[from.desktop] as object) }};
 	}
-	${minWidth.wide} {
-		${{ ...(gridBase[minWidth.wide] as object) }};
+	${from.wide} {
+		${{ ...(gridBase[from.wide] as object) }};
 	}
 `;
 
@@ -79,11 +79,11 @@ export const SectionHeader = (props: SectionHeaderProps) => {
 		margin: ${space[9]}px 0 0 0;
 		padding: ${space[3]}px 0;
 
-		${minWidth.tablet} {
+		${from.tablet} {
 			${{ ...gridItemPlacement(1, 12) }}
 		}
 
-		${minWidth.desktop} {
+		${from.desktop} {
 			${{ ...gridPlacementDesktop }};
 			font-size: 2.625rem;
 			padding-left: ${space[5]}px;
@@ -92,7 +92,7 @@ export const SectionHeader = (props: SectionHeaderProps) => {
 			border-left: 1px solid ${palette.neutral[86]};
 			border-top: 1px solid ${palette.neutral[86]};
 		}
-		${minWidth.wide} {
+		${from.wide} {
 			${{ ...gridPlacementWide }};
 			margin-left: ${pageHasNav ? '0px' : `-${space[5]}px`};
 		}

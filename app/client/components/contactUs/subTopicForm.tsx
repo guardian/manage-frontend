@@ -1,9 +1,8 @@
 import { css } from '@emotion/react';
 import { Button, Radio, RadioGroup } from '@guardian/source-react-components';
-import { space, neutral, textSans } from '@guardian/source-foundations';
+import { space, neutral, textSans, from } from '@guardian/source-foundations';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { SubTopic } from '../../../shared/contactUsTypes';
-import { minWidth } from '../../styles/breakpoints';
 
 interface SubTopicFormProps {
 	title: string;
@@ -50,7 +49,7 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
 						background-color: ${neutral['97']};
 						border-bottom: 1px solid ${neutral['86']};
 						${textSans.medium({ fontWeight: 'bold' })};
-						${minWidth.tablet} {
+						${from.tablet} {
 							padding: ${space[3]}px ${space[5]}px;
 						}
 					`}
@@ -70,7 +69,7 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
 							padding: ${space[3]}px;
 							margin: 0;
 							clear: left;
-							${minWidth.tablet} {
+							${from.tablet} {
 								padding: ${space[5]}px;
 							}
 						`}

@@ -6,6 +6,8 @@ import {
 	neutral,
 	headline,
 	textSans,
+	until,
+	from,
 } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
@@ -23,7 +25,6 @@ import {
 	DeliveryProblemType,
 	holidaySuspensionDeliveryProblem,
 } from '../../../../shared/productTypes';
-import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { trackEvent } from '../../../services/analytics';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { FormError } from '../../FormError';
@@ -307,7 +308,7 @@ const DeliveryRecords = () => {
 						css={css`
 							border-top: 1px solid ${neutral['86']};
 							${headline.small({ fontWeight: 'bold' })};
-							${maxWidth.tablet} {
+							${until.tablet} {
 								font-size: 1.25rem;
 								line-height: 1.6;
 							}
@@ -371,7 +372,7 @@ const DeliveryRecords = () => {
 										${space[3]}px ${space[3] * 2 + 17}px;
 									background-color: ${neutral[97]};
 									${textSans.small()};
-									${minWidth.tablet} {
+									${from.tablet} {
 										margin: ${space[5]}px 0;
 									}
 								`}
@@ -467,7 +468,7 @@ const DeliveryRecords = () => {
               ${textSans.medium({ fontWeight: 'bold' })};
             `
 						: ''}
-					${maxWidth.tablet} {
+					${until.tablet} {
 						${pageStatus === PageStatus.REPORT_ISSUE_STEP_2
 							? ``
 							: `
@@ -582,7 +583,7 @@ const DeliveryRecords = () => {
 								${textSans.medium({
 									fontWeight: 'bold',
 								})};
-								${minWidth.tablet} {
+								${from.tablet} {
 									padding: ${space[3]}px ${space[5]}px;
 								}
 							`}

@@ -4,7 +4,13 @@ import {
 	Checkbox,
 	CheckboxGroup,
 } from '@guardian/source-react-components';
-import { space, brand, neutral, textSans } from '@guardian/source-foundations';
+import {
+	space,
+	brand,
+	neutral,
+	textSans,
+	from,
+} from '@guardian/source-foundations';
 import Color from 'color';
 import {
 	ChangeEvent,
@@ -24,7 +30,6 @@ import {
 } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../../productUtils';
-import { minWidth } from '../../../styles/breakpoints';
 import { flattenEquivalent } from '../../../utils';
 import AsyncLoader from '../../asyncLoader';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
@@ -375,7 +380,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 												${space[5]}px 49px;
 											margin: ${space[3]}px 0;
 											position: relative;
-											${minWidth.tablet} {
+											${from.tablet} {
 												display: inline-block;
 												margin: 2px 0 ${space[3]}px
 													${space[3]}px;
@@ -531,7 +536,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 			<div
 				css={css`
 					padding: ${space[3]}px;
-					${minWidth.tablet} {
+					${from.tablet} {
 						padding: ${space[5]}px;
 					}
 				`}
@@ -567,7 +572,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 			<div
 				css={css`
 					padding: ${space[3]}px;
-					${minWidth.tablet} {
+					${from.tablet} {
 						padding: ${space[5]}px;
 					}
 				`}

@@ -1,6 +1,5 @@
-import { breakpoints, palette } from '@guardian/source-foundations';
+import { breakpoints, from, palette } from '@guardian/source-foundations';
 import { SignInStatus } from '../services/signInStatus';
-import { minWidth } from '../styles/breakpoints';
 import { gridBase, gridColumns, gridItemPlacement } from '../styles/grid';
 import { DropdownNav } from './nav/dropdownNav';
 import { GridRoundel } from './svgs/gridRoundel';
@@ -20,7 +19,7 @@ const Header = ({ signInStatus, requiresSignIn }: HeaderProps) => (
 			position: 'relative',
 			boxShadow: `0 2px 1px -1px ${palette.brand[600]}`,
 			zIndex: 1070,
-			[minWidth.desktop]: {
+			[from.desktop]: {
 				minHeight: '82px',
 			},
 		}}
@@ -43,7 +42,7 @@ const Header = ({ signInStatus, requiresSignIn }: HeaderProps) => (
 								fontWeight: 'bold',
 								color: palette.neutral['100'],
 								display: 'none',
-								[minWidth.desktop]: {
+								[from.desktop]: {
 									display: 'block',
 									...gridItemPlacement(1, 8),
 								},
@@ -74,7 +73,7 @@ const Header = ({ signInStatus, requiresSignIn }: HeaderProps) => (
 						...gridItemPlacement(1, 2),
 						whiteSpace: 'nowrap',
 						margin: 'auto 0',
-						[minWidth.desktop]: {
+						[from.desktop]: {
 							position: 'relative',
 							left: '0.5rem',
 							...gridItemPlacement(
@@ -84,7 +83,7 @@ const Header = ({ signInStatus, requiresSignIn }: HeaderProps) => (
 							),
 							marginLeft: 'auto',
 						},
-						[minWidth.wide]: {
+						[from.wide]: {
 							...gridItemPlacement(-4, 2, gridColumns.wide),
 						},
 					}}

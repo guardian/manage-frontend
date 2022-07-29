@@ -4,6 +4,8 @@ import {
 	palette,
 	headline,
 	textSans,
+	until,
+	from,
 } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
@@ -11,7 +13,6 @@ import { useLocation, Navigate } from 'react-router-dom';
 import { dateString } from '../../../../shared/dates';
 import { ProductDetail } from '../../../../shared/productResponse';
 import { ProductType, WithProductType } from '../../../../shared/productTypes';
-import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { trackEvent } from '../../../services/analytics';
 import AsyncLoader from '../../asyncLoader';
 import { LinkButton } from '../../buttons';
@@ -55,7 +56,7 @@ const AddressConfirmation = (props: ProductType) => {
     ${headline.small()};
     font-weight: bold;
     margin-top: 50px;
-    ${maxWidth.tablet} {
+    ${until.tablet} {
       font-size: 1.25rem;
       line-height: 1.6;
     };
@@ -112,7 +113,7 @@ const AddressConfirmation = (props: ProductType) => {
 								border-bottom: 1px solid
 									${palette.neutral['86']};
 								${textSans.medium({ fontWeight: 'bold' })};
-								${minWidth.tablet} {
+								${from.tablet} {
 									padding: ${space[3]}px ${space[5]}px;
 								}
 							`}
@@ -129,7 +130,7 @@ const AddressConfirmation = (props: ProductType) => {
 								flex-wrap: wrap;
 								flex-direction: column;
 								justify-content: space-between;
-								${minWidth.tablet} {
+								${from.tablet} {
 									padding: 0 ${space[5]}px;
 								}
 							`}
@@ -162,7 +163,7 @@ const AddressConfirmation = (props: ProductType) => {
 								css={css`
 									flex-grow: 1;
 									margin-top: 16px;
-									${minWidth.tablet} {
+									${from.tablet} {
 										margin-top: 0;
 									}
 								`}
@@ -203,7 +204,7 @@ const AddressConfirmation = (props: ProductType) => {
 					<div
 						css={css`
 							margin-top: ${space[3]}px;
-							${minWidth.tablet} {
+							${from.tablet} {
 								margin-top: ${space[5]}px;
 							}
 						`}

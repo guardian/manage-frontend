@@ -11,7 +11,6 @@ import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
 } from '../../../shared/productResponse';
-import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
 import { Button } from '@guardian/source-react-components';
 import { InfoIcon } from '../svgs/infoIcon';
@@ -31,6 +30,7 @@ import {
 	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
 import { SummaryTable } from './summaryTable';
+import { from, until } from '@guardian/source-foundations';
 
 interface OverviewRowProps {
 	heading: string;
@@ -249,7 +249,7 @@ const HolidaysOverview = () => {
 								css={{
 									textAlign: 'right',
 									marginTop: '10px',
-									[minWidth.phablet]: {
+									[from.phablet]: {
 										display: 'none',
 									},
 								}}
@@ -295,7 +295,7 @@ const HolidaysOverview = () => {
 					justifyContent: 'space-between',
 					alignItems: 'center',
 					marginTop: '30px',
-					[maxWidth.phablet]: {
+					[until.phablet]: {
 						flexDirection: 'column-reverse',
 					},
 				}}

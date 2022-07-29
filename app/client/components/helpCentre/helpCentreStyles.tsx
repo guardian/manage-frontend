@@ -4,8 +4,8 @@ import {
 	neutral,
 	headline,
 	textSans,
+	from,
 } from '@guardian/source-foundations';
-import { minWidth } from '../../styles/breakpoints';
 
 export const linkAnchorStyle = css`
 	display: inline-block;
@@ -57,7 +57,7 @@ export const sectionTitleCss = (
 	${textSans.medium()};
 	margin: 0;
 	padding: ${space[4]}px 14px ${space[4]}px ${space[3]}px;
-	${minWidth.desktop} {
+	${from.desktop} {
 		padding: ${space[4]}px 31px ${space[4]}px ${space[3]}px;
 	}
 	position: relative;
@@ -75,7 +75,7 @@ export const sectionTitleCss = (
 			${isOpen ? 'rotate(-45deg)' : 'rotate(135deg)'};
 		transition: transform 0.4s;
 		right: 0;
-		${minWidth.desktop} {
+		${from.desktop} {
 			right: 17px;
 		}
 	}
@@ -117,7 +117,7 @@ export const h2Css = css`
 	padding-top: 2px;
 	border-top: 1px solid ${neutral['86']};
 	${headline.small({ fontWeight: 'bold' })};
-	${minWidth.desktop} {
+	${from.desktop} {
 		font-size: 32px;
 	}
 `;

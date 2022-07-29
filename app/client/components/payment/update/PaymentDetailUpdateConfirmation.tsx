@@ -5,8 +5,9 @@ import {
 	neutral,
 	headline,
 	textSans,
+	from,
+	until,
 } from '@guardian/source-foundations';
-import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import {
 	formatDate,
 	getMainPlan,
@@ -49,7 +50,7 @@ const keyCss = css`
 	vertical-align: top;
 	width: 50%;
 
-	${minWidth.tablet} {
+	${from.tablet} {
 		width: 14ch;
 	}
 `;
@@ -61,7 +62,7 @@ const valueCss = css`
 	vertical-align: top;
 	width: 50%;
 
-	${minWidth.tablet} {
+	${from.tablet} {
 		width: calc(100% - 15ch);
 	}
 `;
@@ -72,7 +73,7 @@ const subHeadingCss = `
       font-weight: bold;
       margin-top: ${space[9]}px;
 
-      ${maxWidth.tablet} {
+      ${until.tablet} {
         font-size: 1.25rem;
         line-height: 1.6;
       };
@@ -111,7 +112,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 						justify-content: space-between;
 						align-items: start;
 						background-color: ${brand[400]};
-						${minWidth.mobileLandscape} {
+						${from.mobileLandscape} {
 							align-items: center;
 						}
 					`}
@@ -123,10 +124,10 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 							margin: 0;
 							padding: ${space[3]}px;
 							color: ${neutral[100]};
-							${maxWidth.mobileLandscape} {
+							${until.mobileLandscape} {
 								padding: ${space[3]}px;
 							}
-							${minWidth.tablet} {
+							${from.tablet} {
 								font-size: 20px;
 								padding: ${space[3]}px ${space[5]}px;
 							}
@@ -138,7 +139,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 				<div
 					css={css`
 						padding: ${space[3]}px;
-						${minWidth.tablet} {
+						${from.tablet} {
 							padding: ${space[5]}px;
 							display: flex;
 						}
@@ -146,7 +147,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 				>
 					<div
 						css={css`
-							${minWidth.tablet} {
+							${from.tablet} {
 								flex: 1;
 								display: flex;
 								flex-flow: column nowrap;
@@ -204,7 +205,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 						<div
 							css={css`
 								padding: ${space[3]}px 0 0 0;
-								${minWidth.tablet} {
+								${from.tablet} {
 									flex: 1;
 									display: inline-block;
 									flex-flow: column nowrap;
@@ -221,7 +222,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 									<span
 										css={css`
 											${keyCss};
-											${minWidth.tablet} {
+											${from.tablet} {
 												text-align: right;
 											}
 										`}
@@ -248,7 +249,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 						css={css`
 							padding: ${space[3]}px;
 							border-top: 1px solid ${neutral[86]};
-							${minWidth.tablet} {
+							${from.tablet} {
 								padding: ${space[5]}px;
 								display: flex;
 							}
@@ -256,7 +257,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 					>
 						<div
 							css={css`
-								${minWidth.tablet} {
+								${from.tablet} {
 									margin: ${space[6]}px 0 0 0;
 									padding: ${space[6]}px 0 0 0;
 									flex: 1;
@@ -289,7 +290,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 						<div
 							css={css`
 								padding: ${space[3]}px 0 0 0;
-								${minWidth.tablet} {
+								${from.tablet} {
 									margin: ${space[6]}px 0 0 0;
 									flex: 1;
 									display: inline-block;

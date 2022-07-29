@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
+import { space, until } from '@guardian/source-foundations';
 import { useContext, useState } from 'react';
 import {
 	DATE_FNS_INPUT_FORMAT,
@@ -10,7 +10,6 @@ import {
 	MDA_TEST_USER_HEADER,
 	ProductDetail,
 } from '../../../shared/productResponse';
-import { maxWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
 import { LinkButton } from '../buttons';
 import { Button, InlineError } from '@guardian/source-react-components';
@@ -222,7 +221,7 @@ const HolidayReview = () => {
 							{
 								justifyContent: 'space-between',
 								marginTop: '20px',
-								[maxWidth.mobileMedium]: {
+								[until.mobileMedium]: {
 									flexDirection: 'column',
 									marginTop: 0,
 								},

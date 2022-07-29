@@ -1,4 +1,4 @@
-import { error } from '@guardian/source-foundations';
+import { error, until } from '@guardian/source-foundations';
 import * as React from 'react';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
@@ -6,7 +6,6 @@ import {
 	dateString,
 } from '../../../shared/dates';
 import { ProductTypeWithHolidayStopsFlow } from '../../../shared/productTypes';
-import { maxWidth } from '../../styles/breakpoints';
 import { Spinner } from '../spinner';
 import { HolidayAnniversaryDateExplainerModal } from './holidayAnniversaryDateExplainerModal';
 import { HolidayStopDetail, IssuesImpactedPerYear } from './holidayStopApi';
@@ -58,7 +57,7 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
 					css={{
 						marginTop: '10px',
 						fontSize: '16px',
-						[maxWidth.desktop]: {
+						[until.desktop]: {
 							marginRight: '20px',
 						},
 					}}
@@ -74,12 +73,12 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
 						'@media(max-height: 600px)': {
 							display: 'none',
 						},
-						[maxWidth.desktop]: {
+						[until.desktop]: {
 							marginTop: '10px',
 						},
 					}}
 				>
-					<hr css={{ [maxWidth.desktop]: { display: 'none' } }} />
+					<hr css={{ [until.desktop]: { display: 'none' } }} />
 					Leaving you with{' '}
 					{displayNumberOfIssuesAsText(
 						issuesRemainingThisYear,
@@ -112,7 +111,7 @@ export const HolidaySelectionInfo = (props: HolidaySelectionInfoPros) => {
 		);
 	} else {
 		return (
-			<div css={{ [maxWidth.phablet]: { width: '100%' } }}>
+			<div css={{ [until.phablet]: { width: '100%' } }}>
 				<Spinner />
 			</div>
 		);

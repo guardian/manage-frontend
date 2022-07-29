@@ -1,6 +1,11 @@
 import { css } from '@emotion/react';
-import { neutral, brand, space, textSans } from '@guardian/source-foundations';
-import { minWidth } from '../../../styles/breakpoints';
+import {
+	neutral,
+	brand,
+	space,
+	textSans,
+	from,
+} from '@guardian/source-foundations';
 import {
 	Button,
 	SvgArrowRightStraight,
@@ -58,7 +63,7 @@ export default function PaymentFailed() {
 						color: ${brand[500]};
 					}
 
-					${minWidth.tablet} {
+					${from.tablet} {
 						padding-top: ${space[9]}px;
 						margin-top: ${space[9]}px;
 					}

@@ -7,12 +7,11 @@ import {
 import { StripeElementBase } from '@stripe/stripe-js';
 import { useState } from 'react';
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
+import { space, until } from '@guardian/source-foundations';
 import {
 	STRIPE_PUBLIC_KEY_HEADER,
 	StripeSetupIntent,
 } from '../../../../../shared/stripeSetupIntent';
-import { maxWidth } from '../../../../styles/breakpoints';
 import {
 	Button,
 	SvgArrowRightStraight,
@@ -265,7 +264,7 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
 				>
 					<div
 						css={{
-							[maxWidth.mobileLandscape]: {
+							[until.mobileLandscape]: {
 								width: '100%',
 							},
 						}}

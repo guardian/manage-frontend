@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
-import { space, neutral, textSans } from '@guardian/source-foundations';
+import { space, neutral, textSans, from } from '@guardian/source-foundations';
 import { Link, useNavigate } from 'react-router-dom';
-import { minWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../../services/analytics';
 import { getHelpSectionIcon } from '../svgs/helpSectionIcons';
 import { HelpCentreTopic } from './helpCentreConfig';
@@ -23,11 +22,11 @@ const boxHolderStyle = css`
 	display: flex;
 	flex-direction: column;
 	margin-bottom: ${space[5]}px;
-	${minWidth.tablet} {
+	${from.tablet} {
 		flex-basis: 48%;
 		flex-basis: calc(50% - (${space[5]}px * 0.5));
 	}
-	${minWidth.desktop} {
+	${from.desktop} {
 		flex-basis: 30%;
 		flex-basis: calc(33.3% - (${space[5]}px * 0.666));
 	}

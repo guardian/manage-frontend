@@ -6,6 +6,8 @@ import {
 	neutral,
 	headline,
 	textSans,
+	until,
+	from,
 } from '@guardian/source-foundations';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -19,7 +21,6 @@ import {
 	Subscription,
 	getMainPlan,
 } from '../../../../shared/productResponse';
-import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
@@ -100,7 +101,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 		display: inline-block;
 		vertical-align: top;
 		min-width: 12ch;
-		${minWidth.tablet} {
+		${from.tablet} {
 			min-width: 16ch;
 		}
 	`;
@@ -126,7 +127,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 					border-top: 1px solid ${neutral['86']};
 					${headline.small()};
 					font-weight: bold;
-					${maxWidth.tablet} {
+					${until.tablet} {
 						font-size: 1.25rem;
 						line-height: 1.6;
 					}
@@ -150,7 +151,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 						${space[3] * 2 + 17}px;
 					background-color: ${neutral[97]};
 					${textSans.small()};
-					${minWidth.tablet} {
+					${from.tablet} {
 						margin: ${space[5]}px 0;
 					}
 				`}
@@ -197,7 +198,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 						background-color: ${neutral['97']};
 						border-bottom: 1px solid ${neutral['86']};
 						${textSans.medium({ fontWeight: 'bold' })};
-						${minWidth.tablet} {
+						${from.tablet} {
 							padding: 14px ${space[5]}px;
 						}
 					`}
@@ -212,13 +213,13 @@ const DeliveryRecordsProblemConfirmationFC = (
 						flex-wrap: wrap;
 						flex-direction: column;
 						justify-content: space-between;
-						${minWidth.tablet} {
+						${from.tablet} {
 							flex-direction: initial;
 							padding: 0 ${space[5]}px;
 						}
 						div {
 							margin-top: 16px;
-							${minWidth.tablet} {
+							${from.tablet} {
 								min-width: 50%;
 							}
 						}
@@ -281,7 +282,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 					css={css`
 						padding: 0 ${space[3]}px;
 						margin-bottom: ${space[5]}px;
-						${minWidth.tablet} {
+						${from.tablet} {
 							padding: 0 ${space[5]}px;
 						}
 					`}
@@ -385,7 +386,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 								background-color: ${neutral['97']};
 								border-bottom: 1px solid ${neutral['86']};
 								${textSans.medium({ fontWeight: 'bold' })};
-								${minWidth.tablet} {
+								${from.tablet} {
 									padding: 14px ${space[5]}px;
 								}
 							`}
@@ -405,7 +406,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 							css={css`
 								padding: 0 ${space[3]}px;
 								margin-top: ${space[5]}px;
-								${minWidth.tablet} {
+								${from.tablet} {
 									padding: 0 ${space[5]}px;
 								}
 							`}
@@ -430,7 +431,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 			<LinkButton
 				css={css`
 					margin-top: ${space[3]}px;
-					${minWidth.tablet} {
+					${from.tablet} {
 						margin-top: ${space[5]}px;
 					}
 				`}

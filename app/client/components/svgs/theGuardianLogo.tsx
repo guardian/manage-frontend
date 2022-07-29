@@ -1,4 +1,4 @@
-import { minWidth } from '../../styles/breakpoints';
+import { from } from '@guardian/source-foundations';
 
 interface TheGuardianLogoProps {
 	width?: number;
@@ -13,7 +13,7 @@ export const TheGuardianLogo = (props: TheGuardianLogoProps) => (
 			width: `${props.width || 121}px`,
 			height: `${props.height || 39}px`,
 			textAlign: 'right',
-			[minWidth.desktop]: {
+			[from.desktop]: {
 				width: `${props.width || 158}px`,
 				height: `${props.height || 51}px`,
 			},
@@ -28,7 +28,7 @@ export const TheGuardianLogo = (props: TheGuardianLogoProps) => (
 			css={{
 				width: `${props.width || 121}px`,
 				height: `${props.height || 39}px`,
-				[minWidth.desktop]: {
+				[from.desktop]: {
 					width: `${props.width || 158}px`,
 					height: `${props.height || 51}px`,
 				},

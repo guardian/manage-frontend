@@ -1,7 +1,12 @@
 import { css } from '@emotion/react';
-import { space, neutral, textSans } from '@guardian/source-foundations';
+import {
+	space,
+	neutral,
+	textSans,
+	until,
+	from,
+} from '@guardian/source-foundations';
 import { useState } from 'react';
-import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { helpCentreNavConfig } from './helpCentreConfig';
 import {
 	innerSectionCss,
@@ -22,7 +27,7 @@ const desktopUlCss = css`
 	padding: 0;
 	position: sticky;
 	top: 1rem;
-	${maxWidth.desktop} {
+	${until.desktop} {
 		display: none;
 	}
 `;
@@ -56,7 +61,7 @@ const mobileLiCss = (topicIndex: number) => css`
 		? '1px solid #dcdcdc'
 		: ''};
 	cursor: pointer;
-	${minWidth.tablet} {
+	${from.tablet} {
 		padding-left: ${space[3]}px;
 	}
 `;
@@ -64,7 +69,7 @@ const mobileLiCss = (topicIndex: number) => css`
 const divCss = css`
 	width: 100%;
 	border: 1px solid ${neutral['86']};
-	${minWidth.desktop} {
+	${from.desktop} {
 		display: none;
 	}
 	margin-bottom: ${space[6]}px;
@@ -85,7 +90,7 @@ const HelpCentreNav = (props: HelpCentreNavProps) => {
 	const h2Css = css`
 		${sectionTitleCss(open, false)};
 		${textSans.large({ fontWeight: 'bold' })};
-		${minWidth.tablet} {
+		${from.tablet} {
 			padding: ${space[3]}px ${space[3] * 2 + 15}px ${space[3]}px
 				${space[5]}px;
 		}

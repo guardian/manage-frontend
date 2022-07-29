@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { from, until } from '@guardian/source-foundations';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	DateRange,
@@ -10,7 +11,6 @@ import {
 	Subscription,
 } from '../../../shared/productResponse';
 import palette from '../../colours';
-import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
 import { ReFetch } from '../asyncLoader';
 import { ExpanderButton } from '../expanderButton';
@@ -192,7 +192,7 @@ export const SummaryTable = (props: SummaryTableProps) => {
 						},
 					],
 					td: cellCss,
-					[maxWidth.tablet]: {
+					[until.tablet]: {
 						display: 'none',
 					},
 				}}
@@ -228,7 +228,7 @@ export const SummaryTable = (props: SummaryTableProps) => {
 			</table>
 			<div
 				css={{
-					[minWidth.tablet]: {
+					[from.tablet]: {
 						display: 'none',
 					},
 				}}

@@ -1,6 +1,5 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { brand, neutral, textSans } from '@guardian/source-foundations';
-import { minWidth } from '../styles/breakpoints';
+import { brand, from, neutral, textSans } from '@guardian/source-foundations';
 import { TickInCircle } from './svgs/tickInCircle';
 
 interface Step {
@@ -133,7 +132,7 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
 						top: 0;
 						left: 50%;
 						transform: translateX(-50%);
-						${minWidth.tablet} {
+						${from.tablet} {
 							transform: none;
 							left: calc(50% - 11px);
 						}
@@ -148,7 +147,7 @@ export const ProgressIndicator = (props: ProgressIndicatorProps) => {
 						position: absolute;
 						top: 0;
 						right: 0;
-						${minWidth.tablet} {
+						${from.tablet} {
 							right: auto;
 							left: calc(100% - 22px);
 						}

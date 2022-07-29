@@ -1,6 +1,6 @@
+import { from } from '@guardian/source-foundations';
 import { FC, ReactNode } from 'react';
 import palette from '../../colours';
-import { minWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
 
 interface PageSectionProps {
@@ -54,14 +54,14 @@ export const PageSection: FC<PageSectionProps> = (props) => {
 	return (
 		<div
 			css={{
-				[minWidth.desktop]: {
+				[from.desktop]: {
 					display: 'flex',
 				},
 			}}
 		>
 			<div
 				css={{
-					[minWidth.desktop]: {
+					[from.desktop]: {
 						paddingRight: '100px',
 						boxSizing: 'content-box',
 						flexBasis: '220px',
@@ -75,7 +75,7 @@ export const PageSection: FC<PageSectionProps> = (props) => {
 			</div>
 			<div
 				css={{
-					[minWidth.desktop]: {
+					[from.desktop]: {
 						maxWidth: '460px',
 						flexGrow: 1,
 					},

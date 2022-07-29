@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
-import { space, neutral, textSans } from '@guardian/source-foundations';
-import { minWidth } from '../../styles/breakpoints';
+import { space, neutral, textSans, from } from '@guardian/source-foundations';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { getHelpSectionIcon } from '../svgs/helpSectionIcons';
 
@@ -19,7 +18,7 @@ const headingCss = css`
 `;
 
 const headingWideCss = css`
-	${minWidth.desktop} {
+	${from.desktop} {
 		padding: 22px 0 22px 64px;
 	}
 `;
@@ -31,7 +30,7 @@ const headingIconCss = css`
 `;
 
 const headingIconWideCss = css`
-	${minWidth.desktop} {
+	${from.desktop} {
 		top: ${space[4]}px;
 		left: ${space[4]}px;
 	}
@@ -45,7 +44,7 @@ const subtitleCss = css`
 `;
 
 const subtitleWideCss = css`
-	${minWidth.wide} {
+	${from.wide} {
 		display: block;
 	}
 `;

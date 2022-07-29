@@ -5,6 +5,8 @@ import {
 	brandAlt,
 	neutral,
 	textSans,
+	from,
+	until,
 } from '@guardian/source-foundations';
 import { cancellationFormatDate, parseDate } from '../../../shared/dates';
 import {
@@ -13,7 +15,6 @@ import {
 	ProductDetail,
 } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
-import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../../services/analytics';
 import { LinkButton } from '../buttons';
 import { CardDisplay } from '../payment/cardDisplay';
@@ -125,7 +126,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 					background-color: ${hasCancellationPending
 						? neutral[97]
 						: brand[400]};
-					${minWidth.mobileLandscape} {
+					${from.mobileLandscape} {
 						align-items: center;
 					}
 				`}
@@ -139,10 +140,10 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 						color: ${hasCancellationPending
 							? neutral[7]
 							: neutral[100]};
-						${maxWidth.mobileLandscape} {
+						${until.mobileLandscape} {
 							padding: ${space[3]}px;
 						}
-						${minWidth.tablet} {
+						${from.tablet} {
 							font-size: 20px;
 							padding: ${space[3]}px ${space[5]}px;
 						}
@@ -156,7 +157,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 						display: flex;
 						align-items: center;
 						padding: ${space[3]}px 0;
-						${maxWidth.mobileLandscape} {
+						${until.mobileLandscape} {
 							flex-direction: column;
 							align-items: end;
 						}
@@ -168,12 +169,12 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 								margin-right: ${space[3]}px;
 								white-space: nowrap;
 								transform: translateY(1px);
-								${maxWidth.mobileLandscape} {
+								${until.mobileLandscape} {
 									${isGift(props.productDetail.subscription)
 										? 'margin: 0 5px 6px 0;'
 										: ''};
 								}
-								${minWidth.tablet} {
+								${from.tablet} {
 									margin-right: ${space[5]}px;
 								}
 							`}
@@ -205,7 +206,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 					${textSans.medium()};
 					padding: ${space[3]}px ${space[3]}px 0;
 					margin: 0;
-					${minWidth.tablet} {
+					${from.tablet} {
 						padding: ${space[5]}px ${space[5]}px 0;
 					}
 				`}
@@ -220,7 +221,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 							${textSans.medium()};
 							padding: ${space[3]}px ${space[3]}px 0;
 							margin: 0;
-							${minWidth.tablet} {
+							${from.tablet} {
 								padding: ${space[5]}px ${space[5]}px 0;
 							}
 						`}
@@ -242,7 +243,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 			<div
 				css={css`
 					padding: ${space[5]}px ${space[3]}px;
-					${minWidth.tablet} {
+					${from.tablet} {
 						padding: ${space[5]}px;
 						display: flex;
 					}
@@ -252,7 +253,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 					css={css`
 						margin: 0;
 						padding: 0;
-						${minWidth.tablet} {
+						${from.tablet} {
 							flex: 1;
 							display: flex;
 							flex-flow: column nowrap;
@@ -364,7 +365,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 						margin: ${space[6]}px 0 0 0;
 						padding: ${space[6]}px 0 0 0;
 						border-top: 1px solid ${neutral[86]};
-						${minWidth.tablet} {
+						${from.tablet} {
 							flex: 1;
 							display: flex;
 							flex-flow: column nowrap;

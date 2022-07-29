@@ -30,8 +30,7 @@ import useScrollToTop from '../services/useScrollToTop';
 import useConsent from '../services/useConsent';
 import ErrorBoundary from './ErrorBoundary';
 import { GenericErrorScreen } from './genericErrorScreen';
-import { breakpoints, space } from '@guardian/source-foundations';
-import { minWidth } from '../styles/breakpoints';
+import { breakpoints, from, space } from '@guardian/source-foundations';
 import { tests } from '../experiments/abTests';
 import { abSwitches } from '../experiments/abSwitches';
 import { ABProvider, useAB } from '@guardian/ab-react';
@@ -256,7 +255,7 @@ const GenericErrorContainer = (props: { children: ReactNode }) => (
 	<section
 		css={css`
 			padding: 0 ${space[3]}px;
-			${minWidth.tablet} {
+			${from.tablet} {
 				padding-left: ${space[5]}px;
 				padding-right: ${space[5]}px;
 			}

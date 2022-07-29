@@ -5,8 +5,8 @@ import {
 	space,
 	headline,
 	textSans,
+	from,
 } from '@guardian/source-foundations';
-import { minWidth } from '../styles/breakpoints';
 
 const containerStyle = css`
 	max-width: ${breakpoints.wide}px;
@@ -20,7 +20,7 @@ const containerStyle = css`
 const wrapperStyle = css`
 	margin: 0 10px;
 	max-width: ${breakpoints.mobileLandscape}px;
-	${minWidth.tablet} {
+	${from.tablet} {
 		margin: 0 20px;
 	}
 `;

@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { breakpoints, palette, space } from '@guardian/source-foundations';
+import {
+	breakpoints,
+	from,
+	palette,
+	space,
+	until,
+} from '@guardian/source-foundations';
 import {
 	createContext,
 	Dispatch,
@@ -7,7 +13,6 @@ import {
 	SetStateAction,
 	useState,
 } from 'react';
-import { maxWidth, minWidth } from '../styles/breakpoints';
 import { gridBase, gridItemPlacement } from '../styles/grid';
 import HelpCentreNav from './helpCentre/helpCentreNav';
 
@@ -24,12 +29,12 @@ const sectionCss = (
 	...gridItemPlacement(1, 4),
 	...(isNavSection && { marginRight: '-13px', marginLeft: '-13px' }),
 
-	[minWidth.tablet]: {
+	[from.tablet]: {
 		...gridItemPlacement(1, 12),
 		...(isNavSection && { marginRight: '-21px', marginLeft: '-21px' }),
 	},
 
-	[minWidth.desktop]: {
+	[from.desktop]: {
 		...(isNavSection
 			? gridItemPlacement(1, 3)
 			: hasNav
@@ -38,7 +43,7 @@ const sectionCss = (
 		...(isNavSection && { marginRight: '-21px', marginLeft: '-21px' }),
 	},
 
-	[minWidth.wide]: {
+	[from.wide]: {
 		...(isNavSection
 			? gridItemPlacement(1, 3)
 			: hasNav
@@ -46,7 +51,7 @@ const sectionCss = (
 			: gridItemPlacement(3, 12)),
 	},
 	...(isStickyOnMobile && {
-		[maxWidth.tablet]: {
+		[until.tablet]: {
 			position: 'sticky',
 			top: 0,
 			backgroundColor: palette.neutral[100],
@@ -62,7 +67,7 @@ const containerCss = css`
 	border-left: 1px solid ${palette.neutral[86]};
 	border-right: 1px solid ${palette.neutral[86]};
 	height: 100%;
-	${maxWidth.desktop} {
+	${until.desktop} {
 		padding-top: 0;
 	}
 `;
@@ -71,14 +76,14 @@ const divCss = (hasNav: boolean | undefined) => css`
 	${{ ...gridBase }};
 	margin-bottom: ${space[12]}px;
 	padding-bottom: 1rem;
-	${minWidth.desktop} {
-		${{ ...(gridBase[minWidth.desktop] as object) }};
+	${from.desktop} {
+		${{ ...(gridBase[from.desktop] as object) }};
 		margin-bottom: ${space[24]}px;
 		padding-bottom: 0;
 		border-top: ${hasNav ? 'none' : `1px solid ${palette.neutral[86]}`};
 	}
-	${minWidth.wide} {
-		${{ ...(gridBase[minWidth.wide] as object) }}
+	${from.wide} {
+		${{ ...(gridBase[from.wide] as object) }}
 	}
 `;
 

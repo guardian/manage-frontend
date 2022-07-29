@@ -6,11 +6,11 @@ import {
 	neutral,
 	headline,
 	textSans,
+	from,
 } from '@guardian/source-foundations';
 import { ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import * as React from 'react';
-import { minWidth } from '../styles/breakpoints';
 import { gridBase, gridColumns, gridItemPlacement } from '../styles/grid';
 import { LeftSideNav, LeftSideNavProps } from './nav/leftSideNav';
 import { NavItem } from './nav/navConfig';
@@ -48,13 +48,13 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
       grid-template-columns: repeat(${gridColumns.default}, minmax(0, 1fr));
       grid-auto-columns: max-content;
       column-gap: ${space[5]}px;
-      ${minWidth.tablet} {
+      ${from.tablet} {
         padding-left: ${space[5]}px;
         padding-right: ${space[5]}px;
         -ms-grid-columns: (minmax(0, 1fr))[${gridColumns.tabletAndDesktop}];
         grid-template-columns: repeat(${gridColumns.tabletAndDesktop}, minmax(0, 1fr));
       };
-      ${minWidth.wide} {
+      ${from.wide} {
         -ms-grid-columns: (minmax(0, 1fr))[${gridColumns.wide}];
         grid-template-columns: repeat(${gridColumns.wide}, minmax(0, 1fr));
       };
@@ -89,10 +89,10 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 				margin-left: auto;
 				margin-right: auto;
 				background: #0a1f47;
-				${minWidth.tablet} {
+				${from.tablet} {
 					${!props.breadcrumbs && `padding-top: 100px;`}
 				}
-				${minWidth.desktop} {
+				${from.desktop} {
 					position: relative;
 				}
 			`}
@@ -112,16 +112,16 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 						css={css`
 							display: none;
 							${gridItemPlacementv2(1, 1, 1, 3)};
-							${minWidth.tablet} {
+							${from.tablet} {
 								display: block;
 								padding: ${space[2]}px 0 0;
 								min-height: 100px;
 								${gridItemPlacementv2(1, 1, 1, 10)};
 							}
-							${minWidth.desktop} {
+							${from.desktop} {
 								${gridItemPlacementv2(1, 1, 5, 8)};
 							}
-							${minWidth.wide} {
+							${from.wide} {
 								${gridItemPlacementv2(1, 1, 6, 10)};
 							}
 						`}
@@ -171,7 +171,7 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 						padding: 8px;
 						border: 1px solid ${brand[600]};
 						border-bottom: 0;
-						${minWidth.tablet} {
+						${from.tablet} {
 							line-height: 57px;
 							margin-top: 0;
 							padding: 0 8px;
@@ -180,33 +180,33 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 						${props.breadcrumbs
 							? `
                 ${gridItemPlacementv2(2, 1, 1, 4)};
-                ${minWidth.mobileMedium} {
+                ${from.mobileMedium} {
                   ${gridItemPlacementv2(2, 1, 1, 3)};
                 };
-                ${minWidth.tablet} {
+                ${from.tablet} {
                   ${gridItemPlacementv2(2, 1, 1, 10)};
                 };
-                ${minWidth.desktop} {
+                ${from.desktop} {
                   ${gridItemPlacementv2(2, 1, 5, 8)};
                   font-size: 2.625rem;
                 };
-                ${minWidth.wide} {
+                ${from.wide} {
                   ${gridItemPlacementv2(2, 1, 6, 10)};
                 };
               `
 							: `
                 ${gridItemPlacementv2(1, 1, 1, 4)};
-                ${minWidth.mobileMedium} {
+                ${from.mobileMedium} {
                   ${gridItemPlacementv2(1, 1, 1, 3)};
                 };
-                ${minWidth.tablet} {
+                ${from.tablet} {
                   ${gridItemPlacementv2(1, 1, 1, 10)};
                 };
-                ${minWidth.desktop} {
+                ${from.desktop} {
                   ${gridItemPlacementv2(1, 1, 5, 8)};
                   font-size: 2.625rem;
                 };
-                ${minWidth.wide} {
+                ${from.wide} {
                   ${gridItemPlacementv2(1, 1, 6, 10)};
                 };
               `}
@@ -231,8 +231,8 @@ const PageNavAndContentContainer = (props: PageNavAndContentContainerProps) => (
 			maxWidth: `calc(${breakpoints.wide}px + 2.5rem)`,
 			margin: '0 auto',
 			paddingBottom: `${space[12]}px`,
-			[minWidth.desktop]: {
-				...(gridBase[minWidth.desktop] as object),
+			[from.desktop]: {
+				...(gridBase[from.desktop] as object),
 				paddingBottom: `${space[24]}px`,
 			},
 		}}
@@ -243,13 +243,13 @@ const PageNavAndContentContainer = (props: PageNavAndContentContainerProps) => (
 					marginTop: `calc(-1 * (${space[5]}px + ${space[9]}px))`,
 					display: 'none',
 
-					[minWidth.desktop]: {
+					[from.desktop]: {
 						...gridItemPlacement(1, 4),
 						display: 'block',
 						paddingRight: '1.25rem',
 					},
 
-					[minWidth.wide]: {
+					[from.wide]: {
 						paddingRight: '0',
 					},
 				}}
@@ -261,15 +261,15 @@ const PageNavAndContentContainer = (props: PageNavAndContentContainerProps) => (
 			css={{
 				...gridItemPlacement(1, 4),
 
-				[minWidth.tablet]: {
+				[from.tablet]: {
 					...gridItemPlacement(1, 12),
 				},
 
-				[minWidth.desktop]: {
+				[from.desktop]: {
 					...gridItemPlacement(5, 8),
 				},
 
-				[minWidth.wide]: {
+				[from.wide]: {
 					...gridItemPlacement(6, 10),
 				},
 			}}

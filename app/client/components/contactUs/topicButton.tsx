@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
-import { space, textSans } from '@guardian/source-foundations';
+import { from, space, textSans } from '@guardian/source-foundations';
 import { Topic } from '../../../shared/contactUsTypes';
-import { minWidth } from '../../styles/breakpoints';
 import { TopicIcon } from './topicIcon';
 
 interface TopicButtonProps extends Topic {
@@ -17,7 +16,7 @@ export const TopicButton = (props: TopicButtonProps) => (
 		css={css`
 			flex: 1 0 50%;
 			max-width: calc(50% - ${space[3] / 2}px);
-			${minWidth.desktop} {
+			${from.desktop} {
 				flex: 1 0 25%;
 				max-width: calc(25% - ${space[2]}px);
 			}

@@ -5,11 +5,12 @@ import {
 	neutral,
 	headline,
 	textSans,
+	until,
+	from,
 } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { parseDate } from '../../../shared/dates';
 import { InvoiceDataApiItem } from '../../../shared/productResponse';
-import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../../services/analytics';
 import { Pagination } from '../pagination';
 import { CardDisplay } from '../payment/cardDisplay';
@@ -92,21 +93,21 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 		display: block;
 		width: 100%;
 		border: 1px solid ${neutral[86]};
-		${minWidth.tablet} {
+		${from.tablet} {
 			display: table;
 		}
 	`;
 
 	const tableHeaderCss2 = css`
 		display: block;
-		${minWidth.tablet} {
+		${from.tablet} {
 			display: table-header-group;
 		}
 	`;
 
 	const tableBodyCss2 = css`
 		display: block;
-		${minWidth.tablet} {
+		${from.tablet} {
 			display: table-row-group;
 		}
 	`;
@@ -116,7 +117,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 		padding: ${space[3]}px;
 		background-color: ${neutral[97]};
 		border-bottom: 1px solid ${neutral[86]};
-		${minWidth.tablet} {
+		${from.tablet} {
 			display: table-cell;
 			padding: ${space[5]}px ${space[5]}px ${space[5]}px 0;
 		}
@@ -128,7 +129,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 		padding: ${space[5]}px;
 		background-color: ${neutral[97]};
 		border-bottom: 1px solid ${neutral[86]};
-		${maxWidth.tablet} {
+		${until.tablet} {
 			margin: 0;
 			padding: ${space[3]}px;
 			font-size: 1.0625rem;
@@ -143,21 +144,21 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 		text-align: left;
 		${textSans.medium({ fontWeight: 'bold' })}
 		padding: ${space[5]}px;
-		${maxWidth.tablet} {
+		${until.tablet} {
 			padding: ${space[3]}px;
 		}
 	`;
 
 	const tableHeadingsRowCss2 = css`
 		display: none;
-		${minWidth.tablet} {
+		${from.tablet} {
 			display: table-row;
 		}
 	`;
 
 	const tableRowCss2 = css`
 		display: block;
-		${minWidth.tablet} {
+		${from.tablet} {
 			display: table-row;
 		}
 	`;
@@ -167,7 +168,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 		${textSans.medium()}
 		padding: ${space[3]}px ${space[3]}px 0;
 		:last-of-type {
-			${maxWidth.tablet} {
+			${until.tablet} {
 				border-bottom: 1px solid ${neutral[86]};
 			}
 			padding: ${space[3]}px;
@@ -179,7 +180,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 			${textSans.medium({ fontWeight: 'bold' })}
 			content: "${title}";
 		}
-		${minWidth.tablet} {
+		${from.tablet} {
 			display: table-cell;
 			width: auto;
 			padding: ${space[5]}px;
@@ -198,7 +199,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 	const paymentDetailsHolderCss = css`
 		display: inline-block;
 		width: calc(40% + ${space[3]}px);
-		${minWidth.tablet} {
+		${from.tablet} {
 			width: auto;
 			min-width: 15ch;
 		}
@@ -226,7 +227,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 								display: none;
 								background-color: ${neutral[97]};
 								border-bottom: 1px solid ${neutral[86]};
-								${minWidth.tablet} {
+								${from.tablet} {
 									display: table-cell;
 								}
 							`}
@@ -236,7 +237,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 								display: none;
 								background-color: ${neutral[97]};
 								border-bottom: 1px solid ${neutral[86]};
-								${minWidth.tablet} {
+								${from.tablet} {
 									display: table-cell;
 								}
 							`}

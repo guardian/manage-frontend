@@ -10,6 +10,8 @@ import {
 	neutral,
 	headline,
 	textSans,
+	until,
+	from,
 } from '@guardian/source-foundations';
 import {
 	ChangeEvent,
@@ -27,7 +29,6 @@ import {
 } from '../../../../shared/productTypes';
 import { COUNTRIES } from '../../identity/models';
 
-import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { flattenEquivalent } from '../../../utils';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { CallCentreNumbers } from '../../callCentreNumbers';
@@ -311,7 +312,7 @@ const Form = (props: FormProps) => {
 											${space[5]}px 49px;
 										margin: ${space[3]}px 0;
 										position: relative;
-										${minWidth.tablet} {
+										${from.tablet} {
 											display: inline-block;
 											vertical-align: top;
 											margin: 2px 0 ${space[3]}px
@@ -372,7 +373,7 @@ const Form = (props: FormProps) => {
 						* {
 							display: inline-block;
 						}
-						${minWidth.tablet} {
+						${from.tablet} {
 							margin-top: ${space[6]}px;
 						}
 					`}
@@ -435,7 +436,7 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 		${headline.small()};
 		font-weight: bold;
 		margin-top: 50px;
-		${maxWidth.tablet} {
+		${until.tablet} {
 			font-size: 1.25rem;
 			line-height: 1.6;
 		};

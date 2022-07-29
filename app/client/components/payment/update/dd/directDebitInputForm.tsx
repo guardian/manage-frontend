@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import * as React from 'react';
 import { css } from '@emotion/react';
-import { maxWidth, minWidth } from '../../../../styles/breakpoints';
-import { space } from '@guardian/source-foundations';
+import { from, space, until } from '@guardian/source-foundations';
 import { sans } from '../../../../styles/fonts';
 import {
 	Button,
@@ -162,7 +161,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 					display: flex;
 					justify-content: flex-start;
 
-					${minWidth.tablet} {
+					${from.tablet} {
 						margin-top: ${space[4]}px;
 					}
 				`}
@@ -207,7 +206,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 				css={css`
 					margin: 14px 0;
 
-					${minWidth.tablet} {
+					${from.tablet} {
 						margin: 4px 0;
 					}
 				`}
@@ -236,7 +235,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 					margin-top: ${space[9]}px;
 					margin-bottom: ${space[9]}px;
 
-					${maxWidth.desktop} {
+					${until.desktop} {
 						width: 100%;
 					}
 				`}

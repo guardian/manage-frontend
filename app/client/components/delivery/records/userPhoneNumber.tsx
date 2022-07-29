@@ -1,9 +1,14 @@
 import { css } from '@emotion/react';
 import { Button, TextInput } from '@guardian/source-react-components';
-import { space, brand, neutral, textSans } from '@guardian/source-foundations';
+import {
+	space,
+	brand,
+	neutral,
+	textSans,
+	from,
+} from '@guardian/source-foundations';
 import { useState } from 'react';
 import * as React from 'react';
-import { minWidth } from '../../../styles/breakpoints';
 import { InfoIconDark } from '../../svgs/infoIconDark';
 import {
 	ContactPhoneNumbers,
@@ -93,7 +98,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
 				background-color: ${neutral['97']};
 				padding: ${space[3]}px;
 				margin: ${space[3]}px;
-				${minWidth.tablet} {
+				${from.tablet} {
 					padding: ${space[5]}px;
 					margin: ${space[5]}px;
 				}

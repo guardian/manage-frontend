@@ -1,6 +1,11 @@
 import { css } from '@emotion/react';
-import { space, brand, neutral, textSans } from '@guardian/source-foundations';
-import { minWidth } from '../../../styles/breakpoints';
+import {
+	space,
+	brand,
+	neutral,
+	textSans,
+	from,
+} from '@guardian/source-foundations';
 import { GiftIcon } from '../../svgs/giftIcon';
 
 interface ProductDetailsTableProps {
@@ -14,20 +19,20 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
 		${textSans.medium()};
 		padding: ${space[3]}px;
 		margin: 0;
-		${minWidth.tablet} {
+		${from.tablet} {
 			padding: ${space[5]}px;
 		}
 		& div {
 			display: inline-flex;
 			width: 100%;
-			${minWidth.tablet} {
+			${from.tablet} {
 				width: 50%;
 				padding-right: ${space[5]}px;
 			}
 		}
 		& div + div {
 			margin-top: ${space[3]}px;
-			${minWidth.tablet} {
+			${from.tablet} {
 				margin-top: 0;
 			}
 		}
@@ -36,7 +41,7 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
 			display: inline-block;
 			vertical-align: top;
 			width: 12ch;
-			${minWidth.tablet} {
+			${from.tablet} {
 				width: auto;
 				margin-right: ${space[5]}px;
 			}
@@ -62,7 +67,7 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
 					background-color: ${brand[400]};
 					color: ${neutral[100]};
 					position: relative;
-					${minWidth.tablet} {
+					${from.tablet} {
 						font-size: 20px;
 						padding: ${space[3]}px ${space[5]}px;
 					}

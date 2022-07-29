@@ -6,9 +6,9 @@ import {
 	neutral,
 	headline,
 	textSans,
+	from,
 } from '@guardian/source-foundations';
 import { useState } from 'react';
-import { minWidth } from '../styles/breakpoints';
 import { trackEvent } from '../services/analytics';
 import { CallCentreEmailAndNumbers } from './callCenterEmailAndNumbers';
 import { NAV_LINKS } from './nav/navConfig';
@@ -75,7 +75,7 @@ const listItemAnchorStyle = css`
 const h2Style = css`
 	border-top: 1px solid ${neutral['86']};
 	margin-top: 30px;
-	${minWidth.tablet} {
+	${from.tablet} {
 		margin-top: 40px;
 	}
 	${headline.small({ fontWeight: 'bold' })};
@@ -83,7 +83,7 @@ const h2Style = css`
 
 const h3Style = css`
 	margin-top: 30px;
-	${minWidth.tablet} {
+	${from.tablet} {
 		margin-top: 40px;
 	}
 	${headline.xxsmall({ fontWeight: 'bold' })};
@@ -114,7 +114,7 @@ const callCentreToggleSpanStyle = (isOpen: boolean) => css`
 const pStyle = css`
 	${textSans.medium()};
 	margin-top: 30px;
-	${minWidth.tablet} {
+	${from.tablet} {
 		margin-top: 40px;
 	}
 `;

@@ -5,9 +5,9 @@ import {
 	neutral,
 	headline,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
 import { useState } from 'react';
-import { maxWidth } from '../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { Users } from '../identity/identity';
 import { SupportTheGuardianButton } from '../supportTheGuardianButton';
@@ -29,7 +29,7 @@ export const EmptyAccountOverview = () => {
 					border-top: 1px solid ${neutral['86']};
 					${headline.small()};
 					font-weight: bold;
-					${maxWidth.tablet} {
+					${until.tablet} {
 						font-size: 1.25rem;
 						line-height: 1.6;
 					}
