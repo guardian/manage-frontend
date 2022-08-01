@@ -1,5 +1,5 @@
+import { palette } from '@guardian/source-foundations';
 import { FC } from 'react';
-import palette from '../../../colours';
 import { sans } from '../../../styles/fonts';
 import { Button } from '../../buttons';
 import { IdentityLocations } from '../IdentityLocations';
@@ -18,11 +18,11 @@ const text = {
 };
 const linkCss = {
 	...text,
-	color: palette.blue.dark,
-	borderBottom: `1px solid ${palette.neutral['5']}`,
+	color: palette.sport[300],
+	borderBottom: `1px solid ${palette.neutral[86]}`,
 	transition: 'border-color .15s ease-out',
 	'&:hover': {
-		borderBottom: `1px solid ${palette.blue.dark}`,
+		borderBottom: `1px solid ${palette.sport[300]}`,
 	},
 };
 
@@ -30,9 +30,9 @@ const successMessage = (
 	<div
 		css={{
 			...text,
-			borderBottom: `1px solid ${palette.green.light}`,
-			borderTop: `1px solid ${palette.green.light}`,
-			color: palette.green.medium,
+			borderBottom: `1px solid ${palette.success[400]}`,
+			borderTop: `1px solid ${palette.success[400]}`,
+			color: palette.success[400],
 			marginTop: '6px',
 			padding: '7px 8px',
 		}}

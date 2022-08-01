@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import palette from '../../../colours';
 import { DropMenu } from '../DropMenu';
 import { NewsletterPreference } from '../NewsletterPreference';
 import { ConsentOption, Theme } from '../models';
 import { PageSection } from '../PageSection';
 import uniq from 'lodash/uniq';
+import { palette } from '@guardian/source-foundations';
 
 type ClickHandler = (id: string) => {};
 
@@ -42,21 +42,21 @@ function notEmpty<T>(value: T | undefined): value is T {
 
 function getColor(theme: string): string {
 	const colors: { [T in Theme]: string } = {
-		[Theme.news]: palette.red.medium,
-		[Theme.opinion]: palette.orange.medium,
-		[Theme.features]: palette.neutral['1'],
-		[Theme.sport]: palette.blue.medium,
+		[Theme.news]: palette.news[400],
+		[Theme.opinion]: palette.opinion[500],
+		[Theme.features]: palette.neutral[7],
+		[Theme.sport]: palette.sport[400],
 		[Theme.culture]: '#a1845c',
-		[Theme.lifestyle]: palette.pink.medium,
+		[Theme.lifestyle]: palette.lifestyle[400],
 		[Theme.comment]: '#e05e00',
-		[Theme.work]: palette.neutral['1'],
-		[Theme.fromThePapers]: palette.neutral['1'],
+		[Theme.work]: palette.neutral[7],
+		[Theme.fromThePapers]: palette.neutral[7],
 	};
 
 	if (theme in Theme) {
 		return colors[theme as Theme];
 	}
-	return palette.neutral['1'];
+	return palette.neutral[7];
 }
 
 const newsletterPreferenceGroups = (

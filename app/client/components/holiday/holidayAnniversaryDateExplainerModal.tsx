@@ -1,4 +1,4 @@
-import palette from '../../colours';
+import { palette } from '@guardian/source-foundations';
 import { Modal } from '../modal';
 
 interface HolidayAnniversaryDateExplainerModalProps {
@@ -14,7 +14,7 @@ export const HolidayAnniversaryDateExplainerModal = (
 			<a
 				css={{
 					textDecoration: 'underline',
-					color: palette.blue.medium,
+					color: palette.sport[400],
 					cursor: 'pointer',
 				}}
 			>

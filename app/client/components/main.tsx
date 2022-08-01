@@ -1,9 +1,9 @@
-import palette from '../colours';
 import { serif } from '../styles/fonts';
 import { Footer } from './footer/footer';
 import Header from './header';
 import { SignInStatus } from '../services/signInStatus';
 import HelpCentreHeader from './helpCentre/helpCentreHeader';
+import { palette } from '@guardian/source-foundations';
 
 export interface MainProps {
 	signInStatus?: SignInStatus;
@@ -25,7 +25,7 @@ export const Main = ({
 			height: '100vh',
 			alignItems: 'stretch',
 			width: '100%',
-			color: palette.neutral['2'],
+			color: palette.neutral[20],
 		}}
 	>
 		{helpCentrePage ? (

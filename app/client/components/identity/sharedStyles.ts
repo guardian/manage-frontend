@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
+import { palette } from '@guardian/source-foundations';
 import { sans } from '../../styles/fonts';
-import palette from '../../colours';
 
 export const textSmall = css({
 	fontSize: '14px',
@@ -18,26 +18,26 @@ export const toggleDescriptionPadding = css({
 });
 
 const lightBorder = css({
-	border: `1px solid ${palette.neutral['5']}`,
+	border: `1px solid ${palette.neutral[86]}`,
 });
 
 const errorBorder = css({
-	border: `1px solid ${palette.red.medium}`,
+	border: `1px solid ${palette.error[400]}`,
 });
 
 export const aCss = css({
-	color: palette.blue.dark,
-	borderBottom: `1px solid ${palette.neutral['5']}`,
+	color: palette.sport[300],
+	borderBottom: `1px solid ${palette.neutral[86]}`,
 	transition: 'border-color .15s ease-out',
 	'&:hover': {
-		borderBottom: `1px solid ${palette.blue.dark}`,
+		borderBottom: `1px solid ${palette.sport[300]}`,
 	},
 });
 
 const inputCss = css({
 	boxShadow: 'none',
 	boxSizing: 'border-box',
-	color: palette.neutral['1'],
+	color: palette.neutral[7],
 	display: 'inline-block',
 	padding: '8px 8px 7px',
 	fontSize: '14px',
@@ -76,9 +76,9 @@ export const errorMessageCss = css({
 	fontSize: '13px',
 	lineHeight: '18px',
 	backgroundColor: '#ffe1e1',
-	borderBottom: `1px solid ${palette.red.light}`,
-	borderTop: `1px solid ${palette.red.light}`,
-	color: palette.red.medium,
+	borderBottom: `1px solid ${palette.error[400]}`,
+	borderTop: `1px solid ${palette.error[400]}`,
+	color: palette.error[400],
 	marginTop: '6px',
 	padding: '7px 8px',
 });
@@ -88,7 +88,7 @@ export const formFieldErrorCss = css({
 	'& p': [
 		textSmall,
 		{
-			color: palette.red.medium,
+			color: palette.error[400],
 			marginTop: '6px',
 		},
 	],

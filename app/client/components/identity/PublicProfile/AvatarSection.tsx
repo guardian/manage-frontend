@@ -3,7 +3,6 @@ import * as Sentry from '@sentry/browser';
 import { Form, Formik, FormikProps } from 'formik';
 import { FC, useEffect } from 'react';
 import * as React from 'react';
-import palette from '../../../colours';
 import { sans } from '../../../styles/fonts';
 import { trackEvent } from '../../../services/analytics';
 import { Button } from '../../buttons';
@@ -21,6 +20,7 @@ import {
 	isSuccessful,
 	useAsyncSource,
 } from '../useAsyncSource';
+import { palette } from '@guardian/source-foundations';
 
 interface AvatarSectionProps {
 	userId: string;
@@ -124,9 +124,9 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 				{
 					lineHeight: '18px',
 					fontFamily: sans,
-					borderBottom: `1px solid ${palette.green.light}`,
-					borderTop: `1px solid ${palette.green.light}`,
-					color: palette.green.medium,
+					borderBottom: `1px solid ${palette.success[400]}`,
+					borderTop: `1px solid ${palette.success[400]}`,
+					color: palette.success[400],
 					marginTop: '6px',
 					padding: '7px 8px',
 				},

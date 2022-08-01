@@ -1,5 +1,5 @@
+import { palette } from '@guardian/source-foundations';
 import * as React from 'react';
-import palette from '../colours';
 import { Button } from './buttons';
 
 export type HideFunction = () => void;
@@ -55,7 +55,7 @@ export class Modal extends React.Component<ModalProps, ModalState> {
 				>
 					<div
 						css={{
-							background: palette.white,
+							background: palette.neutral[100],
 							padding: '15px',
 							fontSize: '16px',
 							maxWidth: '600px',

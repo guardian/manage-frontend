@@ -1,11 +1,10 @@
 import { css } from '@emotion/react';
-import { news, space, until } from '@guardian/source-foundations';
+import { news, palette, space, until } from '@guardian/source-foundations';
 import { ChangeEvent, FC, useContext, useState } from 'react';
 import {
 	WithProductType,
 	ProductTypeWithCancellationFlow,
 } from '../../../shared/productTypes';
-import palette from '../../colours';
 import { sans } from '../../styles/fonts';
 import { trackEvent } from '../../services/analytics';
 import {
@@ -91,7 +90,7 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 					marginLeft: '15px',
 					marginTop: '30px',
 					paddingLeft: '15px',
-					borderLeft: '1px solid ' + palette.neutral['4'],
+					borderLeft: '1px solid ' + palette.neutral[60],
 				}}
 			>
 				<p
@@ -172,7 +171,7 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 					<div
 						css={{
 							fontSize: 'small',
-							color: palette.neutral['3'],
+							color: palette.neutral[46],
 							fontFamily: sans,
 							paddingBottom: '10px',
 						}}

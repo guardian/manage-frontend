@@ -1,5 +1,5 @@
+import { palette } from '@guardian/source-foundations';
 import * as React from 'react';
-import palette from '../colours';
 
 export interface CheckboxProps {
 	checked: boolean;
@@ -18,7 +18,7 @@ export const Checkbox = (props: CheckboxProps) => (
 			cursor: 'pointer',
 			userSelect: 'none',
 			':hover .checkbox': {
-				boxShadow: `0 0 0 3px ${palette.neutral['6']}`,
+				boxShadow: `0 0 0 3px ${palette.neutral[93]}`,
 			},
 		}}
 	>
@@ -28,19 +28,19 @@ export const Checkbox = (props: CheckboxProps) => (
 				transition: 'all .2s ease-in-out',
 				border: props.checked
 					? undefined
-					: `1px solid ${palette.neutral['4']}`,
+					: `1px solid ${palette.neutral[60]}`,
 				minWidth: '18px',
 				height: '18px',
 				display: 'inline-block',
 				margin: '3px',
 				marginRight: '10px',
 				background: props.checked
-					? props.checkboxFill || palette.green.success
-					: palette.white,
+					? props.checkboxFill || palette.success[400]
+					: palette.neutral[100],
 				position: 'relative',
 				outline: 0,
 				':focus': {
-					boxShadow: `0 0 0 3px ${palette.yellow.medium}`,
+					boxShadow: `0 0 0 3px ${palette.brandAlt[400]}`,
 				},
 			}}
 			// accessibility props below
@@ -79,7 +79,7 @@ export const Checkbox = (props: CheckboxProps) => (
 					css={{
 						width: props.checked ? '12px' : '2px',
 						height: '6px',
-						borderColor: palette.white,
+						borderColor: palette.neutral[100],
 						borderWidth: '0 0 2px 2px',
 						borderStyle: 'solid',
 						transition: 'all .2s ease-in-out',

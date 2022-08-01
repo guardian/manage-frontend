@@ -1,4 +1,4 @@
-import palette from '../colours';
+import { palette } from '@guardian/source-foundations';
 
 export const ukPhoneNumberWithoutPrefix = '0330 333 6790';
 
@@ -13,8 +13,8 @@ export const CallCentreNumbers = (props: CallCentreNumbersProps) => (
 		<a
 			css={{
 				textDecoration: 'underline',
-				color: palette.blue.dark,
-				':visited': { color: palette.blue.dark },
+				color: palette.sport[300],
+				':visited': { color: palette.sport[300] },
 			}}
 			href="mailto:customer.help@theguardian.com"
 		>
