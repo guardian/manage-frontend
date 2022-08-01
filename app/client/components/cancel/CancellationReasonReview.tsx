@@ -44,6 +44,8 @@ import {
 } from '../delivery/records/deliveryRecordsApi';
 import { Spinner } from '../spinner';
 import { GenericErrorScreen } from '../genericErrorScreen';
+import { Heading } from '../Heading';
+import { measure } from '../../styles/typography';
 
 const getPatchUpdateCaseFunc =
 	(isTestUser: boolean, caseId: string, feedback: string) => async () =>
@@ -432,12 +434,19 @@ const CancellationReasonReview = () => {
 					)
 				) : (
 					<>
-						<h3 id="save_title">
+						<Heading
+							cssOverrides={[
+								measure.heading,
+								css`
+									margin-bottom: ${space[6]}px;
+								`,
+							]}
+						>
 							{productType.cancellation.hideReasonTitlePrefix
 								? ''
 								: 'Reason: '}
 							{reason.saveTitle || reason.linkLabel}
-						</h3>
+						</Heading>
 						{needsCancellationEscalation && (
 							<p>
 								Once you submit your cancellation request our

@@ -1,11 +1,13 @@
-import { WithStandardTopMargin } from '../../WithStandardTopMargin';
+import { Stack } from '@guardian/source-react-components';
+import { measure } from '../../../styles/typography';
+import { Heading } from '../../Heading';
 
 export const digipackCancellationFlowStart = () => (
-	<WithStandardTopMargin>
-		<h3>
+	<Stack space={4}>
+		<Heading cssOverrides={measure.heading}>
 			We’re sorry to hear you’re thinking of cancelling your digital
 			subscription.
-		</h3>
+		</Heading>
 		<p>
 			Your support means The Guardian can remain editorially independent,
 			free from the influence of billionaire owners and politicians. This
@@ -16,5 +18,5 @@ export const digipackCancellationFlowStart = () => (
 		</p>
 
 		<p>Please could you take a moment to tell us why you want to cancel?</p>
-	</WithStandardTopMargin>
+	</Stack>
 );

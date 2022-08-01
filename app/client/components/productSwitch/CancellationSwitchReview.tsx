@@ -48,12 +48,13 @@ import { SepaDisplay } from '../payment/sepaDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import {
 	colour,
-	headingCss,
 	listCss,
-	standfirstCss,
+	pageTopCss,
 	tickListCss,
 } from './productSwitchStyles';
 import { productBenefits } from './ProductBenefits';
+import { measure } from '../../styles/typography';
+import { Heading } from '../Heading';
 
 /**
  * Generic Card container component
@@ -62,7 +63,7 @@ import { productBenefits } from './ProductBenefits';
 
 interface CardProps {
 	heading: string;
-	theme?: 'brand' | undefined;
+	theme?: 'brand';
 	children: ReactNode;
 }
 
@@ -340,10 +341,10 @@ const CancellationSwitchReview = () => {
 	`;
 
 	const smallPrintCss = css`
-		margin-top: ${space[4]}px;
-		margin-bottom: 0;
 		${textSans.xsmall()};
-		max-width: 60ch;
+		${measure.copy};
+		margin-top: 0;
+		margin-bottom: 0;
 
 		> a {
 			color: inherit;
@@ -454,13 +455,10 @@ const CancellationSwitchReview = () => {
 	};
 
 	return (
-		<>
-			<h2 css={headingCss}>
-				Change your support to a {chosenProduct.name}
-			</h2>
-
-			<Stack space={9}>
-				<p css={standfirstCss}>
+		<Stack space={9} cssOverrides={pageTopCss}>
+			<Stack space={3}>
+				<Heading>Change your support to a {chosenProduct.name}</Heading>
+				<p css={[textSans.medium(), measure.copy]}>
 					If you decide to change your support to a{' '}
 					{chosenProduct.name} we’ll stop your{' '}
 					{chosenProduct.billing.frequency.name}ly{' '}
@@ -468,210 +466,198 @@ const CancellationSwitchReview = () => {
 					straight away and you’ll have immediate access to the
 					benefits of a {chosenProduct.name}.
 				</p>
-
-				<div css={cardLayoutCss}>
-					<Card
-						heading={`Your ${productSwitchContext.productType.friendlyName}`}
-					>
-						{chosenProduct.introOffer && (
-							<hr
-								css={css`
-									display: none;
-									height: 42px;
-									margin: 0;
-									border: none;
-									border-bottom: 1px solid
-										${palette.neutral[86]};
-									${between.tablet.and.desktop} {
-										display: block;
-									}
-									${from.leftCol} {
-										display: block;
-									}
-								`}
-							/>
-						)}
-						<div
+			</Stack>
+			<div css={cardLayoutCss}>
+				<Card
+					heading={`Your ${productSwitchContext.productType.friendlyName}`}
+				>
+					{chosenProduct.introOffer && (
+						<hr
 							css={css`
-								${textSans.medium()};
-								padding: ${space[4]}px;
+								display: none;
+								height: 42px;
+								margin: 0;
+								border: none;
+								border-bottom: 1px solid ${palette.neutral[86]};
+								${between.tablet.and.desktop} {
+									display: block;
+								}
+								${from.leftCol} {
+									display: block;
+								}
+							`}
+						/>
+					)}
+					<div
+						css={css`
+							${textSans.medium()};
+							padding: ${space[4]}px;
+						`}
+					>
+						<PaymentDetails paymentAmount={currentProductPrice()} />
+						<ul css={[listCss, tickListCss]}>
+							<li>
+								<SvgTickRound size="small" />
+								Support independent journalism
+							</li>
+						</ul>
+					</div>
+				</Card>
+
+				<div css={arrowIconCss}>
+					<span>
+						<SvgArrowRightStraight size="small" />
+					</span>
+				</div>
+
+				<Card theme="brand" heading={`Your new ${chosenProduct.name}`}>
+					{chosenProduct.introOffer && (
+						<h4
+							css={css`
+								margin: 0;
+								padding: ${space[2]}px ${space[4]}px;
+								${textSans.medium({ fontWeight: 'bold' })};
+								color: ${palette.brandAlt[400]};
+								background-color: ${palette.brand[400]};
 							`}
 						>
-							<PaymentDetails
-								paymentAmount={currentProductPrice()}
-							/>
-							<ul css={[listCss, tickListCss]}>
-								<li>
-									<SvgTickRound size="small" />
-									Support independent journalism
-								</li>
-							</ul>
-						</div>
-					</Card>
-
-					<div css={arrowIconCss}>
-						<span>
-							<SvgArrowRightStraight size="small" />
-						</span>
-					</div>
-
-					<Card
-						theme="brand"
-						heading={`Your new ${chosenProduct.name}`}
-					>
-						{chosenProduct.introOffer && (
-							<h4
+							{trialCopy(chosenProduct)}{' '}
+							<span
 								css={css`
-									margin: 0;
-									padding: ${space[2]}px ${space[4]}px;
-									${textSans.medium({ fontWeight: 'bold' })};
-									color: ${palette.brandAlt[400]};
-									background-color: ${palette.brand[400]};
+									display: inline-block;
 								`}
 							>
-								{trialCopy(chosenProduct)}{' '}
-								<span
-									css={css`
-										display: inline-block;
-									`}
-								>
-									{introOfferCopy(chosenProduct)}
-								</span>
-							</h4>
-						)}
-						<div
-							css={css`
-								${textSans.medium()};
-								padding: ${space[4]}px;
-								background-color: ${colour.background.hero};
-							`}
-						>
-							{chosenProduct.introOffer ? (
-								<PaymentDetails
-									paymentAmount={`
+								{introOfferCopy(chosenProduct)}
+							</span>
+						</h4>
+					)}
+					<div
+						css={css`
+							${textSans.medium()};
+							padding: ${space[4]}px;
+							background-color: ${colour.background.hero};
+						`}
+					>
+						{chosenProduct.introOffer ? (
+							<PaymentDetails
+								paymentAmount={`
 										${introOfferPrice(chosenProduct)} for
 										${introOfferDuration(chosenProduct)}
 									`}
-									paymentFollowOnAmount={
-										<span
+								paymentFollowOnAmount={
+									<span
+										css={css`
+											padding-left: 8ch;
+										`}
+									>
+										{`Then  ${regularPrice(
+											chosenProduct,
+										)} ${regularBillingFrequency(
+											chosenProduct,
+										)}. `}
+										<strong
 											css={css`
-												padding-left: 8ch;
+												display: inline-block;
 											`}
 										>
-											{`Then  ${regularPrice(
-												chosenProduct,
-											)} ${regularBillingFrequency(
-												chosenProduct,
-											)}. `}
-											<strong
-												css={css`
-													display: inline-block;
-												`}
-											>
-												Cancel anytime.
-											</strong>
-										</span>
-									}
-									theme="brand"
-								/>
-							) : (
-								<PaymentDetails
-									paymentAmount={`${regularPrice(
-										chosenProduct,
-									)} ${regularBillingFrequency(
-										chosenProduct,
-									)}`}
-									theme="brand"
-								/>
-							)}
+											Cancel anytime.
+										</strong>
+									</span>
+								}
+								theme="brand"
+							/>
+						) : (
+							<PaymentDetails
+								paymentAmount={`${regularPrice(
+									chosenProduct,
+								)} ${regularBillingFrequency(chosenProduct)}`}
+								theme="brand"
+							/>
+						)}
 
-							{primaryBenefits && (
-								<ul css={[listCss, tickListCss]}>
-									{primaryBenefits.map((benefit, index) => (
-										<li key={index}>
-											<SvgTickRound size="small" />
-											<span>{benefit}</span>
-										</li>
-									))}
+						{primaryBenefits && (
+							<ul css={[listCss, tickListCss]}>
+								{primaryBenefits.map((benefit, index) => (
+									<li key={index}>
+										<SvgTickRound size="small" />
+										<span>{benefit}</span>
+									</li>
+								))}
+							</ul>
+						)}
+
+						{additionalBenefits && (
+							<>
+								<ul
+									id="additional-benefits"
+									css={[
+										listCss,
+										tickListCss,
+										css`
+											margin-top: ${space[2]}px;
+										`,
+									]}
+									hidden={!benefitsExpanded}
+								>
+									{additionalBenefits.map(
+										(benefit, index) => (
+											<li key={index}>
+												<SvgTickRound size="small" />
+												<span>{benefit}</span>
+											</li>
+										),
+									)}
 								</ul>
-							)}
+								<button
+									css={[
+										expanderButtonCss()(benefitsExpanded),
+										css`
+											padding: 0;
+											margin-top: ${space[4]}px;
+											margin-bottom: ${space[1]}px;
+											margin-left: 34px;
+											border-bottom: 1px solid
+												${palette.neutral[7]};
+										`,
+									]}
+									type="button"
+									aria-expanded={benefitsExpanded}
+									aria-controls="additional-benefits"
+									onClick={() =>
+										setBenefitsExpanded(!benefitsExpanded)
+									}
+								>
+									View {benefitsExpanded ? 'less' : 'more'}
+								</button>
+							</>
+						)}
+					</div>
+				</Card>
+			</div>
 
-							{additionalBenefits && (
-								<>
-									<ul
-										id="additional-benefits"
-										css={[
-											listCss,
-											tickListCss,
-											css`
-												margin-top: ${space[2]}px;
-											`,
-										]}
-										hidden={!benefitsExpanded}
-									>
-										{additionalBenefits.map(
-											(benefit, index) => (
-												<li key={index}>
-													<SvgTickRound size="small" />
-													<span>{benefit}</span>
-												</li>
-											),
-										)}
-									</ul>
-									<button
-										css={[
-											expanderButtonCss()(
-												benefitsExpanded,
-											),
-											css`
-												padding: 0;
-												margin-top: ${space[4]}px;
-												margin-bottom: ${space[1]}px;
-												margin-left: 34px;
-												border-bottom: 1px solid
-													${palette.neutral[7]};
-											`,
-										]}
-										type="button"
-										aria-expanded={benefitsExpanded}
-										aria-controls="additional-benefits"
-										onClick={() =>
-											setBenefitsExpanded(
-												!benefitsExpanded,
-											)
-										}
-									>
-										View{' '}
-										{benefitsExpanded ? 'less' : 'more'}
-									</button>
-								</>
-							)}
-						</div>
-					</Card>
-				</div>
-
-				<div css={buttonLayoutCss}>
+			<div css={buttonLayoutCss}>
+				<Button
+					priority="tertiary"
+					cssOverrides={css`
+						justify-content: center;
+					`}
+				>
+					Return to cancellation
+				</Button>
+				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button
-						priority="tertiary"
 						cssOverrides={css`
 							justify-content: center;
 						`}
+						isLoading={confirmingChange}
+						onClick={confirmChange}
 					>
-						Return to cancellation
+						Confirm change
 					</Button>
-					<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-						<Button
-							cssOverrides={css`
-								justify-content: center;
-							`}
-							isLoading={confirmingChange}
-							onClick={confirmChange}
-						>
-							Confirm change
-						</Button>
-					</ThemeProvider>
-				</div>
+				</ThemeProvider>
+			</div>
 
+			<Stack space={4}>
 				<Stack space={6}>
 					<Card heading="Payment details">
 						<KeyValueTable
@@ -749,21 +735,23 @@ const CancellationSwitchReview = () => {
 						</div>
 					</Card>
 				</Stack>
-			</Stack>
 
-			<p css={smallPrintCss}>
-				By proceeding, you are agreeing to our{' '}
-				<a href="https://www.theguardian.com/info/2014/aug/06/guardian-observer-digital-subscriptions-terms-conditions">
-					Terms and Conditions
-				</a>
-				. To find out what personal data we collect and how we use it,
-				please visit our{' '}
-				<a href="https://www.theguardian.com/help/privacy-policy">
-					Privacy Policy
-				</a>
-				.
-			</p>
-		</>
+				<div>
+					<p css={smallPrintCss}>
+						By proceeding, you are agreeing to our{' '}
+						<a href="https://www.theguardian.com/info/2014/aug/06/guardian-observer-digital-subscriptions-terms-conditions">
+							Terms and Conditions
+						</a>
+						. To find out what personal data we collect and how we
+						use it, please visit our{' '}
+						<a href="https://www.theguardian.com/help/privacy-policy">
+							Privacy Policy
+						</a>
+						.
+					</p>
+				</div>
+			</Stack>
+		</Stack>
 	);
 };
 
