@@ -3,8 +3,8 @@ import {
 	space,
 	brand,
 	neutral,
-	news,
 	textSans,
+	palette,
 } from '@guardian/source-foundations';
 import { LinkButton } from './buttons';
 import { ErrorIcon } from './svgs/errorIcon';
@@ -26,7 +26,7 @@ interface ProblemAlertProps {
 export const ProblemAlert = (props: ProblemAlertProps) => (
 	<div
 		css={css`
-			border: 4px solid ${news[400]};
+			border: 4px solid ${palette.error[400]};
 			padding: ${space['5']}px ${space['5']}px ${space['5']}px 50px;
 			position: relative;
 			${props.additionalcss && props.additionalcss}

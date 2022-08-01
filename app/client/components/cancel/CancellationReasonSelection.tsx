@@ -25,8 +25,7 @@ import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '../../../shared/dates';
 import { css } from '@emotion/react';
 import {
 	from,
-	neutral,
-	news,
+	palette,
 	space,
 	textSans,
 	until,
@@ -90,7 +89,7 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 						setSelectedReasonId(target.value);
 					}}
 					css={css`
-						border: 1px solid ${neutral['86']};
+						border: 1px solid ${palette.neutral[86]};
 						margin: 0 0 ${space[5]}px;
 						padding: 0;
 					`}
@@ -102,8 +101,8 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 							margin: 0;
 							padding: ${space[3]}px;
 							float: left;
-							background-color: ${neutral['97']};
-							border-bottom: 1px solid ${neutral['86']};
+							background-color: ${palette.neutral[97]};
+							border-bottom: 1px solid ${palette.neutral[86]};
 							${textSans.medium({ fontWeight: 'bold' })};
 							${from.tablet} {
 								padding: ${space[3]}px ${space[5]}px;
@@ -148,7 +147,7 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 						cssOverrides={css`
 							padding: ${space[5]}px;
 							margin-bottom: ${space[4]}px;
-							border: 4px solid ${news[400]};
+							border: 4px solid ${palette.error[400]};
 							text-align: left;
 						`}
 					>
@@ -174,7 +173,7 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 								}
 							}}
 							css={css`
-								border: 1px solid ${neutral['86']};
+								border: 1px solid ${palette.neutral[86]};
 								margin: 0 0 ${space[5]}px;
 								padding: 0;
 							`}
@@ -186,8 +185,8 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 									margin: 0;
 									padding: ${space[3]}px;
 									float: left;
-									background-color: ${neutral['97']};
-									border-bottom: 1px solid ${neutral['86']};
+									background-color: ${palette.neutral[97]};
+									border-bottom: 1px solid ${palette.neutral[86]};
 									${textSans.medium({ fontWeight: 'bold' })};
 									${from.tablet} {
 										padding: ${space[3]}px ${space[5]}px;
@@ -222,7 +221,7 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 								cssOverrides={css`
 									padding: ${space[5]}px;
 									margin-bottom: ${space[4]}px;
-									border: 4px solid ${news[400]};
+									border: 4px solid ${palette.error[400]};
 									text-align: left;
 								`}
 							>

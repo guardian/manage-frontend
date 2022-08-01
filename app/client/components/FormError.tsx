@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, news, textSans } from '@guardian/source-foundations';
+import { palette, space, textSans } from '@guardian/source-foundations';
 import { ReactElement } from 'react';
 import { ErrorIcon } from './svgs/errorIcon';
 
@@ -7,7 +7,7 @@ const dlStyles = css`
 	position: relative;
 	padding: ${space[5]}px ${space[5]}px ${space[5]}px 50px;
 	${textSans.medium()};
-	border: 4px solid ${news[400]};
+	border: 4px solid ${palette.error[400]};
 `;
 
 const iStyles = css`

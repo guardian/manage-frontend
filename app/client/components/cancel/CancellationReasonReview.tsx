@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { news, palette, space, until } from '@guardian/source-foundations';
+import { palette, space, until } from '@guardian/source-foundations';
 import { ChangeEvent, FC, useContext, useState } from 'react';
 import {
 	WithProductType,
@@ -184,7 +184,7 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 							cssOverrides={css`
 								padding: ${space[5]}px;
 								margin-bottom: ${space[4]}px;
-								border: 4px solid ${news[400]};
+								border: 4px solid ${palette.error[400]};
 								text-align: left;
 							`}
 						>
