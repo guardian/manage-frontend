@@ -4,9 +4,10 @@ import {
 	neutral,
 	headline,
 	textSans,
+	until,
+	from,
 } from '@guardian/source-foundations';
 import { ReactElement } from 'react';
-import { maxWidth, minWidth } from '../styles/breakpoints';
 
 export interface ProductDescriptionListKeyValue {
 	title: string;
@@ -33,7 +34,7 @@ export const ProductDescriptionListTable = (
 			padding-right: ${space[3]}px;
 			margin: ${isTwoColWidth ? `0 0 ${space[3]}px` : '0'};
 			${textSans.medium({ fontWeight: 'bold' })}
-			${minWidth.tablet} {
+			${from.tablet} {
 				padding-right: ${space[5]}px;
 				width: 16ch;
 				margin: 0;
@@ -47,7 +48,7 @@ export const ProductDescriptionListTable = (
 			vertical-align: top;
 			margin: 0;
 			width: ${isTwoColWidth ? '100%' : `calc(40% + ${space[3]}px)`};
-			${minWidth.tablet} {
+			${from.tablet} {
 				width: auto;
 			}
 		`;
@@ -59,7 +60,7 @@ export const ProductDescriptionListTable = (
 		margin: 0;
 		padding: ${space[3]}px ${space[5]}px;
 		background-color: ${neutral[97]};
-		${maxWidth.tablet} {
+		${until.tablet} {
 			font-size: 1.0625rem;
 			line-height: 1.6;
 			padding: ${space[3]}px;
@@ -167,7 +168,7 @@ export const ProductDescriptionListTable = (
 											props.borderColour || neutral[20]
 									  };`
 									: 'none;'}
-								${minWidth.tablet} {
+								${from.tablet} {
 								border-bottom: ${!isLastTableRow
 									? `1px solid ${
 											props.borderColour || neutral[20]

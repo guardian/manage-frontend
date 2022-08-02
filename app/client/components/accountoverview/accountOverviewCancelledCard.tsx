@@ -5,6 +5,8 @@ import {
 	brandAlt,
 	neutral,
 	textSans,
+	until,
+	from,
 } from '@guardian/source-foundations';
 import { parseDate } from '../../../shared/dates';
 import {
@@ -12,7 +14,6 @@ import {
 	isGift,
 } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
-import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../../services/analytics';
 import { Button } from '../buttons';
 import { ErrorIcon } from '../svgs/errorIcon';
@@ -75,7 +76,7 @@ export const AccountOverviewCancelledCard = (
 					justify-content: space-between;
 					align-items: start;
 					background-color: ${neutral[97]};
-					${minWidth.mobileLandscape} {
+					${from.mobileLandscape} {
 						align-items: center;
 					}
 				`}
@@ -87,10 +88,10 @@ export const AccountOverviewCancelledCard = (
 						margin: 0;
 						padding: ${space[3]}px;
 						color: ${neutral[7]};
-						${maxWidth.mobileLandscape} {
+						${until.mobileLandscape} {
 							padding: ${space[3]}px;
 						}
-						${minWidth.tablet} {
+						${from.tablet} {
 							font-size: 20px;
 							padding: ${space[3]}px ${space[5]}px;
 						}
@@ -103,7 +104,7 @@ export const AccountOverviewCancelledCard = (
 						display: flex;
 						align-items: center;
 						padding: ${space[3]}px 0;
-						${maxWidth.mobileLandscape} {
+						${until.mobileLandscape} {
 							flex-direction: column;
 							align-items: end;
 						}
@@ -114,12 +115,12 @@ export const AccountOverviewCancelledCard = (
 							margin-right: ${space[3]}px;
 							white-space: nowrap;
 							transform: translateY(1px);
-							${maxWidth.mobileLandscape} {
+							${until.mobileLandscape} {
 								${isGift(props.product.subscription)
 									? 'margin: 0 5px 6px 0;'
 									: ''};
 							}
-							${minWidth.tablet} {
+							${from.tablet} {
 								margin-right: ${space[5]}px;
 							}
 						`}
@@ -148,7 +149,7 @@ export const AccountOverviewCancelledCard = (
 			<div
 				css={css`
 					padding: ${space[5]}px ${space[3]}px;
-					${minWidth.tablet} {
+					${from.tablet} {
 						padding: ${space[5]}px;
 						display: flex;
 					}
@@ -158,7 +159,7 @@ export const AccountOverviewCancelledCard = (
 					css={css`
 						margin: 0;
 						padding: 0;
-						${minWidth.tablet} {
+						${from.tablet} {
 							flex: 1;
 							display: flex;
 							flex-flow: column nowrap;
@@ -216,7 +217,7 @@ export const AccountOverviewCancelledCard = (
 						margin: ${space[6]}px 0 0 0;
 						padding: ${space[6]}px 0 0 0;
 						border-top: 1px solid ${neutral[86]};
-						${minWidth.tablet} {
+						${from.tablet} {
 							flex: 1;
 							display: flex;
 							flex-flow: column nowrap;

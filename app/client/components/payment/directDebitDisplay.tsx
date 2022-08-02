@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
-import { brand } from '@guardian/source-foundations';
+import { brand, from } from '@guardian/source-foundations';
 import { DirectDebitDetails } from '../../../shared/productResponse';
-import { minWidth } from '../../styles/breakpoints';
 import { DirectDebitLogo } from './directDebitLogo';
 import { Inlineable } from './inlineable';
 
@@ -38,7 +37,7 @@ export const sanitiseAccountNumber = (
 		accountNumber.length >= NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW && (
 			<span
 				css={css`
-					${minWidth.tablet} {
+					${from.tablet} {
 						:before {
 							display: inline;
 							content: '${shortVersion ? '' : 'account '}';
@@ -88,7 +87,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 				css={css`
 					display: flex;
 					justify-content: right;
-					${minWidth.tablet} {
+					${from.tablet} {
 						justify-content: left;
 					}
 				`}

@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
-import { space, neutral, headline } from '@guardian/source-foundations';
-import { minWidth } from '../../styles/breakpoints';
+import { space, neutral, headline, from } from '@guardian/source-foundations';
 import { helpCentreConfig } from './helpCentreConfig';
 import HelpCentreContactOptions from './helpCentreContactOptions';
 import { HelpCentreLandingMoreTopics } from './helpCentreLandingMoreTopics';
@@ -11,7 +10,7 @@ const subtitleStyles = css`
 	margin-bottom: ${space[6]}px;
 	${headline.small({ fontWeight: 'bold' })};
 	border-top: 1px solid ${neutral['86']};
-	${minWidth.tablet} {
+	${from.tablet} {
 		margin-bottom: ${space[6]}px;
 		margin-top: 40px;
 	}

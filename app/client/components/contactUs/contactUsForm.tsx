@@ -1,6 +1,12 @@
 import { css, SerializedStyles } from '@emotion/react';
 import { Button } from '@guardian/source-react-components';
-import { space, neutral, news, textSans } from '@guardian/source-foundations';
+import {
+	space,
+	neutral,
+	news,
+	textSans,
+	from,
+} from '@guardian/source-foundations';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { ContactUsFormPayload } from '../../../shared/contactUsTypes';
 import {
@@ -11,7 +17,6 @@ import {
 } from '../../../shared/fileUploadUtils';
 import { isEmail } from '../../../shared/validationUtils';
 import { Grecaptcha } from '../../services/captcha';
-import { minWidth } from '../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { FormError } from '../FormError';
 import { Input } from '../input';
@@ -228,7 +233,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 						background-color: ${neutral['97']};
 						border-bottom: 1px solid ${neutral['86']};
 						${textSans.medium({ fontWeight: 'bold' })};
-						${minWidth.tablet} {
+						${from.tablet} {
 							padding: ${space[3]}px ${space[5]}px;
 						}
 					`}

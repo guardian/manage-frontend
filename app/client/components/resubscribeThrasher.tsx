@@ -4,11 +4,11 @@ import {
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../shared/identity';
 import palette from '../colours';
-import { minWidth } from '../styles/breakpoints';
 import { trackEvent } from '../services/analytics';
 import AsyncLoader from './asyncLoader';
 import { SupportTheGuardianButton } from './supportTheGuardianButton';
 import { fetchWithDefaultParameters } from '../fetch';
+import { from } from '@guardian/source-foundations';
 
 const fetchExistingPaymentOptions = () =>
 	fetchWithDefaultParameters('/api/existing-payment-options', {
@@ -75,7 +75,7 @@ const getThrasher =
 							css={{
 								br: {
 									display: 'none',
-									[minWidth.tablet]: {
+									[from.tablet]: {
 										display: 'inline',
 									},
 								},

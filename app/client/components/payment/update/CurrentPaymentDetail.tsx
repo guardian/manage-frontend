@@ -5,9 +5,10 @@ import {
 	neutral,
 	news,
 	textSans,
+	until,
+	from,
 } from '@guardian/source-foundations';
 import { InlineError } from '@guardian/source-react-components';
-import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { getMainPlan, ProductDetail } from '../../../../shared/productResponse';
 import { CardDisplay } from '../cardDisplay';
 import {
@@ -58,7 +59,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 
 		text-align: right;
 
-		${minWidth.tablet} {
+		${from.tablet} {
 			text-align: left;
 		}
 	`;
@@ -80,7 +81,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 					background-color: ${hasCancellationPending
 						? neutral[97]
 						: brand[400]};
-					${minWidth.mobileLandscape} {
+					${from.mobileLandscape} {
 						align-items: center;
 					}
 				`}
@@ -94,10 +95,10 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 						color: ${hasCancellationPending
 							? neutral[7]
 							: neutral[100]};
-						${maxWidth.mobileLandscape} {
+						${until.mobileLandscape} {
 							padding: ${space[3]}px;
 						}
-						${minWidth.tablet} {
+						${from.tablet} {
 							font-size: 20px;
 							padding: ${space[3]}px ${space[5]}px;
 						}
@@ -110,7 +111,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 						display: flex;
 						align-items: center;
 						padding: ${space[3]}px 0;
-						${maxWidth.mobileLandscape} {
+						${until.mobileLandscape} {
 							flex-direction: column;
 							align-items: end;
 						}
@@ -120,7 +121,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 			<div
 				css={css`
 					padding: ${space[5]}px ${space[3]}px;
-					${minWidth.tablet} {
+					${from.tablet} {
 						padding: ${space[5]}px;
 						display: flex;
 					}
@@ -130,7 +131,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 					css={css`
 						padding-bottom: ${space[3]}px;
 
-						${minWidth.tablet} {
+						${from.tablet} {
 							flex: 1;
 							display: flex;
 							flex-flow: column nowrap;
@@ -150,7 +151,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 											cssOverrides={css`
 												margin: 0;
 												justify-content: flex-end;
-												${minWidth.tablet} {
+												${from.tablet} {
 													justify-content: left;
 												}
 											`}
@@ -165,7 +166,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 										<span
 											css={css`
 												text-align: right;
-												${minWidth.tablet} {
+												${from.tablet} {
 													text-align: left;
 												}
 											`}
@@ -191,7 +192,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 						border-top: 1px solid ${neutral[86]};
 						${subscription.mandate ? 'text-align: right;' : ''}
 
-						${minWidth.tablet} {
+						${from.tablet} {
 							flex: 1;
 							display: inline-block;
 							flex-flow: column nowrap;
@@ -210,7 +211,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 							<span
 								css={css`
 									${keyCss};
-									${minWidth.tablet} {
+									${from.tablet} {
 										text-align: right;
 									}
 								`}

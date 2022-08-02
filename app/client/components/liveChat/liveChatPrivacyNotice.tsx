@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
-import { brand, space, textSans } from '@guardian/source-foundations';
+import { brand, from, space, textSans } from '@guardian/source-foundations';
 import { conf } from '../../../server/config';
-import { minWidth } from '../../styles/breakpoints';
 
 export const LiveChatPrivacyNotice = () => {
 	let domain: string;
@@ -14,7 +13,7 @@ export const LiveChatPrivacyNotice = () => {
 	const containerCss = css`
 		margin-top: ${space[9]}px;
 		padding: ${space[3]}px;
-		${minWidth.desktop} {
+		${from.desktop} {
 			padding: ${space[6]}px;
 		}
 		background-color: #ecf3fe;

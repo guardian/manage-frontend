@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
+import { until } from '@guardian/source-foundations';
 import palette from '../colours';
-import { maxWidth } from '../styles/breakpoints';
 import { sans } from '../styles/fonts';
 
 const inputBoxCss = css({
@@ -37,7 +37,7 @@ export const DateInput = (props: DateInputProps) => (
 			css={{
 				fontFamily: sans,
 				fontSize: '14px',
-				[maxWidth.desktop]: {
+				[until.desktop]: {
 					display: 'none',
 				},
 			}}

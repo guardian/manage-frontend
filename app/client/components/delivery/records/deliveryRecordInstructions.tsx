@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
-import { brand, textSans } from '@guardian/source-foundations';
+import { brand, from, textSans } from '@guardian/source-foundations';
 import { useState } from 'react';
-import { minWidth } from '../../../styles/breakpoints';
 
 interface DeliveryRecordInstructionsProps {
 	message: string;
@@ -16,7 +15,7 @@ export const DeliveryRecordInstructions = (
 			<p
 				css={css`
 					margin: 0;
-					${minWidth.tablet} {
+					${from.tablet} {
 						width: 240px;
 					}
 				`}

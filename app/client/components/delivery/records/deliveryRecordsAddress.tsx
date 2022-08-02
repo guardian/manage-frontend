@@ -1,8 +1,7 @@
 import { css } from '@emotion/react';
-import { brand, textSans } from '@guardian/source-foundations';
+import { brand, from, textSans } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { DeliveryAddress } from '../../../../shared/productResponse';
-import { minWidth } from '../../../styles/breakpoints';
 import { COUNTRIES } from '../../identity/models';
 
 export const RecordAddress = (props: DeliveryAddress) => {
@@ -11,14 +10,14 @@ export const RecordAddress = (props: DeliveryAddress) => {
 	return (
 		<div
 			css={css`
-				${minWidth.tablet} {
+				${from.tablet} {
 					min-width: 20ch;
 				}
 			`}
 		>
 			<div
 				css={css`
-					${minWidth.tablet} {
+					${from.tablet} {
 						display: flex;
 						flex-direction: column-reverse;
 					}

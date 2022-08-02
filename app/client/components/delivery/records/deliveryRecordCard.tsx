@@ -1,10 +1,9 @@
 import { css } from '@emotion/react';
 import { Checkbox, CheckboxGroup } from '@guardian/source-react-components';
-import { space, neutral, textSans } from '@guardian/source-foundations';
+import { space, neutral, textSans, from } from '@guardian/source-foundations';
 import { FormEvent } from 'react';
 import { dateIsAfter, parseDate } from '../../../../shared/dates';
 import { DeliveryRecordApiItem } from '../../../../shared/productResponse';
-import { minWidth } from '../../../styles/breakpoints';
 import { DeliveryRecordInstructions } from './deliveryRecordInstructions';
 import { PageStatus } from './deliveryRecords';
 import { RecordAddress } from './deliveryRecordsAddress';
@@ -31,7 +30,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
         display: inline-block;
         vertical-align: top;
         min-width: 10ch;
-        ${minWidth.tablet} {
+        ${from.tablet} {
           margin-right: 16px;
           ${ignoreMinWidthAtNonMobile ? 'min-width: 9ch;' : 'min-width: 12ch;'}
         }
@@ -61,7 +60,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 				opacity: ${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_1
 					? '0.5'
 					: '1'};
-				${minWidth.tablet} {
+				${from.tablet} {
 					padding: ${space[5]}px;
 					${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_2 &&
 					`padding-left: ${space[5] * 2 + 40}px;`}
@@ -77,7 +76,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 						height: 100%;
 						padding: 0 ${space[3]}px;
 						border-right: 1px solid ${neutral['86']};
-						${minWidth.tablet} {
+						${from.tablet} {
 							padding: 0 18px;
 						}
 					`}
@@ -117,7 +116,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 			<div
 				css={css`
 					${recordRowCss}
-					${minWidth.tablet} {
+					${from.tablet} {
 						display: inline-block;
 						width: 50%;
 					}
@@ -141,7 +140,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 			<div
 				css={css`
 					${recordRowCss}
-					${minWidth.tablet} {
+					${from.tablet} {
 						display: inline-block;
 						width: 50%;
 					}
@@ -189,7 +188,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 					css={css`
 						${ddCss}
 						width: calc(100% - 11ch);
-						${minWidth.tablet} {
+						${from.tablet} {
 							width: calc(100% - (13ch + 16px));
 						}
 					`}
@@ -240,7 +239,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 							css={css`
 								${ddCss}
 								width: calc(100% - 11ch);
-								${minWidth.tablet} {
+								${from.tablet} {
 									width: calc(100% - (13ch + 16px));
 								}
 							`}
@@ -253,7 +252,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 									css={css`
 										color: ${neutral['60']};
 										margin: 0;
-										${minWidth.tablet} {
+										${from.tablet} {
 											display: inline-block;
 										}
 									`}

@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
-import { space, palette, textSans } from '@guardian/source-foundations';
+import { space, palette, textSans, from } from '@guardian/source-foundations';
 import { ReactNode, useState } from 'react';
-import { minWidth } from '../../styles/breakpoints';
 import { StartLiveChatButton } from '../liveChat/liveChat';
 import { ErrorIcon } from '../svgs/errorIcon';
 import { getHelpSectionIcon } from '../svgs/helpSectionIcons';
@@ -20,7 +19,7 @@ const contactBoxContainerCss = css`
 	flex-direction: column;
 	border: 1px solid ${palette.neutral[86]};
 	${textSans.medium()};
-	${minWidth.phablet} {
+	${from.phablet} {
 		width: calc(50% - ${space[5] / 2}px);
 	}
 `;
@@ -34,7 +33,7 @@ const contactBoxHeadingCss = css`
 `;
 
 const contactBoxHeadingWideCss = css`
-	${minWidth.desktop} {
+	${from.desktop} {
 		padding: 22px 0 22px 64px;
 	}
 `;
@@ -46,7 +45,7 @@ const contactBoxIconCss = css`
 `;
 
 const contactBoxIconWideCss = css`
-	${minWidth.desktop} {
+	${from.desktop} {
 		top: ${space[4]}px;
 		left: ${space[4]}px;
 	}
@@ -58,7 +57,7 @@ const contactBoxSubtitleCss = css`
 `;
 
 const contactBoxSubtitleWideCss = css`
-	${minWidth.wide} {
+	${from.wide} {
 		display: block;
 	}
 `;
@@ -85,7 +84,7 @@ const contactBoxDetailsCss = (includeTopBorder: boolean = true) => css`
 `;
 
 const contactBoxDetailsWideCss = css`
-	${minWidth.wide} {
+	${from.wide} {
 		padding: ${space[3]}px 0 0;
 		margin: 0 ${space[4]}px ${space[4]}px;
 	}
@@ -155,7 +154,7 @@ interface HelpCentreEmailAndLiveChatProps {
 const emailAndLiveChatFlexContainerCss = css`
 	display: flex;
 	flex-direction: column;
-	${minWidth.phablet} {
+	${from.phablet} {
 		flex-direction: row-reverse;
 		justify-content: space-between;
 	}
@@ -172,7 +171,7 @@ const emailAndLiveChatPCss = css`
 const emailAndLiveChatButtonCss = css`
 	margin-bottom: ${space[5]}px;
 	margin-top: ${space[1]}px;
-	${minWidth.tablet} {
+	${from.tablet} {
 		margin-bottom: ${space[9]}px;
 	}
 `;

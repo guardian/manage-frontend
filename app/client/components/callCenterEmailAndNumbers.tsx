@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
-import { space, neutral, textSans } from '@guardian/source-foundations';
+import { space, neutral, textSans, from } from '@guardian/source-foundations';
 import { useState } from 'react';
-import { minWidth } from '../styles/breakpoints';
 import { CallCentreNumbersProps } from './callCentreNumbers';
 
 const contactUsStyles = {
@@ -146,7 +145,7 @@ export const CallCentreEmailAndNumbers = (
 	`;
 
 	const showHideSpanWideCss = css`
-		${minWidth.desktop} {
+		${from.desktop} {
 			display: block;
 			position: absolute;
 			top: 50%;

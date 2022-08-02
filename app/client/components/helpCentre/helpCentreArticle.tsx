@@ -6,11 +6,11 @@ import {
 	space,
 	headline,
 	textSans,
+	from,
 } from '@guardian/source-foundations';
 import { captureException, captureMessage } from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { minWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../../services/analytics';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { isArticleLiveChatFeatureEnabled } from '../liveChat/liveChatFeatureSwitch';
@@ -255,10 +255,10 @@ const articleFeedbackWidgetCss = css`
 	border: 1px solid ${neutral[86]};
 	padding: ${space[4]}px ${space[3]}px;
 	margin: 36px 0 48px;
-	${minWidth.desktop} {
+	${from.desktop} {
 		margin: 54px 0 66px;
 	}
-	${minWidth.mobileLandscape} {
+	${from.mobileLandscape} {
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
@@ -272,12 +272,12 @@ const articleFeedbackWidgetCss = css`
 		display: flex;
 		align-items: center;
 		margin-top: ${space[4]}px;
-		${minWidth.mobileLandscape} {
+		${from.mobileLandscape} {
 			margin-top: 0;
 		}
 		& > * {
 			margin-right: ${space[2]}px;
-			${minWidth.mobileLandscape} {
+			${from.mobileLandscape} {
 				margin-right: ${space[3]}px;
 			}
 		}

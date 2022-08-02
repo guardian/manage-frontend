@@ -1,12 +1,11 @@
 import { css } from '@emotion/react';
-import { news, space } from '@guardian/source-foundations';
+import { news, space, until } from '@guardian/source-foundations';
 import { ChangeEvent, FC, useContext, useState } from 'react';
 import {
 	WithProductType,
 	ProductTypeWithCancellationFlow,
 } from '../../../shared/productTypes';
 import palette from '../../colours';
-import { maxWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
 import { trackEvent } from '../../services/analytics';
 import {
@@ -259,7 +258,7 @@ const ConfirmCancellationAndReturnRow = (
 						flexDirection: 'row-reverse',
 						marginTop: '10px',
 						textAlign: 'left',
-						[maxWidth.mobileLandscape]: {
+						[until.mobileLandscape]: {
 							flexDirection: 'column',
 						},
 					}}

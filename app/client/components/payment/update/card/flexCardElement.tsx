@@ -6,8 +6,7 @@ import {
 import { StripeElementBase } from '@stripe/stripe-js';
 import { Dispatch, SetStateAction } from 'react';
 import { css } from '@emotion/react';
-import { minWidth } from '../../../../styles/breakpoints';
-import { space } from '@guardian/source-foundations';
+import { from, space } from '@guardian/source-foundations';
 import { sans } from '../../../../styles/fonts';
 import { FieldWrapper } from '../fieldWrapper';
 import { getLogos, PaymentMethod } from '../PaymentDetailUpdate';
@@ -73,7 +72,7 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
 					display: flex;
 					justify-content: flex-start;
 
-					${minWidth.tablet} {
+					${from.tablet} {
 						margin-top: ${space[4]}px;
 					}
 				`}

@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import {
 	breakpoints,
+	from,
 	neutral,
 	palette,
 	space,
@@ -9,7 +10,6 @@ import {
 import { useEffect, useState } from 'react';
 import { ProductDetail } from '../../../shared/productResponse';
 import { allProductsDetailFetcher } from '../../productUtils';
-import { minWidth } from '../../styles/breakpoints';
 import { gridBase, gridItemPlacement } from '../../styles/grid';
 import { ErrorIcon } from '../svgs/errorIcon';
 
@@ -72,7 +72,7 @@ export const KnownIssues = () => {
 		max-width: ${breakpoints.wide}px;
 		margin: 0 auto;
 		padding-top: ${space[4]}px;
-		${minWidth.tablet} {
+		${from.tablet} {
 			padding-top: ${space[5]}px;
 		}
 	`;
@@ -88,15 +88,15 @@ export const KnownIssues = () => {
 		position: relative;
 		${{ ...gridItemPlacement(1, 4) }}
 
-		${minWidth.tablet} {
+		${from.tablet} {
 			${{ ...gridItemPlacement(1, 12) }}
 		}
 
-		${minWidth.desktop} {
+		${from.desktop} {
 			${{ ...gridItemPlacement(3, 9) }}
 		}
 
-		${minWidth.wide} {
+		${from.wide} {
 			${{ ...gridItemPlacement(3, 12) }}
 		}
 	`;

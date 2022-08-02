@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
-import { space, brand, neutral } from '@guardian/source-foundations';
+import { space, brand, neutral, from } from '@guardian/source-foundations';
 import { useEffect, useRef, useState } from 'react';
-import { minWidth } from '../../styles/breakpoints';
 import { gridColumns, gridItemPlacement } from '../../styles/grid';
 import { expanderButtonCss } from '../expanderButton';
 import { ProfileIcon } from '../svgs/profileIcon';
@@ -27,7 +26,7 @@ const dropdownNavCss = (showMenu: boolean, isHelpCentre: boolean) =>
 			padding: 0,
 			margin: 0,
 		},
-		[minWidth.desktop]: {
+		[from.desktop]: {
 			width: 'auto',
 			minWidth: '220px',
 			maxWidth: 'none',
@@ -82,7 +81,7 @@ const dropdownNavItemCss = css({
 		height: '1px',
 		backgroundColor: `${brand[600]}`,
 	},
-	[minWidth.desktop]: {
+	[from.desktop]: {
 		padding: '18px 14px',
 		color: neutral['20'],
 		'.icon--fill': {
@@ -148,17 +147,17 @@ export const DropdownNav = () => {
 				whiteSpace: 'nowrap',
 				maxHeight: '26px',
 				margin: 'auto 0',
-				[minWidth.desktop]: {
+				[from.desktop]: {
 					position: 'relative',
 					left: '0.5rem',
 					...gridItemPlacement(-4, 2, gridColumns.tabletAndDesktop),
 					marginLeft: 'auto',
 				},
-				[minWidth.wide]: {
+				[from.wide]: {
 					...gridItemPlacement(-4, 2, gridColumns.wide),
 				},
 				' button': {
-					[minWidth.tablet]: {
+					[from.tablet]: {
 						marginLeft: 'auto',
 					},
 					paddingTop: 0,
@@ -215,7 +214,7 @@ export const DropdownNav = () => {
 									<div
 										css={{
 											...(!navItem.isDropDownExclusive && {
-												[minWidth.desktop]: {
+												[from.desktop]: {
 													display: 'none',
 												},
 											}),
@@ -232,7 +231,7 @@ export const DropdownNav = () => {
 								<span
 									css={{
 										lineHeight: '33px',
-										[minWidth.desktop]: {
+										[from.desktop]: {
 											lineHeight: 'normal',
 											marginLeft:
 												navItem.isDropDownExclusive &&

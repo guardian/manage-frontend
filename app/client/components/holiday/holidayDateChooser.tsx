@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, neutral } from '@guardian/source-foundations';
+import { space, neutral, until, from } from '@guardian/source-foundations';
 import * as Sentry from '@sentry/browser';
 import { startCase } from 'lodash';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -13,7 +13,6 @@ import {
 	parseDate,
 } from '../../../shared/dates';
 import { isProduct } from '../../../shared/productResponse';
-import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { sans } from '../../styles/fonts';
 import { trackEvent } from '../../services/analytics';
 import { Button, InlineError } from '@guardian/source-react-components';
@@ -69,10 +68,10 @@ const oneAtATimeStyles = css({
 });
 
 const fixedButtonFooterCss = css({
-	[maxWidth.mobileLandscape]: {
+	[until.mobileLandscape]: {
 		justifyContent: 'space-between',
 	},
-	[maxWidth.phablet]: {
+	[until.phablet]: {
 		position: 'fixed',
 		zIndex: 998,
 		bottom: 0,
@@ -387,7 +386,7 @@ const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 						</div>
 						<div
 							css={{
-								[minWidth.mobileLandscape]: {
+								[from.mobileLandscape]: {
 									display: 'none',
 								},
 							}}
@@ -466,7 +465,7 @@ const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 						<div
 							css={{
 								marginRight: '30px',
-								[maxWidth.mobileLandscape]: {
+								[until.mobileLandscape]: {
 									display: 'none',
 								},
 							}}

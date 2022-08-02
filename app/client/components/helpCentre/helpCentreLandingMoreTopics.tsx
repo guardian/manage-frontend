@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
-import { space, neutral, textSans } from '@guardian/source-foundations';
+import { space, neutral, textSans, until } from '@guardian/source-foundations';
 import { useState } from 'react';
-import { maxWidth } from '../../styles/breakpoints';
 import { trackEvent } from '../../services/analytics';
 import { helpCentreMoreQuestionsConfig } from './helpCentreConfig';
 import {
@@ -25,7 +24,7 @@ const moreTopicsStyles = css({
 const showHideCss = css`
 	${textSans.xsmall()};
 	margin-left: ${space[3]}px;
-	${maxWidth.mobileMedium} {
+	${until.mobileMedium} {
 		display: none;
 	}
 `;
@@ -52,7 +51,7 @@ export const HelpCentreLandingMoreTopics = () => {
 					const isNotFirstOption = topicIndex > 0;
 					const titleCss = css`
 						${sectionTitleCss(isOpen, isNotFirstOption)};
-						${maxWidth.desktop} {
+						${until.desktop} {
 							:after {
 								right: 17px;
 							}

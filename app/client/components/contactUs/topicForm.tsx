@@ -1,9 +1,8 @@
 import { css } from '@emotion/react';
 import { Button } from '@guardian/source-react-components';
-import { space, neutral, headline } from '@guardian/source-foundations';
+import { space, neutral, headline, from } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { Topic } from '../../../shared/contactUsTypes';
-import { minWidth } from '../../styles/breakpoints';
 import { TopicButton } from './topicButton';
 
 interface TopicFormProps {
@@ -29,7 +28,7 @@ export const TopicForm = (props: TopicFormProps) => {
 					border-top: 1px solid ${neutral[86]};
 					margin-top: ${space[6]}px;
 					padding: ${space[1]}px 0;
-					${minWidth.desktop} {
+					${from.desktop} {
 						margin-top: ${space[9]}px;
 					}
 				`}

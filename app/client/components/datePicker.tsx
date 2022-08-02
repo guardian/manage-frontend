@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brandAlt } from '@guardian/source-foundations';
+import { brandAlt, from, until } from '@guardian/source-foundations';
 import * as React from 'react';
 import {
 	dateAddDays,
@@ -10,7 +10,6 @@ import {
 	dateRange,
 } from '../../shared/dates';
 import palette from '../colours';
-import { maxWidth, minWidth } from '../styles/breakpoints';
 import { sans } from '../styles/fonts';
 import { DateInput } from './dateInput';
 import { HolidayCalendarTables } from './holiday/holidayCalendarTables';
@@ -150,7 +149,7 @@ export const DatePicker = (props: DatePickerProps) => (
 		<div
 			css={{
 				display: 'flex',
-				[maxWidth.desktop]: {
+				[until.desktop]: {
 					flexDirection: 'column-reverse',
 				},
 			}}
@@ -196,7 +195,7 @@ export const DatePicker = (props: DatePickerProps) => (
 					flexDirection: 'column',
 					fontFamily: sans,
 					fontSize: '14px',
-					[maxWidth.desktop]: {
+					[until.desktop]: {
 						position: 'sticky',
 						zIndex: 998,
 						top: 0,
@@ -218,7 +217,7 @@ export const DatePicker = (props: DatePickerProps) => (
 			>
 				<div
 					css={{
-						[maxWidth.desktop]: {
+						[until.desktop]: {
 							display: 'flex',
 							alignItems: 'center',
 							marginRight: '10px',
@@ -240,12 +239,12 @@ export const DatePicker = (props: DatePickerProps) => (
 					<span
 						css={{
 							margin: '0 5px',
-							[minWidth.desktop]: { display: 'none' },
+							[from.desktop]: { display: 'none' },
 						}}
 					>
 						to
 					</span>
-					<div css={{ [minWidth.desktop]: { marginTop: '8px' } }}>
+					<div css={{ [from.desktop]: { marginTop: '8px' } }}>
 						<DateInput
 							date={
 								props.selectedRange

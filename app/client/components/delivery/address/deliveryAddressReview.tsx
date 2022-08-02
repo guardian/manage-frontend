@@ -6,11 +6,12 @@ import {
 	neutral,
 	headline,
 	textSans,
+	until,
+	from,
 } from '@guardian/source-foundations';
 import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { ProductType, WithProductType } from '../../../../shared/productTypes';
-import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { InfoSection } from '../../infoSection';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
@@ -43,7 +44,7 @@ const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
     ${headline.small()};
     font-weight: bold;
     margin-top: 50px;
-    ${maxWidth.tablet} {
+    ${until.tablet} {
       font-size: 1.25rem;
       line-height: 1.6;
     };
@@ -101,7 +102,7 @@ const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 							background-color: ${neutral['97']};
 							border-bottom: 1px solid ${neutral['86']};
 							${textSans.medium({ fontWeight: 'bold' })};
-							${minWidth.tablet} {
+							${from.tablet} {
 								padding: ${space[3]}px ${space[5]}px;
 							}
 						`}
@@ -119,7 +120,7 @@ const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 							flex-wrap: wrap;
 							flex-direction: column;
 							justify-content: space-between;
-							${minWidth.tablet} {
+							${from.tablet} {
 								padding: 0 ${space[5]}px;
 							}
 						`}
@@ -152,7 +153,7 @@ const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 							css={css`
 								flex-grow: 1;
 								margin-top: 16px;
-								${minWidth.tablet} {
+								${from.tablet} {
 									margin-top: 0;
 								}
 							`}
@@ -196,7 +197,7 @@ const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 						* {
 							display: inline-block;
 						}
-						${minWidth.tablet} {
+						${from.tablet} {
 							margin-top: ${space[6]}px;
 						}
 					`}

@@ -6,6 +6,7 @@ import {
 	neutral,
 	headline,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
 import { Fragment } from 'react';
 import { parseDate } from '../../../shared/dates';
@@ -25,7 +26,6 @@ import {
 	GroupedProductTypeKeys,
 } from '../../../shared/productTypes';
 import { allProductsDetailFetcher } from '../../productUtils';
-import { maxWidth } from '../../styles/breakpoints';
 import { EmptyAccountOverview } from '../accountoverview/emptyAccountOverview';
 import { SixForSixExplainerIfApplicable } from '../accountoverview/sixForSixExplainer';
 import AsyncLoader from '../asyncLoader';
@@ -80,7 +80,7 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
 
 	const subHeadingTitleCss = `
     ${headline.small({ fontWeight: 'bold' })};
-    ${maxWidth.tablet} {
+    ${until.tablet} {
       font-size: 1.25rem;
       line-height: 1.6;
     };

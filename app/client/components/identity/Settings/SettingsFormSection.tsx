@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
+import { from } from '@guardian/source-foundations';
 import { Form, FormikProps, FormikState, withFormik } from 'formik';
 import { FC } from 'react';
 import palette from '../../../colours';
-import { minWidth } from '../../../styles/breakpoints';
 import { Button } from '../../buttons';
 import {
 	FormEmailField,
@@ -110,7 +110,7 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			this information, please select{' '}
 			<span
 				css={{
-					[minWidth.desktop]: {
+					[from.desktop]: {
 						display: 'block',
 					},
 				}}

@@ -6,6 +6,7 @@ import {
 	neutral,
 	headline,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
@@ -25,7 +26,6 @@ import {
 	hasDeliveryRecordsFlow,
 	shouldHaveHolidayStopsFlow,
 } from '../../productUtils';
-import { maxWidth } from '../../styles/breakpoints';
 import { BasicProductInfoTable } from '../basicProductInfoTable';
 import { LinkButton } from '../buttons';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
@@ -46,7 +46,7 @@ import { SixForSixExplainerIfApplicable } from './sixForSixExplainer';
 const subHeadingTitleCss = `
     ${headline.small()};
     font-weight: bold;
-    ${maxWidth.tablet} {
+    ${until.tablet} {
       font-size: 1.25rem;
       line-height: 1.6;
     };

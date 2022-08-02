@@ -6,6 +6,8 @@ import {
 	neutral,
 	textSans,
 	headline,
+	until,
+	from,
 } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { useContext, useState } from 'react';
@@ -17,7 +19,6 @@ import {
 	isPaidSubscriptionPlan,
 	PaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
-import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import {
 	getPotentialHolidayStopsFetcher,
@@ -153,7 +154,7 @@ const DeliveryRecordsProblemReviewFC = (
     display: inline-block;
     vertical-align: top;
     min-width: 12ch;
-    ${minWidth.tablet} {
+    ${from.tablet} {
       min-width: 16ch;
     }
   `;
@@ -224,7 +225,7 @@ const DeliveryRecordsProblemReviewFC = (
 				css={css`
 					border-top: 1px solid ${neutral['86']};
 					${headline.small({ fontWeight: 'bold' })};
-					${maxWidth.tablet} {
+					${until.tablet} {
 						font-size: 1.25rem;
 						line-height: 1.6;
 					}
@@ -244,7 +245,7 @@ const DeliveryRecordsProblemReviewFC = (
 						background-color: ${neutral['97']};
 						border-bottom: 1px solid ${neutral['86']};
 						${textSans.medium({ fontWeight: 'bold' })};
-						${minWidth.tablet} {
+						${from.tablet} {
 							padding: ${space[3]}px ${space[5]}px;
 						}
 					`}
@@ -259,7 +260,7 @@ const DeliveryRecordsProblemReviewFC = (
 						flex-wrap: wrap;
 						flex-direction: column;
 						justify-content: space-between;
-						${minWidth.tablet} {
+						${from.tablet} {
 							flex-direction: initial;
 							padding: 0 ${space[5]}px;
 						}
@@ -289,7 +290,7 @@ const DeliveryRecordsProblemReviewFC = (
 						css={css`
 							flex-grow: 1;
 							margin-top: 16px;
-							${minWidth.tablet} {
+							${from.tablet} {
 								margin-top: 0;
 							}
 						`}
@@ -297,7 +298,7 @@ const DeliveryRecordsProblemReviewFC = (
 						<dt
 							css={css`
 								${dtCss}
-								${minWidth.tablet} {
+								${from.tablet} {
 									min-width: 10ch;
 								}
 							`}
@@ -316,7 +317,7 @@ const DeliveryRecordsProblemReviewFC = (
 						css={css`
 							margin-top: 16px;
 							width: 100%;
-							${minWidth.tablet} {
+							${from.tablet} {
 								margin-top: ${space[5]}px;
 							}
 						`}
@@ -332,7 +333,7 @@ const DeliveryRecordsProblemReviewFC = (
 							css={css`
 								${ddCss}
 								max-width: calc(100% - 12ch);
-								${minWidth.tablet} {
+								${from.tablet} {
 									max-width: calc(100% - 16ch);
 								}
 							`}
@@ -363,7 +364,7 @@ const DeliveryRecordsProblemReviewFC = (
 						css={css`
 							margin-top: 16px;
 							width: 100%;
-							${minWidth.tablet} {
+							${from.tablet} {
 								margin-top: ${space[5]}px;
 							}
 						`}
@@ -379,7 +380,7 @@ const DeliveryRecordsProblemReviewFC = (
 							css={css`
 								${ddCss}
 								max-width: calc(100% - 12ch);
-								${minWidth.tablet} {
+								${from.tablet} {
 									max-width: calc(100% - 16ch);
 								}
 							`}
@@ -400,7 +401,7 @@ const DeliveryRecordsProblemReviewFC = (
 						css={css`
 							padding: 0 ${space[3]}px;
 							margin-bottom: ${space[3]}px;
-							${minWidth.tablet} {
+							${from.tablet} {
 								padding: 0 ${space[5]}px;
 								margin-bottom: ${space[5]}px;
 							}
@@ -438,7 +439,7 @@ const DeliveryRecordsProblemReviewFC = (
 								padding: 0 ${space[3]}px 0
 									${space[5] + space[2]}px;
 								${textSans.medium()};
-								${minWidth.tablet} {
+								${from.tablet} {
 									margin: ${space[5]}px;
 									padding: 0 ${space[5]}px 0
 										${space[5] + space[2]}px;
@@ -481,7 +482,7 @@ const DeliveryRecordsProblemReviewFC = (
 								padding: ${space[3]}px;
 								margin: ${space[3]}px;
 								background-color: ${neutral['97']};
-								${minWidth.tablet} {
+								${from.tablet} {
 									padding: ${space[5]}px;
 									margin: ${space[5]}px;
 								}
@@ -497,7 +498,7 @@ const DeliveryRecordsProblemReviewFC = (
 										display: inline-block;
 										font-weight: bold;
 										min-width: 12ch;
-										${minWidth.tablet} {
+										${from.tablet} {
 											min-width: 0;
 										}
 									`}
@@ -509,7 +510,7 @@ const DeliveryRecordsProblemReviewFC = (
 										display: inline-block;
 										margin-left: 0;
 										font-weight: bold;
-										${minWidth.tablet} {
+										${from.tablet} {
 											margin-left: ${space[9]}px;
 											min-width: 9ch;
 										}
@@ -529,7 +530,7 @@ const DeliveryRecordsProblemReviewFC = (
 										display: inline-block;
 										font-weight: bold;
 										min-width: 12ch;
-										${minWidth.tablet} {
+										${from.tablet} {
 											min-width: 0;
 										}
 									`}
@@ -540,7 +541,7 @@ const DeliveryRecordsProblemReviewFC = (
 									css={css`
 										display: inline-block;
 										margin-left: 0;
-										${minWidth.tablet} {
+										${from.tablet} {
 											margin-left: ${space[9]}px;
 										}
 									`}
@@ -561,7 +562,7 @@ const DeliveryRecordsProblemReviewFC = (
 								padding: 0 ${space[3]}px 0
 									${space[5] + space[2]}px;
 								${textSans.medium()};
-								${minWidth.tablet} {
+								${from.tablet} {
 									margin: ${space[5]}px;
 									padding: 0 ${space[5]}px 0
 										${space[5] + space[2]}px;

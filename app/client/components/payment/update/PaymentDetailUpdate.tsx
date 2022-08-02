@@ -9,6 +9,8 @@ import {
 	space,
 	headline,
 	textSans,
+	until,
+	from,
 } from '@guardian/source-foundations';
 import {
 	Radio,
@@ -25,7 +27,6 @@ import {
 	Subscription,
 	WithSubscription,
 } from '../../../../shared/productResponse';
-import { maxWidth, minWidth } from '../../../styles/breakpoints';
 import { GenericErrorScreen } from '../../genericErrorScreen';
 import { SupportTheGuardianButton } from '../../supportTheGuardianButton';
 import { augmentPaymentFailureAlertText } from '../paymentFailureAlertIfApplicable';
@@ -61,7 +62,7 @@ const subHeadingCss = css`
 	${headline.small()};
 	font-weight: bold;
 	margin-top: 50px;
-	${maxWidth.tablet} {
+	${until.tablet} {
 		font-size: 1.25rem;
 		line-height: 1.6;
 	} ;
@@ -147,7 +148,7 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
 				css={css`
 					display: none;
 					margin-left: auto;
-					${minWidth.mobileMedium} {
+					${from.mobileMedium} {
 						display: flex;
 					}
 				`}

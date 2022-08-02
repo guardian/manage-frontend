@@ -1,8 +1,8 @@
+import { from, until } from '@guardian/source-foundations';
 import {
 	DirectDebitDetails,
 	Subscription,
 } from '../../../../../shared/productResponse';
-import { maxWidth, minWidth } from '../../../../styles/breakpoints';
 import { cleanSortCode, DirectDebitDisplay } from '../../directDebitDisplay';
 import { NewPaymentMethodDetail } from '../newPaymentMethodDetail';
 import { DirectDebitLegal, GoCardlessGuarantee } from './directDebitLegal';
@@ -58,14 +58,14 @@ export class NewDirectDebitPaymentMethodDetail
 				display: 'flex',
 				flexDirection: 'row',
 				textAlign: 'left',
-				[maxWidth.desktop]: {
+				[until.desktop]: {
 					flexDirection: 'column',
 				},
 			}}
 		>
 			<div
 				css={{
-					[minWidth.desktop]: {
+					[from.desktop]: {
 						marginRight: '20px',
 					},
 				}}

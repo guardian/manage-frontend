@@ -23,12 +23,18 @@ import { ProductTypeWithCancellationFlow } from '../../../shared/productTypes';
 import { ProductDetail } from '../../../shared/productResponse';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '../../../shared/dates';
 import { css } from '@emotion/react';
-import { neutral, news, space, textSans } from '@guardian/source-foundations';
+import {
+	from,
+	neutral,
+	news,
+	space,
+	textSans,
+	until,
+} from '@guardian/source-foundations';
 import {
 	cancellationEffectiveEndOfLastInvoicePeriod,
 	cancellationEffectiveToday,
 } from './cancellationContexts';
-import { maxWidth, minWidth } from '../../styles/breakpoints';
 import { CancellationReason } from './cancellationReason';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -99,7 +105,7 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 							background-color: ${neutral['97']};
 							border-bottom: 1px solid ${neutral['86']};
 							${textSans.medium({ fontWeight: 'bold' })};
-							${minWidth.tablet} {
+							${from.tablet} {
 								padding: ${space[3]}px ${space[5]}px;
 							}
 						`}
@@ -183,7 +189,7 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 									background-color: ${neutral['97']};
 									border-bottom: 1px solid ${neutral['86']};
 									${textSans.medium({ fontWeight: 'bold' })};
-									${minWidth.tablet} {
+									${from.tablet} {
 										padding: ${space[3]}px ${space[5]}px;
 									}
 								`}
@@ -233,7 +239,7 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 						display: 'flex',
 						justifyContent: 'space-between',
 						flexDirection: 'row-reverse',
-						[maxWidth.mobileLandscape]: {
+						[until.mobileLandscape]: {
 							flexDirection: 'column',
 						},
 					}}

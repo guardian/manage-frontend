@@ -1,7 +1,11 @@
 import { css } from '@emotion/react';
-import { breakpoints, palette, space } from '@guardian/source-foundations';
+import {
+	breakpoints,
+	from,
+	palette,
+	space,
+} from '@guardian/source-foundations';
 import { SignInStatus } from '../../services/signInStatus';
-import { minWidth } from '../../styles/breakpoints';
 import { DropdownNav } from '.././nav/dropdownNav';
 import { TheGuardianLogo } from '.././svgs/theGuardianLogo';
 import { Link } from 'react-router-dom';
@@ -19,7 +23,7 @@ const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
 		position: relative;
 		box-shadow: 0 2px 1px -1px ${palette.brand[600]};
 		z-index: 1070;
-		${minWidth.desktop} {
+		${from.desktop} {
 			min-height: 82px;
 		}
 	`;
@@ -32,7 +36,7 @@ const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
 		max-width: calc(${breakpoints.wide}px + 2.5rem);
 		margin: auto;
 		padding: 0px ${space[3]}px;
-		${minWidth.tablet} {
+		${from.tablet} {
 			padding: 0px ${space[5]}px;
 		}
 	`;
@@ -42,7 +46,7 @@ const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
 		font-weight: bold;
 		color: ${palette.neutral['100']};
 		display: none;
-		${minWidth.desktop} {
+		${from.desktop} {
 			display: block;
 		}
 	`;

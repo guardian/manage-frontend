@@ -6,13 +6,13 @@ import {
 	labs,
 	neutral,
 	textSans,
+	from,
 } from '@guardian/source-foundations';
 import {
 	dateAddDays,
 	getWeekDay,
 	numberOfDaysInMonth,
 } from '../../../shared/dates';
-import { minWidth } from '../../styles/breakpoints';
 import { CalendarTableDate } from './holidayCalendarTables';
 
 interface HolidayCalendarTableProps {
@@ -41,7 +41,7 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
 		& + div {
 			margin-top: ${space[3]}px;
 		}
-		${minWidth.tablet} {
+		${from.tablet} {
 			width: calc(50% - ${space[2]}px);
 			display: ${props.hideAtDesktop ? 'none' : 'block'};
 			& + div {

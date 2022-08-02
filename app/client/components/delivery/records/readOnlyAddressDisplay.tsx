@@ -1,9 +1,8 @@
 import { css } from '@emotion/react';
 import { Button } from '@guardian/source-react-components';
-import { space, brand, textSans } from '@guardian/source-foundations';
+import { space, brand, textSans, from } from '@guardian/source-foundations';
 import Color from 'color';
 import { DeliveryAddress } from '../../../../shared/productResponse';
-import { minWidth } from '../../../styles/breakpoints';
 import { DeliveryAddressDisplay } from '../address/deliveryAddressDisplay';
 
 interface ReadOnlyAddressDisplayProps {
@@ -19,7 +18,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
     display: table-cell;
     vertical-align: top;
     min-width: 10ch;
-    ${minWidth.tablet} {
+    ${from.tablet} {
       margin-right: 16px;
       ${ignoreMinWidthAtNonMobile ? 'min-width: 9ch;' : 'min-width: 12ch;'}
     }
@@ -37,7 +36,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 				margin: 0;
 				padding: ${space[3]}px;
 				display: table;
-				${minWidth.tablet} {
+				${from.tablet} {
 					padding: ${space[5]}px;
 				}
 			`}
