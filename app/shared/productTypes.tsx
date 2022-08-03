@@ -16,6 +16,8 @@ import {
 	physicalSubsCancellationFlowWrapper,
 	RestOfCancellationFlow,
 } from '../client/components/cancel/physicalSubsCancellationFlowWrapper';
+import { supporterplusCancellationFlowStart } from '../client/components/cancel/supporterplus/supporterplusCancellationFlowStart';
+import { supporterplusCancellationReasons } from '../client/components/cancel/supporterplus/supporterplusCancellationReasons';
 import { voucherCancellationFlowStart } from '../client/components/cancel/voucher/voucherCancellationFlowStart';
 import { voucherCancellationReasons } from '../client/components/cancel/voucher/voucherCancellationReasons';
 import { SupportTheGuardianButtonProps } from '../client/components/supportTheGuardianButton';
@@ -587,9 +589,9 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		],
 		cancellation: {
 			linkOnProductPage: true,
-			reasons: digipackCancellationReasons, // TODO: is it ok to reuse these reasons?
+			reasons: supporterplusCancellationReasons,
 			sfCaseProduct: 'Supporter Plus',
-			startPageBody: digipackCancellationFlowStart, // TODO: cancellation pages
+			startPageBody: supporterplusCancellationFlowStart,
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
 			alternateSupportButtonText: (
