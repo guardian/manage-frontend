@@ -1,4 +1,4 @@
-import palette from '../../colours';
+import { palette } from '@guardian/source-foundations';
 
 export const standardAlternateFeedbackIntro =
 	'Please submit your comments in the box below. Thank you.';
@@ -8,6 +8,6 @@ export const inOrderToImproveSubs =
 
 export const hrefStyle = {
 	textDecoration: 'underline',
-	color: palette.blue.dark,
-	':visited': { color: palette.blue.dark },
+	color: palette.sport[300],
+	':visited': { color: palette.sport[300] },
 };

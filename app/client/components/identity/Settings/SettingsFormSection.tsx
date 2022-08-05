@@ -1,8 +1,7 @@
 import { css } from '@emotion/react';
-import { from } from '@guardian/source-foundations';
+import { from, palette } from '@guardian/source-foundations';
 import { Form, FormikProps, FormikState, withFormik } from 'formik';
 import { FC } from 'react';
-import palette from '../../../colours';
 import { Button } from '../../buttons';
 import {
 	FormEmailField,
@@ -61,12 +60,12 @@ const EmailMessage = (email: string) => (
 			textSmall,
 			{
 				padding: '6px 14px',
-				backgroundColor: palette.neutral[7],
+				backgroundColor: palette.neutral[97],
 			},
 		]}
 	>
 		To verify your new email address <strong>{email}</strong> please check
-		your inbox - the confimation email is on its way. In the meantime you
+		your inbox - the confirmation email is on its way. In the meantime you
 		should keep using your old credentials to sign in.
 	</p>
 );
@@ -80,7 +79,7 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			<div
 				css={[
 					{
-						color: palette.red.medium,
+						color: palette.error[400],
 						backgroundColor: '#ffe1e1',
 						padding: '20px 15px',
 					},

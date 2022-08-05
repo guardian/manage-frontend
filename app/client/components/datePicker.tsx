@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brandAlt, from, until } from '@guardian/source-foundations';
+import { from, palette, until } from '@guardian/source-foundations';
 import * as React from 'react';
 import {
 	dateAddDays,
@@ -9,7 +9,6 @@ import {
 	DateRange,
 	dateRange,
 } from '../../shared/dates';
-import palette from '../colours';
 import { sans } from '../styles/fonts';
 import { DateInput } from './dateInput';
 import { HolidayCalendarTables } from './holiday/holidayCalendarTables';
@@ -17,17 +16,17 @@ import { HolidayCalendarTables } from './holiday/holidayCalendarTables';
 const stateDefinitions = {
 	available: {
 		selectable: true,
-		color: 'white',
+		color: palette.neutral[100],
 		label: '',
 	},
 	existing: {
 		selectable: false,
-		color: palette.labs.main,
+		color: palette.labs[400],
 		label: 'Existing suspensions',
 	},
 	amend: {
 		selectable: true,
-		color: brandAlt[400],
+		color: palette.brandAlt[400],
 		label: "Suspension you're amending",
 	},
 };
@@ -52,7 +51,7 @@ const legendItems = (
     height: 0;
     border-style: solid;
     border-width: 0 14px 14px 14px;
-    border-color: transparent transparent ${palette.blue.header} transparent;
+    border-color: transparent transparent ${palette.brand[400]} transparent;
     transform: rotate(-45deg);
   }
   `,
@@ -205,13 +204,13 @@ export const DatePicker = (props: DatePickerProps) => (
 						flexDirection: 'row',
 						flexWrap: 'wrap',
 						alignItems: 'center',
-						background: palette.white,
+						background: palette.neutral[100],
 						padding: '10px',
 						paddingTop: 0,
 						marginBottom: '15px',
 						marginLeft: '-20px',
 						marginRight: '-20px',
-						boxShadow: '0 3px 5px -3px ' + palette.neutral['4'],
+						boxShadow: '0 3px 5px -3px ' + palette.neutral[60],
 					},
 				}}
 			>

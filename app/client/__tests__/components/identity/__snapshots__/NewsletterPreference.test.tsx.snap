@@ -28,7 +28,7 @@ exports[`NewsletterPreference component renders correctly and displays marketing
 }
 
 .emotion-2:hover .checkbox {
-  box-shadow: 0 0 0 3px #ececec;
+  box-shadow: 0 0 0 3px #EDEDED;
 }
 
 .emotion-3 {
@@ -40,13 +40,13 @@ exports[`NewsletterPreference component renders correctly and displays marketing
   display: inline-block;
   margin: 3px;
   margin-right: 10px;
-  background: #ffffff;
+  background: #FFFFFF;
   position: relative;
   outline: 0;
 }
 
 .emotion-3:focus {
-  box-shadow: 0 0 0 3px #ffe500;
+  box-shadow: 0 0 0 3px #FFE500;
 }
 
 .emotion-4 {
@@ -72,7 +72,7 @@ exports[`NewsletterPreference component renders correctly and displays marketing
 .emotion-6 {
   width: 2px;
   height: 6px;
-  border-color: #ffffff;
+  border-color: #FFFFFF;
   border-width: 0 0 2px 2px;
   border-style: solid;
   -webkit-transition: all .2s ease-in-out;
@@ -109,7 +109,7 @@ exports[`NewsletterPreference component renders correctly and displays marketing
 }
 
 .emotion-11 {
-  fill: #dcdcdc;
+  fill: #DCDCDC;
 }
 
 <div
@@ -207,7 +207,7 @@ exports[`NewsletterPreference component will select the checkbox when the select
 }
 
 .emotion-2:hover .checkbox {
-  box-shadow: 0 0 0 3px #ececec;
+  box-shadow: 0 0 0 3px #EDEDED;
 }
 
 .emotion-3 {
@@ -218,13 +218,13 @@ exports[`NewsletterPreference component will select the checkbox when the select
   display: inline-block;
   margin: 3px;
   margin-right: 10px;
-  background: #22834D;
+  background: #22874D;
   position: relative;
   outline: 0;
 }
 
 .emotion-3:focus {
-  box-shadow: 0 0 0 3px #ffe500;
+  box-shadow: 0 0 0 3px #FFE500;
 }
 
 .emotion-4 {
@@ -250,7 +250,7 @@ exports[`NewsletterPreference component will select the checkbox when the select
 .emotion-6 {
   width: 12px;
   height: 6px;
-  border-color: #ffffff;
+  border-color: #FFFFFF;
   border-width: 0 0 2px 2px;
   border-style: solid;
   -webkit-transition: all .2s ease-in-out;
@@ -287,7 +287,7 @@ exports[`NewsletterPreference component will select the checkbox when the select
 }
 
 .emotion-11 {
-  fill: #dcdcdc;
+  fill: #DCDCDC;
 }
 
 <div

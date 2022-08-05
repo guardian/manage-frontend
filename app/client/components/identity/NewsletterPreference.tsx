@@ -1,5 +1,5 @@
+import { palette } from '@guardian/source-foundations';
 import { FC } from 'react';
-import palette from '../../colours';
 import { sans } from '../../styles/fonts';
 import { Checkbox } from '../checkbox';
 
@@ -20,7 +20,7 @@ const standardText = {
 
 const clockSVG = (
 	<svg
-		css={{ fill: palette.neutral['5'] }}
+		css={{ fill: palette.neutral[86] }}
 		width="11px"
 		height="11px"
 		viewBox="0 0 11 11"

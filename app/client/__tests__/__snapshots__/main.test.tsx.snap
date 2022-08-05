@@ -160,7 +160,7 @@ exports[`Main renders something 1`] = `
 
 .emotion-8 {
   background-color: #052962;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 
 .emotion-9 {
@@ -276,11 +276,11 @@ exports[`Main renders something 1`] = `
 .emotion-16 {
   display: inline-block;
   padding: 6px 0;
-  color: #ffffff;
+  color: #FFFFFF;
 }
 
 .emotion-16:hover {
-  color: #ffe500;
+  color: #FFE500;
   cursor: pointer;
 }
 
@@ -304,7 +304,7 @@ exports[`Main renders something 1`] = `
 }
 
 .emotion-58 {
-  color: #ffe500;
+  color: #FFE500;
   font-family: GH Guardian Headline,"GuardianTextEgyptian",Georgia,serif;
   font-size: 24px;
   line-height: 24px;
@@ -389,7 +389,7 @@ exports[`Main renders something 1`] = `
 
 .emotion-63 {
   font-size: 16px;
-  color: #ffffff;
+  color: #FFFFFF;
   font-weight: bold;
   padding: 0 5px;
   background-color: #052962;
@@ -402,7 +402,7 @@ exports[`Main renders something 1`] = `
 }
 
 .emotion-63:hover {
-  color: #ffe500;
+  color: #FFE500;
 }
 
 .emotion-64 {

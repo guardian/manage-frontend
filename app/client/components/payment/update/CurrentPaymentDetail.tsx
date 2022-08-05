@@ -1,13 +1,5 @@
 import { css } from '@emotion/react';
-import {
-	space,
-	brand,
-	neutral,
-	news,
-	textSans,
-	until,
-	from,
-} from '@guardian/source-foundations';
+import { from, space, textSans, palette, until } from '@guardian/source-foundations';
 import { InlineError } from '@guardian/source-react-components';
 import { getMainPlan, ProductDetail } from '../../../../shared/productResponse';
 import { CardDisplay } from '../cardDisplay';
@@ -69,7 +61,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 	return (
 		<div
 			css={css`
-				border: 1px solid ${neutral[86]};
+				border: 1px solid ${palette.neutral[86]};
 				margin-bottom: ${space[4]}px;
 			`}
 		>
@@ -79,8 +71,8 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 					justify-content: space-between;
 					align-items: start;
 					background-color: ${hasCancellationPending
-						? neutral[97]
-						: brand[400]};
+						? palette.neutral[97]
+						: palette.brand[400]};
 					${from.mobileLandscape} {
 						align-items: center;
 					}
@@ -93,8 +85,8 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 						margin: 0;
 						padding: ${space[3]}px;
 						color: ${hasCancellationPending
-							? neutral[7]
-							: neutral[100]};
+							? palette.neutral[7]
+							: palette.neutral[100]};
 						${until.mobileLandscape} {
 							padding: ${space[3]}px;
 						}
@@ -189,7 +181,7 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 				<div
 					css={css`
 						padding: ${space[3]}px 0 0 0;
-						border-top: 1px solid ${neutral[86]};
+						border-top: 1px solid ${palette.neutral[86]};
 						${subscription.mandate ? 'text-align: right;' : ''}
 
 						${from.tablet} {
@@ -229,8 +221,8 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 								css={css`
 									${valueCss};
 									color: ${hasPaymentFailure
-										? news[400]
-										: neutral[7]};
+										? palette.error[400]
+										: palette.neutral[7]};
 								`}
 							>
 								{subscription.card.expiry.month} /{' '}
@@ -258,8 +250,8 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 							css={css`
 								${valueCss};
 								color: ${hasPaymentFailure
-									? news[400]
-									: neutral[7]};
+									? palette.error[400]
+									: palette.neutral[7]};
 							`}
 						>
 							<DirectDebitDisplay

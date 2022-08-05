@@ -1,16 +1,15 @@
 import { css } from '@emotion/react';
 import { CMP } from '@guardian/consent-management-platform/dist/types';
-import { from } from '@guardian/source-foundations';
+import { from, palette } from '@guardian/source-foundations';
 import { useEffect, useState, SyntheticEvent } from 'react';
-import palette from '../../colours';
 import { isInUSA as isUserInUSA } from '../../geolocation';
 import { headline } from '../../styles/fonts';
 import { SupportTheGuardianButton } from '../supportTheGuardianButton';
 import { footerLinks } from './footerlinks';
 
 const footerColourStyles = css`
-	background-color: ${palette.blue.header};
-	color: ${palette.white};
+	background-color: ${palette.brand[400]};
+	color: ${palette.neutral[100]};
 `;
 
 const footerSizeStyles = css`
@@ -96,9 +95,9 @@ const footerMenuLiStyles = css`
 const footerLinkStyles = css`
 	display: inline-block;
 	padding: 6px 0;
-	color: ${palette.white};
+	color: ${palette.neutral[100]};
 	:hover {
-		color: ${palette.yellow.medium};
+		color: ${palette.brandAlt[400]};
 		cursor: pointer;
 	}
 `;
@@ -117,7 +116,7 @@ const supportStyles = css`
 `;
 
 const supportTitleStyles = css`
-	color: ${palette.yellow.medium};
+	color: ${palette.brandAlt[400]};
 	font-family: ${headline};
 	font-size: 24px;
 	line-height: 24px;
@@ -145,12 +144,12 @@ const copyrightStyles = css`
 
 const backToTopLinkStyles = css`
 	font-size: 16px;
-	color: ${palette.white};
+	color: ${palette.neutral[100]};
 	font-weight: bold;
 	padding: 0 5px;
-	background-color: ${palette.blue.header};
+	background-color: ${palette.brand[400]};
 	:hover {
-		color: ${palette.yellow.medium};
+		color: ${palette.brandAlt[400]};
 	}
 	position: absolute;
 	right: 20px;
@@ -174,7 +173,7 @@ const backToTopButtonOutterContainerStyles = css`
 
 const backToTopButtonInnerContainerStyles = css`
 	position: absolute;
-	fill: ${palette.blue.header};
+	fill: ${palette.brand[400]};
 	top: 9px;
 	left: 9px;
 `;

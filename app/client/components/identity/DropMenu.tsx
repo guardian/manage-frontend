@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
+import { palette } from '@guardian/source-foundations';
 import { FC, useState } from 'react';
-import palette from '../../colours';
 import { serif } from '../../styles/fonts';
 interface DropMenuProps {
 	title: string;
@@ -8,8 +8,8 @@ interface DropMenuProps {
 }
 
 const rootStyles = css({
-	borderColor: palette.neutral['4'],
-	borderTop: `1px solid ${palette.neutral['6']}`,
+	borderColor: palette.neutral[60],
+	borderTop: `1px solid ${palette.neutral[93]}`,
 	cursor: 'pointer',
 	padding: '3px 0 12px',
 	position: 'relative',

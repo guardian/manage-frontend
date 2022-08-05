@@ -1,16 +1,15 @@
 import * as React from 'react';
-import palette from '../../../../colours';
 import { sans } from '../../../../styles/fonts';
-import { neutral } from '@guardian/source-foundations';
+import { palette } from '@guardian/source-foundations';
 
 const hrefStyle = {
-	color: palette.neutral['3'],
+	color: palette.neutral[46],
 	textDecoration: 'underline',
 	cursor: 'pointer',
 };
 
 const baseStyle = {
-	color: neutral[46],
+	color: palette.neutral[46],
 	fontSize: '12px',
 	fontFamily: sans,
 	flexGrow: 1,

@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, until } from '@guardian/source-foundations';
+import { from, palette, until } from '@guardian/source-foundations';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	DateRange,
@@ -10,7 +10,6 @@ import {
 	isPaidSubscriptionPlan,
 	Subscription,
 } from '../../../shared/productResponse';
-import palette from '../../colours';
 import { sans } from '../../styles/fonts';
 import { ReFetch } from '../asyncLoader';
 import { ExpanderButton } from '../expanderButton';
@@ -28,7 +27,7 @@ import {
 
 const cellCss = css({
 	padding: '8px 16px 8px 16px',
-	border: '1px solid ' + palette.neutral['5'],
+	border: '1px solid ' + palette.neutral[86],
 });
 
 interface SummaryTableProps {
@@ -126,7 +125,7 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
 					cellCss,
 					props.withdrawnDate && withdrawnRelatedCSS,
 					{
-						backgroundColor: palette.neutral['7'],
+						backgroundColor: palette.neutral[97],
 						borderBottom: 0,
 					},
 				]}
@@ -187,7 +186,7 @@ export const SummaryTable = (props: SummaryTableProps) => {
 					th: [
 						cellCss,
 						{
-							backgroundColor: palette.neutral['7'],
+							backgroundColor: palette.neutral[97],
 							margin: 0,
 						},
 					],

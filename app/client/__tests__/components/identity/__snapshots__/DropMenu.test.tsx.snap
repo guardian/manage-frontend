@@ -3,7 +3,7 @@
 exports[`DropMenu displays the text in the supplied color 1`] = `
 .emotion-0 {
   border-color: #999999;
-  border-top: 1px solid #ececec;
+  border-top: 1px solid #EDEDED;
   cursor: pointer;
   padding: 3px 0 12px;
   position: relative;
@@ -60,7 +60,7 @@ exports[`DropMenu displays the text in the supplied color 1`] = `
 exports[`DropMenu if closed, opens and shows children on click 1`] = `
 .emotion-0 {
   border-color: #999999;
-  border-top: 1px solid #ececec;
+  border-top: 1px solid #EDEDED;
   cursor: pointer;
   padding: 3px 0 12px;
   position: relative;
@@ -121,7 +121,7 @@ exports[`DropMenu if closed, opens and shows children on click 1`] = `
 exports[`DropMenu if open, closes and hides children on click 1`] = `
 .emotion-0 {
   border-color: #999999;
-  border-top: 1px solid #ececec;
+  border-top: 1px solid #EDEDED;
   cursor: pointer;
   padding: 3px 0 12px;
   position: relative;
@@ -179,7 +179,7 @@ exports[`DropMenu if open, closes and hides children on click 1`] = `
 exports[`DropMenu initalises in the unopened state and displays the title 1`] = `
 .emotion-0 {
   border-color: #999999;
-  border-top: 1px solid #ececec;
+  border-top: 1px solid #EDEDED;
   cursor: pointer;
   padding: 3px 0 12px;
   position: relative;

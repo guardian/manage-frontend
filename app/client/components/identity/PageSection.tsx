@@ -1,6 +1,5 @@
-import { from } from '@guardian/source-foundations';
+import { from, palette } from '@guardian/source-foundations';
 import { FC, ReactNode } from 'react';
-import palette from '../../colours';
 import { sans } from '../../styles/fonts';
 
 interface PageSectionProps {
@@ -40,7 +39,7 @@ const getSubtext = (subtext: PageSectionProps['subtext']) => (
 			fontSize: '13px',
 			lineHeight: '18px',
 			fontFamily: sans,
-			color: palette.neutral['3'],
+			color: palette.neutral[46],
 			marginBottom: '12px',
 			marginTop: '0',
 		}}

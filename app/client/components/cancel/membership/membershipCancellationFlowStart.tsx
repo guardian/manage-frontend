@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
+import { palette } from '@guardian/source-foundations';
 import { ProductDetail } from '../../../../shared/productResponse';
-import palette from '../../../colours';
 import { trackEvent } from '../../../services/analytics';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
 import { hrefStyle } from '../cancellationConstants';
@@ -45,7 +45,7 @@ export const membershipCancellationFlowStart = ({ tier }: ProductDetail) => (
 		{tier !== 'Friend' && (
 			<div
 				css={{
-					backgroundColor: palette.neutral['6'],
+					backgroundColor: palette.neutral[93],
 					padding: '10px 20px',
 					marginBottom: '40px',
 				}}

@@ -2,7 +2,6 @@ import { css } from '@emotion/react';
 import {
 	breakpoints,
 	from,
-	neutral,
 	palette,
 	space,
 	textSans,
@@ -83,7 +82,7 @@ export const KnownIssues = () => {
 	`;
 
 	const divCss = css`
-		border: 4px solid ${palette.news[400]};
+		border: 4px solid ${palette.error[400]};
 		padding: ${space[3]}px ${space[3]}px ${space[3]}px 42px;
 		position: relative;
 		${{ ...gridItemPlacement(1, 4) }}
@@ -109,14 +108,14 @@ export const KnownIssues = () => {
 
 	const h4Css = css`
 		${textSans.medium({ fontWeight: 'bold' })};
-		color: ${palette.news[400]};
+		color: ${palette.error[400]};
 		margin: 0;
 	`;
 
 	const aCss = css`
 		${textSans.medium()};
 		text-decoration: underline;
-		color: ${neutral[0]};
+		color: ${palette.neutral[0]};
 	`;
 
 	return (

@@ -3,12 +3,11 @@ import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../shared/identity';
-import palette from '../colours';
 import { trackEvent } from '../services/analytics';
 import AsyncLoader from './asyncLoader';
 import { SupportTheGuardianButton } from './supportTheGuardianButton';
 import { fetchWithDefaultParameters } from '../fetch';
-import { from } from '@guardian/source-foundations';
+import { from, palette } from '@guardian/source-foundations';
 
 const fetchExistingPaymentOptions = () =>
 	fetchWithDefaultParameters('/api/existing-payment-options', {
@@ -61,7 +60,7 @@ const getThrasher =
 			return (
 				<div
 					css={{
-						backgroundColor: palette.yellow.medium,
+						backgroundColor: palette.brandAlt[400],
 						padding: '10px 15px 15px',
 						margin: '30px 0',
 					}}

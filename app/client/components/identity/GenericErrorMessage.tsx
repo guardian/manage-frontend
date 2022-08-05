@@ -1,5 +1,5 @@
+import { palette } from '@guardian/source-foundations';
 import { forwardRef } from 'react';
-import palette from '../../colours';
 import { errorMessageCss } from './sharedStyles';
 
 export type GenericErrorMessageRef = HTMLDivElement;
@@ -13,7 +13,7 @@ export const GenericErrorMessage = forwardRef<GenericErrorMessageRef, {}>(
 				<p css={{ marginBottom: '0' }}>
 					<a
 						css={{
-							color: palette.blue.dark,
+							color: palette.sport[300],
 							cursor: 'pointer',
 						}}
 						onClick={() => window.location.reload()}

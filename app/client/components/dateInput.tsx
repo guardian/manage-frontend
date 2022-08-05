@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
-import { until } from '@guardian/source-foundations';
-import palette from '../colours';
+import { palette, until } from '@guardian/source-foundations';
 import { sans } from '../styles/fonts';
 
 const inputBoxCss = css({
@@ -47,7 +46,7 @@ export const DateInput = (props: DateInputProps) => (
 		</div>
 		<fieldset
 			css={{
-				border: '1px solid' + palette.neutral['5'],
+				border: '1px solid' + palette.neutral[86],
 				padding: '5px',
 				whiteSpace: 'nowrap',
 				margin: 0,

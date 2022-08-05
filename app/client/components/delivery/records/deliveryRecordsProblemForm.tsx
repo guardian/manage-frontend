@@ -1,13 +1,6 @@
 import { css } from '@emotion/react';
 import { Button, Radio, RadioGroup } from '@guardian/source-react-components';
-import {
-	space,
-	brand,
-	neutral,
-	news,
-	textSans,
-	from,
-} from '@guardian/source-foundations';
+import { from, space, textSans, palette } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { FormEvent, useEffect, useState } from 'react';
 import { DeliveryProblemType } from '../../../../shared/productTypes';
@@ -101,7 +94,7 @@ export const DeliveryRecordProblemForm = (
 					}
 				}}
 				css={css`
-					border: 1px solid ${neutral['86']};
+					border: 1px solid ${palette.neutral[86]};
 					margin: 0 0 ${space[5]}px;
 					padding: 0;
 				`}
@@ -113,8 +106,8 @@ export const DeliveryRecordProblemForm = (
 						margin: 0;
 						padding: ${space[3]}px;
 						float: left;
-						background-color: ${neutral['97']};
-						border-bottom: 1px solid ${neutral['86']};
+						background-color: ${palette.neutral[97]};
+						border-bottom: 1px solid ${palette.neutral[86]};
 						${textSans.medium({ fontWeight: 'bold' })};
 						${from.tablet} {
 							padding: ${space[3]}px ${space[5]}px;
@@ -181,7 +174,8 @@ export const DeliveryRecordProblemForm = (
 													htmlFor="issue1Message"
 													css={css`
 														display: block;
-														color: ${neutral[46]};
+														color: ${palette
+															.neutral[46]};
 													`}
 												>
 													Please specify
@@ -200,7 +194,8 @@ export const DeliveryRecordProblemForm = (
 															<span
 																css={css`
 																	display: block;
-																	color: ${news[400]};
+																	color: ${palette
+																		.error[400]};
 																`}
 															>
 																<i
@@ -229,10 +224,10 @@ export const DeliveryRecordProblemForm = (
 															${props.inValidationState &&
 															deliveryProblemRadioOption.messageIsMandatory &&
 															!selectedDeliveryProblem.message
-																? news[400]
-																: neutral[
-																		'60'
-																  ]};
+																? palette
+																		.error[400]
+																: palette
+																		.neutral[60]};
 														width: 100%;
 														padding: 12px;
 														${textSans.medium()};
@@ -256,7 +251,7 @@ export const DeliveryRecordProblemForm = (
 						display: block;
 						position: relative;
 						padding: ${space[5]}px ${space[5]}px ${space[5]}px 50px;
-						border: 4px solid ${news[400]};
+						border: 4px solid ${palette.error[400]};
 						margin-bottom: ${space[5]}px;
 					`}
 				>
@@ -282,7 +277,7 @@ export const DeliveryRecordProblemForm = (
 							font-weight: bold;
 							margin-left: 22px;
 							padding: 0;
-							color: ${brand[400]};
+							color: ${palette.brand[400]};
 							:hover {
 								background-color: transparent;
 							}

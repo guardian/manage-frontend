@@ -1,5 +1,5 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { neutral, news } from '@guardian/source-foundations';
+import { palette } from '@guardian/source-foundations';
 import { Inlineable } from './inlineable';
 
 interface CardExpiryDetails {
@@ -148,7 +148,9 @@ export const CardDisplay = (props: CardDisplayProps) => {
 			<span
 				css={css`
 					margin-left: 3px;
-					color: ${props.inErrorState ? news[400] : neutral[7]};
+					color: ${props.inErrorState
+						? palette.error[400]
+						: palette.neutral[7]};
 				`}
 			>
 				ending {props.last4}
