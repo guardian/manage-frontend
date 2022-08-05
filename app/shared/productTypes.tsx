@@ -607,6 +607,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 					? '/contribute'
 					: undefined,
 			swapFeedbackAndContactUs: true,
+			shouldHideThrasher: true,
 		},
 	},
 	guardianpatron: {
