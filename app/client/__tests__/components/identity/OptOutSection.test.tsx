@@ -26,7 +26,7 @@ describe('OptOutSection component', () => {
 		).toBeChecked();
 		expect(
 			screen.getByLabelText(
-				'Allow the Guardian to send communications by telephone',
+				'Allow the Guardian to send communications by telephone and SMS',
 			),
 		).not.toBeChecked();
 		expect(screen.getByLabelText('Allow optin consent')).toBeChecked();
@@ -45,7 +45,7 @@ const idapiConsentsFixture: ConsentOption[] = [
 	},
 	{
 		id: 'phone_optout',
-		name: 'Allow the Guardian to send communications by telephone',
+		name: 'Allow the Guardian to send communications by telephone and SMS',
 		isProduct: false,
 		isChannel: false,
 		type: ConsentOptionType.OPT_OUT,
