@@ -18,7 +18,7 @@ jobs:
           node-version-file: app/.nvmrc
 
       - name: Install dependencies
-        run: yarn
+        run: yarn install --frozen-lockfile
         working-directory: app
 
       - name: Publish to Chromatic
