@@ -1,0 +1,24 @@
+name: Tests
+on:
+  push:
+    branches-ignore:
+      - "dependabot/**"
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          cache-dependency-path: app/yarn.lock
+          node-version-file: app/.nvmrc
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: app
+
+      - name: Run tests
+        run: yarn test
+        working-directory: app
