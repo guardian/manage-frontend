@@ -23,8 +23,8 @@ jobs:
         with:
           awsRoleToAssume: ${{ secrets.MANAGE_FRONTEND_IAM_ROLE }}
 
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           cache: yarn
           cache-dependency-path: app/yarn.lock
