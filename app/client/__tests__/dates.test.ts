@@ -253,11 +253,9 @@ describe('dateRange', () => {
 		const inputStartDate = '1969-07-16';
 		const inputEndDate = '1969-08-16';
 		const dateRangeObj = dateRange(inputStartDate, inputEndDate);
-		expect(
-			dateRangeObj.start.toString() + dateRangeObj.end.toString(),
-		).toEqual(
-			'Wed Jul 16 1969 00:00:00 GMT+0100 (British Summer Time)Sat Aug 16 1969 00:00:00 GMT+0100 (British Summer Time)',
-		);
+
+		expect(localiseDate(dateRangeObj.start)).toEqual('16/07/1969');
+		expect(localiseDate(dateRangeObj.end)).toEqual('16/08/1969');
 	});
 });
 
