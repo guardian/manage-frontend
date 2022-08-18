@@ -6,6 +6,7 @@ on:
 
 jobs:
   cypress:
+    if: false # Temporarily disable action
     name: Manage-frontend Cypress
     runs-on: ubuntu-latest
 
