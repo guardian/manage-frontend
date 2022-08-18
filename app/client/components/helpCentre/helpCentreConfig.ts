@@ -235,7 +235,7 @@ export const helpCentreMoreQuestionsConfig: HelpCentreMoreQuestionsTopic[] = [
 			},
 			{
 				id: 'q4',
-				title: 'Device compatability',
+				title: 'Device compatibility',
 				link: '/help-centre/article/what-devices-are-compatible-with-your-apps',
 			},
 			{
@@ -359,5 +359,6 @@ export const helpCentreNavConfig: HelpCentreNavConfig[] = [
 	{ id: 'website', title: 'The Guardian Website' },
 	{ id: 'journalism', title: 'Journalism' },
 	{ id: 'subscriptions', title: 'Print Subscriptions' },
+	{ id: 'apps', title: 'The Guardian Apps' },
 	{ id: 'more-topics', title: 'More Topics' },
 ];
