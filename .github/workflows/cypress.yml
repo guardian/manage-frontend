@@ -1,4 +1,4 @@
-name: manage-frontend cypress
+name: Cypress
 on:
   push:
     branches-ignore:
@@ -7,7 +7,6 @@ on:
 jobs:
   cypress:
     if: false # Temporarily disable action
-    name: Manage-frontend Cypress
     runs-on: ubuntu-latest
 
     permissions:

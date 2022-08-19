@@ -1,4 +1,4 @@
-name: Tests
+name: Jest, type checking and linting
 on:
   push:
     branches-ignore:
@@ -19,6 +19,6 @@ jobs:
         run: yarn install --frozen-lockfile
         working-directory: app
 
-      - name: Run tests
+      - name: Run tests, type check and lint code
         run: yarn test
         working-directory: app
