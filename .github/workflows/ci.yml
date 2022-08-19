@@ -1,11 +1,10 @@
-name: Jest, type checking and linting
+name: CI
 on:
   push:
     branches-ignore:
       - "dependabot/**"
-
 jobs:
-  tests:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,4 +20,8 @@ jobs:
 
       - name: Run tests, type check and lint code
         run: yarn test
+        working-directory: app
+
+      - name: Bundle application for deployment
+        run: yarn bundle
         working-directory: app
