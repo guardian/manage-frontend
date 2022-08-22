@@ -44,7 +44,7 @@ jobs:
       - name: Zip bundle for upload
         run: |
           cd dist
-          zip -r ../manage-front.zip .
+          zip -r ../manage-frontend.zip .
         working-directory: app
 
       # Seed the build number with last number from TeamCity.
