@@ -27,7 +27,7 @@ deployments:
   manage-frontend:
     type: autoscaling
     sources:
-      - cfn.yml
+      - cfn.yaml
     dependencies: [manage-frontend-cloudformation]
     parameters:
       bucket: membership-dist
