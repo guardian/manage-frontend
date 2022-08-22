@@ -47,17 +47,17 @@ jobs:
           zip -r ../manage-front.zip .
         working-directory: app
 
-      # # Seed the build number with last number from TeamCity.
-      # - name: Update GITHUB_RUN_NUMBER
-      #   run: |
-      #     LAST_TEAMCITY_BUILD=6053
-      #     echo GITHUB_RUN_NUMBER=$(( $GITHUB_RUN_NUMBER + $LAST_TEAMCITY_BUILD )) >> $GITHUB_ENV
+      # Seed the build number with last number from TeamCity.
+      - name: Update GITHUB_RUN_NUMBER
+        run: |
+          LAST_TEAMCITY_BUILD=6053
+          echo GITHUB_RUN_NUMBER=$(( $GITHUB_RUN_NUMBER + $LAST_TEAMCITY_BUILD )) >> $GITHUB_ENV
 
-      # - name: Upload to Riff-Raff
-      #   uses: guardian/actions-riff-raff@v1
-      #   with:
-      #     dryRun: true
-      #     app: manage-frontend
-      #     buildNumber: ${{ env.GITHUB_RUN_NUMBER }}
-      #     projectName: support:manage-frontend
-      #     configPath: app/riff-raff.yaml
+      - name: Upload to Riff-Raff
+        uses: guardian/actions-riff-raff@v1
+        with:
+          dryRun: true
+          app: manage-frontend
+          buildNumber: ${{ env.GITHUB_RUN_NUMBER }}
+          projectName: support:manage-frontend
+          configPath: app/riff-raff.yaml

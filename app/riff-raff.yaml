@@ -5,6 +5,8 @@ stacks:
 deployments:
   assets-static:
     type: aws-s3
+    sources:
+      - dist/static
     parameters:
       bucket: manage-frontend-static
       prefixPackage: false
@@ -13,6 +15,8 @@ deployments:
       publicReadAcl: true
   manage-frontend-cloudformation:
     type: cloud-formation
+    sources:
+      - manage-frontend.zip
     app: manage-frontend
     parameters:
       templatePath: cfn.yaml
@@ -22,6 +26,8 @@ deployments:
       amiEncrypted: true
   manage-frontend:
     type: autoscaling
+    sources:
+      - ../cfn.yml
     dependencies: [manage-frontend-cloudformation]
     parameters:
       bucket: membership-dist
