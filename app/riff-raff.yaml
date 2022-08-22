@@ -16,7 +16,7 @@ deployments:
   manage-frontend-cloudformation:
     type: cloud-formation
     sources:
-      - app/manage-frontend.zip
+      - cfn.yaml
     app: manage-frontend
     parameters:
       templatePath: cfn.yaml
@@ -27,7 +27,7 @@ deployments:
   manage-frontend:
     type: autoscaling
     sources:
-      - cfn.yaml
+      - app/manage-frontend.zip
     dependencies: [manage-frontend-cloudformation]
     parameters:
       bucket: membership-dist
