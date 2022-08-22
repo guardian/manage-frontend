@@ -6,7 +6,7 @@ deployments:
   assets-static:
     type: aws-s3
     sources:
-      - dist/static
+      - app/dist/static
     parameters:
       bucket: manage-frontend-static
       prefixPackage: false
@@ -16,7 +16,7 @@ deployments:
   manage-frontend-cloudformation:
     type: cloud-formation
     sources:
-      - manage-frontend.zip
+      - app/manage-frontend.zip
     app: manage-frontend
     parameters:
       templatePath: cfn.yaml
@@ -27,7 +27,7 @@ deployments:
   manage-frontend:
     type: autoscaling
     sources:
-      - ../cfn.yml
+      - cfn.yml
     dependencies: [manage-frontend-cloudformation]
     parameters:
       bucket: membership-dist
