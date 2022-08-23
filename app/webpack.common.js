@@ -21,8 +21,6 @@ const definePlugin = new webpack.DefinePlugin({
 	CYPRESS: `'${process.env.CYPRESS}'`,
 });
 
-console.log('definePlugin = ', definePlugin);
-
 const copyPlugin = new CopyWebpackPlugin({
 	patterns: [
 		{
