@@ -37,6 +37,13 @@ jobs:
         run: yarn test
         working-directory: app
 
+      # Seed the build number with final build from TeamCity.
+      # (This is used by webpack in the next step)
+      - name: Update GITHUB_RUN_NUMBER
+        run: |
+          LAST_TEAMCITY_BUILD=6053
+          echo GITHUB_RUN_NUMBER=$(( $GITHUB_RUN_NUMBER + $LAST_TEAMCITY_BUILD )) >> $GITHUB_ENV
+
       - name: Bundle application
         run: yarn bundle
         working-directory: app
@@ -46,12 +53,6 @@ jobs:
           cd dist
           zip -r ../manage-frontend.zip .
         working-directory: app
-
-      # Seed the build number with last number from TeamCity.
-      - name: Update GITHUB_RUN_NUMBER
-        run: |
-          LAST_TEAMCITY_BUILD=6053
-          echo GITHUB_RUN_NUMBER=$(( $GITHUB_RUN_NUMBER + $LAST_TEAMCITY_BUILD )) >> $GITHUB_ENV
 
       - name: Upload to Riff-Raff
         uses: guardian/actions-riff-raff@v1
