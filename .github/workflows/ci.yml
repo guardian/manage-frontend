@@ -33,8 +33,16 @@ jobs:
         run: yarn install --frozen-lockfile
         working-directory: app
 
-      - name: Run tests, type check and lint code
-        run: yarn test
+      - name: Jest
+        run: yarn jest --coverage
+        working-directory: app
+
+      - name: Type checking
+        run: yarn type-check
+        working-directory: app
+
+      - name: Linting
+        run: yarn lint
         working-directory: app
 
       # Seed the build number with final build from TeamCity.
