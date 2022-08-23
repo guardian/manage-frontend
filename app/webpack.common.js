@@ -12,11 +12,11 @@ const assetsPluginInstance = new AssetsPlugin({
 });
 
 const definePlugin = new webpack.DefinePlugin({
-	WEBPACK_BUILD: process.env.GITHUB_RUN_NUMBER
-		? `'${process.env.GITHUB_RUN_NUMBER}'`
+	WEBPACK_BUILD: process.env.WEBPACK_BUILD
+		? `'${process.env.WEBPACK_BUILD}'`
 		: `'DEV_${new Date().getTime()}'`,
-	GIT_COMMIT_HASH: process.env.BUILD_VCS_NUMBER
-		? `'${process.env.BUILD_VCS_NUMBER}'`
+	GIT_COMMIT_HASH: process.env.GITHUB_SHA
+		? `'${process.env.GITHUB_SHA}'`
 		: `'${new GitRevisionPlugin().commithash()}'`,
 	CYPRESS: `'${process.env.CYPRESS}'`,
 });

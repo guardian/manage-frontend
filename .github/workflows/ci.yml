@@ -47,6 +47,8 @@ jobs:
       - name: Bundle application
         run: yarn bundle
         working-directory: app
+        env:
+          WEBPACK_BUILD: ${{ env.GITHUB_RUN_NUMBER }}
 
       - name: Zip bundle for upload
         run: |
