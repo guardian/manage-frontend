@@ -4,7 +4,6 @@ module.exports = {
 	},
 	testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
 	moduleFileExtensions: ['js', 'json', 'jsx', 'node', 'ts', 'tsx'],
-	testResultsProcessor: 'jest-teamcity-reporter',
 	snapshotSerializers: ['@emotion/jest/serializer'],
 	globals: {
 		'ts-jest': {
