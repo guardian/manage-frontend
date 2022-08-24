@@ -1,12 +1,10 @@
 name: Chromatic
-on:
-  push:
-    branches-ignore:
-      - "dependabot/**"
+on: push
 
 jobs:
   chromatic:
     if: false # Temporarily disable action
+    name: Chromatic
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

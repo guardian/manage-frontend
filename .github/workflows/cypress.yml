@@ -1,12 +1,10 @@
 name: Cypress
-on:
-  push:
-    branches-ignore:
-      - "dependabot/**"
+on: push
 
 jobs:
   cypress:
     if: false # Temporarily disable action
+    name: Cypress
     runs-on: ubuntu-latest
 
     permissions:

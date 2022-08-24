@@ -1,10 +1,9 @@
 name: CI
-on:
-  push:
-    branches-ignore:
-      - "dependabot/**"
+on: push
+
 jobs:
   ci:
+    name: CI
     runs-on: ubuntu-latest
 
     # See https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
@@ -37,17 +36,17 @@ jobs:
         run: yarn jest --coverage
         working-directory: app
 
-      - name: Type checking
+      - name: Type check
         run: yarn type-check
         working-directory: app
 
-      - name: Linting
+      - name: Lint
         run: yarn lint
         working-directory: app
 
       # Seed the build number with final build from TeamCity.
       # (This is used by webpack in the next step)
-      - name: Update GITHUB_RUN_NUMBER
+      - name: Update build number
         run: |
           LAST_TEAMCITY_BUILD=6053
           echo GITHUB_RUN_NUMBER=$(( $GITHUB_RUN_NUMBER + $LAST_TEAMCITY_BUILD )) >> $GITHUB_ENV
@@ -58,7 +57,7 @@ jobs:
         env:
           WEBPACK_BUILD: ${{ env.GITHUB_RUN_NUMBER }}
 
-      - name: Zip bundle for upload
+      - name: Compress for upload
         run: |
           cd dist
           zip -r ../manage-frontend.zip .
