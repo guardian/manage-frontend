@@ -34,12 +34,8 @@ const renderConfirmation = (props: ProductType) => () =>
 	<AddressConfirmation {...props} />;
 
 const AddressConfirmation = (props: ProductType) => {
-	interface LocationState {
-		productDetail: ProductDetail;
-	}
-
 	const location = useLocation();
-	const state = location.state as LocationState;
+	const productDetail = location.state as ProductDetail;
 
 	const addressContext = useContext(NewDeliveryAddressContext);
 	const addressChangedInformationContext = useContext(
@@ -212,7 +208,7 @@ const AddressConfirmation = (props: ProductType) => {
 						<LinkButton
 							to={'/subscriptions'}
 							text={'Return to subscription'}
-							state={state}
+							state={{ productDetail }}
 							colour={palette.brand[400]}
 							textColour={palette.neutral[100]}
 							fontWeight={'bold'}
