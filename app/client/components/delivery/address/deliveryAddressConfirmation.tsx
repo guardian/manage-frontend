@@ -44,6 +44,13 @@ const AddressConfirmation = (props: ProductType) => {
 
 	const productName = props.friendlyName;
 
+	if (isAddress(addressContext.addressStateObject)) {
+		productDetail.subscription.deliveryAddress = {
+			...productDetail.subscription.deliveryAddress,
+			...addressContext.addressStateObject,
+		};
+	}
+
 	const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
 		useState<boolean>(false);
 
