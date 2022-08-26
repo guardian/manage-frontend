@@ -51,4 +51,42 @@ describe('Delivery address', () => {
 
 		cy.get('@address_update.all').should('have.length', 1);
 	});
+
+	it('Shows updated address when returning to manage subscription page', () => {
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: [guardianWeeklyCurrentSubscription],
+		}).as('mma');
+
+		cy.intercept('PUT', '/api/delivery/address/update/**', {
+			statusCode: 200,
+			body: 'success',
+		}).as('address_update');
+
+		cy.visit('/');
+		cy.wait('@mma');
+		cy.wait('@cancelled');
+		cy.findByText('Manage subscription').click();
+		cy.findByText('Manage delivery address').click();
+
+		cy.get('input').eq(0).clear().type('Queens Place');
+		cy.get('input').eq(1).clear().type('50 York Way');
+		cy.get('input').eq(2).clear().type('Melbourne');
+		cy.get('input').eq(3).clear().type('VIC');
+		cy.get('input').eq(4).clear().type('3401');
+
+		cy.get('input[name="instructions-checkbox"]').click();
+		cy.findByText('Review details').click();
+
+		cy.findByText('Submit details').click();
+		cy.wait('@address_update');
+
+		cy.findByText('Return to subscription').click();
+
+		cy.findByText('Queens Place').should('exist');
+		cy.findByText('50 York Way').should('exist');
+		cy.findByText('Melbourne').should('exist');
+		cy.findByText('VIC').should('exist');
+		cy.findByText('3401').should('exist');
+	});
 });
