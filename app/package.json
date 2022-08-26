@@ -35,18 +35,7 @@
   },
   "main": "./dist/server",
   "browserslist": [
-    ">0.25%",
-    "Chrome >= 49",
-    "ChromeAndroid >= 49",
-    "Safari >= 8",
-    "ios_saf >= 9",
-    "IE >= 11",
-    "Edge >= 13",
-    "Firefox >= 46",
-    "FirefoxAndroid >= 46",
-    "Samsung >= 4",
-    "Opera >= 54",
-    "OperaMini all"
+    "extends @guardian/browserslist-config"
   ],
   "devDependencies": {
     "@babel/cli": "^7.16.0",
@@ -60,6 +49,7 @@
     "@emotion/babel-plugin": "^11.9.2",
     "@emotion/eslint-plugin": "^11.7.0",
     "@emotion/jest": "^11.9.1",
+    "@guardian/browserslist-config": "^2.0.1",
     "@guardian/eslint-plugin-source-foundations": "^5.0.0",
     "@guardian/eslint-plugin-source-react-components": "^5.0.0",
     "@guardian/node-riffraff-artifact": "^0.2.2",
