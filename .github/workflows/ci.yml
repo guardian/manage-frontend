@@ -46,16 +46,19 @@ jobs:
 
       # Seed the build number with final build from TeamCity.
       # (This is used by webpack in the next step)
+
+      # TODO: Update last TeamCity build number before merging!
+
       - name: Update build number
         run: |
-          LAST_TEAMCITY_BUILD=6053
-          echo GITHUB_RUN_NUMBER=$(( $GITHUB_RUN_NUMBER + $LAST_TEAMCITY_BUILD )) >> $GITHUB_ENV
+          LAST_TEAMCITY_BUILD=6063
+          echo RIFF_RAFF_BUILD=$(( $GITHUB_RUN_NUMBER + $LAST_TEAMCITY_BUILD )) >> $GITHUB_ENV
 
       - name: Bundle application
         run: yarn bundle
         working-directory: app
         env:
-          WEBPACK_BUILD: ${{ env.GITHUB_RUN_NUMBER }}
+          WEBPACK_BUILD: ${{ env.RIFF_RAFF_BUILD }}
 
       - name: Compress for upload
         run: |
@@ -68,6 +71,6 @@ jobs:
         with:
           dryRun: true
           app: manage-frontend
-          buildNumber: ${{ env.GITHUB_RUN_NUMBER }}
+          buildNumber: ${{ env.RIFF_RAFF_BUILD }}
           projectName: support:manage-frontend
           configPath: app/riff-raff.yaml
