@@ -3,7 +3,6 @@ on: push
 
 jobs:
   cypress:
-    if: false # Temporarily disable action
     name: Cypress
     runs-on: ubuntu-latest
 
