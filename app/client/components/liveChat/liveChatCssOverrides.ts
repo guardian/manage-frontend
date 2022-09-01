@@ -8,6 +8,10 @@ import {
 } from '@guardian/source-foundations';
 
 export const liveChatCss = css`
+	.embeddedServiceSidebar.layout-docked .dockableContainer,
+	.embeddedServiceSidebar.layout-float .dockableContainer {
+		max-height: 524px;
+	}
 	${until.desktop} {
 		.embeddedServiceSidebar.layout-docked .dockableContainer,
 		.embeddedServiceSidebar.layout-float .dockableContainer {
@@ -27,15 +31,25 @@ export const liveChatCss = css`
 			flex-direction: column;
 			min-height: 100%;
 		}
-		.prechat--button-holder[c-prechatForm_prechatForm] {
-			margin-top: auto;
-		}
 		.stateBody {
 			overflow-y: scroll;
 		}
 	}
+	.prechat--container {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+	.prechat--button-holder[c-prechatForm_prechatForm] {
+		margin-top: auto;
+	}
+	.prechat--fieldset[c-prechatForm_prechatForm] {
+		padding-top: 8px;
+		padding-bottom: 0;
+	}
 	.embeddedServiceSidebar.layout-docked .dockableContainer {
 		border-radius: 0;
+		margin-top: auto;
 	}
 	.waitingStateButtonContainer .waitingCancelChat {
 		border-radius: 0;

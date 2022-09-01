@@ -180,8 +180,8 @@ const initESW = (
 		} else {
 			// Initialise live chat API for DEV1 test sandbox
 			liveChatAPI.init(
-				'https://gnmtouchpoint--dev1.my.salesforce.com',
-				'https://dev1-guardiansurveys.cs88.force.com/liveagent',
+				'https://gnmtouchpoint--dev1.sandbox.my.salesforce.com',
+				'https://gnmtouchpoint--dev1.sandbox.my.salesforce-sites.com/liveagent',
 				gslbBaseUrl,
 				'00D9E0000004jvh',
 				'Chat_Team',
