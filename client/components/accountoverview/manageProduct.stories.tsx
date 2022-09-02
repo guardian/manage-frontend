@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MemoryRouter } from 'react-router-dom';
+import { RouterState } from '../../../.storybook/RouterState';
 
 import ManageProduct from './manageProduct';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
@@ -19,31 +19,27 @@ export default {
 } as ComponentMeta<typeof ManageProduct>;
 
 export const GuardianWeekly: ComponentStory<typeof ManageProduct> = () => (
-	<MemoryRouter
-		initialEntries={[{ state: { productDetail: guardianWeeklyCard } }]}
-	>
+	<RouterState initialState={{ productDetail: guardianWeeklyCard }}>
 		<ManageProduct
 			groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
 		/>
-	</MemoryRouter>
+	</RouterState>
 );
 
 export const DigitalSubscription: ComponentStory<typeof ManageProduct> = () => (
-	<MemoryRouter initialEntries={[{ state: { productDetail: digitalDD } }]}>
+	<RouterState initialState={{ productDetail: digitalDD }}>
 		<ManageProduct
 			groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
 		/>
-	</MemoryRouter>
+	</RouterState>
 );
 
 export const NewspaperSubscriptionCard: ComponentStory<
 	typeof ManageProduct
 > = () => (
-	<MemoryRouter
-		initialEntries={[{ state: { productDetail: newspaperVoucherPaypal } }]}
-	>
+	<RouterState initialState={{ productDetail: newspaperVoucherPaypal }}>
 		<ManageProduct
 			groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
 		/>
-	</MemoryRouter>
+	</RouterState>
 );

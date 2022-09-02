@@ -1,7 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import fetchMock from 'fetch-mock';
-import { ReactNode } from 'react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { RouterState } from '../../../.storybook/RouterState';
 
 import { PRODUCT_TYPES } from '../../../shared/productTypes';
 
@@ -17,32 +16,17 @@ export default {
 	},
 } as ComponentMeta<typeof CancellationContainer>;
 
-interface RouterProviderProps {
-	initialState: {};
-	container: ReactNode;
-	component: ReactNode;
-}
-
-const RouterProvider = (props: RouterProviderProps) => (
-	<MemoryRouter initialEntries={[{ state: props.initialState }]}>
-		<Routes>
-			<Route path="*" element={props.container}>
-				<Route index element={props.component} />
-			</Route>
-		</Routes>
-	</MemoryRouter>
-);
-
 export const ContactCustomerService: ComponentStory<
 	typeof CancellationContainer
 > = () => (
-	<RouterProvider
+	<RouterState
 		initialState={{ productDetail: guardianWeeklyCard }}
 		container={
 			<CancellationContainer productType={PRODUCT_TYPES.guardianweekly} />
 		}
-		component={<CancellationReasonSelection />}
-	/>
+	>
+		<CancellationReasonSelection />
+	</RouterState>
 );
 
 export const ReasonSelection: ComponentStory<
@@ -53,14 +37,15 @@ export const ReasonSelection: ComponentStory<
 	});
 
 	return (
-		<RouterProvider
+		<RouterState
 			initialState={{ productDetail: contribution }}
 			container={
 				<CancellationContainer
 					productType={PRODUCT_TYPES.contributions}
 				/>
 			}
-			component={<CancellationReasonSelection />}
-		/>
+		>
+			<CancellationReasonSelection />
+		</RouterState>
 	);
 };
