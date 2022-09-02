@@ -6,6 +6,7 @@ import { PRODUCT_TYPES } from '../../../shared/productTypes';
 
 import { guardianWeeklyCard, contribution } from '../../fixtures/productDetail';
 import CancellationContainer from './CancellationContainer';
+import CancellationReasonReview from './CancellationReasonReview';
 import CancellationReasonSelection from './CancellationReasonSelection';
 
 export default {
@@ -29,7 +30,7 @@ export const ContactCustomerService: ComponentStory<
 	</RouterState>
 );
 
-export const ReasonSelection: ComponentStory<
+export const SelectReason: ComponentStory<
 	typeof CancellationContainer
 > = () => {
 	fetchMock.restore().get('glob:/api/cancellation-date/*', {
@@ -46,6 +47,27 @@ export const ReasonSelection: ComponentStory<
 			}
 		>
 			<CancellationReasonSelection />
+		</RouterState>
+	);
+};
+
+export const Review: ComponentStory<typeof CancellationContainer> = () => {
+	fetchMock.restore().post('/api/case', { body: { id: 'caseId' } });
+
+	return (
+		<RouterState
+			initialState={{
+				productDetail: contribution,
+				selectedReasonId: 'mma_editorial',
+				cancellationPolicy: 'Today',
+			}}
+			container={
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			}
+		>
+			<CancellationReasonReview />
 		</RouterState>
 	);
 };
