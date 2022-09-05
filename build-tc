@@ -11,6 +11,10 @@ export NVM_DIR="$HOME/.nvm"
 nvm install
 nvm use
 
+# https://classic.yarnpkg.com/en/docs/cli/policies/#toc-policies-set-version
+# This could be removed if all TC agents guaranteed   global yarn installed
+alias yarn='node ../.yarn/releases/yarn-*.js'
+
 (
   cd cdk
   yarn install --frozen-lockfile
@@ -22,10 +26,6 @@ nvm use
 
 # cd into the app directory where package.json resides
 cd app
-
-# https://classic.yarnpkg.com/en/docs/cli/policies/#toc-policies-set-version
-# This could be removed if all TC agents guaranteed   global yarn installed
-alias yarn='node ../.yarn/releases/yarn-*.js'
 
 # Installing packages via yarn
 
