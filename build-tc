@@ -3,6 +3,15 @@ shopt -s expand_aliases
 
 set -e
 
+(
+  cd cdk
+  yarn install --frozen-lockfile
+  yarn lint
+  yarn test
+  yarn synth
+)
+
+
 # cd into the app directory where package.json resides
 cd app
 

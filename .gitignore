@@ -7,7 +7,6 @@ coverage/
 
 *.swp
 *.swo
-*.lock
 
 *.code-workspace
 
