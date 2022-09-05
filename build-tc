@@ -3,6 +3,14 @@ shopt -s expand_aliases
 
 set -e
 
+# install node
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+nvm install
+nvm use
+
 (
   cd cdk
   yarn install --frozen-lockfile
@@ -18,15 +26,6 @@ cd app
 # https://classic.yarnpkg.com/en/docs/cli/policies/#toc-policies-set-version
 # This could be removed if all TC agents guaranteed   global yarn installed
 alias yarn='node ../.yarn/releases/yarn-*.js'
-
-# install node
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
-nvm install
-nvm use
-
 
 # Installing packages via yarn
 
