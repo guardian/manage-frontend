@@ -11,19 +11,17 @@ export NVM_DIR="$HOME/.nvm"
 nvm install
 nvm use
 
-(
-  # https://classic.yarnpkg.com/en/docs/cli/policies/#toc-policies-set-version
-  # This could be removed if all TC agents guaranteed   global yarn installed
-  alias yarn='node ../.yarn/releases/yarn-*.js'
+# https://classic.yarnpkg.com/en/docs/cli/policies/#toc-policies-set-version
+# This could be removed if all TC agents guaranteed global yarn installed
+alias yarn='node ./.yarn/releases/yarn-*.js'
 
+(
   cd cdk
   yarn install --frozen-lockfile
   yarn lint
   yarn test
   yarn synth
 )
-
-alias yarn='node .yarn/releases/yarn-*.js'
 
 # Installing packages via yarn
 
