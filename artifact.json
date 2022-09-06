@@ -4,7 +4,7 @@
   "actions": [
     {
       "action": "manage-frontend-cloudformation",
-      "path": "../cdk/cdk.out",
+      "path": "cdk/cdk.out",
       "compress": false
     },
     {

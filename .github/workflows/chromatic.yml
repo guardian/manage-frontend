@@ -12,15 +12,12 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           cache: yarn
-          cache-dependency-path: app/yarn.lock
 
       - name: Install dependencies
         run: yarn
-        working-directory: app
 
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           projectToken: ${{ secrets.CHROMATIC_APP_CODE }}
-          workingDir: app

@@ -23,4 +23,4 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: monitor
-          args: --org=the-guardian-cuu --project-name=${{ github.repository }} --file=./app/yarn.lock
+          args: --org=the-guardian-cuu --project-name=${{ github.repository }} --file=./yarn.lock

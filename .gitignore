@@ -13,16 +13,16 @@ coverage/
 .vscode/
 
 logs/
-/app/node_modules/
+node_modules/
 /conf/webpack-assets.json
 /public/*.js
 /public/webpack-assets.json
 
-app/dist/
+dist/
 tmp_client_bundle/
 
 .DS_Store
 .scannerwork/
-app/test-report.xml
+test-report.xml
 
-app/cypress/screenshots
+cypress/screenshots
