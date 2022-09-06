@@ -15,7 +15,9 @@ deployments:
     type: cloud-formation
     app: manage-frontend
     parameters:
-      templatePath: cfn.yaml
+      templateStagePaths:
+        CODE: ManageFrontend-CODE.template.json
+        PROD: ManageFrontend-PROD.template.json
       amiTags:
         Recipe: manage-frontend-arm-node16
         AmigoStage: PROD

@@ -28,7 +28,6 @@ jobs:
         with:
           cache: yarn
           cache-dependency-path: app/yarn.lock
-          node-version-file: app/.nvmrc
 
       - name: Cypress run
         uses: cypress-io/github-action@v2

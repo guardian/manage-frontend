@@ -4,7 +4,7 @@
   "actions": [
     {
       "action": "manage-frontend-cloudformation",
-      "path": "../cfn.yaml",
+      "path": "../cdk/cdk.out",
       "compress": false
     },
     {

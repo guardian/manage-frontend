@@ -1,0 +1,1480 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The ManageFrontend stack matches the snapshot 1`] = `
+Object {
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Conditions": Object {
+    "CreateCodeResources": Object {
+      "Fn::Equals": Array [
+        Object {
+          "Ref": "Stage",
+        },
+        "CODE",
+      ],
+    },
+    "CreateProdResources": Object {
+      "Fn::Equals": Array [
+        Object {
+          "Ref": "Stage",
+        },
+        "PROD",
+      ],
+    },
+  },
+  "Description": "manage-frontend",
+  "Mappings": Object {
+    "Constants": Object {
+      "Alarm": Object {
+        "Process": "Follow the process in https://docs.google.com/document/d/1_3El3cly9d7u_jPgTcRjLxmdG2e919zCLvmcFCLOYAk/edit",
+        "Urgent": "URGENT 9-5 -",
+      },
+      "MetricFilters": Object {
+        "MetricNamespace": "manage-frontend",
+      },
+    },
+    "StageVariables": Object {
+      "CODE": Object {
+        "ApiDomainEnvVariable": "code.dev-guardianapis.com",
+        "CertificateARN": "arn:aws:acm:eu-west-1:865473395570:certificate/2c2a72a2-a0d6-4ffa-b8a1-8a7916000515",
+        "DomainEnvVariable": "code.dev-theguardian.com",
+        "InstanceType": "t4g.small",
+        "MaxInstances": 2,
+        "MinInstances": 1,
+      },
+      "PROD": Object {
+        "ApiDomainEnvVariable": "guardianapis.com",
+        "CertificateARN": "arn:aws:acm:eu-west-1:865473395570:certificate/d2e4911c-c78d-469b-ab53-8c507aa41576",
+        "DomainEnvVariable": "theguardian.com",
+        "InstanceType": "t4g.small",
+        "MaxInstances": 6,
+        "MinInstances": 3,
+      },
+    },
+  },
+  "Metadata": Object {
+    "gu:cdk:constructs": Array [],
+    "gu:cdk:version": "47.3.1",
+  },
+  "Parameters": Object {
+    "AMI": Object {
+      "Default": "ami-88a6af62",
+      "Description": "AMI ID",
+      "Type": "String",
+    },
+    "App": Object {
+      "Default": "manage-frontend",
+      "Description": "Applied directly as a tag",
+      "Type": "String",
+    },
+    "BastionSecurityGroup": Object {
+      "Description": "Bastion's security group for SSH",
+      "Type": "String",
+    },
+    "ClientRavenDSN": Object {
+      "Description": "the DSN to use with sentry on the client",
+      "Type": "String",
+    },
+    "PrivateVpcSubnets": Object {
+      "Description": "Private subnets to use for EC2 instances",
+      "Type": "List<AWS::EC2::Subnet::Id>",
+    },
+    "PublicVpcSubnets": Object {
+      "Description": "Public subnets to use for the ELB",
+      "Type": "List<AWS::EC2::Subnet::Id>",
+    },
+    "ServerRavenDSN": Object {
+      "Description": "the DSN to use with sentry on the server",
+      "Type": "String",
+    },
+    "Stack": Object {
+      "Default": "support",
+      "Description": "Applied directly as a tag",
+      "Type": "String",
+    },
+    "Stage": Object {
+      "Description": "Applied directly as a tag",
+      "Type": "String",
+    },
+    "VpcId": Object {
+      "Default": "vpc-e6e00183",
+      "Description": "VpcId of your existing Virtual Private Cloud (VPC)",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "AppRole": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "sts:AssumeRole",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Array [
+                  "ec2.amazonaws.com",
+                ],
+              },
+            },
+          ],
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Sub": "arn:aws:iam::\${AWS::AccountId}:policy/guardian-ec2-role-for-ssm",
+          },
+        ],
+        "Path": "/",
+        "Policies": Array [
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": Array [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::GetAtt": "ManageFrontendLogGroup.Arn",
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "PushLogs",
+          },
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": "cloudwatch:PutMetricData",
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "PushMetrics",
+          },
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": "s3:GetObject",
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Sub": "arn:aws:s3:::gu-reader-revenue-private/manage-frontend/\${Stage}/*",
+                  },
+                },
+              ],
+            },
+            "PolicyName": "ReadPrivateCredentials",
+          },
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": "s3:GetObject",
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Sub": "arn:aws:s3:::manage-help-content/\${Stage}/*",
+                  },
+                },
+              ],
+            },
+            "PolicyName": "ReadManageHelpContent",
+          },
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": "s3:GetObject",
+                  "Effect": "Allow",
+                  "Resource": "arn:aws:s3:::fulfilment-date-calculator-*",
+                },
+              ],
+            },
+            "PolicyName": "ReadFulfilmentDateCalculatorOutput",
+          },
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": "cloudformation:ListStackResources",
+                  "Effect": "Allow",
+                  "Resource": Array [
+                    Object {
+                      "Fn::Sub": "arn:aws:cloudformation:\${AWS::Region}:\${AWS::AccountId}:stack/membership-DEV-*",
+                    },
+                    Object {
+                      "Fn::Sub": "arn:aws:cloudformation:\${AWS::Region}:\${AWS::AccountId}:stack/membership-CODE-*",
+                    },
+                    Object {
+                      "Fn::Sub": "arn:aws:cloudformation:\${AWS::Region}:\${AWS::AccountId}:stack/membership-\${Stage}-*",
+                    },
+                    Object {
+                      "Fn::Sub": "arn:aws:cloudformation:\${AWS::Region}:\${AWS::AccountId}:stack/support-DEV-*",
+                    },
+                    Object {
+                      "Fn::Sub": "arn:aws:cloudformation:\${AWS::Region}:\${AWS::AccountId}:stack/support-CODE-*",
+                    },
+                    Object {
+                      "Fn::Sub": "arn:aws:cloudformation:\${AWS::Region}:\${AWS::AccountId}:stack/support-\${Stage}-*",
+                    },
+                  ],
+                },
+              ],
+            },
+            "PolicyName": "DiscoverApiGatewayLambdas",
+          },
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": "apigateway:GET",
+                  "Effect": "Allow",
+                  "Resource": Object {
+                    "Fn::Sub": "arn:aws:apigateway:\${AWS::Region}::/apikeys/*",
+                  },
+                },
+              ],
+            },
+            "PolicyName": "DiscoverApiGatewayApiKeys",
+          },
+          Object {
+            "PolicyDocument": Object {
+              "Statement": Array [
+                Object {
+                  "Action": "execute-api:Invoke",
+                  "Effect": "Allow",
+                  "Resource": Array [
+                    Object {
+                      "Fn::Sub": "arn:aws:execute-api:\${AWS::Region}:\${AWS::AccountId}:*/DEV/*",
+                    },
+                    Object {
+                      "Fn::Sub": "arn:aws:execute-api:\${AWS::Region}:\${AWS::AccountId}:*/CODE/*",
+                    },
+                    Object {
+                      "Fn::Sub": "arn:aws:execute-api:\${AWS::Region}:\${AWS::AccountId}:*/\${Stage}/*",
+                    },
+                  ],
+                },
+              ],
+            },
+            "PolicyName": "InvokeApiGateway",
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "AutoScalingGroup": Object {
+      "Properties": Object {
+        "HealthCheckGracePeriod": 300,
+        "HealthCheckType": "ELB",
+        "LaunchConfigurationName": Object {
+          "Ref": "LaunchConfig",
+        },
+        "MaxSize": Object {
+          "Fn::FindInMap": Array [
+            "StageVariables",
+            Object {
+              "Ref": "Stage",
+            },
+            "MaxInstances",
+          ],
+        },
+        "MinSize": Object {
+          "Fn::FindInMap": Array [
+            "StageVariables",
+            Object {
+              "Ref": "Stage",
+            },
+            "MinInstances",
+          ],
+        },
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "PropagateAtLaunch": true,
+            "Value": Object {
+              "Ref": "App",
+            },
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "PropagateAtLaunch": true,
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "PropagateAtLaunch": true,
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Name",
+            "PropagateAtLaunch": true,
+            "Value": Object {
+              "Fn::Join": Array [
+                "-",
+                Array [
+                  Object {
+                    "Ref": "Stack",
+                  },
+                  Object {
+                    "Ref": "Stage",
+                  },
+                  Object {
+                    "Ref": "App",
+                  },
+                ],
+              ],
+            },
+          },
+          Object {
+            "Key": "Stack",
+            "PropagateAtLaunch": true,
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "PropagateAtLaunch": true,
+            "Value": "TEST",
+          },
+        ],
+        "TargetGroupARNs": Array [
+          Object {
+            "Ref": "TargetGroup",
+          },
+        ],
+        "VPCZoneIdentifier": Object {
+          "Ref": "PrivateVpcSubnets",
+        },
+      },
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+    },
+    "CriticalPathsCloudWatchDashboard": Object {
+      "Condition": "CreateProdResources",
+      "Properties": Object {
+        "DashboardBody": "{
+  \\"widgets\\": [
+    {
+        \\"type\\": \\"metric\\",
+        \\"x\\": 12,
+        \\"y\\": 12,
+        \\"width\\": 12,
+        \\"height\\": 3,
+        \\"properties\\": {
+            \\"metrics\\": [
+                [ { \\"expression\\": \\"s1 + s2 + s3\\", \\"label\\": \\"SUCCESS\\", \\"id\\": \\"success\\", \\"color\\": \\"#2ca02c\\" } ],
+                [ { \\"expression\\": \\"e1 + e2 + e3\\", \\"label\\": \\"ERROR\\", \\"id\\": \\"error\\", \\"color\\": \\"#ff7f0e\\" } ],
+                [ \\"manage-frontend\\", \\"MDA_UPDATE_CONTRIBUTIONS_AMOUNT\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"id\\": \\"s1\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"s2\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"label\\": \\"SUCCESS FINAL\\", \\"color\\": \\"#98df8a\\", \\"id\\": \\"s3\\", \\"visible\\": false } ],
+                [ \\".\\", \\".\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"id\\": \\"e1\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"e2\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"label\\": \\"ERROR FINAL\\", \\"color\\": \\"#ffbb78\\", \\"yAxis\\": \\"left\\", \\"id\\": \\"e3\\", \\"visible\\": false } ]
+            ],
+            \\"view\\": \\"timeSeries\\",
+            \\"stacked\\": false,
+            \\"region\\": \\"eu-west-1\\",
+            \\"stat\\": \\"Sum\\",
+            \\"period\\": 3600,
+            \\"title\\": \\"MDA_UPDATE_CONTRIBUTIONS_AMOUNT (per hour)\\",
+            \\"yAxis\\": {
+                \\"left\\": {
+                    \\"min\\": 0
+                }
+            },
+            \\"legend\\": {
+                \\"position\\": \\"right\\"
+            },
+            \\"annotations\\": {
+                \\"vertical\\": [
+                    {
+                        \\"label\\": \\"50% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-05-26T10:17:00.000Z\\"
+                    },
+                    {
+                        \\"color\\": \\"#d62728\\",
+                        \\"label\\": \\"100% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-06-05T09:57:00.000Z\\"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        \\"type\\": \\"metric\\",
+        \\"x\\": 0,
+        \\"y\\": 12,
+        \\"width\\": 12,
+        \\"height\\": 3,
+        \\"properties\\": {
+            \\"metrics\\": [
+                [ { \\"expression\\": \\"s1 + s2 + s3\\", \\"label\\": \\"SUCCESS\\", \\"id\\": \\"success\\", \\"color\\": \\"#2ca02c\\" } ],
+                [ { \\"expression\\": \\"e1 + e2 + e3\\", \\"label\\": \\"ERROR\\", \\"id\\": \\"error\\", \\"color\\": \\"#ff7f0e\\" } ],
+                [ \\"manage-frontend\\", \\"PAPI_VALIDATE_DIRECT_DEBIT\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"id\\": \\"s1\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"s2\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"label\\": \\"SUCCESS FINAL\\", \\"color\\": \\"#98df8a\\", \\"id\\": \\"s3\\", \\"visible\\": false } ],
+                [ \\".\\", \\".\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"id\\": \\"e1\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"e2\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"label\\": \\"ERROR FINAL\\", \\"color\\": \\"#ffbb78\\", \\"yAxis\\": \\"left\\", \\"id\\": \\"e3\\", \\"visible\\": false } ]
+            ],
+            \\"view\\": \\"timeSeries\\",
+            \\"stacked\\": false,
+            \\"region\\": \\"eu-west-1\\",
+            \\"stat\\": \\"Sum\\",
+            \\"period\\": 3600,
+            \\"title\\": \\"PAPI_VALIDATE_DIRECT_DEBIT (per hour)\\",
+            \\"yAxis\\": {
+                \\"left\\": {
+                    \\"min\\": 0
+                }
+            },
+            \\"legend\\": {
+                \\"position\\": \\"right\\"
+            },
+            \\"annotations\\": {
+                \\"vertical\\": [
+                    {
+                        \\"label\\": \\"50% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-05-26T10:17:00.000Z\\"
+                    },
+                    {
+                        \\"color\\": \\"#d62728\\",
+                        \\"label\\": \\"100% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-06-05T09:57:00.000Z\\"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        \\"type\\": \\"metric\\",
+        \\"x\\": 0,
+        \\"y\\": 6,
+        \\"width\\": 12,
+        \\"height\\": 3,
+        \\"properties\\": {
+            \\"metrics\\": [
+                [ { \\"expression\\": \\"e1 + e2 + e3\\", \\"label\\": \\"ERROR    \\", \\"id\\": \\"error\\", \\"color\\": \\"#ff7f0e\\" } ],
+                [ \\"manage-frontend\\", \\"RECAPTURE_FAILURE\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"id\\": \\"e1\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"e2\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"label\\": \\"ERROR FINAL\\", \\"color\\": \\"#ffbb78\\", \\"yAxis\\": \\"left\\", \\"id\\": \\"e3\\", \\"visible\\": false } ]
+            ],
+            \\"view\\": \\"timeSeries\\",
+            \\"stacked\\": false,
+            \\"region\\": \\"eu-west-1\\",
+            \\"stat\\": \\"Sum\\",
+            \\"period\\": 3600,
+            \\"title\\": \\"RECAPTURE_FAILURE (per hour)\\",
+            \\"yAxis\\": {
+                \\"left\\": {
+                    \\"min\\": 0
+                }
+            },
+            \\"legend\\": {
+                \\"position\\": \\"right\\"
+            },
+            \\"annotations\\": {
+                \\"vertical\\": [
+                    {
+                        \\"label\\": \\"50% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-05-26T10:17:00.000Z\\"
+                    },
+                    {
+                        \\"color\\": \\"#d62728\\",
+                        \\"label\\": \\"100% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-06-05T09:57:00.000Z\\"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        \\"type\\": \\"metric\\",
+        \\"x\\": 12,
+        \\"y\\": 0,
+        \\"width\\": 12,
+        \\"height\\": 3,
+        \\"properties\\": {
+            \\"metrics\\": [
+                [ { \\"expression\\": \\"s1 + s2 + s3\\", \\"label\\": \\"SUCCESS\\", \\"id\\": \\"success\\", \\"color\\": \\"#2ca02c\\" } ],
+                [ { \\"expression\\": \\"e1 + e2 + e3\\", \\"label\\": \\"ERROR\\", \\"id\\": \\"error\\", \\"color\\": \\"#ff7f0e\\" } ],
+                [ \\"manage-frontend\\", \\"MDA_CANCEL\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"id\\": \\"s1\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"s2\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"label\\": \\"SUCCESS FINAL\\", \\"color\\": \\"#98df8a\\", \\"id\\": \\"s3\\", \\"visible\\": false } ],
+                [ \\".\\", \\".\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"id\\": \\"e1\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"e2\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"label\\": \\"ERROR FINAL\\", \\"color\\": \\"#ffbb78\\", \\"yAxis\\": \\"left\\", \\"id\\": \\"e3\\", \\"visible\\": false } ]
+            ],
+            \\"view\\": \\"timeSeries\\",
+            \\"stacked\\": false,
+            \\"region\\": \\"eu-west-1\\",
+            \\"stat\\": \\"Sum\\",
+            \\"period\\": 3600,
+            \\"title\\": \\"MDA_CANCEL (per hour)\\",
+            \\"yAxis\\": {
+                \\"left\\": {
+                    \\"min\\": 0
+                }
+            },
+            \\"legend\\": {
+                \\"position\\": \\"right\\"
+            },
+            \\"annotations\\": {
+                \\"vertical\\": [
+                    {
+                        \\"label\\": \\"50% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-05-26T10:17:00.000Z\\"
+                    },
+                    {
+                        \\"color\\": \\"#d62728\\",
+                        \\"label\\": \\"100% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-06-05T09:57:00.000Z\\"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        \\"type\\": \\"metric\\",
+        \\"x\\": 12,
+        \\"y\\": 3,
+        \\"width\\": 12,
+        \\"height\\": 3,
+        \\"properties\\": {
+            \\"metrics\\": [
+                [ { \\"expression\\": \\"s1 + s2 + s3\\", \\"label\\": \\"SUCCESS\\", \\"id\\": \\"success\\", \\"color\\": \\"#2ca02c\\" } ],
+                [ { \\"expression\\": \\"e1 + e2 + e3\\", \\"label\\": \\"ERROR\\", \\"id\\": \\"error\\", \\"color\\": \\"#ff7f0e\\" } ],
+                [ \\"manage-frontend\\", \\"HOLIDAY_STOP_CREATE\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"id\\": \\"s1\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"s2\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"label\\": \\"SUCCESS FINAL\\", \\"color\\": \\"#98df8a\\", \\"id\\": \\"s3\\", \\"visible\\": false } ],
+                [ \\".\\", \\".\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"id\\": \\"e1\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"e2\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"label\\": \\"ERROR FINAL\\", \\"color\\": \\"#ffbb78\\", \\"yAxis\\": \\"left\\", \\"id\\": \\"e3\\", \\"visible\\": false } ]
+            ],
+            \\"view\\": \\"timeSeries\\",
+            \\"stacked\\": false,
+            \\"region\\": \\"eu-west-1\\",
+            \\"stat\\": \\"Sum\\",
+            \\"period\\": 3600,
+            \\"title\\": \\"HOLIDAY_STOP_CREATE (per hour)\\",
+            \\"yAxis\\": {
+                \\"left\\": {
+                    \\"min\\": 0
+                }
+            },
+            \\"legend\\": {
+                \\"position\\": \\"right\\"
+            },
+            \\"annotations\\": {
+                \\"vertical\\": [
+                    {
+                        \\"label\\": \\"50% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-05-26T10:17:00.000Z\\"
+                    },
+                    {
+                        \\"color\\": \\"#d62728\\",
+                        \\"label\\": \\"100% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-06-05T09:57:00.000Z\\"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        \\"type\\": \\"metric\\",
+        \\"x\\": 12,
+        \\"y\\": 6,
+        \\"width\\": 12,
+        \\"height\\": 3,
+        \\"properties\\": {
+            \\"metrics\\": [
+                [ { \\"expression\\": \\"s1 + s2 + s3\\", \\"label\\": \\"SUCCESS\\", \\"id\\": \\"success\\", \\"color\\": \\"#2ca02c\\" } ],
+                [ { \\"expression\\": \\"e1 + e2 + e3\\", \\"label\\": \\"ERROR\\", \\"id\\": \\"error\\", \\"color\\": \\"#ff7f0e\\" } ],
+                [ \\"manage-frontend\\", \\"DELIVERY_PROBLEM_CREATE\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"id\\": \\"s1\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"s2\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"label\\": \\"SUCCESS FINAL\\", \\"color\\": \\"#98df8a\\", \\"id\\": \\"s3\\", \\"visible\\": false } ],
+                [ \\".\\", \\".\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"id\\": \\"e1\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"e2\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"label\\": \\"ERROR FINAL\\", \\"color\\": \\"#ffbb78\\", \\"yAxis\\": \\"left\\", \\"id\\": \\"e3\\", \\"visible\\": false } ]
+            ],
+            \\"view\\": \\"timeSeries\\",
+            \\"stacked\\": false,
+            \\"region\\": \\"eu-west-1\\",
+            \\"stat\\": \\"Sum\\",
+            \\"period\\": 3600,
+            \\"title\\": \\"DELIVERY_PROBLEM_CREATE (per hour)\\",
+            \\"yAxis\\": {
+                \\"left\\": {
+                    \\"min\\": 0
+                }
+            },
+            \\"legend\\": {
+                \\"position\\": \\"right\\"
+            },
+            \\"annotations\\": {
+                \\"vertical\\": [
+                    {
+                        \\"label\\": \\"50% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-05-26T10:17:00.000Z\\"
+                    },
+                    {
+                        \\"color\\": \\"#d62728\\",
+                        \\"label\\": \\"100% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-06-05T09:57:00.000Z\\"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        \\"type\\": \\"metric\\",
+        \\"x\\": 0,
+        \\"y\\": 9,
+        \\"width\\": 12,
+        \\"height\\": 3,
+        \\"properties\\": {
+            \\"metrics\\": [
+                [ { \\"expression\\": \\"s1 + s2 + s3\\", \\"label\\": \\"SUCCESS\\", \\"id\\": \\"success\\", \\"color\\": \\"#2ca02c\\" } ],
+                [ { \\"expression\\": \\"e1 + e2 + e3\\", \\"label\\": \\"ERROR\\", \\"id\\": \\"error\\", \\"color\\": \\"#ff7f0e\\" } ],
+                [ \\"manage-frontend\\", \\"MDA_UPDATE_PAYMENT_DIRECT_DEBIT\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"id\\": \\"s1\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"s2\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"label\\": \\"SUCCESS FINAL\\", \\"color\\": \\"#98df8a\\", \\"id\\": \\"s3\\", \\"visible\\": false } ],
+                [ \\".\\", \\".\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"id\\": \\"e1\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"e2\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"label\\": \\"ERROR FINAL\\", \\"color\\": \\"#ffbb78\\", \\"yAxis\\": \\"left\\", \\"id\\": \\"e3\\", \\"visible\\": false } ]
+            ],
+            \\"view\\": \\"timeSeries\\",
+            \\"stacked\\": false,
+            \\"region\\": \\"eu-west-1\\",
+            \\"stat\\": \\"Sum\\",
+            \\"period\\": 3600,
+            \\"title\\": \\"MDA_UPDATE_PAYMENT_DIRECT_DEBIT (per hour)\\",
+            \\"yAxis\\": {
+                \\"left\\": {
+                    \\"min\\": 0
+                }
+            },
+            \\"legend\\": {
+                \\"position\\": \\"right\\"
+            },
+            \\"annotations\\": {
+                \\"vertical\\": [
+                    {
+                        \\"label\\": \\"50% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-05-26T10:17:00.000Z\\"
+                    },
+                    {
+                        \\"color\\": \\"#d62728\\",
+                        \\"label\\": \\"100% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-06-05T09:57:00.000Z\\"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        \\"type\\": \\"metric\\",
+        \\"x\\": 0,
+        \\"y\\": 0,
+        \\"width\\": 12,
+        \\"height\\": 3,
+        \\"properties\\": {
+            \\"metrics\\": [
+                [ { \\"expression\\": \\"s1 + s2 + s3\\", \\"label\\": \\"SUCCESS\\", \\"id\\": \\"success\\", \\"color\\": \\"#2ca02c\\" } ],
+                [ { \\"expression\\": \\"e1 + e2 + e3\\", \\"label\\": \\"ERROR\\", \\"id\\": \\"error\\", \\"color\\": \\"#ff7f0e\\" } ],
+                [ \\"manage-frontend\\", \\"MDA_UPDATE_PAYMENT_CARD\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"id\\": \\"s1\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"s2\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"label\\": \\"SUCCESS FINAL\\", \\"color\\": \\"#98df8a\\", \\"id\\": \\"s3\\", \\"visible\\": false } ],
+                [ \\".\\", \\".\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"id\\": \\"e1\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"e2\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"label\\": \\"ERROR FINAL\\", \\"color\\": \\"#ffbb78\\", \\"yAxis\\": \\"left\\", \\"id\\": \\"e3\\", \\"visible\\": false } ]
+            ],
+            \\"view\\": \\"timeSeries\\",
+            \\"stacked\\": false,
+            \\"region\\": \\"eu-west-1\\",
+            \\"stat\\": \\"Sum\\",
+            \\"period\\": 3600,
+            \\"title\\": \\"MDA_UPDATE_PAYMENT_CARD (per hour)\\",
+            \\"yAxis\\": {
+                \\"left\\": {
+                    \\"min\\": 0
+                }
+            },
+            \\"legend\\": {
+                \\"position\\": \\"right\\"
+            },
+            \\"annotations\\": {
+                \\"vertical\\": [
+                    {
+                        \\"color\\": \\"#d62728\\",
+                        \\"label\\": \\"50% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-05-26T10:17:00.000Z\\"
+                    },
+                    {
+                        \\"color\\": \\"#d62728\\",
+                        \\"label\\": \\"100% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-06-05T09:57:00.000Z\\"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        \\"type\\": \\"metric\\",
+        \\"x\\": 0,
+        \\"y\\": 3,
+        \\"width\\": 12,
+        \\"height\\": 3,
+        \\"properties\\": {
+            \\"metrics\\": [
+                [ { \\"expression\\": \\"s1 + s2 + s3\\", \\"label\\": \\"SUCCESS\\", \\"id\\": \\"success\\", \\"color\\": \\"#2ca02c\\" } ],
+                [ { \\"expression\\": \\"e1 + e2 + e3\\", \\"label\\": \\"ERROR\\", \\"id\\": \\"error\\", \\"color\\": \\"#ff7f0e\\" } ],
+                [ \\"manage-frontend\\", \\"STRIPE_SETUP_INTENT\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"id\\": \\"s1\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"s2\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"label\\": \\"SUCCESS FINAL\\", \\"color\\": \\"#98df8a\\", \\"id\\": \\"s3\\", \\"visible\\": false } ],
+                [ \\".\\", \\".\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"id\\": \\"e1\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"e2\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"label\\": \\"ERROR FINAL\\", \\"color\\": \\"#ffbb78\\", \\"yAxis\\": \\"left\\", \\"id\\": \\"e3\\", \\"visible\\": false } ]
+            ],
+            \\"view\\": \\"timeSeries\\",
+            \\"stacked\\": false,
+            \\"region\\": \\"eu-west-1\\",
+            \\"stat\\": \\"Sum\\",
+            \\"period\\": 3600,
+            \\"title\\": \\"STRIPE_SETUP_INTENT (per hour)\\",
+            \\"yAxis\\": {
+                \\"left\\": {
+                    \\"min\\": 0
+                }
+            },
+            \\"legend\\": {
+                \\"position\\": \\"right\\"
+            },
+            \\"annotations\\": {
+                \\"vertical\\": [
+                    {
+                        \\"label\\": \\"50% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-05-26T10:17:00.000Z\\"
+                    },
+                    {
+                        \\"color\\": \\"#d62728\\",
+                        \\"label\\": \\"100% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-06-05T09:57:00.000Z\\"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        \\"type\\": \\"metric\\",
+        \\"x\\": 12,
+        \\"y\\": 9,
+        \\"width\\": 12,
+        \\"height\\": 3,
+        \\"properties\\": {
+            \\"metrics\\": [
+                [ { \\"expression\\": \\"s1 + s2 + s3\\", \\"label\\": \\"SUCCESS\\", \\"id\\": \\"success\\", \\"color\\": \\"#2ca02c\\" } ],
+                [ { \\"expression\\": \\"e1 + e2 + e3\\", \\"label\\": \\"ERROR\\", \\"id\\": \\"error\\", \\"color\\": \\"#ff7f0e\\" } ],
+                [ \\"manage-frontend\\", \\"MDA_DELIVERY_ADDRESS_UPDATE\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"id\\": \\"s1\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"s2\\", \\"visible\\": false, \\"color\\": \\"#98df8a\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"SUCCESS\\", { \\"label\\": \\"SUCCESS FINAL\\", \\"color\\": \\"#98df8a\\", \\"id\\": \\"s3\\", \\"visible\\": false } ],
+                [ \\".\\", \\".\\", \\"variant\\", \\"LEGACY\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"id\\": \\"e1\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\"...\\", \\"ACCOUNT OVERVIEW\\", \\".\\", \\".\\", \\".\\", \\".\\", { \\"id\\": \\"e2\\", \\"visible\\": false, \\"color\\": \\"#ffbb78\\" } ],
+                [ \\".\\", \\".\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"label\\": \\"ERROR FINAL\\", \\"color\\": \\"#ffbb78\\", \\"yAxis\\": \\"left\\", \\"id\\": \\"e3\\", \\"visible\\": false } ]
+            ],
+            \\"view\\": \\"timeSeries\\",
+            \\"stacked\\": false,
+            \\"region\\": \\"eu-west-1\\",
+            \\"stat\\": \\"Sum\\",
+            \\"period\\": 3600,
+            \\"title\\": \\"MDA_DELIVERY_ADDRESS_UPDATE (per hour)\\",
+            \\"yAxis\\": {
+                \\"left\\": {
+                    \\"min\\": 0
+                }
+            },
+            \\"legend\\": {
+                \\"position\\": \\"right\\"
+            },
+            \\"annotations\\": {
+                \\"vertical\\": [
+                    {
+                        \\"label\\": \\"50% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-05-26T10:17:00.000Z\\"
+                    },
+                    {
+                        \\"color\\": \\"#d62728\\",
+                        \\"label\\": \\"100% ACCOUNT OVERVIEW\\",
+                        \\"value\\": \\"2020-06-05T09:57:00.000Z\\"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        \\"type\\": \\"metric\\",
+        \\"x\\": 0,
+        \\"y\\": 15,
+        \\"width\\": 12,
+        \\"height\\": 3,
+        \\"properties\\": {
+            \\"metrics\\": [
+                [ \\"manage-frontend\\", \\"LIST_INVOICES\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"id\\": \\"m1\\", \\"color\\": \\"#ff7f0e\\" } ],
+                [ \\"...\\", \\"SUCCESS\\", { \\"id\\": \\"m2\\", \\"color\\": \\"#2ca02c\\" } ]
+            ],
+            \\"view\\": \\"timeSeries\\",
+            \\"stacked\\": false,
+            \\"region\\": \\"eu-west-1\\",
+            \\"stat\\": \\"Sum\\",
+            \\"period\\": 3600,
+            \\"title\\": \\"LIST_INVOICES (per hour)\\",
+            \\"yAxis\\": {
+                \\"left\\": {
+                    \\"min\\": 0
+                }
+            },
+            \\"legend\\": {
+                \\"position\\": \\"right\\"
+            }
+        }
+    },
+    {
+        \\"type\\": \\"metric\\",
+        \\"x\\": 12,
+        \\"y\\": 15,
+        \\"width\\": 12,
+        \\"height\\": 3,
+        \\"properties\\": {
+            \\"metrics\\": [
+                [ \\"manage-frontend\\", \\"GET_INVOICE_PDF\\", \\"Stage\\", \\"PROD\\", \\"outcome\\", \\"ERROR\\", { \\"id\\": \\"m1\\", \\"color\\": \\"#ff7f0e\\" } ],
+                [ \\"...\\", \\"SUCCESS\\", { \\"id\\": \\"m2\\", \\"color\\": \\"#2ca02c\\" } ]
+            ],
+            \\"view\\": \\"timeSeries\\",
+            \\"stacked\\": false,
+            \\"region\\": \\"eu-west-1\\",
+            \\"stat\\": \\"Sum\\",
+            \\"period\\": 3600,
+            \\"title\\": \\"GET_INVOICE_PDF (per hour)\\",
+            \\"yAxis\\": {
+                \\"left\\": {
+                    \\"min\\": 0
+                }
+            },
+            \\"legend\\": {
+                \\"position\\": \\"right\\"
+            }
+        }
+    }
+  ]
+}",
+        "DashboardName": "manage-frontend",
+      },
+      "Type": "AWS::CloudWatch::Dashboard",
+    },
+    "DescribeEC2Policy": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "ec2:DescribeTags",
+                "ec2:DescribeInstances",
+                "autoscaling:DescribeAutoScalingGroups",
+                "autoscaling:DescribeAutoScalingInstances",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+        },
+        "PolicyName": "describe-ec2-policy",
+        "Roles": Array [
+          Object {
+            "Ref": "AppRole",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ElasticLoadBalancer": Object {
+      "Properties": Object {
+        "Name": Object {
+          "Fn::Sub": "\${Stack}-\${Stage}-\${App}",
+        },
+        "SecurityGroups": Array [
+          Object {
+            "Ref": "LoadBalancerSecurityGroup",
+          },
+        ],
+        "Subnets": Object {
+          "Ref": "PublicVpcSubnets",
+        },
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": Object {
+              "Ref": "App",
+            },
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+    },
+    "High5XXRateAlarm": Object {
+      "Condition": "CreateProdResources",
+      "DependsOn": Array [
+        "ElasticLoadBalancer",
+        "TargetGroup",
+      ],
+      "Properties": Object {
+        "AlarmActions": Array [
+          Object {
+            "Fn::Sub": "arn:aws:sns:\${AWS::Region}:\${AWS::AccountId}:fulfilment-dev",
+          },
+        ],
+        "AlarmDescription": Object {
+          "Fn::Join": Array [
+            " ",
+            Array [
+              "Impact - we're serving errors to too many people",
+              Object {
+                "Fn::FindInMap": Array [
+                  "Constants",
+                  "Alarm",
+                  "Process",
+                ],
+              },
+            ],
+          ],
+        },
+        "AlarmName": Object {
+          "Fn::Join": Array [
+            " ",
+            Array [
+              Object {
+                "Fn::FindInMap": Array [
+                  "Constants",
+                  "Alarm",
+                  "Urgent",
+                ],
+              },
+              Object {
+                "Ref": "Stage",
+              },
+              Object {
+                "Fn::FindInMap": Array [
+                  "Constants",
+                  "MetricFilters",
+                  "MetricNamespace",
+                ],
+              },
+              "High 5XX rate",
+            ],
+          ],
+        },
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 20,
+        "Metrics": Array [
+          Object {
+            "Expression": "backend5XX + elb5XX",
+            "Id": "total5xx",
+            "Label": "Count of Backend AND ELB 5XX",
+          },
+          Object {
+            "Id": "backend5XX",
+            "MetricStat": Object {
+              "Metric": Object {
+                "Dimensions": Array [
+                  Object {
+                    "Name": "LoadBalancer",
+                    "Value": Object {
+                      "Fn::GetAtt": "ElasticLoadBalancer.LoadBalancerFullName",
+                    },
+                  },
+                  Object {
+                    "Name": "TargetGroup",
+                    "Value": Object {
+                      "Fn::GetAtt": "TargetGroup.TargetGroupFullName",
+                    },
+                  },
+                ],
+                "MetricName": "HTTPCode_Target_5XX_Count",
+                "Namespace": "AWS/ApplicationELB",
+              },
+              "Period": 60,
+              "Stat": "Sum",
+              "Unit": "Count",
+            },
+            "ReturnData": false,
+          },
+          Object {
+            "Id": "elb5XX",
+            "MetricStat": Object {
+              "Metric": Object {
+                "Dimensions": Array [
+                  Object {
+                    "Name": "LoadBalancer",
+                    "Value": Object {
+                      "Fn::GetAtt": "ElasticLoadBalancer.LoadBalancerFullName",
+                    },
+                  },
+                ],
+                "MetricName": "HTTPCode_ELB_5XX_Count",
+                "Namespace": "AWS/ApplicationELB",
+              },
+              "Period": 60,
+              "Stat": "Sum",
+              "Unit": "Count",
+            },
+            "ReturnData": false,
+          },
+        ],
+        "Threshold": 10,
+        "TreatMissingData": "notBreaching",
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "InstanceProfile": Object {
+      "Properties": Object {
+        "Path": "/",
+        "Roles": Array [
+          Object {
+            "Ref": "AppRole",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::InstanceProfile",
+    },
+    "InstanceSecurityGroup": Object {
+      "Properties": Object {
+        "GroupDescription": "Open up SSH access and enable HTTP access on the configured port",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "SecurityGroupIngress": Array [
+          Object {
+            "FromPort": 22,
+            "IpProtocol": "tcp",
+            "SourceSecurityGroupId": Object {
+              "Ref": "BastionSecurityGroup",
+            },
+            "ToPort": 22,
+          },
+          Object {
+            "FromPort": 9233,
+            "IpProtocol": "tcp",
+            "SourceSecurityGroupId": Object {
+              "Ref": "LoadBalancerSecurityGroup",
+            },
+            "ToPort": 9233,
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "LaunchConfig": Object {
+      "Properties": Object {
+        "AssociatePublicIpAddress": false,
+        "IamInstanceProfile": Object {
+          "Ref": "InstanceProfile",
+        },
+        "ImageId": Object {
+          "Ref": "AMI",
+        },
+        "InstanceType": Object {
+          "Fn::FindInMap": Array [
+            "StageVariables",
+            Object {
+              "Ref": "Stage",
+            },
+            "InstanceType",
+          ],
+        },
+        "SecurityGroups": Array [
+          Object {
+            "Ref": "InstanceSecurityGroup",
+          },
+          Object {
+            "Ref": "WazuhSecurityGroup",
+          },
+        ],
+        "UserData": Object {
+          "Fn::Base64": Object {
+            "Fn::Sub": Array [
+              "#!/bin/bash -ev
+
+# get runnable tar from S3
+aws --region \${AWS::Region} s3 cp s3://membership-dist/\${Stack}/\${Stage}/\${App}/manage-frontend.zip /tmp
+mkdir /etc/gu
+unzip /tmp/manage-frontend.zip -d /etc/gu/dist/
+
+# add user
+groupadd manage-frontend
+useradd -r -s /usr/bin/nologin -g manage-frontend manage-frontend
+touch /var/log/manage-frontend.log
+chown -R manage-frontend:manage-frontend /etc/gu
+chown manage-frontend:manage-frontend /var/log/manage-frontend.log
+
+# write out systemd file
+cat >/etc/systemd/system/manage-frontend.service <<EOL
+[Service]
+ExecStart=/usr/bin/node /etc/gu/dist/server.js
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=manage-frontend
+User=manage-frontend
+Group=manage-frontend
+Environment=NODE_ENV=production
+Environment=STAGE=\${Stage}
+Environment=DOMAIN=\${DomainEnvVariable}
+Environment=API_DOMAIN=\${ApiDomainEnvVariable}
+Environment=CLIENT_DSN=\${ClientRavenDSN}
+Environment=SERVER_DSN=\${ServerRavenDSN}
+[Install]
+WantedBy=multi-user.target
+EOL
+# RUN
+systemctl enable manage-frontend
+systemctl start manage-frontend
+/opt/cloudwatch-logs/configure-logs application \${Stack} \${Stage} \${App} /var/log/manage-frontend.log
+
+",
+              Object {
+                "ApiDomainEnvVariable": Object {
+                  "Fn::FindInMap": Array [
+                    "StageVariables",
+                    Object {
+                      "Ref": "Stage",
+                    },
+                    "ApiDomainEnvVariable",
+                  ],
+                },
+                "DomainEnvVariable": Object {
+                  "Fn::FindInMap": Array [
+                    "StageVariables",
+                    Object {
+                      "Ref": "Stage",
+                    },
+                    "DomainEnvVariable",
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      },
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+    },
+    "LoadBalancerListener": Object {
+      "Properties": Object {
+        "Certificates": Array [
+          Object {
+            "CertificateArn": Object {
+              "Fn::FindInMap": Array [
+                "StageVariables",
+                Object {
+                  "Ref": "Stage",
+                },
+                "CertificateARN",
+              ],
+            },
+          },
+        ],
+        "DefaultActions": Array [
+          Object {
+            "TargetGroupArn": Object {
+              "Ref": "TargetGroup",
+            },
+            "Type": "forward",
+          },
+        ],
+        "LoadBalancerArn": Object {
+          "Ref": "ElasticLoadBalancer",
+        },
+        "Port": 443,
+        "Protocol": "HTTPS",
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+    },
+    "LoadBalancerSecurityGroup": Object {
+      "Properties": Object {
+        "GroupDescription": "Permit incoming HTTPS access on port 443, egress to port 9233",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "FromPort": 9233,
+            "IpProtocol": "tcp",
+            "ToPort": 9233,
+          },
+        ],
+        "SecurityGroupIngress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "ManageFrontendLogGroup": Object {
+      "Properties": Object {
+        "LogGroupName": Object {
+          "Fn::Sub": "support-manage-frontend-\${Stage}",
+        },
+        "RetentionInDays": 14,
+        "Tags": Array [
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+      },
+      "Type": "AWS::Logs::LogGroup",
+    },
+    "NoHealthyInstancesAlarm": Object {
+      "Condition": "CreateProdResources",
+      "DependsOn": Array [
+        "ElasticLoadBalancer",
+        "TargetGroup",
+      ],
+      "Properties": Object {
+        "AlarmActions": Array [
+          Object {
+            "Fn::Sub": "arn:aws:sns:\${AWS::Region}:\${AWS::AccountId}:fulfilment-dev",
+          },
+        ],
+        "AlarmName": Object {
+          "Fn::Sub": "No healthy instances for manage-frontend in \${Stage}",
+        },
+        "ComparisonOperator": "LessThanOrEqualToThreshold",
+        "Dimensions": Array [
+          Object {
+            "Name": "LoadBalancer",
+            "Value": Object {
+              "Fn::GetAtt": "ElasticLoadBalancer.LoadBalancerFullName",
+            },
+          },
+          Object {
+            "Name": "TargetGroup",
+            "Value": Object {
+              "Fn::GetAtt": "TargetGroup.TargetGroupFullName",
+            },
+          },
+        ],
+        "EvaluationPeriods": 2,
+        "MetricName": "HealthyHostCount",
+        "Namespace": "AWS/ApplicationELB",
+        "Period": 60,
+        "Statistic": "Average",
+        "Threshold": 0.5,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "ReadFromDistBucketPolicy": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Resource": Array [
+                "arn:aws:s3::*:membership-dist/*",
+              ],
+            },
+          ],
+        },
+        "PolicyName": "read-from-dist-bucket-policy",
+        "Roles": Array [
+          Object {
+            "Ref": "AppRole",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "TargetGroup": Object {
+      "DependsOn": Array [
+        "ElasticLoadBalancer",
+      ],
+      "Properties": Object {
+        "HealthCheckIntervalSeconds": 10,
+        "HealthCheckPath": "/_healthcheck",
+        "HealthCheckPort": "9233",
+        "HealthCheckProtocol": "HTTP",
+        "HealthCheckTimeoutSeconds": 5,
+        "HealthyThresholdCount": 2,
+        "Name": Object {
+          "Fn::Sub": "\${Stack}-\${Stage}-\${App}",
+        },
+        "Port": 9233,
+        "Protocol": "HTTP",
+        "Tags": Array [
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+        "TargetGroupAttributes": Array [
+          Object {
+            "Key": "deregistration_delay.timeout_seconds",
+            "Value": "45",
+          },
+        ],
+        "UnhealthyThresholdCount": 2,
+        "VpcId": Object {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+    },
+    "WazuhSecurityGroup": Object {
+      "Properties": Object {
+        "GroupDescription": "Allow outbound traffic from wazuh agent to manager",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "FromPort": 1514,
+            "IpProtocol": "tcp",
+            "ToPort": 1515,
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+  },
+}
+`;
