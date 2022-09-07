@@ -3,7 +3,6 @@ interface Config {
 	readonly DOMAIN: string;
 	readonly API_DOMAIN: string;
 	readonly ENVIRONMENT: Environments;
-	readonly BUILD: string;
 	readonly CLIENT_DSN: string | null;
 	readonly SERVER_DSN: string | null;
 }
@@ -21,18 +20,31 @@ const getConfig: (name: string) => string | null = (name) => {
 };
 
 export enum Environments {
-	PRODUCTION,
+	AWS,
 	DEVELOPMENT,
 }
 
+const stage = getConfig('STAGE');
+
+const getDomain = () => {
+	switch (stage) {
+		case 'PROD':
+			return 'theguardian.com';
+		case 'CODE':
+			return 'code.dev-theguardian.com';
+		default:
+			return 'thegulocal.com';
+	}
+};
+
 export const conf: Config = {
-	STAGE: getConfig('STAGE') || 'DEV',
-	DOMAIN: getConfig('DOMAIN') || 'thegulocal.com',
-	API_DOMAIN: getConfig('API_DOMAIN') || 'code.dev-guardianapis.com',
-	BUILD: getConfig('BUILD') || 'DEV',
+	STAGE: stage || 'DEV',
+	DOMAIN: getDomain(),
+	API_DOMAIN:
+		stage === 'PROD' ? 'guardianapis.com' : 'code.dev-guardianapis.com',
 	ENVIRONMENT:
-		getConfig('NODE_ENV') === 'production'
-			? Environments.PRODUCTION
+		stage === 'PROD' || stage === 'CODE'
+			? Environments.AWS
 			: Environments.DEVELOPMENT,
 	CLIENT_DSN: getConfig('CLIENT_DSN'),
 	SERVER_DSN: getConfig('SERVER_DSN'),

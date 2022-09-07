@@ -5,10 +5,10 @@ import { recaptchaConfigPromise } from '../recaptchaConfig';
 import { stripePublicKeysPromise } from '../stripeSetupIntentConfig';
 
 export const clientDSN =
-	conf.ENVIRONMENT === Environments.PRODUCTION && conf.CLIENT_DSN
+	conf.ENVIRONMENT === Environments.AWS && conf.CLIENT_DSN
 		? conf.CLIENT_DSN
 		: null;
-if (conf.ENVIRONMENT === Environments.PRODUCTION && !conf.CLIENT_DSN) {
+if (conf.ENVIRONMENT === Environments.AWS && !conf.CLIENT_DSN) {
 	log.error('NO SENTRY IN CLIENT PROD!');
 }
 

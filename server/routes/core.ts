@@ -45,7 +45,7 @@ router.get('/robots.txt', (_, res: Response) => {
 		allowHelpCentre + disallowGoogleAdsBots + helpCentreSitemap;
 	const preProdAccessList = disallowAll;
 	const accessList =
-		conf.ENVIRONMENT === Environments.PRODUCTION
+		conf.ENVIRONMENT === Environments.AWS
 			? prodAccessList
 			: preProdAccessList;
 	res.contentType('text/plain').send(accessList);
