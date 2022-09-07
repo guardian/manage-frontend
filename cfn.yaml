@@ -36,8 +36,8 @@ Parameters:
     Description: Bastion's security group for SSH
     Type: String
 Conditions:
-  CreateProdResources: !Equals [!Ref "Stage", "PROD"]
-  CreateCodeResources: !Equals [!Ref "Stage", "CODE"]
+  CreateProdResources: !Equals [!Ref 'Stage', 'PROD']
+  CreateCodeResources: !Equals [!Ref 'Stage', 'CODE']
 Mappings:
   Constants:
     Alarm:
@@ -51,15 +51,11 @@ Mappings:
       MinInstances: 1
       InstanceType: t4g.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/2c2a72a2-a0d6-4ffa-b8a1-8a7916000515
-      ApiDomainEnvVariable: code.dev-guardianapis.com
-      DomainEnvVariable: code.dev-theguardian.com
     PROD:
       MaxInstances: 6
       MinInstances: 3
       InstanceType: t4g.small
       CertificateARN: arn:aws:acm:eu-west-1:865473395570:certificate/d2e4911c-c78d-469b-ab53-8c507aa41576
-      ApiDomainEnvVariable: guardianapis.com
-      DomainEnvVariable: theguardian.com
 Resources:
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -84,11 +80,11 @@ Resources:
           PropagateAtLaunch: true
         - Key: Name
           Value: !Join
-            - "-"
+            - '-'
             - - !Ref Stack
               - !Ref Stage
               - !Ref App
-          PropagateAtLaunch: "true"
+          PropagateAtLaunch: 'true'
   LaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
@@ -126,10 +122,7 @@ Resources:
             SyslogIdentifier=manage-frontend
             User=manage-frontend
             Group=manage-frontend
-            Environment=NODE_ENV=production
             Environment=STAGE=${Stage}
-            Environment=DOMAIN=${DomainEnvVariable}
-            Environment=API_DOMAIN=${ApiDomainEnvVariable}
             Environment=CLIENT_DSN=${ClientRavenDSN}
             Environment=SERVER_DSN=${ServerRavenDSN}
             [Install]
@@ -140,15 +133,10 @@ Resources:
             systemctl start manage-frontend
             /opt/cloudwatch-logs/configure-logs application ${Stack} ${Stage} ${App} /var/log/manage-frontend.log
 
-          - DomainEnvVariable:
-              !FindInMap [StageVariables, !Ref Stage, DomainEnvVariable]
-            ApiDomainEnvVariable:
-              !FindInMap [StageVariables, !Ref Stage, ApiDomainEnvVariable]
-
   AppRole:
     Type: AWS::IAM::Role
     Properties:
-      Path: "/"
+      Path: '/'
       ManagedPolicyArns:
         - !Sub arn:aws:iam::${AWS::AccountId}:policy/guardian-ec2-role-for-ssm
       AssumeRolePolicyDocument:
@@ -176,7 +164,7 @@ Resources:
             Statement:
               - Effect: Allow
                 Action: cloudwatch:PutMetricData
-                Resource: "*"
+                Resource: '*'
         - PolicyName: ReadPrivateCredentials
           PolicyDocument:
             Statement:
@@ -230,7 +218,7 @@ Resources:
       PolicyDocument:
         Statement:
           - Effect: Allow
-            Resource: "*"
+            Resource: '*'
             Action:
               - ec2:DescribeTags
               - ec2:DescribeInstances
@@ -255,7 +243,7 @@ Resources:
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
-      Path: "/"
+      Path: '/'
       Roles:
         - !Ref AppRole
 
@@ -359,7 +347,7 @@ Resources:
           CidrIp: 0.0.0.0/0
 
   ManageFrontendLogGroup:
-    Type: "AWS::Logs::LogGroup"
+    Type: 'AWS::Logs::LogGroup'
     Properties:
       LogGroupName: !Sub support-manage-frontend-${Stage}
       RetentionInDays: 14
@@ -394,13 +382,13 @@ Resources:
       AlarmActions:
         - !Sub arn:aws:sns:${AWS::Region}:${AWS::AccountId}:fulfilment-dev
       AlarmName: !Join
-        - " "
+        - ' '
         - - !FindInMap [Constants, Alarm, Urgent]
-          - !Ref "Stage"
+          - !Ref 'Stage'
           - !FindInMap [Constants, MetricFilters, MetricNamespace]
-          - "High 5XX rate"
+          - 'High 5XX rate'
       AlarmDescription: !Join
-        - " "
+        - ' '
         - - Impact - we're serving errors to too many people
           - !FindInMap [Constants, Alarm, Process]
       ComparisonOperator: GreaterThanOrEqualToThreshold
@@ -410,7 +398,7 @@ Resources:
       Metrics:
         - Id: total5xx
           Expression: backend5XX + elb5XX
-          Label: "Count of Backend AND ELB 5XX"
+          Label: 'Count of Backend AND ELB 5XX'
         - Id: backend5XX
           MetricStat:
             Metric:
@@ -445,7 +433,7 @@ Resources:
     Type: AWS::CloudWatch::Dashboard
     Condition: CreateProdResources
     Properties:
-      DashboardName: "manage-frontend"
+      DashboardName: 'manage-frontend'
       DashboardBody: >-
         {
           "widgets": [
