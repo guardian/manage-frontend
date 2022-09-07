@@ -2,7 +2,6 @@ module.exports = {
 	transform: {
 		'^.+\\.tsx?$': 'ts-jest',
 	},
-	testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
 	moduleFileExtensions: ['js', 'json', 'jsx', 'node', 'ts', 'tsx'],
 	testResultsProcessor: 'jest-teamcity-reporter',
 	snapshotSerializers: ['@emotion/jest/serializer'],
@@ -32,5 +31,9 @@ module.exports = {
 	},
 	preset: 'ts-jest',
 	testEnvironment: 'jsdom',
-	testPathIgnorePatterns: ['/cypress/'],
+	testPathIgnorePatterns: [
+		'<rootDir>/cypress/',
+		'<rootDir>/cdk/',
+		'<rootDir>/node_modules/',
+	],
 };

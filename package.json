@@ -19,7 +19,7 @@
     "test": "jest --coverage && yarn type-check && yarn lint ",
     "jest": "jest",
     "updateSnapshot": "jest -u",
-    "sonar-scanner": "cd .. && app/node_modules/sonar-scanner/bin/sonar-scanner -Dsonar.projectVersion=$(git rev-parse --short HEAD)",
+    "sonar-scanner": "sonar-scanner -Dsonar.projectVersion=$(git rev-parse --short HEAD)",
     "fix": "pretty-quick --staged && eslint --fix 'client/**' 'server/**' 'shared/**'",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -30,7 +30,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn fix && GIT_DIR=../.git && yarn type-check && yarn bundle-check-client-if-changed"
+      "pre-commit": "yarn fix && yarn type-check && yarn bundle-check-client-if-changed"
     }
   },
   "main": "./dist/server",
