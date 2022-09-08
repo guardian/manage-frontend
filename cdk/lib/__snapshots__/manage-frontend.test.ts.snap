@@ -50,14 +50,59 @@ Object {
   "Metadata": Object {
     "gu:cdk:constructs": Array [
       "GuStringParameter",
+      "GuStringParameter",
+      "GuStringParameter",
+      "GuAllowPolicy",
+      "GuPutCloudwatchMetricsPolicy",
+      "GuGetS3ObjectsPolicy",
+      "GuGetS3ObjectsPolicy",
+      "GuGetS3ObjectsPolicy",
+      "GuAllowPolicy",
+      "GuAllowPolicy",
+      "GuAllowPolicy",
+      "GuGetS3ObjectsPolicy",
+      "GuVpcParameter",
+      "GuSubnetListParameter",
+      "GuCertificate",
+      "GuInstanceRole",
+      "GuSSMRunCommandPolicy",
+      "GuDescribeEC2Policy",
+      "GuLoggingStreamNameParameter",
+      "GuLogShippingPolicy",
+      "GuDistributionBucketParameter",
+      "GuGetDistributablePolicy",
+      "GuParameterStoreReadPolicy",
+      "GuAmiParameter",
+      "GuHttpsEgressSecurityGroup",
+      "GuAutoScalingGroup",
+      "GuWazuhAccess",
+      "GuSubnetListParameter",
+      "GuApplicationLoadBalancer",
+      "GuApplicationTargetGroup",
+      "GuHttpsApplicationListener",
     ],
     "gu:cdk:version": "47.3.1",
+  },
+  "Outputs": Object {
+    "LoadBalancerManagefrontendDnsName": Object {
+      "Description": "DNS entry for LoadBalancerManagefrontend",
+      "Value": Object {
+        "Fn::GetAtt": Array [
+          "LoadBalancerManagefrontend184BCE6C",
+          "DNSName",
+        ],
+      },
+    },
   },
   "Parameters": Object {
     "AMI": Object {
       "Default": "ami-88a6af62",
       "Description": "AMI ID",
       "Type": "String",
+    },
+    "AMIManagefrontend": Object {
+      "Description": "Amazon Machine Image ID for the app manage-frontend. Use this in conjunction with AMIgo to keep AMIs up to date.",
+      "Type": "AWS::EC2::Image::Id",
     },
     "App": Object {
       "Default": "manage-frontend",
@@ -71,6 +116,16 @@ Object {
     "ClientRavenDSN": Object {
       "Description": "the DSN to use with sentry on the client",
       "Type": "String",
+    },
+    "DistributionBucketName": Object {
+      "Default": "/account/services/artifact.bucket",
+      "Description": "SSM parameter containing the S3 bucket name holding distribution artifacts",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+    "LoggingStreamName": Object {
+      "Default": "/account/services/logging.stream.name",
+      "Description": "SSM parameter containing the Name (not ARN) on the kinesis stream",
+      "Type": "AWS::SSM::Parameter::Value<String>",
     },
     "PrivateVpcSubnetsPreCDK": Object {
       "Default": "/account/vpc/primary/subnets/private",
@@ -95,13 +150,38 @@ Object {
       "Description": "Applied directly as a tag",
       "Type": "String",
     },
+    "VpcId": Object {
+      "Default": "/account/vpc/primary/id",
+      "Description": "Virtual Private Cloud to run EC2 instances within. Should NOT be the account default VPC.",
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::VPC::Id>",
+    },
     "VpcIdPreCDK": Object {
       "Default": "/account/vpc/primary/id",
       "Description": "VpcId of your existing Virtual Private Cloud (VPC)",
       "Type": "AWS::SSM::Parameter::Value<AWS::EC2::VPC::Id>",
     },
+    "clientRavenDSN": Object {
+      "Default": "/TEST/support/manage-frontend/clientRavenDSN",
+      "Description": "the DSN to use with Sentry on the client",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
     "hostedZoneId": Object {
       "Default": "/account/route53/membership/hostedZoneId",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+    "managefrontendPrivateSubnets": Object {
+      "Default": "/account/vpc/primary/subnets/private",
+      "Description": "A list of private subnets",
+      "Type": "AWS::SSM::Parameter::Value<List<AWS::EC2::Subnet::Id>>",
+    },
+    "managefrontendPublicSubnets": Object {
+      "Default": "/account/vpc/primary/subnets/public",
+      "Description": "A list of public subnets",
+      "Type": "AWS::SSM::Parameter::Value<List<AWS::EC2::Subnet::Id>>",
+    },
+    "serverRavenDSN": Object {
+      "Default": "/TEST/support/manage-frontend/serverRavenDSN",
+      "Description": "the DSN to use with Sentry on the server",
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
   },
@@ -296,10 +376,6 @@ Object {
         ],
         "Tags": Array [
           Object {
-            "Key": "App",
-            "Value": "manage-frontend",
-          },
-          Object {
             "Key": "gu:cdk:version",
             "Value": "TEST",
           },
@@ -348,7 +424,9 @@ Object {
           Object {
             "Key": "App",
             "PropagateAtLaunch": true,
-            "Value": "manage-frontend",
+            "Value": Object {
+              "Ref": "App",
+            },
           },
           Object {
             "Key": "gu:cdk:version",
@@ -401,6 +479,206 @@ Object {
         },
       },
       "Type": "AWS::AutoScaling::AutoScalingGroup",
+    },
+    "AutoScalingGroupManagefrontendASGD7F4CC81": Object {
+      "Properties": Object {
+        "HealthCheckGracePeriod": 120,
+        "HealthCheckType": "ELB",
+        "LaunchConfigurationName": Object {
+          "Ref": "AutoScalingGroupManagefrontendLaunchConfig1BB2A57B",
+        },
+        "MaxSize": "2",
+        "MinSize": "1",
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "PropagateAtLaunch": true,
+            "Value": "manage-frontend",
+          },
+          Object {
+            "Key": "gu:cdk:pattern-name",
+            "PropagateAtLaunch": true,
+            "Value": "GuNodeApp",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "PropagateAtLaunch": true,
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "PropagateAtLaunch": true,
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "gu:riffraff:new-asg",
+            "PropagateAtLaunch": true,
+            "Value": "true",
+          },
+          Object {
+            "Key": "LogKinesisStreamName",
+            "PropagateAtLaunch": true,
+            "Value": Object {
+              "Ref": "LoggingStreamName",
+            },
+          },
+          Object {
+            "Key": "Name",
+            "PropagateAtLaunch": true,
+            "Value": "ManageFrontend/AutoScalingGroupManagefrontend",
+          },
+          Object {
+            "Key": "Stack",
+            "PropagateAtLaunch": true,
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "PropagateAtLaunch": true,
+            "Value": "TEST",
+          },
+        ],
+        "TargetGroupARNs": Array [
+          Object {
+            "Ref": "TargetGroupManagefrontend7AE2B787",
+          },
+        ],
+        "VPCZoneIdentifier": Object {
+          "Ref": "managefrontendPrivateSubnets",
+        },
+      },
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+    },
+    "AutoScalingGroupManagefrontendInstanceProfileB8F58630": Object {
+      "Properties": Object {
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::InstanceProfile",
+    },
+    "AutoScalingGroupManagefrontendLaunchConfig1BB2A57B": Object {
+      "DependsOn": Array [
+        "InstanceRoleManagefrontendC8EBF20D",
+      ],
+      "Properties": Object {
+        "IamInstanceProfile": Object {
+          "Ref": "AutoScalingGroupManagefrontendInstanceProfileB8F58630",
+        },
+        "ImageId": Object {
+          "Ref": "AMIManagefrontend",
+        },
+        "InstanceType": "t4g.small",
+        "MetadataOptions": Object {
+          "HttpTokens": "required",
+        },
+        "SecurityGroups": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "GuHttpsEgressSecurityGroupManagefrontend8E53A220",
+              "GroupId",
+            ],
+          },
+          Object {
+            "Fn::GetAtt": Array [
+              "WazuhSecurityGroup",
+              "GroupId",
+            ],
+          },
+        ],
+        "UserData": Object {
+          "Fn::Base64": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "#!/bin/bash -ev
+            # get runnable tar from S3
+            aws --region ",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                " s3 cp s3://membership-dist/support/TEST/manage-frontend/manage-frontend.zip /tmp
+            mkdir /etc/gu
+            unzip /tmp/manage-frontend.zip -d /etc/gu/dist/
+            # add user
+            groupadd manage-frontend
+            useradd -r -s /usr/bin/nologin -g manage-frontend manage-frontend
+            touch /var/log/manage-frontend.log
+            chown -R manage-frontend:manage-frontend /etc/gu
+            chown manage-frontend:manage-frontend /var/log/manage-frontend.log
+            # write out systemd file
+            cat >/etc/systemd/system/manage-frontend.service <<EOL
+            [Service]
+            ExecStart=/usr/bin/node /etc/gu/dist/server.js
+            Restart=always
+            StandardOutput=syslog
+            StandardError=syslog
+            SyslogIdentifier=manage-frontend
+            User=manage-frontend
+            Group=manage-frontend
+            Environment=STAGE=TEST
+            Environment=CLIENT_DSN=",
+                Object {
+                  "Ref": "clientRavenDSN",
+                },
+                "
+            Environment=SERVER_DSN=",
+                Object {
+                  "Ref": "serverRavenDSN",
+                },
+                "
+            [Install]
+            WantedBy=multi-user.target
+            EOL
+            # RUN
+            systemctl enable manage-frontend
+            systemctl start manage-frontend
+            /opt/cloudwatch-logs/configure-logs application support TEST manage-frontend /var/log/manage-frontend.log",
+              ],
+            ],
+          },
+        },
+      },
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+    },
+    "CertificateManagefrontend6C431D69": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "DomainName": "manage.code.theguardian.com.origin.membership.guardianapis.com",
+        "DomainValidationOptions": Array [
+          Object {
+            "DomainName": "manage.code.theguardian.com.origin.membership.guardianapis.com",
+            "HostedZoneId": "Z1E4V12LQGXFEC",
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "manage-frontend",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+        "ValidationMethod": "DNS",
+      },
+      "Type": "AWS::CertificateManager::Certificate",
+      "UpdateReplacePolicy": "Retain",
     },
     "CriticalPathsCloudWatchDashboard": Object {
       "Condition": "CreateProdResources",
@@ -949,6 +1227,118 @@ Object {
       },
       "Type": "AWS::IAM::Policy",
     },
+    "DescribeEC2PolicyFF5F9295": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "autoscaling:DescribeAutoScalingInstances",
+                "autoscaling:DescribeAutoScalingGroups",
+                "ec2:DescribeTags",
+                "ec2:DescribeInstances",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "describe-ec2-policy",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "DiscoverApiGatewayApiKeys089E4788": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "apigateway:GET",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:apigateway:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    "::/apikeys/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "DiscoverApiGatewayApiKeys089E4788",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "DiscoverApiGatewayLambdas813153A8": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "cloudformation:ListStackResources",
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:cloudformation:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":stack/membership-TEST-*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:cloudformation:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":stack/support-TEST-*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "DiscoverApiGatewayLambdas813153A8",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "ElasticLoadBalancer": Object {
       "Properties": Object {
         "Name": Object {
@@ -962,6 +1352,77 @@ Object {
         "Subnets": Object {
           "Ref": "PublicVpcSubnetsPreCDK",
         },
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": Object {
+              "Ref": "App",
+            },
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+    },
+    "GetDistributablePolicyManagefrontendF60D9EB4": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:s3:::",
+                    Object {
+                      "Ref": "DistributionBucketName",
+                    },
+                    "/support/TEST/manage-frontend/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "GetDistributablePolicyManagefrontendF60D9EB4",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "GuHttpsEgressSecurityGroupManagefrontend8E53A220": Object {
+      "Properties": Object {
+        "GroupDescription": "Allow all outbound HTTPS traffic",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound HTTPS traffic",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
         "Tags": Array [
           Object {
             "Key": "App",
@@ -984,8 +1445,95 @@ Object {
             "Value": "TEST",
           },
         ],
+        "VpcId": Object {
+          "Ref": "VpcId",
+        },
       },
-      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "GuHttpsEgressSecurityGroupManagefrontendfromManageFrontendLoadBalancerManagefrontendSecurityGroup4DBBACB9300072467277": Object {
+      "Properties": Object {
+        "Description": "Load balancer to target",
+        "FromPort": 3000,
+        "GroupId": Object {
+          "Fn::GetAtt": Array [
+            "GuHttpsEgressSecurityGroupManagefrontend8E53A220",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": Object {
+          "Fn::GetAtt": Array [
+            "LoadBalancerManagefrontendSecurityGroupED621ABF",
+            "GroupId",
+          ],
+        },
+        "ToPort": 3000,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "GuLogShippingPolicy981BFE5A": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "kinesis:Describe*",
+                "kinesis:Put*",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:kinesis:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":stream/",
+                    Object {
+                      "Ref": "LoggingStreamName",
+                    },
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "GuLogShippingPolicy981BFE5A",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "GuPutCloudwatchMetricsPolicyC5BCE402": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "cloudwatch:PutMetricData",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "GuPutCloudwatchMetricsPolicyC5BCE402",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "High5XXRateAlarm": Object {
       "Condition": "CreateProdResources",
@@ -1112,6 +1660,56 @@ Object {
       },
       "Type": "AWS::IAM::InstanceProfile",
     },
+    "InstanceRoleManagefrontendC8EBF20D": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "ec2.",
+                      Object {
+                        "Ref": "AWS::URLSuffix",
+                      },
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Path": "/",
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "manage-frontend",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
     "InstanceSecurityGroup": Object {
       "Properties": Object {
         "GroupDescription": "Open up SSH access and enable HTTP access on the configured port",
@@ -1143,10 +1741,6 @@ Object {
         ],
         "Tags": Array [
           Object {
-            "Key": "App",
-            "Value": "manage-frontend",
-          },
-          Object {
             "Key": "gu:cdk:version",
             "Value": "TEST",
           },
@@ -1168,6 +1762,42 @@ Object {
         },
       },
       "Type": "AWS::EC2::SecurityGroup",
+    },
+    "InvokeApiGatewayD4DDF95A": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "execute-api:Invoke",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:execute-api:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":*/TEST/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "InvokeApiGatewayD4DDF95A",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "LaunchConfig": Object {
       "Properties": Object {
@@ -1238,6 +1868,31 @@ systemctl start manage-frontend
       },
       "Type": "AWS::AutoScaling::LaunchConfiguration",
     },
+    "ListenerManagefrontendF0B970A7": Object {
+      "Properties": Object {
+        "Certificates": Array [
+          Object {
+            "CertificateArn": Object {
+              "Ref": "CertificateManagefrontend6C431D69",
+            },
+          },
+        ],
+        "DefaultActions": Array [
+          Object {
+            "TargetGroupArn": Object {
+              "Ref": "TargetGroupManagefrontend7AE2B787",
+            },
+            "Type": "forward",
+          },
+        ],
+        "LoadBalancerArn": Object {
+          "Ref": "LoadBalancerManagefrontend184BCE6C",
+        },
+        "Port": 443,
+        "Protocol": "HTTPS",
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+    },
     "LoadBalancerListener": Object {
       "Properties": Object {
         "Certificates": Array [
@@ -1269,6 +1924,113 @@ systemctl start manage-frontend
       },
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
     },
+    "LoadBalancerManagefrontend184BCE6C": Object {
+      "Properties": Object {
+        "LoadBalancerAttributes": Array [
+          Object {
+            "Key": "deletion_protection.enabled",
+            "Value": "true",
+          },
+        ],
+        "Scheme": "internet-facing",
+        "SecurityGroups": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "LoadBalancerManagefrontendSecurityGroupED621ABF",
+              "GroupId",
+            ],
+          },
+        ],
+        "Subnets": Object {
+          "Ref": "managefrontendPublicSubnets",
+        },
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "manage-frontend",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+        "Type": "application",
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+    },
+    "LoadBalancerManagefrontendSecurityGroupED621ABF": Object {
+      "Properties": Object {
+        "GroupDescription": "Automatically created Security Group for ELB ManageFrontendLoadBalancerManagefrontend0170C9E2",
+        "SecurityGroupIngress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow from anyone on port 443",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "manage-frontend",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "LoadBalancerManagefrontendSecurityGrouptoManageFrontendGuHttpsEgressSecurityGroupManagefrontendD45FBEBD3000A633E9D8": Object {
+      "Properties": Object {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": Object {
+          "Fn::GetAtt": Array [
+            "GuHttpsEgressSecurityGroupManagefrontend8E53A220",
+            "GroupId",
+          ],
+        },
+        "FromPort": 3000,
+        "GroupId": Object {
+          "Fn::GetAtt": Array [
+            "LoadBalancerManagefrontendSecurityGroupED621ABF",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 3000,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
     "LoadBalancerSecurityGroup": Object {
       "Properties": Object {
         "GroupDescription": "Permit incoming HTTPS access on port 443, egress to port 9233",
@@ -1289,10 +2051,6 @@ systemctl start manage-frontend
           },
         ],
         "Tags": Array [
-          Object {
-            "Key": "App",
-            "Value": "manage-frontend",
-          },
           Object {
             "Key": "gu:cdk:version",
             "Value": "TEST",
@@ -1324,9 +2082,31 @@ systemctl start manage-frontend
         "RetentionInDays": 14,
         "Tags": Array [
           Object {
-            "Key": "App",
-            "Value": "manage-frontend",
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
           },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+      },
+      "Type": "AWS::Logs::LogGroup",
+    },
+    "ManageFrontendLogGroup7414E8CD": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "LogGroupName": "support-manage-frontend-TEST",
+        "RetentionInDays": 14,
+        "Tags": Array [
           Object {
             "Key": "gu:cdk:version",
             "Value": "TEST",
@@ -1346,6 +2126,7 @@ systemctl start manage-frontend
         ],
       },
       "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
     },
     "NoHealthyInstancesAlarm": Object {
       "Condition": "CreateProdResources",
@@ -1386,6 +2167,95 @@ systemctl start manage-frontend
       },
       "Type": "AWS::CloudWatch::Alarm",
     },
+    "ParameterStoreReadManagefrontendB2A65B47": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "ssm:GetParametersByPath",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:ssm:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/TEST/support/manage-frontend",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "ssm:GetParameters",
+                "ssm:GetParameter",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:ssm:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/TEST/support/manage-frontend/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "parameter-store-read-policy",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "PushLogs4B59405A": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "ManageFrontendLogGroup7414E8CD",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "PushLogs4B59405A",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "ReadFromDistBucketPolicy": Object {
       "Properties": Object {
         "PolicyDocument": Object {
@@ -1408,6 +2278,126 @@ systemctl start manage-frontend
       },
       "Type": "AWS::IAM::Policy",
     },
+    "ReadFromDistBucketPolicy7F95061E": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Resource": "arn:aws:s3:::membership-dist/*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ReadFromDistBucketPolicy7F95061E",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ReadFulfilmentDateCalculatorOutputB22863A2": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Resource": "arn:aws:s3:::fulfilment-date-calculator-TEST/*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ReadFulfilmentDateCalculatorOutputB22863A2",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ReadManageHelpContent49917399": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Resource": "arn:aws:s3:::manage-help-content/TEST/*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ReadManageHelpContent49917399",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ReadPrivateCredentialsB593C891": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Resource": "arn:aws:s3:::gu-reader-revenue-private/manage-frontend/TEST/*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ReadPrivateCredentialsB593C891",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "SSMRunCommandPolicy244E1613": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "ec2messages:AcknowledgeMessage",
+                "ec2messages:DeleteMessage",
+                "ec2messages:FailMessage",
+                "ec2messages:GetEndpoint",
+                "ec2messages:GetMessages",
+                "ec2messages:SendReply",
+                "ssm:UpdateInstanceInformation",
+                "ssm:ListInstanceAssociations",
+                "ssm:DescribeInstanceProperties",
+                "ssm:DescribeDocumentParameters",
+                "ssmmessages:CreateControlChannel",
+                "ssmmessages:CreateDataChannel",
+                "ssmmessages:OpenControlChannel",
+                "ssmmessages:OpenDataChannel",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ssm-run-command-policy",
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "TargetGroup": Object {
       "DependsOn": Array [
         "ElasticLoadBalancer",
@@ -1425,10 +2415,6 @@ systemctl start manage-frontend
         "Port": 9233,
         "Protocol": "HTTP",
         "Tags": Array [
-          Object {
-            "Key": "App",
-            "Value": "manage-frontend",
-          },
           Object {
             "Key": "gu:cdk:version",
             "Value": "TEST",
@@ -1459,6 +2445,98 @@ systemctl start manage-frontend
       },
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
     },
+    "TargetGroupManagefrontend7AE2B787": Object {
+      "Properties": Object {
+        "HealthCheckIntervalSeconds": 10,
+        "HealthCheckPath": "/healthcheck",
+        "HealthCheckProtocol": "HTTP",
+        "HealthCheckTimeoutSeconds": 5,
+        "HealthyThresholdCount": 5,
+        "Port": 3000,
+        "Protocol": "HTTP",
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "manage-frontend",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+        "TargetGroupAttributes": Array [
+          Object {
+            "Key": "deregistration_delay.timeout_seconds",
+            "Value": "30",
+          },
+          Object {
+            "Key": "stickiness.enabled",
+            "Value": "false",
+          },
+        ],
+        "TargetType": "instance",
+        "UnhealthyThresholdCount": 2,
+        "VpcId": Object {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+    },
+    "WazuhSecurityGroup": Object {
+      "Properties": Object {
+        "GroupDescription": "Allow outbound traffic from wazuh agent to manager",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Wazuh event logging",
+            "FromPort": 1514,
+            "IpProtocol": "tcp",
+            "ToPort": 1514,
+          },
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Wazuh agent registration",
+            "FromPort": 1515,
+            "IpProtocol": "tcp",
+            "ToPort": 1515,
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "TEST",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
     "WazuhSecurityGroupPreCDK": Object {
       "Properties": Object {
         "GroupDescription": "Allow outbound traffic from wazuh agent to manager",
@@ -1471,10 +2549,6 @@ systemctl start manage-frontend
           },
         ],
         "Tags": Array [
-          Object {
-            "Key": "App",
-            "Value": "manage-frontend",
-          },
           Object {
             "Key": "gu:cdk:version",
             "Value": "TEST",
