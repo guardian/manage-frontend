@@ -2,8 +2,7 @@ import winston from 'winston';
 import { putMetricDataPromise } from './awsIntegration';
 import { conf, Environments } from './config';
 
-const location =
-	conf.ENVIRONMENT === Environments.PRODUCTION ? '/var/log/' : './';
+const location = conf.ENVIRONMENT === Environments.AWS ? '/var/log/' : './';
 
 export const log = winston.createLogger({
 	level: 'info',
