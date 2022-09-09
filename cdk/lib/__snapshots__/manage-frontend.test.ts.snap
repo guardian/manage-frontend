@@ -71,10 +71,12 @@ Object {
       "Type": "String",
     },
     "PrivateVpcSubnetsPreCDK": Object {
+      "Default": "/account/vpc/primary/subnets/private",
       "Description": "Private subnets to use for EC2 instances",
       "Type": "List<AWS::EC2::Subnet::Id>",
     },
     "PublicVpcSubnetsPreCDK": Object {
+      "Default": "/account/vpc/primary/subnets/public",
       "Description": "Public subnets to use for the ELB",
       "Type": "List<AWS::EC2::Subnet::Id>",
     },
