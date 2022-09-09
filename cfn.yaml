@@ -8,11 +8,11 @@ Parameters:
   PrivateVpcSubnetsPreCDK:
     Description: Private subnets to use for EC2 instances
     Type: List<AWS::EC2::Subnet::Id>
-    Defualt: /account/vpc/primary/subnets/private
+    Default: /account/vpc/primary/subnets/private
   PublicVpcSubnetsPreCDK:
     Description: Public subnets to use for the ELB
     Type: List<AWS::EC2::Subnet::Id>
-    Defualt: /account/vpc/primary/subnets/public
+    Default: /account/vpc/primary/subnets/public
   Stack:
     Description: Applied directly as a tag
     Type: String
