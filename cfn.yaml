@@ -1,16 +1,18 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: manage-frontend
 Parameters:
-  VpcId:
+  VpcIdPreCDK:
     Type: String
     Description: VpcId of your existing Virtual Private Cloud (VPC)
-    Default: vpc-e6e00183
-  PrivateVpcSubnets:
+    Default: /account/vpc/primary/id
+  PrivateVpcSubnetsPreCDK:
     Description: Private subnets to use for EC2 instances
     Type: List<AWS::EC2::Subnet::Id>
-  PublicVpcSubnets:
+    Defualt: /account/vpc/primary/subnets/private
+  PublicVpcSubnetsPreCDK:
     Description: Public subnets to use for the ELB
     Type: List<AWS::EC2::Subnet::Id>
+    Defualt: /account/vpc/primary/subnets/public
   Stack:
     Description: Applied directly as a tag
     Type: String
@@ -60,7 +62,7 @@ Resources:
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
-      VPCZoneIdentifier: !Ref PrivateVpcSubnets
+      VPCZoneIdentifier: !Ref PrivateVpcSubnetsPreCDK
       LaunchConfigurationName: !Ref LaunchConfig
       MinSize: !FindInMap [StageVariables, !Ref Stage, MinInstances]
       MaxSize: !FindInMap [StageVariables, !Ref Stage, MaxInstances]
@@ -251,7 +253,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Name: !Sub ${Stack}-${Stage}-${App}
-      Subnets: !Ref PublicVpcSubnets
+      Subnets: !Ref PublicVpcSubnetsPreCDK
       SecurityGroups:
         - !Ref LoadBalancerSecurityGroup
       Tags:
@@ -284,7 +286,7 @@ Resources:
       Port: 9233
       Protocol: HTTP
       VpcId:
-        Ref: VpcId
+        Ref: VpcIdPreCDK
       HealthCheckIntervalSeconds: 10
       HealthCheckPath: /_healthcheck
       HealthCheckPort: 9233
@@ -302,7 +304,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Permit incoming HTTPS access on port 443, egress to port 9233
-      VpcId: !Ref VpcId
+      VpcId: !Ref VpcIdPreCDK
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 443
@@ -318,7 +320,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Open up SSH access and enable HTTP access on the configured port
-      VpcId: !Ref VpcId
+      VpcId: !Ref VpcIdPreCDK
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22
@@ -339,7 +341,7 @@ Resources:
     Properties:
       GroupDescription: Allow outbound traffic from wazuh agent to manager
       VpcId:
-        Ref: VpcId
+        Ref: VpcIdPreCDK
       SecurityGroupEgress:
         - IpProtocol: tcp
           FromPort: 1514

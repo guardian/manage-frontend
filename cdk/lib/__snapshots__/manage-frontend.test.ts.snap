@@ -70,11 +70,11 @@ Object {
       "Description": "the DSN to use with sentry on the client",
       "Type": "String",
     },
-    "PrivateVpcSubnets": Object {
+    "PrivateVpcSubnetsPreCDK": Object {
       "Description": "Private subnets to use for EC2 instances",
       "Type": "List<AWS::EC2::Subnet::Id>",
     },
-    "PublicVpcSubnets": Object {
+    "PublicVpcSubnetsPreCDK": Object {
       "Description": "Public subnets to use for the ELB",
       "Type": "List<AWS::EC2::Subnet::Id>",
     },
@@ -91,8 +91,8 @@ Object {
       "Description": "Applied directly as a tag",
       "Type": "String",
     },
-    "VpcId": Object {
-      "Default": "vpc-e6e00183",
+    "VpcIdPreCDK": Object {
+      "Default": "/account/vpc/primary/id",
       "Description": "VpcId of your existing Virtual Private Cloud (VPC)",
       "Type": "String",
     },
@@ -363,7 +363,7 @@ Object {
           },
         ],
         "VPCZoneIdentifier": Object {
-          "Ref": "PrivateVpcSubnets",
+          "Ref": "PrivateVpcSubnetsPreCDK",
         },
       },
       "Type": "AWS::AutoScaling::AutoScalingGroup",
@@ -926,7 +926,7 @@ Object {
           },
         ],
         "Subnets": Object {
-          "Ref": "PublicVpcSubnets",
+          "Ref": "PublicVpcSubnetsPreCDK",
         },
         "Tags": Array [
           Object {
@@ -1128,7 +1128,7 @@ Object {
           },
         ],
         "VpcId": Object {
-          "Ref": "VpcId",
+          "Ref": "VpcIdPreCDK",
         },
       },
       "Type": "AWS::EC2::SecurityGroup",
@@ -1271,7 +1271,7 @@ systemctl start manage-frontend
           },
         ],
         "VpcId": Object {
-          "Ref": "VpcId",
+          "Ref": "VpcIdPreCDK",
         },
       },
       "Type": "AWS::EC2::SecurityGroup",
@@ -1406,7 +1406,7 @@ systemctl start manage-frontend
         ],
         "UnhealthyThresholdCount": 2,
         "VpcId": Object {
-          "Ref": "VpcId",
+          "Ref": "VpcIdPreCDK",
         },
       },
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
@@ -1441,7 +1441,7 @@ systemctl start manage-frontend
           },
         ],
         "VpcId": Object {
-          "Ref": "VpcId",
+          "Ref": "VpcIdPreCDK",
         },
       },
       "Type": "AWS::EC2::SecurityGroup",
