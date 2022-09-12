@@ -289,7 +289,11 @@ Resources:
         Ref: VpcIdPreCDK
       HealthCheckIntervalSeconds: 10
       HealthCheckPath: /_healthcheck
+      HealthCheckPort: 9233
       HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: 45 # only connection drains for 45 seconds (rather than default of 300)

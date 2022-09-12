@@ -2405,7 +2405,10 @@ systemctl start manage-frontend
       "Properties": Object {
         "HealthCheckIntervalSeconds": 10,
         "HealthCheckPath": "/_healthcheck",
+        "HealthCheckPort": "9233",
         "HealthCheckProtocol": "HTTP",
+        "HealthCheckTimeoutSeconds": 5,
+        "HealthyThresholdCount": 2,
         "Name": Object {
           "Fn::Sub": "\${Stack}-\${Stage}-\${App}",
         },
@@ -2435,6 +2438,7 @@ systemctl start manage-frontend
             "Value": "45",
           },
         ],
+        "UnhealthyThresholdCount": 2,
         "VpcId": Object {
           "Ref": "VpcIdPreCDK",
         },
