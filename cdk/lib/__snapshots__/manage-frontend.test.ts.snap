@@ -73,12 +73,12 @@ Object {
     "PrivateVpcSubnetsPreCDK": Object {
       "Default": "/account/vpc/primary/subnets/private",
       "Description": "Private subnets to use for EC2 instances",
-      "Type": "List<AWS::EC2::Subnet::Id>",
+      "Type": "AWS::SSM::Parameter::Value<List<AWS::EC2::Subnet::Id>>",
     },
     "PublicVpcSubnetsPreCDK": Object {
       "Default": "/account/vpc/primary/subnets/public",
       "Description": "Public subnets to use for the ELB",
-      "Type": "List<AWS::EC2::Subnet::Id>",
+      "Type": "AWS::SSM::Parameter::Value<List<AWS::EC2::Subnet::Id>>",
     },
     "ServerRavenDSN": Object {
       "Description": "the DSN to use with sentry on the server",
@@ -96,7 +96,7 @@ Object {
     "VpcIdPreCDK": Object {
       "Default": "/account/vpc/primary/id",
       "Description": "VpcId of your existing Virtual Private Cloud (VPC)",
-      "Type": "String",
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::VPC::Id>",
     },
   },
   "Resources": Object {
