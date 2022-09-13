@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import fetchMock from 'fetch-mock';
-import { RouterState } from '../../../.storybook/RouterState';
+import { RouterDecorator } from '../../../.storybook/RouterDecorator';
 
 import { PRODUCT_TYPES } from '../../../shared/productTypes';
 
@@ -12,62 +12,57 @@ import CancellationReasonSelection from './CancellationReasonSelection';
 export default {
 	title: 'Pages/Cancellation',
 	component: CancellationContainer,
+	decorators: [RouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
+		router: {
+			initialEntry: { state: { productDetail: contribution } },
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
+		},
 	},
 } as ComponentMeta<typeof CancellationContainer>;
 
-export const ContactCustomerService: ComponentStory<
-	typeof CancellationContainer
-> = () => (
-	<RouterState
-		initialState={{ productDetail: guardianWeeklyCard }}
-		container={
-			<CancellationContainer productType={PRODUCT_TYPES.guardianweekly} />
-		}
-	>
-		<CancellationReasonSelection />
-	</RouterState>
-);
-
 export const SelectReason: ComponentStory<
-	typeof CancellationContainer
+	typeof CancellationReasonSelection
 > = () => {
 	fetchMock.restore().get('glob:/api/cancellation-date/*', {
 		body: { cancellationEffectiveDate: '2022-09-01' },
 	});
 
-	return (
-		<RouterState
-			initialState={{ productDetail: contribution }}
-			container={
-				<CancellationContainer
-					productType={PRODUCT_TYPES.contributions}
-				/>
-			}
-		>
-			<CancellationReasonSelection />
-		</RouterState>
-	);
+	return <CancellationReasonSelection />;
+};
+
+export const ContactCustomerService: ComponentStory<
+	typeof CancellationReasonSelection
+> = () => <CancellationReasonSelection />;
+
+ContactCustomerService.parameters = {
+	router: {
+		initialEntry: { state: { productDetail: guardianWeeklyCard } },
+		container: (
+			<CancellationContainer productType={PRODUCT_TYPES.guardianweekly} />
+		),
+	},
 };
 
 export const Review: ComponentStory<typeof CancellationContainer> = () => {
 	fetchMock.restore().post('/api/case', { body: { id: 'caseId' } });
 
-	return (
-		<RouterState
-			initialState={{
+	return <CancellationReasonReview />;
+};
+
+Review.parameters = {
+	router: {
+		initialEntry: {
+			state: {
 				productDetail: contribution,
 				selectedReasonId: 'mma_editorial',
 				cancellationPolicy: 'Today',
-			}}
-			container={
-				<CancellationContainer
-					productType={PRODUCT_TYPES.contributions}
-				/>
-			}
-		>
-			<CancellationReasonReview />
-		</RouterState>
-	);
+			},
+		},
+	},
 };
