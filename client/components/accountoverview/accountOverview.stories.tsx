@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MemoryRouter } from 'react-router-dom';
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import fetchMock from 'fetch-mock';
 
 import AccountOverview from './accountOverview';
@@ -13,6 +13,7 @@ import { user } from '../../fixtures/user';
 export default {
 	title: 'Pages/AccountOverview',
 	component: AccountOverview,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
@@ -25,11 +26,7 @@ export const NoSubscription: ComponentStory<typeof AccountOverview> = () => {
 		.get('/api/me/mma', { body: [] })
 		.get('/idapi/user', { body: user });
 
-	return (
-		<MemoryRouter>
-			<AccountOverview />
-		</MemoryRouter>
-	);
+	return <AccountOverview />;
 };
 
 export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
@@ -40,9 +37,5 @@ export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
 			body: [guardianWeeklyCard, digitalDD, newspaperVoucherPaypal],
 		});
 
-	return (
-		<MemoryRouter>
-			<AccountOverview />
-		</MemoryRouter>
-	);
+	return <AccountOverview />;
 };

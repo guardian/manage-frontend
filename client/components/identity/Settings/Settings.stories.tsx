@@ -1,13 +1,14 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import fetchMock from 'fetch-mock';
 
 import Settings from './';
 import { user } from '../../../fixtures/user';
-import { MemoryRouter } from 'react-router';
 
 export default {
 	title: 'Pages/Settings',
 	component: Settings,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
@@ -16,9 +17,5 @@ export default {
 export const Default: ComponentStory<typeof Settings> = () => {
 	fetchMock.restore().get('/idapi/user', { body: user });
 
-	return (
-		<MemoryRouter>
-			<Settings />
-		</MemoryRouter>
-	);
+	return <Settings />;
 };

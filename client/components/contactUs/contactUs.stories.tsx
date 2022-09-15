@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MemoryRouter, Route, Routes } from 'react-router';
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import fetchMock from 'fetch-mock';
 
 import { SectionContent } from '../sectionContent';
@@ -10,6 +10,7 @@ import ContactUs from './contactUs';
 export default {
 	title: 'Pages/ContactUs',
 	component: ContactUs,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
@@ -19,13 +20,13 @@ export const Default: ComponentStory<typeof ContactUs> = () => {
 	fetchMock.restore().get('/api/known-issues/', { body: [] });
 
 	return (
-		<MemoryRouter>
+		<>
 			<SectionHeader title="Need to contact us?" />
 			<KnownIssues />
 			<SectionContent>
 				<ContactUs />
 			</SectionContent>
-		</MemoryRouter>
+		</>
 	);
 };
 
@@ -40,13 +41,13 @@ export const WithKnownIssue: ComponentStory<typeof ContactUs> = () => {
 	fetchMock.restore().get('/api/known-issues/', { body: knownIssue });
 
 	return (
-		<MemoryRouter>
+		<>
 			<SectionHeader title="Need to contact us?" />
 			<KnownIssues />
 			<SectionContent>
 				<ContactUs />
 			</SectionContent>
-		</MemoryRouter>
+		</>
 	);
 };
 
@@ -54,21 +55,18 @@ export const TopicSelected: ComponentStory<typeof ContactUs> = () => {
 	fetchMock.restore().get('/api/known-issues/', { body: [] });
 
 	return (
-		<MemoryRouter initialEntries={['/contact-us/billing']}>
-			<Routes>
-				<Route
-					path="/contact-us/:urlTopicId"
-					element={
-						<>
-							<SectionHeader title="Need to contact us?" />
-							<KnownIssues />
-							<SectionContent>
-								<ContactUs />
-							</SectionContent>
-						</>
-					}
-				/>
-			</Routes>
-		</MemoryRouter>
+		<>
+			<SectionHeader title="Need to contact us?" />
+			<KnownIssues />
+			<SectionContent>
+				<ContactUs />
+			</SectionContent>
+		</>
 	);
+};
+TopicSelected.parameters = {
+	reactRouter: {
+		location: '/contact-us/billing',
+		path: '/contact-us/:urlTopicId',
+	},
 };

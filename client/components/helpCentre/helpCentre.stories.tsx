@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MemoryRouter } from 'react-router';
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import fetchMock from 'fetch-mock';
 
 import { HelpCenterContentWrapper } from '../HelpCenterContentWrapper';
@@ -8,6 +8,7 @@ import HelpCentre from './helpCentre';
 export default {
 	title: 'Pages/HelpCentre',
 	component: HelpCentre,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
@@ -17,11 +18,9 @@ export const Default: ComponentStory<typeof HelpCentre> = () => {
 	fetchMock.restore().get('/api/known-issues/', { body: [] });
 
 	return (
-		<MemoryRouter>
-			<HelpCenterContentWrapper>
-				<HelpCentre />
-			</HelpCenterContentWrapper>
-		</MemoryRouter>
+		<HelpCenterContentWrapper>
+			<HelpCentre />
+		</HelpCenterContentWrapper>
 	);
 };
 
@@ -36,14 +35,11 @@ export const WithKnownIssue: ComponentStory<typeof HelpCentre> = () => {
 	fetchMock.restore().get('/api/known-issues/', { body: knownIssue });
 
 	return (
-		<MemoryRouter>
-			<HelpCenterContentWrapper>
-				<HelpCentre />
-			</HelpCenterContentWrapper>
-		</MemoryRouter>
+		<HelpCenterContentWrapper>
+			<HelpCentre />
+		</HelpCenterContentWrapper>
 	);
 };
-
 WithKnownIssue.parameters = {
 	chromatic: {
 		viewports: [320, 1300],

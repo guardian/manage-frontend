@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MemoryRouter } from 'react-router-dom';
+import { ReactRouterDecorator } from '../../.storybook/ReactRouterDecorator';
 
 import { brand, neutral } from '@guardian/source-foundations';
 
@@ -8,6 +8,7 @@ import { LinkButton, LinkButtonProps } from './buttons';
 export default {
 	title: 'Components/LinkButton',
 	component: LinkButton,
+	decorators: [ReactRouterDecorator],
 	args: {
 		text: 'Link Button',
 		to: '/example',
@@ -65,9 +66,7 @@ export default {
 } as ComponentMeta<typeof LinkButton>;
 
 const Template: ComponentStory<typeof LinkButton> = (args: LinkButtonProps) => (
-	<MemoryRouter>
-		<LinkButton {...args} />
-	</MemoryRouter>
+	<LinkButton {...args} />
 );
 
 export const Default = Template.bind({});
