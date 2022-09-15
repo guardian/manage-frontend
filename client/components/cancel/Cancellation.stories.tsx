@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import fetchMock from 'fetch-mock';
-import { RouterDecorator } from '../../../.storybook/RouterDecorator';
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 
 import { PRODUCT_TYPES } from '../../../shared/productTypes';
 
@@ -12,11 +12,11 @@ import CancellationReasonSelection from './CancellationReasonSelection';
 export default {
 	title: 'Pages/Cancellation',
 	component: CancellationContainer,
-	decorators: [RouterDecorator],
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
-		router: {
-			initialEntry: { state: { productDetail: contribution } },
+		reactRouter: {
+			state: { productDetail: contribution },
 			container: (
 				<CancellationContainer
 					productType={PRODUCT_TYPES.contributions}
@@ -41,8 +41,8 @@ export const ContactCustomerService: ComponentStory<
 > = () => <CancellationReasonSelection />;
 
 ContactCustomerService.parameters = {
-	router: {
-		initialEntry: { state: { productDetail: guardianWeeklyCard } },
+	reactRouter: {
+		state: { productDetail: guardianWeeklyCard },
 		container: (
 			<CancellationContainer productType={PRODUCT_TYPES.guardianweekly} />
 		),
@@ -56,13 +56,11 @@ export const Review: ComponentStory<typeof CancellationContainer> = () => {
 };
 
 Review.parameters = {
-	router: {
-		initialEntry: {
-			state: {
-				productDetail: contribution,
-				selectedReasonId: 'mma_editorial',
-				cancellationPolicy: 'Today',
-			},
+	reactRouter: {
+		state: {
+			productDetail: contribution,
+			selectedReasonId: 'mma_editorial',
+			cancellationPolicy: 'Today',
 		},
 	},
 };

@@ -1,12 +1,18 @@
 import { DecoratorFn } from '@storybook/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-export const RouterDecorator: DecoratorFn = (Story, context) => {
-	const params = context.parameters.router ?? {};
+export const ReactRouterDecorator: DecoratorFn = (Story, context) => {
+	const params = context.parameters.reactRouter ?? {};
+
 	const path = params.path ?? '*';
 
+	const location = {
+		...(params.location && { pathname: params.location }),
+		...(params.state && { state: params.state }),
+	};
+
 	return (
-		<MemoryRouter initialEntries={[params.initialEntry]}>
+		<MemoryRouter initialEntries={[location]}>
 			<Routes>
 				{params.container ? (
 					<Route path={path} element={params.container}>

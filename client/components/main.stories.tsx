@@ -1,12 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { RouterDecorator } from '../../.storybook/RouterDecorator';
+import { ReactRouterDecorator } from '../../.storybook/ReactRouterDecorator';
 
 import { Main, MainProps } from './main';
 
 export default {
 	title: 'Layouts/Main',
 	component: Main,
-	decorators: [RouterDecorator],
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
