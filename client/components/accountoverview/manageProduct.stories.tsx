@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { RouterState } from '../../../.storybook/RouterState';
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 
 import ManageProduct from './manageProduct';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
@@ -13,33 +13,33 @@ import {
 export default {
 	title: 'Pages/ManageProduct',
 	component: ManageProduct,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
 } as ComponentMeta<typeof ManageProduct>;
 
-export const GuardianWeekly: ComponentStory<typeof ManageProduct> = () => (
-	<RouterState initialState={{ productDetail: guardianWeeklyCard }}>
-		<ManageProduct
-			groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
-		/>
-	</RouterState>
+const Template: ComponentStory<typeof ManageProduct> = () => (
+	<ManageProduct groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions} />
 );
 
-export const DigitalSubscription: ComponentStory<typeof ManageProduct> = () => (
-	<RouterState initialState={{ productDetail: digitalDD }}>
-		<ManageProduct
-			groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
-		/>
-	</RouterState>
-);
+export const GuardianWeekly = Template.bind({});
+GuardianWeekly.parameters = {
+	reactRouter: {
+		state: { productDetail: guardianWeeklyCard },
+	},
+};
 
-export const NewspaperSubscriptionCard: ComponentStory<
-	typeof ManageProduct
-> = () => (
-	<RouterState initialState={{ productDetail: newspaperVoucherPaypal }}>
-		<ManageProduct
-			groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
-		/>
-	</RouterState>
-);
+export const DigitalSubscription = Template.bind({});
+DigitalSubscription.parameters = {
+	reactRouter: {
+		state: { productDetail: digitalDD },
+	},
+};
+
+export const NewspaperSubscriptionCard = Template.bind({});
+NewspaperSubscriptionCard.parameters = {
+	reactRouter: {
+		state: { productDetail: newspaperVoucherPaypal },
+	},
+};
