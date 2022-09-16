@@ -125,7 +125,7 @@ Object {
         "HostedZoneId": Object {
           "Ref": "hostedZoneId",
         },
-        "Name": "manage.code.dev-theguardian.com.origin.membership.guardianapis.com",
+        "Name": "manage.code.theguardian.com.origin.membership.guardianapis.com",
         "Type": "A",
       },
       "Type": "AWS::Route53::RecordSet",
