@@ -8,6 +8,7 @@ describe('The ManageFrontend stack', () => {
 		const stack = new ManageFrontend(app, 'ManageFrontend', {
 			stack: 'support',
 			stage: 'TEST',
+			domain: 'manage.code.theguardian.com.origin.membership.guardianapis.com',
 		});
 		const template = Template.fromStack(stack);
 		expect(template.toJSON()).toMatchSnapshot();

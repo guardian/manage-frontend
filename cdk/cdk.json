@@ -1,5 +1,6 @@
 {
   "app": "npx ts-node bin/cdk.ts",
+  "profile": "membership",
   "context": {
     "aws-cdk:enableDiffNoFail": "true",
     "@aws-cdk/core:stackRelativeExports": "true"
