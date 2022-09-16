@@ -88,6 +88,11 @@ describe('Update payment details', () => {
 			body: [digitalDD],
 		}).as('product_detail');
 
+		cy.intercept('POST', '/api/validate/payment/**', {
+			statusCode: 200,
+			body: { data: { accountValid: false } },
+		}).as('validate_dd');
+
 		cy.visit('/payment/digital');
 
 		cy.wait('@product_detail');
@@ -113,6 +118,9 @@ describe('Update payment details', () => {
 
 		cy.get('input[name="accountHolderConfirmation"').click();
 		cy.findByText('Update payment method').click();
+
+		cy.wait('@validate_dd');
+
 		cy.findByText(
 			'Your bank details are invalid. Please check them and try again.',
 		);
@@ -128,6 +136,11 @@ describe('Update payment details', () => {
 			statusCode: 200,
 			body: [digitalDD],
 		}).as('refetch_subscription');
+
+		cy.intercept('POST', '/api/validate/payment/**', {
+			statusCode: 200,
+			body: { data: { accountValid: true } },
+		}).as('validate_dd');
 
 		cy.intercept('POST', '/api/payment/dd/**', {
 			statusCode: 200,
@@ -150,6 +163,7 @@ describe('Update payment details', () => {
 		cy.get('input[name="accountHolderConfirmation"').click();
 		cy.findByText('Update payment method').click();
 
+		cy.wait('@validate_dd');
 		cy.wait('@scala_backend');
 		cy.wait('@refetch_subscription');
 
@@ -168,6 +182,11 @@ describe('Update payment details', () => {
 			statusCode: 200,
 			body: [digitalDD],
 		}).as('refetch_subscription');
+
+		cy.intercept('POST', '/api/validate/payment/**', {
+			statusCode: 200,
+			body: { data: { accountValid: true } },
+		}).as('validate_dd');
 
 		cy.intercept('POST', '/api/payment/dd/**', {
 			statusCode: 500,
@@ -189,6 +208,7 @@ describe('Update payment details', () => {
 		cy.get('input[name="accountHolderConfirmation"').click();
 		cy.findByText('Update payment method').click();
 
+		cy.wait('@validate_dd');
 		cy.wait('@scala_backend');
 
 		cy.findByText('Try again');
