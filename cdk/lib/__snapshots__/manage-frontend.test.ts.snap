@@ -116,7 +116,10 @@ Object {
             ],
           },
           "HostedZoneId": Object {
-            "Ref": "hostedZoneId",
+            "Fn::GetAtt": Array [
+              "ElasticLoadBalancer",
+              "CanonicalHostedZoneID",
+            ],
           },
         },
         "HostedZoneId": Object {

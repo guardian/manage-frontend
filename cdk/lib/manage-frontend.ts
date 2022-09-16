@@ -32,7 +32,7 @@ export class ManageFrontend extends GuStack {
 			hostedZoneId,
 			aliasTarget: {
 				dnsName: loadBalancer.attrDnsName,
-				hostedZoneId,
+				hostedZoneId: loadBalancer.attrCanonicalHostedZoneId,
 			},
 		});
 	}
