@@ -336,7 +336,8 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 			stripePublicKey = subscription.card.stripePublicKeyForUpdate;
 		} else {
 			stripePublicKey = getStripeKey(
-				subscription.deliveryAddress?.country,
+				productDetail.billingCountry ||
+					subscription.deliveryAddress?.country,
 				isTestUser,
 			);
 		}
