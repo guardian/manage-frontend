@@ -332,9 +332,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 	const getInputForm = (subscription: Subscription, isTestUser: boolean) => {
 		let stripePublicKey: string | undefined;
 
-		if (subscription.stripePublicKeyForCardAddition) {
-			stripePublicKey = subscription.stripePublicKeyForCardAddition;
-		} else if (subscription.card) {
+		if (subscription.card) {
 			stripePublicKey = subscription.card.stripePublicKeyForUpdate;
 		} else {
 			stripePublicKey = getStripeKey(
