@@ -58,6 +58,7 @@ export interface ProductDetail extends WithSubscription {
 	mmaCategory: GroupedProductTypeKeys;
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
+	billingCountry?: string;
 }
 
 export interface CancelledProductDetail {
