@@ -296,6 +296,10 @@ Object {
         ],
         "Tags": Array [
           Object {
+            "Key": "App",
+            "Value": "manage-frontend",
+          },
+          Object {
             "Key": "gu:cdk:version",
             "Value": "TEST",
           },
@@ -344,9 +348,7 @@ Object {
           Object {
             "Key": "App",
             "PropagateAtLaunch": true,
-            "Value": Object {
-              "Ref": "App",
-            },
+            "Value": "manage-frontend",
           },
           Object {
             "Key": "gu:cdk:version",
@@ -963,9 +965,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "App",
-            "Value": Object {
-              "Ref": "App",
-            },
+            "Value": "manage-frontend",
           },
           Object {
             "Key": "gu:cdk:version",
@@ -1143,6 +1143,10 @@ Object {
         ],
         "Tags": Array [
           Object {
+            "Key": "App",
+            "Value": "manage-frontend",
+          },
+          Object {
             "Key": "gu:cdk:version",
             "Value": "TEST",
           },
@@ -1286,6 +1290,10 @@ systemctl start manage-frontend
         ],
         "Tags": Array [
           Object {
+            "Key": "App",
+            "Value": "manage-frontend",
+          },
+          Object {
             "Key": "gu:cdk:version",
             "Value": "TEST",
           },
@@ -1315,6 +1323,10 @@ systemctl start manage-frontend
         },
         "RetentionInDays": 14,
         "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "manage-frontend",
+          },
           Object {
             "Key": "gu:cdk:version",
             "Value": "TEST",
@@ -1414,6 +1426,10 @@ systemctl start manage-frontend
         "Protocol": "HTTP",
         "Tags": Array [
           Object {
+            "Key": "App",
+            "Value": "manage-frontend",
+          },
+          Object {
             "Key": "gu:cdk:version",
             "Value": "TEST",
           },
@@ -1455,6 +1471,10 @@ systemctl start manage-frontend
           },
         ],
         "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "manage-frontend",
+          },
           Object {
             "Key": "gu:cdk:version",
             "Value": "TEST",

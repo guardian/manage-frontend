@@ -12,6 +12,7 @@ interface ManageGuStackProps extends GuStackProps {
 export class ManageFrontend extends GuStack {
 	constructor(scope: App, id: string, props: ManageGuStackProps) {
 		super(scope, id, props);
+		this.addTag('App', 'manage-frontend');
 		const yamlTemplateFilePath = join(__dirname, '../..', 'cfn.yaml');
 		const existingYaml = new CfnInclude(this, 'YamlTemplate', {
 			templateFile: yamlTemplateFilePath,
