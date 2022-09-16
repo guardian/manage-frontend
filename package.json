@@ -59,6 +59,7 @@
     "@emotion/babel-plugin": "^11.9.2",
     "@emotion/eslint-plugin": "^11.7.0",
     "@emotion/jest": "^11.9.1",
+    "@guardian/eslint-config-typescript": "^1.0.11",
     "@guardian/eslint-plugin-source-foundations": "^5.0.0",
     "@guardian/eslint-plugin-source-react-components": "^5.0.0",
     "@guardian/node-riffraff-artifact": "^0.2.2",

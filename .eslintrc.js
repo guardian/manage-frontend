@@ -1,28 +1,13 @@
 module.exports = {
-	env: {
-		browser: true,
-		es2021: true,
-		node: true,
-	},
 	extends: [
-		'eslint:recommended',
+		'@guardian/eslint-config-typescript',
 		'plugin:react/recommended',
 		'plugin:react/jsx-runtime',
 		'plugin:jest/recommended',
-		'plugin:@typescript-eslint/recommended',
-		'prettier',
 		'plugin:@guardian/source-foundations/recommended',
 		'plugin:@guardian/source-react-components/recommended',
 	],
-	parser: '@typescript-eslint/parser',
-	parserOptions: {
-		ecmaFeatures: {
-			jsx: true,
-		},
-		ecmaVersion: 12,
-		sourceType: 'module',
-	},
-	plugins: ['react', '@typescript-eslint', 'jest', '@emotion'],
+	plugins: ['react', 'jest'],
 	settings: {
 		react: {
 			version: 'detect',
@@ -37,16 +22,42 @@ module.exports = {
 		},
 	],
 	rules: {
-		'no-prototype-builtins': ['off'],
-		'react/no-unescaped-entities': ['off'],
-		'react/display-name': ['off'], // TODO: remove this rule and fix in code
-		'@typescript-eslint/ban-types': ['off'],
-		'@typescript-eslint/explicit-module-boundary-types': ['off'],
-		'@typescript-eslint/no-inferrable-types': ['off'],
-		'@typescript-eslint/no-unused-vars': [
-			'error',
-			{ argsIgnorePattern: '_' },
-		],
+		// Overrides for rules from `@guardian/eslint-config-typescript`.
+		// There are a number of these due to applying the config to an existing
+		// codebase. We should progressively fix these and remove the overrides.
+		'@typescript-eslint/array-type': ['off'],
+		'@typescript-eslint/consistent-indexed-object-style': ['off'],
+		'@typescript-eslint/consistent-type-imports': ['off'],
+		'@typescript-eslint/naming-convention': ['off'],
+		'@typescript-eslint/no-floating-promises': ['off'],
+		'@typescript-eslint/no-misused-promises': ['off'],
+		'@typescript-eslint/no-unnecessary-condition': ['off'],
+		'@typescript-eslint/no-unnecessary-type-arguments': ['off'],
+		'@typescript-eslint/no-unnecessary-type-assertion': ['off'],
+		'@typescript-eslint/no-unsafe-argument': ['off'],
+		'@typescript-eslint/no-unsafe-assignment': ['off'],
+		'@typescript-eslint/no-unsafe-call': ['off'],
+		'@typescript-eslint/no-unsafe-member-access': ['off'],
+		'@typescript-eslint/no-unsafe-return': ['off'],
+		'@typescript-eslint/prefer-includes': ['off'],
+		'@typescript-eslint/prefer-nullish-coalescing': ['off'],
+		'@typescript-eslint/prefer-optional-chain': ['off'],
+		'@typescript-eslint/prefer-reduce-type-parameter': ['off'],
+		'@typescript-eslint/prefer-ts-expect-error': ['off'],
+		'@typescript-eslint/require-await': ['off'],
+		'@typescript-eslint/restrict-plus-operands': ['off'],
+		'@typescript-eslint/restrict-template-expressions': ['off'],
+		'@typescript-eslint/unbound-method': ['off'],
+		'eslint-comments/require-description': ['off'],
+		'import/first': ['off'],
+		'import/newline-after-import': ['off'],
+		'import/no-cycle': ['off'],
+		'import/no-default-export': ['off'],
+		'import/no-duplicates': ['off'],
+		'import/order': ['off'],
+		'prefer-const': ['off'],
+		'sort-imports': ['off'],
+		// Overrides carried over from old ESLint config.
 		'@typescript-eslint/ban-ts-comment': [
 			'error',
 			{
@@ -57,6 +68,14 @@ module.exports = {
 				minimumDescriptionLength: 10,
 			},
 		],
-		'@emotion/pkg-renaming': 'error',
+		'@typescript-eslint/ban-types': ['off'],
+		'@typescript-eslint/no-inferrable-types': ['off'],
+		'@typescript-eslint/no-unused-vars': [
+			'error',
+			{ argsIgnorePattern: '_' },
+		],
+		'no-prototype-builtins': ['off'],
+		'react/display-name': ['off'],
+		'react/no-unescaped-entities': ['off'],
 	},
 };
