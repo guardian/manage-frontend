@@ -48,7 +48,9 @@ Object {
     },
   },
   "Metadata": Object {
-    "gu:cdk:constructs": Array [],
+    "gu:cdk:constructs": Array [
+      "GuStringParameter",
+    ],
     "gu:cdk:version": "47.3.1",
   },
   "Parameters": Object {
@@ -98,8 +100,33 @@ Object {
       "Description": "VpcId of your existing Virtual Private Cloud (VPC)",
       "Type": "AWS::SSM::Parameter::Value<AWS::EC2::VPC::Id>",
     },
+    "hostedZoneId": Object {
+      "Default": "/account/route53/membership/hostedZoneId",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
   },
   "Resources": Object {
+    "AliasRecord": Object {
+      "Properties": Object {
+        "AliasTarget": Object {
+          "DNSName": Object {
+            "Fn::GetAtt": Array [
+              "ElasticLoadBalancer",
+              "DNSName",
+            ],
+          },
+          "HostedZoneId": Object {
+            "Ref": "hostedZoneId",
+          },
+        },
+        "HostedZoneId": Object {
+          "Ref": "hostedZoneId",
+        },
+        "Name": "manage.code.dev-theguardian.com.origin.membership.guardianapis.com",
+        "Type": "A",
+      },
+      "Type": "AWS::Route53::RecordSet",
+    },
     "AppRole": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
