@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MemoryRouter, Route, Routes } from 'react-router';
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import fetchMock from 'fetch-mock';
 
 import { SectionContent } from '../sectionContent';
@@ -9,6 +9,7 @@ import HelpCentreTopic from './helpCentreTopic';
 export default {
 	title: 'Pages/HelpCentreTopic',
 	component: HelpCentreTopic,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
@@ -39,23 +40,17 @@ export const Default: ComponentStory<typeof HelpCentreTopic> = () => {
 		.get('/api/help-centre/topic/delivery', { body: topicContent });
 
 	return (
-		<MemoryRouter initialEntries={['/topic/delivery']}>
-			<Routes>
-				<Route
-					path="/topic/:topicCode"
-					element={
-						<>
-							<SectionHeader
-								title="How can we help you?"
-								pageHasNav={true}
-							/>
-							<SectionContent hasNav={true}>
-								<HelpCentreTopic />
-							</SectionContent>
-						</>
-					}
-				/>
-			</Routes>
-		</MemoryRouter>
+		<>
+			<SectionHeader title="How can we help you?" pageHasNav={true} />
+			<SectionContent hasNav={true}>
+				<HelpCentreTopic />
+			</SectionContent>
+		</>
 	);
+};
+Default.parameters = {
+	reactRouter: {
+		location: '/topic/delivery',
+		path: '/topic/:topicCode',
+	},
 };

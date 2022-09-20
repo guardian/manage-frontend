@@ -1,11 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MemoryRouter } from 'react-router';
+import { ReactRouterDecorator } from '../../.storybook/ReactRouterDecorator';
 
 import Header, { HeaderProps } from './header';
 
 export default {
 	title: 'Components/Header',
 	component: Header,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
@@ -22,9 +23,7 @@ export default {
 } as ComponentMeta<typeof Header>;
 
 const Template: ComponentStory<typeof Header> = (args: HeaderProps) => (
-	<MemoryRouter>
-		<Header {...args} />
-	</MemoryRouter>
+	<Header {...args} />
 );
 
 export const Initial = Template.bind({});

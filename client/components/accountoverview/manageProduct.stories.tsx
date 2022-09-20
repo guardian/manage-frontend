@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MemoryRouter } from 'react-router-dom';
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 
 import ManageProduct from './manageProduct';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
@@ -13,37 +13,33 @@ import {
 export default {
 	title: 'Pages/ManageProduct',
 	component: ManageProduct,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
 } as ComponentMeta<typeof ManageProduct>;
 
-export const GuardianWeekly: ComponentStory<typeof ManageProduct> = () => (
-	<MemoryRouter
-		initialEntries={[{ state: { productDetail: guardianWeeklyCard } }]}
-	>
-		<ManageProduct
-			groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
-		/>
-	</MemoryRouter>
+const Template: ComponentStory<typeof ManageProduct> = () => (
+	<ManageProduct groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions} />
 );
 
-export const NewspaperSubscriptionCard: ComponentStory<
-	typeof ManageProduct
-> = () => (
-	<MemoryRouter initialEntries={[{ state: { productDetail: digitalDD } }]}>
-		<ManageProduct
-			groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
-		/>
-	</MemoryRouter>
-);
+export const GuardianWeekly = Template.bind({});
+GuardianWeekly.parameters = {
+	reactRouter: {
+		state: { productDetail: guardianWeeklyCard },
+	},
+};
 
-export const DigitalSubscription: ComponentStory<typeof ManageProduct> = () => (
-	<MemoryRouter
-		initialEntries={[{ state: { productDetail: newspaperVoucherPaypal } }]}
-	>
-		<ManageProduct
-			groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
-		/>
-	</MemoryRouter>
-);
+export const DigitalSubscription = Template.bind({});
+DigitalSubscription.parameters = {
+	reactRouter: {
+		state: { productDetail: digitalDD },
+	},
+};
+
+export const NewspaperSubscriptionCard = Template.bind({});
+NewspaperSubscriptionCard.parameters = {
+	reactRouter: {
+		state: { productDetail: newspaperVoucherPaypal },
+	},
+};

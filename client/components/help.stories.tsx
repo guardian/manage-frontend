@@ -1,11 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MemoryRouter } from 'react-router';
+import { ReactRouterDecorator } from '../../.storybook/ReactRouterDecorator';
 
 import Help from './help';
 
 export default {
 	title: 'Pages/Help',
 	component: Help,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 		chromatic: {
@@ -14,8 +15,4 @@ export default {
 	},
 } as ComponentMeta<typeof Help>;
 
-export const Default: ComponentStory<typeof Help> = () => (
-	<MemoryRouter>
-		<Help />
-	</MemoryRouter>
-);
+export const Default: ComponentStory<typeof Help> = () => <Help />;

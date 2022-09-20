@@ -1,11 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MemoryRouter } from 'react-router';
+import { ReactRouterDecorator } from '../../.storybook/ReactRouterDecorator';
 
 import { Main, MainProps } from './main';
 
 export default {
 	title: 'Layouts/Main',
 	component: Main,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
@@ -23,11 +24,9 @@ export default {
 } as ComponentMeta<typeof Main>;
 
 const Template: ComponentStory<typeof Main> = (args: MainProps) => (
-	<MemoryRouter>
-		<Main {...args}>
-			<h1>Main content</h1>
-		</Main>
-	</MemoryRouter>
+	<Main {...args}>
+		<h1>Main content</h1>
+	</Main>
 );
 
 export const SignedOut = Template.bind({});

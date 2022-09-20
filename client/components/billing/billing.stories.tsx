@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MemoryRouter } from 'react-router-dom';
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import fetchMock from 'fetch-mock';
 
 import Billing from './billing';
@@ -13,6 +13,7 @@ import { user } from '../../fixtures/user';
 export default {
 	title: 'Pages/Billing',
 	component: Billing,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
@@ -25,11 +26,7 @@ export const NoSubscription: ComponentStory<typeof Billing> = () => {
 		.get('/api/invoices', { body: { invoices: [] } })
 		.get('/idapi/user', { body: user });
 
-	return (
-		<MemoryRouter>
-			<Billing />
-		</MemoryRouter>
-	);
+	return <Billing />;
 };
 
 export const WithSubscriptions: ComponentStory<typeof Billing> = () => {
@@ -40,9 +37,5 @@ export const WithSubscriptions: ComponentStory<typeof Billing> = () => {
 		})
 		.get('/api/invoices', { body: { invoices: [] } });
 
-	return (
-		<MemoryRouter>
-			<Billing />
-		</MemoryRouter>
-	);
+	return <Billing />;
 };

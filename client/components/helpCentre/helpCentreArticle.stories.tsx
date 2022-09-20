@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { MemoryRouter, Route, Routes } from 'react-router';
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import fetchMock from 'fetch-mock';
 
 import { SectionContent } from '../sectionContent';
@@ -9,6 +9,7 @@ import HelpCentreArticle from './helpCentreArticle';
 export default {
 	title: 'Pages/HelpCentreArticle',
 	component: HelpCentreArticle,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 		chromatic: {
@@ -49,23 +50,17 @@ export const Default: ComponentStory<typeof HelpCentreArticle> = () => {
 		});
 
 	return (
-		<MemoryRouter initialEntries={['/article/i-need-to-pause-my-delivery']}>
-			<Routes>
-				<Route
-					path="/article/:articleCode"
-					element={
-						<>
-							<SectionHeader
-								title="How can we help you?"
-								pageHasNav={true}
-							/>
-							<SectionContent hasNav={true}>
-								<HelpCentreArticle />
-							</SectionContent>
-						</>
-					}
-				/>
-			</Routes>
-		</MemoryRouter>
+		<>
+			<SectionHeader title="How can we help you?" pageHasNav={true} />
+			<SectionContent hasNav={true}>
+				<HelpCentreArticle />
+			</SectionContent>
+		</>
 	);
+};
+Default.parameters = {
+	reactRouter: {
+		location: '/article/i-need-to-pause-my-delivery',
+		path: '/article/:articleCode',
+	},
 };
