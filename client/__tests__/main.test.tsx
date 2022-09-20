@@ -1,4 +1,4 @@
-import renderer from 'react-test-renderer';
+import { create } from 'react-test-renderer';
 import { Main } from '../components/main';
 
 describe('Main', () => {
@@ -12,7 +12,7 @@ describe('Main', () => {
 	});
 
 	it('renders something', () => {
-		const rendered = renderer.create(
+		const rendered = create(
 			<Main>
 				<p>hi</p>
 			</Main>,

@@ -1,17 +1,17 @@
-import winston from 'winston';
+import { createLogger, format, transports } from 'winston';
 import { putMetricDataPromise } from './awsIntegration';
 import { conf, Environments } from './config';
 
 const location = conf.ENVIRONMENT === Environments.AWS ? '/var/log/' : './';
 
-export const log = winston.createLogger({
+export const log = createLogger({
 	level: 'info',
-	format: winston.format.json(),
+	format: format.json(),
 	transports: [
-		new winston.transports.File({
+		new transports.File({
 			filename: `${location}/manage-frontend.log`,
 		}),
-		new winston.transports.Console({ format: winston.format.simple() }),
+		new transports.Console({ format: format.simple() }),
 	],
 });
 
