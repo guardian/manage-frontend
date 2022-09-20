@@ -60,7 +60,6 @@ Object {
       "GuAllowPolicy",
       "GuAllowPolicy",
       "GuAllowPolicy",
-      "GuGetS3ObjectsPolicy",
       "GuVpcParameter",
       "GuSubnetListParameter",
       "GuCertificate",
@@ -2273,27 +2272,6 @@ systemctl start manage-frontend
         "Roles": Array [
           Object {
             "Ref": "AppRole",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "ReadFromDistBucketPolicy7F95061E": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "s3:GetObject",
-              "Effect": "Allow",
-              "Resource": "arn:aws:s3:::membership-dist/*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "ReadFromDistBucketPolicy7F95061E",
-        "Roles": Array [
-          Object {
-            "Ref": "InstanceRoleManagefrontendC8EBF20D",
           },
         ],
       },

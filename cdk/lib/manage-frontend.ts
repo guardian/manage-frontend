@@ -168,14 +168,6 @@ export class ManageFrontend extends GuStack {
 							`arn:aws:execute-api:${this.region}:${this.account}:*/${this.stage}/*`,
 						],
 					}),
-
-					// TODO tighten this and read the bucket name from SSM Parameter Store
-					// https://github.com/guardian/recommendations/blob/main/github.md#repository-contents
-					// https://github.com/guardian/cdk/blob/main/src/constructs/iam/policies/s3-get-object.ts#L22-L60
-					new GuGetS3ObjectsPolicy(this, 'ReadFromDistBucketPolicy', {
-						bucketName: 'membership-dist',
-						paths: ['*'],
-					}),
 				],
 			},
 		});
