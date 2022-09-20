@@ -1,11 +1,11 @@
 import { css, ThemeProvider } from '@emotion/react';
 import {
-	headline,
-	textSans,
-	palette,
-	space,
 	between,
 	from,
+	headline,
+	palette,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
 import {
 	Button,
@@ -15,7 +15,7 @@ import {
 	SvgTickRound,
 } from '@guardian/source-react-components';
 import { ReactNode, useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate, Navigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import {
 	getMainPlan,
 	MDA_TEST_USER_HEADER,

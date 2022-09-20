@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import {
-	space,
 	brand,
-	neutral,
-	headline,
-	textSans,
 	from,
+	headline,
+	neutral,
+	space,
+	textSans,
 	until,
 } from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';

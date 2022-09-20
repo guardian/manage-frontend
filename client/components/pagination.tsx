@@ -1,5 +1,5 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { space, neutral, textSans } from '@guardian/source-foundations';
+import { neutral, space, textSans } from '@guardian/source-foundations';
 import {
 	SvgChevronLeftSingle,
 	SvgChevronRightSingle,

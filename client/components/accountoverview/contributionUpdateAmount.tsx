@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, brand, neutral } from '@guardian/source-foundations';
+import { brand, neutral, space } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { parseDate } from '../../../shared/dates';

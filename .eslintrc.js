@@ -54,7 +54,6 @@ module.exports = {
 		'eslint-comments/require-description': ['off'],
 		'import/no-cycle': ['off'],
 		'import/no-default-export': ['off'],
-		'sort-imports': ['off'],
 		// Overrides carried over from old ESLint config.
 		'@typescript-eslint/ban-ts-comment': [
 			'error',

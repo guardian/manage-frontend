@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { CardInputForm } from '../../../components/payment/update/card/cardInputForm';
 import { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
 

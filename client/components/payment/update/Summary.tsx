@@ -1,5 +1,5 @@
 import { css, SerializedStyles } from '@emotion/react';
-import { space, palette, size, textSans } from '@guardian/source-foundations';
+import { palette, size, space, textSans } from '@guardian/source-foundations';
 import {
 	SvgAlertTriangle,
 	SvgInfoRound,

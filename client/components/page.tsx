@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import {
-	breakpoints,
-	space,
 	brand,
-	neutral,
-	headline,
-	textSans,
+	breakpoints,
 	from,
+	headline,
+	neutral,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
 import { ReactElement } from 'react';
 import * as React from 'react';

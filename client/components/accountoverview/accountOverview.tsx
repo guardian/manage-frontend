@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, neutral, headline, until } from '@guardian/source-foundations';
+import { headline, neutral, space, until } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { Fragment } from 'react';
 import {

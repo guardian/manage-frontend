@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import {
 	brand,
+	from,
+	headline,
 	neutral,
 	space,
-	headline,
 	textSans,
-	from,
 } from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';
 import { captureException, captureMessage } from '@sentry/browser';

@@ -1,6 +1,6 @@
 import { Button } from '@guardian/source-react-components';
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 import AsyncLoader, { ReFetch } from '../asyncLoader';

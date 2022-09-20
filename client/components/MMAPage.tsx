@@ -2,7 +2,7 @@ import { css, Global } from '@emotion/react';
 import { ABProvider, useAB } from '@guardian/ab-react';
 import { breakpoints, from, space } from '@guardian/source-foundations';
 import { lazy, ReactNode, Suspense, useEffect, useState } from 'react';
-import { Navigate, BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { initFeatureSwitchUrlParamOverride } from '../../shared/featureSwitches';
 import {
 	GROUPED_PRODUCT_TYPES,

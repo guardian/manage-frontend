@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react';
 import CurrentPaymentDetails from '../../../components/payment/update/CurrentPaymentDetail';
 import {
+	digitalDD,
 	guardianWeeklyCard,
 	guardianWeeklyExpiredCard,
-	digitalDD,
 	newspaperVoucherPaypal,
 } from '../../../fixtures/productDetail';
 

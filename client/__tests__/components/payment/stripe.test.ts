@@ -1,6 +1,6 @@
 import {
-	guardianWeeklySubscriptionCard,
 	guardianWeeklySubscriptionAustralia,
+	guardianWeeklySubscriptionCard,
 } from '../../../fixtures/subscription';
 import { getStripeKey } from '../../../stripe';
 

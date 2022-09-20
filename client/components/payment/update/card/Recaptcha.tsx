@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { textSans, space } from '@guardian/source-foundations';
+import { space, textSans } from '@guardian/source-foundations';
 import { Stripe } from '@stripe/stripe-js';
 import { useEffect } from 'react';
 import { Grecaptcha } from '../../../../services/captcha';

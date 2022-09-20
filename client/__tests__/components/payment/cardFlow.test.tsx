@@ -1,5 +1,5 @@
 import { PaymentMethod } from '@stripe/stripe-js';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { StripeSetupIntent } from '../../../../shared/stripeSetupIntent';
 import { CardInputForm } from '../../../components/payment/update/card/cardInputForm';
 import { RecaptchaProps } from '../../../components/payment/update/card/Recaptcha';

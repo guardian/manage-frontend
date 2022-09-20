@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, neutral, headline, until } from '@guardian/source-foundations';
+import { headline, neutral, space, until } from '@guardian/source-foundations';
 import { SvgChevronDownSingle } from '@guardian/source-react-components';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { trackEvent } from '../../services/analytics';

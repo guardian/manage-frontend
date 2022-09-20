@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import {
-	space,
 	brand,
-	neutral,
-	textSans,
 	from,
+	neutral,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
 import {
 	Button,
@@ -24,8 +24,8 @@ import { dateString } from '../../../../shared/dates';
 import {
 	DeliveryAddress,
 	isProduct,
-	MembersDataApiItem,
 	MembersDataApiAsyncLoader,
+	MembersDataApiItem,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';

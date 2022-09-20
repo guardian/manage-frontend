@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { featureSwitches } from '../../../shared/featureSwitches';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 import useFetch from '../../services/useFetch';
@@ -8,11 +8,11 @@ import { AvailableProductsResponse } from '../productSwitch/productSwitchApi';
 import { Spinner } from '../spinner';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
 import {
+	CancellationContext,
+	CancellationContextInterface,
 	CancellationPageTitleContext,
 	CancellationPageTitleInterface,
 	CancellationRouterState,
-	CancellationContext,
-	CancellationContextInterface,
 } from './CancellationContainer';
 import CancellationReasonSelection from './CancellationReasonSelection';
 

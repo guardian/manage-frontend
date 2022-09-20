@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import {
-	space,
-	neutral,
-	headline,
-	textSans,
 	brand,
 	brandAlt,
 	from,
+	headline,
+	neutral,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
 import {
 	Button,
@@ -14,7 +14,7 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
-import { useNavigate, Link, useLocation, Navigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { getGeoLocation } from '../../geolocation';
 import { measure } from '../../styles/typography';
 import { CancellationRouterState } from '../cancel/CancellationContainer';
@@ -28,8 +28,8 @@ import {
 } from './productSwitchApi';
 import {
 	getIosAppUrl,
-	productStartDate,
 	productFirstPaymentAmount,
+	productStartDate,
 } from './productSwitchHelpers';
 import {
 	buttonFullWidthOnMobileCss,

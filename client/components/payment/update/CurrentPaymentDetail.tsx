@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import {
 	from,
+	palette,
 	space,
 	textSans,
-	palette,
 	until,
 } from '@guardian/source-foundations';
 import { InlineError } from '@guardian/source-react-components';

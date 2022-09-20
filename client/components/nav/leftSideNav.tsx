@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import {
-	space,
 	brand,
 	brandAlt,
-	neutral,
 	from,
+	neutral,
+	space,
 } from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
 import { sans } from '../../styles/fonts';

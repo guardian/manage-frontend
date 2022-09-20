@@ -1,9 +1,9 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import {
-	guardianWeeklyCard,
 	digitalDD,
+	guardianWeeklyCard,
 	newspaperVoucherPaypal,
 } from '../../fixtures/productDetail';
 import { user } from '../../fixtures/user';

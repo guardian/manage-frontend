@@ -2,9 +2,9 @@ import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
 import {
 	Button,
-	SvgArrowRightStraight,
 	Radio,
 	RadioGroup,
+	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { useEffect, useState } from 'react';
 import * as React from 'react';

@@ -3,7 +3,7 @@
 // If you want to work with multiple (different) images, maybe try gridPicture instead
 // ----- Imports ----- //
 import { SerializedStyles } from '@emotion/react';
-import { gridSrcset, gridUrl, ImageId, ImageType, ascending } from './theGrid';
+import { ascending, gridSrcset, gridUrl, ImageId, ImageType } from './theGrid';
 // ----- Constants ----- //
 const MIN_IMG_WIDTH = 300;
 // ----- Types ----- //

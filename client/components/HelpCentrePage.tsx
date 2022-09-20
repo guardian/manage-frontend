@@ -1,6 +1,6 @@
 import { css, Global } from '@emotion/react';
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { initFeatureSwitchUrlParamOverride } from '../../shared/featureSwitches';
 import { setPageTitle } from '../services/pageTitle';
 import {

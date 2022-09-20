@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { CMP } from '@guardian/consent-management-platform/dist/types';
 import { from, palette } from '@guardian/source-foundations';
-import { useEffect, useState, SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { isInUSA as isUserInUSA } from '../../geolocation';
 import { headline } from '../../styles/fonts';
 import { SupportTheGuardianButton } from '../supportTheGuardianButton';

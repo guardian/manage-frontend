@@ -6,7 +6,7 @@ import {
 } from '@guardian/source-react-components';
 import * as Sentry from '@sentry/browser';
 import { useContext } from 'react';
-import { useLocation, useNavigate, Navigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { ProgressIndicator } from '../../progressIndicator';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';

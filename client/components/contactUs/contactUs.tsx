@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import {
-	space,
-	neutral,
-	headline,
-	textSans,
 	from,
+	headline,
+	neutral,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
 import { captureException } from '@sentry/browser';
 import { useNavigate, useParams } from 'react-router-dom';

@@ -9,13 +9,13 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { DateRange } from '../../../shared/dates';
 import {
 	isProduct,
-	MembersDataApiItem,
 	MembersDataApiAsyncLoader,
+	MembersDataApiItem,
 	ProductDetail,
 } from '../../../shared/productResponse';
 import {
-	WithProductType,
 	ProductTypeWithHolidayStopsFlow,
+	WithProductType,
 } from '../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../productUtils';
 import { ReFetch } from '../asyncLoader';

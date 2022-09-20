@@ -1,4 +1,4 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { GROUPED_PRODUCT_TYPES } from '../../shared/productTypes';
 import { newspaperVoucherPaypal } from '../fixtures/productDetail';
 import { BasicProductInfoTable } from './basicProductInfoTable';

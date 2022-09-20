@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import {
-	space,
 	brand,
 	brandAlt,
+	from,
 	labs,
 	neutral,
+	space,
 	textSans,
-	from,
 } from '@guardian/source-foundations';
 import {
 	dateAddDays,

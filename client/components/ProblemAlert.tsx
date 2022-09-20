@@ -1,10 +1,10 @@
 import { css, SerializedStyles } from '@emotion/react';
 import {
-	space,
 	brand,
 	neutral,
-	textSans,
 	palette,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
 import { ProductDetail } from '../../shared/productResponse';
 import { LinkButton } from './buttons';

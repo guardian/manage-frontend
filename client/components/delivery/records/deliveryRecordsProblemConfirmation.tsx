@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import {
-	space,
 	brand,
-	neutral,
+	from,
 	headline,
+	neutral,
+	space,
 	textSans,
 	until,
-	from,
 } from '@guardian/source-foundations';
 import { LinkButton } from '@guardian/source-react-components';
 import { useContext } from 'react';
@@ -17,9 +17,9 @@ import {
 } from '../../../../shared/dates';
 import {
 	DeliveryRecordApiItem,
+	getMainPlan,
 	PaidSubscriptionPlan,
 	Subscription,
-	getMainPlan,
 } from '../../../../shared/productResponse';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';

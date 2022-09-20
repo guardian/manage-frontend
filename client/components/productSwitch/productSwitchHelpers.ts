@@ -1,7 +1,7 @@
 import {
-	dateString,
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	DATE_FNS_SHORT_OUTPUT_FORMAT,
+	dateString,
 	parseDate,
 } from '../../../shared/dates';
 import { AvailableProductsResponse } from './productSwitchApi';

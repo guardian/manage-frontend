@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, neutral, textSans, from } from '@guardian/source-foundations';
+import { from, neutral, space, textSans } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { CallCentreNumbersProps } from './callCentreNumbers';
 

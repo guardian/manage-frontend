@@ -7,10 +7,10 @@ import {
 } from '@guardian/source-react-components';
 import * as Sentry from '@sentry/browser';
 import { useContext, useState } from 'react';
-import { useLocation, useNavigate, Navigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import {
-	isPaidSubscriptionPlan,
 	getMainPlan,
+	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { trackEventInOphanOnly } from '../../../services/analytics';

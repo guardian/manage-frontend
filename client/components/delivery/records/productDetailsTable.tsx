@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import {
-	space,
 	brand,
-	neutral,
-	textSans,
 	from,
+	neutral,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
 import { GiftIcon } from '../../svgs/giftIcon';
 

@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import {
-	space,
 	brand,
-	neutral,
-	headline,
-	textSans,
 	from,
+	headline,
+	neutral,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
 import { LinkButton, Stack } from '@guardian/source-react-components';
 import { useState } from 'react';

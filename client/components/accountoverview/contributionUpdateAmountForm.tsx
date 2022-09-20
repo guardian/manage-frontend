@@ -8,8 +8,8 @@ import {
 import {
 	ChoiceCard,
 	ChoiceCardGroup,
-	TextInput,
 	InlineError,
+	TextInput,
 } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';

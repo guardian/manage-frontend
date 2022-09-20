@@ -9,13 +9,13 @@ import {
 	PaymentMethodUpdated,
 } from '../../../components/payment/update/PaymentDetailUpdateConfirmation';
 import {
-	guardianWeeklyCard,
 	digitalDD,
+	guardianWeeklyCard,
 	guardianWeeklyExpiredCard,
 } from '../../../fixtures/productDetail';
 import {
-	guardianWeeklySubscriptionCard,
 	digitalSubscriptionDD,
+	guardianWeeklySubscriptionCard,
 } from '../../../fixtures/subscription';
 
 // mock functions for NewPaymentMethodDetail type

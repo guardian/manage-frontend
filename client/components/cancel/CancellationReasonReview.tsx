@@ -2,16 +2,16 @@ import { css } from '@emotion/react';
 import { palette, space, until } from '@guardian/source-foundations';
 import {
 	Button,
-	SvgArrowRightStraight,
 	InlineError,
+	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { ChangeEvent, FC, useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 import {
-	WithProductType,
 	ProductTypeWithCancellationFlow,
+	WithProductType,
 } from '../../../shared/productTypes';
 import { trackEvent } from '../../services/analytics';
 import useFetch from '../../services/useFetch';

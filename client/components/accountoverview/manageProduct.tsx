@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import {
-	space,
 	brand,
 	brandAlt,
-	neutral,
 	headline,
+	neutral,
+	space,
 	textSans,
 	until,
 } from '@guardian/source-foundations';
@@ -18,9 +18,9 @@ import {
 	ProductDetail,
 } from '../../../shared/productResponse';
 import {
-	WithGroupedProductType,
 	GroupedProductType,
 	ProductType,
+	WithGroupedProductType,
 } from '../../../shared/productTypes';
 import {
 	hasDeliveryRecordsFlow,

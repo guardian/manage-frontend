@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import {
-	space,
+	from,
 	neutral,
+	space,
 	textSans,
 	until,
-	from,
 } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';

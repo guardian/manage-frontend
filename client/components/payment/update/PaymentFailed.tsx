@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import {
-	neutral,
 	brand,
+	from,
+	neutral,
 	space,
 	textSans,
-	from,
 } from '@guardian/source-foundations';
 import {
 	Button,

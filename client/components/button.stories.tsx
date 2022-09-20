@@ -1,5 +1,5 @@
 import { brand } from '@guardian/source-foundations';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Button, ButtonProps } from './buttons';
 
 export default {
