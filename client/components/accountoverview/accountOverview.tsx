@@ -13,6 +13,7 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	GroupedProductTypeKeys,
 } from '../../../shared/productTypes';
+import { fetchWithDefaultParameters } from '../../fetch';
 import { allProductsDetailFetcher } from '../../productUtils';
 import AsyncLoader from '../asyncLoader';
 import { isCancelled } from '../cancel/cancellationSummary';
@@ -23,7 +24,6 @@ import { AccountOverviewCancelledCard } from './accountOverviewCancelledCard';
 import { AccountOverviewCard } from './accountOverviewCard';
 import { EmptyAccountOverview } from './emptyAccountOverview';
 import { SupportTheGuardianSection } from './supportTheGuardianSection';
-import { fetchWithDefaultParameters } from '../../fetch';
 
 const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 	MembersDataApiItem[],

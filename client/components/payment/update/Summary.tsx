@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { css, SerializedStyles } from '@emotion/react';
+import { space, palette, size, textSans } from '@guardian/source-foundations';
 import {
 	SvgAlertTriangle,
 	SvgInfoRound,
 } from '@guardian/source-react-components';
-import { css, SerializedStyles } from '@emotion/react';
-import { space, palette, size, textSans } from '@guardian/source-foundations';
+import * as React from 'react';
 
 interface SummaryProps {
 	/**

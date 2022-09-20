@@ -1,14 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
-
-import ManageProduct from './manageProduct';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
-
 import {
 	guardianWeeklyCard,
 	digitalDD,
 	newspaperVoucherPaypal,
 } from '../../fixtures/productDetail';
+import ManageProduct from './manageProduct';
 
 export default {
 	title: 'Pages/ManageProduct',

@@ -1,7 +1,8 @@
 import { Elements } from '@stripe/react-stripe-js';
+import { useStripeSDK } from '../../../../stripe';
 import { NewPaymentMethodDetail } from '../newPaymentMethodDetail';
 import { StripeCardInputForm } from './stripeCardInputForm';
-import { useStripeSDK } from '../../../../stripe';
+
 export interface CardInputFormProps {
 	stripeApiKey: string;
 	userEmail?: string;

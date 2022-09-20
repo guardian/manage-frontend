@@ -1,5 +1,4 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
 import { Spinner, LoadingProps } from './spinner';
 
 export default {

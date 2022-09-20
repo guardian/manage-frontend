@@ -1,5 +1,4 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
 import HelpCentreHeader, { HelpCentreHeaderProps } from './helpCentreHeader';
 
 export default {

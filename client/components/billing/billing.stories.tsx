@@ -1,14 +1,13 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import fetchMock from 'fetch-mock';
-
-import Billing from './billing';
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import {
 	guardianWeeklyCard,
 	digitalDD,
 	newspaperVoucherPaypal,
 } from '../../fixtures/productDetail';
 import { user } from '../../fixtures/user';
+import Billing from './billing';
 
 export default {
 	title: 'Pages/Billing',

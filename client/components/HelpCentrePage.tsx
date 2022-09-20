@@ -1,24 +1,24 @@
 import { css, Global } from '@emotion/react';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { fonts } from '../styles/fonts';
-import global from '../styles/global';
-import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
-import HelpCentreLoadingContent from './HelpCentreLoadingContent';
-import { LiveChat } from './liveChat/liveChat';
-import { Main } from './main';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { initFeatureSwitchUrlParamOverride } from '../../shared/featureSwitches';
+import { setPageTitle } from '../services/pageTitle';
 import {
 	isSignedIn,
 	pageRequiresSignIn,
 	SignInStatus,
 } from '../services/signInStatus';
 import useAnalytics from '../services/useAnalytics';
-import { setPageTitle } from '../services/pageTitle';
-import useScrollToTop from '../services/useScrollToTop';
 import useConsent from '../services/useConsent';
+import useScrollToTop from '../services/useScrollToTop';
+import { fonts } from '../styles/fonts';
+import global from '../styles/global';
 import ErrorBoundary from './ErrorBoundary';
 import { GenericErrorScreen } from './genericErrorScreen';
-import { initFeatureSwitchUrlParamOverride } from '../../shared/featureSwitches';
+import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
+import HelpCentreLoadingContent from './HelpCentreLoadingContent';
+import { LiveChat } from './liveChat/liveChat';
+import { Main } from './main';
 
 initFeatureSwitchUrlParamOverride();
 

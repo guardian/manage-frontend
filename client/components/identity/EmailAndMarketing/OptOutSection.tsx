@@ -1,7 +1,7 @@
-import { FC } from 'react';
 import { css } from '@emotion/react';
-import { Lines } from '../Lines';
+import { FC } from 'react';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
+import { Lines } from '../Lines';
 import { MarketingToggle } from '../MarketingToggle';
 import { ConsentOption } from '../models';
 import { PageSection } from '../PageSection';

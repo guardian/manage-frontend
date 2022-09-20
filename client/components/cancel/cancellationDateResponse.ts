@@ -2,8 +2,8 @@ import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../../shared/identity';
-import AsyncLoader from '../asyncLoader';
 import { fetchWithDefaultParameters } from '../../fetch';
+import AsyncLoader from '../asyncLoader';
 
 export interface CancellationDateResponse {
 	cancellationEffectiveDate: string;

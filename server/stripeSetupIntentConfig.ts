@@ -1,4 +1,5 @@
 import { s3ConfigPromise } from './awsIntegration';
+
 interface StripePublicToSecretKeyMapping {
 	[publicKey: string]: string;
 }

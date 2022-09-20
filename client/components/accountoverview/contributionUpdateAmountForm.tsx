@@ -1,16 +1,16 @@
 import { css } from '@emotion/react';
 import {
-	ChoiceCard,
-	ChoiceCardGroup,
-	TextInput,
-	InlineError,
-} from '@guardian/source-react-components';
-import {
 	neutral,
 	palette,
 	space,
 	textSans,
 } from '@guardian/source-foundations';
+import {
+	ChoiceCard,
+	ChoiceCardGroup,
+	TextInput,
+	InlineError,
+} from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import {
@@ -18,10 +18,10 @@ import {
 	PaidSubscriptionPlan,
 } from '../../../shared/productResponse';
 import { ProductType } from '../../../shared/productTypes';
+import { fetchWithDefaultParameters } from '../../fetch';
 import { trackEvent } from '../../services/analytics';
 import AsyncLoader from '../asyncLoader';
 import { Button } from '../buttons';
-import { fetchWithDefaultParameters } from '../../fetch';
 
 type ContributionUpdateAmountFormMode = 'MANAGE' | 'CANCELLATION_SAVE';
 

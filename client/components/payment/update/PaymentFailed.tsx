@@ -10,8 +10,8 @@ import {
 	Button,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-import { CallCentreNumbers } from '../../callCentreNumbers';
 import { Navigate, useLocation, useNavigate } from 'react-router';
+import { CallCentreNumbers } from '../../callCentreNumbers';
 
 export default function PaymentFailed() {
 	const location = useLocation();

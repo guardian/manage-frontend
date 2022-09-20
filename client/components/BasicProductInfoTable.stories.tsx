@@ -1,8 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
-import { BasicProductInfoTable } from './basicProductInfoTable';
-import { newspaperVoucherPaypal } from '../fixtures/productDetail';
 import { GROUPED_PRODUCT_TYPES } from '../../shared/productTypes';
+import { newspaperVoucherPaypal } from '../fixtures/productDetail';
+import { BasicProductInfoTable } from './basicProductInfoTable';
 
 export default {
 	title: 'Components/BasicProductInfoTable',

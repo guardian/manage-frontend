@@ -1,5 +1,4 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
 import { Footer } from './footer';
 
 export default {

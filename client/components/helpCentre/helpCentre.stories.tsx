@@ -1,7 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import fetchMock from 'fetch-mock';
-
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import { HelpCenterContentWrapper } from '../HelpCenterContentWrapper';
 import HelpCentre from './helpCentre';
 

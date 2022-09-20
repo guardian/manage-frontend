@@ -1,5 +1,3 @@
-import { StripeError } from '@stripe/stripe-js';
-import * as React from 'react';
 import { css } from '@emotion/react';
 import {
 	textSans,
@@ -9,6 +7,8 @@ import {
 	FocusStyleManager,
 } from '@guardian/source-foundations';
 import { InlineError } from '@guardian/source-react-components';
+import { StripeError } from '@stripe/stripe-js';
+import * as React from 'react';
 
 FocusStyleManager.onlyShowFocusOnTabs();
 interface FieldWrapperProps {

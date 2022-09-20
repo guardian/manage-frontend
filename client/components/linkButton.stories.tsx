@@ -1,8 +1,6 @@
+import { brand, neutral } from '@guardian/source-foundations';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ReactRouterDecorator } from '../../.storybook/ReactRouterDecorator';
-
-import { brand, neutral } from '@guardian/source-foundations';
-
 import { LinkButton, LinkButtonProps } from './buttons';
 
 export default {

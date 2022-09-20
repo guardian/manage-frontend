@@ -1,9 +1,8 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import fetchMock from 'fetch-mock';
-
-import PublicProfile from './';
+import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { user } from '../../../fixtures/user';
+import PublicProfile from './';
 
 export default {
 	title: 'Pages/Profile',

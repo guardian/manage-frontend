@@ -6,9 +6,9 @@ import {
 	textSans,
 	palette,
 } from '@guardian/source-foundations';
+import { ProductDetail } from '../../shared/productResponse';
 import { LinkButton } from './buttons';
 import { ErrorIcon } from './svgs/errorIcon';
-import { ProductDetail } from '../../shared/productResponse';
 
 interface AlertButtonProps {
 	title: string;

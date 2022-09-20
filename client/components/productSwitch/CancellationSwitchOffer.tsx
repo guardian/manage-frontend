@@ -9,7 +9,6 @@ import {
 	textSans,
 	until,
 } from '@guardian/source-foundations';
-import GridPicture from '../images/GridPicture';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
@@ -17,11 +16,14 @@ import {
 	SvgArrowRightStraight,
 	SvgTickRound,
 } from '@guardian/source-react-components';
-import { useNavigate } from 'react-router-dom';
-import { CancellationRouterState } from '../cancel/CancellationContainer';
 import { useLocation } from 'react-router';
-import { AvailableProductsResponse } from './productSwitchApi';
+import { useNavigate } from 'react-router-dom';
+import { measure } from '../../styles/typography';
+import { CancellationRouterState } from '../cancel/CancellationContainer';
+import { Heading } from '../Heading';
+import GridPicture from '../images/GridPicture';
 import { productBenefits } from './ProductBenefits';
+import { AvailableProductsResponse } from './productSwitchApi';
 import {
 	introOfferCopy,
 	introOfferDuration,
@@ -38,8 +40,6 @@ import {
 	pageTopCss,
 	tickListCss,
 } from './productSwitchStyles';
-import { measure } from '../../styles/typography';
-import { Heading } from '../Heading';
 
 interface CancellationSwitchOfferProps {
 	availableProductsToSwitch: AvailableProductsResponse[];

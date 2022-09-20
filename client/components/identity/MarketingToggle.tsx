@@ -1,7 +1,7 @@
-import { FC } from 'react';
 import { css } from '@emotion/react';
-import { ToggleSwitch } from './ToggleSwitch';
+import { FC } from 'react';
 import { standardSansText, toggleDescriptionPadding } from './sharedStyles';
+import { ToggleSwitch } from './ToggleSwitch';
 
 interface MarketingToggleProps {
 	id: string;

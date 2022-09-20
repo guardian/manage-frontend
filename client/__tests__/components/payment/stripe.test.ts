@@ -1,8 +1,8 @@
-import { getStripeKey } from '../../../stripe';
 import {
 	guardianWeeklySubscriptionCard,
 	guardianWeeklySubscriptionAustralia,
 } from '../../../fixtures/subscription';
+import { getStripeKey } from '../../../stripe';
 
 // @ts-ignore
 window.guardian = {

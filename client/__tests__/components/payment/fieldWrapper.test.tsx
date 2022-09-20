@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react';
-import { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
 import { CardInputForm } from '../../../components/payment/update/card/cardInputForm';
+import { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
 
 const stripePublicKey = 'pk_test_Qm3CGRdrV4WfGYCpm0sftR0f';
 const userEmail = 'myemail@email.com';

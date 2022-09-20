@@ -1,6 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { ReactRouterDecorator } from '../../.storybook/ReactRouterDecorator';
-
 import { Main, MainProps } from './main';
 
 export default {

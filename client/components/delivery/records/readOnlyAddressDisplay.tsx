@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { Button } from '@guardian/source-react-components';
 import { space, brand, textSans, from } from '@guardian/source-foundations';
+import { Button } from '@guardian/source-react-components';
 import Color from 'color';
 import { DeliveryAddress } from '../../../../shared/productResponse';
 import { DeliveryAddressDisplay } from '../address/deliveryAddressDisplay';

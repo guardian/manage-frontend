@@ -1,9 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
-
 import { PRODUCT_TYPES } from '../../../shared/productTypes';
-
 import { guardianWeeklyCard, contribution } from '../../fixtures/productDetail';
 import CancellationContainer from './CancellationContainer';
 import CancellationReasonReview from './CancellationReasonReview';

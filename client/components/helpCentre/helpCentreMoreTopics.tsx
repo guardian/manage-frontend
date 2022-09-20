@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { space, neutral, textSans, until } from '@guardian/source-foundations';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { trackEvent } from '../../services/analytics';
 import {
 	h2Css,
@@ -11,7 +12,6 @@ import {
 	sectionTitleCss,
 } from './helpCentreStyles';
 import { MoreTopics } from './HelpCentreTypes';
-import { Link } from 'react-router-dom';
 
 const moreTopicsStyles = css`
 	margin-bottom: '10px';

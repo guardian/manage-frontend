@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
 import { space, neutral, until, from } from '@guardian/source-foundations';
+import { Button, InlineError } from '@guardian/source-react-components';
 import * as Sentry from '@sentry/browser';
 import { startCase } from 'lodash';
 import { createContext, useContext, useEffect, useState } from 'react';
 import * as React from 'react';
+import { Navigate, useLocation, useNavigate, Link } from 'react-router-dom';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	dateAddYears,
@@ -13,9 +15,8 @@ import {
 	parseDate,
 } from '../../../shared/dates';
 import { isProduct } from '../../../shared/productResponse';
-import { sans } from '../../styles/fonts';
 import { trackEvent } from '../../services/analytics';
-import { Button, InlineError } from '@guardian/source-react-components';
+import { sans } from '../../styles/fonts';
 import { DatePicker } from '../datePicker';
 import { GenericErrorScreen } from '../genericErrorScreen';
 import { ProgressIndicator } from '../progressIndicator';
@@ -38,7 +39,6 @@ import {
 	IssuesImpactedPerYear,
 	PotentialHolidayStopsResponse,
 } from './holidayStopApi';
-import { Navigate, useLocation, useNavigate, Link } from 'react-router-dom';
 import {
 	HolidayStopsContext,
 	HolidayStopsContextInterface,

@@ -1,9 +1,8 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import fetchMock from 'fetch-mock';
-
-import Settings from './';
+import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { user } from '../../../fixtures/user';
+import Settings from './';
 
 export default {
 	title: 'Pages/Settings',

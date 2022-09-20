@@ -1,13 +1,4 @@
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { css, ThemeProvider } from '@emotion/react';
-import {
-	Button,
-	buttonThemeReaderRevenueBrand,
-	Stack,
-	SvgArrowRightStraight,
-	SvgTickRound,
-} from '@guardian/source-react-components';
 import {
 	headline,
 	textSans,
@@ -16,23 +7,38 @@ import {
 	between,
 	from,
 } from '@guardian/source-foundations';
-import { cardTypeToSVG } from '../payment/cardDisplay';
-import { expanderButtonCss } from '../expanderButton';
 import {
-	CancellationPageTitleContext,
-	CancellationPageTitleInterface,
-	CancellationRouterState,
-} from '../cancel/CancellationContainer';
-import {
-	AvailableProductsResponse,
-	ProductSwitchContext,
-	ProductSwitchContextInterface,
-} from './productSwitchApi';
+	Button,
+	buttonThemeReaderRevenueBrand,
+	Stack,
+	SvgArrowRightStraight,
+	SvgTickRound,
+} from '@guardian/source-react-components';
+import { ReactNode, useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 import {
 	getMainPlan,
 	MDA_TEST_USER_HEADER,
 	PaidSubscriptionPlan,
 } from '../../../shared/productResponse';
+import { measure } from '../../styles/typography';
+import {
+	CancellationPageTitleContext,
+	CancellationPageTitleInterface,
+	CancellationRouterState,
+} from '../cancel/CancellationContainer';
+import { expanderButtonCss } from '../expanderButton';
+import { Heading } from '../Heading';
+import { cardTypeToSVG } from '../payment/cardDisplay';
+import { DirectDebitDisplay } from '../payment/directDebitDisplay';
+import { PayPalDisplay } from '../payment/paypalDisplay';
+import { SepaDisplay } from '../payment/sepaDisplay';
+import { productBenefits } from './ProductBenefits';
+import {
+	AvailableProductsResponse,
+	ProductSwitchContext,
+	ProductSwitchContextInterface,
+} from './productSwitchApi';
 import {
 	introOfferCopy,
 	introOfferDuration,
@@ -43,18 +49,12 @@ import {
 	regularPrice,
 	trialCopy,
 } from './productSwitchHelpers';
-import { PayPalDisplay } from '../payment/paypalDisplay';
-import { SepaDisplay } from '../payment/sepaDisplay';
-import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import {
 	colour,
 	listCss,
 	pageTopCss,
 	tickListCss,
 } from './productSwitchStyles';
-import { productBenefits } from './ProductBenefits';
-import { measure } from '../../styles/typography';
-import { Heading } from '../Heading';
 
 /**
  * Generic Card container component

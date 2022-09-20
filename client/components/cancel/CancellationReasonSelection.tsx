@@ -1,27 +1,3 @@
-import { ProgressIndicator } from '../progressIndicator';
-import { WithStandardTopMargin } from '../WithStandardTopMargin';
-import {
-	Button,
-	SvgArrowRightStraight,
-	Radio,
-	RadioGroup,
-	InlineError,
-} from '@guardian/source-react-components';
-import { FormEvent, useContext, useState } from 'react';
-import { hasCancellationFlow } from '../../productUtils';
-import {
-	CancellationContext,
-	CancellationContextInterface,
-} from './CancellationContainer';
-import { ContactUsToCancel } from './contactUsToCancel';
-import {
-	CancellationDateAsyncLoader,
-	cancellationDateFetcher,
-	CancellationDateResponse,
-} from './cancellationDateResponse';
-import { ProductTypeWithCancellationFlow } from '../../../shared/productTypes';
-import { ProductDetail } from '../../../shared/productResponse';
-import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '../../../shared/dates';
 import { css } from '@emotion/react';
 import {
 	from,
@@ -31,11 +7,35 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import {
+	Button,
+	SvgArrowRightStraight,
+	Radio,
+	RadioGroup,
+	InlineError,
+} from '@guardian/source-react-components';
+import { FormEvent, useContext, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '../../../shared/dates';
+import { ProductDetail } from '../../../shared/productResponse';
+import { ProductTypeWithCancellationFlow } from '../../../shared/productTypes';
+import { hasCancellationFlow } from '../../productUtils';
+import { ProgressIndicator } from '../progressIndicator';
+import { WithStandardTopMargin } from '../WithStandardTopMargin';
+import {
+	CancellationContext,
+	CancellationContextInterface,
+} from './CancellationContainer';
+import {
 	cancellationEffectiveEndOfLastInvoicePeriod,
 	cancellationEffectiveToday,
 } from './cancellationContexts';
+import {
+	CancellationDateAsyncLoader,
+	cancellationDateFetcher,
+	CancellationDateResponse,
+} from './cancellationDateResponse';
 import { CancellationReason } from './cancellationReason';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { ContactUsToCancel } from './contactUsToCancel';
 
 interface ReasonPickerProps {
 	productDetail: ProductDetail;
@@ -186,7 +186,8 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 									padding: ${space[3]}px;
 									float: left;
 									background-color: ${palette.neutral[97]};
-									border-bottom: 1px solid ${palette.neutral[86]};
+									border-bottom: 1px solid
+										${palette.neutral[86]};
 									${textSans.medium({ fontWeight: 'bold' })};
 									${from.tablet} {
 										padding: ${space[3]}px ${space[5]}px;

@@ -1,7 +1,3 @@
-import {
-	getScopeFromRequestPathOrEmptyString,
-	X_GU_ID_FORWARDED_SCOPE,
-} from '../../../../shared/identity';
 import { css } from '@emotion/react';
 import {
 	neutral,
@@ -20,6 +16,12 @@ import {
 } from '@guardian/source-react-components';
 import * as Sentry from '@sentry/browser';
 import * as React from 'react';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+	getScopeFromRequestPathOrEmptyString,
+	X_GU_ID_FORWARDED_SCOPE,
+} from '../../../../shared/identity';
 import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
@@ -27,26 +29,24 @@ import {
 	Subscription,
 	WithSubscription,
 } from '../../../../shared/productResponse';
+import { ProductType, WithProductType } from '../../../../shared/productTypes';
+import { createProductDetailFetch } from '../../../productUtils';
+import { trackEvent } from '../../../services/analytics';
+import { getStripeKey } from '../../../stripe';
+import { processResponse } from '../../../utils';
 import { GenericErrorScreen } from '../../genericErrorScreen';
+import OverlayLoader from '../../OverlayLoader';
 import { SupportTheGuardianButton } from '../../supportTheGuardianButton';
+import { cardTypeToSVG } from '../cardDisplay';
+import { DirectDebitLogo } from '../directDebitLogo';
 import { augmentPaymentFailureAlertText } from '../paymentFailureAlertIfApplicable';
 import { CardInputForm } from './card/cardInputForm';
+import ContactUs from './ContactUs';
 import CurrentPaymentDetails from './CurrentPaymentDetail';
 import { DirectDebitInputForm } from './dd/directDebitInputForm';
 import { NewPaymentMethodDetail } from './newPaymentMethodDetail';
-import { getStripeKey } from '../../../stripe';
-import OverlayLoader from '../../OverlayLoader';
-import { createProductDetailFetch } from '../../../productUtils';
-import { processResponse } from '../../../utils';
-import { trackEvent } from '../../../services/analytics';
-import { ErrorSummary } from './Summary';
-import { DirectDebitLogo } from '../directDebitLogo';
-import { cardTypeToSVG } from '../cardDisplay';
-import ContactUs from './ContactUs';
-import { ProductType, WithProductType } from '../../../../shared/productTypes';
-import { useNavigate } from 'react-router-dom';
-import { useContext, useState } from 'react';
 import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
+import { ErrorSummary } from './Summary';
 
 export enum PaymentMethod {
 	card = 'Credit card / debit card',

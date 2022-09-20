@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
 import { css } from '@emotion/react';
 import { textSans, space } from '@guardian/source-foundations';
 import { Stripe } from '@stripe/stripe-js';
+import { useEffect } from 'react';
 import { Grecaptcha } from '../../../../services/captcha';
 
 declare let window: Window & {

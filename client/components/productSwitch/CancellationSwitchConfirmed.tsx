@@ -13,30 +13,30 @@ import {
 	Stack,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-import { useNavigate, Link, useLocation, Navigate } from 'react-router-dom';
-import GridPicture from '../images/GridPicture';
-import GridImage from '../images/GridImage';
 import { useContext } from 'react';
+import { useNavigate, Link, useLocation, Navigate } from 'react-router-dom';
+import { getGeoLocation } from '../../geolocation';
+import { measure } from '../../styles/typography';
+import { CancellationRouterState } from '../cancel/CancellationContainer';
+import { Heading } from '../Heading';
+import GridImage from '../images/GridImage';
+import GridPicture from '../images/GridPicture';
 import {
 	ProductSwitchContext,
 	ProductSwitchContextInterface,
 	ProductSwitchResponse,
 } from './productSwitchApi';
-import { getGeoLocation } from '../../geolocation';
 import {
 	getIosAppUrl,
 	productStartDate,
 	productFirstPaymentAmount,
 } from './productSwitchHelpers';
-import { CancellationRouterState } from '../cancel/CancellationContainer';
 import {
 	buttonFullWidthOnMobileCss,
 	colour,
 	listCss,
 	pageTopCss,
 } from './productSwitchStyles';
-import { measure } from '../../styles/typography';
-import { Heading } from '../Heading';
 
 const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();

@@ -1,14 +1,20 @@
 import { css } from '@emotion/react';
-import { from, space, textSans, palette, until } from '@guardian/source-foundations';
+import {
+	from,
+	space,
+	textSans,
+	palette,
+	until,
+} from '@guardian/source-foundations';
 import { InlineError } from '@guardian/source-react-components';
 import { getMainPlan, ProductDetail } from '../../../../shared/productResponse';
+import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { CardDisplay } from '../cardDisplay';
 import {
 	DirectDebitDisplay,
 	sanitiseAccountNumber,
 } from '../directDebitDisplay';
 import { getObfuscatedPayPalId } from '../paypalDisplay';
-import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { PaypalLogo } from '../paypalLogo';
 
 function cardExpired(year: number, month: number) {

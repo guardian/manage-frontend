@@ -1,5 +1,4 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
 import { DatePicker, DatePickerProps } from './datePicker';
 
 export default {

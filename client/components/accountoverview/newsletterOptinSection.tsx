@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { Button, Checkbox } from '@guardian/source-react-components';
 import { space, neutral, textSans } from '@guardian/source-foundations';
+import { Button, Checkbox } from '@guardian/source-react-components';
 import * as Sentry from '@sentry/browser';
 import { Fragment, ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { trackEvent } from '../../services/analytics';

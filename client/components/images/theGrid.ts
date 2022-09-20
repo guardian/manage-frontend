@@ -1,3 +1,5 @@
+import { $Keys } from 'utility-types';
+
 // ----- Setup ----- //
 const catalogue = {
 	digitalSubPackshot: '71ff2a443acb92047e428782ed0239075fd2007a/0_0_497_285',
@@ -9,8 +11,6 @@ export const GRID_DOMAIN = 'https://media.guim.co.uk';
 export const imageCatalogue: Record<string, string> = catalogue;
 
 // ----- Types ----- //
-import { $Keys } from 'utility-types';
-
 export type ImageType = 'jpg' | 'png';
 export type GridImage = {
 	gridId: ImageId;
