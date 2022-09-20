@@ -2100,33 +2100,6 @@ systemctl start manage-frontend
       },
       "Type": "AWS::Logs::LogGroup",
     },
-    "ManageFrontendLogGroup7414E8CD": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "LogGroupName": "support-manage-frontend-TEST",
-        "RetentionInDays": 14,
-        "Tags": Array [
-          Object {
-            "Key": "gu:cdk:version",
-            "Value": "TEST",
-          },
-          Object {
-            "Key": "gu:repo",
-            "Value": "guardian/manage-frontend",
-          },
-          Object {
-            "Key": "Stack",
-            "Value": "support",
-          },
-          Object {
-            "Key": "Stage",
-            "Value": "TEST",
-          },
-        ],
-      },
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-    },
     "NoHealthyInstancesAlarm": Object {
       "Condition": "CreateProdResources",
       "DependsOn": Array [
@@ -2238,7 +2211,7 @@ systemctl start manage-frontend
               "Effect": "Allow",
               "Resource": Object {
                 "Fn::GetAtt": Array [
-                  "ManageFrontendLogGroup7414E8CD",
+                  "ManageFrontendLogGroup",
                   "Arn",
                 ],
               },

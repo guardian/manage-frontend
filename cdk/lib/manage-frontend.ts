@@ -13,7 +13,7 @@ import type { App } from 'aws-cdk-lib';
 import { Tags } from 'aws-cdk-lib';
 import { InstanceClass, InstanceSize, InstanceType } from 'aws-cdk-lib/aws-ec2';
 import type { CfnLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
-import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
+import type { CfnLogGroup } from 'aws-cdk-lib/aws-logs';
 import { CfnRecordSet } from 'aws-cdk-lib/aws-route53';
 import { CfnInclude } from 'aws-cdk-lib/cloudformation-include';
 
@@ -96,10 +96,9 @@ export class ManageFrontend extends GuStack {
             systemctl start manage-frontend
             /opt/cloudwatch-logs/configure-logs application ${this.stack} ${this.stage} ${app} /var/log/manage-frontend.log`;
 
-		const logGroup = new LogGroup(this, 'ManageFrontendLogGroup', {
-			logGroupName: `support-manage-frontend-${this.stage}`,
-			retention: RetentionDays.TWO_WEEKS,
-		});
+		const logGroup = existingYaml.getResource(
+			'ManageFrontendLogGroup',
+		) as CfnLogGroup;
 
 		// docs https://guardian.github.io/cdk/classes/patterns.GuEc2App.html
 		const nodeApp = new GuNodeApp(this, {
@@ -128,7 +127,7 @@ export class ManageFrontend extends GuStack {
 							'logs:CreateLogStream',
 							'logs:PutLogEvents',
 						],
-						resources: [logGroup.logGroupArn],
+						resources: [logGroup.attrArn],
 					}),
 					new GuPutCloudwatchMetricsPolicy(this),
 					// TODO: whats this bucket used for and are we doing the right thing?
