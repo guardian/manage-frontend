@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const babelLoaderExcludeNodeModulesExcept = require('babel-loader-exclude-node-modules-except');
+const nodeExternals = require('webpack-node-externals');
 
 const assetsPluginInstance = new AssetsPlugin({
 	path: path.resolve(__dirname, './dist/'),
@@ -70,6 +71,7 @@ const server = merge(common, {
 		__dirname: false,
 		__filename: false,
 	},
+	externals: [nodeExternals()],
 	module: {
 		rules: [
 			{
