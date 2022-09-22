@@ -4,7 +4,10 @@ import { Button } from '@guardian/source-react-components';
 import { ReactNode, useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { isProduct, ProductDetail } from '../../../../shared/productResponse';
-import { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
+import {
+	ProductType,
+	ProductTypeWithCancellationFlow,
+} from '../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../fetch';
 import { createProductDetailFetcher } from '../../../productUtils';
 import AsyncLoader from '../../asyncLoader';
@@ -26,15 +29,24 @@ class PerformCancelAsyncLoader extends AsyncLoader<ProductDetail[]> {}
 const getCancelFunc =
 	(
 		subscriptionName: string,
+		productType: ProductType,
 		reason: OptionalCancellationReasonId,
 		withSubscriptionResponseFetcher: () => Promise<Response>,
 	) =>
 	async () => {
-		await fetchWithDefaultParameters('/api/cancel/' + subscriptionName, {
-			method: 'POST',
-			body: JSON.stringify({ reason }),
-			headers: { 'Content-Type': 'application/json' },
-		}); // response is either empty or 404 - neither is useful so fetch subscription to determine cancellation result...
+		const isSupporterPlus =
+			productType.allProductsProductTypeFilterString === 'SupporterPlus';
+		const cancellationApi = isSupporterPlus
+			? '/supporter-plus-cancel/'
+			: '/api/cancel/';
+		await fetchWithDefaultParameters(
+			`${cancellationApi}${subscriptionName}`,
+			{
+				method: 'POST',
+				body: JSON.stringify({ reason }),
+				headers: { 'Content-Type': 'application/json' },
+			},
+		); // response is either empty or 404 - neither is useful so fetch subscription to determine cancellation result...
 
 		return await withSubscriptionResponseFetcher();
 	};
@@ -174,6 +186,7 @@ const ExecuteCancellation = () => {
 					<PerformCancelAsyncLoader
 						fetch={getCancelFunc(
 							productDetail.subscription.subscriptionId,
+							productType,
 							routerState.selectedReasonId,
 							createProductDetailFetcher(
 								productType,
