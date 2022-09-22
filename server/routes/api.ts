@@ -107,6 +107,7 @@ router.post(
 	productMoveAPI(
 		'supporter-plus-cancel/:subscriptionName',
 		'CANCEL_SUPPORTER_PLUS',
+		['subscriptionName'],
 	),
 );
 

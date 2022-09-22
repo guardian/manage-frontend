@@ -37,7 +37,7 @@ const getCancelFunc =
 		const isSupporterPlus =
 			productType.allProductsProductTypeFilterString === 'SupporterPlus';
 		const cancellationApi = isSupporterPlus
-			? '/supporter-plus-cancel/'
+			? '/api/supporter-plus-cancel/'
 			: '/api/cancel/';
 		await fetchWithDefaultParameters(
 			`${cancellationApi}${subscriptionName}`,
