@@ -593,48 +593,48 @@ Object {
               "",
               Array [
                 "#!/bin/bash -ev
-            # get runnable tar from S3
-            aws --region ",
+# get runnable tar from S3
+aws --region ",
                 Object {
                   "Ref": "AWS::Region",
                 },
                 " s3 cp s3://membership-dist/support/TEST/manage-frontend/manage-frontend.zip /tmp
-            mkdir /etc/gu
-            unzip /tmp/manage-frontend.zip -d /etc/gu/dist/
-            # add user
-            groupadd manage-frontend
-            useradd -r -s /usr/bin/nologin -g manage-frontend manage-frontend
-            touch /var/log/manage-frontend.log
-            chown -R manage-frontend:manage-frontend /etc/gu
-            chown manage-frontend:manage-frontend /var/log/manage-frontend.log
-            # write out systemd file
-            cat >/etc/systemd/system/manage-frontend.service <<EOL
-            [Service]
-            ExecStart=/usr/bin/node /etc/gu/dist/server.js
-            Restart=always
-            StandardOutput=syslog
-            StandardError=syslog
-            SyslogIdentifier=manage-frontend
-            User=manage-frontend
-            Group=manage-frontend
-            Environment=STAGE=TEST
-            Environment=CLIENT_DSN=",
+mkdir /etc/gu
+unzip /tmp/manage-frontend.zip -d /etc/gu/dist/
+# add user
+groupadd manage-frontend
+useradd -r -s /usr/bin/nologin -g manage-frontend manage-frontend
+touch /var/log/manage-frontend.log
+chown -R manage-frontend:manage-frontend /etc/gu
+chown manage-frontend:manage-frontend /var/log/manage-frontend.log
+# write out systemd file
+cat >/etc/systemd/system/manage-frontend.service <<EOL
+[Service]
+ExecStart=/usr/bin/node /etc/gu/dist/server.js
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=manage-frontend
+User=manage-frontend
+Group=manage-frontend
+Environment=STAGE=TEST
+Environment=CLIENT_DSN=",
                 Object {
                   "Ref": "clientRavenDSN",
                 },
                 "
-            Environment=SERVER_DSN=",
+Environment=SERVER_DSN=",
                 Object {
                   "Ref": "serverRavenDSN",
                 },
                 "
-            [Install]
-            WantedBy=multi-user.target
-            EOL
-            # RUN
-            systemctl enable manage-frontend
-            systemctl start manage-frontend
-            /opt/cloudwatch-logs/configure-logs application support TEST manage-frontend /var/log/manage-frontend.log",
+[Install]
+WantedBy=multi-user.target
+EOL
+# RUN
+systemctl enable manage-frontend
+systemctl start manage-frontend
+/opt/cloudwatch-logs/configure-logs application support TEST manage-frontend /var/log/manage-frontend.log",
               ],
             ],
           },
