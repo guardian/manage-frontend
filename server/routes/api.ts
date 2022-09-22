@@ -102,7 +102,7 @@ router.post(
 	),
 );
 
-router.get(
+router.post(
 	'/supporter-plus-cancel/:subscriptionName',
 	productMoveAPI(
 		'supporter-plus-cancel/:subscriptionName',
