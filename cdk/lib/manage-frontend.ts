@@ -150,10 +150,18 @@ systemctl start manage-frontend
 					),
 					new GuAllowPolicy(this, 'DiscoverApiGatewayLambdas', {
 						actions: ['cloudformation:ListStackResources'],
-						resources: [
-							`arn:aws:cloudformation:${this.region}:${this.account}:stack/membership-${this.stage}-*`,
-							`arn:aws:cloudformation:${this.region}:${this.account}:stack/support-${this.stage}-*`,
-						],
+						resources:
+							this.stage === 'PROD'
+								? [
+										`arn:aws:cloudformation:${this.region}:${this.account}:stack/membership-${this.stage}-*`,
+										`arn:aws:cloudformation:${this.region}:${this.account}:stack/support-${this.stage}-*`,
+								  ]
+								: [
+										`arn:aws:cloudformation:${this.region}:${this.account}:stack/membership-DEV-*`,
+										`arn:aws:cloudformation:${this.region}:${this.account}:stack/membership-CODE-*`,
+										`arn:aws:cloudformation:${this.region}:${this.account}:stack/support-DEV-*`,
+										`arn:aws:cloudformation:${this.region}:${this.account}:stack/support-CODE-*`,
+								  ],
 					}),
 					new GuAllowPolicy(this, 'DiscoverApiGatewayApiKeys', {
 						actions: ['apigateway:GET'],
@@ -163,9 +171,15 @@ systemctl start manage-frontend
 					}),
 					new GuAllowPolicy(this, 'InvokeApiGateway', {
 						actions: ['execute-api:Invoke'],
-						resources: [
-							`arn:aws:execute-api:${this.region}:${this.account}:*/${this.stage}/*`,
-						],
+						resources:
+							this.stage === 'PROD'
+								? [
+										`arn:aws:execute-api:${this.region}:${this.account}:*/${this.stage}/*`,
+								  ]
+								: [
+										`arn:aws:execute-api:${this.region}:${this.account}:*/DEV/*`,
+										`arn:aws:execute-api:${this.region}:${this.account}:*/${this.stage}/*`,
+								  ],
 					}),
 				],
 			},
