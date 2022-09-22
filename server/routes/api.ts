@@ -14,7 +14,7 @@ import {
 	deliveryRecordsAPI,
 	holidayStopAPI,
 	invoicingAPI,
-	// productMoveAPI,
+	productMoveAPI,
 } from '../apiGatewayDiscovery';
 import {
 	customMembersDataApiHandler,
@@ -99,6 +99,14 @@ router.post(
 		'/user-attributes/me/cancel/:subscriptionName',
 		'MDA_CANCEL',
 		['subscriptionName'],
+	),
+);
+
+router.get(
+	'/supporter-plus-cancel/:subscriptionName',
+	productMoveAPI(
+		'supporter-plus-cancel/:subscriptionName',
+		'CANCEL_SUPPORTER_PLUS',
 	),
 );
 
