@@ -2449,7 +2449,7 @@ systemctl start manage-frontend
     "TargetGroupManagefrontend7AE2B787": Object {
       "Properties": Object {
         "HealthCheckIntervalSeconds": 10,
-        "HealthCheckPath": "/healthcheck",
+        "HealthCheckPath": "/_healthcheck",
         "HealthCheckProtocol": "HTTP",
         "HealthCheckTimeoutSeconds": 5,
         "HealthyThresholdCount": 5,

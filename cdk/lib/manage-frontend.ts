@@ -10,9 +10,10 @@ import {
 } from '@guardian/cdk/lib/constructs/iam';
 import type { GuAsgCapacity } from '@guardian/cdk/lib/types';
 import type { App } from 'aws-cdk-lib';
-import { Tags } from 'aws-cdk-lib';
+import { Duration, Tags } from 'aws-cdk-lib';
 import { InstanceClass, InstanceSize, InstanceType } from 'aws-cdk-lib/aws-ec2';
 import type { CfnLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import { Protocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import type { CfnLogGroup } from 'aws-cdk-lib/aws-logs';
 import { CfnRecordSet } from 'aws-cdk-lib/aws-route53';
 import { CfnInclude } from 'aws-cdk-lib/cloudformation-include';
@@ -183,6 +184,15 @@ systemctl start manage-frontend
 					}),
 				],
 			},
+		});
+
+		nodeApp.targetGroup.configureHealthCheck({
+			path: '/_healthcheck',
+			healthyThresholdCount: 5,
+			unhealthyThresholdCount: 2,
+			interval: Duration.seconds(10),
+			timeout: Duration.seconds(5),
+			protocol: Protocol.HTTP,
 		});
 
 		const nodeAppAsg = nodeApp.autoScalingGroup;
