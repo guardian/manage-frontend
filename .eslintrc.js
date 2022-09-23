@@ -1,4 +1,7 @@
 module.exports = {
+	parserOptions: {
+		ecmaVersion: 2020,
+	},
 	extends: [
 		'@guardian/eslint-config-typescript',
 		'plugin:react/recommended',
@@ -50,12 +53,12 @@ module.exports = {
 		'@typescript-eslint/unbound-method': ['off'],
 		'eslint-comments/require-description': ['off'],
 		'import/first': ['off'],
+		'import/namespace': ['off'],
 		'import/newline-after-import': ['off'],
 		'import/no-cycle': ['off'],
 		'import/no-default-export': ['off'],
 		'import/no-duplicates': ['off'],
 		'import/order': ['off'],
-		'prefer-const': ['off'],
 		'sort-imports': ['off'],
 		// Overrides carried over from old ESLint config.
 		'@typescript-eslint/ban-ts-comment': [
