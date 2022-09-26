@@ -1,11 +1,7 @@
 import { ReactNode } from 'react';
 
-interface ProductBenefits {
-	/**
-	 * `key` represents product id returned from `available-products-move` API
-	 */
-	[key: string]: ReactNode[];
-}
+// Record `key` represents product id returned from `available-products-move` API
+type ProductBenefits = Record<string, ReactNode[]>;
 
 export const productBenefits: ProductBenefits = {
 	'123': [
