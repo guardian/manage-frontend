@@ -4,7 +4,6 @@
   "scripts": {
     "start": "nodemon --inspect ./dist/server",
     "type-check": "tsc --noEmit --skipLibCheck",
-    "pretty-quick": "pretty-quick",
     "lint": "eslint 'client/**' 'server/**' 'shared/**'",
     "bundle": "copy-node-modules . ./dist && yarn webpack --config webpack.production.js",
     "bundle-dev": "yarn bundle-dev-server && yarn bundle-dev-client",
@@ -19,7 +18,6 @@
     "test": "jest --coverage && yarn type-check && yarn lint ",
     "jest": "jest",
     "updateSnapshot": "jest -u",
-    "fix": "pretty-quick --staged && eslint --fix 'client/**' 'server/**' 'shared/**'",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "cypress:open": "DEBUG=cypress:* cypress open",
@@ -27,9 +25,13 @@
     "cypress:server": "yarn bundle-dev-server && (yarn bundle-dev-server-cypress -w & yarn start & yarn serve-dev-cypress)",
     "chromatic": "chromatic"
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,md,json}": "prettier --write",
+    "{client,server,shared}/**": "eslint --fix"
+  },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn fix && yarn type-check && yarn bundle-check-client-if-changed"
+      "pre-commit": "yarn lint-staged --concurrent false && yarn type-check && yarn bundle-check-client-if-changed"
     }
   },
   "main": "./dist/server",
@@ -57,9 +59,9 @@
     "@babel/preset-typescript": "^7.16.0",
     "@cypress/webpack-preprocessor": "^5.11.1",
     "@emotion/babel-plugin": "^11.9.2",
-    "@emotion/eslint-plugin": "^11.7.0",
     "@emotion/jest": "^11.9.1",
-    "@guardian/eslint-plugin-source-foundations": "^5.0.0",
+    "@guardian/eslint-config-typescript": "^1.0.11",
+    "@guardian/eslint-plugin-source-foundations": "^5.0.1",
     "@guardian/eslint-plugin-source-react-components": "^5.0.0",
     "@guardian/node-riffraff-artifact": "^0.2.2",
     "@guardian/prettier": "^1.0.0",
@@ -95,8 +97,6 @@
     "@types/webpack": "^5.28.0",
     "@types/webpack-node-externals": "^2.5.3",
     "@types/yup": "^0.26.23",
-    "@typescript-eslint/eslint-plugin": "^5.26.0",
-    "@typescript-eslint/parser": "^5.26.0",
     "assets-webpack-plugin": "^7.1.1",
     "babel-jest": "^27.3.1",
     "babel-loader": "^8.0.6",
@@ -110,8 +110,7 @@
     "cypress": "8.5.0",
     "cypress-plugin-stripe-elements": "^1.0.2",
     "eslint": "^8.0.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-jest": "^26.1.0",
+    "eslint-plugin-jest": "^27.0.4",
     "eslint-plugin-react": "^7.30.0",
     "fetch-mock": "^9.11.0",
     "git-revision-webpack-plugin": "^3.0.6",
@@ -119,11 +118,11 @@
     "jest": "^27.3.1",
     "jest-each": "^26.6.2",
     "jest-teamcity-reporter": "^0.9.0",
+    "lint-staged": "^13.0.3",
     "mini-css-extract-plugin": "^2.5.2",
     "node-polyfill-webpack-plugin": "^1.1.4",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
-    "pretty-quick": "^3.1.2",
     "raw-loader": "^4.0.2",
     "react-test-renderer": "^17.0.2",
     "ts-jest": "^27.0.7",
