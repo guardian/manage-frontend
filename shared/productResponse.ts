@@ -159,8 +159,8 @@ export interface Subscription {
 	mandate?: DirectDebitDetails;
 	sepaMandate?: SepaDetails;
 	autoRenew: boolean;
-	currentPlans: (SubscriptionPlan | PaidSubscriptionPlan)[];
-	futurePlans: (SubscriptionPlan | PaidSubscriptionPlan)[];
+	currentPlans: Array<SubscriptionPlan | PaidSubscriptionPlan>;
+	futurePlans: Array<SubscriptionPlan | PaidSubscriptionPlan>;
 	plan?: PaidSubscriptionPlan;
 	trialLength: number;
 	readerType: ReaderType;
