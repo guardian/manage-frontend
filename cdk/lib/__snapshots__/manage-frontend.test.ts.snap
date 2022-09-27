@@ -190,13 +190,13 @@ Object {
         "AliasTarget": Object {
           "DNSName": Object {
             "Fn::GetAtt": Array [
-              "ElasticLoadBalancer",
+              "LoadBalancerManagefrontend184BCE6C",
               "DNSName",
             ],
           },
           "HostedZoneId": Object {
             "Fn::GetAtt": Array [
-              "ElasticLoadBalancer",
+              "LoadBalancerManagefrontend184BCE6C",
               "CanonicalHostedZoneID",
             ],
           },

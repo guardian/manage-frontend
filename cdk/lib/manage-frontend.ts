@@ -12,7 +12,6 @@ import type { GuAsgCapacity } from '@guardian/cdk/lib/types';
 import type { App } from 'aws-cdk-lib';
 import { Duration, Tags } from 'aws-cdk-lib';
 import { InstanceClass, InstanceSize, InstanceType } from 'aws-cdk-lib/aws-ec2';
-import type { CfnLoadBalancer } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { Protocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import type { CfnLogGroup } from 'aws-cdk-lib/aws-logs';
 import { CfnRecordSet } from 'aws-cdk-lib/aws-route53';
@@ -33,24 +32,10 @@ export class ManageFrontend extends GuStack {
 			templateFile: yamlTemplateFilePath,
 		});
 
-		const loadBalancer = existingYaml.getResource(
-			'ElasticLoadBalancer',
-		) as CfnLoadBalancer;
-
 		const hostedZoneId = new GuStringParameter(this, 'hostedZoneId', {
 			fromSSM: true,
 			default: '/account/route53/membership/hostedZoneId',
 		}).valueAsString;
-
-		new CfnRecordSet(this, 'AliasRecord', {
-			name: props.domain,
-			type: 'A',
-			hostedZoneId,
-			aliasTarget: {
-				dnsName: loadBalancer.attrDnsName,
-				hostedZoneId: loadBalancer.attrCanonicalHostedZoneId,
-			},
-		});
 
 		const clientRavenDSN = new GuStringParameter(this, 'clientRavenDSN', {
 			description: 'the DSN to use with Sentry on the client',
@@ -198,5 +183,16 @@ systemctl start manage-frontend
 
 		const nodeAppAsg = nodeApp.autoScalingGroup;
 		Tags.of(nodeAppAsg).add('gu:riffraff:new-asg', 'true');
+
+		new CfnRecordSet(this, 'AliasRecord', {
+			name: props.domain,
+			type: 'A',
+			hostedZoneId,
+			aliasTarget: {
+				dnsName: nodeApp.loadBalancer.loadBalancerDnsName,
+				hostedZoneId:
+					nodeApp.loadBalancer.loadBalancerCanonicalHostedZoneId,
+			},
+		});
 	}
 }
