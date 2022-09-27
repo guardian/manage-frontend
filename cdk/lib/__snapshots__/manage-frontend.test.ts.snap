@@ -497,7 +497,7 @@ Object {
           Object {
             "Key": "gu:cdk:pattern-name",
             "PropagateAtLaunch": true,
-            "Value": "GuNodeApp",
+            "Value": "GuEc2App",
           },
           Object {
             "Key": "gu:cdk:version",
@@ -1482,10 +1482,10 @@ systemctl start manage-frontend
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "GuHttpsEgressSecurityGroupManagefrontendfromManageFrontendLoadBalancerManagefrontendSecurityGroup4DBBACB9300072467277": Object {
+    "GuHttpsEgressSecurityGroupManagefrontendfromManageFrontendLoadBalancerManagefrontendSecurityGroup4DBBACB992338D8ADC65": Object {
       "Properties": Object {
         "Description": "Load balancer to target",
-        "FromPort": 3000,
+        "FromPort": 9233,
         "GroupId": Object {
           "Fn::GetAtt": Array [
             "GuHttpsEgressSecurityGroupManagefrontend8E53A220",
@@ -1499,7 +1499,7 @@ systemctl start manage-frontend
             "GroupId",
           ],
         },
-        "ToPort": 3000,
+        "ToPort": 9233,
       },
       "Type": "AWS::EC2::SecurityGroupIngress",
     },
@@ -2059,7 +2059,7 @@ systemctl start manage-frontend
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "LoadBalancerManagefrontendSecurityGrouptoManageFrontendGuHttpsEgressSecurityGroupManagefrontendD45FBEBD3000A633E9D8": Object {
+    "LoadBalancerManagefrontendSecurityGrouptoManageFrontendGuHttpsEgressSecurityGroupManagefrontendD45FBEBD9233E0609005": Object {
       "Properties": Object {
         "Description": "Load balancer to target",
         "DestinationSecurityGroupId": Object {
@@ -2068,7 +2068,7 @@ systemctl start manage-frontend
             "GroupId",
           ],
         },
-        "FromPort": 3000,
+        "FromPort": 9233,
         "GroupId": Object {
           "Fn::GetAtt": Array [
             "LoadBalancerManagefrontendSecurityGroupED621ABF",
@@ -2076,7 +2076,7 @@ systemctl start manage-frontend
           ],
         },
         "IpProtocol": "tcp",
-        "ToPort": 3000,
+        "ToPort": 9233,
       },
       "Type": "AWS::EC2::SecurityGroupEgress",
     },
@@ -2453,7 +2453,7 @@ systemctl start manage-frontend
         "HealthCheckProtocol": "HTTP",
         "HealthCheckTimeoutSeconds": 5,
         "HealthyThresholdCount": 5,
-        "Port": 3000,
+        "Port": 9233,
         "Protocol": "HTTP",
         "Tags": Array [
           Object {

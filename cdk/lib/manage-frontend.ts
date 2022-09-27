@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { GuNodeApp } from '@guardian/cdk';
+import { GuEc2App } from '@guardian/cdk';
 import { AccessScope } from '@guardian/cdk/lib/constants';
 import type { GuStackProps } from '@guardian/cdk/lib/constructs/core';
 import { GuStack, GuStringParameter } from '@guardian/cdk/lib/constructs/core';
@@ -102,8 +102,9 @@ systemctl start manage-frontend
 		) as CfnLogGroup;
 
 		// docs https://guardian.github.io/cdk/classes/patterns.GuEc2App.html
-		const nodeApp = new GuNodeApp(this, {
+		const nodeApp = new GuEc2App(this, {
 			access: { scope: AccessScope.PUBLIC },
+			applicationPort: 9233, // TODO: why has this number been choosen?
 			app,
 			certificateProps: {
 				domainName: props.domain,
