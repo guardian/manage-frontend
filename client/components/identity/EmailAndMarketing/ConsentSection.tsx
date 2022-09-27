@@ -45,6 +45,7 @@ const consentPreference = (
 		title: name,
 		description,
 		selected: subscribed,
+		canOnlyUnsubscribe: id === 'holidays',
 	};
 	switch (uxType) {
 		case 'checkbox': {

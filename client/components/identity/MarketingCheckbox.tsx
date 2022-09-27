@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Checkbox } from '../checkbox';
 import { standardSansText } from './sharedStyles';
 
@@ -8,6 +8,7 @@ interface MarketingCheckboxProps {
 	title?: string;
 	selected?: boolean;
 	onClick: (id: string) => {};
+	canOnlyUnsubscribe?: boolean;
 }
 
 const getTitle = (title: MarketingCheckboxProps['title']) => (
@@ -37,7 +38,21 @@ const getDescription = (description: MarketingCheckboxProps['description']) => (
 );
 
 export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
-	const { id, description, selected, title, onClick } = props;
+	const {
+		id,
+		description,
+		selected,
+		title,
+		onClick,
+		canOnlyUnsubscribe = false,
+	} = props;
+
+	const [wasInitiallySelected] = useState(selected);
+
+	if (canOnlyUnsubscribe && !wasInitiallySelected) {
+		return null;
+	}
+
 	return (
 		<div
 			onClick={(e) => {
@@ -49,6 +64,11 @@ export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
 				) {
 					return;
 				}
+
+				if (canOnlyUnsubscribe && !selected) {
+					return;
+				}
+
 				onClick(id);
 			}}
 			css={[
