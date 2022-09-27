@@ -163,7 +163,7 @@ systemctl start manage-frontend
 										`arn:aws:cloudformation:${this.region}:${this.account}:stack/membership-CODE-*`,
 										`arn:aws:cloudformation:${this.region}:${this.account}:stack/support-DEV-*`,
 										`arn:aws:cloudformation:${this.region}:${this.account}:stack/support-CODE-*`,
-								  ],
+								  ], // TODO: why does CODE depend on DEV here?
 					}),
 					new GuAllowPolicy(this, 'DiscoverApiGatewayApiKeys', {
 						actions: ['apigateway:GET'],
@@ -181,7 +181,7 @@ systemctl start manage-frontend
 								: [
 										`arn:aws:execute-api:${this.region}:${this.account}:*/DEV/*`,
 										`arn:aws:execute-api:${this.region}:${this.account}:*/${this.stage}/*`,
-								  ],
+								  ], // TODO: why does CODE depend on DEV here?
 					}),
 				],
 			},
