@@ -11,12 +11,15 @@ interface MarketingCheckboxProps {
 	canOnlyUnsubscribe?: boolean;
 }
 
-const getTitle = (title: MarketingCheckboxProps['title']) => (
+const getTitle = (
+	title: MarketingCheckboxProps['title'],
+	disabledInput: boolean,
+) => (
 	<p
 		css={[
 			standardSansText,
 			{
-				cursor: 'pointer',
+				cursor: disabledInput ? 'default' : 'pointer',
 				lineHeight: '22px',
 				fontWeight: 'bold',
 				margin: '0',
@@ -83,12 +86,13 @@ export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
 			<div css={{ position: 'absolute', left: 0 }}>
 				<Checkbox
 					checked={!!selected}
+					disabled={canOnlyUnsubscribe && !selected}
 					onChange={(_) => {
 						return;
 					}}
 				/>
 			</div>
-			{title && getTitle(title)}
+			{title && getTitle(title, canOnlyUnsubscribe && !selected)}
 			{description && getDescription(description)}
 		</div>
 	);
