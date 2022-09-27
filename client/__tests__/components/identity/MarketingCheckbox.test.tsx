@@ -1,4 +1,4 @@
-import { cleanup, render, fireEvent, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MarketingCheckbox } from '../../../components/identity/MarketingCheckbox';
 

@@ -5,10 +5,10 @@ import {
 	palette,
 	space,
 } from '@guardian/source-foundations';
+import { Link } from 'react-router-dom';
 import { SignInStatus } from '../../services/signInStatus';
 import { DropdownNav } from '.././nav/dropdownNav';
 import { TheGuardianLogo } from '.././svgs/theGuardianLogo';
-import { Link } from 'react-router-dom';
 
 export interface HelpCentreHeaderProps {
 	signInStatus: SignInStatus;

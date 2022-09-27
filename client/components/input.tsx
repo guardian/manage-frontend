@@ -1,7 +1,7 @@
 import { css, SerializedStyles } from '@emotion/react';
 import {
-	focusHalo,
 	error,
+	focusHalo,
 	neutral,
 	textSans,
 } from '@guardian/source-foundations';

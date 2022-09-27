@@ -1,7 +1,7 @@
 import { s3ConfigPromise } from './awsIntegration';
 
-type StripePublicToSecretKeyMapping = Record<string, string>;
 
+type StripePublicToSecretKeyMapping = Record<string, string>;
 export interface StripePublicKeySet {
 	uat: string;
 	default: string;

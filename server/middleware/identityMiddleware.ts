@@ -1,6 +1,6 @@
+import url from 'url';
 import express from 'express';
 import fetch from 'node-fetch';
-import url from 'url';
 import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,

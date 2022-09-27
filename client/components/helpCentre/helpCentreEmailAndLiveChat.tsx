@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, palette, textSans, from } from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { ReactNode, useState } from 'react';
 import { StartLiveChatButton } from '../liveChat/liveChat';
 import { ErrorIcon } from '../svgs/errorIcon';

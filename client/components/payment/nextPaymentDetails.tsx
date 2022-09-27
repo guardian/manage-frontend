@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, brand } from '@guardian/source-foundations';
+import { brand, space } from '@guardian/source-foundations';
 import { parseDate } from '../../../shared/dates';
 import {
 	augmentInterval,

@@ -1,28 +1,28 @@
 import { css } from '@emotion/react';
+import { space } from '@guardian/source-foundations';
 import {
 	Button,
 	LinkButton,
 	SvgArrowLeftStraight,
 } from '@guardian/source-react-components';
-import { space } from '@guardian/source-foundations';
 import * as Sentry from '@sentry/browser';
 import { useContext, useState } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import {
-	isPaidSubscriptionPlan,
 	getMainPlan,
+	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { ContributionUpdateAmountForm } from '../../accountoverview/contributionUpdateAmountForm';
 import { trackEventInOphanOnly } from '../../../services/analytics';
+import { ContributionUpdateAmountForm } from '../../accountoverview/contributionUpdateAmountForm';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
-import { getIsPayingMinAmount } from './utils';
-import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 import {
 	CancellationContext,
 	CancellationContextInterface,
 	CancellationRouterState,
 } from '../CancellationContainer';
 import { SaveBodyProps } from '../cancellationReason';
+import { getIsPayingMinAmount } from './utils';
 
 const container = css`
 	& > * + * {

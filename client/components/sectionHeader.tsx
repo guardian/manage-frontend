@@ -8,8 +8,8 @@ import {
 	textSans,
 	titlepiece,
 } from '@guardian/source-foundations';
-import { Link } from 'react-router-dom';
 import Color from 'color';
+import { Link } from 'react-router-dom';
 import { gridBase, gridItemPlacement } from '../styles/grid';
 
 interface SectionHeaderProps {

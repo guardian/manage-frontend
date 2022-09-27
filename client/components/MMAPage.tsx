@@ -1,6 +1,9 @@
 import { css, Global } from '@emotion/react';
+import { ABProvider, useAB } from '@guardian/ab-react';
+import { breakpoints, from, space } from '@guardian/source-foundations';
 import { lazy, ReactNode, Suspense, useEffect, useState } from 'react';
-import { Navigate, BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { initFeatureSwitchUrlParamOverride } from '../../shared/featureSwitches';
 import {
 	GROUPED_PRODUCT_TYPES,
 	GroupedProductType,
@@ -9,33 +12,30 @@ import {
 	ProductTypeWithDeliveryRecordsProperties,
 	ProductTypeWithHolidayStopsFlow,
 } from '../../shared/productTypes';
+import { getCookie } from '../cookies';
+import { abSwitches } from '../experiments/abSwitches';
+import { tests } from '../experiments/abTests';
 import {
 	hasDeliveryFlow,
 	hasDeliveryRecordsFlow,
 	shouldHaveHolidayStopsFlow,
 } from '../productUtils';
-import { fonts } from '../styles/fonts';
-import global from '../styles/global';
-import { Main } from './main';
-import MMAPageSkeleton from './MMAPageSkeleton';
-import Maintenance from './maintenance';
 import {
 	isSignedIn,
 	pageRequiresSignIn,
 	SignInStatus,
 } from '../services/signInStatus';
 import useAnalytics from '../services/useAnalytics';
-import { DeliveryAddressUpdate } from './delivery/address/deliveryAddressForm';
-import useScrollToTop from '../services/useScrollToTop';
 import useConsent from '../services/useConsent';
+import useScrollToTop from '../services/useScrollToTop';
+import { fonts } from '../styles/fonts';
+import global from '../styles/global';
+import { DeliveryAddressUpdate } from './delivery/address/deliveryAddressForm';
 import ErrorBoundary from './ErrorBoundary';
 import { GenericErrorScreen } from './genericErrorScreen';
-import { breakpoints, from, space } from '@guardian/source-foundations';
-import { tests } from '../experiments/abTests';
-import { abSwitches } from '../experiments/abSwitches';
-import { ABProvider, useAB } from '@guardian/ab-react';
-import { getCookie } from '../cookies';
-import { initFeatureSwitchUrlParamOverride } from '../../shared/featureSwitches';
+import { Main } from './main';
+import Maintenance from './maintenance';
+import MMAPageSkeleton from './MMAPageSkeleton';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {

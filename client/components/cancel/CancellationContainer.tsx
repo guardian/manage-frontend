@@ -8,8 +8,8 @@ import {
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import {
 	isProduct,
-	MembersDataApiItem,
 	MembersDataApiAsyncLoader,
+	MembersDataApiItem,
 	ProductDetail,
 } from '../../../shared/productResponse';
 import {

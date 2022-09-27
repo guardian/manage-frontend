@@ -1,7 +1,7 @@
+import { parse } from 'url';
 import * as Sentry from '@sentry/node';
 import { Request, Response } from 'express';
 import fetch from 'node-fetch';
-import { parse } from 'url';
 import { LOGGING_CODE_SUFFIX_HEADER } from '../shared/globals';
 import { X_GU_ID_FORWARDED_SCOPE } from '../shared/identity';
 import { MDA_TEST_USER_HEADER } from '../shared/productResponse';

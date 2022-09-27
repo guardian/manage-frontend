@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import { Button } from '@guardian/source-react-components';
 import {
-	space,
-	neutral,
-	headline,
-	textSans,
 	from,
+	headline,
+	neutral,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
+import { Button } from '@guardian/source-react-components';
 import { useState } from 'react';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { isLiveChatFeatureEnabled } from '../liveChat/liveChatFeatureSwitch';

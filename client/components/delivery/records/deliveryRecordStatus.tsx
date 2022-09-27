@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, brand } from '@guardian/source-foundations';
+import { brand, space } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { ErrorIcon } from '../../svgs/errorIcon';
 import { HolidayStopIcon } from '../../svgs/holidayStopIcon';

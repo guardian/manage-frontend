@@ -1,23 +1,22 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router';
-
 import { Subscription } from '../../../../shared/productResponse';
+import { CardUpdateResponse } from '../../../components/payment/update/card/newCardPaymentMethodDetail';
+import { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
 import {
 	ConfirmedNewPaymentDetailsRenderer,
 	PaymentMethodUpdated,
 } from '../../../components/payment/update/PaymentDetailUpdateConfirmation';
-import { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
 import {
-	guardianWeeklyCard,
 	digitalDD,
+	guardianWeeklyCard,
 	guardianWeeklyExpiredCard,
 } from '../../../fixtures/productDetail';
 import {
-	guardianWeeklySubscriptionCard,
 	digitalSubscriptionDD,
+	guardianWeeklySubscriptionCard,
 } from '../../../fixtures/subscription';
-import { CardUpdateResponse } from '../../../components/payment/update/card/newCardPaymentMethodDetail';
 
 // mock functions for NewPaymentMethodDetail type
 const matchesResponse = (_: CardUpdateResponse) => true;

@@ -1,17 +1,16 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
-
-import EmailAndMarketing from './';
+import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import { consents } from '../../../fixtures/consents';
+import { newsletters } from '../../../fixtures/newsletters';
+import { newsletterSubscriptions } from '../../../fixtures/newsletterSubscriptions';
 import {
-	guardianWeeklyCard,
 	digitalDD,
+	guardianWeeklyCard,
 	newspaperVoucherPaypal,
 } from '../../../fixtures/productDetail';
 import { user } from '../../../fixtures/user';
-import { newsletters } from '../../../fixtures/newsletters';
-import { newsletterSubscriptions } from '../../../fixtures/newsletterSubscriptions';
-import { consents } from '../../../fixtures/consents';
+import EmailAndMarketing from './';
 
 export default {
 	title: 'Pages/EmailAndMarketing',

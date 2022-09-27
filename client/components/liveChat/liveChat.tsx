@@ -4,11 +4,11 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { conf } from '../../../server/config';
+import { trackEvent } from '../../services/analytics';
 import { LoadingCircleIcon } from '../svgs/loadingCircleIcon';
 import { avatarImg } from './liveChatBase64Images';
 import { liveChatCss } from './liveChatCssOverrides';
-import { trackEvent } from '../../services/analytics';
-import { conf } from '../../../server/config';
 
 let areAgentsAvailable = false;
 

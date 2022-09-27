@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, brand, neutral, from } from '@guardian/source-foundations';
+import { brand, from, neutral, space } from '@guardian/source-foundations';
 import { useEffect, useRef, useState } from 'react';
 import { gridColumns, gridItemPlacement } from '../../styles/grid';
 import { expanderButtonCss } from '../expanderButton';

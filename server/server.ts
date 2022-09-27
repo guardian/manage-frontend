@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/node';
-import bodyParser from 'body-parser';
+import { raw } from 'body-parser';
 import { default as express, NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
 import { MAX_FILE_ATTACHMENT_SIZE_KB } from '../shared/fileUploadUtils';
@@ -62,7 +62,7 @@ const disableCache = (_: Request, res: Response, next: NextFunction) => {
 server.use(disableCache);
 
 server.use(
-	bodyParser.raw({
+	raw({
 		type: '*/*',
 		limit: `${MAX_FILE_ATTACHMENT_SIZE_KB + 100}kb`,
 	}),

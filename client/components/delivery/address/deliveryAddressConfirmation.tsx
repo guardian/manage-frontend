@@ -1,15 +1,15 @@
 import { css, SerializedStyles } from '@emotion/react';
 import {
-	space,
-	palette,
+	from,
 	headline,
+	palette,
+	space,
 	textSans,
 	until,
-	from,
 } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { dateString } from '../../../../shared/dates';
 import { ProductDetail } from '../../../../shared/productResponse';
 import { ProductType, WithProductType } from '../../../../shared/productTypes';

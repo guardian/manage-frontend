@@ -4,7 +4,6 @@ import * as NewslettersSubscriptionsAPI from './idapi/newsletterSubscriptions';
 import * as RemoveSubscriptionsAPI from './idapi/removeSubscriptions';
 import * as SupportRemindersApi from './idapi/supportReminders';
 import * as UserAPI from './idapi/user';
-
 import {
 	ConsentOption,
 	ConsentOptionCollection,

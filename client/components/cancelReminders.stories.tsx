@@ -1,6 +1,5 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
-
 import CancelReminders, { CancelRemindersProps } from './cancelReminders';
 
 export default {

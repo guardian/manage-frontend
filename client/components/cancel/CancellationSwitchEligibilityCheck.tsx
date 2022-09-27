@@ -1,20 +1,20 @@
-import CancellationReasonSelection from './CancellationReasonSelection';
+import { useContext } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { featureSwitches } from '../../../shared/featureSwitches';
+import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
+import useFetch from '../../services/useFetch';
 import CancellationSwitchOffer from '../productSwitch/CancellationSwitchOffer';
-import { useLocation, Navigate } from 'react-router-dom';
+import { AvailableProductsResponse } from '../productSwitch/productSwitchApi';
+import { Spinner } from '../spinner';
+import { WithStandardTopMargin } from '../WithStandardTopMargin';
 import {
+	CancellationContext,
+	CancellationContextInterface,
 	CancellationPageTitleContext,
 	CancellationPageTitleInterface,
 	CancellationRouterState,
-	CancellationContext,
-	CancellationContextInterface,
 } from './CancellationContainer';
-import { useContext } from 'react';
-import useFetch from '../../services/useFetch';
-import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
-import { Spinner } from '../spinner';
-import { WithStandardTopMargin } from '../WithStandardTopMargin';
-import { AvailableProductsResponse } from '../productSwitch/productSwitchApi';
-import { featureSwitches } from '../../../shared/featureSwitches';
+import CancellationReasonSelection from './CancellationReasonSelection';
 
 const CancellationSwitchEligibilityCheck = () => {
 	const location = useLocation();

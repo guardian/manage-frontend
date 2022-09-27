@@ -1,17 +1,20 @@
 import { css } from '@emotion/react';
-import { Button } from '@guardian/source-react-components';
 import {
 	brand,
+	from,
+	headline,
 	neutral,
 	space,
-	headline,
 	textSans,
-	from,
 } from '@guardian/source-foundations';
+import { Button } from '@guardian/source-react-components';
 import { captureException, captureMessage } from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { trackEvent } from '../../services/analytics';
+import { setPageTitle } from '../../services/pageTitle';
+import useHelpArticleSeo from '../../services/useHelpArticleSeo';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { isArticleLiveChatFeatureEnabled } from '../liveChat/liveChatFeatureSwitch';
 import { SelectedTopicObjectContext } from '../sectionContent';
@@ -28,9 +31,6 @@ import {
 	LinkNode,
 	TextNode,
 } from './HelpCentreTypes';
-import { setPageTitle } from '../../services/pageTitle';
-import useHelpArticleSeo from '../../services/useHelpArticleSeo';
-import { useNavigate, useParams } from 'react-router-dom';
 
 const HelpCentreArticle = () => {
 	const [article, setArticle] = useState<Article | undefined>(undefined);

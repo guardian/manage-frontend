@@ -1,6 +1,8 @@
 import { css } from '@emotion/react';
 import { space, until } from '@guardian/source-foundations';
+import { Button, InlineError } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import {
 	DATE_FNS_INPUT_FORMAT,
 	DateRange,
@@ -10,9 +12,9 @@ import {
 	MDA_TEST_USER_HEADER,
 	ProductDetail,
 } from '../../../shared/productResponse';
+import { fetchWithDefaultParameters } from '../../fetch';
 import { sans } from '../../styles/fonts';
 import { LinkButton } from '../buttons';
-import { Button, InlineError } from '@guardian/source-react-components';
 import { CallCentreNumbers } from '../callCentreNumbers';
 import { Checkbox } from '../checkbox';
 import { Modal } from '../modal';
@@ -31,14 +33,12 @@ import {
 	isHolidayStopsResponse,
 	ReloadableGetHolidayStopsResponse,
 } from './holidayStopApi';
-import { SummaryTable } from './summaryTable';
-import { fetchWithDefaultParameters } from '../../fetch';
-import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import {
 	HolidayStopsContext,
 	HolidayStopsContextInterface,
 	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
+import { SummaryTable } from './summaryTable';
 
 const getPerformCreateOrAmendFetcher =
 	(

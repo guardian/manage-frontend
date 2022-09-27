@@ -1,13 +1,13 @@
+import { from, palette } from '@guardian/source-foundations';
 import { ReactNode } from 'react';
 import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../shared/identity';
+import { fetchWithDefaultParameters } from '../fetch';
 import { trackEvent } from '../services/analytics';
 import AsyncLoader from './asyncLoader';
 import { SupportTheGuardianButton } from './supportTheGuardianButton';
-import { fetchWithDefaultParameters } from '../fetch';
-import { from, palette } from '@guardian/source-foundations';
 
 const fetchExistingPaymentOptions = () =>
 	fetchWithDefaultParameters('/api/existing-payment-options', {

@@ -1,18 +1,19 @@
+import { css } from '@emotion/react';
 import {
-	Checkbox,
-	CheckboxGroup,
-	Button,
-	Stack,
-} from '@guardian/source-react-components';
-import {
-	space,
 	brand,
-	neutral,
+	from,
 	headline,
+	neutral,
+	space,
 	textSans,
 	until,
-	from,
 } from '@guardian/source-foundations';
+import {
+	Button,
+	Checkbox,
+	CheckboxGroup,
+	Stack,
+} from '@guardian/source-react-components';
 import {
 	ChangeEvent,
 	Dispatch,
@@ -21,17 +22,18 @@ import {
 	useContext,
 	useState,
 } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { DeliveryAddress } from '../../../../shared/productResponse';
 import {
 	GROUPED_PRODUCT_TYPES,
 	ProductType,
 	WithProductType,
 } from '../../../../shared/productTypes';
-import { COUNTRIES } from '../../identity/models';
-
+import { addressChangeAffectedInfo } from '../../../services/deliveryAddress';
 import { flattenEquivalent } from '../../../utils';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { CallCentreNumbers } from '../../callCentreNumbers';
+import { COUNTRIES } from '../../identity/models';
 import { InfoSection } from '../../infoSection';
 import { Input } from '../../input';
 import { NAV_LINKS } from '../../nav/navConfig';
@@ -49,9 +51,6 @@ import {
 } from './deliveryAddressFormContext';
 import { FormValidationResponse, isFormValid } from './formValidation';
 import { Select } from './select';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { css } from '@emotion/react';
-import { addressChangeAffectedInfo } from '../../../services/deliveryAddress';
 
 interface FormStates {
 	INIT: string;

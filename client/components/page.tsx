@@ -1,16 +1,16 @@
 import { css } from '@emotion/react';
 import {
-	breakpoints,
-	space,
 	brand,
-	neutral,
-	headline,
-	textSans,
+	breakpoints,
 	from,
+	headline,
+	neutral,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
 import { ReactElement } from 'react';
-import { Link } from 'react-router-dom';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { gridBase, gridColumns, gridItemPlacement } from '../styles/grid';
 import { LeftSideNav, LeftSideNavProps } from './nav/leftSideNav';
 import { NavItem } from './nav/navConfig';

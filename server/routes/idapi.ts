@@ -1,8 +1,8 @@
+import { IncomingMessage, RequestOptions } from 'http';
+import https from 'https';
 import cookieParser from 'cookie-parser';
 import csrf from 'csurf';
 import { NextFunction, Request, Response, Router } from 'express';
-import { IncomingMessage, RequestOptions } from 'http';
-import https from 'https';
 import { IdapiConfig, idapiConfigPromise } from '../idapiConfig';
 
 const SECURITY_COOKIE_NAME = 'SC_GU_U';

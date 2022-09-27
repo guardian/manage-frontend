@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/node';
-import * as AWS from 'aws-sdk';
-import { Credentials } from 'aws-sdk';
+import AWS from 'aws-sdk';
 import { GetObjectRequest } from 'aws-sdk/clients/s3';
 import { RequestSigner } from 'aws4';
 import { conf } from './config';
@@ -29,7 +28,7 @@ export const generateAwsSignatureHeaders = async (
 	path: string, // DEV/bar
 	body: string, // '{"foo": "bar"}'
 ) => {
-	const creds: Credentials = await CREDENTIAL_PROVIDER.resolvePromise();
+	const creds: AWS.Credentials = await CREDENTIAL_PROVIDER.resolvePromise();
 	const opts = {
 		region: AWS_REGION,
 		service: 'execute-api',

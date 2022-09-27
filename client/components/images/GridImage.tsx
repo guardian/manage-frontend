@@ -2,8 +2,8 @@
 // This code is designed to work with a single image at one or more crops
 // If you want to work with multiple (different) images, maybe try gridPicture instead
 // ----- Imports ----- //
-import { gridSrcset, gridUrl, ImageId, ImageType, ascending } from './theGrid';
 import { SerializedStyles } from '@emotion/react';
+import { ascending, gridSrcset, gridUrl, ImageId, ImageType } from './theGrid';
 // ----- Constants ----- //
 const MIN_IMG_WIDTH = 300;
 // ----- Types ----- //

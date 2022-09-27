@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
+import { Link } from 'react-router-dom';
 import { trackEvent } from '../../services/analytics';
 import {
 	h2Css,
@@ -9,7 +10,6 @@ import {
 	linksListStyle,
 } from './helpCentreStyles';
 import { SingleTopic } from './HelpCentreTypes';
-import { Link } from 'react-router-dom';
 
 interface HelpCentreSingleTopicProps {
 	id: string;

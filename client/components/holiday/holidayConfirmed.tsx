@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
+import { Button } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { isProduct } from '../../../shared/productResponse';
@@ -7,7 +8,6 @@ import { GenericErrorScreen } from '../genericErrorScreen';
 import { ProgressIndicator } from '../progressIndicator';
 import { buttonBarCss } from './holidayDateChooser';
 import { creditExplainerSentence } from './holidayQuestionsModal';
-import { Button } from '@guardian/source-react-components';
 import { isHolidayStopsResponse } from './holidayStopApi';
 import {
 	HolidayStopsContext,

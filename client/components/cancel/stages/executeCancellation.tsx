@@ -1,25 +1,25 @@
 import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
+import { Button } from '@guardian/source-react-components';
 import { ReactNode, useContext } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { isProduct, ProductDetail } from '../../../../shared/productResponse';
 import { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
+import { fetchWithDefaultParameters } from '../../../fetch';
 import { createProductDetailFetcher } from '../../../productUtils';
 import AsyncLoader from '../../asyncLoader';
 import { GenericErrorScreen } from '../../genericErrorScreen';
 import { ProgressIndicator } from '../../progressIndicator';
-import { Button } from '@guardian/source-react-components';
-import { cancellationEffectiveToday } from '../cancellationContexts';
-import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
-import { OptionalCancellationReasonId } from '../cancellationReason';
-import { getCancellationSummary, isCancelled } from '../cancellationSummary';
-import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
-import { fetchWithDefaultParameters } from '../../../fetch';
 import {
 	CancellationContext,
 	CancellationContextInterface,
 	CancellationRouterState,
 } from '../CancellationContainer';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { cancellationEffectiveToday } from '../cancellationContexts';
+import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
+import { OptionalCancellationReasonId } from '../cancellationReason';
+import { getCancellationSummary, isCancelled } from '../cancellationSummary';
+import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
 
 class PerformCancelAsyncLoader extends AsyncLoader<ProductDetail[]> {}
 

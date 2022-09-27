@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import {
 	isProduct,
-	MembersDataApiItem,
 	MembersDataApiAsyncLoader,
+	MembersDataApiItem,
 } from '../../../../shared/productResponse';
 import {
 	GROUPED_PRODUCT_TYPES,

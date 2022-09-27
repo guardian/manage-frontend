@@ -1,9 +1,9 @@
+import { palette } from '@guardian/source-foundations';
+import { SignInStatus } from '../services/signInStatus';
 import { serif } from '../styles/fonts';
 import { Footer } from './footer/footer';
 import Header from './header';
-import { SignInStatus } from '../services/signInStatus';
 import HelpCentreHeader from './helpCentre/helpCentreHeader';
-import { palette } from '@guardian/source-foundations';
 
 export interface MainProps {
 	signInStatus?: SignInStatus;
