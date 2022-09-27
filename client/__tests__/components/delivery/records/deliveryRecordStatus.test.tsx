@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-
 import { RecordStatus } from '../../../../components/delivery/records/deliveryRecordStatus';
 
 describe('DeliveryRecordStatus', () => {

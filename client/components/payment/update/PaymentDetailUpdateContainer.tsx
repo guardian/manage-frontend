@@ -2,8 +2,8 @@ import { Context, createContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import {
 	isProduct,
-	MembersDataApiItem,
 	MembersDataApiAsyncLoader,
+	MembersDataApiItem,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import { ProductType, WithProductType } from '../../../../shared/productTypes';

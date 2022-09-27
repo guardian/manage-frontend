@@ -1,3 +1,5 @@
+import { css } from '@emotion/react';
+import { from, space } from '@guardian/source-foundations';
 import {
 	CardCvcElement,
 	CardExpiryElement,
@@ -5,8 +7,6 @@ import {
 } from '@stripe/react-stripe-js';
 import { StripeElementBase } from '@stripe/stripe-js';
 import { Dispatch, SetStateAction } from 'react';
-import { css } from '@emotion/react';
-import { from, space } from '@guardian/source-foundations';
 import { sans } from '../../../../styles/fonts';
 import { FieldWrapper } from '../fieldWrapper';
 import { getLogos, PaymentMethod } from '../PaymentDetailUpdate';

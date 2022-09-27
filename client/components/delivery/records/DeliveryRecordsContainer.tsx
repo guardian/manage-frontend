@@ -4,8 +4,8 @@ import { dateAddDays, parseDate } from '../../../../shared/dates';
 import {
 	DeliveryRecordApiItem,
 	isProduct,
-	MembersDataApiItem,
 	MembersDataApiAsyncLoader,
+	MembersDataApiItem,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import {

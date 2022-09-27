@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
+import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { Button, Radio, RadioGroup } from '@guardian/source-react-components';
-import { from, space, textSans, palette } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { FormEvent, useEffect, useState } from 'react';
 import { DeliveryProblemType } from '../../../../shared/productTypes';

@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import {
-	textSans,
-	neutral,
 	brand,
-	space,
 	from,
+	neutral,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
 
 const privacyNoticeLinkCss = css`

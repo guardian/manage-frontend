@@ -1,10 +1,10 @@
+import { palette } from '@guardian/source-foundations';
+import uniq from 'lodash/uniq';
 import { FC } from 'react';
 import { DropMenu } from '../DropMenu';
-import { NewsletterPreference } from '../NewsletterPreference';
 import { ConsentOption, Theme } from '../models';
+import { NewsletterPreference } from '../NewsletterPreference';
 import { PageSection } from '../PageSection';
-import uniq from 'lodash/uniq';
-import { palette } from '@guardian/source-foundations';
 
 type ClickHandler = (id: string) => {};
 

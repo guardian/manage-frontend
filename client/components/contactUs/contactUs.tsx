@@ -1,12 +1,13 @@
 import { css } from '@emotion/react';
 import {
-	space,
-	neutral,
-	headline,
-	textSans,
 	from,
+	headline,
+	neutral,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
 import { captureException } from '@sentry/browser';
+import { useNavigate, useParams } from 'react-router-dom';
 import { contactUsConfig } from '../../../shared/contactUsConfig';
 import { ContactUsFormPayload } from '../../../shared/contactUsTypes';
 import { trackEvent } from '../../services/analytics';
@@ -14,7 +15,6 @@ import { ContactUsForm } from './contactUsForm';
 import { SelfServicePrompt } from './selfServicePrompt';
 import { SubTopicForm } from './subTopicForm';
 import { TopicForm } from './topicForm';
-import { useNavigate, useParams } from 'react-router-dom';
 
 const ContactUs = () => {
 	const { urlTopicId, urlSubTopicId, urlSubSubTopicId, urlSuccess } =

@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import {
-	space,
-	neutral,
+	from,
 	headline,
+	neutral,
+	space,
 	textSans,
 	until,
-	from,
 } from '@guardian/source-foundations';
 import { ReactElement } from 'react';
 

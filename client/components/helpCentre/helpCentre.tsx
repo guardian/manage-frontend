@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, neutral, headline, from } from '@guardian/source-foundations';
+import { from, headline, neutral, space } from '@guardian/source-foundations';
 import { helpCentreConfig } from './helpCentreConfig';
 import HelpCentreContactOptions from './helpCentreContactOptions';
 import { HelpCentreLandingMoreTopics } from './helpCentreLandingMoreTopics';

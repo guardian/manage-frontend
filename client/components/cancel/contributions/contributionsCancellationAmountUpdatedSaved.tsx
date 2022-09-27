@@ -3,8 +3,8 @@ import * as React from 'react';
 import { useContext } from 'react';
 import { parseDate } from '../../../../shared/dates';
 import {
-	isPaidSubscriptionPlan,
 	getMainPlan,
+	isPaidSubscriptionPlan,
 	isProduct,
 } from '../../../../shared/productResponse';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';

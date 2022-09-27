@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import {
-	space,
 	brand,
 	neutral,
+	space,
 	textSans,
 	until,
 } from '@guardian/source-foundations';

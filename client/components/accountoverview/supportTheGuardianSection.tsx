@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, brand, neutral, textSans } from '@guardian/source-foundations';
+import { brand, neutral, space, textSans } from '@guardian/source-foundations';
 import {
 	SupportTheGuardianButton,
 	SupportTheGuardianButtonProps,

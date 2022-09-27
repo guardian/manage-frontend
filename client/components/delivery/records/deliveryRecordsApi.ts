@@ -3,8 +3,8 @@ import {
 	MDA_TEST_USER_HEADER,
 	Subscription,
 } from '../../../../shared/productResponse';
-import AsyncLoader from '../../asyncLoader';
 import { fetchWithDefaultParameters } from '../../../fetch';
+import AsyncLoader from '../../asyncLoader';
 
 interface DeliveryProblem {
 	problemType: string;

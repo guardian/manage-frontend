@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import {
-	space,
 	brand,
 	brandAlt,
-	neutral,
-	textSans,
 	from,
+	neutral,
+	space,
+	textSans,
 	until,
 } from '@guardian/source-foundations';
 import { cancellationFormatDate, parseDate } from '../../../shared/dates';

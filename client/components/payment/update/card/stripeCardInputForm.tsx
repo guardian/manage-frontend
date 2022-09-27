@@ -1,3 +1,9 @@
+import { css } from '@emotion/react';
+import { space, until } from '@guardian/source-foundations';
+import {
+	Button,
+	SvgArrowRightStraight,
+} from '@guardian/source-react-components';
 import * as Sentry from '@sentry/browser';
 import {
 	CardNumberElement,
@@ -6,17 +12,13 @@ import {
 } from '@stripe/react-stripe-js';
 import { StripeElementBase } from '@stripe/stripe-js';
 import { useState } from 'react';
-import { css } from '@emotion/react';
-import { space, until } from '@guardian/source-foundations';
 import {
 	STRIPE_PUBLIC_KEY_HEADER,
 	StripeSetupIntent,
 } from '../../../../../shared/stripeSetupIntent';
-import {
-	Button,
-	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
 import { GenericErrorScreen } from '../../../genericErrorScreen';
+import { LoadingCircleIcon } from '../../../svgs/loadingCircleIcon';
+import { ErrorSummary } from '../Summary';
 import { CardInputFormProps } from './cardInputForm';
 import { FlexCardElement } from './flexCardElement';
 import {
@@ -24,8 +26,7 @@ import {
 	StripePaymentMethod,
 } from './newCardPaymentMethodDetail';
 import Recaptcha from './Recaptcha';
-import { LoadingCircleIcon } from '../../../svgs/loadingCircleIcon';
-import { ErrorSummary } from '../Summary';
+
 interface StripeSetupIntentDetails {
 	stripeSetupIntent?: StripeSetupIntent;
 	stripeSetupIntentError?: Error;

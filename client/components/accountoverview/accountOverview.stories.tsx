@@ -1,14 +1,13 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
-
-import AccountOverview from './accountOverview';
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import {
-	guardianWeeklyCard,
 	digitalDD,
+	guardianWeeklyCard,
 	newspaperVoucherPaypal,
 } from '../../fixtures/productDetail';
 import { user } from '../../fixtures/user';
+import AccountOverview from './accountOverview';
 
 export default {
 	title: 'Pages/AccountOverview',

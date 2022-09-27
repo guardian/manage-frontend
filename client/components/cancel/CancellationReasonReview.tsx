@@ -1,20 +1,40 @@
 import { css } from '@emotion/react';
 import { palette, space, until } from '@guardian/source-foundations';
-import { ChangeEvent, FC, useContext, useState } from 'react';
-import {
-	WithProductType,
-	ProductTypeWithCancellationFlow,
-} from '../../../shared/productTypes';
-import { sans } from '../../styles/fonts';
-import { trackEvent } from '../../services/analytics';
 import {
 	Button,
-	SvgArrowRightStraight,
 	InlineError,
+	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
+import { ChangeEvent, FC, useContext, useState } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../shared/dates';
+import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
+import {
+	ProductTypeWithCancellationFlow,
+	WithProductType,
+} from '../../../shared/productTypes';
+import { trackEvent } from '../../services/analytics';
+import useFetch from '../../services/useFetch';
+import { sans } from '../../styles/fonts';
+import { measure } from '../../styles/typography';
 import { CallCentreNumbers } from '../callCentreNumbers';
+import {
+	DeliveryRecordDetail,
+	DeliveryRecordsResponse,
+} from '../delivery/records/deliveryRecordsApi';
+import { GenericErrorScreen } from '../genericErrorScreen';
+import { Heading } from '../Heading';
+import {
+	OutstandingHolidayStop,
+	OutstandingHolidayStopsResponse,
+} from '../holiday/holidayStopApi';
 import { ProgressIndicator } from '../progressIndicator';
+import { Spinner } from '../spinner';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
+import {
+	CancellationContext,
+	CancellationContextInterface,
+} from './CancellationContainer';
 import { cancellationEffectiveToday } from './cancellationContexts';
 import { requiresCancellationEscalation } from './cancellationFlowEscalationCheck';
 import {
@@ -24,26 +44,6 @@ import {
 	SaveBodyProps,
 } from './cancellationReason';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from './caseUpdate';
-import {
-	CancellationContext,
-	CancellationContextInterface,
-} from './CancellationContainer';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../shared/dates';
-import useFetch from '../../services/useFetch';
-import {
-	OutstandingHolidayStop,
-	OutstandingHolidayStopsResponse,
-} from '../holiday/holidayStopApi';
-import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
-import {
-	DeliveryRecordDetail,
-	DeliveryRecordsResponse,
-} from '../delivery/records/deliveryRecordsApi';
-import { Spinner } from '../spinner';
-import { GenericErrorScreen } from '../genericErrorScreen';
-import { Heading } from '../Heading';
-import { measure } from '../../styles/typography';
 
 const getPatchUpdateCaseFunc =
 	(isTestUser: boolean, caseId: string, feedback: string) => async () =>

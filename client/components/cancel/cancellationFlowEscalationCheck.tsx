@@ -1,6 +1,6 @@
+import { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
 import { OutstandingHolidayStop } from '../holiday/holidayStopApi';
 import { cancellationEffectiveToday } from './cancellationContexts';
-import { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
 
 export const generateEscalationCausesList = (_: {
 	isEffectiveToday: boolean;

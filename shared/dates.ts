@@ -1,5 +1,4 @@
-import format from 'date-fns/format';
-import parse from 'date-fns/parse';
+import { format, parse } from 'date-fns';
 
 export const DATE_FNS_INPUT_FORMAT = 'yyyy-MM-dd'; // example: 1969-07-16
 

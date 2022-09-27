@@ -1,10 +1,11 @@
 import { css } from '@emotion/react';
+import { palette } from '@guardian/source-foundations';
 import * as Sentry from '@sentry/browser';
 import { Form, Formik, FormikProps } from 'formik';
 import { FC, useEffect } from 'react';
 import * as React from 'react';
-import { sans } from '../../../styles/fonts';
 import { trackEvent } from '../../../services/analytics';
+import { sans } from '../../../styles/fonts';
 import { Button } from '../../buttons';
 import { Spinner } from '../../spinner';
 import * as AvatarAPI from '../idapi/avatar';
@@ -12,7 +13,6 @@ import { IdentityLocations } from '../IdentityLocations';
 import { ErrorTypes } from '../models';
 import { PageSection } from '../PageSection';
 import { errorMessageCss, labelCss, textSmall } from '../sharedStyles';
-
 import {
 	getData,
 	isErrored,
@@ -20,7 +20,6 @@ import {
 	isSuccessful,
 	useAsyncSource,
 } from '../useAsyncSource';
-import { palette } from '@guardian/source-foundations';
 
 interface AvatarSectionProps {
 	userId: string;

@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import {
+	neutral,
 	palette,
 	space,
-	neutral,
 	textSans,
 } from '@guardian/source-foundations';
 import { SvgChevronLeftSingle } from '@guardian/source-react-components';

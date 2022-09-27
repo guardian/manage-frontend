@@ -1,9 +1,6 @@
-import React from 'react';
 import type { SerializedStyles } from '@emotion/react';
 import { descriptionId } from '@guardian/source-foundations';
-
-//  TODO v 4 -> v2 import type { EmotionJSX } from "@emotion/react/types/jsx-namespace";
-
+import React from 'react';
 import {
 	androidStyles,
 	buttonStyles,
@@ -11,6 +8,7 @@ import {
 	labelStyles,
 	webStyles,
 } from './ToggleStyles';
+//  TODO v 4 -> v2 import type { EmotionJSX } from "@emotion/react/types/jsx-namespace";
 
 /**
  *  TODO: this toggle switch and accompanying styles are copied from Source (Design System)

@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import * as React from 'react';
 import { css } from '@emotion/react';
 import { from, space, until } from '@guardian/source-foundations';
-import { sans } from '../../../../styles/fonts';
 import {
 	Button,
 	Checkbox,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
+import { useState } from 'react';
+import * as React from 'react';
+import { sans } from '../../../../styles/fonts';
+import { processResponse } from '../../../../utils';
 import { cleanSortCode } from '../../directDebitDisplay';
 import { FieldWrapper } from '../fieldWrapper';
 import { NewPaymentMethodDetail } from '../newPaymentMethodDetail';
+import { ErrorSummary } from '../Summary';
 import { DirectDebitLegal } from './directDebitLegal';
 import { NewDirectDebitPaymentMethodDetail } from './newDirectDebitPaymentMethodDetail';
-import { processResponse } from '../../../../utils';
-import { ErrorSummary } from '../Summary';
 
 const inputBoxBaseStyle = {
 	width: '100%',

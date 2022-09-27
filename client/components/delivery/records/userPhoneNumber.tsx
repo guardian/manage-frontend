@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import { Button, TextInput } from '@guardian/source-react-components';
 import {
-	space,
 	brand,
-	neutral,
-	textSans,
 	from,
+	neutral,
+	space,
+	textSans,
 } from '@guardian/source-foundations';
+import { Button, TextInput } from '@guardian/source-react-components';
 import { useState } from 'react';
 import * as React from 'react';
 import { InfoIconDark } from '../../svgs/infoIconDark';

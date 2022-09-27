@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-
 import { RecordAddress } from '../../../../components/delivery/records/deliveryRecordsAddress';
 
 beforeEach(() => {

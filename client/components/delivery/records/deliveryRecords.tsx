@@ -1,14 +1,14 @@
 import { css } from '@emotion/react';
-import { Button, Stack } from '@guardian/source-react-components';
 import {
-	space,
 	brand,
-	neutral,
+	from,
 	headline,
+	neutral,
+	space,
 	textSans,
 	until,
-	from,
 } from '@guardian/source-foundations';
+import { Button, Stack } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -16,10 +16,10 @@ import { dateIsSameOrBefore, parseDate } from '../../../../shared/dates';
 import {
 	DeliveryAddress,
 	DeliveryRecordApiItem,
-	isGift,
-	PaidSubscriptionPlan,
 	getMainPlan,
+	isGift,
 	isPaidSubscriptionPlan,
+	PaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
 import {
 	DeliveryProblemType,

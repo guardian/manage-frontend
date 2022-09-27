@@ -1,6 +1,10 @@
 import * as Sentry from '@sentry/node';
 import { Router } from 'express';
 import {
+	availableProductMovesResponse,
+	productMoveResponse,
+} from '../../client/fixtures/productMovement';
+import {
 	isProduct,
 	MDA_TEST_USER_HEADER,
 	MembersDataApiItem,
@@ -31,10 +35,6 @@ import {
 	reactivateReminderHandler,
 } from '../reminderApi';
 import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
-import {
-	availableProductMovesResponse,
-	productMoveResponse,
-} from '../../client/fixtures/productMovement';
 
 const router = Router();
 

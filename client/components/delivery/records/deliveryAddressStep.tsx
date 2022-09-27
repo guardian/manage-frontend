@@ -1,16 +1,16 @@
 import { css } from '@emotion/react';
 import {
+	brand,
+	from,
+	neutral,
+	space,
+	textSans,
+} from '@guardian/source-foundations';
+import {
 	Button,
 	Checkbox,
 	CheckboxGroup,
 } from '@guardian/source-react-components';
-import {
-	space,
-	brand,
-	neutral,
-	textSans,
-	from,
-} from '@guardian/source-foundations';
 import Color from 'color';
 import {
 	ChangeEvent,
@@ -24,12 +24,16 @@ import { dateString } from '../../../../shared/dates';
 import {
 	DeliveryAddress,
 	isProduct,
-	MembersDataApiItem,
 	MembersDataApiAsyncLoader,
+	MembersDataApiItem,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../../productUtils';
+import {
+	addressChangeAffectedInfo,
+	getValidDeliveryAddressChangeEffectiveDates,
+} from '../../../services/deliveryAddress';
 import { flattenEquivalent } from '../../../utils';
 import AsyncLoader from '../../asyncLoader';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
@@ -43,10 +47,6 @@ import {
 import { InfoIconDark } from '../../svgs/infoIconDark';
 import { updateAddressFetcher } from '../address/deliveryAddressApi';
 import { SuccessMessage } from '../address/deliveryAddressConfirmation';
-import {
-	addressChangeAffectedInfo,
-	getValidDeliveryAddressChangeEffectiveDates,
-} from '../../../services/deliveryAddress';
 import {
 	convertToDescriptionListData,
 	SubscriptionEffectiveData,

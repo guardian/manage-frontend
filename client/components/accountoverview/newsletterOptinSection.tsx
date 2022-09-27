@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
+import { neutral, space, textSans } from '@guardian/source-foundations';
 import { Button, Checkbox } from '@guardian/source-react-components';
-import { space, neutral, textSans } from '@guardian/source-foundations';
 import * as Sentry from '@sentry/browser';
-import { Fragment, ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react';
 import { trackEvent } from '../../services/analytics';
 import { SuccessMessage } from '../delivery/address/deliveryAddressConfirmation';
 import * as NewslettersAPI from '../identity/idapi/newsletters';

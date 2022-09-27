@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import {
 	breakpoints,
+	from,
+	headline,
 	neutral,
 	space,
-	headline,
 	textSans,
-	from,
 } from '@guardian/source-foundations';
 
 const containerStyle = css`

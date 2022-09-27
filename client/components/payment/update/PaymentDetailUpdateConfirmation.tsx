@@ -1,13 +1,16 @@
 import { css } from '@emotion/react';
 import {
-	space,
 	brand,
-	neutral,
-	headline,
-	textSans,
 	from,
+	headline,
+	neutral,
+	space,
+	textSans,
 	until,
 } from '@guardian/source-foundations';
+import { Button } from '@guardian/source-react-components';
+import { useContext } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import {
 	formatDate,
 	getMainPlan,
@@ -19,17 +22,13 @@ import {
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { LinkButton } from '../../buttons';
 import { GenericErrorScreen } from '../../genericErrorScreen';
+import { ArrowIcon } from '../../svgs/arrowIcon';
 import { CardDisplay } from '../cardDisplay';
 import { DirectDebitDisplay } from '../directDebitDisplay';
 import { PayPalDisplay } from '../paypalDisplay';
 import { SepaDisplay } from '../sepaDisplay';
-import { InfoSummary } from './Summary';
-import { useContext } from 'react';
 import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-
-import { Button } from '@guardian/source-react-components';
-import { ArrowIcon } from '../../svgs/arrowIcon';
+import { InfoSummary } from './Summary';
 
 interface ConfirmedNewPaymentDetailsRendererProps {
 	subscription: Subscription;

@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import {
-	space,
 	brand,
 	brandAlt,
-	neutral,
 	headline,
+	neutral,
+	space,
 	textSans,
 	until,
 } from '@guardian/source-foundations';
@@ -25,6 +25,7 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	GroupedProductTypeKeys,
 } from '../../../shared/productTypes';
+import { fetchWithDefaultParameters } from '../../fetch';
 import { allProductsDetailFetcher } from '../../productUtils';
 import { EmptyAccountOverview } from '../accountoverview/emptyAccountOverview';
 import { SixForSixExplainerIfApplicable } from '../accountoverview/sixForSixExplainer';
@@ -39,7 +40,6 @@ import { PaymentFailureAlertIfApplicable } from '../payment/paymentFailureAlertI
 import { ErrorIcon } from '../svgs/errorIcon';
 import { GiftIcon } from '../svgs/giftIcon';
 import { InvoicesTable } from './invoicesTable';
-import { fetchWithDefaultParameters } from '../../fetch';
 
 type MMACategoryToProductDetails = {
 	[mmaCategory in GroupedProductTypeKeys]: ProductDetail[];

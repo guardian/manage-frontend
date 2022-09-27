@@ -1,6 +1,6 @@
+import { palette } from '@guardian/source-foundations';
 import * as React from 'react';
 import { sans } from '../../../../styles/fonts';
-import { palette } from '@guardian/source-foundations';
 
 const hrefStyle = {
 	color: palette.neutral[46],
