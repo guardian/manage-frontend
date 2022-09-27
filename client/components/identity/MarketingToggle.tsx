@@ -27,6 +27,7 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 	} = props;
 
 	const [wasInitiallySelected] = useState(selected);
+	const disabled = canOnlyUnsubscribe && !selected;
 	if (canOnlyUnsubscribe && !wasInitiallySelected) {
 		return null;
 	}
@@ -62,6 +63,7 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 						}
 						onClick(id);
 					}}
+					disabled={disabled}
 				/>
 			</div>
 			{description && getDescription(description)}

@@ -65,6 +65,11 @@ interface ToggleSwitchProps extends Props {
 	 * Receives the click event as an argument.
 	 */
 	onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+
+	/**
+	 * Whether interaction with the toggle should be disabled.
+	 */
+	disabled?: boolean;
 }
 
 /**
@@ -112,14 +117,19 @@ export const ToggleSwitch = ({
 	return (
 		<label id={labelId} css={[labelStyles, cssOverrides]} {...props}>
 			{labelPosition === 'left' && label}
-			<button
-				id={id}
-				css={[buttonStyles(labelPosition), getPlatformStyles(platform)]}
-				role="switch"
-				aria-checked={isChecked()}
-				aria-labelledby={labelId}
-				onClick={onClick}
-			></button>
+			{!props.disabled && (
+				<button
+					id={id}
+					css={[
+						buttonStyles(labelPosition),
+						getPlatformStyles(platform),
+					]}
+					role="switch"
+					aria-checked={isChecked()}
+					aria-labelledby={labelId}
+					onClick={onClick}
+				></button>
+			)}
 			{labelPosition === 'right' && label}
 		</label>
 	);
