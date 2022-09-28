@@ -643,7 +643,7 @@ export const GROUPED_PRODUCT_TYPES: {
 	contributions: {
 		...PRODUCT_TYPES.contributions,
 		mapGroupedToSpecific: () => PRODUCT_TYPES.contributions,
-		groupFriendlyName: 'contributions',
+		groupFriendlyName: 'recurring support',
 		supportTheGuardianSectionProps: {
 			alternateButtonText: 'Contribute again',
 			supportReferer: 'account_overview_contributions_section',

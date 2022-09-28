@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { headline, neutral, space, until } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
+import { capitalize } from 'lodash';
 import { Fragment } from 'react';
 import {
 	CancelledProductDetail,
@@ -86,7 +87,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 				return (
 					<Fragment key={category}>
 						<h2 css={subHeadingCss}>
-							My {groupedProductType.groupFriendlyName}
+							{capitalize(groupedProductType.groupFriendlyName)}
 						</h2>
 						<Stack space={6}>
 							{activeProductsInCategory.map((productDetail) => (
@@ -112,7 +113,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 							{(groupedProductType.groupFriendlyName ===
 								'membership' ||
 								groupedProductType.groupFriendlyName ===
-									'contribution') &&
+									'contributions') &&
 								(cancelledProductsInCategory.length > 0 ||
 									activeProductsInCategory.some(
 										(productDetail) =>
