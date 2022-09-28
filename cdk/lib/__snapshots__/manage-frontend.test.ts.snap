@@ -1356,6 +1356,38 @@ systemctl start manage-frontend
                     ],
                   ],
                 },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:cloudformation:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":stack/membership-TEST-*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:cloudformation:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":stack/support-TEST-*",
+                    ],
+                  ],
+                },
               ],
             },
           ],
@@ -1815,6 +1847,22 @@ systemctl start manage-frontend
                         "Ref": "AWS::AccountId",
                       },
                       ":*/DEV/*",
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:aws:execute-api:",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ":",
+                      Object {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":*/CODE/*",
                     ],
                   ],
                 },
