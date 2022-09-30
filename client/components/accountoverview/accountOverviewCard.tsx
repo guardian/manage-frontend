@@ -263,17 +263,16 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 						}
 					`}
 				>
-					{groupedProductType.shouldRevealSubscriptionId && (
-						<ul css={keyValuePairCss}>
-							<li css={keyCss}>Subscription ID</li>
-							<li css={valueCss}>
-								{
-									props.productDetail.subscription
-										.subscriptionId
-								}
-							</li>
-						</ul>
-					)}
+					<ul css={keyValuePairCss}>
+						<li css={keyCss}>
+							{groupedProductType.showSupporterId
+								? 'Supporter ID'
+								: 'Subscription ID'}
+						</li>
+						<li css={valueCss}>
+							{props.productDetail.subscription.subscriptionId}
+						</li>
+					</ul>
 					{groupedProductType.tierLabel && (
 						<ul css={keyValuePairCss}>
 							<li css={keyCss}>{groupedProductType.tierLabel}</li>

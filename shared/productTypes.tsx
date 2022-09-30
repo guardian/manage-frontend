@@ -160,7 +160,7 @@ export interface ProductType {
 	getOphanProductType?: (
 		productDetail: ProductDetail,
 	) => OphanProduct | undefined;
-	shouldRevealSubscriptionId?: boolean;
+	showSupporterId?: boolean;
 	tierLabel?: string;
 	renewalMetadata?: SupportTheGuardianButtonProps;
 	noProductSupportUrlSuffix?: string;
@@ -644,6 +644,7 @@ export const GROUPED_PRODUCT_TYPES: {
 		...PRODUCT_TYPES.contributions,
 		mapGroupedToSpecific: () => PRODUCT_TYPES.contributions,
 		groupFriendlyName: 'recurring support',
+		showSupporterId: true,
 		supportTheGuardianSectionProps: {
 			alternateButtonText: 'Contribute again',
 			supportReferer: 'account_overview_contributions_section',
@@ -686,7 +687,6 @@ export const GROUPED_PRODUCT_TYPES: {
 		},
 		cancelledCopy:
 			'Your subscription has been cancelled. You are able to access your subscription until',
-		shouldRevealSubscriptionId: true,
 		supportTheGuardianSectionProps: {
 			alternateButtonText: 'Subscribe again',
 			supportReferer: 'account_overview_subscriptions_section',

@@ -12,15 +12,12 @@ export const BasicProductInfoTable = (props: BasicProductInfoTableProps) => {
 	return (
 		<ProductDescriptionListTable
 			content={[
-				...(props.groupedProductType.shouldRevealSubscriptionId
-					? [
-							{
-								title: 'Subscription ID',
-								value: props.productDetail.subscription
-									.subscriptionId,
-							},
-					  ]
-					: []),
+				{
+					title: props.groupedProductType.showSupporterId
+						? 'Supporter ID'
+						: 'Subscription ID',
+					value: props.productDetail.subscription.subscriptionId,
+				},
 				...(props.groupedProductType.tierLabel
 					? [
 							{
