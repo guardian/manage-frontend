@@ -6,48 +6,48 @@ This README contains mainly set-up information.
 
 ## Technologies
 
-- [Node](https://nodejs.org/en/)
-- [Express](https://expressjs.com/)
-- [Emotion](https://emotion.sh)
-- [React](https://reactjs.org/)
-- [TypeScript](https://www.typescriptlang.org)
+-   [Node](https://nodejs.org/en/)
+-   [Express](https://expressjs.com/)
+-   [Emotion](https://emotion.sh)
+-   [React](https://reactjs.org/)
+-   [TypeScript](https://www.typescriptlang.org)
 
 DEV only Dependencies
 
-- [Jest](https://facebook.github.io/jest/)
-- [Yarn](https://yarnpkg.com/lang/en/)
-- [NGINX](https://www.nginx.com)
+-   [Jest](https://facebook.github.io/jest/)
+-   [Yarn](https://yarnpkg.com/lang/en/)
+-   [NGINX](https://www.nginx.com)
 
 ## Dependencies
 
-- [`identity-frontend`](https://github.com/guardian/identity-frontend)
-- [IDAPI](https://github.com/guardian/identity)
-- [`members-data-api`](https://github.com/guardian/members-data-api)
-- [`holiday-stop-api` ](https://github.com/guardian/support-service-lambdas/tree/master/handlers/holiday-stop-api)
-- [`delivery-records-api`](https://github.com/guardian/support-service-lambdas/tree/master/handlers/delivery-records-api)
-- [`cancellation-sf-cases-api`](https://github.com/guardian/support-service-lambdas/tree/master/handlers/cancellation-sf-cases-api)
-- Stripe
-- Google ReCaptcha
+-   [`identity-frontend`](https://github.com/guardian/identity-frontend)
+-   [IDAPI](https://github.com/guardian/identity)
+-   [`members-data-api`](https://github.com/guardian/members-data-api)
+-   [`holiday-stop-api` ](https://github.com/guardian/support-service-lambdas/tree/master/handlers/holiday-stop-api)
+-   [`delivery-records-api`](https://github.com/guardian/support-service-lambdas/tree/master/handlers/delivery-records-api)
+-   [`cancellation-sf-cases-api`](https://github.com/guardian/support-service-lambdas/tree/master/handlers/cancellation-sf-cases-api)
+-   Stripe
+-   Google ReCaptcha
 
 ## Basic DEV environment
 
-NOTE nginx proxies CODE instances of [`identity-frontend`](https://github.com/guardian/identity-frontend) for sign-in and [`members-data-api`](https://github.com/guardian/members-data-api) **if they're not running locally**. See sections further down if you need to actually develop either of those services in parallel with `manage-frontend`.
+NOTE: nginx proxies CODE instances of [`identity-frontend`](https://github.com/guardian/identity-frontend) for sign-in and [`members-data-api`](https://github.com/guardian/members-data-api) **if they're not running locally**. See sections further down if you need to actually develop either of those services in parallel with `manage-frontend`.
 
 #### One-off setup
 
+1. Install Yarn if you don't already have it.
 1. Follow the [Nginx steps for manage-frontend](https://github.com/guardian/manage-frontend/blob/master/nginx/README.md)
-1. Ensure you have `nvm` installed (DO NOT install via Brew, instead use [nvm's installation instructions](https://github.com/nvm-sh/nvm#installing-and-updating))
-1. In `./app`...
-   1. run `nvm use`
-   1. run `yarn`
+1. Ensure you have a Node.js version manager installed. We recommend using [`fnm`](https://github.com/Schniz/fnm).
+1. Run `fnm use` (or equivalent)
+1. Run `yarn` to install dependencies
 
 #### Running locally (each day you need use it)
 
 1.  First fetch credentials from [Janus](https://janus.gutools.co.uk/) for the `membership` profile.
 
-1.  You will need to have nginx running (`sudo nginx`), if it's not running already.
-1.  In `./app`, run `yarn watch`.
-1.  Which should open https://manage.thegulocal.com/ in the browser (you may need to refresh if you see an error, whilst the it catches up)
+1.  You will need to have nginx running (`sudo nginx`) if it's not running already.
+1.  Run `yarn watch`.
+1.  This should open https://manage.thegulocal.com/ in the browser (this often happens before the server is fully up and running so you may need to refresh if you see an error).
 1.  You will very likely be redirected to `profile.thegulocal.com` (as you need to be signed in, in the last hour, to use MMA - see [wiki/IDAPI-Integration](https://github.com/guardian/manage-frontend/wiki/IDAPI-Integration)). You can use the same login as you would use in CODE, and you can create new subs by visiting https://support.code.dev-theguardian.com (when sign-in there with the same account). _Social sign-in (Google, Facebook etc.) doesn't appear to work via the proxy unfortunately._
 
 ### To develop `members-data-api` in parallel
