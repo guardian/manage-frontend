@@ -28,4 +28,3 @@ deployments:
     dependencies: [manage-frontend-cloudformation]
     parameters:
       bucket: membership-dist
-      asgMigrationInProgress: true
