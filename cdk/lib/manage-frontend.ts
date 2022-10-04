@@ -10,7 +10,7 @@ import {
 } from '@guardian/cdk/lib/constructs/iam';
 import type { GuAsgCapacity } from '@guardian/cdk/lib/types';
 import type { App } from 'aws-cdk-lib';
-import { Duration, Tags } from 'aws-cdk-lib';
+import { Duration } from 'aws-cdk-lib';
 import { InstanceClass, InstanceSize, InstanceType } from 'aws-cdk-lib/aws-ec2';
 import { Protocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import type { CfnLogGroup } from 'aws-cdk-lib/aws-logs';
@@ -172,9 +172,6 @@ systemctl start manage-frontend
 			timeout: Duration.seconds(5),
 			protocol: Protocol.HTTP,
 		});
-
-		const nodeAppAsg = nodeApp.autoScalingGroup;
-		Tags.of(nodeAppAsg).add('gu:riffraff:new-asg', 'true');
 
 		new CfnRecordSet(this, 'AliasRecord', {
 			name: props.domain,
