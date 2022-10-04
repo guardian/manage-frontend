@@ -354,7 +354,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 						>
 							<LinkButton
 								to={`/${groupedProductType.urlPart}`}
-								text={`Manage ${groupedProductType.friendlyName}`}
+								text="Manage"
 								data-cy={`Manage ${groupedProductType.friendlyName}`}
 								state={{ productDetail: props.productDetail }}
 								colour={brand[800]}
@@ -488,7 +488,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 										state={{
 											productDetail: props.productDetail,
 										}}
-										text={'Manage payment method'}
+										text="Adjust payment method"
 										colour={
 											hasPaymentFailure
 												? brand[400]
