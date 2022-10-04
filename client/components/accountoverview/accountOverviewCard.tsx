@@ -8,10 +8,12 @@ import {
 	textSans,
 	until,
 } from '@guardian/source-foundations';
+import { capitalize } from 'lodash';
 import { cancellationFormatDate, parseDate } from '../../../shared/dates';
 import {
 	getMainPlan,
 	isGift,
+	PaidSubscriptionPlan,
 	ProductDetail,
 } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
@@ -34,7 +36,9 @@ interface AccountOverviewCardProps {
 }
 
 export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
-	const mainPlan = getMainPlan(props.productDetail.subscription);
+	const mainPlan = getMainPlan(
+		props.productDetail.subscription,
+	) as PaidSubscriptionPlan;
 	if (!mainPlan) {
 		throw new Error('mainPlan does not exist in accountOverviewCard');
 	}
@@ -85,6 +89,16 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 	const shouldShowStartDate = !(
 		shouldShowJoinDateNotStartDate || userIsGifter
 	);
+
+	const productName = () => {
+		if (props.productDetail.mmaCategory === 'contributions') {
+			return capitalize(`${mainPlan.interval}ly`);
+		}
+
+		return `${specificProductType.productTitle(
+			mainPlan,
+		)}${maybePatronSuffix}`;
+	};
 
 	const keyValuePairCss = css`
 		list-style: none;
@@ -149,8 +163,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 						}
 					`}
 				>
-					{specificProductType.productTitle(mainPlan)}
-					{maybePatronSuffix}
+					{productName()}
 				</h2>
 				<div
 					css={css`
