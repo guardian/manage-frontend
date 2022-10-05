@@ -123,12 +123,9 @@ export const s3TextFilePromise = (
 		);
 	})();
 
-interface MetricDimensions {
-	[name: string]: string;
-}
 export const putMetricDataPromise = (
 	metricName: string,
-	dimensions: MetricDimensions,
+	dimensions: Record<string, string>,
 ) =>
 	CloudWatch.putMetricData({
 		Namespace: 'manage-frontend',

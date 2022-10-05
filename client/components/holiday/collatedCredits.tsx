@@ -1,9 +1,7 @@
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../shared/dates';
 import { HolidayStopDetail } from './holidayStopApi';
 
-interface CollatedCreditByInvoiceDate {
-	[invoiceDateString: string]: number;
-}
+type CollatedCreditByInvoiceDate = Record<string, number>;
 
 const reduceCreditCallback = (
 	accumulator: CollatedCreditByInvoiceDate | null,

@@ -11,9 +11,8 @@ interface DeliveryProblem {
 	id: string;
 	ref: string;
 }
-export interface DeliveryProblemMap {
-	[problemCaseId: string]: DeliveryProblem;
-}
+
+export type DeliveryProblemMap = Record<string, DeliveryProblem>;
 
 export interface ContactPhoneNumbers {
 	id: string;

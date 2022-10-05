@@ -8,9 +8,7 @@ export interface MockableExpressRequest {
 	query: any;
 }
 
-interface QueryParameters {
-	[name: string]: string;
-}
+type QueryParameters = Record<string, string>;
 
 // Names of query parameters to that facilitate sign-in on profile.
 export const signInTokenQueryParameterNames = [

@@ -45,12 +45,13 @@ interface ContributionAmountOptions {
 	maxAmount: number;
 }
 
-interface ContributionAmountsLookup {
-	[currencyISO: string]: {
+type ContributionAmountsLookup = Record<
+	string,
+	{
 		month: ContributionAmountOptions;
 		year: ContributionAmountOptions;
-	};
-}
+	}
+>;
 
 class UpdateAmountLoader extends AsyncLoader<string> {}
 

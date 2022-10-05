@@ -10,9 +10,10 @@ interface ProductDetailAndProductType {
 	productType: ProductType;
 }
 
-export interface ContactIdToArrayOfProductDetailAndProductType {
-	[contactId: string]: ProductDetailAndProductType[];
-}
+export type ContactIdToArrayOfProductDetailAndProductType = Record<
+	string,
+	ProductDetailAndProductType[]
+>;
 
 interface ProductDetailWithContactId extends ProductDetail {
 	subscription: Subscription & {

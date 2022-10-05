@@ -8,9 +8,7 @@ interface Config {
 }
 
 declare let process: {
-	env: {
-		[key: string]: string | undefined;
-	};
+	env: Record<string, string | undefined>;
 };
 
 const getConfig: (name: string) => string | null = (name) => {

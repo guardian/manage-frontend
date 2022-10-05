@@ -26,9 +26,7 @@ function safeJsonParse(jsonStr: JsonString): object | JsonString {
 		return jsonStr;
 	}
 }
-export interface Headers {
-	[headerName: string]: string;
-}
+export type Headers = Record<string, string>;
 export type AdditionalHeaderGenerator = (
 	method: string,
 	host: string,

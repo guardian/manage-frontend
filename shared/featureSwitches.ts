@@ -1,7 +1,3 @@
-interface FeatureSwitches {
-	[x: string]: boolean;
-}
-
 export const initFeatureSwitchUrlParamOverride = () => {
 	const searchParams = new URLSearchParams(window?.location.search);
 	const param = searchParams.get('withFeature');
@@ -26,7 +22,7 @@ export const initFeatureSwitchUrlParamOverride = () => {
  * name provided then the function will return false and the feature switch
  * will be set to off.
  */
-export const featureSwitches: FeatureSwitches = {
+export const featureSwitches: Record<string, boolean> = {
 	exampleFeature: false,
 	cancellationProductSwitch: false,
 };

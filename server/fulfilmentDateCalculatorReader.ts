@@ -5,12 +5,10 @@ import { s3FilePromise } from './awsIntegration';
 import { conf } from './config';
 import { log } from './log';
 
-interface RawFulfilmentDateCalculatorDates {
-	[dayOfWeek: string]: {
-		deliveryAddressChangeEffectiveDate?: string;
-		// there are a number of other fields, but we don't need them
-	};
-}
+type RawFulfilmentDateCalculatorDates = Record<
+	string,
+	{ deliveryAddressChangeEffectiveDate?: string }
+>;
 
 const getDeliveryAddressChangeEffectiveDateForToday = async (
 	filenameProductPart: string,
