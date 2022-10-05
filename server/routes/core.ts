@@ -19,6 +19,14 @@ router.get(
 	(_: Request, res: Response) => {
 		res.send('OK - signed in');
 	},
+	/*
+	 * NOTE: PROD currently requires access to CODE lambdas see here:
+	 * https://github.com/guardian/manage-frontend/wiki/test-users
+	 * and here:
+	 * https://github.com/guardian/manage-frontend/wiki/Proxying-API-Gateway-Lambdas
+	 * Without them this health check will fail on PROD
+	 * TODO: Does this provide us with any real benefit (testing code resources in prod)?
+	 */
 );
 
 router.get('/_prout', (_, res: Response) => {

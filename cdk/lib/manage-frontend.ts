@@ -144,7 +144,18 @@ systemctl start manage-frontend
 							`arn:aws:cloudformation:${this.region}:${this.account}:stack/support-CODE-*`,
 							`arn:aws:cloudformation:${this.region}:${this.account}:stack/membership-${this.stage}-*`,
 							`arn:aws:cloudformation:${this.region}:${this.account}:stack/support-${this.stage}-*`,
-						], // TODO: why does CODE depend on DEV here?
+						],
+						/*
+						 * TODO: why does CODE depend on DEV here?
+						 */
+						/*
+						 * NOTE: PROD currently requires access to CODE lambdas see here:
+						 * https://github.com/guardian/manage-frontend/wiki/test-users
+						 * and here:
+						 * https://github.com/guardian/manage-frontend/wiki/Proxying-API-Gateway-Lambdas
+						 *
+						 * TODO: Does this provide us with any real benefit (testing code resources in prod)?
+						 */
 					}),
 					new GuAllowPolicy(this, 'DiscoverApiGatewayApiKeys', {
 						actions: ['apigateway:GET'],
@@ -158,7 +169,18 @@ systemctl start manage-frontend
 							`arn:aws:execute-api:${this.region}:${this.account}:*/DEV/*`,
 							`arn:aws:execute-api:${this.region}:${this.account}:*/CODE/*`,
 							`arn:aws:execute-api:${this.region}:${this.account}:*/${this.stage}/*`,
-						], // TODO: why does CODE depend on DEV here?
+						],
+						/*
+						 * TODO: why does CODE depend on DEV here?
+						 */
+						/*
+						 * NOTE: PROD currently requires access to CODE lambdas see here:
+						 * https://github.com/guardian/manage-frontend/wiki/test-users
+						 * and here:
+						 * https://github.com/guardian/manage-frontend/wiki/Proxying-API-Gateway-Lambdas
+						 *
+						 * TODO: Does this provide us with any real benefit (testing code resources in prod)?
+						 */
 					}),
 				],
 			},
