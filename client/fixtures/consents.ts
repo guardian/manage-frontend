@@ -68,15 +68,6 @@ export const consents = [
 			'Information on similar products and further ways to support our independent journalism.',
 	},
 	{
-		id: 'holidays',
-		isOptOut: false,
-		isChannel: false,
-		isProduct: false,
-		name: 'Holidays & Vacations',
-		description:
-			'Ideas and inspiration for your next trip away, as well as the latest offers from Guardian Holidays in the UK and Guardian Vacations in the US.',
-	},
-	{
 		id: 'market_research_optout',
 		isOptOut: true,
 		isChannel: false,

@@ -18,7 +18,7 @@ const supportReminderConsent = (consents: ConsentOption[]): ConsentOption[] =>
 	ConsentOptions.findByIds(consents, ['support_reminder']);
 
 const marketingEmailConsents = (consents: ConsentOption[]): ConsentOption[] => {
-	const ids = ['supporter', 'jobs', 'holidays', 'events', 'offers'];
+	const ids = ['supporter', 'jobs', 'events', 'offers'];
 	return ConsentOptions.findByIds(consents, ids);
 };
 
