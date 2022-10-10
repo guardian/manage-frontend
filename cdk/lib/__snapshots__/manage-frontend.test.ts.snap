@@ -225,9 +225,6 @@ Object {
           "Ref": "AMIManagefrontend",
         },
         "InstanceType": "t4g.small",
-        "MetadataOptions": Object {
-          "HttpTokens": "required",
-        },
         "SecurityGroups": Array [
           Object {
             "Fn::GetAtt": Array [
