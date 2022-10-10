@@ -131,7 +131,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 					}
 				`}
 			>
-				<h2
+				<h3
 					css={css`
 						font-size: 17px;
 						font-weight: bold;
@@ -151,7 +151,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 				>
 					{specificProductType.productTitle(mainPlan)}
 					{maybePatronSuffix}
-				</h2>
+				</h3>
 				<div
 					css={css`
 						display: flex;
