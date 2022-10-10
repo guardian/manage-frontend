@@ -92,7 +92,7 @@ export interface LeftSideNavProps {
 }
 
 export const LeftSideNav = (props: LeftSideNavProps) => (
-	<ul role="tablist" css={leftNavCss}>
+	<ul css={leftNavCss}>
 		{Object.values(NAV_LINKS)
 			.filter((navItem) => !navItem.isDropDownExclusive)
 			.map((navItem: MenuSpecificNavItem) => (
@@ -105,6 +105,11 @@ export const LeftSideNav = (props: LeftSideNavProps) => (
 							css={leftNavLinkCss(
 								props.selectedNavItem === navItem,
 							)}
+							aria-current={
+								props.selectedNavItem === navItem
+									? 'page'
+									: undefined
+							}
 							to={navItem.link}
 						>
 							{navItem.icon && (
