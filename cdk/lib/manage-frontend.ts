@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 import { join } from 'path';
 import { GuEc2App } from '@guardian/cdk';
 import { AccessScope } from '@guardian/cdk/lib/constants';
@@ -11,6 +12,7 @@ import {
 import type { GuAsgCapacity } from '@guardian/cdk/lib/types';
 import type { App } from 'aws-cdk-lib';
 import { Duration } from 'aws-cdk-lib';
+import { CfnDashboard } from 'aws-cdk-lib/aws-cloudwatch';
 import { InstanceClass, InstanceSize, InstanceType } from 'aws-cdk-lib/aws-ec2';
 import { Protocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
@@ -212,5 +214,18 @@ systemctl start manage-frontend
 					nodeApp.loadBalancer.loadBalancerCanonicalHostedZoneId,
 			},
 		});
+
+		try {
+			if (this.stage === 'PROD') {
+				const dashboardBody = readFileSync('/dashboard.json', 'utf8');
+				new CfnDashboard(this, 'CriticalPathsCloudWatchDashboard', {
+					dashboardBody,
+					dashboardName: 'manage-frontend',
+				});
+			}
+		} catch (err: unknown) {
+			console.error('Could not load the dashboard.json file:');
+			console.error(err);
+		}
 	}
 }
