@@ -81,7 +81,7 @@ export const AccountOverviewCancelledCard = (
 					}
 				`}
 			>
-				<h2
+				<h3
 					css={css`
 						font-size: 17px;
 						font-weight: bold;
@@ -98,7 +98,7 @@ export const AccountOverviewCancelledCard = (
 					`}
 				>
 					{specificProductType.productTitle()}
-				</h2>
+				</h3>
 				<div
 					css={css`
 						display: flex;
