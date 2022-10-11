@@ -6,7 +6,7 @@
     "build": "tsc",
     "test": "jest",
     "format": "prettier --write \"{lib,bin}/**/*.ts\"",
-    "lint": "eslint lib/** bin/** --ext .ts --no-error-on-unmatched-pattern",
+    "lint": "eslint lib/**/*.ts bin/**/*.ts --no-error-on-unmatched-pattern",
     "synth": "cdk synth --path-metadata false --version-reporting false",
     "diff": "cdk diff --path-metadata false --version-reporting false",
     "deploy-code": "cdk deploy --path-metadata false --version-reporting false ManageFrontend-CODE"
@@ -59,13 +59,6 @@
     "rules": {
       "@typescript-eslint/no-inferrable-types": 0,
       "import/no-namespace": 2
-    },
-    "ignorePatterns": [
-      "**/*.js",
-      "node_modules",
-      "cdk.out",
-      ".eslintrc.js",
-      "jest.config.js"
-    ]
+    }
   }
 }
