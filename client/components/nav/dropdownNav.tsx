@@ -205,7 +205,7 @@ export const DropdownNav = () => {
 				My account
 			</button>
 
-			<ul role="tablist" css={dropdownNavCss(showMenu, isHelpCentre)}>
+			<ul css={dropdownNavCss(showMenu, isHelpCentre)}>
 				{Object.values(NAV_LINKS).map(
 					(navItem: MenuSpecificNavItem) => (
 						<li key={navItem.title}>
