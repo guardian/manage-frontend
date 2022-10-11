@@ -348,10 +348,7 @@ const InnerContent = ({
 						</p>
 						<SupportTheGuardianButton
 							{...specificProductType.renewalMetadata}
-							fontWeight="bold"
-							textColour={neutral[100]}
-							colour={brand[400]}
-							notPrimary
+							size="small"
 						/>
 					</>
 				)}

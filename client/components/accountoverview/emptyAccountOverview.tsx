@@ -89,11 +89,6 @@ export const EmptyAccountOverview = () => {
 			</p>
 			<SupportTheGuardianButton
 				supportReferer={'account_overview_no_product'}
-				fontWeight="bold"
-				height="42px"
-				textColour={neutral[100]}
-				colour={brand[400]}
-				notPrimary
 			/>
 			<div
 				css={css`

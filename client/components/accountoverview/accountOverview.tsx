@@ -118,9 +118,12 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 													.subscription,
 											),
 									)) && (
-									<SupportTheGuardianSection
-										{...groupedProductType.supportTheGuardianSectionProps}
-									/>
+									<div>
+										<SupportTheGuardianSection
+											{...groupedProductType.supportTheGuardianSectionProps}
+											size="small"
+										/>
+									</div>
 								)}
 						</Stack>
 					</Fragment>
