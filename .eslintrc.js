@@ -16,6 +16,7 @@ module.exports = {
 			version: 'detect',
 		},
 	},
+	ignorePatterns: ['*.json'],
 	overrides: [
 		{
 			files: ['client/__tests__/**'],

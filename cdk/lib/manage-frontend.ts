@@ -17,7 +17,6 @@ import { InstanceClass, InstanceSize, InstanceType } from 'aws-cdk-lib/aws-ec2';
 import { Protocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnRecordSet } from 'aws-cdk-lib/aws-route53';
-import { CfnInclude } from 'aws-cdk-lib/cloudformation-include';
 
 interface ManageGuStackProps extends GuStackProps {
 	scaling: GuAsgCapacity;
@@ -26,13 +25,8 @@ interface ManageGuStackProps extends GuStackProps {
 export class ManageFrontend extends GuStack {
 	constructor(scope: App, id: string, props: ManageGuStackProps) {
 		super(scope, id, props);
-		const yamlTemplateFilePath = join(__dirname, '../..', 'cfn.yaml');
 
 		const app = 'manage-frontend';
-
-		new CfnInclude(this, 'YamlTemplate', {
-			templateFile: yamlTemplateFilePath,
-		});
 
 		const hostedZoneId = new GuStringParameter(this, 'hostedZoneId', {
 			fromSSM: true,
@@ -215,17 +209,20 @@ systemctl start manage-frontend
 			},
 		});
 
-		try {
-			if (this.stage === 'PROD') {
-				const dashboardBody = readFileSync('/dashboard.json', 'utf8');
+		if (this.stage === 'PROD') {
+			// TODO: It might be better to undestand the shorthand properties of the existing
+			// dashboard and recreate it using level 2 constructs (cdk/guCDK)
+			try {
+				const jsonFilePath = join(__dirname, 'dashboard.json');
+				const dashboardBody = readFileSync(jsonFilePath, 'utf8');
 				new CfnDashboard(this, 'CriticalPathsCloudWatchDashboard', {
 					dashboardBody,
 					dashboardName: 'manage-frontend',
 				});
+			} catch (err: unknown) {
+				console.error('Could not load the dashboard.json file:');
+				console.error(err);
 			}
-		} catch (err: unknown) {
-			console.error('Could not load the dashboard.json file:');
-			console.error(err);
 		}
 	}
 }
