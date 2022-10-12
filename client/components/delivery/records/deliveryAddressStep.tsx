@@ -12,21 +12,17 @@ import {
 	CheckboxGroup,
 } from '@guardian/source-react-components';
 import Color from 'color';
-import {
-	ChangeEvent,
-	Dispatch,
-	FormEvent,
-	SetStateAction,
-	useContext,
-	useState,
-} from 'react';
+import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
+import { useContext, useState } from 'react';
 import { dateString } from '../../../../shared/dates';
-import {
+import type {
 	DeliveryAddress,
-	isProduct,
-	MembersDataApiAsyncLoader,
 	MembersDataApiItem,
 	ProductDetail,
+} from '../../../../shared/productResponse';
+import {
+	isProduct,
+	MembersDataApiAsyncLoader,
 } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../../productUtils';
@@ -40,18 +36,15 @@ import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { COUNTRIES } from '../../identity/models';
 import { InfoSection } from '../../infoSection';
 import { Input } from '../../input';
-import {
-	ProductDescriptionListKeyValue,
-	ProductDescriptionListTable,
-} from '../../productDescriptionListTable';
+import type { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';
+import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { InfoIconDark } from '../../svgs/infoIconDark';
 import { updateAddressFetcher } from '../address/deliveryAddressApi';
 import { SuccessMessage } from '../address/deliveryAddressConfirmation';
-import {
-	convertToDescriptionListData,
-	SubscriptionEffectiveData,
-} from '../address/deliveryAddressFormContext';
-import { FormValidationResponse, isFormValid } from '../address/formValidation';
+import type { SubscriptionEffectiveData } from '../address/deliveryAddressFormContext';
+import { convertToDescriptionListData } from '../address/deliveryAddressFormContext';
+import type { FormValidationResponse } from '../address/formValidation';
+import { isFormValid } from '../address/formValidation';
 import { Select } from '../address/select';
 import { DeliveryRecordsAddressContext } from './deliveryRecordsProblemContext';
 import { ReadOnlyAddressDisplay } from './readOnlyAddressDisplay';

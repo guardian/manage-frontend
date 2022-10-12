@@ -13,7 +13,7 @@ import {
 	getWeekDay,
 	numberOfDaysInMonth,
 } from '../../../shared/dates';
-import { CalendarTableDate } from './holidayCalendarTables';
+import type { CalendarTableDate } from './holidayCalendarTables';
 
 interface HolidayCalendarTableProps {
 	holidayDates: CalendarTableDate[];

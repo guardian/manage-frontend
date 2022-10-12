@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Subscription } from '../../../../shared/productResponse';
+import type * as React from 'react';
+import type { Subscription } from '../../../../shared/productResponse';
 
 type PaymentUpdateTypeName = 'card' | 'direct_debit';
 type PaymentUpdateTypeApiUrlPart = 'card' | 'dd';

@@ -1,14 +1,14 @@
 import { error, until } from '@guardian/source-foundations';
-import * as React from 'react';
-import {
-	DATE_FNS_LONG_OUTPUT_FORMAT,
-	DateRange,
-	dateString,
-} from '../../../shared/dates';
-import { ProductTypeWithHolidayStopsFlow } from '../../../shared/productTypes';
+import type * as React from 'react';
+import type { DateRange } from '../../../shared/dates';
+import { DATE_FNS_LONG_OUTPUT_FORMAT, dateString } from '../../../shared/dates';
+import type { ProductTypeWithHolidayStopsFlow } from '../../../shared/productTypes';
 import { Spinner } from '../spinner';
 import { HolidayAnniversaryDateExplainerModal } from './holidayAnniversaryDateExplainerModal';
-import { HolidayStopDetail, IssuesImpactedPerYear } from './holidayStopApi';
+import type {
+	HolidayStopDetail,
+	IssuesImpactedPerYear,
+} from './holidayStopApi';
 
 interface HolidaySelectionInfoPros {
 	productType: ProductTypeWithHolidayStopsFlow;

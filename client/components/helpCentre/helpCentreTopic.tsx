@@ -7,7 +7,7 @@ import { WithStandardTopMargin } from '../WithStandardTopMargin';
 import { BackToHelpCentreLink } from './BackToHelpCentreLink';
 import { HelpCentreMoreTopics } from './helpCentreMoreTopics';
 import { HelpCentreSingleTopic } from './helpCentreSingleTopic';
-import { MoreTopics, SingleTopic } from './HelpCentreTypes';
+import type { MoreTopics, SingleTopic } from './HelpCentreTypes';
 
 const HelpCentreTopic = () => {
 	const [singleTopic, setSingleTopic] = useState<SingleTopic | undefined>(

@@ -1,10 +1,12 @@
 import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';
-import { ReactNode, useContext } from 'react';
+import type { ReactNode } from 'react';
+import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { isProduct, ProductDetail } from '../../../../shared/productResponse';
-import {
+import type { ProductDetail } from '../../../../shared/productResponse';
+import { isProduct } from '../../../../shared/productResponse';
+import type {
 	ProductType,
 	ProductTypeWithCancellationFlow,
 } from '../../../../shared/productTypes';
@@ -13,14 +15,14 @@ import { createProductDetailFetcher } from '../../../productUtils';
 import AsyncLoader from '../../asyncLoader';
 import { GenericErrorScreen } from '../../genericErrorScreen';
 import { ProgressIndicator } from '../../progressIndicator';
-import {
-	CancellationContext,
+import type {
 	CancellationContextInterface,
 	CancellationRouterState,
 } from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
 import { cancellationEffectiveToday } from '../cancellationContexts';
 import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
-import { OptionalCancellationReasonId } from '../cancellationReason';
+import type { OptionalCancellationReasonId } from '../cancellationReason';
 import { getCancellationSummary, isCancelled } from '../cancellationSummary';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
 

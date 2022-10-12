@@ -1,6 +1,6 @@
 import { from, until } from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';
-import * as React from 'react';
+import type * as React from 'react';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
@@ -25,11 +25,11 @@ import {
 	isNotBulkSuspension,
 	isNotWithdrawn,
 } from './holidayStopApi';
-import {
-	HolidayStopsContext,
+import type {
 	HolidayStopsContextInterface,
 	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
+import { HolidayStopsContext } from './HolidayStopsContainer';
 import { SummaryTable } from './summaryTable';
 
 interface OverviewRowProps {

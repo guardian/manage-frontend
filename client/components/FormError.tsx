@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { palette, space, textSans } from '@guardian/source-foundations';
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { ErrorIcon } from './svgs/errorIcon';
 
 const dlStyles = css`

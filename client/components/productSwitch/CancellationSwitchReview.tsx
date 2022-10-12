@@ -14,19 +14,20 @@ import {
 	SvgArrowRightStraight,
 	SvgTickRound,
 } from '@guardian/source-react-components';
-import { ReactNode, useContext, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import type { PaidSubscriptionPlan } from '../../../shared/productResponse';
 import {
 	getMainPlan,
 	MDA_TEST_USER_HEADER,
-	PaidSubscriptionPlan,
 } from '../../../shared/productResponse';
 import { measure } from '../../styles/typography';
-import {
-	CancellationPageTitleContext,
+import type {
 	CancellationPageTitleInterface,
 	CancellationRouterState,
 } from '../cancel/CancellationContainer';
+import { CancellationPageTitleContext } from '../cancel/CancellationContainer';
 import { expanderButtonCss } from '../expanderButton';
 import { Heading } from '../Heading';
 import { cardTypeToSVG } from '../payment/cardDisplay';
@@ -34,11 +35,11 @@ import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import { PayPalDisplay } from '../payment/paypalDisplay';
 import { SepaDisplay } from '../payment/sepaDisplay';
 import { productBenefits } from './ProductBenefits';
-import {
+import type {
 	AvailableProductsResponse,
-	ProductSwitchContext,
 	ProductSwitchContextInterface,
 } from './productSwitchApi';
+import { ProductSwitchContext } from './productSwitchApi';
 import {
 	introOfferCopy,
 	introOfferDuration,

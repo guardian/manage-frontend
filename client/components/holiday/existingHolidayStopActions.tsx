@@ -3,13 +3,15 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
-import AsyncLoader, { ReFetch } from '../asyncLoader';
-import { HideFunction, Modal } from '../modal';
-import {
+import type { ReFetch } from '../asyncLoader';
+import AsyncLoader from '../asyncLoader';
+import type { HideFunction } from '../modal';
+import { Modal } from '../modal';
+import type {
 	HolidayStopRequest,
 	MinimalHolidayStopRequest,
 } from './holidayStopApi';
-import { HolidayStopsRouterState } from './HolidayStopsContainer';
+import type { HolidayStopsRouterState } from './HolidayStopsContainer';
 import { formatDateRangeAsFriendly } from './summaryTable';
 
 interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {

@@ -1,4 +1,4 @@
-import { HolidayStopFlowProperties } from '../../../shared/productTypes';
+import type { HolidayStopFlowProperties } from '../../../shared/productTypes';
 import { sans } from '../../styles/fonts';
 import { CallCentreNumbers } from '../callCentreNumbers';
 import { Modal } from '../modal';

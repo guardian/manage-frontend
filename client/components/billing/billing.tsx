@@ -10,21 +10,21 @@ import {
 } from '@guardian/source-foundations';
 import { Fragment } from 'react';
 import { parseDate } from '../../../shared/dates';
-import {
-	getMainPlan,
+import type {
 	InvoiceDataApiItem,
-	isGift,
-	isPaidSubscriptionPlan,
-	isProduct,
 	MembersDataApiItem,
 	PaidSubscriptionPlan,
 	ProductDetail,
-	sortByJoinDate,
 } from '../../../shared/productResponse';
 import {
-	GROUPED_PRODUCT_TYPES,
-	GroupedProductTypeKeys,
-} from '../../../shared/productTypes';
+	getMainPlan,
+	isGift,
+	isPaidSubscriptionPlan,
+	isProduct,
+	sortByJoinDate,
+} from '../../../shared/productResponse';
+import type { GroupedProductTypeKeys } from '../../../shared/productTypes';
+import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../fetch';
 import { allProductsDetailFetcher } from '../../productUtils';
 import { EmptyAccountOverview } from '../accountoverview/emptyAccountOverview';

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { DeliveryProblemType } from '../../../../../../shared/productTypes';
+import type { DeliveryProblemType } from '../../../../../../shared/productTypes';
 import { DeliveryRecordProblemForm } from '../../../../../components/delivery/records/deliveryRecordsProblemForm';
 
 const guardianWeeklyProblemArr: DeliveryProblemType[] = [

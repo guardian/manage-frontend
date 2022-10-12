@@ -11,7 +11,10 @@ import {
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { ProductType, WithProductType } from '../../../../shared/productTypes';
+import type {
+	ProductType,
+	WithProductType,
+} from '../../../../shared/productTypes';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { InfoSection } from '../../infoSection';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';

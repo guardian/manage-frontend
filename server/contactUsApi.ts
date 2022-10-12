@@ -1,8 +1,8 @@
 import { captureMessage } from '@sentry/node';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import fetch from 'node-fetch';
 import { contactUsConfig } from '../shared/contactUsConfig';
-import { ContactUsReq } from '../shared/contactUsTypes';
+import type { ContactUsReq } from '../shared/contactUsTypes';
 import {
 	validateBase64FileSize,
 	validateImageFileExtension,

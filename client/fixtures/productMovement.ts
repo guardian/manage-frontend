@@ -1,4 +1,4 @@
-import {
+import type {
 	AvailableProductsResponse,
 	ProductSwitchResponse,
 } from '../components/productSwitch/productSwitchApi';

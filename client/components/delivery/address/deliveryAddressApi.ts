@@ -1,4 +1,4 @@
-import { DeliveryAddress } from '../../../../shared/productResponse';
+import type { DeliveryAddress } from '../../../../shared/productResponse';
 
 export const updateAddressFetcher =
 	(formData: DeliveryAddress, contactId: string) => () =>

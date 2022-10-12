@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router';
-import { Subscription } from '../../../../shared/productResponse';
-import { CardUpdateResponse } from '../../../components/payment/update/card/newCardPaymentMethodDetail';
-import { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
+import type { Subscription } from '../../../../shared/productResponse';
+import type { CardUpdateResponse } from '../../../components/payment/update/card/newCardPaymentMethodDetail';
+import type { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
 import {
 	ConfirmedNewPaymentDetailsRenderer,
 	PaymentMethodUpdated,

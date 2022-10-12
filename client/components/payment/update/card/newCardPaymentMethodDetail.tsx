@@ -1,7 +1,7 @@
-import { PaymentMethod } from '@stripe/stripe-js';
-import { Card, Subscription } from '../../../../../shared/productResponse';
+import type { PaymentMethod } from '@stripe/stripe-js';
+import type { Card, Subscription } from '../../../../../shared/productResponse';
 import { CardDisplay } from '../../cardDisplay';
-import { NewPaymentMethodDetail } from '../newPaymentMethodDetail';
+import type { NewPaymentMethodDetail } from '../newPaymentMethodDetail';
 
 interface SubscriptionWithCard extends Subscription {
 	card: Card;

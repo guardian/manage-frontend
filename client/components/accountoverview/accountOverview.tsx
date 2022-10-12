@@ -2,17 +2,14 @@ import { css } from '@emotion/react';
 import { headline, neutral, space, until } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { Fragment } from 'react';
-import {
+import type {
 	CancelledProductDetail,
-	isProduct,
 	MembersDataApiItem,
 	ProductDetail,
-	sortByJoinDate,
 } from '../../../shared/productResponse';
-import {
-	GROUPED_PRODUCT_TYPES,
-	GroupedProductTypeKeys,
-} from '../../../shared/productTypes';
+import { isProduct, sortByJoinDate } from '../../../shared/productResponse';
+import type { GroupedProductTypeKeys } from '../../../shared/productTypes';
+import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../fetch';
 import { allProductsDetailFetcher } from '../../productUtils';
 import AsyncLoader from '../asyncLoader';

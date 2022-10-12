@@ -7,7 +7,7 @@ import {
 	textSans,
 } from '@guardian/source-foundations';
 import { useEffect, useState } from 'react';
-import { ProductDetail } from '../../../shared/productResponse';
+import type { ProductDetail } from '../../../shared/productResponse';
 import { allProductsDetailFetcher } from '../../productUtils';
 import { gridBase, gridItemPlacement } from '../../styles/grid';
 import { ErrorIcon } from '../svgs/errorIcon';

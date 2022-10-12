@@ -1,8 +1,9 @@
 import { capitalize } from 'lodash';
 import { parseDate } from '../../shared/dates';
-import { ProductDetail, Subscription } from '../../shared/productResponse';
-import { GROUPED_PRODUCT_TYPES, ProductType } from '../../shared/productTypes';
-import { SubscriptionEffectiveData } from '../components/delivery/address/deliveryAddressFormContext';
+import type { ProductDetail, Subscription } from '../../shared/productResponse';
+import type { ProductType } from '../../shared/productTypes';
+import { GROUPED_PRODUCT_TYPES } from '../../shared/productTypes';
+import type { SubscriptionEffectiveData } from '../components/delivery/address/deliveryAddressFormContext';
 import { flattenEquivalent } from '../utils';
 
 interface ProductDetailAndProductType {

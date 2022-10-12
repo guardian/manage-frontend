@@ -2,7 +2,7 @@ import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../shared/identity';
-import {
+import type {
 	ProductType,
 	ProductTypeWithCancellationFlow,
 	ProductTypeWithDeliveryRecordsProperties,

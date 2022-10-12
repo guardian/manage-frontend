@@ -1,6 +1,6 @@
 import { parseDate } from '../../shared/dates';
-import { ProductDetail } from '../../shared/productResponse';
-import { GroupedProductType } from '../../shared/productTypes';
+import type { ProductDetail } from '../../shared/productResponse';
+import type { GroupedProductType } from '../../shared/productTypes';
 import { ProductDescriptionListTable } from './productDescriptionListTable';
 
 export interface BasicProductInfoTableProps {

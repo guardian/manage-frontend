@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import AWS from 'aws-sdk';
-import { GetObjectRequest } from 'aws-sdk/clients/s3';
+import type { GetObjectRequest } from 'aws-sdk/clients/s3';
 import { RequestSigner } from 'aws4';
 import { conf } from './config';
 import { log } from './log';

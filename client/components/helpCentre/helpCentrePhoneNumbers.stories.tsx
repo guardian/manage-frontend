@@ -1,8 +1,6 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import {
-	HelpCentrePhoneNumbers,
-	HelpCentrePhoneNumbersProps,
-} from './helpCentrePhoneNumbers';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { HelpCentrePhoneNumbersProps } from './helpCentrePhoneNumbers';
+import { HelpCentrePhoneNumbers } from './helpCentrePhoneNumbers';
 
 export default {
 	title: 'Components/Help Centre/Help Centre Phone Numbers',

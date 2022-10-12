@@ -1,19 +1,17 @@
 import { createRef, useEffect, useState } from 'react';
-import { ProductDetail } from '../../../../shared/productResponse';
+import type { ProductDetail } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { allProductsDetailFetcher } from '../../../productUtils';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { PageContainer } from '../../page';
 import { Spinner } from '../../spinner';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
-import {
-	GenericErrorMessage,
-	GenericErrorMessageRef,
-} from '../GenericErrorMessage';
+import type { GenericErrorMessageRef } from '../GenericErrorMessage';
+import { GenericErrorMessage } from '../GenericErrorMessage';
 import { ConsentOptions, Users } from '../identity';
 import { IdentityLocations } from '../IdentityLocations';
 import { Lines } from '../Lines';
-import { ConsentOption } from '../models';
+import type { ConsentOption } from '../models';
 import { Actions, useConsentOptions } from '../useConsentOptions';
 import { ConsentSection } from './ConsentSection';
 import { EmailSettingsSection } from './EmailSettingsSection';

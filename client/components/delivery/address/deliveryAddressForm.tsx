@@ -14,21 +14,15 @@ import {
 	CheckboxGroup,
 	Stack,
 } from '@guardian/source-react-components';
-import {
-	ChangeEvent,
-	Dispatch,
-	FormEvent,
-	SetStateAction,
-	useContext,
-	useState,
-} from 'react';
+import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { DeliveryAddress } from '../../../../shared/productResponse';
-import {
-	GROUPED_PRODUCT_TYPES,
+import type { DeliveryAddress } from '../../../../shared/productResponse';
+import type {
 	ProductType,
 	WithProductType,
 } from '../../../../shared/productTypes';
+import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { addressChangeAffectedInfo } from '../../../services/deliveryAddress';
 import { flattenEquivalent } from '../../../utils';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
@@ -37,19 +31,18 @@ import { COUNTRIES } from '../../identity/models';
 import { InfoSection } from '../../infoSection';
 import { Input } from '../../input';
 import { NAV_LINKS } from '../../nav/navConfig';
-import {
-	ProductDescriptionListKeyValue,
-	ProductDescriptionListTable,
-} from '../../productDescriptionListTable';
+import type { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';
+import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
 import { InfoIconDark } from '../../svgs/infoIconDark';
+import type { AddressSetStateObject } from './deliveryAddressFormContext';
 import {
-	AddressSetStateObject,
 	ContactIdContext,
 	convertToDescriptionListData,
 	NewDeliveryAddressContext,
 } from './deliveryAddressFormContext';
-import { FormValidationResponse, isFormValid } from './formValidation';
+import type { FormValidationResponse } from './formValidation';
+import { isFormValid } from './formValidation';
 import { Select } from './select';
 
 interface FormStates {

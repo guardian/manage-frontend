@@ -7,7 +7,7 @@ import {
 	textSans,
 	until,
 } from '@guardian/source-foundations';
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 export interface ProductDescriptionListKeyValue {
 	title: string;

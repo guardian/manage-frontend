@@ -1,8 +1,10 @@
-import { css, SerializedStyles } from '@emotion/react';
+import type { SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { ContactUsFormPayload } from '../../../shared/contactUsTypes';
+import type { ChangeEvent, FormEvent } from 'react';
+import { useEffect, useState } from 'react';
+import type { ContactUsFormPayload } from '../../../shared/contactUsTypes';
 import {
 	base64FromFile,
 	MAX_FILE_ATTACHMENT_SIZE_KB,
@@ -10,7 +12,7 @@ import {
 	VALID_IMAGE_FILE_MIME_TYPES,
 } from '../../../shared/fileUploadUtils';
 import { isEmail } from '../../../shared/validationUtils';
-import { Grecaptcha } from '../../services/captcha';
+import type { Grecaptcha } from '../../services/captcha';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { FormError } from '../FormError';
 import { Input } from '../input';

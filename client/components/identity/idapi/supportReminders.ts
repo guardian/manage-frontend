@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/browser';
 import { fetchWithDefaultParameters } from '../../../fetch';
-import { ConsentOption, ConsentOptionType } from '../models';
+import type { ConsentOption } from '../models';
+import { ConsentOptionType } from '../models';
 
 interface ReminderStatusApiResponse {
 	recurringStatus: 'NotSet' | 'Active' | 'Cancelled';

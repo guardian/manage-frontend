@@ -1,15 +1,15 @@
+import type { DateRange, ParsedDate } from '../../../shared/dates';
 import {
 	DATE_FNS_INPUT_FORMAT,
 	dateAddYears,
-	DateRange,
 	dateRange,
 	dateString,
 	getOldestDate,
 	parseDate,
-	ParsedDate,
 } from '../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
-import AsyncLoader, { ReFetch } from '../asyncLoader';
+import type { ReFetch } from '../asyncLoader';
+import AsyncLoader from '../asyncLoader';
 
 interface CommonCreditProperties {
 	estimatedPrice?: number;

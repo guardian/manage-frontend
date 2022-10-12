@@ -1,5 +1,5 @@
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../shared/dates';
-import { HolidayStopDetail } from './holidayStopApi';
+import type { HolidayStopDetail } from './holidayStopApi';
 
 type CollatedCreditByInvoiceDate = Record<string, number>;
 

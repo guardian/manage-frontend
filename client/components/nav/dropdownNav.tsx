@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import { gridColumns, gridItemPlacement } from '../../styles/grid';
 import { expanderButtonCss } from '../expanderButton';
 import { ProfileIcon } from '../svgs/profileIcon';
-import { MenuSpecificNavItem, NAV_LINKS } from './navConfig';
+import type { MenuSpecificNavItem } from './navConfig';
+import { NAV_LINKS } from './navConfig';
 
 const dropdownNavCss = (showMenu: boolean, isHelpCentre: boolean) =>
 	css({

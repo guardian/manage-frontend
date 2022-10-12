@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import {

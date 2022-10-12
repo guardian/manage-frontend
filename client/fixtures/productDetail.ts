@@ -6,7 +6,7 @@
  * eg. `[guardianWeeklyCard, digitalDD, newspaperVoucherPaypal]`
  */
 
-import { ProductDetail } from '../../shared/productResponse';
+import type { ProductDetail } from '../../shared/productResponse';
 
 export const guardianWeeklyCard: ProductDetail = {
 	mmaCategory: 'subscriptions',

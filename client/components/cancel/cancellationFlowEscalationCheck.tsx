@@ -1,5 +1,5 @@
-import { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
-import { OutstandingHolidayStop } from '../holiday/holidayStopApi';
+import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
+import type { OutstandingHolidayStop } from '../holiday/holidayStopApi';
 import { cancellationEffectiveToday } from './cancellationContexts';
 
 export const generateEscalationCausesList = (_: {

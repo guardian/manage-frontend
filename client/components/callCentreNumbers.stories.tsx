@@ -1,5 +1,6 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { CallCentreNumbers, CallCentreNumbersProps } from './callCentreNumbers';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { CallCentreNumbersProps } from './callCentreNumbers';
+import { CallCentreNumbers } from './callCentreNumbers';
 
 export default {
 	title: 'Components/CallCentreNumbers',

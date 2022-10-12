@@ -1,5 +1,5 @@
 import { palette } from '@guardian/source-foundations';
-import { SignInStatus } from '../services/signInStatus';
+import type { SignInStatus } from '../services/signInStatus';
 import { serif } from '../styles/fonts';
 import { Footer } from './footer/footer';
 import Header from './header';

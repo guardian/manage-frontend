@@ -1,4 +1,4 @@
-import { $Keys } from 'utility-types';
+import type { $Keys } from 'utility-types';
 
 // ----- Setup ----- //
 const catalogue = {

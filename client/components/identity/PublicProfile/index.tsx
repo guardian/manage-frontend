@@ -5,14 +5,12 @@ import { NAV_LINKS } from '../../nav/navConfig';
 import { PageContainer } from '../../page';
 import { Spinner } from '../../spinner';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
-import {
-	GenericErrorMessage,
-	GenericErrorMessageRef,
-} from '../GenericErrorMessage';
+import type { GenericErrorMessageRef } from '../GenericErrorMessage';
+import { GenericErrorMessage } from '../GenericErrorMessage';
 import { Users } from '../identity';
 import { IdentityLocations } from '../IdentityLocations';
 import { Lines } from '../Lines';
-import { User } from '../models';
+import type { User } from '../models';
 import { PageSection } from '../PageSection';
 import { aCss } from '../sharedStyles';
 import { AvatarSection } from './AvatarSection';

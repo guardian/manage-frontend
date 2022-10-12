@@ -1,5 +1,5 @@
-import { StripePublicKeySet } from '../server/stripeSetupIntentConfig';
-import { AbTest, OphanComponentEvent } from './ophanTypes';
+import type { StripePublicKeySet } from '../server/stripeSetupIntentConfig';
+import type { AbTest, OphanComponentEvent } from './ophanTypes';
 
 interface CommonGlobals {
 	domain: string;

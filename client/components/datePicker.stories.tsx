@@ -1,5 +1,6 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { DatePicker, DatePickerProps } from './datePicker';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { DatePickerProps } from './datePicker';
+import { DatePicker } from './datePicker';
 
 export default {
 	title: 'Components/DatePicker',

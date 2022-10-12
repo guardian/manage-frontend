@@ -13,37 +13,35 @@ import { capitalize } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { dateIsSameOrBefore, parseDate } from '../../../../shared/dates';
-import {
+import type {
 	DeliveryAddress,
 	DeliveryRecordApiItem,
-	getMainPlan,
-	isGift,
-	isPaidSubscriptionPlan,
 	PaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
 import {
-	DeliveryProblemType,
-	holidaySuspensionDeliveryProblem,
-} from '../../../../shared/productTypes';
+	getMainPlan,
+	isGift,
+	isPaidSubscriptionPlan,
+} from '../../../../shared/productResponse';
+import type { DeliveryProblemType } from '../../../../shared/productTypes';
+import { holidaySuspensionDeliveryProblem } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../services/analytics';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { FormError } from '../../FormError';
-import { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';
+import type { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
 import { InfoIconDark } from '../../svgs/infoIconDark';
 import { DeliveryAddressStep } from './deliveryAddressStep';
 import { DeliveryRecordCard } from './deliveryRecordCard';
-import { DeliveryRecordDetail } from './deliveryRecordsApi';
+import type { DeliveryRecordDetail } from './deliveryRecordsApi';
+import type { DeliveryRecordsContextInterface } from './DeliveryRecordsContainer';
 import {
 	checkForExistingDeliveryProblem,
 	DeliveryRecordsContext,
-	DeliveryRecordsContextInterface,
 } from './DeliveryRecordsContainer';
 import { PaginationNav } from './deliveryRecordsPaginationNav';
-import {
-	DeliveryRecordsAddressContext,
-	DeliveryRecordsProblemType,
-} from './deliveryRecordsProblemContext';
+import type { DeliveryRecordsProblemType } from './deliveryRecordsProblemContext';
+import { DeliveryRecordsAddressContext } from './deliveryRecordsProblemContext';
 import { DeliveryRecordProblemForm } from './deliveryRecordsProblemForm';
 import { ProductDetailsTable } from './productDetailsTable';
 

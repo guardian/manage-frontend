@@ -1,4 +1,4 @@
-import { CancellationReason } from '../cancellationReason';
+import type { CancellationReason } from '../cancellationReason';
 import { BreakFromNewsWithGW, PaymentIssue } from '../GenericSaveBodyResponses';
 
 export const membershipCancellationReasons: CancellationReason[] = [

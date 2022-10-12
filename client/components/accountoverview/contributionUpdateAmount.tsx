@@ -1,13 +1,12 @@
 import { css } from '@emotion/react';
 import { brand, neutral, space } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
-import { Dispatch, SetStateAction, useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 import { parseDate } from '../../../shared/dates';
-import {
-	augmentInterval,
-	PaidSubscriptionPlan,
-} from '../../../shared/productResponse';
-import { ProductType } from '../../../shared/productTypes';
+import type { PaidSubscriptionPlan } from '../../../shared/productResponse';
+import { augmentInterval } from '../../../shared/productResponse';
+import type { ProductType } from '../../../shared/productTypes';
 import { Button } from '../buttons';
 import { SuccessMessage } from '../delivery/address/deliveryAddressConfirmation';
 import { ProductDescriptionListTable } from '../productDescriptionListTable';

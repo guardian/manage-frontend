@@ -1,4 +1,4 @@
-import { Topic } from './contactUsTypes';
+import type { Topic } from './contactUsTypes';
 
 export const contactUsConfig: Topic[] = [
 	{

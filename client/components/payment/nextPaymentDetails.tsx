@@ -1,12 +1,14 @@
 import { css } from '@emotion/react';
 import { brand, space } from '@guardian/source-foundations';
 import { parseDate } from '../../../shared/dates';
+import type {
+	Subscription,
+	SubscriptionPlan,
+} from '../../../shared/productResponse';
 import {
 	augmentInterval,
 	isPaidSubscriptionPlan,
 	isSixForSix,
-	Subscription,
-	SubscriptionPlan,
 } from '../../../shared/productResponse';
 import { InfoIconDark } from '../svgs/infoIconDark';
 

@@ -6,18 +6,16 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
+import type { DateStates } from '../../../shared/dates';
 import {
 	dateAddDays,
 	dateAddMonths,
 	dateIsSameOrAfter,
 	dateIsSameOrBefore,
-	DateStates,
 } from '../../../shared/dates';
 import { HolidayCalendarTable } from './holidayCalendarTable';
-import {
-	HolidayDateChooserStateContext,
-	SharedHolidayDateChooserState,
-} from './holidayDateChooser';
+import type { SharedHolidayDateChooserState } from './holidayDateChooser';
+import { HolidayDateChooserStateContext } from './holidayDateChooser';
 
 interface HolidayCalendarTablesProps {
 	minimumDate: Date;

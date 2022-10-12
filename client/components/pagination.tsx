@@ -1,18 +1,12 @@
-import { css, SerializedStyles } from '@emotion/react';
+import type { SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import { neutral, space, textSans } from '@guardian/source-foundations';
 import {
 	SvgChevronLeftSingle,
 	SvgChevronRightSingle,
 } from '@guardian/source-react-components';
-import {
-	createContext,
-	Dispatch,
-	MouseEvent,
-	SetStateAction,
-	useContext,
-	useEffect,
-	useState,
-} from 'react';
+import type { Dispatch, MouseEvent, SetStateAction } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 interface PaginationContextProps {
 	currentPageNumber: number;

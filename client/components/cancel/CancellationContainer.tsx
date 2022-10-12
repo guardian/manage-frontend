@@ -1,33 +1,30 @@
-import {
-	Context,
-	createContext,
-	Dispatch,
-	SetStateAction,
-	useState,
-} from 'react';
+import type { Context, Dispatch, SetStateAction } from 'react';
+import { createContext, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import {
-	isProduct,
-	MembersDataApiAsyncLoader,
+import type {
 	MembersDataApiItem,
 	ProductDetail,
 } from '../../../shared/productResponse';
 import {
+	isProduct,
+	MembersDataApiAsyncLoader,
+} from '../../../shared/productResponse';
+import type {
 	ProductType,
 	ProductTypeWithCancellationFlow,
 	WithProductType,
 } from '../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../productUtils';
-import { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
-import { OutstandingHolidayStop } from '../holiday/holidayStopApi';
+import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
+import type { OutstandingHolidayStop } from '../holiday/holidayStopApi';
 import { NAV_LINKS } from '../nav/navConfig';
 import { PageContainer } from '../page';
-import {
+import type {
 	AvailableProductsResponse,
-	ProductSwitchContext,
 	ProductSwitchResponse,
 } from '../productSwitch/productSwitchApi';
-import {
+import { ProductSwitchContext } from '../productSwitch/productSwitchApi';
+import type {
 	CancellationReason,
 	OptionalCancellationReasonId,
 } from './cancellationReason';

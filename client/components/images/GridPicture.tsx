@@ -2,8 +2,9 @@
 // This code is designed to work with multiple image sources and crops (different pictures)
 // If you want to work with a single image at different crops, maybe consider gridImage instead
 // ----- Imports ----- //
-import { SerializedStyles } from '@emotion/react';
-import { gridSrcset, gridUrl, ImageType, Source } from './theGrid';
+import type { SerializedStyles } from '@emotion/react';
+import type { ImageType, Source } from './theGrid';
+import { gridSrcset, gridUrl } from './theGrid';
 
 export type PropTypes = {
 	sources: Source[];

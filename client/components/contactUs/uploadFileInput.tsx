@@ -1,4 +1,5 @@
-import { css, SerializedStyles } from '@emotion/react';
+import type { SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import {
 	background,
 	focusHalo,
@@ -11,7 +12,7 @@ import {
 } from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';
 import { useEffect, useState } from 'react';
-import * as React from 'react';
+import type * as React from 'react';
 import { ErrorIcon } from '../svgs/errorIcon';
 
 interface UploadFileUploadProps {

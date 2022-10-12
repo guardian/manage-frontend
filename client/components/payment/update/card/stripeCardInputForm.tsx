@@ -10,21 +10,17 @@ import {
 	useElements,
 	useStripe,
 } from '@stripe/react-stripe-js';
-import { StripeElementBase } from '@stripe/stripe-js';
+import type { StripeElementBase } from '@stripe/stripe-js';
 import { useState } from 'react';
-import {
-	STRIPE_PUBLIC_KEY_HEADER,
-	StripeSetupIntent,
-} from '../../../../../shared/stripeSetupIntent';
+import type { StripeSetupIntent } from '../../../../../shared/stripeSetupIntent';
+import { STRIPE_PUBLIC_KEY_HEADER } from '../../../../../shared/stripeSetupIntent';
 import { GenericErrorScreen } from '../../../genericErrorScreen';
 import { LoadingCircleIcon } from '../../../svgs/loadingCircleIcon';
 import { ErrorSummary } from '../Summary';
-import { CardInputFormProps } from './cardInputForm';
+import type { CardInputFormProps } from './cardInputForm';
 import { FlexCardElement } from './flexCardElement';
-import {
-	NewCardPaymentMethodDetail,
-	StripePaymentMethod,
-} from './newCardPaymentMethodDetail';
+import type { StripePaymentMethod } from './newCardPaymentMethodDetail';
+import { NewCardPaymentMethodDetail } from './newCardPaymentMethodDetail';
 import Recaptcha from './Recaptcha';
 
 interface StripeSetupIntentDetails {

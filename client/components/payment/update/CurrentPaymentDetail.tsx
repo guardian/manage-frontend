@@ -7,7 +7,8 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import { InlineError } from '@guardian/source-react-components';
-import { getMainPlan, ProductDetail } from '../../../../shared/productResponse';
+import type { ProductDetail } from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { CardDisplay } from '../cardDisplay';
 import {

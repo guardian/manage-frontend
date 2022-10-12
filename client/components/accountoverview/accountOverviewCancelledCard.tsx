@@ -9,10 +9,8 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import { parseDate } from '../../../shared/dates';
-import {
-	CancelledProductDetail,
-	isGift,
-} from '../../../shared/productResponse';
+import type { CancelledProductDetail } from '../../../shared/productResponse';
+import { isGift } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { trackEvent } from '../../services/analytics';
 import { Button } from '../buttons';

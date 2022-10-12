@@ -1,10 +1,10 @@
 import { from, until } from '@guardian/source-foundations';
-import {
+import type {
 	DirectDebitDetails,
 	Subscription,
 } from '../../../../../shared/productResponse';
 import { cleanSortCode, DirectDebitDisplay } from '../../directDebitDisplay';
-import { NewPaymentMethodDetail } from '../newPaymentMethodDetail';
+import type { NewPaymentMethodDetail } from '../newPaymentMethodDetail';
 import { DirectDebitLegal, GoCardlessGuarantee } from './directDebitLegal';
 
 const CONFIRM_BUTTON_TEXT = 'Complete payment update';

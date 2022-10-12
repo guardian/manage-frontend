@@ -1,5 +1,5 @@
 import { palette } from '@guardian/source-foundations';
-import * as React from 'react';
+import type * as React from 'react';
 
 export interface CheckboxProps {
 	checked: boolean;

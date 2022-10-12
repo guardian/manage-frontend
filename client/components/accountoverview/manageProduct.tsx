@@ -11,13 +11,13 @@ import {
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { cancellationFormatDate } from '../../../shared/dates';
+import type { ProductDetail } from '../../../shared/productResponse';
 import {
 	getMainPlan,
 	isGift,
 	isPaidSubscriptionPlan,
-	ProductDetail,
 } from '../../../shared/productResponse';
-import {
+import type {
 	GroupedProductType,
 	ProductType,
 	WithGroupedProductType,

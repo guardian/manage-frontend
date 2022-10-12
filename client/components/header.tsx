@@ -1,6 +1,6 @@
 import { breakpoints, from, palette } from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
-import { SignInStatus } from '../services/signInStatus';
+import type { SignInStatus } from '../services/signInStatus';
 import { gridBase, gridColumns, gridItemPlacement } from '../styles/grid';
 import { DropdownNav } from './nav/dropdownNav';
 import { GridRoundel } from './svgs/gridRoundel';

@@ -1,5 +1,5 @@
 import { captureMessage } from '@sentry/node';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { s3FilePromise } from './awsIntegration';
 import { conf } from './config';
 import { log } from './log';

@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { brand, from, space, textSans } from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';
 import Color from 'color';
-import { DeliveryAddress } from '../../../../shared/productResponse';
+import type { DeliveryAddress } from '../../../../shared/productResponse';
 import { DeliveryAddressDisplay } from '../address/deliveryAddressDisplay';
 
 interface ReadOnlyAddressDisplayProps {

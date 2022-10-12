@@ -13,28 +13,27 @@ import {
 	RadioGroup,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-import { FormEvent, useContext, useState } from 'react';
+import type { FormEvent } from 'react';
+import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '../../../shared/dates';
-import { ProductDetail } from '../../../shared/productResponse';
-import { ProductTypeWithCancellationFlow } from '../../../shared/productTypes';
+import type { ProductDetail } from '../../../shared/productResponse';
+import type { ProductTypeWithCancellationFlow } from '../../../shared/productTypes';
 import { hasCancellationFlow } from '../../productUtils';
 import { ProgressIndicator } from '../progressIndicator';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
-import {
-	CancellationContext,
-	CancellationContextInterface,
-} from './CancellationContainer';
+import type { CancellationContextInterface } from './CancellationContainer';
+import { CancellationContext } from './CancellationContainer';
 import {
 	cancellationEffectiveEndOfLastInvoicePeriod,
 	cancellationEffectiveToday,
 } from './cancellationContexts';
+import type { CancellationDateResponse } from './cancellationDateResponse';
 import {
 	CancellationDateAsyncLoader,
 	cancellationDateFetcher,
-	CancellationDateResponse,
 } from './cancellationDateResponse';
-import { CancellationReason } from './cancellationReason';
+import type { CancellationReason } from './cancellationReason';
 import { ContactUsToCancel } from './contactUsToCancel';
 
 interface ReasonPickerProps {

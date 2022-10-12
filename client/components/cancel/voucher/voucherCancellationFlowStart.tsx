@@ -1,5 +1,6 @@
 import { Stack } from '@guardian/source-react-components';
-import { getMainPlan, ProductDetail } from '../../../../shared/productResponse';
+import type { ProductDetail } from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import { trackEvent } from '../../../services/analytics';
 import { measure } from '../../../styles/typography';
 import { Heading } from '../../Heading';

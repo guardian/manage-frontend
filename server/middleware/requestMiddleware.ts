@@ -1,4 +1,5 @@
-import url, { UrlWithParsedQuery } from 'url';
+import type { UrlWithParsedQuery } from 'url';
+import url from 'url';
 
 export interface MockableExpressRequest {
 	baseUrl: string;

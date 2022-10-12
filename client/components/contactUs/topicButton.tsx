@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { from, space, textSans } from '@guardian/source-foundations';
-import { Topic } from '../../../shared/contactUsTypes';
+import type { Topic } from '../../../shared/contactUsTypes';
 import { TopicIcon } from './topicIcon';
 
 interface TopicButtonProps extends Topic {

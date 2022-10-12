@@ -1,8 +1,9 @@
 import { palette } from '@guardian/source-foundations';
 import uniq from 'lodash/uniq';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { DropMenu } from '../DropMenu';
-import { ConsentOption, Theme } from '../models';
+import type { ConsentOption } from '../models';
+import { Theme } from '../models';
 import { NewsletterPreference } from '../NewsletterPreference';
 import { PageSection } from '../PageSection';
 

@@ -1,6 +1,7 @@
 import { from } from '@guardian/source-foundations';
 import { gridColumns, gridItemPlacement } from '../../styles/grid';
-import { Roundel, RoundelProps } from './roundel';
+import type { RoundelProps } from './roundel';
+import { Roundel } from './roundel';
 
 export const GridRoundel = (props: RoundelProps) => (
 	<div

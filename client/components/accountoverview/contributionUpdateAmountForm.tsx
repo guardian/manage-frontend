@@ -13,11 +13,9 @@ import {
 } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
-import {
-	augmentInterval,
-	PaidSubscriptionPlan,
-} from '../../../shared/productResponse';
-import { ProductType } from '../../../shared/productTypes';
+import type { PaidSubscriptionPlan } from '../../../shared/productResponse';
+import { augmentInterval } from '../../../shared/productResponse';
+import type { ProductType } from '../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../fetch';
 import { trackEvent } from '../../services/analytics';
 import AsyncLoader from '../asyncLoader';

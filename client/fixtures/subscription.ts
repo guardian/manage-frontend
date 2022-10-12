@@ -6,7 +6,7 @@
  * eg. `[guardianWeeklySubscriptionCard, digitalSubscriptionDD]`
  */
 
-import { Subscription } from '../../shared/productResponse';
+import type { Subscription } from '../../shared/productResponse';
 
 export const guardianWeeklySubscriptionCard: Subscription = {
 	paymentMethod: 'Card',

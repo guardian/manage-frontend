@@ -1,5 +1,7 @@
-import { Request, Response, Router } from 'express';
-import { PRODUCT_TYPES, ProductType } from '../../shared/productTypes';
+import type { Request, Response } from 'express';
+import { Router } from 'express';
+import type { ProductType } from '../../shared/productTypes';
+import { PRODUCT_TYPES } from '../../shared/productTypes';
 import { membersDataApiHandler } from '../apiProxy';
 
 const routeProvider = (apiPathPrefix: string) => {

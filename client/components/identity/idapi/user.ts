@@ -1,5 +1,6 @@
 import { get } from 'lodash';
-import { ErrorTypes, User, UserError } from '../models';
+import type { User, UserError } from '../models';
+import { ErrorTypes } from '../models';
 import {
 	APIPutOptions,
 	APIUseCredentials,

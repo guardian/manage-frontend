@@ -1,9 +1,11 @@
-import { css, SerializedStyles } from '@emotion/react';
+import type { SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import {
 	Button,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-import { Dispatch, SetStateAction, useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 import { conf } from '../../../server/config';
 import { trackEvent } from '../../services/analytics';
 import { LoadingCircleIcon } from '../svgs/loadingCircleIcon';

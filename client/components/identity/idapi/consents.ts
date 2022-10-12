@@ -1,4 +1,5 @@
-import { ConsentOption, ConsentOptionType } from '../models';
+import type { ConsentOption } from '../models';
+import { ConsentOptionType } from '../models';
 import { APIPatchOptions, APIUseCredentials, identityFetch } from './fetch';
 
 interface ConsentAPIResponse {

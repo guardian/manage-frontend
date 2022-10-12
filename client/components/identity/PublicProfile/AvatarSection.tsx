@@ -1,9 +1,10 @@
 import { css } from '@emotion/react';
 import { palette } from '@guardian/source-foundations';
 import * as Sentry from '@sentry/browser';
-import { Form, Formik, FormikProps } from 'formik';
-import { FC, useEffect } from 'react';
-import * as React from 'react';
+import type { FormikProps } from 'formik';
+import { Form, Formik } from 'formik';
+import { useEffect } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import { trackEvent } from '../../../services/analytics';
 import { sans } from '../../../styles/fonts';
 import { Button } from '../../buttons';
@@ -94,7 +95,7 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 							type="file"
 							name="file"
 							accept="image/gif, image/jpeg, image/png"
-							onChange={(e: React.ChangeEvent) => {
+							onChange={(e: ChangeEvent) => {
 								const target =
 									e.currentTarget as HTMLInputElement;
 								if (target.files) {

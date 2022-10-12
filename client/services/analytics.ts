@@ -1,6 +1,6 @@
-import { OphanProduct } from '../../shared/ophanTypes';
-import { ProductDetail } from '../../shared/productResponse';
-import { ProductType } from '../../shared/productTypes';
+import type { OphanProduct } from '../../shared/ophanTypes';
+import type { ProductDetail } from '../../shared/productResponse';
+import type { ProductType } from '../../shared/productTypes';
 
 interface Event {
 	eventCategory: string;

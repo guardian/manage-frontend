@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { palette } from '@guardian/source-foundations';
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 import { serif } from '../../styles/fonts';
 
 interface DropMenuProps {

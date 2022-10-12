@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
 import { Lines } from '../Lines';
 import { MarketingToggle } from '../MarketingToggle';
-import { ConsentOption } from '../models';
+import type { ConsentOption } from '../models';
 import { PageSection } from '../PageSection';
 import { standardSansText, toggleDescriptionPadding } from '../sharedStyles';
 

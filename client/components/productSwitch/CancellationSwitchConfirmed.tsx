@@ -17,15 +17,15 @@ import { useContext } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { getGeoLocation } from '../../geolocation';
 import { measure } from '../../styles/typography';
-import { CancellationRouterState } from '../cancel/CancellationContainer';
+import type { CancellationRouterState } from '../cancel/CancellationContainer';
 import { Heading } from '../Heading';
 import GridImage from '../images/GridImage';
 import GridPicture from '../images/GridPicture';
-import {
-	ProductSwitchContext,
+import type {
 	ProductSwitchContextInterface,
 	ProductSwitchResponse,
 } from './productSwitchApi';
+import { ProductSwitchContext } from './productSwitchApi';
 import {
 	getIosAppUrl,
 	productFirstPaymentAmount,

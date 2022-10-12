@@ -1,5 +1,6 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { FormError, FormErrorProps } from './FormError';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { FormErrorProps } from './FormError';
+import { FormError } from './FormError';
 
 export default {
 	title: 'Components/FormError',

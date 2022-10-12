@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/browser';
-import { getMainPlan, ProductDetail } from '../shared/productResponse';
+import type { ProductDetail } from '../shared/productResponse';
+import { getMainPlan } from '../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../shared/productTypes';
 import { s3FilePromise } from './awsIntegration';
 import { conf } from './config';

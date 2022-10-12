@@ -1,5 +1,6 @@
-import { Context, createContext } from 'react';
-import { ProductType } from '../../../shared/productTypes';
+import type { Context } from 'react';
+import { createContext } from 'react';
+import type { ProductType } from '../../../shared/productTypes';
 
 type BillingFrequency = 'week' | 'month' | 'year';
 

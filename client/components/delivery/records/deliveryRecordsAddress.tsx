@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { brand, from, textSans } from '@guardian/source-foundations';
 import { useState } from 'react';
-import { DeliveryAddress } from '../../../../shared/productResponse';
+import type { DeliveryAddress } from '../../../../shared/productResponse';
 import { COUNTRIES } from '../../identity/models';
 
 export const RecordAddress = (props: DeliveryAddress) => {

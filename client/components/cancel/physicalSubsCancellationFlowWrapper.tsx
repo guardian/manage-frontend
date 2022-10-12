@@ -1,13 +1,11 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../shared/dates';
-import {
-	MDA_TEST_USER_HEADER,
-	ProductDetail,
-} from '../../../shared/productResponse';
-import { ProductType } from '../../../shared/productTypes';
+import type { ProductDetail } from '../../../shared/productResponse';
+import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
+import type { ProductType } from '../../../shared/productTypes';
 import AsyncLoader from '../asyncLoader';
-import { DeliveryRecordsResponse } from '../delivery/records/deliveryRecordsApi';
-import { OutstandingHolidayStopsResponse } from '../holiday/holidayStopApi';
+import type { DeliveryRecordsResponse } from '../delivery/records/deliveryRecordsApi';
+import type { OutstandingHolidayStopsResponse } from '../holiday/holidayStopApi';
 import {
 	cancellationEffectiveToday,
 	CancellationOutstandingCreditsContext,

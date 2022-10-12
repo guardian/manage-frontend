@@ -1,10 +1,8 @@
 import * as Sentry from '@sentry/node';
-import express from 'express';
+import type express from 'express';
 import fetch from 'node-fetch';
-import {
-	STRIPE_PUBLIC_KEY_HEADER,
-	StripeSetupIntent,
-} from '../shared/stripeSetupIntent';
+import type { StripeSetupIntent } from '../shared/stripeSetupIntent';
+import { STRIPE_PUBLIC_KEY_HEADER } from '../shared/stripeSetupIntent';
 import { log, putMetric } from './log';
 import { recaptchaConfigPromise } from './recaptchaConfig';
 import { stripeSetupIntentConfigPromise } from './stripeSetupIntentConfig';

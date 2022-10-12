@@ -1,9 +1,7 @@
 import { css } from '@emotion/react';
 import { brand, neutral, space, textSans } from '@guardian/source-foundations';
-import {
-	SupportTheGuardianButton,
-	SupportTheGuardianButtonProps,
-} from '../supportTheGuardianButton';
+import type { SupportTheGuardianButtonProps } from '../supportTheGuardianButton';
+import { SupportTheGuardianButton } from '../supportTheGuardianButton';
 
 export interface SupportTheGuardianSectionProps
 	extends SupportTheGuardianButtonProps {

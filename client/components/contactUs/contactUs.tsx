@@ -9,7 +9,7 @@ import {
 import { captureException } from '@sentry/browser';
 import { useNavigate, useParams } from 'react-router-dom';
 import { contactUsConfig } from '../../../shared/contactUsConfig';
-import { ContactUsFormPayload } from '../../../shared/contactUsTypes';
+import type { ContactUsFormPayload } from '../../../shared/contactUsTypes';
 import { trackEvent } from '../../services/analytics';
 import { ContactUsForm } from './contactUsForm';
 import { SelfServicePrompt } from './selfServicePrompt';

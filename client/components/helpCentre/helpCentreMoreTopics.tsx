@@ -11,7 +11,7 @@ import {
 	linkArrowStyle,
 	sectionTitleCss,
 } from './helpCentreStyles';
-import { MoreTopics } from './HelpCentreTypes';
+import type { MoreTopics } from './HelpCentreTypes';
 
 const moreTopicsStyles = css`
 	margin-bottom: '10px';

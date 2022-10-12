@@ -1,9 +1,11 @@
-import { IncomingMessage, RequestOptions } from 'http';
+import type { IncomingMessage, RequestOptions } from 'http';
 import https from 'https';
 import cookieParser from 'cookie-parser';
 import csrf from 'csurf';
-import { NextFunction, Request, Response, Router } from 'express';
-import { IdapiConfig, idapiConfigPromise } from '../idapiConfig';
+import type { NextFunction, Request, Response } from 'express';
+import { Router } from 'express';
+import type { IdapiConfig } from '../idapiConfig';
+import { idapiConfigPromise } from '../idapiConfig';
 
 const SECURITY_COOKIE_NAME = 'SC_GU_U';
 const SECURITY_HEADER_NAME = 'X-GU-ID-FOWARDED-SC-GU-U';
