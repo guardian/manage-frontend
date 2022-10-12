@@ -1,6 +1,7 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ReactRouterDecorator } from '../../.storybook/ReactRouterDecorator';
-import { Main, MainProps } from './main';
+import type { MainProps } from './main';
+import { Main } from './main';
 
 export default {
 	title: 'Layouts/Main',

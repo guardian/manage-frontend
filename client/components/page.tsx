@@ -8,12 +8,13 @@ import {
 	space,
 	textSans,
 } from '@guardian/source-foundations';
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { gridBase, gridColumns, gridItemPlacement } from '../styles/grid';
-import { LeftSideNav, LeftSideNavProps } from './nav/leftSideNav';
-import { NavItem } from './nav/navConfig';
+import type { LeftSideNavProps } from './nav/leftSideNav';
+import { LeftSideNav } from './nav/leftSideNav';
+import type { NavItem } from './nav/navConfig';
 
 export interface PageContainerProps {
 	children: React.ReactNode;

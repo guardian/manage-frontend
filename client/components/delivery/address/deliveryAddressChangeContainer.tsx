@@ -2,20 +2,20 @@ import { css } from '@emotion/react';
 import { from } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import type { MembersDataApiItem } from '../../../../shared/productResponse';
 import {
 	isProduct,
 	MembersDataApiAsyncLoader,
-	MembersDataApiItem,
 } from '../../../../shared/productResponse';
-import {
-	GROUPED_PRODUCT_TYPES,
+import type {
 	ProductType,
 	WithProductType,
 } from '../../../../shared/productTypes';
+import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../../productUtils';
+import type { ContactIdToArrayOfProductDetailAndProductType } from '../../../services/deliveryAddress';
 import {
 	addressChangeAffectedInfo,
-	ContactIdToArrayOfProductDetailAndProductType,
 	getValidDeliveryAddressChangeEffectiveDates,
 } from '../../../services/deliveryAddress';
 import { COUNTRIES } from '../../identity/models';

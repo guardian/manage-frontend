@@ -11,13 +11,15 @@ import {
 import { Button } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import type {
+	ProductDetail,
+	Subscription,
+	WithSubscription,
+} from '../../../../shared/productResponse';
 import {
 	formatDate,
 	getMainPlan,
 	isPaidSubscriptionPlan,
-	ProductDetail,
-	Subscription,
-	WithSubscription,
 } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { LinkButton } from '../../buttons';

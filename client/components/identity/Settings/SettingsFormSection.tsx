@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 import { from, palette } from '@guardian/source-foundations';
-import { Form, FormikProps, FormikState, withFormik } from 'formik';
-import { FC } from 'react';
+import type { FormikProps, FormikState } from 'formik';
+import { Form, withFormik } from 'formik';
+import type { FC } from 'react';
 import { Button } from '../../buttons';
 import {
 	FormEmailField,
@@ -13,13 +14,13 @@ import * as PhoneNumber from '../idapi/phonenumber';
 import { Users } from '../identity';
 import { IdentityLocations } from '../IdentityLocations';
 import { Lines } from '../Lines';
+import type { User } from '../models';
 import {
 	COUNTRIES,
 	ErrorTypes,
 	PHONE_CALLING_CODES,
 	RegistrationLocations,
 	Titles,
-	User,
 } from '../models';
 import { PageSection } from '../PageSection';
 import { aCss, textSmall } from '../sharedStyles';

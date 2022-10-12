@@ -1,4 +1,4 @@
-import { Globals } from '../shared/globals';
+import type { Globals } from '../shared/globals';
 
 declare let WEBPACK_BUILD: string;
 

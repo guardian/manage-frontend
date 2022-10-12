@@ -8,8 +8,8 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import { LinkButton } from '@guardian/source-react-components';
-import { SelfServiceCancellation } from '../../../shared/productResponse';
-import { ProductType } from '../../../shared/productTypes';
+import type { SelfServiceCancellation } from '../../../shared/productResponse';
+import type { ProductType } from '../../../shared/productTypes';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { NAV_LINKS } from '../nav/navConfig';
 import { ProductDescriptionListTable } from '../productDescriptionListTable';

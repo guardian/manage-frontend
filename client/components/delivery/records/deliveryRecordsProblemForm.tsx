@@ -2,8 +2,9 @@ import { css } from '@emotion/react';
 import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { Button, Radio, RadioGroup } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
-import { FormEvent, useEffect, useState } from 'react';
-import { DeliveryProblemType } from '../../../../shared/productTypes';
+import type { FormEvent } from 'react';
+import { useEffect, useState } from 'react';
+import type { DeliveryProblemType } from '../../../../shared/productTypes';
 import { ErrorIcon } from '../../svgs/errorIcon';
 
 interface DeliveryRecordProblemFormProps {

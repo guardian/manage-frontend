@@ -1,9 +1,9 @@
-import { PaymentMethod } from '@stripe/stripe-js';
+import type { PaymentMethod } from '@stripe/stripe-js';
 import { fireEvent, render } from '@testing-library/react';
-import { StripeSetupIntent } from '../../../../shared/stripeSetupIntent';
+import type { StripeSetupIntent } from '../../../../shared/stripeSetupIntent';
 import { CardInputForm } from '../../../components/payment/update/card/cardInputForm';
-import { RecaptchaProps } from '../../../components/payment/update/card/Recaptcha';
-import { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
+import type { RecaptchaProps } from '../../../components/payment/update/card/Recaptcha';
+import type { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
 
 const stripePublicKey = 'pk_test_Qm3CGRdrV4WfGYCpm0sftR0f';
 const userEmail = 'myemail@email.com';

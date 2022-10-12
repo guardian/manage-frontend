@@ -1,5 +1,6 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { DateInput, DateInputProps } from './dateInput';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { DateInputProps } from './dateInput';
+import { DateInput } from './dateInput';
 
 export default {
 	title: 'Components/Date Input',

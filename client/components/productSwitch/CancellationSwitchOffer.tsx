@@ -19,11 +19,11 @@ import {
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { measure } from '../../styles/typography';
-import { CancellationRouterState } from '../cancel/CancellationContainer';
+import type { CancellationRouterState } from '../cancel/CancellationContainer';
 import { Heading } from '../Heading';
 import GridPicture from '../images/GridPicture';
 import { productBenefits } from './ProductBenefits';
-import { AvailableProductsResponse } from './productSwitchApi';
+import type { AvailableProductsResponse } from './productSwitchApi';
 import {
 	introOfferCopy,
 	introOfferDuration,

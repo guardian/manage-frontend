@@ -1,8 +1,9 @@
-import { css, SerializedStyles } from '@emotion/react';
+import type { SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
+import type { SubscriptionPlan } from '../../../shared/productResponse';
 import {
 	isPaidSubscriptionPlan,
 	isSixForSix,
-	SubscriptionPlan,
 } from '../../../shared/productResponse';
 
 interface SixForSixExplainerProps {

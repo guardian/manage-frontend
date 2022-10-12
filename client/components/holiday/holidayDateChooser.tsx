@@ -4,12 +4,12 @@ import { Button, InlineError } from '@guardian/source-react-components';
 import * as Sentry from '@sentry/browser';
 import { startCase } from 'lodash';
 import { createContext, useContext, useEffect, useState } from 'react';
-import * as React from 'react';
+import type * as React from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import type { DateRange } from '../../../shared/dates';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	dateAddYears,
-	DateRange,
 	dateRange,
 	dateString,
 	parseDate,
@@ -27,23 +27,25 @@ import {
 	HolidayQuestionsModal,
 } from './holidayQuestionsModal';
 import { HolidaySelectionInfo } from './holidaySelectionInfo';
-import {
-	calculateIssuesImpactedPerYear,
-	convertRawPotentialHolidayStopDetail,
-	getPotentialHolidayStopsFetcher,
+import type {
 	HolidayStopDetail,
 	HolidayStopRequest,
-	isHolidayStopsResponse,
-	isNotBulkSuspension,
-	isNotWithdrawn,
 	IssuesImpactedPerYear,
 	PotentialHolidayStopsResponse,
 } from './holidayStopApi';
 import {
-	HolidayStopsContext,
+	calculateIssuesImpactedPerYear,
+	convertRawPotentialHolidayStopDetail,
+	getPotentialHolidayStopsFetcher,
+	isHolidayStopsResponse,
+	isNotBulkSuspension,
+	isNotWithdrawn,
+} from './holidayStopApi';
+import type {
 	HolidayStopsContextInterface,
 	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
+import { HolidayStopsContext } from './HolidayStopsContainer';
 
 export const cancelLinkCss = css({
 	marginRight: '20px',

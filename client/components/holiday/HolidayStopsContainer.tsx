@@ -1,34 +1,33 @@
-import {
-	Context,
-	createContext,
-	Dispatch,
-	SetStateAction,
-	useState,
-} from 'react';
+import type { Context, Dispatch, SetStateAction } from 'react';
+import { createContext, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { DateRange } from '../../../shared/dates';
-import {
-	isProduct,
-	MembersDataApiAsyncLoader,
+import type { DateRange } from '../../../shared/dates';
+import type {
 	MembersDataApiItem,
 	ProductDetail,
 } from '../../../shared/productResponse';
 import {
+	isProduct,
+	MembersDataApiAsyncLoader,
+} from '../../../shared/productResponse';
+import type {
 	ProductTypeWithHolidayStopsFlow,
 	WithProductType,
 } from '../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../productUtils';
-import { ReFetch } from '../asyncLoader';
+import type { ReFetch } from '../asyncLoader';
 import { GenericErrorScreen } from '../genericErrorScreen';
 import { NAV_LINKS } from '../nav/navConfig';
 import { PageContainer } from '../page';
+import type {
+	GetHolidayStopsResponse,
+	HolidayStopDetail,
+	HolidayStopRequest,
+} from './holidayStopApi';
 import {
 	createGetHolidayStopsFetcher,
 	embellishExistingHolidayStops,
 	GetHolidayStopsAsyncLoader,
-	GetHolidayStopsResponse,
-	HolidayStopDetail,
-	HolidayStopRequest,
 } from './holidayStopApi';
 
 export interface HolidayStopsRouterState {

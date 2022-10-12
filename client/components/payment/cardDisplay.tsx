@@ -1,6 +1,7 @@
-import { css, SerializedStyles } from '@emotion/react';
+import type { SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import { palette } from '@guardian/source-foundations';
-import { Inlineable } from './inlineable';
+import type { Inlineable } from './inlineable';
 
 interface CardExpiryDetails {
 	month: number;

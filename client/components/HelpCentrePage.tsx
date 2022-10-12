@@ -3,11 +3,8 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { initFeatureSwitchUrlParamOverride } from '../../shared/featureSwitches';
 import { setPageTitle } from '../services/pageTitle';
-import {
-	isSignedIn,
-	pageRequiresSignIn,
-	SignInStatus,
-} from '../services/signInStatus';
+import type { SignInStatus } from '../services/signInStatus';
+import { isSignedIn, pageRequiresSignIn } from '../services/signInStatus';
 import useAnalytics from '../services/useAnalytics';
 import useConsent from '../services/useConsent';
 import useScrollToTop from '../services/useScrollToTop';

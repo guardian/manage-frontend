@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import { brand, from } from '@guardian/source-foundations';
-import { DirectDebitDetails } from '../../../shared/productResponse';
+import type { DirectDebitDetails } from '../../../shared/productResponse';
 import { DirectDebitLogo } from './directDebitLogo';
-import { Inlineable } from './inlineable';
+import type { Inlineable } from './inlineable';
 
 const NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW = 3;
 

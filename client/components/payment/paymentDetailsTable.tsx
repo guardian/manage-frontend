@@ -1,10 +1,11 @@
 import { css } from '@emotion/react';
 import { neutral } from '@guardian/source-foundations';
-import { ProductDetail } from '../../../shared/productResponse';
+import type { ProductDetail } from '../../../shared/productResponse';
 import { ProductDescriptionListTable } from '../productDescriptionListTable';
 import { CardDisplay } from './cardDisplay';
 import { DirectDebitDisplay } from './directDebitDisplay';
-import { NewPaymentPriceAlert, NextPaymentDetails } from './nextPaymentDetails';
+import type { NextPaymentDetails } from './nextPaymentDetails';
+import { NewPaymentPriceAlert } from './nextPaymentDetails';
 import { PaypalLogo } from './paypalLogo';
 import { SepaDisplay } from './sepaDisplay';
 

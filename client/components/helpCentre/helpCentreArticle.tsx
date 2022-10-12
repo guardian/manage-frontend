@@ -24,7 +24,7 @@ import { WithStandardTopMargin } from '../WithStandardTopMargin';
 import { BackToHelpCentreLink } from './BackToHelpCentreLink';
 import HelpCentreContactOptions from './helpCentreContactOptions';
 import { h2Css } from './helpCentreStyles';
-import {
+import type {
 	Article,
 	BaseNode,
 	ElementNode,

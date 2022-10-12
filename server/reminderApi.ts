@@ -1,5 +1,5 @@
 import { captureMessage } from '@sentry/node';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import fetch from 'node-fetch';
 import { conf } from './config';
 

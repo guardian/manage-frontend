@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 // Record `key` represents product id returned from `available-products-move` API
 type ProductBenefits = Record<string, ReactNode[]>;

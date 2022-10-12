@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/browser';
 import * as React from 'react';
 import AsyncLoader from '../client/components/asyncLoader';
-import { PhoneRegionKey } from '../client/components/callCenterEmailAndNumbers';
-import { DeliveryRecordDetail } from '../client/components/delivery/records/deliveryRecordsApi';
-import { CardProps } from '../client/components/payment/cardDisplay';
-import { GroupedProductTypeKeys } from './productTypes';
+import type { PhoneRegionKey } from '../client/components/callCenterEmailAndNumbers';
+import type { DeliveryRecordDetail } from '../client/components/delivery/records/deliveryRecordsApi';
+import type { CardProps } from '../client/components/payment/cardDisplay';
+import type { GroupedProductTypeKeys } from './productTypes';
 
 export type DeliveryRecordApiItem = DeliveryRecordDetail;
 

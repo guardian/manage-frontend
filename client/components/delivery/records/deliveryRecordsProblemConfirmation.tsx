@@ -15,29 +15,31 @@ import {
 	DATE_FNS_SHORT_OUTPUT_FORMAT,
 	dateString,
 } from '../../../../shared/dates';
-import {
+import type {
 	DeliveryRecordApiItem,
-	getMainPlan,
 	PaidSubscriptionPlan,
 	Subscription,
 } from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
 import { InfoIconDark } from '../../svgs/infoIconDark';
 import { DeliveryRecordCard } from './deliveryRecordCard';
 import { PageStatus } from './deliveryRecords';
-import {
-	createDeliveryRecordsProblemPost,
-	DeliveryRecordsApiAsyncLoader,
+import type {
 	DeliveryRecordsPostPayload,
 	DeliveryRecordsResponse,
 } from './deliveryRecordsApi';
 import {
-	DeliveryRecordsContext,
+	createDeliveryRecordsProblemPost,
+	DeliveryRecordsApiAsyncLoader,
+} from './deliveryRecordsApi';
+import type {
 	DeliveryRecordsContextInterface,
 	DeliveryRecordsRouterState,
 } from './DeliveryRecordsContainer';
+import { DeliveryRecordsContext } from './DeliveryRecordsContainer';
 import {
 	DeliveryRecordCreditContext,
 	DeliveryRecordsAddressContext,

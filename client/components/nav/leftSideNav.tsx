@@ -8,12 +8,8 @@ import {
 } from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
 import { sans } from '../../styles/fonts';
-import {
-	MenuSpecificNavItem,
-	NAV_LINKS,
-	NavItem,
-	PROFILE_HOST_NAME,
-} from './navConfig';
+import type { MenuSpecificNavItem, NavItem } from './navConfig';
+import { NAV_LINKS, PROFILE_HOST_NAME } from './navConfig';
 
 const leftNavCss = css({
 	width: '100%',

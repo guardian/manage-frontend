@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import { brandAlt, neutral, space } from '@guardian/source-foundations';
 import Color from 'color';
-import * as React from 'react';
+import type * as React from 'react';
 import { Link } from 'react-router-dom';
-import { ProductDetail } from '../../shared/productResponse';
+import type { ProductDetail } from '../../shared/productResponse';
 import { sans } from '../styles/fonts';
 import { ArrowIcon } from './svgs/arrowIcon';
 import { ErrorIcon } from './svgs/errorIcon';

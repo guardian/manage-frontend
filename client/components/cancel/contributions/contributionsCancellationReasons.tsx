@@ -1,9 +1,9 @@
+import type { ProductDetail } from '../../../../shared/productResponse';
 import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
-	ProductDetail,
 } from '../../../../shared/productResponse';
-import { CancellationReason } from '../cancellationReason';
+import type { CancellationReason } from '../cancellationReason';
 import ContributionsCancellationAmountUpdatedSaved from './contributionsCancellationAmountUpdatedSaved';
 import ContributionsCancellationFlowFinancialSaveAttempt from './contributionsCancellationFlowFinancialSaveAttempt';
 import ContributionsCancellationPaymentIssueSaveAttempt from './contributionsCancellationFlowPaymentIssueSaveAttempt';

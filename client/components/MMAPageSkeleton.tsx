@@ -4,7 +4,8 @@ import {
 	PRODUCT_TYPES,
 } from '../../shared/productTypes';
 import { shouldHaveHolidayStopsFlow } from '../productUtils';
-import { MenuSpecificNavItem, NAV_LINKS } from './nav/navConfig';
+import type { MenuSpecificNavItem } from './nav/navConfig';
+import { NAV_LINKS } from './nav/navConfig';
 import { PageContainer } from './page';
 import { Spinner } from './spinner';
 import { WithStandardTopMargin } from './WithStandardTopMargin';

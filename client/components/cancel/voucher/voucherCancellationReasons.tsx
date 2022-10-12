@@ -2,7 +2,7 @@ import {
 	inOrderToImproveSubs,
 	standardAlternateFeedbackIntro,
 } from '../cancellationConstants';
-import { CancellationReason } from '../cancellationReason';
+import type { CancellationReason } from '../cancellationReason';
 import { BreakFromNewsWithAlternative } from '../GenericSaveBodyResponses';
 
 export const voucherCancellationReasons: CancellationReason[] = [

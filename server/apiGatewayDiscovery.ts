@@ -1,15 +1,11 @@
-import {
+import type {
 	StackResourceSummaries,
 	StackResourceSummary,
 } from 'aws-sdk/clients/cloudformation';
-import express from 'express';
+import type express from 'express';
 import { MDA_TEST_USER_HEADER } from '../shared/productResponse';
-import {
-	AdditionalHeaderGenerator,
-	Headers,
-	proxyApiHandler,
-	straightThroughBodyHandler,
-} from './apiProxy';
+import type { AdditionalHeaderGenerator, Headers } from './apiProxy';
+import { proxyApiHandler, straightThroughBodyHandler } from './apiProxy';
 import {
 	APIGateway,
 	AWS_REGION,

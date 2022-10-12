@@ -1,4 +1,5 @@
-import { css, SerializedStyles } from '@emotion/react';
+import type { SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import {
 	error,
 	focusHalo,
@@ -6,7 +7,7 @@ import {
 	textSans,
 } from '@guardian/source-foundations';
 import { useEffect, useRef } from 'react';
-import * as React from 'react';
+import type * as React from 'react';
 import { ErrorIcon } from './svgs/errorIcon';
 
 type setStateFunc = (value: string) => void;

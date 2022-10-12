@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { from, neutral, space, textSans } from '@guardian/source-foundations';
 import { useState } from 'react';
-import { CallCentreNumbersProps } from './callCentreNumbers';
+import type { CallCentreNumbersProps } from './callCentreNumbers';
 
 const contactUsStyles = {
 	margin: '0 0 10px',

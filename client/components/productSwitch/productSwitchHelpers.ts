@@ -4,7 +4,7 @@ import {
 	dateString,
 	parseDate,
 } from '../../../shared/dates';
-import { AvailableProductsResponse } from './productSwitchApi';
+import type { AvailableProductsResponse } from './productSwitchApi';
 
 /**
  * Returns intro offer price if available.

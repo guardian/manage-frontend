@@ -9,11 +9,11 @@ import { ProgressIndicator } from '../progressIndicator';
 import { buttonBarCss } from './holidayDateChooser';
 import { creditExplainerSentence } from './holidayQuestionsModal';
 import { isHolidayStopsResponse } from './holidayStopApi';
-import {
-	HolidayStopsContext,
+import type {
 	HolidayStopsContextInterface,
 	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
+import { HolidayStopsContext } from './HolidayStopsContainer';
 import { SummaryTable } from './summaryTable';
 
 const HolidayConfirmed = () => {

@@ -6,13 +6,8 @@ import {
 	space,
 	until,
 } from '@guardian/source-foundations';
-import {
-	createContext,
-	Dispatch,
-	ReactNode,
-	SetStateAction,
-	useState,
-} from 'react';
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
+import { createContext, useState } from 'react';
 import { gridBase, gridItemPlacement } from '../styles/grid';
 import HelpCentreNav from './helpCentre/helpCentreNav';
 

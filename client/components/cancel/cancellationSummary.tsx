@@ -2,8 +2,11 @@ import { css } from '@emotion/react';
 import { brand, space } from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
 import { cancellationFormatDate } from '../../../shared/dates';
-import { ProductDetail, Subscription } from '../../../shared/productResponse';
-import { ProductType } from '../../../shared/productTypes';
+import type {
+	ProductDetail,
+	Subscription,
+} from '../../../shared/productResponse';
+import type { ProductType } from '../../../shared/productTypes';
 import { hasDeliveryRecordsFlow } from '../../productUtils';
 import { measure } from '../../styles/typography';
 import { GenericErrorScreen } from '../genericErrorScreen';

@@ -1,6 +1,7 @@
-import { css, SerializedStyles } from '@emotion/react';
+import type { SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import { from, headline, palette } from '@guardian/source-foundations';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface HeadingProps {
 	children: ReactNode;

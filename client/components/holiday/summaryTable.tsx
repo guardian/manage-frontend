@@ -1,25 +1,20 @@
 import { css } from '@emotion/react';
 import { from, palette, until } from '@guardian/source-foundations';
-import {
-	DATE_FNS_LONG_OUTPUT_FORMAT,
-	DateRange,
-	dateString,
-} from '../../../shared/dates';
+import type { DateRange } from '../../../shared/dates';
+import { DATE_FNS_LONG_OUTPUT_FORMAT, dateString } from '../../../shared/dates';
+import type { Subscription } from '../../../shared/productResponse';
 import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
-	Subscription,
 } from '../../../shared/productResponse';
 import { sans } from '../../styles/fonts';
-import { ReFetch } from '../asyncLoader';
+import type { ReFetch } from '../asyncLoader';
 import { ExpanderButton } from '../expanderButton';
 import { CollatedCredits } from './collatedCredits';
 import { ExistingHolidayStopActions } from './existingHolidayStopActions';
-import {
-	isSharedHolidayDateChooserState,
-	SharedHolidayDateChooserState,
-} from './holidayDateChooser';
-import {
+import type { SharedHolidayDateChooserState } from './holidayDateChooser';
+import { isSharedHolidayDateChooserState } from './holidayDateChooser';
+import type {
 	HolidayStopDetail,
 	HolidayStopRequest,
 	MinimalHolidayStopRequest,

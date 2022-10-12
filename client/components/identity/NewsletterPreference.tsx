@@ -1,5 +1,5 @@
 import { palette } from '@guardian/source-foundations';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { sans } from '../../styles/fonts';
 import { Checkbox } from '../checkbox';
 

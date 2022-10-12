@@ -5,11 +5,12 @@ import {
 	InlineError,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-import { ChangeEvent, FC, useContext, useState } from 'react';
+import type { ChangeEvent, FC } from 'react';
+import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
-import {
+import type {
 	ProductTypeWithCancellationFlow,
 	WithProductType,
 } from '../../../shared/productTypes';
@@ -18,26 +19,24 @@ import useFetch from '../../services/useFetch';
 import { sans } from '../../styles/fonts';
 import { measure } from '../../styles/typography';
 import { CallCentreNumbers } from '../callCentreNumbers';
-import {
+import type {
 	DeliveryRecordDetail,
 	DeliveryRecordsResponse,
 } from '../delivery/records/deliveryRecordsApi';
 import { GenericErrorScreen } from '../genericErrorScreen';
 import { Heading } from '../Heading';
-import {
+import type {
 	OutstandingHolidayStop,
 	OutstandingHolidayStopsResponse,
 } from '../holiday/holidayStopApi';
 import { ProgressIndicator } from '../progressIndicator';
 import { Spinner } from '../spinner';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
-import {
-	CancellationContext,
-	CancellationContextInterface,
-} from './CancellationContainer';
+import type { CancellationContextInterface } from './CancellationContainer';
+import { CancellationContext } from './CancellationContainer';
 import { cancellationEffectiveToday } from './cancellationContexts';
 import { requiresCancellationEscalation } from './cancellationFlowEscalationCheck';
-import {
+import type {
 	CancellationReason,
 	CancellationReasonId,
 	OptionalCancellationReasonId,

@@ -1,4 +1,5 @@
-import { css, SerializedStyles } from '@emotion/react';
+import type { SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import {
 	from,
 	headline,
@@ -11,8 +12,11 @@ import { Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { dateString } from '../../../../shared/dates';
-import { ProductDetail } from '../../../../shared/productResponse';
-import { ProductType, WithProductType } from '../../../../shared/productTypes';
+import type { ProductDetail } from '../../../../shared/productResponse';
+import type {
+	ProductType,
+	WithProductType,
+} from '../../../../shared/productTypes';
 import { trackEvent } from '../../../services/analytics';
 import AsyncLoader from '../../asyncLoader';
 import { LinkButton } from '../../buttons';

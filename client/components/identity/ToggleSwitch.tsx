@@ -1,6 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { descriptionId } from '@guardian/source-foundations';
-import React from 'react';
+import type React from 'react';
 import {
 	androidStyles,
 	buttonStyles,

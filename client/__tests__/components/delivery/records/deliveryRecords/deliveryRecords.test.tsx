@@ -3,7 +3,7 @@ import {
 	dateAddDays,
 	dateString,
 } from '../../../../../../shared/dates';
-import { DeliveryRecordDetail } from '../../../../../components/delivery/records/deliveryRecordsApi';
+import type { DeliveryRecordDetail } from '../../../../../components/delivery/records/deliveryRecordsApi';
 import { checkForExistingDeliveryProblem } from '../../../../../components/delivery/records/DeliveryRecordsContainer';
 
 describe('delivery records unit tests', () => {

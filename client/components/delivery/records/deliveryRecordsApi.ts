@@ -1,8 +1,8 @@
-import {
+import type {
 	DeliveryRecordApiItem,
-	MDA_TEST_USER_HEADER,
 	Subscription,
 } from '../../../../shared/productResponse';
+import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import { fetchWithDefaultParameters } from '../../../fetch';
 import AsyncLoader from '../../asyncLoader';
 

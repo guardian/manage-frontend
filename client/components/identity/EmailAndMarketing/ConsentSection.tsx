@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
 import { ConsentOptions } from '../identity';
 import { Lines } from '../Lines';
 import { MarketingCheckbox } from '../MarketingCheckbox';
 import { MarketingToggle } from '../MarketingToggle';
-import { ConsentOption } from '../models';
+import type { ConsentOption } from '../models';
 import { PageSection } from '../PageSection';
 
 type ClickHandler = (id: string) => {};

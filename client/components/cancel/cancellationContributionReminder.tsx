@@ -7,7 +7,7 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { useEffect, useState } from 'react';
-import * as React from 'react';
+import type * as React from 'react';
 import { getGeoLocation } from '../../geolocation';
 import { trackEventInOphanOnly } from '../../services/analytics';
 

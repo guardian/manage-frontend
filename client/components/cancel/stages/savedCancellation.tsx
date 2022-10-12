@@ -10,12 +10,12 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { ProgressIndicator } from '../../progressIndicator';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
-import {
-	CancellationContext,
+import type {
 	CancellationContextInterface,
 	CancellationRouterState,
 } from '../CancellationContainer';
-import { CancellationReason } from '../cancellationReason';
+import { CancellationContext } from '../CancellationContainer';
+import type { CancellationReason } from '../cancellationReason';
 
 export interface SavedBodyProps {
 	amount: number;

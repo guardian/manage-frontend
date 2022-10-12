@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import { from, palette, until } from '@guardian/source-foundations';
-import * as React from 'react';
+import type * as React from 'react';
+import type { DateRange } from '../../shared/dates';
 import {
 	dateAddDays,
 	dateClone,
 	dateIsLeapYear,
 	dateIsSame,
-	DateRange,
 	dateRange,
 } from '../../shared/dates';
 import { sans } from '../styles/fonts';

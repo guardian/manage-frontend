@@ -16,12 +16,12 @@ import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { trackEventInOphanOnly } from '../../../services/analytics';
 import { ContributionUpdateAmountForm } from '../../accountoverview/contributionUpdateAmountForm';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
-import {
-	CancellationContext,
+import type {
 	CancellationContextInterface,
 	CancellationRouterState,
 } from '../CancellationContainer';
-import { SaveBodyProps } from '../cancellationReason';
+import { CancellationContext } from '../CancellationContainer';
+import type { SaveBodyProps } from '../cancellationReason';
 import { getIsPayingMinAmount } from './utils';
 
 const container = css`

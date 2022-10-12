@@ -3,15 +3,10 @@ import { space, until } from '@guardian/source-foundations';
 import { Button, InlineError } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import {
-	DATE_FNS_INPUT_FORMAT,
-	DateRange,
-	dateString,
-} from '../../../shared/dates';
-import {
-	MDA_TEST_USER_HEADER,
-	ProductDetail,
-} from '../../../shared/productResponse';
+import type { DateRange } from '../../../shared/dates';
+import { DATE_FNS_INPUT_FORMAT, dateString } from '../../../shared/dates';
+import type { ProductDetail } from '../../../shared/productResponse';
+import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 import { fetchWithDefaultParameters } from '../../fetch';
 import { sans } from '../../styles/fonts';
 import { LinkButton } from '../buttons';
@@ -25,19 +20,21 @@ import {
 	creditExplainerSentence,
 	HolidayQuestionsModal,
 } from './holidayQuestionsModal';
-import {
-	CreateOrAmendHolidayStopsAsyncLoader,
+import type {
 	CreateOrAmendHolidayStopsResponse,
 	HolidayStopDetail,
 	HolidayStopRequest,
-	isHolidayStopsResponse,
 	ReloadableGetHolidayStopsResponse,
 } from './holidayStopApi';
 import {
-	HolidayStopsContext,
+	CreateOrAmendHolidayStopsAsyncLoader,
+	isHolidayStopsResponse,
+} from './holidayStopApi';
+import type {
 	HolidayStopsContextInterface,
 	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
+import { HolidayStopsContext } from './HolidayStopsContainer';
 import { SummaryTable } from './summaryTable';
 
 const getPerformCreateOrAmendFetcher =

@@ -1,10 +1,11 @@
-import { createContext, Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
+import { createContext } from 'react';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	dateString,
 } from '../../../../shared/dates';
-import { DeliveryAddress } from '../../../../shared/productResponse';
-import { ContactIdToArrayOfProductDetailAndProductType } from '../../../services/deliveryAddress';
+import type { DeliveryAddress } from '../../../../shared/productResponse';
+import type { ContactIdToArrayOfProductDetailAndProductType } from '../../../services/deliveryAddress';
 import { flattenEquivalent } from '../../../utils';
 
 export interface AddressSetStateObject {

@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import * as React from 'react';
+import type * as React from 'react';
 import { useContext } from 'react';
 import { parseDate } from '../../../../shared/dates';
 import {
@@ -8,11 +8,9 @@ import {
 	isProduct,
 } from '../../../../shared/productResponse';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
-import {
-	CancellationContext,
-	CancellationContextInterface,
-} from '../CancellationContainer';
-import { SavedBodyProps } from '../stages/savedCancellation';
+import type { CancellationContextInterface } from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
+import type { SavedBodyProps } from '../stages/savedCancellation';
 
 const ContributionsCancellationAmountUpdatedSaved: React.FC<SavedBodyProps> = ({
 	amount,

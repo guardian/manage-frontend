@@ -13,32 +13,38 @@ import { capitalize } from 'lodash';
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { parseDate } from '../../../../shared/dates';
-import {
+import type {
 	DeliveryRecordApiItem,
-	getMainPlan,
-	isPaidSubscriptionPlan,
 	PaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
+import {
+	getMainPlan,
+	isPaidSubscriptionPlan,
+} from '../../../../shared/productResponse';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
+import type {
+	PotentialHolidayStopsResponse,
+	RawPotentialHolidayStopDetail,
+} from '../../holiday/holidayStopApi';
 import {
 	getPotentialHolidayStopsFetcher,
 	PotentialHolidayStopsAsyncLoader,
-	PotentialHolidayStopsResponse,
-	RawPotentialHolidayStopDetail,
 } from '../../holiday/holidayStopApi';
 import { ProgressIndicator } from '../../progressIndicator';
 import { InfoIconDark } from '../../svgs/infoIconDark';
 import { DeliveryRecordCard } from './deliveryRecordCard';
 import { PageStatus } from './deliveryRecords';
-import {
+import type {
 	ContactPhoneNumbers,
 	DeliveryRecordsPostPayload,
 } from './deliveryRecordsApi';
+import type {
+	DeliveryRecordsContextInterface,
+	DeliveryRecordsRouterState,
+} from './DeliveryRecordsContainer';
 import {
 	checkForExistingDeliveryProblem,
 	DeliveryRecordsContext,
-	DeliveryRecordsContextInterface,
-	DeliveryRecordsRouterState,
 } from './DeliveryRecordsContainer';
 import { DeliveryRecordCreditContext } from './deliveryRecordsProblemContext';
 import { UserPhoneNumber } from './userPhoneNumber';

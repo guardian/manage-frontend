@@ -5,8 +5,8 @@ import {
 	CardExpiryElement,
 	CardNumberElement,
 } from '@stripe/react-stripe-js';
-import { StripeElementBase } from '@stripe/stripe-js';
-import { Dispatch, SetStateAction } from 'react';
+import type { StripeElementBase } from '@stripe/stripe-js';
+import type { Dispatch, SetStateAction } from 'react';
 import { sans } from '../../../../styles/fonts';
 import { FieldWrapper } from '../fieldWrapper';
 import { getLogos, PaymentMethod } from '../PaymentDetailUpdate';

@@ -9,7 +9,7 @@ import {
 	linkListItemStyle,
 	linksListStyle,
 } from './helpCentreStyles';
-import { SingleTopic } from './HelpCentreTypes';
+import type { SingleTopic } from './HelpCentreTypes';
 
 interface HelpCentreSingleTopicProps {
 	id: string;

@@ -10,7 +10,7 @@ import {
 } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { parseDate } from '../../../shared/dates';
-import { InvoiceDataApiItem } from '../../../shared/productResponse';
+import type { InvoiceDataApiItem } from '../../../shared/productResponse';
 import { trackEvent } from '../../services/analytics';
 import { Pagination } from '../pagination';
 import { CardDisplay } from '../payment/cardDisplay';

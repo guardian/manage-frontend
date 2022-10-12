@@ -1,5 +1,6 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import HelpCentreHeader, { HelpCentreHeaderProps } from './helpCentreHeader';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { HelpCentreHeaderProps } from './helpCentreHeader';
+import HelpCentreHeader from './helpCentreHeader';
 
 export default {
 	title: 'Components/Help Centre/Help Centre Header',

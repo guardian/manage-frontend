@@ -6,12 +6,12 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { useState } from 'react';
-import * as React from 'react';
+import type * as React from 'react';
 import { sans } from '../../../../styles/fonts';
 import { processResponse } from '../../../../utils';
 import { cleanSortCode } from '../../directDebitDisplay';
 import { FieldWrapper } from '../fieldWrapper';
-import { NewPaymentMethodDetail } from '../newPaymentMethodDetail';
+import type { NewPaymentMethodDetail } from '../newPaymentMethodDetail';
 import { ErrorSummary } from '../Summary';
 import { DirectDebitLegal } from './directDebitLegal';
 import { NewDirectDebitPaymentMethodDetail } from './newDirectDebitPaymentMethodDetail';

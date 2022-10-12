@@ -1,13 +1,13 @@
 import { css } from '@emotion/react';
 import { from, neutral, space, textSans } from '@guardian/source-foundations';
 import { Checkbox, CheckboxGroup } from '@guardian/source-react-components';
-import { FormEvent } from 'react';
+import type { FormEvent } from 'react';
 import { dateIsAfter, parseDate } from '../../../../shared/dates';
-import { DeliveryRecordApiItem } from '../../../../shared/productResponse';
+import type { DeliveryRecordApiItem } from '../../../../shared/productResponse';
 import { DeliveryRecordInstructions } from './deliveryRecordInstructions';
 import { PageStatus } from './deliveryRecords';
 import { RecordAddress } from './deliveryRecordsAddress';
-import { DeliveryProblemMap } from './deliveryRecordsApi';
+import type { DeliveryProblemMap } from './deliveryRecordsApi';
 import { RecordStatus } from './deliveryRecordStatus';
 
 interface DeliveryRecordCardProps {

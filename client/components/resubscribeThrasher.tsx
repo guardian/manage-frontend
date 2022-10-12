@@ -1,5 +1,5 @@
 import { from, palette } from '@guardian/source-foundations';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,

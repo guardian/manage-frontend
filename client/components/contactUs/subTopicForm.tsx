@@ -1,8 +1,9 @@
 import { css } from '@emotion/react';
 import { from, neutral, space, textSans } from '@guardian/source-foundations';
 import { Button, Radio, RadioGroup } from '@guardian/source-react-components';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { SubTopic } from '../../../shared/contactUsTypes';
+import type { ChangeEvent, FormEvent } from 'react';
+import { useState } from 'react';
+import type { SubTopic } from '../../../shared/contactUsTypes';
 
 interface SubTopicFormProps {
 	title: string;

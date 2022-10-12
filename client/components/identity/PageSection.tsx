@@ -1,5 +1,5 @@
 import { from, palette } from '@guardian/source-foundations';
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { sans } from '../../styles/fonts';
 
 interface PageSectionProps {

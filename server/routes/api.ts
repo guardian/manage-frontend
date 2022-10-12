@@ -4,11 +4,8 @@ import {
 	availableProductMovesResponse,
 	productMoveResponse,
 } from '../../client/fixtures/productMovement';
-import {
-	isProduct,
-	MDA_TEST_USER_HEADER,
-	MembersDataApiItem,
-} from '../../shared/productResponse';
+import type { MembersDataApiItem } from '../../shared/productResponse';
+import { isProduct, MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import {
 	cancellationSfCasesAPI,
 	deliveryRecordsAPI,

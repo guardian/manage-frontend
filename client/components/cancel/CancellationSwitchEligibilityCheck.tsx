@@ -4,15 +4,17 @@ import { featureSwitches } from '../../../shared/featureSwitches';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 import useFetch from '../../services/useFetch';
 import CancellationSwitchOffer from '../productSwitch/CancellationSwitchOffer';
-import { AvailableProductsResponse } from '../productSwitch/productSwitchApi';
+import type { AvailableProductsResponse } from '../productSwitch/productSwitchApi';
 import { Spinner } from '../spinner';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
-import {
-	CancellationContext,
+import type {
 	CancellationContextInterface,
-	CancellationPageTitleContext,
 	CancellationPageTitleInterface,
 	CancellationRouterState,
+} from './CancellationContainer';
+import {
+	CancellationContext,
+	CancellationPageTitleContext,
 } from './CancellationContainer';
 import CancellationReasonSelection from './CancellationReasonSelection';
 

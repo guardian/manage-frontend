@@ -1,4 +1,4 @@
-import { SerializedStyles } from '@emotion/react';
+import type { SerializedStyles } from '@emotion/react';
 import { brand } from '@guardian/source-foundations';
 
 interface ProfileIconProps {

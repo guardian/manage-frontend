@@ -1,12 +1,18 @@
-import { Context, createContext } from 'react';
+import type { Context } from 'react';
+import { createContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import {
-	isProduct,
-	MembersDataApiAsyncLoader,
+import type {
 	MembersDataApiItem,
 	ProductDetail,
 } from '../../../../shared/productResponse';
-import { ProductType, WithProductType } from '../../../../shared/productTypes';
+import {
+	isProduct,
+	MembersDataApiAsyncLoader,
+} from '../../../../shared/productResponse';
+import type {
+	ProductType,
+	WithProductType,
+} from '../../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../../productUtils';
 import { getNavItemFromFlowReferrer } from '../../nav/navConfig';
 import { PageContainer } from '../../page';

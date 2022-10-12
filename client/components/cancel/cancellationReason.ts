@@ -1,5 +1,5 @@
-import { ProductDetail } from '../../../shared/productResponse';
-import { SavedBodyProps } from './stages/savedCancellation';
+import type { ProductDetail } from '../../../shared/productResponse';
+import type { SavedBodyProps } from './stages/savedCancellation';
 
 export interface SaveBodyProps {
 	caseId: string;

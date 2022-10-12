@@ -10,7 +10,7 @@ import { Button, TextInput } from '@guardian/source-react-components';
 import { useState } from 'react';
 import * as React from 'react';
 import { InfoIconDark } from '../../svgs/infoIconDark';
-import {
+import type {
 	ContactPhoneNumbers,
 	ContactPhoneNumbersType,
 } from './deliveryRecordsApi';

@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { WithStandardTopMargin } from './WithStandardTopMargin';
 
 export default {

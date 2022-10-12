@@ -1,4 +1,5 @@
-import { Response, Router } from 'express';
+import type { Response } from 'express';
+import { Router } from 'express';
 import { conf } from '../config';
 import { withIdentity } from '../middleware/identityMiddleware';
 

@@ -1,5 +1,6 @@
 import { captureMessage } from '@sentry/node';
-import { Request, Response, Router } from 'express';
+import type { Request, Response } from 'express';
+import { Router } from 'express';
 import { middlewareFailIfAnyAPIGatewayCredsAreMissing } from '../apiGatewayDiscovery';
 import { s3TextFilePromise } from '../awsIntegration';
 import { conf, Environments } from '../config';

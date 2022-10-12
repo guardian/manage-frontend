@@ -1,4 +1,4 @@
-import { DeliveryAddress } from '../../../../shared/productResponse';
+import type { DeliveryAddress } from '../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { ukPhoneNumberWithoutPrefix } from '../../callCentreNumbers';
 

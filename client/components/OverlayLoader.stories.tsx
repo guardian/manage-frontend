@@ -1,5 +1,6 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import OverlayLoader, { OverlayLoaderProps } from './OverlayLoader';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { OverlayLoaderProps } from './OverlayLoader';
+import OverlayLoader from './OverlayLoader';
 
 export default {
 	title: 'Components/OverlayLoader',

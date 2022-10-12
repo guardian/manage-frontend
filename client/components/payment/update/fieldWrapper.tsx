@@ -7,7 +7,7 @@ import {
 	textSans,
 } from '@guardian/source-foundations';
 import { InlineError } from '@guardian/source-react-components';
-import { StripeError } from '@stripe/stripe-js';
+import type { StripeError } from '@stripe/stripe-js';
 import * as React from 'react';
 
 FocusStyleManager.onlyShowFocusOnTabs();

@@ -1,5 +1,5 @@
 import { hrefStyle } from './cancellationConstants';
-import { SaveBodyProps } from './cancellationReason';
+import type { SaveBodyProps } from './cancellationReason';
 
 export const BreakFromNews: React.FC<SaveBodyProps> = () => (
 	<>

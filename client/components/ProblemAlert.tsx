@@ -1,4 +1,5 @@
-import { css, SerializedStyles } from '@emotion/react';
+import type { SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import {
 	brand,
 	neutral,
@@ -6,7 +7,7 @@ import {
 	space,
 	textSans,
 } from '@guardian/source-foundations';
-import { ProductDetail } from '../../shared/productResponse';
+import type { ProductDetail } from '../../shared/productResponse';
 import { LinkButton } from './buttons';
 import { ErrorIcon } from './svgs/errorIcon';
 

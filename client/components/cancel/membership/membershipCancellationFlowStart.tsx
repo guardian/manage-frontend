@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { palette } from '@guardian/source-foundations';
-import { ProductDetail } from '../../../../shared/productResponse';
+import type { ProductDetail } from '../../../../shared/productResponse';
 import { trackEvent } from '../../../services/analytics';
 import { WithStandardTopMargin } from '../../WithStandardTopMargin';
 import { hrefStyle } from '../cancellationConstants';

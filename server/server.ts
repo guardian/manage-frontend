@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/node';
 import { raw } from 'body-parser';
-import { default as express, NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
+import { default as express } from 'express';
 import helmet from 'helmet';
 import { MAX_FILE_ATTACHMENT_SIZE_KB } from '../shared/fileUploadUtils';
 import { conf } from './config';

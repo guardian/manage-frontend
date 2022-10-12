@@ -1,4 +1,5 @@
-import { Request, Response, Router } from 'express';
+import type { Request, Response } from 'express';
+import { Router } from 'express';
 import { DEFAULT_PAGE_TITLE } from '../../shared/helpCentreConfig';
 import { conf } from '../config';
 import html from '../html';

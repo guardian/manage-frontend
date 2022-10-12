@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Checkbox } from '../checkbox';
 import { standardSansText } from './sharedStyles';
 

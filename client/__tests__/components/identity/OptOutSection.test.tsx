@@ -1,10 +1,8 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { OptOutSection } from '../../../components/identity/EmailAndMarketing/OptOutSection';
-import {
-	ConsentOption,
-	ConsentOptionType,
-} from '../../../components/identity/models';
+import type { ConsentOption } from '../../../components/identity/models';
+import { ConsentOptionType } from '../../../components/identity/models';
 
 afterEach(cleanup);
 

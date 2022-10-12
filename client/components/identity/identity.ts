@@ -4,13 +4,13 @@ import * as NewslettersSubscriptionsAPI from './idapi/newsletterSubscriptions';
 import * as RemoveSubscriptionsAPI from './idapi/removeSubscriptions';
 import * as SupportRemindersApi from './idapi/supportReminders';
 import * as UserAPI from './idapi/user';
-import {
+import type {
 	ConsentOption,
 	ConsentOptionCollection,
-	ConsentOptionType,
 	User,
 	UserCollection,
 } from './models';
+import { ConsentOptionType } from './models';
 
 const isNewsletter = (option: ConsentOption): boolean =>
 	option.type === ConsentOptionType.NEWSLETTER;

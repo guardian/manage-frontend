@@ -1,5 +1,5 @@
 import url from 'url';
-import express from 'express';
+import type express from 'express';
 import fetch from 'node-fetch';
 import {
 	getScopeFromRequestPathOrEmptyString,
@@ -10,9 +10,9 @@ import { handleAwsRelatedError } from '../awsIntegration';
 import { conf } from '../config';
 import { idapiConfigPromise } from '../idapiConfig';
 import { log } from '../log';
+import type { MockableExpressRequest } from './requestMiddleware';
 import {
 	augmentRedirectURL,
-	MockableExpressRequest,
 	signInTokenQueryParameterNames,
 	updateManageUrl,
 } from './requestMiddleware';

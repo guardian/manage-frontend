@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
-import { SupportTheGuardianSectionProps } from '../client/components/accountoverview/supportTheGuardianSection';
-import {
+import type { ReactNode } from 'react';
+import type { SupportTheGuardianSectionProps } from '../client/components/accountoverview/supportTheGuardianSection';
+import type {
 	CancellationReason,
 	OptionalCancellationReasonId,
 } from '../client/components/cancel/cancellationReason';
@@ -12,24 +12,22 @@ import { gwCancellationFlowStart } from '../client/components/cancel/gw/gwCancel
 import { gwCancellationReasons } from '../client/components/cancel/gw/gwCancellationReasons';
 import { membershipCancellationFlowStart } from '../client/components/cancel/membership/membershipCancellationFlowStart';
 import { membershipCancellationReasons } from '../client/components/cancel/membership/membershipCancellationReasons';
-import {
-	physicalSubsCancellationFlowWrapper,
-	RestOfCancellationFlow,
-} from '../client/components/cancel/physicalSubsCancellationFlowWrapper';
+import type { RestOfCancellationFlow } from '../client/components/cancel/physicalSubsCancellationFlowWrapper';
+import { physicalSubsCancellationFlowWrapper } from '../client/components/cancel/physicalSubsCancellationFlowWrapper';
 import { supporterplusCancellationFlowStart } from '../client/components/cancel/supporterplus/supporterplusCancellationFlowStart';
 import { supporterplusCancellationReasons } from '../client/components/cancel/supporterplus/supporterplusCancellationReasons';
 import { voucherCancellationFlowStart } from '../client/components/cancel/voucher/voucherCancellationFlowStart';
 import { voucherCancellationReasons } from '../client/components/cancel/voucher/voucherCancellationReasons';
-import { SupportTheGuardianButtonProps } from '../client/components/supportTheGuardianButton';
-import { OphanProduct } from './ophanTypes';
-import {
+import type { SupportTheGuardianButtonProps } from '../client/components/supportTheGuardianButton';
+import type { OphanProduct } from './ophanTypes';
+import type {
 	CancelledProductDetail,
-	isGift,
 	ProductDetail,
 	Subscription,
 	SubscriptionPlan,
 	SubscriptionWithDeliveryAddress,
 } from './productResponse';
+import { isGift } from './productResponse';
 
 type ProductFriendlyName =
 	| 'membership'

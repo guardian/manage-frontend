@@ -1,4 +1,4 @@
-import { StripeSetupIntent } from '../../shared/stripeSetupIntent';
+import type { StripeSetupIntent } from '../../shared/stripeSetupIntent';
 
 export const stripeSetupIntent: StripeSetupIntent = {
 	id: 'seti_0KLFtUItVxyc3M6nBXnYb2jO',

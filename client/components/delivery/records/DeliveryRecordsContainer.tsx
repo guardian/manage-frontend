@@ -1,25 +1,30 @@
-import { Context, createContext } from 'react';
+import type { Context } from 'react';
+import { createContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { dateAddDays, parseDate } from '../../../../shared/dates';
-import {
+import type {
 	DeliveryRecordApiItem,
-	isProduct,
-	MembersDataApiAsyncLoader,
 	MembersDataApiItem,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import {
+	isProduct,
+	MembersDataApiAsyncLoader,
+} from '../../../../shared/productResponse';
+import type {
 	ProductTypeWithDeliveryRecordsProperties,
 	WithProductType,
 } from '../../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../../productUtils';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { PageContainer } from '../../page';
+import type {
+	DeliveryRecordDetail,
+	DeliveryRecordsResponse,
+} from './deliveryRecordsApi';
 import {
 	createDeliveryRecordsFetcher,
-	DeliveryRecordDetail,
 	DeliveryRecordsApiAsyncLoader,
-	DeliveryRecordsResponse,
 } from './deliveryRecordsApi';
 
 interface ProblemType {
