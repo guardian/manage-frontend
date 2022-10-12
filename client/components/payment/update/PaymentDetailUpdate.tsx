@@ -391,6 +391,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 						<SupportTheGuardianButton
 							supportReferer="payment_flow"
 							theme="brand"
+							size="small"
 						/>
 					</div>
 				);
