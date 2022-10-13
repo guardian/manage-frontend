@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "nodemon --inspect ./dist/server",
-    "type-check": "tsc --noEmit --skipLibCheck",
+    "type-check": "tsc --skipLibCheck",
     "lint": "eslint 'client/**' 'server/**' 'shared/**'",
     "bundle": "copy-node-modules . ./dist && yarn webpack --config webpack.production.js",
     "bundle-dev": "yarn bundle-dev-server && yarn bundle-dev-client",

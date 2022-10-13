@@ -4,6 +4,7 @@
     "declaration": true,
     "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
+    "noEmit": true,
     "noImplicitReturns": false,
     "noUncheckedIndexedAccess": false,
     "noUnusedParameters": true,
