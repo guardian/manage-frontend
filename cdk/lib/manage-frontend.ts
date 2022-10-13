@@ -220,8 +220,11 @@ systemctl start manage-frontend
 					dashboardName: 'manage-frontend',
 				});
 			} catch (err: unknown) {
-				console.error('Could not load the dashboard.json file:');
-				console.error(err);
+				const errorToString =
+					err instanceof Error ? err.message : String(err);
+				throw new Error(
+					`Could not load the dashboard.json file: ${errorToString}`,
+				);
 			}
 		}
 	}
