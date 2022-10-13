@@ -11,11 +11,6 @@ Parameters:
 Conditions:
   CreateProdResources: !Equals [!Ref 'Stage', 'PROD']
 Resources:
-  ManageFrontendLogGroup:
-    Type: 'AWS::Logs::LogGroup'
-    Properties:
-      LogGroupName: !Sub support-manage-frontend-${Stage}
-      RetentionInDays: 14
   CriticalPathsCloudWatchDashboard:
     Type: AWS::CloudWatch::Dashboard
     Condition: CreateProdResources

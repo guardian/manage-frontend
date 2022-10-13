@@ -1438,10 +1438,9 @@ systemctl start manage-frontend
       "Type": "AWS::EC2::SecurityGroupEgress",
     },
     "ManageFrontendLogGroup": Object {
+      "DeletionPolicy": "Retain",
       "Properties": Object {
-        "LogGroupName": Object {
-          "Fn::Sub": "support-manage-frontend-\${Stage}",
-        },
+        "LogGroupName": "support-manage-frontend-TEST",
         "RetentionInDays": 14,
         "Tags": Array [
           Object {
@@ -1463,6 +1462,7 @@ systemctl start manage-frontend
         ],
       },
       "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
     },
     "ParameterStoreReadManagefrontendB2A65B47": Object {
       "Properties": Object {
