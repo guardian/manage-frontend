@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { headline, neutral, space, until } from '@guardian/source-foundations';
+import {
+	headline,
+	neutral,
+	space,
+	textSans,
+	until,
+} from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { Fragment } from 'react';
 import type {
@@ -17,10 +23,10 @@ import { isCancelled } from '../cancel/cancellationSummary';
 import { NAV_LINKS } from '../nav/navConfig';
 import { PageContainer } from '../page';
 import { PaymentFailureAlertIfApplicable } from '../payment/paymentFailureAlertIfApplicable';
+import { SupportTheGuardianButton } from '../supportTheGuardianButton';
 import { AccountOverviewCancelledCard } from './accountOverviewCancelledCard';
 import { AccountOverviewCard } from './accountOverviewCard';
 import { EmptyAccountOverview } from './emptyAccountOverview';
-import { SupportTheGuardianSection } from './supportTheGuardianSection';
 
 const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 	MembersDataApiItem[],
@@ -118,9 +124,23 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 													.subscription,
 											),
 									)) && (
-									<SupportTheGuardianSection
-										{...groupedProductType.supportTheGuardianSectionProps}
-									/>
+									<div>
+										<p
+											css={css`
+												${textSans.medium()}
+											`}
+										>
+											{
+												groupedProductType
+													.supportTheGuardianSectionProps
+													.message
+											}
+										</p>
+										<SupportTheGuardianButton
+											{...groupedProductType.supportTheGuardianSectionProps}
+											size="small"
+										/>
+									</div>
 								)}
 						</Stack>
 					</Fragment>

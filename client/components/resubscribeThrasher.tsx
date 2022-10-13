@@ -88,9 +88,7 @@ const getThrasher =
 							supportReferer={`resubscribe_thrasher_${args.usageContext}`}
 							alternateButtonText="Make a recurring contribution"
 							urlSuffix="contribute"
-							fontWeight="bold"
-							height="42px"
-							notPrimary
+							theme="brandAlt"
 						/>
 					</div>
 				</div>

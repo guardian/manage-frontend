@@ -1,18 +1,21 @@
 import url from 'url';
+import { ThemeProvider } from '@emotion/react';
+import {
+	buttonThemeDefault,
+	buttonThemeReaderRevenueBrand,
+	buttonThemeReaderRevenueBrandAlt,
+	LinkButton,
+	SvgArrowRightStraight,
+} from '@guardian/source-react-components';
 import { conf } from '../../server/config';
 import { trackEvent } from '../services/analytics';
-import { Button } from './buttons';
 
 export interface SupportTheGuardianButtonProps {
 	supportReferer: string;
 	alternateButtonText?: string;
 	urlSuffix?: string;
-	fontWeight?: 'bold';
-	height?: string;
-	notPrimary?: true;
-	textColour?: string;
-	colour?: string;
-	withoutArrow?: boolean;
+	theme?: 'default' | 'brand' | 'brandAlt';
+	size?: 'default' | 'small';
 }
 
 const hasWindow = typeof window !== 'undefined' && window.guardian;
@@ -51,25 +54,33 @@ const buildSupportHref = (props: SupportTheGuardianButtonProps) =>
 
 export const SupportTheGuardianButton = (
 	props: SupportTheGuardianButtonProps,
-) => (
-	<a
-		href={buildSupportHref(props)}
-		onClick={() => {
-			trackEvent({
-				eventCategory: 'href',
-				eventAction: 'support_the_guardian',
-				eventLabel: 'support_from_' + props.supportReferer,
-			});
-		}}
-	>
-		<Button
-			text={props.alternateButtonText || 'Support The Guardian'}
-			fontWeight={props.fontWeight}
-			height={props.height}
-			primary={props.notPrimary ? undefined : true}
-			textColour={props.textColour}
-			colour={props.colour}
-			right={!props.withoutArrow}
-		/>
-	</a>
-);
+) => {
+	const mapThemes = {
+		default: buttonThemeDefault,
+		brand: buttonThemeReaderRevenueBrand,
+		brandAlt: buttonThemeReaderRevenueBrandAlt,
+	};
+
+	const theme = mapThemes[props.theme ?? 'default'];
+
+	return (
+		<ThemeProvider theme={theme}>
+			<LinkButton
+				href={buildSupportHref(props)}
+				icon={<SvgArrowRightStraight />}
+				iconSide="right"
+				nudgeIcon={true}
+				size={props.size}
+				onClick={() => {
+					trackEvent({
+						eventCategory: 'href',
+						eventAction: 'support_the_guardian',
+						eventLabel: 'support_from_' + props.supportReferer,
+					});
+				}}
+			>
+				{props.alternateButtonText || 'Support The Guardian'}
+			</LinkButton>
+		</ThemeProvider>
+	);
+};

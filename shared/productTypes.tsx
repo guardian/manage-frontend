@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import type { SupportTheGuardianSectionProps } from '../client/components/accountoverview/supportTheGuardianSection';
 import type {
 	CancellationReason,
 	OptionalCancellationReasonId,
@@ -181,7 +180,9 @@ export interface GroupedProductType extends ProductType {
 		productDetail: ProductDetail | CancelledProductDetail,
 	) => ProductType;
 	groupFriendlyName: string;
-	supportTheGuardianSectionProps: SupportTheGuardianSectionProps;
+	supportTheGuardianSectionProps: SupportTheGuardianButtonProps & {
+		message: string;
+	};
 }
 
 export interface ProductTypeWithCancellationFlow extends ProductType {

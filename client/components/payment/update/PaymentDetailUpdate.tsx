@@ -388,7 +388,11 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 							in other ways, please consider either a contribution
 							or a subscription.
 						</p>
-						<SupportTheGuardianButton supportReferer="payment_flow" />
+						<SupportTheGuardianButton
+							supportReferer="payment_flow"
+							theme="brand"
+							size="small"
+						/>
 					</div>
 				);
 			case PaymentMethod.payPal:

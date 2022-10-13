@@ -156,6 +156,8 @@ const actuallyCancelled = (
 													productType.urlPart +
 													'_cancellation_summary'
 												}
+												theme="brand"
+												size="small"
 											/>
 										</div>
 									</>

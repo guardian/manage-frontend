@@ -108,7 +108,7 @@ const supportStyles = css`
 	border-left: 1px solid rgba(255, 255, 255, 0.3);
 	padding-left: 10px;
 	${from.phablet} {
-		width: 300px;
+		width: 312px;
 	}
 	border-top: 1px solid rgba(255, 255, 255, 0.3);
 	${from.tablet} {
@@ -285,14 +285,16 @@ export const Footer = () => {
 											urlSuffix="contribute"
 											supportReferer="footer_support_contribute"
 											alternateButtonText="Contribute"
-											fontWeight="bold"
+											theme="brand"
+											size="small"
 										/>
 									</div>
 									<SupportTheGuardianButton
 										urlSuffix="subscribe"
 										supportReferer="footer_support_subscribe"
 										alternateButtonText="Subscribe"
-										fontWeight="bold"
+										theme="brand"
+										size="small"
 									/>
 								</div>
 							</div>

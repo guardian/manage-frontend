@@ -293,7 +293,7 @@ exports[`Main renders something 1`] = `
 
 @media (min-width: 660px) {
   .emotion-57 {
-    width: 300px;
+    width: 312px;
   }
 }
 
@@ -327,57 +327,90 @@ exports[`Main renders something 1`] = `
 }
 
 .emotion-60 {
-  font-size: 16px;
-  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-  border-radius: 1000px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  position: relative;
-  min-height: 36px;
-  height: 36px;
-  font-weight: bold;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
   display: inline-flex;
-  background: #FFE500;
-  color: #121212;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
   border: none;
-  padding: 1px 40px 0 18px;
+  background: transparent;
   cursor: pointer;
-  max-width: calc(100vw - 40px);
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  font-weight: 700;
+  height: 36px;
+  min-height: 36px;
+  padding: 0 16px;
+  border-radius: 36px;
+  padding-bottom: 2px;
+  background-color: #FFE500;
+  color: #052962;
 }
 
-.emotion-60:active {
-  outline: none;
+.emotion-60:disabled {
+  cursor: not-allowed;
 }
 
-.emotion-60 svg {
-  fill: currentColor;
-  height: 34px;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  -webkit-transform: translate(0, -50%);
-  -moz-transform: translate(0, -50%);
-  -ms-transform: translate(0, -50%);
-  transform: translate(0, -50%);
-  -webkit-transition: -webkit-transform .3s,background .3s;
-  transition: transform .3s,background .3s;
-  width: 36px;
+.emotion-60:focus {
+  outline: 0;
+}
+
+html:not(.src-focus-disabled) .emotion-60:focus {
+  outline: 5px solid #0077B6;
+  outline-offset: 3px;
 }
 
 .emotion-60:hover {
-  background: hsl(53.89999999999998, 100%, 45%);
+  background-color: #FFD213;
 }
 
-.emotion-60:hover svg {
-  -webkit-transform: translate(3px, -50%);
-  -moz-transform: translate(3px, -50%);
-  -ms-transform: translate(3px, -50%);
-  transform: translate(3px, -50%);
+.emotion-60 svg {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: block;
+  fill: currentColor;
+  position: relative;
+  width: 26px;
+  height: auto;
+}
+
+.emotion-60 .src-button-space {
+  width: 8px;
+}
+
+.emotion-60 svg {
+  margin-right: -4px;
+}
+
+.emotion-60 svg {
+  -webkit-transform: translate(0, 0);
+  -moz-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  transform: translate(0, 0);
+  -webkit-transition: .2s cubic-bezier(.64, .57, .67, 1.53);
+  transition: .2s cubic-bezier(.64, .57, .67, 1.53);
+}
+
+.emotion-60:hover svg,
+.emotion-60:focus svg {
+  -webkit-transform: translate(2px, 0);
+  -moz-transform: translate(2px, 0);
+  -ms-transform: translate(2px, 0);
+  transform: translate(2px, 0);
 }
 
 .emotion-62 {
@@ -739,41 +772,51 @@ exports[`Main renders something 1`] = `
                   className="emotion-59"
                 >
                   <a
+                    className="emotion-60"
                     href="https://support.thegulocal.com/contribute?INTCMP=mma_footer_support_contribute&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_contribute%22%7D&displayExistingPaymentOptions=true"
                     onClick={[Function]}
                   >
-                    <button
-                      className="emotion-60"
-                      onMouseUp={[Function]}
+                    Contribute
+                    <div
+                      className="src-button-space"
+                    />
+                    <svg
+                      aria-hidden={true}
+                      focusable={false}
+                      viewBox="-3 -3 30 30"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      Contribute
-                      <svg
-                        viewBox="0 0 30 30"
-                      >
-                        <path
-                          d="M22.8 14.6L15.2 7l-.7.7 5.5 6.6H6v1.5h14l-5.5 6.6.7.7 7.6-7.6v-.9"
-                        />
-                      </svg>
-                    </button>
+                      <path
+                        clipRule="evenodd"
+                        d="M1 12.956h18.274l-7.167 8.575.932.932L23 12.478v-.956l-9.96-9.985-.932.932 7.166 8.575H1v1.912Z"
+                        fillRule="evenodd"
+                      />
+                    </svg>
+                    
                   </a>
                 </div>
                 <a
+                  className="emotion-60"
                   href="https://support.thegulocal.com/subscribe?INTCMP=mma_footer_support_subscribe&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_subscribe%22%7D&displayExistingPaymentOptions=true"
                   onClick={[Function]}
                 >
-                  <button
-                    className="emotion-60"
-                    onMouseUp={[Function]}
+                  Subscribe
+                  <div
+                    className="src-button-space"
+                  />
+                  <svg
+                    aria-hidden={true}
+                    focusable={false}
+                    viewBox="-3 -3 30 30"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    Subscribe
-                    <svg
-                      viewBox="0 0 30 30"
-                    >
-                      <path
-                        d="M22.8 14.6L15.2 7l-.7.7 5.5 6.6H6v1.5h14l-5.5 6.6.7.7 7.6-7.6v-.9"
-                      />
-                    </svg>
-                  </button>
+                    <path
+                      clipRule="evenodd"
+                      d="M1 12.956h18.274l-7.167 8.575.932.932L23 12.478v-.956l-9.96-9.985-.932.932 7.166 8.575H1v1.912Z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                  
                 </a>
               </div>
             </div>
