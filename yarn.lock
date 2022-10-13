@@ -2465,6 +2465,11 @@
   resolved "https://registry.yarnpkg.com/@guardian/source-react-components/-/source-react-components-5.0.0.tgz#7aa1d529156a2c46283a992fe07d81cad01f1f5b"
   integrity sha512-W8245LKns7Uu7poXB8GQKjERTyIKu2l3d6uMGmvrOWIE0XjMdlrFND5Nd14UCau8C2CC5EdmyRRvkZI5/iZyfg==
 
+"@guardian/tsconfig@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@guardian/tsconfig/-/tsconfig-0.1.6.tgz#2cc3ecce09e84b6bcaea8a1150c7b590e908d2a9"
+  integrity sha512-5GMp2tBMaIxxInmWGDZI9O3v76hbW2CV/3hnWhDDvtXZvgOFs3K41plkAoc+GpPNLZTrtJlAaHHhbZcDDGI9/w==
+
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.5"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.9.5.tgz#2cbaf9a89460da24b5ca6531b8bbfc23e1df50c7"
