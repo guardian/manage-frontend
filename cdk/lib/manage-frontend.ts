@@ -13,7 +13,7 @@ import type { App } from 'aws-cdk-lib';
 import { Duration } from 'aws-cdk-lib';
 import { InstanceClass, InstanceSize, InstanceType } from 'aws-cdk-lib/aws-ec2';
 import { Protocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
-import type { CfnLogGroup } from 'aws-cdk-lib/aws-logs';
+import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnRecordSet } from 'aws-cdk-lib/aws-route53';
 import { CfnInclude } from 'aws-cdk-lib/cloudformation-include';
 
@@ -28,7 +28,7 @@ export class ManageFrontend extends GuStack {
 
 		const app = 'manage-frontend';
 
-		const existingYaml = new CfnInclude(this, 'YamlTemplate', {
+		new CfnInclude(this, 'YamlTemplate', {
 			templateFile: yamlTemplateFilePath,
 		});
 
@@ -82,9 +82,15 @@ systemctl enable manage-frontend
 systemctl start manage-frontend
 /opt/cloudwatch-logs/configure-logs application ${this.stack} ${this.stage} ${app} /var/log/manage-frontend.log`;
 
-		const logGroup = existingYaml.getResource(
-			'ManageFrontendLogGroup',
-		) as CfnLogGroup;
+		const logGroup = new LogGroup(this, 'ManageFrontendLogGroup', {
+			logGroupName: `support-manage-frontend-${this.stage}`,
+			retention: RetentionDays.TWO_WEEKS,
+		});
+
+		this.overrideLogicalId(logGroup, {
+			logicalId: 'ManageFrontendLogGroup',
+			reason: 'Retain logicalId previously defined in yaml',
+		});
 
 		// docs https://guardian.github.io/cdk/classes/patterns.GuEc2App.html
 		const nodeApp = new GuEc2App(this, {
@@ -115,7 +121,7 @@ systemctl start manage-frontend
 							'logs:CreateLogStream',
 							'logs:PutLogEvents',
 						],
-						resources: [logGroup.attrArn],
+						resources: [logGroup.logGroupArn],
 					}),
 					new GuPutCloudwatchMetricsPolicy(this),
 					// TODO: whats this bucket used for and are we doing the right thing?
