@@ -365,7 +365,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 								>
 									{`${specificProductType.productTitle(
 										mainPlan,
-									)} - `}
+									)} : `}
 								</span>
 								{`Manage ${groupedProductType.friendlyName}`}
 							</Button>
@@ -527,7 +527,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 										>
 											{`${specificProductType.productTitle(
 												mainPlan,
-											)} - `}
+											)} : `}
 										</span>
 										Manage payment method
 									</Button>
