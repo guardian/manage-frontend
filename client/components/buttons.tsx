@@ -37,6 +37,7 @@ interface LinkButtonState {
 export interface LinkButtonProps extends ButtonProps {
 	to: string;
 	state?: LinkButtonState | ProductDetail;
+	ariaLabelText?: string;
 }
 
 const applyIconStyleIfApplicable = (
@@ -187,6 +188,7 @@ const styles = {
 
 export const LinkButton = (props: LinkButtonProps) => (
 	<Link
+		aria-label={props.ariaLabelText}
 		to={props.disabled ? '' : props.to}
 		onClick={props.onClick}
 		css={buttonCss(props)}
