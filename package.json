@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "nodemon --inspect ./dist/server",
-    "type-check": "tsc --noEmit --skipLibCheck",
+    "type-check": "tsc --skipLibCheck",
     "lint": "eslint 'client/**' 'server/**' 'shared/**'",
     "bundle": "copy-node-modules . ./dist && yarn webpack --config webpack.production.js",
     "bundle-dev": "yarn bundle-dev-server && yarn bundle-dev-client",
@@ -65,6 +65,7 @@
     "@guardian/eslint-plugin-source-react-components": "^5.0.0",
     "@guardian/node-riffraff-artifact": "^0.2.2",
     "@guardian/prettier": "^1.0.0",
+    "@guardian/tsconfig": "^0.1.6",
     "@storybook/addon-essentials": "^6.4.19",
     "@storybook/builder-webpack5": "^6.4.19",
     "@storybook/manager-webpack5": "^6.4.19",
