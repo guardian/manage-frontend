@@ -7,9 +7,8 @@ import {
 	space,
 	textSans,
 	until,
-	visuallyHidden,
 } from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+import { LinkButton } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router-dom';
 import { cancellationFormatDate, parseDate } from '../../../shared/dates';
 import type { ProductDetail } from '../../../shared/productResponse';
@@ -341,8 +340,13 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 								margin-top: auto;
 							`}
 						>
-							<Button
+							<LinkButton
+								aria-label={`${specificProductType.productTitle(
+									mainPlan,
+								)} : Manage ${groupedProductType.friendlyName}`}
+								tabIndex={0}
 								data-cy={`Manage ${groupedProductType.friendlyName}`}
+								role="link"
 								priority="secondary"
 								size="small"
 								onClick={() => {
@@ -358,17 +362,8 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 									});
 								}}
 							>
-								<span
-									css={css`
-										${visuallyHidden};
-									`}
-								>
-									{`${specificProductType.productTitle(
-										mainPlan,
-									)} : `}
-								</span>
 								{`Manage ${groupedProductType.friendlyName}`}
-							</Button>
+							</LinkButton>
 						</div>
 					)}
 				</div>
@@ -484,7 +479,12 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 										margin-top: auto;
 									`}
 								>
-									<Button
+									<LinkButton
+										aria-label={`${specificProductType.productTitle(
+											mainPlan,
+										)} : Manage payment method`}
+										tabIndex={0}
+										role="link"
 										size="small"
 										priority={
 											hasPaymentFailure
@@ -520,17 +520,8 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 											);
 										}}
 									>
-										<span
-											css={css`
-												${visuallyHidden};
-											`}
-										>
-											{`${specificProductType.productTitle(
-												mainPlan,
-											)} : `}
-										</span>
 										Manage payment method
-									</Button>
+									</LinkButton>
 								</div>
 							)}
 						</>
