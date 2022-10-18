@@ -140,6 +140,7 @@ export const CardDisplay = (props: CardDisplayProps) => {
 
 	return (
 		<div
+			aria-label={props.type}
 			css={css`
 				${styles}
 				${props.cssOverrides}

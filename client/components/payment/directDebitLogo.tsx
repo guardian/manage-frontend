@@ -9,6 +9,7 @@ interface DirectDebitLogoProps {
 
 export const DirectDebitLogo = (props: DirectDebitLogoProps) => (
 	<svg
+		aria-label="Direct Debit"
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 603.094 195.188"
 		width="65"
