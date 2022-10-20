@@ -259,6 +259,7 @@ const PageNavAndContentContainer = (props: PageNavAndContentContainerProps) => (
 			</nav>
 		)}
 		<section
+			id="maincontent"
 			css={{
 				...gridItemPlacement(1, 4),
 
