@@ -1,4 +1,4 @@
-import { palette } from '@guardian/source-foundations';
+import { palette, textSansSizes } from '@guardian/source-foundations';
 import type { SignInStatus } from '../services/signInStatus';
 import { serif } from '../styles/fonts';
 import { Footer } from './footer/footer';
@@ -28,6 +28,20 @@ export const Main = ({
 			color: palette.neutral[20],
 		}}
 	>
+		<a
+			css={{
+				color: palette.brand[400],
+				position: 'absolute',
+				textAlign: 'center',
+				fontSize: `${textSansSizes.xxsmall}px`,
+				':focus': {
+					position: 'static',
+				},
+			}}
+			href="#maincontent"
+		>
+			Skip to main content
+		</a>
 		{helpCentrePage ? (
 			<HelpCentreHeader
 				signInStatus={signInStatus}
