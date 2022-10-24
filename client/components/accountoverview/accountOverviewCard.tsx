@@ -8,12 +8,13 @@ import {
 	textSans,
 	until,
 } from '@guardian/source-foundations';
+import { LinkButton } from '@guardian/source-react-components';
+import { useNavigate } from 'react-router-dom';
 import { cancellationFormatDate, parseDate } from '../../../shared/dates';
 import type { ProductDetail } from '../../../shared/productResponse';
 import { getMainPlan, isGift } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { trackEvent } from '../../services/analytics';
-import { LinkButton } from '../buttons';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import {
@@ -108,6 +109,8 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 		overflow: hidden;
 		text-overflow: ellipsis;
 	`;
+
+	const navigate = useNavigate();
 
 	return (
 		<div
@@ -338,21 +341,29 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 							`}
 						>
 							<LinkButton
-								to={`/${groupedProductType.urlPart}`}
-								text={`Manage ${groupedProductType.friendlyName}`}
+								aria-label={`${specificProductType.productTitle(
+									mainPlan,
+								)} : Manage ${groupedProductType.friendlyName}`}
+								tabIndex={0}
 								data-cy={`Manage ${groupedProductType.friendlyName}`}
-								state={{ productDetail: props.productDetail }}
-								colour={brand[800]}
-								textColour={brand[400]}
-								fontWeight={'bold'}
-								onClick={() =>
+								role="link"
+								priority="secondary"
+								size="small"
+								onClick={() => {
 									trackEvent({
 										eventCategory: 'account_overview',
 										eventAction: 'click',
 										eventLabel: `manage_${groupedProductType.urlPart}`,
-									})
-								}
-							/>
+									});
+									navigate(`/${groupedProductType.urlPart}`, {
+										state: {
+											productDetail: props.productDetail,
+										},
+									});
+								}}
+							>
+								{`Manage ${groupedProductType.friendlyName}`}
+							</LinkButton>
 						</div>
 					)}
 				</div>
@@ -469,33 +480,48 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 									`}
 								>
 									<LinkButton
-										to={`/payment/${specificProductType.urlPart}`}
-										state={{
-											productDetail: props.productDetail,
-										}}
-										text={'Manage payment method'}
-										colour={
+										aria-label={`${specificProductType.productTitle(
+											mainPlan,
+										)} : Manage payment method`}
+										tabIndex={0}
+										role="link"
+										size="small"
+										priority={
 											hasPaymentFailure
-												? brand[400]
-												: brand[800]
+												? 'primary'
+												: 'secondary'
 										}
-										textColour={
-											hasPaymentFailure
-												? neutral[100]
-												: brand[400]
+										icon={
+											hasPaymentFailure ? (
+												<ErrorIcon
+													fill={neutral[100]}
+													additionalCss={css`
+														margin-right: ${space[2]}px;
+													`}
+												/>
+											) : undefined
 										}
-										fontWeight={'bold'}
-										alert={hasPaymentFailure}
-										onClick={() =>
+										onClick={() => {
 											trackEvent({
 												eventCategory:
 													'account_overview',
 												eventAction: 'click',
 												eventLabel:
 													'manage_payment_method',
-											})
-										}
-									/>
+											});
+											navigate(
+												`/payment/${specificProductType.urlPart}`,
+												{
+													state: {
+														productDetail:
+															props.productDetail,
+													},
+												},
+											);
+										}}
+									>
+										Manage payment method
+									</LinkButton>
 								</div>
 							)}
 						</>

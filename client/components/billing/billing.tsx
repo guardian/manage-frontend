@@ -279,6 +279,9 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
 															!!productDetail.alertText
 														}
 														text="Update payment method"
+														ariaLabelText={`${specificProductType.productTitle(
+															mainPlan,
+														)} : Update payment method`}
 														to={`/payment/${specificProductType.urlPart}`}
 														state={{
 															productDetail,
