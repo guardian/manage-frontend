@@ -1,3 +1,4 @@
+import { capitalize } from 'lodash';
 import type { ReactNode } from 'react';
 import type {
 	CancellationReason,
@@ -21,6 +22,7 @@ import type { SupportTheGuardianButtonProps } from '../client/components/support
 import type { OphanProduct } from './ophanTypes';
 import type {
 	CancelledProductDetail,
+	PaidSubscriptionPlan,
 	ProductDetail,
 	Subscription,
 	SubscriptionPlan,
@@ -573,7 +575,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		},
 	},
 	supporterplus: {
-		productTitle: () => 'Supporter Plus',
+		productTitle: (mainPlan?: SubscriptionPlan) => {
+			const paidMainPlan = mainPlan as PaidSubscriptionPlan;
+			return `${capitalize(paidMainPlan.interval)}ly + extras`;
+		},
 		friendlyName: 'supporter plus',
 		allProductsProductTypeFilterString: 'SupporterPlus',
 		urlPart: 'supporterplus',
