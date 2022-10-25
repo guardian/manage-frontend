@@ -195,7 +195,7 @@ const HolidayStopsContainer = (
 						publicationsImpacted,
 						setPublicationsImpacted,
 					)}
-					loadingMessage={`Retrieving details of your ${props.productType.friendlyName}...`}
+					loadingMessage={`Retrieving details of your ${props.productType.friendlyName()}...`}
 				/>
 			)}
 		</PageContainer>

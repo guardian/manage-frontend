@@ -343,9 +343,9 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 							<LinkButton
 								aria-label={`${specificProductType.productTitle(
 									mainPlan,
-								)} : Manage ${groupedProductType.friendlyName}`}
+								)} : Manage ${groupedProductType.friendlyName()}`}
 								tabIndex={0}
-								data-cy={`Manage ${groupedProductType.friendlyName}`}
+								data-cy={`Manage ${groupedProductType.friendlyName()}`}
 								role="link"
 								priority="secondary"
 								size="small"
@@ -362,7 +362,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 									});
 								}}
 							>
-								{`Manage ${groupedProductType.friendlyName}`}
+								{`Manage ${groupedProductType.friendlyName()}`}
 							</LinkButton>
 						</div>
 					)}

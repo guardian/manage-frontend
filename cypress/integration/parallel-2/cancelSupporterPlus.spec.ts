@@ -73,7 +73,7 @@ describe('Cancel Supporter Plus', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your supporter plus is cancelled.',
+			name: 'Your monthly + extras is cancelled.',
 		});
 	});
 });

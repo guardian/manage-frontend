@@ -20,7 +20,8 @@ const manageProductLocationObjects: LocationObject[] = Object.values(
 	GROUPED_PRODUCT_TYPES,
 ).map((groupedProductType) => ({
 	title: `Manage ${
-		groupedProductType.shortFriendlyName || groupedProductType.friendlyName
+		groupedProductType.shortFriendlyName ||
+		groupedProductType.friendlyName()
 	}`,
 	path: `/${groupedProductType.urlPart}`,
 	selectedNavItem: NAV_LINKS.accountOverview,
@@ -30,7 +31,7 @@ const cancellationFlowLocationObjects: LocationObject[] = Object.values(
 	PRODUCT_TYPES,
 ).map((productType) => ({
 	title: `Cancel ${
-		productType.shortFriendlyName || productType.friendlyName
+		productType.shortFriendlyName || productType.friendlyName()
 	}`,
 	path: `/cancel/${productType.urlPart}`,
 	selectedNavItem: NAV_LINKS.accountOverview,

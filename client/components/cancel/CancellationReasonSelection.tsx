@@ -323,7 +323,8 @@ const CancellationReasonSelection = () => {
 				productDetail,
 			)}
 			loadingMessage={`Checking your ${
-				productType.shortFriendlyName || productType.friendlyName
+				productType.shortFriendlyName ||
+				productType.friendlyName(productDetail)
 			} details...`}
 		/>
 	) : (

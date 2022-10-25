@@ -168,10 +168,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		)
 			.flatMap(flattenEquivalent)
 			.map(({ productDetail }) => {
-				const friendlyProductName =
-					GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
-						productDetail,
-					).friendlyName;
+				const friendlyProductName = GROUPED_PRODUCT_TYPES.subscriptions
+					.mapGroupedToSpecific(productDetail)
+					.friendlyName();
 				return `${friendlyProductName}`;
 			});
 

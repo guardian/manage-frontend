@@ -106,11 +106,19 @@ const getCancellationSummaryWithReturnButton = (body: ReactNode) => () =>
 	);
 
 const getCaseUpdatingCancellationSummary =
-	(caseId: string | '', productType: ProductTypeWithCancellationFlow) =>
+	(
+		caseId: string | '',
+		productType: ProductTypeWithCancellationFlow,
+		productFriendlyName: string,
+	) =>
 	(productDetails: ProductDetail[]) => {
 		const productDetail = productDetails[0] || { subscription: {} };
+		console.log('executeCancellation productDetail', productDetail);
 		const render = getCancellationSummaryWithReturnButton(
-			getCancellationSummary(productType)(productDetail),
+			getCancellationSummary(
+				productType,
+				productFriendlyName,
+			)(productDetail),
 		);
 		return caseId ? (
 			<CaseUpdateAsyncLoader
@@ -198,6 +206,7 @@ const ExecuteCancellation = () => {
 						render={getCaseUpdatingCancellationSummary(
 							caseId,
 							productType,
+							productType.friendlyName(productDetail),
 						)}
 						loadingMessage="Performing your cancellation..."
 					/>

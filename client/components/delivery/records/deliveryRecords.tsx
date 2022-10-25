@@ -295,7 +295,7 @@ const DeliveryRecords = () => {
 				`}
 			>
 				<ProductDetailsTable
-					productName={capitalize(productType.friendlyName)}
+					productName={capitalize(productType.friendlyName())}
 					subscriptionId={productDetail.subscription.subscriptionId}
 					isGift={isGift(productDetail.subscription)}
 				/>
@@ -547,7 +547,7 @@ const DeliveryRecords = () => {
 						)}
 						productName={capitalize(
 							productType.shortFriendlyName ||
-								productType.friendlyName,
+								productType.friendlyName(),
 						)}
 					/>
 				),
