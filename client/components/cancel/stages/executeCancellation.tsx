@@ -113,7 +113,6 @@ const getCaseUpdatingCancellationSummary =
 	) =>
 	(productDetails: ProductDetail[]) => {
 		const productDetail = productDetails[0] || { subscription: {} };
-		console.log('executeCancellation productDetail', productDetail);
 		const render = getCancellationSummaryWithReturnButton(
 			getCancellationSummary(
 				productType,
