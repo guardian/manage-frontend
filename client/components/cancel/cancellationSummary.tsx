@@ -21,10 +21,10 @@ import { CancellationContributionReminder } from './cancellationContributionRemi
 const actuallyCancelled = (
 	productType: ProductType,
 	productDetail: ProductDetail,
+	productFriendlyName: string,
 ) => {
 	const deliveryRecordsLink: string = `/delivery/${productType.urlPart}/records`;
 	const subscription = productDetail.subscription;
-
 	return (
 		<>
 			<WithStandardTopMargin>
@@ -36,7 +36,7 @@ const actuallyCancelled = (
 						`,
 					]}
 				>
-					Your {productType.friendlyName} is cancelled.
+					Your {productFriendlyName} is cancelled.
 				</Heading>
 				{productType.cancellation &&
 					!productType.cancellation.shouldHideSummaryMainPara && (
@@ -46,8 +46,8 @@ const actuallyCancelled = (
 								(subscription.end ? (
 									<>
 										You will continue to receive the
-										benefits of your{' '}
-										{productType.friendlyName} until{' '}
+										benefits of your {productFriendlyName}{' '}
+										until{' '}
 										<b>
 											{cancellationFormatDate(
 												subscription.cancellationEffectiveDate,
@@ -175,13 +175,14 @@ export const isCancelled = (subscription: Subscription) =>
 	Object.keys(subscription).length === 0 || subscription.cancelledAt;
 
 export const getCancellationSummary =
-	(productType: ProductType) => (productDetail: ProductDetail) =>
+	(productType: ProductType, productFriendlyName: string) =>
+	(productDetail: ProductDetail) =>
 		isCancelled(productDetail.subscription) ? (
-			actuallyCancelled(productType, productDetail)
+			actuallyCancelled(productType, productDetail, productFriendlyName)
 		) : (
 			<GenericErrorScreen
 				loggingMessage={
-					productType.friendlyName +
+					productFriendlyName +
 					" cancellation call succeeded but subsequent product detail doesn't show as cancelled"
 				}
 			/>

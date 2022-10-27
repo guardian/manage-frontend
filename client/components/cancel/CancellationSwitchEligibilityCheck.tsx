@@ -36,7 +36,9 @@ const CancellationSwitchEligibilityCheck = () => {
 		pageTitleContext.setPageTitle(
 			`Cancel ${
 				cancellationContext.productType.shortFriendlyName ||
-				cancellationContext.productType.friendlyName
+				cancellationContext.productType.friendlyName(
+					routerState.productDetail,
+				)
 			}`,
 		);
 		return <CancellationReasonSelection />;
@@ -65,7 +67,9 @@ const CancellationSwitchEligibilityCheck = () => {
 				<Spinner
 					loadingMessage={`Checking your ${
 						cancellationContext.productType.shortFriendlyName ||
-						cancellationContext.productType.friendlyName
+						cancellationContext.productType.friendlyName(
+							routerState.productDetail,
+						)
 					} details...`}
 				/>
 			</WithStandardTopMargin>

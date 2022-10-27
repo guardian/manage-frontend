@@ -92,7 +92,7 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const [pageTitle, setPageTitle] = useState<string>(
 		`Cancel ${
 			props.productType.shortFriendlyName ||
-			props.productType.friendlyName
+			props.productType.friendlyName(productDetail)
 		}`,
 	);
 
@@ -120,7 +120,9 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 							render={renderSingleProductOrReturnToAccountOverview(
 								props.productType,
 							)}
-							loadingMessage={`Checking the status of your ${props.productType.friendlyName}...`}
+							loadingMessage={`Checking the status of your ${props.productType.friendlyName(
+								productDetail,
+							)}...`}
 						/>
 					)}
 				</PageContainer>

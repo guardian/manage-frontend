@@ -463,14 +463,14 @@ const CancellationSwitchReview = () => {
 					If you decide to change your support to a{' '}
 					{chosenProduct.name} we’ll stop your{' '}
 					{chosenProduct.billing.frequency.name}ly{' '}
-					{productSwitchContext.productType.friendlyName} payments
+					{productSwitchContext.productType.friendlyName()} payments
 					straight away and you’ll have immediate access to the
 					benefits of a {chosenProduct.name}.
 				</p>
 			</Stack>
 			<div css={cardLayoutCss}>
 				<Card
-					heading={`Your ${productSwitchContext.productType.friendlyName}`}
+					heading={`Your ${productSwitchContext.productType.friendlyName()}`}
 				>
 					{chosenProduct.introOffer && (
 						<hr
@@ -717,10 +717,7 @@ const CancellationSwitchReview = () => {
 									We'll stop your{' '}
 									{chosenProduct.billing.frequency.name}
 									ly{' '}
-									{
-										productSwitchContext.productType
-											.friendlyName
-									}{' '}
+									{productSwitchContext.productType.friendlyName()}{' '}
 									payments.
 								</li>
 								<li>

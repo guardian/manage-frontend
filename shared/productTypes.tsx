@@ -28,9 +28,10 @@ import type {
 	SubscriptionPlan,
 	SubscriptionWithDeliveryAddress,
 } from './productResponse';
-import { isGift } from './productResponse';
+import { getMainPlan, isGift } from './productResponse';
 
 type ProductFriendlyName =
+	| 'support' // TODO confirm if this is acceptable fallback for supporter plus where 'monthly' or 'annual' cannot be calculated
 	| 'membership'
 	| 'recurring contribution' // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
 	| 'newspaper subscription'
@@ -38,7 +39,8 @@ type ProductFriendlyName =
 	| 'newspaper subscription card'
 	| 'newspaper home delivery subscription'
 	| 'digital subscription'
-	| 'supporter plus'
+	| 'monthly + extras'
+	| 'annual + extras'
 	| 'Guardian Weekly subscription'
 	| 'subscription'
 	| 'guardian patron';
@@ -50,7 +52,7 @@ type ProductUrlPart =
 	| 'subscriptioncard'
 	| 'homedelivery'
 	| 'digital'
-	| 'supporterplus'
+	| 'support'
 	| 'guardianweekly'
 	| 'subscriptions'
 	| 'guardianpatron';
@@ -150,7 +152,7 @@ interface DeliveryProperties {
 
 export interface ProductType {
 	productTitle: (mainPlan?: SubscriptionPlan) => string;
-	friendlyName: ProductFriendlyName;
+	friendlyName: (productDetail?: ProductDetail) => ProductFriendlyName;
 	shortFriendlyName?: string;
 	allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
 	urlPart: ProductUrlPart;
@@ -219,6 +221,9 @@ const calculateProductTitle =
 	(baseProductTitle: string) => (mainPlan?: SubscriptionPlan) =>
 		baseProductTitle + (mainPlan?.name ? ` - ${mainPlan.name}` : '');
 
+const calculateSupporterPlusTitle = (interval: string) =>
+	interval === 'month' ? 'monthly + extras' : 'annual + extras';
+
 const FRONT_PAGE_NEWSLETTER_ID = '6009';
 enum SOFT_OPT_IN_IDS {
 	support_onboarding = 'your_support_onboarding',
@@ -249,7 +254,7 @@ export type GroupedProductTypeKeys =
 export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	membership: {
 		productTitle: () => 'Guardian membership',
-		friendlyName: 'membership',
+		friendlyName: () => 'membership',
 		allProductsProductTypeFilterString: 'Membership',
 		urlPart: 'membership',
 		getOphanProductType: (productDetail: ProductDetail) => {
@@ -284,7 +289,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	contributions: {
 		productTitle: () => 'Recurring contribution',
-		friendlyName: 'recurring contribution',
+		friendlyName: () => 'recurring contribution',
 		allProductsProductTypeFilterString: 'Contribution',
 		urlPart: 'contributions',
 		getOphanProductType: () => 'RECURRING_CONTRIBUTION',
@@ -343,7 +348,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	// FIXME: DEPRECATED: once Braze templates have been updated to use voucher/homedelivery, then replace with redirect to /subscriptions for anything with 'paper' in the URL
 	newspaper: {
 		productTitle: calculateProductTitle('Newspaper subscription'),
-		friendlyName: 'newspaper subscription',
+		friendlyName: () => 'newspaper subscription',
 		allProductsProductTypeFilterString: 'Paper',
 		urlPart: 'paper',
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
@@ -361,7 +366,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	homedelivery: {
 		productTitle: calculateProductTitle('Newspaper Delivery'),
-		friendlyName: 'newspaper home delivery subscription',
+		friendlyName: () => 'newspaper home delivery subscription',
 		shortFriendlyName: 'newspaper home delivery',
 		allProductsProductTypeFilterString: 'HomeDelivery',
 		urlPart: 'homedelivery',
@@ -399,7 +404,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	voucher: {
 		productTitle: calculateProductTitle('Newspaper Voucher'),
-		friendlyName: 'newspaper voucher subscription',
+		friendlyName: () => 'newspaper voucher subscription',
 		shortFriendlyName: 'newspaper voucher booklet',
 		allProductsProductTypeFilterString: 'Voucher',
 		urlPart: 'voucher',
@@ -456,7 +461,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	digitalvoucher: {
 		productTitle: calculateProductTitle('Newspaper Subscription Card'),
-		friendlyName: 'newspaper subscription card',
+		friendlyName: () => 'newspaper subscription card',
 		allProductsProductTypeFilterString: 'DigitalVoucher',
 		urlPart: 'subscriptioncard',
 		legacyUrlPart: 'digitalvoucher',
@@ -481,7 +486,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	guardianweekly: {
 		productTitle: () => 'Guardian Weekly',
-		friendlyName: 'Guardian Weekly subscription',
+		friendlyName: () => 'Guardian Weekly subscription',
 		shortFriendlyName: 'Guardian Weekly',
 		allProductsProductTypeFilterString: 'Weekly',
 		urlPart: 'guardianweekly',
@@ -540,7 +545,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	digipack: {
 		productTitle: () => 'Digital Subscription',
-		friendlyName: 'digital subscription',
+		friendlyName: () => 'digital subscription',
 		allProductsProductTypeFilterString: 'Digipack',
 		urlPart: 'digital',
 		legacyUrlPart: 'digitalpack',
@@ -577,12 +582,22 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	supporterplus: {
 		productTitle: (mainPlan?: SubscriptionPlan) => {
 			const paidMainPlan = mainPlan as PaidSubscriptionPlan;
-			return `${capitalize(paidMainPlan.interval)}ly + extras`;
+			return `${capitalize(
+				calculateSupporterPlusTitle(paidMainPlan.interval),
+			)}`;
 		},
-		friendlyName: 'supporter plus',
+		friendlyName: (productDetail?: ProductDetail) => {
+			if (!productDetail) {
+				return 'support';
+			}
+
+			const interval = (
+				getMainPlan(productDetail.subscription) as PaidSubscriptionPlan
+			).interval;
+			return calculateSupporterPlusTitle(interval);
+		},
 		allProductsProductTypeFilterString: 'SupporterPlus',
-		urlPart: 'supporterplus',
-		legacyUrlPart: 'supporterplus',
+		urlPart: 'support',
 		getOphanProductType: () => 'SUPPORTER_PLUS',
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
@@ -616,7 +631,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	guardianpatron: {
 		productTitle: () => 'Guardian Patron',
-		friendlyName: 'guardian patron',
+		friendlyName: () => 'guardian patron',
 		allProductsProductTypeFilterString: 'GuardianPatron',
 		urlPart: 'guardianpatron',
 		legacyUrlPart: 'guardianpatron',
@@ -658,7 +673,7 @@ export const GROUPED_PRODUCT_TYPES: {
 	},
 	subscriptions: {
 		productTitle: () => 'Subscription',
-		friendlyName: 'subscription',
+		friendlyName: () => 'subscription',
 		groupFriendlyName: 'subscriptions',
 		allProductsProductTypeFilterString: 'ContentSubscription',
 		urlPart: 'subscriptions',
