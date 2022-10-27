@@ -161,6 +161,7 @@ export interface Subscription {
 	autoRenew: boolean;
 	currentPlans: Array<SubscriptionPlan | PaidSubscriptionPlan>;
 	futurePlans: Array<SubscriptionPlan | PaidSubscriptionPlan>;
+	plan?: PaidSubscriptionPlan; // this is used for memberships (remove when memberships no longer exist)
 	trialLength: number;
 	readerType: ReaderType;
 	deliveryAddress?: DeliveryAddress;
@@ -203,14 +204,15 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 			);
 		}
 		return subscription.currentPlans[0];
+	} else if (subscription.futurePlans.length > 0) {
+		// fallback to use the first future plan (contributions for example are always future plans)
+		return subscription.futurePlans[0];
 	}
-
-	if (!subscription.futurePlans.length) {
-		Sentry.captureException(
-			"User with no 'current' or 'future' plans for a given subscription",
-		);
-	}
-
-	// fallback to use the first future plan (contributions for example are always future plans)
-	return subscription.futurePlans[0];
+	return {
+		name: null,
+		start: subscription.start,
+		shouldBeVisible: true,
+		currency: subscription.plan?.currency,
+		currencyISO: subscription.plan?.currencyISO,
+	};
 };
