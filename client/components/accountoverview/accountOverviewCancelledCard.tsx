@@ -32,7 +32,8 @@ export const AccountOverviewCancelledCard = (
 
 	const showSubscribeAgainButton =
 		props.product.mmaCategory !== 'membership' &&
-		props.product.mmaCategory !== 'contributions';
+		props.product.mmaCategory !== 'contributions' &&
+		props.product.mmaCategory !== 'recurringSupport';
 
 	const shouldShowJoinDateNotStartDate =
 		groupedProductType.shouldShowJoinDateNotStartDate;
