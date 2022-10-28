@@ -2,6 +2,27 @@ import { contribution } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Cancel contribution', () => {
+	const setupCancellation = () => {
+		cy.visit('/');
+
+		cy.window().then((window) => {
+			// @ts-ignore
+			window.guardian.identityDetails = {
+				signInStatus: 'signedInRecently',
+				userId: '200006712',
+				displayName: 'user',
+				email: 'example@example.com',
+			};
+		});
+
+		cy.findByText('Manage recurring support').click();
+		cy.wait('@cancelled');
+
+		cy.findByRole('link', {
+			name: 'Cancel recurring support',
+		}).click();
+	};
+
 	beforeEach(() => {
 		cy.setCookie('GU_mvt_id', '0');
 
@@ -50,24 +71,7 @@ describe('Cancel contribution', () => {
 	});
 
 	it('cancels contribution (reason: As a result of a specific article I read)', () => {
-		cy.visit('/');
-
-		cy.window().then((window) => {
-			// @ts-ignore
-			window.guardian.identityDetails = {
-				signInStatus: 'signedInRecently',
-				userId: '200006712',
-				displayName: 'user',
-				email: 'example@example.com',
-			};
-		});
-
-		cy.findByText('Manage recurring contribution').click();
-		cy.wait('@cancelled');
-
-		cy.findByRole('link', {
-			name: 'Cancel recurring contribution',
-		}).click();
+		setupCancellation();
 		cy.findAllByRole('radio').eq(0).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
@@ -92,24 +96,7 @@ describe('Cancel contribution', () => {
 			statusCode: 500,
 		}).as('get_case');
 
-		cy.visit('/');
-
-		cy.window().then((window) => {
-			// @ts-ignore
-			window.guardian.identityDetails = {
-				signInStatus: 'signedInRecently',
-				userId: '200006712',
-				displayName: 'user',
-				email: 'example@example.com',
-			};
-		});
-
-		cy.findByText('Manage recurring contribution').click();
-		cy.wait('@cancelled');
-
-		cy.findByRole('link', {
-			name: 'Cancel recurring contribution',
-		}).click();
+		setupCancellation();
 		cy.findAllByRole('radio').eq(0).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
@@ -119,24 +106,7 @@ describe('Cancel contribution', () => {
 	});
 
 	it('cancels contribution with custom save body component (reason: I can no longer afford it)', () => {
-		cy.visit('/');
-
-		cy.window().then((window) => {
-			// @ts-ignore
-			window.guardian.identityDetails = {
-				signInStatus: 'signedInRecently',
-				userId: '200006712',
-				displayName: 'user',
-				email: 'example@example.com',
-			};
-		});
-
-		cy.findByText('Manage recurring contribution').click();
-		cy.wait('@cancelled');
-
-		cy.findByRole('link', {
-			name: 'Cancel recurring contribution',
-		}).click();
+		setupCancellation();
 		cy.findAllByRole('radio').eq(4).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
@@ -159,24 +129,7 @@ describe('Cancel contribution', () => {
 	});
 
 	it('cancels contribution with custom save body component (reason: A payment issue)', () => {
-		cy.visit('/');
-
-		cy.window().then((window) => {
-			// @ts-ignore
-			window.guardian.identityDetails = {
-				signInStatus: 'signedInRecently',
-				userId: '200006712',
-				displayName: 'user',
-				email: 'example@example.com',
-			};
-		});
-
-		cy.findByText('Manage recurring contribution').click();
-		cy.wait('@cancelled');
-
-		cy.findByRole('link', {
-			name: 'Cancel recurring contribution',
-		}).click();
+		setupCancellation();
 		cy.findAllByRole('radio').eq(6).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
@@ -204,24 +157,7 @@ describe('Cancel contribution', () => {
 	});
 
 	it('cancels contribution with save body string (reason: I would rather make a single contribution)', () => {
-		cy.visit('/');
-
-		cy.window().then((window) => {
-			// @ts-ignore
-			window.guardian.identityDetails = {
-				signInStatus: 'signedInRecently',
-				userId: '200006712',
-				displayName: 'user',
-				email: 'example@example.com',
-			};
-		});
-
-		cy.findByText('Manage recurring contribution').click();
-		cy.wait('@cancelled');
-
-		cy.findByRole('link', {
-			name: 'Cancel recurring contribution',
-		}).click();
+		setupCancellation();
 		cy.findAllByRole('radio').eq(8).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
@@ -250,24 +186,7 @@ describe('Cancel contribution', () => {
 			body: { status: 'success' },
 		});
 
-		cy.visit('/');
-
-		cy.window().then((window) => {
-			// @ts-ignore
-			window.guardian.identityDetails = {
-				signInStatus: 'signedInRecently',
-				userId: '200006712',
-				displayName: 'user',
-				email: 'example@example.com',
-			};
-		});
-
-		cy.findByText('Manage recurring contribution').click();
-		cy.wait('@cancelled');
-
-		cy.findByRole('link', {
-			name: 'Cancel recurring contribution',
-		}).click();
+		setupCancellation();
 		cy.findAllByRole('radio').eq(4).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 

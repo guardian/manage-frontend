@@ -2,6 +2,17 @@ import { supporterPlus } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Cancel Supporter Plus', () => {
+	const setupCancellation = () => {
+		cy.visit('/');
+
+		cy.findByText('Manage recurring support').click();
+		cy.wait('@cancelled');
+
+		cy.findByRole('link', {
+			name: 'Cancel recurring support',
+		}).click();
+	};
+
 	beforeEach(() => {
 		cy.setCookie('GU_mvt_id', '0');
 
@@ -52,14 +63,7 @@ describe('Cancel Supporter Plus', () => {
 	});
 
 	it('allows self-service cancellation of Supporter Plus', () => {
-		cy.visit('/');
-
-		cy.findByText('Manage subscription').click();
-		cy.wait('@cancelled');
-
-		cy.findByRole('link', {
-			name: 'Cancel subscription',
-		}).click();
+		setupCancellation();
 
 		cy.findAllByRole('radio').eq(0).click();
 		cy.findByRole('button', { name: 'Continue' }).click();

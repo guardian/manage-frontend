@@ -389,7 +389,7 @@ export const homeDeliverySubscription: ProductDetail = {
 };
 
 export const contribution: ProductDetail = {
-	mmaCategory: 'contributions',
+	mmaCategory: 'recurringSupport',
 	tier: 'Contributor',
 	isPaidTier: true,
 	selfServiceCancellation: {
@@ -513,10 +513,11 @@ export const patronDigitalSub = {
 	},
 };
 
-export const supporterPlus = {
-	mmaCategory: 'subscriptions',
+export const supporterPlus: ProductDetail = {
+	mmaCategory: 'recurringSupport',
 	tier: 'Supporter Plus',
 	isPaidTier: true,
+	isTestUser: false,
 	selfServiceCancellation: {
 		isAllowed: false,
 		shouldDisplayEmail: false,
@@ -537,7 +538,6 @@ export const supporterPlus = {
 			email: 'test.user@example.com',
 		},
 		contactId: '0039E00001VVNb5QAH',
-		deliveryAddress: {},
 		safeToUpdatePaymentMethod: true,
 		start: '2022-07-20',
 		end: '2022-08-20',
@@ -552,13 +552,6 @@ export const supporterPlus = {
 		subscriptionId: 'A-S00393340',
 		trialLength: -2,
 		autoRenew: true,
-		plan: {
-			name: 'Supporter Plus',
-			amount: 5000,
-			currency: '£',
-			currencyISO: 'GBP',
-			interval: 'month',
-		},
 		currentPlans: [
 			{
 				name: null,
@@ -575,6 +568,5 @@ export const supporterPlus = {
 		futurePlans: [],
 		readerType: 'Direct',
 		accountId: '8ad088718219a6b601821bbe9e6210f2',
-		cancellationEffectiveDate: null,
 	},
 };
