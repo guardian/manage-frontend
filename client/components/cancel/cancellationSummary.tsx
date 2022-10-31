@@ -193,9 +193,8 @@ export const getCancellationSummary =
 			)
 		) : (
 			<GenericErrorScreen
-				loggingMessage={
-					productType.friendlyName(cancelledProductDetail) +
-					" cancellation call succeeded but subsequent product detail doesn't show as cancelled"
-				}
+				loggingMessage={`${productType.friendlyName(
+					cancelledProductDetail,
+				)} cancellation call succeeded but subsequent product detail doesn't show as cancelled`}
 			/>
 		);

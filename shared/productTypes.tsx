@@ -93,7 +93,7 @@ interface CancellationFlowProperties {
 	hideReasonTitlePrefix?: true;
 	alternateSummaryMainPara?: string;
 	alternateSummaryHeading: (
-		productDetail?: ProductDetail,
+		productDetail: ProductDetail,
 	) => string | undefined;
 	shouldHideSummaryMainPara?: true;
 	summaryReasonSpecificPara: (
@@ -623,11 +623,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		cancellation: {
 			alternateSummaryMainPara:
 				"This is immediate and you will not be charged again. If you've cancelled within the first 14 days, we'll send you a full refund.",
-			alternateSummaryHeading: (productDetail?: ProductDetail) => {
-				if (!productDetail) {
-					return undefined;
-				}
-
+			alternateSummaryHeading: (productDetail: ProductDetail) => {
 				const interval = (
 					getMainPlan(
 						productDetail.subscription,
