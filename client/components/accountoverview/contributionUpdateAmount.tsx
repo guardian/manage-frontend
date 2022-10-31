@@ -67,6 +67,10 @@ export const ContributionUpdateAmount = (
 				borderColour={neutral[86]}
 				content={[
 					{
+						title: 'Supporter ID',
+						value: props.subscriptionId,
+					},
+					{
 						title: `${capitalize(
 							augmentInterval(props.mainPlan.interval),
 						)} amount`,
