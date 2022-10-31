@@ -3,6 +3,7 @@ import { space } from '@guardian/source-foundations';
 import {
 	Button,
 	LinkButton,
+	Stack,
 	SvgArrowLeftStraight,
 } from '@guardian/source-react-components';
 import * as Sentry from '@sentry/browser';
@@ -24,11 +25,6 @@ import { CancellationContext } from '../CancellationContainer';
 import type { CancellationReason, SaveBodyProps } from '../cancellationReason';
 import ContributionsFeedbackForm from './contributionsCancellationFeedbackForm';
 import { getIsPayingMinAmount } from './utils';
-
-const container = css`
-  & > * + * {
-    margin-top: ${space[6]}px;
-`;
 
 const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
 	props: SaveBodyProps,
@@ -120,14 +116,8 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
 	const isPayingMinAmount = getIsPayingMinAmount(mainPlan);
 
 	return (
-		<div css={container}>
-			<div
-				css={css`
-					& > * + * {
-						margin-top: ${space[6]}px;
-					}
-				`}
-			>
+		<Stack space={6}>
+			<Stack space={6}>
 				<p>
 					Before cancelling your contribution, please double-check
 					your payment details. You can update these quickly and
@@ -142,7 +132,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
 					`}
 				>
 					<LinkButton
-						href="/payments/contributions"
+						href="/payment/contributions"
 						onClick={onManageClicked}
 					>
 						Manage payment method
@@ -154,7 +144,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
 						</Button>
 					)}
 				</div>
-			</div>
+			</Stack>
 			{!isPayingMinAmount && (
 				<div>
 					<p>
@@ -229,7 +219,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
 					Return to your account
 				</LinkButton>
 			</div>
-		</div>
+		</Stack>
 	);
 };
 
