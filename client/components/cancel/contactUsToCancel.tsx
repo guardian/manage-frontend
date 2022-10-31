@@ -9,7 +9,7 @@ import {
 } from '@guardian/source-foundations';
 import { LinkButton } from '@guardian/source-react-components';
 import type { SelfServiceCancellation } from '../../../shared/productResponse';
-import type { ProductType } from '../../../shared/productTypes';
+import type { GroupedProductType } from '../../../shared/productTypes';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { NAV_LINKS } from '../nav/navConfig';
 import { ProductDescriptionListTable } from '../productDescriptionListTable';
@@ -17,26 +17,29 @@ import { ProductDescriptionListTable } from '../productDescriptionListTable';
 interface ContactUsToCancelProps {
 	selfServiceCancellation: SelfServiceCancellation;
 	subscriptionId: string;
-	productType: ProductType;
+	groupedProductType: GroupedProductType;
 }
 
 export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
 	const subHeadingTitleCss = `
-    ${headline.small()};
-    font-weight: bold;
-    ${until.tablet} {
-      font-size: 1.25rem;
-      line-height: 1.6;
-    };
-  `;
+		${headline.small()};
+		font-weight: bold;
+		${until.tablet} {
+			font-size: 1.25rem;
+			line-height: 1.6;
+		};
+	`;
+
 	const subHeadingBorderTopCss = `
-    border-top: 1px solid ${neutral['86']};
-    margin: 50px 0 ${space[5]}px;
-  `;
+		border-top: 1px solid ${neutral['86']};
+		margin: 50px 0 ${space[5]}px;
+	`;
+
 	const subHeadingCss = `
-    ${subHeadingBorderTopCss}
-    ${subHeadingTitleCss}
-  `;
+		${subHeadingBorderTopCss}
+		${subHeadingTitleCss}
+	`;
+
 	return (
 		<>
 			<h2
@@ -49,7 +52,9 @@ export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
 			<ProductDescriptionListTable
 				content={[
 					{
-						title: 'Subscription ID',
+						title: props.groupedProductType.showSupporterId
+							? 'Supporter ID'
+							: 'Subscription ID',
 						value: props.subscriptionId,
 					},
 				]}

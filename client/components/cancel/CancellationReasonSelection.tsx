@@ -18,7 +18,11 @@ import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '../../../shared/dates';
 import type { ProductDetail } from '../../../shared/productResponse';
-import type { ProductTypeWithCancellationFlow } from '../../../shared/productTypes';
+import type {
+	ProductTypeWithCancellationFlow} from '../../../shared/productTypes';
+import {
+	GROUPED_PRODUCT_TYPES
+} from '../../../shared/productTypes';
 import { hasCancellationFlow } from '../../productUtils';
 import { ProgressIndicator } from '../progressIndicator';
 import { WithStandardTopMargin } from '../WithStandardTopMargin';
@@ -331,7 +335,9 @@ const CancellationReasonSelection = () => {
 		<ContactUsToCancel
 			selfServiceCancellation={productDetail.selfServiceCancellation}
 			subscriptionId={productDetail.subscription.subscriptionId}
-			productType={productType}
+			groupedProductType={
+				GROUPED_PRODUCT_TYPES[productDetail.mmaCategory]
+			}
 		/>
 	);
 };
