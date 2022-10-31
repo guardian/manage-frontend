@@ -156,6 +156,17 @@ describe('Cancel contribution', () => {
 		cy.get('@cancel_contribution.all').should('have.length', 1);
 	});
 
+	it('attempts cancellation but then updates payment details instead. (reason: A payment issue)', () => {
+		setupCancellation();
+		cy.findAllByRole('radio').eq(6).click();
+		cy.findByRole('button', { name: 'Continue' }).click();
+
+		cy.wait('@get_case');
+
+		cy.findByRole('link', { name: 'Manage payment method' }).click();
+		cy.findByText('Manage payment method').should('exist');
+	});
+
 	it('cancels contribution with save body string (reason: I would rather make a single contribution)', () => {
 		setupCancellation();
 		cy.findAllByRole('radio').eq(8).click();
