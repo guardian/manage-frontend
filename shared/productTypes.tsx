@@ -31,7 +31,6 @@ import type {
 import { getMainPlan, isGift } from './productResponse';
 
 type ProductFriendlyName =
-	| 'support' // TODO confirm if this is acceptable fallback for supporter plus where 'monthly' or 'annual' cannot be calculated
 	| 'membership'
 	| 'recurring contribution' // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
 	| 'newspaper subscription'
@@ -43,6 +42,7 @@ type ProductFriendlyName =
 	| 'annual + extras'
 	| 'Guardian Weekly subscription'
 	| 'subscription'
+	| 'recurring support'
 	| 'guardian patron';
 type ProductUrlPart =
 	| 'membership'
@@ -55,6 +55,7 @@ type ProductUrlPart =
 	| 'support'
 	| 'guardianweekly'
 	| 'subscriptions'
+	| 'recurringsupport'
 	| 'guardianpatron';
 type SfCaseProduct =
 	| 'Membership'
@@ -75,7 +76,8 @@ type AllProductsProductTypeFilterString =
 	| 'Digipack'
 	| 'SupporterPlus'
 	| 'ContentSubscription'
-	| 'GuardianPatron';
+	| 'GuardianPatron'
+	| 'RecurringSupport';
 
 interface CancellationFlowProperties {
 	reasons: CancellationReason[];
@@ -184,7 +186,7 @@ export interface GroupedProductType extends ProductType {
 		productDetail: ProductDetail | CancelledProductDetail,
 	) => ProductType;
 	groupFriendlyName: string;
-	supportTheGuardianSectionProps: SupportTheGuardianButtonProps & {
+	supportTheGuardianSectionProps?: SupportTheGuardianButtonProps & {
 		message: string;
 	};
 }
@@ -246,9 +248,13 @@ type ProductTypeKeys =
 	| 'supporterplus'
 	| 'guardianpatron';
 
+/*
+ * TODO: remove 'contributions' from the following list once MDAPI has been changed to return 'recurringSupport' instead
+ */
 export type GroupedProductTypeKeys =
 	| 'membership'
 	| 'contributions'
+	| 'recurringSupport'
 	| 'subscriptions';
 
 export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
@@ -588,7 +594,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		},
 		friendlyName: (productDetail?: ProductDetail) => {
 			if (!productDetail) {
-				return 'support';
+				return 'recurring support';
 			}
 
 			const interval = (
@@ -602,9 +608,9 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
 			SOFT_OPT_IN_IDS.support_onboarding,
-			// SOFT_OPT_IN_IDS.digi_subscriber_preview, TODO: is there an equivalent of this for the new product?
 			SOFT_OPT_IN_IDS.similar_products,
 			SOFT_OPT_IN_IDS.supporter_newsletter,
+			SOFT_OPT_IN_IDS.digi_subscriber_preview,
 		],
 		cancellation: {
 			linkOnProductPage: true,
@@ -656,20 +662,35 @@ export const GROUPED_PRODUCT_TYPES: {
 		supportTheGuardianSectionProps: {
 			supportReferer: 'account_overview_membership_section',
 			message:
-				'We no longer have a membership programme but you can still continue to support The Guardian via a contribution or subscription.',
+				'We no longer have a membership programme but you can still continue to support The Guardian.',
 		},
 	},
+	/*
+	 * TODO: remove 'contributions' from the array once MDAPI has been changed to return 'recurringSupport' instead
+	 */
 	contributions: {
 		...PRODUCT_TYPES.contributions,
 		mapGroupedToSpecific: () => PRODUCT_TYPES.contributions,
 		groupFriendlyName: 'contributions',
-		supportTheGuardianSectionProps: {
-			alternateButtonText: 'Contribute again',
-			supportReferer: 'account_overview_contributions_section',
-			urlSuffix: 'contribute',
-			message:
-				'You can use your existing payment details, so setting up a new recurring contribution only takes a minute.',
+	},
+	recurringSupport: {
+		productTitle: () => 'Recurring support',
+		friendlyName: () => 'recurring support',
+		groupFriendlyName: 'recurring support',
+		allProductsProductTypeFilterString: 'RecurringSupport',
+		urlPart: 'recurringsupport',
+		mapGroupedToSpecific: (
+			productDetail: ProductDetail | CancelledProductDetail,
+		) => {
+			if (productDetail.tier === 'Supporter Plus') {
+				return PRODUCT_TYPES.supporterplus;
+			} else if (productDetail.tier === 'Contributor') {
+				return PRODUCT_TYPES.contributions;
+			}
+			return GROUPED_PRODUCT_TYPES.recurringSupport; // This should never happen!
 		},
+		softOptInIDs: [], // this is only here for the sake of the typescript type and the unlikely scenario where the mapGroupedToSpecific function returns a grouped product type
+		shouldRevealSubscriptionId: true,
 	},
 	subscriptions: {
 		productTitle: () => 'Subscription',
@@ -677,10 +698,6 @@ export const GROUPED_PRODUCT_TYPES: {
 		groupFriendlyName: 'subscriptions',
 		allProductsProductTypeFilterString: 'ContentSubscription',
 		urlPart: 'subscriptions',
-		softOptInIDs: [
-			SOFT_OPT_IN_IDS.similar_products,
-			SOFT_OPT_IN_IDS.supporter_newsletter,
-		],
 		mapGroupedToSpecific: (
 			productDetail: ProductDetail | CancelledProductDetail,
 		) => {
@@ -698,19 +715,12 @@ export const GROUPED_PRODUCT_TYPES: {
 				return PRODUCT_TYPES.guardianweekly;
 			} else if (productDetail.tier.startsWith('guardianpatron')) {
 				return PRODUCT_TYPES.guardianpatron;
-			} else if (productDetail.tier.startsWith('Supporter Plus')) {
-				return PRODUCT_TYPES.supporterplus;
 			}
 			return GROUPED_PRODUCT_TYPES.subscriptions; // This should never happen!
 		},
+		softOptInIDs: [], // this is only here for the sake of the typescript type and the unlikely scenario where the mapGroupedToSpecific function returns a grouped product type
 		cancelledCopy:
 			'Your subscription has been cancelled. You are able to access your subscription until',
 		shouldRevealSubscriptionId: true,
-		supportTheGuardianSectionProps: {
-			alternateButtonText: 'Subscribe again',
-			supportReferer: 'account_overview_subscriptions_section',
-			urlSuffix: 'subscribe',
-			message: '', // TODO : copy here!!
-		},
 	},
 };
