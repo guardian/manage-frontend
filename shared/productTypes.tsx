@@ -248,6 +248,9 @@ type ProductTypeKeys =
 	| 'supporterplus'
 	| 'guardianpatron';
 
+/*
+ * TODO: remove 'contributions' from the following list once MDAPI has been changed to return 'recurringSupport' instead
+ */
 export type GroupedProductTypeKeys =
 	| 'membership'
 	| 'contributions'
@@ -662,6 +665,9 @@ export const GROUPED_PRODUCT_TYPES: {
 				'We no longer have a membership programme but you can still continue to support The Guardian.',
 		},
 	},
+	/*
+	 * TODO: remove 'contributions' from the array once MDAPI has been changed to return 'recurringSupport' instead
+	 */
 	contributions: {
 		...PRODUCT_TYPES.contributions,
 		mapGroupedToSpecific: () => PRODUCT_TYPES.contributions,

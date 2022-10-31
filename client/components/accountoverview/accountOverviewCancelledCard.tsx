@@ -30,6 +30,9 @@ export const AccountOverviewCancelledCard = (
 		props.product,
 	);
 
+	/*
+	 * TODO: remove 'contributions' from the following list once MDAPI has been changed to return 'recurringSupport' instead
+	 */
 	const showSubscribeAgainButton =
 		props.product.mmaCategory !== 'membership' &&
 		props.product.mmaCategory !== 'contributions' &&
