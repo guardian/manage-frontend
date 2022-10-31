@@ -109,14 +109,14 @@ const getCaseUpdatingCancellationSummary =
 	(
 		caseId: string | '',
 		productType: ProductTypeWithCancellationFlow,
-		productFriendlyName: string,
+		cancelledProductDetail: ProductDetail,
 	) =>
 	(productDetails: ProductDetail[]) => {
 		const productDetail = productDetails[0] || { subscription: {} };
 		const render = getCancellationSummaryWithReturnButton(
 			getCancellationSummary(
 				productType,
-				productFriendlyName,
+				cancelledProductDetail,
 			)(productDetail),
 		);
 		return caseId ? (
@@ -205,7 +205,7 @@ const ExecuteCancellation = () => {
 						render={getCaseUpdatingCancellationSummary(
 							caseId,
 							productType,
-							productType.friendlyName(productDetail),
+							productDetail,
 						)}
 						loadingMessage="Performing your cancellation..."
 					/>

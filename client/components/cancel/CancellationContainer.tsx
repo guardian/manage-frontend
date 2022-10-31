@@ -9,6 +9,7 @@ import {
 	isProduct,
 	MembersDataApiAsyncLoader,
 } from '../../../shared/productResponse';
+import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import type {
 	ProductType,
 	ProductTypeWithCancellationFlow,
@@ -88,11 +89,12 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const productDetail = routerState?.productDetail;
+	const groupedProductType = GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
 
 	const [pageTitle, setPageTitle] = useState<string>(
 		`Cancel ${
-			props.productType.shortFriendlyName ||
-			props.productType.friendlyName(productDetail)
+			groupedProductType.shortFriendlyName ||
+			groupedProductType.friendlyName()
 		}`,
 	);
 

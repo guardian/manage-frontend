@@ -21,7 +21,7 @@ import { CancellationContributionReminder } from './cancellationContributionRemi
 const actuallyCancelled = (
 	productType: ProductType,
 	productDetail: ProductDetail,
-	productFriendlyName: string,
+	cancelledProductDetail: ProductDetail,
 ) => {
 	const deliveryRecordsLink: string = `/delivery/${productType.urlPart}/records`;
 	const subscription = productDetail.subscription;
@@ -36,7 +36,12 @@ const actuallyCancelled = (
 						`,
 					]}
 				>
-					Your {productFriendlyName} is cancelled.
+					{productType.cancellation?.alternateSummaryHeading(
+						cancelledProductDetail,
+					) ||
+						`Your ${productType.friendlyName(
+							cancelledProductDetail,
+						)} is cancelled.`}
 				</Heading>
 				{productType.cancellation &&
 					!productType.cancellation.shouldHideSummaryMainPara && (
@@ -46,7 +51,10 @@ const actuallyCancelled = (
 								(subscription.end ? (
 									<>
 										You will continue to receive the
-										benefits of your {productFriendlyName}{' '}
+										benefits of your{' '}
+										{productType.friendlyName(
+											cancelledProductDetail,
+										)}{' '}
 										until{' '}
 										<b>
 											{cancellationFormatDate(
@@ -175,15 +183,18 @@ export const isCancelled = (subscription: Subscription) =>
 	Object.keys(subscription).length === 0 || subscription.cancelledAt;
 
 export const getCancellationSummary =
-	(productType: ProductType, productFriendlyName: string) =>
+	(productType: ProductType, cancelledProductDetail: ProductDetail) =>
 	(productDetail: ProductDetail) =>
 		isCancelled(productDetail.subscription) ? (
-			actuallyCancelled(productType, productDetail, productFriendlyName)
+			actuallyCancelled(
+				productType,
+				productDetail,
+				cancelledProductDetail,
+			)
 		) : (
 			<GenericErrorScreen
-				loggingMessage={
-					productFriendlyName +
-					" cancellation call succeeded but subsequent product detail doesn't show as cancelled"
-				}
+				loggingMessage={`${productType.friendlyName(
+					cancelledProductDetail,
+				)} cancellation call succeeded but subsequent product detail doesn't show as cancelled`}
 			/>
 		);
