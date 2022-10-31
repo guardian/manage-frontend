@@ -92,6 +92,9 @@ interface CancellationFlowProperties {
 	startPageOfferEffectiveDateOptions?: true;
 	hideReasonTitlePrefix?: true;
 	alternateSummaryMainPara?: string;
+	alternateSummaryHeading: (
+		productDetail?: ProductDetail,
+	) => string | undefined;
 	shouldHideSummaryMainPara?: true;
 	summaryReasonSpecificPara: (
 		reasonId: OptionalCancellationReasonId,
@@ -277,6 +280,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			reasons: membershipCancellationReasons,
 			sfCaseProduct: 'Membership',
 			startPageBody: membershipCancellationFlowStart,
+			alternateSummaryHeading: () => undefined,
 			hideReasonTitlePrefix: true,
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
@@ -312,6 +316,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			sfCaseProduct: 'Recurring - Contributions',
 			startPageBody: contributionsCancellationFlowStart,
 			shouldHideSummaryMainPara: true,
+			alternateSummaryHeading: () => undefined,
 			summaryReasonSpecificPara: (
 				reasonId: OptionalCancellationReasonId,
 			) => {
@@ -450,6 +455,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			startPageOfferEffectiveDateOptions: true,
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
+			alternateSummaryHeading: () => undefined,
 			alternateSupportButtonText: (
 				reasonId: OptionalCancellationReasonId,
 			) =>
@@ -530,6 +536,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			startPageOfferEffectiveDateOptions: true,
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
+			alternateSummaryHeading: () => undefined,
 			alternateSupportButtonText: (
 				reasonId: OptionalCancellationReasonId,
 			) =>
@@ -570,6 +577,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			startPageBody: digipackCancellationFlowStart,
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
+			alternateSummaryHeading: () => undefined,
 			alternateSupportButtonText: (
 				reasonId: OptionalCancellationReasonId,
 			) =>
@@ -613,6 +621,22 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			SOFT_OPT_IN_IDS.digi_subscriber_preview,
 		],
 		cancellation: {
+			alternateSummaryMainPara:
+				"This is immediate and you will not be charged again. If you've cancelled within the first 14 days, we'll send you a full refund.",
+			alternateSummaryHeading: (productDetail?: ProductDetail) => {
+				if (!productDetail) {
+					return undefined;
+				}
+
+				const interval = (
+					getMainPlan(
+						productDetail.subscription,
+					) as PaidSubscriptionPlan
+				).interval;
+				return `${
+					interval === 'month' ? 'Monthly' : 'Annual'
+				} support + extras cancelled.`;
+			},
 			linkOnProductPage: true,
 			reasons: supporterplusCancellationReasons,
 			sfCaseProduct: 'Supporter Plus',

@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { featureSwitches } from '../../../shared/featureSwitches';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
+import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import useFetch from '../../services/useFetch';
 import CancellationSwitchOffer from '../productSwitch/CancellationSwitchOffer';
 import type { AvailableProductsResponse } from '../productSwitch/productSwitchApi';
@@ -32,13 +33,14 @@ const CancellationSwitchEligibilityCheck = () => {
 		return <Navigate to="/" />;
 	}
 
+	const groupedProductType =
+		GROUPED_PRODUCT_TYPES[routerState.productDetail.mmaCategory];
+
 	if (routerState?.dontShowOffer) {
 		pageTitleContext.setPageTitle(
 			`Cancel ${
-				cancellationContext.productType.shortFriendlyName ||
-				cancellationContext.productType.friendlyName(
-					routerState.productDetail,
-				)
+				groupedProductType.shortFriendlyName ||
+				groupedProductType.friendlyName()
 			}`,
 		);
 		return <CancellationReasonSelection />;
