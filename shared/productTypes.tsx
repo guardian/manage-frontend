@@ -229,6 +229,9 @@ const calculateProductTitle =
 const calculateSupporterPlusTitle = (interval: string) =>
 	interval === 'month' ? 'monthly + extras' : 'annual + extras';
 
+const calculateMonthlyOrAnnualFromInterval = (interval: string) =>
+	interval === 'month' ? 'Monthly' : 'Annual';
+
 const FRONT_PAGE_NEWSLETTER_ID = '6009';
 enum SOFT_OPT_IN_IDS {
 	support_onboarding = 'your_support_onboarding',
@@ -298,7 +301,13 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		],
 	},
 	contributions: {
-		productTitle: () => 'Recurring contribution',
+		productTitle: (mainPlan?: SubscriptionPlan) => {
+			const paidPlan = mainPlan as PaidSubscriptionPlan;
+			const interval = paidPlan.interval;
+			return `${calculateMonthlyOrAnnualFromInterval(
+				interval,
+			)} contribution`;
+		},
 		friendlyName: () => 'recurring contribution',
 		allProductsProductTypeFilterString: 'Contribution',
 		urlPart: 'contributions',
@@ -629,9 +638,9 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 						productDetail.subscription,
 					) as PaidSubscriptionPlan
 				).interval;
-				return `${
-					interval === 'month' ? 'Monthly' : 'Annual'
-				} support + extras cancelled.`;
+				return `${calculateMonthlyOrAnnualFromInterval(
+					interval,
+				)} support + extras cancelled.`;
 			},
 			linkOnProductPage: true,
 			reasons: supporterplusCancellationReasons,
