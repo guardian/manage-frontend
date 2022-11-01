@@ -166,7 +166,7 @@ export interface ProductType {
 	getOphanProductType?: (
 		productDetail: ProductDetail,
 	) => OphanProduct | undefined;
-	shouldRevealSubscriptionId?: boolean;
+	showSupporterId?: boolean;
 	tierLabel?: string;
 	renewalMetadata?: SupportTheGuardianButtonProps;
 	noProductSupportUrlSuffix?: string;
@@ -679,6 +679,7 @@ export const GROUPED_PRODUCT_TYPES: {
 		...PRODUCT_TYPES.membership,
 		mapGroupedToSpecific: () => PRODUCT_TYPES.membership,
 		groupFriendlyName: 'membership',
+		showSupporterId: true,
 		supportTheGuardianSectionProps: {
 			supportReferer: 'account_overview_membership_section',
 			message:
@@ -692,6 +693,7 @@ export const GROUPED_PRODUCT_TYPES: {
 		...PRODUCT_TYPES.contributions,
 		mapGroupedToSpecific: () => PRODUCT_TYPES.contributions,
 		groupFriendlyName: 'contributions',
+		showSupporterId: true,
 	},
 	recurringSupport: {
 		productTitle: () => 'Recurring support',
@@ -710,7 +712,7 @@ export const GROUPED_PRODUCT_TYPES: {
 			return GROUPED_PRODUCT_TYPES.recurringSupport; // This should never happen!
 		},
 		softOptInIDs: [], // this is only here for the sake of the typescript type and the unlikely scenario where the mapGroupedToSpecific function returns a grouped product type
-		shouldRevealSubscriptionId: true,
+		showSupporterId: true,
 	},
 	subscriptions: {
 		productTitle: () => 'Subscription',
@@ -741,6 +743,5 @@ export const GROUPED_PRODUCT_TYPES: {
 		softOptInIDs: [], // this is only here for the sake of the typescript type and the unlikely scenario where the mapGroupedToSpecific function returns a grouped product type
 		cancelledCopy:
 			'Your subscription has been cancelled. You are able to access your subscription until',
-		shouldRevealSubscriptionId: true,
 	},
 };
