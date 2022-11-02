@@ -89,7 +89,8 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const productDetail = routerState?.productDetail;
-	const groupedProductType = GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
+	const groupedProductType =
+		GROUPED_PRODUCT_TYPES[props.productType.groupedProductType];
 
 	const [pageTitle, setPageTitle] = useState<string>(
 		`Cancel ${

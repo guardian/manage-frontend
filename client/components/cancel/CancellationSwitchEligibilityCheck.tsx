@@ -29,12 +29,16 @@ const CancellationSwitchEligibilityCheck = () => {
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
-	if (!routerState) {
+	const productDetail = cancellationContext.productDetail;
+
+	if (!productDetail) {
 		return <Navigate to="/" />;
 	}
 
 	const groupedProductType =
-		GROUPED_PRODUCT_TYPES[routerState.productDetail.mmaCategory];
+		GROUPED_PRODUCT_TYPES[
+			cancellationContext.productType.groupedProductType
+		];
 
 	if (routerState?.dontShowOffer) {
 		pageTitleContext.setPageTitle(
@@ -50,11 +54,11 @@ const CancellationSwitchEligibilityCheck = () => {
 		featureSwitches.cancellationProductSwitch;
 
 	const { data, error } = useFetch<AvailableProductsResponse[]>(
-		`/api/available-product-moves/${routerState.productDetail.subscription.subscriptionId}`,
+		`/api/available-product-moves/${productDetail.subscription.subscriptionId}`,
 		{
 			method: 'GET',
 			headers: {
-				[MDA_TEST_USER_HEADER]: `${routerState.productDetail.isTestUser}`,
+				[MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`,
 			},
 		},
 	);
@@ -70,7 +74,7 @@ const CancellationSwitchEligibilityCheck = () => {
 					loadingMessage={`Checking your ${
 						cancellationContext.productType.shortFriendlyName ||
 						cancellationContext.productType.friendlyName(
-							routerState.productDetail,
+							productDetail,
 						)
 					} details...`}
 				/>
