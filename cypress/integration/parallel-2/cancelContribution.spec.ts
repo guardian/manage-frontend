@@ -164,7 +164,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@get_case');
 
 		cy.findByRole('link', { name: 'Manage payment method' }).click();
-		cy.findByText('Manage payment method').should('exist');
+		cy.findByText('Update your payment method').should('exist');
 	});
 
 	it('cancels contribution with save body string (reason: I would rather make a single contribution)', () => {
