@@ -19,7 +19,6 @@ import type {
 import {
 	getMainPlan,
 	isGift,
-	isPaidSubscriptionPlan,
 	isProduct,
 	sortByJoinDate,
 } from '../../../shared/productResponse';
@@ -122,11 +121,6 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
 									const cancelledCopy =
 										specificProductType.cancelledCopy ||
 										groupedProductType.cancelledCopy;
-									const isAmountOveridable =
-										specificProductType.updateAmountMdaEndpoint;
-									const isContribution =
-										isAmountOveridable &&
-										isPaidSubscriptionPlan(mainPlan);
 									const nextPaymentDetails =
 										getNextPaymentDetails(
 											mainPlan,
@@ -231,16 +225,12 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
 													.
 												</p>
 											)}
-											{!isContribution && (
-												<BasicProductInfoTable
-													groupedProductType={
-														groupedProductType
-													}
-													productDetail={
-														productDetail
-													}
-												/>
-											)}
+											<BasicProductInfoTable
+												groupedProductType={
+													groupedProductType
+												}
+												productDetail={productDetail}
+											/>
 											<SixForSixExplainerIfApplicable
 												additionalCss={css`
 													${textSans.medium()};
