@@ -1,9 +1,7 @@
-# This action runs Snyk Monitor every day at 6 AM and on every push to main
+# This action runs Snyk Monitor on every push to main
 name: Snyk
 
 on:
-  schedule:
-    - cron: 0 6 * * *
   push:
     branches:
       - main
