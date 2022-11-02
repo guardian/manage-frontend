@@ -159,6 +159,7 @@ export interface ProductType {
 	productTitle: (mainPlan?: SubscriptionPlan) => string;
 	friendlyName: (productDetail?: ProductDetail) => ProductFriendlyName;
 	shortFriendlyName?: string;
+	groupedProductType: GroupedProductTypeKeys;
 	allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
 	urlPart: ProductUrlPart;
 	softOptInIDs: string[];
@@ -267,6 +268,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	membership: {
 		productTitle: () => 'Guardian membership',
 		friendlyName: () => 'membership',
+		groupedProductType: 'membership',
 		allProductsProductTypeFilterString: 'Membership',
 		urlPart: 'membership',
 		getOphanProductType: (productDetail: ProductDetail) => {
@@ -312,6 +314,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			)} contribution`;
 		},
 		friendlyName: () => 'recurring contribution',
+		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'Contribution',
 		urlPart: 'contributions',
 		getOphanProductType: () => 'RECURRING_CONTRIBUTION',
@@ -372,6 +375,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	newspaper: {
 		productTitle: calculateProductTitle('Newspaper subscription'),
 		friendlyName: () => 'newspaper subscription',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Paper',
 		urlPart: 'paper',
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
@@ -391,6 +395,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		productTitle: calculateProductTitle('Newspaper Delivery'),
 		friendlyName: () => 'newspaper home delivery subscription',
 		shortFriendlyName: 'newspaper home delivery',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'HomeDelivery',
 		urlPart: 'homedelivery',
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
@@ -429,6 +434,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		productTitle: calculateProductTitle('Newspaper Voucher'),
 		friendlyName: () => 'newspaper voucher subscription',
 		shortFriendlyName: 'newspaper voucher booklet',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Voucher',
 		urlPart: 'voucher',
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
@@ -486,6 +492,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	digitalvoucher: {
 		productTitle: calculateProductTitle('Newspaper Subscription Card'),
 		friendlyName: () => 'newspaper subscription card',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'DigitalVoucher',
 		urlPart: 'subscriptioncard',
 		legacyUrlPart: 'digitalvoucher',
@@ -512,6 +519,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		productTitle: () => 'Guardian Weekly',
 		friendlyName: () => 'Guardian Weekly subscription',
 		shortFriendlyName: 'Guardian Weekly',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Weekly',
 		urlPart: 'guardianweekly',
 		softOptInIDs: [
@@ -571,6 +579,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	digipack: {
 		productTitle: () => 'Digital Subscription',
 		friendlyName: () => 'digital subscription',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Digipack',
 		urlPart: 'digital',
 		legacyUrlPart: 'digitalpack',
@@ -626,6 +635,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			).interval;
 			return calculateSupporterPlusTitle(interval);
 		},
+		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'SupporterPlus',
 		urlPart: 'support',
 		getOphanProductType: () => 'SUPPORTER_PLUS',
@@ -674,6 +684,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	guardianpatron: {
 		productTitle: () => 'Guardian Patron',
 		friendlyName: () => 'guardian patron',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'GuardianPatron',
 		urlPart: 'guardianpatron',
 		legacyUrlPart: 'guardianpatron',
@@ -695,6 +706,7 @@ export const GROUPED_PRODUCT_TYPES: {
 		...PRODUCT_TYPES.membership,
 		mapGroupedToSpecific: () => PRODUCT_TYPES.membership,
 		groupFriendlyName: 'membership',
+		groupedProductType: 'membership',
 		showSupporterId: true,
 		supportTheGuardianSectionProps: {
 			supportReferer: 'account_overview_membership_section',
@@ -709,12 +721,14 @@ export const GROUPED_PRODUCT_TYPES: {
 		...PRODUCT_TYPES.contributions,
 		mapGroupedToSpecific: () => PRODUCT_TYPES.contributions,
 		groupFriendlyName: 'contributions',
+		groupedProductType: 'contributions',
 		showSupporterId: true,
 	},
 	recurringSupport: {
 		productTitle: () => 'Recurring support',
 		friendlyName: () => 'recurring support',
 		groupFriendlyName: 'recurring support',
+		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'RecurringSupport',
 		urlPart: 'recurringsupport',
 		mapGroupedToSpecific: (
@@ -734,6 +748,7 @@ export const GROUPED_PRODUCT_TYPES: {
 		productTitle: () => 'Subscription',
 		friendlyName: () => 'subscription',
 		groupFriendlyName: 'subscriptions',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'ContentSubscription',
 		urlPart: 'subscriptions',
 		mapGroupedToSpecific: (
