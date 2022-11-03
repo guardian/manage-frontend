@@ -198,7 +198,7 @@ const ExecuteCancellation = () => {
 							productType,
 							routerState.selectedReasonId,
 							createProductDetailFetcher(
-								productType,
+								productType.allProductsProductTypeFilterString,
 								productDetail.subscription.subscriptionId,
 							),
 						)}

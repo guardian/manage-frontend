@@ -90,7 +90,9 @@ const DeliveryRecordsContainer = (
 				/>
 			) : (
 				<MembersDataApiAsyncLoader
-					fetch={createProductDetailFetcher(props.productType)}
+					fetch={createProductDetailFetcher(
+						props.productType.allProductsProductTypeFilterString,
+					)}
 					render={handleMembersDataResponse(props.productType)}
 					loadingMessage={`Retrieving details of your ${props.productType.friendlyName()}...`}
 				/>

@@ -118,7 +118,8 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 					) : (
 						<MembersDataApiAsyncLoader
 							fetch={createProductDetailFetcher(
-								props.productType,
+								props.productType
+									.allProductsProductTypeFilterString,
 							)}
 							render={renderSingleProductOrReturnToAccountOverview(
 								props.productType,

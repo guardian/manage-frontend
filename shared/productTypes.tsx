@@ -65,7 +65,7 @@ type SfCaseProduct =
 	| 'Digital Pack Subscriptions'
 	| 'Supporter Plus'
 	| 'Guardian Patron';
-type AllProductsProductTypeFilterString =
+export type AllProductsProductTypeFilterString =
 	| 'Weekly'
 	| 'Paper'
 	| 'Voucher'
@@ -185,7 +185,8 @@ export interface ProductType {
 	productPageNewsletterIDs?: string[];
 }
 
-export interface GroupedProductType extends ProductType {
+export interface GroupedProductType
+	extends Omit<ProductType, 'groupedProductType' | 'softOptInIDs'> {
 	mapGroupedToSpecific: (
 		productDetail: ProductDetail | CancelledProductDetail,
 	) => ProductType;
@@ -703,10 +704,9 @@ export const GROUPED_PRODUCT_TYPES: {
 	[productKey in GroupedProductTypeKeys]: GroupedProductType;
 } = {
 	membership: {
-		...PRODUCT_TYPES.membership,
+		...PRODUCT_TYPES.membership, // TODO: Can we omit 'groupedProductType' and 'softOptInIDs' from spread properties as omitted from type
 		mapGroupedToSpecific: () => PRODUCT_TYPES.membership,
 		groupFriendlyName: 'membership',
-		groupedProductType: 'membership',
 		showSupporterId: true,
 		supportTheGuardianSectionProps: {
 			supportReferer: 'account_overview_membership_section',
@@ -718,17 +718,15 @@ export const GROUPED_PRODUCT_TYPES: {
 	 * TODO: remove 'contributions' from the array once MDAPI has been changed to return 'recurringSupport' instead
 	 */
 	contributions: {
-		...PRODUCT_TYPES.contributions,
+		...PRODUCT_TYPES.contributions, // TODO: Can we omit 'groupedProductType' and 'softOptInIDs' from spread properties as omitted from type
 		mapGroupedToSpecific: () => PRODUCT_TYPES.contributions,
 		groupFriendlyName: 'contributions',
-		groupedProductType: 'contributions',
 		showSupporterId: true,
 	},
 	recurringSupport: {
 		productTitle: () => 'Recurring support',
 		friendlyName: () => 'recurring support',
 		groupFriendlyName: 'recurring support',
-		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'RecurringSupport',
 		urlPart: 'recurringsupport',
 		mapGroupedToSpecific: (
@@ -739,16 +737,14 @@ export const GROUPED_PRODUCT_TYPES: {
 			} else if (productDetail.tier === 'Contributor') {
 				return PRODUCT_TYPES.contributions;
 			}
-			return GROUPED_PRODUCT_TYPES.recurringSupport; // This should never happen!
+			throw `Specific product type for tier '${productDetail.tier}' not found.`;
 		},
-		softOptInIDs: [], // this is only here for the sake of the typescript type and the unlikely scenario where the mapGroupedToSpecific function returns a grouped product type
 		showSupporterId: true,
 	},
 	subscriptions: {
 		productTitle: () => 'Subscription',
 		friendlyName: () => 'subscription',
 		groupFriendlyName: 'subscriptions',
-		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'ContentSubscription',
 		urlPart: 'subscriptions',
 		mapGroupedToSpecific: (
@@ -769,9 +765,8 @@ export const GROUPED_PRODUCT_TYPES: {
 			} else if (productDetail.tier.startsWith('guardianpatron')) {
 				return PRODUCT_TYPES.guardianpatron;
 			}
-			return GROUPED_PRODUCT_TYPES.subscriptions; // This should never happen!
+			throw `Specific product type for tier '${productDetail.tier}' not found.`;
 		},
-		softOptInIDs: [], // this is only here for the sake of the typescript type and the unlikely scenario where the mapGroupedToSpecific function returns a grouped product type
 		cancelledCopy:
 			'Your subscription has been cancelled. You are able to access your subscription until',
 	},
