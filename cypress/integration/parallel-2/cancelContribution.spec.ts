@@ -2,9 +2,7 @@ import { contribution } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Cancel contribution', () => {
-	const setupCancellation = () => {
-		cy.visit('/');
-
+	const setSignInStatus = () => {
 		cy.window().then((window) => {
 			// @ts-ignore
 			window.guardian.identityDetails = {
@@ -14,6 +12,12 @@ describe('Cancel contribution', () => {
 				email: 'example@example.com',
 			};
 		});
+	};
+
+	const setupCancellation = () => {
+		cy.visit('/');
+
+		setSignInStatus();
 
 		cy.findByText('Manage recurring support').click();
 		cy.wait('@cancelled');
@@ -211,5 +215,26 @@ describe('Cancel contribution', () => {
 		cy.findByText(
 			'We have successfully updated the amount of your contribution. New amount, £80.00, will be taken on 5 Feb 2022. Thank you for supporting the Guardian.',
 		).should('exist');
+	});
+
+	it('allows cancellation when visiting cancellation page directly', () => {
+		cy.visit('/cancel/contributions');
+
+		setSignInStatus();
+
+		cy.findAllByRole('radio').eq(0).click();
+		cy.findByRole('button', { name: 'Continue' }).click();
+
+		cy.wait('@get_case');
+
+		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
+
+		cy.wait('@create_case_in_salesforce');
+		cy.wait('@cancel_contribution');
+		cy.wait('@new_product_detail');
+
+		cy.findByRole('heading', {
+			name: 'Your recurring contribution is cancelled.',
+		});
 	});
 });
