@@ -37,14 +37,14 @@ export const createProductDetailFetcher =
 		);
 
 export const createProductDetailFetch = (
-	productType: ProductType,
+	productTypeFilter: AllProductsProductTypeFilterString,
 	subscriptionName?: string,
 ) =>
 	fetchWithDefaultParameters(
 		'/api/me/mma' +
 			(subscriptionName
 				? `/${subscriptionName}`
-				: `?productType=${productType.allProductsProductTypeFilterString}`),
+				: `?productType=${productTypeFilter}`),
 		{
 			headers: {
 				[X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(

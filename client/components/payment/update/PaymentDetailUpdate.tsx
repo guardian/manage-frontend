@@ -298,7 +298,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 
 				// refetch subscription from members data api
 				const newSubscriptionData = await createProductDetailFetch(
-					props.productType,
+					props.productType.allProductsProductTypeFilterString,
 					productDetail.subscription.subscriptionId,
 				);
 				navigate('updated', {
