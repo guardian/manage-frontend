@@ -302,10 +302,13 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	contributions: {
 		productTitle: (mainPlan?: SubscriptionPlan) => {
+			if (!mainPlan) {
+				return 'Recurring contribution';
+			}
+
 			const paidPlan = mainPlan as PaidSubscriptionPlan;
-			const interval = paidPlan.interval;
 			return `${calculateMonthlyOrAnnualFromInterval(
-				interval,
+				paidPlan.interval,
 			)} contribution`;
 		},
 		friendlyName: () => 'recurring contribution',
@@ -604,6 +607,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	supporterplus: {
 		productTitle: (mainPlan?: SubscriptionPlan) => {
+			if (!mainPlan) {
+				return 'Recurring support';
+			}
+
 			const paidMainPlan = mainPlan as PaidSubscriptionPlan;
 			return `${capitalize(
 				calculateSupporterPlusTitle(paidMainPlan.interval),
