@@ -1,90 +1,95 @@
 import {
-	inOrderToImproveSubs,
+	financialCircumstances,
 	standardAlternateFeedbackIntro,
 } from '../cancellationConstants';
 import type { CancellationReason } from '../cancellationReason';
-import { BreakFromNews } from '../GenericSaveBodyResponses';
 
 export const supporterplusCancellationReasons: CancellationReason[] = [
 	{
 		reasonId: 'mma_editorial',
-		linkLabel: 'I am unhappy with Guardian journalism',
+		linkLabel: 'I am unhappy with some editorial decisions',
 		saveBody: [
 			'In order to improve our journalism, we’d love to know more about why you are thinking of cancelling.',
 		],
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
+		reasonId: 'mma_article',
+		linkLabel: 'As a result of a specific article I read',
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
+	},
+	{
 		reasonId: 'mma_financial_circumstances',
-		linkLabel: 'A change in my financial circumstances',
-		saveBody: [
-			'We understand that financial circumstances can change from time to time.',
-
-			'Making a smaller contribution to the Guardian can be an inexpensive way of keeping journalism open for everyone to read and enjoy. Once you’ve completed your cancellation below, we hope you’ll consider a small one off or recurring contribution in the future.',
-		],
-		skipFeedback: true,
+		linkLabel: 'I can no longer afford to support you',
+		saveBody: financialCircumstances,
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
-		reasonId: 'mma_support_another_way',
+		reasonId: 'mma_cost_of_living',
+		linkLabel: 'Due to the cost of living crisis',
+		saveBody: financialCircumstances,
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
+	},
+	{
+		reasonId: 'mma_cutting_subscriptions',
 		linkLabel:
-			'I am going to support The Guardian in another way, eg. by subscribing',
-		saveBody: [
-			'Thank you for your ongoing support.',
-			'Once you’ve completed your cancellation below, you can set up a new product via our online checkouts.',
-		],
-		skipFeedback: true,
+			'I’m cutting down on my subscriptions with various organisations',
+		saveBody: financialCircumstances,
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
-		reasonId: 'mma_health',
-		linkLabel: 'Ill-health',
-		saveBody: [
-			'Thank you for your ongoing support.',
-			'Your subscription has ensured that our quality journalism remains open for everyone to read and enjoy.',
-			'Please confirm your cancellation below.',
-		],
-		skipFeedback: true,
+		reasonId: 'mma_prefer_lower_amount',
+		linkLabel: 'I’d like to support you, but at a lower amount',
+		saveBody: financialCircumstances,
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
-		reasonId: 'mma_break_from_news',
-		linkLabel: 'I am taking a break from news',
-		saveBody: BreakFromNews,
-		alternateFeedbackIntro:
-			'Alternatively we’d love to know more about what we could do better to help provide inspiring and trustworthy news.',
+		reasonId: 'mma_prefer_less_frequent',
+		linkLabel: 'I’d like to support you, but less frequently',
+		saveBody: financialCircumstances,
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
+	},
+	{
+		reasonId: 'mma_one_off',
+		linkLabel:
+			'I’d rather give spontaneously than have a recurring payment',
+		saveBody: financialCircumstances,
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
 		reasonId: 'mma_values',
 		linkLabel: 'I don’t feel that The Guardian values my support',
-		alternateFeedbackIntro: inOrderToImproveSubs,
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
-		reasonId: 'mma_benefits',
-		linkLabel: 'None of the subscription benefits are of interest to me',
-		alternateFeedbackIntro: inOrderToImproveSubs,
+		reasonId: 'mma_no_need',
+		linkLabel: 'I don’t think the Guardian needs my support',
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
-		reasonId: 'mma_time',
-		linkLabel: "I don't have time to use my subscription",
-		alternateFeedbackIntro: inOrderToImproveSubs,
-	},
-	{
-		reasonId: 'mma_better_offer',
-		linkLabel: "I've found a better offer with another publisher",
-		alternateFeedbackIntro: inOrderToImproveSubs,
+		reasonId: 'mma_dont_know_what_for',
+		linkLabel: 'I don’t know what my money is being used for',
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
 		reasonId: 'mma_value_for_money',
-		linkLabel: "I wasn't getting value for money",
-		alternateFeedbackIntro: inOrderToImproveSubs,
+		linkLabel:
+			'I didn’t get enough value for money from my ‘supporter extras’',
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
-		reasonId: 'mma_issue',
-		linkLabel: 'I’ve been experiencing technical or service problems',
-		alternateFeedbackIntro: inOrderToImproveSubs,
+		reasonId: 'mma_break_from_news',
+		linkLabel: 'I am taking a break from news',
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
+	},
+	{
+		reasonId: 'mma_dont_read_enough',
+		linkLabel: 'I no longer read the Guardian enough to justify my support',
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
 		reasonId: 'mma_other',
-		linkLabel: 'None of the above',
-		saveTitle: 'Other',
-		alternateFeedbackIntro: inOrderToImproveSubs,
+		linkLabel: 'Another reason (please specify)',
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 ];
