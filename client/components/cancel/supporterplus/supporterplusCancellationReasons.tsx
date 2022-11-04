@@ -58,7 +58,7 @@ export const supporterplusCancellationReasons: CancellationReason[] = [
 	},
 	{
 		reasonId: 'mma_values',
-		linkLabel: 'I don’t feel that The Guardian values my support',
+		linkLabel: 'I don’t feel that the Guardian values my support',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{

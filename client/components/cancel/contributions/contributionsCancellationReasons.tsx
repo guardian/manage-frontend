@@ -59,20 +59,18 @@ export const contributionsCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’d like to support you, but at a lower amount',
 		saveBody: ContributionsCancellationFlowFinancialSaveAttempt,
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
+		hideSaveActions: true,
+		skipFeedback: true,
+		hideContactUs: true,
 	},
 	{
 		reasonId: 'mma_values',
-		linkLabel: 'I don’t feel that The Guardian values my support',
+		linkLabel: 'I don’t feel that the Guardian values my support',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
 		reasonId: 'mma_no_need',
 		linkLabel: 'I don’t think the Guardian needs my support',
-		alternateFeedbackIntro: standardAlternateFeedbackIntro,
-	},
-	{
-		reasonId: 'mma_dont_know_what_for',
-		linkLabel: 'I don’t know what my money is being used for',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
