@@ -391,7 +391,7 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 			`}
 		>
 			{shouldContactUsToCancel &&
-				'Would you like to cancel your subscription? '}
+				`Would you like to cancel your ${props.friendlyName}? `}
 			<Link
 				css={css`
 					color: ${brand['500']};
