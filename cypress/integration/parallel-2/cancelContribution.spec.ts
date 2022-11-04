@@ -105,9 +105,9 @@ describe('Cancel contribution', () => {
 		cy.findByText('Oops!').should('exist');
 	});
 
-	it('cancels contribution with custom save body component (reason: I can no longer afford it)', () => {
+	it('cancels contribution with custom save body component (reason: I can no longer afford to support you)', () => {
 		setupCancellation();
-		cy.findAllByRole('radio').eq(4).click();
+		cy.findAllByRole('radio').eq(2).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
@@ -128,54 +128,15 @@ describe('Cancel contribution', () => {
 		cy.get('@cancel_contribution.all').should('have.length', 1);
 	});
 
-	it('cancels contribution with custom save body component (reason: A payment issue)', () => {
+	it('cancels contribution with save body string (reason: I’d like to get something in return for my support)', () => {
 		setupCancellation();
-		cy.findAllByRole('radio').eq(6).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
-
-		cy.wait('@get_case');
-
-		cy.contains('a', 'Manage payment method').should('exist');
-		cy.findByText(
-			'Please share any further thoughts you have about cancelling – you can help us improve. Thank you.',
-		).should('exist');
-		cy.findByRole('button', { name: 'Submit the form' }).should('exist');
-		cy.findByRole('button', { name: 'Reduce amount' }).should('exist');
-
-		cy.findByRole('button', { name: 'I still want to cancel' }).click();
-
-		cy.wait('@create_case_in_salesforce');
-		cy.wait('@cancel_contribution');
-		cy.wait('@new_product_detail');
-
-		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled.',
-		});
-
-		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
-		cy.get('@cancel_contribution.all').should('have.length', 1);
-	});
-
-	it('attempts cancellation but then updates payment details instead. (reason: A payment issue)', () => {
-		setupCancellation();
-		cy.findAllByRole('radio').eq(6).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
-
-		cy.wait('@get_case');
-
-		cy.findByRole('link', { name: 'Manage payment method' }).click();
-		cy.findByText('Update your payment method').should('exist');
-	});
-
-	it('cancels contribution with save body string (reason: I would rather make a single contribution)', () => {
-		setupCancellation();
-		cy.findAllByRole('radio').eq(8).click();
+		cy.findAllByRole('radio').eq(5).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
 
 		cy.findByText(
-			'After cancelling your monthly or annual contribution, we will show you how to make a single contribution quickly and easily.',
+			'Thank you for your ongoing support. Once you’ve completed your cancellation below, you can set up a new product via our online checkouts.',
 		).should('exist');
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
@@ -198,7 +159,7 @@ describe('Cancel contribution', () => {
 		});
 
 		setupCancellation();
-		cy.findAllByRole('radio').eq(4).click();
+		cy.findAllByRole('radio').eq(2).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
