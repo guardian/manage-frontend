@@ -8,9 +8,6 @@ export const supporterplusCancellationReasons: CancellationReason[] = [
 	{
 		reasonId: 'mma_editorial',
 		linkLabel: 'I am unhappy with some editorial decisions',
-		saveBody: [
-			'In order to improve our journalism, we’d love to know more about why you are thinking of cancelling.',
-		],
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
