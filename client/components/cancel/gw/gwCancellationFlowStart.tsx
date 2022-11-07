@@ -15,7 +15,7 @@ export const gwCancellationFlowStart = () => (
 	<Stack space={4}>
 		<Heading cssOverrides={measure.heading}>
 			We’re sorry to hear you’re thinking of cancelling your Guardian
-			Weekly subscription.
+			Weekly subscription
 		</Heading>
 
 		<p>

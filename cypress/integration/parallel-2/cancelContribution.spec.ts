@@ -84,7 +84,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled.',
+			name: 'Your recurring contribution is cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -121,7 +121,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled.',
+			name: 'Your recurring contribution is cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -145,7 +145,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled.',
+			name: 'Your recurring contribution is cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);

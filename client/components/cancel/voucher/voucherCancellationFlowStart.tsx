@@ -31,7 +31,7 @@ export const voucherCancellationFlowStart = ({
 		<Stack space={4}>
 			<Heading cssOverrides={measure.heading}>
 				We’re sorry to hear you’re thinking of cancelling your voucher
-				subscription.
+				subscription
 			</Heading>
 
 			<p>

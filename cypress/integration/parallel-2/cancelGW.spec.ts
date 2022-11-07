@@ -114,7 +114,7 @@ describe('Cancel guardian weekly', () => {
 		cy.wait('@create_case_in_salesforce');
 		cy.wait('@new_product_detail');
 
-		cy.findByText('Your Guardian Weekly subscription is cancelled.').should(
+		cy.findByText('Your Guardian Weekly subscription is cancelled').should(
 			'exist',
 		);
 	});
