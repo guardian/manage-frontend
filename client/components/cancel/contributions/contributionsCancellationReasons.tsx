@@ -1,4 +1,7 @@
-import { standardAlternateFeedbackIntro } from '../cancellationConstants';
+import {
+	financialCircumstances,
+	standardAlternateFeedbackIntro,
+} from '../cancellationConstants';
 import type { CancellationReason } from '../cancellationReason';
 import ContributionsCancellationAmountUpdatedSaved from './contributionsCancellationAmountUpdatedSaved';
 import ContributionsCancellationFlowFinancialSaveAttempt from './contributionsCancellationFlowFinancialSaveAttempt';
@@ -62,6 +65,19 @@ export const contributionsCancellationReasons: CancellationReason[] = [
 		hideSaveActions: true,
 		skipFeedback: true,
 		hideContactUs: true,
+	},
+	{
+		reasonId: 'mma_prefer_less_frequent',
+		linkLabel: 'I’d like to support you, but less frequently',
+		saveBody: financialCircumstances,
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
+	},
+	{
+		reasonId: 'mma_one_off',
+		linkLabel:
+			'I’d rather give spontaneously than have a recurring payment',
+		saveBody: financialCircumstances,
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
 		reasonId: 'mma_values',
