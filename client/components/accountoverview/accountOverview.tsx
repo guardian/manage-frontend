@@ -72,9 +72,32 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 
 	return (
 		<>
+			<div
+				css={css`
+					margin-top: ${space[12]}px;
+				`}
+			>
+				<p
+					css={css`
+						${headline.large({ fontWeight: 'bold' })};
+						margin-bottom: 0;
+					`}
+				>
+					Hello James
+				</p>
+				<p
+					css={css`
+						${headline.xxxsmall()};
+					`}
+				>
+					Thanks for supporting the Guardian since 2016
+				</p>
+			</div>
+
 			<PaymentFailureAlertIfApplicable
 				productDetail={maybeFirstPaymentFailure}
 			/>
+
 			{productCategories.map((category) => {
 				const groupedProductType =
 					GROUPED_PRODUCT_TYPES[category as GroupedProductTypeKeys];
