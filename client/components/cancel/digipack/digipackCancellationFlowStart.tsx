@@ -6,7 +6,7 @@ export const digipackCancellationFlowStart = () => (
 	<Stack space={4}>
 		<Heading cssOverrides={measure.heading}>
 			We’re sorry to hear you’re thinking of cancelling your digital
-			subscription.
+			subscription
 		</Heading>
 		<p>
 			Your support means The Guardian can remain editorially independent,

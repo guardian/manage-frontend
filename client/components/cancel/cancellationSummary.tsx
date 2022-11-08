@@ -41,7 +41,7 @@ const actuallyCancelled = (
 					) ||
 						`Your ${productType.friendlyName(
 							cancelledProductDetail,
-						)} is cancelled.`}
+						)} is cancelled`}
 				</Heading>
 				{productType.cancellation &&
 					!productType.cancellation.shouldHideSummaryMainPara && (

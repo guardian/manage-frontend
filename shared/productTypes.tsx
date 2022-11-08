@@ -647,7 +647,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 				).interval;
 				return `${calculateMonthlyOrAnnualFromInterval(
 					interval,
-				)} support + extras cancelled.`;
+				)} support + extras cancelled`;
 			},
 			linkOnProductPage: true,
 			reasons: supporterplusCancellationReasons,
