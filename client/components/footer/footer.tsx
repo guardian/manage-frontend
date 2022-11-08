@@ -278,13 +278,13 @@ export const Footer = () => {
 
 								<div css={supportStyles}>
 									<div css={supportTitleStyles}>
-										Support The&nbsp;Guardian
+										Support the&nbsp;Guardian
 									</div>
 									<div css={supportButtonContainerStyles}>
 										<SupportTheGuardianButton
 											urlSuffix="contribute"
 											supportReferer="footer_support_contribute"
-											alternateButtonText="Support"
+											alternateButtonText="Support us"
 											theme="brand"
 											size="small"
 										/>
