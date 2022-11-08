@@ -284,18 +284,11 @@ export const Footer = () => {
 										<SupportTheGuardianButton
 											urlSuffix="contribute"
 											supportReferer="footer_support_contribute"
-											alternateButtonText="Contribute"
+											alternateButtonText="Support"
 											theme="brand"
 											size="small"
 										/>
 									</div>
-									<SupportTheGuardianButton
-										urlSuffix="subscribe"
-										supportReferer="footer_support_subscribe"
-										alternateButtonText="Subscribe"
-										theme="brand"
-										size="small"
-									/>
 								</div>
 							</div>
 						</div>
