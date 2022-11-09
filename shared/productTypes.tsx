@@ -65,7 +65,7 @@ type SfCaseProduct =
 	| 'Digital Pack Subscriptions'
 	| 'Supporter Plus'
 	| 'Guardian Patron';
-type AllProductsProductTypeFilterString =
+export type AllProductsProductTypeFilterString =
 	| 'Weekly'
 	| 'Paper'
 	| 'Voucher'
@@ -159,6 +159,7 @@ export interface ProductType {
 	productTitle: (mainPlan?: SubscriptionPlan) => string;
 	friendlyName: (productDetail?: ProductDetail) => ProductFriendlyName;
 	shortFriendlyName?: string;
+	groupedProductType: GroupedProductTypeKeys;
 	allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
 	urlPart: ProductUrlPart;
 	softOptInIDs: string[];
@@ -184,7 +185,8 @@ export interface ProductType {
 	productPageNewsletterIDs?: string[];
 }
 
-export interface GroupedProductType extends ProductType {
+export interface GroupedProductType
+	extends Omit<ProductType, 'groupedProductType' | 'softOptInIDs'> {
 	mapGroupedToSpecific: (
 		productDetail: ProductDetail | CancelledProductDetail,
 	) => ProductType;
@@ -267,6 +269,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	membership: {
 		productTitle: () => 'Guardian membership',
 		friendlyName: () => 'membership',
+		groupedProductType: 'membership',
 		allProductsProductTypeFilterString: 'Membership',
 		urlPart: 'membership',
 		getOphanProductType: (productDetail: ProductDetail) => {
@@ -312,6 +315,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			)} contribution`;
 		},
 		friendlyName: () => 'recurring contribution',
+		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'Contribution',
 		urlPart: 'contributions',
 		getOphanProductType: () => 'RECURRING_CONTRIBUTION',
@@ -372,6 +376,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	newspaper: {
 		productTitle: calculateProductTitle('Newspaper subscription'),
 		friendlyName: () => 'newspaper subscription',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Paper',
 		urlPart: 'paper',
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
@@ -391,6 +396,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		productTitle: calculateProductTitle('Newspaper Delivery'),
 		friendlyName: () => 'newspaper home delivery subscription',
 		shortFriendlyName: 'newspaper home delivery',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'HomeDelivery',
 		urlPart: 'homedelivery',
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
@@ -429,6 +435,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		productTitle: calculateProductTitle('Newspaper Voucher'),
 		friendlyName: () => 'newspaper voucher subscription',
 		shortFriendlyName: 'newspaper voucher booklet',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Voucher',
 		urlPart: 'voucher',
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
@@ -486,6 +493,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	digitalvoucher: {
 		productTitle: calculateProductTitle('Newspaper Subscription Card'),
 		friendlyName: () => 'newspaper subscription card',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'DigitalVoucher',
 		urlPart: 'subscriptioncard',
 		legacyUrlPart: 'digitalvoucher',
@@ -512,6 +520,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		productTitle: () => 'Guardian Weekly',
 		friendlyName: () => 'Guardian Weekly subscription',
 		shortFriendlyName: 'Guardian Weekly',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Weekly',
 		urlPart: 'guardianweekly',
 		softOptInIDs: [
@@ -571,6 +580,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	digipack: {
 		productTitle: () => 'Digital Subscription',
 		friendlyName: () => 'digital subscription',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Digipack',
 		urlPart: 'digital',
 		legacyUrlPart: 'digitalpack',
@@ -626,6 +636,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			).interval;
 			return calculateSupporterPlusTitle(interval);
 		},
+		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'SupporterPlus',
 		urlPart: 'support',
 		getOphanProductType: () => 'SUPPORTER_PLUS',
@@ -674,6 +685,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	guardianpatron: {
 		productTitle: () => 'Guardian Patron',
 		friendlyName: () => 'guardian patron',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'GuardianPatron',
 		urlPart: 'guardianpatron',
 		legacyUrlPart: 'guardianpatron',
@@ -692,7 +704,7 @@ export const GROUPED_PRODUCT_TYPES: {
 	[productKey in GroupedProductTypeKeys]: GroupedProductType;
 } = {
 	membership: {
-		...PRODUCT_TYPES.membership,
+		...PRODUCT_TYPES.membership, // TODO: Can we omit 'groupedProductType' and 'softOptInIDs' from spread properties as omitted from type
 		mapGroupedToSpecific: () => PRODUCT_TYPES.membership,
 		groupFriendlyName: 'membership',
 		showSupporterId: true,
@@ -706,7 +718,7 @@ export const GROUPED_PRODUCT_TYPES: {
 	 * TODO: remove 'contributions' from the array once MDAPI has been changed to return 'recurringSupport' instead
 	 */
 	contributions: {
-		...PRODUCT_TYPES.contributions,
+		...PRODUCT_TYPES.contributions, // TODO: Can we omit 'groupedProductType' and 'softOptInIDs' from spread properties as omitted from type
 		mapGroupedToSpecific: () => PRODUCT_TYPES.contributions,
 		groupFriendlyName: 'contributions',
 		showSupporterId: true,
@@ -725,9 +737,8 @@ export const GROUPED_PRODUCT_TYPES: {
 			} else if (productDetail.tier === 'Contributor') {
 				return PRODUCT_TYPES.contributions;
 			}
-			return GROUPED_PRODUCT_TYPES.recurringSupport; // This should never happen!
+			throw `Specific product type for tier '${productDetail.tier}' not found.`;
 		},
-		softOptInIDs: [], // this is only here for the sake of the typescript type and the unlikely scenario where the mapGroupedToSpecific function returns a grouped product type
 		showSupporterId: true,
 	},
 	subscriptions: {
@@ -754,9 +765,8 @@ export const GROUPED_PRODUCT_TYPES: {
 			} else if (productDetail.tier.startsWith('guardianpatron')) {
 				return PRODUCT_TYPES.guardianpatron;
 			}
-			return GROUPED_PRODUCT_TYPES.subscriptions; // This should never happen!
+			throw `Specific product type for tier '${productDetail.tier}' not found.`;
 		},
-		softOptInIDs: [], // this is only here for the sake of the typescript type and the unlikely scenario where the mapGroupedToSpecific function returns a grouped product type
 		cancelledCopy:
 			'Your subscription has been cancelled. You are able to access your subscription until',
 	},

@@ -185,7 +185,9 @@ const HolidayStopsContainer = (
 				)
 			) : (
 				<MembersDataApiAsyncLoader
-					fetch={createProductDetailFetcher(props.productType)}
+					fetch={createProductDetailFetcher(
+						props.productType.allProductsProductTypeFilterString,
+					)}
 					render={handleMembersDataResponse(
 						props.productType,
 						existingHolidayStopToAmend,

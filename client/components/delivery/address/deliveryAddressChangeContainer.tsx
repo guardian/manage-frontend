@@ -158,7 +158,8 @@ const DeliveryAddressChangeContainer = (
 			<MembersDataApiAsyncLoader
 				render={renderContextAndOutletContainer(props.productType)}
 				fetch={createProductDetailFetcher(
-					GROUPED_PRODUCT_TYPES.subscriptions,
+					GROUPED_PRODUCT_TYPES.subscriptions
+						.allProductsProductTypeFilterString,
 				)}
 				loadingMessage={'Loading delivery details...'}
 			/>

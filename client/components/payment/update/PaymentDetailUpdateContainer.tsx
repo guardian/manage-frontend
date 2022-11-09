@@ -82,7 +82,9 @@ const PaymentDetailUpdateContainer = (props: WithProductType<ProductType>) => {
 				</PaymentUpdateProductDetailContext.Provider>
 			) : (
 				<MembersDataApiAsyncLoader
-					fetch={createProductDetailFetcher(props.productType)}
+					fetch={createProductDetailFetcher(
+						props.productType.allProductsProductTypeFilterString,
+					)}
 					render={renderContextAndOutletContainer}
 					loadingMessage={`Retrieving current payment details for your ${props.productType.friendlyName()}...`}
 				/>

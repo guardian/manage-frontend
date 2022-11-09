@@ -3,6 +3,7 @@ import {
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../shared/identity';
 import type {
+	AllProductsProductTypeFilterString,
 	ProductType,
 	ProductTypeWithCancellationFlow,
 	ProductTypeWithDeliveryRecordsProperties,
@@ -15,12 +16,16 @@ export const shouldHaveHolidayStopsFlow = (
 ): productType is ProductTypeWithHolidayStopsFlow => !!productType.holidayStops;
 
 export const createProductDetailFetcher =
-	(productType: ProductType, subscriptionName?: string) => () =>
+	(
+		productTypeFilter: AllProductsProductTypeFilterString,
+		subscriptionName?: string,
+	) =>
+	() =>
 		fetchWithDefaultParameters(
 			'/api/me/mma' +
 				(subscriptionName
 					? `/${subscriptionName}`
-					: `?productType=${productType.allProductsProductTypeFilterString}`),
+					: `?productType=${productTypeFilter}`),
 			{
 				headers: {
 					[X_GU_ID_FORWARDED_SCOPE]:
@@ -32,14 +37,14 @@ export const createProductDetailFetcher =
 		);
 
 export const createProductDetailFetch = (
-	productType: ProductType,
+	productTypeFilter: AllProductsProductTypeFilterString,
 	subscriptionName?: string,
 ) =>
 	fetchWithDefaultParameters(
 		'/api/me/mma' +
 			(subscriptionName
 				? `/${subscriptionName}`
-				: `?productType=${productType.allProductsProductTypeFilterString}`),
+				: `?productType=${productTypeFilter}`),
 		{
 			headers: {
 				[X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(

@@ -572,7 +572,8 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 				<MembersDataApiAsyncLoader
 					render={renderDeliveryAddressForm}
 					fetch={createProductDetailFetcher(
-						GROUPED_PRODUCT_TYPES.subscriptions,
+						GROUPED_PRODUCT_TYPES.subscriptions
+							.allProductsProductTypeFilterString,
 					)}
 					loadingMessage={'Loading delivery details...'}
 				/>
