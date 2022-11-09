@@ -195,7 +195,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled.',
+			name: 'Your recurring contribution is cancelled',
 		});
 	});
 });
