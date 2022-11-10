@@ -424,14 +424,14 @@ html:not(.src-focus-disabled) .emotion-61:focus {
   transform: translate(2px, 0);
 }
 
-.emotion-63 {
+.emotion-62 {
   padding-bottom: 24px;
   padding-left: 20px;
   padding-right: 20px;
   position: relative;
 }
 
-.emotion-64 {
+.emotion-63 {
   font-size: 16px;
   color: #FFFFFF;
   font-weight: bold;
@@ -445,17 +445,17 @@ html:not(.src-focus-disabled) .emotion-61:focus {
   transform: translateY(-50%);
 }
 
-.emotion-64:hover {
+.emotion-63:hover {
   color: #FFE500;
 }
 
-.emotion-65 {
+.emotion-64 {
   display: inline-block;
   padding-right: 5px;
   padding-top: 9px;
 }
 
-.emotion-66 {
+.emotion-65 {
   position: relative;
   float: right;
   background-color: currentColor;
@@ -464,20 +464,20 @@ html:not(.src-focus-disabled) .emotion-61:focus {
   width: 42px;
 }
 
-.emotion-67 {
+.emotion-66 {
   position: absolute;
   fill: #052962;
   top: 9px;
   left: 9px;
 }
 
-.emotion-68 {
+.emotion-67 {
   padding-top: 26px;
   font-size: 12px;
 }
 
 @media (min-width: 740px) {
-  .emotion-68 {
+  .emotion-67 {
     padding-top: 6px;
   }
 }
@@ -783,7 +783,7 @@ html:not(.src-focus-disabled) .emotion-61:focus {
                 <div
                   className="emotion-59"
                 >
-                  Support The Guardian
+                  Support the Guardian
                 </div>
                 <div
                   className="emotion-60"
@@ -793,7 +793,7 @@ html:not(.src-focus-disabled) .emotion-61:focus {
                     href="https://support.thegulocal.com/contribute?INTCMP=mma_footer_support_contribute&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_contribute%22%7D&displayExistingPaymentOptions=true"
                     onClick={[Function]}
                   >
-                    Contribute
+                    Support us
                     <div
                       className="src-button-space"
                     />
@@ -812,49 +812,26 @@ html:not(.src-focus-disabled) .emotion-61:focus {
                     
                   </a>
                 </div>
-                <a
-                  className="emotion-61"
-                  href="https://support.thegulocal.com/subscribe?INTCMP=mma_footer_support_subscribe&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_subscribe%22%7D&displayExistingPaymentOptions=true"
-                  onClick={[Function]}
-                >
-                  Subscribe
-                  <div
-                    className="src-button-space"
-                  />
-                  <svg
-                    aria-hidden={true}
-                    focusable={false}
-                    viewBox="-3 -3 30 30"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      clipRule="evenodd"
-                      d="M1 12.956h18.274l-7.167 8.575.932.932L23 12.478v-.956l-9.96-9.985-.932.932 7.166 8.575H1v1.912Z"
-                      fillRule="evenodd"
-                    />
-                  </svg>
-                  
-                </a>
               </div>
             </div>
           </div>
           <div
-            className="emotion-63"
+            className="emotion-62"
           >
             <a
-              className="emotion-64"
+              className="emotion-63"
               href="#top"
             >
               <span
-                className="emotion-65"
+                className="emotion-64"
               >
                 Back to top
               </span>
               <span
-                className="emotion-66"
+                className="emotion-65"
               >
                 <span
-                  className="emotion-67"
+                  className="emotion-66"
                 >
                   <svg
                     height="18"
@@ -869,7 +846,7 @@ html:not(.src-focus-disabled) .emotion-61:focus {
               </span>
             </a>
             <div
-              className="emotion-68"
+              className="emotion-67"
             >
               © 
               2022
