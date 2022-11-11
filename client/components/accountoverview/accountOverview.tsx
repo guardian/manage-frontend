@@ -74,7 +74,9 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 
 	return (
 		<>
-			{featureSwitches.showWelcomeMessage && <WelcomeMessage />}
+			{featureSwitches.showWelcomeMessage && (
+				<WelcomeMessage activeProducts={allActiveProductDetails} />
+			)}
 
 			<PaymentFailureAlertIfApplicable
 				productDetail={maybeFirstPaymentFailure}
