@@ -72,19 +72,19 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 
 	return (
 		<>
-			<div
+			<hgroup
 				css={css`
 					margin-top: ${space[12]}px;
 				`}
 			>
-				<p
+				<h2
 					css={css`
 						${headline.large({ fontWeight: 'bold' })};
 						margin-bottom: 0;
 					`}
 				>
 					Hello James
-				</p>
+				</h2>
 				<p
 					css={css`
 						${headline.xxxsmall()};
@@ -92,7 +92,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 				>
 					Thanks for supporting the Guardian since 2016
 				</p>
-			</div>
+			</hgroup>
 
 			<PaymentFailureAlertIfApplicable
 				productDetail={maybeFirstPaymentFailure}
