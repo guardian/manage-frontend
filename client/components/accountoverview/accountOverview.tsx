@@ -9,6 +9,7 @@ import {
 import { Stack } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
+import { featureSwitches } from '../../../shared/featureSwitches';
 import type {
 	CancelledProductDetail,
 	MembersDataApiItem,
@@ -28,6 +29,7 @@ import { SupportTheGuardianButton } from '../supportTheGuardianButton';
 import { AccountOverviewCancelledCard } from './accountOverviewCancelledCard';
 import { AccountOverviewCard } from './accountOverviewCard';
 import { EmptyAccountOverview } from './emptyAccountOverview';
+import { WelcomeMessage } from './WelcomeMessage';
 
 const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 	MembersDataApiItem[],
@@ -72,27 +74,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 
 	return (
 		<>
-			<hgroup
-				css={css`
-					margin-top: ${space[12]}px;
-				`}
-			>
-				<h2
-					css={css`
-						${headline.large({ fontWeight: 'bold' })};
-						margin-bottom: 0;
-					`}
-				>
-					Hello James
-				</h2>
-				<p
-					css={css`
-						${headline.xxxsmall()};
-					`}
-				>
-					Thanks for supporting the Guardian since 2016
-				</p>
-			</hgroup>
+			{featureSwitches.showWelcomeMessage && <WelcomeMessage />}
 
 			<PaymentFailureAlertIfApplicable
 				productDetail={maybeFirstPaymentFailure}
