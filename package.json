@@ -18,7 +18,7 @@
     "test": "jest --coverage && yarn type-check && yarn lint ",
     "jest": "jest",
     "updateSnapshot": "jest -u",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006 -s msw",
     "build-storybook": "build-storybook",
     "cypress:open": "DEBUG=cypress:* cypress open",
     "cypress:run": "cypress run",
@@ -121,6 +121,8 @@
     "jest-teamcity-reporter": "^0.9.0",
     "lint-staged": "^13.0.3",
     "mini-css-extract-plugin": "^2.5.2",
+    "msw": "^0.48.2",
+    "msw-storybook-addon": "^1.6.3",
     "node-polyfill-webpack-plugin": "^1.1.4",
     "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
@@ -176,5 +178,8 @@
     "winston": "^3.2.1",
     "yup": "^0.28.2"
   },
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "msw": {
+    "workerDirectory": "msw"
+  }
 }
