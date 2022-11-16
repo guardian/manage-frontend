@@ -18,7 +18,7 @@
     "test": "jest --coverage && yarn type-check && yarn lint ",
     "jest": "jest",
     "updateSnapshot": "jest -u",
-    "storybook": "start-storybook -p 6006 -s msw",
+    "storybook": "start-storybook -p 6006 -s '.storybook/static'",
     "build-storybook": "build-storybook",
     "cypress:open": "DEBUG=cypress:* cypress open",
     "cypress:run": "cypress run",
@@ -180,6 +180,6 @@
   },
   "license": "UNLICENSED",
   "msw": {
-    "workerDirectory": "msw"
+    "workerDirectory": ".storybook/static"
   }
 }
