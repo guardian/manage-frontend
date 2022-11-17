@@ -88,6 +88,7 @@ export const EmptyAccountOverview = () => {
 				or contribution.
 			</p>
 			<SupportTheGuardianButton
+				urlSuffix="contribute"
 				supportReferer={'account_overview_no_product'}
 			/>
 			<div
@@ -113,7 +114,7 @@ export const EmptyAccountOverview = () => {
 						${textSans.medium()}
 					`}
 				>
-					If you are already supporting The Guardian, it may be linked
+					If you are already supporting the Guardian, it may be linked
 					to a different email address. Please check that you are
 					logged in using the correct account or contact our customer
 					service team for help.{' '}

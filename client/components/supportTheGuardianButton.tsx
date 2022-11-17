@@ -79,7 +79,7 @@ export const SupportTheGuardianButton = (
 					});
 				}}
 			>
-				{props.alternateButtonText || 'Support The Guardian'}
+				{props.alternateButtonText || 'Support the Guardian'}
 			</LinkButton>
 		</ThemeProvider>
 	);
