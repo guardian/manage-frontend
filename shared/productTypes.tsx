@@ -366,7 +366,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 						return undefined;
 				}
 			},
-			alternateSupportButtonUrlSuffix: () => '/contribute', // TODO tweak the support url to preselect single/monthly/annual once functionality is available
+			alternateSupportButtonUrlSuffix: () => undefined,
 			swapFeedbackAndContactUs: true,
 			shouldHideThrasher: true,
 			shouldShowReminder: true,
@@ -475,18 +475,8 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
 			alternateSummaryHeading: () => undefined,
-			alternateSupportButtonText: (
-				reasonId: OptionalCancellationReasonId,
-			) =>
-				reasonId === 'mma_financial_circumstances'
-					? '/contribute'
-					: undefined,
-			alternateSupportButtonUrlSuffix: (
-				reasonId: OptionalCancellationReasonId,
-			) =>
-				reasonId === 'mma_financial_circumstances'
-					? '/contribute'
-					: undefined,
+			alternateSupportButtonText: () => undefined,
+			alternateSupportButtonUrlSuffix: () => undefined,
 			swapFeedbackAndContactUs: true,
 		},
 	},
@@ -558,18 +548,8 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
 			alternateSummaryHeading: () => undefined,
-			alternateSupportButtonText: (
-				reasonId: OptionalCancellationReasonId,
-			) =>
-				reasonId === 'mma_financial_circumstances'
-					? '/contribute'
-					: undefined,
-			alternateSupportButtonUrlSuffix: (
-				reasonId: OptionalCancellationReasonId,
-			) =>
-				reasonId === 'mma_financial_circumstances'
-					? '/contribute'
-					: undefined,
+			alternateSupportButtonText: () => undefined,
+			alternateSupportButtonUrlSuffix: () => undefined,
 			swapFeedbackAndContactUs: true,
 		},
 		fulfilmentDateCalculator: {
@@ -600,18 +580,8 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
 			alternateSummaryHeading: () => undefined,
-			alternateSupportButtonText: (
-				reasonId: OptionalCancellationReasonId,
-			) =>
-				reasonId === 'mma_financial_circumstances'
-					? '/contribute'
-					: undefined,
-			alternateSupportButtonUrlSuffix: (
-				reasonId: OptionalCancellationReasonId,
-			) =>
-				reasonId === 'mma_financial_circumstances'
-					? '/contribute'
-					: undefined,
+			alternateSupportButtonText: () => undefined,
+			alternateSupportButtonUrlSuffix: () => undefined,
 			swapFeedbackAndContactUs: true,
 		},
 	},
@@ -666,18 +636,8 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			startPageBody: supporterplusCancellationFlowStart,
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
-			alternateSupportButtonText: (
-				reasonId: OptionalCancellationReasonId,
-			) =>
-				reasonId === 'mma_financial_circumstances'
-					? '/contribute'
-					: undefined,
-			alternateSupportButtonUrlSuffix: (
-				reasonId: OptionalCancellationReasonId,
-			) =>
-				reasonId === 'mma_financial_circumstances'
-					? '/contribute'
-					: undefined,
+			alternateSupportButtonText: () => undefined,
+			alternateSupportButtonUrlSuffix: () => undefined,
 			swapFeedbackAndContactUs: true,
 			shouldHideThrasher: true,
 		},
@@ -711,7 +671,7 @@ export const GROUPED_PRODUCT_TYPES: {
 		supportTheGuardianSectionProps: {
 			supportReferer: 'account_overview_membership_section',
 			message:
-				'We no longer have a membership programme but you can still continue to support The Guardian.',
+				'We no longer have a membership programme but you can still continue to support the Guardian.',
 		},
 	},
 	/*
