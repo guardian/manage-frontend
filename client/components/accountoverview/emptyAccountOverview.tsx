@@ -88,7 +88,6 @@ export const EmptyAccountOverview = () => {
 				or contribution.
 			</p>
 			<SupportTheGuardianButton
-				urlSuffix="contribute"
 				supportReferer={'account_overview_no_product'}
 			/>
 			<div

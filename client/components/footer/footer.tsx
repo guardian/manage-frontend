@@ -282,7 +282,6 @@ export const Footer = () => {
 									</div>
 									<div css={supportButtonContainerStyles}>
 										<SupportTheGuardianButton
-											urlSuffix="contribute"
 											supportReferer="footer_support_contribute"
 											alternateButtonText="Support us"
 											theme="brand"

@@ -80,14 +80,13 @@ const getThrasher =
 								},
 							}}
 						>
-							Support The Guardian with a recurring contribution
+							Support the Guardian with a recurring contribution
 							of your choice. You can use your existing payment
 							details so setting it up only takes a minute.
 						</p>
 						<SupportTheGuardianButton
 							supportReferer={`resubscribe_thrasher_${args.usageContext}`}
 							alternateButtonText="Make a recurring contribution"
-							urlSuffix="contribute"
 							theme="brandAlt"
 						/>
 					</div>
