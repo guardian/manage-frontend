@@ -19,7 +19,7 @@
     "jest": "jest",
     "updateSnapshot": "jest -u",
     "storybook": "start-storybook -p 6006 -s '.storybook/static'",
-    "build-storybook": "build-storybook",
+    "build-storybook": "build-storybook -s '.storybook/static'",
     "cypress:open": "DEBUG=cypress:* cypress open",
     "cypress:run": "cypress run",
     "cypress:server": "yarn bundle-dev-server && (yarn bundle-dev-server-cypress -w & yarn start & yarn serve-dev-cypress)",
