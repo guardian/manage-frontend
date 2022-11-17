@@ -43,6 +43,10 @@ const getDeliveryAddressChangeEffectiveDateForToday = async (
 
 export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday =
 	async (productDetail: ProductDetail) => {
+		if (productDetail.mmaCategory !== 'subscriptions') {
+			return productDetail;
+		}
+
 		const mainPlan = getMainPlan(productDetail.subscription);
 		if (!mainPlan) {
 			const missingMainPlanErrorMsg =
