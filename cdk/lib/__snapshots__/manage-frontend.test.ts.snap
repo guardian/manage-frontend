@@ -2287,7 +2287,7 @@ systemctl start manage-frontend
             Object {
               "Action": "s3:GetObject",
               "Effect": "Allow",
-              "Resource": "arn:aws:s3:::fulfilment-date-calculator-PROD/*",
+              "Resource": "arn:aws:s3:::fulfilment-date-calculator-prod/*",
             },
           ],
           "Version": "2012-10-17",
