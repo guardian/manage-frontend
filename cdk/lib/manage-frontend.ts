@@ -134,7 +134,7 @@ systemctl start manage-frontend
 						this,
 						'ReadFulfilmentDateCalculatorOutput',
 						{
-							bucketName: `fulfilment-date-calculator-${this.stage}`,
+							bucketName: `fulfilment-date-calculator-${this.stage.toLowerCase()}`,
 							paths: ['*'],
 						},
 					),
