@@ -220,26 +220,21 @@ export const helpCentreMoreQuestionsConfig: HelpCentreMoreQuestionsTopic[] = [
 		links: [
 			{
 				id: 'q1',
-				title: 'Premium tier access',
-				link: '/help-centre/article/how-can-i-gain-access-to-the-premium-tier-of-your-app',
-			},
-			{
-				id: 'q2',
 				title: 'Apple/Google subscriptions',
 				link: '/help-centre/article/i-have-a-googleitunes-subscription-that-i-need-help-with',
 			},
 			{
-				id: 'q3',
+				id: 'q2',
 				title: 'Personalising your apps',
 				link: '/help-centre/article/making-your-app-more-personal',
 			},
 			{
-				id: 'q4',
+				id: 'q3',
 				title: 'Device compatibility',
 				link: '/help-centre/article/what-devices-are-compatible-with-your-apps',
 			},
 			{
-				id: 'q5',
+				id: 'q4',
 				title: 'Getting started with your Digital Subscription',
 				link: '/help-centre/article/getting-started-with-your-digital-subscription',
 			},
