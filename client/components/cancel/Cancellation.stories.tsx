@@ -2,10 +2,15 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../shared/productTypes';
-import { contribution, guardianWeeklyCard } from '../../fixtures/productDetail';
+import {
+	cancelledContribution,
+	contribution,
+	guardianWeeklyCard,
+} from '../../fixtures/productDetail';
 import CancellationContainer from './CancellationContainer';
 import CancellationReasonReview from './CancellationReasonReview';
 import CancellationReasonSelection from './CancellationReasonSelection';
+import { getCancellationSummary } from './cancellationSummary';
 
 export default {
 	title: 'Pages/Cancellation',
@@ -61,4 +66,16 @@ Review.parameters = {
 			cancellationPolicy: 'Today',
 		},
 	},
+};
+
+export const Confirmation: ComponentStory<
+	typeof CancellationContainer
+> = () => {
+	// @ts-ignore set identity details email in the window
+	window.guardian = { identityDetails: { email: 'test' } };
+
+	return getCancellationSummary(
+		PRODUCT_TYPES.contributions,
+		cancelledContribution,
+	)(cancelledContribution);
 };
