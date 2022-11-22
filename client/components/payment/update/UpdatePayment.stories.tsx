@@ -53,7 +53,6 @@ NewspaperVoucherPaypal.parameters = {
 	reactRouter: {
 		state: {
 			productDetail: newspaperVoucherPaypal,
-			obj: { a: 'B' },
 		},
 		container: (
 			<PaymentDetailUpdateContainer productType={PRODUCT_TYPES.voucher} />
