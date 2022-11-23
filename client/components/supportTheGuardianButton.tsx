@@ -42,7 +42,7 @@ const buildSupportHref = (props: SupportTheGuardianButtonProps) =>
 	url.format({
 		protocol: 'https',
 		host: `support.${domain || 'theguardian.com'}`,
-		pathname: props.urlSuffix || '',
+		pathname: props.urlSuffix || 'contribute',
 		query: {
 			INTCMP: `mma_${props.supportReferer}`,
 			acquisitionData: JSON.stringify(
@@ -79,7 +79,7 @@ export const SupportTheGuardianButton = (
 					});
 				}}
 			>
-				{props.alternateButtonText || 'Support The Guardian'}
+				{props.alternateButtonText || 'Support the Guardian'}
 			</LinkButton>
 		</ThemeProvider>
 	);
