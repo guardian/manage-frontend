@@ -67,8 +67,7 @@ const getThrasher =
 				>
 					<div>
 						<h2 css={{ fontWeight: 'bold', margin: '0' }}>
-							Have you considered a monthly or annual
-							contribution?
+							Support us another way?
 						</h2>
 						<p
 							css={{
@@ -80,13 +79,13 @@ const getThrasher =
 								},
 							}}
 						>
-							Support the Guardian with a recurring contribution
-							of your choice. You can use your existing payment
-							details so setting it up only takes a minute.
+							From just $1, or a little more on a regular basis,
+							you can fund independent Guardian journalism. No
+							need to update your payment details. It only takes a
+							minute but makes a big difference.
 						</p>
 						<SupportTheGuardianButton
 							supportReferer={`resubscribe_thrasher_${args.usageContext}`}
-							alternateButtonText="Make a recurring contribution"
 							theme="brandAlt"
 						/>
 					</div>
