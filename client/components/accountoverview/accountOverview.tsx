@@ -9,6 +9,7 @@ import {
 import { Stack } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
+import { featureSwitches } from '../../../shared/featureSwitches';
 import type {
 	CancelledProductDetail,
 	MembersDataApiItem,
@@ -27,6 +28,7 @@ import { PaymentFailureAlertIfApplicable } from '../payment/paymentFailureAlertI
 import { SupportTheGuardianButton } from '../supportTheGuardianButton';
 import { AccountOverviewCancelledCard } from './accountOverviewCancelledCard';
 import { AccountOverviewCard } from './accountOverviewCard';
+import { AccountOverviewCardV2 } from './accountOverviewCardV2';
 import { EmptyAccountOverview } from './emptyAccountOverview';
 
 const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
@@ -93,15 +95,25 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 							{capitalize(groupedProductType.groupFriendlyName)}
 						</h2>
 						<Stack space={6}>
-							{activeProductsInCategory.map((productDetail) => (
-								<AccountOverviewCard
-									key={
-										productDetail.subscription
-											.subscriptionId
-									}
-									productDetail={productDetail}
-								/>
-							))}
+							{activeProductsInCategory.map((productDetail) =>
+								featureSwitches.accountOverviewNewLayout ? (
+									<AccountOverviewCardV2
+										key={
+											productDetail.subscription
+												.subscriptionId
+										}
+										productDetail={productDetail}
+									/>
+								) : (
+									<AccountOverviewCard
+										key={
+											productDetail.subscription
+												.subscriptionId
+										}
+										productDetail={productDetail}
+									/>
+								),
+							)}
 							{cancelledProductsInCategory.map(
 								(cancelledProductDetail) => (
 									<AccountOverviewCancelledCard
