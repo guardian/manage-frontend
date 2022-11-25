@@ -1,9 +1,14 @@
 import { css } from '@emotion/react';
 import { headline, palette, space } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
+import { parseDate } from '../../../shared/dates';
 import type { ProductDetail } from '../../../shared/productResponse';
-import { getMainPlan } from '../../../shared/productResponse';
+import { getMainPlan , isGift } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
+import {
+	getNextPaymentDetails,
+	NewPaymentPriceAlert,
+} from '../payment/nextPaymentDetails';
 
 interface CardProps {
 	heading: string;
@@ -26,6 +31,7 @@ const Card = (props: CardProps) => {
 	const headingCss = css`
 		${headline.small({ fontWeight: 'bold' })};
 		margin: 0;
+		max-width: 20ch;
 	`;
 
 	return (
@@ -44,7 +50,6 @@ export const AccountOverviewCardV2 = ({
 	productDetail: ProductDetail;
 }) => {
 	const mainPlan = getMainPlan(productDetail.subscription);
-
 	if (!mainPlan) {
 		throw new Error('mainPlan does not exist in accountOverviewCard');
 	}
@@ -53,9 +58,89 @@ export const AccountOverviewCardV2 = ({
 	const specificProductType =
 		groupedProductType.mapGroupedToSpecific(productDetail);
 
+	const isPatron = productDetail.subscription.readerType === 'Patron';
+	const productTitle = `${specificProductType.productTitle(mainPlan)}${
+		isPatron ? ' — Patron' : ''
+	}`;
+
+	const isGifted = isGift(productDetail.subscription);
+	const userIsGifter = isGifted && productDetail.isPaidTier;
+	const giftPurchaseDate = productDetail.subscription.lastPaymentDate;
+	const shouldShowJoinDateNotStartDate =
+		groupedProductType.shouldShowJoinDateNotStartDate;
+	const shouldShowStartDate = !(
+		shouldShowJoinDateNotStartDate || userIsGifter
+	);
+	const subscriptionStartDate = productDetail.subscription.start;
+	const subscriptionEndDate = productDetail.subscription.end;
+	const hasCancellationPending = productDetail.subscription.cancelledAt;
+
+	const hasPaymentFailure = !!productDetail.alertText;
+	const nextPaymentDetails = getNextPaymentDetails(
+		mainPlan,
+		productDetail.subscription,
+		null,
+		hasPaymentFailure,
+	);
+
 	return (
-		<Card heading={specificProductType.productTitle(mainPlan)}>
-			<p>Product details go here…</p>
+		<Card heading={productTitle}>
+			<h4>Billing and payment</h4>
+			<dl>
+				<dt>
+					{groupedProductType.showSupporterId
+						? 'Supporter ID'
+						: 'Subscription ID'}
+				</dt>
+				<dd>{productDetail.subscription.subscriptionId}</dd>
+				{groupedProductType.tierLabel && (
+					<>
+						<dt>{groupedProductType.tierLabel}</dt>
+						<dd>{productDetail.tier}</dd>
+					</>
+				)}
+				{subscriptionStartDate && shouldShowStartDate && (
+					<>
+						<dt>Start date</dt>
+						<dd>{parseDate(subscriptionStartDate).dateStr()}</dd>
+					</>
+				)}
+				{shouldShowJoinDateNotStartDate && (
+					<>
+						<dt>Join date</dt>
+						<dd>{parseDate(productDetail.joinDate).dateStr()}</dd>
+					</>
+				)}
+				{userIsGifter && giftPurchaseDate && (
+					<>
+						<dt>Purchase date</dt>
+						<dd>{parseDate(giftPurchaseDate).dateStr()}</dd>
+					</>
+				)}
+				{isGifted && !userIsGifter && (
+					<>
+						<dt>End date</dt>
+						<dd>{parseDate(subscriptionEndDate).dateStr()}</dd>
+					</>
+				)}
+				{nextPaymentDetails &&
+					productDetail.subscription.autoRenew &&
+					!hasCancellationPending && (
+						<>
+							<dt>{nextPaymentDetails.paymentKey}</dt>
+							<dd>
+								{nextPaymentDetails.isNewPaymentValue && (
+									<NewPaymentPriceAlert />
+								)}
+								{nextPaymentDetails.paymentValue}
+								{nextPaymentDetails.nextPaymentDateValue &&
+									productDetail.subscription.readerType !==
+										'Patron' &&
+									` on ${nextPaymentDetails.nextPaymentDateValue}`}
+							</dd>
+						</>
+					)}
+			</dl>
 		</Card>
 	);
 };
