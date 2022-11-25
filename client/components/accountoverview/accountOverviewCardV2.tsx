@@ -5,11 +5,14 @@ import {
 	space,
 	textSans,
 } from '@guardian/source-foundations';
+import { LinkButton } from '@guardian/source-react-components';
 import type { ReactNode } from 'react';
+import { useNavigate } from 'react-router';
 import { parseDate } from '../../../shared/dates';
 import type { ProductDetail } from '../../../shared/productResponse';
 import { getMainPlan, isGift } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
+import { trackEvent } from '../../services/analytics';
 import {
 	getNextPaymentDetails,
 	NewPaymentPriceAlert,
@@ -52,6 +55,10 @@ const Card = (props: CardProps) => {
 Card.Section = (props: { children: ReactNode }) => {
 	const sectionCss = css`
 		padding: ${space[5]}px ${space[4]}px;
+		& + & {
+			margin-top: ${space[5]}px;
+			border-top: 1px solid ${palette.neutral[86]};
+		}
 	`;
 
 	return <div css={sectionCss}>{props.children}</div>;
@@ -62,6 +69,8 @@ export const AccountOverviewCardV2 = ({
 }: {
 	productDetail: ProductDetail;
 }) => {
+	const navigate = useNavigate();
+
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
 		throw new Error('mainPlan does not exist in accountOverviewCard');
@@ -102,6 +111,16 @@ export const AccountOverviewCardV2 = ({
 		margin-bottom: ${space[2]}px;
 	`;
 
+	const panelCss = css`
+		display: flex;
+		flex-direction: row;
+
+		> :first-child {
+			flex-grow: 1;
+			margin-right: ${space[4]}px;
+		}
+	`;
+
 	const keyValueCss = css`
 		${textSans.medium()};
 		margin: 0;
@@ -127,67 +146,101 @@ export const AccountOverviewCardV2 = ({
 		<Card heading={productTitle}>
 			<Card.Section>
 				<h4 css={sectionHeadingCss}>Billing and payment</h4>
-				<dl css={keyValueCss}>
-					<div>
-						<dt>
-							{groupedProductType.showSupporterId
-								? 'Supporter ID'
-								: 'Subscription ID'}
-						</dt>
-						<dd>{productDetail.subscription.subscriptionId}</dd>
-					</div>
-					{groupedProductType.tierLabel && (
+				<div css={panelCss}>
+					<dl css={keyValueCss}>
 						<div>
-							<dt>{groupedProductType.tierLabel}</dt>
-							<dd>{productDetail.tier}</dd>
+							<dt>
+								{groupedProductType.showSupporterId
+									? 'Supporter ID'
+									: 'Subscription ID'}
+							</dt>
+							<dd>{productDetail.subscription.subscriptionId}</dd>
 						</div>
-					)}
-					{subscriptionStartDate && shouldShowStartDate && (
-						<div>
-							<dt>Start date</dt>
-							<dd>
-								{parseDate(subscriptionStartDate).dateStr()}
-							</dd>
-						</div>
-					)}
-					{shouldShowJoinDateNotStartDate && (
-						<div>
-							<dt>Join date</dt>
-							<dd>
-								{parseDate(productDetail.joinDate).dateStr()}
-							</dd>
-						</div>
-					)}
-					{userIsGifter && giftPurchaseDate && (
-						<div>
-							<dt>Purchase date</dt>
-							<dd>{parseDate(giftPurchaseDate).dateStr()}</dd>
-						</div>
-					)}
-					{isGifted && !userIsGifter && (
-						<div>
-							<dt>End date</dt>
-							<dd>{parseDate(subscriptionEndDate).dateStr()}</dd>
-						</div>
-					)}
-					{nextPaymentDetails &&
-						productDetail.subscription.autoRenew &&
-						!hasCancellationPending && (
+						{groupedProductType.tierLabel && (
 							<div>
-								<dt>{nextPaymentDetails.paymentKey}</dt>
+								<dt>{groupedProductType.tierLabel}</dt>
+								<dd>{productDetail.tier}</dd>
+							</div>
+						)}
+						{subscriptionStartDate && shouldShowStartDate && (
+							<div>
+								<dt>Start date</dt>
 								<dd>
-									{nextPaymentDetails.isNewPaymentValue && (
-										<NewPaymentPriceAlert />
-									)}
-									{nextPaymentDetails.paymentValue}
-									{nextPaymentDetails.nextPaymentDateValue &&
-										productDetail.subscription
-											.readerType !== 'Patron' &&
-										` on ${nextPaymentDetails.nextPaymentDateValue}`}
+									{parseDate(subscriptionStartDate).dateStr()}
 								</dd>
 							</div>
 						)}
-				</dl>
+						{shouldShowJoinDateNotStartDate && (
+							<div>
+								<dt>Join date</dt>
+								<dd>
+									{parseDate(
+										productDetail.joinDate,
+									).dateStr()}
+								</dd>
+							</div>
+						)}
+						{userIsGifter && giftPurchaseDate && (
+							<div>
+								<dt>Purchase date</dt>
+								<dd>{parseDate(giftPurchaseDate).dateStr()}</dd>
+							</div>
+						)}
+						{isGifted && !userIsGifter && (
+							<div>
+								<dt>End date</dt>
+								<dd>
+									{parseDate(subscriptionEndDate).dateStr()}
+								</dd>
+							</div>
+						)}
+						{nextPaymentDetails &&
+							productDetail.subscription.autoRenew &&
+							!hasCancellationPending && (
+								<div>
+									<dt>{nextPaymentDetails.paymentKey}</dt>
+									<dd>
+										{nextPaymentDetails.isNewPaymentValue && (
+											<NewPaymentPriceAlert />
+										)}
+										{nextPaymentDetails.paymentValue}
+										{nextPaymentDetails.nextPaymentDateValue &&
+											productDetail.subscription
+												.readerType !== 'Patron' &&
+											` on ${nextPaymentDetails.nextPaymentDateValue}`}
+									</dd>
+								</div>
+							)}
+					</dl>
+					<div>
+						{!isGifted && (
+							<LinkButton
+								aria-label={`${specificProductType.productTitle(
+									mainPlan,
+								)} : Manage ${groupedProductType.friendlyName()}`}
+								data-cy={`Manage ${groupedProductType.friendlyName()}`}
+								size="small"
+								onClick={() => {
+									trackEvent({
+										eventCategory: 'account_overview',
+										eventAction: 'click',
+										eventLabel: `manage_${groupedProductType.urlPart}`,
+									});
+									navigate(`/${groupedProductType.urlPart}`, {
+										state: {
+											productDetail: productDetail,
+										},
+									});
+								}}
+							>
+								{`Manage ${groupedProductType.friendlyName()}`}
+							</LinkButton>
+						)}
+					</div>
+				</div>
+			</Card.Section>
+			<Card.Section>
+				<h4 css={sectionHeadingCss}>Payment method</h4>
 			</Card.Section>
 		</Card>
 	);
