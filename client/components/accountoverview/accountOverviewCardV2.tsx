@@ -13,10 +13,15 @@ import type { ProductDetail } from '../../../shared/productResponse';
 import { getMainPlan, isGift } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { trackEvent } from '../../services/analytics';
+import { CardDisplay } from '../payment/cardDisplay';
+import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import {
 	getNextPaymentDetails,
 	NewPaymentPriceAlert,
 } from '../payment/nextPaymentDetails';
+import { PayPalDisplay } from '../payment/paypalDisplay';
+import { SepaDisplay } from '../payment/sepaDisplay';
+import { ErrorIcon } from '../svgs/errorIcon';
 
 interface CardProps {
 	heading: string;
@@ -97,6 +102,8 @@ export const AccountOverviewCardV2 = ({
 	const subscriptionEndDate = productDetail.subscription.end;
 	const hasCancellationPending = productDetail.subscription.cancelledAt;
 
+	const isSafeToUpdatePaymentMethod =
+		productDetail.subscription.safeToUpdatePaymentMethod;
 	const hasPaymentFailure = !!productDetail.alertText;
 	const nextPaymentDetails = getNextPaymentDetails(
 		mainPlan,
@@ -131,6 +138,7 @@ export const AccountOverviewCardV2 = ({
 
 		dt {
 			display: inline-block;
+			margin-right: 0.5ch;
 			:after {
 				content: ':';
 			}
@@ -138,7 +146,7 @@ export const AccountOverviewCardV2 = ({
 
 		dd {
 			display: inline-block;
-			margin-left: 0.5ch;
+			margin-left: 0;
 		}
 	`;
 
@@ -239,9 +247,94 @@ export const AccountOverviewCardV2 = ({
 					</div>
 				</div>
 			</Card.Section>
-			<Card.Section>
-				<h4 css={sectionHeadingCss}>Payment method</h4>
-			</Card.Section>
+			{productDetail.isPaidTier && (
+				<Card.Section>
+					<h4 css={sectionHeadingCss}>Payment method</h4>
+					<div css={panelCss}>
+						<div
+							css={css`
+								${textSans.medium()};
+							`}
+						>
+							{productDetail.subscription.card && (
+								<CardDisplay
+									inErrorState={hasPaymentFailure}
+									cssOverrides={css`
+										margin: 0;
+									`}
+									{...productDetail.subscription.card}
+								/>
+							)}
+							{productDetail.subscription.payPalEmail && (
+								<PayPalDisplay
+									payPalId={
+										productDetail.subscription.payPalEmail
+									}
+								/>
+							)}
+							{productDetail.subscription.sepaMandate && (
+								<SepaDisplay
+									accountName={
+										productDetail.subscription.sepaMandate
+											.accountName
+									}
+									iban={
+										productDetail.subscription.sepaMandate
+											.iban
+									}
+								/>
+							)}
+							{productDetail.subscription.mandate && (
+								<DirectDebitDisplay
+									inErrorState={hasPaymentFailure}
+									{...productDetail.subscription.mandate}
+								/>
+							)}
+							{productDetail.subscription
+								.stripePublicKeyForCardAddition && (
+								<p
+									css={css`
+										margin: 0;
+									`}
+								>
+									No Payment Method
+								</p>
+							)}
+						</div>
+						{!isGifted && isSafeToUpdatePaymentMethod && (
+							<LinkButton
+								aria-label={`${specificProductType.productTitle(
+									mainPlan,
+								)} : Update payment method`}
+								size="small"
+								priority="primary"
+								icon={
+									hasPaymentFailure ? (
+										<ErrorIcon
+											fill={palette.neutral[100]}
+										/>
+									) : undefined
+								}
+								onClick={() => {
+									trackEvent({
+										eventCategory: 'account_overview',
+										eventAction: 'click',
+										eventLabel: 'manage_payment_method',
+									});
+									navigate(
+										`/payment/${specificProductType.urlPart}`,
+										{
+											state: { productDetail },
+										},
+									);
+								}}
+							>
+								Update payment method
+							</LinkButton>
+						)}
+					</div>
+				</Card.Section>
+			)}
 		</Card>
 	);
 };
