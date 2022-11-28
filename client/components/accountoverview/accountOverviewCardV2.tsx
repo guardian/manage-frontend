@@ -1,11 +1,14 @@
-import { css } from '@emotion/react';
+import { css, ThemeProvider } from '@emotion/react';
 import {
 	headline,
 	palette,
 	space,
 	textSans,
 } from '@guardian/source-foundations';
-import { LinkButton } from '@guardian/source-react-components';
+import {
+	Button,
+	buttonThemeReaderRevenueBrand,
+} from '@guardian/source-react-components';
 import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router';
 import { parseDate } from '../../../shared/dates';
@@ -112,6 +115,8 @@ export const AccountOverviewCardV2 = ({
 		hasPaymentFailure,
 	);
 
+	const isEligibleToSwitch = true;
+
 	const sectionHeadingCss = css`
 		${textSans.medium({ fontWeight: 'bold' })};
 		margin-top: 0;
@@ -147,6 +152,15 @@ export const AccountOverviewCardV2 = ({
 		dd {
 			display: inline-block;
 			margin-left: 0;
+		}
+	`;
+
+	const buttonLayoutCss = css`
+		display: flex;
+		flex-direction: column;
+
+		> * + * {
+			margin-top: ${space[4]}px;
 		}
 	`;
 
@@ -220,14 +234,17 @@ export const AccountOverviewCardV2 = ({
 								</div>
 							)}
 					</dl>
-					<div>
+					<div css={buttonLayoutCss}>
 						{!isGifted && (
-							<LinkButton
+							<Button
 								aria-label={`${specificProductType.productTitle(
 									mainPlan,
 								)} : Manage ${groupedProductType.friendlyName()}`}
 								data-cy={`Manage ${groupedProductType.friendlyName()}`}
 								size="small"
+								cssOverrides={css`
+									justify-content: center;
+								`}
 								onClick={() => {
 									trackEvent({
 										eventCategory: 'account_overview',
@@ -242,7 +259,21 @@ export const AccountOverviewCardV2 = ({
 								}}
 							>
 								{`Manage ${groupedProductType.friendlyName()}`}
-							</LinkButton>
+							</Button>
+						)}
+						{isEligibleToSwitch && (
+							<ThemeProvider
+								theme={buttonThemeReaderRevenueBrand}
+							>
+								<Button
+									size="small"
+									cssOverrides={css`
+										justify-content: center;
+									`}
+								>
+									Change to monthly + extras
+								</Button>
+							</ThemeProvider>
 						)}
 					</div>
 				</div>
@@ -302,7 +333,7 @@ export const AccountOverviewCardV2 = ({
 							)}
 						</div>
 						{!isGifted && isSafeToUpdatePaymentMethod && (
-							<LinkButton
+							<Button
 								aria-label={`${specificProductType.productTitle(
 									mainPlan,
 								)} : Update payment method`}
@@ -330,7 +361,7 @@ export const AccountOverviewCardV2 = ({
 								}}
 							>
 								Update payment method
-							</LinkButton>
+							</Button>
 						)}
 					</div>
 				</Card.Section>
