@@ -15,7 +15,10 @@ import { useNavigate } from 'react-router';
 import { parseDate } from '../../../shared/dates';
 import type { ProductDetail } from '../../../shared/productResponse';
 import { getMainPlan, isGift } from '../../../shared/productResponse';
-import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
+import {
+	GROUPED_PRODUCT_TYPES,
+	PRODUCT_TYPES,
+} from '../../../shared/productTypes';
 import { trackEvent } from '../../services/analytics';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
@@ -123,7 +126,10 @@ export const AccountOverviewCardV2 = ({
 		hasPaymentFailure,
 	);
 
-	const isEligibleToSwitch = true;
+	// TODO: Add eligibility criteria logic. This is currently hardcoded to
+	// always show the switch button for Supporter+ to allow testing of design
+	const isEligibleToSwitch =
+		specificProductType === PRODUCT_TYPES.supporterplus;
 
 	const sectionHeadingCss = css`
 		${textSans.medium({ fontWeight: 'bold' })};
@@ -132,14 +138,14 @@ export const AccountOverviewCardV2 = ({
 	`;
 
 	const productDetailLayoutCss = css`
-		> :last-child {
+		> * + * {
 			margin-top: ${space[5]}px;
 		}
 
 		${from.tablet} {
 			display: flex;
 			flex-direction: row;
-			> :last-child {
+			> * + * {
 				margin-top: 0;
 				margin-left: auto;
 				padding-left: ${space[4]}px;
@@ -172,82 +178,93 @@ export const AccountOverviewCardV2 = ({
 	const buttonLayoutCss = css`
 		display: flex;
 		flex-direction: column;
+		justify-content: flex-end;
 
 		> * + * {
-			margin-top: ${space[4]}px;
+			margin-top: ${space[3]}px;
 		}
 	`;
 
 	return (
 		<Card heading={productTitle}>
 			<Card.Section>
-				<h4 css={sectionHeadingCss}>Billing and payment</h4>
 				<div css={productDetailLayoutCss}>
-					<dl css={keyValueCss}>
-						<div>
-							<dt>
-								{groupedProductType.showSupporterId
-									? 'Supporter ID'
-									: 'Subscription ID'}
-							</dt>
-							<dd>{productDetail.subscription.subscriptionId}</dd>
-						</div>
-						{groupedProductType.tierLabel && (
+					<div>
+						<h4 css={sectionHeadingCss}>Billing and payment</h4>
+						<dl css={keyValueCss}>
 							<div>
-								<dt>{groupedProductType.tierLabel}</dt>
-								<dd>{productDetail.tier}</dd>
-							</div>
-						)}
-						{subscriptionStartDate && shouldShowStartDate && (
-							<div>
-								<dt>Start date</dt>
+								<dt>
+									{groupedProductType.showSupporterId
+										? 'Supporter ID'
+										: 'Subscription ID'}
+								</dt>
 								<dd>
-									{parseDate(subscriptionStartDate).dateStr()}
+									{productDetail.subscription.subscriptionId}
 								</dd>
 							</div>
-						)}
-						{shouldShowJoinDateNotStartDate && (
-							<div>
-								<dt>Join date</dt>
-								<dd>
-									{parseDate(
-										productDetail.joinDate,
-									).dateStr()}
-								</dd>
-							</div>
-						)}
-						{userIsGifter && giftPurchaseDate && (
-							<div>
-								<dt>Purchase date</dt>
-								<dd>{parseDate(giftPurchaseDate).dateStr()}</dd>
-							</div>
-						)}
-						{isGifted && !userIsGifter && (
-							<div>
-								<dt>End date</dt>
-								<dd>
-									{parseDate(subscriptionEndDate).dateStr()}
-								</dd>
-							</div>
-						)}
-						{nextPaymentDetails &&
-							productDetail.subscription.autoRenew &&
-							!hasCancellationPending && (
+							{groupedProductType.tierLabel && (
 								<div>
-									<dt>{nextPaymentDetails.paymentKey}</dt>
+									<dt>{groupedProductType.tierLabel}</dt>
+									<dd>{productDetail.tier}</dd>
+								</div>
+							)}
+							{subscriptionStartDate && shouldShowStartDate && (
+								<div>
+									<dt>Start date</dt>
 									<dd>
-										{nextPaymentDetails.isNewPaymentValue && (
-											<NewPaymentPriceAlert />
-										)}
-										{nextPaymentDetails.paymentValue}
-										{nextPaymentDetails.nextPaymentDateValue &&
-											productDetail.subscription
-												.readerType !== 'Patron' &&
-											` on ${nextPaymentDetails.nextPaymentDateValue}`}
+										{parseDate(
+											subscriptionStartDate,
+										).dateStr()}
 									</dd>
 								</div>
 							)}
-					</dl>
+							{shouldShowJoinDateNotStartDate && (
+								<div>
+									<dt>Join date</dt>
+									<dd>
+										{parseDate(
+											productDetail.joinDate,
+										).dateStr()}
+									</dd>
+								</div>
+							)}
+							{userIsGifter && giftPurchaseDate && (
+								<div>
+									<dt>Purchase date</dt>
+									<dd>
+										{parseDate(giftPurchaseDate).dateStr()}
+									</dd>
+								</div>
+							)}
+							{isGifted && !userIsGifter && (
+								<div>
+									<dt>End date</dt>
+									<dd>
+										{parseDate(
+											subscriptionEndDate,
+										).dateStr()}
+									</dd>
+								</div>
+							)}
+							{nextPaymentDetails &&
+								productDetail.subscription.autoRenew &&
+								!hasCancellationPending && (
+									<div>
+										<dt>{nextPaymentDetails.paymentKey}</dt>
+										<dd>
+											{nextPaymentDetails.isNewPaymentValue && (
+												<NewPaymentPriceAlert />
+											)}
+											{nextPaymentDetails.paymentValue}
+											{nextPaymentDetails.nextPaymentDateValue &&
+												productDetail.subscription
+													.readerType !== 'Patron' &&
+												` on ${nextPaymentDetails.nextPaymentDateValue}`}
+										</dd>
+									</div>
+								)}
+						</dl>
+					</div>
 					<div css={buttonLayoutCss}>
 						{!isGifted && (
 							<Button
@@ -294,57 +311,60 @@ export const AccountOverviewCardV2 = ({
 			</Card.Section>
 			{productDetail.isPaidTier && (
 				<Card.Section>
-					<h4 css={sectionHeadingCss}>Payment method</h4>
 					<div css={productDetailLayoutCss}>
-						<div
-							css={css`
-								${textSans.medium()};
-							`}
-						>
-							{productDetail.subscription.card && (
-								<CardDisplay
-									inErrorState={hasPaymentFailure}
-									cssOverrides={css`
-										margin: 0;
-									`}
-									{...productDetail.subscription.card}
-								/>
-							)}
-							{productDetail.subscription.payPalEmail && (
-								<PayPalDisplay
-									payPalId={
-										productDetail.subscription.payPalEmail
-									}
-								/>
-							)}
-							{productDetail.subscription.sepaMandate && (
-								<SepaDisplay
-									accountName={
-										productDetail.subscription.sepaMandate
-											.accountName
-									}
-									iban={
-										productDetail.subscription.sepaMandate
-											.iban
-									}
-								/>
-							)}
-							{productDetail.subscription.mandate && (
-								<DirectDebitDisplay
-									inErrorState={hasPaymentFailure}
-									{...productDetail.subscription.mandate}
-								/>
-							)}
-							{productDetail.subscription
-								.stripePublicKeyForCardAddition && (
-								<p
-									css={css`
-										margin: 0;
-									`}
-								>
-									No Payment Method
-								</p>
-							)}
+						<div>
+							<h4 css={sectionHeadingCss}>Payment method</h4>
+							<div
+								css={css`
+									${textSans.medium()};
+								`}
+							>
+								{productDetail.subscription.card && (
+									<CardDisplay
+										inErrorState={hasPaymentFailure}
+										cssOverrides={css`
+											margin: 0;
+										`}
+										{...productDetail.subscription.card}
+									/>
+								)}
+								{productDetail.subscription.payPalEmail && (
+									<PayPalDisplay
+										payPalId={
+											productDetail.subscription
+												.payPalEmail
+										}
+									/>
+								)}
+								{productDetail.subscription.sepaMandate && (
+									<SepaDisplay
+										accountName={
+											productDetail.subscription
+												.sepaMandate.accountName
+										}
+										iban={
+											productDetail.subscription
+												.sepaMandate.iban
+										}
+									/>
+								)}
+								{productDetail.subscription.mandate && (
+									<DirectDebitDisplay
+										inErrorState={hasPaymentFailure}
+										{...productDetail.subscription.mandate}
+									/>
+								)}
+								{productDetail.subscription
+									.stripePublicKeyForCardAddition && (
+									<p
+										css={css`
+											margin: 0;
+										`}
+									>
+										No Payment Method
+									</p>
+								)}
+							</div>
 						</div>
 						{!isGifted && isSafeToUpdatePaymentMethod && (
 							<div css={buttonLayoutCss}>
