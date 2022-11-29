@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand, from } from '@guardian/source-foundations';
+import { brand, from, space } from '@guardian/source-foundations';
 import type { DirectDebitDetails } from '../../../shared/productResponse';
 import { DirectDebitLogo } from './directDebitLogo';
 import type { Inlineable } from './inlineable';
@@ -59,6 +59,7 @@ interface DirectDebitDisplayProps extends DirectDebitDetails, Inlineable {
 	inErrorState?: boolean;
 	onlyAccountEnding?: true;
 	onlySortCode?: true;
+	inline?: true;
 }
 
 export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
@@ -106,6 +107,27 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 					`}
 				>
 					{dashifySortCode(props.sortCode)}
+				</span>
+			</div>
+		);
+	}
+
+	if (props.inline) {
+		return (
+			<div
+				css={css`
+					display: flex;
+					align-items: center;
+				`}
+			>
+				<DirectDebitLogo fill={brand[400]} />
+				<span
+					css={css`
+						margin-left: ${space[2]}px;
+					`}
+				>
+					{dashifySortCode(props.sortCode)}{' '}
+					{sanitiseAccountNumber(props.accountNumber)}
 				</span>
 			</div>
 		);

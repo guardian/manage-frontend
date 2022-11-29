@@ -350,7 +350,7 @@ export const AccountOverviewCardV2 = ({
 								)}
 								{productDetail.subscription.mandate && (
 									<DirectDebitDisplay
-										inErrorState={hasPaymentFailure}
+										inline={true}
 										{...productDetail.subscription.mandate}
 									/>
 								)}
