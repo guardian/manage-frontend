@@ -1,5 +1,6 @@
 import { css, ThemeProvider } from '@emotion/react';
 import {
+	from,
 	headline,
 	palette,
 	space,
@@ -39,15 +40,23 @@ const Card = (props: CardProps) => {
 
 	const headingContainerCss = css`
 		padding: ${space[3]}px ${space[4]}px;
-		min-height: 128px;
+		min-height: 64px;
 		color: ${palette.neutral[100]};
 		background-color: ${palette.brand[500]};
+
+		${from.tablet} {
+			min-height: 128px;
+		}
 	`;
 
 	const headingCss = css`
-		${headline.small({ fontWeight: 'bold' })};
+		${headline.xxsmall({ fontWeight: 'bold' })};
 		margin: 0;
 		max-width: 20ch;
+
+		${from.tablet} {
+			${headline.small({ fontWeight: 'bold' })};
+		}
 	`;
 
 	return (
@@ -64,7 +73,6 @@ Card.Section = (props: { children: ReactNode }) => {
 	const sectionCss = css`
 		padding: ${space[5]}px ${space[4]}px;
 		& + & {
-			margin-top: ${space[5]}px;
 			border-top: 1px solid ${palette.neutral[86]};
 		}
 	`;
@@ -123,13 +131,19 @@ export const AccountOverviewCardV2 = ({
 		margin-bottom: ${space[2]}px;
 	`;
 
-	const panelCss = css`
-		display: flex;
-		flex-direction: row;
+	const productDetailLayoutCss = css`
+		> :last-child {
+			margin-top: ${space[5]}px;
+		}
 
-		> :first-child {
-			flex-grow: 1;
-			margin-right: ${space[4]}px;
+		${from.tablet} {
+			display: flex;
+			flex-direction: row;
+			> :last-child {
+				margin-top: 0;
+				margin-left: auto;
+				padding-left: ${space[4]}px;
+			}
 		}
 	`;
 
@@ -168,7 +182,7 @@ export const AccountOverviewCardV2 = ({
 		<Card heading={productTitle}>
 			<Card.Section>
 				<h4 css={sectionHeadingCss}>Billing and payment</h4>
-				<div css={panelCss}>
+				<div css={productDetailLayoutCss}>
 					<dl css={keyValueCss}>
 						<div>
 							<dt>
@@ -281,7 +295,7 @@ export const AccountOverviewCardV2 = ({
 			{productDetail.isPaidTier && (
 				<Card.Section>
 					<h4 css={sectionHeadingCss}>Payment method</h4>
-					<div css={panelCss}>
+					<div css={productDetailLayoutCss}>
 						<div
 							css={css`
 								${textSans.medium()};
@@ -333,35 +347,40 @@ export const AccountOverviewCardV2 = ({
 							)}
 						</div>
 						{!isGifted && isSafeToUpdatePaymentMethod && (
-							<Button
-								aria-label={`${specificProductType.productTitle(
-									mainPlan,
-								)} : Update payment method`}
-								size="small"
-								priority="primary"
-								icon={
-									hasPaymentFailure ? (
-										<ErrorIcon
-											fill={palette.neutral[100]}
-										/>
-									) : undefined
-								}
-								onClick={() => {
-									trackEvent({
-										eventCategory: 'account_overview',
-										eventAction: 'click',
-										eventLabel: 'manage_payment_method',
-									});
-									navigate(
-										`/payment/${specificProductType.urlPart}`,
-										{
-											state: { productDetail },
-										},
-									);
-								}}
-							>
-								Update payment method
-							</Button>
+							<div css={buttonLayoutCss}>
+								<Button
+									aria-label={`${specificProductType.productTitle(
+										mainPlan,
+									)} : Update payment method`}
+									size="small"
+									cssOverrides={css`
+										justify-content: center;
+									`}
+									priority="primary"
+									icon={
+										hasPaymentFailure ? (
+											<ErrorIcon
+												fill={palette.neutral[100]}
+											/>
+										) : undefined
+									}
+									onClick={() => {
+										trackEvent({
+											eventCategory: 'account_overview',
+											eventAction: 'click',
+											eventLabel: 'manage_payment_method',
+										});
+										navigate(
+											`/payment/${specificProductType.urlPart}`,
+											{
+												state: { productDetail },
+											},
+										);
+									}}
+								>
+									Update payment method
+								</Button>
+							</div>
 						)}
 					</div>
 				</Card.Section>
