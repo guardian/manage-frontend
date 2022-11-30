@@ -236,6 +236,25 @@ export const AccountOverviewCardV2 = ({
 									</dd>
 								</div>
 							)}
+							{specificProductType.showTrialRemainingIfApplicable &&
+								productDetail.subscription.trialLength > 0 &&
+								!isGifted &&
+								productDetail.subscription.readerType !==
+									'Patron' && (
+									<div>
+										<dt>Trial remaining</dt>
+										<dd>
+											{
+												productDetail.subscription
+													.trialLength
+											}{' '}
+											{productDetail.subscription
+												.trialLength !== 1
+												? 'days'
+												: 'day'}
+										</dd>
+									</div>
+								)}
 							{isGifted && !userIsGifter && (
 								<div>
 									<dt>End date</dt>
