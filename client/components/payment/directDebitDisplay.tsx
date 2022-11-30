@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand, from, space } from '@guardian/source-foundations';
+import { from, palette } from '@guardian/source-foundations';
 import type { DirectDebitDetails } from '../../../shared/productResponse';
 import { DirectDebitLogo } from './directDebitLogo';
 import type { Inlineable } from './inlineable';
@@ -59,7 +59,6 @@ interface DirectDebitDisplayProps extends DirectDebitDetails, Inlineable {
 	inErrorState?: boolean;
 	onlyAccountEnding?: true;
 	onlySortCode?: true;
-	inline?: true;
 }
 
 export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
@@ -72,7 +71,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 				`}
 			>
 				<DirectDebitLogo
-					fill={brand[400]}
+					fill={palette.brand[400]}
 					additionalCss={css`
 						margin-right: 10px;
 					`}
@@ -94,7 +93,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 				`}
 			>
 				<DirectDebitLogo
-					fill={brand[400]}
+					fill={palette.brand[400]}
 					additionalCss={css`
 						margin: auto 10px auto 0;
 						width: 47px;
@@ -120,10 +119,10 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 					align-items: center;
 				`}
 			>
-				<DirectDebitLogo fill={brand[400]} />
+				<DirectDebitLogo fill={palette.brand[400]} />
 				<span
 					css={css`
-						margin-left: ${space[2]}px;
+						margin-left: 0.5ch;
 					`}
 				>
 					{dashifySortCode(props.sortCode)}{' '}
@@ -136,7 +135,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 	return (
 		<>
 			<DirectDebitLogo
-				fill={brand[400]}
+				fill={palette.brand[400]}
 				additionalCss={css`
 					margin: 0 10px 0 0;
 				`}

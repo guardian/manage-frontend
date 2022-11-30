@@ -1,8 +1,10 @@
+import { css } from '@emotion/react';
 import { PaypalLogo } from './paypalLogo';
 
 interface PayPalProps {
 	payPalId?: string;
 	shouldIncludePrefixCopy?: true;
+	inline?: true;
 }
 
 // Regex to split a PayPal ID into 3 groups:
@@ -21,10 +23,10 @@ interface PayPalProps {
 // ID                    | 1 | 2   | 3
 // ----------------------|---|-----|---------
 // james                 | j | ame | s
-// james@thegulocal.com | j | ame | s@thegulocal.com
-// jim@thegulocal.com   | j | i   | m@thegulocal.com
-// jm@thegulocal.com    | j |     | m@thegulocal.com
-// j@thegulocal.com     | j |     | @thegulocal.com
+// james@thegulocal.com  | j | ame | s@thegulocal.com
+// jim@thegulocal.com    | j | i   | m@thegulocal.com
+// jm@thegulocal.com     | j |     | m@thegulocal.com
+// j@thegulocal.com      | j |     | @thegulocal.com
 
 const SPLIT_PAYPAL_ID_REGEX = /^(.)(.*?)(.?|.?@.+)$/;
 
@@ -36,21 +38,41 @@ export const getObfuscatedPayPalId = (rawId: string) => {
 	);
 };
 
-export const PayPalDisplay = (props: PayPalProps) => (
-	<>
-		<PaypalLogo />
-		{props.payPalId && (
-			<p>
-				{props.shouldIncludePrefixCopy && (
-					<>
-						To update your payment details, please login to your
-						PayPal account.
-						<br />
-						Your PayPal ID is&nbsp;
-					</>
-				)}
-				{getObfuscatedPayPalId(props.payPalId)}
-			</p>
-		)}
-	</>
-);
+export const PayPalDisplay = (props: PayPalProps) => {
+	const layoutCss = css`
+		${props.inline &&
+		`
+			display: flex;
+			align-items: center;
+			svg {
+				flex-shrink: 0;
+				margin-right: 0.5ch;
+			}
+		`}
+
+		p {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			margin: 0;
+		}
+	`;
+
+	return (
+		<div css={layoutCss}>
+			<PaypalLogo />
+			{props.payPalId && (
+				<p>
+					{props.shouldIncludePrefixCopy && (
+						<>
+							To update your payment details, please login to your
+							PayPal account.
+							<br />
+							Your PayPal ID is&nbsp;
+						</>
+					)}
+					{getObfuscatedPayPalId(props.payPalId)}
+				</p>
+			)}
+		</div>
+	);
+};

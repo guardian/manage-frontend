@@ -330,6 +330,7 @@ export const AccountOverviewCardV2 = ({
 								)}
 								{productDetail.subscription.payPalEmail && (
 									<PayPalDisplay
+										inline={true}
 										payPalId={
 											productDetail.subscription
 												.payPalEmail
@@ -338,6 +339,7 @@ export const AccountOverviewCardV2 = ({
 								)}
 								{productDetail.subscription.sepaMandate && (
 									<SepaDisplay
+										inline={true}
 										accountName={
 											productDetail.subscription
 												.sepaMandate.accountName
@@ -356,13 +358,7 @@ export const AccountOverviewCardV2 = ({
 								)}
 								{productDetail.subscription
 									.stripePublicKeyForCardAddition && (
-									<p
-										css={css`
-											margin: 0;
-										`}
-									>
-										No Payment Method
-									</p>
+									<span>No Payment Method</span>
 								)}
 							</div>
 						</div>
