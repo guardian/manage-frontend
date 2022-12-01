@@ -11,7 +11,8 @@ import {
 	buttonThemeReaderRevenueBrand,
 	SvgTickRound,
 } from '@guardian/source-react-components';
-import type { ReactNode } from 'react';
+import type { ReactNode} from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { parseDate } from '../../../shared/dates';
 import type { ProductDetail } from '../../../shared/productResponse';
@@ -21,6 +22,7 @@ import {
 	PRODUCT_TYPES,
 } from '../../../shared/productTypes';
 import { trackEvent } from '../../services/analytics';
+import { expanderButtonCss } from '../expanderButton';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import {
@@ -94,6 +96,7 @@ export const AccountOverviewCardV2 = ({
 	productDetail: ProductDetail;
 }) => {
 	const navigate = useNavigate();
+	const [showBenefits, setShowBenefits] = useState<boolean>(false);
 
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
@@ -193,7 +196,7 @@ export const AccountOverviewCardV2 = ({
 	const benefitsCss = css`
 		${textSans.medium()};
 		list-style: none;
-		margin: ${space[5]}px 0 0 -4px;
+		margin: ${space[5]}px 0 ${space[4]}px -4px;
 		padding: 0;
 
 		li + li {
@@ -212,6 +215,14 @@ export const AccountOverviewCardV2 = ({
 		}
 	`;
 
+	const benefitsButtonCss = css`
+		${textSans.small()}
+		margin-top: ${space[1]}px;
+		padding: 0;
+		color: ${palette.brand[500]};
+		border-bottom: 1px solid ${palette.brand[500]};
+	`;
+
 	return (
 		<Card heading={productTitle}>
 			{specificProductType === PRODUCT_TYPES.supporterplus &&
@@ -228,7 +239,11 @@ export const AccountOverviewCardV2 = ({
 							{nextPaymentDetails.paymentValue} per month support
 							and extra benefits.
 						</p>
-						<ul css={benefitsCss}>
+						<ul
+							id="benefits"
+							css={benefitsCss}
+							hidden={!showBenefits}
+						>
 							<li>
 								<SvgTickRound size="small" />
 								<span>
@@ -262,6 +277,18 @@ export const AccountOverviewCardV2 = ({
 								</span>
 							</li>
 						</ul>
+						<button
+							css={[
+								expanderButtonCss()(showBenefits),
+								benefitsButtonCss,
+							]}
+							type="button"
+							aria-expanded={showBenefits}
+							aria-controls="benefits"
+							onClick={() => setShowBenefits(!showBenefits)}
+						>
+							{showBenefits ? 'hide' : 'view'} benefits
+						</button>
 					</Card.Section>
 				)}
 			<Card.Section>
