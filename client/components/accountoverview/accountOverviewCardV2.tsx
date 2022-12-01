@@ -9,6 +9,7 @@ import {
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
+	SvgTickRound,
 } from '@guardian/source-react-components';
 import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router';
@@ -72,9 +73,13 @@ const Card = (props: CardProps) => {
 	);
 };
 
-Card.Section = (props: { children: ReactNode }) => {
+Card.Section = (props: { children: ReactNode; backgroundColor?: string }) => {
 	const sectionCss = css`
 		padding: ${space[5]}px ${space[4]}px;
+		${props.backgroundColor &&
+		`
+			background-color: ${props.backgroundColor};
+		`}
 		& + & {
 			border-top: 1px solid ${palette.neutral[86]};
 		}
@@ -185,8 +190,80 @@ export const AccountOverviewCardV2 = ({
 		}
 	`;
 
+	const benefitsCss = css`
+		${textSans.medium()};
+		list-style: none;
+		margin: ${space[5]}px 0 0 -4px;
+		padding: 0;
+
+		li + li {
+			margin-top: ${space[2]}px;
+		}
+
+		li {
+			display: flex;
+			align-items: flex-start;
+		}
+
+		svg {
+			flex-shrink: 0;
+			margin-right: ${space[2]}px;
+			fill: ${palette.brand[500]};
+		}
+	`;
+
 	return (
 		<Card heading={productTitle}>
+			{specificProductType === PRODUCT_TYPES.supporterplus &&
+				nextPaymentDetails && (
+					<Card.Section backgroundColor="#edf5fA">
+						<p
+							css={css`
+								${textSans.medium()}
+								margin: 0;
+								max-width: 35ch;
+							`}
+						>
+							You’re supporting the Guardian with a{' '}
+							{nextPaymentDetails.paymentValue} per month support
+							and extra benefits.
+						</p>
+						<ul css={benefitsCss}>
+							<li>
+								<SvgTickRound size="small" />
+								<span>
+									<strong>
+										A regular supporter newsletter.
+									</strong>{' '}
+									Get exclusive insight from our newsroom
+								</span>
+							</li>
+							<li>
+								<SvgTickRound size="small" />
+								<span>
+									<strong>Uninterrupted reading.</strong> See
+									far fewer asks for support
+								</span>
+							</li>
+							<li>
+								<SvgTickRound size="small" />
+								<span>
+									<strong>
+										Full access to our news app.
+									</strong>{' '}
+									Read our reporting on the go
+								</span>
+							</li>
+							<li>
+								<SvgTickRound size="small" />
+								<span>
+									<strong>Ad-free reading.</strong> Avoid ads
+									on all your devices
+								</span>
+							</li>
+						</ul>
+					</Card.Section>
+				)}
 			<Card.Section>
 				<div css={productDetailLayoutCss}>
 					<div>
