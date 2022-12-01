@@ -230,8 +230,9 @@ export const AccountOverviewCardV2 = ({
 							`}
 						>
 							You’re supporting the Guardian with a{' '}
-							{nextPaymentDetails.paymentValue} per month support
-							and extra benefits.
+							{nextPaymentDetails.paymentValue} per{' '}
+							{nextPaymentDetails.paymentInterval} support and
+							extra benefits.
 						</p>
 						<ul
 							id="benefits"
