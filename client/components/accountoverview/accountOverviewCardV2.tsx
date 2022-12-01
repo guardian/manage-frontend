@@ -11,7 +11,7 @@ import {
 	buttonThemeReaderRevenueBrand,
 	SvgTickRound,
 } from '@guardian/source-react-components';
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { parseDate } from '../../../shared/dates';
@@ -39,11 +39,6 @@ interface CardProps {
 }
 
 const Card = (props: CardProps) => {
-	const containerCss = css`
-		width: 100%;
-		border: 1px solid ${palette.neutral[86]};
-	`;
-
 	const headingContainerCss = css`
 		padding: ${space[3]}px ${space[4]}px;
 		min-height: 64px;
@@ -66,7 +61,7 @@ const Card = (props: CardProps) => {
 	`;
 
 	return (
-		<div css={containerCss}>
+		<div>
 			<div css={headingContainerCss}>
 				<h3 css={headingCss}>{props.heading}</h3>
 			</div>
@@ -78,13 +73,12 @@ const Card = (props: CardProps) => {
 Card.Section = (props: { children: ReactNode; backgroundColor?: string }) => {
 	const sectionCss = css`
 		padding: ${space[5]}px ${space[4]}px;
+		border: 1px solid ${palette.neutral[86]};
+		border-top: none;
 		${props.backgroundColor &&
 		`
 			background-color: ${props.backgroundColor};
 		`}
-		& + & {
-			border-top: 1px solid ${palette.neutral[86]};
-		}
 	`;
 
 	return <div css={sectionCss}>{props.children}</div>;
