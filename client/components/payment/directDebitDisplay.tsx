@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand, from } from '@guardian/source-foundations';
+import { from, palette } from '@guardian/source-foundations';
 import type { DirectDebitDetails } from '../../../shared/productResponse';
 import { DirectDebitLogo } from './directDebitLogo';
 import type { Inlineable } from './inlineable';
@@ -71,7 +71,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 				`}
 			>
 				<DirectDebitLogo
-					fill={brand[400]}
+					fill={palette.brand[400]}
 					additionalCss={css`
 						margin-right: 10px;
 					`}
@@ -93,7 +93,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 				`}
 			>
 				<DirectDebitLogo
-					fill={brand[400]}
+					fill={palette.brand[400]}
 					additionalCss={css`
 						margin: auto 10px auto 0;
 						width: 47px;
@@ -111,10 +111,31 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 		);
 	}
 
+	if (props.inline) {
+		return (
+			<div
+				css={css`
+					display: flex;
+					align-items: center;
+				`}
+			>
+				<DirectDebitLogo fill={palette.brand[400]} />
+				<span
+					css={css`
+						margin-left: 0.5ch;
+					`}
+				>
+					{dashifySortCode(props.sortCode)}{' '}
+					{sanitiseAccountNumber(props.accountNumber)}
+				</span>
+			</div>
+		);
+	}
+
 	return (
 		<>
 			<DirectDebitLogo
-				fill={brand[400]}
+				fill={palette.brand[400]}
 				additionalCss={css`
 					margin: 0 10px 0 0;
 				`}

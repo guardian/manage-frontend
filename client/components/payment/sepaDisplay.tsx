@@ -1,18 +1,33 @@
+import { css } from '@emotion/react';
+
 interface SepaDisplayProps {
 	accountName: string;
 	iban: string;
+	inline?: boolean;
 }
 
-export const SepaDisplay = ({ accountName, iban }: SepaDisplayProps) => {
+export const SepaDisplay = ({
+	accountName,
+	iban,
+	inline,
+}: SepaDisplayProps) => {
 	return (
-		<div>
-			<div>SEPA</div>
-
-			<div>
-				{accountName}
-				<br />
-				{iban}
-			</div>
-		</div>
+		<p
+			css={css`
+				margin: 0;
+			`}
+		>
+			{inline ? (
+				`SEPA ${accountName} ${iban}`
+			) : (
+				<>
+					SEPA
+					<br />
+					{accountName}
+					<br />
+					{iban}
+				</>
+			)}
+		</p>
 	);
 };
