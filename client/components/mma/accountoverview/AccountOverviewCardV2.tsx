@@ -33,8 +33,21 @@ import {
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
 
+const productPalette: Record<string, string> = {
+	Contribution: palette.brand[600],
+	SupporterPlus: palette.brand[500],
+	Digipack: palette.brand[500],
+	DigitalVoucher: '#ff5943',
+	Paper: '#ff5943',
+	HomeDelivery: '#ff5943',
+	Voucher: '#ff5943',
+	Weekly: '#5f8085',
+};
+
 interface CardProps {
-	heading: string;
+	title: string;
+	headerTextColor?: string;
+	headerBackgroundColor?: string;
 	children: ReactNode;
 }
 
@@ -42,8 +55,8 @@ const Card = (props: CardProps) => {
 	const headingContainerCss = css`
 		padding: ${space[3]}px ${space[4]}px;
 		min-height: 64px;
-		color: ${palette.neutral[100]};
-		background-color: ${palette.brand[500]};
+		color: ${props.headerTextColor ?? palette.neutral[0]};
+		background-color: ${props.headerBackgroundColor ?? palette.neutral[97]};
 
 		${from.tablet} {
 			min-height: 128px;
@@ -62,9 +75,9 @@ const Card = (props: CardProps) => {
 
 	return (
 		<div>
-			<div css={headingContainerCss}>
-				<h3 css={headingCss}>{props.heading}</h3>
-			</div>
+			<header css={headingContainerCss}>
+				<h3 css={headingCss}>{props.title}</h3>
+			</header>
 			{props.children}
 		</div>
 	);
@@ -219,7 +232,15 @@ export const AccountOverviewCardV2 = ({
 	`;
 
 	return (
-		<Card heading={productTitle}>
+		<Card
+			title={productTitle}
+			headerTextColor={palette.neutral[100]}
+			headerBackgroundColor={
+				productPalette[
+					specificProductType.allProductsProductTypeFilterString
+				]
+			}
+		>
 			{specificProductType === PRODUCT_TYPES.supporterplus &&
 				nextPaymentDetails && (
 					<Card.Section backgroundColor="#edf5fA">
