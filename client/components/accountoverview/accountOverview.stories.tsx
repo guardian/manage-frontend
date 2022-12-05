@@ -36,12 +36,7 @@ export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
 		.restore()
 		.get('/api/cancelled/', { body: [] })
 		.get('/api/me/mma', {
-			body: [
-				guardianWeeklyCard,
-				digitalDD,
-				newspaperVoucherPaypal,
-				contribution,
-			],
+			body: [guardianWeeklyCard, digitalDD, newspaperVoucherPaypal],
 		});
 
 	return <AccountOverview />;
