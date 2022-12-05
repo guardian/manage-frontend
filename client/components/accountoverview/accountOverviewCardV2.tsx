@@ -86,8 +86,10 @@ Card.Section = (props: { children: ReactNode; backgroundColor?: string }) => {
 
 export const AccountOverviewCardV2 = ({
 	productDetail,
+	isEligibleToSwitch,
 }: {
 	productDetail: ProductDetail;
+	isEligibleToSwitch: boolean;
 }) => {
 	const navigate = useNavigate();
 	const [showBenefits, setShowBenefits] = useState<boolean>(false);
@@ -128,10 +130,9 @@ export const AccountOverviewCardV2 = ({
 		hasPaymentFailure,
 	);
 
-	// TODO: Add eligibility criteria logic. This is currently hardcoded to
-	// always show the switch button for Supporter+ to allow testing of design
-	const isEligibleToSwitch =
-		specificProductType === PRODUCT_TYPES.supporterplus;
+	const showSwitchButton =
+		isEligibleToSwitch &&
+		specificProductType === PRODUCT_TYPES.contributions;
 
 	const sectionHeadingCss = css`
 		${textSans.medium({ fontWeight: 'bold' })};
@@ -410,7 +411,7 @@ export const AccountOverviewCardV2 = ({
 								{`Manage ${groupedProductType.friendlyName()}`}
 							</Button>
 						)}
-						{isEligibleToSwitch && (
+						{showSwitchButton && (
 							<ThemeProvider
 								theme={buttonThemeReaderRevenueBrand}
 							>

@@ -15,9 +15,16 @@ import type {
 	MembersDataApiItem,
 	ProductDetail,
 } from '../../../shared/productResponse';
-import { isProduct, sortByJoinDate } from '../../../shared/productResponse';
+import {
+	isProduct,
+	isSpecificProductType,
+	sortByJoinDate,
+} from '../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../shared/productTypes';
-import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
+import {
+	GROUPED_PRODUCT_TYPES,
+	PRODUCT_TYPES,
+} from '../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../fetch';
 import { allProductsDetailFetcher } from '../../productUtils';
 import AsyncLoader from '../asyncLoader';
@@ -62,6 +69,18 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 		(_) => _.alertText,
 	);
 
+	const hasDigiSubAndContribution =
+		allActiveProductDetails.some((productDetail) =>
+			isSpecificProductType(productDetail, PRODUCT_TYPES.contributions),
+		) &&
+		allActiveProductDetails.some((productDetail) =>
+			isSpecificProductType(productDetail, PRODUCT_TYPES.digipack),
+		);
+
+	const isEligibleToSwitch = !(
+		maybeFirstPaymentFailure || hasDigiSubAndContribution
+	);
+
 	const subHeadingCss = css`
 		margin: ${space[12]}px 0 ${space[6]}px;
 		border-top: 1px solid ${neutral['86']};
@@ -103,6 +122,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 												.subscriptionId
 										}
 										productDetail={productDetail}
+										isEligibleToSwitch={isEligibleToSwitch}
 									/>
 								) : (
 									<AccountOverviewCard

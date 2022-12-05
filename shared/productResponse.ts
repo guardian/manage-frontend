@@ -4,7 +4,8 @@ import AsyncLoader from '../client/components/asyncLoader';
 import type { PhoneRegionKey } from '../client/components/callCenterEmailAndNumbers';
 import type { DeliveryRecordDetail } from '../client/components/delivery/records/deliveryRecordsApi';
 import type { CardProps } from '../client/components/payment/cardDisplay';
-import type { GroupedProductTypeKeys } from './productTypes';
+import { GROUPED_PRODUCT_TYPES } from './productTypes';
+import type { GroupedProductTypeKeys, ProductType } from './productTypes';
 
 export type DeliveryRecordApiItem = DeliveryRecordDetail;
 
@@ -215,4 +216,14 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 		currency: subscription.plan?.currency,
 		currencyISO: subscription.plan?.currencyISO,
 	};
+};
+
+export const isSpecificProductType = (
+	productDetail: ProductDetail,
+	productType: ProductType,
+) => {
+	const groupedProductType = GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
+	const specificProductType =
+		groupedProductType.mapGroupedToSpecific(productDetail);
+	return specificProductType === productType;
 };
