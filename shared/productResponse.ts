@@ -220,10 +220,10 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 
 export const isSpecificProductType = (
 	productDetail: ProductDetail,
-	productType: ProductType,
+	targetProductType: ProductType,
 ) => {
 	const groupedProductType = GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
 	const specificProductType =
 		groupedProductType.mapGroupedToSpecific(productDetail);
-	return specificProductType === productType;
+	return specificProductType === targetProductType;
 };
