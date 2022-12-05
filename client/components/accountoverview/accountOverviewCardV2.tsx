@@ -9,8 +9,10 @@ import {
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
+	SvgTickRound,
 } from '@guardian/source-react-components';
 import type { ReactNode } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { parseDate } from '../../../shared/dates';
 import type { ProductDetail } from '../../../shared/productResponse';
@@ -20,6 +22,7 @@ import {
 	PRODUCT_TYPES,
 } from '../../../shared/productTypes';
 import { trackEvent } from '../../services/analytics';
+import { expanderButtonCss } from '../expanderButton';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import {
@@ -36,11 +39,6 @@ interface CardProps {
 }
 
 const Card = (props: CardProps) => {
-	const containerCss = css`
-		width: 100%;
-		border: 1px solid ${palette.neutral[86]};
-	`;
-
 	const headingContainerCss = css`
 		padding: ${space[3]}px ${space[4]}px;
 		min-height: 64px;
@@ -63,7 +61,7 @@ const Card = (props: CardProps) => {
 	`;
 
 	return (
-		<div css={containerCss}>
+		<div>
 			<div css={headingContainerCss}>
 				<h3 css={headingCss}>{props.heading}</h3>
 			</div>
@@ -72,12 +70,15 @@ const Card = (props: CardProps) => {
 	);
 };
 
-Card.Section = (props: { children: ReactNode }) => {
+Card.Section = (props: { children: ReactNode; backgroundColor?: string }) => {
 	const sectionCss = css`
 		padding: ${space[5]}px ${space[4]}px;
-		& + & {
-			border-top: 1px solid ${palette.neutral[86]};
-		}
+		border: 1px solid ${palette.neutral[86]};
+		border-top: none;
+		${props.backgroundColor &&
+		`
+			background-color: ${props.backgroundColor};
+		`}
 	`;
 
 	return <div css={sectionCss}>{props.children}</div>;
@@ -89,6 +90,7 @@ export const AccountOverviewCardV2 = ({
 	productDetail: ProductDetail;
 }) => {
 	const navigate = useNavigate();
+	const [showBenefits, setShowBenefits] = useState<boolean>(false);
 
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
@@ -185,8 +187,105 @@ export const AccountOverviewCardV2 = ({
 		}
 	`;
 
+	const benefitsCss = css`
+		${textSans.medium()};
+		list-style: none;
+		margin: ${space[5]}px 0 ${space[4]}px -4px;
+		padding: 0;
+
+		li + li {
+			margin-top: ${space[2]}px;
+		}
+
+		li {
+			display: flex;
+			align-items: flex-start;
+		}
+
+		svg {
+			flex-shrink: 0;
+			margin-right: ${space[2]}px;
+			fill: ${palette.brand[500]};
+		}
+	`;
+
+	const benefitsButtonCss = css`
+		${textSans.small()}
+		margin-top: ${space[1]}px;
+		padding: 0;
+		color: ${palette.brand[500]};
+		border-bottom: 1px solid ${palette.brand[500]};
+	`;
+
 	return (
 		<Card heading={productTitle}>
+			{specificProductType === PRODUCT_TYPES.supporterplus &&
+				nextPaymentDetails && (
+					<Card.Section backgroundColor="#edf5fA">
+						<p
+							css={css`
+								${textSans.medium()}
+								margin: 0;
+								max-width: 35ch;
+							`}
+						>
+							You’re supporting the Guardian with a{' '}
+							{nextPaymentDetails.paymentValue} per{' '}
+							{nextPaymentDetails.paymentInterval} support and
+							extra benefits.
+						</p>
+						<ul
+							id="benefits"
+							css={benefitsCss}
+							hidden={!showBenefits}
+						>
+							<li>
+								<SvgTickRound size="small" />
+								<span>
+									<strong>
+										A regular supporter newsletter.
+									</strong>{' '}
+									Get exclusive insight from our newsroom
+								</span>
+							</li>
+							<li>
+								<SvgTickRound size="small" />
+								<span>
+									<strong>Uninterrupted reading.</strong> See
+									far fewer asks for support
+								</span>
+							</li>
+							<li>
+								<SvgTickRound size="small" />
+								<span>
+									<strong>
+										Full access to our news app.
+									</strong>{' '}
+									Read our reporting on the go
+								</span>
+							</li>
+							<li>
+								<SvgTickRound size="small" />
+								<span>
+									<strong>Ad-free reading.</strong> Avoid ads
+									on all your devices
+								</span>
+							</li>
+						</ul>
+						<button
+							css={[
+								expanderButtonCss()(showBenefits),
+								benefitsButtonCss,
+							]}
+							type="button"
+							aria-expanded={showBenefits}
+							aria-controls="benefits"
+							onClick={() => setShowBenefits(!showBenefits)}
+						>
+							{showBenefits ? 'hide' : 'view'} benefits
+						</button>
+					</Card.Section>
+				)}
 			<Card.Section>
 				<div css={productDetailLayoutCss}>
 					<div>

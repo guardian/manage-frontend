@@ -13,6 +13,7 @@ import {
 import { InfoIconDark } from '../svgs/infoIconDark';
 
 export interface NextPaymentDetails {
+	paymentInterval: string;
 	paymentKey: string;
 	paymentValue: string;
 	isNewPaymentValue?: boolean;
@@ -34,13 +35,14 @@ export const getNextPaymentDetails = (
 			? paidFuturePlans[1]
 			: paidFuturePlans[0];
 	if (isPaidSubscriptionPlan(mainPlan)) {
-		const paymentKey = `Next ${augmentInterval(
+		const paymentInterval =
 			subscription.currentPlans.length !== 0 &&
-				isSixForSix(mainPlan.name) &&
-				planAfterMainPlan
+			isSixForSix(mainPlan.name) &&
+			planAfterMainPlan
 				? planAfterMainPlan.interval
-				: mainPlan.interval,
-		)} payment`;
+				: mainPlan.interval;
+
+		const paymentKey = `Next ${augmentInterval(paymentInterval)} payment`;
 
 		const paymentValue =
 			subscription.readerType === 'Patron'
@@ -68,6 +70,7 @@ export const getNextPaymentDetails = (
 			!isSixForSix(mainPlan.name);
 
 		return {
+			paymentInterval,
 			paymentKey,
 			paymentValue,
 			isNewPaymentValue,
