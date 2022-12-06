@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router';
 import { parseDate } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { getMainPlan, isGift } from '../../../../shared/productResponse';
+import type { ProductTypeKeys } from '../../../../shared/productTypes';
 import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
@@ -33,15 +34,17 @@ import {
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
 
-const productPalette: Record<string, string> = {
-	Contribution: palette.brand[600],
-	SupporterPlus: palette.brand[500],
-	Digipack: palette.brand[500],
-	DigitalVoucher: '#ff5943',
-	Paper: '#ff5943',
-	HomeDelivery: '#ff5943',
-	Voucher: '#ff5943',
-	Weekly: '#5f8085',
+const productPalette: { [productType in ProductTypeKeys]: string } = {
+	contributions: palette.brand[600],
+	supporterplus: palette.brand[500],
+	digipack: palette.brand[500],
+	digitalvoucher: '#ff5943',
+	newspaper: '#ff5943',
+	homedelivery: '#ff5943',
+	voucher: '#ff5943',
+	guardianweekly: '#5f8085',
+	membership: palette.brand[500],
+	guardianpatron: palette.brand[500],
 };
 
 const Card = (props: { children: ReactNode }) => {
@@ -124,7 +127,7 @@ export const AccountOverviewCardV2 = ({
 
 	const showSwitchButton =
 		isEligibleToSwitch &&
-		specificProductType === PRODUCT_TYPES.contributions;
+		specificProductType.productType === 'contributions';
 
 	const sectionHeadingCss = css`
 		${textSans.medium({ fontWeight: 'bold' })};
@@ -225,9 +228,7 @@ export const AccountOverviewCardV2 = ({
 		<Card>
 			<Card.Header
 				backgroundColor={
-					productPalette[
-						specificProductType.allProductsProductTypeFilterString
-					]
+					productPalette[specificProductType.productType]
 				}
 			>
 				<h3 css={productTitleCss}>{productTitle}</h3>

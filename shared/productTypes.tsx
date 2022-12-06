@@ -159,6 +159,7 @@ export interface ProductType {
 	productTitle: (mainPlan?: SubscriptionPlan) => string;
 	friendlyName: (productDetail?: ProductDetail) => ProductFriendlyName;
 	shortFriendlyName?: string;
+	productType: ProductTypeKeys;
 	groupedProductType: GroupedProductTypeKeys;
 	allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
 	urlPart: ProductUrlPart;
@@ -186,7 +187,10 @@ export interface ProductType {
 }
 
 export interface GroupedProductType
-	extends Omit<ProductType, 'groupedProductType' | 'softOptInIDs'> {
+	extends Omit<
+		ProductType,
+		'productType' | 'groupedProductType' | 'softOptInIDs'
+	> {
 	mapGroupedToSpecific: (
 		productDetail: ProductDetail | CancelledProductDetail,
 	) => ProductType;
@@ -244,7 +248,7 @@ enum SOFT_OPT_IN_IDS {
 	guardian_weekly_newsletter = 'guardian_weekly_newsletter',
 }
 
-type ProductTypeKeys =
+export type ProductTypeKeys =
 	| 'membership'
 	| 'contributions'
 	| 'newspaper'
@@ -269,6 +273,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	membership: {
 		productTitle: () => 'Guardian membership',
 		friendlyName: () => 'membership',
+		productType: 'membership',
 		groupedProductType: 'membership',
 		allProductsProductTypeFilterString: 'Membership',
 		urlPart: 'membership',
@@ -315,6 +320,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			)} contribution`;
 		},
 		friendlyName: () => 'recurring contribution',
+		productType: 'contributions',
 		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'Contribution',
 		urlPart: 'contributions',
@@ -376,6 +382,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	newspaper: {
 		productTitle: calculateProductTitle('Newspaper subscription'),
 		friendlyName: () => 'newspaper subscription',
+		productType: 'newspaper',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Paper',
 		urlPart: 'paper',
@@ -396,6 +403,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		productTitle: calculateProductTitle('Newspaper Delivery'),
 		friendlyName: () => 'newspaper home delivery subscription',
 		shortFriendlyName: 'newspaper home delivery',
+		productType: 'homedelivery',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'HomeDelivery',
 		urlPart: 'homedelivery',
@@ -435,6 +443,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		productTitle: calculateProductTitle('Newspaper Voucher'),
 		friendlyName: () => 'newspaper voucher subscription',
 		shortFriendlyName: 'newspaper voucher booklet',
+		productType: 'voucher',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Voucher',
 		urlPart: 'voucher',
@@ -483,6 +492,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	digitalvoucher: {
 		productTitle: calculateProductTitle('Newspaper Subscription Card'),
 		friendlyName: () => 'newspaper subscription card',
+		productType: 'digitalvoucher',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'DigitalVoucher',
 		urlPart: 'subscriptioncard',
@@ -510,6 +520,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		productTitle: () => 'Guardian Weekly',
 		friendlyName: () => 'Guardian Weekly subscription',
 		shortFriendlyName: 'Guardian Weekly',
+		productType: 'guardianweekly',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Weekly',
 		urlPart: 'guardianweekly',
@@ -560,6 +571,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	digipack: {
 		productTitle: () => 'Digital Subscription',
 		friendlyName: () => 'digital subscription',
+		productType: 'digipack',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Digipack',
 		urlPart: 'digital',
@@ -606,6 +618,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			).interval;
 			return calculateSupporterPlusTitle(interval);
 		},
+		productType: 'supporterplus',
 		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'SupporterPlus',
 		urlPart: 'support',
@@ -645,6 +658,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	guardianpatron: {
 		productTitle: () => 'Guardian Patron',
 		friendlyName: () => 'guardian patron',
+		productType: 'guardianpatron',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'GuardianPatron',
 		urlPart: 'guardianpatron',
