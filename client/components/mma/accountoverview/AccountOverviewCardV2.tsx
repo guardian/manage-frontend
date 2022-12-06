@@ -44,43 +44,22 @@ const productPalette: Record<string, string> = {
 	Weekly: '#5f8085',
 };
 
-interface CardProps {
-	title: string;
-	headerTextColor?: string;
-	headerBackgroundColor?: string;
-	children: ReactNode;
-}
+const Card = (props: { children: ReactNode }) => {
+	return <div>{props.children}</div>;
+};
 
-const Card = (props: CardProps) => {
-	const headingContainerCss = css`
-		padding: ${space[3]}px ${space[4]}px;
+Card.Header = (props: { children: ReactNode; backgroundColor?: string }) => {
+	const headerCss = css`
+		padding: ${space[5]}px ${space[4]}px;
 		min-height: 64px;
-		color: ${props.headerTextColor ?? palette.neutral[0]};
-		background-color: ${props.headerBackgroundColor ?? palette.neutral[97]};
+		background-color: ${props.backgroundColor ?? palette.neutral[97]};
 
 		${from.tablet} {
 			min-height: 128px;
 		}
 	`;
 
-	const headingCss = css`
-		${headline.xxsmall({ fontWeight: 'bold' })};
-		margin: 0;
-		max-width: 20ch;
-
-		${from.tablet} {
-			${headline.small({ fontWeight: 'bold' })};
-		}
-	`;
-
-	return (
-		<div>
-			<header css={headingContainerCss}>
-				<h3 css={headingCss}>{props.title}</h3>
-			</header>
-			{props.children}
-		</div>
-	);
+	return <header css={headerCss}>{props.children}</header>;
 };
 
 Card.Section = (props: { children: ReactNode; backgroundColor?: string }) => {
@@ -151,6 +130,17 @@ export const AccountOverviewCardV2 = ({
 		${textSans.medium({ fontWeight: 'bold' })};
 		margin-top: 0;
 		margin-bottom: ${space[2]}px;
+	`;
+
+	const productTitleCss = css`
+		${headline.xxsmall({ fontWeight: 'bold' })};
+		color: ${palette.neutral[100]};
+		margin: 0;
+		max-width: 20ch;
+
+		${from.tablet} {
+			${headline.small({ fontWeight: 'bold' })};
+		}
 	`;
 
 	const productDetailLayoutCss = css`
@@ -232,15 +222,16 @@ export const AccountOverviewCardV2 = ({
 	`;
 
 	return (
-		<Card
-			title={productTitle}
-			headerTextColor={palette.neutral[100]}
-			headerBackgroundColor={
-				productPalette[
-					specificProductType.allProductsProductTypeFilterString
-				]
-			}
-		>
+		<Card>
+			<Card.Header
+				backgroundColor={
+					productPalette[
+						specificProductType.allProductsProductTypeFilterString
+					]
+				}
+			>
+				<h3 css={productTitleCss}>{productTitle}</h3>
+			</Card.Header>
 			{specificProductType === PRODUCT_TYPES.supporterplus &&
 				nextPaymentDetails && (
 					<Card.Section backgroundColor="#edf5fA">
