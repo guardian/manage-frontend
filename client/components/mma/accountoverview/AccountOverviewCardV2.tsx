@@ -53,7 +53,7 @@ const Card = (props: { children: ReactNode }) => {
 
 Card.Header = (props: { children: ReactNode; backgroundColor?: string }) => {
 	const headerCss = css`
-		padding: ${space[5]}px ${space[4]}px;
+		padding: ${space[3]}px ${space[4]}px;
 		min-height: 64px;
 		background-color: ${props.backgroundColor ?? palette.neutral[97]};
 
