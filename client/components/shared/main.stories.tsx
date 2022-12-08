@@ -1,11 +1,11 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ReactRouterDecorator } from '../../.storybook/ReactRouterDecorator';
-import type { HeaderProps } from './header';
-import Header from './header';
+import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
+import type { MainProps } from './main';
+import { Main } from './main';
 
 export default {
-	title: 'Components/Header',
-	component: Header,
+	title: 'Layouts/Main',
+	component: Main,
 	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
@@ -13,6 +13,7 @@ export default {
 	args: {
 		signInStatus: 'init',
 		requiresSignIn: false,
+		helpCentrePage: false,
 	},
 	argTypes: {
 		signInStatus: {
@@ -20,13 +21,13 @@ export default {
 			control: { type: 'select' },
 		},
 	},
-} as ComponentMeta<typeof Header>;
+} as ComponentMeta<typeof Main>;
 
-const Template: ComponentStory<typeof Header> = (args: HeaderProps) => (
-	<Header {...args} />
+const Template: ComponentStory<typeof Main> = (args: MainProps) => (
+	<Main {...args}>
+		<h1>Main content</h1>
+	</Main>
 );
-
-export const Initial = Template.bind({});
 
 export const SignedOut = Template.bind({});
 SignedOut.args = {
@@ -42,4 +43,16 @@ export const RequiresSignIn = Template.bind({});
 RequiresSignIn.args = {
 	signInStatus: 'signedIn',
 	requiresSignIn: true,
+};
+
+export const HelpCentreSignedOut = Template.bind({});
+HelpCentreSignedOut.args = {
+	signInStatus: 'signedOut',
+	helpCentrePage: true,
+};
+
+export const HelpCentreSignedIn = Template.bind({});
+HelpCentreSignedIn.args = {
+	signInStatus: 'signedIn',
+	helpCentrePage: true,
 };

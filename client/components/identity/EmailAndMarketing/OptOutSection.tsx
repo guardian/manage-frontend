@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import type { FC } from 'react';
-import { WithStandardTopMargin } from '../../WithStandardTopMargin';
+import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { Lines } from '../Lines';
 import { MarketingToggle } from '../MarketingToggle';
 import type { ConsentOption } from '../models';

@@ -11,7 +11,7 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { Navigate, useLocation, useNavigate } from 'react-router';
-import { CallCentreNumbers } from '../../callCentreNumbers';
+import { CallCentreNumbers } from '../../shared/callCentreNumbers';
 
 export default function PaymentFailed() {
 	const location = useLocation();

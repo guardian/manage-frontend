@@ -1,8 +1,8 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
-import { SectionContent } from '../sectionContent';
-import { SectionHeader } from '../sectionHeader';
+import { SectionContent } from '../shared/sectionContent';
+import { SectionHeader } from '../shared/sectionHeader';
 import HelpCentreArticle from './helpCentreArticle';
 
 export default {

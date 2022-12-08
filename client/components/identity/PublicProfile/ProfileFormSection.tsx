@@ -2,7 +2,7 @@ import type { FormikProps } from 'formik';
 import { Form, withFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '../../buttons';
-import { WithStandardTopMargin } from '../../WithStandardTopMargin';
+import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { FormTextField } from '../Form/FormField';
 import type { User } from '../models';
 import { ErrorTypes } from '../models';

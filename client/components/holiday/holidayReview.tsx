@@ -10,11 +10,11 @@ import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 import { sans } from '../../styles/fonts';
 import { fetchWithDefaultParameters } from '../../utilities/fetch';
 import { LinkButton } from '../buttons';
-import { CallCentreNumbers } from '../callCentreNumbers';
 import { Checkbox } from '../checkbox';
 import { InfoIcon } from '../mma/shared/assets/infoIcon';
 import { Modal } from '../modal';
 import { ProgressIndicator } from '../progressIndicator';
+import { CallCentreNumbers } from '../shared/callCentreNumbers';
 import { buttonBarCss, cancelLinkCss } from './holidayDateChooser';
 import {
 	creditExplainerSentence,

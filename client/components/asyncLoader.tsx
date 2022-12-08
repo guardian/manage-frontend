@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/browser';
 import * as React from 'react';
 import { trackEvent } from '../utilities/analytics';
-import { GenericErrorScreen } from './genericErrorScreen';
-import type { LoadingProps } from './spinner';
-import { Spinner } from './spinner';
-import { WithStandardTopMargin } from './WithStandardTopMargin';
+import { GenericErrorScreen } from './shared/genericErrorScreen';
+import type { LoadingProps } from './shared/spinner';
+import { Spinner } from './shared/spinner';
+import { WithStandardTopMargin } from './shared/WithStandardTopMargin';
 
 type ReaderOnOK<T> = (resp: Response) => Promise<T>;
 

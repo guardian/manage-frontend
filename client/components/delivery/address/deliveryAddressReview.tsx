@@ -15,10 +15,10 @@ import type {
 	ProductType,
 	WithProductType,
 } from '../../../../shared/productTypes';
-import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { InfoSection } from '../../infoSection';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
+import { CallCentreEmailAndNumbers } from '../../shared/callCenterEmailAndNumbers';
 import { DeliveryAddressDisplay } from './deliveryAddressDisplay';
 import {
 	AddressChangedInformationContext,

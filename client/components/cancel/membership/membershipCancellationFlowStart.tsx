@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { palette } from '@guardian/source-foundations';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { trackEvent } from '../../../utilities/analytics';
-import { WithStandardTopMargin } from '../../WithStandardTopMargin';
+import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { hrefStyle } from '../cancellationConstants';
 
 const cssBullet = (flexBasis: string = '50%') =>

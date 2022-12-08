@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { WithStandardTopMargin } from '../../WithStandardTopMargin';
+import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { ConsentOptions } from '../identity';
 import { Lines } from '../Lines';
 import { MarketingCheckbox } from '../MarketingCheckbox';

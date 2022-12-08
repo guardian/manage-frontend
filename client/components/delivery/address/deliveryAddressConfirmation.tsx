@@ -20,10 +20,10 @@ import type {
 import { trackEvent } from '../../../utilities/analytics';
 import AsyncLoader from '../../asyncLoader';
 import { LinkButton } from '../../buttons';
-import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { TickInCircle } from '../../mma/shared/assets/tickInCircle';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
+import { CallCentreEmailAndNumbers } from '../../shared/callCenterEmailAndNumbers';
 import { updateAddressFetcher } from './deliveryAddressApi';
 import { DeliveryAddressDisplay } from './deliveryAddressDisplay';
 import {

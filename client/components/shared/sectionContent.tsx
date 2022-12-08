@@ -8,8 +8,8 @@ import {
 } from '@guardian/source-foundations';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { createContext, useState } from 'react';
-import { gridBase, gridItemPlacement } from '../styles/grid';
-import HelpCentreNav from './helpCentre/helpCentreNav';
+import { gridBase, gridItemPlacement } from '../../styles/grid';
+import HelpCentreNav from '../helpCentre/helpCentreNav';
 
 interface SectionContentProps {
 	children: ReactNode;

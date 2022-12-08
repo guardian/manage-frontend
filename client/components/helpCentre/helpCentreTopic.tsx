@@ -1,9 +1,9 @@
 import { captureException, captureMessage } from '@sentry/browser';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { SelectedTopicObjectContext } from '../sectionContent';
-import { Spinner } from '../spinner';
-import { WithStandardTopMargin } from '../WithStandardTopMargin';
+import { SelectedTopicObjectContext } from '../shared/sectionContent';
+import { Spinner } from '../shared/spinner';
+import { WithStandardTopMargin } from '../shared/WithStandardTopMargin';
 import { BackToHelpCentreLink } from './BackToHelpCentreLink';
 import { HelpCentreMoreTopics } from './helpCentreMoreTopics';
 import { HelpCentreSingleTopic } from './helpCentreSingleTopic';

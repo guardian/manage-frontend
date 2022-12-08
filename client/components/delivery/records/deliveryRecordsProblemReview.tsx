@@ -21,7 +21,6 @@ import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
-import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import type {
 	PotentialHolidayStopsResponse,
 	RawPotentialHolidayStopDetail,
@@ -32,6 +31,7 @@ import {
 } from '../../holiday/holidayStopApi';
 import { InfoIconDark } from '../../mma/shared/assets/infoIconDark';
 import { ProgressIndicator } from '../../progressIndicator';
+import { CallCentreEmailAndNumbers } from '../../shared/callCenterEmailAndNumbers';
 import { DeliveryRecordCard } from './deliveryRecordCard';
 import { PageStatus } from './deliveryRecords';
 import type {

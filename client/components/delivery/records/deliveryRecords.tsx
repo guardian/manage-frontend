@@ -26,11 +26,11 @@ import {
 import type { DeliveryProblemType } from '../../../../shared/productTypes';
 import { holidaySuspensionDeliveryProblem } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
-import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { FormError } from '../../FormError';
 import { InfoIconDark } from '../../mma/shared/assets/infoIconDark';
 import type { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
+import { CallCentreEmailAndNumbers } from '../../shared/callCenterEmailAndNumbers';
 import { DeliveryAddressStep } from './deliveryAddressStep';
 import { DeliveryRecordCard } from './deliveryRecordCard';
 import type { DeliveryRecordDetail } from './deliveryRecordsApi';

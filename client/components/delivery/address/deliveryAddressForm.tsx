@@ -25,8 +25,6 @@ import type {
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { addressChangeAffectedInfo } from '../../../utilities/deliveryAddress';
 import { flattenEquivalent } from '../../../utilities/utils';
-import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
-import { CallCentreNumbers } from '../../callCentreNumbers';
 import { COUNTRIES } from '../../identity/models';
 import { InfoSection } from '../../infoSection';
 import { Input } from '../../input';
@@ -35,6 +33,8 @@ import { NAV_LINKS } from '../../nav/navConfig';
 import type { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
+import { CallCentreEmailAndNumbers } from '../../shared/callCenterEmailAndNumbers';
+import { CallCentreNumbers } from '../../shared/callCentreNumbers';
 import type { AddressSetStateObject } from './deliveryAddressFormContext';
 import {
 	ContactIdContext,

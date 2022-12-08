@@ -18,9 +18,9 @@ import { isProduct } from '../../../shared/productResponse';
 import { sans } from '../../styles/fonts';
 import { trackEvent } from '../../utilities/analytics';
 import { DatePicker } from '../datePicker';
-import { GenericErrorScreen } from '../genericErrorScreen';
 import { InfoIcon } from '../mma/shared/assets/infoIcon';
 import { ProgressIndicator } from '../progressIndicator';
+import { GenericErrorScreen } from '../shared/genericErrorScreen';
 import { HolidayAnniversaryDateExplainerModal } from './holidayAnniversaryDateExplainerModal';
 import {
 	creditExplainerSentence,

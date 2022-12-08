@@ -18,20 +18,20 @@ import { sans } from '../../styles/fonts';
 import { measure } from '../../styles/typography';
 import { trackEvent } from '../../utilities/analytics';
 import useFetch from '../../utilities/hooks/useFetch';
-import { CallCentreNumbers } from '../callCentreNumbers';
 import type {
 	DeliveryRecordDetail,
 	DeliveryRecordsResponse,
 } from '../delivery/records/deliveryRecordsApi';
-import { GenericErrorScreen } from '../genericErrorScreen';
 import { Heading } from '../Heading';
 import type {
 	OutstandingHolidayStop,
 	OutstandingHolidayStopsResponse,
 } from '../holiday/holidayStopApi';
 import { ProgressIndicator } from '../progressIndicator';
-import { Spinner } from '../spinner';
-import { WithStandardTopMargin } from '../WithStandardTopMargin';
+import { CallCentreNumbers } from '../shared/callCentreNumbers';
+import { GenericErrorScreen } from '../shared/genericErrorScreen';
+import { Spinner } from '../shared/spinner';
+import { WithStandardTopMargin } from '../shared/WithStandardTopMargin';
 import type { CancellationContextInterface } from './CancellationContainer';
 import { CancellationContext } from './CancellationContainer';
 import { cancellationEffectiveToday } from './cancellationContexts';

@@ -3,7 +3,7 @@ import type * as React from 'react';
 import type { DateRange } from '../../../shared/dates';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, dateString } from '../../../shared/dates';
 import type { ProductTypeWithHolidayStopsFlow } from '../../../shared/productTypes';
-import { Spinner } from '../spinner';
+import { Spinner } from '../shared/spinner';
 import { HolidayAnniversaryDateExplainerModal } from './holidayAnniversaryDateExplainerModal';
 import type {
 	HolidayStopDetail,

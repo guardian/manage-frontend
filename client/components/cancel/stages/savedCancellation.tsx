@@ -9,7 +9,7 @@ import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { ProgressIndicator } from '../../progressIndicator';
-import { WithStandardTopMargin } from '../../WithStandardTopMargin';
+import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,

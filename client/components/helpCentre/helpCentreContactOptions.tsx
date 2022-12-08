@@ -8,12 +8,12 @@ import {
 } from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';
 import { useState } from 'react';
-import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { isLiveChatFeatureEnabled } from '../liveChat/liveChatFeatureSwitch';
 import {
 	LiveChatPrivacyNotice,
 	LiveChatPrivacyNoticeLink,
 } from '../liveChat/liveChatPrivacyNotice';
+import { CallCentreEmailAndNumbers } from '../shared/callCenterEmailAndNumbers';
 import { HelpCentreEmailAndLiveChat } from './helpCentreEmailAndLiveChat';
 import { HelpCentrePhoneNumbers } from './helpCentrePhoneNumbers';
 

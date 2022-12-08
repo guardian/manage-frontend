@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
-import { KnownIssues } from './helpCentre/knownIssues';
-import { SectionContent } from './sectionContent';
-import { SectionHeader } from './sectionHeader';
+import { SectionContent } from '../shared/sectionContent';
+import { SectionHeader } from '../shared/sectionHeader';
+import { KnownIssues } from './knownIssues';
 
 interface HelpCenterContentWrapperProps {
 	children: React.ReactNode;

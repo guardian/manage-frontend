@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { textSans } from '@guardian/source-foundations';
-import { Spinner } from './spinner';
+import { Spinner } from './shared/spinner';
 
 const overlay = css`
 	z-index: 10000;

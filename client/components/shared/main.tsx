@@ -1,9 +1,9 @@
 import { palette, textSansSizes } from '@guardian/source-foundations';
-import { serif } from '../styles/fonts';
-import type { SignInStatus } from '../utilities/signInStatus';
-import { Footer } from './footer/footer';
+import { serif } from '../../styles/fonts';
+import type { SignInStatus } from '../../utilities/signInStatus';
+import { Footer } from '../footer/footer';
+import HelpCentreHeader from '../helpCentre/helpCentreHeader';
 import Header from './header';
-import HelpCentreHeader from './helpCentre/helpCentreHeader';
 
 export interface MainProps {
 	signInStatus?: SignInStatus;
@@ -38,7 +38,7 @@ export const Main = ({
 					position: 'static',
 				},
 			}}
-			href="#maincontent"
+			href="client/components/shared/main#maincontent"
 		>
 			Skip to main content
 		</a>

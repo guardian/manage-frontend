@@ -10,9 +10,9 @@ import {
 import { LinkButton } from '@guardian/source-react-components';
 import type { SelfServiceCancellation } from '../../../shared/productResponse';
 import type { GroupedProductType } from '../../../shared/productTypes';
-import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { NAV_LINKS } from '../nav/navConfig';
 import { ProductDescriptionListTable } from '../productDescriptionListTable';
+import { CallCentreEmailAndNumbers } from '../shared/callCenterEmailAndNumbers';
 
 interface ContactUsToCancelProps {
 	selfServiceCancellation: SelfServiceCancellation;

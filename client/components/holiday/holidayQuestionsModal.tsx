@@ -1,8 +1,8 @@
 import type { HolidayStopFlowProperties } from '../../../shared/productTypes';
 import { sans } from '../../styles/fonts';
-import { CallCentreNumbers } from '../callCentreNumbers';
 import { InfoIcon } from '../mma/shared/assets/infoIcon';
 import { Modal } from '../modal';
+import { CallCentreNumbers } from '../shared/callCentreNumbers';
 
 export const creditExplainerSentence = (issueKeyword: string) =>
 	`You will be credited for each suspended ${issueKeyword} on the next bill after the ${issueKeyword} date.`;

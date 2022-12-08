@@ -1,21 +1,21 @@
 import { css, Global } from '@emotion/react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { initFeatureSwitchUrlParamOverride } from '../../shared/featureSwitches';
-import { fonts } from '../styles/fonts';
-import global from '../styles/global';
-import useAnalytics from '../utilities/hooks/useAnalytics';
-import useConsent from '../utilities/hooks/useConsent';
-import useScrollToTop from '../utilities/hooks/useScrollToTop';
-import { setPageTitle } from '../utilities/pageTitle';
-import type { SignInStatus } from '../utilities/signInStatus';
-import { isSignedIn, pageRequiresSignIn } from '../utilities/signInStatus';
-import ErrorBoundary from './ErrorBoundary';
-import { GenericErrorScreen } from './genericErrorScreen';
+import { initFeatureSwitchUrlParamOverride } from '../../../shared/featureSwitches';
+import { fonts } from '../../styles/fonts';
+import global from '../../styles/global';
+import useAnalytics from '../../utilities/hooks/useAnalytics';
+import useConsent from '../../utilities/hooks/useConsent';
+import useScrollToTop from '../../utilities/hooks/useScrollToTop';
+import { setPageTitle } from '../../utilities/pageTitle';
+import type { SignInStatus } from '../../utilities/signInStatus';
+import { isSignedIn, pageRequiresSignIn } from '../../utilities/signInStatus';
+import { LiveChat } from '../liveChat/liveChat';
+import ErrorBoundary from '../shared/ErrorBoundary';
+import { GenericErrorScreen } from '../shared/genericErrorScreen';
+import { Main } from '../shared/main';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
 import HelpCentreLoadingContent from './HelpCentreLoadingContent';
-import { LiveChat } from './liveChat/liveChat';
-import { Main } from './main';
 
 initFeatureSwitchUrlParamOverride();
 
@@ -24,26 +24,22 @@ initFeatureSwitchUrlParamOverride();
 // More information: https://webpack.js.org/api/module-methods/#magic-comments
 
 const HelpCentre = lazy(
-	() =>
-		import(/* webpackChunkName: "HelpCentre" */ './helpCentre/helpCentre'),
+	() => import(/* webpackChunkName: "HelpCentre" */ './helpCentre'),
 );
 
 const HelpCentreArticle = lazy(
 	() =>
 		import(
-			/* webpackChunkName: "HelpCentreArticle" */ './helpCentre/helpCentreArticle'
+			/* webpackChunkName: "HelpCentreArticle" */ './helpCentreArticle'
 		),
 );
 
 const HelpCentreTopic = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "HelpCentreTopic" */ './helpCentre/helpCentreTopic'
-		),
+	() => import(/* webpackChunkName: "HelpCentreTopic" */ './helpCentreTopic'),
 );
 
 const ContactUs = lazy(
-	() => import(/* webpackChunkName: "ContactUs" */ './contactUs/contactUs'),
+	() => import(/* webpackChunkName: "ContactUs" */ '../contactUs/contactUs'),
 );
 
 const HelpCentreRouter = () => {

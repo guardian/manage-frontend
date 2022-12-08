@@ -8,9 +8,9 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import { useState } from 'react';
-import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { Users } from '../identity/identity';
 import { InfoIconDark } from '../mma/shared/assets/infoIconDark';
+import { CallCentreEmailAndNumbers } from '../shared/callCenterEmailAndNumbers';
 import { SupportTheGuardianButton } from '../supportTheGuardianButton';
 
 export const EmptyAccountOverview = () => {

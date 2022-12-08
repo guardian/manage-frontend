@@ -3,8 +3,8 @@ import { css } from '@emotion/react';
 import { brand, space, textSans } from '@guardian/source-foundations';
 import { LinkButton } from '@guardian/source-react-components';
 import { trackEvent } from '../../utilities/analytics';
-import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { InfoIconDark } from '../mma/shared/assets/infoIconDark';
+import { CallCentreEmailAndNumbers } from '../shared/callCenterEmailAndNumbers';
 
 interface SelfServicePromptProps {
 	copy: string[];

@@ -16,9 +16,9 @@ import type {
 } from '../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../utilities/productUtils';
 import type { ReFetch } from '../asyncLoader';
-import { GenericErrorScreen } from '../genericErrorScreen';
 import { NAV_LINKS } from '../nav/navConfig';
 import { PageContainer } from '../page';
+import { GenericErrorScreen } from '../shared/genericErrorScreen';
 import type {
 	GetHolidayStopsResponse,
 	HolidayStopDetail,

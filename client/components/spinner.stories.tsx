@@ -1,6 +1,6 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import type { LoadingProps } from './spinner';
-import { Spinner } from './spinner';
+import type { LoadingProps } from './shared/spinner';
+import { Spinner } from './shared/spinner';
 
 export default {
 	title: 'Components/Spinner',

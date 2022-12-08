@@ -31,11 +31,11 @@ import {
 import type { SignInStatus } from '../utilities/signInStatus';
 import { isSignedIn, pageRequiresSignIn } from '../utilities/signInStatus';
 import { DeliveryAddressUpdate } from './delivery/address/deliveryAddressForm';
-import ErrorBoundary from './ErrorBoundary';
-import { GenericErrorScreen } from './genericErrorScreen';
-import { Main } from './main';
 import Maintenance from './maintenance';
 import MMAPageSkeleton from './MMAPageSkeleton';
+import ErrorBoundary from './shared/ErrorBoundary';
+import { GenericErrorScreen } from './shared/genericErrorScreen';
+import { Main } from './shared/main';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {

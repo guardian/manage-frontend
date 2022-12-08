@@ -22,7 +22,7 @@ import type { ProductTypeWithCancellationFlow } from '../../../shared/productTyp
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { hasCancellationFlow } from '../../utilities/productUtils';
 import { ProgressIndicator } from '../progressIndicator';
-import { WithStandardTopMargin } from '../WithStandardTopMargin';
+import { WithStandardTopMargin } from '../shared/WithStandardTopMargin';
 import type { CancellationContextInterface } from './CancellationContainer';
 import { CancellationContext } from './CancellationContainer';
 import {

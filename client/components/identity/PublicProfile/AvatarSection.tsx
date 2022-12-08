@@ -8,7 +8,7 @@ import type { ChangeEvent, FC } from 'react';
 import { sans } from '../../../styles/fonts';
 import { trackEvent } from '../../../utilities/analytics';
 import { Button } from '../../buttons';
-import { Spinner } from '../../spinner';
+import { Spinner } from '../../shared/spinner';
 import * as AvatarAPI from '../idapi/avatar';
 import { IdentityLocations } from '../IdentityLocations';
 import { ErrorTypes } from '../models';

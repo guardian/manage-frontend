@@ -23,8 +23,8 @@ import {
 } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { LinkButton } from '../../buttons';
-import { GenericErrorScreen } from '../../genericErrorScreen';
 import { ArrowIcon } from '../../mma/shared/assets/arrowIcon';
+import { GenericErrorScreen } from '../../shared/genericErrorScreen';
 import { CardDisplay } from '../cardDisplay';
 import { DirectDebitDisplay } from '../directDebitDisplay';
 import { PayPalDisplay } from '../paypalDisplay';

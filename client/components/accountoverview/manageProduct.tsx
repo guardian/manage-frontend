@@ -28,7 +28,6 @@ import {
 } from '../../utilities/productUtils';
 import { BasicProductInfoTable } from '../basicProductInfoTable';
 import { LinkButton } from '../buttons';
-import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { DeliveryAddressDisplay } from '../delivery/address/deliveryAddressDisplay';
 import { ErrorIcon } from '../mma/shared/assets/errorIcon';
 import { GiftIcon } from '../mma/shared/assets/giftIcon';
@@ -38,6 +37,7 @@ import { getNextPaymentDetails } from '../payment/nextPaymentDetails';
 import { PaymentDetailsTable } from '../payment/paymentDetailsTable';
 import { PaymentFailureAlertIfApplicable } from '../payment/paymentFailureAlertIfApplicable';
 import { ProductDescriptionListTable } from '../productDescriptionListTable';
+import { CallCentreEmailAndNumbers } from '../shared/callCenterEmailAndNumbers';
 import { SupportTheGuardianButton } from '../supportTheGuardianButton';
 import { ContributionUpdateAmount } from './contributionUpdateAmount';
 import { NewsletterOptinSection } from './newsletterOptinSection';

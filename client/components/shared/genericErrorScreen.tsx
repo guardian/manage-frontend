@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import { trackEvent } from '../utilities/analytics';
+import { trackEvent } from '../../utilities/analytics';
 import { CallCentreNumbers } from './callCentreNumbers';
 import { WithStandardTopMargin } from './WithStandardTopMargin';
 

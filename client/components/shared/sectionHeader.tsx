@@ -10,7 +10,7 @@ import {
 } from '@guardian/source-foundations';
 import Color from 'color';
 import { Link } from 'react-router-dom';
-import { gridBase, gridItemPlacement } from '../styles/grid';
+import { gridBase, gridItemPlacement } from '../../styles/grid';
 
 interface SectionHeaderProps {
 	title: string | JSX.Element;

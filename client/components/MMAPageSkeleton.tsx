@@ -7,8 +7,8 @@ import { shouldHaveHolidayStopsFlow } from '../utilities/productUtils';
 import type { MenuSpecificNavItem } from './nav/navConfig';
 import { NAV_LINKS } from './nav/navConfig';
 import { PageContainer } from './page';
-import { Spinner } from './spinner';
-import { WithStandardTopMargin } from './WithStandardTopMargin';
+import { Spinner } from './shared/spinner';
+import { WithStandardTopMargin } from './shared/WithStandardTopMargin';
 
 interface LocationObject {
 	title: string;

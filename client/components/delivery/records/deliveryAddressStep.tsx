@@ -32,13 +32,13 @@ import {
 import { createProductDetailFetcher } from '../../../utilities/productUtils';
 import { flattenEquivalent } from '../../../utilities/utils';
 import AsyncLoader from '../../asyncLoader';
-import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { COUNTRIES } from '../../identity/models';
 import { InfoSection } from '../../infoSection';
 import { Input } from '../../input';
 import { InfoIconDark } from '../../mma/shared/assets/infoIconDark';
 import type { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
+import { CallCentreEmailAndNumbers } from '../../shared/callCenterEmailAndNumbers';
 import { updateAddressFetcher } from '../address/deliveryAddressApi';
 import { SuccessMessage } from '../address/deliveryAddressConfirmation';
 import type { SubscriptionEffectiveData } from '../address/deliveryAddressFormContext';

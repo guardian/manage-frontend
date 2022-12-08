@@ -9,11 +9,11 @@ import type {
 import type { ProductType } from '../../../shared/productTypes';
 import { measure } from '../../styles/typography';
 import { hasDeliveryRecordsFlow } from '../../utilities/productUtils';
-import { GenericErrorScreen } from '../genericErrorScreen';
 import { Heading } from '../Heading';
 import { ResubscribeThrasher } from '../resubscribeThrasher';
+import { GenericErrorScreen } from '../shared/genericErrorScreen';
+import { WithStandardTopMargin } from '../shared/WithStandardTopMargin';
 import { SupportTheGuardianButton } from '../supportTheGuardianButton';
-import { WithStandardTopMargin } from '../WithStandardTopMargin';
 import { hrefStyle } from './cancellationConstants';
 import { CancellationReasonContext } from './cancellationContexts';
 import { CancellationContributionReminder } from './cancellationContributionReminder';

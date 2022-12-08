@@ -13,8 +13,8 @@ import type {
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import { createProductDetailFetcher } from '../../../utilities/productUtils';
 import AsyncLoader from '../../asyncLoader';
-import { GenericErrorScreen } from '../../genericErrorScreen';
 import { ProgressIndicator } from '../../progressIndicator';
+import { GenericErrorScreen } from '../../shared/genericErrorScreen';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
