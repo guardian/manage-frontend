@@ -24,7 +24,7 @@ import type {
 } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { addressChangeAffectedInfo } from '../../../utilities/deliveryAddress';
-import { flattenEquivalent } from '../../../utils';
+import { flattenEquivalent } from '../../../utilities/utils';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { CallCentreNumbers } from '../../callCentreNumbers';
 import { COUNTRIES } from '../../identity/models';

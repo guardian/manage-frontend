@@ -10,8 +10,8 @@ import type {
 	ProductType,
 	ProductTypeWithCancellationFlow,
 } from '../../../../shared/productTypes';
-import { fetchWithDefaultParameters } from '../../../fetch';
-import { createProductDetailFetcher } from '../../../productUtils';
+import { fetchWithDefaultParameters } from '../../../utilities/fetch';
+import { createProductDetailFetcher } from '../../../utilities/productUtils';
 import AsyncLoader from '../../asyncLoader';
 import { GenericErrorScreen } from '../../genericErrorScreen';
 import { ProgressIndicator } from '../../progressIndicator';

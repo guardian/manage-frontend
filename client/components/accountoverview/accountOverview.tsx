@@ -25,8 +25,8 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../../shared/productTypes';
-import { fetchWithDefaultParameters } from '../../fetch';
-import { allProductsDetailFetcher } from '../../productUtils';
+import { fetchWithDefaultParameters } from '../../utilities/fetch';
+import { allProductsDetailFetcher } from '../../utilities/productUtils';
 import AsyncLoader from '../asyncLoader';
 import { isCancelled } from '../cancel/cancellationSummary';
 import { NAV_LINKS } from '../nav/navConfig';

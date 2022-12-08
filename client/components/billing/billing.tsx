@@ -24,8 +24,8 @@ import {
 } from '../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
-import { fetchWithDefaultParameters } from '../../fetch';
-import { allProductsDetailFetcher } from '../../productUtils';
+import { fetchWithDefaultParameters } from '../../utilities/fetch';
+import { allProductsDetailFetcher } from '../../utilities/productUtils';
 import { EmptyAccountOverview } from '../accountoverview/emptyAccountOverview';
 import { SixForSixExplainerIfApplicable } from '../accountoverview/sixForSixExplainer';
 import AsyncLoader from '../asyncLoader';

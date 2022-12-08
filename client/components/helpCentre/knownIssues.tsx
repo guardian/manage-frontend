@@ -8,8 +8,8 @@ import {
 } from '@guardian/source-foundations';
 import { useEffect, useState } from 'react';
 import type { ProductDetail } from '../../../shared/productResponse';
-import { allProductsDetailFetcher } from '../../productUtils';
 import { gridBase, gridItemPlacement } from '../../styles/grid';
+import { allProductsDetailFetcher } from '../../utilities/productUtils';
 import { ErrorIcon } from '../mma/shared/assets/errorIcon';
 
 interface Issue {

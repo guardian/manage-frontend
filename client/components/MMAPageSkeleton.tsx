@@ -3,7 +3,7 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../shared/productTypes';
-import { shouldHaveHolidayStopsFlow } from '../productUtils';
+import { shouldHaveHolidayStopsFlow } from '../utilities/productUtils';
 import type { MenuSpecificNavItem } from './nav/navConfig';
 import { NAV_LINKS } from './nav/navConfig';
 import { PageContainer } from './page';

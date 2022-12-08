@@ -1,4 +1,4 @@
-import { getCookie } from '../cookies';
+import { getCookie } from '../utilities/cookies';
 
 const cookieName = 'testCookie';
 const cookieValue = 'whatever';

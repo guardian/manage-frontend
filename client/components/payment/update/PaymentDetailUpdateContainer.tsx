@@ -13,7 +13,7 @@ import type {
 	ProductType,
 	WithProductType,
 } from '../../../../shared/productTypes';
-import { createProductDetailFetcher } from '../../../productUtils';
+import { createProductDetailFetcher } from '../../../utilities/productUtils';
 import { getNavItemFromFlowReferrer } from '../../nav/navConfig';
 import { PageContainer } from '../../page';
 

@@ -35,10 +35,10 @@ import type {
 	ProductType,
 	WithProductType,
 } from '../../../../shared/productTypes';
-import { createProductDetailFetch } from '../../../productUtils';
-import { getStripeKey } from '../../../stripe';
 import { trackEvent } from '../../../utilities/analytics';
-import { processResponse } from '../../../utils';
+import { createProductDetailFetch } from '../../../utilities/productUtils';
+import { getStripeKey } from '../../../utilities/stripe';
+import { processResponse } from '../../../utilities/utils';
 import { GenericErrorScreen } from '../../genericErrorScreen';
 import OverlayLoader from '../../OverlayLoader';
 import { SupportTheGuardianButton } from '../../supportTheGuardianButton';

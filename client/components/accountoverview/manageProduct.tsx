@@ -25,7 +25,7 @@ import type {
 import {
 	hasDeliveryRecordsFlow,
 	shouldHaveHolidayStopsFlow,
-} from '../../productUtils';
+} from '../../utilities/productUtils';
 import { BasicProductInfoTable } from '../basicProductInfoTable';
 import { LinkButton } from '../buttons';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';

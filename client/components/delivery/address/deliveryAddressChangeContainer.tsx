@@ -12,12 +12,12 @@ import type {
 	WithProductType,
 } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { createProductDetailFetcher } from '../../../productUtils';
 import type { ContactIdToArrayOfProductDetailAndProductType } from '../../../utilities/deliveryAddress';
 import {
 	addressChangeAffectedInfo,
 	getValidDeliveryAddressChangeEffectiveDates,
 } from '../../../utilities/deliveryAddress';
+import { createProductDetailFetcher } from '../../../utilities/productUtils';
 import { COUNTRIES } from '../../identity/models';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { PageContainer } from '../../page';

@@ -1,6 +1,6 @@
 import { LOGGING_CODE_SUFFIX_HEADER } from '../../../shared/globals';
 import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
-import { fetchWithDefaultParameters } from '../../fetch';
+import { fetchWithDefaultParameters } from '../../utilities/fetch';
 import AsyncLoader from '../asyncLoader';
 
 interface CaseUpdateResponse {

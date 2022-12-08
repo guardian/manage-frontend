@@ -15,7 +15,7 @@ import type {
 	ProductTypeWithCancellationFlow,
 	WithProductType,
 } from '../../../shared/productTypes';
-import { createProductDetailFetcher } from '../../productUtils';
+import { createProductDetailFetcher } from '../../utilities/productUtils';
 import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../holiday/holidayStopApi';
 import { NAV_LINKS } from '../nav/navConfig';

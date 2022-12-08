@@ -14,7 +14,7 @@ import type {
 	ProductTypeWithHolidayStopsFlow,
 	WithProductType,
 } from '../../../shared/productTypes';
-import { createProductDetailFetcher } from '../../productUtils';
+import { createProductDetailFetcher } from '../../utilities/productUtils';
 import type { ReFetch } from '../asyncLoader';
 import { GenericErrorScreen } from '../genericErrorScreen';
 import { NAV_LINKS } from '../nav/navConfig';

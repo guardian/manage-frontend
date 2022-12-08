@@ -4,8 +4,8 @@ import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../shared/identity';
-import { fetchWithDefaultParameters } from '../fetch';
 import { trackEvent } from '../utilities/analytics';
+import { fetchWithDefaultParameters } from '../utilities/fetch';
 import AsyncLoader from './asyncLoader';
 import { SupportTheGuardianButton } from './supportTheGuardianButton';
 

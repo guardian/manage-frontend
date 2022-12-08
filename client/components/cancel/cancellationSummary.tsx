@@ -7,8 +7,8 @@ import type {
 	Subscription,
 } from '../../../shared/productResponse';
 import type { ProductType } from '../../../shared/productTypes';
-import { hasDeliveryRecordsFlow } from '../../productUtils';
 import { measure } from '../../styles/typography';
+import { hasDeliveryRecordsFlow } from '../../utilities/productUtils';
 import { GenericErrorScreen } from '../genericErrorScreen';
 import { Heading } from '../Heading';
 import { ResubscribeThrasher } from '../resubscribeThrasher';

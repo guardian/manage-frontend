@@ -1,14 +1,14 @@
 import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
-} from '../shared/identity';
+} from '../../shared/identity';
 import type {
 	AllProductsProductTypeFilterString,
 	ProductType,
 	ProductTypeWithCancellationFlow,
 	ProductTypeWithDeliveryRecordsProperties,
 	ProductTypeWithHolidayStopsFlow,
-} from '../shared/productTypes';
+} from '../../shared/productTypes';
 import { fetchWithDefaultParameters } from './fetch';
 
 export const shouldHaveHolidayStopsFlow = (

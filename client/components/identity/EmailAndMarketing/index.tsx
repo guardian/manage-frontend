@@ -1,7 +1,7 @@
 import { createRef, useEffect, useState } from 'react';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { allProductsDetailFetcher } from '../../../productUtils';
+import { allProductsDetailFetcher } from '../../../utilities/productUtils';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { PageContainer } from '../../page';
 import { Spinner } from '../../spinner';

@@ -4,7 +4,7 @@ import type { ProductDetail, Subscription } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../shared/productTypes';
 import type { SubscriptionEffectiveData } from '../components/delivery/address/deliveryAddressFormContext';
-import { flattenEquivalent } from '../utils';
+import { flattenEquivalent } from './utils';
 
 interface ProductDetailAndProductType {
 	productDetail: ProductDetail;

@@ -15,19 +15,19 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../shared/productTypes';
-import { getCookie } from '../cookies';
 import { abSwitches } from '../experiments/abSwitches';
 import { tests } from '../experiments/abTests';
+import { fonts } from '../styles/fonts';
+import global from '../styles/global';
+import { getCookie } from '../utilities/cookies';
+import useAnalytics from '../utilities/hooks/useAnalytics';
+import useConsent from '../utilities/hooks/useConsent';
+import useScrollToTop from '../utilities/hooks/useScrollToTop';
 import {
 	hasDeliveryFlow,
 	hasDeliveryRecordsFlow,
 	shouldHaveHolidayStopsFlow,
-} from '../productUtils';
-import { fonts } from '../styles/fonts';
-import global from '../styles/global';
-import useAnalytics from '../utilities/hooks/useAnalytics';
-import useConsent from '../utilities/hooks/useConsent';
-import useScrollToTop from '../utilities/hooks/useScrollToTop';
+} from '../utilities/productUtils';
 import type { SignInStatus } from '../utilities/signInStatus';
 import { isSignedIn, pageRequiresSignIn } from '../utilities/signInStatus';
 import { DeliveryAddressUpdate } from './delivery/address/deliveryAddressForm';

@@ -3,7 +3,7 @@ import type {
 	Subscription,
 } from '../../../../shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
-import { fetchWithDefaultParameters } from '../../../fetch';
+import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import AsyncLoader from '../../asyncLoader';
 
 interface DeliveryProblem {

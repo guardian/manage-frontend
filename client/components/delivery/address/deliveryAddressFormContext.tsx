@@ -6,7 +6,7 @@ import {
 } from '../../../../shared/dates';
 import type { DeliveryAddress } from '../../../../shared/productResponse';
 import type { ContactIdToArrayOfProductDetailAndProductType } from '../../../utilities/deliveryAddress';
-import { flattenEquivalent } from '../../../utils';
+import { flattenEquivalent } from '../../../utilities/utils';
 
 export interface AddressSetStateObject {
 	setAddressLine1: Dispatch<SetStateAction<string>>;

@@ -2,7 +2,7 @@ import {
 	guardianWeeklySubscriptionAustralia,
 	guardianWeeklySubscriptionCard,
 } from '../../../fixtures/subscription';
-import { getStripeKey } from '../../../stripe';
+import { getStripeKey } from '../../../utilities/stripe';
 
 // @ts-ignore
 window.guardian = {

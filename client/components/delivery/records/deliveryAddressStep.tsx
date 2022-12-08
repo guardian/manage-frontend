@@ -25,12 +25,12 @@ import {
 	MembersDataApiAsyncLoader,
 } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { createProductDetailFetcher } from '../../../productUtils';
 import {
 	addressChangeAffectedInfo,
 	getValidDeliveryAddressChangeEffectiveDates,
 } from '../../../utilities/deliveryAddress';
-import { flattenEquivalent } from '../../../utils';
+import { createProductDetailFetcher } from '../../../utilities/productUtils';
+import { flattenEquivalent } from '../../../utilities/utils';
 import AsyncLoader from '../../asyncLoader';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { COUNTRIES } from '../../identity/models';

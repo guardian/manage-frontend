@@ -16,8 +16,8 @@ import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../shared/productResponse';
 import { augmentInterval } from '../../../shared/productResponse';
 import type { ProductType } from '../../../shared/productTypes';
-import { fetchWithDefaultParameters } from '../../fetch';
 import { trackEvent } from '../../utilities/analytics';
+import { fetchWithDefaultParameters } from '../../utilities/fetch';
 import AsyncLoader from '../asyncLoader';
 import { Button } from '../buttons';
 

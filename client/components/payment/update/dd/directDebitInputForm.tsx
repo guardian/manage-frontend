@@ -8,7 +8,7 @@ import {
 import { useState } from 'react';
 import type * as React from 'react';
 import { sans } from '../../../../styles/fonts';
-import { processResponse } from '../../../../utils';
+import { processResponse } from '../../../../utilities/utils';
 import { cleanSortCode } from '../../directDebitDisplay';
 import { FieldWrapper } from '../fieldWrapper';
 import type { NewPaymentMethodDetail } from '../newPaymentMethodDetail';

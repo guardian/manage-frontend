@@ -1,4 +1,4 @@
-import { getCookie } from '../cookies';
+import { getCookie } from './cookies';
 
 let countryCode: string | null = null;
 
