@@ -1,11 +1,11 @@
 import { conf } from '../../../server/config';
-import { AccountOverviewIcon } from '../svgs/accountOverviewIcon';
-import { CreditCardIcon } from '../svgs/creditCardIcon';
-import { EmailPrefsIcon } from '../svgs/emailPrefIcon';
-import { HelpIcon } from '../svgs/helpIcon';
-import { ProfileIcon } from '../svgs/profileIcon';
-import { SettingsIcon } from '../svgs/settingsIcon';
-import { SignoutIcon } from '../svgs/signoutIcon';
+import { AccountOverviewIcon } from '../mma/shared/assets/accountOverviewIcon';
+import { CreditCardIcon } from '../mma/shared/assets/creditCardIcon';
+import { EmailPrefsIcon } from '../mma/shared/assets/emailPrefIcon';
+import { HelpIcon } from '../mma/shared/assets/helpIcon';
+import { ProfileIcon } from '../mma/shared/assets/profileIcon';
+import { SettingsIcon } from '../mma/shared/assets/settingsIcon';
+import { SignoutIcon } from '../mma/shared/assets/signoutIcon';
 
 interface NavIconProps {
 	overrideFillColor?: string;

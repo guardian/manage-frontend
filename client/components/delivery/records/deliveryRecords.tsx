@@ -28,9 +28,9 @@ import { holidaySuspensionDeliveryProblem } from '../../../../shared/productType
 import { trackEvent } from '../../../utilities/analytics';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { FormError } from '../../FormError';
+import { InfoIconDark } from '../../mma/shared/assets/infoIconDark';
 import type { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
-import { InfoIconDark } from '../../svgs/infoIconDark';
 import { DeliveryAddressStep } from './deliveryAddressStep';
 import { DeliveryRecordCard } from './deliveryRecordCard';
 import type { DeliveryRecordDetail } from './deliveryRecordsApi';

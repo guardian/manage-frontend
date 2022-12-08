@@ -14,7 +14,7 @@ import {
 	isPaidSubscriptionPlan,
 } from '../../../shared/productResponse';
 import { sans } from '../../styles/fonts';
-import { InfoIcon } from '../svgs/infoIcon';
+import { InfoIcon } from '../mma/shared/assets/infoIcon';
 import { CollatedCredits } from './collatedCredits';
 import {
 	creditExplainerSentence,

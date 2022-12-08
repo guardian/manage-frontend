@@ -12,12 +12,12 @@ import { useState } from 'react';
 import { parseDate } from '../../../shared/dates';
 import type { InvoiceDataApiItem } from '../../../shared/productResponse';
 import { trackEvent } from '../../utilities/analytics';
+import { DownloadIcon } from '../mma/shared/assets/downloadIcon';
 import { Pagination } from '../pagination';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import { PayPalDisplay } from '../payment/paypalDisplay';
 import { SepaDisplay } from '../payment/sepaDisplay';
-import { DownloadIcon } from '../svgs/downloadIcon';
 import { InvoiceTableYearSelect } from './invoiceTableYearSelect';
 
 const invoicePaymentMethods = {

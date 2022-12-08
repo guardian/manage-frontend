@@ -31,13 +31,13 @@ import { SixForSixExplainerIfApplicable } from '../accountoverview/sixForSixExpl
 import AsyncLoader from '../asyncLoader';
 import { BasicProductInfoTable } from '../basicProductInfoTable';
 import { LinkButton } from '../buttons';
+import { ErrorIcon } from '../mma/shared/assets/errorIcon';
+import { GiftIcon } from '../mma/shared/assets/giftIcon';
 import { NAV_LINKS } from '../nav/navConfig';
 import { PageContainer } from '../page';
 import { getNextPaymentDetails } from '../payment/nextPaymentDetails';
 import { PaymentDetailsTable } from '../payment/paymentDetailsTable';
 import { PaymentFailureAlertIfApplicable } from '../payment/paymentFailureAlertIfApplicable';
-import { ErrorIcon } from '../svgs/errorIcon';
-import { GiftIcon } from '../svgs/giftIcon';
 import { InvoicesTable } from './invoicesTable';
 
 type MMACategoryToProductDetails = {

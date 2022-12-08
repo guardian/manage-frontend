@@ -9,7 +9,7 @@ import {
 } from '@guardian/source-foundations';
 import type { ProductDetail } from '../../shared/productResponse';
 import { LinkButton } from './buttons';
-import { ErrorIcon } from './svgs/errorIcon';
+import { ErrorIcon } from './mma/shared/assets/errorIcon';
 
 interface AlertButtonProps {
 	title: string;

@@ -30,11 +30,11 @@ import { CallCentreNumbers } from '../../callCentreNumbers';
 import { COUNTRIES } from '../../identity/models';
 import { InfoSection } from '../../infoSection';
 import { Input } from '../../input';
+import { InfoIconDark } from '../../mma/shared/assets/infoIconDark';
 import { NAV_LINKS } from '../../nav/navConfig';
 import type { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';
 import { ProductDescriptionListTable } from '../../productDescriptionListTable';
 import { ProgressIndicator } from '../../progressIndicator';
-import { InfoIconDark } from '../../svgs/infoIconDark';
 import type { AddressSetStateObject } from './deliveryAddressFormContext';
 import {
 	ContactIdContext,

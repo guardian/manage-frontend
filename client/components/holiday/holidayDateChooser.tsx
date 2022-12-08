@@ -19,8 +19,8 @@ import { sans } from '../../styles/fonts';
 import { trackEvent } from '../../utilities/analytics';
 import { DatePicker } from '../datePicker';
 import { GenericErrorScreen } from '../genericErrorScreen';
+import { InfoIcon } from '../mma/shared/assets/infoIcon';
 import { ProgressIndicator } from '../progressIndicator';
-import { InfoIcon } from '../svgs/infoIcon';
 import { HolidayAnniversaryDateExplainerModal } from './holidayAnniversaryDateExplainerModal';
 import {
 	creditExplainerSentence,

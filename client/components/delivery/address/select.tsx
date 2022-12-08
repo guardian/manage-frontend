@@ -7,7 +7,7 @@ import {
 	textSans,
 } from '@guardian/source-foundations';
 import type * as React from 'react';
-import { ErrorIcon } from '../../svgs/errorIcon';
+import { ErrorIcon } from '../../mma/shared/assets/errorIcon';
 
 type setStateFunc = (value: string) => void;
 

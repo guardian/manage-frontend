@@ -2,8 +2,8 @@ import { breakpoints, from, palette } from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
 import { gridBase, gridColumns, gridItemPlacement } from '../styles/grid';
 import type { SignInStatus } from '../utilities/signInStatus';
+import { GridRoundel } from './mma/shared/assets/gridRoundel';
 import { DropdownNav } from './nav/dropdownNav';
-import { GridRoundel } from './svgs/gridRoundel';
 
 export interface HeaderProps {
 	signInStatus: SignInStatus;

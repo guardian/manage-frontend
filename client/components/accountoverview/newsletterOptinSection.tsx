@@ -10,9 +10,9 @@ import * as NewslettersAPI from '../identity/idapi/newsletters';
 import * as NewslettersSubscriptionsAPI from '../identity/idapi/newsletterSubscriptions';
 import { ConsentOptions } from '../identity/identity';
 import type { ConsentOption } from '../identity/models';
+import { ClockIcon } from '../mma/shared/assets/clockIcon';
+import { TickIcon } from '../mma/shared/assets/tickIcon';
 import { ProblemAlert } from '../ProblemAlert';
-import { ClockIcon } from '../svgs/clockIcon';
-import { TickIcon } from '../svgs/tickIcon';
 import { subHeadingCss } from './manageProduct';
 
 interface UpdateMsgStatus {

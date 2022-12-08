@@ -3,7 +3,7 @@ import { brand, from, neutral, space } from '@guardian/source-foundations';
 import { useEffect, useRef, useState } from 'react';
 import { gridColumns, gridItemPlacement } from '../../styles/grid';
 import { expanderButtonCss } from '../expanderButton';
-import { ProfileIcon } from '../svgs/profileIcon';
+import { ProfileIcon } from '../mma/shared/assets/profileIcon';
 import type { MenuSpecificNavItem } from './navConfig';
 import { NAV_LINKS } from './navConfig';
 

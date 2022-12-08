@@ -15,7 +15,7 @@ import { useState } from 'react';
 import type { StripeSetupIntent } from '../../../../../shared/stripeSetupIntent';
 import { STRIPE_PUBLIC_KEY_HEADER } from '../../../../../shared/stripeSetupIntent';
 import { GenericErrorScreen } from '../../../genericErrorScreen';
-import { LoadingCircleIcon } from '../../../svgs/loadingCircleIcon';
+import { LoadingCircleIcon } from '../../../mma/shared/assets/loadingCircleIcon';
 import { ErrorSummary } from '../Summary';
 import type { CardInputFormProps } from './cardInputForm';
 import { FlexCardElement } from './flexCardElement';

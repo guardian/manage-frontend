@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { brand, neutral, space, textSans } from '@guardian/source-foundations';
 import type * as React from 'react';
-import { InfoIconDark } from './svgs/infoIconDark';
+import { InfoIconDark } from './mma/shared/assets/infoIconDark';
 
 interface InfoSectionProps {
 	children: React.ReactNode;

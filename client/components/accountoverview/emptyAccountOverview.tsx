@@ -10,8 +10,8 @@ import {
 import { useState } from 'react';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { Users } from '../identity/identity';
+import { InfoIconDark } from '../mma/shared/assets/infoIconDark';
 import { SupportTheGuardianButton } from '../supportTheGuardianButton';
-import { InfoIconDark } from '../svgs/infoIconDark';
 
 export const EmptyAccountOverview = () => {
 	const [userEmailAddress, setUserEmailAddress] = useState('-');

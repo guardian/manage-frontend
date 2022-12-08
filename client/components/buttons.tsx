@@ -5,9 +5,9 @@ import type * as React from 'react';
 import { Link } from 'react-router-dom';
 import type { ProductDetail } from '../../shared/productResponse';
 import { sans } from '../styles/fonts';
-import { ArrowIcon } from './svgs/arrowIcon';
-import { ErrorIcon } from './svgs/errorIcon';
-import { TickIcon } from './svgs/tickIcon';
+import { ArrowIcon } from './mma/shared/assets/arrowIcon';
+import { ErrorIcon } from './mma/shared/assets/errorIcon';
+import { TickIcon } from './mma/shared/assets/tickIcon';
 
 export interface ButtonProps {
 	text: string;

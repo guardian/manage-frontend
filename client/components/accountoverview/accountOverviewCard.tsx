@@ -15,6 +15,8 @@ import type { ProductDetail } from '../../../shared/productResponse';
 import { getMainPlan, isGift } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { trackEvent } from '../../utilities/analytics';
+import { ErrorIcon } from '../mma/shared/assets/errorIcon';
+import { GiftIcon } from '../mma/shared/assets/giftIcon';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import {
@@ -23,8 +25,6 @@ import {
 } from '../payment/nextPaymentDetails';
 import { PayPalDisplay } from '../payment/paypalDisplay';
 import { SepaDisplay } from '../payment/sepaDisplay';
-import { ErrorIcon } from '../svgs/errorIcon';
-import { GiftIcon } from '../svgs/giftIcon';
 import { SixForSixExplainerIfApplicable } from './sixForSixExplainer';
 
 interface AccountOverviewCardProps {

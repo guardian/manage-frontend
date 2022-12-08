@@ -1,5 +1,5 @@
 import { from } from '@guardian/source-foundations';
-import { gridColumns, gridItemPlacement } from '../../styles/grid';
+import { gridColumns, gridItemPlacement } from '../../../../styles/grid';
 import type { RoundelProps } from './roundel';
 import { Roundel } from './roundel';
 

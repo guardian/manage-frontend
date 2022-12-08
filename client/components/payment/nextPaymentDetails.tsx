@@ -10,7 +10,7 @@ import {
 	isPaidSubscriptionPlan,
 	isSixForSix,
 } from '../../../shared/productResponse';
-import { InfoIconDark } from '../svgs/infoIconDark';
+import { InfoIconDark } from '../mma/shared/assets/infoIconDark';
 
 export interface NextPaymentDetails {
 	paymentInterval: string;

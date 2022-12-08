@@ -23,6 +23,7 @@ import {
 } from '../../../shared/productTypes';
 import { trackEvent } from '../../utilities/analytics';
 import { expanderButtonCss } from '../expanderButton';
+import { ErrorIcon } from '../mma/shared/assets/errorIcon';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import {
@@ -31,7 +32,6 @@ import {
 } from '../payment/nextPaymentDetails';
 import { PayPalDisplay } from '../payment/paypalDisplay';
 import { SepaDisplay } from '../payment/sepaDisplay';
-import { ErrorIcon } from '../svgs/errorIcon';
 
 interface CardProps {
 	heading: string;

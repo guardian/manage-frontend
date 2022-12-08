@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import { brand, space } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
-import { ErrorIcon } from '../../svgs/errorIcon';
-import { HolidayStopIcon } from '../../svgs/holidayStopIcon';
-import { InfoIconDark } from '../../svgs/infoIconDark';
-import { TickInCircle } from '../../svgs/tickInCircle';
+import { ErrorIcon } from '../../mma/shared/assets/errorIcon';
+import { HolidayStopIcon } from '../../mma/shared/assets/holidayStopIcon';
+import { InfoIconDark } from '../../mma/shared/assets/infoIconDark';
+import { TickInCircle } from '../../mma/shared/assets/tickInCircle';
 
 interface RecordStatusProps {
 	isDispatched: boolean;

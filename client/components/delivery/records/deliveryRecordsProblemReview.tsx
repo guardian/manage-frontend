@@ -30,8 +30,8 @@ import {
 	getPotentialHolidayStopsFetcher,
 	PotentialHolidayStopsAsyncLoader,
 } from '../../holiday/holidayStopApi';
+import { InfoIconDark } from '../../mma/shared/assets/infoIconDark';
 import { ProgressIndicator } from '../../progressIndicator';
-import { InfoIconDark } from '../../svgs/infoIconDark';
 import { DeliveryRecordCard } from './deliveryRecordCard';
 import { PageStatus } from './deliveryRecords';
 import type {

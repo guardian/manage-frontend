@@ -13,7 +13,7 @@ import {
 import { Button } from '@guardian/source-react-components';
 import { useEffect, useState } from 'react';
 import type * as React from 'react';
-import { ErrorIcon } from '../svgs/errorIcon';
+import { ErrorIcon } from '../mma/shared/assets/errorIcon';
 
 interface UploadFileUploadProps {
 	title: string;

@@ -16,8 +16,8 @@ import type { Grecaptcha } from '../../utilities/captcha';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { FormError } from '../FormError';
 import { Input } from '../input';
+import { ErrorIcon } from '../mma/shared/assets/errorIcon';
 import { Spinner } from '../spinner';
-import { ErrorIcon } from '../svgs/errorIcon';
 import { UploadFileInput } from './uploadFileInput';
 
 interface ContactUsFormProps {

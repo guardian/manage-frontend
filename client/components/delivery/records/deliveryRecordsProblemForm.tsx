@@ -5,7 +5,7 @@ import { capitalize } from 'lodash';
 import type { FormEvent } from 'react';
 import { useEffect, useState } from 'react';
 import type { DeliveryProblemType } from '../../../../shared/productTypes';
-import { ErrorIcon } from '../../svgs/errorIcon';
+import { ErrorIcon } from '../../mma/shared/assets/errorIcon';
 
 interface DeliveryRecordProblemFormProps {
 	showNextStepButton: boolean;

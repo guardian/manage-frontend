@@ -4,7 +4,7 @@ import { brand, space, textSans } from '@guardian/source-foundations';
 import { LinkButton } from '@guardian/source-react-components';
 import { trackEvent } from '../../utilities/analytics';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
-import { InfoIconDark } from '../svgs/infoIconDark';
+import { InfoIconDark } from '../mma/shared/assets/infoIconDark';
 
 interface SelfServicePromptProps {
 	copy: string[];

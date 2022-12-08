@@ -12,9 +12,9 @@ import { sans } from '../../styles/fonts';
 import { LinkButton } from '../buttons';
 import { CallCentreNumbers } from '../callCentreNumbers';
 import { Checkbox } from '../checkbox';
+import { InfoIcon } from '../mma/shared/assets/infoIcon';
 import { Modal } from '../modal';
 import { ProgressIndicator } from '../progressIndicator';
-import { InfoIcon } from '../svgs/infoIcon';
 import { buttonBarCss, cancelLinkCss } from './holidayDateChooser';
 import {
 	creditExplainerSentence,

@@ -14,8 +14,8 @@ import { isGift } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { trackEvent } from '../../utilities/analytics';
 import { Button } from '../buttons';
-import { ErrorIcon } from '../svgs/errorIcon';
-import { GiftIcon } from '../svgs/giftIcon';
+import { ErrorIcon } from '../mma/shared/assets/errorIcon';
+import { GiftIcon } from '../mma/shared/assets/giftIcon';
 
 interface AccountOverviewCancelledCardProps {
 	product: CancelledProductDetail;

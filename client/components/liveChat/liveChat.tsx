@@ -8,7 +8,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { conf } from '../../../server/config';
 import { trackEvent } from '../../utilities/analytics';
-import { LoadingCircleIcon } from '../svgs/loadingCircleIcon';
+import { LoadingCircleIcon } from '../mma/shared/assets/loadingCircleIcon';
 import { avatarImg } from './liveChatBase64Images';
 import { liveChatCss } from './liveChatCssOverrides';
 

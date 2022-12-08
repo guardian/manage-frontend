@@ -6,7 +6,7 @@ import {
 	space,
 	textSans,
 } from '@guardian/source-foundations';
-import { GiftIcon } from '../../svgs/giftIcon';
+import { GiftIcon } from '../../mma/shared/assets/giftIcon';
 
 interface ProductDetailsTableProps {
 	productName: string;

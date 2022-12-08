@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { from, neutral, space, textSans } from '@guardian/source-foundations';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
-import { getHelpSectionIcon } from '../svgs/helpSectionIcons';
+import { getHelpSectionIcon } from '../mma/shared/assets/helpSectionIcons';
 
 const containerCss = css`
 	border-top: 1px solid ${neutral['86']};

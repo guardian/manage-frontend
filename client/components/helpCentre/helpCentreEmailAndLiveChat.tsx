@@ -3,8 +3,8 @@ import { from, palette, space, textSans } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { StartLiveChatButton } from '../liveChat/liveChat';
-import { ErrorIcon } from '../svgs/errorIcon';
-import { getHelpSectionIcon } from '../svgs/helpSectionIcons';
+import { ErrorIcon } from '../mma/shared/assets/errorIcon';
+import { getHelpSectionIcon } from '../mma/shared/assets/helpSectionIcons';
 
 interface HelpCentreContactBoxProps {
 	iconId: string;

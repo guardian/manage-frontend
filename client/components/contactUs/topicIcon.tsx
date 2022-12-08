@@ -1,11 +1,11 @@
 import { neutral } from '@guardian/source-foundations';
-import { CommentsIcon } from '../svgs/commentsIcon';
-import { CreditCardIcon } from '../svgs/creditCardIcon';
-import { DeliveryIcon } from '../svgs/deliveryIcon';
-import { NewspaperIcon } from '../svgs/newspaperIcon';
-import { NewspaperVoucherIcon } from '../svgs/newspaperVoucherIcon';
-import { OtherIcon } from '../svgs/otherIcon';
-import { ProfileIcon } from '../svgs/profileIcon';
+import { CommentsIcon } from '../mma/shared/assets/commentsIcon';
+import { CreditCardIcon } from '../mma/shared/assets/creditCardIcon';
+import { DeliveryIcon } from '../mma/shared/assets/deliveryIcon';
+import { NewspaperIcon } from '../mma/shared/assets/newspaperIcon';
+import { NewspaperVoucherIcon } from '../mma/shared/assets/newspaperVoucherIcon';
+import { OtherIcon } from '../mma/shared/assets/otherIcon';
+import { ProfileIcon } from '../mma/shared/assets/profileIcon';
 import { TechIcon } from './techIcon';
 
 interface TopicIconProps {
