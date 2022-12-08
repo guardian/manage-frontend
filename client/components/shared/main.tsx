@@ -38,7 +38,7 @@ export const Main = ({
 					position: 'static',
 				},
 			}}
-			href="client/components/shared/main#maincontent"
+			href="#maincontent"
 		>
 			Skip to main content
 		</a>
