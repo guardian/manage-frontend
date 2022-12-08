@@ -15,8 +15,8 @@ import {
 	parseDate,
 } from '../../../shared/dates';
 import { isProduct } from '../../../shared/productResponse';
-import { trackEvent } from '../../services/analytics';
 import { sans } from '../../styles/fonts';
+import { trackEvent } from '../../utilities/analytics';
 import { DatePicker } from '../datePicker';
 import { GenericErrorScreen } from '../genericErrorScreen';
 import { ProgressIndicator } from '../progressIndicator';

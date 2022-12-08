@@ -14,7 +14,7 @@ import { cancellationFormatDate, parseDate } from '../../../shared/dates';
 import type { ProductDetail } from '../../../shared/productResponse';
 import { getMainPlan, isGift } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
-import { trackEvent } from '../../services/analytics';
+import { trackEvent } from '../../utilities/analytics';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';
 import {

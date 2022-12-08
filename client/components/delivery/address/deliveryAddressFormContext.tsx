@@ -5,7 +5,7 @@ import {
 	dateString,
 } from '../../../../shared/dates';
 import type { DeliveryAddress } from '../../../../shared/productResponse';
-import type { ContactIdToArrayOfProductDetailAndProductType } from '../../../services/deliveryAddress';
+import type { ContactIdToArrayOfProductDetailAndProductType } from '../../../utilities/deliveryAddress';
 import { flattenEquivalent } from '../../../utils';
 
 export interface AddressSetStateObject {

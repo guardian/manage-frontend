@@ -12,7 +12,7 @@ import { parseDate } from '../../../shared/dates';
 import type { CancelledProductDetail } from '../../../shared/productResponse';
 import { isGift } from '../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
-import { trackEvent } from '../../services/analytics';
+import { trackEvent } from '../../utilities/analytics';
 import { Button } from '../buttons';
 import { ErrorIcon } from '../svgs/errorIcon';
 import { GiftIcon } from '../svgs/giftIcon';

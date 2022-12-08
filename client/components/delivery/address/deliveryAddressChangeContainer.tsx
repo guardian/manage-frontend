@@ -13,11 +13,11 @@ import type {
 } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../../productUtils';
-import type { ContactIdToArrayOfProductDetailAndProductType } from '../../../services/deliveryAddress';
+import type { ContactIdToArrayOfProductDetailAndProductType } from '../../../utilities/deliveryAddress';
 import {
 	addressChangeAffectedInfo,
 	getValidDeliveryAddressChangeEffectiveDates,
-} from '../../../services/deliveryAddress';
+} from '../../../utilities/deliveryAddress';
 import { COUNTRIES } from '../../identity/models';
 import { NAV_LINKS } from '../../nav/navConfig';
 import { PageContainer } from '../../page';

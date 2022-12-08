@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import parse from 'url-parse';
-import { runGaStub } from '../services/gaStub';
 import {
 	applyAnyOptimiseExperiments,
-	MMA_AB_TEST_DIMENSION_VALUE
-} from './analytics';
+	MMA_AB_TEST_DIMENSION_VALUE,
+} from '../analytics';
+import { runGaStub } from '../gaStub';
 
 declare global {
 	interface Window {
@@ -98,7 +98,7 @@ const useAnalytics = () => {
 		);
 	}, []);
 
-    useEffect(() => {
+	useEffect(() => {
 		if (!cmpIsInitialised) {
 			return;
 		}
@@ -109,9 +109,7 @@ const useAnalytics = () => {
 			window.guardian.ophan.sendInitialEvent
 		) {
 			if (window.guardian.spaTransition) {
-				window.guardian.ophan.sendInitialEvent(
-					window.location.href
-				);
+				window.guardian.ophan.sendInitialEvent(window.location.href);
 			} else {
 				// tslint:disable-next-line:no-object-mutation
 				window.guardian.spaTransition = true;

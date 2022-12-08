@@ -14,10 +14,10 @@ import type {
 	ProductTypeWithCancellationFlow,
 	WithProductType,
 } from '../../../shared/productTypes';
-import { trackEvent } from '../../services/analytics';
-import useFetch from '../../services/useFetch';
 import { sans } from '../../styles/fonts';
 import { measure } from '../../styles/typography';
+import { trackEvent } from '../../utilities/analytics';
+import useFetch from '../../utilities/hooks/useFetch';
 import { CallCentreNumbers } from '../callCentreNumbers';
 import type {
 	DeliveryRecordDetail,

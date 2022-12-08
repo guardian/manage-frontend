@@ -36,8 +36,8 @@ import type {
 	WithProductType,
 } from '../../../../shared/productTypes';
 import { createProductDetailFetch } from '../../../productUtils';
-import { trackEvent } from '../../../services/analytics';
 import { getStripeKey } from '../../../stripe';
+import { trackEvent } from '../../../utilities/analytics';
 import { processResponse } from '../../../utils';
 import { GenericErrorScreen } from '../../genericErrorScreen';
 import OverlayLoader from '../../OverlayLoader';

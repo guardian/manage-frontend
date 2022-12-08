@@ -23,13 +23,13 @@ import {
 	hasDeliveryRecordsFlow,
 	shouldHaveHolidayStopsFlow,
 } from '../productUtils';
-import type { SignInStatus } from '../services/signInStatus';
-import { isSignedIn, pageRequiresSignIn } from '../services/signInStatus';
-import useAnalytics from '../services/useAnalytics';
-import useConsent from '../services/useConsent';
-import useScrollToTop from '../services/useScrollToTop';
 import { fonts } from '../styles/fonts';
 import global from '../styles/global';
+import useAnalytics from '../utilities/hooks/useAnalytics';
+import useConsent from '../utilities/hooks/useConsent';
+import useScrollToTop from '../utilities/hooks/useScrollToTop';
+import type { SignInStatus } from '../utilities/signInStatus';
+import { isSignedIn, pageRequiresSignIn } from '../utilities/signInStatus';
 import { DeliveryAddressUpdate } from './delivery/address/deliveryAddressForm';
 import ErrorBoundary from './ErrorBoundary';
 import { GenericErrorScreen } from './genericErrorScreen';

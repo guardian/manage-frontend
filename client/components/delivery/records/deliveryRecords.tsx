@@ -25,7 +25,7 @@ import {
 } from '../../../../shared/productResponse';
 import type { DeliveryProblemType } from '../../../../shared/productTypes';
 import { holidaySuspensionDeliveryProblem } from '../../../../shared/productTypes';
-import { trackEvent } from '../../../services/analytics';
+import { trackEvent } from '../../../utilities/analytics';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { FormError } from '../../FormError';
 import type { ProductDescriptionListKeyValue } from '../../productDescriptionListTable';

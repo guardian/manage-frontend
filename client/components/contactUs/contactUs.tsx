@@ -10,7 +10,7 @@ import { captureException } from '@sentry/browser';
 import { useNavigate, useParams } from 'react-router-dom';
 import { contactUsConfig } from '../../../shared/contactUsConfig';
 import type { ContactUsFormPayload } from '../../../shared/contactUsTypes';
-import { trackEvent } from '../../services/analytics';
+import { trackEvent } from '../../utilities/analytics';
 import { ContactUsForm } from './contactUsForm';
 import { SelfServicePrompt } from './selfServicePrompt';
 import { SubTopicForm } from './subTopicForm';

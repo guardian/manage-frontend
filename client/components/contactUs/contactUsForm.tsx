@@ -12,7 +12,7 @@ import {
 	VALID_IMAGE_FILE_MIME_TYPES,
 } from '../../../shared/fileUploadUtils';
 import { isEmail } from '../../../shared/validationUtils';
-import type { Grecaptcha } from '../../services/captcha';
+import type { Grecaptcha } from '../../utilities/captcha';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { FormError } from '../FormError';
 import { Input } from '../input';

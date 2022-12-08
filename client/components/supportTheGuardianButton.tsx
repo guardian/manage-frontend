@@ -8,7 +8,7 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { conf } from '../../server/config';
-import { trackEvent } from '../services/analytics';
+import { trackEvent } from '../utilities/analytics';
 
 export interface SupportTheGuardianButtonProps {
 	supportReferer: string;

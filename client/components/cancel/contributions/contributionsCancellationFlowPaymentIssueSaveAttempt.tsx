@@ -14,7 +14,7 @@ import {
 	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { trackEventInOphanOnly } from '../../../services/analytics';
+import { trackEventInOphanOnly } from '../../../utilities/analytics';
 import { ContributionUpdateAmountForm } from '../../accountoverview/contributionUpdateAmountForm';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import type {

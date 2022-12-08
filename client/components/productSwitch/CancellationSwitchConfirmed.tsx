@@ -15,8 +15,8 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { getGeoLocation } from '../../geolocation';
 import { measure } from '../../styles/typography';
+import { getGeoLocation } from '../../utilities/geolocation';
 import type { CancellationRouterState } from '../cancel/CancellationContainer';
 import { Heading } from '../Heading';
 import GridImage from '../images/GridImage';

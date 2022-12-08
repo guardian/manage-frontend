@@ -1,6 +1,6 @@
 import { Stack } from '@guardian/source-react-components';
-import { trackEvent } from '../../../services/analytics';
 import { measure } from '../../../styles/typography';
+import { trackEvent } from '../../../utilities/analytics';
 import { Heading } from '../../Heading';
 import { hrefStyle } from '../cancellationConstants';
 

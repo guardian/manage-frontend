@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import type { Article } from '../components/helpCentre/HelpCentreTypes';
+import type { Article } from '../../components/helpCentre/HelpCentreTypes';
 
 const ELEMENT_ID = 'seodata';
 

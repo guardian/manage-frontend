@@ -21,7 +21,7 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../../shared/productTypes';
-import { trackEvent } from '../../services/analytics';
+import { trackEvent } from '../../utilities/analytics';
 import { expanderButtonCss } from '../expanderButton';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';

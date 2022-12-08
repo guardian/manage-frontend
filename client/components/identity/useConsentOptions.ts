@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import { useReducer } from 'react';
-import { trackEvent } from '../../services/analytics';
+import { trackEvent } from '../../utilities/analytics';
 import type { ConsentOption } from './models';
 import { ConsentOptionType } from './models';
 

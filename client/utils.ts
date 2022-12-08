@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import { trackEvent } from './services/analytics';
+import { trackEvent } from './utilities/analytics';
 
 // babel doesn't support 'flatten', but this function can be used with flatMap
 export function flattenEquivalent<T>(x: T): T {

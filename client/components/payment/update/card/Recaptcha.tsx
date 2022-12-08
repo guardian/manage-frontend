@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { space, textSans } from '@guardian/source-foundations';
 import type { Stripe } from '@stripe/stripe-js';
 import { useEffect } from 'react';
-import type { Grecaptcha } from '../../../../services/captcha';
+import type { Grecaptcha } from '../../../../utilities/captcha';
 
 declare let window: Window & {
 	Stripe: Stripe;

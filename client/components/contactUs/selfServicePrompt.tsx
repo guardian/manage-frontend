@@ -2,7 +2,7 @@ import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import { brand, space, textSans } from '@guardian/source-foundations';
 import { LinkButton } from '@guardian/source-react-components';
-import { trackEvent } from '../../services/analytics';
+import { trackEvent } from '../../utilities/analytics';
 import { CallCentreEmailAndNumbers } from '../callCenterEmailAndNumbers';
 import { InfoIconDark } from '../svgs/infoIconDark';
 

@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import * as React from 'react';
-import { trackEvent } from '../services/analytics';
+import { trackEvent } from '../utilities/analytics';
 import { GenericErrorScreen } from './genericErrorScreen';
 import type { LoadingProps } from './spinner';
 import { Spinner } from './spinner';

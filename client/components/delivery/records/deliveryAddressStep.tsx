@@ -29,7 +29,7 @@ import { createProductDetailFetcher } from '../../../productUtils';
 import {
 	addressChangeAffectedInfo,
 	getValidDeliveryAddressChangeEffectiveDates,
-} from '../../../services/deliveryAddress';
+} from '../../../utilities/deliveryAddress';
 import { flattenEquivalent } from '../../../utils';
 import AsyncLoader from '../../asyncLoader';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';

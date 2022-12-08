@@ -5,7 +5,7 @@ import {
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../shared/identity';
 import { fetchWithDefaultParameters } from '../fetch';
-import { trackEvent } from '../services/analytics';
+import { trackEvent } from '../utilities/analytics';
 import AsyncLoader from './asyncLoader';
 import { SupportTheGuardianButton } from './supportTheGuardianButton';
 

@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { from, neutral, space, textSans } from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { trackEvent } from '../../services/analytics';
+import { trackEvent } from '../../utilities/analytics';
 import { getHelpSectionIcon } from '../svgs/helpSectionIcons';
 import type { HelpCentreTopic } from './helpCentreConfig';
 import {

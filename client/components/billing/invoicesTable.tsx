@@ -11,7 +11,7 @@ import {
 import { useState } from 'react';
 import { parseDate } from '../../../shared/dates';
 import type { InvoiceDataApiItem } from '../../../shared/productResponse';
-import { trackEvent } from '../../services/analytics';
+import { trackEvent } from '../../utilities/analytics';
 import { Pagination } from '../pagination';
 import { CardDisplay } from '../payment/cardDisplay';
 import { DirectDebitDisplay } from '../payment/directDebitDisplay';

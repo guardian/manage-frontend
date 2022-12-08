@@ -23,7 +23,7 @@ import type {
 	WithProductType,
 } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { addressChangeAffectedInfo } from '../../../services/deliveryAddress';
+import { addressChangeAffectedInfo } from '../../../utilities/deliveryAddress';
 import { flattenEquivalent } from '../../../utils';
 import { CallCentreEmailAndNumbers } from '../../callCenterEmailAndNumbers';
 import { CallCentreNumbers } from '../../callCentreNumbers';

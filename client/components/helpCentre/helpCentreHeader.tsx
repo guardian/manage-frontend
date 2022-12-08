@@ -6,7 +6,7 @@ import {
 	space,
 } from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
-import type { SignInStatus } from '../../services/signInStatus';
+import type { SignInStatus } from '../../utilities/signInStatus';
 import { DropdownNav } from '.././nav/dropdownNav';
 import { TheGuardianLogo } from '.././svgs/theGuardianLogo';
 

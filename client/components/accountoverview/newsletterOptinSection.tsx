@@ -4,7 +4,7 @@ import { Button, Checkbox } from '@guardian/source-react-components';
 import * as Sentry from '@sentry/browser';
 import type { ChangeEvent, FormEvent } from 'react';
 import { Fragment, useEffect, useState } from 'react';
-import { trackEvent } from '../../services/analytics';
+import { trackEvent } from '../../utilities/analytics';
 import { SuccessMessage } from '../delivery/address/deliveryAddressConfirmation';
 import * as NewslettersAPI from '../identity/idapi/newsletters';
 import * as NewslettersSubscriptionsAPI from '../identity/idapi/newsletterSubscriptions';

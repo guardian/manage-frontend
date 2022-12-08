@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { neutral, space, textSans, until } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { trackEvent } from '../../services/analytics';
+import { trackEvent } from '../../utilities/analytics';
 import { helpCentreMoreQuestionsConfig } from './helpCentreConfig';
 import {
 	containterCss,

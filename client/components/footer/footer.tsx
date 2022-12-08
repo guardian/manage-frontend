@@ -3,8 +3,8 @@ import type { CMP } from '@guardian/consent-management-platform/dist/types';
 import { from, palette } from '@guardian/source-foundations';
 import type { SyntheticEvent } from 'react';
 import { useEffect, useState } from 'react';
-import { isInUSA as isUserInUSA } from '../../geolocation';
 import { headline } from '../../styles/fonts';
+import { isInUSA as isUserInUSA } from '../../utilities/geolocation';
 import { SupportTheGuardianButton } from '../supportTheGuardianButton';
 import { footerLinks } from './footerlinks';
 
