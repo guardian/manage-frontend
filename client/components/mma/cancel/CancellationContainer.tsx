@@ -16,19 +16,19 @@ import type {
 	WithProductType,
 } from '../../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../../utilities/productUtils';
-import { PageContainer } from '../../Page';
-import type {
-	AvailableProductsResponse,
-	ProductSwitchResponse,
-} from '../../productSwitch/productSwitchApi';
-import { ProductSwitchContext } from '../../productSwitch/productSwitchApi';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../holiday/HolidayStopApi';
+import { PageContainer } from '../Page';
 import type {
 	CancellationReason,
 	OptionalCancellationReasonId,
 } from './cancellationReason';
+import { ProductSwitchContext } from './productSwitch/productSwitchApi';
+import type {
+	AvailableProductsResponse,
+	ProductSwitchResponse,
+} from './productSwitch/productSwitchApi';
 
 const renderSingleProductOrReturnToAccountOverview =
 	(productType: ProductType) => (data: MembersDataApiItem[]) => {

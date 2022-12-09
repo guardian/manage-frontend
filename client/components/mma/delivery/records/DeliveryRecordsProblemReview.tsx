@@ -21,7 +21,6 @@ import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
 } from '../../../../../shared/productResponse';
-import { ProgressIndicator } from '../../../ProgressIndicator';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import type {
 	PotentialHolidayStopsResponse,
@@ -32,6 +31,7 @@ import {
 	PotentialHolidayStopsAsyncLoader,
 } from '../../holiday/HolidayStopApi';
 import { InfoIconDark } from '../../shared/assets/InfoIconDark';
+import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import { DeliveryRecordCard } from './DeliveryRecordCard';
 import { PageStatus } from './DeliveryRecords';
 import type {

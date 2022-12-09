@@ -3,7 +3,7 @@ import { from, palette } from '@guardian/source-foundations';
 import type { FormikProps, FormikState } from 'formik';
 import { Form, withFormik } from 'formik';
 import type { FC } from 'react';
-import { Button } from '../../../Buttons';
+import { Button } from '../../shared/Buttons';
 import {
 	FormEmailField,
 	FormNumberField,

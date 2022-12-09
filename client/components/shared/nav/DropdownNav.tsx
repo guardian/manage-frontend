@@ -2,8 +2,8 @@ import { css } from '@emotion/react';
 import { brand, from, neutral, space } from '@guardian/source-foundations';
 import { useEffect, useRef, useState } from 'react';
 import { gridColumns, gridItemPlacement } from '../../../styles/grid';
-import { expanderButtonCss } from '../../ExpanderButton';
 import { ProfileIcon } from '../../mma/shared/assets/ProfileIcon';
+import { expanderButtonCss } from '../ExpanderButton';
 import type { MenuSpecificNavItem } from './NavConfig';
 import { NAV_LINKS } from './NavConfig';
 

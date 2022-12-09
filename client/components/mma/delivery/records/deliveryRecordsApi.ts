@@ -4,7 +4,7 @@ import type {
 } from '../../../../../shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '../../../../../shared/productResponse';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
-import AsyncLoader from '../../../AsyncLoader';
+import AsyncLoader from '../../shared/AsyncLoader';
 
 interface DeliveryProblem {
 	problemType: string;

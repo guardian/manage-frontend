@@ -5,7 +5,6 @@ import * as Sentry from '@sentry/browser';
 import type { ChangeEvent, FormEvent } from 'react';
 import { Fragment, useEffect, useState } from 'react';
 import { trackEvent } from '../../../utilities/analytics';
-import { ProblemAlert } from '../../ProblemAlert';
 import { SuccessMessage } from '../delivery/address/DeliveryAddressConfirmation';
 import * as NewslettersAPI from '../identity/idapi/newsletters';
 import * as NewslettersSubscriptionsAPI from '../identity/idapi/newsletterSubscriptions';
@@ -13,6 +12,7 @@ import { ConsentOptions } from '../identity/identity';
 import type { ConsentOption } from '../identity/models';
 import { ClockIcon } from '../shared/assets/ClockIcon';
 import { TickIcon } from '../shared/assets/TickIcon';
+import { ProblemAlert } from '../shared/ProblemAlert';
 import { subHeadingCss } from './ManageProduct';
 
 interface UpdateMsgStatus {

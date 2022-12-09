@@ -4,8 +4,6 @@ import { featureSwitches } from '../../../../shared/featureSwitches';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import useFetch from '../../../utilities/hooks/useFetch';
-import CancellationSwitchOffer from '../../productSwitch/CancellationSwitchOffer';
-import type { AvailableProductsResponse } from '../../productSwitch/productSwitchApi';
 import { Spinner } from '../../shared/Spinner';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import type {
@@ -18,6 +16,8 @@ import {
 	CancellationPageTitleContext,
 } from './CancellationContainer';
 import CancellationReasonSelection from './CancellationReasonSelection';
+import CancellationSwitchOffer from './productSwitch/CancellationSwitchOffer';
+import type { AvailableProductsResponse } from './productSwitch/productSwitchApi';
 
 const CancellationSwitchEligibilityCheck = () => {
 	const location = useLocation();

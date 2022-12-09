@@ -22,9 +22,9 @@ import {
 	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { LinkButton } from '../../Buttons';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { ArrowIcon } from '../shared/assets/ArrowIcon';
+import { LinkButton } from '../shared/Buttons';
 import { CardDisplay } from '../shared/CardDisplay';
 import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
 import { PaypalDisplay } from '../shared/PaypalDisplay';

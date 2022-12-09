@@ -7,9 +7,9 @@ import {
 import * as Sentry from '@sentry/browser';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { ProgressIndicator } from '../../../ProgressIndicator';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
+import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,

@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Checkbox } from '../../Checkbox';
+import { Checkbox } from '../shared/Checkbox';
 import { standardSansText } from './sharedStyles';
 
 interface MarketingCheckboxProps {

@@ -9,14 +9,14 @@ import type {
 import type { ProductType } from '../../../../shared/productTypes';
 import { measure } from '../../../styles/typography';
 import { hasDeliveryRecordsFlow } from '../../../utilities/productUtils';
-import { Heading } from '../../Heading';
-import { ResubscribeThrasher } from '../../ResubscribeThrasher';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
+import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
-import { SupportTheGuardianButton } from '../../SupportTheGuardianButton';
+import { Heading } from '../shared/Heading';
 import { hrefStyle } from './cancellationConstants';
 import { CancellationReasonContext } from './cancellationContexts';
 import { CancellationContributionReminder } from './cancellationContributionReminder';
+import { ResubscribeThrasher } from './ResubscribeThrasher';
 
 const actuallyCancelled = (
 	productType: ProductType,

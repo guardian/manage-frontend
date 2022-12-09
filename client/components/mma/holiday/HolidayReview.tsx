@@ -9,12 +9,11 @@ import type { ProductDetail } from '../../../../shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import { sans } from '../../../styles/fonts';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
-import { LinkButton } from '../../Buttons';
-import { Checkbox } from '../../Checkbox';
-import { Modal } from '../../Modal';
-import { ProgressIndicator } from '../../ProgressIndicator';
 import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 import { InfoIcon } from '../shared/assets/InfoIcon';
+import { LinkButton } from '../shared/Buttons';
+import { Checkbox } from '../shared/Checkbox';
+import { ProgressIndicator } from '../shared/ProgressIndicator';
 import { buttonBarCss, cancelLinkCss } from './HolidayDateChooser';
 import {
 	creditExplainerSentence,
@@ -35,6 +34,7 @@ import type {
 	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
 import { HolidayStopsContext } from './HolidayStopsContainer';
+import { Modal } from './Modal';
 import { SummaryTable } from './SummaryTable';
 
 const getPerformCreateOrAmendFetcher =

@@ -1,5 +1,5 @@
 import { palette } from '@guardian/source-foundations';
-import { Modal } from '../../Modal';
+import { Modal } from './Modal';
 
 interface HolidayAnniversaryDateExplainerModalProps {
 	dateElement: JSX.Element;

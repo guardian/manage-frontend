@@ -12,9 +12,9 @@ import type {
 } from '../../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import { createProductDetailFetcher } from '../../../../utilities/productUtils';
-import AsyncLoader from '../../../AsyncLoader';
-import { ProgressIndicator } from '../../../ProgressIndicator';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
+import AsyncLoader from '../../shared/AsyncLoader';
+import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,

@@ -17,10 +17,10 @@ import {
 import { isProduct } from '../../../../shared/productResponse';
 import { sans } from '../../../styles/fonts';
 import { trackEvent } from '../../../utilities/analytics';
-import { DatePicker } from '../../DatePicker';
-import { ProgressIndicator } from '../../ProgressIndicator';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { InfoIcon } from '../shared/assets/InfoIcon';
+import { DatePicker } from '../shared/DatePicker';
+import { ProgressIndicator } from '../shared/ProgressIndicator';
 import { HolidayAnniversaryDateExplainerModal } from './HolidayAnniversaryDateExplainerModal';
 import {
 	creditExplainerSentence,

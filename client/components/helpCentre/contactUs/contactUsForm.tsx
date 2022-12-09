@@ -13,10 +13,10 @@ import {
 } from '../../../../shared/fileUploadUtils';
 import { isEmail } from '../../../../shared/validationUtils';
 import type { Grecaptcha } from '../../../utilities/captcha';
-import { FormError } from '../../FormError';
-import { Input } from '../../Input';
 import { ErrorIcon } from '../../mma/shared/assets/ErrorIcon';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';
+import { FormError } from '../../shared/FormError';
+import { Input } from '../../shared/Input';
 import { Spinner } from '../../shared/Spinner';
 import { UploadFileInput } from './UploadFileInput';
 

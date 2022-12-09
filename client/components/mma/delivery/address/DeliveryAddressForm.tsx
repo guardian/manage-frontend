@@ -25,16 +25,16 @@ import type {
 import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { addressChangeAffectedInfo } from '../../../../utilities/deliveryAddress';
 import { flattenEquivalent } from '../../../../utilities/utils';
-import { InfoSection } from '../../../InfoSection';
-import { Input } from '../../../Input';
-import type { ProductDescriptionListKeyValue } from '../../../ProductDescriptionListTable';
-import { ProductDescriptionListTable } from '../../../ProductDescriptionListTable';
-import { ProgressIndicator } from '../../../ProgressIndicator';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { CallCentreNumbers } from '../../../shared/CallCentreNumbers';
+import { Input } from '../../../shared/Input';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { COUNTRIES } from '../../identity/models';
 import { InfoIconDark } from '../../shared/assets/InfoIconDark';
+import { InfoSection } from '../../shared/InfoSection';
+import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
+import type { ProductDescriptionListKeyValue } from '../../shared/ProductDescriptionListTable';
+import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import type { AddressSetStateObject } from './deliveryAddressFormContext';
 import {
 	ContactIdContext,

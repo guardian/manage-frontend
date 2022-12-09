@@ -1,7 +1,7 @@
 import type {
 	AvailableProductsResponse,
 	ProductSwitchResponse,
-} from '../components/productSwitch/productSwitchApi';
+} from '../components/mma/cancel/productSwitch/productSwitchApi';
 
 export const availableProductMovesResponse: AvailableProductsResponse[] = [
 	{

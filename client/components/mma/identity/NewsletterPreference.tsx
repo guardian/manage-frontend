@@ -1,7 +1,7 @@
 import { palette } from '@guardian/source-foundations';
 import type { FC } from 'react';
 import { sans } from '../../../styles/fonts';
-import { Checkbox } from '../../Checkbox';
+import { Checkbox } from '../shared/Checkbox';
 
 interface NewsletterPreferenceProps {
 	id: string;

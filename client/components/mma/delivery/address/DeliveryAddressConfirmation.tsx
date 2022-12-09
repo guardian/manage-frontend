@@ -18,12 +18,12 @@ import type {
 	WithProductType,
 } from '../../../../../shared/productTypes';
 import { trackEvent } from '../../../../utilities/analytics';
-import AsyncLoader from '../../../AsyncLoader';
-import { LinkButton } from '../../../Buttons';
-import { ProductDescriptionListTable } from '../../../ProductDescriptionListTable';
-import { ProgressIndicator } from '../../../ProgressIndicator';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { TickInCircle } from '../../shared/assets/TickInCircle';
+import AsyncLoader from '../../shared/AsyncLoader';
+import { LinkButton } from '../../shared/Buttons';
+import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
+import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import { updateAddressFetcher } from './deliveryAddressApi';
 import { DeliveryAddressDisplay } from './DeliveryAddressDisplay';
 import {

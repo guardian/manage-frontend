@@ -18,7 +18,7 @@ import { supporterplusCancellationFlowStart } from '../client/components/mma/can
 import { supporterplusCancellationReasons } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationReasons';
 import { voucherCancellationFlowStart } from '../client/components/mma/cancel/voucher/VoucherCancellationFlowStart';
 import { voucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
-import type { SupportTheGuardianButtonProps } from '../client/components/SupportTheGuardianButton';
+import type { SupportTheGuardianButtonProps } from '../client/components/shared/SupportTheGuardianButton';
 import type { OphanProduct } from './ophanTypes';
 import type {
 	CancelledProductDetail,

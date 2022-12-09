@@ -9,7 +9,7 @@ import {
 } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';
-import { SupportTheGuardianButton } from '../../SupportTheGuardianButton';
+import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { Users } from '../identity/identity';
 import { InfoIconDark } from '../shared/assets/InfoIconDark';
 

@@ -21,10 +21,10 @@ import type {
 	Subscription,
 } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
-import { ProductDescriptionListTable } from '../../../ProductDescriptionListTable';
-import { ProgressIndicator } from '../../../ProgressIndicator';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { InfoIconDark } from '../../shared/assets/InfoIconDark';
+import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
+import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import { DeliveryRecordCard } from './DeliveryRecordCard';
 import { PageStatus } from './DeliveryRecords';
 import type {

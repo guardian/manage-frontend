@@ -24,8 +24,8 @@ import type { ProductDetail } from '../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { hasCancellationFlow } from '../../../utilities/productUtils';
-import { ProgressIndicator } from '../../ProgressIndicator';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
+import { ProgressIndicator } from '../shared/ProgressIndicator';
 import type { CancellationContextInterface } from './CancellationContainer';
 import { CancellationContext } from './CancellationContainer';
 import {

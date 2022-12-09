@@ -18,9 +18,9 @@ import {
 	getValidDeliveryAddressChangeEffectiveDates,
 } from '../../../../utilities/deliveryAddress';
 import { createProductDetailFetcher } from '../../../../utilities/productUtils';
-import { PageContainer } from '../../../Page';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { COUNTRIES } from '../../identity/models';
+import { PageContainer } from '../../Page';
 import {
 	AddressChangedInformationContext,
 	ContactIdContext,

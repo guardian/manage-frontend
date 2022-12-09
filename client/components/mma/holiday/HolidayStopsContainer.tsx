@@ -15,10 +15,10 @@ import type {
 	WithProductType,
 } from '../../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../../utilities/productUtils';
-import type { ReFetch } from '../../asyncLoader';
-import { PageContainer } from '../../Page';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
+import { PageContainer } from '../Page';
+import type { ReFetch } from '../shared/AsyncLoader';
 import type {
 	GetHolidayStopsResponse,
 	HolidayStopDetail,

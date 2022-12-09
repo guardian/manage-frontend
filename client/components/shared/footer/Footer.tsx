@@ -5,7 +5,7 @@ import type { SyntheticEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { headline } from '../../../styles/fonts';
 import { isInUSA as isUserInUSA } from '../../../utilities/geolocation';
-import { SupportTheGuardianButton } from '../../SupportTheGuardianButton';
+import { SupportTheGuardianButton } from '../SupportTheGuardianButton';
 import { footerlinks } from './Footerlinks';
 
 const footerColourStyles = css`

@@ -26,19 +26,19 @@ import {
 	hasDeliveryRecordsFlow,
 	shouldHaveHolidayStopsFlow,
 } from '../../../utilities/productUtils';
-import { BasicProductInfoTable } from '../../BasicProductInfoTable';
-import { LinkButton } from '../../Buttons';
-import { PageContainer } from '../../Page';
-import { ProductDescriptionListTable } from '../../ProductDescriptionListTable';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
-import { SupportTheGuardianButton } from '../../SupportTheGuardianButton';
+import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { DeliveryAddressDisplay } from '../delivery/address/DeliveryAddressDisplay';
+import { PageContainer } from '../Page';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
+import { BasicProductInfoTable } from '../shared/BasicProductInfoTable';
+import { LinkButton } from '../shared/Buttons';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { PaymentDetailsTable } from '../shared/PaymentDetailsTable';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
+import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTable';
 import { ContributionUpdateAmount } from './ContributionUpdateAmount';
 import { NewsletterOptinSection } from './NewsletterOptinSection';
 import { SixForSixExplainerIfApplicable } from './SixForSixExplainer';

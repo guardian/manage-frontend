@@ -13,9 +13,9 @@ import type { CancelledProductDetail } from '../../../../shared/productResponse'
 import { isGift } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
-import { Button } from '../../Buttons';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
+import { Button } from '../shared/Buttons';
 
 interface AccountOverviewCancelledCardProps {
 	product: CancelledProductDetail;

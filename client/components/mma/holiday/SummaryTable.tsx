@@ -11,8 +11,8 @@ import {
 	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
 import { sans } from '../../../styles/fonts';
-import type { ReFetch } from '../../asyncLoader';
-import { ExpanderButton } from '../../ExpanderButton';
+import { ExpanderButton } from '../../shared/ExpanderButton';
+import type { ReFetch } from '../shared/AsyncLoader';
 import { CollatedCredits } from './CollatedCredits';
 import { ExistingHolidayStopActions } from './ExistingHolidayStopActions';
 import type { SharedHolidayDateChooserState } from './HolidayDateChooser';

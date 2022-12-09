@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { ProblemAlert } from '../../ProblemAlert';
+import { ProblemAlert } from './ProblemAlert';
 
 interface PaymentFailureAlertIfApplicableProps {
 	productDetail: ProductDetail | undefined;

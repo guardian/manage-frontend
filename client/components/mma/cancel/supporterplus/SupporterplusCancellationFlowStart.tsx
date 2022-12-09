@@ -1,6 +1,6 @@
 import { Stack } from '@guardian/source-react-components';
 import { measure } from '../../../../styles/typography';
-import { Heading } from '../../../Heading';
+import { Heading } from '../../shared/Heading';
 
 export const supporterplusCancellationFlowStart = () => (
 	<Stack space={4}>

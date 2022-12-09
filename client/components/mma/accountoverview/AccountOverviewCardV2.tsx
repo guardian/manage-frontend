@@ -22,7 +22,7 @@ import {
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
-import { expanderButtonCss } from '../../ExpanderButton';
+import { expanderButtonCss } from '../../shared/ExpanderButton';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { CardDisplay } from '../shared/CardDisplay';
 import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';

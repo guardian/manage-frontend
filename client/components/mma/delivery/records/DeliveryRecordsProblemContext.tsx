@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { createContext } from 'react';
 import type { DeliveryAddress } from '../../../../../shared/productResponse';
-import type { ProductDescriptionListKeyValue } from '../../../ProductDescriptionListTable';
+import type { ProductDescriptionListKeyValue } from '../../shared/ProductDescriptionListTable';
 import type { DeliveryRecordsPostPayload } from './deliveryRecordsApi';
 
 export interface DeliveryRecordsProblemType {

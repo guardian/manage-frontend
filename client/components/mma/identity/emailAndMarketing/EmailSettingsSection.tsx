@@ -1,7 +1,7 @@
 import { palette } from '@guardian/source-foundations';
 import type { FC } from 'react';
 import { sans } from '../../../../styles/fonts';
-import { Button } from '../../../Buttons';
+import { Button } from '../../shared/Buttons';
 import { IdentityLocations } from '../IdentityLocations';
 import { PageSection } from '../PageSection';
 

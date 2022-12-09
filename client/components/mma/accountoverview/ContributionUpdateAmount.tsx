@@ -7,9 +7,9 @@ import { parseDate } from '../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { augmentInterval } from '../../../../shared/productResponse';
 import type { ProductType } from '../../../../shared/productTypes';
-import { Button } from '../../Buttons';
-import { ProductDescriptionListTable } from '../../ProductDescriptionListTable';
 import { SuccessMessage } from '../delivery/address/DeliveryAddressConfirmation';
+import { Button } from '../shared/Buttons';
+import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTable';
 import { ContributionUpdateAmountForm } from './ContributionUpdateAmountForm';
 
 interface ContributionUpdateAmountProps {

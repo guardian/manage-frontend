@@ -18,8 +18,6 @@ import { sans } from '../../../styles/fonts';
 import { measure } from '../../../styles/typography';
 import { trackEvent } from '../../../utilities/analytics';
 import useFetch from '../../../utilities/hooks/useFetch';
-import { Heading } from '../../Heading';
-import { ProgressIndicator } from '../../ProgressIndicator';
 import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { Spinner } from '../../shared/Spinner';
@@ -32,6 +30,8 @@ import type {
 	OutstandingHolidayStop,
 	OutstandingHolidayStopsResponse,
 } from '../holiday/HolidayStopApi';
+import { Heading } from '../shared/Heading';
+import { ProgressIndicator } from '../shared/ProgressIndicator';
 import type { CancellationContextInterface } from './CancellationContainer';
 import { CancellationContext } from './CancellationContainer';
 import { cancellationEffectiveToday } from './cancellationContexts';

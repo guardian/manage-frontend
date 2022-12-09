@@ -14,8 +14,8 @@ import type {
 	WithProductType,
 } from '../../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../../utilities/productUtils';
-import { PageContainer } from '../../Page';
 import { getNavItemFromFlowReferrer } from '../../shared/nav/NavConfig';
+import { PageContainer } from '../Page';
 
 const renderContextAndOutletContainer = (
 	allProductDetails: MembersDataApiItem[],

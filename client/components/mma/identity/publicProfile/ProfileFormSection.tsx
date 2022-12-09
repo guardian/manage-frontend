@@ -1,8 +1,8 @@
 import type { FormikProps } from 'formik';
 import { Form, withFormik } from 'formik';
 import * as Yup from 'yup';
-import { Button } from '../../../Buttons';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
+import { Button } from '../../shared/Buttons';
 import { FormTextField } from '../form/FormField';
 import type { User } from '../models';
 import { ErrorTypes } from '../models';

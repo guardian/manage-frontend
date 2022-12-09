@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/browser';
 import { createRef, useEffect, useState } from 'react';
 import { trackEvent } from '../../../../utilities/analytics';
-import { PageContainer } from '../../../Page';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { Spinner } from '../../../shared/Spinner';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
+import { PageContainer } from '../../Page';
 import type { GenericErrorMessageRef } from '../GenericErrorMessage';
 import { GenericErrorMessage } from '../GenericErrorMessage';
 import { Users } from '../identity';

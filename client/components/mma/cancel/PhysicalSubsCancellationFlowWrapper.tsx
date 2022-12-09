@@ -3,9 +3,9 @@ import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import type { ProductType } from '../../../../shared/productTypes';
-import AsyncLoader from '../../AsyncLoader';
 import type { DeliveryRecordsResponse } from '../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStopsResponse } from '../holiday/HolidayStopApi';
+import AsyncLoader from '../shared/AsyncLoader';
 import {
 	cancellationEffectiveToday,
 	CancellationOutstandingCreditsContext,
