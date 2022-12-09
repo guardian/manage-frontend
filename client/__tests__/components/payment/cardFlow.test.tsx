@@ -1,9 +1,9 @@
 import type { PaymentMethod } from '@stripe/stripe-js';
 import { fireEvent, render } from '@testing-library/react';
 import type { StripeSetupIntent } from '../../../../shared/stripeSetupIntent';
-import { CardInputForm } from '../../../components/payment/update/card/cardInputForm';
+import { CardInputForm } from '../../../components/payment/update/card/CardInputForm';
 import type { RecaptchaProps } from '../../../components/payment/update/card/Recaptcha';
-import type { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
+import type { NewPaymentMethodDetail } from '../../../components/payment/update/NewPaymentMethodDetail';
 
 const stripePublicKey = 'pk_test_Qm3CGRdrV4WfGYCpm0sftR0f';
 const userEmail = 'myemail@email.com';
@@ -84,7 +84,7 @@ function returnCardInputForm() {
 	);
 }
 
-describe('cardInputForm.tsx and stripeCardInputForm.tsx', () => {
+describe('CardInputForm.tsx and stripeCardInputForm.tsx', () => {
 	beforeEach(() => {
 		globalThis.fetch = jest.fn().mockImplementation((url) => {
 			return new Promise((resolve) => {

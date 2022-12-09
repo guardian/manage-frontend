@@ -10,13 +10,13 @@ import { InlineError } from '@guardian/source-react-components';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { CardDisplay } from '../cardDisplay';
+import { CardDisplay } from '../CardDisplay';
 import {
 	DirectDebitDisplay,
 	sanitiseAccountNumber,
-} from '../directDebitDisplay';
-import { getObfuscatedPayPalId } from '../paypalDisplay';
-import { PaypalLogo } from '../paypalLogo';
+} from '../DirectDebitDisplay';
+import { getObfuscatedPayPalId } from '../PaypalDisplay';
+import { PaypalLogo } from '../PaypalLogo';
 
 function cardExpired(year: number, month: number) {
 	const expiryTimestamp = new Date(year, month);

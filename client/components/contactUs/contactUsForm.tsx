@@ -14,11 +14,11 @@ import {
 import { isEmail } from '../../../shared/validationUtils';
 import type { Grecaptcha } from '../../utilities/captcha';
 import { FormError } from '../FormError';
-import { Input } from '../input';
-import { ErrorIcon } from '../mma/shared/assets/errorIcon';
-import { CallCentreEmailAndNumbers } from '../shared/callCenterEmailAndNumbers';
-import { Spinner } from '../shared/spinner';
-import { UploadFileInput } from './uploadFileInput';
+import { Input } from '../Input';
+import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
+import { CallCentreEmailAndNumbers } from '../shared/CallCenterEmailAndNumbers';
+import { Spinner } from '../shared/Spinner';
+import { UploadFileInput } from './UploadFileInput';
 
 interface ContactUsFormProps {
 	submitCallback: (payload: ContactUsFormPayload) => Promise<boolean>;

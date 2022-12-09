@@ -26,11 +26,11 @@ import { Heading } from '../Heading';
 import type {
 	OutstandingHolidayStop,
 	OutstandingHolidayStopsResponse,
-} from '../holiday/holidayStopApi';
-import { ProgressIndicator } from '../progressIndicator';
-import { CallCentreNumbers } from '../shared/callCentreNumbers';
-import { GenericErrorScreen } from '../shared/genericErrorScreen';
-import { Spinner } from '../shared/spinner';
+} from '../holiday/HolidayStopApi';
+import { ProgressIndicator } from '../ProgressIndicator';
+import { CallCentreNumbers } from '../shared/CallCentreNumbers';
+import { GenericErrorScreen } from '../shared/GenericErrorScreen';
+import { Spinner } from '../shared/Spinner';
 import { WithStandardTopMargin } from '../shared/WithStandardTopMargin';
 import type { CancellationContextInterface } from './CancellationContainer';
 import { CancellationContext } from './CancellationContainer';

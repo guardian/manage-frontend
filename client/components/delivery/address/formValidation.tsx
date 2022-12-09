@@ -1,6 +1,6 @@
 import type { DeliveryAddress } from '../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { ukPhoneNumberWithoutPrefix } from '../../shared/callCentreNumbers';
+import { ukPhoneNumberWithoutPrefix } from '../../shared/CallCentreNumbers';
 
 interface ErrorState {
 	isValid: boolean;

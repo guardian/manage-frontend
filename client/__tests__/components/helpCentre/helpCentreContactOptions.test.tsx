@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { create } from 'react-test-renderer';
-import HelpCentreContactOptions from '../../../components/helpCentre/helpCentreContactOptions';
+import HelpCentreContactOptions from '../../../components/helpCentre/HelpCentreContactOptions';
 import {
 	isArticleLiveChatFeatureEnabled,
 	isLiveChatFeatureEnabled,

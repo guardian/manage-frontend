@@ -28,12 +28,12 @@ import type {
 	CancellationRouterState,
 } from '../cancel/CancellationContainer';
 import { CancellationPageTitleContext } from '../cancel/CancellationContainer';
-import { expanderButtonCss } from '../expanderButton';
+import { expanderButtonCss } from '../ExpanderButton';
 import { Heading } from '../Heading';
-import { cardTypeToSVG } from '../payment/cardDisplay';
-import { DirectDebitDisplay } from '../payment/directDebitDisplay';
-import { PayPalDisplay } from '../payment/paypalDisplay';
-import { SepaDisplay } from '../payment/sepaDisplay';
+import { cardTypeToSVG } from '../payment/CardDisplay';
+import { DirectDebitDisplay } from '../payment/DirectDebitDisplay';
+import { PaypalDisplay } from '../payment/PaypalDisplay';
+import { SepaDisplay } from '../payment/SepaDisplay';
 import { productBenefits } from './ProductBenefits';
 import type {
 	AvailableProductsResponse,
@@ -381,7 +381,7 @@ const CancellationSwitchReview = () => {
 					/>
 				)}
 				{currentSubscription.payPalEmail && (
-					<PayPalDisplay payPalId={currentSubscription.payPalEmail} />
+					<PaypalDisplay payPalId={currentSubscription.payPalEmail} />
 				)}
 				{currentSubscription.sepaMandate && (
 					<SepaDisplay

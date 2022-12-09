@@ -4,10 +4,10 @@ import {
 	PRODUCT_TYPES,
 } from '../../shared/productTypes';
 import { shouldHaveHolidayStopsFlow } from '../utilities/productUtils';
-import type { MenuSpecificNavItem } from './nav/navConfig';
-import { NAV_LINKS } from './nav/navConfig';
-import { PageContainer } from './page';
-import { Spinner } from './shared/spinner';
+import type { MenuSpecificNavItem } from './nav/NavConfig';
+import { NAV_LINKS } from './nav/NavConfig';
+import { PageContainer } from './Page';
+import { Spinner } from './shared/Spinner';
 import { WithStandardTopMargin } from './shared/WithStandardTopMargin';
 
 interface LocationObject {

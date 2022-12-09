@@ -3,7 +3,7 @@ import {
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../../shared/identity';
 import { fetchWithDefaultParameters } from '../../utilities/fetch';
-import AsyncLoader from '../asyncLoader';
+import AsyncLoader from '../AsyncLoader';
 
 export interface CancellationDateResponse {
 	cancellationEffectiveDate: string;

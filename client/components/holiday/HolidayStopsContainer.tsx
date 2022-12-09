@@ -16,19 +16,19 @@ import type {
 } from '../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../utilities/productUtils';
 import type { ReFetch } from '../asyncLoader';
-import { NAV_LINKS } from '../nav/navConfig';
-import { PageContainer } from '../page';
-import { GenericErrorScreen } from '../shared/genericErrorScreen';
+import { NAV_LINKS } from '../nav/NavConfig';
+import { PageContainer } from '../Page';
+import { GenericErrorScreen } from '../shared/GenericErrorScreen';
 import type {
 	GetHolidayStopsResponse,
 	HolidayStopDetail,
 	HolidayStopRequest,
-} from './holidayStopApi';
+} from './HolidayStopApi';
 import {
 	createGetHolidayStopsFetcher,
 	embellishExistingHolidayStops,
 	GetHolidayStopsAsyncLoader,
-} from './holidayStopApi';
+} from './HolidayStopApi';
 
 export interface HolidayStopsRouterState {
 	productDetail: ProductDetail;

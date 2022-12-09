@@ -10,7 +10,7 @@ import {
 import CancellationContainer from './CancellationContainer';
 import CancellationReasonReview from './CancellationReasonReview';
 import CancellationReasonSelection from './CancellationReasonSelection';
-import { getCancellationSummary } from './cancellationSummary';
+import { getCancellationSummary } from './CancellationSummary';
 
 export default {
 	title: 'Pages/Cancellation',

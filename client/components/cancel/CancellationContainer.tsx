@@ -17,9 +17,9 @@ import type {
 } from '../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../utilities/productUtils';
 import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
-import type { OutstandingHolidayStop } from '../holiday/holidayStopApi';
-import { NAV_LINKS } from '../nav/navConfig';
-import { PageContainer } from '../page';
+import type { OutstandingHolidayStop } from '../holiday/HolidayStopApi';
+import { NAV_LINKS } from '../nav/NavConfig';
+import { PageContainer } from '../Page';
 import type {
 	AvailableProductsResponse,
 	ProductSwitchResponse,

@@ -1,5 +1,5 @@
 import { create } from 'react-test-renderer';
-import { Main } from '../components/shared/main';
+import { Main } from '../components/shared/Main';
 
 describe('Main', () => {
 	beforeEach(() => {

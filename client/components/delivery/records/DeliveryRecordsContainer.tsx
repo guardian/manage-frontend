@@ -16,8 +16,8 @@ import type {
 	WithProductType,
 } from '../../../../shared/productTypes';
 import { createProductDetailFetcher } from '../../../utilities/productUtils';
-import { NAV_LINKS } from '../../nav/navConfig';
-import { PageContainer } from '../../page';
+import { NAV_LINKS } from '../../nav/NavConfig';
+import { PageContainer } from '../../Page';
 import type {
 	DeliveryRecordDetail,
 	DeliveryRecordsResponse,

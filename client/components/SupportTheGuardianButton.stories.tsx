@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { SupportTheGuardianButton } from './supportTheGuardianButton';
+import { SupportTheGuardianButton } from './SupportTheGuardianButton';
 
 export default {
 	title: 'Components/SupportTheGuardianButton',

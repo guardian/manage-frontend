@@ -1,6 +1,6 @@
 import { fireEvent, render } from '@testing-library/react';
-import { CardInputForm } from '../../../components/payment/update/card/cardInputForm';
-import type { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
+import { CardInputForm } from '../../../components/payment/update/card/CardInputForm';
+import type { NewPaymentMethodDetail } from '../../../components/payment/update/NewPaymentMethodDetail';
 
 const stripePublicKey = 'pk_test_Qm3CGRdrV4WfGYCpm0sftR0f';
 const userEmail = 'myemail@email.com';
@@ -43,4 +43,4 @@ test('Stripe Elements has not been loaded yet', async () => {
 	).toBeDefined();
 });
 
-// fieldWrapper.tsx component should have integration testing, but StripeElements do not load when running tests, so we would have to mock StripeElements, job for the future.
+// FieldWrapper.tsx component should have integration testing, but StripeElements do not load when running tests, so we would have to mock StripeElements, job for the future.

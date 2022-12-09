@@ -22,13 +22,13 @@ import {
 	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { LinkButton } from '../../buttons';
-import { ArrowIcon } from '../../mma/shared/assets/arrowIcon';
-import { GenericErrorScreen } from '../../shared/genericErrorScreen';
-import { CardDisplay } from '../cardDisplay';
-import { DirectDebitDisplay } from '../directDebitDisplay';
-import { PayPalDisplay } from '../paypalDisplay';
-import { SepaDisplay } from '../sepaDisplay';
+import { LinkButton } from '../../Buttons';
+import { ArrowIcon } from '../../mma/shared/assets/ArrowIcon';
+import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
+import { CardDisplay } from '../CardDisplay';
+import { DirectDebitDisplay } from '../DirectDebitDisplay';
+import { PaypalDisplay } from '../PaypalDisplay';
+import { SepaDisplay } from '../SepaDisplay';
 import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
 import { InfoSummary } from './Summary';
 
@@ -170,7 +170,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 											/>
 										)}
 										{subscription.payPalEmail && (
-											<PayPalDisplay
+											<PaypalDisplay
 												payPalId={
 													subscription.payPalEmail
 												}

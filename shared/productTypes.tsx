@@ -4,21 +4,21 @@ import type {
 	CancellationReason,
 	OptionalCancellationReasonId,
 } from '../client/components/cancel/cancellationReason';
-import { contributionsCancellationFlowStart } from '../client/components/cancel/contributions/contributionsCancellationFlowStart';
-import { contributionsCancellationReasons } from '../client/components/cancel/contributions/contributionsCancellationReasons';
-import { digipackCancellationFlowStart } from '../client/components/cancel/digipack/digipackCancellationFlowStart';
-import { digipackCancellationReasons } from '../client/components/cancel/digipack/digipackCancellationReasons';
-import { gwCancellationFlowStart } from '../client/components/cancel/gw/gwCancellationFlowStart';
-import { gwCancellationReasons } from '../client/components/cancel/gw/gwCancellationReasons';
-import { membershipCancellationFlowStart } from '../client/components/cancel/membership/membershipCancellationFlowStart';
-import { membershipCancellationReasons } from '../client/components/cancel/membership/membershipCancellationReasons';
-import type { RestOfCancellationFlow } from '../client/components/cancel/physicalSubsCancellationFlowWrapper';
-import { physicalSubsCancellationFlowWrapper } from '../client/components/cancel/physicalSubsCancellationFlowWrapper';
-import { supporterplusCancellationFlowStart } from '../client/components/cancel/supporterplus/supporterplusCancellationFlowStart';
-import { supporterplusCancellationReasons } from '../client/components/cancel/supporterplus/supporterplusCancellationReasons';
-import { voucherCancellationFlowStart } from '../client/components/cancel/voucher/voucherCancellationFlowStart';
-import { voucherCancellationReasons } from '../client/components/cancel/voucher/voucherCancellationReasons';
-import type { SupportTheGuardianButtonProps } from '../client/components/supportTheGuardianButton';
+import { contributionsCancellationFlowStart } from '../client/components/cancel/contributions/ContributionsCancellationFlowStart';
+import { contributionsCancellationReasons } from '../client/components/cancel/contributions/ContributionsCancellationReasons';
+import { digipackCancellationFlowStart } from '../client/components/cancel/digipack/DigipackCancellationFlowStart';
+import { digipackCancellationReasons } from '../client/components/cancel/digipack/DigipackCancellationReasons';
+import { gwCancellationFlowStart } from '../client/components/cancel/gw/GwCancellationFlowStart';
+import { gwCancellationReasons } from '../client/components/cancel/gw/GwCancellationReasons';
+import { membershipCancellationFlowStart } from '../client/components/cancel/membership/MembershipCancellationFlowStart';
+import { membershipCancellationReasons } from '../client/components/cancel/membership/MembershipCancellationReasons';
+import type { RestOfCancellationFlow } from '../client/components/cancel/PhysicalSubsCancellationFlowWrapper';
+import { physicalSubsCancellationFlowWrapper } from '../client/components/cancel/PhysicalSubsCancellationFlowWrapper';
+import { supporterplusCancellationFlowStart } from '../client/components/cancel/supporterplus/SupporterplusCancellationFlowStart';
+import { supporterplusCancellationReasons } from '../client/components/cancel/supporterplus/SupporterplusCancellationReasons';
+import { voucherCancellationFlowStart } from '../client/components/cancel/voucher/VoucherCancellationFlowStart';
+import { voucherCancellationReasons } from '../client/components/cancel/voucher/VoucherCancellationReasons';
+import type { SupportTheGuardianButtonProps } from '../client/components/SupportTheGuardianButton';
 import type { OphanProduct } from './ophanTypes';
 import type {
 	CancelledProductDetail,

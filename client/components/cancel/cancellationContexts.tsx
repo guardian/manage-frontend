@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
-import type { OutstandingHolidayStop } from '../holiday/holidayStopApi';
+import type { OutstandingHolidayStop } from '../holiday/HolidayStopApi';
 import type { OptionalCancellationReasonId } from './cancellationReason';
 
 export const CancellationReasonContext: React.Context<OptionalCancellationReasonId> =

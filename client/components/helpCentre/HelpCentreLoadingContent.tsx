@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
-import { Spinner } from '../shared/spinner';
+import { Spinner } from '../shared/Spinner';
 import { WithStandardTopMargin } from '../shared/WithStandardTopMargin';
 
 const HelpCentreLoadingContent = () => (

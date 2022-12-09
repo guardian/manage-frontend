@@ -10,10 +10,10 @@ import useScrollToTop from '../../utilities/hooks/useScrollToTop';
 import { setPageTitle } from '../../utilities/pageTitle';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { isSignedIn, pageRequiresSignIn } from '../../utilities/signInStatus';
-import { LiveChat } from '../liveChat/liveChat';
+import { LiveChat } from '../liveChat/LiveChat';
 import ErrorBoundary from '../shared/ErrorBoundary';
-import { GenericErrorScreen } from '../shared/genericErrorScreen';
-import { Main } from '../shared/main';
+import { GenericErrorScreen } from '../shared/GenericErrorScreen';
+import { Main } from '../shared/Main';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
 import HelpCentreLoadingContent from './HelpCentreLoadingContent';
 
@@ -24,22 +24,22 @@ initFeatureSwitchUrlParamOverride();
 // More information: https://webpack.js.org/api/module-methods/#magic-comments
 
 const HelpCentre = lazy(
-	() => import(/* webpackChunkName: "HelpCentre" */ './helpCentre'),
+	() => import(/* webpackChunkName: "HelpCentre" */ './HelpCentre'),
 );
 
 const HelpCentreArticle = lazy(
 	() =>
 		import(
-			/* webpackChunkName: "HelpCentreArticle" */ './helpCentreArticle'
+			/* webpackChunkName: "HelpCentreArticle" */ './HelpCentreArticle'
 		),
 );
 
 const HelpCentreTopic = lazy(
-	() => import(/* webpackChunkName: "HelpCentreTopic" */ './helpCentreTopic'),
+	() => import(/* webpackChunkName: "HelpCentreTopic" */ './HelpCentreTopic'),
 );
 
 const ContactUs = lazy(
-	() => import(/* webpackChunkName: "ContactUs" */ '../contactUs/contactUs'),
+	() => import(/* webpackChunkName: "ContactUs" */ '../contactUs/ContactUs'),
 );
 
 const HelpCentreRouter = () => {

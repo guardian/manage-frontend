@@ -14,13 +14,13 @@ import type { StripeElementBase } from '@stripe/stripe-js';
 import { useState } from 'react';
 import type { StripeSetupIntent } from '../../../../../shared/stripeSetupIntent';
 import { STRIPE_PUBLIC_KEY_HEADER } from '../../../../../shared/stripeSetupIntent';
-import { LoadingCircleIcon } from '../../../mma/shared/assets/loadingCircleIcon';
-import { GenericErrorScreen } from '../../../shared/genericErrorScreen';
+import { LoadingCircleIcon } from '../../../mma/shared/assets/LoadingCircleIcon';
+import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { ErrorSummary } from '../Summary';
-import type { CardInputFormProps } from './cardInputForm';
-import { FlexCardElement } from './flexCardElement';
-import type { StripePaymentMethod } from './newCardPaymentMethodDetail';
-import { NewCardPaymentMethodDetail } from './newCardPaymentMethodDetail';
+import type { CardInputFormProps } from './CardInputForm';
+import { FlexCardElement } from './FlexCardElement';
+import type { StripePaymentMethod } from './NewCardPaymentMethodDetail';
+import { NewCardPaymentMethodDetail } from './NewCardPaymentMethodDetail';
 import Recaptcha from './Recaptcha';
 
 interface StripeSetupIntentDetails {

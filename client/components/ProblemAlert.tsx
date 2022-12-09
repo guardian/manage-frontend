@@ -8,8 +8,8 @@ import {
 	textSans,
 } from '@guardian/source-foundations';
 import type { ProductDetail } from '../../shared/productResponse';
-import { LinkButton } from './buttons';
-import { ErrorIcon } from './mma/shared/assets/errorIcon';
+import { LinkButton } from './Buttons';
+import { ErrorIcon } from './mma/shared/assets/ErrorIcon';
 
 interface AlertButtonProps {
 	title: string;
