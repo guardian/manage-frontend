@@ -2,9 +2,9 @@ import { css } from '@emotion/react';
 import { from, palette, space, textSans } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
-import { StartLiveChatButton } from '../liveChat/LiveChat';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
 import { getHelpSectionIcon } from '../mma/shared/assets/HelpSectionIcons';
+import { StartLiveChatButton } from './liveChat/LiveChat';
 
 interface HelpCentreContactBoxProps {
 	iconId: string;

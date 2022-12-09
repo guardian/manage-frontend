@@ -10,12 +10,12 @@ import useScrollToTop from '../../utilities/hooks/useScrollToTop';
 import { setPageTitle } from '../../utilities/pageTitle';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { isSignedIn, pageRequiresSignIn } from '../../utilities/signInStatus';
-import { LiveChat } from '../liveChat/LiveChat';
 import ErrorBoundary from '../shared/ErrorBoundary';
 import { GenericErrorScreen } from '../shared/GenericErrorScreen';
 import { Main } from '../shared/Main';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
 import HelpCentreLoadingContent from './HelpCentreLoadingContent';
+import { LiveChat } from './liveChat/LiveChat';
 
 initFeatureSwitchUrlParamOverride();
 
@@ -39,7 +39,7 @@ const HelpCentreTopic = lazy(
 );
 
 const ContactUs = lazy(
-	() => import(/* webpackChunkName: "ContactUs" */ '../contactUs/ContactUs'),
+	() => import(/* webpackChunkName: "ContactUs" */ './contactUs/ContactUs'),
 );
 
 const HelpCentreRouter = () => {

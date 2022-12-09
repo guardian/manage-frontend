@@ -8,14 +8,14 @@ import {
 } from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';
 import { useState } from 'react';
-import { isLiveChatFeatureEnabled } from '../liveChat/liveChatFeatureSwitch';
-import {
-	LiveChatPrivacyNotice,
-	LiveChatPrivacyNoticeLink,
-} from '../liveChat/LiveChatPrivacyNotice';
 import { CallCentreEmailAndNumbers } from '../shared/CallCenterEmailAndNumbers';
 import { HelpCentreEmailAndLiveChat } from './HelpCentreEmailAndLiveChat';
 import { HelpCentrePhoneNumbers } from './HelpCentrePhoneNumbers';
+import { isLiveChatFeatureEnabled } from './liveChat/liveChatFeatureSwitch';
+import {
+	LiveChatPrivacyNotice,
+	LiveChatPrivacyNoticeLink,
+} from './liveChat/LiveChatPrivacyNotice';
 
 interface HelpCentreContactOptionsProps {
 	compactLayout?: boolean;

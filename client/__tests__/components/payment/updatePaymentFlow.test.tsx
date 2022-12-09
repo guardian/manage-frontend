@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import {
 	PaymentMethod,
 	SelectPaymentMethod,
-} from '../../../components/payment/update/PaymentDetailUpdate';
+} from '../../../components/mma/paymentUpdate/PaymentDetailUpdate';
 
 describe('updatePaymentFlow.tsx', () => {
 	it('Shows only card when sub/contrib is already using card, and dd is not allowed', () => {

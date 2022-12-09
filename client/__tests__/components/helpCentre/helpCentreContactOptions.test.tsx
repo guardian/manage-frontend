@@ -5,12 +5,15 @@ import HelpCentreContactOptions from '../../../components/helpCentre/HelpCentreC
 import {
 	isArticleLiveChatFeatureEnabled,
 	isLiveChatFeatureEnabled,
-} from '../../../components/liveChat/liveChatFeatureSwitch';
+} from '../../../components/helpCentre/liveChat/liveChatFeatureSwitch';
 
-jest.mock('../../../components/liveChat/liveChatFeatureSwitch', () => ({
-	isLiveChatFeatureEnabled: jest.fn(),
-	isArticleLiveChatFeatureEnabled: jest.fn(),
-}));
+jest.mock(
+	'../../../components/helpCentre/liveChat/liveChatFeatureSwitch',
+	() => ({
+		isLiveChatFeatureEnabled: jest.fn(),
+		isArticleLiveChatFeatureEnabled: jest.fn(),
+	}),
+);
 
 describe('HelpCentreContactOptions', () => {
 	describe('Help Centre landing page', () => {

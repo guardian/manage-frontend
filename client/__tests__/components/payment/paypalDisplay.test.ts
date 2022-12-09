@@ -1,4 +1,4 @@
-import { getObfuscatedPayPalId } from '../../../components/payment/PaypalDisplay';
+import { getObfuscatedPayPalId } from '../../../components/mma/shared/PaypalDisplay';
 
 test('obfuscate email id', () => {
 	expect(getObfuscatedPayPalId('username@email.com')).toEqual(

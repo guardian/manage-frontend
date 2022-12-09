@@ -1,8 +1,8 @@
 import { palette, textSansSizes } from '@guardian/source-foundations';
 import { serif } from '../../styles/fonts';
 import type { SignInStatus } from '../../utilities/signInStatus';
-import { Footer } from '../footer/Footer';
 import HelpCentreHeader from '../helpCentre/HelpCentreHeader';
+import { Footer } from './footer/Footer';
 import Header from './Header';
 
 export interface MainProps {

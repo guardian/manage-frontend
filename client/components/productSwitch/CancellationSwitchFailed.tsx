@@ -11,7 +11,7 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { Navigate, useLocation, useNavigate } from 'react-router';
-import type { CancellationRouterState } from '../cancel/CancellationContainer';
+import type { CancellationRouterState } from '../mma/cancel/CancellationContainer';
 import { CallCentreNumbers } from '../shared/CallCentreNumbers';
 
 export default function ProductSwitchFailed() {

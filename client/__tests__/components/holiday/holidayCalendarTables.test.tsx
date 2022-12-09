@@ -1,6 +1,6 @@
 import { dateAddDays } from '../../../../shared/dates';
-import type { CalendarTableDate } from '../../../components/holiday/HolidayCalendarTables';
-import { selectDatesFromRange } from '../../../components/holiday/HolidayCalendarTables';
+import type { CalendarTableDate } from '../../../components/mma/holiday/HolidayCalendarTables';
+import { selectDatesFromRange } from '../../../components/mma/holiday/HolidayCalendarTables';
 
 describe('calendarTables', () => {
 	test('return array of selected dates where end selection date is before the start selection date', () => {

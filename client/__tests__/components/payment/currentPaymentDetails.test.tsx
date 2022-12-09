@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import CurrentPaymentDetails from '../../../components/payment/update/CurrentPaymentDetail';
+import CurrentPaymentDetails from '../../../components/mma/paymentUpdate/CurrentPaymentDetail';
 import {
 	digitalDD,
 	guardianWeeklyCard,

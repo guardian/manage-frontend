@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import { create } from 'react-test-renderer';
-import { NewsletterPreference } from '../../../components/identity/NewsletterPreference';
+import { NewsletterPreference } from '../../../components/mma/identity/NewsletterPreference';
 
 afterEach(cleanup);
 

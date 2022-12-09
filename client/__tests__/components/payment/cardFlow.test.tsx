@@ -1,9 +1,9 @@
 import type { PaymentMethod } from '@stripe/stripe-js';
 import { fireEvent, render } from '@testing-library/react';
 import type { StripeSetupIntent } from '../../../../shared/stripeSetupIntent';
-import { CardInputForm } from '../../../components/payment/update/card/CardInputForm';
-import type { RecaptchaProps } from '../../../components/payment/update/card/Recaptcha';
-import type { NewPaymentMethodDetail } from '../../../components/payment/update/NewPaymentMethodDetail';
+import { CardInputForm } from '../../../components/mma/paymentUpdate/card/CardInputForm';
+import type { RecaptchaProps } from '../../../components/mma/paymentUpdate/card/Recaptcha';
+import type { NewPaymentMethodDetail } from '../../../components/mma/paymentUpdate/NewPaymentMethodDetail';
 
 const stripePublicKey = 'pk_test_Qm3CGRdrV4WfGYCpm0sftR0f';
 const userEmail = 'myemail@email.com';
@@ -68,7 +68,7 @@ jest.mock('@stripe/react-stripe-js', () => {
 	};
 });
 
-jest.mock('../../../components/payment/update/card/Recaptcha', () => ({
+jest.mock('../../../components/mma/paymentUpdate/card/Recaptcha', () => ({
 	__esModule: true,
 	default: Recaptcha,
 }));

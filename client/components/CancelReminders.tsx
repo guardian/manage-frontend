@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
-import { sendReminderCancellation } from './identity/idapi/supportReminders';
+import { sendReminderCancellation } from './mma/identity/idapi/supportReminders';
 
 const containerStyle = css`
 	width: 100%;

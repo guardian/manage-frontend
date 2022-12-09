@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import type { DeliveryProblemType } from '../../../../../../shared/productTypes';
-import { DeliveryRecordProblemForm } from '../../../../../components/delivery/records/DeliveryRecordsProblemForm';
+import { DeliveryRecordProblemForm } from '../../../../../components/mma/delivery/records/DeliveryRecordsProblemForm';
 
 const guardianWeeklyProblemArr: DeliveryProblemType[] = [
 	{ label: 'Damaged paper', messageIsMandatory: true },

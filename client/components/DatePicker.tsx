@@ -11,7 +11,7 @@ import {
 } from '../../shared/dates';
 import { sans } from '../styles/fonts';
 import { DateInput } from './DateInput';
-import { HolidayCalendarTables } from './holiday/HolidayCalendarTables';
+import { HolidayCalendarTables } from './mma/holiday/HolidayCalendarTables';
 
 const stateDefinitions = {
 	available: {

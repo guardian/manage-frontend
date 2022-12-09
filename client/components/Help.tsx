@@ -10,9 +10,9 @@ import {
 import { LinkButton, Stack } from '@guardian/source-react-components';
 import { useState } from 'react';
 import { trackEvent } from '../utilities/analytics';
-import { NAV_LINKS } from './nav/NavConfig';
 import { PageContainer } from './Page';
 import { CallCentreEmailAndNumbers } from './shared/CallCenterEmailAndNumbers';
+import { NAV_LINKS } from './shared/nav/NavConfig';
 
 interface Question {
 	id: string;

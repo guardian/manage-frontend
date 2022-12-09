@@ -19,9 +19,9 @@ import {
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { measure } from '../../styles/typography';
-import type { CancellationRouterState } from '../cancel/CancellationContainer';
 import { Heading } from '../Heading';
-import GridPicture from '../images/GridPicture';
+import type { CancellationRouterState } from '../mma/cancel/CancellationContainer';
+import GridPicture from '../mma/shared/images/GridPicture';
 import { productBenefits } from './ProductBenefits';
 import type { AvailableProductsResponse } from './productSwitchApi';
 import {

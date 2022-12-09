@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { gridBase, gridColumns, gridItemPlacement } from '../../styles/grid';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { GridRoundel } from '../mma/shared/assets/GridRoundel';
-import { DropdownNav } from '../nav/DropdownNav';
+import { DropdownNav } from './nav/DropdownNav';
 
 export interface HeaderProps {
 	signInStatus: SignInStatus;

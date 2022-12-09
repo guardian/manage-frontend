@@ -17,10 +17,10 @@ import { useContext } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '../../styles/typography';
 import { getGeoLocation } from '../../utilities/geolocation';
-import type { CancellationRouterState } from '../cancel/CancellationContainer';
 import { Heading } from '../Heading';
-import GridImage from '../images/GridImage';
-import GridPicture from '../images/GridPicture';
+import type { CancellationRouterState } from '../mma/cancel/CancellationContainer';
+import GridImage from '../mma/shared/images/GridImage';
+import GridPicture from '../mma/shared/images/GridPicture';
 import type {
 	ProductSwitchContextInterface,
 	ProductSwitchResponse,

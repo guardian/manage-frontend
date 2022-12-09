@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { MarketingToggle } from '../../../components/identity/MarketingToggle';
+import { MarketingToggle } from '../../../components/mma/identity/MarketingToggle';
 
 afterEach(cleanup);
 

@@ -15,7 +15,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { trackEvent } from '../../utilities/analytics';
 import useHelpArticleSeo from '../../utilities/hooks/useHelpArticleSeo';
 import { setPageTitle } from '../../utilities/pageTitle';
-import { isArticleLiveChatFeatureEnabled } from '../liveChat/liveChatFeatureSwitch';
 import { ThumbsUpIcon } from '../mma/shared/assets/ThumbsUpIcon';
 import { CallCentreEmailAndNumbers } from '../shared/CallCenterEmailAndNumbers';
 import { SelectedTopicObjectContext } from '../shared/SectionContent';
@@ -31,6 +30,7 @@ import type {
 	LinkNode,
 	TextNode,
 } from './HelpCentreTypes';
+import { isArticleLiveChatFeatureEnabled } from './liveChat/liveChatFeatureSwitch';
 
 const HelpCentreArticle = () => {
 	const [article, setArticle] = useState<Article | undefined>(undefined);

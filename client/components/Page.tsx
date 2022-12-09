@@ -12,9 +12,9 @@ import type { ReactElement } from 'react';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { gridBase, gridColumns, gridItemPlacement } from '../styles/grid';
-import type { LeftSideNavProps } from './nav/LeftSideNav';
-import { LeftSideNav } from './nav/LeftSideNav';
-import type { NavItem } from './nav/NavConfig';
+import type { LeftSideNavProps } from './shared/nav/LeftSideNav';
+import { LeftSideNav } from './shared/nav/LeftSideNav';
+import type { NavItem } from './shared/nav/NavConfig';
 
 export interface PageContainerProps {
 	children: React.ReactNode;

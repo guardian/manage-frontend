@@ -3,21 +3,21 @@ import type { ReactNode } from 'react';
 import type {
 	CancellationReason,
 	OptionalCancellationReasonId,
-} from '../client/components/cancel/cancellationReason';
-import { contributionsCancellationFlowStart } from '../client/components/cancel/contributions/ContributionsCancellationFlowStart';
-import { contributionsCancellationReasons } from '../client/components/cancel/contributions/ContributionsCancellationReasons';
-import { digipackCancellationFlowStart } from '../client/components/cancel/digipack/DigipackCancellationFlowStart';
-import { digipackCancellationReasons } from '../client/components/cancel/digipack/DigipackCancellationReasons';
-import { gwCancellationFlowStart } from '../client/components/cancel/gw/GwCancellationFlowStart';
-import { gwCancellationReasons } from '../client/components/cancel/gw/GwCancellationReasons';
-import { membershipCancellationFlowStart } from '../client/components/cancel/membership/MembershipCancellationFlowStart';
-import { membershipCancellationReasons } from '../client/components/cancel/membership/MembershipCancellationReasons';
-import type { RestOfCancellationFlow } from '../client/components/cancel/PhysicalSubsCancellationFlowWrapper';
-import { physicalSubsCancellationFlowWrapper } from '../client/components/cancel/PhysicalSubsCancellationFlowWrapper';
-import { supporterplusCancellationFlowStart } from '../client/components/cancel/supporterplus/SupporterplusCancellationFlowStart';
-import { supporterplusCancellationReasons } from '../client/components/cancel/supporterplus/SupporterplusCancellationReasons';
-import { voucherCancellationFlowStart } from '../client/components/cancel/voucher/VoucherCancellationFlowStart';
-import { voucherCancellationReasons } from '../client/components/cancel/voucher/VoucherCancellationReasons';
+} from '../client/components/mma/cancel/cancellationReason';
+import { contributionsCancellationFlowStart } from '../client/components/mma/cancel/contributions/ContributionsCancellationFlowStart';
+import { contributionsCancellationReasons } from '../client/components/mma/cancel/contributions/ContributionsCancellationReasons';
+import { digipackCancellationFlowStart } from '../client/components/mma/cancel/digipack/DigipackCancellationFlowStart';
+import { digipackCancellationReasons } from '../client/components/mma/cancel/digipack/DigipackCancellationReasons';
+import { gwCancellationFlowStart } from '../client/components/mma/cancel/gw/GwCancellationFlowStart';
+import { gwCancellationReasons } from '../client/components/mma/cancel/gw/GwCancellationReasons';
+import { membershipCancellationFlowStart } from '../client/components/mma/cancel/membership/MembershipCancellationFlowStart';
+import { membershipCancellationReasons } from '../client/components/mma/cancel/membership/MembershipCancellationReasons';
+import type { RestOfCancellationFlow } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
+import { physicalSubsCancellationFlowWrapper } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
+import { supporterplusCancellationFlowStart } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationFlowStart';
+import { supporterplusCancellationReasons } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationReasons';
+import { voucherCancellationFlowStart } from '../client/components/mma/cancel/voucher/VoucherCancellationFlowStart';
+import { voucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
 import type { SupportTheGuardianButtonProps } from '../client/components/SupportTheGuardianButton';
 import type { OphanProduct } from './ophanTypes';
 import type {

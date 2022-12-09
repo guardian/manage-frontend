@@ -8,7 +8,7 @@ import {
 import { Link } from 'react-router-dom';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { TheGuardianLogo } from '../mma/shared/assets/TheGuardianLogo';
-import { DropdownNav } from '../nav/DropdownNav';
+import { DropdownNav } from '../shared/nav/DropdownNav';
 
 export interface HelpCentreHeaderProps {
 	signInStatus: SignInStatus;

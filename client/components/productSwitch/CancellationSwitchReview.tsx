@@ -23,17 +23,17 @@ import {
 	MDA_TEST_USER_HEADER,
 } from '../../../shared/productResponse';
 import { measure } from '../../styles/typography';
+import { expanderButtonCss } from '../ExpanderButton';
+import { Heading } from '../Heading';
 import type {
 	CancellationPageTitleInterface,
 	CancellationRouterState,
-} from '../cancel/CancellationContainer';
-import { CancellationPageTitleContext } from '../cancel/CancellationContainer';
-import { expanderButtonCss } from '../ExpanderButton';
-import { Heading } from '../Heading';
-import { cardTypeToSVG } from '../payment/CardDisplay';
-import { DirectDebitDisplay } from '../payment/DirectDebitDisplay';
-import { PaypalDisplay } from '../payment/PaypalDisplay';
-import { SepaDisplay } from '../payment/SepaDisplay';
+} from '../mma/cancel/CancellationContainer';
+import { CancellationPageTitleContext } from '../mma/cancel/CancellationContainer';
+import { cardTypeToSVG } from '../mma/shared/CardDisplay';
+import { DirectDebitDisplay } from '../mma/shared/DirectDebitDisplay';
+import { PaypalDisplay } from '../mma/shared/PaypalDisplay';
+import { SepaDisplay } from '../mma/shared/SepaDisplay';
 import { productBenefits } from './ProductBenefits';
 import type {
 	AvailableProductsResponse,

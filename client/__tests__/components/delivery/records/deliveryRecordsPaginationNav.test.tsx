@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { PaginationNav } from '../../../../components/delivery/records/DeliveryRecordsPaginationNav';
+import { PaginationNav } from '../../../../components/mma/delivery/records/DeliveryRecordsPaginationNav';
 
 describe('PaginationNav', () => {
 	it('renders the correct number of pages', () => {
