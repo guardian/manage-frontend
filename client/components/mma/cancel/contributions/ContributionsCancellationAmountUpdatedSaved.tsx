@@ -10,7 +10,7 @@ import {
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import type { SavedBodyProps } from '../stages/savedCancellation';
+import type { SavedBodyProps } from '../stages/SavedCancellation';
 
 const ContributionsCancellationAmountUpdatedSaved: React.FC<SavedBodyProps> = ({
 	amount,
