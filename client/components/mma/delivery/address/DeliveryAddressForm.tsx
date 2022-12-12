@@ -35,7 +35,7 @@ import { InfoSection } from '../../shared/InfoSection';
 import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
 import type { ProductDescriptionListKeyValue } from '../../shared/ProductDescriptionListTable';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
-import type { AddressSetStateObject } from './deliveryAddressFormContext';
+import type { AddressSetStateObject } from './DeliveryAddressFormContext';
 import {
 	ContactIdContext,
 	convertToDescriptionListData,
