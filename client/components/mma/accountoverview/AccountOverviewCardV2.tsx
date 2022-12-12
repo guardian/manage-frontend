@@ -27,6 +27,7 @@ import { expanderButtonCss } from '../../shared/ExpanderButton';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { CardDisplay } from '../shared/CardDisplay';
 import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
+import GridPicture from '../shared/images/GridPicture';
 import {
 	getNextPaymentDetails,
 	NewPaymentPriceAlert,
@@ -35,41 +36,43 @@ import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
 
 interface ProductCardConfiguration {
-	bannerColor: string;
+	headerColor: string;
+	headerImageId?: string;
 }
 
 const productCardConfiguration: {
 	[productType in ProductTypeKeys]: ProductCardConfiguration;
 } = {
 	contributions: {
-		bannerColor: palette.brand[600],
+		headerColor: palette.brand[600],
 	},
 	supporterplus: {
-		bannerColor: palette.brand[500],
+		headerColor: palette.brand[500],
+		headerImageId: 'digitalSubPackshot',
 	},
 	digipack: {
-		bannerColor: palette.brand[500],
+		headerColor: palette.brand[500],
 	},
 	digitalvoucher: {
-		bannerColor: '#ff5943',
+		headerColor: '#ff5943',
 	},
 	newspaper: {
-		bannerColor: '#ff5943',
+		headerColor: '#ff5943',
 	},
 	homedelivery: {
-		bannerColor: '#ff5943',
+		headerColor: '#ff5943',
 	},
 	voucher: {
-		bannerColor: '#ff5943',
+		headerColor: '#ff5943',
 	},
 	guardianweekly: {
-		bannerColor: '#5f8085',
+		headerColor: '#5f8085',
 	},
 	membership: {
-		bannerColor: palette.brand[500],
+		headerColor: palette.brand[500],
 	},
 	guardianpatron: {
-		bannerColor: palette.brand[500],
+		headerColor: palette.brand[500],
 	},
 };
 
@@ -255,8 +258,40 @@ export const AccountOverviewCardV2 = ({
 
 	return (
 		<Card>
-			<Card.Header backgroundColor={cardConfig.bannerColor}>
-				<h3 css={productTitleCss}>{productTitle}</h3>
+			<Card.Header backgroundColor={cardConfig.headerColor}>
+				<div
+					css={css`
+						display: flex;
+						justify-content: space-between;
+					`}
+				>
+					<h3 css={productTitleCss}>{productTitle}</h3>
+					{cardConfig.headerImageId && (
+						<GridPicture
+							cssOverrides={css`
+								margin-top: -${space[3] + 16}px;
+								margin-bottom: -${space[3]}px;
+								max-height: 104px;
+								${from.tablet} {
+									max-height: 168px;
+								}
+							`}
+							sources={[
+								{
+									gridId: cardConfig.headerImageId,
+									srcSizes: [497, 285],
+									imgType: 'png',
+									sizes: '100vw',
+									media: '(max-width: 220px)',
+								},
+							]}
+							fallback="digitalSubPackshot"
+							fallbackSize={497}
+							altText=""
+							fallbackImgType="png"
+						/>
+					)}
+				</div>
 			</Card.Header>
 			{specificProductType === PRODUCT_TYPES.supporterplus &&
 				nextPaymentDetails && (
