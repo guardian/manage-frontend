@@ -25,10 +25,10 @@ import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { CardDisplay } from '../shared/CardDisplay';
 import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
 import GridPicture from '../shared/images/GridPicture';
+import type { NextPaymentDetails } from '../shared/NextPaymentDetails';
 import {
 	getNextPaymentDetails,
 	NewPaymentPriceAlert,
-	NextPaymentDetails,
 } from '../shared/NextPaymentDetails';
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
@@ -332,9 +332,9 @@ export const AccountOverviewCardV2 = ({
 							cssOverrides={css`
 								margin-top: -${space[3] + 16}px;
 								margin-bottom: -${space[3]}px;
-								max-height: 104px;
+								max-height: 80px;
 								${from.tablet} {
-									max-height: 168px;
+									max-height: 144px;
 								}
 							`}
 							sources={[
