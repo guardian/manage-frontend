@@ -1,4 +1,4 @@
-import { isFormValid } from '../../../../components/delivery/address/formValidation';
+import { isFormValid } from '../../../../components/mma/delivery/address/formValidation';
 
 describe('update delivery address form validation', () => {
 	const londonAddress = {

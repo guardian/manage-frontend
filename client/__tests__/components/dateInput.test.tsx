@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { DateInput } from '../../components/dateInput';
+import { DateInput } from '../../components/mma/shared/DateInput';
 
 describe('DateInput', () => {
 	it.each([

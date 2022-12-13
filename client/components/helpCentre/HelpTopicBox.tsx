@@ -2,15 +2,15 @@ import { css } from '@emotion/react';
 import { from, neutral, space, textSans } from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { trackEvent } from '../../services/analytics';
-import { getHelpSectionIcon } from '../svgs/helpSectionIcons';
-import type { HelpCentreTopic } from './helpCentreConfig';
+import { trackEvent } from '../../utilities/analytics';
+import { getHelpSectionIcon } from '../mma/shared/assets/HelpSectionIcons';
+import type { HelpCentreTopic } from './HelpCentreConfig';
 import {
 	linkAnchorStyle,
 	linkArrowStyle,
 	linkListItemStyle,
 	linksListStyle,
-} from './helpCentreStyles';
+} from './HelpCentreStyles';
 
 interface HelpTopicBoxProps {
 	topic: HelpCentreTopic;

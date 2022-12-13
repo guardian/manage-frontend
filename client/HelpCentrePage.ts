@@ -3,7 +3,7 @@ import 'regenerator-runtime/runtime';
 import * as Sentry from '@sentry/browser';
 import 'ophan-tracker-js/build/ophan.manage-my-account';
 import { render } from 'react-dom';
-import { HelpCentrePage } from './components/HelpCentrePage';
+import { HelpCentrePage } from './components/helpCentre/HelpCentrePage';
 
 declare let WEBPACK_BUILD: string;
 

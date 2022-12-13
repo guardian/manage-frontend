@@ -6,7 +6,7 @@ import {
 	waitForElementToBeRemoved,
 } from '@testing-library/react';
 import { create } from 'react-test-renderer';
-import { DropMenu } from '../../../components/identity/DropMenu';
+import { DropMenu } from '../../../components/mma/identity/DropMenu';
 
 const ELEMENT_TEXT = {
 	TITLE: 'TEST DROPMENU',

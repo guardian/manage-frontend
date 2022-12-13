@@ -1,4 +1,4 @@
-import { getObfuscatedPayPalId } from '../../../components/payment/paypalDisplay';
+import { getObfuscatedPayPalId } from '../../../components/mma/shared/PaypalDisplay';
 
 test('obfuscate email id', () => {
 	expect(getObfuscatedPayPalId('username@email.com')).toEqual(
@@ -7,8 +7,12 @@ test('obfuscate email id', () => {
 	expect(getObfuscatedPayPalId('last.first@thegulocal.com')).toEqual(
 		'l********t@thegulocal.com',
 	);
-	expect(getObfuscatedPayPalId('j@thegulocal.com')).toEqual('j@thegulocal.com');
-	expect(getObfuscatedPayPalId('jm@thegulocal.com')).toEqual('jm@thegulocal.com');
+	expect(getObfuscatedPayPalId('j@thegulocal.com')).toEqual(
+		'j@thegulocal.com',
+	);
+	expect(getObfuscatedPayPalId('jm@thegulocal.com')).toEqual(
+		'jm@thegulocal.com',
+	);
 	expect(getObfuscatedPayPalId('jim@thegulocal.com')).toEqual(
 		'j*m@thegulocal.com',
 	);

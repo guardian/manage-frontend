@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { RecordStatus } from '../../../../components/delivery/records/deliveryRecordStatus';
+import { RecordStatus } from '../../../../components/mma/delivery/records/DeliveryRecordStatus';
 
 describe('DeliveryRecordStatus', () => {
 	it('renders dispatched status', () => {

@@ -1,5 +1,5 @@
 import { create } from 'react-test-renderer';
-import { Lines } from '../../../components/identity/Lines';
+import { Lines } from '../../../components/mma/identity/Lines';
 
 describe('Lines', () => {
 	it('draws one line when n = 1', () => {

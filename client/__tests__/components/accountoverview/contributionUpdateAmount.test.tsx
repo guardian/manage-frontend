@@ -2,7 +2,7 @@
 /* eslint jest/no-standalone-expect: "off", jest/no-done-callback: "off" */
 import { fireEvent, render, screen } from '@testing-library/react';
 import each from 'jest-each';
-import { ContributionUpdateAmount } from '../../../components/accountoverview/contributionUpdateAmount';
+import { ContributionUpdateAmount } from '../../../components/mma/accountoverview/ContributionUpdateAmount';
 
 const mainPlan = (interval) => ({
 	start: '2019-10-30',

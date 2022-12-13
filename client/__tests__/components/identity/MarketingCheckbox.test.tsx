@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { MarketingCheckbox } from '../../../components/identity/MarketingCheckbox';
+import { MarketingCheckbox } from '../../../components/mma/identity/MarketingCheckbox';
 
 afterEach(cleanup);
 

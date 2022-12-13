@@ -1,8 +1,8 @@
-import { _, getGeoLocation, isInUSA } from '../geolocation';
+import { _, getGeoLocation, isInUSA } from '../utilities/geolocation';
 
 let mockGeoCookieValue: string | null = null;
 
-jest.mock('../cookies', () => ({
+jest.mock('../utilities/cookies', () => ({
 	getCookie: jest.fn(() => mockGeoCookieValue),
 }));
 

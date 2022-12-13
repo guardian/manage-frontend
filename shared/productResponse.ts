@@ -1,9 +1,9 @@
 import * as Sentry from '@sentry/browser';
 import * as React from 'react';
-import AsyncLoader from '../client/components/asyncLoader';
-import type { PhoneRegionKey } from '../client/components/callCenterEmailAndNumbers';
-import type { DeliveryRecordDetail } from '../client/components/delivery/records/deliveryRecordsApi';
-import type { CardProps } from '../client/components/payment/cardDisplay';
+import type { DeliveryRecordDetail } from '../client/components/mma/delivery/records/deliveryRecordsApi';
+import AsyncLoader from '../client/components/mma/shared/AsyncLoader';
+import type { CardProps } from '../client/components/mma/shared/CardDisplay';
+import type { PhoneRegionKey } from '../client/components/shared/CallCenterEmailAndNumbers';
 import { GROUPED_PRODUCT_TYPES } from './productTypes';
 import type { GroupedProductTypeKeys, ProductType } from './productTypes';
 

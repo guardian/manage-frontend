@@ -3,8 +3,8 @@ import {
 	dateAddDays,
 	dateString,
 } from '../../../../../../shared/dates';
-import type { DeliveryRecordDetail } from '../../../../../components/delivery/records/deliveryRecordsApi';
-import { checkForExistingDeliveryProblem } from '../../../../../components/delivery/records/DeliveryRecordsContainer';
+import type { DeliveryRecordDetail } from '../../../../../components/mma/delivery/records/deliveryRecordsApi';
+import { checkForExistingDeliveryProblem } from '../../../../../components/mma/delivery/records/DeliveryRecordsContainer';
 
 describe('delivery records unit tests', () => {
 	const baseMockDeliveryRecord: DeliveryRecordDetail = {

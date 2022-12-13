@@ -1,0 +1,29 @@
+import type { SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
+import type { SubscriptionPlan } from '../../../../shared/productResponse';
+import {
+	isPaidSubscriptionPlan,
+	isSixForSix,
+} from '../../../../shared/productResponse';
+
+interface SixForSixExplainerProps {
+	additionalCss: SerializedStyles;
+	mainPlan: SubscriptionPlan;
+	hasCancellationPending: boolean;
+}
+
+export const SixForSixExplainerIfApplicable = (
+	props: SixForSixExplainerProps,
+) =>
+	isSixForSix(props.mainPlan.name) &&
+	isPaidSubscriptionPlan(props.mainPlan) &&
+	!props.hasCancellationPending ? (
+		<p
+			css={css`
+				${props.additionalCss}
+			`}
+		>
+			This subscription is still in the initial '6 issues for{' '}
+			{props.mainPlan.currency}6' promotional period.
+		</p>
+	) : null;

@@ -2,12 +2,12 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router';
 import type { Subscription } from '../../../../shared/productResponse';
-import type { CardUpdateResponse } from '../../../components/payment/update/card/newCardPaymentMethodDetail';
-import type { NewPaymentMethodDetail } from '../../../components/payment/update/newPaymentMethodDetail';
+import type { CardUpdateResponse } from '../../../components/mma/paymentUpdate/card/NewCardPaymentMethodDetail';
+import type { NewPaymentMethodDetail } from '../../../components/mma/paymentUpdate/NewPaymentMethodDetail';
 import {
 	ConfirmedNewPaymentDetailsRenderer,
 	PaymentMethodUpdated,
-} from '../../../components/payment/update/PaymentDetailUpdateConfirmation';
+} from '../../../components/mma/paymentUpdate/PaymentDetailUpdateConfirmation';
 import {
 	digitalDD,
 	guardianWeeklyCard,
