@@ -17,15 +17,15 @@ import { useNavigate } from 'react-router';
 import { parseDate } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { getMainPlan, isGift } from '../../../../shared/productResponse';
-import {
-	GROUPED_PRODUCT_TYPES,
-	PRODUCT_TYPES,
-} from '../../../../shared/productTypes';
+import type { ProductTypeKeys } from '../../../../shared/productTypes';
+import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
 import { expanderButtonCss } from '../../shared/ExpanderButton';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { CardDisplay } from '../shared/CardDisplay';
 import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
+import GridPicture from '../shared/images/GridPicture';
+import type { NextPaymentDetails } from '../shared/NextPaymentDetails';
 import {
 	getNextPaymentDetails,
 	NewPaymentPriceAlert,
@@ -33,41 +33,22 @@ import {
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
 
-interface CardProps {
-	heading: string;
-	children: ReactNode;
-}
+const Card = (props: { children: ReactNode }) => {
+	return <div>{props.children}</div>;
+};
 
-const Card = (props: CardProps) => {
-	const headingContainerCss = css`
+Card.Header = (props: { children: ReactNode; backgroundColor?: string }) => {
+	const headerCss = css`
 		padding: ${space[3]}px ${space[4]}px;
 		min-height: 64px;
-		color: ${palette.neutral[100]};
-		background-color: ${palette.brand[500]};
+		background-color: ${props.backgroundColor ?? palette.neutral[97]};
 
 		${from.tablet} {
 			min-height: 128px;
 		}
 	`;
 
-	const headingCss = css`
-		${headline.xxsmall({ fontWeight: 'bold' })};
-		margin: 0;
-		max-width: 20ch;
-
-		${from.tablet} {
-			${headline.small({ fontWeight: 'bold' })};
-		}
-	`;
-
-	return (
-		<div>
-			<div css={headingContainerCss}>
-				<h3 css={headingCss}>{props.heading}</h3>
-			</div>
-			{props.children}
-		</div>
-	);
+	return <header css={headerCss}>{props.children}</header>;
 };
 
 Card.Section = (props: { children: ReactNode; backgroundColor?: string }) => {
@@ -84,6 +65,141 @@ Card.Section = (props: { children: ReactNode; backgroundColor?: string }) => {
 	return <div css={sectionCss}>{props.children}</div>;
 };
 
+const SupporterPlusBenefitsSection = (props: {
+	nextPaymentDetails: NextPaymentDetails;
+}) => {
+	const [showBenefits, setShowBenefits] = useState<boolean>(false);
+
+	const benefitsCss = css`
+		${textSans.medium()};
+		list-style: none;
+		margin: ${space[5]}px 0 ${space[4]}px -4px;
+		padding: 0;
+
+		li + li {
+			margin-top: ${space[2]}px;
+		}
+
+		li {
+			display: flex;
+			align-items: flex-start;
+		}
+
+		svg {
+			flex-shrink: 0;
+			margin-right: ${space[2]}px;
+			fill: ${palette.brand[500]};
+		}
+	`;
+
+	const benefitsButtonCss = css`
+		${textSans.small()}
+		margin-top: ${space[1]}px;
+		padding: 0;
+		color: ${palette.brand[500]};
+		border-bottom: 1px solid ${palette.brand[500]};
+	`;
+
+	return (
+		<Card.Section backgroundColor="#edf5fA">
+			<p
+				css={css`
+					${textSans.medium()}
+					margin: 0;
+					max-width: 35ch;
+				`}
+			>
+				You’re supporting the Guardian with a{' '}
+				{props.nextPaymentDetails.paymentValue} per{' '}
+				{props.nextPaymentDetails.paymentInterval} support and extra
+				benefits.
+			</p>
+			<ul id="benefits" css={benefitsCss} hidden={!showBenefits}>
+				<li>
+					<SvgTickRound size="small" />
+					<span>
+						<strong>A regular supporter newsletter.</strong> Get
+						exclusive insight from our newsroom
+					</span>
+				</li>
+				<li>
+					<SvgTickRound size="small" />
+					<span>
+						<strong>Uninterrupted reading.</strong> See far fewer
+						asks for support
+					</span>
+				</li>
+				<li>
+					<SvgTickRound size="small" />
+					<span>
+						<strong>Full access to our news app.</strong> Read our
+						reporting on the go
+					</span>
+				</li>
+				<li>
+					<SvgTickRound size="small" />
+					<span>
+						<strong>Ad-free reading.</strong> Avoid ads on all your
+						devices
+					</span>
+				</li>
+			</ul>
+			<button
+				css={[expanderButtonCss()(showBenefits), benefitsButtonCss]}
+				type="button"
+				aria-expanded={showBenefits}
+				aria-controls="benefits"
+				onClick={() => setShowBenefits(!showBenefits)}
+			>
+				{showBenefits ? 'hide' : 'view'} benefits
+			</button>
+		</Card.Section>
+	);
+};
+
+interface ProductCardConfiguration {
+	headerColor: string;
+	headerImageId?: string;
+	showBenefitsSection?: boolean;
+}
+
+const productCardConfiguration: {
+	[productType in ProductTypeKeys]: ProductCardConfiguration;
+} = {
+	contributions: {
+		headerColor: palette.brand[600],
+	},
+	supporterplus: {
+		headerColor: palette.brand[500],
+		headerImageId: 'digitalSubPackshot',
+		showBenefitsSection: true,
+	},
+	digipack: {
+		headerColor: palette.brand[500],
+	},
+	digitalvoucher: {
+		headerColor: '#ff5943',
+	},
+	newspaper: {
+		headerColor: '#ff5943',
+	},
+	homedelivery: {
+		headerColor: '#ff5943',
+	},
+	voucher: {
+		headerColor: '#ff5943',
+	},
+	guardianweekly: {
+		headerColor: '#5f8085',
+	},
+	membership: {
+		headerColor: palette.brand[500],
+	},
+	guardianpatron: {
+		headerColor: palette.brand[500],
+	},
+};
+
 export const AccountOverviewCardV2 = ({
 	productDetail,
 	isEligibleToSwitch,
@@ -92,7 +208,6 @@ export const AccountOverviewCardV2 = ({
 	isEligibleToSwitch: boolean;
 }) => {
 	const navigate = useNavigate();
-	const [showBenefits, setShowBenefits] = useState<boolean>(false);
 
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
@@ -132,12 +247,26 @@ export const AccountOverviewCardV2 = ({
 
 	const showSwitchButton =
 		isEligibleToSwitch &&
-		specificProductType === PRODUCT_TYPES.contributions;
+		specificProductType.productType === 'contributions';
+
+	const cardConfig =
+		productCardConfiguration[specificProductType.productType];
 
 	const sectionHeadingCss = css`
 		${textSans.medium({ fontWeight: 'bold' })};
 		margin-top: 0;
 		margin-bottom: ${space[2]}px;
+	`;
+
+	const productTitleCss = css`
+		${headline.xxsmall({ fontWeight: 'bold' })};
+		color: ${palette.neutral[100]};
+		margin: 0;
+		max-width: 20ch;
+
+		${from.tablet} {
+			${headline.small({ fontWeight: 'bold' })};
+		}
 	`;
 
 	const productDetailLayoutCss = css`
@@ -188,105 +317,48 @@ export const AccountOverviewCardV2 = ({
 		}
 	`;
 
-	const benefitsCss = css`
-		${textSans.medium()};
-		list-style: none;
-		margin: ${space[5]}px 0 ${space[4]}px -4px;
-		padding: 0;
-
-		li + li {
-			margin-top: ${space[2]}px;
-		}
-
-		li {
-			display: flex;
-			align-items: flex-start;
-		}
-
-		svg {
-			flex-shrink: 0;
-			margin-right: ${space[2]}px;
-			fill: ${palette.brand[500]};
-		}
-	`;
-
-	const benefitsButtonCss = css`
-		${textSans.small()}
-		margin-top: ${space[1]}px;
-		padding: 0;
-		color: ${palette.brand[500]};
-		border-bottom: 1px solid ${palette.brand[500]};
-	`;
-
 	return (
-		<Card heading={productTitle}>
-			{specificProductType === PRODUCT_TYPES.supporterplus &&
-				nextPaymentDetails && (
-					<Card.Section backgroundColor="#edf5fA">
-						<p
-							css={css`
-								${textSans.medium()}
-								margin: 0;
-								max-width: 35ch;
+		<Card>
+			<Card.Header backgroundColor={cardConfig.headerColor}>
+				<div
+					css={css`
+						display: flex;
+						justify-content: space-between;
+					`}
+				>
+					<h3 css={productTitleCss}>{productTitle}</h3>
+					{cardConfig.headerImageId && (
+						<GridPicture
+							cssOverrides={css`
+								margin-top: -${space[3] + 16}px;
+								margin-bottom: -${space[3]}px;
+								max-height: 80px;
+								${from.tablet} {
+									max-height: 144px;
+								}
 							`}
-						>
-							You’re supporting the Guardian with a{' '}
-							{nextPaymentDetails.paymentValue} per{' '}
-							{nextPaymentDetails.paymentInterval} support and
-							extra benefits.
-						</p>
-						<ul
-							id="benefits"
-							css={benefitsCss}
-							hidden={!showBenefits}
-						>
-							<li>
-								<SvgTickRound size="small" />
-								<span>
-									<strong>
-										A regular supporter newsletter.
-									</strong>{' '}
-									Get exclusive insight from our newsroom
-								</span>
-							</li>
-							<li>
-								<SvgTickRound size="small" />
-								<span>
-									<strong>Uninterrupted reading.</strong> See
-									far fewer asks for support
-								</span>
-							</li>
-							<li>
-								<SvgTickRound size="small" />
-								<span>
-									<strong>
-										Full access to our news app.
-									</strong>{' '}
-									Read our reporting on the go
-								</span>
-							</li>
-							<li>
-								<SvgTickRound size="small" />
-								<span>
-									<strong>Ad-free reading.</strong> Avoid ads
-									on all your devices
-								</span>
-							</li>
-						</ul>
-						<button
-							css={[
-								expanderButtonCss()(showBenefits),
-								benefitsButtonCss,
+							sources={[
+								{
+									gridId: cardConfig.headerImageId,
+									srcSizes: [497, 285],
+									imgType: 'png',
+									sizes: '100vw',
+									media: '(max-width: 220px)',
+								},
 							]}
-							type="button"
-							aria-expanded={showBenefits}
-							aria-controls="benefits"
-							onClick={() => setShowBenefits(!showBenefits)}
-						>
-							{showBenefits ? 'hide' : 'view'} benefits
-						</button>
-					</Card.Section>
-				)}
+							fallback={cardConfig.headerImageId}
+							fallbackSize={497}
+							altText=""
+							fallbackImgType="png"
+						/>
+					)}
+				</div>
+			</Card.Header>
+			{cardConfig.showBenefitsSection && nextPaymentDetails && (
+				<SupporterPlusBenefitsSection
+					nextPaymentDetails={nextPaymentDetails}
+				/>
+			)}
 			<Card.Section>
 				<div css={productDetailLayoutCss}>
 					<div>
