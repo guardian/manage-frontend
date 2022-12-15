@@ -2,8 +2,10 @@ import { useLocation } from 'react-router-dom';
 import { SectionContent } from '../shared/SectionContent';
 import { SectionHeader } from '../shared/SectionHeader';
 import { KnownIssues } from './KnownIssues';
+import type { KnownIssueObj } from './KnownIssues';
 
 interface HelpCenterContentWrapperProps {
+	knownIssues: KnownIssueObj[];
 	children: React.ReactNode;
 }
 
@@ -27,7 +29,7 @@ export const HelpCenterContentWrapper = (
 	return (
 		<>
 			<SectionHeader title={headerTitle} />
-			<KnownIssues />
+			<KnownIssues issues={props.knownIssues} />
 			<SectionContent>{props.children}</SectionContent>
 		</>
 	);

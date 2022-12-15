@@ -17,7 +17,7 @@ export const Default: ComponentStory<typeof HelpCentre> = () => {
 	fetchMock.restore().get('/api/known-issues/', { body: [] });
 
 	return (
-		<HelpCenterContentWrapper>
+		<HelpCenterContentWrapper knownIssues={[]}>
 			<HelpCentre />
 		</HelpCenterContentWrapper>
 	);
@@ -31,10 +31,8 @@ export const WithKnownIssue: ComponentStory<typeof HelpCentre> = () => {
 		},
 	];
 
-	fetchMock.restore().get('/api/known-issues/', { body: knownIssue });
-
 	return (
-		<HelpCenterContentWrapper>
+		<HelpCenterContentWrapper knownIssues={knownIssue}>
 			<HelpCentre />
 		</HelpCenterContentWrapper>
 	);
