@@ -36,6 +36,8 @@ import { Main } from '../shared/Main';
 import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import Maintenance from './maintenance/Maintenance';
 import MMAPageSkeleton from './MMAPageSkeleton';
+import SwitchContainer from './switch/SwitchContainer';
+import SwitchOptions from './switch/SwitchOptions';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {
@@ -322,6 +324,9 @@ const MMARouter = () => {
 							path="/account-settings"
 							element={<Settings />}
 						/>
+						<Route path="/switch" element={<SwitchContainer />}>
+							<Route index element={<SwitchOptions />} />
+						</Route>
 						{Object.values(GROUPED_PRODUCT_TYPES).map(
 							(groupedProductType: GroupedProductType) => (
 								<Route
