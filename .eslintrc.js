@@ -45,7 +45,6 @@ module.exports = {
 		'@typescript-eslint/prefer-reduce-type-parameter': ['off'],
 		'@typescript-eslint/prefer-ts-expect-error': ['off'],
 		'@typescript-eslint/require-await': ['off'],
-		'@typescript-eslint/restrict-plus-operands': ['off'],
 		'@typescript-eslint/restrict-template-expressions': ['off'],
 		'@typescript-eslint/unbound-method': ['off'],
 		'eslint-comments/require-description': ['off'],
