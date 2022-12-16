@@ -1,4 +1,3 @@
-import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import { from, palette, space } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
@@ -10,7 +9,7 @@ export const Card = (props: { children: ReactNode }) => {
 Card.Header = (props: {
 	children: ReactNode;
 	backgroundColor?: string;
-	cssOverrides?: SerializedStyles | SerializedStyles[];
+	headerHeight?: number;
 }) => {
 	const headerCss = css`
 		padding: ${space[3]}px ${space[4]}px;
@@ -18,13 +17,11 @@ Card.Header = (props: {
 		background-color: ${props.backgroundColor ?? palette.neutral[97]};
 
 		${from.tablet} {
-			min-height: 128px;
+			min-height: ${props.headerHeight ?? 128}px;
 		}
 	`;
 
-	return (
-		<header css={[headerCss, props.cssOverrides]}>{props.children}</header>
-	);
+	return <header css={headerCss}>{props.children}</header>;
 };
 
 Card.Section = (props: { children: ReactNode; backgroundColor?: string }) => {

@@ -1,12 +1,18 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { from, headline, palette } from '@guardian/source-foundations';
+import {
+	from,
+	headline,
+	palette,
+	textSans,
+} from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
 
 interface HeadingProps {
 	children: ReactNode;
 	cssOverrides?: SerializedStyles | SerializedStyles[];
 	level?: '1' | '2' | '3' | '4';
+	sansSerif?: boolean;
 }
 
 export const Heading = (props: HeadingProps) => {
@@ -15,11 +21,16 @@ export const Heading = (props: HeadingProps) => {
 	`;
 
 	const headingStyles = css`
-		${headline.xsmall({ fontWeight: 'bold' })};
+		${props.sansSerif
+			? textSans.xxlarge({ fontWeight: 'bold' })
+			: headline.xsmall({ fontWeight: 'bold' })};
+
 		margin-top: 0;
 		margin-bottom: 0;
 		${from.tablet} {
-			${headline.small({ fontWeight: 'bold' })};
+			${props.sansSerif
+				? textSans.xxlarge({ fontWeight: 'bold' })
+				: headline.small({ fontWeight: 'bold' })};
 		} ;
 	`;
 

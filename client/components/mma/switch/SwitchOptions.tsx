@@ -48,18 +48,6 @@ const productSubtitleCss = css`
 	max-width: 20ch;
 `;
 
-const cardHeaderCss = css`
-	${from.tablet} {
-		min-height: 0px;
-	}
-`;
-
-const pageHeadingCss = css`
-	${from.mobile} {
-		${textSans.xxlarge({ fontWeight: 'bold' })}
-	}
-`;
-
 const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 
@@ -73,13 +61,11 @@ const SwitchOptions = () => {
 
 	return (
 		<Stack space={3} cssOverrides={pageTopCss}>
-			<Heading cssOverrides={pageHeadingCss}>
-				Your current support
-			</Heading>
+			<Heading sansSerif>Your current support</Heading>
 			<Card>
 				<Card.Header
 					backgroundColor={palette.brand[600]}
-					cssOverrides={cardHeaderCss}
+					headerHeight={0}
 				>
 					<div css={cardHeaderDivCss}>
 						<h3 css={productTitleCss}>{monthlyOrAnnual} support</h3>
