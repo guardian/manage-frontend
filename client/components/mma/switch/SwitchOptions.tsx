@@ -1,18 +1,24 @@
-import { css } from '@emotion/react';
+import { css, ThemeProvider } from '@emotion/react';
 import {
 	from,
 	headline,
 	palette,
 	space,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
-import { Stack } from '@guardian/source-react-components';
+import {
+	Button,
+	buttonThemeReaderRevenueBrand,
+	Stack,
+} from '@guardian/source-react-components';
 import { useContext } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromInterval } from '../../../../shared/productTypes';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
+import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
 
@@ -48,6 +54,14 @@ const productSubtitleCss = css`
 	max-width: 20ch;
 `;
 
+const buttonCss = css`
+	display: flex;
+
+	${until.tablet} {
+		justify-content: center;
+	}
+`;
+
 const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 
@@ -55,9 +69,20 @@ const SwitchOptions = () => {
 	const mainPlan = getMainPlan(
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
+
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromInterval(
 		mainPlan.interval,
 	);
+	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
+
+	// ToDo: hardcoding this for now; need to find out where to get this from for each currency
+	const monthlyThreshold = 10;
+	const annualThreshold = 95;
+
+	const threshold =
+		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
+	const aboveThreshold = mainPlan.amount >= threshold * 100;
+	const currentAmount = mainPlan.amount / 100;
 
 	return (
 		<Stack space={3} cssOverrides={pageTopCss}>
@@ -71,7 +96,7 @@ const SwitchOptions = () => {
 						<h3 css={productTitleCss}>{monthlyOrAnnual} support</h3>
 						<p css={productSubtitleCss}>
 							{mainPlan.currency}
-							{mainPlan.amount / 100}/{mainPlan.interval}
+							{currentAmount}/{mainPlan.interval}
 						</p>
 					</div>
 				</Card.Header>
@@ -84,10 +109,69 @@ const SwitchOptions = () => {
 						You're currently supporting the Guardian with a{' '}
 						{monthlyOrAnnual.toLowerCase()} contribution of{' '}
 						{mainPlan.currency}
-						{mainPlan.amount / 100}.
+						{currentAmount}.
 					</div>
 				</Card.Section>
 			</Card>
+			<div css={pageTopCss}>
+				<Heading sansSerif>
+					{aboveThreshold ? 'Add extras' : 'Change your support'}
+				</Heading>
+				<p
+					css={css`
+						${textSans.medium()}
+					`}
+				>
+					Change to {supporterPlusTitle} and get exclusive supporter
+					benefits
+				</p>
+				<Card>
+					<Card.Header
+						backgroundColor={palette.brand[500]}
+						headerHeight={0}
+					>
+						<div css={cardHeaderDivCss}>
+							<h3 css={productTitleCss}>{supporterPlusTitle}</h3>
+							{!aboveThreshold && (
+								<p css={productSubtitleCss}>
+									{mainPlan.currency}
+									{threshold}/{mainPlan.interval}
+								</p>
+							)}
+						</div>
+					</Card.Header>
+					<Card.Section>
+						<SupporterPlusBenefitsSection />
+					</Card.Section>
+				</Card>
+			</div>
+			<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
+				<div css={buttonCss}>
+					<Button
+						size="small"
+						cssOverrides={css`
+							justify-content: center;
+						`}
+					>
+						{aboveThreshold
+							? 'Add extras with no extra cost'
+							: 'Change to monthly + extras'}
+					</Button>
+				</div>
+			</ThemeProvider>
+			{aboveThreshold && (
+				<p
+					css={css`
+						color: ${palette.neutral[46]};
+					`}
+				>
+					Exclusive supporter extras are unlocked for any monthly
+					support of {mainPlan.currency}
+					{monthlyThreshold} or above and any annual support of{' '}
+					{mainPlan.currency}
+					{annualThreshold} or above.
+				</p>
+			)}
 		</Stack>
 	);
 };
