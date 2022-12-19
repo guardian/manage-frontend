@@ -15,6 +15,7 @@ import { GenericErrorScreen } from '../shared/GenericErrorScreen';
 import { Main } from '../shared/Main';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
 import HelpCentreLoadingContent from './HelpCentreLoadingContent';
+import type { KnownIssueObj } from './KnownIssues';
 import { LiveChat } from './liveChat/LiveChat';
 
 initFeatureSwitchUrlParamOverride();
@@ -54,6 +55,18 @@ const HelpCentreRouter = () => {
 	useConsent();
 	useScrollToTop();
 
+	/*
+	 * EXAMPLE ISSUE:
+	 * leave as a blank array if there are no issues to render
+	[
+	  {
+		"date": "29 Aug 1997 02:40",
+		"message": "No papers today, it's judgment day"
+	  }
+	]
+	*/
+	const knownIssues: KnownIssueObj[] = [];
+
 	return (
 		<Main
 			signInStatus={signInStatus}
@@ -62,7 +75,7 @@ const HelpCentreRouter = () => {
 		>
 			<Global styles={css(`${global}`)} />
 			<Global styles={css(`${fonts}`)} />
-			<HelpCenterContentWrapper>
+			<HelpCenterContentWrapper knownIssues={knownIssues}>
 				<Suspense fallback={<HelpCentreLoadingContent />}>
 					<ErrorBoundary
 						fallback={(error) => (

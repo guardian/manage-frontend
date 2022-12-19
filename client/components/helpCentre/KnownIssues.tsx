@@ -12,26 +12,45 @@ import { gridBase, gridItemPlacement } from '../../styles/grid';
 import { allProductsDetailFetcher } from '../../utilities/productUtils';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
 
-interface Issue {
-	date: string;
+/*
+ * NOTE: The abililty to load the known issues from a json file in an S3 bucket exists.
+ * The code to do so has been commented out on the client and server in:
+ *  - client/components/helpCentre/KnownIssues.tsx
+ *  - server/routes/api.ts (the '/known-issues route')
+ *
+ *  If in the future a CMS of some kind can be constructed to enable
+ *  a non-developer to curate the issues then this code can be
+ *  reinstated (if the issues are to be stored in s3)
+ */
+
+export interface KnownIssueObj {
+	date: string; // "29 Aug 1997 02:40"
 	message: string;
-	link?: string;
-	affectedProducts?: string[];
+	link?: string; // optional href that is rendered after the message
+	affectedProducts?: string[]; // maps to productDetail.tier property
 }
 
-export const KnownIssues = () => {
-	const [issuesData, setIssuesData] = useState<Issue[]>([]);
+interface KownIssuesProp {
+	issues: KnownIssueObj[];
+}
+
+export const KnownIssues = (props: KownIssuesProp) => {
+	const [issuesData, setIssuesData] = useState<KnownIssueObj[]>([]);
 	useEffect(() => {
 		(async () => {
+			/*
+			 * client side implementation of loading known issues
+			 * externally (s3)
 			const knownIssuesResponse = await fetch('/api/known-issues/');
-			const unfilteredKnownIssues: Issue[] = knownIssuesResponse.ok
+			const knownIssues: Issue[] = knownIssuesResponse.ok
 				? await knownIssuesResponse.json()
 				: [];
-			const unfilteredDateSortedIssues = unfilteredKnownIssues.sort(
+			*/
+			const unfilteredDateSortedIssues = props.issues.sort(
 				(a, b) => Date.parse(a.date) - Date.parse(b.date),
 			);
-			const responseContainsProductIssues = unfilteredKnownIssues.some(
-				(issue: Issue) => !!issue.affectedProducts?.length,
+			const responseContainsProductIssues = props.issues.some(
+				(issue: KnownIssueObj) => !!issue.affectedProducts?.length,
 			);
 			const globalIssues = unfilteredDateSortedIssues.filter(
 				(issue) => !issue.affectedProducts,

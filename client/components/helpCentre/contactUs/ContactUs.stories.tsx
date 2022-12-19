@@ -21,7 +21,7 @@ export const Default: ComponentStory<typeof ContactUs> = () => {
 	return (
 		<>
 			<SectionHeader title="Need to contact us?" />
-			<KnownIssues />
+			<KnownIssues issues={[]} />
 			<SectionContent>
 				<ContactUs />
 			</SectionContent>
@@ -42,7 +42,7 @@ export const WithKnownIssue: ComponentStory<typeof ContactUs> = () => {
 	return (
 		<>
 			<SectionHeader title="Need to contact us?" />
-			<KnownIssues />
+			<KnownIssues issues={knownIssue} />
 			<SectionContent>
 				<ContactUs />
 			</SectionContent>
@@ -50,19 +50,15 @@ export const WithKnownIssue: ComponentStory<typeof ContactUs> = () => {
 	);
 };
 
-export const TopicSelected: ComponentStory<typeof ContactUs> = () => {
-	fetchMock.restore().get('/api/known-issues/', { body: [] });
-
-	return (
-		<>
-			<SectionHeader title="Need to contact us?" />
-			<KnownIssues />
-			<SectionContent>
-				<ContactUs />
-			</SectionContent>
-		</>
-	);
-};
+export const TopicSelected: ComponentStory<typeof ContactUs> = () => (
+	<>
+		<SectionHeader title="Need to contact us?" />
+		<KnownIssues issues={[]} />
+		<SectionContent>
+			<ContactUs />
+		</SectionContent>
+	</>
+);
 TopicSelected.parameters = {
 	reactRouter: {
 		location: '/contact-us/billing',
