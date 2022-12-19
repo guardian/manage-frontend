@@ -11,7 +11,6 @@ import {
 	buttonThemeReaderRevenueBrand,
 	SvgTickRound,
 } from '@guardian/source-react-components';
-import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { parseDate } from '../../../../shared/dates';
@@ -22,6 +21,7 @@ import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
 import { expanderButtonCss } from '../../shared/ExpanderButton';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
+import { Card } from '../shared/Card';
 import { CardDisplay } from '../shared/CardDisplay';
 import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
 import GridPicture from '../shared/images/GridPicture';
@@ -32,38 +32,6 @@ import {
 } from '../shared/NextPaymentDetails';
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
-
-const Card = (props: { children: ReactNode }) => {
-	return <div>{props.children}</div>;
-};
-
-Card.Header = (props: { children: ReactNode; backgroundColor?: string }) => {
-	const headerCss = css`
-		padding: ${space[3]}px ${space[4]}px;
-		min-height: 64px;
-		background-color: ${props.backgroundColor ?? palette.neutral[97]};
-
-		${from.tablet} {
-			min-height: 128px;
-		}
-	`;
-
-	return <header css={headerCss}>{props.children}</header>;
-};
-
-Card.Section = (props: { children: ReactNode; backgroundColor?: string }) => {
-	const sectionCss = css`
-		padding: ${space[5]}px ${space[4]}px;
-		border: 1px solid ${palette.neutral[86]};
-		border-top: none;
-		${props.backgroundColor &&
-		`
-			background-color: ${props.backgroundColor};
-		`}
-	`;
-
-	return <div css={sectionCss}>{props.children}</div>;
-};
 
 const SupporterPlusBenefitsSection = (props: {
 	nextPaymentDetails: NextPaymentDetails;
@@ -492,6 +460,13 @@ export const AccountOverviewCardV2 = ({
 									cssOverrides={css`
 										justify-content: center;
 									`}
+									onClick={() =>
+										navigate(`/switch`, {
+											state: {
+												productDetail: productDetail,
+											},
+										})
+									}
 								>
 									Change to monthly + extras
 								</Button>

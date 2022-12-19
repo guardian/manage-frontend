@@ -235,7 +235,7 @@ const calculateProductTitle =
 const calculateSupporterPlusTitle = (interval: string) =>
 	interval === 'month' ? 'monthly + extras' : 'annual + extras';
 
-const calculateMonthlyOrAnnualFromInterval = (interval: string) =>
+export const calculateMonthlyOrAnnualFromInterval = (interval: string) =>
 	interval === 'month' ? 'Monthly' : 'Annual';
 
 const FRONT_PAGE_NEWSLETTER_ID = '6009';

@@ -166,3 +166,60 @@ if (featureSwitches.cancellationProductSwitch) {
 		});
 	});
 }
+
+describe('product switching', () => {
+	beforeEach(() => {
+		signInAndAcceptCookies();
+
+		cy.setCookie('GU_mvt_id', '999999');
+
+		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
+			statusCode: 200,
+			body: [contribution],
+		});
+
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: [contribution],
+		});
+
+		cy.intercept('GET', '/api/cancelled/', {
+			statusCode: 200,
+			body: [],
+		}).as('cancelled');
+	});
+
+	it('goes to product switching page when clicking CTA button', () => {
+		cy.visit('/?withFeature=accountOverviewNewLayout');
+
+		cy.window().then((window) => {
+			// @ts-ignore
+			window.guardian.identityDetails = {
+				signInStatus: 'signedInRecently',
+				userId: '200006712',
+				displayName: 'user',
+				email: 'example@example.com',
+			};
+		});
+
+		cy.findByText('Change to monthly + extras').click();
+
+		cy.findByText('Your current support');
+	});
+
+	it('goes to product switching page when hitting URL directly', () => {
+		cy.visit('/switch');
+
+		cy.window().then((window) => {
+			// @ts-ignore
+			window.guardian.identityDetails = {
+				signInStatus: 'signedInRecently',
+				userId: '200006712',
+				displayName: 'user',
+				email: 'example@example.com',
+			};
+		});
+
+		cy.findByText('Your current support');
+	});
+});
