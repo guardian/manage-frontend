@@ -44,8 +44,7 @@ const getThrasher =
 				(option) =>
 					!!option.subscriptions.find(
 						(sub) =>
-							sub.isActive &&
-							sub.name.indexOf('Contribution') !== -1,
+							sub.isActive && sub.name.includes('Contribution'),
 					),
 			)
 				? []

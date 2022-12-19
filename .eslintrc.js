@@ -39,7 +39,6 @@ module.exports = {
 		'@typescript-eslint/no-unsafe-call': ['off'],
 		'@typescript-eslint/no-unsafe-member-access': ['off'],
 		'@typescript-eslint/no-unsafe-return': ['off'],
-		'@typescript-eslint/prefer-includes': ['off'],
 		'@typescript-eslint/prefer-nullish-coalescing': ['off'],
 		'@typescript-eslint/prefer-optional-chain': ['off'],
 		'@typescript-eslint/prefer-reduce-type-parameter': ['off'],
