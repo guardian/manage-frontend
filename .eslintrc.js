@@ -32,7 +32,6 @@ module.exports = {
 		'@typescript-eslint/no-floating-promises': ['off'],
 		'@typescript-eslint/no-misused-promises': ['off'],
 		'@typescript-eslint/no-unnecessary-condition': ['off'],
-		'@typescript-eslint/no-unnecessary-type-arguments': ['off'],
 		'@typescript-eslint/no-unnecessary-type-assertion': ['off'],
 		'@typescript-eslint/no-unsafe-argument': ['off'],
 		'@typescript-eslint/no-unsafe-assignment': ['off'],

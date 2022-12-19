@@ -42,9 +42,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
 		return <Navigate to="../" />;
 	}
 
-	const onManageClicked = (
-		event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-	) => {
+	const onManageClicked = (event: React.MouseEvent<HTMLAnchorElement>) => {
 		event.preventDefault();
 		trackEventInOphanOnly({
 			eventCategory: 'cancellation_flow_payment_issue',
@@ -97,9 +95,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
 		});
 	};
 
-	const onReturnClicked = (
-		event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-	) => {
+	const onReturnClicked = (event: React.MouseEvent<HTMLAnchorElement>) => {
 		event.preventDefault();
 		navigate('/');
 	};
