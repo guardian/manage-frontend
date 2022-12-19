@@ -16,7 +16,7 @@ export default {
 } as ComponentMeta<typeof PaymentDetailUpdateContainer>;
 
 const setSiteKey = () => {
-	// @ts-ignore set the recaptcha key in the window for the recaptcha to render
+	// @ts-expect-error set the recaptcha key in the window for the recaptcha to render
 	window.guardian = {
 		recaptchaPublicKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
 	};

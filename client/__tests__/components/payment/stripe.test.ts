@@ -4,7 +4,7 @@ import {
 } from '../../../fixtures/subscription';
 import { getStripeKey } from '../../../utilities/stripe';
 
-// @ts-ignore
+// @ts-expect-error
 window.guardian = {
 	stripeKeyAustralia: {
 		uat: 'uatKeyAustralia',

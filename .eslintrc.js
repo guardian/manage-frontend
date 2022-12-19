@@ -41,7 +41,6 @@ module.exports = {
 		'@typescript-eslint/prefer-nullish-coalescing': ['off'],
 		'@typescript-eslint/prefer-optional-chain': ['off'],
 		'@typescript-eslint/prefer-reduce-type-parameter': ['off'],
-		'@typescript-eslint/prefer-ts-expect-error': ['off'],
 		'@typescript-eslint/require-await': ['off'],
 		'@typescript-eslint/restrict-template-expressions': ['off'],
 		'@typescript-eslint/unbound-method': ['off'],
