@@ -253,10 +253,14 @@ export const AccountOverviewCardV2 = ({
 						{nextPaymentDetails.paymentInterval} support and extra
 						benefits.
 					</p>
-					<SupporterPlusBenefitsSection
+					<div
+						css={css`
+							margin: ${space[5]}px 0 ${space[4]}px 0;
+						`}
 						hidden={!showBenefits}
-						withMargin
-					/>
+					>
+						<SupporterPlusBenefitsSection />
+					</div>
 					<button
 						css={[
 							expanderButtonCss()(showBenefits),

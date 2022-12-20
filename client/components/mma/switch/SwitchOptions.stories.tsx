@@ -26,8 +26,7 @@ export const BelowThreshold: ComponentStory<typeof SwitchOptions> = () => (
 	<SwitchOptions />
 );
 
-// @ts-ignore: this method is not in our current version of TypeScript
-const contributionBelowThreshold = structuredClone(contribution);
+const contributionBelowThreshold = JSON.parse(JSON.stringify(contribution));
 const plan = contributionBelowThreshold.subscription
 	.currentPlans[0] as PaidSubscriptionPlan;
 plan.amount = 300;

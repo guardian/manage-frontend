@@ -2,14 +2,11 @@ import { css } from '@emotion/react';
 import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { SvgTickRound } from '@guardian/source-react-components';
 
-export const SupporterPlusBenefitsSection = (props: {
-	hidden?: boolean;
-	withMargin?: boolean;
-}) => {
+export const SupporterPlusBenefitsSection = () => {
 	const benefitsCss = css`
 		${textSans.medium()};
 		list-style: none;
-		margin: ${props.withMargin ? `${space[5]}px 0 ${space[4]}px -4px` : 0};
+		margin: 0 0 0 -4px;
 		padding: 0;
 
 		li + li {
@@ -35,7 +32,7 @@ export const SupporterPlusBenefitsSection = (props: {
 	`;
 
 	return (
-		<ul id="benefits" css={benefitsCss} hidden={props.hidden}>
+		<ul id="benefits" css={benefitsCss}>
 			<li>
 				<SvgTickRound size="small" />
 				<span>
