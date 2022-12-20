@@ -25,7 +25,7 @@ export const voucherCancellationFlowStart = ({
 	}
 
 	const isEligibleForFreeDigipackAccess =
-		mainPlan.name?.indexOf('plus Digi') === -1;
+		mainPlan.name?.includes('plus Digi');
 
 	return (
 		<Stack space={4}>

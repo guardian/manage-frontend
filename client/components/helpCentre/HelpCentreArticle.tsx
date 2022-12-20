@@ -168,7 +168,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
 
 	// This is to appease React's "Lists need a unique key" error
 	let keyCounter = 0;
-	const getKey = () => props.articleCode + keyCounter++;
+	const getKey = () => `${props.articleCode}${keyCounter++}`;
 
 	const parseBody = (body: BaseNode[] | BaseNode): React.ReactNode => {
 		if (Array.isArray(body)) {

@@ -80,9 +80,7 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 		});
 	};
 
-	const onReturnClicked = (
-		event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-	) => {
+	const onReturnClicked = (event: React.MouseEvent<HTMLAnchorElement>) => {
 		event.preventDefault();
 		navigate('/');
 	};

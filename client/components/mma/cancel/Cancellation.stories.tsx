@@ -71,7 +71,7 @@ Review.parameters = {
 export const Confirmation: ComponentStory<
 	typeof CancellationContainer
 > = () => {
-	// @ts-ignore set identity details email in the window
+	// @ts-expect-error set identity details email in the window
 	window.guardian = { identityDetails: { email: 'test' } };
 
 	return getCancellationSummary(

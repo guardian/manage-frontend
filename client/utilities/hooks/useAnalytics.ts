@@ -85,7 +85,7 @@ const useAnalytics = () => {
 						consentState,
 					);
 
-					// @ts-ignore: Suppressing "element implicitly has an 'any' type because index expression is not of type 'number'."
+					// @ts-expect-error: Suppressing "element implicitly has an 'any' type because index expression is not of type 'number'."
 					window[`ga-disable-${GA_UA}`] = !gaConsentState;
 
 					if (gaConsentState && !gaIsInitialised) {

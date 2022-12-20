@@ -45,9 +45,7 @@ const SavedCancellation = () => {
 		(reason) => reason.reasonId === selectedReasonId,
 	) as CancellationReason;
 
-	const onReturnClicked = (
-		event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-	) => {
+	const onReturnClicked = (event: React.MouseEvent<HTMLAnchorElement>) => {
 		event.preventDefault();
 		navigate('/');
 	};

@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import { errorMessageCss } from './sharedStyles';
 
 export type GenericErrorMessageRef = HTMLDivElement;
-export const GenericErrorMessage = forwardRef<GenericErrorMessageRef, {}>(
+export const GenericErrorMessage = forwardRef<GenericErrorMessageRef>(
 	(_, ref) => {
 		return (
 			<div ref={ref} css={errorMessageCss}>

@@ -1,7 +1,6 @@
 // @ts-nocheck
 /* eslint jest/no-standalone-expect: "off", jest/no-done-callback: "off" */
 import { fireEvent, render, screen } from '@testing-library/react';
-import each from 'jest-each';
 import { ContributionUpdateAmount } from '../../../components/mma/accountoverview/ContributionUpdateAmount';
 
 const mainPlan = (interval) => ({
@@ -21,17 +20,16 @@ const productType = {
 	urlPart: 'contributions',
 };
 
-each`
-  interval    | expectedMinAmount
-  ${'month'}  | ${2}
-  ${'year'}   | ${10}
-`.test(
-	'renders validation error if $interval.interval amount below $expectedMinAmount',
-	(params, done) => {
+it.each([
+	['month', 2],
+	['year', 10],
+])(
+	'renders validation error if %s amount below %i',
+	(interval, expectedMinAmount) => {
 		const { container } = render(
 			<ContributionUpdateAmount
 				subscriptionId="A-123"
-				mainPlan={mainPlan(params.interval)}
+				mainPlan={mainPlan(interval)}
 				amountUpdateStateChange={jest.fn()}
 				nextPaymentDate="2050-10-29"
 				productType={productType}
@@ -44,7 +42,7 @@ each`
 
 		const otherInputElem = container.querySelector('input[type="number"]');
 		fireEvent.change(otherInputElem, {
-			target: { value: params.expectedMinAmount - 1 },
+			target: { value: expectedMinAmount - 1 },
 		});
 
 		// click on the change amount button again and then check to make sure that the validation error message shows up
@@ -53,29 +51,24 @@ each`
 		// assert that the minimum amount validation error message is shown
 		expect(
 			screen.queryByText(
-				`There is a minimum ${
-					params.interval
-				}ly contribution amount of £${params.expectedMinAmount.toFixed(
+				`There is a minimum ${interval}ly contribution amount of £${expectedMinAmount.toFixed(
 					2,
 				)} GBP`,
 			),
 		).toBeTruthy();
-
-		done();
 	},
 );
 
-each`
-  interval    | expectedMaxAmount
-  ${'month'}  | ${166}
-  ${'year'}   | ${2000}
-`.test(
-	'renders validation error if $interval.interval amount above $expectedMaxAmount',
-	(params, done) => {
+it.each([
+	['month', 166],
+	['year', 2000],
+])(
+	'renders validation error if %s amount above %i',
+	(interval, expectedMaxAmount) => {
 		const { container } = render(
 			<ContributionUpdateAmount
 				subscriptionId="A-123"
-				mainPlan={mainPlan(params.interval)}
+				mainPlan={mainPlan(interval)}
 				amountUpdateStateChange={jest.fn()}
 				nextPaymentDate="2050-10-29"
 				productType={productType}
@@ -88,7 +81,7 @@ each`
 
 		const otherInputElem = container.querySelector('input[type="number"]');
 		fireEvent.change(otherInputElem, {
-			target: { value: params.expectedMaxAmount + 1 },
+			target: { value: expectedMaxAmount + 1 },
 		});
 
 		// click on the change amount button again and then check to make sure that the validation error message shows up
@@ -97,19 +90,15 @@ each`
 		// assert that the maximum amount validation error message is shown
 		expect(
 			screen.queryByText(
-				`There is a maximum ${
-					params.interval
-				}ly contribution amount of £${params.expectedMaxAmount.toFixed(
+				`There is a maximum ${interval}ly contribution amount of £${expectedMaxAmount.toFixed(
 					2,
 				)} GBP`,
 			),
 		).toBeTruthy();
-
-		done();
 	},
 );
 
-test('renders validation error if blank input is provided', (done) => {
+it('renders validation error if blank input is provided', () => {
 	const { container } = render(
 		<ContributionUpdateAmount
 			subscriptionId="A-123"
@@ -138,11 +127,9 @@ test('renders validation error if blank input is provided', (done) => {
 			'There is a problem with the amount you have selected, please make sure it is a valid amount',
 		),
 	).toBeTruthy();
-
-	done();
 });
 
-test('renders validation error if a string is attempted to be input', (done) => {
+it('renders validation error if a string is attempted to be input', () => {
 	const { container } = render(
 		<ContributionUpdateAmount
 			subscriptionId="A-123"
@@ -171,11 +158,9 @@ test('renders validation error if a string is attempted to be input', (done) => 
 			'There is a problem with the amount you have selected, please make sure it is a valid amount',
 		),
 	).toBeTruthy();
-
-	done();
 });
 
-test('input correct value', (done) => {
+it('updates amount is valid value is input', () => {
 	// mock the console error for this test case to mute "Cannot update a component (`Unknown`) while rendering a different component" error
 	const mockedError = () => true;
 	// tslint:disable-next-line
@@ -203,6 +188,4 @@ test('input correct value', (done) => {
 	// click on the change amount button again and then check to make sure that the validation error message shows up
 	fireEvent.click(screen.queryByText('Change amount'));
 	expect(screen.queryByText('Updating...')).toBeTruthy();
-
-	done();
 });

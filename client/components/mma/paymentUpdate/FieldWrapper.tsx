@@ -44,7 +44,7 @@ export class FieldWrapper extends React.Component<
 		const hydratedChildren = React.Children.map(
 			this.props.children,
 			(child) => {
-				return React.cloneElement(child as React.ReactElement<any>, {
+				return React.cloneElement(child as React.ReactElement, {
 					onChange: this.validateField(this.props.onChange),
 					onFocus: this.toggleFocus,
 					onBlur: this.toggleFocus,

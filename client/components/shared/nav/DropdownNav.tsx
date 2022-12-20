@@ -47,7 +47,7 @@ const dropdownNavCss = (showMenu: boolean, isHelpCentre: boolean) =>
 				height: 0,
 				position: 'absolute',
 				top: `-${space[2]}px`,
-				right: `${isHelpCentre ? '85px' : space[3] + 'px'}`,
+				right: `${isHelpCentre ? '85' : space[3]}px`,
 				borderLeft: `${space[2]}px solid transparent`,
 				borderRight: `${space[2]}px solid transparent`,
 				borderBottom: `${space[2]}px solid ${neutral['100']}`,
