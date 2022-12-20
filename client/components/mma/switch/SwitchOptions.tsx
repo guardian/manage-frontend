@@ -60,10 +60,14 @@ const buttonContainerCss = css`
 	${until.tablet} {
 		display: flex;
 		flex-direction: column;
+		position: sticky;
+		bottom: 0;
 		margin-left: -${space[3]}px;
 		margin-right: -${space[3]}px;
 		padding-left: ${space[3]}px;
 		padding-right: ${space[3]}px;
+		background-color: ${palette.neutral[100]};
+		box-shadow: 0px -1px 16px rgba(0, 0, 0, 0.1);
 	}
 `;
 
