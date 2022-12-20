@@ -9,7 +9,6 @@ import {
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
-	SvgTickRound,
 } from '@guardian/source-react-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -25,105 +24,13 @@ import { Card } from '../shared/Card';
 import { CardDisplay } from '../shared/CardDisplay';
 import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
 import GridPicture from '../shared/images/GridPicture';
-import type { NextPaymentDetails } from '../shared/NextPaymentDetails';
 import {
 	getNextPaymentDetails,
 	NewPaymentPriceAlert,
 } from '../shared/NextPaymentDetails';
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
-
-const SupporterPlusBenefitsSection = (props: {
-	nextPaymentDetails: NextPaymentDetails;
-}) => {
-	const [showBenefits, setShowBenefits] = useState<boolean>(false);
-
-	const benefitsCss = css`
-		${textSans.medium()};
-		list-style: none;
-		margin: ${space[5]}px 0 ${space[4]}px -4px;
-		padding: 0;
-
-		li + li {
-			margin-top: ${space[2]}px;
-		}
-
-		li {
-			display: flex;
-			align-items: flex-start;
-		}
-
-		svg {
-			flex-shrink: 0;
-			margin-right: ${space[2]}px;
-			fill: ${palette.brand[500]};
-		}
-	`;
-
-	const benefitsButtonCss = css`
-		${textSans.small()}
-		margin-top: ${space[1]}px;
-		padding: 0;
-		color: ${palette.brand[500]};
-		border-bottom: 1px solid ${palette.brand[500]};
-	`;
-
-	return (
-		<Card.Section backgroundColor="#edf5fA">
-			<p
-				css={css`
-					${textSans.medium()}
-					margin: 0;
-					max-width: 35ch;
-				`}
-			>
-				You’re supporting the Guardian with a{' '}
-				{props.nextPaymentDetails.paymentValue} per{' '}
-				{props.nextPaymentDetails.paymentInterval} support and extra
-				benefits.
-			</p>
-			<ul id="benefits" css={benefitsCss} hidden={!showBenefits}>
-				<li>
-					<SvgTickRound size="small" />
-					<span>
-						<strong>A regular supporter newsletter.</strong> Get
-						exclusive insight from our newsroom
-					</span>
-				</li>
-				<li>
-					<SvgTickRound size="small" />
-					<span>
-						<strong>Uninterrupted reading.</strong> See far fewer
-						asks for support
-					</span>
-				</li>
-				<li>
-					<SvgTickRound size="small" />
-					<span>
-						<strong>Full access to our news app.</strong> Read our
-						reporting on the go
-					</span>
-				</li>
-				<li>
-					<SvgTickRound size="small" />
-					<span>
-						<strong>Ad-free reading.</strong> Avoid ads on all your
-						devices
-					</span>
-				</li>
-			</ul>
-			<button
-				css={[expanderButtonCss()(showBenefits), benefitsButtonCss]}
-				type="button"
-				aria-expanded={showBenefits}
-				aria-controls="benefits"
-				onClick={() => setShowBenefits(!showBenefits)}
-			>
-				{showBenefits ? 'hide' : 'view'} benefits
-			</button>
-		</Card.Section>
-	);
-};
+import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
 
 interface ProductCardConfiguration {
 	headerColor: string;
@@ -176,6 +83,7 @@ export const AccountOverviewCardV2 = ({
 	isEligibleToSwitch: boolean;
 }) => {
 	const navigate = useNavigate();
+	const [showBenefits, setShowBenefits] = useState<boolean>(false);
 
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
@@ -285,6 +193,14 @@ export const AccountOverviewCardV2 = ({
 		}
 	`;
 
+	const benefitsButtonCss = css`
+		${textSans.small()}
+		margin-top: ${space[1]}px;
+		padding: 0;
+		color: ${palette.brand[500]};
+		border-bottom: 1px solid ${palette.brand[500]};
+	`;
+
 	return (
 		<Card>
 			<Card.Header backgroundColor={cardConfig.headerColor}>
@@ -322,10 +238,42 @@ export const AccountOverviewCardV2 = ({
 					)}
 				</div>
 			</Card.Header>
+
 			{cardConfig.showBenefitsSection && nextPaymentDetails && (
-				<SupporterPlusBenefitsSection
-					nextPaymentDetails={nextPaymentDetails}
-				/>
+				<Card.Section backgroundColor="#edf5fA">
+					<p
+						css={css`
+							${textSans.medium()}
+							margin: 0;
+							max-width: 35ch;
+						`}
+					>
+						You’re supporting the Guardian with a{' '}
+						{nextPaymentDetails.paymentValue} per{' '}
+						{nextPaymentDetails.paymentInterval} support and extra
+						benefits.
+					</p>
+					<div
+						css={css`
+							margin: ${space[5]}px 0 ${space[4]}px 0;
+						`}
+						hidden={!showBenefits}
+					>
+						<SupporterPlusBenefitsSection />
+					</div>
+					<button
+						css={[
+							expanderButtonCss()(showBenefits),
+							benefitsButtonCss,
+						]}
+						type="button"
+						aria-expanded={showBenefits}
+						aria-controls="benefits"
+						onClick={() => setShowBenefits(!showBenefits)}
+					>
+						{showBenefits ? 'hide' : 'view'} benefits
+					</button>
+				</Card.Section>
 			)}
 			<Card.Section>
 				<div css={productDetailLayoutCss}>
