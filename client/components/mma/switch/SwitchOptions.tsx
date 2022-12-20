@@ -11,7 +11,7 @@ import {
 	Button,
 	buttonThemeReaderRevenueBrand,
 } from '@guardian/source-react-components';
-import { useContext } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromInterval } from '../../../../shared/productTypes';
@@ -66,6 +66,11 @@ const buttonContainerCss = css`
 		margin-right: -${space[3]}px;
 		padding-left: ${space[3]}px;
 		padding-right: ${space[3]}px;
+	}
+`;
+
+const buttonStuckCss = css`
+	${until.tablet} {
 		background-color: ${palette.neutral[100]};
 		box-shadow: 0px -1px 16px rgba(0, 0, 0, 0.1);
 	}
@@ -92,6 +97,28 @@ const SwitchOptions = () => {
 		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
 	const aboveThreshold = mainPlan.amount >= threshold * 100;
 	const currentAmount = mainPlan.amount / 100;
+
+	const buttonContainerRef = useRef(null);
+	const [buttonIsStuck, setButtonIsStuck] = useState(false);
+
+	// Use IntersectionObserver to detect when button is 'stuck' at the bottom
+	// of the viewport. The bottom of the observable area is set to -1px so that
+	// when the button is stuck it is not considered to be fully visible. The
+	// top edge is similarly extended upwards so the button is considered fully
+	// visible when scrolling off the top of the screen.
+
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				setButtonIsStuck(entry.intersectionRatio < 1);
+			},
+			{ threshold: [1], rootMargin: '100px 0px -1px 0px' },
+		);
+
+		if (buttonContainerRef.current) {
+			observer.observe(buttonContainerRef.current);
+		}
+	}, [buttonContainerRef]);
 
 	return (
 		<>
@@ -168,7 +195,10 @@ const SwitchOptions = () => {
 				</Card>
 			</section>
 
-			<section css={buttonContainerCss}>
+			<section
+				css={[buttonContainerCss, buttonIsStuck && buttonStuckCss]}
+				ref={buttonContainerRef}
+			>
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button
 						size="small"
