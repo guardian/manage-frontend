@@ -10,7 +10,6 @@ import {
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
-	Stack,
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
@@ -23,7 +22,7 @@ import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
 
 //TODO: this is copied from AccountOverviewV2, share it
-const pageTopCss = css`
+const sectionSpacing = css`
 	margin-top: ${space[6]}px;
 	${from.tablet} {
 		margin-top: ${space[9]}px;
@@ -54,11 +53,17 @@ const productSubtitleCss = css`
 	max-width: 20ch;
 `;
 
-const buttonCss = css`
-	display: flex;
+const buttonContainerCss = css`
+	margin-top: ${space[1]}px;
+	padding: ${space[5]}px 0;
 
 	${until.tablet} {
-		justify-content: center;
+		display: flex;
+		flex-direction: column;
+		margin-left: -${space[3]}px;
+		margin-right: -${space[3]}px;
+		padding-left: ${space[3]}px;
+		padding-right: ${space[3]}px;
 	}
 `;
 
@@ -85,41 +90,54 @@ const SwitchOptions = () => {
 	const currentAmount = mainPlan.amount / 100;
 
 	return (
-		<Stack space={3} cssOverrides={pageTopCss}>
-			<Heading sansSerif>Your current support</Heading>
-			<Card>
-				<Card.Header
-					backgroundColor={palette.brand[600]}
-					headerHeight={0}
+		<>
+			<section css={sectionSpacing}>
+				<Heading
+					sansSerif
+					cssOverrides={css`
+						margin-bottom: ${space[3]}px;
+					`}
 				>
-					<div css={cardHeaderDivCss}>
-						<h3 css={productTitleCss}>{monthlyOrAnnual} support</h3>
-						<p css={productSubtitleCss}>
-							{mainPlan.currency}
-							{currentAmount}/{mainPlan.interval}
-						</p>
-					</div>
-				</Card.Header>
-				<Card.Section>
-					<div
-						css={css`
-							${textSans.medium()}
-						`}
+					Your current support
+				</Heading>
+				<Card>
+					<Card.Header
+						backgroundColor={palette.brand[600]}
+						headerHeight={0}
 					>
-						You're currently supporting the Guardian with a{' '}
-						{monthlyOrAnnual.toLowerCase()} contribution of{' '}
-						{mainPlan.currency}
-						{currentAmount}.
-					</div>
-				</Card.Section>
-			</Card>
-			<div css={pageTopCss}>
+						<div css={cardHeaderDivCss}>
+							<h3 css={productTitleCss}>
+								{monthlyOrAnnual} support
+							</h3>
+							<p css={productSubtitleCss}>
+								{mainPlan.currency}
+								{currentAmount}/{mainPlan.interval}
+							</p>
+						</div>
+					</Card.Header>
+					<Card.Section>
+						<div
+							css={css`
+								${textSans.medium()}
+							`}
+						>
+							You're currently supporting the Guardian with a{' '}
+							{monthlyOrAnnual.toLowerCase()} contribution of{' '}
+							{mainPlan.currency}
+							{currentAmount}.
+						</div>
+					</Card.Section>
+				</Card>
+			</section>
+
+			<section css={sectionSpacing}>
 				<Heading sansSerif>
 					{aboveThreshold ? 'Add extras' : 'Change your support'}
 				</Heading>
 				<p
 					css={css`
 						${textSans.medium()}
+						margin-bottom: ${space[3]}px;
 					`}
 				>
 					Change to {supporterPlusTitle} and get exclusive supporter
@@ -144,9 +162,10 @@ const SwitchOptions = () => {
 						<SupporterPlusBenefitsSection />
 					</Card.Section>
 				</Card>
-			</div>
-			<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-				<div css={buttonCss}>
+			</section>
+
+			<section css={buttonContainerCss}>
+				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button
 						size="small"
 						cssOverrides={css`
@@ -157,8 +176,9 @@ const SwitchOptions = () => {
 							? 'Add extras with no extra cost'
 							: 'Change to monthly + extras'}
 					</Button>
-				</div>
-			</ThemeProvider>
+				</ThemeProvider>
+			</section>
+
 			{aboveThreshold && (
 				<p
 					css={css`
@@ -172,7 +192,7 @@ const SwitchOptions = () => {
 					{annualThreshold} or above.
 				</p>
 			)}
-		</Stack>
+		</>
 	);
 };
 

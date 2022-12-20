@@ -22,14 +22,14 @@ export const Heading = (props: HeadingProps) => {
 
 	const headingStyles = css`
 		${props.sansSerif
-			? textSans.xxlarge({ fontWeight: 'bold' })
+			? textSans.large({ fontWeight: 'bold' })
 			: headline.xsmall({ fontWeight: 'bold' })};
 
 		margin-top: 0;
 		margin-bottom: 0;
 		${from.tablet} {
 			${props.sansSerif
-				? textSans.xxlarge({ fontWeight: 'bold' })
+				? textSans.xlarge({ fontWeight: 'bold' })
 				: headline.small({ fontWeight: 'bold' })};
 		} ;
 	`;
