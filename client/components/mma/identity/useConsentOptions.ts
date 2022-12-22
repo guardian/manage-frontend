@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as Sentry from '@sentry/browser';
 import { useReducer } from 'react';
 import { trackEvent } from '../../../utilities/analytics';
