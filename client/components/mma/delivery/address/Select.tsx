@@ -9,7 +9,7 @@ import {
 import type * as React from 'react';
 import { ErrorIcon } from '../../shared/assets/ErrorIcon';
 
-type setStateFunc = (value: string) => void;
+type SetStateFunc = (value: string) => void;
 
 interface SelectOption {
 	name: string;
@@ -22,7 +22,7 @@ interface SelectProps {
 	width: number;
 	value: string;
 	additionalCSS?: SerializedStyles;
-	changeSetState?: setStateFunc;
+	changeSetState?: SetStateFunc;
 	inErrorState?: boolean;
 	errorMessage?: string;
 }

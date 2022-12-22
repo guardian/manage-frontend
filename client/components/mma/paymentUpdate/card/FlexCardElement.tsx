@@ -41,7 +41,7 @@ const numberCornerHint = () => (
 			display: flex;
 		`}
 	>
-		{getLogos(PaymentMethod.card)}
+		{getLogos(PaymentMethod.Card)}
 	</div>
 );
 /*TODO find some way to lock these based on this.props.disabled*/

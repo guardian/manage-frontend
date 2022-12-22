@@ -10,7 +10,7 @@ import { useEffect, useRef } from 'react';
 import type * as React from 'react';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
 
-type setStateFunc = (value: string) => void;
+type SetStateFunc = (value: string) => void;
 
 interface InputProps {
 	type?: string;
@@ -23,7 +23,7 @@ interface InputProps {
 	optional?: boolean;
 	name?: string;
 	id?: string;
-	changeSetState?: setStateFunc;
+	changeSetState?: SetStateFunc;
 	onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
 	setFocus?: boolean;
 	inErrorState?: boolean;

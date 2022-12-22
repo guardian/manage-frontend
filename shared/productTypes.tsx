@@ -240,13 +240,13 @@ export const calculateMonthlyOrAnnualFromBillingPeriod = (
 ) => (billingPeriod === 'month' ? 'Monthly' : 'Annual');
 
 const FRONT_PAGE_NEWSLETTER_ID = '6009';
-enum SOFT_OPT_IN_IDS {
-	support_onboarding = 'your_support_onboarding',
-	similar_products = 'similar_guardian_products',
-	supporter_newsletter = 'supporter_newsletter',
-	subscriber_preview = 'subscriber_preview',
-	digi_subscriber_preview = 'digital_subscriber_preview',
-	guardian_weekly_newsletter = 'guardian_weekly_newsletter',
+enum SoftOptInIDs {
+	SupportOnboarding = 'your_support_onboarding',
+	SimilarProducts = 'similar_guardian_products',
+	SupporterNewsletter = 'supporter_newsletter',
+	SubscriberPreview = 'subscriber_preview',
+	DigitalSubscriberPreview = 'digital_subscriber_preview',
+	GuardianWeeklyNewsletter = 'guardian_weekly_newsletter',
 }
 
 export type ProductTypeKeys =
@@ -304,9 +304,9 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		tierLabel: 'Membership tier',
 		shouldShowJoinDateNotStartDate: true,
 		softOptInIDs: [
-			SOFT_OPT_IN_IDS.support_onboarding,
-			SOFT_OPT_IN_IDS.similar_products,
-			SOFT_OPT_IN_IDS.supporter_newsletter,
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SimilarProducts,
+			SoftOptInIDs.SupporterNewsletter,
 		],
 	},
 	contributions: {
@@ -329,9 +329,9 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		noProductSupportUrlSuffix: '/contribute',
 		updateAmountMdaEndpoint: 'contribution-update-amount',
 		softOptInIDs: [
-			SOFT_OPT_IN_IDS.support_onboarding,
-			SOFT_OPT_IN_IDS.similar_products,
-			SOFT_OPT_IN_IDS.supporter_newsletter,
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SimilarProducts,
+			SoftOptInIDs.SupporterNewsletter,
 		],
 		cancellation: {
 			linkOnProductPage: true,
@@ -394,10 +394,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			enableDeliveryInstructionsUpdate: true,
 		},
 		softOptInIDs: [
-			SOFT_OPT_IN_IDS.support_onboarding,
-			SOFT_OPT_IN_IDS.subscriber_preview,
-			SOFT_OPT_IN_IDS.similar_products,
-			SOFT_OPT_IN_IDS.supporter_newsletter,
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SubscriberPreview,
+			SoftOptInIDs.SimilarProducts,
+			SoftOptInIDs.SupporterNewsletter,
 		],
 	},
 	homedelivery: {
@@ -411,10 +411,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
 		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
 		softOptInIDs: [
-			SOFT_OPT_IN_IDS.support_onboarding,
-			SOFT_OPT_IN_IDS.subscriber_preview,
-			SOFT_OPT_IN_IDS.similar_products,
-			SOFT_OPT_IN_IDS.supporter_newsletter,
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SubscriberPreview,
+			SoftOptInIDs.SimilarProducts,
+			SoftOptInIDs.SupporterNewsletter,
 		],
 		holidayStops: {
 			issueKeyword: 'paper',
@@ -451,10 +451,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
 		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
 		softOptInIDs: [
-			SOFT_OPT_IN_IDS.support_onboarding,
-			SOFT_OPT_IN_IDS.subscriber_preview,
-			SOFT_OPT_IN_IDS.similar_products,
-			SOFT_OPT_IN_IDS.supporter_newsletter,
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SubscriberPreview,
+			SoftOptInIDs.SimilarProducts,
+			SoftOptInIDs.SupporterNewsletter,
 		],
 		holidayStops: {
 			issueKeyword: 'voucher',
@@ -501,10 +501,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
 		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
 		softOptInIDs: [
-			SOFT_OPT_IN_IDS.support_onboarding,
-			SOFT_OPT_IN_IDS.subscriber_preview,
-			SOFT_OPT_IN_IDS.similar_products,
-			SOFT_OPT_IN_IDS.supporter_newsletter,
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SubscriberPreview,
+			SoftOptInIDs.SimilarProducts,
+			SoftOptInIDs.SupporterNewsletter,
 		],
 		holidayStops: {
 			issueKeyword: 'issue',
@@ -526,9 +526,9 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		allProductsProductTypeFilterString: 'Weekly',
 		urlPart: 'guardianweekly',
 		softOptInIDs: [
-			SOFT_OPT_IN_IDS.support_onboarding,
-			SOFT_OPT_IN_IDS.guardian_weekly_newsletter,
-			SOFT_OPT_IN_IDS.similar_products,
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.GuardianWeeklyNewsletter,
+			SoftOptInIDs.SimilarProducts,
 		],
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION', // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
 		renewalMetadata: {
@@ -580,10 +580,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		getOphanProductType: () => 'DIGITAL_SUBSCRIPTION',
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
-			SOFT_OPT_IN_IDS.support_onboarding,
-			SOFT_OPT_IN_IDS.digi_subscriber_preview,
-			SOFT_OPT_IN_IDS.similar_products,
-			SOFT_OPT_IN_IDS.supporter_newsletter,
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.DigitalSubscriberPreview,
+			SoftOptInIDs.SimilarProducts,
+			SoftOptInIDs.SupporterNewsletter,
 		],
 		cancellation: {
 			linkOnProductPage: true,
@@ -626,10 +626,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		getOphanProductType: () => 'SUPPORTER_PLUS',
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
-			SOFT_OPT_IN_IDS.support_onboarding,
-			SOFT_OPT_IN_IDS.similar_products,
-			SOFT_OPT_IN_IDS.supporter_newsletter,
-			SOFT_OPT_IN_IDS.digi_subscriber_preview,
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SimilarProducts,
+			SoftOptInIDs.SupporterNewsletter,
+			SoftOptInIDs.DigitalSubscriberPreview,
 		],
 		cancellation: {
 			alternateSummaryMainPara:
@@ -667,10 +667,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		getOphanProductType: () => 'GUARDIAN_PATRON', //TODO: This value doesn't exist in Ophan yet
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
-			SOFT_OPT_IN_IDS.support_onboarding,
-			SOFT_OPT_IN_IDS.digi_subscriber_preview,
-			SOFT_OPT_IN_IDS.similar_products,
-			SOFT_OPT_IN_IDS.supporter_newsletter,
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.DigitalSubscriberPreview,
+			SoftOptInIDs.SimilarProducts,
+			SoftOptInIDs.SupporterNewsletter,
 		],
 	},
 };

@@ -52,22 +52,22 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 				border: 1px solid ${neutral['86']};
 				margin: 0;
 				padding: ${space[3]}px;
-				${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_2 &&
+				${props.pageStatus === PageStatus.ReportIssueStep2 &&
 				`padding-left: ${space[3] * 2 + 40}px;`}
 				width: 100%;
 				${props.listIndex > 0 && 'border-top: none;'}
 				position: relative;
-				opacity: ${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_1
+				opacity: ${props.pageStatus === PageStatus.ReportIssueStep1
 					? '0.5'
 					: '1'};
 				${from.tablet} {
 					padding: ${space[5]}px;
-					${props.pageStatus === PageStatus.REPORT_ISSUE_STEP_2 &&
+					${props.pageStatus === PageStatus.ReportIssueStep2 &&
 					`padding-left: ${space[5] * 2 + 40}px;`}
 				}
 			`}
 		>
-			{props.pageStatus === PageStatus.REPORT_ISSUE_STEP_2 && (
+			{props.pageStatus === PageStatus.ReportIssueStep2 && (
 				<div
 					css={css`
 						position: absolute;
