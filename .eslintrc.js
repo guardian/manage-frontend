@@ -28,7 +28,6 @@ module.exports = {
 		// Overrides for rules from `@guardian/eslint-config-typescript`.
 		// There are a number of these due to applying the config to an existing
 		// codebase. We should progressively fix these and remove the overrides.
-		'@typescript-eslint/naming-convention': ['off'],
 		'@typescript-eslint/no-floating-promises': ['off'],
 		'@typescript-eslint/no-misused-promises': ['off'],
 		'@typescript-eslint/no-unnecessary-condition': ['off'],
