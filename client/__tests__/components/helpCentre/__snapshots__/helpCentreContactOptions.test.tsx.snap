@@ -154,13 +154,25 @@ Array [
   font-size: 1.0625rem;
   line-height: 1.5;
   font-weight: 400;
+  margin-bottom: 0;
+}
+
+.emotion-12+p {
+  margin-top: 16px;
+}
+
+.emotion-13 {
+  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  font-weight: 400;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
   cursor: pointer;
 }
 
-.emotion-12:after {
+.emotion-13:after {
   content: "";
   display: block;
   width: 7px;
@@ -178,7 +190,7 @@ Array [
   right: 17px;
 }
 
-.emotion-12:before {
+.emotion-13:before {
   content: "";
   display: block;
   position: absolute;
@@ -189,13 +201,13 @@ Array [
   background-color: #DCDCDC;
 }
 
-.emotion-14 {
+.emotion-15 {
   display: none;
   background-color: #F6F6F6;
   padding: 16px;
 }
 
-.emotion-20 {
+.emotion-21 {
   font-weight: normal;
 }
 
@@ -255,11 +267,16 @@ Array [
               9am - 6pm Saturday - Sunday (GMT/BST)
             </span>
           </p>
+          <p
+            className="emotion-12"
+          >
+            Closed Christmas Day, Boxing Day and New Years Day
+          </p>
         </div>
       </div>
       <div>
         <h2
-          className="emotion-12"
+          className="emotion-13"
           onClick={[Function]}
         >
           Australia, New Zealand, and Asia Pacific
@@ -271,7 +288,7 @@ Array [
           </span>
         </h2>
         <div
-          className="emotion-14"
+          className="emotion-15"
         >
           <h4
             className="emotion-5"
@@ -296,7 +313,7 @@ Array [
             >
               1800 773 766
               <span
-                className="emotion-20"
+                className="emotion-21"
               >
                  
                 (within Australia)
@@ -307,7 +324,7 @@ Array [
             >
               +61 28076 8599
               <span
-                className="emotion-20"
+                className="emotion-21"
               >
                  
                 (outside Australia)
@@ -319,11 +336,16 @@ Array [
               9am - 5pm Monday - Friday (AEDT)
             </span>
           </p>
+          <p
+            className="emotion-12"
+          >
+            Closed Christmas Day, Boxing Day and New Years Day
+          </p>
         </div>
       </div>
       <div>
         <h2
-          className="emotion-12"
+          className="emotion-13"
           onClick={[Function]}
         >
           Canada and USA
@@ -335,7 +357,7 @@ Array [
           </span>
         </h2>
         <div
-          className="emotion-14"
+          className="emotion-15"
         >
           <h4
             className="emotion-5"
@@ -360,7 +382,7 @@ Array [
             >
               1-844-632-2010
               <span
-                className="emotion-20"
+                className="emotion-21"
               >
                  
                 (toll free USA)
@@ -371,7 +393,7 @@ Array [
             >
               +1 917-900-4663
               <span
-                className="emotion-20"
+                className="emotion-21"
               >
                  
                 (outside USA)
@@ -382,6 +404,11 @@ Array [
             >
               9am - 5pm on weekdays (EST/EDT)
             </span>
+          </p>
+          <p
+            className="emotion-12"
+          >
+            Closed Christmas Day, Boxing Day and New Years Day
           </p>
         </div>
       </div>
@@ -544,13 +571,25 @@ Array [
   font-size: 1.0625rem;
   line-height: 1.5;
   font-weight: 400;
+  margin-bottom: 0;
+}
+
+.emotion-12+p {
+  margin-top: 16px;
+}
+
+.emotion-13 {
+  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  font-weight: 400;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
   cursor: pointer;
 }
 
-.emotion-12:after {
+.emotion-13:after {
   content: "";
   display: block;
   width: 7px;
@@ -568,7 +607,7 @@ Array [
   right: 17px;
 }
 
-.emotion-12:before {
+.emotion-13:before {
   content: "";
   display: block;
   position: absolute;
@@ -579,13 +618,13 @@ Array [
   background-color: #DCDCDC;
 }
 
-.emotion-14 {
+.emotion-15 {
   display: none;
   background-color: #F6F6F6;
   padding: 16px;
 }
 
-.emotion-20 {
+.emotion-21 {
   font-weight: normal;
 }
 
@@ -645,11 +684,16 @@ Array [
               9am - 6pm Saturday - Sunday (GMT/BST)
             </span>
           </p>
+          <p
+            className="emotion-12"
+          >
+            Closed Christmas Day, Boxing Day and New Years Day
+          </p>
         </div>
       </div>
       <div>
         <h2
-          className="emotion-12"
+          className="emotion-13"
           onClick={[Function]}
         >
           Australia, New Zealand, and Asia Pacific
@@ -661,7 +705,7 @@ Array [
           </span>
         </h2>
         <div
-          className="emotion-14"
+          className="emotion-15"
         >
           <h4
             className="emotion-5"
@@ -686,7 +730,7 @@ Array [
             >
               1800 773 766
               <span
-                className="emotion-20"
+                className="emotion-21"
               >
                  
                 (within Australia)
@@ -697,7 +741,7 @@ Array [
             >
               +61 28076 8599
               <span
-                className="emotion-20"
+                className="emotion-21"
               >
                  
                 (outside Australia)
@@ -709,11 +753,16 @@ Array [
               9am - 5pm Monday - Friday (AEDT)
             </span>
           </p>
+          <p
+            className="emotion-12"
+          >
+            Closed Christmas Day, Boxing Day and New Years Day
+          </p>
         </div>
       </div>
       <div>
         <h2
-          className="emotion-12"
+          className="emotion-13"
           onClick={[Function]}
         >
           Canada and USA
@@ -725,7 +774,7 @@ Array [
           </span>
         </h2>
         <div
-          className="emotion-14"
+          className="emotion-15"
         >
           <h4
             className="emotion-5"
@@ -750,7 +799,7 @@ Array [
             >
               1-844-632-2010
               <span
-                className="emotion-20"
+                className="emotion-21"
               >
                  
                 (toll free USA)
@@ -761,7 +810,7 @@ Array [
             >
               +1 917-900-4663
               <span
-                className="emotion-20"
+                className="emotion-21"
               >
                  
                 (outside USA)
@@ -772,6 +821,11 @@ Array [
             >
               9am - 5pm on weekdays (EST/EDT)
             </span>
+          </p>
+          <p
+            className="emotion-12"
+          >
+            Closed Christmas Day, Boxing Day and New Years Day
           </p>
         </div>
       </div>
@@ -1207,13 +1261,25 @@ html:not(.src-focus-disabled) .emotion-7:focus {
   font-size: 1.0625rem;
   line-height: 1.5;
   font-weight: 400;
+  margin-bottom: 0;
+}
+
+.emotion-27+p {
+  margin-top: 16px;
+}
+
+.emotion-28 {
+  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  font-weight: 400;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
   cursor: pointer;
 }
 
-.emotion-27:after {
+.emotion-28:after {
   content: "";
   display: block;
   width: 7px;
@@ -1231,7 +1297,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
   right: 17px;
 }
 
-.emotion-27:before {
+.emotion-28:before {
   content: "";
   display: block;
   position: absolute;
@@ -1242,29 +1308,29 @@ html:not(.src-focus-disabled) .emotion-7:focus {
   background-color: #DCDCDC;
 }
 
-.emotion-29 {
+.emotion-30 {
   display: none;
   background-color: #F6F6F6;
   padding: 16px;
 }
 
-.emotion-32 {
+.emotion-33 {
   font-weight: normal;
 }
 
-.emotion-45 {
+.emotion-48 {
   margin-top: 36px;
   padding: 12px;
   background-color: #ecf3fe;
 }
 
 @media (min-width: 980px) {
-  .emotion-45 {
+  .emotion-48 {
     padding: 24px;
   }
 }
 
-.emotion-46 {
+.emotion-49 {
   margin: 0;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 0.9375rem;
@@ -1272,7 +1338,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
   font-weight: 700;
 }
 
-.emotion-47 {
+.emotion-50 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 0.9375rem;
   line-height: 1.5;
@@ -1281,7 +1347,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
   margin: 0;
 }
 
-.emotion-47 a {
+.emotion-50 a {
   color: #0077B6;
   -webkit-text-decoration: underline;
   text-decoration: underline;
@@ -1530,11 +1596,16 @@ html:not(.src-focus-disabled) .emotion-7:focus {
                 9am - 6pm Saturday - Sunday (GMT/BST)
               </span>
             </p>
+            <p
+              className="emotion-27"
+            >
+              Closed Christmas Day, Boxing Day and New Years Day
+            </p>
           </div>
         </div>
         <div>
           <h2
-            className="emotion-27"
+            className="emotion-28"
             onClick={[Function]}
           >
             Australia, New Zealand, and Asia Pacific
@@ -1546,7 +1617,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
             </span>
           </h2>
           <div
-            className="emotion-29"
+            className="emotion-30"
           >
             <p
               className="emotion-23"
@@ -1556,7 +1627,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
               >
                 1800 773 766
                 <span
-                  className="emotion-32"
+                  className="emotion-33"
                 >
                    
                   (within Australia)
@@ -1567,7 +1638,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
               >
                 +61 28076 8599
                 <span
-                  className="emotion-32"
+                  className="emotion-33"
                 >
                    
                   (outside Australia)
@@ -1579,11 +1650,16 @@ html:not(.src-focus-disabled) .emotion-7:focus {
                 9am - 5pm Monday - Friday (AEDT)
               </span>
             </p>
+            <p
+              className="emotion-27"
+            >
+              Closed Christmas Day, Boxing Day and New Years Day
+            </p>
           </div>
         </div>
         <div>
           <h2
-            className="emotion-27"
+            className="emotion-28"
             onClick={[Function]}
           >
             Canada and USA
@@ -1595,7 +1671,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
             </span>
           </h2>
           <div
-            className="emotion-29"
+            className="emotion-30"
           >
             <p
               className="emotion-23"
@@ -1605,7 +1681,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
               >
                 1-844-632-2010
                 <span
-                  className="emotion-32"
+                  className="emotion-33"
                 >
                    
                   (toll free USA)
@@ -1616,7 +1692,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
               >
                 +1 917-900-4663
                 <span
-                  className="emotion-32"
+                  className="emotion-33"
                 >
                    
                   (outside USA)
@@ -1628,21 +1704,26 @@ html:not(.src-focus-disabled) .emotion-7:focus {
                 9am - 5pm on weekdays (EST/EDT)
               </span>
             </p>
+            <p
+              className="emotion-27"
+            >
+              Closed Christmas Day, Boxing Day and New Years Day
+            </p>
           </div>
         </div>
       </div>
     </div>
     <div
-      className="emotion-45"
+      className="emotion-48"
       id="livechatPrivacyNotice"
     >
       <h2
-        className="emotion-46"
+        className="emotion-49"
       >
         Data privacy notice
       </h2>
       <p
-        className="emotion-47"
+        className="emotion-50"
       >
         We use a type of cookie technology called an SDK (Software Development Kit) to ensure that our live chat services work correctly and meet your expectations. It cannot be switched off but it is removed at the end of the chat. If you do not wish for this cookie to be dropped on your device, please email or phone us instead. Live chats and phone calls will be recorded for monitoring and training purposes. Please do not disclose personal data of a sensitive nature in the live chat, such as health or financial information. A copy of the chat transcript will be emailed to you unless the chat contains payment card information, in which case no transcript will be sent. Click to find out more in our
          
