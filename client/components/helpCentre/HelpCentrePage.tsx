@@ -66,16 +66,19 @@ const HelpCentreRouter = () => {
 	]
 	*/
 
-	const ransomwareMessage = [
+	const knownIssues: KnownIssueObj[] = [
 		{
 			date: '22 Dec 2022 10:00',
 			message:
 				"You may notice the content of todays' paper is slightly different than usual. This is due to operational challenges caused by the ransomware attack on the Guardian. Customer Service phonelines in the US & Australia are currently not available but live chat, email and UK phonelines remain unaffected",
 			link: 'https://www.theguardian.com/media/2022/dec/21/guardian-hit-by-serious-it-incident-believed-to-be-ransomware-attack',
 		},
+		{
+			date: '23 Dec 2022 10:00',
+			message:
+				'Our customer service contact centre, including live chat, will be closed on Christmas Day, Boxing Day and New Year’s Day. Please note the newspaper is not published on Christmas Day and there will be no Guardian Weekly dated 30th December.',
+		},
 	];
-
-	const knownIssues: KnownIssueObj[] = ransomwareMessage;
 
 	return (
 		<Main
