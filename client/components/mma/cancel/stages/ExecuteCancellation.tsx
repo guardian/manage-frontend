@@ -1,11 +1,10 @@
 import {css} from '@emotion/react';
 import {space} from '@guardian/source-foundations';
 import {Button} from '@guardian/source-react-components';
-import type {ReactNode} from 'react';
 import {useContext} from 'react';
 import {Navigate, useLocation, useNavigate} from 'react-router-dom';
 import type {ProductDetail} from '../../../../../shared/productResponse';
-import {CancelledProductDetail, isProduct, MembersDataApiItem} from '../../../../../shared/productResponse';
+import {isProduct} from '../../../../../shared/productResponse';
 import type {
 	ProductType,
 	ProductTypeWithCancellationFlow,
@@ -13,8 +12,9 @@ import type {
 import {fetchWithDefaultParameters} from '../../../../utilities/fetch';
 import {createProductDetailFetcher} from '../../../../utilities/productUtils';
 import {GenericErrorScreen} from '../../../shared/GenericErrorScreen';
-import AsyncLoader from '../../shared/AsyncLoader';
 import {ProgressIndicator} from '../../shared/ProgressIndicator';
+import SpinLoader from "../../shared/SpinLoader";
+import useAsyncLoader from "../../shared/useFetch";
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
@@ -23,35 +23,8 @@ import {CancellationContext} from '../CancellationContainer';
 import {cancellationEffectiveToday} from '../cancellationContexts';
 import {generateEscalationCausesList} from '../cancellationFlowEscalationCheck';
 import type {OptionalCancellationReasonId} from '../cancellationReason';
-import {getCancellationSummary, isCancelled} from '../CancellationSummary';
+import {isCancelled} from '../CancellationSummary';
 import {CaseUpdateAsyncLoader, getUpdateCasePromise} from '../caseUpdate';
-import useAsyncLoader from "../../shared/useFetch";
-import SpinLoader from "../../shared/SpinLoader";
-
-const getCancelFunc =
-	(
-		subscriptionName: string,
-		productType: ProductType,
-		reason: OptionalCancellationReasonId,
-		withSubscriptionResponseFetcher: () => Promise<Response>,
-	) =>
-		async () => {
-			const isSupporterPlus =
-				productType.allProductsProductTypeFilterString === 'SupporterPlus';
-			const cancellationApi = isSupporterPlus
-				? '/api/supporter-plus-cancel/'
-				: '/api/cancel/';
-			await fetchWithDefaultParameters(
-				`${cancellationApi}${subscriptionName}`,
-				{
-					method: 'POST',
-					body: JSON.stringify({reason}),
-					headers: {'Content-Type': 'application/json'},
-				},
-			); // response is either empty or 404 - neither is useful so fetch subscription to determine cancellation result...
-
-			return await withSubscriptionResponseFetcher();
-		};
 
 const getCancelFunc2 =
 	async (
@@ -76,24 +49,6 @@ const getCancelFunc2 =
 
 		return await withSubscriptionResponseFetcher();
 	};
-
-const getCaseUpdateWithCancelOutcomeFunc =
-	(caseId: string, productDetail: ProductDetail) => () =>
-		getUpdateCasePromise(
-			productDetail.isTestUser,
-			isCancelled(productDetail.subscription) ? '_CANCELLED' : '_ERROR',
-			caseId,
-			isCancelled(productDetail.subscription)
-				? {
-					Journey__c: 'SV - Cancellation - MB',
-					Subject: 'Online Cancellation Completed',
-				}
-				: {
-					Subject: 'Online Cancellation Error',
-					Status: 'New',
-					Priority: 'High',
-				},
-		);
 
 export const getCaseUpdateWithCancelOutcomeFunc2 =
 	(caseId: string, productDetail: ProductDetail) =>
@@ -170,7 +125,7 @@ const GetCaseUpdatingCancellationSummary =
 
 		if (caseId) {
 			<div>
-				<CancellationSummary productType={productType} cancelledProductDetail={cancelledProductDetail}
+				<CancellationSummary caseId={caseId} doFetch={true} productType={productType} cancelledProductDetail={cancelledProductDetail}
 									 productDetail={productDetail}/>
 				<ReturnToAccountButton/>
 			</div>

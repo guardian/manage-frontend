@@ -13,14 +13,13 @@ import {GenericErrorScreen} from '../../shared/GenericErrorScreen';
 import {SupportTheGuardianButton} from '../../shared/SupportTheGuardianButton';
 import {WithStandardTopMargin} from '../../shared/WithStandardTopMargin';
 import {Heading} from '../shared/Heading';
+import SpinLoader from "../shared/SpinLoader";
+import useAsyncLoader from "../shared/useFetch";
 import {hrefStyle} from './cancellationConstants';
 import {CancellationReasonContext} from './cancellationContexts';
 import {CancellationContributionReminder} from './cancellationContributionReminder';
 import {ResubscribeThrasher} from './ResubscribeThrasher';
 import {getCaseUpdateWithCancelOutcomeFunc2} from "./stages/ExecuteCancellation";
-import useAsyncLoader from "../shared/useFetch";
-import {CancelledProductDetail, MembersDataApiItem} from "../../../../shared/productResponse";
-import SpinLoader from "../shared/SpinLoader";
 
 const actuallyCancelled = (
 	productType: ProductType,
@@ -186,11 +185,11 @@ const actuallyCancelled = (
 export const isCancelled = (subscription: Subscription) =>
 	Object.keys(subscription).length === 0 || subscription.cancelledAt;
 
-export const CancellationSummary = (caseId: string, productType: ProductType, cancelledProductDetail: ProductDetail, productDetail: ProductDetail) => {
-	const request = getCaseUpdateWithCancelOutcomeFunc2(
+export const CancellationSummary = (caseId: string, productType: ProductType, cancelledProductDetail: ProductDetail, productDetail: ProductDetail, doFetch?: boolean) => {
+	const request = doFetch ? getCaseUpdateWithCancelOutcomeFunc2(
 		caseId,
 		productDetail,
-	);
+	) : null;
 
 	const {data, loading, error} = useAsyncLoader<any>(request);
 
