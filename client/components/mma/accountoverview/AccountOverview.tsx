@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import {css} from '@emotion/react';
 import {
 	headline,
 	neutral,
@@ -6,10 +6,10 @@ import {
 	textSans,
 	until,
 } from '@guardian/source-foundations';
-import { Stack } from '@guardian/source-react-components';
-import { capitalize } from 'lodash';
-import { Fragment } from 'react';
-import { featureSwitches } from '../../../../shared/featureSwitches';
+import {Stack} from '@guardian/source-react-components';
+import {capitalize} from 'lodash';
+import {Fragment} from 'react';
+import {featureSwitches} from '../../../../shared/featureSwitches';
 import type {
 	CancelledProductDetail,
 	MembersDataApiItem,
@@ -20,28 +20,46 @@ import {
 	isSpecificProductType,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
-import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
+import type {GroupedProductTypeKeys} from '../../../../shared/productTypes';
 import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
-import { fetchWithDefaultParameters } from '../../../utilities/fetch';
-import { allProductsDetailFetcher } from '../../../utilities/productUtils';
-import { NAV_LINKS } from '../../shared/nav/NavConfig';
-import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
-import { isCancelled } from '../cancel/CancellationSummary';
-import { PageContainer } from '../Page';
-import AsyncLoader from '../shared/AsyncLoader';
-import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
-import { AccountOverviewCancelledCard } from './AccountOverviewCancelledCard';
-import { AccountOverviewCard } from './AccountOverviewCard';
-import { AccountOverviewCardV2 } from './AccountOverviewCardV2';
-import { EmptyAccountOverview } from './EmptyAccountOverview';
+import {fetchWithDefaultParameters} from '../../../utilities/fetch';
+import {allProductsDetailFetcher} from '../../../utilities/productUtils';
+import {GenericErrorScreen} from "../../shared/GenericErrorScreen";
+import {NAV_LINKS} from '../../shared/nav/NavConfig';
+import {SupportTheGuardianButton} from '../../shared/SupportTheGuardianButton';
+import {isCancelled} from '../cancel/CancellationSummary';
+import {PageContainer} from '../Page';
+import {PaymentFailureAlertIfApplicable} from '../shared/PaymentFailureAlertIfApplicable';
+import SpinLoader from "../shared/SpinLoader";
+import useAsyncLoader from "../shared/useFetch";
+import {AccountOverviewCancelledCard} from './AccountOverviewCancelledCard';
+import {AccountOverviewCard} from './AccountOverviewCard';
+import {AccountOverviewCardV2} from './AccountOverviewCardV2';
+import {EmptyAccountOverview} from './EmptyAccountOverview';
 
-const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
-	MembersDataApiItem[],
-	CancelledProductDetail[],
-]) => {
+const AccountOverviewRenderer = () => {
+	const request =
+		Promise.all([
+			allProductsDetailFetcher(),
+			fetchWithDefaultParameters('/api/cancelled/'),
+		]);
+
+	const {data, loading, error} = useAsyncLoader<[MembersDataApiItem[], CancelledProductDetail[]]>(request);
+
+	if (error || !data) {
+		return <GenericErrorScreen loggingMessage={false}/>
+	}
+
+	if (loading) {
+		return <SpinLoader loadingMessage={`Loading your account details...`}/>
+	}
+
+	const mdaResponse = data[0];
+	const cancelledProductsResponse = data[1];
+
 	const allActiveProductDetails = mdaResponse
 		.filter(isProduct)
 		.sort(sortByJoinDate);
@@ -62,7 +80,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 		.filter((value, index, self) => self.indexOf(value) === index);
 
 	if (allActiveProductDetails.length === 0) {
-		return <EmptyAccountOverview />;
+		return <EmptyAccountOverview/>;
 	}
 
 	const maybeFirstPaymentFailure = allActiveProductDetails.find(
@@ -84,7 +102,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 	const subHeadingCss = css`
 		margin: ${space[12]}px 0 ${space[6]}px;
 		border-top: 1px solid ${neutral['86']};
-		${headline.small({ fontWeight: 'bold' })};
+		${headline.small({fontWeight: 'bold'})};
 		${until.tablet} {
 			font-size: 1.25rem;
 			line-height: 1.6;
@@ -186,23 +204,9 @@ const AccountOverview = () => {
 			selectedNavItem={NAV_LINKS.accountOverview}
 			pageTitle="Account overview"
 		>
-			<AccountOverviewAsyncLoader
-				fetch={AccountOverviewFetcher}
-				render={AccountOverviewRenderer}
-				loadingMessage={`Loading your account details...`}
-			/>
+			<AccountOverviewRenderer />
 		</PageContainer>
 	);
 };
-
-class AccountOverviewAsyncLoader extends AsyncLoader<
-	[MembersDataApiItem[], CancelledProductDetail[]]
-> {}
-
-const AccountOverviewFetcher = () =>
-	Promise.all([
-		allProductsDetailFetcher(),
-		fetchWithDefaultParameters('/api/cancelled/'),
-	]);
 
 export default AccountOverview;

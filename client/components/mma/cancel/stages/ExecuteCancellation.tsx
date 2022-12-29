@@ -1,32 +1,32 @@
-import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
-import type { ReactNode } from 'react';
-import { useContext } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import type { ProductDetail } from '../../../../../shared/productResponse';
-import { isProduct } from '../../../../../shared/productResponse';
+import {css} from '@emotion/react';
+import {space} from '@guardian/source-foundations';
+import {Button} from '@guardian/source-react-components';
+import type {ReactNode} from 'react';
+import {useContext} from 'react';
+import {Navigate, useLocation, useNavigate} from 'react-router-dom';
+import type {ProductDetail} from '../../../../../shared/productResponse';
+import {CancelledProductDetail, isProduct, MembersDataApiItem} from '../../../../../shared/productResponse';
 import type {
 	ProductType,
 	ProductTypeWithCancellationFlow,
 } from '../../../../../shared/productTypes';
-import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
-import { createProductDetailFetcher } from '../../../../utilities/productUtils';
-import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
+import {fetchWithDefaultParameters} from '../../../../utilities/fetch';
+import {createProductDetailFetcher} from '../../../../utilities/productUtils';
+import {GenericErrorScreen} from '../../../shared/GenericErrorScreen';
 import AsyncLoader from '../../shared/AsyncLoader';
-import { ProgressIndicator } from '../../shared/ProgressIndicator';
+import {ProgressIndicator} from '../../shared/ProgressIndicator';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
 } from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
-import { cancellationEffectiveToday } from '../cancellationContexts';
-import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
-import type { OptionalCancellationReasonId } from '../cancellationReason';
-import { getCancellationSummary, isCancelled } from '../CancellationSummary';
-import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
-
-class PerformCancelAsyncLoader extends AsyncLoader<ProductDetail[]> {}
+import {CancellationContext} from '../CancellationContainer';
+import {cancellationEffectiveToday} from '../cancellationContexts';
+import {generateEscalationCausesList} from '../cancellationFlowEscalationCheck';
+import type {OptionalCancellationReasonId} from '../cancellationReason';
+import {getCancellationSummary, isCancelled} from '../CancellationSummary';
+import {CaseUpdateAsyncLoader, getUpdateCasePromise} from '../caseUpdate';
+import useAsyncLoader from "../../shared/useFetch";
+import SpinLoader from "../../shared/SpinLoader";
 
 const getCancelFunc =
 	(
@@ -35,7 +35,31 @@ const getCancelFunc =
 		reason: OptionalCancellationReasonId,
 		withSubscriptionResponseFetcher: () => Promise<Response>,
 	) =>
-	async () => {
+		async () => {
+			const isSupporterPlus =
+				productType.allProductsProductTypeFilterString === 'SupporterPlus';
+			const cancellationApi = isSupporterPlus
+				? '/api/supporter-plus-cancel/'
+				: '/api/cancel/';
+			await fetchWithDefaultParameters(
+				`${cancellationApi}${subscriptionName}`,
+				{
+					method: 'POST',
+					body: JSON.stringify({reason}),
+					headers: {'Content-Type': 'application/json'},
+				},
+			); // response is either empty or 404 - neither is useful so fetch subscription to determine cancellation result...
+
+			return await withSubscriptionResponseFetcher();
+		};
+
+const getCancelFunc2 =
+	async (
+		subscriptionName: string,
+		productType: ProductType,
+		reason: OptionalCancellationReasonId,
+		withSubscriptionResponseFetcher: () => Promise<Response>,
+	) => {
 		const isSupporterPlus =
 			productType.allProductsProductTypeFilterString === 'SupporterPlus';
 		const cancellationApi = isSupporterPlus
@@ -45,8 +69,8 @@ const getCancelFunc =
 			`${cancellationApi}${subscriptionName}`,
 			{
 				method: 'POST',
-				body: JSON.stringify({ reason }),
-				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({reason}),
+				headers: {'Content-Type': 'application/json'},
 			},
 		); // response is either empty or 404 - neither is useful so fetch subscription to determine cancellation result...
 
@@ -61,14 +85,32 @@ const getCaseUpdateWithCancelOutcomeFunc =
 			caseId,
 			isCancelled(productDetail.subscription)
 				? {
-						Journey__c: 'SV - Cancellation - MB',
-						Subject: 'Online Cancellation Completed',
-				  }
+					Journey__c: 'SV - Cancellation - MB',
+					Subject: 'Online Cancellation Completed',
+				}
 				: {
-						Subject: 'Online Cancellation Error',
-						Status: 'New',
-						Priority: 'High',
-				  },
+					Subject: 'Online Cancellation Error',
+					Status: 'New',
+					Priority: 'High',
+				},
+		);
+
+export const getCaseUpdateWithCancelOutcomeFunc2 =
+	(caseId: string, productDetail: ProductDetail) =>
+		getUpdateCasePromise(
+			productDetail.isTestUser,
+			isCancelled(productDetail.subscription) ? '_CANCELLED' : '_ERROR',
+			caseId,
+			isCancelled(productDetail.subscription)
+				? {
+					Journey__c: 'SV - Cancellation - MB',
+					Subject: 'Online Cancellation Completed',
+				}
+				: {
+					Subject: 'Online Cancellation Error',
+					Status: 'New',
+					Priority: 'High',
+				},
 		);
 
 const getCaseUpdateFuncForEscalation =
@@ -97,40 +139,47 @@ const ReturnToAccountButton = () => {
 	);
 };
 
-const getCancellationSummaryWithReturnButton = (body: ReactNode) => () =>
-	(
-		<div>
-			{body}
-			<ReturnToAccountButton />
-		</div>
-	);
-
-const getCaseUpdatingCancellationSummary =
+const GetCaseUpdatingCancellationSummary =
 	(
 		caseId: string | '',
 		productType: ProductTypeWithCancellationFlow,
 		cancelledProductDetail: ProductDetail,
-	) =>
-	(productDetails: ProductDetail[]) => {
-		const productDetail = productDetails[0] || { subscription: {} };
-		const render = getCancellationSummaryWithReturnButton(
-			getCancellationSummary(
-				productType,
-				cancelledProductDetail,
-			)(productDetail),
+		selectedReasonId?: OptionalCancellationReasonId
+	) => {
+		const request = getCancelFunc2(
+			cancelledProductDetail.subscription.subscriptionId,
+			productType,
+			selectedReasonId,
+			createProductDetailFetcher(
+				productType.allProductsProductTypeFilterString,
+				cancelledProductDetail.subscription.subscriptionId,
+			),
 		);
-		return caseId ? (
-			<CaseUpdateAsyncLoader
-				fetch={getCaseUpdateWithCancelOutcomeFunc(
-					caseId,
-					productDetail,
-				)}
-				render={render}
-				loadingMessage="Finalising your cancellation..."
-			/>
-		) : (
-			render()
-		);
+
+		const {data, loading, error} = useAsyncLoader<ProductDetail[]>(request);
+
+		if (error || !data) {
+			return <GenericErrorScreen loggingMessage={false}/>
+		}
+
+		if (loading) {
+			return <SpinLoader loadingMessage={"Performing your cancellation..."}/>
+		}
+
+		const productDetail = data[0] || {subscription: {}};
+
+		if (caseId) {
+			<div>
+				<CancellationSummary productType={productType} cancelledProductDetail={cancelledProductDetail}
+									 productDetail={productDetail}/>
+				<ReturnToAccountButton/>
+			</div>
+		} else {
+			return (
+				<CancellationSummary productType={productType} cancelledProductDetail={cancelledProductDetail}
+									 productDetail={productDetail}/>
+			)
+		}
 	};
 
 // TODO consider returning case number from API and displaying
@@ -147,12 +196,12 @@ const ExecuteCancellation = () => {
 	const routerState = location.state as CancellationRouterState;
 
 	if (!routerState?.selectedReasonId || !routerState?.caseId) {
-		return <Navigate to="../" />;
+		return <Navigate to="../"/>;
 	}
 
 	const caseId = routerState.caseId as string;
 
-	const { productDetail, productType } = useContext(
+	const {productDetail, productType} = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
 
@@ -170,9 +219,9 @@ const ExecuteCancellation = () => {
 		<>
 			<ProgressIndicator
 				steps={[
-					{ title: 'Reason' },
-					{ title: 'Review' },
-					{ title: 'Confirmation', isCurrentStep: true },
+					{title: 'Reason'},
+					{title: 'Review'},
+					{title: 'Confirmation', isCurrentStep: true},
 				]}
 				additionalCSS={css`
 					margin: ${space[5]}px 0 ${space[12]}px;
@@ -192,26 +241,14 @@ const ExecuteCancellation = () => {
 						loadingMessage="Requesting your cancellation..."
 					/>
 				) : (
-					<PerformCancelAsyncLoader
-						fetch={getCancelFunc(
-							productDetail.subscription.subscriptionId,
-							productType,
-							routerState.selectedReasonId,
-							createProductDetailFetcher(
-								productType.allProductsProductTypeFilterString,
-								productDetail.subscription.subscriptionId,
-							),
-						)}
-						render={getCaseUpdatingCancellationSummary(
-							caseId,
-							productType,
-							productDetail,
-						)}
-						loadingMessage="Performing your cancellation..."
+					<GetCaseUpdatingCancellationSummary caseId={caseId}
+														productType={productType}
+														cancelledProductDetail={productDetail}
+														selectedReasonId={routerState.selectedReasonId}
 					/>
 				)
 			) : (
-				<GenericErrorScreen loggingMessage="invalid product detail to cancel" />
+				<GenericErrorScreen loggingMessage="invalid product detail to cancel"/>
 			)}
 		</>
 	);

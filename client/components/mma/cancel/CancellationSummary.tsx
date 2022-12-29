@@ -1,22 +1,26 @@
-import { css } from '@emotion/react';
-import { brand, space } from '@guardian/source-foundations';
-import { Link } from 'react-router-dom';
-import { cancellationFormatDate } from '../../../../shared/dates';
+import {css} from '@emotion/react';
+import {brand, space} from '@guardian/source-foundations';
+import {Link} from 'react-router-dom';
+import {cancellationFormatDate} from '../../../../shared/dates';
 import type {
 	ProductDetail,
 	Subscription,
 } from '../../../../shared/productResponse';
-import type { ProductType } from '../../../../shared/productTypes';
-import { measure } from '../../../styles/typography';
-import { hasDeliveryRecordsFlow } from '../../../utilities/productUtils';
-import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
-import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
-import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
-import { Heading } from '../shared/Heading';
-import { hrefStyle } from './cancellationConstants';
-import { CancellationReasonContext } from './cancellationContexts';
-import { CancellationContributionReminder } from './cancellationContributionReminder';
-import { ResubscribeThrasher } from './ResubscribeThrasher';
+import type {ProductType} from '../../../../shared/productTypes';
+import {measure} from '../../../styles/typography';
+import {hasDeliveryRecordsFlow} from '../../../utilities/productUtils';
+import {GenericErrorScreen} from '../../shared/GenericErrorScreen';
+import {SupportTheGuardianButton} from '../../shared/SupportTheGuardianButton';
+import {WithStandardTopMargin} from '../../shared/WithStandardTopMargin';
+import {Heading} from '../shared/Heading';
+import {hrefStyle} from './cancellationConstants';
+import {CancellationReasonContext} from './cancellationContexts';
+import {CancellationContributionReminder} from './cancellationContributionReminder';
+import {ResubscribeThrasher} from './ResubscribeThrasher';
+import {getCaseUpdateWithCancelOutcomeFunc2} from "./stages/ExecuteCancellation";
+import useAsyncLoader from "../shared/useFetch";
+import {CancelledProductDetail, MembersDataApiItem} from "../../../../shared/productResponse";
+import SpinLoader from "../shared/SpinLoader";
 
 const actuallyCancelled = (
 	productType: ProductType,
@@ -37,8 +41,8 @@ const actuallyCancelled = (
 					]}
 				>
 					{productType.cancellation?.alternateSummaryHeading(
-						cancelledProductDetail,
-					) ||
+							cancelledProductDetail,
+						) ||
 						`Your ${productType.friendlyName(
 							cancelledProductDetail,
 						)} is cancelled`}
@@ -47,7 +51,7 @@ const actuallyCancelled = (
 					!productType.cancellation.shouldHideSummaryMainPara && (
 						<p>
 							{productType.cancellation
-								?.alternateSummaryMainPara ||
+									?.alternateSummaryMainPara ||
 								(subscription.end ? (
 									<>
 										You will continue to receive the
@@ -79,7 +83,7 @@ const actuallyCancelled = (
 					)}
 			</WithStandardTopMargin>
 			{productType.cancellation?.shouldShowReminder && (
-				<CancellationContributionReminder />
+				<CancellationContributionReminder/>
 			)}
 
 			{!productType.cancellation?.shouldHideThrasher && (
@@ -99,7 +103,7 @@ const actuallyCancelled = (
 										}
 									`}
 									to={deliveryRecordsLink}
-									state={{ productDetail }}
+									state={{productDetail}}
 								>
 									view your previous deliveries
 								</Link>{' '}
@@ -113,7 +117,7 @@ const actuallyCancelled = (
 										}
 									`}
 									to={deliveryRecordsLink}
-									state={{ productDetail }}
+									state={{productDetail}}
 								>
 									report a delivery problem
 								</Link>
@@ -137,12 +141,12 @@ const actuallyCancelled = (
 												reason,
 											)
 												? productType.cancellation.summaryReasonSpecificPara(
-														reason,
-												  )
+													reason,
+												)
 												: 'If you are interested in supporting our journalism in other ways, ' +
-												  'please consider either a contribution or a subscription.'}
+												'please consider either a contribution or a subscription.'}
 										</p>
-										<div css={{ marginBottom: '30px' }}>
+										<div css={{marginBottom: '30px'}}>
 											<SupportTheGuardianButton
 												urlSuffix={
 													productType.cancellation &&
@@ -182,19 +186,33 @@ const actuallyCancelled = (
 export const isCancelled = (subscription: Subscription) =>
 	Object.keys(subscription).length === 0 || subscription.cancelledAt;
 
-export const getCancellationSummary =
-	(productType: ProductType, cancelledProductDetail: ProductDetail) =>
-	(productDetail: ProductDetail) =>
-		isCancelled(productDetail.subscription) ? (
-			actuallyCancelled(
-				productType,
-				productDetail,
+export const CancellationSummary = (caseId: string, productType: ProductType, cancelledProductDetail: ProductDetail, productDetail: ProductDetail) => {
+	const request = getCaseUpdateWithCancelOutcomeFunc2(
+		caseId,
+		productDetail,
+	);
+
+	const {data, loading, error} = useAsyncLoader<any>(request);
+
+	if (error || !data) {
+		return <GenericErrorScreen loggingMessage={false}/>
+	}
+
+	if (loading) {
+		return <SpinLoader loadingMessage={"Finalising your cancellation..."}/>
+	}
+
+	isCancelled(productDetail.subscription) ? (
+		actuallyCancelled(
+			productType,
+			productDetail,
+			cancelledProductDetail,
+		)
+	) : (
+		<GenericErrorScreen
+			loggingMessage={`${productType.friendlyName(
 				cancelledProductDetail,
-			)
-		) : (
-			<GenericErrorScreen
-				loggingMessage={`${productType.friendlyName(
-					cancelledProductDetail,
-				)} cancellation call succeeded but subsequent product detail doesn't show as cancelled`}
-			/>
-		);
+			)} cancellation call succeeded but subsequent product detail doesn't show as cancelled`}
+		/>
+	);
+}
