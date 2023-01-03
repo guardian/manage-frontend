@@ -32,7 +32,7 @@ export const ContributionUpdateAmount = (
 	const [status, setStatus] = useState<Status>(Status.OVERVIEW);
 	const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
 
-	const currentAmount = confirmedAmount || props.mainPlan.amount / 100;
+	const currentAmount = confirmedAmount || props.mainPlan.price / 100;
 
 	if (status === Status.EDITING) {
 		return (

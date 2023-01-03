@@ -117,13 +117,13 @@ export interface PaidSubscriptionPlan
 	start: string;
 	end: string;
 	chargedThrough?: string | null;
-	amount: number;
+	price: number;
 }
 
 export function isPaidSubscriptionPlan(
 	subscriptionPlan: SubscriptionPlan,
 ): subscriptionPlan is PaidSubscriptionPlan {
-	return !!subscriptionPlan && subscriptionPlan.hasOwnProperty('amount');
+	return !!subscriptionPlan && subscriptionPlan.hasOwnProperty('price');
 }
 
 export interface DeliveryAddress {

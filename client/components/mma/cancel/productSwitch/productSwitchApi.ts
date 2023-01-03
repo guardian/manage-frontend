@@ -10,9 +10,9 @@ interface Currency {
 }
 
 export interface Billing {
-	amount: number;
+	price: number;
 	currency: Currency;
-	frequency: {
+	billingPeriod: {
 		name: BillingFrequency;
 		count: number;
 	};
@@ -20,10 +20,10 @@ export interface Billing {
 }
 
 export interface IntroOfferBilling {
-	amount?: number;
+	price?: number;
 	percentage?: number;
 	currency: Currency;
-	frequency: {
+	billingPeriod: {
 		name: BillingFrequency;
 		count: number;
 	};

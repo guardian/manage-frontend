@@ -49,7 +49,7 @@ export const getNextPaymentDetails = (
 				? 'not applicable'
 				: `${mainPlan.currency}${(
 						overiddenAmount ||
-						(subscription.nextPaymentPrice ?? mainPlan.amount) /
+						(subscription.nextPaymentPrice ?? mainPlan.price) /
 							100.0
 				  ).toFixed(2)} ${mainPlan.currencyISO}`;
 
@@ -66,7 +66,7 @@ export const getNextPaymentDetails = (
 
 		const isNewPaymentValue =
 			planAfterMainPlan &&
-			mainPlan.amount !== planAfterMainPlan.amount &&
+			mainPlan.price !== planAfterMainPlan.price &&
 			!isSixForSix(mainPlan.name);
 
 		return {

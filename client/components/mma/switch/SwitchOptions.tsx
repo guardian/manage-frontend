@@ -81,8 +81,8 @@ const SwitchOptions = () => {
 
 	const threshold =
 		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
-	const aboveThreshold = mainPlan.amount >= threshold * 100;
-	const currentAmount = mainPlan.amount / 100;
+	const aboveThreshold = mainPlan.price >= threshold * 100;
+	const currentAmount = mainPlan.price / 100;
 
 	return (
 		<Stack space={3} cssOverrides={pageTopCss}>

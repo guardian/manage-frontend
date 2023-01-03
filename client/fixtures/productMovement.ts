@@ -8,12 +8,12 @@ export const availableProductMovesResponse: AvailableProductsResponse[] = [
 		id: '123',
 		name: 'digital subscription',
 		billing: {
-			amount: 1199,
+			price: 1199,
 			currency: {
 				symbol: '£',
 				code: 'GBP',
 			},
-			frequency: {
+			billingPeriod: {
 				name: 'month',
 				count: 1,
 			},
@@ -29,7 +29,7 @@ export const availableProductMovesResponse: AvailableProductsResponse[] = [
 					symbol: '£',
 					code: 'GBP',
 				},
-				frequency: {
+				billingPeriod: {
 					name: 'month',
 					count: 1,
 				},
@@ -49,12 +49,12 @@ export const productMoveResponse: ProductSwitchResponse = {
 		id: '123',
 		name: 'digital subscription',
 		billing: {
-			amount: 1199,
+			price: 1199,
 			currency: {
 				symbol: '£',
 				code: 'GBP',
 			},
-			frequency: {
+			billingPeriod: {
 				name: 'month',
 				count: 1,
 			},
@@ -70,7 +70,7 @@ export const productMoveResponse: ProductSwitchResponse = {
 					symbol: '£',
 					code: 'GBP',
 				},
-				frequency: {
+				billingPeriod: {
 					name: 'month',
 					count: 1,
 				},

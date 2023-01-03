@@ -24,11 +24,11 @@ export const introOfferPrice = (product: AvailableProductsResponse): string => {
 
 	let copy = offer.currency.symbol;
 
-	if (offer.amount) {
-		copy += Number(offer.amount / 100).toFixed(2);
+	if (offer.price) {
+		copy += Number(offer.price / 100).toFixed(2);
 	} else {
 		const discount = offer.percentage ?? 0;
-		const offerPrice = Math.floor((regular.amount * discount) / 100) / 100;
+		const offerPrice = Math.floor((regular.price * discount) / 100) / 100;
 		copy += offerPrice.toFixed(2);
 	}
 
@@ -68,7 +68,7 @@ export const introOfferCopy = (product: AvailableProductsResponse): string => {
 	if (product.introOffer) {
 		const discount = product.introOffer.billing.percentage
 			? `${product.introOffer.billing.percentage}% off`
-			: `${product.introOffer.billing.currency.symbol}${product.introOffer.billing.amount}`;
+			: `${product.introOffer.billing.currency.symbol}${product.introOffer.billing.price}`;
 		copy += `${discount} for ${introOfferDuration(product)}`;
 	}
 
@@ -82,7 +82,7 @@ export const introOfferCopy = (product: AvailableProductsResponse): string => {
 
 export const regularPrice = (product: AvailableProductsResponse): string => {
 	return `${product.billing.currency.symbol}${Number(
-		product.billing.amount / 100,
+		product.billing.price / 100,
 	).toFixed(2)}`;
 };
 
@@ -94,7 +94,7 @@ export const regularPrice = (product: AvailableProductsResponse): string => {
 export const regularBillingFrequency = (
 	product: AvailableProductsResponse,
 ): string => {
-	return `per ${product.billing.frequency.name}`;
+	return `per ${product.billing.billingPeriod.name}`;
 };
 
 /**
@@ -130,7 +130,7 @@ export const productFirstPaymentAmount = (
 		return introOfferPrice(product);
 	} else {
 		const currencySymbol = product.billing.currency.symbol;
-		const amount = product.billing.amount;
+		const amount = product.billing.price;
 		return `${currencySymbol}${Number(amount / 100).toFixed(2)}`;
 	}
 };

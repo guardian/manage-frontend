@@ -151,7 +151,7 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
 
 					{showAmountUpdateForm ? (
 						<ContributionUpdateAmountForm
-							currentAmount={mainPlan.amount / 100}
+							currentAmount={mainPlan.price / 100}
 							subscriptionId={
 								productDetail.subscription.subscriptionId
 							}
