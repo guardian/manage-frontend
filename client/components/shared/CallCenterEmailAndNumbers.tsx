@@ -35,8 +35,6 @@ const PHONE_DATA: PhoneRegion[] = [
 			'8am - 6pm Monday - Friday (GMT/BST)',
 			'9am - 6pm Saturday - Sunday (GMT/BST)',
 		],
-		additionalOpeningHoursInfo:
-			'Closed Christmas Day, Boxing Day and New Years Day',
 		phoneNumbers: [
 			{
 				phoneNumber: '+44 (0) 330 333 6790',
@@ -48,7 +46,7 @@ const PHONE_DATA: PhoneRegion[] = [
 		title: 'Australia, New Zealand, and Asia Pacific',
 		openingHours: ['9am - 5pm Monday - Friday (AEDT)'],
 		additionalOpeningHoursInfo:
-			'Closed Christmas Day, Boxing Day and New Years Day',
+			'Phonelines for this region are temporarily down',
 		phoneNumbers: [
 			{
 				phoneNumber: '1800 773 766',
@@ -65,7 +63,7 @@ const PHONE_DATA: PhoneRegion[] = [
 		title: 'Canada and USA',
 		openingHours: ['9am - 5pm on weekdays (EST/EDT)'],
 		additionalOpeningHoursInfo:
-			'Closed Christmas Day, Boxing Day and New Years Day',
+			'Phonelines for this region are temporarily down',
 		phoneNumbers: [
 			{
 				phoneNumber: '1-844-632-2010',
