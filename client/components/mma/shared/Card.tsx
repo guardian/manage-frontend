@@ -15,9 +15,12 @@ Card.Header = (props: {
 		padding: ${space[3]}px ${space[4]}px;
 		min-height: 64px;
 		background-color: ${props.backgroundColor ?? palette.neutral[97]};
+		border-top-left-radius: 8px;
+		border-top-right-radius: 8px;
 
 		${from.tablet} {
 			min-height: ${props.headerHeight ?? 128}px;
+			border-radius: 0;
 		}
 	`;
 
@@ -29,6 +32,14 @@ Card.Section = (props: { children: ReactNode; backgroundColor?: string }) => {
 		padding: ${space[5]}px ${space[4]}px;
 		border: 1px solid ${palette.neutral[86]};
 		border-top: none;
+		:last-of-type {
+			border-bottom-left-radius: 8px;
+			border-bottom-right-radius: 8px;
+			${from.tablet} {
+				border-radius: 0;
+			}
+		}
+
 		${props.backgroundColor &&
 		`
 			background-color: ${props.backgroundColor};
