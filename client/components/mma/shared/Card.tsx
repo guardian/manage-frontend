@@ -9,7 +9,7 @@ export const Card = (props: { children: ReactNode }) => {
 Card.Header = (props: {
 	children: ReactNode;
 	backgroundColor?: string;
-	headerHeight?: number;
+	minHeightTablet?: boolean;
 }) => {
 	const headerCss = css`
 		padding: ${space[3]}px ${space[4]}px;
@@ -17,10 +17,12 @@ Card.Header = (props: {
 		background-color: ${props.backgroundColor ?? palette.neutral[97]};
 		border-top-left-radius: 8px;
 		border-top-right-radius: 8px;
-
 		${from.tablet} {
-			min-height: ${props.headerHeight ?? 128}px;
 			border-radius: 0;
+			${props.minHeightTablet &&
+			`
+				min-height: 128px;
+			`}
 		}
 	`;
 
