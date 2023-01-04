@@ -101,12 +101,12 @@ interface SepaDetails {
 interface CurrencyAndIntervalDetail {
 	currency: string;
 	currencyISO: string;
-	interval: string;
+	billingPeriod: string;
 }
 
-// 6 weeks interval referes to GW 6 for 6 up front payment (not to be confused with one off contributions which don't come through in this response
-export const augmentInterval = (interval: string) =>
-	interval === '6 weeks' ? 'one-off' : `${interval}ly`;
+// 6 weeks billingPeriod referes to GW 6 for 6 up front payment (not to be confused with one off contributions which don't come through in this response
+export const augmentInterval = (billingPeriod: string) =>
+	billingPeriod === '6 weeks' ? 'one-off' : `${billingPeriod}ly`;
 
 export const isSixForSix = (planName: string | null) =>
 	!!planName && planName.includes('6 for 6');

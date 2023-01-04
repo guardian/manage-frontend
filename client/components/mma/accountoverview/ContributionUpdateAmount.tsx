@@ -72,7 +72,7 @@ export const ContributionUpdateAmount = (
 					},
 					{
 						title: `${capitalize(
-							augmentInterval(props.mainPlan.interval),
+							augmentInterval(props.mainPlan.billingPeriod),
 						)} amount`,
 						value: `${
 							props.mainPlan.currency

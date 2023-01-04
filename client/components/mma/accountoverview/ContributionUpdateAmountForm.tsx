@@ -161,7 +161,7 @@ export const ContributionUpdateAmountForm = (
 	const currentContributionOptions = (contributionAmountsLookup[
 		props.mainPlan.currencyISO
 	] || contributionAmountsLookup.international)[
-		props.mainPlan.interval as ContributionInterval
+		props.mainPlan.billingPeriod as ContributionInterval
 	];
 
 	const getDefaultOtherAmount = (): number | null =>
@@ -240,7 +240,7 @@ export const ContributionUpdateAmountForm = (
 			chosenOptionNum < currentContributionOptions.minAmount
 		) {
 			return `There is a minimum ${
-				props.mainPlan.interval
+				props.mainPlan.billingPeriod
 			}ly contribution amount of ${
 				props.mainPlan.currency
 			}${currentContributionOptions.minAmount.toFixed(2)} ${
@@ -251,7 +251,7 @@ export const ContributionUpdateAmountForm = (
 			chosenOptionNum > currentContributionOptions.maxAmount
 		) {
 			return `There is a maximum ${
-				props.mainPlan.interval
+				props.mainPlan.billingPeriod
 			}ly contribution amount of ${
 				props.mainPlan.currency
 			}${currentContributionOptions.maxAmount.toFixed(2)} ${
@@ -266,7 +266,7 @@ export const ContributionUpdateAmountForm = (
 	);
 
 	const amountLabel = (amount: number) => {
-		return `${props.mainPlan.currency} ${amount} per ${props.mainPlan.interval}`;
+		return `${props.mainPlan.currency} ${amount} per ${props.mainPlan.billingPeriod}`;
 	};
 
 	const shouldShowChoices = props.mode === 'MANAGE';
@@ -291,7 +291,7 @@ export const ContributionUpdateAmountForm = (
 		}
 
 		let weeklyAmount: number;
-		if (props.mainPlan.interval === 'month') {
+		if (props.mainPlan.billingPeriod === 'month') {
 			weeklyAmount = (chosenAmount * 12) / 52;
 		} else {
 			weeklyAmount = chosenAmount / 52;
@@ -367,7 +367,9 @@ export const ContributionUpdateAmountForm = (
 							display: inline-block;
 						`}
 					>
-						{capitalize(augmentInterval(props.mainPlan.interval))}{' '}
+						{capitalize(
+							augmentInterval(props.mainPlan.billingPeriod),
+						)}{' '}
 						amount
 					</dt>
 					<dd

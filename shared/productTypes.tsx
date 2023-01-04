@@ -232,11 +232,11 @@ const calculateProductTitle =
 	(baseProductTitle: string) => (mainPlan?: SubscriptionPlan) =>
 		baseProductTitle + (mainPlan?.name ? ` - ${mainPlan.name}` : '');
 
-const calculateSupporterPlusTitle = (interval: string) =>
-	interval === 'month' ? 'monthly + extras' : 'annual + extras';
+const calculateSupporterPlusTitle = (billingPeriod: string) =>
+	billingPeriod === 'month' ? 'monthly + extras' : 'annual + extras';
 
-export const calculateMonthlyOrAnnualFromInterval = (interval: string) =>
-	interval === 'month' ? 'Monthly' : 'Annual';
+export const calculateMonthlyOrAnnualFromInterval = (billingPeriod: string) =>
+	billingPeriod === 'month' ? 'Monthly' : 'Annual';
 
 const FRONT_PAGE_NEWSLETTER_ID = '6009';
 enum SOFT_OPT_IN_IDS {
@@ -316,7 +316,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 
 			const paidPlan = mainPlan as PaidSubscriptionPlan;
 			return `${calculateMonthlyOrAnnualFromInterval(
-				paidPlan.interval,
+				paidPlan.billingPeriod,
 			)} contribution`;
 		},
 		friendlyName: () => 'recurring contribution',
@@ -605,7 +605,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 
 			const paidMainPlan = mainPlan as PaidSubscriptionPlan;
 			return `${capitalize(
-				calculateSupporterPlusTitle(paidMainPlan.interval),
+				calculateSupporterPlusTitle(paidMainPlan.billingPeriod),
 			)}`;
 		},
 		friendlyName: (productDetail?: ProductDetail) => {
@@ -615,7 +615,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 
 			const interval = (
 				getMainPlan(productDetail.subscription) as PaidSubscriptionPlan
-			).interval;
+			).billingPeriod;
 			return calculateSupporterPlusTitle(interval);
 		},
 		productType: 'supporterplus',
@@ -638,7 +638,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 					getMainPlan(
 						productDetail.subscription,
 					) as PaidSubscriptionPlan
-				).interval;
+				).billingPeriod;
 				return `${calculateMonthlyOrAnnualFromInterval(
 					interval,
 				)} support + extras cancelled`;

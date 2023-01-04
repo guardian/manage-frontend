@@ -247,7 +247,7 @@ const CancellationSwitchReview = () => {
 		}
 
 		return `${plan.currency}${(plan.price / 100).toFixed(2)} per ${
-			plan.interval
+			plan.billingPeriod
 		}`;
 	};
 

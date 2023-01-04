@@ -71,7 +71,7 @@ const SwitchOptions = () => {
 	) as PaidSubscriptionPlan;
 
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromInterval(
-		mainPlan.interval,
+		mainPlan.billingPeriod,
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
 
@@ -96,7 +96,7 @@ const SwitchOptions = () => {
 						<h3 css={productTitleCss}>{monthlyOrAnnual} support</h3>
 						<p css={productSubtitleCss}>
 							{mainPlan.currency}
-							{currentAmount}/{mainPlan.interval}
+							{currentAmount}/{mainPlan.billingPeriod}
 						</p>
 					</div>
 				</Card.Header>
@@ -135,7 +135,7 @@ const SwitchOptions = () => {
 							{!aboveThreshold && (
 								<p css={productSubtitleCss}>
 									{mainPlan.currency}
-									{threshold}/{mainPlan.interval}
+									{threshold}/{mainPlan.billingPeriod}
 								</p>
 							)}
 						</div>

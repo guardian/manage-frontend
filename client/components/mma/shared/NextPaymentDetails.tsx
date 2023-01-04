@@ -39,8 +39,8 @@ export const getNextPaymentDetails = (
 			subscription.currentPlans.length !== 0 &&
 			isSixForSix(mainPlan.name) &&
 			planAfterMainPlan
-				? planAfterMainPlan.interval
-				: mainPlan.interval;
+				? planAfterMainPlan.billingPeriod
+				: mainPlan.billingPeriod;
 
 		const paymentKey = `Next ${augmentInterval(paymentInterval)} payment`;
 
