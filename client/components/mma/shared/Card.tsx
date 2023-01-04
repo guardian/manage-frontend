@@ -19,10 +19,7 @@ Card.Header = (props: {
 		border-top-right-radius: 8px;
 		${from.tablet} {
 			border-radius: 0;
-			${props.minHeightTablet &&
-			`
-				min-height: 128px;
-			`}
+			min-height: ${props.minHeightTablet ? '128px' : 'auto'};
 		}
 	`;
 
