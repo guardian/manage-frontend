@@ -15,7 +15,7 @@ import {
 import { useContext } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromInterval } from '../../../../shared/productTypes';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
@@ -70,7 +70,7 @@ const SwitchOptions = () => {
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
 
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromInterval(
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		mainPlan.billingPeriod,
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;

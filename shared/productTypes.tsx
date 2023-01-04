@@ -235,8 +235,9 @@ const calculateProductTitle =
 const calculateSupporterPlusTitle = (billingPeriod: string) =>
 	billingPeriod === 'month' ? 'monthly + extras' : 'annual + extras';
 
-export const calculateMonthlyOrAnnualFromInterval = (billingPeriod: string) =>
-	billingPeriod === 'month' ? 'Monthly' : 'Annual';
+export const calculateMonthlyOrAnnualFromBillingPeriod = (
+	billingPeriod: string,
+) => (billingPeriod === 'month' ? 'Monthly' : 'Annual');
 
 const FRONT_PAGE_NEWSLETTER_ID = '6009';
 enum SOFT_OPT_IN_IDS {
@@ -315,7 +316,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			}
 
 			const paidPlan = mainPlan as PaidSubscriptionPlan;
-			return `${calculateMonthlyOrAnnualFromInterval(
+			return `${calculateMonthlyOrAnnualFromBillingPeriod(
 				paidPlan.billingPeriod,
 			)} contribution`;
 		},
@@ -613,10 +614,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 				return 'recurring support';
 			}
 
-			const interval = (
+			const billingPeriod = (
 				getMainPlan(productDetail.subscription) as PaidSubscriptionPlan
 			).billingPeriod;
-			return calculateSupporterPlusTitle(interval);
+			return calculateSupporterPlusTitle(billingPeriod);
 		},
 		productType: 'supporterplus',
 		groupedProductType: 'recurringSupport',
@@ -634,13 +635,13 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			alternateSummaryMainPara:
 				"This is immediate and you will not be charged again. If you've cancelled within the first 14 days, we'll send you a full refund.",
 			alternateSummaryHeading: (productDetail: ProductDetail) => {
-				const interval = (
+				const billingPeriod = (
 					getMainPlan(
 						productDetail.subscription,
 					) as PaidSubscriptionPlan
 				).billingPeriod;
-				return `${calculateMonthlyOrAnnualFromInterval(
-					interval,
+				return `${calculateMonthlyOrAnnualFromBillingPeriod(
+					billingPeriod,
 				)} support + extras cancelled`;
 			},
 			linkOnProductPage: true,
