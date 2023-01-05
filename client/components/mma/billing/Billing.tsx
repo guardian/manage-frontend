@@ -12,7 +12,7 @@ import { Fragment } from 'react';
 import { parseDate } from '../../../../shared/dates';
 import type {
 	InvoiceDataApiItem,
-	MembersDataApiItem,
+	MembersDataApiResponse,
 	PaidSubscriptionPlan,
 	ProductDetail,
 } from '../../../../shared/productResponse';
@@ -20,6 +20,7 @@ import {
 	getMainPlan,
 	isGift,
 	isProduct,
+	mdapiResponseReader,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
@@ -45,14 +46,14 @@ type MMACategoryToProductDetails = {
 };
 
 class BillingDataAsyncLoader extends AsyncLoader<
-	[MembersDataApiItem[], { invoices: InvoiceDataApiItem[] }]
+	[MembersDataApiResponse, { invoices: InvoiceDataApiItem[] }]
 > {}
 
 const BillingRenderer = ([mdaResponse, invoiceResponse]: [
-	MembersDataApiItem[],
+	MembersDataApiResponse,
 	{ invoices: InvoiceDataApiItem[] },
 ]) => {
-	const allProductDetails = mdaResponse
+	const allProductDetails = mdaResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
 	const invoiceData = invoiceResponse.invoices.sort(
@@ -322,6 +323,7 @@ const Billing = () => {
 				fetch={billingFetcher}
 				render={BillingRenderer}
 				loadingMessage={`Loading your billing details...`}
+				readerOnOK={mdapiResponseReader}
 			/>
 		</PageContainer>
 	);
