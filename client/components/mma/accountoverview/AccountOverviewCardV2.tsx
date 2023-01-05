@@ -205,7 +205,7 @@ export const AccountOverviewCardV2 = ({
 		<Card>
 			<Card.Header
 				backgroundColor={cardConfig.headerColor}
-				minHeightTablet={true}
+				minHeightTablet
 			>
 				<div
 					css={css`
