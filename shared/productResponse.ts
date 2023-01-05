@@ -10,9 +10,25 @@ import type { GroupedProductTypeKeys, ProductType } from './productTypes';
 export type DeliveryRecordApiItem = DeliveryRecordDetail;
 
 export type MembersDataApiResponse = {
-	user: { firstName: string; lastName: string };
+	user?: { firstName: string; lastName: string };
 	products: MembersDataApiItem[];
 };
+
+export function mdapiResponseReader<MembersDataApiResponse>(
+	response: Response,
+): Promise<MembersDataApiResponse> {
+	return response.json().then((bodyJson) => {
+		if (Array.isArray(bodyJson)) {
+			return Promise.resolve({
+				products: bodyJson,
+			});
+		} else if (!!bodyJson.user || !!bodyJson.products) {
+			return Promise.resolve(bodyJson);
+		} else {
+			Promise.reject('MDAPI Response is of invalid format');
+		}
+	});
+}
 
 export type MembersDataApiItem = ProductDetail | {};
 
