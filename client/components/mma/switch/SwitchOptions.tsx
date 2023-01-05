@@ -76,6 +76,14 @@ const buttonStuckCss = css`
 	}
 `;
 
+const fromAppHeadingCss = css`
+	${textSans.large({ fontWeight: 'bold' })}
+	color:${palette.brand[500]};
+	line-height: 1.35;
+	border: 0;
+	margin-bottom: 0;
+`;
+
 const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 
@@ -122,6 +130,24 @@ const SwitchOptions = () => {
 
 	return (
 		<>
+			{switchContext.isFromApp && (
+				<div css={sectionSpacing}>
+					<h2 css={fromAppHeadingCss}>
+						Change your support to unlock unlimited reading in our
+						news app
+					</h2>
+					<p
+						css={css`
+							${textSans.medium()}
+						`}
+					>
+						To unlock unlimited reading in our news app, please make
+						a small change to your support type. If this doesn't
+						suit you, no change is needed, but not you will continue
+						to have limited app access.
+					</p>
+				</div>
+			)}
 			<section css={sectionSpacing}>
 				<Heading
 					sansSerif

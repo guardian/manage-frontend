@@ -20,10 +20,13 @@ export interface SwitchRouterState {
 
 export interface SwitchContextInterface {
 	productDetail: ProductDetail;
+	isFromApp: Boolean;
 }
 
 export const SwitchContext: Context<SwitchContextInterface | {}> =
 	createContext({});
+
+const isFromApp = () => window?.location.hash.includes('from-app');
 
 const renderSingleProductOrReturnToAccountOverview = (
 	data: MembersDataApiItem[],
@@ -31,13 +34,19 @@ const renderSingleProductOrReturnToAccountOverview = (
 	const filteredProductDetails = data.filter(isProduct);
 
 	if (filteredProductDetails.length === 1) {
-		return contextAndOutletContainer(filteredProductDetails[0]);
+		return contextAndOutletContainer(
+			filteredProductDetails[0],
+			isFromApp(),
+		);
 	}
 	return <Navigate to="/" />;
 };
 
-const contextAndOutletContainer = (productDetail: ProductDetail) => (
-	<SwitchContext.Provider value={{ productDetail }}>
+const contextAndOutletContainer = (
+	productDetail: ProductDetail,
+	isFromApp: Boolean,
+) => (
+	<SwitchContext.Provider value={{ productDetail, isFromApp }}>
 		<Outlet />
 	</SwitchContext.Provider>
 );
@@ -53,7 +62,7 @@ const SwitchContainer = () => {
 			pageTitle={'Change your support'}
 		>
 			{productDetail ? (
-				contextAndOutletContainer(productDetail)
+				contextAndOutletContainer(productDetail, isFromApp())
 			) : (
 				<MembersDataApiAsyncLoader
 					fetch={createProductDetailFetcher(
