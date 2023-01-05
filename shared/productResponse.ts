@@ -9,6 +9,11 @@ import type { GroupedProductTypeKeys, ProductType } from './productTypes';
 
 export type DeliveryRecordApiItem = DeliveryRecordDetail;
 
+export type MembersDataApiResponse = {
+	user: { firstName: string; lastName: string };
+	products: MembersDataApiItem[];
+};
+
 export type MembersDataApiItem = ProductDetail | {};
 
 export interface InvoiceDataApiItem {
@@ -49,6 +54,7 @@ export interface SelfServiceCancellation {
 	shouldDisplayEmail: boolean;
 	phoneRegionsToDisplay: PhoneRegionKey[];
 }
+
 export interface ProductDetail extends WithSubscription {
 	isTestUser: boolean; // THIS IS NOT PART OF THE members-data-api RESPONSE (but inferred from a header)
 	isPaidTier: boolean;
