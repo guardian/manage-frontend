@@ -246,9 +246,9 @@ const CancellationSwitchReview = () => {
 			return '';
 		}
 
-		return `${plan.currency}${(plan.price / 100).toFixed(2)} per ${
-			plan.billingPeriod
-		}`;
+		return `${plan.currency}${(
+			(plan.price || plan.amount || 0) / 100
+		).toFixed(2)} per ${plan.billingPeriod || plan.interval || ''}`;
 	};
 
 	const arrowIconWidth = 36;
@@ -462,10 +462,11 @@ const CancellationSwitchReview = () => {
 				<p css={[textSans.medium(), measure.copy]}>
 					If you decide to change your support to a{' '}
 					{chosenProduct.name} we’ll stop your{' '}
-					{chosenProduct.billing.billingPeriod.name}ly{' '}
-					{productSwitchContext.productType.friendlyName()} payments
-					straight away and you’ll have immediate access to the
-					benefits of a {chosenProduct.name}.
+					{chosenProduct.billing.billingPeriod?.name ||
+						chosenProduct.billing.interval?.name}
+					ly {productSwitchContext.productType.friendlyName()}{' '}
+					payments straight away and you’ll have immediate access to
+					the benefits of a {chosenProduct.name}.
 				</p>
 			</Stack>
 			<div css={cardLayoutCss}>
@@ -715,7 +716,9 @@ const CancellationSwitchReview = () => {
 							<ul css={listCss}>
 								<li>
 									We'll stop your{' '}
-									{chosenProduct.billing.billingPeriod.name}
+									{chosenProduct.billing.billingPeriod
+										?.name ||
+										chosenProduct.billing.interval?.name}
 									ly{' '}
 									{productSwitchContext.productType.friendlyName()}{' '}
 									payments.

@@ -71,7 +71,7 @@ const SwitchOptions = () => {
 	) as PaidSubscriptionPlan;
 
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
+		mainPlan.billingPeriod || mainPlan.interval || '',
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
 
@@ -81,8 +81,9 @@ const SwitchOptions = () => {
 
 	const threshold =
 		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
-	const aboveThreshold = mainPlan.price >= threshold * 100;
-	const currentAmount = mainPlan.price / 100;
+	const aboveThreshold =
+		(mainPlan.price || mainPlan.amount || 0) >= threshold * 100;
+	const currentAmount = (mainPlan.price || mainPlan.amount || 0) / 100;
 
 	return (
 		<Stack space={3} cssOverrides={pageTopCss}>

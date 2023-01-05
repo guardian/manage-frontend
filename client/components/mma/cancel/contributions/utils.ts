@@ -9,5 +9,8 @@ export const getIsPayingMinAmount = (mainPlan: PaidSubscriptionPlan) => {
 		mainPlan.billingPeriod as ContributionInterval
 	];
 
-	return mainPlan.price / 100 <= currentContributionOptions.minAmount;
+	return (
+		(mainPlan.price || mainPlan.amount || 0) / 100 <=
+		currentContributionOptions.minAmount
+	);
 };

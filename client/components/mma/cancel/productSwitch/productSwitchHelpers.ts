@@ -94,7 +94,9 @@ export const regularPrice = (product: AvailableProductsResponse): string => {
 export const regularBillingFrequency = (
 	product: AvailableProductsResponse,
 ): string => {
-	return `per ${product.billing.billingPeriod.name}`;
+	return `per ${
+		product.billing.billingPeriod?.name || product.billing.interval?.name
+	}`;
 };
 
 /**

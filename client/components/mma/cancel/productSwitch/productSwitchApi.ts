@@ -12,7 +12,11 @@ interface Currency {
 export interface Billing {
 	price: number;
 	currency: Currency;
-	billingPeriod: {
+	billingPeriod?: {
+		name: BillingFrequency;
+		count: number;
+	};
+	interval?: {
 		name: BillingFrequency;
 		count: number;
 	};
@@ -23,7 +27,11 @@ export interface IntroOfferBilling {
 	price?: number;
 	percentage?: number;
 	currency: Currency;
-	billingPeriod: {
+	billingPeriod?: {
+		name: BillingFrequency;
+		count: number;
+	};
+	interval?: {
 		name: BillingFrequency;
 		count: number;
 	};

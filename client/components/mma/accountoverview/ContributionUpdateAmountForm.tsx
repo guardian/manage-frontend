@@ -14,7 +14,7 @@ import {
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { augmentInterval } from '../../../../shared/productResponse';
+import { augmentBillingPeriod } from '../../../../shared/productResponse';
 import type { ProductType } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
@@ -368,7 +368,11 @@ export const ContributionUpdateAmountForm = (
 						`}
 					>
 						{capitalize(
-							augmentInterval(props.mainPlan.billingPeriod),
+							augmentBillingPeriod(
+								props.mainPlan.billingPeriod ||
+									props.mainPlan.interval ||
+									'',
+							),
 						)}{' '}
 						amount
 					</dt>

@@ -16,7 +16,8 @@ export interface InvoiceDataApiItem {
 	subscriptionName: string;
 	date: string;
 	pdfPath: string;
-	price: string;
+	price?: number;
+	amount?: number;
 	paymentMethod: string;
 	hasMultipleSubs: boolean;
 	last4?: string;
@@ -98,14 +99,15 @@ interface SepaDetails {
 	iban: string;
 }
 
-interface CurrencyAndIntervalDetail {
+interface CurrenyAndBillingPeriodDetail {
 	currency: string;
 	currencyISO: string;
-	billingPeriod: string;
+	billingPeriod?: string;
+	interval?: string;
 }
 
 // 6 weeks billingPeriod referes to GW 6 for 6 up front payment (not to be confused with one off contributions which don't come through in this response
-export const augmentInterval = (billingPeriod: string) =>
+export const augmentBillingPeriod = (billingPeriod: string) =>
 	billingPeriod === '6 weeks' ? 'one-off' : `${billingPeriod}ly`;
 
 export const isSixForSix = (planName: string | null) =>
@@ -113,17 +115,22 @@ export const isSixForSix = (planName: string | null) =>
 
 export interface PaidSubscriptionPlan
 	extends SubscriptionPlan,
-		CurrencyAndIntervalDetail {
+		CurrenyAndBillingPeriodDetail {
 	start: string;
 	end: string;
 	chargedThrough?: string | null;
-	price: number;
+	price?: number;
+	amount?: number;
 }
 
 export function isPaidSubscriptionPlan(
 	subscriptionPlan: SubscriptionPlan,
 ): subscriptionPlan is PaidSubscriptionPlan {
-	return !!subscriptionPlan && subscriptionPlan.hasOwnProperty('price');
+	return (
+		!!subscriptionPlan &&
+		(subscriptionPlan.hasOwnProperty('price') ||
+			subscriptionPlan.hasOwnProperty('amount'))
+	);
 }
 
 export interface DeliveryAddress {
