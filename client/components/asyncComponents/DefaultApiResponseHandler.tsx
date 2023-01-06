@@ -1,10 +1,10 @@
-import type ResultHandler from './ResultHandler';
+import type ResponseProcessor from './ResponseProcessor';
 
-export const JsonResponseHandler: ResultHandler = (response: Response) => {
+export const JsonResponseHandler: ResponseProcessor = (response: Response) => {
 	return handleAResponses(response, (r: Response) => r.json());
 };
 
-export const TextResponseHandler: ResultHandler = (response: Response) => {
+export const TextResponseHandler: ResponseProcessor = (response: Response) => {
 	return handleAResponses(response, (r: Response) => r.text());
 };
 

@@ -3,14 +3,13 @@ import { render, screen } from '@testing-library/react';
 import { DefaultErrorView } from '../components/asyncComponents/DefaultErrorView';
 import { DefaultLoadingView } from '../components/asyncComponents/DefaultLoadingView';
 import { LoadingComponent } from '../components/asyncComponents/LoadingComponent';
-import type ResultHandler from '../components/asyncComponents/ResultHandler';
+import type ResponseProcessor from '../components/asyncComponents/ResponseProcessor';
 
 function asyncFetcher() {
 	return Promise.resolve('test');
 }
 
-const TestResponseHandler: ResultHandler = (response: Response) => {
-	console.log('res', response);
+const TestResponseHandler: ResponseProcessor = (response: Response) => {
 	return Promise.resolve(response);
 };
 //const ErroringResponseHandler: ResultHandler = (_: Response) => { throw 'Errored out' };
@@ -20,7 +19,7 @@ it('renders loading message and loaded message', async () => {
 	render(
 		<LoadingComponent
 			asyncFetch={asyncFetcher}
-			resultHandler={TestResponseHandler}
+			responseProcessor={TestResponseHandler}
 			LoadingView={DefaultLoadingView}
 			LoadedView={() => <div>Loaded</div>}
 			ErrorView={DefaultErrorView}
@@ -35,7 +34,7 @@ it('renders custom loading view', async () => {
 	render(
 		<LoadingComponent
 			asyncFetch={asyncFetcher}
-			resultHandler={TestResponseHandler}
+			responseProcessor={TestResponseHandler}
 			LoadingView={() => <div>My Custom Loading View</div>}
 			LoadedView={() => <div>Loaded</div>}
 			ErrorView={DefaultErrorView}
