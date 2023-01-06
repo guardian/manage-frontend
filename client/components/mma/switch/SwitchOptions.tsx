@@ -131,10 +131,7 @@ const SwitchOptions = () => {
 					Your current support
 				</Heading>
 				<Card>
-					<Card.Header
-						backgroundColor={palette.brand[600]}
-						headerHeight={0}
-					>
+					<Card.Header backgroundColor={palette.brand[600]}>
 						<div css={cardHeaderDivCss}>
 							<h3 css={productTitleCss}>
 								{monthlyOrAnnual} support
@@ -177,10 +174,7 @@ const SwitchOptions = () => {
 					benefits
 				</p>
 				<Card>
-					<Card.Header
-						backgroundColor={palette.brand[500]}
-						headerHeight={0}
-					>
+					<Card.Header backgroundColor={palette.brand[500]}>
 						<div css={cardHeaderDivCss}>
 							<h3 css={productTitleCss}>{supporterPlusTitle}</h3>
 							{!aboveThreshold && (

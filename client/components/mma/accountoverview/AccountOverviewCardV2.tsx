@@ -203,7 +203,10 @@ export const AccountOverviewCardV2 = ({
 
 	return (
 		<Card>
-			<Card.Header backgroundColor={cardConfig.headerColor}>
+			<Card.Header
+				backgroundColor={cardConfig.headerColor}
+				minHeightTablet
+			>
 				<div
 					css={css`
 						display: flex;
