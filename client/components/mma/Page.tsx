@@ -1,10 +1,9 @@
 import { css } from '@emotion/react';
 import {
-	brand,
 	breakpoints,
 	from,
 	headline,
-	neutral,
+	palette,
 	space,
 	textSans,
 } from '@guardian/source-foundations';
@@ -41,55 +40,44 @@ interface PageHeaderContainerProps extends LeftSideNavProps {
 }
 
 const PageHeaderContainer = (props: PageHeaderContainerProps) => {
-	const gridBasev2 = () => {
-		return `
-      display: grid;
-      display: -ms-grid;
-      -ms-grid-columns: (minmax(0, 1fr))[${gridColumns.default}];
-      grid-template-columns: repeat(${gridColumns.default}, minmax(0, 1fr));
-      grid-auto-columns: max-content;
-      column-gap: ${space[5]}px;
-      ${from.tablet} {
-        padding-left: ${space[5]}px;
-        padding-right: ${space[5]}px;
-        -ms-grid-columns: (minmax(0, 1fr))[${gridColumns.tabletAndDesktop}];
-        grid-template-columns: repeat(${gridColumns.tabletAndDesktop}, minmax(0, 1fr));
-      };
-      ${from.wide} {
-        -ms-grid-columns: (minmax(0, 1fr))[${gridColumns.wide}];
-        grid-template-columns: repeat(${gridColumns.wide}, minmax(0, 1fr));
-      };
-    `;
-	};
+	const gridBasev2 = css`
+		display: grid;
+		grid-template-columns: repeat(${gridColumns.default}, minmax(0, 1fr));
+		grid-auto-columns: max-content;
+		column-gap: ${space[5]}px;
+		${from.tablet} {
+			padding-left: ${space[5]}px;
+			padding-right: ${space[5]}px;
+			grid-template-columns: repeat(
+				${gridColumns.tabletAndDesktop},
+				minmax(0, 1fr)
+			);
+		}
+		${from.wide} {
+			grid-template-columns: repeat(${gridColumns.wide}, minmax(0, 1fr));
+		} ;
+	`;
+
 	const gridItemPlacementv2 = (
 		targetRow: number = 1,
 		rowSpan: number = 1,
 		startingPos: number,
 		span: number,
-		columnsBreakpoint: number = gridColumns.default,
 	) => {
 		return `
-      grid-column-start: ${startingPos};
-      grid-column-end: span ${span};
-      grid-row-start: ${targetRow};
-      grid-row-end: span ${rowSpan};
-      ${startingPos > 0 ? `-ms-grid-column: ${startingPos};` : ''}
-      ${
-			startingPos < 0
-				? `-ms-grid-column: ${columnsBreakpoint + 2 + startingPos};`
-				: ''
-		}
-      -ms-grid-column-span: ${span};
-      -ms-grid-row: ${targetRow};
-    `;
+			grid-column-start: ${startingPos};
+			grid-column-end: span ${span};
+			grid-row-start: ${targetRow};
+			grid-row-end: span ${rowSpan};
+		`;
 	};
 	return (
 		<div
 			css={css`
-				border-bottom: 1px solid ${neutral['86']};
+				border-bottom: 1px solid ${palette.neutral['86']};
 				margin-left: auto;
 				margin-right: auto;
-				background: #0a1f47;
+				background: ${palette.brand[300]};
 				${from.tablet} {
 					${!props.breadcrumbs && `padding-top: 100px;`}
 				}
@@ -104,8 +92,8 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 					padding-right: ${space[3]}px;
 					max-width: calc(${breakpoints.wide}px + 2.5rem);
 					margin: auto;
-					color: ${neutral['100']};
-					${gridBasev2()}
+					color: ${palette.neutral['100']};
+					${gridBasev2};
 				`}
 			>
 				{props.breadcrumbs && (
@@ -134,7 +122,7 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 										to={breadcrumbItem.link}
 										css={css`
 											${textSans.medium()};
-											color: ${neutral[100]};
+											color: ${palette.neutral[100]};
 										`}
 									>
 										{breadcrumbItem.title}
@@ -148,7 +136,7 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 														? 'bold'
 														: 'regular',
 											})};
-											color: ${neutral[100]};
+											color: ${palette.neutral[100]};
 										`}
 									>
 										{breadcrumbItem.title}
@@ -166,11 +154,11 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 					css={css`
 						max-width: calc(${breakpoints.wide}px + 2.5rem);
 						margin: 32px 0 0 0;
-						color: ${neutral['100']};
+						color: ${palette.neutral['100']};
 						${headline.medium({ fontWeight: 'bold' })};
 						font-size: 1.5rem;
 						padding: 8px;
-						border: 1px solid ${brand[600]};
+						border: 1px solid ${palette.brand[600]};
 						border-bottom: 0;
 						${from.tablet} {
 							line-height: 57px;
@@ -180,37 +168,37 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 
 						${props.breadcrumbs
 							? `
-                ${gridItemPlacementv2(2, 1, 1, 4)};
-                ${from.mobileMedium} {
-                  ${gridItemPlacementv2(2, 1, 1, 3)};
-                };
-                ${from.tablet} {
-                  ${gridItemPlacementv2(2, 1, 1, 10)};
-                };
-                ${from.desktop} {
-                  ${gridItemPlacementv2(2, 1, 5, 8)};
-                  font-size: 2.625rem;
-                };
-                ${from.wide} {
-                  ${gridItemPlacementv2(2, 1, 6, 10)};
-                };
-              `
+							${gridItemPlacementv2(2, 1, 1, 4)};
+							${from.mobileMedium} {
+								${gridItemPlacementv2(2, 1, 1, 3)};
+							};
+							${from.tablet} {
+								${gridItemPlacementv2(2, 1, 1, 10)};
+							};
+							${from.desktop} {
+								${gridItemPlacementv2(2, 1, 5, 8)};
+								font-size: 2.625rem;
+							};
+							${from.wide} {
+								${gridItemPlacementv2(2, 1, 6, 10)};
+							};
+						`
 							: `
-                ${gridItemPlacementv2(1, 1, 1, 4)};
-                ${from.mobileMedium} {
-                  ${gridItemPlacementv2(1, 1, 1, 3)};
-                };
-                ${from.tablet} {
-                  ${gridItemPlacementv2(1, 1, 1, 10)};
-                };
-                ${from.desktop} {
-                  ${gridItemPlacementv2(1, 1, 5, 8)};
-                  font-size: 2.625rem;
-                };
-                ${from.wide} {
-                  ${gridItemPlacementv2(1, 1, 6, 10)};
-                };
-              `}
+							${gridItemPlacementv2(1, 1, 1, 4)};
+							${from.mobileMedium} {
+								${gridItemPlacementv2(1, 1, 1, 3)};
+							};
+							${from.tablet} {
+								${gridItemPlacementv2(1, 1, 1, 10)};
+							};
+							${from.desktop} {
+								${gridItemPlacementv2(1, 1, 5, 8)};
+								font-size: 2.625rem;
+							};
+							${from.wide} {
+								${gridItemPlacementv2(1, 1, 6, 10)};
+							};
+						`}
 					`}
 				>
 					{props.title || <>&nbsp;</>}
