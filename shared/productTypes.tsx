@@ -317,7 +317,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 
 			const paidPlan = mainPlan as PaidSubscriptionPlan;
 			return `${calculateMonthlyOrAnnualFromBillingPeriod(
-				paidPlan.billingPeriod || paidPlan.interval || '',
+				paidPlan.billingPeriod,
 			)} contribution`;
 		},
 		friendlyName: () => 'recurring contribution',
@@ -606,9 +606,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 
 			const paidMainPlan = mainPlan as PaidSubscriptionPlan;
 			return `${capitalize(
-				calculateSupporterPlusTitle(
-					paidMainPlan.billingPeriod || paidMainPlan.interval || '',
-				),
+				calculateSupporterPlusTitle(paidMainPlan.billingPeriod),
 			)}`;
 		},
 		friendlyName: (productDetail?: ProductDetail) => {
@@ -616,18 +614,9 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 				return 'recurring support';
 			}
 
-			const billingPeriod =
-				(
-					getMainPlan(
-						productDetail.subscription,
-					) as PaidSubscriptionPlan
-				).billingPeriod ||
-				(
-					getMainPlan(
-						productDetail.subscription,
-					) as PaidSubscriptionPlan
-				).interval ||
-				'';
+			const billingPeriod = (
+				getMainPlan(productDetail.subscription) as PaidSubscriptionPlan
+			).billingPeriod;
 			return calculateSupporterPlusTitle(billingPeriod);
 		},
 		productType: 'supporterplus',
@@ -646,18 +635,11 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			alternateSummaryMainPara:
 				"This is immediate and you will not be charged again. If you've cancelled within the first 14 days, we'll send you a full refund.",
 			alternateSummaryHeading: (productDetail: ProductDetail) => {
-				const billingPeriod =
-					(
-						getMainPlan(
-							productDetail.subscription,
-						) as PaidSubscriptionPlan
-					).billingPeriod ||
-					(
-						getMainPlan(
-							productDetail.subscription,
-						) as PaidSubscriptionPlan
-					).interval ||
-					'';
+				const billingPeriod = (
+					getMainPlan(
+						productDetail.subscription,
+					) as PaidSubscriptionPlan
+				).billingPeriod;
 				return `${calculateMonthlyOrAnnualFromBillingPeriod(
 					billingPeriod,
 				)} support + extras cancelled`;

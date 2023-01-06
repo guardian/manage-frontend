@@ -368,11 +368,7 @@ export const ContributionUpdateAmountForm = (
 						`}
 					>
 						{capitalize(
-							augmentBillingPeriod(
-								props.mainPlan.billingPeriod ||
-									props.mainPlan.interval ||
-									'',
-							),
+							augmentBillingPeriod(props.mainPlan.billingPeriod),
 						)}{' '}
 						amount
 					</dt>

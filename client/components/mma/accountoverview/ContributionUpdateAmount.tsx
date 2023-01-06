@@ -33,8 +33,7 @@ export const ContributionUpdateAmount = (
 	const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
 
 	const mainPlan = props.mainPlan;
-	const currentAmount =
-		confirmedAmount || (mainPlan.price || mainPlan.amount || 0) / 100;
+	const currentAmount = confirmedAmount || mainPlan.price / 100;
 
 	if (status === Status.EDITING) {
 		return (
@@ -74,11 +73,7 @@ export const ContributionUpdateAmount = (
 					},
 					{
 						title: `${capitalize(
-							augmentBillingPeriod(
-								props.mainPlan.billingPeriod ||
-									props.mainPlan.interval ||
-									'',
-							),
+							augmentBillingPeriod(props.mainPlan.billingPeriod),
 						)} amount`,
 						value: `${
 							props.mainPlan.currency
