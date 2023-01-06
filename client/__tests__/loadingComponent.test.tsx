@@ -1,19 +1,20 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { DefaultErrorView } from '../components/asyncComponents/DefaultErrorView';
-import { DefaultLoadingView } from '../components/asyncComponents/DefaultLoadingView';
-import { LoadingComponent } from '../components/asyncComponents/LoadingComponent';
-import type ResponseProcessor from '../components/asyncComponents/ResponseProcessor';
+import { DefaultErrorView } from '../components/mma/shared/asyncComponents/DefaultErrorView';
+import { DefaultLoadingView } from '../components/mma/shared/asyncComponents/DefaultLoadingView';
+import { LoadingComponent } from '../components/mma/shared/asyncComponents/LoadingComponent';
+import type ResponseProcessor from '../components/mma/shared/asyncComponents/ResponseProcessor';
 
 function asyncFetcher() {
-	return Promise.resolve('test');
+	return Promise.resolve('This is the test data returned');
 }
 
 const TestResponseHandler: ResponseProcessor = (response: Response) => {
 	return Promise.resolve(response);
 };
-//const ErroringResponseHandler: ResultHandler = (_: Response) => { throw 'Errored out' };
-// TURN THIS INTO TESTS
+const ErroringResponseHandler: ResponseProcessor = (_: Response) => {
+	throw 'Errored out';
+};
 
 it('renders loading message and loaded message', async () => {
 	render(
@@ -27,7 +28,7 @@ it('renders loading message and loaded message', async () => {
 	);
 
 	expect(screen.getByText('Loading')).toBeInTheDocument();
-	await screen.findByText('Loaded');
+	expect(await screen.findByText('Loaded')).toBeVisible();
 });
 
 it('renders custom loading view', async () => {
@@ -42,27 +43,35 @@ it('renders custom loading view', async () => {
 	);
 
 	expect(screen.getByText('My Custom Loading View')).toBeInTheDocument();
-	await screen.findByText('Loaded');
+	expect(await screen.findByText('Loaded')).toBeVisible();
 });
 
-// it('renders custom error view', async () => {
-//     render(<LoadingComponent asyncFetch={asyncFetcher}
-//         resultHandler={ErroringResponseHandler}
-//         LoadingView={DefaultLoadingView}
-//         LoadedView={() => <div>Loaded</div>}
-//         ErrorView={() => <div>Custom Error</div>}
-//     />);
+it('renders custom error view when error occurs', async () => {
+	render(
+		<LoadingComponent
+			asyncFetch={asyncFetcher}
+			responseProcessor={ErroringResponseHandler}
+			LoadingView={DefaultLoadingView}
+			LoadedView={() => <div>Loaded</div>}
+			ErrorView={() => <div>Custom Error</div>}
+		/>,
+	);
 
-//     await screen.findByText('Custom Error');
-// })
+	expect(await screen.findByText('Custom Error')).toBeVisible();
+});
 
-// it('renders data fetched async', async () => {
-//     render(<LoadingComponent asyncFetch={asyncFetcher}
-//         resultHandler={TestResponseHandler}
-//         LoadingView={DefaultLoadingView}
-//         LoadedView={(data) => <div>{data}</div>}
-//         ErrorView={DefaultErrorView}
-//     />);
+it('renders data fetched async', async () => {
+	render(
+		<LoadingComponent
+			asyncFetch={asyncFetcher}
+			responseProcessor={TestResponseHandler}
+			LoadingView={DefaultLoadingView}
+			LoadedView={({ data }) => <div>{data}</div>}
+			ErrorView={DefaultErrorView}
+		/>,
+	);
 
-//     await screen.findByText('test');
-// })
+	expect(
+		await screen.findByText('This is the test data returned'),
+	).toBeVisible();
+});

@@ -1,4 +1,4 @@
-import { GenericErrorScreen } from "../shared/GenericErrorScreen";
+import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 
 export function DefaultErrorView() {
 	return <GenericErrorScreen loggingMessage={false} />;

@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
-import { trackEvent } from '../../utilities/analytics';
+import { trackEvent } from '../../../../utilities/analytics';
 import type ResponseProcessor from './ResponseProcessor';
 
 export default function useAsyncLoader<T>(

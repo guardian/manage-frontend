@@ -1,5 +1,5 @@
-import { Spinner } from '../spinner';
-import { WithStandardTopMargin } from '../WithStandardTopMargin';
+import { Spinner } from '../../../shared/Spinner';
+import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
 
 export function DefaultLoadingView() {
 	return (
