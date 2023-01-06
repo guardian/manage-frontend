@@ -77,10 +77,8 @@ const buttonStuckCss = css`
 `;
 
 const fromAppHeadingCss = css`
-	${textSans.large({ fontWeight: 'bold' })}
+	${textSans.large({ fontWeight: 'bold', lineHeight: 'regular' })}
 	color:${palette.brand[500]};
-	line-height: 1.35;
-	border: 0;
 	margin-bottom: 0;
 `;
 
@@ -143,8 +141,8 @@ const SwitchOptions = () => {
 					>
 						To unlock unlimited reading in our news app, please make
 						a small change to your support type. If this doesn't
-						suit you, no change is needed, but note you will continue
-						to have limited app access.
+						suit you, no change is needed, but note you will
+						continue to have limited app access.
 					</p>
 				</div>
 			)}
