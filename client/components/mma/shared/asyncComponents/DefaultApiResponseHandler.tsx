@@ -1,19 +1,23 @@
 import type ResponseProcessor from './ResponseProcessor';
 
-export const JsonResponseHandler: ResponseProcessor = (response: Response) => {
-	return handleAResponses(response, (r: Response) => r.json());
+export const JsonResponseHandler: ResponseProcessor = (
+	response: Response | Response[],
+) => {
+	return handleResponses(response, (r: Response) => r.json());
 };
 
-export const TextResponseHandler: ResponseProcessor = (response: Response) => {
-	return handleAResponses(response, (r: Response) => r.text());
+export const TextResponseHandler: ResponseProcessor = (
+	response: Response | Response[],
+) => {
+	return handleResponses(response, (r: Response) => r.text());
 };
 
-function handleAResponses(
-	response: Response,
+function handleResponses(
+	response: Response | Response[],
 	transformResponse: any,
 ): Promise<any> {
 	if (hasBadResponse(response)) {
-		throw new Error(`${response.status} (${response.statusText})`);
+		throw new Error('Invalid API response');
 	}
 
 	if (Array.isArray(response)) {

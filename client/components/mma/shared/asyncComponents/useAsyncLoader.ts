@@ -28,9 +28,7 @@ export default function useAsyncLoader<T>(
 	useEffect(() => {
 		promiseFromAsyncFetch
 			.then((response) => responseProcessor(response))
-			.then((r) => {
-				setData(r);
-			})
+			.then(setData)
 			.catch((e) => handleError(e))
 			.finally(() => setIsLoading(false));
 	}, [promiseFromAsyncFetch]);

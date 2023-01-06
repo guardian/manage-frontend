@@ -1,3 +1,3 @@
 export default interface ResponseProcessor {
-	(resp: Response): Promise<any>;
+	(resp: Response | Response[]): Promise<any>;
 }

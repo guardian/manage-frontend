@@ -9,10 +9,13 @@ function asyncFetcher() {
 	return Promise.resolve('This is the test data returned');
 }
 
-const TestResponseHandler: ResponseProcessor = (response: Response) => {
+const TestResponseHandler: ResponseProcessor = (
+	response: Response | Response[],
+) => {
 	return Promise.resolve(response);
 };
-const ErroringResponseHandler: ResponseProcessor = (_: Response) => {
+
+const ErroringResponseHandler: ResponseProcessor = () => {
 	throw 'Errored out';
 };
 
