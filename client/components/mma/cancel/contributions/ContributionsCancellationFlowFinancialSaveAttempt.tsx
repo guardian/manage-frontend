@@ -120,7 +120,9 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 
 					{showAmountUpdateForm ? (
 						<ContributionUpdateAmountForm
-							currentAmount={mainPlan.amount / 100}
+							currentAmount={
+								(mainPlan.price || mainPlan.amount || 0) / 100
+							}
 							subscriptionId={
 								productDetail.subscription.subscriptionId
 							}

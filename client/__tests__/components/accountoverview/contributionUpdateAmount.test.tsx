@@ -3,7 +3,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ContributionUpdateAmount } from '../../../components/mma/accountoverview/ContributionUpdateAmount';
 
-const mainPlan = (interval) => ({
+const mainPlan = (billingPeriod) => ({
 	start: '2019-10-30',
 	end: '2050-10-30',
 	amount: 500,
@@ -11,7 +11,7 @@ const mainPlan = (interval) => ({
 	shouldBeVisible: false,
 	currency: '£',
 	currencyISO: 'GBP',
-	interval,
+	billingPeriod,
 });
 
 const productType = {
@@ -25,11 +25,11 @@ it.each([
 	['year', 10],
 ])(
 	'renders validation error if %s amount below %i',
-	(interval, expectedMinAmount) => {
+	(billingPeriod, expectedMinAmount) => {
 		const { container } = render(
 			<ContributionUpdateAmount
 				subscriptionId="A-123"
-				mainPlan={mainPlan(interval)}
+				mainPlan={mainPlan(billingPeriod)}
 				amountUpdateStateChange={jest.fn()}
 				nextPaymentDate="2050-10-29"
 				productType={productType}
@@ -51,7 +51,7 @@ it.each([
 		// assert that the minimum amount validation error message is shown
 		expect(
 			screen.queryByText(
-				`There is a minimum ${interval}ly contribution amount of £${expectedMinAmount.toFixed(
+				`There is a minimum ${billingPeriod}ly contribution amount of £${expectedMinAmount.toFixed(
 					2,
 				)} GBP`,
 			),
@@ -64,11 +64,11 @@ it.each([
 	['year', 2000],
 ])(
 	'renders validation error if %s amount above %i',
-	(interval, expectedMaxAmount) => {
+	(billingPeriod, expectedMaxAmount) => {
 		const { container } = render(
 			<ContributionUpdateAmount
 				subscriptionId="A-123"
-				mainPlan={mainPlan(interval)}
+				mainPlan={mainPlan(billingPeriod)}
 				amountUpdateStateChange={jest.fn()}
 				nextPaymentDate="2050-10-29"
 				productType={productType}
@@ -90,7 +90,7 @@ it.each([
 		// assert that the maximum amount validation error message is shown
 		expect(
 			screen.queryByText(
-				`There is a maximum ${interval}ly contribution amount of £${expectedMaxAmount.toFixed(
+				`There is a maximum ${billingPeriod}ly contribution amount of £${expectedMaxAmount.toFixed(
 					2,
 				)} GBP`,
 			),

@@ -60,8 +60,10 @@ const CancellationSwitchConfirmed = () => {
 			<Stack space={3}>
 				<Heading>Your {newProduct.name} is now active</Heading>
 				<p css={[textSans.medium(), measure.copy]}>
-					Your {newProduct.billing.frequency.name}ly{' '}
-					{productSwitchContext.productType.friendlyName()} has
+					Your{' '}
+					{newProduct.billing.billingPeriod?.name ||
+						newProduct.billing.interval?.name}
+					ly {productSwitchContext.productType.friendlyName()} has
 					successfully been changed to a {newProduct.name}. We’ve
 					stopped your previous payments and started you on your new
 					plan. Please check your inbox for an email containing all
@@ -134,7 +136,9 @@ const CancellationSwitchConfirmed = () => {
 							your benefits.
 						</li>
 						<li>
-							We'll stop your {newProduct.billing.frequency.name}
+							We'll stop your{' '}
+							{newProduct.billing.billingPeriod?.name ||
+								newProduct.billing.interval?.name}
 							ly {productSwitchContext.productType.friendlyName()}{' '}
 							payments.
 						</li>

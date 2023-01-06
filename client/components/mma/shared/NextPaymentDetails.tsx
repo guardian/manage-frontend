@@ -6,7 +6,7 @@ import type {
 	SubscriptionPlan,
 } from '../../../../shared/productResponse';
 import {
-	augmentInterval,
+	augmentBillingPeriod,
 	isPaidSubscriptionPlan,
 	isSixForSix,
 } from '../../../../shared/productResponse';
@@ -39,18 +39,22 @@ export const getNextPaymentDetails = (
 			subscription.currentPlans.length !== 0 &&
 			isSixForSix(mainPlan.name) &&
 			planAfterMainPlan
-				? planAfterMainPlan.interval
-				: mainPlan.interval;
+				? planAfterMainPlan.billingPeriod ||
+				  planAfterMainPlan.interval ||
+				  ''
+				: mainPlan.billingPeriod || mainPlan.interval || '';
 
-		const paymentKey = `Next ${augmentInterval(paymentInterval)} payment`;
+		const paymentKey = `Next ${augmentBillingPeriod(
+			paymentInterval,
+		)} payment`;
 
 		const paymentValue =
 			subscription.readerType === 'Patron'
 				? 'not applicable'
 				: `${mainPlan.currency}${(
 						overiddenAmount ||
-						(subscription.nextPaymentPrice ?? mainPlan.amount) /
-							100.0
+						(subscription.nextPaymentPrice ??
+							(mainPlan.price || mainPlan.amount || 0)) / 100.0
 				  ).toFixed(2)} ${mainPlan.currencyISO}`;
 
 		const nextPaymentDateValue =
@@ -66,7 +70,8 @@ export const getNextPaymentDetails = (
 
 		const isNewPaymentValue =
 			planAfterMainPlan &&
-			mainPlan.amount !== planAfterMainPlan.amount &&
+			(mainPlan.price || mainPlan.amount || 0) !==
+				planAfterMainPlan.price &&
 			!isSixForSix(mainPlan.name);
 
 		return {

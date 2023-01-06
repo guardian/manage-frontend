@@ -5,7 +5,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { parseDate } from '../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { augmentInterval } from '../../../../shared/productResponse';
+import { augmentBillingPeriod } from '../../../../shared/productResponse';
 import type { ProductType } from '../../../../shared/productTypes';
 import { SuccessMessage } from '../delivery/address/DeliveryAddressConfirmation';
 import { Button } from '../shared/Buttons';
@@ -32,7 +32,9 @@ export const ContributionUpdateAmount = (
 	const [status, setStatus] = useState<Status>(Status.OVERVIEW);
 	const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
 
-	const currentAmount = confirmedAmount || props.mainPlan.amount / 100;
+	const mainPlan = props.mainPlan;
+	const currentAmount =
+		confirmedAmount || (mainPlan.price || mainPlan.amount || 0) / 100;
 
 	if (status === Status.EDITING) {
 		return (
@@ -72,7 +74,11 @@ export const ContributionUpdateAmount = (
 					},
 					{
 						title: `${capitalize(
-							augmentInterval(props.mainPlan.interval),
+							augmentBillingPeriod(
+								props.mainPlan.billingPeriod ||
+									props.mainPlan.interval ||
+									'',
+							),
 						)} amount`,
 						value: `${
 							props.mainPlan.currency

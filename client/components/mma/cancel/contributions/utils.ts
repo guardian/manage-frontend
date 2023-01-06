@@ -6,8 +6,11 @@ export const getIsPayingMinAmount = (mainPlan: PaidSubscriptionPlan) => {
 	const currentContributionOptions = (contributionAmountsLookup[
 		mainPlan.currencyISO
 	] || contributionAmountsLookup.international)[
-		mainPlan.interval as ContributionInterval
+		mainPlan.billingPeriod as ContributionInterval
 	];
 
-	return mainPlan.amount / 100 <= currentContributionOptions.minAmount;
+	return (
+		(mainPlan.price || mainPlan.amount || 0) / 100 <=
+		currentContributionOptions.minAmount
+	);
 };

@@ -151,10 +151,13 @@ const BillingRenderer = ([mdaResponse, invoiceResponse]: [
 											productUrlPart:
 												specificProductType.urlPart,
 										}));
-									const resultsPerPage =
-										paidPlan.interval?.includes('year')
-											? productInvoiceData.length
-											: 6;
+									const resultsPerPage = (
+										paidPlan.billingPeriod ||
+										paidPlan.interval ||
+										''
+									)?.includes('year')
+										? productInvoiceData.length
+										: 6;
 									return (
 										<Fragment
 											key={
