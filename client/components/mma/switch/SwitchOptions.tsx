@@ -40,7 +40,6 @@ const productTitleCss = css`
 	color: ${palette.neutral[100]};
 	margin: 0;
 	max-width: 20ch;
-
 	${from.tablet} {
 		${headline.small({ fontWeight: 'bold' })};
 	}
@@ -56,7 +55,6 @@ const productSubtitleCss = css`
 const buttonContainerCss = css`
 	margin-top: ${space[1]}px;
 	padding: ${space[5]}px 0;
-
 	${until.tablet} {
 		display: flex;
 		flex-direction: column;
@@ -85,7 +83,7 @@ const SwitchOptions = () => {
 	) as PaidSubscriptionPlan;
 
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod || mainPlan.interval || '',
+		mainPlan.interval || mainPlan.billingPeriod || '',
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
 
@@ -96,8 +94,8 @@ const SwitchOptions = () => {
 	const threshold =
 		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
 	const aboveThreshold =
-		(mainPlan.price || mainPlan.amount || 0) >= threshold * 100;
-	const currentAmount = (mainPlan.price || mainPlan.amount || 0) / 100;
+		(mainPlan.amount || mainPlan.price || 0) >= threshold * 100;
+	const currentAmount = (mainPlan.amount || mainPlan.price || 0) / 100;
 
 	const buttonContainerRef = useRef(null);
 	const [buttonIsStuck, setButtonIsStuck] = useState(false);
@@ -143,7 +141,10 @@ const SwitchOptions = () => {
 							</h3>
 							<p css={productSubtitleCss}>
 								{mainPlan.currency}
-								{currentAmount}/{mainPlan.interval}
+								{currentAmount}/
+								{mainPlan.interval ||
+									mainPlan.billingPeriod ||
+									''}
 							</p>
 						</div>
 					</Card.Header>
@@ -185,7 +186,10 @@ const SwitchOptions = () => {
 							{!aboveThreshold && (
 								<p css={productSubtitleCss}>
 									{mainPlan.currency}
-									{threshold}/{mainPlan.billingPeriod}
+									{threshold}/
+									{mainPlan.interval ||
+										mainPlan.billingPeriod ||
+										''}
 								</p>
 							)}
 						</div>
