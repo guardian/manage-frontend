@@ -398,6 +398,7 @@ export const ContributionUpdateAmountForm = (
 						{shouldShowChoices && (
 							<ChoiceCardGroup
 								name="amounts"
+								data-cy="contribution-amount-choices"
 								label="Choose the amount to contribute"
 								columns={2}
 							>
