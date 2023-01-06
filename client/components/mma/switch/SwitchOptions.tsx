@@ -143,7 +143,7 @@ const SwitchOptions = () => {
 					>
 						To unlock unlimited reading in our news app, please make
 						a small change to your support type. If this doesn't
-						suit you, no change is needed, but not you will continue
+						suit you, no change is needed, but note you will continue
 						to have limited app access.
 					</p>
 				</div>
