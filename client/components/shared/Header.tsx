@@ -1,6 +1,6 @@
 import { breakpoints, from, palette } from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
-import { gridBase, gridColumns, gridItemPlacement } from '../../styles/grid';
+import { gridBase, gridItemPlacement } from '../../styles/grid';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { GridRoundel } from '../mma/shared/assets/GridRoundel';
 import { DropdownNav } from './nav/DropdownNav';
@@ -76,15 +76,11 @@ const Header = ({ signInStatus, requiresSignIn }: HeaderProps) => (
 						[from.desktop]: {
 							position: 'relative',
 							left: '0.5rem',
-							...gridItemPlacement(
-								-4,
-								2,
-								gridColumns.tabletAndDesktop,
-							),
+							...gridItemPlacement(-4, 2),
 							marginLeft: 'auto',
 						},
 						[from.wide]: {
-							...gridItemPlacement(-4, 2, gridColumns.wide),
+							...gridItemPlacement(-4, 2),
 						},
 					}}
 				>

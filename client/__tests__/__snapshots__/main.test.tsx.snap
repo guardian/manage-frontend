@@ -45,10 +45,9 @@ exports[`Main renders something 1`] = `
 }
 
 .emotion-3 {
+  display: grid;
   padding-left: 12px;
   padding-right: 12px;
-  display: -ms-grid;
-  -ms-grid-columns: (minmax(0, 1fr))[4];
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-auto-columns: max-content;
   -webkit-column-gap: 20px;
@@ -62,24 +61,16 @@ exports[`Main renders something 1`] = `
   margin: auto;
 }
 
-@supports (display: grid) {
-  .emotion-3 {
-    display: grid;
-  }
-}
-
 @media (min-width: 740px) {
   .emotion-3 {
     padding-left: 20px;
     padding-right: 20px;
-    -ms-grid-columns: (minmax(0, 1fr))[12];
     grid-template-columns: repeat(12, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1300px) {
   .emotion-3 {
-    -ms-grid-columns: (minmax(0, 1fr))[16];
     grid-template-columns: repeat(16, minmax(0, 1fr));
   }
 }
@@ -87,9 +78,6 @@ exports[`Main renders something 1`] = `
 .emotion-4 {
   grid-column-start: -2;
   grid-column-end: span 1;
-  -ms-grid-column: 4;
-  -ms-grid-column-span: 1;
-  -ms-grid-row: 1;
   display: inline-block;
 }
 
@@ -99,9 +87,6 @@ exports[`Main renders something 1`] = `
     max-height: 51px;
     grid-column-start: -2;
     grid-column-end: span 1;
-    -ms-grid-column: 12;
-    -ms-grid-column-span: 1;
-    -ms-grid-row: 1;
   }
 }
 
@@ -109,9 +94,6 @@ exports[`Main renders something 1`] = `
   .emotion-4 {
     grid-column-start: -2;
     grid-column-end: span 1;
-    -ms-grid-column: 16;
-    -ms-grid-column-span: 1;
-    -ms-grid-row: 1;
   }
 }
 

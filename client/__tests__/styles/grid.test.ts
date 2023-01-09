@@ -5,9 +5,6 @@ describe('grid.ts unit tests', () => {
 		const expected = {
 			gridColumnStart: '1',
 			gridColumnEnd: 'span 4',
-			msGridColumn: '1',
-			msGridColumnSpan: '4',
-			msGridRow: '1',
 		};
 		const result = gridItemPlacement(1, 4);
 		expect(JSON.stringify(result)).toEqual(JSON.stringify(expected));
@@ -17,11 +14,8 @@ describe('grid.ts unit tests', () => {
 		const expected = {
 			gridColumnStart: '-4',
 			gridColumnEnd: 'span 3',
-			msGridColumn: '8',
-			msGridColumnSpan: '3',
-			msGridRow: '1',
 		};
-		const result = gridItemPlacement(-4, 3, 10);
+		const result = gridItemPlacement(-4, 3);
 		expect(JSON.stringify(result)).toEqual(JSON.stringify(expected));
 	});
 });
