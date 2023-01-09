@@ -15,12 +15,19 @@ import type { LeftSideNavProps } from '../shared/nav/LeftSideNav';
 import { LeftSideNav } from '../shared/nav/LeftSideNav';
 import type { NavItem } from '../shared/nav/NavConfig';
 
+interface Breadcrumbs {
+	title: string;
+	link?: string;
+	currentPage?: boolean;
+}
+
 export interface PageContainerProps {
 	children: React.ReactNode;
 	selectedNavItem: NavItem;
 	pageTitle: string | ReactElement;
 	breadcrumbs?: Breadcrumbs[] | undefined;
 }
+
 export const PageContainer = (props: PageContainerProps) => (
 	<>
 		<PageHeaderContainer
@@ -40,24 +47,6 @@ interface PageHeaderContainerProps extends LeftSideNavProps {
 }
 
 const PageHeaderContainer = (props: PageHeaderContainerProps) => {
-	const gridBasev2 = css`
-		display: grid;
-		grid-template-columns: repeat(${gridColumns.default}, minmax(0, 1fr));
-		grid-auto-columns: max-content;
-		column-gap: ${space[5]}px;
-		${from.tablet} {
-			padding-left: ${space[5]}px;
-			padding-right: ${space[5]}px;
-			grid-template-columns: repeat(
-				${gridColumns.tabletAndDesktop},
-				minmax(0, 1fr)
-			);
-		}
-		${from.wide} {
-			grid-template-columns: repeat(${gridColumns.wide}, minmax(0, 1fr));
-		} ;
-	`;
-
 	const gridItemPlacementv2 = (
 		targetRow: number = 1,
 		rowSpan: number = 1,
@@ -71,50 +60,115 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 			grid-row-end: span ${rowSpan};
 		`;
 	};
+
+	const containerCss = css`
+		border-bottom: 1px solid ${palette.neutral['86']};
+		margin-left: auto;
+		margin-right: auto;
+		background: ${palette.brand[300]};
+		${from.tablet} {
+			${!props.breadcrumbs && `padding-top: 100px;`}
+		}
+		${from.desktop} {
+			position: relative;
+		}
+	`;
+
+	const gridCss = css`
+		display: grid;
+		grid-template-columns: repeat(${gridColumns.default}, minmax(0, 1fr));
+		grid-auto-columns: max-content;
+		column-gap: ${space[5]}px;
+		padding-left: ${space[3]}px;
+		padding-right: ${space[3]}px;
+		max-width: calc(${breakpoints.wide}px + 2.5rem);
+		margin: auto;
+		color: ${palette.neutral['100']};
+		${from.tablet} {
+			padding-left: ${space[5]}px;
+			padding-right: ${space[5]}px;
+			grid-template-columns: repeat(
+				${gridColumns.tabletAndDesktop},
+				minmax(0, 1fr)
+			);
+		}
+		${from.wide} {
+			grid-template-columns: repeat(${gridColumns.wide}, minmax(0, 1fr));
+		} ;
+	`;
+
+	const breadcrumbCss = css`
+		display: none;
+		${gridItemPlacementv2(1, 1, 1, 3)};
+		${from.tablet} {
+			display: block;
+			padding: ${space[2]}px 0 0;
+			min-height: 100px;
+			${gridItemPlacementv2(1, 1, 1, 10)};
+		}
+		${from.desktop} {
+			${gridItemPlacementv2(1, 1, 5, 8)};
+		}
+		${from.wide} {
+			${gridItemPlacementv2(1, 1, 6, 10)};
+		}
+	`;
+
+	const titleCss = css`
+		max-width: calc(${breakpoints.wide}px + 2.5rem);
+		margin: 32px 0 0 0;
+		color: ${palette.neutral['100']};
+		${headline.medium({ fontWeight: 'bold' })};
+		font-size: 1.5rem;
+		padding: 8px;
+		border: 1px solid ${palette.brand[600]};
+		border-bottom: 0;
+		${from.tablet} {
+			line-height: 57px;
+			margin-top: 0;
+			padding: 0 8px;
+		}
+
+		${props.breadcrumbs
+			? `
+			${gridItemPlacementv2(2, 1, 1, 4)};
+			${from.mobileMedium} {
+				${gridItemPlacementv2(2, 1, 1, 3)};
+			};
+			${from.tablet} {
+				${gridItemPlacementv2(2, 1, 1, 10)};
+			};
+			${from.desktop} {
+				${gridItemPlacementv2(2, 1, 5, 8)};
+				font-size: 2.625rem;
+			};
+			${from.wide} {
+				${gridItemPlacementv2(2, 1, 6, 10)};
+			};
+		`
+			: `
+			${gridItemPlacementv2(1, 1, 1, 4)};
+			${from.mobileMedium} {
+				${gridItemPlacementv2(1, 1, 1, 3)};
+			};
+			${from.tablet} {
+				${gridItemPlacementv2(1, 1, 1, 10)};
+			};
+			${from.desktop} {
+				${gridItemPlacementv2(1, 1, 5, 8)};
+				font-size: 2.625rem;
+			};
+			${from.wide} {
+				${gridItemPlacementv2(1, 1, 6, 10)};
+			};
+		`}
+	`;
+
 	return (
-		<div
-			css={css`
-				border-bottom: 1px solid ${palette.neutral['86']};
-				margin-left: auto;
-				margin-right: auto;
-				background: ${palette.brand[300]};
-				${from.tablet} {
-					${!props.breadcrumbs && `padding-top: 100px;`}
-				}
-				${from.desktop} {
-					position: relative;
-				}
-			`}
-		>
-			<div
-				css={css`
-					padding-left: ${space[3]}px;
-					padding-right: ${space[3]}px;
-					max-width: calc(${breakpoints.wide}px + 2.5rem);
-					margin: auto;
-					color: ${palette.neutral['100']};
-					${gridBasev2};
-				`}
-			>
+		<div css={containerCss}>
+			<div css={gridCss}>
 				{props.breadcrumbs && (
-					<div
-						css={css`
-							display: none;
-							${gridItemPlacementv2(1, 1, 1, 3)};
-							${from.tablet} {
-								display: block;
-								padding: ${space[2]}px 0 0;
-								min-height: 100px;
-								${gridItemPlacementv2(1, 1, 1, 10)};
-							}
-							${from.desktop} {
-								${gridItemPlacementv2(1, 1, 5, 8)};
-							}
-							${from.wide} {
-								${gridItemPlacementv2(1, 1, 6, 10)};
-							}
-						`}
-					>
+					<div css={breadcrumbCss}>
 						{props.breadcrumbs.map((breadcrumbItem, index) => (
 							<React.Fragment key={`breadcrumb-${index}`}>
 								{breadcrumbItem.link ? (
@@ -150,59 +204,7 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 						))}
 					</div>
 				)}
-				<h1
-					css={css`
-						max-width: calc(${breakpoints.wide}px + 2.5rem);
-						margin: 32px 0 0 0;
-						color: ${palette.neutral['100']};
-						${headline.medium({ fontWeight: 'bold' })};
-						font-size: 1.5rem;
-						padding: 8px;
-						border: 1px solid ${palette.brand[600]};
-						border-bottom: 0;
-						${from.tablet} {
-							line-height: 57px;
-							margin-top: 0;
-							padding: 0 8px;
-						}
-
-						${props.breadcrumbs
-							? `
-							${gridItemPlacementv2(2, 1, 1, 4)};
-							${from.mobileMedium} {
-								${gridItemPlacementv2(2, 1, 1, 3)};
-							};
-							${from.tablet} {
-								${gridItemPlacementv2(2, 1, 1, 10)};
-							};
-							${from.desktop} {
-								${gridItemPlacementv2(2, 1, 5, 8)};
-								font-size: 2.625rem;
-							};
-							${from.wide} {
-								${gridItemPlacementv2(2, 1, 6, 10)};
-							};
-						`
-							: `
-							${gridItemPlacementv2(1, 1, 1, 4)};
-							${from.mobileMedium} {
-								${gridItemPlacementv2(1, 1, 1, 3)};
-							};
-							${from.tablet} {
-								${gridItemPlacementv2(1, 1, 1, 10)};
-							};
-							${from.desktop} {
-								${gridItemPlacementv2(1, 1, 5, 8)};
-								font-size: 2.625rem;
-							};
-							${from.wide} {
-								${gridItemPlacementv2(1, 1, 6, 10)};
-							};
-						`}
-					`}
-				>
-					{props.title || <>&nbsp;</>}
-				</h1>
+				<h1 css={titleCss}>{props.title || <>&nbsp;</>}</h1>
 			</div>
 		</div>
 	);
@@ -268,9 +270,3 @@ const PageNavAndContentContainer = (props: PageNavAndContentContainerProps) => (
 		</section>
 	</div>
 );
-
-interface Breadcrumbs {
-	title: string;
-	link?: string;
-	currentPage?: boolean;
-}
