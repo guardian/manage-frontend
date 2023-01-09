@@ -86,31 +86,35 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 	const breadcrumbCss = css`
 		display: none;
 		grid-column: 1 / span 3;
+
 		${from.tablet} {
 			display: block;
 			padding: ${space[2]}px 0 0;
 			min-height: 100px;
 			grid-column: 1 / span 10;
 		}
+
 		${from.desktop} {
 			grid-column: 5 / span 8;
 		}
+
 		${from.wide} {
 			grid-column: 6 / span 10;
 		}
 	`;
 
 	const titleCss = css`
-		${headline.medium({ fontWeight: 'bold' })};
+		${headline.xsmall({ fontWeight: 'bold' })};
 		grid-column: 1 / span 4;
-		max-width: calc(${breakpoints.wide}px + 2.5rem);
 		margin-top: 32px;
 		margin-bottom: 0;
 		padding: ${space[2]}px;
+		max-width: calc(${breakpoints.wide}px + 2.5rem);
 		color: ${palette.neutral['100']};
-		font-size: 1.5rem;
 		border: 1px solid ${palette.brand[600]};
 		border-bottom: 0;
+
+		${props.breadcrumbs && `grid-row: 2 / 3;`}
 
 		${from.mobileMedium} {
 			grid-column: 1 / span 3;
@@ -118,22 +122,21 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 
 		${from.tablet} {
 			grid-column: 1 / span 10;
-			line-height: 57px;
 			margin-top: 0;
 			padding-top: 0;
 			padding-bottom: 0;
+			line-height: 57px;
 		}
 
 		${from.desktop} {
+			${headline.large({ fontWeight: 'bold' })};
+			line-height: 57px; // TODO: Replace with padding
 			grid-column: 5 / span 8;
-			font-size: 2.625rem;
 		}
 
 		${from.wide} {
 			grid-column: 6 / span 10;
 		}
-
-		${props.breadcrumbs && `grid-row: 2 / 3;`}
 	`;
 
 	return (
