@@ -47,20 +47,6 @@ interface PageHeaderContainerProps extends LeftSideNavProps {
 }
 
 const PageHeaderContainer = (props: PageHeaderContainerProps) => {
-	const gridItemPlacementv2 = (
-		targetRow: number = 1,
-		rowSpan: number = 1,
-		startingPos: number,
-		span: number,
-	) => {
-		return `
-			grid-column-start: ${startingPos};
-			grid-column-end: span ${span};
-			grid-row-start: ${targetRow};
-			grid-row-end: span ${rowSpan};
-		`;
-	};
-
 	const containerCss = css`
 		border-bottom: 1px solid ${palette.neutral['86']};
 		margin-left: auto;
@@ -79,10 +65,10 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 		grid-template-columns: repeat(${gridColumns.default}, minmax(0, 1fr));
 		grid-auto-columns: max-content;
 		column-gap: ${space[5]}px;
+		margin: auto;
 		padding-left: ${space[3]}px;
 		padding-right: ${space[3]}px;
 		max-width: calc(${breakpoints.wide}px + 2.5rem);
-		margin: auto;
 		color: ${palette.neutral['100']};
 		${from.tablet} {
 			padding-left: ${space[5]}px;
@@ -99,69 +85,55 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 
 	const breadcrumbCss = css`
 		display: none;
-		${gridItemPlacementv2(1, 1, 1, 3)};
+		grid-column: 1 / span 3;
 		${from.tablet} {
 			display: block;
 			padding: ${space[2]}px 0 0;
 			min-height: 100px;
-			${gridItemPlacementv2(1, 1, 1, 10)};
+			grid-column: 1 / span 10;
 		}
 		${from.desktop} {
-			${gridItemPlacementv2(1, 1, 5, 8)};
+			grid-column: 5 / span 8;
 		}
 		${from.wide} {
-			${gridItemPlacementv2(1, 1, 6, 10)};
+			grid-column: 6 / span 10;
 		}
 	`;
 
 	const titleCss = css`
-		max-width: calc(${breakpoints.wide}px + 2.5rem);
-		margin: 32px 0 0 0;
-		color: ${palette.neutral['100']};
 		${headline.medium({ fontWeight: 'bold' })};
+		grid-column: 1 / span 4;
+		max-width: calc(${breakpoints.wide}px + 2.5rem);
+		margin-top: 32px;
+		margin-bottom: 0;
+		padding: ${space[2]}px;
+		color: ${palette.neutral['100']};
 		font-size: 1.5rem;
-		padding: 8px;
 		border: 1px solid ${palette.brand[600]};
 		border-bottom: 0;
-		${from.tablet} {
-			line-height: 57px;
-			margin-top: 0;
-			padding: 0 8px;
+
+		${from.mobileMedium} {
+			grid-column: 1 / span 3;
 		}
 
-		${props.breadcrumbs
-			? `
-			${gridItemPlacementv2(2, 1, 1, 4)};
-			${from.mobileMedium} {
-				${gridItemPlacementv2(2, 1, 1, 3)};
-			};
-			${from.tablet} {
-				${gridItemPlacementv2(2, 1, 1, 10)};
-			};
-			${from.desktop} {
-				${gridItemPlacementv2(2, 1, 5, 8)};
-				font-size: 2.625rem;
-			};
-			${from.wide} {
-				${gridItemPlacementv2(2, 1, 6, 10)};
-			};
-		`
-			: `
-			${gridItemPlacementv2(1, 1, 1, 4)};
-			${from.mobileMedium} {
-				${gridItemPlacementv2(1, 1, 1, 3)};
-			};
-			${from.tablet} {
-				${gridItemPlacementv2(1, 1, 1, 10)};
-			};
-			${from.desktop} {
-				${gridItemPlacementv2(1, 1, 5, 8)};
-				font-size: 2.625rem;
-			};
-			${from.wide} {
-				${gridItemPlacementv2(1, 1, 6, 10)};
-			};
-		`}
+		${from.tablet} {
+			grid-column: 1 / span 10;
+			line-height: 57px;
+			margin-top: 0;
+			padding-top: 0;
+			padding-bottom: 0;
+		}
+
+		${from.desktop} {
+			grid-column: 5 / span 8;
+			font-size: 2.625rem;
+		}
+
+		${from.wide} {
+			grid-column: 6 / span 10;
+		}
+
+		${props.breadcrumbs && `grid-row: 2 / 3;`}
 	`;
 
 	return (
