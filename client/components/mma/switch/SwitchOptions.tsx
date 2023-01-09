@@ -83,7 +83,7 @@ const SwitchOptions = () => {
 	) as PaidSubscriptionPlan;
 
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.interval || mainPlan.billingPeriod || '',
+		mainPlan.billingPeriod,
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
 
@@ -93,9 +93,8 @@ const SwitchOptions = () => {
 
 	const threshold =
 		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
-	const aboveThreshold =
-		(mainPlan.amount || mainPlan.price || 0) >= threshold * 100;
-	const currentAmount = (mainPlan.amount || mainPlan.price || 0) / 100;
+	const aboveThreshold = mainPlan.price >= threshold * 100;
+	const currentAmount = mainPlan.price / 100;
 
 	const buttonContainerRef = useRef(null);
 	const [buttonIsStuck, setButtonIsStuck] = useState(false);
@@ -138,10 +137,7 @@ const SwitchOptions = () => {
 							</h3>
 							<p css={productSubtitleCss}>
 								{mainPlan.currency}
-								{currentAmount}/
-								{mainPlan.interval ||
-									mainPlan.billingPeriod ||
-									''}
+								{currentAmount}/{mainPlan.billingPeriod}
 							</p>
 						</div>
 					</Card.Header>
@@ -180,10 +176,7 @@ const SwitchOptions = () => {
 							{!aboveThreshold && (
 								<p css={productSubtitleCss}>
 									{mainPlan.currency}
-									{threshold}/
-									{mainPlan.interval ||
-										mainPlan.billingPeriod ||
-										''}
+									{threshold}/{mainPlan.billingPeriod}
 								</p>
 							)}
 						</div>

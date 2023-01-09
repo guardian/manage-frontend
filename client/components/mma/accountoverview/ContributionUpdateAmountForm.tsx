@@ -368,11 +368,7 @@ export const ContributionUpdateAmountForm = (
 						`}
 					>
 						{capitalize(
-							augmentBillingPeriod(
-								props.mainPlan.billingPeriod ||
-									props.mainPlan.interval ||
-									'',
-							),
+							augmentBillingPeriod(props.mainPlan.billingPeriod),
 						)}{' '}
 						amount
 					</dt>
@@ -402,6 +398,7 @@ export const ContributionUpdateAmountForm = (
 						{shouldShowChoices && (
 							<ChoiceCardGroup
 								name="amounts"
+								data-cy="contribution-amount-choices"
 								label="Choose the amount to contribute"
 								columns={2}
 							>

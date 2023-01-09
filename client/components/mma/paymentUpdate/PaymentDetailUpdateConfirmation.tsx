@@ -280,9 +280,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 										).toFixed(2)}{' '}
 										/{' '}
 										{getPaymentInterval(
-											mainPlan.billingPeriod ||
-												mainPlan.interval ||
-												'',
+											mainPlan.billingPeriod,
 										)}
 										{subscription.stripePublicKeyForCardAddition && (
 											<span>No Payment Method</span>

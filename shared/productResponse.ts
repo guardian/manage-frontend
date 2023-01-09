@@ -102,8 +102,7 @@ interface SepaDetails {
 interface CurrenyAndBillingPeriodDetail {
 	currency: string;
 	currencyISO: string;
-	billingPeriod?: string;
-	interval?: string;
+	billingPeriod: string;
 }
 
 // 6 weeks billingPeriod referes to GW 6 for 6 up front payment (not to be confused with one off contributions which don't come through in this response
@@ -119,8 +118,7 @@ export interface PaidSubscriptionPlan
 	start: string;
 	end: string;
 	chargedThrough?: string | null;
-	price?: number;
-	amount?: number;
+	price: number;
 }
 
 export function isPaidSubscriptionPlan(

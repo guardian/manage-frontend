@@ -39,10 +39,8 @@ export const getNextPaymentDetails = (
 			subscription.currentPlans.length !== 0 &&
 			isSixForSix(mainPlan.name) &&
 			planAfterMainPlan
-				? planAfterMainPlan.billingPeriod ||
-				  planAfterMainPlan.interval ||
-				  ''
-				: mainPlan.billingPeriod || mainPlan.interval || '';
+				? planAfterMainPlan.billingPeriod
+				: mainPlan.billingPeriod;
 
 		const paymentKey = `Next ${augmentBillingPeriod(
 			paymentInterval,
@@ -53,8 +51,8 @@ export const getNextPaymentDetails = (
 				? 'not applicable'
 				: `${mainPlan.currency}${(
 						overiddenAmount ||
-						(subscription.nextPaymentPrice ??
-							(mainPlan.price || mainPlan.amount || 0)) / 100.0
+						(subscription.nextPaymentPrice ?? mainPlan.price) /
+							100.0
 				  ).toFixed(2)} ${mainPlan.currencyISO}`;
 
 		const nextPaymentDateValue =
@@ -70,8 +68,7 @@ export const getNextPaymentDetails = (
 
 		const isNewPaymentValue =
 			planAfterMainPlan &&
-			(mainPlan.price || mainPlan.amount || 0) !==
-				planAfterMainPlan.price &&
+			mainPlan.price !== planAfterMainPlan.price &&
 			!isSixForSix(mainPlan.name);
 
 		return {
