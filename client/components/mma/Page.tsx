@@ -106,13 +106,9 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 	const titleCss = css`
 		${headline.xsmall({ fontWeight: 'bold' })};
 		grid-column: 1 / span 4;
-		margin-top: 32px;
-		margin-bottom: 0;
-		padding: ${space[2]}px;
-		max-width: calc(${breakpoints.wide}px + 2.5rem);
+		margin-top: 28px;
+		margin-bottom: ${space[2]}px;
 		color: ${palette.neutral['100']};
-		border: 1px solid ${palette.brand[600]};
-		border-bottom: 0;
 
 		${props.breadcrumbs && `grid-row: 2 / 3;`}
 
@@ -122,16 +118,15 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 
 		${from.tablet} {
 			grid-column: 1 / span 10;
-			margin-top: 0;
-			padding-top: 0;
-			padding-bottom: 0;
-			line-height: 57px;
 		}
 
 		${from.desktop} {
 			${headline.large({ fontWeight: 'bold' })};
-			line-height: 57px; // TODO: Replace with padding
 			grid-column: 5 / span 8;
+			margin: 0;
+			padding: ${space[1]}px ${space[2]}px;
+			border: 1px solid ${palette.brand[600]};
+			border-bottom: 0;
 		}
 
 		${from.wide} {
