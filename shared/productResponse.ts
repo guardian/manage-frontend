@@ -14,20 +14,18 @@ export type MembersDataApiResponse = {
 	products: MembersDataApiItem[];
 };
 
-export function mdapiResponseReader<MembersDataApiResponse>(
-	response: Response,
-): Promise<MembersDataApiResponse> {
-	return response.json().then((bodyJson) => {
-		if (Array.isArray(bodyJson)) {
-			return Promise.resolve({
-				products: bodyJson,
-			});
-		} else if (!!bodyJson.user || !!bodyJson.products) {
-			return Promise.resolve(bodyJson);
-		} else {
-			Promise.reject('MDAPI Response is of invalid format');
-		}
-	});
+export function mdapiResponseReader(
+	mdaResponse: MembersDataApiResponse | MembersDataApiItem[],
+): MembersDataApiResponse {
+	if (Array.isArray(mdaResponse)) {
+		return {
+			products: mdaResponse,
+		};
+	}
+	if (!!mdaResponse.user || !!mdaResponse.products) {
+		return mdaResponse;
+	}
+	throw new Error('MDAPI Response is of invalid format');
 }
 
 export type MembersDataApiItem = ProductDetail | {};
