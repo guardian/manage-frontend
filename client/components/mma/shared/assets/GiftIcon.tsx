@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import { textSans } from '@guardian/source-foundations';
 
-type giftArrowAlign = 'left' | 'right';
+type GiftArrowAlign = 'left' | 'right';
 
 interface GiftIconProps {
-	alignArrowToThisSide: giftArrowAlign;
+	alignArrowToThisSide: GiftArrowAlign;
 }
 
 export const GiftIcon = (props: GiftIconProps) => (

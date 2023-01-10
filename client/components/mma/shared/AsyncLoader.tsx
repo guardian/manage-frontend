@@ -23,9 +23,9 @@ interface AsyncLoaderProps<T> extends LoadingProps {
 }
 
 enum LoadingState {
-	loading,
-	loaded,
-	error,
+	Loading,
+	Loaded,
+	Error,
 }
 
 interface AsyncLoaderState<T> {
@@ -36,7 +36,7 @@ interface AsyncLoaderState<T> {
 export default class AsyncLoader<
 	T extends NonNullable<unknown>,
 > extends React.Component<AsyncLoaderProps<T>, AsyncLoaderState<T>> {
-	public state: AsyncLoaderState<T> = { loadingState: LoadingState.loading };
+	public state: AsyncLoaderState<T> = { loadingState: LoadingState.Loading };
 	private readerOnOK =
 		this.props.readerOnOK || ((resp: Response) => resp.json());
 
@@ -56,14 +56,14 @@ export default class AsyncLoader<
 					) &&
 					data !== null
 				) {
-					this.setState({ data, loadingState: LoadingState.loaded });
+					this.setState({ data, loadingState: LoadingState.Loaded });
 				}
 			})
 			.catch((exception) => this.handleError(exception));
 	}
 
 	public render(): React.ReactNode {
-		if (this.state.loadingState === LoadingState.loading) {
+		if (this.state.loadingState === LoadingState.Loading) {
 			return this.props.inline ? (
 				<Spinner
 					loadingMessage={this.props.loadingMessage}
@@ -76,12 +76,12 @@ export default class AsyncLoader<
 				</WithStandardTopMargin>
 			);
 		} else if (
-			this.state.loadingState === LoadingState.loaded &&
+			this.state.loadingState === LoadingState.Loaded &&
 			this.state.data !== undefined
 		) {
 			return this.props.render(this.state.data, () =>
 				this.setState(
-					{ loadingState: LoadingState.loading },
+					{ loadingState: LoadingState.Loading },
 					this.componentDidMount,
 				),
 			);
@@ -115,7 +115,7 @@ export default class AsyncLoader<
 				this.props.shouldPreventErrorRender()
 			)
 		) {
-			this.setState({ loadingState: LoadingState.error });
+			this.setState({ loadingState: LoadingState.Error });
 		}
 		trackEvent({
 			eventCategory: 'asyncLoader',

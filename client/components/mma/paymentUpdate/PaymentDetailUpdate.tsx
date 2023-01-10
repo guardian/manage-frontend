@@ -54,12 +54,12 @@ import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContaine
 import { ErrorSummary } from './Summary';
 
 export enum PaymentMethod {
-	card = 'Credit card / debit card',
-	payPal = 'PayPal',
-	dd = 'Direct debit',
-	resetRequired = 'ResetRequired',
-	free = 'FREE',
-	unknown = 'Unknown',
+	Card = 'Credit card / debit card',
+	PayPal = 'PayPal',
+	DirectDebit = 'Direct debit',
+	ResetRequired = 'ResetRequired',
+	Free = 'FREE',
+	Unknown = 'Unknown',
 }
 
 const subHeadingCss = css`
@@ -84,7 +84,7 @@ interface PaymentMethodRadioButtonProps extends PaymentMethodProps {
 }
 
 export function getLogos(paymentMethod: PaymentMethod) {
-	if (paymentMethod === PaymentMethod.card) {
+	if (paymentMethod === PaymentMethod.Card) {
 		return (
 			<>
 				{cardTypeToSVG('visa')}
@@ -92,7 +92,7 @@ export function getLogos(paymentMethod: PaymentMethod) {
 				{cardTypeToSVG('americanexpress')}
 			</>
 		);
-	} else if (paymentMethod === PaymentMethod.dd) {
+	} else if (paymentMethod === PaymentMethod.DirectDebit) {
 		return (
 			<DirectDebitLogo
 				fill={brand[400]}
@@ -170,12 +170,12 @@ export const SelectPaymentMethod = (
 	<form>
 		<RadioGroup label="Select payment method" hideLabel>
 			<PaymentMethodRadioButton
-				paymentMethod={PaymentMethod.card}
+				paymentMethod={PaymentMethod.Card}
 				{...props}
 			/>
 			{props.directDebitIsAllowed ? (
 				<PaymentMethodRadioButton
-					paymentMethod={PaymentMethod.dd}
+					paymentMethod={PaymentMethod.DirectDebit}
 					{...props}
 				/>
 			) : (
@@ -187,28 +187,28 @@ export const SelectPaymentMethod = (
 
 const subscriptionToPaymentMethod = (productDetail: ProductDetail) => {
 	if (!productDetail.subscription.safeToUpdatePaymentMethod) {
-		return PaymentMethod.unknown;
+		return PaymentMethod.Unknown;
 	} else if (
 		productDetail.subscription.paymentMethod === 'Card' &&
 		productDetail.subscription.card
 	) {
-		return PaymentMethod.card;
+		return PaymentMethod.Card;
 	} else if (
 		productDetail.subscription.paymentMethod === 'PayPal' &&
 		productDetail.subscription.payPalEmail
 	) {
-		return PaymentMethod.payPal;
+		return PaymentMethod.PayPal;
 	} else if (
 		productDetail.subscription.paymentMethod === 'DirectDebit' &&
 		productDetail.subscription.mandate
 	) {
-		return PaymentMethod.dd;
+		return PaymentMethod.DirectDebit;
 	} else if (productDetail.subscription.paymentMethod === 'ResetRequired') {
-		return PaymentMethod.resetRequired;
+		return PaymentMethod.ResetRequired;
 	} else if (!productDetail.isPaidTier) {
-		return PaymentMethod.free;
+		return PaymentMethod.Free;
 	}
-	return PaymentMethod.unknown;
+	return PaymentMethod.Unknown;
 };
 
 export interface PaymentUpdaterStepState {
@@ -226,7 +226,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 	const mainPlan = getMainPlan(productDetail.subscription);
 
 	const directDebitIsAllowed =
-		currentPaymentMethod === PaymentMethod.dd ||
+		currentPaymentMethod === PaymentMethod.DirectDebit ||
 		(isPaidSubscriptionPlan(mainPlan) &&
 			mainPlan.currencyISO === 'GBP' &&
 			(!productDetail.subscription.deliveryAddress ||
@@ -244,9 +244,9 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 		useState<boolean>(false);
 	const [selectedPaymentMethod, setSelectedPaymentMethod] =
 		useState<PaymentMethod>(
-			currentPaymentMethod === PaymentMethod.dd
-				? PaymentMethod.unknown
-				: PaymentMethod.card,
+			currentPaymentMethod === PaymentMethod.DirectDebit
+				? PaymentMethod.Unknown
+				: PaymentMethod.Card,
 		);
 
 	const navigate = useNavigate();
@@ -282,7 +282,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 			if (newPaymentMethodDetail.matchesResponse(response)) {
 				const paymentMethodChangeType: string =
 					productDetail.subscription.paymentMethod ===
-					PaymentMethod.resetRequired
+					PaymentMethod.ResetRequired
 						? 'reset'
 						: 'update';
 
@@ -348,7 +348,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 		}
 
 		switch (selectedPaymentMethod) {
-			case PaymentMethod.resetRequired:
+			case PaymentMethod.ResetRequired:
 				return stripePublicKey ? (
 					<CardInputForm
 						stripeApiKey={stripePublicKey}
@@ -364,7 +364,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				) : (
 					<GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
 				);
-			case PaymentMethod.card:
+			case PaymentMethod.Card:
 				return stripePublicKey ? (
 					<CardInputForm
 						stripeApiKey={stripePublicKey}
@@ -380,7 +380,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				) : (
 					<GenericErrorScreen loggingMessage="No existing card information to update from" />
 				);
-			case PaymentMethod.free:
+			case PaymentMethod.Free:
 				return (
 					<div>
 						<p>
@@ -395,7 +395,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 						/>
 					</div>
 				);
-			case PaymentMethod.payPal:
+			case PaymentMethod.PayPal:
 				return (
 					<p>
 						Updating your PayPal payment details is not possible
@@ -403,7 +403,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 						details.
 					</p>
 				);
-			case PaymentMethod.dd:
+			case PaymentMethod.DirectDebit:
 				return (
 					<DirectDebitInputForm
 						newPaymentMethodDetailUpdater={
@@ -413,7 +413,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 						executePaymentUpdate={executePaymentUpdate}
 					/>
 				);
-			case PaymentMethod.unknown:
+			case PaymentMethod.Unknown:
 				return null;
 			default:
 				Sentry.captureException(
@@ -473,7 +473,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 					'margin-top: 36px'}
 				`}
 			>
-				{selectedPaymentMethod === PaymentMethod.unknown
+				{selectedPaymentMethod === PaymentMethod.Unknown
 					? 'Choose your payment method'
 					: 'Update your payment method'}
 			</h3>
@@ -489,7 +489,7 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 
 			{
 				/* Dummy button when user has not selected a payment method */
-				selectedPaymentMethod === PaymentMethod.unknown ? (
+				selectedPaymentMethod === PaymentMethod.Unknown ? (
 					<div
 						css={css`
 							margin-top: ${space[9]}px;

@@ -55,12 +55,12 @@ declare global {
 }
 
 export enum PageStatus {
-	READ_ONLY,
-	REPORT_ISSUE_STEP_1,
-	REPORT_ISSUE_STEP_2,
-	CONTINUE_TO_REVIEW,
-	REPORT_ISSUE_CONFIRMATION,
-	CANNOT_REPORT_PROBLEM,
+	ReadOnly,
+	ReportIssueStep1,
+	ReportIssueStep2,
+	ContinueToReview,
+	ReportIssueConfirmation,
+	CannotReportProblem,
 }
 
 interface Step1FormValidationDetails {
@@ -78,7 +78,7 @@ const DeliveryRecords = () => {
 	) as DeliveryRecordsContextInterface;
 
 	const [pageStatus, setPageStatus] = useState<PageStatus>(
-		PageStatus.READ_ONLY,
+		PageStatus.ReadOnly,
 	);
 	const [currentPage, setCurrentPage] = useState(0);
 	const [selectedProblemRecords, setSelectedProblemRecords] = useState<
@@ -177,7 +177,7 @@ const DeliveryRecords = () => {
 				},
 				eventLabel: productType.urlPart,
 			});
-			setPageStatus(PageStatus.REPORT_ISSUE_STEP_2);
+			setPageStatus(PageStatus.ReportIssueStep2);
 		}
 	};
 
@@ -192,12 +192,12 @@ const DeliveryRecords = () => {
 	const resultsPerPage = 7;
 	const totalPages = Math.ceil(data.results.length / resultsPerPage);
 	const scrollToTop = () => window.scrollTo(0, 0);
-	const resetDeliveryRecordsPage = () => setPageStatus(PageStatus.READ_ONLY);
+	const resetDeliveryRecordsPage = () => setPageStatus(PageStatus.ReadOnly);
 
 	const filterData = (overridePageStatusCheck?: boolean) => {
 		if (
-			(pageStatus !== PageStatus.READ_ONLY &&
-				pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM) ||
+			(pageStatus !== PageStatus.ReadOnly &&
+				pageStatus !== PageStatus.CannotReportProblem) ||
 			overridePageStatusCheck
 		) {
 			const numOfReportableRecords =
@@ -276,8 +276,8 @@ const DeliveryRecords = () => {
 				enableDeliveryInstructions,
 			}}
 		>
-			{pageStatus !== PageStatus.READ_ONLY &&
-				pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM && (
+			{pageStatus !== PageStatus.ReadOnly &&
+				pageStatus !== PageStatus.CannotReportProblem && (
 					<ProgressIndicator
 						steps={[
 							{ title: 'Update', isCurrentStep: true },
@@ -317,7 +317,7 @@ const DeliveryRecords = () => {
 					<div
 						css={css`
 							margin-bottom: ${pageStatus !==
-							PageStatus.REPORT_ISSUE_STEP_2
+							PageStatus.ReportIssueStep2
 								? space[12]
 								: space[5]}px;
 							${textSans.medium()};
@@ -360,7 +360,7 @@ const DeliveryRecords = () => {
 						{showTopCallCentreNumbers && (
 							<CallCentreEmailAndNumbers />
 						)}
-						{pageStatus === PageStatus.CANNOT_REPORT_PROBLEM && (
+						{pageStatus === PageStatus.CannotReportProblem && (
 							<span
 								css={css`
 									position: relative;
@@ -389,9 +389,8 @@ const DeliveryRecords = () => {
 								past or have already been reported.
 							</span>
 						)}
-						{(pageStatus === PageStatus.READ_ONLY ||
-							pageStatus ===
-								PageStatus.CANNOT_REPORT_PROBLEM) && (
+						{(pageStatus === PageStatus.ReadOnly ||
+							pageStatus === PageStatus.CannotReportProblem) && (
 							<Button
 								onClick={() => {
 									const filteredDataAtPresent =
@@ -411,11 +410,11 @@ const DeliveryRecords = () => {
 									if (canReportProblem) {
 										setSelectedProblemRecords([]);
 										setPageStatus(
-											PageStatus.REPORT_ISSUE_STEP_1,
+											PageStatus.ReportIssueStep1,
 										);
 									} else {
 										setPageStatus(
-											PageStatus.CANNOT_REPORT_PROBLEM,
+											PageStatus.CannotReportProblem,
 										);
 									}
 								}}
@@ -423,12 +422,11 @@ const DeliveryRecords = () => {
 								Report a problem
 							</Button>
 						)}
-						{(pageStatus === PageStatus.REPORT_ISSUE_STEP_1 ||
-							pageStatus === PageStatus.REPORT_ISSUE_STEP_2) && (
+						{(pageStatus === PageStatus.ReportIssueStep1 ||
+							pageStatus === PageStatus.ReportIssueStep2) && (
 							<DeliveryRecordProblemForm
 								showNextStepButton={
-									pageStatus !==
-									PageStatus.REPORT_ISSUE_STEP_2
+									pageStatus !== PageStatus.ReportIssueStep2
 								}
 								onResetDeliveryRecordsPage={
 									resetDeliveryRecordsPage
@@ -452,11 +450,11 @@ const DeliveryRecords = () => {
 					border-top: 1px solid ${neutral['86']};
 					${headline.small()};
 					font-weight: bold;
-					opacity: ${pageStatus === PageStatus.REPORT_ISSUE_STEP_1 &&
+					opacity: ${pageStatus === PageStatus.ReportIssueStep1 &&
 					filteredData.length > 0
 						? '0.5'
 						: '1'};
-					${pageStatus === PageStatus.REPORT_ISSUE_STEP_2
+					${pageStatus === PageStatus.ReportIssueStep2
 						? `
               background-color: ${neutral['97']};
               border-left: 1px solid ${neutral['86']};
@@ -467,7 +465,7 @@ const DeliveryRecords = () => {
             `
 						: ''}
 					${until.tablet} {
-						${pageStatus === PageStatus.REPORT_ISSUE_STEP_2
+						${pageStatus === PageStatus.ReportIssueStep2
 							? ``
 							: `
               font-size: 1.25rem;
@@ -476,12 +474,12 @@ const DeliveryRecords = () => {
 					}
 				`}
 			>
-				{pageStatus === PageStatus.REPORT_ISSUE_STEP_2
+				{pageStatus === PageStatus.ReportIssueStep2
 					? 'Step 2. Select the date you have experienced the problem'
 					: 'Deliveries'}
 			</h2>
 			{filteredData.length === 0 &&
-				pageStatus !== PageStatus.CANNOT_REPORT_PROBLEM &&
+				pageStatus !== PageStatus.CannotReportProblem &&
 				(data.results.length === 0 ? (
 					<p
 						css={css`
@@ -553,8 +551,8 @@ const DeliveryRecords = () => {
 				),
 			)}
 			{totalPages > 1 &&
-				(pageStatus === PageStatus.READ_ONLY ||
-					pageStatus === PageStatus.CANNOT_REPORT_PROBLEM) && (
+				(pageStatus === PageStatus.ReadOnly ||
+					pageStatus === PageStatus.CannotReportProblem) && (
 					<PaginationNav
 						resultsPerPage={resultsPerPage}
 						totalNumberOfResults={data.results.length}
@@ -563,7 +561,7 @@ const DeliveryRecords = () => {
 						changeCallBack={scrollToTop}
 					/>
 				)}
-			{pageStatus === PageStatus.REPORT_ISSUE_STEP_2 && (
+			{pageStatus === PageStatus.ReportIssueStep2 && (
 				<>
 					<section
 						css={css`
@@ -648,9 +646,7 @@ const DeliveryRecords = () => {
 										},
 										eventLabel: productType.urlPart,
 									});
-									setPageStatus(
-										PageStatus.CONTINUE_TO_REVIEW,
-									);
+									setPageStatus(PageStatus.ContinueToReview);
 									navigate('review', {
 										state: {
 											productDetail,
@@ -682,7 +678,7 @@ const DeliveryRecords = () => {
 								}
 							`}
 							onClick={() => {
-								setPageStatus(PageStatus.READ_ONLY);
+								setPageStatus(PageStatus.ReadOnly);
 							}}
 						>
 							Cancel

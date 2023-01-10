@@ -300,7 +300,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 									deliveryRecord={deliveryRecord}
 									listIndex={listIndex}
 									pageStatus={
-										PageStatus.REPORT_ISSUE_CONFIRMATION
+										PageStatus.ReportIssueConfirmation
 									}
 									showDeliveryInstructions={
 										productType.delivery?.records

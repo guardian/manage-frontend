@@ -422,7 +422,7 @@ const DeliveryRecordsProblemReviewFC = (
 									key={deliveryRecord.id}
 									deliveryRecord={deliveryRecord}
 									listIndex={listIndex}
-									pageStatus={PageStatus.READ_ONLY}
+									pageStatus={PageStatus.ReadOnly}
 									showDeliveryInstructions={
 										productType.delivery.records
 											.showDeliveryInstructions

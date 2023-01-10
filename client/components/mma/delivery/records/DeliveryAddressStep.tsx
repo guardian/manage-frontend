@@ -57,15 +57,15 @@ interface DeliveryAddressStepProps {
 
 export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 	enum Status {
-		READ_ONLY,
-		EDIT,
-		VALIDATION_ERROR,
-		PENDING,
-		CONFIRMATION,
-		ERROR,
+		ReadOnly,
+		Edit,
+		ValidationError,
+		Pending,
+		Confirmation,
+		Error,
 	}
 
-	const [status, setStatus] = useState(Status.READ_ONLY);
+	const [status, setStatus] = useState(Status.ReadOnly);
 
 	const deliveryAddressContext = useContext(DeliveryRecordsAddressContext);
 
@@ -100,7 +100,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 
 			deliveryAddressContext.setProductsAffected?.(productsAffected);
 
-			setStatus(Status.PENDING);
+			setStatus(Status.Pending);
 
 			const isFormValidResponse = isFormValid(
 				newAddress,
@@ -138,9 +138,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 						)})`,
 					].join('\n'),
 				);
-				setStatus(Status.CONFIRMATION);
+				setStatus(Status.Confirmation);
 			} else {
-				setStatus(Status.VALIDATION_ERROR);
+				setStatus(Status.ValidationError);
 			}
 		};
 
@@ -211,7 +211,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 								})
 							}
 							inErrorState={
-								status === Status.VALIDATION_ERROR &&
+								status === Status.ValidationError &&
 								!formErrors.addressLine1?.isValid
 							}
 							errorMessage={formErrors.addressLine1?.message}
@@ -239,7 +239,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 								})
 							}
 							inErrorState={
-								status === Status.VALIDATION_ERROR &&
+								status === Status.ValidationError &&
 								!formErrors.town?.isValid
 							}
 							errorMessage={formErrors.town?.message}
@@ -267,7 +267,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 								})
 							}
 							inErrorState={
-								status === Status.VALIDATION_ERROR &&
+								status === Status.ValidationError &&
 								!formErrors.postcode?.isValid
 							}
 							errorMessage={formErrors.postcode?.message}
@@ -297,7 +297,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 								})
 							}
 							inErrorState={
-								status === Status.VALIDATION_ERROR &&
+								status === Status.ValidationError &&
 								!formErrors.country?.isValid
 							}
 							errorMessage={formErrors.country?.message}
@@ -413,7 +413,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 						`}
 						name="instructions-checkbox"
 						error={
-							status === Status.VALIDATION_ERROR &&
+							status === Status.ValidationError &&
 							!acknowledgementChecked
 								? 'Please indicate that you understand which subscriptions this change will affect.'
 								: undefined
@@ -462,7 +462,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 										.deliveryAddress,
 								);
 								props.setAddressValidationState(true);
-								setStatus(Status.READ_ONLY);
+								setStatus(Status.ReadOnly);
 							}}
 							css={css`
 								margin-top: ${space[5]}px;
@@ -556,9 +556,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 	);
 
 	if (
-		status === Status.EDIT ||
-		status === Status.PENDING ||
-		status === Status.VALIDATION_ERROR
+		status === Status.Edit ||
+		status === Status.Pending ||
+		status === Status.ValidationError
 	) {
 		return (
 			<div
@@ -580,7 +580,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 			</div>
 		);
 	} else if (
-		status === Status.CONFIRMATION &&
+		status === Status.Confirmation &&
 		props.productDetail.subscription.contactId
 	) {
 		return (
@@ -603,7 +603,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 			showEditButton
 			editButtonCallback={() => {
 				props.setAddressValidationState(false);
-				setStatus(Status.EDIT);
+				setStatus(Status.Edit);
 			}}
 			address={newAddress}
 			instructions={
