@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
-import { trackEvent } from '../../../../utilities/analytics';
-import type ResponseProcessor from './ResponseProcessor';
+import type ResponseProcessor from '../../components/mma/shared/asyncComponents/ResponseProcessor';
+import { trackEvent } from '../analytics';
 
 export default function useAsyncLoader<T>(
 	promiseFromAsyncFetch: Promise<any>,
