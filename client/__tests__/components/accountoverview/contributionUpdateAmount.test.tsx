@@ -1,5 +1,4 @@
 // @ts-nocheck
-/* eslint jest/no-standalone-expect: "off", jest/no-done-callback: "off" */
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ContributionUpdateAmount } from '../../../components/mma/accountoverview/ContributionUpdateAmount';
 

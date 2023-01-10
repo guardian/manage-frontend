@@ -1,7 +1,7 @@
 // @ts-nocheck : Ignoring next few lines to maintain GA's code snippet
 
 export const runGaStub = () => {
-	/* eslint-disable */
+	/* eslint-disable -- Ignoring next few lines to maintain GA's code snippet */
 	(function (i, s, o, g, r, a, m) {
 		i['GoogleAnalyticsObject'] = r;
 		(i[r] =
