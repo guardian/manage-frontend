@@ -26,6 +26,7 @@ export interface PageContainerProps {
 	selectedNavItem: NavItem;
 	pageTitle: string | ReactElement;
 	breadcrumbs?: Breadcrumbs[] | undefined;
+	compactTitle?: boolean;
 }
 
 export const PageContainer = (props: PageContainerProps) => (
@@ -34,6 +35,7 @@ export const PageContainer = (props: PageContainerProps) => (
 			selectedNavItem={props.selectedNavItem}
 			title={props.pageTitle}
 			breadcrumbs={props.breadcrumbs}
+			compactTitle={props.compactTitle}
 		/>
 		<PageNavAndContentContainer selectedNavItem={props.selectedNavItem}>
 			{props.children}
@@ -44,6 +46,7 @@ export const PageContainer = (props: PageContainerProps) => (
 interface PageHeaderContainerProps extends LeftSideNavProps {
 	breadcrumbs?: Breadcrumbs[];
 	title: string | ReactElement;
+	compactTitle?: boolean;
 }
 
 const PageHeaderContainer = (props: PageHeaderContainerProps) => {
@@ -112,12 +115,24 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 
 		${props.breadcrumbs && `grid-row: 2 / 3;`}
 
+		${props.compactTitle &&
+		`
+			${textSans.small({ fontWeight: 'bold' })};
+			margin-top: ${space[2]}px;
+		`}
+
 		${from.mobileMedium} {
 			grid-column: 1 / span 3;
 		}
 
 		${from.tablet} {
 			grid-column: 1 / span 10;
+
+			${props.compactTitle &&
+			`
+				${headline.xsmall({ fontWeight: 'bold' })};
+				margin-top: 28px;
+			`}
 		}
 
 		${from.desktop} {
