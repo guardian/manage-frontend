@@ -14,7 +14,7 @@ export const TextResponseHandler: ResponseProcessor = (
 
 function handleResponses(
 	response: Response | Response[],
-	transformResponse: any,
+	transformResponse: (response: Response) => any,
 ): Promise<any> {
 	if (hasBadResponse(response)) {
 		throw new Error('Invalid API response');
