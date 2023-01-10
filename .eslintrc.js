@@ -43,7 +43,6 @@ module.exports = {
 		'@typescript-eslint/require-await': ['off'],
 		'@typescript-eslint/restrict-template-expressions': ['off'],
 		'@typescript-eslint/unbound-method': ['off'],
-		'eslint-comments/require-description': ['off'],
 		'import/no-cycle': ['off'],
 		'import/no-default-export': ['off'],
 		// Overrides carried over from old ESLint config.

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/naming-convention -- disabling this rule due to uncertainty around coupling between enum values and API responses in Identity code */
 export enum Theme {
 	news = 'news',
 	opinion = 'opinion',

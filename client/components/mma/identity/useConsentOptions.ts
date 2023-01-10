@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/naming-convention -- disabling this rule due to uncertainty around coupling between enum values and API responses in Identity code */
 import * as Sentry from '@sentry/browser';
 import { useReducer } from 'react';
 import { trackEvent } from '../../../utilities/analytics';
