@@ -12,6 +12,7 @@ import { Fragment } from 'react';
 import { parseDate } from '../../../../shared/dates';
 import type {
 	InvoiceDataApiItem,
+	MembersDataApiItem,
 	MembersDataApiResponse,
 	PaidSubscriptionPlan,
 	ProductDetail,
@@ -49,10 +50,12 @@ class BillingDataAsyncLoader extends AsyncLoader<
 	[MembersDataApiResponse, { invoices: InvoiceDataApiItem[] }]
 > {}
 
-const BillingRenderer = ([mdaResponse, invoiceResponse]: [
-	MembersDataApiResponse,
+const BillingRenderer = ([mdapiObject, invoiceResponse]: [
+	MembersDataApiResponse | MembersDataApiItem[],
 	{ invoices: InvoiceDataApiItem[] },
 ]) => {
+	const mdaResponse = mdapiResponseReader(mdapiObject);
+
 	const allProductDetails = mdaResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
@@ -323,7 +326,6 @@ const Billing = () => {
 				fetch={billingFetcher}
 				render={BillingRenderer}
 				loadingMessage={`Loading your billing details...`}
-				readerOnOK={mdapiResponseReader}
 			/>
 		</PageContainer>
 	);

@@ -12,6 +12,7 @@ import { Fragment } from 'react';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
 	CancelledProductDetail,
+	MembersDataApiItem,
 	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../shared/productResponse';
@@ -39,10 +40,12 @@ import { AccountOverviewCard } from './AccountOverviewCard';
 import { AccountOverviewCardV2 } from './AccountOverviewCardV2';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
 
-const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
-	MembersDataApiResponse,
+const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
+	MembersDataApiResponse | MembersDataApiItem[],
 	CancelledProductDetail[],
 ]) => {
+	const mdaResponse = mdapiResponseReader(mdapiObject);
+
 	const allActiveProductDetails = mdaResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
@@ -191,7 +194,6 @@ const AccountOverview = () => {
 				fetch={AccountOverviewFetcher}
 				render={AccountOverviewRenderer}
 				loadingMessage={`Loading your account details...`}
-				readerOnOK={mdapiResponseReader}
 			/>
 		</PageContainer>
 	);
