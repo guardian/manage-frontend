@@ -108,7 +108,8 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 
 	const titleCss = css`
 		${headline.xsmall({ fontWeight: 'bold' })};
-		grid-column: 1 / span 4;
+		font-size: 1.4375rem;
+		grid-column: 1 / -1;
 		margin-top: 28px;
 		margin-bottom: ${space[2]}px;
 		color: ${palette.neutral['100']};
@@ -118,20 +119,20 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 		${props.compactTitle &&
 		`
 			${textSans.small({ fontWeight: 'bold' })};
-			margin-top: ${space[2]}px;
+			margin-top: ${space[1]}px;
+			margin-bottom: ${space[1]}px;
 		`}
 
 		${from.mobileMedium} {
-			grid-column: 1 / span 3;
+			${!props.compactTitle && `font-size: 1.5rem`};
 		}
 
 		${from.tablet} {
-			grid-column: 1 / span 10;
-
 			${props.compactTitle &&
 			`
 				${headline.xsmall({ fontWeight: 'bold' })};
 				margin-top: 28px;
+				margin-bottom: ${space[2]}px;
 			`}
 		}
 
