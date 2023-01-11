@@ -70,7 +70,9 @@ const contactButtonCss = css`
 	}
 `;
 
-const HelpCentreContactOptions = (props: HelpCentreContactOptionsProps) => {
+export const HelpCentreContactOptions = (
+	props: HelpCentreContactOptionsProps,
+) => {
 	const [contactOptionsHidden, setContactOptionsHidden] = useState(
 		props.hideContactOptions,
 	);
@@ -133,5 +135,3 @@ const HelpCentreContactOptions = (props: HelpCentreContactOptionsProps) => {
 		</>
 	);
 };
-
-export default HelpCentreContactOptions;

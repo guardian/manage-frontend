@@ -7,9 +7,9 @@ import {
 	contribution,
 	guardianWeeklyCard,
 } from '../../../fixtures/productDetail';
-import CancellationContainer from './CancellationContainer';
-import CancellationReasonReview from './CancellationReasonReview';
-import CancellationReasonSelection from './CancellationReasonSelection';
+import { CancellationContainer } from './CancellationContainer';
+import { CancellationReasonReview } from './CancellationReasonReview';
+import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { getCancellationSummary } from './CancellationSummary';
 
 export default {

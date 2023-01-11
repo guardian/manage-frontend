@@ -18,7 +18,7 @@ import { ProfileFormSection } from './ProfileFormSection';
 
 const hasUsername = (user: User) => !!user.username;
 
-const PublicProfile = (_: { path?: string }) => {
+export const PublicProfile = (_: { path?: string }) => {
 	const [user, setUser] = useState<User>();
 	const [error, setError] = useState(false);
 
@@ -119,5 +119,3 @@ const PublicProfile = (_: { path?: string }) => {
 		</PageContainer>
 	);
 };
-
-export default PublicProfile;

@@ -1,7 +1,7 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
 import type { CancelRemindersProps } from './CancelReminders';
-import CancelReminders from './CancelReminders';
+import { CancelReminders } from './CancelReminders';
 
 export default {
 	title: 'Pages/CancelReminders',

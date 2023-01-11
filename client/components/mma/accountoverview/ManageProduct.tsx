@@ -411,7 +411,9 @@ interface ManageProductRouterState {
 	productDetail: ProductDetail;
 }
 
-const ManageProduct = (props: WithGroupedProductType<GroupedProductType>) => {
+export const ManageProduct = (
+	props: WithGroupedProductType<GroupedProductType>,
+) => {
 	const location = useLocation();
 	const routerState = location.state as ManageProductRouterState;
 	const productDetail = routerState?.productDetail;
@@ -435,5 +437,3 @@ const ManageProduct = (props: WithGroupedProductType<GroupedProductType>) => {
 		</PageContainer>
 	);
 };
-
-export default ManageProduct;

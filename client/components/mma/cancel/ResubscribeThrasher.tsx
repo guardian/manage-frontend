@@ -7,7 +7,7 @@ import {
 import { trackEvent } from '../../../utilities/analytics';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
-import AsyncLoader from '../shared/AsyncLoader';
+import { AsyncLoader } from '../shared/AsyncLoader';
 
 const fetchExistingPaymentOptions = () =>
 	fetchWithDefaultParameters('/api/existing-payment-options', {

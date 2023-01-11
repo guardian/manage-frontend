@@ -2,7 +2,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
-import HelpCentre from './HelpCentre';
+import { HelpCentre } from './HelpCentre';
 
 export default {
 	title: 'Pages/HelpCentre',

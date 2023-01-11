@@ -30,7 +30,7 @@ const container = css`
 	}
 `;
 
-const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
+export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 	SaveBodyProps
 > = ({ caseId }: SaveBodyProps) => {
 	const [showAmountUpdateForm, setShowUpdateForm] = useState(false);
@@ -173,5 +173,3 @@ const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 		</div>
 	);
 };
-
-export default ContributionsCancellationFlowFinancialSaveAttempt;

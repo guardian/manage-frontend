@@ -5,10 +5,10 @@ import type { ProductTypeWithDeliveryRecordsProperties } from '../../../../../sh
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { deliveryRecordsWithDelivery } from '../../../../fixtures/deliveryRecords';
 import { guardianWeeklyCard } from '../../../../fixtures/productDetail';
-import DeliveryRecords from './DeliveryRecords';
-import DeliveryRecordsContainer from './DeliveryRecordsContainer';
-import DeliveryRecordsProblemConfirmation from './DeliveryRecordsProblemConfirmation';
-import DeliveryRecordsProblemReview from './DeliveryRecordsProblemReview';
+import { DeliveryRecords } from './DeliveryRecords';
+import { DeliveryRecordsContainer } from './DeliveryRecordsContainer';
+import { DeliveryRecordsProblemConfirmation } from './DeliveryRecordsProblemConfirmation';
+import { DeliveryRecordsProblemReview } from './DeliveryRecordsProblemReview';
 
 const productTypeWithDeliveryRecords = {
 	...PRODUCT_TYPES.guardianweekly,

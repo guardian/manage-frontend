@@ -5,7 +5,7 @@ const exceptions: string[] = ['/help-centre/contact-us/'];
 const shouldScrollToTop = (path: string) =>
 	!exceptions.some((exception) => path.startsWith(exception));
 
-const useScrollToTop = () => {
+export const useScrollToTop = () => {
 	const location = useLocation();
 
 	if (shouldScrollToTop(location.pathname)) {
@@ -15,5 +15,3 @@ const useScrollToTop = () => {
 		document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 	}
 };
-
-export default useScrollToTop;

@@ -10,7 +10,7 @@ export interface HeaderProps {
 	requiresSignIn?: boolean;
 }
 
-const Header = ({ signInStatus, requiresSignIn }: HeaderProps) => (
+export const Header = ({ signInStatus, requiresSignIn }: HeaderProps) => (
 	<header
 		css={{
 			backgroundColor: palette.brand[400],
@@ -94,5 +94,3 @@ const Header = ({ signInStatus, requiresSignIn }: HeaderProps) => (
 		</div>
 	</header>
 );
-
-export default Header;

@@ -3,7 +3,7 @@ import { space } from '@guardian/source-foundations';
 import { Spinner } from '../shared/Spinner';
 import { WithStandardTopMargin } from '../shared/WithStandardTopMargin';
 
-const HelpCentreLoadingContent = () => (
+export const HelpCentreLoadingContent = () => (
 	<div
 		css={css`
 			margin-bottom: ${space[24]}px;
@@ -15,5 +15,3 @@ const HelpCentreLoadingContent = () => (
 		<div style={{ height: '50vh' }} />
 	</div>
 );
-
-export default HelpCentreLoadingContent;

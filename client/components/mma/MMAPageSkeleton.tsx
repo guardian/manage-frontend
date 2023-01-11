@@ -114,7 +114,7 @@ const MMALocationObjectArr: LocationObject[] = [
 	},
 ];
 
-const MMAPageSkeleton = () => {
+export const MMAPageSkeleton = () => {
 	const location = useLocation();
 
 	const selectedMMALocationObject = MMALocationObjectArr.filter(
@@ -138,5 +138,3 @@ const MMAPageSkeleton = () => {
 		</PageContainer>
 	);
 };
-
-export default MMAPageSkeleton;

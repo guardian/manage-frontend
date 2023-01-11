@@ -55,7 +55,7 @@ const contextAndOutletContainer = (
 	</SwitchContext.Provider>
 );
 
-const SwitchContainer = () => {
+export const SwitchContainer = () => {
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
 	const productDetail = routerState?.productDetail;
@@ -81,5 +81,3 @@ const SwitchContainer = () => {
 		</PageContainer>
 	);
 };
-
-export default SwitchContainer;

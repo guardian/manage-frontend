@@ -71,7 +71,7 @@ interface Step1FormValidationDetails {
 const checkForRecentHolidayStop = (records: DeliveryRecordDetail[]) =>
 	records.findIndex((record) => record.hasHolidayStop) > -1;
 
-const DeliveryRecords = () => {
+export const DeliveryRecords = () => {
 	const navigate = useNavigate();
 	const { productDetail, productType, data } = useContext(
 		DeliveryRecordsContext,
@@ -719,5 +719,3 @@ const DeliveryRecords = () => {
 		</DeliveryRecordsAddressContext.Provider>
 	);
 };
-
-export default DeliveryRecords;

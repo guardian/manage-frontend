@@ -33,7 +33,7 @@ import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
-import AsyncLoader from '../shared/AsyncLoader';
+import { AsyncLoader } from '../shared/AsyncLoader';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { AccountOverviewCancelledCard } from './AccountOverviewCancelledCard';
 import { AccountOverviewCard } from './AccountOverviewCard';
@@ -184,7 +184,7 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 	);
 };
 
-const AccountOverview = () => {
+export const AccountOverview = () => {
 	return (
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}
@@ -208,5 +208,3 @@ const AccountOverviewFetcher = () =>
 		allProductsDetailFetcher(),
 		fetchWithDefaultParameters('/api/cancelled/'),
 	]);
-
-export default AccountOverview;

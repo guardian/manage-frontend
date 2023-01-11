@@ -4,7 +4,7 @@ import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorato
 import { SectionContent } from '../../shared/SectionContent';
 import { SectionHeader } from '../../shared/SectionHeader';
 import { KnownIssues } from '../KnownIssues';
-import ContactUs from './ContactUs';
+import { ContactUs } from './ContactUs';
 
 export default {
 	title: 'Pages/ContactUs',

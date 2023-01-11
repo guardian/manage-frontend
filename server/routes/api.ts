@@ -300,4 +300,4 @@ router.get(
 router.post('/reminders/cancel', cancelReminderHandler);
 router.post('/reminders/reactivate', reactivateReminderHandler);
 
-export default router;
+export { router };

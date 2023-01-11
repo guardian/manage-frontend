@@ -6,7 +6,7 @@ import {
 	guardianWeeklyCard,
 	newspaperVoucherPaypal,
 } from '../../../fixtures/productDetail';
-import ManageProduct from './ManageProduct';
+import { ManageProduct } from './ManageProduct';
 
 export default {
 	title: 'Pages/ManageProduct',

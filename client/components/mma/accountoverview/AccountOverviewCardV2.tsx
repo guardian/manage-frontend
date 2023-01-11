@@ -21,7 +21,7 @@ import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { Card } from '../shared/Card';
 import { CardDisplay } from '../shared/CardDisplay';
 import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
-import GridPicture from '../shared/images/GridPicture';
+import { GridPicture } from '../shared/images/GridPicture';
 import {
 	getNextPaymentDetails,
 	NewPaymentPriceAlert,

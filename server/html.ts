@@ -40,4 +40,4 @@ const html: (_: {
   </html>
 `;
 
-export default html;
+export { html };

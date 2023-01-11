@@ -17,7 +17,7 @@ import type {
 import { sans } from '../../../styles/fonts';
 import { measure } from '../../../styles/typography';
 import { trackEvent } from '../../../utilities/analytics';
-import useFetch from '../../../utilities/hooks/useFetch';
+import { useFetch } from '../../../utilities/hooks/useFetch';
 import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { Spinner } from '../../shared/Spinner';
@@ -301,7 +301,7 @@ const ConfirmCancellationAndReturnRow = (
 	);
 };
 
-const CancellationReasonReview = () => {
+export const CancellationReasonReview = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
@@ -510,5 +510,3 @@ const CancellationReasonReview = () => {
 		</>
 	);
 };
-
-export default CancellationReasonReview;

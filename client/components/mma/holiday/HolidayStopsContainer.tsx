@@ -132,7 +132,7 @@ const handleMembersDataResponse =
 		return <Navigate to="/" />;
 	};
 
-const HolidayStopsContainer = (
+export const HolidayStopsContainer = (
 	props: WithProductType<ProductTypeWithHolidayStopsFlow>,
 ) => {
 	const location = useLocation();
@@ -197,5 +197,3 @@ const HolidayStopsContainer = (
 		</PageContainer>
 	);
 };
-
-export default HolidayStopsContainer;

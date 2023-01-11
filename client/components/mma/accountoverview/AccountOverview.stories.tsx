@@ -11,7 +11,7 @@ import {
 	toMembersDataApiResponse,
 } from '../../../fixtures/productDetail';
 import { user } from '../../../fixtures/user';
-import AccountOverview from './AccountOverview';
+import { AccountOverview } from './AccountOverview';
 
 export default {
 	title: 'Pages/AccountOverview',

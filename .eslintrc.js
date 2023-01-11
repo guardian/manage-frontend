@@ -23,6 +23,12 @@ module.exports = {
 				'@typescript-eslint/ban-ts-comment': ['off'],
 			},
 		},
+		{
+			files: ['client/**/*.stories.tsx'],
+			rules: {
+				'import/no-default-export': 'off',
+			},
+		},
 	],
 	rules: {
 		// Overrides for rules from `@guardian/eslint-config-typescript`.
@@ -43,7 +49,6 @@ module.exports = {
 		'@typescript-eslint/require-await': ['off'],
 		'@typescript-eslint/restrict-template-expressions': ['off'],
 		'import/no-cycle': ['off'],
-		'import/no-default-export': ['off'],
 		// Overrides carried over from old ESLint config.
 		'@typescript-eslint/ban-ts-comment': [
 			'error',

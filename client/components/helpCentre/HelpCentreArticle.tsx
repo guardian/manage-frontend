@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { trackEvent } from '../../utilities/analytics';
-import useHelpArticleSeo from '../../utilities/hooks/useHelpArticleSeo';
+import { useHelpArticleSeo } from '../../utilities/hooks/useHelpArticleSeo';
 import { setPageTitle } from '../../utilities/pageTitle';
 import { ThumbsUpIcon } from '../mma/shared/assets/ThumbsUpIcon';
 import { CallCentreEmailAndNumbers } from '../shared/CallCenterEmailAndNumbers';
@@ -21,7 +21,7 @@ import { SelectedTopicObjectContext } from '../shared/SectionContent';
 import { Spinner } from '../shared/Spinner';
 import { WithStandardTopMargin } from '../shared/WithStandardTopMargin';
 import { BackToHelpCentreLink } from './BackToHelpCentreLink';
-import HelpCentreContactOptions from './HelpCentreContactOptions';
+import { HelpCentreContactOptions } from './HelpCentreContactOptions';
 import { h2Css } from './HelpCentreStyles';
 import type {
 	Article,
@@ -32,7 +32,7 @@ import type {
 } from './HelpCentreTypes';
 import { isArticleLiveChatFeatureEnabled } from './liveChat/liveChatFeatureSwitch';
 
-const HelpCentreArticle = () => {
+export const HelpCentreArticle = () => {
 	const [article, setArticle] = useState<Article | undefined>(undefined);
 
 	const { articleCode } = useParams();
@@ -350,5 +350,3 @@ export const ArticleFeedbackWidget = (props: ArticleFeedbackWidgetProps) => {
 		</div>
 	);
 };
-
-export default HelpCentreArticle;

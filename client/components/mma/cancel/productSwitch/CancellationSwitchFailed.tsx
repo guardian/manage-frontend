@@ -14,7 +14,7 @@ import { Navigate, useLocation, useNavigate } from 'react-router';
 import { CallCentreNumbers } from '../../../shared/CallCentreNumbers';
 import type { CancellationRouterState } from '../CancellationContainer';
 
-export default function ProductSwitchFailed() {
+export function ProductSwitchFailed() {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const navigate = useNavigate();

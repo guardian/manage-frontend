@@ -20,7 +20,7 @@ import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { measure } from '../../../../styles/typography';
 import { Heading } from '../../shared/Heading';
-import GridPicture from '../../shared/images/GridPicture';
+import { GridPicture } from '../../shared/images/GridPicture';
 import type { CancellationRouterState } from '../CancellationContainer';
 import { productBenefits } from './ProductBenefits';
 import type { AvailableProductsResponse } from './productSwitchApi';
@@ -45,7 +45,9 @@ interface CancellationSwitchOfferProps {
 	availableProductsToSwitch: AvailableProductsResponse[];
 }
 
-const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
+export const CancellationSwitchOffer = (
+	props: CancellationSwitchOfferProps,
+) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
@@ -359,5 +361,3 @@ const CancellationSwitchOffer = (props: CancellationSwitchOfferProps) => {
 		</Stack>
 	);
 };
-
-export default CancellationSwitchOffer;

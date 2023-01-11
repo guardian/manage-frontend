@@ -90,7 +90,7 @@ export const CancellationPageTitleContext: Context<
 	CancellationPageTitleInterface | {}
 > = createContext({});
 
-const CancellationContainer = (props: WithProductType<ProductType>) => {
+export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const productDetail = routerState?.productDetail;
@@ -139,5 +139,3 @@ const CancellationContainer = (props: WithProductType<ProductType>) => {
 		</ProductSwitchContext.Provider>
 	);
 };
-
-export default CancellationContainer;

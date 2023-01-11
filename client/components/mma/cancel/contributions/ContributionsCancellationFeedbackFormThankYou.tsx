@@ -8,7 +8,7 @@ const containerStyles = css`
 	border-left: 1px solid ${neutral[7]};
 `;
 
-const ContributionsFeedbackFormThankYou: React.FC = () => {
+export const ContributionsCancellationFeedbackFormThankYou: React.FC = () => {
 	return (
 		<div css={containerStyles}>
 			<p
@@ -29,5 +29,3 @@ const ContributionsFeedbackFormThankYou: React.FC = () => {
 		</div>
 	);
 };
-
-export default ContributionsFeedbackFormThankYou;

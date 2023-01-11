@@ -3,18 +3,18 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { initFeatureSwitchUrlParamOverride } from '../../../shared/featureSwitches';
 import { fonts } from '../../styles/fonts';
-import global from '../../styles/global';
-import useAnalytics from '../../utilities/hooks/useAnalytics';
-import useConsent from '../../utilities/hooks/useConsent';
-import useScrollToTop from '../../utilities/hooks/useScrollToTop';
+import { global } from '../../styles/global';
+import { useAnalytics } from '../../utilities/hooks/useAnalytics';
+import { useConsent } from '../../utilities/hooks/useConsent';
+import { useScrollToTop } from '../../utilities/hooks/useScrollToTop';
 import { setPageTitle } from '../../utilities/pageTitle';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { isSignedIn, pageRequiresSignIn } from '../../utilities/signInStatus';
-import ErrorBoundary from '../shared/ErrorBoundary';
+import { ErrorBoundary } from '../shared/ErrorBoundary';
 import { GenericErrorScreen } from '../shared/GenericErrorScreen';
 import { Main } from '../shared/Main';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
-import HelpCentreLoadingContent from './HelpCentreLoadingContent';
+import { HelpCentreLoadingContent } from './HelpCentreLoadingContent';
 import type { KnownIssueObj } from './KnownIssues';
 import { LiveChat } from './liveChat/LiveChat';
 
@@ -24,23 +24,28 @@ initFeatureSwitchUrlParamOverride();
 // how to name the chunks these dynamic imports produce
 // More information: https://webpack.js.org/api/module-methods/#magic-comments
 
-const HelpCentre = lazy(
-	() => import(/* webpackChunkName: "HelpCentre" */ './HelpCentre'),
+const HelpCentre = lazy(() =>
+	import(/* webpackChunkName: "HelpCentre" */ './HelpCentre').then(
+		({ HelpCentre }) => ({ default: HelpCentre }),
+	),
 );
 
-const HelpCentreArticle = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "HelpCentreArticle" */ './HelpCentreArticle'
-		),
+const HelpCentreArticle = lazy(() =>
+	import(
+		/* webpackChunkName: "HelpCentreArticle" */ './HelpCentreArticle'
+	).then(({ HelpCentreArticle }) => ({ default: HelpCentreArticle })),
 );
 
-const HelpCentreTopic = lazy(
-	() => import(/* webpackChunkName: "HelpCentreTopic" */ './HelpCentreTopic'),
+const HelpCentreTopic = lazy(() =>
+	import(/* webpackChunkName: "HelpCentreTopic" */ './HelpCentreTopic').then(
+		({ HelpCentreTopic }) => ({ default: HelpCentreTopic }),
+	),
 );
 
-const ContactUs = lazy(
-	() => import(/* webpackChunkName: "ContactUs" */ './contactUs/ContactUs'),
+const ContactUs = lazy(() =>
+	import(/* webpackChunkName: "ContactUs" */ './contactUs/ContactUs').then(
+		({ ContactUs }) => ({ default: ContactUs }),
+	),
 );
 
 const HelpCentreRouter = () => {

@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import Maintenance from './Maintenance';
+import { Maintenance } from './Maintenance';
 
 export default {
 	title: 'Pages/Maintenance',

@@ -11,7 +11,7 @@ import {
 	toMembersDataApiResponse,
 } from '../../../../fixtures/productDetail';
 import { user } from '../../../../fixtures/user';
-import EmailAndMarketing from './EmailAndMarketing';
+import { EmailAndMarketing } from './EmailAndMarketing';
 
 export default {
 	title: 'Pages/EmailAndMarketing',

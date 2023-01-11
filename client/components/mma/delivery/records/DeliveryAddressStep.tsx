@@ -37,7 +37,7 @@ import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNum
 import { Input } from '../../../shared/Input';
 import { COUNTRIES } from '../../identity/models';
 import { InfoIconDark } from '../../shared/assets/InfoIconDark';
-import AsyncLoader from '../../shared/AsyncLoader';
+import { AsyncLoader } from '../../shared/AsyncLoader';
 import { InfoSection } from '../../shared/InfoSection';
 import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
 import type { ProductDescriptionListKeyValue } from '../../shared/ProductDescriptionListTable';

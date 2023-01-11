@@ -74,7 +74,7 @@ const fromAppHeadingCss = css`
 	margin-bottom: 0;
 `;
 
-const SwitchOptions = () => {
+export const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 
 	const productDetail = switchContext.productDetail;
@@ -246,5 +246,3 @@ const SwitchOptions = () => {
 		</>
 	);
 };
-
-export default SwitchOptions;

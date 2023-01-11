@@ -6,10 +6,10 @@ import {
 	guardianWeeklyCard,
 	toMembersDataApiResponse,
 } from '../../../../fixtures/productDetail';
-import DeliveryAddressChangeContainer from './DeliveryAddressChangeContainer';
-import DeliveryAddressConfirmation from './DeliveryAddressConfirmation';
+import { DeliveryAddressChangeContainer } from './DeliveryAddressChangeContainer';
+import { DeliveryAddressConfirmation } from './DeliveryAddressConfirmation';
 import { DeliveryAddressUpdate } from './DeliveryAddressForm';
-import DeliveryAddressReview from './DeliveryAddressReview';
+import { DeliveryAddressReview } from './DeliveryAddressReview';
 
 export default {
 	component: DeliveryAddressChangeContainer,

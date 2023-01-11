@@ -4,7 +4,7 @@ import type { Article } from '../../components/helpCentre/HelpCentreTypes';
 
 const ELEMENT_ID = 'seodata';
 
-const useHelpArticleSeo = (article?: Article) => {
+export const useHelpArticleSeo = (article?: Article) => {
 	const location = useLocation();
 
 	useEffect(() => {
@@ -33,5 +33,3 @@ const addStructuredData = (article: Article) => {
 	scriptElt.innerHTML = JSON.stringify(data);
 	document.head.appendChild(scriptElt);
 };
-
-export default useHelpArticleSeo;

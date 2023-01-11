@@ -21,7 +21,7 @@ export interface SavedBodyProps {
 	amount: number;
 }
 
-const SavedCancellation = () => {
+export const SavedCancellation = () => {
 	const navigate = useNavigate();
 
 	const location = useLocation();
@@ -88,5 +88,3 @@ const SavedCancellation = () => {
 		<GenericErrorMessage />
 	);
 };
-
-export default SavedCancellation;
