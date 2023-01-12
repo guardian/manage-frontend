@@ -82,6 +82,7 @@ export default class AsyncLoader<
 			return this.props.render(this.state.data, () =>
 				this.setState(
 					{ loadingState: LoadingState.Loading },
+					// eslint-disable-next-line -- supress @typescript-eslint/unbound-method on this line
 					this.componentDidMount,
 				),
 			);
