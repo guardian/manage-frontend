@@ -42,7 +42,6 @@ module.exports = {
 		'@typescript-eslint/prefer-reduce-type-parameter': ['off'],
 		'@typescript-eslint/require-await': ['off'],
 		'@typescript-eslint/restrict-template-expressions': ['off'],
-		'@typescript-eslint/unbound-method': ['off'],
 		'import/no-cycle': ['off'],
 		'import/no-default-export': ['off'],
 		// Overrides carried over from old ESLint config.
