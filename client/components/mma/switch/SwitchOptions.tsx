@@ -105,7 +105,6 @@ const SwitchOptions = () => {
 	// top edge is similarly extended upwards so the button is considered fully
 	// visible when scrolling off the top of the screen.
 
-	// TODO: 'To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.' error in console
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			([entry]) => {
@@ -117,6 +116,10 @@ const SwitchOptions = () => {
 		if (buttonContainerRef.current) {
 			observer.observe(buttonContainerRef.current);
 		}
+
+		return () => {
+			observer.disconnect();
+		};
 	}, [buttonContainerRef]);
 
 	const navigate = useNavigate();
