@@ -6,12 +6,10 @@ import {
 	space,
 	textSans,
 } from '@guardian/source-foundations';
+import { Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
-import type {
-	PaidSubscriptionPlan} from '../../../../shared/productResponse';
-import {
-	getMainPlan
-} from '../../../../shared/productResponse';
+import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { sectionSpacing } from '../../../styles/spacing';
 import { Card } from '../shared/Card';
@@ -46,31 +44,38 @@ const SwitchReview = () => {
 	return (
 		<>
 			<section css={sectionSpacing}>
-				<Heading
-					sansSerif
-					cssOverrides={css`
-						margin-bottom: ${space[3]}px;
-					`}
-				>
-					Your new support
-				</Heading>
-				<Card>
-					<Card.Header backgroundColor={palette.brand[500]}>
-						<h3 css={productTitleCss}>{supporterPlusTitle}</h3>
-					</Card.Header>
-					<Card.Section>
-						<div
-							css={css`
-								${textSans.medium()}
-							`}
-						>
-							Monthly support with exclusive extras including
-							unlimited access to the App
-						</div>
-						<SupporterPlusBenefitsToggle />
-						<div>£10</div>
-					</Card.Section>
-				</Card>
+				<Stack space={3}>
+					<Heading sansSerif>Your new support</Heading>
+					<Card>
+						<Card.Header backgroundColor={palette.brand[500]}>
+							<h3 css={productTitleCss}>{supporterPlusTitle}</h3>
+						</Card.Header>
+						<Card.Section>
+							<p
+								css={css`
+									${textSans.medium()};
+									margin: 0;
+									max-width: 40ch;
+								`}
+							>
+								Monthly support with exclusive extras including
+								unlimited access to the App
+							</p>
+							<SupporterPlusBenefitsToggle />
+							<p
+								css={css`
+									${textSans.medium({ fontWeight: 'bold' })};
+									padding-top: ${space[3]}px;
+									margin-top: ${space[4]}px;
+									margin-bottom: 0;
+									border-top: 1px solid ${palette.neutral[86]};
+								`}
+							>
+								£10/month
+							</p>
+						</Card.Section>
+					</Card>
+				</Stack>
 			</section>
 		</>
 	);
