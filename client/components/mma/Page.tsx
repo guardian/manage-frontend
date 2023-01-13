@@ -8,24 +8,15 @@ import {
 	textSans,
 } from '@guardian/source-foundations';
 import type { ReactElement } from 'react';
-import * as React from 'react';
-import { Link } from 'react-router-dom';
 import { gridBase, gridColumns, gridItemPlacement } from '../../styles/grid';
 import type { LeftSideNavProps } from '../shared/nav/LeftSideNav';
 import { LeftSideNav } from '../shared/nav/LeftSideNav';
 import type { NavItem } from '../shared/nav/NavConfig';
 
-interface Breadcrumbs {
-	title: string;
-	link?: string;
-	currentPage?: boolean;
-}
-
 export interface PageContainerProps {
 	children: React.ReactNode;
 	selectedNavItem: NavItem;
 	pageTitle: string | ReactElement;
-	breadcrumbs?: Breadcrumbs[] | undefined;
 	compactTitle?: boolean;
 }
 
@@ -34,7 +25,6 @@ export const PageContainer = (props: PageContainerProps) => (
 		<PageHeaderContainer
 			selectedNavItem={props.selectedNavItem}
 			title={props.pageTitle}
-			breadcrumbs={props.breadcrumbs}
 			compactTitle={props.compactTitle}
 		/>
 		<PageNavAndContentContainer selectedNavItem={props.selectedNavItem}>
@@ -44,22 +34,19 @@ export const PageContainer = (props: PageContainerProps) => (
 );
 
 interface PageHeaderContainerProps extends LeftSideNavProps {
-	breadcrumbs?: Breadcrumbs[];
 	title: string | ReactElement;
 	compactTitle?: boolean;
 }
 
 const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 	const containerCss = css`
-		border-bottom: 1px solid ${palette.neutral['86']};
 		margin-left: auto;
 		margin-right: auto;
 		background: ${palette.brand[300]};
-		${from.tablet} {
-			${!props.breadcrumbs && `padding-top: 100px;`}
-		}
+		border-bottom: 1px solid ${palette.neutral['86']};
+
 		${from.desktop} {
-			position: relative;
+			padding-top: 100px;
 		}
 	`;
 
@@ -73,6 +60,7 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 		padding-right: ${space[3]}px;
 		max-width: calc(${breakpoints.wide}px + 2.5rem);
 		color: ${palette.neutral['100']};
+
 		${from.tablet} {
 			padding-left: ${space[5]}px;
 			padding-right: ${space[5]}px;
@@ -81,29 +69,10 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 				minmax(0, 1fr)
 			);
 		}
+
 		${from.wide} {
 			grid-template-columns: repeat(${gridColumns.wide}, minmax(0, 1fr));
 		} ;
-	`;
-
-	const breadcrumbCss = css`
-		display: none;
-		grid-column: 1 / span 3;
-
-		${from.tablet} {
-			display: block;
-			padding: ${space[2]}px 0 0;
-			min-height: 100px;
-			grid-column: 1 / span 10;
-		}
-
-		${from.desktop} {
-			grid-column: 5 / span 8;
-		}
-
-		${from.wide} {
-			grid-column: 6 / span 10;
-		}
 	`;
 
 	const titleCss = css`
@@ -113,8 +82,6 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 		margin-top: 28px;
 		margin-bottom: ${space[2]}px;
 		color: ${palette.neutral['100']};
-
-		${props.breadcrumbs && `grid-row: 2 / 3;`}
 
 		${props.compactTitle &&
 		`
@@ -153,44 +120,7 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 	return (
 		<div css={containerCss}>
 			<div css={gridCss}>
-				{props.breadcrumbs && (
-					<div css={breadcrumbCss}>
-						{props.breadcrumbs.map((breadcrumbItem, index) => (
-							<React.Fragment key={`breadcrumb-${index}`}>
-								{breadcrumbItem.link ? (
-									<Link
-										to={breadcrumbItem.link}
-										css={css`
-											${textSans.medium()};
-											color: ${palette.neutral[100]};
-										`}
-									>
-										{breadcrumbItem.title}
-									</Link>
-								) : (
-									<span
-										css={css`
-											${textSans.medium({
-												fontWeight:
-													breadcrumbItem.currentPage
-														? 'bold'
-														: 'regular',
-											})};
-											color: ${palette.neutral[100]};
-										`}
-									>
-										{breadcrumbItem.title}
-									</span>
-								)}
-								{props.breadcrumbs?.length &&
-									index < props.breadcrumbs?.length - 1 && (
-										<span>{' / '}</span>
-									)}
-							</React.Fragment>
-						))}
-					</div>
-				)}
-				<h1 css={titleCss}>{props.title || <>&nbsp;</>}</h1>
+				<h1 css={titleCss}>{props.title}</h1>
 			</div>
 		</div>
 	);
