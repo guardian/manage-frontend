@@ -7,6 +7,7 @@ const membersDataApiResponse = {
 	user: {
 		firstName: 'test',
 		lastName: 'name',
+		email: 'joe.bloggs@email.com',
 	},
 	products: membersDataApiItems,
 };
