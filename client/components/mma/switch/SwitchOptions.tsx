@@ -12,22 +12,16 @@ import {
 	buttonThemeReaderRevenueBrand,
 } from '@guardian/source-react-components';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
+import { sectionSpacing } from '../../../styles/spacing';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
-
-//TODO: this is copied from AccountOverviewV2, share it
-const sectionSpacing = css`
-	margin-top: ${space[6]}px;
-	${from.tablet} {
-		margin-top: ${space[9]}px;
-	}
-`;
 
 const cardHeaderDivCss = css`
 	display: flex;
@@ -111,6 +105,7 @@ const SwitchOptions = () => {
 	// top edge is similarly extended upwards so the button is considered fully
 	// visible when scrolling off the top of the screen.
 
+	// TODO: 'To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.' error in console
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			([entry]) => {
@@ -123,6 +118,8 @@ const SwitchOptions = () => {
 			observer.observe(buttonContainerRef.current);
 		}
 	}, [buttonContainerRef]);
+
+	const navigate = useNavigate();
 
 	return (
 		<>
@@ -221,6 +218,7 @@ const SwitchOptions = () => {
 						cssOverrides={css`
 							justify-content: center;
 						`}
+						onClick={() => navigate(`/switch/review`)}
 					>
 						{aboveThreshold
 							? 'Add extras with no extra cost'
