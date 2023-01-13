@@ -63,16 +63,6 @@ const PaymentDetailUpdateContainer = (props: WithProductType<ProductType>) => {
 		<PageContainer
 			selectedNavItem={navItemReferrer}
 			pageTitle="Manage payment method"
-			breadcrumbs={[
-				{
-					title: navItemReferrer.title,
-					link: navItemReferrer.link,
-				},
-				{
-					title: 'Manage payment method',
-					currentPage: true,
-				},
-			]}
 		>
 			{productDetail ? (
 				<PaymentUpdateProductDetailContext.Provider
