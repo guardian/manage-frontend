@@ -1,5 +1,8 @@
 import { createRef, useEffect, useState } from 'react';
-import type { ProductDetail } from '../../../../../shared/productResponse';
+import {
+	isProduct,
+	mdapiResponseReader,
+} from '../../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { allProductsDetailFetcher } from '../../../../utilities/productUtils';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
@@ -61,8 +64,9 @@ const EmailAndMarketing = (_: { path?: string }) => {
 					return;
 				}
 				const productDetailsResponse = await allProductsDetailFetcher();
-				const productDetails: ProductDetail[] =
-					await productDetailsResponse.json();
+				const productDetails = mdapiResponseReader(
+					await productDetailsResponse.json(),
+				).products.filter(isProduct);
 				const consentOptions = await ConsentOptions.getAll();
 				const consentsWithFilteredSoftOptIns = consentOptions.filter(
 					(consent: ConsentOption) =>
