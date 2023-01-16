@@ -6,7 +6,10 @@
  * eg. `[guardianWeeklyCard, digitalDD, newspaperVoucherPaypal]`
  */
 
-import type { ProductDetail } from '../../shared/productResponse';
+import type {
+	MembersDataApiResponse,
+	ProductDetail,
+} from '../../shared/productResponse';
 
 export const guardianWeeklyCard: ProductDetail = {
 	mmaCategory: 'subscriptions',
@@ -686,4 +689,17 @@ export const cancelledContribution: ProductDetail = {
 		accountId: '8ad09f8a7e25bda3017e296317464818',
 	},
 	isTestUser: false,
+};
+
+export const membersDataApiResponse = (
+	...productDetails: ProductDetail[]
+): MembersDataApiResponse => {
+	return {
+		user: {
+			firstName: 'test',
+			lastName: 'name',
+			email: 'test@test.com',
+		},
+		products: productDetails,
+	};
 };

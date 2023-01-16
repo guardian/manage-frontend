@@ -6,6 +6,7 @@ import {
 	contribution,
 	digitalDD,
 	guardianWeeklyCard,
+	membersDataApiResponse,
 	newspaperVoucherPaypal,
 	supporterPlus,
 } from '../../../fixtures/productDetail';
@@ -25,7 +26,7 @@ export const NoSubscription: ComponentStory<typeof AccountOverview> = () => {
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })
-		.get('/api/me/mma', { body: [] })
+		.get('/api/me/mma', { body: membersDataApiResponse() })
 		.get('/idapi/user', { body: user });
 
 	return <AccountOverview />;
@@ -36,17 +37,11 @@ export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
 		.restore()
 		.get('/api/cancelled/', { body: [] })
 		.get('/api/me/mma', {
-			body: {
-				user: {
-					firstname: 'test',
-					lastname: 'name',
-				},
-				products: [
-					guardianWeeklyCard,
-					digitalDD,
-					newspaperVoucherPaypal,
-				],
-			},
+			body: membersDataApiResponse(
+				guardianWeeklyCard,
+				digitalDD,
+				newspaperVoucherPaypal,
+			),
 		});
 
 	return <AccountOverview />;
@@ -61,7 +56,7 @@ export const WithContributionNewLayout: ComponentStory<
 		.restore()
 		.get('/api/cancelled/', { body: [] })
 		.get('/api/me/mma', {
-			body: [contribution],
+			body: membersDataApiResponse(contribution),
 		});
 
 	return <AccountOverview />;
@@ -80,7 +75,10 @@ export const WithContributionNewLayoutPaymentFailure: ComponentStory<
 		.restore()
 		.get('/api/cancelled/', { body: [] })
 		.get('/api/me/mma', {
-			body: [contributionPaymentFailure, supporterPlus],
+			body: membersDataApiResponse(
+				contributionPaymentFailure,
+				supporterPlus,
+			),
 		});
 
 	return <AccountOverview />;
@@ -95,7 +93,7 @@ export const WithContributionNewLayoutDigisubAndContribution: ComponentStory<
 		.restore()
 		.get('/api/cancelled/', { body: [] })
 		.get('/api/me/mma', {
-			body: [contribution, digitalDD],
+			body: membersDataApiResponse(contribution, digitalDD),
 		});
 
 	return <AccountOverview />;

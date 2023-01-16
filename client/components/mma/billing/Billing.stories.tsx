@@ -4,6 +4,7 @@ import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorato
 import {
 	digitalDD,
 	guardianWeeklyCard,
+	membersDataApiResponse,
 	newspaperVoucherPaypal,
 } from '../../../fixtures/productDetail';
 import { user } from '../../../fixtures/user';
@@ -21,7 +22,7 @@ export default {
 export const NoSubscription: ComponentStory<typeof Billing> = () => {
 	fetchMock
 		.restore()
-		.get('/api/me/mma', { body: [] })
+		.get('/api/me/mma', { body: membersDataApiResponse() })
 		.get('/api/invoices', { body: { invoices: [] } })
 		.get('/idapi/user', { body: user });
 
@@ -32,7 +33,11 @@ export const WithSubscriptions: ComponentStory<typeof Billing> = () => {
 	fetchMock
 		.restore()
 		.get('/api/me/mma', {
-			body: [guardianWeeklyCard, digitalDD, newspaperVoucherPaypal],
+			body: membersDataApiResponse(
+				guardianWeeklyCard,
+				digitalDD,
+				newspaperVoucherPaypal,
+			),
 		})
 		.get('/api/invoices', { body: { invoices: [] } });
 
