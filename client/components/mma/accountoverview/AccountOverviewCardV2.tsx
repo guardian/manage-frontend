@@ -10,7 +10,6 @@ import {
 	Button,
 	buttonThemeReaderRevenueBrand,
 } from '@guardian/source-react-components';
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { parseDate } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
@@ -18,7 +17,6 @@ import { getMainPlan, isGift } from '../../../../shared/productResponse';
 import type { ProductTypeKeys } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
-import { expanderButtonCss } from '../../shared/ExpanderButton';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { Card } from '../shared/Card';
 import { CardDisplay } from '../shared/CardDisplay';
@@ -30,7 +28,7 @@ import {
 } from '../shared/NextPaymentDetails';
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
-import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
+import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
 
 interface ProductCardConfiguration {
 	headerColor: string;
@@ -83,7 +81,6 @@ export const AccountOverviewCardV2 = ({
 	isEligibleToSwitch: boolean;
 }) => {
 	const navigate = useNavigate();
-	const [showBenefits, setShowBenefits] = useState<boolean>(false);
 
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
@@ -193,14 +190,6 @@ export const AccountOverviewCardV2 = ({
 		}
 	`;
 
-	const benefitsButtonCss = css`
-		${textSans.small()}
-		margin-top: ${space[1]}px;
-		padding: 0;
-		color: ${palette.brand[500]};
-		border-bottom: 1px solid ${palette.brand[500]};
-	`;
-
 	return (
 		<Card>
 			<Card.Header
@@ -256,26 +245,7 @@ export const AccountOverviewCardV2 = ({
 						{nextPaymentDetails.paymentInterval} support and extra
 						benefits.
 					</p>
-					<div
-						css={css`
-							margin: ${space[5]}px 0 ${space[4]}px 0;
-						`}
-						hidden={!showBenefits}
-					>
-						<SupporterPlusBenefitsSection />
-					</div>
-					<button
-						css={[
-							expanderButtonCss()(showBenefits),
-							benefitsButtonCss,
-						]}
-						type="button"
-						aria-expanded={showBenefits}
-						aria-controls="benefits"
-						onClick={() => setShowBenefits(!showBenefits)}
-					>
-						{showBenefits ? 'hide' : 'view'} benefits
-					</button>
+					<SupporterPlusBenefitsToggle />
 				</Card.Section>
 			)}
 			<Card.Section>

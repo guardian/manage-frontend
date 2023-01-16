@@ -38,6 +38,7 @@ import Maintenance from './maintenance/Maintenance';
 import MMAPageSkeleton from './MMAPageSkeleton';
 import SwitchContainer from './switch/SwitchContainer';
 import SwitchOptions from './switch/SwitchOptions';
+import SwitchReview from './switch/SwitchReview';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {
@@ -326,6 +327,10 @@ const MMARouter = () => {
 						/>
 						<Route path="/switch" element={<SwitchContainer />}>
 							<Route index element={<SwitchOptions />} />
+							<Route
+								path="/switch/review"
+								element={<SwitchReview />}
+							/>
 						</Route>
 						{Object.values(GROUPED_PRODUCT_TYPES).map(
 							(groupedProductType: GroupedProductType) => (
