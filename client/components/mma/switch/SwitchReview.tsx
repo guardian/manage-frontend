@@ -40,6 +40,12 @@ const SwitchReview = () => {
 		mainPlan.billingPeriod,
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
+	// ToDo: hardcoding this for now; need to find out where to get this from for each currency
+	const monthlyThreshold = 10;
+	const annualThreshold = 95;
+
+	const threshold =
+		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
 
 	return (
 		<>
@@ -71,7 +77,8 @@ const SwitchReview = () => {
 									border-top: 1px solid ${palette.neutral[86]};
 								`}
 							>
-								£10/month
+								{mainPlan.currency}
+								{threshold}/{mainPlan.billingPeriod}
 							</p>
 						</Card.Section>
 					</Card>
