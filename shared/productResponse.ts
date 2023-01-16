@@ -44,7 +44,7 @@ export interface InvoiceDataApiItem {
 }
 
 export class MembersDataApiAsyncLoader extends AsyncLoader<
-	MembersDataApiItem[]
+	[MembersDataApiResponse | MembersDataApiItem[]]
 > {}
 
 export const MembersDataApiItemContext: React.Context<MembersDataApiItem> =

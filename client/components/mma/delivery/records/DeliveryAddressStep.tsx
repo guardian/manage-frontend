@@ -18,10 +18,12 @@ import { dateString } from '../../../../../shared/dates';
 import type {
 	DeliveryAddress,
 	MembersDataApiItem,
+	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../../shared/productResponse';
 import {
 	isProduct,
+	mdapiResponseReader,
 	MembersDataApiAsyncLoader,
 } from '../../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
@@ -145,11 +147,13 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		};
 
 	const renderDeliveryAddressForm = (
-		allProductDetails: MembersDataApiItem[],
+		allProductDetails: [MembersDataApiResponse | MembersDataApiItem[]],
 	) => {
+		const mdaResponse = mdapiResponseReader(allProductDetails);
+
 		const contactIdToArrayOfProductDetailAndProductType =
 			getValidDeliveryAddressChangeEffectiveDates(
-				allProductDetails
+				mdaResponse.products
 					.filter(isProduct)
 					.filter(
 						(product) => product.subscription.readerType !== 'Gift',

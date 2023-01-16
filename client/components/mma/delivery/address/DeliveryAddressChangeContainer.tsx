@@ -2,9 +2,13 @@ import { css } from '@emotion/react';
 import { from } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import type { MembersDataApiItem } from '../../../../../shared/productResponse';
+import type {
+	MembersDataApiItem,
+	MembersDataApiResponse,
+} from '../../../../../shared/productResponse';
 import {
 	isProduct,
+	mdapiResponseReader,
 	MembersDataApiAsyncLoader,
 } from '../../../../../shared/productResponse';
 import type {
@@ -33,11 +37,14 @@ interface ContextAndOutletContainerProps {
 }
 
 const renderContextAndOutletContainer =
-	(productType: ProductType) => (allProductDetails: MembersDataApiItem[]) => {
+	(productType: ProductType) =>
+	(allProductDetails: [MembersDataApiResponse | MembersDataApiItem[]]) => {
+		const mdaResponse = mdapiResponseReader(allProductDetails);
+
 		return (
 			<ContextAndOutletContainer
 				contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
-					allProductDetails
+					mdaResponse.products
 						.filter(isProduct)
 						.filter((_) => _.subscription.readerType !== 'Gift'),
 				)}

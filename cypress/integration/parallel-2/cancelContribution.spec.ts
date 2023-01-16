@@ -51,7 +51,14 @@ describe('Cancel contribution', () => {
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: [contribution],
+			body: {
+				user: {
+					firstname: 'test',
+					lastname: 'name',
+					email: 'joe.bloggs@email.com',
+				},
+				products: [contribution],
+			},
 		});
 
 		cy.intercept('GET', '/api/me/mma/**', {
