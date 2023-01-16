@@ -1,4 +1,7 @@
-import { contribution } from '../../../client/fixtures/productDetail';
+import {
+	contribution,
+	membersDataApiResponse,
+} from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Cancel contribution', () => {
@@ -46,24 +49,17 @@ describe('Cancel contribution', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
-			body: [contribution],
+			body: membersDataApiResponse(contribution),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: {
-				user: {
-					firstname: 'test',
-					lastname: 'name',
-					email: 'joe.bloggs@email.com',
-				},
-				products: [contribution],
-			},
+			body: membersDataApiResponse(contribution),
 		});
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: { subscription: {} },
+			body: membersDataApiResponse(),
 		}).as('new_product_detail');
 
 		cy.intercept('GET', '/api/cancelled/', {

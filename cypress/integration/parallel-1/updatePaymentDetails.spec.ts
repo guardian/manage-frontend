@@ -1,6 +1,7 @@
 import {
 	guardianWeeklyCurrentSubscription,
 	digitalDD,
+	membersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
 import {
 	stripeSetupIntent,
@@ -18,12 +19,12 @@ describe('Update payment details', () => {
 	it('Complete card payment update', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
+			body: membersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
+			body: membersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('refetch_subscription');
 
 		cy.intercept('POST', '/api/payment/card', {
@@ -85,7 +86,7 @@ describe('Update payment details', () => {
 	it('Shows correct error messages for direct debit form', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: [digitalDD],
+			body: membersDataApiResponse(digitalDD),
 		}).as('product_detail');
 
 		cy.intercept('POST', '/api/validate/payment/**', {
@@ -129,12 +130,12 @@ describe('Update payment details', () => {
 	it('Complete direct debit payment update', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: [digitalDD],
+			body: membersDataApiResponse(digitalDD),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: [digitalDD],
+			body: membersDataApiResponse(digitalDD),
 		}).as('refetch_subscription');
 
 		cy.intercept('POST', '/api/validate/payment/**', {
@@ -175,12 +176,12 @@ describe('Update payment details', () => {
 	it('Shows payment failure route correctly for direct debit', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: [digitalDD],
+			body: membersDataApiResponse(digitalDD),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: [digitalDD],
+			body: membersDataApiResponse(digitalDD),
 		}).as('refetch_subscription');
 
 		cy.intercept('POST', '/api/validate/payment/**', {
@@ -220,7 +221,7 @@ describe('Update payment details', () => {
 	it('Show recaptcha error', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
+			body: membersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('product_detail');
 
 		cy.visit('/payment/subscriptioncard');

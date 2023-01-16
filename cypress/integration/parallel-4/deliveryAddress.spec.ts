@@ -1,4 +1,7 @@
-import { guardianWeeklyCurrentSubscription } from '../../../client/fixtures/productDetail';
+import {
+	guardianWeeklyCurrentSubscription,
+	membersDataApiResponse,
+} from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Delivery address', () => {
@@ -7,7 +10,7 @@ describe('Delivery address', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=ContentSubscription', {
 			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
+			body: membersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/cancelled/', {
@@ -19,7 +22,7 @@ describe('Delivery address', () => {
 	it('Can update delivery address. Navigating from account overview', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
+			body: membersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('mma');
 
 		cy.intercept('PUT', '/api/delivery/address/update/**', {
@@ -55,7 +58,7 @@ describe('Delivery address', () => {
 	it('Shows updated address when returning to manage subscription page', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
+			body: membersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('mma');
 
 		cy.intercept('PUT', '/api/delivery/address/update/**', {
