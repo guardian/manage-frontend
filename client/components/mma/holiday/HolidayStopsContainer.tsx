@@ -4,10 +4,12 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import type { DateRange } from '../../../../shared/dates';
 import type {
 	MembersDataApiItem,
+	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import {
 	isProduct,
+	mdapiResponseReader,
 	MembersDataApiAsyncLoader,
 } from '../../../../shared/productResponse';
 import type {
@@ -97,8 +99,10 @@ const handleMembersDataResponse =
 		publicationsImpacted: HolidayStopDetail[],
 		setPublicationsImpacted: Dispatch<SetStateAction<HolidayStopDetail[]>>,
 	) =>
-	(data: MembersDataApiItem[]) => {
-		const filteredProductDetails = data.filter(isProduct);
+	(data: [MembersDataApiResponse | MembersDataApiItem[]]) => {
+		const mdaResponse = mdapiResponseReader(data);
+
+		const filteredProductDetails = mdaResponse.products.filter(isProduct);
 
 		if (filteredProductDetails.length === 1) {
 			const productDetail = filteredProductDetails[0];

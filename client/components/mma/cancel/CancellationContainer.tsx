@@ -3,10 +3,12 @@ import { createContext, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import type {
 	MembersDataApiItem,
+	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import {
 	isProduct,
+	mdapiResponseReader,
 	MembersDataApiAsyncLoader,
 } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
@@ -31,8 +33,11 @@ import type {
 } from './productSwitch/productSwitchApi';
 
 const renderSingleProductOrReturnToAccountOverview =
-	(productType: ProductType) => (data: MembersDataApiItem[]) => {
-		const filteredProductDetails = data
+	(productType: ProductType) =>
+	(data: [MembersDataApiResponse | MembersDataApiItem[]]) => {
+		const mdaResponse = mdapiResponseReader(data);
+
+		const filteredProductDetails = mdaResponse.products
 			.filter(isProduct)
 			.filter((productDetail) => !productDetail.subscription.cancelledAt);
 

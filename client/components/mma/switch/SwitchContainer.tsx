@@ -3,10 +3,12 @@ import { createContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import type {
 	MembersDataApiItem,
+	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import {
 	isProduct,
+	mdapiResponseReader,
 	MembersDataApiAsyncLoader,
 } from '../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
@@ -26,9 +28,11 @@ export const SwitchContext: Context<SwitchContextInterface | {}> =
 	createContext({});
 
 const renderSingleProductOrReturnToAccountOverview = (
-	data: MembersDataApiItem[],
+	data: [MembersDataApiResponse | MembersDataApiItem[]],
 ) => {
-	const filteredProductDetails = data.filter(isProduct);
+	const mdaResponse = mdapiResponseReader(data);
+
+	const filteredProductDetails = mdaResponse.products.filter(isProduct);
 
 	if (filteredProductDetails.length === 1) {
 		return contextAndOutletContainer(filteredProductDetails[0]);
