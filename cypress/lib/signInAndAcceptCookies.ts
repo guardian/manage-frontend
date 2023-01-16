@@ -1,4 +1,7 @@
-import { guardianWeeklyCurrentSubscription } from '../../client/fixtures/productDetail';
+import {
+	guardianWeeklyCurrentSubscription,
+	membersDataApiResponse,
+} from '../../client/fixtures/productDetail';
 
 export const signInAndAcceptCookies = () => {
 	cy.session('auth', () => {
@@ -6,7 +9,7 @@ export const signInAndAcceptCookies = () => {
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
+			body: membersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('mma');
 
 		cy.intercept('GET', '/api/cancelled/', {

@@ -1,6 +1,7 @@
 import {
 	guardianWeeklyCurrentSubscription,
 	homeDeliverySubscription,
+	membersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
 import {
 	deliveryRecordsWithNoDeliveries,
@@ -21,7 +22,7 @@ describe('Delivery records', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
+			body: membersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/delivery-records/A-S00293857', {
@@ -49,7 +50,10 @@ describe('Delivery records', () => {
 			secondarySubscriptionId;
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription, secondaryGWSubscription],
+			body: membersDataApiResponse(
+				guardianWeeklyCurrentSubscription,
+				secondaryGWSubscription,
+			),
 		}).as('mma');
 
 		cy.intercept('GET', '/api/cancelled/', {
@@ -106,7 +110,7 @@ describe('Delivery records', () => {
 		cancelledGWSubscription.subscription.cancelledAt = true;
 		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
-			body: [cancelledGWSubscription],
+			body: membersDataApiResponse(cancelledGWSubscription),
 		}).as('mma');
 
 		cy.visit('/delivery/guardianweekly/records');
@@ -139,7 +143,7 @@ describe('Delivery records', () => {
 	it('home delivery with existing delivery problem (within 14 dayes) reporting issue - not auto credited', () => {
 		cy.intercept('GET', '/api/me/mma?productType=HomeDelivery', {
 			statusCode: 200,
-			body: [homeDeliverySubscription],
+			body: membersDataApiResponse(homeDeliverySubscription),
 		}).as('product_detail_home_delivery');
 
 		const deliveryRecordsWithDeliveryProblem = JSON.parse(
@@ -201,7 +205,7 @@ describe('Delivery records', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
-			body: [gWSubscriptionNonAutoRenew],
+			body: membersDataApiResponse(gWSubscriptionNonAutoRenew),
 		}).as('product_detail_non_auto_renew');
 
 		cy.visit('/delivery/guardianweekly/records');
@@ -280,7 +284,7 @@ describe('Delivery records', () => {
 	it('allows you to update delivery address before reporting a problem', () => {
 		cy.intercept('GET', '/api/me/mma?productType=ContentSubscription', {
 			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
+			body: membersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('address_product_detail');
 
 		cy.intercept('PUT', '/api/delivery/address/update/**', {
