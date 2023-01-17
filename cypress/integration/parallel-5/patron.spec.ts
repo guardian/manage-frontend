@@ -1,6 +1,6 @@
 import {
 	guardianWeeklyCard,
-	membersDataApiResponse,
+	toMembersDataApiResponse,
 	patronDigitalSub,
 } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
@@ -13,7 +13,10 @@ describe('patron test', () => {
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: membersDataApiResponse(patronDigitalSub, guardianWeeklyCard),
+			body: toMembersDataApiResponse(
+				patronDigitalSub,
+				guardianWeeklyCard,
+			),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
@@ -38,7 +41,7 @@ describe('patron test', () => {
 	it('patron manage subscription page', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: membersDataApiResponse(patronDigitalSub),
+			body: toMembersDataApiResponse(patronDigitalSub),
 		}).as('product_detail');
 
 		cy.visit('/subscriptions');

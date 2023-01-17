@@ -1,6 +1,6 @@
 import {
 	guardianWeeklyCurrentSubscription,
-	membersDataApiResponse,
+	toMembersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
@@ -27,17 +27,17 @@ describe('Cancel guardian weekly', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=GuardianWeekly', {
 			statusCode: 200,
-			body: membersDataApiResponse(GWwithSelfCancelEnabled),
+			body: toMembersDataApiResponse(GWwithSelfCancelEnabled),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: membersDataApiResponse(GWwithSelfCancelEnabled),
+			body: toMembersDataApiResponse(GWwithSelfCancelEnabled),
 		});
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: membersDataApiResponse(),
+			body: toMembersDataApiResponse(),
 		}).as('new_product_detail');
 
 		cy.intercept('GET', '/api/cancelled/', {

@@ -695,7 +695,7 @@ export const cancelledContribution: ProductDetail = {
 	isTestUser: false,
 };
 
-export const membersDataApiResponse = (
+export const toMembersDataApiResponse = (
 	...productDetails: ProductDetail[]
 ): MembersDataApiResponse => {
 	return {

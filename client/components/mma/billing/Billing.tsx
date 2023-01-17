@@ -47,7 +47,10 @@ type MMACategoryToProductDetails = {
 };
 
 class BillingDataAsyncLoader extends AsyncLoader<
-	[MembersDataApiResponse, { invoices: InvoiceDataApiItem[] }]
+	[
+		MembersDataApiResponse | MembersDataApiItem[],
+		{ invoices: InvoiceDataApiItem[] },
+	]
 > {}
 
 const BillingRenderer = ([mdapiObject, invoiceResponse]: [

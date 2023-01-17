@@ -4,7 +4,7 @@ import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecor
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import {
 	guardianWeeklyCard,
-	membersDataApiResponse,
+	toMembersDataApiResponse,
 } from '../../../../fixtures/productDetail';
 import DeliveryAddressChangeContainer from './DeliveryAddressChangeContainer';
 import DeliveryAddressConfirmation from './DeliveryAddressConfirmation';
@@ -27,7 +27,7 @@ export default {
 		msw: [
 			rest.get('/api/me/mma', (_req, res, ctx) => {
 				return res(
-					ctx.json(membersDataApiResponse(guardianWeeklyCard)),
+					ctx.json(toMembersDataApiResponse(guardianWeeklyCard)),
 				);
 			}),
 		],
@@ -57,7 +57,7 @@ export const Confirmation: ComponentStory<
 Confirmation.parameters = {
 	msw: [
 		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(ctx.json(membersDataApiResponse(guardianWeeklyCard)));
+			return res(ctx.json(toMembersDataApiResponse(guardianWeeklyCard)));
 		}),
 		rest.put('/api/delivery/address/update/*', (_req, res, ctx) => {
 			return res(ctx.status(200));

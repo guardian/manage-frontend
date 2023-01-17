@@ -5,7 +5,7 @@ import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { existingHolidays } from '../../../fixtures/holidays';
 import {
 	guardianWeeklyCard,
-	membersDataApiResponse,
+	toMembersDataApiResponse,
 } from '../../../fixtures/productDetail';
 import HolidayDateChooser from './HolidayDateChooser';
 import HolidaysOverview from './HolidaysOverview';
@@ -40,7 +40,7 @@ export const Manage: ComponentStory<typeof HolidaysOverview> = () => {
 Manage.parameters = {
 	msw: [
 		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(ctx.json(membersDataApiResponse(guardianWeeklyCard)));
+			return res(ctx.json(toMembersDataApiResponse(guardianWeeklyCard)));
 		}),
 		rest.get('/api/holidays/*', (_req, res, ctx) => {
 			return res(ctx.json(existingHolidays));
@@ -55,7 +55,7 @@ export const Create: ComponentStory<typeof HolidayDateChooser> = () => {
 Create.parameters = {
 	msw: [
 		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(ctx.json(membersDataApiResponse(guardianWeeklyCard)));
+			return res(ctx.json(toMembersDataApiResponse(guardianWeeklyCard)));
 		}),
 		rest.get('/api/holidays/*', (_req, res, ctx) => {
 			return res(ctx.json(existingHolidays));

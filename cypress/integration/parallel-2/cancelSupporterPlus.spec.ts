@@ -1,5 +1,5 @@
 import {
-	membersDataApiResponse,
+	toMembersDataApiResponse,
 	supporterPlus,
 } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
@@ -37,17 +37,17 @@ describe('Cancel Supporter Plus', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=SupporterPlus', {
 			statusCode: 200,
-			body: membersDataApiResponse(supporterPlus),
+			body: toMembersDataApiResponse(supporterPlus),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: membersDataApiResponse(supporterPlus),
+			body: toMembersDataApiResponse(supporterPlus),
 		});
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: membersDataApiResponse(),
+			body: toMembersDataApiResponse(),
 		}).as('new_product_detail');
 
 		cy.intercept('GET', '/api/cancelled/', {

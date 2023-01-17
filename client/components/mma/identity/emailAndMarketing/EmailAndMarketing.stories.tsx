@@ -7,8 +7,8 @@ import { newsletterSubscriptions } from '../../../../fixtures/newsletterSubscrip
 import {
 	digitalDD,
 	guardianWeeklyCard,
-	membersDataApiResponse,
 	newspaperVoucherPaypal,
+	toMembersDataApiResponse,
 } from '../../../../fixtures/productDetail';
 import { user } from '../../../../fixtures/user';
 import EmailAndMarketing from './EmailAndMarketing';
@@ -26,7 +26,7 @@ export const Default: ComponentStory<typeof EmailAndMarketing> = () => {
 	fetchMock
 		.restore()
 		.get('/api/me/mma', {
-			body: membersDataApiResponse(
+			body: toMembersDataApiResponse(
 				guardianWeeklyCard,
 				digitalDD,
 				newspaperVoucherPaypal,

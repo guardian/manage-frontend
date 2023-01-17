@@ -1,5 +1,5 @@
 import {
-	membersDataApiResponse,
+	toMembersDataApiResponse,
 	membership,
 } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
@@ -10,12 +10,12 @@ describe('membership test', () => {
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: membersDataApiResponse(membership),
+			body: toMembersDataApiResponse(membership),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: membersDataApiResponse(membership),
+			body: toMembersDataApiResponse(membership),
 		}).as('refetch_subscription');
 
 		cy.intercept('GET', '/api/cancelled/', {
