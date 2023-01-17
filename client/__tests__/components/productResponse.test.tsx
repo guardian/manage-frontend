@@ -1,4 +1,3 @@
-/* eslint jest/no-standalone-expect: "off", jest/no-done-callback: "off" */
 import { mdapiResponseReader } from '../../../shared/productResponse';
 import { digitalDD, guardianWeeklyCard } from '../../fixtures/productDetail';
 
