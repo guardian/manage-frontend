@@ -59,9 +59,9 @@ const SwitchReview = () => {
 							`}
 						>
 							You will now support us with {mainPlan.currency}
-							{threshold} every month, giving you exclusive
-							supporter extras, including unlimited reading in our
-							news app
+							{threshold} every {mainPlan.billingPeriod}, giving
+							you exclusive supporter extras, including unlimited
+							reading in our news app
 						</p>
 					</section>
 					<Heading sansSerif>Your new support</Heading>
@@ -77,8 +77,8 @@ const SwitchReview = () => {
 									max-width: 40ch;
 								`}
 							>
-								Monthly support with exclusive extras including
-								unlimited access to the App
+								{monthlyOrAnnual} support with exclusive extras
+								including unlimited access to the App
 							</p>
 							<SupporterPlusBenefitsToggle />
 							<p
