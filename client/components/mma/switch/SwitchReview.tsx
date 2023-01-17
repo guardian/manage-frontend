@@ -51,6 +51,19 @@ const SwitchReview = () => {
 		<>
 			<section css={sectionSpacing}>
 				<Stack space={3}>
+					<section>
+						<Heading sansSerif>Review change</Heading>
+						<p
+							css={css`
+								${textSans.medium()};
+							`}
+						>
+							You will now support us with {mainPlan.currency}
+							{threshold} every {mainPlan.billingPeriod}, giving
+							you exclusive supporter extras, including unlimited
+							reading in our news app
+						</p>
+					</section>
 					<Heading sansSerif>Your new support</Heading>
 					<Card>
 						<Card.Header backgroundColor={palette.brand[500]}>
@@ -64,8 +77,8 @@ const SwitchReview = () => {
 									max-width: 40ch;
 								`}
 							>
-								Monthly support with exclusive extras including
-								unlimited access to the App
+								{monthlyOrAnnual} support with exclusive extras
+								including unlimited access to the App
 							</p>
 							<SupporterPlusBenefitsToggle />
 							<p
