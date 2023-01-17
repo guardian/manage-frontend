@@ -508,10 +508,11 @@ export const membership: ProductDetail = {
 	},
 };
 
-export const patronDigitalSub = {
+export const patronDigitalSub: ProductDetail = {
 	mmaCategory: 'subscriptions',
 	tier: 'Digital Pack',
 	isPaidTier: true,
+	isTestUser: true,
 	selfServiceCancellation: {
 		isAllowed: false,
 		shouldDisplayEmail: false,
@@ -556,6 +557,9 @@ export const patronDigitalSub = {
 			currency: '£',
 			currencyISO: 'GBP',
 			interval: 'year',
+			start: '2022-12-23',
+			end: '2024-12-11',
+			shouldBeVisible: true,
 		},
 		currentPlans: [],
 		futurePlans: [
@@ -572,7 +576,7 @@ export const patronDigitalSub = {
 			},
 		],
 		readerType: 'Patron',
-		cancellationEffectiveDate: null,
+		cancellationEffectiveDate: '2023-05-20',
 	},
 };
 
