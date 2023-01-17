@@ -1,7 +1,8 @@
-import { membership } from '../../../client/fixtures/productDetail';
+import {
+	membersDataApiResponse,
+	membership,
+} from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
-
-const membershipMDAPI = [membership];
 
 describe('membership test', () => {
 	beforeEach(() => {
@@ -9,12 +10,12 @@ describe('membership test', () => {
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: membershipMDAPI,
+			body: membersDataApiResponse(membership),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: membershipMDAPI,
+			body: membersDataApiResponse(membership),
 		}).as('refetch_subscription');
 
 		cy.intercept('GET', '/api/cancelled/', {
