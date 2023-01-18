@@ -149,16 +149,6 @@ const HolidayStopsContainer = (
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}
 			pageTitle="Manage suspensions"
-			breadcrumbs={[
-				{
-					title: NAV_LINKS.accountOverview.title,
-					link: NAV_LINKS.accountOverview.link,
-				},
-				{
-					title: 'Manage suspensions',
-					currentPage: true,
-				},
-			]}
 		>
 			{productDetail ? (
 				productDetail.subscription.start ? (

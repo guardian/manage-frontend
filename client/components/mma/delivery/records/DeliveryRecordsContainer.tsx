@@ -65,16 +65,6 @@ const DeliveryRecordsContainer = (
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}
 			pageTitle="Delivery history"
-			breadcrumbs={[
-				{
-					title: NAV_LINKS.accountOverview.title,
-					link: NAV_LINKS.accountOverview.link,
-				},
-				{
-					title: 'Delivery history',
-					currentPage: true,
-				},
-			]}
 		>
 			{productDetail ? (
 				<DeliveryRecordsApiAsyncLoader

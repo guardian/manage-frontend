@@ -144,16 +144,6 @@ const DeliveryAddressChangeContainer = (
 					delivery details
 				</span>
 			}
-			breadcrumbs={[
-				{
-					title: NAV_LINKS.accountOverview.title,
-					link: NAV_LINKS.accountOverview.link,
-				},
-				{
-					title: 'Edit delivery address',
-					currentPage: true,
-				},
-			]}
 		>
 			<MembersDataApiAsyncLoader
 				render={renderContextAndOutletContainer(props.productType)}

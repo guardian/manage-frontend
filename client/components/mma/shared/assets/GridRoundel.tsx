@@ -1,5 +1,5 @@
 import { from } from '@guardian/source-foundations';
-import { gridColumns, gridItemPlacement } from '../../../../styles/grid';
+import { gridItemPlacement } from '../../../../styles/grid';
 import type { RoundelProps } from './Roundel';
 import { Roundel } from './Roundel';
 
@@ -11,10 +11,10 @@ export const GridRoundel = (props: RoundelProps) => (
 			[from.tablet]: {
 				margin: 'auto',
 				maxHeight: '51px',
-				...gridItemPlacement(-2, 1, gridColumns.tabletAndDesktop),
+				...gridItemPlacement(-2, 1),
 			},
 			[from.wide]: {
-				...gridItemPlacement(-2, 1, gridColumns.wide),
+				...gridItemPlacement(-2, 1),
 			},
 		}}
 	>

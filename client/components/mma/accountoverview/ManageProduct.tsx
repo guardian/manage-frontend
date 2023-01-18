@@ -423,16 +423,6 @@ const ManageProduct = (props: WithGroupedProductType<GroupedProductType>) => {
 				props.groupedProductType.shortFriendlyName ||
 				props.groupedProductType.friendlyName()
 			}`}
-			breadcrumbs={[
-				{
-					title: NAV_LINKS.accountOverview.title,
-					link: NAV_LINKS.accountOverview.link,
-				},
-				{
-					title: `Manage ${props.groupedProductType.friendlyName()}`,
-					currentPage: true,
-				},
-			]}
 		>
 			{productDetail ? (
 				<InnerContent

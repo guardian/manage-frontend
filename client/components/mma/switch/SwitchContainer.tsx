@@ -60,6 +60,7 @@ const SwitchContainer = () => {
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}
 			pageTitle={'Change your support'}
+			compactTitle
 		>
 			{productDetail ? (
 				contextAndOutletContainer(productDetail, isFromApp())

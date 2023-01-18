@@ -7,13 +7,9 @@ export const gridColumns = {
 };
 
 export const gridBase = {
+	display: 'grid',
 	paddingLeft: `${space[3]}px`,
 	paddingRight: `${space[3]}px`,
-	display: '-ms-grid',
-	'@supports (display: grid)': {
-		display: 'grid',
-	},
-	msGridColumns: `(minmax(0, 1fr))[${gridColumns.default}]`,
 	gridTemplateColumns: `repeat(${gridColumns.default}, minmax(0, 1fr))`,
 
 	gridAutoColumns: 'max-content',
@@ -21,11 +17,9 @@ export const gridBase = {
 	[from.tablet]: {
 		paddingLeft: `${space[5]}px`,
 		paddingRight: `${space[5]}px`,
-		msGridColumns: `(minmax(0, 1fr))[${gridColumns.tabletAndDesktop}]`,
 		gridTemplateColumns: `repeat(${gridColumns.tabletAndDesktop}, minmax(0, 1fr))`,
 	},
 	[from.wide]: {
-		msGridColumns: `(minmax(0, 1fr))[${gridColumns.wide}]`,
 		gridTemplateColumns: `repeat(${gridColumns.wide}, minmax(0, 1fr))`,
 	},
 };
@@ -33,16 +27,9 @@ export const gridBase = {
 export const gridItemPlacement = (
 	startingPos: number,
 	span: number,
-	columnsBreakpoint: number = gridColumns.default,
 ): object => {
 	return {
 		gridColumnStart: `${startingPos}`,
 		gridColumnEnd: `span ${span}`,
-		...(startingPos > 0 && { msGridColumn: `${startingPos}` }),
-		...(startingPos < 0 && {
-			msGridColumn: `${columnsBreakpoint + 2 + startingPos}`,
-		}),
-		msGridColumnSpan: `${span}`,
-		msGridRow: '1',
 	};
 };
