@@ -56,7 +56,7 @@ export const WithContributionNewLayout: ComponentStory<
 		.restore()
 		.get('/api/cancelled/', { body: [] })
 		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(contribution),
+			body: [contribution],
 		});
 
 	return <AccountOverview />;
@@ -93,7 +93,7 @@ export const WithContributionNewLayoutDigisubAndContribution: ComponentStory<
 		.restore()
 		.get('/api/cancelled/', { body: [] })
 		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(contribution, digitalDD),
+			body: [contribution, digitalDD],
 		});
 
 	return <AccountOverview />;
