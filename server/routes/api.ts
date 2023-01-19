@@ -4,8 +4,15 @@ import {
 	availableProductMovesResponse,
 	productMoveResponse,
 } from '../../client/fixtures/productMovement';
-import type { MembersDataApiItem } from '../../shared/productResponse';
-import { isProduct, MDA_TEST_USER_HEADER } from '../../shared/productResponse';
+import type {
+	MembersDataApiItem,
+	MembersDataApiResponse,
+} from '../../shared/productResponse';
+import {
+	isProduct,
+	MDA_TEST_USER_HEADER,
+	mdapiResponseReader,
+} from '../../shared/productResponse';
 import {
 	cancellationSfCasesAPI,
 	deliveryRecordsAPI,
@@ -49,12 +56,16 @@ router.get(
 	'/me/mma/:subscriptionName?',
 	customMembersDataApiHandler((response, body) => {
 		const isTestUser = response.getHeader(MDA_TEST_USER_HEADER) === 'true';
-		const augmentedWithTestUser = (
-			JSON.parse(body.toString()) as MembersDataApiItem[]
-		).map((mdaItem) => ({
-			...mdaItem,
-			isTestUser,
-		}));
+		const parsedResponse = JSON.parse(body.toString()) as
+			| MembersDataApiItem[]
+			| MembersDataApiResponse;
+		const newMdapiResponse = mdapiResponseReader(parsedResponse);
+		const augmentedWithTestUser = newMdapiResponse.products.map(
+			(mdaItem) => ({
+				...mdaItem,
+				isTestUser,
+			}),
+		);
 		Promise.all(
 			augmentedWithTestUser
 				.filter(isProduct)
@@ -63,8 +74,9 @@ router.get(
 					augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday,
 				),
 		)
-			.then((_) => {
-				response.json(_);
+			.then((productDetails) => {
+				newMdapiResponse.products = productDetails;
+				response.json(newMdapiResponse);
 			})
 			.catch((error) => {
 				const errorMessage =
