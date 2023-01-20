@@ -1,8 +1,8 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { contribution } from '../../../fixtures/productDetail';
-import SwitchContainer from './SwitchContainer';
-import SwitchReview from './SwitchReview';
+import { SwitchContainer } from './SwitchContainer';
+import { SwitchReview } from './SwitchReview';
 
 export default {
 	title: 'Pages/SwitchReview',

@@ -1,4 +1,4 @@
-import type ResponseProcessor from './ResponseProcessor';
+import type { ResponseProcessor } from './ResponseProcessor';
 
 export const JsonResponseHandler: ResponseProcessor = (
 	response: Response | Response[],

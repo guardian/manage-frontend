@@ -1,5 +1,5 @@
-import useAsyncLoader from '../../../../utilities/hooks/useAsyncLoader';
-import type ResponseProcessor from './ResponseProcessor';
+import { useAsyncLoader } from '../../../../utilities/hooks/useAsyncLoader';
+import type { ResponseProcessor } from './ResponseProcessor';
 
 export type LoadingProps = {
 	asyncFetch: () => Promise<any>;

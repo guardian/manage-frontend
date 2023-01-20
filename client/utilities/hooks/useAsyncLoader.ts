@@ -1,9 +1,9 @@
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
-import type ResponseProcessor from '../../components/mma/shared/asyncComponents/ResponseProcessor';
+import type { ResponseProcessor } from '../../components/mma/shared/asyncComponents/ResponseProcessor';
 import { trackEvent } from '../analytics';
 
-export default function useAsyncLoader<T>(
+export function useAsyncLoader<T>(
 	promiseFromAsyncFetch: Promise<any>,
 	responseProcessor: ResponseProcessor,
 ): {
