@@ -1,4 +1,7 @@
-import useAsyncLoader from '../../../../utilities/hooks/useAsyncLoader';
+import {
+	LoadingState,
+	useAsyncLoader,
+} from '../../../../utilities/hooks/useAsyncLoader';
 import type ResponseProcessor from './ResponseProcessor';
 
 export type LoadingProps = {
@@ -16,15 +19,15 @@ export function LoadingComponent({
 	LoadedView,
 	ErrorView,
 }: LoadingProps) {
-	const { data, isLoading, error } = useAsyncLoader<any>(
-		asyncFetch(),
+	const { data, loadingState } = useAsyncLoader<any>(
+		asyncFetch,
 		responseProcessor,
 	);
 
-	if (error) {
+	if (loadingState == LoadingState.HasError) {
 		return <ErrorView />;
 	}
-	if (isLoading) {
+	if (loadingState == LoadingState.IsLoading) {
 		return <LoadingView />;
 	}
 

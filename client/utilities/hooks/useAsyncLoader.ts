@@ -3,19 +3,28 @@ import { useEffect, useState } from 'react';
 import type ResponseProcessor from '../../components/mma/shared/asyncComponents/ResponseProcessor';
 import { trackEvent } from '../analytics';
 
-export default function useAsyncLoader<T>(
-	promiseFromAsyncFetch: Promise<any>,
+export enum LoadingState {
+	IsLoading,
+	HasLoaded,
+	HasError,
+}
+
+export function useAsyncLoader<T>(
+	asyncFetch: () => Promise<any>,
 	responseProcessor: ResponseProcessor,
 ): {
 	data: T | null;
 	error: Error | ErrorEvent | string | undefined;
-	isLoading: boolean;
+	loadingState: LoadingState;
 } {
 	const [data, setData] = useState<T | null>(null);
 	const [error, setError] = useState<Error | ErrorEvent | string>();
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [loadingState, setLoadingState] = useState<LoadingState>(
+		LoadingState.IsLoading,
+	);
 
 	function handleError(error: Error | ErrorEvent | string): void {
+		setLoadingState(LoadingState.HasError);
 		setError(error);
 		trackEvent({
 			eventCategory: 'asyncLoader',
@@ -26,12 +35,16 @@ export default function useAsyncLoader<T>(
 	}
 
 	useEffect(() => {
-		promiseFromAsyncFetch
-			.then((response) => responseProcessor(response))
-			.then(setData)
-			.catch((e) => handleError(e))
-			.finally(() => setIsLoading(false));
-	}, [promiseFromAsyncFetch]);
+		if (loadingState == LoadingState.IsLoading) {
+			asyncFetch()
+				.then((response) => responseProcessor(response))
+				.then((data) => {
+					setData(data);
+					setLoadingState(LoadingState.HasLoaded);
+				})
+				.catch((e) => handleError(e));
+		}
+	}, [loadingState]);
 
-	return { data, error, isLoading };
+	return { data, error, loadingState };
 }
