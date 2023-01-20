@@ -5,7 +5,6 @@ import {
 	palette,
 	space,
 	textSans,
-	until,
 } from '@guardian/source-foundations';
 import {
 	Button,
@@ -14,8 +13,8 @@ import {
 	SvgClock,
 	SvgCreditCard,
 } from '@guardian/source-react-components';
-import { useContext } from 'react';
-import { Navigate } from 'react-router';
+import { useContext, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router';
 import {
 	dateAddMonths,
 	dateAddYears,
@@ -60,21 +59,19 @@ const whatHappensNextTextCss = css`
 `;
 
 const buttonLayoutCss = css`
+	display: flex;
+	flex-direction: column;
 	margin-top: ${space[5]}px;
 	padding-top: 32px;
 	border-top: 1px solid ${palette.neutral[86]};
-
 	> * + * {
-		margin-left: ${space[3]}px;
+		margin-top: ${space[3]}px;
 	}
-
-	${until.tablet} {
-		display: flex;
-		flex-direction: column;
-
+	${from.tablet} {
+		flex-direction: row;
 		> * + * {
-			margin-left: 0;
-			margin-top: ${space[3]}px;
+			margin-top: 0;
+			margin-left: ${space[3]}px;
 		}
 	}
 `;
@@ -157,6 +154,14 @@ export const SwitchReview = () => {
 	if (previewResponse == null) {
 		return <Navigate to="/" />;
 	}
+
+	const navigate = useNavigate();
+	const [isConfirmingSwitch, setIsConfirmingSwitch] =
+		useState<boolean>(false);
+
+	const confirmSwitch = () => {
+		setIsConfirmingSwitch(true);
+	};
 
 	return (
 		<>
@@ -371,9 +376,11 @@ export const SwitchReview = () => {
 			<section css={buttonLayoutCss}>
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button
+						isLoading={isConfirmingSwitch}
 						cssOverrides={css`
-							justify-content: center;
+							/* justify-content: center; */
 						`}
+						onClick={confirmSwitch}
 					>
 						Confirm change
 					</Button>
@@ -383,6 +390,7 @@ export const SwitchReview = () => {
 					cssOverrides={css`
 						justify-content: center;
 					`}
+					onClick={() => navigate('..')}
 				>
 					Back
 				</Button>
@@ -406,8 +414,8 @@ export const SwitchReview = () => {
 					.
 				</p>
 				<p css={smallPrintCss}>
-					To find out what personal data we collect and how we use
-					it, please visit our{' '}
+					To find out what personal data we collect and how we use it,
+					please visit our{' '}
 					<a href="https://www.theguardian.com/help/privacy-policy">
 						Privacy Policy
 					</a>
