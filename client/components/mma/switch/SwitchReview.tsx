@@ -78,11 +78,27 @@ const buttonLayoutCss = css`
 		}
 	}
 `;
+
+const smallPrintCss = css`
+	${textSans.xxsmall()};
+	margin-top: 0;
+	margin-bottom: 0;
+	color: ${palette.neutral[46]};
+	> a {
+		color: inherit;
+		text-decoration: underline;
+	}
+	& + & {
+		margin-top: ${space[1]}px;
+	}
+`;
+
 interface PreviewResponse {
 	amountPayableToday: number;
 	contributionRefundAmount: number;
 	supporterPlusPurchaseAmount: number;
 }
+
 export const SwitchReview = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 	const productDetail = switchContext.productDetail;
@@ -370,6 +386,33 @@ export const SwitchReview = () => {
 				>
 					Back
 				</Button>
+			</section>
+			<section css={sectionSpacing}>
+				<p css={smallPrintCss}>
+					This arrangement auto-renews and you will be charged the
+					applicable monthly amount each time it renews unless you
+					cancel. You can change how much you pay at any time but £10
+					per month is the minimum payment to receive these benefits.
+					You can cancel any time before your next payment date and if
+					you cancel within the first 14 days, you’ll receive a full
+					refund. Cancellation of your payment will result in the
+					cancellation of these benefits.
+				</p>
+				<p css={smallPrintCss}>
+					By proceeding, you are agreeing to our{' '}
+					<a href="https://www.theguardian.com/info/2014/aug/06/guardian-observer-digital-subscriptions-terms-conditions">
+						Terms and Conditions
+					</a>
+					.
+				</p>
+				<p css={smallPrintCss}>
+					To find out what personal data we collect and how we use
+					it, please visit our{' '}
+					<a href="https://www.theguardian.com/help/privacy-policy">
+						Privacy Policy
+					</a>
+					.
+				</p>
 			</section>
 		</>
 	);
