@@ -1,6 +1,7 @@
 import {
 	guardianWeeklyCard,
 	guardianWeeklyCurrentSubscription,
+	toMembersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
 import {
 	potentialDeliveries,
@@ -24,7 +25,7 @@ describe('Holiday stops', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
-			body: [guardianWeeklyCurrentSubscription],
+			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/holidays/A-S00293857/potential?*', {
@@ -200,7 +201,10 @@ describe('Holiday stops', () => {
 	it('can create a holiday stop where multiple products of the same type exist by navigating from the Account Overview page', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: [guardianWeeklyCard, guardianWeeklyCurrentSubscription],
+			body: toMembersDataApiResponse(
+				guardianWeeklyCard,
+				guardianWeeklyCurrentSubscription,
+			),
 		}).as('mma');
 
 		cy.intercept('GET', '/api/holidays/A-S00286635', {
@@ -269,12 +273,18 @@ describe('Holiday stops', () => {
 	it('redirects you to the Account Overview page if the suspend URL is visited directly and there are multiple products of the same type', () => {
 		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
-			body: [guardianWeeklyCard, guardianWeeklyCurrentSubscription],
+			body: toMembersDataApiResponse(
+				guardianWeeklyCard,
+				guardianWeeklyCurrentSubscription,
+			),
 		}).as('mma_filtered');
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: [guardianWeeklyCard, guardianWeeklyCurrentSubscription],
+			body: toMembersDataApiResponse(
+				guardianWeeklyCard,
+				guardianWeeklyCurrentSubscription,
+			),
 		}).as('mma');
 
 		cy.visit('/suspend/guardianweekly');

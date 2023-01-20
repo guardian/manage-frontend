@@ -5,10 +5,12 @@ import { dateAddDays, parseDate } from '../../../../../shared/dates';
 import type {
 	DeliveryRecordApiItem,
 	MembersDataApiItem,
+	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../../shared/productResponse';
 import {
 	isProduct,
+	mdapiResponseReader,
 	MembersDataApiAsyncLoader,
 } from '../../../../../shared/productResponse';
 import type {
@@ -93,8 +95,10 @@ const DeliveryRecordsContainer = (
 
 const handleMembersDataResponse =
 	(productType: ProductTypeWithDeliveryRecordsProperties) =>
-	(data: MembersDataApiItem[]) => {
-		const filteredProductDetails = data.filter(isProduct);
+	(data: [MembersDataApiResponse | MembersDataApiItem[]]) => {
+		const mdaResponse = mdapiResponseReader(data);
+
+		const filteredProductDetails = mdaResponse.products.filter(isProduct);
 
 		if (filteredProductDetails.length === 1) {
 			const productDetail = filteredProductDetails[0];

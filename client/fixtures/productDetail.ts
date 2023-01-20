@@ -6,7 +6,10 @@
  * eg. `[guardianWeeklyCard, digitalDD, newspaperVoucherPaypal]`
  */
 
-import type { ProductDetail } from '../../shared/productResponse';
+import type {
+	MembersDataApiResponse,
+	ProductDetail,
+} from '../../shared/productResponse';
 
 export const guardianWeeklyCard: ProductDetail = {
 	mmaCategory: 'subscriptions',
@@ -505,10 +508,11 @@ export const membership: ProductDetail = {
 	},
 };
 
-export const patronDigitalSub = {
+export const patronDigitalSub: ProductDetail = {
 	mmaCategory: 'subscriptions',
 	tier: 'Digital Pack',
 	isPaidTier: true,
+	isTestUser: true,
 	selfServiceCancellation: {
 		isAllowed: false,
 		shouldDisplayEmail: false,
@@ -553,6 +557,9 @@ export const patronDigitalSub = {
 			currency: '£',
 			currencyISO: 'GBP',
 			billingPeriod: 'year',
+			start: '2022-12-23',
+			end: '2024-12-11',
+			shouldBeVisible: true,
 		},
 		currentPlans: [],
 		futurePlans: [
@@ -569,7 +576,7 @@ export const patronDigitalSub = {
 			},
 		],
 		readerType: 'Patron',
-		cancellationEffectiveDate: null,
+		cancellationEffectiveDate: '2023-05-20',
 	},
 };
 
@@ -686,4 +693,17 @@ export const cancelledContribution: ProductDetail = {
 		accountId: '8ad09f8a7e25bda3017e296317464818',
 	},
 	isTestUser: false,
+};
+
+export const toMembersDataApiResponse = (
+	...productDetails: ProductDetail[]
+): MembersDataApiResponse => {
+	return {
+		user: {
+			firstName: 'test',
+			lastName: 'name',
+			email: 'test@test.com',
+		},
+		products: productDetails,
+	};
 };

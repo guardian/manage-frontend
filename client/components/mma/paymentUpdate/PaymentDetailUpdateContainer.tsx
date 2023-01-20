@@ -3,10 +3,12 @@ import { createContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import type {
 	MembersDataApiItem,
+	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import {
 	isProduct,
+	mdapiResponseReader,
 	MembersDataApiAsyncLoader,
 } from '../../../../shared/productResponse';
 import type {
@@ -18,9 +20,11 @@ import { getNavItemFromFlowReferrer } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
 
 const renderContextAndOutletContainer = (
-	allProductDetails: MembersDataApiItem[],
+	allProductDetails: [MembersDataApiResponse | MembersDataApiItem[]],
 ) => {
-	const filteredProductDetails = allProductDetails
+	const mdaResponse = mdapiResponseReader(allProductDetails);
+
+	const filteredProductDetails = mdaResponse.products
 		.filter(isProduct)
 		.filter(
 			(productDetail) =>

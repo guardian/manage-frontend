@@ -13,11 +13,13 @@ import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
 	CancelledProductDetail,
 	MembersDataApiItem,
+	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import {
 	isProduct,
 	isSpecificProductType,
+	mdapiResponseReader,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
@@ -38,11 +40,13 @@ import { AccountOverviewCard } from './AccountOverviewCard';
 import { AccountOverviewCardV2 } from './AccountOverviewCardV2';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
 
-const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
-	MembersDataApiItem[],
+const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
+	MembersDataApiResponse | MembersDataApiItem[],
 	CancelledProductDetail[],
 ]) => {
-	const allActiveProductDetails = mdaResponse
+	const mdaResponse = mdapiResponseReader(mdapiObject);
+
+	const allActiveProductDetails = mdaResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
 
@@ -196,7 +200,7 @@ const AccountOverview = () => {
 };
 
 class AccountOverviewAsyncLoader extends AsyncLoader<
-	[MembersDataApiItem[], CancelledProductDetail[]]
+	[MembersDataApiResponse, CancelledProductDetail[]]
 > {}
 
 const AccountOverviewFetcher = () =>

@@ -13,6 +13,7 @@ import { parseDate } from '../../../../shared/dates';
 import type {
 	InvoiceDataApiItem,
 	MembersDataApiItem,
+	MembersDataApiResponse,
 	PaidSubscriptionPlan,
 	ProductDetail,
 } from '../../../../shared/productResponse';
@@ -20,6 +21,7 @@ import {
 	getMainPlan,
 	isGift,
 	isProduct,
+	mdapiResponseReader,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
@@ -45,14 +47,19 @@ type MMACategoryToProductDetails = {
 };
 
 class BillingDataAsyncLoader extends AsyncLoader<
-	[MembersDataApiItem[], { invoices: InvoiceDataApiItem[] }]
+	[
+		MembersDataApiResponse | MembersDataApiItem[],
+		{ invoices: InvoiceDataApiItem[] },
+	]
 > {}
 
-const BillingRenderer = ([mdaResponse, invoiceResponse]: [
-	MembersDataApiItem[],
+const BillingRenderer = ([mdapiObject, invoiceResponse]: [
+	MembersDataApiResponse | MembersDataApiItem[],
 	{ invoices: InvoiceDataApiItem[] },
 ]) => {
-	const allProductDetails = mdaResponse
+	const mdaResponse = mdapiResponseReader(mdapiObject);
+
+	const allProductDetails = mdaResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
 	const invoiceData = invoiceResponse.invoices.sort(

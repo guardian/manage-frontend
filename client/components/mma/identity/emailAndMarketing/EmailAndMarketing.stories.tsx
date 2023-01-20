@@ -8,6 +8,7 @@ import {
 	digitalDD,
 	guardianWeeklyCard,
 	newspaperVoucherPaypal,
+	toMembersDataApiResponse,
 } from '../../../../fixtures/productDetail';
 import { user } from '../../../../fixtures/user';
 import EmailAndMarketing from './EmailAndMarketing';
@@ -25,7 +26,11 @@ export const Default: ComponentStory<typeof EmailAndMarketing> = () => {
 	fetchMock
 		.restore()
 		.get('/api/me/mma', {
-			body: [guardianWeeklyCard, digitalDD, newspaperVoucherPaypal],
+			body: toMembersDataApiResponse(
+				guardianWeeklyCard,
+				digitalDD,
+				newspaperVoucherPaypal,
+			),
 		})
 		.get('/idapi/user', { body: user })
 		.get('/idapicodeproxy/newsletters', { body: newsletters })

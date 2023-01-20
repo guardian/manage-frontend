@@ -1,4 +1,7 @@
-import { contribution } from '../../../client/fixtures/productDetail';
+import {
+	contribution,
+	toMembersDataApiResponse,
+} from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 import {
 	availableProductMovesResponse,
@@ -15,17 +18,17 @@ if (featureSwitches.cancellationProductSwitch) {
 
 			cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 				statusCode: 200,
-				body: [contribution],
+				body: toMembersDataApiResponse(contribution),
 			});
 
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
-				body: [contribution],
+				body: toMembersDataApiResponse(contribution),
 			});
 
 			cy.intercept('GET', '/api/me/mma/**', {
 				statusCode: 200,
-				body: { subscription: {} },
+				body: toMembersDataApiResponse(),
 			}).as('new_product_detail');
 
 			cy.intercept('GET', '/api/cancelled/', {
@@ -175,12 +178,12 @@ describe('product switching', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
-			body: [contribution],
+			body: toMembersDataApiResponse(contribution),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: [contribution],
+			body: toMembersDataApiResponse(contribution),
 		});
 
 		cy.intercept('GET', '/api/cancelled/', {

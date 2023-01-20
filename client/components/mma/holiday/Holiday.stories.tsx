@@ -3,7 +3,10 @@ import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { existingHolidays } from '../../../fixtures/holidays';
-import { guardianWeeklyCard } from '../../../fixtures/productDetail';
+import {
+	guardianWeeklyCard,
+	toMembersDataApiResponse,
+} from '../../../fixtures/productDetail';
 import HolidayDateChooser from './HolidayDateChooser';
 import HolidaysOverview from './HolidaysOverview';
 import HolidayStopsContainer from './HolidayStopsContainer';
@@ -37,7 +40,7 @@ export const Manage: ComponentStory<typeof HolidaysOverview> = () => {
 Manage.parameters = {
 	msw: [
 		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(ctx.json([guardianWeeklyCard]));
+			return res(ctx.json(toMembersDataApiResponse(guardianWeeklyCard)));
 		}),
 		rest.get('/api/holidays/*', (_req, res, ctx) => {
 			return res(ctx.json(existingHolidays));
@@ -52,7 +55,7 @@ export const Create: ComponentStory<typeof HolidayDateChooser> = () => {
 Create.parameters = {
 	msw: [
 		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(ctx.json([guardianWeeklyCard]));
+			return res(ctx.json(toMembersDataApiResponse(guardianWeeklyCard)));
 		}),
 		rest.get('/api/holidays/*', (_req, res, ctx) => {
 			return res(ctx.json(existingHolidays));

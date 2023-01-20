@@ -9,6 +9,25 @@ import type { GroupedProductTypeKeys, ProductType } from './productTypes';
 
 export type DeliveryRecordApiItem = DeliveryRecordDetail;
 
+export type MembersDataApiResponse = {
+	user?: { firstName: string; lastName: string; email: string };
+	products: MembersDataApiItem[];
+};
+
+export function mdapiResponseReader(
+	mdaResponse: MembersDataApiResponse | MembersDataApiItem[],
+): MembersDataApiResponse {
+	if (Array.isArray(mdaResponse)) {
+		return {
+			products: mdaResponse,
+		};
+	}
+	if (!!mdaResponse.user || !!mdaResponse.products) {
+		return mdaResponse;
+	}
+	throw new Error('MDAPI Response is of invalid format');
+}
+
 export type MembersDataApiItem = ProductDetail | {};
 
 export interface InvoiceDataApiItem {
@@ -25,7 +44,7 @@ export interface InvoiceDataApiItem {
 }
 
 export class MembersDataApiAsyncLoader extends AsyncLoader<
-	MembersDataApiItem[]
+	[MembersDataApiResponse | MembersDataApiItem[]]
 > {}
 
 export const MembersDataApiItemContext: React.Context<MembersDataApiItem> =
@@ -49,6 +68,7 @@ export interface SelfServiceCancellation {
 	shouldDisplayEmail: boolean;
 	phoneRegionsToDisplay: PhoneRegionKey[];
 }
+
 export interface ProductDetail extends WithSubscription {
 	isTestUser: boolean; // THIS IS NOT PART OF THE members-data-api RESPONSE (but inferred from a header)
 	isPaidTier: boolean;
