@@ -1,12 +1,15 @@
-import { css } from '@emotion/react';
+import { css, ThemeProvider } from '@emotion/react';
 import {
 	from,
 	headline,
 	palette,
 	space,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
 import {
+	Button,
+	buttonThemeReaderRevenueBrand,
 	Stack,
 	SvgClock,
 	SvgCreditCard,
@@ -56,12 +59,30 @@ const whatHappensNextTextCss = css`
 	width: 100%;
 `;
 
+const buttonLayoutCss = css`
+	margin-top: ${space[5]}px;
+	padding-top: 32px;
+	border-top: 1px solid ${palette.neutral[86]};
+
+	> * + * {
+		margin-left: ${space[3]}px;
+	}
+
+	${until.tablet} {
+		display: flex;
+		flex-direction: column;
+
+		> * + * {
+			margin-left: 0;
+			margin-top: ${space[3]}px;
+		}
+	}
+`;
 interface PreviewResponse {
 	amountPayableToday: number;
 	contributionRefundAmount: number;
 	supporterPlusPurchaseAmount: number;
 }
-
 export const SwitchReview = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 	const productDetail = switchContext.productDetail;
@@ -330,6 +351,25 @@ export const SwitchReview = () => {
 						</div>
 					</Stack>
 				</section>
+			</section>
+			<section css={buttonLayoutCss}>
+				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
+					<Button
+						cssOverrides={css`
+							justify-content: center;
+						`}
+					>
+						Confirm change
+					</Button>
+				</ThemeProvider>
+				<Button
+					priority="tertiary"
+					cssOverrides={css`
+						justify-content: center;
+					`}
+				>
+					Back
+				</Button>
 			</section>
 		</>
 	);
