@@ -21,7 +21,10 @@ import {
 	dateString,
 } from '../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { getMainPlan } from '../../../../shared/productResponse';
+import {
+	getMainPlan,
+	MDA_TEST_USER_HEADER,
+} from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { sectionSpacing } from '../../../styles/spacing';
 import {
@@ -159,8 +162,28 @@ export const SwitchReview = () => {
 	const [isConfirmingSwitch, setIsConfirmingSwitch] =
 		useState<boolean>(false);
 
-	const confirmSwitch = () => {
+	const confirmSwitch = async () => {
 		setIsConfirmingSwitch(true);
+		try {
+			const res = await fetch(
+				`/api/product-move/${productDetail.subscription.subscriptionId}`,
+				{
+					method: 'POST',
+					body: JSON.stringify({
+						targetProductId: '123', // TODO: Get correct product ID
+					}),
+					headers: {
+						[MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`,
+					},
+				},
+			);
+
+			const json = await res.json();
+			console.log(json);
+			setIsConfirmingSwitch(false);
+		} catch (error) {
+			// TODO: Show error message
+		}
 	};
 
 	return (
@@ -378,7 +401,7 @@ export const SwitchReview = () => {
 					<Button
 						isLoading={isConfirmingSwitch}
 						cssOverrides={css`
-							/* justify-content: center; */
+							justify-content: center;
 						`}
 						onClick={confirmSwitch}
 					>
