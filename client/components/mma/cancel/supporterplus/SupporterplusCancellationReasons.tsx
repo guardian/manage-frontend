@@ -84,9 +84,19 @@ export const supporterplusCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I no longer read the Guardian enough to justify my support',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
+];
+
+export const otherCancellationReason: CancellationReason[] = [
 	{
 		reasonId: 'mma_other',
 		linkLabel: 'Another reason (please specify)',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 ];
+
+const shuffledArray = supporterplusCancellationReasons.sort(
+	() => 0.5 - Math.random(),
+);
+
+export const shuffledSupporterPlusCancellationReasons: CancellationReason[] =
+	shuffledArray.concat(otherCancellationReason);
