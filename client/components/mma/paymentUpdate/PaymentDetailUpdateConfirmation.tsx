@@ -409,7 +409,7 @@ export const PaymentMethodUpdated = ({
 	);
 };
 
-const PaymentDetailUpdateConfirmation = () => {
+export const PaymentDetailUpdateConfirmation = () => {
 	const previousProductDetail = useContext(
 		PaymentUpdateProductDetailContext,
 	) as ProductDetail;
@@ -434,5 +434,3 @@ const PaymentDetailUpdateConfirmation = () => {
 		<Navigate to="/" />
 	);
 };
-
-export default PaymentDetailUpdateConfirmation;

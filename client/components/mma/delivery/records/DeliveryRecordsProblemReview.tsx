@@ -49,7 +49,7 @@ import {
 import { DeliveryRecordCreditContext } from './DeliveryRecordsProblemContext';
 import { UserPhoneNumber } from './UserPhoneNumber';
 
-const DeliveryRecordsProblemReview = () => {
+export const DeliveryRecordsProblemReview = () => {
 	const location = useLocation();
 	const routerState = location.state as DeliveryRecordsRouterState;
 
@@ -670,5 +670,3 @@ const DeliveryRecordsProblemReviewFC = (
 		</DeliveryRecordCreditContext.Provider>
 	);
 };
-
-export default DeliveryRecordsProblemReview;

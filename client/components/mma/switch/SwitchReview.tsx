@@ -29,7 +29,7 @@ const productTitleCss = css`
 	}
 `;
 
-const SwitchReview = () => {
+export const SwitchReview = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 	const productDetail = switchContext.productDetail;
 	const mainPlan = getMainPlan(
@@ -100,5 +100,3 @@ const SwitchReview = () => {
 		</>
 	);
 };
-
-export default SwitchReview;

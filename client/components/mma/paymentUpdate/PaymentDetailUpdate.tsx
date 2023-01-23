@@ -45,11 +45,11 @@ import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { DirectDebitLogo } from '../shared/assets/DirectDebitLogo';
 import { cardTypeToSVG } from '../shared/CardDisplay';
-import OverlayLoader from '../shared/OverlayLoader';
+import { OverlayLoader } from '../shared/OverlayLoader';
 import { augmentPaymentFailureAlertText } from '../shared/PaymentFailureAlertIfApplicable';
 import { CardInputForm } from './card/CardInputForm';
-import ContactUs from './ContactUs';
-import CurrentPaymentDetails from './CurrentPaymentDetail';
+import { ContactUs } from './ContactUs';
+import { CurrentPaymentDetails } from './CurrentPaymentDetail';
 import { DirectDebitInputForm } from './dd/DirectDebitInputForm';
 import type { NewPaymentMethodDetail } from './NewPaymentMethodDetail';
 import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
@@ -218,7 +218,7 @@ export interface PaymentUpdaterStepState {
 	newSubscriptionData?: WithSubscription[];
 }
 
-const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
+export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 	const productDetail = useContext(
 		PaymentUpdateProductDetailContext,
 	) as ProductDetail;
@@ -527,5 +527,3 @@ const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 		</>
 	);
 };
-
-export default PaymentDetailUpdate;

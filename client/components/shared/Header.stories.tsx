@@ -1,7 +1,7 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import type { HeaderProps } from './Header';
-import Header from './Header';
+import { Header } from './Header';
 
 export default {
 	title: 'Components/Header',

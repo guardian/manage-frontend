@@ -59,7 +59,7 @@ const OverviewRow = (props: OverviewRowProps) => (
 	</div>
 );
 
-const HolidaysOverview = () => {
+export const HolidaysOverview = () => {
 	const holidayStopsContext = useContext(
 		HolidayStopsContext,
 	) as HolidayStopsContextInterface;
@@ -321,5 +321,3 @@ const HolidaysOverview = () => {
 		</>
 	);
 };
-
-export default HolidaysOverview;

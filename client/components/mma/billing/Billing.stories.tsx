@@ -8,7 +8,7 @@ import {
 	toMembersDataApiResponse,
 } from '../../../fixtures/productDetail';
 import { user } from '../../../fixtures/user';
-import Billing from './Billing';
+import { Billing } from './Billing';
 
 export default {
 	title: 'Pages/Billing',

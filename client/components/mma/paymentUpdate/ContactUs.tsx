@@ -12,7 +12,7 @@ const privacyNoticeLinkCss = css`
 	text-decoration: underline;
 `;
 
-const ContactUs = () => (
+export const ContactUs = () => (
 	<p
 		css={css`
 			width: 100%;
@@ -49,5 +49,3 @@ const ContactUs = () => (
 		</a>
 	</p>
 );
-
-export default ContactUs;

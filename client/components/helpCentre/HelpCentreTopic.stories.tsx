@@ -3,7 +3,7 @@ import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import { SectionContent } from '../shared/SectionContent';
 import { SectionHeader } from '../shared/SectionHeader';
-import HelpCentreTopic from './HelpCentreTopic';
+import { HelpCentreTopic } from './HelpCentreTopic';
 
 export default {
 	title: 'Pages/HelpCentreTopic',

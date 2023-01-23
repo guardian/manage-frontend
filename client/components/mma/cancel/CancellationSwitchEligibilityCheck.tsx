@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
-import useFetch from '../../../utilities/hooks/useFetch';
+import { useFetch } from '../../../utilities/hooks/useFetch';
 import { Spinner } from '../../shared/Spinner';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import type {
@@ -15,11 +15,11 @@ import {
 	CancellationContext,
 	CancellationPageTitleContext,
 } from './CancellationContainer';
-import CancellationReasonSelection from './CancellationReasonSelection';
-import CancellationSwitchOffer from './productSwitch/CancellationSwitchOffer';
+import { CancellationReasonSelection } from './CancellationReasonSelection';
+import { CancellationSwitchOffer } from './productSwitch/CancellationSwitchOffer';
 import type { AvailableProductsResponse } from './productSwitch/productSwitchApi';
 
-const CancellationSwitchEligibilityCheck = () => {
+export const CancellationSwitchEligibilityCheck = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const cancellationContext = useContext(
@@ -88,5 +88,3 @@ const CancellationSwitchEligibilityCheck = () => {
 		<CancellationReasonSelection />
 	);
 };
-
-export default CancellationSwitchEligibilityCheck;

@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { from, headline, neutral, space } from '@guardian/source-foundations';
 import { helpCentreConfig } from './HelpCentreConfig';
-import HelpCentreContactOptions from './HelpCentreContactOptions';
+import { HelpCentreContactOptions } from './HelpCentreContactOptions';
 import { HelpCentreLandingMoreTopics } from './HelpCentreLandingMoreTopics';
 import { HelpTopicBox } from './HelpTopicBox';
 
@@ -16,7 +16,7 @@ const subtitleStyles = css`
 	}
 `;
 
-const HelpCentre = () => {
+export const HelpCentre = () => {
 	return (
 		<>
 			<div>
@@ -42,5 +42,3 @@ const HelpCentre = () => {
 		</>
 	);
 };
-
-export default HelpCentre;

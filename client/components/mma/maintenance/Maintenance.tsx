@@ -38,7 +38,7 @@ const grafStyle = css`
 	margin-bottom: ${space[4]}px;
 `;
 
-const Maintenance = () => {
+export const Maintenance = () => {
 	return (
 		<div css={containerStyle}>
 			<section css={wrapperStyle}>
@@ -51,5 +51,3 @@ const Maintenance = () => {
 		</div>
 	);
 };
-
-export default Maintenance;

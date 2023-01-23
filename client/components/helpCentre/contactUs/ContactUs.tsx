@@ -16,7 +16,7 @@ import { SelfServicePrompt } from './SelfServicePrompt';
 import { SubTopicForm } from './SubTopicForm';
 import { TopicForm } from './TopicForm';
 
-const ContactUs = () => {
+export const ContactUs = () => {
 	const { urlTopicId, urlSubTopicId, urlSubSubTopicId, urlSuccess } =
 		useParams();
 	const navigate = useNavigate();
@@ -251,5 +251,3 @@ const ContactUs = () => {
 		</>
 	);
 };
-
-export default ContactUs;

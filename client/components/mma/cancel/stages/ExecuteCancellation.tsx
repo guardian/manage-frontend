@@ -13,7 +13,7 @@ import type {
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import { createProductDetailFetcher } from '../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
-import AsyncLoader from '../../shared/AsyncLoader';
+import { AsyncLoader } from '../../shared/AsyncLoader';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import type {
 	CancellationContextInterface,
@@ -142,7 +142,7 @@ const escalatedConfirmationBody = (
 	</p>
 );
 
-const ExecuteCancellation = () => {
+export const ExecuteCancellation = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 
@@ -216,5 +216,3 @@ const ExecuteCancellation = () => {
 		</>
 	);
 };
-
-export default ExecuteCancellation;

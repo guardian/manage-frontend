@@ -16,7 +16,7 @@ import type {
 import { HolidayStopsContext } from './HolidayStopsContainer';
 import { SummaryTable } from './SummaryTable';
 
-const HolidayConfirmed = () => {
+export const HolidayConfirmed = () => {
 	const {
 		productDetail,
 		productType,
@@ -90,5 +90,3 @@ const HolidayConfirmed = () => {
 		<GenericErrorScreen loggingMessage="No holiday stop response" />
 	);
 };
-
-export default HolidayConfirmed;

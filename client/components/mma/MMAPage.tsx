@@ -18,11 +18,11 @@ import {
 import { abSwitches } from '../../experiments/abSwitches';
 import { tests } from '../../experiments/abTests';
 import { fonts } from '../../styles/fonts';
-import global from '../../styles/global';
+import { global } from '../../styles/global';
 import { getCookie } from '../../utilities/cookies';
-import useAnalytics from '../../utilities/hooks/useAnalytics';
-import useConsent from '../../utilities/hooks/useConsent';
-import useScrollToTop from '../../utilities/hooks/useScrollToTop';
+import { useAnalytics } from '../../utilities/hooks/useAnalytics';
+import { useConsent } from '../../utilities/hooks/useConsent';
+import { useScrollToTop } from '../../utilities/hooks/useScrollToTop';
 import {
 	hasDeliveryFlow,
 	hasDeliveryRecordsFlow,
@@ -30,15 +30,15 @@ import {
 } from '../../utilities/productUtils';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { isSignedIn, pageRequiresSignIn } from '../../utilities/signInStatus';
-import ErrorBoundary from '../shared/ErrorBoundary';
+import { ErrorBoundary } from '../shared/ErrorBoundary';
 import { GenericErrorScreen } from '../shared/GenericErrorScreen';
 import { Main } from '../shared/Main';
 import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
-import Maintenance from './maintenance/Maintenance';
-import MMAPageSkeleton from './MMAPageSkeleton';
-import SwitchContainer from './switch/SwitchContainer';
-import SwitchOptions from './switch/SwitchOptions';
-import SwitchReview from './switch/SwitchReview';
+import { Maintenance } from './maintenance/Maintenance';
+import { MMAPageSkeleton } from './MMAPageSkeleton';
+import { SwitchContainer } from './switch/SwitchContainer';
+import { SwitchOptions } from './switch/SwitchOptions';
+import { SwitchReview } from './switch/SwitchReview';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {
@@ -52,212 +52,210 @@ initFeatureSwitchUrlParamOverride();
 // how to name the chunks these dynamic imports produce
 // More information: https://webpack.js.org/api/module-methods/#magic-comments
 
-const AccountOverview = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "AccountOverview" */ './accountoverview/AccountOverview'
-		),
+const AccountOverview = lazy(() =>
+	import(
+		/* webpackChunkName: "AccountOverview" */ './accountoverview/AccountOverview'
+	).then(({ AccountOverview }) => ({ default: AccountOverview })),
 );
-const Billing = lazy(
-	() => import(/* webpackChunkName: "Billing" */ './billing/Billing'),
+const Billing = lazy(() =>
+	import(/* webpackChunkName: "Billing" */ './billing/Billing').then(
+		({ Billing }) => ({ default: Billing }),
+	),
 );
-const ManageProduct = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "ManageProduct" */ './accountoverview/ManageProduct'
-		),
+const ManageProduct = lazy(() =>
+	import(
+		/* webpackChunkName: "ManageProduct" */ './accountoverview/ManageProduct'
+	).then(({ ManageProduct }) => ({ default: ManageProduct })),
 );
-const CancellationContainer = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/CancellationContainer'
-		),
-);
-
-const CancellationSwitchEligibilityCheck = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchEligibilityCheck'
-		),
+const CancellationContainer = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/CancellationContainer'
+	).then(({ CancellationContainer }) => ({ default: CancellationContainer })),
 );
 
-const CancellationSwitchReview = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/productSwitch/CancellationSwitchReview'
-		),
+const CancellationSwitchEligibilityCheck = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchEligibilityCheck'
+	).then(({ CancellationSwitchEligibilityCheck }) => ({
+		default: CancellationSwitchEligibilityCheck,
+	})),
 );
 
-const CancellationSwitchConfirmed = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/productSwitch/CancellationSwitchConfirmed'
-		),
+const CancellationSwitchReview = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/productSwitch/CancellationSwitchReview'
+	).then(({ CancellationSwitchReview }) => ({
+		default: CancellationSwitchReview,
+	})),
 );
 
-const ProductSwitchFailed = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/productSwitch/CancellationSwitchFailed'
-		),
+const CancellationSwitchConfirmed = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/productSwitch/CancellationSwitchConfirmed'
+	).then(({ CancellationSwitchConfirmed }) => ({
+		default: CancellationSwitchConfirmed,
+	})),
 );
 
-const CancellationReasonReview = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/CancellationReasonReview'
-		),
+const ProductSwitchFailed = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/productSwitch/CancellationSwitchFailed'
+	).then(({ ProductSwitchFailed }) => ({ default: ProductSwitchFailed })),
 );
 
-const SavedCancellation = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/stages/SavedCancellation'
-		),
+const CancellationReasonReview = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/CancellationReasonReview'
+	).then(({ CancellationReasonReview }) => ({
+		default: CancellationReasonReview,
+	})),
 );
 
-const ExecuteCancellation = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "Cancellation" */ './cancel/stages/ExecuteCancellation'
-		),
+const SavedCancellation = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/stages/SavedCancellation'
+	).then(({ SavedCancellation }) => ({ default: SavedCancellation })),
 );
 
-const PaymentDetailUpdateContainer = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateContainer'
-		),
-);
-const PaymentDetailUpdate = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdate'
-		),
+const ExecuteCancellation = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/stages/ExecuteCancellation'
+	).then(({ ExecuteCancellation }) => ({ default: ExecuteCancellation })),
 );
 
-const PaymentDetailUpdateConfirmation = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateConfirmation'
-		),
+const PaymentDetailUpdateContainer = lazy(() =>
+	import(
+		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateContainer'
+	).then(({ PaymentDetailUpdateContainer }) => ({
+		default: PaymentDetailUpdateContainer,
+	})),
+);
+const PaymentDetailUpdate = lazy(() =>
+	import(
+		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdate'
+	).then(({ PaymentDetailUpdate }) => ({ default: PaymentDetailUpdate })),
 );
 
-const PaymentFailed = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentFailed'
-		),
+const PaymentDetailUpdateConfirmation = lazy(() =>
+	import(
+		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateConfirmation'
+	).then(({ PaymentDetailUpdateConfirmation }) => ({
+		default: PaymentDetailUpdateConfirmation,
+	})),
 );
 
-const HolidayStopsContainer = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "HolidayStops" */ './holiday/HolidayStopsContainer'
-		),
+const PaymentFailed = lazy(() =>
+	import(
+		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentFailed'
+	).then(({ PaymentFailed }) => ({ default: PaymentFailed })),
 );
 
-const HolidaysOverview = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "HolidayStops" */ './holiday/HolidaysOverview'
-		),
+const HolidayStopsContainer = lazy(() =>
+	import(
+		/* webpackChunkName: "HolidayStops" */ './holiday/HolidayStopsContainer'
+	).then(({ HolidayStopsContainer }) => ({ default: HolidayStopsContainer })),
 );
 
-const HolidayDateChooser = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "HolidayStops" */ './holiday/HolidayDateChooser'
-		),
+const HolidaysOverview = lazy(() =>
+	import(
+		/* webpackChunkName: "HolidayStops" */ './holiday/HolidaysOverview'
+	).then(({ HolidaysOverview }) => ({ default: HolidaysOverview })),
 );
 
-const HolidayReview = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "HolidayStops" */ './holiday/HolidayReview'
-		),
+const HolidayDateChooser = lazy(() =>
+	import(
+		/* webpackChunkName: "HolidayStops" */ './holiday/HolidayDateChooser'
+	).then(({ HolidayDateChooser }) => ({ default: HolidayDateChooser })),
 );
 
-const HolidayConfirmed = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "HolidayStops" */ './holiday/HolidayConfirmed'
-		),
+const HolidayReview = lazy(() =>
+	import(
+		/* webpackChunkName: "HolidayStops" */ './holiday/HolidayReview'
+	).then(({ HolidayReview }) => ({ default: HolidayReview })),
 );
 
-const DeliveryAddressChangeContainer = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DeliveryAddress" */ './delivery/address/DeliveryAddressChangeContainer'
-		),
+const HolidayConfirmed = lazy(() =>
+	import(
+		/* webpackChunkName: "HolidayStops" */ './holiday/HolidayConfirmed'
+	).then(({ HolidayConfirmed }) => ({ default: HolidayConfirmed })),
 );
 
-const DeliveryAddressReview = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DeliveryAddress" */ './delivery/address/DeliveryAddressReview'
-		),
+const DeliveryAddressChangeContainer = lazy(() =>
+	import(
+		/* webpackChunkName: "DeliveryAddress" */ './delivery/address/DeliveryAddressChangeContainer'
+	).then(({ DeliveryAddressChangeContainer }) => ({
+		default: DeliveryAddressChangeContainer,
+	})),
 );
 
-const DeliveryAddressConfirmation = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DeliveryAddress" */ './delivery/address/DeliveryAddressConfirmation'
-		),
+const DeliveryAddressReview = lazy(() =>
+	import(
+		/* webpackChunkName: "DeliveryAddress" */ './delivery/address/DeliveryAddressReview'
+	).then(({ DeliveryAddressReview }) => ({ default: DeliveryAddressReview })),
 );
 
-const DeliveryRecordsContainer = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecordsContainer'
-		),
+const DeliveryAddressConfirmation = lazy(() =>
+	import(
+		/* webpackChunkName: "DeliveryAddress" */ './delivery/address/DeliveryAddressConfirmation'
+	).then(({ DeliveryAddressConfirmation }) => ({
+		default: DeliveryAddressConfirmation,
+	})),
 );
 
-const DeliveryRecords = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecords'
-		),
+const DeliveryRecordsContainer = lazy(() =>
+	import(
+		/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecordsContainer'
+	).then(({ DeliveryRecordsContainer }) => ({
+		default: DeliveryRecordsContainer,
+	})),
 );
 
-const DeliveryRecordsProblemReview = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecordsProblemReview'
-		),
+const DeliveryRecords = lazy(() =>
+	import(
+		/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecords'
+	).then(({ DeliveryRecords }) => ({ default: DeliveryRecords })),
 );
 
-const DeliveryRecordsProblemConfirmation = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecordsProblemConfirmation'
-		),
+const DeliveryRecordsProblemReview = lazy(() =>
+	import(
+		/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecordsProblemReview'
+	).then(({ DeliveryRecordsProblemReview }) => ({
+		default: DeliveryRecordsProblemReview,
+	})),
 );
 
-const EmailAndMarketing = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "EmailAndMarketing" */ './identity/emailAndMarketing/EmailAndMarketing'
-		),
+const DeliveryRecordsProblemConfirmation = lazy(() =>
+	import(
+		/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecordsProblemConfirmation'
+	).then(({ DeliveryRecordsProblemConfirmation }) => ({
+		default: DeliveryRecordsProblemConfirmation,
+	})),
 );
-const PublicProfile = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "PublicProfile" */ './identity/publicProfile/PublicProfile'
-		),
+
+const EmailAndMarketing = lazy(() =>
+	import(
+		/* webpackChunkName: "EmailAndMarketing" */ './identity/emailAndMarketing/EmailAndMarketing'
+	).then(({ EmailAndMarketing }) => ({ default: EmailAndMarketing })),
 );
-const Settings = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "Settings" */ './identity/settings/Settings'
-		),
+const PublicProfile = lazy(() =>
+	import(
+		/* webpackChunkName: "PublicProfile" */ './identity/publicProfile/PublicProfile'
+	).then(({ PublicProfile }) => ({ default: PublicProfile })),
 );
-const Help = lazy(() => import(/* webpackChunkName: "Help" */ './help/Help'));
-const CancelReminders = lazy(
-	() =>
-		import(
-			/* webpackChunkName: "CancelReminders" */ './cancelReminders/CancelReminders'
-		),
+const Settings = lazy(() =>
+	import(
+		/* webpackChunkName: "Settings" */ './identity/settings/Settings'
+	).then(({ Settings }) => ({ default: Settings })),
+);
+const Help = lazy(() =>
+	import(/* webpackChunkName: "Help" */ './help/Help').then(({ Help }) => ({
+		default: Help,
+	})),
+);
+const CancelReminders = lazy(() =>
+	import(
+		/* webpackChunkName: "CancelReminders" */ './cancelReminders/CancelReminders'
+	).then(({ CancelReminders }) => ({ default: CancelReminders })),
 );
 
 const GenericErrorContainer = (props: { children: ReactNode }) => (

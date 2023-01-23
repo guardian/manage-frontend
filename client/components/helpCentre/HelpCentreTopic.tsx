@@ -9,7 +9,7 @@ import { HelpCentreMoreTopics } from './HelpCentreMoreTopics';
 import { HelpCentreSingleTopic } from './HelpCentreSingleTopic';
 import type { MoreTopics, SingleTopic } from './HelpCentreTypes';
 
-const HelpCentreTopic = () => {
+export const HelpCentreTopic = () => {
 	const [singleTopic, setSingleTopic] = useState<SingleTopic | undefined>(
 		undefined,
 	);
@@ -83,5 +83,3 @@ const getTopicComponent = (
 		</WithStandardTopMargin>
 	);
 };
-
-export default HelpCentreTopic;

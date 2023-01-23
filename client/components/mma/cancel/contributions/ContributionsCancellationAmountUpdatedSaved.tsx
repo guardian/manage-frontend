@@ -12,9 +12,9 @@ import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import type { SavedBodyProps } from '../stages/SavedCancellation';
 
-const ContributionsCancellationAmountUpdatedSaved: React.FC<SavedBodyProps> = ({
-	amount,
-}: SavedBodyProps) => {
+export const ContributionsCancellationAmountUpdatedSaved: React.FC<
+	SavedBodyProps
+> = ({ amount }: SavedBodyProps) => {
 	const { productDetail } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
@@ -56,5 +56,3 @@ const ContributionsCancellationAmountUpdatedSaved: React.FC<SavedBodyProps> = ({
 		</>
 	);
 };
-
-export default ContributionsCancellationAmountUpdatedSaved;

@@ -7,9 +7,9 @@ import {
 	guardianWeeklyCard,
 	toMembersDataApiResponse,
 } from '../../../fixtures/productDetail';
-import HolidayDateChooser from './HolidayDateChooser';
-import HolidaysOverview from './HolidaysOverview';
-import HolidayStopsContainer from './HolidayStopsContainer';
+import { HolidayDateChooser } from './HolidayDateChooser';
+import { HolidaysOverview } from './HolidaysOverview';
+import { HolidayStopsContainer } from './HolidayStopsContainer';
 
 const productTypeWithHolidayStops = {
 	...PRODUCT_TYPES.guardianweekly,

@@ -18,7 +18,7 @@ import { augmentBillingPeriod } from '../../../../shared/productResponse';
 import type { ProductType } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
-import AsyncLoader from '../shared/AsyncLoader';
+import { AsyncLoader } from '../shared/AsyncLoader';
 import { Button } from '../shared/Buttons';
 
 type ContributionUpdateAmountFormMode = 'MANAGE' | 'CANCELLATION_SAVE';

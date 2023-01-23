@@ -124,7 +124,7 @@ const ContextAndOutletContainer = (props: ContextAndOutletContainerProps) => {
 	);
 };
 
-const DeliveryAddressChangeContainer = (
+export const DeliveryAddressChangeContainer = (
 	props: WithProductType<ProductType>,
 ) => {
 	return (
@@ -163,5 +163,3 @@ const DeliveryAddressChangeContainer = (
 		</PageContainer>
 	);
 };
-
-export default DeliveryAddressChangeContainer;

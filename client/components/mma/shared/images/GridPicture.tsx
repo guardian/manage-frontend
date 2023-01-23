@@ -15,7 +15,7 @@ export type PropTypes = {
 	cssOverrides?: SerializedStyles | SerializedStyles[];
 }; // ----- Component ----- //
 
-export default function GridPicture(props: PropTypes) {
+export function GridPicture(props: PropTypes) {
 	const sources = props.sources.map((source) => {
 		const srcSet = gridSrcset(
 			source.gridId,

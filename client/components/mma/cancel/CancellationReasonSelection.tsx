@@ -311,7 +311,7 @@ const ReasonPickerRenderer =
 		);
 	};
 
-const CancellationReasonSelection = () => {
+export const CancellationReasonSelection = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
@@ -341,5 +341,3 @@ const CancellationReasonSelection = () => {
 		/>
 	);
 };
-
-export default CancellationReasonSelection;

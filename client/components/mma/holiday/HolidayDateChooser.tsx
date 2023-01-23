@@ -169,7 +169,7 @@ interface HolidayDateChooserProps {
 	isAmendJourney?: true;
 }
 
-const HolidayDateChooser = (props: HolidayDateChooserProps) => {
+export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 	const {
 		productDetail,
 		productType,
@@ -538,5 +538,3 @@ const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 	}
 	return <GenericErrorScreen loggingMessage="No holiday stop response" />;
 };
-
-export default HolidayDateChooser;

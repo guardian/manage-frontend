@@ -21,7 +21,7 @@ import type { CardInputFormProps } from './CardInputForm';
 import { FlexCardElement } from './FlexCardElement';
 import type { StripePaymentMethod } from './NewCardPaymentMethodDetail';
 import { NewCardPaymentMethodDetail } from './NewCardPaymentMethodDetail';
-import Recaptcha from './Recaptcha';
+import { Recaptcha } from './Recaptcha';
 
 interface StripeSetupIntentDetails {
 	stripeSetupIntent?: StripeSetupIntent;

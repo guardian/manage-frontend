@@ -17,7 +17,7 @@ declare global {
 
 const GA_UA = 'UA-51507017-5';
 
-const useAnalytics = () => {
+export const useAnalytics = () => {
 	const location = useLocation();
 	const [cmpIsInitialised, setCmpIsInitialised] = useState<boolean>(false);
 	const [gaIsInitialised, setGaIsInitialised] = useState<boolean>(false);
@@ -128,5 +128,3 @@ const useAnalytics = () => {
 		}
 	}, [location, cmpIsInitialised, gaIsInitialised]);
 };
-
-export default useAnalytics;

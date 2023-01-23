@@ -70,7 +70,7 @@ jest.mock('@stripe/react-stripe-js', () => {
 
 jest.mock('../../../components/mma/paymentUpdate/card/Recaptcha', () => ({
 	__esModule: true,
-	default: Recaptcha,
+	Recaptcha,
 }));
 
 function returnCardInputForm() {

@@ -5,7 +5,7 @@ import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import type { ProductType } from '../../../../shared/productTypes';
 import type { DeliveryRecordsResponse } from '../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStopsResponse } from '../holiday/HolidayStopApi';
-import AsyncLoader from '../shared/AsyncLoader';
+import { AsyncLoader } from '../shared/AsyncLoader';
 import {
 	cancellationEffectiveToday,
 	CancellationOutstandingCreditsContext,

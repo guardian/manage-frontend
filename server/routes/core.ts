@@ -103,4 +103,4 @@ router.get('/google6e3510e8603d6b4c.html', (_, res: Response) => {
  * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
 
-export default router;
+export { router };

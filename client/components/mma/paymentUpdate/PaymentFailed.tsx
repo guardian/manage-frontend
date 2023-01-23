@@ -13,7 +13,7 @@ import {
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 
-export default function PaymentFailed() {
+export function PaymentFailed() {
 	const location = useLocation();
 	const state = location.state as {
 		newPaymentMethodDetailFriendlyName: string;

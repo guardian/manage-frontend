@@ -26,7 +26,7 @@ import {
 	NewDeliveryAddressContext,
 } from './DeliveryAddressFormContext';
 
-const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
+export const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 	const newDeliveryAddressContext = useContext(NewDeliveryAddressContext);
 	const addressChangedInformationContext = useContext(
 		AddressChangedInformationContext,
@@ -258,5 +258,3 @@ const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 		</>
 	);
 };
-
-export default DeliveryAddressReview;

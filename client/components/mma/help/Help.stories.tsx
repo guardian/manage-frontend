@@ -1,6 +1,6 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
-import Help from './Help';
+import { Help } from './Help';
 
 export default {
 	title: 'Pages/Help',

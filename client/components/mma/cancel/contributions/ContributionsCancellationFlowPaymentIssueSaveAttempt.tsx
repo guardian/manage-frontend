@@ -23,10 +23,10 @@ import type {
 } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import type { CancellationReason, SaveBodyProps } from '../cancellationReason';
-import ContributionsFeedbackForm from './ContributionsCancellationFeedbackForm';
+import { ContributionsFeedbackForm } from './ContributionsCancellationFeedbackForm';
 import { getIsPayingMinAmount } from './utils';
 
-const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
+export const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
 	props: SaveBodyProps,
 ) => {
 	const [showAmountUpdateForm, setShowUpdateForm] = useState(false);
@@ -218,5 +218,3 @@ const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
 		</Stack>
 	);
 };
-
-export default ContributionsCancellationFlowPaymentIssueSaveAttempt;

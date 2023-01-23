@@ -15,7 +15,7 @@ export interface HelpCentreHeaderProps {
 	requiresSignIn?: boolean;
 }
 
-const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
+export const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
 	const headerCss = css`
 		background-color: ${palette.brand[400]};
 		min-height: 50px;
@@ -96,5 +96,3 @@ const HelpCentreHeader = (props: HelpCentreHeaderProps) => {
 		</header>
 	);
 };
-
-export default HelpCentreHeader;

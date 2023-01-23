@@ -18,8 +18,8 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '../../../../styles/typography';
 import { getGeoLocation } from '../../../../utilities/geolocation';
 import { Heading } from '../../shared/Heading';
-import GridImage from '../../shared/images/GridImage';
-import GridPicture from '../../shared/images/GridPicture';
+import { GridImage } from '../../shared/images/GridImage';
+import { GridPicture } from '../../shared/images/GridPicture';
 import type { CancellationRouterState } from '../CancellationContainer';
 import type {
 	ProductSwitchContextInterface,
@@ -38,7 +38,7 @@ import {
 	pageTopCss,
 } from './productSwitchStyles';
 
-const CancellationSwitchConfirmed = () => {
+export const CancellationSwitchConfirmed = () => {
 	const navigate = useNavigate();
 
 	const productSwitchContext = useContext(
@@ -275,5 +275,3 @@ const CancellationSwitchConfirmed = () => {
 		</Stack>
 	);
 };
-
-export default CancellationSwitchConfirmed;

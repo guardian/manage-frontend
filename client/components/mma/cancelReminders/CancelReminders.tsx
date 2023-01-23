@@ -29,7 +29,7 @@ export interface CancelRemindersProps {
 	reminderCode?: string;
 }
 
-const CancelReminders = (props: CancelRemindersProps) => {
+export const CancelReminders = (props: CancelRemindersProps) => {
 	const [cancelStatus, setCancelStatus] = useState<CancelStatus>('PENDING');
 
 	useEffect(() => {
@@ -95,5 +95,3 @@ const CancelReminders = (props: CancelRemindersProps) => {
 		</div>
 	);
 };
-
-export default CancelReminders;

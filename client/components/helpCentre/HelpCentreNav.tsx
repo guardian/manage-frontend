@@ -80,7 +80,7 @@ const pCss = css`
 	margin: 0;
 `;
 
-const HelpCentreNav = (props: HelpCentreNavProps) => {
+export const HelpCentreNav = (props: HelpCentreNavProps) => {
 	const [open, setOpen] = useState<boolean>(false);
 
 	const handleSectionClick = () => {
@@ -147,5 +147,3 @@ const HelpCentreNav = (props: HelpCentreNavProps) => {
 		</>
 	);
 };
-
-export default HelpCentreNav;

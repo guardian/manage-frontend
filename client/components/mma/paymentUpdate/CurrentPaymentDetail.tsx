@@ -25,7 +25,7 @@ function cardExpired(year: number, month: number) {
 	return expiryTimestamp < now;
 }
 
-const CurrentPaymentDetails = (props: ProductDetail) => {
+export const CurrentPaymentDetails = (props: ProductDetail) => {
 	const { subscription } = props;
 
 	const mainPlan = getMainPlan(subscription);
@@ -282,5 +282,3 @@ const CurrentPaymentDetails = (props: ProductDetail) => {
 		</div>
 	);
 };
-
-export default CurrentPaymentDetails;

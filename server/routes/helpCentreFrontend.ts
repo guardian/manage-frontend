@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 import { Router } from 'express';
 import { DEFAULT_PAGE_TITLE } from '../../shared/helpCentreConfig';
 import { conf } from '../config';
-import html from '../html';
+import { html } from '../html';
 import { withIdentity } from '../middleware/identityMiddleware';
 import {
 	clientDSN,
@@ -31,4 +31,4 @@ router.use(withIdentity(), async (_: Request, res: Response) => {
 	);
 });
 
-export default router;
+export { router };

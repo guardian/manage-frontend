@@ -3,8 +3,8 @@ import {
 	standardAlternateFeedbackIntro,
 } from '../cancellationConstants';
 import type { CancellationReason } from '../cancellationReason';
-import ContributionsCancellationAmountUpdatedSaved from './ContributionsCancellationAmountUpdatedSaved';
-import ContributionsCancellationFlowFinancialSaveAttempt from './ContributionsCancellationFlowFinancialSaveAttempt';
+import { ContributionsCancellationAmountUpdatedSaved } from './ContributionsCancellationAmountUpdatedSaved';
+import { ContributionsCancellationFlowFinancialSaveAttempt } from './ContributionsCancellationFlowFinancialSaveAttempt';
 
 export const contributionsCancellationReasons: CancellationReason[] = [
 	{

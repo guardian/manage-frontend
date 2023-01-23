@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { DefaultErrorView } from '../components/mma/shared/asyncComponents/DefaultErrorView';
 import { DefaultLoadingView } from '../components/mma/shared/asyncComponents/DefaultLoadingView';
 import { LoadingComponent } from '../components/mma/shared/asyncComponents/LoadingComponent';
-import type ResponseProcessor from '../components/mma/shared/asyncComponents/ResponseProcessor';
+import type { ResponseProcessor } from '../components/mma/shared/asyncComponents/ResponseProcessor';
 
 function asyncFetcher() {
 	return Promise.resolve('This is the test data returned');

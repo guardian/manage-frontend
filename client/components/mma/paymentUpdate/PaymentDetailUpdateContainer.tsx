@@ -46,7 +46,9 @@ const renderContextAndOutletContainer = (
 export const PaymentUpdateProductDetailContext: Context<ProductDetail | {}> =
 	createContext({});
 
-const PaymentDetailUpdateContainer = (props: WithProductType<ProductType>) => {
+export const PaymentDetailUpdateContainer = (
+	props: WithProductType<ProductType>,
+) => {
 	interface LocationState {
 		productDetail: ProductDetail;
 		flowReferrer?: {
@@ -86,5 +88,3 @@ const PaymentDetailUpdateContainer = (props: WithProductType<ProductType>) => {
 		</PageContainer>
 	);
 };
-
-export default PaymentDetailUpdateContainer;

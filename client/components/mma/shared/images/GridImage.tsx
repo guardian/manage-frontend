@@ -18,7 +18,7 @@ export type GridImg = {
 };
 type PropTypes = GridImg; // ----- Component ----- //
 
-export default function GridImage(props: PropTypes): JSX.Element | null {
+export function GridImage(props: PropTypes): JSX.Element | null {
 	if (props.srcSizes.length < 1) {
 		return null;
 	}

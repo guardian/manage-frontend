@@ -13,4 +13,4 @@ router.get('/user', withIdentity(), (_, res: Response) =>
 		: res.status(500).send(),
 );
 
-export default router;
+export { router };

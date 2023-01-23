@@ -49,7 +49,7 @@ export interface OverlayLoaderProps {
 	message: string;
 }
 
-export default function OverlayLoader(props: OverlayLoaderProps) {
+export function OverlayLoader(props: OverlayLoaderProps) {
 	return (
 		<div css={overlay}>
 			<div css={overlayDialog}>

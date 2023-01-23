@@ -160,4 +160,4 @@ router.use((err: any, _: Request, res: Response, next: NextFunction) => {
 	next(err);
 });
 
-export default router;
+export { router };

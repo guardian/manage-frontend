@@ -34,7 +34,7 @@ import { SixForSixExplainerIfApplicable } from '../accountoverview/SixForSixExpl
 import { PageContainer } from '../Page';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
-import AsyncLoader from '../shared/AsyncLoader';
+import { AsyncLoader } from '../shared/AsyncLoader';
 import { BasicProductInfoTable } from '../shared/BasicProductInfoTable';
 import { LinkButton } from '../shared/Buttons';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
@@ -322,7 +322,7 @@ const BillingRenderer = ([mdapiObject, invoiceResponse]: [
 	);
 };
 
-const Billing = () => {
+export const Billing = () => {
 	return (
 		<PageContainer selectedNavItem={NAV_LINKS.billing} pageTitle="Billing">
 			<BillingDataAsyncLoader
@@ -339,5 +339,3 @@ const billingFetcher = () =>
 		allProductsDetailFetcher(),
 		fetchWithDefaultParameters('/api/invoices'),
 	]);
-
-export default Billing;

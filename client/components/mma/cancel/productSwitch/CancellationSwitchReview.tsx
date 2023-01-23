@@ -183,7 +183,7 @@ const KeyValueTable = (props: KeyValueTableProps) => {
 	);
 };
 
-const CancellationSwitchReview = () => {
+export const CancellationSwitchReview = () => {
 	const navigate = useNavigate();
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
@@ -752,5 +752,3 @@ const CancellationSwitchReview = () => {
 		</Stack>
 	);
 };
-
-export default CancellationSwitchReview;

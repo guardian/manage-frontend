@@ -21,7 +21,7 @@ export interface RecaptchaProps {
 	setRecaptchaToken: (_: string | undefined) => void;
 }
 
-export default function Recaptcha({
+export function Recaptcha({
 	setStripeSetupIntent,
 	setRecaptchaToken,
 }: RecaptchaProps) {

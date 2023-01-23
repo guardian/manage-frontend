@@ -45,4 +45,4 @@ const routeProvider = (apiPathPrefix: string) => {
 	return router;
 };
 
-export default routeProvider;
+export { routeProvider };

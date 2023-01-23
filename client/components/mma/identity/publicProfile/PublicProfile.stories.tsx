@@ -2,7 +2,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import { user } from '../../../../fixtures/user';
-import PublicProfile from './PublicProfile';
+import { PublicProfile } from './PublicProfile';
 
 export default {
 	title: 'Pages/Profile',

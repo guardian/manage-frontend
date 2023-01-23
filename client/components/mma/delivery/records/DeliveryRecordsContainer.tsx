@@ -56,7 +56,7 @@ export const checkForExistingDeliveryProblem = (
 		);
 	}) > -1;
 
-const DeliveryRecordsContainer = (
+export const DeliveryRecordsContainer = (
 	props: WithProductType<ProductTypeWithDeliveryRecordsProperties>,
 ) => {
 	const location = useLocation();
@@ -147,5 +147,3 @@ const renderContextAndOutletContainer =
 			</DeliveryRecordsContext.Provider>
 		);
 	};
-
-export default DeliveryRecordsContainer;

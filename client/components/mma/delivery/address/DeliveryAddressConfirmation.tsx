@@ -20,7 +20,7 @@ import type {
 import { trackEvent } from '../../../../utilities/analytics';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { TickInCircle } from '../../shared/assets/TickInCircle';
-import AsyncLoader from '../../shared/AsyncLoader';
+import { AsyncLoader } from '../../shared/AsyncLoader';
 import { LinkButton } from '../../shared/Buttons';
 import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
@@ -271,7 +271,9 @@ const AddressConfirmation = (props: ProductType) => {
 	);
 };
 
-const DeliveryAddressConfirmation = (props: WithProductType<ProductType>) => {
+export const DeliveryAddressConfirmation = (
+	props: WithProductType<ProductType>,
+) => {
 	const addressContext = useContext(NewDeliveryAddressContext);
 	const contactIdContext = useContext(ContactIdContext);
 	const addressChangedInformationContext = useContext(
@@ -349,5 +351,3 @@ export const SuccessMessage = (props: SuccessMessageProps) => (
 		{props.message}
 	</div>
 );
-
-export default DeliveryAddressConfirmation;

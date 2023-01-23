@@ -83,7 +83,7 @@ const getRenderCreateOrAmendError = (modificationKeyword: string) => () =>
 		</div>
 	);
 
-const HolidayReview = () => {
+export const HolidayReview = () => {
 	const [isExecuting, setIsExecuting] = useState<boolean>(false);
 	const [isCheckboxConfirmed, setIsCheckboxConfirmed] =
 		useState<boolean>(false);
@@ -321,5 +321,3 @@ const HolidayReview = () => {
 		<Navigate to=".." state={routerState} />
 	);
 };
-
-export default HolidayReview;

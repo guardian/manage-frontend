@@ -6,8 +6,8 @@ import {
 	guardianWeeklyExpiredCard,
 	newspaperVoucherPaypal,
 } from '../../../fixtures/productDetail';
-import PaymentDetailUpdate from './PaymentDetailUpdate';
-import PaymentDetailUpdateContainer from './PaymentDetailUpdateContainer';
+import { PaymentDetailUpdate } from './PaymentDetailUpdate';
+import { PaymentDetailUpdateContainer } from './PaymentDetailUpdateContainer';
 
 export default {
 	component: PaymentDetailUpdateContainer,

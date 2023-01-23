@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { ComponentStory, Meta } from '@storybook/react';
 import { Footer } from './Footer';
 
 export default {
@@ -10,6 +10,6 @@ export default {
 			viewports: [320, 740, 1300],
 		},
 	},
-} as ComponentMeta<typeof Footer>;
+} as Meta;
 
 export const Default: ComponentStory<typeof Footer> = () => <Footer />;

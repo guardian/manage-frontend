@@ -1,6 +1,6 @@
 import { headline, serif } from './fonts';
 
-const global = `
+export const global = `
 html {
   box-sizing: border-box;
   font-family: "Guardian Text Sans Web", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -73,4 +73,3 @@ address {
   word-break: keep-all;
 }
 `;
-export default global;

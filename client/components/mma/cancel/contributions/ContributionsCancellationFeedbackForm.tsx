@@ -3,7 +3,7 @@ import { Button } from '@guardian/source-react-components';
 import { useState } from 'react';
 import type * as React from 'react';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
-import ContributionsCancellationFeedbackFormThankYou from './ContributionsCancellationFeedbackFormThankYou';
+import { ContributionsCancellationFeedbackFormThankYou } from './ContributionsCancellationFeedbackFormThankYou';
 
 const textAreaStyles = css`
 	width: 100%;
@@ -33,10 +33,9 @@ const getPatchUpdateCaseFunc =
 			Subject: 'Online Cancellation Query',
 		});
 
-const ContributionsFeedbackForm: React.FC<ContributionsFeedbackFormProps> = ({
-	isTestUser,
-	caseId,
-}: ContributionsFeedbackFormProps) => {
+export const ContributionsFeedbackForm: React.FC<
+	ContributionsFeedbackFormProps
+> = ({ isTestUser, caseId }: ContributionsFeedbackFormProps) => {
 	const [feedback, setFeedback] = useState('');
 	const [status, setStatus] = useState<Status>('EDITING');
 
@@ -76,5 +75,3 @@ const ContributionsFeedbackForm: React.FC<ContributionsFeedbackFormProps> = ({
 		</div>
 	);
 };
-
-export default ContributionsFeedbackForm;

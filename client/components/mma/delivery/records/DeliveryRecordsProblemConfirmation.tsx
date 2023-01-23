@@ -450,7 +450,7 @@ interface DeliveryRecordsConfirmationRouterState
 	deliveryIssuePostPayload: DeliveryRecordsPostPayload;
 }
 
-const DeliveryRecordsProblemConfirmation = () => {
+export const DeliveryRecordsProblemConfirmation = () => {
 	const location = useLocation();
 	const routerState =
 		location.state as DeliveryRecordsConfirmationRouterState;
@@ -476,5 +476,3 @@ const DeliveryRecordsProblemConfirmation = () => {
 		/>
 	);
 };
-
-export default DeliveryRecordsProblemConfirmation;
