@@ -1,9 +1,6 @@
 import * as Sentry from '@sentry/node';
 import { Router } from 'express';
-import {
-	availableProductMovesResponse,
-	productMoveResponse,
-} from '../../client/fixtures/productMovement';
+import { availableProductMovesResponse } from '../../client/fixtures/productMovement';
 import type {
 	MembersDataApiItem,
 	MembersDataApiResponse,
@@ -175,16 +172,12 @@ router.get('/available-product-moves/:subscriptionName', (_, response) => {
 });
 //
 
-/*
 router.post(
 	'/product-move/:subscriptionName',
-	productMoveAPI('product-move/:subscriptionName', 'MOVE_PRODUCT'),
+	productMoveAPI('product-move/:subscriptionName', 'MOVE_PRODUCT', [
+		'subscriptionName',
+	]),
 );
-*/
-
-router.post('/product-move/:subscriptionName', (_, response) => {
-	response.json(productMoveResponse);
-});
 
 router.get(
 	'/holidays/:subscriptionName/potential',
