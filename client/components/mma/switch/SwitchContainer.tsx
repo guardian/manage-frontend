@@ -1,4 +1,4 @@
-import type { Context } from 'react';
+import type { Context, ReactNode } from 'react';
 import { createContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import type {
@@ -44,6 +44,18 @@ export const SwitchContainer = () => {
 	return <RenderedPage productDetail={productDetail} />;
 };
 
+const SwitchPageContainer = (props: { children: ReactNode }) => {
+	return (
+		<PageContainer
+			selectedNavItem={NAV_LINKS.accountOverview}
+			pageTitle={'Change your support'}
+			compactTitle
+		>
+			{props.children}
+		</PageContainer>
+	);
+};
+
 const AsyncLoadedSwitchContainer = () => {
 	const request = createProductDetailFetcher(
 		PRODUCT_TYPES.contributions.allProductsProductTypeFilterString,
@@ -56,24 +68,16 @@ const AsyncLoadedSwitchContainer = () => {
 
 	if (loadingState == LoadingState.HasError) {
 		return (
-			<PageContainer
-				selectedNavItem={NAV_LINKS.accountOverview}
-				pageTitle={'Change your support'}
-				compactTitle
-			>
+			<SwitchPageContainer>
 				<GenericErrorScreen loggingMessage={false} />
-			</PageContainer>
+			</SwitchPageContainer>
 		);
 	}
 	if (loadingState == LoadingState.IsLoading) {
 		return (
-			<PageContainer
-				selectedNavItem={NAV_LINKS.accountOverview}
-				pageTitle={'Change your support'}
-				compactTitle
-			>
+			<SwitchPageContainer>
 				<DefaultLoadingView />
-			</PageContainer>
+			</SwitchPageContainer>
 		);
 	}
 
@@ -91,16 +95,15 @@ const AsyncLoadedSwitchContainer = () => {
 
 const RenderedPage = (props: { productDetail: ProductDetail }) => {
 	return (
-		<PageContainer
-			selectedNavItem={NAV_LINKS.accountOverview}
-			pageTitle={'Change your support'}
-			compactTitle
-		>
+		<SwitchPageContainer>
 			<SwitchContext.Provider
-				value={{ productDetail: props.productDetail, isFromApp }}
+				value={{
+					productDetail: props.productDetail,
+					isFromApp: isFromApp(),
+				}}
 			>
 				<Outlet />
 			</SwitchContext.Provider>
-		</PageContainer>
+		</SwitchPageContainer>
 	);
 };
