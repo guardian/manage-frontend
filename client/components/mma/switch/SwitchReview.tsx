@@ -126,6 +126,34 @@ export const SwitchReview = () => {
 		'd MMMM',
 	);
 
+	const navigate = useNavigate();
+	const [isConfirmingSwitch, setIsConfirmingSwitch] =
+		useState<boolean>(false);
+
+	const confirmSwitch = async () => {
+		setIsConfirmingSwitch(true);
+		try {
+			const res = await fetch(
+				`/api/product-move/${productDetail.subscription.subscriptionId}`,
+				{
+					method: 'POST',
+					body: JSON.stringify({
+						targetProductId: '123', // TODO: Get correct product ID
+					}),
+					headers: {
+						[MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`,
+					},
+				},
+			);
+
+			const json = await res.json();
+			console.log(json);
+			setIsConfirmingSwitch(false);
+		} catch (error) {
+			// TODO: Show error message
+		}
+	};
+
 	const {
 		data: previewResponse,
 		loadingState,
@@ -157,34 +185,6 @@ export const SwitchReview = () => {
 	if (previewResponse == null) {
 		return <Navigate to="/" />;
 	}
-
-	const navigate = useNavigate();
-	const [isConfirmingSwitch, setIsConfirmingSwitch] =
-		useState<boolean>(false);
-
-	const confirmSwitch = async () => {
-		setIsConfirmingSwitch(true);
-		try {
-			const res = await fetch(
-				`/api/product-move/${productDetail.subscription.subscriptionId}`,
-				{
-					method: 'POST',
-					body: JSON.stringify({
-						targetProductId: '123', // TODO: Get correct product ID
-					}),
-					headers: {
-						[MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`,
-					},
-				},
-			);
-
-			const json = await res.json();
-			console.log(json);
-			setIsConfirmingSwitch(false);
-		} catch (error) {
-			// TODO: Show error message
-		}
-	};
 
 	return (
 		<>
