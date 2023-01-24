@@ -19,10 +19,7 @@ import {
 	dateString,
 } from '../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import {
-	getMainPlan,
-	MDA_TEST_USER_HEADER,
-} from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { sectionSpacing } from '../../../styles/spacing';
 import {
@@ -108,7 +105,6 @@ export const SwitchReview = () => {
 						}),
 						headers: {
 							'Content-Type': 'application/json',
-							[MDA_TEST_USER_HEADER]: `${true}`,
 						},
 					},
 				),
