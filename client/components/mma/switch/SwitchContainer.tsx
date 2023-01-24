@@ -32,15 +32,6 @@ export const SwitchContext: Context<SwitchContextInterface | {}> =
 
 const isFromApp = () => window?.location.hash.includes('from-app');
 
-const contextAndOutletContainer = (
-	productDetail: ProductDetail,
-	isFromApp: Boolean,
-) => (
-	<SwitchContext.Provider value={{ productDetail, isFromApp }}>
-		<Outlet />
-	</SwitchContext.Provider>
-);
-
 export const SwitchContainer = () => {
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
@@ -105,7 +96,11 @@ const RenderedPage = (props: { productDetail: ProductDetail }) => {
 			pageTitle={'Change your support'}
 			compactTitle
 		>
-			{contextAndOutletContainer(props.productDetail, isFromApp())}
+			<SwitchContext.Provider
+				value={{ productDetail: props.productDetail, isFromApp }}
+			>
+				<Outlet />
+			</SwitchContext.Provider>
 		</PageContainer>
 	);
 };
