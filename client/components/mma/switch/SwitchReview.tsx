@@ -9,6 +9,7 @@ import {
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
+	InlineError,
 	Stack,
 	SvgClock,
 	SvgCreditCard,
@@ -21,10 +22,7 @@ import {
 	dateString,
 } from '../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import {
-	getMainPlan,
-	MDA_TEST_USER_HEADER,
-} from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { sectionSpacing } from '../../../styles/spacing';
 import {
@@ -99,9 +97,20 @@ interface PreviewResponse {
 	supporterPlusPurchaseAmount: number;
 }
 
+interface AsyncLoader {
+	data: PreviewResponse | null;
+	loadingState: LoadingState;
+}
+
 export const SwitchReview = () => {
+	const navigate = useNavigate();
+
+	const [isSwitching, setIsSwitching] = useState<boolean>(false);
+	const [switchingError, setSwitchingError] = useState<boolean>(false);
+
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 	const productDetail = switchContext.productDetail;
+
 	const mainPlan = getMainPlan(
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
@@ -126,55 +135,43 @@ export const SwitchReview = () => {
 		'd MMMM',
 	);
 
-	const navigate = useNavigate();
-	const [isConfirmingSwitch, setIsConfirmingSwitch] =
-		useState<boolean>(false);
+	const productMoveFetch = (preview: boolean) =>
+		fetch(
+			`/api/product-move/${productDetail.subscription.subscriptionId}`,
+			{
+				method: 'POST',
+				body: JSON.stringify({
+					price: newAmount,
+					preview,
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			},
+		);
 
 	const confirmSwitch = async () => {
-		setIsConfirmingSwitch(true);
+		setIsSwitching(true);
 		try {
-			const res = await fetch(
-				`/api/product-move/${productDetail.subscription.subscriptionId}`,
-				{
-					method: 'POST',
-					body: JSON.stringify({
-						targetProductId: '123', // TODO: Get correct product ID
-					}),
-					headers: {
-						[MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`,
-					},
-				},
-			);
-
-			const json = await res.json();
-			console.log(json);
-			setIsConfirmingSwitch(false);
-		} catch (error) {
-			// TODO: Show error message
+			const response = await productMoveFetch(false);
+			const data = await response.json();
+			if (data === null) {
+				setIsSwitching(false);
+				setSwitchingError(true);
+			} else {
+				// TODO: Navigate to switch complete page when built
+				navigate('/');
+			}
+		} catch (e) {
+			setIsSwitching(false);
+			setSwitchingError(true);
 		}
 	};
 
-	const {
-		data: previewResponse,
-		loadingState,
-	}: { data: PreviewResponse | null; loadingState: LoadingState } =
-		useAsyncLoader(
-			() =>
-				fetch(
-					`/api/product-move/${productDetail.subscription.subscriptionId}`,
-					{
-						method: 'POST',
-						body: JSON.stringify({
-							price: newAmount,
-							preview: true,
-						}),
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				),
-			JsonResponseHandler,
-		);
+	const { data: previewResponse, loadingState }: AsyncLoader = useAsyncLoader(
+		() => productMoveFetch(true),
+		JsonResponseHandler,
+	);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen loggingMessage={false} />;
@@ -182,7 +179,7 @@ export const SwitchReview = () => {
 	if (loadingState == LoadingState.IsLoading) {
 		return <DefaultLoadingView />;
 	}
-	if (previewResponse == null) {
+	if (previewResponse === null) {
 		return <Navigate to="/" />;
 	}
 
@@ -399,7 +396,7 @@ export const SwitchReview = () => {
 			<section css={buttonLayoutCss}>
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button
-						isLoading={isConfirmingSwitch}
+						isLoading={isSwitching}
 						cssOverrides={css`
 							justify-content: center;
 						`}
@@ -418,6 +415,13 @@ export const SwitchReview = () => {
 					Back
 				</Button>
 			</section>
+			{switchingError && (
+				<section css={sectionSpacing}>
+					<InlineError>
+						An error occurred whilst switching
+					</InlineError>
+				</section>
+			)}
 			<section css={sectionSpacing}>
 				<p css={smallPrintCss}>
 					This arrangement auto-renews and you will be charged the
