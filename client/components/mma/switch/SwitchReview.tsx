@@ -97,11 +97,6 @@ interface PreviewResponse {
 	supporterPlusPurchaseAmount: number;
 }
 
-interface AsyncLoader {
-	data: PreviewResponse | null;
-	loadingState: LoadingState;
-}
-
 export const SwitchReview = () => {
 	const navigate = useNavigate();
 
@@ -151,10 +146,11 @@ export const SwitchReview = () => {
 		);
 
 	const confirmSwitch = async () => {
-		setIsSwitching(true);
 		try {
+			setIsSwitching(true);
 			const response = await productMoveFetch(false);
-			const data = await response.json();
+			const data = await JsonResponseHandler(response);
+
 			if (data === null) {
 				setIsSwitching(false);
 				setSwitchingError(true);
@@ -168,10 +164,13 @@ export const SwitchReview = () => {
 		}
 	};
 
-	const { data: previewResponse, loadingState }: AsyncLoader = useAsyncLoader(
-		() => productMoveFetch(true),
-		JsonResponseHandler,
-	);
+	const {
+		data: previewResponse,
+		loadingState,
+	}: {
+		data: PreviewResponse | null;
+		loadingState: LoadingState;
+	} = useAsyncLoader(() => productMoveFetch(true), JsonResponseHandler);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen loggingMessage={false} />;
