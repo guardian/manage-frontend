@@ -79,7 +79,9 @@ describe('Cancel contribution', () => {
 
 	it('cancels contribution (reason: As a result of a specific article I read)', () => {
 		setupCancellation();
-		cy.findAllByRole('radio').eq(0).click();
+		cy.findByRole('radio', {
+			name: 'As the result of a specific article I read',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
@@ -137,7 +139,9 @@ describe('Cancel contribution', () => {
 
 	it('cancels contribution with save body string (reason: I’d like to get something in return for my support)', () => {
 		setupCancellation();
-		cy.findAllByRole('radio').eq(5).click();
+		cy.findAllByRole('radio', {
+			name: 'I’d like to get something ‘in return’ for my support, e.g. digital features',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');

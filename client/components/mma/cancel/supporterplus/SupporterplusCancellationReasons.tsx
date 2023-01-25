@@ -94,9 +94,11 @@ export const otherCancellationReason: CancellationReason[] = [
 	},
 ];
 
-const shuffledArray = supporterplusCancellationReasons.sort(
+const shuffledArray = [...supporterplusCancellationReasons].sort(
 	() => 0.5 - Math.random(),
 );
 
-export const shuffledSupporterPlusCancellationReasons: CancellationReason[] =
-	shuffledArray.concat(otherCancellationReason);
+export const shuffledSupporterPlusCancellationReasons: CancellationReason[] = [
+	...shuffledArray,
+	...otherCancellationReason,
+];
