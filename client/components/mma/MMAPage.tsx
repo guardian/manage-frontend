@@ -4,7 +4,10 @@ import { breakpoints, from, space } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { initFeatureSwitchUrlParamOverride } from '../../../shared/featureSwitches';
+import {
+	featureSwitches,
+	initFeatureSwitchUrlParamOverride,
+} from '../../../shared/featureSwitches';
 import type {
 	GroupedProductType,
 	ProductType,
@@ -324,14 +327,19 @@ const MMARouter = () => {
 							path="/account-settings"
 							element={<Settings />}
 						/>
-						<Route path="/switch" element={<SwitchContainer />}>
-							<Route index element={<SwitchOptions />} />
-							<Route path="review" element={<SwitchReview />} />
-							<Route
-								path="complete"
-								element={<SwitchComplete />}
-							/>
-						</Route>
+						{featureSwitches.productSwitching && (
+							<Route path="/switch" element={<SwitchContainer />}>
+								<Route index element={<SwitchOptions />} />
+								<Route
+									path="review"
+									element={<SwitchReview />}
+								/>
+								<Route
+									path="complete"
+									element={<SwitchComplete />}
+								/>
+							</Route>
+						)}
 						{Object.values(GROUPED_PRODUCT_TYPES).map(
 							(groupedProductType: GroupedProductType) => (
 								<Route

@@ -1,7 +1,6 @@
 import type { Context, ReactNode } from 'react';
 import { createContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
-import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
@@ -37,10 +36,6 @@ export const SwitchContainer = () => {
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
 	const productDetail = routerState?.productDetail;
-
-	if (!featureSwitches.productSwitching) {
-		return <Navigate to="/" />;
-	}
 
 	if (!productDetail) {
 		return <AsyncLoadedSwitchContainer />;
