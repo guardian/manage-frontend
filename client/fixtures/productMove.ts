@@ -4,6 +4,6 @@ export const productMovePreviewResponse = {
 	supporterPlusPurchaseAmount: 10.0,
 };
 
-export const productMoveResponse = {
+export const productMoveSuccessfulResponse = {
 	message: 'Product move completed successfully',
 };

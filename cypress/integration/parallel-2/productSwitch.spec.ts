@@ -4,10 +4,26 @@ import {
 } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 import {
+	productMovePreviewResponse,
+	productMoveSuccessfulResponse,
+} from '../../../client/fixtures/productMove';
+import {
 	availableProductMovesResponse,
 	productMoveResponse,
 } from '../../../client/fixtures/productMovement';
 import { featureSwitches } from '../../../shared/featureSwitches';
+
+const setSignInStatus = () => {
+	cy.window().then((window) => {
+		// @ts-ignore
+		window.guardian.identityDetails = {
+			signInStatus: 'signedInRecently',
+			userId: '200006712',
+			displayName: 'user',
+			email: 'example@example.com',
+		};
+	});
+};
 
 if (featureSwitches.cancellationProductSwitch) {
 	describe('product movement', () => {
@@ -174,8 +190,6 @@ describe('product switching', () => {
 	beforeEach(() => {
 		signInAndAcceptCookies();
 
-		cy.setCookie('GU_mvt_id', '999999');
-
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(contribution),
@@ -190,39 +204,75 @@ describe('product switching', () => {
 			statusCode: 200,
 			body: [],
 		}).as('cancelled');
+
+		cy.intercept('POST', '/api/product-move/*', {
+			statusCode: 200,
+			body: productMovePreviewResponse,
+		});
 	});
 
-	it('goes to product switching page when clicking CTA button', () => {
+	it('navigates to product switching page from Account Overview', () => {
 		cy.visit('/?withFeature=accountOverviewNewLayout');
-
-		cy.window().then((window) => {
-			// @ts-ignore
-			window.guardian.identityDetails = {
-				signInStatus: 'signedInRecently',
-				userId: '200006712',
-				displayName: 'user',
-				email: 'example@example.com',
-			};
-		});
-
+		setSignInStatus();
 		cy.findByText('Change to monthly + extras').click();
-
-		cy.findByText('Your current support');
+		cy.findByText('Your current support').should('exist');
 	});
 
-	it('goes to product switching page when hitting URL directly', () => {
+	it('shows product switching page when visiting URL directly', () => {
 		cy.visit('/switch');
+		setSignInStatus();
+		cy.findByText('Your current support').should('exist');
+	});
 
-		cy.window().then((window) => {
-			// @ts-ignore
-			window.guardian.identityDetails = {
-				signInStatus: 'signedInRecently',
-				userId: '200006712',
-				displayName: 'user',
-				email: 'example@example.com',
-			};
+	it('shows review page after choosing to switch', () => {
+		cy.visit('/switch');
+		setSignInStatus();
+
+		cy.findByRole('button', {
+			name: 'Add extras with no extra cost',
+		}).click();
+
+		cy.findByText('Review change').should('exist');
+		cy.findByText('Your new support').should('exist');
+		cy.findByText('What happens next?').should('exist');
+	});
+
+	it('successfully switches product', () => {
+		cy.visit('/switch');
+		setSignInStatus();
+
+		cy.findByRole('button', {
+			name: 'Add extras with no extra cost',
+		}).click();
+
+		cy.intercept('POST', '/api/product-move/*', {
+			statusCode: 200,
+			body: productMoveSuccessfulResponse,
 		});
 
-		cy.findByText('Your current support');
+		cy.findByRole('button', { name: 'Confirm change' }).click();
+
+		// TODO: Final confirmation page hasn't been built yet so we redirect
+		// back to the Account Overview following a successful switch
+		cy.location('pathname').should('eq', '/');
+	});
+
+	it('shows an error message if switch fails', () => {
+		cy.visit('/switch');
+		setSignInStatus();
+
+		cy.findByRole('button', {
+			name: 'Add extras with no extra cost',
+		}).click();
+
+		cy.intercept('POST', '/api/product-move/*', {
+			statusCode: 500,
+			body: {},
+		});
+
+		cy.findByRole('button', { name: 'Confirm change' }).click();
+
+		// TODO: This is a placeholder error message pending final design
+		cy.findByText('An error occurred whilst switching').should('exist');
 	});
 });
