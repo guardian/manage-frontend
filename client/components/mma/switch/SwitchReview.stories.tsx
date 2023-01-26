@@ -2,7 +2,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { contribution } from '../../../fixtures/productDetail';
-import { switchPreview } from '../../../fixtures/switchPreview';
+import { productMovePreviewResponse } from '../../../fixtures/productMove';
 import { SwitchContainer } from './SwitchContainer';
 import { SwitchReview } from './SwitchReview';
 
@@ -18,7 +18,7 @@ export default {
 		},
 		msw: [
 			rest.post('/api/product-move/*', (_req, res, ctx) => {
-				return res(ctx.json(switchPreview));
+				return res(ctx.json(productMovePreviewResponse));
 			}),
 		],
 	},

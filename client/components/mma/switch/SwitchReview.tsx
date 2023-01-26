@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css, ThemeProvider } from '@emotion/react';
 import {
 	from,
 	headline,
@@ -7,12 +7,15 @@ import {
 	textSans,
 } from '@guardian/source-foundations';
 import {
+	Button,
+	buttonThemeReaderRevenueBrand,
+	InlineError,
 	Stack,
 	SvgClock,
 	SvgCreditCard,
 } from '@guardian/source-react-components';
-import { useContext } from 'react';
-import { Navigate } from 'react-router';
+import { useContext, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router';
 import {
 	dateAddMonths,
 	dateAddYears,
@@ -56,6 +59,38 @@ const whatHappensNextTextCss = css`
 	width: 100%;
 `;
 
+const buttonLayoutCss = css`
+	display: flex;
+	flex-direction: column;
+	margin-top: ${space[5]}px;
+	padding-top: 32px;
+	border-top: 1px solid ${palette.neutral[86]};
+	> * + * {
+		margin-top: ${space[3]}px;
+	}
+	${from.tablet} {
+		flex-direction: row;
+		> * + * {
+			margin-top: 0;
+			margin-left: ${space[3]}px;
+		}
+	}
+`;
+
+const smallPrintCss = css`
+	${textSans.xxsmall()};
+	margin-top: 0;
+	margin-bottom: 0;
+	color: #606060;
+	> a {
+		color: inherit;
+		text-decoration: underline;
+	}
+	& + & {
+		margin-top: ${space[1]}px;
+	}
+`;
+
 interface PreviewResponse {
 	amountPayableToday: number;
 	contributionRefundAmount: number;
@@ -63,8 +98,14 @@ interface PreviewResponse {
 }
 
 export const SwitchReview = () => {
+	const navigate = useNavigate();
+
+	const [isSwitching, setIsSwitching] = useState<boolean>(false);
+	const [switchingError, setSwitchingError] = useState<boolean>(false);
+
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 	const productDetail = switchContext.productDetail;
+
 	const mainPlan = getMainPlan(
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
@@ -89,27 +130,47 @@ export const SwitchReview = () => {
 		'd MMMM',
 	);
 
+	const productMoveFetch = (preview: boolean) =>
+		fetch(
+			`/api/product-move/${productDetail.subscription.subscriptionId}`,
+			{
+				method: 'POST',
+				body: JSON.stringify({
+					price: newAmount,
+					preview,
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			},
+		);
+
+	const confirmSwitch = async () => {
+		try {
+			setIsSwitching(true);
+			const response = await productMoveFetch(false);
+			const data = await JsonResponseHandler(response);
+
+			if (data === null) {
+				setIsSwitching(false);
+				setSwitchingError(true);
+			} else {
+				// TODO: Navigate to switch complete page when built
+				navigate('/');
+			}
+		} catch (e) {
+			setIsSwitching(false);
+			setSwitchingError(true);
+		}
+	};
+
 	const {
 		data: previewResponse,
 		loadingState,
-	}: { data: PreviewResponse | null; loadingState: LoadingState } =
-		useAsyncLoader(
-			() =>
-				fetch(
-					`/api/product-move/${productDetail.subscription.subscriptionId}`,
-					{
-						method: 'POST',
-						body: JSON.stringify({
-							price: newAmount,
-							preview: true,
-						}),
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				),
-			JsonResponseHandler,
-		);
+	}: {
+		data: PreviewResponse | null;
+		loadingState: LoadingState;
+	} = useAsyncLoader(() => productMoveFetch(true), JsonResponseHandler);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen loggingMessage={false} />;
@@ -117,7 +178,7 @@ export const SwitchReview = () => {
 	if (loadingState == LoadingState.IsLoading) {
 		return <DefaultLoadingView />;
 	}
-	if (previewResponse == null) {
+	if (previewResponse === null) {
 		return <Navigate to="/" />;
 	}
 
@@ -330,6 +391,64 @@ export const SwitchReview = () => {
 						</div>
 					</Stack>
 				</section>
+			</section>
+			<section css={buttonLayoutCss}>
+				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
+					<Button
+						isLoading={isSwitching}
+						cssOverrides={css`
+							justify-content: center;
+						`}
+						onClick={confirmSwitch}
+					>
+						Confirm change
+					</Button>
+				</ThemeProvider>
+				<Button
+					priority="tertiary"
+					cssOverrides={css`
+						justify-content: center;
+					`}
+					onClick={() => navigate('..')}
+				>
+					Back
+				</Button>
+			</section>
+			{switchingError && (
+				<section css={sectionSpacing}>
+					<InlineError>
+						An error occurred whilst switching
+					</InlineError>
+				</section>
+			)}
+			<section css={sectionSpacing}>
+				<p css={smallPrintCss}>
+					This arrangement auto-renews and you will be charged the
+					applicable monthly amount each time it renews unless you
+					cancel. You can change how much you pay at any time but{' '}
+					{mainPlan.currency}
+					{threshold} per {mainPlan.billingPeriod}, is the minimum
+					payment to receive these benefits. You can cancel any time
+					before your next payment date and if you cancel within the
+					first 14 days, you’ll receive a full refund. Cancellation of
+					your payment will result in the cancellation of these
+					benefits.
+				</p>
+				<p css={smallPrintCss}>
+					By proceeding, you are agreeing to our{' '}
+					<a href="https://www.theguardian.com/info/2014/aug/06/guardian-observer-digital-subscriptions-terms-conditions">
+						Terms and Conditions
+					</a>
+					.
+				</p>
+				<p css={smallPrintCss}>
+					To find out what personal data we collect and how we use it,
+					please visit our{' '}
+					<a href="https://www.theguardian.com/help/privacy-policy">
+						Privacy Policy
+					</a>
+					.
+				</p>
 			</section>
 		</>
 	);
