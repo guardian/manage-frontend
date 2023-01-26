@@ -36,6 +36,7 @@ import { Main } from '../shared/Main';
 import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
+import { SwitchComplete } from './switch/SwitchComplete';
 import { SwitchContainer } from './switch/SwitchContainer';
 import { SwitchOptions } from './switch/SwitchOptions';
 import { SwitchReview } from './switch/SwitchReview';
@@ -325,9 +326,10 @@ const MMARouter = () => {
 						/>
 						<Route path="/switch" element={<SwitchContainer />}>
 							<Route index element={<SwitchOptions />} />
+							<Route path="review" element={<SwitchReview />} />
 							<Route
-								path="/switch/review"
-								element={<SwitchReview />}
+								path="complete"
+								element={<SwitchComplete />}
 							/>
 						</Route>
 						{Object.values(GROUPED_PRODUCT_TYPES).map(
