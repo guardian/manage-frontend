@@ -1,12 +1,9 @@
 import { css } from '@emotion/react';
 import { from, palette, until } from '@guardian/source-foundations';
-import { Stack } from '@guardian/source-react-components';
+import { LinkButton, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
-import type {
-	PaidSubscriptionPlan} from '../../../../shared/productResponse';
-import {
-	getMainPlan
-} from '../../../../shared/productResponse';
+import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { sectionSpacing } from '../../../styles/spacing';
 import { Heading } from '../shared/Heading';
@@ -31,6 +28,10 @@ export const SwitchComplete = () => {
 		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 
+	const continueReadingLink = switchContext.isFromApp
+		? 'x-gu://mma/success'
+		: 'https://www.theguardian.com';
+
 	return (
 		<section css={sectionSpacing}>
 			<Stack space={3}>
@@ -40,6 +41,11 @@ export const SwitchComplete = () => {
 						newAmount={newAmount}
 					/>
 				)}
+				<div>
+					<LinkButton href={continueReadingLink}>
+						Continue reading the Guardian
+					</LinkButton>
+				</div>
 			</Stack>
 		</section>
 	);

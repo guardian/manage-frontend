@@ -324,14 +324,27 @@ const MMARouter = () => {
 							path="/account-settings"
 							element={<Settings />}
 						/>
-						<Route path="/switch" element={<SwitchContainer />}>
-							<Route index element={<SwitchOptions />} />
-							<Route path="review" element={<SwitchReview />} />
+						{[
+							{ path: '/switch', fromApp: false },
+							{ path: '/app/switch', fromApp: true },
+						].map(({ path, fromApp }) => (
 							<Route
-								path="complete"
-								element={<SwitchComplete />}
-							/>
-						</Route>
+								key={path}
+								path={path}
+								element={<SwitchContainer fromApp={fromApp} />}
+							>
+								<Route index element={<SwitchOptions />} />
+								<Route
+									path="review"
+									element={<SwitchReview />}
+								/>
+								<Route
+									path="complete"
+									element={<SwitchComplete />}
+								/>
+							</Route>
+						))}
+						;
 						{Object.values(GROUPED_PRODUCT_TYPES).map(
 							(groupedProductType: GroupedProductType) => (
 								<Route
@@ -497,7 +510,6 @@ const MMARouter = () => {
 								</Route>
 							),
 						)}
-
 						{Object.values(PRODUCT_TYPES)
 							.filter(shouldHaveHolidayStopsFlow)
 							.map(

@@ -30,18 +30,18 @@ export interface SwitchContextInterface {
 export const SwitchContext: Context<SwitchContextInterface | {}> =
 	createContext({});
 
-const isFromApp = () => window?.location.hash.includes('from-app');
-
-export const SwitchContainer = () => {
+export const SwitchContainer = (props: { fromApp?: boolean }) => {
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
 	const productDetail = routerState?.productDetail;
 
 	if (!productDetail) {
-		return <AsyncLoadedSwitchContainer />;
+		return <AsyncLoadedSwitchContainer fromApp={props.fromApp} />;
 	}
 
-	return <RenderedPage productDetail={productDetail} />;
+	return (
+		<RenderedPage productDetail={productDetail} fromApp={props.fromApp} />
+	);
 };
 
 const SwitchPageContainer = (props: { children: ReactNode }) => {
@@ -56,7 +56,7 @@ const SwitchPageContainer = (props: { children: ReactNode }) => {
 	);
 };
 
-const AsyncLoadedSwitchContainer = () => {
+const AsyncLoadedSwitchContainer = (props: { fromApp?: boolean }) => {
 	const request = createProductDetailFetcher(
 		PRODUCT_TYPES.contributions.allProductsProductTypeFilterString,
 	);
@@ -90,16 +90,21 @@ const AsyncLoadedSwitchContainer = () => {
 	}
 
 	const productDetail = data.products.filter(isProduct)[0];
-	return <RenderedPage productDetail={productDetail} />;
+	return (
+		<RenderedPage productDetail={productDetail} fromApp={props.fromApp} />
+	);
 };
 
-const RenderedPage = (props: { productDetail: ProductDetail }) => {
+const RenderedPage = (props: {
+	productDetail: ProductDetail;
+	fromApp?: boolean;
+}) => {
 	return (
 		<SwitchPageContainer>
 			<SwitchContext.Provider
 				value={{
 					productDetail: props.productDetail,
-					isFromApp: isFromApp(),
+					isFromApp: props.fromApp,
 				}}
 			>
 				<Outlet />
