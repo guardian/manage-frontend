@@ -9,8 +9,14 @@ import type { GroupedProductTypeKeys, ProductType } from './productTypes';
 
 export type DeliveryRecordApiItem = DeliveryRecordDetail;
 
+export type MembersDataApiUser = {
+	firstName: string;
+	lastName: string;
+	email: string;
+};
+
 export type MembersDataApiResponse = {
-	user?: { firstName: string; lastName: string; email: string };
+	user?: MembersDataApiUser;
 	products: MembersDataApiItem[];
 };
 

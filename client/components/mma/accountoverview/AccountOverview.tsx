@@ -127,6 +127,7 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 										}
 										productDetail={productDetail}
 										isEligibleToSwitch={isEligibleToSwitch}
+										user={mdaResponse.user}
 									/>
 								) : (
 									<AccountOverviewCard

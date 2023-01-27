@@ -12,7 +12,10 @@ import {
 } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
 import { parseDate } from '../../../../shared/dates';
-import type { ProductDetail } from '../../../../shared/productResponse';
+import type {
+	MembersDataApiUser,
+	ProductDetail,
+} from '../../../../shared/productResponse';
 import { getMainPlan, isGift } from '../../../../shared/productResponse';
 import type { ProductTypeKeys } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
@@ -76,9 +79,11 @@ const productCardConfiguration: {
 export const AccountOverviewCardV2 = ({
 	productDetail,
 	isEligibleToSwitch,
+	user,
 }: {
 	productDetail: ProductDetail;
 	isEligibleToSwitch: boolean;
+	user?: MembersDataApiUser;
 }) => {
 	const navigate = useNavigate();
 
@@ -385,6 +390,7 @@ export const AccountOverviewCardV2 = ({
 										navigate(`/switch`, {
 											state: {
 												productDetail: productDetail,
+												user: user,
 											},
 										})
 									}
