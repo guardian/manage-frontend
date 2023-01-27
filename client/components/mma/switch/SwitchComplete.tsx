@@ -71,6 +71,9 @@ export const SwitchComplete = () => {
 					email={switchContext.user?.email ?? ''}
 				/>
 			</section>
+			<section css={sectionSpacing}>
+				<SignInPrompt />
+			</section>
 		</>
 	);
 };
@@ -182,3 +185,30 @@ const ThankYouMessaging = (props: {
 		</>
 	);
 };
+
+const signInContainerCss = css`
+	padding: ${space[3]}px;
+	color: ${palette.neutral[100]};
+	background-color: ${palette.brand[500]};
+`;
+
+const signInHeadingCss = css`
+	${textSans.medium({ fontWeight: 'bold', lineHeight: 'regular' })};
+	margin: 0;
+`;
+
+const signInParaCss = css`
+	${textSans.medium({ lineHeight: 'regular' })};
+	margin: 0;
+	max-width: 42ch;
+`;
+
+const SignInPrompt = () => (
+	<div css={signInContainerCss}>
+		<h2 css={signInHeadingCss}>Sign in on all your devices</h2>
+		<p css={signInParaCss}>
+			To access your extras on all your digital devices, please sign in.
+			It takes less than a minute.
+		</p>
+	</div>
+);
