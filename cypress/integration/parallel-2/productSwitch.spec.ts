@@ -211,68 +211,75 @@ describe('product switching', () => {
 		});
 	});
 
-	it('navigates to product switching page from Account Overview', () => {
-		cy.visit('/?withFeature=accountOverviewNewLayout');
-		setSignInStatus();
-		cy.findByText('Change to monthly + extras').click();
-		cy.findByText('Your current support').should('exist');
-	});
+	if (
+		featureSwitches.accountOverviewNewLayout &&
+		featureSwitches.productSwitching
+	) {
+		it('navigates to product switching page from Account Overview', () => {
+			cy.visit('/');
+			setSignInStatus();
+			cy.findByText('Change to monthly + extras').click();
+			cy.findByText('Your current support').should('exist');
+		});
+	}
 
-	it('shows product switching page when visiting URL directly', () => {
-		cy.visit('/switch');
-		setSignInStatus();
-		cy.findByText('Your current support').should('exist');
-	});
-
-	it('shows review page after choosing to switch', () => {
-		cy.visit('/switch');
-		setSignInStatus();
-
-		cy.findByRole('button', {
-			name: 'Add extras with no extra cost',
-		}).click();
-
-		cy.findByText('Review change').should('exist');
-		cy.findByText('Your new support').should('exist');
-		cy.findByText('What happens next?').should('exist');
-	});
-
-	it('successfully switches product', () => {
-		cy.visit('/switch');
-		setSignInStatus();
-
-		cy.findByRole('button', {
-			name: 'Add extras with no extra cost',
-		}).click();
-
-		cy.intercept('POST', '/api/product-move/*', {
-			statusCode: 200,
-			body: productMoveSuccessfulResponse,
+	if (featureSwitches.productSwitching) {
+		it('shows product switching page when visiting URL directly', () => {
+			cy.visit('/switch');
+			setSignInStatus();
+			cy.findByText('Your current support').should('exist');
 		});
 
-		cy.findByRole('button', { name: 'Confirm change' }).click();
+		it('shows review page after choosing to switch', () => {
+			cy.visit('/switch');
+			setSignInStatus();
 
-		// TODO: Final confirmation page hasn't been built yet so we redirect
-		// back to the Account Overview following a successful switch
-		cy.location('pathname').should('eq', '/');
-	});
+			cy.findByRole('button', {
+				name: 'Add extras with no extra cost',
+			}).click();
 
-	it('shows an error message if switch fails', () => {
-		cy.visit('/switch');
-		setSignInStatus();
-
-		cy.findByRole('button', {
-			name: 'Add extras with no extra cost',
-		}).click();
-
-		cy.intercept('POST', '/api/product-move/*', {
-			statusCode: 500,
-			body: {},
+			cy.findByText('Review change').should('exist');
+			cy.findByText('Your new support').should('exist');
+			cy.findByText('What happens next?').should('exist');
 		});
 
-		cy.findByRole('button', { name: 'Confirm change' }).click();
+		it('successfully switches product', () => {
+			cy.visit('/switch');
+			setSignInStatus();
 
-		// TODO: This is a placeholder error message pending final design
-		cy.findByText('An error occurred whilst switching').should('exist');
-	});
+			cy.findByRole('button', {
+				name: 'Add extras with no extra cost',
+			}).click();
+
+			cy.intercept('POST', '/api/product-move/*', {
+				statusCode: 200,
+				body: productMoveSuccessfulResponse,
+			});
+
+			cy.findByRole('button', { name: 'Confirm change' }).click();
+
+			// TODO: Final confirmation page hasn't been built yet so we redirect
+			// back to the Account Overview following a successful switch
+			cy.location('pathname').should('eq', '/');
+		});
+
+		it('shows an error message if switch fails', () => {
+			cy.visit('/switch');
+			setSignInStatus();
+
+			cy.findByRole('button', {
+				name: 'Add extras with no extra cost',
+			}).click();
+
+			cy.intercept('POST', '/api/product-move/*', {
+				statusCode: 500,
+				body: {},
+			});
+
+			cy.findByRole('button', { name: 'Confirm change' }).click();
+
+			// TODO: This is a placeholder error message pending final design
+			cy.findByText('An error occurred whilst switching').should('exist');
+		});
+	}
 });
