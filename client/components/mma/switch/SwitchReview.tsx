@@ -155,7 +155,6 @@ export const SwitchReview = () => {
 				setIsSwitching(false);
 				setSwitchingError(true);
 			} else {
-				// TODO: Navigate to switch complete page when built
 				navigate('/switch/complete', {
 					state: { amountPayableToday: amount },
 				});

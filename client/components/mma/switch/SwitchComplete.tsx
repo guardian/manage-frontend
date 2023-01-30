@@ -103,56 +103,58 @@ const WhatHappensNext = (props: {
 	email: string;
 }) => {
 	return (
-		<Stack
-			cssOverrides={css`
-				svg {
-					fill: ${brand[500]};
-					flex-shrink: 0;
-				}
-			`}
-		>
+		<Stack space={4}>
 			<Heading sansSerif>What happens next?</Heading>
 			<div
 				css={css`
-					display: flex;
-					align-items: start;
-					margin-top: ${space[4]}px;
+					svg {
+						fill: ${brand[500]};
+						flex-shrink: 0;
+					}
 				`}
 			>
-				<SvgEnvelope size="medium" />
-				<div css={whatHappensNextTextCss}>
-					<p>
-						You will receive a confirmation email to {props.email}
-					</p>
+				<div
+					css={css`
+						display: flex;
+						align-items: start;
+					`}
+				>
+					<SvgEnvelope size="medium" />
+					<div css={whatHappensNextTextCss}>
+						<p>
+							You will receive a confirmation email to{' '}
+							{props.email}
+						</p>
+					</div>
 				</div>
-			</div>
-			<div
-				css={css`
-					display: flex;
-					align-items: start;
-				`}
-			>
-				<SvgClock size="medium" />
-				<div css={whatHappensNextTextCss}>
-					<p>
-						Your first billing date is today and you will be charge
-						a reduced rate of {props.currency}
-						{props.amountPayableToday}.
-					</p>
+				<div
+					css={css`
+						display: flex;
+						align-items: start;
+					`}
+				>
+					<SvgClock size="medium" />
+					<div css={whatHappensNextTextCss}>
+						<p>
+							Your first billing date is today and you will be
+							charge a reduced rate of {props.currency}
+							{props.amountPayableToday}.
+						</p>
+					</div>
 				</div>
-			</div>
-			<div
-				css={css`
-					display: flex;
-					align-items: start;
-				`}
-			>
-				<InverseStarIcon size="medium" />
-				<div css={whatHappensNextTextCss}>
-					<p>
-						Your new support will start today. It can take up to an
-						hour for your support to be activated.
-					</p>
+				<div
+					css={css`
+						display: flex;
+						align-items: start;
+					`}
+				>
+					<InverseStarIcon size="medium" />
+					<div css={whatHappensNextTextCss}>
+						<p>
+							Your new support will start today. It can take up to
+							an hour for your support to be activated.
+						</p>
+					</div>
 				</div>
 			</div>
 		</Stack>
