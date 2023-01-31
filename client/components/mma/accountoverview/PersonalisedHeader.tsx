@@ -19,15 +19,14 @@ export const PersonalisedHeader = ({
 	const supportStartYear = new Date(oldestProduct.joinDate).getFullYear();
 
 	const calculatedTimeOfDay = () => {
-		const userDate = new Date().getHours();
+		const currentHour = new Date().getHours();
 
-		if (userDate >= 0 && userDate <= 11) {
+		if (currentHour < 12) {
 			return 'Good Morning';
 		}
-		if (userDate >= 12 && userDate <= 17) {
+		if (currentHour < 18) {
 			return 'Good Afternoon';
-		}
-		if (userDate >= 18 && userDate <= 23) {
+		} else {
 			return 'Good Evening';
 		}
 	};
