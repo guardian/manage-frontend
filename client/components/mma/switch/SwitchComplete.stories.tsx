@@ -11,7 +11,11 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: contribution },
+			state: {
+				productDetail: contribution,
+				user: { email: 'test@theguardian.com' },
+				amountPayableToday: 5,
+			},
 			container: <SwitchContainer />,
 		},
 	},

@@ -145,7 +145,7 @@ export const SwitchReview = () => {
 			},
 		);
 
-	const confirmSwitch = async () => {
+	const confirmSwitch = async (amount: number) => {
 		try {
 			setIsSwitching(true);
 			const response = await productMoveFetch(false);
@@ -155,8 +155,9 @@ export const SwitchReview = () => {
 				setIsSwitching(false);
 				setSwitchingError(true);
 			} else {
-				// TODO: Navigate to switch complete page when built
-				navigate('/');
+				navigate('/switch/complete', {
+					state: { amountPayableToday: amount },
+				});
 			}
 		} catch (e) {
 			setIsSwitching(false);
@@ -399,7 +400,9 @@ export const SwitchReview = () => {
 						cssOverrides={css`
 							justify-content: center;
 						`}
-						onClick={confirmSwitch}
+						onClick={() =>
+							confirmSwitch(previewResponse.amountPayableToday)
+						}
 					>
 						Confirm change
 					</Button>

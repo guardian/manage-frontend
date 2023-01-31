@@ -1,8 +1,9 @@
-import type { Context, ReactNode } from 'react';
 import { createContext } from 'react';
+import type { Context, ReactNode  } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import type {
 	MembersDataApiResponse,
+	MembersDataApiUser,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import { isProduct } from '../../../../shared/productResponse';
@@ -20,11 +21,14 @@ import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView
 
 export interface SwitchRouterState {
 	productDetail: ProductDetail;
+	user?: MembersDataApiUser;
+	amountPayableToday: number;
 }
 
 export interface SwitchContextInterface {
 	productDetail: ProductDetail;
 	isFromApp: Boolean;
+	user?: MembersDataApiUser;
 }
 
 export const SwitchContext: Context<SwitchContextInterface | {}> =
@@ -36,12 +40,13 @@ export const SwitchContainer = () => {
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
 	const productDetail = routerState?.productDetail;
+	const user = routerState?.user;
 
 	if (!productDetail) {
 		return <AsyncLoadedSwitchContainer />;
 	}
 
-	return <RenderedPage productDetail={productDetail} />;
+	return <RenderedPage productDetail={productDetail} user={user} />;
 };
 
 const SwitchPageContainer = (props: { children: ReactNode }) => {
@@ -90,16 +95,20 @@ const AsyncLoadedSwitchContainer = () => {
 	}
 
 	const productDetail = data.products.filter(isProduct)[0];
-	return <RenderedPage productDetail={productDetail} />;
+	return <RenderedPage productDetail={productDetail} user={data.user} />;
 };
 
-const RenderedPage = (props: { productDetail: ProductDetail }) => {
+const RenderedPage = (props: {
+	productDetail: ProductDetail;
+	user?: MembersDataApiUser;
+}) => {
 	return (
 		<SwitchPageContainer>
 			<SwitchContext.Provider
 				value={{
 					productDetail: props.productDetail,
 					isFromApp: isFromApp(),
+					user: props.user,
 				}}
 			>
 				<Outlet />

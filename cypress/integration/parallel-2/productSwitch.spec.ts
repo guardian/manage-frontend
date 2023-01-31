@@ -251,16 +251,15 @@ describe('product switching', () => {
 				name: 'Add extras with no extra cost',
 			}).click();
 
+			cy.findByRole('button', { name: 'Confirm change' }).click();
+
 			cy.intercept('POST', '/api/product-move/*', {
 				statusCode: 200,
 				body: productMoveSuccessfulResponse,
 			});
 
-			cy.findByRole('button', { name: 'Confirm change' }).click();
-
-			// TODO: Final confirmation page hasn't been built yet so we redirect
-			// back to the Account Overview following a successful switch
-			cy.location('pathname').should('eq', '/');
+			cy.findByText(/Thank you/).should('exist');
+			cy.findByText(/reduced rate of £5/).should('exist');
 		});
 
 		it('shows an error message if switch fails', () => {
