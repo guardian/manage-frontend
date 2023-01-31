@@ -104,9 +104,21 @@ export const contributionsCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I no longer read the Guardian enough to justify my support',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
+];
+
+export const otherCancellationReason: CancellationReason[] = [
 	{
 		reasonId: 'mma_other',
 		linkLabel: 'Another reason (please specify)',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
+];
+
+const shuffledArray = [...contributionsCancellationReasons].sort(
+	() => 0.5 - Math.random(),
+);
+
+export const shuffledContributionsCancellationReasons: CancellationReason[] = [
+	...shuffledArray,
+	...otherCancellationReason,
 ];

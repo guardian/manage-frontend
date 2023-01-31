@@ -11,6 +11,13 @@ import { CancellationContainer } from './CancellationContainer';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { getCancellationSummary } from './CancellationSummary';
+import { contributionsCancellationReasons } from './contributions/ContributionsCancellationReasons';
+import { otherCancellationReason } from './supporterplus/SupporterplusCancellationReasons';
+
+const contributions = PRODUCT_TYPES.contributions;
+contributions.cancellation!.reasons = contributionsCancellationReasons.concat(
+	otherCancellationReason,
+);
 
 export default {
 	title: 'Pages/Cancellation',
@@ -20,11 +27,7 @@ export default {
 		layout: 'fullscreen',
 		reactRouter: {
 			state: { productDetail: contribution },
-			container: (
-				<CancellationContainer
-					productType={PRODUCT_TYPES.contributions}
-				/>
-			),
+			container: <CancellationContainer productType={contributions} />,
 		},
 	},
 } as ComponentMeta<typeof CancellationContainer>;

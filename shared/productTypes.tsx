@@ -5,7 +5,7 @@ import type {
 	OptionalCancellationReasonId,
 } from '../client/components/mma/cancel/cancellationReason';
 import { contributionsCancellationFlowStart } from '../client/components/mma/cancel/contributions/ContributionsCancellationFlowStart';
-import { contributionsCancellationReasons } from '../client/components/mma/cancel/contributions/ContributionsCancellationReasons';
+import { shuffledContributionsCancellationReasons } from '../client/components/mma/cancel/contributions/ContributionsCancellationReasons';
 import { digipackCancellationFlowStart } from '../client/components/mma/cancel/digipack/DigipackCancellationFlowStart';
 import { digipackCancellationReasons } from '../client/components/mma/cancel/digipack/DigipackCancellationReasons';
 import { gwCancellationFlowStart } from '../client/components/mma/cancel/gw/GwCancellationFlowStart';
@@ -15,7 +15,7 @@ import { membershipCancellationReasons } from '../client/components/mma/cancel/m
 import type { RestOfCancellationFlow } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
 import { physicalSubsCancellationFlowWrapper } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
 import { supporterplusCancellationFlowStart } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationFlowStart';
-import { supporterplusCancellationReasons } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationReasons';
+import { shuffledSupporterPlusCancellationReasons } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationReasons';
 import { voucherCancellationFlowStart } from '../client/components/mma/cancel/voucher/VoucherCancellationFlowStart';
 import { voucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
 import type { SupportTheGuardianButtonProps } from '../client/components/shared/SupportTheGuardianButton';
@@ -335,7 +335,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		],
 		cancellation: {
 			linkOnProductPage: true,
-			reasons: contributionsCancellationReasons,
+			reasons: shuffledContributionsCancellationReasons,
 			sfCaseProduct: 'Recurring - Contributions',
 			startPageBody: contributionsCancellationFlowStart,
 			shouldHideSummaryMainPara: true,
@@ -645,7 +645,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 				)} support + extras cancelled`;
 			},
 			linkOnProductPage: true,
-			reasons: supporterplusCancellationReasons,
+			reasons: shuffledSupporterPlusCancellationReasons,
 			sfCaseProduct: 'Supporter Plus',
 			startPageBody: supporterplusCancellationFlowStart,
 			summaryReasonSpecificPara: () => undefined,
