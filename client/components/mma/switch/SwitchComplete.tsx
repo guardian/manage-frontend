@@ -25,6 +25,7 @@ import type {
 	SwitchRouterState,
 } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
+import { SwitchSignInImage } from './SwitchSignInImage';
 
 export const SwitchComplete = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
@@ -71,6 +72,11 @@ export const SwitchComplete = () => {
 					email={switchContext.user?.email ?? ''}
 				/>
 			</section>
+			{!switchContext.isFromApp && (
+				<section css={sectionSpacing}>
+					<SignInBanner />
+				</section>
+			)}
 		</>
 	);
 };
@@ -182,3 +188,50 @@ const ThankYouMessaging = (props: {
 		</>
 	);
 };
+
+const signInCss = css`
+	display: grid;
+	overflow: hidden;
+	background-color: ${palette.brand[500]};
+	border-radius: 8px;
+	> * {
+		grid-area: 1 / 1;
+	}
+	> svg {
+		place-self: end;
+		height: 0;
+		min-height: 100%;
+	}
+	${from.tablet} {
+		border-radius: 0;
+	}
+`;
+
+const signInContentContainerCss = css`
+	padding: ${space[3]}px;
+	color: ${palette.neutral[100]};
+`;
+
+const signInHeadingCss = css`
+	${textSans.medium({ fontWeight: 'bold', lineHeight: 'regular' })};
+	margin: 0;
+`;
+
+const signInParaCss = css`
+	${textSans.medium({ lineHeight: 'regular' })};
+	margin: 0;
+	max-width: 64%;
+`;
+
+const SignInBanner = () => (
+	<div css={signInCss}>
+		<SwitchSignInImage />
+		<div css={signInContentContainerCss}>
+			<h2 css={signInHeadingCss}>Sign in on all your devices</h2>
+			<p css={signInParaCss}>
+				To access your extras on all your digital devices, please sign
+				in. It takes less than a minute.
+			</p>
+		</div>
+	</div>
+);
