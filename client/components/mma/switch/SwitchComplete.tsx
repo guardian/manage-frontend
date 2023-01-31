@@ -72,9 +72,11 @@ export const SwitchComplete = () => {
 					email={switchContext.user?.email ?? ''}
 				/>
 			</section>
-			<section css={sectionSpacing}>
-				<SignInBanner />
-			</section>
+			{!switchContext.isFromApp && (
+				<section css={sectionSpacing}>
+					<SignInBanner />
+				</section>
+			)}
 		</>
 	);
 };
