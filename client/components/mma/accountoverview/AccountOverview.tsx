@@ -39,6 +39,7 @@ import { AccountOverviewCancelledCard } from './AccountOverviewCancelledCard';
 import { AccountOverviewCard } from './AccountOverviewCard';
 import { AccountOverviewCardV2 } from './AccountOverviewCardV2';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
+import { PersonalisedHeader } from './PersonalisedHeader';
 
 const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 	MembersDataApiResponse | MembersDataApiItem[],
@@ -97,6 +98,8 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 
 	return (
 		<>
+			<PersonalisedHeader mdapiResponse={mdaResponse} />
+
 			<PaymentFailureAlertIfApplicable
 				productDetail={maybeFirstPaymentFailure}
 			/>
