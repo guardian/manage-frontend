@@ -1,12 +1,5 @@
 import { css, ThemeProvider } from '@emotion/react';
-import {
-	from,
-	headline,
-	palette,
-	space,
-	textSans,
-	until,
-} from '@guardian/source-foundations';
+import { palette, space, textSans, until } from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
@@ -22,21 +15,12 @@ import { Heading } from '../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
+import { productTitleCss } from './SwitchStyles';
 
 const cardHeaderDivCss = css`
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-end;
-`;
-
-const productTitleCss = css`
-	${headline.xsmall({ fontWeight: 'bold' })};
-	color: ${palette.neutral[100]};
-	margin: 0;
-	max-width: 20ch;
-	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
-	}
 `;
 
 const productSubtitleCss = css`

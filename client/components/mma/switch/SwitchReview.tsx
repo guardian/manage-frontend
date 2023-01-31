@@ -1,11 +1,5 @@
 import { css, ThemeProvider } from '@emotion/react';
-import {
-	from,
-	headline,
-	palette,
-	space,
-	textSans,
-} from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
@@ -42,21 +36,31 @@ import { SepaDisplay } from '../shared/SepaDisplay';
 import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
+import { iconListCss, productTitleCss } from './SwitchStyles';
 
-// TODO: this is copied from SwitchOptions, share it
-const productTitleCss = css`
-	${headline.xsmall({ fontWeight: 'bold' })};
-	color: ${palette.neutral[100]};
-	margin: 0;
-	max-width: 20ch;
-	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
-	}
+const newAmountCss = css`
+	${textSans.medium({ fontWeight: 'bold' })};
+	padding-top: ${space[3]}px;
+	margin-top: ${space[4]}px;
+	margin-bottom: 0;
+	border-top: 1px solid ${palette.neutral[86]};
 `;
 
-const whatHappensNextTextCss = css`
-	margin-left: 0.75rem;
-	width: 100%;
+const whatHappensNextCss = css`
+	margin-top: ${space[4]}px;
+
+	li + li {
+		margin-top: ${space[3]}px;
+
+		> svg {
+			padding-top: ${space[3]}px;
+		}
+
+		> span {
+			padding-top: ${space[3]}px;
+			border-top: 1px solid ${palette.neutral[86]};
+		}
+	}
 `;
 
 const buttonLayoutCss = css`
@@ -187,19 +191,21 @@ export const SwitchReview = () => {
 		<>
 			<section css={sectionSpacing}>
 				<Stack space={3}>
-					<section>
-						<Heading sansSerif>Review change</Heading>
-						<p
-							css={css`
-								${textSans.medium()};
-							`}
-						>
-							You will now support us with {mainPlan.currency}
-							{newAmount} every {mainPlan.billingPeriod}, giving
-							you exclusive supporter extras, including unlimited
-							reading in our news app
-						</p>
-					</section>
+					<Heading sansSerif>Review change</Heading>
+					<p
+						css={css`
+							${textSans.medium()};
+						`}
+					>
+						You will now support us with {mainPlan.currency}
+						{newAmount} every {mainPlan.billingPeriod}, giving you
+						exclusive supporter extras, including unlimited reading
+						in our news app
+					</p>
+				</Stack>
+			</section>
+			<section css={sectionSpacing}>
+				<Stack space={3}>
 					<Heading sansSerif>Your new support</Heading>
 					<Card>
 						<Card.Header backgroundColor={palette.brand[500]}>
@@ -217,181 +223,89 @@ export const SwitchReview = () => {
 								including unlimited access to the App
 							</p>
 							<SupporterPlusBenefitsToggle />
-							<p
-								css={css`
-									${textSans.medium({ fontWeight: 'bold' })};
-									padding-top: ${space[3]}px;
-									margin-top: ${space[4]}px;
-									margin-bottom: 0;
-									border-top: 1px solid ${palette.neutral[86]};
-								`}
-							>
+							<p css={newAmountCss}>
 								{mainPlan.currency}
 								{newAmount}/{mainPlan.billingPeriod}
 							</p>
 						</Card.Section>
-					</Card>{' '}
+					</Card>
 				</Stack>
-				<section css={sectionSpacing}>
-					<Stack>
-						<Heading sansSerif>What happens next?</Heading>
-						<div
-							css={css`
-								display: flex;
-								align-items: start;
-							`}
-						>
-							<SvgClock size="medium" />
-							<div css={whatHappensNextTextCss}>
-								<p
-									css={css`
-										${textSans.medium({
-											fontWeight: 'bold',
-										})};
-										margin-bottom: 0;
+			</section>
+			<section css={sectionSpacing}>
+				<Heading sansSerif>What happens next?</Heading>
+				<ul css={[iconListCss, whatHappensNextCss]}>
+					<li>
+						<SvgClock size="medium" />
+						<span>
+							<strong>This change will happen today</strong>
+							Dive in and start enjoying your exclusive extras
+							straight away.
+						</span>
+					</li>
+					<li
+						css={css`
+							color: ${palette.success[400]};
+						`}
+					>
+						<SwitchOffsetPaymentIcon size="medium" />
+						<span>
+							<strong>
+								Your first payment will be just{' '}
+								{mainPlan.currency}
+								{previewResponse.amountPayableToday}
+							</strong>
+							We will charge you a smaller amount today, to offset
+							the payment you've already given us for the rest of
+							the month. After this, from {nextPayment}, your new{' '}
+							{monthlyOrAnnual.toLocaleLowerCase()} payment will
+							be {mainPlan.currency}
+							{previewResponse.supporterPlusPurchaseAmount}
+						</span>
+					</li>
+					<li>
+						<SvgCreditCard size="medium" />
+						<span>
+							<strong>No payment changes are needed</strong>
+							We will take payment as before, from
+							{productDetail.subscription.card && (
+								<CardDisplay
+									inline
+									cssOverrides={css`
+										margin: 0;
 									`}
-								>
-									This change will happen today
-								</p>
-								<p
-									css={css`
-										${textSans.medium()}
-										margin-top: 0;
-									`}
-								>
-									Dive in and start enjoying your exclusive
-									extras straight away.
-								</p>
-							</div>
-						</div>
-						<div
-							css={css`
-								display: flex;
-								align-items: start;
-								svg {
-									flex-shrink: 0;
-									fill: ${palette.success[400]};
-								}
-							`}
-						>
-							<SwitchOffsetPaymentIcon size="medium" />
-							<div css={whatHappensNextTextCss}>
-								<p
-									css={css`
-										${textSans.medium({
-											fontWeight: 'bold',
-										})};
-										color: ${palette.success[400]};
-										margin-bottom: 0;
-										border-top: 1px solid
-											${palette.neutral[86]};
-									`}
-								>
-									Your first payment will be just{' '}
-									{mainPlan.currency}
-									{previewResponse.amountPayableToday}
-								</p>
-								<p
-									css={css`
-										${textSans.medium()};
-										color: ${palette.success[400]};
-										margin-top: 0;
-									`}
-								>
-									We will charge you a smaller amount today,
-									to offset the payment you've already given
-									us for the rest of the month. After this,
-									from {nextPayment}, your new{' '}
-									{monthlyOrAnnual.toLocaleLowerCase()}{' '}
-									payment will be {mainPlan.currency}
-									{
-										previewResponse.supporterPlusPurchaseAmount
+									{...productDetail.subscription.card}
+								/>
+							)}
+							{productDetail.subscription.payPalEmail && (
+								<PaypalDisplay
+									inline
+									payPalId={
+										productDetail.subscription.payPalEmail
 									}
-								</p>
-							</div>
-						</div>
-						<div
-							css={css`
-								display: flex;
-								align-items: start;
-							`}
-						>
-							<SvgCreditCard size="medium" />
-							<div css={whatHappensNextTextCss}>
-								<p
-									css={css`
-										${textSans.medium({
-											fontWeight: 'bold',
-										})};
-										margin-bottom: 0;
-										border-top: 1px solid
-											${palette.neutral[86]};
-									`}
-								>
-									No payment changes are needed
-								</p>
-								<div
-									css={css`
-										${from.tablet} {
-											display: flex;
-										}
-										${textSans.medium()}
-										margin-top: 0;
-									`}
-								>
-									<p
-										css={css`
-											margin-bottom: 0;
-											margin-right: ${space[1]}px;
-										`}
-									>
-										We will take payment as before, from
-									</p>
-									{productDetail.subscription.card && (
-										<b>
-											<CardDisplay
-												cssOverrides={css`
-													margin: 0;
-												`}
-												{...productDetail.subscription
-													.card}
-											/>
-										</b>
-									)}
-									{productDetail.subscription.payPalEmail && (
-										<PaypalDisplay
-											inline
-											payPalId={
-												productDetail.subscription
-													.payPalEmail
-											}
-										/>
-									)}
-									{productDetail.subscription.sepaMandate && (
-										<SepaDisplay
-											inline
-											accountName={
-												productDetail.subscription
-													.sepaMandate.accountName
-											}
-											iban={
-												productDetail.subscription
-													.sepaMandate.iban
-											}
-										/>
-									)}
-									{productDetail.subscription.mandate && (
-										<DirectDebitDisplay
-											inline
-											{...productDetail.subscription
-												.mandate}
-										/>
-									)}
-								</div>
-							</div>
-						</div>
-					</Stack>
-				</section>
+								/>
+							)}
+							{productDetail.subscription.sepaMandate && (
+								<SepaDisplay
+									inline
+									accountName={
+										productDetail.subscription.sepaMandate
+											.accountName
+									}
+									iban={
+										productDetail.subscription.sepaMandate
+											.iban
+									}
+								/>
+							)}
+							{productDetail.subscription.mandate && (
+								<DirectDebitDisplay
+									inline
+									{...productDetail.subscription.mandate}
+								/>
+							)}
+						</span>
+					</li>
+				</ul>
 			</section>
 			<section css={buttonLayoutCss}>
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
