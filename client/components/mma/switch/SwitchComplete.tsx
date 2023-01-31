@@ -189,22 +189,23 @@ const ThankYouMessaging = (props: {
 
 const signInCss = css`
 	display: grid;
+	overflow: hidden;
 	background-color: ${palette.brand[500]};
 	border-radius: 8px;
-	${from.tablet} {
-		border-radius: 0;
-	}
 	> * {
 		grid-area: 1 / 1;
 	}
 	> svg {
-		display: block;
-		max-height: 100px;
 		place-self: end;
+		height: 0;
+		min-height: 100%;
+	}
+	${from.tablet} {
+		border-radius: 0;
 	}
 `;
 
-const signInContainerCss = css`
+const signInContentContainerCss = css`
 	padding: ${space[3]}px;
 	color: ${palette.neutral[100]};
 `;
@@ -222,13 +223,13 @@ const signInParaCss = css`
 
 const SignInBanner = () => (
 	<div css={signInCss}>
-		<div css={signInContainerCss}>
+		<SwitchSignInImage />
+		<div css={signInContentContainerCss}>
 			<h2 css={signInHeadingCss}>Sign in on all your devices</h2>
 			<p css={signInParaCss}>
 				To access your extras on all your digital devices, please sign
 				in. It takes less than a minute.
 			</p>
 		</div>
-		<SwitchSignInImage />
 	</div>
 );
