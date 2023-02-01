@@ -40,6 +40,7 @@ import {
 	iconListCss,
 	listWithDividersCss,
 	productTitleCss,
+	smallPrintCss,
 } from './SwitchStyles';
 
 const newAmountCss = css`
@@ -65,20 +66,6 @@ const buttonLayoutCss = css`
 			margin-top: 0;
 			margin-left: ${space[3]}px;
 		}
-	}
-`;
-
-const smallPrintCss = css`
-	${textSans.xxsmall()};
-	margin-top: 0;
-	margin-bottom: 0;
-	color: #606060;
-	> a {
-		color: inherit;
-		text-decoration: underline;
-	}
-	& + & {
-		margin-top: ${space[1]}px;
 	}
 `;
 

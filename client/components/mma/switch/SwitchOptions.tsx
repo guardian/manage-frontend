@@ -15,7 +15,7 @@ import { Heading } from '../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
-import { productTitleCss } from './SwitchStyles';
+import { productTitleCss, smallPrintCss } from './SwitchStyles';
 
 const cardHeaderDivCss = css`
 	display: flex;
@@ -215,17 +215,15 @@ export const SwitchOptions = () => {
 			</section>
 
 			{aboveThreshold && (
-				<p
-					css={css`
-						color: ${palette.neutral[46]};
-					`}
-				>
-					Exclusive supporter extras are unlocked for any monthly
-					support of {mainPlan.currency}
-					{monthlyThreshold} or above and any annual support of{' '}
-					{mainPlan.currency}
-					{annualThreshold} or above.
-				</p>
+				<section>
+					<p css={smallPrintCss}>
+						Exclusive supporter extras are unlocked for any monthly
+						support of {mainPlan.currency}
+						{monthlyThreshold} or above and any annual support of{' '}
+						{mainPlan.currency}
+						{annualThreshold} or above.
+					</p>
+				</section>
 			)}
 		</>
 	);
