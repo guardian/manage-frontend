@@ -3,6 +3,7 @@ import { palette, space, textSans, until } from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
+	Stack,
 } from '@guardian/source-react-components';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -169,34 +170,40 @@ export const SwitchOptions = () => {
 			</section>
 
 			<section css={sectionSpacing}>
-				<Heading sansSerif>
-					{aboveThreshold ? 'Add extras' : 'Change your support'}
-				</Heading>
-				<p
-					css={css`
-						${textSans.medium()}
-						margin-bottom: ${space[3]}px;
-					`}
-				>
-					Change to {supporterPlusTitle} and get exclusive supporter
-					benefits
-				</p>
-				<Card>
-					<Card.Header backgroundColor={palette.brand[500]}>
-						<div css={cardHeaderDivCss}>
-							<h3 css={productTitleCss}>{supporterPlusTitle}</h3>
-							{!aboveThreshold && (
-								<p css={productSubtitleCss}>
-									{mainPlan.currency}
-									{threshold}/{mainPlan.billingPeriod}
-								</p>
-							)}
-						</div>
-					</Card.Header>
-					<Card.Section>
-						<SupporterPlusBenefitsSection />
-					</Card.Section>
-				</Card>
+				<Stack space={3}>
+					<Heading sansSerif>
+						{aboveThreshold ? 'Add extras' : 'Change your support'}
+					</Heading>
+					{!switchContext.isFromApp && (
+						<p
+							css={css`
+								${textSans.medium()}
+								margin: 0;
+							`}
+						>
+							Change to {supporterPlusTitle} and get exclusive
+							supporter benefits
+						</p>
+					)}
+					<Card>
+						<Card.Header backgroundColor={palette.brand[500]}>
+							<div css={cardHeaderDivCss}>
+								<h3 css={productTitleCss}>
+									{supporterPlusTitle}
+								</h3>
+								{!aboveThreshold && (
+									<p css={productSubtitleCss}>
+										{mainPlan.currency}
+										{threshold}/{mainPlan.billingPeriod}
+									</p>
+								)}
+							</div>
+						</Card.Header>
+						<Card.Section>
+							<SupporterPlusBenefitsSection />
+						</Card.Section>
+					</Card>
+				</Stack>
 			</section>
 
 			<section
