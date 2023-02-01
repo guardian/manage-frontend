@@ -5,6 +5,7 @@ import {
 	palette,
 	space,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
 
 export const productTitleCss = css`
@@ -73,5 +74,15 @@ export const listWithDividersCss = css`
 				padding-top: ${space[3]}px;
 			}
 		}
+	}
+`;
+
+export const buttonCentredCss = css`
+	justify-content: center;
+`;
+
+export const buttonMutedCss = css`
+	${until.tablet} {
+		border: none;
 	}
 `;

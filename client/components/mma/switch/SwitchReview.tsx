@@ -37,6 +37,8 @@ import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
 import {
+	buttonCentredCss,
+	buttonMutedCss,
 	iconListCss,
 	listWithDividersCss,
 	productTitleCss,
@@ -295,9 +297,7 @@ export const SwitchReview = () => {
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button
 						isLoading={isSwitching}
-						cssOverrides={css`
-							justify-content: center;
-						`}
+						cssOverrides={buttonCentredCss}
 						onClick={() =>
 							confirmSwitch(previewResponse.amountPayableToday)
 						}
@@ -307,9 +307,7 @@ export const SwitchReview = () => {
 				</ThemeProvider>
 				<Button
 					priority="tertiary"
-					cssOverrides={css`
-						justify-content: center;
-					`}
+					cssOverrides={[buttonCentredCss, buttonMutedCss]}
 					onClick={() => navigate('..')}
 				>
 					Back

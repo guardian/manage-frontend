@@ -15,7 +15,11 @@ import { Heading } from '../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
-import { productTitleCss, smallPrintCss } from './SwitchStyles';
+import {
+	buttonCentredCss,
+	productTitleCss,
+	smallPrintCss,
+} from './SwitchStyles';
 
 const cardHeaderDivCss = css`
 	display: flex;
@@ -202,9 +206,7 @@ export const SwitchOptions = () => {
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button
 						size="small"
-						cssOverrides={css`
-							justify-content: center;
-						`}
+						cssOverrides={buttonCentredCss}
 						onClick={() => navigate(`/switch/review`)}
 					>
 						{aboveThreshold
