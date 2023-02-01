@@ -20,25 +20,44 @@ export const productTitleCss = css`
 export const iconListCss = css`
 	${textSans.medium()};
 	list-style: none;
-	margin: 0 0 0 -${space[1]}px;
 	padding: 0;
+	margin-bottom: 0;
 
-	> li {
+	li + li {
+		margin-top: ${space[2]}px;
+		${from.tablet} {
+			margin-top: ${space[3]}px;
+		}
+	}
+
+	li {
 		display: flex;
+		margin-left: -4px;
 		align-items: flex-start;
 
 		> svg {
 			flex-shrink: 0;
-			margin-right: ${space[2]}px;
+			margin-right: 8px;
 			fill: currentColor;
 		}
-
-		> span strong {
-			display: block;
-		}
 	}
+`;
 
-	> li + li {
-		margin-top: ${space[2]}px;
+export const listWithDividersCss = css`
+	li + li {
+		> svg {
+			padding-top: ${space[2]}px;
+			${from.tablet} {
+				padding-top: ${space[3]}px;
+			}
+		}
+		> span {
+			flex-grow: 1;
+			padding-top: ${space[2]}px;
+			border-top: 1px solid ${palette.neutral[86]};
+			${from.tablet} {
+				padding-top: ${space[3]}px;
+			}
+		}
 	}
 `;

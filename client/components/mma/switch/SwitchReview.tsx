@@ -36,7 +36,11 @@ import { SepaDisplay } from '../shared/SepaDisplay';
 import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
-import { iconListCss, productTitleCss } from './SwitchStyles';
+import {
+	iconListCss,
+	listWithDividersCss,
+	productTitleCss,
+} from './SwitchStyles';
 
 const newAmountCss = css`
 	${textSans.medium({ fontWeight: 'bold' })};
@@ -44,23 +48,6 @@ const newAmountCss = css`
 	margin-top: ${space[4]}px;
 	margin-bottom: 0;
 	border-top: 1px solid ${palette.neutral[86]};
-`;
-
-const whatHappensNextCss = css`
-	margin-top: ${space[4]}px;
-
-	li + li {
-		margin-top: ${space[3]}px;
-
-		> svg {
-			padding-top: ${space[3]}px;
-		}
-
-		> span {
-			padding-top: ${space[3]}px;
-			border-top: 1px solid ${palette.neutral[86]};
-		}
-	}
 `;
 
 const buttonLayoutCss = css`
@@ -232,80 +219,90 @@ export const SwitchReview = () => {
 				</Stack>
 			</section>
 			<section css={sectionSpacing}>
-				<Heading sansSerif>What happens next?</Heading>
-				<ul css={[iconListCss, whatHappensNextCss]}>
-					<li>
-						<SvgClock size="medium" />
-						<span>
-							<strong>This change will happen today</strong>
-							Dive in and start enjoying your exclusive extras
-							straight away.
-						</span>
-					</li>
-					<li
-						css={css`
-							color: ${palette.success[400]};
-						`}
-					>
-						<SwitchOffsetPaymentIcon size="medium" />
-						<span>
-							<strong>
-								Your first payment will be just{' '}
-								{mainPlan.currency}
-								{previewResponse.amountPayableToday}
-							</strong>
-							We will charge you a smaller amount today, to offset
-							the payment you've already given us for the rest of
-							the month. After this, from {nextPayment}, your new{' '}
-							{monthlyOrAnnual.toLocaleLowerCase()} payment will
-							be {mainPlan.currency}
-							{previewResponse.supporterPlusPurchaseAmount}
-						</span>
-					</li>
-					<li>
-						<SvgCreditCard size="medium" />
-						<span>
-							<strong>No payment changes are needed</strong>
-							We will take payment as before, from
-							{productDetail.subscription.card && (
-								<CardDisplay
-									inline
-									cssOverrides={css`
-										margin: 0;
-									`}
-									{...productDetail.subscription.card}
-								/>
-							)}
-							{productDetail.subscription.payPalEmail && (
-								<PaypalDisplay
-									inline
-									payPalId={
-										productDetail.subscription.payPalEmail
-									}
-								/>
-							)}
-							{productDetail.subscription.sepaMandate && (
-								<SepaDisplay
-									inline
-									accountName={
-										productDetail.subscription.sepaMandate
-											.accountName
-									}
-									iban={
-										productDetail.subscription.sepaMandate
-											.iban
-									}
-								/>
-							)}
-							{productDetail.subscription.mandate && (
-								<DirectDebitDisplay
-									inline
-									{...productDetail.subscription.mandate}
-								/>
-							)}
-						</span>
-					</li>
-				</ul>
+				<Stack space={4}>
+					<Heading sansSerif>What happens next?</Heading>
+					<ul css={[iconListCss, listWithDividersCss]}>
+						<li>
+							<SvgClock size="medium" />
+							<span>
+								<strong>This change will happen today</strong>
+								<br />
+								Dive in and start enjoying your exclusive extras
+								straight away.
+							</span>
+						</li>
+						<li
+							css={css`
+								color: ${palette.success[400]};
+							`}
+						>
+							<SwitchOffsetPaymentIcon size="medium" />
+							<span>
+								<strong>
+									Your first payment will be just{' '}
+									{mainPlan.currency}
+									{previewResponse.amountPayableToday}
+								</strong>
+								<br />
+								We will charge you a smaller amount today, to
+								offset the payment you've already given us for
+								the rest of the month. After this, from{' '}
+								{nextPayment}, your new{' '}
+								{monthlyOrAnnual.toLocaleLowerCase()} payment
+								will be {mainPlan.currency}
+								{previewResponse.supporterPlusPurchaseAmount}
+							</span>
+						</li>
+						<li>
+							<SvgCreditCard size="medium" />
+							<span>
+								<strong>No payment changes are needed</strong>
+								<br />
+								We will take payment as before, from
+								<strong>
+									{productDetail.subscription.card && (
+										<CardDisplay
+											inline
+											cssOverrides={css`
+												margin: 0;
+											`}
+											{...productDetail.subscription.card}
+										/>
+									)}
+									{productDetail.subscription.payPalEmail && (
+										<PaypalDisplay
+											inline
+											payPalId={
+												productDetail.subscription
+													.payPalEmail
+											}
+										/>
+									)}
+									{productDetail.subscription.sepaMandate && (
+										<SepaDisplay
+											inline
+											accountName={
+												productDetail.subscription
+													.sepaMandate.accountName
+											}
+											iban={
+												productDetail.subscription
+													.sepaMandate.iban
+											}
+										/>
+									)}
+									{productDetail.subscription.mandate && (
+										<DirectDebitDisplay
+											inline
+											{...productDetail.subscription
+												.mandate}
+										/>
+									)}
+								</strong>
+							</span>
+						</li>
+					</ul>
+				</Stack>
 			</section>
 			<section css={buttonLayoutCss}>
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
