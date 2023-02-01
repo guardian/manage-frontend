@@ -2,10 +2,10 @@ import { css } from '@emotion/react';
 import {
 	brand,
 	from,
+	headline,
 	palette,
 	space,
 	textSans,
-	until,
 } from '@guardian/source-foundations';
 import {
 	Stack,
@@ -82,17 +82,6 @@ export const SwitchComplete = () => {
 	);
 };
 
-const extrasStyling = css`
-	${from.tablet} {
-		color: ${palette.brand['500']};
-
-		::before {
-			content: '\\a';
-			white-space: pre;
-		}
-	}
-`;
-
 const whatHappensNextCss = css`
 	li > svg {
 		fill: ${brand[500]};
@@ -134,25 +123,30 @@ const WhatHappensNext = (props: {
 	);
 };
 
+const thankYouCss = css`
+	${headline.xsmall({ fontWeight: 'bold' })};
+	margin-top: 0;
+	margin-bottom: 0;
+
+	${from.tablet} {
+		${headline.small({ fontWeight: 'bold' })};
+		span {
+			display: block;
+			color: ${palette.brand['500']};
+		}
+	}
+`;
+
 const ThankYouMessaging = (props: {
 	mainPlan: PaidSubscriptionPlan;
 	newAmount: number;
 }) => {
 	return (
-		<>
-			<Heading
-				cssOverrides={css`
-					${until.mobile} {
-						max-width: 350px;
-					}
-				`}
-				noDivider
-			>
-				Thank you for upgrading to {props.mainPlan.currency}
-				{props.newAmount} per {props.mainPlan.billingPeriod}.{' '}
-				<span css={extrasStyling}>Enjoy your exclusive extras.</span>
-			</Heading>
-		</>
+		<h2 css={thankYouCss}>
+			Thank you for upgrading to {props.mainPlan.currency}
+			{props.newAmount} per {props.mainPlan.billingPeriod}.{' '}
+			<span>Enjoy your exclusive extras.</span>
+		</h2>
 	);
 };
 
