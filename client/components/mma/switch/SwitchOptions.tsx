@@ -214,7 +214,7 @@ export const SwitchOptions = () => {
 					<Button
 						size="small"
 						cssOverrides={buttonCentredCss}
-						onClick={() => navigate(`/switch/review`)}
+						onClick={() => navigate('review')}
 					>
 						{aboveThreshold
 							? 'Add extras with no extra cost'

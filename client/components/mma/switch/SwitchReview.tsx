@@ -135,7 +135,7 @@ export const SwitchReview = () => {
 				setIsSwitching(false);
 				setSwitchingError(true);
 			} else {
-				navigate('/switch/complete', {
+				navigate('../complete', {
 					state: { amountPayableToday: amount },
 				});
 			}

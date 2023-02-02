@@ -327,19 +327,29 @@ const MMARouter = () => {
 							path="/account-settings"
 							element={<Settings />}
 						/>
-						{featureSwitches.productSwitching && (
-							<Route path="/switch" element={<SwitchContainer />}>
-								<Route index element={<SwitchOptions />} />
+						{featureSwitches.productSwitching &&
+							[
+								{ path: '/switch', fromApp: false },
+								{ path: '/app/switch', fromApp: true },
+							].map(({ path, fromApp }) => (
 								<Route
-									path="review"
-									element={<SwitchReview />}
-								/>
-								<Route
-									path="complete"
-									element={<SwitchComplete />}
-								/>
-							</Route>
-						)}
+									key={path}
+									path={path}
+									element={
+										<SwitchContainer isFromApp={fromApp} />
+									}
+								>
+									<Route index element={<SwitchOptions />} />
+									<Route
+										path="review"
+										element={<SwitchReview />}
+									/>
+									<Route
+										path="complete"
+										element={<SwitchComplete />}
+									/>
+								</Route>
+							))}
 						{Object.values(GROUPED_PRODUCT_TYPES).map(
 							(groupedProductType: GroupedProductType) => (
 								<Route
