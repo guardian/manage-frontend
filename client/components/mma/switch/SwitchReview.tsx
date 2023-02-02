@@ -18,7 +18,6 @@ import {
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { sectionSpacing } from '../../../styles/spacing';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -42,6 +41,7 @@ import {
 	iconListCss,
 	listWithDividersCss,
 	productTitleCss,
+	sectionSpacing,
 	smallPrintCss,
 } from './SwitchStyles';
 

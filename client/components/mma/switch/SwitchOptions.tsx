@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { sectionSpacing } from '../../../styles/spacing';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
@@ -19,6 +18,7 @@ import { SwitchContext } from './SwitchContainer';
 import {
 	buttonCentredCss,
 	productTitleCss,
+	sectionSpacing,
 	smallPrintCss,
 } from './SwitchStyles';
 

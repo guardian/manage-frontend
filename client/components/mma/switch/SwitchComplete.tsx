@@ -17,7 +17,6 @@ import { Navigate, useLocation } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { sectionSpacing } from '../../../styles/spacing';
 import { InverseStarIcon } from '../shared/assets/InverseStarIcon';
 import { Heading } from '../shared/Heading';
 import type {
@@ -26,7 +25,7 @@ import type {
 } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
 import { SwitchSignInImage } from './SwitchSignInImage';
-import { iconListCss } from './SwitchStyles';
+import { iconListCss, sectionSpacing } from './SwitchStyles';
 
 export const SwitchComplete = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
