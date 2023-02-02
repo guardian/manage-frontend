@@ -1,11 +1,5 @@
 import { css, ThemeProvider } from '@emotion/react';
-import {
-	from,
-	headline,
-	palette,
-	space,
-	textSans,
-} from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
@@ -24,7 +18,6 @@ import {
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { sectionSpacing } from '../../../styles/spacing';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -42,21 +35,22 @@ import { SepaDisplay } from '../shared/SepaDisplay';
 import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
+import {
+	buttonCentredCss,
+	buttonMutedCss,
+	iconListCss,
+	listWithDividersCss,
+	productTitleCss,
+	sectionSpacing,
+	smallPrintCss,
+} from './SwitchStyles';
 
-// TODO: this is copied from SwitchOptions, share it
-const productTitleCss = css`
-	${headline.xsmall({ fontWeight: 'bold' })};
-	color: ${palette.neutral[100]};
-	margin: 0;
-	max-width: 20ch;
-	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
-	}
-`;
-
-const whatHappensNextTextCss = css`
-	margin-left: 0.75rem;
-	width: 100%;
+const newAmountCss = css`
+	${textSans.medium({ fontWeight: 'bold' })};
+	padding-top: ${space[3]}px;
+	margin-top: ${space[4]}px;
+	margin-bottom: 0;
+	border-top: 1px solid ${palette.neutral[86]};
 `;
 
 const buttonLayoutCss = css`
@@ -74,20 +68,6 @@ const buttonLayoutCss = css`
 			margin-top: 0;
 			margin-left: ${space[3]}px;
 		}
-	}
-`;
-
-const smallPrintCss = css`
-	${textSans.xxsmall()};
-	margin-top: 0;
-	margin-bottom: 0;
-	color: #606060;
-	> a {
-		color: inherit;
-		text-decoration: underline;
-	}
-	& + & {
-		margin-top: ${space[1]}px;
 	}
 `;
 
@@ -187,19 +167,21 @@ export const SwitchReview = () => {
 		<>
 			<section css={sectionSpacing}>
 				<Stack space={3}>
-					<section>
-						<Heading sansSerif>Review change</Heading>
-						<p
-							css={css`
-								${textSans.medium()};
-							`}
-						>
-							You will now support us with {mainPlan.currency}
-							{newAmount} every {mainPlan.billingPeriod}, giving
-							you exclusive supporter extras, including unlimited
-							reading in our news app
-						</p>
-					</section>
+					<Heading sansSerif>Review change</Heading>
+					<p
+						css={css`
+							${textSans.medium()};
+						`}
+					>
+						You will now support us with {mainPlan.currency}
+						{newAmount} every {mainPlan.billingPeriod}, giving you
+						exclusive supporter extras, including unlimited reading
+						in our news app
+					</p>
+				</Stack>
+			</section>
+			<section css={sectionSpacing}>
+				<Stack space={3}>
 					<Heading sansSerif>Your new support</Heading>
 					<Card>
 						<Card.Header backgroundColor={palette.brand[500]}>
@@ -217,146 +199,64 @@ export const SwitchReview = () => {
 								including unlimited access to the App
 							</p>
 							<SupporterPlusBenefitsToggle />
-							<p
-								css={css`
-									${textSans.medium({ fontWeight: 'bold' })};
-									padding-top: ${space[3]}px;
-									margin-top: ${space[4]}px;
-									margin-bottom: 0;
-									border-top: 1px solid ${palette.neutral[86]};
-								`}
-							>
+							<p css={newAmountCss}>
 								{mainPlan.currency}
 								{newAmount}/{mainPlan.billingPeriod}
 							</p>
 						</Card.Section>
-					</Card>{' '}
+					</Card>
 				</Stack>
-				<section css={sectionSpacing}>
-					<Stack>
-						<Heading sansSerif>What happens next?</Heading>
-						<div
-							css={css`
-								display: flex;
-								align-items: start;
-							`}
-						>
+			</section>
+			<section css={sectionSpacing}>
+				<Stack space={4}>
+					<Heading sansSerif>What happens next?</Heading>
+					<ul css={[iconListCss, listWithDividersCss]}>
+						<li>
 							<SvgClock size="medium" />
-							<div css={whatHappensNextTextCss}>
-								<p
-									css={css`
-										${textSans.medium({
-											fontWeight: 'bold',
-										})};
-										margin-bottom: 0;
-									`}
-								>
-									This change will happen today
-								</p>
-								<p
-									css={css`
-										${textSans.medium()}
-										margin-top: 0;
-									`}
-								>
-									Dive in and start enjoying your exclusive
-									extras straight away.
-								</p>
-							</div>
-						</div>
-						<div
+							<span>
+								<strong>This change will happen today</strong>
+								<br />
+								Dive in and start enjoying your exclusive extras
+								straight away.
+							</span>
+						</li>
+						<li
 							css={css`
-								display: flex;
-								align-items: start;
-								svg {
-									flex-shrink: 0;
-									fill: ${palette.success[400]};
-								}
+								color: ${palette.success[400]};
 							`}
 						>
 							<SwitchOffsetPaymentIcon size="medium" />
-							<div css={whatHappensNextTextCss}>
-								<p
-									css={css`
-										${textSans.medium({
-											fontWeight: 'bold',
-										})};
-										color: ${palette.success[400]};
-										margin-bottom: 0;
-										border-top: 1px solid
-											${palette.neutral[86]};
-									`}
-								>
+							<span>
+								<strong>
 									Your first payment will be just{' '}
 									{mainPlan.currency}
 									{previewResponse.amountPayableToday}
-								</p>
-								<p
-									css={css`
-										${textSans.medium()};
-										color: ${palette.success[400]};
-										margin-top: 0;
-									`}
-								>
-									We will charge you a smaller amount today,
-									to offset the payment you've already given
-									us for the rest of the month. After this,
-									from {nextPayment}, your new{' '}
-									{monthlyOrAnnual.toLocaleLowerCase()}{' '}
-									payment will be {mainPlan.currency}
-									{
-										previewResponse.supporterPlusPurchaseAmount
-									}
-								</p>
-							</div>
-						</div>
-						<div
-							css={css`
-								display: flex;
-								align-items: start;
-							`}
-						>
+								</strong>
+								<br />
+								We will charge you a smaller amount today, to
+								offset the payment you've already given us for
+								the rest of the month. After this, from{' '}
+								{nextPayment}, your new{' '}
+								{monthlyOrAnnual.toLocaleLowerCase()} payment
+								will be {mainPlan.currency}
+								{previewResponse.supporterPlusPurchaseAmount}
+							</span>
+						</li>
+						<li>
 							<SvgCreditCard size="medium" />
-							<div css={whatHappensNextTextCss}>
-								<p
-									css={css`
-										${textSans.medium({
-											fontWeight: 'bold',
-										})};
-										margin-bottom: 0;
-										border-top: 1px solid
-											${palette.neutral[86]};
-									`}
-								>
-									No payment changes are needed
-								</p>
-								<div
-									css={css`
-										${from.tablet} {
-											display: flex;
-										}
-										${textSans.medium()}
-										margin-top: 0;
-									`}
-								>
-									<p
-										css={css`
-											margin-bottom: 0;
-											margin-right: ${space[1]}px;
-										`}
-									>
-										We will take payment as before, from
-									</p>
+							<span>
+								<strong>No payment changes are needed</strong>
+								<br />
+								We will take payment as before, from
+								<strong>
 									{productDetail.subscription.card && (
-										<b>
-											<CardDisplay
-												cssOverrides={css`
-													margin: 0;
-												`}
-												{...productDetail.subscription
-													.card}
-											/>
-										</b>
+										<CardDisplay
+											inline
+											cssOverrides={css`
+												margin: 0;
+											`}
+											{...productDetail.subscription.card}
+										/>
 									)}
 									{productDetail.subscription.payPalEmail && (
 										<PaypalDisplay
@@ -387,19 +287,17 @@ export const SwitchReview = () => {
 												.mandate}
 										/>
 									)}
-								</div>
-							</div>
-						</div>
-					</Stack>
-				</section>
+								</strong>
+							</span>
+						</li>
+					</ul>
+				</Stack>
 			</section>
 			<section css={buttonLayoutCss}>
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button
 						isLoading={isSwitching}
-						cssOverrides={css`
-							justify-content: center;
-						`}
+						cssOverrides={buttonCentredCss}
 						onClick={() =>
 							confirmSwitch(previewResponse.amountPayableToday)
 						}
@@ -409,9 +307,7 @@ export const SwitchReview = () => {
 				</ThemeProvider>
 				<Button
 					priority="tertiary"
-					cssOverrides={css`
-						justify-content: center;
-					`}
+					cssOverrides={[buttonCentredCss, buttonMutedCss]}
 					onClick={() => navigate('..')}
 				>
 					Back

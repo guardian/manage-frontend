@@ -2,10 +2,10 @@ import { css } from '@emotion/react';
 import {
 	brand,
 	from,
+	headline,
 	palette,
 	space,
 	textSans,
-	until,
 } from '@guardian/source-foundations';
 import {
 	Stack,
@@ -17,7 +17,6 @@ import { Navigate, useLocation } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { sectionSpacing } from '../../../styles/spacing';
 import { InverseStarIcon } from '../shared/assets/InverseStarIcon';
 import { Heading } from '../shared/Heading';
 import type {
@@ -26,6 +25,7 @@ import type {
 } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
 import { SwitchSignInImage } from './SwitchSignInImage';
+import { iconListCss, sectionSpacing } from './SwitchStyles';
 
 export const SwitchComplete = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
@@ -81,25 +81,9 @@ export const SwitchComplete = () => {
 	);
 };
 
-const extrasStyling = css`
-	${from.tablet} {
-		color: ${palette.brand['500']};
-
-		::before {
-			content: '\\a';
-			white-space: pre;
-		}
-	}
-`;
-
-const whatHappensNextTextCss = css`
-	width: 100%;
-	margin-left: 0.5rem;
-
-	p {
-		${textSans.medium()}
-		margin-top: 0;
-		margin-bottom: ${space[2]}px;
+const whatHappensNextCss = css`
+	li > svg {
+		fill: ${brand[500]};
 	}
 `;
 
@@ -111,81 +95,57 @@ const WhatHappensNext = (props: {
 	return (
 		<Stack space={4}>
 			<Heading sansSerif>What happens next?</Heading>
-			<div
-				css={css`
-					svg {
-						fill: ${brand[500]};
-						flex-shrink: 0;
-					}
-				`}
-			>
-				<div
-					css={css`
-						display: flex;
-						align-items: start;
-					`}
-				>
+			<ul css={[iconListCss, whatHappensNextCss]}>
+				<li>
 					<SvgEnvelope size="medium" />
-					<div css={whatHappensNextTextCss}>
-						<p>
-							You will receive a confirmation email to{' '}
-							{props.email}
-						</p>
-					</div>
-				</div>
-				<div
-					css={css`
-						display: flex;
-						align-items: start;
-					`}
-				>
+					<span>
+						You will receive a confirmation email to {props.email}
+					</span>
+				</li>
+				<li>
 					<SvgClock size="medium" />
-					<div css={whatHappensNextTextCss}>
-						<p>
-							Your first billing date is today and you will be
-							charge a reduced rate of {props.currency}
-							{props.amountPayableToday}.
-						</p>
-					</div>
-				</div>
-				<div
-					css={css`
-						display: flex;
-						align-items: start;
-					`}
-				>
+					<span>
+						Your first billing date is today and you will be charge
+						a reduced rate of {props.currency}
+						{props.amountPayableToday}.
+					</span>
+				</li>
+				<li>
 					<InverseStarIcon size="medium" />
-					<div css={whatHappensNextTextCss}>
-						<p>
-							Your new support will start today. It can take up to
-							an hour for your support to be activated.
-						</p>
-					</div>
-				</div>
-			</div>
+					<span>
+						Your new support will start today. It can take up to an
+						hour for your support to be activated.
+					</span>
+				</li>
+			</ul>
 		</Stack>
 	);
 };
+
+const thankYouCss = css`
+	${headline.xsmall({ fontWeight: 'bold' })};
+	margin-top: 0;
+	margin-bottom: 0;
+
+	${from.tablet} {
+		${headline.small({ fontWeight: 'bold' })};
+		span {
+			display: block;
+			color: ${palette.brand['500']};
+		}
+	}
+`;
 
 const ThankYouMessaging = (props: {
 	mainPlan: PaidSubscriptionPlan;
 	newAmount: number;
 }) => {
 	return (
-		<>
-			<Heading
-				cssOverrides={css`
-					${until.mobile} {
-						max-width: 350px;
-					}
-				`}
-				noDivider
-			>
-				Thank you for upgrading to {props.mainPlan.currency}
-				{props.newAmount} per {props.mainPlan.billingPeriod}.{' '}
-				<span css={extrasStyling}>Enjoy your exclusive extras.</span>
-			</Heading>
-		</>
+		<h2 css={thankYouCss}>
+			Thank you for upgrading to {props.mainPlan.currency}
+			{props.newAmount} per {props.mainPlan.billingPeriod}.{' '}
+			<span>Enjoy your exclusive extras.</span>
+		</h2>
 	);
 };
 

@@ -1,42 +1,31 @@
 import { css, ThemeProvider } from '@emotion/react';
-import {
-	from,
-	headline,
-	palette,
-	space,
-	textSans,
-	until,
-} from '@guardian/source-foundations';
+import { palette, space, textSans, until } from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
+	Stack,
 } from '@guardian/source-react-components';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { sectionSpacing } from '../../../styles/spacing';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
+import {
+	buttonCentredCss,
+	productTitleCss,
+	sectionSpacing,
+	smallPrintCss,
+} from './SwitchStyles';
 
 const cardHeaderDivCss = css`
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-end;
-`;
-
-const productTitleCss = css`
-	${headline.xsmall({ fontWeight: 'bold' })};
-	color: ${palette.neutral[100]};
-	margin: 0;
-	max-width: 20ch;
-	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
-	}
 `;
 
 const productSubtitleCss = css`
@@ -181,34 +170,40 @@ export const SwitchOptions = () => {
 			</section>
 
 			<section css={sectionSpacing}>
-				<Heading sansSerif>
-					{aboveThreshold ? 'Add extras' : 'Change your support'}
-				</Heading>
-				<p
-					css={css`
-						${textSans.medium()}
-						margin-bottom: ${space[3]}px;
-					`}
-				>
-					Change to {supporterPlusTitle} and get exclusive supporter
-					benefits
-				</p>
-				<Card>
-					<Card.Header backgroundColor={palette.brand[500]}>
-						<div css={cardHeaderDivCss}>
-							<h3 css={productTitleCss}>{supporterPlusTitle}</h3>
-							{!aboveThreshold && (
-								<p css={productSubtitleCss}>
-									{mainPlan.currency}
-									{threshold}/{mainPlan.billingPeriod}
-								</p>
-							)}
-						</div>
-					</Card.Header>
-					<Card.Section>
-						<SupporterPlusBenefitsSection />
-					</Card.Section>
-				</Card>
+				<Stack space={3}>
+					<Heading sansSerif>
+						{aboveThreshold ? 'Add extras' : 'Change your support'}
+					</Heading>
+					{!switchContext.isFromApp && (
+						<p
+							css={css`
+								${textSans.medium()}
+								margin: 0;
+							`}
+						>
+							Change to {supporterPlusTitle} and get exclusive
+							supporter benefits
+						</p>
+					)}
+					<Card>
+						<Card.Header backgroundColor={palette.brand[500]}>
+							<div css={cardHeaderDivCss}>
+								<h3 css={productTitleCss}>
+									{supporterPlusTitle}
+								</h3>
+								{!aboveThreshold && (
+									<p css={productSubtitleCss}>
+										{mainPlan.currency}
+										{threshold}/{mainPlan.billingPeriod}
+									</p>
+								)}
+							</div>
+						</Card.Header>
+						<Card.Section>
+							<SupporterPlusBenefitsSection />
+						</Card.Section>
+					</Card>
+				</Stack>
 			</section>
 
 			<section
@@ -218,9 +213,7 @@ export const SwitchOptions = () => {
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button
 						size="small"
-						cssOverrides={css`
-							justify-content: center;
-						`}
+						cssOverrides={buttonCentredCss}
 						onClick={() => navigate(`/switch/review`)}
 					>
 						{aboveThreshold
@@ -231,17 +224,15 @@ export const SwitchOptions = () => {
 			</section>
 
 			{aboveThreshold && (
-				<p
-					css={css`
-						color: ${palette.neutral[46]};
-					`}
-				>
-					Exclusive supporter extras are unlocked for any monthly
-					support of {mainPlan.currency}
-					{monthlyThreshold} or above and any annual support of{' '}
-					{mainPlan.currency}
-					{annualThreshold} or above.
-				</p>
+				<section>
+					<p css={smallPrintCss}>
+						Exclusive supporter extras are unlocked for any monthly
+						support of {mainPlan.currency}
+						{monthlyThreshold} or above and any annual support of{' '}
+						{mainPlan.currency}
+						{annualThreshold} or above.
+					</p>
+				</section>
 			)}
 		</>
 	);
