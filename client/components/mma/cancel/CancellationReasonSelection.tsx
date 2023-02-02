@@ -322,10 +322,7 @@ export const CancellationReasonSelection = () => {
 			fetch={cancellationDateFetcher(
 				productDetail.subscription.subscriptionId,
 			)}
-			render={ReasonPickerRenderer(
-				productType as ProductTypeWithCancellationFlow,
-				productDetail,
-			)}
+			render={ReasonPickerRenderer(productType, productDetail)}
 			loadingMessage={`Checking your ${
 				productType.shortFriendlyName ||
 				productType.friendlyName(productDetail)

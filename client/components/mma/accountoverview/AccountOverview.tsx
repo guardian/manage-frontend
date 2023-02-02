@@ -22,7 +22,6 @@ import {
 	mdapiResponseReader,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
-import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
 import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
@@ -104,8 +103,7 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 				productDetail={maybeFirstPaymentFailure}
 			/>
 			{productCategories.map((category) => {
-				const groupedProductType =
-					GROUPED_PRODUCT_TYPES[category as GroupedProductTypeKeys];
+				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
 					(activeProduct) => activeProduct.mmaCategory === category,
 				);
@@ -158,8 +156,7 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 									activeProductsInCategory.some(
 										(productDetail) =>
 											isCancelled(
-												(productDetail as ProductDetail)
-													.subscription,
+												productDetail.subscription,
 											),
 									)) && (
 									<div>
