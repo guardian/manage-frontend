@@ -68,7 +68,9 @@ describe('Cancel Supporter Plus', () => {
 	it('allows self-service cancellation of Supporter Plus', () => {
 		setupCancellation();
 
-		cy.findAllByRole('radio').eq(0).click();
+		cy.findByRole('radio', {
+			name: 'I am unhappy with some editorial decisions',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');

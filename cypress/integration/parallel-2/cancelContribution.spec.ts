@@ -106,7 +106,9 @@ describe('Cancel contribution', () => {
 		}).as('get_case');
 
 		setupCancellation();
-		cy.findAllByRole('radio').eq(0).click();
+		cy.findAllByRole('radio', {
+			name: 'I am unhappy with some editorial decisions',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case').its('response.statusCode').should('equal', 500);
@@ -116,7 +118,9 @@ describe('Cancel contribution', () => {
 
 	it('cancels contribution with custom save body component (reason: I can no longer afford to support you)', () => {
 		setupCancellation();
-		cy.findAllByRole('radio').eq(2).click();
+		cy.findByRole('radio', {
+			name: 'I can no longer afford to support you',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
@@ -170,7 +174,9 @@ describe('Cancel contribution', () => {
 		});
 
 		setupCancellation();
-		cy.findAllByRole('radio').eq(2).click();
+		cy.findAllByRole('radio', {
+			name: 'I can no longer afford to support you',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
@@ -190,7 +196,9 @@ describe('Cancel contribution', () => {
 
 		setSignInStatus();
 
-		cy.findAllByRole('radio').eq(0).click();
+		cy.findAllByRole('radio', {
+			name: 'I am unhappy with some editorial decisions',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
