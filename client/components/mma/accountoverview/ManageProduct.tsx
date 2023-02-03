@@ -99,7 +99,7 @@ const InnerContent = ({
 
 	return (
 		<>
-			<PaymentFailureAlertIfApplicable productDetail={productDetail} />
+			<PaymentFailureAlertIfApplicable productDetails={[productDetail]} />
 			<div
 				css={css`
 					${subHeadingBorderTopCss}

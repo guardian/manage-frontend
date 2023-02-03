@@ -70,7 +70,7 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 	}
 
 	const maybeFirstPaymentFailure = allActiveProductDetails.find(
-		(_) => _.alertText,
+		(product) => product.alertText,
 	);
 
 	const hasDigiSubAndContribution =
@@ -81,9 +81,8 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 			isSpecificProductType(productDetail, PRODUCT_TYPES.digipack),
 		);
 
-	const isEligibleToSwitch = !(
-		maybeFirstPaymentFailure || hasDigiSubAndContribution
-	);
+	const isEligibleToSwitch =
+		!maybeFirstPaymentFailure && !hasDigiSubAndContribution;
 
 	const subHeadingCss = css`
 		margin: ${space[12]}px 0 ${space[6]}px;
@@ -100,7 +99,7 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 			<PersonalisedHeader mdapiResponse={mdaResponse} />
 
 			<PaymentFailureAlertIfApplicable
-				productDetail={maybeFirstPaymentFailure}
+				productDetails={allActiveProductDetails}
 			/>
 			{productCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];

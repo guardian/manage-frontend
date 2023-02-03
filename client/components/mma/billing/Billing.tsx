@@ -105,9 +105,6 @@ const BillingRenderer = () => {
 	const mmaCategoryToProductDetails =
 		organiseProductsIntoCategory(allProductDetails);
 
-	const hasPaymentFailure = (product: ProductDetail) => !!product.alertText;
-	const maybeFirstPaymentFailure = allProductDetails.find(hasPaymentFailure);
-
 	if (allProductDetails.length === 0) {
 		return <EmptyAccountOverview />;
 	}
@@ -115,7 +112,7 @@ const BillingRenderer = () => {
 	return (
 		<>
 			<PaymentFailureAlertIfApplicable
-				productDetail={maybeFirstPaymentFailure}
+				productDetails={allProductDetails}
 			/>
 			{Object.entries(mmaCategoryToProductDetails).map(
 				([mmaCategory, productDetails]) => {
