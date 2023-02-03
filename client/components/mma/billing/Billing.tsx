@@ -48,8 +48,12 @@ import { PaymentDetailsTable } from '../shared/PaymentDetailsTable';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { InvoicesTable } from './InvoicesTable';
 
+interface ProductDetailWithInvoice extends ProductDetail {
+	invoices: InvoiceDataApiItem[];
+}
+
 type MMACategoryToProductDetails = {
-	[mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
+	[mmaCategory in GroupedProductTypeKeys]: ProductDetailWithInvoice[];
 };
 
 type BillingResponse = [
@@ -70,7 +74,241 @@ border-top: 1px solid ${neutral['86']};
 margin: 50px 0 ${space[5]}px;
 `;
 
-const BillingRenderer = () => {
+function decorateProductDetailWithInvoices(
+	productDetail: ProductDetail,
+): ProductDetailWithInvoice {
+	return { ...productDetail, invoices: [] };
+}
+function joinInvoicesWithProductsInCategories(
+	mdapiObject: MembersDataApiResponse,
+	invoicesResponse: { invoices: InvoiceDataApiItem[] },
+) {
+	const allProductDetails = mdapiObject.products
+		.filter(isProduct)
+		.sort(sortByJoinDate)
+		.map(decorateProductDetailWithInvoices);
+
+	const invoiceData = invoicesResponse.invoices.sort(
+		(a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
+			b.date.localeCompare(a.date),
+	);
+
+	invoiceData.forEach((invoice) => {
+		const matchingProduct = allProductDetails.find(
+			(product) =>
+				product.subscription.subscriptionId ===
+				invoice.subscriptionName,
+		);
+		if (matchingProduct) {
+			matchingProduct.invoices.push(invoice);
+		}
+	});
+
+	const mmaCategoryToProductDetails =
+		organiseProductsIntoCategory(allProductDetails);
+	return { allProductDetails, mmaCategoryToProductDetails };
+}
+
+function organiseProductsIntoCategory(allProductDetails: ProductDetail[]) {
+	return allProductDetails.reduce(
+		(accumulator, productDetail) => ({
+			...accumulator,
+			[productDetail.mmaCategory]: [
+				...(accumulator[productDetail.mmaCategory] || []),
+				productDetail,
+			],
+		}),
+		{} as MMACategoryToProductDetails,
+	);
+}
+
+function renderProductBillingInfo([mmaCategory, productDetails]: [
+	string,
+	ProductDetailWithInvoice[],
+]) {
+	return (
+		productDetails.length > 0 && (
+			<Fragment key={mmaCategory}>
+				{productDetails.map((productDetail) => {
+					const mainPlan = getMainPlan(productDetail.subscription);
+					if (!mainPlan) {
+						throw new Error(
+							'mainPlan does not exist for product in billing page',
+						);
+					}
+					const groupedProductType =
+						GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
+					const specificProductType =
+						groupedProductType.mapGroupedToSpecific(productDetail);
+					const hasCancellationPending =
+						productDetail.subscription.cancelledAt;
+					const cancelledCopy =
+						specificProductType.cancelledCopy ||
+						groupedProductType.cancelledCopy;
+					const nextPaymentDetails = getNextPaymentDetails(
+						mainPlan,
+						productDetail.subscription,
+						null,
+						!!productDetail.alertText,
+					);
+					const paidPlan = getMainPlan(
+						productDetail.subscription,
+					) as PaidSubscriptionPlan;
+					const maybePatronSuffix =
+						productDetail.subscription.readerType === 'Patron'
+							? ' - Patron'
+							: '';
+					const productInvoiceData = productDetail.invoices.map(
+						(invoice) => ({
+							...invoice,
+							pdfPath: `/api/${invoice.pdfPath}`,
+							currency: paidPlan.currency,
+							currencyISO: paidPlan.currencyISO,
+							productUrlPart: specificProductType.urlPart,
+						}),
+					);
+					const resultsPerPage = paidPlan.billingPeriod?.includes(
+						'year',
+					)
+						? productInvoiceData.length
+						: 6;
+					return (
+						<Fragment
+							key={productDetail.subscription.subscriptionId}
+						>
+							<div
+								css={css`
+									${subHeadingBorderTopCss}
+									display: flex;
+									align-items: start;
+									justify-content: space-between;
+								`}
+							>
+								<h2
+									css={css`
+										${subHeadingTitleCss}
+										margin: 0;
+									`}
+								>
+									{specificProductType.productTitle(mainPlan)}
+									{maybePatronSuffix}
+								</h2>
+								{isGift(productDetail.subscription) && (
+									<i
+										css={css`
+											margin: 4px 0 0 ${space[3]}px;
+										`}
+									>
+										<GiftIcon
+											alignArrowToThisSide={'left'}
+										/>
+									</i>
+								)}
+							</div>
+
+							{hasCancellationPending && (
+								<p
+									css={css`
+										${textSans.medium()};
+									`}
+								>
+									<ErrorIcon fill={brandAlt[200]} />
+									<span
+										css={css`
+											margin-left: ${space[2]}px;
+										`}
+									>
+										{cancelledCopy}{' '}
+										<strong>
+											{parseDate(
+												productDetail.subscription.end,
+											).dateStr()}
+										</strong>
+									</span>
+									.
+								</p>
+							)}
+							<BasicProductInfoTable
+								groupedProductType={groupedProductType}
+								productDetail={productDetail}
+							/>
+							<SixForSixExplainerIfApplicable
+								additionalCss={css`
+									${textSans.medium()};
+								`}
+								mainPlan={mainPlan}
+								hasCancellationPending={hasCancellationPending}
+							/>
+							<PaymentDetailsTable
+								productDetail={productDetail}
+								nextPaymentDetails={nextPaymentDetails}
+								hasCancellationPending={hasCancellationPending}
+								tableHeading="Payment"
+							/>
+							{productDetail.isPaidTier &&
+								productDetail.subscription
+									.safeToUpdatePaymentMethod && (
+									<LinkButton
+										colour={
+											productDetail.alertText
+												? brand[400]
+												: brand[800]
+										}
+										textColour={
+											productDetail.alertText
+												? neutral[100]
+												: brand[400]
+										}
+										fontWeight={'bold'}
+										alert={!!productDetail.alertText}
+										text="Update payment method"
+										ariaLabelText={`${specificProductType.productTitle(
+											mainPlan,
+										)} : Update payment method`}
+										to={`/payment/${specificProductType.urlPart}`}
+										state={{
+											productDetail,
+											flowReferrer: {
+												title: NAV_LINKS.billing.title,
+												link: NAV_LINKS.billing.link,
+											},
+										}}
+									/>
+								)}
+							{productInvoiceData.length > 0 && (
+								<div
+									css={css`
+										margin-top: ${space[12]}px;
+										margin-bottom: ${space[3]}px;
+									`}
+								>
+									<InvoicesTable
+										resultsPerPage={resultsPerPage}
+										invoiceData={productInvoiceData}
+									/>
+								</div>
+							)}
+						</Fragment>
+					);
+				})}
+			</Fragment>
+		)
+	);
+}
+
+function BillingDetailsComponent(props: {
+	mmaCategoryToProductDetails: MMACategoryToProductDetails;
+}) {
+	return (
+		<>
+			{Object.entries(props.mmaCategoryToProductDetails).map(
+				renderProductBillingInfo,
+			)}
+		</>
+	);
+}
+
+const BillingPage = () => {
 	const {
 		data: billingResponse,
 		loadingState,
@@ -94,16 +332,8 @@ const BillingRenderer = () => {
 	const [mdapiResponse, invoicesResponse] = billingResponse;
 	const mdapiObject = mdapiResponseReader(mdapiResponse);
 
-	const allProductDetails = mdapiObject.products
-		.filter(isProduct)
-		.sort(sortByJoinDate);
-	const invoiceData = invoicesResponse.invoices.sort(
-		(a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
-			b.date.localeCompare(a.date),
-	);
-
-	const mmaCategoryToProductDetails =
-		organiseProductsIntoCategory(allProductDetails);
+	const { allProductDetails, mmaCategoryToProductDetails } =
+		joinInvoicesWithProductsInCategories(mdapiObject, invoicesResponse);
 
 	if (allProductDetails.length === 0) {
 		return <EmptyAccountOverview />;
@@ -114,232 +344,10 @@ const BillingRenderer = () => {
 			<PaymentFailureAlertIfApplicable
 				productDetails={allProductDetails}
 			/>
-			{Object.entries(mmaCategoryToProductDetails).map(
-				([mmaCategory, productDetails]) => {
-					return (
-						productDetails.length > 0 && (
-							<Fragment key={mmaCategory}>
-								{productDetails.map((productDetail) => {
-									const mainPlan = getMainPlan(
-										productDetail.subscription,
-									);
-									if (!mainPlan) {
-										throw new Error(
-											'mainPlan does not exist for product in billing page',
-										);
-									}
-									const groupedProductType =
-										GROUPED_PRODUCT_TYPES[
-											productDetail.mmaCategory
-										];
-									const specificProductType =
-										groupedProductType.mapGroupedToSpecific(
-											productDetail,
-										);
-									const hasCancellationPending =
-										productDetail.subscription.cancelledAt;
-									const cancelledCopy =
-										specificProductType.cancelledCopy ||
-										groupedProductType.cancelledCopy;
-									const nextPaymentDetails =
-										getNextPaymentDetails(
-											mainPlan,
-											productDetail.subscription,
-											null,
-											!!productDetail.alertText,
-										);
-									const paidPlan = getMainPlan(
-										productDetail.subscription,
-									) as PaidSubscriptionPlan;
-									const maybePatronSuffix =
-										productDetail.subscription
-											.readerType === 'Patron'
-											? ' - Patron'
-											: '';
-									const productInvoiceData = invoiceData
-										.filter(
-											(invoice) =>
-												invoice.subscriptionName ===
-												productDetail.subscription
-													.subscriptionId,
-										)
-										.map((invoice) => ({
-											...invoice,
-											pdfPath: `/api/${invoice.pdfPath}`,
-											currency: paidPlan.currency,
-											currencyISO: paidPlan.currencyISO,
-											productUrlPart:
-												specificProductType.urlPart,
-										}));
-									const resultsPerPage =
-										paidPlan.billingPeriod?.includes('year')
-											? productInvoiceData.length
-											: 6;
-									return (
-										<Fragment
-											key={
-												productDetail.subscription
-													.subscriptionId
-											}
-										>
-											<div
-												css={css`
-													${subHeadingBorderTopCss}
-													display: flex;
-													align-items: start;
-													justify-content: space-between;
-												`}
-											>
-												<h2
-													css={css`
-														${subHeadingTitleCss}
-														margin: 0;
-													`}
-												>
-													{specificProductType.productTitle(
-														mainPlan,
-													)}
-													{maybePatronSuffix}
-												</h2>
-												{isGift(
-													productDetail.subscription,
-												) && (
-													<i
-														css={css`
-															margin: 4px 0 0
-																${space[3]}px;
-														`}
-													>
-														<GiftIcon
-															alignArrowToThisSide={
-																'left'
-															}
-														/>
-													</i>
-												)}
-											</div>
-
-											{hasCancellationPending && (
-												<p
-													css={css`
-														${textSans.medium()};
-													`}
-												>
-													<ErrorIcon
-														fill={brandAlt[200]}
-													/>
-													<span
-														css={css`
-															margin-left: ${space[2]}px;
-														`}
-													>
-														{cancelledCopy}{' '}
-														<strong>
-															{parseDate(
-																productDetail
-																	.subscription
-																	.end,
-															).dateStr()}
-														</strong>
-													</span>
-													.
-												</p>
-											)}
-											<BasicProductInfoTable
-												groupedProductType={
-													groupedProductType
-												}
-												productDetail={productDetail}
-											/>
-											<SixForSixExplainerIfApplicable
-												additionalCss={css`
-													${textSans.medium()};
-												`}
-												mainPlan={mainPlan}
-												hasCancellationPending={
-													hasCancellationPending
-												}
-											/>
-											<PaymentDetailsTable
-												productDetail={productDetail}
-												nextPaymentDetails={
-													nextPaymentDetails
-												}
-												hasCancellationPending={
-													hasCancellationPending
-												}
-												tableHeading="Payment"
-											/>
-											{productDetail.isPaidTier &&
-												productDetail.subscription
-													.safeToUpdatePaymentMethod && (
-													<LinkButton
-														colour={
-															productDetail.alertText
-																? brand[400]
-																: brand[800]
-														}
-														textColour={
-															productDetail.alertText
-																? neutral[100]
-																: brand[400]
-														}
-														fontWeight={'bold'}
-														alert={
-															!!productDetail.alertText
-														}
-														text="Update payment method"
-														ariaLabelText={`${specificProductType.productTitle(
-															mainPlan,
-														)} : Update payment method`}
-														to={`/payment/${specificProductType.urlPart}`}
-														state={{
-															productDetail,
-															flowReferrer: {
-																title: NAV_LINKS
-																	.billing
-																	.title,
-																link: NAV_LINKS
-																	.billing
-																	.link,
-															},
-														}}
-													/>
-												)}
-											{productInvoiceData.length > 0 && (
-												<div
-													css={css`
-														margin-top: ${space[12]}px;
-														margin-bottom: ${space[3]}px;
-													`}
-												>
-													<InvoicesTable
-														resultsPerPage={
-															resultsPerPage
-														}
-														invoiceData={
-															productInvoiceData
-														}
-													/>
-												</div>
-											)}
-										</Fragment>
-									);
-								})}
-							</Fragment>
-						)
-					);
-				},
-			)}
+			<BillingDetailsComponent
+				mmaCategoryToProductDetails={mmaCategoryToProductDetails}
+			/>
 		</>
-	);
-};
-
-export const Billing = () => {
-	return (
-		<PageContainer selectedNavItem={NAV_LINKS.billing} pageTitle="Billing">
-			<BillingRenderer />
-		</PageContainer>
 	);
 };
 
@@ -349,15 +357,10 @@ const billingFetcher = () =>
 		fetchWithDefaultParameters('/api/invoices'),
 	]);
 
-function organiseProductsIntoCategory(allProductDetails: ProductDetail[]) {
-	return allProductDetails.reduce(
-		(accumulator, productDetail) => ({
-			...accumulator,
-			[productDetail.mmaCategory]: [
-				...(accumulator[productDetail.mmaCategory] || []),
-				productDetail,
-			],
-		}),
-		{} as MMACategoryToProductDetails,
+export const Billing = () => {
+	return (
+		<PageContainer selectedNavItem={NAV_LINKS.billing} pageTitle="Billing">
+			<BillingPage />
+		</PageContainer>
 	);
-}
+};
