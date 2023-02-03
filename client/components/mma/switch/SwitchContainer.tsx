@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { Context, ReactNode  } from 'react';
+import type { Context, ReactNode } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import type {
 	MembersDataApiResponse,
@@ -34,19 +34,23 @@ export interface SwitchContextInterface {
 export const SwitchContext: Context<SwitchContextInterface | {}> =
 	createContext({});
 
-const isFromApp = () => window?.location.hash.includes('from-app');
-
-export const SwitchContainer = () => {
+export const SwitchContainer = (props: { isFromApp?: boolean }) => {
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
 	const productDetail = routerState?.productDetail;
 	const user = routerState?.user;
 
 	if (!productDetail) {
-		return <AsyncLoadedSwitchContainer />;
+		return <AsyncLoadedSwitchContainer isFromApp={props.isFromApp} />;
 	}
 
-	return <RenderedPage productDetail={productDetail} user={user} />;
+	return (
+		<RenderedPage
+			productDetail={productDetail}
+			user={user}
+			isFromApp={props.isFromApp}
+		/>
+	);
 };
 
 const SwitchPageContainer = (props: { children: ReactNode }) => {
@@ -61,7 +65,7 @@ const SwitchPageContainer = (props: { children: ReactNode }) => {
 	);
 };
 
-const AsyncLoadedSwitchContainer = () => {
+const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 	const request = createProductDetailFetcher(
 		PRODUCT_TYPES.contributions.allProductsProductTypeFilterString,
 	);
@@ -95,19 +99,26 @@ const AsyncLoadedSwitchContainer = () => {
 	}
 
 	const productDetail = data.products.filter(isProduct)[0];
-	return <RenderedPage productDetail={productDetail} user={data.user} />;
+	return (
+		<RenderedPage
+			productDetail={productDetail}
+			user={data.user}
+			isFromApp={props.isFromApp}
+		/>
+	);
 };
 
 const RenderedPage = (props: {
 	productDetail: ProductDetail;
 	user?: MembersDataApiUser;
+	isFromApp?: boolean;
 }) => {
 	return (
 		<SwitchPageContainer>
 			<SwitchContext.Provider
 				value={{
 					productDetail: props.productDetail,
-					isFromApp: isFromApp(),
+					isFromApp: props.isFromApp,
 					user: props.user,
 				}}
 			>
