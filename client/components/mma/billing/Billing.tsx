@@ -27,14 +27,20 @@ import {
 import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
+import {
+	LoadingState,
+	useAsyncLoader,
+} from '../../../utilities/hooks/useAsyncLoader';
 import { allProductsDetailFetcher } from '../../../utilities/productUtils';
+import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { EmptyAccountOverview } from '../accountoverview/EmptyAccountOverview';
 import { SixForSixExplainerIfApplicable } from '../accountoverview/SixForSixExplainer';
 import { PageContainer } from '../Page';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
-import { AsyncLoader } from '../shared/AsyncLoader';
+import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { BasicProductInfoTable } from '../shared/BasicProductInfoTable';
 import { LinkButton } from '../shared/Buttons';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
@@ -46,55 +52,65 @@ type MMACategoryToProductDetails = {
 	[mmaCategory in GroupedProductTypeKeys]: ProductDetail[];
 };
 
-class BillingDataAsyncLoader extends AsyncLoader<
-	[
-		MembersDataApiResponse | MembersDataApiItem[],
-		{ invoices: InvoiceDataApiItem[] },
-	]
-> {}
-
-const BillingRenderer = ([mdapiObject, invoiceResponse]: [
+type BillingResponse = [
 	MembersDataApiResponse | MembersDataApiItem[],
 	{ invoices: InvoiceDataApiItem[] },
-]) => {
-	const mdaResponse = mdapiResponseReader(mdapiObject);
+];
 
-	const allProductDetails = mdaResponse.products
+const subHeadingTitleCss = `
+${headline.small({ fontWeight: 'bold' })};
+${until.tablet} {
+  font-size: 1.25rem;
+  line-height: 1.6;
+};
+`;
+
+const subHeadingBorderTopCss = `
+border-top: 1px solid ${neutral['86']};
+margin: 50px 0 ${space[5]}px;
+`;
+
+const BillingRenderer = () => {
+	const {
+		data: billingResponse,
+		loadingState,
+	}: {
+		data: BillingResponse | null;
+		loadingState: LoadingState;
+	} = useAsyncLoader(billingFetcher, JsonResponseHandler);
+
+	if (loadingState == LoadingState.HasError) {
+		return <GenericErrorScreen />;
+	}
+	if (loadingState == LoadingState.IsLoading) {
+		return (
+			<DefaultLoadingView loadingMessage="Loading your billing details..." />
+		);
+	}
+	if (billingResponse === null) {
+		return <GenericErrorScreen />;
+	}
+
+	const [mdapiResponse, invoicesResponse] = billingResponse;
+	const mdapiObject = mdapiResponseReader(mdapiResponse);
+
+	const allProductDetails = mdapiObject.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
-	const invoiceData = invoiceResponse.invoices.sort(
+	const invoiceData = invoicesResponse.invoices.sort(
 		(a: InvoiceDataApiItem, b: InvoiceDataApiItem) =>
 			b.date.localeCompare(a.date),
 	);
 
-	const mmaCategoryToProductDetails = allProductDetails.reduce(
-		(accumulator, productDetail) => ({
-			...accumulator,
-			[productDetail.mmaCategory]: [
-				...(accumulator[productDetail.mmaCategory] || []),
-				productDetail,
-			],
-		}),
-		{} as MMACategoryToProductDetails,
-	);
+	const mmaCategoryToProductDetails =
+		organiseProductsIntoCategory(allProductDetails);
 
-	const maybeFirstPaymentFailure = allProductDetails.find((_) => _.alertText);
+	const hasPaymentFailure = (product: ProductDetail) => !!product.alertText;
+	const maybeFirstPaymentFailure = allProductDetails.find(hasPaymentFailure);
 
 	if (allProductDetails.length === 0) {
 		return <EmptyAccountOverview />;
 	}
-
-	const subHeadingTitleCss = `
-    ${headline.small({ fontWeight: 'bold' })};
-    ${until.tablet} {
-      font-size: 1.25rem;
-      line-height: 1.6;
-    };
-  `;
-	const subHeadingBorderTopCss = `
-    border-top: 1px solid ${neutral['86']};
-    margin: 50px 0 ${space[5]}px;
-  `;
 
 	return (
 		<>
@@ -325,11 +341,7 @@ const BillingRenderer = ([mdapiObject, invoiceResponse]: [
 export const Billing = () => {
 	return (
 		<PageContainer selectedNavItem={NAV_LINKS.billing} pageTitle="Billing">
-			<BillingDataAsyncLoader
-				fetch={billingFetcher}
-				render={BillingRenderer}
-				loadingMessage={`Loading your billing details...`}
-			/>
+			<BillingRenderer />
 		</PageContainer>
 	);
 };
@@ -339,3 +351,16 @@ const billingFetcher = () =>
 		allProductsDetailFetcher(),
 		fetchWithDefaultParameters('/api/invoices'),
 	]);
+
+function organiseProductsIntoCategory(allProductDetails: ProductDetail[]) {
+	return allProductDetails.reduce(
+		(accumulator, productDetail) => ({
+			...accumulator,
+			[productDetail.mmaCategory]: [
+				...(accumulator[productDetail.mmaCategory] || []),
+				productDetail,
+			],
+		}),
+		{} as MMACategoryToProductDetails,
+	);
+}
