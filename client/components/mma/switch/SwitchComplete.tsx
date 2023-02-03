@@ -84,7 +84,7 @@ export const SwitchComplete = () => {
 							margin-top: ${space[6]}px;
 						`}
 						onClick={() => {
-							navigate('https://www.theguardian.com/uk');
+							navigate('https://www.theguardian.com/');
 						}}
 					>
 						Continue to read the Guardian
