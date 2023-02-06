@@ -31,7 +31,6 @@ import { iconListCss, sectionSpacing } from './SwitchStyles';
 export const SwitchComplete = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 	const productDetail = switchContext.productDetail;
-
 	const mainPlan = getMainPlan(
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
@@ -83,7 +82,7 @@ export const SwitchComplete = () => {
 						`}
 						href="https://www.theguardian.com/"
 					>
-						Continue to read the Guardian
+						Continue reading the Guardian
 					</LinkButton>
 				</section>
 			)}
