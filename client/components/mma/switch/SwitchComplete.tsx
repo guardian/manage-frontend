@@ -5,6 +5,7 @@ import {
 	palette,
 	space,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
 import {
 	Button,
@@ -111,35 +112,42 @@ const thankYouBannerCss = css`
 	}
 `;
 
-const thankYouButtonCss = css`
-	display: flex;
-	flex-direction: column;
+const thankYouBannerHeadingCss = css`
+	${headline.xsmall({ fontWeight: 'bold' })}
+	margin-top: 0;
+	margin-bottom: ${space[5]}px;
+	max-width: 35ch;
+`;
+
+const thankYouBannerSubheadingCss = css`
+	${textSans.large({ fontWeight: 'bold' })};
+	margin: 0;
+	border-top: 1px solid rgba(255, 255, 255, 0.6);
+`;
+
+const thankYouBannerCopyCss = css`
+	${textSans.medium()};
+	margin: 0;
+	max-width: 45ch;
+`;
+
+const thankYouBannerButtonCss = css`
 	margin-top: ${space[6]}px;
 	margin-bottom: ${space[5]}px;
+	${until.tablet} {
+		display: flex;
+		flex-direction: column;
+	}
 `;
 
 const ThankYouBanner = () => {
 	return (
 		<section css={thankYouBannerCss}>
-			<h2
-				css={css`
-					margin-top: 0;
-					margin-bottom: ${space[5]}px;
-					${headline.xsmall({ fontWeight: 'bold' })}
-				`}
-			>
-				Thank you for upgrading to
+			<h2 css={thankYouBannerHeadingCss}>
+				Thank you for upgrading to £10 monthly support + extras
 			</h2>
-			<p
-				css={css`
-					${textSans.large({ fontWeight: 'bold' })};
-					margin: 0;
-					border-top: 1px solid rgba(255, 255, 255, 0.6);
-				`}
-			>
-				One last step ...
-			</p>
-			<div css={thankYouButtonCss}>
+			<p css={thankYouBannerSubheadingCss}>One last step ...</p>
+			<div css={thankYouBannerButtonCss}>
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button
 						cssOverrides={buttonCentredCss}
@@ -149,12 +157,7 @@ const ThankYouBanner = () => {
 					</Button>
 				</ThemeProvider>
 			</div>
-			<p
-				css={css`
-					${textSans.medium()};
-					margin: 0;
-				`}
-			>
+			<p css={thankYouBannerCopyCss}>
 				If you don’t complete this step, you may be unable to access the
 				app in full for up to one hour.
 			</p>
