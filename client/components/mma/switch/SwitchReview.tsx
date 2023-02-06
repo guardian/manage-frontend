@@ -127,7 +127,7 @@ export const SwitchReview = () => {
 
 	const confirmSwitch = async (amount: number) => {
 		try {
-			setIsSwitching(true);
+			setIsSwitching(false);
 			const response = await productMoveFetch(true);
 			const data = await JsonResponseHandler(response);
 
