@@ -8,7 +8,6 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import {
-	Button,
 	buttonThemeReaderRevenueBrand,
 	LinkButton,
 	Stack,
@@ -43,10 +42,11 @@ export const SwitchComplete = () => {
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		mainPlan.billingPeriod,
 	);
-
+	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
 	const threshold =
 		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
+	const newAmountAndCurrency = `${mainPlan.currency}${newAmount}`;
 
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
@@ -58,8 +58,12 @@ export const SwitchComplete = () => {
 
 	return (
 		<>
-			{switchContext.isFromApp && <ThankYouBanner />}
-			{!switchContext.isFromApp && (
+			{switchContext.isFromApp ? (
+				<ThankYouBanner
+					newAmount={newAmountAndCurrency}
+					newProduct={supporterPlusTitle.toLowerCase()}
+				/>
+			) : (
 				<section css={sectionSpacing}>
 					<ThankYouMessaging
 						mainPlan={mainPlan}
@@ -107,8 +111,7 @@ const thankYouBannerCss = css`
 		margin-top: ${space[9]}px;
 		margin-left: 0;
 		margin-right: 0;
-		padding-left: ${space[4]}px;
-		padding-right: ${space[4]}px;
+		padding: ${space[4]}px ${space[4]}px;
 	}
 `;
 
@@ -116,7 +119,7 @@ const thankYouBannerHeadingCss = css`
 	${headline.xsmall({ fontWeight: 'bold' })}
 	margin-top: 0;
 	margin-bottom: ${space[5]}px;
-	max-width: 35ch;
+	max-width: 30ch;
 `;
 
 const thankYouBannerSubheadingCss = css`
@@ -140,21 +143,21 @@ const thankYouBannerButtonCss = css`
 	}
 `;
 
-const ThankYouBanner = () => {
+const ThankYouBanner = (props: { newAmount: string; newProduct: string }) => {
 	return (
 		<section css={thankYouBannerCss}>
 			<h2 css={thankYouBannerHeadingCss}>
-				Thank you for upgrading to £10 monthly support + extras
+				Thank you for upgrading to {props.newAmount} {props.newProduct}.
 			</h2>
 			<p css={thankYouBannerSubheadingCss}>One last step ...</p>
 			<div css={thankYouBannerButtonCss}>
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-					<Button
+					<LinkButton
+						href="x-gu://mma/success"
 						cssOverrides={buttonCentredCss}
-						onClick={() => alert('app')}
 					>
 						Activate full app access now
-					</Button>
+					</LinkButton>
 				</ThemeProvider>
 			</div>
 			<p css={thankYouBannerCopyCss}>
