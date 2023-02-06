@@ -75,15 +75,19 @@ export const SwitchComplete = () => {
 			</section>
 			{!switchContext.isFromApp && (
 				<section css={sectionSpacing}>
-					<SignInBanner />
-					<LinkButton
-						css={css`
-							margin-top: ${space[6]}px;
-						`}
-						href="https://www.theguardian.com/"
-					>
-						Continue reading the Guardian
-					</LinkButton>
+					<Stack space={6}>
+						<SignInBanner />
+						<div>
+							<LinkButton
+								cssOverrides={css`
+									margin-top: ${space[6]}px;
+								`}
+								href="https://www.theguardian.com/"
+							>
+								Continue reading the Guardian
+							</LinkButton>
+						</div>
+					</Stack>
 				</section>
 			)}
 		</>
