@@ -1,12 +1,10 @@
 import { css, ThemeProvider } from '@emotion/react';
 import {
-	brand,
 	from,
 	headline,
 	palette,
 	space,
 	textSans,
-	until,
 } from '@guardian/source-foundations';
 import {
 	Button,
@@ -59,7 +57,7 @@ export const SwitchComplete = () => {
 
 	return (
 		<>
-			{switchContext.isFromApp && <AppOnlyThankYou />}
+			{switchContext.isFromApp && <ThankYouBanner />}
 			{!switchContext.isFromApp && (
 				<section css={sectionSpacing}>
 					<ThankYouMessaging
@@ -91,32 +89,38 @@ export const SwitchComplete = () => {
 	);
 };
 
-const buttonContainerCss = css`
-	margin-top: ${space[1]}px;
-	padding: ${space[5]}px 0;
-	${until.tablet} {
-		display: flex;
-		flex-direction: column;
-	}
-`;
-
-const appThankYouCss = css`
-	background-color: ${brand[500]};
+const thankYouBannerCss = css`
+	margin-top: -1px;
+	margin-left: -${space[3]}px;
+	margin-right: -${space[3]}px;
+	padding: ${space[6]}px ${space[3]}px;
 	color: ${palette.neutral[100]};
+	background-color: ${palette.brand[500]};
 
-	${until.tablet} {
-		margin-left: -${space[3]}px;
-		margin-right: -${space[3]}px;
-		padding-left: ${space[3]}px;
-		padding-right: ${space[3]}px;
-		padding-top: ${space[6]}px;
-		padding-bottom: ${space[6]}px;
+	${from.tablet} {
+		margin-left: -${space[5]}px;
+		margin-right: -${space[5]}px;
+	}
+
+	${from.desktop} {
+		margin-top: ${space[9]}px;
+		margin-left: 0;
+		margin-right: 0;
+		padding-left: ${space[4]}px;
+		padding-right: ${space[4]}px;
 	}
 `;
 
-const AppOnlyThankYou = () => {
+const thankYouButtonCss = css`
+	display: flex;
+	flex-direction: column;
+	margin-top: ${space[6]}px;
+	margin-bottom: ${space[5]}px;
+`;
+
+const ThankYouBanner = () => {
 	return (
-		<div css={appThankYouCss}>
+		<section css={thankYouBannerCss}>
 			<h2
 				css={css`
 					margin-top: 0;
@@ -135,7 +139,7 @@ const AppOnlyThankYou = () => {
 			>
 				One last step ...
 			</p>
-			<section css={buttonContainerCss}>
+			<div css={thankYouButtonCss}>
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button
 						cssOverrides={buttonCentredCss}
@@ -144,7 +148,7 @@ const AppOnlyThankYou = () => {
 						Activate full app access now
 					</Button>
 				</ThemeProvider>
-			</section>
+			</div>
 			<p
 				css={css`
 					${textSans.medium()};
@@ -154,13 +158,13 @@ const AppOnlyThankYou = () => {
 				If you don’t complete this step, you may be unable to access the
 				app in full for up to one hour.
 			</p>
-		</div>
+		</section>
 	);
 };
 
 const whatHappensNextCss = css`
 	li > svg {
-		fill: ${brand[500]};
+		fill: ${palette.brand[500]};
 	}
 `;
 
