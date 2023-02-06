@@ -78,12 +78,7 @@ export const SwitchComplete = () => {
 					<Stack space={6}>
 						<SignInBanner />
 						<div>
-							<LinkButton
-								cssOverrides={css`
-									margin-top: ${space[6]}px;
-								`}
-								href="https://www.theguardian.com/"
-							>
+							<LinkButton href="https://www.theguardian.com/">
 								Continue reading the Guardian
 							</LinkButton>
 						</div>
