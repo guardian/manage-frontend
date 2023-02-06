@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css, ThemeProvider } from '@emotion/react';
 import {
 	brand,
 	from,
@@ -6,8 +6,11 @@ import {
 	palette,
 	space,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
 import {
+	Button,
+	buttonThemeReaderRevenueBrand,
 	LinkButton,
 	Stack,
 	SvgClock,
@@ -26,7 +29,7 @@ import type {
 } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
 import { SwitchSignInImage } from './SwitchSignInImage';
-import { iconListCss, sectionSpacing } from './SwitchStyles';
+import { buttonCentredCss, iconListCss, sectionSpacing } from './SwitchStyles';
 
 export const SwitchComplete = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
@@ -51,21 +54,20 @@ export const SwitchComplete = () => {
 	const amountPayableToday = routerState?.amountPayableToday;
 
 	if (!amountPayableToday) {
-		return <Navigate to="/switch" />;
+		return <Navigate to=".." />;
 	}
 
 	return (
 		<>
-			<section css={sectionSpacing}>
-				<Stack space={3}>
-					{!switchContext.isFromApp && (
-						<ThankYouMessaging
-							mainPlan={mainPlan}
-							newAmount={newAmount}
-						/>
-					)}
-				</Stack>
-			</section>
+			{switchContext.isFromApp && <AppOnlyThankYou />}
+			{!switchContext.isFromApp && (
+				<section css={sectionSpacing}>
+					<ThankYouMessaging
+						mainPlan={mainPlan}
+						newAmount={newAmount}
+					/>
+				</section>
+			)}
 			<section css={sectionSpacing}>
 				<WhatHappensNext
 					currency={mainPlan.currency}
@@ -86,6 +88,73 @@ export const SwitchComplete = () => {
 				</section>
 			)}
 		</>
+	);
+};
+
+const buttonContainerCss = css`
+	margin-top: ${space[1]}px;
+	padding: ${space[5]}px 0;
+	${until.tablet} {
+		display: flex;
+		flex-direction: column;
+	}
+`;
+
+const appThankYouCss = css`
+	background-color: ${brand[500]};
+	color: ${palette.neutral[100]};
+
+	${until.tablet} {
+		margin-left: -${space[3]}px;
+		margin-right: -${space[3]}px;
+		padding-left: ${space[3]}px;
+		padding-right: ${space[3]}px;
+		padding-top: ${space[6]}px;
+		padding-bottom: ${space[6]}px;
+	}
+`;
+
+const AppOnlyThankYou = () => {
+	return (
+		<div css={appThankYouCss}>
+			<h2
+				css={css`
+					margin-top: 0;
+					margin-bottom: ${space[5]}px;
+					${headline.xsmall({ fontWeight: 'bold' })}
+				`}
+			>
+				Thank you for upgrading to
+			</h2>
+			<p
+				css={css`
+					${textSans.large({ fontWeight: 'bold' })};
+					margin: 0;
+					border-top: 1px solid rgba(255, 255, 255, 0.6);
+				`}
+			>
+				One last step ...
+			</p>
+			<section css={buttonContainerCss}>
+				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
+					<Button
+						cssOverrides={buttonCentredCss}
+						onClick={() => alert('app')}
+					>
+						Activate full app access now
+					</Button>
+				</ThemeProvider>
+			</section>
+			<p
+				css={css`
+					${textSans.medium()};
+					margin: 0;
+				`}
+			>
+				If you don’t complete this step, you may be unable to access the
+				app in full for up to one hour.
+			</p>
+		</div>
 	);
 };
 
@@ -181,12 +250,12 @@ const signInContentContainerCss = css`
 `;
 
 const signInHeadingCss = css`
-	${textSans.medium({ fontWeight: 'bold', lineHeight: 'regular' })};
+	${textSans.medium({ fontWeight: 'bold' })};
 	margin: 0;
 `;
 
 const signInParaCss = css`
-	${textSans.medium({ lineHeight: 'regular' })};
+	${textSans.medium()};
 	margin: 0;
 	max-width: 64%;
 `;
