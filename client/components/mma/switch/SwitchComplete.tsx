@@ -8,14 +8,13 @@ import {
 	textSans,
 } from '@guardian/source-foundations';
 import {
-	Button,
+	LinkButton,
 	Stack,
 	SvgClock,
 	SvgEnvelope,
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
-import { useNavigate } from 'react-router-dom';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
@@ -32,7 +31,6 @@ import { iconListCss, sectionSpacing } from './SwitchStyles';
 export const SwitchComplete = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 	const productDetail = switchContext.productDetail;
-	const navigate = useNavigate();
 
 	const mainPlan = getMainPlan(
 		productDetail.subscription,
@@ -79,16 +77,14 @@ export const SwitchComplete = () => {
 			{!switchContext.isFromApp && (
 				<section css={sectionSpacing}>
 					<SignInBanner />
-					<Button
+					<LinkButton
 						css={css`
 							margin-top: ${space[6]}px;
 						`}
-						onClick={() => {
-							navigate('https://www.theguardian.com/');
-						}}
+						href="https://www.theguardian.com/uk"
 					>
 						Continue to read the Guardian
-					</Button>
+					</LinkButton>
 				</section>
 			)}
 		</>
