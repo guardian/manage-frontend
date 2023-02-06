@@ -81,7 +81,7 @@ export const SwitchComplete = () => {
 						css={css`
 							margin-top: ${space[6]}px;
 						`}
-						href="https://www.theguardian.com/uk"
+						href="https://www.theguardian.com/"
 					>
 						Continue to read the Guardian
 					</LinkButton>
