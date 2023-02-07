@@ -47,6 +47,7 @@ export const SwitchComplete = () => {
 		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 	const newAmountAndCurrency = `${mainPlan.currency}${newAmount}`;
+	const isUpgrading = mainPlan.price >= threshold * 100;
 
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
@@ -62,6 +63,7 @@ export const SwitchComplete = () => {
 				<ThankYouBanner
 					newAmount={newAmountAndCurrency}
 					newProduct={supporterPlusTitle.toLowerCase()}
+					isUpgrading={isUpgrading}
 				/>
 			) : (
 				<section css={sectionSpacing}>
@@ -143,11 +145,16 @@ const thankYouBannerButtonCss = css`
 	}
 `;
 
-const ThankYouBanner = (props: { newAmount: string; newProduct: string }) => {
+const ThankYouBanner = (props: {
+	newAmount: string;
+	newProduct: string;
+	isUpgrading: boolean;
+}) => {
 	return (
 		<section css={thankYouBannerCss}>
 			<h2 css={thankYouBannerHeadingCss}>
-				Thank you for upgrading to {props.newAmount} {props.newProduct}.
+				Thank you for {props.isUpgrading ? 'upgrading' : 'changing'} to{' '}
+				{props.newAmount} {props.newProduct}.
 			</h2>
 			<p css={thankYouBannerSubheadingCss}>One last step ...</p>
 			<div css={thankYouBannerButtonCss}>
