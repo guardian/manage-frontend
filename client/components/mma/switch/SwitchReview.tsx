@@ -322,20 +322,27 @@ export const SwitchReview = () => {
 			)}
 			<section css={sectionSpacing}>
 				<p css={smallPrintCss}>
-					This arrangement auto-renews and you will be charged the
-					applicable monthly amount each time it renews unless you
-					cancel. You can change how much you pay at any time but{' '}
-					{mainPlan.currency}
-					{threshold} per {mainPlan.billingPeriod}, is the minimum
-					payment to receive these benefits. You can cancel any time
-					before your next payment date and if you cancel within the
-					first 14 days, you’ll receive a full refund. Cancellation of
-					your payment will result in the cancellation of these
-					benefits.
+					This arrangement auto-renews each {mainPlan.billingPeriod}.
+					You will be charged the applicable{' '}
+					{monthlyOrAnnual.toLowerCase()} amount at each renewal
+					unless you cancel. You can cancel or change how much you pay
+					for these benefits at any time before your next renewal
+					date, but {mainPlan.currency}
+					{threshold} per {mainPlan.billingPeriod} is the minimum
+					payment. If you cancel within 14 days of signing up, you’ll
+					receive a full refund and your benefits will stop
+					immediately. Changes to your payment amount or cancellation
+					made after 14 days will take effect at the end of your
+					current {monthlyOrAnnual.toLowerCase()} payment period. To
+					cancel, go to Manage My Account or see our{' '}
+					<a href="https://www.theguardian.com/info/2022/oct/28/the-guardian-supporter-plus-terms-and-conditions">
+						Terms
+					</a>
+					.
 				</p>
 				<p css={smallPrintCss}>
 					By proceeding, you are agreeing to our{' '}
-					<a href="https://www.theguardian.com/info/2014/aug/06/guardian-observer-digital-subscriptions-terms-conditions">
+					<a href="https://www.theguardian.com/info/2022/oct/28/the-guardian-supporter-plus-terms-and-conditions">
 						Terms and Conditions
 					</a>
 					.
