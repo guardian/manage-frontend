@@ -1,13 +1,14 @@
-import { css } from '@emotion/react';
+import { css, ThemeProvider } from '@emotion/react';
 import {
-	brand,
 	from,
 	headline,
 	palette,
 	space,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
 import {
+	buttonThemeReaderRevenueBrand,
 	LinkButton,
 	Stack,
 	SvgClock,
@@ -26,7 +27,7 @@ import type {
 } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
 import { SwitchSignInImage } from './SwitchSignInImage';
-import { iconListCss, sectionSpacing } from './SwitchStyles';
+import { buttonCentredCss, iconListCss, sectionSpacing } from './SwitchStyles';
 
 export const SwitchComplete = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
@@ -41,31 +42,37 @@ export const SwitchComplete = () => {
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		mainPlan.billingPeriod,
 	);
-
+	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
 	const threshold =
 		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
+	const newAmountAndCurrency = `${mainPlan.currency}${newAmount}`;
+	const isUpgrading = mainPlan.price >= threshold * 100;
 
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
 	const amountPayableToday = routerState?.amountPayableToday;
 
 	if (!amountPayableToday) {
-		return <Navigate to="/switch" />;
+		return <Navigate to=".." />;
 	}
 
 	return (
 		<>
-			<section css={sectionSpacing}>
-				<Stack space={3}>
-					{!switchContext.isFromApp && (
-						<ThankYouMessaging
-							mainPlan={mainPlan}
-							newAmount={newAmount}
-						/>
-					)}
-				</Stack>
-			</section>
+			{switchContext.isFromApp ? (
+				<ThankYouBanner
+					newAmount={newAmountAndCurrency}
+					newProduct={supporterPlusTitle.toLowerCase()}
+					isUpgrading={isUpgrading}
+				/>
+			) : (
+				<section css={sectionSpacing}>
+					<ThankYouMessaging
+						mainPlan={mainPlan}
+						newAmount={newAmount}
+					/>
+				</section>
+			)}
 			<section css={sectionSpacing}>
 				<WhatHappensNext
 					currency={mainPlan.currency}
@@ -89,9 +96,88 @@ export const SwitchComplete = () => {
 	);
 };
 
+const thankYouBannerCss = css`
+	margin-top: -1px;
+	margin-left: -${space[3]}px;
+	margin-right: -${space[3]}px;
+	padding: ${space[6]}px ${space[3]}px;
+	color: ${palette.neutral[100]};
+	background-color: ${palette.brand[500]};
+
+	${from.tablet} {
+		margin-left: -${space[5]}px;
+		margin-right: -${space[5]}px;
+	}
+
+	${from.desktop} {
+		margin-top: ${space[9]}px;
+		margin-left: 0;
+		margin-right: 0;
+		padding: ${space[4]}px ${space[4]}px;
+	}
+`;
+
+const thankYouBannerHeadingCss = css`
+	${headline.xsmall({ fontWeight: 'bold' })}
+	margin-top: 0;
+	margin-bottom: ${space[5]}px;
+	max-width: 30ch;
+`;
+
+const thankYouBannerSubheadingCss = css`
+	${textSans.large({ fontWeight: 'bold' })};
+	margin: 0;
+	border-top: 1px solid rgba(255, 255, 255, 0.6);
+`;
+
+const thankYouBannerCopyCss = css`
+	${textSans.medium()};
+	margin: 0;
+	max-width: 45ch;
+`;
+
+const thankYouBannerButtonCss = css`
+	margin-top: ${space[6]}px;
+	margin-bottom: ${space[5]}px;
+	${until.tablet} {
+		display: flex;
+		flex-direction: column;
+	}
+`;
+
+const ThankYouBanner = (props: {
+	newAmount: string;
+	newProduct: string;
+	isUpgrading: boolean;
+}) => {
+	return (
+		<section css={thankYouBannerCss}>
+			<h2 css={thankYouBannerHeadingCss}>
+				Thank you for {props.isUpgrading ? 'upgrading' : 'changing'} to{' '}
+				{props.newAmount} {props.newProduct}.
+			</h2>
+			<p css={thankYouBannerSubheadingCss}>One last step ...</p>
+			<div css={thankYouBannerButtonCss}>
+				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
+					<LinkButton
+						href="x-gu://mma/success"
+						cssOverrides={buttonCentredCss}
+					>
+						Activate full app access now
+					</LinkButton>
+				</ThemeProvider>
+			</div>
+			<p css={thankYouBannerCopyCss}>
+				If you don’t complete this step, you may be unable to access the
+				app in full for up to one hour.
+			</p>
+		</section>
+	);
+};
+
 const whatHappensNextCss = css`
 	li > svg {
-		fill: ${brand[500]};
+		fill: ${palette.brand[500]};
 	}
 `;
 
@@ -181,12 +267,12 @@ const signInContentContainerCss = css`
 `;
 
 const signInHeadingCss = css`
-	${textSans.medium({ fontWeight: 'bold', lineHeight: 'regular' })};
+	${textSans.medium({ fontWeight: 'bold' })};
 	margin: 0;
 `;
 
 const signInParaCss = css`
-	${textSans.medium({ lineHeight: 'regular' })};
+	${textSans.medium()};
 	margin: 0;
 	max-width: 64%;
 `;
