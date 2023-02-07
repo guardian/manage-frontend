@@ -183,7 +183,7 @@ const whatHappensNextCss = css`
 
 const WhatHappensNext = (props: {
 	currency: string;
-	amountPayableToday: Number;
+	amountPayableToday: number;
 	email: string;
 }) => {
 	return (
