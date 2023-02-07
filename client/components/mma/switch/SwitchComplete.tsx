@@ -183,7 +183,7 @@ const whatHappensNextCss = css`
 
 const WhatHappensNext = (props: {
 	currency: string;
-	amountPayableToday: number;
+	amountPayableToday: Number;
 	email: string;
 }) => {
 	return (
@@ -201,7 +201,7 @@ const WhatHappensNext = (props: {
 					<span>
 						Your first billing date is today and you will be charge
 						a reduced rate of {props.currency}
-						{props.amountPayableToday}.
+						{props.amountPayableToday.toFixed(2)}.
 					</span>
 				</li>
 				<li>
