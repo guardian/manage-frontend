@@ -136,7 +136,7 @@ export const SwitchReview = () => {
 				setSwitchingError(true);
 			} else {
 				navigate('../complete', {
-					state: { amountPayableToday: amount },
+					state: { amountPayableToday: amount.toFixed(2) },
 				});
 			}
 		} catch (e) {
@@ -230,7 +230,9 @@ export const SwitchReview = () => {
 								<strong>
 									Your first payment will be just{' '}
 									{mainPlan.currency}
-									{previewResponse.amountPayableToday}
+									{previewResponse.amountPayableToday.toFixed(
+										2,
+									)}
 								</strong>
 								<br />
 								We will charge you a smaller amount today, to
