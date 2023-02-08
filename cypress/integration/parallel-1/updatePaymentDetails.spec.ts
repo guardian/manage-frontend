@@ -16,8 +16,8 @@ describe('Update payment details', () => {
 		signInAndAcceptCookies();
 	});
 
-	it('Complete card payment update', () => {
-		cy.intercept('GET', '/api/me/mma?productType=*', {
+	it('Complete card payment update through billing page', () => {
+		cy.intercept('GET', '/api/me/mma*', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('product_detail');
@@ -26,6 +26,11 @@ describe('Update payment details', () => {
 			statusCode: 200,
 			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('refetch_subscription');
+
+		cy.intercept('GET', 'api/invoices', {
+			statusCode: 200,
+			body: { invoices: [] },
+		}).as('invoices');
 
 		cy.intercept('POST', '/api/payment/card', {
 			statusCode: 200,
@@ -47,9 +52,11 @@ describe('Update payment details', () => {
 			body: paymentMethods,
 		});
 
-		cy.visit('/payment/subscriptioncard');
-
+		cy.visit('/billing');
 		cy.wait('@product_detail');
+		cy.wait('@invoices');
+
+		cy.findByText('Update payment method').click();
 
 		cy.resolve('Stripe').should((value) => {
 			expect(value).to.be.ok;

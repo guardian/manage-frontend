@@ -1,6 +1,7 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import { guardianWeeklyCardInvoice } from '../../../fixtures/invoices';
 import {
 	digitalDD,
 	guardianWeeklyCard,
@@ -39,7 +40,9 @@ export const WithSubscriptions: ComponentStory<typeof Billing> = () => {
 				newspaperVoucherPaypal,
 			),
 		})
-		.get('/api/invoices', { body: { invoices: [] } });
+		.get('/api/invoices', {
+			body: { invoices: [guardianWeeklyCardInvoice] },
+		});
 
 	return <Billing />;
 };

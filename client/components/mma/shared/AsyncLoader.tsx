@@ -89,7 +89,7 @@ export class AsyncLoader<
 		} else if (this.props.errorRender) {
 			return this.props.errorRender();
 		}
-		return <GenericErrorScreen loggingMessage={false} />;
+		return <GenericErrorScreen />;
 	}
 
 	private processResponse = (

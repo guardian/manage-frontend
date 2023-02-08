@@ -154,7 +154,7 @@ export const SwitchReview = () => {
 	} = useAsyncLoader(() => productMoveFetch(true), JsonResponseHandler);
 
 	if (loadingState == LoadingState.HasError) {
-		return <GenericErrorScreen loggingMessage={false} />;
+		return <GenericErrorScreen />;
 	}
 	if (loadingState == LoadingState.IsLoading) {
 		return <DefaultLoadingView />;

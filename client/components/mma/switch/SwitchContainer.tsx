@@ -78,7 +78,7 @@ const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 	if (loadingState == LoadingState.HasError) {
 		return (
 			<SwitchPageContainer>
-				<GenericErrorScreen loggingMessage={false} />
+				<GenericErrorScreen />
 			</SwitchPageContainer>
 		);
 	}
