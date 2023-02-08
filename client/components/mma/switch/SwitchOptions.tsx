@@ -63,6 +63,16 @@ const fromAppHeadingCss = css`
 	margin-bottom: 0;
 `;
 
+function showAmountPerPeriod(plan: PaidSubscriptionPlan, amount: number) {
+	return (
+		<>
+			{plan.currency}
+			{Number.isInteger(amount) ? amount : amount.toFixed(2)}/
+			{plan.billingPeriod}
+		</>
+	);
+}
+
 export const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 
@@ -149,11 +159,7 @@ export const SwitchOptions = () => {
 								{monthlyOrAnnual} support
 							</h3>
 							<p css={productSubtitleCss}>
-								{mainPlan.currency}
-								{Number.isInteger(currentAmount)
-									? currentAmount
-									: currentAmount.toFixed(2)}
-								/{mainPlan.billingPeriod}
+								{showAmountPerPeriod(mainPlan, currentAmount)}
 							</p>
 						</div>
 					</Card.Header>
