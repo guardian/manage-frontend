@@ -150,7 +150,10 @@ export const SwitchOptions = () => {
 							</h3>
 							<p css={productSubtitleCss}>
 								{mainPlan.currency}
-								{currentAmount}/{mainPlan.billingPeriod}
+								{Number.isInteger(currentAmount)
+									? currentAmount
+									: currentAmount.toFixed(2)}
+								/{mainPlan.billingPeriod}
 							</p>
 						</div>
 					</Card.Header>
