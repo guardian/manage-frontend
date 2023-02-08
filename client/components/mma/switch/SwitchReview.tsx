@@ -3,7 +3,6 @@ import { from, palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
-	InlineError,
 	Stack,
 	SvgClock,
 	SvgCreditCard,
@@ -25,6 +24,7 @@ import {
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
+import { ErrorSummary } from '../paymentUpdate/Summary';
 import { SwitchOffsetPaymentIcon } from '../shared/assets/SwitchOffsetPaymentIcon';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
@@ -40,12 +40,40 @@ import { SwitchContext } from './SwitchContainer';
 import {
 	buttonCentredCss,
 	buttonMutedCss,
+	errorSummaryLinkCss,
+	errorSummaryOverrideCss,
 	iconListCss,
 	listWithDividersCss,
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
 } from './SwitchStyles';
+
+const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
+	props.PaymentFailure ? (
+		<>
+			Please click{' '}
+			<a css={errorSummaryLinkCss} href="/payment/contributions">
+				here
+			</a>{' '}
+			to update your payment details in order to change your support.
+		</>
+	) : (
+		<>
+			Please click{' '}
+			<a css={errorSummaryLinkCss} href="/payment/contributions">
+				here
+			</a>{' '}
+			to check that your details are correct before trying again. If the
+			problem persists contact{' '}
+			<a
+				css={errorSummaryLinkCss}
+				href="mailto:customer.help@guardian.com"
+			>
+				customer.help@guardian.com
+			</a>
+		</>
+	);
 
 const newAmountCss = css`
 	${textSans.medium({ fontWeight: 'bold' })};
@@ -88,6 +116,8 @@ export const SwitchReview = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 	const productDetail = switchContext.productDetail;
 
+	const inPaymentFailure = !!productDetail.alertText;
+
 	const mainPlan = getMainPlan(
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
@@ -128,6 +158,11 @@ export const SwitchReview = () => {
 		);
 
 	const confirmSwitch = async (amount: number) => {
+		if (inPaymentFailure) {
+			setSwitchingError(true);
+			return;
+		}
+
 		try {
 			setIsSwitching(true);
 			const response = await productMoveFetch(false);
@@ -320,9 +355,15 @@ export const SwitchReview = () => {
 			</section>
 			{switchingError && (
 				<section css={sectionSpacing}>
-					<InlineError>
-						An error occurred whilst switching
-					</InlineError>
+					<ErrorSummary
+						message="There is a problem with your payment"
+						context={
+							<SwitchErrorContext
+								PaymentFailure={inPaymentFailure}
+							/>
+						}
+						cssOverrides={errorSummaryOverrideCss}
+					/>
 				</section>
 			)}
 			<section css={sectionSpacing}>
