@@ -12,6 +12,7 @@ import {
 	productMoveResponse,
 } from '../../../client/fixtures/productMovement';
 import { featureSwitches } from '../../../shared/featureSwitches';
+import { ProductDetail } from '../../../shared/productResponse';
 
 const setSignInStatus = () => {
 	cy.window().then((window) => {
@@ -208,7 +209,7 @@ describe('product switching', () => {
 		cy.intercept('POST', '/api/product-move/*', {
 			statusCode: 200,
 			body: productMovePreviewResponse,
-		});
+		}).as('product_move');
 	});
 
 	if (
@@ -277,8 +278,49 @@ describe('product switching', () => {
 
 			cy.findByRole('button', { name: 'Confirm change' }).click();
 
-			// TODO: This is a placeholder error message pending final design
-			cy.findByText('An error occurred whilst switching').should('exist');
+			cy.findByText('There is a problem with your payment').should(
+				'exist',
+			);
+			cy.findByText(
+				/check that your details are correct before trying again/,
+			).should('exist');
+		});
+
+		it('shows payment failure error message and does not call product move API again', () => {
+			const contributionWithPaymentFailure: ProductDetail = JSON.parse(
+				JSON.stringify(contribution),
+			);
+			contributionWithPaymentFailure.alertText = 'Payment failed';
+
+			cy.intercept('GET', '/api/me/mma?productType=Contribution', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(contributionWithPaymentFailure),
+			});
+
+			cy.visit('/switch');
+			setSignInStatus();
+
+			cy.findByText('There is a problem with your payment').should(
+				'exist',
+			);
+			cy.findByText(
+				/update your payment details in order to change your support/,
+			).should('exist');
+
+			cy.findByRole('button', {
+				name: 'Add extras with no extra cost',
+			}).click();
+
+			cy.findByRole('button', { name: 'Confirm change' }).click();
+
+			cy.findByText('There is a problem with your payment').should(
+				'exist',
+			);
+			cy.findByText(
+				/update your payment details in order to change your support/,
+			).should('exist');
+
+			cy.get('@product_move.all').should('have.length', 1);
 		});
 	}
 });
