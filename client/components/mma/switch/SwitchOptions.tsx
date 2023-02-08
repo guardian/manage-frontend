@@ -12,6 +12,7 @@ import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
+import { ErrorSummary } from '../paymentUpdate/Summary';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
@@ -19,6 +20,8 @@ import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
 import {
 	buttonCentredCss,
+	errorSummaryLinkCss,
+	errorSummaryOverrideCss,
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
@@ -122,8 +125,29 @@ export const SwitchOptions = () => {
 
 	return (
 		<>
+			{productDetail.alertText && (
+				<section css={sectionSpacing}>
+					<ErrorSummary
+						message="There is a problem with your payment"
+						context={
+							<>
+								Please click{' '}
+								<a
+									css={errorSummaryLinkCss}
+									href="/payment/contributions"
+								>
+									here
+								</a>{' '}
+								to update your payment details in order to
+								change your support.
+							</>
+						}
+						cssOverrides={errorSummaryOverrideCss}
+					/>
+				</section>
+			)}
 			{switchContext.isFromApp && (
-				<div css={sectionSpacing}>
+				<section css={sectionSpacing}>
 					<h2 css={fromAppHeadingCss}>
 						Unlock full access to our news app today
 					</h2>
@@ -136,7 +160,7 @@ export const SwitchOptions = () => {
 						If this doesn't suit you, no change is needed, but note
 						you will have limited access to our app.
 					</p>
-				</div>
+				</section>
 			)}
 			<section css={sectionSpacing}>
 				<Heading

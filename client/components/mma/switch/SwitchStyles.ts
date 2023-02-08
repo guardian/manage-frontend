@@ -93,3 +93,14 @@ export const buttonMutedCss = css`
 		border: none;
 	}
 `;
+
+export const errorSummaryOverrideCss = css`
+	${until.tablet} {
+		border-radius: 6px;
+	}
+`;
+
+export const errorSummaryLinkCss = css`
+	color: ${palette.error[400]};
+	text-decoration: underline;
+`;
