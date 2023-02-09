@@ -9,6 +9,7 @@ import {
 } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import {
 	dateAddMonths,
 	dateAddYears,
@@ -40,6 +41,7 @@ import { SwitchContext } from './SwitchContainer';
 import {
 	buttonCentredCss,
 	buttonMutedCss,
+	errorSummaryBlockLinkCss,
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,
 	iconListCss,
@@ -52,26 +54,25 @@ import {
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
 	props.PaymentFailure ? (
 		<>
-			Please click{' '}
-			<a css={errorSummaryLinkCss} href="/payment/contributions">
-				here
-			</a>{' '}
-			to update your payment details in order to change your support.
+			Please update your payment details in order to change your support.
+			<Link
+				css={[errorSummaryLinkCss, errorSummaryBlockLinkCss]}
+				to="/payment/contributions"
+			>
+				Check your payment details
+			</Link>
 		</>
 	) : (
 		<>
-			Please click{' '}
-			<a css={errorSummaryLinkCss} href="/payment/contributions">
-				here
-			</a>{' '}
-			to check that your details are correct before trying again. If the
-			problem persists contact{' '}
+			Please ensure your payment details are correct. If the problem
+			persists get in touch at{' '}
 			<a
 				css={errorSummaryLinkCss}
 				href="mailto:customer.help@guardian.com"
 			>
 				customer.help@guardian.com
 			</a>
+			.
 		</>
 	);
 
@@ -356,7 +357,11 @@ export const SwitchReview = () => {
 			{switchingError && (
 				<section css={sectionSpacing}>
 					<ErrorSummary
-						message="There is a problem with your payment"
+						message={
+							inPaymentFailure
+								? 'There is a problem with your payment method'
+								: 'We were unable to change your support'
+						}
 						context={
 							<SwitchErrorContext
 								PaymentFailure={inPaymentFailure}

@@ -101,6 +101,11 @@ export const errorSummaryOverrideCss = css`
 `;
 
 export const errorSummaryLinkCss = css`
-	color: ${palette.error[400]};
+	color: currentColor;
 	text-decoration: underline;
+`;
+
+export const errorSummaryBlockLinkCss = css`
+	display: block;
+	margin-top: ${space[3]}px;
 `;

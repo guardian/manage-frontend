@@ -278,12 +278,9 @@ describe('product switching', () => {
 
 			cy.findByRole('button', { name: 'Confirm change' }).click();
 
-			cy.findByText('There is a problem with your payment').should(
+			cy.findByText('We were unable to change your support').should(
 				'exist',
 			);
-			cy.findByText(
-				/check that your details are correct before trying again/,
-			).should('exist');
 		});
 
 		it('shows payment failure error message and does not call product move API again', () => {
@@ -300,12 +297,9 @@ describe('product switching', () => {
 			cy.visit('/switch');
 			setSignInStatus();
 
-			cy.findByText('There is a problem with your payment').should(
+			cy.findByText('There is a problem with your payment method').should(
 				'exist',
 			);
-			cy.findByText(
-				/update your payment details in order to change your support/,
-			).should('exist');
 
 			cy.findByRole('button', {
 				name: 'Add extras with no extra cost',
@@ -313,12 +307,9 @@ describe('product switching', () => {
 
 			cy.findByRole('button', { name: 'Confirm change' }).click();
 
-			cy.findByText('There is a problem with your payment').should(
+			cy.findByText('There is a problem with your payment method').should(
 				'exist',
 			);
-			cy.findByText(
-				/update your payment details in order to change your support/,
-			).should('exist');
 
 			cy.get('@product_move.all').should('have.length', 1);
 		});

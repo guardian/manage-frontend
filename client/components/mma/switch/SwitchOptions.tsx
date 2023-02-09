@@ -7,6 +7,7 @@ import {
 } from '@guardian/source-react-components';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
@@ -20,6 +21,7 @@ import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
 import {
 	buttonCentredCss,
+	errorSummaryBlockLinkCss,
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,
 	productTitleCss,
@@ -128,21 +130,23 @@ export const SwitchOptions = () => {
 			{productDetail.alertText && (
 				<section css={sectionSpacing}>
 					<ErrorSummary
-						message="There is a problem with your payment"
+						cssOverrides={errorSummaryOverrideCss}
+						message="There is a problem with your payment method"
 						context={
 							<>
-								Please click{' '}
-								<a
-									css={errorSummaryLinkCss}
-									href="/payment/contributions"
-								>
-									here
-								</a>{' '}
-								to update your payment details in order to
+								Please update your payment details in order to
 								change your support.
+								<Link
+									css={[
+										errorSummaryLinkCss,
+										errorSummaryBlockLinkCss,
+									]}
+									to="/payment/contributions"
+								>
+									Check your payment details
+								</Link>
 							</>
 						}
-						cssOverrides={errorSummaryOverrideCss}
 					/>
 				</section>
 			)}
