@@ -201,7 +201,7 @@ const WhatHappensNext = (props: {
 					<span>
 						Your first billing date is today and you will be charge
 						a reduced rate of {props.currency}
-						{props.amountPayableToday.toFixed(2)}.
+						{showAmount(props.amountPayableToday)}.
 					</span>
 				</li>
 				<li>
@@ -230,6 +230,10 @@ const thankYouCss = css`
 	}
 `;
 
+function showAmount(amount: number) {
+	return <>{Number.isInteger(amount) ? amount : amount.toFixed(2)}</>;
+}
+
 const ThankYouMessaging = (props: {
 	mainPlan: PaidSubscriptionPlan;
 	newAmount: number;
@@ -237,7 +241,7 @@ const ThankYouMessaging = (props: {
 	return (
 		<h2 css={thankYouCss}>
 			Thank you for upgrading to {props.mainPlan.currency}
-			{props.newAmount} per {props.mainPlan.billingPeriod}.{' '}
+			{showAmount(props.newAmount)} per {props.mainPlan.billingPeriod}.{' '}
 			<span>Enjoy your exclusive extras.</span>
 		</h2>
 	);
