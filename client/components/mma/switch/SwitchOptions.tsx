@@ -125,18 +125,16 @@ export const SwitchOptions = () => {
 			{switchContext.isFromApp && (
 				<div css={sectionSpacing}>
 					<h2 css={fromAppHeadingCss}>
-						Change your support to unlock unlimited reading in our
-						news app
+						Unlock full access to our news app today
 					</h2>
 					<p
 						css={css`
 							${textSans.medium()}
 						`}
 					>
-						To unlock unlimited reading in our news app, please make
-						a small change to your support type. If this doesn't
-						suit you, no change is needed, but note you will
-						continue to have limited app access.
+						It takes less than a minute to change your support type.
+						If this doesn't suit you, no change is needed, but note
+						you will have limited access to our app.
 					</p>
 				</div>
 			)}
@@ -178,26 +176,27 @@ export const SwitchOptions = () => {
 					<Heading sansSerif>
 						{aboveThreshold ? 'Add extras' : 'Change your support'}
 					</Heading>
-					{!switchContext.isFromApp && (
+					{aboveThreshold && (
 						<p
 							css={css`
 								${textSans.medium()}
 								margin: 0;
 							`}
 						>
-							{aboveThreshold ? (
-								<>
-									Your current payment entitles you to unlock
-									exclusive supporter extras. It takes less
-									than a minute to change your support type
-									and gain access.
-								</>
-							) : (
-								<>
-									Unlock exclusive supporter extras when you
-									pay a little more
-								</>
-							)}
+							Your current payment entitles you to unlock
+							exclusive supporter extras. It takes less than a
+							minute to change your support type and gain access.
+						</p>
+					)}
+					{!aboveThreshold && !switchContext.isFromApp && (
+						<p
+							css={css`
+								${textSans.medium()}
+								margin: 0;
+							`}
+						>
+							Unlock exclusive supporter extras when you pay a
+							little more
 						</p>
 					)}
 					<Card>
@@ -238,17 +237,15 @@ export const SwitchOptions = () => {
 				</ThemeProvider>
 			</section>
 
-			{aboveThreshold && (
-				<section>
-					<p css={smallPrintCss}>
-						These exclusive supporter extras are unlocked for a
-						minimum monthly support of {mainPlan.currency}
-						{monthlyThreshold} and a minimum annual support of{' '}
-						{mainPlan.currency}
-						{annualThreshold}.
-					</p>
-				</section>
-			)}
+			<section>
+				<p css={smallPrintCss}>
+					These exclusive supporter extras are unlocked for a minimum
+					monthly support of {mainPlan.currency}
+					{monthlyThreshold} and a minimum annual support of{' '}
+					{mainPlan.currency}
+					{annualThreshold}.
+				</p>
+			</section>
 		</>
 	);
 };

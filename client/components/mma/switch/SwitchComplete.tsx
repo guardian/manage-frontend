@@ -88,6 +88,7 @@ export const SwitchComplete = () => {
 					nextPaymentAmount={newAmount}
 					billingPeriod={monthlyOrAnnual.toLowerCase()}
 					email={switchContext.user?.email ?? ''}
+					isFromApp={switchContext.isFromApp}
 				/>
 			</section>
 			{!switchContext.isFromApp && (
@@ -178,8 +179,8 @@ const ThankYouBanner = (props: {
 				</ThemeProvider>
 			</div>
 			<p css={thankYouBannerCopyCss}>
-				Your new support plan starts today. It may take up to an hour
-				for your full app access to become available
+				If you don’t complete this step, you may be unable to access the
+				app in full for up to one hour.
 			</p>
 		</section>
 	);
@@ -197,6 +198,7 @@ const WhatHappensNext = (props: {
 	nextPaymentAmount: number;
 	billingPeriod: string;
 	email: string;
+	isFromApp: boolean;
 }) => {
 	// ToDo: the API could return the next payment date
 	const nextPaymentDate = dateString(
@@ -227,13 +229,15 @@ const WhatHappensNext = (props: {
 						{props.nextPaymentAmount}
 					</span>
 				</li>
-				<li>
-					<InverseStarIcon size="medium" />
-					<span>
-						Your new support will start today. It can take up to an
-						hour for your support to be activated.
-					</span>
-				</li>
+				{!props.isFromApp && (
+					<li>
+						<InverseStarIcon size="medium" />
+						<span>
+							Your new support will start today. It can take up to
+							an hour for your support to be activated.
+						</span>
+					</li>
+				)}
 			</ul>
 		</Stack>
 	);
