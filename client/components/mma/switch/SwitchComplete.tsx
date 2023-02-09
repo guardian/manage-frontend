@@ -16,6 +16,11 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
+import {
+	dateAddMonths,
+	dateAddYears,
+	dateString,
+} from '../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
@@ -49,7 +54,7 @@ export const SwitchComplete = () => {
 	);
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 	const newAmountAndCurrency = `${mainPlan.currency}${newAmount}`;
-	const isUpgrading = mainPlan.price >= threshold * 100;
+	const aboveThreshold = mainPlan.price >= threshold * 100;
 
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
@@ -65,13 +70,14 @@ export const SwitchComplete = () => {
 				<ThankYouBanner
 					newAmount={newAmountAndCurrency}
 					newProduct={supporterPlusTitle.toLowerCase()}
-					isUpgrading={isUpgrading}
+					aboveThreshold={aboveThreshold}
 				/>
 			) : (
 				<section css={sectionSpacing}>
 					<ThankYouMessaging
 						mainPlan={mainPlan}
 						newAmount={newAmount}
+						aboveThreshold={aboveThreshold}
 					/>
 				</section>
 			)}
@@ -79,6 +85,8 @@ export const SwitchComplete = () => {
 				<WhatHappensNext
 					currency={mainPlan.currency}
 					amountPayableToday={amountPayableToday}
+					nextPaymentAmount={newAmount}
+					billingPeriod={monthlyOrAnnual.toLowerCase()}
 					email={switchContext.user?.email ?? ''}
 				/>
 			</section>
@@ -150,13 +158,13 @@ const thankYouBannerButtonCss = css`
 const ThankYouBanner = (props: {
 	newAmount: string;
 	newProduct: string;
-	isUpgrading: boolean;
+	aboveThreshold: boolean;
 }) => {
 	return (
 		<section css={thankYouBannerCss}>
 			<h2 css={thankYouBannerHeadingCss}>
-				Thank you for {props.isUpgrading ? 'upgrading' : 'changing'} to{' '}
-				{props.newAmount} {props.newProduct}.
+				Thank you for {props.aboveThreshold ? 'changing' : 'upgrading'}{' '}
+				to {props.newAmount} {props.newProduct}.
 			</h2>
 			<p css={thankYouBannerSubheadingCss}>One last step ...</p>
 			<div css={thankYouBannerButtonCss}>
@@ -170,8 +178,8 @@ const ThankYouBanner = (props: {
 				</ThemeProvider>
 			</div>
 			<p css={thankYouBannerCopyCss}>
-				If you don’t complete this step, you may be unable to access the
-				app in full for up to one hour.
+				Your new support plan starts today. It may take up to an hour
+				for your full app access to become available
 			</p>
 		</section>
 	);
@@ -186,8 +194,18 @@ const whatHappensNextCss = css`
 const WhatHappensNext = (props: {
 	currency: string;
 	amountPayableToday: number;
+	nextPaymentAmount: number;
+	billingPeriod: string;
 	email: string;
 }) => {
+	// ToDo: the API could return the next payment date
+	const nextPaymentDate = dateString(
+		props.billingPeriod == 'monthly'
+			? dateAddMonths(new Date(), 1)
+			: dateAddYears(new Date(), 1),
+		'd MMMM',
+	);
+
 	return (
 		<Stack space={4}>
 			<Heading sansSerif>What happens next?</Heading>
@@ -201,9 +219,12 @@ const WhatHappensNext = (props: {
 				<li>
 					<SvgClock size="medium" />
 					<span>
-						Your first billing date is today and you will be charge
-						a reduced rate of {props.currency}
-						{props.amountPayableToday}.
+						Your first billing date is today and you will be charged{' '}
+						{props.currency}
+						{props.amountPayableToday}. From {nextPaymentDate}, your
+						ongoing {props.billingPeriod} payment will be{' '}
+						{props.currency}
+						{props.nextPaymentAmount}
 					</span>
 				</li>
 				<li>
@@ -235,11 +256,18 @@ const thankYouCss = css`
 const ThankYouMessaging = (props: {
 	mainPlan: PaidSubscriptionPlan;
 	newAmount: number;
+	aboveThreshold: boolean;
 }) => {
 	return (
 		<h2 css={thankYouCss}>
-			Thank you for upgrading to {props.mainPlan.currency}
-			{props.newAmount} per {props.mainPlan.billingPeriod}.{' '}
+			{props.aboveThreshold ? (
+				<>Thank you for changing your support type.</>
+			) : (
+				<>
+					Thank you for upgrading to {props.mainPlan.currency}
+					{props.newAmount} per {props.mainPlan.billingPeriod}.
+				</>
+			)}
 			<span>Enjoy your exclusive extras.</span>
 		</h2>
 	);
@@ -285,8 +313,8 @@ const SignInBanner = () => (
 		<div css={signInContentContainerCss}>
 			<h2 css={signInHeadingCss}>Sign in on all your devices</h2>
 			<p css={signInParaCss}>
-				To access your extras on all your digital devices, please sign
-				in. It takes less than a minute.
+				To access your exclusive extras on our website and app, please
+				sign in. It takes less than a minute.
 			</p>
 		</div>
 	</div>
