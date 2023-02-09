@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
+import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
+import type { CurrencyIso } from '../../../utilities/currencyIso';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
@@ -76,9 +78,14 @@ export const SwitchOptions = () => {
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
 
-	// ToDo: hardcoding this for now; need to find out where to get this from for each currency
-	const monthlyThreshold = 10;
-	const annualThreshold = 95;
+	const monthlyThreshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		'Monthly',
+	);
+	const annualThreshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		'Annual',
+	);
 
 	const threshold =
 		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
@@ -218,7 +225,7 @@ export const SwitchOptions = () => {
 					>
 						{aboveThreshold
 							? 'Add extras with no extra cost'
-							: 'Change to monthly + extras'}
+							: `Change to ${monthlyOrAnnual.toLowerCase()} + extras`}
 					</Button>
 				</ThemeProvider>
 			</section>

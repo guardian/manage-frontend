@@ -19,6 +19,8 @@ import { Navigate, useLocation } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
+import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
+import type { CurrencyIso } from '../../../utilities/currencyIso';
 import { InverseStarIcon } from '../shared/assets/InverseStarIcon';
 import { Heading } from '../shared/Heading';
 import type {
@@ -36,15 +38,15 @@ export const SwitchComplete = () => {
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
 
-	// ToDo: hardcoding this for now; need to find out where to get this from for each currency
-	const monthlyThreshold = 10;
-	const annualThreshold = 95;
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		mainPlan.billingPeriod,
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
-	const threshold =
-		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
+
+	const threshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		monthlyOrAnnual,
+	);
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 	const newAmountAndCurrency = `${mainPlan.currency}${newAmount}`;
 	const isUpgrading = mainPlan.price >= threshold * 100;

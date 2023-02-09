@@ -24,3 +24,20 @@ export default {
 export const Default: ComponentStory<typeof SwitchComplete> = () => (
 	<SwitchComplete />
 );
+
+export const YearlyOtherCurrency: ComponentStory<
+	typeof SwitchComplete
+> = () => <SwitchComplete />;
+
+const contributionBelowThreshold = JSON.parse(JSON.stringify(contribution));
+const plan = contributionBelowThreshold.subscription.currentPlans[0];
+plan.price = 300;
+plan.currency = '$';
+plan.billingPeriod = 'year';
+plan.currencyISO = 'NZD';
+
+YearlyOtherCurrency.parameters = {
+	reactRouter: {
+		state: { productDetail: contributionBelowThreshold },
+	},
+};

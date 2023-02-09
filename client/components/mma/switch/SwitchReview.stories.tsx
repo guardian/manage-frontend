@@ -27,3 +27,20 @@ export default {
 export const Default: ComponentStory<typeof SwitchReview> = () => (
 	<SwitchReview />
 );
+
+export const YearlyOtherCurrency: ComponentStory<typeof SwitchReview> = () => (
+	<SwitchReview />
+);
+
+const contributionBelowThreshold = JSON.parse(JSON.stringify(contribution));
+const plan = contributionBelowThreshold.subscription.currentPlans[0];
+plan.price = 300;
+plan.currency = '$';
+plan.billingPeriod = 'year';
+plan.currencyISO = 'NZD';
+
+YearlyOtherCurrency.parameters = {
+	reactRouter: {
+		state: { productDetail: contributionBelowThreshold },
+	},
+};

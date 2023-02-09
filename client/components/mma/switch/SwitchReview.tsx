@@ -18,6 +18,8 @@ import {
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
+import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
+import type { CurrencyIso } from '../../../utilities/currencyIso';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -94,12 +96,11 @@ export const SwitchReview = () => {
 		mainPlan.billingPeriod,
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
-	// ToDo: hardcoding this for now; need to find out where to get this from for each currency
-	const monthlyThreshold = 10;
-	const annualThreshold = 95;
 
-	const threshold =
-		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
+	const threshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		monthlyOrAnnual,
+	);
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 
 	// ToDo: the API could return the next payment date
@@ -235,8 +236,8 @@ export const SwitchReview = () => {
 								<br />
 								We will charge you a smaller amount today, to
 								offset the payment you've already given us for
-								the rest of the month. After this, from{' '}
-								{nextPayment}, your new{' '}
+								the rest of the {mainPlan.billingPeriod}. After
+								this, from {nextPayment}, your new{' '}
 								{monthlyOrAnnual.toLocaleLowerCase()} payment
 								will be {mainPlan.currency}
 								{previewResponse.supporterPlusPurchaseAmount}
