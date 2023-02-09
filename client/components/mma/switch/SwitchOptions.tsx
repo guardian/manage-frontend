@@ -171,8 +171,7 @@ export const SwitchOptions = () => {
 						>
 							You're currently supporting the Guardian with a{' '}
 							{monthlyOrAnnual.toLowerCase()} contribution of{' '}
-							{mainPlan.currency}
-							{currentAmount.toFixed(2)}.
+							{showAmountPerPeriod(mainPlan, currentAmount)}.
 						</div>
 					</Card.Section>
 				</Card>
