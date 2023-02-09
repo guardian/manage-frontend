@@ -77,6 +77,15 @@ interface PreviewResponse {
 	supporterPlusPurchaseAmount: number;
 }
 
+function showAmountPerPeriod(plan: PaidSubscriptionPlan, amount: number) {
+	return (
+		<>
+			{plan.currency}
+			{Number.isInteger(amount) ? amount : amount.toFixed(2)}
+		</>
+	);
+}
+
 export const SwitchReview = () => {
 	const navigate = useNavigate();
 
@@ -173,10 +182,10 @@ export const SwitchReview = () => {
 							${textSans.medium()};
 						`}
 					>
-						You will now support us with {mainPlan.currency}
-						{newAmount} every {mainPlan.billingPeriod}, giving you
-						exclusive supporter extras, including unlimited reading
-						in our news app
+						You will now support us with{' '}
+						{showAmountPerPeriod(mainPlan, newAmount)} every{' '}
+						{mainPlan.billingPeriod}, giving you exclusive supporter
+						extras, including unlimited reading in our news app
 					</p>
 				</Stack>
 			</section>
@@ -200,8 +209,8 @@ export const SwitchReview = () => {
 							</p>
 							<SupporterPlusBenefitsToggle />
 							<p css={newAmountCss}>
-								{mainPlan.currency}
-								{newAmount}/{mainPlan.billingPeriod}
+								{showAmountPerPeriod(mainPlan, newAmount)}/
+								{mainPlan.billingPeriod}
 							</p>
 						</Card.Section>
 					</Card>
@@ -241,7 +250,9 @@ export const SwitchReview = () => {
 								{nextPayment}, your new{' '}
 								{monthlyOrAnnual.toLocaleLowerCase()} payment
 								will be {mainPlan.currency}
-								{previewResponse.supporterPlusPurchaseAmount}
+								{previewResponse.supporterPlusPurchaseAmount.toFixed(
+									2,
+								)}
 							</span>
 						</li>
 						<li>
@@ -330,9 +341,9 @@ export const SwitchReview = () => {
 					unless you cancel. You can cancel or change how much you pay
 					for these benefits at any time before your next renewal
 					date, but {mainPlan.currency}
-					{threshold} per {mainPlan.billingPeriod} is the minimum
-					payment. If you cancel within 14 days of signing up, you’ll
-					receive a full refund and your benefits will stop
+					{threshold.toFixed(2)} per {mainPlan.billingPeriod} is the
+					minimum payment. If you cancel within 14 days of signing up,
+					you’ll receive a full refund and your benefits will stop
 					immediately. Changes to your payment amount or cancellation
 					made after 14 days will take effect at the end of your
 					current {monthlyOrAnnual.toLowerCase()} payment period. To
