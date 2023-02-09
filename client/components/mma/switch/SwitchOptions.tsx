@@ -202,8 +202,10 @@ export const SwitchOptions = () => {
 								</h3>
 								{!aboveThreshold && (
 									<p css={productSubtitleCss}>
-										{mainPlan.currency}
-										{threshold}/{mainPlan.billingPeriod}
+										{showAmountPerPeriod(
+											mainPlan,
+											threshold,
+										)}
 									</p>
 								)}
 							</div>
