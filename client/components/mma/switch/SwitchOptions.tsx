@@ -152,9 +152,7 @@ export const SwitchOptions = () => {
 				<Card>
 					<Card.Header backgroundColor={palette.brand[600]}>
 						<div css={cardHeaderDivCss}>
-							<h3 css={productTitleCss}>
-								{monthlyOrAnnual} support
-							</h3>
+							<h3 css={productTitleCss}>{monthlyOrAnnual}</h3>
 							<p css={productSubtitleCss}>
 								{mainPlan.currency}
 								{currentAmount}/{mainPlan.billingPeriod}
@@ -167,10 +165,9 @@ export const SwitchOptions = () => {
 								${textSans.medium()}
 							`}
 						>
-							You're currently supporting the Guardian with a{' '}
-							{monthlyOrAnnual.toLowerCase()} contribution of{' '}
-							{mainPlan.currency}
-							{currentAmount}.
+							You pay {mainPlan.currency}
+							{currentAmount} on a recurring basis every{' '}
+							{mainPlan.billingPeriod}
 						</div>
 					</Card.Section>
 				</Card>
@@ -188,8 +185,19 @@ export const SwitchOptions = () => {
 								margin: 0;
 							`}
 						>
-							Change to {supporterPlusTitle} and get exclusive
-							supporter benefits
+							{aboveThreshold ? (
+								<>
+									Your current payment entitles you to unlock
+									exclusive supporter extras. It takes less
+									than a minute to change your support type
+									and gain access.
+								</>
+							) : (
+								<>
+									Unlock exclusive supporter extras when you
+									pay a little more
+								</>
+							)}
 						</p>
 					)}
 					<Card>
@@ -225,7 +233,7 @@ export const SwitchOptions = () => {
 					>
 						{aboveThreshold
 							? 'Add extras with no extra cost'
-							: `Change to ${monthlyOrAnnual.toLowerCase()} + extras`}
+							: 'Upgrade'}
 					</Button>
 				</ThemeProvider>
 			</section>
@@ -233,11 +241,11 @@ export const SwitchOptions = () => {
 			{aboveThreshold && (
 				<section>
 					<p css={smallPrintCss}>
-						Exclusive supporter extras are unlocked for any monthly
-						support of {mainPlan.currency}
-						{monthlyThreshold} or above and any annual support of{' '}
+						These exclusive supporter extras are unlocked for a
+						minimum monthly support of {mainPlan.currency}
+						{monthlyThreshold} and a minimum annual support of{' '}
 						{mainPlan.currency}
-						{annualThreshold} or above.
+						{annualThreshold}.
 					</p>
 				</section>
 			)}
