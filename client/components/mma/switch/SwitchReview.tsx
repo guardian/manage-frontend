@@ -101,6 +101,7 @@ export const SwitchReview = () => {
 		mainPlan.currencyISO as CurrencyIso,
 		monthlyOrAnnual,
 	);
+	const aboveThreshold = mainPlan.price >= threshold * 100;
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 
 	// ToDo: the API could return the next payment date
@@ -174,10 +175,11 @@ export const SwitchReview = () => {
 							${textSans.medium()};
 						`}
 					>
-						You will now support us with {mainPlan.currency}
-						{newAmount} every {mainPlan.billingPeriod}, giving you
-						exclusive supporter extras, including unlimited reading
-						in our news app
+						Please {switchContext.isFromApp ? 'confirm' : 'review'}{' '}
+						your choice to unlock exclusive supporter extras
+						{aboveThreshold ? ". You'll still pay " : ' by paying '}
+						{mainPlan.currency}
+						{newAmount} per {mainPlan.billingPeriod}.
 					</p>
 				</Stack>
 			</section>
@@ -196,8 +198,9 @@ export const SwitchReview = () => {
 									max-width: 40ch;
 								`}
 							>
-								{monthlyOrAnnual} support with exclusive extras
-								including unlimited access to the App
+								{monthlyOrAnnual} support with exclusive extras,
+								including full access to our app and ad-free
+								reading
 							</p>
 							<SupporterPlusBenefitsToggle />
 							<p css={newAmountCss}>
@@ -218,7 +221,7 @@ export const SwitchReview = () => {
 								<strong>This change will happen today</strong>
 								<br />
 								Dive in and start enjoying your exclusive extras
-								straight away.
+								straight away
 							</span>
 						</li>
 						<li
@@ -229,7 +232,8 @@ export const SwitchReview = () => {
 							<SwitchOffsetPaymentIcon size="medium" />
 							<span>
 								<strong>
-									Your first payment will be just{' '}
+									Your first payment will be{' '}
+									{aboveThreshold && 'just'}{' '}
 									{mainPlan.currency}
 									{previewResponse.amountPayableToday}
 								</strong>
@@ -238,15 +242,15 @@ export const SwitchReview = () => {
 								offset the payment you've already given us for
 								the rest of the {mainPlan.billingPeriod}. After
 								this, from {nextPayment}, your new{' '}
-								{monthlyOrAnnual.toLocaleLowerCase()} payment
-								will be {mainPlan.currency}
+								{monthlyOrAnnual.toLowerCase()} payment will be{' '}
+								{mainPlan.currency}
 								{previewResponse.supporterPlusPurchaseAmount}
 							</span>
 						</li>
 						<li>
 							<SvgCreditCard size="medium" />
 							<span>
-								<strong>No payment changes are needed</strong>
+								<strong>Your payment method</strong>
 								<br />
 								We will take payment as before, from
 								<strong>
@@ -303,7 +307,7 @@ export const SwitchReview = () => {
 							confirmSwitch(previewResponse.amountPayableToday)
 						}
 					>
-						Confirm change
+						Confirm {aboveThreshold ? 'change' : 'upgrade'}
 					</Button>
 				</ThemeProvider>
 				<Button

@@ -27,7 +27,7 @@ export interface SwitchRouterState {
 
 export interface SwitchContextInterface {
 	productDetail: ProductDetail;
-	isFromApp: Boolean;
+	isFromApp: boolean;
 	user?: MembersDataApiUser;
 }
 
