@@ -125,10 +125,18 @@ export const SwitchReview = () => {
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
 
-	const threshold = getBenefitsThreshold(
+	const monthlyThreshold = getBenefitsThreshold(
 		mainPlan.currencyISO as CurrencyIso,
-		monthlyOrAnnual,
+		'Monthly',
 	);
+	const annualThreshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		'Annual',
+	);
+
+	const threshold =
+		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
+
 	const aboveThreshold = mainPlan.price >= threshold * 100;
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 
@@ -212,7 +220,7 @@ export const SwitchReview = () => {
 						your choice to unlock exclusive supporter extras
 						{aboveThreshold ? ". You'll still pay " : ' by paying '}
 						{mainPlan.currency}
-						{formatAmount(newAmount)}  per {mainPlan.billingPeriod}.
+						{formatAmount(newAmount)} per {mainPlan.billingPeriod}.
 					</p>
 				</Stack>
 			</section>
@@ -375,21 +383,26 @@ export const SwitchReview = () => {
 			)}
 			<section css={sectionSpacing}>
 				<p css={smallPrintCss}>
-					This arrangement auto-renews each {mainPlan.billingPeriod}.
+					This subscription auto-renews each {mainPlan.billingPeriod}.
 					You will be charged the applicable{' '}
 					{monthlyOrAnnual.toLowerCase()} amount at each renewal
-					unless you cancel. You can cancel or change how much you pay
-					for these benefits at any time before your next renewal
-					date, but {mainPlan.currency}
-					{formatAmount(threshold)} per {mainPlan.billingPeriod} is
-					the minimum payment. If you cancel within 14 days of signing
-					up, you’ll receive a full refund and your benefits will stop
-					immediately. Changes to your payment amount or cancellation
-					made after 14 days will take effect at the end of your
-					current {monthlyOrAnnual.toLowerCase()} payment period. To
-					cancel, go to Manage My Account or see our{' '}
+					unless you cancel. Payment can only be made using your
+					existing payment method. You can cancel or change how much
+					you pay for these benefits at any time before your next
+					renewal date, but {mainPlan.currency}
+					{formatAmount(monthlyThreshold)} per month or{' '}
+					{mainPlan.currency}
+					{formatAmount(annualThreshold)} per year is the minimum
+					payment. If you cancel within 14 days of taking out this
+					subscription, you’ll receive a full refund and your benefits
+					will stop immediately. Changes to your payment amount or
+					cancellation made after 14 days will take effect at the end
+					of your current subscription {mainPlan.billingPeriod}. To
+					cancel,{' '}
+					<Link to="/recurringsupport">go to Manage My Account</Link>{' '}
+					or{' '}
 					<a href="https://www.theguardian.com/info/2022/oct/28/the-guardian-supporter-plus-terms-and-conditions">
-						Terms
+						see our Terms
 					</a>
 					.
 				</p>
