@@ -7,11 +7,13 @@ import {
 } from '@guardian/source-react-components';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
+import { ErrorSummary } from '../paymentUpdate/Summary';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
@@ -19,6 +21,9 @@ import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
 import {
 	buttonCentredCss,
+	errorSummaryBlockLinkCss,
+	errorSummaryLinkCss,
+	errorSummaryOverrideCss,
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
@@ -122,8 +127,31 @@ export const SwitchOptions = () => {
 
 	return (
 		<>
+			{productDetail.alertText && (
+				<section css={sectionSpacing}>
+					<ErrorSummary
+						cssOverrides={errorSummaryOverrideCss}
+						message="There is a problem with your payment method"
+						context={
+							<>
+								Please update your payment details in order to
+								change your support.
+								<Link
+									css={[
+										errorSummaryLinkCss,
+										errorSummaryBlockLinkCss,
+									]}
+									to="/payment/contributions"
+								>
+									Check your payment details
+								</Link>
+							</>
+						}
+					/>
+				</section>
+			)}
 			{switchContext.isFromApp && (
-				<div css={sectionSpacing}>
+				<section css={sectionSpacing}>
 					<h2 css={fromAppHeadingCss}>
 						Unlock full access to our news app today
 					</h2>
@@ -136,7 +164,7 @@ export const SwitchOptions = () => {
 						If this doesn't suit you, no change is needed, but note
 						you will have limited access to our app.
 					</p>
-				</div>
+				</section>
 			)}
 			<section css={sectionSpacing}>
 				<Heading
