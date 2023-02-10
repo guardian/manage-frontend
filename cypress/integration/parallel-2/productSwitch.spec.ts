@@ -259,8 +259,12 @@ describe('product switching', () => {
 				body: productMoveSuccessfulResponse,
 			});
 
-			cy.findByText(/Thank you/).should('exist');
-			cy.findByText(/reduced rate of £5/).should('exist');
+			cy.findByText(/Thank you for changing your support type/).should(
+				'exist',
+			);
+			cy.findByText(
+				/Your first billing date is today and you will be charged £5/,
+			).should('exist');
 		});
 
 		it('shows an error message if switch fails', () => {
