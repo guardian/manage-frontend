@@ -15,6 +15,7 @@ export default {
 				productDetail: contribution,
 				user: { email: 'test@theguardian.com' },
 				amountPayableToday: 5.9,
+				nextPaymentDate: '20 March',
 			},
 			container: <SwitchContainer />,
 		},
