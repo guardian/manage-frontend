@@ -11,9 +11,9 @@ import { Link } from 'react-router-dom';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { formatAmount } from '../../../utilities/utils';
 import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
+import { formatAmount } from '../../../utilities/utils';
 import { ErrorSummary } from '../paymentUpdate/Summary';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
@@ -194,8 +194,8 @@ export const SwitchOptions = () => {
 							`}
 						>
 							You pay {mainPlan.currency}
-							{formatAmount(currentAmount)} on a recurring basis every{' '}
-							{mainPlan.billingPeriod}
+							{formatAmount(currentAmount)} on a recurring basis
+							every {mainPlan.billingPeriod}
 						</div>
 					</Card.Section>
 				</Card>
@@ -272,8 +272,8 @@ export const SwitchOptions = () => {
 				<p css={smallPrintCss}>
 					These exclusive supporter extras are unlocked for a minimum
 					monthly support of {mainPlan.currency}
-					{formatAmount(monthlyThreshold)} and a minimum annual support of{' '}
-					{mainPlan.currency}
+					{formatAmount(monthlyThreshold)} and a minimum annual
+					support of {mainPlan.currency}
 					{formatAmount(annualThreshold)}.
 				</p>
 			</section>

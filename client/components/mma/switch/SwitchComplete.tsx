@@ -24,9 +24,9 @@ import {
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { formatAmount } from '../../../utilities/utils';
 import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
+import { formatAmount } from '../../../utilities/utils';
 import { InverseStarIcon } from '../shared/assets/InverseStarIcon';
 import { Heading } from '../shared/Heading';
 import type {
@@ -54,7 +54,9 @@ export const SwitchComplete = () => {
 		monthlyOrAnnual,
 	);
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
-	const newAmountAndCurrency = `${mainPlan.currency}${newAmount}`;
+	const newAmountAndCurrency = `${mainPlan.currency}${formatAmount(
+		newAmount,
+	)}`;
 	const aboveThreshold = mainPlan.price >= threshold * 100;
 
 	const location = useLocation();
@@ -224,10 +226,10 @@ const WhatHappensNext = (props: {
 					<span>
 						Your first billing date is today and you will be charged{' '}
 						{props.currency}
-						{formatAmount(props.amountPayableToday)}. From {nextPaymentDate}, your
-						ongoing {props.billingPeriod} payment will be{' '}
-						{props.currency}
-            {formatAmount(props.nextPaymentAmount)}
+						{formatAmount(props.amountPayableToday)}. From{' '}
+						{nextPaymentDate}, your ongoing {props.billingPeriod}{' '}
+						payment will be {props.currency}
+						{formatAmount(props.nextPaymentAmount)}
 					</span>
 				</li>
 				{!props.isFromApp && (
@@ -270,7 +272,8 @@ const ThankYouMessaging = (props: {
 			) : (
 				<>
 					Thank you for upgrading to {props.mainPlan.currency}
-					{formatAmount(props.newAmount)} per {props.mainPlan.billingPeriod}.
+					{formatAmount(props.newAmount)} per{' '}
+					{props.mainPlan.billingPeriod}.
 				</>
 			)}
 			<span>Enjoy your exclusive extras.</span>
