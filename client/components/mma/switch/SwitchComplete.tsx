@@ -16,11 +16,6 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
-import {
-	dateAddMonths,
-	dateAddYears,
-	dateString,
-} from '../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
@@ -62,8 +57,9 @@ export const SwitchComplete = () => {
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
 	const amountPayableToday = routerState?.amountPayableToday;
+	const nextPaymentDate = routerState?.nextPaymentDate;
 
-	if (!amountPayableToday) {
+	if (!amountPayableToday || !nextPaymentDate) {
 		return <Navigate to=".." />;
 	}
 
@@ -92,6 +88,7 @@ export const SwitchComplete = () => {
 					billingPeriod={monthlyOrAnnual.toLowerCase()}
 					email={switchContext.user?.email ?? ''}
 					isFromApp={switchContext.isFromApp}
+					nextPaymentDate={nextPaymentDate}
 				/>
 			</section>
 			{!switchContext.isFromApp && (
@@ -202,15 +199,8 @@ const WhatHappensNext = (props: {
 	billingPeriod: string;
 	email: string;
 	isFromApp: boolean;
+	nextPaymentDate: string;
 }) => {
-	// ToDo: the API could return the next payment date
-	const nextPaymentDate = dateString(
-		props.billingPeriod == 'monthly'
-			? dateAddMonths(new Date(), 1)
-			: dateAddYears(new Date(), 1),
-		'd MMMM',
-	);
-
 	return (
 		<Stack space={4}>
 			<Heading sansSerif>What happens next?</Heading>
@@ -227,8 +217,8 @@ const WhatHappensNext = (props: {
 						Your first billing date is today and you will be charged{' '}
 						{props.currency}
 						{formatAmount(props.amountPayableToday)}. From{' '}
-						{nextPaymentDate}, your ongoing {props.billingPeriod}{' '}
-						payment will be {props.currency}
+						{props.nextPaymentDate}, your ongoing{' '}
+						{props.billingPeriod} payment will be {props.currency}
 						{formatAmount(props.nextPaymentAmount)}
 					</span>
 				</li>

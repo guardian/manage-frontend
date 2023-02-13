@@ -10,11 +10,7 @@ import {
 import { useContext, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import {
-	dateAddMonths,
-	dateAddYears,
-	dateString,
-} from '../../../../shared/dates';
+import { dateString } from '../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
@@ -105,8 +101,8 @@ const buttonLayoutCss = css`
 
 interface PreviewResponse {
 	amountPayableToday: number;
-	contributionRefundAmount: number;
 	supporterPlusPurchaseAmount: number;
+	nextPaymentDate: string;
 }
 
 export const SwitchReview = () => {
@@ -135,14 +131,6 @@ export const SwitchReview = () => {
 	);
 	const aboveThreshold = mainPlan.price >= threshold * 100;
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
-
-	// ToDo: the API could return the next payment date
-	const nextPayment = dateString(
-		monthlyOrAnnual == 'Monthly'
-			? dateAddMonths(new Date(), 1)
-			: dateAddYears(new Date(), 1),
-		'd MMMM',
-	);
 
 	const productMoveFetch = (preview: boolean) =>
 		fetch(
@@ -175,7 +163,10 @@ export const SwitchReview = () => {
 				setSwitchingError(true);
 			} else {
 				navigate('../complete', {
-					state: { amountPayableToday: amount },
+					state: {
+						amountPayableToday: amount,
+						nextPaymentDate: nextPaymentDate,
+					},
 				});
 			}
 		} catch (e) {
@@ -201,6 +192,11 @@ export const SwitchReview = () => {
 	if (previewResponse === null) {
 		return <Navigate to="/" />;
 	}
+
+	const nextPaymentDate = dateString(
+		new Date(previewResponse.nextPaymentDate),
+		'd MMMM',
+	);
 
 	return (
 		<>
@@ -281,7 +277,7 @@ export const SwitchReview = () => {
 								We will charge you a smaller amount today, to
 								offset the payment you've already given us for
 								the rest of the {mainPlan.billingPeriod}. After
-								this, from {nextPayment}, your new{' '}
+								this, from {nextPaymentDate}, your new{' '}
 								{monthlyOrAnnual.toLowerCase()} payment will be{' '}
 								{mainPlan.currency}
 								{formatAmount(

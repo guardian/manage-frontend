@@ -1,7 +1,7 @@
 export const productMovePreviewResponse = {
 	amountPayableToday: 5.0,
-	contributionRefundAmount: -5.0,
 	supporterPlusPurchaseAmount: 10.0,
+	nextPaymentDate: '2023-03-20',
 };
 
 export const productMoveSuccessfulResponse = {
