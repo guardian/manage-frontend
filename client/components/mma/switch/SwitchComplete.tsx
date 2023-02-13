@@ -19,6 +19,7 @@ import { Navigate, useLocation } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
+import { formatAmount } from '../../../utilities/utils';
 import { InverseStarIcon } from '../shared/assets/InverseStarIcon';
 import { Heading } from '../shared/Heading';
 import type {
@@ -201,7 +202,7 @@ const WhatHappensNext = (props: {
 					<span>
 						Your first billing date is today and you will be charge
 						a reduced rate of {props.currency}
-						{showAmount(props.amountPayableToday)}.
+						{formatAmount(props.amountPayableToday)}.
 					</span>
 				</li>
 				<li>
@@ -230,10 +231,6 @@ const thankYouCss = css`
 	}
 `;
 
-function showAmount(amount: number) {
-	return <>{Number.isInteger(amount) ? amount : amount.toFixed(2)}</>;
-}
-
 const ThankYouMessaging = (props: {
 	mainPlan: PaidSubscriptionPlan;
 	newAmount: number;
@@ -241,7 +238,7 @@ const ThankYouMessaging = (props: {
 	return (
 		<h2 css={thankYouCss}>
 			Thank you for upgrading to {props.mainPlan.currency}
-			{showAmount(props.newAmount)} per {props.mainPlan.billingPeriod}.{' '}
+			{formatAmount(props.newAmount)} per {props.mainPlan.billingPeriod}.{' '}
 			<span>Enjoy your exclusive extras.</span>
 		</h2>
 	);

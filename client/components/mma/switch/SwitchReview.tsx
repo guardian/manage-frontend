@@ -22,6 +22,7 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
+import { formatAmount } from '../../../utilities/utils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { SwitchOffsetPaymentIcon } from '../shared/assets/SwitchOffsetPaymentIcon';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
@@ -75,15 +76,6 @@ interface PreviewResponse {
 	amountPayableToday: number;
 	contributionRefundAmount: number;
 	supporterPlusPurchaseAmount: number;
-}
-
-function showAmountPerPeriod(plan: PaidSubscriptionPlan, amount: number) {
-	return (
-		<>
-			{plan.currency}
-			{Number.isInteger(amount) ? amount : amount.toFixed(2)}
-		</>
-	);
 }
 
 export const SwitchReview = () => {
@@ -182,10 +174,10 @@ export const SwitchReview = () => {
 							${textSans.medium()};
 						`}
 					>
-						You will now support us with{' '}
-						{showAmountPerPeriod(mainPlan, newAmount)} every{' '}
-						{mainPlan.billingPeriod}, giving you exclusive supporter
-						extras, including unlimited reading in our news app
+						You will now support us with {mainPlan.currency}
+						{formatAmount(newAmount)} every {mainPlan.billingPeriod}
+						, giving you exclusive supporter extras, including
+						unlimited reading in our news app
 					</p>
 				</Stack>
 			</section>
@@ -209,7 +201,8 @@ export const SwitchReview = () => {
 							</p>
 							<SupporterPlusBenefitsToggle />
 							<p css={newAmountCss}>
-								{showAmountPerPeriod(mainPlan, newAmount)}/
+								{mainPlan.currency}
+								{formatAmount(newAmount)}/
 								{mainPlan.billingPeriod}
 							</p>
 						</Card.Section>
@@ -238,7 +231,8 @@ export const SwitchReview = () => {
 							<span>
 								<strong>
 									Your first payment will be just{' '}
-									{showAmountPerPeriod(mainPlan, newAmount)}
+									{mainPlan.currency}
+									{formatAmount(newAmount)}
 								</strong>
 								<br />
 								We will charge you a smaller amount today, to
@@ -246,7 +240,8 @@ export const SwitchReview = () => {
 								the rest of the month. After this, from{' '}
 								{nextPayment}, your new{' '}
 								{monthlyOrAnnual.toLocaleLowerCase()} payment{' '}
-								{showAmountPerPeriod(mainPlan, newAmount)}
+								{mainPlan.currency}
+								{formatAmount(newAmount)}
 							</span>
 						</li>
 						<li>
@@ -334,14 +329,14 @@ export const SwitchReview = () => {
 					{monthlyOrAnnual.toLowerCase()} amount at each renewal
 					unless you cancel. You can cancel or change how much you pay
 					for these benefits at any time before your next renewal
-					date, but {showAmountPerPeriod(mainPlan, threshold)} per{' '}
-					{mainPlan.billingPeriod} is the minimum payment. If you
-					cancel within 14 days of signing up, you’ll receive a full
-					refund and your benefits will stop immediately. Changes to
-					your payment amount or cancellation made after 14 days will
-					take effect at the end of your current{' '}
-					{monthlyOrAnnual.toLowerCase()} payment period. To cancel,
-					go to Manage My Account or see our{' '}
+					date, but {mainPlan.currency}
+					{formatAmount(threshold)} per {mainPlan.billingPeriod} is
+					the minimum payment. If you cancel within 14 days of signing
+					up, you’ll receive a full refund and your benefits will stop
+					immediately. Changes to your payment amount or cancellation
+					made after 14 days will take effect at the end of your
+					current {monthlyOrAnnual.toLowerCase()} payment period. To
+					cancel, go to Manage My Account or see our{' '}
 					<a href="https://www.theguardian.com/info/2022/oct/28/the-guardian-supporter-plus-terms-and-conditions">
 						Terms
 					</a>

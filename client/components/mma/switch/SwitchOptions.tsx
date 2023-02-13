@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
+import { formatAmount } from '../../../utilities/utils';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
@@ -62,15 +63,6 @@ const fromAppHeadingCss = css`
 	color:${palette.brand[500]};
 	margin-bottom: 0;
 `;
-
-function formatPrice(plan: PaidSubscriptionPlan, amount: number) {
-	return (
-		<>
-			{plan.currency}
-			{Number.isInteger(amount) ? amount : amount.toFixed(2)}
-		</>
-	);
-}
 
 export const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
@@ -158,7 +150,8 @@ export const SwitchOptions = () => {
 								{monthlyOrAnnual} support
 							</h3>
 							<p css={productSubtitleCss}>
-								{formatPrice(mainPlan, currentAmount)}/
+								{mainPlan.currency}
+								{formatAmount(currentAmount)}/
 								{mainPlan.billingPeriod}
 							</p>
 						</div>
@@ -171,7 +164,8 @@ export const SwitchOptions = () => {
 						>
 							You're currently supporting the Guardian with a{' '}
 							{monthlyOrAnnual.toLowerCase()} contribution of{' '}
-							{formatPrice(mainPlan, currentAmount)}.
+							{mainPlan.currency}
+							{formatAmount(currentAmount)}.
 						</div>
 					</Card.Section>
 				</Card>
@@ -201,7 +195,8 @@ export const SwitchOptions = () => {
 								</h3>
 								{!aboveThreshold && (
 									<p css={productSubtitleCss}>
-										{formatPrice(mainPlan, threshold)}/
+										{mainPlan.currency}
+										{formatAmount(threshold)}/
 										{mainPlan.billingPeriod}
 									</p>
 								)}
@@ -235,9 +230,10 @@ export const SwitchOptions = () => {
 				<section>
 					<p css={smallPrintCss}>
 						Exclusive supporter extras are unlocked for any monthly
-						support of {formatPrice(mainPlan, monthlyThreshold)} or
-						above and any annual support of{' '}
-						{formatPrice(mainPlan, annualThreshold)} or above.
+						support of {mainPlan.currency}
+						{formatAmount(monthlyThreshold)} or above and any annual
+						support of {mainPlan.currency}
+						{formatAmount(annualThreshold)} or above.
 					</p>
 				</section>
 			)}
