@@ -238,21 +238,15 @@ export const SwitchReview = () => {
 							<span>
 								<strong>
 									Your first payment will be just{' '}
-									{mainPlan.currency}
-									{previewResponse.amountPayableToday.toFixed(
-										2,
-									)}
+									{showAmountPerPeriod(mainPlan, newAmount)}
 								</strong>
 								<br />
 								We will charge you a smaller amount today, to
 								offset the payment you've already given us for
 								the rest of the month. After this, from{' '}
 								{nextPayment}, your new{' '}
-								{monthlyOrAnnual.toLocaleLowerCase()} payment
-								will be {mainPlan.currency}
-								{previewResponse.supporterPlusPurchaseAmount.toFixed(
-									2,
-								)}
+								{monthlyOrAnnual.toLocaleLowerCase()} payment{' '}
+								{showAmountPerPeriod(mainPlan, newAmount)}
 							</span>
 						</li>
 						<li>
@@ -340,14 +334,14 @@ export const SwitchReview = () => {
 					{monthlyOrAnnual.toLowerCase()} amount at each renewal
 					unless you cancel. You can cancel or change how much you pay
 					for these benefits at any time before your next renewal
-					date, but {mainPlan.currency}
-					{threshold.toFixed(2)} per {mainPlan.billingPeriod} is the
-					minimum payment. If you cancel within 14 days of signing up,
-					you’ll receive a full refund and your benefits will stop
-					immediately. Changes to your payment amount or cancellation
-					made after 14 days will take effect at the end of your
-					current {monthlyOrAnnual.toLowerCase()} payment period. To
-					cancel, go to Manage My Account or see our{' '}
+					date, but {showAmountPerPeriod(mainPlan, threshold)} per{' '}
+					{mainPlan.billingPeriod} is the minimum payment. If you
+					cancel within 14 days of signing up, you’ll receive a full
+					refund and your benefits will stop immediately. Changes to
+					your payment amount or cancellation made after 14 days will
+					take effect at the end of your current{' '}
+					{monthlyOrAnnual.toLowerCase()} payment period. To cancel,
+					go to Manage My Account or see our{' '}
 					<a href="https://www.theguardian.com/info/2022/oct/28/the-guardian-supporter-plus-terms-and-conditions">
 						Terms
 					</a>
