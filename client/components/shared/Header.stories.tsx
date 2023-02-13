@@ -12,7 +12,6 @@ export default {
 	},
 	args: {
 		signInStatus: 'init',
-		requiresSignIn: false,
 	},
 	argTypes: {
 		signInStatus: {
@@ -36,10 +35,4 @@ SignedOut.args = {
 export const SignedIn = Template.bind({});
 SignedIn.args = {
 	signInStatus: 'signedIn',
-};
-
-export const RequiresSignIn = Template.bind({});
-RequiresSignIn.args = {
-	signInStatus: 'signedIn',
-	requiresSignIn: true,
 };

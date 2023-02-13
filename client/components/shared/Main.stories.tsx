@@ -39,20 +39,12 @@ SignedIn.args = {
 	signInStatus: 'signedIn',
 };
 
-export const RequiresSignIn = Template.bind({});
-RequiresSignIn.args = {
-	signInStatus: 'signedIn',
-	requiresSignIn: true,
-};
-
 export const HelpCentreSignedOut = Template.bind({});
 HelpCentreSignedOut.args = {
 	signInStatus: 'signedOut',
-	helpCentrePage: true,
 };
 
 export const HelpCentreSignedIn = Template.bind({});
 HelpCentreSignedIn.args = {
 	signInStatus: 'signedIn',
-	helpCentrePage: true,
 };
