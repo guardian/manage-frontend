@@ -14,7 +14,7 @@ export default {
 			state: {
 				productDetail: contribution,
 				user: { email: 'test@theguardian.com' },
-				amountPayableToday: 5,
+				amountPayableToday: 5.9,
 			},
 			container: <SwitchContainer />,
 		},

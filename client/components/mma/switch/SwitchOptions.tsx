@@ -13,6 +13,7 @@ import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
+import { formatAmount } from '../../../utilities/utils';
 import { ErrorSummary } from '../paymentUpdate/Summary';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
@@ -181,7 +182,8 @@ export const SwitchOptions = () => {
 							<h3 css={productTitleCss}>{monthlyOrAnnual}</h3>
 							<p css={productSubtitleCss}>
 								{mainPlan.currency}
-								{currentAmount}/{mainPlan.billingPeriod}
+								{formatAmount(currentAmount)}/
+								{mainPlan.billingPeriod}
 							</p>
 						</div>
 					</Card.Header>
@@ -192,8 +194,8 @@ export const SwitchOptions = () => {
 							`}
 						>
 							You pay {mainPlan.currency}
-							{currentAmount} on a recurring basis every{' '}
-							{mainPlan.billingPeriod}
+							{formatAmount(currentAmount)} on a recurring basis
+							every {mainPlan.billingPeriod}
 						</div>
 					</Card.Section>
 				</Card>
@@ -236,7 +238,8 @@ export const SwitchOptions = () => {
 								{!aboveThreshold && (
 									<p css={productSubtitleCss}>
 										{mainPlan.currency}
-										{threshold}/{mainPlan.billingPeriod}
+										{formatAmount(threshold)}/
+										{mainPlan.billingPeriod}
 									</p>
 								)}
 							</div>
@@ -269,9 +272,9 @@ export const SwitchOptions = () => {
 				<p css={smallPrintCss}>
 					These exclusive supporter extras are unlocked for a minimum
 					monthly support of {mainPlan.currency}
-					{monthlyThreshold} and a minimum annual support of{' '}
-					{mainPlan.currency}
-					{annualThreshold}.
+					{formatAmount(monthlyThreshold)} and a minimum annual
+					support of {mainPlan.currency}
+					{formatAmount(annualThreshold)}.
 				</p>
 			</section>
 		</>

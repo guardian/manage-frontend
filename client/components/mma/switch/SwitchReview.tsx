@@ -24,6 +24,7 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
+import { formatAmount } from '../../../utilities/utils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { ErrorSummary } from '../paymentUpdate/Summary';
 import { SwitchOffsetPaymentIcon } from '../shared/assets/SwitchOffsetPaymentIcon';
@@ -215,7 +216,7 @@ export const SwitchReview = () => {
 						your choice to unlock exclusive supporter extras
 						{aboveThreshold ? ". You'll still pay " : ' by paying '}
 						{mainPlan.currency}
-						{newAmount} per {mainPlan.billingPeriod}.
+						{formatAmount(newAmount)}  per {mainPlan.billingPeriod}.
 					</p>
 				</Stack>
 			</section>
@@ -241,7 +242,8 @@ export const SwitchReview = () => {
 							<SupporterPlusBenefitsToggle />
 							<p css={newAmountCss}>
 								{mainPlan.currency}
-								{newAmount}/{mainPlan.billingPeriod}
+								{formatAmount(newAmount)}/
+								{mainPlan.billingPeriod}
 							</p>
 						</Card.Section>
 					</Card>
@@ -271,7 +273,9 @@ export const SwitchReview = () => {
 									Your first payment will be{' '}
 									{aboveThreshold && 'just'}{' '}
 									{mainPlan.currency}
-									{previewResponse.amountPayableToday}
+									{formatAmount(
+										previewResponse.amountPayableToday,
+									)}
 								</strong>
 								<br />
 								We will charge you a smaller amount today, to
@@ -280,7 +284,9 @@ export const SwitchReview = () => {
 								this, from {nextPayment}, your new{' '}
 								{monthlyOrAnnual.toLowerCase()} payment will be{' '}
 								{mainPlan.currency}
-								{previewResponse.supporterPlusPurchaseAmount}
+								{formatAmount(
+									previewResponse.supporterPlusPurchaseAmount,
+								)}
 							</span>
 						</li>
 						<li>
@@ -379,9 +385,9 @@ export const SwitchReview = () => {
 					unless you cancel. You can cancel or change how much you pay
 					for these benefits at any time before your next renewal
 					date, but {mainPlan.currency}
-					{threshold} per {mainPlan.billingPeriod} is the minimum
-					payment. If you cancel within 14 days of signing up, you’ll
-					receive a full refund and your benefits will stop
+					{formatAmount(threshold)} per {mainPlan.billingPeriod} is
+					the minimum payment. If you cancel within 14 days of signing
+					up, you’ll receive a full refund and your benefits will stop
 					immediately. Changes to your payment amount or cancellation
 					made after 14 days will take effect at the end of your
 					current {monthlyOrAnnual.toLowerCase()} payment period. To
