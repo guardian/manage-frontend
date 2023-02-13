@@ -63,12 +63,11 @@ const fromAppHeadingCss = css`
 	margin-bottom: 0;
 `;
 
-function showAmountPerPeriod(plan: PaidSubscriptionPlan, amount: number) {
+function formatPrice(plan: PaidSubscriptionPlan, amount: number) {
 	return (
 		<>
 			{plan.currency}
-			{Number.isInteger(amount) ? amount : amount.toFixed(2)}/
-			{plan.billingPeriod}
+			{Number.isInteger(amount) ? amount : amount.toFixed(2)}
 		</>
 	);
 }
@@ -159,7 +158,8 @@ export const SwitchOptions = () => {
 								{monthlyOrAnnual} support
 							</h3>
 							<p css={productSubtitleCss}>
-								{showAmountPerPeriod(mainPlan, currentAmount)}
+								{formatPrice(mainPlan, currentAmount)}/
+								{mainPlan.billingPeriod}
 							</p>
 						</div>
 					</Card.Header>
@@ -171,7 +171,7 @@ export const SwitchOptions = () => {
 						>
 							You're currently supporting the Guardian with a{' '}
 							{monthlyOrAnnual.toLowerCase()} contribution of{' '}
-							{showAmountPerPeriod(mainPlan, currentAmount)}.
+							{formatPrice(mainPlan, currentAmount)}.
 						</div>
 					</Card.Section>
 				</Card>
@@ -201,10 +201,8 @@ export const SwitchOptions = () => {
 								</h3>
 								{!aboveThreshold && (
 									<p css={productSubtitleCss}>
-										{showAmountPerPeriod(
-											mainPlan,
-											threshold,
-										)}
+										{formatPrice(mainPlan, threshold)}/
+										{mainPlan.billingPeriod}
 									</p>
 								)}
 							</div>
@@ -237,10 +235,9 @@ export const SwitchOptions = () => {
 				<section>
 					<p css={smallPrintCss}>
 						Exclusive supporter extras are unlocked for any monthly
-						support of {mainPlan.currency}
-						{monthlyThreshold} or above and any annual support of{' '}
-						{mainPlan.currency}
-						{annualThreshold} or above.
+						support of {formatPrice(mainPlan, monthlyThreshold)} or
+						above and any annual support of{' '}
+						{formatPrice(mainPlan, annualThreshold)} or above.
 					</p>
 				</section>
 			)}
