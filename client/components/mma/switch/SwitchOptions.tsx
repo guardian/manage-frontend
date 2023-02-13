@@ -7,10 +7,14 @@ import {
 } from '@guardian/source-react-components';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { formatAmount } from '../../../utilities/utils';
+import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
+import type { CurrencyIso } from '../../../utilities/currencyIso';
+import { ErrorSummary } from '../paymentUpdate/Summary';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
@@ -18,6 +22,9 @@ import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
 import {
 	buttonCentredCss,
+	errorSummaryBlockLinkCss,
+	errorSummaryLinkCss,
+	errorSummaryOverrideCss,
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
@@ -77,9 +84,14 @@ export const SwitchOptions = () => {
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
 
-	// ToDo: hardcoding this for now; need to find out where to get this from for each currency
-	const monthlyThreshold = 10;
-	const annualThreshold = 95;
+	const monthlyThreshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		'Monthly',
+	);
+	const annualThreshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		'Annual',
+	);
 
 	const threshold =
 		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
@@ -116,23 +128,44 @@ export const SwitchOptions = () => {
 
 	return (
 		<>
+			{productDetail.alertText && (
+				<section css={sectionSpacing}>
+					<ErrorSummary
+						cssOverrides={errorSummaryOverrideCss}
+						message="There is a problem with your payment method"
+						context={
+							<>
+								Please update your payment details in order to
+								change your support.
+								<Link
+									css={[
+										errorSummaryLinkCss,
+										errorSummaryBlockLinkCss,
+									]}
+									to="/payment/contributions"
+								>
+									Check your payment details
+								</Link>
+							</>
+						}
+					/>
+				</section>
+			)}
 			{switchContext.isFromApp && (
-				<div css={sectionSpacing}>
+				<section css={sectionSpacing}>
 					<h2 css={fromAppHeadingCss}>
-						Change your support to unlock unlimited reading in our
-						news app
+						Unlock full access to our news app today
 					</h2>
 					<p
 						css={css`
 							${textSans.medium()}
 						`}
 					>
-						To unlock unlimited reading in our news app, please make
-						a small change to your support type. If this doesn't
-						suit you, no change is needed, but note you will
-						continue to have limited app access.
+						It takes less than a minute to change your support type.
+						If this doesn't suit you, no change is needed, but note
+						you will have limited access to our app.
 					</p>
-				</div>
+				</section>
 			)}
 			<section css={sectionSpacing}>
 				<Heading
@@ -146,9 +179,7 @@ export const SwitchOptions = () => {
 				<Card>
 					<Card.Header backgroundColor={palette.brand[600]}>
 						<div css={cardHeaderDivCss}>
-							<h3 css={productTitleCss}>
-								{monthlyOrAnnual} support
-							</h3>
+							<h3 css={productTitleCss}>{monthlyOrAnnual}</h3>
 							<p css={productSubtitleCss}>
 								{mainPlan.currency}
 								{formatAmount(currentAmount)}/
@@ -162,10 +193,9 @@ export const SwitchOptions = () => {
 								${textSans.medium()}
 							`}
 						>
-							You're currently supporting the Guardian with a{' '}
-							{monthlyOrAnnual.toLowerCase()} contribution of{' '}
-							{mainPlan.currency}
-							{formatAmount(currentAmount)}.
+							You pay {mainPlan.currency}
+							{formatAmount(currentAmount)} on a recurring basis every{' '}
+							{mainPlan.billingPeriod}
 						</div>
 					</Card.Section>
 				</Card>
@@ -176,15 +206,27 @@ export const SwitchOptions = () => {
 					<Heading sansSerif>
 						{aboveThreshold ? 'Add extras' : 'Change your support'}
 					</Heading>
-					{!switchContext.isFromApp && (
+					{aboveThreshold && (
 						<p
 							css={css`
 								${textSans.medium()}
 								margin: 0;
 							`}
 						>
-							Change to {supporterPlusTitle} and get exclusive
-							supporter benefits
+							Your current payment entitles you to unlock
+							exclusive supporter extras. It takes less than a
+							minute to change your support type and gain access.
+						</p>
+					)}
+					{!aboveThreshold && !switchContext.isFromApp && (
+						<p
+							css={css`
+								${textSans.medium()}
+								margin: 0;
+							`}
+						>
+							Unlock exclusive supporter extras when you pay a
+							little more
 						</p>
 					)}
 					<Card>
@@ -221,22 +263,20 @@ export const SwitchOptions = () => {
 					>
 						{aboveThreshold
 							? 'Add extras with no extra cost'
-							: 'Change to monthly + extras'}
+							: 'Upgrade'}
 					</Button>
 				</ThemeProvider>
 			</section>
 
-			{aboveThreshold && (
-				<section>
-					<p css={smallPrintCss}>
-						Exclusive supporter extras are unlocked for any monthly
-						support of {mainPlan.currency}
-						{formatAmount(monthlyThreshold)} or above and any annual
-						support of {mainPlan.currency}
-						{formatAmount(annualThreshold)} or above.
-					</p>
-				</section>
-			)}
+			<section>
+				<p css={smallPrintCss}>
+					These exclusive supporter extras are unlocked for a minimum
+					monthly support of {mainPlan.currency}
+					{formatAmount(monthlyThreshold)} and a minimum annual support of{' '}
+					{mainPlan.currency}
+					{formatAmount(annualThreshold)}.
+				</p>
+			</section>
 		</>
 	);
 };

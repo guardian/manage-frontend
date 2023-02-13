@@ -3,13 +3,13 @@ import { from, palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
-	InlineError,
 	Stack,
 	SvgClock,
 	SvgCreditCard,
 } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import {
 	dateAddMonths,
 	dateAddYears,
@@ -18,12 +18,15 @@ import {
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
+import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
+import type { CurrencyIso } from '../../../utilities/currencyIso';
 import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
 import { formatAmount } from '../../../utilities/utils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
+import { ErrorSummary } from '../paymentUpdate/Summary';
 import { SwitchOffsetPaymentIcon } from '../shared/assets/SwitchOffsetPaymentIcon';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
@@ -39,12 +42,40 @@ import { SwitchContext } from './SwitchContainer';
 import {
 	buttonCentredCss,
 	buttonMutedCss,
+	errorSummaryBlockLinkCss,
+	errorSummaryLinkCss,
+	errorSummaryOverrideCss,
 	iconListCss,
 	listWithDividersCss,
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
 } from './SwitchStyles';
+
+const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
+	props.PaymentFailure ? (
+		<>
+			Please update your payment details in order to change your support.
+			<Link
+				css={[errorSummaryLinkCss, errorSummaryBlockLinkCss]}
+				to="/payment/contributions"
+			>
+				Check your payment details
+			</Link>
+		</>
+	) : (
+		<>
+			Please ensure your payment details are correct. If the problem
+			persists get in touch at{' '}
+			<a
+				css={errorSummaryLinkCss}
+				href="mailto:customer.help@guardian.com"
+			>
+				customer.help@guardian.com
+			</a>
+			.
+		</>
+	);
 
 const newAmountCss = css`
 	${textSans.medium({ fontWeight: 'bold' })};
@@ -87,6 +118,8 @@ export const SwitchReview = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 	const productDetail = switchContext.productDetail;
 
+	const inPaymentFailure = !!productDetail.alertText;
+
 	const mainPlan = getMainPlan(
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
@@ -95,12 +128,12 @@ export const SwitchReview = () => {
 		mainPlan.billingPeriod,
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
-	// ToDo: hardcoding this for now; need to find out where to get this from for each currency
-	const monthlyThreshold = 10;
-	const annualThreshold = 95;
 
-	const threshold =
-		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
+	const threshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		monthlyOrAnnual,
+	);
+	const aboveThreshold = mainPlan.price >= threshold * 100;
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 
 	// ToDo: the API could return the next payment date
@@ -127,6 +160,11 @@ export const SwitchReview = () => {
 		);
 
 	const confirmSwitch = async (amount: number) => {
+		if (inPaymentFailure) {
+			setSwitchingError(true);
+			return;
+		}
+
 		try {
 			setIsSwitching(true);
 			const response = await productMoveFetch(false);
@@ -174,10 +212,11 @@ export const SwitchReview = () => {
 							${textSans.medium()};
 						`}
 					>
-						You will now support us with {mainPlan.currency}
-						{formatAmount(newAmount)} every {mainPlan.billingPeriod}
-						, giving you exclusive supporter extras, including
-						unlimited reading in our news app
+						Please {switchContext.isFromApp ? 'confirm' : 'review'}{' '}
+						your choice to unlock exclusive supporter extras
+						{aboveThreshold ? ". You'll still pay " : ' by paying '}
+						{mainPlan.currency}
+						{formatAmount(newAmount)}  per {mainPlan.billingPeriod}.
 					</p>
 				</Stack>
 			</section>
@@ -196,8 +235,9 @@ export const SwitchReview = () => {
 									max-width: 40ch;
 								`}
 							>
-								{monthlyOrAnnual} support with exclusive extras
-								including unlimited access to the App
+								{monthlyOrAnnual} support with exclusive extras,
+								including full access to our app and ad-free
+								reading
 							</p>
 							<SupporterPlusBenefitsToggle />
 							<p css={newAmountCss}>
@@ -219,7 +259,7 @@ export const SwitchReview = () => {
 								<strong>This change will happen today</strong>
 								<br />
 								Dive in and start enjoying your exclusive extras
-								straight away.
+								straight away
 							</span>
 						</li>
 						<li
@@ -230,7 +270,8 @@ export const SwitchReview = () => {
 							<SwitchOffsetPaymentIcon size="medium" />
 							<span>
 								<strong>
-									Your first payment will be just{' '}
+									Your first payment will be{' '}
+									{aboveThreshold && 'just'}{' '}
 									{mainPlan.currency}
 									{formatAmount(
 										previewResponse.amountPayableToday,
@@ -239,9 +280,9 @@ export const SwitchReview = () => {
 								<br />
 								We will charge you a smaller amount today, to
 								offset the payment you've already given us for
-								the rest of the month. After this, from{' '}
-								{nextPayment}, your new{' '}
-								{monthlyOrAnnual.toLocaleLowerCase()} payment{' '}
+								the rest of the {mainPlan.billingPeriod}. After
+								this, from {nextPayment}, your new{' '}
+								{monthlyOrAnnual.toLowerCase()} payment will be{' '}
 								{mainPlan.currency}
 								{formatAmount(
 									previewResponse.supporterPlusPurchaseAmount,
@@ -251,7 +292,7 @@ export const SwitchReview = () => {
 						<li>
 							<SvgCreditCard size="medium" />
 							<span>
-								<strong>No payment changes are needed</strong>
+								<strong>Your payment method</strong>
 								<br />
 								We will take payment as before, from
 								<strong>
@@ -308,7 +349,7 @@ export const SwitchReview = () => {
 							confirmSwitch(previewResponse.amountPayableToday)
 						}
 					>
-						Confirm change
+						Confirm {aboveThreshold ? 'change' : 'upgrade'}
 					</Button>
 				</ThemeProvider>
 				<Button
@@ -321,9 +362,19 @@ export const SwitchReview = () => {
 			</section>
 			{switchingError && (
 				<section css={sectionSpacing}>
-					<InlineError>
-						An error occurred whilst switching
-					</InlineError>
+					<ErrorSummary
+						message={
+							inPaymentFailure
+								? 'There is a problem with your payment method'
+								: 'We were unable to change your support'
+						}
+						context={
+							<SwitchErrorContext
+								PaymentFailure={inPaymentFailure}
+							/>
+						}
+						cssOverrides={errorSummaryOverrideCss}
+					/>
 				</section>
 			)}
 			<section css={sectionSpacing}>

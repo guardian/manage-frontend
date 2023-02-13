@@ -16,10 +16,17 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
+import {
+	dateAddMonths,
+	dateAddYears,
+	dateString,
+} from '../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { formatAmount } from '../../../utilities/utils';
+import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
+import type { CurrencyIso } from '../../../utilities/currencyIso';
 import { InverseStarIcon } from '../shared/assets/InverseStarIcon';
 import { Heading } from '../shared/Heading';
 import type {
@@ -37,18 +44,18 @@ export const SwitchComplete = () => {
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
 
-	// ToDo: hardcoding this for now; need to find out where to get this from for each currency
-	const monthlyThreshold = 10;
-	const annualThreshold = 95;
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		mainPlan.billingPeriod,
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
-	const threshold =
-		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
+
+	const threshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		monthlyOrAnnual,
+	);
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 	const newAmountAndCurrency = `${mainPlan.currency}${newAmount}`;
-	const isUpgrading = mainPlan.price >= threshold * 100;
+	const aboveThreshold = mainPlan.price >= threshold * 100;
 
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
@@ -64,13 +71,14 @@ export const SwitchComplete = () => {
 				<ThankYouBanner
 					newAmount={newAmountAndCurrency}
 					newProduct={supporterPlusTitle.toLowerCase()}
-					isUpgrading={isUpgrading}
+					aboveThreshold={aboveThreshold}
 				/>
 			) : (
 				<section css={sectionSpacing}>
 					<ThankYouMessaging
 						mainPlan={mainPlan}
 						newAmount={newAmount}
+						aboveThreshold={aboveThreshold}
 					/>
 				</section>
 			)}
@@ -78,7 +86,10 @@ export const SwitchComplete = () => {
 				<WhatHappensNext
 					currency={mainPlan.currency}
 					amountPayableToday={amountPayableToday}
+					nextPaymentAmount={newAmount}
+					billingPeriod={monthlyOrAnnual.toLowerCase()}
 					email={switchContext.user?.email ?? ''}
+					isFromApp={switchContext.isFromApp}
 				/>
 			</section>
 			{!switchContext.isFromApp && (
@@ -149,13 +160,13 @@ const thankYouBannerButtonCss = css`
 const ThankYouBanner = (props: {
 	newAmount: string;
 	newProduct: string;
-	isUpgrading: boolean;
+	aboveThreshold: boolean;
 }) => {
 	return (
 		<section css={thankYouBannerCss}>
 			<h2 css={thankYouBannerHeadingCss}>
-				Thank you for {props.isUpgrading ? 'upgrading' : 'changing'} to{' '}
-				{props.newAmount} {props.newProduct}.
+				Thank you for {props.aboveThreshold ? 'changing' : 'upgrading'}{' '}
+				to {props.newAmount} {props.newProduct}.
 			</h2>
 			<p css={thankYouBannerSubheadingCss}>One last step ...</p>
 			<div css={thankYouBannerButtonCss}>
@@ -185,8 +196,19 @@ const whatHappensNextCss = css`
 const WhatHappensNext = (props: {
 	currency: string;
 	amountPayableToday: number;
+	nextPaymentAmount: number;
+	billingPeriod: string;
 	email: string;
+	isFromApp: boolean;
 }) => {
+	// ToDo: the API could return the next payment date
+	const nextPaymentDate = dateString(
+		props.billingPeriod == 'monthly'
+			? dateAddMonths(new Date(), 1)
+			: dateAddYears(new Date(), 1),
+		'd MMMM',
+	);
+
 	return (
 		<Stack space={4}>
 			<Heading sansSerif>What happens next?</Heading>
@@ -200,18 +222,23 @@ const WhatHappensNext = (props: {
 				<li>
 					<SvgClock size="medium" />
 					<span>
-						Your first billing date is today and you will be charge
-						a reduced rate of {props.currency}
-						{formatAmount(props.amountPayableToday)}.
+						Your first billing date is today and you will be charged{' '}
+						{props.currency}
+						{formatAmount(props.amountPayableToday)}. From {nextPaymentDate}, your
+						ongoing {props.billingPeriod} payment will be{' '}
+						{props.currency}
+            {formatAmount(props.nextPaymentAmount)}
 					</span>
 				</li>
-				<li>
-					<InverseStarIcon size="medium" />
-					<span>
-						Your new support will start today. It can take up to an
-						hour for your support to be activated.
-					</span>
-				</li>
+				{!props.isFromApp && (
+					<li>
+						<InverseStarIcon size="medium" />
+						<span>
+							Your new support will start today. It can take up to
+							an hour for your support to be activated.
+						</span>
+					</li>
+				)}
 			</ul>
 		</Stack>
 	);
@@ -234,11 +261,18 @@ const thankYouCss = css`
 const ThankYouMessaging = (props: {
 	mainPlan: PaidSubscriptionPlan;
 	newAmount: number;
+	aboveThreshold: boolean;
 }) => {
 	return (
 		<h2 css={thankYouCss}>
-			Thank you for upgrading to {props.mainPlan.currency}
-			{formatAmount(props.newAmount)} per {props.mainPlan.billingPeriod}.{' '}
+			{props.aboveThreshold ? (
+				<>Thank you for changing your support type.</>
+			) : (
+				<>
+					Thank you for upgrading to {props.mainPlan.currency}
+					{formatAmount(props.newAmount)} per {props.mainPlan.billingPeriod}.
+				</>
+			)}
 			<span>Enjoy your exclusive extras.</span>
 		</h2>
 	);
@@ -284,8 +318,8 @@ const SignInBanner = () => (
 		<div css={signInContentContainerCss}>
 			<h2 css={signInHeadingCss}>Sign in on all your devices</h2>
 			<p css={signInParaCss}>
-				To access your extras on all your digital devices, please sign
-				in. It takes less than a minute.
+				To access your exclusive extras on our website and app, please
+				sign in. It takes less than a minute.
 			</p>
 		</div>
 	</div>
