@@ -232,7 +232,9 @@ export const SwitchReview = () => {
 								<strong>
 									Your first payment will be just{' '}
 									{mainPlan.currency}
-									{formatAmount(newAmount)}
+									{formatAmount(
+										previewResponse.amountPayableToday,
+									)}
 								</strong>
 								<br />
 								We will charge you a smaller amount today, to
@@ -241,7 +243,9 @@ export const SwitchReview = () => {
 								{nextPayment}, your new{' '}
 								{monthlyOrAnnual.toLocaleLowerCase()} payment{' '}
 								{mainPlan.currency}
-								{formatAmount(newAmount)}
+								{formatAmount(
+									previewResponse.supporterPlusPurchaseAmount,
+								)}
 							</span>
 						</li>
 						<li>

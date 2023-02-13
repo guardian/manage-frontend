@@ -29,7 +29,7 @@ export const BelowThreshold: ComponentStory<typeof SwitchOptions> = () => (
 const contributionBelowThreshold = JSON.parse(JSON.stringify(contribution));
 const plan = contributionBelowThreshold.subscription
 	.currentPlans[0] as PaidSubscriptionPlan;
-plan.price = 350;
+plan.price = 300;
 
 BelowThreshold.parameters = {
 	reactRouter: {
