@@ -165,7 +165,7 @@ const ThankYouBanner = (props: {
 		<section css={thankYouBannerCss}>
 			<h2 css={thankYouBannerHeadingCss}>
 				Thank you for {props.aboveThreshold ? 'changing' : 'upgrading'}{' '}
-				to {props.newAmount} {props.newProduct}.
+				to {props.newAmount} {props.newProduct}
 			</h2>
 			<p css={thankYouBannerSubheadingCss}>One last step ...</p>
 			<div css={thankYouBannerButtonCss}>
@@ -265,7 +265,7 @@ const ThankYouMessaging = (props: {
 					{formatAmount(props.newAmount)} per{' '}
 					{props.mainPlan.billingPeriod}.
 				</>
-			)}
+			)}{' '}
 			<span>Enjoy your exclusive extras.</span>
 		</h2>
 	);
