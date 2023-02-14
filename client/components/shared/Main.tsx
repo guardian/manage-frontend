@@ -1,23 +1,15 @@
 import { palette, textSansSizes } from '@guardian/source-foundations';
 import { serif } from '../../styles/fonts';
 import type { SignInStatus } from '../../utilities/signInStatus';
-import { HelpCentreHeader } from '../helpCentre/HelpCentreHeader';
 import { Footer } from './footer/Footer';
 import { Header } from './Header';
 
 export interface MainProps {
 	signInStatus?: SignInStatus;
-	requiresSignIn?: boolean;
-	helpCentrePage?: boolean;
 	children: JSX.Element | JSX.Element[];
 }
 
-export const Main = ({
-	signInStatus = 'init',
-	requiresSignIn,
-	helpCentrePage,
-	children,
-}: MainProps) => (
+export const Main = ({ signInStatus = 'init', children }: MainProps) => (
 	<div
 		css={{
 			display: 'flex',
@@ -42,17 +34,7 @@ export const Main = ({
 		>
 			Skip to main content
 		</a>
-		{helpCentrePage ? (
-			<HelpCentreHeader
-				signInStatus={signInStatus}
-				requiresSignIn={requiresSignIn}
-			/>
-		) : (
-			<Header
-				signInStatus={signInStatus}
-				requiresSignIn={requiresSignIn}
-			/>
-		)}
+		<Header signInStatus={signInStatus} />
 		<div
 			css={{
 				flexGrow: 1,

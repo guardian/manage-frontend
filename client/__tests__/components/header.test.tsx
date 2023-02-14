@@ -18,7 +18,7 @@ describe('Header', () => {
 	it('renders the header in a signed in state', () => {
 		render(
 			<MemoryRouter>
-				<Header signInStatus="signedIn" requiresSignIn={true} />
+				<Header signInStatus="signedIn" />
 			</MemoryRouter>,
 		);
 		expect(
