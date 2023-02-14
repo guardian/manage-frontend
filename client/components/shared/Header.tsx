@@ -39,7 +39,7 @@ export const Header = (props: HeaderProps) => {
 	`;
 
 	const divCss = css`
-		margin: ${space[2]}px ${space[3]}px 0 0;
+		margin: ${space[3]}px ${space[3]}px 0 0;
 		align-self: flex-start;
 	`;
 
