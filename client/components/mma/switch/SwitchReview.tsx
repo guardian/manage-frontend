@@ -11,7 +11,10 @@ import { useContext, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { dateString } from '../../../../shared/dates';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
+import type {
+	PaidSubscriptionPlan,
+	Subscription,
+} from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
@@ -27,11 +30,8 @@ import { SwitchOffsetPaymentIcon } from '../shared/assets/SwitchOffsetPaymentIco
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { Card } from '../shared/Card';
-import { CardDisplay } from '../shared/CardDisplay';
-import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
+import { cardTypeToSVG } from '../shared/CardDisplay';
 import { Heading } from '../shared/Heading';
-import { PaypalDisplay } from '../shared/PaypalDisplay';
-import { SepaDisplay } from '../shared/SepaDisplay';
 import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
@@ -47,6 +47,73 @@ import {
 	sectionSpacing,
 	smallPrintCss,
 } from './SwitchStyles';
+
+const PaymentDetails = (props: { subscription: Subscription }) => {
+	const subscription = props.subscription;
+
+	const cardType = (type: string) => {
+		if (type !== 'MasterCard') {
+			return `${type} card`;
+		}
+		return type;
+	};
+
+	const containerCss = css`
+		font-weight: 700;
+	`;
+
+	const cardCss = css`
+		display: inline-flex;
+		align-items: center;
+		> svg {
+			margin-left: 0.5ch;
+		}
+	`;
+
+	return (
+		<span css={containerCss}>
+			{subscription.card && (
+				<span css={cardCss}>
+					{cardType(subscription.card.type)} ending{' '}
+					{subscription.card.last4}
+					{cardTypeToSVG(subscription.card.type)}
+				</span>
+			)}
+		</span>
+	);
+};
+
+{
+	/* {productDetail.subscription.payPalEmail && (
+		<PaypalDisplay
+			inline
+			payPalId={
+				productDetail.subscription
+					.payPalEmail
+			}
+		/>
+	)}
+	{productDetail.subscription.sepaMandate && (
+		<SepaDisplay
+			inline
+			accountName={
+				productDetail.subscription
+					.sepaMandate.accountName
+			}
+			iban={
+				productDetail.subscription
+					.sepaMandate.iban
+			}
+		/>
+	)}
+	{productDetail.subscription.mandate && (
+		<DirectDebitDisplay
+			inline
+			{...productDetail.subscription
+				.mandate}
+		/>
+	)} */
+}
 
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
 	props.PaymentFailure ? (
@@ -298,47 +365,10 @@ export const SwitchReview = () => {
 							<span>
 								<strong>Your payment method</strong>
 								<br />
-								We will take payment as before, from
-								<strong>
-									{productDetail.subscription.card && (
-										<CardDisplay
-											inline
-											cssOverrides={css`
-												margin: 0;
-											`}
-											{...productDetail.subscription.card}
-										/>
-									)}
-									{productDetail.subscription.payPalEmail && (
-										<PaypalDisplay
-											inline
-											payPalId={
-												productDetail.subscription
-													.payPalEmail
-											}
-										/>
-									)}
-									{productDetail.subscription.sepaMandate && (
-										<SepaDisplay
-											inline
-											accountName={
-												productDetail.subscription
-													.sepaMandate.accountName
-											}
-											iban={
-												productDetail.subscription
-													.sepaMandate.iban
-											}
-										/>
-									)}
-									{productDetail.subscription.mandate && (
-										<DirectDebitDisplay
-											inline
-											{...productDetail.subscription
-												.mandate}
-										/>
-									)}
-								</strong>
+								We will take payment as before, from{' '}
+								<PaymentDetails
+									subscription={productDetail.subscription}
+								/>
 							</span>
 						</li>
 					</ul>
