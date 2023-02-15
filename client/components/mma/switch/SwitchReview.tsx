@@ -26,12 +26,15 @@ import {
 import { formatAmount } from '../../../utilities/utils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { ErrorSummary } from '../paymentUpdate/Summary';
+import { DirectDebitLogo } from '../shared/assets/DirectDebitLogo';
+import { PaypalLogo } from '../shared/assets/PaypalLogo';
 import { SwitchOffsetPaymentIcon } from '../shared/assets/SwitchOffsetPaymentIcon';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { Card } from '../shared/Card';
 import { cardTypeToSVG } from '../shared/CardDisplay';
 import { Heading } from '../shared/Heading';
+import { getObfuscatedPayPalId } from '../shared/PaypalDisplay';
 import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
@@ -59,25 +62,45 @@ const PaymentDetails = (props: { subscription: Subscription }) => {
 	};
 
 	const containerCss = css`
-		font-weight: 700;
-	`;
-
-	const cardCss = css`
 		display: inline-flex;
 		align-items: center;
+		font-weight: 700;
+		max-width: 100%;
 		> svg {
+			flex: 0 0 auto;
 			margin-left: 0.5ch;
 		}
+	`;
+
+	const truncateCss = css`
+		flex: 0 1 auto;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	`;
 
 	return (
 		<span css={containerCss}>
 			{subscription.card && (
-				<span css={cardCss}>
+				<>
 					{cardType(subscription.card.type)} ending{' '}
 					{subscription.card.last4}
 					{cardTypeToSVG(subscription.card.type)}
-				</span>
+				</>
+			)}
+			{subscription.payPalEmail && (
+				<>
+					<span css={truncateCss}>
+						{getObfuscatedPayPalId(subscription.payPalEmail)}
+					</span>
+					<PaypalLogo />
+				</>
+			)}
+			{subscription.mandate && (
+				<>
+					account ending{' '}
+					{subscription.mandate.accountNumber.slice(-3)}
+					<DirectDebitLogo />
+				</>
 			)}
 		</span>
 	);
