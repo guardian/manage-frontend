@@ -236,7 +236,7 @@ describe('product switching', () => {
 			setSignInStatus();
 
 			cy.findByRole('button', {
-				name: 'Add extras with no extra cost',
+				name: 'Add extras',
 			}).click();
 
 			cy.findByText('Review change').should('exist');
@@ -249,7 +249,7 @@ describe('product switching', () => {
 			setSignInStatus();
 
 			cy.findByRole('button', {
-				name: 'Add extras with no extra cost',
+				name: 'Add extras',
 			}).click();
 
 			cy.findByRole('button', { name: 'Confirm change' }).click();
@@ -272,7 +272,7 @@ describe('product switching', () => {
 			setSignInStatus();
 
 			cy.findByRole('button', {
-				name: 'Add extras with no extra cost',
+				name: 'Add extras',
 			}).click();
 
 			cy.intercept('POST', '/api/product-move/*', {
@@ -306,7 +306,7 @@ describe('product switching', () => {
 			);
 
 			cy.findByRole('button', {
-				name: 'Add extras with no extra cost',
+				name: 'Add extras',
 			}).click();
 
 			cy.findByRole('button', { name: 'Confirm change' }).click();
