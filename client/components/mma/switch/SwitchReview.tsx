@@ -262,8 +262,8 @@ export const SwitchReview = () => {
 							<span>
 								<strong>This change will happen today</strong>
 								<br />
-								Dive in and start enjoying your exclusive extras
-								straight away
+								In just a couple of steps, you'll be able to
+								start enjoying your exclusive extras{' '}
 							</span>
 						</li>
 						<li
