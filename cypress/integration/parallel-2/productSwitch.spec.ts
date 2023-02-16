@@ -1,5 +1,5 @@
 import {
-	contribution,
+	contributionCard,
 	toMembersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
@@ -35,12 +35,12 @@ if (featureSwitches.cancellationProductSwitch) {
 
 			cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(contribution),
+				body: toMembersDataApiResponse(contributionCard),
 			});
 
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(contribution),
+				body: toMembersDataApiResponse(contributionCard),
 			});
 
 			cy.intercept('GET', '/api/me/mma/**', {
@@ -193,12 +193,12 @@ describe('product switching', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contribution),
+			body: toMembersDataApiResponse(contributionCard),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contribution),
+			body: toMembersDataApiResponse(contributionCard),
 		});
 
 		cy.intercept('GET', '/api/cancelled/', {
@@ -289,7 +289,7 @@ describe('product switching', () => {
 
 		it('shows payment failure error message and does not call product move API again', () => {
 			const contributionWithPaymentFailure: ProductDetail = JSON.parse(
-				JSON.stringify(contribution),
+				JSON.stringify(contributionCard),
 			);
 			contributionWithPaymentFailure.alertText = 'Payment failed';
 
