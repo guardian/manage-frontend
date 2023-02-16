@@ -213,9 +213,10 @@ export const SwitchOptions = () => {
 								margin: 0;
 							`}
 						>
-							Your current payment entitles you to unlock
-							exclusive supporter extras. It takes less than a
-							minute to change your support type and gain access.
+							In exchange for your current payment, you can choose
+							to receive exclusive supporter extras. It takes less
+							than a minute to change your support type and gain
+							access.
 						</p>
 					)}
 					{!aboveThreshold && !switchContext.isFromApp && (
@@ -262,19 +263,19 @@ export const SwitchOptions = () => {
 						onClick={() => navigate('review')}
 					>
 						{aboveThreshold
-							? 'Add extras with no extra cost'
-							: 'Upgrade'}
+							? 'Add extras'
+							: `Upgrade to ${mainPlan.currency}${threshold} per ${mainPlan.billingPeriod}`}
 					</Button>
 				</ThemeProvider>
 			</section>
 
 			<section>
 				<p css={smallPrintCss}>
-					These exclusive supporter extras are unlocked for a minimum
-					monthly support of {mainPlan.currency}
-					{formatAmount(monthlyThreshold)} and a minimum annual
-					support of {mainPlan.currency}
-					{formatAmount(annualThreshold)}.
+					These exclusive supporter extras are available when you pay{' '}
+					{mainPlan.currency}
+					{formatAmount(monthlyThreshold)} minimum on a monthly basis,
+					or {mainPlan.currency}
+					{formatAmount(annualThreshold)} minimum on an annual basis.
 				</p>
 			</section>
 		</>
