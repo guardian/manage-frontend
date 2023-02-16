@@ -102,41 +102,15 @@ const PaymentDetails = (props: { subscription: Subscription }) => {
 					<DirectDebitLogo />
 				</>
 			)}
+			{subscription.sepaMandate && (
+				<>
+					SEPA {subscription.sepaMandate.accountName}{' '}
+					{subscription.sepaMandate.iban}
+				</>
+			)}
 		</span>
 	);
 };
-
-{
-	/* {productDetail.subscription.payPalEmail && (
-		<PaypalDisplay
-			inline
-			payPalId={
-				productDetail.subscription
-					.payPalEmail
-			}
-		/>
-	)}
-	{productDetail.subscription.sepaMandate && (
-		<SepaDisplay
-			inline
-			accountName={
-				productDetail.subscription
-					.sepaMandate.accountName
-			}
-			iban={
-				productDetail.subscription
-					.sepaMandate.iban
-			}
-		/>
-	)}
-	{productDetail.subscription.mandate && (
-		<DirectDebitDisplay
-			inline
-			{...productDetail.subscription
-				.mandate}
-		/>
-	)} */
-}
 
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
 	props.PaymentFailure ? (
