@@ -391,7 +391,7 @@ export const homeDeliverySubscription: ProductDetail = {
 	isTestUser: false,
 };
 
-export const contribution: ProductDetail = {
+export const contributionPayPal: ProductDetail = {
 	mmaCategory: 'recurringSupport',
 	tier: 'Contributor',
 	isPaidTier: true,

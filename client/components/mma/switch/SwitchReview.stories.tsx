@@ -1,7 +1,7 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
-import { contribution } from '../../../fixtures/productDetail';
+import { contributionPayPal } from '../../../fixtures/productDetail';
 import { productMovePreviewResponse } from '../../../fixtures/productMove';
 import { SwitchContainer } from './SwitchContainer';
 import { SwitchReview } from './SwitchReview';
@@ -13,7 +13,7 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: contribution },
+			state: { productDetail: contributionPayPal },
 			container: <SwitchContainer />,
 		},
 		msw: [
@@ -32,7 +32,9 @@ export const YearlyOtherCurrency: ComponentStory<typeof SwitchReview> = () => (
 	<SwitchReview />
 );
 
-const contributionBelowThreshold = JSON.parse(JSON.stringify(contribution));
+const contributionBelowThreshold = JSON.parse(
+	JSON.stringify(contributionPayPal),
+);
 const plan = contributionBelowThreshold.subscription.currentPlans[0];
 plan.price = 300;
 plan.currency = '$';
