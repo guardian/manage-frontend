@@ -34,7 +34,7 @@ if (featureSwitches.savedArticles) {
 		it('displays Saved Article page', () => {
 			cy.visit('/saved-articles');
 
-			cy.findAllByText('Saved articles').should('have.length', 1);
+			cy.findAllByText('Saved articles').should('have.length', 2);
 		});
 	});
 }

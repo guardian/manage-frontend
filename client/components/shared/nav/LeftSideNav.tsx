@@ -91,6 +91,7 @@ export const LeftSideNav = (props: LeftSideNavProps) => (
 	<ul css={leftNavCss}>
 		{Object.values(NAV_LINKS)
 			.filter((navItem) => !navItem.isDropDownExclusive)
+			.filter((navItem) => !navItem.isExcludedByFeatureSwitch)
 			.map((navItem: MenuSpecificNavItem) => (
 				<li
 					css={leftNavItemCss(props.selectedNavItem === navItem)}

@@ -203,8 +203,9 @@ export const DropdownNav = () => {
 			</button>
 
 			<ul css={dropdownNavCss(showMenu, isHelpCentre)}>
-				{Object.values(NAV_LINKS).map(
-					(navItem: MenuSpecificNavItem) => (
+				{Object.values(NAV_LINKS)
+					.filter((navItem) => !navItem.isExcludedByFeatureSwitch)
+					.map((navItem: MenuSpecificNavItem) => (
 						<li key={navItem.title}>
 							<a href={navItem.link} css={dropdownNavItemCss}>
 								{navItem.icon && (
@@ -242,8 +243,7 @@ export const DropdownNav = () => {
 								</span>
 							</a>
 						</li>
-					),
-				)}
+					))}
 			</ul>
 		</nav>
 	);

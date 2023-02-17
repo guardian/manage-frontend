@@ -1,4 +1,5 @@
 import { conf } from '../../../../server/config';
+import { featureSwitches } from '../../../../shared/featureSwitches';
 import { AccountOverviewIcon } from '../../mma/shared/assets/AccountOverviewIcon';
 import { CreditCardIcon } from '../../mma/shared/assets/CreditCardIcon';
 import { EmailPrefsIcon } from '../../mma/shared/assets/EmailPrefIcon';
@@ -20,6 +21,7 @@ export interface NavItem {
 
 export interface MenuSpecificNavItem extends NavItem {
 	isDropDownExclusive?: boolean;
+	isExcludedByFeatureSwitch?: boolean;
 }
 
 interface NavLinks {
@@ -27,6 +29,7 @@ interface NavLinks {
 	billing: MenuSpecificNavItem;
 	profile: MenuSpecificNavItem;
 	settings: MenuSpecificNavItem;
+	savedArticles: MenuSpecificNavItem;
 	emailPrefs: MenuSpecificNavItem;
 	help: MenuSpecificNavItem;
 	comments: MenuSpecificNavItem;
@@ -59,6 +62,12 @@ export const NAV_LINKS: NavLinks = {
 		link: '/public-settings',
 		local: true,
 		icon: ProfileIcon,
+	},
+	savedArticles: {
+		title: 'Saved articles',
+		link: '/saved-articles',
+		local: true,
+		isExcludedByFeatureSwitch: !featureSwitches.savedArticles,
 	},
 	emailPrefs: {
 		title: 'Emails & marketing',
