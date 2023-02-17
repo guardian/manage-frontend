@@ -1,4 +1,4 @@
-import { contribution } from '../../../client/fixtures/productDetail';
+import { contributionCard } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Update contribution amount', () => {
@@ -21,12 +21,12 @@ describe('Update contribution amount', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
-			body: [contribution],
+			body: [contributionCard],
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: [contribution],
+			body: [contributionCard],
 		});
 
 		cy.intercept('GET', '/api/cancelled/', {

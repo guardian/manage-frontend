@@ -11,7 +11,10 @@ import { useContext, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { dateString } from '../../../../shared/dates';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
+import type {
+	PaidSubscriptionPlan,
+	Subscription,
+} from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
@@ -23,15 +26,15 @@ import {
 import { formatAmount } from '../../../utilities/utils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { ErrorSummary } from '../paymentUpdate/Summary';
+import { DirectDebitLogo } from '../shared/assets/DirectDebitLogo';
+import { PaypalLogo } from '../shared/assets/PaypalLogo';
 import { SwitchOffsetPaymentIcon } from '../shared/assets/SwitchOffsetPaymentIcon';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { Card } from '../shared/Card';
-import { CardDisplay } from '../shared/CardDisplay';
-import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
+import { cardTypeToSVG } from '../shared/CardDisplay';
 import { Heading } from '../shared/Heading';
-import { PaypalDisplay } from '../shared/PaypalDisplay';
-import { SepaDisplay } from '../shared/SepaDisplay';
+import { getObfuscatedPayPalId } from '../shared/PaypalDisplay';
 import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
@@ -47,6 +50,67 @@ import {
 	sectionSpacing,
 	smallPrintCss,
 } from './SwitchStyles';
+
+const PaymentDetails = (props: { subscription: Subscription }) => {
+	const subscription = props.subscription;
+
+	const cardType = (type: string) => {
+		if (type !== 'MasterCard') {
+			return `${type} card`;
+		}
+		return type;
+	};
+
+	const containerCss = css`
+		display: inline-flex;
+		align-items: center;
+		font-weight: 700;
+		max-width: 100%;
+		> svg {
+			flex: 0 0 auto;
+			margin-left: 0.5ch;
+		}
+	`;
+
+	const truncateCss = css`
+		flex: 0 1 auto;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	`;
+
+	return (
+		<span css={containerCss}>
+			{subscription.card && (
+				<>
+					{cardType(subscription.card.type)} ending{' '}
+					{subscription.card.last4}
+					{cardTypeToSVG(subscription.card.type)}
+				</>
+			)}
+			{subscription.payPalEmail && (
+				<>
+					<span css={truncateCss}>
+						{getObfuscatedPayPalId(subscription.payPalEmail)}
+					</span>
+					<PaypalLogo />
+				</>
+			)}
+			{subscription.mandate && (
+				<>
+					account ending{' '}
+					{subscription.mandate.accountNumber.slice(-3)}
+					<DirectDebitLogo />
+				</>
+			)}
+			{subscription.sepaMandate && (
+				<>
+					SEPA {subscription.sepaMandate.accountName}{' '}
+					{subscription.sepaMandate.iban}
+				</>
+			)}
+		</span>
+	);
+};
 
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
 	props.PaymentFailure ? (
@@ -298,47 +362,10 @@ export const SwitchReview = () => {
 							<span>
 								<strong>Your payment method</strong>
 								<br />
-								We will take payment as before, from
-								<strong>
-									{productDetail.subscription.card && (
-										<CardDisplay
-											inline
-											cssOverrides={css`
-												margin: 0;
-											`}
-											{...productDetail.subscription.card}
-										/>
-									)}
-									{productDetail.subscription.payPalEmail && (
-										<PaypalDisplay
-											inline
-											payPalId={
-												productDetail.subscription
-													.payPalEmail
-											}
-										/>
-									)}
-									{productDetail.subscription.sepaMandate && (
-										<SepaDisplay
-											inline
-											accountName={
-												productDetail.subscription
-													.sepaMandate.accountName
-											}
-											iban={
-												productDetail.subscription
-													.sepaMandate.iban
-											}
-										/>
-									)}
-									{productDetail.subscription.mandate && (
-										<DirectDebitDisplay
-											inline
-											{...productDetail.subscription
-												.mandate}
-										/>
-									)}
-								</strong>
+								We will take payment as before, from{' '}
+								<PaymentDetails
+									subscription={productDetail.subscription}
+								/>
 							</span>
 						</li>
 					</ul>
