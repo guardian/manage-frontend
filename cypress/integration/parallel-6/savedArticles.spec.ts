@@ -22,3 +22,19 @@ if (!featureSwitches.savedArticles) {
 		});
 	});
 }
+
+if (featureSwitches.savedArticles) {
+	describe('Feature Switch ON: Saved Article', () => {
+		beforeEach(() => {
+			cy.session('auth', () => {
+				cy.setCookie('gu-cmp-disabled', 'true');
+			});
+		});
+
+		it('displays Saved Article page', () => {
+			cy.visit('/saved-articles');
+
+			cy.findAllByText('Saved articles').should('have.length', 1);
+		});
+	});
+}

@@ -236,6 +236,12 @@ const DeliveryRecordsProblemConfirmation = lazy(() =>
 	})),
 );
 
+const SavedArticles = lazy(() =>
+	import(
+		/* webpackChunkName: "SavedArticles" */ './savedArticles/SavedArticles'
+	).then(({ SavedArticles }) => ({ default: SavedArticles })),
+);
+
 const EmailAndMarketing = lazy(() =>
 	import(
 		/* webpackChunkName: "EmailAndMarketing" */ './identity/emailAndMarketing/EmailAndMarketing'
@@ -319,6 +325,12 @@ const MMARouter = () => {
 							path="/email-prefs"
 							element={<EmailAndMarketing />}
 						/>
+						{featureSwitches.savedArticles && (
+							<Route
+								path="/saved-articles"
+								element={<SavedArticles />}
+							/>
+						)}
 						<Route
 							path="/public-settings"
 							element={<PublicProfile />}
