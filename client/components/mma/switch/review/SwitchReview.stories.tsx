@@ -1,14 +1,14 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import {
 	contributionCard,
 	contributionDirectDebit,
 	contributionPayPal,
 	contributionSepa,
-} from '../../../fixtures/productDetail';
-import { productMovePreviewResponse } from '../../../fixtures/productMove';
-import { SwitchContainer } from './SwitchContainer';
+} from '../../../../fixtures/productDetail';
+import { productMovePreviewResponse } from '../../../../fixtures/productMove';
+import { SwitchContainer } from '../SwitchContainer';
 import { SwitchReview } from './SwitchReview';
 
 export default {

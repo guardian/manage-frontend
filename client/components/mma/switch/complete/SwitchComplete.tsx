@@ -16,28 +16,24 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { getMainPlan } from '../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
-import type { CurrencyIso } from '../../../utilities/currencyIso';
-import { formatAmount } from '../../../utilities/utils';
-import { InverseStarIcon } from '../shared/assets/InverseStarIcon';
-import { Heading } from '../shared/Heading';
+import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
+import { getBenefitsThreshold } from '../../../../utilities/benefitsThreshold';
+import type { CurrencyIso } from '../../../../utilities/currencyIso';
+import { formatAmount } from '../../../../utilities/utils';
+import { InverseStarIcon } from '../../shared/assets/InverseStarIcon';
+import { Heading } from '../../shared/Heading';
 import type {
 	SwitchContextInterface,
 	SwitchRouterState,
-} from './SwitchContainer';
-import { SwitchContext } from './SwitchContainer';
+} from '../SwitchContainer';
+import { SwitchContext } from '../SwitchContainer';
+import { buttonCentredCss, iconListCss, sectionSpacing } from '../SwitchStyles';
 import { SwitchSignInImage } from './SwitchSignInImage';
-import { buttonCentredCss, iconListCss, sectionSpacing } from './SwitchStyles';
 
 export const SwitchComplete = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
-	const productDetail = switchContext.productDetail;
-	const mainPlan = getMainPlan(
-		productDetail.subscription,
-	) as PaidSubscriptionPlan;
+	const { mainPlan } = switchContext;
 
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		mainPlan.billingPeriod,

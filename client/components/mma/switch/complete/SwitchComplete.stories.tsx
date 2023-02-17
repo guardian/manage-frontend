@@ -1,8 +1,8 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
-import { contributionPayPal } from '../../../fixtures/productDetail';
+import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
+import { contributionPayPal } from '../../../../fixtures/productDetail';
+import { SwitchContainer } from '../SwitchContainer';
 import { SwitchComplete } from './SwitchComplete';
-import { SwitchContainer } from './SwitchContainer';
 
 export default {
 	title: 'Pages/SwitchComplete',

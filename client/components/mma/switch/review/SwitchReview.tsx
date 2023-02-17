@@ -10,34 +10,30 @@ import {
 import { useContext, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { dateString } from '../../../../shared/dates';
-import type {
-	PaidSubscriptionPlan,
-	Subscription,
-} from '../../../../shared/productResponse';
-import { getMainPlan } from '../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
-import type { CurrencyIso } from '../../../utilities/currencyIso';
+import { dateString } from '../../../../../shared/dates';
+import type { Subscription } from '../../../../../shared/productResponse';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
+import { getBenefitsThreshold } from '../../../../utilities/benefitsThreshold';
+import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import {
 	LoadingState,
 	useAsyncLoader,
-} from '../../../utilities/hooks/useAsyncLoader';
-import { formatAmount } from '../../../utilities/utils';
-import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
-import { ErrorSummary } from '../paymentUpdate/Summary';
-import { DirectDebitLogo } from '../shared/assets/DirectDebitLogo';
-import { PaypalLogo } from '../shared/assets/PaypalLogo';
-import { SwitchOffsetPaymentIcon } from '../shared/assets/SwitchOffsetPaymentIcon';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
-import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
-import { Card } from '../shared/Card';
-import { cardTypeToSVG } from '../shared/CardDisplay';
-import { Heading } from '../shared/Heading';
-import { getObfuscatedPayPalId } from '../shared/PaypalDisplay';
-import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
-import type { SwitchContextInterface } from './SwitchContainer';
-import { SwitchContext } from './SwitchContainer';
+} from '../../../../utilities/hooks/useAsyncLoader';
+import { formatAmount } from '../../../../utilities/utils';
+import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
+import { ErrorSummary } from '../../paymentUpdate/Summary';
+import { DirectDebitLogo } from '../../shared/assets/DirectDebitLogo';
+import { PaypalLogo } from '../../shared/assets/PaypalLogo';
+import { SwitchOffsetPaymentIcon } from '../../shared/assets/SwitchOffsetPaymentIcon';
+import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
+import { Card } from '../../shared/Card';
+import { cardTypeToSVG } from '../../shared/CardDisplay';
+import { Heading } from '../../shared/Heading';
+import { getObfuscatedPayPalId } from '../../shared/PaypalDisplay';
+import { SupporterPlusBenefitsToggle } from '../../shared/SupporterPlusBenefits';
+import type { SwitchContextInterface } from '../SwitchContainer';
+import { SwitchContext } from '../SwitchContainer';
 import {
 	buttonCentredCss,
 	buttonMutedCss,
@@ -49,7 +45,7 @@ import {
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
-} from './SwitchStyles';
+} from '../SwitchStyles';
 
 const PaymentDetails = (props: { subscription: Subscription }) => {
 	const subscription = props.subscription;
@@ -176,13 +172,9 @@ export const SwitchReview = () => {
 	const [switchingError, setSwitchingError] = useState<boolean>(false);
 
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
-	const productDetail = switchContext.productDetail;
+	const { productDetail, mainPlan } = switchContext;
 
 	const inPaymentFailure = !!productDetail.alertText;
-
-	const mainPlan = getMainPlan(
-		productDetail.subscription,
-	) as PaidSubscriptionPlan;
 
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		mainPlan.billingPeriod,

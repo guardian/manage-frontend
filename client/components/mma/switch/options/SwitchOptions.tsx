@@ -8,18 +8,16 @@ import {
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { getMainPlan } from '../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
-import type { CurrencyIso } from '../../../utilities/currencyIso';
-import { formatAmount } from '../../../utilities/utils';
-import { ErrorSummary } from '../paymentUpdate/Summary';
-import { Card } from '../shared/Card';
-import { Heading } from '../shared/Heading';
-import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
-import type { SwitchContextInterface } from './SwitchContainer';
-import { SwitchContext } from './SwitchContainer';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
+import { getBenefitsThreshold } from '../../../../utilities/benefitsThreshold';
+import type { CurrencyIso } from '../../../../utilities/currencyIso';
+import { formatAmount } from '../../../../utilities/utils';
+import { ErrorSummary } from '../../paymentUpdate/Summary';
+import { Card } from '../../shared/Card';
+import { Heading } from '../../shared/Heading';
+import { SupporterPlusBenefitsSection } from '../../shared/SupporterPlusBenefits';
+import type { SwitchContextInterface } from '.././SwitchContainer';
+import { SwitchContext } from '.././SwitchContainer';
 import {
 	buttonCentredCss,
 	errorSummaryBlockLinkCss,
@@ -28,7 +26,7 @@ import {
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
-} from './SwitchStyles';
+} from '.././SwitchStyles';
 
 const cardHeaderDivCss = css`
 	display: flex;
@@ -74,10 +72,7 @@ const fromAppHeadingCss = css`
 export const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 
-	const productDetail = switchContext.productDetail;
-	const mainPlan = getMainPlan(
-		productDetail.subscription,
-	) as PaidSubscriptionPlan;
+	const { productDetail, mainPlan } = switchContext;
 
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		mainPlan.billingPeriod,
