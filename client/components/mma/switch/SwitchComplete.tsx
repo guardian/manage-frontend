@@ -59,14 +59,14 @@ export const SwitchComplete = () => {
 	const amountPayableToday = routerState?.amountPayableToday;
 	const nextPaymentDate = routerState?.nextPaymentDate;
 
-	if (!amountPayableToday || !nextPaymentDate) {
+	if (amountPayableToday === undefined || !nextPaymentDate) {
 		return <Navigate to=".." />;
 	}
 
 	return (
 		<>
 			{switchContext.isFromApp ? (
-				<ThankYouBanner
+				<AppThankYouBanner
 					newAmount={newAmountAndCurrency}
 					newProduct={supporterPlusTitle.toLowerCase()}
 					aboveThreshold={aboveThreshold}
@@ -156,7 +156,7 @@ const thankYouBannerButtonCss = css`
 	}
 `;
 
-const ThankYouBanner = (props: {
+const AppThankYouBanner = (props: {
 	newAmount: string;
 	newProduct: string;
 	aboveThreshold: boolean;
@@ -180,7 +180,7 @@ const ThankYouBanner = (props: {
 			</div>
 			<p css={thankYouBannerCopyCss}>
 				If you don’t complete this step, you may be unable to access the
-				app in full for up to one hour.
+				app in full for up to one hour
 			</p>
 		</section>
 	);
@@ -227,7 +227,7 @@ const WhatHappensNext = (props: {
 						<InverseStarIcon size="medium" />
 						<span>
 							Your new support will start today. It can take up to
-							an hour for your support to be activated.
+							an hour for your support to be activated
 						</span>
 					</li>
 				)}
@@ -266,7 +266,7 @@ const ThankYouMessaging = (props: {
 					{props.mainPlan.billingPeriod}.
 				</>
 			)}{' '}
-			<span>Enjoy your exclusive extras.</span>
+			<span>Enjoy your exclusive extras</span>
 		</h2>
 	);
 };

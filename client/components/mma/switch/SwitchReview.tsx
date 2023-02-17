@@ -326,8 +326,8 @@ export const SwitchReview = () => {
 							<span>
 								<strong>This change will happen today</strong>
 								<br />
-								Dive in and start enjoying your exclusive extras
-								straight away
+								In just a couple of steps, you'll be able to
+								start enjoying your exclusive extras{' '}
 							</span>
 						</li>
 						<li
@@ -338,18 +338,21 @@ export const SwitchReview = () => {
 							<SwitchOffsetPaymentIcon size="medium" />
 							<span>
 								<strong>
-									Your first payment will be{' '}
-									{aboveThreshold && 'just'}{' '}
-									{mainPlan.currency}
-									{formatAmount(
-										previewResponse.amountPayableToday,
-									)}
+									{previewResponse.amountPayableToday > 0 &&
+										`Your first payment will be
+									${aboveThreshold && 'just'}
+									${mainPlan.currency}${formatAmount(previewResponse.amountPayableToday)}`}
+									{previewResponse.amountPayableToday == 0 &&
+										"There's nothing extra to pay today"}
 								</strong>
 								<br />
-								We will charge you a smaller amount today, to
+								{previewResponse.amountPayableToday > 0 &&
+									`We will charge you a smaller amount today, to
 								offset the payment you've already given us for
-								the rest of the {mainPlan.billingPeriod}. After
-								this, from {nextPaymentDate}, your new{' '}
+								the rest of the ${mainPlan.billingPeriod}.`}
+								{previewResponse.amountPayableToday == 0 &&
+									`We won't charge you today, as your current payment covers you for the rest of the ${mainPlan.billingPeriod}.`}{' '}
+								After this, from {nextPaymentDate}, your new{' '}
 								{monthlyOrAnnual.toLowerCase()} payment will be{' '}
 								{mainPlan.currency}
 								{formatAmount(
