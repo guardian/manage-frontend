@@ -16,9 +16,8 @@ function calculateTimeOfDay() {
 	}
 	if (currentHour < 18) {
 		return 'Good afternoon';
-	} else {
-		return 'Good evening';
 	}
+	return 'Good evening';
 }
 
 export const PersonalisedHeader = ({
