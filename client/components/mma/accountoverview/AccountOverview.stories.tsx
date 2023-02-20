@@ -3,7 +3,7 @@ import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import {
-	contribution,
+	contributionPayPal,
 	digitalDD,
 	guardianWeeklyCard,
 	newspaperVoucherPaypal,
@@ -56,7 +56,8 @@ export const WithContributionNewLayout: ComponentStory<
 		.restore()
 		.get('/api/cancelled/', { body: [] })
 		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(contribution),
+			body: toMembersDataApiResponse(contributionPayPal),
+
 		});
 
 	return <AccountOverview />;
@@ -67,7 +68,7 @@ export const WithContributionNewLayoutPaymentFailure: ComponentStory<
 > = () => {
 	featureSwitches['accountOverviewNewLayout'] = true;
 	const contributionPaymentFailure = {
-		...contribution,
+		...contributionPayPal,
 		alertText: 'Your payment has failed.',
 	};
 
@@ -93,7 +94,7 @@ export const WithContributionNewLayoutDigisubAndContribution: ComponentStory<
 		.restore()
 		.get('/api/cancelled/', { body: [] })
 		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(contribution, digitalDD),
+			body: toMembersDataApiResponse(contributionPayPal, digitalDD),
 		});
 
 	return <AccountOverview />;

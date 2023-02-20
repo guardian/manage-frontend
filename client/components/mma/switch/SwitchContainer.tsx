@@ -23,6 +23,7 @@ export interface SwitchRouterState {
 	productDetail: ProductDetail;
 	user?: MembersDataApiUser;
 	amountPayableToday: number;
+	nextPaymentDate: string;
 }
 
 export interface SwitchContextInterface {

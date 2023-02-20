@@ -1,10 +1,23 @@
 import { css } from '@emotion/react';
 import { headline, space } from '@guardian/source-foundations';
+import { dateString } from '../../../../shared/dates';
 import type { MembersDataApiResponse } from '../../../../shared/productResponse';
 import { isProduct, sortByJoinDate } from '../../../../shared/productResponse';
 
 interface PersonalisedHeaderProps {
 	mdapiResponse: MembersDataApiResponse;
+}
+
+function calculateTimeOfDay() {
+	const currentHour = new Date().getHours();
+
+	if (currentHour < 12) {
+		return 'Good morning';
+	}
+	if (currentHour < 18) {
+		return 'Good afternoon';
+	}
+	return 'Good evening';
 }
 
 export const PersonalisedHeader = ({
@@ -16,20 +29,10 @@ export const PersonalisedHeader = ({
 		.filter(isProduct)
 		.sort(sortByJoinDate);
 	const oldestProduct = productDetails[productDetails.length - 1];
-	const supportStartYear = new Date(oldestProduct.joinDate).getFullYear();
-
-	const calculatedTimeOfDay = () => {
-		const currentHour = new Date().getHours();
-
-		if (currentHour < 12) {
-			return 'Good Morning';
-		}
-		if (currentHour < 18) {
-			return 'Good Afternoon';
-		} else {
-			return 'Good Evening';
-		}
-	};
+	const supportStartYear = dateString(
+		new Date(oldestProduct.joinDate),
+		'MMMM yyyy',
+	);
 
 	return userDetails ? (
 		<hgroup
@@ -43,14 +46,14 @@ export const PersonalisedHeader = ({
 					margin-bottom: 0;
 				`}
 			>
-				{calculatedTimeOfDay()} {userDetails.firstName ?? 'Reader'}
+				{calculateTimeOfDay()}, {userDetails.firstName ?? 'supporter'}
 			</h2>
 			<p
 				css={css`
 					${headline.xxxsmall()};
 				`}
 			>
-				Thanks for supporting the Guardian since {supportStartYear}
+				Thank you for funding the Guardian since {supportStartYear}
 			</p>
 		</hgroup>
 	) : null;

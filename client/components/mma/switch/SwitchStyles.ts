@@ -77,6 +77,7 @@ export const listWithDividersCss = css`
 			flex-grow: 1;
 			padding-top: ${space[2]}px;
 			border-top: 1px solid ${palette.neutral[86]};
+			min-width: 0;
 			${from.tablet} {
 				padding-top: ${space[3]}px;
 			}

@@ -16,11 +16,6 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
-import {
-	dateAddMonths,
-	dateAddYears,
-	dateString,
-} from '../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
@@ -62,15 +57,16 @@ export const SwitchComplete = () => {
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
 	const amountPayableToday = routerState?.amountPayableToday;
+	const nextPaymentDate = routerState?.nextPaymentDate;
 
-	if (!amountPayableToday) {
+	if (amountPayableToday === undefined || !nextPaymentDate) {
 		return <Navigate to=".." />;
 	}
 
 	return (
 		<>
 			{switchContext.isFromApp ? (
-				<ThankYouBanner
+				<AppThankYouBanner
 					newAmount={newAmountAndCurrency}
 					newProduct={supporterPlusTitle.toLowerCase()}
 					aboveThreshold={aboveThreshold}
@@ -92,6 +88,7 @@ export const SwitchComplete = () => {
 					billingPeriod={monthlyOrAnnual.toLowerCase()}
 					email={switchContext.user?.email ?? ''}
 					isFromApp={switchContext.isFromApp}
+					nextPaymentDate={nextPaymentDate}
 				/>
 			</section>
 			{!switchContext.isFromApp && (
@@ -159,7 +156,7 @@ const thankYouBannerButtonCss = css`
 	}
 `;
 
-const ThankYouBanner = (props: {
+const AppThankYouBanner = (props: {
 	newAmount: string;
 	newProduct: string;
 	aboveThreshold: boolean;
@@ -168,7 +165,7 @@ const ThankYouBanner = (props: {
 		<section css={thankYouBannerCss}>
 			<h2 css={thankYouBannerHeadingCss}>
 				Thank you for {props.aboveThreshold ? 'changing' : 'upgrading'}{' '}
-				to {props.newAmount} {props.newProduct}.
+				to {props.newAmount} {props.newProduct}
 			</h2>
 			<p css={thankYouBannerSubheadingCss}>One last step ...</p>
 			<div css={thankYouBannerButtonCss}>
@@ -183,7 +180,7 @@ const ThankYouBanner = (props: {
 			</div>
 			<p css={thankYouBannerCopyCss}>
 				If you don’t complete this step, you may be unable to access the
-				app in full for up to one hour.
+				app in full for up to one hour
 			</p>
 		</section>
 	);
@@ -202,15 +199,8 @@ const WhatHappensNext = (props: {
 	billingPeriod: string;
 	email: string;
 	isFromApp: boolean;
+	nextPaymentDate: string;
 }) => {
-	// ToDo: the API could return the next payment date
-	const nextPaymentDate = dateString(
-		props.billingPeriod == 'monthly'
-			? dateAddMonths(new Date(), 1)
-			: dateAddYears(new Date(), 1),
-		'd MMMM',
-	);
-
 	return (
 		<Stack space={4}>
 			<Heading sansSerif>What happens next?</Heading>
@@ -227,8 +217,8 @@ const WhatHappensNext = (props: {
 						Your first billing date is today and you will be charged{' '}
 						{props.currency}
 						{formatAmount(props.amountPayableToday)}. From{' '}
-						{nextPaymentDate}, your ongoing {props.billingPeriod}{' '}
-						payment will be {props.currency}
+						{props.nextPaymentDate}, your ongoing{' '}
+						{props.billingPeriod} payment will be {props.currency}
 						{formatAmount(props.nextPaymentAmount)}
 					</span>
 				</li>
@@ -237,7 +227,7 @@ const WhatHappensNext = (props: {
 						<InverseStarIcon size="medium" />
 						<span>
 							Your new support will start today. It can take up to
-							an hour for your support to be activated.
+							an hour for your support to be activated
 						</span>
 					</li>
 				)}
@@ -275,8 +265,8 @@ const ThankYouMessaging = (props: {
 					{formatAmount(props.newAmount)} per{' '}
 					{props.mainPlan.billingPeriod}.
 				</>
-			)}
-			<span>Enjoy your exclusive extras.</span>
+			)}{' '}
+			<span>Enjoy your exclusive extras</span>
 		</h2>
 	);
 };

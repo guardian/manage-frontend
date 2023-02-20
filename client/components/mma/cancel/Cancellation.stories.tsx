@@ -4,7 +4,7 @@ import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorato
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
 	cancelledContribution,
-	contribution,
+	contributionPayPal,
 	guardianWeeklyCard,
 } from '../../../fixtures/productDetail';
 import { CancellationContainer } from './CancellationContainer';
@@ -26,7 +26,7 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: contribution },
+			state: { productDetail: contributionPayPal },
 			container: <CancellationContainer productType={contributions} />,
 		},
 	},
@@ -64,7 +64,7 @@ export const Review: ComponentStory<typeof CancellationContainer> = () => {
 Review.parameters = {
 	reactRouter: {
 		state: {
-			productDetail: contribution,
+			productDetail: contributionPayPal,
 			selectedReasonId: 'mma_editorial',
 			cancellationPolicy: 'Today',
 		},

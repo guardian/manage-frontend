@@ -151,11 +151,7 @@ export const DropdownNav = () => {
 				[from.desktop]: {
 					position: 'relative',
 					left: '0.5rem',
-					...gridItemPlacement(-4, 2),
 					marginLeft: 'auto',
-				},
-				[from.wide]: {
-					...gridItemPlacement(-4, 2),
 				},
 				' button': {
 					[from.tablet]: {

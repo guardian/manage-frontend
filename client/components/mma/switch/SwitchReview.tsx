@@ -10,12 +10,11 @@ import {
 import { useContext, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import {
-	dateAddMonths,
-	dateAddYears,
-	dateString,
-} from '../../../../shared/dates';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
+import { dateString } from '../../../../shared/dates';
+import type {
+	PaidSubscriptionPlan,
+	Subscription,
+} from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
@@ -27,15 +26,15 @@ import {
 import { formatAmount } from '../../../utilities/utils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { ErrorSummary } from '../paymentUpdate/Summary';
+import { DirectDebitLogo } from '../shared/assets/DirectDebitLogo';
+import { PaypalLogo } from '../shared/assets/PaypalLogo';
 import { SwitchOffsetPaymentIcon } from '../shared/assets/SwitchOffsetPaymentIcon';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { Card } from '../shared/Card';
-import { CardDisplay } from '../shared/CardDisplay';
-import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
+import { cardTypeToSVG } from '../shared/CardDisplay';
 import { Heading } from '../shared/Heading';
-import { PaypalDisplay } from '../shared/PaypalDisplay';
-import { SepaDisplay } from '../shared/SepaDisplay';
+import { getObfuscatedPayPalId } from '../shared/PaypalDisplay';
 import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
 import type { SwitchContextInterface } from './SwitchContainer';
 import { SwitchContext } from './SwitchContainer';
@@ -51,6 +50,67 @@ import {
 	sectionSpacing,
 	smallPrintCss,
 } from './SwitchStyles';
+
+const PaymentDetails = (props: { subscription: Subscription }) => {
+	const subscription = props.subscription;
+
+	const cardType = (type: string) => {
+		if (type !== 'MasterCard') {
+			return `${type} card`;
+		}
+		return type;
+	};
+
+	const containerCss = css`
+		display: inline-flex;
+		align-items: center;
+		font-weight: 700;
+		max-width: 100%;
+		> svg {
+			flex: 0 0 auto;
+			margin-left: 0.5ch;
+		}
+	`;
+
+	const truncateCss = css`
+		flex: 0 1 auto;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	`;
+
+	return (
+		<span css={containerCss}>
+			{subscription.card && (
+				<>
+					{cardType(subscription.card.type)} ending{' '}
+					{subscription.card.last4}
+					{cardTypeToSVG(subscription.card.type)}
+				</>
+			)}
+			{subscription.payPalEmail && (
+				<>
+					<span css={truncateCss}>
+						{getObfuscatedPayPalId(subscription.payPalEmail)}
+					</span>
+					<PaypalLogo />
+				</>
+			)}
+			{subscription.mandate && (
+				<>
+					account ending{' '}
+					{subscription.mandate.accountNumber.slice(-3)}
+					<DirectDebitLogo />
+				</>
+			)}
+			{subscription.sepaMandate && (
+				<>
+					SEPA {subscription.sepaMandate.accountName}{' '}
+					{subscription.sepaMandate.iban}
+				</>
+			)}
+		</span>
+	);
+};
 
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
 	props.PaymentFailure ? (
@@ -105,8 +165,8 @@ const buttonLayoutCss = css`
 
 interface PreviewResponse {
 	amountPayableToday: number;
-	contributionRefundAmount: number;
 	supporterPlusPurchaseAmount: number;
+	nextPaymentDate: string;
 }
 
 export const SwitchReview = () => {
@@ -129,20 +189,20 @@ export const SwitchReview = () => {
 	);
 	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
 
-	const threshold = getBenefitsThreshold(
+	const monthlyThreshold = getBenefitsThreshold(
 		mainPlan.currencyISO as CurrencyIso,
-		monthlyOrAnnual,
+		'Monthly',
 	);
+	const annualThreshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		'Annual',
+	);
+
+	const threshold =
+		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
+
 	const aboveThreshold = mainPlan.price >= threshold * 100;
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
-
-	// ToDo: the API could return the next payment date
-	const nextPayment = dateString(
-		monthlyOrAnnual == 'Monthly'
-			? dateAddMonths(new Date(), 1)
-			: dateAddYears(new Date(), 1),
-		'd MMMM',
-	);
 
 	const productMoveFetch = (preview: boolean) =>
 		fetch(
@@ -175,7 +235,10 @@ export const SwitchReview = () => {
 				setSwitchingError(true);
 			} else {
 				navigate('../complete', {
-					state: { amountPayableToday: amount },
+					state: {
+						amountPayableToday: amount,
+						nextPaymentDate: nextPaymentDate,
+					},
 				});
 			}
 		} catch (e) {
@@ -202,6 +265,11 @@ export const SwitchReview = () => {
 		return <Navigate to="/" />;
 	}
 
+	const nextPaymentDate = dateString(
+		new Date(previewResponse.nextPaymentDate),
+		'd MMMM',
+	);
+
 	return (
 		<>
 			<section css={sectionSpacing}>
@@ -216,7 +284,7 @@ export const SwitchReview = () => {
 						your choice to unlock exclusive supporter extras
 						{aboveThreshold ? ". You'll still pay " : ' by paying '}
 						{mainPlan.currency}
-						{formatAmount(newAmount)}  per {mainPlan.billingPeriod}.
+						{formatAmount(newAmount)} per {mainPlan.billingPeriod}.
 					</p>
 				</Stack>
 			</section>
@@ -258,8 +326,8 @@ export const SwitchReview = () => {
 							<span>
 								<strong>This change will happen today</strong>
 								<br />
-								Dive in and start enjoying your exclusive extras
-								straight away
+								In just a couple of steps, you'll be able to
+								start enjoying your exclusive extras{' '}
 							</span>
 						</li>
 						<li
@@ -270,18 +338,21 @@ export const SwitchReview = () => {
 							<SwitchOffsetPaymentIcon size="medium" />
 							<span>
 								<strong>
-									Your first payment will be{' '}
-									{aboveThreshold && 'just'}{' '}
-									{mainPlan.currency}
-									{formatAmount(
-										previewResponse.amountPayableToday,
-									)}
+									{previewResponse.amountPayableToday > 0 &&
+										`Your first payment will be
+									${aboveThreshold ? 'just' : ''}
+									${mainPlan.currency}${formatAmount(previewResponse.amountPayableToday)}`}
+									{previewResponse.amountPayableToday == 0 &&
+										"There's nothing extra to pay today"}
 								</strong>
 								<br />
-								We will charge you a smaller amount today, to
+								{previewResponse.amountPayableToday > 0 &&
+									`We will charge you a smaller amount today, to
 								offset the payment you've already given us for
-								the rest of the {mainPlan.billingPeriod}. After
-								this, from {nextPayment}, your new{' '}
+								the rest of the ${mainPlan.billingPeriod}.`}
+								{previewResponse.amountPayableToday == 0 &&
+									`We won't charge you today, as your current payment covers you for the rest of the ${mainPlan.billingPeriod}.`}{' '}
+								After this, from {nextPaymentDate}, your new{' '}
 								{monthlyOrAnnual.toLowerCase()} payment will be{' '}
 								{mainPlan.currency}
 								{formatAmount(
@@ -294,47 +365,10 @@ export const SwitchReview = () => {
 							<span>
 								<strong>Your payment method</strong>
 								<br />
-								We will take payment as before, from
-								<strong>
-									{productDetail.subscription.card && (
-										<CardDisplay
-											inline
-											cssOverrides={css`
-												margin: 0;
-											`}
-											{...productDetail.subscription.card}
-										/>
-									)}
-									{productDetail.subscription.payPalEmail && (
-										<PaypalDisplay
-											inline
-											payPalId={
-												productDetail.subscription
-													.payPalEmail
-											}
-										/>
-									)}
-									{productDetail.subscription.sepaMandate && (
-										<SepaDisplay
-											inline
-											accountName={
-												productDetail.subscription
-													.sepaMandate.accountName
-											}
-											iban={
-												productDetail.subscription
-													.sepaMandate.iban
-											}
-										/>
-									)}
-									{productDetail.subscription.mandate && (
-										<DirectDebitDisplay
-											inline
-											{...productDetail.subscription
-												.mandate}
-										/>
-									)}
-								</strong>
+								We will take payment as before, from{' '}
+								<PaymentDetails
+									subscription={productDetail.subscription}
+								/>
 							</span>
 						</li>
 					</ul>
@@ -379,21 +413,26 @@ export const SwitchReview = () => {
 			)}
 			<section css={sectionSpacing}>
 				<p css={smallPrintCss}>
-					This arrangement auto-renews each {mainPlan.billingPeriod}.
+					This subscription auto-renews each {mainPlan.billingPeriod}.
 					You will be charged the applicable{' '}
 					{monthlyOrAnnual.toLowerCase()} amount at each renewal
-					unless you cancel. You can cancel or change how much you pay
-					for these benefits at any time before your next renewal
-					date, but {mainPlan.currency}
-					{formatAmount(threshold)} per {mainPlan.billingPeriod} is
-					the minimum payment. If you cancel within 14 days of signing
-					up, you’ll receive a full refund and your benefits will stop
-					immediately. Changes to your payment amount or cancellation
-					made after 14 days will take effect at the end of your
-					current {monthlyOrAnnual.toLowerCase()} payment period. To
-					cancel, go to Manage My Account or see our{' '}
+					unless you cancel. Payment can only be made using your
+					existing payment method. You can cancel or change how much
+					you pay for these benefits at any time before your next
+					renewal date, but {mainPlan.currency}
+					{formatAmount(monthlyThreshold)} per month or{' '}
+					{mainPlan.currency}
+					{formatAmount(annualThreshold)} per year is the minimum
+					payment. If you cancel within 14 days of taking out this
+					subscription, you’ll receive a full refund and your benefits
+					will stop immediately. Changes to your payment amount or
+					cancellation made after 14 days will take effect at the end
+					of your current subscription {mainPlan.billingPeriod}. To
+					cancel,{' '}
+					<Link to="/recurringsupport">go to Manage My Account</Link>{' '}
+					or{' '}
 					<a href="https://www.theguardian.com/info/2022/oct/28/the-guardian-supporter-plus-terms-and-conditions">
-						Terms
+						see our Terms
 					</a>
 					.
 				</p>

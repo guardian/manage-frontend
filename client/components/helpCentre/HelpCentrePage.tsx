@@ -9,7 +9,7 @@ import { useConsent } from '../../utilities/hooks/useConsent';
 import { useScrollToTop } from '../../utilities/hooks/useScrollToTop';
 import { setPageTitle } from '../../utilities/pageTitle';
 import type { SignInStatus } from '../../utilities/signInStatus';
-import { isSignedIn, pageRequiresSignIn } from '../../utilities/signInStatus';
+import { isSignedIn } from '../../utilities/signInStatus';
 import { ErrorBoundary } from '../shared/ErrorBoundary';
 import { GenericErrorScreen } from '../shared/GenericErrorScreen';
 import { Main } from '../shared/Main';
@@ -81,11 +81,7 @@ const HelpCentreRouter = () => {
 	];
 
 	return (
-		<Main
-			signInStatus={signInStatus}
-			requiresSignIn={pageRequiresSignIn()}
-			helpCentrePage={true}
-		>
+		<Main signInStatus={signInStatus}>
 			<Global styles={css(`${global}`)} />
 			<Global styles={css(`${fonts}`)} />
 			<HelpCenterContentWrapper knownIssues={knownIssues}>

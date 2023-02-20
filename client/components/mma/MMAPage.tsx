@@ -32,7 +32,7 @@ import {
 	shouldHaveHolidayStopsFlow,
 } from '../../utilities/productUtils';
 import type { SignInStatus } from '../../utilities/signInStatus';
-import { isSignedIn, pageRequiresSignIn } from '../../utilities/signInStatus';
+import { isSignedIn } from '../../utilities/signInStatus';
 import { ErrorBoundary } from '../shared/ErrorBoundary';
 import { GenericErrorScreen } from '../shared/GenericErrorScreen';
 import { Main } from '../shared/Main';
@@ -301,7 +301,7 @@ const MMARouter = () => {
 	useScrollToTop();
 
 	return (
-		<Main signInStatus={signInStatus} requiresSignIn={pageRequiresSignIn()}>
+		<Main signInStatus={signInStatus}>
 			<Global styles={css(`${global}`)} />
 			<Global styles={css(`${fonts}`)} />
 			<Suspense fallback={<MMAPageSkeleton />}>
