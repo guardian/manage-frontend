@@ -80,8 +80,8 @@ export const SwitchOptions = () => {
 	const {
 		monthlyThreshold,
 		annualThreshold,
-		chosenThreshold: threshold,
-		aboveThreshold,
+		thresholdForBillingPeriod: threshold,
+		isAboveThreshold,
 	} = thresholds;
 
 	const currentAmount = mainPlan.price / 100;
@@ -192,9 +192,11 @@ export const SwitchOptions = () => {
 			<section css={sectionSpacing}>
 				<Stack space={3}>
 					<Heading sansSerif>
-						{aboveThreshold ? 'Add extras' : 'Change your support'}
+						{isAboveThreshold
+							? 'Add extras'
+							: 'Change your support'}
 					</Heading>
-					{aboveThreshold && (
+					{isAboveThreshold && (
 						<p
 							css={css`
 								${textSans.medium()}
@@ -207,7 +209,7 @@ export const SwitchOptions = () => {
 							access.
 						</p>
 					)}
-					{!aboveThreshold && !switchContext.isFromApp && (
+					{!isAboveThreshold && !switchContext.isFromApp && (
 						<p
 							css={css`
 								${textSans.medium()}
@@ -224,7 +226,7 @@ export const SwitchOptions = () => {
 								<h3 css={productTitleCss}>
 									{supporterPlusTitle}
 								</h3>
-								{!aboveThreshold && (
+								{!isAboveThreshold && (
 									<p css={productSubtitleCss}>
 										{mainPlan.currency}
 										{formatAmount(threshold)}/
@@ -250,7 +252,7 @@ export const SwitchOptions = () => {
 						cssOverrides={buttonCentredCss}
 						onClick={() => navigate('review')}
 					>
-						{aboveThreshold
+						{isAboveThreshold
 							? 'Add extras'
 							: `Upgrade to ${mainPlan.currency}${threshold} per ${mainPlan.billingPeriod}`}
 					</Button>

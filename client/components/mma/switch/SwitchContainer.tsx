@@ -45,8 +45,8 @@ export interface SwitchContextInterface {
 export interface Thresholds {
 	monthlyThreshold: number;
 	annualThreshold: number;
-	chosenThreshold: number;
-	aboveThreshold: boolean;
+	thresholdForBillingPeriod: number;
+	isAboveThreshold: boolean;
 }
 
 export const SwitchContext: Context<SwitchContextInterface | {}> =
@@ -148,7 +148,10 @@ const RenderedPage = (props: {
 					mainPlan,
 					monthlyOrAnnual,
 					supporterPlusTitle: `${monthlyOrAnnual} + extras`,
-					thresholds: getThresholds(mainPlan, monthlyOrAnnual),
+					thresholds: getThresholds(
+						mainPlan,
+						monthlyOrAnnual == 'Monthly',
+					),
 				}}
 			>
 				<Outlet />
@@ -157,10 +160,7 @@ const RenderedPage = (props: {
 	);
 };
 
-function getThresholds(
-	mainPlan: PaidSubscriptionPlan,
-	monthlyOrAnnual: string,
-) {
+function getThresholds(mainPlan: PaidSubscriptionPlan, monthly: boolean) {
 	const monthlyThreshold = getBenefitsThreshold(
 		mainPlan.currencyISO as CurrencyIso,
 		'Monthly',
@@ -169,15 +169,13 @@ function getThresholds(
 		mainPlan.currencyISO as CurrencyIso,
 		'Annual',
 	);
-	const chosenThreshold =
-		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
-
-	const aboveThreshold = mainPlan.price >= chosenThreshold * 100;
+	const chosenThreshold = monthly ? monthlyThreshold : annualThreshold;
+	const isAboveThreshold = mainPlan.price >= chosenThreshold * 100;
 
 	return {
 		monthlyThreshold,
 		annualThreshold,
 		chosenThreshold,
-		aboveThreshold,
+		isAboveThreshold,
 	};
 }

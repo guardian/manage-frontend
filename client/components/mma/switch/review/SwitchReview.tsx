@@ -182,8 +182,8 @@ export const SwitchReview = () => {
 	const {
 		monthlyThreshold,
 		annualThreshold,
-		chosenThreshold: threshold,
-		aboveThreshold,
+		thresholdForBillingPeriod: threshold,
+		isAboveThreshold,
 	} = thresholds;
 
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
@@ -266,7 +266,9 @@ export const SwitchReview = () => {
 					>
 						Please {switchContext.isFromApp ? 'confirm' : 'review'}{' '}
 						your choice to unlock exclusive supporter extras
-						{aboveThreshold ? ". You'll still pay " : ' by paying '}
+						{isAboveThreshold
+							? ". You'll still pay "
+							: ' by paying '}
 						{mainPlan.currency}
 						{formatAmount(newAmount)} per {mainPlan.billingPeriod}.
 					</p>
@@ -324,7 +326,7 @@ export const SwitchReview = () => {
 								<strong>
 									{previewResponse.amountPayableToday > 0 &&
 										`Your first payment will be
-									${aboveThreshold ? 'just' : ''}
+									${isAboveThreshold ? 'just' : ''}
 									${mainPlan.currency}${formatAmount(previewResponse.amountPayableToday)}`}
 									{previewResponse.amountPayableToday == 0 &&
 										"There's nothing extra to pay today"}
@@ -367,7 +369,7 @@ export const SwitchReview = () => {
 							confirmSwitch(previewResponse.amountPayableToday)
 						}
 					>
-						Confirm {aboveThreshold ? 'change' : 'upgrade'}
+						Confirm {isAboveThreshold ? 'change' : 'upgrade'}
 					</Button>
 				</ThemeProvider>
 				<Button

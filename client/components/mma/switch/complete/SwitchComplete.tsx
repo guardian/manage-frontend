@@ -33,7 +33,8 @@ export const SwitchComplete = () => {
 	const { mainPlan, monthlyOrAnnual, supporterPlusTitle, thresholds } =
 		switchContext;
 
-	const { chosenThreshold: threshold, aboveThreshold } = thresholds;
+	const { thresholdForBillingPeriod: threshold, isAboveThreshold } =
+		thresholds;
 
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 	const newAmountAndCurrency = `${mainPlan.currency}${formatAmount(
@@ -55,14 +56,14 @@ export const SwitchComplete = () => {
 				<AppThankYouBanner
 					newAmount={newAmountAndCurrency}
 					newProduct={supporterPlusTitle.toLowerCase()}
-					aboveThreshold={aboveThreshold}
+					aboveThreshold={isAboveThreshold}
 				/>
 			) : (
 				<section css={sectionSpacing}>
 					<ThankYouMessaging
 						mainPlan={mainPlan}
 						newAmount={newAmount}
-						aboveThreshold={aboveThreshold}
+						aboveThreshold={isAboveThreshold}
 					/>
 				</section>
 			)}
