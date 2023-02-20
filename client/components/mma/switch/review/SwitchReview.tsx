@@ -12,7 +12,6 @@ import { Navigate, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';
 import type { Subscription } from '../../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
 import { getBenefitsThreshold } from '../../../../utilities/benefitsThreshold';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import {
@@ -172,14 +171,10 @@ export const SwitchReview = () => {
 	const [switchingError, setSwitchingError] = useState<boolean>(false);
 
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
-	const { productDetail, mainPlan } = switchContext;
+	const { productDetail, mainPlan, monthlyOrAnnual, supporterPlusTitle } =
+		switchContext;
 
 	const inPaymentFailure = !!productDetail.alertText;
-
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
-	);
-	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
 
 	const monthlyThreshold = getBenefitsThreshold(
 		mainPlan.currencyISO as CurrencyIso,

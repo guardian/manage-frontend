@@ -8,7 +8,6 @@ import {
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
 import { getBenefitsThreshold } from '../../../../utilities/benefitsThreshold';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { formatAmount } from '../../../../utilities/utils';
@@ -72,12 +71,8 @@ const fromAppHeadingCss = css`
 export const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 
-	const { productDetail, mainPlan } = switchContext;
-
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
-	);
-	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
+	const { productDetail, mainPlan, monthlyOrAnnual, supporterPlusTitle } =
+		switchContext;
 
 	const monthlyThreshold = getBenefitsThreshold(
 		mainPlan.currencyISO as CurrencyIso,

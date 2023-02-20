@@ -17,7 +17,6 @@ import {
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
 import { getBenefitsThreshold } from '../../../../utilities/benefitsThreshold';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { formatAmount } from '../../../../utilities/utils';
@@ -33,12 +32,7 @@ import { SwitchSignInImage } from './SwitchSignInImage';
 
 export const SwitchComplete = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
-	const { mainPlan } = switchContext;
-
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
-	);
-	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
+	const { mainPlan, monthlyOrAnnual, supporterPlusTitle } = switchContext;
 
 	const threshold = getBenefitsThreshold(
 		mainPlan.currencyISO as CurrencyIso,

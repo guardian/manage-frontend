@@ -8,7 +8,10 @@ import type {
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import { getMainPlan, isProduct } from '../../../../shared/productResponse';
-import { PRODUCT_TYPES } from '../../../../shared/productTypes';
+import {
+	calculateMonthlyOrAnnualFromBillingPeriod,
+	PRODUCT_TYPES,
+} from '../../../../shared/productTypes';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -32,6 +35,8 @@ export interface SwitchContextInterface {
 	isFromApp: boolean;
 	user?: MembersDataApiUser;
 	mainPlan: PaidSubscriptionPlan;
+	monthlyOrAnnual: 'Monthly' | 'Annual';
+	supporterPlusTitle: string;
 }
 
 export const SwitchContext: Context<SwitchContextInterface | {}> =
@@ -116,6 +121,13 @@ const RenderedPage = (props: {
 	user?: MembersDataApiUser;
 	isFromApp?: boolean;
 }) => {
+	const mainPlan = getMainPlan(
+		props.productDetail.subscription,
+	) as PaidSubscriptionPlan;
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		mainPlan.billingPeriod,
+	);
+
 	return (
 		<SwitchPageContainer>
 			<SwitchContext.Provider
@@ -123,9 +135,9 @@ const RenderedPage = (props: {
 					productDetail: props.productDetail,
 					isFromApp: props.isFromApp,
 					user: props.user,
-					mainPlan: getMainPlan(
-						props.productDetail.subscription,
-					) as PaidSubscriptionPlan,
+					mainPlan,
+					monthlyOrAnnual,
+					supporterPlusTitle: `${monthlyOrAnnual} + extras`,
 				}}
 			>
 				<Outlet />
