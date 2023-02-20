@@ -23,8 +23,9 @@ describe('Saved Articles', () => {
 	describe('Feature Switch ON:', () => {
 		it('displays Saved Article page', () => {
 			cy.visit('/saved-articles?withFeature=savedArticles');
-
-			cy.findAllByText('Saved articles').should('have.length.above', 0);
+			// We should see this text in the nav on the LH side
+			// and as a title on the page
+			cy.findAllByText('Saved articles').should('have.length', 2);
 		});
 	});
 });

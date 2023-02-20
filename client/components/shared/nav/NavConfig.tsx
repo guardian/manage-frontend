@@ -1,5 +1,8 @@
 import { conf } from '../../../../server/config';
-import { featureSwitches } from '../../../../shared/featureSwitches';
+import {
+	featureSwitches,
+	initFeatureSwitchUrlParamOverride,
+} from '../../../../shared/featureSwitches';
 import { AccountOverviewIcon } from '../../mma/shared/assets/AccountOverviewIcon';
 import { CreditCardIcon } from '../../mma/shared/assets/CreditCardIcon';
 import { EmailPrefsIcon } from '../../mma/shared/assets/EmailPrefIcon';
@@ -38,6 +41,10 @@ interface NavLinks {
 
 let domain: string;
 if (typeof window !== 'undefined' && window.guardian) {
+	// Window need to be defined in order to call this method.
+	// This method is necessary to called so that when we read
+	// the feature switch, it will respect the URL override
+	initFeatureSwitchUrlParamOverride();
 	domain = window.guardian.domain;
 } else {
 	domain = conf.DOMAIN;
