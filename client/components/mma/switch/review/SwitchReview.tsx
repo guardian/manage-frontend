@@ -12,8 +12,6 @@ import { Navigate, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';
 import type { Subscription } from '../../../../../shared/productResponse';
-import { getBenefitsThreshold } from '../../../../utilities/benefitsThreshold';
-import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -171,24 +169,23 @@ export const SwitchReview = () => {
 	const [switchingError, setSwitchingError] = useState<boolean>(false);
 
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
-	const { productDetail, mainPlan, monthlyOrAnnual, supporterPlusTitle } =
-		switchContext;
+	const {
+		productDetail,
+		mainPlan,
+		monthlyOrAnnual,
+		supporterPlusTitle,
+		thresholds,
+	} = switchContext;
 
 	const inPaymentFailure = !!productDetail.alertText;
 
-	const monthlyThreshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		'Monthly',
-	);
-	const annualThreshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		'Annual',
-	);
+	const {
+		monthlyThreshold,
+		annualThreshold,
+		chosenThreshold: threshold,
+		aboveThreshold,
+	} = thresholds;
 
-	const threshold =
-		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
-
-	const aboveThreshold = mainPlan.price >= threshold * 100;
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 
 	const productMoveFetch = (preview: boolean) =>

@@ -8,8 +8,6 @@ import {
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { getBenefitsThreshold } from '../../../../utilities/benefitsThreshold';
-import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { formatAmount } from '../../../../utilities/utils';
 import { ErrorSummary } from '../../paymentUpdate/Summary';
 import { Card } from '../../shared/Card';
@@ -71,21 +69,21 @@ const fromAppHeadingCss = css`
 export const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 
-	const { productDetail, mainPlan, monthlyOrAnnual, supporterPlusTitle } =
-		switchContext;
+	const {
+		productDetail,
+		mainPlan,
+		monthlyOrAnnual,
+		supporterPlusTitle,
+		thresholds,
+	} = switchContext;
 
-	const monthlyThreshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		'Monthly',
-	);
-	const annualThreshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		'Annual',
-	);
+	const {
+		monthlyThreshold,
+		annualThreshold,
+		chosenThreshold: threshold,
+		aboveThreshold,
+	} = thresholds;
 
-	const threshold =
-		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
-	const aboveThreshold = mainPlan.price >= threshold * 100;
 	const currentAmount = mainPlan.price / 100;
 
 	const buttonContainerRef = useRef(null);

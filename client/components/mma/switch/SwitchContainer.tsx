@@ -12,6 +12,8 @@ import {
 	calculateMonthlyOrAnnualFromBillingPeriod,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
+import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
+import type { CurrencyIso } from '../../../utilities/currencyIso';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -37,6 +39,14 @@ export interface SwitchContextInterface {
 	mainPlan: PaidSubscriptionPlan;
 	monthlyOrAnnual: 'Monthly' | 'Annual';
 	supporterPlusTitle: string;
+	thresholds: Thresholds;
+}
+
+export interface Thresholds {
+	monthlyThreshold: number;
+	annualThreshold: number;
+	chosenThreshold: number;
+	aboveThreshold: boolean;
 }
 
 export const SwitchContext: Context<SwitchContextInterface | {}> =
@@ -138,6 +148,7 @@ const RenderedPage = (props: {
 					mainPlan,
 					monthlyOrAnnual,
 					supporterPlusTitle: `${monthlyOrAnnual} + extras`,
+					thresholds: getThresholds(mainPlan, monthlyOrAnnual),
 				}}
 			>
 				<Outlet />
@@ -145,3 +156,28 @@ const RenderedPage = (props: {
 		</SwitchPageContainer>
 	);
 };
+
+function getThresholds(
+	mainPlan: PaidSubscriptionPlan,
+	monthlyOrAnnual: string,
+) {
+	const monthlyThreshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		'Monthly',
+	);
+	const annualThreshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		'Annual',
+	);
+	const chosenThreshold =
+		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
+
+	const aboveThreshold = mainPlan.price >= chosenThreshold * 100;
+
+	return {
+		monthlyThreshold,
+		annualThreshold,
+		chosenThreshold,
+		aboveThreshold,
+	};
+}

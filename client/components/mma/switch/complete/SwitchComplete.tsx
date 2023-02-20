@@ -17,8 +17,6 @@ import {
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { getBenefitsThreshold } from '../../../../utilities/benefitsThreshold';
-import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { formatAmount } from '../../../../utilities/utils';
 import { InverseStarIcon } from '../../shared/assets/InverseStarIcon';
 import { Heading } from '../../shared/Heading';
@@ -32,17 +30,15 @@ import { SwitchSignInImage } from './SwitchSignInImage';
 
 export const SwitchComplete = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
-	const { mainPlan, monthlyOrAnnual, supporterPlusTitle } = switchContext;
+	const { mainPlan, monthlyOrAnnual, supporterPlusTitle, thresholds } =
+		switchContext;
 
-	const threshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		monthlyOrAnnual,
-	);
+	const { chosenThreshold: threshold, aboveThreshold } = thresholds;
+
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 	const newAmountAndCurrency = `${mainPlan.currency}${formatAmount(
 		newAmount,
 	)}`;
-	const aboveThreshold = mainPlan.price >= threshold * 100;
 
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
