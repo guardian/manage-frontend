@@ -340,7 +340,7 @@ export const SwitchReview = () => {
 								<strong>
 									{previewResponse.amountPayableToday > 0 &&
 										`Your first payment will be
-									${aboveThreshold && 'just'}
+									${aboveThreshold ? 'just' : ''}
 									${mainPlan.currency}${formatAmount(previewResponse.amountPayableToday)}`}
 									{previewResponse.amountPayableToday == 0 &&
 										"There's nothing extra to pay today"}
