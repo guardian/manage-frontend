@@ -160,7 +160,10 @@ const RenderedPage = (props: {
 	);
 };
 
-function getThresholds(mainPlan: PaidSubscriptionPlan, monthly: boolean) {
+function getThresholds(
+	mainPlan: PaidSubscriptionPlan,
+	monthly: boolean,
+): Thresholds {
 	const monthlyThreshold = getBenefitsThreshold(
 		mainPlan.currencyISO as CurrencyIso,
 		'Monthly',
@@ -169,13 +172,15 @@ function getThresholds(mainPlan: PaidSubscriptionPlan, monthly: boolean) {
 		mainPlan.currencyISO as CurrencyIso,
 		'Annual',
 	);
-	const chosenThreshold = monthly ? monthlyThreshold : annualThreshold;
-	const isAboveThreshold = mainPlan.price >= chosenThreshold * 100;
+	const thresholdForBillingPeriod = monthly
+		? monthlyThreshold
+		: annualThreshold;
+	const isAboveThreshold = mainPlan.price >= thresholdForBillingPeriod * 100;
 
 	return {
 		monthlyThreshold,
 		annualThreshold,
-		chosenThreshold,
+		thresholdForBillingPeriod,
 		isAboveThreshold,
 	};
 }
