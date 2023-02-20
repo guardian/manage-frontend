@@ -12,7 +12,6 @@ import { Fragment } from 'react';
 import { parseDate } from '../../../../shared/dates';
 import type {
 	InvoiceDataApiItem,
-	MembersDataApiItem,
 	MembersDataApiResponse,
 	PaidSubscriptionPlan,
 	ProductDetail,
@@ -21,7 +20,6 @@ import {
 	getMainPlan,
 	isGift,
 	isProduct,
-	mdapiResponseReader,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
@@ -57,7 +55,7 @@ type MMACategoryToProductDetails = {
 };
 
 type BillingResponse = [
-	MembersDataApiResponse | MembersDataApiItem[],
+	MembersDataApiResponse,
 	{ invoices: InvoiceDataApiItem[] },
 ];
 
@@ -330,7 +328,7 @@ const BillingPage = () => {
 	}
 
 	const [mdapiResponse, invoicesResponse] = billingResponse;
-	const mdapiObject = mdapiResponseReader(mdapiResponse);
+	const mdapiObject = mdapiResponse;
 
 	const { allProductDetails, mmaCategoryToProductDetails } =
 		joinInvoicesWithProductsInCategories(mdapiObject, invoicesResponse);

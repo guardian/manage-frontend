@@ -12,14 +12,12 @@ import { Fragment } from 'react';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
 	CancelledProductDetail,
-	MembersDataApiItem,
 	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import {
 	isProduct,
 	isSpecificProductType,
-	mdapiResponseReader,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
 import {
@@ -40,12 +38,10 @@ import { AccountOverviewCardV2 } from './AccountOverviewCardV2';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { PersonalisedHeader } from './PersonalisedHeader';
 
-const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
-	MembersDataApiResponse | MembersDataApiItem[],
+const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
+	MembersDataApiResponse,
 	CancelledProductDetail[],
 ]) => {
-	const mdaResponse = mdapiResponseReader(mdapiObject);
-
 	const allActiveProductDetails = mdaResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);

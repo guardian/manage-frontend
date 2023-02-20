@@ -1,15 +1,8 @@
 import * as Sentry from '@sentry/node';
 import { Router } from 'express';
 import { availableProductMovesResponse } from '../../client/fixtures/productMovement';
-import type {
-	MembersDataApiItem,
-	MembersDataApiResponse,
-} from '../../shared/productResponse';
-import {
-	isProduct,
-	MDA_TEST_USER_HEADER,
-	mdapiResponseReader,
-} from '../../shared/productResponse';
+import type { MembersDataApiResponse } from '../../shared/productResponse';
+import { isProduct, MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import {
 	cancellationSfCasesAPI,
 	deliveryRecordsAPI,
@@ -53,11 +46,10 @@ router.get(
 	'/me/mma/:subscriptionName?',
 	customMembersDataApiHandler((response, body) => {
 		const isTestUser = response.getHeader(MDA_TEST_USER_HEADER) === 'true';
-		const parsedResponse = JSON.parse(body.toString()) as
-			| MembersDataApiItem[]
-			| MembersDataApiResponse;
-		const newMdapiResponse = mdapiResponseReader(parsedResponse);
-		const augmentedWithTestUser = newMdapiResponse.products.map(
+		const parsedResponse = JSON.parse(
+			body.toString(),
+		) as MembersDataApiResponse;
+		const augmentedWithTestUser = parsedResponse.products.map(
 			(mdaItem) => ({
 				...mdaItem,
 				isTestUser,
@@ -72,8 +64,8 @@ router.get(
 				),
 		)
 			.then((productDetails) => {
-				newMdapiResponse.products = productDetails;
-				response.json(newMdapiResponse);
+				parsedResponse.products = productDetails;
+				response.json(parsedResponse);
 			})
 			.catch((error) => {
 				const errorMessage =

@@ -30,8 +30,6 @@ import type {
 import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
-	isProduct,
-	mdapiResponseReader,
 } from '../../../../shared/productResponse';
 import type {
 	ProductType,
@@ -299,12 +297,10 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				});
 
 				// refetch subscription from members data api
-				const newSubscriptionData = mdapiResponseReader(
-					await createProductDetailFetch(
-						props.productType.allProductsProductTypeFilterString,
-						productDetail.subscription.subscriptionId,
-					),
-				).products.filter(isProduct);
+				const newSubscriptionData = await createProductDetailFetch(
+					props.productType.allProductsProductTypeFilterString,
+					productDetail.subscription.subscriptionId,
+				);
 
 				navigate('updated', {
 					state: {
