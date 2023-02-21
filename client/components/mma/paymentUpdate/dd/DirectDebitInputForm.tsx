@@ -5,6 +5,7 @@ import {
 	Checkbox,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
+import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useState } from 'react';
 import type * as React from 'react';
 import { sans } from '../../../../styles/fonts';
@@ -12,7 +13,6 @@ import { processResponse } from '../../../../utilities/utils';
 import { cleanSortCode } from '../../shared/DirectDebitDisplay';
 import { FieldWrapper } from '../FieldWrapper';
 import type { NewPaymentMethodDetail } from '../NewPaymentMethodDetail';
-import { ErrorSummary } from '../Summary';
 import { DirectDebitLegal } from './DirectDebitLegal';
 import { NewDirectDebitPaymentMethodDetail } from './NewDirectDebitPaymentMethodDetail';
 
