@@ -3,6 +3,7 @@ import type { CMP } from '@guardian/consent-management-platform/dist/types';
 import { from, palette } from '@guardian/source-foundations';
 import type { SyntheticEvent } from 'react';
 import { useEffect, useState } from 'react';
+import { darkModeCss } from '../../../styles/darkMode';
 import { headline } from '../../../styles/fonts';
 import { isInUSA as isUserInUSA } from '../../../utilities/geolocation';
 import { SupportTheGuardianButton } from '../SupportTheGuardianButton';
@@ -11,6 +12,9 @@ import { footerlinks } from './Footerlinks';
 const footerColourStyles = css`
 	background-color: ${palette.brand[400]};
 	color: ${palette.neutral[100]};
+	${darkModeCss`
+		background-color: ${palette.neutral[20]};
+	`}
 `;
 
 const footerSizeStyles = css`
@@ -47,6 +51,9 @@ const emailSignUpStyles = css`
 
 const emailSignUpIframeStyles = css`
 	min-height: 150px;
+	.email-sub__link--footer .email-sub__description {
+		background-color: ${palette.neutral[0]};
+	}
 `;
 
 const footerMenuStyles = css`
@@ -134,6 +141,10 @@ const supportButtonContainerStyles = css`
 	display: inline-block;
 	margin-right: 10px;
 	margin-bottom: 6px;
+
+	${darkModeCss`
+		background-color: ${palette.neutral[20]};
+	`}
 `;
 
 const copyrightStyles = css`
@@ -155,6 +166,9 @@ const backToTopLinkStyles = css`
 	position: absolute;
 	right: 20px;
 	transform: translateY(-50%);
+	${darkModeCss`
+		background-color: ${palette.neutral[20]};
+	`}
 `;
 
 const backToTopLabelStyles = css`
