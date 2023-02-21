@@ -1,13 +1,12 @@
-import { featureSwitches } from '../../../shared/featureSwitches';
-
-if (!featureSwitches.savedArticles) {
-	describe('Feature Switch OFF: Saved Articles', () => {
-		beforeEach(() => {
-			cy.session('auth', () => {
-				cy.setCookie('gu-cmp-disabled', 'true');
-			});
+describe('Saved Articles', () => {
+	beforeEach(() => {
+		cy.session('auth', () => {
+			cy.setCookie('gu-cmp-disabled', 'true');
 		});
+	});
 
+	// TODO - add an explicit mechanism for overriding the switch to false, for when we turn this on by default?
+	describe('Feature Switch OFF', () => {
 		it('redirects to account overview homepage from /saved-articles route ', () => {
 			cy.visit('/saved-articles');
 
@@ -21,20 +20,12 @@ if (!featureSwitches.savedArticles) {
 			cy.findAllByText('Saved articles').should('have.length', 0);
 		});
 	});
-}
-
-if (featureSwitches.savedArticles) {
-	describe('Feature Switch ON: Saved Article', () => {
-		beforeEach(() => {
-			cy.session('auth', () => {
-				cy.setCookie('gu-cmp-disabled', 'true');
-			});
-		});
-
+	describe('Feature Switch ON:', () => {
 		it('displays Saved Article page', () => {
-			cy.visit('/saved-articles');
-
+			cy.visit('/saved-articles?withFeature=savedArticles');
+			// We should see this text in the nav on the LH side
+			// and as a title on the page
 			cy.findAllByText('Saved articles').should('have.length', 2);
 		});
 	});
-}
+});
