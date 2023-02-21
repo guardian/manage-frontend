@@ -6,6 +6,15 @@ import { SavedArticlesPage } from '../../../components/mma/savedArticles/SavedAr
 import 'isomorphic-fetch';
 
 describe('SavedArticlesPage', () => {
+	const successfulAPIResponse: (body: string) => Response = (body) => {
+		return new Response(body, {
+			status: 200,
+			statusText: 'Ok',
+			headers: {
+				'Content-type': 'application/json',
+			},
+		});
+	};
 	it('should show an error page if the S4L API call fails', async () => {
 		render(
 			<SavedArticlesPage
@@ -38,14 +47,8 @@ describe('SavedArticlesPage', () => {
 				},
 			],
 		};
-		const responseData = JSON.stringify(articles);
-		const apiResponse = new Response(responseData, {
-			status: 200,
-			statusText: 'Ok',
-			headers: {
-				'Content-type': 'application/json',
-			},
-		});
+
+		const apiResponse = successfulAPIResponse(JSON.stringify(articles));
 
 		render(
 			<SavedArticlesPage
@@ -60,6 +63,26 @@ describe('SavedArticlesPage', () => {
 					'world/2018/mar/08/donald-trump-north-korea-kim-jong-un-meeting-may-letter-invite-talks-nuclear-weapons',
 				),
 			).toBeInTheDocument();
+		});
+	});
+
+	it('should display an error message if the API call is successful but the json response is not expected', async () => {
+		const invalidJson = {
+			foo: 'bar',
+		};
+
+		const apiResponse = successfulAPIResponse(JSON.stringify(invalidJson));
+
+		render(
+			<SavedArticlesPage
+				saveForLaterAPICall={() => {
+					return Promise.resolve(apiResponse);
+				}}
+			/>,
+		);
+
+		await waitFor(() => {
+			expect(screen.queryByText('Oops!')).toBeInTheDocument();
 		});
 	});
 });

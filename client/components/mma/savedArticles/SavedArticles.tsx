@@ -1,3 +1,4 @@
+import { typeCheckObject } from '../../../../shared/typeCheckObject';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
 	LoadingState,
@@ -7,6 +8,7 @@ import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
+import { isSavedArticlesResponse } from './models/SavedArticle';
 import type { SavedArticlesResponse } from './models/SavedArticle';
 import { SavedArticlesDisplay } from './SavedArticlesDisplay';
 
@@ -34,16 +36,21 @@ export function SavedArticlesPage(props: SavedArticlesPageProps) {
 		data,
 		loadingState,
 	}: {
-		data: SavedArticlesResponse | null;
+		data: unknown;
 		loadingState: LoadingState;
 	} = useAsyncLoader(props.saveForLaterAPICall, JsonResponseHandler);
 
 	if (loadingState === LoadingState.HasError) {
 		return <GenericErrorScreen />;
 	}
-	if (data === null) {
+	const saveForLaterData = typeCheckObject<SavedArticlesResponse>(
+		isSavedArticlesResponse,
+	)(data);
+	if (saveForLaterData === undefined) {
 		return <GenericErrorScreen />;
 	} else {
-		return <SavedArticlesDisplay savedArticles={data.articles} />;
+		return (
+			<SavedArticlesDisplay savedArticles={saveForLaterData.articles} />
+		);
 	}
 }
