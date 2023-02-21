@@ -8,6 +8,7 @@ import {
 import { darkModeCss } from '../../styles/darkMode';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { TheGuardianLogo } from '../mma/shared/assets/TheGuardianLogo';
+import { DarkModeToggle } from './DarkModeToggle';
 import { DropdownNav } from './nav/DropdownNav';
 
 export interface HeaderProps {
@@ -65,9 +66,12 @@ export const Header = (props: HeaderProps) => {
 					</div>
 				)}
 				{props.signInStatus === 'signedOut' && (
-					<a href={'/'} css={aCss}>
-						Sign in
-					</a>
+					<>
+						<a href={'/'} css={aCss}>
+							Sign in
+						</a>
+						<DarkModeToggle />
+					</>
 				)}
 				<TheGuardianLogo fill={palette.neutral['100']} />
 			</div>
