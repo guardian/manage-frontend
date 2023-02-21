@@ -101,6 +101,10 @@ export const HelpTopicBox = (props: HelpTopicBoxProps) => {
 				`}
 			>
 				<Button
+					cssOverrides={darkModeCss`
+						background-color: ${neutral[46]};
+						color: ${neutral[97]};
+					`}
 					priority="secondary"
 					onClick={() => {
 						trackEvent({
