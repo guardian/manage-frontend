@@ -12,6 +12,7 @@ import { isSavedArticlesResponse } from './models/SavedArticle';
 import type { SavedArticlesResponse } from './models/SavedArticle';
 import { SavedArticlesDisplay } from './SavedArticlesDisplay';
 import { SavedArticlesEmpty } from './SavedArticlesEmpty';
+import { SavedArticlesLoading } from './SavedArticlesLoading';
 
 export const SavedArticles = () => {
 	return (
@@ -41,6 +42,9 @@ export function SavedArticlesPage(props: SavedArticlesPageProps) {
 		loadingState: LoadingState;
 	} = useAsyncLoader(props.saveForLaterAPICall, JsonResponseHandler);
 
+	if (loadingState === LoadingState.IsLoading) {
+		return <SavedArticlesLoading />;
+	}
 	if (loadingState === LoadingState.HasError) {
 		return <GenericErrorScreen />;
 	}
