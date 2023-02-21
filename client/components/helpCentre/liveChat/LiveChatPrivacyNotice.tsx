@@ -1,6 +1,13 @@
 import { css } from '@emotion/react';
-import { brand, from, space, textSans } from '@guardian/source-foundations';
+import {
+	brand,
+	from,
+	palette,
+	space,
+	textSans,
+} from '@guardian/source-foundations';
 import { conf } from '../../../../server/config';
+import { darkModeCss } from '../../../styles/darkMode';
 
 export const LiveChatPrivacyNotice = () => {
 	let domain: string;
@@ -17,6 +24,10 @@ export const LiveChatPrivacyNotice = () => {
 			padding: ${space[6]}px;
 		}
 		background-color: #ecf3fe;
+
+		${darkModeCss`
+		background-color: ${palette.neutral[10]};
+	`}
 	`;
 	const titleCss = css`
 		margin: 0;
