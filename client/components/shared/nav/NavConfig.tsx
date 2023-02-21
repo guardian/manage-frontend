@@ -1,6 +1,7 @@
 import { conf } from '../../../../server/config';
 import {
 	featureSwitches,
+	getFeatureSwitches,
 	initFeatureSwitchUrlParamOverride,
 } from '../../../../shared/featureSwitches';
 import { AccountOverviewIcon } from '../../mma/shared/assets/AccountOverviewIcon';
@@ -40,13 +41,16 @@ interface NavLinks {
 }
 
 let domain: string;
+let featureSwitchState: Record<string, boolean>;
 if (typeof window !== 'undefined' && window.guardian) {
 	// Window need to be defined in order to call this method.
 	// This method is necessary to called so that when we read
 	// the feature switch, it will respect the URL override
 	initFeatureSwitchUrlParamOverride();
+	featureSwitchState = getFeatureSwitches();
 	domain = window.guardian.domain;
 } else {
+	featureSwitchState = featureSwitches;
 	domain = conf.DOMAIN;
 }
 export const PROFILE_HOST_NAME = `https://profile.${domain}`;
@@ -74,7 +78,7 @@ export const NAV_LINKS: NavLinks = {
 		title: 'Saved articles',
 		link: '/saved-articles',
 		local: true,
-		isExcludedByFeatureSwitch: !featureSwitches.savedArticles,
+		isExcludedByFeatureSwitch: !featureSwitchState.savedArticles,
 	},
 	emailPrefs: {
 		title: 'Emails & marketing',
