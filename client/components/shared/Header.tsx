@@ -5,6 +5,7 @@ import {
 	palette,
 	space,
 } from '@guardian/source-foundations';
+import { darkModeCss } from '../../styles/darkMode';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { TheGuardianLogo } from '../mma/shared/assets/TheGuardianLogo';
 import { DropdownNav } from './nav/DropdownNav';
@@ -23,6 +24,10 @@ export const Header = (props: HeaderProps) => {
 		${from.desktop} {
 			min-height: 82px;
 		}
+
+		${darkModeCss`
+			background-color: ${palette.brand[100]};
+		`}
 	`;
 
 	const containerCss = css`
