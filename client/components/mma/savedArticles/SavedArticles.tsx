@@ -7,6 +7,8 @@ import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
+import type { SavedArticlesResponse } from './models/SavedArticle';
+import { SavedArticlesDisplay } from './SavedArticlesDisplay';
 
 export const SavedArticles = () => {
 	return (
@@ -29,15 +31,19 @@ interface SavedArticlesPageProps {
 
 export function SavedArticlesPage(props: SavedArticlesPageProps) {
 	const {
+		data,
 		loadingState,
 	}: {
-		data: unknown;
+		data: SavedArticlesResponse | null;
 		loadingState: LoadingState;
 	} = useAsyncLoader(props.saveForLaterAPICall, JsonResponseHandler);
 
 	if (loadingState === LoadingState.HasError) {
 		return <GenericErrorScreen />;
 	}
-
-	return <p>hello</p>;
+	if (data === null) {
+		return <GenericErrorScreen />;
+	} else {
+		return <SavedArticlesDisplay savedArticles={data.articles} />;
+	}
 }
