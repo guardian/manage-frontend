@@ -10,34 +10,27 @@ import {
 import { useContext, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { dateString } from '../../../../shared/dates';
-import type {
-	PaidSubscriptionPlan,
-	Subscription,
-} from '../../../../shared/productResponse';
-import { getMainPlan } from '../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
-import type { CurrencyIso } from '../../../utilities/currencyIso';
+import { dateString } from '../../../../../shared/dates';
+import type { Subscription } from '../../../../../shared/productResponse';
 import {
 	LoadingState,
 	useAsyncLoader,
-} from '../../../utilities/hooks/useAsyncLoader';
-import { formatAmount } from '../../../utilities/utils';
-import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
-import { ErrorSummary } from '../paymentUpdate/Summary';
-import { DirectDebitLogo } from '../shared/assets/DirectDebitLogo';
-import { PaypalLogo } from '../shared/assets/PaypalLogo';
-import { SwitchOffsetPaymentIcon } from '../shared/assets/SwitchOffsetPaymentIcon';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
-import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
-import { Card } from '../shared/Card';
-import { cardTypeToSVG } from '../shared/CardDisplay';
-import { Heading } from '../shared/Heading';
-import { getObfuscatedPayPalId } from '../shared/PaypalDisplay';
-import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
-import type { SwitchContextInterface } from './SwitchContainer';
-import { SwitchContext } from './SwitchContainer';
+} from '../../../../utilities/hooks/useAsyncLoader';
+import { formatAmount } from '../../../../utilities/utils';
+import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
+import { ErrorSummary } from '../../paymentUpdate/Summary';
+import { DirectDebitLogo } from '../../shared/assets/DirectDebitLogo';
+import { PaypalLogo } from '../../shared/assets/PaypalLogo';
+import { SwitchOffsetPaymentIcon } from '../../shared/assets/SwitchOffsetPaymentIcon';
+import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
+import { Card } from '../../shared/Card';
+import { cardTypeToSVG } from '../../shared/CardDisplay';
+import { Heading } from '../../shared/Heading';
+import { getObfuscatedPayPalId } from '../../shared/PaypalDisplay';
+import { SupporterPlusBenefitsToggle } from '../../shared/SupporterPlusBenefits';
+import type { SwitchContextInterface } from '../SwitchContainer';
+import { SwitchContext } from '../SwitchContainer';
 import {
 	buttonCentredCss,
 	buttonMutedCss,
@@ -49,7 +42,7 @@ import {
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
-} from './SwitchStyles';
+} from '../SwitchStyles';
 
 const PaymentDetails = (props: { subscription: Subscription }) => {
 	const subscription = props.subscription;
@@ -176,32 +169,23 @@ export const SwitchReview = () => {
 	const [switchingError, setSwitchingError] = useState<boolean>(false);
 
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
-	const productDetail = switchContext.productDetail;
+	const {
+		productDetail,
+		mainPlan,
+		monthlyOrAnnual,
+		supporterPlusTitle,
+		thresholds,
+	} = switchContext;
 
 	const inPaymentFailure = !!productDetail.alertText;
 
-	const mainPlan = getMainPlan(
-		productDetail.subscription,
-	) as PaidSubscriptionPlan;
+	const {
+		monthlyThreshold,
+		annualThreshold,
+		thresholdForBillingPeriod: threshold,
+		isAboveThreshold,
+	} = thresholds;
 
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
-	);
-	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
-
-	const monthlyThreshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		'Monthly',
-	);
-	const annualThreshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		'Annual',
-	);
-
-	const threshold =
-		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
-
-	const aboveThreshold = mainPlan.price >= threshold * 100;
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 
 	const productMoveFetch = (preview: boolean) =>
@@ -282,7 +266,9 @@ export const SwitchReview = () => {
 					>
 						Please {switchContext.isFromApp ? 'confirm' : 'review'}{' '}
 						your choice to unlock exclusive supporter extras
-						{aboveThreshold ? ". You'll still pay " : ' by paying '}
+						{isAboveThreshold
+							? ". You'll still pay "
+							: ' by paying '}
 						{mainPlan.currency}
 						{formatAmount(newAmount)} per {mainPlan.billingPeriod}.
 					</p>
@@ -340,7 +326,7 @@ export const SwitchReview = () => {
 								<strong>
 									{previewResponse.amountPayableToday > 0 &&
 										`Your first payment will be
-									${aboveThreshold ? 'just' : ''}
+									${isAboveThreshold ? 'just' : ''}
 									${mainPlan.currency}${formatAmount(previewResponse.amountPayableToday)}`}
 									{previewResponse.amountPayableToday == 0 &&
 										"There's nothing extra to pay today"}
@@ -383,7 +369,7 @@ export const SwitchReview = () => {
 							confirmSwitch(previewResponse.amountPayableToday)
 						}
 					>
-						Confirm {aboveThreshold ? 'change' : 'upgrade'}
+						Confirm {isAboveThreshold ? 'change' : 'upgrade'}
 					</Button>
 				</ThemeProvider>
 				<Button

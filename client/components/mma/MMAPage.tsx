@@ -39,10 +39,10 @@ import { Main } from '../shared/Main';
 import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
-import { SwitchComplete } from './switch/SwitchComplete';
+import { SwitchComplete } from './switch/complete/SwitchComplete';
+import { SwitchOptions } from './switch/options/SwitchOptions';
+import { SwitchReview } from './switch/review/SwitchReview';
 import { SwitchContainer } from './switch/SwitchContainer';
-import { SwitchOptions } from './switch/SwitchOptions';
-import { SwitchReview } from './switch/SwitchReview';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {

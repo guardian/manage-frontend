@@ -1,8 +1,8 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { contributionPayPal } from '../../../fixtures/productDetail';
-import { SwitchContainer } from './SwitchContainer';
+import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
+import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { contributionPayPal } from '../../../../fixtures/productDetail';
+import { SwitchContainer } from '../SwitchContainer';
 import { SwitchOptions } from './SwitchOptions';
 
 export default {
