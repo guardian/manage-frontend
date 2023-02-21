@@ -1,4 +1,6 @@
+import { neutral } from '@guardian/source-foundations';
 import type * as React from 'react';
+import { darkModeCss } from '../../../../styles/darkMode';
 
 interface HelpSectionIconProps {
 	size?: number;
@@ -42,7 +44,15 @@ const SvgWrapper = (props: SvgWrapperProps) => (
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
 	>
-		<circle cx="19.5" cy="19.5" r="19.5" fill="#052962" />
+		<circle
+			cx="19.5"
+			cy="19.5"
+			r="19.5"
+			fill="#052962"
+			css={darkModeCss`
+		 		fill:${neutral[46]};
+		 `}
+		/>
 		{props.children}
 	</svg>
 );

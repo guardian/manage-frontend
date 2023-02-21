@@ -6,6 +6,7 @@ import {
 	space,
 	textSans,
 } from '@guardian/source-foundations';
+import { darkModeCss } from '../../styles/darkMode';
 
 export const linkAnchorStyle = css`
 	display: inline-block;
@@ -15,6 +16,13 @@ export const linkAnchorStyle = css`
 	:visited {
 		color: ${neutral['7']};
 	}
+
+	${darkModeCss`
+		color: ${neutral[97]};
+		:visited {
+			color: ${neutral[97]}
+		}
+	`}
 `;
 
 export const linkArrowStyle = css`

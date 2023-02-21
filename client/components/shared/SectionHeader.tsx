@@ -33,7 +33,7 @@ const headerCss = css`
 	background-color: ${Color(palette.brand[800]).alpha(0.3).string()};
 
 	${darkModeCss`
-		background-color: ${palette.neutral[20]};
+		background-color: ${palette.neutral[7]};
 	`}
 `;
 
