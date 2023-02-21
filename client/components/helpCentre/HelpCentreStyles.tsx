@@ -35,6 +35,11 @@ export const linkArrowStyle = css`
 	top: 50%;
 	transform: translateY(-50%) rotate(45deg);
 	right: 7px;
+
+	${darkModeCss`
+		border-top: 2px solid ${neutral['93']};
+		border-right: 2px solid ${neutral['93']};
+	`}
 `;
 
 export const linksListStyle = css`
@@ -86,6 +91,11 @@ export const sectionTitleCss = (
 		${from.desktop} {
 			right: 17px;
 		}
+
+		${darkModeCss`
+			border-top: 2px solid ${neutral['97']};
+			border-right: 2px solid ${neutral['97']};
+		`}
 	}
 	${isNotFirstOption &&
 	`
@@ -100,6 +110,10 @@ export const sectionTitleCss = (
       background-color: ${neutral['86']}
     }
   `}
+
+	${darkModeCss`
+		color: ${neutral[97]};
+	`}
 `;
 
 export const innerSectionDivCss = css`
