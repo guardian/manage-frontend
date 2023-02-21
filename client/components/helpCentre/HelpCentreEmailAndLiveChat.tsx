@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { from, palette, space, textSans } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import { darkModeCss } from '../../styles/darkMode';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
 import { getHelpSectionIcon } from '../mma/shared/assets/HelpSectionIcons';
 import { StartLiveChatButton } from './liveChat/LiveChat';
@@ -31,6 +32,10 @@ const contactBoxHeadingCss = css`
 	position: relative;
 	margin: 0;
 	padding: 18px 0 18px 60px;
+
+	${darkModeCss`
+		color: ${palette.neutral[86]};
+	`}
 `;
 
 const contactBoxHeadingWideCss = css`
@@ -175,6 +180,11 @@ const emailAndLiveChatButtonCss = css`
 	${from.tablet} {
 		margin-bottom: ${space[9]}px;
 	}
+
+	${darkModeCss`
+		background-color: ${palette.neutral[46]};
+		color: ${palette.neutral[86]};
+	`}
 `;
 
 export const HelpCentreEmailAndLiveChat = (

@@ -1,5 +1,12 @@
 import { css } from '@emotion/react';
-import { from, neutral, space, textSans } from '@guardian/source-foundations';
+import {
+	from,
+	neutral,
+	palette,
+	space,
+	textSans,
+} from '@guardian/source-foundations';
+import { darkModeCss } from '../../styles/darkMode';
 import { getHelpSectionIcon } from '../mma/shared/assets/HelpSectionIcons';
 import { CallCentreEmailAndNumbers } from '../shared/CallCenterEmailAndNumbers';
 
@@ -15,6 +22,10 @@ const headingCss = css`
 	position: relative;
 	margin: 0;
 	padding: 18px 0 18px 60px;
+
+	${darkModeCss`
+		color: ${palette.neutral[86]};
+	`}
 `;
 
 const headingWideCss = css`
