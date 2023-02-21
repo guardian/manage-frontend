@@ -85,4 +85,25 @@ describe('SavedArticlesPage', () => {
 			expect(screen.queryByText('Oops!')).toBeInTheDocument();
 		});
 	});
+
+	it('should display the empty articles page if user has no saved articles', async () => {
+		const noArticles = {
+			version: 1,
+			articles: [],
+		};
+
+		const apiResponse = successfulAPIResponse(JSON.stringify(noArticles));
+		render(
+			<SavedArticlesPage
+				saveForLaterAPICall={() => {
+					return Promise.resolve(apiResponse);
+				}}
+			/>,
+		);
+		await waitFor(() => {
+			expect(
+				screen.queryByText('You have no saved articles'),
+			).toBeInTheDocument();
+		});
+	});
 });

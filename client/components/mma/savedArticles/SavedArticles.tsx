@@ -11,6 +11,7 @@ import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiRespons
 import { isSavedArticlesResponse } from './models/SavedArticle';
 import type { SavedArticlesResponse } from './models/SavedArticle';
 import { SavedArticlesDisplay } from './SavedArticlesDisplay';
+import { SavedArticlesEmpty } from './SavedArticlesEmpty';
 
 export const SavedArticles = () => {
 	return (
@@ -48,9 +49,9 @@ export function SavedArticlesPage(props: SavedArticlesPageProps) {
 	)(data);
 	if (saveForLaterData === undefined) {
 		return <GenericErrorScreen />;
-	} else {
-		return (
-			<SavedArticlesDisplay savedArticles={saveForLaterData.articles} />
-		);
 	}
+	if (saveForLaterData.articles.length === 0) {
+		return <SavedArticlesEmpty />;
+	}
+	return <SavedArticlesDisplay savedArticles={saveForLaterData.articles} />;
 }
