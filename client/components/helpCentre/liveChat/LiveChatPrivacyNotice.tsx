@@ -26,7 +26,7 @@ export const LiveChatPrivacyNotice = () => {
 		background-color: #ecf3fe;
 
 		${darkModeCss`
-		background-color: ${palette.neutral[10]};
+		background-color: ${palette.neutral[20]};
 	`}
 	`;
 	const titleCss = css`
