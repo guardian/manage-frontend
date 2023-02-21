@@ -1,7 +1,14 @@
 import { css } from '@emotion/react';
-import { from, neutral, space, textSans } from '@guardian/source-foundations';
+import {
+	from,
+	neutral,
+	palette,
+	space,
+	textSans,
+} from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';
 import { Link, useNavigate } from 'react-router-dom';
+import { darkModeCss } from '../../styles/darkMode';
 import { trackEvent } from '../../utilities/analytics';
 import { getHelpSectionIcon } from '../mma/shared/assets/HelpSectionIcons';
 import type { HelpCentreTopic } from './HelpCentreConfig';
@@ -40,6 +47,10 @@ const boxTitleStyle = css`
 	padding: 18px 0 18px 60px;
 	border-bottom: 1px solid ${neutral['86']};
 	width: 100%;
+
+	${darkModeCss`
+		color: ${palette.neutral[86]}
+	`}
 `;
 
 const iconStyle = css`
