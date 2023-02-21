@@ -7,6 +7,7 @@ import {
 	space,
 } from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
+import { darkModeCss } from '../../../styles/darkMode';
 import { sans } from '../../../styles/fonts';
 import type { MenuSpecificNavItem, NavItem } from './NavConfig';
 import { NAV_LINKS, PROFILE_HOST_NAME } from './NavConfig';
@@ -22,46 +23,57 @@ const leftNavCss = css({
 });
 
 const leftNavLinkCss = (isSelected: boolean | undefined) =>
-	css({
-		fontSize: '1.25rem',
-		fontWeight: isSelected ? 'bold' : 'normal',
-		lineHeight: '1.25rem',
-		fontFamily: sans,
-		display: 'block',
-		boxSizing: 'border-box',
-		padding: '4px 0 0 5px',
-		letterSpacing: '-0.02rem',
-		textAlign: 'left',
-		textDecoration: 'none',
-		overflow: 'hidden',
-		whiteSpace: 'nowrap',
-		textOverflow: 'ellipsis',
-		background: neutral['100'],
-		color: brand[400],
+	css(
+		{
+			fontSize: '1.25rem',
+			fontWeight: isSelected ? 'bold' : 'normal',
+			lineHeight: '1.25rem',
+			fontFamily: sans,
+			display: 'block',
+			boxSizing: 'border-box',
+			padding: '4px 0 0 5px',
+			letterSpacing: '-0.02rem',
+			textAlign: 'left',
+			textDecoration: 'none',
+			overflow: 'hidden',
+			whiteSpace: 'nowrap',
+			textOverflow: 'ellipsis',
+			background: neutral[100],
+			color: brand[400],
 
-		[from.desktop]: {
-			borderLeft: `${space[2]}px solid ${
-				isSelected ? brandAlt[400] : neutral['46']
-			}`,
-			boxShadow: isSelected ? '0 1px 0 white' : undefined,
-			minHeight: 0,
-			padding: '18px 0 18px 22px',
-			position: 'relative',
-			' :after': {
-				content: "''",
-				position: 'absolute',
-				bottom: 0,
-				right: 0,
-				height: '1px',
-				width: 'calc(100% - 22px)',
-				backgroundColor: neutral['86'],
-			},
+			[from.desktop]: {
+				borderLeft: `${space[2]}px solid ${
+					isSelected ? brandAlt[400] : neutral['46']
+				}`,
+				boxShadow: isSelected ? '0 1px 0 white' : undefined,
+				minHeight: 0,
+				padding: '18px 0 18px 22px',
+				position: 'relative',
+				' :after': {
+					content: "''",
+					position: 'absolute',
+					bottom: 0,
+					right: 0,
+					height: '1px',
+					width: 'calc(100% - 22px)',
+					backgroundColor: neutral['86'],
+				},
 
-			':hover': {
-				backgroundColor: isSelected ? neutral['100'] : neutral['97'],
+				':hover': {
+					backgroundColor: isSelected
+						? neutral['100']
+						: neutral['97'],
+				},
 			},
 		},
-	});
+		darkModeCss`
+			background-color: ${neutral[20]};
+			color: ${neutral[86]};
+			:hover {
+				background-color: ${isSelected ? neutral[20] : neutral[46]};
+			}
+	`,
+	);
 
 const leftNavItemCss = (isSelected: boolean | undefined) => ({
 	margin: 0,

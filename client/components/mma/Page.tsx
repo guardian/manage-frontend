@@ -8,6 +8,7 @@ import {
 	textSans,
 } from '@guardian/source-foundations';
 import type { ReactElement } from 'react';
+import { darkModeCss } from '../../styles/darkMode';
 import { gridBase, gridColumns, gridItemPlacement } from '../../styles/grid';
 import type { LeftSideNavProps } from '../shared/nav/LeftSideNav';
 import { LeftSideNav } from '../shared/nav/LeftSideNav';
@@ -44,6 +45,10 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 		margin-right: auto;
 		background: ${palette.brand[300]};
 		border-bottom: 1px solid ${palette.neutral['86']};
+
+		${darkModeCss`
+			background: ${palette.neutral[7]};
+		`}
 
 		${from.desktop} {
 			padding-top: 100px;
@@ -110,6 +115,10 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 			padding: ${space[1]}px ${space[2]}px;
 			border: 1px solid ${palette.brand[600]};
 			border-bottom: 0;
+
+			${darkModeCss`
+				border: 1px solid ${palette.neutral[46]};
+			`}
 		}
 
 		${from.wide} {
