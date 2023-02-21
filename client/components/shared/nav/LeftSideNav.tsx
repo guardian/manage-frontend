@@ -85,15 +85,22 @@ const leftNavItemCss = (isSelected: boolean | undefined) => ({
 	},
 });
 
-const leftNavIconCss = css({
-	display: 'inline-block',
-	verticalAlign: 'top',
-	width: 'auto',
-	height: '100%',
-	maxWidth: `${space[5]}px`,
-	maxHeight: `${space[5]}px`,
-	marginRight: `${space[5]}px`,
-});
+const leftNavIconCss = css(
+	{
+		display: 'inline-block',
+		verticalAlign: 'top',
+		width: 'auto',
+		height: '100%',
+		maxWidth: `${space[5]}px`,
+		maxHeight: `${space[5]}px`,
+		marginRight: `${space[5]}px`,
+	},
+	darkModeCss`
+		path {
+			fill: ${brand[800]};
+		},
+`,
+);
 
 export interface LeftSideNavProps {
 	selectedNavItem?: NavItem;

@@ -15,8 +15,10 @@ export const darkModeCss = (
 				.join('')
 		: '';
 
-	const darkModeSetting = localStorage.getItem('darkMode');
-	//console.log(darkModeSetting);
+	let darkModeSetting = null;
+	if (typeof window !== 'undefined') {
+		darkModeSetting = localStorage.getItem('darkMode');
+	}
 
 	if (darkModeSetting === 'dark') {
 		return css`
