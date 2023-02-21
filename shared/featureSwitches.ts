@@ -7,6 +7,12 @@ export const initFeatureSwitchUrlParamOverride = () => {
 				featureSwitches[key] = param === key;
 			}
 		}
+		// Required to use query params to force true states in Cypress tests
+		for (const [key, value] of Object.entries(cypressSwitchState)) {
+			if (!value) {
+				cypressSwitchState[key] = param === key;
+			}
+		}
 	}
 };
 
@@ -28,4 +34,26 @@ export const featureSwitches: Record<string, boolean> = {
 	accountOverviewNewLayout: false,
 	productSwitching: true,
 	savedArticles: false,
+};
+
+// Cypress Testing:
+// We want to be able to write tests independent of switch state that test both states.
+// Use getFeatureSwitches to retrieve switches dependant on clientside environment.
+// For example you can set a switch to false
+// and opt in in Cypress via query search params in cy.visit(url).
+declare global {
+	interface Window {
+		Cypress: unknown;
+	}
+}
+
+const cypressSwitchState: Record<string, boolean> = {
+	...featureSwitches,
+	savedArticles: false,
+};
+export const getFeatureSwitches = (): Record<string, boolean> => {
+	// If running within cypress, return the forced switches to keep tests consistent regardless of production state
+	if (window !== undefined && window.Cypress) return cypressSwitchState;
+	// Otherwise just return empty object
+	return featureSwitches;
 };

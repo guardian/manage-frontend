@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import {
-	featureSwitches,
+	getFeatureSwitches,
 	initFeatureSwitchUrlParamOverride,
 } from '../../../shared/featureSwitches';
 import type {
@@ -325,7 +325,7 @@ const MMARouter = () => {
 							path="/email-prefs"
 							element={<EmailAndMarketing />}
 						/>
-						{featureSwitches.savedArticles && (
+						{getFeatureSwitches().savedArticles && (
 							<Route
 								path="/saved-articles"
 								element={<SavedArticles />}
@@ -339,7 +339,7 @@ const MMARouter = () => {
 							path="/account-settings"
 							element={<Settings />}
 						/>
-						{featureSwitches.productSwitching &&
+						{getFeatureSwitches().productSwitching &&
 							[
 								{ path: '/switch', fromApp: false },
 								{ path: '/app/switch', fromApp: true },

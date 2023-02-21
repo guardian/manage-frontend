@@ -5,7 +5,7 @@ describe('Saved Articles', () => {
 		});
 	});
 
-	// TODO - add an explicit mechanism for overriding the switch to false, for when we turn this on by default?
+	// NOTE: Switch state for Cypress environment is colocated in shared/featureSwitches
 	describe('Feature Switch OFF', () => {
 		it('redirects to account overview homepage from /saved-articles route ', () => {
 			cy.visit('/saved-articles');
@@ -20,6 +20,7 @@ describe('Saved Articles', () => {
 			cy.findAllByText('Saved articles').should('have.length', 0);
 		});
 	});
+
 	describe('Feature Switch ON:', () => {
 		it('displays Saved Article page', () => {
 			cy.visit('/saved-articles?withFeature=savedArticles');
