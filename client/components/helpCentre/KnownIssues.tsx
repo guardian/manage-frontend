@@ -8,6 +8,7 @@ import {
 } from '@guardian/source-foundations';
 import { useEffect, useState } from 'react';
 import type { ProductDetail } from '../../../shared/productResponse';
+import { darkModeCss } from '../../styles/darkMode';
 import { gridBase, gridItemPlacement } from '../../styles/grid';
 import { allProductsDetailFetcher } from '../../utilities/productUtils';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
@@ -135,6 +136,9 @@ export const KnownIssues = (props: KownIssuesProp) => {
 		${textSans.medium()};
 		text-decoration: underline;
 		color: ${palette.neutral[0]};
+		${darkModeCss`
+			color: ${palette.neutral[86]};
+		`}
 	`;
 
 	return (

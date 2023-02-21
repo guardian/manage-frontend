@@ -40,12 +40,15 @@ export const Main = ({ signInStatus = 'init', children }: MainProps) => (
 		</a>
 		<Header signInStatus={signInStatus} />
 		<div
-			css={{
-				flexGrow: 1,
-				flexShrink: 0,
-				display: 'flex',
-				flexDirection: 'column',
-			}}
+			css={[
+				{
+					flexGrow: 1,
+					flexShrink: 0,
+					display: 'flex',
+					flexDirection: 'column',
+				},
+				darkModeCss`background-color: ${palette.neutral[10]}`,
+			]}
 		>
 			<main
 				css={{
