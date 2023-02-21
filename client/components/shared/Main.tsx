@@ -1,4 +1,5 @@
 import { palette, textSansSizes } from '@guardian/source-foundations';
+import { darkModeCss } from '../../styles/darkMode';
 import { serif } from '../../styles/fonts';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { Footer } from './footer/Footer';
@@ -11,14 +12,17 @@ export interface MainProps {
 
 export const Main = ({ signInStatus = 'init', children }: MainProps) => (
 	<div
-		css={{
-			display: 'flex',
-			flexDirection: 'column',
-			height: '100vh',
-			alignItems: 'stretch',
-			width: '100%',
-			color: palette.neutral[20],
-		}}
+		css={[
+			{
+				display: 'flex',
+				flexDirection: 'column',
+				height: '100vh',
+				alignItems: 'stretch',
+				width: '100%',
+				color: palette.neutral[20],
+			},
+			darkModeCss`color: ${palette.neutral[86]}`,
+		]}
 	>
 		<a
 			css={{

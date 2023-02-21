@@ -26,7 +26,8 @@ export const Header = (props: HeaderProps) => {
 		}
 
 		${darkModeCss`
-			background-color: ${palette.brand[100]};
+			background-color: ${palette.neutral[0]};
+			box-shadow: 0 2px 1px -1px ${palette.neutral[60]};
 		`}
 	`;
 

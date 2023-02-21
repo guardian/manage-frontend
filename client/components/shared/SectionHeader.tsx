@@ -10,6 +10,7 @@ import {
 } from '@guardian/source-foundations';
 import Color from 'color';
 import { Link } from 'react-router-dom';
+import { darkModeCss } from '../../styles/darkMode';
 import { gridBase, gridItemPlacement } from '../../styles/grid';
 
 interface SectionHeaderProps {
@@ -30,6 +31,10 @@ const chevronCss = css`
 
 const headerCss = css`
 	background-color: ${Color(palette.brand[800]).alpha(0.3).string()};
+
+	${darkModeCss`
+		background-color: ${palette.neutral[20]};
+	`}
 `;
 
 const containerCss = css`
@@ -61,6 +66,10 @@ const linkCss = css`
 const spanCss = css`
 	${textSans.medium({ fontWeight: 'bold' })};
 	color: ${palette.neutral[0]};
+
+	${darkModeCss`
+		color: ${palette.neutral[100]}
+	`}
 `;
 
 export const SectionHeader = (props: SectionHeaderProps) => {
