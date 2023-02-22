@@ -1,4 +1,5 @@
-import { createRef, useEffect } from 'react';
+import type { CMP } from '@guardian/consent-management-platform/dist/types';
+import { createRef, useEffect, useState } from 'react';
 import {
 	isProduct,
 	mdapiResponseReader,
@@ -25,6 +26,8 @@ type ClickHandler = (id: string) => {};
 export const DataPrivacy = () => {
 	const { options, error, subscribe, unsubscribe } = Actions;
 	const [state, dispatch] = useConsentOptions();
+	const [importedCmp, setImportedCmp] = useState<CMP | null>(null);
+
 	// const [error, setError] = useState(false);
 	const consents = ConsentOptions.consents(state.options);
 
@@ -75,59 +78,63 @@ export const DataPrivacy = () => {
 				)
 			);
 		};
-	// const addInvertedMarketingToggle = optOutFinder(
-	// 	consents,
-	// 	clickHandler,
-	// 	consentSubscribedValueInverter,
-	// );
+
 	const addMarketingToggle = optOutFinder(
 		consents,
 		toggleConsentSubscription,
 	);
 
 	const openManageCookies = () => {
-		console.log('openManageCookies');
+		importedCmp?.showPrivacyManager();
 	};
 
 	useEffect(() => {
-		const makeInitialAPICalls = async () => {
-			try {
-				const user = await Users.getCurrentUser();
-				if (!user.validated) {
-					window.location.assign(IdentityLocations.VERIFY_EMAIL);
-					return;
-				}
-				const productDetailsResponse = await allProductsDetailFetcher();
-				const productDetails = mdapiResponseReader(
-					await productDetailsResponse.json(),
-				).products.filter(isProduct);
-				const consentOptions = await ConsentOptions.getAll();
-				const consentsWithFilteredSoftOptIns = consentOptions.filter(
-					(consent: ConsentOption) =>
-						consent.isProduct
-							? productDetails.some((productDetail) => {
-									const groupedProductType =
-										GROUPED_PRODUCT_TYPES[
-											productDetail.mmaCategory
-										];
-									const specificProductType =
-										groupedProductType.mapGroupedToSpecific(
-											productDetail,
-										);
-									return specificProductType.softOptInIDs.includes(
-										consent.id,
-									);
-							  })
-							: true,
-				);
-				dispatch(options(consentsWithFilteredSoftOptIns));
-			} catch (e) {
-				dispatch(error(e));
-			}
-		};
-
 		makeInitialAPICalls();
+		loadCMP();
 	}, []);
+
+	const loadCMP = () => {
+		import('@guardian/consent-management-platform').then(({ cmp }) => {
+			setImportedCmp(cmp);
+		});
+	};
+
+	const makeInitialAPICalls = async () => {
+		try {
+			const user = await Users.getCurrentUser();
+			if (!user.validated) {
+				window.location.assign(IdentityLocations.VERIFY_EMAIL);
+				return;
+			}
+			const productDetailsResponse = await allProductsDetailFetcher();
+			const productDetails = mdapiResponseReader(
+				await productDetailsResponse.json(),
+			).products.filter(isProduct);
+			const consentOptions = await ConsentOptions.getAll();
+			const consentsWithFilteredSoftOptIns = consentOptions.filter(
+				(consent: ConsentOption) =>
+					consent.isProduct
+						? productDetails.some((productDetail) => {
+								const groupedProductType =
+									GROUPED_PRODUCT_TYPES[
+										productDetail.mmaCategory
+									];
+								const specificProductType =
+									groupedProductType.mapGroupedToSpecific(
+										productDetail,
+									);
+								return specificProductType.softOptInIDs.includes(
+									consent.id,
+								);
+						  })
+						: true,
+			);
+			dispatch(options(consentsWithFilteredSoftOptIns));
+		} catch (e) {
+			dispatch(error(e));
+		}
+	};
+
 	useEffect(() => {
 		if (state.error && errorRef.current) {
 			window.scrollTo(0, errorRef.current.offsetTop - 20);
@@ -215,7 +222,14 @@ export const DataPrivacy = () => {
 				<h3>VIDEO</h3>
 				<p>
 					For more information about how we use your data, visit our
-					privacy policy guide
+					<a
+						css={aCss}
+						target="_blank"
+						href={'https://www.theguardian.com/info/privacy'} rel="noreferrer"
+					>
+						privacy policy
+					</a>{' '}
+					guide
 				</p>
 			</WithStandardTopMargin>
 		</>
