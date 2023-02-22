@@ -164,29 +164,35 @@ export const DataPrivacy = () => {
 						websites when signed in
 					</li>
 				</ul>
-				{addMarketingToggle('profiling_optout')}
-				<a css={aCss} href={''}>
-					Why is this selected by default?
-				</a>
-				{addMarketingToggle('personalised_advertising')}
-				<p>
-					Advertising is a crucial source of our funding. You won't
-					see more ads, and your data won't be shared with third
-					parties to use for their own advertising
-				</p>
-				<p>We do this by:</p>
-				<ul>
-					<li>
-						{' '}
-						analysing your information to predict what you might be
-						interested in
-					</li>
-					<li>
-						{' '}
-						checking if you are already a customer of other trusted
-						partners.
-					</li>
-				</ul>
+				<WithStandardTopMargin>
+					{addMarketingToggle('profiling_optout')}
+					<a css={aCss} href={''}>
+						Why is this selected by default?
+					</a>
+					{addMarketingToggle('personalised_advertising')}
+				</WithStandardTopMargin>
+
+				<WithStandardTopMargin>
+					<p>
+						Advertising is a crucial source of our funding. You
+						won't see more ads, and your data won't be shared with
+						third parties to use for their own advertising
+					</p>
+					<p>We do this by:</p>
+					<ul>
+						<li>
+							{' '}
+							analysing your information to predict what you might
+							be interested in
+						</li>
+						<li>
+							{' '}
+							checking if you are already a customer of other
+							trusted partners.
+						</li>
+					</ul>
+				</WithStandardTopMargin>
+
 				{lines()}
 				<h2>Cookies on this browser</h2>
 				<p>
@@ -206,6 +212,7 @@ export const DataPrivacy = () => {
 				/>
 				{lines()}
 				<h2>Learn more about our private policy</h2>
+				<h3>VIDEO</h3>
 				<p>
 					For more information about how we use your data, visit our
 					privacy policy guide
