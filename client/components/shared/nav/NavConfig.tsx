@@ -25,6 +25,7 @@ export interface MenuSpecificNavItem extends NavItem {
 interface NavLinks {
 	accountOverview: MenuSpecificNavItem;
 	billing: MenuSpecificNavItem;
+	dataPrivacy: MenuSpecificNavItem;
 	profile: MenuSpecificNavItem;
 	settings: MenuSpecificNavItem;
 	emailPrefs: MenuSpecificNavItem;
@@ -65,6 +66,12 @@ export const NAV_LINKS: NavLinks = {
 		link: '/email-prefs',
 		local: true,
 		icon: EmailPrefsIcon,
+	},
+	dataPrivacy: {
+		title: 'Data privacy',
+		link: '/data-privacy',
+		local: true,
+		icon: CreditCardIcon,
 	},
 	settings: {
 		title: 'Settings',
