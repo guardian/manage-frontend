@@ -1,6 +1,7 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import { palette } from '@guardian/source-foundations';
+import { darkModeCss } from '../../../styles/darkMode';
 import type { Inlineable } from './inlineable';
 
 interface CardExpiryDetails {
@@ -153,6 +154,10 @@ export const CardDisplay = (props: CardDisplayProps) => {
 					color: ${props.inErrorState
 						? palette.error[400]
 						: palette.neutral[7]};
+
+					${darkModeCss`
+						color: ${props.inErrorState ? palette.error[500] : palette.neutral[93]};
+					`}
 				`}
 			>
 				ending {props.last4}

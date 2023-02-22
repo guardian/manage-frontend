@@ -14,6 +14,7 @@ import { cancellationFormatDate, parseDate } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { getMainPlan, isGift } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { darkModeCss } from '../../../styles/darkMode';
 import { trackEvent } from '../../../utilities/analytics';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
@@ -129,6 +130,10 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 					${from.mobileLandscape} {
 						align-items: center;
 					}
+
+					${darkModeCss`
+						background-color: ${neutral[46]}
+					`}
 				`}
 			>
 				<h3

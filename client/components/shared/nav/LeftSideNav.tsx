@@ -97,7 +97,7 @@ const leftNavIconCss = css(
 	},
 	darkModeCss`
 		path {
-			fill: ${brand[800]};
+			fill: ${neutral[60]};
 		},
 `,
 );
