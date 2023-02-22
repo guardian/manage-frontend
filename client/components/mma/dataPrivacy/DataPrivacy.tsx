@@ -15,6 +15,7 @@ import { IdentityLocations } from '../identity/IdentityLocations';
 import { Lines } from '../identity/Lines';
 import { MarketingToggle } from '../identity/MarketingToggle';
 import type { ConsentOption } from '../identity/models';
+import { aCss } from '../identity/sharedStyles';
 import { Actions, useConsentOptions } from '../identity/useConsentOptions';
 import { PageContainer } from '../Page';
 import { Button } from '../shared/Buttons';
@@ -164,6 +165,9 @@ export const DataPrivacy = () => {
 					</li>
 				</ul>
 				{addMarketingToggle('profiling_optout')}
+				<a css={aCss} href={''}>
+					Why is this selected by default?
+				</a>
 				{addMarketingToggle('personalised_advertising')}
 				<p>
 					Advertising is a crucial source of our funding. You won't
@@ -198,9 +202,14 @@ export const DataPrivacy = () => {
 					text="Manage cookies on this browser"
 					type="button"
 					onClick={() => openManageCookies()}
+					fontWeight="bold"
 				/>
 				{lines()}
 				<h2>Learn more about our private policy</h2>
+				<p>
+					For more information about how we use your data, visit our
+					privacy policy guide
+				</p>
 			</WithStandardTopMargin>
 		</>
 	);
