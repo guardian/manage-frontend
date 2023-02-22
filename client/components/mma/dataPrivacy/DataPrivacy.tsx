@@ -221,11 +221,13 @@ export const DataPrivacy = () => {
 				<h2>Learn more about our private policy</h2>
 				<h3>VIDEO</h3>
 				<p>
-					For more information about how we use your data, visit our
+					For more information about how we use your data, visit
+					our&nbsp;
 					<a
 						css={aCss}
 						target="_blank"
-						href={'https://www.theguardian.com/info/privacy'} rel="noreferrer"
+						href={'https://www.theguardian.com/info/privacy'}
+						rel="noreferrer"
 					>
 						privacy policy
 					</a>{' '}
