@@ -70,9 +70,9 @@ export const Header = (props: HeaderProps) => {
 						<a href={'/'} css={aCss}>
 							Sign in
 						</a>
-						<DarkModeToggle />
 					</>
 				)}
+				<DarkModeToggle />
 				<TheGuardianLogo fill={palette.neutral['100']} />
 			</div>
 		</header>

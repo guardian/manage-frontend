@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { brand, from, neutral, space } from '@guardian/source-foundations';
 import { useEffect, useRef, useState } from 'react';
+import { darkModeCss } from '../../../styles/darkMode';
 import { gridItemPlacement } from '../../../styles/grid';
 import { ProfileIcon } from '../../mma/shared/assets/ProfileIcon';
 import { expanderButtonCss } from '../ExpanderButton';
@@ -8,52 +9,62 @@ import type { MenuSpecificNavItem } from './NavConfig';
 import { NAV_LINKS } from './NavConfig';
 
 const dropdownNavCss = (showMenu: boolean, isHelpCentre: boolean) =>
-	css({
-		display: `${showMenu ? 'block' : 'none'}`,
-		background: brand[400],
-		borderTop: `1px solid ${brand[600]}`,
-		position: 'absolute',
-		top: '50px',
-		left: 0,
-		width: 'calc(100% - 30px)',
-		maxWidth: '350px',
-		zIndex: 1071,
-		listStyle: 'none',
-		lineHeight: '1.375rem',
-		boxShadow: '0 0 0 0.0625rem rgba(0,0,0,0.1)',
-		margin: 0,
-		padding: 0,
-		' li': {
-			padding: 0,
+	css(
+		{
+			display: `${showMenu ? 'block' : 'none'}`,
+			background: brand[400],
+			borderTop: `1px solid ${brand[600]}`,
+			position: 'absolute',
+			top: '50px',
+			left: 0,
+			width: 'calc(100% - 30px)',
+			maxWidth: '350px',
+			zIndex: 1071,
+			listStyle: 'none',
+			lineHeight: '1.375rem',
+			boxShadow: '0 0 0 0.0625rem rgba(0,0,0,0.1)',
 			margin: 0,
-		},
-		[from.desktop]: {
-			width: 'auto',
-			minWidth: '220px',
-			maxWidth: 'none',
-			top: `${space[9]}px`,
-			left: 'auto',
-			right: `${isHelpCentre ? '' : '16px'}`,
-			marginRight: '-32px',
-			bottom: 'auto',
-			borderTop: 'none',
-			background: neutral['100'],
-			'li:not(:last-child)': {
-				borderBottom: `1px solid ${neutral['86']}`,
+			padding: 0,
+			' li': {
+				padding: 0,
+				margin: 0,
 			},
-			':before': {
-				content: "''",
-				width: 0,
-				height: 0,
-				position: 'absolute',
-				top: `-${space[2]}px`,
-				right: `${isHelpCentre ? '85' : space[3]}px`,
-				borderLeft: `${space[2]}px solid transparent`,
-				borderRight: `${space[2]}px solid transparent`,
-				borderBottom: `${space[2]}px solid ${neutral['100']}`,
+			[from.desktop]: {
+				width: 'auto',
+				minWidth: '220px',
+				maxWidth: 'none',
+				top: `${space[9]}px`,
+				left: 'auto',
+				right: `${isHelpCentre ? '' : '16px'}`,
+				marginRight: '-32px',
+				bottom: 'auto',
+				borderTop: 'none',
+				background: neutral['100'],
+				'li:not(:last-child)': {
+					borderBottom: `1px solid ${neutral['86']}`,
+				},
+				':before': {
+					content: "''",
+					width: 0,
+					height: 0,
+					position: 'absolute',
+					top: `-${space[2]}px`,
+					right: `${isHelpCentre ? '85' : space[3]}px`,
+					borderLeft: `${space[2]}px solid transparent`,
+					borderRight: `${space[2]}px solid transparent`,
+					borderBottom: `${space[2]}px solid ${neutral['100']}`,
+				},
 			},
 		},
-	});
+		darkModeCss`
+		${from.desktop} {
+			background-color: ${neutral[60]};
+			a {
+				color: ${neutral[100]};
+			}
+		}
+	`,
+	);
 
 const dropdownNavItemCss = css({
 	padding: `9px 30px ${space[2]}px 46px`,
@@ -195,6 +206,12 @@ export const DropdownNav = () => {
 								transform: translateX(-50%);
 								width: 65%;
 								height: auto;
+
+								${darkModeCss`
+										path {
+											fill: ${neutral[0]};
+										},
+								`},
 							`}
 						/>
 					</i>

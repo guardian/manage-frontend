@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { from, palette, space } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
+import { darkModeCss } from '../../../styles/darkMode';
 
 export const Card = (props: { children: ReactNode }) => {
 	return <div>{props.children}</div>;
@@ -42,6 +43,10 @@ Card.Section = (props: { children: ReactNode; backgroundColor?: string }) => {
 		${props.backgroundColor &&
 		`
 			background-color: ${props.backgroundColor};
+		`}
+
+		${darkModeCss`
+			background-color: ${palette.neutral[20]};
 		`}
 	`;
 

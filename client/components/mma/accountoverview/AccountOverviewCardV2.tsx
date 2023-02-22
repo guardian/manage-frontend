@@ -1,5 +1,6 @@
 import { css, ThemeProvider } from '@emotion/react';
 import {
+	brand,
 	from,
 	headline,
 	palette,
@@ -19,6 +20,7 @@ import type {
 import { getMainPlan, isGift } from '../../../../shared/productResponse';
 import type { ProductTypeKeys } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { darkModeCss } from '../../../styles/darkMode';
 import { trackEvent } from '../../../utilities/analytics';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { Card } from '../shared/Card';
@@ -358,9 +360,15 @@ export const AccountOverviewCardV2 = ({
 								)} : Manage ${groupedProductType.friendlyName()}`}
 								data-cy={`Manage ${groupedProductType.friendlyName()}`}
 								size="small"
-								cssOverrides={css`
-									justify-content: center;
-								`}
+								cssOverrides={[
+									css`
+										justify-content: center;
+									`,
+									darkModeCss`
+										background-color: ${brand[800]};
+										color: ${brand[400]};
+									`,
+								]}
 								onClick={() => {
 									trackEvent({
 										eventCategory: 'account_overview',
@@ -462,9 +470,15 @@ export const AccountOverviewCardV2 = ({
 										mainPlan,
 									)} : Update payment method`}
 									size="small"
-									cssOverrides={css`
-										justify-content: center;
-									`}
+									cssOverrides={[
+										css`
+											justify-content: center;
+										`,
+										darkModeCss`
+											background-color: ${brand[800]};
+											color: ${brand[400]};
+										`,
+									]}
 									priority="primary"
 									icon={
 										hasPaymentFailure ? (

@@ -345,6 +345,10 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 							`}
 						>
 							<LinkButton
+								cssOverrides={darkModeCss`
+									background-color: ${neutral[60]};
+									color: ${neutral[0]};
+								`}
 								aria-label={`${specificProductType.productTitle(
 									mainPlan,
 								)} : Manage ${groupedProductType.friendlyName()}`}
@@ -484,6 +488,10 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 									`}
 								>
 									<LinkButton
+										cssOverrides={darkModeCss`
+											background-color: ${neutral[60]};
+											color: ${neutral[0]};
+										`}
 										aria-label={`${specificProductType.productTitle(
 											mainPlan,
 										)} : Manage payment method`}

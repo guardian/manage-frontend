@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { SvgTickRound } from '@guardian/source-react-components';
 import { useState } from 'react';
+import { darkModeCss } from '../../../styles/darkMode';
 import { expanderButtonCss } from '../../shared/ExpanderButton';
 
 const benefitsButtonCss = css`
@@ -10,6 +11,11 @@ const benefitsButtonCss = css`
 	padding: 0;
 	color: ${palette.brand[500]};
 	border-bottom: 1px solid ${palette.brand[500]};
+
+	${darkModeCss`
+		color: ${palette.brand[800]};
+		border-bottom: 1px solid ${palette.brand[800]};
+	`}
 `;
 
 export const SupporterPlusBenefitsSection = () => {
