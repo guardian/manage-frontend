@@ -17,6 +17,7 @@ import { MarketingToggle } from '../identity/MarketingToggle';
 import type { ConsentOption } from '../identity/models';
 import { Actions, useConsentOptions } from '../identity/useConsentOptions';
 import { PageContainer } from '../Page';
+import { Button } from '../shared/Buttons';
 
 type ClickHandler = (id: string) => {};
 
@@ -82,6 +83,10 @@ export const DataPrivacy = () => {
 		consents,
 		toggleConsentSubscription,
 	);
+
+	const openManageCookies = () => {
+		console.log('openManageCookies');
+	};
 
 	useEffect(() => {
 		const makeInitialAPICalls = async () => {
@@ -158,8 +163,8 @@ export const DataPrivacy = () => {
 						websites when signed in
 					</li>
 				</ul>
-				{addMarketingToggle('personalised_advertising')}
 				{addMarketingToggle('profiling_optout')}
+				{addMarketingToggle('personalised_advertising')}
 				<p>
 					Advertising is a crucial source of our funding. You won't
 					see more ads, and your data won't be shared with third
@@ -188,6 +193,12 @@ export const DataPrivacy = () => {
 					switched off, and some are optional but support the Guardian
 					and your experience in other ways.
 				</p>
+				<Button
+					disabled={false}
+					text="Manage cookies on this browser"
+					type="button"
+					onClick={() => openManageCookies()}
+				/>
 				{lines()}
 				<h2>Learn more about our private policy</h2>
 			</WithStandardTopMargin>
