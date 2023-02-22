@@ -1,21 +1,130 @@
-import { createRef, useEffect, useState } from 'react';
+import { createRef, useEffect } from 'react';
+import {
+	isProduct,
+	mdapiResponseReader,
+} from '../../../../shared/productResponse';
+import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { allProductsDetailFetcher } from '../../../utilities/productUtils';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { Spinner } from '../../shared/Spinner';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { GenericErrorMessage } from '../identity/GenericErrorMessage';
 import type { GenericErrorMessageRef } from '../identity/GenericErrorMessage';
+import { ConsentOptions, Users } from '../identity/identity';
+import { IdentityLocations } from '../identity/IdentityLocations';
 import { Lines } from '../identity/Lines';
-import { ToggleSwitch } from '../identity/ToggleSwitch';
+import { MarketingToggle } from '../identity/MarketingToggle';
+import type { ConsentOption } from '../identity/models';
+import { Actions, useConsentOptions } from '../identity/useConsentOptions';
 import { PageContainer } from '../Page';
 
+type ClickHandler = (id: string) => {};
+
 export const DataPrivacy = () => {
-	// const [state, dispatch] = useConsentOptions();
-	const [error, setError] = useState(false);
+	const { options, error, subscribe, unsubscribe } = Actions;
+	const [state, dispatch] = useConsentOptions();
+	// const [error, setError] = useState(false);
+	const consents = ConsentOptions.consents(state.options);
+
+	const loading = consents.length === 0;
+
+	const toggleConsentSubscription = async (id: string) => {
+		const option = ConsentOptions.findById(state.options, id);
+		try {
+			if (option === undefined) {
+				throw Error('Id not found');
+			}
+			if (option.subscribed) {
+				await ConsentOptions.unsubscribe(option);
+				dispatch(unsubscribe(id));
+			} else {
+				await ConsentOptions.subscribe(option);
+				dispatch(subscribe(id));
+			}
+		} catch (e) {
+			dispatch(error(e));
+		}
+	};
+
+	const optOutFinder =
+		(
+			consents: ConsentOption[],
+			clickHandler: ClickHandler,
+			invertSubscribedValue?: (c: ConsentOption) => ConsentOption,
+		) =>
+		(id: string) => {
+			let consent = consents.find((c) => c.id === id);
+			if (consent && !!invertSubscribedValue) {
+				consent = invertSubscribedValue(consent);
+			}
+
+			console.log('CONSENT', consent);
+			console.log('CONSENT', consents);
+
+			return (
+				consent && (
+					<MarketingToggle
+						id={consent.id}
+						title={consent.name}
+						description={consent.description} // Not all consents from IDAPI have a description
+						selected={consent.subscribed}
+						onClick={clickHandler}
+					/>
+				)
+			);
+		};
+	// const addInvertedMarketingToggle = optOutFinder(
+	// 	consents,
+	// 	clickHandler,
+	// 	consentSubscribedValueInverter,
+	// );
+	const addMarketingToggle = optOutFinder(
+		consents,
+		toggleConsentSubscription,
+	);
 
 	useEffect(() => {
-		if (error && errorRef.current) {
+		const makeInitialAPICalls = async () => {
+			try {
+				const user = await Users.getCurrentUser();
+				if (!user.validated) {
+					window.location.assign(IdentityLocations.VERIFY_EMAIL);
+					return;
+				}
+				const productDetailsResponse = await allProductsDetailFetcher();
+				const productDetails = mdapiResponseReader(
+					await productDetailsResponse.json(),
+				).products.filter(isProduct);
+				const consentOptions = await ConsentOptions.getAll();
+				const consentsWithFilteredSoftOptIns = consentOptions.filter(
+					(consent: ConsentOption) =>
+						consent.isProduct
+							? productDetails.some((productDetail) => {
+									const groupedProductType =
+										GROUPED_PRODUCT_TYPES[
+											productDetail.mmaCategory
+										];
+									const specificProductType =
+										groupedProductType.mapGroupedToSpecific(
+											productDetail,
+										);
+									return specificProductType.softOptInIDs.includes(
+										consent.id,
+									);
+							  })
+							: true,
+				);
+				dispatch(options(consentsWithFilteredSoftOptIns));
+			} catch (e) {
+				dispatch(error(e));
+			}
+		};
+
+		makeInitialAPICalls();
+	}, []);
+	useEffect(() => {
+		if (state.error && errorRef.current) {
 			window.scrollTo(0, errorRef.current.offsetTop - 20);
-			setError(false);
 		}
 	}, [error]);
 
@@ -49,16 +158,8 @@ export const DataPrivacy = () => {
 						websites when signed in
 					</li>
 				</ul>
-				<ToggleSwitch
-					id="oi"
-					label="Allow the guardian to use my data for its marketing purposes"
-					labelPosition="left"
-				/>
-				<ToggleSwitch
-					id="oi"
-					label="Allow personalised advertising using this data - this supports the Guardian"
-					labelPosition="left"
-				/>
+				{addMarketingToggle('personalised_advertising')}
+				{addMarketingToggle('profiling_optout')}
 				<p>
 					Advertising is a crucial source of our funding. You won't
 					see more ads, and your data won't be shared with third
@@ -98,8 +199,8 @@ export const DataPrivacy = () => {
 			selectedNavItem={NAV_LINKS.dataPrivacy}
 			pageTitle="Data privacy"
 		>
-			{loader}
-			{error ? errorMessage : content()}
+			{loading ? loader : content()}
+			{state.error ? errorMessage : null}
 		</PageContainer>
 	);
 };
