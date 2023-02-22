@@ -66,6 +66,12 @@ const Billing = lazy(() =>
 		({ Billing }) => ({ default: Billing }),
 	),
 );
+
+const DataPrivacy = lazy(() =>
+	import(/* webpackChunkName: "Billing" */ './dataPrivacy/DataPrivacy').then(
+		({ DataPrivacy }) => ({ default: DataPrivacy }),
+	),
+);
 const ManageProduct = lazy(() =>
 	import(
 		/* webpackChunkName: "ManageProduct" */ './accountoverview/ManageProduct'
@@ -315,6 +321,7 @@ const MMARouter = () => {
 					<Routes>
 						<Route path="/" element={<AccountOverview />} />
 						<Route path="/billing" element={<Billing />} />
+						<Route path="/data-privacy" element={<DataPrivacy />} />
 						<Route
 							path="/email-prefs"
 							element={<EmailAndMarketing />}
