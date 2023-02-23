@@ -335,17 +335,17 @@ const ReasonPickerWithCancellationDate = ({
 			Date.parse(cancellationDateResponse.cancellationEffectiveDate),
 		) && productType.cancellation.startPageOfferEffectiveDateOptions;
 
-	const chargedThroughDateStr =
-		shouldOfferEffectiveDateOptions &&
-		parseDate(cancellationDateResponse.cancellationEffectiveDate).dateStr(
-			DATE_FNS_LONG_OUTPUT_FORMAT,
-		);
+	const chargedThroughDateStr = shouldOfferEffectiveDateOptions
+		? parseDate(cancellationDateResponse.cancellationEffectiveDate).dateStr(
+				DATE_FNS_LONG_OUTPUT_FORMAT,
+		  )
+		: undefined;
 
 	return (
 		<ReasonPicker
 			productType={productType}
 			productDetail={productDetail}
-			chargedThroughDateStr={chargedThroughDateStr || undefined}
+			chargedThroughDateStr={chargedThroughDateStr}
 		/>
 	);
 };
