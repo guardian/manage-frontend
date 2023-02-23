@@ -23,8 +23,15 @@ import {
 import type { ProductDetail } from '../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import {
+	LoadingState,
+	useAsyncLoader,
+} from '../../../utilities/hooks/useAsyncLoader';
 import { hasCancellationFlow } from '../../../utilities/productUtils';
+import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
+import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
 import type { CancellationContextInterface } from './CancellationContainer';
 import { CancellationContext } from './CancellationContainer';
@@ -33,33 +40,23 @@ import {
 	cancellationEffectiveToday,
 } from './cancellationContexts';
 import type { CancellationDateResponse } from './cancellationDateResponse';
-import {
-	CancellationDateAsyncLoader,
-	cancellationDateFetcher,
-} from './cancellationDateResponse';
+import { cancellationDateFetcher } from './cancellationDateResponse';
 import type { CancellationReason } from './cancellationReason';
 import { ContactUsToCancel } from './ContactUsToCancel';
 
 interface ReasonPickerProps {
-	productDetail: ProductDetail;
 	productType: ProductTypeWithCancellationFlow;
-	chargedThroughCancellationDate: string;
+	productDetail: ProductDetail;
+	chargedThroughDateStr?: string;
 }
 
-const ReasonPicker = (props: ReasonPickerProps) => {
+const ReasonPicker = ({
+	productType,
+	productDetail,
+	chargedThroughDateStr,
+}: ReasonPickerProps) => {
 	const [selectedReasonId, setSelectedReasonId] = useState<string>('');
 	const [cancellationPolicy, setCancellationPolicy] = useState<string>('');
-
-	// offer choice if not trial period or lead time, and startPageOfferEffectiveDateOptions config set to true
-	const shouldOfferEffectiveDateOptions =
-		!isNaN(Date.parse(props.chargedThroughCancellationDate)) &&
-		props.productType.cancellation.startPageOfferEffectiveDateOptions;
-
-	const chargedThroughDateStr =
-		shouldOfferEffectiveDateOptions &&
-		parseDate(props.chargedThroughCancellationDate).dateStr(
-			DATE_FNS_LONG_OUTPUT_FORMAT,
-		);
 
 	const [inValidationErrorState, setInValidationErrorState] =
 		useState<boolean>(false);
@@ -83,7 +80,7 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 					margin: ${space[5]}px 0 ${space[12]}px;
 				`}
 			/>
-			{props.productType.cancellation.startPageBody(props.productDetail)}
+			{productType.cancellation.startPageBody(productDetail)}
 			<WithStandardTopMargin>
 				<fieldset
 					onChange={(event: FormEvent<HTMLFieldSetElement>) => {
@@ -122,10 +119,10 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 							padding: ${space[5]}px;
 						`}
 					>
-						{props.productType.cancellation.reasons
+						{productType.cancellation.reasons
 							.filter((reason: CancellationReason) =>
 								reason.shouldShow
-									? reason.shouldShow(props.productDetail)
+									? reason.shouldShow(productDetail)
 									: true,
 							)
 							.map((reason: CancellationReason) => (
@@ -157,7 +154,7 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 						Please select a reason
 					</InlineError>
 				)}
-				{shouldOfferEffectiveDateOptions && (
+				{chargedThroughDateStr && (
 					<>
 						<fieldset
 							onChange={(
@@ -259,7 +256,7 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 							onClick={() => {
 								const canContinue =
 									!!selectedReasonId.length &&
-									(shouldOfferEffectiveDateOptions
+									(chargedThroughDateStr
 										? !!cancellationPolicy.length
 										: true);
 
@@ -294,47 +291,95 @@ const ReasonPicker = (props: ReasonPickerProps) => {
 	);
 };
 
-const ReasonPickerRenderer =
-	(
-		productType: ProductTypeWithCancellationFlow,
-		productDetail: ProductDetail,
-	) =>
-	(apiResponse: CancellationDateResponse) => {
+interface ReasonPickerWithCancellationDateProps {
+	productType: ProductTypeWithCancellationFlow;
+	productDetail: ProductDetail;
+}
+
+const ReasonPickerWithCancellationDate = ({
+	productType,
+	productDetail,
+}: ReasonPickerWithCancellationDateProps) => {
+	const {
+		data: cancellationDateResponse,
+		loadingState,
+	}: {
+		data: CancellationDateResponse | null;
+		loadingState: LoadingState;
+	} = useAsyncLoader(
+		cancellationDateFetcher(productDetail.subscription.subscriptionId),
+		JsonResponseHandler,
+	);
+
+	if (loadingState == LoadingState.HasError) {
+		return <GenericErrorScreen />;
+	}
+
+	if (loadingState == LoadingState.IsLoading) {
 		return (
-			<ReasonPicker
-				productType={productType}
-				productDetail={productDetail}
-				chargedThroughCancellationDate={
-					apiResponse.cancellationEffectiveDate
-				}
+			<DefaultLoadingView
+				loadingMessage={`Checking your ${
+					productType.shortFriendlyName || productType.friendlyName
+				} details...`}
 			/>
 		);
-	};
+	}
+
+	if (cancellationDateResponse === null) {
+		return <GenericErrorScreen />;
+	}
+
+	// offer choice if not trial period or lead time, and startPageOfferEffectiveDateOptions config set to true
+	const shouldOfferEffectiveDateOptions =
+		!isNaN(
+			Date.parse(cancellationDateResponse.cancellationEffectiveDate),
+		) && productType.cancellation.startPageOfferEffectiveDateOptions;
+
+	const chargedThroughDateStr =
+		shouldOfferEffectiveDateOptions &&
+		parseDate(cancellationDateResponse.cancellationEffectiveDate).dateStr(
+			DATE_FNS_LONG_OUTPUT_FORMAT,
+		);
+
+	return (
+		<ReasonPicker
+			productType={productType}
+			productDetail={productDetail}
+			chargedThroughDateStr={chargedThroughDateStr || undefined}
+		/>
+	);
+};
 
 export const CancellationReasonSelection = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
 
-	return productDetail.selfServiceCancellation.isAllowed &&
-		hasCancellationFlow(productType) ? (
-		<CancellationDateAsyncLoader
-			fetch={cancellationDateFetcher(
-				productDetail.subscription.subscriptionId,
-			)}
-			render={ReasonPickerRenderer(productType, productDetail)}
-			loadingMessage={`Checking your ${
-				productType.shortFriendlyName ||
-				productType.friendlyName(productDetail)
-			} details...`}
-		/>
-	) : (
-		<ContactUsToCancel
-			selfServiceCancellation={productDetail.selfServiceCancellation}
-			subscriptionId={productDetail.subscription.subscriptionId}
-			groupedProductType={
-				GROUPED_PRODUCT_TYPES[productDetail.mmaCategory]
-			}
-		/>
+	if (
+		!productDetail.selfServiceCancellation.isAllowed ||
+		!hasCancellationFlow(productType)
+	) {
+		return (
+			<ContactUsToCancel
+				selfServiceCancellation={productDetail.selfServiceCancellation}
+				subscriptionId={productDetail.subscription.subscriptionId}
+				groupedProductType={
+					GROUPED_PRODUCT_TYPES[productDetail.mmaCategory]
+				}
+			/>
+		);
+	}
+
+	if (productType.cancellation.startPageOfferEffectiveDateOptions) {
+		return (
+			<ReasonPickerWithCancellationDate
+				productType={productType}
+				productDetail={productDetail}
+			/>
+		);
+	}
+
+	return (
+		<ReasonPicker productType={productType} productDetail={productDetail} />
 	);
 };

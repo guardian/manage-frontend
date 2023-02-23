@@ -48,7 +48,7 @@ describe('Cancel guardian weekly', () => {
 		cy.intercept('GET', 'api/cancellation-date/**', {
 			statusCode: 200,
 			body: { cancellationEffectiveDate: '2022-02-05' },
-		});
+		}).as('get_cancellation_date');
 
 		cy.intercept('POST', 'api/cancel/**', {
 			statusCode: 200,
@@ -92,6 +92,8 @@ describe('Cancel guardian weekly', () => {
 		cy.findByText(
 			'Your cancellation request has been successfully submitted. Our customer service team will try their best to contact you as soon as possible to confirm the cancellation and refund any credit you are owed.',
 		).should('exist');
+
+		cy.get('@get_cancellation_date.all').should('have.length', 1);
 	});
 
 	it('cancels Guardian Weekly (reason: I dont have time to use my subscription, effective: next billing date)', () => {
@@ -120,5 +122,7 @@ describe('Cancel guardian weekly', () => {
 		cy.findByText('Your Guardian Weekly subscription is cancelled').should(
 			'exist',
 		);
+
+		cy.get('@get_cancellation_date.all').should('have.length', 1);
 	});
 });
