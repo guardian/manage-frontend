@@ -36,6 +36,7 @@ import { isSignedIn } from '../../utilities/signInStatus';
 import { ErrorBoundary } from '../shared/ErrorBoundary';
 import { GenericErrorScreen } from '../shared/GenericErrorScreen';
 import { Main } from '../shared/Main';
+import { TestReturnToApp } from './appsTest/TestReturnToApp';
 import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
@@ -594,6 +595,10 @@ const MMARouter = () => {
 						/>
 						<Route path="/maintenance" element={<Maintenance />} />
 						<Route path="*" element={<Navigate to="/" />} />
+						<Route
+							path="/return-to-app-test"
+							element={<TestReturnToApp />}
+						/>
 					</Routes>
 				</ErrorBoundary>
 			</Suspense>
