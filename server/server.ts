@@ -74,6 +74,7 @@ server.use('/profile/', routes.profile);
 server.use('/api/', routes.api);
 server.use('/idapi', routes.idapi);
 server.use(routes.productsProvider('/api/'));
+server.use(routes.savedArticlesProvider('/api'));
 
 // Help Centre
 server.use('/help-centre', routes.helpcentre);
