@@ -47,32 +47,31 @@ const productCardConfiguration: {
 	},
 	supporterplus: {
 		headerColor: palette.brand[500],
-		headerImageId: 'digitalSubPackshot',
 		showBenefitsSection: true,
 	},
 	digipack: {
-		headerColor: palette.brand[500],
+		headerColor: '#ff663d',
 	},
 	digitalvoucher: {
-		headerColor: '#ff5943',
+		headerColor: palette.sport[500],
 	},
 	newspaper: {
-		headerColor: '#ff5943',
+		headerColor: palette.sport[500],
 	},
 	homedelivery: {
-		headerColor: '#ff5943',
+		headerColor: palette.sport[500],
 	},
 	voucher: {
-		headerColor: '#ff5943',
+		headerColor: palette.sport[500],
 	},
 	guardianweekly: {
 		headerColor: '#5f8085',
 	},
 	membership: {
-		headerColor: palette.brand[500],
+		headerColor: palette.lifestyle[300],
 	},
 	guardianpatron: {
-		headerColor: palette.brand[500],
+		headerColor: palette.sport[300],
 	},
 };
 
