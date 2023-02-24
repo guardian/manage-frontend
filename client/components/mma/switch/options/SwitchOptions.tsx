@@ -8,18 +8,13 @@ import {
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { getMainPlan } from '../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
-import type { CurrencyIso } from '../../../utilities/currencyIso';
-import { formatAmount } from '../../../utilities/utils';
-import { ErrorSummary } from '../paymentUpdate/Summary';
-import { Card } from '../shared/Card';
-import { Heading } from '../shared/Heading';
-import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
-import type { SwitchContextInterface } from './SwitchContainer';
-import { SwitchContext } from './SwitchContainer';
+import { formatAmount } from '../../../../utilities/utils';
+import { ErrorSummary } from '../../paymentUpdate/Summary';
+import { Card } from '../../shared/Card';
+import { Heading } from '../../shared/Heading';
+import { SupporterPlusBenefitsSection } from '../../shared/SupporterPlusBenefits';
+import type { SwitchContextInterface } from '.././SwitchContainer';
+import { SwitchContext } from '.././SwitchContainer';
 import {
 	buttonCentredCss,
 	errorSummaryBlockLinkCss,
@@ -28,7 +23,7 @@ import {
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
-} from './SwitchStyles';
+} from '.././SwitchStyles';
 
 const cardHeaderDivCss = css`
 	display: flex;
@@ -74,28 +69,21 @@ const fromAppHeadingCss = css`
 export const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 
-	const productDetail = switchContext.productDetail;
-	const mainPlan = getMainPlan(
-		productDetail.subscription,
-	) as PaidSubscriptionPlan;
+	const {
+		productDetail,
+		mainPlan,
+		monthlyOrAnnual,
+		supporterPlusTitle,
+		thresholds,
+	} = switchContext;
 
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
-	);
-	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
+	const {
+		monthlyThreshold,
+		annualThreshold,
+		thresholdForBillingPeriod: threshold,
+		isAboveThreshold,
+	} = thresholds;
 
-	const monthlyThreshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		'Monthly',
-	);
-	const annualThreshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		'Annual',
-	);
-
-	const threshold =
-		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
-	const aboveThreshold = mainPlan.price >= threshold * 100;
 	const currentAmount = mainPlan.price / 100;
 
 	const buttonContainerRef = useRef(null);
@@ -204,9 +192,11 @@ export const SwitchOptions = () => {
 			<section css={sectionSpacing}>
 				<Stack space={3}>
 					<Heading sansSerif>
-						{aboveThreshold ? 'Add extras' : 'Change your support'}
+						{isAboveThreshold
+							? 'Add extras'
+							: 'Change your support'}
 					</Heading>
-					{aboveThreshold && (
+					{isAboveThreshold && (
 						<p
 							css={css`
 								${textSans.medium()}
@@ -219,7 +209,7 @@ export const SwitchOptions = () => {
 							access.
 						</p>
 					)}
-					{!aboveThreshold && !switchContext.isFromApp && (
+					{!isAboveThreshold && !switchContext.isFromApp && (
 						<p
 							css={css`
 								${textSans.medium()}
@@ -236,7 +226,7 @@ export const SwitchOptions = () => {
 								<h3 css={productTitleCss}>
 									{supporterPlusTitle}
 								</h3>
-								{!aboveThreshold && (
+								{!isAboveThreshold && (
 									<p css={productSubtitleCss}>
 										{mainPlan.currency}
 										{formatAmount(threshold)}/
@@ -262,7 +252,7 @@ export const SwitchOptions = () => {
 						cssOverrides={buttonCentredCss}
 						onClick={() => navigate('review')}
 					>
-						{aboveThreshold
+						{isAboveThreshold
 							? 'Add extras'
 							: `Upgrade to ${mainPlan.currency}${threshold} per ${mainPlan.billingPeriod}`}
 					</Button>

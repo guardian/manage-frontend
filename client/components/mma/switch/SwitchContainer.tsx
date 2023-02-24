@@ -4,10 +4,16 @@ import { Navigate, Outlet, useLocation } from 'react-router';
 import type {
 	MembersDataApiResponse,
 	MembersDataApiUser,
+	PaidSubscriptionPlan,
 	ProductDetail,
 } from '../../../../shared/productResponse';
-import { isProduct } from '../../../../shared/productResponse';
-import { PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { getMainPlan, isProduct } from '../../../../shared/productResponse';
+import {
+	calculateMonthlyOrAnnualFromBillingPeriod,
+	PRODUCT_TYPES,
+} from '../../../../shared/productTypes';
+import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
+import type { CurrencyIso } from '../../../utilities/currencyIso';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -30,6 +36,17 @@ export interface SwitchContextInterface {
 	productDetail: ProductDetail;
 	isFromApp: boolean;
 	user?: MembersDataApiUser;
+	mainPlan: PaidSubscriptionPlan;
+	monthlyOrAnnual: 'Monthly' | 'Annual';
+	supporterPlusTitle: string;
+	thresholds: Thresholds;
+}
+
+export interface Thresholds {
+	monthlyThreshold: number;
+	annualThreshold: number;
+	thresholdForBillingPeriod: number;
+	isAboveThreshold: boolean;
 }
 
 export const SwitchContext: Context<SwitchContextInterface | {}> =
@@ -114,6 +131,13 @@ const RenderedPage = (props: {
 	user?: MembersDataApiUser;
 	isFromApp?: boolean;
 }) => {
+	const mainPlan = getMainPlan(
+		props.productDetail.subscription,
+	) as PaidSubscriptionPlan;
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		mainPlan.billingPeriod,
+	);
+
 	return (
 		<SwitchPageContainer>
 			<SwitchContext.Provider
@@ -121,6 +145,13 @@ const RenderedPage = (props: {
 					productDetail: props.productDetail,
 					isFromApp: props.isFromApp,
 					user: props.user,
+					mainPlan,
+					monthlyOrAnnual,
+					supporterPlusTitle: `${monthlyOrAnnual} + extras`,
+					thresholds: getThresholds(
+						mainPlan,
+						monthlyOrAnnual == 'Monthly',
+					),
 				}}
 			>
 				<Outlet />
@@ -128,3 +159,28 @@ const RenderedPage = (props: {
 		</SwitchPageContainer>
 	);
 };
+
+function getThresholds(
+	mainPlan: PaidSubscriptionPlan,
+	monthly: boolean,
+): Thresholds {
+	const monthlyThreshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		'Monthly',
+	);
+	const annualThreshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		'Annual',
+	);
+	const thresholdForBillingPeriod = monthly
+		? monthlyThreshold
+		: annualThreshold;
+	const isAboveThreshold = mainPlan.price >= thresholdForBillingPeriod * 100;
+
+	return {
+		monthlyThreshold,
+		annualThreshold,
+		thresholdForBillingPeriod,
+		isAboveThreshold,
+	};
+}

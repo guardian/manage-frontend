@@ -39,10 +39,6 @@ import { Main } from '../shared/Main';
 import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
-import { SwitchComplete } from './switch/SwitchComplete';
-import { SwitchContainer } from './switch/SwitchContainer';
-import { SwitchOptions } from './switch/SwitchOptions';
-import { SwitchReview } from './switch/SwitchReview';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {
@@ -233,6 +229,38 @@ const DeliveryRecordsProblemConfirmation = lazy(() =>
 		/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecordsProblemConfirmation'
 	).then(({ DeliveryRecordsProblemConfirmation }) => ({
 		default: DeliveryRecordsProblemConfirmation,
+	})),
+);
+
+const SwitchContainer = lazy(() =>
+	import(/* webpackChunkName: "Switch" */ './switch/SwitchContainer').then(
+		({ SwitchContainer }) => ({
+			default: SwitchContainer,
+		}),
+	),
+);
+
+const SwitchOptions = lazy(() =>
+	import(
+		/* webpackChunkName: "Switch" */ './switch/options/SwitchOptions'
+	).then(({ SwitchOptions }) => ({
+		default: SwitchOptions,
+	})),
+);
+
+const SwitchReview = lazy(() =>
+	import(
+		/* webpackChunkName: "Switch" */ './switch/review/SwitchReview'
+	).then(({ SwitchReview }) => ({
+		default: SwitchReview,
+	})),
+);
+
+const SwitchComplete = lazy(() =>
+	import(
+		/* webpackChunkName: "Switch" */ './switch/complete/SwitchComplete'
+	).then(({ SwitchComplete }) => ({
+		default: SwitchComplete,
 	})),
 );
 
