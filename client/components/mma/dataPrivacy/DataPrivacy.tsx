@@ -233,7 +233,6 @@ export const DataPrivacy = () => {
 				{cookiesOnThisBrowserSection}
 				<Lines n={1} />
 				{learnMoreSection}
-				<Lines n={1} />
 			</WithStandardTopMargin>
 		</>
 	);
