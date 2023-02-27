@@ -56,8 +56,12 @@ const gridUrl = (
 
 interface ProductCardConfiguration {
 	headerColor: string;
-	headerImageId?: GridImageId;
 	showBenefitsSection?: boolean;
+	headerImage?: {
+		gridId: GridImageId;
+		width: number;
+		offset: number;
+	};
 }
 
 const productCardConfiguration: {
@@ -68,31 +72,55 @@ const productCardConfiguration: {
 	},
 	supporterplus: {
 		headerColor: palette.brand[500],
-		headerImageId: 'SupporterPlusPackshot',
 		showBenefitsSection: true,
+		headerImage: {
+			gridId: 'SupporterPlusPackshot',
+			width: 320,
+			offset: 38,
+		},
 	},
 	digipack: {
 		headerColor: '#ff663d',
 	},
 	digitalvoucher: {
 		headerColor: palette.sport[500],
-		headerImageId: 'PrintPackshot',
+		headerImage: {
+			gridId: 'PrintPackshot',
+			width: 260,
+			offset: 88,
+		},
 	},
 	newspaper: {
 		headerColor: palette.sport[500],
-		headerImageId: 'PrintPackshot',
+		headerImage: {
+			gridId: 'PrintPackshot',
+			width: 260,
+			offset: 88,
+		},
 	},
 	homedelivery: {
 		headerColor: palette.sport[500],
-		headerImageId: 'PrintPackshot',
+		headerImage: {
+			gridId: 'PrintPackshot',
+			width: 260,
+			offset: 88,
+		},
 	},
 	voucher: {
 		headerColor: palette.sport[500],
-		headerImageId: 'PrintPackshot',
+		headerImage: {
+			gridId: 'PrintPackshot',
+			width: 260,
+			offset: 88,
+		},
 	},
 	guardianweekly: {
 		headerColor: '#5f8085',
-		headerImageId: 'GuardianWeeklyPackshot',
+		headerImage: {
+			gridId: 'GuardianWeeklyPackshot',
+			width: 295,
+			offset: 52,
+		},
 	},
 	membership: {
 		headerColor: palette.lifestyle[300],
@@ -173,6 +201,20 @@ export const AccountOverviewCardV2 = ({
 		}
 	`;
 
+	const productPackshotCss = css`
+		display: none;
+		position: absolute;
+		bottom: 0;
+		${from.tablet} {
+			display: block;
+		}
+	`;
+
+	const productPackshotAlignmentCss = (width: number, offset: number) => css`
+		width: ${width}px;
+		right: ${offset}px;
+	`;
+
 	const productDetailLayoutCss = css`
 		> * + * {
 			margin-top: ${space[5]}px;
@@ -227,23 +269,20 @@ export const AccountOverviewCardV2 = ({
 				backgroundColor={cardConfig.headerColor}
 				minHeightTablet
 			>
-				<div
-					css={css`
-						display: flex;
-						justify-content: space-between;
-					`}
-				>
-					<h3 css={productTitleCss}>{productTitle}</h3>
-					{cardConfig.headerImageId && (
-						<img
-							src={gridUrl(cardConfig.headerImageId)}
-							alt=""
-							css={css`
-								width: 295px;
-							`}
-						/>
-					)}
-				</div>
+				<h3 css={productTitleCss}>{productTitle}</h3>
+				{cardConfig.headerImage && (
+					<img
+						alt=""
+						src={gridUrl(cardConfig.headerImage.gridId)}
+						css={[
+							productPackshotCss,
+							productPackshotAlignmentCss(
+								cardConfig.headerImage.width,
+								cardConfig.headerImage.offset,
+							),
+						]}
+					/>
+				)}
 			</Card.Header>
 
 			{cardConfig.showBenefitsSection && nextPaymentDetails && (
