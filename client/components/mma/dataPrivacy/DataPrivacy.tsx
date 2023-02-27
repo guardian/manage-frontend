@@ -158,7 +158,7 @@ export const DataPrivacy = () => {
 					parties to use for their own advertising
 				</p>
 				<p>We do this by:</p>
-				<ul>
+				<ul css={dataPrivacyUnorderedListCss}>
 					<li>
 						{' '}
 						analysing your information to predict what you might be
