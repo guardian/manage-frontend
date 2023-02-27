@@ -38,6 +38,7 @@ export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
 		.get('/api/cancelled/', { body: [] })
 		.get('/api/me/mma', {
 			body: toMembersDataApiResponse(
+				supporterPlus,
 				guardianWeeklyCard,
 				digitalDD,
 				newspaperVoucherPaypal,
