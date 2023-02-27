@@ -74,7 +74,74 @@ const productCardConfiguration: {
 	guardianpatron: {
 		headerColor: palette.brand[500],
 	},
+	iap: {
+		headerColor: palette.brand[500],
+	},
 };
+const sectionHeadingCss = css`
+	${textSans.medium({ fontWeight: 'bold' })};
+	margin-top: 0;
+	margin-bottom: ${space[2]}px;
+`;
+
+const productTitleCss = css`
+	${headline.xxsmall({ fontWeight: 'bold' })};
+	color: ${palette.neutral[100]};
+	margin: 0;
+	max-width: 20ch;
+
+	${from.tablet} {
+		${headline.small({ fontWeight: 'bold' })};
+	}
+`;
+
+const productDetailLayoutCss = css`
+	> * + * {
+		margin-top: ${space[5]}px;
+	}
+
+	${from.tablet} {
+		display: flex;
+		flex-direction: row;
+		> * + * {
+			margin-top: 0;
+			margin-left: auto;
+			padding-left: ${space[4]}px;
+		}
+	}
+`;
+
+const keyValueCss = css`
+	${textSans.medium()};
+	margin: 0;
+
+	div + div {
+		margin-top: ${space[1]}px;
+	}
+
+	dt {
+		display: inline-block;
+		margin-right: 0.5ch;
+		:after {
+			content: ':';
+		}
+	}
+
+	dd {
+		display: inline-block;
+		margin-left: 0;
+	}
+`;
+
+const buttonLayoutCss = css`
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+
+	> * + * {
+		margin-top: ${space[3]}px;
+	}
+`;
 
 export const AccountOverviewCardV2 = ({
 	productDetail,
@@ -130,70 +197,7 @@ export const AccountOverviewCardV2 = ({
 	const cardConfig =
 		productCardConfiguration[specificProductType.productType];
 
-	const sectionHeadingCss = css`
-		${textSans.medium({ fontWeight: 'bold' })};
-		margin-top: 0;
-		margin-bottom: ${space[2]}px;
-	`;
-
-	const productTitleCss = css`
-		${headline.xxsmall({ fontWeight: 'bold' })};
-		color: ${palette.neutral[100]};
-		margin: 0;
-		max-width: 20ch;
-
-		${from.tablet} {
-			${headline.small({ fontWeight: 'bold' })};
-		}
-	`;
-
-	const productDetailLayoutCss = css`
-		> * + * {
-			margin-top: ${space[5]}px;
-		}
-
-		${from.tablet} {
-			display: flex;
-			flex-direction: row;
-			> * + * {
-				margin-top: 0;
-				margin-left: auto;
-				padding-left: ${space[4]}px;
-			}
-		}
-	`;
-
-	const keyValueCss = css`
-		${textSans.medium()};
-		margin: 0;
-
-		div + div {
-			margin-top: ${space[1]}px;
-		}
-
-		dt {
-			display: inline-block;
-			margin-right: 0.5ch;
-			:after {
-				content: ':';
-			}
-		}
-
-		dd {
-			display: inline-block;
-			margin-left: 0;
-		}
-	`;
-
-	const buttonLayoutCss = css`
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
-
-		> * + * {
-			margin-top: ${space[3]}px;
-		}
-	`;
+	const isInAppPurchase = productDetail.tier === 'IAP';
 
 	return (
 		<Card>
@@ -253,156 +257,174 @@ export const AccountOverviewCardV2 = ({
 					<SupporterPlusBenefitsToggle />
 				</Card.Section>
 			)}
-			<Card.Section>
-				<div css={productDetailLayoutCss}>
-					<div>
-						<h4 css={sectionHeadingCss}>Billing and payment</h4>
-						<dl css={keyValueCss}>
-							<div>
-								<dt>
-									{groupedProductType.showSupporterId
-										? 'Supporter ID'
-										: 'Subscription ID'}
-								</dt>
-								<dd>
-									{productDetail.subscription.subscriptionId}
-								</dd>
-							</div>
-							{groupedProductType.tierLabel && (
+			{!isInAppPurchase && (
+				<Card.Section>
+					<div css={productDetailLayoutCss}>
+						<div>
+							<h4 css={sectionHeadingCss}>Billing and payment</h4>
+							<dl css={keyValueCss}>
 								<div>
-									<dt>{groupedProductType.tierLabel}</dt>
-									<dd>{productDetail.tier}</dd>
-								</div>
-							)}
-							{subscriptionStartDate && shouldShowStartDate && (
-								<div>
-									<dt>Start date</dt>
+									<dt>
+										{groupedProductType.showSupporterId
+											? 'Supporter ID'
+											: 'Subscription ID'}
+									</dt>
 									<dd>
-										{parseDate(
-											subscriptionStartDate,
-										).dateStr()}
+										{
+											productDetail.subscription
+												.subscriptionId
+										}
 									</dd>
 								</div>
-							)}
-							{shouldShowJoinDateNotStartDate && (
-								<div>
-									<dt>Join date</dt>
-									<dd>
-										{parseDate(
-											productDetail.joinDate,
-										).dateStr()}
-									</dd>
-								</div>
-							)}
-							{userIsGifter && giftPurchaseDate && (
-								<div>
-									<dt>Purchase date</dt>
-									<dd>
-										{parseDate(giftPurchaseDate).dateStr()}
-									</dd>
-								</div>
-							)}
-							{specificProductType.showTrialRemainingIfApplicable &&
-								productDetail.subscription.trialLength > 0 &&
-								!isGifted &&
-								productDetail.subscription.readerType !==
-									'Patron' && (
+								{groupedProductType.tierLabel && (
 									<div>
-										<dt>Trial remaining</dt>
+										<dt>{groupedProductType.tierLabel}</dt>
+										<dd>{productDetail.tier}</dd>
+									</div>
+								)}
+								{subscriptionStartDate && shouldShowStartDate && (
+									<div>
+										<dt>Start date</dt>
 										<dd>
-											{
-												productDetail.subscription
-													.trialLength
-											}{' '}
-											{productDetail.subscription
-												.trialLength !== 1
-												? 'days'
-												: 'day'}
+											{parseDate(
+												subscriptionStartDate,
+											).dateStr()}
 										</dd>
 									</div>
 								)}
-							{isGifted && !userIsGifter && (
-								<div>
-									<dt>End date</dt>
-									<dd>
-										{parseDate(
-											subscriptionEndDate,
-										).dateStr()}
-									</dd>
-								</div>
-							)}
-							{nextPaymentDetails &&
-								productDetail.subscription.autoRenew &&
-								!hasCancellationPending && (
+								{shouldShowJoinDateNotStartDate && (
 									<div>
-										<dt>{nextPaymentDetails.paymentKey}</dt>
+										<dt>Join date</dt>
 										<dd>
-											{nextPaymentDetails.isNewPaymentValue && (
-												<NewPaymentPriceAlert />
-											)}
-											{nextPaymentDetails.paymentValue}
-											{nextPaymentDetails.nextPaymentDateValue &&
-												productDetail.subscription
-													.readerType !== 'Patron' &&
-												` on ${nextPaymentDetails.nextPaymentDateValue}`}
+											{parseDate(
+												productDetail.joinDate,
+											).dateStr()}
 										</dd>
 									</div>
 								)}
-						</dl>
-					</div>
-					<div css={buttonLayoutCss}>
-						{!isGifted && (
-							<Button
-								aria-label={`${specificProductType.productTitle(
-									mainPlan,
-								)} : Manage ${groupedProductType.friendlyName()}`}
-								data-cy={`Manage ${groupedProductType.friendlyName()}`}
-								size="small"
-								cssOverrides={css`
-									justify-content: center;
-								`}
-								onClick={() => {
-									trackEvent({
-										eventCategory: 'account_overview',
-										eventAction: 'click',
-										eventLabel: `manage_${groupedProductType.urlPart}`,
-									});
-									navigate(`/${groupedProductType.urlPart}`, {
-										state: {
-											productDetail: productDetail,
-										},
-									});
-								}}
-							>
-								{`Manage ${groupedProductType.friendlyName()}`}
-							</Button>
-						)}
-						{showSwitchButton && (
-							<ThemeProvider
-								theme={buttonThemeReaderRevenueBrand}
-							>
+								{userIsGifter && giftPurchaseDate && (
+									<div>
+										<dt>Purchase date</dt>
+										<dd>
+											{parseDate(
+												giftPurchaseDate,
+											).dateStr()}
+										</dd>
+									</div>
+								)}
+								{specificProductType.showTrialRemainingIfApplicable &&
+									productDetail.subscription.trialLength >
+										0 &&
+									!isGifted &&
+									productDetail.subscription.readerType !==
+										'Patron' && (
+										<div>
+											<dt>Trial remaining</dt>
+											<dd>
+												{
+													productDetail.subscription
+														.trialLength
+												}{' '}
+												{productDetail.subscription
+													.trialLength !== 1
+													? 'days'
+													: 'day'}
+											</dd>
+										</div>
+									)}
+								{isGifted && !userIsGifter && (
+									<div>
+										<dt>End date</dt>
+										<dd>
+											{parseDate(
+												subscriptionEndDate,
+											).dateStr()}
+										</dd>
+									</div>
+								)}
+								{nextPaymentDetails &&
+									productDetail.subscription.autoRenew &&
+									!hasCancellationPending && (
+										<div>
+											<dt>
+												{nextPaymentDetails.paymentKey}
+											</dt>
+											<dd>
+												{nextPaymentDetails.isNewPaymentValue && (
+													<NewPaymentPriceAlert />
+												)}
+												{
+													nextPaymentDetails.paymentValue
+												}
+												{nextPaymentDetails.nextPaymentDateValue &&
+													productDetail.subscription
+														.readerType !==
+														'Patron' &&
+													` on ${nextPaymentDetails.nextPaymentDateValue}`}
+											</dd>
+										</div>
+									)}
+							</dl>
+						</div>
+						<div css={buttonLayoutCss}>
+							{!isGifted && (
 								<Button
+									aria-label={`${specificProductType.productTitle(
+										mainPlan,
+									)} : Manage ${groupedProductType.friendlyName()}`}
+									data-cy={`Manage ${groupedProductType.friendlyName()}`}
 									size="small"
 									cssOverrides={css`
 										justify-content: center;
 									`}
-									onClick={() =>
-										navigate(`/switch`, {
-											state: {
-												productDetail: productDetail,
-												user: user,
+									onClick={() => {
+										trackEvent({
+											eventCategory: 'account_overview',
+											eventAction: 'click',
+											eventLabel: `manage_${groupedProductType.urlPart}`,
+										});
+										navigate(
+											`/${groupedProductType.urlPart}`,
+											{
+												state: {
+													productDetail:
+														productDetail,
+												},
 											},
-										})
-									}
+										);
+									}}
 								>
-									Change to monthly + extras
+									{`Manage ${groupedProductType.friendlyName()}`}
 								</Button>
-							</ThemeProvider>
-						)}
+							)}
+							{showSwitchButton && (
+								<ThemeProvider
+									theme={buttonThemeReaderRevenueBrand}
+								>
+									<Button
+										size="small"
+										cssOverrides={css`
+											justify-content: center;
+										`}
+										onClick={() =>
+											navigate(`/switch`, {
+												state: {
+													productDetail:
+														productDetail,
+													user: user,
+												},
+											})
+										}
+									>
+										Change to monthly + extras
+									</Button>
+								</ThemeProvider>
+							)}
+						</div>
 					</div>
-				</div>
-			</Card.Section>
-			{productDetail.isPaidTier && (
+				</Card.Section>
+			)}
+			{productDetail.isPaidTier && !isInAppPurchase && (
 				<Card.Section>
 					<div css={productDetailLayoutCss}>
 						<div>
@@ -494,6 +516,7 @@ export const AccountOverviewCardV2 = ({
 					</div>
 				</Card.Section>
 			)}
+			{isInAppPurchase && <Card.Section>In App Purchase</Card.Section>}
 		</Card>
 	);
 };

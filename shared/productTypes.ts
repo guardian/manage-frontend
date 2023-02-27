@@ -43,7 +43,8 @@ type ProductFriendlyName =
 	| 'Guardian Weekly subscription'
 	| 'subscription'
 	| 'recurring support'
-	| 'guardian patron';
+	| 'guardian patron'
+	| 'in app purchase';
 type ProductUrlPart =
 	| 'membership'
 	| 'contributions'
@@ -56,7 +57,8 @@ type ProductUrlPart =
 	| 'guardianweekly'
 	| 'subscriptions'
 	| 'recurringsupport'
-	| 'guardianpatron';
+	| 'guardianpatron'
+	| 'iap';
 type SfCaseProduct =
 	| 'Membership'
 	| 'Recurring - Contributions'
@@ -77,7 +79,8 @@ export type AllProductsProductTypeFilterString =
 	| 'SupporterPlus'
 	| 'ContentSubscription'
 	| 'GuardianPatron'
-	| 'RecurringSupport';
+	| 'RecurringSupport'
+	| 'IAP';
 
 interface CancellationFlowProperties {
 	reasons: CancellationReason[];
@@ -259,7 +262,8 @@ export type ProductTypeKeys =
 	| 'guardianweekly'
 	| 'digipack'
 	| 'supporterplus'
-	| 'guardianpatron';
+	| 'guardianpatron'
+	| 'iap';
 
 /*
  * TODO: remove 'contributions' from the following list once MDAPI has been changed to return 'recurringSupport' instead
@@ -673,6 +677,21 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			SoftOptInIDs.SupporterNewsletter,
 		],
 	},
+	iap: {
+		productTitle: () => 'In App Purchase',
+		friendlyName: () => 'in app purchase',
+		productType: 'iap',
+		groupedProductType: 'recurringSupport',
+		allProductsProductTypeFilterString: 'IAP',
+		urlPart: 'iap',
+		legacyUrlPart: 'iap',
+		softOptInIDs: [
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SimilarProducts,
+			SoftOptInIDs.SupporterNewsletter,
+			SoftOptInIDs.DigitalSubscriberPreview,
+		],
+	},
 };
 
 export const GROUPED_PRODUCT_TYPES: {
@@ -711,6 +730,8 @@ export const GROUPED_PRODUCT_TYPES: {
 				return PRODUCT_TYPES.supporterplus;
 			} else if (productDetail.tier === 'Contributor') {
 				return PRODUCT_TYPES.contributions;
+			} else if (productDetail.tier === 'IAP') {
+				return PRODUCT_TYPES.iap;
 			}
 			throw `Specific product type for tier '${productDetail.tier}' not found.`;
 		},

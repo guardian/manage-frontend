@@ -879,6 +879,36 @@ export const cancelledContribution: ProductDetail = {
 	isTestUser: false,
 };
 
+export const inAppPurchase: ProductDetail = {
+	isTestUser: false,
+	isPaidTier: true,
+	tier: 'IAP',
+	mmaCategory: 'recurringSupport',
+	joinDate: '2020-02-02',
+	selfServiceCancellation: {
+		isAllowed: false,
+		shouldDisplayEmail: false,
+		phoneRegionsToDisplay: [],
+	},
+	subscription: {
+		subscriptionId: '',
+		end: '',
+		renewalDate: '',
+		anniversaryDate: '',
+		cancelledAt: false,
+		safeToUpdatePaymentMethod: false,
+		autoRenew: false,
+		trialLength: 0,
+		readerType: 'Direct',
+		nextPaymentDate: null,
+		nextPaymentPrice: null,
+		lastPaymentDate: null,
+		chargedThroughDate: null,
+		currentPlans: [],
+		futurePlans: [],
+	},
+};
+
 export const toMembersDataApiResponse = (
 	...productDetails: ProductDetail[]
 ): MembersDataApiResponse => {

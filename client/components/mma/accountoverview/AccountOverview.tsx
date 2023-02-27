@@ -119,7 +119,8 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 						</h2>
 						<Stack space={6}>
 							{activeProductsInCategory.map((productDetail) =>
-								featureSwitches.accountOverviewNewLayout ? (
+								featureSwitches.accountOverviewNewLayout ||
+								productDetail.tier === 'IAP' ? ( // ToDo: remove this check when moving to V2
 									<AccountOverviewCardV2
 										key={
 											productDetail.subscription

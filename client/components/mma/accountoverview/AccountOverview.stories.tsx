@@ -6,6 +6,7 @@ import {
 	contributionPayPal,
 	digitalDD,
 	guardianWeeklyCard,
+	inAppPurchase,
 	newspaperVoucherPaypal,
 	supporterPlus,
 	toMembersDataApiResponse,
@@ -94,6 +95,32 @@ export const WithContributionNewLayoutDigisubAndContribution: ComponentStory<
 		.get('/api/cancelled/', { body: [] })
 		.get('/api/me/mma', {
 			body: [contributionPayPal, digitalDD],
+		});
+
+	return <AccountOverview />;
+};
+
+export const WithInAppPurchase: ComponentStory<typeof AccountOverview> = () => {
+	fetchMock
+		.restore()
+		.get('/api/cancelled/', { body: [] })
+		.get('/api/me/mma', {
+			body: toMembersDataApiResponse(inAppPurchase),
+		});
+
+	return <AccountOverview />;
+};
+
+export const WithInAppPurchaseNewLayout: ComponentStory<
+	typeof AccountOverview
+> = () => {
+	featureSwitches['accountOverviewNewLayout'] = true;
+
+	fetchMock
+		.restore()
+		.get('/api/cancelled/', { body: [] })
+		.get('/api/me/mma', {
+			body: toMembersDataApiResponse(inAppPurchase),
 		});
 
 	return <AccountOverview />;
