@@ -24,7 +24,6 @@ import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { Card } from '../shared/Card';
 import { CardDisplay } from '../shared/CardDisplay';
 import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
-import { GridPicture } from '../shared/images/GridPicture';
 import {
 	getNextPaymentDetails,
 	NewPaymentPriceAlert,
@@ -33,9 +32,31 @@ import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
 import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
 
+const gridImageCatalogue = {
+	PrintPackshot: '34edb8f20fe4f9e847ea63967b202b52a6891c16/0_0_520_312',
+	GuardianWeeklyPackshot:
+		'0ed355937481e005eb1ffecacddbb592d450e8e8/0_0_591_355',
+	SupporterPlusPackshot:
+		'956d120bc2a924d214908e5d9e3a1e39be156666/0_0_643_300',
+};
+
+type GridImageId = keyof typeof gridImageCatalogue;
+
+enum ImageType {
+	JPG = 'jpg',
+	PNG = 'png',
+}
+
+const gridUrl = (
+	gridId: GridImageId,
+	size: number = 500,
+	imageType: ImageType = ImageType.PNG,
+): string =>
+	`https://media.guim.co.uk/${gridImageCatalogue[gridId]}/${size}.${imageType}`;
+
 interface ProductCardConfiguration {
 	headerColor: string;
-	headerImageId?: string;
+	headerImageId?: GridImageId;
 	showBenefitsSection?: boolean;
 }
 
@@ -47,6 +68,7 @@ const productCardConfiguration: {
 	},
 	supporterplus: {
 		headerColor: palette.brand[500],
+		headerImageId: 'SupporterPlusPackshot',
 		showBenefitsSection: true,
 	},
 	digipack: {
@@ -54,18 +76,23 @@ const productCardConfiguration: {
 	},
 	digitalvoucher: {
 		headerColor: palette.sport[500],
+		headerImageId: 'PrintPackshot',
 	},
 	newspaper: {
 		headerColor: palette.sport[500],
+		headerImageId: 'PrintPackshot',
 	},
 	homedelivery: {
 		headerColor: palette.sport[500],
+		headerImageId: 'PrintPackshot',
 	},
 	voucher: {
 		headerColor: palette.sport[500],
+		headerImageId: 'PrintPackshot',
 	},
 	guardianweekly: {
 		headerColor: '#5f8085',
+		headerImageId: 'GuardianWeeklyPackshot',
 	},
 	membership: {
 		headerColor: palette.lifestyle[300],
@@ -208,28 +235,12 @@ export const AccountOverviewCardV2 = ({
 				>
 					<h3 css={productTitleCss}>{productTitle}</h3>
 					{cardConfig.headerImageId && (
-						<GridPicture
-							cssOverrides={css`
-								margin-top: -${space[3] + 16}px;
-								margin-bottom: -${space[3]}px;
-								max-height: 80px;
-								${from.tablet} {
-									max-height: 144px;
-								}
+						<img
+							src={gridUrl(cardConfig.headerImageId)}
+							alt=""
+							css={css`
+								width: 295px;
 							`}
-							sources={[
-								{
-									gridId: cardConfig.headerImageId,
-									srcSizes: [497, 285],
-									imgType: 'png',
-									sizes: '100vw',
-									media: '(max-width: 220px)',
-								},
-							]}
-							fallback={cardConfig.headerImageId}
-							fallbackSize={497}
-							altText=""
-							fallbackImgType="png"
 						/>
 					)}
 				</div>
