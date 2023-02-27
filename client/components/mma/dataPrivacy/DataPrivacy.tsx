@@ -1,4 +1,5 @@
 import type { CMP } from '@guardian/consent-management-platform/dist/types';
+import { brand } from '@guardian/source-foundations';
 import { createRef, useEffect, useState } from 'react';
 import {
 	isProduct,
@@ -20,6 +21,13 @@ import { aCss } from '../identity/sharedStyles';
 import { Actions, useConsentOptions } from '../identity/useConsentOptions';
 import { PageContainer } from '../Page';
 import { Button } from '../shared/Buttons';
+import {
+	dataPrivacyHeadingCss,
+	dataPrivacyMarketingToggleCss,
+	dataPrivacyParagraphCss,
+	dataPrivacyUnorderedListCss,
+	dataPrivacyVideoCss,
+} from './DataPrivacy.styles';
 
 type ClickHandler = (id: string) => {};
 
@@ -30,7 +38,6 @@ export const DataPrivacy = () => {
 
 	// const [error, setError] = useState(false);
 	const consents = ConsentOptions.consents(state.options);
-
 	const loading = consents.length === 0;
 
 	const toggleConsentSubscription = async (id: string) => {
@@ -63,9 +70,6 @@ export const DataPrivacy = () => {
 				consent = invertSubscribedValue(consent);
 			}
 
-			console.log('CONSENT', consent);
-			console.log('CONSENT', consents);
-
 			return (
 				consent && (
 					<MarketingToggle
@@ -74,6 +78,7 @@ export const DataPrivacy = () => {
 						description={consent.description} // Not all consents from IDAPI have a description
 						selected={consent.subscribed}
 						onClick={clickHandler}
+						divCss={dataPrivacyMarketingToggleCss}
 					/>
 				)
 			);
@@ -141,8 +146,6 @@ export const DataPrivacy = () => {
 		}
 	}, [error]);
 
-	const lines = () => <Lines n={1} margin="32px auto 16px" />;
-
 	const errorRef = createRef<GenericErrorMessageRef>();
 
 	const loader = (
@@ -157,82 +160,107 @@ export const DataPrivacy = () => {
 		</WithStandardTopMargin>
 	);
 
+	const yourDataSection = (
+		<>
+			<h3 css={dataPrivacyHeadingCss}>Your Data</h3>
+			<p css={dataPrivacyParagraphCss}>What we mean by your data</p>
+			<ul css={dataPrivacyUnorderedListCss}>
+				<li> Information you provide such as your email address</li>
+				<li> Products or services you buy from us</li>
+				<li>
+					{' '}
+					Pages you view on theguardian.com or other Guardian websites
+					when signed in
+				</li>
+			</ul>
+			<Lines n={1} />
+			{addMarketingToggle('profiling_optout')}
+			<Lines n={1} />
+			{addMarketingToggle('personalised_advertising')}
+
+			<WithStandardTopMargin>
+				<p>
+					Advertising is a crucial source of our funding. You won't
+					see more ads, and your data won't be shared with third
+					parties to use for their own advertising
+				</p>
+				<p>We do this by:</p>
+				<ul>
+					<li>
+						{' '}
+						analysing your information to predict what you might be
+						interested in
+					</li>
+					<li>
+						{' '}
+						checking if you are already a customer of other trusted
+						partners.
+					</li>
+				</ul>
+			</WithStandardTopMargin>
+		</>
+	);
+
+	const cookiesOnThisBrowserSection = (
+		<>
+			<h3 css={dataPrivacyHeadingCss}>Cookies on this browser</h3>
+			<p>
+				{' '}
+				When we make the Guardian available for you online, we use
+				cookies and similar technologies to help us to do this. Some are
+				necessary to help our website work properly and can’s be
+				switched off, and some are optional but support the Guardian and
+				your experience in other ways.
+			</p>
+			<Button
+				disabled={false}
+				text="Manage cookies on this browser"
+				type="button"
+				colour={brand[400]}
+				onClick={() => openManageCookies()}
+				fontWeight="bold"
+			/>
+		</>
+	);
+
+	const learnMoreSection = (
+		<>
+			<h3 css={dataPrivacyHeadingCss}>
+				Learn more about our private policy
+			</h3>
+			<video
+				controls
+				css={dataPrivacyVideoCss}
+				src="https://uploads.guim.co.uk/2019%2F30%2F26%2FThe+Guardian%27s+privacy+policy+%E2%80%93+video--7d3a7f3f-bc23-4e9d-9566-ea1f8ada5954-1.mp4"
+			/>
+
+			<Lines n={1} />
+
+			<p>
+				For more information about how we use your data, visit our&nbsp;
+				<a
+					css={aCss}
+					target="_blank"
+					href={'https://www.theguardian.com/info/privacy'}
+					rel="noreferrer"
+				>
+					privacy policy
+				</a>{' '}
+				guide
+			</p>
+		</>
+	);
+
 	const content = () => (
 		<>
 			<WithStandardTopMargin>
-				<h2>Your Data</h2>
-				<p>What we mean by your data</p>
-				<ul>
-					<li> Information you provide such as your email address</li>
-					<li> Products or services you buy from us</li>
-					<li>
-						{' '}
-						Pages you view on theguardian.com or other Guardian
-						websites when signed in
-					</li>
-				</ul>
-				<WithStandardTopMargin>
-					{addMarketingToggle('profiling_optout')}
-					<a css={aCss} href={''}>
-						Why is this selected by default?
-					</a>
-					{addMarketingToggle('personalised_advertising')}
-				</WithStandardTopMargin>
-
-				<WithStandardTopMargin>
-					<p>
-						Advertising is a crucial source of our funding. You
-						won't see more ads, and your data won't be shared with
-						third parties to use for their own advertising
-					</p>
-					<p>We do this by:</p>
-					<ul>
-						<li>
-							{' '}
-							analysing your information to predict what you might
-							be interested in
-						</li>
-						<li>
-							{' '}
-							checking if you are already a customer of other
-							trusted partners.
-						</li>
-					</ul>
-				</WithStandardTopMargin>
-
-				{lines()}
-				<h2>Cookies on this browser</h2>
-				<p>
-					{' '}
-					When we make the Guardian available for you online, we use
-					cookies and similar technologies to help us to do this. Some
-					are necessary to help our website work properly and can’s be
-					switched off, and some are optional but support the Guardian
-					and your experience in other ways.
-				</p>
-				<Button
-					disabled={false}
-					text="Manage cookies on this browser"
-					type="button"
-					onClick={() => openManageCookies()}
-					fontWeight="bold"
-				/>
-				{lines()}
-				<h2>Learn more about our private policy</h2>
-				<h3>VIDEO</h3>
-				<p>
-					For more information about how we use your data, visit
-					our&nbsp;
-					<a
-						css={aCss}
-						target="_blank"
-						href={'https://www.theguardian.com/info/privacy'}
-						rel="noreferrer"
-					>
-						privacy policy
-					</a>{' '}
-					guide
-				</p>
+				<Lines n={1} />
+				{yourDataSection}
+				<Lines n={1} />
+				{cookiesOnThisBrowserSection}
+				<Lines n={1} />
+				{learnMoreSection}
+				<Lines n={1} />
 			</WithStandardTopMargin>
 		</>
 	);
