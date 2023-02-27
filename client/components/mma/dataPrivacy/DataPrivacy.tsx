@@ -10,12 +10,12 @@ import { allProductsDetailFetcher } from '../../../utilities/productUtils';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { Spinner } from '../../shared/Spinner';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
+import { optOutFinder } from '../identity/emailAndMarketing/OptOutSection';
 import { GenericErrorMessage } from '../identity/GenericErrorMessage';
 import type { GenericErrorMessageRef } from '../identity/GenericErrorMessage';
 import { ConsentOptions, Users } from '../identity/identity';
 import { IdentityLocations } from '../identity/IdentityLocations';
 import { Lines } from '../identity/Lines';
-import { MarketingToggle } from '../identity/MarketingToggle';
 import type { ConsentOption } from '../identity/models';
 import { aCss } from '../identity/sharedStyles';
 import { Actions, useConsentOptions } from '../identity/useConsentOptions';
@@ -28,8 +28,6 @@ import {
 	dataPrivacyUnorderedListCss,
 	dataPrivacyVideoCss,
 } from './DataPrivacy.styles';
-
-type ClickHandler = (id: string) => {};
 
 export const DataPrivacy = () => {
 	const { options, error, subscribe, unsubscribe } = Actions;
@@ -58,35 +56,10 @@ export const DataPrivacy = () => {
 		}
 	};
 
-	const optOutFinder =
-		(
-			consents: ConsentOption[],
-			clickHandler: ClickHandler,
-			invertSubscribedValue?: (c: ConsentOption) => ConsentOption,
-		) =>
-		(id: string) => {
-			let consent = consents.find((c) => c.id === id);
-			if (consent && !!invertSubscribedValue) {
-				consent = invertSubscribedValue(consent);
-			}
-
-			return (
-				consent && (
-					<MarketingToggle
-						id={consent.id}
-						title={consent.name}
-						description={consent.description} // Not all consents from IDAPI have a description
-						selected={consent.subscribed}
-						onClick={clickHandler}
-						divCss={dataPrivacyMarketingToggleCss}
-					/>
-				)
-			);
-		};
-
 	const addMarketingToggle = optOutFinder(
 		consents,
 		toggleConsentSubscription,
+		dataPrivacyMarketingToggleCss,
 	);
 
 	const openManageCookies = () => {
