@@ -56,7 +56,7 @@ export const DataPrivacy = () => {
 		}
 	};
 
-	const addMarketingToggle = optOutFinder(
+	const addMarketingToggleElement = optOutFinder(
 		consents,
 		toggleConsentSubscription,
 		dataPrivacyMarketingToggleCss,
@@ -147,9 +147,9 @@ export const DataPrivacy = () => {
 				</li>
 			</ul>
 			<Lines n={1} />
-			{addMarketingToggle('profiling_optout')}
+			{addMarketingToggleElement('profiling_optout')}
 			<Lines n={1} />
-			{addMarketingToggle('personalised_advertising')}
+			{addMarketingToggleElement('personalised_advertising')}
 
 			<WithStandardTopMargin>
 				<p>
