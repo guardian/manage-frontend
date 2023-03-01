@@ -95,7 +95,7 @@ export const SupporterPlusBenefitsToggle = () => {
 				aria-controls="benefits"
 				onClick={() => setShowBenefits(!showBenefits)}
 			>
-				{showBenefits ? 'hide' : 'view'} benefits
+				{showBenefits ? 'hide' : 'view'} extras
 			</button>
 		</>
 	);

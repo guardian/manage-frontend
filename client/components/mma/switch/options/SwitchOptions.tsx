@@ -8,18 +8,13 @@ import {
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { getMainPlan } from '../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
-import type { CurrencyIso } from '../../../utilities/currencyIso';
-import { formatAmount } from '../../../utilities/utils';
-import { ErrorSummary } from '../paymentUpdate/Summary';
-import { Card } from '../shared/Card';
-import { Heading } from '../shared/Heading';
-import { SupporterPlusBenefitsSection } from '../shared/SupporterPlusBenefits';
-import type { SwitchContextInterface } from './SwitchContainer';
-import { SwitchContext } from './SwitchContainer';
+import { formatAmount } from '../../../../utilities/utils';
+import { ErrorSummary } from '../../paymentUpdate/Summary';
+import { Card } from '../../shared/Card';
+import { Heading } from '../../shared/Heading';
+import { SupporterPlusBenefitsSection } from '../../shared/SupporterPlusBenefits';
+import type { SwitchContextInterface } from '.././SwitchContainer';
+import { SwitchContext } from '.././SwitchContainer';
 import {
 	buttonCentredCss,
 	errorSummaryBlockLinkCss,
@@ -28,7 +23,7 @@ import {
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
-} from './SwitchStyles';
+} from '.././SwitchStyles';
 
 const cardHeaderDivCss = css`
 	display: flex;
@@ -74,28 +69,21 @@ const fromAppHeadingCss = css`
 export const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 
-	const productDetail = switchContext.productDetail;
-	const mainPlan = getMainPlan(
-		productDetail.subscription,
-	) as PaidSubscriptionPlan;
+	const {
+		productDetail,
+		mainPlan,
+		monthlyOrAnnual,
+		supporterPlusTitle,
+		thresholds,
+	} = switchContext;
 
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
-	);
-	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
+	const {
+		monthlyThreshold,
+		annualThreshold,
+		thresholdForBillingPeriod: threshold,
+		isAboveThreshold,
+	} = thresholds;
 
-	const monthlyThreshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		'Monthly',
-	);
-	const annualThreshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		'Annual',
-	);
-
-	const threshold =
-		monthlyOrAnnual == 'Monthly' ? monthlyThreshold : annualThreshold;
-	const aboveThreshold = mainPlan.price >= threshold * 100;
 	const currentAmount = mainPlan.price / 100;
 
 	const buttonContainerRef = useRef(null);
@@ -204,21 +192,24 @@ export const SwitchOptions = () => {
 			<section css={sectionSpacing}>
 				<Stack space={3}>
 					<Heading sansSerif>
-						{aboveThreshold ? 'Add extras' : 'Change your support'}
+						{isAboveThreshold
+							? 'Add extras'
+							: 'Change your support'}
 					</Heading>
-					{aboveThreshold && (
+					{isAboveThreshold && (
 						<p
 							css={css`
 								${textSans.medium()}
 								margin: 0;
 							`}
 						>
-							Your current payment entitles you to unlock
-							exclusive supporter extras. It takes less than a
-							minute to change your support type and gain access.
+							In exchange for your current payment, you can choose
+							to receive exclusive supporter extras. It takes less
+							than a minute to change your support type and gain
+							access.
 						</p>
 					)}
-					{!aboveThreshold && !switchContext.isFromApp && (
+					{!isAboveThreshold && !switchContext.isFromApp && (
 						<p
 							css={css`
 								${textSans.medium()}
@@ -235,7 +226,7 @@ export const SwitchOptions = () => {
 								<h3 css={productTitleCss}>
 									{supporterPlusTitle}
 								</h3>
-								{!aboveThreshold && (
+								{!isAboveThreshold && (
 									<p css={productSubtitleCss}>
 										{mainPlan.currency}
 										{formatAmount(threshold)}/
@@ -261,20 +252,20 @@ export const SwitchOptions = () => {
 						cssOverrides={buttonCentredCss}
 						onClick={() => navigate('review')}
 					>
-						{aboveThreshold
-							? 'Add extras with no extra cost'
-							: 'Upgrade'}
+						{isAboveThreshold
+							? 'Add extras'
+							: `Upgrade to ${mainPlan.currency}${threshold} per ${mainPlan.billingPeriod}`}
 					</Button>
 				</ThemeProvider>
 			</section>
 
 			<section>
 				<p css={smallPrintCss}>
-					These exclusive supporter extras are unlocked for a minimum
-					monthly support of {mainPlan.currency}
-					{formatAmount(monthlyThreshold)} and a minimum annual
-					support of {mainPlan.currency}
-					{formatAmount(annualThreshold)}.
+					These exclusive supporter extras are available when you pay{' '}
+					{mainPlan.currency}
+					{formatAmount(monthlyThreshold)} minimum on a monthly basis,
+					or {mainPlan.currency}
+					{formatAmount(annualThreshold)} minimum on an annual basis.
 				</p>
 			</section>
 		</>

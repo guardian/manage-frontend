@@ -16,67 +16,54 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { getMainPlan } from '../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
-import type { CurrencyIso } from '../../../utilities/currencyIso';
-import { formatAmount } from '../../../utilities/utils';
-import { InverseStarIcon } from '../shared/assets/InverseStarIcon';
-import { Heading } from '../shared/Heading';
+import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { formatAmount } from '../../../../utilities/utils';
+import { InverseStarIcon } from '../../shared/assets/InverseStarIcon';
+import { Heading } from '../../shared/Heading';
 import type {
 	SwitchContextInterface,
 	SwitchRouterState,
-} from './SwitchContainer';
-import { SwitchContext } from './SwitchContainer';
+} from '../SwitchContainer';
+import { SwitchContext } from '../SwitchContainer';
+import { buttonCentredCss, iconListCss, sectionSpacing } from '../SwitchStyles';
 import { SwitchSignInImage } from './SwitchSignInImage';
-import { buttonCentredCss, iconListCss, sectionSpacing } from './SwitchStyles';
 
 export const SwitchComplete = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
-	const productDetail = switchContext.productDetail;
-	const mainPlan = getMainPlan(
-		productDetail.subscription,
-	) as PaidSubscriptionPlan;
+	const { mainPlan, monthlyOrAnnual, supporterPlusTitle, thresholds } =
+		switchContext;
 
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
-	);
-	const supporterPlusTitle = `${monthlyOrAnnual} + extras`;
+	const { thresholdForBillingPeriod: threshold, isAboveThreshold } =
+		thresholds;
 
-	const threshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		monthlyOrAnnual,
-	);
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 	const newAmountAndCurrency = `${mainPlan.currency}${formatAmount(
 		newAmount,
 	)}`;
-	const aboveThreshold = mainPlan.price >= threshold * 100;
 
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
 	const amountPayableToday = routerState?.amountPayableToday;
 	const nextPaymentDate = routerState?.nextPaymentDate;
 
-	if (!amountPayableToday || !nextPaymentDate) {
+	if (amountPayableToday === undefined || !nextPaymentDate) {
 		return <Navigate to=".." />;
 	}
 
 	return (
 		<>
 			{switchContext.isFromApp ? (
-				<ThankYouBanner
+				<AppThankYouBanner
 					newAmount={newAmountAndCurrency}
 					newProduct={supporterPlusTitle.toLowerCase()}
-					aboveThreshold={aboveThreshold}
+					aboveThreshold={isAboveThreshold}
 				/>
 			) : (
 				<section css={sectionSpacing}>
 					<ThankYouMessaging
 						mainPlan={mainPlan}
 						newAmount={newAmount}
-						aboveThreshold={aboveThreshold}
+						aboveThreshold={isAboveThreshold}
 					/>
 				</section>
 			)}
@@ -156,7 +143,7 @@ const thankYouBannerButtonCss = css`
 	}
 `;
 
-const ThankYouBanner = (props: {
+const AppThankYouBanner = (props: {
 	newAmount: string;
 	newProduct: string;
 	aboveThreshold: boolean;
@@ -180,7 +167,7 @@ const ThankYouBanner = (props: {
 			</div>
 			<p css={thankYouBannerCopyCss}>
 				If you don’t complete this step, you may be unable to access the
-				app in full for up to one hour.
+				app in full for up to one hour
 			</p>
 		</section>
 	);
@@ -227,7 +214,7 @@ const WhatHappensNext = (props: {
 						<InverseStarIcon size="medium" />
 						<span>
 							Your new support will start today. It can take up to
-							an hour for your support to be activated.
+							an hour for your support to be activated
 						</span>
 					</li>
 				)}
@@ -266,7 +253,7 @@ const ThankYouMessaging = (props: {
 					{props.mainPlan.billingPeriod}.
 				</>
 			)}{' '}
-			<span>Enjoy your exclusive extras.</span>
+			<span>Enjoy your exclusive extras</span>
 		</h2>
 	);
 };
