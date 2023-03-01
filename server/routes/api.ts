@@ -38,6 +38,15 @@ const router = Router();
 router.use(withIdentity(401));
 
 router.get(
+	'/me/mma/one-off-contributions',
+	membersDataApiHandler(
+		'user-attributes/me/one-off-contributions',
+		'MDA_DETAIL',
+		[],
+	),
+);
+
+router.get(
 	'/existing-payment-options',
 	membersDataApiHandler(
 		'user-attributes/me/existing-payment-options',

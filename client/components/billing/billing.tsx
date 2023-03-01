@@ -25,7 +25,7 @@ import {
 import type { GroupedProductTypeKeys } from '../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../fetch';
-import { allProductsDetailFetcher } from '../../productUtils';
+import { allRecurringProductsDetailFetcher } from '../../productUtils';
 import { EmptyAccountOverview } from '../accountoverview/emptyAccountOverview';
 import { SixForSixExplainerIfApplicable } from '../accountoverview/sixForSixExplainer';
 import AsyncLoader from '../asyncLoader';
@@ -329,7 +329,7 @@ const Billing = () => {
 
 const billingFetcher = () =>
 	Promise.all([
-		allProductsDetailFetcher(),
+		allRecurringProductsDetailFetcher(),
 		fetchWithDefaultParameters('/api/invoices'),
 	]);
 

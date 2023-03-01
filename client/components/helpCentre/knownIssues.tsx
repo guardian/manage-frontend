@@ -8,7 +8,7 @@ import {
 } from '@guardian/source-foundations';
 import { useEffect, useState } from 'react';
 import type { ProductDetail } from '../../../shared/productResponse';
-import { allProductsDetailFetcher } from '../../productUtils';
+import { allRecurringProductsDetailFetcher } from '../../productUtils';
 import { gridBase, gridItemPlacement } from '../../styles/grid';
 import { ErrorIcon } from '../svgs/errorIcon';
 
@@ -46,7 +46,7 @@ export const KnownIssues = () => {
 					window.guardian?.identityDetails?.signInStatus || '';
 				if (signInStatus === 'signedInRecently') {
 					const productDetailsResponse =
-						await allProductsDetailFetcher();
+						await allRecurringProductsDetailFetcher();
 					const productDetails: ProductDetail[] =
 						await productDetailsResponse.json();
 					const userProductNames = productDetails.map(

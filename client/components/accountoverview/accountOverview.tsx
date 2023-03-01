@@ -14,11 +14,18 @@ import type {
 	MembersDataApiItem,
 	ProductDetail,
 } from '../../../shared/productResponse';
-import { isProduct, sortByJoinDate } from '../../../shared/productResponse';
+import {
+	isProduct,
+	SingleProductDetail,
+	sortByJoinDate,
+} from '../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../fetch';
-import { allProductsDetailFetcher } from '../../productUtils';
+import {
+	allRecurringProductsDetailFetcher,
+	allSingleProductsDetailFetcher,
+} from '../../productUtils';
 import AsyncLoader from '../asyncLoader';
 import { isCancelled } from '../cancel/cancellationSummary';
 import { NAV_LINKS } from '../nav/navConfig';
@@ -29,20 +36,27 @@ import { AccountOverviewCancelledCard } from './accountOverviewCancelledCard';
 import { AccountOverviewCard } from './accountOverviewCard';
 import { EmptyAccountOverview } from './emptyAccountOverview';
 
-const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
-	MembersDataApiItem[],
-	CancelledProductDetail[],
-]) => {
+import { SingleProductCard } from './singleProductCard';
+
+const AccountOverviewRenderer = ([
+	mdaResponse,
+	singleProductResponse,
+	cancelledProductsResponse,
+]: [MembersDataApiItem[], SingleProductDetail[], CancelledProductDetail[]]) => {
 	const allActiveProductDetails = mdaResponse
 		.filter(isProduct)
 		.sort(sortByJoinDate);
+
+	const allSingleProductDetails = singleProductResponse.sort(
+		(a, b) => b.created - a.created,
+	);
 
 	const allCancelledProductDetails = cancelledProductsResponse.sort(
 		(a: CancelledProductDetail, b: CancelledProductDetail) =>
 			b.subscription.start.localeCompare(a.subscription.start),
 	);
 
-	const productCategories = [
+	const recurringProductCategories = [
 		...allActiveProductDetails,
 		...allCancelledProductDetails,
 	]
@@ -52,7 +66,10 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 		)
 		.filter((value, index, self) => self.indexOf(value) === index);
 
-	if (allActiveProductDetails.length === 0) {
+	if (
+		allActiveProductDetails.length === 0 &&
+		allSingleProductDetails.length === 0
+	) {
 		return <EmptyAccountOverview />;
 	}
 
@@ -75,7 +92,7 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 			<PaymentFailureAlertIfApplicable
 				productDetail={maybeFirstPaymentFailure}
 			/>
-			{productCategories.map((category) => {
+			{recurringProductCategories.map((category) => {
 				const groupedProductType =
 					GROUPED_PRODUCT_TYPES[category as GroupedProductTypeKeys];
 				const activeProductsInCategory = allActiveProductDetails.filter(
@@ -144,6 +161,18 @@ const AccountOverviewRenderer = ([mdaResponse, cancelledProductsResponse]: [
 					</Fragment>
 				);
 			})}
+			<Fragment key="OccasionalSupport">
+				<h2 css={subHeadingCss}>Occasional support</h2>
+				<Stack space={6}>
+					{allSingleProductDetails.map((singleProduct) => {
+						return (
+							<SingleProductCard
+								productDetail={singleProduct}
+							></SingleProductCard>
+						);
+					})}
+				</Stack>
+			</Fragment>
 		</>
 	);
 };
@@ -153,6 +182,7 @@ const AccountOverview = () => {
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}
 			pageTitle="Account overview"
+			key={''}
 		>
 			<AccountOverviewAsyncLoader
 				fetch={AccountOverviewFetcher}
@@ -164,12 +194,13 @@ const AccountOverview = () => {
 };
 
 class AccountOverviewAsyncLoader extends AsyncLoader<
-	[MembersDataApiItem[], CancelledProductDetail[]]
+	[MembersDataApiItem[], SingleProductDetail[], CancelledProductDetail[]]
 > {}
 
 const AccountOverviewFetcher = () =>
 	Promise.all([
-		allProductsDetailFetcher(),
+		allRecurringProductsDetailFetcher(),
+		allSingleProductsDetailFetcher(),
 		fetchWithDefaultParameters('/api/cancelled/'),
 	]);
 
