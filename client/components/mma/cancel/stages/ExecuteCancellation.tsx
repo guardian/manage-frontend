@@ -150,7 +150,7 @@ export const ExecuteCancellation = () => {
 		return <Navigate to="../" />;
 	}
 
-	const caseId = routerState.caseId as string;
+	const caseId = routerState.caseId;
 
 	const { productDetail, productType } = useContext(
 		CancellationContext,

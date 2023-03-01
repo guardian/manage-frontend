@@ -13,7 +13,6 @@ interface HeadingProps {
 	cssOverrides?: SerializedStyles | SerializedStyles[];
 	level?: '1' | '2' | '3' | '4';
 	sansSerif?: boolean;
-	noDivider?: boolean;
 }
 
 export const Heading = (props: HeadingProps) => {
@@ -38,7 +37,7 @@ export const Heading = (props: HeadingProps) => {
 	const HeadingElement: keyof JSX.IntrinsicElements = `h${props.level ?? 2}`;
 
 	return (
-		<div css={props.noDivider ? '' : dividerStyles}>
+		<div css={dividerStyles}>
 			<HeadingElement css={[headingStyles, props.cssOverrides]}>
 				{props.children}
 			</HeadingElement>

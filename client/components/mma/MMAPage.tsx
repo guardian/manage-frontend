@@ -32,17 +32,13 @@ import {
 	shouldHaveHolidayStopsFlow,
 } from '../../utilities/productUtils';
 import type { SignInStatus } from '../../utilities/signInStatus';
-import { isSignedIn, pageRequiresSignIn } from '../../utilities/signInStatus';
+import { isSignedIn } from '../../utilities/signInStatus';
 import { ErrorBoundary } from '../shared/ErrorBoundary';
 import { GenericErrorScreen } from '../shared/GenericErrorScreen';
 import { Main } from '../shared/Main';
 import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
-import { SwitchComplete } from './switch/SwitchComplete';
-import { SwitchContainer } from './switch/SwitchContainer';
-import { SwitchOptions } from './switch/SwitchOptions';
-import { SwitchReview } from './switch/SwitchReview';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {
@@ -242,6 +238,38 @@ const DeliveryRecordsProblemConfirmation = lazy(() =>
 	})),
 );
 
+const SwitchContainer = lazy(() =>
+	import(/* webpackChunkName: "Switch" */ './switch/SwitchContainer').then(
+		({ SwitchContainer }) => ({
+			default: SwitchContainer,
+		}),
+	),
+);
+
+const SwitchOptions = lazy(() =>
+	import(
+		/* webpackChunkName: "Switch" */ './switch/options/SwitchOptions'
+	).then(({ SwitchOptions }) => ({
+		default: SwitchOptions,
+	})),
+);
+
+const SwitchReview = lazy(() =>
+	import(
+		/* webpackChunkName: "Switch" */ './switch/review/SwitchReview'
+	).then(({ SwitchReview }) => ({
+		default: SwitchReview,
+	})),
+);
+
+const SwitchComplete = lazy(() =>
+	import(
+		/* webpackChunkName: "Switch" */ './switch/complete/SwitchComplete'
+	).then(({ SwitchComplete }) => ({
+		default: SwitchComplete,
+	})),
+);
+
 const EmailAndMarketing = lazy(() =>
 	import(
 		/* webpackChunkName: "EmailAndMarketing" */ './identity/emailAndMarketing/EmailAndMarketing'
@@ -307,7 +335,7 @@ const MMARouter = () => {
 	useScrollToTop();
 
 	return (
-		<Main signInStatus={signInStatus} requiresSignIn={pageRequiresSignIn()}>
+		<Main signInStatus={signInStatus}>
 			<Global styles={css(`${global}`)} />
 			<Global styles={css(`${fonts}`)} />
 			<Suspense fallback={<MMAPageSkeleton />}>
@@ -334,19 +362,29 @@ const MMARouter = () => {
 							path="/account-settings"
 							element={<Settings />}
 						/>
-						{featureSwitches.productSwitching && (
-							<Route path="/switch" element={<SwitchContainer />}>
-								<Route index element={<SwitchOptions />} />
+						{featureSwitches.productSwitching &&
+							[
+								{ path: '/switch', fromApp: false },
+								{ path: '/app/switch', fromApp: true },
+							].map(({ path, fromApp }) => (
 								<Route
-									path="review"
-									element={<SwitchReview />}
-								/>
-								<Route
-									path="complete"
-									element={<SwitchComplete />}
-								/>
-							</Route>
-						)}
+									key={path}
+									path={path}
+									element={
+										<SwitchContainer isFromApp={fromApp} />
+									}
+								>
+									<Route index element={<SwitchOptions />} />
+									<Route
+										path="review"
+										element={<SwitchReview />}
+									/>
+									<Route
+										path="complete"
+										element={<SwitchComplete />}
+									/>
+								</Route>
+							))}
 						{Object.values(GROUPED_PRODUCT_TYPES).map(
 							(groupedProductType: GroupedProductType) => (
 								<Route

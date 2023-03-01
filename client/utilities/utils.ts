@@ -6,6 +6,10 @@ export function flattenEquivalent<T>(x: T): T {
 	return x;
 }
 
+export function formatAmount(amount: number) {
+	return Number.isInteger(amount) ? amount : amount.toFixed(2);
+}
+
 export const processResponse = <T>(resp: Response): Promise<T | null> => {
 	const locationHeader = resp.headers.get('Location');
 	const allResponsesAreOK = [resp].filter((res) => !res.ok).length === 0;

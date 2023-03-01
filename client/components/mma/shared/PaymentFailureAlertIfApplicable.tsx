@@ -4,13 +4,24 @@ import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { ProblemAlert } from './ProblemAlert';
 
 interface PaymentFailureAlertIfApplicableProps {
-	productDetail: ProductDetail | undefined;
+	productDetails: ProductDetail[];
+}
+
+function findPaymentFailureProduct(allProductDetails: ProductDetail[]) {
+	const hasPaymentFailure = (product: ProductDetail) => !!product.alertText;
+	return allProductDetails.find(hasPaymentFailure);
 }
 
 export const PaymentFailureAlertIfApplicable = ({
-	productDetail,
-}: PaymentFailureAlertIfApplicableProps) =>
-	productDetail?.alertText ? (
+	productDetails,
+}: PaymentFailureAlertIfApplicableProps) => {
+	const productDetail = findPaymentFailureProduct(productDetails);
+
+	if (!productDetail || !productDetail.alertText) {
+		return null;
+	}
+
+	return (
 		<ProblemAlert
 			title="A payment needs your attention"
 			message={augmentPaymentFailureAlertText(productDetail.alertText)}
@@ -27,7 +38,8 @@ export const PaymentFailureAlertIfApplicable = ({
 				margin-top: 30px;
 			`}
 		/>
-	) : null;
+	);
+};
 
 export const augmentPaymentFailureAlertText = (alertText: string) =>
 	`${alertText} Please check that the payment details shown are up to date.`;

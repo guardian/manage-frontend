@@ -4,7 +4,7 @@ import { CallCentreNumbers } from './CallCentreNumbers';
 import { WithStandardTopMargin } from './WithStandardTopMargin';
 
 interface GenericErrorScreenProps {
-	loggingMessage: string | false;
+	loggingMessage?: string;
 }
 
 export const GenericErrorScreen = ({

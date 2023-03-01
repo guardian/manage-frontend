@@ -58,7 +58,7 @@ describe('Cancel Supporter Plus', () => {
 		cy.intercept('GET', 'api/cancellation-date/**', {
 			statusCode: 200,
 			body: { cancellationEffectiveDate: '2022-02-05' },
-		});
+		}).as('get_cancellation_date');
 
 		cy.intercept('POST', '/api/supporter-plus-cancel/**', {
 			statusCode: 200,
@@ -68,7 +68,9 @@ describe('Cancel Supporter Plus', () => {
 	it('allows self-service cancellation of Supporter Plus', () => {
 		setupCancellation();
 
-		cy.findAllByRole('radio').eq(0).click();
+		cy.findByRole('radio', {
+			name: 'I am unhappy with some editorial decisions',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
@@ -82,5 +84,7 @@ describe('Cancel Supporter Plus', () => {
 		cy.findByRole('heading', {
 			name: 'Monthly support + extras cancelled',
 		});
+
+		cy.get('@get_cancellation_date.all').should('have.length', 0);
 	});
 });

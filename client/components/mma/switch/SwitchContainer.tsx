@@ -1,12 +1,19 @@
-import type { Context, ReactNode } from 'react';
 import { createContext } from 'react';
+import type { Context, ReactNode } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import type {
 	MembersDataApiResponse,
+	MembersDataApiUser,
+	PaidSubscriptionPlan,
 	ProductDetail,
 } from '../../../../shared/productResponse';
-import { isProduct } from '../../../../shared/productResponse';
-import { PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { getMainPlan, isProduct } from '../../../../shared/productResponse';
+import {
+	calculateMonthlyOrAnnualFromBillingPeriod,
+	PRODUCT_TYPES,
+} from '../../../../shared/productTypes';
+import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
+import type { CurrencyIso } from '../../../utilities/currencyIso';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -20,28 +27,48 @@ import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView
 
 export interface SwitchRouterState {
 	productDetail: ProductDetail;
+	user?: MembersDataApiUser;
+	amountPayableToday: number;
+	nextPaymentDate: string;
 }
 
 export interface SwitchContextInterface {
 	productDetail: ProductDetail;
-	isFromApp: Boolean;
+	isFromApp: boolean;
+	user?: MembersDataApiUser;
+	mainPlan: PaidSubscriptionPlan;
+	monthlyOrAnnual: 'Monthly' | 'Annual';
+	supporterPlusTitle: string;
+	thresholds: Thresholds;
+}
+
+export interface Thresholds {
+	monthlyThreshold: number;
+	annualThreshold: number;
+	thresholdForBillingPeriod: number;
+	isAboveThreshold: boolean;
 }
 
 export const SwitchContext: Context<SwitchContextInterface | {}> =
 	createContext({});
 
-const isFromApp = () => window?.location.hash.includes('from-app');
-
-export const SwitchContainer = () => {
+export const SwitchContainer = (props: { isFromApp?: boolean }) => {
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
 	const productDetail = routerState?.productDetail;
+	const user = routerState?.user;
 
 	if (!productDetail) {
-		return <AsyncLoadedSwitchContainer />;
+		return <AsyncLoadedSwitchContainer isFromApp={props.isFromApp} />;
 	}
 
-	return <RenderedPage productDetail={productDetail} />;
+	return (
+		<RenderedPage
+			productDetail={productDetail}
+			user={user}
+			isFromApp={props.isFromApp}
+		/>
+	);
 };
 
 const SwitchPageContainer = (props: { children: ReactNode }) => {
@@ -56,7 +83,7 @@ const SwitchPageContainer = (props: { children: ReactNode }) => {
 	);
 };
 
-const AsyncLoadedSwitchContainer = () => {
+const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 	const request = createProductDetailFetcher(
 		PRODUCT_TYPES.contributions.allProductsProductTypeFilterString,
 	);
@@ -69,7 +96,7 @@ const AsyncLoadedSwitchContainer = () => {
 	if (loadingState == LoadingState.HasError) {
 		return (
 			<SwitchPageContainer>
-				<GenericErrorScreen loggingMessage={false} />
+				<GenericErrorScreen />
 			</SwitchPageContainer>
 		);
 	}
@@ -90,16 +117,41 @@ const AsyncLoadedSwitchContainer = () => {
 	}
 
 	const productDetail = data.products.filter(isProduct)[0];
-	return <RenderedPage productDetail={productDetail} />;
+	return (
+		<RenderedPage
+			productDetail={productDetail}
+			user={data.user}
+			isFromApp={props.isFromApp}
+		/>
+	);
 };
 
-const RenderedPage = (props: { productDetail: ProductDetail }) => {
+const RenderedPage = (props: {
+	productDetail: ProductDetail;
+	user?: MembersDataApiUser;
+	isFromApp?: boolean;
+}) => {
+	const mainPlan = getMainPlan(
+		props.productDetail.subscription,
+	) as PaidSubscriptionPlan;
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		mainPlan.billingPeriod,
+	);
+
 	return (
 		<SwitchPageContainer>
 			<SwitchContext.Provider
 				value={{
 					productDetail: props.productDetail,
-					isFromApp: isFromApp(),
+					isFromApp: props.isFromApp,
+					user: props.user,
+					mainPlan,
+					monthlyOrAnnual,
+					supporterPlusTitle: `${monthlyOrAnnual} + extras`,
+					thresholds: getThresholds(
+						mainPlan,
+						monthlyOrAnnual == 'Monthly',
+					),
 				}}
 			>
 				<Outlet />
@@ -107,3 +159,28 @@ const RenderedPage = (props: { productDetail: ProductDetail }) => {
 		</SwitchPageContainer>
 	);
 };
+
+function getThresholds(
+	mainPlan: PaidSubscriptionPlan,
+	monthly: boolean,
+): Thresholds {
+	const monthlyThreshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		'Monthly',
+	);
+	const annualThreshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		'Annual',
+	);
+	const thresholdForBillingPeriod = monthly
+		? monthlyThreshold
+		: annualThreshold;
+	const isAboveThreshold = mainPlan.price >= thresholdForBillingPeriod * 100;
+
+	return {
+		monthlyThreshold,
+		annualThreshold,
+		thresholdForBillingPeriod,
+		isAboveThreshold,
+	};
+}

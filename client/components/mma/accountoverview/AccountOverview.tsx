@@ -22,7 +22,6 @@ import {
 	mdapiResponseReader,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
-import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
 import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
@@ -39,6 +38,7 @@ import { AccountOverviewCancelledCard } from './AccountOverviewCancelledCard';
 import { AccountOverviewCard } from './AccountOverviewCard';
 import { AccountOverviewCardV2 } from './AccountOverviewCardV2';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
+import { PersonalisedHeader } from './PersonalisedHeader';
 
 const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 	MembersDataApiResponse | MembersDataApiItem[],
@@ -70,7 +70,7 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 	}
 
 	const maybeFirstPaymentFailure = allActiveProductDetails.find(
-		(_) => _.alertText,
+		(product) => product.alertText,
 	);
 
 	const hasDigiSubAndContribution =
@@ -81,9 +81,8 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 			isSpecificProductType(productDetail, PRODUCT_TYPES.digipack),
 		);
 
-	const isEligibleToSwitch = !(
-		maybeFirstPaymentFailure || hasDigiSubAndContribution
-	);
+	const isEligibleToSwitch =
+		!maybeFirstPaymentFailure && !hasDigiSubAndContribution;
 
 	const subHeadingCss = css`
 		margin: ${space[12]}px 0 ${space[6]}px;
@@ -97,12 +96,13 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 
 	return (
 		<>
+			<PersonalisedHeader mdapiResponse={mdaResponse} />
+
 			<PaymentFailureAlertIfApplicable
-				productDetail={maybeFirstPaymentFailure}
+				productDetails={allActiveProductDetails}
 			/>
 			{productCategories.map((category) => {
-				const groupedProductType =
-					GROUPED_PRODUCT_TYPES[category as GroupedProductTypeKeys];
+				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
 					(activeProduct) => activeProduct.mmaCategory === category,
 				);
@@ -127,6 +127,7 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 										}
 										productDetail={productDetail}
 										isEligibleToSwitch={isEligibleToSwitch}
+										user={mdaResponse.user}
 									/>
 								) : (
 									<AccountOverviewCard
@@ -154,8 +155,7 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 									activeProductsInCategory.some(
 										(productDetail) =>
 											isCancelled(
-												(productDetail as ProductDetail)
-													.subscription,
+												productDetail.subscription,
 											),
 									)) && (
 									<div>

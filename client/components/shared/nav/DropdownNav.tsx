@@ -7,7 +7,7 @@ import { expanderButtonCss } from '../ExpanderButton';
 import type { MenuSpecificNavItem } from './NavConfig';
 import { NAV_LINKS } from './NavConfig';
 
-const dropdownNavCss = (showMenu: boolean, isHelpCentre: boolean) =>
+const dropdownNavCss = (showMenu: boolean) =>
 	css({
 		display: `${showMenu ? 'block' : 'none'}`,
 		background: brand[400],
@@ -33,7 +33,6 @@ const dropdownNavCss = (showMenu: boolean, isHelpCentre: boolean) =>
 			maxWidth: 'none',
 			top: `${space[9]}px`,
 			left: 'auto',
-			right: `${isHelpCentre ? '' : '16px'}`,
 			marginRight: '-32px',
 			bottom: 'auto',
 			borderTop: 'none',
@@ -47,7 +46,7 @@ const dropdownNavCss = (showMenu: boolean, isHelpCentre: boolean) =>
 				height: 0,
 				position: 'absolute',
 				top: `-${space[2]}px`,
-				right: `${isHelpCentre ? '85' : space[3]}px`,
+				right: '85px',
 				borderLeft: `${space[2]}px solid transparent`,
 				borderRight: `${space[2]}px solid transparent`,
 				borderBottom: `${space[2]}px solid ${neutral['100']}`,
@@ -109,8 +108,6 @@ export const DropdownNav = () => {
 		};
 	});
 
-	const isHelpCentre = window.location.pathname.startsWith('/help-centre');
-
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if (event.code === 'Escape' && showMenu) {
 			setShowMenu(false);
@@ -151,11 +148,7 @@ export const DropdownNav = () => {
 				[from.desktop]: {
 					position: 'relative',
 					left: '0.5rem',
-					...gridItemPlacement(-4, 2),
 					marginLeft: 'auto',
-				},
-				[from.wide]: {
-					...gridItemPlacement(-4, 2),
 				},
 				' button': {
 					[from.tablet]: {
@@ -206,7 +199,7 @@ export const DropdownNav = () => {
 				My account
 			</button>
 
-			<ul css={dropdownNavCss(showMenu, isHelpCentre)}>
+			<ul css={dropdownNavCss(showMenu)}>
 				{Object.values(NAV_LINKS).map(
 					(navItem: MenuSpecificNavItem) => (
 						<li key={navItem.title}>

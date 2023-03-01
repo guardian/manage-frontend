@@ -1,5 +1,5 @@
 import {
-	contribution,
+	contributionCard,
 	toMembersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
@@ -49,12 +49,12 @@ describe('Cancel contribution', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contribution),
+			body: toMembersDataApiResponse(contributionCard),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contribution),
+			body: toMembersDataApiResponse(contributionCard),
 		});
 
 		cy.intercept('GET', '/api/me/mma/**', {
@@ -70,7 +70,7 @@ describe('Cancel contribution', () => {
 		cy.intercept('GET', 'api/cancellation-date/**', {
 			statusCode: 200,
 			body: { cancellationEffectiveDate: '2022-02-05' },
-		});
+		}).as('get_cancellation_date');
 
 		cy.intercept('POST', 'api/cancel/**', {
 			statusCode: 200,
@@ -79,7 +79,9 @@ describe('Cancel contribution', () => {
 
 	it('cancels contribution (reason: As a result of a specific article I read)', () => {
 		setupCancellation();
-		cy.findAllByRole('radio').eq(0).click();
+		cy.findByRole('radio', {
+			name: 'As the result of a specific article I read',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
@@ -96,6 +98,7 @@ describe('Cancel contribution', () => {
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
 		cy.get('@cancel_contribution.all').should('have.length', 1);
+		cy.get('@get_cancellation_date.all').should('have.length', 0);
 	});
 
 	it('does not cancel contribution, case api call returns 500', () => {
@@ -104,17 +107,23 @@ describe('Cancel contribution', () => {
 		}).as('get_case');
 
 		setupCancellation();
-		cy.findAllByRole('radio').eq(0).click();
+		cy.findAllByRole('radio', {
+			name: 'I am unhappy with some editorial decisions',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case').its('response.statusCode').should('equal', 500);
 
 		cy.findByText('Oops!').should('exist');
+
+		cy.get('@get_cancellation_date.all').should('have.length', 0);
 	});
 
 	it('cancels contribution with custom save body component (reason: I can no longer afford to support you)', () => {
 		setupCancellation();
-		cy.findAllByRole('radio').eq(2).click();
+		cy.findByRole('radio', {
+			name: 'I can no longer afford to support you',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
@@ -133,11 +142,14 @@ describe('Cancel contribution', () => {
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
 		cy.get('@cancel_contribution.all').should('have.length', 1);
+		cy.get('@get_cancellation_date.all').should('have.length', 0);
 	});
 
 	it('cancels contribution with save body string (reason: I’d like to get something in return for my support)', () => {
 		setupCancellation();
-		cy.findAllByRole('radio').eq(5).click();
+		cy.findAllByRole('radio', {
+			name: 'I’d like to get something ‘in return’ for my support, e.g. digital features',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
@@ -157,6 +169,7 @@ describe('Cancel contribution', () => {
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
 		cy.get('@cancel_contribution.all').should('have.length', 1);
+		cy.get('@get_cancellation_date.all').should('have.length', 0);
 	});
 
 	it('save journey completed contribution not cancelled, amount reduced', () => {
@@ -166,7 +179,9 @@ describe('Cancel contribution', () => {
 		});
 
 		setupCancellation();
-		cy.findAllByRole('radio').eq(2).click();
+		cy.findAllByRole('radio', {
+			name: 'I can no longer afford to support you',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
@@ -179,6 +194,8 @@ describe('Cancel contribution', () => {
 		cy.findByText(
 			'We have successfully updated the amount of your contribution. New amount, £80.00, will be taken on 5 Feb 2022. Thank you for supporting the Guardian.',
 		).should('exist');
+
+		cy.get('@get_cancellation_date.all').should('have.length', 0);
 	});
 
 	it('allows cancellation when visiting cancellation page directly', () => {
@@ -186,7 +203,9 @@ describe('Cancel contribution', () => {
 
 		setSignInStatus();
 
-		cy.findAllByRole('radio').eq(0).click();
+		cy.findAllByRole('radio', {
+			name: 'I am unhappy with some editorial decisions',
+		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
@@ -200,5 +219,7 @@ describe('Cancel contribution', () => {
 		cy.findByRole('heading', {
 			name: 'Your recurring contribution is cancelled',
 		});
+
+		cy.get('@get_cancellation_date.all').should('have.length', 0);
 	});
 });

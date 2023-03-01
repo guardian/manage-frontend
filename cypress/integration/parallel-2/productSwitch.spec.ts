@@ -1,5 +1,5 @@
 import {
-	contribution,
+	contributionCard,
 	toMembersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
@@ -12,6 +12,7 @@ import {
 	productMoveResponse,
 } from '../../../client/fixtures/productMovement';
 import { featureSwitches } from '../../../shared/featureSwitches';
+import { ProductDetail } from '../../../shared/productResponse';
 
 const setSignInStatus = () => {
 	cy.window().then((window) => {
@@ -34,12 +35,12 @@ if (featureSwitches.cancellationProductSwitch) {
 
 			cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(contribution),
+				body: toMembersDataApiResponse(contributionCard),
 			});
 
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(contribution),
+				body: toMembersDataApiResponse(contributionCard),
 			});
 
 			cy.intercept('GET', '/api/me/mma/**', {
@@ -192,12 +193,12 @@ describe('product switching', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contribution),
+			body: toMembersDataApiResponse(contributionCard),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contribution),
+			body: toMembersDataApiResponse(contributionCard),
 		});
 
 		cy.intercept('GET', '/api/cancelled/', {
@@ -208,7 +209,7 @@ describe('product switching', () => {
 		cy.intercept('POST', '/api/product-move/*', {
 			statusCode: 200,
 			body: productMovePreviewResponse,
-		});
+		}).as('product_move');
 	});
 
 	if (
@@ -235,7 +236,7 @@ describe('product switching', () => {
 			setSignInStatus();
 
 			cy.findByRole('button', {
-				name: 'Add extras with no extra cost',
+				name: 'Add extras',
 			}).click();
 
 			cy.findByText('Review change').should('exist');
@@ -248,19 +249,22 @@ describe('product switching', () => {
 			setSignInStatus();
 
 			cy.findByRole('button', {
-				name: 'Add extras with no extra cost',
+				name: 'Add extras',
 			}).click();
+
+			cy.findByRole('button', { name: 'Confirm change' }).click();
 
 			cy.intercept('POST', '/api/product-move/*', {
 				statusCode: 200,
 				body: productMoveSuccessfulResponse,
 			});
 
-			cy.findByRole('button', { name: 'Confirm change' }).click();
-
-			// TODO: Final confirmation page hasn't been built yet so we redirect
-			// back to the Account Overview following a successful switch
-			cy.location('pathname').should('eq', '/');
+			cy.findByText(/Thank you for changing your support type/).should(
+				'exist',
+			);
+			cy.findByText(
+				/Your first billing date is today and you will be charged £5/,
+			).should('exist');
 		});
 
 		it('shows an error message if switch fails', () => {
@@ -268,7 +272,7 @@ describe('product switching', () => {
 			setSignInStatus();
 
 			cy.findByRole('button', {
-				name: 'Add extras with no extra cost',
+				name: 'Add extras',
 			}).click();
 
 			cy.intercept('POST', '/api/product-move/*', {
@@ -278,8 +282,40 @@ describe('product switching', () => {
 
 			cy.findByRole('button', { name: 'Confirm change' }).click();
 
-			// TODO: This is a placeholder error message pending final design
-			cy.findByText('An error occurred whilst switching').should('exist');
+			cy.findByText('We were unable to change your support').should(
+				'exist',
+			);
+		});
+
+		it('shows payment failure error message and does not call product move API again', () => {
+			const contributionWithPaymentFailure: ProductDetail = JSON.parse(
+				JSON.stringify(contributionCard),
+			);
+			contributionWithPaymentFailure.alertText = 'Payment failed';
+
+			cy.intercept('GET', '/api/me/mma?productType=Contribution', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(contributionWithPaymentFailure),
+			});
+
+			cy.visit('/switch');
+			setSignInStatus();
+
+			cy.findByText('There is a problem with your payment method').should(
+				'exist',
+			);
+
+			cy.findByRole('button', {
+				name: 'Add extras',
+			}).click();
+
+			cy.findByRole('button', { name: 'Confirm change' }).click();
+
+			cy.findByText('There is a problem with your payment method').should(
+				'exist',
+			);
+
+			cy.get('@product_move.all').should('have.length', 1);
 		});
 	}
 });

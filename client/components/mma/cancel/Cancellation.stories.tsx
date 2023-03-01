@@ -4,13 +4,20 @@ import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorato
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
 	cancelledContribution,
-	contribution,
+	contributionPayPal,
 	guardianWeeklyCard,
 } from '../../../fixtures/productDetail';
 import { CancellationContainer } from './CancellationContainer';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { getCancellationSummary } from './CancellationSummary';
+import { contributionsCancellationReasons } from './contributions/ContributionsCancellationReasons';
+import { otherCancellationReason } from './supporterplus/SupporterplusCancellationReasons';
+
+const contributions = PRODUCT_TYPES.contributions;
+contributions.cancellation!.reasons = contributionsCancellationReasons.concat(
+	otherCancellationReason,
+);
 
 export default {
 	title: 'Pages/Cancellation',
@@ -19,12 +26,8 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: contribution },
-			container: (
-				<CancellationContainer
-					productType={PRODUCT_TYPES.contributions}
-				/>
-			),
+			state: { productDetail: contributionPayPal },
+			container: <CancellationContainer productType={contributions} />,
 		},
 	},
 } as ComponentMeta<typeof CancellationContainer>;
@@ -61,7 +64,7 @@ export const Review: ComponentStory<typeof CancellationContainer> = () => {
 Review.parameters = {
 	reactRouter: {
 		state: {
-			productDetail: contribution,
+			productDetail: contributionPayPal,
 			selectedReasonId: 'mma_editorial',
 			cancellationPolicy: 'Today',
 		},

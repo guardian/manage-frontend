@@ -1,9 +1,8 @@
 import type { StripeSetupIntent } from '../../shared/stripeSetupIntent';
 
 export const stripeSetupIntent: StripeSetupIntent = {
-	id: 'seti_0KLFtUItVxyc3M6nBXnYb2jO',
-	client_secret:
-		'seti_0KLFtUItVxyc3Q6nBXnYb2jO_secret_L1IUioSNMNThetlMQnVtbCJu0Gj2cq1M',
+	id: 'seti_test',
+	client_secret: 'seti_test_secret_test',
 };
 
 export const executePaymentUpdateResponse = {
