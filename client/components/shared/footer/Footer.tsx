@@ -192,7 +192,11 @@ const fillEmailSignup = (_: SyntheticEvent<HTMLIFrameElement>) => {
 	return;
 };
 
-export const Footer = () => {
+export const Footer = ({
+	hideSupportButton,
+}: {
+	hideSupportButton?: boolean;
+}) => {
 	const TODAY = new Date(Date.now());
 
 	const [isInUSA, setIsInUSA] = useState<boolean>(false);
@@ -277,17 +281,25 @@ export const Footer = () => {
 								))}
 
 								<div css={supportStyles}>
-									<div css={supportTitleStyles}>
-										Support the&nbsp;Guardian
-									</div>
-									<div css={supportButtonContainerStyles}>
-										<SupportTheGuardianButton
-											supportReferer="footer_support_contribute"
-											alternateButtonText="Support us"
-											theme="brand"
-											size="small"
-										/>
-									</div>
+									{!hideSupportButton && (
+										<>
+											<div css={supportTitleStyles}>
+												Support the&nbsp;Guardian
+											</div>
+											<div
+												css={
+													supportButtonContainerStyles
+												}
+											>
+												<SupportTheGuardianButton
+													supportReferer="footer_support_contribute"
+													alternateButtonText="Support us"
+													theme="brand"
+													size="small"
+												/>
+											</div>
+										</>
+									)}
 								</div>
 							</div>
 						</div>

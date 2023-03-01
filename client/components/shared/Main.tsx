@@ -6,10 +6,15 @@ import { Header } from './Header';
 
 export interface MainProps {
 	signInStatus?: SignInStatus;
+	hideSupportButton?: boolean;
 	children: JSX.Element | JSX.Element[];
 }
 
-export const Main = ({ signInStatus = 'init', children }: MainProps) => (
+export const Main = ({
+	signInStatus = 'init',
+	hideSupportButton = false,
+	children,
+}: MainProps) => (
 	<div
 		css={{
 			display: 'flex',
@@ -53,6 +58,6 @@ export const Main = ({ signInStatus = 'init', children }: MainProps) => (
 				{children}
 			</main>
 		</div>
-		<Footer />
+		<Footer hideSupportButton={hideSupportButton} />
 	</div>
 );

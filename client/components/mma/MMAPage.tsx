@@ -3,7 +3,13 @@ import { ABProvider, useAB } from '@guardian/ab-react';
 import { breakpoints, from, space } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import {
+	BrowserRouter,
+	Navigate,
+	Route,
+	Routes,
+	useLocation,
+} from 'react-router-dom';
 import {
 	featureSwitches,
 	initFeatureSwitchUrlParamOverride,
@@ -312,7 +318,9 @@ const GenericErrorContainer = (props: { children: ReactNode }) => (
 );
 
 const MMARouter = () => {
+	const location = useLocation();
 	const [signInStatus, setSignInStatus] = useState<SignInStatus>('init');
+	const [hideSupportButton, setHideSupportButton] = useState<boolean>(false);
 
 	const ABTestAPI = useAB();
 
@@ -324,12 +332,19 @@ const MMARouter = () => {
 		ABTestAPI.registerCompleteEvents(allRunnableTests);
 	}, [ABTestAPI]);
 
+	useEffect(() => {
+		const isSwitchPage =
+			location.pathname.startsWith('/switch') ||
+			location.pathname.startsWith('/app/switch');
+		setHideSupportButton(isSwitchPage);
+	}, [location]);
+
 	useAnalytics();
 	useConsent();
 	useScrollToTop();
 
 	return (
-		<Main signInStatus={signInStatus}>
+		<Main signInStatus={signInStatus} hideSupportButton={hideSupportButton}>
 			<Global styles={css(`${global}`)} />
 			<Global styles={css(`${fonts}`)} />
 			<Suspense fallback={<MMAPageSkeleton />}>
