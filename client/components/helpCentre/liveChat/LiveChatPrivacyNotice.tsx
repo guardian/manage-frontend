@@ -37,7 +37,7 @@ export const LiveChatPrivacyNotice = () => {
 			<p css={paragraphCss}>
 				We use an SDK (a Software Development Kit) from Salesforce which
 				uses cookies to ensure that our live chat service works
-				correctly and meet your expectations. It cannot be switched off
+				correctly and meets your expectations. It cannot be switched off
 				but it is removed at the end of the chat. If you do not wish for
 				this cookie to be dropped on your device, please email or phone
 				us instead. Live chats and phone calls will be recorded for
