@@ -35,8 +35,8 @@ export const LiveChatPrivacyNotice = () => {
 		<div css={containerCss} id="livechatPrivacyNotice">
 			<h2 css={titleCss}>Data privacy notice</h2>
 			<p css={paragraphCss}>
-				We use a type of cookie technology called an SDK (Software
-				Development Kit) to ensure that our live chat services work
+				We use an SDK (a Software Development Kit) from Salesforce which
+				uses cookies to ensure that our live chat service works
 				correctly and meet your expectations. It cannot be switched off
 				but it is removed at the end of the chat. If you do not wish for
 				this cookie to be dropped on your device, please email or phone
