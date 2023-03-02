@@ -11,6 +11,11 @@ import {
 import { Fragment } from 'react';
 import { parseDate } from '../../../../shared/dates';
 import type {
+	MPAPIResponse} from '../../../../shared/mpapiResponse';
+import {
+	getFirstActiveAppSubscription
+} from '../../../../shared/mpapiResponse';
+import type {
 	InvoiceDataApiItem,
 	MembersDataApiItem,
 	MembersDataApiResponse,
@@ -35,6 +40,7 @@ import { allProductsDetailFetcher } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { EmptyAccountOverview } from '../accountoverview/EmptyAccountOverview';
+import { InAppPurchaseCard } from '../accountoverview/InAppPurchaseCard';
 import { SixForSixExplainerIfApplicable } from '../accountoverview/SixForSixExplainer';
 import { PageContainer } from '../Page';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
@@ -59,6 +65,7 @@ type MMACategoryToProductDetails = {
 type BillingResponse = [
 	MembersDataApiResponse | MembersDataApiItem[],
 	{ invoices: InvoiceDataApiItem[] },
+	MPAPIResponse,
 ];
 
 const subHeadingTitleCss = `
@@ -79,6 +86,7 @@ function decorateProductDetailWithInvoices(
 ): ProductDetailWithInvoice {
 	return { ...productDetail, invoices: [] };
 }
+
 function joinInvoicesWithProductsInCategories(
 	mdapiObject: MembersDataApiResponse,
 	invoicesResponse: { invoices: InvoiceDataApiItem[] },
@@ -329,13 +337,15 @@ const BillingPage = () => {
 		return <GenericErrorScreen />;
 	}
 
-	const [mdapiResponse, invoicesResponse] = billingResponse;
+	const [mdapiResponse, invoicesResponse, mpapiResponse] = billingResponse;
 	const mdapiObject = mdapiResponseReader(mdapiResponse);
+	const { subscriptions: appSubscription } = mpapiResponse;
+	const inAppPurchase = getFirstActiveAppSubscription(appSubscription);
 
 	const { allProductDetails, mmaCategoryToProductDetails } =
 		joinInvoicesWithProductsInCategories(mdapiObject, invoicesResponse);
 
-	if (allProductDetails.length === 0) {
+	if (allProductDetails.length === 0 && appSubscription.length === 0) {
 		return <EmptyAccountOverview />;
 	}
 
@@ -344,6 +354,12 @@ const BillingPage = () => {
 			<PaymentFailureAlertIfApplicable
 				productDetails={allProductDetails}
 			/>
+			{inAppPurchase && (
+				<>
+					todo
+					<InAppPurchaseCard inAppPurchase={inAppPurchase} />
+				</>
+			)}
 			<BillingDetailsComponent
 				mmaCategoryToProductDetails={mmaCategoryToProductDetails}
 			/>
@@ -355,6 +371,7 @@ const billingFetcher = () =>
 	Promise.all([
 		allProductsDetailFetcher(),
 		fetchWithDefaultParameters('/api/invoices'),
+		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions'),
 	]);
 
 export const Billing = () => {
