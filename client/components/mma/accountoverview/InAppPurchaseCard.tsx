@@ -34,9 +34,7 @@ export const InAppPurchaseCard = (props: {
 					backgroundColor={palette.brand[500]}
 					minHeightTablet
 				>
-					<h3 css={productTitleCss}>
-						App Subscription {props.inAppPurchase.subscriptionId}
-					</h3>
+					<h3 css={productTitleCss}>App Subscription</h3>
 				</Card.Header>
 				<Card.Section>you have it</Card.Section>
 			</Card>

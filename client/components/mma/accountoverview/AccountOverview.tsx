@@ -13,7 +13,7 @@ import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
 	MPAPIResponse} from '../../../../shared/mpapiResponse';
 import {
-	getFirstActiveAppSubscription
+	isValidAppSubscription
 } from '../../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
@@ -86,8 +86,9 @@ const AccountOverviewRenderer = ([
 		)
 		.filter((value, index, self) => self.indexOf(value) === index);
 
-	const { subscriptions: appSubscriptions } = mpapiResponse;
-	const inAppPurchase = getFirstActiveAppSubscription(appSubscriptions);
+	const appSubscriptions = mpapiResponse.subscriptions.filter(
+		isValidAppSubscription,
+	);
 
 	if (allActiveProductDetails.length === 0 && appSubscriptions.length === 0) {
 		return <EmptyAccountOverview />;
@@ -116,10 +117,17 @@ const AccountOverviewRenderer = ([
 				productDetails={allActiveProductDetails}
 			/>
 
-			{inAppPurchase && (
+			{featureSwitches.appSubscriptions && appSubscriptions.length > 0 && (
 				<>
 					<h2 css={subHeadingCss}>App Subscriptions</h2>
-					<InAppPurchaseCard inAppPurchase={inAppPurchase} />
+					<Stack space={6}>
+						{appSubscriptions.map((subscription) => (
+							<InAppPurchaseCard
+								key={subscription.subscriptionId}
+								inAppPurchase={subscription}
+							/>
+						))}
+					</Stack>
 				</>
 			)}
 			{productCategories.map((category) => {
