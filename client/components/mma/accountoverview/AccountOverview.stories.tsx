@@ -125,7 +125,7 @@ export const WithIAP: ComponentStory<typeof AccountOverview> = () => {
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [InAppPurchase] },
 		})
-		.get('/api/me/mma', { body: toMembersDataApiResponse() })
+		.get('/api/me/mma', { body: toMembersDataApiResponse(digitalDD) })
 		.get('/idapi/user', { body: user });
 
 	return <AccountOverview />;

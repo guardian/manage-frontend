@@ -11,9 +11,8 @@ import {
 import { Fragment } from 'react';
 import { parseDate } from '../../../../shared/dates';
 import type {
-	MPAPIResponse} from '../../../../shared/mpapiResponse';
-import {
-	getFirstActiveAppSubscription
+	AppSubscription,
+	MPAPIResponse,
 } from '../../../../shared/mpapiResponse';
 import type {
 	InvoiceDataApiItem,
@@ -40,7 +39,6 @@ import { allProductsDetailFetcher } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { EmptyAccountOverview } from '../accountoverview/EmptyAccountOverview';
-import { InAppPurchaseCard } from '../accountoverview/InAppPurchaseCard';
 import { SixForSixExplainerIfApplicable } from '../accountoverview/SixForSixExplainer';
 import { PageContainer } from '../Page';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
@@ -304,6 +302,10 @@ function renderProductBillingInfo([mmaCategory, productDetails]: [
 	);
 }
 
+function renderInAppPurchase(value: AppSubscription) {
+	return <div key={value.subscriptionId}>todo</div>;
+}
+
 function BillingDetailsComponent(props: {
 	mmaCategoryToProductDetails: MMACategoryToProductDetails;
 }) {
@@ -339,13 +341,14 @@ const BillingPage = () => {
 
 	const [mdapiResponse, invoicesResponse, mpapiResponse] = billingResponse;
 	const mdapiObject = mdapiResponseReader(mdapiResponse);
-	const { subscriptions: appSubscription } = mpapiResponse;
-	const inAppPurchase = getFirstActiveAppSubscription(appSubscription);
+	const appSubscriptions = mpapiResponse.subscriptions.filter(
+		(subscription) => subscription.valid,
+	);
 
 	const { allProductDetails, mmaCategoryToProductDetails } =
 		joinInvoicesWithProductsInCategories(mdapiObject, invoicesResponse);
 
-	if (allProductDetails.length === 0 && appSubscription.length === 0) {
+	if (allProductDetails.length === 0 && appSubscriptions.length === 0) {
 		return <EmptyAccountOverview />;
 	}
 
@@ -354,12 +357,8 @@ const BillingPage = () => {
 			<PaymentFailureAlertIfApplicable
 				productDetails={allProductDetails}
 			/>
-			{inAppPurchase && (
-				<>
-					todo
-					<InAppPurchaseCard inAppPurchase={inAppPurchase} />
-				</>
-			)}
+			{appSubscriptions.map(renderInAppPurchase)}
+
 			<BillingDetailsComponent
 				mmaCategoryToProductDetails={mmaCategoryToProductDetails}
 			/>
