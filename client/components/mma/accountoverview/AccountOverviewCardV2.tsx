@@ -24,7 +24,6 @@ import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { Card } from '../shared/Card';
 import { CardDisplay } from '../shared/CardDisplay';
 import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
-import { GridPicture } from '../shared/images/GridPicture';
 import {
 	getNextPaymentDetails,
 	NewPaymentPriceAlert,
@@ -35,7 +34,6 @@ import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
 
 interface ProductCardConfiguration {
 	headerColor: string;
-	headerImageId?: string;
 	showBenefitsSection?: boolean;
 }
 
@@ -47,7 +45,6 @@ const productCardConfiguration: {
 	},
 	supporterplus: {
 		headerColor: palette.brand[500],
-		headerImageId: 'digitalSubPackshot',
 		showBenefitsSection: true,
 	},
 	digipack: {
@@ -201,39 +198,7 @@ export const AccountOverviewCardV2 = ({
 				backgroundColor={cardConfig.headerColor}
 				minHeightTablet
 			>
-				<div
-					css={css`
-						display: flex;
-						justify-content: space-between;
-					`}
-				>
-					<h3 css={productTitleCss}>{productTitle}</h3>
-					{cardConfig.headerImageId && (
-						<GridPicture
-							cssOverrides={css`
-								margin-top: -${space[3] + 16}px;
-								margin-bottom: -${space[3]}px;
-								max-height: 80px;
-								${from.tablet} {
-									max-height: 144px;
-								}
-							`}
-							sources={[
-								{
-									gridId: cardConfig.headerImageId,
-									srcSizes: [497, 285],
-									imgType: 'png',
-									sizes: '100vw',
-									media: '(max-width: 220px)',
-								},
-							]}
-							fallback={cardConfig.headerImageId}
-							fallbackSize={497}
-							altText=""
-							fallbackImgType="png"
-						/>
-					)}
-				</div>
+				<h3 css={productTitleCss}>{productTitle}</h3>
 			</Card.Header>
 
 			{cardConfig.showBenefitsSection && nextPaymentDetails && (
