@@ -10,7 +10,11 @@ import { Stack } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
 import { featureSwitches } from '../../../../shared/featureSwitches';
-import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
+import type {
+	MPAPIResponse} from '../../../../shared/mpapiResponse';
+import {
+	isValidAppSubscription
+} from '../../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
 	MembersDataApiItem,
@@ -83,7 +87,7 @@ const AccountOverviewRenderer = ([
 		.filter((value, index, self) => self.indexOf(value) === index);
 
 	const appSubscriptions = mpapiResponse.subscriptions.filter(
-		(subscription) => subscription.valid,
+		isValidAppSubscription,
 	);
 
 	if (allActiveProductDetails.length === 0 && appSubscriptions.length === 0) {
@@ -113,7 +117,7 @@ const AccountOverviewRenderer = ([
 				productDetails={allActiveProductDetails}
 			/>
 
-			{appSubscriptions.length > 0 && (
+			{featureSwitches.appSubscriptions && appSubscriptions.length > 0 && (
 				<>
 					<h2 css={subHeadingCss}>App Subscriptions</h2>
 					<Stack space={6}>

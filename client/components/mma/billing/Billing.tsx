@@ -10,9 +10,12 @@ import {
 } from '@guardian/source-foundations';
 import { Fragment } from 'react';
 import { parseDate } from '../../../../shared/dates';
+import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
 	AppSubscription,
-	MPAPIResponse,
+	MPAPIResponse} from '../../../../shared/mpapiResponse';
+import {
+	isValidAppSubscription
 } from '../../../../shared/mpapiResponse';
 import type {
 	InvoiceDataApiItem,
@@ -342,7 +345,7 @@ const BillingPage = () => {
 	const [mdapiResponse, invoicesResponse, mpapiResponse] = billingResponse;
 	const mdapiObject = mdapiResponseReader(mdapiResponse);
 	const appSubscriptions = mpapiResponse.subscriptions.filter(
-		(subscription) => subscription.valid,
+		isValidAppSubscription,
 	);
 
 	const { allProductDetails, mmaCategoryToProductDetails } =
@@ -357,7 +360,8 @@ const BillingPage = () => {
 			<PaymentFailureAlertIfApplicable
 				productDetails={allProductDetails}
 			/>
-			{appSubscriptions.map(renderInAppPurchase)}
+			{featureSwitches.appSubscriptions &&
+				appSubscriptions.map(renderInAppPurchase)}
 
 			<BillingDetailsComponent
 				mmaCategoryToProductDetails={mmaCategoryToProductDetails}

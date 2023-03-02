@@ -7,3 +7,7 @@ export interface AppSubscription {
 export interface MPAPIResponse {
 	subscriptions: AppSubscription[];
 }
+
+export function isValidAppSubscription(subscription: AppSubscription) {
+	return subscription.valid;
+}
