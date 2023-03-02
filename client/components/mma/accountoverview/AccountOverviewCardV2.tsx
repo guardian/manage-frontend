@@ -9,17 +9,19 @@ import {
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
+	Stack,
 } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
 import { parseDate } from '../../../../shared/dates';
 import type {
 	MembersDataApiUser,
 	ProductDetail,
+	Subscription,
 } from '../../../../shared/productResponse';
 import { getMainPlan, isGift } from '../../../../shared/productResponse';
-import type { ProductTypeKeys } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
+import { InfoSummary } from '../paymentUpdate/Summary';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { Card } from '../shared/Card';
 import { CardDisplay } from '../shared/CardDisplay';
@@ -31,47 +33,47 @@ import {
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
 import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
+import { productCardConfiguration } from './ProductCardConfiguration';
 
-interface ProductCardConfiguration {
-	headerColor: string;
-	showBenefitsSection?: boolean;
-}
-
-const productCardConfiguration: {
-	[productType in ProductTypeKeys]: ProductCardConfiguration;
-} = {
-	contributions: {
-		headerColor: palette.brand[600],
-	},
-	supporterplus: {
-		headerColor: palette.brand[500],
-		showBenefitsSection: true,
-	},
-	digipack: {
-		headerColor: palette.brand[500],
-	},
-	digitalvoucher: {
-		headerColor: '#ff5943',
-	},
-	newspaper: {
-		headerColor: '#ff5943',
-	},
-	homedelivery: {
-		headerColor: '#ff5943',
-	},
-	voucher: {
-		headerColor: '#ff5943',
-	},
-	guardianweekly: {
-		headerColor: '#5f8085',
-	},
-	membership: {
-		headerColor: palette.brand[500],
-	},
-	guardianpatron: {
-		headerColor: palette.brand[500],
-	},
-};
+const PaymentMethod = ({
+	subscription,
+	inPaymentFailure,
+}: {
+	subscription: Subscription;
+	inPaymentFailure: boolean;
+}) => (
+	<div
+		css={css`
+			${textSans.medium()};
+		`}
+	>
+		{subscription.card && (
+			<CardDisplay
+				inErrorState={inPaymentFailure}
+				cssOverrides={css`
+					margin: 0;
+				`}
+				{...subscription.card}
+			/>
+		)}
+		{subscription.payPalEmail && (
+			<PaypalDisplay inline={true} payPalId={subscription.payPalEmail} />
+		)}
+		{subscription.sepaMandate && (
+			<SepaDisplay
+				inline={true}
+				accountName={subscription.sepaMandate.accountName}
+				iban={subscription.sepaMandate.iban}
+			/>
+		)}
+		{subscription.mandate && (
+			<DirectDebitDisplay inline={true} {...subscription.mandate} />
+		)}
+		{subscription.stripePublicKeyForCardAddition && (
+			<span>No Payment Method</span>
+		)}
+	</div>
+);
 
 export const AccountOverviewCardV2 = ({
 	productDetail,
@@ -109,6 +111,8 @@ export const AccountOverviewCardV2 = ({
 	const subscriptionStartDate = productDetail.subscription.start;
 	const subscriptionEndDate = productDetail.subscription.end;
 	const hasCancellationPending = productDetail.subscription.cancelledAt;
+	const cancelledCopy =
+		specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
 
 	const isSafeToUpdatePaymentMethod =
 		productDetail.subscription.safeToUpdatePaymentMethod;
@@ -192,273 +196,253 @@ export const AccountOverviewCardV2 = ({
 		}
 	`;
 
-	return (
-		<Card>
-			<Card.Header
-				backgroundColor={cardConfig.headerColor}
-				minHeightTablet
-			>
-				<h3 css={productTitleCss}>{productTitle}</h3>
-			</Card.Header>
+	const benefitsTextCss = css`
+		${textSans.medium()}
+		margin: 0;
+		max-width: 35ch;
+	`;
 
-			{cardConfig.showBenefitsSection && nextPaymentDetails && (
-				<Card.Section backgroundColor="#edf5fA">
-					<p
-						css={css`
-							${textSans.medium()}
-							margin: 0;
-							max-width: 35ch;
-						`}
-					>
-						You’re supporting the Guardian with a{' '}
-						{nextPaymentDetails.paymentValue} per{' '}
-						{nextPaymentDetails.paymentInterval} support and extra
-						benefits.
-					</p>
-					<SupporterPlusBenefitsToggle />
-				</Card.Section>
-			)}
-			<Card.Section>
-				<div css={productDetailLayoutCss}>
-					<div>
-						<h4 css={sectionHeadingCss}>Billing and payment</h4>
-						<dl css={keyValueCss}>
-							<div>
-								<dt>
-									{groupedProductType.showSupporterId
-										? 'Supporter ID'
-										: 'Subscription ID'}
-								</dt>
-								<dd>
-									{productDetail.subscription.subscriptionId}
-								</dd>
-							</div>
-							{groupedProductType.tierLabel && (
-								<div>
-									<dt>{groupedProductType.tierLabel}</dt>
-									<dd>{productDetail.tier}</dd>
-								</div>
-							)}
-							{subscriptionStartDate && shouldShowStartDate && (
-								<div>
-									<dt>Start date</dt>
-									<dd>
-										{parseDate(
-											subscriptionStartDate,
-										).dateStr()}
-									</dd>
-								</div>
-							)}
-							{shouldShowJoinDateNotStartDate && (
-								<div>
-									<dt>Join date</dt>
-									<dd>
-										{parseDate(
-											productDetail.joinDate,
-										).dateStr()}
-									</dd>
-								</div>
-							)}
-							{userIsGifter && giftPurchaseDate && (
-								<div>
-									<dt>Purchase date</dt>
-									<dd>
-										{parseDate(giftPurchaseDate).dateStr()}
-									</dd>
-								</div>
-							)}
-							{specificProductType.showTrialRemainingIfApplicable &&
-								productDetail.subscription.trialLength > 0 &&
-								!isGifted &&
-								productDetail.subscription.readerType !==
-									'Patron' && (
-									<div>
-										<dt>Trial remaining</dt>
-										<dd>
-											{
-												productDetail.subscription
-													.trialLength
-											}{' '}
-											{productDetail.subscription
-												.trialLength !== 1
-												? 'days'
-												: 'day'}
-										</dd>
-									</div>
-								)}
-							{isGifted && !userIsGifter && (
-								<div>
-									<dt>End date</dt>
-									<dd>
-										{parseDate(
-											subscriptionEndDate,
-										).dateStr()}
-									</dd>
-								</div>
-							)}
-							{nextPaymentDetails &&
-								productDetail.subscription.autoRenew &&
-								!hasCancellationPending && (
-									<div>
-										<dt>{nextPaymentDetails.paymentKey}</dt>
-										<dd>
-											{nextPaymentDetails.isNewPaymentValue && (
-												<NewPaymentPriceAlert />
-											)}
-											{nextPaymentDetails.paymentValue}
-											{nextPaymentDetails.nextPaymentDateValue &&
-												productDetail.subscription
-													.readerType !== 'Patron' &&
-												` on ${nextPaymentDetails.nextPaymentDateValue}`}
-										</dd>
-									</div>
-								)}
-						</dl>
-					</div>
-					<div css={buttonLayoutCss}>
-						{!isGifted && (
-							<Button
-								aria-label={`${specificProductType.productTitle(
-									mainPlan,
-								)} : Manage ${groupedProductType.friendlyName()}`}
-								data-cy={`Manage ${groupedProductType.friendlyName()}`}
-								size="small"
-								cssOverrides={css`
-									justify-content: center;
-								`}
-								onClick={() => {
-									trackEvent({
-										eventCategory: 'account_overview',
-										eventAction: 'click',
-										eventLabel: `manage_${groupedProductType.urlPart}`,
-									});
-									navigate(`/${groupedProductType.urlPart}`, {
-										state: {
-											productDetail: productDetail,
-										},
-									});
-								}}
-							>
-								{`Manage ${groupedProductType.friendlyName()}`}
-							</Button>
-						)}
-						{showSwitchButton && (
-							<ThemeProvider
-								theme={buttonThemeReaderRevenueBrand}
-							>
-								<Button
-									size="small"
-									cssOverrides={css`
-										justify-content: center;
-									`}
-									onClick={() =>
-										navigate(`/switch`, {
-											state: {
-												productDetail: productDetail,
-												user: user,
-											},
-										})
-									}
-								>
-									Change to monthly + extras
-								</Button>
-							</ThemeProvider>
-						)}
-					</div>
-				</div>
-			</Card.Section>
-			{productDetail.isPaidTier && (
+	return (
+		<Stack space={4}>
+			{hasCancellationPending &&
+				productDetail.subscription.end &&
+				cancelledCopy && <InfoSummary message={cancelledCopy} />}
+			<Card>
+				<Card.Header
+					backgroundColor={cardConfig.headerColor}
+					minHeightTablet
+				>
+					<h3 css={productTitleCss}>{productTitle}</h3>
+				</Card.Header>
+
+				{cardConfig.showBenefitsSection && nextPaymentDetails && (
+					<Card.Section backgroundColor="#edf5fA">
+						<p css={benefitsTextCss}>
+							You’re supporting the Guardian with a{' '}
+							{nextPaymentDetails.paymentValue} per{' '}
+							{nextPaymentDetails.paymentInterval} support and
+							extra benefits.
+						</p>
+						<SupporterPlusBenefitsToggle />
+					</Card.Section>
+				)}
 				<Card.Section>
 					<div css={productDetailLayoutCss}>
 						<div>
-							<h4 css={sectionHeadingCss}>Payment method</h4>
-							<div
-								css={css`
-									${textSans.medium()};
-								`}
-							>
-								{productDetail.subscription.card && (
-									<CardDisplay
-										inErrorState={hasPaymentFailure}
-										cssOverrides={css`
-											margin: 0;
-										`}
-										{...productDetail.subscription.card}
-									/>
-								)}
-								{productDetail.subscription.payPalEmail && (
-									<PaypalDisplay
-										inline={true}
-										payPalId={
+							<h4 css={sectionHeadingCss}>Billing and payment</h4>
+							<dl css={keyValueCss}>
+								<div>
+									<dt>
+										{groupedProductType.showSupporterId
+											? 'Supporter ID'
+											: 'Subscription ID'}
+									</dt>
+									<dd>
+										{
 											productDetail.subscription
-												.payPalEmail
+												.subscriptionId
 										}
-									/>
+									</dd>
+								</div>
+								{groupedProductType.tierLabel && (
+									<div>
+										<dt>{groupedProductType.tierLabel}</dt>
+										<dd>{productDetail.tier}</dd>
+									</div>
 								)}
-								{productDetail.subscription.sepaMandate && (
-									<SepaDisplay
-										inline={true}
-										accountName={
-											productDetail.subscription
-												.sepaMandate.accountName
-										}
-										iban={
-											productDetail.subscription
-												.sepaMandate.iban
-										}
-									/>
+								{subscriptionStartDate && shouldShowStartDate && (
+									<div>
+										<dt>Start date</dt>
+										<dd>
+											{parseDate(
+												subscriptionStartDate,
+											).dateStr()}
+										</dd>
+									</div>
 								)}
-								{productDetail.subscription.mandate && (
-									<DirectDebitDisplay
-										inline={true}
-										{...productDetail.subscription.mandate}
-									/>
+								{shouldShowJoinDateNotStartDate && (
+									<div>
+										<dt>Join date</dt>
+										<dd>
+											{parseDate(
+												productDetail.joinDate,
+											).dateStr()}
+										</dd>
+									</div>
 								)}
-								{productDetail.subscription
-									.stripePublicKeyForCardAddition && (
-									<span>No Payment Method</span>
+								{userIsGifter && giftPurchaseDate && (
+									<div>
+										<dt>Purchase date</dt>
+										<dd>
+											{parseDate(
+												giftPurchaseDate,
+											).dateStr()}
+										</dd>
+									</div>
 								)}
-							</div>
+								{specificProductType.showTrialRemainingIfApplicable &&
+									productDetail.subscription.trialLength >
+										0 &&
+									!isGifted &&
+									productDetail.subscription.readerType !==
+										'Patron' && (
+										<div>
+											<dt>Trial remaining</dt>
+											<dd>
+												{
+													productDetail.subscription
+														.trialLength
+												}{' '}
+												{productDetail.subscription
+													.trialLength !== 1
+													? 'days'
+													: 'day'}
+											</dd>
+										</div>
+									)}
+								{isGifted && !userIsGifter && (
+									<div>
+										<dt>End date</dt>
+										<dd>
+											{parseDate(
+												subscriptionEndDate,
+											).dateStr()}
+										</dd>
+									</div>
+								)}
+								{nextPaymentDetails &&
+									productDetail.subscription.autoRenew &&
+									!hasCancellationPending && (
+										<div>
+											<dt>
+												{nextPaymentDetails.paymentKey}
+											</dt>
+											<dd>
+												{nextPaymentDetails.isNewPaymentValue && (
+													<NewPaymentPriceAlert />
+												)}
+												{
+													nextPaymentDetails.paymentValue
+												}
+												{nextPaymentDetails.nextPaymentDateValue &&
+													productDetail.subscription
+														.readerType !==
+														'Patron' &&
+													` on ${nextPaymentDetails.nextPaymentDateValue}`}
+											</dd>
+										</div>
+									)}
+							</dl>
 						</div>
-						{!isGifted && isSafeToUpdatePaymentMethod && (
-							<div css={buttonLayoutCss}>
+						<div css={buttonLayoutCss}>
+							{!isGifted && (
 								<Button
 									aria-label={`${specificProductType.productTitle(
 										mainPlan,
-									)} : Update payment method`}
+									)} : Manage ${groupedProductType.friendlyName()}`}
+									data-cy={`Manage ${groupedProductType.friendlyName()}`}
 									size="small"
 									cssOverrides={css`
 										justify-content: center;
 									`}
-									priority="primary"
-									icon={
-										hasPaymentFailure ? (
-											<ErrorIcon
-												fill={palette.neutral[100]}
-											/>
-										) : undefined
-									}
 									onClick={() => {
 										trackEvent({
 											eventCategory: 'account_overview',
 											eventAction: 'click',
-											eventLabel: 'manage_payment_method',
+											eventLabel: `manage_${groupedProductType.urlPart}`,
 										});
 										navigate(
-											`/payment/${specificProductType.urlPart}`,
+											`/${groupedProductType.urlPart}`,
 											{
-												state: { productDetail },
+												state: {
+													productDetail:
+														productDetail,
+												},
 											},
 										);
 									}}
 								>
-									Update payment method
+									{`Manage ${groupedProductType.friendlyName()}`}
 								</Button>
-							</div>
-						)}
+							)}
+							{showSwitchButton && (
+								<ThemeProvider
+									theme={buttonThemeReaderRevenueBrand}
+								>
+									<Button
+										size="small"
+										cssOverrides={css`
+											justify-content: center;
+										`}
+										onClick={() =>
+											navigate(`/switch`, {
+												state: {
+													productDetail:
+														productDetail,
+													user: user,
+												},
+											})
+										}
+									>
+										Change to monthly + extras
+									</Button>
+								</ThemeProvider>
+							)}
+						</div>
 					</div>
 				</Card.Section>
-			)}
-		</Card>
+				{productDetail.isPaidTier && (
+					<Card.Section>
+						<div css={productDetailLayoutCss}>
+							<div>
+								<h4 css={sectionHeadingCss}>Payment method</h4>
+								<PaymentMethod
+									subscription={productDetail.subscription}
+									inPaymentFailure={hasPaymentFailure}
+								/>
+							</div>
+							{!isGifted && isSafeToUpdatePaymentMethod && (
+								<div css={buttonLayoutCss}>
+									<Button
+										aria-label={`${specificProductType.productTitle(
+											mainPlan,
+										)} : Update payment method`}
+										size="small"
+										cssOverrides={css`
+											justify-content: center;
+										`}
+										priority="primary"
+										icon={
+											hasPaymentFailure ? (
+												<ErrorIcon
+													fill={palette.neutral[100]}
+												/>
+											) : undefined
+										}
+										onClick={() => {
+											trackEvent({
+												eventCategory:
+													'account_overview',
+												eventAction: 'click',
+												eventLabel:
+													'manage_payment_method',
+											});
+											navigate(
+												`/payment/${specificProductType.urlPart}`,
+												{
+													state: { productDetail },
+												},
+											);
+										}}
+									>
+										Update payment method
+									</Button>
+								</div>
+							)}
+						</div>
+					</Card.Section>
+				)}
+			</Card>
+		</Stack>
 	);
 };
