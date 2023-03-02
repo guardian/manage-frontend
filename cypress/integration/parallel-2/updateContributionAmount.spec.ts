@@ -39,6 +39,11 @@ describe('Update contribution amount', () => {
 			body: { subscription: {} },
 		}).as('new_product_detail');
 
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
 		cy.intercept('POST', '/api/update/amount/contributions/**', {
 			statusCode: 200,
 		}).as('update_contribution_amount');
