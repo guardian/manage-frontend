@@ -43,6 +43,11 @@ if (featureSwitches.cancellationProductSwitch) {
 				body: toMembersDataApiResponse(contributionCard),
 			});
 
+			cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+				statusCode: 200,
+				body: { subscriptions: [] },
+			});
+
 			cy.intercept('GET', '/api/me/mma/**', {
 				statusCode: 200,
 				body: toMembersDataApiResponse(),

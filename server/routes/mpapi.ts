@@ -24,16 +24,10 @@ const makeMpapiRequest = (options: RequestOptions, res: Response) => {
 	mpapiRequest.end();
 };
 
-declare let CYPRESS: string;
-
 router.get(
 	'/user/mobile-subscriptions',
 	withIdentity(),
 	async (_req: Request, res: Response, next: NextFunction) => {
-		if (CYPRESS == 'SKIP_IDAPI') {
-			res.status(200).send({ subscriptions: [] });
-		}
-
 		let config;
 		try {
 			config = await getConfig();
