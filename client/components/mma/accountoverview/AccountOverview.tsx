@@ -38,6 +38,7 @@ import { AsyncLoader } from '../shared/AsyncLoader';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { AccountOverviewCancelledCard } from './AccountOverviewCancelledCard';
 import { AccountOverviewCard } from './AccountOverviewCard';
+import { CancelledProductCard } from './CancelledProductCard';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
@@ -171,15 +172,26 @@ const AccountOverviewRenderer = ([
 								),
 							)}
 							{cancelledProductsInCategory.map(
-								(cancelledProductDetail) => (
-									<AccountOverviewCancelledCard
-										key={
-											cancelledProductDetail.subscription
-												.subscriptionId
-										}
-										product={cancelledProductDetail}
-									/>
-								),
+								(cancelledProductDetail) =>
+									featureSwitches.accountOverviewNewLayout ? (
+										<CancelledProductCard
+											key={
+												cancelledProductDetail
+													.subscription.subscriptionId
+											}
+											productDetail={
+												cancelledProductDetail
+											}
+										/>
+									) : (
+										<AccountOverviewCancelledCard
+											key={
+												cancelledProductDetail
+													.subscription.subscriptionId
+											}
+											product={cancelledProductDetail}
+										/>
+									),
 							)}
 							{groupedProductType.supportTheGuardianSectionProps &&
 								(cancelledProductsInCategory.length > 0 ||
