@@ -12,6 +12,13 @@ export const signInAndAcceptCookies = () => {
 			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('mma');
 
+		/*
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+		 */
+
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,
 			body: [],
@@ -20,6 +27,7 @@ export const signInAndAcceptCookies = () => {
 		cy.wait(1000);
 		cy.visit('/');
 
+		// cy.wait('@mobile_subscriptions')
 		cy.wait('@mma');
 		cy.wait('@cancelled');
 	});
