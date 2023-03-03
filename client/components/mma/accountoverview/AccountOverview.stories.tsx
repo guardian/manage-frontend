@@ -119,6 +119,8 @@ export const WithContributionNewLayoutDigisubAndContribution: ComponentStory<
 };
 
 export const WithIAP: ComponentStory<typeof AccountOverview> = () => {
+	featureSwitches['appSubscriptions'] = true;
+
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })
@@ -132,6 +134,8 @@ export const WithIAP: ComponentStory<typeof AccountOverview> = () => {
 };
 
 export const WithCancelledIAP: ComponentStory<typeof AccountOverview> = () => {
+	featureSwitches['appSubscriptions'] = true;
+
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })
@@ -147,6 +151,8 @@ export const WithCancelledIAP: ComponentStory<typeof AccountOverview> = () => {
 export const WithOneCancelledAndOneNotCancelledIAP: ComponentStory<
 	typeof AccountOverview
 > = () => {
+	featureSwitches['appSubscriptions'] = true;
+
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })

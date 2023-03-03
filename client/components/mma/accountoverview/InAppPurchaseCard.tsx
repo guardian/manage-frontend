@@ -31,7 +31,7 @@ export const InAppPurchaseCard = (props: {
 				>
 					<h3 css={productTitleCss}>App Subscription</h3>
 				</Card.Header>
-				<Card.Section>you have it</Card.Section>
+				<Card.Section>ToDo: </Card.Section>
 			</Card>
 		</Stack>
 	);

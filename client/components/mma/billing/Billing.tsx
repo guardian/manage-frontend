@@ -13,10 +13,9 @@ import { parseDate } from '../../../../shared/dates';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
 	AppSubscription,
-	MPAPIResponse} from '../../../../shared/mpapiResponse';
-import {
-	isValidAppSubscription
+	MPAPIResponse,
 } from '../../../../shared/mpapiResponse';
+import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
 	InvoiceDataApiItem,
 	MembersDataApiItem,
