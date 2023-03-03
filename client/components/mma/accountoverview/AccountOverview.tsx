@@ -10,11 +10,8 @@ import { Stack } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
 import { featureSwitches } from '../../../../shared/featureSwitches';
-import type {
-	MPAPIResponse} from '../../../../shared/mpapiResponse';
-import {
-	isValidAppSubscription
-} from '../../../../shared/mpapiResponse';
+import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
+import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
 	MembersDataApiItem,
@@ -90,7 +87,12 @@ const AccountOverviewRenderer = ([
 		isValidAppSubscription,
 	);
 
-	if (allActiveProductDetails.length === 0 && appSubscriptions.length === 0) {
+	if (
+		(allActiveProductDetails.length === 0 &&
+			appSubscriptions.length === 0) ||
+		(allActiveProductDetails.length === 0 &&
+			!featureSwitches.appSubscriptions)
+	) {
 		return <EmptyAccountOverview />;
 	}
 
