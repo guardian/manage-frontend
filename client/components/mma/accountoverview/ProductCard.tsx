@@ -75,7 +75,7 @@ const PaymentMethod = ({
 	</div>
 );
 
-export const AccountOverviewCardV2 = ({
+export const ProductCard = ({
 	productDetail,
 	isEligibleToSwitch,
 	user,
