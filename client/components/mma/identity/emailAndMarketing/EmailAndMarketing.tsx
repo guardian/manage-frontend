@@ -1,9 +1,19 @@
 import { createRef, useEffect, useState } from 'react';
+import type {
+	AppSubscription,
+	MPAPIResponse} from '../../../../../shared/mpapiResponse';
+import {
+	AppSubscriptionSoftOptInIds,
+	isValidAppSubscription
+} from '../../../../../shared/mpapiResponse';
+import type {
+	ProductDetail} from '../../../../../shared/productResponse';
 import {
 	isProduct,
-	mdapiResponseReader,
+	mdapiResponseReader
 } from '../../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
+import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import { allProductsDetailFetcher } from '../../../../utilities/productUtils';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { Spinner } from '../../../shared/Spinner';
@@ -64,26 +74,32 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 					return;
 				}
 				const productDetailsResponse = await allProductsDetailFetcher();
+
 				const productDetails = mdapiResponseReader(
 					await productDetailsResponse.json(),
 				).products.filter(isProduct);
+
+				const mpapiResponse = (await (
+					await fetchWithDefaultParameters(
+						'/mpapi/user/mobile-subscriptions',
+					)
+				).json()) as MPAPIResponse;
+				const appSubscriptions = mpapiResponse.subscriptions.filter(
+					isValidAppSubscription,
+				);
+
 				const consentOptions = await ConsentOptions.getAll();
 				const consentsWithFilteredSoftOptIns = consentOptions.filter(
 					(consent: ConsentOption) =>
 						consent.isProduct
-							? productDetails.some((productDetail) => {
-									const groupedProductType =
-										GROUPED_PRODUCT_TYPES[
-											productDetail.mmaCategory
-										];
-									const specificProductType =
-										groupedProductType.mapGroupedToSpecific(
-											productDetail,
-										);
-									return specificProductType.softOptInIDs.includes(
-										consent.id,
-									);
-							  })
+							? userHasProductWithConsent(
+									productDetails,
+									consent,
+							  ) ||
+							  userHasAppSubscriptionWithConsent(
+									appSubscriptions,
+									consent,
+							  )
 							: true,
 				);
 
@@ -169,3 +185,26 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 		</PageContainer>
 	);
 };
+
+function userHasProductWithConsent(
+	productDetails: ProductDetail[],
+	consent: ConsentOption,
+) {
+	return productDetails.some((productDetail) => {
+		const groupedProductType =
+			GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
+		const specificProductType =
+			groupedProductType.mapGroupedToSpecific(productDetail);
+		return specificProductType.softOptInIDs.includes(consent.id);
+	});
+}
+
+function userHasAppSubscriptionWithConsent(
+	appSubscriptions: AppSubscription[],
+	consent: ConsentOption,
+) {
+	return (
+		appSubscriptions.length > 0 &&
+		AppSubscriptionSoftOptInIds.includes(consent.id)
+	);
+}

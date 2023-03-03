@@ -14,9 +14,8 @@ export function isValidAppSubscription(subscription: AppSubscription) {
 	return subscription.valid;
 }
 
-export const AppSubscriptionSoftOptInIds = [
+export const AppSubscriptionSoftOptInIds: string[] = [
 	SoftOptInIDs.SupportOnboarding,
 	SoftOptInIDs.SimilarProducts,
 	SoftOptInIDs.SupporterNewsletter,
-	SoftOptInIDs.DigitalSubscriberPreview,
 ];
