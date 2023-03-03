@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
-import { from, headline, palette, space } from '@guardian/source-foundations';
+import { from, headline, palette } from '@guardian/source-foundations';
+import { Stack } from '@guardian/source-react-components';
 import type { AppSubscription } from '../../../../shared/mpapiResponse';
 import { InfoSummary } from '../paymentUpdate/Summary';
 import { Card } from '../shared/Card';
@@ -19,15 +20,9 @@ export const InAppPurchaseCard = (props: {
 	inAppPurchase: AppSubscription;
 }) => {
 	return (
-		<>
+		<Stack space={3}>
 			{props.inAppPurchase.cancellationTimestamp && (
-				<InfoSummary
-					message="Your IAP Was cancelled TODO"
-					cssOverrides={css`
-						color: ${palette.neutral[0]};
-						margin-bottom: ${space[3]}px;
-					`}
-				/>
+				<InfoSummary message="ToDo: Your App Subscription Was cancelled" />
 			)}
 			<Card>
 				<Card.Header
@@ -38,6 +33,6 @@ export const InAppPurchaseCard = (props: {
 				</Card.Header>
 				<Card.Section>you have it</Card.Section>
 			</Card>
-		</>
+		</Stack>
 	);
 };
