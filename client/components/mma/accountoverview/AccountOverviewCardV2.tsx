@@ -12,7 +12,7 @@ import {
 	Stack,
 } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
-import { parseDate } from '../../../../shared/dates';
+import { cancellationFormatDate, parseDate } from '../../../../shared/dates';
 import type {
 	MembersDataApiUser,
 	ProductDetail,
@@ -111,8 +111,6 @@ export const AccountOverviewCardV2 = ({
 	const subscriptionStartDate = productDetail.subscription.start;
 	const subscriptionEndDate = productDetail.subscription.end;
 	const hasCancellationPending = productDetail.subscription.cancelledAt;
-	const cancelledCopy =
-		specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
 
 	const isSafeToUpdatePaymentMethod =
 		productDetail.subscription.safeToUpdatePaymentMethod;
@@ -204,9 +202,23 @@ export const AccountOverviewCardV2 = ({
 
 	return (
 		<Stack space={4}>
-			{hasCancellationPending &&
-				productDetail.subscription.end &&
-				cancelledCopy && <InfoSummary message={cancelledCopy} />}
+			{hasCancellationPending && productDetail.subscription.end && (
+				<InfoSummary
+					message={`Your ${groupedProductType.friendlyName()} has been cancelled`}
+					context={
+						<>
+							You are able to access your{' '}
+							{groupedProductType.friendlyName()} until{' '}
+							<strong>
+								{cancellationFormatDate(
+									productDetail.subscription
+										.cancellationEffectiveDate,
+								)}
+							</strong>
+						</>
+					}
+				/>
+			)}
 			<Card>
 				<Card.Header
 					backgroundColor={cardConfig.headerColor}
