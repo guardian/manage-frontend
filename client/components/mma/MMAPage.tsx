@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import {
-	featureSwitches,
+	getFeatureSwitches,
 	initFeatureSwitchUrlParamOverride,
 } from '../../../shared/featureSwitches';
 import type {
@@ -264,6 +264,12 @@ const SwitchComplete = lazy(() =>
 	})),
 );
 
+const SavedArticles = lazy(() =>
+	import(
+		/* webpackChunkName: "SavedArticles" */ './savedArticles/SavedArticles'
+	).then(({ SavedArticles }) => ({ default: SavedArticles })),
+);
+
 const EmailAndMarketing = lazy(() =>
 	import(
 		/* webpackChunkName: "EmailAndMarketing" */ './identity/emailAndMarketing/EmailAndMarketing'
@@ -347,6 +353,12 @@ const MMARouter = () => {
 							path="/email-prefs"
 							element={<EmailAndMarketing />}
 						/>
+						{getFeatureSwitches().savedArticles && (
+							<Route
+								path="/saved-articles"
+								element={<SavedArticles />}
+							/>
+						)}
 						<Route
 							path="/public-settings"
 							element={<PublicProfile />}
@@ -355,7 +367,7 @@ const MMARouter = () => {
 							path="/account-settings"
 							element={<Settings />}
 						/>
-						{featureSwitches.productSwitching &&
+						{getFeatureSwitches().productSwitching &&
 							[
 								{ path: '/switch', fromApp: false },
 								{ path: '/app/switch', fromApp: true },

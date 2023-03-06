@@ -98,6 +98,11 @@ const MMALocationObjectArr: LocationObject[] = [
 		selectedNavItem: NAV_LINKS.emailPrefs,
 	},
 	{
+		title: 'Saved articles',
+		path: '/saved-articles',
+		selectedNavItem: NAV_LINKS.savedArticles,
+	},
+	{
 		title: 'Edit your profile',
 		path: '/public-settings',
 		selectedNavItem: NAV_LINKS.profile,

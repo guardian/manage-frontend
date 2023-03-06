@@ -30,6 +30,7 @@ declare global {
 	interface Window {
 		guardian: Globals;
 		embedded_svc: any;
+		Cypress: unknown;
 	}
 }
 
