@@ -1,6 +1,7 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
+import { featureSwitches } from '../../../../../shared/featureSwitches';
 import { consents } from '../../../../fixtures/consents';
 import { InAppPurchase } from '../../../../fixtures/inAppPurchase';
 import { newsletters } from '../../../../fixtures/newsletters';
@@ -68,6 +69,8 @@ export const WithNoProducts: ComponentStory<typeof EmailAndMarketing> = () => {
 };
 
 export const WithIAP: ComponentStory<typeof EmailAndMarketing> = () => {
+	featureSwitches['appSubscriptions'] = true;
+
 	fetchMock
 		.restore()
 		.get('/api/me/mma', {
