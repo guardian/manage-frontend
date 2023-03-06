@@ -76,9 +76,9 @@ ${until.tablet} {
 };
 `;
 
-const subHeadingBorderTopCss = `
-border-top: 1px solid ${neutral['86']};
-margin: 50px 0 ${space[5]}px;
+const subHeadingBorderTopCss = css`
+	border-top: 1px solid ${neutral['86']};
+	margin: ${space[12]}px 0 ${space[5]}px;
 `;
 
 function decorateProductDetailWithInvoices(
@@ -305,7 +305,31 @@ function renderProductBillingInfo([mmaCategory, productDetails]: [
 }
 
 function renderInAppPurchase(value: AppSubscription) {
-	return <div key={value.subscriptionId}>todo</div>;
+	return (
+		<div css={subHeadingBorderTopCss} key={value.subscriptionId}>
+			<h2
+				css={css`
+					${subHeadingTitleCss}
+					margin: 0;
+				`}
+			>
+				App Subscription
+			</h2>
+			<div
+				css={css`
+					${textSans.medium()};
+					border: 1px solid ${neutral[20]};
+					display: flex;
+					flex-wrap: wrap;
+					margin: ${space[5]}px 0;
+					padding: ${space[3]}px;
+				`}
+			>
+				To change your payment setup, please contact Apple (for iOS), or
+				Google (for Android).
+			</div>
+		</div>
+	);
 }
 
 function BillingDetailsComponent(props: {
@@ -350,7 +374,10 @@ const BillingPage = () => {
 	const { allProductDetails, mmaCategoryToProductDetails } =
 		joinInvoicesWithProductsInCategories(mdapiObject, invoicesResponse);
 
-	if (allProductDetails.length === 0 && appSubscriptions.length === 0) {
+	if (
+		(allProductDetails.length === 0 && appSubscriptions.length === 0) ||
+		(allProductDetails.length === 0 && !featureSwitches.appSubscriptions)
+	) {
 		return <EmptyAccountOverview />;
 	}
 

@@ -3,6 +3,7 @@ import { SoftOptInIDs } from './softOptInIDs';
 export interface AppSubscription {
 	subscriptionId: string;
 	cancellationTimestamp?: string;
+	from: string;
 	valid: boolean;
 }
 

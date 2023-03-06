@@ -1,16 +1,17 @@
 import { createRef, useEffect, useState } from 'react';
+import { featureSwitches } from '../../../../../shared/featureSwitches';
 import type {
 	AppSubscription,
-	MPAPIResponse} from '../../../../../shared/mpapiResponse';
+	MPAPIResponse,
+} from '../../../../../shared/mpapiResponse';
 import {
 	AppSubscriptionSoftOptInIds,
-	isValidAppSubscription
+	isValidAppSubscription,
 } from '../../../../../shared/mpapiResponse';
-import type {
-	ProductDetail} from '../../../../../shared/productResponse';
+import type { ProductDetail } from '../../../../../shared/productResponse';
 import {
 	isProduct,
-	mdapiResponseReader
+	mdapiResponseReader,
 } from '../../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
@@ -96,10 +97,11 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 									productDetails,
 									consent,
 							  ) ||
-							  userHasAppSubscriptionWithConsent(
+							  (userHasAppSubscriptionWithConsent(
 									appSubscriptions,
 									consent,
-							  )
+							  ) &&
+									featureSwitches.appSubscriptions)
 							: true,
 				);
 
