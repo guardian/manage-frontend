@@ -10,6 +10,8 @@ import { Stack } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
 import { featureSwitches } from '../../../../shared/featureSwitches';
+import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
+import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
 	MembersDataApiItem,
@@ -38,11 +40,27 @@ import { AccountOverviewCancelledCard } from './AccountOverviewCancelledCard';
 import { AccountOverviewCard } from './AccountOverviewCard';
 import { AccountOverviewCardV2 } from './AccountOverviewCardV2';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
+import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 
-const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
+const subHeadingCss = css`
+	margin: ${space[12]}px 0 ${space[6]}px;
+	border-top: 1px solid ${neutral['86']};
+	${headline.small({ fontWeight: 'bold' })};
+	${until.tablet} {
+		font-size: 1.25rem;
+		line-height: 1.6;
+	}
+`;
+
+const AccountOverviewRenderer = ([
+	mdapiObject,
+	cancelledProductsResponse,
+	mpapiResponse,
+]: [
 	MembersDataApiResponse | MembersDataApiItem[],
 	CancelledProductDetail[],
+	MPAPIResponse,
 ]) => {
 	const mdaResponse = mdapiResponseReader(mdapiObject);
 
@@ -65,7 +83,16 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 		)
 		.filter((value, index, self) => self.indexOf(value) === index);
 
-	if (allActiveProductDetails.length === 0) {
+	const appSubscriptions = mpapiResponse.subscriptions.filter(
+		isValidAppSubscription,
+	);
+
+	if (
+		(allActiveProductDetails.length === 0 &&
+			appSubscriptions.length === 0) ||
+		(allActiveProductDetails.length === 0 &&
+			!featureSwitches.appSubscriptions)
+	) {
 		return <EmptyAccountOverview />;
 	}
 
@@ -84,16 +111,6 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 	const isEligibleToSwitch =
 		!maybeFirstPaymentFailure && !hasDigiSubAndContribution;
 
-	const subHeadingCss = css`
-		margin: ${space[12]}px 0 ${space[6]}px;
-		border-top: 1px solid ${neutral['86']};
-		${headline.small({ fontWeight: 'bold' })};
-		${until.tablet} {
-			font-size: 1.25rem;
-			line-height: 1.6;
-		}
-	`;
-
 	return (
 		<>
 			<PersonalisedHeader mdapiResponse={mdaResponse} />
@@ -101,6 +118,20 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}
 			/>
+
+			{featureSwitches.appSubscriptions && appSubscriptions.length > 0 && (
+				<>
+					<h2 css={subHeadingCss}>App Subscriptions</h2>
+					<Stack space={6}>
+						{appSubscriptions.map((subscription) => (
+							<InAppPurchaseCard
+								key={subscription.subscriptionId}
+								inAppPurchase={subscription}
+							/>
+						))}
+					</Stack>
+				</>
+			)}
 			{productCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
@@ -200,11 +231,12 @@ export const AccountOverview = () => {
 };
 
 class AccountOverviewAsyncLoader extends AsyncLoader<
-	[MembersDataApiResponse, CancelledProductDetail[]]
+	[MembersDataApiResponse, CancelledProductDetail[], MPAPIResponse]
 > {}
 
 const AccountOverviewFetcher = () =>
 	Promise.all([
 		allProductsDetailFetcher(),
 		fetchWithDefaultParameters('/api/cancelled/'),
+		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions'),
 	]);

@@ -3,6 +3,10 @@ import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import {
+	CancelledInAppPurchase,
+	InAppPurchase,
+} from '../../../fixtures/inAppPurchase';
+import {
 	contributionPayPal,
 	digitalDD,
 	guardianWeeklyCard,
@@ -26,6 +30,9 @@ export const NoSubscription: ComponentStory<typeof AccountOverview> = () => {
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: { subscriptions: [] },
+		})
 		.get('/api/me/mma', { body: toMembersDataApiResponse() })
 		.get('/idapi/user', { body: user });
 
@@ -36,6 +43,9 @@ export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: { subscriptions: [] },
+		})
 		.get('/api/me/mma', {
 			body: toMembersDataApiResponse(
 				guardianWeeklyCard,
@@ -55,6 +65,9 @@ export const WithContributionNewLayout: ComponentStory<
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: { subscriptions: [] },
+		})
 		.get('/api/me/mma', {
 			body: [contributionPayPal],
 		});
@@ -74,6 +87,9 @@ export const WithContributionNewLayoutPaymentFailure: ComponentStory<
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: { subscriptions: [] },
+		})
 		.get('/api/me/mma', {
 			body: toMembersDataApiResponse(
 				contributionPaymentFailure,
@@ -92,9 +108,55 @@ export const WithContributionNewLayoutDigisubAndContribution: ComponentStory<
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: { subscriptions: [] },
+		})
 		.get('/api/me/mma', {
 			body: [contributionPayPal, digitalDD],
 		});
+
+	return <AccountOverview />;
+};
+
+export const WithIAP: ComponentStory<typeof AccountOverview> = () => {
+	fetchMock
+		.restore()
+		.get('/api/cancelled/', { body: [] })
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: { subscriptions: [InAppPurchase] },
+		})
+		.get('/api/me/mma', { body: toMembersDataApiResponse(digitalDD) })
+		.get('/idapi/user', { body: user });
+
+	return <AccountOverview />;
+};
+
+export const WithCancelledIAP: ComponentStory<typeof AccountOverview> = () => {
+	fetchMock
+		.restore()
+		.get('/api/cancelled/', { body: [] })
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: { subscriptions: [CancelledInAppPurchase] },
+		})
+		.get('/api/me/mma', { body: toMembersDataApiResponse() })
+		.get('/idapi/user', { body: user });
+
+	return <AccountOverview />;
+};
+
+export const WithOneCancelledAndOneNotCancelledIAP: ComponentStory<
+	typeof AccountOverview
+> = () => {
+	fetchMock
+		.restore()
+		.get('/api/cancelled/', { body: [] })
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: {
+				subscriptions: [CancelledInAppPurchase, InAppPurchase],
+			},
+		})
+		.get('/api/me/mma', { body: toMembersDataApiResponse() })
+		.get('/idapi/user', { body: user });
 
 	return <AccountOverview />;
 };

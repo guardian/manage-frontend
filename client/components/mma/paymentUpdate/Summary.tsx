@@ -99,7 +99,7 @@ export const InfoSummary = ({
 			<SvgInfoRound />
 		</div>
 		<div css={messageWrapperStyles}>
-			<div css={messageStyles(palette.neutral[100])}>{message}</div>
+			<div css={messageStyles(palette.neutral[7])}>{message}</div>
 			{context && <div css={contextStyles}>{context}</div>}
 		</div>
 	</div>

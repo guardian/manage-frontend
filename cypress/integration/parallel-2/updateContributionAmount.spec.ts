@@ -29,6 +29,11 @@ describe('Update contribution amount', () => {
 			body: [contributionCard],
 		});
 
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		});
+
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,
 			body: [],
