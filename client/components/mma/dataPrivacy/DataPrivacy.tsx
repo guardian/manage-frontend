@@ -242,8 +242,8 @@ export const DataPrivacy = () => {
 			selectedNavItem={NAV_LINKS.dataPrivacy}
 			pageTitle="Data privacy"
 		>
-			{loading ? loader : content()}
 			{state.error ? errorMessage : null}
+			{loading ? (!state.error ? loader : null) : content()}
 		</PageContainer>
 	);
 };
