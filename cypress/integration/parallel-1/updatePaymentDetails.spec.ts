@@ -27,6 +27,11 @@ describe('Update payment details', () => {
 			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('refetch_subscription');
 
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
 		cy.intercept('GET', 'api/invoices', {
 			statusCode: 200,
 			body: { invoices: [] },
@@ -55,6 +60,7 @@ describe('Update payment details', () => {
 		cy.visit('/billing');
 		cy.wait('@product_detail');
 		cy.wait('@invoices');
+		cy.wait('@mobile_subscriptions');
 
 		cy.findByText('Update payment method').click();
 

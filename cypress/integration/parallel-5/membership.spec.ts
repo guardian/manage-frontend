@@ -13,6 +13,11 @@ describe('membership test', () => {
 			body: toMembersDataApiResponse(membership),
 		}).as('product_detail');
 
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(membership),
@@ -28,6 +33,7 @@ describe('membership test', () => {
 		cy.visit('/');
 
 		cy.wait('@product_detail');
+		cy.wait('@mobile_subscriptions');
 
 		cy.findByText('Staff Membership');
 	});
@@ -50,6 +56,7 @@ describe('membership test', () => {
 
 		cy.wait('@product_detail');
 		cy.wait('@invoices');
+		cy.wait('@mobile_subscriptions');
 
 		cy.findAllByText('Billing').should('have.length', 2);
 	});

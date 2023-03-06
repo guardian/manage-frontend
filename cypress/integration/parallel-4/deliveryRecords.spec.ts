@@ -56,6 +56,11 @@ describe('Delivery records', () => {
 			),
 		}).as('mma');
 
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,
 			body: [],
@@ -73,6 +78,7 @@ describe('Delivery records', () => {
 		cy.visit('/');
 		cy.wait('@mma');
 		cy.wait('@cancelled');
+		cy.wait('@mobile_subscriptions');
 		cy.findAllByText('Manage subscription').eq(1).click();
 		cy.findByText(secondarySubscriptionId).should('exist');
 		cy.findByText('Manage delivery history').click();

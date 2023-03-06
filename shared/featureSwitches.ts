@@ -27,4 +27,5 @@ export const featureSwitches: Record<string, boolean> = {
 	cancellationProductSwitch: false,
 	accountOverviewNewLayout: false,
 	productSwitching: true,
+	appSubscriptions: false,
 };

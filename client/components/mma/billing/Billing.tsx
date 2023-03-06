@@ -10,6 +10,12 @@ import {
 } from '@guardian/source-foundations';
 import { Fragment } from 'react';
 import { parseDate } from '../../../../shared/dates';
+import { featureSwitches } from '../../../../shared/featureSwitches';
+import type {
+	AppSubscription,
+	MPAPIResponse,
+} from '../../../../shared/mpapiResponse';
+import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
 	InvoiceDataApiItem,
 	MembersDataApiResponse,
@@ -57,6 +63,7 @@ type MMACategoryToProductDetails = {
 type BillingResponse = [
 	MembersDataApiResponse,
 	{ invoices: InvoiceDataApiItem[] },
+	MPAPIResponse,
 ];
 
 const subHeadingTitleCss = `
@@ -77,6 +84,7 @@ function decorateProductDetailWithInvoices(
 ): ProductDetailWithInvoice {
 	return { ...productDetail, invoices: [] };
 }
+
 function joinInvoicesWithProductsInCategories(
 	mdapiObject: MembersDataApiResponse,
 	invoicesResponse: { invoices: InvoiceDataApiItem[] },
@@ -294,6 +302,10 @@ function renderProductBillingInfo([mmaCategory, productDetails]: [
 	);
 }
 
+function renderInAppPurchase(value: AppSubscription) {
+	return <div key={value.subscriptionId}>todo</div>;
+}
+
 function BillingDetailsComponent(props: {
 	mmaCategoryToProductDetails: MMACategoryToProductDetails;
 }) {
@@ -327,13 +339,16 @@ const BillingPage = () => {
 		return <GenericErrorScreen />;
 	}
 
-	const [mdapiResponse, invoicesResponse] = billingResponse;
+	const [mdapiResponse, invoicesResponse, mpapiResponse] = billingResponse;
 	const mdapiObject = mdapiResponse;
+	const appSubscriptions = mpapiResponse.subscriptions.filter(
+		isValidAppSubscription,
+	);
 
 	const { allProductDetails, mmaCategoryToProductDetails } =
 		joinInvoicesWithProductsInCategories(mdapiObject, invoicesResponse);
 
-	if (allProductDetails.length === 0) {
+	if (allProductDetails.length === 0 && appSubscriptions.length === 0) {
 		return <EmptyAccountOverview />;
 	}
 
@@ -342,6 +357,9 @@ const BillingPage = () => {
 			<PaymentFailureAlertIfApplicable
 				productDetails={allProductDetails}
 			/>
+			{featureSwitches.appSubscriptions &&
+				appSubscriptions.map(renderInAppPurchase)}
+
 			<BillingDetailsComponent
 				mmaCategoryToProductDetails={mmaCategoryToProductDetails}
 			/>
@@ -353,6 +371,7 @@ const billingFetcher = () =>
 	Promise.all([
 		allProductsDetailFetcher(),
 		fetchWithDefaultParameters('/api/invoices'),
+		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions'),
 	]);
 
 export const Billing = () => {

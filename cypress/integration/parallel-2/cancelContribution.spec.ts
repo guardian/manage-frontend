@@ -57,11 +57,15 @@ describe('Cancel contribution', () => {
 			body: toMembersDataApiResponse(contributionCard),
 		});
 
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		});
+
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(),
 		}).as('new_product_detail');
-
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,
 			body: [],
