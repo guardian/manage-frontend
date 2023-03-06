@@ -88,7 +88,7 @@ export const ProductCard = ({
 
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
-		throw new Error('mainPlan does not exist in accountOverviewCard');
+		throw new Error('mainPlan does not exist in ProductCard');
 	}
 
 	const groupedProductType = GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];

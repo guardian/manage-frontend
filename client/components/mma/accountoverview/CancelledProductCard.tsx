@@ -6,10 +6,11 @@ import {
 	space,
 	textSans,
 } from '@guardian/source-foundations';
-import { Stack } from '@guardian/source-react-components';
+import { LinkButton, Stack } from '@guardian/source-react-components';
 import { parseDate } from '../../../../shared/dates';
 import type { CancelledProductDetail } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { trackEvent } from '../../../utilities/analytics';
 import { InfoSummary } from '../paymentUpdate/Summary';
 import { Card } from '../shared/Card';
 import { productCardConfiguration } from './ProductCardConfiguration';
@@ -25,6 +26,10 @@ export const CancelledProductCard = ({
 
 	const cardConfig =
 		productCardConfiguration[specificProductType.productType];
+
+	const showSubscribeAgainButton =
+		productDetail.mmaCategory !== 'membership' &&
+		productDetail.mmaCategory !== 'recurringSupport';
 
 	const sectionHeadingCss = css`
 		${textSans.medium({ fontWeight: 'bold' })};
@@ -156,7 +161,25 @@ export const CancelledProductCard = ({
 							</dl>
 						</div>
 						<div css={buttonLayoutCss}>
-							{/* TODO: Resubscribe button */}
+							{showSubscribeAgainButton && (
+								<LinkButton
+									href="https://support.theguardian.com/uk/subscribe"
+									size="small"
+									cssOverrides={css`
+										justify-content: center;
+									`}
+									priority="primary"
+									onClick={() => {
+										trackEvent({
+											eventCategory: 'href',
+											eventAction: 'click',
+											eventLabel: 'subscribe_again',
+										});
+									}}
+								>
+									Subscribe again
+								</LinkButton>
+							)}
 						</div>
 					</div>
 				</Card.Section>
