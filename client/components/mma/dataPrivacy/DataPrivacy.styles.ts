@@ -6,7 +6,9 @@ export const dataPrivacyHeadingCss = css`
 `;
 
 export const dataPrivacyParagraphCss = css`
-	margin: 0;
+	/* margin: 0; */
+	margin-bottom: 0.5rem;
+	margin-top: 0.5rem;
 `;
 
 export const dataPrivacyUnorderedListCss = css`
