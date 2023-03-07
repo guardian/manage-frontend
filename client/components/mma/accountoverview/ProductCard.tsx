@@ -12,7 +12,11 @@ import {
 	Stack,
 } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
-import { cancellationFormatDate, parseDate } from '../../../../shared/dates';
+import {
+	cancellationFormatDate,
+	DATE_FNS_LONG_OUTPUT_FORMAT,
+	parseDate,
+} from '../../../../shared/dates';
 import type {
 	MembersDataApiUser,
 	ProductDetail,
@@ -217,6 +221,7 @@ export const ProductCard = ({
 								{cancellationFormatDate(
 									productDetail.subscription
 										.cancellationEffectiveDate,
+									DATE_FNS_LONG_OUTPUT_FORMAT,
 								)}
 							</strong>
 						</>
