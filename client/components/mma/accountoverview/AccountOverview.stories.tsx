@@ -18,6 +18,7 @@ import {
 	guardianWeeklyCard,
 	newspaperVoucherPaypal,
 	supporterPlus,
+	supporterPlusCancelled,
 	toMembersDataApiResponse,
 } from '../../../fixtures/productDetail';
 import { user } from '../../../fixtures/user';
@@ -131,11 +132,15 @@ export const WithCancellationsNewLayout: ComponentStory<
 
 	fetchMock
 		.restore()
+		.get('/api/me/mma', {
+			body: [
+				contributionCancelled,
+				guardianWeeklyCancelled,
+				supporterPlusCancelled,
+			],
+		})
 		.get('/api/cancelled/', {
 			body: [cancelledContribution, cancelledGuardianWeekly],
-		})
-		.get('/api/me/mma', {
-			body: [contributionCancelled, guardianWeeklyCancelled],
 		})
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
