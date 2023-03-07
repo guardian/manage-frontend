@@ -126,6 +126,11 @@ export const ProductCard = ({
 		isEligibleToSwitch &&
 		specificProductType.productType === 'contributions';
 
+	const productBenefits =
+		specificProductType.productType === 'supporterplus'
+			? 'supporter benefits'
+			: groupedProductType.friendlyName();
+
 	const cardConfig =
 		productCardConfiguration[specificProductType.productType];
 
@@ -207,8 +212,7 @@ export const ProductCard = ({
 					message={`Your ${groupedProductType.friendlyName()} has been cancelled`}
 					context={
 						<>
-							You are able to access your{' '}
-							{groupedProductType.friendlyName()} until{' '}
+							You are able to access your {productBenefits} until{' '}
 							<strong>
 								{cancellationFormatDate(
 									productDetail.subscription
