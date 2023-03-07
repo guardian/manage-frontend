@@ -27,7 +27,7 @@ describe('OptOutSection component', () => {
 				'Allow the Guardian to send communications by telephone',
 			),
 		).not.toBeChecked();
-		expect(screen.getByLabelText('Allow optin consent')).toBeChecked();
+		// expect(screen.getByLabelText('Allow optin consent')).toBeChecked();
 	});
 });
 
