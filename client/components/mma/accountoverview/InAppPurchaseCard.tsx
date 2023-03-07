@@ -22,12 +22,10 @@ const summaryLinkCss = css`
 	text-decoration: underline;
 `;
 
-const cancelledAppSubscriptionMessage = (cancellationTimestamp: string) => {
+const cancelledAppSubscriptionMessage = () => {
 	return (
 		<>
-			Your app subscription was cancelled in{' '}
-			{dateString(new Date(cancellationTimestamp), 'MMMM yyyy')}. If you
-			would like to fund Guardian journalism again, please{' '}
+			If you would like to fund Guardian journalism again, please{' '}
 			<a css={summaryLinkCss} href="https://support.theguardian.com/">
 				support us today
 			</a>
@@ -44,9 +42,11 @@ export const InAppPurchaseCard = ({
 		<Stack space={3}>
 			{inAppPurchase.cancellationTimestamp && (
 				<InfoSummary
-					message={cancelledAppSubscriptionMessage(
-						inAppPurchase.cancellationTimestamp,
-					)}
+					message={`Your app subscription was cancelled in ${dateString(
+						new Date(inAppPurchase.cancellationTimestamp),
+						'MMMM yyyy',
+					)}.`}
+					context={cancelledAppSubscriptionMessage()}
 				/>
 			)}
 			<Card>

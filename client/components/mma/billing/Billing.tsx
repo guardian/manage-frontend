@@ -319,8 +319,6 @@ function renderInAppPurchase(value: AppSubscription) {
 				css={css`
 					${textSans.medium()};
 					border: 1px solid ${neutral[20]};
-					display: flex;
-					flex-wrap: wrap;
 					margin: ${space[5]}px 0;
 					padding: ${space[3]}px;
 				`}

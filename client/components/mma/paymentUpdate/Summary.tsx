@@ -12,7 +12,7 @@ interface SummaryProps {
 	 * The main message of the component
 	 * e.g. the main error message, success message etc.
 	 */
-	message: React.ReactNode;
+	message: string;
 	/**
 	 * Optional context information about the message
 	 */
