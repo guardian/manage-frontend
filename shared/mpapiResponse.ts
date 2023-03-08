@@ -1,6 +1,9 @@
+import { SoftOptInIDs } from './softOptInIDs';
+
 export interface AppSubscription {
 	subscriptionId: string;
 	cancellationTimestamp?: string;
+	from: string;
 	valid: boolean;
 }
 
@@ -11,3 +14,9 @@ export interface MPAPIResponse {
 export function isValidAppSubscription(subscription: AppSubscription) {
 	return subscription.valid;
 }
+
+export const AppSubscriptionSoftOptInIds: string[] = [
+	SoftOptInIDs.SupportOnboarding,
+	SoftOptInIDs.SimilarProducts,
+	SoftOptInIDs.SupporterNewsletter,
+];

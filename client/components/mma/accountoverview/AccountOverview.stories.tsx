@@ -118,35 +118,11 @@ export const WithContributionNewLayoutDigisubAndContribution: ComponentStory<
 	return <AccountOverview />;
 };
 
-export const WithIAP: ComponentStory<typeof AccountOverview> = () => {
-	fetchMock
-		.restore()
-		.get('/api/cancelled/', { body: [] })
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [InAppPurchase] },
-		})
-		.get('/api/me/mma', { body: toMembersDataApiResponse(digitalDD) })
-		.get('/idapi/user', { body: user });
-
-	return <AccountOverview />;
-};
-
-export const WithCancelledIAP: ComponentStory<typeof AccountOverview> = () => {
-	fetchMock
-		.restore()
-		.get('/api/cancelled/', { body: [] })
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [CancelledInAppPurchase] },
-		})
-		.get('/api/me/mma', { body: toMembersDataApiResponse() })
-		.get('/idapi/user', { body: user });
-
-	return <AccountOverview />;
-};
-
-export const WithOneCancelledAndOneNotCancelledIAP: ComponentStory<
+export const WithAppSubscriptions: ComponentStory<
 	typeof AccountOverview
 > = () => {
+	featureSwitches['appSubscriptions'] = true;
+
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })
