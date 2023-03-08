@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { from, headline, palette } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
+import { dateString } from '../../../../shared/dates';
 import type { AppSubscription } from '../../../../shared/mpapiResponse';
 import { InfoSummary } from '../paymentUpdate/Summary';
 import { Card } from '../shared/Card';
@@ -16,13 +17,37 @@ const productTitleCss = css`
 	}
 `;
 
-export const InAppPurchaseCard = (props: {
+const summaryLinkCss = css`
+	color: currentColor;
+	text-decoration: underline;
+`;
+
+const cancelledAppSubscriptionMessage = () => {
+	return (
+		<>
+			If you would like to fund Guardian journalism again, please{' '}
+			<a css={summaryLinkCss} href="https://support.theguardian.com/">
+				support us today
+			</a>
+		</>
+	);
+};
+
+export const InAppPurchaseCard = ({
+	inAppPurchase,
+}: {
 	inAppPurchase: AppSubscription;
 }) => {
 	return (
 		<Stack space={3}>
-			{props.inAppPurchase.cancellationTimestamp && (
-				<InfoSummary message="ToDo: Your App Subscription Was cancelled" />
+			{inAppPurchase.cancellationTimestamp && (
+				<InfoSummary
+					message={`Your app subscription was cancelled in ${dateString(
+						new Date(inAppPurchase.cancellationTimestamp),
+						'MMMM yyyy',
+					)}.`}
+					context={cancelledAppSubscriptionMessage()}
+				/>
 			)}
 			<Card>
 				<Card.Header
@@ -31,7 +56,11 @@ export const InAppPurchaseCard = (props: {
 				>
 					<h3 css={productTitleCss}>App Subscription</h3>
 				</Card.Header>
-				<Card.Section>you have it</Card.Section>
+				<Card.Section>
+					Your subscription started in{' '}
+					{dateString(new Date(inAppPurchase.from), 'MMMM yyyy')}.
+					Thank you for supporting the Guardian.
+				</Card.Section>
 			</Card>
 		</Stack>
 	);
