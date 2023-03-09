@@ -8,7 +8,7 @@ import type { ConsentOption } from '../models';
 import { PageSection } from '../PageSection';
 // import { standardSansText, toggleDescriptionPadding } from '../sharedStyles';
 
-type ClickHandler = (id: string) => {};
+export type ClickHandler = (id: string) => {};
 
 interface OptOutSectionProps {
 	consents: ConsentOption[];

@@ -1,5 +1,4 @@
 import type { CMP } from '@guardian/consent-management-platform/dist/types';
-import { brand } from '@guardian/source-foundations';
 import { useEffect, useState } from 'react';
 import type {
 	MembersDataApiItem,
@@ -18,23 +17,16 @@ import {
 import { allProductsDetailFetcher } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
-import { optOutFinder } from '../identity/emailAndMarketing/OptOutSection';
 import * as UserAPI from '../identity/idapi/user';
 import { ConsentOptions, mapSubscriptions } from '../identity/identity';
 import { Lines } from '../identity/Lines';
 import type { ConsentOption } from '../identity/models';
-import { aCss } from '../identity/sharedStyles';
 import { Actions, useConsentOptions } from '../identity/useConsentOptions';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
-import { Button } from '../shared/Buttons';
-import {
-	dataPrivacyHeadingCss,
-	dataPrivacyMarketingToggleCss,
-	dataPrivacyParagraphCss,
-	dataPrivacyUnorderedListCss,
-	dataPrivacyVideoCss,
-} from './DataPrivacy.styles';
+import { CookiesOnThisBrowserSection } from './CookiesOnTheBrowserSection';
+import { LearnMoreSection } from './LearnMoreSection';
+import { YourDataSection } from './YourDataSection';
 
 type DataPrivacyResponse = [
 	MembersDataApiResponse | MembersDataApiItem[],
@@ -78,7 +70,10 @@ export const DataPrivacyPage = () => {
 		const [productDetailsResponse, consentOptions, userResponse] = response;
 		const user = UserAPI.toUser(userResponse);
 
+		console.log('consentOptions', consentOptions);
+
 		const consentOpt = mapSubscriptions(user.consents, consentOptions);
+		console.log('consentOpt', consentOpt);
 
 		const productDetails = mdapiResponseReader(
 			productDetailsResponse,
@@ -101,11 +96,17 @@ export const DataPrivacyPage = () => {
 					  })
 					: true,
 		);
+		console.log(
+			'consentsWithFilteredSoftOptIns',
+			consentsWithFilteredSoftOptIns,
+		);
 
 		dispatch(options(consentsWithFilteredSoftOptIns));
 	};
 
 	const consents = ConsentOptions.consents(state.options);
+	console.log('CCC', consents);
+	console.log('OPTION', state.options);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
@@ -137,114 +138,50 @@ export const DataPrivacyPage = () => {
 		}
 	};
 
-	const addMarketingToggleElement = optOutFinder(
-		consents,
-		toggleConsentSubscription,
-		dataPrivacyMarketingToggleCss,
-	);
-
 	const openManageCookies = () => {
 		importedCmp?.showPrivacyManager();
 	};
 
-	const yourDataSection = (
-		<>
-			<h3 css={dataPrivacyHeadingCss}>Your Data</h3>
-			<p css={dataPrivacyParagraphCss}>What we mean by your data</p>
-			<ul css={dataPrivacyUnorderedListCss}>
-				<li> Information you provide such as your email address</li>
-				<li> Products or services you buy from us</li>
-				<li>
-					{' '}
-					Pages you view on theguardian.com or other Guardian websites
-					when signed in
-				</li>
-			</ul>
-			<Lines n={1} />
-			{addMarketingToggleElement('profiling_optout')}
-			<Lines n={1} />
-			{addMarketingToggleElement('personalised_advertising')}
+	// const learnMoreSection = (
+	// 	<>
+	// 		<h3 css={dataPrivacyHeadingCss}>
+	// 			Learn more about our privacy policy
+	// 		</h3>
+	// 		<video
+	// 			controls
+	// 			css={dataPrivacyVideoCss}
+	// 			src="https://uploads.guim.co.uk/2019%2F30%2F26%2FThe+Guardian%27s+privacy+policy+%E2%80%93+video--7d3a7f3f-bc23-4e9d-9566-ea1f8ada5954-1.mp4"
+	// 		/>
 
-			<p css={dataPrivacyParagraphCss}>
-				Advertising is a crucial source of our funding. You won't see
-				more ads, and your data won't be shared with third parties to
-				use for their own advertising
-			</p>
-			<p css={dataPrivacyParagraphCss}>We do this by:</p>
-			<ul css={dataPrivacyUnorderedListCss}>
-				<li>
-					{' '}
-					analysing your information to predict what you might be
-					interested in
-				</li>
-				<li>
-					{' '}
-					checking if you are already a customer of other trusted
-					partners.
-				</li>
-			</ul>
-		</>
-	);
+	// 		<Lines n={1} />
 
-	const cookiesOnThisBrowserSection = (
-		<>
-			<h3 css={dataPrivacyHeadingCss}>Cookies on this browser</h3>
-			<p css={dataPrivacyParagraphCss}>
-				{' '}
-				When we make the Guardian available for you online, we use
-				cookies and similar technologies to help us to do this. Some are
-				necessary to help our website work properly and can’s be
-				switched off, and some are optional but support the Guardian and
-				your experience in other ways.
-			</p>
-			<Button
-				disabled={false}
-				text="Manage cookies on this browser"
-				type="button"
-				colour={brand[400]}
-				onClick={() => openManageCookies()}
-				fontWeight="bold"
-			/>
-		</>
-	);
-
-	const learnMoreSection = (
-		<>
-			<h3 css={dataPrivacyHeadingCss}>
-				Learn more about our privacy policy
-			</h3>
-			<video
-				controls
-				css={dataPrivacyVideoCss}
-				src="https://uploads.guim.co.uk/2019%2F30%2F26%2FThe+Guardian%27s+privacy+policy+%E2%80%93+video--7d3a7f3f-bc23-4e9d-9566-ea1f8ada5954-1.mp4"
-			/>
-
-			<Lines n={1} />
-
-			<p css={dataPrivacyParagraphCss}>
-				For more information about how we use your data, visit our&nbsp;
-				<a
-					css={aCss}
-					target="_blank"
-					href={'https://www.theguardian.com/info/privacy'}
-					rel="noreferrer"
-				>
-					privacy policy
-				</a>{' '}
-				guide
-			</p>
-		</>
-	);
+	// 		<p css={dataPrivacyParagraphCss}>
+	// 			For more information about how we use your data, visit our&nbsp;
+	// 			<a
+	// 				css={aCss}
+	// 				target="_blank"
+	// 				href={'https://www.theguardian.com/info/privacy'}
+	// 				rel="noreferrer"
+	// 			>
+	// 				privacy policy
+	// 			</a>{' '}
+	// 			guide
+	// 		</p>
+	// 	</>
+	// );
 
 	const content = () => (
 		<>
 			<WithStandardTopMargin>
 				<Lines n={1} />
-				{yourDataSection}
+				<YourDataSection
+					consents={consents}
+					toggleConsent={toggleConsentSubscription}
+				/>
 				<Lines n={1} />
-				{cookiesOnThisBrowserSection}
+				<CookiesOnThisBrowserSection onClick={openManageCookies} />
 				<Lines n={1} />
-				{learnMoreSection}
+				<LearnMoreSection />
 			</WithStandardTopMargin>
 		</>
 	);
