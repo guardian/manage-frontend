@@ -97,8 +97,8 @@ const handleMembersDataResponse =
 		publicationsImpacted: HolidayStopDetail[],
 		setPublicationsImpacted: Dispatch<SetStateAction<HolidayStopDetail[]>>,
 	) =>
-	(data: MembersDataApiResponse) => {
-		const filteredProductDetails = data.products.filter(isProduct);
+	(mdapiResponse: MembersDataApiResponse) => {
+		const filteredProductDetails = mdapiResponse.products.filter(isProduct);
 
 		if (filteredProductDetails.length === 1) {
 			const productDetail = filteredProductDetails[0];

@@ -73,11 +73,11 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 					window.location.assign(IdentityLocations.VERIFY_EMAIL);
 					return;
 				}
-				const membersDataApiResponse: MembersDataApiResponse = await (
+				const mdapiResponse: MembersDataApiResponse = await (
 					await allProductsDetailFetcher()
 				).json();
 				const productDetails =
-					membersDataApiResponse.products as ProductDetail[];
+					mdapiResponse.products as ProductDetail[];
 
 				const mpapiResponse = (await (
 					await fetchWithDefaultParameters(

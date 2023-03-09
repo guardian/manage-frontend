@@ -93,8 +93,8 @@ export const DeliveryRecordsContainer = (
 
 const handleMembersDataResponse =
 	(productType: ProductTypeWithDeliveryRecordsProperties) =>
-	(data: MembersDataApiResponse) => {
-		const filteredProductDetails = data.products.filter(isProduct);
+	(mdapiResponse: MembersDataApiResponse) => {
+		const filteredProductDetails = mdapiResponse.products.filter(isProduct);
 
 		if (filteredProductDetails.length === 1) {
 			const productDetail = filteredProductDetails[0];

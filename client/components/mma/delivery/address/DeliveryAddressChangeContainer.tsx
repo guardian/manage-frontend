@@ -33,12 +33,11 @@ interface ContextAndOutletContainerProps {
 }
 
 const renderContextAndOutletContainer =
-	(productType: ProductType) =>
-	(allProductDetails: MembersDataApiResponse) => {
+	(productType: ProductType) => (mdapiResponse: MembersDataApiResponse) => {
 		return (
 			<ContextAndOutletContainer
 				contactIdToArrayOfProductDetailAndProductType={getValidDeliveryAddressChangeEffectiveDates(
-					allProductDetails.products
+					mdapiResponse.products
 						.filter(isProduct)
 						.filter((_) => _.subscription.readerType !== 'Gift'),
 				)}

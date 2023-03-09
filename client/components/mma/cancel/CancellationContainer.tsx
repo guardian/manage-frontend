@@ -31,10 +31,8 @@ import type {
 } from './productSwitch/productSwitchApi';
 
 const renderSingleProductOrReturnToAccountOverview =
-	(productType: ProductType) => (data: MembersDataApiResponse) => {
-		const mdaResponse = data;
-
-		const filteredProductDetails = mdaResponse.products
+	(productType: ProductType) => (mdapiResponse: MembersDataApiResponse) => {
+		const filteredProductDetails = mdapiResponse.products
 			.filter(isProduct)
 			.filter((productDetail) => !productDetail.subscription.cancelledAt);
 

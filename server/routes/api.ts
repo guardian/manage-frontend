@@ -46,12 +46,12 @@ router.get(
 	'/me/mma/:subscriptionName?',
 	customMembersDataApiHandler((response, body) => {
 		const isTestUser = response.getHeader(MDA_TEST_USER_HEADER) === 'true';
-		const parsedResponse = JSON.parse(
+		const mdapiResponse = JSON.parse(
 			body.toString(),
 		) as MembersDataApiResponse;
-		const augmentedWithTestUser = parsedResponse.products.map(
-			(mdaItem) => ({
-				...mdaItem,
+		const augmentedWithTestUser = mdapiResponse.products.map(
+			(mdapiObject) => ({
+				...mdapiObject,
 				isTestUser,
 			}),
 		);
@@ -64,15 +64,15 @@ router.get(
 				),
 		)
 			.then((productDetails) => {
-				parsedResponse.products = productDetails;
-				response.json(parsedResponse);
+				mdapiResponse.products = productDetails;
+				response.json(mdapiResponse);
 			})
 			.catch((error) => {
 				const errorMessage =
 					"Unexpected error when augmenting members-data-api response with 'deliveryAddressChangeEffectiveDate'";
 				log.error(errorMessage, error);
 				Sentry.captureMessage(errorMessage);
-				response.json(augmentedWithTestUser); // fallback to sending sending the response augmented with just isTestUser
+				response.json(augmentedWithTestUser); // fallback to sending the response augmented with just isTestUser
 			});
 	})(
 		'user-attributes/me/mma/:subscriptionName',

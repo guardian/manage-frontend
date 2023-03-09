@@ -52,13 +52,11 @@ const subHeadingCss = css`
 `;
 
 const AccountOverviewRenderer = ([
-	mdapiObject,
+	mdapiResponse,
 	cancelledProductsResponse,
 	mpapiResponse,
 ]: [MembersDataApiResponse, CancelledProductDetail[], MPAPIResponse]) => {
-	const mdaResponse = mdapiObject;
-
-	const allActiveProductDetails = mdaResponse.products
+	const allActiveProductDetails = mdapiResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
 
@@ -107,7 +105,7 @@ const AccountOverviewRenderer = ([
 
 	return (
 		<>
-			<PersonalisedHeader mdapiResponse={mdaResponse} />
+			<PersonalisedHeader mdapiResponse={mdapiResponse} />
 
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}
@@ -152,7 +150,7 @@ const AccountOverviewRenderer = ([
 										}
 										productDetail={productDetail}
 										isEligibleToSwitch={isEligibleToSwitch}
-										user={mdaResponse.user}
+										user={mdapiResponse.user}
 									/>
 								) : (
 									<AccountOverviewCard

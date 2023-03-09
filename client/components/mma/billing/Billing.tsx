@@ -86,10 +86,10 @@ function decorateProductDetailWithInvoices(
 }
 
 function joinInvoicesWithProductsInCategories(
-	mdapiObject: MembersDataApiResponse,
+	mdapiResponse: MembersDataApiResponse,
 	invoicesResponse: { invoices: InvoiceDataApiItem[] },
 ) {
-	const allProductDetails = mdapiObject.products
+	const allProductDetails = mdapiResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate)
 		.map(decorateProductDetailWithInvoices);
@@ -362,13 +362,12 @@ const BillingPage = () => {
 	}
 
 	const [mdapiResponse, invoicesResponse, mpapiResponse] = billingResponse;
-	const mdapiObject = mdapiResponse;
 	const appSubscriptions = mpapiResponse.subscriptions.filter(
 		isValidAppSubscription,
 	);
 
 	const { allProductDetails, mmaCategoryToProductDetails } =
-		joinInvoicesWithProductsInCategories(mdapiObject, invoicesResponse);
+		joinInvoicesWithProductsInCategories(mdapiResponse, invoicesResponse);
 
 	if (
 		(allProductDetails.length === 0 && appSubscriptions.length === 0) ||

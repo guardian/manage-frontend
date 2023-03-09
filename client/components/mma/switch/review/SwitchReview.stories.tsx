@@ -18,7 +18,6 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: contributionPayPal },
 			container: <SwitchContainer />,
 		},
 		msw: [

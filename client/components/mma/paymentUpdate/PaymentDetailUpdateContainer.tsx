@@ -18,9 +18,9 @@ import { getNavItemFromFlowReferrer } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
 
 const renderContextAndOutletContainer = (
-	allProductDetails: MembersDataApiResponse,
+	mdapiResponse: MembersDataApiResponse,
 ) => {
-	const filteredProductDetails = allProductDetails.products
+	const filteredProductDetails = mdapiResponse.products
 		.filter(isProduct)
 		.filter(
 			(productDetail) =>

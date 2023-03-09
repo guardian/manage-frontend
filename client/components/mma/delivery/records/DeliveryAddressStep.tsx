@@ -145,11 +145,11 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		};
 
 	const renderDeliveryAddressForm = (
-		allProductDetails: MembersDataApiResponse,
+		mdapiResponse: MembersDataApiResponse,
 	) => {
 		const contactIdToArrayOfProductDetailAndProductType =
 			getValidDeliveryAddressChangeEffectiveDates(
-				allProductDetails.products
+				mdapiResponse.products
 					.filter(isProduct)
 					.filter(
 						(product) => product.subscription.readerType !== 'Gift',
