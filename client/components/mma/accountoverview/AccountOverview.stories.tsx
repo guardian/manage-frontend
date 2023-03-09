@@ -16,6 +16,7 @@ import {
 	digitalDD,
 	guardianWeeklyCancelled,
 	guardianWeeklyCard,
+	guardianWeeklyGift,
 	newspaperVoucherPaypal,
 	supporterPlus,
 	supporterPlusCancelled,
@@ -142,6 +143,24 @@ export const WithCancellationsNewLayout: ComponentStory<
 		.get('/api/cancelled/', {
 			body: [cancelledContribution, cancelledGuardianWeekly],
 		})
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: { subscriptions: [] },
+		});
+
+	return <AccountOverview />;
+};
+
+export const WithGiftSubscriptionNewLayout: ComponentStory<
+	typeof AccountOverview
+> = () => {
+	featureSwitches['accountOverviewNewLayout'] = true;
+
+	fetchMock
+		.restore()
+		.get('/api/me/mma', {
+			body: [guardianWeeklyGift],
+		})
+		.get('/api/cancelled/', { body: [] })
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
 		});
