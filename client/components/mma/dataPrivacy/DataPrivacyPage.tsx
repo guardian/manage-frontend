@@ -55,7 +55,7 @@ export const DataPrivacyPage = () => {
 
 	useEffect(() => {
 		if (dataPrivacyResponse) {
-			assignOption(dataPrivacyResponse);
+			handleResponse(dataPrivacyResponse);
 		}
 		loadCMP();
 	}, [dataPrivacyResponse]);
@@ -66,15 +66,18 @@ export const DataPrivacyPage = () => {
 		});
 	};
 
-	const assignOption = (response: DataPrivacyResponse) => {
+	/**
+	 * This function uses the responses from the dataPrivacyFetcher api calls
+	 * to get the users subscriptions/consents and dispatch the options to the
+	 * store.
+	 *
+	 * @param {DataPrivacyResponse} response
+	 */
+	const handleResponse = (response: DataPrivacyResponse) => {
 		const [productDetailsResponse, consentOptions, userResponse] = response;
 		const user = UserAPI.toUser(userResponse);
 
-		console.log('consentOptions', consentOptions);
-
 		const consentOpt = mapSubscriptions(user.consents, consentOptions);
-		console.log('consentOpt', consentOpt);
-
 		const productDetails = mdapiResponseReader(
 			productDetailsResponse,
 		).products.filter(isProduct);
@@ -141,34 +144,6 @@ export const DataPrivacyPage = () => {
 	const openManageCookies = () => {
 		importedCmp?.showPrivacyManager();
 	};
-
-	// const learnMoreSection = (
-	// 	<>
-	// 		<h3 css={dataPrivacyHeadingCss}>
-	// 			Learn more about our privacy policy
-	// 		</h3>
-	// 		<video
-	// 			controls
-	// 			css={dataPrivacyVideoCss}
-	// 			src="https://uploads.guim.co.uk/2019%2F30%2F26%2FThe+Guardian%27s+privacy+policy+%E2%80%93+video--7d3a7f3f-bc23-4e9d-9566-ea1f8ada5954-1.mp4"
-	// 		/>
-
-	// 		<Lines n={1} />
-
-	// 		<p css={dataPrivacyParagraphCss}>
-	// 			For more information about how we use your data, visit our&nbsp;
-	// 			<a
-	// 				css={aCss}
-	// 				target="_blank"
-	// 				href={'https://www.theguardian.com/info/privacy'}
-	// 				rel="noreferrer"
-	// 			>
-	// 				privacy policy
-	// 			</a>{' '}
-	// 			guide
-	// 		</p>
-	// 	</>
-	// );
 
 	const content = () => (
 		<>
