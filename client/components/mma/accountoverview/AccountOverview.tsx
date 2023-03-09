@@ -38,10 +38,11 @@ import { AsyncLoader } from '../shared/AsyncLoader';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { AccountOverviewCancelledCard } from './AccountOverviewCancelledCard';
 import { AccountOverviewCard } from './AccountOverviewCard';
-import { AccountOverviewCardV2 } from './AccountOverviewCardV2';
+import { CancelledProductCard } from './CancelledProductCard';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
+import { ProductCard } from './ProductCard';
 
 const subHeadingCss = css`
 	margin: ${space[12]}px 0 ${space[6]}px;
@@ -151,7 +152,7 @@ const AccountOverviewRenderer = ([
 						<Stack space={6}>
 							{activeProductsInCategory.map((productDetail) =>
 								featureSwitches.accountOverviewNewLayout ? (
-									<AccountOverviewCardV2
+									<ProductCard
 										key={
 											productDetail.subscription
 												.subscriptionId
@@ -171,15 +172,26 @@ const AccountOverviewRenderer = ([
 								),
 							)}
 							{cancelledProductsInCategory.map(
-								(cancelledProductDetail) => (
-									<AccountOverviewCancelledCard
-										key={
-											cancelledProductDetail.subscription
-												.subscriptionId
-										}
-										product={cancelledProductDetail}
-									/>
-								),
+								(cancelledProductDetail) =>
+									featureSwitches.accountOverviewNewLayout ? (
+										<CancelledProductCard
+											key={
+												cancelledProductDetail
+													.subscription.subscriptionId
+											}
+											productDetail={
+												cancelledProductDetail
+											}
+										/>
+									) : (
+										<AccountOverviewCancelledCard
+											key={
+												cancelledProductDetail
+													.subscription.subscriptionId
+											}
+											product={cancelledProductDetail}
+										/>
+									),
 							)}
 							{groupedProductType.supportTheGuardianSectionProps &&
 								(cancelledProductsInCategory.length > 0 ||

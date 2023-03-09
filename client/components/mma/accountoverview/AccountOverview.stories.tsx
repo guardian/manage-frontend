@@ -3,15 +3,22 @@ import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import {
+	cancelledContribution,
+	cancelledGuardianWeekly,
+} from '../../../fixtures/cancelledProductDetail';
+import {
 	CancelledInAppPurchase,
 	InAppPurchase,
 } from '../../../fixtures/inAppPurchase';
 import {
+	contributionCancelled,
 	contributionPayPal,
 	digitalDD,
+	guardianWeeklyCancelled,
 	guardianWeeklyCard,
 	newspaperVoucherPaypal,
 	supporterPlus,
+	supporterPlusCancelled,
 	toMembersDataApiResponse,
 } from '../../../fixtures/productDetail';
 import { user } from '../../../fixtures/user';
@@ -113,6 +120,30 @@ export const WithContributionNewLayoutDigisubAndContribution: ComponentStory<
 		})
 		.get('/api/me/mma', {
 			body: [contributionPayPal, digitalDD],
+		});
+
+	return <AccountOverview />;
+};
+
+export const WithCancellationsNewLayout: ComponentStory<
+	typeof AccountOverview
+> = () => {
+	featureSwitches['accountOverviewNewLayout'] = true;
+
+	fetchMock
+		.restore()
+		.get('/api/me/mma', {
+			body: [
+				contributionCancelled,
+				guardianWeeklyCancelled,
+				supporterPlusCancelled,
+			],
+		})
+		.get('/api/cancelled/', {
+			body: [cancelledContribution, cancelledGuardianWeekly],
+		})
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: { subscriptions: [] },
 		});
 
 	return <AccountOverview />;
