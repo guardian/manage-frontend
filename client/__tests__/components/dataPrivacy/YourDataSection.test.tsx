@@ -59,6 +59,6 @@ describe('YourDataSection', () => {
 				'Allow the Guardian to analyse this data to improve marketing content',
 			),
 		).toBeDefined();
-		expect(screen.getByTestId('profiling_optout')).toBeDefined();
+		expect(screen.findByRole('switch')).toBeDefined();
 	});
 });
