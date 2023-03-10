@@ -261,11 +261,11 @@ export const SwitchOptions = () => {
 
 			<section>
 				<p css={smallPrintCss}>
-					These exclusive supporter extras are available when you pay{' '}
+					These extras are exclusively available for supporters who
+					give a minimum of {mainPlan.currency}
+					{formatAmount(monthlyThreshold)} per month, or{' '}
 					{mainPlan.currency}
-					{formatAmount(monthlyThreshold)} minimum on a monthly basis,
-					or {mainPlan.currency}
-					{formatAmount(annualThreshold)} minimum on an annual basis.
+					{formatAmount(annualThreshold)} per year.
 				</p>
 			</section>
 		</>
