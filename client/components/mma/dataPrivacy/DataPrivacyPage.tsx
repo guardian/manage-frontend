@@ -40,6 +40,9 @@ const dataPrivacyFetcher = () =>
 		allProductsDetailFetcher(),
 		fetchWithDefaultParameters(
 			IdentityLocations.IDAPI + '/consents?filter=all',
+			{
+				mode: 'cors',
+			},
 		),
 		fetchWithDefaultParameters('/idapi/user'),
 	]);
