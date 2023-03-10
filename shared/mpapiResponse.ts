@@ -31,12 +31,12 @@ export enum AppStore {
 export function determineAppStore(subscription: AppSubscription) {
 	if (subscription.productId.includes('guardian.subscription')) {
 		return AppStore.ANDROID;
-	} else if (
+	}
+	if (
 		subscription.productId.includes('guardian.gia') ||
 		subscription.productId.includes('guardian.gla')
 	) {
 		return AppStore.IOS;
-	} else {
-		return AppStore.UNKNOWN;
 	}
+	return AppStore.UNKNOWN;
 }
