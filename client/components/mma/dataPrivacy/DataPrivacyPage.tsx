@@ -60,6 +60,10 @@ export const DataPrivacyPage = () => {
 		loadCMP();
 	}, [dataPrivacyResponse]);
 
+	/**
+	 * This function imports and loads the cmp app to the state value, importedCmp
+	 *
+	 */
 	const loadCMP = () => {
 		import('@guardian/consent-management-platform').then(({ cmp }) => {
 			setImportedCmp(cmp);
@@ -99,17 +103,11 @@ export const DataPrivacyPage = () => {
 					  })
 					: true,
 		);
-		console.log(
-			'consentsWithFilteredSoftOptIns',
-			consentsWithFilteredSoftOptIns,
-		);
 
 		dispatch(options(consentsWithFilteredSoftOptIns));
 	};
 
 	const consents = ConsentOptions.consents(state.options);
-	console.log('CCC', consents);
-	console.log('OPTION', state.options);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;

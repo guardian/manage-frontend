@@ -10,15 +10,24 @@ import {
 
 interface VideoPlayerProps {
 	url: string;
-	text: string;
+	overlayText: string;
 }
+
+/**
+ * This VideoPlayer displays an overlay with a
+ *
+ * @param {VideoPlayerProps} props
+ * @return {*}
+ */
 export const VideoPlayer = (props: VideoPlayerProps) => {
 	const [showOverlay, setShowOverlay] = useState<boolean>(true);
 	const videoRef = createRef<HTMLVideoElement>();
+
 	const hideOverlay = () => {
 		videoRef.current?.play();
 		setShowOverlay(false);
 	};
+
 	const overlay = (
 		<div onClick={hideOverlay} css={dataPrivacyVideoOverlay}>
 			<div css={dataPrivacyFooter}>
@@ -30,7 +39,7 @@ export const VideoPlayer = (props: VideoPlayerProps) => {
 					onClick={() => hideOverlay()}
 					fontWeight="bold"
 				/>
-				<h1>{props.text}</h1>
+				<h1>{props.overlayText}</h1>
 			</div>
 		</div>
 	);

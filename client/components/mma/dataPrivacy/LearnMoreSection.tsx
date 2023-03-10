@@ -13,7 +13,7 @@ export const LearnMoreSection = () => {
 				Learn more about our privacy policy
 			</h3>
 			<VideoPlayer
-				text={"The Guardian's privacy policy"}
+				overlayText={"The Guardian's privacy policy"}
 				url={
 					'https://uploads.guim.co.uk/2019%2F30%2F26%2FThe+Guardian%27s+privacy+policy+%E2%80%93+video--7d3a7f3f-bc23-4e9d-9566-ea1f8ada5954-1.mp4'
 				}

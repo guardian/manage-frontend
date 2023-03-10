@@ -23,10 +23,6 @@ export const dataPrivacyVideoOverlayContainer = css`
 	background-color: red;
 	width: 100%;
 	position: relative;
-	/* width: 500px; */
-	/* margin: 0 auto; */
-	/* padding: 20px; */
-
 	video {
 		width: 100%;
 		display: block;
