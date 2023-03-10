@@ -37,7 +37,7 @@ import {
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
 import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
-import { GiftBadge } from './GiftBadge';
+import { GiftRibbon } from './GiftRibbon';
 import { productCardConfiguration } from './ProductCardConfiguration';
 
 const PaymentMethod = ({
@@ -235,7 +235,7 @@ export const ProductCard = ({
 					minHeightTablet
 				>
 					<h3 css={productTitleCss}>{productTitle}</h3>
-					{isGifted && <GiftBadge />}
+					{isGifted && <GiftRibbon />}
 				</Card.Header>
 
 				{cardConfig.showBenefitsSection && nextPaymentDetails && (
