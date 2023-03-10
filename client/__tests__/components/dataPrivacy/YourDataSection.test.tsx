@@ -11,7 +11,6 @@ describe('YourDataSection', () => {
 		{
 			id: 'personalised_advertising',
 			isChannel: false,
-			// isOptOut: false,
 			isProduct: false,
 			name: 'Allow personalised advertising using this data - this supports the Guardian',
 			subscribed: false,
@@ -20,7 +19,6 @@ describe('YourDataSection', () => {
 		{
 			id: 'profiling_optout',
 			isChannel: false,
-			// isOptOut: false,
 			isProduct: false,
 			name: 'Allow the Guardian to analyse this data to improve marketing content',
 			subscribed: true,
