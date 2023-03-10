@@ -46,8 +46,9 @@ export const dataPrivacyFooter = css`
 	color: white;
 	display: flex;
 	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
 	width: 100%;
-	align-items: baseline;
 	padding-left: 1rem;
 	padding-bottom: 0.5rem;
 `;
