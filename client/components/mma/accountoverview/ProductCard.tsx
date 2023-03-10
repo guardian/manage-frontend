@@ -303,6 +303,16 @@ export const ProductCard = ({
 										</dd>
 									</div>
 								)}
+								{isGifted && !userIsGifter && (
+									<div>
+										<dt>End date</dt>
+										<dd>
+											{parseDate(
+												subscriptionEndDate,
+											).dateStr()}
+										</dd>
+									</div>
+								)}
 								{specificProductType.showTrialRemainingIfApplicable &&
 									productDetail.subscription.trialLength >
 										0 &&
@@ -323,16 +333,6 @@ export const ProductCard = ({
 											</dd>
 										</div>
 									)}
-								{isGifted && !userIsGifter && (
-									<div>
-										<dt>End date</dt>
-										<dd>
-											{parseDate(
-												subscriptionEndDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
 								{nextPaymentDetails &&
 									productDetail.subscription.autoRenew &&
 									!hasCancellationPending && (

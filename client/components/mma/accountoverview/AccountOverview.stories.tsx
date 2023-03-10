@@ -16,7 +16,8 @@ import {
 	digitalDD,
 	guardianWeeklyCancelled,
 	guardianWeeklyCard,
-	guardianWeeklyGift,
+	guardianWeeklyGiftPurchase,
+	guardianWeeklyGiftRecipient,
 	newspaperVoucherPaypal,
 	supporterPlus,
 	supporterPlusCancelled,
@@ -158,7 +159,7 @@ export const WithGiftSubscriptionNewLayout: ComponentStory<
 	fetchMock
 		.restore()
 		.get('/api/me/mma', {
-			body: [guardianWeeklyGift],
+			body: [guardianWeeklyGiftRecipient, guardianWeeklyGiftPurchase],
 		})
 		.get('/api/cancelled/', { body: [] })
 		.get('/mpapi/user/mobile-subscriptions', {
