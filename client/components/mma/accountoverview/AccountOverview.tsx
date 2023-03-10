@@ -14,14 +14,12 @@ import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
-	MembersDataApiItem,
 	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import {
 	isProduct,
 	isSpecificProductType,
-	mdapiResponseReader,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
 import {
@@ -55,17 +53,11 @@ const subHeadingCss = css`
 `;
 
 const AccountOverviewRenderer = ([
-	mdapiObject,
+	mdapiResponse,
 	cancelledProductsResponse,
 	mpapiResponse,
-]: [
-	MembersDataApiResponse | MembersDataApiItem[],
-	CancelledProductDetail[],
-	MPAPIResponse,
-]) => {
-	const mdaResponse = mdapiResponseReader(mdapiObject);
-
-	const allActiveProductDetails = mdaResponse.products
+]: [MembersDataApiResponse, CancelledProductDetail[], MPAPIResponse]) => {
+	const allActiveProductDetails = mdapiResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
 
@@ -114,7 +106,7 @@ const AccountOverviewRenderer = ([
 
 	return (
 		<>
-			<PersonalisedHeader mdapiResponse={mdaResponse} />
+			<PersonalisedHeader mdapiResponse={mdapiResponse} />
 
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}
@@ -159,7 +151,7 @@ const AccountOverviewRenderer = ([
 										}
 										productDetail={productDetail}
 										isEligibleToSwitch={isEligibleToSwitch}
-										user={mdaResponse.user}
+										user={mdapiResponse.user}
 									/>
 								) : (
 									<AccountOverviewCard

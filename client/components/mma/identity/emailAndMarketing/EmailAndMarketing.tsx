@@ -8,10 +8,9 @@ import {
 	AppSubscriptionSoftOptInIds,
 	isValidAppSubscription,
 } from '../../../../../shared/mpapiResponse';
-import type { ProductDetail } from '../../../../../shared/productResponse';
-import {
-	isProduct,
-	mdapiResponseReader,
+import type {
+	MembersDataApiResponse,
+	ProductDetail,
 } from '../../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
@@ -74,11 +73,11 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 					window.location.assign(IdentityLocations.VERIFY_EMAIL);
 					return;
 				}
-				const productDetailsResponse = await allProductsDetailFetcher();
-
-				const productDetails = mdapiResponseReader(
-					await productDetailsResponse.json(),
-				).products.filter(isProduct);
+				const mdapiResponse: MembersDataApiResponse = await (
+					await allProductsDetailFetcher()
+				).json();
+				const productDetails =
+					mdapiResponse.products as ProductDetail[];
 
 				const mpapiResponse = (await (
 					await fetchWithDefaultParameters(

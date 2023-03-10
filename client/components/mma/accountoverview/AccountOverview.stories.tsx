@@ -76,7 +76,7 @@ export const WithContributionNewLayout: ComponentStory<
 			body: { subscriptions: [] },
 		})
 		.get('/api/me/mma', {
-			body: [contributionPayPal],
+			body: toMembersDataApiResponse(contributionPayPal),
 		});
 
 	return <AccountOverview />;
@@ -119,7 +119,7 @@ export const WithContributionNewLayoutDigisubAndContribution: ComponentStory<
 			body: { subscriptions: [] },
 		})
 		.get('/api/me/mma', {
-			body: [contributionPayPal, digitalDD],
+			body: toMembersDataApiResponse(contributionPayPal, digitalDD),
 		});
 
 	return <AccountOverview />;

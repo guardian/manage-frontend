@@ -18,7 +18,6 @@ import type {
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
 	InvoiceDataApiItem,
-	MembersDataApiItem,
 	MembersDataApiResponse,
 	PaidSubscriptionPlan,
 	ProductDetail,
@@ -27,7 +26,6 @@ import {
 	getMainPlan,
 	isGift,
 	isProduct,
-	mdapiResponseReader,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
@@ -63,7 +61,7 @@ type MMACategoryToProductDetails = {
 };
 
 type BillingResponse = [
-	MembersDataApiResponse | MembersDataApiItem[],
+	MembersDataApiResponse,
 	{ invoices: InvoiceDataApiItem[] },
 	MPAPIResponse,
 ];
@@ -88,10 +86,10 @@ function decorateProductDetailWithInvoices(
 }
 
 function joinInvoicesWithProductsInCategories(
-	mdapiObject: MembersDataApiResponse,
+	mdapiResponse: MembersDataApiResponse,
 	invoicesResponse: { invoices: InvoiceDataApiItem[] },
 ) {
-	const allProductDetails = mdapiObject.products
+	const allProductDetails = mdapiResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate)
 		.map(decorateProductDetailWithInvoices);
@@ -364,13 +362,12 @@ const BillingPage = () => {
 	}
 
 	const [mdapiResponse, invoicesResponse, mpapiResponse] = billingResponse;
-	const mdapiObject = mdapiResponseReader(mdapiResponse);
 	const appSubscriptions = mpapiResponse.subscriptions.filter(
 		isValidAppSubscription,
 	);
 
 	const { allProductDetails, mmaCategoryToProductDetails } =
-		joinInvoicesWithProductsInCategories(mdapiObject, invoicesResponse);
+		joinInvoicesWithProductsInCategories(mdapiResponse, invoicesResponse);
 
 	if (
 		(allProductDetails.length === 0 && appSubscriptions.length === 0) ||
