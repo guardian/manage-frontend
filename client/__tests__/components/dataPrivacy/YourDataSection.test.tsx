@@ -42,7 +42,7 @@ describe('YourDataSection', () => {
 		expect(screen.getAllByText('Your Data')).toBeDefined();
 	});
 
-	it('correctly displays the toggle button', () => {
+	it('correctly displays the toggle buttons', () => {
 		render(
 			<YourDataSection
 				consents={consents}

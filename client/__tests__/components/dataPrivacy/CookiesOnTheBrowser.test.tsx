@@ -13,7 +13,7 @@ describe('CookiesOnThisBrowserSection', () => {
 		expect(screen.getAllByText('Cookies on this browser')).toBeDefined();
 	});
 
-	it('correctly displays the manage cookies on this browser', () => {
+	it('correctly displays the manage cookies on this browser button', () => {
 		render(<CookiesOnThisBrowserSection onClick={onClick} />);
 		expect(
 			screen.getAllByText('Manage cookies on this browser'),

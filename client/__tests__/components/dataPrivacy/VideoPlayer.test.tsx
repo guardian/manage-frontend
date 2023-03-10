@@ -5,8 +5,8 @@ import { VideoPlayer } from '../../../components/mma/dataPrivacy/shared/VideoPla
 afterEach(cleanup);
 
 describe('VideoPlayer', () => {
-	it('correctly displays the heading', () => {
-		render(<VideoPlayer url={'url'} text={'VIDEO_TEXT'} />);
+	it('correctly displays the video text', () => {
+		render(<VideoPlayer url={'url'} overlayText={'VIDEO_TEXT'} />);
 		expect(screen.getAllByText('VIDEO_TEXT')).toBeDefined();
 	});
 });
