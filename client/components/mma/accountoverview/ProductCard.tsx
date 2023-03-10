@@ -465,6 +465,19 @@ export const ProductCard = ({
 						</div>
 					</Card.Section>
 				)}
+				{!productDetail.isPaidTier && (
+					<Card.Section>
+						<h4 css={sectionHeadingCss}>Payment</h4>
+						<p
+							css={css`
+								${textSans.medium()};
+								margin: 0;
+							`}
+						>
+							{isGifted ? 'Gift redemption' : 'Free'}
+						</p>
+					</Card.Section>
+				)}
 			</Card>
 		</Stack>
 	);
