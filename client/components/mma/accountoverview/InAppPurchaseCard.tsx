@@ -29,7 +29,7 @@ export const InAppPurchaseCard = ({
 	inAppPurchase: AppSubscription;
 }) => {
 	return (
-		<Stack space={3}>
+		<Stack space={4}>
 			{inAppPurchase.cancellationTimestamp && (
 				<InfoSummary
 					message={`Your app subscription was cancelled in ${dateString(
@@ -40,10 +40,7 @@ export const InAppPurchaseCard = ({
 				/>
 			)}
 			<Card>
-				<Card.Header
-					backgroundColor={palette.brand[500]}
-					minHeightTablet
-				>
+				<Card.Header backgroundColor={palette.brand[500]}>
 					<h3 css={productTitleCss}>App Subscription</h3>
 				</Card.Header>
 				<Card.Section>

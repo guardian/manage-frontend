@@ -10,8 +10,9 @@ import {
 export const productTitleCss = css`
 	${headline.xxsmall({ fontWeight: 'bold' })};
 	color: ${palette.neutral[100]};
-	margin: 0;
-	max-width: 20ch;
+	margin-top: 0;
+	margin-bottom: ${space[1]}px;
+	max-width: calc(100% - 97px); // Leave space for gift ribbon
 
 	${from.tablet} {
 		${headline.small({ fontWeight: 'bold' })};
