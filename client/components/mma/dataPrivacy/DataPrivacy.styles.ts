@@ -51,6 +51,7 @@ export const dataPrivacyFooter = css`
 	width: 100%;
 	padding-left: 1rem;
 	padding-bottom: 0.5rem;
+	height: 20%;
 
 	display: grid;
 	grid-template-columns: 3fr 7fr;
@@ -59,4 +60,8 @@ export const dataPrivacyFooter = css`
 export const dataPrivacyMarketingToggleCss = css`
 	margin-top: 0;
 	position: relative;
+`;
+
+export const dataPrivacySvgImage = css`
+	max-width: 100%;
 `;
