@@ -1,4 +1,3 @@
-// import { css } from '@emotion/react';
 import type { SerializedStyles } from '@emotion/react';
 import type { FC } from 'react';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
@@ -6,7 +5,6 @@ import { Lines } from '../Lines';
 import { MarketingToggle } from '../MarketingToggle';
 import type { ConsentOption } from '../models';
 import { PageSection } from '../PageSection';
-// import { standardSansText, toggleDescriptionPadding } from '../sharedStyles';
 
 export type ClickHandler = (id: string) => {};
 
@@ -117,7 +115,6 @@ export const OptOutSection: FC<OptOutSectionProps> = (props) => {
 		undefined,
 		consentSubscribedValueInverter,
 	);
-	// const addMarketingToggle = optOutFinder(consents, clickHandler);
 
 	return (
 		<>
@@ -135,16 +132,6 @@ export const OptOutSection: FC<OptOutSectionProps> = (props) => {
 			<WithStandardTopMargin>
 				<Lines n={1} />
 			</WithStandardTopMargin>
-			{/* <WithStandardTopMargin>
-				<PageSection
-					title="Your data"
-					description={<YourDataDescription />}
-				>
-					{addInvertedMarketingToggle('profiling_optout')}
-					{addMarketingToggle('personalised_advertising')}
-					<PersonalisedAdvertisingConsentDescription />
-				</PageSection>
-			</WithStandardTopMargin> */}
 		</>
 	);
 };
