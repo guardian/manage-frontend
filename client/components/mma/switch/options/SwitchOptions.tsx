@@ -142,7 +142,9 @@ export const SwitchOptions = () => {
 			{switchContext.isFromApp && (
 				<section css={sectionSpacing}>
 					<h2 css={fromAppHeadingCss}>
-						Unlock full access to our news app today
+						{isAboveThreshold
+							? 'Add extras to get full access to our news app today'
+							: 'Change your support to get full access to our news app today'}
 					</h2>
 					<p
 						css={css`
@@ -203,10 +205,9 @@ export const SwitchOptions = () => {
 								margin: 0;
 							`}
 						>
-							In exchange for your current payment, you can choose
-							to receive exclusive supporter extras. It takes less
-							than a minute to change your support type and gain
-							access.
+							Your current payment entitles you to exclusive
+							supporter extras. It takes less than a minute to
+							change you support type and gain access.
 						</p>
 					)}
 					{!isAboveThreshold && !switchContext.isFromApp && (
