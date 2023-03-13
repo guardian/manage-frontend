@@ -40,6 +40,7 @@ export const VideoPlayer = (props: VideoPlayerProps) => {
 					fontWeight="bold"
 				/>
 				<h1>{props.overlayText}</h1>
+				<span></span>
 			</div>
 		</div>
 	);
