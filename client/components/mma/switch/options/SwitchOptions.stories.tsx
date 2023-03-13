@@ -13,7 +13,8 @@ export default {
 		layout: 'fullscreen',
 		reactRouter: {
 			state: { productDetail: contributionPayPal },
-			container: <SwitchContainer />,
+			container: <SwitchContainer isFromApp={true} />,
+			//container: <SwitchContainer />,
 		},
 	},
 } as ComponentMeta<typeof SwitchContainer>;
