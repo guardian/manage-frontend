@@ -51,6 +51,9 @@ export const dataPrivacyFooter = css`
 	width: 100%;
 	padding-left: 1rem;
 	padding-bottom: 0.5rem;
+
+	display: grid;
+	grid-template-columns: 3fr 7fr;
 `;
 
 export const dataPrivacyMarketingToggleCss = css`
