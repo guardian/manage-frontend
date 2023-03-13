@@ -135,11 +135,11 @@ export const WithCancellationsNewLayout: ComponentStory<
 	fetchMock
 		.restore()
 		.get('/api/me/mma', {
-			body: [
+			body: toMembersDataApiResponse(
 				contributionCancelled,
 				guardianWeeklyCancelled,
 				supporterPlusCancelled,
-			],
+			),
 		})
 		.get('/api/cancelled/', {
 			body: [cancelledContribution, cancelledGuardianWeekly],
@@ -159,7 +159,10 @@ export const WithGiftSubscriptionNewLayout: ComponentStory<
 	fetchMock
 		.restore()
 		.get('/api/me/mma', {
-			body: [guardianWeeklyGiftRecipient, guardianWeeklyGiftPurchase],
+			body: toMembersDataApiResponse(
+				guardianWeeklyGiftRecipient,
+				guardianWeeklyGiftPurchase,
+			),
 		})
 		.get('/api/cancelled/', { body: [] })
 		.get('/mpapi/user/mobile-subscriptions', {
