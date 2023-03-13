@@ -2,7 +2,11 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { featureSwitches } from '../../../../shared/featureSwitches';
-import { InAppPurchase } from '../../../fixtures/inAppPurchase';
+import {
+	InAppPurchase,
+	InAppPurchaseAndroid,
+	InAppPurchaseIos,
+} from '../../../fixtures/inAppPurchase';
 import { guardianWeeklyCardInvoice } from '../../../fixtures/invoices';
 import {
 	digitalDD,
@@ -48,7 +52,13 @@ export const WithSubscriptions: ComponentStory<typeof Billing> = () => {
 			),
 		})
 		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [InAppPurchase] },
+			body: {
+				subscriptions: [
+					InAppPurchase,
+					InAppPurchaseIos,
+					InAppPurchaseAndroid,
+				],
+			},
 		})
 		.get('/api/invoices', {
 			body: { invoices: [guardianWeeklyCardInvoice] },

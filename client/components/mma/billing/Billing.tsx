@@ -15,7 +15,11 @@ import type {
 	AppSubscription,
 	MPAPIResponse,
 } from '../../../../shared/mpapiResponse';
-import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
+import {
+	AppStore,
+	determineAppStore,
+	isValidAppSubscription,
+} from '../../../../shared/mpapiResponse';
 import type {
 	InvoiceDataApiItem,
 	MembersDataApiResponse,
@@ -302,9 +306,25 @@ function renderProductBillingInfo([mmaCategory, productDetails]: [
 	);
 }
 
-function renderInAppPurchase(value: AppSubscription) {
+function getAppStoreMessage(subscription: AppSubscription) {
+	const iosMessage = 'Apple (for iOS)';
+	const androidMessage = 'Google (for Android)';
+
+	const appStore = determineAppStore(subscription);
+
+	switch (appStore) {
+		case AppStore.IOS:
+			return iosMessage;
+		case AppStore.ANDROID:
+			return androidMessage;
+		default:
+			return `${iosMessage}, or ${androidMessage}`;
+	}
+}
+
+function renderInAppPurchase(subscription: AppSubscription) {
 	return (
-		<div css={subHeadingBorderTopCss} key={value.subscriptionId}>
+		<div css={subHeadingBorderTopCss} key={subscription.subscriptionId}>
 			<h2
 				css={css`
 					${subHeadingTitleCss}
@@ -321,8 +341,8 @@ function renderInAppPurchase(value: AppSubscription) {
 					padding: ${space[3]}px;
 				`}
 			>
-				To change your payment setup, please contact Apple (for iOS), or
-				Google (for Android).
+				To change your payment setup, please contact{' '}
+				{getAppStoreMessage(subscription)}.
 			</div>
 		</div>
 	);

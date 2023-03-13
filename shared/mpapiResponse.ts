@@ -5,6 +5,7 @@ export interface AppSubscription {
 	cancellationTimestamp?: string;
 	from: string;
 	valid: boolean;
+	productId: string;
 }
 
 export interface MPAPIResponse {
@@ -20,3 +21,22 @@ export const AppSubscriptionSoftOptInIds: string[] = [
 	SoftOptInIDs.SimilarProducts,
 	SoftOptInIDs.SupporterNewsletter,
 ];
+
+export enum AppStore {
+	IOS,
+	ANDROID,
+	UNKNOWN,
+}
+
+export function determineAppStore(subscription: AppSubscription) {
+	if (subscription.productId.includes('guardian.subscription')) {
+		return AppStore.ANDROID;
+	}
+	if (
+		subscription.productId.includes('guardian.gia') ||
+		subscription.productId.includes('guardian.gla')
+	) {
+		return AppStore.IOS;
+	}
+	return AppStore.UNKNOWN;
+}
