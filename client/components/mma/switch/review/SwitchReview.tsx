@@ -269,7 +269,7 @@ export const SwitchReview = () => {
 									mainPlan.currency
 							  }${formatAmount(newAmount)} per ${
 									mainPlan.billingPeriod
-							  }`
+							  }.`
 							: 'Please confirm your choice to change your support to monthly + extras.'}
 					</p>
 				</Stack>
