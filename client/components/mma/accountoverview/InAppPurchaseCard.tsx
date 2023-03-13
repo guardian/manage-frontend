@@ -1,21 +1,11 @@
 import { css } from '@emotion/react';
-import { from, headline, palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { dateString } from '../../../../shared/dates';
 import type { AppSubscription } from '../../../../shared/mpapiResponse';
 import { InfoSummary } from '../paymentUpdate/Summary';
 import { Card } from '../shared/Card';
-
-const productTitleCss = css`
-	${headline.xxsmall({ fontWeight: 'bold' })};
-	color: ${palette.neutral[100]};
-	margin: 0;
-	max-width: 20ch;
-
-	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
-	}
-`;
+import { productTitleCss } from './ProductCardStyles';
 
 const summaryLinkCss = css`
 	color: currentColor;
