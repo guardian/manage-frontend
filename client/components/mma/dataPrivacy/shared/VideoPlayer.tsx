@@ -1,12 +1,11 @@
-import { brand } from '@guardian/source-foundations';
 import { createRef, useState } from 'react';
-import { Button } from '../../shared/Buttons';
 import {
 	dataPrivacyFooter,
 	dataPrivacyVideoCss,
 	dataPrivacyVideoOverlay,
 	dataPrivacyVideoOverlayContainer,
 } from '../DataPrivacy.styles';
+import { PlayButton } from './PlayButton';
 
 interface VideoPlayerProps {
 	url: string;
@@ -31,16 +30,17 @@ export const VideoPlayer = (props: VideoPlayerProps) => {
 	const overlay = (
 		<div onClick={hideOverlay} css={dataPrivacyVideoOverlay}>
 			<div css={dataPrivacyFooter}>
-				<Button
+				<PlayButton />
+
+				{/* <Button
 					disabled={false}
 					text="PLAY"
 					type="button"
 					colour={brand[400]}
 					onClick={() => hideOverlay()}
 					fontWeight="bold"
-				/>
+				/> */}
 				<h1>{props.overlayText}</h1>
-				<span></span>
 			</div>
 		</div>
 	);
