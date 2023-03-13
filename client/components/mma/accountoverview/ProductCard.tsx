@@ -37,6 +37,7 @@ import {
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
 import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
+import { GiftRibbon } from './GiftRibbon';
 import { productCardConfiguration } from './ProductCardConfiguration';
 
 const PaymentMethod = ({
@@ -234,6 +235,7 @@ export const ProductCard = ({
 					minHeightTablet
 				>
 					<h3 css={productTitleCss}>{productTitle}</h3>
+					{isGifted && <GiftRibbon />}
 				</Card.Header>
 
 				{cardConfig.showBenefitsSection && nextPaymentDetails && (
@@ -301,6 +303,16 @@ export const ProductCard = ({
 										</dd>
 									</div>
 								)}
+								{isGifted && !userIsGifter && (
+									<div>
+										<dt>End date</dt>
+										<dd>
+											{parseDate(
+												subscriptionEndDate,
+											).dateStr()}
+										</dd>
+									</div>
+								)}
 								{specificProductType.showTrialRemainingIfApplicable &&
 									productDetail.subscription.trialLength >
 										0 &&
@@ -321,16 +333,6 @@ export const ProductCard = ({
 											</dd>
 										</div>
 									)}
-								{isGifted && !userIsGifter && (
-									<div>
-										<dt>End date</dt>
-										<dd>
-											{parseDate(
-												subscriptionEndDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
 								{nextPaymentDetails &&
 									productDetail.subscription.autoRenew &&
 									!hasCancellationPending && (
@@ -461,6 +463,19 @@ export const ProductCard = ({
 								</div>
 							)}
 						</div>
+					</Card.Section>
+				)}
+				{!productDetail.isPaidTier && (
+					<Card.Section>
+						<h4 css={sectionHeadingCss}>Payment</h4>
+						<p
+							css={css`
+								${textSans.medium()};
+								margin: 0;
+							`}
+						>
+							{isGifted ? 'Gift redemption' : 'Free'}
+						</p>
 					</Card.Section>
 				)}
 			</Card>
