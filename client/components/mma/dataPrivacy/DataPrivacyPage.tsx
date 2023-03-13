@@ -42,6 +42,7 @@ const dataPrivacyFetcher = () =>
 			IdentityLocations.IDAPI + '/consents?filter=all',
 			{
 				mode: 'cors',
+				credentials: 'omit',
 			},
 		),
 		fetchWithDefaultParameters('/idapi/user'),
