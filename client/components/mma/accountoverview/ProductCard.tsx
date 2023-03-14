@@ -166,8 +166,10 @@ export const ProductCard = ({
 				/>
 			)}
 			<Card>
-				<Card.Header backgroundColor={cardConfig.headerColor}>
-					<h3 css={productTitleCss}>{productTitle}</h3>
+				<Card.Header backgroundColor={cardConfig.colour}>
+					<h3 css={productTitleCss(cardConfig.darkText)}>
+						{productTitle}
+					</h3>
 					{isGifted && <GiftRibbon />}
 				</Card.Header>
 

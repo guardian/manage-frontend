@@ -37,8 +37,8 @@ export const CancelledProductCard = ({
 				message={`Your ${groupedProductType.friendlyName()} has been cancelled`}
 			/>
 			<Card>
-				<Card.Header backgroundColor={cardConfig.headerColor}>
-					<h3 css={productTitleCss}>
+				<Card.Header backgroundColor={cardConfig.colour}>
+					<h3 css={productTitleCss(cardConfig.darkText)}>
 						{specificProductType.productTitle()}
 					</h3>
 				</Card.Header>

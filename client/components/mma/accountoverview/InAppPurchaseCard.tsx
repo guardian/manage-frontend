@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
-import { palette } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { dateString } from '../../../../shared/dates';
 import type { AppSubscription } from '../../../../shared/mpapiResponse';
 import { InfoSummary } from '../paymentUpdate/Summary';
 import { Card } from '../shared/Card';
+import { productColour } from './ProductCardConfiguration';
 import { productTitleCss } from './ProductCardStyles';
 
 const summaryLinkCss = css`
@@ -40,8 +40,8 @@ export const InAppPurchaseCard = ({
 				/>
 			)}
 			<Card>
-				<Card.Header backgroundColor={palette.brand[500]}>
-					<h3 css={productTitleCss}>App Subscription</h3>
+				<Card.Header backgroundColor={productColour.inAppPurchase}>
+					<h3 css={productTitleCss(true)}>App Subscription</h3>
 				</Card.Header>
 				<Card.Section>
 					Your subscription started in{' '}

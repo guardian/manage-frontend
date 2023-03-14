@@ -1,15 +1,10 @@
 import { css } from '@emotion/react';
-import {
-	from,
-	headline,
-	palette,
-	space,
-	textSans,
-} from '@guardian/source-foundations';
+import { from, headline, space, textSans } from '@guardian/source-foundations';
+import { textColour } from './ProductCardConfiguration';
 
-export const productTitleCss = css`
+export const productTitleCss = (dark?: boolean) => css`
 	${headline.xxsmall({ fontWeight: 'bold' })};
-	color: ${palette.neutral[100]};
+	color: ${dark ? textColour.dark : textColour.light};
 	margin-top: 0;
 	margin-bottom: ${space[1]}px;
 	max-width: calc(100% - 97px); // Leave space for gift ribbon
