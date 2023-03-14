@@ -146,6 +146,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 								<li css={valueCss}>
 									{subscription.card && (
 										<CardDisplay
+											data-qm-masking="blocklist"
 											inErrorState={hasPaymentFailure}
 											cssOverrides={css`
 												margin: 0;
@@ -157,6 +158,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 											{...subscription.card}
 										/>
 									)}
+
 									{subscription.payPalEmail && <PaypalLogo />}
 									{subscription.sepaMandate && (
 										<div>SEPA</div>
@@ -262,6 +264,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 							`}
 						>
 							<DirectDebitDisplay
+								data-qm-masking="blocklist"
 								{...subscription.mandate}
 								onlySortCode
 							/>
@@ -273,6 +276,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 							css={css`
 								${valueCss};
 							`}
+							data-qm-masking="blocklist"
 						>
 							{getObfuscatedPayPalId(subscription.payPalEmail)}
 						</span>

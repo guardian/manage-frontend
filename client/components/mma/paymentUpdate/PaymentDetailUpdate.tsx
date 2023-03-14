@@ -457,7 +457,10 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				>
 					Your current payment method
 				</h3>
-				<CurrentPaymentDetails {...productDetail} />
+				<CurrentPaymentDetails
+					{...productDetail}
+					data-qm-masking="blocklist"
+				/>
 				{productDetail.subscription.payPalEmail && (
 					<p
 						css={css`
@@ -472,6 +475,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 			</div>
 
 			<h3
+				data-qm-masking="blocklist"
 				css={css`
 					${subHeadingCss}
 					${productDetail.subscription.payPalEmail &&
