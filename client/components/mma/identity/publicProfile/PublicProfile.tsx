@@ -62,7 +62,9 @@ export const PublicProfile = (_: { path?: string }) => {
 	const usernameDisplay = (u: User) => (
 		<>
 			<WithStandardTopMargin>
-				<PageSection title="Username">{u.username}</PageSection>
+				<PageSection title="Username" data-qm-masking="blocklist">
+					{u.username}
+				</PageSection>
 			</WithStandardTopMargin>
 			<WithStandardTopMargin>
 				<Lines n={1} />
