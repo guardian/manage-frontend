@@ -68,6 +68,7 @@ export const EmptyAccountOverview = () => {
 					Email address
 				</dt>
 				<dd
+					data-qm-masking="blocklist"
 					css={css`
 						margin: 0;
 						padding: 0;

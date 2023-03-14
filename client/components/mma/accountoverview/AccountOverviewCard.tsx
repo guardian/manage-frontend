@@ -269,7 +269,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 								? 'Supporter ID'
 								: 'Subscription ID'}
 						</li>
-						<li css={valueCss}>
+						<li css={valueCss} data-qm-masking="blocklist">
 							{props.productDetail.subscription.subscriptionId}
 						</li>
 					</ul>
@@ -425,7 +425,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 						<>
 							<ul css={keyValuePairCss}>
 								<li css={keyCss}>Payment method</li>
-								<li css={valueCss}>
+								<li css={valueCss} data-qm-masking="blocklist">
 									{props.productDetail.subscription.card && (
 										<CardDisplay
 											inErrorState={hasPaymentFailure}
@@ -439,6 +439,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 									{props.productDetail.subscription
 										.payPalEmail && (
 										<PaypalDisplay
+											data-qm-masking="blocklist"
 											payPalId={
 												props.productDetail.subscription
 													.payPalEmail
@@ -448,6 +449,7 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 									{props.productDetail.subscription
 										.sepaMandate && (
 										<SepaDisplay
+											data-qm-masking="blocklist"
 											accountName={
 												props.productDetail.subscription
 													.sepaMandate.accountName

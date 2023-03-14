@@ -46,6 +46,7 @@ export const PersonalisedHeader = ({
 					margin-bottom: 0;
 				`}
 			>
+				{/*add in Quantum Metrics masking tag when name is piped through*/}
 				{calculateTimeOfDay()}, {userDetails.firstName ?? 'supporter'}
 			</h2>
 			<p
