@@ -170,7 +170,7 @@ export const ProductCard = ({
 					<h3 css={productTitleCss(cardConfig.darkText)}>
 						{productTitle}
 					</h3>
-					{isGifted && <GiftRibbon />}
+					{isGifted && <GiftRibbon inverted={cardConfig.darkText} />}
 				</Card.Header>
 
 				{cardConfig.showBenefitsSection && nextPaymentDetails && (
