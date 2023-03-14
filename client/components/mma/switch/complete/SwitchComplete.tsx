@@ -194,9 +194,8 @@ const WhatHappensNext = (props: {
 			<ul css={[iconListCss, whatHappensNextCss]}>
 				<li>
 					<SvgEnvelope size="medium" />
-					<span>
-						data-qm-masking="blocklist" You will receive a
-						confirmation email to {props.email}
+					<span data-qm-masking="blocklist">
+						You will receive a confirmation email to {props.email}
 					</span>
 				</li>
 				<li>
