@@ -167,10 +167,12 @@ export const ProductCard = ({
 			)}
 			<Card>
 				<Card.Header backgroundColor={cardConfig.colour}>
-					<h3 css={productTitleCss(cardConfig.darkText)}>
+					<h3 css={productTitleCss(cardConfig.invertText)}>
 						{productTitle}
 					</h3>
-					{isGifted && <GiftRibbon inverted={cardConfig.darkText} />}
+					{isGifted && (
+						<GiftRibbon inverted={cardConfig.invertText} />
+					)}
 				</Card.Header>
 
 				{cardConfig.showBenefitsSection && nextPaymentDetails && (

@@ -24,7 +24,7 @@ export const productColour = {
 
 interface ProductCardConfiguration {
 	colour: string;
-	darkText?: boolean;
+	invertText?: boolean;
 	showBenefitsSection?: boolean;
 }
 
@@ -64,7 +64,7 @@ export const productCardConfiguration: {
 	},
 	guardianweekly: {
 		colour: productColour.guardianWeekly,
-		darkText: true,
+		invertText: true,
 	},
 	membership: {
 		colour: productColour.membership,

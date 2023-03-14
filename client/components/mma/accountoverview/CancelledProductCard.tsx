@@ -38,7 +38,7 @@ export const CancelledProductCard = ({
 			/>
 			<Card>
 				<Card.Header backgroundColor={cardConfig.colour}>
-					<h3 css={productTitleCss(cardConfig.darkText)}>
+					<h3 css={productTitleCss(cardConfig.invertText)}>
 						{specificProductType.productTitle()}
 					</h3>
 				</Card.Header>
