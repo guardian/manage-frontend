@@ -242,7 +242,9 @@ const DeliveryRecordsProblemConfirmationFC = (
 					</div>
 					<div>
 						<dt css={dtCss}>Subscription ID:</dt>
-						<dd css={ddCss}>{props.subscriptionId}</dd>
+						<dd css={ddCss} data-qm-masking="blocklist">
+							{props.subscriptionId}
+						</dd>
 					</div>
 					<div>
 						<dt css={dtCss}>Product:</dt>

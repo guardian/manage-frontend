@@ -11,6 +11,7 @@ export interface BasicProductInfoTableProps {
 export const BasicProductInfoTable = (props: BasicProductInfoTableProps) => {
 	return (
 		<ProductDescriptionListTable
+			data-qm-masking="blocklist"
 			content={[
 				{
 					title: props.groupedProductType.showSupporterId

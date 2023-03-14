@@ -179,7 +179,7 @@ export const AccountOverviewCancelledCard = (
 								? 'Supporter ID'
 								: 'Subscription ID'}
 						</li>
-						<li css={valueCss}>
+						<li css={valueCss} data-qm-masking="blocklist">
 							{props.product.subscription.subscriptionId}
 						</li>
 					</ul>

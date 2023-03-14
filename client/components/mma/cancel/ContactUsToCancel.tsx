@@ -50,6 +50,7 @@ export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
 				Contact us to cancel
 			</h2>
 			<ProductDescriptionListTable
+				data-qm-masking="blocklist"
 				content={[
 					{
 						title: props.groupedProductType.showSupporterId
