@@ -82,9 +82,8 @@ const PaymentDetails = (props: { subscription: Subscription }) => {
 			)}
 			{subscription.payPalEmail && (
 				<>
-					<span css={truncateCss}>
+					<span css={truncateCss} data-qm-masking="blocklist">
 						{' '}
-						data-qm-masking="blocklist"
 						{getObfuscatedPayPalId(subscription.payPalEmail)}
 					</span>
 					<PaypalLogo />
