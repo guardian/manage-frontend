@@ -51,6 +51,7 @@ export const ProductDescriptionListTable = (
 			${from.tablet} {
 				width: auto;
 			}
+			data-qm-masking="blocklist"
 		`;
 	};
 

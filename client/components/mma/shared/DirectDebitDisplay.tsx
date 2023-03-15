@@ -142,6 +142,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 			/>
 			<div>
 				<span
+					data-qm-masking="blocklist"
 					css={css`
 						margin-right: 10px;
 					`}
@@ -156,7 +157,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 					{sanitiseAccountNumber(props.accountNumber)}
 				</span>
 				{props.showAccountName && props.accountName ? (
-					<span>{props.accountName}</span>
+					<span data-qm-masking="blocklist">{props.accountName}</span>
 				) : undefined}
 			</div>
 		</>

@@ -300,6 +300,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 												invoicePaymentMethods.DIRECT_DEBIT &&
 												tableRow.last4 && (
 													<DirectDebitDisplay
+														data-qm-masking="blocklist"
 														accountNumber={
 															tableRow.last4
 														}
@@ -312,6 +313,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 												invoicePaymentMethods.SEPA &&
 												tableRow.last4 && (
 													<SepaDisplay
+														data-qm-masking="blocklist"
 														accountName=""
 														iban={tableRow.last4}
 													/>

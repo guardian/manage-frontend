@@ -49,6 +49,7 @@ export const Select = (props: SelectProps) => (
 			</span>
 		)}
 		<select
+			data-qm-masking="blocklist"
 			name="country"
 			id="delivery-address-country"
 			defaultValue={props.value}

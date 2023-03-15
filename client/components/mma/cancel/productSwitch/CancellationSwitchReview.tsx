@@ -381,10 +381,14 @@ export const CancellationSwitchReview = () => {
 					/>
 				)}
 				{currentSubscription.payPalEmail && (
-					<PaypalDisplay payPalId={currentSubscription.payPalEmail} />
+					<PaypalDisplay
+						data-qm-masking="blocklist"
+						payPalId={currentSubscription.payPalEmail}
+					/>
 				)}
 				{currentSubscription.sepaMandate && (
 					<SepaDisplay
+						data-qm-masking="blocklist"
 						accountName={
 							currentSubscription.sepaMandate.accountName
 						}

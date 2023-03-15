@@ -246,7 +246,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 								${valueCss};
 							`}
 						>
-							<div>
+							<div data-qm-masking="blocklist">
 								{subscription.sepaMandate.accountName}
 								<br />
 								{subscription.sepaMandate.iban}
