@@ -30,7 +30,9 @@ export const VideoPlayer = (props: VideoPlayerProps) => {
 	const overlay = (
 		<div onClick={hideOverlay} css={dataPrivacyVideoOverlay}>
 			<div css={dataPrivacyFooter}>
-				<PlayButton />
+				<div tabIndex={1}>
+					<PlayButton />
+				</div>
 				<h1>{props.overlayText}</h1>
 			</div>
 		</div>
@@ -43,6 +45,7 @@ export const VideoPlayer = (props: VideoPlayerProps) => {
 				controls
 				css={dataPrivacyVideoCss}
 				src={props.url}
+				tabIndex={-1}
 			/>
 		</div>
 	);
