@@ -408,7 +408,6 @@ const DeliveryRecordsProblemConfirmationFC = (
 							Delivery address changes
 						</h2>
 						<ReadOnlyAddressDisplay
-							data-qm-masking="blocklist"
 							address={deliveryAddressContext.address}
 							instructions={
 								(deliveryAddressContext.enableDeliveryInstructions &&

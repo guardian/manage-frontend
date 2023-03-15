@@ -84,6 +84,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 						align-items: center;
 					}
 				`}
+				data-qm-masking="blocklist"
 			>
 				<h2
 					css={css`
@@ -146,7 +147,6 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 								<li css={valueCss}>
 									{subscription.card && (
 										<CardDisplay
-											data-qm-masking="blocklist"
 											inErrorState={hasPaymentFailure}
 											cssOverrides={css`
 												margin: 0;

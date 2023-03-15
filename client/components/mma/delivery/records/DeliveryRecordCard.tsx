@@ -161,7 +161,6 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 					{props.deliveryRecord.addressLine1 &&
 					!props.deliveryRecord.hasHolidayStop ? (
 						<RecordAddress
-							data-qm-masking="blocklist"
 							addressLine1={props.deliveryRecord.addressLine1}
 							addressLine2={props.deliveryRecord.addressLine2}
 							town={props.deliveryRecord.addressTown}

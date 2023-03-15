@@ -358,7 +358,6 @@ export const SwitchReview = () => {
 								<br />
 								We will take payment as before, from{' '}
 								<PaymentDetails
-									data-qm-masking="blocklist"
 									subscription={productDetail.subscription}
 								/>
 							</span>

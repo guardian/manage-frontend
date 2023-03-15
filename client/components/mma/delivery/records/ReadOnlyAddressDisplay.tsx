@@ -50,6 +50,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 					css={css`
 						${dtCss()}
 					`}
+					data-qm-masking="blocklist"
 				>
 					Address:
 				</dt>

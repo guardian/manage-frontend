@@ -136,7 +136,6 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			{lines()}
 			<PageSection title="Email & Password">
 				<FormEmailField
-					data-qm-masking="blocklist"
 					name="primaryEmailAddress"
 					label="Email"
 					formikProps={props}
@@ -168,7 +167,6 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			{lines()}
 			<PageSection title="Phone">
 				<FormSelectField
-					data-qm-masking="blocklist"
 					name="countryCode"
 					label="Country code"
 					options={PHONE_CALLING_CODES}
@@ -176,7 +174,6 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 					labelModifier={(o: string) => `+${o}`}
 				/>
 				<FormNumberField
-					data-qm-masking="blocklist"
 					name="localNumber"
 					label="Local Number"
 					formikProps={props}
@@ -186,20 +183,17 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			{lines()}
 			<PageSection title="Personal Information">
 				<FormSelectField
-					data-qm-masking="blocklist"
 					name="title"
 					label="Title"
 					options={titles}
 					formikProps={props}
 				/>
 				<FormTextField
-					data-qm-masking="blocklist"
 					name="firstName"
 					label="First Name"
 					formikProps={props}
 				/>
 				<FormTextField
-					data-qm-masking="blocklist"
 					name="secondName"
 					label="Last Name"
 					formikProps={props}
@@ -211,19 +205,16 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 				description={correpondenceDescription}
 			>
 				<FormTextField
-					data-qm-masking="blocklist"
 					name="address1"
 					label="Address line 1"
 					formikProps={props}
 				/>
 				<FormTextField
-					data-qm-masking="blocklist"
 					name="address2"
 					label="Address line 2"
 					formikProps={props}
 				/>
 				<FormTextField
-					data-qm-masking="blocklist"
 					name="address3"
 					label="Town"
 					formikProps={props}
@@ -234,13 +225,11 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 					formikProps={props}
 				/>
 				<FormTextField
-					data-qm-masking="blocklist"
 					name="postcode"
 					label="Postcode/Zipcode"
 					formikProps={props}
 				/>
 				<FormSelectField
-					data-qm-masking="blocklist"
 					name="country"
 					label="Country"
 					options={COUNTRIES.flatMap((country) => country.name)}
@@ -250,7 +239,6 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			{lines()}
 			<PageSection title="Location" description={locationDescription}>
 				<FormSelectField
-					data-qm-masking="blocklist"
 					name="registrationLocation" // must match api field name
 					label="Location"
 					labelModifier={registrationLocationLabelModifier}

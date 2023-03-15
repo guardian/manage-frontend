@@ -16,6 +16,7 @@ export const SepaDisplay = ({
 			css={css`
 				margin: 0;
 			`}
+			data-qm-masking="blocklist"
 		>
 			{inline ? (
 				`SEPA ${accountName} ${iban}`

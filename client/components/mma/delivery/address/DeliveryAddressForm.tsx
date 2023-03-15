@@ -171,7 +171,6 @@ const Form = (props: FormProps) => {
 							' and instructions'}
 					</legend>
 					<Input
-						data-qm-masking="blocklist"
 						label={'Address line 1'}
 						width={30}
 						value={addressStateObject.addressLine1}
@@ -183,7 +182,6 @@ const Form = (props: FormProps) => {
 						errorMessage={props.formErrors.addressLine1?.message}
 					/>
 					<Input
-						data-qm-masking="blocklist"
 						label="Address line 2"
 						width={30}
 						value={addressStateObject.addressLine2 || ''}
@@ -191,7 +189,6 @@ const Form = (props: FormProps) => {
 						optional={true}
 					/>
 					<Input
-						data-qm-masking="blocklist"
 						label="Town or City"
 						width={30}
 						value={addressStateObject.town || ''}
@@ -203,7 +200,6 @@ const Form = (props: FormProps) => {
 						errorMessage={props.formErrors.town?.message}
 					/>
 					<Input
-						data-qm-masking="blocklist"
 						label="County or State"
 						width={30}
 						value={addressStateObject.region || ''}
@@ -211,7 +207,6 @@ const Form = (props: FormProps) => {
 						changeSetState={addressSetStateObject.setRegion}
 					/>
 					<Input
-						data-qm-masking="blocklist"
 						label="Postcode/Zipcode"
 						width={11}
 						value={addressStateObject.postcode}
@@ -223,7 +218,6 @@ const Form = (props: FormProps) => {
 						errorMessage={props.formErrors.postcode?.message}
 					/>
 					<Select
-						data-qm-masking="blocklist"
 						label={'Country'}
 						options={COUNTRIES.map((country) => {
 							return {

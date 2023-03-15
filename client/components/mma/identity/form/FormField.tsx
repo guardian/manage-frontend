@@ -47,6 +47,7 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
 			{label}
 			{field}
 			{error ? <p>{error}</p> : null}
+			data-qm-masking="blocklist"
 		</label>
 	);
 };

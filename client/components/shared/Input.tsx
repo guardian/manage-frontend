@@ -106,6 +106,7 @@ export const Input = (props: InputProps) => {
 					</span>
 				)}
 				<input
+					data-qm-masking="blocklist"
 					type={props.type || 'text'}
 					name={props.name}
 					id={props.id}

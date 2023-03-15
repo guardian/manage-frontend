@@ -414,7 +414,6 @@ export const AccountOverviewCardV2 = ({
 							>
 								{productDetail.subscription.card && (
 									<CardDisplay
-										data-qm-masking="blocklist"
 										inErrorState={hasPaymentFailure}
 										cssOverrides={css`
 											margin: 0;
@@ -424,7 +423,6 @@ export const AccountOverviewCardV2 = ({
 								)}
 								{productDetail.subscription.payPalEmail && (
 									<PaypalDisplay
-										data-qm-masking="blocklist"
 										inline={true}
 										payPalId={
 											productDetail.subscription
@@ -434,7 +432,6 @@ export const AccountOverviewCardV2 = ({
 								)}
 								{productDetail.subscription.sepaMandate && (
 									<SepaDisplay
-										data-qm-masking="blocklist"
 										inline={true}
 										accountName={
 											productDetail.subscription
@@ -448,7 +445,6 @@ export const AccountOverviewCardV2 = ({
 								)}
 								{productDetail.subscription.mandate && (
 									<DirectDebitDisplay
-										data-qm-masking="blocklist"
 										inline={true}
 										{...productDetail.subscription.mandate}
 									/>

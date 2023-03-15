@@ -56,13 +56,11 @@ export class NewCardPaymentMethodDetail implements NewPaymentMethodDetail {
 	public readonly render = (subscription?: Subscription) =>
 		isSubscriptionWithCard(subscription) ? (
 			<CardDisplay
-				data-qm-masking="blocklist"
 				last4={subscription.card.last4}
 				type={subscription.card.type}
 			/>
 		) : (
 			<CardDisplay
-				data-qm-masking="blocklist"
 				last4={this.stripePaymentMethod.card.last4}
 				type={this.stripePaymentMethod.card.brand}
 			/>

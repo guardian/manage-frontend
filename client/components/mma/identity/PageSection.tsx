@@ -67,6 +67,7 @@ export const PageSection: FC<PageSectionProps> = (props) => {
 						minWidth: '220px',
 					},
 				}}
+				data-qm-masking="blocklist"
 			>
 				{title && getTitle(title)}
 				{description && getDescription(description)}

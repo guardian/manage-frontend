@@ -79,7 +79,6 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
 			>
 				<FieldWrapper width="50%" label="Expiry Date">
 					<CardExpiryElement
-						data-qm-masking="blocklist"
 						options={{
 							style: baseStyle,
 							placeholder: 'MM/YY',

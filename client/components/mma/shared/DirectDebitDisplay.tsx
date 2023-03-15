@@ -69,6 +69,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 					display: flex;
 					align-items: center;
 				`}
+				data-qm-masking="blocklist"
 			>
 				<DirectDebitLogo
 					fill={palette.brand[400]}

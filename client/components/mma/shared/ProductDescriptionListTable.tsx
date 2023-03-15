@@ -51,7 +51,6 @@ export const ProductDescriptionListTable = (
 			${from.tablet} {
 				width: auto;
 			}
-			data-qm-masking="blocklist"
 		`;
 	};
 
@@ -127,6 +126,7 @@ export const ProductDescriptionListTable = (
 				flex-wrap: wrap;
 				margin: ${space[5]}px 0;
 			`}
+			data-qm-masking="blocklist"
 		>
 			{props.tableHeading && (
 				<h2 css={tableHeadingCss}>{props.tableHeading}</h2>

@@ -439,7 +439,6 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 									{props.productDetail.subscription
 										.payPalEmail && (
 										<PaypalDisplay
-											data-qm-masking="blocklist"
 											payPalId={
 												props.productDetail.subscription
 													.payPalEmail
@@ -449,7 +448,6 @@ export const AccountOverviewCard = (props: AccountOverviewCardProps) => {
 									{props.productDetail.subscription
 										.sepaMandate && (
 										<SepaDisplay
-											data-qm-masking="blocklist"
 											accountName={
 												props.productDetail.subscription
 													.sepaMandate.accountName

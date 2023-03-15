@@ -205,7 +205,6 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 						`}
 					>
 						<Input
-							data-qm-masking="blocklist"
 							label={'Address line 1'}
 							width={30}
 							value={newAddress.addressLine1}
@@ -222,7 +221,6 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 							errorMessage={formErrors.addressLine1?.message}
 						/>
 						<Input
-							data-qm-masking="blocklist"
 							label="Address line 2"
 							width={30}
 							value={newAddress.addressLine2 || ''}
@@ -235,7 +233,6 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 							optional={true}
 						/>
 						<Input
-							data-qm-masking="blocklist"
 							label="Town or City"
 							width={30}
 							value={newAddress.town || ''}
@@ -252,7 +249,6 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 							errorMessage={formErrors.town?.message}
 						/>
 						<Input
-							data-qm-masking="blocklist"
 							label="County or State"
 							width={30}
 							value={newAddress.region || ''}
@@ -265,7 +261,6 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 							}
 						/>
 						<Input
-							data-qm-masking="blocklist"
 							label="Postcode/Zipcode"
 							width={11}
 							value={newAddress.postcode}
@@ -282,7 +277,6 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 							errorMessage={formErrors.postcode?.message}
 						/>
 						<Select
-							data-qm-masking="blocklist"
 							label={'Country'}
 							options={COUNTRIES.map((country) => {
 								return {

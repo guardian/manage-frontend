@@ -254,7 +254,6 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 					us you will need to use the email you registered with.
 				</p>
 				<Input
-					data-qm-masking="blocklist"
 					label="Full Name"
 					width={50}
 					changeSetState={(newName) => setName(newName.substr(0, 50))}
@@ -269,7 +268,6 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 					errorMessage={formValidationState.name.errorMessage}
 				/>
 				<Input
-					data-qm-masking="blocklist"
 					label="Email address"
 					secondaryLabel="If you are contacting us regarding an account you hold with us you must use the email you registered with"
 					width={50}

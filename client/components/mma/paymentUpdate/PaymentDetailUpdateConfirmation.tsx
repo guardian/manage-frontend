@@ -162,7 +162,6 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 									<li css={valueCss}>
 										{subscription.card && (
 											<CardDisplay
-												data-qm-masking="blocklist"
 												inErrorState={false}
 												cssOverrides={css`
 													margin: 0;
@@ -172,7 +171,6 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 										)}
 										{subscription.payPalEmail && (
 											<PaypalDisplay
-												data-qm-masking="blocklist"
 												payPalId={
 													subscription.payPalEmail
 												}
@@ -180,7 +178,6 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 										)}
 										{subscription.sepaMandate && (
 											<SepaDisplay
-												data-qm-masking="blocklist"
 												accountName={
 													subscription.sepaMandate
 														.accountName
@@ -193,7 +190,6 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 										)}
 										{subscription.mandate && (
 											<DirectDebitDisplay
-												data-qm-masking="blocklist"
 												inErrorState={false}
 												{...subscription.mandate}
 											/>

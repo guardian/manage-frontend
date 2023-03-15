@@ -58,7 +58,7 @@ export const PaypalDisplay = (props: PayPalProps) => {
 	`;
 
 	return (
-		<div css={layoutCss}>
+		<div css={layoutCss} data-qm-masking="blocklist">
 			<PaypalLogo />
 			{props.payPalId && (
 				<p>

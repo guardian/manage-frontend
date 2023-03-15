@@ -121,7 +121,6 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 							{activeProductsInCategory.map((productDetail) =>
 								featureSwitches.accountOverviewNewLayout ? (
 									<AccountOverviewCardV2
-										data-qm-masking="blocklist"
 										key={
 											productDetail.subscription
 												.subscriptionId
@@ -132,7 +131,6 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 									/>
 								) : (
 									<AccountOverviewCard
-										data-qm-masking="blocklist"
 										key={
 											productDetail.subscription
 												.subscriptionId
@@ -144,7 +142,6 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 							{cancelledProductsInCategory.map(
 								(cancelledProductDetail) => (
 									<AccountOverviewCancelledCard
-										data-qm-masking="blocklist"
 										key={
 											cancelledProductDetail.subscription
 												.subscriptionId

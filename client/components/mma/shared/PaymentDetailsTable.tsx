@@ -55,7 +55,6 @@ export const PaymentDetailsTable = (props: PaymentDetailsTableProps) => (
 					<>
 						{props.productDetail.subscription.card && (
 							<CardDisplay
-								data-qm-masking="blocklist"
 								cssOverrides={css`
 									margin: 0;
 								`}
@@ -68,14 +67,12 @@ export const PaymentDetailsTable = (props: PaymentDetailsTableProps) => (
 						)}
 						{props.productDetail.subscription.mandate && (
 							<DirectDebitDisplay
-								data-qm-masking="blocklist"
 								inErrorState={!!props.productDetail.alertText}
 								{...props.productDetail.subscription.mandate}
 							/>
 						)}
 						{props.productDetail.subscription.sepaMandate && (
 							<SepaDisplay
-								data-qm-masking="blocklist"
 								{...props.productDetail.subscription
 									.sepaMandate}
 							/>

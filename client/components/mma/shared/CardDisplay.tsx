@@ -156,6 +156,7 @@ export const CardDisplay = (props: CardDisplayProps) => {
 				`}
 			>
 				ending {props.last4}
+				data-qm-masking="blocklist"
 			</span>
 		</div>
 	);
