@@ -285,6 +285,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 											{tableRow.cardType &&
 												tableRow.last4 && (
 													<CardDisplay
+														data-qm-masking="blocklist"
 														cssOverrides={css`
 															margin: 0;
 														`}
