@@ -395,8 +395,7 @@ export const AccountOverviewCardV2 = ({
 										})
 									}
 								>
-									Change to monthly + extras Change to monthly
-									+ extras
+									Change to monthly + extras
 								</Button>
 							</ThemeProvider>
 						)}
