@@ -98,10 +98,8 @@ const PaymentDetails = (props: { subscription: Subscription }) => {
 			)}
 			{subscription.sepaMandate && (
 				<>
-					<span data-qm-masking="blocklist">
-						SEPA {subscription.sepaMandate.accountName}{' '}
-						{subscription.sepaMandate.iban}
-					</span>
+					SEPA {subscription.sepaMandate.accountName}{' '}
+					{subscription.sepaMandate.iban}
 				</>
 			)}
 		</span>
