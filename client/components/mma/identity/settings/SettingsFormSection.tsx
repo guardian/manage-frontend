@@ -65,9 +65,10 @@ const EmailMessage = (email: string) => (
 			},
 		]}
 	>
-		To verify your new email address <strong>{email}</strong> please check
-		your inbox - the confirmation email is on its way. In the meantime you
-		should keep using your old credentials to sign in.
+		To verify your new email address{' '}
+		<strong data-qm-masking="blocklist">{email}</strong> please check your
+		inbox - the confirmation email is on its way. In the meantime you should
+		keep using your old credentials to sign in.
 	</p>
 );
 

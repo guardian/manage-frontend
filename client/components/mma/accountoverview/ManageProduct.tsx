@@ -217,6 +217,7 @@ const InnerContent = ({
 							Delivery address
 						</h2>
 						<ProductDescriptionListTable
+							data-qm-masking="blocklist"
 							alternateRowBgColors
 							borderColour={neutral[86]}
 							content={[
