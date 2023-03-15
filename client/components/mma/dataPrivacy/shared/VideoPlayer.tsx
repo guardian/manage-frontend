@@ -31,15 +31,6 @@ export const VideoPlayer = (props: VideoPlayerProps) => {
 		<div onClick={hideOverlay} css={dataPrivacyVideoOverlay}>
 			<div css={dataPrivacyFooter}>
 				<PlayButton />
-
-				{/* <Button
-					disabled={false}
-					text="PLAY"
-					type="button"
-					colour={brand[400]}
-					onClick={() => hideOverlay()}
-					fontWeight="bold"
-				/> */}
 				<h1>{props.overlayText}</h1>
 			</div>
 		</div>
