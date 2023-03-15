@@ -25,6 +25,11 @@ describe('Delivery address', () => {
 			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('mma');
 
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
 		cy.intercept('PUT', '/api/delivery/address/update/**', {
 			statusCode: 200,
 			body: 'success',
@@ -33,8 +38,11 @@ describe('Delivery address', () => {
 		cy.visit('/');
 		cy.wait('@mma');
 		cy.wait('@cancelled');
+		cy.wait('@mobile_subscriptions');
+
 		cy.findByText('Manage subscription').click();
 		cy.findByText('Manage delivery address').click();
+
 		cy.get('input').first().invoke('val').should('equal', 'Kings Place');
 		cy.get('input').first().clear().type('Queens Place');
 
@@ -61,6 +69,11 @@ describe('Delivery address', () => {
 			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
 		}).as('mma');
 
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
 		cy.intercept('PUT', '/api/delivery/address/update/**', {
 			statusCode: 200,
 			body: 'success',
@@ -69,6 +82,8 @@ describe('Delivery address', () => {
 		cy.visit('/');
 		cy.wait('@mma');
 		cy.wait('@cancelled');
+		cy.wait('@mobile_subscriptions');
+
 		cy.findByText('Manage subscription').click();
 		cy.findByText('Manage delivery address').click();
 

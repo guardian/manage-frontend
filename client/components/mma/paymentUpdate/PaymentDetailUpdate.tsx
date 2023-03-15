@@ -23,6 +23,7 @@ import {
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../../../shared/identity';
 import type {
+	MembersDataApiResponse,
 	ProductDetail,
 	Subscription,
 	WithSubscription,
@@ -31,7 +32,6 @@ import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
 	isProduct,
-	mdapiResponseReader,
 } from '../../../../shared/productResponse';
 import type {
 	ProductType,
@@ -299,12 +299,13 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				});
 
 				// refetch subscription from members data api
-				const newSubscriptionData = mdapiResponseReader(
-					await createProductDetailFetch(
-						props.productType.allProductsProductTypeFilterString,
-						productDetail.subscription.subscriptionId,
-					),
-				).products.filter(isProduct);
+				const mdapiResponse = (await createProductDetailFetch(
+					props.productType.allProductsProductTypeFilterString,
+					productDetail.subscription.subscriptionId,
+				)) as MembersDataApiResponse;
+
+				const newSubscriptionData =
+					mdapiResponse.products.filter(isProduct);
 
 				navigate('updated', {
 					state: {

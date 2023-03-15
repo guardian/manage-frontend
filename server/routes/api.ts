@@ -1,15 +1,8 @@
 import * as Sentry from '@sentry/node';
 import { Router } from 'express';
 import { availableProductMovesResponse } from '../../client/fixtures/productMovement';
-import type {
-	MembersDataApiItem,
-	MembersDataApiResponse,
-} from '../../shared/productResponse';
-import {
-	isProduct,
-	MDA_TEST_USER_HEADER,
-	mdapiResponseReader,
-} from '../../shared/productResponse';
+import type { MembersDataApiResponse } from '../../shared/productResponse';
+import { isProduct, MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import {
 	cancellationSfCasesAPI,
 	deliveryRecordsAPI,
@@ -53,13 +46,12 @@ router.get(
 	'/me/mma/:subscriptionName?',
 	customMembersDataApiHandler((response, body) => {
 		const isTestUser = response.getHeader(MDA_TEST_USER_HEADER) === 'true';
-		const parsedResponse = JSON.parse(body.toString()) as
-			| MembersDataApiItem[]
-			| MembersDataApiResponse;
-		const newMdapiResponse = mdapiResponseReader(parsedResponse);
-		const augmentedWithTestUser = newMdapiResponse.products.map(
-			(mdaItem) => ({
-				...mdaItem,
+		const mdapiResponse = JSON.parse(
+			body.toString(),
+		) as MembersDataApiResponse;
+		const augmentedWithTestUser = mdapiResponse.products.map(
+			(mdapiObject) => ({
+				...mdapiObject,
 				isTestUser,
 			}),
 		);
@@ -72,15 +64,15 @@ router.get(
 				),
 		)
 			.then((productDetails) => {
-				newMdapiResponse.products = productDetails;
-				response.json(newMdapiResponse);
+				mdapiResponse.products = productDetails;
+				response.json(mdapiResponse);
 			})
 			.catch((error) => {
 				const errorMessage =
 					"Unexpected error when augmenting members-data-api response with 'deliveryAddressChangeEffectiveDate'";
 				log.error(errorMessage, error);
 				Sentry.captureMessage(errorMessage);
-				response.json(augmentedWithTestUser); // fallback to sending sending the response augmented with just isTestUser
+				response.json(augmentedWithTestUser); // fallback to sending the response augmented with just isTestUser
 			});
 	})(
 		'user-attributes/me/mma/:subscriptionName',

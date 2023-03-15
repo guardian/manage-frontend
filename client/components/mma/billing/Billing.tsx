@@ -10,9 +10,18 @@ import {
 } from '@guardian/source-foundations';
 import { Fragment } from 'react';
 import { parseDate } from '../../../../shared/dates';
+import { featureSwitches } from '../../../../shared/featureSwitches';
+import type {
+	AppSubscription,
+	MPAPIResponse,
+} from '../../../../shared/mpapiResponse';
+import {
+	AppStore,
+	determineAppStore,
+	isValidAppSubscription,
+} from '../../../../shared/mpapiResponse';
 import type {
 	InvoiceDataApiItem,
-	MembersDataApiItem,
 	MembersDataApiResponse,
 	PaidSubscriptionPlan,
 	ProductDetail,
@@ -21,7 +30,6 @@ import {
 	getMainPlan,
 	isGift,
 	isProduct,
-	mdapiResponseReader,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
@@ -57,8 +65,9 @@ type MMACategoryToProductDetails = {
 };
 
 type BillingResponse = [
-	MembersDataApiResponse | MembersDataApiItem[],
+	MembersDataApiResponse,
 	{ invoices: InvoiceDataApiItem[] },
+	MPAPIResponse,
 ];
 
 const subHeadingTitleCss = `
@@ -69,9 +78,9 @@ ${until.tablet} {
 };
 `;
 
-const subHeadingBorderTopCss = `
-border-top: 1px solid ${neutral['86']};
-margin: 50px 0 ${space[5]}px;
+const subHeadingBorderTopCss = css`
+	border-top: 1px solid ${neutral['86']};
+	margin: ${space[12]}px 0 ${space[5]}px;
 `;
 
 function decorateProductDetailWithInvoices(
@@ -79,11 +88,12 @@ function decorateProductDetailWithInvoices(
 ): ProductDetailWithInvoice {
 	return { ...productDetail, invoices: [] };
 }
+
 function joinInvoicesWithProductsInCategories(
-	mdapiObject: MembersDataApiResponse,
+	mdapiResponse: MembersDataApiResponse,
 	invoicesResponse: { invoices: InvoiceDataApiItem[] },
 ) {
-	const allProductDetails = mdapiObject.products
+	const allProductDetails = mdapiResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate)
 		.map(decorateProductDetailWithInvoices);
@@ -296,6 +306,48 @@ function renderProductBillingInfo([mmaCategory, productDetails]: [
 	);
 }
 
+function getAppStoreMessage(subscription: AppSubscription) {
+	const iosMessage = 'Apple (for iOS)';
+	const androidMessage = 'Google (for Android)';
+
+	const appStore = determineAppStore(subscription);
+
+	switch (appStore) {
+		case AppStore.IOS:
+			return iosMessage;
+		case AppStore.ANDROID:
+			return androidMessage;
+		default:
+			return `${iosMessage}, or ${androidMessage}`;
+	}
+}
+
+function renderInAppPurchase(subscription: AppSubscription) {
+	return (
+		<div css={subHeadingBorderTopCss} key={subscription.subscriptionId}>
+			<h2
+				css={css`
+					${subHeadingTitleCss}
+					margin: 0;
+				`}
+			>
+				App Subscription
+			</h2>
+			<div
+				css={css`
+					${textSans.medium()};
+					border: 1px solid ${neutral[20]};
+					margin: ${space[5]}px 0;
+					padding: ${space[3]}px;
+				`}
+			>
+				To change your payment setup, please contact{' '}
+				{getAppStoreMessage(subscription)}.
+			</div>
+		</div>
+	);
+}
+
 function BillingDetailsComponent(props: {
 	mmaCategoryToProductDetails: MMACategoryToProductDetails;
 }) {
@@ -329,13 +381,18 @@ const BillingPage = () => {
 		return <GenericErrorScreen />;
 	}
 
-	const [mdapiResponse, invoicesResponse] = billingResponse;
-	const mdapiObject = mdapiResponseReader(mdapiResponse);
+	const [mdapiResponse, invoicesResponse, mpapiResponse] = billingResponse;
+	const appSubscriptions = mpapiResponse.subscriptions.filter(
+		isValidAppSubscription,
+	);
 
 	const { allProductDetails, mmaCategoryToProductDetails } =
-		joinInvoicesWithProductsInCategories(mdapiObject, invoicesResponse);
+		joinInvoicesWithProductsInCategories(mdapiResponse, invoicesResponse);
 
-	if (allProductDetails.length === 0) {
+	if (
+		(allProductDetails.length === 0 && appSubscriptions.length === 0) ||
+		(allProductDetails.length === 0 && !featureSwitches.appSubscriptions)
+	) {
 		return <EmptyAccountOverview />;
 	}
 
@@ -344,6 +401,9 @@ const BillingPage = () => {
 			<PaymentFailureAlertIfApplicable
 				productDetails={allProductDetails}
 			/>
+			{featureSwitches.appSubscriptions &&
+				appSubscriptions.map(renderInAppPurchase)}
+
 			<BillingDetailsComponent
 				mmaCategoryToProductDetails={mmaCategoryToProductDetails}
 			/>
@@ -355,6 +415,7 @@ const billingFetcher = () =>
 	Promise.all([
 		allProductsDetailFetcher(),
 		fetchWithDefaultParameters('/api/invoices'),
+		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions'),
 	]);
 
 export const Billing = () => {

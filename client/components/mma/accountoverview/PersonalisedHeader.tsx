@@ -25,6 +25,10 @@ export const PersonalisedHeader = ({
 }: PersonalisedHeaderProps) => {
 	const userDetails = mdapiResponse.user;
 
+	if (!userDetails || mdapiResponse.products.length === 0) {
+		return null;
+	}
+
 	const productDetails = mdapiResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
@@ -34,7 +38,7 @@ export const PersonalisedHeader = ({
 		'MMMM yyyy',
 	);
 
-	return userDetails ? (
+	return (
 		<hgroup
 			css={css`
 				margin-top: ${space[12]}px;
@@ -57,5 +61,5 @@ export const PersonalisedHeader = ({
 				Thank you for funding the Guardian since {supportStartYear}
 			</p>
 		</hgroup>
-	) : null;
+	);
 };

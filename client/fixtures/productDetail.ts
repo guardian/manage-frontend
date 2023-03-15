@@ -137,6 +137,74 @@ export const guardianWeeklyExpiredCard: ProductDetail = {
 	isTestUser: false,
 };
 
+export const guardianWeeklyCancelled: ProductDetail = {
+	mmaCategory: 'subscriptions',
+	tier: 'Guardian Weekly - Domestic',
+	isPaidTier: true,
+	selfServiceCancellation: {
+		isAllowed: false,
+		shouldDisplayEmail: false,
+		phoneRegionsToDisplay: ['UK & ROW'],
+	},
+	joinDate: '2021-11-29',
+	optIn: true,
+	subscription: {
+		paymentMethod: 'Card',
+		card: {
+			last4: '4242',
+			expiry: {
+				month: 4,
+				year: 2024,
+			},
+			type: 'Visa',
+			stripePublicKeyForUpdate: 'pk_test_123',
+			email: 'test.user@example.com',
+		},
+		contactId: '0039E00001KA26BQAT',
+		deliveryAddress: {
+			addressLine1: 'Kings Place',
+			addressLine2: '90 York Way',
+			town: 'London',
+			postcode: 'N1 9GU',
+			country: 'United Kingdom',
+		},
+		safeToUpdatePaymentMethod: true,
+		start: '2021-12-10',
+		end: '2022-11-29',
+		nextPaymentPrice: 13500,
+		nextPaymentDate: '2021-12-10',
+		lastPaymentDate: null,
+		chargedThroughDate: null,
+		renewalDate: '2022-11-29',
+		anniversaryDate: '2022-12-10',
+		cancelledAt: true,
+		subscriberId: 'A-S00286635',
+		subscriptionId: 'A-S00286635',
+		trialLength: 9,
+		autoRenew: true,
+		currentPlans: [],
+		futurePlans: [
+			{
+				name: null,
+				start: '2021-12-10',
+				end: '2022-11-29',
+				shouldBeVisible: true,
+				chargedThrough: null,
+				price: 15000,
+				currency: '£',
+				currencyISO: 'GBP',
+				billingPeriod: 'year',
+			},
+		],
+		readerType: 'Direct',
+		accountId: '8ad0965d7d585497017d6ce786026089',
+		cancellationEffectiveDate: '2023-03-20',
+		deliveryAddressChangeEffectiveDate: '2021-12-10',
+	},
+	isTestUser: false,
+	key: '1638374153759',
+};
+
 export const digitalDD: ProductDetail = {
 	mmaCategory: 'subscriptions',
 	tier: 'Digital Pack',
@@ -822,7 +890,66 @@ export const supporterPlus: ProductDetail = {
 	},
 };
 
-export const cancelledContribution: ProductDetail = {
+export const supporterPlusCancelled: ProductDetail = {
+	mmaCategory: 'recurringSupport',
+	tier: 'Supporter Plus',
+	isPaidTier: true,
+	isTestUser: false,
+	selfServiceCancellation: {
+		isAllowed: false,
+		shouldDisplayEmail: false,
+		phoneRegionsToDisplay: ['UK & ROW'],
+	},
+	joinDate: '2022-07-20',
+	optIn: true,
+	subscription: {
+		paymentMethod: 'Card',
+		card: {
+			last4: '4242',
+			expiry: {
+				month: 2,
+				year: 2027,
+			},
+			type: 'Visa',
+			stripePublicKeyForUpdate: 'pk_test_123',
+			email: 'test.user@example.com',
+		},
+		contactId: '0039E00001VVNb5QAH',
+		safeToUpdatePaymentMethod: true,
+		start: '2022-07-20',
+		end: '2022-08-20',
+		nextPaymentPrice: 1000,
+		nextPaymentDate: '2022-08-20',
+		lastPaymentDate: '2022-07-20',
+		chargedThroughDate: '2022-08-20',
+		renewalDate: '2023-07-20',
+		anniversaryDate: '2023-07-20',
+		cancelledAt: true,
+		subscriberId: 'A-S00393340',
+		subscriptionId: 'A-S00393340',
+		trialLength: -2,
+		autoRenew: true,
+		currentPlans: [
+			{
+				name: null,
+				start: '2022-07-20',
+				end: '2023-07-20',
+				shouldBeVisible: true,
+				chargedThrough: '2022-08-20',
+				price: 1000,
+				currency: '£',
+				currencyISO: 'GBP',
+				billingPeriod: 'month',
+			},
+		],
+		futurePlans: [],
+		readerType: 'Direct',
+		accountId: '8ad088718219a6b601821bbe9e6210f2',
+		cancellationEffectiveDate: '2023-04-07',
+	},
+};
+
+export const contributionCancelled: ProductDetail = {
 	mmaCategory: 'recurringSupport',
 	tier: 'Contributor',
 	isPaidTier: true,

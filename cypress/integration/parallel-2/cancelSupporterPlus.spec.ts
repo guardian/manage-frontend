@@ -8,8 +8,11 @@ describe('Cancel Supporter Plus', () => {
 	const setupCancellation = () => {
 		cy.visit('/');
 
-		cy.findByText('Manage recurring support').click();
+		cy.wait('@mma');
 		cy.wait('@cancelled');
+		cy.wait('@mobile_subscriptions');
+
+		cy.findByText('Manage recurring support').click();
 
 		cy.findByRole('link', {
 			name: 'Cancel recurring support',
@@ -43,7 +46,12 @@ describe('Cancel Supporter Plus', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(supporterPlus),
-		});
+		}).as('mma');
+
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
@@ -65,8 +73,13 @@ describe('Cancel Supporter Plus', () => {
 		}).as('cancel_supporter_plus');
 	});
 
-	it('allows self-service cancellation of Supporter Plus', () => {
+	it('shows error message when cancellation fails', () => {
 		setupCancellation();
+
+		cy.intercept('GET', '/api/me/mma/**', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(supporterPlus),
+		}).as('get_failed_cancellation');
 
 		cy.findByRole('radio', {
 			name: 'I am unhappy with some editorial decisions',
@@ -79,7 +92,33 @@ describe('Cancel Supporter Plus', () => {
 
 		cy.wait('@create_case_in_salesforce');
 		cy.wait('@cancel_supporter_plus');
-		cy.wait('@new_product_detail');
+		cy.wait('@get_failed_cancellation');
+
+		cy.findByRole('heading', {
+			name: 'Oops!',
+		});
+	});
+
+	it('allows self-service cancellation of Supporter Plus', () => {
+		setupCancellation();
+
+		cy.intercept('GET', '/api/me/mma/**', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(),
+		}).as('get_cancelled_product');
+
+		cy.findByRole('radio', {
+			name: 'I am unhappy with some editorial decisions',
+		}).click();
+		cy.findByRole('button', { name: 'Continue' }).click();
+
+		cy.wait('@get_case');
+
+		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
+
+		cy.wait('@create_case_in_salesforce');
+		cy.wait('@cancel_supporter_plus');
+		cy.wait('@get_cancelled_product');
 
 		cy.findByRole('heading', {
 			name: 'Monthly support + extras cancelled',
