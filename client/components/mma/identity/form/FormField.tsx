@@ -43,7 +43,10 @@ const FormField = <T,>(props: FormFieldProps<T>) => {
 	const error = getError(name, formikProps);
 	const field = cloneElement(children, { name });
 	return (
-		<label css={[labelCss, error && formFieldErrorCss]}>
+		<label
+			css={[labelCss, error && formFieldErrorCss]}
+			data-qm-masking="blocklist"
+		>
 			{label}
 			{field}
 			{error ? <p>{error}</p> : null}
