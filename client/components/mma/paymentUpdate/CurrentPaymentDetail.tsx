@@ -84,7 +84,6 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 						align-items: center;
 					}
 				`}
-				data-qm-masking="blocklist"
 			>
 				<h2
 					css={css`
