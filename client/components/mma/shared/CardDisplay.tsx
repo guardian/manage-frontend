@@ -154,9 +154,9 @@ export const CardDisplay = (props: CardDisplayProps) => {
 						? palette.error[400]
 						: palette.neutral[7]};
 				`}
+				data-qm-masking="blocklist"
 			>
 				ending {props.last4}
-				data-qm-masking="blocklist"
 			</span>
 		</div>
 	);

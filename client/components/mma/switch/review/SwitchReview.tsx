@@ -72,7 +72,7 @@ const PaymentDetails = (props: { subscription: Subscription }) => {
 	`;
 
 	return (
-		<span css={containerCss} data-qm-masking="blocklist">
+		<span css={containerCss}>
 			{subscription.card && (
 				<>
 					{cardType(subscription.card.type)} ending{' '}
@@ -82,7 +82,7 @@ const PaymentDetails = (props: { subscription: Subscription }) => {
 			)}
 			{subscription.payPalEmail && (
 				<>
-					<span css={truncateCss} data-qm-masking="blocklist">
+					<span css={truncateCss}>
 						{' '}
 						{getObfuscatedPayPalId(subscription.payPalEmail)}
 					</span>
@@ -91,10 +91,8 @@ const PaymentDetails = (props: { subscription: Subscription }) => {
 			)}
 			{subscription.mandate && (
 				<>
-					<span data-qm-masking="blocklist">
-						account ending{' '}
-						{subscription.mandate.accountNumber.slice(-3)}
-					</span>
+					account ending{' '}
+					{subscription.mandate.accountNumber.slice(-3)}
 					<DirectDebitLogo />
 				</>
 			)}

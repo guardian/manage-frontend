@@ -157,7 +157,6 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 											{...subscription.card}
 										/>
 									)}
-
 									{subscription.payPalEmail && <PaypalLogo />}
 									{subscription.sepaMandate && (
 										<div>SEPA</div>
@@ -263,7 +262,6 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 							`}
 						>
 							<DirectDebitDisplay
-								data-qm-masking="blocklist"
 								{...subscription.mandate}
 								onlySortCode
 							/>

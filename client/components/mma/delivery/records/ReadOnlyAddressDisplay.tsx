@@ -59,10 +59,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 						${ddCss}
 					`}
 				>
-					<DeliveryAddressDisplay
-						data-qm-masking="blocklist"
-						{...props.address}
-					/>
+					<DeliveryAddressDisplay {...props.address} />
 					{!props.instructions && props.showEditButton && (
 						<Button
 							onClick={() => props.editButtonCallback?.()}
