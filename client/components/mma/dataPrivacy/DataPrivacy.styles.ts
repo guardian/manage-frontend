@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { headline, textSans } from '@guardian/source-foundations';
-// import BulletPointPng from './shared/BulletPoint.svg'
 
 export const dataPrivacyHeadingCss = css`
 	margin: 0;
