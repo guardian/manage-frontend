@@ -3,7 +3,7 @@ import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
-	cancelledContribution,
+	contributionCancelled,
 	contributionPayPal,
 	guardianWeeklyCard,
 } from '../../../fixtures/productDetail';
@@ -79,6 +79,6 @@ export const Confirmation: ComponentStory<
 
 	return getCancellationSummary(
 		PRODUCT_TYPES.contributions,
-		cancelledContribution,
-	)(cancelledContribution);
+		contributionCancelled,
+	)(contributionCancelled);
 };

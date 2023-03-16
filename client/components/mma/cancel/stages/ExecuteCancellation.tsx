@@ -4,7 +4,10 @@ import { Button } from '@guardian/source-react-components';
 import type { ReactNode } from 'react';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import type { ProductDetail } from '../../../../../shared/productResponse';
+import type {
+	MembersDataApiResponse,
+	ProductDetail,
+} from '../../../../../shared/productResponse';
 import { isProduct } from '../../../../../shared/productResponse';
 import type {
 	ProductType,
@@ -26,7 +29,7 @@ import type { OptionalCancellationReasonId } from '../cancellationReason';
 import { getCancellationSummary, isCancelled } from '../CancellationSummary';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
 
-class PerformCancelAsyncLoader extends AsyncLoader<ProductDetail[]> {}
+class PerformCancelAsyncLoader extends AsyncLoader<MembersDataApiResponse> {}
 
 const getCancelFunc =
 	(
@@ -111,8 +114,11 @@ const getCaseUpdatingCancellationSummary =
 		productType: ProductTypeWithCancellationFlow,
 		cancelledProductDetail: ProductDetail,
 	) =>
-	(productDetails: ProductDetail[]) => {
-		const productDetail = productDetails[0] || { subscription: {} };
+	(mdapiResponse: MembersDataApiResponse) => {
+		const productDetail = (mdapiResponse.products[0] as ProductDetail) || {
+			subscription: {},
+		};
+
 		const render = getCancellationSummaryWithReturnButton(
 			getCancellationSummary(
 				productType,

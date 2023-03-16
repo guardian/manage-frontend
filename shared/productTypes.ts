@@ -29,6 +29,7 @@ import type {
 	SubscriptionWithDeliveryAddress,
 } from './productResponse';
 import { getMainPlan, isGift } from './productResponse';
+import { SoftOptInIDs } from './softOptInIDs';
 
 type ProductFriendlyName =
 	| 'membership'
@@ -240,14 +241,6 @@ export const calculateMonthlyOrAnnualFromBillingPeriod = (
 ) => (billingPeriod === 'month' ? 'Monthly' : 'Annual');
 
 const FRONT_PAGE_NEWSLETTER_ID = '6009';
-enum SoftOptInIDs {
-	SupportOnboarding = 'your_support_onboarding',
-	SimilarProducts = 'similar_guardian_products',
-	SupporterNewsletter = 'supporter_newsletter',
-	SubscriberPreview = 'subscriber_preview',
-	DigitalSubscriberPreview = 'digital_subscriber_preview',
-	GuardianWeeklyNewsletter = 'guardian_weekly_newsletter',
-}
 
 export type ProductTypeKeys =
 	| 'membership'

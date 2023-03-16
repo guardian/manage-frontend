@@ -10,16 +10,16 @@ import { Stack } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
 import { featureSwitches } from '../../../../shared/featureSwitches';
+import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
+import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
-	MembersDataApiItem,
 	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import {
 	isProduct,
 	isSpecificProductType,
-	mdapiResponseReader,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
 import {
@@ -27,26 +27,68 @@ import {
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
+import {
+	LoadingState,
+	useAsyncLoader,
+} from '../../../utilities/hooks/useAsyncLoader';
 import { allProductsDetailFetcher } from '../../../utilities/productUtils';
+import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
-import { AsyncLoader } from '../shared/AsyncLoader';
+import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { AccountOverviewCancelledCard } from './AccountOverviewCancelledCard';
 import { AccountOverviewCard } from './AccountOverviewCard';
-import { AccountOverviewCardV2 } from './AccountOverviewCardV2';
+import { CancelledProductCard } from './CancelledProductCard';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
+import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
+import { ProductCard } from './ProductCard';
 
-const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
-	MembersDataApiResponse | MembersDataApiItem[],
+type AccountOverviewResponse = [
+	MembersDataApiResponse,
 	CancelledProductDetail[],
-]) => {
-	const mdaResponse = mdapiResponseReader(mdapiObject);
+	MPAPIResponse,
+];
 
-	const allActiveProductDetails = mdaResponse.products
+const subHeadingCss = css`
+	margin: ${space[12]}px 0 ${space[6]}px;
+	border-top: 1px solid ${neutral['86']};
+	${headline.small({ fontWeight: 'bold' })};
+	${until.tablet} {
+		font-size: 1.25rem;
+		line-height: 1.6;
+	}
+`;
+
+const AccountOverviewPage = () => {
+	const {
+		data: accountOverviewResponse,
+		loadingState,
+	}: {
+		data: AccountOverviewResponse | null;
+		loadingState: LoadingState;
+	} = useAsyncLoader(accountOverviewFetcher, JsonResponseHandler);
+
+	if (loadingState == LoadingState.HasError) {
+		return <GenericErrorScreen />;
+	}
+	if (loadingState == LoadingState.IsLoading) {
+		return (
+			<DefaultLoadingView loadingMessage="Loading your account details..." />
+		);
+	}
+	if (accountOverviewResponse === null) {
+		return <GenericErrorScreen />;
+	}
+
+	const [mdapiResponse, cancelledProductsResponse, mpapiResponse] =
+		accountOverviewResponse;
+
+	const allActiveProductDetails = mdapiResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
 
@@ -65,7 +107,16 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 		)
 		.filter((value, index, self) => self.indexOf(value) === index);
 
-	if (allActiveProductDetails.length === 0) {
+	const appSubscriptions = mpapiResponse.subscriptions.filter(
+		isValidAppSubscription,
+	);
+
+	if (
+		(allActiveProductDetails.length === 0 &&
+			appSubscriptions.length === 0) ||
+		(allActiveProductDetails.length === 0 &&
+			!featureSwitches.appSubscriptions)
+	) {
 		return <EmptyAccountOverview />;
 	}
 
@@ -84,23 +135,27 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 	const isEligibleToSwitch =
 		!maybeFirstPaymentFailure && !hasDigiSubAndContribution;
 
-	const subHeadingCss = css`
-		margin: ${space[12]}px 0 ${space[6]}px;
-		border-top: 1px solid ${neutral['86']};
-		${headline.small({ fontWeight: 'bold' })};
-		${until.tablet} {
-			font-size: 1.25rem;
-			line-height: 1.6;
-		}
-	`;
-
 	return (
 		<>
-			<PersonalisedHeader mdapiResponse={mdaResponse} />
+			<PersonalisedHeader mdapiResponse={mdapiResponse} />
 
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}
 			/>
+
+			{featureSwitches.appSubscriptions && appSubscriptions.length > 0 && (
+				<>
+					<h2 css={subHeadingCss}>App Subscriptions</h2>
+					<Stack space={6}>
+						{appSubscriptions.map((subscription) => (
+							<InAppPurchaseCard
+								key={subscription.subscriptionId}
+								inAppPurchase={subscription}
+							/>
+						))}
+					</Stack>
+				</>
+			)}
 			{productCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
@@ -120,14 +175,14 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 						<Stack space={6}>
 							{activeProductsInCategory.map((productDetail) =>
 								featureSwitches.accountOverviewNewLayout ? (
-									<AccountOverviewCardV2
+									<ProductCard
 										key={
 											productDetail.subscription
 												.subscriptionId
 										}
 										productDetail={productDetail}
 										isEligibleToSwitch={isEligibleToSwitch}
-										user={mdaResponse.user}
+										user={mdapiResponse.user}
 									/>
 								) : (
 									<AccountOverviewCard
@@ -140,15 +195,26 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 								),
 							)}
 							{cancelledProductsInCategory.map(
-								(cancelledProductDetail) => (
-									<AccountOverviewCancelledCard
-										key={
-											cancelledProductDetail.subscription
-												.subscriptionId
-										}
-										product={cancelledProductDetail}
-									/>
-								),
+								(cancelledProductDetail) =>
+									featureSwitches.accountOverviewNewLayout ? (
+										<CancelledProductCard
+											key={
+												cancelledProductDetail
+													.subscription.subscriptionId
+											}
+											productDetail={
+												cancelledProductDetail
+											}
+										/>
+									) : (
+										<AccountOverviewCancelledCard
+											key={
+												cancelledProductDetail
+													.subscription.subscriptionId
+											}
+											product={cancelledProductDetail}
+										/>
+									),
 							)}
 							{groupedProductType.supportTheGuardianSectionProps &&
 								(cancelledProductsInCategory.length > 0 ||
@@ -184,27 +250,20 @@ const AccountOverviewRenderer = ([mdapiObject, cancelledProductsResponse]: [
 	);
 };
 
+const accountOverviewFetcher = () =>
+	Promise.all([
+		allProductsDetailFetcher(),
+		fetchWithDefaultParameters('/api/cancelled/'),
+		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions'),
+	]);
+
 export const AccountOverview = () => {
 	return (
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}
 			pageTitle="Account overview"
 		>
-			<AccountOverviewAsyncLoader
-				fetch={AccountOverviewFetcher}
-				render={AccountOverviewRenderer}
-				loadingMessage={`Loading your account details...`}
-			/>
+			<AccountOverviewPage />
 		</PageContainer>
 	);
 };
-
-class AccountOverviewAsyncLoader extends AsyncLoader<
-	[MembersDataApiResponse, CancelledProductDetail[]]
-> {}
-
-const AccountOverviewFetcher = () =>
-	Promise.all([
-		allProductsDetailFetcher(),
-		fetchWithDefaultParameters('/api/cancelled/'),
-	]);

@@ -1,6 +1,12 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import fetchMock from 'fetch-mock';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import { featureSwitches } from '../../../../shared/featureSwitches';
+import {
+	InAppPurchase,
+	InAppPurchaseAndroid,
+	InAppPurchaseIos,
+} from '../../../fixtures/inAppPurchase';
 import { guardianWeeklyCardInvoice } from '../../../fixtures/invoices';
 import {
 	digitalDD,
@@ -25,12 +31,17 @@ export const NoSubscription: ComponentStory<typeof Billing> = () => {
 		.restore()
 		.get('/api/me/mma', { body: toMembersDataApiResponse() })
 		.get('/api/invoices', { body: { invoices: [] } })
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: { subscriptions: [] },
+		})
 		.get('/idapi/user', { body: user });
 
 	return <Billing />;
 };
 
 export const WithSubscriptions: ComponentStory<typeof Billing> = () => {
+	featureSwitches['appSubscriptions'] = true;
+
 	fetchMock
 		.restore()
 		.get('/api/me/mma', {
@@ -39,6 +50,15 @@ export const WithSubscriptions: ComponentStory<typeof Billing> = () => {
 				digitalDD,
 				newspaperVoucherPaypal,
 			),
+		})
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: {
+				subscriptions: [
+					InAppPurchase,
+					InAppPurchaseIos,
+					InAppPurchaseAndroid,
+				],
+			},
 		})
 		.get('/api/invoices', {
 			body: { invoices: [guardianWeeklyCardInvoice] },
