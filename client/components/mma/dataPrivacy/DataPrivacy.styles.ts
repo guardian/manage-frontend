@@ -9,7 +9,6 @@ export const dataPrivacyHeadingCss = css`
 `;
 
 export const dataPrivacyParagraphCss = css`
-	/* margin: 0; */
 	margin-bottom: 0.5rem;
 	margin-top: 0.5rem;
 	${textSans.small()}
@@ -43,23 +42,24 @@ export const dataPrivacyVideoOverlay = css`
 	right: 0;
 	top: 0;
 	bottom: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+`;
+
+export const dataPrivacyVideoTextHeadline = css`
+	${headline.medium()};
+	align-self: center;
 `;
 
 export const dataPrivacyFooter = css`
-	position: absolute;
-	bottom: 0;
 	color: white;
 	display: flex;
 	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
 	width: 100%;
 	padding-left: 1rem;
 	padding-bottom: 0.5rem;
 	height: 20%;
-
-	display: grid;
-	grid-template-columns: 3fr 7fr;
 `;
 
 export const dataPrivacyMarketingToggleCss = css`
@@ -69,4 +69,7 @@ export const dataPrivacyMarketingToggleCss = css`
 
 export const dataPrivacySvgImage = css`
 	max-width: 100%;
+	max-height: 100%;
+	width: 95%;
+	height: 95%;
 `;
