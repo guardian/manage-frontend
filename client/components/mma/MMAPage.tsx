@@ -64,9 +64,9 @@ const Billing = lazy(() =>
 );
 
 const DataPrivacy = lazy(() =>
-	import(/* webpackChunkName: "Billing" */ './dataPrivacy/DataPrivacy').then(
-		({ DataPrivacy }) => ({ default: DataPrivacy }),
-	),
+	import(
+		/* webpackChunkName: "DataPrivacy" */ './dataPrivacy/DataPrivacy'
+	).then(({ DataPrivacy }) => ({ default: DataPrivacy })),
 );
 const ManageProduct = lazy(() =>
 	import(
