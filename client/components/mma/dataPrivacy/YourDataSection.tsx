@@ -13,7 +13,11 @@ interface YourDataSectionProps {
 	consents: ConsentOption[];
 	toggleConsent: ClickHandler;
 }
+// NOTE: The personalised advertising consent description is hard coded here and in
+// Identity Gateway. They should be the same unless running A/B tests.
 
+// NOTE: The Your Data description is hard coded here and in
+// Identity Gateway. They should be the same unless running A/B tests.
 export const YourDataSection = (props: YourDataSectionProps) => {
 	const addMarketingToggleElement = optOutFinder(
 		props.consents,
@@ -33,6 +37,7 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 					when signed in
 				</li>
 			</ul>
+
 			<Lines n={1} />
 			{addMarketingToggleElement('profiling_optout')}
 			<Lines n={1} />
