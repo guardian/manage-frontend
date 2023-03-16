@@ -151,6 +151,10 @@ export const SwitchOptions = () => {
 							${textSans.medium()}
 						`}
 					>
+						{' '}
+						{isAboveThreshold
+							? 'Your current payment entitles you to exclusive supporter extras. '
+							: ''}
 						It takes less than a minute to change your support type.
 						If this doesn't suit you, no change is needed, but note
 						you will have limited access to our app.
@@ -198,7 +202,7 @@ export const SwitchOptions = () => {
 							? 'Add extras'
 							: 'Change your support'}
 					</Heading>
-					{isAboveThreshold && (
+					{isAboveThreshold && !switchContext.isFromApp && (
 						<p
 							css={css`
 								${textSans.medium()}
