@@ -1,13 +1,7 @@
 import type { CMP } from '@guardian/consent-management-platform/dist/types';
 import { useEffect, useState } from 'react';
-import type {
-	MembersDataApiItem,
-	MembersDataApiResponse,
-} from '../../../../shared/productResponse';
-import {
-	isProduct,
-	mdapiResponseReader,
-} from '../../../../shared/productResponse';
+import type { MembersDataApiResponse } from '../../../../shared/productResponse';
+import { isProduct, sortByJoinDate } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
@@ -30,7 +24,7 @@ import { LearnMoreSection } from './LearnMoreSection';
 import { YourDataSection } from './YourDataSection';
 
 type DataPrivacyResponse = [
-	MembersDataApiResponse | MembersDataApiItem[],
+	MembersDataApiResponse,
 	ConsentOption[],
 	UserAPI.UserAPIResponse,
 ];
@@ -89,9 +83,11 @@ export const DataPrivacyPage = () => {
 		const user = UserAPI.toUser(userResponse);
 
 		const consentOpt = mapSubscriptions(user.consents, consentOptions);
-		const productDetails = mdapiResponseReader(
-			productDetailsResponse,
-		).products.filter(isProduct);
+
+		const productDetails = productDetailsResponse.products
+			.filter(isProduct)
+			.sort(sortByJoinDate);
+
 		const consentsWithFilteredSoftOptIns = consentOpt.filter(
 			(consent: ConsentOption) =>
 				consent.isProduct
