@@ -4,6 +4,7 @@ import {
 	dataPrivacyVideoCss,
 	dataPrivacyVideoOverlay,
 	dataPrivacyVideoOverlayContainer,
+	dataPrivacyVideoTextHeadline,
 } from '../DataPrivacy.styles';
 import { PlayButton } from './PlayButton';
 
@@ -33,7 +34,7 @@ export const VideoPlayer = (props: VideoPlayerProps) => {
 				<div tabIndex={1}>
 					<PlayButton />
 				</div>
-				<h1>{props.overlayText}</h1>
+				<h1 css={dataPrivacyVideoTextHeadline}>{props.overlayText}</h1>
 			</div>
 		</div>
 	);
