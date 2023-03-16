@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { headline, textSans } from '@guardian/source-foundations';
+import { headline, textSans, until } from '@guardian/source-foundations';
 
 export const dataPrivacyHeadingCss = css`
 	margin: 0;
@@ -47,8 +47,11 @@ export const dataPrivacyVideoOverlay = css`
 `;
 
 export const dataPrivacyVideoTextHeadline = css`
-	${headline.medium()};
+	${headline.small()};
 	align-self: center;
+	${until.tablet} {
+		${headline.xxsmall()};
+	}
 `;
 
 export const dataPrivacyFooter = css`
