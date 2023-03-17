@@ -13,11 +13,15 @@ import {
 } from '../../../../shared/dates';
 import type {
 	MembersDataApiUser,
+	PaidSubscriptionPlan,
 	ProductDetail,
 	Subscription,
 } from '../../../../shared/productResponse';
 import { getMainPlan, isGift } from '../../../../shared/productResponse';
-import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import {
+	calculateSupporterPlusTitle,
+	GROUPED_PRODUCT_TYPES,
+} from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
 import { InfoSummary } from '../paymentUpdate/Summary';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
@@ -345,7 +349,11 @@ export const ProductCard = ({
 											})
 										}
 									>
-										Change to monthly + extras
+										Change to{' '}
+										{calculateSupporterPlusTitle(
+											(mainPlan as PaidSubscriptionPlan)
+												.billingPeriod,
+										)}
 									</Button>
 								</ThemeProvider>
 							)}

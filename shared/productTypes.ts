@@ -233,7 +233,7 @@ const calculateProductTitle =
 	(baseProductTitle: string) => (mainPlan?: SubscriptionPlan) =>
 		baseProductTitle + (mainPlan?.name ? ` - ${mainPlan.name}` : '');
 
-const calculateSupporterPlusTitle = (billingPeriod: string) =>
+export const calculateSupporterPlusTitle = (billingPeriod: string) =>
 	billingPeriod === 'month' ? 'monthly + extras' : 'annual + extras';
 
 export const calculateMonthlyOrAnnualFromBillingPeriod = (
