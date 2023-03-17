@@ -4,6 +4,7 @@ import {
 	Button,
 	buttonThemeReaderRevenueBrand,
 	Stack,
+	SvgInfoRound,
 } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
 import {
@@ -28,10 +29,7 @@ import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { Card } from '../shared/Card';
 import { CardDisplay } from '../shared/CardDisplay';
 import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
-import {
-	getNextPaymentDetails,
-	NewPaymentPriceAlert,
-} from '../shared/NextPaymentDetails';
+import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
 import { SupporterPlusBenefitsToggle } from '../shared/SupporterPlusBenefits';
@@ -84,6 +82,24 @@ const PaymentMethod = ({
 		)}
 	</div>
 );
+
+const NewPriceAlert = () => {
+	const iconCss = css`
+		svg {
+			position: relative;
+			top: 7px;
+			margin-left: -4px;
+			fill: ${palette.brand[500]};
+		}
+	`;
+
+	return (
+		<span css={iconCss}>
+			<SvgInfoRound size="small" />
+			New price |{' '}
+		</span>
+	);
+};
 
 export const ProductCard = ({
 	productDetail,
@@ -284,7 +300,7 @@ export const ProductCard = ({
 											</dt>
 											<dd>
 												{nextPaymentDetails.isNewPaymentValue && (
-													<NewPaymentPriceAlert />
+													<NewPriceAlert />
 												)}
 												{
 													nextPaymentDetails.paymentValue
