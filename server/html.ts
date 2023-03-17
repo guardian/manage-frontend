@@ -28,16 +28,16 @@ const html: (_: {
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>${title}</title>
 
-      ${insertGlobals(globals)}
-
-      <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/46bd2faa1ab438684a6d4528a655a8bd/32x32.ico" />
-
-      <script type='text/javascript'>
+            <script type='text/javascript'>
 (function() {
 var qtm = document.createElement('script'); qtm.type = 'text/javascript'; qtm.async = 1; qtm.integrity = 'sha384-9lxh6w+oVquYA47bYUQuhrupZBGTGfivqJbgW+ok0PsWPd5D4h9/IPtCYy/w9u27'; qtm.crossOrigin = 'anonymous'; qtm.src = 'https://cdn.quantummetric.com/instrumentation/1.32.18/quantum-gnm-test.js'; var d = document.getElementsByTagName('script')[0];
 !window.QuantumMetricAPI && d.parentNode.insertBefore(qtm, d);
 })();
 </script>
+
+      ${insertGlobals(globals)}
+
+      <link rel="shortcut icon" type="image/png" href="https://assets.guim.co.uk/images/favicons/46bd2faa1ab438684a6d4528a655a8bd/32x32.ico" />
 
     </head>
     <body style="margin:0">
