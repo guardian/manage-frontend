@@ -204,6 +204,10 @@ export const SwitchReview = () => {
 		);
 
 	const confirmSwitch = async (amount: number) => {
+		if (isSwitching) {
+			return;
+		}
+
 		if (inPaymentFailure) {
 			setSwitchingError(true);
 			return;
