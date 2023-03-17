@@ -130,6 +130,7 @@ export const ProductCard = ({
 
 	const showSwitchButton =
 		isEligibleToSwitch &&
+		!hasCancellationPending &&
 		specificProductType.productType === 'contributions';
 
 	const productBenefits =
