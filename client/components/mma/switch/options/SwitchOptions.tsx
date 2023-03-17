@@ -153,9 +153,8 @@ export const SwitchOptions = () => {
 					>
 						{' '}
 						{isAboveThreshold
-							? 'Your current payment entitles you to exclusive supporter extras. '
-							: ''}
-						It takes less than a minute to change your support type.
+							? 'Your current payment entitles you to exclusive supporter extras. It takes less than a minute to add them. '
+							: 'It takes less than a minute to change your support type.'}
 						If this doesn't suit you, no change is needed, but note
 						you will have limited access to our app.
 					</p>
