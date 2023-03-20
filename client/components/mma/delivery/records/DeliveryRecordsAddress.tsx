@@ -32,23 +32,14 @@ export const RecordAddress = (props: DeliveryAddress) => {
 							margin: 0;
 							text-align: left;
 						`}
+						data-qm-masking="blocklist"
 					>
-						<li data-qm-masking="blocklist">
-							{props.addressLine1}
-						</li>
-						{props.addressLine2 && (
-							<li data-qm-masking="blocklist">
-								{props.addressLine2}
-							</li>
-						)}
-						{props.town && (
-							<li data-qm-masking="blocklist">{props.town}</li>
-						)}
-						{props.region && (
-							<li data-qm-masking="blocklist">{props.region}</li>
-						)}
+						<li>{props.addressLine1}</li>
+						{props.addressLine2 && <li>{props.addressLine2}</li>}
+						{props.town && <li>{props.town}</li>}
+						{props.region && <li>{props.region}</li>}
 						{props.country && (
-							<li data-qm-masking="blocklist">
+							<li>
 								{COUNTRIES.find(
 									(country) => props.country === country.iso,
 								)?.name || props.country}

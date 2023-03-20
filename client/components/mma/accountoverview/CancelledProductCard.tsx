@@ -121,7 +121,7 @@ export const CancelledProductCard = ({
 											? 'Supporter ID'
 											: 'Subscription ID'}
 									</dt>
-									<dd>
+									<dd data-qm-masking="blocklist">
 										{
 											productDetail.subscription
 												.subscriptionId

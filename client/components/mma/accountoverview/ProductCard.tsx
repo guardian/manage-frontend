@@ -50,6 +50,7 @@ const PaymentMethod = ({
 		css={css`
 			${textSans.medium()};
 		`}
+		data-qm-masking="blocklist"
 	>
 		{subscription.card && (
 			<CardDisplay
@@ -258,7 +259,7 @@ export const ProductCard = ({
 											? 'Supporter ID'
 											: 'Subscription ID'}
 									</dt>
-									<dd>
+									<dd data-qm-masking="blocklist">
 										{
 											productDetail.subscription
 												.subscriptionId

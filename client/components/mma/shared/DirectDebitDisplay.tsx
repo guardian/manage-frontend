@@ -92,6 +92,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 						justify-content: left;
 					}
 				`}
+				data-qm-masking="blocklist"
 			>
 				<DirectDebitLogo
 					fill={palette.brand[400]}
@@ -119,6 +120,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 					display: flex;
 					align-items: center;
 				`}
+				data-qm-masking="blocklist"
 			>
 				<DirectDebitLogo fill={palette.brand[400]} />
 				<span
@@ -141,9 +143,8 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 					margin: 0 10px 0 0;
 				`}
 			/>
-			<div>
+			<div data-qm-masking="blocklist">
 				<span
-					data-qm-masking="blocklist"
 					css={css`
 						margin-right: 10px;
 					`}
@@ -158,7 +159,7 @@ export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
 					{sanitiseAccountNumber(props.accountNumber)}
 				</span>
 				{props.showAccountName && props.accountName ? (
-					<span data-qm-masking="blocklist">{props.accountName}</span>
+					<span>{props.accountName}</span>
 				) : undefined}
 			</div>
 		</>

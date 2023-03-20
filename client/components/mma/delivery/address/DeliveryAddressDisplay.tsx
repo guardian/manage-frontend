@@ -17,7 +17,7 @@ export const DeliveryAddressDisplay = (props: DeliveryAddress) => {
 			`}
 			data-qm-masking="blocklist"
 		>
-			<span> {props.addressLine1}</span>
+			<span>{props.addressLine1}</span>
 			{props.addressLine2 && <span>{props.addressLine2}</span>}
 			{props.town && <span>{props.town}</span>}
 			{props.region && <span>{props.region}</span>}

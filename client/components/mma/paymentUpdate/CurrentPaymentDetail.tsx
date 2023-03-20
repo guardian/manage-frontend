@@ -204,6 +204,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 							margin-bottom: ${space[5]}px;
 						}
 					`}
+					data-qm-masking="blocklist"
 				>
 					{subscription.card && subscription.card.expiry && (
 						<>
@@ -244,7 +245,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 								${valueCss};
 							`}
 						>
-							<div data-qm-masking="blocklist">
+							<div>
 								{subscription.sepaMandate.accountName}
 								<br />
 								{subscription.sepaMandate.iban}
@@ -273,7 +274,6 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 							css={css`
 								${valueCss};
 							`}
-							data-qm-masking="blocklist"
 						>
 							{getObfuscatedPayPalId(subscription.payPalEmail)}
 						</span>
