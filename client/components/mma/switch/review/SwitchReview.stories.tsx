@@ -88,3 +88,14 @@ YearlyOtherCurrency.parameters = {
 		state: { productDetail: contributionBelowThreshold },
 	},
 };
+
+export const FromApp: ComponentStory<typeof SwitchReview> = () => (
+	<SwitchReview />
+);
+
+FromApp.parameters = {
+	reactRouter: {
+		container: <SwitchContainer isFromApp={true} />,
+		state: { productDetail: contributionCard },
+	},
+};
