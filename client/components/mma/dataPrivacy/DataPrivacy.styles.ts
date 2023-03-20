@@ -45,7 +45,7 @@ export const dataPrivacyVideoOverlay = css`
 `;
 
 export const dataPrivacyVideoTextHeadline = css`
-	${headline.small()};
+	${headline.medium()};
 	align-self: center;
 	${until.tablet} {
 		${headline.xxsmall()};
@@ -56,10 +56,16 @@ export const dataPrivacyFooter = css`
 	color: white;
 	display: flex;
 	flex-direction: row;
+	justify-content: space-between;
+
 	width: 100%;
 	padding-left: 1rem;
 	padding-bottom: 0.5rem;
 	height: 20%;
+`;
+
+export const dataPrivacyPlayButtonWrapper = css`
+	height: 100%;
 `;
 
 export const dataPrivacyMarketingToggleCss = css`
