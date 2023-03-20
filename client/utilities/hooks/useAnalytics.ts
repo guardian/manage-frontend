@@ -1,3 +1,5 @@
+import { loadScript } from '@guardian/libs';
+import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import parse from 'url-parse';
@@ -21,6 +23,7 @@ export const useAnalytics = () => {
 	const location = useLocation();
 	const [cmpIsInitialised, setCmpIsInitialised] = useState<boolean>(false);
 	const [gaIsInitialised, setGaIsInitialised] = useState<boolean>(false);
+	const [qmIsInitialised, setQmIsInitialised] = useState<boolean>(false);
 
 	const initialiseGa = () => {
 		// Run self evoking GA script
@@ -76,6 +79,24 @@ export const useAnalytics = () => {
 		setGaIsInitialised(true);
 	};
 
+	const initialiseQm = () => {
+		loadScript(
+			'https://cdn.quantummetric.com/instrumentation/1.32.18/quantum-gnm-test.js',
+			{
+				async: true,
+				integrity:
+					'sha384-9lxh6w+oVquYA47bYUQuhrupZBGTGfivqJbgW+ok0PsWPd5D4h9/IPtCYy/w9u27',
+				crossOrigin: 'anonymous',
+			},
+		)
+			.then(() => {
+				setQmIsInitialised(true);
+			})
+			.catch(() => {
+				Sentry.captureException('Failed to load Quantum Metric');
+			});
+	};
+
 	useEffect(() => {
 		import('@guardian/consent-management-platform').then(
 			({ onConsentChange, getConsentFor }) => {
@@ -85,11 +106,17 @@ export const useAnalytics = () => {
 						consentState,
 					);
 
+					const qmConsentState = getConsentFor('qm', consentState);
+
 					// @ts-expect-error: Suppressing "element implicitly has an 'any' type because index expression is not of type 'number'."
 					window[`ga-disable-${GA_UA}`] = !gaConsentState;
 
 					if (gaConsentState && !gaIsInitialised) {
 						initialiseGa();
+					}
+
+					if (qmConsentState && !qmIsInitialised) {
+						initialiseQm();
 					}
 
 					setCmpIsInitialised(true);
