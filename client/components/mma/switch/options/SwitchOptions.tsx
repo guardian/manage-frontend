@@ -210,7 +210,7 @@ export const SwitchOptions = () => {
 						>
 							Your current payment entitles you to exclusive
 							supporter extras. It takes less than a minute to
-							change you support type and gain access.
+							change your support type and gain access.
 						</p>
 					)}
 					{!isAboveThreshold && !switchContext.isFromApp && (
