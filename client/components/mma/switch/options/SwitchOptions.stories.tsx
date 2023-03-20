@@ -38,3 +38,14 @@ BelowThreshold.parameters = {
 		state: { productDetail: contributionBelowThreshold },
 	},
 };
+
+export const FromApp: ComponentStory<typeof SwitchOptions> = () => (
+	<SwitchOptions />
+);
+
+FromApp.parameters = {
+	reactRouter: {
+		container: <SwitchContainer isFromApp={true} />,
+		state: { productDetail: contributionBelowThreshold },
+	},
+};

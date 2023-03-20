@@ -268,13 +268,13 @@ export const SwitchReview = () => {
 							${textSans.medium()};
 						`}
 					>
-						Please {switchContext.isFromApp ? 'confirm' : 'review'}{' '}
-						your choice to unlock exclusive supporter extras
 						{isAboveThreshold
-							? ". You'll still pay "
-							: ' by paying '}
-						{mainPlan.currency}
-						{formatAmount(newAmount)} per {mainPlan.billingPeriod}.
+							? `Please confirm your choice to get exclusive supporter extras. You'll still pay ${
+									mainPlan.currency
+							  }${formatAmount(newAmount)} per ${
+									mainPlan.billingPeriod
+							  }.`
+							: `Please confirm your choice to change your support to ${monthlyOrAnnual.toLowerCase()} + extras.`}
 					</p>
 				</Stack>
 			</section>
