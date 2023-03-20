@@ -274,7 +274,7 @@ export const SwitchReview = () => {
 							  }${formatAmount(newAmount)} per ${
 									mainPlan.billingPeriod
 							  }.`
-							: 'Please confirm your choice to change your support to monthly + extras.'}
+							:`Please confirm your choice to change your support to ${monthlyOrAnnual} + extras.`}
 					</p>
 				</Stack>
 			</section>
