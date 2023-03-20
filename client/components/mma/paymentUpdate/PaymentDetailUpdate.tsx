@@ -473,7 +473,6 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 			</div>
 
 			<h3
-				data-qm-masking="blocklist"
 				css={css`
 					${subHeadingCss}
 					${productDetail.subscription.payPalEmail &&
