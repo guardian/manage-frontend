@@ -281,7 +281,6 @@ const DeliveryRecordsProblemReviewFC = (
 							css={css`
 								${dtCss}
 							`}
-							data-qm-masking="blocklist"
 						>
 							Subscription ID:
 						</dt>
@@ -289,6 +288,7 @@ const DeliveryRecordsProblemReviewFC = (
 							css={css`
 								${ddCss}
 							`}
+							data-qm-masking="blocklist"
 						>
 							{subscription.subscriptionId}
 						</dd>

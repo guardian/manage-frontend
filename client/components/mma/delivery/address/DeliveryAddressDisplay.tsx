@@ -15,19 +15,14 @@ export const DeliveryAddressDisplay = (props: DeliveryAddress) => {
 				}
 				${textSans.medium()}
 			`}
+			data-qm-masking="blocklist"
 		>
-			<span data-qm-masking="blocklist"> {props.addressLine1}</span>
-			{props.addressLine2 && (
-				<span data-qm-masking="blocklist">{props.addressLine2}</span>
-			)}
-			{props.town && (
-				<span data-qm-masking="blocklist">{props.town}</span>
-			)}
-			{props.region && (
-				<span data-qm-masking="blocklist">{props.region}</span>
-			)}
-			<span data-qm-masking="blocklist">{props.postcode}</span>
-			<span data-qm-masking="blocklist">
+			<span> {props.addressLine1}</span>
+			{props.addressLine2 && <span>{props.addressLine2}</span>}
+			{props.town && <span>{props.town}</span>}
+			{props.region && <span>{props.region}</span>}
+			<span>{props.postcode}</span>
+			<span>
 				{COUNTRIES.find((country) => props.country === country.iso)
 					?.name || props.country}
 			</span>
