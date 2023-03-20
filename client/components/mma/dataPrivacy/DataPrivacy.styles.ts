@@ -23,7 +23,6 @@ export const dataPrivacyVideoCss = css`
 `;
 
 export const dataPrivacyVideoOverlayContainer = css`
-	background-color: red;
 	width: 100%;
 	position: relative;
 	video {
@@ -33,7 +32,6 @@ export const dataPrivacyVideoOverlayContainer = css`
 `;
 
 export const dataPrivacyVideoOverlay = css`
-	background-color: red;
 	position: absolute;
 	background-color: rgba(0, 0, 0, 0.46);
 	z-index: 2;
