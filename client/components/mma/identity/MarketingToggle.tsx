@@ -23,12 +23,11 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 		<div
 			css={[
 				standardSansText,
-				props.divCss
-					? props.divCss
-					: css`
-							margin-top: 12px;
-							position: relative;
-					  `,
+				props.divCss ??
+					css`
+						margin-top: 12px;
+						position: relative;
+					`,
 			]}
 		>
 			<div css={{ left: 0 }}>
