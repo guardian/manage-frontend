@@ -24,11 +24,8 @@ export const CookiesOnThisBrowserSection = (
 			</p>
 			<Button
 				disabled={false}
-				// text="Manage cookies on this browser"
 				type="button"
-				// colour={brand[400]}
 				onClick={() => props.onClick()}
-				// fontWeight="bold"
 			>
 				Manage cookies on this browser
 			</Button>
