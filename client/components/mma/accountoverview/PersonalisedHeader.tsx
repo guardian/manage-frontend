@@ -49,8 +49,8 @@ export const PersonalisedHeader = ({
 					${headline.large({ fontWeight: 'bold' })};
 					margin-bottom: 0;
 				`}
+				data-qm-masking="blocklist"
 			>
-				{/*add in Quantum Metrics masking tag when name is piped through*/}
 				{calculateTimeOfDay()}, {userDetails.firstName ?? 'supporter'}
 			</h2>
 			<p

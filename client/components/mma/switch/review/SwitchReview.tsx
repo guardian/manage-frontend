@@ -83,7 +83,6 @@ const PaymentDetails = (props: { subscription: Subscription }) => {
 			{subscription.payPalEmail && (
 				<>
 					<span css={truncateCss}>
-						{' '}
 						{getObfuscatedPayPalId(subscription.payPalEmail)}
 					</span>
 					<PaypalLogo />
