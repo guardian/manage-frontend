@@ -1,14 +1,10 @@
 import type { CMP } from '@guardian/consent-management-platform/dist/types';
 import { useEffect, useState } from 'react';
-import type { MembersDataApiResponse } from '../../../../shared/productResponse';
-import { isProduct, sortByJoinDate } from '../../../../shared/productResponse';
-import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { allProductsDetailFetcher } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import * as UserAPI from '../identity/idapi/user';
@@ -23,15 +19,11 @@ import { CookiesOnThisBrowserSection } from './CookiesOnTheBrowserSection';
 import { LearnMoreSection } from './LearnMoreSection';
 import { YourDataSection } from './YourDataSection';
 
-type DataPrivacyResponse = [
-	MembersDataApiResponse,
-	ConsentOption[],
-	UserAPI.UserAPIResponse,
-];
+type DataPrivacyResponse = [ConsentOption[], UserAPI.UserAPIResponse];
 
 const dataPrivacyFetcher = () =>
 	Promise.all([
-		allProductsDetailFetcher(),
+		// allProductsDetailFetcher(),
 		fetchWithDefaultParameters(
 			IdentityLocations.IDAPI + '/consents?filter=all',
 			{
@@ -79,35 +71,10 @@ export const DataPrivacyPage = () => {
 	 * @param {DataPrivacyResponse} response
 	 */
 	const handleResponse = (response: DataPrivacyResponse) => {
-		const [productDetailsResponse, consentOptions, userResponse] = response;
+		const [consentOptions, userResponse] = response;
 		const user = UserAPI.toUser(userResponse);
-
 		const consentOpt = mapSubscriptions(user.consents, consentOptions);
-
-		const productDetails = productDetailsResponse.products
-			.filter(isProduct)
-			.sort(sortByJoinDate);
-
-		const consentsWithFilteredSoftOptIns = consentOpt.filter(
-			(consent: ConsentOption) =>
-				consent.isProduct
-					? productDetails.some((productDetail) => {
-							const groupedProductType =
-								GROUPED_PRODUCT_TYPES[
-									productDetail.mmaCategory
-								];
-							const specificProductType =
-								groupedProductType.mapGroupedToSpecific(
-									productDetail,
-								);
-							return specificProductType.softOptInIDs.includes(
-								consent.id,
-							);
-					  })
-					: true,
-		);
-
-		dispatch(options(consentsWithFilteredSoftOptIns));
+		dispatch(options(consentOpt));
 	};
 
 	const consents = ConsentOptions.consents(state.options);
