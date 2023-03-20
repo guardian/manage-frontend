@@ -23,7 +23,6 @@ type DataPrivacyResponse = [ConsentOption[], UserAPI.UserAPIResponse];
 
 const dataPrivacyFetcher = () =>
 	Promise.all([
-		// allProductsDetailFetcher(),
 		fetchWithDefaultParameters(
 			IdentityLocations.IDAPI + '/consents?filter=all',
 			{
