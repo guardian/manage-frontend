@@ -1,5 +1,4 @@
-import { brand } from '@guardian/source-foundations';
-import { Button } from '../shared/Buttons';
+import { Button } from '@guardian/source-react-components';
 import {
 	dataPrivacyHeadingCss,
 	dataPrivacyParagraphCss,
@@ -25,12 +24,14 @@ export const CookiesOnThisBrowserSection = (
 			</p>
 			<Button
 				disabled={false}
-				text="Manage cookies on this browser"
+				// text="Manage cookies on this browser"
 				type="button"
-				colour={brand[400]}
+				// colour={brand[400]}
 				onClick={() => props.onClick()}
-				fontWeight="bold"
-			/>
+				// fontWeight="bold"
+			>
+				Manage cookies on this browser
+			</Button>
 		</>
 	);
 };
