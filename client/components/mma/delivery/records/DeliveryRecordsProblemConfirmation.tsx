@@ -169,24 +169,14 @@ const DeliveryRecordsProblemConfirmationFC = (
 				</i>
 				{deliveryProblemCredit?.showCredit
 					? `Thank you for reporting your delivery problem${
-							(
-								<span data-qm-masking="blocklist">
-									{' '}
-									deliveryAddressContext.address{' '}
-								</span>
-							) &&
+							deliveryAddressContext.address &&
 							deliveryAddressContext.productsAffected &&
 							deliveryAddressContext.productsAffected?.length > 0
 								? ' and updating your delivery details'
 								: ''
 					  }. We will credit you for the affected issues and apologise for any inconvenience caused. We monitor these reports closely and use them to improve our service.`
 					: `Your case is high priority. Our customer service team will try their best to contact you as soon as possible to resolve the issue.${
-							(
-								<span data-qm-masking="blocklist">
-									{' '}
-									deliveryAddressContext.address{' '}
-								</span>
-							) &&
+							deliveryAddressContext.address &&
 							deliveryAddressContext.productsAffected &&
 							deliveryAddressContext.productsAffected?.length > 0
 								? ' Thank you for updating your delivery details.'
