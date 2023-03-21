@@ -72,7 +72,7 @@ const PaymentDetails = (props: { subscription: Subscription }) => {
 	`;
 
 	return (
-		<span css={containerCss}>
+		<span css={containerCss} data-qm-masking="blocklist">
 			{subscription.card && (
 				<>
 					{cardType(subscription.card.type)} ending{' '}
