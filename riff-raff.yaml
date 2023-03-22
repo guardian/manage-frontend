@@ -19,7 +19,7 @@ deployments:
         CODE: ManageFrontend-CODE.template.json
         PROD: ManageFrontend-PROD.template.json
       amiTags:
-        Recipe: manage-frontend-arm-node16
+        Recipe: jammy-membership-node18
         AmigoStage: PROD
       amiEncrypted: true
       amiParameter: AMIManagefrontend
