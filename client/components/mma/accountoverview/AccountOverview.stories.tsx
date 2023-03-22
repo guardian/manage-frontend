@@ -26,6 +26,8 @@ import {
 import { user } from '../../../fixtures/user';
 import { AccountOverview } from './AccountOverview';
 
+featureSwitches['appSubscriptions'] = true;
+
 export default {
 	title: 'Pages/AccountOverview',
 	component: AccountOverview,
@@ -66,11 +68,9 @@ export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
 	return <AccountOverview />;
 };
 
-export const WithContributionNewLayout: ComponentStory<
+export const WithContributionAndSwitchPossible: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	featureSwitches['accountOverviewNewLayout'] = true;
-
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })
@@ -84,10 +84,9 @@ export const WithContributionNewLayout: ComponentStory<
 	return <AccountOverview />;
 };
 
-export const WithContributionNewLayoutPaymentFailure: ComponentStory<
+export const WithContributionInPaymentFailure: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	featureSwitches['accountOverviewNewLayout'] = true;
 	const contributionPaymentFailure = {
 		...contributionPayPal,
 		alertText: 'Your payment has failed.',
@@ -109,11 +108,9 @@ export const WithContributionNewLayoutPaymentFailure: ComponentStory<
 	return <AccountOverview />;
 };
 
-export const WithContributionNewLayoutDigisubAndContribution: ComponentStory<
+export const WithContributionAndDigisub: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	featureSwitches['accountOverviewNewLayout'] = true;
-
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })
@@ -127,11 +124,9 @@ export const WithContributionNewLayoutDigisubAndContribution: ComponentStory<
 	return <AccountOverview />;
 };
 
-export const WithCancellationsNewLayout: ComponentStory<
+export const WithCancelledSubscriptions: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	featureSwitches['accountOverviewNewLayout'] = true;
-
 	fetchMock
 		.restore()
 		.get('/api/me/mma', {
@@ -151,11 +146,9 @@ export const WithCancellationsNewLayout: ComponentStory<
 	return <AccountOverview />;
 };
 
-export const WithGiftSubscriptionNewLayout: ComponentStory<
+export const WithGiftSubscriptions: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	featureSwitches['accountOverviewNewLayout'] = true;
-
 	fetchMock
 		.restore()
 		.get('/api/me/mma', {
@@ -175,8 +168,6 @@ export const WithGiftSubscriptionNewLayout: ComponentStory<
 export const WithAppSubscriptions: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	featureSwitches['appSubscriptions'] = true;
-
 	fetchMock
 		.restore()
 		.get('/api/cancelled/', { body: [] })
