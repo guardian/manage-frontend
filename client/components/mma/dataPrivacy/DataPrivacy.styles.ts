@@ -1,8 +1,5 @@
 import { css } from '@emotion/react';
-import { headline, textSans, until } from '@guardian/source-foundations';
-// import Ellipse from './shared/Ellipse.jpg'
-// import Ellipse from './shared/Ellipse.svg'
-// import { PlayButton } from './PlayButton';
+import { headline, textSans } from '@guardian/source-foundations';
 
 export const dataPrivacyHeadingCss = css`
 	margin: 0;
@@ -62,12 +59,6 @@ export const dataPrivacyVideoTextHeadline = css`
 	left: 25%;
 	bottom: 0;
 	position: absolute;
-	${until.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
-	}
-	${until.mobileMedium} {
-		${headline.xxsmall({ fontWeight: 'bold' })};
-	}
 `;
 
 export const dataPrivacyFooter = css`
