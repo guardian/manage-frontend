@@ -108,7 +108,7 @@ export const WithContributionInPaymentFailure: ComponentStory<
 	return <AccountOverview />;
 };
 
-export const WithContributionAndDigisub: ComponentStory<
+export const WithContributionAndSwitchNotPossible: ComponentStory<
 	typeof AccountOverview
 > = () => {
 	fetchMock
