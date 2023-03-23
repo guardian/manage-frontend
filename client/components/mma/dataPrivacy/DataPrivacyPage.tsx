@@ -115,7 +115,6 @@ export const DataPrivacyPage = () => {
 	const content = () => (
 		<>
 			<WithStandardTopMargin>
-				<Lines n={1} />
 				<YourDataSection
 					consents={consents}
 					toggleConsent={toggleConsentSubscription}
