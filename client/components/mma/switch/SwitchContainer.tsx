@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import type { Context, ReactNode } from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router';
+import { Navigate, Outlet } from 'react-router';
 import type {
 	MembersDataApiResponse,
 	MembersDataApiUser,
@@ -53,22 +53,7 @@ export const SwitchContext: Context<SwitchContextInterface | {}> =
 	createContext({});
 
 export const SwitchContainer = (props: { isFromApp?: boolean }) => {
-	const location = useLocation();
-	const routerState = location.state as SwitchRouterState;
-	const productDetail = routerState?.productDetail;
-	const user = routerState?.user;
-
-	if (!productDetail) {
-		return <AsyncLoadedSwitchContainer isFromApp={props.isFromApp} />;
-	}
-
-	return (
-		<RenderedPage
-			productDetail={productDetail}
-			user={user}
-			isFromApp={props.isFromApp}
-		/>
-	);
+	return <AsyncLoadedSwitchContainer isFromApp={props.isFromApp} />;
 };
 
 const SwitchPageContainer = (props: { children: ReactNode }) => {
