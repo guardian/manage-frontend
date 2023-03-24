@@ -226,6 +226,7 @@ export const SwitchReview = () => {
 					state: {
 						amountPayableToday: amount,
 						nextPaymentDate: nextPaymentDate,
+						switchHasCompleted: true,
 					},
 				});
 			}

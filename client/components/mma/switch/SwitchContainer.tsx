@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useState } from 'react';
 import type { Context, ReactNode } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import type {
@@ -30,6 +30,7 @@ export interface SwitchRouterState {
 	user?: MembersDataApiUser;
 	amountPayableToday: number;
 	nextPaymentDate: string;
+	switchHasCompleted?: boolean;
 }
 
 export interface SwitchContextInterface {
@@ -57,6 +58,17 @@ export const SwitchContainer = (props: { isFromApp?: boolean }) => {
 	const routerState = location.state as SwitchRouterState;
 	const productDetail = routerState?.productDetail;
 	const user = routerState?.user;
+
+	const [switchHasCompleted, setSwitchHasCompleted] =
+		useState<boolean>(false);
+
+	if (!switchHasCompleted && routerState?.switchHasCompleted) {
+		setSwitchHasCompleted(true);
+	}
+
+	if (userIsNavigatingBackFromCompletePage(switchHasCompleted)) {
+		return <Navigate to="/" />;
+	}
 
 	if (!productDetail) {
 		return <AsyncLoadedSwitchContainer isFromApp={props.isFromApp} />;
@@ -108,11 +120,7 @@ const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 		);
 	}
 
-	if (
-		data == null ||
-		data.products.length == 0 ||
-		data.products.filter(isProduct).length > 1
-	) {
+	if (data == null || noSingleRecurringContribution(data)) {
 		return <Navigate to="/" />;
 	}
 
@@ -159,6 +167,16 @@ const RenderedPage = (props: {
 		</SwitchPageContainer>
 	);
 };
+
+function userIsNavigatingBackFromCompletePage(hasCompleted: boolean) {
+	return hasCompleted && !location.pathname.includes('complete');
+}
+
+function noSingleRecurringContribution(data: MembersDataApiResponse) {
+	return (
+		data.products.length == 0 || data.products.filter(isProduct).length > 1
+	);
+}
 
 function getThresholds(
 	mainPlan: PaidSubscriptionPlan,
