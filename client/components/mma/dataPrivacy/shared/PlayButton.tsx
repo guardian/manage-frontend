@@ -4,6 +4,7 @@ export const PlayButton = () => {
 	return (
 		<svg
 			css={dataPrivacySvgImage}
+			tabIndex={0}
 			viewBox={`0 0 60 60`}
 			fill="none"
 			preserveAspectRatio="xMaxYMid meet"
