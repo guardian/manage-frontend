@@ -8,7 +8,9 @@ import {
 } from '../../../fixtures/cancelledProductDetail';
 import {
 	CancelledInAppPurchase,
-	InAppPurchase,
+	InAppPurchaseIos,
+	PuzzleAppPurchaseAndroid,
+	PuzzleAppPurchaseIos,
 } from '../../../fixtures/inAppPurchase';
 import {
 	contributionCancelled,
@@ -173,7 +175,12 @@ export const WithAppSubscriptions: ComponentStory<
 		.get('/api/cancelled/', { body: [] })
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: {
-				subscriptions: [CancelledInAppPurchase, InAppPurchase],
+				subscriptions: [
+					CancelledInAppPurchase,
+					InAppPurchaseIos,
+					PuzzleAppPurchaseAndroid,
+					PuzzleAppPurchaseIos,
+				],
 			},
 		})
 		.get('/api/me/mma', { body: toMembersDataApiResponse() })

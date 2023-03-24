@@ -150,7 +150,7 @@ const AccountOverviewPage = () => {
 						{appSubscriptions.map((subscription) => (
 							<InAppPurchaseCard
 								key={subscription.subscriptionId}
-								inAppPurchase={subscription}
+								subscription={subscription}
 							/>
 						))}
 					</Stack>

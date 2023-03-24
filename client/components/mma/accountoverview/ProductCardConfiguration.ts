@@ -20,6 +20,7 @@ export const productColour = {
 	newspaper: palette.brand[400],
 	digital: palette.sport[100],
 	guardianWeekly: '#cadbe8',
+	puzzleApp: palette.lifestyle[300],
 };
 
 interface ProductCardConfiguration {

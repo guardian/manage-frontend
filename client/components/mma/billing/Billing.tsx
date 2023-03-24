@@ -323,6 +323,19 @@ function getAppStoreMessage(subscription: AppSubscription) {
 }
 
 function renderInAppPurchase(subscription: AppSubscription) {
+	const tableHeadingCss = css`
+		width: 100%;
+		${headline.xxsmall({ fontWeight: 'bold' })};
+		margin: 0;
+		padding: ${space[3]}px ${space[5]}px;
+		background-color: ${neutral[97]};
+		${until.tablet} {
+			font-size: 1.0625rem;
+			line-height: 1.6;
+			padding: ${space[3]}px;
+		}
+	`;
+
 	return (
 		<div css={subHeadingBorderTopCss} key={subscription.subscriptionId}>
 			<h2
@@ -336,13 +349,21 @@ function renderInAppPurchase(subscription: AppSubscription) {
 			<div
 				css={css`
 					${textSans.medium()};
-					border: 1px solid ${neutral[20]};
+					border: 1px solid ${neutral[86]};
+					display: flex;
+					flex-wrap: wrap;
 					margin: ${space[5]}px 0;
-					padding: ${space[3]}px;
 				`}
 			>
-				To change your payment setup, please contact{' '}
-				{getAppStoreMessage(subscription)}.
+				<h2 css={tableHeadingCss}>Payment</h2>
+				<div
+					css={css`
+						padding: ${space[3]}px;
+					`}
+				>
+					To change your payment setup, please contact{' '}
+					{getAppStoreMessage(subscription)}.
+				</div>
 			</div>
 		</div>
 	);
