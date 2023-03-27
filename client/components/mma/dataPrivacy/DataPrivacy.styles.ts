@@ -16,6 +16,9 @@ export const dataPrivacyParagraphCss = css`
 export const dataPrivacyUnorderedListCss = css`
 	margin: 0;
 	${textSans.small()}
+	li {
+		list-style: none;
+	}
 	li::before {
 		display: inline-block;
 		content: '';
@@ -23,7 +26,7 @@ export const dataPrivacyUnorderedListCss = css`
 		height: 13px;
 		width: 13px;
 		background-color: #dcdcdc;
-		margin-left: -20px;
+		margin-left: -40px;
 		margin-right: 7px;
 	}
 `;
