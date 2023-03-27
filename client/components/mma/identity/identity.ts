@@ -120,11 +120,6 @@ export const ConsentOptions: ConsentOptionCollection = {
 				// Prevent trial newsletter from displaying.
 				.filter((newsletter: ConsentOption) => newsletter.id !== '6028') // identityId: 'saturday-roundup-trial'
 				// @AB_TEST: Default Onboarding Newsletter Test: END
-
-				// Temporary change - the newsletter with this number needs to be
-				// set up in advance but not rendered on MMA until the journalism
-				// it refers to is published.
-				.filter((newsletter: ConsentOption) => newsletter.id !== '6029')
 		);
 	},
 	consents(options: ConsentOption[]): ConsentOption[] {
