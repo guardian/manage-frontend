@@ -96,6 +96,13 @@ export const dataPrivacySvgImage = css`
 	max-height: 100%;
 	width: 95%;
 	height: 95%;
+	border-radius: 50%;
+
+	&:focus {
+		border: 0;
+		outline-offset: -2px;
+		outline-style: solid;
+	}
 `;
 
 export const dataPrivacyWrapper = css`
