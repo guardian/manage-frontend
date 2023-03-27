@@ -1,5 +1,10 @@
 import { css } from '@emotion/react';
-import { headline, textSans, until } from '@guardian/source-foundations';
+import {
+	headline,
+	palette,
+	textSans,
+	until,
+} from '@guardian/source-foundations';
 
 export const dataPrivacyHeadingCss = css`
 	margin: 0;
@@ -91,4 +96,12 @@ export const dataPrivacySvgImage = css`
 	max-height: 100%;
 	width: 95%;
 	height: 95%;
+`;
+
+export const dataPrivacyWrapper = css`
+	*:focus {
+		outline-offset: 2px;
+		outline-width: 3px;
+		outline-color: ${palette.focus[400]};
+	}
 `;

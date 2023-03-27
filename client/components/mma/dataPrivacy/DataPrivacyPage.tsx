@@ -16,6 +16,7 @@ import { Actions, useConsentOptions } from '../identity/useConsentOptions';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { CookiesOnThisBrowserSection } from './CookiesOnTheBrowserSection';
+import { dataPrivacyWrapper } from './DataPrivacy.styles';
 import { LearnMoreSection } from './LearnMoreSection';
 import { YourDataSection } from './YourDataSection';
 
@@ -113,7 +114,7 @@ export const DataPrivacyPage = () => {
 	};
 
 	const content = () => (
-		<>
+		<div css={dataPrivacyWrapper}>
 			<WithStandardTopMargin>
 				<YourDataSection
 					consents={consents}
@@ -124,7 +125,7 @@ export const DataPrivacyPage = () => {
 				<Lines n={1} />
 				<LearnMoreSection />
 			</WithStandardTopMargin>
-		</>
+		</div>
 	);
 
 	return <>{content()}</>;
