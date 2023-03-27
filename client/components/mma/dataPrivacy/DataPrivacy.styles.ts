@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { headline, textSans } from '@guardian/source-foundations';
+import { headline, textSans, until } from '@guardian/source-foundations';
 
 export const dataPrivacyHeadingCss = css`
 	margin: 0;
@@ -62,6 +62,9 @@ export const dataPrivacyVideoTextHeadline = css`
 	left: 25%;
 	bottom: 0;
 	position: absolute;
+	${until.mobileLandscape} {
+		margin-bottom: 0.5rem;
+	}
 `;
 
 export const dataPrivacyFooter = css`
