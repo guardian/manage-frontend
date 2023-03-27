@@ -272,6 +272,35 @@ describe('product switching', () => {
 			).should('exist');
 		});
 
+		it('Does not allow user to navigate back to switch review and confirmation pages after switch completion', () => {
+			cy.visit('/switch');
+			setSignInStatus();
+
+			cy.findByRole('button', {
+				name: 'Add extras',
+			}).click();
+
+			cy.findByRole('button', { name: 'Confirm change' }).click();
+
+			cy.intercept('POST', '/api/product-move/*', {
+				statusCode: 200,
+				body: productMoveSuccessfulResponse,
+			});
+
+			cy.findByText(/Thank you for changing your support type/).should(
+				'exist',
+			);
+			cy.findByText(
+				/Your first billing date is today and you will be charged £5/,
+			).should('exist');
+
+			cy.go('back');
+
+			cy.findByRole('heading', { name: 'Account overview' }).should(
+				'exist',
+			);
+		});
+
 		it('shows an error message if switch fails', () => {
 			cy.visit('/switch');
 			setSignInStatus();
