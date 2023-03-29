@@ -37,7 +37,7 @@ describe('YourDataSection', () => {
 				toggleConsent={toggleConsent}
 			/>,
 		);
-		expect(screen.getAllByText('Your Data')).toBeDefined();
+		expect(screen.getAllByText('Your account data')).toBeDefined();
 	});
 
 	it('correctly displays the toggle buttons', () => {
