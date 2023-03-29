@@ -228,11 +228,7 @@ describe('Holiday stops', () => {
 		cy.wait('@mobile_subscriptions');
 
 		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
-		cy.findAllByRole('link', {
-			name: 'Guardian Weekly : Manage subscription',
-		})
-			.eq(0)
-			.click();
+		cy.findAllByText('Manage subscription').eq(0).click();
 
 		cy.findByText('A-S00293857').should('exist');
 
@@ -241,11 +237,7 @@ describe('Holiday stops', () => {
 		cy.wait('@cancelled');
 		cy.wait('@mobile_subscriptions');
 
-		cy.findAllByRole('link', {
-			name: 'Guardian Weekly : Manage subscription',
-		})
-			.eq(1)
-			.click();
+		cy.findAllByText('Manage subscription').eq(1).click();
 
 		cy.findByText('A-S00286635').should('exist');
 		cy.findByRole('link', { name: 'Manage suspensions' }).click();
