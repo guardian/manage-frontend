@@ -16,6 +16,7 @@ export const dataPrivacyParagraphCss = css`
 	margin-bottom: 0.5rem;
 	margin-top: 0.5rem;
 	${textSans.small()}
+	color: ${palette.neutral[7]};
 `;
 
 export const dataPrivacyUnorderedListCss = css`
