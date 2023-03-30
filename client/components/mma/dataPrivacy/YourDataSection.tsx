@@ -39,7 +39,6 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 					Information about the products or services you buy from us
 				</li>
 				<li>
-					{' '}
 					Pages you view on theguardian.com or other Guardian websites
 					when signed in and your region
 				</li>
@@ -58,12 +57,10 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 			<p css={dataPrivacyParagraphCss}>We do this by:</p>
 			<ul css={dataPrivacyUnorderedListCss}>
 				<li>
-					{' '}
 					Analysing your account data to predict what you might be
 					interested in.
 				</li>
 				<li>
-					{' '}
 					Checking if you are already a customer of other trusted
 					partners.
 				</li>
