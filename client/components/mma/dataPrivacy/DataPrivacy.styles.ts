@@ -10,6 +10,7 @@ export const dataPrivacyHeadingCss = css`
 	margin: 0;
 	margin-bottom: 0.5rem;
 	${headline.xxsmall({ fontWeight: 'bold' })}
+	color: ${palette.neutral[7]};
 `;
 
 export const dataPrivacyParagraphCss = css`
@@ -21,7 +22,7 @@ export const dataPrivacyParagraphCss = css`
 
 export const dataPrivacyUnorderedListCss = css`
 	margin: 0;
-	padding: 0;
+	padding-left: 20px;
 	${textSans.small()}
 	color: ${palette.neutral[7]};
 	li {
@@ -34,7 +35,7 @@ export const dataPrivacyUnorderedListCss = css`
 		height: 13px;
 		width: 13px;
 		background-color: #dcdcdc;
-		/* margin-left: -40px; */
+		margin-left: -20px;
 		margin-right: 7px;
 	}
 `;
