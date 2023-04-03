@@ -37,7 +37,7 @@ const PHONE_DATA: PhoneRegion[] = [
 		],
 		phoneNumbers: [
 			{
-				phoneNumber: '+44 (0) 330 333 6790',
+				phoneNumber: '+44 (0) 330 333 6767',
 			},
 		],
 	},
@@ -45,8 +45,6 @@ const PHONE_DATA: PhoneRegion[] = [
 		key: 'AUS',
 		title: 'Australia, New Zealand, and Asia Pacific',
 		openingHours: ['9am - 5pm Monday - Friday (AEDT)'],
-		additionalOpeningHoursInfo:
-			'Phonelines for this region are temporarily down',
 		phoneNumbers: [
 			{
 				phoneNumber: '1800 773 766',
