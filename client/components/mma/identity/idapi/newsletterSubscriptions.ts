@@ -4,7 +4,7 @@ interface Subscription {
 	listId: number;
 }
 
-interface NewsletterSubscriptions {
+export interface NewsletterSubscriptions {
 	result: {
 		htmlPreference: string;
 		subscriptions: [Subscription];

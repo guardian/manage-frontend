@@ -1,3 +1,4 @@
+import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import type { FC } from 'react';
 import { standardSansText, toggleDescriptionPadding } from './sharedStyles';
@@ -8,6 +9,7 @@ interface MarketingToggleProps {
 	description?: string;
 	title?: string;
 	selected?: boolean;
+	divCss?: SerializedStyles;
 	onClick: (id: string) => {};
 }
 
@@ -21,10 +23,11 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 		<div
 			css={[
 				standardSansText,
-				{
-					marginTop: '12px',
-					position: 'relative',
-				},
+				props.divCss ??
+					css`
+						margin-top: 12px;
+						position: relative;
+					`,
 			]}
 		>
 			<div css={{ left: 0 }}>

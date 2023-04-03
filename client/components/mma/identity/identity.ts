@@ -19,7 +19,7 @@ const isConsent = (option: ConsentOption): boolean =>
 const isSupportReminderConsent = (option: ConsentOption): boolean =>
 	option.type === ConsentOptionType.SUPPORT_REMINDER;
 
-const mapSubscriptions = (
+export const mapSubscriptions = (
 	subscriptions: string[],
 	options: ConsentOption[],
 ): ConsentOption[] =>

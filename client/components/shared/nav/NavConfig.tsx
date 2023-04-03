@@ -5,6 +5,7 @@ import { EmailPrefsIcon } from '../../mma/shared/assets/EmailPrefIcon';
 import { HelpIcon } from '../../mma/shared/assets/HelpIcon';
 import { ProfileIcon } from '../../mma/shared/assets/ProfileIcon';
 import { SettingsIcon } from '../../mma/shared/assets/SettingsIcon';
+import { ShieldIcon } from '../../mma/shared/assets/ShieldIcon';
 import { SignoutIcon } from '../../mma/shared/assets/SignoutIcon';
 
 interface NavIconProps {
@@ -25,6 +26,7 @@ export interface MenuSpecificNavItem extends NavItem {
 interface NavLinks {
 	accountOverview: MenuSpecificNavItem;
 	billing: MenuSpecificNavItem;
+	dataPrivacy: MenuSpecificNavItem;
 	profile: MenuSpecificNavItem;
 	settings: MenuSpecificNavItem;
 	emailPrefs: MenuSpecificNavItem;
@@ -65,6 +67,12 @@ export const NAV_LINKS: NavLinks = {
 		link: '/email-prefs',
 		local: true,
 		icon: EmailPrefsIcon,
+	},
+	dataPrivacy: {
+		title: 'Data privacy',
+		link: '/data-privacy',
+		local: true,
+		icon: ShieldIcon,
 	},
 	settings: {
 		title: 'Settings',

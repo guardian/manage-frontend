@@ -42,7 +42,7 @@ const userErrorMessageMap = new Map([
 	],
 ]);
 
-interface UserAPIResponse {
+export interface UserAPIResponse {
 	user: IdapiUserDetails;
 }
 
@@ -115,7 +115,7 @@ const toUserApiRequest = (user: Partial<User>): UserAPIRequest => {
 	};
 };
 
-const toUser = (response: UserAPIResponse): User => {
+export const toUser = (response: UserAPIResponse): User => {
 	const consents = getConsentedTo(response);
 	const { user } = response;
 	const getFromUser = getOrEmpty(user);
