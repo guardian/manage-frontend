@@ -170,7 +170,7 @@ const PageNavAndContentContainer = (props: PageNavAndContentContainerProps) => (
 				...gridItemPlacement(1, 4),
 
 				[from.tablet]: {
-					...gridItemPlacement(1, 10),
+					...gridItemPlacement(1, 12),
 				},
 
 				[from.desktop]: {
@@ -178,7 +178,7 @@ const PageNavAndContentContainer = (props: PageNavAndContentContainerProps) => (
 				},
 
 				[from.wide]: {
-					...gridItemPlacement(6, 8),
+					...gridItemPlacement(6, 10),
 				},
 			}}
 		>
