@@ -49,11 +49,6 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 			<Lines n={1} />
 			{addMarketingToggleElement('personalised_advertising')}
 
-			<p css={dataPrivacyParagraphCss}>
-				Advertising is a crucial source of our funding. You won't see
-				more ads, but your advertising may be more relevant. We don’t
-				share your email with third parties.
-			</p>
 			<p css={dataPrivacyParagraphCss}>We do this by:</p>
 			<ul css={dataPrivacyUnorderedListCss}>
 				<li>
@@ -65,6 +60,12 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 					partners.
 				</li>
 			</ul>
+
+			<p css={dataPrivacyParagraphCss}>
+				Advertising is a crucial source of our funding. You won't see
+				more ads, but your advertising may be more relevant. We don’t
+				share your email with third parties.
+			</p>
 		</>
 	);
 };
