@@ -34,7 +34,7 @@ export const dataPrivacyUnorderedListCss = css`
 		border-radius: 50%;
 		height: 13px;
 		width: 13px;
-		background-color: #dcdcdc;
+		background-color: ${palette.neutral[86]};
 		margin-left: -20px;
 		margin-right: 7px;
 	}
