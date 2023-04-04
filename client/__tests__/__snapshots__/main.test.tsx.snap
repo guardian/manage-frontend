@@ -312,8 +312,9 @@ exports[`Main renders something 1`] = `
   white-space: nowrap;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 2px;
   height: 36px;
   min-height: 36px;
   padding: 0 16px;

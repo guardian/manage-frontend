@@ -9,6 +9,7 @@ Array [
   font-size: 1.75rem;
   line-height: 1.15;
   font-weight: 700;
+  --source-text-decoration-thickness: 3px;
   margin-bottom: 24px;
 }
 
@@ -45,8 +46,9 @@ Array [
 .emotion-2 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
@@ -106,32 +108,36 @@ Array [
 .emotion-5 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 6px 0 4px;
 }
 
 .emotion-6 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 2px;
   word-break: break-word;
 }
 
 .emotion-7 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 6px 0 4px;
 }
 
 .emotion-8 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 0;
 }
 
@@ -152,8 +158,9 @@ Array [
 .emotion-12 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
@@ -202,8 +209,9 @@ Array [
 .emotion-36 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 0;
 }
 
@@ -416,6 +424,7 @@ Array [
   font-size: 1.75rem;
   line-height: 1.15;
   font-weight: 700;
+  --source-text-decoration-thickness: 3px;
   margin-bottom: 24px;
 }
 
@@ -452,8 +461,9 @@ Array [
 .emotion-2 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
@@ -513,32 +523,36 @@ Array [
 .emotion-5 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 6px 0 4px;
 }
 
 .emotion-6 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 2px;
   word-break: break-word;
 }
 
 .emotion-7 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 6px 0 4px;
 }
 
 .emotion-8 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 0;
 }
 
@@ -559,8 +573,9 @@ Array [
 .emotion-12 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
@@ -609,8 +624,9 @@ Array [
 .emotion-36 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 0;
 }
 
@@ -823,6 +839,7 @@ Array [
   font-size: 1.75rem;
   line-height: 1.15;
   font-weight: 700;
+  --source-text-decoration-thickness: 3px;
   margin-bottom: 4px;
 }
 
@@ -841,8 +858,9 @@ Array [
   .emotion-0 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 4px;
   max-width: 320px;
 }
@@ -872,8 +890,9 @@ Array [
 .emotion-0 a {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 0.9375rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   color: #0077B6;
   -webkit-text-decoration: underline;
   text-decoration: underline;
@@ -915,8 +934,9 @@ Array [
   border: 1px solid #DCDCDC;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
 }
 
 @media (min-width: 660px) {
@@ -928,8 +948,9 @@ Array [
 .emotion-3 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.25rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 3px;
   color: #333333;
   position: relative;
   margin: 0;
@@ -1023,8 +1044,9 @@ Array [
   white-space: nowrap;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 2px;
   height: 44px;
   min-height: 44px;
   padding: 0 20px;
@@ -1092,8 +1114,9 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 .emotion-15 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.25rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 3px;
   color: #333333;
   position: relative;
   margin: 0;
@@ -1123,8 +1146,9 @@ html:not(.src-focus-disabled) .emotion-7:focus {
   display: none;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   padding: 0 16px 16px 16px;
   margin: 0;
 }
@@ -1156,8 +1180,9 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 .emotion-20 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
@@ -1217,8 +1242,9 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 .emotion-23 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 0;
 }
 
@@ -1239,8 +1265,9 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 .emotion-27 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
@@ -1289,8 +1316,9 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 .emotion-45 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 0;
 }
 
@@ -1314,15 +1342,17 @@ html:not(.src-focus-disabled) .emotion-7:focus {
   margin: 0;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 0.9375rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 2px;
 }
 
 .emotion-48 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 0.9375rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   max-width: 830px;
   margin: 0;
 }
