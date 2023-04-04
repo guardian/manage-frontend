@@ -53,11 +53,11 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 			<ul css={dataPrivacyUnorderedListCss}>
 				<li>
 					Analysing your account data to predict what you might be
-					interested in.
+					interested in
 				</li>
 				<li>
 					Checking if you are already a customer of other trusted
-					partners.
+					partners
 				</li>
 			</ul>
 
