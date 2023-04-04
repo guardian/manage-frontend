@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { brand, from, neutral, space } from '@guardian/source-foundations';
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { gridItemPlacement } from '../../../styles/grid';
 import { ProfileIcon } from '../../mma/shared/assets/ProfileIcon';
 import { expanderButtonCss } from '../ExpanderButton';
@@ -95,6 +96,43 @@ const dropdownNavItemCss = css({
 		},
 	},
 });
+
+const DropdownNavItem = ({ navItem }: { navItem: MenuSpecificNavItem }) => (
+	<>
+		{navItem.icon && (
+			<div
+				css={{
+					...(!navItem.isDropDownExclusive && {
+						[from.desktop]: {
+							display: 'none',
+						},
+					}),
+					position: 'absolute',
+					left: `${space[3]}px`,
+				}}
+			>
+				<navItem.icon
+					overrideFillColor={neutral[100]}
+					overrideWidthAtDesktop={12}
+				/>
+			</div>
+		)}
+		<span
+			css={{
+				lineHeight: '33px',
+				[from.desktop]: {
+					lineHeight: 'normal',
+					marginLeft:
+						navItem.isDropDownExclusive && navItem.icon
+							? `${space[5]}px`
+							: 0,
+				},
+			}}
+		>
+			{navItem.title}
+		</span>
+	</>
+);
 
 export const DropdownNav = () => {
 	const [showMenu, setShowMenu] = useState(false);
@@ -203,41 +241,19 @@ export const DropdownNav = () => {
 				{Object.values(NAV_LINKS).map(
 					(navItem: MenuSpecificNavItem) => (
 						<li key={navItem.title}>
-							<a href={navItem.link} css={dropdownNavItemCss}>
-								{navItem.icon && (
-									<div
-										css={{
-											...(!navItem.isDropDownExclusive && {
-												[from.desktop]: {
-													display: 'none',
-												},
-											}),
-											position: 'absolute',
-											left: `${space[3]}px`,
-										}}
-									>
-										<navItem.icon
-											overrideFillColor={neutral[100]}
-											overrideWidthAtDesktop={12}
-										/>
-									</div>
-								)}
-								<span
-									css={{
-										lineHeight: '33px',
-										[from.desktop]: {
-											lineHeight: 'normal',
-											marginLeft:
-												navItem.isDropDownExclusive &&
-												navItem.icon
-													? `${space[5]}px`
-													: 0,
-										},
-									}}
+							{navItem.local ? (
+								<Link
+									to={navItem.link}
+									css={dropdownNavItemCss}
+									onClick={() => setShowMenu(false)}
 								>
-									{navItem.title}
-								</span>
-							</a>
+									<DropdownNavItem navItem={navItem} />
+								</Link>
+							) : (
+								<a href={navItem.link} css={dropdownNavItemCss}>
+									<DropdownNavItem navItem={navItem} />
+								</a>
+							)}
 						</li>
 					),
 				)}
