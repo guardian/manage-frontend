@@ -19,7 +19,7 @@ export const CookiesOnThisBrowserSection = (
 				When we make the Guardian available for you online, we use
 				cookies and similar technologies to help us to do this. Some are
 				necessary to help our website work properly and can’t be
-				switched off, and some are optional but support the Guardian and
+				switched off, and some are optional but may support the Guardian and
 				your experience in other ways.
 			</p>
 			<Button
