@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import { Stack } from '@guardian/source-react-components';
+import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
 import { dateString } from '../../../../shared/dates';
 import type { AppSubscription } from '../../../../shared/mpapiResponse';
-import { InfoSummary } from '../paymentUpdate/Summary';
 import { Card } from '../shared/Card';
 import { productColour } from './ProductCardConfiguration';
 import { productTitleCss } from './ProductCardStyles';

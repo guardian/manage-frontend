@@ -7,6 +7,7 @@ import {
 	SvgClock,
 	SvgCreditCard,
 } from '@guardian/source-react-components';
+import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -18,7 +19,6 @@ import {
 } from '../../../../utilities/hooks/useAsyncLoader';
 import { formatAmount } from '../../../../utilities/utils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
-import { ErrorSummary } from '../../paymentUpdate/Summary';
 import { DirectDebitLogo } from '../../shared/assets/DirectDebitLogo';
 import { PaypalLogo } from '../../shared/assets/PaypalLogo';
 import { SwitchOffsetPaymentIcon } from '../../shared/assets/SwitchOffsetPaymentIcon';

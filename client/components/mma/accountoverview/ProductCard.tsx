@@ -6,6 +6,7 @@ import {
 	Stack,
 	SvgInfoRound,
 } from '@guardian/source-react-components';
+import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
 import { useNavigate } from 'react-router';
 import {
 	cancellationFormatDate,
@@ -24,7 +25,6 @@ import {
 	GROUPED_PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
-import { InfoSummary } from '../paymentUpdate/Summary';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { Card } from '../shared/Card';
 import { CardDisplay } from '../shared/CardDisplay';
