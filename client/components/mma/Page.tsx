@@ -174,11 +174,11 @@ const PageNavAndContentContainer = (props: PageNavAndContentContainerProps) => (
 				},
 
 				[from.desktop]: {
-					...gridItemPlacement(5, 8),
+					...gridItemPlacement(5, 6),
 				},
 
 				[from.wide]: {
-					...gridItemPlacement(6, 10),
+					...gridItemPlacement(6, 8),
 				},
 			}}
 		>
