@@ -148,6 +148,7 @@
     "@guardian/libs": "^14.0.0",
     "@guardian/source-foundations": "^10.0.1",
     "@guardian/source-react-components": "^12.0.0",
+    "@guardian/source-react-components-development-kitchen": "^10.0.1",
     "@sentry/browser": "^5.22.3",
     "@sentry/node": "^5.22.3",
     "@stripe/react-stripe-js": "^1.1.2",

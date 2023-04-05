@@ -5,11 +5,11 @@ import {
 	buttonThemeReaderRevenueBrand,
 	Stack,
 } from '@guardian/source-react-components';
+import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { formatAmount } from '../../../../utilities/utils';
-import { ErrorSummary } from '../../paymentUpdate/Summary';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../../shared/SupporterPlusBenefits';

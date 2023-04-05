@@ -4,6 +4,7 @@ import {
 	Button,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
+import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import * as Sentry from '@sentry/browser';
 import {
 	CardNumberElement,
@@ -16,7 +17,6 @@ import type { StripeSetupIntent } from '../../../../../shared/stripeSetupIntent'
 import { STRIPE_PUBLIC_KEY_HEADER } from '../../../../../shared/stripeSetupIntent';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { LoadingCircleIcon } from '../../shared/assets/LoadingCircleIcon';
-import { ErrorSummary } from '../Summary';
 import type { CardInputFormProps } from './CardInputForm';
 import { FlexCardElement } from './FlexCardElement';
 import type { StripePaymentMethod } from './NewCardPaymentMethodDetail';

@@ -14,6 +14,7 @@ import {
 	RadioGroup,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
+import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import * as Sentry from '@sentry/browser';
 import type * as React from 'react';
 import { useContext, useState } from 'react';
@@ -53,7 +54,6 @@ import { CurrentPaymentDetails } from './CurrentPaymentDetail';
 import { DirectDebitInputForm } from './dd/DirectDebitInputForm';
 import type { NewPaymentMethodDetail } from './NewPaymentMethodDetail';
 import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
-import { ErrorSummary } from './Summary';
 
 export enum PaymentMethod {
 	Card = 'Credit card / debit card',

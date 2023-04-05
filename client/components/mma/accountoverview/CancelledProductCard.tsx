@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import { LinkButton, Stack } from '@guardian/source-react-components';
+import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
 import { parseDate } from '../../../../shared/dates';
 import type { CancelledProductDetail } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
-import { InfoSummary } from '../paymentUpdate/Summary';
 import { Card } from '../shared/Card';
 import { productCardConfiguration } from './ProductCardConfiguration';
 import {
