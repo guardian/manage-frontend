@@ -120,7 +120,7 @@ const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 		);
 	}
 
-	if (data == null || noSingleRecurringContribution(data)) {
+	if (data == null || data.products.length == 0) {
 		return <Navigate to="/" />;
 	}
 
@@ -170,12 +170,6 @@ const RenderedPage = (props: {
 
 function userIsNavigatingBackFromCompletePage(hasCompleted: boolean) {
 	return hasCompleted && !location.pathname.includes('complete');
-}
-
-function noSingleRecurringContribution(data: MembersDataApiResponse) {
-	return (
-		data.products.length == 0 || data.products.filter(isProduct).length > 1
-	);
 }
 
 function getThresholds(
