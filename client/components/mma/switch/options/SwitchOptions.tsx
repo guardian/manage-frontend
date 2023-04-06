@@ -7,13 +7,16 @@ import {
 } from '@guardian/source-react-components';
 import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { formatAmount } from '../../../../utilities/utils';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../../shared/SupporterPlusBenefits';
-import type { SwitchContextInterface } from '.././SwitchContainer';
+import type {
+	SwitchContextInterface,
+	SwitchRouterState,
+} from '.././SwitchContainer';
 import { SwitchContext } from '.././SwitchContainer';
 import {
 	buttonCentredCss,
@@ -68,6 +71,8 @@ const fromAppHeadingCss = css`
 
 export const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
+	const location = useLocation();
+	const routerState = location.state as SwitchRouterState;
 
 	const {
 		productDetail,
@@ -253,7 +258,11 @@ export const SwitchOptions = () => {
 					<Button
 						size="small"
 						cssOverrides={buttonCentredCss}
-						onClick={() => navigate('review')}
+						onClick={() =>
+							navigate('review', {
+								state: routerState,
+							})
+						}
 					>
 						{isAboveThreshold
 							? 'Add extras'

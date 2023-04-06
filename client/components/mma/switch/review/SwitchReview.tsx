@@ -9,7 +9,7 @@ import {
 } from '@guardian/source-react-components';
 import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { Navigate, useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';
 import type { Subscription } from '../../../../../shared/productResponse';
@@ -29,7 +29,10 @@ import { cardTypeToSVG } from '../../shared/CardDisplay';
 import { Heading } from '../../shared/Heading';
 import { getObfuscatedPayPalId } from '../../shared/PaypalDisplay';
 import { SupporterPlusBenefitsToggle } from '../../shared/SupporterPlusBenefits';
-import type { SwitchContextInterface } from '../SwitchContainer';
+import type {
+	SwitchContextInterface,
+	SwitchRouterState,
+} from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
 import {
 	buttonCentredCss,
@@ -164,6 +167,8 @@ interface PreviewResponse {
 
 export const SwitchReview = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as SwitchRouterState;
 
 	const [isSwitching, setIsSwitching] = useState<boolean>(false);
 	const [switchingError, setSwitchingError] = useState<boolean>(false);
@@ -224,6 +229,7 @@ export const SwitchReview = () => {
 			} else {
 				navigate('../complete', {
 					state: {
+						...routerState,
 						amountPayableToday: amount,
 						nextPaymentDate: nextPaymentDate,
 						switchHasCompleted: true,
@@ -380,7 +386,7 @@ export const SwitchReview = () => {
 				<Button
 					priority="tertiary"
 					cssOverrides={[buttonCentredCss, buttonMutedCss]}
-					onClick={() => navigate('..')}
+					onClick={() => navigate('..', { state: routerState })}
 				>
 					Back
 				</Button>

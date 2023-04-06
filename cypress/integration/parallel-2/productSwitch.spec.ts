@@ -1,5 +1,6 @@
 import {
 	contributionCard,
+	contributionPayPal,
 	toMembersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
@@ -35,12 +36,18 @@ if (featureSwitches.cancellationProductSwitch) {
 
 			cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(contributionCard),
+				body: toMembersDataApiResponse(
+					contributionCard,
+					contributionPayPal,
+				),
 			});
 
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(contributionCard),
+				body: toMembersDataApiResponse(
+					contributionCard,
+					contributionPayPal,
+				),
 			});
 
 			cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -199,7 +206,7 @@ describe('product switching', () => {
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(contributionCard),
-		});
+		}).as('mdapi_get_contribution');
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
@@ -221,11 +228,31 @@ describe('product switching', () => {
 		featureSwitches.accountOverviewNewLayout &&
 		featureSwitches.productSwitching
 	) {
-		it('navigates to product switching page from Account Overview', () => {
+		it('successfully completes product switching page from Account Overview', () => {
 			cy.visit('/');
 			setSignInStatus();
 			cy.findByText('Change to monthly + extras').click();
 			cy.findByText('Your current support').should('exist');
+
+			cy.findByRole('button', {
+				name: 'Add extras',
+			}).click();
+
+			cy.findByRole('button', { name: 'Confirm change' }).click();
+
+			cy.intercept('POST', '/api/product-move/*', {
+				statusCode: 200,
+				body: productMoveSuccessfulResponse,
+			});
+
+			cy.findByText(/Thank you for changing your support type/).should(
+				'exist',
+			);
+			cy.findByText(
+				/Your first billing date is today and you will be charged £5/,
+			).should('exist');
+
+			cy.get('@mdapi_get_contribution.all').should('have.length', 0);
 		});
 	}
 
@@ -270,6 +297,8 @@ describe('product switching', () => {
 			cy.findByText(
 				/Your first billing date is today and you will be charged £5/,
 			).should('exist');
+
+			cy.get('@mdapi_get_contribution.all').should('have.length', 1);
 		});
 
 		it('Does not allow user to navigate back to switch review and confirmation pages after switch completion', () => {
