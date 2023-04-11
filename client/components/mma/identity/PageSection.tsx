@@ -3,6 +3,7 @@ import type { FC, ReactNode } from 'react';
 import { sans } from '../../../styles/fonts';
 
 interface PageSectionProps {
+	children?: React.ReactNode;
 	title?: string;
 	description?: string | ReactNode;
 	subtext?: string;

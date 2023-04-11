@@ -1,10 +1,11 @@
 import { css } from '@emotion/react';
 import { palette } from '@guardian/source-foundations';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import { useState } from 'react';
 import { serif } from '../../../styles/fonts';
 
 interface DropMenuProps {
+	children?: ReactNode;
 	title: string;
 	color: string;
 }

@@ -86,34 +86,36 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 				formikBag.setSubmitting(false);
 			}}
 		>
-			{(formikBag: FormikProps<AvatarPayload>) => (
-				<Form>
-					<label css={labelCss}>
-						{avatarDisplay()}
-						<input
+			<>
+				{(formikBag: FormikProps<AvatarPayload>) => (
+					<Form>
+						<label css={labelCss}>
+							{avatarDisplay()}
+							<input
+								disabled={formikBag.isSubmitting}
+								type="file"
+								name="file"
+								accept="image/gif, image/jpeg, image/png"
+								onChange={(e: ChangeEvent) => {
+									const target =
+										e.currentTarget as HTMLInputElement;
+									if (target.files) {
+										formikBag.setFieldValue(
+											'file',
+											target.files[0],
+										);
+									}
+								}}
+							/>
+						</label>
+						<Button
 							disabled={formikBag.isSubmitting}
-							type="file"
-							name="file"
-							accept="image/gif, image/jpeg, image/png"
-							onChange={(e: ChangeEvent) => {
-								const target =
-									e.currentTarget as HTMLInputElement;
-								if (target.files) {
-									formikBag.setFieldValue(
-										'file',
-										target.files[0],
-									);
-								}
-							}}
+							text="Upload image"
+							onClick={() => formikBag.submitForm()}
 						/>
-					</label>
-					<Button
-						disabled={formikBag.isSubmitting}
-						text="Upload image"
-						onClick={() => formikBag.submitForm()}
-					/>
-				</Form>
-			)}
+					</Form>
+				)}
+			</>
 		</Formik>
 	);
 

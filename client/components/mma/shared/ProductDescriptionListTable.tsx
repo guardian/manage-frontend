@@ -201,7 +201,7 @@ export const ProductDescriptionListTable = (
 							{tableEntry.title}
 						</dt>
 						<dd css={tableValueCss(!!tableEntry.spanTwoCols)}>
-							{tableEntry.value}
+							<>{tableEntry.value}</>
 						</dd>
 					</dl>
 				);
