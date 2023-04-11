@@ -75,7 +75,7 @@ export const SwitchOptions = () => {
 	const routerState = location.state as SwitchRouterState;
 
 	const {
-		productDetail,
+		contributionToSwitch,
 		mainPlan,
 		monthlyOrAnnual,
 		supporterPlusTitle,
@@ -121,7 +121,7 @@ export const SwitchOptions = () => {
 
 	return (
 		<>
-			{productDetail.alertText && (
+			{contributionToSwitch.alertText && (
 				<section css={sectionSpacing}>
 					<ErrorSummary
 						cssOverrides={errorSummaryOverrideCss}

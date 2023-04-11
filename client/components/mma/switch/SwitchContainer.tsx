@@ -34,7 +34,7 @@ export interface SwitchRouterState {
 }
 
 export interface SwitchContextInterface {
-	productDetail: ProductDetail;
+	contributionToSwitch: ProductDetail;
 	isFromApp: boolean;
 	user?: MembersDataApiUser;
 	mainPlan: PaidSubscriptionPlan;
@@ -56,7 +56,7 @@ export const SwitchContext: Context<SwitchContextInterface | {}> =
 export const SwitchContainer = (props: { isFromApp?: boolean }) => {
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
-	const productDetail = routerState?.productDetail;
+	const contributionToSwitch = routerState?.productDetail;
 	const user = routerState?.user;
 
 	const [switchHasCompleted, setSwitchHasCompleted] =
@@ -70,13 +70,13 @@ export const SwitchContainer = (props: { isFromApp?: boolean }) => {
 		return <Navigate to="/" />;
 	}
 
-	if (!productDetail) {
+	if (!contributionToSwitch) {
 		return <AsyncLoadedSwitchContainer isFromApp={props.isFromApp} />;
 	}
 
 	return (
 		<RenderedPage
-			productDetail={productDetail}
+			contributionToSwitch={contributionToSwitch}
 			user={user}
 			isFromApp={props.isFromApp}
 		/>
@@ -124,10 +124,10 @@ const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 		return <Navigate to="/" />;
 	}
 
-	const productDetail = data.products.filter(isProduct)[0];
+	const contributionToSwitch = data.products.filter(isProduct)[0];
 	return (
 		<RenderedPage
-			productDetail={productDetail}
+			contributionToSwitch={contributionToSwitch}
 			user={data.user}
 			isFromApp={props.isFromApp}
 		/>
@@ -135,12 +135,12 @@ const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 };
 
 const RenderedPage = (props: {
-	productDetail: ProductDetail;
+	contributionToSwitch: ProductDetail;
 	user?: MembersDataApiUser;
 	isFromApp?: boolean;
 }) => {
 	const mainPlan = getMainPlan(
-		props.productDetail.subscription,
+		props.contributionToSwitch.subscription,
 	) as PaidSubscriptionPlan;
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		mainPlan.billingPeriod,
@@ -150,7 +150,7 @@ const RenderedPage = (props: {
 		<SwitchPageContainer>
 			<SwitchContext.Provider
 				value={{
-					productDetail: props.productDetail,
+					contributionToSwitch: props.contributionToSwitch,
 					isFromApp: props.isFromApp,
 					user: props.user,
 					mainPlan,

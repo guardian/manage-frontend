@@ -175,14 +175,14 @@ export const SwitchReview = () => {
 
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 	const {
-		productDetail,
+		contributionToSwitch,
 		mainPlan,
 		monthlyOrAnnual,
 		supporterPlusTitle,
 		thresholds,
 	} = switchContext;
 
-	const inPaymentFailure = !!productDetail.alertText;
+	const inPaymentFailure = !!contributionToSwitch.alertText;
 
 	const {
 		monthlyThreshold,
@@ -195,7 +195,7 @@ export const SwitchReview = () => {
 
 	const productMoveFetch = (preview: boolean) =>
 		fetch(
-			`/api/product-move/${productDetail.subscription.subscriptionId}`,
+			`/api/product-move/${contributionToSwitch.subscription.subscriptionId}`,
 			{
 				method: 'POST',
 				body: JSON.stringify({
@@ -364,7 +364,9 @@ export const SwitchReview = () => {
 								<br />
 								We will take payment as before, from{' '}
 								<PaymentDetails
-									subscription={productDetail.subscription}
+									subscription={
+										contributionToSwitch.subscription
+									}
 								/>
 							</span>
 						</li>
