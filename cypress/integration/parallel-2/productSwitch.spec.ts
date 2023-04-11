@@ -207,7 +207,10 @@ describe('product switching', () => {
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contributionCard),
+			body: toMembersDataApiResponse(
+				contributionCard,
+				contributionPayPal,
+			),
 		});
 
 		cy.intercept('GET', '/api/cancelled/', {
@@ -228,13 +231,19 @@ describe('product switching', () => {
 		it('successfully completes product switching page from Account Overview', () => {
 			cy.visit('/');
 			setSignInStatus();
-			cy.findByText('Change to monthly + extras').click();
+
+			cy.findAllByText('Change to monthly + extras').should(
+				'have.length',
+				2,
+			);
+			cy.findAllByText('Change to monthly + extras').last().click();
 			cy.findByText('Your current support').should('exist');
 
 			cy.findByRole('button', {
 				name: 'Add extras',
 			}).click();
 
+			cy.findByLabelText('PayPal').should('exist');
 			cy.findByRole('button', { name: 'Confirm change' }).click();
 
 			cy.intercept('POST', '/api/product-move/*', {
