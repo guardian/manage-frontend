@@ -36,18 +36,12 @@ if (featureSwitches.cancellationProductSwitch) {
 
 			cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(
-					contributionCard,
-					contributionPayPal,
-				),
+				body: toMembersDataApiResponse(contributionCard),
 			});
 
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(
-					contributionCard,
-					contributionPayPal,
-				),
+				body: toMembersDataApiResponse(contributionCard),
 			});
 
 			cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -205,7 +199,10 @@ describe('product switching', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contributionCard),
+			body: toMembersDataApiResponse(
+				contributionCard,
+				contributionPayPal,
+			),
 		}).as('mdapi_get_contribution');
 
 		cy.intercept('GET', '/api/me/mma', {
