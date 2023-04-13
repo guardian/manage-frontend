@@ -94,7 +94,7 @@ export const DataPrivacyPage = () => {
 	const toggleConsentSubscription = async (id: string) => {
 		const option = ConsentOptions.findById(state.options, id);
 		try {
-			if (!option) {
+			if (option === undefined) {
 				throw Error('Id not found');
 			}
 			if (option.subscribed) {

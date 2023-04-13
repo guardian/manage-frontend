@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import { palette } from '@guardian/source-foundations';
 import * as Sentry from '@sentry/browser';
-import type { FormikProps } from 'formik';
 import { Form, Formik } from 'formik';
 import { useEffect } from 'react';
 import type { ChangeEvent, FC } from 'react';
@@ -86,36 +85,34 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 				formikBag.setSubmitting(false);
 			}}
 		>
-			<>
-				{(formikBag: FormikProps<AvatarPayload>) => (
-					<Form>
-						<label css={labelCss}>
-							{avatarDisplay()}
-							<input
-								disabled={formikBag.isSubmitting}
-								type="file"
-								name="file"
-								accept="image/gif, image/jpeg, image/png"
-								onChange={(e: ChangeEvent) => {
-									const target =
-										e.currentTarget as HTMLInputElement;
-									if (target.files) {
-										formikBag.setFieldValue(
-											'file',
-											target.files[0],
-										);
-									}
-								}}
-							/>
-						</label>
-						<Button
+			{(formikBag) => (
+				<Form>
+					<label css={labelCss}>
+						{avatarDisplay()}
+						<input
 							disabled={formikBag.isSubmitting}
-							text="Upload image"
-							onClick={() => formikBag.submitForm()}
+							type="file"
+							name="file"
+							accept="image/gif, image/jpeg, image/png"
+							onChange={(e: ChangeEvent) => {
+								const target =
+									e.currentTarget as HTMLInputElement;
+								if (target.files) {
+									formikBag.setFieldValue(
+										'file',
+										target.files[0],
+									);
+								}
+							}}
 						/>
-					</Form>
-				)}
-			</>
+					</label>
+					<Button
+						disabled={formikBag.isSubmitting}
+						text="Upload image"
+						onClick={() => formikBag.submitForm()}
+					/>
+				</Form>
+			)}
 		</Formik>
 	);
 
