@@ -11,7 +11,7 @@ import type { ReactElement } from 'react';
 
 export interface ProductDescriptionListKeyValue {
 	title: string;
-	value?: string | number | ReactElement | HTMLElement;
+	value?: string | number | ReactElement;
 	spanTwoCols?: boolean;
 }
 
@@ -201,7 +201,7 @@ export const ProductDescriptionListTable = (
 							{tableEntry.title}
 						</dt>
 						<dd css={tableValueCss(!!tableEntry.spanTwoCols)}>
-							<>{tableEntry.value}</>
+							{tableEntry.value}
 						</dd>
 					</dl>
 				);
