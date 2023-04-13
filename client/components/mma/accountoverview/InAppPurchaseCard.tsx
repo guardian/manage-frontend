@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
+import { space, textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
 import { capitalize } from 'lodash';
@@ -61,12 +61,23 @@ export const InAppPurchaseCard = ({
 					}
 				>
 					<h3 css={productTitleCss(!isPuzzleApp)}>
-						{capitalize(puzzleOrNews)} App Subscription
+						{capitalize(puzzleOrNews)} app
 					</h3>
 				</Card.Header>
 				<Card.Section>
-					<div css={productDetailLayoutCss}>
-						<div>
+					<div
+						css={[
+							productDetailLayoutCss,
+							css`
+								margin-top: -${space[2]}px;
+							`,
+						]}
+					>
+						<div
+							css={css`
+								${textSans.medium()};
+							`}
+						>
 							You have unlimited access to the Guardian{' '}
 							{appStore === AppStore.ANDROID && 'Android'}
 							{appStore === AppStore.IOS && 'iOS'} {puzzleOrNews}{' '}
@@ -74,7 +85,7 @@ export const InAppPurchaseCard = ({
 						</div>
 						<div
 							css={css`
-								margin-top: ${space[5]}px;
+								margin-top: ${space[9]}px;
 							`}
 						>
 							<Button

@@ -8,16 +8,18 @@ import {
 	textSans,
 	until,
 } from '@guardian/source-foundations';
+import { capitalize } from 'lodash';
 import { Fragment } from 'react';
 import { parseDate } from '../../../../shared/dates';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
 	AppSubscription,
-	MPAPIResponse,
-} from '../../../../shared/mpapiResponse';
+	MPAPIResponse} from '../../../../shared/mpapiResponse';
 import {
 	AppStore,
+
 	determineAppStore,
+	isPuzzle,
 	isValidAppSubscription,
 } from '../../../../shared/mpapiResponse';
 import type {
@@ -335,6 +337,7 @@ function renderInAppPurchase(subscription: AppSubscription) {
 			padding: ${space[3]}px;
 		}
 	`;
+	const puzzleOrNews = isPuzzle(subscription) ? 'puzzle' : 'news';
 
 	return (
 		<div css={subHeadingBorderTopCss} key={subscription.subscriptionId}>
@@ -344,7 +347,7 @@ function renderInAppPurchase(subscription: AppSubscription) {
 					margin: 0;
 				`}
 			>
-				App Subscription
+				{capitalize(puzzleOrNews)} app
 			</h2>
 			<div
 				css={css`
