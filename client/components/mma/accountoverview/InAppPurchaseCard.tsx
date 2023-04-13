@@ -1,15 +1,11 @@
 import { css } from '@emotion/react';
-import { Stack } from '@guardian/source-react-components';
-import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
-import { dateString } from '../../../../shared/dates';
-import type { AppSubscription } from '../../../../shared/mpapiResponse';
 import { space } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
+import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
 import { capitalize } from 'lodash';
 import { useNavigate } from 'react-router';
 import { dateString } from '../../../../shared/dates';
-import type {
-	AppSubscription} from '../../../../shared/mpapiResponse';
+import type { AppSubscription } from '../../../../shared/mpapiResponse';
 import {
 	AppStore,
 	determineAppStore,
