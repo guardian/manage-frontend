@@ -26,6 +26,7 @@ interface ProblemAlertProps {
 
 export const ProblemAlert = (props: ProblemAlertProps) => (
 	<div
+		id="errorMessage"
 		css={css`
 			border: 4px solid ${palette.error[400]};
 			padding: ${space['5']}px ${space['5']}px ${space['5']}px 50px;

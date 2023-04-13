@@ -36,7 +36,6 @@ export const PaymentFailureAlertIfApplicable = ({
 			}}
 			additionalcss={css`
 				margin-top: 30px;
-				id="errorMessage"
 			`}
 		/>
 	);
