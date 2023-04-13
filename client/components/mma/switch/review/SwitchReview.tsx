@@ -394,7 +394,7 @@ export const SwitchReview = () => {
 				</Button>
 			</section>
 			{switchingError && (
-				<section css={sectionSpacing}>
+				<section css={sectionSpacing} id="productSwitchErrorMessage">
 					<ErrorSummary
 						message={
 							inPaymentFailure
