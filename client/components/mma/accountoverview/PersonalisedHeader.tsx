@@ -2,13 +2,9 @@ import { css } from '@emotion/react';
 import { headline, space } from '@guardian/source-foundations';
 import { min } from 'date-fns';
 import { dateString } from '../../../../shared/dates';
-import type {
-	MPAPIResponse} from '../../../../shared/mpapiResponse';
-import {
-	sortByFromDate,
-} from '../../../../shared/mpapiResponse';
+import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import type { MembersDataApiResponse } from '../../../../shared/productResponse';
-import { isProduct, sortByJoinDate } from '../../../../shared/productResponse';
+import { isProduct } from '../../../../shared/productResponse';
 
 interface PersonalisedHeaderProps {
 	mdapiResponse: MembersDataApiResponse;
@@ -41,22 +37,12 @@ export const PersonalisedHeader = ({
 		return null;
 	}
 
-	const productDetails = mdapiResponse.products
-		.filter(isProduct)
-		.sort(sortByJoinDate);
-	const oldestProductDateString =
-		productDetails[productDetails.length - 1]?.joinDate;
+	const productDetails = mdapiResponse.products.filter(isProduct);
 
-	const oldestAppSubscriptionDateString =
-		mpapiResponse.subscriptions.sort(sortByFromDate)[
-			mpapiResponse.subscriptions.length - 1
-		]?.from;
-
-	const oldestDate = min(
-		[oldestProductDateString, oldestAppSubscriptionDateString].map((d) =>
-			d ? new Date(d) : new Date(),
-		),
-	);
+	const oldestDate = min([
+		...productDetails.map((p) => new Date(p.joinDate)),
+		...mpapiResponse.subscriptions.map((s) => new Date(s.from)),
+	]);
 
 	const supportStartYear = dateString(oldestDate, 'MMMM yyyy');
 

@@ -16,9 +16,6 @@ export function isValidAppSubscription(subscription: AppSubscription) {
 	return subscription.valid;
 }
 
-export const sortByFromDate = (a: AppSubscription, b: AppSubscription) =>
-	b.from.localeCompare(a.from);
-
 export const AppSubscriptionSoftOptInIds: string[] = [
 	SoftOptInIDs.SupportOnboarding,
 	SoftOptInIDs.SimilarProducts,
