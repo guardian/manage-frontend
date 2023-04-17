@@ -201,8 +201,8 @@ export const ProductCard = ({
 						<p css={benefitsTextCss}>
 							You’re supporting the Guardian with a{' '}
 							{nextPaymentDetails.paymentValue} per{' '}
-							{nextPaymentDetails.paymentInterval} support and
-							extra benefits.
+							{nextPaymentDetails.paymentInterval}, and have
+							access to exclusive extras.
 						</p>
 						<SupporterPlusBenefitsToggle />
 					</Card.Section>
