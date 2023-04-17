@@ -8,16 +8,18 @@ import {
 	textSans,
 	until,
 } from '@guardian/source-foundations';
+import { capitalize } from 'lodash';
 import { Fragment } from 'react';
 import { parseDate } from '../../../../shared/dates';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
 	AppSubscription,
-	MPAPIResponse,
-} from '../../../../shared/mpapiResponse';
+	MPAPIResponse} from '../../../../shared/mpapiResponse';
 import {
 	AppStore,
+
 	determineAppStore,
+	isPuzzle,
 	isValidAppSubscription,
 } from '../../../../shared/mpapiResponse';
 import type {
@@ -323,6 +325,20 @@ function getAppStoreMessage(subscription: AppSubscription) {
 }
 
 function renderInAppPurchase(subscription: AppSubscription) {
+	const tableHeadingCss = css`
+		width: 100%;
+		${headline.xxsmall({ fontWeight: 'bold' })};
+		margin: 0;
+		padding: ${space[3]}px ${space[5]}px;
+		background-color: ${neutral[97]};
+		${until.tablet} {
+			font-size: 1.0625rem;
+			line-height: 1.6;
+			padding: ${space[3]}px;
+		}
+	`;
+	const puzzleOrNews = isPuzzle(subscription) ? 'puzzle' : 'news';
+
 	return (
 		<div css={subHeadingBorderTopCss} key={subscription.subscriptionId}>
 			<h2
@@ -331,18 +347,26 @@ function renderInAppPurchase(subscription: AppSubscription) {
 					margin: 0;
 				`}
 			>
-				App Subscription
+				{capitalize(puzzleOrNews)} app
 			</h2>
 			<div
 				css={css`
 					${textSans.medium()};
-					border: 1px solid ${neutral[20]};
+					border: 1px solid ${neutral[86]};
+					display: flex;
+					flex-wrap: wrap;
 					margin: ${space[5]}px 0;
-					padding: ${space[3]}px;
 				`}
 			>
-				To change your payment setup, please contact{' '}
-				{getAppStoreMessage(subscription)}.
+				<h2 css={tableHeadingCss}>Payment</h2>
+				<div
+					css={css`
+						padding: ${space[3]}px;
+					`}
+				>
+					To change your payment setup, please contact{' '}
+					{getAppStoreMessage(subscription)}.
+				</div>
 			</div>
 		</div>
 	);

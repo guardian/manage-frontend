@@ -6,6 +6,7 @@ import {
 	InAppPurchase,
 	InAppPurchaseAndroid,
 	InAppPurchaseIos,
+	PuzzleAppPurchaseAndroid,
 } from '../../../fixtures/inAppPurchase';
 import { guardianWeeklyCardInvoice } from '../../../fixtures/invoices';
 import {
@@ -57,6 +58,7 @@ export const WithSubscriptions: ComponentStory<typeof Billing> = () => {
 					InAppPurchase,
 					InAppPurchaseIos,
 					InAppPurchaseAndroid,
+					PuzzleAppPurchaseAndroid,
 				],
 			},
 		})
