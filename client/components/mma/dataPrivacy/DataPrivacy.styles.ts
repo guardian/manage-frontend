@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import {
-	breakpoints,
 	from,
 	headline,
 	palette,
@@ -123,7 +122,6 @@ export const dataPrivacyWrapper = css`
 	display: grid;
 	grid-template-columns: repeat(${gridColumns.default}, minmax(0, 1fr));
 	column-gap: ${space[5]}px;
-	max-width: calc(${breakpoints.wide}px + 2.5rem);
 
 	${from.tablet} {
 		grid-template-columns: repeat(
