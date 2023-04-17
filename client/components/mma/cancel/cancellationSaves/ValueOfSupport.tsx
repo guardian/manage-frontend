@@ -5,9 +5,16 @@ import {
 	Stack,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-import { useNavigate } from 'react-router';
+import { useContext } from 'react';
+import { Navigate, useNavigate } from 'react-router';
+import { dateString } from '../../../../../shared/dates';
 import { Heading } from '../../shared/Heading';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
+import type {
+	CancellationContextInterface} from '../CancellationContainer';
+import {
+	CancellationContext
+} from '../CancellationContainer';
 
 const buttonLayoutCss = css`
 	text-align: right;
@@ -18,6 +25,19 @@ const buttonLayoutCss = css`
 
 export const ValueOfSupport = () => {
 	const navigate = useNavigate();
+	const cancellationContext = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+	const productDetail = cancellationContext.productDetail;
+
+	if (!productDetail) {
+		return <Navigate to="/" />;
+	}
+
+	const supportStartYear = dateString(
+		new Date(productDetail.joinDate),
+		'yyyy',
+	);
 
 	return (
 		<>
@@ -33,7 +53,8 @@ export const ValueOfSupport = () => {
 			/>
 			<Stack space={4}>
 				<Heading>
-					Thank you for supporting the Guardian since xxx.
+					Thank you for supporting the Guardian since{' '}
+					{supportStartYear}.
 					<span css={{ display: 'block' }}>
 						Your support has made such a difference.
 					</span>
