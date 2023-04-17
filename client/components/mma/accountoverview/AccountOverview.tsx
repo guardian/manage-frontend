@@ -241,7 +241,7 @@ const AccountOverviewPage = () => {
 								)}
 							{featureSwitches.appSubscriptions &&
 								appSubscriptions.length > 0 &&
-								category == 'subscriptions' &&
+								category === 'subscriptions' &&
 								appSubscriptions.map((subscription) => (
 									<InAppPurchaseCard
 										key={subscription.subscriptionId}
