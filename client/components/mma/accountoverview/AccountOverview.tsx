@@ -112,6 +112,14 @@ const AccountOverviewPage = () => {
 	);
 
 	if (
+		featureSwitches.appSubscriptions &&
+		appSubscriptions.length > 0 &&
+		!productCategories.includes('subscriptions')
+	) {
+		productCategories.push('subscriptions');
+	}
+
+	if (
 		(allActiveProductDetails.length === 0 &&
 			appSubscriptions.length === 0) ||
 		(allActiveProductDetails.length === 0 &&
@@ -231,23 +239,19 @@ const AccountOverviewPage = () => {
 										/>
 									</div>
 								)}
+							{featureSwitches.appSubscriptions &&
+								appSubscriptions.length > 0 &&
+								category == 'subscriptions' &&
+								appSubscriptions.map((subscription) => (
+									<InAppPurchaseCard
+										key={subscription.subscriptionId}
+										subscription={subscription}
+									/>
+								))}
 						</Stack>
 					</Fragment>
 				);
 			})}
-			{featureSwitches.appSubscriptions && appSubscriptions.length > 0 && (
-				<>
-					<h2 css={subHeadingCss}>Subscriptions</h2>
-					<Stack space={6}>
-						{appSubscriptions.map((subscription) => (
-							<InAppPurchaseCard
-								key={subscription.subscriptionId}
-								subscription={subscription}
-							/>
-						))}
-					</Stack>
-				</>
-			)}
 		</>
 	);
 };
