@@ -3,6 +3,7 @@ import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecor
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { membership } from '../../../../fixtures/productDetail';
 import { CancellationContainer } from '../CancellationContainer';
+import { SwitchingOptions } from './SwitchingOptions';
 import { ValueOfSupport } from './ValueOfSupport';
 
 export default {
@@ -20,6 +21,12 @@ export default {
 	},
 } as ComponentMeta<typeof CancellationContainer>;
 
-export const Default: ComponentStory<typeof ValueOfSupport> = () => {
+export const ValueOfSupportPage: ComponentStory<typeof ValueOfSupport> = () => {
 	return <ValueOfSupport />;
+};
+
+export const SwitchOptionsPage: ComponentStory<
+	typeof SwitchingOptions
+> = () => {
+	return <SwitchingOptions />;
 };
