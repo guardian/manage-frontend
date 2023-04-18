@@ -112,6 +112,14 @@ const AccountOverviewPage = () => {
 	);
 
 	if (
+		featureSwitches.appSubscriptions &&
+		appSubscriptions.length > 0 &&
+		!productCategories.includes('subscriptions')
+	) {
+		productCategories.push('subscriptions');
+	}
+
+	if (
 		(allActiveProductDetails.length === 0 &&
 			appSubscriptions.length === 0) ||
 		(allActiveProductDetails.length === 0 &&
@@ -137,25 +145,14 @@ const AccountOverviewPage = () => {
 
 	return (
 		<>
-			<PersonalisedHeader mdapiResponse={mdapiResponse} />
+			<PersonalisedHeader
+				mdapiResponse={mdapiResponse}
+				mpapiResponse={mpapiResponse}
+			/>
 
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}
 			/>
-
-			{featureSwitches.appSubscriptions && appSubscriptions.length > 0 && (
-				<>
-					<h2 css={subHeadingCss}>App Subscriptions</h2>
-					<Stack space={6}>
-						{appSubscriptions.map((subscription) => (
-							<InAppPurchaseCard
-								key={subscription.subscriptionId}
-								inAppPurchase={subscription}
-							/>
-						))}
-					</Stack>
-				</>
-			)}
 			{productCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
@@ -242,6 +239,15 @@ const AccountOverviewPage = () => {
 										/>
 									</div>
 								)}
+							{featureSwitches.appSubscriptions &&
+								appSubscriptions.length > 0 &&
+								category === 'subscriptions' &&
+								appSubscriptions.map((subscription) => (
+									<InAppPurchaseCard
+										key={subscription.subscriptionId}
+										subscription={subscription}
+									/>
+								))}
 						</Stack>
 					</Fragment>
 				);
