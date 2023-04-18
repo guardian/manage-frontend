@@ -1,5 +1,7 @@
 import type { CMP } from '@guardian/consent-management-platform/dist/types';
+import { from } from '@guardian/source-foundations';
 import { useEffect, useState } from 'react';
+import { gridItemPlacement } from '../../../styles/grid';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
 	LoadingState,
@@ -115,16 +117,34 @@ export const DataPrivacyPage = () => {
 
 	const content = () => (
 		<div css={dataPrivacyWrapper}>
-			<WithStandardTopMargin>
-				<YourDataSection
-					consents={consents}
-					toggleConsent={toggleConsentSubscription}
-				/>
-				<Lines n={1} />
-				<CookiesOnThisBrowserSection onClick={openManageCookies} />
-				<Lines n={1} />
-				<LearnMoreSection />
-			</WithStandardTopMargin>
+			<div
+				css={{
+					...gridItemPlacement(1, 12),
+
+					[from.tablet]: {
+						...gridItemPlacement(1, 12),
+					},
+
+					[from.desktop]: {
+						...gridItemPlacement(1, 10),
+					},
+
+					[from.wide]: {
+						...gridItemPlacement(1, 14),
+					},
+				}}
+			>
+				<WithStandardTopMargin>
+					<YourDataSection
+						consents={consents}
+						toggleConsent={toggleConsentSubscription}
+					/>
+					<Lines n={1} />
+					<CookiesOnThisBrowserSection onClick={openManageCookies} />
+					<Lines n={1} />
+					<LearnMoreSection />
+				</WithStandardTopMargin>
+			</div>
 		</div>
 	);
 
