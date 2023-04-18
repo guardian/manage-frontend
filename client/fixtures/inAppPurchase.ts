@@ -28,3 +28,17 @@ export const InAppPurchaseAndroid: AppSubscription = {
 	from: '2023-01-11T11:05:20.000Z',
 	productId: 'com.guardian.subscription.annual.metered',
 };
+
+export const PuzzleAppPurchaseAndroid: AppSubscription = {
+	subscriptionId: '5',
+	valid: true,
+	from: '2023-01-11T11:05:20.000Z',
+	productId: 'uk.co.guardian.puzzles.annual_sub',
+};
+
+export const PuzzleAppPurchaseIos: AppSubscription = {
+	subscriptionId: '6',
+	valid: true,
+	from: '2023-01-11T11:05:20.000Z',
+	productId: 'uk.co.guardian.puzzles.monthlySub',
+};
