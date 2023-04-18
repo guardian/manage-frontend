@@ -28,6 +28,7 @@ export const MembershipCancellationLanding = () => {
 					We offer different ways for cancelling your membership
 				</Heading>
 				<Heading sansSerif>Call us</Heading>
+				You can call one of our customer service...
 				<CallCentreEmailAndNumbers //TODO collapse menu
 					hideEmailAddress={true}
 				/>
