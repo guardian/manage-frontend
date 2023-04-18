@@ -1,19 +1,18 @@
-
 import { css } from '@emotion/react';
-import { from, space } from '@guardian/source-foundations';
-import { Button , Stack } from '@guardian/source-react-components';
-import { HelpCentreContactBox } from '../../helpCentre/HelpCentreEmailAndLiveChat';
+import { space } from '@guardian/source-foundations';
+import {
+	Button,
+	Stack,
+	SvgArrowRightStraight,
+} from '@guardian/source-react-components';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';
 import { Heading } from '../shared/Heading';
 import { sectionSpacing } from '../switch/SwitchStyles';
 
-//const navigate = useNavigate();
-
-const chatButtonCss = css`
-	margin-bottom: ${space[5]}px;
-	margin-top: ${space[1]}px;
-	${from.tablet} {
-		margin-bottom: ${space[9]}px;
+const buttonLayoutCss = css`
+	text-align: right;
+	> * + * {
+		margin-left: ${space[3]}px;
 	}
 `;
 
@@ -22,46 +21,48 @@ export const MembershipCancellationLanding = () => {
 		<>
 			<section css={sectionSpacing}>
 				<Stack space={3}>
-					<Heading sansSerif>
-						We're sorry to hear you're thinking of cancelling
-					</Heading>
+					<h1>We're sorry to hear you're thinking of cancelling.</h1>
+					Lorem Lipsum. Lorem Lipsum. Lorem Lipsum.
 				</Stack>
 			</section>
 			<section css={sectionSpacing}>
-				<Stack space={3}>
-					<Heading sansSerif>
-						We offer different ways for canceling your membership
-					</Heading>
-				</Stack>
+				<h1>We offer different ways for cancelling your membership</h1>
 			</section>
 			<section css={sectionSpacing}>
 				<Stack space={4}>
 					<Heading sansSerif>Call us</Heading>
-					<CallCentreEmailAndNumbers hideEmailAddress={true} />
+					<CallCentreEmailAndNumbers //TO DO collapse menu
+						hideEmailAddress={true}
+					/>
 				</Stack>
-				<Stack space={4}>
-					<Heading sansSerif>Chat to us</Heading>
-					<HelpCentreContactBox
-						title="Chat with us"
-						subtitle="Chat with one of our customer service agents."
-						iconId="chat-with-us"
-					>
-						{' '}
-						<Button
-							css={chatButtonCss}
-							/*priority="secondary"
-						onClick={() => {
-							navigate('/help-centre/contact-us');
-						}}*/
-						>
-							Contact Us
-						</Button>
-					</HelpCentreContactBox>
-				</Stack>
-				<Stack space={4}>
-					<Heading sansSerif>Cancel online</Heading>
-					You can cancel online...
-				</Stack>
+				<section>
+					<Stack space={4}>
+						<Heading sansSerif>Chat to us</Heading>
+						You can chat with our customer service..
+						<div css={buttonLayoutCss}>
+							<Button
+								icon={<SvgArrowRightStraight />}
+								iconSide="right"
+							>
+								Contact Us
+							</Button>
+						</div>
+					</Stack>
+				</section>
+				<section>
+					<Stack space={4}>
+						<Heading sansSerif>Cancel online</Heading>
+						You can cancel online Lorem Lipsum.
+						<div css={buttonLayoutCss}>
+							<Button
+								icon={<SvgArrowRightStraight />}
+								iconSide="right"
+							>
+								Cancel online
+							</Button>
+						</div>
+					</Stack>
+				</section>
 			</section>
 		</>
 	);
