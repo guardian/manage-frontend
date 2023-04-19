@@ -1,16 +1,7 @@
 import { css } from '@emotion/react';
 import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { SvgCrossRound, SvgTickRound } from '@guardian/source-react-components';
-import { useState } from 'react';
-import { expanderButtonCss } from '../../shared/ExpanderButton';
-
-const benefitsButtonCss = css`
-	${textSans.small()}
-	margin-top: ${space[1]}px;
-	padding: 0;
-	color: ${palette.brand[500]};
-	border-bottom: 1px solid ${palette.brand[500]};
-`;
+import { sans } from '../../../styles/fonts';
 
 export const RecurringSupporterBenefitsSection = () => {
 	const benefitsCss = css`
@@ -41,20 +32,33 @@ export const RecurringSupporterBenefitsSection = () => {
 		}
 	`;
 
+	const baseStyle = {
+		base: {
+			fontSize: '17px',
+			fontFamily: sans,
+			'::placeholder': {
+				color: '#c4c4c4',
+			},
+			':-ms-input-placeholder': {
+				color: '#c4c4c4',
+			},
+		},
+	};
+
 	return (
 		<ul id="benefits" css={benefitsCss}>
 			<li>
 				<SvgTickRound size="small" />
 				<span>
 					<strong>Uninterrupted reading.</strong>
-					<br css={lineBreakCss} /> See far fewer asks for support
+					<br css={lineBreakCss} /> No more yellow banners
 				</span>
 			</li>
 			<li>
 				<SvgTickRound size="small" />
 				<span>
-					<strong>A regular supporter newsletter.</strong> Get
-					exclusive insight from our newsroom
+					<strong>Supporter newsletter.</strong> Giving you editorial
+					insight on the week's top stories
 				</span>
 			</li>
 			<li>
@@ -62,42 +66,18 @@ export const RecurringSupporterBenefitsSection = () => {
 				<span>
 					<strong>Unlimited app access.</strong>
 					<br css={lineBreakCss} />
-					Giving you editorial insight on the week's top stories
+					For the best mobile experience
 				</span>
 			</li>
 			<li>
-				<SvgCrossRound size="small" />
-				<span>
-					<strong>Ad-free reading.</strong>
-					<br css={lineBreakCss} /> Avoid ads on all your devices
-				</span>
+				<div css={baseStyle}>
+					<SvgCrossRound size="small" />
+					<span>
+						<strong>Ad-free reading.</strong>
+						<br css={lineBreakCss} /> On any device when signed in
+					</span>
+				</div>
 			</li>
 		</ul>
-	);
-};
-
-export const RecurringSupporterBenefitsToggle = () => {
-	const [showBenefits, setShowBenefits] = useState<boolean>(false);
-
-	return (
-		<>
-			<div
-				css={css`
-					margin: ${space[5]}px 0 ${space[4]}px 0;
-				`}
-				hidden={!showBenefits}
-			>
-				<RecurringSupporterBenefitsSection />
-			</div>
-			<button
-				css={[expanderButtonCss()(showBenefits), benefitsButtonCss]}
-				type="button"
-				aria-expanded={showBenefits}
-				aria-controls="benefits"
-				onClick={() => setShowBenefits(!showBenefits)}
-			>
-				{showBenefits ? 'hide' : 'view'} extras
-			</button>
-		</>
 	);
 };

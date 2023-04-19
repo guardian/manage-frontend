@@ -1,16 +1,6 @@
 import { css } from '@emotion/react';
 import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { SvgTickRound } from '@guardian/source-react-components';
-import { useState } from 'react';
-import { expanderButtonCss } from '../../shared/ExpanderButton';
-
-const benefitsButtonCss = css`
-	${textSans.small()}
-	margin-top: ${space[1]}px;
-	padding: 0;
-	color: ${palette.brand[500]};
-	border-bottom: 1px solid ${palette.brand[500]};
-`;
 
 export const MembershipBenefitsSection = () => {
 	const benefitsCss = css`
@@ -67,36 +57,10 @@ export const MembershipBenefitsSection = () => {
 			<li>
 				<SvgTickRound size="small" />
 				<span>
-					<strong>A regular supporter newsletter.</strong> Giving you
-					editorial insight on the week's top stories
+					<strong>Supporter newsletter.</strong> Giving you editorial
+					insight on the week's top stories
 				</span>
 			</li>
 		</ul>
-	);
-};
-
-export const MembershipBenefitsToggle = () => {
-	const [showBenefits, setShowBenefits] = useState<boolean>(false);
-
-	return (
-		<>
-			<div
-				css={css`
-					margin: ${space[5]}px 0 ${space[4]}px 0;
-				`}
-				hidden={!showBenefits}
-			>
-				<MembershipBenefitsSection />
-			</div>
-			<button
-				css={[expanderButtonCss()(showBenefits), benefitsButtonCss]}
-				type="button"
-				aria-expanded={showBenefits}
-				aria-controls="benefits"
-				onClick={() => setShowBenefits(!showBenefits)}
-			>
-				{showBenefits ? 'hide' : 'view'} extras
-			</button>
-		</>
 	);
 };

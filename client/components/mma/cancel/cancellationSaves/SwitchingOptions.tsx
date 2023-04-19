@@ -5,23 +5,15 @@ import {
 	Stack,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-import { formatAmount } from '../../../../utilities/utils';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { MembershipBenefitsSection } from '../../shared/MembershipBenefits';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
-/*import { useContext } from 'react';
-import {
-	SwitchContext,
-	SwitchContextInterface,
-} from '../../switch/SwitchContainer';*/
 import { RecurringSupporterBenefitsSection } from '../../shared/RecurringSupporterBenefits';
-import { productTitleCss } from '../../switch/SwitchStyles';
+import { productTitleCss, sectionSpacing } from '../../switch/SwitchStyles';
+import { buttonLayoutCss } from './SaveStyles';
 
 export const SwitchingOptions = () => {
-	/*const switchContext = useContext(SwitchContext) as SwitchContextInterface;
-	const { mainPlan } = switchContext;*/
-
 	const cardHeaderDivCss = css`
 		display: flex;
 		justify-content: space-between;
@@ -32,13 +24,6 @@ export const SwitchingOptions = () => {
 		color: ${palette.neutral[100]};
 		margin: 0;
 		max-width: 20ch;
-	`;
-
-	const buttonLayoutCss = css`
-		text-align: right;
-		> * + * {
-			margin-left: ${space[3]}px;
-		}
 	`;
 
 	return (
@@ -54,53 +39,80 @@ export const SwitchingOptions = () => {
 				`}
 			/>
 			<Stack space={4}>
-				<Heading>
-					Before you go, would you consider different support options
-				</Heading>
-				<Heading sansSerif>
-					Continue your membership at £7 per month
-				</Heading>
+				<section css={sectionSpacing}>
+					<Heading>
+						Before you go, would you consider different support
+						options
+					</Heading>
+				</section>
+				<section css={sectionSpacing}>
+					<Heading sansSerif>
+						Continue your membership at X per month
+					</Heading>
+				</section>
 				You will keep your current set of benefits
 				<Card>
 					<Card.Header backgroundColor={palette.brand[600]}>
 						<div css={cardHeaderDivCss}>
 							<h3 css={productTitleCss}>Membership</h3>
-							<p css={productSubtitleCss}>
-								£{formatAmount(7)}/month
-							</p>
+							<p css={productSubtitleCss}>XY/Z</p>
 						</div>
 					</Card.Header>
 					<Card.Section>
 						<MembershipBenefitsSection />
+						<section css={sectionSpacing}>
+							<div css={buttonLayoutCss}>
+								<Button
+									icon={<SvgArrowRightStraight />}
+									iconSide="right"
+								>
+									Continue your membership
+								</Button>
+							</div>
+						</section>
 					</Card.Section>
 				</Card>
-				<Heading sansSerif>
-					Continue your membership at £5 per month
-				</Heading>
+				<section css={sectionSpacing}>
+					<Heading sansSerif>
+						Continue your membership at X per month
+					</Heading>
+				</section>
 				You will still be able to enjoy uninterrupted reading and
 				receive the supporter newsletter.
 				<Card>
 					<Card.Header backgroundColor={palette.brand[600]}>
 						<div css={cardHeaderDivCss}>
 							<h3 css={productTitleCss}>Recurring supporter</h3>
-							<p css={productSubtitleCss}>
-								£{formatAmount(5)}/month
-							</p>
+							<p css={productSubtitleCss}>XY/Z</p>
 						</div>
 					</Card.Header>
 					<Card.Section>
 						<RecurringSupporterBenefitsSection />
+						<section css={sectionSpacing}>
+							<div css={buttonLayoutCss}>
+								<Button
+									icon={<SvgArrowRightStraight />}
+									iconSide="right"
+								>
+									Become a recurring supporter
+								</Button>
+							</div>
+						</section>
 					</Card.Section>
 				</Card>
-				<Heading sansSerif>Cancel your membership</Heading>
-				Copy to say that you cannot become a member again once you have
-				cancelled.
+				<section css={sectionSpacing}>
+					<Heading sansSerif>Cancel your membership</Heading>
+					Copy to say that you cannot become a member again once you
+					have cancelled.
+				</section>
 			</Stack>
-			<div css={buttonLayoutCss}>
-				<Button icon={<SvgArrowRightStraight />} iconSide="right">
-					Cancel membership
-				</Button>
-			</div>
+			<section css={sectionSpacing}>
+				<div css={buttonLayoutCss}>
+					<Button icon={<SvgArrowRightStraight />} iconSide="right">
+						Cancel membership
+					</Button>
+				</div>
+			</section>
 		</>
 	);
 };
