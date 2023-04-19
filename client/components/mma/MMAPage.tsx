@@ -123,14 +123,6 @@ const ExecuteCancellation = lazy(() =>
 	).then(({ ExecuteCancellation }) => ({ default: ExecuteCancellation })),
 );
 
-const MembershipCancellationLanding = lazy(() =>
-	import(
-		/* webpackChunkName: "Cancellation" */ './cancellationSave/MembershipCancellationLanding'
-	).then(({ MembershipCancellationLanding }) => ({
-		default: MembershipCancellationLanding,
-	})),
-);
-
 const PaymentDetailUpdateContainer = lazy(() =>
 	import(
 		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateContainer'
@@ -547,12 +539,6 @@ const MMARouter = () => {
 									<Route
 										path="confirmed"
 										element={<ExecuteCancellation />}
-									/>
-									<Route
-										path="landing"
-										element={
-											<MembershipCancellationLanding />
-										}
 									/>
 								</Route>
 							),
