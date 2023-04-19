@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import { palette, space } from '@guardian/source-foundations';
 import {
 	Button,
 	Stack,
@@ -11,21 +11,13 @@ import { MembershipBenefitsSection } from '../../shared/MembershipBenefits';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import { RecurringSupporterBenefitsSection } from '../../shared/RecurringSupporterBenefits';
 import { productTitleCss, sectionSpacing } from '../../switch/SwitchStyles';
-import { buttonLayoutCss } from './SaveStyles';
+import {
+	buttonLayoutCss,
+	cardHeaderDivCss,
+	productSubtitleCss,
+} from './SaveStyles';
 
 export const SwitchingOptions = () => {
-	const cardHeaderDivCss = css`
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-end;
-	`;
-	const productSubtitleCss = css`
-		${textSans.medium({ fontWeight: 'bold' })};
-		color: ${palette.neutral[100]};
-		margin: 0;
-		max-width: 20ch;
-	`;
-
 	return (
 		<>
 			<ProgressIndicator

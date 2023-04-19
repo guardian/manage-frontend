@@ -101,3 +101,16 @@ export const smallPrintCss = css`
 		margin-top: ${space[1]}px;
 	}
 `;
+
+export const productSubtitleCss = css`
+	${textSans.medium({ fontWeight: 'bold' })};
+	color: ${palette.neutral[100]};
+	margin: 0;
+	max-width: 20ch;
+`;
+
+export const cardHeaderDivCss = css`
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+`;
