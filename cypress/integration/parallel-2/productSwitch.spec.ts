@@ -224,167 +224,153 @@ describe('product switching', () => {
 		}).as('product_move');
 	});
 
-	if (
-		featureSwitches.accountOverviewNewLayout &&
-		featureSwitches.productSwitching
-	) {
-		it('successfully completes product switching page from Account Overview', () => {
-			cy.visit('/');
-			setSignInStatus();
+	it('successfully completes product switching page from Account Overview', () => {
+		cy.visit('/');
+		setSignInStatus();
 
-			cy.findAllByText('Change to monthly + extras').should(
-				'have.length',
-				2,
-			);
-			cy.findAllByText('Change to monthly + extras').last().click();
-			cy.findByText('Your current support').should('exist');
+		cy.findAllByText('Change to monthly + extras').should('have.length', 2);
+		cy.findAllByText('Change to monthly + extras').last().click();
+		cy.findByText('Your current support').should('exist');
 
-			cy.findByRole('button', {
-				name: 'Add extras',
-			}).click();
+		cy.findByRole('button', {
+			name: 'Add extras',
+		}).click();
 
-			cy.findByLabelText('PayPal').should('exist');
-			cy.findByRole('button', { name: 'Confirm change' }).click();
+		cy.findByLabelText('PayPal').should('exist');
+		cy.findByRole('button', { name: 'Confirm change' }).click();
 
-			cy.intercept('POST', '/api/product-move/*', {
-				statusCode: 200,
-				body: productMoveSuccessfulResponse,
-			});
-
-			cy.findByText(/Thank you for changing your support type/).should(
-				'exist',
-			);
-			cy.findByText(
-				/Your first billing date is today and you will be charged £5/,
-			).should('exist');
-
-			cy.get('@mdapi_get_contribution.all').should('have.length', 0);
-		});
-	}
-
-	if (featureSwitches.productSwitching) {
-		it('shows product switching page when visiting URL directly', () => {
-			cy.visit('/switch');
-			setSignInStatus();
-			cy.findByText('Your current support').should('exist');
+		cy.intercept('POST', '/api/product-move/*', {
+			statusCode: 200,
+			body: productMoveSuccessfulResponse,
 		});
 
-		it('shows review page after choosing to switch', () => {
-			cy.visit('/switch');
-			setSignInStatus();
+		cy.findByText(/Thank you for changing your support type/).should(
+			'exist',
+		);
+		cy.findByText(
+			/Your first billing date is today and you will be charged £5/,
+		).should('exist');
 
-			cy.findByRole('button', {
-				name: 'Add extras',
-			}).click();
+		cy.get('@mdapi_get_contribution.all').should('have.length', 0);
+	});
 
-			cy.findByText('Review change').should('exist');
-			cy.findByText('Your new support').should('exist');
-			cy.findByText('What happens next?').should('exist');
+	it('shows product switching page when visiting URL directly', () => {
+		cy.visit('/switch');
+		setSignInStatus();
+		cy.findByText('Your current support').should('exist');
+	});
+
+	it('shows review page after choosing to switch', () => {
+		cy.visit('/switch');
+		setSignInStatus();
+
+		cy.findByRole('button', {
+			name: 'Add extras',
+		}).click();
+
+		cy.findByText('Review change').should('exist');
+		cy.findByText('Your new support').should('exist');
+		cy.findByText('What happens next?').should('exist');
+	});
+
+	it('successfully switches product', () => {
+		cy.visit('/switch');
+		setSignInStatus();
+
+		cy.findByRole('button', {
+			name: 'Add extras',
+		}).click();
+
+		cy.findByRole('button', { name: 'Confirm change' }).click();
+
+		cy.intercept('POST', '/api/product-move/*', {
+			statusCode: 200,
+			body: productMoveSuccessfulResponse,
 		});
 
-		it('successfully switches product', () => {
-			cy.visit('/switch');
-			setSignInStatus();
+		cy.findByText(/Thank you for changing your support type/).should(
+			'exist',
+		);
+		cy.findByText(
+			/Your first billing date is today and you will be charged £5/,
+		).should('exist');
 
-			cy.findByRole('button', {
-				name: 'Add extras',
-			}).click();
+		cy.get('@mdapi_get_contribution.all').should('have.length', 1);
+	});
 
-			cy.findByRole('button', { name: 'Confirm change' }).click();
+	it('Does not allow user to navigate back to switch review and confirmation pages after switch completion', () => {
+		cy.visit('/switch');
+		setSignInStatus();
 
-			cy.intercept('POST', '/api/product-move/*', {
-				statusCode: 200,
-				body: productMoveSuccessfulResponse,
-			});
+		cy.findByRole('button', {
+			name: 'Add extras',
+		}).click();
 
-			cy.findByText(/Thank you for changing your support type/).should(
-				'exist',
-			);
-			cy.findByText(
-				/Your first billing date is today and you will be charged £5/,
-			).should('exist');
+		cy.findByRole('button', { name: 'Confirm change' }).click();
 
-			cy.get('@mdapi_get_contribution.all').should('have.length', 1);
+		cy.intercept('POST', '/api/product-move/*', {
+			statusCode: 200,
+			body: productMoveSuccessfulResponse,
 		});
 
-		it('Does not allow user to navigate back to switch review and confirmation pages after switch completion', () => {
-			cy.visit('/switch');
-			setSignInStatus();
+		cy.findByText(/Thank you for changing your support type/).should(
+			'exist',
+		);
+		cy.findByText(
+			/Your first billing date is today and you will be charged £5/,
+		).should('exist');
 
-			cy.findByRole('button', {
-				name: 'Add extras',
-			}).click();
+		cy.go('back');
 
-			cy.findByRole('button', { name: 'Confirm change' }).click();
+		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
+	});
 
-			cy.intercept('POST', '/api/product-move/*', {
-				statusCode: 200,
-				body: productMoveSuccessfulResponse,
-			});
+	it('shows an error message if switch fails', () => {
+		cy.visit('/switch');
+		setSignInStatus();
 
-			cy.findByText(/Thank you for changing your support type/).should(
-				'exist',
-			);
-			cy.findByText(
-				/Your first billing date is today and you will be charged £5/,
-			).should('exist');
+		cy.findByRole('button', {
+			name: 'Add extras',
+		}).click();
 
-			cy.go('back');
-
-			cy.findByRole('heading', { name: 'Account overview' }).should(
-				'exist',
-			);
+		cy.intercept('POST', '/api/product-move/*', {
+			statusCode: 500,
+			body: {},
 		});
 
-		it('shows an error message if switch fails', () => {
-			cy.visit('/switch');
-			setSignInStatus();
+		cy.findByRole('button', { name: 'Confirm change' }).click();
 
-			cy.findByRole('button', {
-				name: 'Add extras',
-			}).click();
+		cy.findByText('We were unable to change your support').should('exist');
+	});
 
-			cy.intercept('POST', '/api/product-move/*', {
-				statusCode: 500,
-				body: {},
-			});
+	it('shows payment failure error message and does not call product move API again', () => {
+		const contributionWithPaymentFailure: ProductDetail = JSON.parse(
+			JSON.stringify(contributionCard),
+		);
+		contributionWithPaymentFailure.alertText = 'Payment failed';
 
-			cy.findByRole('button', { name: 'Confirm change' }).click();
-
-			cy.findByText('We were unable to change your support').should(
-				'exist',
-			);
+		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(contributionWithPaymentFailure),
 		});
 
-		it('shows payment failure error message and does not call product move API again', () => {
-			const contributionWithPaymentFailure: ProductDetail = JSON.parse(
-				JSON.stringify(contributionCard),
-			);
-			contributionWithPaymentFailure.alertText = 'Payment failed';
+		cy.visit('/switch');
+		setSignInStatus();
 
-			cy.intercept('GET', '/api/me/mma?productType=Contribution', {
-				statusCode: 200,
-				body: toMembersDataApiResponse(contributionWithPaymentFailure),
-			});
+		cy.findByText('There is a problem with your payment method').should(
+			'exist',
+		);
 
-			cy.visit('/switch');
-			setSignInStatus();
+		cy.findByRole('button', {
+			name: 'Add extras',
+		}).click();
 
-			cy.findByText('There is a problem with your payment method').should(
-				'exist',
-			);
+		cy.findByRole('button', { name: 'Confirm change' }).click();
 
-			cy.findByRole('button', {
-				name: 'Add extras',
-			}).click();
+		cy.findByText('There is a problem with your payment method').should(
+			'exist',
+		);
 
-			cy.findByRole('button', { name: 'Confirm change' }).click();
-
-			cy.findByText('There is a problem with your payment method').should(
-				'exist',
-			);
-
-			cy.get('@product_move.all').should('have.length', 1);
-		});
-	}
+		cy.get('@product_move.all').should('have.length', 1);
+	});
 });

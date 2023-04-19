@@ -4,10 +4,6 @@ import { breakpoints, from, space } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import {
-	featureSwitches,
-	initFeatureSwitchUrlParamOverride,
-} from '../../../shared/featureSwitches';
 import type {
 	GroupedProductType,
 	ProductType,
@@ -45,8 +41,6 @@ const record = (event: any) => {
 		window.guardian.ophan.record(event);
 	}
 };
-
-initFeatureSwitchUrlParamOverride();
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -370,29 +364,28 @@ const MMARouter = () => {
 							path="/account-settings"
 							element={<Settings />}
 						/>
-						{featureSwitches.productSwitching &&
-							[
-								{ path: '/switch', fromApp: false },
-								{ path: '/app/switch', fromApp: true },
-							].map(({ path, fromApp }) => (
+						{[
+							{ path: '/switch', fromApp: false },
+							{ path: '/app/switch', fromApp: true },
+						].map(({ path, fromApp }) => (
+							<Route
+								key={path}
+								path={path}
+								element={
+									<SwitchContainer isFromApp={fromApp} />
+								}
+							>
+								<Route index element={<SwitchOptions />} />
 								<Route
-									key={path}
-									path={path}
-									element={
-										<SwitchContainer isFromApp={fromApp} />
-									}
-								>
-									<Route index element={<SwitchOptions />} />
-									<Route
-										path="review"
-										element={<SwitchReview />}
-									/>
-									<Route
-										path="complete"
-										element={<SwitchComplete />}
-									/>
-								</Route>
-							))}
+									path="review"
+									element={<SwitchReview />}
+								/>
+								<Route
+									path="complete"
+									element={<SwitchComplete />}
+								/>
+							</Route>
+						))}
 						{Object.values(GROUPED_PRODUCT_TYPES).map(
 							(groupedProductType: GroupedProductType) => (
 								<Route

@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import {
 	headline,
-	neutral,
+	palette,
 	space,
 	textSans,
 	until,
@@ -40,8 +40,6 @@ import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
-import { AccountOverviewCancelledCard } from './AccountOverviewCancelledCard';
-import { AccountOverviewCard } from './AccountOverviewCard';
 import { CancelledProductCard } from './CancelledProductCard';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
@@ -56,7 +54,7 @@ type AccountOverviewResponse = [
 
 const subHeadingCss = css`
 	margin: ${space[12]}px 0 ${space[6]}px;
-	border-top: 1px solid ${neutral['86']};
+	border-top: 1px solid ${palette.neutral['86']};
 	${headline.small({ fontWeight: 'bold' })};
 	${until.tablet} {
 		font-size: 1.25rem;
@@ -112,6 +110,14 @@ const AccountOverviewPage = () => {
 	);
 
 	if (
+		featureSwitches.appSubscriptions &&
+		appSubscriptions.length > 0 &&
+		!productCategories.includes('subscriptions')
+	) {
+		productCategories.push('subscriptions');
+	}
+
+	if (
 		(allActiveProductDetails.length === 0 &&
 			appSubscriptions.length === 0) ||
 		(allActiveProductDetails.length === 0 &&
@@ -162,48 +168,27 @@ const AccountOverviewPage = () => {
 							{capitalize(groupedProductType.groupFriendlyName)}
 						</h2>
 						<Stack space={6}>
-							{activeProductsInCategory.map((productDetail) =>
-								featureSwitches.accountOverviewNewLayout ? (
-									<ProductCard
+							{activeProductsInCategory.map((productDetail) => (
+								<ProductCard
+									key={
+										productDetail.subscription
+											.subscriptionId
+									}
+									productDetail={productDetail}
+									isEligibleToSwitch={isEligibleToSwitch}
+									user={mdapiResponse.user}
+								/>
+							))}
+							{cancelledProductsInCategory.map(
+								(cancelledProductDetail) => (
+									<CancelledProductCard
 										key={
-											productDetail.subscription
+											cancelledProductDetail.subscription
 												.subscriptionId
 										}
-										productDetail={productDetail}
-										isEligibleToSwitch={isEligibleToSwitch}
-										user={mdapiResponse.user}
-									/>
-								) : (
-									<AccountOverviewCard
-										key={
-											productDetail.subscription
-												.subscriptionId
-										}
-										productDetail={productDetail}
+										productDetail={cancelledProductDetail}
 									/>
 								),
-							)}
-							{cancelledProductsInCategory.map(
-								(cancelledProductDetail) =>
-									featureSwitches.accountOverviewNewLayout ? (
-										<CancelledProductCard
-											key={
-												cancelledProductDetail
-													.subscription.subscriptionId
-											}
-											productDetail={
-												cancelledProductDetail
-											}
-										/>
-									) : (
-										<AccountOverviewCancelledCard
-											key={
-												cancelledProductDetail
-													.subscription.subscriptionId
-											}
-											product={cancelledProductDetail}
-										/>
-									),
 							)}
 							{groupedProductType.supportTheGuardianSectionProps &&
 								(cancelledProductsInCategory.length > 0 ||
@@ -231,23 +216,19 @@ const AccountOverviewPage = () => {
 										/>
 									</div>
 								)}
+							{featureSwitches.appSubscriptions &&
+								appSubscriptions.length > 0 &&
+								category === 'subscriptions' &&
+								appSubscriptions.map((subscription) => (
+									<InAppPurchaseCard
+										key={subscription.subscriptionId}
+										subscription={subscription}
+									/>
+								))}
 						</Stack>
 					</Fragment>
 				);
 			})}
-			{featureSwitches.appSubscriptions && appSubscriptions.length > 0 && (
-				<>
-					<h2 css={subHeadingCss}>Subscriptions</h2>
-					<Stack space={6}>
-						{appSubscriptions.map((subscription) => (
-							<InAppPurchaseCard
-								key={subscription.subscriptionId}
-								subscription={subscription}
-							/>
-						))}
-					</Stack>
-				</>
-			)}
 		</>
 	);
 };
