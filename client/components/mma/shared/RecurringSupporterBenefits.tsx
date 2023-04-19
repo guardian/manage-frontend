@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { SvgCrossRound, SvgTickRound } from '@guardian/source-react-components';
-import { sans } from '../../../styles/fonts';
 
 export const RecurringSupporterBenefitsSection = () => {
 	const benefitsCss = css`
@@ -32,19 +31,6 @@ export const RecurringSupporterBenefitsSection = () => {
 		}
 	`;
 
-	const baseStyle = {
-		base: {
-			fontSize: '17px',
-			fontFamily: sans,
-			'::placeholder': {
-				color: '#c4c4c4',
-			},
-			':-ms-input-placeholder': {
-				color: '#c4c4c4',
-			},
-		},
-	};
-
 	return (
 		<ul id="benefits" css={benefitsCss}>
 			<li>
@@ -70,13 +56,11 @@ export const RecurringSupporterBenefitsSection = () => {
 				</span>
 			</li>
 			<li>
-				<div css={baseStyle}>
-					<SvgCrossRound size="small" />
-					<span>
-						<strong>Ad-free reading.</strong>
-						<br css={lineBreakCss} /> On any device when signed in
-					</span>
-				</div>
+				<SvgCrossRound size="small" />
+				<span>
+					<strong>Ad-free reading.</strong>
+					<br css={lineBreakCss} /> On any device when signed in
+				</span>
 			</li>
 		</ul>
 	);
