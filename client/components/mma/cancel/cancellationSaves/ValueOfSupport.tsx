@@ -10,11 +10,8 @@ import { Navigate, useNavigate } from 'react-router';
 import { dateString } from '../../../../../shared/dates';
 import { Heading } from '../../shared/Heading';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
-import type {
-	CancellationContextInterface} from '../CancellationContainer';
-import {
-	CancellationContext
-} from '../CancellationContainer';
+import type { CancellationContextInterface } from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
 
 const buttonLayoutCss = css`
 	text-align: right;
