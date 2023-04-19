@@ -3,6 +3,7 @@ import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecor
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { membership } from '../../../../fixtures/productDetail';
 import { CancellationContainer } from '../CancellationContainer';
+import { MembershipCancellationLanding } from './MembershipCancellationLanding';
 import { MembershipSwitch } from './MembershipSwitch';
 import { ValueOfSupport } from './ValueOfSupport';
 
@@ -27,4 +28,10 @@ export const ValueOfSupportPage: ComponentStory<typeof ValueOfSupport> = () => {
 
 export const Switch: ComponentStory<typeof MembershipSwitch> = () => {
 	return <MembershipSwitch />;
+};
+
+export const LandingPage: ComponentStory<
+	typeof MembershipCancellationLanding
+> = () => {
+	return <MembershipCancellationLanding />;
 };
