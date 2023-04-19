@@ -79,12 +79,16 @@ export interface CallCentreEmailAndNumbersProps extends CallCentreNumbersProps {
 	hideEmailAddress?: boolean;
 	phoneRegionFilterKeys?: PhoneRegionKey[];
 	compactLayout?: boolean;
+	collapsed?: boolean;
 }
 
 export const CallCentreEmailAndNumbers = (
 	props: CallCentreEmailAndNumbersProps,
 ) => {
-	const [indexOfOpenSection, setIndexOfOpenSection] = useState<number>(0);
+	const intailIndex = props.collapsed ? -1 : 0;
+
+	const [indexOfOpenSection, setIndexOfOpenSection] =
+		useState<number>(intailIndex);
 
 	const filteredPhoneData = PHONE_DATA.filter(
 		(phoneRegion) =>
