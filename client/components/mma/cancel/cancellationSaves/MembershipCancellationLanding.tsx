@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, headline, palette, space } from '@guardian/source-foundations';
+import { from, headline, palette } from '@guardian/source-foundations';
 import {
 	Button,
 	Stack,
@@ -8,12 +8,7 @@ import {
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { Heading } from '../../shared/Heading';
 import { sectionSpacing } from '../../switch/SwitchStyles';
-
-const buttonLayoutCss = css`
-	> * + * {
-		margin-left: ${space[3]}px;
-	}
-`;
+import { buttonLayoutCss } from './SaveStyles';
 
 const headingCss = css`
 	${headline.xsmall({ fontWeight: 'bold' })};

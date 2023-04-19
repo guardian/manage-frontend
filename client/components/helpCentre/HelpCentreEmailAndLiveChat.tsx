@@ -91,7 +91,7 @@ const contactBoxDetailsWideCss = css`
 	}
 `;
 
-export const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
+const HelpCentreContactBox = (props: HelpCentreContactBoxProps) => {
 	return (
 		<div css={contactBoxContainerCss}>
 			<div>

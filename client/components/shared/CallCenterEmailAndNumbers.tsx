@@ -85,10 +85,10 @@ export interface CallCentreEmailAndNumbersProps extends CallCentreNumbersProps {
 export const CallCentreEmailAndNumbers = (
 	props: CallCentreEmailAndNumbersProps,
 ) => {
-	const intailIndex = props.collapsed ? -1 : 0;
+	const initialIndex = props.collapsed ? -1 : 0;
 
 	const [indexOfOpenSection, setIndexOfOpenSection] =
-		useState<number>(intailIndex);
+		useState<number>(initialIndex);
 
 	const filteredPhoneData = PHONE_DATA.filter(
 		(phoneRegion) =>
