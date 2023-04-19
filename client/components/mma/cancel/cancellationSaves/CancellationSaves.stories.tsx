@@ -3,6 +3,7 @@ import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecor
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { membership } from '../../../../fixtures/productDetail';
 import { CancellationContainer } from '../CancellationContainer';
+import { MembershipSwitch } from './MembershipSwitch';
 import { SwitchingOptions } from './SwitchingOptions';
 import { ValueOfSupport } from './ValueOfSupport';
 
@@ -25,8 +26,10 @@ export const ValueOfSupportPage: ComponentStory<typeof ValueOfSupport> = () => {
 	return <ValueOfSupport />;
 };
 
-export const SwitchOptionsPage: ComponentStory<
-	typeof SwitchingOptions
-> = () => {
+export const Switch: ComponentStory<typeof MembershipSwitch> = () => {
+	return <MembershipSwitch />;
+};
+
+export const SwitchOptions: ComponentStory<typeof SwitchingOptions> = () => {
 	return <SwitchingOptions />;
 };
