@@ -257,7 +257,7 @@ router.get('/help-centre/topic/:topic', getTopicHandler);
 
 router.post('/contact-us', contactUsFormHandler);
 
-router.post('/reminders', createReminderHandler);
+router.post('/reminders/create', createReminderHandler);
 router.get(
 	'/reminders/status',
 	membersDataApiHandler(

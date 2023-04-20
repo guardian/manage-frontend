@@ -9,7 +9,7 @@ interface ReCaptchaKeys {
 	reminderHmacKey: string;
 }
 
-const reminderConfigPromise = s3ConfigPromise<ReCaptchaKeys>()('reminder');
+const reminderConfigPromise = s3ConfigPromise<ReCaptchaKeys>()('reminders');
 
 const getReminderHmacKey = (): Promise<string> =>
 	reminderConfigPromise.then((result) => {
@@ -34,9 +34,9 @@ const verifyReminderToken = (
 };
 
 export const createReminderHandler = (req: Request, res: Response) => {
-	const { reminderData, token } = req.body;
+	const { reminderData, token } = JSON.parse(req.body);
 
-	if (typeof reminderData === 'string' && typeof token === 'string') {
+	if (reminderData && token) {
 		getReminderHmacKey().then((reminderHmacKey) => {
 			if (verifyReminderToken(reminderData, token, reminderHmacKey)) {
 				createReminder(reminderData).then((response) => {

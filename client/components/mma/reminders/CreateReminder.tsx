@@ -48,7 +48,8 @@ export const CreateReminder = () => {
 				`Failed to create reminder for request with querystring: ${params}`,
 			);
 		} else {
-			sendReminderCreation(reminderData, token)
+			const b64Token = token.replace(' ', '+'); // + gets encoded as space in querystring
+			sendReminderCreation(reminderData, b64Token)
 				.then((response) => {
 					if (!response.ok) {
 						return Promise.reject(
@@ -65,7 +66,7 @@ export const CreateReminder = () => {
 					);
 				});
 		}
-	});
+	}, []);
 
 	return (
 		<div css={containerStyle}>
