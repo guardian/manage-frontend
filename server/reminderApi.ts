@@ -33,25 +33,23 @@ const verifyReminderToken = (
 	return hash === token;
 };
 
-export const createReminderHandler = (req: Request, res: Response) => {
+export const createReminderHandler = async (req: Request, res: Response) => {
 	const { reminderData, token } = JSON.parse(req.body);
 
 	if (reminderData && token) {
-		getReminderHmacKey().then((reminderHmacKey) => {
-			if (verifyReminderToken(reminderData, token, reminderHmacKey)) {
-				createReminder(reminderData).then((response) => {
-					if (!response.ok) {
-						captureMessage(
-							'Reminder sign up failed at the point of request',
-						);
-					}
-					res.sendStatus(response.status);
-				});
-			} else {
-				captureMessage('Failed to verify token for reminder signup');
-				res.sendStatus(400);
+		const reminderHmacKey = await getReminderHmacKey();
+		if (verifyReminderToken(reminderData, token, reminderHmacKey)) {
+			const response = await createReminder(reminderData);
+			if (!response.ok) {
+				captureMessage(
+					'Reminder sign up failed at the point of request',
+				);
 			}
-		});
+			res.sendStatus(response.status);
+		} else {
+			captureMessage('Failed to verify token for reminder signup');
+			res.sendStatus(400);
+		}
 	} else {
 		captureMessage('Invalid request for reminder signup');
 		res.sendStatus(400);
