@@ -1,4 +1,3 @@
-import type { ProductDetail } from '../../../../shared/productResponse';
 import type { SavedBodyProps } from './stages/SavedCancellation';
 
 export interface SaveBodyProps {
@@ -19,7 +18,6 @@ export interface CancellationReason {
 	hideContactUs?: boolean;
 	skipFeedback?: boolean;
 	savedBody?: React.FC<SavedBodyProps>;
-	shouldShow?: (productDetail: ProductDetail) => boolean;
 }
 
 export type CancellationReasonId =

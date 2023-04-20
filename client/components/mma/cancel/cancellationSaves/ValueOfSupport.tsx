@@ -12,13 +12,7 @@ import { Heading } from '../../shared/Heading';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-
-const buttonLayoutCss = css`
-	text-align: right;
-	> * + * {
-		margin-left: ${space[3]}px;
-	}
-`;
+import { buttonLayoutCss } from './SaveStyles';
 
 export const ValueOfSupport = () => {
 	const navigate = useNavigate();
@@ -63,7 +57,7 @@ export const ValueOfSupport = () => {
 				</p>
 			</Stack>
 			<div>Image placeholder</div>
-			<div css={buttonLayoutCss}>
+			<div css={[buttonLayoutCss, { textAlign: 'right' }]}>
 				<Button priority="tertiary" onClick={() => navigate('/')}>
 					Back
 				</Button>

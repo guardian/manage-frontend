@@ -6,6 +6,7 @@ import { CancellationContainer } from '../CancellationContainer';
 import { MembershipCancellationLanding } from './MembershipCancellationLanding';
 import { MembershipSwitch } from './MembershipSwitch';
 import { SwitchingOptions } from './SwitchingOptions';
+import { SelectReason } from './SelectReason';
 import { ValueOfSupport } from './ValueOfSupport';
 
 export default {
@@ -38,5 +39,9 @@ export const LandingPage: ComponentStory<
 };
 
 export const SwitchOptions: ComponentStory<typeof SwitchingOptions> = () => {
-	return <SwitchingOptions />;
+	return <SwitchingOptions/>;
+};
+
+export const Reasons: ComponentStory<typeof SelectReason> = () => {
+	return <SelectReason />;
 };

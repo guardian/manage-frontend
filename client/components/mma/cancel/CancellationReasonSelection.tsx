@@ -119,13 +119,8 @@ const ReasonPicker = ({
 							padding: ${space[5]}px;
 						`}
 					>
-						{productType.cancellation.reasons
-							.filter((reason: CancellationReason) =>
-								reason.shouldShow
-									? reason.shouldShow(productDetail)
-									: true,
-							)
-							.map((reason: CancellationReason) => (
+						{productType.cancellation.reasons.map(
+							(reason: CancellationReason) => (
 								<Radio
 									key={reason.reasonId}
 									name="cancellation-reason"
@@ -139,7 +134,8 @@ const ReasonPicker = ({
 										}
 									`}
 								/>
-							))}
+							),
+						)}
 					</RadioGroup>
 				</fieldset>
 				{inValidationErrorState && !selectedReasonId.length && (

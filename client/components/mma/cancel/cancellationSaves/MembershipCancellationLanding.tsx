@@ -1,5 +1,3 @@
-import { css } from '@emotion/react';
-import { from, headline, palette } from '@guardian/source-foundations';
 import {
 	Button,
 	Stack,
@@ -8,21 +6,7 @@ import {
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { Heading } from '../../shared/Heading';
 import { sectionSpacing } from '../../switch/SwitchStyles';
-import { buttonLayoutCss } from './SaveStyles';
-
-const headingCss = css`
-	${headline.xsmall({ fontWeight: 'bold' })};
-	margin-top: 0;
-	margin-bottom: 0;
-
-	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
-		span {
-			display: block;
-			color: ${palette.brand['500']};
-		}
-	}
-`;
+import { buttonLayoutCss, headingCss } from './SaveStyles';
 
 export const MembershipCancellationLanding = () => {
 	return (
