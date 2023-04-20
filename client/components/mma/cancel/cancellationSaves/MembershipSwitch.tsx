@@ -10,18 +10,12 @@ import {
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { dateString } from '../../../../../shared/dates';
-import type {
-	PaidSubscriptionPlan} from '../../../../../shared/productResponse';
-import {
-	getMainPlan
-} from '../../../../../shared/productResponse';
+import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { getMainPlan } from '../../../../../shared/productResponse';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
-import type {
-	CancellationContextInterface} from '../CancellationContainer';
-import {
-	CancellationContext
-} from '../CancellationContainer';
+import type { CancellationContextInterface } from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
 import {
 	buttonCentredCss,
 	buttonLayoutCss,
