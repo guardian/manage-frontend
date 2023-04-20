@@ -1,15 +1,61 @@
+import crypto from 'crypto';
 import { captureMessage } from '@sentry/node';
 import type { Request, Response } from 'express';
 import fetch from 'node-fetch';
+import { s3ConfigPromise } from './awsIntegration';
 import { conf } from './config';
 
-export const createReminderHandler = (req: Request, res: Response) =>
-	createReminder(req.body).then((response) => {
-		if (!response.ok) {
-			captureMessage('Reminder sign up failed at the point of request');
+interface ReCaptchaKeys {
+	reminderHmacKey: string;
+}
+
+const reminderConfigPromise = s3ConfigPromise<ReCaptchaKeys>()('reminder');
+
+const getReminderHmacKey = (): Promise<string> =>
+	reminderConfigPromise.then((result) => {
+		if (result?.reminderHmacKey) {
+			return result.reminderHmacKey;
+		} else {
+			return Promise.reject('Failed to get reminder Hmac key');
 		}
-		res.sendStatus(response.status);
 	});
+
+const validateReminderToken = (
+	reminderData: string,
+	token: string,
+	key: string,
+): boolean => {
+	const hash = crypto
+		.createHmac('sha1', key)
+		.update(reminderData)
+		.digest('base64');
+
+	return hash === token;
+};
+
+export const createReminderHandler = (req: Request, res: Response) => {
+	const { reminderData, token } = req.body;
+	if (typeof reminderData === 'string' && typeof token === 'string') {
+		getReminderHmacKey().then((reminderHmacKey) => {
+			if (validateReminderToken(reminderData, token, reminderHmacKey)) {
+				createReminder(reminderData).then((response) => {
+					if (!response.ok) {
+						captureMessage(
+							'Reminder sign up failed at the point of request',
+						);
+					}
+					res.sendStatus(response.status);
+				});
+			} else {
+				captureMessage('Failed to validate token for reminder signup');
+				res.sendStatus(400);
+			}
+		});
+	} else {
+		captureMessage('Invalid request for reminder signup');
+		res.sendStatus(400);
+	}
+};
 
 export const cancelReminderHandler = (req: Request, res: Response) =>
 	cancelReminder(req.body).then((response) => {
@@ -37,13 +83,16 @@ const createOneOffReminderEndpoint = baseReminderEndpoint + 'create/one-off';
 const cancelRemindersEndpoint = baseReminderEndpoint + 'cancel';
 const reactivateRemindersEndpoint = baseReminderEndpoint + 'reactivate';
 
-const createReminder = (body: any) =>
+// /create-reminder?reminder-data={email:"",reminderPeriod:"",reminderPlatform:"",reminderComponent:"",reminderStage:"",reminderOption:""},token={hash}
+
+// The reminders API will validate reminderData, no need to do it here
+const createReminder = (reminderData: string) =>
 	fetch(createOneOffReminderEndpoint, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body,
+		body: reminderData,
 	});
 
 const cancelReminder = (body: any) =>

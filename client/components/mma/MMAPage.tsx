@@ -345,6 +345,11 @@ const CancelReminders = lazy(() =>
 		/* webpackChunkName: "CancelReminders" */ './cancelReminders/CancelReminders'
 	).then(({ CancelReminders }) => ({ default: CancelReminders })),
 );
+const CreateReminder = lazy(() =>
+	import(
+		/* webpackChunkName: "CreateReminder" */ './reminders/CreateReminder'
+	).then(({ CreateReminder }) => ({ default: CreateReminder })),
+);
 
 const GenericErrorContainer = (props: { children: ReactNode }) => (
 	<section
@@ -679,6 +684,10 @@ const MMARouter = () => {
 						<Route
 							path="/cancel-reminders/:reminderCode"
 							element={<CancelReminders />}
+						/>
+						<Route
+							path="/create-reminder"
+							element={<CreateReminder />}
 						/>
 						<Route path="/maintenance" element={<Maintenance />} />
 						<Route path="*" element={<Navigate to="/" />} />

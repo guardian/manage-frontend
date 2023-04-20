@@ -13,6 +13,7 @@ let recurringReminderCode = '';
 const REMINDERS_STATUS_ENDPOINT = '/api/reminders/status';
 const CANCEL_REMINDERS_ENDPOINT = '/api/reminders/cancel';
 const REACTIVATE_REMINDERS_ENDPOINT = '/api/reminders/reactivate';
+const CREATE_REMINDER_ENDPOINT = '/api/reminders/create';
 
 const getConsent = (isActive: boolean): ConsentOption => ({
 	id: 'support_reminder',
@@ -68,4 +69,13 @@ const sendReminderReactivation = (reminderCode: string) =>
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({ reminderCode }),
+	});
+
+export const sendReminderCreation = (reminderData: string, token: string) =>
+	fetch(CREATE_REMINDER_ENDPOINT, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ reminderData, token }),
 	});
