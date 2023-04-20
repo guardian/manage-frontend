@@ -83,8 +83,6 @@ const createOneOffReminderEndpoint = baseReminderEndpoint + 'create/one-off';
 const cancelRemindersEndpoint = baseReminderEndpoint + 'cancel';
 const reactivateRemindersEndpoint = baseReminderEndpoint + 'reactivate';
 
-// /create-reminder?reminder-data={email:"",reminderPeriod:"",reminderPlatform:"",reminderComponent:"",reminderStage:"",reminderOption:""},token={hash}
-
 // The reminders API will validate reminderData, no need to do it here
 const createReminder = (reminderData: string) =>
 	fetch(createOneOffReminderEndpoint, {
