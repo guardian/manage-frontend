@@ -20,7 +20,7 @@ const getReminderHmacKey = (): Promise<string> =>
 		}
 	});
 
-const validateReminderToken = (
+const verifyReminderToken = (
 	reminderData: string,
 	token: string,
 	key: string,
@@ -35,9 +35,10 @@ const validateReminderToken = (
 
 export const createReminderHandler = (req: Request, res: Response) => {
 	const { reminderData, token } = req.body;
+
 	if (typeof reminderData === 'string' && typeof token === 'string') {
 		getReminderHmacKey().then((reminderHmacKey) => {
-			if (validateReminderToken(reminderData, token, reminderHmacKey)) {
+			if (verifyReminderToken(reminderData, token, reminderHmacKey)) {
 				createReminder(reminderData).then((response) => {
 					if (!response.ok) {
 						captureMessage(
@@ -47,7 +48,7 @@ export const createReminderHandler = (req: Request, res: Response) => {
 					res.sendStatus(response.status);
 				});
 			} else {
-				captureMessage('Failed to validate token for reminder signup');
+				captureMessage('Failed to verify token for reminder signup');
 				res.sendStatus(400);
 			}
 		});
