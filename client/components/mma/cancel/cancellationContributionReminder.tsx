@@ -40,7 +40,7 @@ interface ReminderChoice {
 	thankYouMessage: string;
 }
 
-const REMINDER_ENDPOINT = '/api/reminders';
+const REMINDER_ENDPOINT = '/api/reminders/create';
 const REMINDER_PLATFORM = 'MMA';
 const REMINDER_STAGE = 'WINBACK';
 const REMINDER_COMPONENT = 'CANCELLATION';

@@ -33,7 +33,18 @@ const verifyReminderToken = (
 	return hash === token;
 };
 
-export const createReminderHandler = async (req: Request, res: Response) => {
+export const createReminderHandler = (req: Request, res: Response) =>
+	createReminder(req.body).then((response) => {
+		if (!response.ok) {
+			captureMessage('Reminder sign up failed at the point of request');
+		}
+		res.sendStatus(response.status);
+	});
+
+export const publicCreateReminderHandler = async (
+	req: Request,
+	res: Response,
+) => {
 	const { reminderData, token } = JSON.parse(req.body);
 
 	if (reminderData && token) {

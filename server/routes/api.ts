@@ -25,6 +25,7 @@ import { withIdentity } from '../middleware/identityMiddleware';
 import {
 	cancelReminderHandler,
 	createReminderHandler,
+	publicCreateReminderHandler,
 	reactivateReminderHandler,
 } from '../reminderApi';
 import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
@@ -257,7 +258,8 @@ router.get('/help-centre/topic/:topic', getTopicHandler);
 
 router.post('/contact-us', contactUsFormHandler);
 
-router.post('/reminders/create', createReminderHandler);
+router.post('/reminders/create', createReminderHandler); // requires sign-in
+router.post('/reminders/create-public', publicCreateReminderHandler); // does not require sign-in, uses verification token
 router.get(
 	'/reminders/status',
 	membersDataApiHandler(

@@ -685,6 +685,7 @@ const MMARouter = () => {
 							path="/cancel-reminders/:reminderCode"
 							element={<CancelReminders />}
 						/>
+						{/*Does not require sign in*/}
 						<Route
 							path="/create-reminder"
 							element={<CreateReminder />}

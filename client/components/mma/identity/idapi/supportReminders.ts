@@ -13,7 +13,7 @@ let recurringReminderCode = '';
 const REMINDERS_STATUS_ENDPOINT = '/api/reminders/status';
 const CANCEL_REMINDERS_ENDPOINT = '/api/reminders/cancel';
 const REACTIVATE_REMINDERS_ENDPOINT = '/api/reminders/reactivate';
-const CREATE_REMINDER_ENDPOINT = '/api/reminders/create';
+const CREATE_REMINDER_ENDPOINT = '/api/reminders/create-public';
 
 const getConsent = (isActive: boolean): ConsentOption => ({
 	id: 'support_reminder',
