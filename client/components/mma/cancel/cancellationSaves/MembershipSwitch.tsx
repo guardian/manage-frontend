@@ -188,7 +188,7 @@ export const MembershipSwitch = () => {
 				<Button
 					priority="tertiary"
 					cssOverrides={[buttonCentredCss]}
-					onClick={() => navigate('..')}
+					onClick={() => navigate('../offers')}
 				>
 					Back
 				</Button>

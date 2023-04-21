@@ -4,6 +4,10 @@ import { breakpoints, from, space } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import {
+	featureSwitches,
+	initFeatureSwitchUrlParamOverride,
+} from '../../../shared/featureSwitches';
 import type {
 	GroupedProductType,
 	ProductType,
@@ -41,6 +45,8 @@ const record = (event: any) => {
 		window.guardian.ophan.record(event);
 	}
 };
+
+initFeatureSwitchUrlParamOverride();
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
@@ -121,6 +127,46 @@ const ExecuteCancellation = lazy(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/stages/ExecuteCancellation'
 	).then(({ ExecuteCancellation }) => ({ default: ExecuteCancellation })),
+);
+
+const MembershipCancellationLanding = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/MembershipCancellationLanding'
+	).then(({ MembershipCancellationLanding }) => ({
+		default: MembershipCancellationLanding,
+	})),
+);
+
+const ValueOfSupport = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/ValueOfSupport'
+	).then(({ ValueOfSupport }) => ({
+		default: ValueOfSupport,
+	})),
+);
+
+const SaveOptions = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SaveOptions'
+	).then(({ SaveOptions }) => ({
+		default: SaveOptions,
+	})),
+);
+
+const MembershipSwitch = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/MembershipSwitch'
+	).then(({ MembershipSwitch }) => ({
+		default: MembershipSwitch,
+	})),
+);
+
+const SelectReason = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SelectReason'
+	).then(({ SelectReason }) => ({
+		default: SelectReason,
+	})),
 );
 
 const PaymentDetailUpdateContainer = lazy(() =>
@@ -540,6 +586,32 @@ const MMARouter = () => {
 										path="confirmed"
 										element={<ExecuteCancellation />}
 									/>
+									{featureSwitches.membershipSave && (
+										<>
+											<Route
+												path="landing"
+												element={
+													<MembershipCancellationLanding />
+												}
+											/>
+											<Route
+												path="details"
+												element={<ValueOfSupport />}
+											/>
+											<Route
+												path="offers"
+												element={<SaveOptions />}
+											/>
+											<Route
+												path="reasons"
+												element={<SelectReason />}
+											/>
+											<Route
+												path="switch-offer"
+												element={<MembershipSwitch />}
+											/>
+										</>
+									)}
 								</Route>
 							),
 						)}

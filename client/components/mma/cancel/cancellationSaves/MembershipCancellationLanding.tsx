@@ -3,12 +3,15 @@ import {
 	Stack,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
+import { useNavigate } from 'react-router';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { Heading } from '../../shared/Heading';
 import { sectionSpacing } from '../../switch/SwitchStyles';
 import { buttonLayoutCss, headingCss } from './SaveStyles';
 
 export const MembershipCancellationLanding = () => {
+	const navigate = useNavigate();
+
 	return (
 		<>
 			<section css={sectionSpacing}>
@@ -54,6 +57,7 @@ export const MembershipCancellationLanding = () => {
 						<Button
 							icon={<SvgArrowRightStraight />}
 							iconSide="right"
+							onClick={() => navigate('../details')}
 						>
 							Cancel online
 						</Button>
