@@ -1,7 +1,16 @@
+import { css } from '@emotion/react';
+import { palette } from '@guardian/source-foundations';
 import { SvgCrossRound, SvgTickRound } from '@guardian/source-react-components';
 import { benefitsCss, lineBreakCss } from './BenefitsStyles';
 
 export const RecurringSupporterBenefitsSection = () => {
+	const unavailableBenefits = css`
+		color: ${palette.neutral[60]};
+		svg {
+			fill: ${palette.neutral[60]};
+		}
+	`;
+
 	return (
 		<ul id="benefits" css={benefitsCss}>
 			<li>
@@ -18,15 +27,14 @@ export const RecurringSupporterBenefitsSection = () => {
 					insight on the week's top stories
 				</span>
 			</li>
-			<li>
+			<li css={unavailableBenefits}>
 				<SvgCrossRound size="small" />
 				<span>
 					<strong>Unlimited app access.</strong>
-					<br css={lineBreakCss} />
-					For the best mobile experience
+					<br css={lineBreakCss} /> For the best mobile experience
 				</span>
 			</li>
-			<li>
+			<li css={unavailableBenefits}>
 				<SvgCrossRound size="small" />
 				<span>
 					<strong>Ad-free reading.</strong>
