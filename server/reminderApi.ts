@@ -5,11 +5,11 @@ import fetch from 'node-fetch';
 import { s3ConfigPromise } from './awsIntegration';
 import { conf } from './config';
 
-interface ReCaptchaKeys {
+interface RemindersConfig {
 	reminderHmacKey: string;
 }
 
-const reminderConfigPromise = s3ConfigPromise<ReCaptchaKeys>()('reminders');
+const reminderConfigPromise = s3ConfigPromise<RemindersConfig>()('reminders');
 
 const getReminderHmacKey = (): Promise<string> =>
 	reminderConfigPromise.then((result) => {
@@ -41,6 +41,7 @@ export const createReminderHandler = (req: Request, res: Response) =>
 		res.sendStatus(response.status);
 	});
 
+// Instead of requiring the user to be signed in, this endpoint verifies the token
 export const publicCreateReminderHandler = async (
 	req: Request,
 	res: Response,
@@ -93,7 +94,6 @@ const createOneOffReminderEndpoint = baseReminderEndpoint + 'create/one-off';
 const cancelRemindersEndpoint = baseReminderEndpoint + 'cancel';
 const reactivateRemindersEndpoint = baseReminderEndpoint + 'reactivate';
 
-// The reminders API will validate reminderData, no need to do it here
 const createReminder = (reminderData: string) =>
 	fetch(createOneOffReminderEndpoint, {
 		method: 'POST',
