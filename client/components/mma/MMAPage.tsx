@@ -610,6 +610,10 @@ const MMARouter = () => {
 												path="switch-offer"
 												element={<MembershipSwitch />}
 											/>
+											<Route path="thank-you" />
+											<Route path="switch-thank-you" />
+											<Route path="confirm" />
+											<Route path="reminder" />
 										</>
 									)}
 								</Route>
