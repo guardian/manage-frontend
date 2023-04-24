@@ -4,7 +4,7 @@ import {
 } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
-describe('Cancel guardian weekly', () => {
+describe('Cancel membership saves', () => {
 	beforeEach(() => {
 		signInAndAcceptCookies();
 
