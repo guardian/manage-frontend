@@ -9,9 +9,7 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router';
-import { dateString } from '../../../../../shared/dates';
-import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { getMainPlan } from '../../../../../shared/productResponse';
+import { dateString, parseDate } from '../../../../../shared/dates';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import type { CancellationContextInterface } from '../CancellationContainer';
@@ -62,7 +60,7 @@ const YourNewSupport = (props: { billingPeriod: string }) => {
 
 const WhatHappensNext = (props: { nextBillingDate: string }) => {
 	const nextPaymentDate = dateString(
-		new Date(props.nextBillingDate),
+		parseDate(props.nextBillingDate).date,
 		'd MMMM',
 	);
 	return (
@@ -139,13 +137,11 @@ export const MembershipSwitch = () => {
 	if (!membership) {
 		return <Navigate to="/" />;
 	}
-	const mainPlan = getMainPlan(
-		membership.subscription,
-	) as PaidSubscriptionPlan;
 
 	const currentPrice = membership.subscription.plan?.price;
 	const billingPeriod = membership.subscription.plan?.billingPeriod ?? '';
 	const monthlyOrAnnual = getMonthlyOrAnnual(billingPeriod);
+	const currencySymbol = membership.subscription.plan?.currency ?? '£';
 
 	return (
 		<>
@@ -158,7 +154,7 @@ export const MembershipSwitch = () => {
 					`}
 				>
 					You are changing your current membership for a{' '}
-					{mainPlan.currency}
+					{currencySymbol}
 					{currentPrice} {monthlyOrAnnual}.
 				</p>
 			</section>
