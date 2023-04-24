@@ -7,11 +7,21 @@ import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 describe('Cancel membership saves', () => {
 	beforeEach(() => {
 		signInAndAcceptCookies();
-
+		console.log('beforeEach');
 		cy.intercept('GET', '/api/me/mma?productType=Membership', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(membership),
 		});
+
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
+		cy.intercept('GET', '/api/cancelled/', {
+			statusCode: 200,
+			body: [],
+		}).as('cancelled');
 	});
 
 	it('switches to recurring contribution', () => {
