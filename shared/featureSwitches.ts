@@ -26,5 +26,5 @@ export const featureSwitches: Record<string, boolean> = {
 	exampleFeature: false,
 	cancellationProductSwitch: false,
 	appSubscriptions: false,
-	membershipSave: true,
+	membershipSave: false,
 };
