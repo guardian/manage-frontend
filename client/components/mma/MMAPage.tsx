@@ -4,6 +4,7 @@ import { breakpoints, from, space } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { initFeatureSwitchUrlParamOverride } from '../../../shared/featureSwitches';
 import type {
 	GroupedProductType,
 	ProductType,
@@ -41,6 +42,8 @@ const record = (event: any) => {
 		window.guardian.ophan.record(event);
 	}
 };
+
+initFeatureSwitchUrlParamOverride();
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
