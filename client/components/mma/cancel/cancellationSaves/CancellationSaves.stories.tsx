@@ -5,8 +5,8 @@ import { membership } from '../../../../fixtures/productDetail';
 import { CancellationContainer } from '../CancellationContainer';
 import { MembershipCancellationLanding } from './MembershipCancellationLanding';
 import { MembershipSwitch } from './MembershipSwitch';
+import { SaveOptions } from './SaveOptions';
 import { SelectReason } from './SelectReason';
-import { SwitchingOptions } from './SwitchingOptions';
 import { ValueOfSupport } from './ValueOfSupport';
 
 export default {
@@ -38,8 +38,8 @@ export const LandingPage: ComponentStory<
 	return <MembershipCancellationLanding />;
 };
 
-export const SwitchOptions: ComponentStory<typeof SwitchingOptions> = () => {
-	return <SwitchingOptions />;
+export const SwitchOptions: ComponentStory<typeof SaveOptions> = () => {
+	return <SaveOptions />;
 };
 
 export const Reasons: ComponentStory<typeof SelectReason> = () => {

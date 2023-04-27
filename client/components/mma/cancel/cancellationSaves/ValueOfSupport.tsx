@@ -34,8 +34,8 @@ export const ValueOfSupport = () => {
 		<>
 			<ProgressIndicator
 				steps={[
-					{ title: '' },
 					{ title: 'Details', isCurrentStep: true },
+					{ title: '' },
 					{ title: '' },
 				]}
 				additionalCSS={css`
@@ -58,10 +58,17 @@ export const ValueOfSupport = () => {
 			</Stack>
 			<div>Image placeholder</div>
 			<div css={[buttonLayoutCss, { textAlign: 'right' }]}>
-				<Button priority="tertiary" onClick={() => navigate('/')}>
+				<Button
+					priority="tertiary"
+					onClick={() => navigate('../landing')}
+				>
 					Back
 				</Button>
-				<Button icon={<SvgArrowRightStraight />} iconSide="right">
+				<Button
+					icon={<SvgArrowRightStraight />}
+					iconSide="right"
+					onClick={() => navigate('../offers')}
+				>
 					Continue to cancellation
 				</Button>
 			</div>

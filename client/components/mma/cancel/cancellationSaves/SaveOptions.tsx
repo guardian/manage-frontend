@@ -5,6 +5,7 @@ import {
 	Stack,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
+import { useNavigate } from 'react-router';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { MembershipBenefitsSection } from '../../shared/MembershipBenefits';
@@ -17,7 +18,9 @@ import {
 	productSubtitleCss,
 } from './SaveStyles';
 
-export const SwitchingOptions = () => {
+export const SaveOptions = () => {
+	const navigate = useNavigate();
+
 	return (
 		<>
 			<ProgressIndicator
@@ -85,6 +88,7 @@ export const SwitchingOptions = () => {
 								<Button
 									icon={<SvgArrowRightStraight />}
 									iconSide="right"
+									onClick={() => navigate('../switch-offer')}
 								>
 									Become a recurring supporter
 								</Button>
@@ -100,7 +104,11 @@ export const SwitchingOptions = () => {
 			</Stack>
 			<section css={sectionSpacing}>
 				<div css={buttonLayoutCss}>
-					<Button icon={<SvgArrowRightStraight />} iconSide="right">
+					<Button
+						icon={<SvgArrowRightStraight />}
+						iconSide="right"
+						onClick={() => navigate('../reasons')}
+					>
 						Cancel membership
 					</Button>
 				</div>

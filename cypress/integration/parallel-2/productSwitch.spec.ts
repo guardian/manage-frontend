@@ -213,6 +213,11 @@ describe('product switching', () => {
 			),
 		});
 
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,
 			body: [],
