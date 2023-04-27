@@ -3,6 +3,7 @@ import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecor
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { membership } from '../../../../fixtures/productDetail';
 import { CancellationContainer } from '../CancellationContainer';
+import { ContinueMembershipConfirmation } from './ContinueMembershipConfirmation';
 import { MembershipCancellationLanding } from './MembershipCancellationLanding';
 import { MembershipSwitch } from './MembershipSwitch';
 import { SaveOptions } from './SaveOptions';
@@ -44,4 +45,10 @@ export const SwitchOptions: ComponentStory<typeof SaveOptions> = () => {
 
 export const Reasons: ComponentStory<typeof SelectReason> = () => {
 	return <SelectReason />;
+};
+
+export const ContinueMembership: ComponentStory<
+	typeof ContinueMembershipConfirmation
+> = () => {
+	return <ContinueMembershipConfirmation />;
 };
