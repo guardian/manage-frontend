@@ -35,7 +35,7 @@ describe('membership test', () => {
 		cy.wait('@product_detail');
 		cy.wait('@mobile_subscriptions');
 
-		cy.findByText('Staff Membership');
+		cy.findByText('Guardian membership');
 	});
 
 	it('membership subscription', () => {
