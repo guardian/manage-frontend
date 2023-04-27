@@ -1,7 +1,11 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
-import { membership } from '../../../../fixtures/productDetail';
+import {
+	membership,
+	toMembersDataApiResponse,
+} from '../../../../fixtures/productDetail';
 import { CancellationContainer } from '../CancellationContainer';
 import { MembershipCancellationLanding } from './MembershipCancellationLanding';
 import { MembershipSwitch } from './MembershipSwitch';
@@ -36,6 +40,14 @@ export const LandingPage: ComponentStory<
 	typeof MembershipCancellationLanding
 > = () => {
 	return <MembershipCancellationLanding />;
+};
+
+LandingPage.parameters = {
+	msw: [
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(ctx.json(toMembersDataApiResponse(membership)));
+		}),
+	],
 };
 
 export const SwitchOptions: ComponentStory<typeof SaveOptions> = () => {
