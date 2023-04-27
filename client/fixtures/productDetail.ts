@@ -840,7 +840,7 @@ export const membership: ProductDetail = {
 	isTestUser: true,
 	isPaidTier: true,
 	selfServiceCancellation: {
-		isAllowed: false,
+		isAllowed: true,
 		shouldDisplayEmail: true,
 		phoneRegionsToDisplay: ['UK & ROW', 'US', 'AUS'],
 	},

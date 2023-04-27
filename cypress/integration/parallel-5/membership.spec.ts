@@ -43,7 +43,7 @@ describe('membership test', () => {
 
 		cy.findByText('Manage membership').click();
 
-		cy.findByText('Would you like to cancel your membership?');
+		cy.findByText('Cancel membership');
 	});
 
 	it('membership billing page', () => {
