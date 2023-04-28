@@ -12,7 +12,6 @@ import { MembershipCancellationLanding } from './MembershipCancellationLanding';
 import { MembershipSwitch } from './MembershipSwitch';
 import { SaveOptions } from './SaveOptions';
 import { SelectReason } from './SelectReason';
-import { SwitchThankYou } from './SwitchThankYou';
 import { ValueOfSupport } from './ValueOfSupport';
 
 export default {
@@ -64,10 +63,4 @@ export const ContinueMembership: ComponentStory<
 	typeof ContinueMembershipConfirmation
 > = () => {
 	return <ContinueMembershipConfirmation />;
-};
-
-export const SwitchCompleteThankYou: ComponentStory<
-	typeof SwitchThankYou
-> = () => {
-	return <SwitchThankYou />;
 };
