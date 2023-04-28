@@ -10,8 +10,10 @@ import {
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { dateString, parseDate } from '../../../../../shared/dates';
+import type { Subscription } from '../../../../../shared/productResponse';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
+import { PaymentDetails } from '../../shared/PaymentDetails';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import {
@@ -58,9 +60,9 @@ const YourNewSupport = (props: { billingPeriod: string }) => {
 	);
 };
 
-const WhatHappensNext = (props: { nextBillingDate: string }) => {
+const WhatHappensNext = (props: { subscription: Subscription }) => {
 	const nextPaymentDate = dateString(
-		parseDate(props.nextBillingDate).date,
+		parseDate(props.subscription.nextPaymentDate ?? '').date,
 		'd MMMM',
 	);
 	return (
@@ -89,11 +91,7 @@ const WhatHappensNext = (props: { nextBillingDate: string }) => {
 							<strong>Your payment method</strong>
 							<br />
 							The payment will be taken from{' '}
-							{/* <PaymentDetails
-            subscription={
-                contributionToSwitch.subscription
-            }
-        /> */}
+							<PaymentDetails subscription={props.subscription} />
 						</span>
 					</li>
 				</ul>
@@ -159,9 +157,7 @@ export const MembershipSwitch = () => {
 				</p>
 			</section>
 			<YourNewSupport billingPeriod={billingPeriod} />
-			<WhatHappensNext
-				nextBillingDate={membership.subscription.plan?.end ?? ''}
-			/>
+			<WhatHappensNext subscription={membership.subscription} />
 			<section css={sectionSpacing}>
 				<p
 					css={css`
