@@ -12,22 +12,18 @@ import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';
-import type { Subscription } from '../../../../../shared/productResponse';
 import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
 import { formatAmount } from '../../../../utilities/utils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
-import { DirectDebitLogo } from '../../shared/assets/DirectDebitLogo';
-import { PaypalLogo } from '../../shared/assets/PaypalLogo';
 import { SwitchOffsetPaymentIcon } from '../../shared/assets/SwitchOffsetPaymentIcon';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 import { Card } from '../../shared/Card';
-import { cardTypeToSVG } from '../../shared/CardDisplay';
 import { Heading } from '../../shared/Heading';
-import { getObfuscatedPayPalId } from '../../shared/PaypalDisplay';
+import { PaymentDetails } from '../../shared/PaymentDetails';
 import { SupporterPlusBenefitsToggle } from '../../shared/SupporterPlusBenefits';
 import type {
 	SwitchContextInterface,
@@ -46,67 +42,6 @@ import {
 	sectionSpacing,
 	smallPrintCss,
 } from '../SwitchStyles';
-
-const PaymentDetails = (props: { subscription: Subscription }) => {
-	const subscription = props.subscription;
-
-	const cardType = (type: string) => {
-		if (type !== 'MasterCard') {
-			return `${type} card`;
-		}
-		return type;
-	};
-
-	const containerCss = css`
-		display: inline-flex;
-		align-items: center;
-		font-weight: 700;
-		max-width: 100%;
-		> svg {
-			flex: 0 0 auto;
-			margin-left: 0.5ch;
-		}
-	`;
-
-	const truncateCss = css`
-		flex: 0 1 auto;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	`;
-
-	return (
-		<span css={containerCss} data-qm-masking="blocklist">
-			{subscription.card && (
-				<>
-					{cardType(subscription.card.type)} ending{' '}
-					{subscription.card.last4}
-					{cardTypeToSVG(subscription.card.type)}
-				</>
-			)}
-			{subscription.payPalEmail && (
-				<>
-					<span css={truncateCss}>
-						{getObfuscatedPayPalId(subscription.payPalEmail)}
-					</span>
-					<PaypalLogo />
-				</>
-			)}
-			{subscription.mandate && (
-				<>
-					account ending{' '}
-					{subscription.mandate.accountNumber.slice(-3)}
-					<DirectDebitLogo />
-				</>
-			)}
-			{subscription.sepaMandate && (
-				<>
-					SEPA {subscription.sepaMandate.accountName}{' '}
-					{subscription.sepaMandate.iban}
-				</>
-			)}
-		</span>
-	);
-};
 
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
 	props.PaymentFailure ? (
