@@ -3,7 +3,7 @@ import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import {
-	membership,
+	membershipSupporter,
 	toMembersDataApiResponse,
 } from '../../../../fixtures/productDetail';
 import { CancellationContainer } from '../CancellationContainer';
@@ -20,7 +20,7 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: membership },
+			state: { productDetail: membershipSupporter },
 			container: (
 				<CancellationContainer productType={PRODUCT_TYPES.membership} />
 			),
@@ -45,7 +45,7 @@ export const LandingPage: ComponentStory<
 LandingPage.parameters = {
 	msw: [
 		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(ctx.json(toMembersDataApiResponse(membership)));
+			return res(ctx.json(toMembersDataApiResponse(membershipSupporter)));
 		}),
 	],
 };

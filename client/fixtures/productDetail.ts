@@ -894,7 +894,7 @@ export const membershipStaff: ProductDetail = {
 	},
 };
 
-export const membership: ProductDetail = {
+export const membershipSupporter: ProductDetail = {
 	mmaCategory: 'membership',
 	tier: 'Supporter',
 	isPaidTier: true,

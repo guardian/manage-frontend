@@ -1,7 +1,7 @@
 import {
 	contributionCard,
 	guardianWeeklyExpiredCard,
-	membership,
+	membershipSupporter,
 	toMembersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
 import { featureSwitches } from '../../../shared/featureSwitches';
@@ -14,12 +14,12 @@ if (featureSwitches.membershipSave) {
 			console.log('beforeEach');
 			cy.intercept('GET', '/api/me/mma?productType=Membership', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(membership),
+				body: toMembersDataApiResponse(membershipSupporter),
 			});
 
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(membership),
+				body: toMembersDataApiResponse(membershipSupporter),
 			});
 
 			cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -115,7 +115,10 @@ if (featureSwitches.membershipSave) {
 		it('redirects user with other product to normal journey', () => {
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(membership, contributionCard),
+				body: toMembersDataApiResponse(
+					membershipSupporter,
+					contributionCard,
+				),
 			});
 
 			cy.visit('/cancel/membership');
@@ -127,7 +130,7 @@ if (featureSwitches.membershipSave) {
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
 				body: toMembersDataApiResponse(
-					membership,
+					membershipSupporter,
 					guardianWeeklyExpiredCard,
 				),
 			});
