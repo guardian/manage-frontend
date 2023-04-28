@@ -7,6 +7,7 @@ import {
 	toMembersDataApiResponse,
 } from '../../../../fixtures/productDetail';
 import { CancellationContainer } from '../CancellationContainer';
+import { ConfirmMembershipCancellation } from './ConfirmMembershipCancellation';
 import { ContinueMembershipConfirmation } from './ContinueMembershipConfirmation';
 import { MembershipCancellationLanding } from './MembershipCancellationLanding';
 import { MembershipSwitch } from './MembershipSwitch';
@@ -63,4 +64,10 @@ export const ContinueMembership: ComponentStory<
 	typeof ContinueMembershipConfirmation
 > = () => {
 	return <ContinueMembershipConfirmation />;
+};
+
+export const ConfirmCancellation: ComponentStory<
+	typeof ConfirmMembershipCancellation
+> = () => {
+	return <ConfirmMembershipCancellation />;
 };

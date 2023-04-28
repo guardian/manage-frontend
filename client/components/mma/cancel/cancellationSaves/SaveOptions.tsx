@@ -107,7 +107,7 @@ export const SaveOptions = () => {
 					<Button
 						icon={<SvgArrowRightStraight />}
 						iconSide="right"
-						onClick={() => navigate('../reasons')}
+						onClick={() => navigate('../confirm')}
 					>
 						Cancel membership
 					</Button>
