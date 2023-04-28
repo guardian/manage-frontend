@@ -1465,7 +1465,6 @@ html:not(.src-focus-disabled) .emotion-7:focus {
                 fillRule="evenodd"
               />
             </svg>
-            
           </button>
         </div>
       </div>

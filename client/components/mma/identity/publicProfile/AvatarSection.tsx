@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import { palette } from '@guardian/source-foundations';
 import * as Sentry from '@sentry/browser';
-import type { FormikProps } from 'formik';
 import { Form, Formik } from 'formik';
 import { useEffect } from 'react';
 import type { ChangeEvent, FC } from 'react';
@@ -86,7 +85,7 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 				formikBag.setSubmitting(false);
 			}}
 		>
-			{(formikBag: FormikProps<AvatarPayload>) => (
+			{(formikBag) => (
 				<Form>
 					<label css={labelCss}>
 						{avatarDisplay()}
