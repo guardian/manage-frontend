@@ -834,13 +834,13 @@ export const contributionSepa: ProductDetail = {
 	isTestUser: false,
 };
 
-export const membership: ProductDetail = {
+export const membershipStaff: ProductDetail = {
 	mmaCategory: 'membership',
 	tier: 'Staff Membership',
 	isTestUser: true,
 	isPaidTier: true,
 	selfServiceCancellation: {
-		isAllowed: false,
+		isAllowed: true,
 		shouldDisplayEmail: true,
 		phoneRegionsToDisplay: ['UK & ROW', 'US', 'AUS'],
 	},
@@ -854,7 +854,7 @@ export const membership: ProductDetail = {
 			accountNumber: '****9911',
 			sortCode: '200000',
 		},
-		contactId: '0039E00001VVNb5QAH',
+		contactId: '1',
 		deliveryAddress: {
 			addressLine1: 'Kings Place',
 			addressLine2: '90 York Way',
@@ -890,8 +890,77 @@ export const membership: ProductDetail = {
 		currentPlans: [],
 		futurePlans: [],
 		readerType: 'Direct',
-		accountId: '8ad088718219a6b601821bbe9e6210f2',
+		accountId: '1',
 	},
+};
+
+export const membershipSupporter: ProductDetail = {
+	mmaCategory: 'membership',
+	tier: 'Supporter',
+	isPaidTier: true,
+	selfServiceCancellation: {
+		isAllowed: true,
+		shouldDisplayEmail: true,
+		phoneRegionsToDisplay: ['UK & ROW', 'US', 'AUS'],
+	},
+	billingCountry: 'United Kingdom',
+	joinDate: '2023-04-26',
+	optIn: true,
+	subscription: {
+		paymentMethod: 'Card',
+		card: {
+			last4: '4242',
+			expiry: {
+				month: 4,
+				year: 2024,
+			},
+			type: 'Visa',
+			stripePublicKeyForUpdate: 'pk_test_1',
+			email: 'test@example.com',
+		},
+		contactId: '2',
+		safeToUpdatePaymentMethod: true,
+		start: '2023-04-26',
+		end: '2024-04-26',
+		nextPaymentPrice: 700,
+		nextPaymentDate: '2023-05-26',
+		lastPaymentDate: '2023-04-26',
+		chargedThroughDate: '2023-05-26',
+		renewalDate: '2024-04-26',
+		anniversaryDate: '2024-04-26',
+		cancelledAt: false,
+		subscriberId: 'A-S00538748',
+		subscriptionId: 'A-S00538748',
+		trialLength: -1,
+		autoRenew: true,
+		plan: {
+			name: 'Supporter',
+			price: 700,
+			currency: '£',
+			currencyISO: 'GBP',
+			billingPeriod: 'month',
+			start: '',
+			end: '',
+			shouldBeVisible: false,
+		},
+		currentPlans: [
+			{
+				name: null,
+				start: '2023-04-26',
+				end: '2024-04-26',
+				shouldBeVisible: true,
+				chargedThrough: '2023-05-26',
+				price: 700,
+				currency: '£',
+				currencyISO: 'GBP',
+				billingPeriod: 'month',
+			},
+		],
+		futurePlans: [],
+		readerType: 'Direct',
+		accountId: '2',
+	},
+	isTestUser: false,
 };
 
 export const patronDigitalSub: ProductDetail = {

@@ -1,5 +1,7 @@
 import {
-	membership,
+	contributionCard,
+	guardianWeeklyExpiredCard,
+	membershipSupporter,
 	toMembersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
 import { featureSwitches } from '../../../shared/featureSwitches';
@@ -12,7 +14,12 @@ if (featureSwitches.membershipSave) {
 			console.log('beforeEach');
 			cy.intercept('GET', '/api/me/mma?productType=Membership', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(membership),
+				body: toMembersDataApiResponse(membershipSupporter),
+			});
+
+			cy.intercept('GET', '/api/me/mma', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(membershipSupporter),
 			});
 
 			cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -27,7 +34,7 @@ if (featureSwitches.membershipSave) {
 		});
 
 		it('switches to recurring contribution', () => {
-			cy.visit('/cancel/membership/landing');
+			cy.visit('/cancel/membership');
 
 			cy.findByText(
 				/We're sorry to hear you're thinking of cancelling/,
@@ -55,7 +62,10 @@ if (featureSwitches.membershipSave) {
 		});
 
 		it('cancels membership', () => {
-			cy.visit('/cancel/membership/landing');
+			cy.visit('/');
+			cy.get(`[data-cy="Manage membership"]`).click();
+
+			cy.findByText(/Cancel/).click();
 
 			cy.findByText(
 				/We're sorry to hear you're thinking of cancelling/,
@@ -80,7 +90,7 @@ if (featureSwitches.membershipSave) {
 		});
 
 		it('retains membership', () => {
-			cy.visit('/cancel/membership/landing');
+			cy.visit('/cancel/membership');
 
 			cy.findByText(
 				/We're sorry to hear you're thinking of cancelling/,
@@ -100,6 +110,34 @@ if (featureSwitches.membershipSave) {
 			cy.findByRole('button', {
 				name: 'Continue your membership',
 			}).click();
+		});
+
+		it('redirects user with other product to normal journey', () => {
+			cy.intercept('GET', '/api/me/mma', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(
+					membershipSupporter,
+					contributionCard,
+				),
+			});
+
+			cy.visit('/cancel/membership');
+
+			cy.findByText(/Please select a reason/).should('exist');
+		});
+
+		it('redirects user in payment failiure to normal journey', () => {
+			cy.intercept('GET', '/api/me/mma', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(
+					membershipSupporter,
+					guardianWeeklyExpiredCard,
+				),
+			});
+
+			cy.visit('/cancel/membership');
+
+			cy.findByText(/Please select a reason/).should('exist');
 		});
 	});
 }
