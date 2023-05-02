@@ -177,6 +177,14 @@ const ContinueMembershipConfirmation = lazy(() =>
 	})),
 );
 
+const ConfirmMembershipCancellation = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/ConfirmMembershipCancellation'
+	).then(({ ConfirmMembershipCancellation }) => ({
+		default: ConfirmMembershipCancellation,
+	})),
+);
+
 const PaymentDetailUpdateContainer = lazy(() =>
 	import(
 		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateContainer'
@@ -625,7 +633,12 @@ const MMARouter = () => {
 												}
 											/>
 											<Route path="switch-thank-you" />
-											<Route path="confirm" />
+											<Route
+												path="confirm"
+												element={
+													<ConfirmMembershipCancellation />
+												}
+											/>
 											<Route path="reminder" />
 										</>
 									)}
