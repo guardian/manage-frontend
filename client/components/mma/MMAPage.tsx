@@ -185,6 +185,14 @@ const ConfirmMembershipCancellation = lazy(() =>
 	})),
 );
 
+const SupportReminder = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SupportReminder'
+	).then(({ SupportReminder }) => ({
+		default: SupportReminder,
+	})),
+);
+
 const PaymentDetailUpdateContainer = lazy(() =>
 	import(
 		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateContainer'
@@ -639,7 +647,10 @@ const MMARouter = () => {
 													<ConfirmMembershipCancellation />
 												}
 											/>
-											<Route path="reminder" />
+											<Route
+												path="reminder"
+												element={<SupportReminder />}
+											/>
 										</>
 									)}
 								</Route>

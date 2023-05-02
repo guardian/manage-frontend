@@ -2,14 +2,30 @@ import { css } from '@emotion/react';
 import { from, palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
+	InlineError,
 	Radio,
 	RadioGroup,
 	Stack,
 	SvgCalendar,
 	SvgEnvelope,
 } from '@guardian/source-react-components';
+import type { FormEvent} from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
+import type {
+	ProductDetail} from '../../../../../shared/productResponse';
+import {
+	MDA_TEST_USER_HEADER
+} from '../../../../../shared/productResponse';
+import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
+import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
+import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
+import type {
+	CancellationContextInterface} from '../CancellationContainer';
+import {
+	CancellationContext
+} from '../CancellationContainer';
 import type { CancellationReason } from '../cancellationReason';
 import { membershipCancellationReasons } from '../membership/MembershipCancellationReasons';
 import {
@@ -29,6 +45,20 @@ const infoCss = css`
 	}
 	> span {
 		padding-top: ${space[1]}px;
+	}
+`;
+
+const reasonLegendCss = css`
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: ${space[3]}px;
+	float: left;
+	background-color: ${palette.neutral[97]};
+	border-bottom: 1px solid ${palette.neutral[86]};
+	${textSans.medium({ fontWeight: 'bold' })};
+	${from.tablet} {
+		padding: ${space[3]}px ${space[5]}px;
 	}
 `;
 
@@ -54,35 +84,23 @@ const CancellationInfo = () => (
 	</ul>
 );
 
-const ReasonSelection = () => {
+const ReasonSelection = (props: {
+	setSelectedReasonId: React.Dispatch<React.SetStateAction<string>>;
+}) => {
 	return (
 		<fieldset
-			// onChange={(event: FormEvent<HTMLFieldSetElement>) => {
-			// 	const target: HTMLInputElement =
-			// 		event.target as HTMLInputElement;
-			// 	setSelectedReasonId(target.value);
-			// }}
+			onChange={(event: FormEvent<HTMLFieldSetElement>) => {
+				const target: HTMLInputElement =
+					event.target as HTMLInputElement;
+				props.setSelectedReasonId(target.value);
+			}}
 			css={css`
 				border: 1px solid ${palette.neutral[86]};
 				margin: 0 0 ${space[5]}px;
 				padding: 0;
 			`}
 		>
-			<legend
-				css={css`
-					display: block;
-					width: 100%;
-					margin: 0;
-					padding: ${space[3]}px;
-					float: left;
-					background-color: ${palette.neutral[97]};
-					border-bottom: 1px solid ${palette.neutral[86]};
-					${textSans.medium({ fontWeight: 'bold' })};
-					${from.tablet} {
-						padding: ${space[3]}px ${space[5]}px;
-					}
-				`}
-			>
+			<legend css={reasonLegendCss}>
 				Why did you cancel your Membership with us today?
 			</legend>
 			<RadioGroup
@@ -115,8 +133,82 @@ const ReasonSelection = () => {
 	);
 };
 
+function cancellationCaseFetch(
+	selectedReasonId: string,
+	productType: ProductTypeWithCancellationFlow,
+	productDetail: ProductDetail,
+) {
+	return fetch('/api/case', {
+		method: 'POST',
+		body: JSON.stringify({
+			reason: selectedReasonId,
+			product: productType.cancellation.sfCaseProduct,
+			subscriptionName: productDetail.subscription.subscriptionId,
+			gaData: '' + JSON.stringify(window.gaData),
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+			[MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`,
+		},
+	});
+}
+
 export const SelectReason = () => {
 	const navigate = useNavigate();
+	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+	const [loadingFailed, setLoadingFailed] = useState<boolean>(false);
+
+	const [selectedReasonId, setSelectedReasonId] = useState<string>('');
+	const [inValidationErrorState, setInValidationErrorState] =
+		useState<boolean>(false);
+	const { productDetail, productType } = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+
+	const submitReason = async () => {
+		{
+			const canContinue = !!selectedReasonId.length;
+			if (canContinue) {
+				await postReason();
+				navigate('../reminder', {
+					state: {
+						selectedReasonId,
+					},
+				});
+			}
+			setInValidationErrorState(!canContinue);
+		}
+	};
+
+	const postReason = async () => {
+		if (isSubmitting) {
+			return;
+		}
+
+		try {
+			setIsSubmitting(true);
+			const response = await cancellationCaseFetch(
+				selectedReasonId,
+				productType,
+				productDetail,
+			);
+			const data = await JsonResponseHandler(response);
+
+			if (data === null) {
+				setIsSubmitting(false);
+				setLoadingFailed(true);
+			}
+		} catch (e) {
+			setIsSubmitting(false);
+			setLoadingFailed(true);
+		}
+	};
+
+	if (loadingFailed) {
+		return (
+			<GenericErrorScreen loggingMessage="Cancel journey case id api call failed during the cancellation process" />
+		);
+	}
 
 	return (
 		<>
@@ -143,7 +235,19 @@ export const SelectReason = () => {
 				feedback. If you can, please take a moment to tell us why you've
 				cancelled your Membership.
 			</p>
-			<ReasonSelection />
+			<ReasonSelection setSelectedReasonId={setSelectedReasonId} />
+			{inValidationErrorState && !selectedReasonId.length && (
+				<InlineError
+					cssOverrides={css`
+						padding: ${space[5]}px;
+						margin-bottom: ${space[4]}px;
+						border: 4px solid ${palette.error[400]};
+						text-align: left;
+					`}
+				>
+					Please select a reason
+				</InlineError>
+			)}
 			<section
 				css={[sectionSpacing, buttonLayoutCss, { textAlign: 'right' }]}
 			>
@@ -154,7 +258,13 @@ export const SelectReason = () => {
 				>
 					Skip
 				</Button>
-				<Button cssOverrides={buttonCentredCss}>Submit</Button>
+				<Button
+					isLoading={isSubmitting}
+					onClick={() => submitReason()}
+					cssOverrides={buttonCentredCss}
+				>
+					Submit
+				</Button>
 			</section>
 		</>
 	);

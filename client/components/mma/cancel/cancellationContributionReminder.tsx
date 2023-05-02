@@ -1,13 +1,9 @@
 import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
-import {
-	Button,
-	Radio,
-	RadioGroup,
-	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
+import { Button, Radio, RadioGroup } from '@guardian/source-react-components';
 import { useEffect, useState } from 'react';
 import type * as React from 'react';
+import { useNavigate } from 'react-router';
 import { trackEventInOphanOnly } from '../../../utilities/analytics';
 import { getGeoLocation } from '../../../utilities/geolocation';
 
@@ -24,6 +20,12 @@ const setReminderContainerStyles = css`
 const formContainerStyles = css`
 	& > * + * {
 		margin-top: ${space[6]}px;
+	}
+`;
+
+const buttonLayoutCss = css`
+	> * + * {
+		margin-left: ${space[3]}px;
 	}
 `;
 
@@ -92,6 +94,8 @@ const getDefaultReminderChoices = (): ReminderChoice[] => [
 export const CancellationContributionReminder: React.FC = () => {
 	const [selectedChoiceIndex, setSelectedChoiceIndex] = useState(0);
 	const [hasSetReminder, setHasSetReminder] = useState(false);
+
+	const navigate = useNavigate();
 
 	const email = window.guardian.identityDetails.email;
 	const reminderChoices = getDefaultReminderChoices();
@@ -163,14 +167,15 @@ export const CancellationContributionReminder: React.FC = () => {
 								/>
 							))}
 						</RadioGroup>
-
-						<Button
-							onClick={onSubmit}
-							icon={<SvgArrowRightStraight />}
-							iconSide="right"
-						>
-							Set my reminder
-						</Button>
+						<div css={buttonLayoutCss}>
+							<Button onClick={onSubmit}>Set my reminder</Button>
+							<Button
+								priority="tertiary"
+								onClick={() => navigate('/')}
+							>
+								Back to your account
+							</Button>
+						</div>
 					</div>
 				</div>
 			)}

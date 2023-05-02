@@ -13,6 +13,7 @@ import { MembershipCancellationLanding } from './MembershipCancellationLanding';
 import { MembershipSwitch } from './MembershipSwitch';
 import { SaveOptions } from './SaveOptions';
 import { SelectReason } from './SelectReason';
+import { SupportReminder } from './SupportReminder';
 import { ValueOfSupport } from './ValueOfSupport';
 
 export default {
@@ -70,4 +71,11 @@ export const ConfirmCancellation: ComponentStory<
 	typeof ConfirmMembershipCancellation
 > = () => {
 	return <ConfirmMembershipCancellation />;
+};
+
+export const Reminder: ComponentStory<typeof SupportReminder> = () => {
+	// @ts-expect-error set identity details email in the window
+	window.guardian = { identityDetails: { email: 'test' } };
+
+	return <SupportReminder />;
 };
