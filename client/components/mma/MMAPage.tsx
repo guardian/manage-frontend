@@ -36,7 +36,6 @@ import { isSignedIn } from '../../utilities/signInStatus';
 import { ErrorBoundary } from '../shared/ErrorBoundary';
 import { GenericErrorScreen } from '../shared/GenericErrorScreen';
 import { Main } from '../shared/Main';
-import { ConfirmMembershipCancellation } from './cancel/cancellationSaves/ConfirmMembershipCancellation';
 import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
@@ -175,6 +174,14 @@ const ContinueMembershipConfirmation = lazy(() =>
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/ContinueMembershipConfirmation'
 	).then(({ ContinueMembershipConfirmation }) => ({
 		default: ContinueMembershipConfirmation,
+	})),
+);
+
+const ConfirmMembershipCancellation = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/ConfirmMembershipCancellation'
+	).then(({ ConfirmMembershipCancellation }) => ({
+		default: ConfirmMembershipCancellation,
 	})),
 );
 
