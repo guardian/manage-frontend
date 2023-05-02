@@ -640,7 +640,6 @@ const MMARouter = () => {
 													<ContinueMembershipConfirmation />
 												}
 											/>
-											<Route path="switch-thank-you" />
 											<Route
 												path="confirm"
 												element={
