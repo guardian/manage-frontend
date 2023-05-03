@@ -74,8 +74,7 @@ export const ConfirmCancellation: ComponentStory<
 };
 
 export const Reminder: ComponentStory<typeof SupportReminder> = () => {
-	// @ts-expect-error set identity details email in the window
-	window.guardian = { identityDetails: { email: 'test' } };
+	window.guardian.identityDetails.email = 'test';
 
 	return <SupportReminder />;
 };
