@@ -9,7 +9,7 @@ describe('Cancel contribution', () => {
 		cy.window().then((window) => {
 			window.guardian.identityDetails = {
 				signInStatus: 'signedInRecently',
-				userId: '200006712',
+				userId: '1',
 				displayName: 'user',
 				email: 'example@example.com',
 			};

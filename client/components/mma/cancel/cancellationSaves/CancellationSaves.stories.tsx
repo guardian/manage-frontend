@@ -14,6 +14,7 @@ import { MembershipSwitch } from './MembershipSwitch';
 import { SaveOptions } from './SaveOptions';
 import { SelectReason } from './SelectReason';
 import { SupportReminder } from './SupportReminder';
+import { SwitchThankYou } from './SwitchThankYou';
 import { ValueOfSupport } from './ValueOfSupport';
 
 export default {
@@ -71,6 +72,12 @@ export const ConfirmCancellation: ComponentStory<
 	typeof ConfirmMembershipCancellation
 > = () => {
 	return <ConfirmMembershipCancellation />;
+};
+
+export const SwitchCompleteThankYou: ComponentStory<
+	typeof SwitchThankYou
+> = () => {
+	return <SwitchThankYou />;
 };
 
 export const Reminder: ComponentStory<typeof SupportReminder> = () => {
