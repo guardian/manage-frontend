@@ -14,6 +14,7 @@ import { MembershipSwitch } from './MembershipSwitch';
 import { SaveOptions } from './SaveOptions';
 import { SelectReason } from './SelectReason';
 import { SupportReminder } from './SupportReminder';
+import { SwitchThankYou } from './SwitchThankYou';
 import { ValueOfSupport } from './ValueOfSupport';
 
 export default {
@@ -77,4 +78,10 @@ export const Reminder: ComponentStory<typeof SupportReminder> = () => {
 	window.guardian.identityDetails.email = 'test';
 
 	return <SupportReminder />;
+};
+
+export const SwitchCompleteThankYou: ComponentStory<
+	typeof SwitchThankYou
+> = () => {
+	return <SwitchThankYou />;
 };
