@@ -189,6 +189,7 @@ export const MembershipSwitch = () => {
 		</>
 	);
 };
+
 function getMonthlyOrAnnual(billingPeriod: string | undefined) {
 	return billingPeriod === 'year' ? 'Annual' : 'Monthly';
 }

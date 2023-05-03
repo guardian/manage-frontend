@@ -17,10 +17,9 @@ import { ProductDetail } from '../../../shared/productResponse';
 
 const setSignInStatus = () => {
 	cy.window().then((window) => {
-		// @ts-ignore
 		window.guardian.identityDetails = {
 			signInStatus: 'signedInRecently',
-			userId: '200006712',
+			userId: '1',
 			displayName: 'user',
 			email: 'example@example.com',
 		};
@@ -74,10 +73,9 @@ if (featureSwitches.cancellationProductSwitch) {
 			cy.visit('/');
 
 			cy.window().then((window) => {
-				// @ts-ignore
 				window.guardian.identityDetails = {
 					signInStatus: 'signedInRecently',
-					userId: '200006712',
+					userId: '1',
 					displayName: 'user',
 					email: 'example@example.com',
 				};
@@ -106,10 +104,9 @@ if (featureSwitches.cancellationProductSwitch) {
 			cy.visit('/');
 
 			cy.window().then((window) => {
-				// @ts-ignore
 				window.guardian.identityDetails = {
 					signInStatus: 'signedInRecently',
-					userId: '200006712',
+					userId: '1',
 					displayName: 'user',
 					email: 'example@example.com',
 				};
@@ -158,10 +155,9 @@ if (featureSwitches.cancellationProductSwitch) {
 			cy.visit('/');
 
 			cy.window().then((window) => {
-				// @ts-ignore
 				window.guardian.identityDetails = {
 					signInStatus: 'signedInRecently',
-					userId: '200006712',
+					userId: '1',
 					displayName: 'user',
 					email: 'example@example.com',
 				};
