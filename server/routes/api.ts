@@ -169,7 +169,7 @@ router.post(
 	productMoveAPI(
 		'product-move/:switchType/:subscriptionName',
 		'MOVE_PRODUCT',
-		['subscriptionName'],
+		['switchType', 'subscriptionName'],
 	),
 );
 
