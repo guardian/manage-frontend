@@ -55,7 +55,6 @@ export const publicCreateReminderHandler =
 					reminderType,
 					JSON.parse(reminderData),
 				);
-				console.log(reminderDataWithReminderPeriod);
 
 				const response = await createReminder(
 					reminderType,
