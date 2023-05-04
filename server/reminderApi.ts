@@ -28,7 +28,7 @@ const verifyReminderToken = (
 	const hash = crypto
 		.createHmac('sha1', key)
 		.update(reminderData)
-		.digest('base64');
+		.digest('hex');
 
 	return hash === token;
 };
