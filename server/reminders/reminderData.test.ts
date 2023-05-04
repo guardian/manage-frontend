@@ -7,7 +7,11 @@ describe('addReminderPeriod', () => {
 		const expected = {
 			reminderPeriod: `2020-12-01`,
 		};
-		const actual = addReminderPeriod(reminderData, novemberNineteenth);
+		const actual = addReminderPeriod(
+			'ONE_OFF',
+			reminderData,
+			novemberNineteenth,
+		);
 
 		expect(actual).toEqual(expected);
 	});
@@ -18,7 +22,11 @@ describe('addReminderPeriod', () => {
 		const expected = {
 			reminderPeriod: `2021-01-01`,
 		};
-		const actual = addReminderPeriod(reminderData, novemberTwentieth);
+		const actual = addReminderPeriod(
+			'ONE_OFF',
+			reminderData,
+			novemberTwentieth,
+		);
 
 		expect(actual).toEqual(expected);
 	});
@@ -29,7 +37,11 @@ describe('addReminderPeriod', () => {
 		const expected = {
 			reminderPeriod: `2021-01-01`,
 		};
-		const actual = addReminderPeriod(reminderData, novemberTwentyFirst);
+		const actual = addReminderPeriod(
+			'ONE_OFF',
+			reminderData,
+			novemberTwentyFirst,
+		);
 
 		expect(actual).toEqual(expected);
 	});
@@ -40,7 +52,11 @@ describe('addReminderPeriod', () => {
 		const expected = {
 			reminderPeriod: `2022-12-01`,
 		};
-		const actual = addReminderPeriod(reminderData, novemberTwentyFirst);
+		const actual = addReminderPeriod(
+			'ONE_OFF',
+			reminderData,
+			novemberTwentyFirst,
+		);
 
 		expect(actual).toEqual(expected);
 	});

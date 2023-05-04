@@ -4,6 +4,7 @@ import type { Request, Response } from 'express';
 import fetch from 'node-fetch';
 import { s3ConfigPromise } from '../awsIntegration';
 import { conf } from '../config';
+import type { ReminderType } from './reminderData';
 import { addReminderPeriod } from './reminderData';
 
 interface RemindersConfig {
@@ -44,14 +45,14 @@ export const createOneOffReminderHandler = (req: Request, res: Response) =>
 
 // Instead of requiring the user to be signed in, this endpoint verifies the token
 export const publicCreateReminderHandler =
-	(reminderType: 'ONE_OFF' | 'RECURRING') =>
-	async (req: Request, res: Response) => {
+	(reminderType: ReminderType) => async (req: Request, res: Response) => {
 		const { reminderData, token } = JSON.parse(req.body);
 
 		if (reminderData && token) {
 			const reminderHmacKey = await getReminderHmacKey();
 			if (verifyReminderToken(reminderData, token, reminderHmacKey)) {
 				const reminderDataWithReminderPeriod = addReminderPeriod(
+					reminderType,
 					JSON.parse(reminderData),
 				);
 				console.log(reminderDataWithReminderPeriod);
@@ -104,10 +105,7 @@ const createRecurringReminderEndpoint =
 const cancelRemindersEndpoint = baseReminderEndpoint + 'cancel';
 const reactivateRemindersEndpoint = baseReminderEndpoint + 'reactivate';
 
-const createReminder = (
-	reminderType: 'ONE_OFF' | 'RECURRING',
-	reminderData: string,
-) => {
+const createReminder = (reminderType: ReminderType, reminderData: string) => {
 	const url =
 		reminderType === 'ONE_OFF'
 			? createOneOffReminderEndpoint
