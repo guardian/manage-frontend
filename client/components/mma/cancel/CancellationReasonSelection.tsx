@@ -325,9 +325,13 @@ const ReasonPickerWithCancellationDate = ({
 		return <GenericErrorScreen />;
 	}
 
-	const chargedThroughDateStr = parseDate(
+	const parsedDate = parseDate(
 		cancellationDateResponse.cancellationEffectiveDate,
-	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
+	);
+
+	const chargedThroughDateStr = isNaN(parsedDate.date.getTime())
+		? undefined
+		: parsedDate.dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
 	return (
 		<ReasonPicker
