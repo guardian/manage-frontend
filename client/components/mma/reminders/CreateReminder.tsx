@@ -75,7 +75,7 @@ export const CreateReminder = ({ reminderType }: CreateReminderProps) => {
 
 	const successCopy =
 		reminderType === 'ONE_OFF'
-			? 'Your reminder has been created. Look out for an email from us next month.'
+			? 'Your reminder has been created. Look out for an email from us soon.'
 			: 'Your monthly reminder has been created. Look out for an email from us next month.';
 
 	return (
