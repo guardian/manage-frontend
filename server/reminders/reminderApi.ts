@@ -2,8 +2,9 @@ import crypto from 'crypto';
 import { captureMessage } from '@sentry/node';
 import type { Request, Response } from 'express';
 import fetch from 'node-fetch';
-import { s3ConfigPromise } from './awsIntegration';
-import { conf } from './config';
+import { s3ConfigPromise } from '../awsIntegration';
+import { conf } from '../config';
+import { addReminderPeriod } from './reminderData';
 
 interface RemindersConfig {
 	reminderHmacKey: string;
@@ -34,7 +35,7 @@ const verifyReminderToken = (
 };
 
 export const createOneOffReminderHandler = (req: Request, res: Response) =>
-	createOneOffReminder(req.body).then((response) => {
+	createReminder('ONE_OFF', req.body).then((response) => {
 		if (!response.ok) {
 			captureMessage('Reminder sign up failed at the point of request');
 		}
@@ -50,9 +51,15 @@ export const publicCreateReminderHandler =
 		if (reminderData && token) {
 			const reminderHmacKey = await getReminderHmacKey();
 			if (verifyReminderToken(reminderData, token, reminderHmacKey)) {
-				const response = await (reminderType === 'ONE_OFF'
-					? createOneOffReminder(reminderData)
-					: createRecurringReminder(reminderData));
+				const reminderDataWithReminderPeriod = addReminderPeriod(
+					JSON.parse(reminderData),
+				);
+				console.log(reminderDataWithReminderPeriod);
+
+				const response = await createReminder(
+					reminderType,
+					JSON.stringify(reminderDataWithReminderPeriod),
+				);
 				if (!response.ok) {
 					captureMessage(
 						'Reminder sign up failed at the point of request',
@@ -97,23 +104,22 @@ const createRecurringReminderEndpoint =
 const cancelRemindersEndpoint = baseReminderEndpoint + 'cancel';
 const reactivateRemindersEndpoint = baseReminderEndpoint + 'reactivate';
 
-const createOneOffReminder = (reminderData: string) =>
-	fetch(createOneOffReminderEndpoint, {
+const createReminder = (
+	reminderType: 'ONE_OFF' | 'RECURRING',
+	reminderData: string,
+) => {
+	const url =
+		reminderType === 'ONE_OFF'
+			? createOneOffReminderEndpoint
+			: createRecurringReminderEndpoint;
+	return fetch(url, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 		},
 		body: reminderData,
 	});
-
-const createRecurringReminder = (reminderData: string) =>
-	fetch(createRecurringReminderEndpoint, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: reminderData,
-	});
+};
 
 const cancelReminder = (body: any) =>
 	fetch(cancelRemindersEndpoint, {

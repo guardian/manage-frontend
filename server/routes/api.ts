@@ -27,7 +27,7 @@ import {
 	createOneOffReminderHandler,
 	publicCreateReminderHandler,
 	reactivateReminderHandler,
-} from '../reminderApi';
+} from '../reminders/reminderApi';
 import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
 
 const router = Router();
