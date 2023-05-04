@@ -687,8 +687,17 @@ const MMARouter = () => {
 						/>
 						{/*Does not require sign in*/}
 						<Route
-							path="/create-reminder"
-							element={<CreateReminder />}
+							path="/create-reminder/one-off"
+							element={
+								<CreateReminder reminderType={'ONE_OFF'} />
+							}
+						/>
+						{/*Does not require sign in*/}
+						<Route
+							path="/create-reminder/recurring"
+							element={
+								<CreateReminder reminderType={'RECURRING'} />
+							}
 						/>
 						<Route path="/maintenance" element={<Maintenance />} />
 						<Route path="*" element={<Navigate to="/" />} />

@@ -24,7 +24,7 @@ import { log } from '../log';
 import { withIdentity } from '../middleware/identityMiddleware';
 import {
 	cancelReminderHandler,
-	createReminderHandler,
+	createOneOffReminderHandler,
 	publicCreateReminderHandler,
 	reactivateReminderHandler,
 } from '../reminderApi';
@@ -258,8 +258,15 @@ router.get('/help-centre/topic/:topic', getTopicHandler);
 
 router.post('/contact-us', contactUsFormHandler);
 
-router.post('/reminders/create', createReminderHandler); // requires sign-in
-router.post('/reminders/create-public', publicCreateReminderHandler); // does not require sign-in, uses verification token
+router.post('/reminders/create', createOneOffReminderHandler); // requires sign-in
+router.post(
+	'/reminders/create-public/one-off',
+	publicCreateReminderHandler('ONE_OFF'),
+); // does not require sign-in, uses verification token
+router.post(
+	'/reminders/create-public/recurring',
+	publicCreateReminderHandler('RECURRING'),
+); // does not require sign-in, uses verification token
 router.get(
 	'/reminders/status',
 	membersDataApiHandler(

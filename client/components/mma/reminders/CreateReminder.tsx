@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import type { ReminderType } from '../identity/idapi/supportReminders';
 import { sendReminderCreation } from '../identity/idapi/supportReminders';
 
 const containerStyle = css`
@@ -26,6 +27,10 @@ const linkStyle = css`
 
 type Status = 'PENDING' | 'SUCCESS' | 'FAILURE';
 
+interface CreateReminderProps {
+	reminderType: ReminderType;
+}
+
 /**
  * This is the destination for reminder signup links in Braze emails.
  * Attempts to create a reminder and displays a progress message.
@@ -34,7 +39,7 @@ type Status = 'PENDING' | 'SUCCESS' | 'FAILURE';
  * - reminderData - stringified JSON payload for the reminders API
  * - token - hashed version of the payload (using a key shared with Braze)
  */
-export const CreateReminder = () => {
+export const CreateReminder = ({ reminderType }: CreateReminderProps) => {
 	const [status, setStatus] = useState<Status>('PENDING');
 	const [params] = useSearchParams();
 
@@ -49,7 +54,7 @@ export const CreateReminder = () => {
 			);
 		} else {
 			const b64Token = token.replace(' ', '+'); // + gets encoded as space in querystring
-			sendReminderCreation(reminderData, b64Token)
+			sendReminderCreation(reminderType, reminderData, b64Token)
 				.then((response) => {
 					if (!response.ok) {
 						return Promise.reject(
@@ -68,6 +73,11 @@ export const CreateReminder = () => {
 		}
 	}, []);
 
+	const successCopy =
+		reminderType === 'ONE_OFF'
+			? 'Your reminder has been created. Look out for an email from us next month.'
+			: 'Your monthly reminder has been created. Look out for an email from us next month.';
+
 	return (
 		<div css={containerStyle}>
 			{status === 'PENDING' && (
@@ -76,7 +86,7 @@ export const CreateReminder = () => {
 
 			{status === 'SUCCESS' && (
 				<>
-					<h3 css={headingStyle}>Reminder created</h3>
+					<h3 css={headingStyle}>{successCopy}</h3>
 					<div css={linkStyle}>
 						<a
 							css={css`

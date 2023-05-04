@@ -33,8 +33,8 @@ const verifyReminderToken = (
 	return hash === token;
 };
 
-export const createReminderHandler = (req: Request, res: Response) =>
-	createReminder(req.body).then((response) => {
+export const createOneOffReminderHandler = (req: Request, res: Response) =>
+	createOneOffReminder(req.body).then((response) => {
 		if (!response.ok) {
 			captureMessage('Reminder sign up failed at the point of request');
 		}
@@ -42,31 +42,32 @@ export const createReminderHandler = (req: Request, res: Response) =>
 	});
 
 // Instead of requiring the user to be signed in, this endpoint verifies the token
-export const publicCreateReminderHandler = async (
-	req: Request,
-	res: Response,
-) => {
-	const { reminderData, token } = JSON.parse(req.body);
+export const publicCreateReminderHandler =
+	(reminderType: 'ONE_OFF' | 'RECURRING') =>
+	async (req: Request, res: Response) => {
+		const { reminderData, token } = JSON.parse(req.body);
 
-	if (reminderData && token) {
-		const reminderHmacKey = await getReminderHmacKey();
-		if (verifyReminderToken(reminderData, token, reminderHmacKey)) {
-			const response = await createReminder(reminderData);
-			if (!response.ok) {
-				captureMessage(
-					'Reminder sign up failed at the point of request',
-				);
+		if (reminderData && token) {
+			const reminderHmacKey = await getReminderHmacKey();
+			if (verifyReminderToken(reminderData, token, reminderHmacKey)) {
+				const response = await (reminderType === 'ONE_OFF'
+					? createOneOffReminder(reminderData)
+					: createRecurringReminder(reminderData));
+				if (!response.ok) {
+					captureMessage(
+						'Reminder sign up failed at the point of request',
+					);
+				}
+				res.sendStatus(response.status);
+			} else {
+				captureMessage('Failed to verify token for reminder signup');
+				res.sendStatus(400);
 			}
-			res.sendStatus(response.status);
 		} else {
-			captureMessage('Failed to verify token for reminder signup');
+			captureMessage('Invalid request for reminder signup');
 			res.sendStatus(400);
 		}
-	} else {
-		captureMessage('Invalid request for reminder signup');
-		res.sendStatus(400);
-	}
-};
+	};
 
 export const cancelReminderHandler = (req: Request, res: Response) =>
 	cancelReminder(req.body).then((response) => {
@@ -91,11 +92,22 @@ const baseReminderEndpoint = isProd
 	: 'https://support.code.dev-theguardian.com/reminders/';
 
 const createOneOffReminderEndpoint = baseReminderEndpoint + 'create/one-off';
+const createRecurringReminderEndpoint =
+	baseReminderEndpoint + 'create/recurring';
 const cancelRemindersEndpoint = baseReminderEndpoint + 'cancel';
 const reactivateRemindersEndpoint = baseReminderEndpoint + 'reactivate';
 
-const createReminder = (reminderData: string) =>
+const createOneOffReminder = (reminderData: string) =>
 	fetch(createOneOffReminderEndpoint, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: reminderData,
+	});
+
+const createRecurringReminder = (reminderData: string) =>
+	fetch(createRecurringReminderEndpoint, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
