@@ -253,9 +253,6 @@ export type ProductTypeKeys =
 	| 'supporterplus'
 	| 'guardianpatron';
 
-/*
- * TODO: remove 'contributions' from the following list once MDAPI has been changed to return 'recurringSupport' instead
- */
 export type GroupedProductTypeKeys =
 	| 'membership'
 	| 'recurringSupport'
