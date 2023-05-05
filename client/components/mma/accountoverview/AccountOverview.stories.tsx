@@ -13,11 +13,14 @@ import {
 	PuzzleAppPurchaseIos,
 } from '../../../fixtures/inAppPurchase';
 import {
+	digitalPackPaidByDirectDebit,
+	guardianWeeklyPaidByCard,
+} from '../../../fixtures/productBuilder/testProducts';
+import {
 	contributionCancelled,
 	contributionPayPal,
 	digitalDD,
 	guardianWeeklyCancelled,
-	guardianWeeklyCard,
 	guardianWeeklyGiftPurchase,
 	guardianWeeklyGiftRecipient,
 	newspaperVoucherPaypal,
@@ -61,8 +64,8 @@ export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
 		})
 		.get('/api/me/mma', {
 			body: toMembersDataApiResponse(
-				guardianWeeklyCard,
-				digitalDD,
+				guardianWeeklyPaidByCard(),
+				digitalPackPaidByDirectDebit(),
 				newspaperVoucherPaypal,
 			),
 		});
