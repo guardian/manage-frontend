@@ -7,9 +7,14 @@ import { Header } from './Header';
 export interface MainProps {
 	signInStatus?: SignInStatus;
 	children: JSX.Element | JSX.Element[];
+	isHelpCentrePage?: boolean;
 }
 
-export const Main = ({ signInStatus = 'init', children }: MainProps) => (
+export const Main = ({
+	signInStatus = 'init',
+	children,
+	isHelpCentrePage,
+}: MainProps) => (
 	<div
 		css={{
 			display: 'flex',
@@ -34,7 +39,10 @@ export const Main = ({ signInStatus = 'init', children }: MainProps) => (
 		>
 			Skip to main content
 		</a>
-		<Header signInStatus={signInStatus} />
+		<Header
+			signInStatus={signInStatus}
+			isHelpCentrePage={isHelpCentrePage}
+		/>
 		<div
 			css={{
 				flexGrow: 1,

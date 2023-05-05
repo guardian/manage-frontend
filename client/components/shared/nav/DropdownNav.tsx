@@ -134,7 +134,7 @@ const DropdownNavItem = ({ navItem }: { navItem: MenuSpecificNavItem }) => (
 	</>
 );
 
-export const DropdownNav = () => {
+export const DropdownNav = (props: { isHelpCentrePage: boolean }) => {
 	const [showMenu, setShowMenu] = useState(false);
 	const wrapperRef = useRef<HTMLElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
@@ -241,7 +241,7 @@ export const DropdownNav = () => {
 				{Object.values(NAV_LINKS).map(
 					(navItem: MenuSpecificNavItem) => (
 						<li key={navItem.title}>
-							{navItem.local ? (
+							{navItem.local && !props.isHelpCentrePage ? (
 								<Link
 									to={navItem.link}
 									css={dropdownNavItemCss}

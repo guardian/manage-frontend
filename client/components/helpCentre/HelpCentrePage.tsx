@@ -81,7 +81,7 @@ const HelpCentreRouter = () => {
 	];
 
 	return (
-		<Main signInStatus={signInStatus}>
+		<Main signInStatus={signInStatus} isHelpCentrePage>
 			<Global styles={css(`${global}`)} />
 			<Global styles={css(`${fonts}`)} />
 			<HelpCenterContentWrapper knownIssues={knownIssues}>
