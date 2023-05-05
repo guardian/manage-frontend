@@ -46,31 +46,38 @@ export const createOneOffReminderHandler = (req: Request, res: Response) =>
 // Instead of requiring the user to be signed in, this endpoint verifies the token
 export const publicCreateReminderHandler =
 	(reminderType: ReminderType) => async (req: Request, res: Response) => {
-		const { reminderData, token } = JSON.parse(req.body);
+		try {
+			const { reminderData, token } = JSON.parse(req.body);
 
-		if (reminderData && token) {
-			const reminderHmacKey = await getReminderHmacKey();
-			if (verifyReminderToken(reminderData, token, reminderHmacKey)) {
-				const reminderDataWithReminderPeriod = addReminderPeriod(
-					reminderType,
-					JSON.parse(reminderData),
-				);
-
-				const response = await createReminder(
-					reminderType,
-					JSON.stringify(reminderDataWithReminderPeriod),
-				);
-				if (!response.ok) {
-					captureMessage(
-						'Reminder sign up failed at the point of request',
+			if (reminderData && token) {
+				const reminderHmacKey = await getReminderHmacKey();
+				if (verifyReminderToken(reminderData, token, reminderHmacKey)) {
+					const reminderDataWithReminderPeriod = addReminderPeriod(
+						reminderType,
+						JSON.parse(reminderData),
 					);
+
+					const response = await createReminder(
+						reminderType,
+						JSON.stringify(reminderDataWithReminderPeriod),
+					);
+					if (!response.ok) {
+						captureMessage(
+							'Reminder sign up failed at the point of request',
+						);
+					}
+					res.sendStatus(response.status);
+				} else {
+					captureMessage(
+						'Failed to verify token for reminder signup',
+					);
+					res.sendStatus(400);
 				}
-				res.sendStatus(response.status);
 			} else {
-				captureMessage('Failed to verify token for reminder signup');
+				captureMessage('Invalid request for reminder signup');
 				res.sendStatus(400);
 			}
-		} else {
+		} catch (err) {
 			captureMessage('Invalid request for reminder signup');
 			res.sendStatus(400);
 		}
