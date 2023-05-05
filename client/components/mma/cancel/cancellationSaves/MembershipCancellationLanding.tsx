@@ -23,7 +23,7 @@ import { Heading } from '../../shared/Heading';
 import { sectionSpacing } from '../../switch/SwitchStyles';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import { buttonLayoutCss, headingCss } from './SaveStyles';
+import { buttonLayoutCss } from './SaveStyles';
 
 function ineligibleForSave(
 	products: ProductDetail[],
@@ -89,42 +89,25 @@ export const MembershipCancellationLanding = () => {
 			<section css={sectionSpacing}>
 				<Stack space={3}>
 					<Heading>
-						We're sorry to hear you're thinking of cancelling.
+						We're sorry to hear you're thinking of leaving
 					</Heading>
-					<p>Lorem Lipsum Loremm Lipsum</p>
-					<h2 css={headingCss}>
-						We offer different ways for cancelling your membership
-					</h2>
+					<p>
+						To cancel today, please chose from the following
+						options.
+					</p>
 				</Stack>
 			</section>
 			<section css={sectionSpacing}>
 				<Stack space={3}>
 					<Heading sansSerif>Call us</Heading>
-					You can call one of our customer service...
-					<CallCentreEmailAndNumbers
-						hideEmailAddress={true}
-						collapsed
-					/>
-				</Stack>
-			</section>
-			<section css={sectionSpacing}>
-				<Stack space={3}>
-					<Heading sansSerif>Chat to us</Heading>
-					You can chat with our customer service..
-					<div css={buttonLayoutCss}>
-						<Button
-							icon={<SvgArrowRightStraight />}
-							iconSide="right"
-						>
-							Contact Us
-						</Button>
-					</div>
+					You can call one of our customer service agents.
+					<CallCentreEmailAndNumbers hideEmailAddress={true} />
 				</Stack>
 			</section>
 			<section css={sectionSpacing}>
 				<Stack space={3}>
 					<Heading sansSerif>Cancel online</Heading>
-					You can cancel online Lorem Lipsum.
+					Continue without speaking to our customer service team.
 					<div css={buttonLayoutCss}>
 						<Button
 							icon={<SvgArrowRightStraight />}
