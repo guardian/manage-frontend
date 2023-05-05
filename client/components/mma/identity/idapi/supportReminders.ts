@@ -15,9 +15,9 @@ let recurringReminderCode = '';
 const REMINDERS_STATUS_ENDPOINT = '/api/reminders/status';
 const CANCEL_REMINDERS_ENDPOINT = '/api/reminders/cancel';
 const REACTIVATE_REMINDERS_ENDPOINT = '/api/reminders/reactivate';
-const CREATE_ONE_OFF_REMINDER_ENDPOINT = '/api/reminders/create-public/one-off';
+const CREATE_ONE_OFF_REMINDER_ENDPOINT = '/api/public/reminders/create/one-off';
 const CREATE_RECURRING_REMINDER_ENDPOINT =
-	'/api/reminders/create-public/recurring';
+	'/api/public/reminders/create/recurring';
 
 const getConsent = (isActive: boolean): ConsentOption => ({
 	id: 'support_reminder',

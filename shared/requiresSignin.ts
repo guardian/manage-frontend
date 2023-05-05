@@ -5,7 +5,7 @@ const publicPaths = [
 	'/api/contact-us/',
 	'/api/known-issues/',
 	'/api/reminders/cancel/',
-	'/api/reminders/create-public/',
+	'/api/public/reminders/',
 	'/api/help-centre/',
 	'/cancel-reminders/',
 	'/create-reminder/',

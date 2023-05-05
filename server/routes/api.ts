@@ -260,11 +260,11 @@ router.post('/contact-us', contactUsFormHandler);
 
 router.post('/reminders/create', createOneOffReminderHandler); // requires sign-in
 router.post(
-	'/reminders/create-public/one-off',
+	'/public/reminders/create/one-off',
 	publicCreateReminderHandler('ONE_OFF'),
 ); // does not require sign-in, uses verification token
 router.post(
-	'/reminders/create-public/recurring',
+	'/public/reminders/create/recurring',
 	publicCreateReminderHandler('RECURRING'),
 ); // does not require sign-in, uses verification token
 router.get(
