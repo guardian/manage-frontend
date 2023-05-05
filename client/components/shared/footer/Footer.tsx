@@ -316,7 +316,7 @@ export const Footer = () => {
 								</span>
 							</a>
 							<div css={copyrightTextStyles}>
-								© {TODAY.getFullYear()} Guardian News and Media
+								© {TODAY.getFullYear()} Guardian News & Media
 								Limited or its affiliated companies.
 								All&nbsp;rights&nbsp;reserved.
 							</div>
