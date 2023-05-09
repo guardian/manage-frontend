@@ -677,7 +677,7 @@ const MMARouter = () => {
 						<Route path="/help" element={<Help />} />
 						{/*Does not require sign in*/}
 						<Route
-							path="/cancel-reminders/*reminderCode"
+							path="/cancel-reminders/:reminderCode"
 							element={<CancelReminders />}
 						/>
 						<Route path="/maintenance" element={<Maintenance />} />
