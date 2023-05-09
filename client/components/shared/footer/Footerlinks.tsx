@@ -103,3 +103,24 @@ export const footerlinks: FooterLink[][] = [
 		},
 	],
 ];
+
+export const minimalFooterLinks: FooterLink[][] = [
+	[
+		{
+			title: 'Privacy policy',
+			link: `https://${domain}/info/privacy`,
+		},
+	],
+	[
+		{
+			title: 'Contact us',
+			link: `https://${domain}/help/contact-us`,
+		},
+	],
+	[
+		{
+			title: 'Help centre',
+			link: `https://www.${domain}/help`,
+		},
+	],
+];
