@@ -22,19 +22,6 @@ const getReminderHmacKey = (): Promise<string> =>
 		}
 	});
 
-const verifyReminderToken = (
-	reminderData: string,
-	token: string,
-	key: string,
-): boolean => {
-	const hash = crypto
-		.createHmac('sha1', key)
-		.update(reminderData)
-		.digest('hex');
-
-	return hash === token;
-};
-
 export const createOneOffReminderHandler = (req: Request, res: Response) =>
 	createReminder('ONE_OFF', req.body).then((response) => {
 		if (!response.ok) {
@@ -43,44 +30,76 @@ export const createOneOffReminderHandler = (req: Request, res: Response) =>
 		res.sendStatus(response.status);
 	});
 
+interface CreateReminderRequest {
+	reminderData: string;
+	token: string;
+}
+
+const parseCreateReminderRequest = (
+	req: Request,
+): CreateReminderRequest | undefined => {
+	try {
+		const { reminderData, token } = JSON.parse(req.body);
+
+		if (reminderData && token) {
+			return { reminderData, token };
+		}
+		return undefined;
+	} catch (err) {
+		return undefined;
+	}
+};
+
+const isValidReminderToken = (
+	request: CreateReminderRequest,
+	key: string,
+): boolean => {
+	const hash = crypto
+		.createHmac('sha1', key)
+		.update(request.reminderData)
+		.digest('hex');
+
+	return hash === request.token;
+};
+
 // Instead of requiring the user to be signed in, this endpoint verifies the token
 export const publicCreateReminderHandler =
 	(reminderType: ReminderType) => async (req: Request, res: Response) => {
-		try {
-			const { reminderData, token } = JSON.parse(req.body);
-
-			if (reminderData && token) {
-				const reminderHmacKey = await getReminderHmacKey();
-				if (verifyReminderToken(reminderData, token, reminderHmacKey)) {
+		getReminderHmacKey()
+			.then(async (reminderHmacKey) => {
+				const requestData = parseCreateReminderRequest(req);
+				if (
+					requestData &&
+					isValidReminderToken(requestData, reminderHmacKey)
+				) {
 					const reminderDataWithReminderPeriod = addReminderPeriod(
 						reminderType,
-						JSON.parse(reminderData),
+						JSON.parse(requestData.reminderData),
 					);
 
-					const response = await createReminder(
+					return createReminder(
 						reminderType,
 						JSON.stringify(reminderDataWithReminderPeriod),
-					);
-					if (!response.ok) {
-						captureMessage(
-							'Reminder sign up failed at the point of request',
-						);
-					}
-					res.sendStatus(response.status);
+					).then((response) => {
+						if (!response.ok) {
+							captureMessage(
+								'Reminder sign up failed at the point of request',
+							);
+							return response.status;
+						}
+						return 200;
+					});
 				} else {
-					captureMessage(
-						'Failed to verify token for reminder signup',
-					);
-					res.sendStatus(400);
+					return 400;
 				}
-			} else {
-				captureMessage('Invalid request for reminder signup');
-				res.sendStatus(400);
-			}
-		} catch (err) {
-			captureMessage('Invalid request for reminder signup');
-			res.sendStatus(400);
-		}
+			})
+			.then((statusCode) => {
+				res.sendStatus(statusCode);
+			})
+			.catch((err) => {
+				captureMessage(`Reminder sign up failed: ${err}`);
+				res.sendStatus(500);
+			});
 	};
 
 export const cancelReminderHandler = (req: Request, res: Response) =>
