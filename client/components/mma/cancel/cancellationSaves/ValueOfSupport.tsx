@@ -11,7 +11,11 @@ import { dateString } from '../../../../../shared/dates';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import { buttonLayoutCss, headingCss } from './SaveStyles';
+import {
+	buttonCentredCss,
+	headingCss,
+	stackedButtonLayoutCss,
+} from './SaveStyles';
 
 export const ValueOfSupport = () => {
 	const navigate = useNavigate();
@@ -57,9 +61,10 @@ export const ValueOfSupport = () => {
 				</p>
 			</Stack>
 			<div>Image placeholder</div>
-			<div css={[buttonLayoutCss, { textAlign: 'right' }]}>
+			<div css={[stackedButtonLayoutCss, { textAlign: 'right' }]}>
 				<Button
 					priority="tertiary"
+					cssOverrides={buttonCentredCss}
 					onClick={() => navigate('../landing')}
 				>
 					Back
@@ -67,6 +72,7 @@ export const ValueOfSupport = () => {
 				<Button
 					icon={<SvgArrowRightStraight />}
 					iconSide="right"
+					cssOverrides={buttonCentredCss}
 					onClick={() => navigate('../offers')}
 				>
 					Continue to cancellation
