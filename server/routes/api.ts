@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/node';
 import { Router } from 'express';
-import { availableProductMovesResponse } from '../../client/fixtures/productMovement';
 import type { MembersDataApiResponse } from '../../shared/productResponse';
 import { isProduct, MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import {
@@ -147,22 +146,6 @@ router.patch(
 		'caseId',
 	]),
 );
-
-/*
-router.get(
-	'/available-product-moves/:subscriptionName',
-	productMoveAPI(
-		'available-product-moves/:subscriptionName',
-		'GET_AVAILABLE_PRODUCTS',
-	),
-);
-*/
-
-//
-router.get('/available-product-moves/:subscriptionName', (_, response) => {
-	response.json(availableProductMovesResponse);
-});
-//
 
 router.post(
 	'/product-move/:subscriptionName',

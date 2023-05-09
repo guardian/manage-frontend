@@ -5,30 +5,29 @@ import type {
 	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../shared/productResponse';
-import {
-	isProduct,
-	MembersDataApiAsyncLoader,
-} from '../../../../shared/productResponse';
+import { isProduct } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import type {
 	ProductType,
 	ProductTypeWithCancellationFlow,
 	WithProductType,
 } from '../../../../shared/productTypes';
+import {
+	LoadingState,
+	useAsyncLoader,
+} from '../../../utilities/hooks/useAsyncLoader';
 import { createProductDetailFetcher } from '../../../utilities/productUtils';
+import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../holiday/HolidayStopApi';
 import { PageContainer } from '../Page';
+import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import type {
 	CancellationReason,
 	OptionalCancellationReasonId,
 } from './cancellationReason';
-import { ProductSwitchContext } from './productSwitch/productSwitchApi';
-import type {
-	AvailableProductsResponse,
-	ProductSwitchResponse,
-} from './productSwitch/productSwitchApi';
 
 const renderSingleProductOrReturnToAccountOverview =
 	(productType: ProductType) => (mdapiResponse: MembersDataApiResponse) => {
@@ -44,6 +43,40 @@ const renderSingleProductOrReturnToAccountOverview =
 		}
 		return <Navigate to="/" />;
 	};
+
+const AsyncLoadedCancellationContainer = (
+	props: WithProductType<ProductType>,
+) => {
+	const request = createProductDetailFetcher(
+		props.productType.allProductsProductTypeFilterString,
+	);
+
+	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
+		request,
+		JsonResponseHandler,
+	);
+
+	if (loadingState == LoadingState.HasError) {
+		return <GenericErrorScreen />;
+	}
+	if (loadingState == LoadingState.IsLoading) {
+		return (
+			<DefaultLoadingView
+				loadingMessage={`Checking the status of your ${props.productType.friendlyName(
+					undefined,
+				)}...`}
+			/>
+		);
+	}
+
+	if (data == null || data.products.length == 0) {
+		return <Navigate to="/" />;
+	}
+
+	return renderSingleProductOrReturnToAccountOverview(props.productType)(
+		data,
+	);
+};
 
 export interface CancellationContextInterface {
 	productDetail: ProductDetail;
@@ -73,8 +106,6 @@ export interface CancellationRouterState {
 	updatedContributionAmount?: number;
 	selectedReason?: CancellationReason;
 	dontShowOffer?: boolean;
-	chosenProductToSwitchTo?: AvailableProductsResponse;
-	productSwitchConfirmationInfo?: ProductSwitchResponse;
 }
 
 export interface CancellationPageTitleInterface {
@@ -100,37 +131,19 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	);
 
 	return (
-		<ProductSwitchContext.Provider
-			value={{
-				productType: props.productType,
-			}}
-		>
-			<CancellationPageTitleContext.Provider value={{ setPageTitle }}>
-				<PageContainer
-					selectedNavItem={NAV_LINKS.accountOverview}
-					pageTitle={pageTitle}
-				>
-					{productDetail ? (
-						contextAndOutletContainer(
-							productDetail,
-							props.productType,
-						)
-					) : (
-						<MembersDataApiAsyncLoader
-							fetch={createProductDetailFetcher(
-								props.productType
-									.allProductsProductTypeFilterString,
-							)}
-							render={renderSingleProductOrReturnToAccountOverview(
-								props.productType,
-							)}
-							loadingMessage={`Checking the status of your ${props.productType.friendlyName(
-								productDetail,
-							)}...`}
-						/>
-					)}
-				</PageContainer>
-			</CancellationPageTitleContext.Provider>
-		</ProductSwitchContext.Provider>
+		<CancellationPageTitleContext.Provider value={{ setPageTitle }}>
+			<PageContainer
+				selectedNavItem={NAV_LINKS.accountOverview}
+				pageTitle={pageTitle}
+			>
+				{productDetail ? (
+					contextAndOutletContainer(productDetail, props.productType)
+				) : (
+					<AsyncLoadedCancellationContainer
+						productType={props.productType}
+					/>
+				)}
+			</PageContainer>
+		</CancellationPageTitleContext.Provider>
 	);
 };
