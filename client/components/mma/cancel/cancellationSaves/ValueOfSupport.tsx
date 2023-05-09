@@ -61,7 +61,7 @@ export const ValueOfSupport = () => {
 				</p>
 			</Stack>
 			<div>Image placeholder</div>
-			<div css={[stackedButtonLayoutCss, { textAlign: 'right' }]}>
+			<div css={stackedButtonLayoutCss}>
 				<Button
 					priority="tertiary"
 					cssOverrides={buttonCentredCss}

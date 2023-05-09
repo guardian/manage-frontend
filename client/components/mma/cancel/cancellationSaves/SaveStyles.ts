@@ -98,6 +98,7 @@ export const stackedButtonLayoutCss = css`
 	}
 	${from.tablet} {
 		flex-direction: row;
+		justify-content: flex-end;
 		> * + * {
 			margin-top: 0;
 			margin-left: ${space[3]}px;
