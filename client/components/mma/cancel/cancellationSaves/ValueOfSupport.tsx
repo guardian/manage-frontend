@@ -8,11 +8,10 @@ import {
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { dateString } from '../../../../../shared/dates';
-import { Heading } from '../../shared/Heading';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import { buttonLayoutCss } from './SaveStyles';
+import { buttonLayoutCss, headingCss } from './SaveStyles';
 
 export const ValueOfSupport = () => {
 	const navigate = useNavigate();
@@ -43,17 +42,18 @@ export const ValueOfSupport = () => {
 				`}
 			/>
 			<Stack space={4}>
-				<Heading>
+				<h2 css={headingCss}>
 					Thank you for supporting the Guardian since{' '}
 					{supportStartYear}.
-					<span css={{ display: 'block' }}>
-						Your support has made such a difference.
+					<span>
+						Your funding has played a vital role in our progress
 					</span>
-				</Heading>
+				</h2>
 				<p>
-					Here comes ... Before you go, please consider adapting your
-					membership to a monthly support or a Monthly + Extra
-					support.
+					Since you first joined as a Guardian Member, we've lived
+					through some of the most important news events of our times.
+					Without you, our fearless, independent journalism wouldn't
+					have reached millions around the world. We're so grateful.
 				</p>
 			</Stack>
 			<div>Image placeholder</div>

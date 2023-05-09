@@ -124,6 +124,7 @@ export const headingCss = css`
 		${headline.small({ fontWeight: 'bold' })};
 		span {
 			display: block;
+			color: ${palette.brand['500']};
 		}
 	}
 `;
