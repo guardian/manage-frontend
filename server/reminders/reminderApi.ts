@@ -151,7 +151,7 @@ const createReminder = (
 		'Content-Type': 'application/json',
 	};
 	if (country) {
-		headers['X-GU-GeoIP-Country-Code'] = country;
+		headers[COUNTRY_CODE_HEADER] = country;
 	}
 	return fetch(url, {
 		method: 'POST',
