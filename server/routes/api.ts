@@ -24,9 +24,10 @@ import { log } from '../log';
 import { withIdentity } from '../middleware/identityMiddleware';
 import {
 	cancelReminderHandler,
-	createReminderHandler,
+	createOneOffReminderHandler,
+	publicCreateReminderHandler,
 	reactivateReminderHandler,
-} from '../reminderApi';
+} from '../reminders/reminderApi';
 import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
 
 const router = Router();
@@ -257,7 +258,15 @@ router.get('/help-centre/topic/:topic', getTopicHandler);
 
 router.post('/contact-us', contactUsFormHandler);
 
-router.post('/reminders', createReminderHandler);
+router.post('/reminders/create', createOneOffReminderHandler); // requires sign-in
+router.post(
+	'/public/reminders/create/one-off',
+	publicCreateReminderHandler('ONE_OFF'),
+); // does not require sign-in, uses verification token
+router.post(
+	'/public/reminders/create/recurring',
+	publicCreateReminderHandler('RECURRING'),
+); // does not require sign-in, uses verification token
 router.get(
 	'/reminders/status',
 	membersDataApiHandler(

@@ -5,14 +5,17 @@ const publicPaths = [
 	'/api/contact-us/',
 	'/api/known-issues/',
 	'/api/reminders/cancel/',
+	'/api/public/reminders/',
 	'/api/help-centre/',
 	'/cancel-reminders/',
+	'/create-reminder/',
 	'/help-centre/',
 	'/maintenance/',
 ];
 
 export const requiresSignin = (path: string) => {
-	const normalizedPath = normalize(path + '/');
+	const pathWithoutQuerystring = path.split('?')[0];
+	const normalizedPath = normalize(pathWithoutQuerystring + '/');
 	return !publicPaths.some((publicPath) =>
 		normalizedPath.startsWith(publicPath),
 	);
