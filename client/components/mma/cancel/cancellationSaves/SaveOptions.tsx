@@ -1,7 +1,8 @@
-import { css } from '@emotion/react';
+import { css, ThemeProvider } from '@emotion/react';
 import { palette, space } from '@guardian/source-foundations';
 import {
 	Button,
+	buttonThemeReaderRevenueBrand,
 	Stack,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
@@ -36,16 +37,14 @@ export const SaveOptions = () => {
 			<Stack space={4}>
 				<section css={sectionSpacing}>
 					<Heading>
-						Before you go, would you consider different support
-						options
+						Are you sure you want to lose your exclusive benefits?
 					</Heading>
 				</section>
 				<section css={sectionSpacing}>
-					<Heading sansSerif>
-						Continue your membership at X per month
-					</Heading>
+					<Heading sansSerif>Keep your Membership</Heading>
 				</section>
-				You will keep your current set of benefits
+				Enjoy all of your exclusive extras. The new price has increased
+				from XX to YY/ZZ.
 				<Card>
 					<Card.Header backgroundColor={palette.brand[600]}>
 						<div css={cardHeaderDivCss}>
@@ -55,14 +54,16 @@ export const SaveOptions = () => {
 					</Card.Header>
 					<Card.Section>
 						<MembershipBenefitsSection />
+						{/*todo: add  border border-top: 1px solid ${palette.neutral[86]}; */}
 						<section css={sectionSpacing}>
 							<div css={buttonLayoutCss}>
-								<Button
-									icon={<SvgArrowRightStraight />}
-									iconSide="right"
+								<ThemeProvider
+									theme={buttonThemeReaderRevenueBrand}
 								>
-									Continue your membership
-								</Button>
+									<Button>
+										Keep my Membership for xx/yy
+									</Button>
+								</ThemeProvider>
 							</div>
 						</section>
 					</Card.Section>
