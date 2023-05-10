@@ -7,6 +7,8 @@ import { conf } from '../config';
 import type { ReminderType } from './reminderData';
 import { addReminderPeriod } from './reminderData';
 
+const COUNTRY_CODE_HEADER = 'X-GU-GeoIP-Country-Code';
+
 interface RemindersConfig {
 	reminderHmacKey: string;
 }
@@ -23,12 +25,16 @@ const getReminderHmacKey = (): Promise<string> =>
 	});
 
 export const createOneOffReminderHandler = (req: Request, res: Response) =>
-	createReminder('ONE_OFF', req.body).then((response) => {
-		if (!response.ok) {
-			captureMessage('Reminder sign up failed at the point of request');
-		}
-		res.sendStatus(response.status);
-	});
+	createReminder('ONE_OFF', req.body, req.header(COUNTRY_CODE_HEADER)).then(
+		(response) => {
+			if (!response.ok) {
+				captureMessage(
+					'Reminder sign up failed at the point of request',
+				);
+			}
+			res.sendStatus(response.status);
+		},
+	);
 
 interface CreateReminderRequest {
 	reminderData: string;
@@ -80,6 +86,7 @@ export const publicCreateReminderHandler =
 					return createReminder(
 						reminderType,
 						JSON.stringify(reminderDataWithReminderPeriod),
+						req.header(COUNTRY_CODE_HEADER),
 					).then((response) => {
 						if (!response.ok) {
 							captureMessage(
@@ -130,16 +137,25 @@ const createRecurringReminderEndpoint =
 const cancelRemindersEndpoint = baseReminderEndpoint + 'cancel';
 const reactivateRemindersEndpoint = baseReminderEndpoint + 'reactivate';
 
-const createReminder = (reminderType: ReminderType, reminderData: string) => {
+const createReminder = (
+	reminderType: ReminderType,
+	reminderData: string,
+	country: string | undefined,
+) => {
 	const url =
 		reminderType === 'ONE_OFF'
 			? createOneOffReminderEndpoint
 			: createRecurringReminderEndpoint;
+
+	const headers: Record<string, string> = {
+		'Content-Type': 'application/json',
+	};
+	if (country) {
+		headers['X-GU-GeoIP-Country-Code'] = country;
+	}
 	return fetch(url, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
+		headers,
 		body: reminderData,
 	});
 };
