@@ -96,7 +96,7 @@ const buttonLayoutCss = css`
 `;
 
 const productSwitchType: ProductSwitchType =
-	'RecurringContributionToSupporterPlus';
+	'recurring-contribution-to-supporter-plus';
 
 interface PreviewResponse {
 	amountPayableToday: number;

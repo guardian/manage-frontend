@@ -1,3 +1,3 @@
 export type ProductSwitchType =
-	| 'MembershipToRecurringContribution'
-	| 'RecurringContributionToSupporterPlus';
+	| 'to-recurring-contribution'
+	| 'recurring-contribution-to-supporter-plus';
