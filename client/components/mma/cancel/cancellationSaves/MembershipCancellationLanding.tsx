@@ -100,7 +100,7 @@ export const MembershipCancellationLanding = () => {
 			<section css={sectionSpacing}>
 				<Stack space={3}>
 					<Heading sansSerif>Call us</Heading>
-					You can call one of our customer service agents.
+					Phone one of our customer service agents.
 					<CallCentreEmailAndNumbers hideEmailAddress={true} />
 				</Stack>
 			</section>
