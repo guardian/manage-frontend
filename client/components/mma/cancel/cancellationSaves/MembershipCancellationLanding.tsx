@@ -92,7 +92,7 @@ export const MembershipCancellationLanding = () => {
 						We're sorry to hear you're thinking of leaving
 					</Heading>
 					<p>
-						To cancel today, please chose from the following
+						To cancel today, please choose from the following
 						options.
 					</p>
 				</Stack>
