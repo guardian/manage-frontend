@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { from } from '@guardian/source-foundations';
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -6,8 +7,10 @@ import type { ReminderType } from '../identity/idapi/supportReminders';
 import { sendReminderCreation } from '../identity/idapi/supportReminders';
 
 const containerStyle = css`
-	width: 100%;
-	margin-left: 20%;
+	margin: 0 5px;
+	${from.desktop} {
+		margin-left: 20%;
+	}
 
 	max-width: 400px;
 	display: flex;
