@@ -4,7 +4,6 @@ import {
 	Button,
 	buttonThemeReaderRevenueBrand,
 	Stack,
-	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
 import { Card } from '../../shared/Card';
@@ -12,11 +11,15 @@ import { Heading } from '../../shared/Heading';
 import { MembershipBenefitsSection } from '../../shared/MembershipBenefits';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import { RecurringSupporterBenefitsSection } from '../../shared/RecurringSupporterBenefits';
-import { productTitleCss, sectionSpacing } from '../../switch/SwitchStyles';
 import {
-	buttonLayoutCss,
+	buttonCentredCss,
+	buttonContainerCss,
 	cardHeaderDivCss,
+	cardSectionCss,
+	headingCss,
 	productSubtitleCss,
+	productTitleCss,
+	sectionSpacing,
 } from './SaveStyles';
 
 export const SaveOptions = () => {
@@ -36,9 +39,9 @@ export const SaveOptions = () => {
 			/>
 			<Stack space={4}>
 				<section css={sectionSpacing}>
-					<Heading>
+					<h2 css={headingCss}>
 						Are you sure you want to lose your exclusive benefits?
-					</Heading>
+					</h2>
 				</section>
 				<section css={sectionSpacing}>
 					<Heading sansSerif>Keep your Membership</Heading>
@@ -54,66 +57,70 @@ export const SaveOptions = () => {
 					</Card.Header>
 					<Card.Section>
 						<MembershipBenefitsSection />
-						{/*todo: add  border border-top: 1px solid ${palette.neutral[86]}; */}
-						<section css={sectionSpacing}>
-							<div css={buttonLayoutCss}>
-								<ThemeProvider
-									theme={buttonThemeReaderRevenueBrand}
+						<section css={[cardSectionCss, buttonContainerCss]}>
+							<ThemeProvider
+								theme={buttonThemeReaderRevenueBrand}
+							>
+								<Button
+									cssOverrides={buttonCentredCss}
+									size="small"
 								>
-									<Button>
-										Keep my Membership for xx/yy
-									</Button>
-								</ThemeProvider>
-							</div>
+									Keep my Membership for xx/yy
+								</Button>
+							</ThemeProvider>
 						</section>
 					</Card.Section>
 				</Card>
 				<section css={sectionSpacing}>
 					<Heading sansSerif>
-						Continue your membership at X per month
+						Stay a supporter at no extra cost
 					</Heading>
 				</section>
-				You will still be able to enjoy uninterrupted reading and
-				receive the supporter newsletter.
+				You will lose access to some of your benefits, but will keep
+				funding Guardian journalism.
 				<Card>
 					<Card.Header backgroundColor={palette.brand[600]}>
 						<div css={cardHeaderDivCss}>
-							<h3 css={productTitleCss}>Recurring supporter</h3>
+							<h3 css={productTitleCss}>Monthly contribution</h3>
 							<p css={productSubtitleCss}>XY/Z</p>
 						</div>
 					</Card.Header>
 					<Card.Section>
 						<RecurringSupporterBenefitsSection />
-						<section css={sectionSpacing}>
-							<div css={buttonLayoutCss}>
+						<section css={[cardSectionCss, buttonContainerCss]}>
+							<ThemeProvider
+								theme={buttonThemeReaderRevenueBrand}
+							>
 								<Button
-									icon={<SvgArrowRightStraight />}
-									iconSide="right"
+									cssOverrides={buttonCentredCss}
+									size="small"
 									onClick={() => navigate('../switch-offer')}
 								>
-									Become a recurring supporter
+									Become a recurring contributor
 								</Button>
-							</div>
+							</ThemeProvider>
 						</section>
 					</Card.Section>
 				</Card>
 				<section css={sectionSpacing}>
 					<Heading sansSerif>Cancel your membership</Heading>
-					Copy to say that you cannot become a member again once you
-					have cancelled.
+					<p>
+						Please note if you cancel you will not be able to rejoin
+						the Guardian Members scheme, as it’s now closed to new
+						members
+					</p>
+					<div css={buttonContainerCss}>
+						<Button
+							cssOverrides={buttonCentredCss}
+							priority="tertiary"
+							size="small"
+							onClick={() => navigate('../confirm')}
+						>
+							Cancel Membership
+						</Button>
+					</div>
 				</section>
 			</Stack>
-			<section css={sectionSpacing}>
-				<div css={buttonLayoutCss}>
-					<Button
-						icon={<SvgArrowRightStraight />}
-						iconSide="right"
-						onClick={() => navigate('../confirm')}
-					>
-						Cancel membership
-					</Button>
-				</div>
-			</section>
 		</>
 	);
 };
