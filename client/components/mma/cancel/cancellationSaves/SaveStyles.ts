@@ -88,6 +88,24 @@ export const buttonLayoutCss = css`
 	}
 `;
 
+export const stackedButtonLayoutCss = css`
+	display: flex;
+	flex-direction: column-reverse;
+	margin-top: ${space[5]}px;
+	padding-top: 32px;
+	> * + * {
+		margin-bottom: ${space[3]}px;
+	}
+	${from.tablet} {
+		flex-direction: row;
+		justify-content: flex-end;
+		> * + * {
+			margin-top: 0;
+			margin-left: ${space[3]}px;
+		}
+	}
+`;
+
 export const smallPrintCss = css`
 	${textSans.xxsmall()};
 	margin-top: 0;
@@ -122,8 +140,10 @@ export const headingCss = css`
 
 	${from.tablet} {
 		${headline.small({ fontWeight: 'bold' })};
-		span {
-			display: block;
-		}
+	}
+
+	span {
+		display: block;
+		color: ${palette.brand['500']};
 	}
 `;
