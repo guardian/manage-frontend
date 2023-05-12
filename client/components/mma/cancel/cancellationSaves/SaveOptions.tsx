@@ -1,16 +1,28 @@
 import { css, ThemeProvider } from '@emotion/react';
-import { palette, space } from '@guardian/source-foundations';
+import { palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
 	Stack,
 } from '@guardian/source-react-components';
-import { useNavigate } from 'react-router';
+import { useContext } from 'react';
+import { Navigate, useNavigate } from 'react-router';
+import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { getMainPlan  } from '../../../../../shared/productResponse';
+import {
+	getNewMembershipPrice,
+	getOldMembershipPrice,
+} from '../../../../utilities/membershipPriceRise';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { MembershipBenefitsSection } from '../../shared/MembershipBenefits';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import { RecurringSupporterBenefitsSection } from '../../shared/RecurringSupporterBenefits';
+import type {
+	CancellationContextInterface} from '../CancellationContainer';
+import {
+	CancellationContext
+} from '../CancellationContainer';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
@@ -24,6 +36,26 @@ import {
 
 export const SaveOptions = () => {
 	const navigate = useNavigate();
+	const cancellationContext = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+	const membership = cancellationContext.productDetail;
+
+	if (!membership) {
+		return <Navigate to="/" />;
+	}
+
+	const mainPlan = getMainPlan(
+		membership.subscription,
+	) as PaidSubscriptionPlan;
+
+	const oldPriceDisplay = `${mainPlan.currency}${getOldMembershipPrice(
+		mainPlan,
+	)}`;
+	const newPriceDisplay = `${mainPlan.currency}${getNewMembershipPrice(
+		mainPlan,
+	)}`;
+	const billingPeriod = mainPlan.billingPeriod;
 
 	return (
 		<>
@@ -46,13 +78,22 @@ export const SaveOptions = () => {
 				<section css={sectionSpacing}>
 					<Heading sansSerif>Keep your Membership</Heading>
 				</section>
-				Enjoy all of your exclusive extras. The new price has increased
-				from XX to YY/ZZ.
+				<p
+					css={css`
+						${textSans.medium()};
+					`}
+				>
+					Enjoy all of your exclusive extras. The new price has
+					increased from {oldPriceDisplay} to {newPriceDisplay}/
+					{billingPeriod}.
+				</p>
 				<Card>
 					<Card.Header backgroundColor={palette.brand[600]}>
 						<div css={cardHeaderDivCss}>
 							<h3 css={productTitleCss}>Membership</h3>
-							<p css={productSubtitleCss}>XY/Z</p>
+							<p css={productSubtitleCss}>
+								{newPriceDisplay}/{billingPeriod}
+							</p>
 						</div>
 					</Card.Header>
 					<Card.Section>
@@ -65,7 +106,8 @@ export const SaveOptions = () => {
 									cssOverrides={buttonCentredCss}
 									size="small"
 								>
-									Keep my Membership for xx/yy
+									Keep my Membership for {newPriceDisplay}/
+									{billingPeriod}
 								</Button>
 							</ThemeProvider>
 						</section>
@@ -76,13 +118,21 @@ export const SaveOptions = () => {
 						Stay a supporter at no extra cost
 					</Heading>
 				</section>
-				You will lose access to some of your benefits, but will keep
-				funding Guardian journalism.
+				<p
+					css={css`
+						${textSans.medium()};
+					`}
+				>
+					You will lose access to some of your benefits, but will keep
+					funding Guardian journalism.
+				</p>
 				<Card>
 					<Card.Header backgroundColor={palette.brand[600]}>
 						<div css={cardHeaderDivCss}>
 							<h3 css={productTitleCss}>Monthly contribution</h3>
-							<p css={productSubtitleCss}>XY/Z</p>
+							<p css={productSubtitleCss}>
+								{oldPriceDisplay}/{billingPeriod}
+							</p>
 						</div>
 					</Card.Header>
 					<Card.Section>
@@ -104,7 +154,11 @@ export const SaveOptions = () => {
 				</Card>
 				<section css={sectionSpacing}>
 					<Heading sansSerif>Cancel your membership</Heading>
-					<p>
+					<p
+						css={css`
+							${textSans.medium()};
+						`}
+					>
 						Please note if you cancel you will not be able to rejoin
 						the Guardian Members scheme, as it’s now closed to new
 						members
