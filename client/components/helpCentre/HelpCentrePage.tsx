@@ -47,7 +47,11 @@ const ContactUs = lazy(() =>
 		({ ContactUs }) => ({ default: ContactUs }),
 	),
 );
-
+const DiagnosticInformation = lazy(() =>
+	import(
+		/* webpackChunkName: "DiagnosticInformation" */ './diagnosticInformation/DiagnosticInformation'
+	).then(({ DiagnosticInformation }) => ({ default: DiagnosticInformation })),
+);
 const HelpCentreRouter = () => {
 	const [signInStatus, setSignInStatus] = useState<SignInStatus>('init');
 
@@ -123,6 +127,10 @@ const HelpCentreRouter = () => {
 							<Route
 								path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess"
 								element={<ContactUs />}
+							/>
+							<Route
+								path="/help-centre/diagnostic-information"
+								element={<DiagnosticInformation />}
 							/>
 							<Route
 								path="/*"
