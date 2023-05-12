@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, textSans } from '@guardian/source-foundations';
+import { from, space, textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
@@ -42,12 +42,22 @@ export const ContinueMembershipConfirmation = () => {
 				<h2 css={headingCss}>Thank you for keeping your Membership</h2>
 				<p
 					css={css`
-						${textSans.medium()}
+						${textSans.medium()};
+						${from.tablet} {
+							span {
+								display: block;
+							}
+						}
 					`}
 				>
-					The new price of your Membership is £7/month. <br />
-					Your first billing date will be{' '}
-					{cancellationFormatDate(`${mainPlan.chargedThrough}`)}.
+					The new price of your Membership is £7/month.{' '}
+					<span>
+						Your first billing date will be{' '}
+						{cancellationFormatDate(
+							mainPlan.chargedThrough ?? undefined,
+						)}
+						.
+					</span>
 				</p>
 			</Stack>
 			<div css={stackedButtonLeftLayoutCss}>
