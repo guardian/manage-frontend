@@ -1,28 +1,12 @@
 import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
-import {
-	Button,
-	Stack,
-	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
-import { useContext } from 'react';
+import { Button, Stack } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
-import { Heading } from '../../shared/Heading';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
-import type {
-	CancellationPageTitleInterface} from '../CancellationContainer';
-import {
-	CancellationPageTitleContext
-} from '../CancellationContainer';
-import { buttonLayoutCss } from './SaveStyles';
+import { headingCss, stackedButtonLeftLayoutCss } from './SaveStyles';
 
 export const ContinueMembershipConfirmation = () => {
 	const navigate = useNavigate();
-
-	const pageTitleContext = useContext(
-		CancellationPageTitleContext,
-	) as CancellationPageTitleInterface;
-	pageTitleContext.setPageTitle('Membership confirmation');
 
 	return (
 		<>
@@ -37,19 +21,18 @@ export const ContinueMembershipConfirmation = () => {
 				`}
 			/>
 			<Stack space={4}>
-				<Heading>Thank you for continuing your membership</Heading>
+				<h2 css={headingCss}>Thank you for keeping your Membership</h2>
 				<p>
-					No action is needed from your side. Your membership will
-					continue as normal.
+					The new price of your Membership is £7/month. <br />
+					Your first billing date will be XX Month.
 				</p>
 			</Stack>
-			<div css={[buttonLayoutCss, { textAlign: 'left' }]}>
-				<Button
-					icon={<SvgArrowRightStraight />}
-					iconSide="right"
-					onClick={() => navigate('https://www.theguardian.com')}
-				>
-					Continue reading the Guardian
+			<div css={stackedButtonLeftLayoutCss}>
+				<Button priority="tertiary" onClick={() => navigate('/')}>
+					Back to account overview
+				</Button>
+				<Button onClick={() => navigate('https://www.theguardian.com')}>
+					Continue to the Guardian
 				</Button>
 			</div>
 		</>
