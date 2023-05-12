@@ -2,7 +2,7 @@ import type { PaidSubscriptionPlan } from '../../shared/productResponse';
 import type { MembershipCurrencyIso } from './currencyIso';
 
 //ToDo: TBC annual prices
-export const newSupporterMembershipByCountryGroup: Record<
+const newSupporterMembershipByCountryGroup: Record<
 	MembershipCurrencyIso,
 	Record<'Monthly' | 'Annual', number>
 > = {
@@ -28,7 +28,7 @@ export const newSupporterMembershipByCountryGroup: Record<
 	},
 };
 
-export const oldSupporterMembershipByCountryGroup: Record<
+const oldSupporterMembershipByCountryGroup: Record<
 	MembershipCurrencyIso,
 	Record<'Monthly' | 'Annual', number>
 > = {
@@ -56,7 +56,7 @@ export const oldSupporterMembershipByCountryGroup: Record<
 
 function getMembershipPrice(
 	plan: PaidSubscriptionPlan,
-	priceConfig: Record<
+	pricePerCurrency: Record<
 		MembershipCurrencyIso,
 		Record<'Monthly' | 'Annual', number>
 	>,
@@ -65,13 +65,13 @@ function getMembershipPrice(
 	const monthlyOrAnnual =
 		plan.billingPeriod === 'month' ? 'Monthly' : 'Annual';
 
-	const region = priceConfig[currency];
+	const currencyPricing = pricePerCurrency[currency];
 
-	if (region === undefined) {
+	if (currencyPricing === undefined) {
 		throw new Error('Unsupported membership currency');
 	}
 
-	return region[monthlyOrAnnual];
+	return currencyPricing[monthlyOrAnnual];
 }
 
 export function getNewMembershipPrice(plan: PaidSubscriptionPlan): number {
