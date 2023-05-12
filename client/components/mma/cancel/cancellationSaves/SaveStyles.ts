@@ -5,12 +5,21 @@ import {
 	palette,
 	space,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
 
 export const sectionSpacing = css`
 	margin-top: ${space[6]}px;
 	${from.tablet} {
 		margin-top: ${space[9]}px;
+	}
+`;
+
+export const cardSectionCss = css`
+	margin-top: ${space[5]}px;
+	${from.tablet} {
+		padding-top: ${space[5]}px;
+		border-top: 1px solid ${palette.neutral[86]};
 	}
 `;
 
@@ -145,5 +154,12 @@ export const headingCss = css`
 	span {
 		display: block;
 		color: ${palette.brand['500']};
+	}
+`;
+
+export const buttonContainerCss = css`
+	${until.tablet} {
+		display: flex;
+		flex-direction: column;
 	}
 `;
