@@ -115,6 +115,23 @@ export const stackedButtonLayoutCss = css`
 	}
 `;
 
+export const stackedButtonLeftLayoutCss = css`
+	display: flex;
+	flex-direction: column-reverse;
+	margin-top: ${space[5]}px;
+	padding-top: 32px;
+	> * + * {
+		margin-bottom: ${space[3]}px;
+	}
+	${from.tablet} {
+		flex-direction: row;
+		> * + * {
+			margin-top: 0;
+			margin-left: ${space[3]}px;
+		}
+	}
+`;
+
 export const smallPrintCss = css`
 	${textSans.xxsmall()};
 	margin-top: 0;

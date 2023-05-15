@@ -1,28 +1,30 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
-import {
-	Button,
-	Stack,
-	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
+import { from, space, textSans } from '@guardian/source-foundations';
+import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
-import { Heading } from '../../shared/Heading';
+import { cancellationFormatDate } from '../../../../../shared/dates';
+import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { getMainPlan } from '../../../../../shared/productResponse';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
-import type {
-	CancellationPageTitleInterface} from '../CancellationContainer';
+import type { CancellationContextInterface } from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
 import {
-	CancellationPageTitleContext
-} from '../CancellationContainer';
-import { buttonLayoutCss } from './SaveStyles';
+	buttonCentredCss,
+	headingCss,
+	stackedButtonLeftLayoutCss,
+} from './SaveStyles';
 
 export const ContinueMembershipConfirmation = () => {
 	const navigate = useNavigate();
+	const cancellationContext = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+	const membership = cancellationContext.productDetail;
 
-	const pageTitleContext = useContext(
-		CancellationPageTitleContext,
-	) as CancellationPageTitleInterface;
-	pageTitleContext.setPageTitle('Membership confirmation');
+	const mainPlan = getMainPlan(
+		membership.subscription,
+	) as PaidSubscriptionPlan;
 
 	return (
 		<>
@@ -37,19 +39,40 @@ export const ContinueMembershipConfirmation = () => {
 				`}
 			/>
 			<Stack space={4}>
-				<Heading>Thank you for continuing your membership</Heading>
-				<p>
-					No action is needed from your side. Your membership will
-					continue as normal.
+				<h2 css={headingCss}>Thank you for keeping your Membership</h2>
+				<p
+					css={css`
+						${textSans.medium()};
+						${from.tablet} {
+							span {
+								display: block;
+							}
+						}
+					`}
+				>
+					The new price of your Membership is £7/month.{' '}
+					<span>
+						Your first billing date will be{' '}
+						{cancellationFormatDate(
+							mainPlan.chargedThrough ?? undefined,
+						)}
+						.
+					</span>
 				</p>
 			</Stack>
-			<div css={[buttonLayoutCss, { textAlign: 'left' }]}>
+			<div css={stackedButtonLeftLayoutCss}>
 				<Button
-					icon={<SvgArrowRightStraight />}
-					iconSide="right"
-					onClick={() => navigate('https://www.theguardian.com')}
+					priority="tertiary"
+					onClick={() => navigate('/')}
+					cssOverrides={buttonCentredCss}
 				>
-					Continue reading the Guardian
+					Back to account overview
+				</Button>
+				<Button
+					onClick={() => navigate('https://www.theguardian.com')}
+					cssOverrides={buttonCentredCss}
+				>
+					Continue to the Guardian
 				</Button>
 			</div>
 		</>
