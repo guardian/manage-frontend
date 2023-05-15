@@ -22,6 +22,12 @@ export const AppSubscriptionSoftOptInIds: string[] = [
 	SoftOptInIDs.SupporterNewsletter,
 ];
 
+export const SingleContributionSoftOptInIds: string[] = [
+	SoftOptInIDs.SupportOnboarding,
+	SoftOptInIDs.SimilarProducts,
+	SoftOptInIDs.SupporterNewsletter,
+];
+
 export enum AppStore {
 	IOS,
 	ANDROID,

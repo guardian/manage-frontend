@@ -7,6 +7,7 @@ import type {
 import {
 	AppSubscriptionSoftOptInIds,
 	isValidAppSubscription,
+	SingleContributionSoftOptInIds,
 } from '../../../../../shared/mpapiResponse';
 import type {
 	MembersDataApiResponse,
@@ -244,6 +245,6 @@ function userHasSingleContributionWithConsent(
 ) {
 	return (
 		singleContributions.length > 0 &&
-		AppSubscriptionSoftOptInIds.includes(consent.id)
+		SingleContributionSoftOptInIds.includes(consent.id)
 	);
 }
