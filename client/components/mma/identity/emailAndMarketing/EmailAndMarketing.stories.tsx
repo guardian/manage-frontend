@@ -89,3 +89,30 @@ export const WithIAP: ComponentStory<typeof EmailAndMarketing> = () => {
 
 	return <EmailAndMarketing />;
 };
+
+export const WithSingleContribution: ComponentStory<
+	typeof EmailAndMarketing
+> = () => {
+	featureSwitches['singleContributions'] = true;
+
+	fetchMock
+		.restore()
+		.get('/api/me/mma', {
+			body: toMembersDataApiResponse(),
+		})
+		.get('/idapi/user', { body: user })
+		.get('/idapicodeproxy/newsletters', { body: newsletters })
+		.get('/idapicodeproxy/users/me/newsletters', {
+			body: newsletterSubscriptions,
+		})
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: { subscriptions: [InAppPurchase] },
+		})
+		.get('/api/me/one-off-contributions', {
+			body: { subscriptions: [InAppPurchase] },
+		})
+		.get('/idapicodeproxy/consents?filter=all', { body: consents })
+		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
+
+	return <EmailAndMarketing />;
+};

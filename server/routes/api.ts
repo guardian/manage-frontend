@@ -83,7 +83,7 @@ router.get(
 );
 
 router.get(
-	'/me/mma/one-off-contributions',
+	'/me/one-off-contributions',
 	membersDataApiHandler(
 		'user-attributes/me/one-off-contributions',
 		'MDA_DETAIL',
