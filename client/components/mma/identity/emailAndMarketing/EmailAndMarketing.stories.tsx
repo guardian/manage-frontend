@@ -12,6 +12,7 @@ import {
 	newspaperVoucherPaypal,
 	toMembersDataApiResponse,
 } from '../../../../fixtures/productDetail';
+import { singleContributionsAPIResponse } from '../../../../fixtures/singleContribution';
 import { user } from '../../../../fixtures/user';
 import { EmailAndMarketing } from './EmailAndMarketing';
 
@@ -109,7 +110,7 @@ export const WithSingleContribution: ComponentStory<
 			body: { subscriptions: [InAppPurchase] },
 		})
 		.get('/api/me/one-off-contributions', {
-			body: { subscriptions: [InAppPurchase] },
+			body: singleContributionsAPIResponse,
 		})
 		.get('/idapicodeproxy/consents?filter=all', { body: consents })
 		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
