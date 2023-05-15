@@ -12,6 +12,7 @@ import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';
+import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -94,6 +95,9 @@ const buttonLayoutCss = css`
 	}
 `;
 
+const productSwitchType: ProductSwitchType =
+	'recurring-contribution-to-supporter-plus';
+
 interface PreviewResponse {
 	amountPayableToday: number;
 	supporterPlusPurchaseAmount: number;
@@ -130,7 +134,7 @@ export const SwitchReview = () => {
 
 	const productMoveFetch = (preview: boolean) =>
 		fetch(
-			`/api/product-move/${contributionToSwitch.subscription.subscriptionId}`,
+			`/api/product-move/${productSwitchType}/${contributionToSwitch.subscription.subscriptionId}`,
 			{
 				method: 'POST',
 				body: JSON.stringify({

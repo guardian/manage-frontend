@@ -51,7 +51,7 @@ describe('product switching', () => {
 			body: [],
 		}).as('cancelled');
 
-		cy.intercept('POST', '/api/product-move/*', {
+		cy.intercept('POST', '/api/product-move/**', {
 			statusCode: 200,
 			body: productMovePreviewResponse,
 		}).as('product_move');
@@ -116,7 +116,7 @@ describe('product switching', () => {
 
 		cy.findByRole('button', { name: 'Confirm change' }).click();
 
-		cy.intercept('POST', '/api/product-move/*', {
+		cy.intercept('POST', '/api/product-move/**', {
 			statusCode: 200,
 			body: productMoveSuccessfulResponse,
 		});
@@ -141,7 +141,7 @@ describe('product switching', () => {
 
 		cy.findByRole('button', { name: 'Confirm change' }).click();
 
-		cy.intercept('POST', '/api/product-move/*', {
+		cy.intercept('POST', '/api/product-move/**', {
 			statusCode: 200,
 			body: productMoveSuccessfulResponse,
 		});
@@ -166,7 +166,7 @@ describe('product switching', () => {
 			name: 'Add extras',
 		}).click();
 
-		cy.intercept('POST', '/api/product-move/*', {
+		cy.intercept('POST', '/api/product-move/**', {
 			statusCode: 500,
 			body: {},
 		});

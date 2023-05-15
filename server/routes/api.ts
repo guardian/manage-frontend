@@ -149,10 +149,12 @@ router.patch(
 );
 
 router.post(
-	'/product-move/:subscriptionName',
-	productMoveAPI('product-move/:subscriptionName', 'MOVE_PRODUCT', [
-		'subscriptionName',
-	]),
+	'/product-move/:switchType/:subscriptionName',
+	productMoveAPI(
+		'product-move/:switchType/:subscriptionName',
+		'MOVE_PRODUCT',
+		['switchType', 'subscriptionName'],
+	),
 );
 
 router.get(
