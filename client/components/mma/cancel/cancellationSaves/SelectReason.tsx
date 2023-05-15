@@ -9,23 +9,17 @@ import {
 	SvgCalendar,
 	SvgEnvelope,
 } from '@guardian/source-react-components';
-import type { FormEvent} from 'react';
+import type { FormEvent } from 'react';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
-import type {
-	ProductDetail} from '../../../../../shared/productResponse';
-import {
-	MDA_TEST_USER_HEADER
-} from '../../../../../shared/productResponse';
+import type { ProductDetail } from '../../../../../shared/productResponse';
+import { MDA_TEST_USER_HEADER } from '../../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
-import type {
-	CancellationContextInterface} from '../CancellationContainer';
-import {
-	CancellationContext
-} from '../CancellationContainer';
+import type { CancellationContextInterface } from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
 import type { CancellationReason } from '../cancellationReason';
 import { membershipCancellationReasons } from '../membership/MembershipCancellationReasons';
 import {
