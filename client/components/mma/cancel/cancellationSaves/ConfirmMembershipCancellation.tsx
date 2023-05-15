@@ -1,10 +1,6 @@
 import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
-import {
-	Button,
-	Stack,
-	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
+import { Button, Stack } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
 import { Heading } from '../../shared/Heading';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
@@ -30,24 +26,21 @@ export const ConfirmMembershipCancellation = () => {
 					Are you sure you want to cancel your membership?
 				</Heading>
 				<p>
-					Before you do, please keep in mind that you will be losing{' '}
-					access to you supporter extras. If you're certain you want
-					to cancel, please confirm your cancellation below.
+					Please keep in mind that you will be losing access to your
+					supporter extras. <br />
+					If you cancel you will not be able to rejoin the Guardian
+					Members scheme, as it’s now closed to new members.
 				</p>
 			</Stack>
 			<div css={[buttonLayoutCss, { textAlign: 'left' }]}>
-				<Button
-					icon={<SvgArrowRightStraight />}
-					iconSide="right"
-					onClick={() => navigate('../reasons')}
-				>
+				<Button onClick={() => navigate('../reasons')}>
 					Confirm Cancellation
 				</Button>
 				<Button
 					priority="tertiary"
 					onClick={() => navigate('../offers')}
 				>
-					Back to offers
+					Back to options
 				</Button>
 			</div>
 		</>
