@@ -7,29 +7,22 @@ export const MembershipBenefitsSection = () => {
 			<li>
 				<SvgTickRound size="small" />
 				<span>
-					<strong>Unlimited app access.</strong>
-					<br css={lineBreakCss} /> For the best mobile experience
-				</span>
-			</li>
-			<li>
-				<SvgTickRound size="small" />
-				<span>
-					<strong>Ad-free reading.</strong>
-					<br css={lineBreakCss} /> On any device when signed in
+					<strong>Full access to our news app.</strong>
+					<br css={lineBreakCss} /> Read our reporting on the go
 				</span>
 			</li>
 			<li>
 				<SvgTickRound size="small" />
 				<span>
 					<strong>Uninterrupted reading.</strong>
-					<br css={lineBreakCss} /> No more yellow banners
+					<br css={lineBreakCss} /> See far fewer asks for support
 				</span>
 			</li>
 			<li>
 				<SvgTickRound size="small" />
 				<span>
-					<strong>Supporter newsletter.</strong> Giving you editorial
-					insight on the week's top stories
+					<strong>A regular supporter newsletter.</strong> Get
+					exclusive insight from our newsroom
 				</span>
 			</li>
 		</ul>

@@ -1,25 +1,61 @@
-import { css } from '@emotion/react';
-import { palette, space } from '@guardian/source-foundations';
+import { css, ThemeProvider } from '@emotion/react';
+import { palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
+	buttonThemeReaderRevenueBrand,
 	Stack,
-	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
-import { useNavigate } from 'react-router';
+import { useContext } from 'react';
+import { Navigate, useNavigate } from 'react-router';
+import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { getMainPlan  } from '../../../../../shared/productResponse';
+import {
+	getNewMembershipPrice,
+	getOldMembershipPrice,
+} from '../../../../utilities/membershipPriceRise';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { MembershipBenefitsSection } from '../../shared/MembershipBenefits';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import { RecurringSupporterBenefitsSection } from '../../shared/RecurringSupporterBenefits';
-import { productTitleCss, sectionSpacing } from '../../switch/SwitchStyles';
+import type {
+	CancellationContextInterface} from '../CancellationContainer';
 import {
-	buttonLayoutCss,
+	CancellationContext
+} from '../CancellationContainer';
+import {
+	buttonCentredCss,
+	buttonContainerCss,
 	cardHeaderDivCss,
+	cardSectionCss,
+	headingCss,
 	productSubtitleCss,
+	productTitleCss,
+	sectionSpacing,
 } from './SaveStyles';
 
 export const SaveOptions = () => {
 	const navigate = useNavigate();
+	const cancellationContext = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+	const membership = cancellationContext.productDetail;
+
+	if (!membership) {
+		return <Navigate to="/" />;
+	}
+
+	const mainPlan = getMainPlan(
+		membership.subscription,
+	) as PaidSubscriptionPlan;
+
+	const oldPriceDisplay = `${mainPlan.currency}${getOldMembershipPrice(
+		mainPlan,
+	)}`;
+	const newPriceDisplay = `${mainPlan.currency}${getNewMembershipPrice(
+		mainPlan,
+	)}`;
+	const billingPeriod = mainPlan.billingPeriod;
 
 	return (
 		<>
@@ -35,84 +71,110 @@ export const SaveOptions = () => {
 			/>
 			<Stack space={4}>
 				<section css={sectionSpacing}>
-					<Heading>
-						Before you go, would you consider different support
-						options
-					</Heading>
+					<h2 css={headingCss}>
+						Are you sure you want to lose your exclusive benefits?
+					</h2>
 				</section>
 				<section css={sectionSpacing}>
-					<Heading sansSerif>
-						Continue your membership at X per month
-					</Heading>
+					<Heading sansSerif>Keep your Membership</Heading>
 				</section>
-				You will keep your current set of benefits
+				<p
+					css={css`
+						${textSans.medium()};
+					`}
+				>
+					Enjoy all of your exclusive extras. The new price has
+					increased from {oldPriceDisplay} to {newPriceDisplay}/
+					{billingPeriod}.
+				</p>
 				<Card>
 					<Card.Header backgroundColor={palette.brand[600]}>
 						<div css={cardHeaderDivCss}>
 							<h3 css={productTitleCss}>Membership</h3>
-							<p css={productSubtitleCss}>XY/Z</p>
+							<p css={productSubtitleCss}>
+								{newPriceDisplay}/{billingPeriod}
+							</p>
 						</div>
 					</Card.Header>
 					<Card.Section>
 						<MembershipBenefitsSection />
-						<section css={sectionSpacing}>
-							<div css={buttonLayoutCss}>
+						<section css={[cardSectionCss, buttonContainerCss]}>
+							<ThemeProvider
+								theme={buttonThemeReaderRevenueBrand}
+							>
 								<Button
-									icon={<SvgArrowRightStraight />}
-									iconSide="right"
+									cssOverrides={buttonCentredCss}
+									size="small"
 								>
-									Continue your membership
+									Keep my Membership for {newPriceDisplay}/
+									{billingPeriod}
 								</Button>
-							</div>
+							</ThemeProvider>
 						</section>
 					</Card.Section>
 				</Card>
 				<section css={sectionSpacing}>
 					<Heading sansSerif>
-						Continue your membership at X per month
+						Stay a supporter at no extra cost
 					</Heading>
 				</section>
-				You will still be able to enjoy uninterrupted reading and
-				receive the supporter newsletter.
+				<p
+					css={css`
+						${textSans.medium()};
+					`}
+				>
+					You will lose access to some of your benefits, but will keep
+					funding Guardian journalism.
+				</p>
 				<Card>
 					<Card.Header backgroundColor={palette.brand[600]}>
 						<div css={cardHeaderDivCss}>
-							<h3 css={productTitleCss}>Recurring supporter</h3>
-							<p css={productSubtitleCss}>XY/Z</p>
+							<h3 css={productTitleCss}>Monthly contribution</h3>
+							<p css={productSubtitleCss}>
+								{oldPriceDisplay}/{billingPeriod}
+							</p>
 						</div>
 					</Card.Header>
 					<Card.Section>
 						<RecurringSupporterBenefitsSection />
-						<section css={sectionSpacing}>
-							<div css={buttonLayoutCss}>
+						<section css={[cardSectionCss, buttonContainerCss]}>
+							<ThemeProvider
+								theme={buttonThemeReaderRevenueBrand}
+							>
 								<Button
-									icon={<SvgArrowRightStraight />}
-									iconSide="right"
+									cssOverrides={buttonCentredCss}
+									size="small"
 									onClick={() => navigate('../switch-offer')}
 								>
-									Become a recurring supporter
+									Become a recurring contributor
 								</Button>
-							</div>
+							</ThemeProvider>
 						</section>
 					</Card.Section>
 				</Card>
 				<section css={sectionSpacing}>
 					<Heading sansSerif>Cancel your membership</Heading>
-					Copy to say that you cannot become a member again once you
-					have cancelled.
+					<p
+						css={css`
+							${textSans.medium()};
+						`}
+					>
+						Please note if you cancel you will not be able to rejoin
+						the Guardian Members scheme, as it’s now closed to new
+						members
+					</p>
+					<div css={buttonContainerCss}>
+						<Button
+							cssOverrides={buttonCentredCss}
+							priority="tertiary"
+							size="small"
+							onClick={() => navigate('../confirm')}
+						>
+							Cancel Membership
+						</Button>
+					</div>
 				</section>
 			</Stack>
-			<section css={sectionSpacing}>
-				<div css={buttonLayoutCss}>
-					<Button
-						icon={<SvgArrowRightStraight />}
-						iconSide="right"
-						onClick={() => navigate('../confirm')}
-					>
-						Cancel membership
-					</Button>
-				</div>
-			</section>
 		</>
 	);
 };
