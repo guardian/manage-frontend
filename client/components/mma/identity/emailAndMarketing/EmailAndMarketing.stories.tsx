@@ -43,6 +43,9 @@ export const Default: ComponentStory<typeof EmailAndMarketing> = () => {
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
 		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
+		})
 		.get('/idapicodeproxy/consents?filter=all', { body: consents })
 		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
 
@@ -62,6 +65,9 @@ export const WithNoProducts: ComponentStory<typeof EmailAndMarketing> = () => {
 		})
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
+		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
 		})
 		.get('/idapicodeproxy/consents?filter=all', { body: consents })
 		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
@@ -84,6 +90,9 @@ export const WithIAP: ComponentStory<typeof EmailAndMarketing> = () => {
 		})
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [InAppPurchase] },
+		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
 		})
 		.get('/idapicodeproxy/consents?filter=all', { body: consents })
 		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
