@@ -51,7 +51,7 @@ if (featureSwitches.membershipSave) {
 				},
 			}).as('get_case');
 
-			cy.intercept('POST', '/api/reminders', {
+			cy.intercept('POST', '/api/reminders/create', {
 				statusCode: 200,
 			}).as('set_reminder');
 
