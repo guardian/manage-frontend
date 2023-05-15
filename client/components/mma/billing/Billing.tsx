@@ -14,10 +14,10 @@ import { parseDate } from '../../../../shared/dates';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
 	AppSubscription,
-	MPAPIResponse} from '../../../../shared/mpapiResponse';
+	MPAPIResponse,
+} from '../../../../shared/mpapiResponse';
 import {
 	AppStore,
-
 	determineAppStore,
 	isPuzzle,
 	isValidAppSubscription,
@@ -41,7 +41,7 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { allProductsDetailFetcher } from '../../../utilities/productUtils';
+import { allRecurringProductsDetailFetcher } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { EmptyAccountOverview } from '../accountoverview/EmptyAccountOverview';
@@ -437,7 +437,7 @@ const BillingPage = () => {
 
 const billingFetcher = () =>
 	Promise.all([
-		allProductsDetailFetcher(),
+		allRecurringProductsDetailFetcher(),
 		fetchWithDefaultParameters('/api/invoices'),
 		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions'),
 	]);

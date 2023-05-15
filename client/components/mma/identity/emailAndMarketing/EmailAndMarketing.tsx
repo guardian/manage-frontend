@@ -11,10 +11,14 @@ import {
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
+	SingleProductDetail,
 } from '../../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
-import { allProductsDetailFetcher } from '../../../../utilities/productUtils';
+import {
+	allRecurringProductsDetailFetcher,
+	allSingleProductsDetailFetcher,
+} from '../../../../utilities/productUtils';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { Spinner } from '../../../shared/Spinner';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
@@ -73,17 +77,36 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 					window.location.assign(IdentityLocations.VERIFY_EMAIL);
 					return;
 				}
-				const mdapiResponse: MembersDataApiResponse = await (
-					await allProductsDetailFetcher()
-				).json();
+
+				const allRecurringProductsDetailFetcherPromise =
+					allRecurringProductsDetailFetcher();
+				const mpapiFetchPromise = fetchWithDefaultParameters(
+					'/mpapi/user/mobile-subscriptions',
+				);
+				const allSingleProductsDetailFetcherPromise =
+					allSingleProductsDetailFetcher();
+
+				const [
+					mdapiResponseRaw,
+					mpapiResponseRaw,
+					singleContributionsRaw,
+				] = await Promise.all(
+					[
+						allRecurringProductsDetailFetcherPromise,
+						mpapiFetchPromise,
+						allSingleProductsDetailFetcherPromise,
+					].map((responsePromise) =>
+						responsePromise.then((response) => response.json()),
+					),
+				);
+
+				const mdapiResponse: MembersDataApiResponse = mdapiResponseRaw;
 				const productDetails =
 					mdapiResponse.products as ProductDetail[];
+				const mpapiResponse = mpapiResponseRaw as MPAPIResponse;
+				const singleContributions: SingleProductDetail[] =
+					singleContributionsRaw;
 
-				const mpapiResponse = (await (
-					await fetchWithDefaultParameters(
-						'/mpapi/user/mobile-subscriptions',
-					)
-				).json()) as MPAPIResponse;
 				const appSubscriptions = mpapiResponse.subscriptions.filter(
 					isValidAppSubscription,
 				);
@@ -100,7 +123,12 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 									appSubscriptions,
 									consent,
 							  ) &&
-									featureSwitches.appSubscriptions)
+									featureSwitches.appSubscriptions) ||
+							  (userHasSingleContributionWithConsent(
+									singleContributions,
+									consent,
+							  ) &&
+									featureSwitches.singleContributions)
 							: true,
 				);
 
@@ -191,7 +219,7 @@ function userHasProductWithConsent(
 	productDetails: ProductDetail[],
 	consent: ConsentOption,
 ) {
-	return productDetails.some((productDetail) => {
+	return productDetails.some((productDetail: ProductDetail) => {
 		const groupedProductType =
 			GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
 		const specificProductType =
@@ -206,6 +234,16 @@ function userHasAppSubscriptionWithConsent(
 ) {
 	return (
 		appSubscriptions.length > 0 &&
+		AppSubscriptionSoftOptInIds.includes(consent.id)
+	);
+}
+
+function userHasSingleContributionWithConsent(
+	singleContributions: SingleProductDetail[],
+	consent: ConsentOption,
+) {
+	return (
+		singleContributions.length > 0 &&
 		AppSubscriptionSoftOptInIds.includes(consent.id)
 	);
 }
