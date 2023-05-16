@@ -85,7 +85,7 @@ if (featureSwitches.membershipSave) {
 				name: 'Become a recurring contributor',
 			}).click();
 
-			cy.findByText(/Review change/).should('exist');
+			cy.findByText(/Review and confirm change/).should('exist');
 			cy.findByRole('button', {
 				name: 'Confirm change',
 			}).click();

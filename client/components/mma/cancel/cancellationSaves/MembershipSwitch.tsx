@@ -17,12 +17,7 @@ import type {
 } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
 import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
-import { getBenefitsThreshold } from '../../../../utilities/benefitsThreshold';
-import type { CurrencyIso } from '../../../../utilities/currencyIso';
-import {
-	getNewMembershipPrice,
-	getOldMembershipPrice,
-} from '../../../../utilities/membershipPriceRise';
+import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
@@ -134,12 +129,17 @@ const WhatHappensNext = (props: {
 	);
 };
 
-const TsAndCs = () => (
+const TsAndCs = (props: {
+	contributionPriceDisplay: string;
+	paymentDay: string;
+}) => (
 	<section css={sectionSpacing}>
 		<p css={smallPrintCss}>
-			This subscription auto-renews and you will be charged the applicable
-			monthly amount each time it renews unless you cancel. You can change
-			how much you pay at any time but
+			We will attempt to take payment of {props.contributionPriceDisplay},
+			on the {props.paymentDay} day of every month, from now until you
+			cancel your payment. Payments may take up to 6 days to be recorded
+			in your bank account. You can change how much you give or cancel
+			your payment at any time.
 		</p>
 		<p css={smallPrintCss}>
 			By proceeding, you are agreeing to our{' '}
@@ -189,20 +189,10 @@ export const MembershipSwitch = () => {
 		mainPlan.currency
 	}${getOldMembershipPrice(mainPlan)}`;
 
-	const newPriceDisplay = `${mainPlan.currency}${getNewMembershipPrice(
-		mainPlan,
-	)}`;
-
 	const billingPeriod = mainPlan.billingPeriod;
-	const monthlyOrAnnual = getMonthlyOrAnnual(billingPeriod);
-
-	const supporterPlusPriceDisplay = `${
-		mainPlan.currency
-	}${getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		monthlyOrAnnual,
-	)}`;
-
+	const paymentDay = parseDate(mainPlan.chargedThrough ?? undefined).dateStr(
+		'do',
+	);
 	const productSwitchType: ProductSwitchType = 'to-recurring-contribution';
 
 	const productMoveFetch = () =>
@@ -244,15 +234,15 @@ export const MembershipSwitch = () => {
 	return (
 		<>
 			<section css={sectionSpacing}>
-				<Heading sansSerif>Review change</Heading>
+				<Heading sansSerif>Review and confirm change</Heading>
 				<p
 					css={css`
 						${textSans.medium()}
 						margin: 0;
 					`}
 				>
-					You are changing your current membership for a{' '}
-					{contributionPriceDisplay} {monthlyOrAnnual}.
+					Please confirm that you’re changing support type from a
+					Membership to a Monthly contribution.
 				</p>
 			</section>
 			<YourNewSupport
@@ -271,9 +261,9 @@ export const MembershipSwitch = () => {
 						padding-top: ${space[5]}px;
 					`}
 				>
-					Please note that, once the change is done, you will not be
-					able to have the full set of benefits for {newPriceDisplay}{' '}
-					again (full price is now {supporterPlusPriceDisplay}).
+					Please note if you confirm the change you will not be able
+					to rejoin the Guardian Members scheme, as it’s now closed to
+					new members.
 				</p>
 			</section>
 			{switchingError && (
@@ -304,7 +294,10 @@ export const MembershipSwitch = () => {
 					Back
 				</Button>
 			</section>
-			<TsAndCs />
+			<TsAndCs
+				contributionPriceDisplay={contributionPriceDisplay}
+				paymentDay={paymentDay}
+			/>
 		</>
 	);
 };
