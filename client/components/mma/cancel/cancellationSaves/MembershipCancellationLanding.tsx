@@ -1,3 +1,5 @@
+import { css } from '@emotion/react';
+import { textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router';
@@ -87,7 +89,11 @@ export const MembershipCancellationLanding = () => {
 					<h2 css={headingCss}>
 						We're sorry to hear you're thinking of leaving
 					</h2>
-					<p>
+					<p
+						css={css`
+							${textSans.medium()}
+						`}
+					>
 						To cancel today, please choose from the following
 						options.
 					</p>
@@ -96,14 +102,26 @@ export const MembershipCancellationLanding = () => {
 			<section css={sectionSpacing}>
 				<Stack space={3}>
 					<Heading sansSerif>Call us to cancel</Heading>
-					Phone one of our customer service agents
+					<p
+						css={css`
+							${textSans.medium()}
+						`}
+					>
+						Phone one of our customer service agents
+					</p>
 					<CallCentreEmailAndNumbers hideEmailAddress={true} />
 				</Stack>
 			</section>
 			<section css={sectionSpacing}>
 				<Stack space={3}>
 					<Heading sansSerif>Cancel online</Heading>
-					Continue without speaking to our customer service team.
+					<p
+						css={css`
+							${textSans.medium()}
+						`}
+					>
+						Continue without speaking to our customer service team.
+					</p>
 					<div css={buttonLayoutCss}>
 						<Button onClick={() => navigate('../details')}>
 							Cancel online

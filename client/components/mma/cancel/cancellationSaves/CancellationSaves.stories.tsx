@@ -36,7 +36,7 @@ export const ValueOfSupportPage: ComponentStory<typeof ValueOfSupport> = () => {
 	return <ValueOfSupport />;
 };
 
-export const Switch: ComponentStory<typeof MembershipSwitch> = () => {
+export const SwitchReview: ComponentStory<typeof MembershipSwitch> = () => {
 	return <MembershipSwitch />;
 };
 

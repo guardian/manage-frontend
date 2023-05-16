@@ -7,27 +7,48 @@ import {
 	SvgClock,
 	SvgCreditCard,
 } from '@guardian/source-react-components';
-import { useContext } from 'react';
+import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
+import { useContext, useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { dateString, parseDate } from '../../../../../shared/dates';
-import type { Subscription } from '../../../../../shared/productResponse';
+import type {
+	PaidSubscriptionPlan,
+	Subscription,
+} from '../../../../../shared/productResponse';
+import { getMainPlan } from '../../../../../shared/productResponse';
+import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
+import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
+import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { PaymentDetails } from '../../shared/PaymentDetails';
-import type { CancellationContextInterface } from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
+import type {
+	CancellationContextInterface,
+	CancellationPageTitleInterface,
+} from '../CancellationContainer';
+import {
+	CancellationContext,
+	CancellationPageTitleContext,
+} from '../CancellationContainer';
 import {
 	buttonCentredCss,
-	buttonLayoutCss,
+	buttonMutedCss,
+	errorSummaryLinkCss,
+	errorSummaryOverrideCss,
 	iconListCss,
 	listWithDividersCss,
 	newAmountCss,
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
+	stackedButtonLayoutCss,
+	wideButtonCss,
 } from './SaveStyles';
 
-const YourNewSupport = (props: { billingPeriod: string }) => {
+const YourNewSupport = (props: {
+	contributionPriceDisplay: string;
+	billingPeriod: string;
+}) => {
 	const monthlyOrAnnual = getMonthlyOrAnnual(props.billingPeriod);
 	return (
 		<section css={sectionSpacing}>
@@ -40,7 +61,7 @@ const YourNewSupport = (props: { billingPeriod: string }) => {
 				Your new support
 			</Heading>
 			<Card>
-				<Card.Header backgroundColor={palette.brand[500]}>
+				<Card.Header backgroundColor={palette.brand[400]}>
 					<h3 css={productTitleCss}>{monthlyOrAnnual}</h3>
 				</Card.Header>
 				<Card.Section>
@@ -50,21 +71,27 @@ const YourNewSupport = (props: { billingPeriod: string }) => {
 							margin: 0;
 						`}
 					>
-						{monthlyOrAnnual} support with supporter newsletter and
-						fewer asks for support
+						{monthlyOrAnnual} support with fewer funding asks and an
+						exclusive email from the newsroom
 					</p>
-					<p css={newAmountCss}>XY/{props.billingPeriod}</p>
+					<p css={newAmountCss}>
+						{props.contributionPriceDisplay}/{props.billingPeriod}
+					</p>
 				</Card.Section>
 			</Card>
 		</section>
 	);
 };
 
-const WhatHappensNext = (props: { subscription: Subscription }) => {
+const WhatHappensNext = (props: {
+	contributionPriceDisplay: string;
+	subscription: Subscription;
+}) => {
 	const nextPaymentDate = dateString(
 		parseDate(props.subscription.nextPaymentDate ?? '').date,
 		'd MMMM',
 	);
+
 	return (
 		<section css={sectionSpacing}>
 			<Stack space={4}>
@@ -78,11 +105,13 @@ const WhatHappensNext = (props: { subscription: Subscription }) => {
 								billing period
 							</strong>
 							<br />
-							You will be charged XY from the {nextPaymentDate}.
-							From that date, you will continue to receive the
-							supporter newsletter and see fewer support asks but
-							you will lose access to premium features in the App
-							and ad-free reading.
+							You will be charged {
+								props.contributionPriceDisplay
+							}{' '}
+							from the {nextPaymentDate}. From that date, you will
+							continue to receive the supporter newsletter and see
+							fewer support asks but you will lose access to
+							premium features in the App and ad-free reading.
 						</span>
 					</li>
 					<li>
@@ -100,12 +129,17 @@ const WhatHappensNext = (props: { subscription: Subscription }) => {
 	);
 };
 
-const TsAndCs = () => (
+const TsAndCs = (props: {
+	contributionPriceDisplay: string;
+	paymentDay: string;
+}) => (
 	<section css={sectionSpacing}>
 		<p css={smallPrintCss}>
-			This subscription auto-renews and you will be charged the applicable
-			monthly amount each time it renews unless you cancel. You can change
-			how much you pay at any time but
+			We will attempt to take payment of {props.contributionPriceDisplay},
+			on the {props.paymentDay} day of every month, from now until you
+			cancel your payment. Payments may take up to 6 days to be recorded
+			in your bank account. You can change how much you give or cancel
+			your payment at any time.
 		</p>
 		<p css={smallPrintCss}>
 			By proceeding, you are agreeing to our{' '}
@@ -132,32 +166,93 @@ export const MembershipSwitch = () => {
 	) as CancellationContextInterface;
 	const membership = cancellationContext.productDetail;
 
+	const [isSwitching, setIsSwitching] = useState<boolean>(false);
+	const [switchingError, setSwitchingError] = useState<boolean>(false);
+
+	const pageTitleContext = useContext(
+		CancellationPageTitleContext,
+	) as CancellationPageTitleInterface;
+
+	useEffect(() => {
+		pageTitleContext.setPageTitle('Change your support');
+	}, []);
+
 	if (!membership) {
 		return <Navigate to="/" />;
 	}
 
-	const currentPrice = membership.subscription.plan?.price;
-	const billingPeriod = membership.subscription.plan?.billingPeriod ?? '';
-	const monthlyOrAnnual = getMonthlyOrAnnual(billingPeriod);
-	const currencySymbol = membership.subscription.plan?.currency ?? '£';
+	const mainPlan = getMainPlan(
+		membership.subscription,
+	) as PaidSubscriptionPlan;
 
+	const contributionPriceDisplay = `${
+		mainPlan.currency
+	}${getOldMembershipPrice(mainPlan)}`;
+
+	const billingPeriod = mainPlan.billingPeriod;
+	const paymentDay = parseDate(mainPlan.chargedThrough ?? undefined).dateStr(
+		'do',
+	);
+	const productSwitchType: ProductSwitchType = 'to-recurring-contribution';
+
+	const productMoveFetch = () =>
+		fetch(
+			`/api/product-move/${productSwitchType}/${membership.subscription.subscriptionId}`,
+			{
+				method: 'POST',
+				body: JSON.stringify({
+					price: getOldMembershipPrice(mainPlan),
+					preview: false,
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			},
+		);
+
+	const confirmSwitch = async () => {
+		if (isSwitching) {
+			return;
+		}
+
+		try {
+			setIsSwitching(true);
+			const response = await productMoveFetch();
+			const data = await JsonResponseHandler(response);
+
+			if (data === null) {
+				setIsSwitching(false);
+				setSwitchingError(true);
+			} else {
+				navigate('../switch-thank-you');
+			}
+		} catch (e) {
+			setIsSwitching(false);
+			setSwitchingError(true);
+		}
+	};
 	return (
 		<>
 			<section css={sectionSpacing}>
-				<Heading sansSerif>Review change</Heading>
+				<Heading sansSerif>Review and confirm change</Heading>
 				<p
 					css={css`
 						${textSans.medium()}
 						margin: 0;
 					`}
 				>
-					You are changing your current membership for a{' '}
-					{currencySymbol}
-					{currentPrice} {monthlyOrAnnual}.
+					Please confirm that you’re changing support type from a
+					Membership to a Monthly contribution.
 				</p>
 			</section>
-			<YourNewSupport billingPeriod={billingPeriod} />
-			<WhatHappensNext subscription={membership.subscription} />
+			<YourNewSupport
+				contributionPriceDisplay={contributionPriceDisplay}
+				billingPeriod={billingPeriod}
+			/>
+			<WhatHappensNext
+				contributionPriceDisplay={contributionPriceDisplay}
+				subscription={membership.subscription}
+			/>
 			<section css={sectionSpacing}>
 				<p
 					css={css`
@@ -166,30 +261,63 @@ export const MembershipSwitch = () => {
 						padding-top: ${space[5]}px;
 					`}
 				>
-					Please note that, once the change is done, you will not be
-					able to have the full set of benefits for £7 again (full
-					price is now £10).
+					Please note if you confirm the change you will not be able
+					to rejoin the Guardian Members scheme, as it’s now closed to
+					new members.
 				</p>
 			</section>
-			<section css={[sectionSpacing, buttonLayoutCss]}>
+			{switchingError && (
+				<section css={sectionSpacing} id="productSwitchErrorMessage">
+					<ErrorSummary
+						message={'We were unable to change your support'}
+						context={<SwitchErrorContext />}
+						cssOverrides={errorSummaryOverrideCss}
+					/>
+				</section>
+			)}
+
+			<section css={[sectionSpacing, stackedButtonLayoutCss]}>
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-					<Button cssOverrides={buttonCentredCss}>
+					<Button
+						cssOverrides={[buttonCentredCss, wideButtonCss]}
+						isLoading={isSwitching}
+						onClick={confirmSwitch}
+					>
 						Confirm change
 					</Button>
 				</ThemeProvider>
 				<Button
 					priority="tertiary"
-					cssOverrides={[buttonCentredCss]}
+					cssOverrides={[buttonCentredCss, buttonMutedCss]}
 					onClick={() => navigate('../offers')}
 				>
 					Back
 				</Button>
 			</section>
-			<TsAndCs />
+			<TsAndCs
+				contributionPriceDisplay={contributionPriceDisplay}
+				paymentDay={paymentDay}
+			/>
 		</>
 	);
 };
 
 function getMonthlyOrAnnual(billingPeriod: string | undefined) {
 	return billingPeriod === 'year' ? 'Annual' : 'Monthly';
+}
+
+function SwitchErrorContext() {
+	return (
+		<>
+			Please ensure your payment details are correct. If the problem
+			persists get in touch at{' '}
+			<a
+				css={errorSummaryLinkCss}
+				href="mailto:customer.help@guardian.com"
+			>
+				customer.help@guardian.com
+			</a>
+			.
+		</>
+	);
 }
