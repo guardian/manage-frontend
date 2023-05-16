@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
+import { space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
 	Stack,
@@ -14,7 +14,7 @@ import { CancellationContext } from '../CancellationContainer';
 import {
 	buttonCentredCss,
 	headingCss,
-	stackedButtonLayoutCss,
+	reverseStackedButtonLayoutCss,
 } from './SaveStyles';
 
 export const ValueOfSupport = () => {
@@ -53,7 +53,11 @@ export const ValueOfSupport = () => {
 						Your funding has played a vital role in our progress
 					</span>
 				</h2>
-				<p>
+				<p
+					css={css`
+						${textSans.medium()}
+					`}
+				>
 					Since you first joined as a Guardian Member, we've lived
 					through some of the most important news events of our times.
 					Without you, our fearless, independent journalism wouldn't
@@ -61,7 +65,7 @@ export const ValueOfSupport = () => {
 				</p>
 			</Stack>
 			<div>Image placeholder</div>
-			<div css={stackedButtonLayoutCss}>
+			<div css={reverseStackedButtonLayoutCss}>
 				<Button
 					priority="tertiary"
 					cssOverrides={buttonCentredCss}

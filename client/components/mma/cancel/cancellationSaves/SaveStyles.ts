@@ -99,6 +99,24 @@ export const buttonLayoutCss = css`
 
 export const stackedButtonLayoutCss = css`
 	display: flex;
+	flex-direction: column;
+	margin-top: ${space[5]}px;
+	padding-top: 32px;
+	border-top: 1px solid ${palette.neutral[86]};
+	> * + * {
+		margin-top: ${space[3]}px;
+	}
+	${from.tablet} {
+		flex-direction: row;
+		> * + * {
+			margin-top: 0;
+			margin-left: ${space[3]}px;
+		}
+	}
+`;
+
+export const reverseStackedButtonLayoutCss = css`
+	display: flex;
 	flex-direction: column-reverse;
 	margin-top: ${space[5]}px;
 	padding-top: 32px;
@@ -179,4 +197,28 @@ export const buttonContainerCss = css`
 		display: flex;
 		flex-direction: column;
 	}
+`;
+
+export const buttonMutedCss = css`
+	${until.tablet} {
+		border: none;
+	}
+`;
+
+export const wideButtonCss = css`
+	${from.tablet} {
+		flex-grow: 1;
+		max-width: 300px;
+	}
+`;
+
+export const errorSummaryOverrideCss = css`
+	${until.tablet} {
+		border-radius: 6px;
+	}
+`;
+
+export const errorSummaryLinkCss = css`
+	color: currentColor;
+	text-decoration: underline;
 `;
