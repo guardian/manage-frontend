@@ -220,7 +220,7 @@ function userHasProductWithConsent(
 	productDetails: ProductDetail[],
 	consent: ConsentOption,
 ) {
-	return productDetails.some((productDetail: ProductDetail) => {
+	return productDetails.some((productDetail) => {
 		const groupedProductType =
 			GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
 		const specificProductType =
