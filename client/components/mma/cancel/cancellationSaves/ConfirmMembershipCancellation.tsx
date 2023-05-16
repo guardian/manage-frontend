@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
+import { news, space } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
 import { Heading } from '../../shared/Heading';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
-import { buttonLayoutCss } from './SaveStyles';
+import { stackedButtonLeftLayoutCss } from './SaveStyles';
 
 export const ConfirmMembershipCancellation = () => {
 	const navigate = useNavigate();
@@ -27,18 +27,29 @@ export const ConfirmMembershipCancellation = () => {
 				</Heading>
 				<p>
 					Please keep in mind that you will be losing access to your
-					supporter extras. <br />
+					supporter extras.{' '}
+				</p>
+				<p>
 					If you cancel you will not be able to rejoin the Guardian
 					Members scheme, as it’s now closed to new members.
 				</p>
 			</Stack>
-			<div css={[buttonLayoutCss, { textAlign: 'left' }]}>
-				<Button onClick={() => navigate('../reasons')}>
+			<div css={stackedButtonLeftLayoutCss}>
+				<Button
+					onClick={() => navigate('../reasons')}
+					cssOverrides={css`
+						background-color: ${news['400']};
+						justify-content: center;
+					`}
+				>
 					Confirm Cancellation
 				</Button>
 				<Button
 					priority="tertiary"
 					onClick={() => navigate('../offers')}
+					cssOverrides={css`
+						justify-content: center;
+					`}
 				>
 					Back to options
 				</Button>
