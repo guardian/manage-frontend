@@ -17,6 +17,7 @@ declare global {
 	}
 }
 
+const GA_AVAILABLE = false;
 const GA_UA = 'UA-51507017-5';
 
 export const useAnalytics = () => {
@@ -111,7 +112,7 @@ export const useAnalytics = () => {
 					// @ts-expect-error: Suppressing "element implicitly has an 'any' type because index expression is not of type 'number'."
 					window[`ga-disable-${GA_UA}`] = !gaConsentState;
 
-					if (gaConsentState && !gaIsInitialised) {
+					if (GA_AVAILABLE && gaConsentState && !gaIsInitialised) {
 						initialiseGa();
 					}
 
@@ -150,7 +151,6 @@ export const useAnalytics = () => {
 				dimension12: window.guardian.INTCMP,
 				dimension29: MMA_AB_TEST_DIMENSION_VALUE,
 			});
-			// TODO add ophan pageViewId as a GA dimension
 			applyAnyOptimiseExperiments();
 		}
 	}, [location, cmpIsInitialised, gaIsInitialised]);
