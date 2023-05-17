@@ -135,7 +135,7 @@ export const reverseStackedButtonLayoutCss = css`
 
 export const stackedButtonLeftLayoutCss = css`
 	display: flex;
-	flex-direction: column-reverse;
+	flex-direction: column;
 	margin-top: ${space[5]}px;
 	padding-top: 32px;
 	> * + * {
