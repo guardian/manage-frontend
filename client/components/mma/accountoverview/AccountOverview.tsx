@@ -16,6 +16,7 @@ import type {
 	CancelledProductDetail,
 	MembersDataApiResponse,
 	ProductDetail,
+	SingleProductDetail,
 } from '../../../../shared/productResponse';
 import {
 	isProduct,
@@ -31,7 +32,10 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { allRecurringProductsDetailFetcher } from '../../../utilities/productUtils';
+import {
+	allRecurringProductsDetailFetcher,
+	allSingleProductsDetailFetcher,
+} from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
@@ -42,7 +46,7 @@ import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { CancelledProductCard } from './CancelledProductCard';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
-import { InAppPurchaseCard } from './InAppPurchaseCard';
+import { InAppPurchaseCard, SingleContributionCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 
@@ -50,6 +54,7 @@ type AccountOverviewResponse = [
 	MembersDataApiResponse,
 	CancelledProductDetail[],
 	MPAPIResponse,
+	SingleProductDetail[],
 ];
 
 const subHeadingCss = css`
@@ -83,8 +88,12 @@ const AccountOverviewPage = () => {
 		return <GenericErrorScreen />;
 	}
 
-	const [mdapiResponse, cancelledProductsResponse, mpapiResponse] =
-		accountOverviewResponse;
+	const [
+		mdapiResponse,
+		cancelledProductsResponse,
+		mpapiResponse,
+		singleContributions,
+	] = accountOverviewResponse;
 
 	const allActiveProductDetails = mdapiResponse.products
 		.filter(isProduct)
@@ -119,9 +128,11 @@ const AccountOverviewPage = () => {
 
 	if (
 		(allActiveProductDetails.length === 0 &&
-			appSubscriptions.length === 0) ||
+			appSubscriptions.length === 0 &&
+			singleContributions.length === 0) ||
 		(allActiveProductDetails.length === 0 &&
-			!featureSwitches.appSubscriptions)
+			!featureSwitches.appSubscriptions &&
+			!featureSwitches.singleContributions)
 	) {
 		return <EmptyAccountOverview />;
 	}
@@ -161,6 +172,8 @@ const AccountOverviewPage = () => {
 						(activeProduct) =>
 							activeProduct.mmaCategory === category,
 					);
+
+				console.log('asdfasdf');
 
 				return (
 					<Fragment key={category}>
@@ -225,6 +238,14 @@ const AccountOverviewPage = () => {
 										subscription={subscription}
 									/>
 								))}
+							{featureSwitches.singleContributions &&
+								category === 'recurringSupport' &&
+								singleContributions.map((subscription) => (
+									<SingleContributionCard
+										key={0}
+										subscription={subscription}
+									/>
+								))}
 						</Stack>
 					</Fragment>
 				);
@@ -238,6 +259,7 @@ const accountOverviewFetcher = () =>
 		allRecurringProductsDetailFetcher(),
 		fetchWithDefaultParameters('/api/cancelled/'),
 		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions'),
+		allSingleProductsDetailFetcher(),
 	]);
 
 export const AccountOverview = () => {

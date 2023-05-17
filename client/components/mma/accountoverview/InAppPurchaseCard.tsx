@@ -11,6 +11,7 @@ import {
 	determineAppStore,
 	isPuzzle,
 } from '../../../../shared/mpapiResponse';
+import type { SingleProductDetail } from '../../../../shared/productResponse';
 import { Card } from '../shared/Card';
 import { productColour } from './ProductCardConfiguration';
 import { productDetailLayoutCss, productTitleCss } from './ProductCardStyles';
@@ -82,6 +83,56 @@ export const InAppPurchaseCard = ({
 							{appStore === AppStore.ANDROID && 'Android'}
 							{appStore === AppStore.IOS && 'iOS'} {puzzleOrNews}{' '}
 							app.
+						</div>
+						<div
+							css={css`
+								margin-top: ${space[9]}px;
+							`}
+						>
+							<Button
+								size="small"
+								onClick={() => {
+									navigate('/email-prefs');
+								}}
+							>
+								Manage marketing preferences
+							</Button>
+						</div>
+					</div>
+				</Card.Section>
+			</Card>
+		</Stack>
+	);
+};
+
+export const SingleContributionCard = ({
+	subscription,
+}: {
+	subscription: SingleProductDetail;
+}) => {
+	const navigate = useNavigate();
+
+	return (
+		<Stack space={4}>
+			<Card>
+				<Card.Header backgroundColor={productColour.inAppPurchase}>
+					<h3 css={productTitleCss(false)}>Single Support</h3>
+				</Card.Header>
+				<Card.Section>
+					<div
+						css={[
+							productDetailLayoutCss,
+							css`
+								margin-top: -${space[2]}px;
+							`,
+						]}
+					>
+						<div
+							css={css`
+								${textSans.medium()};
+							`}
+						>
+							{subscription.created}
 						</div>
 						<div
 							css={css`
