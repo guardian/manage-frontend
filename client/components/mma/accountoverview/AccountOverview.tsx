@@ -31,7 +31,7 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { allProductsDetailFetcher } from '../../../utilities/productUtils';
+import { allRecurringProductsDetailFetcher } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
@@ -235,7 +235,7 @@ const AccountOverviewPage = () => {
 
 const accountOverviewFetcher = () =>
 	Promise.all([
-		allProductsDetailFetcher(),
+		allRecurringProductsDetailFetcher(),
 		fetchWithDefaultParameters('/api/cancelled/'),
 		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions'),
 	]);

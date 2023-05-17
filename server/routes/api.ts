@@ -83,6 +83,15 @@ router.get(
 );
 
 router.get(
+	'/me/one-off-contributions',
+	membersDataApiHandler(
+		'user-attributes/me/one-off-contributions',
+		'MDA_DETAIL',
+		[],
+	),
+);
+
+router.get(
 	'/cancellation-date/:subscriptionName',
 	membersDataApiHandler(
 		'user-attributes/me/cancellation-date/:subscriptionName',
