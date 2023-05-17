@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { news, space } from '@guardian/source-foundations';
+import { news, space, textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
 import { Heading } from '../../shared/Heading';
@@ -23,13 +23,21 @@ export const ConfirmMembershipCancellation = () => {
 			/>
 			<Stack space={4}>
 				<Heading>
-					Are you sure you want to cancel your membership?
+					Are you sure you want to cancel <br /> your membership?
 				</Heading>
-				<p>
+				<p
+					css={css`
+						${textSans.medium()}
+					`}
+				>
 					Please keep in mind that you will be losing access to your
 					supporter extras.{' '}
 				</p>
-				<p>
+				<p
+					css={css`
+						${textSans.medium()}
+					`}
+				>
 					If you cancel you will not be able to rejoin the Guardian
 					Members scheme, as it’s now closed to new members.
 				</p>
