@@ -46,9 +46,10 @@ import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { CancelledProductCard } from './CancelledProductCard';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
-import { InAppPurchaseCard, SingleContributionCard } from './InAppPurchaseCard';
+import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
+import { SingleContributionCard } from './SingleContributionCard';
 
 type AccountOverviewResponse = [
 	MembersDataApiResponse,
@@ -124,6 +125,14 @@ const AccountOverviewPage = () => {
 		!productCategories.includes('subscriptions')
 	) {
 		productCategories.push('subscriptions');
+	}
+
+	if (
+		featureSwitches.singleContributions &&
+		singleContributions.length > 0 &&
+		!productCategories.includes('recurringSupport')
+	) {
+		productCategories.push('recurringSupport');
 	}
 
 	if (
@@ -240,12 +249,13 @@ const AccountOverviewPage = () => {
 								))}
 							{featureSwitches.singleContributions &&
 								category === 'recurringSupport' &&
-								singleContributions.map((subscription) => (
+								singleContributions.length > 0 && (
 									<SingleContributionCard
-										key={0}
-										subscription={subscription}
+										singleContributions={
+											singleContributions
+										}
 									/>
-								))}
+								)}
 						</Stack>
 					</Fragment>
 				);

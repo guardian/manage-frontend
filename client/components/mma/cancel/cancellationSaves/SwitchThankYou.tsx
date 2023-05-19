@@ -5,7 +5,7 @@ import {
 	SvgCalendar,
 	SvgEnvelope,
 } from '@guardian/source-react-components';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { Heading } from '../../shared/Heading';
 import { iconListCss, sectionSpacing } from '../../switch/SwitchStyles';
@@ -19,7 +19,10 @@ export const SwitchThankYou = () => {
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
-	pageTitleContext.setPageTitle('Change your membership');
+
+	useEffect(() => {
+		pageTitleContext.setPageTitle('Change your support');
+	}, []);
 
 	return (
 		<>
