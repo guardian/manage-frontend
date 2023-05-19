@@ -182,8 +182,6 @@ const AccountOverviewPage = () => {
 							activeProduct.mmaCategory === category,
 					);
 
-				console.log('asdfasdf');
-
 				return (
 					<Fragment key={category}>
 						<h2 css={subHeadingCss}>
