@@ -53,6 +53,11 @@ describe('Cancel Supporter Plus', () => {
 			body: { subscriptions: [] },
 		}).as('mobile_subscriptions');
 
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: [],
+		}).as('single_contributions');
+
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(),

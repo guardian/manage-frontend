@@ -7,6 +7,7 @@ import {
 import { productMovePreviewResponse } from '../../../client/fixtures/productMove';
 import { featureSwitches } from '../../../shared/featureSwitches';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
+import { singleContributionsAPIResponse } from '../../../client/fixtures/singleContribution';
 
 if (featureSwitches.membershipSave) {
 	describe('Cancel membership saves', () => {
@@ -38,6 +39,11 @@ if (featureSwitches.membershipSave) {
 				statusCode: 200,
 				body: { subscriptions: [] },
 			}).as('mobile_subscriptions');
+
+			cy.intercept('GET', '/api/me/one-off-contributions', {
+				statusCode: 200,
+				body: [],
+			}).as('single_contributions');
 
 			cy.intercept('GET', '/api/cancelled/', {
 				statusCode: 200,
