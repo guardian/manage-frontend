@@ -2,7 +2,9 @@ import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
+import { convertTimestampToDate } from '../../../../shared/dates';
 import type { SingleProductDetail } from '../../../../shared/productResponse';
+import { convertCurrencyToSymbol } from '../../../utilities/currencyIso';
 import { Card } from '../shared/Card';
 import { productColour } from './ProductCardConfiguration';
 import {
@@ -44,13 +46,19 @@ export const SingleContributionCard = ({
 									>
 										<dt>Single contribution of</dt>
 										<dd>
-											{contribution.currency}
+											{convertCurrencyToSymbol(
+												contribution.currency,
+											)}
 											{contribution.price}
 										</dd>
 									</div>
 									<div>
 										<dt>Date of contribution</dt>
-										<dd>dateeee</dd>
+										<dd>
+											{convertTimestampToDate(
+												contribution.created,
+											)}
+										</dd>
 									</div>
 								</>
 							))}
