@@ -7,7 +7,6 @@ import {
 import { productMovePreviewResponse } from '../../../client/fixtures/productMove';
 import { featureSwitches } from '../../../shared/featureSwitches';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
-import { singleContributionsAPIResponse } from '../../../client/fixtures/singleContribution';
 
 if (featureSwitches.membershipSave) {
 	describe('Cancel membership saves', () => {

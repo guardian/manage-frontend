@@ -1,7 +1,4 @@
-import {
-	toMembersDataApiResponse,
-	membershipSupporter,
-} from '../../../client/fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 import { singleContributionsAPIResponse } from '../../../client/fixtures/singleContribution';
 import { featureSwitches } from '../../../shared/featureSwitches';
