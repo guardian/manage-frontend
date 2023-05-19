@@ -298,6 +298,11 @@ describe('Holiday stops', () => {
 			body: { subscriptions: [] },
 		}).as('mobile_subscriptions');
 
+		cy.intercept('GET', '/mpapi/user/one-off-contributions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('single_contributions');
+
 		cy.visit('/suspend/guardianweekly');
 
 		cy.wait('@mma_filtered');

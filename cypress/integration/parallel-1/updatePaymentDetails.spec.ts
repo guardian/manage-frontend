@@ -32,11 +32,6 @@ describe('Update payment details', () => {
 			body: { subscriptions: [] },
 		}).as('mobile_subscriptions');
 
-		cy.intercept('GET', '/api/me/one-off-contributions', {
-			statusCode: 200,
-			body: [],
-		}).as('single_contributions');
-
 		cy.intercept('GET', 'api/invoices', {
 			statusCode: 200,
 			body: { invoices: [] },
@@ -66,7 +61,6 @@ describe('Update payment details', () => {
 		cy.wait('@product_detail');
 		cy.wait('@invoices');
 		cy.wait('@mobile_subscriptions');
-		cy.wait('@single_contributions');
 
 		cy.findByText('Update payment method').click();
 

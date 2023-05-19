@@ -15,6 +15,7 @@ import {
 	dateString,
 	DATE_FNS_INPUT_FORMAT,
 } from '../../../shared/dates';
+import { singleContributionsAPIResponse } from '../../../client/fixtures/singleContribution';
 
 describe('Delivery records', () => {
 	beforeEach(() => {
@@ -60,6 +61,11 @@ describe('Delivery records', () => {
 			statusCode: 200,
 			body: { subscriptions: [] },
 		}).as('mobile_subscriptions');
+
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: singleContributionsAPIResponse,
+		}).as('single_contributions');
 
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,
