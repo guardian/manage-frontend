@@ -6,9 +6,9 @@ import {
 	Stack,
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { Navigate, useLocation, useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { getMainPlan  } from '../../../../../shared/productResponse';
+import { getMainPlan } from '../../../../../shared/productResponse';
 import {
 	getNewMembershipPrice,
 	getOldMembershipPrice,
@@ -19,10 +19,10 @@ import { MembershipBenefitsSection } from '../../shared/MembershipBenefits';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import { RecurringSupporterBenefitsSection } from '../../shared/RecurringSupporterBenefits';
 import type {
-	CancellationContextInterface} from '../CancellationContainer';
-import {
-	CancellationContext
+	CancellationContextInterface,
+	CancellationRouterState,
 } from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
@@ -36,6 +36,9 @@ import {
 
 export const SaveOptions = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
+
 	const cancellationContext = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
@@ -144,7 +147,11 @@ export const SaveOptions = () => {
 								<Button
 									cssOverrides={buttonCentredCss}
 									size="small"
-									onClick={() => navigate('../switch-offer')}
+									onClick={() =>
+										navigate('../switch-offer', {
+											state: { ...routerState },
+										})
+									}
 								>
 									Become a recurring contributor
 								</Button>
@@ -168,7 +175,11 @@ export const SaveOptions = () => {
 							cssOverrides={buttonCentredCss}
 							priority="tertiary"
 							size="small"
-							onClick={() => navigate('../confirm')}
+							onClick={() =>
+								navigate('../confirm', {
+									state: { ...routerState },
+								})
+							}
 						>
 							Cancel Membership
 						</Button>

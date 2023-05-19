@@ -6,10 +6,13 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { Navigate, useLocation, useNavigate } from 'react-router';
 import { dateString } from '../../../../../shared/dates';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
-import type { CancellationContextInterface } from '../CancellationContainer';
+import type {
+	CancellationContextInterface,
+	CancellationRouterState,
+} from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import {
 	buttonCentredCss,
@@ -23,6 +26,9 @@ export const ValueOfSupport = () => {
 		CancellationContext,
 	) as CancellationContextInterface;
 	const productDetail = cancellationContext.productDetail;
+
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
 
 	if (!productDetail) {
 		return <Navigate to="/" />;
@@ -77,7 +83,9 @@ export const ValueOfSupport = () => {
 					icon={<SvgArrowRightStraight />}
 					iconSide="right"
 					cssOverrides={buttonCentredCss}
-					onClick={() => navigate('../offers')}
+					onClick={() =>
+						navigate('../offers', { state: { ...routerState } })
+					}
 				>
 					Continue to cancellation
 				</Button>

@@ -101,8 +101,6 @@ export const stackedButtonLayoutCss = css`
 	display: flex;
 	flex-direction: column;
 	margin-top: ${space[5]}px;
-	padding-top: 32px;
-	border-top: 1px solid ${palette.neutral[86]};
 	> * + * {
 		margin-top: ${space[3]}px;
 	}
@@ -221,4 +219,10 @@ export const errorSummaryOverrideCss = css`
 export const errorSummaryLinkCss = css`
 	color: currentColor;
 	text-decoration: underline;
+`;
+
+export const whatHappensNextCss = css`
+	li > svg {
+		fill: ${palette.brand[500]};
+	}
 `;

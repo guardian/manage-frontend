@@ -9,7 +9,7 @@ import {
 } from '@guardian/source-react-components';
 import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { Navigate, useLocation, useNavigate } from 'react-router';
 import { dateString, parseDate } from '../../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
@@ -25,6 +25,7 @@ import { PaymentDetails } from '../../shared/PaymentDetails';
 import type {
 	CancellationContextInterface,
 	CancellationPageTitleInterface,
+	CancellationRouterState,
 } from '../CancellationContainer';
 import {
 	CancellationContext,
@@ -161,6 +162,9 @@ const TsAndCs = (props: {
 
 export const MembershipSwitch = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
+
 	const cancellationContext = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
@@ -224,7 +228,7 @@ export const MembershipSwitch = () => {
 				setIsSwitching(false);
 				setSwitchingError(true);
 			} else {
-				navigate('../switch-thank-you');
+				navigate('../switch-thank-you', { state: { ...routerState } });
 			}
 		} catch (e) {
 			setIsSwitching(false);
@@ -289,7 +293,9 @@ export const MembershipSwitch = () => {
 				<Button
 					priority="tertiary"
 					cssOverrides={[buttonCentredCss, buttonMutedCss]}
-					onClick={() => navigate('../offers')}
+					onClick={() =>
+						navigate('../offers', { state: { ...routerState } })
+					}
 				>
 					Back
 				</Button>
