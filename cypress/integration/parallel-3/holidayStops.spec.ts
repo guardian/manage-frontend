@@ -298,7 +298,7 @@ describe('Holiday stops', () => {
 			body: { subscriptions: [] },
 		}).as('mobile_subscriptions');
 
-		cy.intercept('GET', '/mpapi/user/one-off-contributions', {
+		cy.intercept('GET', '/api/me/one-off-contributions', {
 			statusCode: 200,
 			body: { subscriptions: [] },
 		}).as('single_contributions');
