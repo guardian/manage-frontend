@@ -23,6 +23,11 @@ describe('membership test', () => {
 			body: [],
 		}).as('single_contributions');
 
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: [],
+		}).as('single_contributions');
+
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(membershipSupporter),
@@ -39,6 +44,7 @@ describe('membership test', () => {
 
 		cy.wait('@product_detail');
 		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
 
 		cy.findByText('Guardian membership');
 	});

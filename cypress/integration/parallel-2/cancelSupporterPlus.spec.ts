@@ -11,6 +11,7 @@ describe('Cancel Supporter Plus', () => {
 		cy.wait('@mma');
 		cy.wait('@cancelled');
 		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
 
 		cy.findByText('Manage recurring support').click();
 

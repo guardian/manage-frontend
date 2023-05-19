@@ -79,6 +79,7 @@ describe('Delivery records', () => {
 		cy.wait('@mma');
 		cy.wait('@cancelled');
 		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
 		cy.findAllByText('Manage subscription').eq(1).click();
 		cy.findByText(secondarySubscriptionId).should('exist');
 		cy.findByText('Manage delivery history').click();

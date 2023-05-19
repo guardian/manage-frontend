@@ -66,6 +66,7 @@ describe('Update payment details', () => {
 		cy.wait('@product_detail');
 		cy.wait('@invoices');
 		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
 
 		cy.findByText('Update payment method').click();
 
