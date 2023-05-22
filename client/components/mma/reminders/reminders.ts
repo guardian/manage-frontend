@@ -8,7 +8,7 @@ export const getReminderParams = (
 ): ReminderParams | undefined => {
 	const pairs = querystring
 		.slice(1) // drop initial '?'
-		.replace('?', '&') // braze can append a new query string at the end of an existing one
+		.replaceAll('?', '&') // braze can append a new query string at the end of an existing one
 		.split('&');
 
 	const params = pairs.reduce<Partial<ReminderParams>>((acc, pair) => {
