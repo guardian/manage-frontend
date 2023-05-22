@@ -2,9 +2,9 @@ import { css } from '@emotion/react';
 import { from } from '@guardian/source-foundations';
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import type { ReminderType } from '../identity/idapi/supportReminders';
 import { sendReminderCreation } from '../identity/idapi/supportReminders';
+import { getReminderParams } from './reminders';
 
 const containerStyle = css`
 	margin: 0 5px;
@@ -44,20 +44,18 @@ interface CreateReminderProps {
  */
 export const CreateReminder = ({ reminderType }: CreateReminderProps) => {
 	const [status, setStatus] = useState<Status>('PENDING');
-	const [params] = useSearchParams();
 
 	useEffect(() => {
-		const reminderData = params.get('reminderData');
-		const token = params.get('token');
+		const params = getReminderParams(window.location.search);
 
-		if (!reminderData || !token) {
+		if (!params) {
 			setStatus('FAILURE');
 			Sentry.captureMessage(
 				`Failed to create reminder for request with querystring: ${params}`,
 			);
 		} else {
-			const b64Token = token.replace(' ', '+'); // + gets encoded as space in querystring
-			sendReminderCreation(reminderType, reminderData, b64Token)
+			const b64Token = params.token.replace(' ', '+'); // + gets encoded as space in querystring
+			sendReminderCreation(reminderType, params.reminderData, b64Token)
 				.then((response) => {
 					if (!response.ok) {
 						return Promise.reject(
@@ -70,7 +68,7 @@ export const CreateReminder = ({ reminderType }: CreateReminderProps) => {
 				.catch((err) => {
 					setStatus('FAILURE');
 					Sentry.captureMessage(
-						`Failed to create reminder for request with data: ${reminderData}. Error: ${err}`,
+						`Failed to create reminder for request with data: ${params.reminderData}. Error: ${err}`,
 					);
 				});
 		}
