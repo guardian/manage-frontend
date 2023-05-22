@@ -226,3 +226,12 @@ export const whatHappensNextCss = css`
 		fill: ${palette.brand[500]};
 	}
 `;
+
+export const paragraphListCss = css`
+	${textSans.medium()};
+	${from.tablet} {
+		span {
+			display: block;
+		}
+	}
+`;
