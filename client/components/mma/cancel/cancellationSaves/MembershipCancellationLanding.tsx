@@ -123,7 +123,13 @@ export const MembershipCancellationLanding = () => {
 						Continue without speaking to our customer service team.
 					</p>
 					<div css={buttonLayoutCss}>
-						<Button onClick={() => navigate('../details')}>
+						<Button
+							onClick={() =>
+								navigate('../details', {
+									state: { user: data.user },
+								})
+							}
+						>
 							Cancel online
 						</Button>
 					</div>

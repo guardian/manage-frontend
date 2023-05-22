@@ -23,7 +23,6 @@ if (featureSwitches.membershipSave) {
 
 		beforeEach(() => {
 			signInAndAcceptCookies();
-			console.log('beforeEach');
 			cy.intercept('GET', '/api/me/mma?productType=Membership', {
 				statusCode: 200,
 				body: toMembersDataApiResponse(membershipSupporter),
@@ -92,6 +91,7 @@ if (featureSwitches.membershipSave) {
 
 			cy.wait('@product_move');
 			cy.findByText(/Thank you/).should('exist');
+			cy.findByText(/test@test.com/).should('exist');
 		});
 
 		it('cancels membership', () => {
