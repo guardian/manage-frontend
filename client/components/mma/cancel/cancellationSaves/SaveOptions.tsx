@@ -1,5 +1,11 @@
 import { css, ThemeProvider } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans,
+	until,
+} from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
@@ -45,8 +51,11 @@ const NewPriceIcon = () => {
 				border-radius: 19px;
 				padding: 0 ${space[2]}px;
 				margin-left: ${space[3]}px;
-				position: absolute;
-				top: -10px;
+
+				${from.tablet} {
+					position: absolute;
+					top: -10px;
+				}
 			`}
 		>
 			New price
@@ -114,7 +123,14 @@ export const SaveOptions = () => {
 					<Card.Header backgroundColor={palette.sport[300]}>
 						<div css={cardHeaderDivCss}>
 							<h3 css={productTitleCss}>Membership</h3>
-							<div>
+							<div
+								css={css`
+									${until.tablet} {
+										display: flex;
+										flex-direction: column-reverse;
+									}
+								`}
+							>
 								<NewPriceIcon />
 								<p css={productSubtitleCss}>
 									{newPriceDisplay}/{billingPeriod}
