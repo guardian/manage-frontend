@@ -147,6 +147,7 @@ export const SaveOptions = () => {
 								<Button
 									cssOverrides={buttonCentredCss}
 									size="small"
+									onClick={() => navigate('../thank-you')}
 								>
 									Keep my Membership for {newPriceDisplay}/
 									{billingPeriod}
