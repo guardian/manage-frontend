@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import type { CMP } from '@guardian/consent-management-platform/dist/types';
 import { from, palette } from '@guardian/source-foundations';
+import { BackToTop } from '@guardian/source-react-components';
 import type { SyntheticEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { headline } from '../../../styles/fonts';
@@ -157,28 +158,6 @@ const backToTopLinkStyles = css`
 	transform: translateY(-50%);
 `;
 
-const backToTopLabelStyles = css`
-	display: inline-block;
-	padding-right: 5px;
-	padding-top: 9px;
-`;
-
-const backToTopButtonOutterContainerStyles = css`
-	position: relative;
-	float: right;
-	background-color: currentColor;
-	border-radius: 100%;
-	height: 42px;
-	width: 42px;
-`;
-
-const backToTopButtonInnerContainerStyles = css`
-	position: absolute;
-	fill: ${palette.brand[400]};
-	top: 9px;
-	left: 9px;
-`;
-
 const copyrightTextStyles = css`
 	${from.tablet} {
 		padding-top: 6px;
@@ -293,28 +272,7 @@ export const Footer = () => {
 						</div>
 
 						<div css={copyrightStyles}>
-							<a href="#top" css={backToTopLinkStyles}>
-								<span css={backToTopLabelStyles}>
-									Back to top
-								</span>
-								<span
-									css={backToTopButtonOutterContainerStyles}
-								>
-									<span
-										css={
-											backToTopButtonInnerContainerStyles
-										}
-									>
-										<svg
-											width="24"
-											height="18"
-											viewBox="0 0 24 18"
-										>
-											<path d="M.4 15.3l10.5-8.4L12 6l1.1.9 10.5 8.4-.5.7L12 9.7.9 16l-.5-.7z" />
-										</svg>
-									</span>
-								</span>
-							</a>
+							<div css={backToTopLinkStyles}>{BackToTop}</div>
 							<div css={copyrightTextStyles}>
 								© {TODAY.getFullYear()} Guardian News & Media
 								Limited or its affiliated companies.
