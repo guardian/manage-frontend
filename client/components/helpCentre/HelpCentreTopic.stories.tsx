@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import fetchMock from 'fetch-mock';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import { SectionContent } from '../shared/SectionContent';
 import { SectionHeader } from '../shared/SectionHeader';
@@ -34,10 +34,6 @@ const topicContent = {
 };
 
 export const Default: ComponentStory<typeof HelpCentreTopic> = () => {
-	fetchMock
-		.restore()
-		.get('/api/help-centre/topic/delivery', { body: topicContent });
-
 	return (
 		<>
 			<SectionHeader title="How can we help you?" pageHasNav={true} />
@@ -47,7 +43,13 @@ export const Default: ComponentStory<typeof HelpCentreTopic> = () => {
 		</>
 	);
 };
+
 Default.parameters = {
+	msw: [
+		rest.get('/api/help-centre/topic/delivery', (_req, res, ctx) => {
+			return res(ctx.json(topicContent));
+		}),
+	],
 	reactRouter: {
 		location: '/topic/delivery',
 		path: '/topic/:topicCode',

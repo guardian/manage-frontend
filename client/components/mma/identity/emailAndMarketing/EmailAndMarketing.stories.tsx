@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import fetchMock from 'fetch-mock';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import { featureSwitches } from '../../../../../shared/featureSwitches';
 import { consents } from '../../../../fixtures/consents';
@@ -26,78 +26,112 @@ export default {
 } as ComponentMeta<typeof EmailAndMarketing>;
 
 export const Default: ComponentStory<typeof EmailAndMarketing> = () => {
-	fetchMock
-		.restore()
-		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(
-				guardianWeeklyCard,
-				digitalDD,
-				newspaperVoucherPaypal,
-			),
-		})
-		.get('/idapi/user', { body: user })
-		.get('/idapicodeproxy/newsletters', { body: newsletters })
-		.get('/idapicodeproxy/users/me/newsletters', {
-			body: newsletterSubscriptions,
-		})
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [] },
-		})
-		.get('/api/me/one-off-contributions', {
-			body: [],
-		})
-		.get('/idapicodeproxy/consents?filter=all', { body: consents })
-		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
-
 	return <EmailAndMarketing />;
 };
 
-export const WithNoProducts: ComponentStory<typeof EmailAndMarketing> = () => {
-	fetchMock
-		.restore()
-		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(),
-		})
-		.get('/idapi/user', { body: user })
-		.get('/idapicodeproxy/newsletters', { body: newsletters })
-		.get('/idapicodeproxy/users/me/newsletters', {
-			body: newsletterSubscriptions,
-		})
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [] },
-		})
-		.get('/api/me/one-off-contributions', {
-			body: [],
-		})
-		.get('/idapicodeproxy/consents?filter=all', { body: consents })
-		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
+Default.parameters = {
+	msw: [
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(
+				ctx.json(
+					toMembersDataApiResponse(
+						guardianWeeklyCard,
+						digitalDD,
+						newspaperVoucherPaypal,
+					),
+				),
+			);
+		}),
+		rest.get('/idapi/user', (_req, res, ctx) => {
+			return res(ctx.json(user));
+		}),
+		rest.get('/idapicodeproxy/newsletters', (_req, res, ctx) => {
+			return res(ctx.json(newsletters));
+		}),
+		rest.get('/idapicodeproxy/users/me/newsletters', (_req, res, ctx) => {
+			return res(ctx.json(newsletterSubscriptions));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(ctx.json({ subscriptions: [] }));
+		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+		rest.get('/idapicodeproxy/consents', (_req, res, ctx) => {
+			return res(ctx.json(consents));
+		}),
+		rest.get('/api/reminders/status', (_req, res, ctx) => {
+			return res(ctx.json({ recurringStatus: 'NotSet' }));
+		}),
+	],
+};
 
+export const WithNoProducts: ComponentStory<typeof EmailAndMarketing> = () => {
 	return <EmailAndMarketing />;
+};
+
+WithNoProducts.parameters = {
+	msw: [
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(ctx.json(toMembersDataApiResponse()));
+		}),
+		rest.get('/idapi/user', (_req, res, ctx) => {
+			return res(ctx.json(user));
+		}),
+		rest.get('/idapicodeproxy/newsletters', (_req, res, ctx) => {
+			return res(ctx.json(newsletters));
+		}),
+		rest.get('/idapicodeproxy/users/me/newsletters', (_req, res, ctx) => {
+			return res(ctx.json(newsletterSubscriptions));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(ctx.json({ subscriptions: [] }));
+		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+		rest.get('/idapicodeproxy/consents', (_req, res, ctx) => {
+			return res(ctx.json(consents));
+		}),
+		rest.get('/api/reminders/status', (_req, res, ctx) => {
+			return res(ctx.json({ recurringStatus: 'NotSet' }));
+		}),
+	],
 };
 
 export const WithIAP: ComponentStory<typeof EmailAndMarketing> = () => {
 	featureSwitches['appSubscriptions'] = true;
 
-	fetchMock
-		.restore()
-		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(),
-		})
-		.get('/idapi/user', { body: user })
-		.get('/idapicodeproxy/newsletters', { body: newsletters })
-		.get('/idapicodeproxy/users/me/newsletters', {
-			body: newsletterSubscriptions,
-		})
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [InAppPurchase] },
-		})
-		.get('/api/me/one-off-contributions', {
-			body: [],
-		})
-		.get('/idapicodeproxy/consents?filter=all', { body: consents })
-		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
-
 	return <EmailAndMarketing />;
+};
+
+WithIAP.parameters = {
+	msw: [
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(ctx.json(toMembersDataApiResponse()));
+		}),
+		rest.get('/idapi/user', (_req, res, ctx) => {
+			return res(ctx.json(user));
+		}),
+		rest.get('/idapicodeproxy/newsletters', (_req, res, ctx) => {
+			return res(ctx.json(newsletters));
+		}),
+		rest.get('/idapicodeproxy/users/me/newsletters', (_req, res, ctx) => {
+			return res(ctx.json(newsletterSubscriptions));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(ctx.json({ subscriptions: [InAppPurchase] }));
+		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+		rest.get('/idapicodeproxy/consents', (_req, res, ctx) => {
+			return res(ctx.json(consents));
+		}),
+		rest.get('/api/reminders/status', (_req, res, ctx) => {
+			return res(ctx.json({ recurringStatus: 'NotSet' }));
+		}),
+	],
 };
 
 export const WithSingleContribution: ComponentStory<
@@ -105,24 +139,34 @@ export const WithSingleContribution: ComponentStory<
 > = () => {
 	featureSwitches['singleContributions'] = true;
 
-	fetchMock
-		.restore()
-		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(),
-		})
-		.get('/idapi/user', { body: user })
-		.get('/idapicodeproxy/newsletters', { body: newsletters })
-		.get('/idapicodeproxy/users/me/newsletters', {
-			body: newsletterSubscriptions,
-		})
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [InAppPurchase] },
-		})
-		.get('/api/me/one-off-contributions', {
-			body: singleContributionsAPIResponse,
-		})
-		.get('/idapicodeproxy/consents?filter=all', { body: consents })
-		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
-
 	return <EmailAndMarketing />;
+};
+
+WithSingleContribution.parameters = {
+	msw: [
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(ctx.json(toMembersDataApiResponse()));
+		}),
+		rest.get('/idapi/user', (_req, res, ctx) => {
+			return res(ctx.json(user));
+		}),
+		rest.get('/idapicodeproxy/newsletters', (_req, res, ctx) => {
+			return res(ctx.json(newsletters));
+		}),
+		rest.get('/idapicodeproxy/users/me/newsletters', (_req, res, ctx) => {
+			return res(ctx.json(newsletterSubscriptions));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(ctx.json({ subscriptions: [] }));
+		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json(singleContributionsAPIResponse));
+		}),
+		rest.get('/idapicodeproxy/consents', (_req, res, ctx) => {
+			return res(ctx.json(consents));
+		}),
+		rest.get('/api/reminders/status', (_req, res, ctx) => {
+			return res(ctx.json({ recurringStatus: 'NotSet' }));
+		}),
+	],
 };
