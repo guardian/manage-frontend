@@ -38,14 +38,6 @@ export const SelectReason: ComponentStory<
 	return <CancellationReasonSelection />;
 };
 
-SelectReason.parameters = {
-	msw: [
-		rest.get('glob:/api/cancellation-date/*', (_req, res, ctx) => {
-			return res(ctx.json({ cancellationEffectiveDate: '2022-09-01' }));
-		}),
-	],
-};
-
 export const ContactCustomerService: ComponentStory<
 	typeof CancellationReasonSelection
 > = () => <CancellationReasonSelection />;
