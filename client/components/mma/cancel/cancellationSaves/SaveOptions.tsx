@@ -1,5 +1,11 @@
 import { css, ThemeProvider } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans,
+	until,
+} from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
@@ -33,6 +39,29 @@ import {
 	productTitleCss,
 	sectionSpacing,
 } from './SaveStyles';
+
+const NewPriceIcon = () => {
+	return (
+		<div
+			css={css`
+				${textSans.xsmall({ fontWeight: 'bold' })};
+				color: ${palette.sport[300]};
+				background-color: ${palette.neutral[100]};
+				border: 1px solid ${palette.sport[300]};
+				border-radius: 19px;
+				padding: 0 ${space[2]}px;
+				margin-left: ${space[3]}px;
+
+				${from.tablet} {
+					position: absolute;
+					top: -10px;
+				}
+			`}
+		>
+			New price
+		</div>
+	);
+};
 
 export const SaveOptions = () => {
 	const navigate = useNavigate();
@@ -91,12 +120,22 @@ export const SaveOptions = () => {
 					{billingPeriod}.
 				</p>
 				<Card>
-					<Card.Header backgroundColor={palette.brand[600]}>
+					<Card.Header backgroundColor={palette.sport[300]}>
 						<div css={cardHeaderDivCss}>
 							<h3 css={productTitleCss}>Membership</h3>
-							<p css={productSubtitleCss}>
-								{newPriceDisplay}/{billingPeriod}
-							</p>
+							<div
+								css={css`
+									${until.tablet} {
+										display: flex;
+										flex-direction: column-reverse;
+									}
+								`}
+							>
+								<NewPriceIcon />
+								<p css={productSubtitleCss}>
+									{newPriceDisplay}/{billingPeriod}
+								</p>
+							</div>
 						</div>
 					</Card.Header>
 					<Card.Section>
@@ -130,7 +169,7 @@ export const SaveOptions = () => {
 					funding Guardian journalism.
 				</p>
 				<Card>
-					<Card.Header backgroundColor={palette.brand[600]}>
+					<Card.Header backgroundColor={palette.brand[400]}>
 						<div css={cardHeaderDivCss}>
 							<h3 css={productTitleCss}>Monthly contribution</h3>
 							<p css={productSubtitleCss}>

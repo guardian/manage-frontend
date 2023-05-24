@@ -163,7 +163,7 @@ export const smallPrintCss = css`
 `;
 
 export const productSubtitleCss = css`
-	${textSans.medium({ fontWeight: 'bold' })};
+	${textSans.large({ fontWeight: 'bold' })};
 	color: ${palette.neutral[100]};
 	margin: 0;
 	max-width: 20ch;
