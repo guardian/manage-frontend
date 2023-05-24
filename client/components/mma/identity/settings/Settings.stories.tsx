@@ -20,7 +20,7 @@ export const Default: ComponentStory<typeof Settings> = () => {
 Default.parameters = {
 	msw: [
 		rest.get('/idapi/user', (_req, res, ctx) => {
-			return res(ctx.json({ body: user }));
+			return res(ctx.json(user));
 		}),
 	],
 };
