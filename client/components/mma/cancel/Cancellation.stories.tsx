@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import fetchMock from 'fetch-mock';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
@@ -35,11 +35,15 @@ export default {
 export const SelectReason: ComponentStory<
 	typeof CancellationReasonSelection
 > = () => {
-	fetchMock.restore().get('glob:/api/cancellation-date/*', {
-		body: { cancellationEffectiveDate: '2022-09-01' },
-	});
-
 	return <CancellationReasonSelection />;
+};
+
+SelectReason.parameters = {
+	msw: [
+		rest.get('glob:/api/cancellation-date/*', (_req, res, ctx) => {
+			return res(ctx.json({ cancellationEffectiveDate: '2022-09-01' }));
+		}),
+	],
 };
 
 export const ContactCustomerService: ComponentStory<
@@ -56,12 +60,15 @@ ContactCustomerService.parameters = {
 };
 
 export const Review: ComponentStory<typeof CancellationContainer> = () => {
-	fetchMock.restore().post('/api/case', { body: { id: 'caseId' } });
-
 	return <CancellationReasonReview />;
 };
 
 Review.parameters = {
+	msw: [
+		rest.post('/api/case', (_req, res, ctx) => {
+			return res(ctx.json({ id: 'caseId' }));
+		}),
+	],
 	reactRouter: {
 		state: {
 			productDetail: contributionPayPal,

@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import fetchMock from 'fetch-mock';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import {
@@ -41,195 +41,220 @@ export default {
 } as ComponentMeta<typeof AccountOverview>;
 
 export const NoSubscription: ComponentStory<typeof AccountOverview> = () => {
-	fetchMock
-		.restore()
-		.get('/api/cancelled/', { body: [] })
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [] },
-		})
-		.get('/api/me/one-off-contributions', {
-			body: [],
-		})
-		.get('/api/me/mma', { body: toMembersDataApiResponse() })
-		.get('/idapi/user', { body: user });
-
 	return <AccountOverview />;
 };
 
 export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
-	fetchMock
-		.restore()
-		.get('/api/cancelled/', { body: [] })
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [] },
-		})
-		.get('/api/me/one-off-contributions', {
-			body: [],
-		})
-		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(
-				guardianWeeklyCard,
-				digitalDD,
-				newspaperVoucherPaypal,
-			),
-		});
-
 	return <AccountOverview />;
+};
+
+NoSubscription.parameters = {
+	msw: [
+		rest.get('/api/cancelled/', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(ctx.json({ subscriptions: [] }));
+		}),
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(ctx.json(toMembersDataApiResponse()));
+		}),
+		rest.get('/idapi/user', (_req, res, ctx) => {
+			return res(ctx.json(user));
+		}),
+	],
+};
+
+export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
+	return <AccountOverview />;
+};
+
+WithSubscriptions.parameters = {
+	msw: [
+		rest.get('/api/cancelled/', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(ctx.json({ subscriptions: [] }));
+		}),
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(
+				ctx.json(
+					toMembersDataApiResponse(
+						guardianWeeklyCard,
+						digitalDD,
+						newspaperVoucherPaypal,
+					),
+				),
+			);
+		}),
+	],
 };
 
 export const WithContributionAndSwitchPossible: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	fetchMock
-		.restore()
-		.get('/api/cancelled/', { body: [] })
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [] },
-		})
-		.get('/api/me/one-off-contributions', {
-			body: [],
-		})
-		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(contributionPayPal),
-		});
-
 	return <AccountOverview />;
+};
+
+WithContributionAndSwitchPossible.parameters = {
+	msw: [
+		rest.get('/api/cancelled/', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(ctx.json({ subscriptions: [] }));
+		}),
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(ctx.json(toMembersDataApiResponse(contributionPayPal)));
+		}),
+	],
 };
 
 export const WithContributionInPaymentFailure: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	const contributionPaymentFailure = {
-		...contributionPayPal,
-		alertText: 'Your payment has failed.',
-	};
-
-	fetchMock
-		.restore()
-		.get('/api/cancelled/', { body: [] })
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [] },
-		})
-		.get('/api/me/one-off-contributions', {
-			body: [],
-		})
-		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(
-				contributionPaymentFailure,
-				supporterPlus,
-			),
-		});
-
 	return <AccountOverview />;
+};
+
+const contributionPaymentFailure = {
+	...contributionPayPal,
+	alertText: 'Your payment has failed.',
+};
+
+WithContributionInPaymentFailure.parameters = {
+	msw: [
+		rest.get('/api/cancelled/', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(ctx.json({ subscriptions: [] }));
+		}),
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(
+				ctx.json(
+					toMembersDataApiResponse(
+						contributionPaymentFailure,
+						supporterPlus,
+					),
+				),
+			);
+		}),
+	],
 };
 
 export const WithContributionAndSwitchNotPossible: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	fetchMock
-		.restore()
-		.get('/api/cancelled/', { body: [] })
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [] },
-		})
-		.get('/api/me/one-off-contributions', {
-			body: [],
-		})
-		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(contributionPayPal, digitalDD),
-		});
-
 	return <AccountOverview />;
+};
+
+WithContributionAndSwitchNotPossible.parameters = {
+	msw: [
+		rest.get('/api/cancelled/', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(ctx.json({ subscriptions: [] }));
+		}),
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(
+				ctx.json(
+					toMembersDataApiResponse(contributionPayPal, digitalDD),
+				),
+			);
+		}),
+	],
 };
 
 export const WithCancelledSubscriptions: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	fetchMock
-		.restore()
-		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(
-				contributionCancelled,
-				guardianWeeklyCancelled,
-				supporterPlusCancelled,
-			),
-		})
-		.get('/api/cancelled/', {
-			body: [cancelledContribution, cancelledGuardianWeekly],
-		})
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [] },
-		})
-		.get('/api/me/one-off-contributions', {
-			body: [],
-		});
-
 	return <AccountOverview />;
+};
+
+WithCancelledSubscriptions.parameters = {
+	msw: [
+		rest.get('/api/cancelled/', (_req, res, ctx) => {
+			return res(
+				ctx.json([cancelledContribution, cancelledGuardianWeekly]),
+			);
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(ctx.json({ subscriptions: [] }));
+		}),
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(
+				ctx.json(
+					toMembersDataApiResponse(
+						contributionCancelled,
+						guardianWeeklyCancelled,
+						supporterPlusCancelled,
+					),
+				),
+			);
+		}),
+	],
 };
 
 export const WithGiftSubscriptions: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	fetchMock
-		.restore()
-		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(
-				guardianWeeklyGiftRecipient,
-				guardianWeeklyGiftPurchase,
-			),
-		})
-		.get('/api/cancelled/', { body: [] })
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [] },
-		})
-		.get('/api/me/one-off-contributions', {
-			body: [],
-		});
-
 	return <AccountOverview />;
+};
+
+WithGiftSubscriptions.parameters = {
+	msw: [
+		rest.get('/api/cancelled/', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(ctx.json({ subscriptions: [] }));
+		}),
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(
+				ctx.json(
+					toMembersDataApiResponse(
+						guardianWeeklyGiftRecipient,
+						guardianWeeklyGiftPurchase,
+					),
+				),
+			);
+		}),
+	],
 };
 
 export const WithAppSubscriptions: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	fetchMock
-		.restore()
-		.get('/api/cancelled/', { body: [] })
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: {
-				subscriptions: [
-					CancelledInAppPurchase,
-					InAppPurchaseIos,
-					PuzzleAppPurchaseAndroid,
-					PuzzleAppPurchaseIos,
-				],
-			},
-		})
-		.get('/api/me/one-off-contributions', {
-			body: [],
-		})
-		.get('/api/me/mma', { body: toMembersDataApiResponse() })
-		.get('/idapi/user', { body: user });
-
 	return <AccountOverview />;
 };
 
 export const WithSingleContribution: ComponentStory<
 	typeof AccountOverview
 > = () => {
-	fetchMock
-		.restore()
-		.get('/api/cancelled/', { body: [] })
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: {
-				subscriptions: [],
-			},
-		})
-		.get('/api/me/one-off-contributions', {
-			body: singleContributionsAPIResponse,
-		})
-		.get('/api/me/mma', { body: toMembersDataApiResponse() })
-		.get('/idapi/user', { body: user });
-
 	return <AccountOverview />;
+};
+
+WithAppSubscriptions.parameters = {
+	msw: [
+		rest.get('/api/cancelled/', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(
+				ctx.json({
+					subscriptions: [
+						CancelledInAppPurchase,
+						InAppPurchaseIos,
+						PuzzleAppPurchaseAndroid,
+						PuzzleAppPurchaseIos,
+					],
+				}),
+			);
+		}),
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(ctx.json(toMembersDataApiResponse()));
+		}),
+	],
 };

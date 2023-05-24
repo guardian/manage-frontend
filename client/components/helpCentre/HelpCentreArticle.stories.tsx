@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import fetchMock from 'fetch-mock';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import { SectionContent } from '../shared/SectionContent';
 import { SectionHeader } from '../shared/SectionHeader';
@@ -41,13 +41,6 @@ const articleContent = {
 };
 
 export const Default: ComponentStory<typeof HelpCentreArticle> = () => {
-	fetchMock
-		.restore()
-		.get('/api/known-issues/', { body: [] })
-		.get('/api/help-centre/article/i-need-to-pause-my-delivery', {
-			body: articleContent,
-		});
-
 	return (
 		<>
 			<SectionHeader title="How can we help you?" pageHasNav={true} />
@@ -57,7 +50,19 @@ export const Default: ComponentStory<typeof HelpCentreArticle> = () => {
 		</>
 	);
 };
+
 Default.parameters = {
+	msw: [
+		rest.get('/api/known-issues/', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+		rest.get(
+			'/api/help-centre/article/i-need-to-pause-my-delivery',
+			(_req, res, ctx) => {
+				return res(ctx.json(articleContent));
+			},
+		),
+	],
 	reactRouter: {
 		location: '/article/i-need-to-pause-my-delivery',
 		path: '/article/:articleCode',
