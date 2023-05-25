@@ -135,9 +135,5 @@ export const getOldestDate = (dates: Date[]) =>
 	);
 
 export function convertTimestampToDate(timestamp: number): string {
-	const date = new Date(timestamp);
-	const day = date.getDate();
-	const month = date.toLocaleString('default', { month: 'short' });
-	const year = date.getFullYear();
-	return `${day} ${month} ${year}`;
+	return dateString(new Date(timestamp), DATE_FNS_LONG_OUTPUT_FORMAT);
 }

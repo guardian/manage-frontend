@@ -42,6 +42,12 @@ export const SingleContributionCard = ({
 									<div
 										css={css`
 											padding-top: ${space[3]}px;
+
+											dt {
+												:after {
+													content: '';
+												}
+											}
 										`}
 									>
 										<dt>Single contribution of</dt>
