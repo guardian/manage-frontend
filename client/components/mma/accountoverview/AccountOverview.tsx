@@ -140,7 +140,8 @@ const AccountOverviewPage = () => {
 			appSubscriptions.length === 0 &&
 			singleContributions.length === 0) ||
 		(allActiveProductDetails.length === 0 &&
-			!featureSwitches.appSubscriptions &&
+			!featureSwitches.appSubscriptions) ||
+		(allActiveProductDetails.length === 0 &&
 			!featureSwitches.singleContributions)
 	) {
 		return <EmptyAccountOverview />;
