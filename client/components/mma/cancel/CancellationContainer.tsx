@@ -3,6 +3,7 @@ import { createContext, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import type {
 	MembersDataApiResponse,
+	MembersDataApiUser,
 	ProductDetail,
 } from '../../../../shared/productResponse';
 import { isProduct } from '../../../../shared/productResponse';
@@ -98,6 +99,7 @@ const contextAndOutletContainer = (
 export interface CancellationRouterState {
 	productDetail: ProductDetail;
 	productType?: ProductTypeWithCancellationFlow;
+	user?: MembersDataApiUser;
 	selectedReasonId?: OptionalCancellationReasonId;
 	cancellationPolicy?: string;
 	caseId?: string;

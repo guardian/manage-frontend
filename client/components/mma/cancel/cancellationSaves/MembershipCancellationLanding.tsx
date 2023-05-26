@@ -12,7 +12,7 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
-import { allProductsDetailFetcher } from '../../../../utilities/productUtils';
+import { allRecurringProductsDetailFetcher } from '../../../../utilities/productUtils';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
@@ -56,7 +56,7 @@ export const MembershipCancellationLanding = () => {
 	}: {
 		data: MembersDataApiResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(allProductsDetailFetcher, JsonResponseHandler);
+	} = useAsyncLoader(allRecurringProductsDetailFetcher, JsonResponseHandler);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
@@ -123,7 +123,13 @@ export const MembershipCancellationLanding = () => {
 						Continue without speaking to our customer service team.
 					</p>
 					<div css={buttonLayoutCss}>
-						<Button onClick={() => navigate('../details')}>
+						<Button
+							onClick={() =>
+								navigate('../details', {
+									state: { user: data.user },
+								})
+							}
+						>
 							Cancel online
 						</Button>
 					</div>

@@ -12,6 +12,7 @@ import {
 	newspaperVoucherPaypal,
 	toMembersDataApiResponse,
 } from '../../../../fixtures/productDetail';
+import { singleContributionsAPIResponse } from '../../../../fixtures/singleContribution';
 import { user } from '../../../../fixtures/user';
 import { EmailAndMarketing } from './EmailAndMarketing';
 
@@ -42,6 +43,9 @@ export const Default: ComponentStory<typeof EmailAndMarketing> = () => {
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
 		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
+		})
 		.get('/idapicodeproxy/consents?filter=all', { body: consents })
 		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
 
@@ -61,6 +65,9 @@ export const WithNoProducts: ComponentStory<typeof EmailAndMarketing> = () => {
 		})
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
+		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
 		})
 		.get('/idapicodeproxy/consents?filter=all', { body: consents })
 		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
@@ -83,6 +90,36 @@ export const WithIAP: ComponentStory<typeof EmailAndMarketing> = () => {
 		})
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [InAppPurchase] },
+		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
+		})
+		.get('/idapicodeproxy/consents?filter=all', { body: consents })
+		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });
+
+	return <EmailAndMarketing />;
+};
+
+export const WithSingleContribution: ComponentStory<
+	typeof EmailAndMarketing
+> = () => {
+	featureSwitches['singleContributions'] = true;
+
+	fetchMock
+		.restore()
+		.get('/api/me/mma', {
+			body: toMembersDataApiResponse(),
+		})
+		.get('/idapi/user', { body: user })
+		.get('/idapicodeproxy/newsletters', { body: newsletters })
+		.get('/idapicodeproxy/users/me/newsletters', {
+			body: newsletterSubscriptions,
+		})
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: { subscriptions: [InAppPurchase] },
+		})
+		.get('/api/me/one-off-contributions', {
+			body: singleContributionsAPIResponse,
 		})
 		.get('/idapicodeproxy/consents?filter=all', { body: consents })
 		.get('/api/reminders/status', { body: { recurringStatus: 'NotSet' } });

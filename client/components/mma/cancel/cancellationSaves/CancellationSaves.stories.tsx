@@ -24,7 +24,10 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: membershipSupporter },
+			state: {
+				productDetail: membershipSupporter,
+				user: { email: 'test@test.com' },
+			},
 			container: (
 				<CancellationContainer productType={PRODUCT_TYPES.membership} />
 			),

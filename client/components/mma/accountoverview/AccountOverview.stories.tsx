@@ -25,6 +25,7 @@ import {
 	supporterPlusCancelled,
 	toMembersDataApiResponse,
 } from '../../../fixtures/productDetail';
+import { singleContributionsAPIResponse } from '../../../fixtures/singleContribution';
 import { user } from '../../../fixtures/user';
 import { AccountOverview } from './AccountOverview';
 
@@ -46,6 +47,9 @@ export const NoSubscription: ComponentStory<typeof AccountOverview> = () => {
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
 		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
+		})
 		.get('/api/me/mma', { body: toMembersDataApiResponse() })
 		.get('/idapi/user', { body: user });
 
@@ -58,6 +62,9 @@ export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
 		.get('/api/cancelled/', { body: [] })
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
+		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
 		})
 		.get('/api/me/mma', {
 			body: toMembersDataApiResponse(
@@ -78,6 +85,9 @@ export const WithContributionAndSwitchPossible: ComponentStory<
 		.get('/api/cancelled/', { body: [] })
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
+		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
 		})
 		.get('/api/me/mma', {
 			body: toMembersDataApiResponse(contributionPayPal),
@@ -100,6 +110,9 @@ export const WithContributionInPaymentFailure: ComponentStory<
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
 		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
+		})
 		.get('/api/me/mma', {
 			body: toMembersDataApiResponse(
 				contributionPaymentFailure,
@@ -118,6 +131,9 @@ export const WithContributionAndSwitchNotPossible: ComponentStory<
 		.get('/api/cancelled/', { body: [] })
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
+		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
 		})
 		.get('/api/me/mma', {
 			body: toMembersDataApiResponse(contributionPayPal, digitalDD),
@@ -143,6 +159,9 @@ export const WithCancelledSubscriptions: ComponentStory<
 		})
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
+		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
 		});
 
 	return <AccountOverview />;
@@ -162,6 +181,9 @@ export const WithGiftSubscriptions: ComponentStory<
 		.get('/api/cancelled/', { body: [] })
 		.get('/mpapi/user/mobile-subscriptions', {
 			body: { subscriptions: [] },
+		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
 		});
 
 	return <AccountOverview />;
@@ -182,6 +204,29 @@ export const WithAppSubscriptions: ComponentStory<
 					PuzzleAppPurchaseIos,
 				],
 			},
+		})
+		.get('/api/me/one-off-contributions', {
+			body: [],
+		})
+		.get('/api/me/mma', { body: toMembersDataApiResponse() })
+		.get('/idapi/user', { body: user });
+
+	return <AccountOverview />;
+};
+
+export const WithSingleContribution: ComponentStory<
+	typeof AccountOverview
+> = () => {
+	fetchMock
+		.restore()
+		.get('/api/cancelled/', { body: [] })
+		.get('/mpapi/user/mobile-subscriptions', {
+			body: {
+				subscriptions: [],
+			},
+		})
+		.get('/api/me/one-off-contributions', {
+			body: singleContributionsAPIResponse,
 		})
 		.get('/api/me/mma', { body: toMembersDataApiResponse() })
 		.get('/idapi/user', { body: user });

@@ -11,6 +11,7 @@ describe('Cancel Supporter Plus', () => {
 		cy.wait('@mma');
 		cy.wait('@cancelled');
 		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
 
 		cy.findByText('Manage recurring support').click();
 
@@ -52,6 +53,11 @@ describe('Cancel Supporter Plus', () => {
 			statusCode: 200,
 			body: { subscriptions: [] },
 		}).as('mobile_subscriptions');
+
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: [],
+		}).as('single_contributions');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,

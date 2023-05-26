@@ -22,6 +22,13 @@ export type MembersDataApiResponse = {
 
 export type MembersDataApiItem = ProductDetail | {};
 
+export type SingleProductDetail = {
+	created: number;
+	currency: string;
+	price: number;
+	status: string;
+};
+
 export interface InvoiceDataApiItem {
 	invoiceId: string;
 	subscriptionName: string;

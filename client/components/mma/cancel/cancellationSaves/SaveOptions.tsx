@@ -1,14 +1,20 @@
 import { css, ThemeProvider } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans,
+	until,
+} from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
 	Stack,
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { Navigate, useLocation, useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { getMainPlan  } from '../../../../../shared/productResponse';
+import { getMainPlan } from '../../../../../shared/productResponse';
 import {
 	getNewMembershipPrice,
 	getOldMembershipPrice,
@@ -19,10 +25,10 @@ import { MembershipBenefitsSection } from '../../shared/MembershipBenefits';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import { RecurringSupporterBenefitsSection } from '../../shared/RecurringSupporterBenefits';
 import type {
-	CancellationContextInterface} from '../CancellationContainer';
-import {
-	CancellationContext
+	CancellationContextInterface,
+	CancellationRouterState,
 } from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
@@ -34,8 +40,34 @@ import {
 	sectionSpacing,
 } from './SaveStyles';
 
+const NewPriceIcon = () => {
+	return (
+		<div
+			css={css`
+				${textSans.xsmall({ fontWeight: 'bold' })};
+				color: ${palette.sport[300]};
+				background-color: ${palette.neutral[100]};
+				border: 1px solid ${palette.sport[300]};
+				border-radius: 19px;
+				padding: 0 ${space[2]}px;
+				margin-left: ${space[3]}px;
+
+				${from.tablet} {
+					position: absolute;
+					top: -10px;
+				}
+			`}
+		>
+			New price
+		</div>
+	);
+};
+
 export const SaveOptions = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
+
 	const cancellationContext = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
@@ -88,12 +120,22 @@ export const SaveOptions = () => {
 					{billingPeriod}.
 				</p>
 				<Card>
-					<Card.Header backgroundColor={palette.brand[600]}>
+					<Card.Header backgroundColor={palette.sport[300]}>
 						<div css={cardHeaderDivCss}>
 							<h3 css={productTitleCss}>Membership</h3>
-							<p css={productSubtitleCss}>
-								{newPriceDisplay}/{billingPeriod}
-							</p>
+							<div
+								css={css`
+									${until.tablet} {
+										display: flex;
+										flex-direction: column-reverse;
+									}
+								`}
+							>
+								<NewPriceIcon />
+								<p css={productSubtitleCss}>
+									{newPriceDisplay}/{billingPeriod}
+								</p>
+							</div>
 						</div>
 					</Card.Header>
 					<Card.Section>
@@ -105,6 +147,7 @@ export const SaveOptions = () => {
 								<Button
 									cssOverrides={buttonCentredCss}
 									size="small"
+									onClick={() => navigate('../thank-you')}
 								>
 									Keep my Membership for {newPriceDisplay}/
 									{billingPeriod}
@@ -127,7 +170,7 @@ export const SaveOptions = () => {
 					funding Guardian journalism.
 				</p>
 				<Card>
-					<Card.Header backgroundColor={palette.brand[600]}>
+					<Card.Header backgroundColor={palette.brand[400]}>
 						<div css={cardHeaderDivCss}>
 							<h3 css={productTitleCss}>Monthly contribution</h3>
 							<p css={productSubtitleCss}>
@@ -144,7 +187,11 @@ export const SaveOptions = () => {
 								<Button
 									cssOverrides={buttonCentredCss}
 									size="small"
-									onClick={() => navigate('../switch-offer')}
+									onClick={() =>
+										navigate('../switch-offer', {
+											state: { ...routerState },
+										})
+									}
 								>
 									Become a recurring contributor
 								</Button>
@@ -168,7 +215,11 @@ export const SaveOptions = () => {
 							cssOverrides={buttonCentredCss}
 							priority="tertiary"
 							size="small"
-							onClick={() => navigate('../confirm')}
+							onClick={() =>
+								navigate('../confirm', {
+									state: { ...routerState },
+								})
+							}
 						>
 							Cancel Membership
 						</Button>

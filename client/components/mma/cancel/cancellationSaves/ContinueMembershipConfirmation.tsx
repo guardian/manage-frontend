@@ -1,17 +1,19 @@
 import { css } from '@emotion/react';
-import { from, space, textSans } from '@guardian/source-foundations';
+import { space } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { cancellationFormatDate } from '../../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
+import { getNewMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import {
 	buttonCentredCss,
 	headingCss,
+	paragraphListCss,
 	stackedButtonLeftLayoutCss,
 } from './SaveStyles';
 
@@ -25,6 +27,10 @@ export const ContinueMembershipConfirmation = () => {
 	const mainPlan = getMainPlan(
 		membership.subscription,
 	) as PaidSubscriptionPlan;
+
+	const newMembershipPriceDisplay = `${
+		mainPlan.currency
+	}${getNewMembershipPrice(mainPlan)}`;
 
 	return (
 		<>
@@ -40,17 +46,9 @@ export const ContinueMembershipConfirmation = () => {
 			/>
 			<Stack space={4}>
 				<h2 css={headingCss}>Thank you for keeping your Membership</h2>
-				<p
-					css={css`
-						${textSans.medium()};
-						${from.tablet} {
-							span {
-								display: block;
-							}
-						}
-					`}
-				>
-					The new price of your Membership is £7/month.{' '}
+				<p css={paragraphListCss}>
+					The new price of your Membership is{' '}
+					{newMembershipPriceDisplay}/{mainPlan.billingPeriod}.{' '}
 					<span>
 						Your first billing date will be{' '}
 						{cancellationFormatDate(

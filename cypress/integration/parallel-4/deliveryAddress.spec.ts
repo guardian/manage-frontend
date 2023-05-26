@@ -30,6 +30,11 @@ describe('Delivery address', () => {
 			body: { subscriptions: [] },
 		}).as('mobile_subscriptions');
 
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: [],
+		}).as('single_contributions');
+
 		cy.intercept('PUT', '/api/delivery/address/update/**', {
 			statusCode: 200,
 			body: 'success',
@@ -39,6 +44,7 @@ describe('Delivery address', () => {
 		cy.wait('@mma');
 		cy.wait('@cancelled');
 		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
 
 		cy.findByText('Manage subscription').click();
 		cy.findByText('Manage delivery address').click();
@@ -74,6 +80,11 @@ describe('Delivery address', () => {
 			body: { subscriptions: [] },
 		}).as('mobile_subscriptions');
 
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: [],
+		}).as('single_contributions');
+
 		cy.intercept('PUT', '/api/delivery/address/update/**', {
 			statusCode: 200,
 			body: 'success',
@@ -83,6 +94,7 @@ describe('Delivery address', () => {
 		cy.wait('@mma');
 		cy.wait('@cancelled');
 		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
 
 		cy.findByText('Manage subscription').click();
 		cy.findByText('Manage delivery address').click();
