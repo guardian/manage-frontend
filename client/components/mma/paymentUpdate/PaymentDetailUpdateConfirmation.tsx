@@ -9,6 +9,7 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import { Button } from '@guardian/source-react-components';
+import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type {
@@ -30,7 +31,6 @@ import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
 import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
-import { InfoSummary } from './Summary';
 
 interface ConfirmedNewPaymentDetailsRendererProps {
 	subscription: Subscription;

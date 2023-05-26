@@ -8,7 +8,10 @@ import {
 	textSans,
 } from '@guardian/source-foundations';
 import type { ReactElement } from 'react';
+import { useContext, useEffect } from 'react';
 import { gridBase, gridColumns, gridItemPlacement } from '../../styles/grid';
+import type { HasMinimalFooterInterface } from '../shared/Main';
+import { HasMinimalFooterContext } from '../shared/Main';
 import type { LeftSideNavProps } from '../shared/nav/LeftSideNav';
 import { LeftSideNav } from '../shared/nav/LeftSideNav';
 import type { NavItem } from '../shared/nav/NavConfig';
@@ -18,20 +21,33 @@ export interface PageContainerProps {
 	selectedNavItem: NavItem;
 	pageTitle: string | ReactElement;
 	compactTitle?: boolean;
+	minimalFooter?: boolean;
 }
 
-export const PageContainer = (props: PageContainerProps) => (
-	<>
-		<PageHeaderContainer
-			selectedNavItem={props.selectedNavItem}
-			title={props.pageTitle}
-			compactTitle={props.compactTitle}
-		/>
-		<PageNavAndContentContainer selectedNavItem={props.selectedNavItem}>
-			{props.children}
-		</PageNavAndContentContainer>
-	</>
-);
+export const PageContainer = (props: PageContainerProps) => {
+	const hasMinimalFooterContext = useContext(
+		HasMinimalFooterContext,
+	) as HasMinimalFooterInterface;
+
+	useEffect(() => {
+		hasMinimalFooterContext.setHasMinimalFooter(
+			props.minimalFooter ?? false,
+		);
+	});
+
+	return (
+		<>
+			<PageHeaderContainer
+				selectedNavItem={props.selectedNavItem}
+				title={props.pageTitle}
+				compactTitle={props.compactTitle}
+			/>
+			<PageNavAndContentContainer selectedNavItem={props.selectedNavItem}>
+				{props.children}
+			</PageNavAndContentContainer>
+		</>
+	);
+};
 
 interface PageHeaderContainerProps extends LeftSideNavProps {
 	title: string | ReactElement;

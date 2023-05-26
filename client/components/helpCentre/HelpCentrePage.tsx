@@ -79,13 +79,13 @@ const HelpCentreRouter = () => {
 		{
 			date: '3 Jan 2023 17:00',
 			message:
-				'Due to operational challenges caused by the ransomware attack on the Guardian, Customer Service phonelines in the US & Australia are currently not available. Live chat, email and UK phonelines remain unaffected.',
+				'Due to operational challenges caused by the ransomware attack on the Guardian, Customer Service phonelines in the US are currently not available. Live chat, email and UK and Australia phonelines remain unaffected.',
 			link: 'https://www.theguardian.com/media/2022/dec/21/guardian-hit-by-serious-it-incident-believed-to-be-ransomware-attack',
 		},
 	];
 
 	return (
-		<Main signInStatus={signInStatus}>
+		<Main signInStatus={signInStatus} isHelpCentrePage>
 			<Global styles={css(`${global}`)} />
 			<Global styles={css(`${fonts}`)} />
 			<HelpCenterContentWrapper knownIssues={knownIssues}>

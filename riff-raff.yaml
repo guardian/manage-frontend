@@ -2,6 +2,9 @@ regions:
   - eu-west-1
 stacks:
   - support
+allowedStages:
+  - CODE
+  - PROD
 deployments:
   assets-static:
     type: aws-s3
@@ -19,7 +22,7 @@ deployments:
         CODE: ManageFrontend-CODE.template.json
         PROD: ManageFrontend-PROD.template.json
       amiTags:
-        Recipe: manage-frontend-arm-node16
+        Recipe: jammy-membership-node18
         AmigoStage: PROD
       amiEncrypted: true
       amiParameter: AMIManagefrontend

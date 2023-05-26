@@ -12,6 +12,7 @@ Card.Header = (props: {
 	minHeightTablet?: boolean;
 }) => {
 	const headerCss = css`
+		position: relative;
 		padding: ${space[3]}px ${space[4]}px;
 		min-height: 64px;
 		background-color: ${props.backgroundColor ?? palette.neutral[97]};

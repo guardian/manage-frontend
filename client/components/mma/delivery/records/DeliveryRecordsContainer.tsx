@@ -4,13 +4,11 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { dateAddDays, parseDate } from '../../../../../shared/dates';
 import type {
 	DeliveryRecordApiItem,
-	MembersDataApiItem,
 	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../../shared/productResponse';
 import {
 	isProduct,
-	mdapiResponseReader,
 	MembersDataApiAsyncLoader,
 } from '../../../../../shared/productResponse';
 import type {
@@ -95,10 +93,8 @@ export const DeliveryRecordsContainer = (
 
 const handleMembersDataResponse =
 	(productType: ProductTypeWithDeliveryRecordsProperties) =>
-	(data: [MembersDataApiResponse | MembersDataApiItem[]]) => {
-		const mdaResponse = mdapiResponseReader(data);
-
-		const filteredProductDetails = mdaResponse.products.filter(isProduct);
+	(mdapiResponse: MembersDataApiResponse) => {
+		const filteredProductDetails = mdapiResponse.products.filter(isProduct);
 
 		if (filteredProductDetails.length === 1) {
 			const productDetail = filteredProductDetails[0];

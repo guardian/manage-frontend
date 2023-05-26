@@ -1,15 +1,7 @@
 import * as Sentry from '@sentry/node';
 import { Router } from 'express';
-import { availableProductMovesResponse } from '../../client/fixtures/productMovement';
-import type {
-	MembersDataApiItem,
-	MembersDataApiResponse,
-} from '../../shared/productResponse';
-import {
-	isProduct,
-	MDA_TEST_USER_HEADER,
-	mdapiResponseReader,
-} from '../../shared/productResponse';
+import type { MembersDataApiResponse } from '../../shared/productResponse';
+import { isProduct, MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import {
 	cancellationSfCasesAPI,
 	deliveryRecordsAPI,
@@ -32,9 +24,10 @@ import { log } from '../log';
 import { withIdentity } from '../middleware/identityMiddleware';
 import {
 	cancelReminderHandler,
-	createReminderHandler,
+	createOneOffReminderHandler,
+	publicCreateReminderHandler,
 	reactivateReminderHandler,
-} from '../reminderApi';
+} from '../reminders/reminderApi';
 import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
 
 const router = Router();
@@ -53,13 +46,12 @@ router.get(
 	'/me/mma/:subscriptionName?',
 	customMembersDataApiHandler((response, body) => {
 		const isTestUser = response.getHeader(MDA_TEST_USER_HEADER) === 'true';
-		const parsedResponse = JSON.parse(body.toString()) as
-			| MembersDataApiItem[]
-			| MembersDataApiResponse;
-		const newMdapiResponse = mdapiResponseReader(parsedResponse);
-		const augmentedWithTestUser = newMdapiResponse.products.map(
-			(mdaItem) => ({
-				...mdaItem,
+		const mdapiResponse = JSON.parse(
+			body.toString(),
+		) as MembersDataApiResponse;
+		const augmentedWithTestUser = mdapiResponse.products.map(
+			(mdapiObject) => ({
+				...mdapiObject,
 				isTestUser,
 			}),
 		);
@@ -72,21 +64,30 @@ router.get(
 				),
 		)
 			.then((productDetails) => {
-				newMdapiResponse.products = productDetails;
-				response.json(newMdapiResponse);
+				mdapiResponse.products = productDetails;
+				response.json(mdapiResponse);
 			})
 			.catch((error) => {
 				const errorMessage =
 					"Unexpected error when augmenting members-data-api response with 'deliveryAddressChangeEffectiveDate'";
 				log.error(errorMessage, error);
 				Sentry.captureMessage(errorMessage);
-				response.json(augmentedWithTestUser); // fallback to sending sending the response augmented with just isTestUser
+				response.json(augmentedWithTestUser); // fallback to sending the response augmented with just isTestUser
 			});
 	})(
 		'user-attributes/me/mma/:subscriptionName',
 		'MDA_DETAIL',
 		['subscriptionName'],
 		true,
+	),
+);
+
+router.get(
+	'/me/one-off-contributions',
+	membersDataApiHandler(
+		'user-attributes/me/one-off-contributions',
+		'MDA_DETAIL',
+		[],
 	),
 );
 
@@ -156,27 +157,13 @@ router.patch(
 	]),
 );
 
-/*
-router.get(
-	'/available-product-moves/:subscriptionName',
-	productMoveAPI(
-		'available-product-moves/:subscriptionName',
-		'GET_AVAILABLE_PRODUCTS',
-	),
-);
-*/
-
-//
-router.get('/available-product-moves/:subscriptionName', (_, response) => {
-	response.json(availableProductMovesResponse);
-});
-//
-
 router.post(
-	'/product-move/:subscriptionName',
-	productMoveAPI('product-move/:subscriptionName', 'MOVE_PRODUCT', [
-		'subscriptionName',
-	]),
+	'/product-move/:switchType/:subscriptionName',
+	productMoveAPI(
+		'product-move/:switchType/:subscriptionName',
+		'MOVE_PRODUCT',
+		['switchType', 'subscriptionName'],
+	),
 );
 
 router.get(
@@ -282,7 +269,15 @@ router.get('/help-centre/topic/:topic', getTopicHandler);
 
 router.post('/contact-us', contactUsFormHandler);
 
-router.post('/reminders', createReminderHandler);
+router.post('/reminders/create', createOneOffReminderHandler); // requires sign-in
+router.post(
+	'/public/reminders/create/one-off',
+	publicCreateReminderHandler('ONE_OFF'),
+); // does not require sign-in, uses verification token
+router.post(
+	'/public/reminders/create/recurring',
+	publicCreateReminderHandler('RECURRING'),
+); // does not require sign-in, uses verification token
 router.get(
 	'/reminders/status',
 	membersDataApiHandler(

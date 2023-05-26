@@ -11,7 +11,7 @@ import type { ReactElement } from 'react';
 
 export interface ProductDescriptionListKeyValue {
 	title: string;
-	value?: string | number | ReactElement | HTMLElement;
+	value?: string | number | ReactElement;
 	spanTwoCols?: boolean;
 }
 

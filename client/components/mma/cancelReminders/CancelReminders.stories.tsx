@@ -1,28 +1,41 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import fetchMock from 'fetch-mock';
-import type { CancelRemindersProps } from './CancelReminders';
+import { rest } from 'msw';
+import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { CancelReminders } from './CancelReminders';
 
 export default {
 	title: 'Pages/CancelReminders',
 	component: CancelReminders,
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
+		reactRouter: {
+			location: '/cancel-reminders/test',
+			path: 'cancel-reminders/:reminderCode',
+		},
 	},
 } as ComponentMeta<typeof CancelReminders>;
 
-export const Error: ComponentStory<typeof CancelReminders> = (
-	_: CancelRemindersProps,
-) => {
-	fetchMock.restore().post('/api/reminders/cancel', 500);
-
-	return <CancelReminders reminderCode="123" />;
+export const Error: ComponentStory<typeof CancelReminders> = () => {
+	return <CancelReminders />;
 };
 
-export const Success: ComponentStory<typeof CancelReminders> = (
-	_: CancelRemindersProps,
-) => {
-	fetchMock.restore().post('/api/reminders/cancel', 200);
+Error.parameters = {
+	msw: [
+		rest.post('/api/reminders/cancel', (_req, res, ctx) => {
+			return res(ctx.status(500));
+		}),
+	],
+};
 
-	return <CancelReminders reminderCode="123" />;
+export const Success: ComponentStory<typeof CancelReminders> = () => {
+	return <CancelReminders />;
+};
+
+Success.parameters = {
+	msw: [
+		rest.post('/api/reminders/cancel', (_req, res, ctx) => {
+			return res(ctx.status(200));
+		}),
+	],
 };

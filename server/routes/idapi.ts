@@ -1,11 +1,11 @@
-import type { IncomingMessage, RequestOptions } from 'http';
+import type { RequestOptions } from 'http';
 import https from 'https';
 import cookieParser from 'cookie-parser';
-import csrf from 'csurf';
 import type { NextFunction, Request, Response } from 'express';
 import { Router } from 'express';
 import type { IdapiConfig } from '../idapiConfig';
 import { idapiConfigPromise } from '../idapiConfig';
+import { crsfMiddleware, handleError, mimicResponse } from '../util';
 
 const SECURITY_COOKIE_NAME = 'SC_GU_U';
 const SECURITY_HEADER_NAME = 'X-GU-ID-FOWARDED-SC-GU-U';
@@ -31,21 +31,6 @@ const isValidConfig = (config: any): config is IdapiConfig =>
 const isValid = (req: Request): boolean => {
 	const token: boolean = !!req.cookies[SECURITY_COOKIE_NAME];
 	return token;
-};
-
-const handleError = (error: any, res: Response, next: NextFunction) => {
-	res.status(500).send({ status: 500, message: 'Internal service error' });
-	next(error);
-};
-
-const mimicResponse = (
-	sourceResponse: IncomingMessage,
-	targetResponse: Response,
-) => {
-	if (sourceResponse.statusCode) {
-		targetResponse.status(sourceResponse.statusCode);
-	}
-	targetResponse.set(sourceResponse.headers);
 };
 
 const makeIdapiRequest = (
@@ -95,15 +80,6 @@ const getOptions = (
 
 	return options;
 };
-
-const crsfMiddleware = csrf({
-	cookie: {
-		key: '_csrf',
-		sameSite: true,
-		secure: true,
-		httpOnly: true,
-	},
-});
 
 router.use(cookieParser());
 

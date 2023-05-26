@@ -44,3 +44,13 @@ YearlyOtherCurrency.parameters = {
 		state: { productDetail: contributionBelowThreshold },
 	},
 };
+
+export const FromApp: ComponentStory<typeof SwitchComplete> = () => (
+	<SwitchComplete />
+);
+
+FromApp.parameters = {
+	reactRouter: {
+		container: <SwitchContainer isFromApp={true} />,
+	},
+};

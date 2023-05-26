@@ -163,7 +163,7 @@ const initESW = (
 		if (window.guardian.domain === 'theguardian.com') {
 			liveChatAPI.init(
 				'https://gnmtouchpoint.my.salesforce.com',
-				'https://guardiansurveys.secure.force.com/liveagent',
+				'https://gnmtouchpoint.my.salesforce-sites.com/liveagent',
 				gslbBaseUrl,
 				'00D20000000nq5g',
 				'Chat_Team',

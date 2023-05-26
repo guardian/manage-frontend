@@ -7,9 +7,10 @@ import {
 	textSans,
 } from '@guardian/source-foundations';
 import { useEffect, useState } from 'react';
-import type { ProductDetail } from '../../../shared/productResponse';
+import type { MembersDataApiResponse } from '../../../shared/productResponse';
+import { isProduct } from '../../../shared/productResponse';
 import { gridBase, gridItemPlacement } from '../../styles/grid';
-import { allProductsDetailFetcher } from '../../utilities/productUtils';
+import { allRecurringProductsDetailFetcher } from '../../utilities/productUtils';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
 
 /*
@@ -30,11 +31,11 @@ export interface KnownIssueObj {
 	affectedProducts?: string[]; // maps to productDetail.tier property
 }
 
-interface KownIssuesProp {
+interface KnownIssuesProp {
 	issues: KnownIssueObj[];
 }
 
-export const KnownIssues = (props: KownIssuesProp) => {
+export const KnownIssues = (props: KnownIssuesProp) => {
 	const [issuesData, setIssuesData] = useState<KnownIssueObj[]>([]);
 	useEffect(() => {
 		(async () => {
@@ -65,12 +66,12 @@ export const KnownIssues = (props: KownIssuesProp) => {
 					window.guardian?.identityDetails?.signInStatus || '';
 				if (signInStatus === 'signedInRecently') {
 					const productDetailsResponse =
-						await allProductsDetailFetcher();
-					const productDetails: ProductDetail[] =
+						await allRecurringProductsDetailFetcher();
+					const mdapiResponse: MembersDataApiResponse =
 						await productDetailsResponse.json();
-					const userProductNames = productDetails.map(
-						(productDetail) => productDetail.tier,
-					);
+					const userProductNames = mdapiResponse.products
+						.filter(isProduct)
+						.map((productDetail) => productDetail.tier);
 
 					const productIssues = unfilteredDateSortedIssues.filter(
 						(issue) =>

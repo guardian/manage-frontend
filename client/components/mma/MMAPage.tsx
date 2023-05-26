@@ -62,6 +62,12 @@ const Billing = lazy(() =>
 		({ Billing }) => ({ default: Billing }),
 	),
 );
+
+const DataPrivacy = lazy(() =>
+	import(
+		/* webpackChunkName: "DataPrivacy" */ './dataPrivacy/DataPrivacy'
+	).then(({ DataPrivacy }) => ({ default: DataPrivacy })),
+);
 const ManageProduct = lazy(() =>
 	import(
 		/* webpackChunkName: "ManageProduct" */ './accountoverview/ManageProduct'
@@ -73,34 +79,12 @@ const CancellationContainer = lazy(() =>
 	).then(({ CancellationContainer }) => ({ default: CancellationContainer })),
 );
 
-const CancellationSwitchEligibilityCheck = lazy(() =>
+const CancellationSaveEligibilityCheck = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/CancellationSwitchEligibilityCheck'
-	).then(({ CancellationSwitchEligibilityCheck }) => ({
-		default: CancellationSwitchEligibilityCheck,
+		/* webpackChunkName: "Cancellation" */ './cancel/CancellationSaveEligibilityCheck'
+	).then(({ CancellationSaveEligibilityCheck }) => ({
+		default: CancellationSaveEligibilityCheck,
 	})),
-);
-
-const CancellationSwitchReview = lazy(() =>
-	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/productSwitch/CancellationSwitchReview'
-	).then(({ CancellationSwitchReview }) => ({
-		default: CancellationSwitchReview,
-	})),
-);
-
-const CancellationSwitchConfirmed = lazy(() =>
-	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/productSwitch/CancellationSwitchConfirmed'
-	).then(({ CancellationSwitchConfirmed }) => ({
-		default: CancellationSwitchConfirmed,
-	})),
-);
-
-const ProductSwitchFailed = lazy(() =>
-	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/productSwitch/CancellationSwitchFailed'
-	).then(({ ProductSwitchFailed }) => ({ default: ProductSwitchFailed })),
 );
 
 const CancellationReasonReview = lazy(() =>
@@ -121,6 +105,78 @@ const ExecuteCancellation = lazy(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/stages/ExecuteCancellation'
 	).then(({ ExecuteCancellation }) => ({ default: ExecuteCancellation })),
+);
+
+const MembershipCancellationLanding = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/MembershipCancellationLanding'
+	).then(({ MembershipCancellationLanding }) => ({
+		default: MembershipCancellationLanding,
+	})),
+);
+
+const ValueOfSupport = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/ValueOfSupport'
+	).then(({ ValueOfSupport }) => ({
+		default: ValueOfSupport,
+	})),
+);
+
+const SaveOptions = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SaveOptions'
+	).then(({ SaveOptions }) => ({
+		default: SaveOptions,
+	})),
+);
+
+const MembershipSwitch = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/MembershipSwitch'
+	).then(({ MembershipSwitch }) => ({
+		default: MembershipSwitch,
+	})),
+);
+
+const SelectReason = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SelectReason'
+	).then(({ SelectReason }) => ({
+		default: SelectReason,
+	})),
+);
+
+const ContinueMembershipConfirmation = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/ContinueMembershipConfirmation'
+	).then(({ ContinueMembershipConfirmation }) => ({
+		default: ContinueMembershipConfirmation,
+	})),
+);
+
+const ConfirmMembershipCancellation = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/ConfirmMembershipCancellation'
+	).then(({ ConfirmMembershipCancellation }) => ({
+		default: ConfirmMembershipCancellation,
+	})),
+);
+
+const SupportReminder = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SupportReminder'
+	).then(({ SupportReminder }) => ({
+		default: SupportReminder,
+	})),
+);
+
+const SwitchThankYou = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SwitchThankYou'
+	).then(({ SwitchThankYou }) => ({
+		default: SwitchThankYou,
+	})),
 );
 
 const PaymentDetailUpdateContainer = lazy(() =>
@@ -289,6 +345,11 @@ const CancelReminders = lazy(() =>
 		/* webpackChunkName: "CancelReminders" */ './cancelReminders/CancelReminders'
 	).then(({ CancelReminders }) => ({ default: CancelReminders })),
 );
+const CreateReminder = lazy(() =>
+	import(
+		/* webpackChunkName: "CreateReminder" */ './reminders/CreateReminder'
+	).then(({ CreateReminder }) => ({ default: CreateReminder })),
+);
 
 const GenericErrorContainer = (props: { children: ReactNode }) => (
 	<section
@@ -343,6 +404,7 @@ const MMARouter = () => {
 					<Routes>
 						<Route path="/" element={<AccountOverview />} />
 						<Route path="/billing" element={<Billing />} />
+						<Route path="/data-privacy" element={<DataPrivacy />} />
 						<Route
 							path="/email-prefs"
 							element={<EmailAndMarketing />}
@@ -355,29 +417,28 @@ const MMARouter = () => {
 							path="/account-settings"
 							element={<Settings />}
 						/>
-						{featureSwitches.productSwitching &&
-							[
-								{ path: '/switch', fromApp: false },
-								{ path: '/app/switch', fromApp: true },
-							].map(({ path, fromApp }) => (
+						{[
+							{ path: '/switch', fromApp: false },
+							{ path: '/app/switch', fromApp: true },
+						].map(({ path, fromApp }) => (
+							<Route
+								key={path}
+								path={path}
+								element={
+									<SwitchContainer isFromApp={fromApp} />
+								}
+							>
+								<Route index element={<SwitchOptions />} />
 								<Route
-									key={path}
-									path={path}
-									element={
-										<SwitchContainer isFromApp={fromApp} />
-									}
-								>
-									<Route index element={<SwitchOptions />} />
-									<Route
-										path="review"
-										element={<SwitchReview />}
-									/>
-									<Route
-										path="complete"
-										element={<SwitchComplete />}
-									/>
-								</Route>
-							))}
+									path="review"
+									element={<SwitchReview />}
+								/>
+								<Route
+									path="complete"
+									element={<SwitchComplete />}
+								/>
+							</Route>
+						))}
 						{Object.values(GROUPED_PRODUCT_TYPES).map(
 							(groupedProductType: GroupedProductType) => (
 								<Route
@@ -511,22 +572,8 @@ const MMARouter = () => {
 									<Route
 										index
 										element={
-											<CancellationSwitchEligibilityCheck />
+											<CancellationSaveEligibilityCheck />
 										}
-									/>
-									<Route
-										path="switch"
-										element={<CancellationSwitchReview />}
-									/>
-									<Route
-										path="switch/confirmed"
-										element={
-											<CancellationSwitchConfirmed />
-										}
-									/>
-									<Route
-										path="switch/failed"
-										element={<ProductSwitchFailed />}
 									/>
 									<Route
 										path="review"
@@ -540,6 +587,52 @@ const MMARouter = () => {
 										path="confirmed"
 										element={<ExecuteCancellation />}
 									/>
+									{featureSwitches.membershipSave && (
+										<>
+											<Route
+												path="landing"
+												element={
+													<MembershipCancellationLanding />
+												}
+											/>
+											<Route
+												path="details"
+												element={<ValueOfSupport />}
+											/>
+											<Route
+												path="offers"
+												element={<SaveOptions />}
+											/>
+											<Route
+												path="reasons"
+												element={<SelectReason />}
+											/>
+											<Route
+												path="switch-offer"
+												element={<MembershipSwitch />}
+											/>
+											<Route
+												path="thank-you"
+												element={
+													<ContinueMembershipConfirmation />
+												}
+											/>
+											<Route
+												path="confirm"
+												element={
+													<ConfirmMembershipCancellation />
+												}
+											/>
+											<Route
+												path="reminder"
+												element={<SupportReminder />}
+											/>
+											<Route
+												path="switch-thank-you"
+												element={<SwitchThankYou />}
+											/>
+										</>
+									)}
 								</Route>
 							),
 						)}
@@ -589,8 +682,22 @@ const MMARouter = () => {
 						<Route path="/help" element={<Help />} />
 						{/*Does not require sign in*/}
 						<Route
-							path="/cancel-reminders/*reminderCode"
+							path="/cancel-reminders/:reminderCode"
 							element={<CancelReminders />}
+						/>
+						{/*Does not require sign in*/}
+						<Route
+							path="/create-reminder/one-off"
+							element={
+								<CreateReminder reminderType={'ONE_OFF'} />
+							}
+						/>
+						{/*Does not require sign in*/}
+						<Route
+							path="/create-reminder/recurring"
+							element={
+								<CreateReminder reminderType={'RECURRING'} />
+							}
 						/>
 						<Route path="/maintenance" element={<Maintenance />} />
 						<Route path="*" element={<Navigate to="/" />} />

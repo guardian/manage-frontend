@@ -1,10 +1,25 @@
 import { createRef, useEffect, useState } from 'react';
+import { featureSwitches } from '../../../../../shared/featureSwitches';
+import type {
+	AppSubscription,
+	MPAPIResponse,
+} from '../../../../../shared/mpapiResponse';
 import {
-	isProduct,
-	mdapiResponseReader,
+	AppSubscriptionSoftOptInIds,
+	isValidAppSubscription,
+	SingleContributionSoftOptInIds,
+} from '../../../../../shared/mpapiResponse';
+import type {
+	MembersDataApiResponse,
+	ProductDetail,
+	SingleProductDetail,
 } from '../../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
-import { allProductsDetailFetcher } from '../../../../utilities/productUtils';
+import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
+import {
+	allRecurringProductsDetailFetcher,
+	allSingleProductsDetailFetcher,
+} from '../../../../utilities/productUtils';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { Spinner } from '../../../shared/Spinner';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
@@ -63,27 +78,58 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 					window.location.assign(IdentityLocations.VERIFY_EMAIL);
 					return;
 				}
-				const productDetailsResponse = await allProductsDetailFetcher();
-				const productDetails = mdapiResponseReader(
-					await productDetailsResponse.json(),
-				).products.filter(isProduct);
+
+				const allRecurringProductsDetailFetcherPromise =
+					allRecurringProductsDetailFetcher();
+				const mpapiFetchPromise = fetchWithDefaultParameters(
+					'/mpapi/user/mobile-subscriptions',
+				);
+				const allSingleProductsDetailFetcherPromise =
+					allSingleProductsDetailFetcher();
+
+				const [
+					mdapiResponseRaw,
+					mpapiResponseRaw,
+					singleContributionsRaw,
+				] = await Promise.all(
+					[
+						allRecurringProductsDetailFetcherPromise,
+						mpapiFetchPromise,
+						allSingleProductsDetailFetcherPromise,
+					].map((responsePromise) =>
+						responsePromise.then((response) => response.json()),
+					),
+				);
+
+				const mdapiResponse: MembersDataApiResponse = mdapiResponseRaw;
+				const productDetails =
+					mdapiResponse.products as ProductDetail[];
+				const mpapiResponse = mpapiResponseRaw as MPAPIResponse;
+				const singleContributions: SingleProductDetail[] =
+					singleContributionsRaw;
+
+				const appSubscriptions = mpapiResponse.subscriptions.filter(
+					isValidAppSubscription,
+				);
+
 				const consentOptions = await ConsentOptions.getAll();
 				const consentsWithFilteredSoftOptIns = consentOptions.filter(
 					(consent: ConsentOption) =>
 						consent.isProduct
-							? productDetails.some((productDetail) => {
-									const groupedProductType =
-										GROUPED_PRODUCT_TYPES[
-											productDetail.mmaCategory
-										];
-									const specificProductType =
-										groupedProductType.mapGroupedToSpecific(
-											productDetail,
-										);
-									return specificProductType.softOptInIDs.includes(
-										consent.id,
-									);
-							  })
+							? userHasProductWithConsent(
+									productDetails,
+									consent,
+							  ) ||
+							  (userHasAppSubscriptionWithConsent(
+									appSubscriptions,
+									consent,
+							  ) &&
+									featureSwitches.appSubscriptions) ||
+							  (userHasSingleContributionWithConsent(
+									singleContributions,
+									consent,
+							  ) &&
+									featureSwitches.singleContributions)
 							: true,
 				);
 
@@ -169,3 +215,36 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 		</PageContainer>
 	);
 };
+
+function userHasProductWithConsent(
+	productDetails: ProductDetail[],
+	consent: ConsentOption,
+) {
+	return productDetails.some((productDetail) => {
+		const groupedProductType =
+			GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
+		const specificProductType =
+			groupedProductType.mapGroupedToSpecific(productDetail);
+		return specificProductType.softOptInIDs.includes(consent.id);
+	});
+}
+
+function userHasAppSubscriptionWithConsent(
+	appSubscriptions: AppSubscription[],
+	consent: ConsentOption,
+) {
+	return (
+		appSubscriptions.length > 0 &&
+		AppSubscriptionSoftOptInIds.includes(consent.id)
+	);
+}
+
+function userHasSingleContributionWithConsent(
+	singleContributions: SingleProductDetail[],
+	consent: ConsentOption,
+) {
+	return (
+		singleContributions.length > 0 &&
+		SingleContributionSoftOptInIds.includes(consent.id)
+	);
+}

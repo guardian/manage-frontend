@@ -20,21 +20,14 @@ export type MembersDataApiResponse = {
 	products: MembersDataApiItem[];
 };
 
-export function mdapiResponseReader(
-	mdaResponse: MembersDataApiResponse | MembersDataApiItem[],
-): MembersDataApiResponse {
-	if (Array.isArray(mdaResponse)) {
-		return {
-			products: mdaResponse,
-		};
-	}
-	if (!!mdaResponse.user || !!mdaResponse.products) {
-		return mdaResponse;
-	}
-	throw new Error('MDAPI Response is of invalid format');
-}
-
 export type MembersDataApiItem = ProductDetail | {};
+
+export type SingleProductDetail = {
+	created: number;
+	currency: string;
+	price: number;
+	status: string;
+};
 
 export interface InvoiceDataApiItem {
 	invoiceId: string;
@@ -49,9 +42,7 @@ export interface InvoiceDataApiItem {
 	cardType?: string;
 }
 
-export class MembersDataApiAsyncLoader extends AsyncLoader<
-	[MembersDataApiResponse | MembersDataApiItem[]]
-> {}
+export class MembersDataApiAsyncLoader extends AsyncLoader<MembersDataApiResponse> {}
 
 export const MembersDataApiItemContext: React.Context<MembersDataApiItem> =
 	React.createContext({});

@@ -9,6 +9,7 @@ Array [
   font-size: 1.75rem;
   line-height: 1.15;
   font-weight: 700;
+  --source-text-decoration-thickness: 3px;
   margin-bottom: 24px;
 }
 
@@ -45,8 +46,9 @@ Array [
 .emotion-2 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
@@ -106,32 +108,36 @@ Array [
 .emotion-5 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 6px 0 4px;
 }
 
 .emotion-6 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 2px;
   word-break: break-word;
 }
 
 .emotion-7 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 6px 0 4px;
 }
 
 .emotion-8 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 0;
 }
 
@@ -152,8 +158,9 @@ Array [
 .emotion-12 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
@@ -199,15 +206,16 @@ Array [
   font-weight: normal;
 }
 
-.emotion-24 {
+.emotion-36 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 0;
 }
 
-.emotion-24+p {
+.emotion-36+p {
   margin-top: 16px;
 }
 
@@ -254,7 +262,7 @@ Array [
             <span
               className="emotion-9"
             >
-              +44 (0) 330 333 6790
+              +44 (0) 330 333 6767
             </span>
             <span
               className="emotion-10"
@@ -331,11 +339,6 @@ Array [
               9am - 5pm Monday - Friday (AEDT)
             </span>
           </p>
-          <p
-            className="emotion-24"
-          >
-            Phonelines for this region are temporarily down
-          </p>
         </div>
       </div>
       <div>
@@ -401,7 +404,7 @@ Array [
             </span>
           </p>
           <p
-            className="emotion-24"
+            className="emotion-36"
           >
             Phonelines for this region are temporarily down
           </p>
@@ -421,6 +424,7 @@ Array [
   font-size: 1.75rem;
   line-height: 1.15;
   font-weight: 700;
+  --source-text-decoration-thickness: 3px;
   margin-bottom: 24px;
 }
 
@@ -457,8 +461,9 @@ Array [
 .emotion-2 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
@@ -518,32 +523,36 @@ Array [
 .emotion-5 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 6px 0 4px;
 }
 
 .emotion-6 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 2px;
   word-break: break-word;
 }
 
 .emotion-7 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 6px 0 4px;
 }
 
 .emotion-8 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 0;
 }
 
@@ -564,8 +573,9 @@ Array [
 .emotion-12 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
@@ -611,15 +621,16 @@ Array [
   font-weight: normal;
 }
 
-.emotion-24 {
+.emotion-36 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 0;
 }
 
-.emotion-24+p {
+.emotion-36+p {
   margin-top: 16px;
 }
 
@@ -666,7 +677,7 @@ Array [
             <span
               className="emotion-9"
             >
-              +44 (0) 330 333 6790
+              +44 (0) 330 333 6767
             </span>
             <span
               className="emotion-10"
@@ -743,11 +754,6 @@ Array [
               9am - 5pm Monday - Friday (AEDT)
             </span>
           </p>
-          <p
-            className="emotion-24"
-          >
-            Phonelines for this region are temporarily down
-          </p>
         </div>
       </div>
       <div>
@@ -813,7 +819,7 @@ Array [
             </span>
           </p>
           <p
-            className="emotion-24"
+            className="emotion-36"
           >
             Phonelines for this region are temporarily down
           </p>
@@ -833,6 +839,7 @@ Array [
   font-size: 1.75rem;
   line-height: 1.15;
   font-weight: 700;
+  --source-text-decoration-thickness: 3px;
   margin-bottom: 4px;
 }
 
@@ -851,8 +858,9 @@ Array [
   .emotion-0 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 4px;
   max-width: 320px;
 }
@@ -882,8 +890,9 @@ Array [
 .emotion-0 a {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 0.9375rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   color: #0077B6;
   -webkit-text-decoration: underline;
   text-decoration: underline;
@@ -925,8 +934,9 @@ Array [
   border: 1px solid #DCDCDC;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
 }
 
 @media (min-width: 660px) {
@@ -938,8 +948,9 @@ Array [
 .emotion-3 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.25rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 3px;
   color: #333333;
   position: relative;
   margin: 0;
@@ -1033,8 +1044,9 @@ Array [
   white-space: nowrap;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 2px;
   height: 44px;
   min-height: 44px;
   padding: 0 20px;
@@ -1102,8 +1114,9 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 .emotion-15 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.25rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 3px;
   color: #333333;
   position: relative;
   margin: 0;
@@ -1133,8 +1146,9 @@ html:not(.src-focus-disabled) .emotion-7:focus {
   display: none;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   padding: 0 16px 16px 16px;
   margin: 0;
 }
@@ -1166,8 +1180,9 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 .emotion-20 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
@@ -1227,8 +1242,9 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 .emotion-23 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 0;
 }
 
@@ -1249,8 +1265,9 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 .emotion-27 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin: 0;
   padding: 16px 47px 16px 16px;
   position: relative;
@@ -1296,48 +1313,51 @@ html:not(.src-focus-disabled) .emotion-7:focus {
   font-weight: normal;
 }
 
-.emotion-36 {
+.emotion-45 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   margin-bottom: 0;
 }
 
-.emotion-36+p {
+.emotion-45+p {
   margin-top: 16px;
 }
 
-.emotion-47 {
+.emotion-46 {
   margin-top: 36px;
   padding: 12px;
   background-color: #ecf3fe;
 }
 
 @media (min-width: 980px) {
-  .emotion-47 {
+  .emotion-46 {
     padding: 24px;
   }
 }
 
-.emotion-48 {
+.emotion-47 {
   margin: 0;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 0.9375rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 700;
+  --source-text-decoration-thickness: 2px;
 }
 
-.emotion-49 {
+.emotion-48 {
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 0.9375rem;
-  line-height: 1.5;
+  line-height: 1.35;
   font-weight: 400;
+  --source-text-decoration-thickness: 2px;
   max-width: 830px;
   margin: 0;
 }
 
-.emotion-49 a {
+.emotion-48 a {
   color: #0077B6;
   -webkit-text-decoration: underline;
   text-decoration: underline;
@@ -1445,7 +1465,6 @@ html:not(.src-focus-disabled) .emotion-7:focus {
                 fillRule="evenodd"
               />
             </svg>
-            
           </button>
         </div>
       </div>
@@ -1573,7 +1592,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
               <span
                 className="emotion-24"
               >
-                +44 (0) 330 333 6790
+                +44 (0) 330 333 6767
               </span>
               <span
                 className="emotion-25"
@@ -1635,11 +1654,6 @@ html:not(.src-focus-disabled) .emotion-7:focus {
                 9am - 5pm Monday - Friday (AEDT)
               </span>
             </p>
-            <p
-              className="emotion-36"
-            >
-              Phonelines for this region are temporarily down
-            </p>
           </div>
         </div>
         <div>
@@ -1690,7 +1704,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
               </span>
             </p>
             <p
-              className="emotion-36"
+              className="emotion-45"
             >
               Phonelines for this region are temporarily down
             </p>
@@ -1699,16 +1713,16 @@ html:not(.src-focus-disabled) .emotion-7:focus {
       </div>
     </div>
     <div
-      className="emotion-47"
+      className="emotion-46"
       id="livechatPrivacyNotice"
     >
       <h2
-        className="emotion-48"
+        className="emotion-47"
       >
         Data privacy notice
       </h2>
       <p
-        className="emotion-49"
+        className="emotion-48"
       >
         We use a type of cookie technology called an SDK (Software Development Kit) to ensure that our live chat services work correctly and meet your expectations. It cannot be switched off but it is removed at the end of the chat. If you do not wish for this cookie to be dropped on your device, please email or phone us instead. Live chats and phone calls will be recorded for monitoring and training purposes. Please do not disclose personal data of a sensitive nature in the live chat, such as health or financial information. A copy of the chat transcript will be emailed to you unless the chat contains payment card information, in which case no transcript will be sent. Click to find out more in our
          

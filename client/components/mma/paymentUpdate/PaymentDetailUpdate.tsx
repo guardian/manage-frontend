@@ -14,6 +14,7 @@ import {
 	RadioGroup,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
+import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import * as Sentry from '@sentry/browser';
 import type * as React from 'react';
 import { useContext, useState } from 'react';
@@ -23,6 +24,7 @@ import {
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../../../shared/identity';
 import type {
+	MembersDataApiResponse,
 	ProductDetail,
 	Subscription,
 	WithSubscription,
@@ -31,7 +33,6 @@ import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
 	isProduct,
-	mdapiResponseReader,
 } from '../../../../shared/productResponse';
 import type {
 	ProductType,
@@ -53,7 +54,6 @@ import { CurrentPaymentDetails } from './CurrentPaymentDetail';
 import { DirectDebitInputForm } from './dd/DirectDebitInputForm';
 import type { NewPaymentMethodDetail } from './NewPaymentMethodDetail';
 import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
-import { ErrorSummary } from './Summary';
 
 export enum PaymentMethod {
 	Card = 'Credit card / debit card',
@@ -299,12 +299,13 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				});
 
 				// refetch subscription from members data api
-				const newSubscriptionData = mdapiResponseReader(
-					await createProductDetailFetch(
-						props.productType.allProductsProductTypeFilterString,
-						productDetail.subscription.subscriptionId,
-					),
-				).products.filter(isProduct);
+				const mdapiResponse = (await createProductDetailFetch(
+					props.productType.allProductsProductTypeFilterString,
+					productDetail.subscription.subscriptionId,
+				)) as MembersDataApiResponse;
+
+				const newSubscriptionData =
+					mdapiResponse.products.filter(isProduct);
 
 				navigate('updated', {
 					state: {

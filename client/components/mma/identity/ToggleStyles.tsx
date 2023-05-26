@@ -113,7 +113,7 @@ export const webStyles = css`
 		background-color: rgba(153, 153, 153, 0.5);
 	}
 	&[aria-checked='true'] {
-		background: ${success[500]};
+		background: ${success[400]};
 	}
 	&[aria-checked='true']:before {
 		opacity: 1;

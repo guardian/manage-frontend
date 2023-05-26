@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useState } from 'react';
 import type { Context, ReactNode } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import type {
@@ -30,10 +30,11 @@ export interface SwitchRouterState {
 	user?: MembersDataApiUser;
 	amountPayableToday: number;
 	nextPaymentDate: string;
+	switchHasCompleted?: boolean;
 }
 
 export interface SwitchContextInterface {
-	productDetail: ProductDetail;
+	contributionToSwitch: ProductDetail;
 	isFromApp: boolean;
 	user?: MembersDataApiUser;
 	mainPlan: PaidSubscriptionPlan;
@@ -55,16 +56,27 @@ export const SwitchContext: Context<SwitchContextInterface | {}> =
 export const SwitchContainer = (props: { isFromApp?: boolean }) => {
 	const location = useLocation();
 	const routerState = location.state as SwitchRouterState;
-	const productDetail = routerState?.productDetail;
+	const contributionToSwitch = routerState?.productDetail;
 	const user = routerState?.user;
 
-	if (!productDetail) {
+	const [switchHasCompleted, setSwitchHasCompleted] =
+		useState<boolean>(false);
+
+	if (!switchHasCompleted && routerState?.switchHasCompleted) {
+		setSwitchHasCompleted(true);
+	}
+
+	if (userIsNavigatingBackFromCompletePage(switchHasCompleted)) {
+		return <Navigate to="/" />;
+	}
+
+	if (!contributionToSwitch) {
 		return <AsyncLoadedSwitchContainer isFromApp={props.isFromApp} />;
 	}
 
 	return (
 		<RenderedPage
-			productDetail={productDetail}
+			contributionToSwitch={contributionToSwitch}
 			user={user}
 			isFromApp={props.isFromApp}
 		/>
@@ -77,6 +89,7 @@ const SwitchPageContainer = (props: { children: ReactNode }) => {
 			selectedNavItem={NAV_LINKS.accountOverview}
 			pageTitle={'Change your support'}
 			compactTitle
+			minimalFooter
 		>
 			{props.children}
 		</PageContainer>
@@ -108,18 +121,14 @@ const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 		);
 	}
 
-	if (
-		data == null ||
-		data.products.length == 0 ||
-		data.products.filter(isProduct).length > 1
-	) {
+	if (data == null || data.products.length == 0) {
 		return <Navigate to="/" />;
 	}
 
-	const productDetail = data.products.filter(isProduct)[0];
+	const contributionToSwitch = data.products.filter(isProduct)[0];
 	return (
 		<RenderedPage
-			productDetail={productDetail}
+			contributionToSwitch={contributionToSwitch}
 			user={data.user}
 			isFromApp={props.isFromApp}
 		/>
@@ -127,12 +136,12 @@ const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 };
 
 const RenderedPage = (props: {
-	productDetail: ProductDetail;
+	contributionToSwitch: ProductDetail;
 	user?: MembersDataApiUser;
 	isFromApp?: boolean;
 }) => {
 	const mainPlan = getMainPlan(
-		props.productDetail.subscription,
+		props.contributionToSwitch.subscription,
 	) as PaidSubscriptionPlan;
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		mainPlan.billingPeriod,
@@ -142,7 +151,7 @@ const RenderedPage = (props: {
 		<SwitchPageContainer>
 			<SwitchContext.Provider
 				value={{
-					productDetail: props.productDetail,
+					contributionToSwitch: props.contributionToSwitch,
 					isFromApp: props.isFromApp,
 					user: props.user,
 					mainPlan,
@@ -159,6 +168,10 @@ const RenderedPage = (props: {
 		</SwitchPageContainer>
 	);
 };
+
+function userIsNavigatingBackFromCompletePage(hasCompleted: boolean) {
+	return hasCompleted && !location.pathname.includes('complete');
+}
 
 function getThresholds(
 	mainPlan: PaidSubscriptionPlan,

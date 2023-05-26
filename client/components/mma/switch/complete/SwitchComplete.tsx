@@ -11,6 +11,7 @@ import {
 	buttonThemeReaderRevenueBrand,
 	LinkButton,
 	Stack,
+	SvgCalendar,
 	SvgClock,
 	SvgEnvelope,
 } from '@guardian/source-react-components';
@@ -18,7 +19,6 @@ import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { formatAmount } from '../../../../utilities/utils';
-import { InverseStarIcon } from '../../shared/assets/InverseStarIcon';
 import { Heading } from '../../shared/Heading';
 import type {
 	SwitchContextInterface,
@@ -194,12 +194,12 @@ const WhatHappensNext = (props: {
 			<ul css={[iconListCss, whatHappensNextCss]}>
 				<li>
 					<SvgEnvelope size="medium" />
-					<span>
+					<span data-qm-masking="blocklist">
 						You will receive a confirmation email to {props.email}
 					</span>
 				</li>
 				<li>
-					<SvgClock size="medium" />
+					<SvgCalendar size="medium" />
 					<span>
 						Your first billing date is today and you will be charged{' '}
 						{props.currency}
@@ -211,7 +211,7 @@ const WhatHappensNext = (props: {
 				</li>
 				{!props.isFromApp && (
 					<li>
-						<InverseStarIcon size="medium" />
+						<SvgClock size="medium" />
 						<span>
 							Your new support will start today. It can take up to
 							an hour for your support to be activated

@@ -58,19 +58,8 @@ NOTE: nginx proxies CODE instances of [`identity-frontend`](https://github.com/g
 
 #### Running locally (each day you need use it)
 
-1.  You will also need to have [members-data-api](https://github.com/guardian/members-data-api) (`./start-api.sh`) running, to get subscription data (from DEV Zuora/Salesforce).
+1.  You will also need to have [members-data-api](https://github.com/guardian/members-data-api) (`./start-api.sh`) running, to get subscription data (from CODE Zuora/Salesforce).
 1.  You will probably also need the tunnel to the `contributions-store`, see point 2 of [members-data-api#running-locally](https://github.com/guardian/members-data-api#running-locally)
-
-### To develop `identity-frontend` in parallel (very unlikely)
-
-#### One-off setup
-
-1. Follow the [nginx steps for identity-platform](https://github.com/guardian/identity-platform/blob/master/nginx/README.md#setup-nginx-with-ssl-for-dev).
-1. Follow the [identity-frontend configuration steps](https://github.com/guardian/identity-frontend#configuration).
-
-#### Running locally (each day you need use it)
-
-2.  Start [identity-frontend](https://github.com/guardian/identity-frontend) with `./start-frontend.sh`.
 
 ## SSH into running instances in AWS
 

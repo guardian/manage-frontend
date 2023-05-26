@@ -17,11 +17,8 @@ import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { augmentBillingPeriod } from '../../../../shared/productResponse';
 import type { ProductType } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
-import type {
-	ContributionInterval} from '../../../utilities/contributionsAmount';
-import {
-	contributionAmountsLookup
-} from '../../../utilities/contributionsAmount';
+import type { ContributionInterval } from '../../../utilities/contributionsAmount';
+import { contributionAmountsLookup } from '../../../utilities/contributionsAmount';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import { AsyncLoader } from '../shared/AsyncLoader';
 import { Button } from '../shared/Buttons';

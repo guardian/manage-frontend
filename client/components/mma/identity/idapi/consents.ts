@@ -2,7 +2,7 @@ import type { ConsentOption } from '../models';
 import { ConsentOptionType } from '../models';
 import { APIPatchOptions, APIUseCredentials, identityFetch } from './fetch';
 
-interface ConsentAPIResponse {
+export interface ConsentAPIResponse {
 	id: string;
 	description?: string;
 	name: string;

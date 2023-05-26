@@ -207,6 +207,16 @@ describe('Holiday stops', () => {
 			),
 		}).as('mma');
 
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: [],
+		}).as('single_contributions');
+
 		cy.intercept('GET', '/api/holidays/A-S00286635', {
 			statusCode: 200,
 			body: existingHolidays,
@@ -220,25 +230,21 @@ describe('Holiday stops', () => {
 		cy.visit('/');
 		cy.wait('@mma');
 		cy.wait('@cancelled');
+		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
 
 		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
-		cy.findAllByRole('link', {
-			name: 'Guardian Weekly : Manage subscription',
-		})
-			.eq(0)
-			.click();
+		cy.findAllByText('Manage subscription').eq(0).click();
 
 		cy.findByText('A-S00293857').should('exist');
 
 		cy.visit('/');
 		cy.wait('@mma');
 		cy.wait('@cancelled');
+		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
 
-		cy.findAllByRole('link', {
-			name: 'Guardian Weekly : Manage subscription',
-		})
-			.eq(1)
-			.click();
+		cy.findAllByText('Manage subscription').eq(1).click();
 
 		cy.findByText('A-S00286635').should('exist');
 		cy.findByRole('link', { name: 'Manage suspensions' }).click();
@@ -286,6 +292,16 @@ describe('Holiday stops', () => {
 				guardianWeeklyCurrentSubscription,
 			),
 		}).as('mma');
+
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('single_contributions');
 
 		cy.visit('/suspend/guardianweekly');
 

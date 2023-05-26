@@ -34,7 +34,7 @@ import { SummaryTable } from './SummaryTable';
 
 interface OverviewRowProps {
 	heading: string;
-	children: React.ReactFragment;
+	children: React.ReactNode;
 }
 
 const OverviewRow = (props: OverviewRowProps) => (

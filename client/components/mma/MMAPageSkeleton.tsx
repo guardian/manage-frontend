@@ -86,6 +86,11 @@ const MMALocationObjectArr: LocationObject[] = [
 		path: '/billing',
 		selectedNavItem: NAV_LINKS.billing,
 	},
+	{
+		title: 'Data privacy',
+		path: '/data-privacy',
+		selectedNavItem: NAV_LINKS.dataPrivacy,
+	},
 	...manageProductLocationObjects,
 	...cancellationFlowLocationObjects,
 	...paymentUpdateFlowLocationObjects,

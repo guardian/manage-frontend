@@ -19,6 +19,16 @@ describe('patron test', () => {
 			),
 		}).as('product_detail');
 
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: [],
+		}).as('single_contributions');
+
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
 			body: patronMDAPI,
@@ -34,6 +44,8 @@ describe('patron test', () => {
 		cy.visit('/');
 
 		cy.wait('@product_detail');
+		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
 
 		cy.findAllByText('not applicable').should('have.length', 1);
 	});
@@ -47,6 +59,7 @@ describe('patron test', () => {
 		cy.visit('/subscriptions');
 
 		cy.wait('@product_detail');
+		cy.wait('@mobile_subscriptions');
 
 		cy.findAllByText('not applicable').should('have.length', 1);
 	});
@@ -61,6 +74,7 @@ describe('patron test', () => {
 
 		cy.wait('@product_detail');
 		cy.wait('@invoices');
+		cy.wait('@mobile_subscriptions');
 
 		cy.findAllByText('not applicable').should('have.length', 2);
 	});

@@ -70,7 +70,7 @@ export const helpCentreConfig: HelpCentreTopic[] = [
 			},
 			{
 				id: 'q5',
-				title: 'Changing my contribution amount',
+				title: 'Changing the amount of my payments',
 				link: '/help-centre/article/changing-my-contribution-amount',
 			},
 		],
@@ -233,11 +233,6 @@ export const helpCentreMoreQuestionsConfig: HelpCentreMoreQuestionsTopic[] = [
 				title: 'Device compatibility',
 				link: '/help-centre/article/what-devices-are-compatible-with-your-apps',
 			},
-			{
-				id: 'q4',
-				title: 'Getting started with your Digital Subscription',
-				link: '/help-centre/article/getting-started-with-your-digital-subscription',
-			},
 		],
 	},
 	{
@@ -299,26 +294,21 @@ export const helpCentreMoreQuestionsConfig: HelpCentreMoreQuestionsTopic[] = [
 		links: [
 			{
 				id: 'q1',
-				title: 'Gifting a Digital Subscription',
-				link: '/help-centre/article/gifting-a-digital-subscription',
-			},
-			{
-				id: 'q2',
 				title: 'Gifting the Guardian Weekly',
 				link: '/help-centre/article/gifting-the-guardian-weekly',
 			},
 			{
-				id: 'q3',
+				id: 'q2',
 				title: "My gift recipient hasn't recieved their gift",
 				link: '/help-centre/article/my-gift-recipient-hasnt-received-their-gift',
 			},
 			{
-				id: 'q4',
+				id: 'q3',
 				title: "I've accidentally entered the wrong details when gifting",
 				link: '/help-centre/article/ive-accidentally-entered-the-wrong-details',
 			},
 			{
-				id: 'q5',
+				id: 'q4',
 				title: 'The person I bought a gift for already has a subscription, can I get a refund?',
 				link: '/help-centre/article/the-person-i-bought-a-gift-for-already-has-a-subscription-can-i-get-a-refund',
 			},

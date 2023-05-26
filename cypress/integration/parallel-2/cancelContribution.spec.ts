@@ -7,10 +7,9 @@ import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 describe('Cancel contribution', () => {
 	const setSignInStatus = () => {
 		cy.window().then((window) => {
-			// @ts-ignore
 			window.guardian.identityDetails = {
 				signInStatus: 'signedInRecently',
-				userId: '200006712',
+				userId: '1',
 				displayName: 'user',
 				email: 'example@example.com',
 			};
@@ -57,11 +56,20 @@ describe('Cancel contribution', () => {
 			body: toMembersDataApiResponse(contributionCard),
 		});
 
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		});
+
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: [],
+		}).as('single_contributions');
+
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(),
 		}).as('new_product_detail');
-
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,
 			body: [],

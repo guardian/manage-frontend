@@ -5,10 +5,13 @@ export const DATE_FNS_INPUT_FORMAT = 'yyyy-MM-dd'; // example: 1969-07-16
 export const DATE_FNS_LONG_OUTPUT_FORMAT = 'd MMMM yyyy'; // example: 1 July 2021
 export const DATE_FNS_SHORT_OUTPUT_FORMAT = 'd MMM yyyy'; // example: 5 Jan 2019
 
-export const cancellationFormatDate = (cancellationEffectiveDate?: string) => {
+export const cancellationFormatDate = (
+	cancellationEffectiveDate?: string,
+	outputFormat: string = DATE_FNS_SHORT_OUTPUT_FORMAT,
+) => {
 	return cancellationEffectiveDate === undefined
 		? 'today'
-		: parseDate(cancellationEffectiveDate).dateStr();
+		: parseDate(cancellationEffectiveDate).dateStr(outputFormat);
 };
 
 export interface ParsedDate {
@@ -130,3 +133,7 @@ export const getOldestDate = (dates: Date[]) =>
 	dates.reduce((dateA: Date, dateB: Date) =>
 		dateA.valueOf() <= dateB.valueOf() ? dateA : dateB,
 	);
+
+export function convertTimestampToDate(timestamp: number): string {
+	return dateString(new Date(timestamp), DATE_FNS_LONG_OUTPUT_FORMAT);
+}

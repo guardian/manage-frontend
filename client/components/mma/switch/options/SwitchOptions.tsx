@@ -5,15 +5,18 @@ import {
 	buttonThemeReaderRevenueBrand,
 	Stack,
 } from '@guardian/source-react-components';
+import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { formatAmount } from '../../../../utilities/utils';
-import { ErrorSummary } from '../../paymentUpdate/Summary';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { SupporterPlusBenefitsSection } from '../../shared/SupporterPlusBenefits';
-import type { SwitchContextInterface } from '.././SwitchContainer';
+import type {
+	SwitchContextInterface,
+	SwitchRouterState,
+} from '.././SwitchContainer';
 import { SwitchContext } from '.././SwitchContainer';
 import {
 	buttonCentredCss,
@@ -68,9 +71,11 @@ const fromAppHeadingCss = css`
 
 export const SwitchOptions = () => {
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
+	const location = useLocation();
+	const routerState = location.state as SwitchRouterState;
 
 	const {
-		productDetail,
+		contributionToSwitch,
 		mainPlan,
 		monthlyOrAnnual,
 		supporterPlusTitle,
@@ -116,7 +121,7 @@ export const SwitchOptions = () => {
 
 	return (
 		<>
-			{productDetail.alertText && (
+			{contributionToSwitch.alertText && (
 				<section css={sectionSpacing}>
 					<ErrorSummary
 						cssOverrides={errorSummaryOverrideCss}
@@ -142,14 +147,18 @@ export const SwitchOptions = () => {
 			{switchContext.isFromApp && (
 				<section css={sectionSpacing}>
 					<h2 css={fromAppHeadingCss}>
-						Unlock full access to our news app today
+						{isAboveThreshold
+							? 'Add extras to get full access to our news app today'
+							: 'Change your support to get full access to our news app today'}
 					</h2>
 					<p
 						css={css`
 							${textSans.medium()}
 						`}
 					>
-						It takes less than a minute to change your support type.
+						{isAboveThreshold
+							? 'Your current payment entitles you to exclusive supporter extras. It takes less than a minute to add them.'
+							: 'It takes less than a minute to change your support type.'}{' '}
 						If this doesn't suit you, no change is needed, but note
 						you will have limited access to our app.
 					</p>
@@ -196,17 +205,16 @@ export const SwitchOptions = () => {
 							? 'Add extras'
 							: 'Change your support'}
 					</Heading>
-					{isAboveThreshold && (
+					{isAboveThreshold && !switchContext.isFromApp && (
 						<p
 							css={css`
 								${textSans.medium()}
 								margin: 0;
 							`}
 						>
-							In exchange for your current payment, you can choose
-							to receive exclusive supporter extras. It takes less
-							than a minute to change your support type and gain
-							access.
+							Your current payment entitles you to exclusive
+							supporter extras. It takes less than a minute to
+							change your support type and gain access.
 						</p>
 					)}
 					{!isAboveThreshold && !switchContext.isFromApp && (
@@ -250,7 +258,11 @@ export const SwitchOptions = () => {
 					<Button
 						size="small"
 						cssOverrides={buttonCentredCss}
-						onClick={() => navigate('review')}
+						onClick={() =>
+							navigate('review', {
+								state: routerState,
+							})
+						}
 					>
 						{isAboveThreshold
 							? 'Add extras'
@@ -261,11 +273,11 @@ export const SwitchOptions = () => {
 
 			<section>
 				<p css={smallPrintCss}>
-					These exclusive supporter extras are available when you pay{' '}
+					These extras are exclusively available for supporters who
+					give a minimum of {mainPlan.currency}
+					{formatAmount(monthlyThreshold)} per month, or{' '}
 					{mainPlan.currency}
-					{formatAmount(monthlyThreshold)} minimum on a monthly basis,
-					or {mainPlan.currency}
-					{formatAmount(annualThreshold)} minimum on an annual basis.
+					{formatAmount(annualThreshold)} per year.
 				</p>
 			</section>
 		</>

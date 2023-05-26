@@ -8,8 +8,12 @@ describe('Cancel Supporter Plus', () => {
 	const setupCancellation = () => {
 		cy.visit('/');
 
-		cy.findByText('Manage recurring support').click();
+		cy.wait('@mma');
 		cy.wait('@cancelled');
+		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
+
+		cy.findByText('Manage recurring support').click();
 
 		cy.findByRole('link', {
 			name: 'Cancel recurring support',
@@ -43,7 +47,22 @@ describe('Cancel Supporter Plus', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(supporterPlus),
-		});
+		}).as('mma');
+
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: [],
+		}).as('single_contributions');
+
+		cy.intercept('GET', '/api/me/mma/**', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(),
+		}).as('new_product_detail');
 
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,

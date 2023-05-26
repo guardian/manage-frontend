@@ -54,7 +54,7 @@ export const createProductDetailFetch = (
 		},
 	).then((res) => res.json());
 
-export const allProductsDetailFetcher = () =>
+export const allRecurringProductsDetailFetcher = () =>
 	fetchWithDefaultParameters('/api/me/mma', {
 		headers: {
 			[X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
@@ -62,6 +62,9 @@ export const allProductsDetailFetcher = () =>
 			),
 		},
 	});
+
+export const allSingleProductsDetailFetcher = () =>
+	fetchWithDefaultParameters('/api/me/one-off-contributions');
 
 export const hasCancellationFlow = (
 	productType: ProductType,

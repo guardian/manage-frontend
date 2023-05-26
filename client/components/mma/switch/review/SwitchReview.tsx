@@ -7,29 +7,29 @@ import {
 	SvgClock,
 	SvgCreditCard,
 } from '@guardian/source-react-components';
+import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { Navigate, useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';
-import type { Subscription } from '../../../../../shared/productResponse';
+import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
 import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
 import { formatAmount } from '../../../../utilities/utils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
-import { ErrorSummary } from '../../paymentUpdate/Summary';
-import { DirectDebitLogo } from '../../shared/assets/DirectDebitLogo';
-import { PaypalLogo } from '../../shared/assets/PaypalLogo';
 import { SwitchOffsetPaymentIcon } from '../../shared/assets/SwitchOffsetPaymentIcon';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 import { Card } from '../../shared/Card';
-import { cardTypeToSVG } from '../../shared/CardDisplay';
 import { Heading } from '../../shared/Heading';
-import { getObfuscatedPayPalId } from '../../shared/PaypalDisplay';
+import { PaymentDetails } from '../../shared/PaymentDetails';
 import { SupporterPlusBenefitsToggle } from '../../shared/SupporterPlusBenefits';
-import type { SwitchContextInterface } from '../SwitchContainer';
+import type {
+	SwitchContextInterface,
+	SwitchRouterState,
+} from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
 import {
 	buttonCentredCss,
@@ -43,67 +43,6 @@ import {
 	sectionSpacing,
 	smallPrintCss,
 } from '../SwitchStyles';
-
-const PaymentDetails = (props: { subscription: Subscription }) => {
-	const subscription = props.subscription;
-
-	const cardType = (type: string) => {
-		if (type !== 'MasterCard') {
-			return `${type} card`;
-		}
-		return type;
-	};
-
-	const containerCss = css`
-		display: inline-flex;
-		align-items: center;
-		font-weight: 700;
-		max-width: 100%;
-		> svg {
-			flex: 0 0 auto;
-			margin-left: 0.5ch;
-		}
-	`;
-
-	const truncateCss = css`
-		flex: 0 1 auto;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	`;
-
-	return (
-		<span css={containerCss}>
-			{subscription.card && (
-				<>
-					{cardType(subscription.card.type)} ending{' '}
-					{subscription.card.last4}
-					{cardTypeToSVG(subscription.card.type)}
-				</>
-			)}
-			{subscription.payPalEmail && (
-				<>
-					<span css={truncateCss}>
-						{getObfuscatedPayPalId(subscription.payPalEmail)}
-					</span>
-					<PaypalLogo />
-				</>
-			)}
-			{subscription.mandate && (
-				<>
-					account ending{' '}
-					{subscription.mandate.accountNumber.slice(-3)}
-					<DirectDebitLogo />
-				</>
-			)}
-			{subscription.sepaMandate && (
-				<>
-					SEPA {subscription.sepaMandate.accountName}{' '}
-					{subscription.sepaMandate.iban}
-				</>
-			)}
-		</span>
-	);
-};
 
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
 	props.PaymentFailure ? (
@@ -156,6 +95,9 @@ const buttonLayoutCss = css`
 	}
 `;
 
+const productSwitchType: ProductSwitchType =
+	'recurring-contribution-to-supporter-plus';
+
 interface PreviewResponse {
 	amountPayableToday: number;
 	supporterPlusPurchaseAmount: number;
@@ -164,20 +106,22 @@ interface PreviewResponse {
 
 export const SwitchReview = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as SwitchRouterState;
 
 	const [isSwitching, setIsSwitching] = useState<boolean>(false);
 	const [switchingError, setSwitchingError] = useState<boolean>(false);
 
 	const switchContext = useContext(SwitchContext) as SwitchContextInterface;
 	const {
-		productDetail,
+		contributionToSwitch,
 		mainPlan,
 		monthlyOrAnnual,
 		supporterPlusTitle,
 		thresholds,
 	} = switchContext;
 
-	const inPaymentFailure = !!productDetail.alertText;
+	const inPaymentFailure = !!contributionToSwitch.alertText;
 
 	const {
 		monthlyThreshold,
@@ -190,7 +134,7 @@ export const SwitchReview = () => {
 
 	const productMoveFetch = (preview: boolean) =>
 		fetch(
-			`/api/product-move/${productDetail.subscription.subscriptionId}`,
+			`/api/product-move/${productSwitchType}/${contributionToSwitch.subscription.subscriptionId}`,
 			{
 				method: 'POST',
 				body: JSON.stringify({
@@ -204,6 +148,10 @@ export const SwitchReview = () => {
 		);
 
 	const confirmSwitch = async (amount: number) => {
+		if (isSwitching) {
+			return;
+		}
+
 		if (inPaymentFailure) {
 			setSwitchingError(true);
 			return;
@@ -220,8 +168,10 @@ export const SwitchReview = () => {
 			} else {
 				navigate('../complete', {
 					state: {
+						...routerState,
 						amountPayableToday: amount,
 						nextPaymentDate: nextPaymentDate,
+						switchHasCompleted: true,
 					},
 				});
 			}
@@ -264,13 +214,13 @@ export const SwitchReview = () => {
 							${textSans.medium()};
 						`}
 					>
-						Please {switchContext.isFromApp ? 'confirm' : 'review'}{' '}
-						your choice to unlock exclusive supporter extras
 						{isAboveThreshold
-							? ". You'll still pay "
-							: ' by paying '}
-						{mainPlan.currency}
-						{formatAmount(newAmount)} per {mainPlan.billingPeriod}.
+							? `Please confirm your choice to get exclusive supporter extras. You'll still pay ${
+									mainPlan.currency
+							  }${formatAmount(newAmount)} per ${
+									mainPlan.billingPeriod
+							  }.`
+							: `Please confirm your choice to change your support to ${monthlyOrAnnual.toLowerCase()} + extras.`}
 					</p>
 				</Stack>
 			</section>
@@ -353,7 +303,9 @@ export const SwitchReview = () => {
 								<br />
 								We will take payment as before, from{' '}
 								<PaymentDetails
-									subscription={productDetail.subscription}
+									subscription={
+										contributionToSwitch.subscription
+									}
 								/>
 							</span>
 						</li>
@@ -375,13 +327,13 @@ export const SwitchReview = () => {
 				<Button
 					priority="tertiary"
 					cssOverrides={[buttonCentredCss, buttonMutedCss]}
-					onClick={() => navigate('..')}
+					onClick={() => navigate('..', { state: routerState })}
 				>
 					Back
 				</Button>
 			</section>
 			{switchingError && (
-				<section css={sectionSpacing}>
+				<section css={sectionSpacing} id="productSwitchErrorMessage">
 					<ErrorSummary
 						message={
 							inPaymentFailure
