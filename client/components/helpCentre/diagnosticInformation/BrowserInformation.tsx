@@ -13,11 +13,13 @@ import UAParser from 'ua-parser-js';
 export const BrowserInformation = () => {
 	const ua = new UAParser();
 
-	const [adblockstatus, setAdblockstatus] = useState(false);
-	useEffect(function () {
-		isAdBlockInUse().then(function (value) {
-			setAdblockstatus(value);
-		});
+	const [adblockstatus, setAdblockstatus] = useState<boolean | 'failed'>(
+		false,
+	);
+	useEffect(() => {
+		isAdBlockInUse()
+			.then((value: boolean) => setAdblockstatus(value))
+			.catch(() => setAdblockstatus('failed'));
 	});
 	return (
 		<>
