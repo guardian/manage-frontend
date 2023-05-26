@@ -23,6 +23,7 @@ export const ConfirmMembershipCancellation = () => {
 				]}
 				additionalCSS={css`
 					margin: ${space[5]}px 0 ${space[12]}px;
+					max-width: 350px;
 				`}
 			/>
 			<Stack space={4}>
