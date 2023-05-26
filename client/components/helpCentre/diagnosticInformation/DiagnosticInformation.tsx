@@ -66,8 +66,8 @@ export const DiagnosticInformation = () => {
 		<div>
 			<h2 css={h2Css}>Diagnostic Information</h2>
 			<p css={pCss}>
-				To report a bug, please copy the below information onto an email
-				to User Help, with the url of the page if possible.
+				To report a bug, please copy the below information onto an
+				email, with the url of the page if possible.
 			</p>
 			<p css={pCss}>
 				We'll aim to get back to you within 48 hours and use technical

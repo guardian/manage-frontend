@@ -28,10 +28,13 @@ router.use(withIdentity());
 router.use('/diagnostic-information', async (req, res, next) => {
 	try {
 		const idapiConfig = await idapiConfigPromise;
-		if (
-			idapiConfig &&
-			res.locals?.identity?.signInStatus === 'signedInRecently'
-		) {
+		const isSignedIn =
+			res.locals?.identity?.signInStatus === 'signedInRecently' ||
+			res.locals?.identity.signInStatus === 'signedInNotRecently';
+
+		if (idapiConfig && isSignedIn) {
+			console.log('making request');
+
 			const response = await fetch(
 				url.format({
 					protocol: 'https',
@@ -55,6 +58,8 @@ router.use('/diagnostic-information', async (req, res, next) => {
 				res.locals.userAttributes = data;
 			}
 
+			next();
+		} else {
 			next();
 		}
 	} catch (err) {
