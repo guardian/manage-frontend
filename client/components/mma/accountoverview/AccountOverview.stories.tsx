@@ -30,6 +30,7 @@ import { user } from '../../../fixtures/user';
 import { AccountOverview } from './AccountOverview';
 
 featureSwitches['appSubscriptions'] = true;
+featureSwitches['singleContributions'] = true;
 
 export default {
 	title: 'Pages/AccountOverview',
@@ -41,10 +42,6 @@ export default {
 } as ComponentMeta<typeof AccountOverview>;
 
 export const NoSubscription: ComponentStory<typeof AccountOverview> = () => {
-	return <AccountOverview />;
-};
-
-export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
 	return <AccountOverview />;
 };
 
@@ -61,6 +58,9 @@ NoSubscription.parameters = {
 		}),
 		rest.get('/idapi/user', (_req, res, ctx) => {
 			return res(ctx.json(user));
+		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json([]));
 		}),
 	],
 };
@@ -88,6 +88,9 @@ WithSubscriptions.parameters = {
 				),
 			);
 		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
 	],
 };
 
@@ -107,6 +110,9 @@ WithContributionAndSwitchPossible.parameters = {
 		}),
 		rest.get('/api/me/mma', (_req, res, ctx) => {
 			return res(ctx.json(toMembersDataApiResponse(contributionPayPal)));
+		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json([]));
 		}),
 	],
 };
@@ -140,6 +146,9 @@ WithContributionInPaymentFailure.parameters = {
 				),
 			);
 		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
 	],
 };
 
@@ -163,6 +172,9 @@ WithContributionAndSwitchNotPossible.parameters = {
 					toMembersDataApiResponse(contributionPayPal, digitalDD),
 				),
 			);
+		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json([]));
 		}),
 	],
 };
@@ -194,6 +206,9 @@ WithCancelledSubscriptions.parameters = {
 				),
 			);
 		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
 	],
 };
 
@@ -221,16 +236,13 @@ WithGiftSubscriptions.parameters = {
 				),
 			);
 		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
 	],
 };
 
 export const WithAppSubscriptions: ComponentStory<
-	typeof AccountOverview
-> = () => {
-	return <AccountOverview />;
-};
-
-export const WithSingleContribution: ComponentStory<
 	typeof AccountOverview
 > = () => {
 	return <AccountOverview />;
@@ -255,6 +267,36 @@ WithAppSubscriptions.parameters = {
 		}),
 		rest.get('/api/me/mma', (_req, res, ctx) => {
 			return res(ctx.json(toMembersDataApiResponse()));
+		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+	],
+};
+
+export const WithSingleContribution: ComponentStory<
+	typeof AccountOverview
+> = () => {
+	return <AccountOverview />;
+};
+
+WithSingleContribution.parameters = {
+	msw: [
+		rest.get('/api/cancelled/', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(
+				ctx.json({
+					subscriptions: [],
+				}),
+			);
+		}),
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(ctx.json(toMembersDataApiResponse()));
+		}),
+		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+			return res(ctx.json(singleContributionsAPIResponse));
 		}),
 	],
 };
