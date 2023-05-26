@@ -64,13 +64,7 @@ export const allRecurringProductsDetailFetcher = () =>
 	});
 
 export const allSingleProductsDetailFetcher = () =>
-	fetchWithDefaultParameters('/api/me/one-off-contributions', {
-		headers: {
-			[X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
-				window.location.href,
-			),
-		},
-	});
+	fetchWithDefaultParameters('/api/me/one-off-contributions');
 
 export const hasCancellationFlow = (
 	productType: ProductType,
