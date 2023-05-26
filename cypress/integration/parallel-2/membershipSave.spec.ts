@@ -55,6 +55,15 @@ if (featureSwitches.membershipSave) {
 				},
 			}).as('get_case');
 
+			cy.intercept('POST', '/api/cancel/**', {
+				statusCode: 200,
+			}).as('cancel_membership');
+
+			cy.intercept('GET', '/api/me/mma/**', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(),
+			});
+
 			cy.intercept('POST', '/api/reminders/create', {
 				statusCode: 200,
 			}).as('set_reminder');
@@ -133,10 +142,10 @@ if (featureSwitches.membershipSave) {
 				name: 'Confirm Cancellation',
 			}).click();
 
-			cy.findByRole('button', {
-				name: 'Submit',
-			}).click();
-			cy.findByText(/Please select a reason/).should('exist');
+			cy.wait('@get_case');
+			cy.wait('@cancel_membership');
+
+			cy.findByText(/Your membership has been cancelled/).should('exist');
 
 			cy.findAllByRole('radio', {
 				name: 'Other',
