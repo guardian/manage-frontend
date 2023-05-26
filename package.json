@@ -94,6 +94,7 @@
     "@types/react-dom": "18.2.1",
     "@types/react-test-renderer": "18.0.0",
     "@types/url-parse": "1.4.3",
+    "@types/ua-parser-js": "^0.7.36",
     "@types/uuid": "8.3.4",
     "@types/webpack": "5.28.0",
     "@types/webpack-node-externals": "2.5.3",
@@ -144,6 +145,7 @@
     "@emotion/react": "11.9.0",
     "@guardian/ab-core": "2.0.0",
     "@guardian/ab-react": "2.0.1",
+    "@guardian/commercial-core": "^5.4.5",
     "@guardian/consent-management-platform": "13.0.0",
     "@guardian/libs": "14.0.0",
     "@guardian/source-foundations": "10.0.1",
@@ -176,6 +178,7 @@
     "source-map-support": "0.5.21",
     "stylis-pxtorem": "0.0.2",
     "tslib": "2.5.0",
+    "ua-parser-js": "^1.0.34",
     "url-parse": "1.5.9",
     "winston": "3.2.1",
     "yup": "0.28.5"
