@@ -18,7 +18,7 @@ import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
-import { stackedButtonLeftLayoutCss } from './SaveStyles';
+import { stackedButtonLayoutCss } from './SaveStyles';
 
 export const ConfirmMembershipCancellation = () => {
 	const navigate = useNavigate();
@@ -43,7 +43,6 @@ export const ConfirmMembershipCancellation = () => {
 				reason: selectedReasonId,
 				product: productType.cancellation.sfCaseProduct,
 				subscriptionName: productDetail.subscription.subscriptionId,
-				gaData: '' + JSON.stringify(window.gaData),
 			}),
 			headers: {
 				'Content-Type': 'application/json',
@@ -161,7 +160,7 @@ export const ConfirmMembershipCancellation = () => {
 					Members scheme, as it’s now closed to new members.
 				</p>
 			</Stack>
-			<div css={stackedButtonLeftLayoutCss}>
+			<div css={stackedButtonLayoutCss}>
 				<Button
 					onClick={postCancellation}
 					isLoading={isSubmitting}

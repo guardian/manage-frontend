@@ -14,7 +14,7 @@ import {
 	buttonCentredCss,
 	headingCss,
 	paragraphListCss,
-	stackedButtonLeftLayoutCss,
+	stackedButtonLayoutCss,
 } from './SaveStyles';
 
 export const ContinueMembershipConfirmation = () => {
@@ -58,7 +58,7 @@ export const ContinueMembershipConfirmation = () => {
 					</span>
 				</p>
 			</Stack>
-			<div css={stackedButtonLeftLayoutCss}>
+			<div css={stackedButtonLayoutCss}>
 				<Button
 					priority="tertiary"
 					onClick={() => navigate('/')}
