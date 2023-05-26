@@ -49,7 +49,6 @@ export type CancellationReasonId =
 	| 'mma_values'
 	| 'mma_no_need'
 	| 'mma_dont_know_what_for'
-	| 'mma_default'
 	| 'mma_other';
 
 export type OptionalCancellationReasonId = CancellationReasonId | undefined;
