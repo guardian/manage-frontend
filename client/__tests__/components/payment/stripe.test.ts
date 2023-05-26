@@ -7,11 +7,11 @@ import { getStripeKey } from '../../../utilities/stripe';
 // @ts-expect-error
 window.guardian = {
 	stripeKeyAustralia: {
-		uat: 'uatKeyAustralia',
+		test: 'testKeyAustralia',
 		default: 'defaultKeyAustralia',
 	},
 	stripeKeyDefaultCurrencies: {
-		uat: 'uatKeyDefaultCurrencies',
+		test: 'testKeyDefaultCurrencies',
 		default: 'defaultKeyDefaultCurrencies',
 	},
 };

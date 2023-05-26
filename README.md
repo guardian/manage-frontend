@@ -58,7 +58,7 @@ NOTE: nginx proxies CODE instances of [`identity-frontend`](https://github.com/g
 
 #### Running locally (each day you need use it)
 
-1.  You will also need to have [members-data-api](https://github.com/guardian/members-data-api) (`./start-api.sh`) running, to get subscription data (from DEV Zuora/Salesforce).
+1.  You will also need to have [members-data-api](https://github.com/guardian/members-data-api) (`./start-api.sh`) running, to get subscription data (from CODE Zuora/Salesforce).
 1.  You will probably also need the tunnel to the `contributions-store`, see point 2 of [members-data-api#running-locally](https://github.com/guardian/members-data-api#running-locally)
 
 ## SSH into running instances in AWS

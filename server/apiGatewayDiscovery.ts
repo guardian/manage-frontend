@@ -17,7 +17,7 @@ import { log } from './log';
 
 const isProd = conf.STAGE.toUpperCase() === 'PROD';
 
-const normalUserApiStage = isProd ? 'PROD' : 'DEV'; // i.e. CODE manage-frontend uses DEV when in normal mode
+const normalUserApiStage = isProd ? 'PROD' : 'CODE';
 const testUserApiStage = 'CODE';
 
 const apiNames = [
