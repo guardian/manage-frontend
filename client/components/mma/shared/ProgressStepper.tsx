@@ -8,7 +8,7 @@ interface Step {
 	isCurrentStep?: true;
 }
 
-export interface ProgressIndicatorProps {
+export interface ProgressStepperProps {
 	steps: Step[];
 	additionalCSS?: SerializedStyles;
 }
@@ -85,10 +85,10 @@ const Step = ({
 	);
 };
 
-export const ProgressIndicatorV2 = ({
+export const ProgressStepper = ({
 	steps,
 	additionalCSS,
-}: ProgressIndicatorProps) => {
+}: ProgressStepperProps) => {
 	const currentStep = steps.findIndex((step) => step.isCurrentStep) || 0;
 	return (
 		<div

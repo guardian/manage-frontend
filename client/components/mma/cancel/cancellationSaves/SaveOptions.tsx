@@ -22,7 +22,7 @@ import {
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { MembershipBenefitsSection } from '../../shared/MembershipBenefits';
-import { ProgressIndicatorV2 } from '../../shared/ProgressIndicatorV2';
+import { ProgressStepper } from '../../shared/ProgressStepper';
 import { RecurringSupporterBenefitsSection } from '../../shared/RecurringSupporterBenefits';
 import type {
 	CancellationContextInterface,
@@ -91,7 +91,7 @@ export const SaveOptions = () => {
 
 	return (
 		<>
-			<ProgressIndicatorV2
+			<ProgressStepper
 				steps={[
 					{ title: 'Details' },
 					{ title: 'Offer', isCurrentStep: true },

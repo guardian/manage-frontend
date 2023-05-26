@@ -1,36 +1,36 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ProgressIndicator } from './ProgressIndicator';
-import { ProgressIndicatorV2 } from './ProgressIndicatorV2';
+import { ProgressStepper } from './ProgressStepper';
 
 export default {
 	title: 'Components/ProgressIndicator',
-	component: ProgressIndicatorV2,
+	component: ProgressStepper,
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof ProgressIndicatorV2>;
+} as ComponentMeta<typeof ProgressStepper>;
 
-export const Default: ComponentStory<typeof ProgressIndicatorV2> = () => {
+export const Default: ComponentStory<typeof ProgressStepper> = () => {
 	return (
 		<>
-			<ProgressIndicatorV2
+			<ProgressStepper
 				steps={[{ title: 'Reason' }, { title: 'Review' }]}
 			/>
-			<ProgressIndicatorV2
+			<ProgressStepper
 				steps={[
 					{ title: 'Reason' },
 					{ title: 'Review', isCurrentStep: true },
 					{ title: 'Confirmation' },
 				]}
 			/>
-			<ProgressIndicatorV2
+			<ProgressStepper
 				steps={[
 					{ title: 'Reason', isCurrentStep: true },
 					{ title: 'Review' },
 					{ title: 'Confirmation' },
 				]}
 			/>
-			<ProgressIndicatorV2
+			<ProgressStepper
 				steps={[
 					{ title: 'Reason' },
 					{ title: 'Review' },
