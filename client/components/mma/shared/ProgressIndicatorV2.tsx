@@ -55,14 +55,14 @@ const Step = ({
 				color: ${index > currentStep
 					? palette.neutral[46]
 					: palette.brand[400]};
-				flex: 1;
+				flex: ${index > 0 ? '1' : '0.5'};
 			`}
 		>
 			<div
 				css={css`
-					display: flex;
-					flex-direction: column;
-					align-items: center;
+					${index > 0
+						? 'display: flex; flex-direction: column; align-items: center;'
+						: ''}
 				`}
 			>
 				<span>{step.title}</span>
@@ -107,7 +107,11 @@ export const ProgressIndicatorV2 = ({
 					background-color: ${palette.neutral[60]};
 					order: -1;
 				}
-				> :nth-child(-n + ${currentStep}):after {
+				> :first-of-type:after {
+					left: calc(22px + ${space[2]}px);
+					width: calc(200% - 33px - 2 * ${space[2]}px);
+				}
+				> :nth-of-type(-n + ${currentStep}):after {
 					background-color: ${palette.brand[400]};
 				}
 			`}
