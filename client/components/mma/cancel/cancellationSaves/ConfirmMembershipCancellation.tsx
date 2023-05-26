@@ -7,7 +7,7 @@ import {
 } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
 import { Heading } from '../../shared/Heading';
-import { ProgressIndicator } from '../../shared/ProgressIndicator';
+import { ProgressStepper } from '../../shared/ProgressStepper';
 import { buttonLayoutCss } from './SaveStyles';
 
 export const ConfirmMembershipCancellation = () => {
@@ -15,10 +15,10 @@ export const ConfirmMembershipCancellation = () => {
 
 	return (
 		<>
-			<ProgressIndicator
+			<ProgressStepper
 				steps={[
-					{ title: '' },
-					{ title: '' },
+					{ title: 'Details' },
+					{ title: 'Options' },
 					{ title: 'Confirmation', isCurrentStep: true },
 				]}
 				additionalCSS={css`
