@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { news, space, textSans } from '@guardian/source-foundations';
+import { palette, space, textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -167,7 +167,7 @@ export const ConfirmMembershipCancellation = () => {
 					onClick={postCancellation}
 					isLoading={isSubmitting}
 					cssOverrides={css`
-						background-color: ${news[400]};
+						background-color: ${palette.news['400']};
 						justify-content: center;
 					`}
 				>
