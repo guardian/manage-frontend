@@ -30,7 +30,8 @@ export const ConfirmMembershipCancellation = () => {
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const [loadingFailed, setLoadingFailed] = useState<boolean>(false);
 
-	const reason: OptionalCancellationReasonId = 'mma_other'; //reason needs to be provided as undefined doesn't work. Reason updated if user provides one on next screen.
+	const reason: OptionalCancellationReasonId =
+		'mma_membership_cancellation_default'; //reason needs to be provided as undefined doesn't work. Reason updated if user provides one on next screen.
 
 	const createCase = (
 		selectedReasonId: string,
@@ -43,6 +44,7 @@ export const ConfirmMembershipCancellation = () => {
 				reason: selectedReasonId,
 				product: productType.cancellation.sfCaseProduct,
 				subscriptionName: productDetail.subscription.subscriptionId,
+				gaData: '' + JSON.stringify(window.gaData),
 			}),
 			headers: {
 				'Content-Type': 'application/json',
