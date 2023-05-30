@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import fetchMock from 'fetch-mock';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import { user } from '../../../../fixtures/user';
 import { PublicProfile } from './PublicProfile';
@@ -14,7 +14,13 @@ export default {
 } as ComponentMeta<typeof PublicProfile>;
 
 export const Default: ComponentStory<typeof PublicProfile> = () => {
-	fetchMock.restore().get('/idapi/user', { body: user });
-
 	return <PublicProfile />;
+};
+
+Default.parameters = {
+	msw: [
+		rest.get('/idapi/user', (_req, res, ctx) => {
+			return res(ctx.json(user));
+		}),
+	],
 };
