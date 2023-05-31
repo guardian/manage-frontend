@@ -1,10 +1,6 @@
 import { css } from '@emotion/react';
 import { space, textSans } from '@guardian/source-foundations';
-import {
-	Button,
-	Stack,
-	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
+import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { dateString } from '../../../../../shared/dates';
@@ -78,10 +74,9 @@ export const ValueOfSupport = () => {
 					cssOverrides={buttonCentredCss}
 					onClick={() => navigate('../landing')}
 				>
-					Back
+					Go back to my account
 				</Button>
 				<Button
-					icon={<SvgArrowRightStraight />}
 					iconSide="right"
 					cssOverrides={buttonCentredCss}
 					onClick={() =>
