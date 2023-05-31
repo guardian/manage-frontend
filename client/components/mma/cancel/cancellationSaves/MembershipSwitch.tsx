@@ -117,7 +117,7 @@ const WhatHappensNext = (props: {
 					</li>
 					<li>
 						<SvgCreditCard size="medium" />
-						<span>
+						<span data-qm-masking="blocklist">
 							<strong>Your payment method</strong>
 							<br />
 							The payment will be taken from{' '}
