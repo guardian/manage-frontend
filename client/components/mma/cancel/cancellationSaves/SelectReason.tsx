@@ -16,10 +16,12 @@ import {
 } from '../../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
-	ProductDetail} from '../../../../../shared/productResponse';
+	ProductDetail,
+} from '../../../../../shared/productResponse';
 import {
 	getMainPlan,
- MDA_TEST_USER_HEADER } from '../../../../../shared/productResponse';
+	MDA_TEST_USER_HEADER,
+} from '../../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
