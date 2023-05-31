@@ -6,6 +6,10 @@ import type * as React from 'react';
 import { useNavigate } from 'react-router';
 import { trackEventInOphanOnly } from '../../../utilities/analytics';
 import { getGeoLocation } from '../../../utilities/geolocation';
+import {
+	buttonCentredCss,
+	stackedButtonLayoutCss,
+} from './cancellationSaves/SaveStyles';
 
 const containerStyles = css`
 	padding-bottom: ${space[24]}px;
@@ -20,12 +24,6 @@ const setReminderContainerStyles = css`
 const formContainerStyles = css`
 	& > * + * {
 		margin-top: ${space[6]}px;
-	}
-`;
-
-const buttonLayoutCss = css`
-	> * + * {
-		margin-left: ${space[3]}px;
 	}
 `;
 
@@ -167,11 +165,17 @@ export const CancellationContributionReminder: React.FC = () => {
 								/>
 							))}
 						</RadioGroup>
-						<div css={buttonLayoutCss}>
-							<Button onClick={onSubmit}>Set my reminder</Button>
+						<div css={stackedButtonLayoutCss}>
+							<Button
+								onClick={onSubmit}
+								cssOverrides={buttonCentredCss}
+							>
+								Set my reminder
+							</Button>
 							<Button
 								priority="tertiary"
 								onClick={() => navigate('/')}
+								cssOverrides={buttonCentredCss}
 							>
 								Back to your account
 							</Button>

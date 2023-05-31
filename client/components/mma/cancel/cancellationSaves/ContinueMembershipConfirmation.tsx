@@ -65,7 +65,7 @@ export const ContinueMembershipConfirmation = () => {
 					onClick={() => navigate('/')}
 					cssOverrides={buttonCentredCss}
 				>
-					Back to account overview
+					Back to my account
 				</Button>
 				<Button
 					onClick={() => navigate('https://www.theguardian.com')}
