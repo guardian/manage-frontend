@@ -18,7 +18,7 @@ import { ProgressStepper } from '../../shared/ProgressStepper';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
-import { buttonLayoutCss, stackedButtonLayoutCss } from './SaveStyles';
+import { stackedButtonLayoutCss } from './SaveStyles';
 
 export const ConfirmMembershipCancellation = () => {
 	const navigate = useNavigate();
