@@ -14,9 +14,9 @@ const Benefit = ({ benefit }: { benefit: ProductBenefit }) => {
 	return (
 		<li css={benefit.isUnavailable ? unavailableBenefitsCss : ''}>
 			{benefit.isUnavailable ? (
-				<SvgCrossRound size="small" />
+				<SvgCrossRound isAnnouncedByScreenReader size="small" />
 			) : (
-				<SvgTickRound size="small" />
+				<SvgTickRound isAnnouncedByScreenReader size="small" />
 			)}
 			<span>
 				<strong>{benefit.name}</strong>
