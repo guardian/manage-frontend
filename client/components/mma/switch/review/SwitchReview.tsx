@@ -22,10 +22,10 @@ import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { SwitchOffsetPaymentIcon } from '../../shared/assets/SwitchOffsetPaymentIcon';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
+import { BenefitsToggle } from '../../shared/benefits/BenefitsToggle';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { PaymentDetails } from '../../shared/PaymentDetails';
-import { SupporterPlusBenefitsToggle } from '../../shared/SupporterPlusBenefits';
 import type {
 	SwitchContextInterface,
 	SwitchRouterState,
@@ -243,7 +243,7 @@ export const SwitchReview = () => {
 								including full access to our app and ad-free
 								reading
 							</p>
-							<SupporterPlusBenefitsToggle />
+							<BenefitsToggle productType="supporterplus" />
 							<p css={newAmountCss}>
 								{mainPlan.currency}
 								{formatAmount(newAmount)}/

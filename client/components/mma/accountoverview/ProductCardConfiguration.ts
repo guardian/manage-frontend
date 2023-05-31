@@ -1,4 +1,5 @@
 import { palette } from '@guardian/source-foundations';
+import { featureSwitches } from '../../../../shared/featureSwitches';
 import type { ProductTypeKeys } from '../../../../shared/productTypes';
 
 export const textColour = {
@@ -69,6 +70,7 @@ export const productCardConfiguration: {
 	},
 	membership: {
 		colour: productColour.membership,
+		showBenefitsSection: featureSwitches.membershipSave,
 	},
 	guardianpatron: {
 		colour: productColour.membership,

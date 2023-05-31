@@ -19,11 +19,11 @@ import {
 	getNewMembershipPrice,
 	getOldMembershipPrice,
 } from '../../../../utilities/membershipPriceRise';
+import { benefitsConfiguration } from '../../shared/benefits/BenefitsConfiguration';
+import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
-import { MembershipBenefitsSection } from '../../shared/MembershipBenefits';
 import { ProgressStepper } from '../../shared/ProgressStepper';
-import { RecurringSupporterBenefitsSection } from '../../shared/RecurringSupporterBenefits';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
@@ -140,7 +140,9 @@ export const SaveOptions = () => {
 						</div>
 					</Card.Header>
 					<Card.Section>
-						<MembershipBenefitsSection />
+						<BenefitsSection
+							benefits={benefitsConfiguration['membership']}
+						/>
 						<section css={[cardSectionCss, buttonContainerCss]}>
 							<ThemeProvider
 								theme={buttonThemeReaderRevenueBrand}
@@ -180,7 +182,9 @@ export const SaveOptions = () => {
 						</div>
 					</Card.Header>
 					<Card.Section>
-						<RecurringSupporterBenefitsSection />
+						<BenefitsSection
+							benefits={benefitsConfiguration['contributions']}
+						/>
 						<section css={[cardSectionCss, buttonContainerCss]}>
 							<ThemeProvider
 								theme={buttonThemeReaderRevenueBrand}
