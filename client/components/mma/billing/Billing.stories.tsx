@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import fetchMock from 'fetch-mock';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import {
@@ -28,43 +28,64 @@ export default {
 } as ComponentMeta<typeof Billing>;
 
 export const NoSubscription: ComponentStory<typeof Billing> = () => {
-	fetchMock
-		.restore()
-		.get('/api/me/mma', { body: toMembersDataApiResponse() })
-		.get('/api/invoices', { body: { invoices: [] } })
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: { subscriptions: [] },
-		})
-		.get('/idapi/user', { body: user });
-
 	return <Billing />;
+};
+
+NoSubscription.parameters = {
+	msw: [
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(ctx.json(toMembersDataApiResponse()));
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(
+				ctx.json({
+					subscriptions: [],
+				}),
+			);
+		}),
+		rest.get('/api/invoices', (_req, res, ctx) => {
+			return res(ctx.json({ invoices: [] }));
+		}),
+
+		rest.get('/idapi/user', (_req, res, ctx) => {
+			return res(ctx.json(user));
+		}),
+	],
 };
 
 export const WithSubscriptions: ComponentStory<typeof Billing> = () => {
 	featureSwitches['appSubscriptions'] = true;
 
-	fetchMock
-		.restore()
-		.get('/api/me/mma', {
-			body: toMembersDataApiResponse(
-				guardianWeeklyCard,
-				digitalDD,
-				newspaperVoucherPaypal,
-			),
-		})
-		.get('/mpapi/user/mobile-subscriptions', {
-			body: {
-				subscriptions: [
-					InAppPurchase,
-					InAppPurchaseIos,
-					InAppPurchaseAndroid,
-					PuzzleAppPurchaseAndroid,
-				],
-			},
-		})
-		.get('/api/invoices', {
-			body: { invoices: [guardianWeeklyCardInvoice] },
-		});
-
 	return <Billing />;
+};
+
+WithSubscriptions.parameters = {
+	msw: [
+		rest.get('/api/me/mma', (_req, res, ctx) => {
+			return res(
+				ctx.json(
+					toMembersDataApiResponse(
+						guardianWeeklyCard,
+						digitalDD,
+						newspaperVoucherPaypal,
+					),
+				),
+			);
+		}),
+		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+			return res(
+				ctx.json({
+					subscriptions: [
+						InAppPurchase,
+						InAppPurchaseIos,
+						InAppPurchaseAndroid,
+						PuzzleAppPurchaseAndroid,
+					],
+				}),
+			);
+		}),
+		rest.get('/api/invoices', (_req, res, ctx) => {
+			return res(ctx.json({ invoices: [guardianWeeklyCardInvoice] }));
+		}),
+	],
 };

@@ -2,6 +2,9 @@ regions:
   - eu-west-1
 stacks:
   - support
+allowedStages:
+  - CODE
+  - PROD
 deployments:
   assets-static:
     type: aws-s3
