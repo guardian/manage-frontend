@@ -14,7 +14,7 @@ import { createProductDetailFetcher } from '../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Heading } from '../../shared/Heading';
-import { ProgressIndicator } from '../../shared/ProgressIndicator';
+import { ProgressStepper } from '../../shared/ProgressStepper';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
@@ -131,14 +131,15 @@ export const ConfirmMembershipCancellation = () => {
 
 	return (
 		<>
-			<ProgressIndicator
+			<ProgressStepper
 				steps={[
-					{ title: '' },
-					{ title: '' },
+					{ title: 'Details' },
+					{ title: 'Options' },
 					{ title: 'Confirmation', isCurrentStep: true },
 				]}
 				additionalCSS={css`
 					margin: ${space[5]}px 0 ${space[12]}px;
+					max-width: 350px;
 				`}
 			/>
 			<Stack space={4}>

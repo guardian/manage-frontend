@@ -7,7 +7,7 @@ import { cancellationFormatDate } from '../../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
 import { getNewMembershipPrice } from '../../../../utilities/membershipPriceRise';
-import { ProgressIndicator } from '../../shared/ProgressIndicator';
+import { ProgressStepper } from '../../shared/ProgressStepper';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import {
@@ -34,14 +34,15 @@ export const ContinueMembershipConfirmation = () => {
 
 	return (
 		<>
-			<ProgressIndicator
+			<ProgressStepper
 				steps={[
-					{ title: '' },
-					{ title: '' },
+					{ title: 'Details' },
+					{ title: 'Options' },
 					{ title: 'Confirmation', isCurrentStep: true },
 				]}
 				additionalCSS={css`
 					margin: ${space[5]}px 0 ${space[12]}px;
+					max-width: 350px;
 				`}
 			/>
 			<Stack space={4}>
