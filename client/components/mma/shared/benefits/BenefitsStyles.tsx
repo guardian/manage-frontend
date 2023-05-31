@@ -36,3 +36,10 @@ export const benefitsButtonCss = css`
 	color: ${palette.brand[500]};
 	border-bottom: 1px solid ${palette.brand[500]};
 `;
+
+export const unavailableBenefitsCss = css`
+	color: ${palette.neutral[60]};
+	svg {
+		fill: ${palette.neutral[60]};
+	}
+`;

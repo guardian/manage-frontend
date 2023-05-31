@@ -69,6 +69,7 @@ export const productCardConfiguration: {
 	},
 	membership: {
 		colour: productColour.membership,
+		showBenefitsSection: true,
 	},
 	guardianpatron: {
 		colour: productColour.membership,

@@ -20,6 +20,7 @@ import {
 	guardianWeeklyCard,
 	guardianWeeklyGiftPurchase,
 	guardianWeeklyGiftRecipient,
+	membershipSupporter,
 	newspaperVoucherPaypal,
 	supporterPlus,
 	supporterPlusCancelled,
@@ -84,6 +85,8 @@ WithSubscriptions.parameters = {
 						guardianWeeklyCard,
 						digitalDD,
 						newspaperVoucherPaypal,
+						membershipSupporter,
+						supporterPlus,
 					),
 				),
 			);
