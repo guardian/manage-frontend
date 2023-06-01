@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { palette, space, textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { MDA_TEST_USER_HEADER } from '../../../../../shared/productResponse';
 import type {
 	MembersDataApiResponse,
@@ -15,7 +15,10 @@ import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Heading } from '../../shared/Heading';
 import { ProgressStepper } from '../../shared/ProgressStepper';
-import type { CancellationContextInterface } from '../CancellationContainer';
+import type {
+	CancellationContextInterface,
+	CancellationRouterState,
+} from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 import { stackedButtonLayoutCss } from './SaveStyles';
@@ -29,6 +32,9 @@ export const ConfirmMembershipCancellation = () => {
 
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const [loadingFailed, setLoadingFailed] = useState<boolean>(false);
+
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
 
 	const reason: OptionalCancellationReasonId =
 		'mma_membership_cancellation_default'; //reason needs to be provided as undefined doesn't work. Reason updated if user provides one on next screen.
@@ -115,7 +121,9 @@ export const ConfirmMembershipCancellation = () => {
 				setIsSubmitting(false);
 				setLoadingFailed(true);
 			} else {
-				navigate('../reasons');
+				navigate('../reasons', {
+					state: { ...routerState },
+				});
 			}
 		} catch (e) {
 			setIsSubmitting(false);
@@ -176,7 +184,9 @@ export const ConfirmMembershipCancellation = () => {
 				</Button>
 				<Button
 					priority="tertiary"
-					onClick={() => navigate('../offers')}
+					onClick={() =>
+						navigate('../offers', { state: { ...routerState } })
+					}
 					cssOverrides={css`
 						justify-content: center;
 					`}
