@@ -152,7 +152,7 @@ export const ConfirmMembershipCancellation = () => {
 			/>
 			<Stack space={4}>
 				<Heading>
-					Are you sure you want to cancel <br /> your membership?
+					Are you sure you want to cancel your membership?
 				</Heading>
 				<p
 					css={css`
@@ -160,7 +160,7 @@ export const ConfirmMembershipCancellation = () => {
 					`}
 				>
 					Please keep in mind that you will be losing access to your
-					supporter extras.{' '}
+					supporter benefits.{' '}
 				</p>
 				<p
 					css={css`
