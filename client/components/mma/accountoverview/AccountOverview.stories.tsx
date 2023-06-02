@@ -85,8 +85,8 @@ WithSubscriptions.parameters = {
 			return res(
 				ctx.json(
 					toMembersDataApiResponse(
-						guardianWeeklyCard,
-						digitalDD,
+						guardianWeeklyPaidByCard(),
+						digitalPackPaidByDirectDebit(),
 						newspaperVoucherPaypal,
 						membershipSupporter,
 						supporterPlus,
