@@ -1,7 +1,5 @@
-import {
-	guardianWeeklyCurrentSubscription,
-	toMembersDataApiResponse,
-} from '../../client/fixtures/productDetail';
+import { guardianWeeklyPaidByCard } from '../../client/fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../client/fixtures/productDetail';
 
 export const signInAndAcceptCookies = () => {
 	cy.session('auth', () => {
@@ -9,7 +7,7 @@ export const signInAndAcceptCookies = () => {
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
+			body: toMembersDataApiResponse(guardianWeeklyPaidByCard()),
 		}).as('mma');
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {

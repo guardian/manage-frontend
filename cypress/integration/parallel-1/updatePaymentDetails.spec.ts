@@ -1,8 +1,4 @@
-import {
-	guardianWeeklyCurrentSubscription,
-	digitalDD,
-	toMembersDataApiResponse,
-} from '../../../client/fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../client/fixtures/productDetail';
 import {
 	stripeSetupIntent,
 	executePaymentUpdateResponse,
@@ -10,6 +6,10 @@ import {
 } from '../../../client/fixtures/payment';
 import { paymentMethods } from '../../../client/fixtures/stripe';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
+import {
+	digitalPackPaidByDirectDebit,
+	guardianWeeklyPaidByCard,
+} from '../../../client/fixtures/productBuilder/testProducts';
 
 describe('Update payment details', () => {
 	beforeEach(() => {
@@ -19,12 +19,12 @@ describe('Update payment details', () => {
 	it('Complete card payment update through billing page', () => {
 		cy.intercept('GET', '/api/me/mma*', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
+			body: toMembersDataApiResponse(guardianWeeklyPaidByCard()),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
+			body: toMembersDataApiResponse(guardianWeeklyPaidByCard()),
 		}).as('refetch_subscription');
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -99,7 +99,7 @@ describe('Update payment details', () => {
 	it('Shows correct error messages for direct debit form', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(digitalDD),
+			body: toMembersDataApiResponse(digitalPackPaidByDirectDebit()),
 		}).as('product_detail');
 
 		cy.intercept('POST', '/api/validate/payment/**', {
@@ -143,12 +143,12 @@ describe('Update payment details', () => {
 	it('Complete direct debit payment update', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(digitalDD),
+			body: toMembersDataApiResponse(digitalPackPaidByDirectDebit()),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(digitalDD),
+			body: toMembersDataApiResponse(digitalPackPaidByDirectDebit()),
 		}).as('refetch_subscription');
 
 		cy.intercept('POST', '/api/validate/payment/**', {
@@ -189,12 +189,12 @@ describe('Update payment details', () => {
 	it('Shows payment failure route correctly for direct debit', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(digitalDD),
+			body: toMembersDataApiResponse(digitalPackPaidByDirectDebit()),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(digitalDD),
+			body: toMembersDataApiResponse(digitalPackPaidByDirectDebit()),
 		}).as('refetch_subscription');
 
 		cy.intercept('POST', '/api/validate/payment/**', {
@@ -234,7 +234,7 @@ describe('Update payment details', () => {
 	it('Show recaptcha error', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
+			body: toMembersDataApiResponse(guardianWeeklyPaidByCard()),
 		}).as('product_detail');
 
 		cy.visit('/payment/subscriptioncard');

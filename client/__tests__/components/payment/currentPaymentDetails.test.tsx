@@ -1,13 +1,11 @@
 import { render } from '@testing-library/react';
 import { CurrentPaymentDetails } from '../../../components/mma/paymentUpdate/CurrentPaymentDetail';
 import {
+	digitalPackPaidByDirectDebit,
 	guardianWeeklyExpiredCard,
 	guardianWeeklyPaidByCard,
 } from '../../../fixtures/productBuilder/testProducts';
-import {
-	digitalDD,
-	newspaperVoucherPaypal,
-} from '../../../fixtures/productDetail';
+import { newspaperVoucherPaypal } from '../../../fixtures/productDetail';
 
 describe('currentPaymentDetails.tsx', () => {
 	it('Shows product name', () => {
@@ -40,7 +38,7 @@ describe('currentPaymentDetails.tsx', () => {
 	describe('For Direct Debit', () => {
 		test('shows account number and sort code', () => {
 			const { getByText } = render(
-				<CurrentPaymentDetails {...digitalDD} />,
+				<CurrentPaymentDetails {...digitalPackPaidByDirectDebit()} />,
 			);
 
 			expect(getByText('ending 911')).toBeDefined();

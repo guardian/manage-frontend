@@ -13,57 +13,6 @@ import type {
 	ProductDetail,
 } from '../../shared/productResponse';
 
-export const digitalDD: ProductDetail = {
-	mmaCategory: 'subscriptions',
-	tier: 'Digital Pack',
-	isPaidTier: true,
-	selfServiceCancellation: {
-		isAllowed: false,
-		shouldDisplayEmail: false,
-		phoneRegionsToDisplay: ['UK & ROW'],
-	},
-	joinDate: '2021-11-11',
-	subscription: {
-		paymentMethod: 'DirectDebit',
-		mandate: {
-			accountName: 'khjhk',
-			accountNumber: '****9911',
-			sortCode: '200000',
-		},
-		contactId: '0039E00001KA26BQAT',
-		deliveryAddress: {
-			addressLine1: 'Kings Place',
-			addressLine2: '90 York Way',
-			town: 'London',
-			postcode: 'N1 9GU',
-			country: 'United Kingdom',
-		},
-		safeToUpdatePaymentMethod: true,
-		start: '2021-11-27',
-		end: '2022-11-11',
-		nextPaymentPrice: 599,
-		nextPaymentDate: '2021-11-27',
-		lastPaymentDate: null,
-		chargedThroughDate: null,
-		renewalDate: '2022-11-11',
-		anniversaryDate: '2022-11-27',
-		cancelledAt: false,
-		subscriptionId: 'A-S00278175',
-		trialLength: 12,
-		autoRenew: true,
-		currentPlans: [],
-		futurePlans: [
-			{
-				name: null,
-				start: '2021-11-27',
-				shouldBeVisible: true,
-			},
-		],
-		readerType: 'Direct',
-	},
-	isTestUser: false,
-};
-
 export const newspaperVoucherPaypal: ProductDetail = {
 	mmaCategory: 'subscriptions',
 	tier: 'Newspaper Digital Voucher',
@@ -128,70 +77,6 @@ export const newspaperVoucherPaypal: ProductDetail = {
 	},
 	isTestUser: false,
 	key: '1639394814906',
-};
-
-export const guardianWeeklyCurrentSubscription: ProductDetail = {
-	mmaCategory: 'subscriptions',
-	tier: 'Guardian Weekly - Domestic',
-	isPaidTier: true,
-	selfServiceCancellation: {
-		isAllowed: false,
-		shouldDisplayEmail: false,
-		phoneRegionsToDisplay: ['UK & ROW'],
-	},
-	joinDate: '2021-12-15',
-	optIn: true,
-	subscription: {
-		paymentMethod: 'Card',
-		card: {
-			last4: '4242',
-			expiry: { month: 4, year: 2024 },
-			type: 'Visa',
-			stripePublicKeyForUpdate: 'pk_test_123',
-			email: 'test.user@example.com',
-		},
-		contactId: '0039E00001KA26BQAT',
-		deliveryAddress: {
-			addressLine1: 'Kings Place',
-			addressLine2: '90 York Way',
-			town: 'Canberra',
-			region: 'ACT',
-			postcode: '2601',
-			country: 'Australia',
-		},
-		safeToUpdatePaymentMethod: true,
-		start: '2021-12-24',
-		end: '2022-12-15',
-		nextPaymentPrice: 3250,
-		nextPaymentDate: '2021-12-24',
-		lastPaymentDate: null,
-		chargedThroughDate: null,
-		renewalDate: '2022-12-15',
-		anniversaryDate: '2022-12-24',
-		cancelledAt: false,
-		subscriberId: 'A-S00293857',
-		subscriptionId: 'A-S00293857',
-		trialLength: -37,
-		autoRenew: true,
-		currentPlans: [
-			{
-				name: null,
-				start: '2021-12-24',
-				end: '2022-12-15',
-				shouldBeVisible: true,
-				chargedThrough: null,
-				price: 3250,
-				currency: '$',
-				currencyISO: 'AUD',
-				billingPeriod: 'month',
-			},
-		],
-		futurePlans: [],
-		readerType: 'Direct',
-		accountId: '8ad0965d7dbcc507017dbe20afd33ac4',
-		deliveryAddressChangeEffectiveDate: '2022-02-11',
-	},
-	isTestUser: false,
 };
 
 export const homeDeliverySubscription: ProductDetail = {

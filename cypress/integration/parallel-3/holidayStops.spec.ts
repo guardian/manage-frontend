@@ -1,7 +1,4 @@
-import {
-	guardianWeeklyCurrentSubscription,
-	toMembersDataApiResponse,
-} from '../../../client/fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../client/fixtures/productDetail';
 import {
 	potentialDeliveries,
 	noPotentialDeliveries,
@@ -25,7 +22,7 @@ describe('Holiday stops', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
+			body: toMembersDataApiResponse(guardianWeeklyPaidByCard()),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/holidays/A-S00293857/potential?*', {
@@ -203,7 +200,7 @@ describe('Holiday stops', () => {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
 				guardianWeeklyPaidByCard(),
-				guardianWeeklyCurrentSubscription,
+				guardianWeeklyPaidByCard(),
 			),
 		}).as('mma');
 
@@ -281,7 +278,7 @@ describe('Holiday stops', () => {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
 				guardianWeeklyPaidByCard(),
-				guardianWeeklyCurrentSubscription,
+				guardianWeeklyPaidByCard(),
 			),
 		}).as('mma_filtered');
 
@@ -289,7 +286,7 @@ describe('Holiday stops', () => {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
 				guardianWeeklyPaidByCard(),
-				guardianWeeklyCurrentSubscription,
+				guardianWeeklyPaidByCard(),
 			),
 		}).as('mma');
 

@@ -22,7 +22,6 @@ import {
 import {
 	contributionCancelled,
 	contributionPayPal,
-	digitalDD,
 	membershipSupporter,
 	newspaperVoucherPaypal,
 	supporterPlus,
@@ -175,7 +174,10 @@ WithContributionAndSwitchNotPossible.parameters = {
 		rest.get('/api/me/mma', (_req, res, ctx) => {
 			return res(
 				ctx.json(
-					toMembersDataApiResponse(contributionPayPal, digitalDD),
+					toMembersDataApiResponse(
+						contributionPayPal,
+						digitalPackPaidByDirectDebit(),
+					),
 				),
 			);
 		}),

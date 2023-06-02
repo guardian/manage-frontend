@@ -6,9 +6,11 @@ import { consents } from '../../../../fixtures/consents';
 import { InAppPurchase } from '../../../../fixtures/inAppPurchase';
 import { newsletters } from '../../../../fixtures/newsletters';
 import { newsletterSubscriptions } from '../../../../fixtures/newsletterSubscriptions';
-import { guardianWeeklyPaidByCard } from '../../../../fixtures/productBuilder/testProducts';
 import {
-	digitalDD,
+	digitalPackPaidByDirectDebit,
+	guardianWeeklyPaidByCard,
+} from '../../../../fixtures/productBuilder/testProducts';
+import {
 	newspaperVoucherPaypal,
 	toMembersDataApiResponse,
 } from '../../../../fixtures/productDetail';
@@ -36,7 +38,7 @@ Default.parameters = {
 				ctx.json(
 					toMembersDataApiResponse(
 						guardianWeeklyPaidByCard(),
-						digitalDD,
+						digitalPackPaidByDirectDebit(),
 						newspaperVoucherPaypal,
 					),
 				),

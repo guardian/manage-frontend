@@ -1,11 +1,11 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { guardianWeeklyPaidByCard } from '../../../fixtures/productBuilder/testProducts';
 import {
-	digitalDD,
-	newspaperVoucherPaypal,
-} from '../../../fixtures/productDetail';
+	digitalPackPaidByDirectDebit,
+	guardianWeeklyPaidByCard,
+} from '../../../fixtures/productBuilder/testProducts';
+import { newspaperVoucherPaypal } from '../../../fixtures/productDetail';
 import { ManageProduct } from './ManageProduct';
 
 export default {
@@ -31,7 +31,7 @@ GuardianWeekly.parameters = {
 export const DigitalSubscription = Template.bind({});
 DigitalSubscription.parameters = {
 	reactRouter: {
-		state: { productDetail: digitalDD },
+		state: { productDetail: digitalPackPaidByDirectDebit() },
 	},
 };
 

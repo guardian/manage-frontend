@@ -9,10 +9,10 @@ import {
 	PaymentMethodUpdated,
 } from '../../../components/mma/paymentUpdate/PaymentDetailUpdateConfirmation';
 import {
+	digitalPackPaidByDirectDebit,
 	guardianWeeklyExpiredCard,
 	guardianWeeklyPaidByCard,
 } from '../../../fixtures/productBuilder/testProducts';
-import { digitalDD } from '../../../fixtures/productDetail';
 import {
 	digitalSubscriptionDD,
 	guardianWeeklySubscriptionCard,
@@ -72,7 +72,7 @@ const tests = [
 		data: {
 			subscription: digitalSubscriptionDD,
 			newPaymentMethodDetail: newPaymentMethodDetailDD,
-			previousProductDetail: digitalDD,
+			previousProductDetail: digitalPackPaidByDirectDebit(),
 		},
 		expectations: [
 			'Digital Subscription',
