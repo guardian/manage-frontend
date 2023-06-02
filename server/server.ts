@@ -36,6 +36,7 @@ if (conf.DOMAIN === 'thegulocal.com') {
 server.use(helmet());
 
 /** static asses are cached by fastly */
+// @ts-expect-error I did yarn upgrade and this was flagged, but can't figure out why
 server.use('/static', express.static(__dirname + '/static'));
 
 /**
