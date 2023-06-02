@@ -8,11 +8,11 @@ import {
 	ConfirmedNewPaymentDetailsRenderer,
 	PaymentMethodUpdated,
 } from '../../../components/mma/paymentUpdate/PaymentDetailUpdateConfirmation';
-import { guardianWeeklyPaidByCard } from '../../../fixtures/productBuilder/testProducts';
 import {
-	digitalDD,
 	guardianWeeklyExpiredCard,
-} from '../../../fixtures/productDetail';
+	guardianWeeklyPaidByCard,
+} from '../../../fixtures/productBuilder/testProducts';
+import { digitalDD } from '../../../fixtures/productDetail';
 import {
 	digitalSubscriptionDD,
 	guardianWeeklySubscriptionCard,
@@ -124,7 +124,7 @@ test('PaymentMethodUpdated component displays failure message when necessary', (
 			<PaymentMethodUpdated
 				subs={[{ subscription: guardianWeeklySubscriptionCard }]}
 				subHasExpectedPaymentType={true}
-				previousProductDetail={guardianWeeklyExpiredCard}
+				previousProductDetail={guardianWeeklyExpiredCard()}
 				paymentFailureRecoveryMessage={failureMessage}
 			/>
 		</MemoryRouter>,

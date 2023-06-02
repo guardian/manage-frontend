@@ -1,5 +1,5 @@
 import { baseDigitalPack, baseGuardianWeekly } from './baseProducts';
-import { ProductBuilder } from './productBuilder';
+import { cards, ProductBuilder } from './productBuilder';
 
 export function guardianWeeklyPaidByCard() {
 	return new ProductBuilder(baseGuardianWeekly())
@@ -17,6 +17,15 @@ export function guardianWeeklyGiftPurchase() {
 export function guardianWeeklyGiftRecipient() {
 	return new ProductBuilder(baseGuardianWeekly())
 		.gift(true)
+		.getProductDetailObject();
+}
+
+export function guardianWeeklyExpiredCard() {
+	return new ProductBuilder(baseGuardianWeekly())
+		.payByCard(cards.visaExpired())
+		.withAlertText(
+			'Our attempt to take payment for your Guardian Weekly subscription failed on 24/02/2016.',
+		)
 		.getProductDetailObject();
 }
 

@@ -13,65 +13,6 @@ import type {
 	ProductDetail,
 } from '../../shared/productResponse';
 
-export const guardianWeeklyExpiredCard: ProductDetail = {
-	mmaCategory: 'subscriptions',
-	tier: 'Guardian Weekly - Domestic',
-	isPaidTier: true,
-	selfServiceCancellation: {
-		isAllowed: false,
-		shouldDisplayEmail: false,
-		phoneRegionsToDisplay: ['UK & ROW'],
-	},
-	joinDate: '2021-11-15',
-	alertText:
-		'Our attempt to take payment for your Guardian Weekly subscription failed on 24/02/2016.',
-	subscription: {
-		paymentMethod: 'Card',
-		card: {
-			last4: '4242',
-			expiry: {
-				month: 8,
-				year: 2015,
-			},
-			type: 'Visa',
-			stripePublicKeyForUpdate: 'pk_test_123',
-			email: 'test.user@example.com',
-		},
-		contactId: '0039E00001KA26BQAT',
-		deliveryAddress: {
-			addressLine1: 'Kings Place',
-			addressLine2: '90 York Way',
-			town: 'London',
-			postcode: 'N1 9GU',
-			country: 'United Kingdom',
-		},
-		safeToUpdatePaymentMethod: true,
-		start: '2021-11-26',
-		end: '2022-11-15',
-		nextPaymentPrice: 1250,
-		nextPaymentDate: '2021-11-26',
-		lastPaymentDate: null,
-		chargedThroughDate: null,
-		renewalDate: '2022-11-15',
-		anniversaryDate: '2022-11-26',
-		cancelledAt: false,
-		subscriptionId: 'A-S00280026',
-		trialLength: 11,
-		autoRenew: true,
-		currentPlans: [],
-		futurePlans: [
-			{
-				name: null,
-				start: '2021-11-26',
-				shouldBeVisible: true,
-			},
-		],
-		readerType: 'Direct',
-		deliveryAddressChangeEffectiveDate: '2021-11-26',
-	},
-	isTestUser: false,
-};
-
 export const guardianWeeklyCancelled: ProductDetail = {
 	mmaCategory: 'subscriptions',
 	tier: 'Guardian Weekly - Domestic',

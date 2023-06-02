@@ -1,11 +1,11 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { guardianWeeklyPaidByCard } from '../../../fixtures/productBuilder/testProducts';
 import {
 	guardianWeeklyExpiredCard,
-	newspaperVoucherPaypal,
-} from '../../../fixtures/productDetail';
+	guardianWeeklyPaidByCard,
+} from '../../../fixtures/productBuilder/testProducts';
+import { newspaperVoucherPaypal } from '../../../fixtures/productDetail';
 import { PaymentDetailUpdate } from './PaymentDetailUpdate';
 import { PaymentDetailUpdateContainer } from './PaymentDetailUpdateContainer';
 
@@ -69,7 +69,7 @@ export const GuardianWeeklyExpiredCard: ComponentStory<
 
 GuardianWeeklyExpiredCard.parameters = {
 	reactRouter: {
-		state: { productDetail: guardianWeeklyExpiredCard },
+		state: { productDetail: guardianWeeklyExpiredCard() },
 		container: (
 			<PaymentDetailUpdateContainer
 				productType={PRODUCT_TYPES.guardianweekly}

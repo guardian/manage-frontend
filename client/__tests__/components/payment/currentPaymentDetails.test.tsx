@@ -1,9 +1,11 @@
 import { render } from '@testing-library/react';
 import { CurrentPaymentDetails } from '../../../components/mma/paymentUpdate/CurrentPaymentDetail';
-import { guardianWeeklyPaidByCard } from '../../../fixtures/productBuilder/testProducts';
+import {
+	guardianWeeklyExpiredCard,
+	guardianWeeklyPaidByCard,
+} from '../../../fixtures/productBuilder/testProducts';
 import {
 	digitalDD,
-	guardianWeeklyExpiredCard,
 	newspaperVoucherPaypal,
 } from '../../../fixtures/productDetail';
 
@@ -28,7 +30,7 @@ describe('currentPaymentDetails.tsx', () => {
 
 		test('Shows expired when expiry date is in the past', () => {
 			const { getByText } = render(
-				<CurrentPaymentDetails {...guardianWeeklyExpiredCard} />,
+				<CurrentPaymentDetails {...guardianWeeklyExpiredCard()} />,
 			);
 
 			expect(getByText('Expired')).toBeDefined();
