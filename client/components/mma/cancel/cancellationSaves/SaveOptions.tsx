@@ -116,9 +116,9 @@ export const SaveOptions = () => {
 						${textSans.medium()};
 					`}
 				>
-					Enjoy all of your exclusive extras. The new price has
-					increased from {oldPriceDisplay} to {newPriceDisplay}/
-					{billingPeriod}.
+					Enjoy all of your exclusive benefits. The new price has
+					increased from {oldPriceDisplay}/{billingPeriod} to{' '}
+					{newPriceDisplay}/{billingPeriod}.
 				</p>
 				<Card>
 					<Card.Header backgroundColor={palette.sport[300]}>

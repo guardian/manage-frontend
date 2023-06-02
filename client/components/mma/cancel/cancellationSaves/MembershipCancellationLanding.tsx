@@ -107,7 +107,7 @@ export const MembershipCancellationLanding = () => {
 							${textSans.medium()}
 						`}
 					>
-						Phone one of our customer service agents
+						Phone one of our customer service agents.
 					</p>
 					<CallCentreEmailAndNumbers hideEmailAddress={true} />
 				</Stack>

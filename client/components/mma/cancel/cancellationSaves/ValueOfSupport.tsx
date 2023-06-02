@@ -74,7 +74,7 @@ export const ValueOfSupport = () => {
 					cssOverrides={buttonCentredCss}
 					onClick={() => navigate('../landing')}
 				>
-					Go back to my account
+					Back to my account
 				</Button>
 				<Button
 					iconSide="right"
