@@ -13,13 +13,14 @@ import UAParser from 'ua-parser-js';
 export const BrowserInformation = () => {
 	const ua = new UAParser();
 
-	const [adblockstatus, setAdblockstatus] = useState<boolean | 'failed'>(
-		false,
-	);
+	const [adblockstatus, setAdblockstatus] = useState<
+		'On' | 'Off' | 'Failed' | 'Loading'
+	>('Loading');
+
 	useEffect(() => {
 		isAdBlockInUse()
-			.then((value: boolean) => setAdblockstatus(value))
-			.catch(() => setAdblockstatus('failed'));
+			.then((value: boolean) => setAdblockstatus(value ? 'On' : 'Off'))
+			.catch(() => setAdblockstatus('Failed'));
 	});
 	return (
 		<>
@@ -38,7 +39,7 @@ export const BrowserInformation = () => {
 				<li>
 					Screen Size: {window.screen.width} x {window.screen.height}
 				</li>
-				<li>Adblocker status: {adblockstatus ? 'On' : 'Off'}</li>
+				<li>Adblocker status: {adblockstatus}</li>
 			</ul>
 		</>
 	);

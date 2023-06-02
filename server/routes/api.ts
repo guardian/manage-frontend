@@ -92,6 +92,11 @@ router.get(
 );
 
 router.get(
+	'/me/user-attributes',
+	membersDataApiHandler('user-attributes/me', 'MDA_DETAIL', []),
+);
+
+router.get(
 	'/cancellation-date/:subscriptionName',
 	membersDataApiHandler(
 		'user-attributes/me/cancellation-date/:subscriptionName',

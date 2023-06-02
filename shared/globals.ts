@@ -13,13 +13,6 @@ interface IdentityDetails {
 	signInStatus?: string;
 }
 
-interface UserAttributes {
-	userId: string;
-	digitalSubscriptionExpiryDate: string;
-	showSupportMessaging: boolean;
-	contentAccess: Record<string, boolean>;
-}
-
 export interface Globals extends CommonGlobals {
 	spaTransition?: true;
 	INTCMP?: string;
@@ -30,7 +23,6 @@ export interface Globals extends CommonGlobals {
 	};
 	abTest?: AbTest;
 	identityDetails: IdentityDetails;
-	userAttributes?: UserAttributes;
 	recaptchaPublicKey?: string;
 	stripeKeyAustralia?: StripePublicKeySet;
 	stripeKeyDefaultCurrencies?: StripePublicKeySet;
