@@ -7,6 +7,19 @@ export function guardianWeeklyPaidByCard() {
 		.getProductDetailObject();
 }
 
+export function guardianWeeklyGiftPurchase() {
+	return new ProductBuilder(baseGuardianWeekly())
+		.payByCard()
+		.gift(false)
+		.getProductDetailObject();
+}
+
+export function guardianWeeklyGiftRecipient() {
+	return new ProductBuilder(baseGuardianWeekly())
+		.gift(true)
+		.getProductDetailObject();
+}
+
 export function digitalPackPaidByDirectDebit() {
 	return new ProductBuilder(baseDigitalPack())
 		.payByDirectDebit()

@@ -14,6 +14,8 @@ import {
 } from '../../../fixtures/inAppPurchase';
 import {
 	digitalPackPaidByDirectDebit,
+	guardianWeeklyGiftPurchase,
+	guardianWeeklyGiftRecipient,
 	guardianWeeklyPaidByCard,
 } from '../../../fixtures/productBuilder/testProducts';
 import {
@@ -21,8 +23,6 @@ import {
 	contributionPayPal,
 	digitalDD,
 	guardianWeeklyCancelled,
-	guardianWeeklyGiftPurchase,
-	guardianWeeklyGiftRecipient,
 	membershipSupporter,
 	newspaperVoucherPaypal,
 	supporterPlus,
@@ -236,8 +236,8 @@ WithGiftSubscriptions.parameters = {
 			return res(
 				ctx.json(
 					toMembersDataApiResponse(
-						guardianWeeklyGiftRecipient,
-						guardianWeeklyGiftPurchase,
+						guardianWeeklyGiftRecipient(),
+						guardianWeeklyGiftPurchase(),
 					),
 				),
 			);

@@ -21,6 +21,7 @@ export class ProductBuilder {
 
 	constructor(baseProduct: ProductDetail) {
 		this.productToBuild = baseProduct;
+		this.productToBuild.subscription.subscriptionId = generateNewSubId();
 	}
 
 	getProductDetailObject() {
@@ -49,4 +50,15 @@ export class ProductBuilder {
 
 		return this;
 	}
+
+	gift(isReceived: boolean) {
+		this.productToBuild.isPaidTier = !isReceived;
+		this.productToBuild.subscription.readerType = 'Gift';
+
+		return this;
+	}
+}
+
+function generateNewSubId(): string {
+	return `A-S002866${Math.floor(Math.random() * 99)}`;
 }
