@@ -26,17 +26,17 @@ describe('Delivery records', () => {
 			body: toMembersDataApiResponse(guardianWeeklyPaidByCard()),
 		}).as('product_detail');
 
-		cy.intercept('GET', '/api/delivery-records/A-S00293857', {
+		cy.intercept('GET', '/api/delivery-records/*', {
 			statusCode: 200,
 			body: deliveryRecordsWithDelivery,
 		}).as('delivery_records');
 
-		cy.intercept('GET', '/api/holidays/A-S00293857/potential?*', {
+		cy.intercept('GET', '/api/holidays/*/potential?*', {
 			statusCode: 200,
 			body: potentialDeliveries,
 		}).as('fetch_potential_holidays');
 
-		cy.intercept('POST', '/api/delivery-records/A-S00293857', {
+		cy.intercept('POST', '/api/delivery-records/*', {
 			statusCode: 200,
 			body: deliveryRecordsWithReportedProblem,
 		}).as('fetch_potential_holidays');
@@ -94,7 +94,7 @@ describe('Delivery records', () => {
 	});
 
 	it('does not show delivery history when there have been no deliveries', () => {
-		cy.intercept('GET', '/api/delivery-records/A-S00293857', {
+		cy.intercept('GET', '/api/delivery-records/*', {
 			statusCode: 200,
 			body: deliveryRecordsWithNoDeliveries,
 		}).as('delivery_records');
