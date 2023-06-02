@@ -6,6 +6,10 @@ import type * as React from 'react';
 import { useNavigate } from 'react-router';
 import { trackEventInOphanOnly } from '../../../utilities/analytics';
 import { getGeoLocation } from '../../../utilities/geolocation';
+import {
+	buttonCentredCss,
+	stackedButtonLayoutCss,
+} from './cancellationSaves/SaveStyles';
 
 const containerStyles = css`
 	padding-bottom: ${space[24]}px;
@@ -23,12 +27,6 @@ const formContainerStyles = css`
 	}
 `;
 
-const buttonLayoutCss = css`
-	> * + * {
-		margin-left: ${space[3]}px;
-	}
-`;
-
 interface ReminderSignup {
 	reminderPeriod: string;
 	reminderOption: string;
@@ -40,7 +38,7 @@ interface ReminderChoice {
 	thankYouMessage: string;
 }
 
-const REMINDER_ENDPOINT = '/api/reminders';
+const REMINDER_ENDPOINT = '/api/reminders/create';
 const REMINDER_PLATFORM = 'MMA';
 const REMINDER_STAGE = 'WINBACK';
 const REMINDER_COMPONENT = 'CANCELLATION';
@@ -167,11 +165,17 @@ export const CancellationContributionReminder: React.FC = () => {
 								/>
 							))}
 						</RadioGroup>
-						<div css={buttonLayoutCss}>
-							<Button onClick={onSubmit}>Set my reminder</Button>
+						<div css={stackedButtonLayoutCss}>
+							<Button
+								onClick={onSubmit}
+								cssOverrides={buttonCentredCss}
+							>
+								Set my reminder
+							</Button>
 							<Button
 								priority="tertiary"
 								onClick={() => navigate('/')}
+								cssOverrides={buttonCentredCss}
 							>
 								Back to your account
 							</Button>

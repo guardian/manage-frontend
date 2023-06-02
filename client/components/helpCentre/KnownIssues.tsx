@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import type { MembersDataApiResponse } from '../../../shared/productResponse';
 import { isProduct } from '../../../shared/productResponse';
 import { gridBase, gridItemPlacement } from '../../styles/grid';
-import { allProductsDetailFetcher } from '../../utilities/productUtils';
+import { allRecurringProductsDetailFetcher } from '../../utilities/productUtils';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
 
 /*
@@ -66,7 +66,7 @@ export const KnownIssues = (props: KnownIssuesProp) => {
 					window.guardian?.identityDetails?.signInStatus || '';
 				if (signInStatus === 'signedInRecently') {
 					const productDetailsResponse =
-						await allProductsDetailFetcher();
+						await allRecurringProductsDetailFetcher();
 					const mdapiResponse: MembersDataApiResponse =
 						await productDetailsResponse.json();
 					const userProductNames = mdapiResponse.products

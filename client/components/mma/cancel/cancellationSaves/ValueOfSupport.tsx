@@ -1,18 +1,20 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
-import {
-	Button,
-	Stack,
-	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
+import { space, textSans } from '@guardian/source-foundations';
+import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { Navigate, useLocation, useNavigate } from 'react-router';
 import { dateString } from '../../../../../shared/dates';
-import { Heading } from '../../shared/Heading';
-import { ProgressIndicator } from '../../shared/ProgressIndicator';
-import type { CancellationContextInterface } from '../CancellationContainer';
+import { ProgressStepper } from '../../shared/ProgressStepper';
+import type {
+	CancellationContextInterface,
+	CancellationRouterState,
+} from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import { buttonLayoutCss } from './SaveStyles';
+import {
+	buttonCentredCss,
+	headingCss,
+	reverseStackedButtonLayoutCss,
+} from './SaveStyles';
 
 export const ValueOfSupport = () => {
 	const navigate = useNavigate();
@@ -20,6 +22,9 @@ export const ValueOfSupport = () => {
 		CancellationContext,
 	) as CancellationContextInterface;
 	const productDetail = cancellationContext.productDetail;
+
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
 
 	if (!productDetail) {
 		return <Navigate to="/" />;
@@ -32,42 +37,51 @@ export const ValueOfSupport = () => {
 
 	return (
 		<>
-			<ProgressIndicator
+			<ProgressStepper
 				steps={[
 					{ title: 'Details', isCurrentStep: true },
-					{ title: '' },
-					{ title: '' },
+					{ title: 'Options' },
+					{ title: 'Confirmation' },
 				]}
 				additionalCSS={css`
 					margin: ${space[5]}px 0 ${space[12]}px;
+					max-width: 350px;
 				`}
 			/>
 			<Stack space={4}>
-				<Heading>
+				<h2 css={headingCss}>
 					Thank you for supporting the Guardian since{' '}
 					{supportStartYear}.
-					<span css={{ display: 'block' }}>
-						Your support has made such a difference.
+					<span>
+						Your funding has played a vital role in our progress
 					</span>
-				</Heading>
-				<p>
-					Here comes ... Before you go, please consider adapting your
-					membership to a monthly support or a Monthly + Extra
-					support.
+				</h2>
+				<p
+					css={css`
+						${textSans.medium()}
+					`}
+				>
+					Since you first joined as a Guardian Member, we've lived
+					through some of the most important news events of our times.
+					Without you, our fearless, independent journalism wouldn't
+					have reached millions around the world. We're so grateful.
 				</p>
 			</Stack>
 			<div>Image placeholder</div>
-			<div css={[buttonLayoutCss, { textAlign: 'right' }]}>
+			<div css={reverseStackedButtonLayoutCss}>
 				<Button
 					priority="tertiary"
+					cssOverrides={buttonCentredCss}
 					onClick={() => navigate('../landing')}
 				>
-					Back
+					Go back to my account
 				</Button>
 				<Button
-					icon={<SvgArrowRightStraight />}
 					iconSide="right"
-					onClick={() => navigate('../offers')}
+					cssOverrides={buttonCentredCss}
+					onClick={() =>
+						navigate('../offers', { state: { ...routerState } })
+					}
 				>
 					Continue to cancellation
 				</Button>

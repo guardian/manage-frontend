@@ -89,6 +89,7 @@ const SwitchPageContainer = (props: { children: ReactNode }) => {
 			selectedNavItem={NAV_LINKS.accountOverview}
 			pageTitle={'Change your support'}
 			compactTitle
+			minimalFooter
 		>
 			{props.children}
 		</PageContainer>

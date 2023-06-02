@@ -24,7 +24,10 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: membershipSupporter },
+			state: {
+				productDetail: membershipSupporter,
+				user: { email: 'test@test.com' },
+			},
 			container: (
 				<CancellationContainer productType={PRODUCT_TYPES.membership} />
 			),
@@ -36,7 +39,7 @@ export const ValueOfSupportPage: ComponentStory<typeof ValueOfSupport> = () => {
 	return <ValueOfSupport />;
 };
 
-export const Switch: ComponentStory<typeof MembershipSwitch> = () => {
+export const SwitchReview: ComponentStory<typeof MembershipSwitch> = () => {
 	return <MembershipSwitch />;
 };
 

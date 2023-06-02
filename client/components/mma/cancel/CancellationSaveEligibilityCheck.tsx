@@ -8,7 +8,7 @@ import type {
 } from './CancellationContainer';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 
-export const CancellationSwitchEligibilityCheck = () => {
+export const CancellationSaveEligibilityCheck = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 

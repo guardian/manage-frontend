@@ -403,34 +403,72 @@ html:not(.src-focus-disabled) .emotion-60:focus {
 }
 
 .emotion-63 {
-  display: inline-block;
-  padding-right: 5px;
-  padding-top: 9px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 44px;
+  padding-left: 8px;
+  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  font-weight: 700;
+  --source-text-decoration-thickness: 2px;
+  color: #FFFFFF;
+  background-color: #052962;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-63 :hover {
+  color: #FFE500;
+}
+
+.emotion-63 :focus {
+  outline: 0;
+}
+
+html:not(.src-focus-disabled) .emotion-63 :focus {
+  box-shadow: 0 0 0 5px #0077B6;
 }
 
 .emotion-64 {
-  position: relative;
-  float: right;
-  background-color: currentColor;
-  border-radius: 100%;
-  height: 42px;
-  width: 42px;
+  height: 44px;
+  width: 44px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 44px;
+  background: currentColor;
+  margin-left: 8px;
+}
+
+.emotion-64 svg {
+  height: 26px;
+  width: 26px;
+  fill: #052962;
 }
 
 .emotion-65 {
-  position: absolute;
-  fill: #052962;
-  top: 9px;
-  left: 9px;
-}
-
-.emotion-66 {
   padding-top: 26px;
   font-size: 12px;
 }
 
 @media (min-width: 740px) {
-  .emotion-66 {
+  .emotion-65 {
     padding-top: 6px;
   }
 }
@@ -803,39 +841,38 @@ html:not(.src-focus-disabled) .emotion-60:focus {
           <div
             className="emotion-61"
           >
-            <a
+            <div
               className="emotion-62"
-              href="#top"
             >
-              <span
+              <a
                 className="emotion-63"
+                href="#top"
               >
                 Back to top
-              </span>
-              <span
-                className="emotion-64"
-              >
-                <span
-                  className="emotion-65"
+                <div
+                  className="emotion-64"
                 >
                   <svg
-                    height="18"
-                    viewBox="0 0 24 18"
-                    width="24"
+                    aria-hidden={true}
+                    focusable={false}
+                    viewBox="-3 -3 30 30"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M.4 15.3l10.5-8.4L12 6l1.1.9 10.5 8.4-.5.7L12 9.7.9 16l-.5-.7z"
+                      clipRule="evenodd"
+                      d="M23 16.768 12.502 6.27h-1.004L1 16.768l.98.954L12 9.284l10.02 8.438.98-.954Z"
+                      fillRule="evenodd"
                     />
                   </svg>
-                </span>
-              </span>
-            </a>
+                </div>
+              </a>
+            </div>
             <div
-              className="emotion-66"
+              className="emotion-65"
             >
               © 
               2022
-               Guardian News and Media Limited or its affiliated companies. All rights reserved.
+               Guardian News & Media Limited or its affiliated companies. All rights reserved.
             </div>
           </div>
         </div>

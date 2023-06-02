@@ -141,16 +141,11 @@ systemctl start manage-frontend
 					new GuAllowPolicy(this, 'DiscoverApiGatewayLambdas', {
 						actions: ['cloudformation:ListStackResources'],
 						resources: [
-							`arn:aws:cloudformation:${this.region}:${this.account}:stack/membership-DEV-*`,
 							`arn:aws:cloudformation:${this.region}:${this.account}:stack/membership-CODE-*`,
-							`arn:aws:cloudformation:${this.region}:${this.account}:stack/support-DEV-*`,
 							`arn:aws:cloudformation:${this.region}:${this.account}:stack/support-CODE-*`,
 							`arn:aws:cloudformation:${this.region}:${this.account}:stack/membership-${this.stage}-*`,
 							`arn:aws:cloudformation:${this.region}:${this.account}:stack/support-${this.stage}-*`,
 						],
-						/*
-						 * TODO: why does CODE depend on DEV here?
-						 */
 						/*
 						 * NOTE: PROD currently requires access to CODE lambdas see here:
 						 * https://github.com/guardian/manage-frontend/wiki/test-users
@@ -169,13 +164,9 @@ systemctl start manage-frontend
 					new GuAllowPolicy(this, 'InvokeApiGateway', {
 						actions: ['execute-api:Invoke'],
 						resources: [
-							`arn:aws:execute-api:${this.region}:${this.account}:*/DEV/*`,
 							`arn:aws:execute-api:${this.region}:${this.account}:*/CODE/*`,
 							`arn:aws:execute-api:${this.region}:${this.account}:*/${this.stage}/*`,
 						],
-						/*
-						 * TODO: why does CODE depend on DEV here?
-						 */
 						/*
 						 * NOTE: PROD currently requires access to CODE lambdas see here:
 						 * https://github.com/guardian/manage-frontend/wiki/test-users
@@ -210,7 +201,7 @@ systemctl start manage-frontend
 		});
 
 		if (this.stage === 'PROD') {
-			// TODO: It might be better to undestand the shorthand properties of the existing
+			// TODO: It might be better to understand the shorthand properties of the existing
 			// dashboard and recreate it using level 2 constructs (cdk/guCDK)
 			try {
 				const jsonFilePath = join(__dirname, 'dashboard.json');

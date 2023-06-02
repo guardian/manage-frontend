@@ -5,6 +5,7 @@ import { viewport } from './viewport';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import isChromatic from 'chromatic/isChromatic';
 import MockDate from 'mockdate';
+import { FooterContextDecorator } from './FooterContextDecorator';
 
 // Initialize MSW
 initialize();
@@ -15,6 +16,7 @@ if (isChromatic()) {
 
 export const decorators = [
 	mswDecorator,
+	FooterContextDecorator,
 	(Story) => (
 		<>
 			<Global styles={css(`${global}`)} />

@@ -77,8 +77,7 @@ export type AllProductsProductTypeFilterString =
 	| 'Digipack'
 	| 'SupporterPlus'
 	| 'ContentSubscription'
-	| 'GuardianPatron'
-	| 'RecurringSupport';
+	| 'GuardianPatron';
 
 interface CancellationFlowProperties {
 	reasons: CancellationReason[];
@@ -254,12 +253,8 @@ export type ProductTypeKeys =
 	| 'supporterplus'
 	| 'guardianpatron';
 
-/*
- * TODO: remove 'contributions' from the following list once MDAPI has been changed to return 'recurringSupport' instead
- */
 export type GroupedProductTypeKeys =
 	| 'membership'
-	| 'contributions'
 	| 'recurringSupport'
 	| 'subscriptions';
 
@@ -682,20 +677,11 @@ export const GROUPED_PRODUCT_TYPES: {
 				'We no longer have a membership programme but you can still continue to support the Guardian.',
 		},
 	},
-	/*
-	 * TODO: remove 'contributions' from the array once MDAPI has been changed to return 'recurringSupport' instead
-	 */
-	contributions: {
-		...PRODUCT_TYPES.contributions, // TODO: Can we omit 'groupedProductType' and 'softOptInIDs' from spread properties as omitted from type
-		mapGroupedToSpecific: () => PRODUCT_TYPES.contributions,
-		groupFriendlyName: 'contributions',
-		showSupporterId: true,
-	},
 	recurringSupport: {
 		productTitle: () => 'Recurring support',
 		friendlyName: () => 'recurring support',
 		groupFriendlyName: 'recurring support',
-		allProductsProductTypeFilterString: 'RecurringSupport',
+		allProductsProductTypeFilterString: 'SupporterPlus', // this will only return SupporterPlus, and not Contributions
 		urlPart: 'recurringsupport',
 		mapGroupedToSpecific: (
 			productDetail: ProductDetail | CancelledProductDetail,

@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import { sendReminderCancellation } from '../identity/idapi/supportReminders';
 
 const containerStyle = css`
@@ -25,20 +26,17 @@ const linkStyle = css`
 
 type CancelStatus = 'PENDING' | 'SUCCESS' | 'FAILURE';
 
-export interface CancelRemindersProps {
-	reminderCode?: string;
-}
-
-export const CancelReminders = (props: CancelRemindersProps) => {
+export const CancelReminders = () => {
+	const { reminderCode } = useParams();
 	const [cancelStatus, setCancelStatus] = useState<CancelStatus>('PENDING');
 
 	useEffect(() => {
-		if (props.reminderCode) {
-			sendReminderCancellation(props.reminderCode).then((response) => {
+		if (reminderCode) {
+			sendReminderCancellation(reminderCode).then((response) => {
 				if (!response.ok) {
 					setCancelStatus('FAILURE');
 					Sentry.captureMessage(
-						`Failed to cancel reminders for code: ${props.reminderCode}`,
+						`Failed to cancel reminders for code: ${reminderCode}`,
 					);
 				} else {
 					setCancelStatus('SUCCESS');

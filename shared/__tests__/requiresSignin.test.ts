@@ -20,4 +20,10 @@ describe('requiresSignin', () => {
 	test('returns true for a private path hidden within a public path (path traversal attack)', () => {
 		expect(requiresSignin('/help-centre/../billing')).toEqual(true);
 	});
+
+	test('not require sign-in for public path with querystring', () => {
+		expect(requiresSignin('/create-reminder/one-off?test=blah')).toEqual(
+			false,
+		);
+	});
 });

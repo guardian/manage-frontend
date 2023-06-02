@@ -1658,39 +1658,7 @@ systemctl start manage-frontend
                       Object {
                         "Ref": "AWS::AccountId",
                       },
-                      ":stack/membership-DEV-*",
-                    ],
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:aws:cloudformation:",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
                       ":stack/membership-CODE-*",
-                    ],
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:aws:cloudformation:",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":stack/support-DEV-*",
                     ],
                   ],
                 },
@@ -1970,22 +1938,6 @@ systemctl start manage-frontend
               "Action": "execute-api:Invoke",
               "Effect": "Allow",
               "Resource": Array [
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:aws:execute-api:",
-                      Object {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
-                      Object {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":*/DEV/*",
-                    ],
-                  ],
-                },
                 Object {
                   "Fn::Join": Array [
                     "",

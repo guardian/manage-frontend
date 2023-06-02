@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/node';
 import { Router } from 'express';
-import { availableProductMovesResponse } from '../../client/fixtures/productMovement';
 import type { MembersDataApiResponse } from '../../shared/productResponse';
 import { isProduct, MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import {
@@ -25,9 +24,10 @@ import { log } from '../log';
 import { withIdentity } from '../middleware/identityMiddleware';
 import {
 	cancelReminderHandler,
-	createReminderHandler,
+	createOneOffReminderHandler,
+	publicCreateReminderHandler,
 	reactivateReminderHandler,
-} from '../reminderApi';
+} from '../reminders/reminderApi';
 import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
 
 const router = Router();
@@ -79,6 +79,15 @@ router.get(
 		'MDA_DETAIL',
 		['subscriptionName'],
 		true,
+	),
+);
+
+router.get(
+	'/me/one-off-contributions',
+	membersDataApiHandler(
+		'user-attributes/me/one-off-contributions',
+		'MDA_DETAIL',
+		[],
 	),
 );
 
@@ -148,27 +157,13 @@ router.patch(
 	]),
 );
 
-/*
-router.get(
-	'/available-product-moves/:subscriptionName',
-	productMoveAPI(
-		'available-product-moves/:subscriptionName',
-		'GET_AVAILABLE_PRODUCTS',
-	),
-);
-*/
-
-//
-router.get('/available-product-moves/:subscriptionName', (_, response) => {
-	response.json(availableProductMovesResponse);
-});
-//
-
 router.post(
-	'/product-move/:subscriptionName',
-	productMoveAPI('product-move/:subscriptionName', 'MOVE_PRODUCT', [
-		'subscriptionName',
-	]),
+	'/product-move/:switchType/:subscriptionName',
+	productMoveAPI(
+		'product-move/:switchType/:subscriptionName',
+		'MOVE_PRODUCT',
+		['switchType', 'subscriptionName'],
+	),
 );
 
 router.get(
@@ -274,7 +269,15 @@ router.get('/help-centre/topic/:topic', getTopicHandler);
 
 router.post('/contact-us', contactUsFormHandler);
 
-router.post('/reminders', createReminderHandler);
+router.post('/reminders/create', createOneOffReminderHandler); // requires sign-in
+router.post(
+	'/public/reminders/create/one-off',
+	publicCreateReminderHandler('ONE_OFF'),
+); // does not require sign-in, uses verification token
+router.post(
+	'/public/reminders/create/recurring',
+	publicCreateReminderHandler('RECURRING'),
+); // does not require sign-in, uses verification token
 router.get(
 	'/reminders/status',
 	membersDataApiHandler(

@@ -12,6 +12,7 @@ import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';
+import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -21,10 +22,10 @@ import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { SwitchOffsetPaymentIcon } from '../../shared/assets/SwitchOffsetPaymentIcon';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
+import { BenefitsToggle } from '../../shared/benefits/BenefitsToggle';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { PaymentDetails } from '../../shared/PaymentDetails';
-import { SupporterPlusBenefitsToggle } from '../../shared/SupporterPlusBenefits';
 import type {
 	SwitchContextInterface,
 	SwitchRouterState,
@@ -94,6 +95,9 @@ const buttonLayoutCss = css`
 	}
 `;
 
+const productSwitchType: ProductSwitchType =
+	'recurring-contribution-to-supporter-plus';
+
 interface PreviewResponse {
 	amountPayableToday: number;
 	supporterPlusPurchaseAmount: number;
@@ -130,7 +134,7 @@ export const SwitchReview = () => {
 
 	const productMoveFetch = (preview: boolean) =>
 		fetch(
-			`/api/product-move/${contributionToSwitch.subscription.subscriptionId}`,
+			`/api/product-move/${productSwitchType}/${contributionToSwitch.subscription.subscriptionId}`,
 			{
 				method: 'POST',
 				body: JSON.stringify({
@@ -239,7 +243,7 @@ export const SwitchReview = () => {
 								including full access to our app and ad-free
 								reading
 							</p>
-							<SupporterPlusBenefitsToggle />
+							<BenefitsToggle productType="supporterplus" />
 							<p css={newAmountCss}>
 								{mainPlan.currency}
 								{formatAmount(newAmount)}/

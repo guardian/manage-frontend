@@ -4,6 +4,7 @@ import {
 	membershipSupporter,
 	toMembersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
+import { productMovePreviewResponse } from '../../../client/fixtures/productMove';
 import { featureSwitches } from '../../../shared/featureSwitches';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
@@ -22,7 +23,6 @@ if (featureSwitches.membershipSave) {
 
 		beforeEach(() => {
 			signInAndAcceptCookies();
-			console.log('beforeEach');
 			cy.intercept('GET', '/api/me/mma?productType=Membership', {
 				statusCode: 200,
 				body: toMembersDataApiResponse(membershipSupporter),
@@ -38,6 +38,11 @@ if (featureSwitches.membershipSave) {
 				body: { subscriptions: [] },
 			}).as('mobile_subscriptions');
 
+			cy.intercept('GET', '/api/me/one-off-contributions', {
+				statusCode: 200,
+				body: [],
+			}).as('single_contributions');
+
 			cy.intercept('GET', '/api/cancelled/', {
 				statusCode: 200,
 				body: [],
@@ -50,16 +55,30 @@ if (featureSwitches.membershipSave) {
 				},
 			}).as('get_case');
 
-			cy.intercept('POST', '/api/reminders', {
+			cy.intercept('POST', '/api/cancel/**', {
+				statusCode: 200,
+			}).as('cancel_membership');
+
+			cy.intercept('GET', '/api/me/mma/**', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(),
+			});
+
+			cy.intercept('POST', '/api/reminders/create', {
 				statusCode: 200,
 			}).as('set_reminder');
+
+			cy.intercept('POST', '/api/product-move/**', {
+				statusCode: 200,
+				body: productMovePreviewResponse,
+			}).as('product_move');
 		});
 
 		it('switches to recurring contribution', () => {
 			cy.visit('/cancel/membership');
 
 			cy.findByText(
-				/We're sorry to hear you're thinking of cancelling/,
+				/We're sorry to hear you're thinking of leaving/,
 			).should('exist');
 			cy.findByRole('button', {
 				name: 'Cancel online',
@@ -72,15 +91,21 @@ if (featureSwitches.membershipSave) {
 				name: 'Continue to cancellation',
 			}).click();
 
-			cy.findByText(/consider different support options/).should('exist');
+			cy.findByText(
+				/Are you sure you want to lose your exclusive benefits/,
+			).should('exist');
 			cy.findByRole('button', {
-				name: 'Become a recurring supporter',
+				name: 'Become a recurring contributor',
 			}).click();
 
-			cy.findByText(/Review change/).should('exist');
+			cy.findByText(/Review and confirm change/).should('exist');
 			cy.findByRole('button', {
 				name: 'Confirm change',
 			}).click();
+
+			cy.wait('@product_move');
+			cy.findByText(/Thank you/).should('exist');
+			cy.findByText(/test@test.com/).should('exist');
 		});
 
 		it('cancels membership', () => {
@@ -92,7 +117,7 @@ if (featureSwitches.membershipSave) {
 			cy.findByText(/Cancel/).click();
 
 			cy.findByText(
-				/We're sorry to hear you're thinking of cancelling/,
+				/We're sorry to hear you're thinking of leaving/,
 			).should('exist');
 			cy.findByRole('button', {
 				name: 'Cancel online',
@@ -105,9 +130,11 @@ if (featureSwitches.membershipSave) {
 				name: 'Continue to cancellation',
 			}).click();
 
-			cy.findByText(/consider different support options/).should('exist');
+			cy.findByText(
+				/Are you sure you want to lose your exclusive benefits/,
+			).should('exist');
 			cy.findByRole('button', {
-				name: 'Cancel membership',
+				name: 'Cancel Membership',
 			}).click();
 
 			cy.findByText(/Are you sure/).should('exist');
@@ -115,10 +142,10 @@ if (featureSwitches.membershipSave) {
 				name: 'Confirm Cancellation',
 			}).click();
 
-			cy.findByRole('button', {
-				name: 'Submit',
-			}).click();
-			cy.findByText(/Please select a reason/).should('exist');
+			cy.wait('@get_case');
+			cy.wait('@cancel_membership');
+
+			cy.findByText(/Your membership has been cancelled/).should('exist');
 
 			cy.findAllByRole('radio', {
 				name: 'Other',
@@ -146,7 +173,7 @@ if (featureSwitches.membershipSave) {
 			cy.visit('/cancel/membership');
 
 			cy.findByText(
-				/We're sorry to hear you're thinking of cancelling/,
+				/We're sorry to hear you're thinking of leaving/,
 			).should('exist');
 			cy.findByRole('button', {
 				name: 'Cancel online',
@@ -159,9 +186,11 @@ if (featureSwitches.membershipSave) {
 				name: 'Continue to cancellation',
 			}).click();
 
-			cy.findByText(/consider different support options/).should('exist');
+			cy.findByText(
+				/Are you sure you want to lose your exclusive benefits/,
+			).should('exist');
 			cy.findByRole('button', {
-				name: 'Continue your membership',
+				name: /Keep my Membership/,
 			}).click();
 		});
 

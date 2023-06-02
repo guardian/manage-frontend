@@ -133,3 +133,7 @@ export const getOldestDate = (dates: Date[]) =>
 	dates.reduce((dateA: Date, dateB: Date) =>
 		dateA.valueOf() <= dateB.valueOf() ? dateA : dateB,
 	);
+
+export function convertTimestampToDate(timestamp: number): string {
+	return dateString(new Date(timestamp), DATE_FNS_LONG_OUTPUT_FORMAT);
+}

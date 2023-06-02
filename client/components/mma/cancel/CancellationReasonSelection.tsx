@@ -292,6 +292,22 @@ interface ReasonPickerWithCancellationDateProps {
 	productDetail: ProductDetail;
 }
 
+function getChargedThroughDateStr(
+	cancellationDateResponse: CancellationDateResponse,
+) {
+	if (
+		cancellationDateResponse.cancellationEffectiveDate === 'now' ||
+		cancellationDateResponse.cancellationEffectiveDate === undefined ||
+		cancellationDateResponse.cancellationEffectiveDate === null
+	) {
+		return undefined;
+	}
+
+	return parseDate(
+		cancellationDateResponse.cancellationEffectiveDate,
+	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
+}
+
 const ReasonPickerWithCancellationDate = ({
 	productType,
 	productDetail,
@@ -325,9 +341,9 @@ const ReasonPickerWithCancellationDate = ({
 		return <GenericErrorScreen />;
 	}
 
-	const chargedThroughDateStr = parseDate(
-		cancellationDateResponse.cancellationEffectiveDate,
-	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
+	const chargedThroughDateStr = getChargedThroughDateStr(
+		cancellationDateResponse,
+	);
 
 	return (
 		<ReasonPicker

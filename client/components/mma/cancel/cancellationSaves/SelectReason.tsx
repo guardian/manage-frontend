@@ -1,85 +1,74 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
+import { palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
 	InlineError,
 	Radio,
 	RadioGroup,
 	Stack,
-	SvgCalendar,
-	SvgEnvelope,
 } from '@guardian/source-react-components';
-import type { FormEvent} from 'react';
+import type { FormEvent } from 'react';
 import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router';
-import type {
-	ProductDetail} from '../../../../../shared/productResponse';
+import { useLocation, useNavigate } from 'react-router';
 import {
-	MDA_TEST_USER_HEADER
+	DATE_FNS_LONG_OUTPUT_FORMAT,
+	parseDate,
+} from '../../../../../shared/dates';
+import type {
+	PaidSubscriptionPlan,
+	ProductDetail,
+} from '../../../../../shared/productResponse';
+import {
+	getMainPlan,
+	MDA_TEST_USER_HEADER,
 } from '../../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
-import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import type {
-	CancellationContextInterface} from '../CancellationContainer';
-import {
-	CancellationContext
+	CancellationContextInterface,
+	CancellationRouterState,
 } from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
 import type { CancellationReason } from '../cancellationReason';
 import { membershipCancellationReasons } from '../membership/MembershipCancellationReasons';
 import {
 	buttonCentredCss,
-	buttonLayoutCss,
 	headingCss,
+	paragraphListCss,
 	sectionSpacing,
+	stackedButtonLayoutCss,
+	wideButtonCss,
 } from './SaveStyles';
-
-const infoCss = css`
-	${textSans.medium()}
-	display: flex;
-	> svg {
-		flex-shrink: 0;
-		margin-right: 8px;
-		fill: currentColor;
-	}
-	> span {
-		padding-top: ${space[1]}px;
-	}
-`;
 
 const reasonLegendCss = css`
 	display: block;
 	width: 100%;
-	margin: 0;
-	padding: ${space[3]}px;
 	float: left;
-	background-color: ${palette.neutral[97]};
-	border-bottom: 1px solid ${palette.neutral[86]};
+	margin-top: ${space[2]}px;
 	${textSans.medium({ fontWeight: 'bold' })};
-	${from.tablet} {
-		padding: ${space[3]}px ${space[5]}px;
-	}
 `;
 
-const CancellationInfo = () => (
+const CancellationInfo = ({
+	userEmailAddress,
+	benefitsEndDate,
+}: {
+	userEmailAddress: string;
+	benefitsEndDate: string;
+}) => (
 	<ul
 		css={css`
 			padding-inline-start: 0;
 		`}
 	>
 		<Stack space={1}>
-			<li css={infoCss}>
-				<SvgCalendar size="medium" />
+			<p css={paragraphListCss}>
+				We will send a confirmation email to you at {userEmailAddress}.{' '}
 				<span>
-					You'll continue to have access to your Membership benefits
-					until xx
+					You will have access to all of your benefits until{' '}
+					{benefitsEndDate}
 				</span>
-			</li>
-			<li css={infoCss}>
-				<SvgEnvelope size="medium" />
-				<span>We will send you a confirmation email at xx.com</span>
-			</li>
+			</p>
 		</Stack>
 	</ul>
 );
@@ -95,37 +84,46 @@ const ReasonSelection = (props: {
 				props.setSelectedReasonId(target.value);
 			}}
 			css={css`
-				border: 1px solid ${palette.neutral[86]};
 				margin: 0 0 ${space[5]}px;
 				padding: 0;
+				border: 0;
 			`}
 		>
 			<legend css={reasonLegendCss}>
-				Why did you cancel your Membership with us today?
+				Why did you cancel your membership today?
 			</legend>
 			<RadioGroup
 				name="issue_type"
 				orientation="vertical"
 				css={css`
 					display: block;
-					padding: ${space[5]}px;
+					padding-top: ${space[4]}px;
 				`}
 			>
 				{membershipCancellationReasons.map(
 					(reason: CancellationReason) => (
-						<Radio
+						<div
 							key={reason.reasonId}
-							name="cancellation-reason"
-							value={reason.reasonId}
-							label={reason.linkLabel}
 							css={css`
-								vertical-align: top;
-								text-transform: lowercase;
-								:checked + div label:first-of-type {
-									font-weight: bold;
-								}
+								border: 1px solid ${palette.neutral[86]};
+								border-radius: 4px;
+								padding: ${space[1]}px ${space[3]}px;
+								margin-bottom: ${space[3]}px;
 							`}
-						/>
+						>
+							<Radio
+								name="cancellation-reason"
+								value={reason.reasonId}
+								label={reason.linkLabel}
+								css={css`
+									vertical-align: top;
+									text-transform: lowercase;
+									:checked + div label:first-of-type {
+										font-weight: bold;
+									}
+								`}
+							/>
+						</div>
 					),
 				)}
 			</RadioGroup>
@@ -164,6 +162,17 @@ export const SelectReason = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
+
+	const mainPlan = getMainPlan(
+		productDetail.subscription,
+	) as PaidSubscriptionPlan;
+
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
+	const userEmailAddress = routerState?.user?.email ?? '';
+	const benefitsEndDate = parseDate(
+		mainPlan.chargedThrough ?? undefined,
+	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
 	const submitReason = async () => {
 		{
@@ -211,29 +220,23 @@ export const SelectReason = () => {
 	}
 
 	return (
-		<>
-			<ProgressIndicator
-				steps={[
-					{ title: '' },
-					{ title: '' },
-					{ title: 'Confirmation', isCurrentStep: true },
-				]}
-				additionalCSS={css`
-					margin: ${space[5]}px 0 ${space[12]}px;
-				`}
+		<section css={sectionSpacing}>
+			<h2 css={headingCss}>Your membership has been cancelled</h2>
+			<CancellationInfo
+				userEmailAddress={userEmailAddress}
+				benefitsEndDate={benefitsEndDate}
 			/>
-			<h2 css={headingCss}>Your Membership is cancelled</h2>
-			<CancellationInfo />
 			<p
 				css={css`
-					${textSans.medium()}
+					${paragraphListCss}
 					border-top: 1px solid ${palette.neutral[86]};
 					padding-top: ${space[5]}px;
 				`}
 			>
-				We're always trying to improve our offering and welcome any
-				feedback. If you can, please take a moment to tell us why you've
-				cancelled your Membership.
+				We're always keen to improve, and welcome your feedback.{' '}
+				<span>
+					Please take a moment to tell us more about your decision.
+				</span>
 			</p>
 			<ReasonSelection setSelectedReasonId={setSelectedReasonId} />
 			{inValidationErrorState && !selectedReasonId.length && (
@@ -248,24 +251,22 @@ export const SelectReason = () => {
 					Please select a reason
 				</InlineError>
 			)}
-			<section
-				css={[sectionSpacing, buttonLayoutCss, { textAlign: 'right' }]}
-			>
-				<Button
-					priority="tertiary"
-					cssOverrides={[buttonCentredCss]}
-					onClick={() => navigate('..')}
-				>
-					Skip
-				</Button>
+			<section css={stackedButtonLayoutCss}>
 				<Button
 					isLoading={isSubmitting}
 					onClick={() => submitReason()}
-					cssOverrides={buttonCentredCss}
+					cssOverrides={[buttonCentredCss, wideButtonCss]}
 				>
 					Submit
 				</Button>
+				<Button
+					priority="tertiary"
+					cssOverrides={buttonCentredCss}
+					onClick={() => navigate('../reminder')}
+				>
+					Skip
+				</Button>
 			</section>
-		</>
+		</section>
 	);
 };

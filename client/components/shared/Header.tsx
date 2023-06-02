@@ -11,9 +11,10 @@ import { DropdownNav } from './nav/DropdownNav';
 
 export interface HeaderProps {
 	signInStatus: SignInStatus;
+	isHelpCentrePage?: boolean;
 }
 
-export const Header = (props: HeaderProps) => {
+export const Header = ({ signInStatus, isHelpCentrePage }: HeaderProps) => {
 	const headerCss = css`
 		background-color: ${palette.brand[400]};
 		min-height: 50px;
@@ -53,12 +54,14 @@ export const Header = (props: HeaderProps) => {
 	return (
 		<header css={headerCss}>
 			<div css={containerCss}>
-				{props.signInStatus === 'signedIn' && (
+				{signInStatus === 'signedIn' && (
 					<div css={divCss}>
-						<DropdownNav />
+						<DropdownNav
+							isHelpCentrePage={isHelpCentrePage ?? false}
+						/>
 					</div>
 				)}
-				{props.signInStatus === 'signedOut' && (
+				{signInStatus === 'signedOut' && (
 					<a href={'/'} css={aCss}>
 						Sign in
 					</a>

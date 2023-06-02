@@ -1,8 +1,6 @@
-import {
-	Button,
-	Stack,
-	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
+import { css } from '@emotion/react';
+import { textSans } from '@guardian/source-foundations';
+import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { featureSwitches } from '../../../../../shared/featureSwitches';
@@ -14,7 +12,7 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
-import { allProductsDetailFetcher } from '../../../../utilities/productUtils';
+import { allRecurringProductsDetailFetcher } from '../../../../utilities/productUtils';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
@@ -58,7 +56,7 @@ export const MembershipCancellationLanding = () => {
 	}: {
 		data: MembersDataApiResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(allProductsDetailFetcher, JsonResponseHandler);
+	} = useAsyncLoader(allRecurringProductsDetailFetcher, JsonResponseHandler);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
@@ -88,48 +86,49 @@ export const MembershipCancellationLanding = () => {
 		<>
 			<section css={sectionSpacing}>
 				<Stack space={3}>
-					<Heading>
-						We're sorry to hear you're thinking of cancelling.
-					</Heading>
-					<p>Lorem Lipsum Loremm Lipsum</p>
 					<h2 css={headingCss}>
-						We offer different ways for cancelling your membership
+						We're sorry to hear you're thinking of leaving
 					</h2>
+					<p
+						css={css`
+							${textSans.medium()}
+						`}
+					>
+						To cancel today, please choose from the following
+						options.
+					</p>
 				</Stack>
 			</section>
 			<section css={sectionSpacing}>
 				<Stack space={3}>
-					<Heading sansSerif>Call us</Heading>
-					You can call one of our customer service...
-					<CallCentreEmailAndNumbers
-						hideEmailAddress={true}
-						collapsed
-					/>
-				</Stack>
-			</section>
-			<section css={sectionSpacing}>
-				<Stack space={3}>
-					<Heading sansSerif>Chat to us</Heading>
-					You can chat with our customer service..
-					<div css={buttonLayoutCss}>
-						<Button
-							icon={<SvgArrowRightStraight />}
-							iconSide="right"
-						>
-							Contact Us
-						</Button>
-					</div>
+					<Heading sansSerif>Call us to cancel</Heading>
+					<p
+						css={css`
+							${textSans.medium()}
+						`}
+					>
+						Phone one of our customer service agents
+					</p>
+					<CallCentreEmailAndNumbers hideEmailAddress={true} />
 				</Stack>
 			</section>
 			<section css={sectionSpacing}>
 				<Stack space={3}>
 					<Heading sansSerif>Cancel online</Heading>
-					You can cancel online Lorem Lipsum.
+					<p
+						css={css`
+							${textSans.medium()}
+						`}
+					>
+						Continue without speaking to our customer service team.
+					</p>
 					<div css={buttonLayoutCss}>
 						<Button
-							icon={<SvgArrowRightStraight />}
-							iconSide="right"
-							onClick={() => navigate('../details')}
+							onClick={() =>
+								navigate('../details', {
+									state: { user: data.user },
+								})
+							}
 						>
 							Cancel online
 						</Button>
