@@ -1,8 +1,8 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { guardianWeeklyPaidByCard } from '../../../fixtures/productBuilder/testProducts';
 import {
-	guardianWeeklyCard,
 	guardianWeeklyExpiredCard,
 	newspaperVoucherPaypal,
 } from '../../../fixtures/productDetail';
@@ -32,7 +32,7 @@ export const GuardianWeeklyCard: ComponentStory<
 GuardianWeeklyCard.parameters = {
 	reactRouter: {
 		state: {
-			productDetail: guardianWeeklyCard,
+			productDetail: guardianWeeklyPaidByCard(),
 		},
 		container: (
 			<PaymentDetailUpdateContainer

@@ -1,11 +1,11 @@
+import { guardianWeeklyPaidByCard } from '../../../client/fixtures/productBuilder/testProducts';
 import {
-	guardianWeeklyCard,
 	toMembersDataApiResponse,
 	patronDigitalSub,
 } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
-const patronMDAPI = [patronDigitalSub, guardianWeeklyCard];
+const patronMDAPI = [patronDigitalSub, guardianWeeklyPaidByCard()];
 
 describe('patron test', () => {
 	beforeEach(() => {
@@ -15,7 +15,7 @@ describe('patron test', () => {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
 				patronDigitalSub,
-				guardianWeeklyCard,
+				guardianWeeklyPaidByCard(),
 			),
 		}).as('product_detail');
 

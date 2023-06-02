@@ -4,7 +4,7 @@ import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecor
 import type { ProductTypeWithDeliveryRecordsProperties } from '../../../../../shared/productTypes';
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { deliveryRecordsWithDelivery } from '../../../../fixtures/deliveryRecords';
-import { guardianWeeklyCard } from '../../../../fixtures/productDetail';
+import { guardianWeeklyPaidByCard } from '../../../../fixtures/productBuilder/testProducts';
 import { DeliveryRecords } from './DeliveryRecords';
 import { DeliveryRecordsContainer } from './DeliveryRecordsContainer';
 import { DeliveryRecordsProblemConfirmation } from './DeliveryRecordsProblemConfirmation';
@@ -30,7 +30,7 @@ export default {
 	decorators: [ReactRouterDecorator],
 	parameters: {
 		reactRouter: {
-			state: { productDetail: guardianWeeklyCard },
+			state: { productDetail: guardianWeeklyPaidByCard() },
 			container: (
 				<DeliveryRecordsContainer
 					productType={productTypeWithDeliveryRecords}

@@ -6,9 +6,9 @@ import { consents } from '../../../../fixtures/consents';
 import { InAppPurchase } from '../../../../fixtures/inAppPurchase';
 import { newsletters } from '../../../../fixtures/newsletters';
 import { newsletterSubscriptions } from '../../../../fixtures/newsletterSubscriptions';
+import { guardianWeeklyPaidByCard } from '../../../../fixtures/productBuilder/testProducts';
 import {
 	digitalDD,
-	guardianWeeklyCard,
 	newspaperVoucherPaypal,
 	toMembersDataApiResponse,
 } from '../../../../fixtures/productDetail';
@@ -35,7 +35,7 @@ Default.parameters = {
 			return res(
 				ctx.json(
 					toMembersDataApiResponse(
-						guardianWeeklyCard,
+						guardianWeeklyPaidByCard(),
 						digitalDD,
 						newspaperVoucherPaypal,
 					),

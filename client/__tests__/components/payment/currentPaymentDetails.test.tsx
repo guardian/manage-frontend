@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 import { CurrentPaymentDetails } from '../../../components/mma/paymentUpdate/CurrentPaymentDetail';
+import { guardianWeeklyPaidByCard } from '../../../fixtures/productBuilder/testProducts';
 import {
 	digitalDD,
-	guardianWeeklyCard,
 	guardianWeeklyExpiredCard,
 	newspaperVoucherPaypal,
 } from '../../../fixtures/productDetail';
@@ -10,7 +10,7 @@ import {
 describe('currentPaymentDetails.tsx', () => {
 	it('Shows product name', () => {
 		const { getByText } = render(
-			<CurrentPaymentDetails {...guardianWeeklyCard} />,
+			<CurrentPaymentDetails {...guardianWeeklyPaidByCard()} />,
 		);
 
 		expect(getByText('Guardian Weekly')).toBeDefined();
@@ -19,7 +19,7 @@ describe('currentPaymentDetails.tsx', () => {
 	describe('For Card', () => {
 		test('Shows last 4 digits on card and expiry date', () => {
 			const { getByText } = render(
-				<CurrentPaymentDetails {...guardianWeeklyCard} />,
+				<CurrentPaymentDetails {...guardianWeeklyPaidByCard()} />,
 			);
 
 			expect(getByText('ending 4242')).toBeDefined();

@@ -2,10 +2,10 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { guardianWeeklyPaidByCard } from '../../../fixtures/productBuilder/testProducts';
 import {
 	contributionCancelled,
 	contributionPayPal,
-	guardianWeeklyCard,
 } from '../../../fixtures/productDetail';
 import { CancellationContainer } from './CancellationContainer';
 import { CancellationReasonReview } from './CancellationReasonReview';
@@ -44,7 +44,7 @@ export const ContactCustomerService: ComponentStory<
 
 ContactCustomerService.parameters = {
 	reactRouter: {
-		state: { productDetail: guardianWeeklyCard },
+		state: { productDetail: guardianWeeklyPaidByCard() },
 		container: (
 			<CancellationContainer productType={PRODUCT_TYPES.guardianweekly} />
 		),
