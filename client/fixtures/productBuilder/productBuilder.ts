@@ -21,7 +21,6 @@ export class ProductBuilder {
 
 	constructor(baseProduct: ProductDetail) {
 		this.productToBuild = baseProduct;
-		this.productToBuild.subscription.subscriptionId = generateNewSubId();
 	}
 
 	getProductDetailObject() {
@@ -57,8 +56,4 @@ export class ProductBuilder {
 
 		return this;
 	}
-}
-
-function generateNewSubId(): string {
-	return `A-S002866${Math.floor(Math.random() * 99)}`;
 }
