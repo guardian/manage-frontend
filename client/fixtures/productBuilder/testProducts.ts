@@ -29,6 +29,13 @@ export function guardianWeeklyExpiredCard() {
 		.getProductDetailObject();
 }
 
+export function guardianWeeklyCancelled() {
+	return new ProductBuilder(baseGuardianWeekly())
+		.payByCard()
+		.cancelled()
+		.getProductDetailObject();
+}
+
 export function digitalPackPaidByDirectDebit() {
 	return new ProductBuilder(baseDigitalPack())
 		.payByDirectDebit()

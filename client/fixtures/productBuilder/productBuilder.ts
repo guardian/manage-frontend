@@ -73,4 +73,11 @@ export class ProductBuilder {
 		this.productToBuild.alertText = alertText;
 		return this;
 	}
+
+	cancelled() {
+		this.productToBuild.subscription.cancelledAt = true;
+		this.productToBuild.subscription.cancellationEffectiveDate =
+			'2023-03-20';
+		return this;
+	}
 }

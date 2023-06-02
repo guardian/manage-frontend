@@ -14,6 +14,7 @@ import {
 } from '../../../fixtures/inAppPurchase';
 import {
 	digitalPackPaidByDirectDebit,
+	guardianWeeklyCancelled,
 	guardianWeeklyGiftPurchase,
 	guardianWeeklyGiftRecipient,
 	guardianWeeklyPaidByCard,
@@ -22,7 +23,6 @@ import {
 	contributionCancelled,
 	contributionPayPal,
 	digitalDD,
-	guardianWeeklyCancelled,
 	membershipSupporter,
 	newspaperVoucherPaypal,
 	supporterPlus,
@@ -206,7 +206,7 @@ WithCancelledSubscriptions.parameters = {
 				ctx.json(
 					toMembersDataApiResponse(
 						contributionCancelled,
-						guardianWeeklyCancelled,
+						guardianWeeklyCancelled(),
 						supporterPlusCancelled,
 					),
 				),
