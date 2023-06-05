@@ -1,5 +1,4 @@
 import {
-	contributionCard,
 	contributionPayPal,
 	toMembersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
@@ -9,6 +8,7 @@ import {
 	productMoveSuccessfulResponse,
 } from '../../../client/fixtures/productMove';
 import { ProductDetail } from '../../../shared/productResponse';
+import { contributionPaidByCard } from '../../../client/fixtures/productBuilder/testProducts';
 
 const setSignInStatus = () => {
 	cy.window().then((window) => {
@@ -28,7 +28,7 @@ describe('product switching', () => {
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
-				contributionCard,
+				contributionPaidByCard(),
 				contributionPayPal,
 			),
 		}).as('mdapi_get_contribution');
@@ -36,7 +36,7 @@ describe('product switching', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
-				contributionCard,
+				contributionPaidByCard(),
 				contributionPayPal,
 			),
 		});
@@ -183,7 +183,7 @@ describe('product switching', () => {
 
 	it('shows payment failure error message and does not call product move API again', () => {
 		const contributionWithPaymentFailure: ProductDetail = JSON.parse(
-			JSON.stringify(contributionCard),
+			JSON.stringify(contributionPaidByCard()),
 		);
 		contributionWithPaymentFailure.alertText = 'Payment failed';
 

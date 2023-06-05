@@ -1,8 +1,8 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
+import { contributionPaidByCard } from '../../../../fixtures/productBuilder/testProducts';
 import {
-	contributionCard,
 	contributionDirectDebit,
 	contributionPayPal,
 	contributionSepa,
@@ -41,7 +41,7 @@ export const Default: ComponentStory<typeof SwitchReview> = () => (
 // such as multiple payment methods being displayed.
 Default.parameters = {
 	reactRouter: {
-		state: { productDetail: contributionCard },
+		state: { productDetail: contributionPaidByCard() },
 	},
 };
 
@@ -76,7 +76,9 @@ export const YearlyOtherCurrency: ComponentStory<typeof SwitchReview> = () => (
 	<SwitchReview />
 );
 
-const contributionBelowThreshold = JSON.parse(JSON.stringify(contributionCard));
+const contributionBelowThreshold = JSON.parse(
+	JSON.stringify(contributionPaidByCard()),
+);
 const plan = contributionBelowThreshold.subscription.currentPlans[0];
 plan.price = 300;
 plan.currency = '$';
@@ -96,6 +98,6 @@ export const FromApp: ComponentStory<typeof SwitchReview> = () => (
 FromApp.parameters = {
 	reactRouter: {
 		container: <SwitchContainer isFromApp={true} />,
-		state: { productDetail: contributionCard },
+		state: { productDetail: contributionPaidByCard() },
 	},
 };

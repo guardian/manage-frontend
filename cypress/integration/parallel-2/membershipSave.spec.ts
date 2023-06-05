@@ -1,6 +1,8 @@
-import { guardianWeeklyExpiredCard } from '../../../client/fixtures/productBuilder/testProducts';
 import {
-	contributionCard,
+	contributionPaidByCard,
+	guardianWeeklyExpiredCard,
+} from '../../../client/fixtures/productBuilder/testProducts';
+import {
 	membershipSupporter,
 	toMembersDataApiResponse,
 } from '../../../client/fixtures/productDetail';
@@ -199,7 +201,7 @@ if (featureSwitches.membershipSave) {
 				statusCode: 200,
 				body: toMembersDataApiResponse(
 					membershipSupporter,
-					contributionCard,
+					contributionPaidByCard(),
 				),
 			});
 

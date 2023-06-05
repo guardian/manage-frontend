@@ -1,4 +1,8 @@
-import { baseDigitalPack, baseGuardianWeekly } from './baseProducts';
+import {
+	baseContribution,
+	baseDigitalPack,
+	baseGuardianWeekly,
+} from './baseProducts';
 import { cards, ProductBuilder } from './productBuilder';
 
 export function guardianWeeklyPaidByCard() {
@@ -39,5 +43,11 @@ export function guardianWeeklyCancelled() {
 export function digitalPackPaidByDirectDebit() {
 	return new ProductBuilder(baseDigitalPack())
 		.payByDirectDebit()
+		.getProductDetailObject();
+}
+
+export function contributionPaidByCard() {
+	return new ProductBuilder(baseContribution())
+		.payByCard()
 		.getProductDetailObject();
 }
