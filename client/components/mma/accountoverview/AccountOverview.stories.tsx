@@ -23,12 +23,10 @@ import {
 	membershipStaff,
 	membershipSupporter,
 	newspaperVoucherPaidByPaypal,
-} from '../../../fixtures/productBuilder/testProducts';
-import {
 	supporterPlus,
 	supporterPlusCancelled,
-	toMembersDataApiResponse,
-} from '../../../fixtures/productDetail';
+} from '../../../fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../fixtures/productDetail';
 import { singleContributionsAPIResponse } from '../../../fixtures/singleContribution';
 import { user } from '../../../fixtures/user';
 import { AccountOverview } from './AccountOverview';
@@ -90,7 +88,7 @@ WithSubscriptions.parameters = {
 						newspaperVoucherPaidByPaypal(),
 						membershipSupporter(),
 						membershipStaff(),
-						supporterPlus,
+						supporterPlus(),
 					),
 				),
 			);
@@ -150,7 +148,7 @@ WithContributionInPaymentFailure.parameters = {
 				ctx.json(
 					toMembersDataApiResponse(
 						contributionPaymentFailure,
-						supporterPlus,
+						supporterPlus(),
 					),
 				),
 			);
@@ -213,7 +211,7 @@ WithCancelledSubscriptions.parameters = {
 					toMembersDataApiResponse(
 						contributionCancelled(),
 						guardianWeeklyCancelled(),
-						supporterPlusCancelled,
+						supporterPlusCancelled(),
 					),
 				),
 			);

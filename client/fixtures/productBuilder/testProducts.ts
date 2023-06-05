@@ -5,6 +5,7 @@ import {
 	baseGuardianWeekly,
 	baseHomeDelivery,
 	baseMembership,
+	baseSupporterPlus,
 } from './baseProducts';
 import { cards, ProductBuilder } from './productBuilder';
 
@@ -103,5 +104,18 @@ export function membershipStaff() {
 		.payByCard()
 		.tier('Staff Membership')
 		.withNoCurrentPlans()
+		.getProductDetailObject();
+}
+
+export function supporterPlus() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function supporterPlusCancelled() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.cancel()
 		.getProductDetailObject();
 }

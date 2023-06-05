@@ -366,3 +366,52 @@ export function baseHomeDelivery(): ProductDetail {
 		isTestUser: false,
 	};
 }
+
+export function baseSupporterPlus(): ProductDetail {
+	return {
+		mmaCategory: 'recurringSupport',
+		tier: 'Supporter Plus',
+		isPaidTier: true,
+		isTestUser: false,
+		selfServiceCancellation: {
+			isAllowed: false,
+			shouldDisplayEmail: false,
+			phoneRegionsToDisplay: ['UK & ROW'],
+		},
+		joinDate: '2022-07-20',
+		optIn: true,
+		subscription: {
+			contactId: '0039E00001VVNb5QAH',
+			safeToUpdatePaymentMethod: true,
+			start: '2022-07-20',
+			end: '2022-08-20',
+			nextPaymentPrice: 5000,
+			nextPaymentDate: '2022-08-20',
+			lastPaymentDate: '2022-07-20',
+			chargedThroughDate: '2022-08-20',
+			renewalDate: '2023-07-20',
+			anniversaryDate: '2023-07-20',
+			cancelledAt: false,
+			subscriberId: 'A-S00393340',
+			subscriptionId: 'A-S00393340',
+			trialLength: -2,
+			autoRenew: true,
+			currentPlans: [
+				{
+					name: null,
+					start: '2022-07-20',
+					end: '2023-07-20',
+					shouldBeVisible: true,
+					chargedThrough: '2022-08-20',
+					price: 5000,
+					currency: '£',
+					currencyISO: 'GBP',
+					billingPeriod: 'month',
+				},
+			],
+			futurePlans: [],
+			readerType: 'Direct',
+			accountId: '8ad088718219a6b601821bbe9e6210f2',
+		},
+	};
+}
