@@ -1,6 +1,6 @@
 import type { ProductDetail } from '../../../shared/productResponse';
 
-// export type ProductTypeKeys =
+// Base ProductTypes to support
 // 	| 'membership'
 // 	| 'contributions'
 // 	| 'newspaper'
@@ -15,32 +15,60 @@ import type { ProductDetail } from '../../../shared/productResponse';
 export function baseMembership(): ProductDetail {
 	return {
 		mmaCategory: 'membership',
-		tier: 'Staff Membership',
-		isTestUser: true,
+		tier: 'Supporter',
 		isPaidTier: true,
 		selfServiceCancellation: {
-			isAllowed: false,
+			isAllowed: true,
 			shouldDisplayEmail: true,
 			phoneRegionsToDisplay: ['UK & ROW', 'US', 'AUS'],
 		},
-		joinDate: '2014-12-16',
+		billingCountry: 'United Kingdom',
+		joinDate: '2023-04-26',
+		optIn: true,
 		subscription: {
+			contactId: '2',
 			safeToUpdatePaymentMethod: true,
-			end: '2022-12-16',
-			nextPaymentPrice: null,
-			nextPaymentDate: null,
-			lastPaymentDate: null,
-			chargedThroughDate: null,
-			renewalDate: '2022-12-16',
-			anniversaryDate: '2022-12-16',
+			start: '2023-04-26',
+			end: '2024-04-26',
+			nextPaymentPrice: 700,
+			nextPaymentDate: '2023-05-26',
+			lastPaymentDate: '2023-04-26',
+			chargedThroughDate: '2023-05-26',
+			renewalDate: '2024-04-26',
+			anniversaryDate: '2024-04-26',
 			cancelledAt: false,
-			subscriptionId: 'A-S00393340',
-			trialLength: 0,
+			subscriberId: 'A-S00538748',
+			subscriptionId: 'A-S00538748',
+			trialLength: -1,
 			autoRenew: true,
-			currentPlans: [],
+			plan: {
+				name: 'Supporter',
+				price: 700,
+				currency: '£',
+				currencyISO: 'GBP',
+				billingPeriod: 'month',
+				start: '',
+				end: '',
+				shouldBeVisible: false,
+			},
+			currentPlans: [
+				{
+					name: null,
+					start: '2023-04-26',
+					end: '2024-04-26',
+					shouldBeVisible: true,
+					chargedThrough: '2023-05-26',
+					price: 700,
+					currency: '£',
+					currencyISO: 'GBP',
+					billingPeriod: 'month',
+				},
+			],
 			futurePlans: [],
 			readerType: 'Direct',
+			accountId: '2',
 		},
+		isTestUser: false,
 	};
 }
 

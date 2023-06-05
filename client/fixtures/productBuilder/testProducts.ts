@@ -4,6 +4,7 @@ import {
 	baseDigitalVoucher,
 	baseGuardianWeekly,
 	baseHomeDelivery,
+	baseMembership,
 } from './baseProducts';
 import { cards, ProductBuilder } from './productBuilder';
 
@@ -88,5 +89,19 @@ export function newspaperVoucherPaidByPaypal(email?: string) {
 export function homeDelivery() {
 	return new ProductBuilder(baseHomeDelivery())
 		.payByCard()
+		.getProductDetailObject();
+}
+
+export function membershipSupporter() {
+	return new ProductBuilder(baseMembership())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function membershipStaff() {
+	return new ProductBuilder(baseMembership())
+		.payByCard()
+		.tier('Staff Membership')
+		.withNoCurrentPlans()
 		.getProductDetailObject();
 }

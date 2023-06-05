@@ -2,10 +2,8 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
-import {
-	membershipSupporter,
-	toMembersDataApiResponse,
-} from '../../../../fixtures/productDetail';
+import { membershipSupporter } from '../../../../fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../../fixtures/productDetail';
 import { CancellationContainer } from '../CancellationContainer';
 import { ConfirmMembershipCancellation } from './ConfirmMembershipCancellation';
 import { ContinueMembershipConfirmation } from './ContinueMembershipConfirmation';
@@ -52,7 +50,9 @@ export const LandingPage: ComponentStory<
 LandingPage.parameters = {
 	msw: [
 		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(ctx.json(toMembersDataApiResponse(membershipSupporter)));
+			return res(
+				ctx.json(toMembersDataApiResponse(membershipSupporter())),
+			);
 		}),
 	],
 };

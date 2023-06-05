@@ -44,6 +44,16 @@ export class ProductBuilder {
 		return this;
 	}
 
+	tier(tier: string) {
+		this.productToBuild.tier = tier;
+		return this;
+	}
+
+	withNoCurrentPlans() {
+		this.productToBuild.subscription.currentPlans = [];
+		return this;
+	}
+
 	payByCard(customCard?: Card) {
 		this.productToBuild.subscription.card =
 			customCard || cards.visaActive();
