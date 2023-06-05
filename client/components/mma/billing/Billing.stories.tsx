@@ -9,12 +9,12 @@ import {
 	PuzzleAppPurchaseAndroid,
 } from '../../../fixtures/inAppPurchase';
 import { guardianWeeklyCardInvoice } from '../../../fixtures/invoices';
+import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
 import {
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
 	newspaperVoucherPaidByPaypal,
 } from '../../../fixtures/productBuilder/testProducts';
-import { toMembersDataApiResponse } from '../../../fixtures/productDetail';
 import { user } from '../../../fixtures/user';
 import { Billing } from './Billing';
 

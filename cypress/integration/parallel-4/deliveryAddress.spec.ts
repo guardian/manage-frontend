@@ -1,5 +1,5 @@
 import { guardianWeeklyPaidByCard } from '../../../client/fixtures/productBuilder/testProducts';
-import { toMembersDataApiResponse } from '../../../client/fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Delivery address', () => {

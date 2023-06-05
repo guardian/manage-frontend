@@ -1,4 +1,4 @@
-import { toMembersDataApiResponse } from '../../../client/fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import {
 	stripeSetupIntent,
 	executePaymentUpdateResponse,

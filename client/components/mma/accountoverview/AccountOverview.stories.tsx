@@ -12,6 +12,7 @@ import {
 	PuzzleAppPurchaseAndroid,
 	PuzzleAppPurchaseIos,
 } from '../../../fixtures/inAppPurchase';
+import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
 import {
 	contributionCancelled,
 	contributionPaidByPayPal,
@@ -26,7 +27,6 @@ import {
 	supporterPlus,
 	supporterPlusCancelled,
 } from '../../../fixtures/productBuilder/testProducts';
-import { toMembersDataApiResponse } from '../../../fixtures/productDetail';
 import { singleContributionsAPIResponse } from '../../../fixtures/singleContribution';
 import { user } from '../../../fixtures/user';
 import { AccountOverview } from './AccountOverview';

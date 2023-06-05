@@ -2,7 +2,7 @@ import {
 	guardianWeeklyPaidByCard,
 	patronDigitalPack,
 } from '../../../client/fixtures/productBuilder/testProducts';
-import { toMembersDataApiResponse } from '../../../client/fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 const patronMDAPI = [patronDigitalPack(), guardianWeeklyPaidByCard()];

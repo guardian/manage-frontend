@@ -3,7 +3,7 @@ import {
 	guardianWeeklyExpiredCard,
 	membershipSupporter,
 } from '../../../client/fixtures/productBuilder/testProducts';
-import { toMembersDataApiResponse } from '../../../client/fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { productMovePreviewResponse } from '../../../client/fixtures/productMove';
 import { featureSwitches } from '../../../shared/featureSwitches';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';

@@ -4,6 +4,7 @@ import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecor
 import { featureSwitches } from '../../../../../shared/featureSwitches';
 import { consents } from '../../../../fixtures/consents';
 import { InAppPurchase } from '../../../../fixtures/inAppPurchase';
+import { toMembersDataApiResponse } from '../../../../fixtures/mdapiResponse';
 import { newsletters } from '../../../../fixtures/newsletters';
 import { newsletterSubscriptions } from '../../../../fixtures/newsletterSubscriptions';
 import {
@@ -11,7 +12,6 @@ import {
 	guardianWeeklyPaidByCard,
 	newspaperVoucherPaidByPaypal,
 } from '../../../../fixtures/productBuilder/testProducts';
-import { toMembersDataApiResponse } from '../../../../fixtures/productDetail';
 import { singleContributionsAPIResponse } from '../../../../fixtures/singleContribution';
 import { user } from '../../../../fixtures/user';
 import { EmailAndMarketing } from './EmailAndMarketing';
