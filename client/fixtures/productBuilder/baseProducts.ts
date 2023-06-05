@@ -374,7 +374,7 @@ export function baseSupporterPlus(): ProductDetail {
 		isPaidTier: true,
 		isTestUser: false,
 		selfServiceCancellation: {
-			isAllowed: false,
+			isAllowed: true,
 			shouldDisplayEmail: false,
 			phoneRegionsToDisplay: ['UK & ROW'],
 		},

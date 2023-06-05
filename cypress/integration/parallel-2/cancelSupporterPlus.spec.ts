@@ -23,8 +23,6 @@ describe('Cancel Supporter Plus', () => {
 
 		signInAndAcceptCookies();
 
-		supporterPlus().selfServiceCancellation.isAllowed = true;
-
 		cy.intercept('POST', '/api/case', {
 			statusCode: 200,
 			body: {
