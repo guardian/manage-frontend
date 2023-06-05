@@ -36,7 +36,7 @@ export function guardianWeeklyExpiredCard() {
 export function guardianWeeklyCancelled() {
 	return new ProductBuilder(baseGuardianWeekly())
 		.payByCard()
-		.cancelled()
+		.cancel()
 		.getProductDetailObject();
 }
 
@@ -55,5 +55,17 @@ export function contributionPaidByCard() {
 export function contributionPaidByPayPal() {
 	return new ProductBuilder(baseContribution())
 		.payByPayPal()
+		.getProductDetailObject();
+}
+
+export function contributionPaidByDirectDebit() {
+	return new ProductBuilder(baseContribution())
+		.payByDirectDebit()
+		.getProductDetailObject();
+}
+
+export function contributionPaidBySepa() {
+	return new ProductBuilder(baseContribution())
+		.payBySepa()
 		.getProductDetailObject();
 }

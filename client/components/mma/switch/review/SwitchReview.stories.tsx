@@ -3,12 +3,10 @@ import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import {
 	contributionPaidByCard,
+	contributionPaidByDirectDebit,
 	contributionPaidByPayPal,
+	contributionPaidBySepa,
 } from '../../../../fixtures/productBuilder/testProducts';
-import {
-	contributionDirectDebit,
-	contributionSepa,
-} from '../../../../fixtures/productDetail';
 import { productMovePreviewResponse } from '../../../../fixtures/productMove';
 import { SwitchContainer } from '../SwitchContainer';
 import { SwitchReview } from './SwitchReview';
@@ -61,7 +59,7 @@ export const WithDirectDebitPayment: ComponentStory<
 > = () => <SwitchReview />;
 WithDirectDebitPayment.parameters = {
 	reactRouter: {
-		state: { productDetail: contributionDirectDebit },
+		state: { productDetail: contributionPaidByDirectDebit() },
 	},
 };
 
@@ -70,7 +68,7 @@ export const WithSEPAPayment: ComponentStory<typeof SwitchReview> = () => (
 );
 WithSEPAPayment.parameters = {
 	reactRouter: {
-		state: { productDetail: contributionSepa },
+		state: { productDetail: contributionPaidBySepa() },
 	},
 };
 

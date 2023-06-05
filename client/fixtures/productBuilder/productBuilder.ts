@@ -70,6 +70,15 @@ export class ProductBuilder {
 		return this;
 	}
 
+	payBySepa() {
+		this.productToBuild.subscription.paymentMethod = 'Sepa';
+		this.productToBuild.subscription.sepaMandate = {
+			accountName: 'John Smith',
+			iban: 'FR*********************2606',
+		};
+		return this;
+	}
+
 	gift(isReceived: boolean) {
 		this.productToBuild.isPaidTier = !isReceived;
 		this.productToBuild.subscription.readerType = 'Gift';
@@ -82,7 +91,7 @@ export class ProductBuilder {
 		return this;
 	}
 
-	cancelled() {
+	cancel() {
 		this.productToBuild.subscription.cancelledAt = true;
 		this.productToBuild.subscription.cancellationEffectiveDate =
 			'2023-03-20';
