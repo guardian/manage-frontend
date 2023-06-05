@@ -9,11 +9,9 @@ import { newsletterSubscriptions } from '../../../../fixtures/newsletterSubscrip
 import {
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
+	newspaperVoucherPaidByPaypal,
 } from '../../../../fixtures/productBuilder/testProducts';
-import {
-	newspaperVoucherPaypal,
-	toMembersDataApiResponse,
-} from '../../../../fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../../fixtures/productDetail';
 import { singleContributionsAPIResponse } from '../../../../fixtures/singleContribution';
 import { user } from '../../../../fixtures/user';
 import { EmailAndMarketing } from './EmailAndMarketing';
@@ -39,7 +37,7 @@ Default.parameters = {
 					toMembersDataApiResponse(
 						guardianWeeklyPaidByCard(),
 						digitalPackPaidByDirectDebit(),
-						newspaperVoucherPaypal,
+						newspaperVoucherPaidByPaypal(),
 					),
 				),
 			);

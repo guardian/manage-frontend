@@ -1,7 +1,9 @@
 import {
 	baseContribution,
 	baseDigitalPack,
+	baseDigitalVoucher,
 	baseGuardianWeekly,
+	baseHomeDelivery,
 } from './baseProducts';
 import { cards, ProductBuilder } from './productBuilder';
 
@@ -74,5 +76,17 @@ export function contributionCancelled() {
 	return new ProductBuilder(baseContribution())
 		.payByCard()
 		.cancel()
+		.getProductDetailObject();
+}
+
+export function newspaperVoucherPaidByPaypal() {
+	return new ProductBuilder(baseDigitalVoucher())
+		.payByPayPal()
+		.getProductDetailObject();
+}
+
+export function homeDelivery() {
+	return new ProductBuilder(baseHomeDelivery())
+		.payByCard()
 		.getProductDetailObject();
 }

@@ -4,8 +4,8 @@ import {
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyExpiredCard,
 	guardianWeeklyPaidByCard,
+	newspaperVoucherPaidByPaypal,
 } from '../../../fixtures/productBuilder/testProducts';
-import { newspaperVoucherPaypal } from '../../../fixtures/productDetail';
 
 describe('currentPaymentDetails.tsx', () => {
 	it('Shows product name', () => {
@@ -49,7 +49,7 @@ describe('currentPaymentDetails.tsx', () => {
 	describe('For Paypal', () => {
 		test('shows masked email', () => {
 			const { getByText } = render(
-				<CurrentPaymentDetails {...newspaperVoucherPaypal} />,
+				<CurrentPaymentDetails {...newspaperVoucherPaidByPaypal()} />,
 			);
 
 			expect(getByText('t*******r@example.com')).toBeDefined();

@@ -12,11 +12,9 @@ import { guardianWeeklyCardInvoice } from '../../../fixtures/invoices';
 import {
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
+	newspaperVoucherPaidByPaypal,
 } from '../../../fixtures/productBuilder/testProducts';
-import {
-	newspaperVoucherPaypal,
-	toMembersDataApiResponse,
-} from '../../../fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../fixtures/productDetail';
 import { user } from '../../../fixtures/user';
 import { Billing } from './Billing';
 
@@ -69,7 +67,7 @@ WithSubscriptions.parameters = {
 					toMembersDataApiResponse(
 						guardianWeeklyPaidByCard(),
 						digitalPackPaidByDirectDebit(),
-						newspaperVoucherPaypal,
+						newspaperVoucherPaidByPaypal(),
 					),
 				),
 			);

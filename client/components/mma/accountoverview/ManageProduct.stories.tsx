@@ -4,8 +4,8 @@ import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
+	newspaperVoucherPaidByPaypal,
 } from '../../../fixtures/productBuilder/testProducts';
-import { newspaperVoucherPaypal } from '../../../fixtures/productDetail';
 import { ManageProduct } from './ManageProduct';
 
 export default {
@@ -38,6 +38,6 @@ DigitalSubscription.parameters = {
 export const NewspaperSubscriptionCard = Template.bind({});
 NewspaperSubscriptionCard.parameters = {
 	reactRouter: {
-		state: { productDetail: newspaperVoucherPaypal },
+		state: { productDetail: newspaperVoucherPaidByPaypal() },
 	},
 };

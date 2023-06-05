@@ -20,10 +20,10 @@ import {
 	guardianWeeklyGiftPurchase,
 	guardianWeeklyGiftRecipient,
 	guardianWeeklyPaidByCard,
+	newspaperVoucherPaidByPaypal,
 } from '../../../fixtures/productBuilder/testProducts';
 import {
 	membershipSupporter,
-	newspaperVoucherPaypal,
 	supporterPlus,
 	supporterPlusCancelled,
 	toMembersDataApiResponse,
@@ -86,7 +86,7 @@ WithSubscriptions.parameters = {
 					toMembersDataApiResponse(
 						guardianWeeklyPaidByCard(),
 						digitalPackPaidByDirectDebit(),
-						newspaperVoucherPaypal,
+						newspaperVoucherPaidByPaypal(),
 						membershipSupporter,
 						supporterPlus,
 					),
