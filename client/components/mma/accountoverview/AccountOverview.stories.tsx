@@ -13,6 +13,7 @@ import {
 	PuzzleAppPurchaseIos,
 } from '../../../fixtures/inAppPurchase';
 import {
+	contributionPaidByPayPal,
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyCancelled,
 	guardianWeeklyGiftPurchase,
@@ -21,7 +22,6 @@ import {
 } from '../../../fixtures/productBuilder/testProducts';
 import {
 	contributionCancelled,
-	contributionPayPal,
 	membershipSupporter,
 	newspaperVoucherPaypal,
 	supporterPlus,
@@ -114,7 +114,9 @@ WithContributionAndSwitchPossible.parameters = {
 			return res(ctx.json({ subscriptions: [] }));
 		}),
 		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(ctx.json(toMembersDataApiResponse(contributionPayPal)));
+			return res(
+				ctx.json(toMembersDataApiResponse(contributionPaidByPayPal())),
+			);
 		}),
 		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
 			return res(ctx.json([]));
@@ -129,7 +131,7 @@ export const WithContributionInPaymentFailure: ComponentStory<
 };
 
 const contributionPaymentFailure = {
-	...contributionPayPal,
+	...contributionPaidByPayPal(),
 	alertText: 'Your payment has failed.',
 };
 
@@ -175,7 +177,7 @@ WithContributionAndSwitchNotPossible.parameters = {
 			return res(
 				ctx.json(
 					toMembersDataApiResponse(
-						contributionPayPal,
+						contributionPaidByPayPal(),
 						digitalPackPaidByDirectDebit(),
 					),
 				),

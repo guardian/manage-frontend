@@ -1,14 +1,14 @@
-import {
-	contributionPayPal,
-	toMembersDataApiResponse,
-} from '../../../client/fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../client/fixtures/productDetail';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 import {
 	productMovePreviewResponse,
 	productMoveSuccessfulResponse,
 } from '../../../client/fixtures/productMove';
 import { ProductDetail } from '../../../shared/productResponse';
-import { contributionPaidByCard } from '../../../client/fixtures/productBuilder/testProducts';
+import {
+	contributionPaidByCard,
+	contributionPaidByPayPal,
+} from '../../../client/fixtures/productBuilder/testProducts';
 
 const setSignInStatus = () => {
 	cy.window().then((window) => {
@@ -29,7 +29,7 @@ describe('product switching', () => {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
 				contributionPaidByCard(),
-				contributionPayPal,
+				contributionPaidByPayPal(),
 			),
 		}).as('mdapi_get_contribution');
 
@@ -37,7 +37,7 @@ describe('product switching', () => {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
 				contributionPaidByCard(),
-				contributionPayPal,
+				contributionPaidByPayPal(),
 			),
 		});
 

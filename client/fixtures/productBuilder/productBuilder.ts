@@ -62,6 +62,14 @@ export class ProductBuilder {
 		return this;
 	}
 
+	payByPayPal() {
+		this.productToBuild.subscription.payPalEmail =
+			'sb-ltpuy8454870@personal.example.com';
+		this.productToBuild.subscription.paymentMethod = 'PayPal';
+
+		return this;
+	}
+
 	gift(isReceived: boolean) {
 		this.productToBuild.isPaidTier = !isReceived;
 		this.productToBuild.subscription.readerType = 'Gift';

@@ -51,3 +51,9 @@ export function contributionPaidByCard() {
 		.payByCard()
 		.getProductDetailObject();
 }
+
+export function contributionPaidByPayPal() {
+	return new ProductBuilder(baseContribution())
+		.payByPayPal()
+		.getProductDetailObject();
+}

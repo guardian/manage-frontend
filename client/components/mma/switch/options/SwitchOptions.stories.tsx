@@ -1,7 +1,7 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { contributionPayPal } from '../../../../fixtures/productDetail';
+import { contributionPaidByPayPal } from '../../../../fixtures/productBuilder/testProducts';
 import { SwitchContainer } from '../SwitchContainer';
 import { SwitchOptions } from './SwitchOptions';
 
@@ -12,7 +12,7 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: contributionPayPal },
+			state: { productDetail: contributionPaidByPayPal() },
 			container: <SwitchContainer />,
 		},
 	},
@@ -27,7 +27,7 @@ export const BelowThreshold: ComponentStory<typeof SwitchOptions> = () => (
 );
 
 const contributionBelowThreshold = JSON.parse(
-	JSON.stringify(contributionPayPal),
+	JSON.stringify(contributionPaidByPayPal()),
 );
 const plan = contributionBelowThreshold.subscription
 	.currentPlans[0] as PaidSubscriptionPlan;

@@ -2,11 +2,11 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { guardianWeeklyPaidByCard } from '../../../fixtures/productBuilder/testProducts';
 import {
-	contributionCancelled,
-	contributionPayPal,
-} from '../../../fixtures/productDetail';
+	contributionPaidByPayPal,
+	guardianWeeklyPaidByCard,
+} from '../../../fixtures/productBuilder/testProducts';
+import { contributionCancelled } from '../../../fixtures/productDetail';
 import { CancellationContainer } from './CancellationContainer';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
@@ -26,7 +26,7 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: contributionPayPal },
+			state: { productDetail: contributionPaidByPayPal() },
 			container: <CancellationContainer productType={contributions} />,
 		},
 	},
@@ -63,7 +63,7 @@ Review.parameters = {
 	],
 	reactRouter: {
 		state: {
-			productDetail: contributionPayPal,
+			productDetail: contributionPaidByPayPal(),
 			selectedReasonId: 'mma_editorial',
 			cancellationPolicy: 'Today',
 		},

@@ -1,10 +1,12 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
-import { contributionPaidByCard } from '../../../../fixtures/productBuilder/testProducts';
+import {
+	contributionPaidByCard,
+	contributionPaidByPayPal,
+} from '../../../../fixtures/productBuilder/testProducts';
 import {
 	contributionDirectDebit,
-	contributionPayPal,
 	contributionSepa,
 } from '../../../../fixtures/productDetail';
 import { productMovePreviewResponse } from '../../../../fixtures/productMove';
@@ -50,7 +52,7 @@ export const WithPayPalPayment: ComponentStory<typeof SwitchReview> = () => (
 );
 WithPayPalPayment.parameters = {
 	reactRouter: {
-		state: { productDetail: contributionPayPal },
+		state: { productDetail: contributionPaidByPayPal() },
 	},
 };
 
