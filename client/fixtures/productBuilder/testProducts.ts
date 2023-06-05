@@ -119,3 +119,10 @@ export function supporterPlusCancelled() {
 		.cancel()
 		.getProductDetailObject();
 }
+
+export function patronDigitalPack() {
+	return new ProductBuilder(baseDigitalPack())
+		.payByCard()
+		.asPatron()
+		.getProductDetailObject();
+}

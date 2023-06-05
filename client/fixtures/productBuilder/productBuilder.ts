@@ -107,4 +107,9 @@ export class ProductBuilder {
 			'2023-03-20';
 		return this;
 	}
+
+	asPatron() {
+		this.productToBuild.subscription.readerType = 'Patron';
+		return this;
+	}
 }
