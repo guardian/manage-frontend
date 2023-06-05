@@ -69,3 +69,10 @@ export function contributionPaidBySepa() {
 		.payBySepa()
 		.getProductDetailObject();
 }
+
+export function contributionCancelled() {
+	return new ProductBuilder(baseContribution())
+		.payByCard()
+		.cancel()
+		.getProductDetailObject();
+}

@@ -470,63 +470,6 @@ export const supporterPlusCancelled: ProductDetail = {
 	},
 };
 
-export const contributionCancelled: ProductDetail = {
-	mmaCategory: 'recurringSupport',
-	tier: 'Contributor',
-	isPaidTier: true,
-	selfServiceCancellation: {
-		isAllowed: true,
-		shouldDisplayEmail: true,
-		phoneRegionsToDisplay: ['UK & ROW', 'US', 'AUS'],
-	},
-	joinDate: '2022-01-05',
-	optIn: true,
-	subscription: {
-		paymentMethod: 'PayPal',
-		payPalEmail: 'sb-ltpuy8454870@personal.example.com',
-		contactId: '0039E00001KA26BQAT',
-		deliveryAddress: {
-			addressLine1: 'Kings Place',
-			addressLine2: '90 York Place',
-			town: 'Canberra',
-			region: 'ACT',
-			postcode: '2601',
-			country: 'Australia',
-		},
-		safeToUpdatePaymentMethod: true,
-		start: '2022-01-05',
-		end: '2022-02-05',
-		nextPaymentPrice: 10000,
-		nextPaymentDate: '2022-02-05',
-		lastPaymentDate: '2022-01-05',
-		chargedThroughDate: '2022-02-05',
-		renewalDate: '2023-01-05',
-		anniversaryDate: '2023-01-05',
-		cancelledAt: true,
-		subscriberId: 'A-S00303370',
-		subscriptionId: 'A-S00303370',
-		trialLength: -24,
-		autoRenew: true,
-		currentPlans: [
-			{
-				name: null,
-				start: '2022-01-05',
-				end: '2023-01-05',
-				shouldBeVisible: true,
-				chargedThrough: '2022-02-05',
-				price: 10000,
-				currency: '£',
-				currencyISO: 'GBP',
-				billingPeriod: 'month',
-			},
-		],
-		futurePlans: [],
-		readerType: 'Direct',
-		accountId: '8ad09f8a7e25bda3017e296317464818',
-	},
-	isTestUser: false,
-};
-
 export const toMembersDataApiResponse = (
 	...productDetails: ProductDetail[]
 ): MembersDataApiResponse => {

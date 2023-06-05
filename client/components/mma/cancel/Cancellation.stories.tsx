@@ -3,10 +3,10 @@ import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
+	contributionCancelled,
 	contributionPaidByPayPal,
 	guardianWeeklyPaidByCard,
 } from '../../../fixtures/productBuilder/testProducts';
-import { contributionCancelled } from '../../../fixtures/productDetail';
 import { CancellationContainer } from './CancellationContainer';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
@@ -78,6 +78,6 @@ export const Confirmation: ComponentStory<
 
 	return getCancellationSummary(
 		PRODUCT_TYPES.contributions,
-		contributionCancelled,
-	)(contributionCancelled);
+		contributionCancelled(),
+	)(contributionCancelled());
 };
