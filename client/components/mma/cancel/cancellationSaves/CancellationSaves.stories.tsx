@@ -23,7 +23,7 @@ export default {
 		layout: 'fullscreen',
 		reactRouter: {
 			state: {
-				productDetail: membershipSupporter,
+				productDetail: membershipSupporter(),
 				user: { email: 'test@test.com' },
 			},
 			container: (
