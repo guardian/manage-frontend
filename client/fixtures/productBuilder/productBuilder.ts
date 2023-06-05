@@ -62,9 +62,9 @@ export class ProductBuilder {
 		return this;
 	}
 
-	payByPayPal() {
+	payByPayPal(email?: string) {
 		this.productToBuild.subscription.payPalEmail =
-			'sb-ltpuy8454870@personal.example.com';
+			email ?? 'sb-ltpuy8454870@personal.example.com';
 		this.productToBuild.subscription.paymentMethod = 'PayPal';
 
 		return this;

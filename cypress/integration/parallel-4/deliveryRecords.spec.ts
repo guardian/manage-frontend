@@ -1,7 +1,4 @@
-import {
-	homeDeliverySubscription,
-	toMembersDataApiResponse,
-} from '../../../client/fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../client/fixtures/productDetail';
 import {
 	deliveryRecordsWithNoDeliveries,
 	deliveryRecordsWithDelivery,
@@ -15,7 +12,10 @@ import {
 	DATE_FNS_INPUT_FORMAT,
 } from '../../../shared/dates';
 import { singleContributionsAPIResponse } from '../../../client/fixtures/singleContribution';
-import { guardianWeeklyPaidByCard } from '../../../client/fixtures/productBuilder/testProducts';
+import {
+	guardianWeeklyPaidByCard,
+	homeDelivery,
+} from '../../../client/fixtures/productBuilder/testProducts';
 
 describe('Delivery records', () => {
 	beforeEach(() => {
@@ -156,7 +156,7 @@ describe('Delivery records', () => {
 	it('home delivery with existing delivery problem (within 14 dayes) reporting issue - not auto credited', () => {
 		cy.intercept('GET', '/api/me/mma?productType=HomeDelivery', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(homeDeliverySubscription),
+			body: toMembersDataApiResponse(homeDelivery()),
 		}).as('product_detail_home_delivery');
 
 		const deliveryRecordsWithDeliveryProblem = JSON.parse(

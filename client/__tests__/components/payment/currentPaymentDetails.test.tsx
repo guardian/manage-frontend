@@ -49,10 +49,12 @@ describe('currentPaymentDetails.tsx', () => {
 	describe('For Paypal', () => {
 		test('shows masked email', () => {
 			const { getByText } = render(
-				<CurrentPaymentDetails {...newspaperVoucherPaidByPaypal()} />,
+				<CurrentPaymentDetails
+					{...newspaperVoucherPaidByPaypal('subscriber@example.com')}
+				/>,
 			);
 
-			expect(getByText('t*******r@example.com')).toBeDefined();
+			expect(getByText('s********r@example.com')).toBeDefined();
 		});
 	});
 });

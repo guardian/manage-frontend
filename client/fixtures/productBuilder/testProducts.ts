@@ -79,9 +79,9 @@ export function contributionCancelled() {
 		.getProductDetailObject();
 }
 
-export function newspaperVoucherPaidByPaypal() {
+export function newspaperVoucherPaidByPaypal(email?: string) {
 	return new ProductBuilder(baseDigitalVoucher())
-		.payByPayPal()
+		.payByPayPal(email)
 		.getProductDetailObject();
 }
 
