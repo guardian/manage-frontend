@@ -135,24 +135,16 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 		setCancellationCompleted(true);
 	}
 
-	if (userIsNavigatingBackFromCompletePage(cancellationCompleted)) {
-		return <Navigate to="/" />;
-	}
-
-	function userIsNavigatingBackFromCompletePage(hasCompleted: boolean) {
-		return (
-			hasCompleted &&
-			(!location.pathname.includes('switch-thank-you') ||
-				!location.pathname.includes('reasons'))
-		);
-	}
-
 	const [pageTitle, setPageTitle] = useState<string>(
 		`Cancel ${
 			groupedProductType.shortFriendlyName ||
 			groupedProductType.friendlyName()
 		}`,
 	);
+
+	if (userIsNavigatingBackFromCompletePage(cancellationCompleted)) {
+		return <Navigate to="/" />;
+	}
 
 	return (
 		<CancellationPageTitleContext.Provider value={{ setPageTitle }}>
@@ -171,3 +163,11 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 		</CancellationPageTitleContext.Provider>
 	);
 };
+
+function userIsNavigatingBackFromCompletePage(hasCompleted: boolean) {
+	return (
+		hasCompleted &&
+		!location.pathname.includes('reasons') &&
+		!location.pathname.includes('switch-thank-you')
+	);
+}
