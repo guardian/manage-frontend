@@ -78,11 +78,6 @@ const HelpCentreRouter = () => {
 				'Due to operational challenges caused by the ransomware attack on the Guardian, Customer Service phonelines in the US are currently not available. Live chat, email and UK and Australia phonelines remain unaffected.',
 			link: 'https://www.theguardian.com/media/2022/dec/21/guardian-hit-by-serious-it-incident-believed-to-be-ransomware-attack',
 		},
-		{
-			date: '1 Jun 2023 14:00',
-			message:
-				'We are aware that a small number of subscribers are continuing to have their newspapers delivered despite having a holiday booked. Our team are working to resolve this issue now. We apologise for any inconvenience.',
-		},
 	];
 
 	return (
