@@ -6,7 +6,7 @@ module.exports = {
 		options: {},
 	},
 	docs: {
-		autodocs: true,
+		autodocs: false,
 	},
 	webpackFinal: async (config, { configType }) => {
 		config.module.rules.push({
