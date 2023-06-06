@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import { raw } from 'body-parser';
-import type { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import { default as express } from 'express';
 import helmet from 'helmet';
 import { MAX_FILE_ATTACHMENT_SIZE_KB } from '../shared/fileUploadUtils';
@@ -35,8 +35,10 @@ if (conf.DOMAIN === 'thegulocal.com') {
 
 server.use(helmet());
 
+const serveStaticAssets: RequestHandler = express.static(__dirname + '/static');
+
 /** static asses are cached by fastly */
-server.use('/static', express.static(__dirname + '/static'));
+server.use('/static', serveStaticAssets);
 
 /**
  * WARNING: Because manage-fronted manages personal data make sure to prevent caching
