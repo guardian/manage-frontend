@@ -62,7 +62,7 @@ const CancellationInfo = ({
 		`}
 	>
 		<Stack space={1}>
-			<p css={paragraphListCss}>
+			<p css={paragraphListCss} data-qm-masking="blocklist">
 				We will send a confirmation email to you at {userEmailAddress}.{' '}
 				<span>
 					You will have access to all of your benefits until{' '}
