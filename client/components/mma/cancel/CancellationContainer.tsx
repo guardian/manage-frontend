@@ -108,6 +108,7 @@ export interface CancellationRouterState {
 	updatedContributionAmount?: number;
 	selectedReason?: CancellationReason;
 	dontShowOffer?: boolean;
+	journeyCompleted?: boolean;
 }
 
 export interface CancellationPageTitleInterface {
@@ -124,6 +125,27 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const productDetail = routerState?.productDetail;
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[props.productType.groupedProductType];
+
+	console.log(routerState);
+
+	const [cancellationCompleted, setCancellationCompleted] =
+		useState<boolean>(false);
+
+	if (!cancellationCompleted && routerState?.journeyCompleted) {
+		setCancellationCompleted(true);
+	}
+
+	if (userIsNavigatingBackFromCompletePage(cancellationCompleted)) {
+		return <Navigate to="/" />;
+	}
+
+	function userIsNavigatingBackFromCompletePage(hasCompleted: boolean) {
+		return (
+			hasCompleted &&
+			(!location.pathname.includes('switch-thank-you') ||
+				!location.pathname.includes('reasons'))
+		);
+	}
 
 	const [pageTitle, setPageTitle] = useState<string>(
 		`Cancel ${

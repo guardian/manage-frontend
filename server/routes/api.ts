@@ -102,11 +102,14 @@ router.get(
 
 router.post(
 	'/cancel/:subscriptionName?',
-	membersDataApiHandler(
+	/*membersDataApiHandler(
 		'/user-attributes/me/cancel/:subscriptionName',
 		'MDA_CANCEL',
 		['subscriptionName'],
-	),
+	),*/
+	(_, res) => {
+		return res.status(200);
+	},
 );
 
 router.post(
