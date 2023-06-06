@@ -108,7 +108,7 @@ if (featureSwitches.membershipSave) {
 			cy.findByText(/test@test.com/).should('exist');
 		});
 
-		it('cancels membership', () => {
+		it('cancels membership and user cannot go back to confirmation screen', () => {
 			cy.visit('/');
 			setSignInStatus();
 
@@ -165,6 +165,12 @@ if (featureSwitches.membershipSave) {
 			cy.wait('@set_reminder');
 
 			cy.findByText(/Thank you for setting up support reminder/).should(
+				'exist',
+			);
+
+			cy.go('back');
+
+			cy.findByRole('heading', { name: 'Account overview' }).should(
 				'exist',
 			);
 		});
