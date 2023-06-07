@@ -4,7 +4,7 @@ import { Lines } from '../identity/Lines';
 import type { ConsentOption } from '../identity/models';
 import {
 	dataPrivacyHeadingCss,
-	dataPrivacyMarketingToggleCss,
+	// dataPrivacyMarketingToggleCss,
 	dataPrivacyParagraphCss,
 	dataPrivacyUnorderedListCss,
 } from './DataPrivacy.styles';
@@ -13,6 +13,16 @@ interface YourDataSectionProps {
 	consents: ConsentOption[];
 	toggleConsent: ClickHandler;
 }
+
+const consentSubscribedValueInverter = (
+	consent: ConsentOption,
+): ConsentOption => {
+	return {
+		...consent,
+		subscribed: !consent.subscribed, // Opt Out consent value is inverted
+	};
+};
+
 // NOTE: The personalised advertising consent description is hard coded here and in
 // Identity Gateway. They should be the same unless running A/B tests.
 
@@ -22,7 +32,9 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 	const addMarketingToggleElement = optOutFinder(
 		props.consents,
 		props.toggleConsent,
-		dataPrivacyMarketingToggleCss,
+		undefined,
+		// dataPrivacyMarketingToggleCss,
+		consentSubscribedValueInverter,
 	);
 	return (
 		<>
