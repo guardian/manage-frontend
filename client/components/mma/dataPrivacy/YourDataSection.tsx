@@ -1,5 +1,8 @@
-import type { ClickHandler } from '../identity/emailAndMarketing/OptOutSection';
-import { optOutFinder } from '../identity/emailAndMarketing/OptOutSection';
+import type {
+	ClickHandler} from '../identity/emailAndMarketing/OptOutSection';
+import {
+	consentSubscribedValueInverter,
+ optOutFinder } from '../identity/emailAndMarketing/OptOutSection';
 import { Lines } from '../identity/Lines';
 import type { ConsentOption } from '../identity/models';
 import {
@@ -13,15 +16,6 @@ interface YourDataSectionProps {
 	consents: ConsentOption[];
 	toggleConsent: ClickHandler;
 }
-
-const consentSubscribedValueInverter = (
-	consent: ConsentOption,
-): ConsentOption => {
-	return {
-		...consent,
-		subscribed: !consent.subscribed, // Opt Out consent value is inverted
-	};
-};
 
 // NOTE: The personalised advertising consent description is hard coded here and in
 // Identity Gateway. They should be the same unless running A/B tests.
