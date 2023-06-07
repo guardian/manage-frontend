@@ -4,7 +4,7 @@ import { Lines } from '../identity/Lines';
 import type { ConsentOption } from '../identity/models';
 import {
 	dataPrivacyHeadingCss,
-	// dataPrivacyMarketingToggleCss,
+	dataPrivacyMarketingToggleCss,
 	dataPrivacyParagraphCss,
 	dataPrivacyUnorderedListCss,
 } from './DataPrivacy.styles';
@@ -32,8 +32,7 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 	const addMarketingToggleElement = optOutFinder(
 		props.consents,
 		props.toggleConsent,
-		undefined,
-		// dataPrivacyMarketingToggleCss,
+		dataPrivacyMarketingToggleCss,
 		consentSubscribedValueInverter,
 	);
 	return (
