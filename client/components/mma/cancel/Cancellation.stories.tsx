@@ -4,9 +4,9 @@ import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorato
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
 	contributionCancelled,
-	contributionPayPal,
-	guardianWeeklyCard,
-} from '../../../fixtures/productDetail';
+	contributionPaidByPayPal,
+	guardianWeeklyPaidByCard,
+} from '../../../fixtures/productBuilder/testProducts';
 import { CancellationContainer } from './CancellationContainer';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
@@ -26,7 +26,7 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: contributionPayPal },
+			state: { productDetail: contributionPaidByPayPal() },
 			container: <CancellationContainer productType={contributions} />,
 		},
 	},
@@ -44,7 +44,7 @@ export const ContactCustomerService: ComponentStory<
 
 ContactCustomerService.parameters = {
 	reactRouter: {
-		state: { productDetail: guardianWeeklyCard },
+		state: { productDetail: guardianWeeklyPaidByCard() },
 		container: (
 			<CancellationContainer productType={PRODUCT_TYPES.guardianweekly} />
 		),
@@ -63,7 +63,7 @@ Review.parameters = {
 	],
 	reactRouter: {
 		state: {
-			productDetail: contributionPayPal,
+			productDetail: contributionPaidByPayPal(),
 			selectedReasonId: 'mma_editorial',
 			cancellationPolicy: 'Today',
 		},
@@ -78,6 +78,6 @@ export const Confirmation: ComponentStory<
 
 	return getCancellationSummary(
 		PRODUCT_TYPES.contributions,
-		contributionCancelled,
-	)(contributionCancelled);
+		contributionCancelled(),
+	)(contributionCancelled());
 };

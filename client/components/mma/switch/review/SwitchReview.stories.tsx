@@ -2,11 +2,11 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import {
-	contributionCard,
-	contributionDirectDebit,
-	contributionPayPal,
-	contributionSepa,
-} from '../../../../fixtures/productDetail';
+	contributionPaidByCard,
+	contributionPaidByDirectDebit,
+	contributionPaidByPayPal,
+	contributionPaidBySepa,
+} from '../../../../fixtures/productBuilder/testProducts';
 import { productMovePreviewResponse } from '../../../../fixtures/productMove';
 import { SwitchContainer } from '../SwitchContainer';
 import { SwitchReview } from './SwitchReview';
@@ -41,7 +41,7 @@ export const Default: ComponentStory<typeof SwitchReview> = () => (
 // such as multiple payment methods being displayed.
 Default.parameters = {
 	reactRouter: {
-		state: { productDetail: contributionCard },
+		state: { productDetail: contributionPaidByCard() },
 	},
 };
 
@@ -50,7 +50,7 @@ export const WithPayPalPayment: ComponentStory<typeof SwitchReview> = () => (
 );
 WithPayPalPayment.parameters = {
 	reactRouter: {
-		state: { productDetail: contributionPayPal },
+		state: { productDetail: contributionPaidByPayPal() },
 	},
 };
 
@@ -59,7 +59,7 @@ export const WithDirectDebitPayment: ComponentStory<
 > = () => <SwitchReview />;
 WithDirectDebitPayment.parameters = {
 	reactRouter: {
-		state: { productDetail: contributionDirectDebit },
+		state: { productDetail: contributionPaidByDirectDebit() },
 	},
 };
 
@@ -68,7 +68,7 @@ export const WithSEPAPayment: ComponentStory<typeof SwitchReview> = () => (
 );
 WithSEPAPayment.parameters = {
 	reactRouter: {
-		state: { productDetail: contributionSepa },
+		state: { productDetail: contributionPaidBySepa() },
 	},
 };
 
@@ -76,7 +76,9 @@ export const YearlyOtherCurrency: ComponentStory<typeof SwitchReview> = () => (
 	<SwitchReview />
 );
 
-const contributionBelowThreshold = JSON.parse(JSON.stringify(contributionCard));
+const contributionBelowThreshold = JSON.parse(
+	JSON.stringify(contributionPaidByCard()),
+);
 const plan = contributionBelowThreshold.subscription.currentPlans[0];
 plan.price = 300;
 plan.currency = '$';
@@ -96,6 +98,6 @@ export const FromApp: ComponentStory<typeof SwitchReview> = () => (
 FromApp.parameters = {
 	reactRouter: {
 		container: <SwitchContainer isFromApp={true} />,
-		state: { productDetail: contributionCard },
+		state: { productDetail: contributionPaidByCard() },
 	},
 };

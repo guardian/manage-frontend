@@ -1,6 +1,6 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { newspaperVoucherPaypal } from '../../../fixtures/productDetail';
+import { newspaperVoucherPaidByPaypal } from '../../../fixtures/productBuilder/testProducts';
 import { BasicProductInfoTable } from './BasicProductInfoTable';
 
 export default {
@@ -11,6 +11,6 @@ export default {
 export const Default: ComponentStory<typeof BasicProductInfoTable> = () => (
 	<BasicProductInfoTable
 		groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
-		productDetail={newspaperVoucherPaypal}
+		productDetail={newspaperVoucherPaidByPaypal()}
 	/>
 );

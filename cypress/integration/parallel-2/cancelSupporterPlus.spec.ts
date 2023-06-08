@@ -1,7 +1,5 @@
-import {
-	toMembersDataApiResponse,
-	supporterPlus,
-} from '../../../client/fixtures/productDetail';
+import { supporterPlus } from '../../../client/fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Cancel Supporter Plus', () => {
@@ -25,8 +23,6 @@ describe('Cancel Supporter Plus', () => {
 
 		signInAndAcceptCookies();
 
-		supporterPlus.selfServiceCancellation.isAllowed = true;
-
 		cy.intercept('POST', '/api/case', {
 			statusCode: 200,
 			body: {
@@ -41,12 +37,12 @@ describe('Cancel Supporter Plus', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=SupporterPlus', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(supporterPlus),
+			body: toMembersDataApiResponse(supporterPlus()),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(supporterPlus),
+			body: toMembersDataApiResponse(supporterPlus()),
 		}).as('mma');
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -84,7 +80,7 @@ describe('Cancel Supporter Plus', () => {
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(supporterPlus),
+			body: toMembersDataApiResponse(supporterPlus()),
 		}).as('get_failed_cancellation');
 
 		cy.findByRole('radio', {

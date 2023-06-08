@@ -1,7 +1,5 @@
-import {
-	contributionCard,
-	toMembersDataApiResponse,
-} from '../../../client/fixtures/productDetail';
+import { contributionPaidByCard } from '../../../client/fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Cancel contribution', () => {
@@ -48,12 +46,12 @@ describe('Cancel contribution', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contributionCard),
+			body: toMembersDataApiResponse(contributionPaidByCard()),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contributionCard),
+			body: toMembersDataApiResponse(contributionPaidByCard()),
 		});
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
