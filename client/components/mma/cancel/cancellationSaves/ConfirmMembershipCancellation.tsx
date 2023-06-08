@@ -122,7 +122,7 @@ export const ConfirmMembershipCancellation = () => {
 				setLoadingFailed(true);
 			} else {
 				navigate('../reasons', {
-					state: { ...routerState },
+					state: { ...routerState, journeyCompleted: true },
 				});
 			}
 		} catch (e) {
