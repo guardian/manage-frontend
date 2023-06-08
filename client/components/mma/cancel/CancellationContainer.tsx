@@ -126,7 +126,6 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[props.productType.groupedProductType];
 
-	console.log(routerState);
 
 	const [cancellationCompleted, setCancellationCompleted] =
 		useState<boolean>(false);
