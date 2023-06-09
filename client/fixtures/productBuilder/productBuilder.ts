@@ -1,5 +1,15 @@
-import type { Card, ProductDetail } from '../../../shared/productResponse';
+import type {
+	Card,
+	ProductDetail} from '../../../shared/productResponse';
+import {
+	isPaidSubscriptionPlan,
+} from '../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../shared/productTypes';
+import type {
+	CurrencyIso} from '../../utilities/currencyIso';
+import {
+	convertCurrencyToSymbol,
+} from '../../utilities/currencyIso';
 
 export const cards = {
 	visaActive: () => {
@@ -110,6 +120,31 @@ export class ProductBuilder {
 
 	asPatron() {
 		this.productToBuild.subscription.readerType = 'Patron';
+		return this;
+	}
+
+	withCurrency(currencyIso: CurrencyIso) {
+		const { plan, currentPlans, futurePlans } =
+			this.productToBuild.subscription;
+		const currencySymbol = convertCurrencyToSymbol(currencyIso);
+		if (plan) {
+			plan.currencyISO = currencyIso;
+			plan.currency = currencySymbol;
+		}
+		for (const currentPlan of currentPlans) {
+			if (isPaidSubscriptionPlan(currentPlan)) {
+				currentPlan.currency = currencySymbol;
+				currentPlan.currencyISO = currencyIso;
+			}
+		}
+
+		for (const futurePlan of futurePlans) {
+			if (isPaidSubscriptionPlan(futurePlan)) {
+				futurePlan.currency = currencySymbol;
+				futurePlan.currencyISO = currencyIso;
+			}
+		}
+
 		return this;
 	}
 }
