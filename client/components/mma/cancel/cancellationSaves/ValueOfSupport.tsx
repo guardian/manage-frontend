@@ -67,7 +67,6 @@ export const ValueOfSupport = () => {
 					have reached millions around the world. We're so grateful.
 				</p>
 			</Stack>
-			<div>Image placeholder</div>
 			<div css={reverseStackedButtonLayoutCss}>
 				<Button
 					priority="tertiary"

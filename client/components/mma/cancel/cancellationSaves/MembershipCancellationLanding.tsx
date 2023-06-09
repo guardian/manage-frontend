@@ -30,7 +30,9 @@ function ineligibleForSave(
 	const inPaymentFailure = products.find((product) => product.alertText);
 
 	const hasOtherProduct = products.find(
-		(product) => product.mmaCategory != 'membership',
+		(product) =>
+			product.mmaCategory != 'membership' &&
+			!product.subscription.cancelledAt,
 	);
 
 	const membershipTierIsNotSupporter =
