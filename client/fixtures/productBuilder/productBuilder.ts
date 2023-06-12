@@ -1,5 +1,9 @@
-import type { Card, ProductDetail } from '../../../shared/productResponse';
-import { isPaidSubscriptionPlan } from '../../../shared/productResponse';
+import type {
+	Card,
+	ProductDetail} from '../../../shared/productResponse';
+import {
+	MDA_TEST_USER_HEADER
+} from '../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../shared/productTypes';
 
 export const cards = {
@@ -114,32 +118,8 @@ export class ProductBuilder {
 		return this;
 	}
 
-	withCurrency() {
-		// const { plan, currentPlans, futurePlans } =
-		// 	this.productToBuild.subscription;
-		// const currencySymbol = convertCurrencyToSymbol(currencyIso);
-		// if (plan) {
-		// 	plan.currencyISO = currencyIso;
-		// 	plan.currency = currencySymbol;
-		// }
-		// for (const currentPlan of currentPlans) {
-		// 	if (isPaidSubscriptionPlan(currentPlan)) {
-		// 		currentPlan.currency = currencySymbol;
-		// 		currentPlan.currencyISO = currencyIso;
-		// 	}
-		// }
-
-		// for (const futurePlan of futurePlans) {
-		// 	if (isPaidSubscriptionPlan(futurePlan)) {
-		// 		futurePlan.currency = currencySymbol;
-		// 		futurePlan.currencyISO = currencyIso;
-		// 	}
-		// }
-		console.log(
-			isPaidSubscriptionPlan(
-				this.productToBuild.subscription.currentPlans[0],
-			),
-		);
+	createBug() {
+		console.log(MDA_TEST_USER_HEADER);
 		return this;
 	}
 }
