@@ -1,15 +1,12 @@
 import type {
 	Card,
-	ProductDetail} from '../../../shared/productResponse';
-import {
-	isPaidSubscriptionPlan,
+	PaidSubscriptionPlan,
+	ProductDetail,
+	SubscriptionPlan,
 } from '../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../shared/productTypes';
-import type {
-	CurrencyIso} from '../../utilities/currencyIso';
-import {
-	convertCurrencyToSymbol,
-} from '../../utilities/currencyIso';
+import type { CurrencyIso } from '../../utilities/currencyIso';
+import { convertCurrencyToSymbol } from '../../utilities/currencyIso';
 
 export const cards = {
 	visaActive: () => {
@@ -147,4 +144,14 @@ export class ProductBuilder {
 
 		return this;
 	}
+}
+
+function isPaidSubscriptionPlan(
+	subscriptionPlan: SubscriptionPlan,
+): subscriptionPlan is PaidSubscriptionPlan {
+	return (
+		!!subscriptionPlan &&
+		(subscriptionPlan.hasOwnProperty('price') ||
+			subscriptionPlan.hasOwnProperty('amount'))
+	);
 }
