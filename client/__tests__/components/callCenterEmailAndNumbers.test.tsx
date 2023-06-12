@@ -16,11 +16,9 @@ describe('Call Center Email and Numbers', () => {
 
 	it('has no details when collapsed', () => {
 		render(<CallCentreEmailAndNumbers collapsed />);
-		expect(
-			screen
-				.getAllByText('Email:')
-				.every((e) => expect(e).not.toBeVisible()),
-		).toBe(true);
+		screen
+			.getAllByText('Email:')
+			.forEach((e) => expect(e).not.toBeVisible());
 		expect(screen.queryByText('Hide')).not.toBeInTheDocument();
 		expect(screen.getByText(/United Kingdom/)).toHaveStyle({
 			'font-weight': '400',
@@ -30,11 +28,7 @@ describe('Call Center Email and Numbers', () => {
 	it('displays compact layout', () => {
 		render(<CallCentreEmailAndNumbers compactLayout />);
 		expect(screen.getByText('Hide')).not.toBeVisible();
-		expect(
-			screen
-				.getAllByText('Show')
-				.every((e) => expect(e).not.toBeVisible()),
-		).toBe(true);
+		screen.getAllByText('Show').forEach((e) => expect(e).not.toBeVisible());
 	});
 
 	it('filters phone regions', () => {
