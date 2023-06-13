@@ -48,8 +48,8 @@ export const ContinueMembershipConfirmation = () => {
 			<Stack space={4}>
 				<h2 css={headingCss}>Thank you for keeping your Membership</h2>
 				<p css={paragraphListCss}>
-					The new price of your Membership is{' '}
-					{newMembershipPriceDisplay}/{mainPlan.billingPeriod}.{' '}
+					The price of your Membership is {newMembershipPriceDisplay}/
+					{mainPlan.billingPeriod}.{' '}
 					<span>
 						Your first billing date will be{' '}
 						{cancellationFormatDate(
