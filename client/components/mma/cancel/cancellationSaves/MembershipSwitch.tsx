@@ -228,7 +228,9 @@ export const MembershipSwitch = () => {
 				setIsSwitching(false);
 				setSwitchingError(true);
 			} else {
-				navigate('../switch-thank-you', { state: { ...routerState } });
+				navigate('../switch-thank-you', {
+					state: { ...routerState, journeyCompleted: true },
+				});
 			}
 		} catch (e) {
 			setIsSwitching(false);

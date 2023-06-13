@@ -2,10 +2,10 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
-	guardianWeeklyCard,
 	guardianWeeklyExpiredCard,
-	newspaperVoucherPaypal,
-} from '../../../fixtures/productDetail';
+	guardianWeeklyPaidByCard,
+	newspaperVoucherPaidByPaypal,
+} from '../../../fixtures/productBuilder/testProducts';
 import { PaymentDetailUpdate } from './PaymentDetailUpdate';
 import { PaymentDetailUpdateContainer } from './PaymentDetailUpdateContainer';
 
@@ -32,7 +32,7 @@ export const GuardianWeeklyCard: ComponentStory<
 GuardianWeeklyCard.parameters = {
 	reactRouter: {
 		state: {
-			productDetail: guardianWeeklyCard,
+			productDetail: guardianWeeklyPaidByCard(),
 		},
 		container: (
 			<PaymentDetailUpdateContainer
@@ -52,7 +52,7 @@ export const NewspaperVoucherPaypal: ComponentStory<
 NewspaperVoucherPaypal.parameters = {
 	reactRouter: {
 		state: {
-			productDetail: newspaperVoucherPaypal,
+			productDetail: newspaperVoucherPaidByPaypal(),
 		},
 		container: (
 			<PaymentDetailUpdateContainer productType={PRODUCT_TYPES.voucher} />
@@ -69,7 +69,7 @@ export const GuardianWeeklyExpiredCard: ComponentStory<
 
 GuardianWeeklyExpiredCard.parameters = {
 	reactRouter: {
-		state: { productDetail: guardianWeeklyExpiredCard },
+		state: { productDetail: guardianWeeklyExpiredCard() },
 		container: (
 			<PaymentDetailUpdateContainer
 				productType={PRODUCT_TYPES.guardianweekly}

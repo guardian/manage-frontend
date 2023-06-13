@@ -12,23 +12,20 @@ import {
 	PuzzleAppPurchaseAndroid,
 	PuzzleAppPurchaseIos,
 } from '../../../fixtures/inAppPurchase';
-import {
-	digitalPackPaidByDirectDebit,
-	guardianWeeklyPaidByCard,
-} from '../../../fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
 import {
 	contributionCancelled,
-	contributionPayPal,
-	digitalDD,
+	contributionPaidByPayPal,
+	digitalPackPaidByDirectDebit,
 	guardianWeeklyCancelled,
 	guardianWeeklyGiftPurchase,
 	guardianWeeklyGiftRecipient,
+	guardianWeeklyPaidByCard,
 	membershipSupporter,
-	newspaperVoucherPaypal,
+	newspaperVoucherPaidByPaypal,
 	supporterPlus,
 	supporterPlusCancelled,
-	toMembersDataApiResponse,
-} from '../../../fixtures/productDetail';
+} from '../../../fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../fixtures/singleContribution';
 import { user } from '../../../fixtures/user';
 import { AccountOverview } from './AccountOverview';
@@ -87,9 +84,9 @@ WithSubscriptions.parameters = {
 					toMembersDataApiResponse(
 						guardianWeeklyPaidByCard(),
 						digitalPackPaidByDirectDebit(),
-						newspaperVoucherPaypal,
-						membershipSupporter,
-						supporterPlus,
+						newspaperVoucherPaidByPaypal(),
+						membershipSupporter(),
+						supporterPlus(),
 					),
 				),
 			);
@@ -115,7 +112,9 @@ WithContributionAndSwitchPossible.parameters = {
 			return res(ctx.json({ subscriptions: [] }));
 		}),
 		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(ctx.json(toMembersDataApiResponse(contributionPayPal)));
+			return res(
+				ctx.json(toMembersDataApiResponse(contributionPaidByPayPal())),
+			);
 		}),
 		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
 			return res(ctx.json([]));
@@ -130,7 +129,7 @@ export const WithContributionInPaymentFailure: ComponentStory<
 };
 
 const contributionPaymentFailure = {
-	...contributionPayPal,
+	...contributionPaidByPayPal(),
 	alertText: 'Your payment has failed.',
 };
 
@@ -147,7 +146,7 @@ WithContributionInPaymentFailure.parameters = {
 				ctx.json(
 					toMembersDataApiResponse(
 						contributionPaymentFailure,
-						supporterPlus,
+						supporterPlus(),
 					),
 				),
 			);
@@ -175,7 +174,10 @@ WithContributionAndSwitchNotPossible.parameters = {
 		rest.get('/api/me/mma', (_req, res, ctx) => {
 			return res(
 				ctx.json(
-					toMembersDataApiResponse(contributionPayPal, digitalDD),
+					toMembersDataApiResponse(
+						contributionPaidByPayPal(),
+						digitalPackPaidByDirectDebit(),
+					),
 				),
 			);
 		}),
@@ -205,9 +207,9 @@ WithCancelledSubscriptions.parameters = {
 			return res(
 				ctx.json(
 					toMembersDataApiResponse(
-						contributionCancelled,
-						guardianWeeklyCancelled,
-						supporterPlusCancelled,
+						contributionCancelled(),
+						guardianWeeklyCancelled(),
+						supporterPlusCancelled(),
 					),
 				),
 			);
@@ -236,8 +238,8 @@ WithGiftSubscriptions.parameters = {
 			return res(
 				ctx.json(
 					toMembersDataApiResponse(
-						guardianWeeklyGiftRecipient,
-						guardianWeeklyGiftPurchase,
+						guardianWeeklyGiftRecipient(),
+						guardianWeeklyGiftPurchase(),
 					),
 				),
 			);

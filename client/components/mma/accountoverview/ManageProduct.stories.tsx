@@ -2,10 +2,10 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
-	digitalDD,
-	guardianWeeklyCard,
-	newspaperVoucherPaypal,
-} from '../../../fixtures/productDetail';
+	digitalPackPaidByDirectDebit,
+	guardianWeeklyPaidByCard,
+	newspaperVoucherPaidByPaypal,
+} from '../../../fixtures/productBuilder/testProducts';
 import { ManageProduct } from './ManageProduct';
 
 export default {
@@ -24,20 +24,20 @@ const Template: ComponentStory<typeof ManageProduct> = () => (
 export const GuardianWeekly = Template.bind({});
 GuardianWeekly.parameters = {
 	reactRouter: {
-		state: { productDetail: guardianWeeklyCard },
+		state: { productDetail: guardianWeeklyPaidByCard() },
 	},
 };
 
 export const DigitalSubscription = Template.bind({});
 DigitalSubscription.parameters = {
 	reactRouter: {
-		state: { productDetail: digitalDD },
+		state: { productDetail: digitalPackPaidByDirectDebit() },
 	},
 };
 
 export const NewspaperSubscriptionCard = Template.bind({});
 NewspaperSubscriptionCard.parameters = {
 	reactRouter: {
-		state: { productDetail: newspaperVoucherPaypal },
+		state: { productDetail: newspaperVoucherPaidByPaypal() },
 	},
 };

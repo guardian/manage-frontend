@@ -2,10 +2,8 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
-import {
-	guardianWeeklyCard,
-	toMembersDataApiResponse,
-} from '../../../../fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../../fixtures/mdapiResponse';
+import { guardianWeeklyPaidByCard } from '../../../../fixtures/productBuilder/testProducts';
 import { DeliveryAddressChangeContainer } from './DeliveryAddressChangeContainer';
 import { DeliveryAddressConfirmation } from './DeliveryAddressConfirmation';
 import { DeliveryAddressUpdate } from './DeliveryAddressForm';
@@ -17,7 +15,7 @@ export default {
 	decorators: [ReactRouterDecorator],
 	parameters: {
 		reactRouter: {
-			state: guardianWeeklyCard,
+			state: guardianWeeklyPaidByCard(),
 			container: (
 				<DeliveryAddressChangeContainer
 					productType={PRODUCT_TYPES.guardianweekly}
@@ -27,7 +25,9 @@ export default {
 		msw: [
 			rest.get('/api/me/mma', (_req, res, ctx) => {
 				return res(
-					ctx.json(toMembersDataApiResponse(guardianWeeklyCard)),
+					ctx.json(
+						toMembersDataApiResponse(guardianWeeklyPaidByCard()),
+					),
 				);
 			}),
 		],
@@ -57,7 +57,9 @@ export const Confirmation: ComponentStory<
 Confirmation.parameters = {
 	msw: [
 		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(ctx.json(toMembersDataApiResponse(guardianWeeklyCard)));
+			return res(
+				ctx.json(toMembersDataApiResponse(guardianWeeklyPaidByCard())),
+			);
 		}),
 		rest.put('/api/delivery/address/update/*', (_req, res, ctx) => {
 			return res(ctx.status(200));

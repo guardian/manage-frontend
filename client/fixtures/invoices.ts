@@ -1,9 +1,9 @@
 import type { InvoiceDataApiItem } from '../../shared/productResponse';
-import { guardianWeeklyCard } from './productDetail';
+import { guardianWeeklyPaidByCard } from './productBuilder/testProducts';
 
 export const guardianWeeklyCardInvoice: InvoiceDataApiItem = {
 	invoiceId: '',
-	subscriptionName: guardianWeeklyCard.subscription.subscriptionId,
+	subscriptionName: guardianWeeklyPaidByCard().subscription.subscriptionId,
 	date: '2021-12-10',
 	pdfPath: '',
 	price: 135,

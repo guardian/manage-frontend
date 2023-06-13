@@ -9,12 +9,12 @@ import {
 	PuzzleAppPurchaseAndroid,
 } from '../../../fixtures/inAppPurchase';
 import { guardianWeeklyCardInvoice } from '../../../fixtures/invoices';
+import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
 import {
-	digitalDD,
-	guardianWeeklyCard,
-	newspaperVoucherPaypal,
-	toMembersDataApiResponse,
-} from '../../../fixtures/productDetail';
+	digitalPackPaidByDirectDebit,
+	guardianWeeklyPaidByCard,
+	newspaperVoucherPaidByPaypal,
+} from '../../../fixtures/productBuilder/testProducts';
 import { user } from '../../../fixtures/user';
 import { Billing } from './Billing';
 
@@ -65,9 +65,9 @@ WithSubscriptions.parameters = {
 			return res(
 				ctx.json(
 					toMembersDataApiResponse(
-						guardianWeeklyCard,
-						digitalDD,
-						newspaperVoucherPaypal,
+						guardianWeeklyPaidByCard(),
+						digitalPackPaidByDirectDebit(),
+						newspaperVoucherPaidByPaypal(),
 					),
 				),
 			);

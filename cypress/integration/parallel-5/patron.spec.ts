@@ -1,11 +1,11 @@
 import {
-	guardianWeeklyCard,
-	toMembersDataApiResponse,
-	patronDigitalSub,
-} from '../../../client/fixtures/productDetail';
+	guardianWeeklyPaidByCard,
+	patronDigitalPack,
+} from '../../../client/fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
-const patronMDAPI = [patronDigitalSub, guardianWeeklyCard];
+const patronMDAPI = [patronDigitalPack(), guardianWeeklyPaidByCard()];
 
 describe('patron test', () => {
 	beforeEach(() => {
@@ -14,8 +14,8 @@ describe('patron test', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
-				patronDigitalSub,
-				guardianWeeklyCard,
+				patronDigitalPack(),
+				guardianWeeklyPaidByCard(),
 			),
 		}).as('product_detail');
 
@@ -53,7 +53,7 @@ describe('patron test', () => {
 	it('patron manage subscription page', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(patronDigitalSub),
+			body: toMembersDataApiResponse(patronDigitalPack()),
 		}).as('product_detail');
 
 		cy.visit('/subscriptions');

@@ -1,9 +1,9 @@
 import {
-	contributionCard,
+	contributionPaidByCard,
 	guardianWeeklyExpiredCard,
 	membershipSupporter,
-	toMembersDataApiResponse,
-} from '../../../client/fixtures/productDetail';
+} from '../../../client/fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { productMovePreviewResponse } from '../../../client/fixtures/productMove';
 import { featureSwitches } from '../../../shared/featureSwitches';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
@@ -25,12 +25,12 @@ if (featureSwitches.membershipSave) {
 			signInAndAcceptCookies();
 			cy.intercept('GET', '/api/me/mma?productType=Membership', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(membershipSupporter),
+				body: toMembersDataApiResponse(membershipSupporter()),
 			});
 
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(membershipSupporter),
+				body: toMembersDataApiResponse(membershipSupporter()),
 			});
 
 			cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -108,7 +108,7 @@ if (featureSwitches.membershipSave) {
 			cy.findByText(/test@test.com/).should('exist');
 		});
 
-		it('cancels membership', () => {
+		it('cancels membership and user cannot go back to confirmation screen', () => {
 			cy.visit('/');
 			setSignInStatus();
 
@@ -167,6 +167,12 @@ if (featureSwitches.membershipSave) {
 			cy.findByText(/Thank you for setting up support reminder/).should(
 				'exist',
 			);
+
+			cy.go('back');
+
+			cy.findByRole('heading', { name: 'Account overview' }).should(
+				'exist',
+			);
 		});
 
 		it('retains membership', () => {
@@ -198,8 +204,8 @@ if (featureSwitches.membershipSave) {
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
 				body: toMembersDataApiResponse(
-					membershipSupporter,
-					contributionCard,
+					membershipSupporter(),
+					contributionPaidByCard(),
 				),
 			});
 
@@ -212,8 +218,8 @@ if (featureSwitches.membershipSave) {
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
 				body: toMembersDataApiResponse(
-					membershipSupporter,
-					guardianWeeklyExpiredCard,
+					membershipSupporter(),
+					guardianWeeklyExpiredCard(),
 				),
 			});
 

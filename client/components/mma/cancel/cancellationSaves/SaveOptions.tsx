@@ -94,7 +94,7 @@ export const SaveOptions = () => {
 			<ProgressStepper
 				steps={[
 					{ title: 'Details' },
-					{ title: 'Offer', isCurrentStep: true },
+					{ title: 'Options', isCurrentStep: true },
 					{ title: 'Confirmation' },
 				]}
 				additionalCSS={css`

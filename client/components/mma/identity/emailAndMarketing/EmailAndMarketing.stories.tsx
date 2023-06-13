@@ -4,14 +4,14 @@ import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecor
 import { featureSwitches } from '../../../../../shared/featureSwitches';
 import { consents } from '../../../../fixtures/consents';
 import { InAppPurchase } from '../../../../fixtures/inAppPurchase';
+import { toMembersDataApiResponse } from '../../../../fixtures/mdapiResponse';
 import { newsletters } from '../../../../fixtures/newsletters';
 import { newsletterSubscriptions } from '../../../../fixtures/newsletterSubscriptions';
 import {
-	digitalDD,
-	guardianWeeklyCard,
-	newspaperVoucherPaypal,
-	toMembersDataApiResponse,
-} from '../../../../fixtures/productDetail';
+	digitalPackPaidByDirectDebit,
+	guardianWeeklyPaidByCard,
+	newspaperVoucherPaidByPaypal,
+} from '../../../../fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../../fixtures/singleContribution';
 import { user } from '../../../../fixtures/user';
 import { EmailAndMarketing } from './EmailAndMarketing';
@@ -35,9 +35,9 @@ Default.parameters = {
 			return res(
 				ctx.json(
 					toMembersDataApiResponse(
-						guardianWeeklyCard,
-						digitalDD,
-						newspaperVoucherPaypal,
+						guardianWeeklyPaidByCard(),
+						digitalPackPaidByDirectDebit(),
+						newspaperVoucherPaidByPaypal(),
 					),
 				),
 			);
