@@ -178,6 +178,9 @@ export const ConfirmMembershipCancellation = () => {
 					cssOverrides={css`
 						background-color: ${palette.news['400']};
 						justify-content: center;
+						:hover {
+							background-color: ${palette.news['200']};
+						}
 					`}
 				>
 					Confirm Cancellation
