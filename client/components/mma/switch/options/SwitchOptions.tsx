@@ -10,7 +10,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { formatAmount } from '../../../../utilities/utils';
-import { supporterPlusSwitch } from '../../shared/benefits/BenefitsConfiguration';
+import { supporterPlusSwitchBenefits } from '../../shared/benefits/BenefitsConfiguration';
 import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
@@ -245,7 +245,9 @@ export const SwitchOptions = () => {
 							</div>
 						</Card.Header>
 						<Card.Section>
-							<BenefitsSection benefits={supporterPlusSwitch} />
+							<BenefitsSection
+								benefits={supporterPlusSwitchBenefits}
+							/>
 						</Card.Section>
 					</Card>
 				</Stack>
