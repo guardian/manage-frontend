@@ -207,6 +207,7 @@ export const MembershipSwitch = () => {
 				body: JSON.stringify({
 					price: getOldMembershipPrice(mainPlan),
 					preview: false,
+					checkChargeAmountBeforeUpdate: false,
 				}),
 				headers: {
 					'Content-Type': 'application/json',
