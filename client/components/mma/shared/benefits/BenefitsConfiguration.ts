@@ -26,6 +26,8 @@ export interface ProductBenefit {
 	isUnavailable?: boolean;
 }
 
+export const supporterPlusSwitch = [newsApp, adFree];
+
 export const benefitsConfiguration: {
 	[productType in ProductTypeKeys]: ProductBenefit[];
 } = {
@@ -37,7 +39,7 @@ export const benefitsConfiguration: {
 			isUnavailable: true,
 		},
 	],
-	supporterplus: [newsApp, adFree],
+	supporterplus: [newsApp, supporterNewsletter, uninterruptedReading, adFree],
 	membership: [newsApp, uninterruptedReading, supporterNewsletter],
 	digipack: [],
 	digitalvoucher: [],
