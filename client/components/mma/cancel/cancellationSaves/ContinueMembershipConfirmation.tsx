@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
-import { Button, Stack } from '@guardian/source-react-components';
+import { Button, LinkButton, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { cancellationFormatDate } from '../../../../../shared/dates';
@@ -48,8 +48,8 @@ export const ContinueMembershipConfirmation = () => {
 			<Stack space={4}>
 				<h2 css={headingCss}>Thank you for keeping your Membership</h2>
 				<p css={paragraphListCss}>
-					The new price of your Membership is{' '}
-					{newMembershipPriceDisplay}/{mainPlan.billingPeriod}.{' '}
+					The price of your Membership is {newMembershipPriceDisplay}/
+					{mainPlan.billingPeriod}.{' '}
 					<span>
 						Your first billing date will be{' '}
 						{cancellationFormatDate(
@@ -67,12 +67,12 @@ export const ContinueMembershipConfirmation = () => {
 				>
 					Back to my account
 				</Button>
-				<Button
-					onClick={() => navigate('https://www.theguardian.com')}
+				<LinkButton
+					href="https://theguardian.com"
 					cssOverrides={buttonCentredCss}
 				>
 					Continue to the Guardian
-				</Button>
+				</LinkButton>
 			</div>
 		</>
 	);

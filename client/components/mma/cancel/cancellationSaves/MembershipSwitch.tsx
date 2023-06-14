@@ -144,7 +144,7 @@ const TsAndCs = (props: {
 		</p>
 		<p css={smallPrintCss}>
 			By proceeding, you are agreeing to our{' '}
-			<a href="https://www.theguardian.com/info/2022/oct/28/the-guardian-supporter-plus-terms-and-conditions">
+			<a href="https://www.theguardian.com/info/2016/apr/04/contribution-terms-and-conditions">
 				Terms and Conditions
 			</a>
 			.

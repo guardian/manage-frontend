@@ -71,7 +71,7 @@ export const ValueOfSupport = () => {
 				<Button
 					priority="tertiary"
 					cssOverrides={buttonCentredCss}
-					onClick={() => navigate('../landing')}
+					onClick={() => navigate('/')}
 				>
 					Back to my account
 				</Button>
