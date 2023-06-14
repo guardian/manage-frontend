@@ -26,6 +26,8 @@ export interface ProductBenefit {
 	isUnavailable?: boolean;
 }
 
+export const supporterPlusSwitchBenefits = [newsApp, adFree];
+
 export const benefitsConfiguration: {
 	[productType in ProductTypeKeys]: ProductBenefit[];
 } = {
