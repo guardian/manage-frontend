@@ -99,6 +99,13 @@ export function membershipSupporter() {
 		.getProductDetailObject();
 }
 
+export function membershipSupporterCurrencyUSD() {
+	return new ProductBuilder(baseMembership())
+		.payByCard()
+		.withCurrency('USD')
+		.getProductDetailObject();
+}
+
 export function membershipStaff() {
 	return new ProductBuilder(baseMembership())
 		.payByCard()
