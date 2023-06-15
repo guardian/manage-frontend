@@ -11,6 +11,7 @@ import {
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { cancellationFormatDate } from '../../../../shared/dates';
+import { featureSwitches } from '../../../../shared/featureSwitches';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import {
 	getMainPlan,
@@ -42,6 +43,7 @@ import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTab
 import { NewsletterOptinSection } from './NewsletterOptinSection';
 import { SixForSixExplainerIfApplicable } from './SixForSixExplainer';
 import { ContributionUpdateAmount } from './updateAmount/ContributionUpdateAmount';
+import { SupporterPlusUpdateAmount } from './updateAmount/SupporterPlusUpdateAmount';
 
 const subHeadingTitleCss = `
     ${headline.small()};
@@ -152,14 +154,35 @@ const InnerContent = ({
 				</p>
 			)}
 
-			{isAmountOveridable && isPaidSubscriptionPlan(mainPlan) ? (
-				<ContributionUpdateAmount
-					subscriptionId={productDetail.subscription.subscriptionId}
-					mainPlan={mainPlan}
-					productType={specificProductType}
-					nextPaymentDate={productDetail.subscription.nextPaymentDate}
-					amountUpdateStateChange={setOveriddenAmount}
-				/>
+			{(isAmountOveridable ||
+				featureSwitches.supporterPlusUpdateAmount) &&
+			isPaidSubscriptionPlan(mainPlan) ? (
+				specificProductType.productType === 'supporterplus' &&
+				featureSwitches.supporterPlusUpdateAmount ? (
+					<SupporterPlusUpdateAmount
+						subscriptionId={
+							productDetail.subscription.subscriptionId
+						}
+						mainPlan={mainPlan}
+						productType={specificProductType}
+						nextPaymentDate={
+							productDetail.subscription.nextPaymentDate
+						}
+						amountUpdateStateChange={setOveriddenAmount}
+					/>
+				) : (
+					<ContributionUpdateAmount
+						subscriptionId={
+							productDetail.subscription.subscriptionId
+						}
+						mainPlan={mainPlan}
+						productType={specificProductType}
+						nextPaymentDate={
+							productDetail.subscription.nextPaymentDate
+						}
+						amountUpdateStateChange={setOveriddenAmount}
+					/>
+				)
 			) : (
 				<BasicProductInfoTable
 					groupedProductType={groupedProductType}

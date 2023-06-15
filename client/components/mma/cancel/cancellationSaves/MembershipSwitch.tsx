@@ -17,6 +17,7 @@ import type {
 } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
 import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
 import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Card } from '../../shared/Card';
@@ -50,7 +51,9 @@ const YourNewSupport = (props: {
 	contributionPriceDisplay: string;
 	billingPeriod: string;
 }) => {
-	const monthlyOrAnnual = getMonthlyOrAnnual(props.billingPeriod);
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		props.billingPeriod,
+	);
 	return (
 		<section css={sectionSpacing}>
 			<Heading
@@ -310,10 +313,6 @@ export const MembershipSwitch = () => {
 		</>
 	);
 };
-
-function getMonthlyOrAnnual(billingPeriod: string | undefined) {
-	return billingPeriod === 'year' ? 'Annual' : 'Monthly';
-}
 
 function SwitchErrorContext() {
 	return (

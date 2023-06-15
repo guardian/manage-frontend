@@ -4,6 +4,7 @@ import {
 	ChoiceCard,
 	ChoiceCardGroup,
 	InlineError,
+	Link,
 	SvgInfoRound,
 	TextInput,
 } from '@guardian/source-react-components';
@@ -12,9 +13,13 @@ import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { augmentBillingPeriod } from '../../../../../shared/productResponse';
 import type { ProductType } from '../../../../../shared/productTypes';
-import type { ContributionInterval } from '../../../../utilities/contributionsAmount';
-import { contributionAmountsLookup } from '../../../../utilities/contributionsAmount';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
+import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
+import {
+	suggestedAmounts,
+	supporterPlusPriceConfigByCountryGroup,
+} from '../../../../utilities/supporterPlusPricing';
 import { TextResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 import { Button } from '../../shared/Buttons';
@@ -32,17 +37,16 @@ interface SupporterPlusUpdateAmountFormProps {
 export const SupporterPlusUpdateAmountForm = (
 	props: SupporterPlusUpdateAmountFormProps,
 ) => {
-	const currentContributionOptions = (contributionAmountsLookup[
-		props.mainPlan.currencyISO
-	] || contributionAmountsLookup.international)[
-		props.mainPlan.billingPeriod as ContributionInterval
+	const priceConfig = (supporterPlusPriceConfigByCountryGroup[
+		props.mainPlan.currencyISO as CurrencyIso
+	] || supporterPlusPriceConfigByCountryGroup.international)[
+		calculateMonthlyOrAnnualFromBillingPeriod(props.mainPlan.billingPeriod)
 	];
 
-	const getDefaultOtherAmount = (): number | null =>
-		currentContributionOptions.otherDefaultAmount;
+	const getDefaultOtherAmount = priceConfig.minAmount;
 
 	const [otherAmount, setOtherAmount] = useState<number | null>(
-		getDefaultOtherAmount(),
+		getDefaultOtherAmount,
 	);
 	const [isOtherAmountSelected, setIsOtherAmountSelected] =
 		useState<boolean>(false);
@@ -60,7 +64,7 @@ export const SupporterPlusUpdateAmountForm = (
 	const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
 
 	useEffect(() => {
-		if (otherAmount !== getDefaultOtherAmount()) {
+		if (otherAmount !== getDefaultOtherAmount) {
 			setHasInteractedWithOtherAmount(true);
 		}
 	}, [otherAmount]);
@@ -103,26 +107,22 @@ export const SupporterPlusUpdateAmountForm = (
 			return 'There is a problem with the amount you have selected, please make sure it is a valid amount';
 		} else if (
 			!isNaN(chosenOptionNum) &&
-			chosenOptionNum < currentContributionOptions.minAmount
+			chosenOptionNum < priceConfig.minAmount
 		) {
 			return `There is a minimum ${
 				props.mainPlan.billingPeriod
 			}ly contribution amount of ${
 				props.mainPlan.currency
-			}${currentContributionOptions.minAmount.toFixed(2)} ${
-				props.mainPlan.currencyISO
-			}`;
+			}${priceConfig.minAmount.toFixed(2)} ${props.mainPlan.currencyISO}`;
 		} else if (
 			!isNaN(chosenOptionNum) &&
-			chosenOptionNum > currentContributionOptions.maxAmount
+			chosenOptionNum > priceConfig.maxAmount
 		) {
 			return `There is a maximum ${
 				props.mainPlan.billingPeriod
 			}ly contribution amount of ${
 				props.mainPlan.currency
-			}${currentContributionOptions.maxAmount.toFixed(2)} ${
-				props.mainPlan.currencyISO
-			}`;
+			}${priceConfig.maxAmount.toFixed(2)} ${props.mainPlan.currencyISO}`;
 		}
 		return null;
 	};
@@ -132,7 +132,7 @@ export const SupporterPlusUpdateAmountForm = (
 	);
 
 	const amountLabel = (amount: number) => {
-		return `${props.mainPlan.currency} ${amount} per ${props.mainPlan.billingPeriod}`;
+		return `${props.mainPlan.currency}${amount} a ${props.mainPlan.billingPeriod}`;
 	};
 
 	const shouldShowSelectedAmountErrorMessage =
@@ -264,7 +264,7 @@ export const SupporterPlusUpdateAmountForm = (
 							columns={2}
 						>
 							<>
-								{currentContributionOptions.amounts.map(
+								{suggestedAmounts(props.currentAmount).map(
 									(amount) => (
 										<ChoiceCard
 											id={`amount-${amount}`}
@@ -308,8 +308,8 @@ export const SupporterPlusUpdateAmountForm = (
 							/>
 							<p>
 								If you would like to lower your monthly amount
-								below TODO:£10 please call us via the TODO:Help
-								Centre
+								below TODO:£10 please call us via the{' '}
+								<Link href="/help-centre">Help Centre</Link>
 							</p>
 						</div>
 						<p>
