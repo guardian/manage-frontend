@@ -84,8 +84,8 @@ export const ContributionUpdateAmount = (
 				]}
 			/>
 			<Button
-				colour={palette.brand[400]}
-				textColour={palette.brand[800]}
+				colour={palette.brand[800]}
+				textColour={palette.brand[400]}
 				fontWeight="bold"
 				text="Change amount"
 				onClick={() => {

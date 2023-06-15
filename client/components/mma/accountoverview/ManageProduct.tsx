@@ -99,6 +99,10 @@ const InnerContent = ({
 	const maybePatronSuffix =
 		productDetail.subscription.readerType === 'Patron' ? ' - Patron' : '';
 
+	const showSupporterPlusUpdateAmount =
+		specificProductType.productType === 'supporterplus' &&
+		featureSwitches.supporterPlusUpdateAmount;
+
 	return (
 		<>
 			<PaymentFailureAlertIfApplicable productDetails={[productDetail]} />
@@ -154,11 +158,9 @@ const InnerContent = ({
 				</p>
 			)}
 
-			{(isAmountOveridable ||
-				featureSwitches.supporterPlusUpdateAmount) &&
+			{(isAmountOveridable || showSupporterPlusUpdateAmount) &&
 			isPaidSubscriptionPlan(mainPlan) ? (
-				specificProductType.productType === 'supporterplus' &&
-				featureSwitches.supporterPlusUpdateAmount ? (
+				showSupporterPlusUpdateAmount ? (
 					<SupporterPlusUpdateAmount
 						subscriptionId={
 							productDetail.subscription.subscriptionId

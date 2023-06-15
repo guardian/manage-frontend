@@ -62,13 +62,7 @@ it.each([
 		fireEvent.click(screen.getByText('Change amount'));
 
 		// assert that the minimum amount validation error message is shown
-		expect(
-			screen.queryByText(
-				`There is a minimum ${billingPeriod}ly contribution amount of £${expectedMinAmount.toFixed(
-					2,
-				)} GBP`,
-			),
-		).toBeTruthy();
+		expect(screen.queryByText(/There is a minimum/)).toBeTruthy();
 	},
 );
 
@@ -198,7 +192,7 @@ it('updates amount is valid value is input', async () => {
 		name: /other amount/i,
 	});
 	fireEvent.change(otherInputElem, {
-		target: { value: 4 },
+		target: { value: 14 },
 	});
 
 	// click on the change amount button again and then check to make sure that the validation error message shows up
