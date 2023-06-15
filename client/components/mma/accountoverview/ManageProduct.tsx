@@ -39,9 +39,9 @@ import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { PaymentDetailsTable } from '../shared/PaymentDetailsTable';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTable';
-import { ContributionUpdateAmount } from './ContributionUpdateAmount';
 import { NewsletterOptinSection } from './NewsletterOptinSection';
 import { SixForSixExplainerIfApplicable } from './SixForSixExplainer';
+import { ContributionUpdateAmount } from './updateAmount/ContributionUpdateAmount';
 
 const subHeadingTitleCss = `
     ${headline.small()};
