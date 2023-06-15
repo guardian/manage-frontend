@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
@@ -15,9 +15,9 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof ManageProduct>;
+} as Meta<typeof ManageProduct>;
 
-const Template: ComponentStory<typeof ManageProduct> = () => (
+const Template: StoryFn<typeof ManageProduct> = () => (
 	<ManageProduct groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions} />
 );
 

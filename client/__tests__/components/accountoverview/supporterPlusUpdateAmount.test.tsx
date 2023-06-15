@@ -1,23 +1,36 @@
-// @ts-nocheck
 import { fireEvent, render, screen } from '@testing-library/react';
-import { ContributionUpdateAmount } from '../../../components/mma/accountoverview/updateAmount/ContributionUpdateAmount';
+import { PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { SupporterPlusUpdateAmount } from '../../../components/mma/accountoverview/updateAmount/SupporterPlusUpdateAmount';
 
-const mainPlan = (billingPeriod) => ({
+const mainPlan = (billingPeriod: string) => ({
 	start: '2019-10-30',
 	end: '2050-10-30',
-	amount: 500,
 	name: '',
 	shouldBeVisible: false,
 	currency: '£',
 	currencyISO: 'GBP',
 	billingPeriod,
+	price: 500,
 });
 
-const productType = {
-	productTitle: () => 'contribution test',
-	friendlyName: 'recurring contribution',
-	urlPart: 'contributions',
-};
+const productType = PRODUCT_TYPES['supporterplus'];
+
+beforeEach(() => {
+	globalThis.fetch = jest.fn().mockImplementation(() => {
+		return new Promise((resolve) => {
+			resolve({
+				ok: true,
+				status: 200,
+				headers: {
+					get: () => 'pass',
+				},
+				text: () => {
+					'hurrah';
+				},
+			});
+		});
+	});
+});
 
 it.each([
 	['month', 2],
@@ -25,8 +38,8 @@ it.each([
 ])(
 	'renders validation error if %s amount below %i',
 	(billingPeriod, expectedMinAmount) => {
-		const { container } = render(
-			<ContributionUpdateAmount
+		render(
+			<SupporterPlusUpdateAmount
 				subscriptionId="A-123"
 				mainPlan={mainPlan(billingPeriod)}
 				amountUpdateStateChange={jest.fn()}
@@ -35,17 +48,18 @@ it.each([
 			/>,
 		);
 
-		fireEvent.click(screen.queryByText('Change amount'));
-
+		fireEvent.click(screen.getByText('Change amount'));
 		fireEvent.click(screen.getByLabelText('Other'));
 
-		const otherInputElem = container.querySelector('input[type="number"]');
+		const otherInputElem = screen.getByRole('spinbutton', {
+			name: /other amount/i,
+		});
 		fireEvent.change(otherInputElem, {
 			target: { value: expectedMinAmount - 1 },
 		});
 
 		// click on the change amount button again and then check to make sure that the validation error message shows up
-		fireEvent.click(screen.queryByText('Change amount'));
+		fireEvent.click(screen.getByText('Change amount'));
 
 		// assert that the minimum amount validation error message is shown
 		expect(
@@ -64,8 +78,8 @@ it.each([
 ])(
 	'renders validation error if %s amount above %i',
 	(billingPeriod, expectedMaxAmount) => {
-		const { container } = render(
-			<ContributionUpdateAmount
+		render(
+			<SupporterPlusUpdateAmount
 				subscriptionId="A-123"
 				mainPlan={mainPlan(billingPeriod)}
 				amountUpdateStateChange={jest.fn()}
@@ -74,17 +88,19 @@ it.each([
 			/>,
 		);
 
-		fireEvent.click(screen.queryByText('Change amount'));
+		fireEvent.click(screen.getByText('Change amount'));
 
 		fireEvent.click(screen.getByLabelText('Other'));
 
-		const otherInputElem = container.querySelector('input[type="number"]');
+		const otherInputElem = screen.getByRole('spinbutton', {
+			name: /other amount/i,
+		});
 		fireEvent.change(otherInputElem, {
 			target: { value: expectedMaxAmount + 1 },
 		});
 
 		// click on the change amount button again and then check to make sure that the validation error message shows up
-		fireEvent.click(screen.queryByText('Change amount'));
+		fireEvent.click(screen.getByText('Change amount'));
 
 		// assert that the maximum amount validation error message is shown
 		expect(
@@ -98,8 +114,8 @@ it.each([
 );
 
 it('renders validation error if blank input is provided', () => {
-	const { container } = render(
-		<ContributionUpdateAmount
+	render(
+		<SupporterPlusUpdateAmount
 			subscriptionId="A-123"
 			mainPlan={mainPlan('month')}
 			amountUpdateStateChange={jest.fn()}
@@ -108,17 +124,19 @@ it('renders validation error if blank input is provided', () => {
 		/>,
 	);
 
-	fireEvent.click(screen.queryByText('Change amount'));
+	fireEvent.click(screen.getByText('Change amount'));
 
 	fireEvent.click(screen.getByLabelText('Other'));
 
-	const otherInputElem = container.querySelector('input[type="number"]');
+	const otherInputElem = screen.getByRole('spinbutton', {
+		name: /other amount/i,
+	});
 	fireEvent.change(otherInputElem, {
 		target: { value: '' },
 	});
 
 	// click on the change amount button again and then check to make sure that the validation error message shows up
-	fireEvent.click(screen.queryByText('Change amount'));
+	fireEvent.click(screen.getByText('Change amount'));
 
 	// assert that the maximum amount validation error message is shown
 	expect(
@@ -129,8 +147,8 @@ it('renders validation error if blank input is provided', () => {
 });
 
 it('renders validation error if a string is attempted to be input', () => {
-	const { container } = render(
-		<ContributionUpdateAmount
+	render(
+		<SupporterPlusUpdateAmount
 			subscriptionId="A-123"
 			mainPlan={mainPlan('month')}
 			amountUpdateStateChange={jest.fn()}
@@ -139,17 +157,19 @@ it('renders validation error if a string is attempted to be input', () => {
 		/>,
 	);
 
-	fireEvent.click(screen.queryByText('Change amount'));
+	fireEvent.click(screen.getByText('Change amount'));
 
 	fireEvent.click(screen.getByLabelText('Other'));
 
-	const otherInputElem = container.querySelector('input[type="number"]');
+	const otherInputElem = screen.getByRole('spinbutton', {
+		name: /other amount/i,
+	});
 	fireEvent.change(otherInputElem, {
 		target: { value: 'twelfty' },
 	});
 
 	// click on the change amount button again and then check to make sure that the validation error message shows up
-	fireEvent.click(screen.queryByText('Change amount'));
+	fireEvent.click(screen.getByText('Change amount'));
 
 	// assert that the maximum amount validation error message is shown
 	expect(
@@ -159,14 +179,9 @@ it('renders validation error if a string is attempted to be input', () => {
 	).toBeTruthy();
 });
 
-it('updates amount is valid value is input', () => {
-	// mock the console error for this test case to mute "Cannot update a component (`Unknown`) while rendering a different component" error
-	const mockedError = () => true;
-	// tslint:disable-next-line
-	console.error = mockedError; // tslint:disable-line:no-console
-
-	const { container } = render(
-		<ContributionUpdateAmount
+it('updates amount is valid value is input', async () => {
+	render(
+		<SupporterPlusUpdateAmount
 			subscriptionId="A-123"
 			mainPlan={mainPlan('month')}
 			amountUpdateStateChange={jest.fn()}
@@ -175,16 +190,20 @@ it('updates amount is valid value is input', () => {
 		/>,
 	);
 
-	fireEvent.click(screen.queryByText('Change amount'));
+	fireEvent.click(screen.getByText('Change amount'));
 
 	fireEvent.click(screen.getByLabelText('Other'));
 
-	const otherInputElem = container.querySelector('input[type="number"]');
+	const otherInputElem = screen.getByRole('spinbutton', {
+		name: /other amount/i,
+	});
 	fireEvent.change(otherInputElem, {
 		target: { value: 4 },
 	});
 
 	// click on the change amount button again and then check to make sure that the validation error message shows up
-	fireEvent.click(screen.queryByText('Change amount'));
-	expect(screen.queryByText('Updating...')).toBeTruthy();
+	fireEvent.click(screen.getByText('Change amount'));
+
+	expect(await screen.findByText(/Updating/)).toBeTruthy();
+	expect(await screen.findByText(/successfully updated/)).toBeTruthy();
 });

@@ -1,45 +1,36 @@
 import { css } from '@emotion/react';
-import {
-	neutral,
-	palette,
-	space,
-	textSans,
-} from '@guardian/source-foundations';
+import { palette, space, textSans } from '@guardian/source-foundations';
 import {
 	ChoiceCard,
 	ChoiceCardGroup,
 	InlineError,
+	SvgInfoRound,
 	TextInput,
 } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { augmentBillingPeriod } from '../../../../shared/productResponse';
-import type { ProductType } from '../../../../shared/productTypes';
-import { trackEvent } from '../../../utilities/analytics';
-import type { ContributionInterval } from '../../../utilities/contributionsAmount';
-import { contributionAmountsLookup } from '../../../utilities/contributionsAmount';
-import { fetchWithDefaultParameters } from '../../../utilities/fetch';
-import { AsyncLoader } from '../shared/AsyncLoader';
-import { Button } from '../shared/Buttons';
+import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { augmentBillingPeriod } from '../../../../../shared/productResponse';
+import type { ProductType } from '../../../../../shared/productTypes';
+import type { ContributionInterval } from '../../../../utilities/contributionsAmount';
+import { contributionAmountsLookup } from '../../../../utilities/contributionsAmount';
+import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
+import { TextResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
+import { Button } from '../../shared/Buttons';
 
-type ContributionUpdateAmountFormMode = 'MANAGE' | 'CANCELLATION_SAVE';
-
-interface ContributionUpdateAmountFormProps {
+interface SupporterPlusUpdateAmountFormProps {
 	subscriptionId: string;
 	mainPlan: PaidSubscriptionPlan;
 	productType: ProductType;
 	// we use this over the value in mainPlan as that value isn't updated after the user submits this form
 	currentAmount: number;
 	nextPaymentDate: string | null;
-	mode: ContributionUpdateAmountFormMode;
 	onUpdateConfirmed: (updatedAmount: number) => void;
 }
 
-class UpdateAmountLoader extends AsyncLoader<string> {}
-
-export const ContributionUpdateAmountForm = (
-	props: ContributionUpdateAmountFormProps,
+export const SupporterPlusUpdateAmountForm = (
+	props: SupporterPlusUpdateAmountFormProps,
 ) => {
 	const currentContributionOptions = (contributionAmountsLookup[
 		props.mainPlan.currencyISO
@@ -48,19 +39,13 @@ export const ContributionUpdateAmountForm = (
 	];
 
 	const getDefaultOtherAmount = (): number | null =>
-		props.mode === 'MANAGE'
-			? currentContributionOptions.otherDefaultAmount
-			: null;
-
-	const getDefaultIsOtherAmountSelected = (): boolean =>
-		props.mode === 'CANCELLATION_SAVE';
+		currentContributionOptions.otherDefaultAmount;
 
 	const [otherAmount, setOtherAmount] = useState<number | null>(
 		getDefaultOtherAmount(),
 	);
-	const [isOtherAmountSelected, setIsOtherAmountSelected] = useState<boolean>(
-		getDefaultIsOtherAmountSelected(),
-	);
+	const [isOtherAmountSelected, setIsOtherAmountSelected] =
+		useState<boolean>(false);
 	const [hasInteractedWithOtherAmount, setHasInteractedWithOtherAmount] =
 		useState<boolean>(false);
 
@@ -91,20 +76,18 @@ export const ContributionUpdateAmountForm = (
 		}
 	}, [confirmedAmount]);
 
-	const getAmountUpdater =
-		(
-			newAmount: number,
-			productType: ProductType,
-			subscriptionName: string,
-		) =>
-		async () =>
-			await fetchWithDefaultParameters(
-				`/api/update/amount/${productType.urlPart}/${subscriptionName}`,
-				{
-					method: 'POST',
-					body: JSON.stringify({ newPaymentAmount: newAmount }),
-				},
-			);
+	const getAmountUpdater = (
+		newAmount: number,
+		productType: ProductType,
+		subscriptionName: string,
+	) =>
+		fetchWithDefaultParameters(
+			`/api/update/amount/${productType.urlPart}/${subscriptionName}`,
+			{
+				method: 'POST',
+				body: JSON.stringify({ newPaymentAmount: newAmount }),
+			},
+		);
 
 	const validateChoice = (): string | null => {
 		const chosenOption = isOtherAmountSelected
@@ -152,18 +135,13 @@ export const ContributionUpdateAmountForm = (
 		return `${props.mainPlan.currency} ${amount} per ${props.mainPlan.billingPeriod}`;
 	};
 
-	const shouldShowChoices = props.mode === 'MANAGE';
-
 	const shouldShowSelectedAmountErrorMessage =
 		!isOtherAmountSelected && (selectedValue || hasSubmitted);
 
 	const shouldShowOtherAmountErrorMessage =
 		hasInteractedWithOtherAmount || hasSubmitted;
 
-	const otherAmountLabel =
-		props.mode === 'MANAGE'
-			? `Other amount (${props.mainPlan.currency})`
-			: `Amount (${props.mainPlan.currency})`;
+	const otherAmountLabel = `Other amount (${props.mainPlan.currency})`;
 
 	const weeklyBreakDown = (): string | null => {
 		const chosenAmount = isOtherAmountSelected
@@ -187,40 +165,41 @@ export const ContributionUpdateAmountForm = (
 		}${weeklyAmount.toFixed(2)} each week`;
 	};
 
-	if (showUpdateLoader) {
-		return (
-			<UpdateAmountLoader
-				fetch={getAmountUpdater(
-					pendingAmount,
-					props.productType,
-					props.subscriptionId,
-				)}
-				readerOnOK={(resp: Response) => resp.text()}
-				render={() => {
-					trackEvent({
-						eventCategory: 'amount_change',
-						eventAction: 'contributions_amount_change_success',
-						eventLabel: `by ${props.mainPlan.currency}${(
-							pendingAmount - props.currentAmount
-						).toFixed(2)}${props.mainPlan.currencyISO}`,
-					});
-					setConfirmedAmount(pendingAmount);
-					return null;
-				}}
-				loadingMessage={'Updating...'}
-				errorRender={() => {
-					trackEvent({
-						eventCategory: 'amount_change',
-						eventAction: 'contributions_amount_change_failed',
-					});
-					setUpdateFailedStatus(true);
-					setShowUpdateLoader(false);
-					return null;
-				}}
-				spinnerScale={0.7}
-				inline
-			/>
+	const changeAmountClick = async () => {
+		setHasSubmitted(true);
+		const newErrorMessage = validateChoice();
+		if (newErrorMessage) {
+			setErrorMessage(newErrorMessage);
+			return;
+		}
+		setShowUpdateLoader(true);
+		const response = await getAmountUpdater(
+			pendingAmount,
+			props.productType,
+			props.subscriptionId,
 		);
+
+		const data = await TextResponseHandler(response);
+		if (data === null) {
+			// trackEvent({
+			// 	eventCategory: 'amount_change',
+			// 	eventAction: 'contributions_amount_change_failed',
+			// });
+			setUpdateFailedStatus(true);
+			setShowUpdateLoader(false);
+		}
+		// trackEvent({
+		// 	eventCategory: 'amount_change',
+		// 	eventAction: 'contributions_amount_change_success',
+		// 	eventLabel: `by ${props.mainPlan.currency}${(
+		// 		pendingAmount - props.currentAmount
+		// 	).toFixed(2)}${props.mainPlan.currencyISO}`,
+		// });
+		setConfirmedAmount(pendingAmount);
+	};
+
+	if (showUpdateLoader) {
+		return <DefaultLoadingView loadingMessage="Updating..." />;
 	}
 
 	return (
@@ -278,48 +257,65 @@ export const ContributionUpdateAmountForm = (
 							max-width: 500px;
 						`}
 					>
-						{shouldShowChoices && (
-							<ChoiceCardGroup
-								name="amounts"
-								data-cy="contribution-amount-choices"
-								label="Choose the amount to contribute"
-								columns={2}
-							>
-								<>
-									{currentContributionOptions.amounts.map(
-										(amount) => (
-											<ChoiceCard
-												id={`amount-${amount}`}
-												key={amount}
-												value={amount.toString()}
-												label={amountLabel(amount)}
-												checked={
-													selectedValue === amount
-												}
-												onChange={() => {
-													setSelectedValue(amount);
-													setIsOtherAmountSelected(
-														false,
-													);
-												}}
-											/>
-										),
-									)}
+						<ChoiceCardGroup
+							name="amounts"
+							data-cy="contribution-amount-choices"
+							label="Choose the amount to contribute"
+							columns={2}
+						>
+							<>
+								{currentContributionOptions.amounts.map(
+									(amount) => (
+										<ChoiceCard
+											id={`amount-${amount}`}
+											key={amount}
+											value={amount.toString()}
+											label={amountLabel(amount)}
+											checked={selectedValue === amount}
+											onChange={() => {
+												setSelectedValue(amount);
+												setIsOtherAmountSelected(false);
+											}}
+										/>
+									),
+								)}
 
-									<ChoiceCard
-										id={`amount-other`}
-										value="Other"
-										label="Other"
-										checked={isOtherAmountSelected}
-										onChange={() => {
-											setIsOtherAmountSelected(true);
-											setSelectedValue(null);
-										}}
-									/>
-								</>
-							</ChoiceCardGroup>
-						)}
-
+								<ChoiceCard
+									id={`amount-other`}
+									value="Other"
+									label="Other"
+									checked={isOtherAmountSelected}
+									onChange={() => {
+										setIsOtherAmountSelected(true);
+										setSelectedValue(null);
+									}}
+								/>
+							</>
+						</ChoiceCardGroup>
+						<div
+							css={css`
+								display: flex;
+								> svg {
+									flex-shrink: 0;
+									margin-right: 8px;
+									fill: ${palette.brand[500]};
+								}
+							`}
+						>
+							<SvgInfoRound
+								isAnnouncedByScreenReader
+								size="medium"
+							/>
+							<p>
+								If you would like to lower your monthly amount
+								below TODO:£10 please call us via the TODO:Help
+								Centre
+							</p>
+						</div>
+						<p>
+							TODO:£10 per month is the minimum payment to receive
+							this subscription.
+						</p>
 						{isOtherAmountSelected && (
 							<div
 								css={css`
@@ -328,7 +324,6 @@ export const ContributionUpdateAmountForm = (
 							>
 								<TextInput
 									label={otherAmountLabel}
-									supporting={`Sorry, we are only able to accept contributions of ${props.mainPlan.currency}${currentContributionOptions.minAmount} or over due to transaction fees`}
 									error={
 										(shouldShowOtherAmountErrorMessage &&
 											errorMessage) ||
@@ -351,7 +346,7 @@ export const ContributionUpdateAmountForm = (
 					<div
 						css={css`
 							margin-top: ${space[2]}px;
-							color: ${neutral[46]};
+							color: ${palette.neutral[46]};
 							font-size: 15px;
 						`}
 					>
@@ -364,15 +359,7 @@ export const ContributionUpdateAmountForm = (
 				textColour={palette.brand[400]}
 				fontWeight="bold"
 				text="Change amount"
-				onClick={() => {
-					setHasSubmitted(true);
-					const newErrorMessage = validateChoice();
-					if (newErrorMessage) {
-						setErrorMessage(newErrorMessage);
-						return;
-					}
-					setShowUpdateLoader(true);
-				}}
+				onClick={changeAmountClick}
 			/>
 		</>
 	);

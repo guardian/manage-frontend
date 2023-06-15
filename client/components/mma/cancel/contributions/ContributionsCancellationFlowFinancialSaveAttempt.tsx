@@ -14,7 +14,7 @@ import {
 } from '../../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { trackEventInOphanOnly } from '../../../../utilities/analytics';
-import { ContributionUpdateAmountForm } from '../../accountoverview/ContributionUpdateAmountForm';
+import { ContributionUpdateAmountForm } from '../../accountoverview/updateAmount/ContributionUpdateAmountForm';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import type {
 	CancellationContextInterface,
