@@ -1,6 +1,8 @@
-import { css } from '@emotion/react';
+import { css, ThemeProvider } from '@emotion/react';
 import { palette, space, textSans } from '@guardian/source-foundations';
 import {
+	Button,
+	buttonThemeReaderRevenueBrand,
 	ChoiceCard,
 	ChoiceCardGroup,
 	InlineError,
@@ -22,7 +24,33 @@ import {
 } from '../../../../utilities/supporterPlusPricing';
 import { TextResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
-import { Button } from '../../shared/Buttons';
+
+const smallPrintCss = css`
+	${textSans.xsmall()};
+	margin-top: 0;
+	margin-bottom: 0;
+	color: #606060;
+	> a {
+		color: inherit;
+		text-decoration: underline;
+	}
+	& + & {
+		margin-top: ${space[1]}px;
+	}
+`;
+
+const getAmountUpdater = (
+	newAmount: number,
+	productType: ProductType,
+	subscriptionName: string,
+) =>
+	fetchWithDefaultParameters(
+		`/api/update/amount/${productType.urlPart}/${subscriptionName}`,
+		{
+			method: 'POST',
+			body: JSON.stringify({ newPaymentAmount: newAmount }),
+		},
+	);
 
 interface SupporterPlusUpdateAmountFormProps {
 	subscriptionId: string;
@@ -42,6 +70,11 @@ export const SupporterPlusUpdateAmountForm = (
 	] || supporterPlusPriceConfigByCountryGroup.international)[
 		calculateMonthlyOrAnnualFromBillingPeriod(props.mainPlan.billingPeriod)
 	];
+
+	const minPriceDisplay = `${props.mainPlan.currency}${priceConfig.minAmount}`;
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		props.mainPlan.billingPeriod,
+	).toLocaleLowerCase();
 
 	const getDefaultOtherAmount = priceConfig.minAmount;
 
@@ -80,20 +113,7 @@ export const SupporterPlusUpdateAmountForm = (
 		}
 	}, [confirmedAmount]);
 
-	const getAmountUpdater = (
-		newAmount: number,
-		productType: ProductType,
-		subscriptionName: string,
-	) =>
-		fetchWithDefaultParameters(
-			`/api/update/amount/${productType.urlPart}/${subscriptionName}`,
-			{
-				method: 'POST',
-				body: JSON.stringify({ newPaymentAmount: newAmount }),
-			},
-		);
-
-	const validateChoice = (): string | null => {
+	const validateChoice = () => {
 		const chosenOption = isOtherAmountSelected
 			? otherAmount
 			: selectedValue;
@@ -109,11 +129,7 @@ export const SupporterPlusUpdateAmountForm = (
 			!isNaN(chosenOptionNum) &&
 			chosenOptionNum < priceConfig.minAmount
 		) {
-			return `There is a minimum ${
-				props.mainPlan.billingPeriod
-			}ly contribution amount of ${
-				props.mainPlan.currency
-			}${priceConfig.minAmount.toFixed(2)} ${props.mainPlan.currencyISO}`;
+			return `${minPriceDisplay} a ${props.mainPlan.billingPeriod} is the minimum payment to receive this subscription. Please call our customer service team to lower your ${monthlyOrAnnual} amount below ${minPriceDisplay} via the Help Centre`;
 		} else if (
 			!isNaN(chosenOptionNum) &&
 			chosenOptionNum > priceConfig.maxAmount
@@ -142,28 +158,6 @@ export const SupporterPlusUpdateAmountForm = (
 		hasInteractedWithOtherAmount || hasSubmitted;
 
 	const otherAmountLabel = `Other amount (${props.mainPlan.currency})`;
-
-	const weeklyBreakDown = (): string | null => {
-		const chosenAmount = isOtherAmountSelected
-			? otherAmount
-			: selectedValue;
-		if (!chosenAmount) {
-			return null;
-		}
-
-		let weeklyAmount: number;
-		if (props.mainPlan.billingPeriod === 'month') {
-			weeklyAmount = (chosenAmount * 12) / 52;
-		} else {
-			weeklyAmount = chosenAmount / 52;
-		}
-
-		return `Contributing ${
-			props.mainPlan.currency
-		}${chosenAmount} works out as ${
-			props.mainPlan.currency
-		}${weeklyAmount.toFixed(2)} each week`;
-	};
 
 	const changeAmountClick = async () => {
 		setHasSubmitted(true);
@@ -292,9 +286,27 @@ export const SupporterPlusUpdateAmountForm = (
 								/>
 							</>
 						</ChoiceCardGroup>
+						<section
+							css={css`
+								margin-top: ${space[3]}px;
+							`}
+						>
+							<ThemeProvider
+								theme={buttonThemeReaderRevenueBrand}
+							>
+								<Button
+									onClick={changeAmountClick}
+									size="small"
+								>
+									Change amount
+								</Button>
+							</ThemeProvider>
+						</section>
 						<div
 							css={css`
+								margin-top: ${space[3]}px;
 								display: flex;
+								align-items: flex-start;
 								> svg {
 									flex-shrink: 0;
 									margin-right: 8px;
@@ -307,14 +319,15 @@ export const SupporterPlusUpdateAmountForm = (
 								size="medium"
 							/>
 							<p>
-								If you would like to lower your monthly amount
-								below TODO:£10 please call us via the{' '}
+								If you would like to lower your{' '}
+								{monthlyOrAnnual} amount below {minPriceDisplay}{' '}
+								please call us via the{' '}
 								<Link href="/help-centre">Help Centre</Link>
 							</p>
 						</div>
-						<p>
-							TODO:£10 per month is the minimum payment to receive
-							this subscription.
+						<p css={smallPrintCss}>
+							{minPriceDisplay} per {props.mainPlan.billingPeriod}{' '}
+							is the minimum payment to receive this subscription.
 						</p>
 						{isOtherAmountSelected && (
 							<div
@@ -342,25 +355,8 @@ export const SupporterPlusUpdateAmountForm = (
 							</div>
 						)}
 					</div>
-
-					<div
-						css={css`
-							margin-top: ${space[2]}px;
-							color: ${palette.neutral[46]};
-							font-size: 15px;
-						`}
-					>
-						<em>{weeklyBreakDown()}</em>
-					</div>
 				</div>
 			</div>
-			<Button
-				colour={palette.brand[800]}
-				textColour={palette.brand[400]}
-				fontWeight="bold"
-				text="Change amount"
-				onClick={changeAmountClick}
-			/>
 		</>
 	);
 };
