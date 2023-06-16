@@ -52,8 +52,7 @@ export function getBenefitsThreshold(
 export function suggestedAmounts(currentAmount: number) {
 	const firstValue = currentAmount + 2;
 
-	const secondValue =
-		firstValue % 5 === 0 ? firstValue + 5 : Math.ceil(firstValue / 5) * 5;
+	const secondValue = Math.ceil((firstValue + 1) / 5) * 5;
 
 	const thirdValue = secondValue + 5;
 
