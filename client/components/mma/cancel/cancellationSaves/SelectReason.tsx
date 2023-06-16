@@ -90,7 +90,7 @@ const ReasonSelection = (props: {
 			`}
 		>
 			<legend css={reasonLegendCss}>
-				Why did you cancel your membership today?
+				Why did you cancel your Membership today?
 			</legend>
 			<RadioGroup
 				name="issue_type"
@@ -221,7 +221,7 @@ export const SelectReason = () => {
 
 	return (
 		<section css={sectionSpacing}>
-			<h2 css={headingCss}>Your membership has been cancelled</h2>
+			<h2 css={headingCss}>Your Membership has been cancelled</h2>
 			<CancellationInfo
 				userEmailAddress={userEmailAddress}
 				benefitsEndDate={benefitsEndDate}
