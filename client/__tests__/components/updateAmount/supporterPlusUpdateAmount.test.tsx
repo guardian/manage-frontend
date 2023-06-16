@@ -62,7 +62,7 @@ it.each([
 		fireEvent.click(screen.getByText('Change amount'));
 
 		// assert that the minimum amount validation error message is shown
-		expect(screen.queryByText(/There is a minimum/)).toBeTruthy();
+		expect(screen.findByText(/is the minimum payment/i)).toBeTruthy();
 	},
 );
 
