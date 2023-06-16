@@ -129,7 +129,7 @@ export const SupporterPlusUpdateAmountForm = (
 			!isNaN(chosenOptionNum) &&
 			chosenOptionNum < priceConfig.minAmount
 		) {
-			return `${minPriceDisplay} a ${props.mainPlan.billingPeriod} is the minimum payment to receive this subscription. Please call our customer service team to lower your ${monthlyOrAnnual} amount below ${minPriceDisplay} via the Help Centre`;
+			return `${minPriceDisplay} a ${props.mainPlan.billingPeriod} is the minimum payment to receive this subscription. Please call our customer service team to lower your ${monthlyOrAnnual} amount below ${minPriceDisplay}`;
 		} else if (
 			!isNaN(chosenOptionNum) &&
 			chosenOptionNum > priceConfig.maxAmount
@@ -286,6 +286,31 @@ export const SupporterPlusUpdateAmountForm = (
 								/>
 							</>
 						</ChoiceCardGroup>
+						{isOtherAmountSelected && (
+							<div
+								css={css`
+									margin-top: ${space[3]}px;
+								`}
+							>
+								<TextInput
+									label={otherAmountLabel}
+									error={
+										(shouldShowOtherAmountErrorMessage &&
+											errorMessage) ||
+										undefined
+									}
+									type="number"
+									value={otherAmount?.toString() || ''}
+									onChange={(event) =>
+										setOtherAmount(
+											event.target.value
+												? Number(event.target.value)
+												: null,
+										)
+									}
+								/>
+							</div>
+						)}
 						<section
 							css={css`
 								margin-top: ${space[3]}px;
@@ -329,31 +354,6 @@ export const SupporterPlusUpdateAmountForm = (
 							{minPriceDisplay} per {props.mainPlan.billingPeriod}{' '}
 							is the minimum payment to receive this subscription.
 						</p>
-						{isOtherAmountSelected && (
-							<div
-								css={css`
-									margin-top: ${space[3]}px;
-								`}
-							>
-								<TextInput
-									label={otherAmountLabel}
-									error={
-										(shouldShowOtherAmountErrorMessage &&
-											errorMessage) ||
-										undefined
-									}
-									type="number"
-									value={otherAmount?.toString() || ''}
-									onChange={(event) =>
-										setOtherAmount(
-											event.target.value
-												? Number(event.target.value)
-												: null,
-										)
-									}
-								/>
-							</div>
-						)}
 					</div>
 				</div>
 			</div>

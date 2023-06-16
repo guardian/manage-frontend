@@ -29,7 +29,7 @@ export const SupporterPlusUpdateAmount = (
 		CONFIRMED,
 	}
 
-	const [status, setStatus] = useState<Status>(Status.EDITING); // ToDo: testing purposes only;
+	const [status, setStatus] = useState<Status>(Status.OVERVIEW);
 	const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
 
 	const mainPlan = props.mainPlan;
