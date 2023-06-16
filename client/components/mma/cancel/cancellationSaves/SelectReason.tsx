@@ -262,7 +262,7 @@ export const SelectReason = () => {
 				<Button
 					priority="tertiary"
 					cssOverrides={buttonCentredCss}
-					onClick={() => navigate('../reminder')}
+					onClick={() => navigate('/')}
 				>
 					Skip
 				</Button>
