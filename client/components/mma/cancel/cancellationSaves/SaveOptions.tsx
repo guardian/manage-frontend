@@ -205,7 +205,7 @@ export const SaveOptions = () => {
 					</Card.Section>
 				</Card>
 				<section css={sectionSpacing}>
-					<Heading sansSerif>Cancel your membership</Heading>
+					<Heading sansSerif>Cancel your Membership</Heading>
 					<p
 						css={css`
 							${textSans.medium()};
@@ -213,7 +213,7 @@ export const SaveOptions = () => {
 					>
 						Please note if you cancel you will not be able to rejoin
 						the Guardian Members scheme, as it’s now closed to new
-						members
+						Members
 					</p>
 					<div css={buttonContainerCss}>
 						<Button
