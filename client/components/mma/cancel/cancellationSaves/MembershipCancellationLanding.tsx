@@ -7,21 +7,17 @@ import { featureSwitches } from '../../../../../shared/featureSwitches';
 import type {
 	MembersDataApiResponse,
 	PaidSubscriptionPlan,
-	ProductDetail} from '../../../../../shared/productResponse';
-import {
-	getMainPlan,
+	ProductDetail,
 } from '../../../../../shared/productResponse';
+import { getMainPlan } from '../../../../../shared/productResponse';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
 import { allRecurringProductsDetailFetcher } from '../../../../utilities/productUtils';
-import type {
-	PhoneRegionKey} from '../../../shared/CallCenterEmailAndNumbers';
-import {
-	CallCentreEmailAndNumbers
-} from '../../../shared/CallCenterEmailAndNumbers';
+import type { PhoneRegionKey } from '../../../shared/CallCenterEmailAndNumbers';
+import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
@@ -46,7 +42,16 @@ function ineligibleForSave(
 	const membershipTierIsNotSupporter =
 		membershipToCancel.tier !== 'Supporter';
 
-	return inPaymentFailure || hasOtherProduct || membershipTierIsNotSupporter;
+	const membershipIsAnnual =
+		(getMainPlan(membershipToCancel.subscription) as PaidSubscriptionPlan)
+			.billingPeriod === 'year';
+
+	return (
+		inPaymentFailure ||
+		hasOtherProduct ||
+		membershipTierIsNotSupporter ||
+		membershipIsAnnual
+	);
 }
 
 function getPhoneRegion(currencyIso: CurrencyIso): PhoneRegionKey {

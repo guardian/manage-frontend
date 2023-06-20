@@ -144,6 +144,27 @@ export class ProductBuilder {
 
 		return this;
 	}
+
+	withBillingPeriod(billingPeriod: 'month' | 'year') {
+		const { plan, currentPlans, futurePlans } =
+			this.productToBuild.subscription;
+		if (plan) {
+			plan.billingPeriod = billingPeriod;
+		}
+		for (const currentPlan of currentPlans) {
+			if (isPaidSubscriptionPlan(currentPlan)) {
+				currentPlan.billingPeriod = billingPeriod;
+			}
+		}
+
+		for (const futurePlan of futurePlans) {
+			if (isPaidSubscriptionPlan(futurePlan)) {
+				futurePlan.billingPeriod = billingPeriod;
+			}
+		}
+
+		return this;
+	}
 }
 
 function isPaidSubscriptionPlan(
