@@ -1,15 +1,15 @@
 import { css } from '@emotion/react';
-import { brand, neutral, space } from '@guardian/source-foundations';
+import { palette, space } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
-import { parseDate } from '../../../../shared/dates';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { augmentBillingPeriod } from '../../../../shared/productResponse';
-import type { ProductType } from '../../../../shared/productTypes';
-import { SuccessMessage } from '../delivery/address/DeliveryAddressConfirmation';
-import { Button } from '../shared/Buttons';
-import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTable';
+import { parseDate } from '../../../../../shared/dates';
+import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { augmentBillingPeriod } from '../../../../../shared/productResponse';
+import type { ProductType } from '../../../../../shared/productTypes';
+import { SuccessMessage } from '../../delivery/address/DeliveryAddressConfirmation';
+import { Button } from '../../shared/Buttons';
+import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
 import { ContributionUpdateAmountForm } from './ContributionUpdateAmountForm';
 
 interface ContributionUpdateAmountProps {
@@ -65,7 +65,7 @@ export const ContributionUpdateAmount = (
 				/>
 			)}
 			<ProductDescriptionListTable
-				borderColour={neutral[86]}
+				borderColour={palette.neutral[86]}
 				content={[
 					{
 						title: 'Supporter ID',
@@ -84,8 +84,8 @@ export const ContributionUpdateAmount = (
 				]}
 			/>
 			<Button
-				colour={brand[800]}
-				textColour={brand[400]}
+				colour={palette.brand[800]}
+				textColour={palette.brand[400]}
 				fontWeight="bold"
 				text="Change amount"
 				onClick={() => {

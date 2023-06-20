@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { fireEvent, render, screen } from '@testing-library/react';
-import { ContributionUpdateAmount } from '../../../components/mma/accountoverview/ContributionUpdateAmount';
+import { ContributionUpdateAmount } from '../../../components/mma/accountoverview/updateAmount/ContributionUpdateAmount';
 
 const mainPlan = (billingPeriod) => ({
 	start: '2019-10-30',

@@ -12,13 +12,13 @@ import {
 	calculateMonthlyOrAnnualFromBillingPeriod,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
-import { getBenefitsThreshold } from '../../../utilities/benefitsThreshold';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
 import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
 import { createProductDetailFetcher } from '../../../utilities/productUtils';
+import { getBenefitsThreshold } from '../../../utilities/supporterPlusPricing';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
