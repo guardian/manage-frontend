@@ -56,17 +56,22 @@ export interface HelpCentrePhoneNumbersProps {
 export const HelpCentrePhoneNumbers = (props: HelpCentrePhoneNumbersProps) => (
 	<>
 		<div css={containerCss}>
-			<h2 css={[headingCss, !props.compactLayout && headingWideCss]}>
-				<i
-					css={[
-						headingIconCss,
-						!props.compactLayout && headingIconWideCss,
-					]}
+			<a>
+				<h2
+					css={[headingCss, !props.compactLayout && headingWideCss]}
+					id={'call-us'}
 				>
-					{getHelpSectionIcon('call-us')}
-				</i>
-				Call us
-			</h2>
+					<i
+						css={[
+							headingIconCss,
+							!props.compactLayout && headingIconWideCss,
+						]}
+					>
+						{getHelpSectionIcon('call-us')}
+					</i>
+					Call us
+				</h2>
+			</a>
 			<p css={[subtitleCss, !props.compactLayout && subtitleWideCss]}>
 				Speak with one of our customer service agents.
 			</p>
