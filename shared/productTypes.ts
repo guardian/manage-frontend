@@ -32,7 +32,7 @@ import { getMainPlan, isGift } from './productResponse';
 import { SoftOptInIDs } from './softOptInIDs';
 
 type ProductFriendlyName =
-	| 'membership'
+	| 'Membership'
 	| 'recurring contribution' // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
 	| 'newspaper subscription'
 	| 'newspaper voucher subscription'
@@ -260,8 +260,8 @@ export type GroupedProductTypeKeys =
 
 export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	membership: {
-		productTitle: () => 'Guardian membership',
-		friendlyName: () => 'membership',
+		productTitle: () => 'Guardian Membership',
+		friendlyName: () => 'Membership',
 		productType: 'membership',
 		groupedProductType: 'membership',
 		allProductsProductTypeFilterString: 'Membership',
@@ -674,7 +674,7 @@ export const GROUPED_PRODUCT_TYPES: {
 		supportTheGuardianSectionProps: {
 			supportReferer: 'account_overview_membership_section',
 			message:
-				'We no longer have a membership programme but you can still continue to support the Guardian.',
+				'We no longer have a Membership programme but you can still continue to support the Guardian.',
 		},
 	},
 	recurringSupport: {

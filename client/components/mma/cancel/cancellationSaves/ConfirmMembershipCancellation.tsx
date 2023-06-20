@@ -152,7 +152,7 @@ export const ConfirmMembershipCancellation = () => {
 			/>
 			<Stack space={4}>
 				<Heading>
-					Are you sure you want to cancel your membership?
+					Are you sure you want to cancel your Membership?
 				</Heading>
 				<p
 					css={css`

@@ -9,7 +9,7 @@ import { featureSwitches } from '../../../shared/featureSwitches';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 if (featureSwitches.membershipSave) {
-	describe('Cancel membership saves', () => {
+	describe('Cancel Membership saves', () => {
 		const setSignInStatus = () => {
 			cy.window().then((window) => {
 				window.guardian.identityDetails = {

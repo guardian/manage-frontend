@@ -39,15 +39,15 @@ describe('membership test', () => {
 		cy.wait('@mobile_subscriptions');
 		cy.wait('@single_contributions');
 
-		cy.findByText('Guardian membership');
+		cy.findByText('Guardian Membership');
 	});
 
 	it('membership subscription', () => {
 		cy.visit('/membership');
 
-		cy.findByText('Manage membership').click();
+		cy.findByText('Manage Membership').click();
 
-		cy.findByText('Cancel membership');
+		cy.findByText('Cancel Membership');
 	});
 
 	it('membership billing page', () => {

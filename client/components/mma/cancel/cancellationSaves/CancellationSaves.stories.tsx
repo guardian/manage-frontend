@@ -11,7 +11,6 @@ import { MembershipCancellationLanding } from './MembershipCancellationLanding';
 import { MembershipSwitch } from './MembershipSwitch';
 import { SaveOptions } from './SaveOptions';
 import { SelectReason } from './SelectReason';
-import { SupportReminder } from './SupportReminder';
 import { SwitchThankYou } from './SwitchThankYou';
 import { ValueOfSupport } from './ValueOfSupport';
 
@@ -81,11 +80,4 @@ export const ConfirmCancellation: StoryFn<
 
 export const SwitchCompleteThankYou: StoryFn<typeof SwitchThankYou> = () => {
 	return <SwitchThankYou />;
-};
-
-export const Reminder: StoryFn<typeof SupportReminder> = () => {
-	// @ts-expect-error set identity details email in the window
-	window.guardian = { identityDetails: { email: 'test' } };
-
-	return <SupportReminder />;
 };
