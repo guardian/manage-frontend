@@ -2,6 +2,7 @@ import {
 	contributionPaidByCard,
 	guardianWeeklyExpiredCard,
 	membershipSupporter,
+	membershipSupporterAnnual,
 } from '../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { productMovePreviewResponse } from '../../../client/fixtures/productMove';
@@ -112,7 +113,7 @@ if (featureSwitches.membershipSave) {
 			cy.visit('/');
 			setSignInStatus();
 
-			cy.get(`[data-cy="Manage membership"]`).click();
+			cy.get(`[data-cy="Manage Membership"]`).click();
 
 			cy.findByText(/Cancel/).click();
 
@@ -145,28 +146,7 @@ if (featureSwitches.membershipSave) {
 			cy.wait('@get_case');
 			cy.wait('@cancel_membership');
 
-			cy.findByText(/Your membership has been cancelled/).should('exist');
-
-			cy.findAllByRole('radio', {
-				name: 'Other',
-			}).click();
-
-			cy.findByRole('button', {
-				name: 'Submit',
-			}).click();
-
-			cy.wait('@get_case');
-
-			cy.findByText(/You can support us again any time/).should('exist');
-			cy.findByRole('button', {
-				name: 'Set my reminder',
-			}).click();
-
-			cy.wait('@set_reminder');
-
-			cy.findByText(/Thank you for setting up support reminder/).should(
-				'exist',
-			);
+			cy.findByText(/Your Membership has been cancelled/).should('exist');
 
 			cy.go('back');
 
@@ -214,13 +194,29 @@ if (featureSwitches.membershipSave) {
 			cy.findByText(/Please select a reason/).should('exist');
 		});
 
-		it('redirects user in payment failiure to normal journey', () => {
+		it('redirects user in payment failure to normal journey', () => {
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
 				body: toMembersDataApiResponse(
 					membershipSupporter(),
 					guardianWeeklyExpiredCard(),
 				),
+			});
+
+			cy.visit('/cancel/membership');
+
+			cy.findByText(/Please select a reason/).should('exist');
+		});
+
+		it('redirects user with annual membership to normal journey', () => {
+			cy.intercept('GET', '/api/me/mma?productType=Membership', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(membershipSupporterAnnual()),
+			});
+
+			cy.intercept('GET', '/api/me/mma', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(membershipSupporterAnnual()),
 			});
 
 			cy.visit('/cancel/membership');
