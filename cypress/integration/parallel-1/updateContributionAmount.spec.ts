@@ -1,4 +1,7 @@
-import { contributionPaidByCard } from '../../../client/fixtures/productBuilder/testProducts';
+import {
+	contributionPaidByCard,
+	supporterPlus,
+} from '../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
@@ -24,11 +27,6 @@ describe('Update contribution amount', () => {
 			body: toMembersDataApiResponse(contributionPaidByCard()),
 		});
 
-		cy.intercept('GET', '/api/me/mma', {
-			statusCode: 200,
-			body: toMembersDataApiResponse(contributionPaidByCard()),
-		});
-
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
 			statusCode: 200,
 			body: { subscriptions: [] },
@@ -49,12 +47,16 @@ describe('Update contribution amount', () => {
 			body: { subscription: {} },
 		}).as('new_product_detail');
 
-		cy.intercept('POST', '/api/update/amount/contributions/**', {
+		cy.intercept('POST', '/api/update/amount/**', {
 			statusCode: 200,
-		}).as('update_contribution_amount');
+		}).as('update_amount');
 	});
 
-	it('Update contribution amount', () => {
+	it('Updates recurring contribution amount', () => {
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(contributionPaidByCard()),
+		});
 		cy.visit('/');
 
 		setSignInStatus();
@@ -70,7 +72,34 @@ describe('Update contribution amount', () => {
 
 		cy.findByText('Change amount').click();
 
-		cy.wait('@update_contribution_amount');
+		cy.wait('@update_amount');
+
+		cy.contains(
+			'We have successfully updated the amount of your contribution.',
+		).should('exist');
+	});
+
+	it('Updates supporter plus amount', () => {
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(supporterPlus()),
+		});
+		cy.visit('/?withFeature=supporterPlusUpdateAmount');
+
+		setSignInStatus();
+
+		cy.findByText('Manage recurring support').click();
+		cy.wait('@cancelled');
+
+		cy.findByText('Change amount').click();
+
+		cy.get(
+			'[data-cy="contribution-amount-choices"] label:first-of-type',
+		).click();
+
+		cy.findByText('Change amount').click();
+
+		cy.wait('@update_amount');
 
 		cy.contains(
 			'We have successfully updated the amount of your contribution.',
