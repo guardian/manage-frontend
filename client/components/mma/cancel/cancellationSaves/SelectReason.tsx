@@ -151,6 +151,24 @@ function cancellationCaseFetch(
 	});
 }
 
+function updateZuoraCancellationReason(
+	selectedReasonId: string,
+	productDetail: ProductDetail,
+) {
+	return fetch(
+		'/api/update-cancellation-reason/' +
+			productDetail.subscription.subscriptionId,
+		{
+			method: 'POST',
+			body: JSON.stringify({ reason: selectedReasonId }),
+			headers: {
+				'Content-Type': 'application/json',
+				[MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`,
+			},
+		},
+	);
+}
+
 export const SelectReason = () => {
 	const navigate = useNavigate();
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -196,11 +214,15 @@ export const SelectReason = () => {
 
 		try {
 			setIsSubmitting(true);
-			const response = await cancellationCaseFetch(
-				selectedReasonId,
-				productType,
-				productDetail,
-			);
+			const response = await Promise.all([
+				cancellationCaseFetch(
+					selectedReasonId,
+					productType,
+					productDetail,
+				),
+				updateZuoraCancellationReason(selectedReasonId, productDetail),
+			]);
+
 			const data = await JsonResponseHandler(response);
 
 			if (data === null) {
