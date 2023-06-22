@@ -52,6 +52,37 @@ const getAmountUpdater = (
 		},
 	);
 
+function validateChoice(
+	currentAmount: number,
+	chosenAmount: number | null,
+	minAmount: number,
+	maxAmount: number,
+	isOtherAmountSelected: boolean,
+	mainPlan: PaidSubscriptionPlan,
+): string | null {
+	const chosenOptionNum = Number(chosenAmount);
+	if (!chosenAmount && !isOtherAmountSelected) {
+		return 'Please make a selection';
+	} else if (chosenOptionNum === currentAmount) {
+		return 'You have selected the same amount as you currently contribute';
+	} else if (!chosenAmount || isNaN(chosenOptionNum)) {
+		return 'There is a problem with the amount you have selected, please make sure it is a valid amount';
+	} else if (!isNaN(chosenOptionNum) && chosenOptionNum < minAmount) {
+		return `There is a minimum ${
+			mainPlan.billingPeriod
+		}ly contribution amount of ${mainPlan.currency}${minAmount.toFixed(
+			2,
+		)} ${mainPlan.currencyISO}`;
+	} else if (!isNaN(chosenOptionNum) && chosenOptionNum > maxAmount) {
+		return `There is a maximum ${
+			mainPlan.billingPeriod
+		}ly contribution amount of ${mainPlan.currency}${maxAmount.toFixed(
+			2,
+		)} ${mainPlan.currencyISO}`;
+	}
+	return null;
+}
+
 interface SupporterPlusUpdateAmountFormProps {
 	subscriptionId: string;
 	mainPlan: PaidSubscriptionPlan;
@@ -76,10 +107,10 @@ export const SupporterPlusUpdateAmountForm = (
 		props.mainPlan.billingPeriod,
 	).toLocaleLowerCase();
 
-	const getDefaultOtherAmount = priceConfig.minAmount;
+	const defaultOtherAmount = priceConfig.minAmount;
 
 	const [otherAmount, setOtherAmount] = useState<number | null>(
-		getDefaultOtherAmount,
+		defaultOtherAmount,
 	);
 	const [isOtherAmountSelected, setIsOtherAmountSelected] =
 		useState<boolean>(false);
@@ -95,15 +126,23 @@ export const SupporterPlusUpdateAmountForm = (
 	const [showUpdateLoader, setShowUpdateLoader] = useState<boolean>(false);
 	const [updateFailed, setUpdateFailedStatus] = useState<boolean>(false);
 	const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
+	const chosenAmount = isOtherAmountSelected ? otherAmount : selectedValue;
 
 	useEffect(() => {
-		if (otherAmount !== getDefaultOtherAmount) {
+		if (otherAmount !== defaultOtherAmount) {
 			setHasInteractedWithOtherAmount(true);
 		}
 	}, [otherAmount]);
 
 	useEffect(() => {
-		const newErrorMessage = validateChoice();
+		const newErrorMessage = validateChoice(
+			props.currentAmount,
+			chosenAmount,
+			priceConfig.minAmount,
+			priceConfig.maxAmount,
+			isOtherAmountSelected,
+			props.mainPlan,
+		);
 		setErrorMessage(newErrorMessage);
 	}, [otherAmount, selectedValue]);
 
@@ -112,36 +151,6 @@ export const SupporterPlusUpdateAmountForm = (
 			props.onUpdateConfirmed(confirmedAmount);
 		}
 	}, [confirmedAmount]);
-
-	const validateChoice = () => {
-		const chosenOption = isOtherAmountSelected
-			? otherAmount
-			: selectedValue;
-
-		const chosenOptionNum = Number(chosenOption);
-		if (!chosenOption && !isOtherAmountSelected) {
-			return 'Please make a selection';
-		} else if (chosenOptionNum === props.currentAmount) {
-			return 'You have selected the same amount as you currently contribute';
-		} else if (!chosenOption || isNaN(chosenOptionNum)) {
-			return 'There is a problem with the amount you have selected, please make sure it is a valid amount';
-		} else if (
-			!isNaN(chosenOptionNum) &&
-			chosenOptionNum < priceConfig.minAmount
-		) {
-			return `${minPriceDisplay} a ${props.mainPlan.billingPeriod} is the minimum payment to receive this subscription. Please call our customer service team to lower your ${monthlyOrAnnual} amount below ${minPriceDisplay}`;
-		} else if (
-			!isNaN(chosenOptionNum) &&
-			chosenOptionNum > priceConfig.maxAmount
-		) {
-			return `There is a maximum ${
-				props.mainPlan.billingPeriod
-			}ly contribution amount of ${
-				props.mainPlan.currency
-			}${priceConfig.maxAmount.toFixed(2)} ${props.mainPlan.currencyISO}`;
-		}
-		return null;
-	};
 
 	const pendingAmount = Number(
 		isOtherAmountSelected ? otherAmount : selectedValue,
@@ -161,7 +170,14 @@ export const SupporterPlusUpdateAmountForm = (
 
 	const changeAmountClick = async () => {
 		setHasSubmitted(true);
-		const newErrorMessage = validateChoice();
+		const newErrorMessage = validateChoice(
+			props.currentAmount,
+			chosenAmount,
+			priceConfig.minAmount,
+			priceConfig.maxAmount,
+			isOtherAmountSelected,
+			props.mainPlan,
+		);
 		if (newErrorMessage) {
 			setErrorMessage(newErrorMessage);
 			return;

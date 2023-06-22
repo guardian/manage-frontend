@@ -11,8 +11,9 @@ import { SuccessMessage } from '../../delivery/address/DeliveryAddressConfirmati
 import { Button } from '../../shared/Buttons';
 import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
 import { ContributionUpdateAmountForm } from './ContributionUpdateAmountForm';
+import { SupporterPlusUpdateAmountForm } from './SupporterPlusUpdateAmountForm';
 
-interface ContributionUpdateAmountProps {
+interface UpdateAmountProps {
 	subscriptionId: string;
 	mainPlan: PaidSubscriptionPlan;
 	productType: ProductType;
@@ -20,9 +21,7 @@ interface ContributionUpdateAmountProps {
 	amountUpdateStateChange: Dispatch<SetStateAction<number | null>>;
 }
 
-export const ContributionUpdateAmount = (
-	props: ContributionUpdateAmountProps,
-) => {
+export const UpdateAmount = (props: UpdateAmountProps) => {
 	enum Status {
 		OVERVIEW,
 		EDITING,
@@ -36,7 +35,16 @@ export const ContributionUpdateAmount = (
 	const currentAmount = confirmedAmount || mainPlan.price / 100;
 
 	if (status === Status.EDITING) {
-		return (
+		return props.productType.productType === 'supporterplus' ? (
+			<SupporterPlusUpdateAmountForm
+				{...props}
+				currentAmount={currentAmount}
+				onUpdateConfirmed={(updatedAmount) => {
+					setConfirmedAmount(updatedAmount);
+					setStatus(Status.CONFIRMED);
+				}}
+			/>
+		) : (
 			<ContributionUpdateAmountForm
 				{...props}
 				currentAmount={currentAmount}

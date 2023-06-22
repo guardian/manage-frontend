@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
-import { SupporterPlusUpdateAmount } from '../../../components/mma/accountoverview/updateAmount/SupporterPlusUpdateAmount';
+import { UpdateAmount } from '../../../components/mma/accountoverview/updateAmount/UpdateAmount';
 
 const mainPlan = (billingPeriod: string) => ({
 	start: '2019-10-30',
@@ -39,7 +39,7 @@ it.each([
 	'renders validation error if %s amount below %i',
 	(billingPeriod, expectedMinAmount) => {
 		render(
-			<SupporterPlusUpdateAmount
+			<UpdateAmount
 				subscriptionId="A-123"
 				mainPlan={mainPlan(billingPeriod)}
 				amountUpdateStateChange={jest.fn()}
@@ -73,7 +73,7 @@ it.each([
 	'renders validation error if %s amount above %i',
 	(billingPeriod, expectedMaxAmount) => {
 		render(
-			<SupporterPlusUpdateAmount
+			<UpdateAmount
 				subscriptionId="A-123"
 				mainPlan={mainPlan(billingPeriod)}
 				amountUpdateStateChange={jest.fn()}
@@ -109,7 +109,7 @@ it.each([
 
 it('renders validation error if blank input is provided', () => {
 	render(
-		<SupporterPlusUpdateAmount
+		<UpdateAmount
 			subscriptionId="A-123"
 			mainPlan={mainPlan('month')}
 			amountUpdateStateChange={jest.fn()}
@@ -142,7 +142,7 @@ it('renders validation error if blank input is provided', () => {
 
 it('renders validation error if a string is attempted to be input', () => {
 	render(
-		<SupporterPlusUpdateAmount
+		<UpdateAmount
 			subscriptionId="A-123"
 			mainPlan={mainPlan('month')}
 			amountUpdateStateChange={jest.fn()}
@@ -175,7 +175,7 @@ it('renders validation error if a string is attempted to be input', () => {
 
 it('updates amount is valid value is input', async () => {
 	render(
-		<SupporterPlusUpdateAmount
+		<UpdateAmount
 			subscriptionId="A-123"
 			mainPlan={mainPlan('month')}
 			amountUpdateStateChange={jest.fn()}
