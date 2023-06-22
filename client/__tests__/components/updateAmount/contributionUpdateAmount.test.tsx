@@ -181,11 +181,6 @@ it('renders validation error if a string is attempted to be input', () => {
 });
 
 it('updates amount is valid value is input', () => {
-	// mock the console error for this test case to mute "Cannot update a component (`Unknown`) while rendering a different component" error
-	const mockedError = () => true;
-	// tslint:disable-next-line
-	console.error = mockedError; // tslint:disable-line:no-console
-
 	render(
 		<UpdateAmount
 			subscriptionId="A-123"
