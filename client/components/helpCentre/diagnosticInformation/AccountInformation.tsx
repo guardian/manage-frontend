@@ -22,6 +22,8 @@ export const AccountInformation = () => {
 			if (resp.ok) {
 				const data = (await resp.json()) as UserAttributes;
 				SetUserAttributes(data);
+			} else {
+				SetUserAttributes('failed');
 			}
 		};
 
