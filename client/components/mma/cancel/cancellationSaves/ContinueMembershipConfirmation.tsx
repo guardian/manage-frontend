@@ -1,13 +1,13 @@
 import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
-import { Button, Stack } from '@guardian/source-react-components';
+import { Button, LinkButton, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { cancellationFormatDate } from '../../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
 import { getNewMembershipPrice } from '../../../../utilities/membershipPriceRise';
-import { ProgressIndicator } from '../../shared/ProgressIndicator';
+import { ProgressStepper } from '../../shared/ProgressStepper';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import {
@@ -34,21 +34,22 @@ export const ContinueMembershipConfirmation = () => {
 
 	return (
 		<>
-			<ProgressIndicator
+			<ProgressStepper
 				steps={[
-					{ title: '' },
-					{ title: '' },
+					{ title: 'Details' },
+					{ title: 'Options' },
 					{ title: 'Confirmation', isCurrentStep: true },
 				]}
 				additionalCSS={css`
 					margin: ${space[5]}px 0 ${space[12]}px;
+					max-width: 350px;
 				`}
 			/>
 			<Stack space={4}>
 				<h2 css={headingCss}>Thank you for keeping your Membership</h2>
 				<p css={paragraphListCss}>
-					The new price of your Membership is{' '}
-					{newMembershipPriceDisplay}/{mainPlan.billingPeriod}.{' '}
+					The price of your Membership is {newMembershipPriceDisplay}/
+					{mainPlan.billingPeriod}.{' '}
 					<span>
 						Your first billing date will be{' '}
 						{cancellationFormatDate(
@@ -64,14 +65,14 @@ export const ContinueMembershipConfirmation = () => {
 					onClick={() => navigate('/')}
 					cssOverrides={buttonCentredCss}
 				>
-					Back to account overview
+					Back to my account
 				</Button>
-				<Button
-					onClick={() => navigate('https://www.theguardian.com')}
+				<LinkButton
+					href="https://theguardian.com"
 					cssOverrides={buttonCentredCss}
 				>
 					Continue to the Guardian
-				</Button>
+				</LinkButton>
 			</div>
 		</>
 	);

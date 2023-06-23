@@ -1,11 +1,7 @@
 import { css } from '@emotion/react';
+import { palette, space, textSans } from '@guardian/source-foundations';
 import {
-	neutral,
-	palette,
-	space,
-	textSans,
-} from '@guardian/source-foundations';
-import {
+	Button,
 	ChoiceCard,
 	ChoiceCardGroup,
 	InlineError,
@@ -13,15 +9,15 @@ import {
 } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { augmentBillingPeriod } from '../../../../shared/productResponse';
-import type { ProductType } from '../../../../shared/productTypes';
-import { trackEvent } from '../../../utilities/analytics';
-import type { ContributionInterval } from '../../../utilities/contributionsAmount';
-import { contributionAmountsLookup } from '../../../utilities/contributionsAmount';
-import { fetchWithDefaultParameters } from '../../../utilities/fetch';
-import { AsyncLoader } from '../shared/AsyncLoader';
-import { Button } from '../shared/Buttons';
+import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { augmentBillingPeriod } from '../../../../../shared/productResponse';
+import type { ProductType } from '../../../../../shared/productTypes';
+import { trackEvent } from '../../../../utilities/analytics';
+import type { ContributionInterval } from '../../../../utilities/contributionsAmount';
+import { contributionAmountsLookup } from '../../../../utilities/contributionsAmount';
+import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
+import { TextResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 
 type ContributionUpdateAmountFormMode = 'MANAGE' | 'CANCELLATION_SAVE';
 
@@ -36,7 +32,70 @@ interface ContributionUpdateAmountFormProps {
 	onUpdateConfirmed: (updatedAmount: number) => void;
 }
 
-class UpdateAmountLoader extends AsyncLoader<string> {}
+const getAmountUpdater = (
+	newAmount: number,
+	productType: ProductType,
+	subscriptionName: string,
+) =>
+	fetchWithDefaultParameters(
+		`/api/update/amount/${productType.urlPart}/${subscriptionName}`,
+		{
+			method: 'POST',
+			body: JSON.stringify({ newPaymentAmount: newAmount }),
+		},
+	);
+
+function weeklyBreakDown(
+	chosenAmount: number | null,
+	billingPeriod: string,
+	currencySymbol: string,
+): string | null {
+	if (!chosenAmount) {
+		return null;
+	}
+
+	let weeklyAmount: number;
+	if (billingPeriod === 'month') {
+		weeklyAmount = (chosenAmount * 12) / 52;
+	} else {
+		weeklyAmount = chosenAmount / 52;
+	}
+
+	return `Contributing ${currencySymbol}${chosenAmount} works out as ${currencySymbol}${weeklyAmount.toFixed(
+		2,
+	)} each week`;
+}
+
+function validateChoice(
+	currentAmount: number,
+	chosenAmount: number | null,
+	minAmount: number,
+	maxAmount: number,
+	isOtherAmountSelected: boolean,
+	mainPlan: PaidSubscriptionPlan,
+): string | null {
+	const chosenOptionNum = Number(chosenAmount);
+	if (!chosenAmount && !isOtherAmountSelected) {
+		return 'Please make a selection';
+	} else if (chosenOptionNum === currentAmount) {
+		return 'You have selected the same amount as you currently contribute';
+	} else if (!chosenAmount || isNaN(chosenOptionNum)) {
+		return 'There is a problem with the amount you have selected, please make sure it is a valid amount';
+	} else if (!isNaN(chosenOptionNum) && chosenOptionNum < minAmount) {
+		return `There is a minimum ${
+			mainPlan.billingPeriod
+		}ly contribution amount of ${mainPlan.currency}${minAmount.toFixed(
+			2,
+		)} ${mainPlan.currencyISO}`;
+	} else if (!isNaN(chosenOptionNum) && chosenOptionNum > maxAmount) {
+		return `There is a maximum ${
+			mainPlan.billingPeriod
+		}ly contribution amount of ${mainPlan.currency}${maxAmount.toFixed(
+			2,
+		)} ${mainPlan.currencyISO}`;
+	}
+	return null;
+}
 
 export const ContributionUpdateAmountForm = (
 	props: ContributionUpdateAmountFormProps,
@@ -47,19 +106,18 @@ export const ContributionUpdateAmountForm = (
 		props.mainPlan.billingPeriod as ContributionInterval
 	];
 
-	const getDefaultOtherAmount = (): number | null =>
+	const defaultOtherAmount =
 		props.mode === 'MANAGE'
 			? currentContributionOptions.otherDefaultAmount
 			: null;
 
-	const getDefaultIsOtherAmountSelected = (): boolean =>
-		props.mode === 'CANCELLATION_SAVE';
+	const defaultIsOtherAmountSelected = props.mode === 'CANCELLATION_SAVE';
 
 	const [otherAmount, setOtherAmount] = useState<number | null>(
-		getDefaultOtherAmount(),
+		defaultOtherAmount,
 	);
 	const [isOtherAmountSelected, setIsOtherAmountSelected] = useState<boolean>(
-		getDefaultIsOtherAmountSelected(),
+		defaultIsOtherAmountSelected,
 	);
 	const [hasInteractedWithOtherAmount, setHasInteractedWithOtherAmount] =
 		useState<boolean>(false);
@@ -73,15 +131,23 @@ export const ContributionUpdateAmountForm = (
 	const [showUpdateLoader, setShowUpdateLoader] = useState<boolean>(false);
 	const [updateFailed, setUpdateFailedStatus] = useState<boolean>(false);
 	const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
+	const chosenAmount = isOtherAmountSelected ? otherAmount : selectedValue;
 
 	useEffect(() => {
-		if (otherAmount !== getDefaultOtherAmount()) {
+		if (otherAmount !== defaultOtherAmount) {
 			setHasInteractedWithOtherAmount(true);
 		}
 	}, [otherAmount]);
 
 	useEffect(() => {
-		const newErrorMessage = validateChoice();
+		const newErrorMessage = validateChoice(
+			props.currentAmount,
+			chosenAmount,
+			currentContributionOptions.minAmount,
+			currentContributionOptions.maxAmount,
+			isOtherAmountSelected,
+			props.mainPlan,
+		);
 		setErrorMessage(newErrorMessage);
 	}, [otherAmount, selectedValue]);
 
@@ -91,57 +157,44 @@ export const ContributionUpdateAmountForm = (
 		}
 	}, [confirmedAmount]);
 
-	const getAmountUpdater =
-		(
-			newAmount: number,
-			productType: ProductType,
-			subscriptionName: string,
-		) =>
-		async () =>
-			await fetchWithDefaultParameters(
-				`/api/update/amount/${productType.urlPart}/${subscriptionName}`,
-				{
-					method: 'POST',
-					body: JSON.stringify({ newPaymentAmount: newAmount }),
-				},
-			);
-
-	const validateChoice = (): string | null => {
-		const chosenOption = isOtherAmountSelected
-			? otherAmount
-			: selectedValue;
-
-		const chosenOptionNum = Number(chosenOption);
-		if (!chosenOption && !isOtherAmountSelected) {
-			return 'Please make a selection';
-		} else if (chosenOptionNum === props.currentAmount) {
-			return 'You have selected the same amount as you currently contribute';
-		} else if (!chosenOption || isNaN(chosenOptionNum)) {
-			return 'There is a problem with the amount you have selected, please make sure it is a valid amount';
-		} else if (
-			!isNaN(chosenOptionNum) &&
-			chosenOptionNum < currentContributionOptions.minAmount
-		) {
-			return `There is a minimum ${
-				props.mainPlan.billingPeriod
-			}ly contribution amount of ${
-				props.mainPlan.currency
-			}${currentContributionOptions.minAmount.toFixed(2)} ${
-				props.mainPlan.currencyISO
-			}`;
-		} else if (
-			!isNaN(chosenOptionNum) &&
-			chosenOptionNum > currentContributionOptions.maxAmount
-		) {
-			return `There is a maximum ${
-				props.mainPlan.billingPeriod
-			}ly contribution amount of ${
-				props.mainPlan.currency
-			}${currentContributionOptions.maxAmount.toFixed(2)} ${
-				props.mainPlan.currencyISO
-			}`;
+	const changeAmountClick = async () => {
+		setHasSubmitted(true);
+		const newErrorMessage = validateChoice(
+			props.currentAmount,
+			chosenAmount,
+			currentContributionOptions.minAmount,
+			currentContributionOptions.maxAmount,
+			isOtherAmountSelected,
+			props.mainPlan,
+		);
+		if (newErrorMessage) {
+			setErrorMessage(newErrorMessage);
+			return;
 		}
-		return null;
+		setShowUpdateLoader(true);
+		const response = await getAmountUpdater(
+			pendingAmount,
+			props.productType,
+			props.subscriptionId,
+		);
+
+		const data = await TextResponseHandler(response);
+		if (data === null) {
+			trackEvent({
+				eventCategory: 'amount_change',
+				eventAction: 'contributions_amount_change_failed',
+			});
+			setUpdateFailedStatus(true);
+			setShowUpdateLoader(false);
+		}
+		trackEvent({
+			eventCategory: 'amount_change',
+			eventAction: 'contributions_amount_change_success',
+			eventLabel: `by ${props.mainPlan.currency}${(
+				pendingAmount - props.currentAmount
+			).toFixed(2)}${props.mainPlan.currencyISO}`,
+		});
+		setConfirmedAmount(pendingAmount);
 	};
 
 	const pendingAmount = Number(
@@ -165,62 +218,8 @@ export const ContributionUpdateAmountForm = (
 			? `Other amount (${props.mainPlan.currency})`
 			: `Amount (${props.mainPlan.currency})`;
 
-	const weeklyBreakDown = (): string | null => {
-		const chosenAmount = isOtherAmountSelected
-			? otherAmount
-			: selectedValue;
-		if (!chosenAmount) {
-			return null;
-		}
-
-		let weeklyAmount: number;
-		if (props.mainPlan.billingPeriod === 'month') {
-			weeklyAmount = (chosenAmount * 12) / 52;
-		} else {
-			weeklyAmount = chosenAmount / 52;
-		}
-
-		return `Contributing ${
-			props.mainPlan.currency
-		}${chosenAmount} works out as ${
-			props.mainPlan.currency
-		}${weeklyAmount.toFixed(2)} each week`;
-	};
-
 	if (showUpdateLoader) {
-		return (
-			<UpdateAmountLoader
-				fetch={getAmountUpdater(
-					pendingAmount,
-					props.productType,
-					props.subscriptionId,
-				)}
-				readerOnOK={(resp: Response) => resp.text()}
-				render={() => {
-					trackEvent({
-						eventCategory: 'amount_change',
-						eventAction: 'contributions_amount_change_success',
-						eventLabel: `by ${props.mainPlan.currency}${(
-							pendingAmount - props.currentAmount
-						).toFixed(2)}${props.mainPlan.currencyISO}`,
-					});
-					setConfirmedAmount(pendingAmount);
-					return null;
-				}}
-				loadingMessage={'Updating...'}
-				errorRender={() => {
-					trackEvent({
-						eventCategory: 'amount_change',
-						eventAction: 'contributions_amount_change_failed',
-					});
-					setUpdateFailedStatus(true);
-					setShowUpdateLoader(false);
-					return null;
-				}}
-				spinnerScale={0.7}
-				inline
-			/>
-		);
+		return <DefaultLoadingView loadingMessage="Updating..." />;
 	}
 
 	return (
@@ -351,29 +350,21 @@ export const ContributionUpdateAmountForm = (
 					<div
 						css={css`
 							margin-top: ${space[2]}px;
-							color: ${neutral[46]};
+							color: ${palette.neutral[46]};
 							font-size: 15px;
 						`}
 					>
-						<em>{weeklyBreakDown()}</em>
+						<em>
+							{weeklyBreakDown(
+								chosenAmount,
+								props.mainPlan.billingPeriod,
+								props.mainPlan.currency,
+							)}
+						</em>
 					</div>
 				</div>
 			</div>
-			<Button
-				colour={palette.brand[800]}
-				textColour={palette.brand[400]}
-				fontWeight="bold"
-				text="Change amount"
-				onClick={() => {
-					setHasSubmitted(true);
-					const newErrorMessage = validateChoice();
-					if (newErrorMessage) {
-						setErrorMessage(newErrorMessage);
-						return;
-					}
-					setShowUpdateLoader(true);
-				}}
-			/>
+			<Button onClick={changeAmountClick}>Change amount</Button>
 		</>
 	);
 };

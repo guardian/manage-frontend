@@ -10,14 +10,15 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { formatAmount } from '../../../../utilities/utils';
+import { supporterPlusSwitchBenefits } from '../../shared/benefits/BenefitsConfiguration';
+import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
-import { SupporterPlusBenefitsSection } from '../../shared/SupporterPlusBenefits';
 import type {
 	SwitchContextInterface,
 	SwitchRouterState,
-} from '.././SwitchContainer';
-import { SwitchContext } from '.././SwitchContainer';
+} from '../SwitchContainer';
+import { SwitchContext } from '../SwitchContainer';
 import {
 	buttonCentredCss,
 	errorSummaryBlockLinkCss,
@@ -26,7 +27,7 @@ import {
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
-} from '.././SwitchStyles';
+} from '../SwitchStyles';
 
 const cardHeaderDivCss = css`
 	display: flex;
@@ -244,7 +245,9 @@ export const SwitchOptions = () => {
 							</div>
 						</Card.Header>
 						<Card.Section>
-							<SupporterPlusBenefitsSection />
+							<BenefitsSection
+								benefits={supporterPlusSwitchBenefits}
+							/>
 						</Card.Section>
 					</Card>
 				</Stack>

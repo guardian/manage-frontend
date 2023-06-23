@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import fetchMock from 'fetch-mock';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { SectionContent } from '../../shared/SectionContent';
 import { SectionHeader } from '../../shared/SectionHeader';
@@ -16,8 +16,6 @@ export default {
 } as ComponentMeta<typeof ContactUs>;
 
 export const Default: ComponentStory<typeof ContactUs> = () => {
-	fetchMock.restore().get('/api/known-issues/', { body: [] });
-
 	return (
 		<>
 			<SectionHeader title="Need to contact us?" />
@@ -29,16 +27,22 @@ export const Default: ComponentStory<typeof ContactUs> = () => {
 	);
 };
 
+Default.parameters = {
+	msw: [
+		rest.get('/api/known-issues/', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+	],
+};
+
+const knownIssue = [
+	{
+		date: '20 Jan 2022 12:00',
+		message: 'Live Chat is currently unavailable.',
+	},
+];
+
 export const WithKnownIssue: ComponentStory<typeof ContactUs> = () => {
-	const knownIssue = [
-		{
-			date: '20 Jan 2022 12:00',
-			message: 'Live Chat is currently unavailable.',
-		},
-	];
-
-	fetchMock.restore().get('/api/known-issues/', { body: knownIssue });
-
 	return (
 		<>
 			<SectionHeader title="Need to contact us?" />
@@ -48,6 +52,14 @@ export const WithKnownIssue: ComponentStory<typeof ContactUs> = () => {
 			</SectionContent>
 		</>
 	);
+};
+
+WithKnownIssue.parameters = {
+	msw: [
+		rest.get('/api/known-issues/', (_req, res, ctx) => {
+			return res(ctx.json(knownIssue));
+		}),
+	],
 };
 
 export const TopicSelected: ComponentStory<typeof ContactUs> = () => (

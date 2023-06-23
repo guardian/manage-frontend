@@ -80,21 +80,30 @@ export interface CallCentreEmailAndNumbersProps extends CallCentreNumbersProps {
 	phoneRegionFilterKeys?: PhoneRegionKey[];
 	compactLayout?: boolean;
 	collapsed?: boolean;
+	openPhoneRegion?: PhoneRegionKey;
 }
 
 export const CallCentreEmailAndNumbers = (
 	props: CallCentreEmailAndNumbersProps,
 ) => {
-	const initialIndex = props.collapsed ? -1 : 0;
-
-	const [indexOfOpenSection, setIndexOfOpenSection] =
-		useState<number>(initialIndex);
-
 	const filteredPhoneData = PHONE_DATA.filter(
 		(phoneRegion) =>
 			!props.phoneRegionFilterKeys ||
 			props.phoneRegionFilterKeys.includes(phoneRegion.key),
 	);
+
+	const openPhoneRegionIndex = filteredPhoneData.findIndex(
+		(region) => region.key === props.openPhoneRegion,
+	);
+
+	const initialIndex = props.collapsed
+		? -1
+		: props.openPhoneRegion
+		? openPhoneRegionIndex
+		: 0;
+
+	const [indexOfOpenSection, setIndexOfOpenSection] =
+		useState<number>(initialIndex);
 
 	const sectionTitleCss = (isOpen: boolean, isNotFirstOption: boolean) => `
     ${textSans.medium()};

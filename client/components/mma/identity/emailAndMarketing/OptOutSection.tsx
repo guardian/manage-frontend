@@ -19,7 +19,7 @@ interface OptOutSectionProps {
  * The description of Opt Out consents have changed so for UX/UI purposes they are now opt INs
  * The backend model remains an opt OUT, so we invert the consented/subscribed value here.
  */
-const consentSubscribedValueInverter = (
+export const consentSubscribedValueInverter = (
 	consent: ConsentOption,
 ): ConsentOption => {
 	return {

@@ -1,11 +1,9 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
-import {
-	membershipSupporter,
-	toMembersDataApiResponse,
-} from '../../../../fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../../fixtures/mdapiResponse';
+import { membershipSupporterCurrencyUSD } from '../../../../fixtures/productBuilder/testProducts';
 import { CancellationContainer } from '../CancellationContainer';
 import { ConfirmMembershipCancellation } from './ConfirmMembershipCancellation';
 import { ContinueMembershipConfirmation } from './ContinueMembershipConfirmation';
@@ -13,7 +11,6 @@ import { MembershipCancellationLanding } from './MembershipCancellationLanding';
 import { MembershipSwitch } from './MembershipSwitch';
 import { SaveOptions } from './SaveOptions';
 import { SelectReason } from './SelectReason';
-import { SupportReminder } from './SupportReminder';
 import { SwitchThankYou } from './SwitchThankYou';
 import { ValueOfSupport } from './ValueOfSupport';
 
@@ -25,7 +22,7 @@ export default {
 		layout: 'fullscreen',
 		reactRouter: {
 			state: {
-				productDetail: membershipSupporter,
+				productDetail: membershipSupporterCurrencyUSD(),
 				user: { email: 'test@test.com' },
 			},
 			container: (
@@ -33,17 +30,17 @@ export default {
 			),
 		},
 	},
-} as ComponentMeta<typeof CancellationContainer>;
+} as Meta<typeof CancellationContainer>;
 
-export const ValueOfSupportPage: ComponentStory<typeof ValueOfSupport> = () => {
+export const ValueOfSupportPage: StoryFn<typeof ValueOfSupport> = () => {
 	return <ValueOfSupport />;
 };
 
-export const SwitchReview: ComponentStory<typeof MembershipSwitch> = () => {
+export const SwitchReview: StoryFn<typeof MembershipSwitch> = () => {
 	return <MembershipSwitch />;
 };
 
-export const LandingPage: ComponentStory<
+export const LandingPage: StoryFn<
 	typeof MembershipCancellationLanding
 > = () => {
 	return <MembershipCancellationLanding />;
@@ -52,40 +49,35 @@ export const LandingPage: ComponentStory<
 LandingPage.parameters = {
 	msw: [
 		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(ctx.json(toMembersDataApiResponse(membershipSupporter)));
+			return res(
+				ctx.json(
+					toMembersDataApiResponse(membershipSupporterCurrencyUSD()),
+				),
+			);
 		}),
 	],
 };
 
-export const SwitchOptions: ComponentStory<typeof SaveOptions> = () => {
+export const SwitchOptions: StoryFn<typeof SaveOptions> = () => {
 	return <SaveOptions />;
 };
 
-export const Reasons: ComponentStory<typeof SelectReason> = () => {
+export const Reasons: StoryFn<typeof SelectReason> = () => {
 	return <SelectReason />;
 };
 
-export const ContinueMembership: ComponentStory<
+export const ContinueMembership: StoryFn<
 	typeof ContinueMembershipConfirmation
 > = () => {
 	return <ContinueMembershipConfirmation />;
 };
 
-export const ConfirmCancellation: ComponentStory<
+export const ConfirmCancellation: StoryFn<
 	typeof ConfirmMembershipCancellation
 > = () => {
 	return <ConfirmMembershipCancellation />;
 };
 
-export const SwitchCompleteThankYou: ComponentStory<
-	typeof SwitchThankYou
-> = () => {
+export const SwitchCompleteThankYou: StoryFn<typeof SwitchThankYou> = () => {
 	return <SwitchThankYou />;
-};
-
-export const Reminder: ComponentStory<typeof SupportReminder> = () => {
-	// @ts-expect-error set identity details email in the window
-	window.guardian = { identityDetails: { email: 'test' } };
-
-	return <SupportReminder />;
 };

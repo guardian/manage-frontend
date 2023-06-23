@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import fetchMock from 'fetch-mock';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import { user } from '../../../../fixtures/user';
 import { Settings } from './Settings';
@@ -14,7 +14,13 @@ export default {
 } as ComponentMeta<typeof Settings>;
 
 export const Default: ComponentStory<typeof Settings> = () => {
-	fetchMock.restore().get('/idapi/user', { body: user });
-
 	return <Settings />;
+};
+
+Default.parameters = {
+	msw: [
+		rest.get('/idapi/user', (_req, res, ctx) => {
+			return res(ctx.json(user));
+		}),
+	],
 };

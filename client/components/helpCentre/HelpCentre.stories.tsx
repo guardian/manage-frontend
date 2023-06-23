@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import fetchMock from 'fetch-mock';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
 import { HelpCentre } from './HelpCentre';
@@ -14,13 +14,19 @@ export default {
 } as ComponentMeta<typeof HelpCentre>;
 
 export const Default: ComponentStory<typeof HelpCentre> = () => {
-	fetchMock.restore().get('/api/known-issues/', { body: [] });
-
 	return (
 		<HelpCenterContentWrapper knownIssues={[]}>
 			<HelpCentre />
 		</HelpCenterContentWrapper>
 	);
+};
+
+Default.parameters = {
+	msw: [
+		rest.get('/api/known-issues/', (_req, res, ctx) => {
+			return res(ctx.json([]));
+		}),
+	],
 };
 
 export const WithKnownIssue: ComponentStory<typeof HelpCentre> = () => {

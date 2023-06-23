@@ -17,6 +17,7 @@ import type {
 } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
 import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
 import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Card } from '../../shared/Card';
@@ -50,7 +51,9 @@ const YourNewSupport = (props: {
 	contributionPriceDisplay: string;
 	billingPeriod: string;
 }) => {
-	const monthlyOrAnnual = getMonthlyOrAnnual(props.billingPeriod);
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		props.billingPeriod,
+	);
 	return (
 		<section css={sectionSpacing}>
 			<Heading
@@ -117,7 +120,7 @@ const WhatHappensNext = (props: {
 					</li>
 					<li>
 						<SvgCreditCard size="medium" />
-						<span>
+						<span data-qm-masking="blocklist">
 							<strong>Your payment method</strong>
 							<br />
 							The payment will be taken from{' '}
@@ -144,7 +147,7 @@ const TsAndCs = (props: {
 		</p>
 		<p css={smallPrintCss}>
 			By proceeding, you are agreeing to our{' '}
-			<a href="https://www.theguardian.com/info/2022/oct/28/the-guardian-supporter-plus-terms-and-conditions">
+			<a href="https://www.theguardian.com/info/2016/apr/04/contribution-terms-and-conditions">
 				Terms and Conditions
 			</a>
 			.
@@ -207,6 +210,7 @@ export const MembershipSwitch = () => {
 				body: JSON.stringify({
 					price: getOldMembershipPrice(mainPlan),
 					preview: false,
+					checkChargeAmountBeforeUpdate: false,
 				}),
 				headers: {
 					'Content-Type': 'application/json',
@@ -228,7 +232,9 @@ export const MembershipSwitch = () => {
 				setIsSwitching(false);
 				setSwitchingError(true);
 			} else {
-				navigate('../switch-thank-you', { state: { ...routerState } });
+				navigate('../switch-thank-you', {
+					state: { ...routerState, journeyCompleted: true },
+				});
 			}
 		} catch (e) {
 			setIsSwitching(false);
@@ -307,10 +313,6 @@ export const MembershipSwitch = () => {
 		</>
 	);
 };
-
-function getMonthlyOrAnnual(billingPeriod: string | undefined) {
-	return billingPeriod === 'year' ? 'Annual' : 'Monthly';
-}
 
 function SwitchErrorContext() {
 	return (

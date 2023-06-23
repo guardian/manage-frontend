@@ -1,16 +1,16 @@
 import { render } from '@testing-library/react';
 import { CurrentPaymentDetails } from '../../../components/mma/paymentUpdate/CurrentPaymentDetail';
 import {
-	digitalDD,
-	guardianWeeklyCard,
+	digitalPackPaidByDirectDebit,
 	guardianWeeklyExpiredCard,
-	newspaperVoucherPaypal,
-} from '../../../fixtures/productDetail';
+	guardianWeeklyPaidByCard,
+	newspaperVoucherPaidByPaypal,
+} from '../../../fixtures/productBuilder/testProducts';
 
 describe('currentPaymentDetails.tsx', () => {
 	it('Shows product name', () => {
 		const { getByText } = render(
-			<CurrentPaymentDetails {...guardianWeeklyCard} />,
+			<CurrentPaymentDetails {...guardianWeeklyPaidByCard()} />,
 		);
 
 		expect(getByText('Guardian Weekly')).toBeDefined();
@@ -19,7 +19,7 @@ describe('currentPaymentDetails.tsx', () => {
 	describe('For Card', () => {
 		test('Shows last 4 digits on card and expiry date', () => {
 			const { getByText } = render(
-				<CurrentPaymentDetails {...guardianWeeklyCard} />,
+				<CurrentPaymentDetails {...guardianWeeklyPaidByCard()} />,
 			);
 
 			expect(getByText('ending 4242')).toBeDefined();
@@ -28,7 +28,7 @@ describe('currentPaymentDetails.tsx', () => {
 
 		test('Shows expired when expiry date is in the past', () => {
 			const { getByText } = render(
-				<CurrentPaymentDetails {...guardianWeeklyExpiredCard} />,
+				<CurrentPaymentDetails {...guardianWeeklyExpiredCard()} />,
 			);
 
 			expect(getByText('Expired')).toBeDefined();
@@ -38,7 +38,7 @@ describe('currentPaymentDetails.tsx', () => {
 	describe('For Direct Debit', () => {
 		test('shows account number and sort code', () => {
 			const { getByText } = render(
-				<CurrentPaymentDetails {...digitalDD} />,
+				<CurrentPaymentDetails {...digitalPackPaidByDirectDebit()} />,
 			);
 
 			expect(getByText('ending 911')).toBeDefined();
@@ -49,10 +49,12 @@ describe('currentPaymentDetails.tsx', () => {
 	describe('For Paypal', () => {
 		test('shows masked email', () => {
 			const { getByText } = render(
-				<CurrentPaymentDetails {...newspaperVoucherPaypal} />,
+				<CurrentPaymentDetails
+					{...newspaperVoucherPaidByPaypal('subscriber@example.com')}
+				/>,
 			);
 
-			expect(getByText('t*******r@example.com')).toBeDefined();
+			expect(getByText('s********r@example.com')).toBeDefined();
 		});
 	});
 });

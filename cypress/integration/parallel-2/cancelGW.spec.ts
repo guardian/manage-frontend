@@ -1,7 +1,5 @@
-import {
-	guardianWeeklyCurrentSubscription,
-	toMembersDataApiResponse,
-} from '../../../client/fixtures/productDetail';
+import { guardianWeeklyPaidByCard } from '../../../client/fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Cancel guardian weekly', () => {
@@ -9,7 +7,7 @@ describe('Cancel guardian weekly', () => {
 		signInAndAcceptCookies();
 
 		const GWwithSelfCancelEnabled = JSON.parse(
-			JSON.stringify(guardianWeeklyCurrentSubscription),
+			JSON.stringify(guardianWeeklyPaidByCard()),
 		);
 		GWwithSelfCancelEnabled.selfServiceCancellation.isAllowed = true;
 

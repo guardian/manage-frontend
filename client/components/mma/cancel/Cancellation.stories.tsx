@@ -1,12 +1,12 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import fetchMock from 'fetch-mock';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
 	contributionCancelled,
-	contributionPayPal,
-	guardianWeeklyCard,
-} from '../../../fixtures/productDetail';
+	contributionPaidByPayPal,
+	guardianWeeklyPaidByCard,
+} from '../../../fixtures/productBuilder/testProducts';
 import { CancellationContainer } from './CancellationContainer';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
@@ -26,7 +26,7 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: contributionPayPal },
+			state: { productDetail: contributionPaidByPayPal() },
 			container: <CancellationContainer productType={contributions} />,
 		},
 	},
@@ -35,10 +35,6 @@ export default {
 export const SelectReason: ComponentStory<
 	typeof CancellationReasonSelection
 > = () => {
-	fetchMock.restore().get('glob:/api/cancellation-date/*', {
-		body: { cancellationEffectiveDate: '2022-09-01' },
-	});
-
 	return <CancellationReasonSelection />;
 };
 
@@ -48,7 +44,7 @@ export const ContactCustomerService: ComponentStory<
 
 ContactCustomerService.parameters = {
 	reactRouter: {
-		state: { productDetail: guardianWeeklyCard },
+		state: { productDetail: guardianWeeklyPaidByCard() },
 		container: (
 			<CancellationContainer productType={PRODUCT_TYPES.guardianweekly} />
 		),
@@ -56,15 +52,18 @@ ContactCustomerService.parameters = {
 };
 
 export const Review: ComponentStory<typeof CancellationContainer> = () => {
-	fetchMock.restore().post('/api/case', { body: { id: 'caseId' } });
-
 	return <CancellationReasonReview />;
 };
 
 Review.parameters = {
+	msw: [
+		rest.post('/api/case', (_req, res, ctx) => {
+			return res(ctx.json({ id: 'caseId' }));
+		}),
+	],
 	reactRouter: {
 		state: {
-			productDetail: contributionPayPal,
+			productDetail: contributionPaidByPayPal(),
 			selectedReasonId: 'mma_editorial',
 			cancellationPolicy: 'Today',
 		},
@@ -79,6 +78,6 @@ export const Confirmation: ComponentStory<
 
 	return getCancellationSummary(
 		PRODUCT_TYPES.contributions,
-		contributionCancelled,
-	)(contributionCancelled);
+		contributionCancelled(),
+	)(contributionCancelled());
 };

@@ -1,6 +1,6 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
-import { contributionPayPal } from '../../../../fixtures/productDetail';
+import { contributionPaidByPayPal } from '../../../../fixtures/productBuilder/testProducts';
 import { SwitchContainer } from '../SwitchContainer';
 import { SwitchComplete } from './SwitchComplete';
 
@@ -12,7 +12,7 @@ export default {
 		layout: 'fullscreen',
 		reactRouter: {
 			state: {
-				productDetail: contributionPayPal,
+				productDetail: contributionPaidByPayPal(),
 				user: { email: 'test@theguardian.com' },
 				amountPayableToday: 5.9,
 				nextPaymentDate: '20 March',
@@ -31,7 +31,7 @@ export const YearlyOtherCurrency: ComponentStory<
 > = () => <SwitchComplete />;
 
 const contributionBelowThreshold = JSON.parse(
-	JSON.stringify(contributionPayPal),
+	JSON.stringify(contributionPaidByPayPal()),
 );
 const plan = contributionBelowThreshold.subscription.currentPlans[0];
 plan.price = 300;

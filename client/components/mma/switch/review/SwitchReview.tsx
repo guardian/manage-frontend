@@ -22,10 +22,10 @@ import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { SwitchOffsetPaymentIcon } from '../../shared/assets/SwitchOffsetPaymentIcon';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
+import { BenefitsToggle } from '../../shared/benefits/BenefitsToggle';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { PaymentDetails } from '../../shared/PaymentDetails';
-import { SupporterPlusBenefitsToggle } from '../../shared/SupporterPlusBenefits';
 import type {
 	SwitchContextInterface,
 	SwitchRouterState,
@@ -102,6 +102,7 @@ interface PreviewResponse {
 	amountPayableToday: number;
 	supporterPlusPurchaseAmount: number;
 	nextPaymentDate: string;
+	checkChargeAmountBeforeUpdate: boolean;
 }
 
 export const SwitchReview = () => {
@@ -132,7 +133,10 @@ export const SwitchReview = () => {
 
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 
-	const productMoveFetch = (preview: boolean) =>
+	const productMoveFetch = (
+		preview: boolean,
+		checkChargeAmountBeforeUpdate: boolean,
+	) =>
 		fetch(
 			`/api/product-move/${productSwitchType}/${contributionToSwitch.subscription.subscriptionId}`,
 			{
@@ -140,6 +144,7 @@ export const SwitchReview = () => {
 				body: JSON.stringify({
 					price: newAmount,
 					preview,
+					checkChargeAmountBeforeUpdate,
 				}),
 				headers: {
 					'Content-Type': 'application/json',
@@ -147,7 +152,10 @@ export const SwitchReview = () => {
 			},
 		);
 
-	const confirmSwitch = async (amount: number) => {
+	const confirmSwitch = async (
+		amount: number,
+		checkChargeAmountBeforeUpdate: boolean,
+	) => {
 		if (isSwitching) {
 			return;
 		}
@@ -159,7 +167,10 @@ export const SwitchReview = () => {
 
 		try {
 			setIsSwitching(true);
-			const response = await productMoveFetch(false);
+			const response = await productMoveFetch(
+				false,
+				checkChargeAmountBeforeUpdate,
+			);
 			const data = await JsonResponseHandler(response);
 
 			if (data === null) {
@@ -187,7 +198,10 @@ export const SwitchReview = () => {
 	}: {
 		data: PreviewResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(() => productMoveFetch(true), JsonResponseHandler);
+	} = useAsyncLoader(
+		() => productMoveFetch(true, false),
+		JsonResponseHandler,
+	);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
@@ -243,7 +257,7 @@ export const SwitchReview = () => {
 								including full access to our app and ad-free
 								reading
 							</p>
-							<SupporterPlusBenefitsToggle />
+							<BenefitsToggle productType="supporterplus" />
 							<p css={newAmountCss}>
 								{mainPlan.currency}
 								{formatAmount(newAmount)}/
@@ -318,7 +332,10 @@ export const SwitchReview = () => {
 						isLoading={isSwitching}
 						cssOverrides={buttonCentredCss}
 						onClick={() =>
-							confirmSwitch(previewResponse.amountPayableToday)
+							confirmSwitch(
+								previewResponse.amountPayableToday,
+								previewResponse.checkChargeAmountBeforeUpdate,
+							)
 						}
 					>
 						Confirm {isAboveThreshold ? 'change' : 'upgrade'}

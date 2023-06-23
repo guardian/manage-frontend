@@ -1,18 +1,19 @@
 import { css } from '@emotion/react';
-import { brand, neutral, space } from '@guardian/source-foundations';
+import { palette, space } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
-import { parseDate } from '../../../../shared/dates';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { augmentBillingPeriod } from '../../../../shared/productResponse';
-import type { ProductType } from '../../../../shared/productTypes';
-import { SuccessMessage } from '../delivery/address/DeliveryAddressConfirmation';
-import { Button } from '../shared/Buttons';
-import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTable';
+import { parseDate } from '../../../../../shared/dates';
+import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { augmentBillingPeriod } from '../../../../../shared/productResponse';
+import type { ProductType } from '../../../../../shared/productTypes';
+import { SuccessMessage } from '../../delivery/address/DeliveryAddressConfirmation';
+import { Button } from '../../shared/Buttons';
+import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
 import { ContributionUpdateAmountForm } from './ContributionUpdateAmountForm';
+import { SupporterPlusUpdateAmountForm } from './SupporterPlusUpdateAmountForm';
 
-interface ContributionUpdateAmountProps {
+interface UpdateAmountProps {
 	subscriptionId: string;
 	mainPlan: PaidSubscriptionPlan;
 	productType: ProductType;
@@ -20,9 +21,7 @@ interface ContributionUpdateAmountProps {
 	amountUpdateStateChange: Dispatch<SetStateAction<number | null>>;
 }
 
-export const ContributionUpdateAmount = (
-	props: ContributionUpdateAmountProps,
-) => {
+export const UpdateAmount = (props: UpdateAmountProps) => {
 	enum Status {
 		OVERVIEW,
 		EDITING,
@@ -36,7 +35,16 @@ export const ContributionUpdateAmount = (
 	const currentAmount = confirmedAmount || mainPlan.price / 100;
 
 	if (status === Status.EDITING) {
-		return (
+		return props.productType.productType === 'supporterplus' ? (
+			<SupporterPlusUpdateAmountForm
+				{...props}
+				currentAmount={currentAmount}
+				onUpdateConfirmed={(updatedAmount) => {
+					setConfirmedAmount(updatedAmount);
+					setStatus(Status.CONFIRMED);
+				}}
+			/>
+		) : (
 			<ContributionUpdateAmountForm
 				{...props}
 				currentAmount={currentAmount}
@@ -65,7 +73,7 @@ export const ContributionUpdateAmount = (
 				/>
 			)}
 			<ProductDescriptionListTable
-				borderColour={neutral[86]}
+				borderColour={palette.neutral[86]}
 				content={[
 					{
 						title: 'Supporter ID',
@@ -84,8 +92,8 @@ export const ContributionUpdateAmount = (
 				]}
 			/>
 			<Button
-				colour={brand[800]}
-				textColour={brand[400]}
+				colour={palette.brand[800]}
+				textColour={palette.brand[400]}
 				fontWeight="bold"
 				text="Change amount"
 				onClick={() => {

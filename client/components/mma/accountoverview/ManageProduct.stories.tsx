@@ -1,11 +1,11 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
-	digitalDD,
-	guardianWeeklyCard,
-	newspaperVoucherPaypal,
-} from '../../../fixtures/productDetail';
+	digitalPackPaidByDirectDebit,
+	guardianWeeklyPaidByCard,
+	newspaperVoucherPaidByPaypal,
+} from '../../../fixtures/productBuilder/testProducts';
 import { ManageProduct } from './ManageProduct';
 
 export default {
@@ -15,29 +15,29 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof ManageProduct>;
+} as Meta<typeof ManageProduct>;
 
-const Template: ComponentStory<typeof ManageProduct> = () => (
+const Template: StoryFn<typeof ManageProduct> = () => (
 	<ManageProduct groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions} />
 );
 
 export const GuardianWeekly = Template.bind({});
 GuardianWeekly.parameters = {
 	reactRouter: {
-		state: { productDetail: guardianWeeklyCard },
+		state: { productDetail: guardianWeeklyPaidByCard() },
 	},
 };
 
 export const DigitalSubscription = Template.bind({});
 DigitalSubscription.parameters = {
 	reactRouter: {
-		state: { productDetail: digitalDD },
+		state: { productDetail: digitalPackPaidByDirectDebit() },
 	},
 };
 
 export const NewspaperSubscriptionCard = Template.bind({});
 NewspaperSubscriptionCard.parameters = {
 	reactRouter: {
-		state: { productDetail: newspaperVoucherPaypal },
+		state: { productDetail: newspaperVoucherPaidByPaypal() },
 	},
 };

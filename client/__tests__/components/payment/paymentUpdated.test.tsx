@@ -9,10 +9,10 @@ import {
 	PaymentMethodUpdated,
 } from '../../../components/mma/paymentUpdate/PaymentDetailUpdateConfirmation';
 import {
-	digitalDD,
-	guardianWeeklyCard,
+	digitalPackPaidByDirectDebit,
 	guardianWeeklyExpiredCard,
-} from '../../../fixtures/productDetail';
+	guardianWeeklyPaidByCard,
+} from '../../../fixtures/productBuilder/testProducts';
 import {
 	digitalSubscriptionDD,
 	guardianWeeklySubscriptionCard,
@@ -58,7 +58,7 @@ const tests = [
 		data: {
 			subscription: guardianWeeklySubscriptionCard,
 			newPaymentMethodDetail: newPaymentMethodDetailCard,
-			previousProductDetail: guardianWeeklyCard,
+			previousProductDetail: guardianWeeklyPaidByCard(),
 		},
 		expectations: [
 			'Guardian Weekly',
@@ -72,7 +72,7 @@ const tests = [
 		data: {
 			subscription: digitalSubscriptionDD,
 			newPaymentMethodDetail: newPaymentMethodDetailDD,
-			previousProductDetail: digitalDD,
+			previousProductDetail: digitalPackPaidByDirectDebit(),
 		},
 		expectations: [
 			'Digital Subscription',
@@ -109,7 +109,7 @@ test('PaymentMethodUpdated component does not display failure message', () => {
 			<PaymentMethodUpdated
 				subs={[{ subscription: guardianWeeklySubscriptionCard }]}
 				subHasExpectedPaymentType={true}
-				previousProductDetail={guardianWeeklyCard}
+				previousProductDetail={guardianWeeklyPaidByCard()}
 				paymentFailureRecoveryMessage={failureMessage}
 			/>
 		</MemoryRouter>,
@@ -124,7 +124,7 @@ test('PaymentMethodUpdated component displays failure message when necessary', (
 			<PaymentMethodUpdated
 				subs={[{ subscription: guardianWeeklySubscriptionCard }]}
 				subHasExpectedPaymentType={true}
-				previousProductDetail={guardianWeeklyExpiredCard}
+				previousProductDetail={guardianWeeklyExpiredCard()}
 				paymentFailureRecoveryMessage={failureMessage}
 			/>
 		</MemoryRouter>,

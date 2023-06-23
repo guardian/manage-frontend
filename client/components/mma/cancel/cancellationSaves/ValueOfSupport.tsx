@@ -1,14 +1,10 @@
 import { css } from '@emotion/react';
 import { space, textSans } from '@guardian/source-foundations';
-import {
-	Button,
-	Stack,
-	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
+import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { dateString } from '../../../../../shared/dates';
-import { ProgressIndicator } from '../../shared/ProgressIndicator';
+import { ProgressStepper } from '../../shared/ProgressStepper';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
@@ -41,14 +37,15 @@ export const ValueOfSupport = () => {
 
 	return (
 		<>
-			<ProgressIndicator
+			<ProgressStepper
 				steps={[
 					{ title: 'Details', isCurrentStep: true },
-					{ title: '' },
-					{ title: '' },
+					{ title: 'Options' },
+					{ title: 'Confirmation' },
 				]}
 				additionalCSS={css`
 					margin: ${space[5]}px 0 ${space[12]}px;
+					max-width: 350px;
 				`}
 			/>
 			<Stack space={4}>
@@ -70,17 +67,15 @@ export const ValueOfSupport = () => {
 					have reached millions around the world. We're so grateful.
 				</p>
 			</Stack>
-			<div>Image placeholder</div>
 			<div css={reverseStackedButtonLayoutCss}>
 				<Button
 					priority="tertiary"
 					cssOverrides={buttonCentredCss}
-					onClick={() => navigate('../landing')}
+					onClick={() => navigate('/')}
 				>
-					Back
+					Back to my account
 				</Button>
 				<Button
-					icon={<SvgArrowRightStraight />}
 					iconSide="right"
 					cssOverrides={buttonCentredCss}
 					onClick={() =>

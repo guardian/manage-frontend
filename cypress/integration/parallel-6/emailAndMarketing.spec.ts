@@ -1,5 +1,5 @@
 import { user as userResponse } from '../../../client/fixtures/user';
-import { toMembersDataApiResponse } from '../../../client/fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { singleContributionsAPIResponse } from '../../../client/fixtures/singleContribution';
 import { newsletters } from '../../../client/fixtures/newsletters';
 import { consents } from '../../../client/fixtures/consents';

@@ -1,8 +1,4 @@
-import {
-	guardianWeeklyCurrentSubscription,
-	homeDeliverySubscription,
-	toMembersDataApiResponse,
-} from '../../../client/fixtures/productDetail';
+import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import {
 	deliveryRecordsWithNoDeliveries,
 	deliveryRecordsWithDelivery,
@@ -16,6 +12,10 @@ import {
 	DATE_FNS_INPUT_FORMAT,
 } from '../../../shared/dates';
 import { singleContributionsAPIResponse } from '../../../client/fixtures/singleContribution';
+import {
+	guardianWeeklyPaidByCard,
+	homeDelivery,
+} from '../../../client/fixtures/productBuilder/testProducts';
 
 describe('Delivery records', () => {
 	beforeEach(() => {
@@ -23,20 +23,20 @@ describe('Delivery records', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
+			body: toMembersDataApiResponse(guardianWeeklyPaidByCard()),
 		}).as('product_detail');
 
-		cy.intercept('GET', '/api/delivery-records/A-S00293857', {
+		cy.intercept('GET', '/api/delivery-records/*', {
 			statusCode: 200,
 			body: deliveryRecordsWithDelivery,
 		}).as('delivery_records');
 
-		cy.intercept('GET', '/api/holidays/A-S00293857/potential?*', {
+		cy.intercept('GET', '/api/holidays/*/potential?*', {
 			statusCode: 200,
 			body: potentialDeliveries,
 		}).as('fetch_potential_holidays');
 
-		cy.intercept('POST', '/api/delivery-records/A-S00293857', {
+		cy.intercept('POST', '/api/delivery-records/*', {
 			statusCode: 200,
 			body: deliveryRecordsWithReportedProblem,
 		}).as('fetch_potential_holidays');
@@ -44,7 +44,7 @@ describe('Delivery records', () => {
 
 	it('shows delivery history when multiple products of the same type exist. Navigating from account overview', () => {
 		const secondaryGWSubscription = JSON.parse(
-			JSON.stringify(guardianWeeklyCurrentSubscription),
+			JSON.stringify(guardianWeeklyPaidByCard()),
 		);
 		const secondarySubscriptionId = 'A-S00000002';
 		secondaryGWSubscription.subscription.subscriptionId =
@@ -52,7 +52,7 @@ describe('Delivery records', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
-				guardianWeeklyCurrentSubscription,
+				guardianWeeklyPaidByCard(),
 				secondaryGWSubscription,
 			),
 		}).as('mma');
@@ -94,7 +94,7 @@ describe('Delivery records', () => {
 	});
 
 	it('does not show delivery history when there have been no deliveries', () => {
-		cy.intercept('GET', '/api/delivery-records/A-S00293857', {
+		cy.intercept('GET', '/api/delivery-records/*', {
 			statusCode: 200,
 			body: deliveryRecordsWithNoDeliveries,
 		}).as('delivery_records');
@@ -118,7 +118,7 @@ describe('Delivery records', () => {
 
 	it('cancelled subscription delivery reporting - not auto credited', () => {
 		const cancelledGWSubscription = JSON.parse(
-			JSON.stringify(guardianWeeklyCurrentSubscription),
+			JSON.stringify(guardianWeeklyPaidByCard()),
 		);
 		cancelledGWSubscription.subscription.cancelledAt = true;
 		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
@@ -156,7 +156,7 @@ describe('Delivery records', () => {
 	it('home delivery with existing delivery problem (within 14 dayes) reporting issue - not auto credited', () => {
 		cy.intercept('GET', '/api/me/mma?productType=HomeDelivery', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(homeDeliverySubscription),
+			body: toMembersDataApiResponse(homeDelivery()),
 		}).as('product_detail_home_delivery');
 
 		const deliveryRecordsWithDeliveryProblem = JSON.parse(
@@ -212,7 +212,7 @@ describe('Delivery records', () => {
 
 	it('allows you to report a problem with a delivery with a non auto renewable subscription - not auto credited', () => {
 		const gWSubscriptionNonAutoRenew = JSON.parse(
-			JSON.stringify(guardianWeeklyCurrentSubscription),
+			JSON.stringify(guardianWeeklyPaidByCard()),
 		);
 		gWSubscriptionNonAutoRenew.subscription.autoRenew = false;
 
@@ -297,7 +297,7 @@ describe('Delivery records', () => {
 	it('allows you to update delivery address before reporting a problem', () => {
 		cy.intercept('GET', '/api/me/mma?productType=ContentSubscription', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianWeeklyCurrentSubscription),
+			body: toMembersDataApiResponse(guardianWeeklyPaidByCard()),
 		}).as('address_product_detail');
 
 		cy.intercept('PUT', '/api/delivery/address/update/**', {

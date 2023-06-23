@@ -19,11 +19,11 @@ import {
 	getNewMembershipPrice,
 	getOldMembershipPrice,
 } from '../../../../utilities/membershipPriceRise';
+import { benefitsConfiguration } from '../../shared/benefits/BenefitsConfiguration';
+import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
-import { MembershipBenefitsSection } from '../../shared/MembershipBenefits';
-import { ProgressIndicator } from '../../shared/ProgressIndicator';
-import { RecurringSupporterBenefitsSection } from '../../shared/RecurringSupporterBenefits';
+import { ProgressStepper } from '../../shared/ProgressStepper';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
@@ -91,14 +91,15 @@ export const SaveOptions = () => {
 
 	return (
 		<>
-			<ProgressIndicator
+			<ProgressStepper
 				steps={[
-					{ title: '' },
-					{ title: 'Offer', isCurrentStep: true },
-					{ title: '' },
+					{ title: 'Details' },
+					{ title: 'Options', isCurrentStep: true },
+					{ title: 'Confirmation' },
 				]}
 				additionalCSS={css`
 					margin: ${space[5]}px 0 ${space[12]}px;
+					max-width: 350px;
 				`}
 			/>
 			<Stack space={4}>
@@ -115,9 +116,9 @@ export const SaveOptions = () => {
 						${textSans.medium()};
 					`}
 				>
-					Enjoy all of your exclusive extras. The new price has
-					increased from {oldPriceDisplay} to {newPriceDisplay}/
-					{billingPeriod}.
+					Enjoy all of your exclusive benefits. The new price has
+					increased from {oldPriceDisplay}/{billingPeriod} to{' '}
+					{newPriceDisplay}/{billingPeriod}.
 				</p>
 				<Card>
 					<Card.Header backgroundColor={palette.sport[300]}>
@@ -139,7 +140,9 @@ export const SaveOptions = () => {
 						</div>
 					</Card.Header>
 					<Card.Section>
-						<MembershipBenefitsSection />
+						<BenefitsSection
+							benefits={benefitsConfiguration['membership']}
+						/>
 						<section css={[cardSectionCss, buttonContainerCss]}>
 							<ThemeProvider
 								theme={buttonThemeReaderRevenueBrand}
@@ -179,7 +182,9 @@ export const SaveOptions = () => {
 						</div>
 					</Card.Header>
 					<Card.Section>
-						<RecurringSupporterBenefitsSection />
+						<BenefitsSection
+							benefits={benefitsConfiguration['contributions']}
+						/>
 						<section css={[cardSectionCss, buttonContainerCss]}>
 							<ThemeProvider
 								theme={buttonThemeReaderRevenueBrand}
@@ -200,7 +205,7 @@ export const SaveOptions = () => {
 					</Card.Section>
 				</Card>
 				<section css={sectionSpacing}>
-					<Heading sansSerif>Cancel your membership</Heading>
+					<Heading sansSerif>Cancel your Membership</Heading>
 					<p
 						css={css`
 							${textSans.medium()};
@@ -208,7 +213,7 @@ export const SaveOptions = () => {
 					>
 						Please note if you cancel you will not be able to rejoin
 						the Guardian Members scheme, as it’s now closed to new
-						members
+						Members
 					</p>
 					<div css={buttonContainerCss}>
 						<Button

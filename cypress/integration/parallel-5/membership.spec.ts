@@ -1,7 +1,5 @@
-import {
-	toMembersDataApiResponse,
-	membershipSupporter,
-} from '../../../client/fixtures/productDetail';
+import { membershipSupporter } from '../../../client/fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('membership test', () => {
@@ -10,7 +8,7 @@ describe('membership test', () => {
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(membershipSupporter),
+			body: toMembersDataApiResponse(membershipSupporter()),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -25,7 +23,7 @@ describe('membership test', () => {
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(membershipSupporter),
+			body: toMembersDataApiResponse(membershipSupporter()),
 		}).as('refetch_subscription');
 
 		cy.intercept('GET', '/api/cancelled/', {
@@ -41,15 +39,15 @@ describe('membership test', () => {
 		cy.wait('@mobile_subscriptions');
 		cy.wait('@single_contributions');
 
-		cy.findByText('Guardian membership');
+		cy.findByText('Guardian Membership');
 	});
 
 	it('membership subscription', () => {
 		cy.visit('/membership');
 
-		cy.findByText('Manage membership').click();
+		cy.findByText('Manage Membership').click();
 
-		cy.findByText('Cancel membership');
+		cy.findByText('Cancel Membership');
 	});
 
 	it('membership billing page', () => {

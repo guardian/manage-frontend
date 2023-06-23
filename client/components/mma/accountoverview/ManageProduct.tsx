@@ -1,9 +1,7 @@
 import { css } from '@emotion/react';
 import {
-	brand,
-	brandAlt,
 	headline,
-	neutral,
+	palette,
 	space,
 	textSans,
 	until,
@@ -11,6 +9,7 @@ import {
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { cancellationFormatDate } from '../../../../shared/dates';
+import { featureSwitches } from '../../../../shared/featureSwitches';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import {
 	getMainPlan,
@@ -39,9 +38,9 @@ import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { PaymentDetailsTable } from '../shared/PaymentDetailsTable';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTable';
-import { ContributionUpdateAmount } from './ContributionUpdateAmount';
 import { NewsletterOptinSection } from './NewsletterOptinSection';
 import { SixForSixExplainerIfApplicable } from './SixForSixExplainer';
+import { UpdateAmount } from './updateAmount/UpdateAmount';
 
 const subHeadingTitleCss = `
     ${headline.small()};
@@ -52,7 +51,7 @@ const subHeadingTitleCss = `
     };
   `;
 const subHeadingBorderTopCss = `
-    border-top: 1px solid ${neutral['86']};
+    border-top: 1px solid ${palette.neutral['86']};
     margin: 50px 0 ${space[5]}px;
   `;
 export const subHeadingCss = `
@@ -97,6 +96,10 @@ const InnerContent = ({
 	const maybePatronSuffix =
 		productDetail.subscription.readerType === 'Patron' ? ' - Patron' : '';
 
+	const showSupporterPlusUpdateAmount =
+		specificProductType.productType === 'supporterplus' &&
+		featureSwitches.supporterPlusUpdateAmount;
+
 	return (
 		<>
 			<PaymentFailureAlertIfApplicable productDetails={[productDetail]} />
@@ -134,7 +137,7 @@ const InnerContent = ({
 						${textSans.medium()};
 					`}
 				>
-					<ErrorIcon fill={brandAlt[200]} />
+					<ErrorIcon fill={palette.brandAlt[200]} />
 					<span
 						css={css`
 							margin-left: ${space[2]}px;
@@ -152,8 +155,9 @@ const InnerContent = ({
 				</p>
 			)}
 
-			{isAmountOveridable && isPaidSubscriptionPlan(mainPlan) ? (
-				<ContributionUpdateAmount
+			{(isAmountOveridable || showSupporterPlusUpdateAmount) &&
+			isPaidSubscriptionPlan(mainPlan) ? (
+				<UpdateAmount
 					subscriptionId={productDetail.subscription.subscriptionId}
 					mainPlan={mainPlan}
 					productType={specificProductType}
@@ -191,10 +195,14 @@ const InnerContent = ({
 				!productDetail.subscription.payPalEmail && (
 					<LinkButton
 						colour={
-							productDetail.alertText ? brand[400] : brand[800]
+							productDetail.alertText
+								? palette.brand[400]
+								: palette.brand[800]
 						}
 						textColour={
-							productDetail.alertText ? neutral[100] : brand[400]
+							productDetail.alertText
+								? palette.neutral[100]
+								: palette.brand[400]
 						}
 						fontWeight={'bold'}
 						alert={!!productDetail.alertText}
@@ -218,7 +226,7 @@ const InnerContent = ({
 						</h2>
 						<ProductDescriptionListTable
 							alternateRowBgColors
-							borderColour={neutral[86]}
+							borderColour={palette.neutral[86]}
 							content={[
 								{
 									title: 'Address',
@@ -246,8 +254,8 @@ const InnerContent = ({
 							]}
 						/>
 						<LinkButton
-							colour={brand[800]}
-							textColour={brand[400]}
+							colour={palette.brand[800]}
+							textColour={palette.brand[400]}
 							fontWeight="bold"
 							text="Manage delivery address"
 							to={`/delivery/${specificProductType.urlPart}/address`}
@@ -273,8 +281,8 @@ const InnerContent = ({
 						Check delivery history and report an issue.
 					</p>
 					<LinkButton
-						colour={brand[800]}
-						textColour={brand[400]}
+						colour={palette.brand[800]}
+						textColour={palette.brand[400]}
 						fontWeight="bold"
 						text="Manage delivery history"
 						to={`/delivery/${specificProductType.urlPart}/records`}
@@ -306,8 +314,8 @@ const InnerContent = ({
 							the first bill after the suspension date.
 						</p>
 						<LinkButton
-							colour={brand[800]}
-							textColour={brand[400]}
+							colour={palette.brand[800]}
+							textColour={palette.brand[400]}
 							fontWeight="bold"
 							text="Manage suspensions"
 							to={`/suspend/${specificProductType.urlPart}`}
@@ -387,14 +395,14 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 			css={css`
 				margin: ${space[24]}px 0 0 auto;
 				${textSans.medium()}
-				color: ${neutral[46]};
+				color: ${palette.neutral[46]};
 			`}
 		>
 			{shouldContactUsToCancel &&
 				`Would you like to cancel your ${props.friendlyName}? `}
 			<Link
 				css={css`
-					color: ${brand['500']};
+					color: ${palette.brand['500']};
 				`}
 				to={'/cancel/' + props.specificProductType.urlPart}
 				state={{ productDetail: props.productDetail }}
