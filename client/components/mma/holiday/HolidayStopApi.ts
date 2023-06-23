@@ -105,8 +105,6 @@ export const convertRawPotentialHolidayStopDetail = (
 	publicationDate: parseDate(raw.publicationDate),
 });
 
-export class GetHolidayStopsAsyncLoader extends AsyncLoader<GetHolidayStopsResponse> {}
-
 // tslint:disable-next-line:max-classes-per-file
 export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<PotentialHolidayStopsResponse> {}
 
