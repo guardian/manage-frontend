@@ -63,7 +63,7 @@ describe('Holiday stops', () => {
 
 		cy.get('table').contains('9 February - 11 February 2022');
 		cy.get('table').contains('1 issue');
-		cy.get('table').contains('$2.89 off your 1 February 2023 payment');
+		cy.get('table').contains('£2.89 off your 1 February 2023 payment');
 
 		cy.findByText('Confirm').click();
 
