@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { from, neutral, space, textSans } from '@guardian/source-foundations';
-import { ScrollToHashElement } from '../../../shared/ScrollToHashElement';
 import { getHelpSectionIcon } from '../mma/shared/assets/HelpSectionIcons';
 import { CallCentreEmailAndNumbers } from '../shared/CallCenterEmailAndNumbers';
 
@@ -72,7 +71,6 @@ export const HelpCentrePhoneNumbers = (props: HelpCentrePhoneNumbersProps) => (
 				Speak with one of our customer service agents.
 			</p>
 		</div>
-		<ScrollToHashElement />
 		<CallCentreEmailAndNumbers
 			hideEmailAddress={true}
 			compactLayout={props.compactLayout}

@@ -25,7 +25,6 @@ import { global } from '../../styles/global';
 import { getCookie } from '../../utilities/cookies';
 import { useAnalytics } from '../../utilities/hooks/useAnalytics';
 import { useConsent } from '../../utilities/hooks/useConsent';
-import { useScrollToTop } from '../../utilities/hooks/useScrollToTop';
 import {
 	hasDeliveryFlow,
 	hasDeliveryRecordsFlow,
@@ -387,7 +386,6 @@ const MMARouter = () => {
 
 	useAnalytics();
 	useConsent();
-	useScrollToTop();
 
 	return (
 		<Main signInStatus={signInStatus}>
