@@ -141,20 +141,18 @@ export const Help = () => {
 			>
 				Visit our Help Centre to find more useful information
 			</p>
-			<a>
-				<LinkButton
-					href="/help-centre/#call-us"
-					priority="secondary"
-					onClick={() =>
-						trackEvent({
-							eventCategory: 'help-page',
-							eventAction: 'help-centre-cta-click',
-						})
-					}
-				>
-					Visit Help Centre
-				</LinkButton>
-			</a>
+			<LinkButton
+				href="/help-centre#call-us"
+				priority="secondary"
+				onClick={() =>
+					trackEvent({
+						eventCategory: 'help-page',
+						eventAction: 'help-centre-cta-click',
+					})
+				}
+			>
+				Visit Help Centre
+			</LinkButton>
 			<Stack space={5}>
 				<p
 					css={css`

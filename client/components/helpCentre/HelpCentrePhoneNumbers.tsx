@@ -52,26 +52,21 @@ const subtitleWideCss = css`
 export interface HelpCentrePhoneNumbersProps {
 	compactLayout?: boolean;
 }
-
 export const HelpCentrePhoneNumbers = (props: HelpCentrePhoneNumbersProps) => (
 	<>
-		<div css={containerCss}>
-			<a>
-				<h2
-					css={[headingCss, !props.compactLayout && headingWideCss]}
-					id={'call-us'}
+		<div css={containerCss} id={'call-us'}>
+			<h2 css={[headingCss, !props.compactLayout && headingWideCss]}>
+				<i
+					css={[
+						headingIconCss,
+						!props.compactLayout && headingIconWideCss,
+					]}
 				>
-					<i
-						css={[
-							headingIconCss,
-							!props.compactLayout && headingIconWideCss,
-						]}
-					>
-						{getHelpSectionIcon('call-us')}
-					</i>
-					Call us
-				</h2>
-			</a>
+					{getHelpSectionIcon('call-us')}
+				</i>
+				Call us
+			</h2>
+
 			<p css={[subtitleCss, !props.compactLayout && subtitleWideCss]}>
 				Speak with one of our customer service agents.
 			</p>
