@@ -110,6 +110,15 @@ router.post(
 );
 
 router.post(
+	'/update-cancellation-reason/:subscriptionName?',
+	membersDataApiHandler(
+		'/user-attributes/me/update-cancellation-reason/:subscriptionName',
+		'MDA_UPDATE_CANCELLATION_REASON',
+		['subscriptionName'],
+	),
+);
+
+router.post(
 	'/supporter-plus-cancel/:subscriptionName',
 	productMoveAPI(
 		'supporter-plus-cancel/:subscriptionName',

@@ -56,6 +56,13 @@ if (featureSwitches.membershipSave) {
 				},
 			}).as('get_case');
 
+			cy.intercept('POST', '/api/update-cancellation-reason/**', {
+				statusCode: 204,
+				body: {
+					reason: 'reason',
+				},
+			}).as('update_zuora_cancellation_reason');
+
 			cy.intercept('POST', '/api/cancel/**', {
 				statusCode: 200,
 			}).as('cancel_membership');
