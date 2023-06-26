@@ -27,12 +27,12 @@ describe('Holiday stops', () => {
 
 		cy.intercept('GET', '/api/holidays/*/potential?*', {
 			statusCode: 200,
-			body: yearSpanningPotentialDeliveries,
+			body: potentialDeliveries,
 		}).as('fetch_potential_holidays');
 
 		cy.intercept('GET', '/api/holidays/*', {
 			statusCode: 200,
-			body: existingHolidaysFirstIssueDecember,
+			body: existingHolidays,
 		}).as('fetch_existing_holidays');
 
 		cy.intercept('POST', '/api/holidays', {
