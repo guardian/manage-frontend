@@ -66,7 +66,6 @@ export const HelpCentrePhoneNumbers = (props: HelpCentrePhoneNumbersProps) => (
 				</i>
 				Call us
 			</h2>
-
 			<p css={[subtitleCss, !props.compactLayout && subtitleWideCss]}>
 				Speak with one of our customer service agents.
 			</p>
