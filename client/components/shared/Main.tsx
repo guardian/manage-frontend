@@ -1,12 +1,6 @@
 import { palette, textSansSizes } from '@guardian/source-foundations';
-import type {
-	Context,
-	Dispatch,
-	SetStateAction} from 'react';
-import {
-	createContext,
-	useState,
-} from 'react';
+import type { Context, Dispatch, SetStateAction } from 'react';
+import { createContext, useState } from 'react';
 import { serif } from '../../styles/fonts';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { Footer } from './footer/Footer';
@@ -30,7 +24,7 @@ export const Main = ({
 	signInStatus = 'init',
 	children,
 	isHelpCentrePage,
-}: MainProps)  => {
+}: MainProps) => {
 	const [hasMinimalFooter, setHasMinimalFooter] = useState<boolean>(false);
 
 	return (
@@ -59,7 +53,10 @@ export const Main = ({
 				>
 					Skip to main content
 				</a>
-				<Header signInStatus={signInStatus} isHelpCentrePage={isHelpCentrePage} />
+				<Header
+					signInStatus={signInStatus}
+					isHelpCentrePage={isHelpCentrePage}
+				/>
 				<div
 					css={{
 						flexGrow: 1,

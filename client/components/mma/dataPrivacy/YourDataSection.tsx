@@ -1,8 +1,8 @@
-import type {
-	ClickHandler} from '../identity/emailAndMarketing/OptOutSection';
+import type { ClickHandler } from '../identity/emailAndMarketing/OptOutSection';
 import {
 	consentSubscribedValueInverter,
- optOutFinder } from '../identity/emailAndMarketing/OptOutSection';
+	optOutFinder,
+} from '../identity/emailAndMarketing/OptOutSection';
 import { Lines } from '../identity/Lines';
 import type { ConsentOption } from '../identity/models';
 import {

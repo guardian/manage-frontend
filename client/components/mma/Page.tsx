@@ -7,14 +7,11 @@ import {
 	space,
 	textSans,
 } from '@guardian/source-foundations';
-import type { ReactElement} from 'react';
+import type { ReactElement } from 'react';
 import { useContext, useEffect } from 'react';
 import { gridBase, gridColumns, gridItemPlacement } from '../../styles/grid';
-import type {
-	HasMinimalFooterInterface} from '../shared/Main';
-import {
-	HasMinimalFooterContext
-} from '../shared/Main';
+import type { HasMinimalFooterInterface } from '../shared/Main';
+import { HasMinimalFooterContext } from '../shared/Main';
 import type { LeftSideNavProps } from '../shared/nav/LeftSideNav';
 import { LeftSideNav } from '../shared/nav/LeftSideNav';
 import type { NavItem } from '../shared/nav/NavConfig';

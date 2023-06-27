@@ -119,7 +119,7 @@ export const ConsentOptions: ConsentOptionCollection = {
 				// @AB_TEST: Default Onboarding Newsletter Test: START
 				// Prevent trial newsletter from displaying.
 				.filter((newsletter: ConsentOption) => newsletter.id !== '6028') // identityId: 'saturday-roundup-trial'
-				// @AB_TEST: Default Onboarding Newsletter Test: END
+			// @AB_TEST: Default Onboarding Newsletter Test: END
 		);
 	},
 	consents(options: ConsentOption[]): ConsentOption[] {
