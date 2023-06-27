@@ -146,7 +146,7 @@
     "@guardian/ab-core": "2.0.0",
     "@guardian/ab-react": "2.0.1",
     "@guardian/commercial-core": "5.4.5",
-    "@guardian/consent-management-platform": "13.0.0",
+    "@guardian/consent-management-platform": "13.5.0",
     "@guardian/libs": "14.0.0",
     "@guardian/source-foundations": "10.0.1",
     "@guardian/source-react-components": "13.0.0",

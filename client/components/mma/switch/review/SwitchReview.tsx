@@ -95,6 +95,13 @@ const buttonLayoutCss = css`
 	}
 `;
 
+const scrollToErrorMessage = () => {
+	const errorMessageElement = document.getElementById(
+		'productSwitchErrorMessage',
+	);
+	errorMessageElement && errorMessageElement.scrollIntoView();
+};
+
 const productSwitchType: ProductSwitchType =
 	'recurring-contribution-to-supporter-plus';
 
@@ -162,6 +169,7 @@ export const SwitchReview = () => {
 
 		if (inPaymentFailure) {
 			setSwitchingError(true);
+			scrollToErrorMessage();
 			return;
 		}
 
@@ -176,6 +184,7 @@ export const SwitchReview = () => {
 			if (data === null) {
 				setIsSwitching(false);
 				setSwitchingError(true);
+				scrollToErrorMessage();
 			} else {
 				navigate('../complete', {
 					state: {
@@ -189,6 +198,7 @@ export const SwitchReview = () => {
 		} catch (e) {
 			setIsSwitching(false);
 			setSwitchingError(true);
+			scrollToErrorMessage();
 		}
 	};
 
