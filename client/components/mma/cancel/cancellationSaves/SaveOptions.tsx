@@ -15,6 +15,7 @@ import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
 import {
 	getNewMembershipPrice,
 	getOldMembershipPrice,
@@ -80,6 +81,9 @@ export const SaveOptions = () => {
 	const mainPlan = getMainPlan(
 		membership.subscription,
 	) as PaidSubscriptionPlan;
+	const billingPeriod = mainPlan.billingPeriod;
+	const monthlyOrAnnual =
+		calculateMonthlyOrAnnualFromBillingPeriod(billingPeriod);
 
 	const oldPriceDisplay = `${mainPlan.currency}${getOldMembershipPrice(
 		mainPlan,
@@ -87,7 +91,6 @@ export const SaveOptions = () => {
 	const newPriceDisplay = `${mainPlan.currency}${getNewMembershipPrice(
 		mainPlan,
 	)}`;
-	const billingPeriod = mainPlan.billingPeriod;
 
 	return (
 		<>
@@ -175,7 +178,9 @@ export const SaveOptions = () => {
 				<Card>
 					<Card.Header backgroundColor={palette.brand[400]}>
 						<div css={cardHeaderDivCss}>
-							<h3 css={productTitleCss}>Monthly contribution</h3>
+							<h3 css={productTitleCss}>
+								{monthlyOrAnnual} contribution
+							</h3>
 							<p css={productSubtitleCss}>
 								{oldPriceDisplay}/{billingPeriod}
 							</p>
