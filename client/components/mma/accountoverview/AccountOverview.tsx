@@ -130,9 +130,9 @@ const AccountOverviewPage = () => {
 	if (
 		featureSwitches.singleContributions &&
 		singleContributions.length > 0 &&
-		!productCategories.includes('recurringSupport')
+		!productCategories.includes('subscriptions')
 	) {
-		productCategories.push('recurringSupport');
+		productCategories.push('subscriptions');
 	}
 
 	if (
@@ -244,7 +244,7 @@ const AccountOverviewPage = () => {
 									/>
 								))}
 							{featureSwitches.singleContributions &&
-								category === 'recurringSupport' &&
+								category === 'subscriptions' &&
 								singleContributions.length > 0 && (
 									<SingleContributionCard
 										singleContributions={

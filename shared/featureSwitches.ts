@@ -25,7 +25,7 @@ export const initFeatureSwitchUrlParamOverride = () => {
 export const featureSwitches: Record<string, boolean> = {
 	exampleFeature: false,
 	appSubscriptions: true,
-	singleContributions: false,
+	singleContributions: true,
 	membershipSave: true,
 	supporterPlusUpdateAmount: false,
 };
