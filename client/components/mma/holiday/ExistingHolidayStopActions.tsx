@@ -27,6 +27,12 @@ interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
 	) => void;
 }
 
+const Refresh = () => {
+	const navigate = useNavigate();
+	useEffect(() => navigate(0), []);
+	return null;
+};
+
 const DeleteHolidayStop = (props: {
 	friendlyDateRange: string;
 	subscriptionName: string | undefined;
@@ -79,8 +85,7 @@ const DeleteHolidayStop = (props: {
 		);
 	}
 
-	useEffect(() => navigate(0), []);
-	return <></>;
+	return <Refresh />;
 };
 
 export const ExistingHolidayStopActions = (

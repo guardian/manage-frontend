@@ -186,12 +186,13 @@ describe('Holiday stops', () => {
 
 		cy.findByRole('button', { name: 'Yes' }).click();
 		cy.wait('@delete_holiday_stop');
+		cy.wait('@product_detail');
 		cy.wait('@fetch_existing_holidays');
 
 		cy.get('table').contains('Deleted on 7 April 2022');
 
 		cy.get('@fetch_existing_holidays.all').should('have.length', 2);
-		cy.get('@product_detail.all').should('have.length', 1);
+		cy.get('@product_detail.all').should('have.length', 2);
 		cy.get('@delete_holiday_stop.all').should('have.length', 1);
 	});
 
