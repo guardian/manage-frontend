@@ -210,9 +210,10 @@ export const MembershipSwitch = () => {
 	const paymentDay = parseDate(mainPlan.chargedThrough ?? undefined).dateStr(
 		'do',
 	);
-	const paymentMonth = parseDate(
-		mainPlan.chargedThrough ?? undefined,
-	).dateStr('MMMM');
+	const paymentMonth =
+		monthlyOrAnnual === 'Monthly'
+			? 'every month'
+			: parseDate(mainPlan.chargedThrough ?? undefined).dateStr('MMMM');
 
 	const productSwitchType: ProductSwitchType = 'to-recurring-contribution';
 
