@@ -15,6 +15,7 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
+import { getNewMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { allRecurringProductsDetailFetcher } from '../../../../utilities/productUtils';
 import type { PhoneRegionKey } from '../../../shared/CallCenterEmailAndNumbers';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
@@ -42,15 +43,21 @@ function ineligibleForSave(
 	const membershipTierIsNotSupporter =
 		membershipToCancel.tier !== 'Supporter';
 
-	const membershipIsAnnual =
-		(getMainPlan(membershipToCancel.subscription) as PaidSubscriptionPlan)
-			.billingPeriod === 'year';
+	const mainPlan = getMainPlan(
+		membershipToCancel.subscription,
+	) as PaidSubscriptionPlan;
+
+	const membershipIsAnnual = mainPlan.billingPeriod === 'year';
+
+	const hasBeenPriceRisen =
+		getNewMembershipPrice(mainPlan) === mainPlan.price / 100;
 
 	return (
 		inPaymentFailure ||
 		hasOtherProduct ||
 		membershipTierIsNotSupporter ||
-		membershipIsAnnual
+		membershipIsAnnual ||
+		hasBeenPriceRisen
 	);
 }
 
