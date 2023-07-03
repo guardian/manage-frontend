@@ -18,7 +18,7 @@ export const CancellationSaveEligibilityCheck = () => {
 
 	const productDetail = cancellationContext.productDetail;
 	if (!productDetail) {
-		return <Navigate to="/" />;
+		return <Navigate to="/hiAndrew" />;
 	}
 
 	if (
