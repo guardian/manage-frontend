@@ -52,10 +52,9 @@ const subtitleWideCss = css`
 export interface HelpCentrePhoneNumbersProps {
 	compactLayout?: boolean;
 }
-
 export const HelpCentrePhoneNumbers = (props: HelpCentrePhoneNumbersProps) => (
 	<>
-		<div css={containerCss}>
+		<div css={containerCss} id={'call-us'}>
 			<h2 css={[headingCss, !props.compactLayout && headingWideCss]}>
 				<i
 					css={[

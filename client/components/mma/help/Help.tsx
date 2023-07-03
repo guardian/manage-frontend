@@ -142,7 +142,7 @@ export const Help = () => {
 				Visit our Help Centre to find more useful information
 			</p>
 			<LinkButton
-				href="/help-centre/"
+				href="/help-centre#call-us"
 				priority="secondary"
 				onClick={() =>
 					trackEvent({

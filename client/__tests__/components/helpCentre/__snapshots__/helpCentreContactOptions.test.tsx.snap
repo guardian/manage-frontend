@@ -1371,7 +1371,6 @@ html:not(.src-focus-disabled) .emotion-7:focus {
     >
       <a
         href="#livechatPrivacyNotice"
-        onClick={[Function]}
       >
         data privacy notice
       </a>
@@ -1524,6 +1523,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
     </div>
     <div
       className="emotion-14"
+      id="call-us"
     >
       <h2
         className="emotion-15"
