@@ -47,13 +47,15 @@ import {
 	wideButtonCss,
 } from './SaveStyles';
 
-const YourNewSupport = (props: {
+const YourNewSupport = ({
+	contributionPriceDisplay,
+	billingPeriod,
+	monthlyOrAnnual,
+}: {
 	contributionPriceDisplay: string;
 	billingPeriod: string;
+	monthlyOrAnnual: string;
 }) => {
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		props.billingPeriod,
-	);
 	return (
 		<section css={sectionSpacing}>
 			<Heading
@@ -79,7 +81,7 @@ const YourNewSupport = (props: {
 						exclusive email from the newsroom
 					</p>
 					<p css={newAmountCss}>
-						{props.contributionPriceDisplay}/{props.billingPeriod}
+						{contributionPriceDisplay}/{billingPeriod}
 					</p>
 				</Card.Section>
 			</Card>
@@ -133,17 +135,22 @@ const WhatHappensNext = (props: {
 	);
 };
 
-const TsAndCs = (props: {
+const TsAndCs = ({
+	contributionPriceDisplay,
+	paymentDay,
+	paymentMonth,
+}: {
 	contributionPriceDisplay: string;
 	paymentDay: string;
+	paymentMonth: string;
 }) => (
 	<section css={sectionSpacing}>
 		<p css={smallPrintCss}>
-			We will attempt to take payment of {props.contributionPriceDisplay},
-			on the {props.paymentDay} day of every month, from now until you
-			cancel your payment. Payments may take up to 6 days to be recorded
-			in your bank account. You can change how much you give or cancel
-			your payment at any time.
+			We will attempt to take payment of {contributionPriceDisplay}, on
+			the {paymentDay} day of {paymentMonth}, from now until you cancel
+			your payment. Payments may take up to 6 days to be recorded in your
+			bank account. You can change how much you give or cancel your
+			payment at any time.
 		</p>
 		<p css={smallPrintCss}>
 			By proceeding, you are agreeing to our{' '}
@@ -197,9 +204,17 @@ export const MembershipSwitch = () => {
 	}${getOldMembershipPrice(mainPlan)}`;
 
 	const billingPeriod = mainPlan.billingPeriod;
+	const monthlyOrAnnual =
+		calculateMonthlyOrAnnualFromBillingPeriod(billingPeriod);
+	const indefiniteArticle = monthlyOrAnnual === 'Monthly' ? 'a' : 'an';
 	const paymentDay = parseDate(mainPlan.chargedThrough ?? undefined).dateStr(
 		'do',
 	);
+	const paymentMonth =
+		monthlyOrAnnual === 'Monthly'
+			? 'every month'
+			: parseDate(mainPlan.chargedThrough ?? undefined).dateStr('MMMM');
+
 	const productSwitchType: ProductSwitchType = 'to-recurring-contribution';
 
 	const productMoveFetch = () =>
@@ -252,12 +267,14 @@ export const MembershipSwitch = () => {
 					`}
 				>
 					Please confirm that you’re changing support type from a
-					Membership to a Monthly contribution.
+					Membership to {indefiniteArticle} {monthlyOrAnnual}{' '}
+					contribution.
 				</p>
 			</section>
 			<YourNewSupport
 				contributionPriceDisplay={contributionPriceDisplay}
 				billingPeriod={billingPeriod}
+				monthlyOrAnnual={monthlyOrAnnual}
 			/>
 			<WhatHappensNext
 				contributionPriceDisplay={contributionPriceDisplay}
@@ -309,6 +326,7 @@ export const MembershipSwitch = () => {
 			<TsAndCs
 				contributionPriceDisplay={contributionPriceDisplay}
 				paymentDay={paymentDay}
+				paymentMonth={paymentMonth}
 			/>
 		</>
 	);
