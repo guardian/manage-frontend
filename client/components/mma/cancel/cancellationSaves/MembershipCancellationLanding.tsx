@@ -47,8 +47,6 @@ function ineligibleForSave(
 		membershipToCancel.subscription,
 	) as PaidSubscriptionPlan;
 
-	const membershipIsAnnual = mainPlan.billingPeriod === 'year';
-
 	const hasBeenPriceRisen =
 		getNewMembershipPrice(mainPlan) === mainPlan.price / 100;
 
@@ -56,7 +54,6 @@ function ineligibleForSave(
 		inPaymentFailure ||
 		hasOtherProduct ||
 		membershipTierIsNotSupporter ||
-		membershipIsAnnual ||
 		hasBeenPriceRisen
 	);
 }
