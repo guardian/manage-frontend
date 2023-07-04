@@ -11,6 +11,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TodayUk_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'today_uk',
 		theme: 'news',
+		group: 'news in brief',
 		description:
 			"A digest of the morning's main headlines emailed direct to you every week day",
 		frequency: 'Every day',
@@ -37,6 +38,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TodayUs_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'today_us',
 		theme: 'news',
+		group: 'news in brief',
 		description:
 			'For US readers, we offer a regional edition of our daily email, delivering the most important headlines every morning',
 		frequency: 'Every day',
@@ -94,6 +96,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'MorningBriefingUk_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'morning_briefing_uk',
 		theme: 'news',
+		group: 'news in brief',
 		description:
 			'Start the day one step ahead. Our email breaks down the key stories of the day and why they matter',
 		frequency: 'Every weekday',
@@ -122,6 +125,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'MorningBriefingUs_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'morning_briefing_us',
 		theme: 'news',
+		group: 'news in brief',
 		description:
 			'Start the day with the top stories from the US, plus the day’s must-reads from across the Guardian',
 		frequency: 'Every weekday',
@@ -155,6 +159,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'MorningMailAus_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'morning_mail_aus',
 		theme: 'news',
+		group: 'news in brief',
 		description:
 			'Our Australian morning briefing email breaks down the key national and international stories of the day and why they matter',
 		frequency: 'Every weekday',
@@ -184,6 +189,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TechScape_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'tech_scape',
 		theme: 'news',
+		group: 'news in depth',
 		description:
 			"Alex Hern's weekly dive in to how technology is shaping our lives",
 		frequency: 'Weekly',
@@ -209,6 +215,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'GlobalDispatch_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'global_dispatch',
 		theme: 'news',
+		group: 'news in brief',
 		description:
 			'Get a different world view with a roundup of the best news, features and pictures, curated by our global development team',
 		frequency: 'Every fortnight',
@@ -236,6 +243,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'BusinessToday_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'business_today',
 		theme: 'news',
+		group: 'news in brief',
 		description:
 			"Get set for the working day – we'll point you to the all the business news and analysis you need every morning",
 		frequency: 'Every weekday',
@@ -268,6 +276,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'GreenLight_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'green_light',
 		theme: 'news',
+		group: 'news in depth',
 		description:
 			"The planet's most important stories. Get all the week's environment news - the good, the bad and the essential",
 		frequency: 'Weekly',
@@ -299,6 +308,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TheUsPoliticsMinute_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'the_us_politics_minute',
 		theme: 'news',
+		group: 'news in brief',
 		description:
 			'Keeping you up to date on the systemic ways voting rights are denied to so many Americans',
 		frequency: 'Weekly during election season',
@@ -332,6 +342,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'AustralianPolitics_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'australian_politics',
 		theme: 'news',
+		group: 'news in brief',
 		description:
 			'From the big, breaking news to quiet, thoughtful analysis, all you need to keep up with Australian political manoeuvres',
 		frequency: 'Every weekday',
@@ -359,6 +370,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TheRuralNetwork_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'the_rural_network',
 		theme: 'news',
+		group: 'news in depth',
 		description:
 			'Subscribe to Gabrielle Chan’s fortnightly update on Australian rural and regional affairs',
 		frequency: 'Every fortnight',
@@ -384,6 +396,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'GuardianDocumentaries_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'guardian_documentaries',
 		theme: 'features',
+		group: 'features',
 		description:
 			'Be the first to see our latest thought-provoking films, bringing you bold and original storytelling from around the world',
 		frequency: 'Whenever a new film is available',
@@ -412,6 +425,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TheLongRead_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'the_long_read',
 		theme: 'features',
+		group: 'features',
 		description:
 			'Lose yourself in a great story: from politics to psychology, food to technology, culture to crime',
 		frequency: 'Weekly',
@@ -438,6 +452,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'AnimalsFarmed_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'animals_farmed',
 		theme: 'features',
+		group: 'features',
 		description:
 			'Get a round-up of the best farming and food stories across the world and keep up with our investigation as we track the impact intensive practices and meet those offering sustainable solutions to feed us all.',
 		frequency: 'Monthly',
@@ -466,6 +481,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'HerStage_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'her_stage',
 		theme: 'features',
+		group: 'features',
 		description:
 			' Hear directly from incredible women from around the world on the issues that matter most to them – from the climate crisis to the arts to sport',
 		frequency: 'Monthly',
@@ -490,6 +506,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'Tokyo2020DailyBriefing_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'tokyo_2020_daily_briefing',
 		theme: 'sport',
+		group: 'sport',
 		description:
 			'Our daily email briefing will help you keep up with all the goings on at the Olympics',
 		frequency: 'Daily',
@@ -515,6 +532,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TheRecap_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'the_recap',
 		theme: 'sport',
+		group: 'sport',
 		description:
 			'The best of our sports journalism from the past seven days and a heads-up on the weekend’s action',
 		frequency: 'Weekly',
@@ -547,6 +565,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TheFiver_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'the_fiver',
 		theme: 'sport',
+		group: 'sport',
 		description:
 			"Kick off your evenings with the Guardian's take on the world of football",
 		frequency: 'Every weekday',
@@ -579,6 +598,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TheBreakdown_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'the_breakdown',
 		theme: 'sport',
+		group: 'sport',
 		description:
 			"The latest rugby union news and analysis, plus all the week's action reviewed",
 		frequency: 'Weekly',
@@ -611,6 +631,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TheSpin_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'the_spin',
 		theme: 'sport',
+		group: 'sport',
 		description:
 			"Subscribe to our cricket newsletter for our writers' thoughts on the biggest stories and a review of the week’s action",
 		frequency: 'Weekly',
@@ -643,6 +664,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'GuardianAustraliaSports_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'guardian_australia_sports',
 		theme: 'sport',
+		group: 'sport',
 		description:
 			'Get a daily roundup of the latest sports news, features and comment from our Australian sports desk',
 		frequency: 'Every day',
@@ -675,6 +697,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'SleeveNotes_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'sleeve_notes',
 		theme: 'culture',
+		group: 'culture',
 		description:
 			'Get music news, bold reviews and unexpected extras. Every genre, every era, every week',
 		frequency: 'Weekly',
@@ -702,6 +725,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'FilmToday_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'film_today',
 		theme: 'culture',
+		group: 'culture',
 		description:
 			'Take a front seat at the cinema with our weekly email filled with all the latest news and all the movie action that matters',
 		frequency: 'Every week',
@@ -728,6 +752,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'Bookmarks_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'bookmarks',
 		theme: 'culture',
+		group: 'culture',
 		description:
 			'Discover new books with our expert reviews, author interviews and top 10s. Literary delights delivered direct you',
 		frequency: 'Weekly',
@@ -754,6 +779,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'ArtWeekly_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'art_weekly',
 		theme: 'culture',
+		group: 'culture',
 		description:
 			'Your weekly art world round-up, sketching out all the biggest stories, scandals and exhibitions',
 		frequency: 'Weekly',
@@ -781,6 +807,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'HearHere_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'hear_here',
 		theme: 'culture',
+		group: 'culture',
 		description:
 			"Podcast recommendations for unexpected audio pleasures. Our reviewers and audio producers pick the week's top shows",
 		frequency: 'Weekly',
@@ -809,6 +836,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'PushingButtons_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'pushing_buttons',
 		theme: 'culture',
+		group: 'culture',
 		description: "Keza MacDonald's weekly look at the world of gaming",
 		frequency: 'Weekly',
 		exactTargetListId: 6017,
@@ -831,6 +859,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'DesignReview_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'design_review',
 		theme: 'lifestyle',
+		group: 'lifestyle',
 		description:
 			'Get a dose of creative inspiration. Expect original, sustainable ideas and reflection from designers and crafters, along with clever, beautiful products for smarter living',
 		frequency: 'Monthly',
@@ -858,6 +887,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'FashionStatement_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'fashion_statement',
 		theme: 'lifestyle',
+		group: 'lifestyle',
 		description:
 			'Style with substance: smart fashion writing and inspiring shopping galleries - expect both expertise and irreverence',
 		frequency: 'Weekly',
@@ -885,6 +915,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TheGuideStayingIn_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'the_guide_staying_in',
 		theme: 'lifestyle',
+		group: 'lifestyle',
 		description:
 			'Home entertainment tips delivered straight to your sofa. The best TV and box sets, games, podcasts, books and more',
 		frequency: 'Weekly',
@@ -912,6 +943,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'SavedForLater_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'saved_for_later',
 		theme: 'lifestyle',
+		group: 'lifestyle',
 		description:
 			"Catch up on the fun stuff with Guardian Australia's culture and lifestyle rundown of pop culture, trends and tips",
 		frequency: 'Weekly',
@@ -939,6 +971,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'FiveGreatReads_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'five_great_reads',
 		theme: 'lifestyle',
+		group: 'lifestyle',
 		description:
 			'During the holiday season Lifestyle editor Alyx Gorman will do the heavy lifting for you and list five of the most interesting, entertaining, and thoughtful reads. Sign up and receive it in your inbox from Monday to Friday.',
 		frequency: 'Monday to Friday',
@@ -963,6 +996,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'WordOfMouth_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'word_of_mouth',
 		theme: 'lifestyle',
+		group: 'lifestyle',
 		description:
 			'Recipes from all our star cooks, seasonal eating ideas and restaurant reviews. Get our best food writing every week',
 		frequency: 'Weekly',
@@ -990,6 +1024,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'BestOfGuardianOpinionUK_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'best_of_guardian_opinion_uk',
 		theme: 'comment',
+		group: 'opinion',
 		description:
 			'Get out of your bubble. Sign up for our daily selection of opinion pieces and and see things from another point of view',
 		frequency: 'Every weekday',
@@ -1016,6 +1051,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'ThisIsEurope_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'this_is_europe',
 		theme: 'comment',
+		group: 'opinion',
 		description:
 			'The most pivotal stories and debates for Europeans – from identity to economics to the environment',
 		frequency: 'Weekly',
@@ -1043,6 +1079,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'BestOfGuardianOpinionUS_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'best_of_guardian_opinion_us',
 		theme: 'comment',
+		group: 'opinion',
 		description:
 			"Join the debate on America's most pressing issues with the US edition of our daily op-ed selection",
 		frequency: 'Every weekday',
@@ -1070,6 +1107,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TheWeekInPatriarchy_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'the_week_in_patriarchy',
 		theme: 'comment',
+		group: 'opinion',
 		description:
 			'Reviewing the most important stories on feminism and sexism and those fighting for equality',
 		frequency: 'Weekly',
@@ -1098,6 +1136,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'BestOfGuardianOpinionAus_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'best_of_guardian_opinion_aus',
 		theme: 'comment',
+		group: 'opinion',
 		description:
 			'Challenge your own perceptions with a daily selection of the opinion pieces from Australia',
 		frequency: 'Every weekday',
@@ -1125,6 +1164,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'FirstDogOnTheMoon_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'first_dog_on_the_moon',
 		theme: 'comment',
+		group: 'opinion',
 		description:
 			'Get an email alert whenever a new First Dog on the Moon cartoon is published by Guardian Australia',
 		frequency: 'About three times a week',
@@ -1152,6 +1192,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'InsideSaturday_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'inside_saturday',
 		theme: 'From the papers',
+		group: 'From the papers',
 		description:
 			'The only way to get a look behind the scenes of our brand new magazine, Saturday. Sign up to get the inside story from our top writers as well as all the must-read articles and columns, delivered to your inbox every weekend.',
 		frequency: 'Weekly',
@@ -1178,6 +1219,7 @@ export const newsletters = [
 		brazeSubscribeAttributeName: 'TheObserverFoodMonthly_Subscribe_Email',
 		brazeSubscribeEventNamePrefix: 'the_observer_food_monthly',
 		theme: 'From the papers',
+		group: 'From the papers',
 		description:
 			'Find out what’s coming up in the latest edition of the magazine plus our favourite food and drink tips',
 		frequency: 'Monthly',

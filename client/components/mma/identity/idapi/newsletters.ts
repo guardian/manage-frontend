@@ -43,7 +43,6 @@ export const read = async (): Promise<ConsentOption[]> => {
 	const newslettersResponse = await identityFetch<NewsletterAPIResponse[]>(
 		url,
 	);
-	console.log({ idapiNewslettersResponse: newslettersResponse });
 	return newslettersResponse.map(newsletterToConsentOption);
 };
 
