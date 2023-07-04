@@ -2,7 +2,7 @@ name: manage-frontend cypress
 on:
   push:
     branches-ignore:
-      - "dependabot/**"
+      - 'dependabot/**'
 
 jobs:
   cypress:
@@ -19,9 +19,10 @@ jobs:
         group: [1, 2, 3, 4, 5, 6]
 
     steps:
-      - uses: guardian/actions-assume-aws-role@v1.0.0
+      - uses: aws-actions/configure-aws-credentials@v2
         with:
-          awsRoleToAssume: ${{ secrets.MANAGE_FRONTEND_IAM_ROLE }}
+          role-to-assume: ${{ secrets.MANAGE_FRONTEND_IAM_ROLE }}
+          aws-region: eu-west-1
 
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v2
@@ -34,7 +35,7 @@ jobs:
           IDAPI_CLIENT_ACCESS_TOKEN: ${{ secrets.IDAPI_CLIENT_ACCESS_TOKEN }}
         with:
           start: yarn cypress:server
-          wait-on: "http://localhost:9234, http://localhost:9233"
+          wait-on: 'http://localhost:9234, http://localhost:9233'
           wait-on-timeout: 30
           quiet: true
           browser: chrome
