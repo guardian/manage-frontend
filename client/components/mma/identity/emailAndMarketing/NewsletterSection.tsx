@@ -3,7 +3,7 @@ import uniq from 'lodash/uniq';
 import type { FC } from 'react';
 import { DropMenu } from '../DropMenu';
 import type { ConsentOption } from '../models';
-import { Theme } from '../models';
+import { NewsletterGroup } from '../models';
 import { NewsletterPreference } from '../NewsletterPreference';
 import { PageSection } from '../PageSection';
 
@@ -41,21 +41,21 @@ function notEmpty<T>(value: T | undefined): value is T {
 	return value !== undefined;
 }
 
-function getColor(theme: string): string {
-	const colors: { [T in Theme]: string } = {
-		[Theme.news]: palette.news[400],
-		[Theme.opinion]: palette.opinion[500],
-		[Theme.features]: palette.neutral[7],
-		[Theme.sport]: palette.sport[400],
-		[Theme.culture]: '#a1845c',
-		[Theme.lifestyle]: palette.lifestyle[400],
-		[Theme.comment]: '#e05e00',
-		[Theme.work]: palette.neutral[7],
-		[Theme.fromThePapers]: palette.neutral[7],
+function getGroupColor(group: string): string {
+	const colors: { [T in NewsletterGroup]: string } = {
+		[NewsletterGroup.newsInBrief]: palette.news[400],
+		[NewsletterGroup.newsInDepth]: palette.news[400],
+		[NewsletterGroup.opinion]: palette.opinion[500],
+		[NewsletterGroup.features]: palette.neutral[7],
+		[NewsletterGroup.sport]: palette.sport[400],
+		[NewsletterGroup.culture]: '#a1845c',
+		[NewsletterGroup.lifestyle]: palette.lifestyle[400],
+		[NewsletterGroup.work]: palette.neutral[7],
+		[NewsletterGroup.fromThePapers]: palette.neutral[7],
 	};
 
-	if (theme in Theme) {
-		return colors[theme as Theme];
+	if (Object.values(NewsletterGroup).includes(group as NewsletterGroup)) {
+		return colors[group as NewsletterGroup];
 	}
 	return palette.neutral[7];
 }
@@ -64,12 +64,15 @@ const newsletterPreferenceGroups = (
 	newsletters: ConsentOption[],
 	clickHandler: ClickHandler,
 ) => {
-	const themes = uniq(newsletters.map((_) => _.theme)).filter(notEmpty);
-
-	return themes.map((theme) => (
-		<DropMenu key={theme} color={getColor(theme)} title={theme}>
+	const groups = uniq(newsletters.map((_) => _.group)).filter(notEmpty);
+	return groups.map((group) => (
+		<DropMenu
+			key={group}
+			color={getGroupColor(group.toLowerCase())}
+			title={group}
+		>
 			{newsletters
-				.filter((n) => n.theme === theme)
+				.filter((n) => n.group === group)
 				.map((n) => newsletterPreference(n, clickHandler))}
 		</DropMenu>
 	));

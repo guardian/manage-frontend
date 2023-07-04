@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention -- disabling this rule due to uncertainty around coupling between enum values and API responses in Identity code */
-export enum Theme {
-	news = 'news',
+
+export enum NewsletterGroup {
+	newsInDepth = 'news in depth',
+	newsInBrief = 'news in brief',
 	opinion = 'opinion',
 	features = 'features',
-	sport = 'sport',
 	culture = 'culture',
 	lifestyle = 'lifestyle',
-	comment = 'comment',
+	sport = 'sport',
 	work = 'work',
-	fromThePapers = 'From the papers',
+	fromThePapers = 'from the papers',
 }
 
 export enum ErrorTypes {
@@ -64,6 +65,7 @@ export interface ConsentOption {
 	frequency?: string;
 	name: string;
 	theme?: string;
+	group?: string;
 	type: ConsentOptionType;
 	subscribed: boolean;
 	identityName?: string;

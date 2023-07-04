@@ -5,6 +5,7 @@ import { APIPatchOptions, APIUseCredentials, identityFetch } from './fetch';
 interface NewsletterAPIResponse {
 	id: string;
 	theme: string;
+	group: string;
 	name: string;
 	description: string;
 	frequency: string;
@@ -19,6 +20,7 @@ const newsletterToConsentOption = (
 		id: identityName,
 		theme,
 		name,
+		group,
 		description,
 		frequency,
 		exactTargetListId,
@@ -28,6 +30,7 @@ const newsletterToConsentOption = (
 		description,
 		theme,
 		type: ConsentOptionType.NEWSLETTER,
+		group,
 		name,
 		frequency,
 		subscribed: false,
@@ -37,9 +40,11 @@ const newsletterToConsentOption = (
 
 export const read = async (): Promise<ConsentOption[]> => {
 	const url = '/newsletters';
-	return (await identityFetch<NewsletterAPIResponse[]>(url)).map(
-		newsletterToConsentOption,
+	const newslettersResponse = await identityFetch<NewsletterAPIResponse[]>(
+		url,
 	);
+	console.log({ idapiNewslettersResponse: newslettersResponse });
+	return newslettersResponse.map(newsletterToConsentOption);
 };
 
 export const readRestricted = async (): Promise<ConsentOption[]> => {
