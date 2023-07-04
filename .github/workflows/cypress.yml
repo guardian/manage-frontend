@@ -22,6 +22,7 @@ jobs:
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.MANAGE_FRONTEND_IAM_ROLE }}
+          aws-region: eu-west-1
 
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v2
