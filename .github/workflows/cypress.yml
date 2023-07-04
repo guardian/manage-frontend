@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ secrets.MANAGE_FRONTEND_IAM_ROLE }}
+          role-to-assume: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
           aws-region: eu-west-1
 
       - uses: actions/checkout@v1
