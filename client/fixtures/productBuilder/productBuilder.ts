@@ -165,6 +165,29 @@ export class ProductBuilder {
 
 		return this;
 	}
+
+	withPrice(price: number) {
+		this.productToBuild.subscription.nextPaymentPrice = price;
+
+		const { plan, currentPlans, futurePlans } =
+			this.productToBuild.subscription;
+		if (plan) {
+			plan.price = price;
+		}
+		for (const currentPlan of currentPlans) {
+			if (isPaidSubscriptionPlan(currentPlan)) {
+				currentPlan.price = price;
+			}
+		}
+
+		for (const futurePlan of futurePlans) {
+			if (isPaidSubscriptionPlan(futurePlan)) {
+				futurePlan.price = price;
+			}
+		}
+
+		return this;
+	}
 }
 
 function isPaidSubscriptionPlan(

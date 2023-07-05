@@ -1,8 +1,7 @@
 import {
 	contributionPaidByCard,
 	guardianWeeklyExpiredCard,
-	membershipSupporter,
-	membershipSupporterAnnual,
+	membershipSupporterWithOldPrice,
 } from '../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { productMovePreviewResponse } from '../../../client/fixtures/productMove';
@@ -26,12 +25,16 @@ if (featureSwitches.membershipSave) {
 			signInAndAcceptCookies();
 			cy.intercept('GET', '/api/me/mma?productType=Membership', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(membershipSupporter()),
+				body: toMembersDataApiResponse(
+					membershipSupporterWithOldPrice(),
+				),
 			});
 
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
-				body: toMembersDataApiResponse(membershipSupporter()),
+				body: toMembersDataApiResponse(
+					membershipSupporterWithOldPrice(),
+				),
 			});
 
 			cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -191,7 +194,7 @@ if (featureSwitches.membershipSave) {
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
 				body: toMembersDataApiResponse(
-					membershipSupporter(),
+					membershipSupporterWithOldPrice(),
 					contributionPaidByCard(),
 				),
 			});
@@ -205,25 +208,9 @@ if (featureSwitches.membershipSave) {
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
 				body: toMembersDataApiResponse(
-					membershipSupporter(),
+					membershipSupporterWithOldPrice(),
 					guardianWeeklyExpiredCard(),
 				),
-			});
-
-			cy.visit('/cancel/membership');
-
-			cy.findByText(/Please select a reason/).should('exist');
-		});
-
-		it('redirects user with annual membership to normal journey', () => {
-			cy.intercept('GET', '/api/me/mma?productType=Membership', {
-				statusCode: 200,
-				body: toMembersDataApiResponse(membershipSupporterAnnual()),
-			});
-
-			cy.intercept('GET', '/api/me/mma', {
-				statusCode: 200,
-				body: toMembersDataApiResponse(membershipSupporterAnnual()),
 			});
 
 			cy.visit('/cancel/membership');
