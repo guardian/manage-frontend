@@ -7,6 +7,7 @@ import { global } from '../../styles/global';
 import { useAnalytics } from '../../utilities/hooks/useAnalytics';
 import { useConsent } from '../../utilities/hooks/useConsent';
 import { useScrollToHashElement } from '../../utilities/hooks/useScrollToHashElement';
+import { useScrollToTop } from '../../utilities/hooks/useScrollToTop';
 import { setPageTitle } from '../../utilities/pageTitle';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { isSignedIn } from '../../utilities/signInStatus';
@@ -62,6 +63,7 @@ const HelpCentreRouter = () => {
 	useAnalytics();
 	setPageTitle();
 	useConsent();
+	useScrollToTop();
 	useScrollToHashElement();
 
 	/*
