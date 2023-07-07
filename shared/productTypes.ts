@@ -608,7 +608,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			return calculateSupporterPlusTitle(billingPeriod);
 		},
 		productType: 'supporterplus',
-		groupedProductType: 'recurringSupport',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'SupporterPlus',
 		urlPart: 'support',
 		getOphanProductType: () => 'SUPPORTER_PLUS',
