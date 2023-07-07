@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import type { ProductTypeWithDeliveryRecordsProperties } from '../../../../../shared/productTypes';
@@ -10,20 +10,6 @@ import { DeliveryRecordsContainer } from './DeliveryRecordsContainer';
 import { DeliveryRecordsProblemConfirmation } from './DeliveryRecordsProblemConfirmation';
 import { DeliveryRecordsProblemReview } from './DeliveryRecordsProblemReview';
 
-const productTypeWithDeliveryRecords = {
-	...PRODUCT_TYPES.guardianweekly,
-	delivery: {
-		records: {
-			productNameForProblemReport: '',
-			showDeliveryInstructions: true,
-			numberOfProblemRecordsToShow: 0,
-			contactUserOnExistingProblemReport: true,
-			availableProblemTypes: [],
-		},
-		enableDeliveryInstructionsUpdate: true,
-	},
-} as ProductTypeWithDeliveryRecordsProperties;
-
 export default {
 	component: DeliveryRecordsContainer,
 	title: 'Pages/DeliveryHistory',
@@ -33,14 +19,16 @@ export default {
 			state: { productDetail: guardianWeeklyPaidByCard() },
 			container: (
 				<DeliveryRecordsContainer
-					productType={productTypeWithDeliveryRecords}
+					productType={
+						PRODUCT_TYPES.guardianweekly as ProductTypeWithDeliveryRecordsProperties
+					}
 				/>
 			),
 		},
 	},
-} as ComponentMeta<typeof DeliveryRecordsContainer>;
+} as Meta<typeof DeliveryRecordsContainer>;
 
-export const DeliveryHistory: ComponentStory<typeof DeliveryRecords> = () => {
+export const DeliveryHistory: StoryFn<typeof DeliveryRecords> = () => {
 	return <DeliveryRecords />;
 };
 
@@ -52,9 +40,7 @@ DeliveryHistory.parameters = {
 	],
 };
 
-export const Review: ComponentStory<
-	typeof DeliveryRecordsProblemReview
-> = () => {
+export const Review: StoryFn<typeof DeliveryRecordsProblemReview> = () => {
 	return <DeliveryRecordsProblemReview />;
 };
 
@@ -69,7 +55,7 @@ Review.parameters = {
 	},
 };
 
-export const Confirmation: ComponentStory<
+export const Confirmation: StoryFn<
 	typeof DeliveryRecordsProblemConfirmation
 > = () => {
 	return <DeliveryRecordsProblemConfirmation />;
