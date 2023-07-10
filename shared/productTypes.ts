@@ -681,17 +681,17 @@ export const GROUPED_PRODUCT_TYPES: {
 		productTitle: () => 'Recurring support',
 		friendlyName: () => 'recurring support',
 		groupFriendlyName: 'recurring support',
-		allProductsProductTypeFilterString: 'Contribution',
+		allProductsProductTypeFilterString: 'SupporterPlus', // this will only return SupporterPlus, and not Contributions
 		urlPart: 'recurringsupport',
 		mapGroupedToSpecific: (
 			productDetail: ProductDetail | CancelledProductDetail,
 		) => {
-			if (productDetail.tier === 'Contributor') {
-				return PRODUCT_TYPES.contributions;
-			} else if (productDetail.tier === 'Supporter Plus') {
+			if (productDetail.tier === 'Supporter Plus') {
 				return PRODUCT_TYPES.supporterplus;
+			} else if (productDetail.tier === 'Contributor') {
+				return PRODUCT_TYPES.contributions;
 			}
-			throw `recurringSupport: Specific product type for tier '${productDetail.tier}' not found.`;
+			throw `Specific product type for tier '${productDetail.tier}' not found.`;
 		},
 		showSupporterId: true,
 	},
@@ -719,7 +719,7 @@ export const GROUPED_PRODUCT_TYPES: {
 			} else if (productDetail.tier.startsWith('guardianpatron')) {
 				return PRODUCT_TYPES.guardianpatron;
 			}
-			throw `subscriptions: Specific product type for tier '${productDetail.tier}' not found.`;
+			throw `Specific product type for tier '${productDetail.tier}' not found.`;
 		},
 		cancelledCopy:
 			'Your subscription has been cancelled. You are able to access your subscription until',
