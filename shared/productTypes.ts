@@ -608,7 +608,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			return calculateSupporterPlusTitle(billingPeriod);
 		},
 		productType: 'supporterplus',
-		groupedProductType: 'subscriptions',
+		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'SupporterPlus',
 		urlPart: 'support',
 		getOphanProductType: () => 'SUPPORTER_PLUS',
@@ -688,6 +688,8 @@ export const GROUPED_PRODUCT_TYPES: {
 		) => {
 			if (productDetail.tier === 'Contributor') {
 				return PRODUCT_TYPES.contributions;
+			} else if (productDetail.tier === 'Supporter Plus') {
+				return PRODUCT_TYPES.supporterplus;
 			}
 			throw `recurringSupport: Specific product type for tier '${productDetail.tier}' not found.`;
 		},
@@ -716,8 +718,6 @@ export const GROUPED_PRODUCT_TYPES: {
 				return PRODUCT_TYPES.guardianweekly;
 			} else if (productDetail.tier.startsWith('guardianpatron')) {
 				return PRODUCT_TYPES.guardianpatron;
-			} else if (productDetail.tier === 'Supporter Plus') {
-				return PRODUCT_TYPES.supporterplus;
 			}
 			throw `subscriptions: Specific product type for tier '${productDetail.tier}' not found.`;
 		},
