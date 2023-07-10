@@ -44,7 +44,7 @@ if (featureSwitches.singleContributions) {
 			cy.findByText('Single Support');
 			cy.findByText('$50');
 			cy.findByText('15 May 2023');
-			cy.findByText('Recurring support');
+			cy.findByText('Subscriptions');
 			cy.findByText('Manage marketing preferences');
 		});
 	});

@@ -99,6 +99,13 @@ export function membershipSupporter() {
 		.getProductDetailObject();
 }
 
+export function membershipSupporterWithOldPrice() {
+	return new ProductBuilder(baseMembership())
+		.payByCard()
+		.withPrice(500)
+		.getProductDetailObject();
+}
+
 export function membershipSupporterAnnual() {
 	return new ProductBuilder(baseMembership())
 		.payByDirectDebit()
