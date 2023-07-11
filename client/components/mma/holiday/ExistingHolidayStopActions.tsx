@@ -1,6 +1,6 @@
 import { Button } from '@guardian/source-react-components';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import {
@@ -35,8 +35,8 @@ const Refresh = () => {
 
 const DeleteHolidayStop = (props: {
 	friendlyDateRange: string;
-	subscriptionName: string | undefined;
-	id: string | undefined;
+	subscriptionName: string;
+	id: string;
 	isTestUser: boolean;
 }) => {
 	const navigate = useNavigate();
@@ -57,7 +57,6 @@ const DeleteHolidayStop = (props: {
 				title="Sorry"
 				instigator={null}
 				extraOnHideFunctionality={() => {
-					console.log('extra hide');
 					navigate(0);
 				}}
 			>
@@ -75,7 +74,6 @@ const DeleteHolidayStop = (props: {
 				title="Sorry"
 				instigator={null}
 				extraOnHideFunctionality={() => {
-					console.log('extra hide');
 					navigate(0);
 				}}
 			>
@@ -157,6 +155,10 @@ export const ExistingHolidayStopActions = (
 		);
 
 		const friendlyDateRange = formatDateRangeAsFriendly(props.dateRange);
+
+		if (props.subscriptionName === undefined || props.id === undefined) {
+			return <Navigate to="/" />;
+		}
 
 		return isDeleting ? (
 			<DeleteHolidayStop

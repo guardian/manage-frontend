@@ -18,9 +18,7 @@ export const Modal = (props: ModalProps) => {
 
 	const hide = () => {
 		setIsDisplayed(false);
-		console.log('hide');
 		if (props.extraOnHideFunctionality) {
-			console.log('here we go');
 			props.extraOnHideFunctionality();
 		}
 	};
