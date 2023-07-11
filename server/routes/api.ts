@@ -180,6 +180,15 @@ router.post(
 	),
 );
 
+router.post(
+	'/update-supporter-plus-amount/:subscriptionName',
+	productMoveAPI(
+		'update-supporter-plus-amount/:subscriptionName',
+		'MOVE_PRODUCT_UPDATE_AMOUNT',
+		['subscriptionName'],
+	),
+);
+
 router.get(
 	'/holidays/:subscriptionName/potential',
 	holidayStopAPI('potential/:subscriptionName', 'HOLIDAY_STOP_POTENTIALS', [
