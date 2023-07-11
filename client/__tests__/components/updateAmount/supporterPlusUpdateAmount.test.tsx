@@ -24,8 +24,8 @@ beforeEach(() => {
 				headers: {
 					get: () => 'pass',
 				},
-				text: () => {
-					'hurrah';
+				json: () => {
+					'success';
 				},
 			});
 		});
