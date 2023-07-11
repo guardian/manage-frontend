@@ -36,9 +36,9 @@ export const getValidDeliveryAddressChangeEffectiveDates = (
 		.map((productDetail) => ({
 			productDetail,
 			productType:
-				GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
-					productDetail,
-				),
+				GROUPED_PRODUCT_TYPES[
+					productDetail.mmaCategory
+				].mapGroupedToSpecific(productDetail),
 		}))
 		.filter((_) => _.productType.delivery?.showAddress)
 		.reduce(
