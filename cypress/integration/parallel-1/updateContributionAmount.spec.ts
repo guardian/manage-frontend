@@ -50,6 +50,11 @@ describe('Update contribution amount', () => {
 		cy.intercept('POST', '/api/update/amount/**', {
 			statusCode: 200,
 		}).as('update_amount');
+
+		cy.intercept('POST', '/api/update-supporter-plus-amount/**', {
+			statusCode: 200,
+			body: { message: 'success' },
+		}).as('supporter_plus_update_amount');
 	});
 
 	it('Updates recurring contribution amount', () => {
@@ -99,7 +104,7 @@ describe('Update contribution amount', () => {
 
 		cy.findByText('Change amount').click();
 
-		cy.wait('@update_amount');
+		cy.wait('@supporter_plus_update_amount');
 
 		cy.contains(
 			'We have successfully updated the amount of your contribution.',
