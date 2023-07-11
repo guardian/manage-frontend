@@ -27,5 +27,5 @@ export const featureSwitches: Record<string, boolean> = {
 	appSubscriptions: true,
 	singleContributions: true,
 	membershipSave: true,
-	supporterPlusUpdateAmount: true,
+	supporterPlusUpdateAmount: false,
 };
