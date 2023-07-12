@@ -1,6 +1,6 @@
 import type { Context, Dispatch, SetStateAction } from 'react';
-import { createContext, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { createContext, useEffect, useState } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type { DateRange } from '../../../../shared/dates';
 import type {
 	MembersDataApiResponse,
@@ -18,7 +18,6 @@ import { createProductDetailFetcher } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
-import type { ReFetch } from '../shared/AsyncLoader';
 import type {
 	GetHolidayStopsResponse,
 	HolidayStopDetail,
@@ -29,6 +28,7 @@ import { HolidayStopsPage } from './HolidayStopsPage';
 export interface HolidayStopsRouterState {
 	productDetail: ProductDetail;
 }
+
 export interface HolidayStopsContextInterface {
 	productDetail: ProductDetail;
 	productType: ProductTypeWithHolidayStopsFlow;
@@ -41,7 +41,7 @@ export interface HolidayStopsContextInterface {
 	publicationsImpacted: HolidayStopDetail[];
 	setPublicationsImpacted: Dispatch<SetStateAction<HolidayStopDetail[]>>;
 	holidayStopResponse: GetHolidayStopsResponse;
-	reload: ReFetch;
+	setShouldReload: Dispatch<SetStateAction<boolean>>;
 }
 
 export const HolidayStopsContext: Context<HolidayStopsContextInterface | {}> =
@@ -58,6 +58,7 @@ const handleMembersDataResponse =
 		setSelectedRange: Dispatch<SetStateAction<DateRange | undefined>>,
 		publicationsImpacted: HolidayStopDetail[],
 		setPublicationsImpacted: Dispatch<SetStateAction<HolidayStopDetail[]>>,
+		setShouldReload: Dispatch<SetStateAction<boolean>>,
 	) =>
 	(mdapiResponse: MembersDataApiResponse) => {
 		const filteredProductDetails = mdapiResponse.products.filter(isProduct);
@@ -76,6 +77,7 @@ const handleMembersDataResponse =
 					setSelectedRange={setSelectedRange}
 					publicationsImpacted={publicationsImpacted}
 					setPublicationsImpacted={setPublicationsImpacted}
+					setShouldReload={setShouldReload}
 				/>
 			) : (
 				<GenericErrorScreen loggingMessage="Subscription had no start date" />
@@ -88,6 +90,7 @@ export const HolidayStopsContainer = (
 	props: WithProductType<ProductTypeWithHolidayStopsFlow>,
 ) => {
 	const location = useLocation();
+	const navigate = useNavigate();
 	const routerState = location.state as HolidayStopsRouterState;
 	const productDetail = routerState?.productDetail;
 
@@ -100,6 +103,14 @@ export const HolidayStopsContainer = (
 	const [publicationsImpacted, setPublicationsImpacted] = useState<
 		HolidayStopDetail[]
 	>([]);
+
+	const [shouldReload, setShouldReload] = useState<boolean>(false);
+
+	useEffect(() => {
+		if (shouldReload) {
+			navigate(0);
+		}
+	}, [shouldReload]);
 
 	return (
 		<PageContainer
@@ -119,6 +130,7 @@ export const HolidayStopsContainer = (
 						setSelectedRange={setSelectedRange}
 						publicationsImpacted={publicationsImpacted}
 						setPublicationsImpacted={setPublicationsImpacted}
+						setShouldReload={setShouldReload}
 					/>
 				) : (
 					<GenericErrorScreen loggingMessage="Subscription had no start date" />
@@ -136,6 +148,7 @@ export const HolidayStopsContainer = (
 						setSelectedRange,
 						publicationsImpacted,
 						setPublicationsImpacted,
+						setShouldReload,
 					)}
 					loadingMessage={`Retrieving details of your ${props.productType.friendlyName()}...`}
 				/>

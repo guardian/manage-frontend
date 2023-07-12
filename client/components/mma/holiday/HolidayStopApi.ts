@@ -8,7 +8,6 @@ import {
 	parseDate,
 } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
-import type { ReFetch } from '../shared/AsyncLoader';
 import { AsyncLoader } from '../shared/AsyncLoader';
 
 interface CommonCreditProperties {
@@ -84,7 +83,6 @@ export interface GetHolidayStopsResponse {
 
 export interface ReloadableGetHolidayStopsResponse
 	extends GetHolidayStopsResponse {
-	reload: ReFetch;
 	existingHolidayStopToAmend?: HolidayStopRequest;
 }
 

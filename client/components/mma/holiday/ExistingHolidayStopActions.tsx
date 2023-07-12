@@ -9,7 +9,6 @@ import {
 } from '../../../utilities/hooks/useAsyncLoader';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
-import type { ReFetch } from '../shared/AsyncLoader';
 import type {
 	HolidayStopRequest,
 	MinimalHolidayStopRequest,
@@ -21,7 +20,6 @@ import { formatDateRangeAsFriendly } from './SummaryTable';
 
 interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
 	isTestUser: boolean;
-	reloadParent?: ReFetch;
 	setExistingHolidayStopToAmend?: (
 		newValue: HolidayStopRequest | null,
 	) => void;

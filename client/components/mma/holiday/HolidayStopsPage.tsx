@@ -35,6 +35,7 @@ export const HolidayStopsPage = ({
 	setSelectedRange,
 	publicationsImpacted,
 	setPublicationsImpacted,
+	setShouldReload,
 }: {
 	productDetail: ProductDetail;
 	productType: ProductTypeWithHolidayStopsFlow;
@@ -46,6 +47,7 @@ export const HolidayStopsPage = ({
 	setSelectedRange: Dispatch<SetStateAction<DateRange | undefined>>;
 	publicationsImpacted: HolidayStopDetail[];
 	setPublicationsImpacted: Dispatch<SetStateAction<HolidayStopDetail[]>>;
+	setShouldReload: Dispatch<SetStateAction<boolean>>;
 }) => {
 	const { data: holidayStopResponse, loadingState } =
 		useAsyncLoader<GetHolidayStopsResponse>(
@@ -84,6 +86,7 @@ export const HolidayStopsPage = ({
 				publicationsImpacted,
 				setPublicationsImpacted,
 				holidayStopResponse,
+				setShouldReload,
 			}}
 		>
 			<Outlet />
