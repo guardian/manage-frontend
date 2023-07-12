@@ -43,7 +43,7 @@ describe('Holiday stops', () => {
 		}).as('create_holiday_stop');
 	});
 
-	it('can add a new holiday stop', () => {
+	it('can add a new holiday stop and add another', () => {
 		cy.visit('/suspend/guardianweekly');
 		cy.wait('@fetch_existing_holidays');
 		cy.wait('@product_detail');
@@ -70,6 +70,11 @@ describe('Holiday stops', () => {
 		cy.wait('@create_holiday_stop');
 		cy.findByText('Your schedule has been set').should('exist');
 
+		cy.findByText('Schedule another suspension').click();
+		cy.wait('@fetch_existing_holidays');
+		cy.wait('@product_detail');
+
+		cy.get('@fetch_existing_holidays.all').should('have.length', 2);
 		cy.get('@create_holiday_stop.all').should('have.length', 1);
 	});
 
