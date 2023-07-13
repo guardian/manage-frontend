@@ -14,7 +14,6 @@ import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { augmentBillingPeriod } from '../../../../../shared/productResponse';
-import type { ProductType } from '../../../../../shared/productTypes';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
@@ -22,7 +21,7 @@ import {
 	suggestedAmounts,
 	supporterPlusPriceConfigByCountryGroup,
 } from '../../../../utilities/supporterPlusPricing';
-import { TextResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
+import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 
 const smallPrintCss = css`
@@ -39,13 +38,9 @@ const smallPrintCss = css`
 	}
 `;
 
-const getAmountUpdater = (
-	newAmount: number,
-	productType: ProductType,
-	subscriptionName: string,
-) =>
+const getAmountUpdater = (newAmount: number, subscriptionName: string) =>
 	fetchWithDefaultParameters(
-		`/api/update/amount/${productType.urlPart}/${subscriptionName}`,
+		`/api/update-supporter-plus-amount/${subscriptionName}`,
 		{
 			method: 'POST',
 			body: JSON.stringify({ newPaymentAmount: newAmount }),
@@ -86,7 +81,6 @@ function validateChoice(
 interface SupporterPlusUpdateAmountFormProps {
 	subscriptionId: string;
 	mainPlan: PaidSubscriptionPlan;
-	productType: ProductType;
 	// we use this over the value in mainPlan as that value isn't updated after the user submits this form
 	currentAmount: number;
 	nextPaymentDate: string | null;
@@ -185,27 +179,31 @@ export const SupporterPlusUpdateAmountForm = (
 		setShowUpdateLoader(true);
 		const response = await getAmountUpdater(
 			pendingAmount,
-			props.productType,
 			props.subscriptionId,
 		);
 
-		const data = await TextResponseHandler(response);
-		if (data === null) {
+		try {
+			const data = await JsonResponseHandler(response);
+			if (data === null) {
+				// trackEvent({
+				// 	eventCategory: 'amount_change',
+				// 	eventAction: 'contributions_amount_change_failed',
+				// });
+				setUpdateFailedStatus(true);
+				setShowUpdateLoader(false);
+			}
 			// trackEvent({
 			// 	eventCategory: 'amount_change',
-			// 	eventAction: 'contributions_amount_change_failed',
+			// 	eventAction: 'contributions_amount_change_success',
+			// 	eventLabel: `by ${props.mainPlan.currency}${(
+			// 		pendingAmount - props.currentAmount
+			// 	).toFixed(2)}${props.mainPlan.currencyISO}`,
 			// });
+			setConfirmedAmount(pendingAmount);
+		} catch {
 			setUpdateFailedStatus(true);
 			setShowUpdateLoader(false);
 		}
-		// trackEvent({
-		// 	eventCategory: 'amount_change',
-		// 	eventAction: 'contributions_amount_change_success',
-		// 	eventLabel: `by ${props.mainPlan.currency}${(
-		// 		pendingAmount - props.currentAmount
-		// 	).toFixed(2)}${props.mainPlan.currencyISO}`,
-		// });
-		setConfirmedAmount(pendingAmount);
 	};
 
 	if (showUpdateLoader) {
