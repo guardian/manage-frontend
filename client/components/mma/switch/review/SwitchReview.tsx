@@ -392,7 +392,7 @@ export const SwitchReview = () => {
 					per {mainPlan.billingPeriod}, these additional amounts will
 					be separate {monthlyOrAnnual.toLowerCase()} voluntary
 					financial contributions to the Guardian. The Supporter Plus
-					subscription and any contributions will auto-renew each
+					subscription and any contributions will auto-renew each{' '}
 					{mainPlan.billingPeriod}. You will be charged the
 					subscription and contribution amounts using your chosen
 					payment method at each renewal unless you cancel. You can
