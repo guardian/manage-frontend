@@ -1,6 +1,6 @@
 import { Button } from '@guardian/source-react-components';
-import { useEffect, useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import {
@@ -24,12 +24,6 @@ interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
 		newValue: HolidayStopRequest | null,
 	) => void;
 }
-
-const Refresh = () => {
-	const navigate = useNavigate();
-	useEffect(() => navigate(0), []);
-	return null;
-};
 
 const DeleteHolidayStop = (props: {
 	friendlyDateRange: string;
@@ -81,7 +75,8 @@ const DeleteHolidayStop = (props: {
 		);
 	}
 
-	return <Refresh />;
+	navigate(0);
+	return null;
 };
 
 export const ExistingHolidayStopActions = (
@@ -155,7 +150,8 @@ export const ExistingHolidayStopActions = (
 		const friendlyDateRange = formatDateRangeAsFriendly(props.dateRange);
 
 		if (props.subscriptionName === undefined || props.id === undefined) {
-			return <Navigate to="/" />;
+			navigate('/');
+			return null;
 		}
 
 		return isDeleting ? (

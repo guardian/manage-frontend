@@ -1,5 +1,5 @@
 import type { Context, Dispatch, SetStateAction } from 'react';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type { DateRange } from '../../../../shared/dates';
 import type {
@@ -106,11 +106,9 @@ export const HolidayStopsContainer = (
 
 	const [shouldReload, setShouldReload] = useState<boolean>(false);
 
-	useEffect(() => {
-		if (shouldReload) {
-			navigate(0);
-		}
-	}, [shouldReload]);
+	if (shouldReload) {
+		navigate(0);
+	}
 
 	return (
 		<PageContainer
