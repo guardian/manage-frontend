@@ -1,7 +1,8 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import {
+	annualContributionPaidByCardWithCurrency,
 	contributionPaidByCard,
 	contributionPaidByDirectDebit,
 	contributionPaidByPayPal,
@@ -26,11 +27,9 @@ export default {
 			}),
 		],
 	},
-} as ComponentMeta<typeof SwitchContainer>;
+} as Meta<typeof SwitchContainer>;
 
-export const Default: ComponentStory<typeof SwitchReview> = () => (
-	<SwitchReview />
-);
+export const Default: StoryFn<typeof SwitchReview> = () => <SwitchReview />;
 // We're not setting `state` in the component-level parameters above due to how
 // parameters on individual stories are merged with these. This doesn't
 // necessarily cause an issue, but in the case of payments different properties
@@ -45,7 +44,7 @@ Default.parameters = {
 	},
 };
 
-export const WithPayPalPayment: ComponentStory<typeof SwitchReview> = () => (
+export const WithPayPalPayment: StoryFn<typeof SwitchReview> = () => (
 	<SwitchReview />
 );
 WithPayPalPayment.parameters = {
@@ -54,46 +53,38 @@ WithPayPalPayment.parameters = {
 	},
 };
 
-export const WithDirectDebitPayment: ComponentStory<
-	typeof SwitchReview
-> = () => <SwitchReview />;
+export const WithDirectDebitPayment: StoryFn<typeof SwitchReview> = () => (
+	<SwitchReview />
+);
 WithDirectDebitPayment.parameters = {
 	reactRouter: {
 		state: { productDetail: contributionPaidByDirectDebit() },
 	},
 };
 
-export const WithSEPAPayment: ComponentStory<typeof SwitchReview> = () => (
+export const WithSEPAPayment: StoryFn<typeof SwitchReview> = () => (
 	<SwitchReview />
 );
+
 WithSEPAPayment.parameters = {
 	reactRouter: {
 		state: { productDetail: contributionPaidBySepa() },
 	},
 };
 
-export const YearlyOtherCurrency: ComponentStory<typeof SwitchReview> = () => (
+export const YearlyOtherCurrency: StoryFn<typeof SwitchReview> = () => (
 	<SwitchReview />
 );
-
-const contributionBelowThreshold = JSON.parse(
-	JSON.stringify(contributionPaidByCard()),
-);
-const plan = contributionBelowThreshold.subscription.currentPlans[0];
-plan.price = 300;
-plan.currency = '$';
-plan.billingPeriod = 'year';
-plan.currencyISO = 'NZD';
 
 YearlyOtherCurrency.parameters = {
 	reactRouter: {
-		state: { productDetail: contributionBelowThreshold },
+		state: {
+			productDetail: annualContributionPaidByCardWithCurrency('NZD'),
+		},
 	},
 };
 
-export const FromApp: ComponentStory<typeof SwitchReview> = () => (
-	<SwitchReview />
-);
+export const FromApp: StoryFn<typeof SwitchReview> = () => <SwitchReview />;
 
 FromApp.parameters = {
 	reactRouter: {

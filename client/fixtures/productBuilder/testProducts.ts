@@ -1,3 +1,4 @@
+import type { CurrencyIso } from '../../utilities/currencyIso';
 import {
 	baseContribution,
 	baseDigitalPack,
@@ -47,6 +48,17 @@ export function guardianWeeklyCancelled() {
 export function digitalPackPaidByDirectDebit() {
 	return new ProductBuilder(baseDigitalPack())
 		.payByDirectDebit()
+		.getProductDetailObject();
+}
+
+export function annualContributionPaidByCardWithCurrency(
+	currency: CurrencyIso,
+) {
+	return new ProductBuilder(baseContribution())
+		.payByCard()
+		.withBillingPeriod('year')
+		.withCurrency(currency)
+		.withPrice(300)
 		.getProductDetailObject();
 }
 
