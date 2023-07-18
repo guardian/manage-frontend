@@ -12,7 +12,6 @@ import {
 } from '../../../../shared/productResponse';
 import { sans } from '../../../styles/fonts';
 import { ExpanderButton } from '../../shared/ExpanderButton';
-import type { ReFetch } from '../shared/AsyncLoader';
 import { CollatedCredits } from './CollatedCredits';
 import { ExistingHolidayStopActions } from './ExistingHolidayStopActions';
 import type { SharedHolidayDateChooserState } from './HolidayDateChooser';
@@ -34,7 +33,6 @@ interface SummaryTableProps {
 	subscription: Subscription;
 	issueKeyword: string;
 	alternateSuspendedColumnHeading?: string;
-	reloadParent?: ReFetch;
 	setExistingHolidayStopToAmend?: (
 		newValue: HolidayStopRequest | null,
 	) => void;
@@ -52,7 +50,6 @@ interface SummaryTableRowProps extends MinimalHolidayStopRequest {
 	issueKeyword: string;
 	isTestUser: boolean;
 	isOperatingOnNewHolidayStop: boolean;
-	reloadParent?: ReFetch;
 	currency?: string;
 	asTD?: true;
 }

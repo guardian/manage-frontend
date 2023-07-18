@@ -68,7 +68,6 @@ export const HolidaysOverview = () => {
 		productDetail,
 		setExistingHolidayStopToAmend,
 		holidayStopResponse,
-		reload,
 		setSelectedRange,
 	} = holidayStopsContext;
 
@@ -278,7 +277,6 @@ export const HolidaysOverview = () => {
 								issueKeyword={
 									productType.holidayStops.issueKeyword
 								}
-								reloadParent={reload}
 								setExistingHolidayStopToAmend={
 									setExistingHolidayStopToAmend
 								}

@@ -8,7 +8,6 @@ import {
 	parseDate,
 } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
-import type { ReFetch } from '../shared/AsyncLoader';
 import { AsyncLoader } from '../shared/AsyncLoader';
 
 interface CommonCreditProperties {
@@ -84,7 +83,6 @@ export interface GetHolidayStopsResponse {
 
 export interface ReloadableGetHolidayStopsResponse
 	extends GetHolidayStopsResponse {
-	reload: ReFetch;
 	existingHolidayStopToAmend?: HolidayStopRequest;
 }
 
@@ -104,8 +102,6 @@ export const convertRawPotentialHolidayStopDetail = (
 	invoiceDate: raw.invoiceDate ? parseDate(raw.invoiceDate) : undefined,
 	publicationDate: parseDate(raw.publicationDate),
 });
-
-export class GetHolidayStopsAsyncLoader extends AsyncLoader<GetHolidayStopsResponse> {}
 
 // tslint:disable-next-line:max-classes-per-file
 export class PotentialHolidayStopsAsyncLoader extends AsyncLoader<PotentialHolidayStopsResponse> {}

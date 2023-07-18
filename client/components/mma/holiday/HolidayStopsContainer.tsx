@@ -1,6 +1,6 @@
 import type { Context, Dispatch, SetStateAction } from 'react';
 import { createContext, useState } from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type { DateRange } from '../../../../shared/dates';
 import type {
 	MembersDataApiResponse,
@@ -18,21 +18,17 @@ import { createProductDetailFetcher } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
-import type { ReFetch } from '../shared/AsyncLoader';
 import type {
 	GetHolidayStopsResponse,
 	HolidayStopDetail,
 	HolidayStopRequest,
 } from './HolidayStopApi';
-import {
-	createGetHolidayStopsFetcher,
-	embellishExistingHolidayStops,
-	GetHolidayStopsAsyncLoader,
-} from './HolidayStopApi';
+import { HolidayStopsPage } from './HolidayStopsPage';
 
 export interface HolidayStopsRouterState {
 	productDetail: ProductDetail;
 }
+
 export interface HolidayStopsContextInterface {
 	productDetail: ProductDetail;
 	productType: ProductTypeWithHolidayStopsFlow;
@@ -45,45 +41,11 @@ export interface HolidayStopsContextInterface {
 	publicationsImpacted: HolidayStopDetail[];
 	setPublicationsImpacted: Dispatch<SetStateAction<HolidayStopDetail[]>>;
 	holidayStopResponse: GetHolidayStopsResponse;
-	reload: ReFetch;
+	setShouldReload: Dispatch<SetStateAction<boolean>>;
 }
 
 export const HolidayStopsContext: Context<HolidayStopsContextInterface | {}> =
 	createContext({});
-
-const renderHolidayStopsContextAndOutlet =
-	(
-		productType: ProductTypeWithHolidayStopsFlow,
-		productDetail: ProductDetail,
-		existingHolidayStopToAmend: HolidayStopRequest | null,
-		setExistingHolidayStopToAmend: Dispatch<
-			SetStateAction<HolidayStopRequest | null>
-		>,
-		selectedRange: DateRange | undefined,
-		setSelectedRange: Dispatch<SetStateAction<DateRange | undefined>>,
-		publicationsImpacted: HolidayStopDetail[],
-		setPublicationsImpacted: Dispatch<SetStateAction<HolidayStopDetail[]>>,
-	) =>
-	(holidayStopResponse: GetHolidayStopsResponse, reload: ReFetch) => {
-		return (
-			<HolidayStopsContext.Provider
-				value={{
-					productType,
-					productDetail,
-					existingHolidayStopToAmend,
-					setExistingHolidayStopToAmend,
-					selectedRange,
-					setSelectedRange,
-					publicationsImpacted,
-					setPublicationsImpacted,
-					holidayStopResponse,
-					reload,
-				}}
-			>
-				<Outlet />
-			</HolidayStopsContext.Provider>
-		);
-	};
 
 const handleMembersDataResponse =
 	(
@@ -96,6 +58,7 @@ const handleMembersDataResponse =
 		setSelectedRange: Dispatch<SetStateAction<DateRange | undefined>>,
 		publicationsImpacted: HolidayStopDetail[],
 		setPublicationsImpacted: Dispatch<SetStateAction<HolidayStopDetail[]>>,
+		setShouldReload: Dispatch<SetStateAction<boolean>>,
 	) =>
 	(mdapiResponse: MembersDataApiResponse) => {
 		const filteredProductDetails = mdapiResponse.products.filter(isProduct);
@@ -103,23 +66,18 @@ const handleMembersDataResponse =
 		if (filteredProductDetails.length === 1) {
 			const productDetail = filteredProductDetails[0];
 			return productDetail.subscription.start ? (
-				<GetHolidayStopsAsyncLoader
-					fetch={createGetHolidayStopsFetcher(
-						productDetail.subscription.subscriptionId,
-						productDetail.isTestUser,
-					)}
-					render={renderHolidayStopsContextAndOutlet(
-						productType,
-						productDetail,
-						existingHolidayStopToAmend,
-						setExistingHolidayStopToAmend,
-						selectedRange,
-						setSelectedRange,
-						publicationsImpacted,
-						setPublicationsImpacted,
-					)}
-					loadingMessage="Loading existing suspensions..."
-					readerOnOK={embellishExistingHolidayStops}
+				<HolidayStopsPage
+					productDetail={productDetail}
+					productType={productType}
+					existingHolidayStopToAmend={existingHolidayStopToAmend}
+					setExistingHolidayStopToAmend={
+						setExistingHolidayStopToAmend
+					}
+					selectedRange={selectedRange}
+					setSelectedRange={setSelectedRange}
+					publicationsImpacted={publicationsImpacted}
+					setPublicationsImpacted={setPublicationsImpacted}
+					setShouldReload={setShouldReload}
 				/>
 			) : (
 				<GenericErrorScreen loggingMessage="Subscription had no start date" />
@@ -132,6 +90,7 @@ export const HolidayStopsContainer = (
 	props: WithProductType<ProductTypeWithHolidayStopsFlow>,
 ) => {
 	const location = useLocation();
+	const navigate = useNavigate();
 	const routerState = location.state as HolidayStopsRouterState;
 	const productDetail = routerState?.productDetail;
 
@@ -145,6 +104,12 @@ export const HolidayStopsContainer = (
 		HolidayStopDetail[]
 	>([]);
 
+	const [shouldReload, setShouldReload] = useState<boolean>(false);
+
+	if (shouldReload) {
+		navigate(0);
+	}
+
 	return (
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}
@@ -152,23 +117,18 @@ export const HolidayStopsContainer = (
 		>
 			{productDetail ? (
 				productDetail.subscription.start ? (
-					<GetHolidayStopsAsyncLoader
-						fetch={createGetHolidayStopsFetcher(
-							productDetail.subscription.subscriptionId,
-							productDetail.isTestUser,
-						)}
-						render={renderHolidayStopsContextAndOutlet(
-							props.productType,
-							productDetail,
-							existingHolidayStopToAmend,
-							setExistingHolidayStopToAmend,
-							selectedRange,
-							setSelectedRange,
-							publicationsImpacted,
-							setPublicationsImpacted,
-						)}
-						loadingMessage="Loading existing suspensions..."
-						readerOnOK={embellishExistingHolidayStops}
+					<HolidayStopsPage
+						productDetail={productDetail}
+						productType={props.productType}
+						existingHolidayStopToAmend={existingHolidayStopToAmend}
+						setExistingHolidayStopToAmend={
+							setExistingHolidayStopToAmend
+						}
+						selectedRange={selectedRange}
+						setSelectedRange={setSelectedRange}
+						publicationsImpacted={publicationsImpacted}
+						setPublicationsImpacted={setPublicationsImpacted}
+						setShouldReload={setShouldReload}
 					/>
 				) : (
 					<GenericErrorScreen loggingMessage="Subscription had no start date" />
@@ -186,6 +146,7 @@ export const HolidayStopsContainer = (
 						setSelectedRange,
 						publicationsImpacted,
 						setPublicationsImpacted,
+						setShouldReload,
 					)}
 					loadingMessage={`Retrieving details of your ${props.productType.friendlyName()}...`}
 				/>

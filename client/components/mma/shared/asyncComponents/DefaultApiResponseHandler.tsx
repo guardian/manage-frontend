@@ -12,7 +12,7 @@ export const TextResponseHandler: ResponseProcessor = (
 	return handleResponses(response, (r: Response) => r.text());
 };
 
-function handleResponses(
+export function handleResponses(
 	response: Response | Response[],
 	transformResponse: (response: Response) => any,
 ): Promise<any> {
