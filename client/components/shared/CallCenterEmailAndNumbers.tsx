@@ -60,8 +60,6 @@ const PHONE_DATA: PhoneRegion[] = [
 		key: 'US',
 		title: 'Canada and USA',
 		openingHours: ['9am - 5pm on weekdays (EST/EDT)'],
-		additionalOpeningHoursInfo:
-			'Phonelines for this region are temporarily down',
 		phoneNumbers: [
 			{
 				phoneNumber: '1-844-632-2010',
