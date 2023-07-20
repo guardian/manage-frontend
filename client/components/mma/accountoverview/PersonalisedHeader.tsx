@@ -58,7 +58,7 @@ export const PersonalisedHeader = ({
 					margin-bottom: 0;
 				`}
 			>
-				test:{calculateTimeOfDay()},{' '}
+				test2:{calculateTimeOfDay()},{' '}
 				{userDetails.firstName ?? 'supporter'}
 			</h2>
 			<p
