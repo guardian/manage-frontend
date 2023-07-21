@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { ComponentMeta, ComponentStory, StoryFn } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { featureSwitches } from '../../../../shared/featureSwitches';
@@ -27,7 +27,7 @@ export default {
 	},
 } as ComponentMeta<typeof Billing>;
 
-export const NoSubscription: ComponentStory<typeof Billing> = () => {
+export const NoSubscription: StoryFn<typeof Billing> = () => {
 	return <Billing />;
 };
 
