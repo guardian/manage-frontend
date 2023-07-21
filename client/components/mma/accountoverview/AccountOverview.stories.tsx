@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { featureSwitches } from '../../../../shared/featureSwitches';
@@ -40,9 +40,9 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof AccountOverview>;
+} as Meta<typeof AccountOverview>;
 
-export const NoSubscription: ComponentStory<typeof AccountOverview> = () => {
+export const NoSubscription: StoryFn<typeof AccountOverview> = () => {
 	return <AccountOverview />;
 };
 
@@ -66,7 +66,7 @@ NoSubscription.parameters = {
 	],
 };
 
-export const WithSubscriptions: ComponentStory<typeof AccountOverview> = () => {
+export const WithSubscriptions: StoryFn<typeof AccountOverview> = () => {
 	return <AccountOverview />;
 };
 
@@ -97,7 +97,7 @@ WithSubscriptions.parameters = {
 	],
 };
 
-export const WithContributionAndSwitchPossible: ComponentStory<
+export const WithContributionAndSwitchPossible: StoryFn<
 	typeof AccountOverview
 > = () => {
 	return <AccountOverview />;
@@ -122,7 +122,7 @@ WithContributionAndSwitchPossible.parameters = {
 	],
 };
 
-export const WithContributionInPaymentFailure: ComponentStory<
+export const WithContributionInPaymentFailure: StoryFn<
 	typeof AccountOverview
 > = () => {
 	return <AccountOverview />;
@@ -157,7 +157,7 @@ WithContributionInPaymentFailure.parameters = {
 	],
 };
 
-export const WithContributionAndSwitchNotPossible: ComponentStory<
+export const WithContributionAndSwitchNotPossible: StoryFn<
 	typeof AccountOverview
 > = () => {
 	return <AccountOverview />;
@@ -187,7 +187,7 @@ WithContributionAndSwitchNotPossible.parameters = {
 	],
 };
 
-export const WithCancelledSubscriptions: ComponentStory<
+export const WithCancelledSubscriptions: StoryFn<
 	typeof AccountOverview
 > = () => {
 	return <AccountOverview />;
@@ -220,9 +220,7 @@ WithCancelledSubscriptions.parameters = {
 	],
 };
 
-export const WithGiftSubscriptions: ComponentStory<
-	typeof AccountOverview
-> = () => {
+export const WithGiftSubscriptions: StoryFn<typeof AccountOverview> = () => {
 	return <AccountOverview />;
 };
 
@@ -250,9 +248,7 @@ WithGiftSubscriptions.parameters = {
 	],
 };
 
-export const WithAppSubscriptions: ComponentStory<
-	typeof AccountOverview
-> = () => {
+export const WithAppSubscriptions: StoryFn<typeof AccountOverview> = () => {
 	return <AccountOverview />;
 };
 
@@ -282,9 +278,7 @@ WithAppSubscriptions.parameters = {
 	],
 };
 
-export const WithSingleContribution: ComponentStory<
-	typeof AccountOverview
-> = () => {
+export const WithSingleContribution: StoryFn<typeof AccountOverview> = () => {
 	return <AccountOverview />;
 };
 
