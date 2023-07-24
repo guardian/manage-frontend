@@ -378,22 +378,34 @@ export const SwitchReview = () => {
 			)}
 			<section css={sectionSpacing}>
 				<p css={smallPrintCss}>
-					This subscription auto-renews each {mainPlan.billingPeriod}.
-					You will be charged the applicable{' '}
-					{monthlyOrAnnual.toLowerCase()} amount at each renewal
-					unless you cancel. Payment can only be made using your
-					existing payment method. You can cancel or change how much
-					you pay for these benefits at any time before your next
-					renewal date, but {mainPlan.currency}
+					If you pay at least {mainPlan.currency}
 					{formatAmount(monthlyThreshold)} per month or{' '}
 					{mainPlan.currency}
-					{formatAmount(annualThreshold)} per year is the minimum
-					payment. If you cancel within 14 days of taking out this
-					subscription, you’ll receive a full refund and your benefits
-					will stop immediately. Changes to your payment amount or
-					cancellation made after 14 days will take effect at the end
-					of your current subscription {mainPlan.billingPeriod}. To
-					cancel,{' '}
+					{formatAmount(annualThreshold)} per year, you will receive
+					the Supporter Plus benefits on a subscription basis. If you
+					pay more than {mainPlan.currency}
+					{formatAmount(
+						monthlyOrAnnual === 'Annual'
+							? annualThreshold
+							: monthlyThreshold,
+					)}{' '}
+					per {mainPlan.billingPeriod}, these additional amounts will
+					be separate {monthlyOrAnnual.toLowerCase()} voluntary
+					financial contributions to the Guardian. The Supporter Plus
+					subscription and any contributions will auto-renew each{' '}
+					{mainPlan.billingPeriod}. You will be charged the
+					subscription and contribution amounts using your chosen
+					payment method at each renewal unless you cancel. You can
+					cancel your subscription or change your contributions at any
+					time before your next renewal date. If you cancel within 14
+					days of taking out a Supporter Plus subscription, you’ll
+					receive a full refund (including of any contributions) and
+					your subscription and any contribution will stop
+					immediately. Cancellation of your subscription (which will
+					also cancel any contribution) or cancellation of your
+					contribution made after 14 days will take effect at the end
+					of your current {monthlyOrAnnual.toLowerCase()} payment
+					period. To cancel,{' '}
 					<Link to="/recurringsupport">go to Manage My Account</Link>{' '}
 					or{' '}
 					<a href="https://www.theguardian.com/info/2022/oct/28/the-guardian-supporter-plus-terms-and-conditions">

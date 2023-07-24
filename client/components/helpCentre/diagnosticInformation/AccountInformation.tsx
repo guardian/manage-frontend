@@ -55,6 +55,7 @@ export const AccountInformation = () => {
 		<>
 			<h3>Account Information</h3>
 			<ul>
+				<li>ID number: {userAttributes.userId}</li>
 				<li>
 					Digital subscription end date:{' '}
 					{userAttributes.digitalSubscriptionExpiryDate}

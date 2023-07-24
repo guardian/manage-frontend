@@ -1,6 +1,6 @@
 import { palette } from '@guardian/source-foundations';
-import * as React from 'react';
-import { Button } from '../shared/Buttons';
+import { Button } from '@guardian/source-react-components';
+import { useState } from 'react';
 
 export type HideFunction = () => void;
 
@@ -13,30 +13,25 @@ interface ModalProps {
 	extraOnHideFunctionality?: () => void;
 }
 
-interface ModalState {
-	isDisplayed: boolean;
-}
+export const Modal = (props: ModalProps) => {
+	const [isDisplayed, setIsDisplayed] = useState(props.instigator == null);
 
-export class Modal extends React.Component<ModalProps, ModalState> {
-	public state = {
-		isDisplayed: false,
+	const hide = () => {
+		setIsDisplayed(false);
+		if (props.extraOnHideFunctionality) {
+			props.extraOnHideFunctionality();
+		}
 	};
 
-	public componentDidMount(): void {
-		if (this.props.instigator == null) {
-			this.setState({ isDisplayed: true });
-		}
-	}
-
-	public render = () => (
+	return (
 		<>
 			<div
 				css={{ display: 'inline-block' }}
-				onClick={() => this.setState({ isDisplayed: true })}
+				onClick={() => setIsDisplayed(true)}
 			>
-				{this.props.instigator}
+				{props.instigator}
 			</div>
-			{this.state.isDisplayed && (
+			{isDisplayed && (
 				<div
 					css={{
 						zIndex: 9999,
@@ -51,7 +46,7 @@ export class Modal extends React.Component<ModalProps, ModalState> {
 						justifyContent: 'space-around',
 						background: 'rgba(192,192,192,0.5)',
 					}}
-					onClick={this.hide}
+					onClick={hide}
 				>
 					<div
 						css={{
@@ -70,7 +65,7 @@ export class Modal extends React.Component<ModalProps, ModalState> {
 						onClick={(e) => e.stopPropagation()}
 					>
 						<span
-							onClick={this.hide}
+							onClick={hide}
 							css={{
 								position: 'absolute',
 								top: '5px',
@@ -83,28 +78,19 @@ export class Modal extends React.Component<ModalProps, ModalState> {
 							</svg>
 						</span>
 						<h2 css={{ fontWeight: 900, marginTop: 0 }}>
-							{this.props.title}
+							{props.title}
 						</h2>
-						{this.props.children}
+						{props.children}
 						<div css={{ textAlign: 'right' }}>
-							{this.props.additionalButton &&
-								this.props.additionalButton(this.hide)}
-							<Button
-								text={this.props.alternateOkText || 'Ok'}
-								onClick={this.hide}
-								fontWeight="bold"
-							/>
+							{props.additionalButton &&
+								props.additionalButton(hide)}
+							<Button onClick={hide}>
+								{props.alternateOkText || 'Ok'}
+							</Button>
 						</div>
 					</div>
 				</div>
 			)}
 		</>
 	);
-
-	private hide: HideFunction = () => {
-		this.setState({ isDisplayed: false });
-		if (this.props.extraOnHideFunctionality) {
-			this.props.extraOnHideFunctionality();
-		}
-	};
-}
+};

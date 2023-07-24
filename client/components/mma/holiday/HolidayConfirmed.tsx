@@ -25,7 +25,7 @@ export const HolidayConfirmed = () => {
 		holidayStopResponse,
 		setSelectedRange,
 		setPublicationsImpacted,
-		reload,
+		setShouldReload,
 	} = useContext(HolidayStopsContext) as HolidayStopsContextInterface;
 
 	const navigate = useNavigate();
@@ -67,7 +67,7 @@ export const HolidayConfirmed = () => {
 						<Button
 							priority="secondary"
 							onClick={() => {
-								reload();
+								setShouldReload(true);
 								setSelectedRange(undefined);
 								setPublicationsImpacted([]);
 								navigate('../create', { state: routerState });

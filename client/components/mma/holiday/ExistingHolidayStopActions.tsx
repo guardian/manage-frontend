@@ -3,8 +3,12 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
-import type { ReFetch } from '../shared/AsyncLoader';
-import { AsyncLoader } from '../shared/AsyncLoader';
+import {
+	LoadingState,
+	useAsyncLoader,
+} from '../../../utilities/hooks/useAsyncLoader';
+import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import type {
 	HolidayStopRequest,
 	MinimalHolidayStopRequest,
@@ -16,13 +20,64 @@ import { formatDateRangeAsFriendly } from './SummaryTable';
 
 interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
 	isTestUser: boolean;
-	reloadParent?: ReFetch;
 	setExistingHolidayStopToAmend?: (
 		newValue: HolidayStopRequest | null,
 	) => void;
 }
 
-class WithdrawHolidayStopAsyncLoader extends AsyncLoader<object> {}
+const DeleteHolidayStop = (props: {
+	friendlyDateRange: string;
+	subscriptionName: string;
+	id: string;
+	isTestUser: boolean;
+}) => {
+	const navigate = useNavigate();
+	const { data, loadingState } = useAsyncLoader(
+		() =>
+			fetch(`/api/holidays/${props.subscriptionName}/${props.id}`, {
+				method: 'DELETE',
+				headers: {
+					[MDA_TEST_USER_HEADER]: `${props.isTestUser}`,
+				},
+			}),
+		JsonResponseHandler,
+	);
+
+	if (loadingState == LoadingState.HasError) {
+		return (
+			<Modal
+				title="Sorry"
+				instigator={null}
+				extraOnHideFunctionality={() => {
+					navigate(0);
+				}}
+			>
+				Deleting your <strong>{props.friendlyDateRange}</strong>{' '}
+				suspension failed, please try again later...
+			</Modal>
+		);
+	}
+	if (loadingState == LoadingState.IsLoading) {
+		return <DefaultLoadingView />;
+	}
+	if (data === null) {
+		return (
+			<Modal
+				title="Sorry"
+				instigator={null}
+				extraOnHideFunctionality={() => {
+					navigate(0);
+				}}
+			>
+				Deleting your <strong>{props.friendlyDateRange}</strong>{' '}
+				suspension failed, please try again later...
+			</Modal>
+		);
+	}
+
+	navigate(0);
+	return null;
+};
 
 export const ExistingHolidayStopActions = (
 	props: ExistingHolidayStopActionsProps,
@@ -32,14 +87,6 @@ export const ExistingHolidayStopActions = (
 	const navigate = useNavigate();
 	const location = useLocation();
 	const routerState = location.state as HolidayStopsRouterState;
-
-	const withdrawHolidayStopFetch = () =>
-		fetch(`/api/holidays/${props.subscriptionName}/${props.id}`, {
-			method: 'DELETE',
-			headers: {
-				[MDA_TEST_USER_HEADER]: `${props.isTestUser}`,
-			},
-		});
 
 	if (props.withdrawnDate) {
 		return (
@@ -67,7 +114,6 @@ export const ExistingHolidayStopActions = (
 	}
 
 	if (
-		props.reloadParent &&
 		props.mutabilityFlags &&
 		(props.mutabilityFlags.isFullyMutable ||
 			props.mutabilityFlags.isEndDateEditable)
@@ -81,8 +127,6 @@ export const ExistingHolidayStopActions = (
 
 		const setExistingHolidayStopToAmend =
 			props.setExistingHolidayStopToAmend;
-
-		const reloadParent: ReFetch = props.reloadParent;
 
 		const yesButton = (hideFunction: HideFunction) => (
 			<div
@@ -105,26 +149,17 @@ export const ExistingHolidayStopActions = (
 
 		const friendlyDateRange = formatDateRangeAsFriendly(props.dateRange);
 
+		if (props.subscriptionName === undefined || props.id === undefined) {
+			navigate('/');
+			return null;
+		}
+
 		return isDeleting ? (
-			<WithdrawHolidayStopAsyncLoader
-				fetch={withdrawHolidayStopFetch}
-				loadingMessage="Deleting..."
-				inline
-				spinnerScale={0.6}
-				render={() => {
-					reloadParent();
-					return null;
-				}}
-				errorRender={() => (
-					<Modal
-						title="Sorry"
-						instigator={null}
-						extraOnHideFunctionality={reloadParent}
-					>
-						Deleting your <strong>{friendlyDateRange}</strong>{' '}
-						suspension failed, please try again later...
-					</Modal>
-				)}
+			<DeleteHolidayStop
+				friendlyDateRange={friendlyDateRange}
+				subscriptionName={props.subscriptionName}
+				id={props.id}
+				isTestUser={props.isTestUser}
 			/>
 		) : (
 			<>

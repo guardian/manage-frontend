@@ -77,14 +77,7 @@ const HelpCentreRouter = () => {
 	]
 	*/
 
-	const knownIssues: KnownIssueObj[] = [
-		{
-			date: '3 Jan 2023 17:00',
-			message:
-				'Due to operational challenges caused by the ransomware attack on the Guardian, Customer Service phonelines in the US are currently not available. Live chat, email and UK and Australia phonelines remain unaffected.',
-			link: 'https://www.theguardian.com/media/2022/dec/21/guardian-hit-by-serious-it-incident-believed-to-be-ransomware-attack',
-		},
-	];
+	const knownIssues: KnownIssueObj[] = [];
 
 	return (
 		<Main signInStatus={signInStatus} isHelpCentrePage>
