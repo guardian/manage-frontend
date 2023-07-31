@@ -40,6 +40,7 @@ import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { isCancelled } from '../cancel/CancellationSummary';
+import { nonServiceableCountries } from '../identity/models';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
@@ -156,8 +157,18 @@ const AccountOverviewPage = () => {
 			isSpecificProductType(productDetail, PRODUCT_TYPES.digipack),
 		);
 
+	const hasNonServiceableCountry = nonServiceableCountries.includes(
+		allActiveProductDetails.find(isProduct)?.billingCountry as string,
+	);
+
+	console.log(allActiveProductDetails.find(isProduct)?.billingCountry);
+
 	const isEligibleToSwitch =
-		!maybeFirstPaymentFailure && !hasDigiSubAndContribution;
+		!maybeFirstPaymentFailure &&
+		!hasDigiSubAndContribution &&
+		!hasNonServiceableCountry;
+
+	console.log(isEligibleToSwitch.valueOf());
 
 	return (
 		<>
