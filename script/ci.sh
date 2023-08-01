@@ -8,17 +8,17 @@ ROOT_DIR="${DIR}/.."
 cd "$ROOT_DIR"
 
 yarn install
-yarn tsc
+yarn type-check
 yarn lint
-yarn build
+yarn bundle
 
-cp package.json target
-cp riff-raff.yaml target
+cp package.json dist
+cp riff-raff.yaml dist
 
-pushd target
+pushd dist
 yarn install --production
 popd
 
-cd target
+cd dist
 
 zip -FSr "${ROOT_DIR}/manage-frontend.zip" ./*
