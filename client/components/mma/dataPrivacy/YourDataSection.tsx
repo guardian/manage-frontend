@@ -27,6 +27,12 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 		props.consents,
 		props.toggleConsent,
 		dataPrivacyMarketingToggleCss,
+	);
+
+	const addInvertedMarketingToggleElement = optOutFinder(
+		props.consents,
+		props.toggleConsent,
+		dataPrivacyMarketingToggleCss,
 		consentSubscribedValueInverter,
 	);
 	return (
@@ -50,7 +56,7 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 			</ul>
 
 			<Lines n={1} />
-			{addMarketingToggleElement('profiling_optout')}
+			{addInvertedMarketingToggleElement('profiling_optout')}
 			<Lines n={1} />
 			{addMarketingToggleElement('personalised_advertising')}
 
