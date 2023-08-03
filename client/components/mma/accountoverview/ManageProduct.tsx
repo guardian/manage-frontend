@@ -97,7 +97,7 @@ const InnerContent = ({
 	const maybePatronSuffix =
 		productDetail.subscription.readerType === 'Patron' ? ' - Patron' : '';
 
-	const nonServiceableCountry = nonServiceableCountries.includes(
+	const isNonServiceableCountry = nonServiceableCountries.includes(
 		productDetail.billingCountry ?? '',
 	);
 
@@ -161,7 +161,7 @@ const InnerContent = ({
 			)}
 
 			{(isAmountOveridable || showSupporterPlusUpdateAmount) &&
-			!nonServiceableCountry &&
+			!isNonServiceableCountry &&
 			isPaidSubscriptionPlan(mainPlan) ? (
 				<UpdateAmount
 					subscriptionId={productDetail.subscription.subscriptionId}
