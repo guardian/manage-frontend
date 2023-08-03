@@ -21,6 +21,7 @@ import { createProductDetailFetcher } from '../../../utilities/productUtils';
 import { getBenefitsThreshold } from '../../../utilities/supporterPlusPricing';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
+import { nonServiceableCountries } from '../identity/models';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
@@ -126,6 +127,9 @@ const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 	}
 
 	const contributionToSwitch = data.products.filter(isProduct)[0];
+	if (hasNonServiceableCountry(contributionToSwitch)) {
+		return <Navigate to="/" />;
+	}
 	return (
 		<RenderedPage
 			contributionToSwitch={contributionToSwitch}
@@ -171,6 +175,10 @@ const RenderedPage = (props: {
 
 function userIsNavigatingBackFromCompletePage(hasCompleted: boolean) {
 	return hasCompleted && !location.pathname.includes('complete');
+}
+
+function hasNonServiceableCountry(productDetail: ProductDetail) {
+	return nonServiceableCountries.includes(productDetail.billingCountry ?? '');
 }
 
 function getThresholds(

@@ -161,14 +161,10 @@ const AccountOverviewPage = () => {
 		allActiveProductDetails.find(isProduct)?.billingCountry as string,
 	);
 
-	console.log(allActiveProductDetails.find(isProduct)?.billingCountry);
-
 	const isEligibleToSwitch =
 		!maybeFirstPaymentFailure &&
 		!hasDigiSubAndContribution &&
 		!hasNonServiceableCountry;
-
-	console.log(isEligibleToSwitch.valueOf());
 
 	return (
 		<>

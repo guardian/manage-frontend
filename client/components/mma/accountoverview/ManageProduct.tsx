@@ -29,6 +29,7 @@ import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumber
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { DeliveryAddressDisplay } from '../delivery/address/DeliveryAddressDisplay';
+import { nonServiceableCountries } from '../identity/models';
 import { PageContainer } from '../Page';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
@@ -96,6 +97,10 @@ const InnerContent = ({
 	const maybePatronSuffix =
 		productDetail.subscription.readerType === 'Patron' ? ' - Patron' : '';
 
+	const nonServiceableCountry = nonServiceableCountries.includes(
+		productDetail.billingCountry ?? '',
+	);
+
 	const showSupporterPlusUpdateAmount =
 		specificProductType.productType === 'supporterplus' &&
 		featureSwitches.supporterPlusUpdateAmount;
@@ -156,6 +161,7 @@ const InnerContent = ({
 			)}
 
 			{(isAmountOveridable || showSupporterPlusUpdateAmount) &&
+			!nonServiceableCountry &&
 			isPaidSubscriptionPlan(mainPlan) ? (
 				<UpdateAmount
 					subscriptionId={productDetail.subscription.subscriptionId}
