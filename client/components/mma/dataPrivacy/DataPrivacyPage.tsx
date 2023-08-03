@@ -75,8 +75,8 @@ export const DataPrivacyPage = () => {
 	 * @param {DataPrivacyResponse} response
 	 */
 	const handleResponse = (response: DataPrivacyResponse) => {
-		const [consentOptions, userResponse, xx] = response;
-		console.log('XXX', xx);
+		const [consentOptions, userResponse, consentResponse] = response;
+		console.log('CONSENT RESPONSE', consentResponse);
 		const user = UserAPI.toUser(userResponse);
 		const consentOpt = mapSubscriptions(user.consents, consentOptions);
 		dispatch(options(consentOpt));
