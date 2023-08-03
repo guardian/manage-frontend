@@ -9,7 +9,7 @@ import {
 } from '../../../utilities/hooks/useAsyncLoader';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
-import { APIUseCredentials } from '../identity/idapi/fetch';
+import { APIUseCredentials, identityFetch } from '../identity/idapi/fetch';
 import * as UserAPI from '../identity/idapi/user';
 import { ConsentOptions, mapSubscriptions } from '../identity/identity';
 import { IdentityLocations } from '../identity/IdentityLocations';
@@ -35,11 +35,7 @@ const dataPrivacyFetcher = () =>
 			},
 		),
 		fetchWithDefaultParameters('/idapi/user'),
-		fetchWithDefaultParameters(
-			IdentityLocations.IDAPI + '/users/me/consents',
-			APIUseCredentials({}),
-		),
-		// identityFetch('/users/me/consents', APIUseCredentials({}),),
+		identityFetch('/users/me/consents', APIUseCredentials({})),
 	]);
 
 export const DataPrivacyPage = () => {
