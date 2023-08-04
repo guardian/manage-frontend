@@ -2,6 +2,7 @@ import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../shared/identity';
+import type { ProductDetail } from '../../shared/productResponse';
 import type {
 	AllProductsProductTypeFilterString,
 	ProductType,
@@ -9,6 +10,7 @@ import type {
 	ProductTypeWithDeliveryRecordsProperties,
 	ProductTypeWithHolidayStopsFlow,
 } from '../../shared/productTypes';
+import { nonServiceableCountries } from '../components/mma/shared/NonServiceableCountries';
 import { fetchWithDefaultParameters } from './fetch';
 
 export const shouldHaveHolidayStopsFlow = (
@@ -78,3 +80,7 @@ export const hasDeliveryRecordsFlow = (
 	productType: ProductType,
 ): productType is ProductTypeWithDeliveryRecordsProperties =>
 	!!productType.delivery?.records;
+
+export function isNonServiceableCountry(productDetail: ProductDetail) {
+	return nonServiceableCountries.includes(productDetail.billingCountry ?? '');
+}

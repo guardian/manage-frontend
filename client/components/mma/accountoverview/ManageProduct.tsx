@@ -23,13 +23,13 @@ import type {
 } from '../../../../shared/productTypes';
 import {
 	hasDeliveryRecordsFlow,
+	isNonServiceableCountry,
 	shouldHaveHolidayStopsFlow,
 } from '../../../utilities/productUtils';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { DeliveryAddressDisplay } from '../delivery/address/DeliveryAddressDisplay';
-import { nonServiceableCountries } from '../identity/models';
 import { PageContainer } from '../Page';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
@@ -96,10 +96,6 @@ const InnerContent = ({
 
 	const maybePatronSuffix =
 		productDetail.subscription.readerType === 'Patron' ? ' - Patron' : '';
-
-	const isNonServiceableCountry = nonServiceableCountries.includes(
-		productDetail.billingCountry ?? '',
-	);
 
 	const showSupporterPlusUpdateAmount =
 		specificProductType.productType === 'supporterplus' &&
