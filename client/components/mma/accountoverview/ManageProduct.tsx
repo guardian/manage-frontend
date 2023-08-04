@@ -157,7 +157,7 @@ const InnerContent = ({
 			)}
 
 			{(isAmountOveridable || showSupporterPlusUpdateAmount) &&
-			!isNonServiceableCountry &&
+			!isNonServiceableCountry(productDetail) &&
 			isPaidSubscriptionPlan(mainPlan) ? (
 				<UpdateAmount
 					subscriptionId={productDetail.subscription.subscriptionId}
