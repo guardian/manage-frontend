@@ -93,6 +93,13 @@ export function contributionCancelled() {
 		.getProductDetailObject();
 }
 
+export function nonServicedCountryContributor() {
+	return new ProductBuilder(baseContribution())
+		.payByCard()
+		.nonServiceableCountry()
+		.getProductDetailObject();
+}
+
 export function newspaperVoucherPaidByPaypal(email?: string) {
 	return new ProductBuilder(baseDigitalVoucher())
 		.payByPayPal(email)

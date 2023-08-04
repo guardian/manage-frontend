@@ -1872,10 +1872,10 @@
   resolved "https://registry.yarnpkg.com/@guardian/commercial-core/-/commercial-core-5.4.5.tgz#2a2fa51b3c06e193f5ffb685a28ffc4b9788eeed"
   integrity sha512-06HK6V4fOpe9JSsV+hCzSgAmlSHSojTs0U7zEvDsfPCeGEWUjSrAsesmJ2EeM8oxpQZbNt8EL8Kxzn32QMCO4g==
 
-"@guardian/consent-management-platform@13.5.0":
-  version "13.5.0"
-  resolved "https://registry.yarnpkg.com/@guardian/consent-management-platform/-/consent-management-platform-13.5.0.tgz#61a97c823f6b18f62a6517a3374f6e7bdfca121d"
-  integrity sha512-9iz04lyonWAbUeZ7B+fNp0KbgAervsWDO3A4CE/3e+d876AQj0I3TwU7W4jpWxI4tthcA6UVk7Y6faaS8l+lFw==
+"@guardian/consent-management-platform@13.6.1":
+  version "13.6.1"
+  resolved "https://registry.yarnpkg.com/@guardian/consent-management-platform/-/consent-management-platform-13.6.1.tgz#528ed9193b1bd96e9f84964a5a1a080de43e29c1"
+  integrity sha512-5KQ4dZrqIBKuJCSJ/TTWXZ4F0WXY9ecpMnfOfvNIU9tXF1LAeT+LNv7hfV8eC5qMJskj2yvZZUi7hlwWD+Nq/A==
 
 "@guardian/eslint-config-typescript@1.0.11":
   version "1.0.11"
@@ -14405,9 +14405,9 @@ winston@3.2.1:
     winston-transport "^4.3.0"
 
 word-wrap@^1.2.3, word-wrap@~1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
-  integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.4.tgz#cb4b50ec9aca570abd1f52f33cd45b6c61739a9f"
+  integrity sha512-2V81OA4ugVo5pRo46hAoD2ivUJx8jXmWXfUkY4KFNw0hEptvN0QfH3K4nHiwzGeKl5rFKedV48QVoqYavy4YpA==
 
 wordwrap@^1.0.0:
   version "1.0.0"

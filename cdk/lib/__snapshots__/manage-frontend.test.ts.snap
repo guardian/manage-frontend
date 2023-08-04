@@ -17,9 +17,10 @@ Object {
       "GuAllowPolicy",
       "GuVpcParameter",
       "GuSubnetListParameter",
+      "GuSubnetListParameter",
+      "GuEc2App",
       "GuCertificate",
       "GuInstanceRole",
-      "GuSSMRunCommandPolicy",
       "GuDescribeEC2Policy",
       "GuLoggingStreamNameParameter",
       "GuLogShippingPolicy",
@@ -28,14 +29,13 @@ Object {
       "GuParameterStoreReadPolicy",
       "GuAmiParameter",
       "GuHttpsEgressSecurityGroup",
-      "GuAutoScalingGroup",
       "GuWazuhAccess",
-      "GuSubnetListParameter",
+      "GuAutoScalingGroup",
       "GuApplicationLoadBalancer",
       "GuApplicationTargetGroup",
       "GuHttpsApplicationListener",
     ],
-    "gu:cdk:version": "47.3.1",
+    "gu:cdk:version": "TEST",
   },
   "Outputs": Object {
     "LoadBalancerManagefrontendDnsName": Object {
@@ -122,8 +122,16 @@ Object {
       "Properties": Object {
         "HealthCheckGracePeriod": 120,
         "HealthCheckType": "ELB",
-        "LaunchConfigurationName": Object {
-          "Ref": "AutoScalingGroupManagefrontendLaunchConfig1BB2A57B",
+        "LaunchTemplate": Object {
+          "LaunchTemplateId": Object {
+            "Ref": "supportPRODmanagefrontend8911518E",
+          },
+          "Version": Object {
+            "Fn::GetAtt": Array [
+              "supportPRODmanagefrontend8911518E",
+              "LatestVersionNumber",
+            ],
+          },
         },
         "MaxSize": "6",
         "MinSize": "3",
@@ -132,11 +140,6 @@ Object {
             "Key": "App",
             "PropagateAtLaunch": true,
             "Value": "manage-frontend",
-          },
-          Object {
-            "Key": "gu:cdk:pattern-name",
-            "PropagateAtLaunch": true,
-            "Value": "GuEc2App",
           },
           Object {
             "Key": "gu:cdk:version",
@@ -154,11 +157,6 @@ Object {
             "Value": Object {
               "Ref": "LoggingStreamName",
             },
-          },
-          Object {
-            "Key": "Name",
-            "PropagateAtLaunch": true,
-            "Value": "ManageFrontend/AutoScalingGroupManagefrontend",
           },
           Object {
             "Key": "Stack",
@@ -182,97 +180,6 @@ Object {
       },
       "Type": "AWS::AutoScaling::AutoScalingGroup",
     },
-    "AutoScalingGroupManagefrontendInstanceProfileB8F58630": Object {
-      "Properties": Object {
-        "Roles": Array [
-          Object {
-            "Ref": "InstanceRoleManagefrontendC8EBF20D",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::InstanceProfile",
-    },
-    "AutoScalingGroupManagefrontendLaunchConfig1BB2A57B": Object {
-      "DependsOn": Array [
-        "InstanceRoleManagefrontendC8EBF20D",
-      ],
-      "Properties": Object {
-        "IamInstanceProfile": Object {
-          "Ref": "AutoScalingGroupManagefrontendInstanceProfileB8F58630",
-        },
-        "ImageId": Object {
-          "Ref": "AMIManagefrontend",
-        },
-        "InstanceType": "t4g.small",
-        "SecurityGroups": Array [
-          Object {
-            "Fn::GetAtt": Array [
-              "GuHttpsEgressSecurityGroupManagefrontend8E53A220",
-              "GroupId",
-            ],
-          },
-          Object {
-            "Fn::GetAtt": Array [
-              "WazuhSecurityGroup",
-              "GroupId",
-            ],
-          },
-        ],
-        "UserData": Object {
-          "Fn::Base64": Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                "#!/bin/bash -ev
-# get runnable tar from S3
-aws --region ",
-                Object {
-                  "Ref": "AWS::Region",
-                },
-                " s3 cp s3://membership-dist/support/PROD/manage-frontend/manage-frontend.zip /tmp
-mkdir /etc/gu
-unzip /tmp/manage-frontend.zip -d /etc/gu/dist/
-# add user
-groupadd manage-frontend
-useradd -r -s /usr/bin/nologin -g manage-frontend manage-frontend
-touch /var/log/manage-frontend.log
-chown -R manage-frontend:manage-frontend /etc/gu
-chown manage-frontend:manage-frontend /var/log/manage-frontend.log
-# write out systemd file
-cat >/etc/systemd/system/manage-frontend.service <<EOL
-[Service]
-ExecStart=/usr/bin/node /etc/gu/dist/server.js
-Restart=always
-StandardOutput=syslog
-StandardError=syslog
-SyslogIdentifier=manage-frontend
-User=manage-frontend
-Group=manage-frontend
-Environment=STAGE=PROD
-Environment=CLIENT_DSN=",
-                Object {
-                  "Ref": "clientRavenDSN",
-                },
-                "
-Environment=SERVER_DSN=",
-                Object {
-                  "Ref": "serverRavenDSN",
-                },
-                "
-[Install]
-WantedBy=multi-user.target
-EOL
-# RUN
-systemctl enable manage-frontend
-systemctl start manage-frontend
-/opt/cloudwatch-logs/configure-logs application support PROD manage-frontend /var/log/manage-frontend.log",
-              ],
-            ],
-          },
-        },
-      },
-      "Type": "AWS::AutoScaling::LaunchConfiguration",
-    },
     "CertificateManagefrontend6C431D69": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
@@ -295,6 +202,10 @@ systemctl start manage-frontend
           Object {
             "Key": "gu:repo",
             "Value": "guardian/manage-frontend",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "ManageFrontend/CertificateManagefrontend",
           },
           Object {
             "Key": "Stack",
@@ -1888,22 +1799,26 @@ systemctl start manage-frontend
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
               "Principal": Object {
-                "Service": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "ec2.",
-                      Object {
-                        "Ref": "AWS::URLSuffix",
-                      },
-                    ],
-                  ],
-                },
+                "Service": "ec2.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/AmazonSSMManagedInstanceCore",
+              ],
+            ],
+          },
+        ],
         "Path": "/",
         "Tags": Array [
           Object {
@@ -2116,6 +2031,27 @@ systemctl start manage-frontend
       },
       "Type": "AWS::EC2::SecurityGroupEgress",
     },
+    "LoadBalancerManagefrontendSecurityGrouptoManageFrontendWazuhSecurityGroup21F140CF923324CB9496": Object {
+      "Properties": Object {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": Object {
+          "Fn::GetAtt": Array [
+            "WazuhSecurityGroup",
+            "GroupId",
+          ],
+        },
+        "FromPort": 9233,
+        "GroupId": Object {
+          "Fn::GetAtt": Array [
+            "LoadBalancerManagefrontendSecurityGroupED621ABF",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9233,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
     "ManageFrontendLogGroup": Object {
       "DeletionPolicy": "Retain",
       "Properties": Object {
@@ -2295,42 +2231,6 @@ systemctl start manage-frontend
       },
       "Type": "AWS::IAM::Policy",
     },
-    "SSMRunCommandPolicy244E1613": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "ec2messages:AcknowledgeMessage",
-                "ec2messages:DeleteMessage",
-                "ec2messages:FailMessage",
-                "ec2messages:GetEndpoint",
-                "ec2messages:GetMessages",
-                "ec2messages:SendReply",
-                "ssm:UpdateInstanceInformation",
-                "ssm:ListInstanceAssociations",
-                "ssm:DescribeInstanceProperties",
-                "ssm:DescribeDocumentParameters",
-                "ssmmessages:CreateControlChannel",
-                "ssmmessages:CreateDataChannel",
-                "ssmmessages:OpenControlChannel",
-                "ssmmessages:OpenDataChannel",
-              ],
-              "Effect": "Allow",
-              "Resource": "*",
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "ssm-run-command-policy",
-        "Roles": Array [
-          Object {
-            "Ref": "InstanceRoleManagefrontendC8EBF20D",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
     "TargetGroupManagefrontend7AE2B787": Object {
       "Properties": Object {
         "HealthCheckIntervalSeconds": 10,
@@ -2422,6 +2322,201 @@ systemctl start manage-frontend
         },
       },
       "Type": "AWS::EC2::SecurityGroup",
+    },
+    "WazuhSecurityGroupfromManageFrontendLoadBalancerManagefrontendSecurityGroup4DBBACB9923356374CB4": Object {
+      "Properties": Object {
+        "Description": "Load balancer to target",
+        "FromPort": 9233,
+        "GroupId": Object {
+          "Fn::GetAtt": Array [
+            "WazuhSecurityGroup",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": Object {
+          "Fn::GetAtt": Array [
+            "LoadBalancerManagefrontendSecurityGroupED621ABF",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9233,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "supportPRODmanagefrontend8911518E": Object {
+      "Properties": Object {
+        "LaunchTemplateData": Object {
+          "IamInstanceProfile": Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "supportPRODmanagefrontendProfile44EC6508",
+                "Arn",
+              ],
+            },
+          },
+          "ImageId": Object {
+            "Ref": "AMIManagefrontend",
+          },
+          "InstanceType": "t4g.small",
+          "SecurityGroupIds": Array [
+            Object {
+              "Fn::GetAtt": Array [
+                "GuHttpsEgressSecurityGroupManagefrontend8E53A220",
+                "GroupId",
+              ],
+            },
+            Object {
+              "Fn::GetAtt": Array [
+                "WazuhSecurityGroup",
+                "GroupId",
+              ],
+            },
+          ],
+          "TagSpecifications": Array [
+            Object {
+              "ResourceType": "instance",
+              "Tags": Array [
+                Object {
+                  "Key": "gu:cdk:version",
+                  "Value": "TEST",
+                },
+                Object {
+                  "Key": "gu:repo",
+                  "Value": "guardian/manage-frontend",
+                },
+                Object {
+                  "Key": "Name",
+                  "Value": "ManageFrontend/support-PROD-manage-frontend",
+                },
+                Object {
+                  "Key": "Stack",
+                  "Value": "support",
+                },
+                Object {
+                  "Key": "Stage",
+                  "Value": "PROD",
+                },
+              ],
+            },
+            Object {
+              "ResourceType": "volume",
+              "Tags": Array [
+                Object {
+                  "Key": "gu:cdk:version",
+                  "Value": "TEST",
+                },
+                Object {
+                  "Key": "gu:repo",
+                  "Value": "guardian/manage-frontend",
+                },
+                Object {
+                  "Key": "Name",
+                  "Value": "ManageFrontend/support-PROD-manage-frontend",
+                },
+                Object {
+                  "Key": "Stack",
+                  "Value": "support",
+                },
+                Object {
+                  "Key": "Stage",
+                  "Value": "PROD",
+                },
+              ],
+            },
+          ],
+          "UserData": Object {
+            "Fn::Base64": Object {
+              "Fn::Join": Array [
+                "",
+                Array [
+                  "#!/bin/bash -ev
+# get runnable tar from S3
+aws --region ",
+                  Object {
+                    "Ref": "AWS::Region",
+                  },
+                  " s3 cp s3://membership-dist/support/PROD/manage-frontend/manage-frontend.zip /tmp
+mkdir /etc/gu
+unzip /tmp/manage-frontend.zip -d /etc/gu/dist/
+# add user
+groupadd manage-frontend
+useradd -r -s /usr/bin/nologin -g manage-frontend manage-frontend
+touch /var/log/manage-frontend.log
+chown -R manage-frontend:manage-frontend /etc/gu
+chown manage-frontend:manage-frontend /var/log/manage-frontend.log
+# write out systemd file
+cat >/etc/systemd/system/manage-frontend.service <<EOL
+[Service]
+ExecStart=/usr/bin/node /etc/gu/dist/server.js
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=manage-frontend
+User=manage-frontend
+Group=manage-frontend
+Environment=STAGE=PROD
+Environment=CLIENT_DSN=",
+                  Object {
+                    "Ref": "clientRavenDSN",
+                  },
+                  "
+Environment=SERVER_DSN=",
+                  Object {
+                    "Ref": "serverRavenDSN",
+                  },
+                  "
+[Install]
+WantedBy=multi-user.target
+EOL
+# RUN
+systemctl enable manage-frontend
+systemctl start manage-frontend
+/opt/cloudwatch-logs/configure-logs application support PROD manage-frontend /var/log/manage-frontend.log",
+                ],
+              ],
+            },
+          },
+        },
+        "TagSpecifications": Array [
+          Object {
+            "ResourceType": "launch-template",
+            "Tags": Array [
+              Object {
+                "Key": "gu:cdk:version",
+                "Value": "TEST",
+              },
+              Object {
+                "Key": "gu:repo",
+                "Value": "guardian/manage-frontend",
+              },
+              Object {
+                "Key": "Name",
+                "Value": "ManageFrontend/support-PROD-manage-frontend",
+              },
+              Object {
+                "Key": "Stack",
+                "Value": "support",
+              },
+              Object {
+                "Key": "Stage",
+                "Value": "PROD",
+              },
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::EC2::LaunchTemplate",
+    },
+    "supportPRODmanagefrontendProfile44EC6508": Object {
+      "Properties": Object {
+        "Roles": Array [
+          Object {
+            "Ref": "InstanceRoleManagefrontendC8EBF20D",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::InstanceProfile",
     },
   },
 }
