@@ -1,4 +1,4 @@
-//Countries cannot purchase or switch to S+
+//Countries cannot amend support or switch product
 export const nonServiceableCountries: string[] = [
 	'Albania',
 	'Åland Islands',
