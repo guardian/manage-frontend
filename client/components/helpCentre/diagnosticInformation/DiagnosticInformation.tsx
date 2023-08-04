@@ -6,6 +6,7 @@ import { h2Css } from '../HelpCentreStyles';
 import { AccountInformation } from './AccountInformation';
 import { BrowserInformation } from './BrowserInformation';
 import { CookieInformation } from './CookieInformation';
+import { SubscriptionInformation } from './SubscriptionInformation';
 
 const pCss = css`
 	margin: 0 0 ${space[4]}px;
@@ -77,6 +78,7 @@ export const DiagnosticInformation = () => {
 				<BrowserInformation />
 				<CookieInformation />
 				<AccountInformation />
+				<SubscriptionInformation />
 			</div>
 			<Button
 				onClick={copyToClipboard}
