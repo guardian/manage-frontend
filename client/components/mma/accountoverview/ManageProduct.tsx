@@ -23,6 +23,7 @@ import type {
 } from '../../../../shared/productTypes';
 import {
 	hasDeliveryRecordsFlow,
+	isNonServiceableCountry,
 	shouldHaveHolidayStopsFlow,
 } from '../../../utilities/productUtils';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';
@@ -156,6 +157,7 @@ const InnerContent = ({
 			)}
 
 			{(isAmountOveridable || showSupporterPlusUpdateAmount) &&
+			!isNonServiceableCountry(productDetail) &&
 			isPaidSubscriptionPlan(mainPlan) ? (
 				<UpdateAmount
 					subscriptionId={productDetail.subscription.subscriptionId}

@@ -43,6 +43,7 @@ import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import { nonServiceableCountries } from '../shared/NonServiceableCountries';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { CancelledProductCard } from './CancelledProductCard';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
@@ -156,8 +157,14 @@ const AccountOverviewPage = () => {
 			isSpecificProductType(productDetail, PRODUCT_TYPES.digipack),
 		);
 
+	const hasNonServiceableCountry = nonServiceableCountries.includes(
+		allActiveProductDetails.find(isProduct)?.billingCountry as string,
+	);
+
 	const isEligibleToSwitch =
-		!maybeFirstPaymentFailure && !hasDigiSubAndContribution;
+		!maybeFirstPaymentFailure &&
+		!hasDigiSubAndContribution &&
+		!hasNonServiceableCountry;
 
 	return (
 		<>

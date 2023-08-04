@@ -8,6 +8,7 @@ import { ProductDetail } from '../../../shared/productResponse';
 import {
 	contributionPaidByCard,
 	contributionPaidByPayPal,
+	nonServicedCountryContributor,
 } from '../../../client/fixtures/productBuilder/testProducts';
 
 const setSignInStatus = () => {
@@ -210,5 +211,27 @@ describe('product switching', () => {
 		);
 
 		cy.get('@product_move.all').should('have.length', 1);
+	});
+
+	it('Billing Country is non-serviceable for Supporter Plus switch', () => {
+		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(nonServicedCountryContributor()),
+		}).as('mdapi_get_contribution');
+
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(nonServicedCountryContributor()),
+		});
+
+		cy.visit('/');
+		setSignInStatus();
+
+		cy.findAllByText('Change to monthly + extras').should('have.length', 0);
+
+		cy.visit('/switch');
+
+		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
+		cy.findAllByText('Change to monthly + extras').should('have.length', 0);
 	});
 });

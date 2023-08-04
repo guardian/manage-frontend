@@ -120,6 +120,11 @@ export class ProductBuilder {
 		return this;
 	}
 
+	nonServiceableCountry() {
+		this.productToBuild.billingCountry = 'New Caledonia';
+		return this;
+	}
+
 	withCurrency(currencyIso: CurrencyIso) {
 		const { plan, currentPlans, futurePlans } =
 			this.productToBuild.subscription;

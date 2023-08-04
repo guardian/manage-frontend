@@ -17,7 +17,10 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { createProductDetailFetcher } from '../../../utilities/productUtils';
+import {
+	createProductDetailFetcher,
+	isNonServiceableCountry,
+} from '../../../utilities/productUtils';
 import { getBenefitsThreshold } from '../../../utilities/supporterPlusPricing';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
@@ -126,6 +129,9 @@ const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 	}
 
 	const contributionToSwitch = data.products.filter(isProduct)[0];
+	if (isNonServiceableCountry(contributionToSwitch)) {
+		return <Navigate to="/" />;
+	}
 	return (
 		<RenderedPage
 			contributionToSwitch={contributionToSwitch}
