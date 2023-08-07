@@ -22,13 +22,24 @@ interface YourDataSectionProps {
 
 // NOTE: The Your Data description is hard coded here and in
 // Identity Gateway. They should be the same unless running A/B tests.
+
 export const YourDataSection = (props: YourDataSectionProps) => {
+	/** @type {*}
+	 *
+	 * This function is used for consents that are opt in
+	 */
 	const addMarketingToggleElement = optOutFinder(
 		props.consents,
 		props.toggleConsent,
 		dataPrivacyMarketingToggleCss,
 	);
 
+	/** @type {*}
+	 *
+	 * This function is used for consents that are opt out.
+	 * The consents have the `_optout` as id (i.e. profiling_optout)
+	 *
+	 */
 	const addInvertedMarketingToggleElement = optOutFinder(
 		props.consents,
 		props.toggleConsent,
