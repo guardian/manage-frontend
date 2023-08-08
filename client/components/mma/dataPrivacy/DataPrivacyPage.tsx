@@ -93,6 +93,12 @@ export const DataPrivacyPage = () => {
 		return <GenericErrorScreen />;
 	}
 
+	/**
+	 * This function makes an API request to /users/me/consents to subscribe or unsubscribe.
+	 * It then dispatches a redux action
+	 *
+	 * @param {string} id
+	 */
 	const toggleConsentSubscription = async (id: string) => {
 		const option = ConsentOptions.findById(state.options, id);
 		try {
@@ -111,6 +117,13 @@ export const DataPrivacyPage = () => {
 		}
 	};
 
+	/**
+	 * This function triggers importedCmp?.showPrivacyManage
+	 * if it has loaded.
+	 *
+	 * The importedCmp is lazy loaded.
+	 *
+	 */
 	const openManageCookies = () => {
 		importedCmp?.showPrivacyManager();
 	};
