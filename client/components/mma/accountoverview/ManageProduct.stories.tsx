@@ -1,10 +1,12 @@
 import type { Meta, StoryFn } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import { featureSwitches } from '../../../../shared/featureSwitches';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
 	newspaperVoucherPaidByPaypal,
+	supporterPlus,
 } from '../../../fixtures/productBuilder/testProducts';
 import { ManageProduct } from './ManageProduct';
 
@@ -39,5 +41,18 @@ export const NewspaperSubscriptionCard = Template.bind({});
 NewspaperSubscriptionCard.parameters = {
 	reactRouter: {
 		state: { productDetail: newspaperVoucherPaidByPaypal() },
+	},
+};
+
+featureSwitches.supporterPlusUpdateAmount = true;
+export const SupporterPlus = () => (
+	<ManageProduct
+		groupedProductType={GROUPED_PRODUCT_TYPES.recurringSupport}
+	/>
+);
+
+SupporterPlus.parameters = {
+	reactRouter: {
+		state: { productDetail: supporterPlus() },
 	},
 };

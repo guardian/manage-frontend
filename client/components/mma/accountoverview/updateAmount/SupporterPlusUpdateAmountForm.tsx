@@ -10,10 +10,8 @@ import {
 	SvgInfoRound,
 	TextInput,
 } from '@guardian/source-react-components';
-import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { augmentBillingPeriod } from '../../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
@@ -229,10 +227,7 @@ export const SupporterPlusUpdateAmountForm = (
 							display: inline-block;
 						`}
 					>
-						{capitalize(
-							augmentBillingPeriod(props.mainPlan.billingPeriod),
-						)}{' '}
-						amount
+						Current amount
 					</dt>
 					<dd
 						css={css`
