@@ -368,7 +368,9 @@ export const SupporterPlusUpdateAmountForm = (
 								If you would like to lower your{' '}
 								{monthlyOrAnnual.toLowerCase()} amount below{' '}
 								{minPriceDisplay} please call us via the{' '}
-								<Link href="/help-centre">Help Centre</Link>
+								<Link href="/help-centre#call-us">
+									Help Centre
+								</Link>
 							</p>
 						</div>
 						<p css={smallPrintCss}>
