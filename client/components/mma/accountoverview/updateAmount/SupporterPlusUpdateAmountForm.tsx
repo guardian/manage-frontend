@@ -65,7 +65,7 @@ function validateChoice(
 	} else if (!isNaN(chosenOptionNum) && chosenOptionNum < minAmount) {
 		return `${mainPlan.currency}${minAmount.toFixed(2)} per ${
 			mainPlan.billingPeriod
-		} is the minimum  payment to receive this subscription. Please call our customer service team to lower your monthly amount below ${
+		} is the minimum payment to receive this subscription. Please call our customer service team to lower your monthly amount below ${
 			mainPlan.currency
 		}${minAmount.toFixed(2)}`;
 	} else if (!isNaN(chosenOptionNum) && chosenOptionNum > maxAmount) {
@@ -266,7 +266,7 @@ export const SupporterPlusUpdateAmountForm = (
 						<ChoiceCardGroup
 							name="amounts"
 							data-cy="supporter-plus-amount-choices"
-							label="Choose the amount to pay"
+							label="Choose your new amount"
 							columns={2}
 						>
 							<>

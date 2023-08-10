@@ -62,7 +62,11 @@ it.each([
 		fireEvent.click(screen.getByText('Change amount'));
 
 		// assert that the minimum amount validation error message is shown
-		expect(screen.findByText(/is the minimum payment/i)).toBeTruthy();
+		expect(
+			screen.findByText(
+				/minimum payment to receive this subscription. Please call our customer service team/i,
+			),
+		).toBeTruthy();
 	},
 );
 
@@ -99,7 +103,7 @@ it.each([
 		// assert that the maximum amount validation error message is shown
 		expect(
 			screen.queryByText(
-				`There is a maximum ${billingPeriod}ly contribution amount of £${expectedMaxAmount.toFixed(
+				`There is a maximum ${billingPeriod}ly amount of £${expectedMaxAmount.toFixed(
 					2,
 				)} GBP`,
 			),
