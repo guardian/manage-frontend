@@ -63,15 +63,9 @@ function validateChoice(
 	} else if (!chosenAmount || isNaN(chosenOptionNum)) {
 		return 'There is a problem with the amount you have selected, please make sure it is a valid amount';
 	} else if (!isNaN(chosenOptionNum) && chosenOptionNum < minAmount) {
-		return `${mainPlan.currency}${minAmount.toFixed(2)} per ${
-			mainPlan.billingPeriod
-		} is the minimum payment to receive this subscription. Please call our customer service team to lower your monthly amount below ${
-			mainPlan.currency
-		}${minAmount.toFixed(2)}`;
+		return `${mainPlan.currency}${minAmount} per ${mainPlan.billingPeriod} is the minimum payment to receive this subscription. Please call our customer service team to lower your monthly amount below ${mainPlan.currency}${minAmount}`;
 	} else if (!isNaN(chosenOptionNum) && chosenOptionNum > maxAmount) {
-		return `There is a maximum ${mainPlan.billingPeriod}ly amount of ${
-			mainPlan.currency
-		}${maxAmount.toFixed(2)} ${mainPlan.currencyISO}`;
+		return `There is a maximum ${mainPlan.billingPeriod}ly amount of ${mainPlan.currency}${maxAmount} ${mainPlan.currencyISO}`;
 	}
 	return null;
 }

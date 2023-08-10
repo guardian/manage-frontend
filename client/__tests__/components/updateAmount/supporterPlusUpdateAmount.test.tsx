@@ -103,9 +103,7 @@ it.each([
 		// assert that the maximum amount validation error message is shown
 		expect(
 			screen.queryByText(
-				`There is a maximum ${billingPeriod}ly amount of £${expectedMaxAmount.toFixed(
-					2,
-				)} GBP`,
+				`There is a maximum ${billingPeriod}ly amount of £${expectedMaxAmount} GBP`,
 			),
 		).toBeTruthy();
 	},
