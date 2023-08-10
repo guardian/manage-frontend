@@ -80,7 +80,7 @@ describe('Update contribution amount', () => {
 		cy.wait('@update_amount');
 
 		cy.contains(
-			'We have successfully updated the amount of your contribution.',
+			'We have successfully updated the amount of your support.',
 		).should('exist');
 	});
 
@@ -107,7 +107,7 @@ describe('Update contribution amount', () => {
 		cy.wait('@supporter_plus_update_amount');
 
 		cy.contains(
-			'We have successfully updated the amount of your contribution.',
+			'We have successfully updated the amount of your support.',
 		).should('exist');
 	});
 });
