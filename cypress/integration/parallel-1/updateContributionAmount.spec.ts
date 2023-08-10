@@ -99,7 +99,7 @@ describe('Update contribution amount', () => {
 		cy.findByText('Change amount').click();
 
 		cy.get(
-			'[data-cy="contribution-amount-choices"] label:first-of-type',
+			'[data-cy="supporter-plus-amount-choices"] label:first-of-type',
 		).click();
 
 		cy.findByText('Change amount').click();

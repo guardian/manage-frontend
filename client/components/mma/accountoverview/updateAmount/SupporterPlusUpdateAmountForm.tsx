@@ -59,21 +59,19 @@ function validateChoice(
 	if (!chosenAmount && !isOtherAmountSelected) {
 		return 'Please make a selection';
 	} else if (chosenOptionNum === currentAmount) {
-		return 'You have selected the same amount as you currently contribute';
+		return 'You have selected the same amount as you currently pay';
 	} else if (!chosenAmount || isNaN(chosenOptionNum)) {
 		return 'There is a problem with the amount you have selected, please make sure it is a valid amount';
 	} else if (!isNaN(chosenOptionNum) && chosenOptionNum < minAmount) {
-		return `There is a minimum ${
+		return `${mainPlan.currency}${minAmount.toFixed(2)} per ${
 			mainPlan.billingPeriod
-		}ly contribution amount of ${mainPlan.currency}${minAmount.toFixed(
-			2,
-		)} ${mainPlan.currencyISO}`;
+		} is the minimum  payment to receive this subscription. Please call our customer service team to lower your monthly amount below ${
+			mainPlan.currency
+		}${minAmount.toFixed(2)}`;
 	} else if (!isNaN(chosenOptionNum) && chosenOptionNum > maxAmount) {
-		return `There is a maximum ${
-			mainPlan.billingPeriod
-		}ly contribution amount of ${mainPlan.currency}${maxAmount.toFixed(
-			2,
-		)} ${mainPlan.currencyISO}`;
+		return `There is a maximum ${mainPlan.billingPeriod}ly amount of ${
+			mainPlan.currency
+		}${maxAmount.toFixed(2)} ${mainPlan.currencyISO}`;
 	}
 	return null;
 }
@@ -267,8 +265,8 @@ export const SupporterPlusUpdateAmountForm = (
 					>
 						<ChoiceCardGroup
 							name="amounts"
-							data-cy="contribution-amount-choices"
-							label="Choose the amount to contribute"
+							data-cy="supporter-plus-amount-choices"
+							label="Choose the amount to pay"
 							columns={2}
 						>
 							<>
