@@ -6,7 +6,7 @@ import {
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
 	newspaperVoucherPaidByPaypal,
-	supporterPlus,
+	supporterPlusAnnual,
 } from '../../../fixtures/productBuilder/testProducts';
 import { ManageProduct } from './ManageProduct';
 
@@ -53,6 +53,6 @@ export const SupporterPlus = () => (
 
 SupporterPlus.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlus() },
+		state: { productDetail: supporterPlusAnnual() },
 	},
 };

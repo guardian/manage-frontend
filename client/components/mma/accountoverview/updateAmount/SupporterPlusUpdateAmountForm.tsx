@@ -1,5 +1,5 @@
 import { css, ThemeProvider } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import { palette, space, textSans, until } from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
@@ -36,6 +36,17 @@ const smallPrintCss = css`
 	}
 `;
 
+const buttonContainerCss = css`
+	${until.tablet} {
+		display: flex;
+		flex-direction: column;
+	}
+`;
+
+const buttonCentredCss = css`
+	justify-content: center;
+`;
+
 const getAmountUpdater = (newAmount: number, subscriptionName: string) =>
 	fetchWithDefaultParameters(
 		`/api/update-supporter-plus-amount/${subscriptionName}`,
@@ -54,6 +65,10 @@ function validateChoice(
 	mainPlan: PaidSubscriptionPlan,
 ): string | null {
 	const chosenOptionNum = Number(chosenAmount);
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		mainPlan.billingPeriod,
+	).toLocaleLowerCase();
+
 	if (!chosenAmount && !isOtherAmountSelected) {
 		return 'Please make a selection';
 	} else if (chosenOptionNum === currentAmount) {
@@ -61,7 +76,7 @@ function validateChoice(
 	} else if (!chosenAmount || isNaN(chosenOptionNum)) {
 		return 'There is a problem with the amount you have selected, please make sure it is a valid amount';
 	} else if (!isNaN(chosenOptionNum) && chosenOptionNum < minAmount) {
-		return `${mainPlan.currency}${minAmount} per ${mainPlan.billingPeriod} is the minimum payment to receive this subscription. Please call our customer service team to lower your monthly amount below ${mainPlan.currency}${minAmount}`;
+		return `${mainPlan.currency}${minAmount} per ${mainPlan.billingPeriod} is the minimum payment to receive this subscription. Please call our customer service team to lower your ${monthlyOrAnnual} amount below ${mainPlan.currency}${minAmount}`;
 	} else if (!isNaN(chosenOptionNum) && chosenOptionNum > maxAmount) {
 		return `There is a maximum ${mainPlan.billingPeriod}ly amount of ${mainPlan.currency}${maxAmount} ${mainPlan.currencyISO}`;
 	}
@@ -89,7 +104,7 @@ export const SupporterPlusUpdateAmountForm = (
 	const minPriceDisplay = `${props.mainPlan.currency}${priceConfig.minAmount}`;
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		props.mainPlan.billingPeriod,
-	).toLocaleLowerCase();
+	);
 
 	const defaultOtherAmount = priceConfig.minAmount;
 
@@ -259,21 +274,22 @@ export const SupporterPlusUpdateAmountForm = (
 							columns={2}
 						>
 							<>
-								{suggestedAmounts(props.currentAmount).map(
-									(amount) => (
-										<ChoiceCard
-											id={`amount-${amount}`}
-											key={amount}
-											value={amount.toString()}
-											label={amountLabel(amount)}
-											checked={selectedValue === amount}
-											onChange={() => {
-												setSelectedValue(amount);
-												setIsOtherAmountSelected(false);
-											}}
-										/>
-									),
-								)}
+								{suggestedAmounts(
+									props.currentAmount,
+									monthlyOrAnnual,
+								).map((amount) => (
+									<ChoiceCard
+										id={`amount-${amount}`}
+										key={amount}
+										value={amount.toString()}
+										label={amountLabel(amount)}
+										checked={selectedValue === amount}
+										onChange={() => {
+											setSelectedValue(amount);
+											setIsOtherAmountSelected(false);
+										}}
+									/>
+								))}
 
 								<ChoiceCard
 									id={`amount-other`}
@@ -313,14 +329,18 @@ export const SupporterPlusUpdateAmountForm = (
 							</div>
 						)}
 						<section
-							css={css`
-								margin-top: ${space[3]}px;
-							`}
+							css={[
+								css`
+									margin-top: ${space[3]}px;
+								`,
+								buttonContainerCss,
+							]}
 						>
 							<ThemeProvider
 								theme={buttonThemeReaderRevenueBrand}
 							>
 								<Button
+									cssOverrides={buttonCentredCss}
 									onClick={changeAmountClick}
 									size="small"
 								>
@@ -346,8 +366,8 @@ export const SupporterPlusUpdateAmountForm = (
 							/>
 							<p>
 								If you would like to lower your{' '}
-								{monthlyOrAnnual} amount below {minPriceDisplay}{' '}
-								please call us via the{' '}
+								{monthlyOrAnnual.toLowerCase()} amount below{' '}
+								{minPriceDisplay} please call us via the{' '}
 								<Link href="/help-centre">Help Centre</Link>
 							</p>
 						</div>
