@@ -31,10 +31,10 @@ describe('suggested support amounts for annual', () => {
 	it.each([
 		[95, 105, 120, 145],
 		[100, 110, 125, 150],
-		[103, 115, 125, 150],
+		[103, 115, 130, 155],
 		[99, 110, 125, 150],
 	])(
-		'returns options 10%, 25%, 50% more than the current amount %s',
+		'returns options 10%, 25%, 50% more (rounded to 5) than the current amount %s',
 		(
 			currentAmount: number,
 			expectedFirstAmount: number,
