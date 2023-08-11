@@ -246,6 +246,7 @@ export const SupporterPlusUpdateAmountForm = (
 					</dt>
 					<dd
 						css={css`
+							margin-left: ${space[4]}px;
 							display: inline-block;
 						`}
 					>{`${props.mainPlan.currency}${props.currentAmount.toFixed(
@@ -331,7 +332,7 @@ export const SupporterPlusUpdateAmountForm = (
 						<section
 							css={[
 								css`
-									margin-top: ${space[3]}px;
+									margin-top: ${space[5]}px;
 								`,
 								buttonContainerCss,
 							]}
