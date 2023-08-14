@@ -11,7 +11,6 @@ import {
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
 import { parseDate } from '../../../../shared/dates';
-import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
 	AppSubscription,
 	MPAPIResponse,
@@ -413,10 +412,7 @@ const BillingPage = () => {
 	const { allProductDetails, mmaCategoryToProductDetails } =
 		joinInvoicesWithProductsInCategories(mdapiResponse, invoicesResponse);
 
-	if (
-		(allProductDetails.length === 0 && appSubscriptions.length === 0) ||
-		(allProductDetails.length === 0 && !featureSwitches.appSubscriptions)
-	) {
+	if (allProductDetails.length === 0 && appSubscriptions.length === 0) {
 		return <EmptyAccountOverview />;
 	}
 
@@ -425,8 +421,7 @@ const BillingPage = () => {
 			<PaymentFailureAlertIfApplicable
 				productDetails={allProductDetails}
 			/>
-			{featureSwitches.appSubscriptions &&
-				appSubscriptions.map(renderInAppPurchase)}
+			{appSubscriptions.map(renderInAppPurchase)}
 
 			<BillingDetailsComponent
 				mmaCategoryToProductDetails={mmaCategoryToProductDetails}

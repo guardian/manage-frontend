@@ -1,5 +1,4 @@
 import { createRef, useEffect, useState } from 'react';
-import { featureSwitches } from '../../../../../shared/featureSwitches';
 import type {
 	AppSubscription,
 	MPAPIResponse,
@@ -120,16 +119,14 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 									productDetails,
 									consent,
 							  ) ||
-							  (userHasAppSubscriptionWithConsent(
+							  userHasAppSubscriptionWithConsent(
 									appSubscriptions,
 									consent,
-							  ) &&
-									featureSwitches.appSubscriptions) ||
-							  (userHasSingleContributionWithConsent(
+							  ) ||
+							  userHasSingleContributionWithConsent(
 									singleContributions,
 									consent,
-							  ) &&
-									featureSwitches.singleContributions)
+							  )
 							: true,
 				);
 

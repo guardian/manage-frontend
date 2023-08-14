@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { featureSwitches } from '../../../../shared/featureSwitches';
 import { CancellationContext } from './CancellationContainer';
 import type {
 	CancellationContextInterface,
@@ -22,7 +21,6 @@ export const CancellationSaveEligibilityCheck = () => {
 	}
 
 	if (
-		featureSwitches.membershipSave &&
 		!routerState?.dontShowOffer &&
 		productDetail.mmaCategory === 'membership'
 	) {

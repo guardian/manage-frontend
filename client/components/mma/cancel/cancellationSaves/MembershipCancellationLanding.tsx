@@ -3,7 +3,6 @@ import { textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router';
-import { featureSwitches } from '../../../../../shared/featureSwitches';
 import type {
 	MembersDataApiResponse,
 	PaidSubscriptionPlan,
@@ -99,10 +98,7 @@ export const MembershipCancellationLanding = () => {
 		return <GenericErrorScreen />;
 	}
 
-	if (
-		featureSwitches.membershipSave &&
-		ineligibleForSave(data.products as ProductDetail[], membership)
-	) {
+	if (ineligibleForSave(data.products as ProductDetail[], membership)) {
 		return (
 			<Navigate
 				to="../"

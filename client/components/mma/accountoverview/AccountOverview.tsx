@@ -9,7 +9,6 @@ import {
 import { Stack } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
-import { featureSwitches } from '../../../../shared/featureSwitches';
 import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
@@ -121,7 +120,6 @@ const AccountOverviewPage = () => {
 	);
 
 	if (
-		featureSwitches.appSubscriptions &&
 		appSubscriptions.length > 0 &&
 		!productCategories.includes('subscriptions')
 	) {
@@ -129,7 +127,6 @@ const AccountOverviewPage = () => {
 	}
 
 	if (
-		featureSwitches.singleContributions &&
 		singleContributions.length > 0 &&
 		!productCategories.includes('subscriptions')
 	) {
@@ -139,8 +136,7 @@ const AccountOverviewPage = () => {
 	if (
 		allActiveProductDetails.length === 0 &&
 		appSubscriptions.length === 0 &&
-		(singleContributions.length === 0 ||
-			!featureSwitches.singleContributions)
+		singleContributions.length === 0
 	) {
 		return <EmptyAccountOverview />;
 	}
@@ -241,8 +237,7 @@ const AccountOverviewPage = () => {
 										/>
 									</div>
 								)}
-							{featureSwitches.appSubscriptions &&
-								appSubscriptions.length > 0 &&
+							{appSubscriptions.length > 0 &&
 								category === 'subscriptions' &&
 								appSubscriptions.map((subscription) => (
 									<InAppPurchaseCard
@@ -250,8 +245,7 @@ const AccountOverviewPage = () => {
 										subscription={subscription}
 									/>
 								))}
-							{featureSwitches.singleContributions &&
-								category === 'subscriptions' &&
+							{category === 'subscriptions' &&
 								singleContributions.length > 0 && (
 									<SingleContributionCard
 										singleContributions={
