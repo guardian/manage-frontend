@@ -61,7 +61,7 @@ export const UpdateAmount = (props: UpdateAmountProps) => {
 		<>
 			{status === Status.CONFIRMED && (
 				<SuccessMessage
-					message={`We have successfully updated the amount of your contribution. ${
+					message={`We have successfully updated the amount of your support. ${
 						props.nextPaymentDate &&
 						`This amount will be taken on ${parseDate(
 							props.nextPaymentDate,

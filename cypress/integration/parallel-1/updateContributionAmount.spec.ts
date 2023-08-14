@@ -80,7 +80,7 @@ describe('Update contribution amount', () => {
 		cy.wait('@update_amount');
 
 		cy.contains(
-			'We have successfully updated the amount of your contribution.',
+			'We have successfully updated the amount of your support.',
 		).should('exist');
 	});
 
@@ -99,7 +99,7 @@ describe('Update contribution amount', () => {
 		cy.findByText('Change amount').click();
 
 		cy.get(
-			'[data-cy="contribution-amount-choices"] label:first-of-type',
+			'[data-cy="supporter-plus-amount-choices"] label:first-of-type',
 		).click();
 
 		cy.findByText('Change amount').click();
@@ -107,7 +107,7 @@ describe('Update contribution amount', () => {
 		cy.wait('@supporter_plus_update_amount');
 
 		cy.contains(
-			'We have successfully updated the amount of your contribution.',
+			'We have successfully updated the amount of your support.',
 		).should('exist');
 	});
 });

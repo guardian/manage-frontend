@@ -49,7 +49,16 @@ export function getBenefitsThreshold(
 	return region[billingPeriod].minAmount;
 }
 
-export function suggestedAmounts(currentAmount: number) {
+export function suggestedAmounts(
+	currentAmount: number,
+	monthlyOrAnnual: 'Monthly' | 'Annual',
+) {
+	return monthlyOrAnnual === 'Monthly'
+		? suggestedAmountsMonthly(currentAmount)
+		: suggestedAmountsAnnual(currentAmount);
+}
+
+function suggestedAmountsMonthly(currentAmount: number) {
 	const firstValue = currentAmount + 2;
 
 	const secondValue = Math.ceil((firstValue + 1) / 5) * 5;
@@ -57,4 +66,12 @@ export function suggestedAmounts(currentAmount: number) {
 	const thirdValue = secondValue + 5;
 
 	return [firstValue, secondValue, thirdValue];
+}
+
+function suggestedAmountsAnnual(currentAmount: number) {
+	const percentageStepUps = [1.1, 1.25, 1.5];
+
+	return percentageStepUps.map(
+		(p) => Math.round((currentAmount * p) / 5) * 5,
+	);
 }
