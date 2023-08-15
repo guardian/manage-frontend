@@ -45,10 +45,10 @@ Default.parameters = {
 		rest.get('/idapi/user', (_req, res, ctx) => {
 			return res(ctx.json(user));
 		}),
-		rest.get('/idapicodeproxy/newsletters', (_req, res, ctx) => {
+		rest.get('/idapi/newsletters', (_req, res, ctx) => {
 			return res(ctx.json(newsletters));
 		}),
-		rest.get('/idapicodeproxy/users/me/newsletters', (_req, res, ctx) => {
+		rest.get('/idapi/user/newsletters', (_req, res, ctx) => {
 			return res(ctx.json(newsletterSubscriptions));
 		}),
 		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
@@ -57,7 +57,7 @@ Default.parameters = {
 		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
 			return res(ctx.json([]));
 		}),
-		rest.get('/idapicodeproxy/consents', (_req, res, ctx) => {
+		rest.get('/idapi/user/consents', (_req, res, ctx) => {
 			return res(ctx.json(consents));
 		}),
 		rest.get('/api/reminders/status', (_req, res, ctx) => {
@@ -78,10 +78,10 @@ WithNoProducts.parameters = {
 		rest.get('/idapi/user', (_req, res, ctx) => {
 			return res(ctx.json(user));
 		}),
-		rest.get('/idapicodeproxy/newsletters', (_req, res, ctx) => {
+		rest.get('/idapi/newsletters', (_req, res, ctx) => {
 			return res(ctx.json(newsletters));
 		}),
-		rest.get('/idapicodeproxy/users/me/newsletters', (_req, res, ctx) => {
+		rest.get('/idapi/user/newsletters', (_req, res, ctx) => {
 			return res(ctx.json(newsletterSubscriptions));
 		}),
 		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
@@ -90,7 +90,7 @@ WithNoProducts.parameters = {
 		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
 			return res(ctx.json([]));
 		}),
-		rest.get('/idapicodeproxy/consents', (_req, res, ctx) => {
+		rest.get('/idapi/user/consents', (_req, res, ctx) => {
 			return res(ctx.json(consents));
 		}),
 		rest.get('/api/reminders/status', (_req, res, ctx) => {
@@ -113,10 +113,10 @@ WithIAP.parameters = {
 		rest.get('/idapi/user', (_req, res, ctx) => {
 			return res(ctx.json(user));
 		}),
-		rest.get('/idapicodeproxy/newsletters', (_req, res, ctx) => {
+		rest.get('/idapi/newsletters', (_req, res, ctx) => {
 			return res(ctx.json(newsletters));
 		}),
-		rest.get('/idapicodeproxy/users/me/newsletters', (_req, res, ctx) => {
+		rest.get('/idapi/user/newsletters', (_req, res, ctx) => {
 			return res(ctx.json(newsletterSubscriptions));
 		}),
 		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
@@ -125,7 +125,7 @@ WithIAP.parameters = {
 		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
 			return res(ctx.json([]));
 		}),
-		rest.get('/idapicodeproxy/consents', (_req, res, ctx) => {
+		rest.get('/idapi/user/consents', (_req, res, ctx) => {
 			return res(ctx.json(consents));
 		}),
 		rest.get('/api/reminders/status', (_req, res, ctx) => {
@@ -150,10 +150,10 @@ WithSingleContribution.parameters = {
 		rest.get('/idapi/user', (_req, res, ctx) => {
 			return res(ctx.json(user));
 		}),
-		rest.get('/idapicodeproxy/newsletters', (_req, res, ctx) => {
+		rest.get('/idapi/newsletters', (_req, res, ctx) => {
 			return res(ctx.json(newsletters));
 		}),
-		rest.get('/idapicodeproxy/users/me/newsletters', (_req, res, ctx) => {
+		rest.get('/idapi/user/newsletters', (_req, res, ctx) => {
 			return res(ctx.json(newsletterSubscriptions));
 		}),
 		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
@@ -162,7 +162,7 @@ WithSingleContribution.parameters = {
 		rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
 			return res(ctx.json(singleContributionsAPIResponse));
 		}),
-		rest.get('/idapicodeproxy/consents', (_req, res, ctx) => {
+		rest.get('/idapi/user/consents', (_req, res, ctx) => {
 			return res(ctx.json(consents));
 		}),
 		rest.get('/api/reminders/status', (_req, res, ctx) => {

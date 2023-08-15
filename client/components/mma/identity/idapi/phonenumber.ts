@@ -1,9 +1,10 @@
-import { APIUseCredentials, identityFetch } from './fetch';
+import {
+	addCSRFToken,
+	deleteRequest,
+	fetchWithDefaultParameters,
+} from '@/client/utilities/fetch';
 
 export const remove = async () => {
-	const url = '/user/me/telephoneNumber';
-	const options = {
-		method: 'DELETE',
-	};
-	return await identityFetch(url, APIUseCredentials(options));
+	const url = '/idapi/user/telephone-number';
+	return await fetchWithDefaultParameters(url, addCSRFToken(deleteRequest()));
 };

@@ -1,6 +1,6 @@
-import { IdentityLocations } from '../IdentityLocations';
+import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import { base64FromFile } from '@/shared/fileUploadUtils';
 import { ErrorTypes } from '../models';
-import { APIFetch, APIFilePostOptions, APIUseCredentials } from './fetch';
 
 interface AvatarAPIErrorResponse {
 	message: string;
@@ -46,24 +46,35 @@ const toAvatarError = (e: AvatarAPIErrorResponse): AvatarError => {
 	} as AvatarError;
 };
 
-const avatarFetch = APIFetch(IdentityLocations.AVATAR);
-
 export const read = async () => {
-	const url = '/v1/avatars/user/me/active';
-	const options = APIUseCredentials({});
-	try {
-		return await avatarFetch(url, options);
-	} catch (e) {
-		throw isAvatarAPIErrorResponse(e) ? toAvatarError(e) : e;
+	const url = '/aapi/avatar';
+	const response = await fetchWithDefaultParameters(url).then((res) =>
+		res.json(),
+	);
+	if (isAvatarAPIErrorResponse(response)) {
+		throw toAvatarError(response);
 	}
+	return response;
 };
 
 export const write = async (file: File) => {
-	const url = '/v1/avatars';
-	const options = APIUseCredentials(APIFilePostOptions(file));
-	try {
-		await avatarFetch(url, options);
-	} catch (e) {
-		throw isAvatarAPIErrorResponse(e) ? toAvatarError(e) : e;
+	const url = '/aapi/avatar';
+	const payload = {
+		name: file.name,
+		type: file.type,
+		contents: (await base64FromFile(file)) as string,
+	};
+	// We send the request as a text/plain to avoid triggering the Express JSON parser
+	// which would try to parse the payload as JSON and fail. We instead parse the body
+	// in the route handler.
+	const response = await fetch(url, {
+		method: 'POST',
+		body: JSON.stringify(payload),
+		headers: {
+			'Content-Type': 'text/plain;charset=UTF-8',
+		},
+	}).then((res) => res.json());
+	if (isAvatarAPIErrorResponse(response)) {
+		throw toAvatarError(response);
 	}
 };

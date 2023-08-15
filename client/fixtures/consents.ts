@@ -1,6 +1,6 @@
 /*
  * Consent for marketing communications for signed in user
- * /idapicodeproxy/consents?filter=all
+ * /idapi/user/consents (proxied to IDAPI /consents?filter=all)
  */
 
 export const consents = [
