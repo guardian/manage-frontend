@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
+import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import type { ConsentOption } from '../models';
 import { ConsentOptionType } from '../models';
 

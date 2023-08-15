@@ -9,7 +9,12 @@
     "noUncheckedIndexedAccess": false,
     "noUnusedParameters": true,
     "types": ["node", "jest"],
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "esModuleInterop": true
   },
   "exclude": ["cypress/**", "cdk/**"]
 }
