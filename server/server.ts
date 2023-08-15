@@ -35,6 +35,7 @@ if (conf.DOMAIN === 'thegulocal.com') {
 }
 
 server.use(helmet());
+server.use(express.json());
 
 const serveStaticAssets: RequestHandler = express.static(__dirname + '/static');
 
