@@ -332,7 +332,7 @@ export const ProductCard = ({
 										trackEvent({
 											eventCategory: 'account_overview',
 											eventAction: 'click',
-											eventLabel: `manage_${groupedProductType.urlPart}`,
+											eventLabel: `manage_${specificProductType.urlPart}`,
 										});
 										navigate(
 											`/${specificProductType.urlPart}`,

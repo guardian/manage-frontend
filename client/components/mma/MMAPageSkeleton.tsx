@@ -17,13 +17,14 @@ interface LocationObject {
 }
 
 const manageProductLocationObjects: LocationObject[] = Object.values(
-	GROUPED_PRODUCT_TYPES,
-).map((groupedProductType) => ({
+	PRODUCT_TYPES,
+).map((productType) => ({
 	title: `Manage ${
-		groupedProductType.shortFriendlyName ||
-		groupedProductType.friendlyName()
+		GROUPED_PRODUCT_TYPES[productType.groupedProductType]
+			.shortFriendlyName ||
+		GROUPED_PRODUCT_TYPES[productType.groupedProductType].friendlyName()
 	}`,
-	path: `/${groupedProductType.urlPart}`,
+	path: `/${productType.urlPart}`,
 	selectedNavItem: NAV_LINKS.accountOverview,
 }));
 
