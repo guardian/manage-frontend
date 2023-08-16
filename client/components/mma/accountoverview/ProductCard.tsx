@@ -335,7 +335,7 @@ export const ProductCard = ({
 											eventLabel: `manage_${groupedProductType.urlPart}`,
 										});
 										navigate(
-											`/${groupedProductType.urlPart}`,
+											`/${specificProductType.urlPart}`,
 											{
 												state: {
 													productDetail:

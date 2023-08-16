@@ -217,7 +217,7 @@ const AddressConfirmation = (props: ProductType) => {
 						`}
 					>
 						<LinkButton
-							to={'/subscriptions'}
+							to={`/${props.urlPart}`}
 							text={'Return to subscription'}
 							state={{ productDetail }}
 							colour={palette.brand[400]}

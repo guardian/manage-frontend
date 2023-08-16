@@ -5,8 +5,6 @@ import {
 import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
-const patronMDAPI = [patronDigitalPack(), guardianWeeklyPaidByCard()];
-
 describe('patron test', () => {
 	beforeEach(() => {
 		signInAndAcceptCookies();
@@ -29,10 +27,13 @@ describe('patron test', () => {
 			body: [],
 		}).as('single_contributions');
 
-		cy.intercept('GET', '/api/me/mma/**', {
+		cy.intercept('GET', '/api/me/mma?productType=**', {
 			statusCode: 200,
-			body: patronMDAPI,
-		}).as('refetch_subscription');
+			body: toMembersDataApiResponse(
+				patronDigitalPack(),
+				guardianWeeklyPaidByCard(),
+			),
+		}).as('fetch_subscription');
 
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,
@@ -51,17 +52,11 @@ describe('patron test', () => {
 	});
 
 	it('patron manage subscription page', () => {
-		cy.intercept('GET', '/api/me/mma', {
-			statusCode: 200,
-			body: toMembersDataApiResponse(patronDigitalPack()),
-		}).as('product_detail');
+		cy.visit('/digital');
 
-		cy.visit('/subscriptions');
+		cy.wait('@fetch_subscription');
 
-		cy.wait('@product_detail');
-		cy.wait('@mobile_subscriptions');
-
-		cy.findAllByText('not applicable').should('have.length', 1);
+		cy.findAllByText('not applicable').should('have.length', 2);
 	});
 
 	it('patron billing page', () => {

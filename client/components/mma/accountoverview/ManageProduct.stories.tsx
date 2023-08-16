@@ -1,7 +1,7 @@
 import type { Meta, StoryFn } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { featureSwitches } from '../../../../shared/featureSwitches';
-import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
@@ -19,25 +19,30 @@ export default {
 	},
 } as Meta<typeof ManageProduct>;
 
-const Template: StoryFn<typeof ManageProduct> = () => (
-	<ManageProduct groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions} />
-);
+export const GuardianWeekly: StoryFn<typeof ManageProduct> = () => {
+	return <ManageProduct productType={PRODUCT_TYPES.guardianweekly} />;
+};
 
-export const GuardianWeekly = Template.bind({});
 GuardianWeekly.parameters = {
 	reactRouter: {
 		state: { productDetail: guardianWeeklyPaidByCard() },
 	},
 };
 
-export const DigitalSubscription = Template.bind({});
+export const DigitalSubscription: StoryFn<typeof ManageProduct> = () => {
+	return <ManageProduct productType={PRODUCT_TYPES.digipack} />;
+};
+
 DigitalSubscription.parameters = {
 	reactRouter: {
 		state: { productDetail: digitalPackPaidByDirectDebit() },
 	},
 };
 
-export const NewspaperSubscriptionCard = Template.bind({});
+export const NewspaperSubscriptionCard: StoryFn<typeof ManageProduct> = () => {
+	return <ManageProduct productType={PRODUCT_TYPES.digitalvoucher} />;
+};
+
 NewspaperSubscriptionCard.parameters = {
 	reactRouter: {
 		state: { productDetail: newspaperVoucherPaidByPaypal() },
@@ -45,11 +50,9 @@ NewspaperSubscriptionCard.parameters = {
 };
 
 featureSwitches.supporterPlusUpdateAmount = true;
-export const SupporterPlus = () => (
-	<ManageProduct
-		groupedProductType={GROUPED_PRODUCT_TYPES.recurringSupport}
-	/>
-);
+export const SupporterPlus: StoryFn<typeof ManageProduct> = () => {
+	return <ManageProduct productType={PRODUCT_TYPES.supporterplus} />;
+};
 
 SupporterPlus.parameters = {
 	reactRouter: {

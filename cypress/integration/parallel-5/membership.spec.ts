@@ -43,7 +43,7 @@ describe('membership test', () => {
 	});
 
 	it('membership subscription', () => {
-		cy.visit('/membership');
+		cy.visit('/');
 
 		cy.findByText('Manage Membership').click();
 

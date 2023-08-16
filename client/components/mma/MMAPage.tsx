@@ -9,15 +9,11 @@ import {
 	initFeatureSwitchUrlParamOverride,
 } from '../../../shared/featureSwitches';
 import type {
-	GroupedProductType,
 	ProductType,
 	ProductTypeWithDeliveryRecordsProperties,
 	ProductTypeWithHolidayStopsFlow,
 } from '../../../shared/productTypes';
-import {
-	GROUPED_PRODUCT_TYPES,
-	PRODUCT_TYPES,
-} from '../../../shared/productTypes';
+import { PRODUCT_TYPES } from '../../../shared/productTypes';
 import { abSwitches } from '../../experiments/abSwitches';
 import { tests } from '../../experiments/abTests';
 import { fonts } from '../../styles/fonts';
@@ -431,16 +427,14 @@ const MMARouter = () => {
 								/>
 							</Route>
 						))}
-						{Object.values(GROUPED_PRODUCT_TYPES).map(
-							(groupedProductType: GroupedProductType) => (
+						{Object.values(PRODUCT_TYPES).map(
+							(productType: ProductType) => (
 								<Route
-									key={groupedProductType.urlPart}
-									path={`/${groupedProductType.urlPart}`}
+									key={productType.urlPart}
+									path={`/${productType.urlPart}`}
 									element={
 										<ManageProduct
-											groupedProductType={
-												groupedProductType
-											}
+											productType={productType}
 										/>
 									}
 								/>
