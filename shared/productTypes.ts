@@ -651,7 +651,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'GuardianPatron',
 		urlPart: 'guardianpatron',
-		legacyUrlPart: 'guardianpatron',
 		getOphanProductType: () => 'GUARDIAN_PATRON', //TODO: This value doesn't exist in Ophan yet
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [

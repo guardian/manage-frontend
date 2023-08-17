@@ -10,29 +10,41 @@ import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import { featureSwitches } from '../../../../shared/featureSwitches';
-import type { ProductDetail } from '../../../../shared/productResponse';
+import type {
+	MembersDataApiResponse,
+	ProductDetail,
+} from '../../../../shared/productResponse';
 import {
 	getMainPlan,
 	isGift,
 	isPaidSubscriptionPlan,
+	isProduct,
 } from '../../../../shared/productResponse';
 import type {
-	GroupedProductType,
 	ProductType,
-	WithGroupedProductType,
+	WithProductType,
 } from '../../../../shared/productTypes';
+import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
+	LoadingState,
+	useAsyncLoader,
+} from '../../../utilities/hooks/useAsyncLoader';
+import {
+	createProductDetailFetcher,
 	hasDeliveryRecordsFlow,
 	isNonServiceableCountry,
 	shouldHaveHolidayStopsFlow,
 } from '../../../utilities/productUtils';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';
+import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { DeliveryAddressDisplay } from '../delivery/address/DeliveryAddressDisplay';
 import { PageContainer } from '../Page';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
+import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { BasicProductInfoTable } from '../shared/BasicProductInfoTable';
 import { LinkButton } from '../shared/Buttons';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
@@ -61,7 +73,7 @@ export const subHeadingCss = `
   `;
 
 interface InnerContentProps {
-	manageProductProps: WithGroupedProductType<GroupedProductType>;
+	manageProductProps: WithProductType<ProductType>;
 	productDetail: ProductDetail;
 }
 
@@ -74,10 +86,9 @@ const InnerContent = ({
 		throw new Error('mainPlan does not exist in manageProduct page');
 	}
 
-	const groupedProductType = manageProductProps.groupedProductType;
-
-	const specificProductType =
-		groupedProductType.mapGroupedToSpecific(productDetail);
+	const specificProductType = manageProductProps.productType;
+	const groupedProductType =
+		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
 
 	const hasCancellationPending = productDetail.subscription.cancelledAt;
 
@@ -421,9 +432,38 @@ interface ManageProductRouterState {
 	productDetail: ProductDetail;
 }
 
-export const ManageProduct = (
-	props: WithGroupedProductType<GroupedProductType>,
-) => {
+const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
+	const request = createProductDetailFetcher(
+		props.productType.allProductsProductTypeFilterString,
+	);
+
+	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
+		request,
+		JsonResponseHandler,
+	);
+
+	if (loadingState == LoadingState.HasError) {
+		return <GenericErrorScreen />;
+	}
+	if (loadingState == LoadingState.IsLoading) {
+		return <DefaultLoadingView loadingMessage="Loading your product..." />;
+	}
+
+	if (data == null || data.products.length == 0) {
+		return <Navigate to="/" />;
+	}
+
+	const productDetail = data.products.filter(isProduct)[0];
+
+	return (
+		<InnerContent
+			manageProductProps={props}
+			productDetail={productDetail}
+		/>
+	);
+};
+
+export const ManageProduct = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as ManageProductRouterState;
 	const productDetail = routerState?.productDetail;
@@ -432,9 +472,13 @@ export const ManageProduct = (
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}
 			pageTitle={`Manage ${
-				props.groupedProductType.shortFriendlyName ||
-				props.groupedProductType.friendlyName()
+				GROUPED_PRODUCT_TYPES[props.productType.groupedProductType]
+					.shortFriendlyName ||
+				GROUPED_PRODUCT_TYPES[
+					props.productType.groupedProductType
+				].friendlyName()
 			}`}
+			minimalFooter
 		>
 			{productDetail ? (
 				<InnerContent
@@ -442,7 +486,7 @@ export const ManageProduct = (
 					productDetail={productDetail}
 				/>
 			) : (
-				<Navigate to="/" />
+				<AsyncLoadedInnerContent {...props} />
 			)}
 		</PageContainer>
 	);
