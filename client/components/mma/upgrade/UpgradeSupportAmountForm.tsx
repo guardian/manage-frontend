@@ -65,7 +65,7 @@ export const UpgradeSupportAmountForm = () => {
 	];
 
 	const amountLabel = (amount: number) => {
-		return `${upgradeSupportContext.mainPlan.currency}${amount} a ${upgradeSupportContext.mainPlan.billingPeriod}`;
+		return `${upgradeSupportContext.mainPlan.currency}${amount} per ${upgradeSupportContext.mainPlan.billingPeriod}`;
 	};
 	const currentAmount = upgradeSupportContext.mainPlan.price / 100;
 	const mainPlan = upgradeSupportContext.mainPlan;
