@@ -304,6 +304,14 @@ const SwitchReview = lazy(() =>
 	})),
 );
 
+const UpgradeSupport = lazy(() =>
+	import(
+		/* webpackChunkName: "UpgradeSupport" */ './upgrade/UpgradeSupport'
+	).then(({ UpgradeSupport }) => ({
+		default: UpgradeSupport,
+	})),
+);
+
 const SwitchComplete = lazy(() =>
 	import(
 		/* webpackChunkName: "Switch" */ './switch/complete/SwitchComplete'
@@ -408,6 +416,10 @@ const MMARouter = () => {
 						<Route
 							path="/account-settings"
 							element={<Settings />}
+						/>
+						<Route
+							path="upgrade-support"
+							element={<UpgradeSupport />}
 						/>
 						{[
 							{ path: '/switch', fromApp: false },
