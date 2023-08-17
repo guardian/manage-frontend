@@ -190,20 +190,9 @@ export const SupporterPlusUpdateAmountForm = (
 		try {
 			const data = await JsonResponseHandler(response);
 			if (data === null) {
-				// trackEvent({
-				// 	eventCategory: 'amount_change',
-				// 	eventAction: 'contributions_amount_change_failed',
-				// });
 				setUpdateFailedStatus(true);
 				setShowUpdateLoader(false);
 			}
-			// trackEvent({
-			// 	eventCategory: 'amount_change',
-			// 	eventAction: 'contributions_amount_change_success',
-			// 	eventLabel: `by ${props.mainPlan.currency}${(
-			// 		pendingAmount - props.currentAmount
-			// 	).toFixed(2)}${props.mainPlan.currencyISO}`,
-			// });
 			setConfirmedAmount(pendingAmount);
 		} catch {
 			setUpdateFailedStatus(true);
