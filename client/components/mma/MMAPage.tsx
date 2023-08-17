@@ -39,6 +39,7 @@ import { Main } from '../shared/Main';
 import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
+import { UpgradeSupportContainer } from './upgrade/UpgradeSupportContainer';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {
@@ -419,8 +420,14 @@ const MMARouter = () => {
 						/>
 						<Route
 							path="upgrade-support"
-							element={<UpgradeSupport />}
-						/>
+							element={<UpgradeSupportContainer />}
+						>
+							<Route index element={<UpgradeSupport />} />
+							<Route
+								path={'thank-you'}
+								element={<div>thanks</div>}
+							/>
+						</Route>
 						{[
 							{ path: '/switch', fromApp: false },
 							{ path: '/app/switch', fromApp: true },

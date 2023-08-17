@@ -5,9 +5,18 @@ import {
 	ChoiceCard,
 	ChoiceCardGroup,
 } from '@guardian/source-react-components';
+import { useContext } from 'react';
 import { InfoIconDark } from '../shared/assets/InfoIconDark';
+import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
+import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 export const UpgradeSupportAmountForm = () => {
+	const upgradeSupportContext = useContext(
+		UpgradeSupportContext,
+	) as UpgradeSupportInterface;
+
+	const currentAmount = upgradeSupportContext.mainPlan.price / 100;
+
 	return (
 		<>
 			<div
@@ -19,7 +28,9 @@ export const UpgradeSupportAmountForm = () => {
 				`}
 			>
 				<InfoIconDark />
-				You're currently supporting XYZ.
+				You're currently supporting{' '}
+				{upgradeSupportContext.mainPlan.currency} {currentAmount}
+				{upgradeSupportContext.mainPlan.billingPeriod}.
 				<dl />
 				<ChoiceCardGroup
 					name="amounts"
