@@ -43,7 +43,7 @@ export const benefitsConfiguration: {
 			isUnavailable: true,
 		},
 	],
-	supporterplus: [newsApp, supporterNewsletter, uninterruptedReading, adFree],
+	supporterplus: [supporterNewsletter, uninterruptedReading, newsApp, adFree],
 	membership: [newsApp, uninterruptedReading, supporterNewsletter],
 	digipack: [],
 	digitalvoucher: [],

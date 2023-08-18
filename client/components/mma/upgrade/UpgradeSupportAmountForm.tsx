@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import type { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 import { palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
@@ -51,6 +52,22 @@ function validateChoice(
 	return null;
 }
 
+function isAboveThreshold(chosenAmount: number | null): EmotionJSX.Element {
+	const chosenOptionNum = Number(chosenAmount);
+	if (!isNaN(chosenOptionNum) && chosenOptionNum < 10) {
+		return (
+			<BenefitsSection
+				benefits={benefitsConfiguration['contributions']}
+			/>
+		);
+	} else
+		{return (
+			<BenefitsSection
+				benefits={benefitsConfiguration['supporterplus']}
+			/>
+		);}
+}
+
 export const UpgradeSupportAmountForm = () => {
 	const upgradeSupportContext = useContext(
 		UpgradeSupportContext,
@@ -68,6 +85,7 @@ export const UpgradeSupportAmountForm = () => {
 		return `${upgradeSupportContext.mainPlan.currency}${amount} per ${upgradeSupportContext.mainPlan.billingPeriod}`;
 	};
 	const currentAmount = upgradeSupportContext.mainPlan.price / 100;
+
 	const mainPlan = upgradeSupportContext.mainPlan;
 
 	const otherAmountLabel = `Choose an amount (${upgradeSupportContext.mainPlan.currency} per ${upgradeSupportContext.mainPlan.billingPeriod})`;
@@ -192,11 +210,12 @@ export const UpgradeSupportAmountForm = () => {
 						${textSans.medium()};
 					`}
 				>
-					<BenefitsSection
-						benefits={benefitsConfiguration['contributions']}
-					/>
+					{isAboveThreshold(chosenAmount)}
 				</div>
-				<Button>Continue XYZ</Button>
+				<Button>
+					Continue with {mainPlan.currency}
+					{chosenAmount}/{mainPlan.billingPeriod}
+				</Button>
 			</div>
 		</>
 	);
