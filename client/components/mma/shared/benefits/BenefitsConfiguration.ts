@@ -38,10 +38,6 @@ export const benefitsConfiguration: {
 			...newsApp,
 			isUnavailable: true,
 		},
-		{
-			...adFree,
-			isUnavailable: true,
-		},
 	],
 	supporterplus: [supporterNewsletter, uninterruptedReading, newsApp, adFree],
 	membership: [newsApp, uninterruptedReading, supporterNewsletter],
