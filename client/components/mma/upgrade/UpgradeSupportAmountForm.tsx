@@ -60,12 +60,13 @@ function isAboveThreshold(chosenAmount: number | null): EmotionJSX.Element {
 				benefits={benefitsConfiguration['contributions']}
 			/>
 		);
-	} else
-		{return (
+	} else {
+		return (
 			<BenefitsSection
 				benefits={benefitsConfiguration['supporterplus']}
 			/>
-		);}
+		);
+	}
 }
 
 export const UpgradeSupportAmountForm = () => {
@@ -186,6 +187,9 @@ export const UpgradeSupportAmountForm = () => {
 					>
 						<TextInput
 							label={otherAmountLabel}
+							supporting={
+								'Support £10/month or more to unlock all extras'
+							}
 							error={
 								(shouldShowOtherAmountErrorMessage &&
 									errorMessage) ||
