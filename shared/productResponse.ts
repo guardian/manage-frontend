@@ -116,7 +116,7 @@ interface SepaDetails {
 	iban: string;
 }
 
-interface CurrenyAndBillingPeriodDetail {
+interface CurrencyAndBillingPeriodDetail {
 	currency: string;
 	currencyISO: string;
 	billingPeriod: string;
@@ -131,7 +131,7 @@ export const isSixForSix = (planName: string | null) =>
 
 export interface PaidSubscriptionPlan
 	extends SubscriptionPlan,
-		CurrenyAndBillingPeriodDetail {
+		CurrencyAndBillingPeriodDetail {
 	start: string;
 	end: string;
 	chargedThrough?: string | null;
@@ -237,6 +237,7 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 		shouldBeVisible: true,
 		currency: subscription.plan?.currency,
 		currencyISO: subscription.plan?.currencyISO,
+		billingPeriod: subscription.plan?.billingPeriod,
 	};
 };
 

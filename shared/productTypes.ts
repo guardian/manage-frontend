@@ -232,12 +232,29 @@ const calculateProductTitle =
 	(baseProductTitle: string) => (mainPlan?: SubscriptionPlan) =>
 		baseProductTitle + (mainPlan?.name ? ` - ${mainPlan.name}` : '');
 
-export const calculateSupporterPlusTitle = (billingPeriod: string) =>
-	billingPeriod === 'month' ? 'monthly + extras' : 'annual + extras';
+export function calculateSupporterPlusTitle(billingPeriod: string) {
+	if (billingPeriod === 'month') {
+		return 'monthly + extras';
+	}
+	if (billingPeriod === 'year') {
+		return 'annual + extras';
+	}
 
-export const calculateMonthlyOrAnnualFromBillingPeriod = (
+	return 'recurring support';
+}
+
+export function calculateMonthlyOrAnnualFromBillingPeriod(
 	billingPeriod: string,
-) => (billingPeriod === 'month' ? 'Monthly' : 'Annual');
+) {
+	if (billingPeriod === 'month') {
+		return 'Monthly';
+	}
+	if (billingPeriod === 'year') {
+		return 'Annual';
+	}
+
+	throw new Error('No billing period for subscription');
+}
 
 const FRONT_PAGE_NEWSLETTER_ID = '6009';
 
