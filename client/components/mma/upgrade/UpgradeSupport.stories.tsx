@@ -1,5 +1,7 @@
 import type { Meta, StoryFn } from '@storybook/react';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
 import { contributionPaidByCard } from '../../../fixtures/productBuilder/testProducts';
 import { UpgradeSupport } from './UpgradeSupport';
 import { UpgradeSupportContainer } from './UpgradeSupportContainer';
@@ -11,12 +13,17 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: {
-				productDetail: contributionPaidByCard,
-				user: { email: 'test@test.com' },
-				container: <UpgradeSupportContainer />,
-			},
+			container: <UpgradeSupportContainer />,
 		},
+		msw: [
+			rest.get('/api/me/mma', (_req, res, ctx) => {
+				return res(
+					ctx.json(
+						toMembersDataApiResponse(contributionPaidByCard()),
+					),
+				);
+			}),
+		],
 	},
 } as Meta<typeof UpgradeSupportContainer>;
 
