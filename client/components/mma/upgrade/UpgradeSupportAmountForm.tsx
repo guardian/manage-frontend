@@ -52,7 +52,9 @@ function validateChoice(
 	return null;
 }
 
-function isAboveThreshold(chosenAmount: number | null): EmotionJSX.Element {
+function displayRelevantBenefits(
+	chosenAmount: number | null,
+): EmotionJSX.Element {
 	const chosenOptionNum = Number(chosenAmount);
 	if (!isNaN(chosenOptionNum) && chosenOptionNum < 10) {
 		return (
@@ -214,7 +216,7 @@ export const UpgradeSupportAmountForm = () => {
 						${textSans.medium()};
 					`}
 				>
-					{isAboveThreshold(chosenAmount)}
+					{displayRelevantBenefits(chosenAmount)}
 				</div>
 				<Button>
 					Continue with {mainPlan.currency}
