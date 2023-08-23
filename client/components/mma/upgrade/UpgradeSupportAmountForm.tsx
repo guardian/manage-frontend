@@ -111,6 +111,9 @@ export const UpgradeSupportAmountForm = () => {
 		defaultOtherAmount,
 	);
 	const chosenAmount = isOtherAmountSelected ? otherAmount : selectedValue;
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		mainPlan.billingPeriod,
+	);
 
 	const shouldShowOtherAmountErrorMessage =
 		hasInteractedWithOtherAmount || hasSubmitted;
@@ -155,19 +158,21 @@ export const UpgradeSupportAmountForm = () => {
 					columns={2}
 				>
 					<>
-						{suggestedAmounts(currentAmount).map((amount) => (
-							<ChoiceCard
-								id={`amount-${amount}`}
-								key={amount}
-								value={amount.toString()}
-								label={amountLabel(amount)}
-								checked={selectedValue === amount}
-								onChange={() => {
-									setSelectedValue(amount);
-									setIsOtherAmountSelected(false);
-								}}
-							/>
-						))}
+						{suggestedAmounts(currentAmount, monthlyOrAnnual).map(
+							(amount) => (
+								<ChoiceCard
+									id={`amount-${amount}`}
+									key={amount}
+									value={amount.toString()}
+									label={amountLabel(amount)}
+									checked={selectedValue === amount}
+									onChange={() => {
+										setSelectedValue(amount);
+										setIsOtherAmountSelected(false);
+									}}
+								/>
+							),
+						)}
 
 						<ChoiceCard
 							id={`amount-other`}
