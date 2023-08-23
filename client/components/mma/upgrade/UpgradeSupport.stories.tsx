@@ -5,6 +5,7 @@ import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
 import { contributionPaidByCard } from '../../../fixtures/productBuilder/testProducts';
 import { UpgradeSupport } from './UpgradeSupport';
 import { UpgradeSupportContainer } from './UpgradeSupportContainer';
+import { UpgradeSupportSwitchThankYou } from './UpgradeSupportSwitchThankYou';
 
 export default {
 	title: 'Pages/UpgradeSupport',
@@ -29,4 +30,10 @@ export default {
 
 export const UpgradeSupportValue: StoryFn<typeof UpgradeSupport> = () => {
 	return <UpgradeSupport />;
+};
+
+export const UpgradeSupportSwitchThankYouPage: StoryFn<
+	typeof UpgradeSupportSwitchThankYou
+> = () => {
+	return <UpgradeSupportSwitchThankYou />;
 };
