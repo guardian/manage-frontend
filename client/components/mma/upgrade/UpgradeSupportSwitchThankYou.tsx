@@ -6,6 +6,7 @@ import {
 	SvgClock,
 	SvgEnvelope,
 } from '@guardian/source-react-components';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import {
 	headingCss,
@@ -22,9 +23,17 @@ import {
 	signInHeadingCss,
 	signInParaCss,
 } from './UpgradeStyles';
+import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
+import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 export const UpgradeSupportSwitchThankYou = () => {
 	const navigate = useNavigate();
+
+	const upgradeSupportContext = useContext(
+		UpgradeSupportContext,
+	) as UpgradeSupportInterface;
+
+	const userEmailAddress = upgradeSupportContext.user;
 
 	return (
 		<>
@@ -44,14 +53,20 @@ export const UpgradeSupportSwitchThankYou = () => {
 					<li>
 						<SvgEnvelope size="medium" />
 						<span data-qm-masking="blocklist">
-							You will receive a confirmation email to
+							You will receive a confirmation email to{' '}
+							<> {userEmailAddress} </>
 						</span>
 					</li>
 					<li>
 						<SvgCalendar size="medium" />
 						<span>
 							Your first billing date is today and you will be
-							charged
+							charged {upgradeSupportContext.mainPlan.currency}{' '}
+							amount payable today , your ongoing{' '}
+							{upgradeSupportContext.mainPlan.billingPeriod}{' '}
+							payment will be{' '}
+							{upgradeSupportContext.mainPlan.currency}next
+							payment amount
 						</span>
 					</li>
 					<li>

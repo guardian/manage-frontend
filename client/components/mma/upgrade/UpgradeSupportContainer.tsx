@@ -20,6 +20,7 @@ import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView
 
 export interface UpgradeSupportInterface {
 	mainPlan: PaidSubscriptionPlan;
+	user?: MembersDataApiResponse;
 }
 
 export const UpgradeSupportContext: Context<UpgradeSupportInterface | {}> =
@@ -67,12 +68,14 @@ export const UpgradeSupportContainer = () => {
 
 	const contribution = data.products.filter(isProduct)[0];
 	const mainPlan = getMainPlan(contribution.subscription);
+	const user = data.user?.email;
 
 	return (
 		<UpgradeSupportPageContainer>
 			<UpgradeSupportContext.Provider
 				value={{
 					mainPlan,
+					user,
 				}}
 			>
 				<Outlet />
