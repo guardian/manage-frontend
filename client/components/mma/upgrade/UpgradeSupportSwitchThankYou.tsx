@@ -9,6 +9,13 @@ import {
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import {
+	sectionSpacing,
+	signInContentContainerCss,
+	signInCss,
+	signInHeadingCss,
+	signInParaCss,
+} from '../../shared/SignIn';
+import {
 	headingCss,
 	stackedButtonLayoutCss,
 	whatHappensNextCss,
@@ -16,13 +23,6 @@ import {
 import { Heading } from '../shared/Heading';
 import { SwitchSignInImage } from '../switch/complete/SwitchSignInImage';
 import { buttonCentredCss, iconListCss } from '../switch/SwitchStyles';
-import {
-	sectionSpacing,
-	signInContentContainerCss,
-	signInCss,
-	signInHeadingCss,
-	signInParaCss,
-} from './UpgradeStyles';
 import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
