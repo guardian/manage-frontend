@@ -27,12 +27,11 @@ import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 export const UpgradeSupportSwitchThankYou = () => {
-	const navigate = useNavigate();
-
 	const upgradeSupportContext = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
+	const navigate = useNavigate();
 	const userEmailAddress = upgradeSupportContext.user;
 
 	return (
@@ -40,11 +39,9 @@ export const UpgradeSupportSwitchThankYou = () => {
 			<section css={sectionSpacing}>
 				<Stack space={4}>
 					<h2 css={headingCss}>
-						Thank you for your continued support.
+						Thank you for supporting us with{' '}
+						contributionPriceDisplay/billingPeriod
 					</h2>
-					You've increased your support - helping keep independent
-					journalism in perpetuity. You have instant access to
-					unlimited app access, ad-free reading and more.
 				</Stack>
 			</section>
 			<section css={sectionSpacing}>
@@ -92,25 +89,22 @@ export const UpgradeSupportSwitchThankYou = () => {
 					</div>
 				</div>
 			</section>
-			<section>
-				<Stack space={6}>
-					<div css={sectionSpacing}>
-						<div css={stackedButtonLayoutCss}>
-							<div>
-								<Button
-									priority="tertiary"
-									cssOverrides={buttonCentredCss}
-									onClick={() => navigate('/')}
-								>
-									Back to my account
-								</Button>
-								<LinkButton href="https://www.theguardian.com/">
-									Continue reading the Guardian
-								</LinkButton>
-							</div>
-						</div>
-					</div>
-				</Stack>
+			<section css={sectionSpacing}>
+				<div css={stackedButtonLayoutCss}>
+					<LinkButton
+						href="https://theguardian.com"
+						cssOverrides={buttonCentredCss}
+					>
+						Continue to the Guardian
+					</LinkButton>
+					<Button
+						priority="tertiary"
+						cssOverrides={buttonCentredCss}
+						onClick={() => navigate('/')}
+					>
+						Back to my account
+					</Button>
+				</div>
 			</section>
 		</>
 	);
