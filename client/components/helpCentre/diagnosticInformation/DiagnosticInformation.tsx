@@ -65,7 +65,7 @@ export const DiagnosticInformation = () => {
 
 	return (
 		<div>
-			<h2 css={h2Css}>Diagnostic Information</h2>
+			<h2 css={h2Css}>Diagnostic Information:</h2>
 			<p css={pCss}>
 				To report a bug, please copy the below information onto an
 				email, with the url of the page if possible.
