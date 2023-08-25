@@ -309,6 +309,14 @@ const UpgradeSupport = lazy(() =>
 	})),
 );
 
+const UpgradeSupportSwitchThankYou = lazy(() =>
+	import(
+		/* webpackChunkName: "UpgradeSupport" */ './upgrade/UpgradeSupportSwitchThankYou'
+	).then(({ UpgradeSupportSwitchThankYou }) => ({
+		default: UpgradeSupportSwitchThankYou,
+	})),
+);
+
 const SwitchComplete = lazy(() =>
 	import(
 		/* webpackChunkName: "Switch" */ './switch/complete/SwitchComplete'
@@ -421,7 +429,7 @@ const MMARouter = () => {
 							<Route index element={<UpgradeSupport />} />
 							<Route
 								path={'thank-you'}
-								element={<div>thanks</div>}
+								element={<UpgradeSupportSwitchThankYou />}
 							/>
 						</Route>
 						{[
