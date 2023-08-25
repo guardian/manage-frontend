@@ -8,11 +8,14 @@ import {
 	SvgReload,
 } from '@guardian/source-react-components';
 import type { Dispatch, SetStateAction } from 'react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import type { Subscription } from '../../../../shared/productResponse';
 import { contributionPaidByCard } from '../../../fixtures/productBuilder/testProducts';
 import { Heading } from '../shared/Heading';
 import { PaymentDetails } from '../shared/PaymentDetails';
+import { SupporterPlusTsAndCs } from '../shared/SupporterPlusTsAndCs';
+import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
+import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 const iconListCss = css`
 	${textSans.medium()};
@@ -111,20 +114,22 @@ const RoundUp = ({
 	const [hasRoundedUp, setHasRoundedUp] = useState<boolean>(false);
 
 	return (
-		<section>
-			Want to unlock extras etc?
-			<Button
-				onClick={() => {
-					const toggleRoundUp = !hasRoundedUp;
-					setHasRoundedUp(toggleRoundUp);
-					setChosenAmount(
-						toggleRoundUp ? 10 : chosenAmountPreRoundup,
-					);
-				}}
-			>
-				{hasRoundedUp ? 'Rounded up' : 'Round up'}
-			</Button>
-		</section>
+		<Stack space={2}>
+			<p>Want to unlock all extras?</p>
+			<section>
+				<Button
+					onClick={() => {
+						const toggleRoundUp = !hasRoundedUp;
+						setHasRoundedUp(toggleRoundUp);
+						setChosenAmount(
+							toggleRoundUp ? 10 : chosenAmountPreRoundup,
+						);
+					}}
+				>
+					{hasRoundedUp ? 'Rounded up' : 'Round up'}
+				</Button>
+			</section>
+		</Stack>
 	);
 };
 
@@ -139,28 +144,40 @@ export const ConfirmForm = ({
 	setChosenAmount,
 	threshold,
 }: ConfirmFormProps) => {
+	const { mainPlan } = useContext(
+		UpgradeSupportContext,
+	) as UpgradeSupportInterface;
+
 	const aboveThreshold = chosenAmount >= threshold;
 	const [shouldShowRoundUp] = useState<boolean>(!aboveThreshold);
 	const [chosenAmountPreRoundup] = useState<number>(chosenAmount);
 
 	return (
-		<Stack>
+		<Stack space={2}>
 			<Heading>2. Confirm change</Heading>
+			{shouldShowRoundUp && (
+				<RoundUp
+					setChosenAmount={setChosenAmount}
+					chosenAmountPreRoundup={chosenAmountPreRoundup}
+				/>
+			)}
+			{aboveThreshold && (
+				<WhatHappensNext
+					contributionPriceDisplay=""
+					subscription={contributionPaidByCard().subscription}
+				/>
+			)}
 			<section>
-				{shouldShowRoundUp && (
-					<RoundUp
-						setChosenAmount={setChosenAmount}
-						chosenAmountPreRoundup={chosenAmountPreRoundup}
-					/>
-				)}
-				{aboveThreshold && (
-					<WhatHappensNext
-						contributionPriceDisplay=""
-						subscription={contributionPaidByCard().subscription}
-					/>
-				)}
 				<Button>Confirm support change</Button>
 			</section>
+			{aboveThreshold && (
+				<section>
+					<SupporterPlusTsAndCs
+						currencyISO={mainPlan.currencyISO}
+						billingPeriod={mainPlan.billingPeriod}
+					/>{' '}
+				</section>
+			)}
 		</Stack>
 	);
 };

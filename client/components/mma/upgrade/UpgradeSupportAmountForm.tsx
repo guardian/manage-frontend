@@ -111,9 +111,6 @@ export const UpgradeSupportAmountForm = () => {
 		defaultOtherAmount,
 	);
 	const chosenAmount = isOtherAmountSelected ? otherAmount : selectedValue;
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
-	);
 
 	const shouldShowOtherAmountErrorMessage =
 		hasInteractedWithOtherAmount || hasSubmitted;
