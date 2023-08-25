@@ -6,6 +6,7 @@ import { h2Css } from '../HelpCentreStyles';
 import { AccountInformation } from './AccountInformation';
 import { BrowserInformation } from './BrowserInformation';
 import { CookieInformation } from './CookieInformation';
+import { SubscriptionInformation } from './SubscriptionInformation';
 
 const pCss = css`
 	margin: 0 0 ${space[4]}px;
@@ -64,7 +65,7 @@ export const DiagnosticInformation = () => {
 
 	return (
 		<div>
-			<h2 css={h2Css}>Diagnostic Information</h2>
+			<h2 css={h2Css}>Diagnostic Information:</h2>
 			<p css={pCss}>
 				To report a bug, please copy the below information onto an
 				email, with the url of the page if possible.
@@ -77,6 +78,7 @@ export const DiagnosticInformation = () => {
 				<BrowserInformation />
 				<CookieInformation />
 				<AccountInformation />
+				<SubscriptionInformation />
 			</div>
 			<Button
 				onClick={copyToClipboard}

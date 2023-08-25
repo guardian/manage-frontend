@@ -53,7 +53,7 @@ export const AccountInformation = () => {
 
 	return (
 		<>
-			<h3>Account Information</h3>
+			<h3>Account Information:</h3>
 			<ul>
 				<li>ID number: {userAttributes.userId}</li>
 				<li>
