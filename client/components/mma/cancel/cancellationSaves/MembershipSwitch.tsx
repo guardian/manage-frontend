@@ -20,6 +20,7 @@ import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
 import {
 	iconListCss,
+	listWithDividersCss,
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
@@ -43,7 +44,6 @@ import {
 	buttonMutedCss,
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,
-	listWithDividersCss,
 	newAmountCss,
 	stackedButtonLayoutCss,
 	wideButtonCss,

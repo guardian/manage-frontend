@@ -15,6 +15,7 @@ import { dateString } from '../../../../../shared/dates';
 import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
 import {
 	iconListCss,
+	listWithDividersCss,
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
@@ -43,7 +44,6 @@ import {
 	errorSummaryBlockLinkCss,
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,
-	listWithDividersCss,
 } from '../SwitchStyles';
 
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
