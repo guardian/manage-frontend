@@ -13,7 +13,11 @@ import { Navigate, useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';
 import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
-import { iconListCss, sectionSpacing } from '../../../../styles/GenericStyles';
+import {
+	iconListCss,
+	productTitleCss,
+	sectionSpacing,
+} from '../../../../styles/GenericStyles';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -39,7 +43,6 @@ import {
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,
 	listWithDividersCss,
-	productTitleCss,
 	smallPrintCss,
 } from '../SwitchStyles';
 

@@ -10,8 +10,8 @@ import { productColour } from './ProductCardConfiguration';
 import {
 	buttonLayoutCss,
 	keyValueCss,
+	productCardTitleCss,
 	productDetailLayoutCss,
-	productTitleCss,
 } from './ProductCardStyles';
 
 export const SingleContributionCard = ({
@@ -25,7 +25,7 @@ export const SingleContributionCard = ({
 		<Stack space={4}>
 			<Card>
 				<Card.Header backgroundColor={productColour.singleContribution}>
-					<h3 css={productTitleCss(true)}>Single Support</h3>
+					<h3 css={productCardTitleCss(true)}>Single Support</h3>
 				</Card.Header>
 				<Card.Section>
 					<div

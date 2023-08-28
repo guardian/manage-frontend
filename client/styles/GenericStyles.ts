@@ -60,3 +60,13 @@ export const iconListCss = css`
 		}
 	}
 `;
+
+export const productTitleCss = css`
+	${headline.xsmall({ fontWeight: 'bold' })};
+	color: ${palette.neutral[100]};
+	margin: 0;
+	max-width: 20ch;
+	${from.tablet} {
+		${headline.small({ fontWeight: 'bold' })};
+	}
+`;

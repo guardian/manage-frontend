@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
 	palette,
 	space,
 	textSans,
@@ -13,16 +12,6 @@ export const cardSectionCss = css`
 	${from.tablet} {
 		padding-top: ${space[5]}px;
 		border-top: 1px solid ${palette.neutral[86]};
-	}
-`;
-
-export const productTitleCss = css`
-	${headline.xsmall({ fontWeight: 'bold' })};
-	color: ${palette.neutral[100]};
-	margin: 0;
-	max-width: 20ch;
-	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
 	}
 `;
 

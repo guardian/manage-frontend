@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { from, headline, space, textSans } from '@guardian/source-foundations';
 import { textColour } from './ProductCardConfiguration';
 
-export const productTitleCss = (dark?: boolean) => css`
+export const productCardTitleCss = (dark?: boolean) => css`
 	${headline.xxsmall({ fontWeight: 'bold' })};
 	color: ${dark ? textColour.dark : textColour.light};
 	margin-top: 0;

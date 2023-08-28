@@ -38,8 +38,8 @@ import { productCardConfiguration } from './ProductCardConfiguration';
 import {
 	buttonLayoutCss,
 	keyValueCss,
+	productCardTitleCss,
 	productDetailLayoutCss,
-	productTitleCss,
 	sectionHeadingCss,
 } from './ProductCardStyles';
 
@@ -188,7 +188,7 @@ export const ProductCard = ({
 			)}
 			<Card>
 				<Card.Header backgroundColor={cardConfig.colour}>
-					<h3 css={productTitleCss(cardConfig.invertText)}>
+					<h3 css={productCardTitleCss(cardConfig.invertText)}>
 						{productTitle}
 					</h3>
 					{isGifted && (

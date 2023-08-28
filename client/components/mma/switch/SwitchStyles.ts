@@ -1,22 +1,11 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
 	palette,
 	space,
 	textSans,
 	until,
 } from '@guardian/source-foundations';
-
-export const productTitleCss = css`
-	${headline.xsmall({ fontWeight: 'bold' })};
-	color: ${palette.neutral[100]};
-	margin: 0;
-	max-width: 20ch;
-	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
-	}
-`;
 
 export const smallPrintCss = css`
 	${textSans.xxsmall()};
