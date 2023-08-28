@@ -10,6 +10,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import {
+	errorSummaryBlockLinkCss,
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,
 } from '../../../../styles/ErrorStyles';
@@ -28,7 +29,7 @@ import type {
 	SwitchRouterState,
 } from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
-import { buttonCentredCss, errorSummaryBlockLinkCss } from '../SwitchStyles';
+import { buttonCentredCss } from '../SwitchStyles';
 
 const cardHeaderDivCss = css`
 	display: flex;

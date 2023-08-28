@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';
 import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
 import {
+	errorSummaryBlockLinkCss,
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,
 } from '../../../../styles/ErrorStyles';
@@ -42,11 +43,7 @@ import type {
 	SwitchRouterState,
 } from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
-import {
-	buttonCentredCss,
-	buttonMutedCss,
-	errorSummaryBlockLinkCss,
-} from '../SwitchStyles';
+import { buttonCentredCss, buttonMutedCss } from '../SwitchStyles';
 
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
 	props.PaymentFailure ? (

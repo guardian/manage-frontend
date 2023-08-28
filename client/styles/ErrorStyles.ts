@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { until } from '@guardian/source-foundations';
+import { space, until } from '@guardian/source-foundations';
 
 export const errorSummaryOverrideCss = css`
 	${until.tablet} {
@@ -10,4 +10,9 @@ export const errorSummaryOverrideCss = css`
 export const errorSummaryLinkCss = css`
 	color: currentColor;
 	text-decoration: underline;
+`;
+
+export const errorSummaryBlockLinkCss = css`
+	display: block;
+	margin-top: ${space[3]}px;
 `;
