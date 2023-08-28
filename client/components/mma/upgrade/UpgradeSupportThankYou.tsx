@@ -5,6 +5,7 @@ import {
 	SvgCalendar,
 	SvgEnvelope,
 } from '@guardian/source-react-components';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import {
 	headingCss,
@@ -17,10 +18,20 @@ import {
 	iconListCss,
 	sectionSpacing,
 } from '../switch/SwitchStyles';
+import type {
+	UpgradeSupportInterface} from './UpgradeSupportContainer';
+import {
+	UpgradeSupportContext
+} from './UpgradeSupportContainer';
 
 export const UpgradeSupportThankYou = () => {
+	const upgradeSupportContext = useContext(
+		UpgradeSupportContext,
+	) as UpgradeSupportInterface;
+
 	const navigate = useNavigate();
 
+	const userEmailAddress = upgradeSupportContext.user;
 	return (
 		<>
 			<section css={sectionSpacing}>
@@ -41,6 +52,7 @@ export const UpgradeSupportThankYou = () => {
 							<SvgEnvelope size="medium" />
 							<span data-qm-masking="blocklist">
 								We will send a confirmation email to you at{' '}
+								<> {userEmailAddress} </>
 							</span>
 						</li>
 						<li>
