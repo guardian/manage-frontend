@@ -6,12 +6,8 @@ export const buttonCentredCss = css`
 `;
 
 export const buttonLayoutCss = css`
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-
 	> * + * {
-		margin-top: ${space[3]}px;
+		margin-left: ${space[3]}px;
 	}
 `;
 
@@ -83,5 +79,15 @@ export const wideButtonCss = css`
 	${from.tablet} {
 		flex-grow: 1;
 		max-width: 300px;
+	}
+`;
+
+export const wideButtonLayoutCss = css`
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+
+	> * + * {
+		margin-top: ${space[3]}px;
 	}
 `;

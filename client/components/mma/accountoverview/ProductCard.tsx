@@ -24,6 +24,7 @@ import {
 	calculateSupporterPlusTitle,
 	GROUPED_PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
+import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
@@ -36,7 +37,6 @@ import { SepaDisplay } from '../shared/SepaDisplay';
 import { GiftRibbon } from './GiftRibbon';
 import { productCardConfiguration } from './ProductCardConfiguration';
 import {
-	buttonLayoutCss,
 	keyValueCss,
 	productDetailLayoutCss,
 	productTitleCss,
@@ -317,7 +317,7 @@ export const ProductCard = ({
 									)}
 							</dl>
 						</div>
-						<div css={buttonLayoutCss}>
+						<div css={wideButtonLayoutCss}>
 							{!isGifted && (
 								<Button
 									aria-label={`${specificProductType.productTitle(
@@ -389,7 +389,7 @@ export const ProductCard = ({
 								/>
 							</div>
 							{!isGifted && isSafeToUpdatePaymentMethod && (
-								<div css={buttonLayoutCss}>
+								<div css={wideButtonLayoutCss}>
 									<Button
 										aria-label={`${specificProductType.productTitle(
 											mainPlan,

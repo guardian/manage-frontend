@@ -4,11 +4,11 @@ import { Button, Stack } from '@guardian/source-react-components';
 import { useNavigate } from 'react-router';
 import { convertTimestampToDate } from '../../../../shared/dates';
 import type { SingleProductDetail } from '../../../../shared/productResponse';
+import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { convertCurrencyToSymbol } from '../../../utilities/currencyIso';
 import { Card } from '../shared/Card';
 import { productColour } from './ProductCardConfiguration';
 import {
-	buttonLayoutCss,
 	keyValueCss,
 	productDetailLayoutCss,
 	productTitleCss,
@@ -69,7 +69,7 @@ export const SingleContributionCard = ({
 								</>
 							))}
 						</dl>
-						<div css={buttonLayoutCss}>
+						<div css={wideButtonLayoutCss}>
 							<Button
 								css={css`
 									justify-content: center;
