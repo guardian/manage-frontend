@@ -9,6 +9,7 @@ import { ErrorSummary } from '@guardian/source-react-components-development-kitc
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import { errorSummaryOverrideCss } from '../../../../styles/ErrorStyles';
 import {
 	productTitleCss,
 	sectionSpacing,
@@ -28,7 +29,6 @@ import {
 	buttonCentredCss,
 	errorSummaryBlockLinkCss,
 	errorSummaryLinkCss,
-	errorSummaryOverrideCss,
 } from '../SwitchStyles';
 
 const cardHeaderDivCss = css`

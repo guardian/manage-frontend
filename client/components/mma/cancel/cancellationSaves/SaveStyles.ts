@@ -117,12 +117,6 @@ export const wideButtonCss = css`
 	}
 `;
 
-export const errorSummaryOverrideCss = css`
-	${until.tablet} {
-		border-radius: 6px;
-	}
-`;
-
 export const errorSummaryLinkCss = css`
 	color: currentColor;
 	text-decoration: underline;

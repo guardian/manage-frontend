@@ -18,6 +18,7 @@ import type {
 import { getMainPlan } from '../../../../../shared/productResponse';
 import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
+import { errorSummaryOverrideCss } from '../../../../styles/ErrorStyles';
 import {
 	iconListCss,
 	listWithDividersCss,
@@ -43,7 +44,6 @@ import {
 	buttonCentredCss,
 	buttonMutedCss,
 	errorSummaryLinkCss,
-	errorSummaryOverrideCss,
 	newAmountCss,
 	stackedButtonLayoutCss,
 	wideButtonCss,

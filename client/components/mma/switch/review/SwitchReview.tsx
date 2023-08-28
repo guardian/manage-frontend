@@ -13,6 +13,7 @@ import { Navigate, useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';
 import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
+import { errorSummaryOverrideCss } from '../../../../styles/ErrorStyles';
 import {
 	iconListCss,
 	listWithDividersCss,
@@ -43,7 +44,6 @@ import {
 	buttonMutedCss,
 	errorSummaryBlockLinkCss,
 	errorSummaryLinkCss,
-	errorSummaryOverrideCss,
 } from '../SwitchStyles';
 
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
