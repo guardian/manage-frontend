@@ -9,7 +9,10 @@ import { ErrorSummary } from '@guardian/source-react-components-development-kitc
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { errorSummaryOverrideCss } from '../../../../styles/ErrorStyles';
+import {
+	errorSummaryLinkCss,
+	errorSummaryOverrideCss,
+} from '../../../../styles/ErrorStyles';
 import {
 	productTitleCss,
 	sectionSpacing,
@@ -25,11 +28,7 @@ import type {
 	SwitchRouterState,
 } from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
-import {
-	buttonCentredCss,
-	errorSummaryBlockLinkCss,
-	errorSummaryLinkCss,
-} from '../SwitchStyles';
+import { buttonCentredCss, errorSummaryBlockLinkCss } from '../SwitchStyles';
 
 const cardHeaderDivCss = css`
 	display: flex;

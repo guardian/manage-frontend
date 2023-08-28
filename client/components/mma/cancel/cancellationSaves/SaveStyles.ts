@@ -117,11 +117,6 @@ export const wideButtonCss = css`
 	}
 `;
 
-export const errorSummaryLinkCss = css`
-	color: currentColor;
-	text-decoration: underline;
-`;
-
 export const paragraphListCss = css`
 	${textSans.medium()};
 	${from.tablet} {

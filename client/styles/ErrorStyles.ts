@@ -6,3 +6,8 @@ export const errorSummaryOverrideCss = css`
 		border-radius: 6px;
 	}
 `;
+
+export const errorSummaryLinkCss = css`
+	color: currentColor;
+	text-decoration: underline;
+`;
