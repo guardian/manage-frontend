@@ -6,8 +6,12 @@ export const buttonCentredCss = css`
 `;
 
 export const buttonLayoutCss = css`
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+
 	> * + * {
-		margin-left: ${space[3]}px;
+		margin-top: ${space[3]}px;
 	}
 `;
 
