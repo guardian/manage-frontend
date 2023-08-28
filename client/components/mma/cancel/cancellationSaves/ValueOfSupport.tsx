@@ -4,17 +4,14 @@ import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { dateString } from '../../../../../shared/dates';
+import { headingCss } from '../../../../styles/GenericStyles';
 import { ProgressStepper } from '../../shared/ProgressStepper';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
 } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import {
-	buttonCentredCss,
-	headingCss,
-	reverseStackedButtonLayoutCss,
-} from './SaveStyles';
+import { buttonCentredCss, reverseStackedButtonLayoutCss } from './SaveStyles';
 
 export const ValueOfSupport = () => {
 	const navigate = useNavigate();

@@ -8,7 +8,7 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
-import { sectionSpacing } from '../../../styles/GenericStyles';
+import { headingCss, sectionSpacing } from '../../../styles/GenericStyles';
 import {
 	signInContentContainerCss,
 	signInCss,
@@ -16,7 +16,6 @@ import {
 	signInParaCss,
 } from '../../shared/SignIn';
 import {
-	headingCss,
 	stackedButtonLayoutCss,
 	whatHappensNextCss,
 } from '../cancel/cancellationSaves/SaveStyles';

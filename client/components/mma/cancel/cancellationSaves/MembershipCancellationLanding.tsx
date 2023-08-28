@@ -10,7 +10,7 @@ import type {
 	ProductDetail,
 } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
-import { sectionSpacing } from '../../../../styles/GenericStyles';
+import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import {
 	LoadingState,
@@ -26,7 +26,7 @@ import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingV
 import { Heading } from '../../shared/Heading';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import { buttonLayoutCss, headingCss } from './SaveStyles';
+import { buttonLayoutCss } from './SaveStyles';
 
 function ineligibleForSave(
 	products: ProductDetail[],

@@ -168,21 +168,6 @@ export const cardHeaderDivCss = css`
 	align-items: flex-end;
 `;
 
-export const headingCss = css`
-	${headline.xsmall({ fontWeight: 'bold' })};
-	margin-top: 0;
-	margin-bottom: 0;
-
-	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
-	}
-
-	span {
-		display: block;
-		color: ${palette.brand['500']};
-	}
-`;
-
 export const buttonContainerCss = css`
 	${until.tablet} {
 		display: flex;

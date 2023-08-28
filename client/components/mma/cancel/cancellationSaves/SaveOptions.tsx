@@ -16,7 +16,7 @@ import { Navigate, useLocation, useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
-import { sectionSpacing } from '../../../../styles/GenericStyles';
+import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
 import {
 	getNewMembershipPrice,
 	getOldMembershipPrice,
@@ -36,7 +36,6 @@ import {
 	buttonContainerCss,
 	cardHeaderDivCss,
 	cardSectionCss,
-	headingCss,
 	productSubtitleCss,
 	productTitleCss,
 } from './SaveStyles';
