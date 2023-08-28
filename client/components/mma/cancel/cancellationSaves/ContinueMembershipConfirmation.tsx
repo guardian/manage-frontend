@@ -6,16 +6,15 @@ import { useNavigate } from 'react-router';
 import { cancellationFormatDate } from '../../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
+import {
+	buttonCentredCss,
+	stackedButtonLeftLayoutCss,
+} from '../../../../styles/ButtonStyles';
 import { getNewMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { ProgressStepper } from '../../shared/ProgressStepper';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import {
-	buttonCentredCss,
-	headingCss,
-	paragraphListCss,
-	stackedButtonLeftLayoutCss,
-} from './SaveStyles';
+import { headingCss, paragraphListCss } from './SaveStyles';
 
 export const ContinueMembershipConfirmation = () => {
 	const navigate = useNavigate();
