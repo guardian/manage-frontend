@@ -23,6 +23,7 @@ import {
 	MDA_TEST_USER_HEADER,
 } from '../../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
+import { sectionSpacing } from '../../../../styles/GenericStyles';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import type {
@@ -36,7 +37,6 @@ import {
 	buttonCentredCss,
 	headingCss,
 	paragraphListCss,
-	sectionSpacing,
 	stackedButtonLayoutCss,
 	wideButtonCss,
 } from './SaveStyles';

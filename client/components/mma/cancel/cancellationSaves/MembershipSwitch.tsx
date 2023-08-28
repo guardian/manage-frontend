@@ -18,6 +18,7 @@ import type {
 import { getMainPlan } from '../../../../../shared/productResponse';
 import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
+import { sectionSpacing } from '../../../../styles/GenericStyles';
 import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Card } from '../../shared/Card';
@@ -41,7 +42,6 @@ import {
 	listWithDividersCss,
 	newAmountCss,
 	productTitleCss,
-	sectionSpacing,
 	smallPrintCss,
 	stackedButtonLayoutCss,
 	wideButtonCss,

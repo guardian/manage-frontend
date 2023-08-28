@@ -13,9 +13,10 @@ import {
 } from '../../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
+import { sectionSpacing } from '../../../../styles/GenericStyles';
 import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { Heading } from '../../shared/Heading';
-import { iconListCss, sectionSpacing } from '../../switch/SwitchStyles';
+import { iconListCss } from '../../switch/SwitchStyles';
 import type {
 	CancellationContextInterface,
 	CancellationPageTitleInterface,

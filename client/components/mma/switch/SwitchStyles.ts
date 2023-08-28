@@ -8,13 +8,6 @@ import {
 	until,
 } from '@guardian/source-foundations';
 
-export const sectionSpacing = css`
-	margin-top: ${space[6]}px;
-	${from.tablet} {
-		margin-top: ${space[9]}px;
-	}
-`;
-
 export const productTitleCss = css`
 	${headline.xsmall({ fontWeight: 'bold' })};
 	color: ${palette.neutral[100]};

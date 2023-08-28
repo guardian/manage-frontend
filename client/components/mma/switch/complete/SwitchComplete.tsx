@@ -18,6 +18,7 @@ import {
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { sectionSpacing } from '../../../../styles/GenericStyles';
 import { formatAmount } from '../../../../utilities/utils';
 import { Heading } from '../../shared/Heading';
 import type {
@@ -25,7 +26,7 @@ import type {
 	SwitchRouterState,
 } from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
-import { buttonCentredCss, iconListCss, sectionSpacing } from '../SwitchStyles';
+import { buttonCentredCss, iconListCss } from '../SwitchStyles';
 import { SwitchSignInImage } from './SwitchSignInImage';
 
 export const SwitchComplete = () => {

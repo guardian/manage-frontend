@@ -9,6 +9,7 @@ import { ErrorSummary } from '@guardian/source-react-components-development-kitc
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import { sectionSpacing } from '../../../../styles/GenericStyles';
 import { formatAmount } from '../../../../utilities/utils';
 import { supporterPlusSwitchBenefits } from '../../shared/benefits/BenefitsConfiguration';
 import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
@@ -25,7 +26,6 @@ import {
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,
 	productTitleCss,
-	sectionSpacing,
 	smallPrintCss,
 } from '../SwitchStyles';
 

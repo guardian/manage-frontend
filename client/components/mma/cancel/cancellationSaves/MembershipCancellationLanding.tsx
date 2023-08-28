@@ -10,6 +10,7 @@ import type {
 	ProductDetail,
 } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
+import { sectionSpacing } from '../../../../styles/GenericStyles';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import {
 	LoadingState,
@@ -23,7 +24,6 @@ import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 import { Heading } from '../../shared/Heading';
-import { sectionSpacing } from '../../switch/SwitchStyles';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import { buttonLayoutCss, headingCss } from './SaveStyles';

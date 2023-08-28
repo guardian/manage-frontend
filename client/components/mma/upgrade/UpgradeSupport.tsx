@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { headline } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
-import { sectionSpacing } from '../switch/SwitchStyles';
+import { sectionSpacing } from '../../../styles/GenericStyles';
 import { UpgradeSupportAmountForm } from './UpgradeSupportAmountForm';
 
 export const UpgradeSupport = () => {

@@ -8,8 +8,8 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
+import { sectionSpacing } from '../../../styles/GenericStyles';
 import {
-	sectionSpacing,
 	signInContentContainerCss,
 	signInCss,
 	signInHeadingCss,
