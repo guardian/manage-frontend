@@ -8,6 +8,10 @@ import {
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import {
+	DATE_FNS_LONG_OUTPUT_FORMAT,
+	parseDate,
+} from '../../../../shared/dates';
+import {
 	headingCss,
 	stackedButtonLeftLayoutCss,
 	whatHappensNextCss,
@@ -18,11 +22,8 @@ import {
 	iconListCss,
 	sectionSpacing,
 } from '../switch/SwitchStyles';
-import type {
-	UpgradeSupportInterface} from './UpgradeSupportContainer';
-import {
-	UpgradeSupportContext
-} from './UpgradeSupportContainer';
+import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
+import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 export const UpgradeSupportThankYou = () => {
 	const upgradeSupportContext = useContext(
@@ -32,6 +33,13 @@ export const UpgradeSupportThankYou = () => {
 	const navigate = useNavigate();
 
 	const userEmailAddress = upgradeSupportContext.user;
+
+	const billingPeriod = upgradeSupportContext.mainPlan.billingPeriod;
+
+	const nextBillingDate = parseDate(
+		upgradeSupportContext.mainPlan.chargedThrough ?? undefined,
+	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
+
 	return (
 		<>
 			<section css={sectionSpacing}>
@@ -41,7 +49,7 @@ export const UpgradeSupportThankYou = () => {
 					</h2>
 				</Stack>
 				<Stack space={4}>
-					<h2 css={headingCss}>Your new support</h2>
+					<h2 css={headingCss}>Your new support /{billingPeriod}</h2>
 				</Stack>
 			</section>
 			<section css={sectionSpacing}>
@@ -59,7 +67,7 @@ export const UpgradeSupportThankYou = () => {
 							<SvgCalendar size="medium" />
 							<span>
 								This change will happen on your next billing
-								date of
+								date of {nextBillingDate}
 							</span>
 						</li>
 					</ul>
