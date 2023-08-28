@@ -8,17 +8,18 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
-import { headingCss, sectionSpacing } from '../../../styles/GenericStyles';
+import {
+	headingCss,
+	sectionSpacing,
+	whatHappensNextCss,
+} from '../../../styles/GenericStyles';
 import {
 	signInContentContainerCss,
 	signInCss,
 	signInHeadingCss,
 	signInParaCss,
 } from '../../shared/SignIn';
-import {
-	stackedButtonLayoutCss,
-	whatHappensNextCss,
-} from '../cancel/cancellationSaves/SaveStyles';
+import { stackedButtonLayoutCss } from '../cancel/cancellationSaves/SaveStyles';
 import { Heading } from '../shared/Heading';
 import { SwitchSignInImage } from '../switch/complete/SwitchSignInImage';
 import { buttonCentredCss, iconListCss } from '../switch/SwitchStyles';

@@ -22,3 +22,9 @@ export const headingCss = css`
 		color: ${palette.brand['500']};
 	}
 `;
+
+export const whatHappensNextCss = css`
+	li > svg {
+		fill: ${palette.brand[500]};
+	}
+`;

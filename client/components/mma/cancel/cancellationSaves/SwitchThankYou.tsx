@@ -13,7 +13,11 @@ import {
 } from '../../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
-import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
+import {
+	headingCss,
+	sectionSpacing,
+	whatHappensNextCss,
+} from '../../../../styles/GenericStyles';
 import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { Heading } from '../../shared/Heading';
 import { iconListCss } from '../../switch/SwitchStyles';
@@ -26,11 +30,7 @@ import {
 	CancellationContext,
 	CancellationPageTitleContext,
 } from '../CancellationContainer';
-import {
-	buttonCentredCss,
-	stackedButtonLayoutCss,
-	whatHappensNextCss,
-} from './SaveStyles';
+import { buttonCentredCss, stackedButtonLayoutCss } from './SaveStyles';
 
 export const SwitchThankYou = () => {
 	const navigate = useNavigate();

@@ -18,7 +18,10 @@ import {
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { sectionSpacing } from '../../../../styles/GenericStyles';
+import {
+	sectionSpacing,
+	whatHappensNextCss,
+} from '../../../../styles/GenericStyles';
 import { formatAmount } from '../../../../utilities/utils';
 import { Heading } from '../../shared/Heading';
 import type {
@@ -173,12 +176,6 @@ const AppThankYouBanner = (props: {
 		</section>
 	);
 };
-
-const whatHappensNextCss = css`
-	li > svg {
-		fill: ${palette.brand[500]};
-	}
-`;
 
 const WhatHappensNext = (props: {
 	currency: string;

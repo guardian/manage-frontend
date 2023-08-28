@@ -199,12 +199,6 @@ export const errorSummaryLinkCss = css`
 	text-decoration: underline;
 `;
 
-export const whatHappensNextCss = css`
-	li > svg {
-		fill: ${palette.brand[500]};
-	}
-`;
-
 export const paragraphListCss = css`
 	${textSans.medium()};
 	${from.tablet} {
