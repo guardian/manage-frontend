@@ -6,6 +6,7 @@ import { contributionPaidByCard } from '../../../fixtures/productBuilder/testPro
 import { UpgradeSupport } from './UpgradeSupport';
 import { UpgradeSupportContainer } from './UpgradeSupportContainer';
 import { UpgradeSupportSwitchThankYou } from './UpgradeSupportSwitchThankYou';
+import { UpgradeSupportThankYou } from './UpgradeSupportThankYou';
 
 export default {
 	title: 'Pages/UpgradeSupport',
@@ -36,4 +37,10 @@ export const UpgradeSupportSwitchThankYouPage: StoryFn<
 	typeof UpgradeSupportSwitchThankYou
 > = () => {
 	return <UpgradeSupportSwitchThankYou />;
+};
+
+export const UpgradeSupportThankYouPage: StoryFn<
+	typeof UpgradeSupportThankYou
+> = () => {
+	return <UpgradeSupportThankYou />;
 };
