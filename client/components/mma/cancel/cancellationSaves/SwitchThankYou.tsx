@@ -15,12 +15,12 @@ import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse
 import { getMainPlan } from '../../../../../shared/productResponse';
 import {
 	headingCss,
+	iconListCss,
 	sectionSpacing,
 	whatHappensNextCss,
 } from '../../../../styles/GenericStyles';
 import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { Heading } from '../../shared/Heading';
-import { iconListCss } from '../../switch/SwitchStyles';
 import type {
 	CancellationContextInterface,
 	CancellationPageTitleInterface,

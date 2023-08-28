@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { from, headline, palette, space } from '@guardian/source-foundations';
+import {
+	from,
+	headline,
+	palette,
+	space,
+	textSans,
+} from '@guardian/source-foundations';
 
 export const sectionSpacing = css`
 	margin-top: ${space[6]}px;
@@ -26,5 +32,31 @@ export const headingCss = css`
 export const whatHappensNextCss = css`
 	li > svg {
 		fill: ${palette.brand[500]};
+	}
+`;
+
+export const iconListCss = css`
+	${textSans.medium()};
+	list-style: none;
+	padding: 0;
+	margin-bottom: 0;
+
+	li + li {
+		margin-top: ${space[2]}px;
+		${from.tablet} {
+			margin-top: ${space[3]}px;
+		}
+	}
+
+	li {
+		display: flex;
+		margin-left: -4px;
+		align-items: flex-start;
+
+		> svg {
+			flex-shrink: 0;
+			margin-right: 8px;
+			fill: currentColor;
+		}
 	}
 `;

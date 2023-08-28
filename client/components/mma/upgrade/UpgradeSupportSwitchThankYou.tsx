@@ -10,6 +10,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import {
 	headingCss,
+	iconListCss,
 	sectionSpacing,
 	whatHappensNextCss,
 } from '../../../styles/GenericStyles';
@@ -22,7 +23,7 @@ import {
 import { stackedButtonLayoutCss } from '../cancel/cancellationSaves/SaveStyles';
 import { Heading } from '../shared/Heading';
 import { SwitchSignInImage } from '../switch/complete/SwitchSignInImage';
-import { buttonCentredCss, iconListCss } from '../switch/SwitchStyles';
+import { buttonCentredCss } from '../switch/SwitchStyles';
 import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 

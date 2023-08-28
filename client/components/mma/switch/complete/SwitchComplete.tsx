@@ -19,6 +19,7 @@ import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import {
+	iconListCss,
 	sectionSpacing,
 	whatHappensNextCss,
 } from '../../../../styles/GenericStyles';
@@ -29,7 +30,7 @@ import type {
 	SwitchRouterState,
 } from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
-import { buttonCentredCss, iconListCss } from '../SwitchStyles';
+import { buttonCentredCss } from '../SwitchStyles';
 import { SwitchSignInImage } from './SwitchSignInImage';
 
 export const SwitchComplete = () => {
