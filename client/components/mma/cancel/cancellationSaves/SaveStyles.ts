@@ -104,20 +104,6 @@ export const stackedButtonLeftLayoutCss = css`
 	}
 `;
 
-export const smallPrintCss = css`
-	${textSans.xxsmall()};
-	margin-top: 0;
-	margin-bottom: 0;
-	color: #606060;
-	> a {
-		color: inherit;
-		text-decoration: underline;
-	}
-	& + & {
-		margin-top: ${space[1]}px;
-	}
-`;
-
 export const productSubtitleCss = css`
 	${textSans.large({ fontWeight: 'bold' })};
 	color: ${palette.neutral[100]};

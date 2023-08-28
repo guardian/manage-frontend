@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import {
 	productTitleCss,
 	sectionSpacing,
+	smallPrintCss,
 } from '../../../../styles/GenericStyles';
 import { formatAmount } from '../../../../utilities/utils';
 import { supporterPlusSwitchBenefits } from '../../shared/benefits/BenefitsConfiguration';
@@ -28,7 +29,6 @@ import {
 	errorSummaryBlockLinkCss,
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,
-	smallPrintCss,
 } from '../SwitchStyles';
 
 const cardHeaderDivCss = css`

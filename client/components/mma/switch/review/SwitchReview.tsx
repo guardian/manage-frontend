@@ -17,6 +17,7 @@ import {
 	iconListCss,
 	productTitleCss,
 	sectionSpacing,
+	smallPrintCss,
 } from '../../../../styles/GenericStyles';
 import {
 	LoadingState,
@@ -43,7 +44,6 @@ import {
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,
 	listWithDividersCss,
-	smallPrintCss,
 } from '../SwitchStyles';
 
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>

@@ -22,6 +22,7 @@ import {
 	iconListCss,
 	productTitleCss,
 	sectionSpacing,
+	smallPrintCss,
 } from '../../../../styles/GenericStyles';
 import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
@@ -44,7 +45,6 @@ import {
 	errorSummaryOverrideCss,
 	listWithDividersCss,
 	newAmountCss,
-	smallPrintCss,
 	stackedButtonLayoutCss,
 	wideButtonCss,
 } from './SaveStyles';

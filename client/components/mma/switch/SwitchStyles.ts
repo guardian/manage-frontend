@@ -1,25 +1,5 @@
 import { css } from '@emotion/react';
-import {
-	from,
-	palette,
-	space,
-	textSans,
-	until,
-} from '@guardian/source-foundations';
-
-export const smallPrintCss = css`
-	${textSans.xxsmall()};
-	margin-top: 0;
-	margin-bottom: 0;
-	color: #606060;
-	> a {
-		color: inherit;
-		text-decoration: underline;
-	}
-	& + & {
-		margin-top: ${space[1]}px;
-	}
-`;
+import { from, palette, space, until } from '@guardian/source-foundations';
 
 export const listWithDividersCss = css`
 	li + li {
