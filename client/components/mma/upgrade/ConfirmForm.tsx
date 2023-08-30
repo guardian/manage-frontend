@@ -9,8 +9,12 @@ import {
 } from '@guardian/source-react-components';
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router';
 import type { Subscription } from '../../../../shared/productResponse';
+import type { ProductSwitchType } from '../../../../shared/productSwitchTypes';
+import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { contributionPaidByCard } from '../../../fixtures/productBuilder/testProducts';
+import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import { Heading } from '../shared/Heading';
 import { PaymentDetails } from '../shared/PaymentDetails';
 import { SupporterPlusTsAndCs } from '../shared/SupporterPlusTsAndCs';
@@ -133,6 +137,39 @@ const RoundUp = ({
 	);
 };
 
+const productMoveFetch = (
+	subscriptionId: string,
+	chosenAmount: number,
+	preview: boolean,
+	checkChargeAmountBeforeUpdate: boolean,
+) =>
+	fetch(`/api/product-move/${productSwitchType}/${subscriptionId}`, {
+		method: 'POST',
+		body: JSON.stringify({
+			price: chosenAmount,
+			preview,
+			checkChargeAmountBeforeUpdate,
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+
+const updateContributionAmountFetch = (
+	newAmount: number,
+	subscriptionId: string,
+) =>
+	fetchWithDefaultParameters(
+		`/api/update/amount/${PRODUCT_TYPES.contributions}/${subscriptionId}`,
+		{
+			method: 'POST',
+			body: JSON.stringify({ newPaymentAmount: newAmount }),
+		},
+	);
+
+const productSwitchType: ProductSwitchType =
+	'recurring-contribution-to-supporter-plus';
+
 interface ConfirmFormProps {
 	chosenAmount: number;
 	setChosenAmount: Dispatch<SetStateAction<number>>;
@@ -144,13 +181,35 @@ export const ConfirmForm = ({
 	setChosenAmount,
 	threshold,
 }: ConfirmFormProps) => {
-	const { mainPlan } = useContext(
+	const { mainPlan, subscription } = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
+	const navigate = useNavigate();
+
+	// todo get this from preview
+	const checkChargeAmountBeforeUpdate = false;
 	const aboveThreshold = chosenAmount >= threshold;
 	const [shouldShowRoundUp] = useState<boolean>(!aboveThreshold);
 	const [chosenAmountPreRoundup] = useState<number>(chosenAmount);
+
+	const confirmOnClick = () => {
+		if (aboveThreshold) {
+			productMoveFetch(
+				subscription.subscriptionId,
+				chosenAmount,
+				false,
+				checkChargeAmountBeforeUpdate,
+			);
+			navigate('../switch-thank-you');
+		} else {
+			updateContributionAmountFetch(
+				chosenAmount,
+				subscription.subscriptionId,
+			);
+			navigate('../thank-you');
+		}
+	};
 
 	return (
 		<Stack space={2}>
@@ -168,14 +227,14 @@ export const ConfirmForm = ({
 				/>
 			)}
 			<section>
-				<Button>Confirm support change</Button>
+				<Button onClick={confirmOnClick}>Confirm support change</Button>
 			</section>
 			{aboveThreshold && (
 				<section>
 					<SupporterPlusTsAndCs
 						currencyISO={mainPlan.currencyISO}
 						billingPeriod={mainPlan.billingPeriod}
-					/>{' '}
+					/>
 				</section>
 			)}
 		</Stack>
