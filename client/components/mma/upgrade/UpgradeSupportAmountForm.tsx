@@ -7,6 +7,7 @@ import {
 	ChoiceCardGroup,
 	TextInput,
 } from '@guardian/source-react-components';
+import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
@@ -71,7 +72,15 @@ function displayRelevantBenefits(
 	}
 }
 
-export const UpgradeSupportAmountForm = () => {
+interface UpgradeSupportAmountFormProps {
+	chosenAmount: number | null;
+	setChosenAmount: Dispatch<SetStateAction<number | null>>;
+}
+
+export const UpgradeSupportAmountForm = ({
+	chosenAmount,
+	setChosenAmount,
+}: UpgradeSupportAmountFormProps) => {
 	const upgradeSupportContext = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
@@ -93,10 +102,13 @@ export const UpgradeSupportAmountForm = () => {
 
 	const otherAmountLabel = `Choose an amount (${upgradeSupportContext.mainPlan.currency} per ${upgradeSupportContext.mainPlan.billingPeriod})`;
 
-	const [selectedValue, setSelectedValue] = useState<number | null>(null);
-
 	const [isOtherAmountSelected, setIsOtherAmountSelected] =
 		useState<boolean>(false);
+
+	const defaultOtherAmount = priceConfig.minAmount;
+	const [otherAmountSelected, setOtherAmountSelected] = useState<
+		number | null
+	>(defaultOtherAmount);
 
 	const [hasInteractedWithOtherAmount, setHasInteractedWithOtherAmount] =
 		useState<boolean>(false);
@@ -105,21 +117,14 @@ export const UpgradeSupportAmountForm = () => {
 
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-	const defaultOtherAmount = priceConfig.minAmount;
-
-	const [otherAmount, setOtherAmount] = useState<number | null>(
-		defaultOtherAmount,
-	);
-	const chosenAmount = isOtherAmountSelected ? otherAmount : selectedValue;
-
 	const shouldShowOtherAmountErrorMessage =
 		hasInteractedWithOtherAmount || hasSubmitted;
 
 	useEffect(() => {
-		if (otherAmount !== defaultOtherAmount) {
+		if (otherAmountSelected !== defaultOtherAmount) {
 			setHasInteractedWithOtherAmount(true);
 		}
-	}, [otherAmount]);
+	}, [otherAmountSelected]);
 
 	useEffect(() => {
 		const newErrorMessage = validateChoice(
@@ -131,7 +136,7 @@ export const UpgradeSupportAmountForm = () => {
 			mainPlan,
 		);
 		setErrorMessage(newErrorMessage);
-	}, [otherAmount, selectedValue]);
+	}, [otherAmountSelected, chosenAmount]);
 
 	return (
 		<>
@@ -162,15 +167,14 @@ export const UpgradeSupportAmountForm = () => {
 									key={amount}
 									value={amount.toString()}
 									label={amountLabel(amount)}
-									checked={selectedValue === amount}
+									checked={chosenAmount === amount}
 									onChange={() => {
-										setSelectedValue(amount);
+										setChosenAmount(amount);
 										setIsOtherAmountSelected(false);
 									}}
 								/>
 							),
 						)}
-
 						<ChoiceCard
 							id={`amount-other`}
 							value="Choose your amount"
@@ -178,7 +182,7 @@ export const UpgradeSupportAmountForm = () => {
 							checked={isOtherAmountSelected}
 							onChange={() => {
 								setIsOtherAmountSelected(true);
-								setSelectedValue(null);
+								setChosenAmount(otherAmountSelected);
 							}}
 						/>
 					</>
@@ -200,14 +204,19 @@ export const UpgradeSupportAmountForm = () => {
 								undefined
 							}
 							type="number"
-							value={otherAmount?.toString() || ''}
-							onChange={(event) =>
-								setOtherAmount(
+							value={otherAmountSelected?.toString() || ''}
+							onChange={(event) => {
+								setChosenAmount(
 									event.target.value
 										? Number(event.target.value)
 										: null,
-								)
-							}
+								);
+								setOtherAmountSelected(
+									event.target.value
+										? Number(event.target.value)
+										: null,
+								);
+							}}
 						/>
 					</div>
 				)}

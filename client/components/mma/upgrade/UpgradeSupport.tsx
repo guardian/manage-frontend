@@ -7,7 +7,7 @@ import { ConfirmForm } from './ConfirmForm';
 import { UpgradeSupportAmountForm } from './UpgradeSupportAmountForm';
 
 export const UpgradeSupport = () => {
-	const [chosenAmount, setChosenAmount] = useState<number>(0);
+	const [chosenAmount, setChosenAmount] = useState<number | null>(null);
 
 	return (
 		<>
@@ -21,12 +21,16 @@ export const UpgradeSupport = () => {
 					>
 						1. Increase your support
 					</h2>
-					<UpgradeSupportAmountForm />
-					<ConfirmForm
+					<UpgradeSupportAmountForm
 						chosenAmount={chosenAmount}
 						setChosenAmount={setChosenAmount}
-						threshold={10}
 					/>
+					{chosenAmount && (
+						<ConfirmForm
+							chosenAmount={chosenAmount}
+							setChosenAmount={setChosenAmount}
+						/>
+					)}
 				</Stack>
 			</section>
 		</>

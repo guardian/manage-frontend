@@ -112,7 +112,7 @@ const RoundUp = ({
 	setChosenAmount,
 	chosenAmountPreRoundup,
 }: {
-	setChosenAmount: Dispatch<SetStateAction<number>>;
+	setChosenAmount: Dispatch<SetStateAction<number | null>>;
 	chosenAmountPreRoundup: number;
 }) => {
 	const [hasRoundedUp, setHasRoundedUp] = useState<boolean>(false);
@@ -172,14 +172,12 @@ const productSwitchType: ProductSwitchType =
 
 interface ConfirmFormProps {
 	chosenAmount: number;
-	setChosenAmount: Dispatch<SetStateAction<number>>;
-	threshold: number;
+	setChosenAmount: Dispatch<SetStateAction<number | null>>;
 }
 
 export const ConfirmForm = ({
 	chosenAmount,
 	setChosenAmount,
-	threshold,
 }: ConfirmFormProps) => {
 	const { mainPlan, subscription } = useContext(
 		UpgradeSupportContext,
@@ -187,6 +185,7 @@ export const ConfirmForm = ({
 
 	const navigate = useNavigate();
 
+	const threshold = 10;
 	// todo get this from preview
 	const checkChargeAmountBeforeUpdate = false;
 	const aboveThreshold = chosenAmount >= threshold;
