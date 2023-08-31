@@ -36,6 +36,7 @@ import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
 import { UpgradeSupportContainer } from './upgrade/UpgradeSupportContainer';
+import { UpgradeSupportThankYou } from './upgrade/UpgradeSupportThankYou';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {
@@ -428,8 +429,12 @@ const MMARouter = () => {
 						>
 							<Route index element={<UpgradeSupport />} />
 							<Route
-								path={'thank-you'}
+								path={'switch-thank-you'}
 								element={<UpgradeSupportSwitchThankYou />}
+							/>
+							<Route
+								path={'thank-you'}
+								element={<UpgradeSupportThankYou />}
 							/>
 						</Route>
 						{[
