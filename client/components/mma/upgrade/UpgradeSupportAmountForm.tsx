@@ -10,12 +10,8 @@ import {
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
-import type { CurrencyIso } from '../../../utilities/currencyIso';
-import {
-	suggestedAmounts,
-	supporterPlusPriceConfigByCountryGroup,
-} from '../../../utilities/supporterPlusPricing';
+import type { ContributionInterval } from '../../../utilities/contributionsAmount';
+import { contributionAmountsLookup } from '../../../utilities/contributionsAmount';
 import { InfoIconDark } from '../shared/assets/InfoIconDark';
 import { benefitsConfiguration } from '../shared/benefits/BenefitsConfiguration';
 import { BenefitsSection } from '../shared/benefits/BenefitsSection';
@@ -75,23 +71,27 @@ function displayRelevantBenefits(
 interface UpgradeSupportAmountFormProps {
 	chosenAmount: number | null;
 	setChosenAmount: Dispatch<SetStateAction<number | null>>;
+	setContinuedToConfirmation: Dispatch<SetStateAction<boolean>>;
+	continuedToConfirmation: boolean;
+	suggestedAmounts: number[];
 }
 
 export const UpgradeSupportAmountForm = ({
 	chosenAmount,
 	setChosenAmount,
+	setContinuedToConfirmation,
+	continuedToConfirmation,
+	suggestedAmounts,
 }: UpgradeSupportAmountFormProps) => {
 	const upgradeSupportContext = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		upgradeSupportContext.mainPlan.billingPeriod,
-	);
-
-	const priceConfig = (supporterPlusPriceConfigByCountryGroup[
-		upgradeSupportContext.mainPlan.currencyISO as CurrencyIso
-	] || supporterPlusPriceConfigByCountryGroup.international)[monthlyOrAnnual];
+	const priceConfig = (contributionAmountsLookup[
+		upgradeSupportContext.mainPlan.currencyISO
+	] || contributionAmountsLookup.international)[
+		upgradeSupportContext.mainPlan.billingPeriod as ContributionInterval
+	];
 
 	const amountLabel = (amount: number) => {
 		return `${upgradeSupportContext.mainPlan.currency}${amount} per ${upgradeSupportContext.mainPlan.billingPeriod}`;
@@ -160,21 +160,20 @@ export const UpgradeSupportAmountForm = ({
 					columns={2}
 				>
 					<>
-						{suggestedAmounts(currentAmount, monthlyOrAnnual).map(
-							(amount) => (
-								<ChoiceCard
-									id={`amount-${amount}`}
-									key={amount}
-									value={amount.toString()}
-									label={amountLabel(amount)}
-									checked={chosenAmount === amount}
-									onChange={() => {
-										setChosenAmount(amount);
-										setIsOtherAmountSelected(false);
-									}}
-								/>
-							),
-						)}
+						{suggestedAmounts.map((amount) => (
+							<ChoiceCard
+								id={`amount-${amount}`}
+								key={amount}
+								value={amount.toString()}
+								label={amountLabel(amount)}
+								checked={chosenAmount === amount}
+								onChange={() => {
+									setChosenAmount(amount);
+									setIsOtherAmountSelected(false);
+									setContinuedToConfirmation(false);
+								}}
+							/>
+						))}
 						<ChoiceCard
 							id={`amount-other`}
 							value="Choose your amount"
@@ -183,6 +182,7 @@ export const UpgradeSupportAmountForm = ({
 							onChange={() => {
 								setIsOtherAmountSelected(true);
 								setChosenAmount(otherAmountSelected);
+								setContinuedToConfirmation(false);
 							}}
 						/>
 					</>
@@ -229,10 +229,18 @@ export const UpgradeSupportAmountForm = ({
 				>
 					{displayRelevantBenefits(chosenAmount)}
 				</div>
-				<Button>
-					Continue with {mainPlan.currency}
-					{chosenAmount}/{mainPlan.billingPeriod}
-				</Button>
+				{!continuedToConfirmation && (
+					<Button
+						onClick={() =>
+							setContinuedToConfirmation(
+								chosenAmount ? true : false,
+							)
+						}
+					>
+						Continue with {mainPlan.currency}
+						{chosenAmount}/{mainPlan.billingPeriod}
+					</Button>
+				)}
 			</div>
 		</>
 	);

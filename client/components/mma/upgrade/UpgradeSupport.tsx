@@ -1,13 +1,28 @@
 import { css } from '@emotion/react';
 import { headline } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { getSuggestedAmountsFromMainPlan } from '../../../utilities/supporterPlusPricing';
 import { sectionSpacing } from '../switch/SwitchStyles';
 import { ConfirmForm } from './ConfirmForm';
 import { UpgradeSupportAmountForm } from './UpgradeSupportAmountForm';
+import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
+import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 export const UpgradeSupport = () => {
-	const [chosenAmount, setChosenAmount] = useState<number | null>(null);
+	const upgradeSupportContext = useContext(
+		UpgradeSupportContext,
+	) as UpgradeSupportInterface;
+
+	const suggestedAmounts = getSuggestedAmountsFromMainPlan(
+		upgradeSupportContext.mainPlan,
+	);
+
+	const [chosenAmount, setChosenAmount] = useState<number | null>(
+		suggestedAmounts[0],
+	);
+	const [continuedToConfirmation, setContinuedToConfirmation] =
+		useState<boolean>(false);
 
 	return (
 		<>
@@ -24,8 +39,11 @@ export const UpgradeSupport = () => {
 					<UpgradeSupportAmountForm
 						chosenAmount={chosenAmount}
 						setChosenAmount={setChosenAmount}
+						setContinuedToConfirmation={setContinuedToConfirmation}
+						continuedToConfirmation={continuedToConfirmation}
+						suggestedAmounts={suggestedAmounts}
 					/>
-					{chosenAmount && (
+					{continuedToConfirmation && chosenAmount && (
 						<ConfirmForm
 							chosenAmount={chosenAmount}
 							setChosenAmount={setChosenAmount}
