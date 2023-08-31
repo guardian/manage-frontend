@@ -76,13 +76,13 @@ export const UpgradeSupportAmountForm = () => {
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		upgradeSupportContext.mainPlan.billingPeriod,
+	);
+
 	const priceConfig = (supporterPlusPriceConfigByCountryGroup[
 		upgradeSupportContext.mainPlan.currencyISO as CurrencyIso
-	] || supporterPlusPriceConfigByCountryGroup.international)[
-		calculateMonthlyOrAnnualFromBillingPeriod(
-			upgradeSupportContext.mainPlan.billingPeriod,
-		)
-	];
+	] || supporterPlusPriceConfigByCountryGroup.international)[monthlyOrAnnual];
 
 	const amountLabel = (amount: number) => {
 		return `${upgradeSupportContext.mainPlan.currency}${amount} per ${upgradeSupportContext.mainPlan.billingPeriod}`;
@@ -111,9 +111,6 @@ export const UpgradeSupportAmountForm = () => {
 		defaultOtherAmount,
 	);
 	const chosenAmount = isOtherAmountSelected ? otherAmount : selectedValue;
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
-	);
 
 	const shouldShowOtherAmountErrorMessage =
 		hasInteractedWithOtherAmount || hasSubmitted;

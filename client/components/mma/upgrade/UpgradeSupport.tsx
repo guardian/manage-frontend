@@ -1,10 +1,14 @@
 import { css } from '@emotion/react';
 import { headline } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
+import { useState } from 'react';
 import { sectionSpacing } from '../switch/SwitchStyles';
+import { ConfirmForm } from './ConfirmForm';
 import { UpgradeSupportAmountForm } from './UpgradeSupportAmountForm';
 
 export const UpgradeSupport = () => {
+	const [chosenAmount, setChosenAmount] = useState<number>(0);
+
 	return (
 		<>
 			<section css={sectionSpacing}>
@@ -18,6 +22,11 @@ export const UpgradeSupport = () => {
 						1. Increase your support
 					</h2>
 					<UpgradeSupportAmountForm />
+					<ConfirmForm
+						chosenAmount={chosenAmount}
+						setChosenAmount={setChosenAmount}
+						threshold={10}
+					/>
 				</Stack>
 			</section>
 		</>

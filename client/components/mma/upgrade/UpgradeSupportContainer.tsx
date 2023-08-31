@@ -4,6 +4,7 @@ import { Navigate, Outlet } from 'react-router';
 import type {
 	MembersDataApiResponse,
 	PaidSubscriptionPlan,
+	Subscription,
 } from '../../../../shared/productResponse';
 import { getMainPlan, isProduct } from '../../../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
@@ -20,6 +21,7 @@ import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView
 
 export interface UpgradeSupportInterface {
 	mainPlan: PaidSubscriptionPlan;
+	subscription: Subscription;
 	user?: MembersDataApiResponse;
 }
 
@@ -75,6 +77,7 @@ export const UpgradeSupportContainer = () => {
 			<UpgradeSupportContext.Provider
 				value={{
 					mainPlan,
+					subscription: contribution.subscription,
 					user,
 				}}
 			>

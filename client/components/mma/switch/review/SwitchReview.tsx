@@ -26,6 +26,7 @@ import { BenefitsToggle } from '../../shared/benefits/BenefitsToggle';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
 import { PaymentDetails } from '../../shared/PaymentDetails';
+import { SupporterPlusTsAndCs } from '../../shared/SupporterPlusTsAndCs';
 import type {
 	SwitchContextInterface,
 	SwitchRouterState,
@@ -41,7 +42,6 @@ import {
 	listWithDividersCss,
 	productTitleCss,
 	sectionSpacing,
-	smallPrintCss,
 } from '../SwitchStyles';
 
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
@@ -131,12 +131,8 @@ export const SwitchReview = () => {
 
 	const inPaymentFailure = !!contributionToSwitch.alertText;
 
-	const {
-		monthlyThreshold,
-		annualThreshold,
-		thresholdForBillingPeriod: threshold,
-		isAboveThreshold,
-	} = thresholds;
+	const { thresholdForBillingPeriod: threshold, isAboveThreshold } =
+		thresholds;
 
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 
@@ -377,57 +373,10 @@ export const SwitchReview = () => {
 				</section>
 			)}
 			<section css={sectionSpacing}>
-				<p css={smallPrintCss}>
-					If you pay at least {mainPlan.currency}
-					{formatAmount(monthlyThreshold)} per month or{' '}
-					{mainPlan.currency}
-					{formatAmount(annualThreshold)} per year, you will receive
-					the Supporter Plus benefits on a subscription basis. If you
-					pay more than {mainPlan.currency}
-					{formatAmount(
-						monthlyOrAnnual === 'Annual'
-							? annualThreshold
-							: monthlyThreshold,
-					)}{' '}
-					per {mainPlan.billingPeriod}, these additional amounts will
-					be separate {monthlyOrAnnual.toLowerCase()} voluntary
-					financial contributions to the Guardian. The Supporter Plus
-					subscription and any contributions will auto-renew each{' '}
-					{mainPlan.billingPeriod}. You will be charged the
-					subscription and contribution amounts using your chosen
-					payment method at each renewal unless you cancel. You can
-					cancel your subscription or change your contributions at any
-					time before your next renewal date. If you cancel within 14
-					days of taking out a Supporter Plus subscription, you’ll
-					receive a full refund (including of any contributions) and
-					your subscription and any contribution will stop
-					immediately. Cancellation of your subscription (which will
-					also cancel any contribution) or cancellation of your
-					contribution made after 14 days will take effect at the end
-					of your current {monthlyOrAnnual.toLowerCase()} payment
-					period. To cancel,{' '}
-					<Link to="/recurringsupport">go to Manage My Account</Link>{' '}
-					or{' '}
-					<a href="https://www.theguardian.com/info/2022/oct/28/the-guardian-supporter-plus-terms-and-conditions">
-						see our Terms
-					</a>
-					.
-				</p>
-				<p css={smallPrintCss}>
-					By proceeding, you are agreeing to our{' '}
-					<a href="https://www.theguardian.com/info/2022/oct/28/the-guardian-supporter-plus-terms-and-conditions">
-						Terms and Conditions
-					</a>
-					.
-				</p>
-				<p css={smallPrintCss}>
-					To find out what personal data we collect and how we use it,
-					please visit our{' '}
-					<a href="https://www.theguardian.com/help/privacy-policy">
-						Privacy Policy
-					</a>
-					.
-				</p>
+				<SupporterPlusTsAndCs
+					currencyISO={mainPlan.currencyISO}
+					billingPeriod={mainPlan.billingPeriod}
+				/>
 			</section>
 		</>
 	);
