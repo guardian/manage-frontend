@@ -1,3 +1,5 @@
+import type { PaidSubscriptionPlan } from '../../shared/productResponse';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../shared/productTypes';
 import type { CurrencyIso } from './currencyIso';
 
 type PriceConfig = {
@@ -49,13 +51,24 @@ export function getBenefitsThreshold(
 	return region[billingPeriod].minAmount;
 }
 
-export function suggestedAmounts(
+export function getSuggestedAmounts(
 	currentAmount: number,
 	monthlyOrAnnual: 'Monthly' | 'Annual',
 ) {
 	return monthlyOrAnnual === 'Monthly'
 		? suggestedAmountsMonthly(currentAmount)
 		: suggestedAmountsAnnual(currentAmount);
+}
+
+export function getSuggestedAmountsFromMainPlan(
+	mainPlan: PaidSubscriptionPlan,
+) {
+	const currentAmount = mainPlan.price / 100;
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		mainPlan.billingPeriod,
+	);
+
+	return getSuggestedAmounts(currentAmount, monthlyOrAnnual);
 }
 
 function suggestedAmountsMonthly(currentAmount: number) {

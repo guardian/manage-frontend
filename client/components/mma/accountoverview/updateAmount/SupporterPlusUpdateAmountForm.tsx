@@ -16,7 +16,7 @@ import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import {
-	suggestedAmounts,
+	getSuggestedAmountsFromMainPlan,
 	supporterPlusPriceConfigByCountryGroup,
 } from '../../../../utilities/supporterPlusPricing';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
@@ -264,9 +264,8 @@ export const SupporterPlusUpdateAmountForm = (
 							columns={2}
 						>
 							<>
-								{suggestedAmounts(
-									props.currentAmount,
-									monthlyOrAnnual,
+								{getSuggestedAmountsFromMainPlan(
+									props.mainPlan,
 								).map((amount) => (
 									<ChoiceCard
 										id={`amount-${amount}`}

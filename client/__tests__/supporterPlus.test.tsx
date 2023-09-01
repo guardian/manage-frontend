@@ -1,4 +1,4 @@
-import { suggestedAmounts } from '../utilities/supporterPlusPricing';
+import { getSuggestedAmounts } from '../utilities/supporterPlusPricing';
 
 describe('suggested support amounts for monthly', () => {
 	it.each([
@@ -14,13 +14,13 @@ describe('suggested support amounts for monthly', () => {
 			expectedSecondAmount: number,
 			expectedThirdAmount: number,
 		) => {
-			expect(suggestedAmounts(currentAmount, 'Monthly')[0]).toEqual(
+			expect(getSuggestedAmounts(currentAmount, 'Monthly')[0]).toEqual(
 				expectedFirstAmount,
 			);
-			expect(suggestedAmounts(currentAmount, 'Monthly')[1]).toEqual(
+			expect(getSuggestedAmounts(currentAmount, 'Monthly')[1]).toEqual(
 				expectedSecondAmount,
 			);
-			expect(suggestedAmounts(currentAmount, 'Monthly')[2]).toEqual(
+			expect(getSuggestedAmounts(currentAmount, 'Monthly')[2]).toEqual(
 				expectedThirdAmount,
 			);
 		},
@@ -41,13 +41,13 @@ describe('suggested support amounts for annual', () => {
 			expectedSecondAmount: number,
 			expectedThirdAmount: number,
 		) => {
-			expect(suggestedAmounts(currentAmount, 'Annual')[0]).toEqual(
+			expect(getSuggestedAmounts(currentAmount, 'Annual')[0]).toEqual(
 				expectedFirstAmount,
 			);
-			expect(suggestedAmounts(currentAmount, 'Annual')[1]).toEqual(
+			expect(getSuggestedAmounts(currentAmount, 'Annual')[1]).toEqual(
 				expectedSecondAmount,
 			);
-			expect(suggestedAmounts(currentAmount, 'Annual')[2]).toEqual(
+			expect(getSuggestedAmounts(currentAmount, 'Annual')[2]).toEqual(
 				expectedThirdAmount,
 			);
 		},
