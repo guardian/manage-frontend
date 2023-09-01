@@ -166,7 +166,10 @@ export const UpgradeSupportAmountForm = ({
 								key={amount}
 								value={amount.toString()}
 								label={amountLabel(amount)}
-								checked={chosenAmount === amount}
+								checked={
+									chosenAmount === amount &&
+									!isOtherAmountSelected
+								}
 								onChange={() => {
 									setChosenAmount(amount);
 									setIsOtherAmountSelected(false);
