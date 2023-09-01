@@ -98,7 +98,7 @@ export const SupporterPlusUpdateAmountForm = (
 	const priceConfig = (supporterPlusPriceConfigByCountryGroup[
 		props.mainPlan.currencyISO as CurrencyIso
 	] || supporterPlusPriceConfigByCountryGroup.international)[
-		calculateMonthlyOrAnnualFromBillingPeriod(props.mainPlan.billingPeriod)
+		props.mainPlan.billingPeriod
 	];
 
 	const minPriceDisplay = `${props.mainPlan.currency}${priceConfig.minAmount}`;

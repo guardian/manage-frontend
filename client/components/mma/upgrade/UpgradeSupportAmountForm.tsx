@@ -219,6 +219,7 @@ export const UpgradeSupportAmountForm = ({
 										? Number(event.target.value)
 										: null,
 								);
+								setContinuedToConfirmation(false);
 							}}
 						/>
 					</div>

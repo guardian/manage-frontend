@@ -1,5 +1,5 @@
-import { createContext, useState } from 'react';
 import type { Context, ReactNode } from 'react';
+import { createContext, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import type {
 	MembersDataApiResponse,
@@ -185,11 +185,11 @@ function getThresholds(
 ): Thresholds {
 	const monthlyThreshold = getBenefitsThreshold(
 		mainPlan.currencyISO as CurrencyIso,
-		'Monthly',
+		'month',
 	);
 	const annualThreshold = getBenefitsThreshold(
 		mainPlan.currencyISO as CurrencyIso,
-		'Annual',
+		'year',
 	);
 	const thresholdForBillingPeriod = monthly
 		? monthlyThreshold

@@ -12,7 +12,10 @@ import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';
-import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
+import type {
+	PreviewResponse,
+	ProductSwitchType,
+} from '../../../../../shared/productSwitchTypes';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -104,13 +107,6 @@ const scrollToErrorMessage = () => {
 
 const productSwitchType: ProductSwitchType =
 	'recurring-contribution-to-supporter-plus';
-
-interface PreviewResponse {
-	amountPayableToday: number;
-	supporterPlusPurchaseAmount: number;
-	nextPaymentDate: string;
-	checkChargeAmountBeforeUpdate: boolean;
-}
 
 export const SwitchReview = () => {
 	const navigate = useNavigate();

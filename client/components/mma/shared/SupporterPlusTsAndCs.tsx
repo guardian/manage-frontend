@@ -37,8 +37,8 @@ export const SupporterPlusTsAndCs = ({
 	const currencySymbol = convertCurrencyToSymbol(currencyISO);
 	const monthlyOrAnnual =
 		calculateMonthlyOrAnnualFromBillingPeriod(billingPeriod);
-	const monthlyThreshold = getBenefitsThreshold(currencyISO, 'Monthly');
-	const annualThreshold = getBenefitsThreshold(currencyISO, 'Annual');
+	const monthlyThreshold = getBenefitsThreshold(currencyISO, 'month');
+	const annualThreshold = getBenefitsThreshold(currencyISO, 'year');
 
 	return (
 		<>
