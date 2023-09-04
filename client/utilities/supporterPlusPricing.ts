@@ -12,38 +12,38 @@ export const supporterPlusPriceConfigByCountryGroup: Record<
 	Record<string, PriceConfig>
 > = {
 	GBP: {
-		Monthly: { minAmount: 10, maxAmount: 166 },
-		Annual: { minAmount: 95, maxAmount: 2000 },
+		month: { minAmount: 10, maxAmount: 166 },
+		year: { minAmount: 95, maxAmount: 2000 },
 	},
 	USD: {
-		Monthly: { minAmount: 13, maxAmount: 800 },
-		Annual: { minAmount: 120, maxAmount: 10000 },
+		month: { minAmount: 13, maxAmount: 800 },
+		year: { minAmount: 120, maxAmount: 10000 },
 	},
 	EUR: {
-		Monthly: { minAmount: 10, maxAmount: 166 },
-		Annual: { minAmount: 95, maxAmount: 2000 },
+		month: { minAmount: 10, maxAmount: 166 },
+		year: { minAmount: 95, maxAmount: 2000 },
 	},
 	AUD: {
-		Monthly: { minAmount: 17, maxAmount: 200 },
-		Annual: { minAmount: 160, maxAmount: 2000 },
+		month: { minAmount: 17, maxAmount: 200 },
+		year: { minAmount: 160, maxAmount: 2000 },
 	},
 	NZD: {
-		Monthly: { minAmount: 17, maxAmount: 200 },
-		Annual: { minAmount: 160, maxAmount: 2000 },
+		month: { minAmount: 17, maxAmount: 200 },
+		year: { minAmount: 160, maxAmount: 2000 },
 	},
 	CAD: {
-		Monthly: { minAmount: 13, maxAmount: 166 },
-		Annual: { minAmount: 120, maxAmount: 2000 },
+		month: { minAmount: 13, maxAmount: 166 },
+		year: { minAmount: 120, maxAmount: 2000 },
 	},
 	international: {
-		Monthly: { minAmount: 13, maxAmount: 166 },
-		Annual: { minAmount: 120, maxAmount: 2000 },
+		month: { minAmount: 13, maxAmount: 166 },
+		year: { minAmount: 120, maxAmount: 2000 },
 	},
 };
 
 export function getBenefitsThreshold(
 	currency: CurrencyIso,
-	billingPeriod: 'Monthly' | 'Annual',
+	billingPeriod: 'month' | 'year',
 ): number {
 	const region =
 		supporterPlusPriceConfigByCountryGroup[currency] ??
