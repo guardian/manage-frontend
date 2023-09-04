@@ -194,11 +194,13 @@ const productSwitchType: ProductSwitchType =
 interface ConfirmFormProps {
 	chosenAmount: number;
 	setChosenAmount: Dispatch<SetStateAction<number | null>>;
+	suggestedAmounts: number[];
 }
 
 export const ConfirmForm = ({
 	chosenAmount,
 	setChosenAmount,
+	suggestedAmounts,
 }: ConfirmFormProps) => {
 	const { mainPlan, subscription } = useContext(
 		UpgradeSupportContext,
@@ -211,8 +213,13 @@ export const ConfirmForm = ({
 		mainPlan.billingPeriod as 'month' | 'year',
 	);
 	const aboveThreshold = chosenAmount >= threshold;
-	const [shouldShowRoundUp] = useState<boolean>(!aboveThreshold);
+
+	const [shouldShowRoundUp] = useState<boolean>(
+		!aboveThreshold && suggestedAmounts.includes(threshold),
+	);
+
 	const [chosenAmountPreRoundup] = useState<number>(chosenAmount);
+
 	const [isConfirmationLoading, setIsConfirmationLoading] =
 		useState<boolean>(false);
 
