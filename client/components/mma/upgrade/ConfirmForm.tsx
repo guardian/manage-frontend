@@ -127,9 +127,11 @@ const WhatHappensNext = ({
 
 const RoundUp = ({
 	setChosenAmount,
+	thresholdAmount,
 	chosenAmountPreRoundup,
 }: {
 	setChosenAmount: Dispatch<SetStateAction<number | null>>;
+	thresholdAmount: number;
 	chosenAmountPreRoundup: number;
 }) => {
 	const [hasRoundedUp, setHasRoundedUp] = useState<boolean>(false);
@@ -143,7 +145,9 @@ const RoundUp = ({
 						const toggleRoundUp = !hasRoundedUp;
 						setHasRoundedUp(toggleRoundUp);
 						setChosenAmount(
-							toggleRoundUp ? 10 : chosenAmountPreRoundup,
+							toggleRoundUp
+								? thresholdAmount
+								: chosenAmountPreRoundup,
 						);
 					}}
 				>
@@ -190,11 +194,13 @@ const productSwitchType: ProductSwitchType =
 interface ConfirmFormProps {
 	chosenAmount: number;
 	setChosenAmount: Dispatch<SetStateAction<number | null>>;
+	suggestedAmounts: number[];
 }
 
 export const ConfirmForm = ({
 	chosenAmount,
 	setChosenAmount,
+	suggestedAmounts,
 }: ConfirmFormProps) => {
 	const { mainPlan, subscription } = useContext(
 		UpgradeSupportContext,
@@ -207,8 +213,13 @@ export const ConfirmForm = ({
 		mainPlan.billingPeriod as 'month' | 'year',
 	);
 	const aboveThreshold = chosenAmount >= threshold;
-	const [shouldShowRoundUp] = useState<boolean>(!aboveThreshold);
+
+	const [shouldShowRoundUp] = useState<boolean>(
+		!aboveThreshold && suggestedAmounts.includes(threshold),
+	);
+
 	const [chosenAmountPreRoundup] = useState<number>(chosenAmount);
+
 	const [isConfirmationLoading, setIsConfirmationLoading] =
 		useState<boolean>(false);
 
@@ -274,6 +285,7 @@ export const ConfirmForm = ({
 			{shouldShowRoundUp && (
 				<RoundUp
 					setChosenAmount={setChosenAmount}
+					thresholdAmount={threshold}
 					chosenAmountPreRoundup={chosenAmountPreRoundup}
 				/>
 			)}

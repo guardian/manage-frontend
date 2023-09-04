@@ -47,6 +47,7 @@ export const UpgradeSupport = () => {
 						<ConfirmForm
 							chosenAmount={chosenAmount}
 							setChosenAmount={setChosenAmount}
+							suggestedAmounts={suggestedAmounts}
 						/>
 					)}
 				</Stack>
