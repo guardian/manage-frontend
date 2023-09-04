@@ -127,9 +127,11 @@ const WhatHappensNext = ({
 
 const RoundUp = ({
 	setChosenAmount,
+	thresholdAmount,
 	chosenAmountPreRoundup,
 }: {
 	setChosenAmount: Dispatch<SetStateAction<number | null>>;
+	thresholdAmount: number;
 	chosenAmountPreRoundup: number;
 }) => {
 	const [hasRoundedUp, setHasRoundedUp] = useState<boolean>(false);
@@ -143,7 +145,9 @@ const RoundUp = ({
 						const toggleRoundUp = !hasRoundedUp;
 						setHasRoundedUp(toggleRoundUp);
 						setChosenAmount(
-							toggleRoundUp ? 10 : chosenAmountPreRoundup,
+							toggleRoundUp
+								? thresholdAmount
+								: chosenAmountPreRoundup,
 						);
 					}}
 				>
@@ -274,6 +278,7 @@ export const ConfirmForm = ({
 			{shouldShowRoundUp && (
 				<RoundUp
 					setChosenAmount={setChosenAmount}
+					thresholdAmount={threshold}
 					chosenAmountPreRoundup={chosenAmountPreRoundup}
 				/>
 			)}
