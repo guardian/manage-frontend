@@ -20,7 +20,7 @@ export const shouldHaveHolidayStopsFlow = (
 
 export const productMoveFetch = (
 	subscriptionId: string,
-	chosenAmount: number,
+	price: number,
 	productSwitchType: ProductSwitchType,
 	checkChargeAmountBeforeUpdate: boolean,
 	preview: boolean,
@@ -28,7 +28,7 @@ export const productMoveFetch = (
 	fetch(`/api/product-move/${productSwitchType}/${subscriptionId}`, {
 		method: 'POST',
 		body: JSON.stringify({
-			price: chosenAmount,
+			price,
 			preview,
 			checkChargeAmountBeforeUpdate,
 		}),

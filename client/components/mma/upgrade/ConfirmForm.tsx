@@ -10,12 +10,18 @@ import {
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
-import type { Subscription } from '../../../../shared/productResponse';
+import type {
+	PaidSubscriptionPlan,
+	Subscription,
+} from '../../../../shared/productResponse';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
-import type { CurrencyIso } from '../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
+import {
+	calculateAmountPayableToday,
+	calculateCheckChargeAmountBeforeUpdate,
+} from '../../../utilities/productMovePreview';
 import { productMoveFetch } from '../../../utilities/productUtils';
-import { getBenefitsThreshold } from '../../../utilities/supporterPlusPricing';
+import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { Heading } from '../shared/Heading';
 import { PaymentDetails } from '../shared/PaymentDetails';
 import { SupporterPlusTsAndCs } from '../shared/SupporterPlusTsAndCs';
@@ -69,12 +75,16 @@ const listWithDividersCss = css`
 `;
 
 const WhatHappensNext = ({
-	firstPaymentDisplay,
+	amountPayableToday,
+	mainPlan,
 	subscription,
 }: {
-	firstPaymentDisplay: string;
+	amountPayableToday: number;
+	mainPlan: PaidSubscriptionPlan;
 	subscription: Subscription;
 }) => {
+	const firstPaymentDisplay = `${mainPlan.currency}${amountPayableToday}`;
+
 	return (
 		<section>
 			<Stack space={4}>
@@ -163,6 +173,7 @@ const updateContributionAmountFetch = (
 interface ConfirmFormProps {
 	chosenAmount: number;
 	setChosenAmount: Dispatch<SetStateAction<number | null>>;
+	threshold: number;
 	suggestedAmounts: number[];
 	previewResponse: PreviewResponse | null;
 }
@@ -170,6 +181,7 @@ interface ConfirmFormProps {
 export const ConfirmForm = ({
 	chosenAmount,
 	setChosenAmount,
+	threshold,
 	suggestedAmounts,
 	previewResponse,
 }: ConfirmFormProps) => {
@@ -179,10 +191,6 @@ export const ConfirmForm = ({
 
 	const navigate = useNavigate();
 
-	const threshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		mainPlan.billingPeriod as 'month' | 'year',
-	);
 	const aboveThreshold = chosenAmount >= threshold;
 
 	const [shouldShowRoundUp] = useState<boolean>(
@@ -194,12 +202,18 @@ export const ConfirmForm = ({
 	const [isConfirmationLoading, setIsConfirmationLoading] =
 		useState<boolean>(false);
 
-	const checkChargeAmount = false; //todo calculate this
+	if (previewResponse === null) {
+		return (
+			<DefaultLoadingView loadingMessage="Loading your payment details..." />
+		);
+	}
 
-	//ToDo: a more elegant loading option
-	const firstPaymentDisplay = `${mainPlan.currency}${
-		previewResponse?.amountPayableToday ?? 'loading'
-	}`;
+	const amountPayableToday = calculateAmountPayableToday(
+		chosenAmount,
+		previewResponse.contributionRefundAmount,
+	);
+	const checkChargeAmount =
+		calculateCheckChargeAmountBeforeUpdate(amountPayableToday);
 
 	const confirmOnClick = async () => {
 		if (isConfirmationLoading) {
@@ -241,7 +255,8 @@ export const ConfirmForm = ({
 			)}
 			{aboveThreshold && (
 				<WhatHappensNext
-					firstPaymentDisplay={firstPaymentDisplay}
+					amountPayableToday={amountPayableToday}
+					mainPlan={mainPlan}
 					subscription={subscription}
 				/>
 			)}

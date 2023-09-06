@@ -5,6 +5,7 @@ export type ProductSwitchType =
 export interface PreviewResponse {
 	amountPayableToday: number;
 	supporterPlusPurchaseAmount: number;
+	contributionRefundAmount: number;
 	nextPaymentDate: string;
 	checkChargeAmountBeforeUpdate: boolean;
 }
