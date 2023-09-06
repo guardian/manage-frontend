@@ -3,6 +3,7 @@ import {
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../shared/identity';
 import type { ProductDetail } from '../../shared/productResponse';
+import type { ProductSwitchType } from '../../shared/productSwitchTypes';
 import type {
 	AllProductsProductTypeFilterString,
 	ProductType,
@@ -16,6 +17,25 @@ import { fetchWithDefaultParameters } from './fetch';
 export const shouldHaveHolidayStopsFlow = (
 	productType: ProductType,
 ): productType is ProductTypeWithHolidayStopsFlow => !!productType.holidayStops;
+
+export const productMoveFetch = (
+	subscriptionId: string,
+	chosenAmount: number,
+	productSwitchType: ProductSwitchType,
+	checkChargeAmountBeforeUpdate: boolean,
+	preview: boolean,
+) =>
+	fetch(`/api/product-move/${productSwitchType}/${subscriptionId}`, {
+		method: 'POST',
+		body: JSON.stringify({
+			price: chosenAmount,
+			preview,
+			checkChargeAmountBeforeUpdate,
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
 
 export const createProductDetailFetcher =
 	(

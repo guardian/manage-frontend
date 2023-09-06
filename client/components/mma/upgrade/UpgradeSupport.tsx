@@ -1,7 +1,9 @@
 import { css } from '@emotion/react';
 import { headline, space, textSans, until } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
+import { productMoveFetch } from '../../../utilities/productUtils';
 import { getSuggestedAmountsFromMainPlan } from '../../../utilities/supporterPlusPricing';
 import { ConfirmForm } from './ConfirmForm';
 import { UpgradeSupportAmountForm } from './UpgradeSupportAmountForm';
@@ -68,6 +70,7 @@ export const UpgradeSupport = () => {
 							chosenAmount={chosenAmount}
 							setChosenAmount={setChosenAmount}
 							suggestedAmounts={suggestedAmounts}
+							previewResponse={previewResponse}
 						/>
 					)}
 				</Stack>
