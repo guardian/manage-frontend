@@ -16,11 +16,13 @@ import type {
 } from '../../../../shared/productResponse';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
+import { LoadingState } from '../../../utilities/hooks/useAsyncLoader';
 import {
 	calculateAmountPayableToday,
 	calculateCheckChargeAmountBeforeUpdate,
 } from '../../../utilities/productMovePreview';
 import { productMoveFetch } from '../../../utilities/productUtils';
+import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { Heading } from '../shared/Heading';
 import { PaymentDetails } from '../shared/PaymentDetails';
@@ -176,6 +178,7 @@ interface ConfirmFormProps {
 	threshold: number;
 	suggestedAmounts: number[];
 	previewResponse: PreviewResponse | null;
+	previewLoadingState: LoadingState;
 }
 
 export const ConfirmForm = ({
@@ -184,6 +187,7 @@ export const ConfirmForm = ({
 	threshold,
 	suggestedAmounts,
 	previewResponse,
+	previewLoadingState,
 }: ConfirmFormProps) => {
 	const { mainPlan, subscription } = useContext(
 		UpgradeSupportContext,
@@ -202,10 +206,17 @@ export const ConfirmForm = ({
 	const [isConfirmationLoading, setIsConfirmationLoading] =
 		useState<boolean>(false);
 
-	if (previewResponse === null) {
+	if (previewLoadingState === LoadingState.IsLoading) {
 		return (
 			<DefaultLoadingView loadingMessage="Loading your payment details..." />
 		);
+	}
+
+	if (
+		previewLoadingState === LoadingState.HasError ||
+		previewResponse === null
+	) {
+		return <GenericErrorScreen />;
 	}
 
 	const amountPayableToday = calculateAmountPayableToday(

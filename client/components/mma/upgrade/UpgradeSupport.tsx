@@ -35,18 +35,18 @@ export const UpgradeSupport = () => {
 		mainPlan.billingPeriod as 'month' | 'year',
 	);
 
-	// ToDo: what should we do if there is an error - some kind of retry logic? Or just show error screen instead of perpetual loading
-	const { data: previewResponse } = useAsyncLoader<PreviewResponse>(
-		() =>
-			productMoveFetch(
-				subscription.subscriptionId,
-				threshold,
-				'recurring-contribution-to-supporter-plus',
-				false,
-				true,
-			),
-		JsonResponseHandler,
-	);
+	const { data: previewResponse, loadingState: previewLoadingState } =
+		useAsyncLoader<PreviewResponse>(
+			() =>
+				productMoveFetch(
+					subscription.subscriptionId,
+					threshold,
+					'recurring-contribution-to-supporter-plus',
+					false,
+					true,
+				),
+			JsonResponseHandler,
+		);
 
 	return (
 		<>
@@ -95,6 +95,7 @@ export const UpgradeSupport = () => {
 							setChosenAmount={setChosenAmount}
 							suggestedAmounts={suggestedAmounts}
 							previewResponse={previewResponse}
+							previewLoadingState={previewLoadingState}
 						/>
 					)}
 				</Stack>
