@@ -1,17 +1,19 @@
 import { css } from '@emotion/react';
 import { headline, space, textSans, until } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
+import { useAsyncLoader } from '../../../utilities/hooks/useAsyncLoader';
 import { productMoveFetch } from '../../../utilities/productUtils';
 import { getSuggestedAmountsFromMainPlan } from '../../../utilities/supporterPlusPricing';
+import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { ConfirmForm } from './ConfirmForm';
 import { UpgradeSupportAmountForm } from './UpgradeSupportAmountForm';
 import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 export const UpgradeSupport = () => {
-	const { mainPlan } = useContext(
+	const { mainPlan, subscription } = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
@@ -24,6 +26,17 @@ export const UpgradeSupport = () => {
 		useState<boolean>(false);
 
 	const currentAmount = mainPlan.price / 100;
+	const { data: previewResponse } = useAsyncLoader<PreviewResponse>(
+		() =>
+			productMoveFetch(
+				subscription.subscriptionId,
+				10,
+				'recurring-contribution-to-supporter-plus',
+				false,
+				true,
+			),
+		JsonResponseHandler,
+	);
 
 	return (
 		<>

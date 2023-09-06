@@ -12,7 +12,6 @@ import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
 import type { Subscription } from '../../../../shared/productResponse';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
-import { contributionPaidByCard } from '../../../fixtures/productBuilder/testProducts';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import { productMoveFetch } from '../../../utilities/productUtils';
@@ -70,10 +69,10 @@ const listWithDividersCss = css`
 `;
 
 const WhatHappensNext = ({
-	contributionPriceDisplay,
+	firstPaymentDisplay,
 	subscription,
 }: {
-	contributionPriceDisplay: string;
+	firstPaymentDisplay: string;
 	subscription: Subscription;
 }) => {
 	return (
@@ -95,7 +94,7 @@ const WhatHappensNext = ({
 						<span>
 							<strong>
 								Your first payment will be just{' '}
-								{contributionPriceDisplay}
+								{firstPaymentDisplay}
 							</strong>
 							<br />
 							We will charge you...
@@ -195,7 +194,12 @@ export const ConfirmForm = ({
 	const [isConfirmationLoading, setIsConfirmationLoading] =
 		useState<boolean>(false);
 
-	const checkChargeAmount = false; //todo
+	const checkChargeAmount = false; //todo calculate this
+
+	//ToDo: a more elegant loading option
+	const firstPaymentDisplay = `${mainPlan.currency}${
+		previewResponse?.amountPayableToday ?? 'loading'
+	}`;
 
 	const confirmOnClick = async () => {
 		if (isConfirmationLoading) {
@@ -237,8 +241,8 @@ export const ConfirmForm = ({
 			)}
 			{aboveThreshold && (
 				<WhatHappensNext
-					contributionPriceDisplay={`${previewResponse?.amountPayableToday}`}
-					subscription={contributionPaidByCard().subscription}
+					firstPaymentDisplay={firstPaymentDisplay}
+					subscription={subscription}
 				/>
 			)}
 			<section>
