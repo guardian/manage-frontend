@@ -95,33 +95,31 @@ export const UpgradeSupportAmountForm = ({
 	continuedToConfirmation,
 	suggestedAmounts,
 }: UpgradeSupportAmountFormProps) => {
-	const upgradeSupportContext = useContext(
+	const { mainPlan } = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
 	const threshold = 10; // TODO
-	const priceConfig = (contributionAmountsLookup[
-		upgradeSupportContext.mainPlan.currencyISO
-	] || contributionAmountsLookup.international)[
-		upgradeSupportContext.mainPlan.billingPeriod as ContributionInterval
+	const priceConfig = (contributionAmountsLookup[mainPlan.currencyISO] ||
+		contributionAmountsLookup.international)[
+		mainPlan.billingPeriod as ContributionInterval
 	];
 
+	const currencySymbol = mainPlan.currency;
+
 	const amountLabel = (amount: number) => {
-		return `${upgradeSupportContext.mainPlan.currency}${amount} per ${upgradeSupportContext.mainPlan.billingPeriod}`;
+		return `${currencySymbol}${amount} per ${mainPlan.billingPeriod}`;
 	};
-	const currentAmount = upgradeSupportContext.mainPlan.price / 100;
+	const currentAmount = mainPlan.price / 100;
 
-	const mainPlan = upgradeSupportContext.mainPlan;
-
-	const otherAmountLabel = `Choose an amount (${upgradeSupportContext.mainPlan.currency} per ${upgradeSupportContext.mainPlan.billingPeriod})`;
+	const otherAmountLabel = `Enter an amount (${currencySymbol} per ${mainPlan.billingPeriod})`;
 
 	const [isOtherAmountSelected, setIsOtherAmountSelected] =
 		useState<boolean>(false);
 
-	const defaultOtherAmount = priceConfig.minAmount;
 	const [otherAmountSelected, setOtherAmountSelected] = useState<
 		number | null
-	>(defaultOtherAmount);
+	>(null);
 
 	const [hasInteractedWithOtherAmount, setHasInteractedWithOtherAmount] =
 		useState<boolean>(false);
@@ -134,7 +132,7 @@ export const UpgradeSupportAmountForm = ({
 		hasInteractedWithOtherAmount || hasSubmitted;
 
 	useEffect(() => {
-		if (otherAmountSelected !== defaultOtherAmount) {
+		if (otherAmountSelected) {
 			setHasInteractedWithOtherAmount(true);
 		}
 	}, [otherAmountSelected]);
@@ -210,15 +208,14 @@ export const UpgradeSupportAmountForm = ({
 						>
 							<TextInput
 								label={otherAmountLabel}
-								supporting={
-									'Support TODO or more to unlock all extras'
-								}
+								supporting={`Support ${currencySymbol}${threshold}/${mainPlan.billingPeriod} or more to unlock all benefits.`}
 								error={
 									(shouldShowOtherAmountErrorMessage &&
 										errorMessage) ||
 									undefined
 								}
 								type="number"
+								width={30}
 								value={otherAmountSelected?.toString() || ''}
 								onChange={(event) => {
 									setChosenAmount(
@@ -237,11 +234,11 @@ export const UpgradeSupportAmountForm = ({
 						</div>
 					)}
 					<BenefitsDisplay
-						chosenAmountDisplay={`${mainPlan.currency}${chosenAmount} per ${mainPlan.billingPeriod}`}
+						chosenAmountDisplay={`${currencySymbol}${chosenAmount} per ${mainPlan.billingPeriod}`}
 						chosenAmount={chosenAmount}
 						threshold={threshold}
 					/>
-					{!continuedToConfirmation && (
+					{!continuedToConfirmation && chosenAmount && (
 						<section css={buttonContainerCss}>
 							<ThemeProvider
 								theme={buttonThemeReaderRevenueBrand}
@@ -254,7 +251,7 @@ export const UpgradeSupportAmountForm = ({
 										)
 									}
 								>
-									Continue with {mainPlan.currency}
+									Continue with {currencySymbol}
 									{chosenAmount}/{mainPlan.billingPeriod}
 								</Button>
 							</ThemeProvider>
