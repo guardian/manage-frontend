@@ -7,7 +7,10 @@ import type {
 	Subscription,
 } from '../../../../shared/productResponse';
 import { getMainPlan, isProduct } from '../../../../shared/productResponse';
-import { PRODUCT_TYPES } from '../../../../shared/productTypes';
+import {
+	calculateMonthlyOrAnnualFromBillingPeriod,
+	PRODUCT_TYPES,
+} from '../../../../shared/productTypes';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -28,11 +31,17 @@ export interface UpgradeSupportInterface {
 export const UpgradeSupportContext: Context<UpgradeSupportInterface | {}> =
 	createContext({});
 
-const UpgradeSupportPageContainer = ({ children }: { children: ReactNode }) => {
+const UpgradeSupportPageContainer = ({
+	pageTitle,
+	children,
+}: {
+	pageTitle?: string;
+	children: ReactNode;
+}) => {
 	return (
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}
-			pageTitle={'Select your new support'}
+			pageTitle={pageTitle ?? 'Your support'}
 		>
 			{children}
 		</PageContainer>
@@ -69,11 +78,19 @@ export const UpgradeSupportContainer = () => {
 	}
 
 	const contribution = data.products.filter(isProduct)[0];
-	const mainPlan = getMainPlan(contribution.subscription);
+	const mainPlan = getMainPlan(
+		contribution.subscription,
+	) as PaidSubscriptionPlan;
+
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		mainPlan.billingPeriod,
+	);
+	const pageTitle = `Your ${monthlyOrAnnual.toLowerCase()} support`;
+
 	const user = data.user?.email;
 
 	return (
-		<UpgradeSupportPageContainer>
+		<UpgradeSupportPageContainer pageTitle={pageTitle}>
 			<UpgradeSupportContext.Provider
 				value={{
 					mainPlan,

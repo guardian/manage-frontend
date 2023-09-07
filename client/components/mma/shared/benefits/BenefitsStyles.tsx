@@ -3,6 +3,7 @@ import { from, palette, space, textSans } from '@guardian/source-foundations';
 
 export const benefitsCss = css`
 	${textSans.medium()};
+	color: ${palette.neutral[7]};
 	list-style: none;
 	margin: 0 0 0 -4px;
 	padding: 0;
@@ -38,8 +39,8 @@ export const benefitsButtonCss = css`
 `;
 
 export const unavailableBenefitsCss = css`
-	color: ${palette.neutral[60]};
+	color: ${palette.neutral[46]};
 	svg {
-		fill: ${palette.neutral[60]};
+		fill: ${palette.neutral[46]};
 	}
 `;

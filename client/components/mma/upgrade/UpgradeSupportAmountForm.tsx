@@ -1,10 +1,11 @@
-import { css } from '@emotion/react';
-import type { EmotionJSX } from '@emotion/react/types/jsx-namespace';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import { css, ThemeProvider } from '@emotion/react';
+import { space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
+	buttonThemeReaderRevenueBrand,
 	ChoiceCard,
 	ChoiceCardGroup,
+	Stack,
 	TextInput,
 } from '@guardian/source-react-components';
 import type { Dispatch, SetStateAction } from 'react';
@@ -12,9 +13,8 @@ import { useContext, useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import type { ContributionInterval } from '../../../utilities/contributionsAmount';
 import { contributionAmountsLookup } from '../../../utilities/contributionsAmount';
-import { InfoIconDark } from '../shared/assets/InfoIconDark';
-import { benefitsConfiguration } from '../shared/benefits/BenefitsConfiguration';
-import { BenefitsSection } from '../shared/benefits/BenefitsSection';
+import { UpgradeBenefitsCard } from '../shared/benefits/BenefitsCard';
+import { getUpgradeBenefits } from '../shared/benefits/BenefitsConfiguration';
 import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
@@ -49,23 +49,30 @@ function validateChoice(
 	return null;
 }
 
-function displayRelevantBenefits(
-	chosenAmount: number | null,
-): EmotionJSX.Element {
-	const chosenOptionNum = Number(chosenAmount);
-	if (!isNaN(chosenOptionNum) && chosenOptionNum < 10) {
-		return (
-			<BenefitsSection
-				benefits={benefitsConfiguration['contributions']}
-			/>
-		);
-	} else {
-		return (
-			<BenefitsSection
-				benefits={benefitsConfiguration['supporterplus']}
-			/>
-		);
+function BenefitsDisplay({
+	chosenAmount,
+	chosenAmountDisplay,
+	threshold,
+}: {
+	chosenAmount: number | null;
+	chosenAmountDisplay: string;
+	threshold: number;
+}) {
+	if (!chosenAmount) {
+		return null;
 	}
+
+	const benefitsList =
+		chosenAmount < threshold
+			? getUpgradeBenefits('contributions')
+			: getUpgradeBenefits('supporterplus');
+
+	return (
+		<UpgradeBenefitsCard
+			chosenAmountDisplay={chosenAmountDisplay}
+			benefits={benefitsList}
+		/>
+	);
 }
 
 interface UpgradeSupportAmountFormProps {
@@ -87,6 +94,7 @@ export const UpgradeSupportAmountForm = ({
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
+	const threshold = 10; // TODO
 	const priceConfig = (contributionAmountsLookup[
 		upgradeSupportContext.mainPlan.currencyISO
 	] || contributionAmountsLookup.international)[
@@ -140,111 +148,109 @@ export const UpgradeSupportAmountForm = ({
 
 	return (
 		<>
-			<div
-				css={css`
-					border: 1px solid ${palette.neutral[20]};
-					margin-bottom: ${space[5]}px;
-					padding: ${space[3]}px ${space[5]}px;
-					${textSans.medium()};
-				`}
-			>
-				<InfoIconDark /> You're currently supporting{' '}
-				{upgradeSupportContext.mainPlan.currency}
-				{currentAmount} per{' '}
-				{upgradeSupportContext.mainPlan.billingPeriod}.
-				<dl />
-				<ChoiceCardGroup
-					name="amounts"
-					data-cy="contribution-amount-choices"
-					label="Choose your new amount"
-					columns={2}
+			<div>
+				<h3
+					css={css`
+						${textSans.xlarge({ fontWeight: 'bold' })};
+						margin: 0;
+					`}
 				>
-					<>
-						{suggestedAmounts.map((amount) => (
+					1. Choose your new amount
+				</h3>
+				<Stack space={4}>
+					<ChoiceCardGroup
+						name="amounts"
+						data-cy="contribution-amount-choices"
+					>
+						<>
+							{suggestedAmounts.map((amount) => (
+								<ChoiceCard
+									id={`amount-${amount}`}
+									key={amount}
+									value={amount.toString()}
+									label={amountLabel(amount)}
+									checked={
+										chosenAmount === amount &&
+										!isOtherAmountSelected
+									}
+									onChange={() => {
+										setChosenAmount(amount);
+										setIsOtherAmountSelected(false);
+										setContinuedToConfirmation(false);
+									}}
+								/>
+							))}
 							<ChoiceCard
-								id={`amount-${amount}`}
-								key={amount}
-								value={amount.toString()}
-								label={amountLabel(amount)}
-								checked={
-									chosenAmount === amount &&
-									!isOtherAmountSelected
-								}
+								id={`amount-other`}
+								value="Other"
+								label="Other"
+								checked={isOtherAmountSelected}
 								onChange={() => {
-									setChosenAmount(amount);
-									setIsOtherAmountSelected(false);
+									setIsOtherAmountSelected(true);
+									setChosenAmount(otherAmountSelected);
 									setContinuedToConfirmation(false);
 								}}
 							/>
-						))}
-						<ChoiceCard
-							id={`amount-other`}
-							value="Choose your amount"
-							label="Choose your amount"
-							checked={isOtherAmountSelected}
-							onChange={() => {
-								setIsOtherAmountSelected(true);
-								setChosenAmount(otherAmountSelected);
-								setContinuedToConfirmation(false);
-							}}
-						/>
-					</>
-				</ChoiceCardGroup>
-				{isOtherAmountSelected && (
-					<div
-						css={css`
-							margin-top: ${space[3]}px;
-						`}
-					>
-						<TextInput
-							label={otherAmountLabel}
-							supporting={
-								'Support £10/month or more to unlock all extras'
-							}
-							error={
-								(shouldShowOtherAmountErrorMessage &&
-									errorMessage) ||
-								undefined
-							}
-							type="number"
-							value={otherAmountSelected?.toString() || ''}
-							onChange={(event) => {
-								setChosenAmount(
-									event.target.value
-										? Number(event.target.value)
-										: null,
-								);
-								setOtherAmountSelected(
-									event.target.value
-										? Number(event.target.value)
-										: null,
-								);
-								setContinuedToConfirmation(false);
-							}}
-						/>
-					</div>
-				)}
-				<div
-					css={css`
-						margin-bottom: ${space[5]}px;
-						padding: ${space[3]}px ${space[5]}px;
-						${textSans.medium()};
-					`}
-				>
-					{displayRelevantBenefits(chosenAmount)}
-				</div>
-				{!continuedToConfirmation && (
-					<Button
-						onClick={() =>
-							setContinuedToConfirmation(
-								chosenAmount ? true : false,
-							)
-						}
-					>
-						Continue with {mainPlan.currency}
-						{chosenAmount}/{mainPlan.billingPeriod}
-					</Button>
-				)}
+						</>
+					</ChoiceCardGroup>
+					{isOtherAmountSelected && (
+						<div
+							css={css`
+								margin-top: ${space[3]}px;
+							`}
+						>
+							<TextInput
+								label={otherAmountLabel}
+								supporting={
+									'Support £10/month or more to unlock all extras'
+								}
+								error={
+									(shouldShowOtherAmountErrorMessage &&
+										errorMessage) ||
+									undefined
+								}
+								type="number"
+								value={otherAmountSelected?.toString() || ''}
+								onChange={(event) => {
+									setChosenAmount(
+										event.target.value
+											? Number(event.target.value)
+											: null,
+									);
+									setOtherAmountSelected(
+										event.target.value
+											? Number(event.target.value)
+											: null,
+									);
+									setContinuedToConfirmation(false);
+								}}
+							/>
+						</div>
+					)}
+					<BenefitsDisplay
+						chosenAmountDisplay={`${mainPlan.currency}${chosenAmount} per ${mainPlan.billingPeriod}`}
+						chosenAmount={chosenAmount}
+						threshold={threshold}
+					/>
+					{!continuedToConfirmation && (
+						<section>
+							<ThemeProvider
+								theme={buttonThemeReaderRevenueBrand}
+							>
+								<Button
+									onClick={() =>
+										setContinuedToConfirmation(
+											chosenAmount ? true : false,
+										)
+									}
+								>
+									Continue with {mainPlan.currency}
+									{chosenAmount}/{mainPlan.billingPeriod}
+								</Button>
+							</ThemeProvider>
+						</section>
+					)}
+				</Stack>
 			</div>
 		</>
 	);
