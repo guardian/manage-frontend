@@ -34,10 +34,3 @@ export const signInContentContainerCss = css`
 	padding: ${space[3]}px;
 	color: ${palette.neutral[100]};
 `;
-
-export const sectionSpacing = css`
-	margin-top: ${space[6]}px;
-	${from.tablet} {
-		margin-top: ${space[9]}px;
-	}
-`;

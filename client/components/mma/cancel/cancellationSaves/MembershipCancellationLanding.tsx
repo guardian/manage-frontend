@@ -11,6 +11,7 @@ import type {
 } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
 import { buttonLayoutCss } from '../../../../styles/ButtonStyles';
+import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import {
 	LoadingState,
@@ -24,10 +25,8 @@ import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 import { Heading } from '../../shared/Heading';
-import { sectionSpacing } from '../../switch/SwitchStyles';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import { headingCss } from './SaveStyles';
 
 function ineligibleForSave(
 	products: ProductDetail[],

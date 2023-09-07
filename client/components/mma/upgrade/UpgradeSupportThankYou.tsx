@@ -12,16 +12,16 @@ import {
 	parseDate,
 } from '../../../../shared/dates';
 import {
-	headingCss,
-	stackedButtonLeftLayoutCss,
-	whatHappensNextCss,
-} from '../cancel/cancellationSaves/SaveStyles';
-import { Heading } from '../shared/Heading';
-import {
 	buttonCentredCss,
+	stackedButtonLeftLayoutCss,
+} from '../../../styles/ButtonStyles';
+import {
+	headingCss,
 	iconListCss,
 	sectionSpacing,
-} from '../switch/SwitchStyles';
+	whatHappensNextCss,
+} from '../../../styles/GenericStyles';
+import { Heading } from '../shared/Heading';
 import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 

@@ -10,11 +10,12 @@ import {
 	buttonCentredCss,
 	stackedButtonLeftLayoutCss,
 } from '../../../../styles/ButtonStyles';
+import { headingCss } from '../../../../styles/GenericStyles';
 import { getNewMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { ProgressStepper } from '../../shared/ProgressStepper';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import { headingCss, paragraphListCss } from './SaveStyles';
+import { paragraphListCss } from './SaveStyles';
 
 export const ContinueMembershipConfirmation = () => {
 	const navigate = useNavigate();

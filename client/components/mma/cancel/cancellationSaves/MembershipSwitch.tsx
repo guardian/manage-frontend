@@ -24,6 +24,17 @@ import {
 	stackedButtonLayoutCss,
 	wideButtonCss,
 } from '../../../../styles/ButtonStyles';
+import {
+	errorSummaryLinkCss,
+	errorSummaryOverrideCss,
+} from '../../../../styles/ErrorStyles';
+import {
+	iconListCss,
+	listWithDividersCss,
+	productTitleCss,
+	sectionSpacing,
+	smallPrintCss,
+} from '../../../../styles/GenericStyles';
 import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Card } from '../../shared/Card';
@@ -38,16 +49,7 @@ import {
 	CancellationContext,
 	CancellationPageTitleContext,
 } from '../CancellationContainer';
-import {
-	errorSummaryLinkCss,
-	errorSummaryOverrideCss,
-	iconListCss,
-	listWithDividersCss,
-	newAmountCss,
-	productTitleCss,
-	sectionSpacing,
-	smallPrintCss,
-} from './SaveStyles';
+import { newAmountCss } from './SaveStyles';
 
 const YourNewSupport = ({
 	contributionPriceDisplay,

@@ -21,6 +21,11 @@ import {
 	buttonContainerCss,
 } from '../../../../styles/ButtonStyles';
 import {
+	headingCss,
+	productTitleCss,
+	sectionSpacing,
+} from '../../../../styles/GenericStyles';
+import {
 	getNewMembershipPrice,
 	getOldMembershipPrice,
 } from '../../../../utilities/membershipPriceRise';
@@ -37,10 +42,7 @@ import { CancellationContext } from '../CancellationContainer';
 import {
 	cardHeaderDivCss,
 	cardSectionCss,
-	headingCss,
 	productSubtitleCss,
-	productTitleCss,
-	sectionSpacing,
 } from './SaveStyles';
 
 const NewPriceIcon = () => {

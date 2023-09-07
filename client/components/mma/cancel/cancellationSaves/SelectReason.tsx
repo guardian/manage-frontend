@@ -28,6 +28,7 @@ import {
 	stackedButtonLayoutCss,
 	wideButtonCss,
 } from '../../../../styles/ButtonStyles';
+import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import type {
@@ -37,7 +38,7 @@ import type {
 import { CancellationContext } from '../CancellationContainer';
 import type { CancellationReason } from '../cancellationReason';
 import { membershipCancellationReasons } from '../membership/MembershipCancellationReasons';
-import { headingCss, paragraphListCss, sectionSpacing } from './SaveStyles';
+import { paragraphListCss } from './SaveStyles';
 
 const reasonLegendCss = css`
 	display: block;

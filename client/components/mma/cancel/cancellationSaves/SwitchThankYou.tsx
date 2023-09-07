@@ -17,9 +17,14 @@ import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 } from '../../../../styles/ButtonStyles';
+import {
+	headingCss,
+	iconListCss,
+	sectionSpacing,
+	whatHappensNextCss,
+} from '../../../../styles/GenericStyles';
 import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { Heading } from '../../shared/Heading';
-import { iconListCss, sectionSpacing } from '../../switch/SwitchStyles';
 import type {
 	CancellationContextInterface,
 	CancellationPageTitleInterface,
@@ -29,7 +34,6 @@ import {
 	CancellationContext,
 	CancellationPageTitleContext,
 } from '../CancellationContainer';
-import { headingCss, whatHappensNextCss } from './SaveStyles';
 
 export const SwitchThankYou = () => {
 	const navigate = useNavigate();
