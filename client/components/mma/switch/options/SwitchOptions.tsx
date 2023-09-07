@@ -9,6 +9,7 @@ import { ErrorSummary } from '@guardian/source-react-components-development-kitc
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import { buttonCentredCss } from '../../../../styles/ButtonStyles';
 import { formatAmount } from '../../../../utilities/utils';
 import { supporterPlusSwitchBenefits } from '../../shared/benefits/BenefitsConfiguration';
 import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
@@ -20,7 +21,6 @@ import type {
 } from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
 import {
-	buttonCentredCss,
 	errorSummaryBlockLinkCss,
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,

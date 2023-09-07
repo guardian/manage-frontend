@@ -4,11 +4,11 @@ import { InfoSummary } from '@guardian/source-react-components-development-kitch
 import { parseDate } from '../../../../shared/dates';
 import type { CancelledProductDetail } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
 import { Card } from '../shared/Card';
 import { productCardConfiguration } from './ProductCardConfiguration';
 import {
-	buttonLayoutCss,
 	keyValueCss,
 	productDetailLayoutCss,
 	productTitleCss,
@@ -92,7 +92,7 @@ export const CancelledProductCard = ({
 								</div>
 							</dl>
 						</div>
-						<div css={buttonLayoutCss}>
+						<div css={wideButtonLayoutCss}>
 							{showSubscribeAgainButton && (
 								<LinkButton
 									href="https://support.theguardian.com/uk/subscribe"

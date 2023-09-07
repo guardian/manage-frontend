@@ -57,13 +57,3 @@ export const keyValueCss = css`
 		margin-left: 0;
 	}
 `;
-
-export const buttonLayoutCss = css`
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-
-	> * + * {
-		margin-top: ${space[3]}px;
-	}
-`;

@@ -85,16 +85,6 @@ export const listWithDividersCss = css`
 	}
 `;
 
-export const buttonCentredCss = css`
-	justify-content: center;
-`;
-
-export const buttonMutedCss = css`
-	${until.tablet} {
-		border: none;
-	}
-`;
-
 export const errorSummaryOverrideCss = css`
 	${until.tablet} {
 		border-radius: 6px;

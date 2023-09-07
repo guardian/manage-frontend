@@ -17,6 +17,10 @@ import type {
 	ProductSwitchType,
 } from '../../../../../shared/productSwitchTypes';
 import {
+	buttonCentredCss,
+	buttonMutedCss,
+} from '../../../../styles/ButtonStyles';
+import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
@@ -36,8 +40,6 @@ import type {
 } from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
 import {
-	buttonCentredCss,
-	buttonMutedCss,
 	errorSummaryBlockLinkCss,
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,

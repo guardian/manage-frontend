@@ -17,6 +17,10 @@ import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse
 import { getMainPlan } from '../../../../../shared/productResponse';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
 import {
+	buttonCentredCss,
+	buttonContainerCss,
+} from '../../../../styles/ButtonStyles';
+import {
 	getNewMembershipPrice,
 	getOldMembershipPrice,
 } from '../../../../utilities/membershipPriceRise';
@@ -31,8 +35,6 @@ import type {
 } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import {
-	buttonCentredCss,
-	buttonContainerCss,
 	cardHeaderDivCss,
 	cardSectionCss,
 	headingCss,

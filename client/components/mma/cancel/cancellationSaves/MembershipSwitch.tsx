@@ -18,6 +18,12 @@ import type {
 import { getMainPlan } from '../../../../../shared/productResponse';
 import type { ProductSwitchType } from '../../../../../shared/productSwitchTypes';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
+import {
+	buttonCentredCss,
+	buttonMutedCss,
+	stackedButtonLayoutCss,
+	wideButtonCss,
+} from '../../../../styles/ButtonStyles';
 import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Card } from '../../shared/Card';
@@ -33,8 +39,6 @@ import {
 	CancellationPageTitleContext,
 } from '../CancellationContainer';
 import {
-	buttonCentredCss,
-	buttonMutedCss,
 	errorSummaryLinkCss,
 	errorSummaryOverrideCss,
 	iconListCss,
@@ -43,8 +47,6 @@ import {
 	productTitleCss,
 	sectionSpacing,
 	smallPrintCss,
-	stackedButtonLayoutCss,
-	wideButtonCss,
 } from './SaveStyles';
 
 const YourNewSupport = ({

@@ -9,6 +9,7 @@ import type {
 	ProductDetail,
 } from '../../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
+import { stackedButtonLayoutCss } from '../../../../styles/ButtonStyles';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import { createProductDetailFetcher } from '../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
@@ -21,7 +22,6 @@ import type {
 } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
-import { stackedButtonLayoutCss } from './SaveStyles';
 
 export const ConfirmMembershipCancellation = () => {
 	const navigate = useNavigate();
