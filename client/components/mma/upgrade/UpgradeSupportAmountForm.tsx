@@ -39,7 +39,7 @@ function validateChoice(
 		chosenOptionNum < minAmount ||
 		chosenOptionNum > maxAmount
 	) {
-		return `Enter a number between ${minAmount} and ${maxAmount}`;
+		return `Enter a number between ${minAmount} and ${maxAmount}.`;
 	}
 	return null;
 }
@@ -114,12 +114,7 @@ export const UpgradeSupportAmountForm = ({
 	const [hasInteractedWithOtherAmount, setHasInteractedWithOtherAmount] =
 		useState<boolean>(false);
 
-	const [hasSubmitted] = useState<boolean>(false);
-
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-	const shouldShowOtherAmountErrorMessage =
-		hasInteractedWithOtherAmount || hasSubmitted;
 
 	useEffect(() => {
 		if (otherAmountSelected) {
@@ -199,7 +194,7 @@ export const UpgradeSupportAmountForm = ({
 								label={otherAmountLabel}
 								supporting={`Support ${currencySymbol}${threshold}/${mainPlan.billingPeriod} or more to unlock all benefits.`}
 								error={
-									(shouldShowOtherAmountErrorMessage &&
+									(hasInteractedWithOtherAmount &&
 										errorMessage) ||
 									undefined
 								}
@@ -222,12 +217,14 @@ export const UpgradeSupportAmountForm = ({
 							/>
 						</div>
 					)}
-					<BenefitsDisplay
-						chosenAmountDisplay={`${currencySymbol}${chosenAmount} per ${mainPlan.billingPeriod}`}
-						chosenAmount={chosenAmount}
-						threshold={threshold}
-					/>
-					{!continuedToConfirmation && chosenAmount && (
+					{!errorMessage && (
+						<BenefitsDisplay
+							chosenAmountDisplay={`${currencySymbol}${chosenAmount} per ${mainPlan.billingPeriod}`}
+							chosenAmount={chosenAmount}
+							threshold={threshold}
+						/>
+					)}
+					{!continuedToConfirmation && chosenAmount && !errorMessage && (
 						<section css={buttonContainerCss}>
 							<ThemeProvider
 								theme={buttonThemeReaderRevenueBrand}
