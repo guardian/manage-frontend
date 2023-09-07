@@ -19,6 +19,11 @@ import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { buttonCentredCss } from '../../../../styles/ButtonStyles';
+import {
+	iconListCss,
+	sectionSpacing,
+	whatHappensNextCss,
+} from '../../../../styles/GenericStyles';
 import { formatAmount } from '../../../../utilities/utils';
 import { Heading } from '../../shared/Heading';
 import type {
@@ -26,7 +31,6 @@ import type {
 	SwitchRouterState,
 } from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
-import { iconListCss, sectionSpacing } from '../SwitchStyles';
 import { SwitchSignInImage } from './SwitchSignInImage';
 
 export const SwitchComplete = () => {
@@ -173,12 +177,6 @@ const AppThankYouBanner = (props: {
 		</section>
 	);
 };
-
-const whatHappensNextCss = css`
-	li > svg {
-		fill: ${palette.brand[500]};
-	}
-`;
 
 const WhatHappensNext = (props: {
 	currency: string;

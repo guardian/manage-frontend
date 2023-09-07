@@ -13,7 +13,10 @@ import {
 } from '../../../../shared/mpapiResponse';
 import { Card } from '../shared/Card';
 import { productColour } from './ProductCardConfiguration';
-import { productDetailLayoutCss, productTitleCss } from './ProductCardStyles';
+import {
+	productCardTitleCss,
+	productDetailLayoutCss,
+} from './ProductCardStyles';
 
 const summaryLinkCss = css`
 	color: currentColor;
@@ -60,7 +63,7 @@ export const InAppPurchaseCard = ({
 							: productColour.inAppPurchase
 					}
 				>
-					<h3 css={productTitleCss(!isPuzzleApp)}>
+					<h3 css={productCardTitleCss(!isPuzzleApp)}>
 						{capitalize(puzzleOrNews)} app
 					</h3>
 				</Card.Header>

@@ -13,19 +13,19 @@ import {
 	stackedButtonLayoutCss,
 } from '../../../styles/ButtonStyles';
 import {
+	headingCss,
+	iconListCss,
 	sectionSpacing,
+	whatHappensNextCss,
+} from '../../../styles/GenericStyles';
+import {
 	signInContentContainerCss,
 	signInCss,
 	signInHeadingCss,
 	signInParaCss,
 } from '../../shared/SignIn';
-import {
-	headingCss,
-	whatHappensNextCss,
-} from '../cancel/cancellationSaves/SaveStyles';
 import { Heading } from '../shared/Heading';
 import { SwitchSignInImage } from '../switch/complete/SwitchSignInImage';
-import { iconListCss } from '../switch/SwitchStyles';
 import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 

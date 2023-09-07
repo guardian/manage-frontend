@@ -21,6 +21,17 @@ import {
 	buttonMutedCss,
 } from '../../../../styles/ButtonStyles';
 import {
+	errorSummaryBlockLinkCss,
+	errorSummaryLinkCss,
+	errorSummaryOverrideCss,
+} from '../../../../styles/ErrorStyles';
+import {
+	iconListCss,
+	listWithDividersCss,
+	productTitleCss,
+	sectionSpacing,
+} from '../../../../styles/GenericStyles';
+import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
@@ -39,15 +50,6 @@ import type {
 	SwitchRouterState,
 } from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
-import {
-	errorSummaryBlockLinkCss,
-	errorSummaryLinkCss,
-	errorSummaryOverrideCss,
-	iconListCss,
-	listWithDividersCss,
-	productTitleCss,
-	sectionSpacing,
-} from '../SwitchStyles';
 
 const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
 	props.PaymentFailure ? (

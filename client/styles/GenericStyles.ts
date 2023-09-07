@@ -5,13 +5,54 @@ import {
 	palette,
 	space,
 	textSans,
-	until,
 } from '@guardian/source-foundations';
 
 export const sectionSpacing = css`
 	margin-top: ${space[6]}px;
 	${from.tablet} {
 		margin-top: ${space[9]}px;
+	}
+`;
+
+export const headingCss = css`
+	${headline.xsmall({ fontWeight: 'bold' })};
+	margin-top: 0;
+	margin-bottom: 0;
+	${from.tablet} {
+		${headline.small({ fontWeight: 'bold' })};
+	}
+	span {
+		display: block;
+		color: ${palette.brand['500']};
+	}
+`;
+
+export const whatHappensNextCss = css`
+	li > svg {
+		fill: ${palette.brand[500]};
+	}
+`;
+
+export const iconListCss = css`
+	${textSans.medium()};
+	list-style: none;
+	padding: 0;
+	margin-bottom: 0;
+	li + li {
+		margin-top: ${space[2]}px;
+		${from.tablet} {
+			margin-top: ${space[3]}px;
+		}
+	}
+	li {
+		display: flex;
+		margin-left: -4px;
+		align-items: flex-start;
+		> svg {
+			flex-shrink: 0;
+			margin-right: 8px;
+			fill: currentColor;
+		}
 	}
 `;
 
@@ -39,32 +80,6 @@ export const smallPrintCss = css`
 	}
 `;
 
-export const iconListCss = css`
-	${textSans.medium()};
-	list-style: none;
-	padding: 0;
-	margin-bottom: 0;
-
-	li + li {
-		margin-top: ${space[2]}px;
-		${from.tablet} {
-			margin-top: ${space[3]}px;
-		}
-	}
-
-	li {
-		display: flex;
-		margin-left: -4px;
-		align-items: flex-start;
-
-		> svg {
-			flex-shrink: 0;
-			margin-right: 8px;
-			fill: currentColor;
-		}
-	}
-`;
-
 export const listWithDividersCss = css`
 	li + li {
 		> svg {
@@ -85,18 +100,11 @@ export const listWithDividersCss = css`
 	}
 `;
 
-export const errorSummaryOverrideCss = css`
-	${until.tablet} {
-		border-radius: 6px;
+export const paragraphListCss = css`
+	${textSans.medium()};
+	${from.tablet} {
+		span {
+			display: block;
+		}
 	}
-`;
-
-export const errorSummaryLinkCss = css`
-	color: currentColor;
-	text-decoration: underline;
-`;
-
-export const errorSummaryBlockLinkCss = css`
-	display: block;
-	margin-top: ${space[3]}px;
 `;

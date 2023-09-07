@@ -10,6 +10,16 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { buttonCentredCss } from '../../../../styles/ButtonStyles';
+import {
+	errorSummaryBlockLinkCss,
+	errorSummaryLinkCss,
+	errorSummaryOverrideCss,
+} from '../../../../styles/ErrorStyles';
+import {
+	productTitleCss,
+	sectionSpacing,
+	smallPrintCss,
+} from '../../../../styles/GenericStyles';
 import { formatAmount } from '../../../../utilities/utils';
 import { supporterPlusSwitchBenefits } from '../../shared/benefits/BenefitsConfiguration';
 import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
@@ -20,14 +30,6 @@ import type {
 	SwitchRouterState,
 } from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
-import {
-	errorSummaryBlockLinkCss,
-	errorSummaryLinkCss,
-	errorSummaryOverrideCss,
-	productTitleCss,
-	sectionSpacing,
-	smallPrintCss,
-} from '../SwitchStyles';
 
 const cardHeaderDivCss = css`
 	display: flex;

@@ -8,13 +8,13 @@ import {
 	buttonCentredCss,
 	reverseStackedButtonLayoutCss,
 } from '../../../../styles/ButtonStyles';
+import { headingCss } from '../../../../styles/GenericStyles';
 import { ProgressStepper } from '../../shared/ProgressStepper';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
 } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import { headingCss } from './SaveStyles';
 
 export const ValueOfSupport = () => {
 	const navigate = useNavigate();
