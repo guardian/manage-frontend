@@ -10,7 +10,6 @@ import {
 } from '@guardian/source-react-components';
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useEffect, useState } from 'react';
-import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
@@ -29,27 +28,18 @@ function validateChoice(
 	minAmount: number,
 	maxAmount: number,
 	isOtherAmountSelected: boolean,
-	mainPlan: PaidSubscriptionPlan,
 ): string | null {
 	const chosenOptionNum = Number(chosenAmount);
 	if (!chosenAmount && !isOtherAmountSelected) {
 		return 'Please make a selection';
 	} else if (chosenOptionNum === currentAmount) {
-		return 'You have selected the same amount as you currently contribute';
-	} else if (!chosenAmount || isNaN(chosenOptionNum)) {
-		return 'There is a problem with the amount you have selected, please make sure it is a valid amount';
-	} else if (!isNaN(chosenOptionNum) && chosenOptionNum < minAmount) {
-		return `There is a minimum ${
-			mainPlan.billingPeriod
-		}ly contribution amount of ${mainPlan.currency}${minAmount.toFixed(
-			2,
-		)} ${mainPlan.currencyISO}`;
-	} else if (!isNaN(chosenOptionNum) && chosenOptionNum > maxAmount) {
-		return `There is a maximum ${
-			mainPlan.billingPeriod
-		}ly contribution amount of ${mainPlan.currency}${maxAmount.toFixed(
-			2,
-		)} ${mainPlan.currencyISO}`;
+		return 'This is the same amount as your current support. Please enter a new amount.';
+	} else if (
+		!chosenAmount ||
+		chosenOptionNum < minAmount ||
+		chosenOptionNum > maxAmount
+	) {
+		return `Enter a number between ${minAmount} and ${maxAmount}`;
 	}
 	return null;
 }
@@ -144,7 +134,6 @@ export const UpgradeSupportAmountForm = ({
 			priceConfig.minAmount,
 			priceConfig.maxAmount,
 			isOtherAmountSelected,
-			mainPlan,
 		);
 		setErrorMessage(newErrorMessage);
 	}, [otherAmountSelected, chosenAmount]);
