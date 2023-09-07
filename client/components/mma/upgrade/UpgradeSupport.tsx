@@ -1,8 +1,7 @@
 import { css } from '@emotion/react';
-import { headline, textSans } from '@guardian/source-foundations';
+import { headline, space, textSans, until } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
-import { sectionSpacing } from '../../../styles/GenericStyles';
 import { getSuggestedAmountsFromMainPlan } from '../../../utilities/supporterPlusPricing';
 import { ConfirmForm } from './ConfirmForm';
 import { UpgradeSupportAmountForm } from './UpgradeSupportAmountForm';
@@ -26,13 +25,20 @@ export const UpgradeSupport = () => {
 
 	return (
 		<>
-			<section css={sectionSpacing}>
+			<section
+				css={css`
+					margin-top: ${space[4]}px;
+				`}
+			>
 				<Stack space={6}>
 					<Stack space={1}>
 						<h2
 							css={css`
-								${headline.medium({ fontWeight: 'bold' })};
 								margin: 0;
+								${headline.medium({ fontWeight: 'bold' })};
+								${until.tablet} {
+									${headline.xsmall({ fontWeight: 'bold' })};
+								}
 							`}
 						>
 							Increase your support

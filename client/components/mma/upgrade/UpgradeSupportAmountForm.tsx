@@ -1,5 +1,5 @@
 import { css, ThemeProvider } from '@emotion/react';
-import { space, textSans } from '@guardian/source-foundations';
+import { space, textSans, until } from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
@@ -11,6 +11,11 @@ import {
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../shared/productResponse';
+import {
+	buttonCentredCss,
+	buttonContainerCss,
+} from '../../../styles/ButtonStyles';
+import { twoColumnChoiceCardMobile } from '../../../styles/GenericStyles';
 import type { ContributionInterval } from '../../../utilities/contributionsAmount';
 import { contributionAmountsLookup } from '../../../utilities/contributionsAmount';
 import { UpgradeBenefitsCard } from '../shared/benefits/BenefitsCard';
@@ -152,6 +157,9 @@ export const UpgradeSupportAmountForm = ({
 				<h3
 					css={css`
 						${textSans.xlarge({ fontWeight: 'bold' })};
+						${until.tablet} {
+							${textSans.large({ fontWeight: 'bold' })};
+						}
 						margin: 0;
 					`}
 				>
@@ -159,6 +167,7 @@ export const UpgradeSupportAmountForm = ({
 				</h3>
 				<Stack space={4}>
 					<ChoiceCardGroup
+						cssOverrides={twoColumnChoiceCardMobile}
 						name="amounts"
 						data-cy="contribution-amount-choices"
 					>
@@ -202,7 +211,7 @@ export const UpgradeSupportAmountForm = ({
 							<TextInput
 								label={otherAmountLabel}
 								supporting={
-									'Support £10/month or more to unlock all extras'
+									'Support TODO or more to unlock all extras'
 								}
 								error={
 									(shouldShowOtherAmountErrorMessage &&
@@ -233,11 +242,12 @@ export const UpgradeSupportAmountForm = ({
 						threshold={threshold}
 					/>
 					{!continuedToConfirmation && (
-						<section>
+						<section css={buttonContainerCss}>
 							<ThemeProvider
 								theme={buttonThemeReaderRevenueBrand}
 							>
 								<Button
+									cssOverrides={buttonCentredCss}
 									onClick={() =>
 										setContinuedToConfirmation(
 											chosenAmount ? true : false,

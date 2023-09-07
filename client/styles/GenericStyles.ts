@@ -5,6 +5,7 @@ import {
 	palette,
 	space,
 	textSans,
+	until,
 } from '@guardian/source-foundations';
 
 export const sectionSpacing = css`
@@ -105,6 +106,16 @@ export const paragraphListCss = css`
 	${from.tablet} {
 		span {
 			display: block;
+		}
+	}
+`;
+
+export const twoColumnChoiceCardMobile = css`
+	> div {
+		${until.mobileLandscape} {
+			display: grid;
+			column-gap: ${space[2]}px;
+			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 `;
