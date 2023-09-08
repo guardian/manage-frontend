@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-import { brand, textSans } from '@guardian/source-foundations'; //move import?
 import {
 	LinkButton,
 	Stack,
@@ -32,8 +31,11 @@ import type {
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 import {
 	headingCSS,
+	iconTextCss,
+	linkCss,
 	paragraphCss,
 	sectionSpacing,
+	withMarginParagraphCss,
 } from './UpgradeSupportStyles';
 
 export const UpgradeSupportThankYou = () => {
@@ -43,11 +45,13 @@ export const UpgradeSupportThankYou = () => {
 
 	const location = useLocation();
 	const routerState = location.state as UpgradeRouterState;
-	const amountPayableToday = routerState?.amountPayableToday;
-	const chosenAmount = routerState?.chosenAmount;
+	const amountPayableToday = routerState?.amountPayableToday.toFixed(2);
+	const chosenAmount = routerState?.chosenAmount.toFixed(2);
 
 	const currency = upgradeSupportContext.mainPlan.currency;
-	const previousPrice = upgradeSupportContext.mainPlan.price;
+	const previousPrice = (upgradeSupportContext.mainPlan.price / 100).toFixed(
+		2,
+	);
 	const billingPeriod = upgradeSupportContext.mainPlan.billingPeriod;
 	const userEmail = upgradeSupportContext.user?.user?.email;
 
@@ -66,8 +70,7 @@ export const UpgradeSupportThankYou = () => {
 				<Stack>
 					<p css={paragraphCss}>
 						You’ve increased your support from {currency}
-						{(previousPrice / 100.0).toFixed(2)} per {billingPeriod}{' '}
-						to {currency}
+						{previousPrice} to {currency}
 						{chosenAmount} per {billingPeriod}.
 					</p>
 				</Stack>
@@ -78,16 +81,7 @@ export const UpgradeSupportThankYou = () => {
 					<ul css={[iconListCss, whatHappensNextCss]}>
 						<li>
 							<SvgEnvelope size="medium" />
-							<span
-								data-qm-masking="blocklist"
-								css={css`
-									font-size: 17px;
-									font-style: normal;
-									font-weight: 700;
-									line-height: 130%; /* 22.1px */
-									margin-top: 4px;
-								`}
-							>
+							<span data-qm-masking="blocklist" css={iconTextCss}>
 								Check your email
 							</span>
 						</li>
@@ -102,36 +96,16 @@ export const UpgradeSupportThankYou = () => {
 						<Heading sansSerif>
 							<li>
 								<SvgCalendar size="medium" />
-								<span
-									css={css`
-										font-size: 17px;
-										font-style: normal;
-										font-weight: 700;
-										line-height: 130%; /* 22.1px */
-										margin-bottom: 12px;
-										margin-top: 4px;
-									`}
-								>
+								<span css={iconTextCss}>
 									Your billing date has changed
 								</span>
 							</li>
-							<p
-								css={css`
-									font-size: 17px;
-									font-style: normal;
-									font-weight: 400;
-									line-height: 130%; /* 22.1px */
-									margin-bottom: 36px;
-									margin-top: 2px;
-									margin-left: 36px;
-								`}
-							>
+							<p css={withMarginParagraphCss}>
 								Your first billing date is today and you will be
 								charged {currency}
 								{amountPayableToday}. From {nextBillingDate},
 								your ongoing monthly payment will be {currency}
 								{chosenAmount}{' '}
-								{/* add in to fixed and null handling */}
 							</p>
 						</Heading>
 					</ul>
@@ -159,18 +133,7 @@ export const UpgradeSupportThankYou = () => {
 					Continue to the Guardian
 				</LinkButton>
 
-				<div
-					css={css`
-						${textSans.medium()};
-						color: ${brand[400]};
-						font-style: normal;
-						font-weight: 700;
-						line-height: 135%; /* 22.95px */
-						text-decoration-line: underline;
-						margin-left: 20px;
-						margin-top: 10px;
-					`}
-				>
+				<div css={linkCss}>
 					<a href="/">Back to account overview </a>
 				</div>
 			</div>

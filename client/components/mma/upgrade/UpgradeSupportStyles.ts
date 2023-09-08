@@ -6,16 +6,14 @@ export const sectionSpacing = css`
 `;
 
 export const linkCss = css`
-	a {
-		${textSans.medium()};
-		color: ${brand[400]};
-		font-style: normal;
-		font-weight: 700;
-		line-height: 135%; /* 22.95px */
-		text-decoration-line: underline;
-		margin-left: 20px;
-		margin-top: 20px;
-	}
+	${textSans.medium()};
+	color: ${brand[400]};
+	font-style: normal;
+	font-weight: 700;
+	line-height: 135%; /* 22.95px */
+	text-decoration-line: underline;
+	margin-left: 20px;
+	margin-top: 10px;
 `;
 
 export const headingCSS = css`
@@ -30,4 +28,21 @@ export const paragraphCss = css`
 	font-style: normal;
 	font-weight: 400;
 	line-height: 130%;
+`;
+
+export const withMarginParagraphCss = css`
+	margin-bottom: 32px;
+	font-size: 17px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 130%;
+	margin-left: 36px;
+`;
+
+export const iconTextCss = css`
+	font-size: 17px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 130%; /* 22.1px */
+	margin-top: 4px;
 `;
