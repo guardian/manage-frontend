@@ -9,7 +9,7 @@ export function calculateAmountPayableToday(
 	contributionRefundAmount: number,
 ): number {
 	// contributionRefundAmount will be a negative number (eg if the refund is £5 the param will be -5)
-	return userChosenAmount - -1 * contributionRefundAmount;
+	return userChosenAmount - Math.abs(contributionRefundAmount);
 }
 
 /**
