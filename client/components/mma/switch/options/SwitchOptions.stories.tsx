@@ -1,7 +1,9 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
-import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { contributionPaidByPayPal } from '../../../../fixtures/productBuilder/testProducts';
+import {
+	contributionPaidByPayPal,
+	contributionPaidByPayPalAboveSupporterPlusThreshold,
+} from '../../../../fixtures/productBuilder/testProducts';
 import { SwitchContainer } from '../SwitchContainer';
 import { SwitchOptions } from './SwitchOptions';
 
@@ -12,40 +14,34 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
-			state: { productDetail: contributionPaidByPayPal() },
+			state: {
+				productDetail:
+					contributionPaidByPayPalAboveSupporterPlusThreshold(),
+			},
 			container: <SwitchContainer />,
 		},
 	},
-} as ComponentMeta<typeof SwitchContainer>;
+} as Meta<typeof SwitchContainer>;
 
-export const AboveThreshold: ComponentStory<typeof SwitchOptions> = () => (
+export const AboveThreshold: StoryFn<typeof SwitchOptions> = () => (
 	<SwitchOptions />
 );
 
-export const BelowThreshold: ComponentStory<typeof SwitchOptions> = () => (
+export const BelowThreshold: StoryFn<typeof SwitchOptions> = () => (
 	<SwitchOptions />
 );
-
-const contributionBelowThreshold = JSON.parse(
-	JSON.stringify(contributionPaidByPayPal()),
-);
-const plan = contributionBelowThreshold.subscription
-	.currentPlans[0] as PaidSubscriptionPlan;
-plan.price = 300;
 
 BelowThreshold.parameters = {
 	reactRouter: {
-		state: { productDetail: contributionBelowThreshold },
+		state: { productDetail: contributionPaidByPayPal() },
 	},
 };
 
-export const FromApp: ComponentStory<typeof SwitchOptions> = () => (
-	<SwitchOptions />
-);
+export const FromApp: StoryFn<typeof SwitchOptions> = () => <SwitchOptions />;
 
 FromApp.parameters = {
 	reactRouter: {
 		container: <SwitchContainer isFromApp={true} />,
-		state: { productDetail: contributionBelowThreshold },
+		state: { productDetail: contributionPaidByPayPal() },
 	},
 };

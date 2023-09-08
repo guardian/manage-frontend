@@ -1,8 +1,7 @@
 import { css } from '@emotion/react';
-import { headline } from '@guardian/source-foundations';
+import { headline, space, textSans, until } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
-import { sectionSpacing } from '../../../styles/GenericStyles';
 import { getSuggestedAmountsFromMainPlan } from '../../../utilities/supporterPlusPricing';
 import { ConfirmForm } from './ConfirmForm';
 import { UpgradeSupportAmountForm } from './UpgradeSupportAmountForm';
@@ -10,13 +9,11 @@ import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 export const UpgradeSupport = () => {
-	const upgradeSupportContext = useContext(
+	const { mainPlan } = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
-	const suggestedAmounts = getSuggestedAmountsFromMainPlan(
-		upgradeSupportContext.mainPlan,
-	);
+	const suggestedAmounts = getSuggestedAmountsFromMainPlan(mainPlan);
 
 	const [chosenAmount, setChosenAmount] = useState<number | null>(
 		suggestedAmounts[0],
@@ -24,18 +21,41 @@ export const UpgradeSupport = () => {
 	const [continuedToConfirmation, setContinuedToConfirmation] =
 		useState<boolean>(false);
 
+	const currentAmount = mainPlan.price / 100;
+
 	return (
 		<>
-			<section css={sectionSpacing}>
-				<Stack space={3}>
-					<h2
-						css={css`
-							${headline.xsmall({ fontWeight: 'bold' })};
-							margin-bottom: 0;
-						`}
-					>
-						1. Increase your support
-					</h2>
+			<section
+				css={css`
+					margin-top: ${space[4]}px;
+				`}
+			>
+				<Stack space={6}>
+					<Stack space={1}>
+						<h2
+							css={css`
+								margin: 0;
+								${headline.medium({ fontWeight: 'bold' })};
+								${until.tablet} {
+									${headline.xsmall({ fontWeight: 'bold' })};
+								}
+							`}
+						>
+							Increase your support
+						</h2>
+						<div
+							css={css`
+								${textSans.medium()};
+								padding-bottom: ${space[2]}px;
+								${until.tablet} {
+									padding-bottom: ${space[4]}px;
+								}
+							`}
+						>
+							You're currently supporting {mainPlan.currency}
+							{currentAmount} per {mainPlan.billingPeriod}.
+						</div>
+					</Stack>
 					<UpgradeSupportAmountForm
 						chosenAmount={chosenAmount}
 						setChosenAmount={setChosenAmount}

@@ -1,5 +1,7 @@
 import type { ProductTypeKeys } from '../../../../../shared/productTypes';
 
+/* Product Switch Benefits */
+
 const supporterNewsletter = {
 	name: 'A regular supporter newsletter.',
 	description: 'Get exclusive insight from our newsroom',
@@ -22,7 +24,7 @@ const adFree = {
 
 export interface ProductBenefit {
 	name: string;
-	description: string;
+	description?: string;
 	isUnavailable?: boolean;
 }
 
@@ -49,3 +51,29 @@ export const benefitsConfiguration: {
 	guardianweekly: [],
 	guardianpatron: [],
 };
+
+export function getUpgradeBenefits(
+	supportProduct: 'contributions' | 'supporterplus',
+): ProductBenefit[] {
+	const isUnavailable = supportProduct === 'contributions';
+	return [
+		{
+			name: 'Fierce independent journalism',
+		},
+		{
+			name: 'A regular supporter newsletter',
+		},
+		{
+			name: 'Unlimited access in our app ',
+			isUnavailable,
+		},
+		{
+			name: 'Ad-free reading',
+			isUnavailable,
+		},
+		{
+			name: 'Offline reading',
+			isUnavailable,
+		},
+	];
+}
