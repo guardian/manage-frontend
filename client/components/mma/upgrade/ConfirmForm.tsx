@@ -1,7 +1,8 @@
-import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import { css, ThemeProvider } from '@emotion/react';
+import { from, palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
+	buttonThemeReaderRevenueBrand,
 	Stack,
 	SvgClock,
 	SvgCreditCard,
@@ -53,7 +54,12 @@ const WhatHappensNext = ({
 	alreadyPayingAboveThreshold: boolean;
 }) => {
 	return (
-		<section>
+		<section
+			css={css`
+				border-bottom: 1px solid ${palette.neutral[86]};
+				padding-bottom: ${space[4] + space[1]}px;
+			`}
+		>
 			<Stack space={4}>
 				<div
 					css={css`
@@ -226,7 +232,6 @@ export const ConfirmForm = ({
 		chosenAmount,
 		previewResponse.contributionRefundAmount,
 	);
-	console.log();
 
 	const nextPaymentDate = dateString(
 		new Date(previewResponse.nextPaymentDate),
@@ -265,8 +270,14 @@ export const ConfirmForm = ({
 	};
 
 	return (
-		<Stack space={2}>
-			<section>
+		<Stack space={4}>
+			<section
+				css={css`
+					${from.tablet} {
+						padding-bottom: ${space[2]}px;
+					}
+				`}
+			>
 				<Heading sansSerif level="3" borderless>
 					2. Confirm support increase
 				</Heading>
@@ -294,12 +305,15 @@ export const ConfirmForm = ({
 				/>
 			)}
 			<section>
-				<Button
-					onClick={confirmOnClick}
-					isLoading={isConfirmationLoading}
-				>
-					Confirm support change
-				</Button>
+				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
+					<Button
+						onClick={confirmOnClick}
+						isLoading={isConfirmationLoading}
+					>
+						Confirm increase to {currencySymbol}
+						{chosenAmount}/{mainPlan.billingPeriod}
+					</Button>
+				</ThemeProvider>
 			</section>
 			{aboveThreshold && (
 				<section>
