@@ -7,6 +7,7 @@ import {
 	SvgEnvelope,
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
+import { useLocation } from 'react-router';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
@@ -24,7 +25,10 @@ import {
 } from '../../shared/SignIn';
 import { Heading } from '../shared/Heading';
 import { SwitchSignInImage } from '../switch/complete/SwitchSignInImage';
-import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
+import type {
+	UpgradeRouterState,
+	UpgradeSupportInterface,
+} from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 import {
 	headingCSS,
@@ -37,7 +41,15 @@ export const UpgradeSupportThankYou = () => {
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
+	const location = useLocation();
+	const routerState = location.state as UpgradeRouterState;
+	const amountPayableToday = routerState?.amountPayableToday;
+	const chosenAmount = routerState?.chosenAmount;
+
+	const currency = upgradeSupportContext.mainPlan.currency;
+	const previousPrice = upgradeSupportContext.mainPlan.price;
 	const billingPeriod = upgradeSupportContext.mainPlan.billingPeriod;
+	const userEmail = upgradeSupportContext.user?.user?.email;
 
 	const nextBillingDate = parseDate(
 		upgradeSupportContext.mainPlan.chargedThrough ?? undefined,
@@ -53,14 +65,10 @@ export const UpgradeSupportThankYou = () => {
 				</Stack>
 				<Stack>
 					<p css={paragraphCss}>
-						You’ve increased your support from{' '}
-						{upgradeSupportContext.mainPlan.currency}
-						{upgradeSupportContext.mainPlan.price} per month to{' '}
-						{upgradeSupportContext.mainPlan.currency}
-						{(upgradeSupportContext.mainPlan.price / 100.0).toFixed(
-							2,
-						)}{' '}
-						per {billingPeriod}.
+						You’ve increased your support from {currency}
+						{(previousPrice / 100.0).toFixed(2)} per {billingPeriod}{' '}
+						to {currency}
+						{chosenAmount} per {billingPeriod}.
 					</p>
 				</Stack>
 			</section>
@@ -89,7 +97,7 @@ export const UpgradeSupportThankYou = () => {
 							`}
 						>
 							You will receive a confirmation email to
-							{upgradeSupportContext.user?.user?.email ?? ''}
+							{userEmail}
 						</p>
 						<Heading sansSerif>
 							<li>
@@ -119,16 +127,10 @@ export const UpgradeSupportThankYou = () => {
 								`}
 							>
 								Your first billing date is today and you will be
-								charged{' '}
-								{upgradeSupportContext.mainPlan.currency}
-								{upgradeSupportContext.mainPlan.price}. From{' '}
-								{nextBillingDate}, your ongoing monthly payment
-								will be{' '}
-								{upgradeSupportContext.mainPlan.currency}
-								{
-									upgradeSupportContext.subscription
-										.nextPaymentPrice
-								}{' '}
+								charged {currency}
+								{amountPayableToday}. From {nextBillingDate},
+								your ongoing monthly payment will be {currency}
+								{chosenAmount}{' '}
 								{/* add in to fixed and null handling */}
 							</p>
 						</Heading>

@@ -28,6 +28,12 @@ export interface UpgradeSupportInterface {
 	user?: MembersDataApiResponse;
 }
 
+export interface UpgradeRouterState {
+	chosenAmount: number;
+	amountPayableToday: number;
+	user?: MembersDataApiResponse;
+}
+
 export const UpgradeSupportContext: Context<UpgradeSupportInterface | {}> =
 	createContext({});
 
@@ -87,7 +93,7 @@ export const UpgradeSupportContainer = () => {
 	);
 	const pageTitle = `Your ${monthlyOrAnnual.toLowerCase()} support`;
 
-	const user = data.user?.email;
+	const userEmail = data?.user?.email;
 
 	return (
 		<UpgradeSupportPageContainer pageTitle={pageTitle}>
@@ -95,7 +101,7 @@ export const UpgradeSupportContainer = () => {
 				value={{
 					mainPlan,
 					subscription: contribution.subscription,
-					user,
+					userEmail,
 				}}
 			>
 				<Outlet />

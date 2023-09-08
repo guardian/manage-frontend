@@ -9,7 +9,7 @@ import {
 } from '@guardian/source-react-components';
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { Navigate, useLocation, useNavigate } from 'react-router';
 import type { Subscription } from '../../../../shared/productResponse';
 import type {
 	PreviewResponse,
@@ -29,7 +29,10 @@ import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView
 import { Heading } from '../shared/Heading';
 import { PaymentDetails } from '../shared/PaymentDetails';
 import { SupporterPlusTsAndCs } from '../shared/SupporterPlusTsAndCs';
-import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
+import type {
+	UpgradeRouterState,
+	UpgradeSupportInterface,
+} from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 const iconListCss = css`
@@ -207,6 +210,9 @@ export const ConfirmForm = ({
 	) as UpgradeSupportInterface;
 
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = (location.state || {}) as UpgradeRouterState;
+	routerState.chosenAmount = chosenAmount;
 
 	const threshold = getBenefitsThreshold(
 		mainPlan.currencyISO as CurrencyIso,
@@ -252,6 +258,8 @@ export const ConfirmForm = ({
 		return <Navigate to="/" />;
 	}
 
+	routerState.amountPayableToday = previewResponse.amountPayableToday;
+
 	const confirmOnClick = async () => {
 		if (isConfirmationLoading) {
 			return;
@@ -275,7 +283,8 @@ export const ConfirmForm = ({
 				subscription.subscriptionId,
 			);
 			setIsConfirmationLoading(false);
-			navigate('../thank-you');
+			console.log(routerState);
+			navigate('thank-you', { state: routerState });
 		}
 	};
 
