@@ -46,6 +46,10 @@ export const UpgradeSupport = () => {
 						<div
 							css={css`
 								${textSans.medium()};
+								padding-bottom: ${space[2]}px;
+								${until.tablet} {
+									padding-bottom: ${space[4]}px;
+								}
 							`}
 						>
 							You're currently supporting {mainPlan.currency}
