@@ -3,6 +3,7 @@ import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
 import { contributionPaidByCard } from '../../../fixtures/productBuilder/testProducts';
+import { productMovePreviewResponse } from '../../../fixtures/productMove';
 import { UpgradeSupport } from './UpgradeSupport';
 import { UpgradeSupportContainer } from './UpgradeSupportContainer';
 import { UpgradeSupportSwitchThankYou } from './UpgradeSupportSwitchThankYou';
@@ -24,6 +25,9 @@ export default {
 						toMembersDataApiResponse(contributionPaidByCard()),
 					),
 				);
+			}),
+			rest.post('/api/product-move/*', (_req, res, ctx) => {
+				return res(ctx.json(productMovePreviewResponse));
 			}),
 		],
 	},
