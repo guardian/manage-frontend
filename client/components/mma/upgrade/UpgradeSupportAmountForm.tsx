@@ -1,5 +1,5 @@
 import { css, ThemeProvider } from '@emotion/react';
-import { space, textSans, until } from '@guardian/source-foundations';
+import { space } from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
@@ -19,6 +19,7 @@ import type { ContributionInterval } from '../../../utilities/contributionsAmoun
 import { contributionAmountsLookup } from '../../../utilities/contributionsAmount';
 import { UpgradeBenefitsCard } from '../shared/benefits/BenefitsCard';
 import { getUpgradeBenefits } from '../shared/benefits/BenefitsConfiguration';
+import { Heading } from '../shared/Heading';
 import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
@@ -136,17 +137,9 @@ export const UpgradeSupportAmountForm = ({
 	return (
 		<>
 			<div>
-				<h3
-					css={css`
-						${textSans.xlarge({ fontWeight: 'bold' })};
-						${until.tablet} {
-							${textSans.large({ fontWeight: 'bold' })};
-						}
-						margin: 0;
-					`}
-				>
+				<Heading sansSerif level="3" borderless>
 					1. Choose your new amount
-				</h3>
+				</Heading>
 				<Stack space={4}>
 					<ChoiceCardGroup
 						cssOverrides={twoColumnChoiceCardMobile}
