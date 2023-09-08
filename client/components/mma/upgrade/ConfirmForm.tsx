@@ -9,22 +9,20 @@ import {
 } from '@guardian/source-react-components';
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router';
-import type { Subscription } from '../../../../shared/productResponse';
+import { useNavigate } from 'react-router';
 import type {
-	PreviewResponse,
-	ProductSwitchType,
-} from '../../../../shared/productSwitchTypes';
-import { contributionPaidByCard } from '../../../fixtures/productBuilder/testProducts';
-import type { CurrencyIso } from '../../../utilities/currencyIso';
+	PaidSubscriptionPlan,
+	Subscription,
+} from '../../../../shared/productResponse';
+import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
+import { LoadingState } from '../../../utilities/hooks/useAsyncLoader';
 import {
-	LoadingState,
-	useAsyncLoader,
-} from '../../../utilities/hooks/useAsyncLoader';
-import { getBenefitsThreshold } from '../../../utilities/supporterPlusPricing';
+	calculateAmountPayableToday,
+	calculateCheckChargeAmountBeforeUpdate,
+} from '../../../utilities/productMovePreview';
+import { productMoveFetch } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { Heading } from '../shared/Heading';
 import { PaymentDetails } from '../shared/PaymentDetails';
@@ -79,12 +77,16 @@ const listWithDividersCss = css`
 `;
 
 const WhatHappensNext = ({
-	contributionPriceDisplay,
+	amountPayableToday,
+	mainPlan,
 	subscription,
 }: {
-	contributionPriceDisplay: string;
+	amountPayableToday: number;
+	mainPlan: PaidSubscriptionPlan;
 	subscription: Subscription;
 }) => {
+	const firstPaymentDisplay = `${mainPlan.currency}${amountPayableToday}`;
+
 	return (
 		<section>
 			<Stack space={4}>
@@ -104,7 +106,7 @@ const WhatHappensNext = ({
 						<span>
 							<strong>
 								Your first payment will be just{' '}
-								{contributionPriceDisplay}
+								{firstPaymentDisplay}
 							</strong>
 							<br />
 							We will charge you...
@@ -158,24 +160,6 @@ const RoundUp = ({
 	);
 };
 
-const productMoveFetch = (
-	subscriptionId: string,
-	chosenAmount: number,
-	preview: boolean,
-	checkChargeAmountBeforeUpdate: boolean,
-) =>
-	fetch(`/api/product-move/${productSwitchType}/${subscriptionId}`, {
-		method: 'POST',
-		body: JSON.stringify({
-			price: chosenAmount,
-			preview,
-			checkChargeAmountBeforeUpdate,
-		}),
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
-
 const updateContributionAmountFetch = (
 	newAmount: number,
 	subscriptionId: string,
@@ -188,19 +172,22 @@ const updateContributionAmountFetch = (
 		},
 	);
 
-const productSwitchType: ProductSwitchType =
-	'recurring-contribution-to-supporter-plus';
-
 interface ConfirmFormProps {
 	chosenAmount: number;
 	setChosenAmount: Dispatch<SetStateAction<number | null>>;
+	threshold: number;
 	suggestedAmounts: number[];
+	previewResponse: PreviewResponse | null;
+	previewLoadingState: LoadingState;
 }
 
 export const ConfirmForm = ({
 	chosenAmount,
 	setChosenAmount,
+	threshold,
 	suggestedAmounts,
+	previewResponse,
+	previewLoadingState,
 }: ConfirmFormProps) => {
 	const { mainPlan, subscription } = useContext(
 		UpgradeSupportContext,
@@ -208,10 +195,6 @@ export const ConfirmForm = ({
 
 	const navigate = useNavigate();
 
-	const threshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		mainPlan.billingPeriod as 'month' | 'year',
-	);
 	const aboveThreshold = chosenAmount >= threshold;
 
 	const [shouldShowRoundUp] = useState<boolean>(
@@ -223,34 +206,25 @@ export const ConfirmForm = ({
 	const [isConfirmationLoading, setIsConfirmationLoading] =
 		useState<boolean>(false);
 
-	const amountToPreview = aboveThreshold ? chosenAmount : threshold;
+	if (previewLoadingState === LoadingState.IsLoading) {
+		return (
+			<DefaultLoadingView loadingMessage="Loading your payment details..." />
+		);
+	}
 
-	const {
-		data: previewResponse,
-		loadingState,
-	}: {
-		data: PreviewResponse | null;
-		loadingState: LoadingState;
-	} = useAsyncLoader(
-		() =>
-			productMoveFetch(
-				subscription.subscriptionId,
-				amountToPreview,
-				true,
-				false,
-			),
-		JsonResponseHandler,
-	);
-
-	if (loadingState == LoadingState.HasError) {
+	if (
+		previewLoadingState === LoadingState.HasError ||
+		previewResponse === null
+	) {
 		return <GenericErrorScreen />;
 	}
-	if (loadingState == LoadingState.IsLoading) {
-		return <DefaultLoadingView />;
-	}
-	if (previewResponse === null) {
-		return <Navigate to="/" />;
-	}
+
+	const amountPayableToday = calculateAmountPayableToday(
+		chosenAmount,
+		previewResponse.contributionRefundAmount,
+	);
+	const checkChargeAmount =
+		calculateCheckChargeAmountBeforeUpdate(amountPayableToday);
 
 	const confirmOnClick = async () => {
 		if (isConfirmationLoading) {
@@ -264,8 +238,9 @@ export const ConfirmForm = ({
 			await productMoveFetch(
 				subscription.subscriptionId,
 				chosenAmount,
+				'recurring-contribution-to-supporter-plus',
+				checkChargeAmount,
 				false,
-				previewResponse.checkChargeAmountBeforeUpdate,
 			);
 			setIsConfirmationLoading(false);
 			navigate('../switch-thank-you');
@@ -291,8 +266,9 @@ export const ConfirmForm = ({
 			)}
 			{aboveThreshold && (
 				<WhatHappensNext
-					contributionPriceDisplay={`${previewResponse.amountPayableToday}`}
-					subscription={contributionPaidByCard().subscription}
+					amountPayableToday={amountPayableToday}
+					mainPlan={mainPlan}
+					subscription={subscription}
 				/>
 			)}
 			<section>
