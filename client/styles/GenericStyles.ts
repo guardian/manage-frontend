@@ -28,7 +28,7 @@ export const headingCss = css`
 	}
 `;
 
-export const whatHappensNextCss = css`
+export const whatHappensNextIconCss = css`
 	li > svg {
 		fill: ${palette.brand[500]};
 	}
