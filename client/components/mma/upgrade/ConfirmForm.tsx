@@ -18,6 +18,10 @@ import type {
 } from '../../../../shared/productResponse';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
 import {
+	buttonCentredCss,
+	buttonContainerCss,
+} from '../../../styles/ButtonStyles';
+import {
 	iconListCss,
 	listWithDividersCss,
 	whatHappensNextIconCss,
@@ -304,9 +308,10 @@ export const ConfirmForm = ({
 					alreadyPayingAboveThreshold={mainPlan.price >= threshold}
 				/>
 			)}
-			<section>
+			<section css={buttonContainerCss}>
 				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
 					<Button
+						cssOverrides={buttonCentredCss}
 						onClick={confirmOnClick}
 						isLoading={isConfirmationLoading}
 					>
