@@ -68,9 +68,23 @@ export function contributionPaidByCard() {
 		.getProductDetailObject();
 }
 
+export function contributionAboveSupporterPlusThreshold() {
+	return new ProductBuilder(baseContribution())
+		.payByCard()
+		.withPrice(1000)
+		.getProductDetailObject();
+}
+
 export function contributionPaidByPayPal() {
 	return new ProductBuilder(baseContribution())
 		.payByPayPal()
+		.getProductDetailObject();
+}
+
+export function contributionPaidByPayPalAboveSupporterPlusThreshold() {
+	return new ProductBuilder(baseContribution())
+		.payByPayPal()
+		.withPrice(1000)
 		.getProductDetailObject();
 }
 
@@ -90,6 +104,14 @@ export function contributionCancelled() {
 	return new ProductBuilder(baseContribution())
 		.payByCard()
 		.cancel()
+		.getProductDetailObject();
+}
+
+export function contributionWithPaymentFailure() {
+	return new ProductBuilder(baseContribution())
+		.payByCard()
+		.withAlertText('Payment failed')
+		.withPrice(1000)
 		.getProductDetailObject();
 }
 

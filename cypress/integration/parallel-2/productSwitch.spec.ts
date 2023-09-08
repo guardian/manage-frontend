@@ -4,10 +4,10 @@ import {
 	productMovePreviewResponse,
 	productMoveSuccessfulResponse,
 } from '../../../client/fixtures/productMove';
-import { ProductDetail } from '../../../shared/productResponse';
 import {
-	contributionPaidByCard,
-	contributionPaidByPayPal,
+	contributionAboveSupporterPlusThreshold,
+	contributionPaidByPayPalAboveSupporterPlusThreshold,
+	contributionWithPaymentFailure,
 	nonServicedCountryContributor,
 } from '../../../client/fixtures/productBuilder/testProducts';
 
@@ -29,16 +29,16 @@ describe('product switching', () => {
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
-				contributionPaidByCard(),
-				contributionPaidByPayPal(),
+				contributionAboveSupporterPlusThreshold(),
+				contributionPaidByPayPalAboveSupporterPlusThreshold(),
 			),
 		}).as('mdapi_get_contribution');
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
-				contributionPaidByCard(),
-				contributionPaidByPayPal(),
+				contributionAboveSupporterPlusThreshold(),
+				contributionPaidByPayPalAboveSupporterPlusThreshold(),
 			),
 		});
 
@@ -63,7 +63,7 @@ describe('product switching', () => {
 		}).as('product_move');
 	});
 
-	it('successfully completes product switching page from Account Overview', () => {
+	it('successfully completes product switching page from Account Overview (pay by PayPal)', () => {
 		cy.visit('/');
 		setSignInStatus();
 
@@ -93,28 +93,11 @@ describe('product switching', () => {
 		cy.get('@mdapi_get_contribution.all').should('have.length', 0);
 	});
 
-	it('shows product switching page when visiting URL directly', () => {
+	it('switches product', () => {
 		cy.visit('/switch');
 		setSignInStatus();
+
 		cy.findByText('Your current support').should('exist');
-	});
-
-	it('shows review page after choosing to switch', () => {
-		cy.visit('/switch');
-		setSignInStatus();
-
-		cy.findByRole('button', {
-			name: 'Add extras',
-		}).click();
-
-		cy.findByText('Review change').should('exist');
-		cy.findByText('Your new support').should('exist');
-		cy.findByText('What happens next?').should('exist');
-	});
-
-	it('successfully switches product', () => {
-		cy.visit('/switch');
-		setSignInStatus();
 
 		cy.findByRole('button', {
 			name: 'Add extras',
@@ -183,14 +166,9 @@ describe('product switching', () => {
 	});
 
 	it('shows payment failure error message and does not call product move API again', () => {
-		const contributionWithPaymentFailure: ProductDetail = JSON.parse(
-			JSON.stringify(contributionPaidByCard()),
-		);
-		contributionWithPaymentFailure.alertText = 'Payment failed';
-
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contributionWithPaymentFailure),
+			body: toMembersDataApiResponse(contributionWithPaymentFailure()),
 		});
 
 		cy.visit('/switch');
