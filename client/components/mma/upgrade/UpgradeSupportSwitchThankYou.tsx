@@ -53,8 +53,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 					<li>
 						<SvgEnvelope size="medium" />
 						<span data-qm-masking="blocklist">
-							You will receive a confirmation email to{' '}
-							<> {userEmail} </>
+							You will receive a confirmation email to {userEmail}
 						</span>
 					</li>
 					<li>
