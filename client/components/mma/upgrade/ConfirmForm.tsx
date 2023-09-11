@@ -285,7 +285,11 @@ export const ConfirmForm = ({
 				<Heading sansSerif level="3" borderless>
 					2. Confirm support increase
 				</Heading>
-				<div>
+				<div
+					css={css`
+						${textSans.medium()}
+					`}
+				>
 					You've selected to support {currencySymbol}
 					{chosenAmount} per {mainPlan.billingPeriod}
 					{aboveThreshold ? ', which unlocks all benefits' : ''}.
