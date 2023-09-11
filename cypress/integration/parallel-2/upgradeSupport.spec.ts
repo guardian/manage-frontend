@@ -49,7 +49,7 @@ describe('upgrade support', () => {
 		}).click();
 
 		cy.findByRole('button', {
-			name: /Confirm support change/,
+			name: /Confirm support increase/,
 		}).click();
 
 		cy.wait('@product_move');
