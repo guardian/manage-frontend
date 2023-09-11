@@ -8,12 +8,12 @@ export const sectionSpacing = css`
 export const linkCss = css`
 	${textSans.medium()};
 	color: ${brand[400]};
-	font-style: normal;
 	font-weight: 700;
-	line-height: 135%; /* 22.95px */
 	text-decoration-line: underline;
-	margin-left: 20px;
 	margin-top: 10px;
+	margin-left: 20px;
+	display: flex;
+	justify-content: center;
 `;
 
 export const headingCSS = css`

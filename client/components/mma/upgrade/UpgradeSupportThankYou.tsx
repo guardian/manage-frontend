@@ -13,7 +13,7 @@ import {
 } from '../../../../shared/dates';
 import {
 	buttonCentredCss,
-	stackedButtonLeftLayoutCss,
+	stackedButtonLayoutCss,
 } from '../../../styles/ButtonStyles';
 import { iconListCss, whatHappensNextCss } from '../../../styles/GenericStyles';
 import {
@@ -125,7 +125,7 @@ export const UpgradeSupportThankYou = () => {
 					</div>
 				</div>
 			</section>
-			<div css={stackedButtonLeftLayoutCss}>
+			<div css={stackedButtonLayoutCss}>
 				<LinkButton
 					href="https://theguardian.com"
 					cssOverrides={buttonCentredCss}
