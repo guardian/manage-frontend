@@ -283,7 +283,6 @@ export const ConfirmForm = ({
 				subscription.subscriptionId,
 			);
 			setIsConfirmationLoading(false);
-			console.log(routerState);
 			navigate('thank-you', { state: routerState });
 		}
 	};
