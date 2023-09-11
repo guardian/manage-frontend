@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { space, textSans } from '@guardian/source-foundations';
 import {
 	LinkButton,
 	Stack,
@@ -33,7 +34,6 @@ import {
 	headingCSS,
 	iconTextCss,
 	linkCss,
-	paragraphCss,
 	sectionSpacing,
 	withMarginParagraphCss,
 } from './UpgradeSupportStyles';
@@ -68,7 +68,12 @@ export const UpgradeSupportThankYou = () => {
 					</h2>
 				</Stack>
 				<Stack>
-					<p css={paragraphCss}>
+					<p
+						css={css`
+							${textSans.medium()}
+							margin-bottom: ${space[9]}
+						`}
+					>
 						You’ve increased your support from {currency}
 						{previousPrice} to {currency}
 						{chosenAmount} per {billingPeriod}.
@@ -76,7 +81,7 @@ export const UpgradeSupportThankYou = () => {
 				</Stack>
 			</section>
 			<section>
-				<Stack space={4}>
+				<Stack space={3}>
 					<Heading sansSerif>What happens next?</Heading>
 					<ul css={[iconListCss, whatHappensNextCss]}>
 						<li>
@@ -85,11 +90,7 @@ export const UpgradeSupportThankYou = () => {
 								Check your email
 							</span>
 						</li>
-						<p
-							css={css`
-								margin-left: 36px;
-							`}
-						>
+						<p css={withMarginParagraphCss}>
 							You will receive a confirmation email to
 							{userEmail}
 						</p>

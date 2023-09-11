@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { brand, headline, space, textSans } from '@guardian/source-foundations';
+import {
+	brand,
+	from,
+	headline,
+	space,
+	textSans,
+} from '@guardian/source-foundations';
 
 export const sectionSpacing = css`
 	margin-top: ${space[4]}px;
@@ -17,25 +23,18 @@ export const linkCss = css`
 `;
 
 export const headingCSS = css`
-	${headline.medium({ fontWeight: 'bold' })};
-	margin-top: 0;
-	margin-bottom: 0;
-`;
+	${from.desktop} {
+      ${headline.medium({ fontWeight: 'bold' })};
+      margin-bottom: 0;
+    }
 
-export const paragraphCss = css`
-	margin-bottom: 32px;
-	font-size: 17px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: 130%;
+	${from.mobile}{
+		${headline.xsmall({ fontWeight: 'bold' })}
+		margin-bottom: 0;
 `;
 
 export const withMarginParagraphCss = css`
-	margin-bottom: 32px;
-	font-size: 17px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: 130%;
+	${textSans.medium()};
 	margin-left: 36px;
 `;
 
