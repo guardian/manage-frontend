@@ -32,7 +32,6 @@ export interface UpgradeSupportInterface {
 export interface UpgradeRouterState {
 	chosenAmount: number;
 	amountPayableToday: number;
-	user?: MembersDataApiResponse;
 }
 
 export const UpgradeSupportContext: Context<UpgradeSupportInterface | {}> =

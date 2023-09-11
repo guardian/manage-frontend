@@ -53,7 +53,7 @@ export const UpgradeSupportThankYou = () => {
 		2,
 	);
 	const billingPeriod = upgradeSupportContext.mainPlan.billingPeriod;
-	const userEmail = upgradeSupportContext.user?.email;
+	const userEmail = upgradeSupportContext.user?.email ?? '';
 
 	const nextBillingDate = parseDate(
 		upgradeSupportContext.mainPlan.chargedThrough ?? undefined,
