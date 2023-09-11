@@ -3,6 +3,7 @@ import { createContext } from 'react';
 import { Navigate, Outlet } from 'react-router';
 import type {
 	MembersDataApiResponse,
+	MembersDataApiUser,
 	PaidSubscriptionPlan,
 	Subscription,
 } from '../../../../shared/productResponse';
@@ -25,7 +26,7 @@ import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView
 export interface UpgradeSupportInterface {
 	mainPlan: PaidSubscriptionPlan;
 	subscription: Subscription;
-	user?: MembersDataApiResponse;
+	user?: MembersDataApiUser;
 }
 
 export interface UpgradeRouterState {
@@ -93,15 +94,13 @@ export const UpgradeSupportContainer = () => {
 	);
 	const pageTitle = `Your ${monthlyOrAnnual.toLowerCase()} support`;
 
-	const userEmail = data?.user?.email;
-
 	return (
 		<UpgradeSupportPageContainer pageTitle={pageTitle}>
 			<UpgradeSupportContext.Provider
 				value={{
 					mainPlan,
 					subscription: contribution.subscription,
-					userEmail,
+					user: data.user,
 				}}
 			>
 				<Outlet />
