@@ -2,14 +2,22 @@ import { css } from '@emotion/react';
 import { headline, space, textSans, until } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
-import { getSuggestedAmountsFromMainPlan } from '../../../utilities/supporterPlusPricing';
+import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
+import type { CurrencyIso } from '../../../utilities/currencyIso';
+import { useAsyncLoader } from '../../../utilities/hooks/useAsyncLoader';
+import { productMoveFetch } from '../../../utilities/productUtils';
+import {
+	getBenefitsThreshold,
+	getSuggestedAmountsFromMainPlan,
+} from '../../../utilities/supporterPlusPricing';
+import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { ConfirmForm } from './ConfirmForm';
 import { UpgradeSupportAmountForm } from './UpgradeSupportAmountForm';
 import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 export const UpgradeSupport = () => {
-	const { mainPlan } = useContext(
+	const { mainPlan, subscription } = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
@@ -22,6 +30,23 @@ export const UpgradeSupport = () => {
 		useState<boolean>(false);
 
 	const currentAmount = mainPlan.price / 100;
+	const threshold = getBenefitsThreshold(
+		mainPlan.currencyISO as CurrencyIso,
+		mainPlan.billingPeriod as 'month' | 'year',
+	);
+
+	const { data: previewResponse, loadingState: previewLoadingState } =
+		useAsyncLoader<PreviewResponse>(
+			() =>
+				productMoveFetch(
+					subscription.subscriptionId,
+					threshold,
+					'recurring-contribution-to-supporter-plus',
+					false,
+					true,
+				),
+			JsonResponseHandler,
+		);
 
 	return (
 		<>
@@ -66,8 +91,11 @@ export const UpgradeSupport = () => {
 					{continuedToConfirmation && chosenAmount && (
 						<ConfirmForm
 							chosenAmount={chosenAmount}
+							threshold={threshold}
 							setChosenAmount={setChosenAmount}
 							suggestedAmounts={suggestedAmounts}
+							previewResponse={previewResponse}
+							previewLoadingState={previewLoadingState}
 						/>
 					)}
 				</Stack>
