@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, textSans } from '@guardian/source-foundations';
+import { headline, space, textSans, until } from '@guardian/source-foundations';
 import {
 	LinkButton,
 	Stack,
@@ -31,10 +31,8 @@ import type {
 } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 import {
-	headingCSS,
 	iconTextCss,
 	linkCss,
-	sectionSpacing,
 	withMarginParagraphCss,
 } from './UpgradeSupportStyles';
 
@@ -61,27 +59,39 @@ export const UpgradeSupportThankYou = () => {
 
 	return (
 		<>
-			<section css={sectionSpacing}>
+			<section
+				css={css`
+					margin-top: ${space[4]}px;
+				`}
+			>
 				<Stack space={4}>
-					<h2 css={headingCSS}>
+					<h2
+						css={css`
+							margin: 0;
+							${headline.medium({ fontWeight: 'bold' })};
+							${until.tablet} {
+								${headline.xsmall({ fontWeight: 'bold' })};
+							}
+						`}
+					>
 						Thank you for your continued support.
 					</h2>
 				</Stack>
-				<Stack>
-					<p
+				<Stack space={4}>
+					<div
 						css={css`
 							${textSans.medium()}
-							margin-bottom: ${space[9]}
+							margin-bottom: 32px;
 						`}
 					>
 						You’ve increased your support from {currency}
 						{previousPrice} to {currency}
 						{chosenAmount} per {billingPeriod}.
-					</p>
+					</div>
 				</Stack>
 			</section>
 			<section>
-				<Stack space={3}>
+				<Stack space={5}>
 					<Heading sansSerif>What happens next?</Heading>
 					<ul css={[iconListCss, whatHappensNextCss]}>
 						<li>
@@ -94,7 +104,13 @@ export const UpgradeSupportThankYou = () => {
 							You will receive a confirmation email to
 							{userEmail}
 						</p>
-						<Heading sansSerif>
+						<Heading
+							sansSerif
+							cssOverrides={css`
+								margin-top: ${space[3]}px;
+								margin-bottom: ${space[5]}px;
+							`}
+						>
 							<li>
 								<SvgCalendar size="medium" />
 								<span css={iconTextCss}>
