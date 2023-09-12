@@ -35,21 +35,21 @@ describe('upgrade support', () => {
 
 		cy.wait('@product_move');
 
-		cy.findByText(/Confirm change/).should('exist');
+		cy.findByText(/Confirm support increase/).should('exist');
 
 		// ToDo: make it more explicit what amount we're choosing once amounts confirmed
 		cy.get(
 			'[data-cy="contribution-amount-choices"] label:nth-of-type(2)',
 		).click();
 
-		cy.findByText(/Confirm change/).should('not.exist');
+		cy.findByText(/Confirm support increase/).should('not.exist');
 
 		cy.findByRole('button', {
 			name: /Continue with/,
 		}).click();
 
 		cy.findByRole('button', {
-			name: /Confirm support change/,
+			name: /Confirm increase/,
 		}).click();
 
 		cy.wait('@product_move');

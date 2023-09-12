@@ -16,7 +16,7 @@ import {
 	headingCss,
 	iconListCss,
 	sectionSpacing,
-	whatHappensNextCss,
+	whatHappensNextIconCss,
 } from '../../../styles/GenericStyles';
 import {
 	signInContentContainerCss,
@@ -49,7 +49,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 			</section>
 			<section css={sectionSpacing}>
 				<Heading sansSerif>What happens next?</Heading>
-				<ul css={[iconListCss, whatHappensNextCss]}>
+				<ul css={[iconListCss, whatHappensNextIconCss]}>
 					<li>
 						<SvgEnvelope size="medium" />
 						<span data-qm-masking="blocklist">

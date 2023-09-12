@@ -1,7 +1,8 @@
-import { css } from '@emotion/react';
+import { css, ThemeProvider } from '@emotion/react';
 import { from, palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
+	buttonThemeReaderRevenueBrand,
 	Stack,
 	SvgClock,
 	SvgCreditCard,
@@ -10,11 +11,21 @@ import {
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { dateString } from '../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
 	Subscription,
 } from '../../../../shared/productResponse';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
+import {
+	buttonCentredCss,
+	buttonContainerCss,
+} from '../../../styles/ButtonStyles';
+import {
+	iconListCss,
+	listWithDividersCss,
+	whatHappensNextIconCss,
+} from '../../../styles/GenericStyles';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import { LoadingState } from '../../../utilities/hooks/useAsyncLoader';
 import {
@@ -23,6 +34,7 @@ import {
 } from '../../../utilities/productMovePreview';
 import { productMoveFetch } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
+import { SwitchPaymentInfo } from '../../shared/productSwitch/SwitchPaymentInfo';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { Heading } from '../shared/Heading';
 import { PaymentDetails } from '../shared/PaymentDetails';
@@ -33,72 +45,62 @@ import type {
 } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
-const iconListCss = css`
-	${textSans.medium()};
-	list-style: none;
-	padding: 0;
-	margin-bottom: 0;
-
-	li + li {
-		margin-top: ${space[2]}px;
-		${from.tablet} {
-			margin-top: ${space[3]}px;
-		}
-	}
-
-	li {
-		display: flex;
-		margin-left: -4px;
-		align-items: flex-start;
-
-		> svg {
-			flex-shrink: 0;
-			margin-right: 8px;
-			fill: currentColor;
-		}
-	}
-`;
-
-const listWithDividersCss = css`
-	li + li {
-		> svg {
-			padding-top: ${space[2]}px;
-			${from.tablet} {
-				padding-top: ${space[3]}px;
-			}
-		}
-		> span {
-			flex-grow: 1;
-			padding-top: ${space[2]}px;
-			border-top: 1px solid ${palette.neutral[86]};
-			min-width: 0;
-			${from.tablet} {
-				padding-top: ${space[3]}px;
-			}
-		}
-	}
-`;
-
 const WhatHappensNext = ({
 	amountPayableToday,
 	mainPlan,
 	subscription,
+	nextPaymentDate,
+	chosenAmount,
+	alreadyPayingAboveThreshold,
 }: {
 	amountPayableToday: number;
 	mainPlan: PaidSubscriptionPlan;
 	subscription: Subscription;
+	nextPaymentDate: string;
+	chosenAmount: number;
+	alreadyPayingAboveThreshold: boolean;
 }) => {
-	const firstPaymentDisplay = `${mainPlan.currency}${amountPayableToday}`;
-
 	return (
-		<section>
+		<section
+			css={css`
+				border-bottom: 1px solid ${palette.neutral[86]};
+				padding-bottom: ${space[4] + space[1]}px;
+			`}
+		>
 			<Stack space={4}>
-				<Heading sansSerif>What happens next?</Heading>
-				<ul css={[iconListCss, listWithDividersCss]}>
+				<div
+					css={css`
+						border-top: 1px solid ${palette.neutral[86]};
+						padding-bottom: ${space[1]}px;
+					`}
+				>
+					<h3
+						css={css`
+							${textSans.large({ fontWeight: 'bold' })};
+							padding-top: ${space[1]}px;
+							margin: 0;
+						`}
+					>
+						What happens next?
+					</h3>
+				</div>
+				<ul
+					css={[
+						iconListCss,
+						listWithDividersCss,
+						whatHappensNextIconCss,
+					]}
+				>
 					<li>
 						<SvgClock size="medium" />
 						<span>
-							<strong>Price change will happen today</strong>
+							<strong
+								css={css`
+									padding-bottom: ${space[1]}px;
+								`}
+							>
+								Price change will happen today
+							</strong>
 							<br />
 							You can start enjoying your exclusive extras
 							straight away
@@ -107,18 +109,28 @@ const WhatHappensNext = ({
 					<li>
 						<SvgReload size="medium" />
 						<span>
-							<strong>
-								Your first payment will be just{' '}
-								{firstPaymentDisplay}
-							</strong>
-							<br />
-							We will charge you...
+							<SwitchPaymentInfo
+								amountPayableToday={amountPayableToday}
+								alreadyPayingAboveThreshold={
+									alreadyPayingAboveThreshold
+								}
+								currencySymbol={mainPlan.currency}
+								supporterPlusPurchaseAmount={chosenAmount}
+								billingPeriod={mainPlan.billingPeriod}
+								nextPaymentDate={nextPaymentDate}
+							/>
 						</span>
 					</li>
 					<li>
 						<SvgCreditCard size="medium" />
 						<span data-qm-masking="blocklist">
-							<strong>Your payment method</strong>
+							<strong
+								css={css`
+									padding-bottom: ${space[1]}px;
+								`}
+							>
+								Your payment method
+							</strong>
 							<br />
 							The payment will be taken from{' '}
 							<PaymentDetails subscription={subscription} />
@@ -201,6 +213,7 @@ export const ConfirmForm = ({
 	const routerState = (location.state || {}) as UpgradeRouterState;
 	routerState.chosenAmount = chosenAmount;
 
+	const currencySymbol = mainPlan.currency;
 	const aboveThreshold = chosenAmount >= threshold;
 
 	const [shouldShowRoundUp] = useState<boolean>(
@@ -229,6 +242,12 @@ export const ConfirmForm = ({
 		chosenAmount,
 		previewResponse.contributionRefundAmount,
 	);
+
+	const nextPaymentDate = dateString(
+		new Date(previewResponse.nextPaymentDate),
+		'd MMMM',
+	);
+
 	const checkChargeAmount =
 		calculateCheckChargeAmountBeforeUpdate(amountPayableToday);
 
@@ -263,8 +282,27 @@ export const ConfirmForm = ({
 	};
 
 	return (
-		<Stack space={2}>
-			<Heading>2. Confirm change</Heading>
+		<Stack space={4}>
+			<section
+				css={css`
+					${from.tablet} {
+						padding-bottom: ${space[2]}px;
+					}
+				`}
+			>
+				<Heading sansSerif level="3" borderless>
+					2. Confirm support increase
+				</Heading>
+				<div
+					css={css`
+						${textSans.medium()}
+					`}
+				>
+					You've selected to support {currencySymbol}
+					{chosenAmount} per {mainPlan.billingPeriod}
+					{aboveThreshold ? ', which unlocks all benefits' : ''}.
+				</div>
+			</section>
 			{shouldShowRoundUp && (
 				<RoundUp
 					setChosenAmount={setChosenAmount}
@@ -277,15 +315,22 @@ export const ConfirmForm = ({
 					amountPayableToday={amountPayableToday}
 					mainPlan={mainPlan}
 					subscription={subscription}
+					nextPaymentDate={nextPaymentDate}
+					chosenAmount={chosenAmount}
+					alreadyPayingAboveThreshold={mainPlan.price >= threshold}
 				/>
 			)}
-			<section>
-				<Button
-					onClick={confirmOnClick}
-					isLoading={isConfirmationLoading}
-				>
-					Confirm support change
-				</Button>
+			<section css={buttonContainerCss}>
+				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
+					<Button
+						cssOverrides={buttonCentredCss}
+						onClick={confirmOnClick}
+						isLoading={isConfirmationLoading}
+					>
+						Confirm increase to {currencySymbol}
+						{chosenAmount}/{mainPlan.billingPeriod}
+					</Button>
+				</ThemeProvider>
 			</section>
 			{aboveThreshold && (
 				<section>

@@ -37,6 +37,7 @@ import {
 } from '../../../../utilities/hooks/useAsyncLoader';
 import { formatAmount } from '../../../../utilities/utils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
+import { SwitchPaymentInfo } from '../../../shared/productSwitch/SwitchPaymentInfo';
 import { SwitchOffsetPaymentIcon } from '../../shared/assets/SwitchOffsetPaymentIcon';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
@@ -293,27 +294,20 @@ export const SwitchReview = () => {
 						>
 							<SwitchOffsetPaymentIcon size="medium" />
 							<span>
-								<strong>
-									{previewResponse.amountPayableToday > 0 &&
-										`Your first payment will be
-									${isAboveThreshold ? 'just' : ''}
-									${mainPlan.currency}${formatAmount(previewResponse.amountPayableToday)}`}
-									{previewResponse.amountPayableToday == 0 &&
-										"There's nothing extra to pay today"}
-								</strong>
-								<br />
-								{previewResponse.amountPayableToday > 0 &&
-									`We will charge you a smaller amount today, to
-								offset the payment you've already given us for
-								the rest of the ${mainPlan.billingPeriod}.`}
-								{previewResponse.amountPayableToday == 0 &&
-									`We won't charge you today, as your current payment covers you for the rest of the ${mainPlan.billingPeriod}.`}{' '}
-								After this, from {nextPaymentDate}, your new{' '}
-								{monthlyOrAnnual.toLowerCase()} payment will be{' '}
-								{mainPlan.currency}
-								{formatAmount(
-									previewResponse.supporterPlusPurchaseAmount,
-								)}
+								<SwitchPaymentInfo
+									amountPayableToday={
+										previewResponse.amountPayableToday
+									}
+									alreadyPayingAboveThreshold={
+										isAboveThreshold
+									}
+									currencySymbol={mainPlan.currency}
+									supporterPlusPurchaseAmount={
+										previewResponse.supporterPlusPurchaseAmount
+									}
+									billingPeriod={mainPlan.billingPeriod}
+									nextPaymentDate={nextPaymentDate}
+								/>
 							</span>
 						</li>
 						<li>

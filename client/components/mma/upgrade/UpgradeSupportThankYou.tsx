@@ -16,7 +16,10 @@ import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 } from '../../../styles/ButtonStyles';
-import { iconListCss, whatHappensNextCss } from '../../../styles/GenericStyles';
+import {
+	iconListCss,
+	whatHappensNextIconCss,
+} from '../../../styles/GenericStyles';
 import {
 	signInContentContainerCss,
 	signInCss,
@@ -93,7 +96,7 @@ export const UpgradeSupportThankYou = () => {
 			<section>
 				<Stack space={5}>
 					<Heading sansSerif>What happens next?</Heading>
-					<ul css={[iconListCss, whatHappensNextCss]}>
+					<ul css={[iconListCss, whatHappensNextIconCss]}>
 						<li>
 							<SvgEnvelope size="medium" />
 							<span data-qm-masking="blocklist" css={iconTextCss}>
