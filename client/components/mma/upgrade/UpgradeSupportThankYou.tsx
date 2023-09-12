@@ -38,6 +38,7 @@ import {
 	linkCss,
 	withMarginParagraphCss,
 } from './UpgradeSupportStyles';
+import { monthlyOrAnnual } from './UpgradeSupportSwitchThankYou';
 
 export const UpgradeSupportThankYou = () => {
 	const upgradeSupportContext = useContext(
@@ -124,7 +125,8 @@ export const UpgradeSupportThankYou = () => {
 								Your first billing date is today and you will be
 								charged {currency}
 								{amountPayableToday}. From {nextBillingDate},
-								your ongoing monthly payment will be {currency}
+								your ongoing {monthlyOrAnnual(billingPeriod)}{' '}
+								payment will be {currency}
 								{chosenAmount}{' '}
 							</p>
 						</Heading>

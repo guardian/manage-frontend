@@ -30,16 +30,27 @@ import {
 } from '../../shared/SignIn';
 import { Heading } from '../shared/Heading';
 import { SwitchSignInImage } from '../switch/complete/SwitchSignInImage';
-import type { UpgradeRouterState ,
-	UpgradeSupportInterface} from './UpgradeSupportContainer';
-import {
-	UpgradeSupportContext,
+import type {
+	UpgradeRouterState,
+	UpgradeSupportInterface,
 } from './UpgradeSupportContainer';
+import { UpgradeSupportContext } from './UpgradeSupportContainer';
 import {
 	iconTextCss,
 	linkCss,
 	withMarginParagraphCss,
 } from './UpgradeSupportStyles';
+
+export function monthlyOrAnnual(billingPeriod: string): string {
+	if (billingPeriod === 'month') {
+		return 'monthly';
+	}
+	if (billingPeriod === 'annual') {
+		return 'annual';
+	} else {
+		return ' ';
+	}
+}
 
 export const UpgradeSupportSwitchThankYou = () => {
 	const upgradeSupportContext = useContext(
@@ -126,7 +137,8 @@ export const UpgradeSupportSwitchThankYou = () => {
 								Your first billing date is today and you will be
 								charged {currency}
 								{amountPayableToday}. From {nextBillingDate},
-								your ongoing payment will be {currency}
+								your ongoing {monthlyOrAnnual(billingPeriod)}{' '}
+								payment will be {currency}
 								{chosenAmount}
 							</div>
 						</Heading>
