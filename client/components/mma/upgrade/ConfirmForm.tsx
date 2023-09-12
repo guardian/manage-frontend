@@ -170,7 +170,7 @@ const RoundUp = ({
 					padding: ${space[3]}px ${space[1]}px ${space[3]}px
 						${space[3]}px;
 				}
-				padding: ${space[3]}px ${space[2]}px ${space[3]}px ${space[3]}px;
+				padding: ${space[4]}px ${space[2]}px ${space[4]}px ${space[4]}px;
 				border-radius: 4px;
 				border: 1px solid ${palette.neutral[86]};
 				background: ${hasRoundedUp
