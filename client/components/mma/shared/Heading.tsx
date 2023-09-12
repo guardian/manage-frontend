@@ -13,12 +13,15 @@ interface HeadingProps {
 	cssOverrides?: SerializedStyles | SerializedStyles[];
 	level?: '1' | '2' | '3' | '4';
 	sansSerif?: boolean;
+	borderless?: boolean;
 }
 
 export const Heading = (props: HeadingProps) => {
-	const dividerStyles = css`
-		border-top: 1px solid ${palette.neutral[86]};
-	`;
+	const dividerStyles = props.borderless
+		? css``
+		: css`
+				border-top: 1px solid ${palette.neutral[86]};
+		  `;
 
 	const headingStyles = css`
 		${props.sansSerif

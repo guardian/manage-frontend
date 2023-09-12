@@ -1,6 +1,9 @@
-export const productMovePreviewResponse = {
+import type { PreviewResponse } from '../../shared/productSwitchTypes';
+
+export const productMovePreviewResponse: PreviewResponse = {
 	amountPayableToday: 5.0,
 	supporterPlusPurchaseAmount: 10.0,
+	contributionRefundAmount: -5,
 	nextPaymentDate: '2023-03-20',
 	checkChargeAmountBeforeUpdate: false,
 };

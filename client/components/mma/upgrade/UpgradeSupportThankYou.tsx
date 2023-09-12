@@ -19,7 +19,7 @@ import {
 	headingCss,
 	iconListCss,
 	sectionSpacing,
-	whatHappensNextCss,
+	whatHappensNextIconCss,
 } from '../../../styles/GenericStyles';
 import { Heading } from '../shared/Heading';
 import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
@@ -55,7 +55,7 @@ export const UpgradeSupportThankYou = () => {
 			<section css={sectionSpacing}>
 				<Stack space={4}>
 					<Heading sansSerif>What happens next?</Heading>
-					<ul css={[iconListCss, whatHappensNextCss]}>
+					<ul css={[iconListCss, whatHappensNextIconCss]}>
 						<li>
 							<SvgEnvelope size="medium" />
 							<span data-qm-masking="blocklist">
