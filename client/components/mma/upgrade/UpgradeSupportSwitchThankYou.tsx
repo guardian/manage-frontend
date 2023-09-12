@@ -35,7 +35,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 	) as UpgradeSupportInterface;
 
 	const navigate = useNavigate();
-	const userEmailAddress = upgradeSupportContext.user;
+	const userEmail = upgradeSupportContext.user?.email ?? '';
 
 	return (
 		<>
@@ -53,8 +53,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 					<li>
 						<SvgEnvelope size="medium" />
 						<span data-qm-masking="blocklist">
-							You will receive a confirmation email to{' '}
-							<> {userEmailAddress} </>
+							You will receive a confirmation email to {userEmail}
 						</span>
 					</li>
 					<li>

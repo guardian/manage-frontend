@@ -54,7 +54,7 @@ describe('upgrade support', () => {
 
 		cy.wait('@product_move');
 
-		cy.findByText(/Your new support/).should('exist');
+		cy.findByText(/Your monthly support/).should('exist');
 
 		cy.get('@mdapi_get_contribution.all').should('have.length', 1);
 		cy.get('@product_move.all').should('have.length', 2);

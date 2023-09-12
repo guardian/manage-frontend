@@ -16,6 +16,10 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		reactRouter: {
+			state: {
+				amountPayableToday: 5.9,
+				chosenAmount: 9,
+			},
 			container: <UpgradeSupportContainer />,
 		},
 		msw: [
