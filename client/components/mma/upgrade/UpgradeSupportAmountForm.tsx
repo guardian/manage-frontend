@@ -74,6 +74,7 @@ function BenefitsDisplay({
 interface UpgradeSupportAmountFormProps {
 	chosenAmount: number | null;
 	setChosenAmount: Dispatch<SetStateAction<number | null>>;
+	threshold: number;
 	setContinuedToConfirmation: Dispatch<SetStateAction<boolean>>;
 	continuedToConfirmation: boolean;
 	suggestedAmounts: number[];
@@ -82,6 +83,7 @@ interface UpgradeSupportAmountFormProps {
 export const UpgradeSupportAmountForm = ({
 	chosenAmount,
 	setChosenAmount,
+	threshold,
 	setContinuedToConfirmation,
 	continuedToConfirmation,
 	suggestedAmounts,
@@ -90,7 +92,6 @@ export const UpgradeSupportAmountForm = ({
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
-	const threshold = 10; // TODO
 	const priceConfig = (contributionAmountsLookup[mainPlan.currencyISO] ||
 		contributionAmountsLookup.international)[
 		mainPlan.billingPeriod as ContributionInterval

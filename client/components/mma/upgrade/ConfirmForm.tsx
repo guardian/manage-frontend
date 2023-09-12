@@ -1,5 +1,11 @@
 import { css, ThemeProvider } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans,
+	until,
+} from '@guardian/source-foundations';
 import {
 	Button,
 	buttonThemeReaderRevenueBrand,
@@ -8,6 +14,7 @@ import {
 	SvgCreditCard,
 	SvgReload,
 } from '@guardian/source-react-components';
+import { ToggleSwitch } from '@guardian/source-react-components-development-kitchen';
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -143,32 +150,69 @@ const RoundUp = ({
 	setChosenAmount,
 	thresholdAmount,
 	chosenAmountPreRoundup,
+	currencySymbol,
+	billingPeriod,
 }: {
 	setChosenAmount: Dispatch<SetStateAction<number | null>>;
 	thresholdAmount: number;
 	chosenAmountPreRoundup: number;
+	currencySymbol: string;
+	billingPeriod: string;
 }) => {
 	const [hasRoundedUp, setHasRoundedUp] = useState<boolean>(false);
 
 	return (
-		<Stack space={2}>
-			<p>Want to unlock all extras?</p>
-			<section>
-				<Button
-					onClick={() => {
-						const toggleRoundUp = !hasRoundedUp;
-						setHasRoundedUp(toggleRoundUp);
-						setChosenAmount(
-							toggleRoundUp
-								? thresholdAmount
-								: chosenAmountPreRoundup,
-						);
-					}}
+		<section
+			css={css`
+				display: flex;
+				justify-content: space-between;
+				${until.tablet} {
+					padding: ${space[3]}px ${space[1]}px ${space[3]}px
+						${space[3]}px;
+				}
+				padding: ${space[3]}px ${space[2]}px ${space[3]}px ${space[3]}px;
+				border-radius: 4px;
+				border: 1px solid ${palette.neutral[86]};
+				background: ${hasRoundedUp
+					? palette.neutral[97]
+					: palette.neutral[100]};
+			`}
+		>
+			<div>
+				<div
+					css={css`
+						${textSans.medium({ fontWeight: 'bold' })};
+						padding-right: ${space[4]}px;
+					`}
 				>
-					{hasRoundedUp ? 'Rounded up' : 'Round up'}
-				</Button>
-			</section>
-		</Stack>
+					Round up to unlock all benefits ({currencySymbol}
+					{thresholdAmount}/{billingPeriod})
+				</div>
+				<div
+					css={css`
+						${until.tablet} {
+							${textSans.small()};
+						}
+						${textSans.medium()};
+						color: ${palette.neutral[46]};
+					`}
+				>
+					Get unlimited app access, ad-free reading, and more.
+				</div>
+			</div>
+			<ToggleSwitch
+				checked={hasRoundedUp}
+				onClick={() => {
+					const toggleRoundUp = !hasRoundedUp;
+					setHasRoundedUp(toggleRoundUp);
+					setChosenAmount(
+						toggleRoundUp
+							? thresholdAmount
+							: chosenAmountPreRoundup,
+					);
+				}}
+			/>
+		</section>
 	);
 };
 
@@ -300,6 +344,8 @@ export const ConfirmForm = ({
 					setChosenAmount={setChosenAmount}
 					thresholdAmount={threshold}
 					chosenAmountPreRoundup={chosenAmountPreRoundup}
+					currencySymbol={currencySymbol}
+					billingPeriod={mainPlan.billingPeriod}
 				/>
 			)}
 			{aboveThreshold && (

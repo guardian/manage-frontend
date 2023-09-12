@@ -84,6 +84,7 @@ export const UpgradeSupport = () => {
 					<UpgradeSupportAmountForm
 						chosenAmount={chosenAmount}
 						setChosenAmount={setChosenAmount}
+						threshold={threshold}
 						setContinuedToConfirmation={setContinuedToConfirmation}
 						continuedToConfirmation={continuedToConfirmation}
 						suggestedAmounts={suggestedAmounts}
@@ -91,8 +92,8 @@ export const UpgradeSupport = () => {
 					{continuedToConfirmation && chosenAmount && (
 						<ConfirmForm
 							chosenAmount={chosenAmount}
-							threshold={threshold}
 							setChosenAmount={setChosenAmount}
+							threshold={threshold}
 							suggestedAmounts={suggestedAmounts}
 							previewResponse={previewResponse}
 							previewLoadingState={previewLoadingState}
