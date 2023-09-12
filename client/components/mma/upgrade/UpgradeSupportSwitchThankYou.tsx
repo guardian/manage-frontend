@@ -45,7 +45,7 @@ export function monthlyOrAnnual(billingPeriod: string): string {
 	if (billingPeriod === 'month') {
 		return 'monthly';
 	}
-	if (billingPeriod === 'annual') {
+	if (billingPeriod === 'year') {
 		return 'annual';
 	} else {
 		return ' ';
