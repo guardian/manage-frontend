@@ -28,6 +28,7 @@ export const UpgradeBenefitsCard = ({
 		<div
 			css={css`
 				background-color: #f3f7fe;
+				border-radius: 4px;
 				padding: ${space[4]}px;
 			`}
 		>
