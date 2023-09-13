@@ -331,6 +331,7 @@ export const ConfirmForm = ({
 	return (
 		<Stack space={4}>
 			<section
+				id="confirm-change"
 				css={css`
 					${from.tablet} {
 						padding-bottom: ${space[2]}px;

@@ -17,11 +17,21 @@ import {
 import { twoColumnChoiceCardMobile } from '../../../styles/GenericStyles';
 import type { ContributionInterval } from '../../../utilities/contributionsAmount';
 import { contributionAmountsLookup } from '../../../utilities/contributionsAmount';
+import { waitForElement } from '../../../utilities/utils';
 import { UpgradeBenefitsCard } from '../shared/benefits/BenefitsCard';
 import { getUpgradeBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { Heading } from '../shared/Heading';
 import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
+
+async function scrollToConfirmChange() {
+	const confirmElement = await waitForElement('#confirm-change');
+	confirmElement &&
+		confirmElement.scrollIntoView({
+			behavior: 'smooth',
+		});
+	parent.location.hash = 'confirm-change';
+}
 
 function validateChoice(
 	currentAmount: number,
@@ -225,11 +235,12 @@ export const UpgradeSupportAmountForm = ({
 							>
 								<Button
 									cssOverrides={buttonCentredCss}
-									onClick={() =>
+									onClick={() => {
 										setContinuedToConfirmation(
 											chosenAmount ? true : false,
-										)
-									}
+										);
+										scrollToConfirmChange();
+									}}
 								>
 									Continue with {currencySymbol}
 									{chosenAmount}/{mainPlan.billingPeriod}
