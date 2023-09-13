@@ -1938,22 +1938,22 @@
   resolved "https://registry.yarnpkg.com/@guardian/prettier/-/prettier-1.0.0.tgz#a5dd832e2ce31c6f723f0af77fe116b32b4695ff"
   integrity sha512-srnhPn3hcSv14mDotFQN0CfN3k8MaGsXdK8BXAG95QQxM69Ybi16o4/Xqe361fwDEp7m+9jf03sETcMi8WsDlA==
 
-"@guardian/source-foundations@10.0.1":
-  version "10.0.1"
-  resolved "https://registry.yarnpkg.com/@guardian/source-foundations/-/source-foundations-10.0.1.tgz#fe9d5d1bee9dd1b0d3d579d21a99f6051aa47649"
-  integrity sha512-q7FHvQO2JN463SHRjLNKeywW8KUfjoao6oiULoyHssI07saol2rE0W8BdPCeD9337FNztiOxMGOmXWSBUIdYJw==
+"@guardian/source-foundations@13.0.0":
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/source-foundations/-/source-foundations-13.0.0.tgz#3e8f4e67dcd5fe706001fd04df582f69210b132f"
+  integrity sha512-1+z20ySfwm0K2GiQXh2JlWIjOKBwHxISRdAgAKivOdT1QUCh5VdU+2xCVE07juMI4lBBfIzXe/qZXAI7II6tQQ==
   dependencies:
     mini-svg-data-uri "1.4.4"
 
-"@guardian/source-react-components-development-kitchen@11.0.0":
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/@guardian/source-react-components-development-kitchen/-/source-react-components-development-kitchen-11.0.0.tgz#6fe57d6f5fda751e311df70ed0e7735cd8342316"
-  integrity sha512-KNC+IZfufZI0L6sBEvsdzYa1HLkuV3stZ8Ty+wSHKjN22nxON2Yzvrkf9gw4LKNCAWuaLVkSPzritfs87zdWuQ==
+"@guardian/source-react-components-development-kitchen@14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/source-react-components-development-kitchen/-/source-react-components-development-kitchen-14.0.0.tgz#9678ae07aa745f62df6b44d2d56f4a502c8f569e"
+  integrity sha512-hl295B88dKpkv7NJl7vzx0wT+luUSSXcZes64B0F1lW0y6NtiRGkEsLQ6gnSTPfXM04FDd2jeZR4nFMsMypieQ==
 
-"@guardian/source-react-components@13.0.0":
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/@guardian/source-react-components/-/source-react-components-13.0.0.tgz#11157b8b7615b371a6f6ab96d2efdfe5a20c6ea2"
-  integrity sha512-mhWHSUSCr8PjkajzsQs0yMFch1h9BONTlgV96T+niPkrtqn+xWvkQJeaBsN/X/QLSqweBLCjo6yvPdGxgJgaWw==
+"@guardian/source-react-components@16.0.0":
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/source-react-components/-/source-react-components-16.0.0.tgz#2d04a3cd2443ed46de2533351f89082eaccc2365"
+  integrity sha512-oSRa1TjRvbnfYIEa+qMz23aCM6V73pIvP2ca64dP9dNopNR1PgooNlf7PihjXDEkyBo4ks9udMRzzAd3nfst6A==
 
 "@guardian/tsconfig@0.1.6":
   version "0.1.6"
