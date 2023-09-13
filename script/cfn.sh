@@ -7,7 +7,7 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT_DIR="${DIR}/.."
 cd "$ROOT_DIR/cdk"
 
-yarn install
+yarn install --frozen-lockfile
 yarn tsc
 yarn lint
 yarn test
