@@ -317,7 +317,7 @@ export const ConfirmForm = ({
 				false,
 			);
 			setIsConfirmationLoading(false);
-			navigate('../switch-thank-you');
+			navigate('switch-thank-you', { state: routerState });
 		} else {
 			await updateContributionAmountFetch(
 				chosenAmount,

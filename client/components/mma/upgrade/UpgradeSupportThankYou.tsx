@@ -12,6 +12,7 @@ import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
 } from '../../../../shared/dates';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
@@ -104,8 +105,7 @@ export const UpgradeSupportThankYou = () => {
 							</span>
 						</li>
 						<p css={withMarginParagraphCss}>
-							You will receive a confirmation email to
-							{userEmail}
+							You will receive a confirmation email to {userEmail}
 						</p>
 						<Heading
 							sansSerif
@@ -124,7 +124,11 @@ export const UpgradeSupportThankYou = () => {
 								Your first billing date is today and you will be
 								charged {currency}
 								{amountPayableToday}. From {nextBillingDate},
-								your ongoing monthly payment will be {currency}
+								your ongoing{' '}
+								{calculateMonthlyOrAnnualFromBillingPeriod(
+									billingPeriod,
+								).toLowerCase()}{' '}
+								payment will be {currency}
 								{chosenAmount}{' '}
 							</p>
 						</Heading>
