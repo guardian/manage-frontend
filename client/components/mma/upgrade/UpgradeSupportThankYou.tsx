@@ -105,8 +105,7 @@ export const UpgradeSupportThankYou = () => {
 							</span>
 						</li>
 						<p css={withMarginParagraphCss}>
-							You will receive a confirmation email to
-							{userEmail}
+							You will receive a confirmation email to {userEmail}
 						</p>
 						<Heading
 							sansSerif
