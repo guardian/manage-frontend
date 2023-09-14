@@ -38,6 +38,7 @@ export const processResponse = <T>(resp: Response): Promise<T | null> => {
 	throw error;
 };
 
+// https://stackoverflow.com/a/61511955
 export function waitForElement(selector: string): Promise<Element | null> {
 	return new Promise((resolve) => {
 		if (document.querySelector(selector)) {
