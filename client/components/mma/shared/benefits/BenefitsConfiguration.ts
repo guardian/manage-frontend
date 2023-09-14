@@ -47,6 +47,7 @@ export const benefitsConfiguration: {
 	digitalvoucher: [],
 	newspaper: [],
 	homedelivery: [],
+	nationaldelivery: [],
 	voucher: [],
 	guardianweekly: [],
 	guardianpatron: [],

@@ -68,8 +68,7 @@ router.get(
 				response.json(mdapiResponse);
 			})
 			.catch((error) => {
-				const errorMessage =
-					"Unexpected error when augmenting members-data-api response with 'deliveryAddressChangeEffectiveDate'";
+				const errorMessage = `Unexpected error when augmenting members-data-api response with 'deliveryAddressChangeEffectiveDate' error message was ${error}`;
 				log.error(errorMessage, error);
 				Sentry.captureMessage(errorMessage);
 				response.json(augmentedWithTestUser); // fallback to sending the response augmented with just isTestUser

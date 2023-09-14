@@ -38,6 +38,7 @@ type ProductFriendlyName =
 	| 'newspaper voucher subscription'
 	| 'newspaper subscription card'
 	| 'newspaper home delivery subscription'
+	| 'newspaper national delivery subscription'
 	| 'digital subscription'
 	| 'monthly + extras'
 	| 'annual + extras'
@@ -263,6 +264,7 @@ export type ProductTypeKeys =
 	| 'contributions'
 	| 'newspaper'
 	| 'homedelivery'
+	| 'nationaldelivery'
 	| 'voucher'
 	| 'digitalvoucher'
 	| 'guardianweekly'
@@ -443,6 +445,46 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		},
 		fulfilmentDateCalculator: {
 			productFilenamePart: 'Newspaper - Home Delivery',
+		},
+	},
+	nationaldelivery: {
+		productTitle: calculateProductTitle('Newspaper Delivery'),
+		friendlyName: () => 'newspaper national delivery subscription',
+		shortFriendlyName: 'newspaper national delivery',
+		productType: 'nationaldelivery',
+		groupedProductType: 'subscriptions',
+		allProductsProductTypeFilterString: 'HomeDelivery', // Is this right?
+		urlPart: 'homedelivery', // Is this right?
+		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
+		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+		softOptInIDs: [
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SubscriberPreview,
+			SoftOptInIDs.SimilarProducts,
+			SoftOptInIDs.SupporterNewsletter,
+		],
+		holidayStops: {
+			issueKeyword: 'paper',
+		},
+		delivery: {
+			showAddress: showDeliveryAddressCheck,
+			enableDeliveryInstructionsUpdate: true,
+			records: {
+				productNameForProblemReport: 'National Delivery',
+				showDeliveryInstructions: true,
+				numberOfProblemRecordsToShow: 14,
+				contactUserOnExistingProblemReport: true,
+				availableProblemTypes: [
+					{
+						label: 'Instructions Not Followed',
+						messageIsMandatory: true,
+					},
+					...commonDeliveryProblemTypes,
+				],
+			},
+		},
+		fulfilmentDateCalculator: {
+			productFilenamePart: 'Newspaper - National Delivery',
 		},
 	},
 	voucher: {
@@ -723,6 +765,8 @@ export const GROUPED_PRODUCT_TYPES: {
 			if (productDetail.tier === 'Digital Pack') {
 				return PRODUCT_TYPES.digipack;
 			} else if (productDetail.tier === 'Newspaper Delivery') {
+				return PRODUCT_TYPES.homedelivery;
+			} else if (productDetail.tier === 'Newspaper - National Delivery') {
 				return PRODUCT_TYPES.homedelivery;
 			} else if (productDetail.tier === 'Newspaper Voucher') {
 				return PRODUCT_TYPES.voucher;
