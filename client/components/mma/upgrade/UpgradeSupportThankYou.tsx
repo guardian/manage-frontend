@@ -12,6 +12,7 @@ import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
 } from '../../../../shared/dates';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
@@ -38,7 +39,6 @@ import {
 	linkCss,
 	withMarginParagraphCss,
 } from './UpgradeSupportStyles';
-import { monthlyOrAnnual } from './UpgradeSupportSwitchThankYou';
 
 export const UpgradeSupportThankYou = () => {
 	const upgradeSupportContext = useContext(
@@ -125,7 +125,10 @@ export const UpgradeSupportThankYou = () => {
 								Your first billing date is today and you will be
 								charged {currency}
 								{amountPayableToday}. From {nextBillingDate},
-								your ongoing {monthlyOrAnnual(billingPeriod)}{' '}
+								your ongoing{' '}
+								{calculateMonthlyOrAnnualFromBillingPeriod(
+									billingPeriod,
+								)}{' '}
 								payment will be {currency}
 								{chosenAmount}{' '}
 							</p>
