@@ -1,8 +1,12 @@
+import {
+	addCSRFToken,
+	fetchWithDefaultParameters,
+	patchRequest,
+} from '@/client/utilities/fetch';
 import type { ConsentOption } from '../models';
 import { ConsentOptionType } from '../models';
-import { APIPatchOptions, APIUseCredentials, identityFetch } from './fetch';
 
-interface NewsletterAPIResponse {
+export interface NewsletterAPIResponse {
 	id: string;
 	theme: string;
 	group: string;
@@ -13,7 +17,7 @@ interface NewsletterAPIResponse {
 	exactTargetListId: number;
 }
 
-const newsletterToConsentOption = (
+export const newsletterToConsentOption = (
 	newsletter: NewsletterAPIResponse,
 ): ConsentOption => {
 	const {
@@ -39,25 +43,28 @@ const newsletterToConsentOption = (
 };
 
 export const read = async (): Promise<ConsentOption[]> => {
-	const url = '/newsletters';
-	const newslettersResponse = await identityFetch<NewsletterAPIResponse[]>(
-		url,
-	);
-	return newslettersResponse.map(newsletterToConsentOption);
+	const url = '/idapi/newsletters';
+	return await fetchWithDefaultParameters(url)
+		.then((response) => response.json() as Promise<NewsletterAPIResponse[]>)
+		.then((newsletters) => newsletters.map(newsletterToConsentOption));
 };
 
 export const readRestricted = async (): Promise<ConsentOption[]> => {
-	const url = '/newsletters/restricted';
-	return (await identityFetch<NewsletterAPIResponse[]>(url)).map(
-		newsletterToConsentOption,
-	);
+	const url = '/idapi/newsletters/restricted';
+	return await fetchWithDefaultParameters(url)
+		.then((response) => response.json() as Promise<NewsletterAPIResponse[]>)
+		.then((newsletters) => newsletters.map(newsletterToConsentOption));
 };
 
 export const update = async (id: string, subscribed: boolean = true) => {
-	const url = '/users/me/newsletters';
-	const payload = {
-		id,
-		subscribed,
-	};
-	identityFetch(url, APIUseCredentials(APIPatchOptions(payload)));
+	const url = '/idapi/user/newsletters';
+	await fetchWithDefaultParameters(
+		url,
+		addCSRFToken(
+			patchRequest({
+				id,
+				subscribed,
+			}),
+		),
+	);
 };
