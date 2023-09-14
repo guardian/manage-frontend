@@ -38,7 +38,6 @@ type ProductFriendlyName =
 	| 'newspaper voucher subscription'
 	| 'newspaper subscription card'
 	| 'newspaper home delivery subscription'
-	| 'newspaper national delivery subscription'
 	| 'digital subscription'
 	| 'monthly + extras'
 	| 'annual + extras'
@@ -53,6 +52,7 @@ type ProductUrlPart =
 	| 'voucher'
 	| 'subscriptioncard'
 	| 'homedelivery'
+	| 'nationaldelivery'
 	| 'digital'
 	| 'support'
 	| 'guardianweekly'
@@ -449,12 +449,12 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	nationaldelivery: {
 		productTitle: calculateProductTitle('Newspaper Delivery'),
-		friendlyName: () => 'newspaper national delivery subscription',
-		shortFriendlyName: 'newspaper national delivery',
+		friendlyName: () => 'newspaper home delivery subscription',
+		shortFriendlyName: 'newspaper home delivery',
 		productType: 'nationaldelivery',
 		groupedProductType: 'subscriptions',
-		allProductsProductTypeFilterString: 'HomeDelivery', // Is this right?
-		urlPart: 'homedelivery', // Is this right?
+		allProductsProductTypeFilterString: 'HomeDelivery',
+		urlPart: 'nationaldelivery',
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
 		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
 		softOptInIDs: [
