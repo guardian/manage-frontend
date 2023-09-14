@@ -10,6 +10,7 @@ cd "$ROOT_DIR"
 yarn install --frozen-lockfile
 yarn type-check
 yarn lint
+yarn test
 yarn bundle
 
 cp package.json dist
