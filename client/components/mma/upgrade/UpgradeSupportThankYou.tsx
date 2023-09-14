@@ -128,7 +128,7 @@ export const UpgradeSupportThankYou = () => {
 								your ongoing{' '}
 								{calculateMonthlyOrAnnualFromBillingPeriod(
 									billingPeriod,
-								)}{' '}
+								).toLowerCase()}{' '}
 								payment will be {currency}
 								{chosenAmount}{' '}
 							</p>
