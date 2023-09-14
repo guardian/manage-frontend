@@ -2,19 +2,13 @@ name: Build manage-frontend
 
 on:
   pull_request:
-    branches:
-      - main
+  workflow_dispatch:
   push:
     branches:
       - main
 
 jobs:
   CI:
-    if: >-
-      (github.actor != 'dependabot[bot]') &&
-        (github.event.pull_request.head.repo.owner.login == 'guardian' ||
-          github.event_name == 'push')
-    # Required by actions-assume-aws-role
     permissions:
       id-token: write
       contents: read
