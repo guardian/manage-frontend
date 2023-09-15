@@ -1,102 +1,132 @@
+import type { RequestOptions } from 'http';
+import https from 'https';
+import cookieParser from 'cookie-parser';
 import type { NextFunction, Request, Response } from 'express';
 import { Router } from 'express';
-import type { ConsentAPIResponse } from '@/client/components/mma/identity/idapi/consents';
-import type { NewsletterAPIResponse } from '@/client/components/mma/identity/idapi/newsletters';
-import type { NewsletterSubscriptions } from '@/client/components/mma/identity/idapi/newsletterSubscriptions';
-import type {
-	ConsentPatchRequest,
-	NewsletterPatchRequest,
-} from '../idapiProxy';
-import { idapiProxyHandler } from '../idapiProxy';
-import { withIdentity } from '../middleware/identityMiddleware';
-import { csrfValidateMiddleware } from '../util';
+import type { IdapiConfig } from '../idapiConfig';
+import { idapiConfigPromise } from '../idapiConfig';
+import { crsfMiddleware, handleError, mimicResponse } from '../util';
+
+const SECURITY_COOKIE_NAME = 'SC_GU_U';
+const SECURITY_HEADER_NAME = 'X-GU-ID-FOWARDED-SC-GU-U';
 
 const router = Router();
 
-router.use(withIdentity(401));
+interface CookiesWithToken {
+	[SECURITY_COOKIE_NAME]: string;
+	[key: string]: string;
+}
+
+interface SCGUHeader {
+	[SECURITY_HEADER_NAME]: string;
+}
+
+const securityCookieToHeader = (cookies: CookiesWithToken): SCGUHeader => ({
+	[SECURITY_HEADER_NAME]: cookies[SECURITY_COOKIE_NAME],
+});
+
+const isValidConfig = (config: any): config is IdapiConfig =>
+	config.host && config.accessToken;
+
+const isValid = (req: Request): boolean => {
+	const token: boolean = !!req.cookies[SECURITY_COOKIE_NAME];
+	return token;
+};
+
+const makeIdapiRequest = (
+	options: RequestOptions,
+	res: Response,
+	body?: Buffer,
+) => {
+	const idapiRequest = https.request(options, (idapiResponse) => {
+		mimicResponse(idapiResponse, res);
+		idapiResponse.pipe(res);
+	});
+	idapiRequest.on('error', handleError);
+	if (body) {
+		idapiRequest.write(body);
+	}
+	idapiRequest.end();
+};
+
+const getConfig = async (): Promise<IdapiConfig> => {
+	const config = await idapiConfigPromise;
+	if (!isValidConfig(config)) {
+		throw new Error('Error loading a valid config');
+	}
+	return config;
+};
+
+const getOptions = (
+	method: string,
+	cookies: CookiesWithToken,
+	config: IdapiConfig,
+) => {
+	const path = '/user/me';
+	const hostname = config.host;
+
+	const headers = {
+		'X-GU-ID-Client-Access-Token': `Bearer ${config.accessToken}`,
+		...securityCookieToHeader(cookies),
+		'Content-Type': 'application/json',
+	};
+
+	const options = {
+		headers,
+		method,
+		hostname,
+		path,
+	};
+
+	return options;
+};
+
+router.use(cookieParser());
+
+router.use((req: Request, res: Response, next: NextFunction) => {
+	if (!isValid(req)) {
+		res.sendStatus(401);
+		return;
+	} else {
+		next();
+	}
+});
 
 router.get(
 	'/user',
-	idapiProxyHandler({
-		url: '/user/me',
-	}),
+	crsfMiddleware,
+	async (req: Request, res: Response, next: NextFunction) => {
+		let config;
+		try {
+			config = await getConfig();
+		} catch (e) {
+			handleError(e, res, next);
+			return;
+		}
+		res.cookie('XSRF-TOKEN', req.csrfToken(), {
+			secure: true,
+			sameSite: 'strict',
+		});
+		const options = getOptions('GET', req.cookies, config);
+		makeIdapiRequest(options, res);
+	},
 );
 
 router.put(
 	'/user',
-	csrfValidateMiddleware,
-	idapiProxyHandler({
-		url: '/user/me',
-		method: 'POST',
-	}),
-);
-
-router.get(
-	'/user/newsletters',
-	csrfValidateMiddleware,
-	idapiProxyHandler<NewsletterSubscriptions>({
-		url: '/users/me/newsletters',
-	}),
-);
-
-router.get(
-	'/newsletters',
-	csrfValidateMiddleware,
-	idapiProxyHandler<NewsletterAPIResponse[]>({
-		url: '/newsletters',
-	}),
-);
-
-router.get(
-	'/newsletters/restricted',
-	csrfValidateMiddleware,
-	idapiProxyHandler<NewsletterAPIResponse[]>({
-		url: '/newsletters/restricted',
-	}),
-);
-
-router.patch(
-	'/user/newsletters',
-	csrfValidateMiddleware,
-	idapiProxyHandler<NewsletterPatchRequest>({
-		url: '/users/me/newsletters',
-		method: 'PATCH',
-	}),
-);
-
-router.get(
-	'/user/consents',
-	csrfValidateMiddleware,
-	idapiProxyHandler<ConsentAPIResponse[]>({
-		url: '/consents?filter=all',
-	}),
-);
-
-router.patch(
-	'/user/consents',
-	csrfValidateMiddleware,
-	idapiProxyHandler<ConsentPatchRequest>({
-		url: '/users/me/consents',
-		method: 'PATCH',
-	}),
-);
-
-router.delete(
-	'/user/telephone-number',
-	csrfValidateMiddleware,
-	idapiProxyHandler({
-		url: '/user/me/telephoneNumber',
-		method: 'DELETE',
-	}),
-);
-
-router.delete(
-	'/user/consents/all',
-	csrfValidateMiddleware,
-	idapiProxyHandler({
-		url: '/remove/consent/all',
-		method: 'POST',
-	}),
+	crsfMiddleware,
+	async (req: Request, res: Response, next: NextFunction) => {
+		let config;
+		try {
+			config = await getConfig();
+		} catch (e) {
+			handleError(e, res, next);
+			return;
+		}
+		const options = getOptions('POST', req.cookies, config);
+		const { body } = req;
+		makeIdapiRequest(options, res, body);
+	},
 );
 
 router.use((err: any, _: Request, res: Response, next: NextFunction) => {

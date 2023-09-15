@@ -225,7 +225,7 @@ export const invoicingAPI = invoicingAPIGateway.authorisedExpressCallback;
 
 // not sure why this doesn't follow the pattern above
 export const getContactUsAPIHostAndKey = async () => {
-	const stage = conf.STAGE.toUpperCase() === 'PROD' ? 'PROD' : 'CODE';
+	const stage = conf.STAGE.toUpperCase();
 	const { host, apiKey } = await getHostAndApiKeyForStack(
 		'membership',
 		'contact-us-api',

@@ -1,26 +1,8 @@
 import type { IncomingMessage } from 'http';
 import csrf from 'csurf';
-import type {
-	Response as ExpressResponse,
-	NextFunction,
-	Request,
-} from 'express';
+import type { NextFunction, Response } from 'express';
 
-export const CLIENTSIDE_CSRF_COOKIE_NAME = 'XSRF-TOKEN';
-
-export const csrfSendTokenMiddleware = (
-	res: ExpressResponse,
-	req: Request,
-	next: NextFunction,
-) => {
-	res.cookie(CLIENTSIDE_CSRF_COOKIE_NAME, req.csrfToken(), {
-		secure: true,
-		sameSite: 'strict',
-	});
-	next();
-};
-
-export const csrfValidateMiddleware = csrf({
+export const crsfMiddleware = csrf({
 	cookie: {
 		key: '_csrf',
 		sameSite: true,
@@ -29,29 +11,17 @@ export const csrfValidateMiddleware = csrf({
 	},
 });
 
-export const handleError = (
-	error: any,
-	res: ExpressResponse,
-	next: NextFunction,
-) => {
+export const handleError = (error: any, res: Response, next: NextFunction) => {
 	res.status(500).send({ status: 500, message: 'Internal service error' });
 	next(error);
 };
 
 export const mimicResponse = (
 	sourceResponse: IncomingMessage,
-	targetResponse: ExpressResponse,
+	targetResponse: Response,
 ) => {
 	if (sourceResponse.statusCode) {
 		targetResponse.status(sourceResponse.statusCode);
 	}
 	targetResponse.set(sourceResponse.headers);
-};
-
-export const jsonOrEmpty = async (response: Response) => {
-	try {
-		return await response.json();
-	} catch (e) {
-		return {};
-	}
 };

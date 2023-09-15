@@ -1,10 +1,12 @@
-import {
-	addCSRFToken,
-	deleteRequest,
-	fetchWithDefaultParameters,
-} from '@/client/utilities/fetch';
+import { APIUseCredentials, identityFetch } from './fetch';
 
 export const execute = async () => {
-	const url = '/idapi/user/consents/all';
-	await fetchWithDefaultParameters(url, addCSRFToken(deleteRequest()));
+	const url = '/remove/consent/all';
+	const options = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
+	};
+	return identityFetch<void>(url, APIUseCredentials(options));
 };

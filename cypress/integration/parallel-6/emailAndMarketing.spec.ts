@@ -29,17 +29,17 @@ if (featureSwitches.singleContributions) {
 				body: toMembersDataApiResponse(),
 			}).as('product_detail');
 
-			cy.intercept('GET', '/idapi/newsletters', {
+			cy.intercept('GET', '/idapicodeproxy/newsletters', {
 				statusCode: 200,
 				body: newsletters,
 			}).as('newsletters');
 
-			cy.intercept('GET', '/idapi/user/newsletters', {
+			cy.intercept('GET', '/idapicodeproxy/users/me/newsletters', {
 				statusCode: 200,
 				body: newsletterSubscriptions,
 			}).as('newsletter_subscriptions');
 
-			cy.intercept('GET', '/idapi/user/consents', {
+			cy.intercept('GET', '/idapicodeproxy/consents?filter=all', {
 				statusCode: 200,
 				body: consents,
 			}).as('consents');

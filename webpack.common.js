@@ -55,9 +55,6 @@ const babelCommon = {
 const common = {
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.json'],
-		alias: {
-			'@': path.resolve(__dirname, '.'),
-		},
 	},
 	plugins: [definePlugin, assetsPluginInstance],
 };

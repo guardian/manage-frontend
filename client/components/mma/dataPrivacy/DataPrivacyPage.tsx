@@ -11,6 +11,7 @@ import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import * as UserAPI from '../identity/idapi/user';
 import { ConsentOptions, mapSubscriptions } from '../identity/identity';
+import { IdentityLocations } from '../identity/IdentityLocations';
 import { Lines } from '../identity/Lines';
 import type { ConsentOption } from '../identity/models';
 import { Actions, useConsentOptions } from '../identity/useConsentOptions';
@@ -25,7 +26,13 @@ type DataPrivacyResponse = [ConsentOption[], UserAPI.UserAPIResponse];
 
 const dataPrivacyFetcher = () =>
 	Promise.all([
-		fetchWithDefaultParameters('/idapi/user/consents'),
+		fetchWithDefaultParameters(
+			IdentityLocations.IDAPI + '/consents?filter=all',
+			{
+				mode: 'cors',
+				credentials: 'omit',
+			},
+		),
 		fetchWithDefaultParameters('/idapi/user'),
 	]);
 
