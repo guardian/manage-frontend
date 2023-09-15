@@ -35,7 +35,6 @@ if (conf.DOMAIN === 'thegulocal.com') {
 }
 
 server.use(helmet());
-server.use(express.json());
 
 const serveStaticAssets: RequestHandler = express.static(__dirname + '/static');
 
@@ -66,6 +65,20 @@ const disableCache = (_: Request, res: Response, next: NextFunction) => {
 };
 server.use(disableCache);
 
+/**
+ * Cookies and body parsing
+ * ------------------------
+ * We don't parse the body of JSON requests that are coming into the server from
+ * the client using express.json() because MMA is essentially a proxy and is
+ * usually not interested in the body of the request. One of the exceptions is
+ * POST /aapi/avatar, which extracts file data from a JSON payload and reformats
+ * it. This is handled separately directly in the route handler.
+ *
+ * WARNING: A lot of the routes _rely_ on the JSON body not being parsed at the
+ * server level, so they don't stringify the body before sending it to
+ * downstream APIs. For this reason, think and test carefully before adding a
+ * global body parser to the server!
+ */
 server.use(cookieParser());
 server.use(
 	raw({
