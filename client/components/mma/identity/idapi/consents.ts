@@ -1,10 +1,6 @@
-import {
-	addCSRFToken,
-	fetchWithDefaultParameters,
-	patchRequest,
-} from '@/client/utilities/fetch';
 import type { ConsentOption } from '../models';
 import { ConsentOptionType } from '../models';
+import { APIPatchOptions, APIUseCredentials, identityFetch } from './fetch';
 
 export interface ConsentAPIResponse {
 	id: string;
@@ -15,7 +11,7 @@ export interface ConsentAPIResponse {
 	isProduct: boolean;
 }
 
-export const consentToConsentOption = (
+const consentToConsentOption = (
 	response: ConsentAPIResponse,
 ): ConsentOption => {
 	const { id, description, name, isProduct, isChannel, isOptOut } = response;
@@ -31,17 +27,19 @@ export const consentToConsentOption = (
 };
 
 export const read = async (): Promise<ConsentOption[]> => {
-	const url = '/idapi/user/consents';
-	return await fetchWithDefaultParameters(url)
-		.then((response) => response.json() as Promise<ConsentAPIResponse[]>)
-		.then((consents) => consents.map(consentToConsentOption));
+	const url = '/consents?filter=all';
+	return (await identityFetch<ConsentAPIResponse[]>(url)).map(
+		consentToConsentOption,
+	);
 };
 
 export const update = async (id: string, consented: boolean = true) => {
-	const url = '/idapi/user/consents';
-	const payload = {
-		id,
-		consented,
-	};
-	await fetchWithDefaultParameters(url, addCSRFToken(patchRequest(payload)));
+	const url = '/users/me/consents';
+	const payload = [
+		{
+			id,
+			consented,
+		},
+	];
+	await identityFetch(url, APIUseCredentials(APIPatchOptions(payload)));
 };

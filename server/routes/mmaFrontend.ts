@@ -3,7 +3,6 @@ import { Router } from 'express';
 import { conf } from '../config';
 import { html } from '../html';
 import { withIdentity } from '../middleware/identityMiddleware';
-import { csrfValidateMiddleware } from '../util';
 import {
 	clientDSN,
 	getRecaptchaPublicKey,
@@ -12,16 +11,9 @@ import {
 
 const router = Router();
 
-router.use(csrfValidateMiddleware);
-
-router.use(withIdentity(), async (req: Request, res: Response) => {
+router.use(withIdentity(), async (_: Request, res: Response) => {
 	const title = 'My Account | The Guardian';
 	const src = '/static/mma.js';
-
-	res.cookie('XSRF-TOKEN', req.csrfToken(), {
-		secure: true,
-		sameSite: 'strict',
-	});
 
 	res.send(
 		html({

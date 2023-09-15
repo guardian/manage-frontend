@@ -1,6 +1,3 @@
-const webpack = require('webpack');
-const path = require('path');
-
 module.exports = {
 	stories: ['../client/**/*.stories.@(js|jsx|ts|tsx)'],
 	addons: ['@storybook/addon-essentials'],
@@ -39,19 +36,6 @@ module.exports = {
 			],
 		});
 		config.resolve.plugins ||= [];
-		config.plugins.push(
-			// Buffer, which is a Node.js object, is not defined in browser environments
-			// when building with Webpack 5, so we need to polyfill it to make Storybook work.
-			// We use Buffer in our file uploading utils.
-			new webpack.ProvidePlugin({
-				Buffer: ['buffer', 'Buffer'],
-			}),
-		);
-		config.resolve.alias = {
-			...config.resolve.alias,
-			Buffer: 'buffer',
-			'@': path.resolve(__dirname, '../'),
-		};
 		return config;
 	},
 };

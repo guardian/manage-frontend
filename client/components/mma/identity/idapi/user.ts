@@ -1,11 +1,12 @@
 import { get } from 'lodash';
-import {
-	addCSRFToken,
-	fetchWithDefaultParameters,
-	putRequest,
-} from '@/client/utilities/fetch';
 import type { User, UserError } from '../models';
 import { ErrorTypes } from '../models';
+import {
+	APIPutOptions,
+	APIUseCredentials,
+	APIUseXSRFHeader,
+	localFetch,
+} from './fetch';
 
 type UserPublicFields = Partial<Pick<User, 'username'>> & {
 	displayName?: string;
@@ -172,15 +173,9 @@ const toUserError = (response: UserAPIErrorResponse): UserError => {
 export const write = async (user: Partial<User>): Promise<User> => {
 	const url = '/idapi/user';
 	const body = toUserApiRequest(user);
+	const options = APIUseXSRFHeader(APIUseCredentials(APIPutOptions(body)));
 	try {
-		const response = await fetchWithDefaultParameters(
-			url,
-			addCSRFToken(putRequest(body)),
-		).then((response) => response.json());
-		if (isErrorResponse(response)) {
-			throw toUserError(response);
-		}
-		return toUser(response);
+		return toUser(await localFetch(url, options));
 	} catch (e) {
 		throw isErrorResponse(e) ? toUserError(e) : e;
 	}
@@ -188,8 +183,9 @@ export const write = async (user: Partial<User>): Promise<User> => {
 
 export const read = async (): Promise<User> => {
 	const url = '/idapi/user';
-	const response: UserAPIResponse = await fetchWithDefaultParameters(
+	const response: UserAPIResponse = await localFetch(
 		url,
-	).then((response) => response.json());
+		APIUseCredentials({}),
+	);
 	return toUser(response);
 };

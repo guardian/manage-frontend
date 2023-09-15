@@ -20,7 +20,7 @@ export const Default: ComponentStory<typeof DataPrivacy> = () => {
 
 Default.parameters = {
 	msw: [
-		rest.get('/idapi/user/consents', (_req, res, ctx) => {
+		rest.get('idapicodeproxy/consents', (_req, res, ctx) => {
 			return res(ctx.json(consents));
 		}),
 		rest.get('/idapi/user', (_req, res, ctx) => {

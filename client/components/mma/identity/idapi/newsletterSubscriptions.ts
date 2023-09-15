@@ -1,6 +1,6 @@
-import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import { APIUseCredentials, identityFetch } from './fetch';
 
-export interface Subscription {
+interface Subscription {
 	listId: number;
 }
 
@@ -14,12 +14,12 @@ export interface NewsletterSubscriptions {
 }
 
 export const read = async (): Promise<string[]> => {
-	const url = '/idapi/user/newsletters';
-	return await fetchWithDefaultParameters(url)
-		.then((response) => response.json() as Promise<NewsletterSubscriptions>)
-		.then((newsletters) =>
-			newsletters.result.subscriptions.map((subscription: Subscription) =>
-				subscription.listId.toString(),
-			),
-		);
+	const url = '/users/me/newsletters';
+	const data = await identityFetch<NewsletterSubscriptions>(
+		url,
+		APIUseCredentials({}),
+	);
+	return data.result.subscriptions.map((s: Subscription) =>
+		s.listId.toString(),
+	);
 };

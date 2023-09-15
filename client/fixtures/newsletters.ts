@@ -1,6 +1,6 @@
 /*
  * Available newsletter subscriptions
- * /idapi/newsletters
+ * /idapicodeproxy/newsletters
  */
 
 export const newsletters = [

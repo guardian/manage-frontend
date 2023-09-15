@@ -1,6 +1,6 @@
 /*
  * Newsletter subscriptions for signed in user
- * /idapi/user/newsletters (proxied to IDAPI /users/me/newsletters)
+ * /idapicodeproxy/users/me/newsletters
  */
 
 export const newsletterSubscriptions = {

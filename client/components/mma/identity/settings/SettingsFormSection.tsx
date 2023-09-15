@@ -10,7 +10,7 @@ import {
 	FormSelectField,
 	FormTextField,
 } from '../form/FormField';
-import * as PhoneNumberAPI from '../idapi/phonenumber';
+import * as PhoneNumber from '../idapi/phonenumber';
 import { Users } from '../identity';
 import { IdentityLocations } from '../IdentityLocations';
 import { Lines } from '../Lines';
@@ -51,7 +51,7 @@ const registrationLocationLabelModifier = (location: string) => {
 };
 
 const deletePhoneNumber = async () => {
-	await PhoneNumberAPI.remove();
+	await PhoneNumber.remove();
 	return await Users.getCurrentUser();
 };
 
