@@ -50,10 +50,14 @@ const securityCookieToHeader = (cookies: CookiesWithToken) => ({
 const prepareBody = <T>(body: T | undefined) => {
 	if (!body) {
 		return undefined;
-	} 
+	}
 	if (typeof body === 'string') {
 		return body;
 	}
+	if (Buffer.isBuffer(body)) {
+		return body;
+	}
+	// Body might be a JSON object, so we need to stringify it
 	try {
 		return JSON.stringify(body);
 	} catch (e) {
@@ -151,6 +155,8 @@ export const idapiProxyHandler =
 		try {
 			const response = await idapiFetch<T>({
 				options,
+				// The body will come in as a Buffer because we're not parsing JSON
+				// so we simply pass it through as is. We don't care what's inside it.
 				body: ['POST', 'PUT', 'PATCH'].includes(method)
 					? req.body
 					: undefined,
