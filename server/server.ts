@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/node';
 import { raw } from 'body-parser';
+import cookieParser from 'cookie-parser';
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import { default as express } from 'express';
 import helmet from 'helmet';
@@ -34,6 +35,7 @@ if (conf.DOMAIN === 'thegulocal.com') {
 }
 
 server.use(helmet());
+server.use(express.json());
 
 const serveStaticAssets: RequestHandler = express.static(__dirname + '/static');
 
@@ -64,6 +66,7 @@ const disableCache = (_: Request, res: Response, next: NextFunction) => {
 };
 server.use(disableCache);
 
+server.use(cookieParser());
 server.use(
 	raw({
 		type: '*/*',
@@ -76,6 +79,7 @@ server.use('/profile/', routes.profile);
 server.use('/api/', routes.api);
 server.use('/idapi', routes.idapi);
 server.use('/mpapi', routes.mpapi);
+server.use('/aapi', routes.aapi);
 server.use(routes.productsProvider('/api/'));
 
 // Help Centre
