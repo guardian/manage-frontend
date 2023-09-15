@@ -111,13 +111,14 @@ systemctl start manage-frontend
 			userData,
 			roleConfiguration: {
 				additionalPolicies: [
-					new GuAllowPolicy(this, 'PushLogs', {
+					new GuAllowPolicy(this, 'CloudwatchMetrics', {
 						actions: [
 							'logs:CreateLogGroup',
 							'logs:CreateLogStream',
 							'logs:PutLogEvents',
+							'logs:DescribeLogStreams',
 						],
-						resources: [logGroup.logGroupArn],
+						resources: ['arn:aws:logs:*:*:*'],
 					}),
 					new GuPutCloudwatchMetricsPolicy(this),
 					// TODO: whats this bucket used for and are we doing the right thing?
