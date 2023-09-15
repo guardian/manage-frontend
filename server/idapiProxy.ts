@@ -50,7 +50,7 @@ const securityCookieToHeader = (cookies: CookiesWithToken) => ({
 const prepareBody = <T>(body: T | undefined) => {
 	if (!body) {
 		return undefined;
-	} 
+	}
 	if (typeof body === 'string') {
 		return body;
 	}
@@ -141,6 +141,17 @@ export const idapiProxyHandler =
 		} catch (e) {
 			return handleError(e, res, next);
 		}
+		// We don't parse JSON globally for all requests in the server,
+		// so we do it specifically for all the IDAPI requests here, as long
+		// as the incoming request has the correct Content-Type header.
+		let body = req.body;
+		if (req.headers['content-type'] === 'application/json') {
+			try {
+				body = JSON.parse(body);
+			} catch (e) {
+				return handleError(e, res, next);
+			}
+		}
 		const options = setOptions({
 			path: url,
 			subdomain: 'idapi',
@@ -152,7 +163,7 @@ export const idapiProxyHandler =
 			const response = await idapiFetch<T>({
 				options,
 				body: ['POST', 'PUT', 'PATCH'].includes(method)
-					? req.body
+					? body
 					: undefined,
 			});
 			if (response.status === 204) {
