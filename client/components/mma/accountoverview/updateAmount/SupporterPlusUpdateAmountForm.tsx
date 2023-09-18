@@ -18,7 +18,7 @@ import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import {
 	getSuggestedAmountsFromMainPlan,
 	supporterPlusPriceConfigByCountryGroup,
-} from '../../../../utilities/supporterPlusPricing';
+} from '../../../../utilities/supportPricing/supporterPlusPricing';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 

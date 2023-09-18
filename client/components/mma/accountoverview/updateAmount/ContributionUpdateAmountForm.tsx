@@ -13,9 +13,9 @@ import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse
 import { augmentBillingPeriod } from '../../../../../shared/productResponse';
 import type { ProductType } from '../../../../../shared/productTypes';
 import { trackEvent } from '../../../../utilities/analytics';
-import type { ContributionInterval } from '../../../../utilities/contributionsAmount';
-import { contributionAmountsLookup } from '../../../../utilities/contributionsAmount';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
+import type { ContributionInterval } from '../../../../utilities/supportPricing/contributionsAmount';
+import { contributionAmountsLookup } from '../../../../utilities/supportPricing/contributionsAmount';
 import { TextResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 

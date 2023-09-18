@@ -15,8 +15,8 @@ import {
 	buttonContainerCss,
 } from '../../../styles/ButtonStyles';
 import { twoColumnChoiceCardMobile } from '../../../styles/GenericStyles';
-import type { ContributionInterval } from '../../../utilities/contributionsAmount';
-import { contributionAmountsLookup } from '../../../utilities/contributionsAmount';
+import type { ContributionInterval } from '../../../utilities/supportPricing/contributionsAmount';
+import { contributionAmountsLookup } from '../../../utilities/supportPricing/contributionsAmount';
 import { waitForElement } from '../../../utilities/utils';
 import { UpgradeBenefitsCard } from '../shared/benefits/BenefitsCard';
 import { getUpgradeBenefits } from '../shared/benefits/BenefitsConfiguration';
