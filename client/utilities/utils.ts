@@ -37,3 +37,24 @@ export const processResponse = <T>(resp: Response): Promise<T | null> => {
 
 	throw error;
 };
+
+// https://stackoverflow.com/a/61511955
+export function waitForElement(selector: string): Promise<Element | null> {
+	return new Promise((resolve) => {
+		if (document.querySelector(selector)) {
+			return resolve(document.querySelector(selector));
+		}
+
+		const observer = new MutationObserver((_) => {
+			if (document.querySelector(selector)) {
+				observer.disconnect();
+				resolve(document.querySelector(selector));
+			}
+		});
+
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true,
+		});
+	});
+}
