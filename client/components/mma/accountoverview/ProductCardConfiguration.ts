@@ -61,6 +61,9 @@ export const productCardConfiguration: {
 	homedelivery: {
 		colour: productColour.newspaper,
 	},
+	nationaldelivery: {
+		colour: productColour.newspaper,
+	},
 	voucher: {
 		colour: productColour.newspaper,
 	},
