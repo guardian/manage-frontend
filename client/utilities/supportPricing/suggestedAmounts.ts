@@ -26,7 +26,7 @@ export function getSuggestedSupportAmounts(mainPlan: PaidSubscriptionPlan) {
 }
 
 /* 
-    ToDo: we need a more flexible way of calculating these suggested amounts, which came from a spreadsheet
+	ToDo: we need a more flexible way of calculating these suggested amounts, which came from a spreadsheet
 */
 
 const suggestedAmountsLookup: SuggestedAmountsLookup = {
@@ -61,215 +61,278 @@ const suggestedAmountsLookup: SuggestedAmountsLookup = {
 };
 
 function getGbpMonthly(amount: number) {
-	switch (true) {
-		case amount <= 3:
-			return [5, 7, 10];
-		case amount <= 8:
-			return [10, 12, 15];
-		case amount <= 9:
-			return [12, 15, 17];
-		case amount <= 13:
-			return [15, 17, 20];
-		case amount <= 18:
-			return [20, 22, 25];
-		case amount <= 23:
-			return [25, 27, 30];
-		case amount <= 28:
-			return [30, 32, 35];
-		case amount <= 29:
-			return [35, 37, 40];
-		case amount <= 35:
-			return [40, 42, 45];
-		default:
-			return getSuggestedAmountsMonthly(amount);
+	if (amount <= 3) {
+		return [5, 7, 10];
+	}
+	if (amount <= 8) {
+		return [10, 12, 15];
+	}
+	if (amount <= 9) {
+		return [12, 15, 17];
+	}
+	if (amount <= 13) {
+		return [15, 17, 20];
+	}
+	if (amount <= 18) {
+		return [20, 22, 25];
+	}
+	if (amount <= 23) {
+		return [25, 27, 30];
+	}
+	if (amount <= 28) {
+		return [30, 32, 35];
+	}
+	if (amount <= 29) {
+		return [35, 37, 40];
+	}
+	if (amount <= 35) {
+		return [40, 42, 45];
+	} else {
+		return getSuggestedAmountsMonthly(amount);
 	}
 }
 
 function getGbpAnnual(amount: number) {
-	switch (true) {
-		case amount <= 11:
-			return [20, 30, 40];
-		case amount <= 13:
-			return [25, 40, 50];
-		case amount <= 16:
-			return [30, 40, 50];
-		case amount <= 18:
-			return [35, 40, 50];
-		case amount <= 19:
-			return [40, 50, 60];
-		case amount <= 50:
-			return [60, 70, 80];
-		case amount <= 69:
-			return [80, 90, 100];
-		case amount <= 80:
-			return [95, 100, 110];
-		case amount <= 89:
-			return [99, 110, 120];
-		case amount <= 100:
-			return [120, 130, 140];
-		case amount <= 119:
-			return [150, 160, 170];
-		case amount <= 140:
-			return [240, 250, 260];
-		default:
-			return getSuggestedAmountsAnnual(amount);
+	if (amount <= 11) {
+		return [20, 30, 40];
+	}
+	if (amount <= 13) {
+		return [25, 40, 50];
+	}
+	if (amount <= 16) {
+		return [30, 40, 50];
+	}
+	if (amount <= 18) {
+		return [35, 40, 50];
+	}
+	if (amount <= 19) {
+		return [40, 50, 60];
+	}
+	if (amount <= 50) {
+		return [60, 70, 80];
+	}
+	if (amount <= 69) {
+		return [80, 90, 100];
+	}
+	if (amount <= 80) {
+		return [95, 100, 110];
+	}
+	if (amount <= 89) {
+		return [99, 110, 120];
+	}
+	if (amount <= 100) {
+		return [120, 130, 140];
+	}
+	if (amount <= 119) {
+		return [150, 160, 170];
+	}
+	if (amount <= 140) {
+		return [240, 250, 260];
+	} else {
+		return getSuggestedAmountsAnnual(amount);
 	}
 }
 
 function getUsdMonthly(amount: number) {
-	switch (true) {
-		case amount <= 4:
-			return [5, 7, 13];
-		case amount <= 8:
-			return [10, 13, 15];
-		case amount <= 9:
-			return [13, 15, 17];
-		case amount <= 18:
-			return [20, 22, 25];
-		case amount <= 23:
-			return [25, 27, 30];
-		case amount <= 28:
-			return [30, 32, 35];
-		case amount <= 29:
-			return [35, 37, 40];
-		case amount <= 35:
-			return [40, 42, 45];
-		default:
-			return getSuggestedAmountsMonthly(amount);
+	if (amount <= 4) {
+		return [5, 7, 13];
+	}
+	if (amount <= 8) {
+		return [10, 13, 15];
+	}
+	if (amount <= 9) {
+		return [13, 15, 17];
+	}
+	if (amount <= 18) {
+		return [20, 22, 25];
+	}
+	if (amount <= 23) {
+		return [25, 27, 30];
+	}
+	if (amount <= 28) {
+		return [30, 32, 35];
+	}
+	if (amount <= 29) {
+		return [35, 37, 40];
+	}
+	if (amount <= 35) {
+		return [40, 42, 45];
+	} else {
+		return getSuggestedAmountsMonthly(amount);
 	}
 }
 
 function getUsdAnnual(amount: number) {
-	switch (true) {
-		case amount <= 10:
-			return [20, 30, 40];
-		case amount <= 20:
-			return [40, 50, 60];
-		case amount <= 30:
-			return [50, 60, 70];
-		case amount <= 39:
-			return [60, 70, 80];
-		case amount <= 50:
-			return [75, 80, 90];
-		case amount <= 55:
-			return [80, 90, 100];
-		case amount <= 59:
-			return [90, 100, 110];
-		case amount <= 70:
-			return [100, 110, 120];
-		case amount <= 89:
-			return [120, 130, 140];
-		case amount <= 99:
-			return [130, 140, 150];
-		case amount <= 114:
-			return [150, 160, 170];
-		case amount <= 119:
-			return [160, 170, 180];
-		case amount <= 139:
-			return [180, 190, 200];
-		case amount <= 150:
-			return [200, 210, 220];
-		default:
-			return getSuggestedAmountsAnnual(amount);
+	if (amount <= 10) {
+		return [20, 30, 40];
+	}
+	if (amount <= 20) {
+		return [40, 50, 60];
+	}
+	if (amount <= 30) {
+		return [50, 60, 70];
+	}
+	if (amount <= 39) {
+		return [60, 70, 80];
+	}
+	if (amount <= 50) {
+		return [75, 80, 90];
+	}
+	if (amount <= 55) {
+		return [80, 90, 100];
+	}
+	if (amount <= 59) {
+		return [90, 100, 110];
+	}
+	if (amount <= 70) {
+		return [100, 110, 120];
+	}
+	if (amount <= 89) {
+		return [120, 130, 140];
+	}
+	if (amount <= 99) {
+		return [130, 140, 150];
+	}
+	if (amount <= 114) {
+		return [150, 160, 170];
+	}
+	if (amount <= 119) {
+		return [160, 170, 180];
+	}
+	if (amount <= 139) {
+		return [180, 190, 200];
+	}
+	if (amount <= 150) {
+		return [200, 210, 220];
+	} else {
+		return getSuggestedAmountsAnnual(amount);
 	}
 }
 
 function getEuroMonthly(amount: number) {
-	switch (true) {
-		case amount <= 4:
-			return [6, 8, 10];
-		case amount <= 8:
-			return [10, 12, 15];
-		case amount <= 9:
-			return [15, 17, 20];
-		case amount <= 18:
-			return [20, 22, 25];
-		case amount <= 28:
-			return [30, 32, 35];
-		case amount <= 29:
-			return [35, 37, 40];
-		case amount <= 35:
-			return [40, 42, 45];
-		default:
-			return getSuggestedAmountsMonthly(amount);
+	if (amount <= 4) {
+		return [6, 8, 10];
+	}
+	if (amount <= 8) {
+		return [10, 12, 15];
+	}
+	if (amount <= 9) {
+		return [15, 17, 20];
+	}
+	if (amount <= 18) {
+		return [20, 22, 25];
+	}
+	if (amount <= 28) {
+		return [30, 32, 35];
+	}
+	if (amount <= 29) {
+		return [35, 37, 40];
+	}
+	if (amount <= 35) {
+		return [40, 42, 45];
+	} else {
+		return getSuggestedAmountsMonthly(amount);
 	}
 }
 
 function getEuroAnnual(amount: number) {
-	switch (true) {
-		case amount <= 14:
-			return [25, 30, 40];
-		case amount <= 19:
-			return [30, 40, 50];
-		case amount <= 44:
-			return [60, 70, 80];
-		case amount <= 49:
-			return [75, 80, 90];
-		case amount <= 89:
-			return [100, 110, 120];
-		case amount <= 99:
-			return [120, 130, 140];
-		case amount <= 119:
-			return [150, 160, 170];
-		case amount <= 149:
-			return [240, 250, 260];
-		case amount <= 150:
-			return [250, 260, 270];
-		default:
-			return getSuggestedAmountsAnnual(amount);
+	if (amount <= 14) {
+		return [25, 30, 40];
+	}
+	if (amount <= 19) {
+		return [30, 40, 50];
+	}
+	if (amount <= 44) {
+		return [60, 70, 80];
+	}
+	if (amount <= 49) {
+		return [75, 80, 90];
+	}
+	if (amount <= 89) {
+		return [100, 110, 120];
+	}
+	if (amount <= 99) {
+		return [120, 130, 140];
+	}
+	if (amount <= 119) {
+		return [150, 160, 170];
+	}
+	if (amount <= 149) {
+		return [240, 250, 260];
+	}
+	if (amount <= 150) {
+		return [250, 260, 270];
+	} else {
+		return getSuggestedAmountsAnnual(amount);
 	}
 }
 
 function getAusMonthly(amount: number) {
-	switch (true) {
-		case amount <= 9:
-			return [15, 17, 20];
-		case amount <= 18:
-			return [20, 22, 25];
-		case amount <= 27:
-			return [30, 32, 35];
-		case amount <= 29:
-			return [35, 37, 40];
-		case amount <= 35:
-			return [40, 42, 45];
-		case amount <= 39:
-			return [45, 47, 50];
-		case amount <= 45:
-			return [50, 52, 55];
-		case amount <= 50:
-			return [60, 62, 65];
-		default:
-			return getSuggestedAmountsMonthly(amount);
+	if (amount <= 9) {
+		return [15, 17, 20];
+	}
+	if (amount <= 18) {
+		return [20, 22, 25];
+	}
+	if (amount <= 27) {
+		return [30, 32, 35];
+	}
+	if (amount <= 29) {
+		return [35, 37, 40];
+	}
+	if (amount <= 35) {
+		return [40, 42, 45];
+	}
+	if (amount <= 39) {
+		return [45, 47, 50];
+	}
+	if (amount <= 45) {
+		return [50, 52, 55];
+	}
+	if (amount <= 50) {
+		return [60, 62, 65];
+	} else {
+		return getSuggestedAmountsMonthly(amount);
 	}
 }
 
 function getAusAnnual(amount: number) {
-	switch (true) {
-		case amount <= 19:
-			return [40, 50, 60];
-		case amount <= 29:
-			return [50, 60, 70];
-		case amount <= 44:
-			return [60, 70, 80];
-		case amount <= 49:
-			return [70, 80, 90];
-		case amount <= 69:
-			return [80, 90, 100];
-		case amount <= 79:
-			return [100, 110, 120];
-		case amount <= 151:
-			return [160, 170, 180];
-		case amount <= 169:
-			return [180, 190, 200];
-		case amount <= 179:
-			return [200, 210, 220];
-		case amount <= 190:
-			return [230, 240, 250];
-		case amount <= 199:
-			return [250, 260, 270];
-		case amount <= 250:
-			return [300, 310, 320];
-		default:
-			return getSuggestedAmountsAnnual(amount);
+	if (amount <= 19) {
+		return [40, 50, 60];
+	}
+	if (amount <= 29) {
+		return [50, 60, 70];
+	}
+	if (amount <= 44) {
+		return [60, 70, 80];
+	}
+	if (amount <= 49) {
+		return [70, 80, 90];
+	}
+	if (amount <= 69) {
+		return [80, 90, 100];
+	}
+	if (amount <= 79) {
+		return [100, 110, 120];
+	}
+	if (amount <= 151) {
+		return [160, 170, 180];
+	}
+	if (amount <= 169) {
+		return [180, 190, 200];
+	}
+	if (amount <= 179) {
+		return [200, 210, 220];
+	}
+	if (amount <= 190) {
+		return [230, 240, 250];
+	}
+	if (amount <= 199) {
+		return [250, 260, 270];
+	}
+	if (amount <= 250) {
+		return [300, 310, 320];
+	} else {
+		return getSuggestedAmountsAnnual(amount);
 	}
 }
