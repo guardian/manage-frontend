@@ -45,6 +45,8 @@ jobs:
           app: manage-frontend
           configPath: ./riff-raff.yaml
           contentDirectories: |
+            assets-static:
+              - ./dist/static
             manage-frontend-cloudformation:
               - ./cdk/cdk.out/ManageFrontend-CODE.template.json
               - ./cdk/cdk.out/ManageFrontend-PROD.template.json
