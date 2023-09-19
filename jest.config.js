@@ -3,7 +3,6 @@ module.exports = {
 		'^.+\\.tsx?$': 'ts-jest',
 	},
 	moduleFileExtensions: ['js', 'json', 'jsx', 'node', 'ts', 'tsx'],
-	testResultsProcessor: 'jest-teamcity-reporter',
 	snapshotSerializers: ['@emotion/jest/serializer'],
 	globals: {
 		'ts-jest': {
