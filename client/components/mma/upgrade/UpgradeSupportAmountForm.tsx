@@ -147,7 +147,7 @@ export const UpgradeSupportAmountForm = ({
 
 	return (
 		<>
-			<div>
+			<Stack space={3}>
 				<Heading sansSerif level="3" borderless>
 					1. Choose your new amount
 				</Heading>
@@ -249,7 +249,7 @@ export const UpgradeSupportAmountForm = ({
 						</section>
 					)}
 				</Stack>
-			</div>
+			</Stack>
 		</>
 	);
 };

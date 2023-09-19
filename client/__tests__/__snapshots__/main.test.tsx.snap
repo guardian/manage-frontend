@@ -312,7 +312,7 @@ exports[`Main renders something 1`] = `
   white-space: nowrap;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.35;
+  line-height: 1.3;
   font-weight: 700;
   --source-text-decoration-thickness: 2px;
   height: 36px;
@@ -415,7 +415,7 @@ html:not(.src-focus-disabled) .emotion-60:focus {
   padding-left: 8px;
   font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
   font-size: 0.9375rem;
-  line-height: 1.35;
+  line-height: 1.3;
   font-weight: 700;
   --source-text-decoration-thickness: 2px;
   color: #FFFFFF;
@@ -433,7 +433,7 @@ html:not(.src-focus-disabled) .emotion-60:focus {
 }
 
 html:not(.src-focus-disabled) .emotion-63 :focus {
-  box-shadow: 0 0 0 5px #0077B6;
+  box-shadow: 0 0 0 3px #0077B6;
 }
 
 .emotion-64 {

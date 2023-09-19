@@ -46,6 +46,8 @@ const UpgradeSupportPageContainer = ({
 }) => {
 	return (
 		<PageContainer
+			compactTitle
+			minimalFooter
 			selectedNavItem={NAV_LINKS.accountOverview}
 			pageTitle={pageTitle ?? 'Your support'}
 		>
