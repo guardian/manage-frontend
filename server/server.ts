@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/node';
 import { raw } from 'body-parser';
+import cookieParser from 'cookie-parser';
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import { default as express } from 'express';
 import helmet from 'helmet';
@@ -64,6 +65,21 @@ const disableCache = (_: Request, res: Response, next: NextFunction) => {
 };
 server.use(disableCache);
 
+/**
+ * Cookies and body parsing
+ * ------------------------
+ * We don't parse the body of JSON requests that are coming into the server from
+ * the client using express.json() because MMA is essentially a proxy and is
+ * usually not interested in the body of the request. One of the exceptions is
+ * POST /aapi/avatar, which extracts file data from a JSON payload and reformats
+ * it. This is handled separately directly in the route handler.
+ *
+ * WARNING: A lot of the routes _rely_ on the JSON body not being parsed at the
+ * server level, so they don't stringify the body before sending it to
+ * downstream APIs. For this reason, think and test carefully before adding a
+ * global body parser to the server!
+ */
+server.use(cookieParser());
 server.use(
 	raw({
 		type: '*/*',
@@ -76,6 +92,7 @@ server.use('/profile/', routes.profile);
 server.use('/api/', routes.api);
 server.use('/idapi', routes.idapi);
 server.use('/mpapi', routes.mpapi);
+server.use('/aapi', routes.aapi);
 server.use(routes.productsProvider('/api/'));
 
 // Help Centre
