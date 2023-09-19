@@ -111,6 +111,9 @@ function getGbpAnnual(amount: number) {
 	if (amount <= 50) {
 		return [60, 70, 80];
 	}
+	if (amount <= 59) {
+		return [70, 80, 90];
+	}
 	if (amount <= 69) {
 		return [80, 90, 100];
 	}
