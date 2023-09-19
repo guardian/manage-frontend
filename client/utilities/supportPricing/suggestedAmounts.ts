@@ -1,10 +1,8 @@
 import type { PaidSubscriptionPlan } from '../../../shared/productResponse';
 import type { CurrencyIso } from '../currencyIso';
 import { isCurrencyIso } from '../currencyIso';
-import {
-	getSuggestedAmountsAnnual,
-	getSuggestedAmountsMonthly,
-} from './supporterPlusPricing';
+
+/* Recurring Contributions */
 
 type SuggestedAmountsLookup = Record<
 	CurrencyIso | 'international',
@@ -14,7 +12,9 @@ type SuggestedAmountsLookup = Record<
 	}
 >;
 
-export function getSuggestedSupportAmounts(mainPlan: PaidSubscriptionPlan) {
+export function getContributionSuggestedAmounts(
+	mainPlan: PaidSubscriptionPlan,
+) {
 	const currentAmount = mainPlan.price / 100;
 	const currencyISO = isCurrencyIso(mainPlan.currencyISO)
 		? mainPlan.currencyISO
@@ -88,7 +88,7 @@ function getGbpMonthly(amount: number) {
 	if (amount <= 35) {
 		return [40, 42, 45];
 	} else {
-		return getSuggestedAmountsMonthly(amount);
+		return getSupporterPlusSuggestedAmountsMonthly(amount);
 	}
 }
 
@@ -129,7 +129,7 @@ function getGbpAnnual(amount: number) {
 	if (amount <= 140) {
 		return [240, 250, 260];
 	} else {
-		return getSuggestedAmountsAnnual(amount);
+		return getSupporterPlusSuggestedAmountsAnnual(amount);
 	}
 }
 
@@ -158,7 +158,7 @@ function getUsdMonthly(amount: number) {
 	if (amount <= 35) {
 		return [40, 42, 45];
 	} else {
-		return getSuggestedAmountsMonthly(amount);
+		return getSupporterPlusSuggestedAmountsMonthly(amount);
 	}
 }
 
@@ -205,7 +205,7 @@ function getUsdAnnual(amount: number) {
 	if (amount <= 150) {
 		return [200, 210, 220];
 	} else {
-		return getSuggestedAmountsAnnual(amount);
+		return getSupporterPlusSuggestedAmountsAnnual(amount);
 	}
 }
 
@@ -231,7 +231,7 @@ function getEuroMonthly(amount: number) {
 	if (amount <= 35) {
 		return [40, 42, 45];
 	} else {
-		return getSuggestedAmountsMonthly(amount);
+		return getSupporterPlusSuggestedAmountsMonthly(amount);
 	}
 }
 
@@ -263,7 +263,7 @@ function getEuroAnnual(amount: number) {
 	if (amount <= 150) {
 		return [250, 260, 270];
 	} else {
-		return getSuggestedAmountsAnnual(amount);
+		return getSupporterPlusSuggestedAmountsAnnual(amount);
 	}
 }
 
@@ -292,7 +292,7 @@ function getAusMonthly(amount: number) {
 	if (amount <= 50) {
 		return [60, 62, 65];
 	} else {
-		return getSuggestedAmountsMonthly(amount);
+		return getSupporterPlusSuggestedAmountsMonthly(amount);
 	}
 }
 
@@ -333,6 +333,37 @@ function getAusAnnual(amount: number) {
 	if (amount <= 250) {
 		return [300, 310, 320];
 	} else {
-		return getSuggestedAmountsAnnual(amount);
+		return getSupporterPlusSuggestedAmountsAnnual(amount);
 	}
+}
+
+/* Supporter Plus */
+
+export function getSupporterPlusSuggestedAmountsFromMainPlan(
+	mainPlan: PaidSubscriptionPlan,
+) {
+	const currentAmount = mainPlan.price / 100;
+
+	return mainPlan.billingPeriod === 'month'
+		? getSupporterPlusSuggestedAmountsMonthly(currentAmount)
+		: getSupporterPlusSuggestedAmountsAnnual(currentAmount);
+}
+
+export function getSupporterPlusSuggestedAmountsMonthly(currentAmount: number) {
+	const firstValue = currentAmount + 2;
+
+	const secondValue = Math.ceil((firstValue + 1) / 5) * 5;
+
+	const thirdValue = secondValue + 5;
+
+	return [firstValue, secondValue, thirdValue];
+}
+
+export function getSupporterPlusSuggestedAmountsAnnual(currentAmount: number) {
+	// ToDo: what if this goes over the max?
+	const percentageStepUps = [1.1, 1.25, 1.5];
+
+	return percentageStepUps.map(
+		(p) => Math.round((currentAmount * p) / 5) * 5,
+	);
 }

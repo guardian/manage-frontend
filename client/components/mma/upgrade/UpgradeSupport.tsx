@@ -6,7 +6,7 @@ import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
 import { useAsyncLoader } from '../../../utilities/hooks/useAsyncLoader';
 import { productMoveFetch } from '../../../utilities/productUtils';
-import { getSuggestedSupportAmounts } from '../../../utilities/supportPricing/suggestedAmounts';
+import { getContributionSuggestedAmounts } from '../../../utilities/supportPricing/suggestedAmounts';
 import { getBenefitsThreshold } from '../../../utilities/supportPricing/supporterPlusPricing';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { ConfirmForm } from './ConfirmForm';
@@ -19,7 +19,7 @@ export const UpgradeSupport = () => {
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
-	const suggestedAmounts = getSuggestedSupportAmounts(mainPlan);
+	const suggestedAmounts = getContributionSuggestedAmounts(mainPlan);
 
 	const [chosenAmount, setChosenAmount] = useState<number | null>(
 		suggestedAmounts[0],
