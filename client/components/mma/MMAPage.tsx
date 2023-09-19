@@ -35,8 +35,6 @@ import { Main } from '../shared/Main';
 import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
-import { UpgradeSupportContainer } from './upgrade/UpgradeSupportContainer';
-import { UpgradeSupportThankYou } from './upgrade/UpgradeSupportThankYou';
 
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {
@@ -302,11 +300,27 @@ const SwitchReview = lazy(() =>
 	})),
 );
 
+const UpgradeSupportContainer = lazy(() =>
+	import(
+		/* webpackChunkName: "UpgradeSupport" */ './upgrade/UpgradeSupportContainer'
+	).then(({ UpgradeSupportContainer }) => ({
+		default: UpgradeSupportContainer,
+	})),
+);
+
 const UpgradeSupport = lazy(() =>
 	import(
 		/* webpackChunkName: "UpgradeSupport" */ './upgrade/UpgradeSupport'
 	).then(({ UpgradeSupport }) => ({
 		default: UpgradeSupport,
+	})),
+);
+
+const UpgradeSupportThankYou = lazy(() =>
+	import(
+		/* webpackChunkName: "UpgradeSupport" */ './upgrade/UpgradeSupportThankYou'
+	).then(({ UpgradeSupportThankYou }) => ({
+		default: UpgradeSupportThankYou,
 	})),
 );
 
