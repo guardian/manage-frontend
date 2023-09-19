@@ -117,7 +117,6 @@
     "git-revision-webpack-plugin": "3.0.6",
     "husky": "1.3.1",
     "jest": "27.4.5",
-    "jest-teamcity-reporter": "0.9.0",
     "lint-staged": "13.0.3",
     "mini-css-extract-plugin": "2.5.2",
     "mockdate": "3.0.5",

@@ -1,0 +1,55 @@
+name: Build manage-frontend
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  CI:
+    permissions:
+      id-token: write
+      contents: read
+    name: manage-frontend build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Env
+        run: env
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: eu-west-1
+          role-to-assume: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: './.nvmrc'
+          cache: 'yarn'
+
+      - name: Build project and generate Riff-Raff artefact
+        run: ./script/ci.sh
+
+      - name: Generate CFN templates from GuCDK
+        run: ./script/cfn.sh
+
+      - name: Upload to Riff-Raff
+        uses: guardian/actions-riff-raff@v2
+        with:
+          app: manage-frontend
+          configPath: ./riff-raff.yaml
+          contentDirectories: |
+            manage-frontend-cloudformation:
+              - ./cdk/cdk.out/ManageFrontend-CODE.template.json
+              - ./cdk/cdk.out/ManageFrontend-PROD.template.json
+            manage-frontend:
+              - ./manage-frontend.zip
+
+
+
