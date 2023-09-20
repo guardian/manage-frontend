@@ -47,7 +47,6 @@ export const UpgradeSupportThankYou = () => {
 
 	const location = useLocation();
 	const routerState = location.state as UpgradeRouterState;
-	const amountPayableToday = routerState?.amountPayableToday.toFixed(2);
 	const chosenAmount = routerState?.chosenAmount.toFixed(2);
 
 	const currency = upgradeSupportContext.mainPlan.currency;
@@ -117,15 +116,10 @@ export const UpgradeSupportThankYou = () => {
 						>
 							<li>
 								<SvgCalendar size="medium" />
-								<span css={iconTextCss}>
-									Your billing date has changed
-								</span>
+								<span css={iconTextCss}>Your billing date</span>
 							</li>
 							<p css={withMarginParagraphCss}>
-								Your first billing date is today and you will be
-								charged {currency}
-								{amountPayableToday}. From {nextBillingDate},
-								your ongoing{' '}
+								From {nextBillingDate}, your ongoing{' '}
 								{calculateMonthlyOrAnnualFromBillingPeriod(
 									billingPeriod,
 								).toLowerCase()}{' '}
