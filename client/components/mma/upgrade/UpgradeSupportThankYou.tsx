@@ -100,12 +100,11 @@ export const UpgradeSupportThankYou = () => {
 					<ul css={[iconListCss, whatHappensNextIconCss]}>
 						<li>
 							<SvgEnvelope size="medium" />
-							<span css={iconTextCss}>Check your email</span>
+							<span data-qm-masking="blocklist" css={iconTextCss}>
+								Check your email
+							</span>
 						</li>
-						<p
-							css={withMarginParagraphCss}
-							data-qm-masking="blocklist"
-						>
+						<p css={withMarginParagraphCss}>
 							You will receive a confirmation email to {userEmail}
 						</p>
 						<Heading
