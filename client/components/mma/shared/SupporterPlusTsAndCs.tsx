@@ -6,7 +6,7 @@ import {
 	convertCurrencyToSymbol,
 	isCurrencyIso,
 } from '../../../utilities/currencyIso';
-import { getBenefitsThreshold } from '../../../utilities/supporterPlusPricing';
+import { getBenefitsThreshold } from '../../../utilities/supportPricing/supporterPlusPricing';
 import { formatAmount } from '../../../utilities/utils';
 
 const smallPrintCss = css`

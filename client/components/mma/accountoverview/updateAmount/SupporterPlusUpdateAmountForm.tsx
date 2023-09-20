@@ -15,10 +15,8 @@ import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
-import {
-	getSuggestedAmountsFromMainPlan,
-	supporterPlusPriceConfigByCountryGroup,
-} from '../../../../utilities/supporterPlusPricing';
+import { getSupporterPlusSuggestedAmountsFromMainPlan } from '../../../../utilities/supportPricing/suggestedAmounts';
+import { supporterPlusPriceConfigByCountryGroup } from '../../../../utilities/supportPricing/supporterPlusPricing';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 
@@ -264,7 +262,7 @@ export const SupporterPlusUpdateAmountForm = (
 							columns={2}
 						>
 							<>
-								{getSuggestedAmountsFromMainPlan(
+								{getSupporterPlusSuggestedAmountsFromMainPlan(
 									props.mainPlan,
 								).map((amount) => (
 									<ChoiceCard

@@ -1,6 +1,4 @@
-import type { PaidSubscriptionPlan } from '../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../shared/productTypes';
-import type { CurrencyIso } from './currencyIso';
+import type { CurrencyIso } from '../currencyIso';
 
 type PriceConfig = {
 	minAmount: number;
@@ -49,42 +47,4 @@ export function getBenefitsThreshold(
 		supporterPlusPriceConfigByCountryGroup[currency] ??
 		supporterPlusPriceConfigByCountryGroup['international'];
 	return region[billingPeriod].minAmount;
-}
-
-export function getSuggestedAmounts(
-	currentAmount: number,
-	monthlyOrAnnual: 'Monthly' | 'Annual',
-) {
-	return monthlyOrAnnual === 'Monthly'
-		? suggestedAmountsMonthly(currentAmount)
-		: suggestedAmountsAnnual(currentAmount);
-}
-
-export function getSuggestedAmountsFromMainPlan(
-	mainPlan: PaidSubscriptionPlan,
-) {
-	const currentAmount = mainPlan.price / 100;
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
-	);
-
-	return getSuggestedAmounts(currentAmount, monthlyOrAnnual);
-}
-
-function suggestedAmountsMonthly(currentAmount: number) {
-	const firstValue = currentAmount + 2;
-
-	const secondValue = Math.ceil((firstValue + 1) / 5) * 5;
-
-	const thirdValue = secondValue + 5;
-
-	return [firstValue, secondValue, thirdValue];
-}
-
-function suggestedAmountsAnnual(currentAmount: number) {
-	const percentageStepUps = [1.1, 1.25, 1.5];
-
-	return percentageStepUps.map(
-		(p) => Math.round((currentAmount * p) / 5) * 5,
-	);
 }
