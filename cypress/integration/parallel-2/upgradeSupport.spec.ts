@@ -37,7 +37,6 @@ describe('upgrade support', () => {
 
 		cy.findByText(/Confirm support increase/).should('exist');
 
-		// ToDo: make it more explicit what amount we're choosing once amounts confirmed
 		cy.get(
 			'[data-cy="contribution-amount-choices"] label:nth-of-type(2)',
 		).click();
@@ -58,5 +57,29 @@ describe('upgrade support', () => {
 
 		cy.get('@mdapi_get_contribution.all').should('have.length', 1);
 		cy.get('@product_move.all').should('have.length', 2);
+	});
+
+	it('shows an error message if switch fails', () => {
+		cy.visit('/upgrade-support');
+
+		cy.findByText(/Increase your support/).should('exist');
+		cy.wait('@product_move');
+
+		cy.intercept('POST', '/api/product-move/**', {
+			statusCode: 500,
+			body: {},
+		}).as('failed_product_move');
+
+		cy.findByRole('button', {
+			name: /Continue with/,
+		}).click();
+
+		cy.findByRole('button', {
+			name: /Confirm increase/,
+		}).click();
+
+		cy.wait('@failed_product_move');
+
+		cy.findByText('We were unable to change your support').should('exist');
 	});
 });

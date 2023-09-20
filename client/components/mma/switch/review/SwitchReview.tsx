@@ -7,10 +7,9 @@ import {
 	SvgClock,
 	SvgCreditCard,
 } from '@guardian/source-react-components';
-import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
+import { SwitchErrorSummary } from '@/client/components/shared/productSwitch/SwitchErrorSummary';
 import { dateString } from '../../../../../shared/dates';
 import type {
 	PreviewResponse,
@@ -20,11 +19,6 @@ import {
 	buttonCentredCss,
 	buttonMutedCss,
 } from '../../../../styles/ButtonStyles';
-import {
-	errorSummaryBlockLinkCss,
-	errorSummaryLinkCss,
-	errorSummaryOverrideCss,
-} from '../../../../styles/ErrorStyles';
 import {
 	iconListCss,
 	listWithDividersCss,
@@ -51,31 +45,6 @@ import type {
 	SwitchRouterState,
 } from '../SwitchContainer';
 import { SwitchContext } from '../SwitchContainer';
-
-const SwitchErrorContext = (props: { PaymentFailure: boolean }) =>
-	props.PaymentFailure ? (
-		<>
-			Please update your payment details in order to change your support.
-			<Link
-				css={[errorSummaryLinkCss, errorSummaryBlockLinkCss]}
-				to="/payment/contributions"
-			>
-				Check your payment details
-			</Link>
-		</>
-	) : (
-		<>
-			Please ensure your payment details are correct. If the problem
-			persists get in touch at{' '}
-			<a
-				css={errorSummaryLinkCss}
-				href="mailto:customer.help@guardian.com"
-			>
-				customer.help@guardian.com
-			</a>
-			.
-		</>
-	);
 
 const newAmountCss = css`
 	${textSans.medium({ fontWeight: 'bold' })};
@@ -351,19 +320,7 @@ export const SwitchReview = () => {
 			</section>
 			{switchingError && (
 				<section css={sectionSpacing} id="productSwitchErrorMessage">
-					<ErrorSummary
-						message={
-							inPaymentFailure
-								? 'There is a problem with your payment method'
-								: 'We were unable to change your support'
-						}
-						context={
-							<SwitchErrorContext
-								PaymentFailure={inPaymentFailure}
-							/>
-						}
-						cssOverrides={errorSummaryOverrideCss}
-					/>
+					<SwitchErrorSummary inPaymentFailure={inPaymentFailure} />
 				</section>
 			)}
 			<section css={sectionSpacing}>

@@ -26,6 +26,7 @@ import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView
 export interface UpgradeSupportInterface {
 	mainPlan: PaidSubscriptionPlan;
 	subscription: Subscription;
+	inPaymentFailure: boolean;
 	user?: MembersDataApiUser;
 }
 
@@ -93,6 +94,8 @@ export const UpgradeSupportContainer = () => {
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		mainPlan.billingPeriod,
 	);
+
+	const inPaymentFailure = !!contribution.alertText;
 	const pageTitle = `Your ${monthlyOrAnnual.toLowerCase()} support`;
 
 	return (
@@ -101,6 +104,7 @@ export const UpgradeSupportContainer = () => {
 				value={{
 					mainPlan,
 					subscription: contribution.subscription,
+					inPaymentFailure,
 					user: data.user,
 				}}
 			>
