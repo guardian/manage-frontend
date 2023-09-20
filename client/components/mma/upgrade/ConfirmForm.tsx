@@ -110,7 +110,7 @@ const WhatHappensNext = ({
 							</strong>
 							<br />
 							You can start enjoying your exclusive extras
-							straight away
+							straight away.
 						</span>
 					</li>
 					<li>

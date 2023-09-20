@@ -44,7 +44,7 @@ export const SwitchPaymentInfo = ({
 				`We won't charge you today, as your current payment covers you for the rest of the ${billingPeriod}.`}{' '}
 			After this, from {nextPaymentDate}, your new {monthlyOrAnnual}{' '}
 			payment will be {currencySymbol}
-			{formatAmount(supporterPlusPurchaseAmount)}
+			{formatAmount(supporterPlusPurchaseAmount)}.
 		</>
 	);
 };

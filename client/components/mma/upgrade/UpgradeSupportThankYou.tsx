@@ -130,7 +130,7 @@ export const UpgradeSupportThankYou = () => {
 									billingPeriod,
 								).toLowerCase()}{' '}
 								payment will be {currency}
-								{chosenAmount}{' '}
+								{chosenAmount}.
 							</p>
 						</Heading>
 					</ul>
