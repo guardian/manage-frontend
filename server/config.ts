@@ -24,7 +24,7 @@ export enum Environments {
 
 const stage = getConfig('STAGE');
 
-const getDomain = () => {
+export const getDomain = () => {
 	switch (stage) {
 		case 'PROD':
 			return 'theguardian.com';
