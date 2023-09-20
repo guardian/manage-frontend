@@ -104,6 +104,9 @@ const server = merge(common, {
 			},
 		],
 	},
+	experiments: {
+		topLevelAwait: true,
+	},
 });
 
 const client = merge(common, {
