@@ -191,7 +191,7 @@ const RoundUp = ({
 							: palette.neutral[20]};
 					`}
 				>
-					Round up to unlock all benefits ({currencySymbol}
+					Round up to unlock extras ({currencySymbol}
 					{thresholdAmount}/{billingPeriod})
 				</div>
 				<div
@@ -348,7 +348,7 @@ export const ConfirmForm = ({
 				>
 					You've selected to support {currencySymbol}
 					{chosenAmount} per {mainPlan.billingPeriod}
-					{aboveThreshold ? ', which unlocks all benefits' : ''}.
+					{aboveThreshold ? ', which unlocks extras' : ''}.
 				</div>
 			</section>
 			{shouldShowRoundUp && (
