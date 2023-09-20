@@ -3,6 +3,8 @@ import type { HTTPMethod } from '../shared/apiTypes';
 import { conf as mmaConfig } from './config';
 import type { IdapiConfig } from './idapiConfig';
 import { getConfig } from './idapiConfig';
+import { OAuthAccessTokenCookieName } from './oauthConfig';
+import { getConfig as getOktaConfig } from './oktaConfig';
 import { handleError } from './util';
 
 export type NewsletterPatchRequest = {
@@ -65,29 +67,90 @@ const prepareBody = <T>(body: T | undefined) => {
 	}
 };
 
+const idapiOrOAuthHeaders = ({
+	sendAuthHeader,
+	config,
+	useOkta,
+	cookies,
+	signedCookies,
+	subdomain,
+}: {
+	sendAuthHeader: boolean;
+	config: IdapiConfig;
+	useOkta: boolean;
+	cookies: CookiesWithToken;
+	signedCookies: CookiesWithToken;
+	subdomain: string;
+}): HeadersInit => {
+	if (!sendAuthHeader) {
+		return {};
+	}
+	if (useOkta) {
+		return {
+			'X-GU-IS-OAUTH': 'true',
+			Authorization: `Bearer ${signedCookies[OAuthAccessTokenCookieName]}`,
+		};
+	} else {
+		return {
+			'X-GU-ID-Client-Access-Token': `Bearer ${config.accessToken}`,
+			...securityCookieToHeader(cookies),
+			// Avatar API expects a Cookie header with the SC_GU_U cookie.
+			Cookie: subdomain === 'avatar' ? `SC_GU_U=${cookies.SC_GU_U};` : '',
+		};
+	}
+};
+
+/**
+ * Prepares the options object for a fetch request to IDAPI
+ * or Avatar API (AAPI).
+ *
+ * @param options - The options object to prepare
+ * @param options.sendAuthHeader - Whether to send the access token or IDAPI cookies
+ * in the request
+ * @param options.useOkta - Whether to use Okta for authentication
+ * @param options.path - The path to the IDAPI endpoint (e.g. '/user/me')
+ * @param options.subdomain - The subdomain of the IDAPI endpoint
+ * (e.g. 'idapi' or 'avatar')
+ * @param options.method - The HTTP method to use
+ * @param options.cookies - The cookies coming from the client. These are used to
+ * build the security and cookie headers in the request
+ * @param options.signedCookies - The signed cookies coming from the client, also
+ * used to build the security and cookie headers in the request
+ * @param options.config - The IDAPI configuration object
+ * @returns The options object for the fetch request
+ */
 export const setOptions = ({
+	sendAuthHeader,
+	useOkta,
 	path,
 	subdomain,
 	method,
 	cookies,
+	signedCookies,
 	config,
 }: {
+	sendAuthHeader: boolean;
+	useOkta: boolean;
 	path: string;
 	subdomain: string;
 	method: HTTPMethod;
 	cookies: CookiesWithToken;
+	signedCookies: CookiesWithToken;
 	config: IdapiConfig;
 }): IdapiFetchOptions => {
 	const hostname = `${subdomain}.${getBaseDomain()}`;
-
 	const headers = {
-		'X-GU-ID-Client-Access-Token': `Bearer ${config.accessToken}`,
-		...securityCookieToHeader(cookies),
+		...idapiOrOAuthHeaders({
+			sendAuthHeader,
+			config,
+			useOkta,
+			cookies,
+			signedCookies,
+			subdomain,
+		}),
 		'Content-Type': 'application/json',
 		Origin: `https://manage.${getBaseDomain()}`,
 		Referer: `https://manage.${getBaseDomain()}`,
-		// Avatar API expects a Cookie header with the SC_GU_U cookie.
-		Cookie: subdomain === 'avatar' ? `SC_GU_U=${cookies.SC_GU_U};` : '',
 	};
 
 	const options = {
@@ -126,6 +189,8 @@ export const idapiFetch = async <T>({
  * @param url The IDAPI endpoint to hit
  * @param method The HTTP method to use (default: 'GET')
  * @param processData A function to process the JSON response (optional)
+ * @param sendAuthHeader Whether to send the access token or IDAPI cookies
+ * in the request (default: false)
  * @returns An Express route handler
  */
 export const idapiProxyHandler =
@@ -133,10 +198,13 @@ export const idapiProxyHandler =
 		url,
 		method = 'GET',
 		processData,
+		sendAuthHeader,
 	}: {
 		url: string;
 		method?: HTTPMethod;
 		processData?: (json: T, res: Response) => Response | void;
+		useOAuth?: boolean;
+		sendAuthHeader: boolean;
 	}) =>
 	async (req: Request, res: Response, next: NextFunction) => {
 		let config;
@@ -145,11 +213,15 @@ export const idapiProxyHandler =
 		} catch (e) {
 			return handleError(e, res, next);
 		}
+		const { useOkta } = await getOktaConfig();
 		const options = setOptions({
+			sendAuthHeader,
+			useOkta,
 			path: url,
 			subdomain: 'idapi',
 			method,
 			cookies: req.cookies,
+			signedCookies: req.signedCookies,
 			config,
 		});
 		try {
@@ -161,11 +233,16 @@ export const idapiProxyHandler =
 					? req.body
 					: undefined,
 			});
+			console.log(url);
+			console.log(response.status);
 			if (response.status === 204) {
 				return res.sendStatus(204);
 			} else {
 				try {
 					const json = await response.json();
+					if (response.status >= 400) {
+						console.log('IDAPI ERROR: ', json);
+					}
 					if (processData) {
 						return processData(json, res);
 					} else {

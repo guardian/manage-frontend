@@ -19,6 +19,7 @@ router.get(
 	'/user',
 	idapiProxyHandler({
 		url: '/user/me',
+		sendAuthHeader: true,
 	}),
 );
 
@@ -28,6 +29,7 @@ router.put(
 	idapiProxyHandler({
 		url: '/user/me',
 		method: 'POST',
+		sendAuthHeader: true,
 	}),
 );
 
@@ -36,6 +38,7 @@ router.get(
 	csrfValidateMiddleware,
 	idapiProxyHandler<NewsletterSubscriptions>({
 		url: '/users/me/newsletters',
+		sendAuthHeader: true,
 	}),
 );
 
@@ -44,6 +47,7 @@ router.get(
 	csrfValidateMiddleware,
 	idapiProxyHandler<NewsletterAPIResponse[]>({
 		url: '/newsletters',
+		sendAuthHeader: false,
 	}),
 );
 
@@ -52,6 +56,7 @@ router.get(
 	csrfValidateMiddleware,
 	idapiProxyHandler<NewsletterAPIResponse[]>({
 		url: '/newsletters/restricted',
+		sendAuthHeader: false,
 	}),
 );
 
@@ -61,6 +66,7 @@ router.patch(
 	idapiProxyHandler<NewsletterPatchRequest>({
 		url: '/users/me/newsletters',
 		method: 'PATCH',
+		sendAuthHeader: true,
 	}),
 );
 
@@ -69,6 +75,7 @@ router.get(
 	csrfValidateMiddleware,
 	idapiProxyHandler<ConsentAPIResponse[]>({
 		url: '/consents?filter=all',
+		sendAuthHeader: false,
 	}),
 );
 
@@ -78,6 +85,7 @@ router.patch(
 	idapiProxyHandler<ConsentPatchRequest>({
 		url: '/users/me/consents',
 		method: 'PATCH',
+		sendAuthHeader: true,
 	}),
 );
 
@@ -87,6 +95,7 @@ router.delete(
 	idapiProxyHandler({
 		url: '/user/me/telephoneNumber',
 		method: 'DELETE',
+		sendAuthHeader: true,
 	}),
 );
 
@@ -96,6 +105,7 @@ router.delete(
 	idapiProxyHandler({
 		url: '/remove/consent/all',
 		method: 'POST',
+		sendAuthHeader: true,
 	}),
 );
 
