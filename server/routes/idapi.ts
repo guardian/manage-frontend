@@ -8,12 +8,12 @@ import type {
 	NewsletterPatchRequest,
 } from '../idapiProxy';
 import { idapiProxyHandler } from '../idapiProxy';
-import { withIdentity } from '../middleware/identityMiddleware';
+import { withOAuth } from '../middleware/identityMiddleware';
 import { csrfValidateMiddleware } from '../util';
 
 const router = Router();
 
-router.use(withIdentity(401));
+router.use(withOAuth);
 
 router.get(
 	'/user',
