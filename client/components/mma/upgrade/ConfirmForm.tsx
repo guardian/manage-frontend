@@ -17,7 +17,7 @@ import {
 import { ToggleSwitch } from '@guardian/source-react-components-development-kitchen';
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { dateString } from '../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
@@ -41,7 +41,12 @@ import {
 } from '../../../utilities/productMovePreview';
 import { productMoveFetch } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
+import { SwitchErrorSummary } from '../../shared/productSwitch/SwitchErrorSummary';
 import { SwitchPaymentInfo } from '../../shared/productSwitch/SwitchPaymentInfo';
+import {
+	JsonResponseHandler,
+	TextResponseHandler,
+} from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { Heading } from '../shared/Heading';
 import { PaymentDetails } from '../shared/PaymentDetails';
@@ -251,14 +256,11 @@ export const ConfirmForm = ({
 	previewResponse,
 	previewLoadingState,
 }: ConfirmFormProps) => {
-	const { mainPlan, subscription } = useContext(
+	const { mainPlan, subscription, inPaymentFailure } = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
 	const navigate = useNavigate();
-	const location = useLocation();
-	const routerState = (location.state || {}) as UpgradeRouterState;
-	routerState.chosenAmount = chosenAmount;
 
 	const currencySymbol = mainPlan.currency;
 	const aboveThreshold = chosenAmount >= threshold;
@@ -271,6 +273,7 @@ export const ConfirmForm = ({
 
 	const [isConfirmationLoading, setIsConfirmationLoading] =
 		useState<boolean>(false);
+	const [confirmationError, setConfirmationError] = useState<boolean>(false);
 
 	if (previewLoadingState === LoadingState.IsLoading) {
 		return (
@@ -298,33 +301,61 @@ export const ConfirmForm = ({
 	const checkChargeAmount =
 		calculateCheckChargeAmountBeforeUpdate(amountPayableToday);
 
-	routerState.amountPayableToday = previewResponse.amountPayableToday;
-
 	const confirmOnClick = async () => {
 		if (isConfirmationLoading) {
 			return;
 		}
 
+		if (inPaymentFailure) {
+			setConfirmationError(true);
+			return;
+		}
+
 		setIsConfirmationLoading(true);
 
-		// ToDo: handle error responses
-		if (aboveThreshold) {
-			await productMoveFetch(
-				subscription.subscriptionId,
-				chosenAmount,
-				'recurring-contribution-to-supporter-plus',
-				checkChargeAmount,
-				false,
-			);
+		const routerState = {
+			chosenAmount,
+			amountPayableToday,
+		} as UpgradeRouterState;
+
+		try {
+			if (aboveThreshold) {
+				const data = await productMoveFetch(
+					subscription.subscriptionId,
+					chosenAmount,
+					'recurring-contribution-to-supporter-plus',
+					checkChargeAmount,
+					false,
+				).then((r) => JsonResponseHandler(r));
+
+				if (data === null) {
+					setIsConfirmationLoading(false);
+					setConfirmationError(true);
+				}
+
+				setIsConfirmationLoading(false);
+				navigate('switch-thank-you', {
+					state: routerState,
+				});
+			} else {
+				const data = await updateContributionAmountFetch(
+					chosenAmount,
+					subscription.subscriptionId,
+				).then((r) => TextResponseHandler(r));
+
+				if (data === null) {
+					setIsConfirmationLoading(false);
+					setConfirmationError(true);
+				}
+
+				setIsConfirmationLoading(false);
+				navigate('thank-you', {
+					state: routerState,
+				});
+			}
+		} catch {
 			setIsConfirmationLoading(false);
-			navigate('switch-thank-you', { state: routerState });
-		} else {
-			await updateContributionAmountFetch(
-				chosenAmount,
-				subscription.subscriptionId,
-			);
-			setIsConfirmationLoading(false);
-			navigate('thank-you', { state: routerState });
+			setConfirmationError(true);
 		}
 	};
 
@@ -382,6 +413,11 @@ export const ConfirmForm = ({
 					</Button>
 				</ThemeProvider>
 			</section>
+			{confirmationError && (
+				<section id="upgradeSupportErrorMessage">
+					<SwitchErrorSummary inPaymentFailure={inPaymentFailure} />
+				</section>
+			)}
 			{aboveThreshold && (
 				<section>
 					<SupporterPlusTsAndCs
