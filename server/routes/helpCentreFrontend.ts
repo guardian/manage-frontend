@@ -4,7 +4,7 @@ import type express from 'express';
 import { DEFAULT_PAGE_TITLE } from '../../shared/helpCentreConfig';
 import { conf } from '../config';
 import { html } from '../html';
-import { withIdentity } from '../middleware/identityMiddleware';
+import { withOAuth } from '../middleware/identityMiddleware';
 import {
 	clientDSN,
 	getRecaptchaPublicKey,
@@ -16,7 +16,7 @@ const router = Router();
 export const getCookiesOrEmptyString = (req: express.Request) =>
 	req.header('cookie') || '';
 
-router.use(withIdentity());
+router.use(withOAuth);
 
 router.use(async (_: Request, res: Response) => {
 	const title = DEFAULT_PAGE_TITLE;

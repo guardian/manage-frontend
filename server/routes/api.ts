@@ -21,7 +21,7 @@ import { contactUsFormHandler } from '../contactUsApi';
 import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } from '../fulfilmentDateCalculatorReader';
 import { getArticleHandler, getTopicHandler } from '../helpCentreApi';
 import { log } from '../log';
-import { withIdentity } from '../middleware/identityMiddleware';
+import { withOAuth } from '../middleware/identityMiddleware';
 import {
 	cancelReminderHandler,
 	createOneOffReminderHandler,
@@ -32,7 +32,7 @@ import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
 
 const router = Router();
 
-router.use(withIdentity(401));
+router.use(withOAuth);
 
 router.get(
 	'/existing-payment-options',

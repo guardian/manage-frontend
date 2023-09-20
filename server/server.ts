@@ -7,11 +7,14 @@ import helmet from 'helmet';
 import { MAX_FILE_ATTACHMENT_SIZE_KB } from '../shared/fileUploadUtils';
 import { conf } from './config';
 import { log } from './log';
+import { getConfig } from './oktaConfig';
 import * as routes from './routes';
 
 const port = 9233;
 
 const server = express();
+
+const oktaConfig = await getConfig();
 
 declare let WEBPACK_BUILD: string;
 if (conf.SERVER_DSN) {
@@ -79,7 +82,7 @@ server.use(disableCache);
  * downstream APIs. For this reason, think and test carefully before adding a
  * global body parser to the server!
  */
-server.use(cookieParser());
+server.use(cookieParser(oktaConfig.cookieSecret));
 server.use(
 	raw({
 		type: '*/*',
@@ -88,6 +91,7 @@ server.use(
 ); // parses all bodys to a raw 'Buffer'
 
 server.use(routes.core);
+server.use('/oauth', routes.oauth);
 server.use('/profile/', routes.profile);
 server.use('/api/', routes.api);
 server.use('/idapi', routes.idapi);
