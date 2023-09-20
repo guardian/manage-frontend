@@ -8,7 +8,7 @@ import {
 } from '@/shared/fileUploadUtils';
 import { getConfig } from '../idapiConfig';
 import { setOptions } from '../idapiProxy';
-import { withIdentity } from '../middleware/identityMiddleware';
+import { withOAuth } from '../middleware/identityMiddleware';
 import { handleError, jsonOrEmpty } from '../util';
 
 interface AvatarAPIErrorResponse {
@@ -26,7 +26,7 @@ const sendAvatarAPIErrorResponse = (
 
 const router = Router();
 
-router.use(withIdentity(401));
+router.use(withOAuth);
 
 router.get(
 	'/avatar',
@@ -39,10 +39,12 @@ router.get(
 			return;
 		}
 		const options = setOptions({
+			useOAuth: !!res.locals.identity.accessToken,
 			path: '/v1/avatars/user/me/active',
 			subdomain: 'avatar',
 			method: 'GET',
 			cookies: req.cookies,
+			signedCookies: req.signedCookies,
 			config,
 		});
 		try {
@@ -101,10 +103,12 @@ router.post(
 				return;
 			}
 			const options = setOptions({
+				useOAuth: !!res.locals.identity.accessToken,
 				path: '/v1/avatars',
 				subdomain: 'avatar',
 				method: 'POST',
 				cookies: req.cookies,
+				signedCookies: req.signedCookies,
 				config,
 			});
 			// Recerate a FormData payload from the Base64-encoded file contents string.

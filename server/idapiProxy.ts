@@ -3,6 +3,7 @@ import type { HTTPMethod } from '../shared/apiTypes';
 import { conf as mmaConfig } from './config';
 import type { IdapiConfig } from './idapiConfig';
 import { getConfig } from './idapiConfig';
+import { OAuthAccessTokenCookieName } from './oauth';
 import { handleError } from './util';
 
 export type NewsletterPatchRequest = {
@@ -65,30 +66,67 @@ const prepareBody = <T>(body: T | undefined) => {
 	}
 };
 
+const idapiOrOAuthHeaders = ({
+	config,
+	useOAuth,
+	cookies,
+	signedCookies,
+	subdomain,
+}: {
+	config: IdapiConfig;
+	useOAuth: boolean;
+	cookies: CookiesWithToken;
+	signedCookies: CookiesWithToken;
+	subdomain: string;
+}) => ({
+	...(useOAuth
+		? {
+				'X-GU-IS-OAUTH': 'true',
+				Authorization: `Bearer ${signedCookies[OAuthAccessTokenCookieName]}`,
+		  }
+		: {
+				'X-GU-ID-Client-Access-Token': `Bearer ${config.accessToken}`,
+				...securityCookieToHeader(cookies),
+				// Avatar API expects a Cookie header with the SC_GU_U cookie.
+				Cookie:
+					subdomain === 'avatar' ? `SC_GU_U=${cookies.SC_GU_U};` : '',
+		  }),
+});
+
 export const setOptions = ({
+	useOAuth,
 	path,
 	subdomain,
 	method,
 	cookies,
+	signedCookies,
 	config,
 }: {
+	useOAuth: boolean;
 	path: string;
 	subdomain: string;
 	method: HTTPMethod;
 	cookies: CookiesWithToken;
+	signedCookies: CookiesWithToken;
 	config: IdapiConfig;
 }): IdapiFetchOptions => {
 	const hostname = `${subdomain}.${getBaseDomain()}`;
+	console.log('Using OAuth?', useOAuth);
 
 	const headers = {
-		'X-GU-ID-Client-Access-Token': `Bearer ${config.accessToken}`,
-		...securityCookieToHeader(cookies),
+		...idapiOrOAuthHeaders({
+			config,
+			useOAuth,
+			cookies,
+			signedCookies,
+			subdomain,
+		}),
 		'Content-Type': 'application/json',
 		Origin: `https://manage.${getBaseDomain()}`,
 		Referer: `https://manage.${getBaseDomain()}`,
-		// Avatar API expects a Cookie header with the SC_GU_U cookie.
-		Cookie: subdomain === 'avatar' ? `SC_GU_U=${cookies.SC_GU_U};` : '',
 	};
+
+	console.log('HEADERS', headers);
 
 	const options = {
 		headers,
@@ -133,10 +171,12 @@ export const idapiProxyHandler =
 		url,
 		method = 'GET',
 		processData,
+		useOAuth = false,
 	}: {
 		url: string;
 		method?: HTTPMethod;
 		processData?: (json: T, res: Response) => Response | void;
+		useOAuth?: boolean;
 	}) =>
 	async (req: Request, res: Response, next: NextFunction) => {
 		let config;
@@ -146,10 +186,12 @@ export const idapiProxyHandler =
 			return handleError(e, res, next);
 		}
 		const options = setOptions({
+			useOAuth: useOAuth && !!res.locals.identity.accessToken,
 			path: url,
 			subdomain: 'idapi',
 			method,
 			cookies: req.cookies,
+			signedCookies: req.signedCookies,
 			config,
 		});
 		try {
@@ -161,6 +203,10 @@ export const idapiProxyHandler =
 					? req.body
 					: undefined,
 			});
+			if (response.ok) {
+				const json = await response.json();
+				console.log(json);
+			}
 			if (response.status === 204) {
 				return res.sendStatus(204);
 			} else {
