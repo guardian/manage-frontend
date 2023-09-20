@@ -262,6 +262,7 @@ export const ConfirmForm = ({
 
 	const currencySymbol = mainPlan.currency;
 	const aboveThreshold = chosenAmount >= threshold;
+	const previousPrice = mainPlan.price / 100;
 
 	const [shouldShowRoundUp] = useState<boolean>(
 		!aboveThreshold && suggestedAmounts.includes(threshold),
@@ -328,6 +329,8 @@ export const ConfirmForm = ({
 		}
 	};
 
+	const increaseText = chosenAmount > previousPrice ? 'increase' : 'change';
+
 	return (
 		<Stack space={4}>
 			<section
@@ -339,7 +342,7 @@ export const ConfirmForm = ({
 				`}
 			>
 				<Heading sansSerif level="3" borderless>
-					2. Confirm support increase
+					2. Confirm support {increaseText}
 				</Heading>
 				<div
 					css={css`
@@ -367,7 +370,7 @@ export const ConfirmForm = ({
 					subscription={subscription}
 					nextPaymentDate={nextPaymentDate}
 					chosenAmount={chosenAmount}
-					alreadyPayingAboveThreshold={mainPlan.price >= threshold}
+					alreadyPayingAboveThreshold={previousPrice >= threshold}
 				/>
 			)}
 			<section css={buttonContainerCss}>
@@ -377,7 +380,7 @@ export const ConfirmForm = ({
 						onClick={confirmOnClick}
 						isLoading={isConfirmationLoading}
 					>
-						Confirm increase to {currencySymbol}
+						Confirm {increaseText} to {currencySymbol}
 						{chosenAmount}/{mainPlan.billingPeriod}
 					</Button>
 				</ThemeProvider>
