@@ -232,7 +232,7 @@ export const UpgradeSupportAmountForm = ({
 							threshold={threshold}
 						/>
 					)}
-					{!continuedToConfirmation && chosenAmount && !errorMessage && (
+					{!continuedToConfirmation && !errorMessage && chosenAmount && (
 						<section css={buttonContainerCss}>
 							<ThemeProvider
 								theme={buttonThemeReaderRevenueBrand}
