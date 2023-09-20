@@ -17,7 +17,7 @@ import {
 import { twoColumnChoiceCardMobile } from '../../../styles/GenericStyles';
 import type { ContributionInterval } from '../../../utilities/supportPricing/contributionsAmount';
 import { contributionAmountsLookup } from '../../../utilities/supportPricing/contributionsAmount';
-import { waitForElement } from '../../../utilities/utils';
+import { formatAmount, waitForElement } from '../../../utilities/utils';
 import { UpgradeBenefitsCard } from '../shared/benefits/BenefitsCard';
 import { getUpgradeBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { Heading } from '../shared/Heading';
@@ -110,7 +110,9 @@ export const UpgradeSupportAmountForm = ({
 	const currencySymbol = mainPlan.currency;
 
 	const amountLabel = (amount: number) => {
-		return `${currencySymbol}${amount} per ${mainPlan.billingPeriod}`;
+		return `${currencySymbol}${formatAmount(amount)} per ${
+			mainPlan.billingPeriod
+		}`;
 	};
 	const currentAmount = mainPlan.price / 100;
 
@@ -221,9 +223,11 @@ export const UpgradeSupportAmountForm = ({
 							/>
 						</div>
 					)}
-					{!errorMessage && (
+					{!errorMessage && !!chosenAmount && (
 						<BenefitsDisplay
-							chosenAmountDisplay={`${currencySymbol}${chosenAmount} per ${mainPlan.billingPeriod}`}
+							chosenAmountDisplay={`${currencySymbol}${formatAmount(
+								chosenAmount,
+							)} per ${mainPlan.billingPeriod}`}
 							chosenAmount={chosenAmount}
 							threshold={threshold}
 						/>
@@ -243,7 +247,8 @@ export const UpgradeSupportAmountForm = ({
 									}}
 								>
 									Continue with {currencySymbol}
-									{chosenAmount}/{mainPlan.billingPeriod}
+									{formatAmount(chosenAmount)}/
+									{mainPlan.billingPeriod}
 								</Button>
 							</ThemeProvider>
 						</section>

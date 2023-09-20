@@ -18,6 +18,7 @@ import { ToggleSwitch } from '@guardian/source-react-components-development-kitc
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { formatAmount } from '@/client/utilities/utils';
 import { dateString } from '../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
@@ -347,7 +348,7 @@ export const ConfirmForm = ({
 					`}
 				>
 					You've selected to support {currencySymbol}
-					{chosenAmount} per {mainPlan.billingPeriod}
+					{formatAmount(chosenAmount)} per {mainPlan.billingPeriod}
 					{aboveThreshold ? ', which unlocks all benefits' : ''}.
 				</div>
 			</section>
@@ -378,7 +379,7 @@ export const ConfirmForm = ({
 						isLoading={isConfirmationLoading}
 					>
 						Confirm increase to {currencySymbol}
-						{chosenAmount}/{mainPlan.billingPeriod}
+						{formatAmount(chosenAmount)}/{mainPlan.billingPeriod}
 					</Button>
 				</ThemeProvider>
 			</section>

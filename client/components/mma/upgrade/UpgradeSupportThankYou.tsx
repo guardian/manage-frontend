@@ -8,6 +8,7 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { useLocation } from 'react-router';
+import { formatAmount } from '@/client/utilities/utils';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
@@ -47,12 +48,12 @@ export const UpgradeSupportThankYou = () => {
 
 	const location = useLocation();
 	const routerState = location.state as UpgradeRouterState;
-	const amountPayableToday = routerState?.amountPayableToday.toFixed(2);
-	const chosenAmount = routerState?.chosenAmount.toFixed(2);
+	const amountPayableToday = formatAmount(routerState?.amountPayableToday);
+	const chosenAmount = formatAmount(routerState?.chosenAmount);
 
 	const currency = upgradeSupportContext.mainPlan.currency;
-	const previousPrice = (upgradeSupportContext.mainPlan.price / 100).toFixed(
-		2,
+	const previousPrice = formatAmount(
+		upgradeSupportContext.mainPlan.price / 100,
 	);
 	const billingPeriod = upgradeSupportContext.mainPlan.billingPeriod;
 	const userEmail = upgradeSupportContext.user?.email ?? '';
