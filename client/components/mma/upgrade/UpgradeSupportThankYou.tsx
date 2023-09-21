@@ -48,7 +48,6 @@ export const UpgradeSupportThankYou = () => {
 
 	const location = useLocation();
 	const routerState = location.state as UpgradeRouterState;
-	const amountPayableToday = routerState?.amountPayableToday;
 	const chosenAmount = routerState?.chosenAmount;
 
 	const currency = upgradeSupportContext.mainPlan.currency;
@@ -61,6 +60,9 @@ export const UpgradeSupportThankYou = () => {
 	const nextBillingDate = parseDate(
 		upgradeSupportContext.mainPlan.chargedThrough ?? undefined,
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
+
+	const increasedText =
+		chosenAmount > previousPrice ? 'increased' : 'changed';
 
 	return (
 		<>
@@ -89,7 +91,7 @@ export const UpgradeSupportThankYou = () => {
 							margin-bottom: 32px;
 						`}
 					>
-						You’ve increased your support from {currency}
+						You’ve {increasedText} your support from {currency}
 						{previousPrice} to {currency}
 						{formatAmount(chosenAmount)} per {billingPeriod}.
 					</div>
@@ -118,20 +120,15 @@ export const UpgradeSupportThankYou = () => {
 						>
 							<li>
 								<SvgCalendar size="medium" />
-								<span css={iconTextCss}>
-									Your billing date has changed
-								</span>
+								<span css={iconTextCss}>Your billing date</span>
 							</li>
 							<p css={withMarginParagraphCss}>
-								Your first billing date is today and you will be
-								charged {currency}
-								{formatAmount(amountPayableToday)}. From{' '}
-								{nextBillingDate}, your ongoing{' '}
+								From {nextBillingDate}, your ongoing{' '}
 								{calculateMonthlyOrAnnualFromBillingPeriod(
 									billingPeriod,
 								).toLowerCase()}{' '}
 								payment will be {currency}
-								{formatAmount(chosenAmount)}{' '}
+								{formatAmount(chosenAmount)}.
 							</p>
 						</Heading>
 					</ul>

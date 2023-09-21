@@ -198,7 +198,7 @@ export const UpgradeSupportAmountForm = ({
 						>
 							<TextInput
 								label={otherAmountLabel}
-								supporting={`Support ${currencySymbol}${threshold}/${mainPlan.billingPeriod} or more to unlock all benefits.`}
+								supporting={`Support ${currencySymbol}${threshold}/${mainPlan.billingPeriod} or more to unlock extras.`}
 								error={
 									(hasInteractedWithOtherAmount &&
 										errorMessage) ||
