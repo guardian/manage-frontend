@@ -1,12 +1,13 @@
-import path from 'path';
-import AssetsPlugin from 'assets-webpack-plugin';
-import babelLoaderExcludeNodeModulesExcept from 'babel-loader-exclude-node-modules-except';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
-import GitRevisionPlugin from 'git-revision-webpack-plugin';
-import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
-import webpack from 'webpack';
-import { merge } from 'webpack-merge';
-import nodeExternals from 'webpack-node-externals';
+/* eslint-disable @typescript-eslint/no-var-requires -- minimising changes to this file*/
+const path = require('path');
+const AssetsPlugin = require('assets-webpack-plugin');
+const babelLoaderExcludeNodeModulesExcept = require('babel-loader-exclude-node-modules-except');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const GitRevisionPlugin = require('git-revision-webpack-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const webpack = require('webpack');
+const { merge } = require('webpack-merge');
+const nodeExternals = require('webpack-node-externals');
 
 const assetsPluginInstance = new AssetsPlugin({
 	path: path.resolve(__dirname, './dist/'),
