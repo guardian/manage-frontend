@@ -63,6 +63,9 @@ export const UpgradeSupportSwitchThankYou = () => {
 		upgradeSupportContext.mainPlan.chargedThrough ?? undefined,
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
+	const increasedText =
+		chosenAmount > previousPrice ? 'increased' : 'changed';
+
 	return (
 		<>
 			<section
@@ -90,7 +93,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 							margin-bottom: 32px;
 						`}
 					>
-						You’ve increased your support from {currency}
+						You’ve {increasedText} your support from {currency}
 						{previousPrice} to {currency}
 						{chosenAmount} per {billingPeriod}.
 					</div>
@@ -132,7 +135,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 									billingPeriod,
 								).toLowerCase()}{' '}
 								payment will be {currency}
-								{chosenAmount}
+								{chosenAmount}.
 							</div>
 						</Heading>
 						<Heading
