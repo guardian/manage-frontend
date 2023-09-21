@@ -30,4 +30,4 @@ deployments:
     type: autoscaling
     dependencies: [manage-frontend-cloudformation]
     parameters:
-      bucket: membership-dist
+      bucketSsmLookup: true

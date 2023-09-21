@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-var-requires -- minimising changes */
 const path = require('path');
-const { merge } = require('webpack-merge');
 const AssetsPlugin = require('assets-webpack-plugin');
-const webpack = require('webpack');
+const babelLoaderExcludeNodeModulesExcept = require('babel-loader-exclude-node-modules-except');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
-const babelLoaderExcludeNodeModulesExcept = require('babel-loader-exclude-node-modules-except');
+const webpack = require('webpack');
+const { merge } = require('webpack-merge');
 const nodeExternals = require('webpack-node-externals');
 
 const assetsPluginInstance = new AssetsPlugin({
@@ -13,11 +14,11 @@ const assetsPluginInstance = new AssetsPlugin({
 });
 
 const definePlugin = new webpack.DefinePlugin({
-	WEBPACK_BUILD: process.env.TEAMCITY_BUILD
-		? `'${process.env.TEAMCITY_BUILD}'`
+	WEBPACK_BUILD: process.env.GITHUB_RUN_NUMBER
+		? `'${process.env.GITHUB_RUN_NUMBER}'`
 		: `'DEV_${new Date().getTime()}'`,
-	GIT_COMMIT_HASH: process.env.BUILD_VCS_NUMBER
-		? `'${process.env.BUILD_VCS_NUMBER}'`
+	GIT_COMMIT_HASH: process.env.GITHUB_SHA
+		? `'${process.env.GITHUB_SHA}'`
 		: `'${new GitRevisionPlugin().commithash()}'`,
 	CYPRESS: `'${process.env.CYPRESS}'`,
 });
