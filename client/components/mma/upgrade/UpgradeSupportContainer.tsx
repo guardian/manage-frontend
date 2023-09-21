@@ -1,6 +1,6 @@
 import type { Context, ReactNode } from 'react';
-import { createContext } from 'react';
-import { Navigate, Outlet } from 'react-router';
+import { createContext, useState } from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router';
 import type {
 	MembersDataApiResponse,
 	MembersDataApiUser,
@@ -33,6 +33,7 @@ export interface UpgradeSupportInterface {
 export interface UpgradeRouterState {
 	chosenAmount: number;
 	amountPayableToday: number;
+	journeyCompleted: boolean;
 }
 
 export const UpgradeSupportContext: Context<UpgradeSupportInterface | {}> =
@@ -57,10 +58,23 @@ const UpgradeSupportPageContainer = ({
 	);
 };
 
+function userIsNavigatingBackFromThankYouPage(hasCompleted: boolean) {
+	return (
+		hasCompleted &&
+		!location.pathname.includes('thank-you') &&
+		!location.pathname.includes('switch-thank-you')
+	);
+}
+
 export const UpgradeSupportContainer = () => {
 	const request = createProductDetailFetcher(
 		PRODUCT_TYPES.contributions.allProductsProductTypeFilterString,
 	);
+
+	const location = useLocation();
+	const routerState = location.state as UpgradeRouterState;
+
+	const [journeyCompleted, setJourneyCompleted] = useState<boolean>(false);
 
 	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
 		request,
@@ -83,6 +97,14 @@ export const UpgradeSupportContainer = () => {
 	}
 
 	if (data == null || data.products.length == 0) {
+		return <Navigate to="/" />;
+	}
+
+	if (!journeyCompleted && routerState?.journeyCompleted) {
+		setJourneyCompleted(true);
+	}
+
+	if (userIsNavigatingBackFromThankYouPage(journeyCompleted)) {
 		return <Navigate to="/" />;
 	}
 
