@@ -59,7 +59,7 @@ export function getUpgradeBenefits(
 	const isUnavailable = supportProduct === 'contributions';
 	return [
 		{
-			name: 'Fierce independent journalism',
+			name: 'More impactful funding of journalism',
 		},
 		{
 			name: 'A regular supporter newsletter',
