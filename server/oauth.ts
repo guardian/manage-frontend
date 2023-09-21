@@ -79,7 +79,12 @@ export type Scopes =
 	| 'guardian.avatar-api.read.self'
 	| 'guardian.avatar-api.update.self'
 	| 'guardian.identity-api.newsletters.read.self'
-	| 'guardian.identity-api.newsletters.update.self';
+	| 'guardian.identity-api.newsletters.update.self'
+	| 'guardian.identity-api.user.read.self.secure'
+	| 'guardian.identity-api.user.update.self.secure'
+	| 'guardian.identity-api.user.username.create.self.secure'
+	| 'guardian.identity-api.consents.read.self'
+	| 'guardian.identity-api.consents.update.self';
 
 export const scopes: Scopes[] = [
 	'openid',
@@ -89,6 +94,11 @@ export const scopes: Scopes[] = [
 	'guardian.avatar-api.update.self',
 	'guardian.identity-api.newsletters.read.self',
 	'guardian.identity-api.newsletters.update.self',
+	'guardian.identity-api.user.read.self.secure',
+	'guardian.identity-api.user.update.self.secure',
+	'guardian.identity-api.user.username.create.self.secure',
+	'guardian.identity-api.consents.read.self',
+	'guardian.identity-api.consents.update.self',
 ];
 
 export const ManageMyAccountOpenIdClient = async () => {
@@ -115,9 +125,7 @@ export const ManageMyAccountOpenIdClient = async () => {
 	return new OIDCIssuer.Client({
 		client_id: oktaConfig.clientId,
 		client_secret: oktaConfig.clientSecret,
-		redirect_uris: [
-			'https://manage.thegulocal.com/oauth/authorization-code/callback',
-		],
+		redirect_uris: ['https://manage.thegulocal.com/oauth/callback'],
 	});
 };
 

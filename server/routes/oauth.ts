@@ -4,7 +4,7 @@ import { ManageMyAccountOpenIdClient } from '@/server/oauth';
 
 const router = Router();
 
-router.get('/authorization-code/callback', async (req, res) => {
+router.get('/callback', async (req, res) => {
 	console.log('OAUTH FLOW: 2. Hit callback route');
 	// Read the state cookie
 	if (!req.signedCookies['GU_oidc_auth_state']) {
@@ -28,7 +28,7 @@ router.get('/authorization-code/callback', async (req, res) => {
 		// and validate the state token and PKCE code verifier
 		const tokenSet = await OpenIdClient.callback(
 			// the redirectUri is the callback location (this route)
-			'https://manage.thegulocal.com/oauth/authorization-code/callback',
+			'https://manage.thegulocal.com/oauth/callback',
 			// the params sent to the callback
 			callbackParams,
 			// checks to make sure that everything is valid
