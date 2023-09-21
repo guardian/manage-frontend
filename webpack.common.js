@@ -13,8 +13,8 @@ const assetsPluginInstance = new AssetsPlugin({
 });
 
 const definePlugin = new webpack.DefinePlugin({
-	WEBPACK_BUILD: process.env.TEAMCITY_BUILD
-		? `'${process.env.TEAMCITY_BUILD}'`
+	WEBPACK_BUILD: process.env.GITHUB_RUN_NUMBER
+		? `'${process.env.GITHUB_RUN_NUMBER}'`
 		: `'DEV_${new Date().getTime()}'`,
 	GIT_COMMIT_HASH: process.env.BUILD_VCS_NUMBER
 		? `'${process.env.BUILD_VCS_NUMBER}'`
