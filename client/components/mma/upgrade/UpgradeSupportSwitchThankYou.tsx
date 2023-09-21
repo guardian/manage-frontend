@@ -50,13 +50,10 @@ export const UpgradeSupportSwitchThankYou = () => {
 
 	const location = useLocation();
 	const routerState = location.state as UpgradeRouterState;
-	const amountPayableToday = formatAmount(routerState?.amountPayableToday);
-	const chosenAmount = formatAmount(routerState?.chosenAmount);
-
+	const amountPayableToday = routerState?.amountPayableToday;
+	const chosenAmount = routerState?.chosenAmount;
 	const currency = upgradeSupportContext.mainPlan.currency;
-	const previousPrice = formatAmount(
-		upgradeSupportContext.mainPlan.price / 100,
-	);
+	const previousPrice = upgradeSupportContext.mainPlan.price / 100;
 	const billingPeriod = upgradeSupportContext.mainPlan.billingPeriod;
 	const userEmail = upgradeSupportContext.user?.email ?? '';
 
@@ -95,8 +92,8 @@ export const UpgradeSupportSwitchThankYou = () => {
 						`}
 					>
 						You’ve {increasedText} your support from {currency}
-						{previousPrice} to {currency}
-						{chosenAmount} per {billingPeriod}.
+						{formatAmount(previousPrice)} to {currency}
+						{formatAmount(chosenAmount)} per {billingPeriod}.
 					</div>
 				</Stack>
 			</section>
@@ -130,13 +127,13 @@ export const UpgradeSupportSwitchThankYou = () => {
 							<div css={withMarginParagraphCss}>
 								Your first billing date is today and you will be
 								charged {currency}
-								{amountPayableToday}. From {nextBillingDate},
-								your ongoing{' '}
+								{formatAmount(amountPayableToday)}. From{' '}
+								{nextBillingDate}, your ongoing{' '}
 								{calculateMonthlyOrAnnualFromBillingPeriod(
 									billingPeriod,
 								).toLowerCase()}{' '}
 								payment will be {currency}
-								{chosenAmount}.
+								{formatAmount(chosenAmount)}.
 							</div>
 						</Heading>
 						<Heading
