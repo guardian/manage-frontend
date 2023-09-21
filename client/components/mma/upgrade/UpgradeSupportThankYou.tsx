@@ -51,9 +51,7 @@ export const UpgradeSupportThankYou = () => {
 	const chosenAmount = routerState?.chosenAmount;
 
 	const currency = upgradeSupportContext.mainPlan.currency;
-	const previousPrice = formatAmount(
-		upgradeSupportContext.mainPlan.price / 100,
-	);
+	const previousPrice = upgradeSupportContext.mainPlan.price / 100;
 	const billingPeriod = upgradeSupportContext.mainPlan.billingPeriod;
 	const userEmail = upgradeSupportContext.user?.email ?? '';
 
@@ -92,7 +90,7 @@ export const UpgradeSupportThankYou = () => {
 						`}
 					>
 						You’ve {increasedText} your support from {currency}
-						{previousPrice} to {currency}
+						{formatAmount(previousPrice)} to {currency}
 						{formatAmount(chosenAmount)} per {billingPeriod}.
 					</div>
 				</Stack>
