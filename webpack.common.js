@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires -- minimising changes to this file*/
+/* eslint-disable @typescript-eslint/no-var-requires -- minimising changes */
 const path = require('path');
 const AssetsPlugin = require('assets-webpack-plugin');
 const babelLoaderExcludeNodeModulesExcept = require('babel-loader-exclude-node-modules-except');

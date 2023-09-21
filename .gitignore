@@ -21,6 +21,8 @@ node_modules/
 dist/
 tmp_client_bundle/
 
+manage-frontend.zip
+
 .DS_Store
 .scannerwork/
 test-report.xml
