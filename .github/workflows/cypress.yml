@@ -35,8 +35,8 @@ jobs:
           IDAPI_CLIENT_ACCESS_TOKEN: ${{ secrets.IDAPI_CLIENT_ACCESS_TOKEN }}
         with:
           start: yarn cypress:server
-          wait-on: 'http://localhost:9234, http://localhost:9233'
-          wait-on-timeout: 30
+          wait-on: 'http://localhost:9234'
+          wait-on-timeout: 60
           quiet: true
           browser: chrome
           spec: cypress/integration/parallel-${{ matrix.group }}/*.ts
