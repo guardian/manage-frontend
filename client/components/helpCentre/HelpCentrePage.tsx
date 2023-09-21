@@ -81,7 +81,7 @@ const HelpCentreRouter = () => {
 		{
 			date: '21 Sep 2023 17:00',
 			message:
-				'Due to a technical issue, Customer Service phonelines in the US are currently not available. Live chat and email are unaffected..',
+				'Due to a technical issue, Customer Service phonelines in the US are currently not available. Live chat and email are unaffected.',
 		},
 	];
 
