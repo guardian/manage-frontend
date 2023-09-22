@@ -241,7 +241,7 @@ export const UpgradeSupportAmountForm = ({
 										cssOverrides={buttonCentredCss}
 										onClick={() => {
 											setContinuedToConfirmation(
-												chosenAmount ? true : false,
+												true
 											);
 											scrollToConfirmChange();
 										}}
