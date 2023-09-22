@@ -144,6 +144,9 @@ export const UpgradeSupportAmountForm = ({
 			priceConfig.maxAmount,
 			isOtherAmountSelected,
 		);
+
+		setIsOtherAmountSelected(chosenAmount === otherAmountSelected);
+
 		setErrorMessage(newErrorMessage);
 	}, [otherAmountSelected, chosenAmount]);
 
