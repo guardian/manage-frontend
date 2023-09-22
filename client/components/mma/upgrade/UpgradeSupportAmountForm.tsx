@@ -131,7 +131,7 @@ export const UpgradeSupportAmountForm = ({
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	useEffect(() => {
-		if (otherAmountSelected) {
+		if (otherAmountSelected !== null) {
 			setHasInteractedWithOtherAmount(true);
 		}
 	}, [otherAmountSelected]);
@@ -232,27 +232,29 @@ export const UpgradeSupportAmountForm = ({
 							threshold={threshold}
 						/>
 					)}
-					{!continuedToConfirmation && !errorMessage && !!chosenAmount && (
-						<section css={buttonContainerCss}>
-							<ThemeProvider
-								theme={buttonThemeReaderRevenueBrand}
-							>
-								<Button
-									cssOverrides={buttonCentredCss}
-									onClick={() => {
-										setContinuedToConfirmation(
-											chosenAmount ? true : false,
-										);
-										scrollToConfirmChange();
-									}}
+					{!continuedToConfirmation &&
+						!errorMessage &&
+						!!chosenAmount && (
+							<section css={buttonContainerCss}>
+								<ThemeProvider
+									theme={buttonThemeReaderRevenueBrand}
 								>
-									Continue with {currencySymbol}
-									{formatAmount(chosenAmount)}/
-									{mainPlan.billingPeriod}
-								</Button>
-							</ThemeProvider>
-						</section>
-					)}
+									<Button
+										cssOverrides={buttonCentredCss}
+										onClick={() => {
+											setContinuedToConfirmation(
+												chosenAmount ? true : false,
+											);
+											scrollToConfirmChange();
+										}}
+									>
+										Continue with {currencySymbol}
+										{formatAmount(chosenAmount)}/
+										{mainPlan.billingPeriod}
+									</Button>
+								</ThemeProvider>
+							</section>
+						)}
 				</Stack>
 			</Stack>
 		</>
