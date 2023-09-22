@@ -99,7 +99,9 @@ export const UpgradeSupportSwitchThankYou = () => {
 			</section>
 			<section>
 				<Stack space={5}>
-					<Heading sansSerif>What happens next?</Heading>
+					<Heading level="3" sansSerif>
+						What happens next?
+					</Heading>
 					<ul css={[iconListCss, whatHappensNextIconCss]}>
 						<li>
 							<SvgEnvelope size="medium" />
@@ -111,9 +113,8 @@ export const UpgradeSupportSwitchThankYou = () => {
 						>
 							You will receive a confirmation email to {userEmail}
 						</div>
-						<Heading
-							sansSerif
-							cssOverrides={css`
+						<div
+							css={css`
 								margin-top: ${space[3]}px;
 								margin-bottom: ${space[5]}px;
 							`}
@@ -135,10 +136,9 @@ export const UpgradeSupportSwitchThankYou = () => {
 								payment will be {currency}
 								{formatAmount(chosenAmount)}.
 							</div>
-						</Heading>
-						<Heading
-							sansSerif
-							cssOverrides={css`
+						</div>
+						<div
+							css={css`
 								margin-top: ${space[3]}px;
 								margin-bottom: ${space[5]}px;
 							`}
@@ -154,7 +154,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 								and app, please sign in. It takes less than a
 								minute.
 							</div>
-						</Heading>
+						</div>
 					</ul>
 				</Stack>
 			</section>
