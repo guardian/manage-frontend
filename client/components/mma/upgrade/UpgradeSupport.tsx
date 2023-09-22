@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { headline, space, textSans, until } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
+import { formatAmount } from '@/client/utilities/utils';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
 import { useAsyncLoader } from '../../../utilities/hooks/useAsyncLoader';
@@ -76,7 +77,8 @@ export const UpgradeSupport = () => {
 							`}
 						>
 							You're currently supporting {mainPlan.currency}
-							{currentAmount} per {mainPlan.billingPeriod}.
+							{formatAmount(currentAmount)} per{' '}
+							{mainPlan.billingPeriod}.
 						</div>
 					</Stack>
 					<UpgradeSupportAmountForm

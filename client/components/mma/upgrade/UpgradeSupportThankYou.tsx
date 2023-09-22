@@ -8,6 +8,7 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { useLocation } from 'react-router';
+import { formatAmount } from '@/client/utilities/utils';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
@@ -47,12 +48,10 @@ export const UpgradeSupportThankYou = () => {
 
 	const location = useLocation();
 	const routerState = location.state as UpgradeRouterState;
-	const chosenAmount = routerState?.chosenAmount.toFixed(2);
+	const chosenAmount = routerState?.chosenAmount;
 
 	const currency = upgradeSupportContext.mainPlan.currency;
-	const previousPrice = (upgradeSupportContext.mainPlan.price / 100).toFixed(
-		2,
-	);
+	const previousPrice = upgradeSupportContext.mainPlan.price / 100;
 	const billingPeriod = upgradeSupportContext.mainPlan.billingPeriod;
 	const userEmail = upgradeSupportContext.user?.email ?? '';
 
@@ -91,8 +90,8 @@ export const UpgradeSupportThankYou = () => {
 						`}
 					>
 						You’ve {increasedText} your support from {currency}
-						{previousPrice} to {currency}
-						{chosenAmount} per {billingPeriod}.
+						{formatAmount(previousPrice)} to {currency}
+						{formatAmount(chosenAmount)} per {billingPeriod}.
 					</div>
 				</Stack>
 			</section>
@@ -127,7 +126,7 @@ export const UpgradeSupportThankYou = () => {
 									billingPeriod,
 								).toLowerCase()}{' '}
 								payment will be {currency}
-								{chosenAmount}.
+								{formatAmount(chosenAmount)}.
 							</p>
 						</Heading>
 					</ul>
