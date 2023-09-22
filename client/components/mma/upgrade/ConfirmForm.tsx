@@ -317,6 +317,7 @@ export const ConfirmForm = ({
 		const routerState = {
 			chosenAmount,
 			amountPayableToday,
+			journeyCompleted: true,
 		} as UpgradeRouterState;
 
 		try {

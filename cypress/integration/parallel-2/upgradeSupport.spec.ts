@@ -53,7 +53,7 @@ describe('upgrade support', () => {
 
 		cy.wait('@product_move');
 
-		cy.findByText(/Your monthly support/).should('exist');
+		cy.findByText(/Thank you/).should('exist');
 
 		cy.get('@mdapi_get_contribution.all').should('have.length', 1);
 		cy.get('@product_move.all').should('have.length', 2);
@@ -81,5 +81,29 @@ describe('upgrade support', () => {
 		cy.wait('@failed_product_move');
 
 		cy.findByText('We were unable to change your support').should('exist');
+	});
+
+	it('Does not allow user to navigate back to first page after completion', () => {
+		cy.visit('/upgrade-support');
+
+		cy.findByRole('button', {
+			name: /Continue with/,
+		}).click();
+
+		cy.wait('@product_move');
+
+		cy.findByText(/Confirm support increase/).should('exist');
+
+		cy.findByRole('button', {
+			name: /Confirm increase/,
+		}).click();
+
+		cy.wait('@product_move');
+
+		cy.findByText(/Thank you/).should('exist');
+
+		cy.go('back');
+
+		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
 	});
 });
