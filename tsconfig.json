@@ -16,5 +16,5 @@
     },
     "esModuleInterop": true
   },
-  "exclude": ["cypress/**", "cdk/**"]
+  "exclude": ["cypress/**", "cdk/**", "cypress.config.ts"]
 }
