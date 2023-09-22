@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { headline, space, textSans, until } from '@guardian/source-foundations';
+import {
+	headline,
+	palette,
+	space,
+	textSans,
+	until,
+} from '@guardian/source-foundations';
 import {
 	LinkButton,
 	Stack,
@@ -109,11 +115,11 @@ export const UpgradeSupportThankYou = () => {
 						>
 							You will receive a confirmation email to {userEmail}
 						</p>
-						<Heading
-							sansSerif
-							cssOverrides={css`
+						<div
+							css={css`
 								margin-top: ${space[3]}px;
 								margin-bottom: ${space[5]}px;
+								border-top: 1px solid ${palette.neutral[86]};
 							`}
 						>
 							<li>
@@ -128,7 +134,7 @@ export const UpgradeSupportThankYou = () => {
 								payment will be {currency}
 								{formatAmount(chosenAmount)}.
 							</p>
-						</Heading>
+						</div>
 					</ul>
 				</Stack>
 			</section>

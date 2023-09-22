@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { headline, space, textSans, until } from '@guardian/source-foundations';
+import {
+	headline,
+	palette,
+	space,
+	textSans,
+	until,
+} from '@guardian/source-foundations';
 import {
 	LinkButton,
 	Stack,
@@ -117,6 +123,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 							css={css`
 								margin-top: ${space[3]}px;
 								margin-bottom: ${space[5]}px;
+								border-top: 1px solid ${palette.neutral[86]};
 							`}
 						>
 							<li>
@@ -141,6 +148,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 							css={css`
 								margin-top: ${space[3]}px;
 								margin-bottom: ${space[5]}px;
+								border-top: 1px solid ${palette.neutral[86]};
 							`}
 						>
 							<li>
