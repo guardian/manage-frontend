@@ -1,5 +1,5 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
+import type { Meta, StoryFn } from '@storybook/react';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import type { MainProps } from './Main';
 import { Main } from './Main';
 
@@ -21,9 +21,9 @@ export default {
 			control: { type: 'select' },
 		},
 	},
-} as ComponentMeta<typeof Main>;
+} as Meta<typeof Main>;
 
-const Template: ComponentStory<typeof Main> = (args: MainProps) => (
+const Template: StoryFn<typeof Main> = (args: MainProps) => (
 	<Main {...args}>
 		<h1>Main content</h1>
 	</Main>

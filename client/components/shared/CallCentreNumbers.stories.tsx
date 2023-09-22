@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import type { CallCentreNumbersProps } from './CallCentreNumbers';
 import { CallCentreNumbers } from './CallCentreNumbers';
 
@@ -8,9 +8,9 @@ export default {
 	args: {
 		prefixText: '',
 	},
-} as ComponentMeta<typeof CallCentreNumbers>;
+} as Meta<typeof CallCentreNumbers>;
 
-const Template: ComponentStory<typeof CallCentreNumbers> = (
+const Template: StoryFn<typeof CallCentreNumbers> = (
 	args: CallCentreNumbersProps,
 ) => {
 	return <CallCentreNumbers {...args} />;

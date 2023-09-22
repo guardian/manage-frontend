@@ -1,30 +1,30 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { SupportTheGuardianButton } from './SupportTheGuardianButton';
 
 export default {
 	title: 'Components/SupportTheGuardianButton',
 	component: SupportTheGuardianButton,
-} as ComponentMeta<typeof SupportTheGuardianButton>;
+} as Meta<typeof SupportTheGuardianButton>;
 
-export const Default: ComponentStory<typeof SupportTheGuardianButton> = () => (
+export const Default: StoryFn<typeof SupportTheGuardianButton> = () => (
 	<SupportTheGuardianButton supportReferer="storybook" />
 );
 
-export const WithSmallSize: ComponentStory<
-	typeof SupportTheGuardianButton
-> = () => <SupportTheGuardianButton supportReferer="storybook" size="small" />;
+export const WithSmallSize: StoryFn<typeof SupportTheGuardianButton> = () => (
+	<SupportTheGuardianButton supportReferer="storybook" size="small" />
+);
 
-export const WithBrandTheme: ComponentStory<
-	typeof SupportTheGuardianButton
-> = () => <SupportTheGuardianButton supportReferer="storybook" theme="brand" />;
+export const WithBrandTheme: StoryFn<typeof SupportTheGuardianButton> = () => (
+	<SupportTheGuardianButton supportReferer="storybook" theme="brand" />
+);
 
-export const WithBrandAltTheme: ComponentStory<
+export const WithBrandAltTheme: StoryFn<
 	typeof SupportTheGuardianButton
 > = () => (
 	<SupportTheGuardianButton supportReferer="storybook" theme="brandAlt" />
 );
 
-export const WithAlternateButtonText: ComponentStory<
+export const WithAlternateButtonText: StoryFn<
 	typeof SupportTheGuardianButton
 > = () => (
 	<SupportTheGuardianButton

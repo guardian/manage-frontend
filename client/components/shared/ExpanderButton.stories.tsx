@@ -1,13 +1,13 @@
 import { css } from '@emotion/react';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { ExpanderButton } from './ExpanderButton';
 
 export default {
 	title: 'Components/ExpanderButton',
 	component: ExpanderButton,
-} as ComponentMeta<typeof ExpanderButton>;
+} as Meta<typeof ExpanderButton>;
 
-export const Default: ComponentStory<typeof ExpanderButton> = () => (
+export const Default: StoryFn<typeof ExpanderButton> = () => (
 	<ExpanderButton buttonLabel="2 issues">
 		<ul
 			css={css`

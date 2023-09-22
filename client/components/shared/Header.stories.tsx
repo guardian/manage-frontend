@@ -1,5 +1,5 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
+import type { Meta, StoryFn } from '@storybook/react';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import type { HeaderProps } from './Header';
 import { Header } from './Header';
 
@@ -19,9 +19,9 @@ export default {
 			control: { type: 'select' },
 		},
 	},
-} as ComponentMeta<typeof Header>;
+} as Meta<typeof Header>;
 
-const Template: ComponentStory<typeof Header> = (args: HeaderProps) => (
+const Template: StoryFn<typeof Header> = (args: HeaderProps) => (
 	<Header {...args} />
 );
 
