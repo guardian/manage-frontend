@@ -40,15 +40,14 @@ function validateChoice(
 	maxAmount: number,
 	isOtherAmountSelected: boolean,
 ): string | null {
-	const chosenOptionNum = Number(chosenAmount);
 	if (!chosenAmount && !isOtherAmountSelected) {
 		return 'Please make a selection';
-	} else if (chosenOptionNum === currentAmount) {
+	} else if (chosenAmount === currentAmount) {
 		return 'This is the same amount as your current support. Please enter a new amount.';
 	} else if (
 		!chosenAmount ||
-		chosenOptionNum < minAmount ||
-		chosenOptionNum > maxAmount
+		chosenAmount < minAmount ||
+		chosenAmount > maxAmount
 	) {
 		return `Enter a number between ${minAmount} and ${maxAmount}.`;
 	}
@@ -60,14 +59,10 @@ function BenefitsDisplay({
 	chosenAmountDisplay,
 	threshold,
 }: {
-	chosenAmount: number | null;
+	chosenAmount: number;
 	chosenAmountDisplay: string;
 	threshold: number;
 }) {
-	if (!chosenAmount) {
-		return null;
-	}
-
 	const benefitsList =
 		chosenAmount < threshold
 			? getUpgradeBenefits('contributions')
@@ -131,7 +126,7 @@ export const UpgradeSupportAmountForm = ({
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	useEffect(() => {
-		if (otherAmountSelected) {
+		if (otherAmountSelected !== null) {
 			setHasInteractedWithOtherAmount(true);
 		}
 	}, [otherAmountSelected]);
@@ -144,6 +139,9 @@ export const UpgradeSupportAmountForm = ({
 			priceConfig.maxAmount,
 			isOtherAmountSelected,
 		);
+
+		setIsOtherAmountSelected(chosenAmount === otherAmountSelected);
+
 		setErrorMessage(newErrorMessage);
 	}, [otherAmountSelected, chosenAmount]);
 
@@ -232,27 +230,29 @@ export const UpgradeSupportAmountForm = ({
 							threshold={threshold}
 						/>
 					)}
-					{!continuedToConfirmation && !errorMessage && !!chosenAmount && (
-						<section css={buttonContainerCss}>
-							<ThemeProvider
-								theme={buttonThemeReaderRevenueBrand}
-							>
-								<Button
-									cssOverrides={buttonCentredCss}
-									onClick={() => {
-										setContinuedToConfirmation(
-											chosenAmount ? true : false,
-										);
-										scrollToConfirmChange();
-									}}
+					{!continuedToConfirmation &&
+						!errorMessage &&
+						!!chosenAmount && (
+							<section css={buttonContainerCss}>
+								<ThemeProvider
+									theme={buttonThemeReaderRevenueBrand}
 								>
-									Continue with {currencySymbol}
-									{formatAmount(chosenAmount)}/
-									{mainPlan.billingPeriod}
-								</Button>
-							</ThemeProvider>
-						</section>
-					)}
+									<Button
+										cssOverrides={buttonCentredCss}
+										onClick={() => {
+											setContinuedToConfirmation(
+												true
+											);
+											scrollToConfirmChange();
+										}}
+									>
+										Continue with {currencySymbol}
+										{formatAmount(chosenAmount)}/
+										{mainPlan.billingPeriod}
+									</Button>
+								</ThemeProvider>
+							</section>
+						)}
 				</Stack>
 			</Stack>
 		</>

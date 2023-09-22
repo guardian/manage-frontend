@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { headline, space, textSans, until } from '@guardian/source-foundations';
+import {
+	headline,
+	palette,
+	space,
+	textSans,
+	until,
+} from '@guardian/source-foundations';
 import {
 	LinkButton,
 	Stack,
@@ -10,17 +16,15 @@ import {
 import { useContext } from 'react';
 import { useLocation } from 'react-router';
 import { formatAmount } from '@/client/utilities/utils';
-import {
-	DATE_FNS_LONG_OUTPUT_FORMAT,
-	parseDate,
-} from '../../../../shared/dates';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
+import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '@/shared/productTypes';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 } from '../../../styles/ButtonStyles';
 import {
 	iconListCss,
+	listWithDividersCss,
 	sectionSpacing,
 	whatHappensNextIconCss,
 } from '../../../styles/GenericStyles';
@@ -30,18 +34,13 @@ import {
 	signInHeadingCss,
 	signInParaCss,
 } from '../../shared/SignIn';
-import { Heading } from '../shared/Heading';
 import { SwitchSignInImage } from '../switch/complete/SwitchSignInImage';
 import type {
 	UpgradeRouterState,
 	UpgradeSupportInterface,
 } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
-import {
-	iconTextCss,
-	linkCss,
-	withMarginParagraphCss,
-} from './UpgradeSupportStyles';
+import { linkCss } from './UpgradeSupportStyles';
 
 export const UpgradeSupportSwitchThankYou = () => {
 	const upgradeSupportContext = useContext(
@@ -97,34 +96,62 @@ export const UpgradeSupportSwitchThankYou = () => {
 					</div>
 				</Stack>
 			</section>
-			<section>
-				<Stack space={5}>
-					<Heading sansSerif>What happens next?</Heading>
-					<ul css={[iconListCss, whatHappensNextIconCss]}>
-						<li>
-							<SvgEnvelope size="medium" />
-							<span css={iconTextCss}>Check your email</span>
-						</li>
-						<div
-							css={withMarginParagraphCss}
-							data-qm-masking="blocklist"
-						>
-							You will receive a confirmation email to {userEmail}
-						</div>
-						<Heading
-							sansSerif
-							cssOverrides={css`
-								margin-top: ${space[3]}px;
-								margin-bottom: ${space[5]}px;
+			<section
+				css={css`
+					border-bottom: 1px solid ${palette.neutral[86]};
+					padding-bottom: ${space[5]}px;
+				`}
+			>
+				<Stack space={4}>
+					<div
+						css={css`
+							border-top: 1px solid ${palette.neutral[86]};
+							padding-bottom: ${space[1]}px;
+						`}
+					>
+						<h3
+							css={css`
+								${textSans.large({ fontWeight: 'bold' })};
+								padding-top: ${space[1]}px;
+								margin: 0;
 							`}
 						>
-							<li>
-								<SvgCalendar size="medium" />
-								<span css={iconTextCss}>
+							What happens next?
+						</h3>
+					</div>
+					<ul
+						css={[
+							iconListCss,
+							listWithDividersCss,
+							whatHappensNextIconCss,
+						]}
+					>
+						<li>
+							<SvgEnvelope size="medium" />
+							<span data-qm-masking="blocklist">
+								<strong
+									css={css`
+										padding-bottom: ${space[1]}px;
+									`}
+								>
+									Check your email
+								</strong>
+								<br />
+								You will receive a confirmation email to{' '}
+								{userEmail}
+							</span>
+						</li>
+						<li>
+							<SvgCalendar size="medium" />
+							<span>
+								<strong
+									css={css`
+										padding-bottom: ${space[1]}px;
+									`}
+								>
 									Your billing date has changed
-								</span>
-							</li>
-							<div css={withMarginParagraphCss}>
+								</strong>
+								<br />
 								Your first billing date is today and you will be
 								charged {currency}
 								{formatAmount(amountPayableToday)}. From{' '}
@@ -134,27 +161,24 @@ export const UpgradeSupportSwitchThankYou = () => {
 								).toLowerCase()}{' '}
 								payment will be {currency}
 								{formatAmount(chosenAmount)}.
-							</div>
-						</Heading>
-						<Heading
-							sansSerif
-							cssOverrides={css`
-								margin-top: ${space[3]}px;
-								margin-bottom: ${space[5]}px;
-							`}
-						>
-							<li>
-								<SvgClock size="medium" />
-								<span css={iconTextCss}>
+							</span>
+						</li>
+						<li>
+							<SvgClock size="medium" />
+							<span>
+								<strong
+									css={css`
+										padding-bottom: ${space[1]}px;
+									`}
+								>
 									Enjoy your new extras
-								</span>
-							</li>
-							<div css={withMarginParagraphCss}>
+								</strong>
+								<br />
 								To access your exclusive extras on our website
 								and app, please sign in. It takes less than a
 								minute.
-							</div>
-						</Heading>
+							</span>
+						</li>
 					</ul>
 				</Stack>
 			</section>

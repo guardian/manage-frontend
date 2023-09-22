@@ -77,7 +77,7 @@ const WhatHappensNext = ({
 		<section
 			css={css`
 				border-bottom: 1px solid ${palette.neutral[86]};
-				padding-bottom: ${space[4] + space[1]}px;
+				padding-bottom: ${space[5]}px;
 			`}
 		>
 			<Stack space={4}>
