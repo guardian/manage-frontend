@@ -85,15 +85,6 @@ interface UpgradeSupportAmountFormProps {
 	suggestedAmounts: number[];
 }
 
-function addScrollEventListener() {
-	document.addEventListener('wheel', function (_) {
-		const inputElement = document.activeElement as HTMLInputElement;
-		if (inputElement.type === 'number') {
-			inputElement.blur();
-		}
-	});
-}
-
 export const UpgradeSupportAmountForm = ({
 	chosenAmount,
 	setChosenAmount,
@@ -153,8 +144,6 @@ export const UpgradeSupportAmountForm = ({
 
 		setErrorMessage(newErrorMessage);
 	}, [otherAmountSelected, chosenAmount]);
-
-	addScrollEventListener();
 
 	return (
 		<>
@@ -216,6 +205,7 @@ export const UpgradeSupportAmountForm = ({
 								type="number"
 								width={30}
 								value={otherAmountSelected?.toString() || ''}
+								onWheel={(event) => event.currentTarget.blur()}
 								onChange={(event) => {
 									setChosenAmount(
 										event.target.value
