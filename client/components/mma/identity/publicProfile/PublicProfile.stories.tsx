@@ -1,7 +1,7 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta , StoryFn } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
-import { user } from '../../../../fixtures/user';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import { user } from '@/client/fixtures/user';
 import { PublicProfile } from './PublicProfile';
 
 export default {
@@ -11,9 +11,9 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof PublicProfile>;
+} as Meta<typeof PublicProfile>;
 
-export const Default: ComponentStory<typeof PublicProfile> = () => {
+export const Default: StoryFn<typeof PublicProfile> = () => {
 	return <PublicProfile />;
 };
 
