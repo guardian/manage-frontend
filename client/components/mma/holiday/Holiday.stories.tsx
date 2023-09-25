@@ -1,7 +1,7 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta , StoryFn } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
-import { PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { existingHolidays } from '../../../fixtures/holidays';
 import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
 import { guardianWeeklyPaidByCard } from '../../../fixtures/productBuilder/testProducts';
@@ -29,9 +29,9 @@ export default {
 			),
 		},
 	},
-} as ComponentMeta<typeof HolidayStopsContainer>;
+} as Meta<typeof HolidayStopsContainer>;
 
-export const Manage: ComponentStory<typeof HolidaysOverview> = () => {
+export const Manage: StoryFn<typeof HolidaysOverview> = () => {
 	return <HolidaysOverview />;
 };
 
@@ -48,7 +48,7 @@ Manage.parameters = {
 	],
 };
 
-export const Create: ComponentStory<typeof HolidayDateChooser> = () => {
+export const Create: StoryFn<typeof HolidayDateChooser> = () => {
 	return <HolidayDateChooser />;
 };
 

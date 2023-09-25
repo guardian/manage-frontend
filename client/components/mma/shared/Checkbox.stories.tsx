@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import type { CheckboxProps } from './Checkbox';
 import { Checkbox } from './Checkbox';
 
@@ -21,9 +21,9 @@ export default {
 			control: { type: 'color' },
 		},
 	},
-} as ComponentMeta<typeof Checkbox>;
+} as Meta<typeof Checkbox>;
 
-const Template: ComponentStory<typeof Checkbox> = (args: CheckboxProps) => (
+const Template: StoryFn<typeof Checkbox> = (args: CheckboxProps) => (
 	<Checkbox {...args} />
 );
 

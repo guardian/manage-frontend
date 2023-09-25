@@ -1,13 +1,13 @@
 import { css } from '@emotion/react';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { WithStandardTopMargin } from './WithStandardTopMargin';
 
 export default {
 	title: 'Components/WithStandardTopMargin',
 	component: WithStandardTopMargin,
-} as ComponentMeta<typeof WithStandardTopMargin>;
+} as Meta<typeof WithStandardTopMargin>;
 
-export const Default: ComponentStory<typeof WithStandardTopMargin> = () => (
+export const Default: StoryFn<typeof WithStandardTopMargin> = () => (
 	<div
 		css={css`
 			outline: 1px dotted red;

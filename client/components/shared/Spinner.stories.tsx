@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import type { LoadingProps } from './Spinner';
 import { Spinner } from './Spinner';
 
@@ -21,9 +21,9 @@ export default {
 			control: { type: 'inline-radio' },
 		},
 	},
-} as ComponentMeta<typeof Spinner>;
+} as Meta<typeof Spinner>;
 
-const Template: ComponentStory<typeof Spinner> = (args: LoadingProps) => (
+const Template: StoryFn<typeof Spinner> = (args: LoadingProps) => (
 	<Spinner {...args} />
 );
 

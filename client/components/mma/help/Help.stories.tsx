@@ -1,5 +1,5 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import type { Meta , StoryFn } from '@storybook/react';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { Help } from './Help';
 
 export default {
@@ -12,6 +12,6 @@ export default {
 			viewports: [320, 1300],
 		},
 	},
-} as ComponentMeta<typeof Help>;
+} as Meta<typeof Help>;
 
-export const Default: ComponentStory<typeof Help> = () => <Help />;
+export const Default: StoryFn<typeof Help> = () => <Help />;

@@ -1,6 +1,6 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { SectionContent } from '../shared/SectionContent';
 import { SectionHeader } from '../shared/SectionHeader';
 import { HelpCentreArticle } from './HelpCentreArticle';
@@ -15,7 +15,7 @@ export default {
 			viewports: [320, 1300],
 		},
 	},
-} as ComponentMeta<typeof HelpCentreArticle>;
+} as Meta<typeof HelpCentreArticle>;
 
 const articleContent = {
 	title: 'I need to pause my delivery',
@@ -40,7 +40,7 @@ const articleContent = {
 	],
 };
 
-export const Default: ComponentStory<typeof HelpCentreArticle> = () => {
+export const Default: StoryFn<typeof HelpCentreArticle> = () => {
 	return (
 		<>
 			<SectionHeader title="How can we help you?" pageHasNav={true} />

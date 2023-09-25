@@ -1,7 +1,7 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
-import { PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
 	contributionCancelled,
 	contributionPaidByPayPal,
@@ -30,15 +30,13 @@ export default {
 			container: <CancellationContainer productType={contributions} />,
 		},
 	},
-} as ComponentMeta<typeof CancellationContainer>;
+} as Meta<typeof CancellationContainer>;
 
-export const SelectReason: ComponentStory<
-	typeof CancellationReasonSelection
-> = () => {
+export const SelectReason: StoryFn<typeof CancellationReasonSelection> = () => {
 	return <CancellationReasonSelection />;
 };
 
-export const ContactCustomerService: ComponentStory<
+export const ContactCustomerService: StoryFn<
 	typeof CancellationReasonSelection
 > = () => <CancellationReasonSelection />;
 
@@ -51,7 +49,7 @@ ContactCustomerService.parameters = {
 	},
 };
 
-export const Review: ComponentStory<typeof CancellationContainer> = () => {
+export const Review: StoryFn<typeof CancellationContainer> = () => {
 	return <CancellationReasonReview />;
 };
 
@@ -70,9 +68,7 @@ Review.parameters = {
 	},
 };
 
-export const Confirmation: ComponentStory<
-	typeof CancellationContainer
-> = () => {
+export const Confirmation: StoryFn<typeof CancellationContainer> = () => {
 	// @ts-expect-error set identity details email in the window
 	window.guardian = { identityDetails: { email: 'test' } };
 

@@ -1,6 +1,6 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { SectionContent } from '../shared/SectionContent';
 import { SectionHeader } from '../shared/SectionHeader';
 import { HelpCentreTopic } from './HelpCentreTopic';
@@ -12,7 +12,7 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof HelpCentreTopic>;
+} as Meta<typeof HelpCentreTopic>;
 
 const topicContent = {
 	path: 'delivery',
@@ -33,7 +33,7 @@ const topicContent = {
 	],
 };
 
-export const Default: ComponentStory<typeof HelpCentreTopic> = () => {
+export const Default: StoryFn<typeof HelpCentreTopic> = () => {
 	return (
 		<>
 			<SectionHeader title="How can we help you?" pageHasNav={true} />

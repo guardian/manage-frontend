@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import type { FormErrorProps } from './FormError';
 import { FormError } from './FormError';
 
@@ -11,9 +11,9 @@ export default {
 			'Please try again or if the problem persists please contact Customer Service',
 		],
 	},
-} as ComponentMeta<typeof FormError>;
+} as Meta<typeof FormError>;
 
-const Template: ComponentStory<typeof FormError> = (args: FormErrorProps) => {
+const Template: StoryFn<typeof FormError> = (args: FormErrorProps) => {
 	return <FormError {...args} />;
 };
 

@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import type { OverlayLoaderProps } from './OverlayLoader';
 import { OverlayLoader } from './OverlayLoader';
 
@@ -11,10 +11,10 @@ export default {
 	args: {
 		message: 'Updating payment details...',
 	},
-} as ComponentMeta<typeof OverlayLoader>;
+} as Meta<typeof OverlayLoader>;
 
-const Template: ComponentStory<typeof OverlayLoader> = (
-	args: OverlayLoaderProps,
-) => <OverlayLoader {...args} />;
+const Template: StoryFn<typeof OverlayLoader> = (args: OverlayLoaderProps) => (
+	<OverlayLoader {...args} />
+);
 
 export const Default = Template.bind({});

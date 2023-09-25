@@ -1,5 +1,5 @@
 import { brand } from '@guardian/source-foundations';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import type { ButtonProps } from './Buttons';
 import { Button } from './Buttons';
 
@@ -59,9 +59,9 @@ export default {
 			control: { type: 'inline-radio' },
 		},
 	},
-} as ComponentMeta<typeof Button>;
+} as Meta<typeof Button>;
 
-const Template: ComponentStory<typeof Button> = (args: ButtonProps) => (
+const Template: StoryFn<typeof Button> = (args: ButtonProps) => (
 	<Button {...args} />
 );
 

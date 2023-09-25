@@ -1,6 +1,6 @@
 import { brand, neutral } from '@guardian/source-foundations';
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import type { Meta, StoryFn } from '@storybook/react';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import type { LinkButtonProps } from './Buttons';
 import { LinkButton } from './Buttons';
 
@@ -62,9 +62,9 @@ export default {
 			control: { type: 'inline-radio' },
 		},
 	},
-} as ComponentMeta<typeof LinkButton>;
+} as Meta<typeof LinkButton>;
 
-const Template: ComponentStory<typeof LinkButton> = (args: LinkButtonProps) => (
+const Template: StoryFn<typeof LinkButton> = (args: LinkButtonProps) => (
 	<LinkButton {...args} />
 );
 

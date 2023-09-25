@@ -1,6 +1,6 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
-import { PRODUCT_TYPES } from '../../../../shared/productTypes';
+import type { Meta , StoryFn } from '@storybook/react';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
 	guardianWeeklyExpiredCard,
 	guardianWeeklyPaidByCard,
@@ -13,7 +13,7 @@ export default {
 	component: PaymentDetailUpdateContainer,
 	title: 'Pages/UpdatePayment',
 	decorators: [ReactRouterDecorator],
-} as ComponentMeta<typeof PaymentDetailUpdateContainer>;
+} as Meta<typeof PaymentDetailUpdateContainer>;
 
 const setSiteKey = () => {
 	// @ts-expect-error set the recaptcha key in the window for the recaptcha to render
@@ -22,9 +22,7 @@ const setSiteKey = () => {
 	};
 };
 
-export const GuardianWeeklyCard: ComponentStory<
-	typeof PaymentDetailUpdate
-> = () => {
+export const GuardianWeeklyCard: StoryFn<typeof PaymentDetailUpdate> = () => {
 	setSiteKey();
 	return <PaymentDetailUpdate productType={PRODUCT_TYPES.guardianweekly} />;
 };
@@ -42,7 +40,7 @@ GuardianWeeklyCard.parameters = {
 	},
 };
 
-export const NewspaperVoucherPaypal: ComponentStory<
+export const NewspaperVoucherPaypal: StoryFn<
 	typeof PaymentDetailUpdate
 > = () => {
 	setSiteKey();
@@ -60,7 +58,7 @@ NewspaperVoucherPaypal.parameters = {
 	},
 };
 
-export const GuardianWeeklyExpiredCard: ComponentStory<
+export const GuardianWeeklyExpiredCard: StoryFn<
 	typeof PaymentDetailUpdate
 > = () => {
 	setSiteKey();

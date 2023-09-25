@@ -1,9 +1,9 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta , StoryFn } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
-import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
-import { toMembersDataApiResponse } from '../../../../fixtures/mdapiResponse';
-import { guardianWeeklyPaidByCard } from '../../../../fixtures/productBuilder/testProducts';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
+import { guardianWeeklyPaidByCard } from '@/client/fixtures/productBuilder/testProducts';
+import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { DeliveryAddressChangeContainer } from './DeliveryAddressChangeContainer';
 import { DeliveryAddressConfirmation } from './DeliveryAddressConfirmation';
 import { DeliveryAddressUpdate } from './DeliveryAddressForm';
@@ -32,21 +32,19 @@ export default {
 			}),
 		],
 	},
-} as ComponentMeta<typeof DeliveryAddressChangeContainer>;
+} as Meta<typeof DeliveryAddressChangeContainer>;
 
-export const UpdateDeliveryAddress: ComponentStory<
+export const UpdateDeliveryAddress: StoryFn<
 	typeof DeliveryAddressUpdate
 > = () => {
 	return <DeliveryAddressUpdate productType={PRODUCT_TYPES.guardianweekly} />;
 };
 
-export const Review: ComponentStory<typeof DeliveryAddressReview> = () => {
+export const Review: StoryFn<typeof DeliveryAddressReview> = () => {
 	return <DeliveryAddressReview productType={PRODUCT_TYPES.guardianweekly} />;
 };
 
-export const Confirmation: ComponentStory<
-	typeof DeliveryAddressConfirmation
-> = () => {
+export const Confirmation: StoryFn<typeof DeliveryAddressConfirmation> = () => {
 	return (
 		<DeliveryAddressConfirmation
 			productType={PRODUCT_TYPES.guardianweekly}

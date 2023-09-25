@@ -1,19 +1,19 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta , StoryFn } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
-import { featureSwitches } from '../../../../../shared/featureSwitches';
-import { consents } from '../../../../fixtures/consents';
-import { InAppPurchase } from '../../../../fixtures/inAppPurchase';
-import { toMembersDataApiResponse } from '../../../../fixtures/mdapiResponse';
-import { newsletters } from '../../../../fixtures/newsletters';
-import { newsletterSubscriptions } from '../../../../fixtures/newsletterSubscriptions';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import { consents } from '@/client/fixtures/consents';
+import { InAppPurchase } from '@/client/fixtures/inAppPurchase';
+import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
+import { newsletters } from '@/client/fixtures/newsletters';
+import { newsletterSubscriptions } from '@/client/fixtures/newsletterSubscriptions';
 import {
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
 	newspaperVoucherPaidByPaypal,
-} from '../../../../fixtures/productBuilder/testProducts';
-import { singleContributionsAPIResponse } from '../../../../fixtures/singleContribution';
-import { user } from '../../../../fixtures/user';
+} from '@/client/fixtures/productBuilder/testProducts';
+import { singleContributionsAPIResponse } from '@/client/fixtures/singleContribution';
+import { user } from '@/client/fixtures/user';
+import { featureSwitches } from '@/shared/featureSwitches';
 import { EmailAndMarketing } from './EmailAndMarketing';
 
 export default {
@@ -23,9 +23,9 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof EmailAndMarketing>;
+} as Meta<typeof EmailAndMarketing>;
 
-export const Default: ComponentStory<typeof EmailAndMarketing> = () => {
+export const Default: StoryFn<typeof EmailAndMarketing> = () => {
 	return <EmailAndMarketing />;
 };
 
@@ -66,7 +66,7 @@ Default.parameters = {
 	],
 };
 
-export const WithNoProducts: ComponentStory<typeof EmailAndMarketing> = () => {
+export const WithNoProducts: StoryFn<typeof EmailAndMarketing> = () => {
 	return <EmailAndMarketing />;
 };
 
@@ -99,7 +99,7 @@ WithNoProducts.parameters = {
 	],
 };
 
-export const WithIAP: ComponentStory<typeof EmailAndMarketing> = () => {
+export const WithIAP: StoryFn<typeof EmailAndMarketing> = () => {
 	featureSwitches['appSubscriptions'] = true;
 
 	return <EmailAndMarketing />;
@@ -134,9 +134,7 @@ WithIAP.parameters = {
 	],
 };
 
-export const WithSingleContribution: ComponentStory<
-	typeof EmailAndMarketing
-> = () => {
+export const WithSingleContribution: StoryFn<typeof EmailAndMarketing> = () => {
 	featureSwitches['singleContributions'] = true;
 
 	return <EmailAndMarketing />;

@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import type { DateInputProps } from './DateInput';
 import { DateInput } from './DateInput';
 
@@ -17,9 +17,9 @@ export default {
 			},
 		},
 	},
-} as ComponentMeta<typeof DateInput>;
+} as Meta<typeof DateInput>;
 
-const Template: ComponentStory<typeof DateInput> = (args: DateInputProps) => {
+const Template: StoryFn<typeof DateInput> = (args: DateInputProps) => {
 	args.date = new Date(args.date);
 	return <DateInput {...args} />;
 };
