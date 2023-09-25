@@ -26,7 +26,9 @@ describe('MarketingToggle component', () => {
 		render(marketingToggle(false));
 
 		expect(screen.getByRole('switch')).toBeInTheDocument();
-		expect(screen.getByLabelText('Test title')).not.toBeChecked();
+		expect(
+			screen.getByRole('switch', { name: 'Test title' }),
+		).not.toBeChecked();
 		expect(screen.getByText('Test description')).toBeVisible();
 	});
 

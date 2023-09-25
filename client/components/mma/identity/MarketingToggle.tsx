@@ -1,8 +1,8 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
+import { ToggleSwitch } from '@guardian/source-react-components-development-kitchen';
 import type { FC } from 'react';
 import { standardSansText, toggleDescriptionPadding } from './sharedStyles';
-import { ToggleSwitch } from './ToggleSwitch';
 
 interface MarketingToggleProps {
 	id: string;
@@ -34,16 +34,14 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 				<ToggleSwitch
 					cssOverrides={css`
 						${standardSansText};
-						font-weight: bold;
-						justify-content: space-between;
+						display: flex;
 						button {
-							margin-left: 20px;
 							align-self: flex-start;
-							cursor: pointer;
 						}
 					`}
 					label={title}
 					labelPosition="left"
+					fontWeight="bold"
 					id={id}
 					checked={!!selected}
 					onClick={() => {

@@ -18,14 +18,14 @@ describe('OptOutSection component', () => {
 		);
 
 		expect(
-			screen.getByLabelText(
-				'Allow the Guardian to send communications by post',
-			),
+			screen.getByRole('switch', {
+				name: 'Allow the Guardian to send communications by post',
+			}),
 		).toBeChecked();
 		expect(
-			screen.getByLabelText(
-				'Allow the Guardian to send communications by telephone',
-			),
+			screen.getByRole('switch', {
+				name: 'Allow the Guardian to send communications by telephone',
+			}),
 		).not.toBeChecked();
 	});
 });
