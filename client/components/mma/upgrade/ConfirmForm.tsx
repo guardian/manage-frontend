@@ -385,7 +385,7 @@ export const ConfirmForm = ({
 				>
 					You've selected to support {currencySymbol}
 					{formatAmount(chosenAmount)} per {mainPlan.billingPeriod}
-					{aboveThreshold ? ', which unlocks extras' : ''}.
+					{aboveThreshold ? ', which unlocks all extras' : ''}.
 				</div>
 			</section>
 			{shouldShowRoundUp && (

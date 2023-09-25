@@ -171,9 +171,9 @@ export const UpgradeSupportSwitchThankYou = () => {
 									Enjoy your new extras
 								</strong>
 								<br />
-								To access your exclusive extras on our website
-								and app, please sign in. It takes less than a
-								minute.
+								Your new support plan starts today. It may take
+								up to an hour for your full app access to become
+								available.
 							</span>
 						</li>
 					</ul>
