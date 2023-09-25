@@ -1,6 +1,6 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta , StoryFn } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { consents } from '../../../fixtures/consents';
 import { user } from '../../../fixtures/user';
 import { DataPrivacy } from './DataPrivacy';
@@ -12,9 +12,9 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof DataPrivacy>;
+} as Meta<typeof DataPrivacy>;
 
-export const Default: ComponentStory<typeof DataPrivacy> = () => {
+export const Default: StoryFn<typeof DataPrivacy> = () => {
 	return <DataPrivacy />;
 };
 
