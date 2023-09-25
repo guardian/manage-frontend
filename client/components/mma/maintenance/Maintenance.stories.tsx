@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta , StoryFn } from '@storybook/react';
 import { Maintenance } from './Maintenance';
 
 export default {
@@ -7,8 +7,6 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof Maintenance>;
+} as Meta<typeof Maintenance>;
 
-export const Default: ComponentStory<typeof Maintenance> = () => (
-	<Maintenance />
-);
+export const Default: StoryFn<typeof Maintenance> = () => <Maintenance />;
