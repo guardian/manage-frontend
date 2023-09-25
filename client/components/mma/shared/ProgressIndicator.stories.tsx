@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { ProgressIndicator } from './ProgressIndicator';
 import { ProgressStepper } from './ProgressStepper';
 
@@ -8,9 +8,9 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof ProgressStepper>;
+} as Meta<typeof ProgressStepper>;
 
-export const Default: ComponentStory<typeof ProgressStepper> = () => {
+export const Default: StoryFn<typeof ProgressStepper> = () => {
 	return (
 		<>
 			<ProgressStepper
@@ -41,7 +41,7 @@ export const Default: ComponentStory<typeof ProgressStepper> = () => {
 	);
 };
 
-export const OldVersion: ComponentStory<typeof ProgressIndicator> = () => {
+export const OldVersion: StoryFn<typeof ProgressIndicator> = () => {
 	return (
 		<ProgressIndicator
 			steps={[

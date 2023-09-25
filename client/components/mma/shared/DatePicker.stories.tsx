@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import type { DatePickerProps } from './DatePicker';
 import { DatePicker } from './DatePicker';
 
@@ -16,9 +16,9 @@ export default {
 		issueKeyword: 'Issue',
 		existingDates: [],
 	},
-} as ComponentMeta<typeof DatePicker>;
+} as Meta<typeof DatePicker>;
 
-const Template: ComponentStory<typeof DatePicker> = (args: DatePickerProps) => {
+const Template: StoryFn<typeof DatePicker> = (args: DatePickerProps) => {
 	return <DatePicker {...args} />;
 };
 
