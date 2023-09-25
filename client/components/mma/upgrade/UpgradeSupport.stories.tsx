@@ -19,6 +19,7 @@ export default {
 			state: {
 				amountPayableToday: 5.9,
 				chosenAmount: 9,
+				nextPaymentDate: '20 March',
 			},
 			container: <UpgradeSupportContainer />,
 		},
