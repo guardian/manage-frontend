@@ -33,6 +33,7 @@ export interface UpgradeSupportInterface {
 export interface UpgradeRouterState {
 	chosenAmount: number;
 	amountPayableToday: number;
+	nextPaymentDate: string;
 	journeyCompleted: boolean;
 }
 

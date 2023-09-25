@@ -16,7 +16,6 @@ import {
 import { useContext } from 'react';
 import { useLocation } from 'react-router';
 import { formatAmount } from '@/client/utilities/utils';
-import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import { calculateMonthlyOrAnnualFromBillingPeriod } from '@/shared/productTypes';
 import {
 	buttonCentredCss,
@@ -51,14 +50,12 @@ export const UpgradeSupportSwitchThankYou = () => {
 	const routerState = location.state as UpgradeRouterState;
 	const amountPayableToday = routerState?.amountPayableToday;
 	const chosenAmount = routerState?.chosenAmount;
+	const nextPaymentDate = routerState?.nextPaymentDate;
+
 	const currency = upgradeSupportContext.mainPlan.currency;
 	const previousPrice = upgradeSupportContext.mainPlan.price / 100;
 	const billingPeriod = upgradeSupportContext.mainPlan.billingPeriod;
 	const userEmail = upgradeSupportContext.user?.email ?? '';
-
-	const nextBillingDate = parseDate(
-		upgradeSupportContext.mainPlan.chargedThrough ?? undefined,
-	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
 	const increasedText =
 		chosenAmount > previousPrice ? 'increased' : 'changed';
@@ -155,7 +152,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 								Your first billing date is today and you will be
 								charged {currency}
 								{formatAmount(amountPayableToday)}. From{' '}
-								{nextBillingDate}, your ongoing{' '}
+								{nextPaymentDate}, your ongoing{' '}
 								{calculateMonthlyOrAnnualFromBillingPeriod(
 									billingPeriod,
 								).toLowerCase()}{' '}
