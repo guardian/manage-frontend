@@ -1,7 +1,7 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
-import { featureSwitches } from '../../../../shared/featureSwitches';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import { featureSwitches } from '@/shared/featureSwitches';
 import {
 	InAppPurchase,
 	InAppPurchaseAndroid,
@@ -25,9 +25,9 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof Billing>;
+} as Meta<typeof Billing>;
 
-export const NoSubscription: ComponentStory<typeof Billing> = () => {
+export const NoSubscription: StoryFn<typeof Billing> = () => {
 	return <Billing />;
 };
 
@@ -53,7 +53,7 @@ NoSubscription.parameters = {
 	],
 };
 
-export const WithSubscriptions: ComponentStory<typeof Billing> = () => {
+export const WithSubscriptions: StoryFn<typeof Billing> = () => {
 	featureSwitches['appSubscriptions'] = true;
 
 	return <Billing />;
