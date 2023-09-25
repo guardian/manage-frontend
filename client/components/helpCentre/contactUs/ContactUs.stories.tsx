@@ -1,6 +1,6 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { SectionContent } from '../../shared/SectionContent';
 import { SectionHeader } from '../../shared/SectionHeader';
 import { KnownIssues } from '../KnownIssues';
@@ -13,9 +13,9 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof ContactUs>;
+} as Meta<typeof ContactUs>;
 
-export const Default: ComponentStory<typeof ContactUs> = () => {
+export const Default: StoryFn<typeof ContactUs> = () => {
 	return (
 		<>
 			<SectionHeader title="Need to contact us?" />
@@ -42,7 +42,7 @@ const knownIssue = [
 	},
 ];
 
-export const WithKnownIssue: ComponentStory<typeof ContactUs> = () => {
+export const WithKnownIssue: StoryFn<typeof ContactUs> = () => {
 	return (
 		<>
 			<SectionHeader title="Need to contact us?" />
@@ -62,7 +62,7 @@ WithKnownIssue.parameters = {
 	],
 };
 
-export const TopicSelected: ComponentStory<typeof ContactUs> = () => (
+export const TopicSelected: StoryFn<typeof ContactUs> = () => (
 	<>
 		<SectionHeader title="Need to contact us?" />
 		<KnownIssues issues={[]} />

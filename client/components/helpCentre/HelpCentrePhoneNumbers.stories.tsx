@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import type { HelpCentrePhoneNumbersProps } from './HelpCentrePhoneNumbers';
 import { HelpCentrePhoneNumbers } from './HelpCentrePhoneNumbers';
 
@@ -13,9 +13,9 @@ export default {
 			viewports: [320, 1300],
 		},
 	},
-} as ComponentMeta<typeof HelpCentrePhoneNumbers>;
+} as Meta<typeof HelpCentrePhoneNumbers>;
 
-const Template: ComponentStory<typeof HelpCentrePhoneNumbers> = (
+const Template: StoryFn<typeof HelpCentrePhoneNumbers> = (
 	args: HelpCentrePhoneNumbersProps,
 ) => <HelpCentrePhoneNumbers {...args} />;
 
