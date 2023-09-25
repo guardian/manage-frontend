@@ -1,6 +1,6 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../.storybook/ReactRouterDecorator';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
 import { HelpCentre } from './HelpCentre';
 
@@ -11,9 +11,9 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as ComponentMeta<typeof HelpCentre>;
+} as Meta<typeof HelpCentre>;
 
-export const Default: ComponentStory<typeof HelpCentre> = () => {
+export const Default: StoryFn<typeof HelpCentre> = () => {
 	return (
 		<HelpCenterContentWrapper knownIssues={[]}>
 			<HelpCentre />
@@ -29,7 +29,7 @@ Default.parameters = {
 	],
 };
 
-export const WithKnownIssue: ComponentStory<typeof HelpCentre> = () => {
+export const WithKnownIssue: StoryFn<typeof HelpCentre> = () => {
 	const knownIssue = [
 		{
 			date: '20 Jan 2022 12:00',
