@@ -8,11 +8,17 @@ const UpgradeBenefit = ({ benefit }: { benefit: ProductBenefit }) => {
 	return (
 		<li css={benefit.isUnavailable ? unavailableBenefitsCss : ''}>
 			{benefit.isUnavailable ? (
-				<SvgCrossRound isAnnouncedByScreenReader size="small" />
+				<SvgCrossRound isAnnouncedByScreenReader size="medium" />
 			) : (
-				<SvgTickRound isAnnouncedByScreenReader size="small" />
+				<SvgTickRound isAnnouncedByScreenReader size="medium" />
 			)}
-			<span>{benefit.name}</span>
+			<span
+				css={css`
+					padding-top: ${space[1]}px;
+				`}
+			>
+				{benefit.name}
+			</span>
 		</li>
 	);
 };

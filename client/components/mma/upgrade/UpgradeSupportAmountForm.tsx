@@ -205,6 +205,7 @@ export const UpgradeSupportAmountForm = ({
 								type="number"
 								width={30}
 								value={otherAmountSelected?.toString() || ''}
+								onWheel={(event) => event.currentTarget.blur()}
 								onChange={(event) => {
 									setChosenAmount(
 										event.target.value
@@ -240,9 +241,7 @@ export const UpgradeSupportAmountForm = ({
 									<Button
 										cssOverrides={buttonCentredCss}
 										onClick={() => {
-											setContinuedToConfirmation(
-												true
-											);
+											setContinuedToConfirmation(true);
 											scrollToConfirmChange();
 										}}
 									>
