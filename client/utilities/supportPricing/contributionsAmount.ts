@@ -62,7 +62,7 @@ export const contributionAmountsLookup: ContributionAmountsLookup = {
 		month: {
 			amounts: [10, 20, 40],
 			otherDefaultAmount: 10,
-			minAmount: 10,
+			minAmount: 2,
 			maxAmount: 200,
 		},
 		year: {
@@ -76,7 +76,7 @@ export const contributionAmountsLookup: ContributionAmountsLookup = {
 		month: {
 			amounts: [10, 20, 50],
 			otherDefaultAmount: 10,
-			minAmount: 10,
+			minAmount: 2,
 			maxAmount: 200,
 		},
 		year: {
@@ -90,7 +90,7 @@ export const contributionAmountsLookup: ContributionAmountsLookup = {
 		month: {
 			amounts: [5, 10, 20],
 			otherDefaultAmount: 5,
-			minAmount: 5,
+			minAmount: 2,
 			maxAmount: 166,
 		},
 		year: {
@@ -104,7 +104,7 @@ export const contributionAmountsLookup: ContributionAmountsLookup = {
 		month: {
 			amounts: [5, 10, 20],
 			otherDefaultAmount: 5,
-			minAmount: 5,
+			minAmount: 2,
 			maxAmount: 166,
 		},
 		year: {
