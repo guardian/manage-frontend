@@ -147,7 +147,7 @@ export const UpgradeSupportThankYou = () => {
 										padding-bottom: ${space[1]}px;
 									`}
 								>
-									Your billing date has changed
+									Your billing date
 								</strong>
 								<br />
 								From {nextBillingDate}, your ongoing{' '}
