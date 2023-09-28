@@ -5,6 +5,7 @@ import type { Request, Response } from 'express';
 import ms from 'ms';
 import type { IssuerMetadata } from 'openid-client';
 import { generators, Issuer } from 'openid-client';
+import { conf } from '@/server/config';
 import type { OktaConfig } from '@/server/oktaConfig';
 import { getConfig as getOktaConfig } from '@/server/oktaConfig';
 
@@ -125,7 +126,7 @@ export const ManageMyAccountOpenIdClient = async () => {
 	return new OIDCIssuer.Client({
 		client_id: oktaConfig.clientId,
 		client_secret: oktaConfig.clientSecret,
-		redirect_uris: ['https://manage.thegulocal.com/oauth/callback'],
+		redirect_uris: [`https://manage.${conf.DOMAIN}/oauth/callback`],
 	});
 };
 

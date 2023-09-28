@@ -184,8 +184,7 @@ export const withOAuth = async (
 			sameSite: 'strict',
 		});
 		return performAuthorizationCodeFlow(req, res, {
-			// TODO: Get from config
-			redirectUri: 'https://manage.thegulocal.com/oauth/callback',
+			redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
 			scopes,
 			confirmationPagePath: req.path,
 			returnUrl: req.originalUrl,
@@ -242,7 +241,7 @@ export const withOAuth = async (
 	// We don't have the tokens, so we need to get them.
 	return performAuthorizationCodeFlow(req, res, {
 		// TODO: Get from config
-		redirectUri: 'https://manage.thegulocal.com/oauth/callback',
+		redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
 		scopes,
 		confirmationPagePath: req.path,
 		returnUrl: req.originalUrl,

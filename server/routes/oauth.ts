@@ -4,6 +4,7 @@ import {
 	ManageMyAccountOpenIdClient,
 	OAuthStateCookieName,
 } from '@/server/oauth';
+import { conf } from '../config';
 
 const router = Router();
 
@@ -31,7 +32,7 @@ router.get('/callback', async (req, res) => {
 		// and validate the state token and PKCE code verifier
 		const tokenSet = await OpenIdClient.callback(
 			// the redirectUri is the callback location (this route)
-			'https://manage.thegulocal.com/oauth/callback',
+			`https://manage.${conf.DOMAIN}/oauth/callback`,
 			// the params sent to the callback
 			callbackParams,
 			// checks to make sure that everything is valid
