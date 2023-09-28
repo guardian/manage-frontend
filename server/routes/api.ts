@@ -71,7 +71,8 @@ router.get(
 				const errorMessage = `Unexpected error when augmenting members-data-api response with 'deliveryAddressChangeEffectiveDate' error message was ${error}`;
 				log.error(errorMessage, error);
 				Sentry.captureMessage(errorMessage);
-				response.json(augmentedWithTestUser); // fallback to sending the response augmented with just isTestUser
+				mdapiResponse.products = augmentedWithTestUser;
+				response.json(mdapiResponse); // fallback to sending the response augmented with just isTestUser
 			});
 	})(
 		'user-attributes/me/mma/:subscriptionName',
