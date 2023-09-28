@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import ms from 'ms';
 import { createClient } from 'redis';
+import {
+	ManageMyAccountOpenIdClient,
+	OAuthStateCookieName,
+} from '@/server/oauth';
 
 const redisClient = await createClient()
 	.on('error', (err) => console.log('Redis Client Error', err))
@@ -11,14 +15,14 @@ const router = Router();
 router.get('/callback', async (req, res) => {
 	console.log('OAUTH FLOW: 2. Hit callback route');
 	// Read the state cookie
-	if (!req.signedCookies['GU_oidc_auth_state']) {
+	if (!req.signedCookies[OAuthStateCookieName]) {
 		res.status(400).send('No state cookie found');
 		// TODO: Handle this properly
 		return;
 	}
 	const state = JSON.parse(
 		Buffer.from(
-			req.signedCookies['GU_oidc_auth_state'],
+			req.signedCookies[OAuthStateCookieName],
 			'base64',
 		).toString(),
 	);
@@ -66,7 +70,11 @@ router.get('/callback', async (req, res) => {
 		});
 
 		// Delete state cookie, for it is no longer needed
-		res.clearCookie('GU_oidc_auth_state');
+		res.clearCookie(OAuthStateCookieName, {
+			httpOnly: true,
+			secure: true,
+			signed: true,
+		});
 
 		// call the IDAPI /auth/oauth-token endpoint
 		// to exchange the access token for identity cookies
