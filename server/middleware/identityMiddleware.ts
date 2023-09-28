@@ -196,9 +196,6 @@ export const withOAuth = async (
 	const accessTokenCookie = req.signedCookies['GU_ACCESS_TOKEN'];
 	const idTokenCookie = req.signedCookies['GU_ID_TOKEN'];
 
-	console.log('  ACCESS TOKEN COOKIE: ', accessTokenCookie);
-	console.log('  ID TOKEN COOKIE: ', idTokenCookie);
-
 	// If we have both, verify them:
 	if (accessTokenCookie && idTokenCookie) {
 		const accessToken = await verifyAccessToken(accessTokenCookie);
