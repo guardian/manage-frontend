@@ -1,14 +1,9 @@
 import { Router } from 'express';
 import ms from 'ms';
-import { createClient } from 'redis';
 import {
 	ManageMyAccountOpenIdClient,
 	OAuthStateCookieName,
 } from '@/server/oauth';
-
-const redisClient = await createClient()
-	.on('error', (err) => console.log('Redis Client Error', err))
-	.connect();
 
 const router = Router();
 
@@ -49,10 +44,6 @@ router.get('/callback', async (req, res) => {
 				code_verifier: state.codeVerifier,
 			},
 		);
-
-		await redisClient.set('ACCESS_TOKEN', tokenSet.access_token || '');
-		await redisClient.set('ID_TOKEN', tokenSet.id_token || '');
-		await redisClient.disconnect();
 
 		// Set the access token and ID tokens as cookies
 		res.cookie('GU_ACCESS_TOKEN', tokenSet.access_token, {

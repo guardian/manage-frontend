@@ -176,7 +176,6 @@
     "react-dom": "18.2.0",
     "react-router": "6.2.2",
     "react-router-dom": "6.2.2",
-    "redis": "4.6.10",
     "regenerator-runtime": "0.13.9",
     "source-map-support": "0.5.21",
     "stylis-pxtorem": "0.0.2",
