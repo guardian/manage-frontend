@@ -146,11 +146,6 @@ export const performAuthorizationCodeFlow = async (
 	res: Response,
 	{
 		sessionToken,
-		// confirmationPagePath,
-		// idp,
-		// closeExistingSession,
-		// doNotSetLastAccessCookie = false,
-		// prompt,
 		scopes = ['openid'],
 		redirectUri,
 		returnUrl,

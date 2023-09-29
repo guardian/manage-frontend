@@ -158,12 +158,21 @@ export const withIdentity: (statusCodeOverride?: number) => RequestHandler =
 			.catch((err) => errorHandler('error fetching IDAPI config', err));
 	};
 
+const handleOAuthMiddlewareError = (err: Error, res: Response) => {
+	console.log('OAuth / Middleware error: ', err);
+	res.redirect('/maintenance');
+};
+
 export const withOAuth = async (
 	req: Request,
 	res: Response,
 	next: NextFunction,
 ) => {
 	console.log("OAUTH FLOW: 1. Hit 'withOAuth' middleware");
+	// Is this a public route? If so, we don't need to do anything.
+	if (!requiresSignin(req.originalUrl)) {
+		return next();
+	}
 	// If we have a GU_SO cookie, we've signed out recently, so we need to delete
 	// the access and ID tokens from the browser and redirect to the sign in page.
 	if (req.cookies['GU_SO']) {
@@ -197,41 +206,50 @@ export const withOAuth = async (
 
 	// If we have both, verify them:
 	if (accessTokenCookie && idTokenCookie) {
-		const accessToken = await verifyAccessToken(accessTokenCookie);
-		const idToken = await verifyIdToken(idTokenCookie);
-		if (
-			// check access token is valid
-			accessToken &&
-			// check that the id token is valid
-			idToken &&
-			// check that the access token is not expired
-			!accessToken.isExpired() &&
-			// check that the scopes are all the ones we expect
-			// TODO: Do we need to do this?
-			accessToken.claims.scp?.every((scope) =>
-				scopes.includes(scope as Scopes),
-			)
-		) {
-			console.log('  OAUTH FLOW: Access token and ID token are valid');
-			res.locals.identity = {
-				// TODO: Do we need to put these in res.locals?
-				accessToken,
-				idToken,
-				// Mirror the response we got previously from the auth/redirect endpoint
-				// in IDAPI. Store the user's ID, name and email on the identity object
-				// of res.locals so that it can be used by the rest of the app.
-				// signInStatus is always 'signedInRecently' because we only get here
-				// if the access and ID tokens are valid, and they're only valid for 30 minutes.
-				signInStatus: 'signedInRecently',
-				userId: idToken.claims.legacy_identity_id,
-				name: idToken.claims.name,
-				email: idToken.claims.email,
-				// TODO: Add discussion username (if we actually need it) - probably for the 'Profile' page?
-			};
+		try {
+			const accessToken = await verifyAccessToken(accessTokenCookie);
+			const idToken = await verifyIdToken(idTokenCookie);
+			if (
+				// check access token is valid
+				accessToken &&
+				// check that the id token is valid
+				idToken &&
+				// check that the access token is not expired
+				!accessToken.isExpired() &&
+				// check that the scopes are all the ones we expect
+				// TODO: Do we need to do this?
+				accessToken.claims.scp?.every((scope) =>
+					scopes.includes(scope as Scopes),
+				)
+			) {
+				console.log(
+					'  OAUTH FLOW: Access token and ID token are valid',
+				);
+				res.locals.identity = {
+					// TODO: Do we need to put these in res.locals?
+					accessToken,
+					idToken,
+					// Mirror the response we got previously from the auth/redirect endpoint
+					// in IDAPI. Store the user's ID, name and email on the identity object
+					// of res.locals so that it can be used by the rest of the app.
+					// signInStatus is always 'signedInRecently' because we only get here
+					// if the access and ID tokens are valid, and they're only valid for 30 minutes.
+					signInStatus: 'signedInRecently',
+					userId: idToken.claims.legacy_identity_id,
+					name: idToken.claims.name,
+					email: idToken.claims.email,
+					// TODO: Add discussion username (if we actually need it) - probably for the 'Profile' page?
+				};
 
-			return next();
-		} else {
-			console.log('  OAUTH FLOW: Access token or ID token are invalid');
+				return next();
+			} else {
+				return handleOAuthMiddlewareError(
+					new Error('Access token or ID token is invalid'),
+					res,
+				);
+			}
+		} catch (err) {
+			return handleOAuthMiddlewareError(err, res);
 		}
 	}
 
@@ -240,7 +258,6 @@ export const withOAuth = async (
 	);
 	// We don't have the tokens, so we need to get them.
 	return performAuthorizationCodeFlow(req, res, {
-		// TODO: Get from config
 		redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
 		scopes,
 		confirmationPagePath: req.path,

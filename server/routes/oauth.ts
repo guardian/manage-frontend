@@ -87,6 +87,11 @@ router.get('/callback', async (req: Request, res: Response) => {
 		console.log('  ACCESS TOKEN', tokenSet.access_token);
 		console.log('  ID TOKEN', tokenSet.id_token);
 
+		// Exchange the access token for IDAPI cookies.  To maintain dual
+		// running of new, OAuth-powered API routes and 'classic' IDAPI
+		// cookie-powered routes, we need to ensure that GU_U, SC_GU_U and
+		// SC_GU_LA cookies are set.  We mint fresh cookies on IDAPI and set
+		// them here.
 		const cookies = await exchangeAccessTokenForCookies(
 			tokenSet.access_token,
 		);
