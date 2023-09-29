@@ -1,42 +1,18 @@
 import crypto from 'crypto';
 import { joinUrl } from '@guardian/libs';
 import OktaJwtVerifier from '@okta/jwt-verifier';
-import type { Request, Response } from 'express';
+import type { CookieOptions, Request, Response } from 'express';
 import ms from 'ms';
 import type { IssuerMetadata } from 'openid-client';
 import { generators, Issuer } from 'openid-client';
 import { conf } from '@/server/config';
 import type { OktaConfig } from '@/server/oktaConfig';
 import { getConfig as getOktaConfig } from '@/server/oktaConfig';
+import { getConfig } from './idapiConfig';
 
 export const OAuthAccessTokenCookieName = 'GU_ACCESS_TOKEN';
 export const OAuthIdTokenCookieName = 'GU_ID_TOKEN';
 export const OAuthStateCookieName = 'GU_oidc_auth_state';
-
-// interface CookieOptions {
-// 	domain: string;
-// 	httpOnly: boolean;
-// 	secure: boolean;
-// 	signed: boolean;
-// 	sameSite: 'lax';
-// }
-
-// export const cookieOptions = (key: string): CookieOptions => ({
-// 	// If setting an OAuth cookie, we only want to set it for the subdomain,
-// 	// otherwise for the root domain.
-// 	domain: `${
-// 		[OAuthAccessTokenCookieName, OAuthIdTokenCookieName].includes(key)
-// 			? 'manage'
-// 			: ''
-// 	}.${getDomain().split(':')[0]}`,
-// 	httpOnly: !['GU_U', 'GU_SO'].includes(key), // unless GU_U/GU_SO cookie, set to true
-// 	secure: !['GU_U', 'GU_SO'].includes(key), // unless GU_U/GU_SO cookie, set to true
-// 	signed: !['GU_U', 'GU_SO'].includes(key), // unless GU_U/GU_SO cookie, set to true
-// 	sameSite: 'lax',
-// });
-
-// console.log('COOKIE OPTIONS (IDAPI): ', cookieOptions('GU_SO'));
-// console.log('COOKIE OPTIONS (OAUTH): ', cookieOptions(OAuthIdTokenCookieName));
 
 const oauthTokenVerifier = (oktaConfig: OktaConfig) =>
 	new OktaJwtVerifier({
@@ -85,7 +61,8 @@ export type Scopes =
 	| 'guardian.identity-api.user.update.self.secure'
 	| 'guardian.identity-api.user.username.create.self.secure'
 	| 'guardian.identity-api.consents.read.self'
-	| 'guardian.identity-api.consents.update.self';
+	| 'guardian.identity-api.consents.update.self'
+	| 'guardian.identity-api.cookies.create.self.secure';
 
 export const scopes: Scopes[] = [
 	'openid',
@@ -100,6 +77,7 @@ export const scopes: Scopes[] = [
 	'guardian.identity-api.user.username.create.self.secure',
 	'guardian.identity-api.consents.read.self',
 	'guardian.identity-api.consents.update.self',
+	'guardian.identity-api.cookies.create.self.secure',
 ];
 
 export const ManageMyAccountOpenIdClient = async () => {
@@ -223,4 +201,80 @@ export const performAuthorizationCodeFlow = async (
 
 	// redirect the user to the authorize URL
 	return res.redirect(303, authorizeUrl);
+};
+
+export interface IdapiCookie {
+	key: string;
+	value: string;
+	sessionCookie?: boolean;
+}
+
+export interface IdapiCookies {
+	values: IdapiCookie[];
+	expiresAt: string;
+}
+
+export const exchangeAccessTokenForCookies = async (token: string) => {
+	let idapiConfig;
+	try {
+		idapiConfig = await getConfig();
+	} catch (e) {
+		throw new Error('Error loading a valid config');
+	}
+	try {
+		const response = await fetch(
+			`https://${idapiConfig.host}/auth/oauth-token?format=cookies&persist=true`,
+			{
+				method: 'POST',
+				body: JSON.stringify({
+					token,
+				}),
+			},
+		);
+		if (!response.ok) {
+			throw new Error(
+				`Error fetching cookies from IDAPI: status ${response.status}.`,
+			);
+		}
+		const json = await response.json();
+		return json.cookies;
+	} catch (error) {
+		throw new Error(error);
+	}
+};
+
+const idapiCookieOptions = (key: string): CookieOptions => ({
+	domain: `.${conf.DOMAIN}`,
+	httpOnly: !['GU_U', 'GU_SO'].includes(key), // unless GU_U/GU_SO cookie, set to true
+	secure: true,
+	sameSite: 'lax',
+	path: '/',
+});
+
+export const setIDAPICookies = (res: Response, cookies: IdapiCookies) => {
+	const { values, expiresAt } = cookies;
+	values.forEach(({ key, value, sessionCookie = false }) => {
+		const expires: Date | undefined = (() => {
+			if (key === 'SC_GU_LA') {
+				// have SC_GU_LA cookie expire in 30 mins, despite the fact that it is a session cookie
+				// this is to support the Native App logging in with an in-app browser, so the cookie
+				// isn't immediately deleted when the in app browser is closed
+				return new Date(Date.now() + 30 * 60 * 1000);
+			}
+			if (sessionCookie) {
+				return undefined;
+			}
+			return new Date(expiresAt);
+		})();
+
+		console.log(
+			"Cookie options for '" + key + "': ",
+			idapiCookieOptions(key),
+		);
+
+		res.cookie(key, value, {
+			expires,
+			...idapiCookieOptions(key),
+		});
+	});
 };

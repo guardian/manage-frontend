@@ -1,20 +1,29 @@
+import type { Request, Response } from 'express';
 import { Router } from 'express';
 import ms from 'ms';
 import {
+	exchangeAccessTokenForCookies,
 	ManageMyAccountOpenIdClient,
 	OAuthStateCookieName,
+	setIDAPICookies,
 } from '@/server/oauth';
 import { conf } from '../config';
 
 const router = Router();
 
-router.get('/callback', async (req, res) => {
+const handleCallbackRouteError = (err: Error, res: Response) => {
+	console.log('OAuth / Callback endpoint error: ', err);
+	res.redirect('/maintenance');
+};
+
+router.get('/callback', async (req: Request, res: Response) => {
 	console.log('OAUTH FLOW: 2. Hit callback route');
 	// Read the state cookie
 	if (!req.signedCookies[OAuthStateCookieName]) {
-		res.status(400).send('No state cookie found');
-		// TODO: Handle this properly
-		return;
+		return handleCallbackRouteError(
+			new Error('No state cookie found.'),
+			res,
+		);
 	}
 	const state = JSON.parse(
 		Buffer.from(
@@ -46,6 +55,13 @@ router.get('/callback', async (req, res) => {
 			},
 		);
 
+		if (!tokenSet.access_token) {
+			throw new Error('No access token returned');
+		}
+		if (!tokenSet.id_token) {
+			throw new Error('No ID token returned');
+		}
+
 		// Set the access token and ID tokens as cookies
 		res.cookie('GU_ACCESS_TOKEN', tokenSet.access_token, {
 			signed: true,
@@ -68,38 +84,22 @@ router.get('/callback', async (req, res) => {
 			signed: true,
 		});
 
-		// call the IDAPI /auth/oauth-token endpoint
-		// to exchange the access token for identity cookies
-		// the idapi introspects the access token and if valid
-		// will generate and sign cookies for the user the
-		// token belonged to
-		// const cookies = await exchangeAccessTokenForCookies(
-		// 	tokenSet.access_token,
-		// 	req.ip,
-		// 	res.locals.requestId,
-		// );
+		console.log('  ACCESS TOKEN', tokenSet.access_token);
+		console.log('  ID TOKEN', tokenSet.id_token);
 
-		// if (cookies) {
-		// 	// adds set cookie headers
-		// 	setIDAPICookies(res, cookies, authState.doNotSetLastAccessCookie);
-		// } else {
-		// 	logger.error('No cookies returned from IDAPI', undefined, {
-		// 		request_id: res.locals.requestId,
-		// 	});
-		// }
-
-		console.log('  RETURN URL', state.returnUrl);
+		const cookies = await exchangeAccessTokenForCookies(
+			tokenSet.access_token,
+		);
+		if (cookies) {
+			setIDAPICookies(res, cookies);
+		} else {
+			throw new Error('No cookies returned from IDAPI.');
+		}
 
 		// Redirect to the original return URL
 		res.redirect(state.returnUrl);
-
-		// res.json({
-		// 	...tokenSet,
-		// 	state,
-		// });
 	} catch (err) {
-		console.log(err);
-		res.json(err);
+		return handleCallbackRouteError(err, res);
 	}
 });
 
