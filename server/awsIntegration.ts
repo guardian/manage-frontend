@@ -56,7 +56,7 @@ export const s3ConfigPromise =
 	(configPathPart: string) =>
 		s3FilePromise<ConfigInterface>(
 			'gu-reader-revenue-private',
-			`manage-frontend/${conf.STAGE}/${configPathPart}-${conf.STAGE}.json`,
+			`manage-frontend/${conf.API_STAGE}/${configPathPart}-${conf.API_STAGE}.json`,
 			...fieldNamesToValidate,
 		);
 

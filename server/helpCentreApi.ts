@@ -7,7 +7,7 @@ import { log } from './log';
 export const getArticleHandler = async (req: Request, res: Response) => {
 	const { article } = req.params;
 	const bucketName = 'manage-help-content';
-	const filePath = `${conf.STAGE}/articles/${article}.json`;
+	const filePath = `${conf.API_STAGE}/articles/${article}.json`;
 	s3FilePromise(bucketName, filePath)
 		.then((data) => {
 			if (!data) {
@@ -29,7 +29,7 @@ export const getArticleHandler = async (req: Request, res: Response) => {
 export const getTopicHandler = async (req: Request, res: Response) => {
 	const { topic } = req.params;
 	const bucketName = 'manage-help-content';
-	const filePath = `${conf.STAGE}/topics/${topic}.json`;
+	const filePath = `${conf.API_STAGE}/topics/${topic}.json`;
 	s3FilePromise(bucketName, filePath)
 		.then((data) => {
 			if (!data) {

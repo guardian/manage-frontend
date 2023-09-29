@@ -62,7 +62,7 @@ router.get('/robots.txt', (_, res: Response) => {
 
 router.get('/sitemap.txt', async (_, res: Response) => {
 	const bucketName = 'manage-help-content';
-	const filePath = `${conf.STAGE}/sitemap.txt`;
+	const filePath = `${conf.API_STAGE}/sitemap.txt`;
 	s3TextFilePromise(bucketName, filePath)
 		.then((data) => {
 			if (!data) {

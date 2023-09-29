@@ -1,5 +1,6 @@
 interface Config {
 	readonly STAGE: string;
+	readonly API_STAGE: 'PROD' | 'CODE';
 	readonly DOMAIN: string;
 	readonly API_DOMAIN: string;
 	readonly ENVIRONMENT: Environments;
@@ -37,6 +38,7 @@ const getDomain = () => {
 
 export const conf: Config = {
 	STAGE: stage || 'DEV',
+	API_STAGE: stage?.toUpperCase() === 'PROD' ? 'PROD' : 'CODE',
 	DOMAIN: getDomain(),
 	API_DOMAIN:
 		stage === 'PROD' ? 'guardianapis.com' : 'code.dev-guardianapis.com',

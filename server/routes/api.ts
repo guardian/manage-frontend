@@ -282,7 +282,7 @@ router.get(
 
 router.get('/known-issues', async (_, response) => {
 	const bucketName = 'manage-help-content';
-	const filePath = `${conf.STAGE}/known-issues/knownIssuesConfig.json`;
+	const filePath = `${conf.API_STAGE}/known-issues/knownIssuesConfig.json`;
 	const data = await s3FilePromise(bucketName, filePath);
 	response.json(data || []);
 });

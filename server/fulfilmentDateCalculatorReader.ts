@@ -17,10 +17,10 @@ const getDeliveryAddressChangeEffectiveDateForToday = async (
 ) => {
 	const datesByDayOfWeek =
 		await s3FilePromise<RawFulfilmentDateCalculatorDates>(
-			`fulfilment-date-calculator-${conf.STAGE.toLowerCase()}`,
+			`fulfilment-date-calculator-${conf.API_STAGE.toLowerCase()}`,
 			`${filenameProductPart}/${new Date()
 				.toISOString()
-				.substr(0, 10)}_${filenameProductPart}.json`,
+				.substring(0, 10)}_${filenameProductPart}.json`,
 			...daysOfWeek,
 		);
 	return (
