@@ -63,7 +63,7 @@ export const Header = ({ signInStatus, isHelpCentrePage }: HeaderProps) => {
 				)}
 				{signInStatus === 'signedOut' && (
 					<a
-						href={`/oauth/signin?returnUrl=${window.location.href}`}
+						href={`/oauth/signin?returnUrl=${window.location.pathname}`}
 						css={aCss}
 					>
 						Sign in
