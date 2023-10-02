@@ -173,8 +173,6 @@ export const performAuthorizationCodeFlow = async (
 
 	// generate the /authorize endpoint url which we'll redirect the user to
 	const authorizeUrl = OpenIdClient.authorizationUrl({
-		// Should this always be 'login'?
-		prompt: 'login',
 		// The sessionToken from authentication to exchange for session cookie
 		sessionToken,
 		// we send the generated stateParam as the state parameter
@@ -182,14 +180,14 @@ export const performAuthorizationCodeFlow = async (
 		// any scopes, by default the 'openid' scope is required
 		scope: scopes.join(' '),
 		// the redirect_uri is the callback location we'll redirect to after authentication
-		redirect_uri: redirectUri, // /ouauth/authorization-code/callback
+		redirect_uri: redirectUri, // /oauth/callback
 		// PKCE
 		code_challenge: codeChallenge,
 		code_challenge_method: codeChallengeMethod,
 		response_type: 'code',
 		// A max age of 30 minutes means that the user will be prompted to re-authenticate
 		// after 30 minutes of inactivity
-		max_age: ms('30m'),
+		max_age: ms('30m') / 1000,
 	});
 
 	console.log('  AUTHORIZE URL:', authorizeUrl);
