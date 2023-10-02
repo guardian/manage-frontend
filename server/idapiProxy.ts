@@ -30,7 +30,7 @@ interface CookiesWithToken {
 	[key: string]: string;
 }
 
-export const getBaseDomain = (): string => {
+const getBaseDomain = (): string => {
 	const { STAGE } = mmaConfig;
 	switch (STAGE) {
 		case 'PROD':
