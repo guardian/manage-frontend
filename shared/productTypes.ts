@@ -767,7 +767,7 @@ export const GROUPED_PRODUCT_TYPES: {
 			} else if (productDetail.tier === 'Newspaper Delivery') {
 				return PRODUCT_TYPES.homedelivery;
 			} else if (productDetail.tier === 'Newspaper - National Delivery') {
-				return PRODUCT_TYPES.nationaldelivery;
+				return PRODUCT_TYPES.homedelivery;
 			} else if (productDetail.tier === 'Newspaper Voucher') {
 				return PRODUCT_TYPES.voucher;
 			} else if (
