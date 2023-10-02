@@ -38,7 +38,7 @@ export const SingleContributionCard = ({
 					>
 						<dl css={keyValueCss}>
 							{singleContributions.map((contribution) => (
-								<>
+								<span key={contribution.created}>
 									<div
 										css={css`
 											padding-top: ${space[3]}px;
@@ -66,7 +66,7 @@ export const SingleContributionCard = ({
 											)}
 										</dd>
 									</div>
-								</>
+								</span>
 							))}
 						</dl>
 						<div css={wideButtonLayoutCss}>
