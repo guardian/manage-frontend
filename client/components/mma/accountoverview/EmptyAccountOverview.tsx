@@ -74,6 +74,7 @@ export const EmptyAccountOverview = () => {
 						display: inline-block;
 						overflow-wrap: anywhere;
 					`}
+					data-qm-masking="blocklist"
 				>
 					{userEmailAddress}
 				</dd>
