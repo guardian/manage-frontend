@@ -9,8 +9,8 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import { useState } from 'react';
-import { parseDate } from '../../../../shared/dates';
-import type { InvoiceDataApiItem } from '../../../../shared/productResponse';
+import { parseDate } from '@/shared/dates';
+import type { InvoiceDataApiItem } from '@/shared/productResponse';
 import { trackEvent } from '../../../utilities/analytics';
 import { DownloadIcon } from '../shared/assets/DownloadIcon';
 import { CardDisplay } from '../shared/CardDisplay';
@@ -281,7 +281,10 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 										{parseDate(tableRow.date).dateStr()}
 									</div>
 									<div css={tdCss2(index, tableHeadings[1])}>
-										<div css={paymentDetailsHolderCss}>
+										<div
+											css={paymentDetailsHolderCss}
+											data-qm-masking="blocklist"
+										>
 											{tableRow.cardType &&
 												tableRow.last4 && (
 													<CardDisplay
