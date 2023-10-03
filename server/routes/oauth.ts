@@ -69,7 +69,6 @@ router.get('/callback', async (req: Request, res: Response) => {
 			httpOnly: true,
 			maxAge: ms('30m'), // Same expiry as set in Okta
 		});
-		// TODO: Do we need to set the ID token?
 		res.cookie('GU_ID_TOKEN', tokenSet.id_token, {
 			signed: true,
 			secure: true,

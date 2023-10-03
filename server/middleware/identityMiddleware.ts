@@ -219,7 +219,6 @@ const setLocalStateFromIdToken = (
 		userId: idToken.claims.legacy_identity_id,
 		name: idToken.claims.name,
 		email: idToken.claims.email,
-		// TODO: Add discussion username (if we actually need it) - probably for the 'Profile' page?
 	};
 };
 
