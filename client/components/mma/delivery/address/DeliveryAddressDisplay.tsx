@@ -15,6 +15,7 @@ export const DeliveryAddressDisplay = (props: DeliveryAddress) => {
 				}
 				${textSans.medium()}
 			`}
+			data-qm-masking="blocklist"
 		>
 			<span>{props.addressLine1}</span>
 			{props.addressLine2 && <span>{props.addressLine2}</span>}
