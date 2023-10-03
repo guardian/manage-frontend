@@ -7,9 +7,9 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import { InlineError } from '@guardian/source-react-components';
-import type { ProductDetail } from '../../../../shared/productResponse';
-import { getMainPlan } from '../../../../shared/productResponse';
-import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import type { ProductDetail } from '@/shared/productResponse';
+import { getMainPlan } from '@/shared/productResponse';
+import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { PaypalLogo } from '../shared/assets/PaypalLogo';
 import { CardDisplay } from '../shared/CardDisplay';
 import {
@@ -143,7 +143,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 						<>
 							<ul css={keyValuePairCss}>
 								<li css={keyCss}>Payment method</li>
-								<li css={valueCss}>
+								<li css={valueCss} data-qm-masking="blocklist">
 									{subscription.card && (
 										<CardDisplay
 											inErrorState={hasPaymentFailure}
@@ -225,6 +225,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 								)}
 							</span>
 							<span
+								data-qm-masking="blocklist"
 								css={css`
 									${valueCss};
 									color: ${hasPaymentFailure
