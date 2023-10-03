@@ -223,6 +223,19 @@ const setLocalStateFromIdToken = (
 	};
 };
 
+const sanitizeReturnPath = (returnPath: string) => {
+	try {
+		const url = new URL(`https://example.com${returnPath}`);
+		if (url.pathname.endsWith('/')) {
+			return url.pathname.slice(0, -1);
+		} else {
+			return url.pathname;
+		}
+	} catch (err) {
+		return '/';
+	}
+};
+
 export const withOAuth = async (
 	req: Request,
 	res: Response,
@@ -246,12 +259,9 @@ export const withOAuth = async (
 			return handleOAuthMiddlewareError(err, res);
 		}
 	}
-	// returnUrl can be passed as a query parameter to the sign in page,
-	// which will forward it here.
-	const returnUrl =
-		req.query.returnUrl && req.originalUrl === '/signin'
-			? (req.query.returnUrl as string)
-			: req.originalUrl;
+
+	// Get the path of the current page and use it as our returnPath after the OAuth callback.
+	const returnPath = sanitizeReturnPath(req.originalUrl);
 
 	// If we have a GU_SO cookie, we've signed out recently, so we need to delete
 	// the access and ID tokens from the browser and redirect to the sign in page.
@@ -275,8 +285,7 @@ export const withOAuth = async (
 		return performAuthorizationCodeFlow(req, res, {
 			redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
 			scopes,
-			confirmationPagePath: req.path,
-			returnUrl,
+			returnPath,
 		});
 	}
 
@@ -298,8 +307,7 @@ export const withOAuth = async (
 		return performAuthorizationCodeFlow(req, res, {
 			redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
 			scopes,
-			confirmationPagePath: req.path,
-			returnUrl,
+			returnPath,
 		});
 	} catch (err) {
 		return handleOAuthMiddlewareError(err, res);

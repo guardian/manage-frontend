@@ -8,7 +8,6 @@ import {
 	setIDAPICookies,
 } from '@/server/oauth';
 import { conf } from '../config';
-import { withOAuth } from '../middleware/identityMiddleware';
 
 const router = Router();
 
@@ -16,16 +15,6 @@ const handleCallbackRouteError = (err: Error, res: Response) => {
 	console.log('OAuth / Callback endpoint error: ', err);
 	res.redirect('/maintenance');
 };
-
-router.get('/signin', withOAuth, (req: Request, res: Response) => {
-	// This route essentially does nothing, but triggers the OAuth signin flow.
-	// It is used by 'Sign In' buttons on the frontend, which pass a 'returnUrl'
-	// query parameter to this route which is then handled by the middleware.
-
-	// If we've fallen through to here, we're signed in - redirect.
-	const returnUrl = (req.query.returnUrl as string) || '/';
-	res.redirect(returnUrl);
-});
 
 router.get('/callback', async (req: Request, res: Response) => {
 	console.log('OAUTH FLOW: 2. Hit callback route');
@@ -112,8 +101,8 @@ router.get('/callback', async (req: Request, res: Response) => {
 			throw new Error('No cookies returned from IDAPI.');
 		}
 
-		// Redirect to the original return URL
-		res.redirect(state.returnUrl);
+		// Redirect to the original return path, if set, or the homepage
+		res.redirect(state.returnPath || '/');
 	} catch (err) {
 		return handleCallbackRouteError(err, res);
 	}

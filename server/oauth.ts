@@ -109,25 +109,16 @@ export const ManageMyAccountOpenIdClient = async () => {
 };
 
 /**
- * @param closeExistingSession (optional) - if true, we'll close any existing okta session before calling the authorization code flow
- * @param confirmationPagePath (optional) - page to redirect the user to after authentication
- * @param doNotSetLastAccessCookie (optional) - if true, does not update the SC_GU_LA cookie during update of Idapi cookies.  Default false.
- * @param idp (optional) - okta id of the social identity provider to use
- * @param prompt (optional) - if provided, we'll use this to set the prompt parameter, see https://developer.okta.com/docs/reference/api/oidc/#parameter-details for prompt parameter details, N.B `undefined` has a different meaning to `none`
  * @param redirectUri - the redirect uri to use for the /authorize endpoint
  * @param scopes (optional) - any scopes to use for the /authorize endpoint, defaults to ['openid']
  * @param sessionToken (optional) - if provided, we'll use this to set the session cookie
+ * @param returnPath (optional) - if provided, we'll use this as the return path after the /authorize callback
  */
 interface PerformAuthorizationCodeFlowOptions {
-	closeExistingSession?: boolean;
-	confirmationPagePath?: string;
-	doNotSetLastAccessCookie?: boolean;
-	idp?: string;
-	prompt?: 'login' | 'none';
 	redirectUri: string;
 	scopes: Scopes[];
 	sessionToken?: string | null;
-	returnUrl?: string;
+	returnPath?: string;
 }
 
 /**
@@ -148,18 +139,18 @@ export const performAuthorizationCodeFlow = async (
 		sessionToken,
 		scopes = ['openid'],
 		redirectUri,
-		returnUrl,
+		returnPath,
 	}: PerformAuthorizationCodeFlowOptions,
 ) => {
 	const OpenIdClient = await ManageMyAccountOpenIdClient();
 
-	// Encode the redirectUri, a state token, and the PKCE code verifier into a state cookie
+	// Encode the returnPath, a state token, and the PKCE code verifier into a state cookie
 	const stateToken = crypto.randomBytes(16).toString('base64');
 	const codeVerifier = generators.codeVerifier();
 	const codeChallenge = generators.codeChallenge(codeVerifier);
 	const codeChallengeMethod = 'S256';
 	const state = {
-		returnUrl,
+		returnPath,
 		stateToken,
 		codeVerifier,
 	};
