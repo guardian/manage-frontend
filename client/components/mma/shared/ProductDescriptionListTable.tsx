@@ -200,7 +200,10 @@ export const ProductDescriptionListTable = (
 						<dt css={tableEntryTitleCss(!!tableEntry.spanTwoCols)}>
 							{tableEntry.title}
 						</dt>
-						<dd css={tableValueCss(!!tableEntry.spanTwoCols)}>
+						<dd
+							css={tableValueCss(!!tableEntry.spanTwoCols)}
+							data-qm-masking="blocklist"
+						>
 							{tableEntry.value}
 						</dd>
 					</dl>
