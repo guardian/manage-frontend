@@ -50,6 +50,7 @@ export const Input = (props: InputProps) => {
 				font-weight: bold;
 				${props.additionalCss}
 			`}
+			data-qm-masking="blocklist"
 		>
 			{props.label}
 			{props.optional && (

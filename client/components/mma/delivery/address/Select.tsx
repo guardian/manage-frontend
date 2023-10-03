@@ -35,6 +35,7 @@ export const Select = (props: SelectProps) => (
 			${textSans.medium()} ${props.additionalCSS};
 			font-weight: bold;
 		`}
+		data-qm-masking="blocklist"
 	>
 		{props.label}
 		{props.inErrorState && (
