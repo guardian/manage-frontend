@@ -12,6 +12,8 @@ import {
 import { requiresSignin } from '../../shared/requiresSignin';
 import { conf } from '../config';
 
+declare const CYPRESS: string;
+
 const handleOAuthMiddlewareError = (err: Error, res: Response) => {
 	console.log('OAuth / Middleware error: ', err);
 	res.redirect('/maintenance');
