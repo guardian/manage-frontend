@@ -1,6 +1,6 @@
 import { palette } from '@guardian/source-foundations';
 import type { FC } from 'react';
-import { sans } from '../../../../styles/fonts';
+import { sans } from '@/client/styles/fonts';
 import { Button } from '../../shared/Buttons';
 import { IdentityLocations } from '../IdentityLocations';
 import { PageSection } from '../PageSection';
@@ -50,7 +50,7 @@ export const EmailSettingsSection: FC<EmailSettingsSectionProps> = (props) => {
 		<PageSection title={'Email settings'}>
 			<p css={{ ...text, marginBottom: '8px' }}>
 				You are receiving newsletters, notifications and all other
-				emails to <strong>{email}</strong>
+				emails to <strong data-qm-masking="blocklist">{email}</strong>
 			</p>
 			<p css={{ ...text, marginBottom: '2px' }}>
 				<a css={linkCss} href={IdentityLocations.CHANGE_EMAIL}>
