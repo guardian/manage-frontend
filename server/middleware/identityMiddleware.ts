@@ -12,6 +12,8 @@ import {
 import { requiresSignin } from '../../shared/requiresSignin';
 import { conf } from '../config';
 
+declare const CYPRESS: string;
+
 const handleOAuthMiddlewareError = (err: Error, res: Response) => {
 	console.log('OAuth / Middleware error: ', err);
 	res.redirect('/maintenance');
@@ -93,6 +95,10 @@ export const withOAuth = async (
 	res: Response,
 	next: NextFunction,
 ) => {
+	if (CYPRESS === 'SKIP_IDAPI') {
+		return next();
+	}
+
 	console.log("OAUTH FLOW: 1. Hit 'withOAuth' middleware");
 
 	// Is this a public route?
