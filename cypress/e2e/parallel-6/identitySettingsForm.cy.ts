@@ -1,10 +1,12 @@
 import { user as userResponse } from '../../../client/fixtures/user';
+import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Settings Form', () => {
 	beforeEach(() => {
-		cy.session('auth', () => {
-			cy.setCookie('gu-cmp-disabled', 'true');
-		});
+		signInAndAcceptCookies();
+		// cy.session('auth', () => {
+		// 	cy.setCookie('gu-cmp-disabled', 'true');
+		// });
 
 		cy.intercept('GET', '/idapi/user', {
 			body: userResponse,
