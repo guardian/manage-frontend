@@ -11,16 +11,13 @@ import {
 import { LinkButton } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import {
-	DATE_FNS_SHORT_OUTPUT_FORMAT,
-	dateString,
-} from '../../../../../shared/dates';
+import { DATE_FNS_SHORT_OUTPUT_FORMAT, dateString } from '@/shared/dates';
 import type {
 	DeliveryRecordApiItem,
 	PaidSubscriptionPlan,
 	Subscription,
-} from '../../../../../shared/productResponse';
-import { getMainPlan } from '../../../../../shared/productResponse';
+} from '@/shared/productResponse';
+import { getMainPlan } from '@/shared/productResponse';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { InfoIconDark } from '../../shared/assets/InfoIconDark';
 import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
@@ -242,7 +239,9 @@ const DeliveryRecordsProblemConfirmationFC = (
 					</div>
 					<div>
 						<dt css={dtCss}>Subscription ID:</dt>
-						<dd css={ddCss}>{props.subscriptionId}</dd>
+						<dd css={ddCss} data-qm-masking="blocklist">
+							{props.subscriptionId}
+						</dd>
 					</div>
 					<div>
 						<dt css={dtCss}>Product:</dt>
