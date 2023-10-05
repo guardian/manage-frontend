@@ -7,7 +7,7 @@ import {
 } from '@stripe/react-stripe-js';
 import type { StripeElementBase } from '@stripe/stripe-js';
 import type { Dispatch, SetStateAction } from 'react';
-import { sans } from '@/client/styles/fonts';
+import { sans } from '../../../../styles/fonts';
 import { FieldWrapper } from '../FieldWrapper';
 import { getLogos, PaymentMethod } from '../PaymentDetailUpdate';
 

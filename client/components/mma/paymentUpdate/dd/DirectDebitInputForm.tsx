@@ -8,8 +8,8 @@ import {
 import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useState } from 'react';
 import type * as React from 'react';
-import { sans } from '@/client/styles/fonts';
-import { processResponse } from '@/client/utilities/utils';
+import { sans } from '../../../../styles/fonts';
+import { processResponse } from '../../../../utilities/utils';
 import { cleanSortCode } from '../../shared/DirectDebitDisplay';
 import { FieldWrapper } from '../FieldWrapper';
 import type { NewPaymentMethodDetail } from '../NewPaymentMethodDetail';
