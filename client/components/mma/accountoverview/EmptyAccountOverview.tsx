@@ -1,8 +1,7 @@
 import { css } from '@emotion/react';
 import {
-	brand,
 	headline,
-	neutral,
+	palette,
 	space,
 	textSans,
 	until,
@@ -26,7 +25,7 @@ export const EmptyAccountOverview = () => {
 			<h2
 				css={css`
 					margin-top: 50px;
-					border-top: 1px solid ${neutral['86']};
+					border-top: 1px solid ${palette.neutral['86']};
 					${headline.small()};
 					font-weight: bold;
 					${until.tablet} {
@@ -50,8 +49,8 @@ export const EmptyAccountOverview = () => {
 			<dl
 				css={css`
 					${textSans.medium()}
-					background-color: ${neutral[97]};
-					border: 1px solid ${neutral[86]};
+					background-color: ${palette.neutral[97]};
+					border: 1px solid ${palette.neutral[86]};
 					margin: 30px 0 0 0;
 					padding: ${space[5]}px;
 				`}
@@ -105,7 +104,7 @@ export const EmptyAccountOverview = () => {
 						left: 0;
 					`}
 				>
-					<InfoIconDark fillColor={brand[500]} />
+					<InfoIconDark fillColor={palette.brand[500]} />
 				</i>
 				<p
 					css={css`
@@ -121,7 +120,7 @@ export const EmptyAccountOverview = () => {
 					<span
 						css={css`
 							cursor: pointer;
-							color: ${brand[500]};
+							color: ${palette.brand[500]};
 							text-decoration: underline;
 						`}
 						onClick={() =>

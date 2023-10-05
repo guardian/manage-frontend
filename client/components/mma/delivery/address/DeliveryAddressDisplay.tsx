@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { textSans } from '@guardian/source-foundations';
-import type { DeliveryAddress } from '../../../../../shared/productResponse';
+import type { DeliveryAddress } from '@/shared/productResponse';
 import { COUNTRIES } from '../../identity/models';
 
 export const DeliveryAddressDisplay = (props: DeliveryAddress) => {

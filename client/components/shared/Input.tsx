@@ -1,11 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import {
-	error,
-	focusHalo,
-	neutral,
-	textSans,
-} from '@guardian/source-foundations';
+import { focusHalo, palette, textSans } from '@guardian/source-foundations';
 import { useEffect, useRef } from 'react';
 import type * as React from 'react';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
@@ -45,7 +40,7 @@ export const Input = (props: InputProps) => {
 		<label
 			css={css`
 				display: block;
-				color: ${neutral['7']};
+				color: ${palette.neutral['7']};
 				${textSans.medium()};
 				font-weight: bold;
 				${props.additionalCss}
@@ -58,7 +53,7 @@ export const Input = (props: InputProps) => {
 					css={css`
 						font-style: italic;
 						font-weight: normal;
-						color: ${neutral['46']};
+						color: ${palette.neutral['46']};
 					`}
 				>
 					{' '}
@@ -70,7 +65,7 @@ export const Input = (props: InputProps) => {
 					css={css`
 						display: block;
 						font-weight: normal;
-						color: ${neutral['46']};
+						color: ${palette.neutral['46']};
 						max-width: ${props.width}ch;
 					`}
 				>
@@ -82,7 +77,7 @@ export const Input = (props: InputProps) => {
 					css={css`
 						display: block;
 						font-weight: normal;
-						color: ${error[400]};
+						color: ${palette.error[400]};
 					`}
 				>
 					<ErrorIcon
@@ -134,12 +129,14 @@ export const Input = (props: InputProps) => {
 						max-width: ${props.width}ch;
 						height: 44px;
 						${textSans.medium()}
-						color: ${neutral['7']};
+						color: ${palette.neutral['7']};
 						margin-top: 4px;
 						padding: 0 8px;
-						background-color: ${neutral['100']};
+						background-color: ${palette.neutral['100']};
 						border: ${props.inErrorState ? 4 : 2}px solid
-							${props.inErrorState ? error[400] : neutral['60']};
+							${props.inErrorState
+								? palette.error[400]
+								: palette.neutral['60']};
 						${props.prefixValue &&
 						`
             margin-left: calc(-${props.prefixValue.length}ch + 4px);

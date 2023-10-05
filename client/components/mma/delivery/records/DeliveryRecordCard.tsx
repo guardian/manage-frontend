@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, neutral, space, textSans } from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { Checkbox, CheckboxGroup } from '@guardian/source-react-components';
 import type { FormEvent } from 'react';
 import { dateIsAfter, parseDate } from '@/shared/dates';
@@ -49,7 +49,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 	return (
 		<dl
 			css={css`
-				border: 1px solid ${neutral['86']};
+				border: 1px solid ${palette.neutral['86']};
 				margin: 0;
 				padding: ${space[3]}px;
 				${props.pageStatus === PageStatus.ReportIssueStep2 &&
@@ -75,7 +75,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 						left: 0;
 						height: 100%;
 						padding: 0 ${space[3]}px;
-						border-right: 1px solid ${neutral['86']};
+						border-right: 1px solid ${palette.neutral['86']};
 						${from.tablet} {
 							padding: 0 18px;
 						}
@@ -251,7 +251,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 							{props.deliveryRecord.credit.invoiceDate && (
 								<p
 									css={css`
-										color: ${neutral['60']};
+										color: ${palette.neutral['60']};
 										margin: 0;
 										${from.tablet} {
 											display: inline-block;

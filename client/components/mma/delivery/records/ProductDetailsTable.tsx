@@ -1,11 +1,5 @@
 import { css } from '@emotion/react';
-import {
-	brand,
-	from,
-	neutral,
-	space,
-	textSans,
-} from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { GiftIcon } from '../../shared/assets/GiftIcon';
 
 interface ProductDetailsTableProps {
@@ -55,7 +49,7 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
 	return (
 		<div
 			css={css`
-				border: 1px solid ${neutral[86]};
+				border: 1px solid ${palette.neutral[86]};
 			`}
 		>
 			<h2
@@ -64,8 +58,8 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
 					font-weight: bold;
 					padding: ${space[3]}px;
 					margin: 0;
-					background-color: ${brand[400]};
-					color: ${neutral[100]};
+					background-color: ${palette.brand[400]};
+					color: ${palette.neutral[100]};
 					position: relative;
 					${from.tablet} {
 						font-size: 20px;
