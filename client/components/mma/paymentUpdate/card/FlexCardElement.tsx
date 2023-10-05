@@ -7,7 +7,7 @@ import {
 } from '@stripe/react-stripe-js';
 import type { StripeElementBase } from '@stripe/stripe-js';
 import type { Dispatch, SetStateAction } from 'react';
-import { sans } from '../../../../styles/fonts';
+import { sans } from '@/client/styles/fonts';
 import { FieldWrapper } from '../FieldWrapper';
 import { getLogos, PaymentMethod } from '../PaymentDetailUpdate';
 
@@ -80,22 +80,26 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
 				`}
 			>
 				<FieldWrapper width="50%" label="Expiry Date">
-					<CardExpiryElement
-						options={{
-							style: baseStyle,
-							placeholder: 'MM/YY',
-						}}
-						onReady={props.setCardExpiryElement}
-					/>
+					<span data-qm-masking="blocklist">
+						<CardExpiryElement
+							options={{
+								style: baseStyle,
+								placeholder: 'MM/YY',
+							}}
+							onReady={props.setCardExpiryElement}
+						/>
+					</span>
 				</FieldWrapper>
 				<FieldWrapper width="50%" label="CVC">
-					<CardCvcElement
-						options={{
-							style: baseStyle,
-							placeholder: '123',
-						}}
-						onReady={props.setCardCVCElement}
-					/>
+					<span data-qm-masking="blocklist">
+						<CardCvcElement
+							options={{
+								style: baseStyle,
+								placeholder: '123',
+							}}
+							onReady={props.setCardCVCElement}
+						/>
+					</span>
 				</FieldWrapper>
 			</div>
 		</div>
