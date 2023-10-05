@@ -59,13 +59,15 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
 				label="Card Number"
 				cornerHint={numberCornerHint()}
 			>
-				<CardNumberElement
-					options={{
-						style: baseStyle,
-						placeholder: '•••• •••• •••• ••••',
-					}}
-					onReady={props.setCardNumberElement}
-				/>
+				<span data-qm-masking="blocklist">
+					<CardNumberElement
+						options={{
+							style: baseStyle,
+							placeholder: '•••• •••• •••• ••••',
+						}}
+						onReady={props.setCardNumberElement}
+					/>
+				</span>
 			</FieldWrapper>
 			<div
 				css={css`

@@ -12,15 +12,12 @@ import { Button, Stack } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { parseDate } from '../../../../../shared/dates';
+import { parseDate } from '@/shared/dates';
 import type {
 	DeliveryRecordApiItem,
 	PaidSubscriptionPlan,
-} from '../../../../../shared/productResponse';
-import {
-	getMainPlan,
-	isPaidSubscriptionPlan,
-} from '../../../../../shared/productResponse';
+} from '@/shared/productResponse';
+import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import type {
 	PotentialHolidayStopsResponse,
@@ -288,6 +285,7 @@ const DeliveryRecordsProblemReviewFC = (
 							css={css`
 								${ddCss}
 							`}
+							data-qm-masking="blocklist"
 						>
 							{subscription.subscriptionId}
 						</dd>
@@ -315,6 +313,7 @@ const DeliveryRecordsProblemReviewFC = (
 							css={css`
 								${ddCss}
 							`}
+							data-qm-masking="blocklist"
 						>
 							{productName}
 						</dd>

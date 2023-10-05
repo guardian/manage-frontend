@@ -2,8 +2,8 @@ import { css } from '@emotion/react';
 import { from, neutral, space, textSans } from '@guardian/source-foundations';
 import { Checkbox, CheckboxGroup } from '@guardian/source-react-components';
 import type { FormEvent } from 'react';
-import { dateIsAfter, parseDate } from '../../../../../shared/dates';
-import type { DeliveryRecordApiItem } from '../../../../../shared/productResponse';
+import { dateIsAfter, parseDate } from '@/shared/dates';
+import type { DeliveryRecordApiItem } from '@/shared/productResponse';
 import { DeliveryRecordInstructions } from './DeliveryRecordInstructions';
 import { PageStatus } from './DeliveryRecords';
 import { RecordAddress } from './DeliveryRecordsAddress';
@@ -157,6 +157,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 					css={css`
 						${ddCss}
 					`}
+					data-qm-masking="blocklist"
 				>
 					{props.deliveryRecord.addressLine1 &&
 					!props.deliveryRecord.hasHolidayStop ? (
