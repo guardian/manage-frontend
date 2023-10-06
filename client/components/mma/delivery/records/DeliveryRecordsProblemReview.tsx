@@ -312,7 +312,6 @@ const DeliveryRecordsProblemReviewFC = (
 							css={css`
 								${ddCss}
 							`}
-							data-qm-masking="blocklist"
 						>
 							{productName}
 						</dd>

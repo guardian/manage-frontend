@@ -84,7 +84,7 @@ export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
 			<dl css={dlCss}>
 				<div>
 					<dt>Product:</dt>
-					<dd data-qm-masking="blocklist">{props.productName}</dd>
+					<dd>{props.productName}</dd>
 				</div>
 				<div>
 					<dt>Subscription ID:</dt>
