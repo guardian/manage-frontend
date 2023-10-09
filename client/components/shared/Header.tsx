@@ -5,6 +5,7 @@ import {
 	palette,
 	space,
 } from '@guardian/source-foundations';
+import { buildUrl } from '@/shared/urlUtils';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { TheGuardianLogo } from '../mma/shared/assets/TheGuardianLogo';
 import { DropdownNav } from './nav/DropdownNav';
@@ -62,7 +63,12 @@ export const Header = ({ signInStatus, isHelpCentrePage }: HeaderProps) => {
 					</div>
 				)}
 				{signInStatus === 'signedOut' && (
-					<a href={'/'} css={aCss}>
+					<a
+						href={buildUrl('/oauth/signin', {
+							returnUrl: window.location.pathname,
+						})}
+						css={aCss}
+					>
 						Sign in
 					</a>
 				)}

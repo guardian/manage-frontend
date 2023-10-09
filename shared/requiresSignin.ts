@@ -1,7 +1,7 @@
 import { normalize } from 'path'; // webpack polyfills this for the browser via node-polyfill-webpack-plugin
 
 // To avoid security vulnerabilities do not add public paths that do not end in a slash
-const publicPaths = [
+export const publicPaths = [
 	'/api/contact-us/',
 	'/api/known-issues/',
 	'/api/reminders/cancel/',
