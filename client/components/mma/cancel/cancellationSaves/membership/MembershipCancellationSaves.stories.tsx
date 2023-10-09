@@ -1,16 +1,16 @@
 import type { Meta, StoryFn } from '@storybook/react';
 import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
-import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
-import { toMembersDataApiResponse } from '../../../../fixtures/mdapiResponse';
-import { membershipSupporterCurrencyUSD } from '../../../../fixtures/productBuilder/testProducts';
-import { CancellationContainer } from '../CancellationContainer';
+import { ReactRouterDecorator } from '../../../../../../.storybook/ReactRouterDecorator';
+import { PRODUCT_TYPES } from '../../../../../../shared/productTypes';
+import { toMembersDataApiResponse } from '../../../../../fixtures/mdapiResponse';
+import { membershipSupporterCurrencyUSD } from '../../../../../fixtures/productBuilder/testProducts';
+import { CancellationContainer } from '../../CancellationContainer';
+import { SelectReason } from '../SelectReason';
 import { ConfirmMembershipCancellation } from './ConfirmMembershipCancellation';
 import { ContinueMembershipConfirmation } from './ContinueMembershipConfirmation';
 import { MembershipCancellationLanding } from './MembershipCancellationLanding';
 import { MembershipSwitch } from './MembershipSwitch';
 import { SaveOptions } from './SaveOptions';
-import { SelectReason } from './SelectReason';
 import { SwitchThankYou } from './SwitchThankYou';
 import { ValueOfSupport } from './ValueOfSupport';
 

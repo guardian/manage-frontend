@@ -3,30 +3,33 @@ import { textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router';
-import { featureSwitches } from '../../../../../shared/featureSwitches';
+import { featureSwitches } from '../../../../../../shared/featureSwitches';
 import type {
 	MembersDataApiResponse,
 	PaidSubscriptionPlan,
 	ProductDetail,
-} from '../../../../../shared/productResponse';
-import { getMainPlan } from '../../../../../shared/productResponse';
-import { buttonLayoutCss } from '../../../../styles/ButtonStyles';
-import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
-import type { CurrencyIso } from '../../../../utilities/currencyIso';
+} from '../../../../../../shared/productResponse';
+import { getMainPlan } from '../../../../../../shared/productResponse';
+import { buttonLayoutCss } from '../../../../../styles/ButtonStyles';
+import {
+	headingCss,
+	sectionSpacing,
+} from '../../../../../styles/GenericStyles';
+import type { CurrencyIso } from '../../../../../utilities/currencyIso';
 import {
 	LoadingState,
 	useAsyncLoader,
-} from '../../../../utilities/hooks/useAsyncLoader';
-import { getNewMembershipPrice } from '../../../../utilities/membershipPriceRise';
-import { allRecurringProductsDetailFetcher } from '../../../../utilities/productUtils';
-import type { PhoneRegionKey } from '../../../shared/CallCenterEmailAndNumbers';
-import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
-import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
-import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
-import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
-import { Heading } from '../../shared/Heading';
-import type { CancellationContextInterface } from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
+} from '../../../../../utilities/hooks/useAsyncLoader';
+import { getNewMembershipPrice } from '../../../../../utilities/membershipPriceRise';
+import { allRecurringProductsDetailFetcher } from '../../../../../utilities/productUtils';
+import type { PhoneRegionKey } from '../../../../shared/CallCenterEmailAndNumbers';
+import { CallCentreEmailAndNumbers } from '../../../../shared/CallCenterEmailAndNumbers';
+import { GenericErrorScreen } from '../../../../shared/GenericErrorScreen';
+import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../../../shared/asyncComponents/DefaultLoadingView';
+import { Heading } from '../../../shared/Heading';
+import type { CancellationContextInterface } from '../../CancellationContainer';
+import { CancellationContext } from '../../CancellationContainer';
 
 function ineligibleForSave(
 	products: ProductDetail[],
