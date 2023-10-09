@@ -27,6 +27,7 @@ function safeJsonParse(jsonStr: JsonString): object | JsonString {
 		return jsonStr;
 	}
 }
+
 export type Headers = Record<string, string>;
 export type AdditionalHeaderGenerator = (
 	method: string,
@@ -35,12 +36,29 @@ export type AdditionalHeaderGenerator = (
 	body: string,
 ) => Promise<Headers>;
 
+export const newApiProxyHandler = (p: {
+	host: string;
+	headers?: Headers;
+	additionalHeaderGenerator?: AdditionalHeaderGenerator;
+	forwardPersonalCredentials: boolean;
+}) =>
+	proxyApiHandler(
+		p.host,
+		p.headers,
+		p.additionalHeaderGenerator,
+		p.forwardPersonalCredentials,
+		false,
+	);
+
 export const proxyApiHandler =
 	(
 		host: string,
 		headers: Headers = {},
 		additionalHeaderGenerator: AdditionalHeaderGenerator = () =>
 			Promise.resolve({}),
+		forwardPersonalCredentials: boolean = true, // whether the downstream api needs the authenticated user credentials
+		//just a flag to preserve endpoints that have not been migrated yet unchanged
+		legacyBehaviour: boolean = true,
 	) =>
 	(bodyHandler: BodyHandler) =>
 	(
@@ -87,14 +105,37 @@ export const proxyApiHandler =
 			outgoingURL,
 		};
 
+		let apiCookies = '';
+		let maybeOktaAuthHeader = {};
+		//TODO remove this debug logging
+		const logWithRef = (msg: string): void => {
+			console.log(`==>> For ${host} :${msg}`);
+		};
+
+		if (forwardPersonalCredentials) {
+			if (legacyBehaviour) {
+				logWithRef(`legacy behaviour, forwarding all cookies`);
+				apiCookies = getCookiesOrEmptyString(req);
+			} else {
+				logWithRef('forwarding okta credentials in header!');
+				maybeOktaAuthHeader = {
+					Authorization: `Bearer ${req.signedCookies['GU_ACCESS_TOKEN']}`,
+				};
+			}
+		} else {
+			logWithRef('forwarding credentials is disabled!');
+		}
+		//logWithRef(`forwarding cookies to api: [${apiCookies}]`);
+
 		fetch(outgoingURL, {
 			method: httpMethod,
 			body: requestBody,
 			headers: {
 				'Content-Type': 'application/json', // TODO: set this from the client req headers (would need to check all client calls actually specify content-type)
-				Cookie: getCookiesOrEmptyString(req),
+				Cookie: apiCookies,
 				[X_GU_ID_FORWARDED_SCOPE]:
 					req.header(X_GU_ID_FORWARDED_SCOPE) || '',
+				...maybeOktaAuthHeader,
 				...headers,
 				...(await additionalHeaderGenerator(
 					httpMethod,
@@ -168,9 +209,10 @@ export const proxyApiHandler =
 			});
 	};
 
-export const customMembersDataApiHandler = proxyApiHandler(
-	'members-data-api.' + conf.DOMAIN,
-);
+export const customMembersDataApiHandler = newApiProxyHandler({
+	host: 'members-data-api.' + conf.DOMAIN,
+	forwardPersonalCredentials: true,
+});
 export const membersDataApiHandler = customMembersDataApiHandler(
 	straightThroughBodyHandler,
 );

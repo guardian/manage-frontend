@@ -62,7 +62,10 @@ export type Scopes =
 	| 'guardian.identity-api.user.username.create.self.secure'
 	| 'guardian.identity-api.consents.read.self'
 	| 'guardian.identity-api.consents.update.self'
-	| 'guardian.identity-api.cookies.create.self.secure';
+	| 'guardian.identity-api.cookies.create.self.secure'
+	| 'guardian.members-data-api.complete.read.self.secure'
+	| 'guardian.members-data-api.read.self'
+	| 'guardian.members-data-api.update.self.secure';
 
 export const scopes: Scopes[] = [
 	'openid',
@@ -78,6 +81,9 @@ export const scopes: Scopes[] = [
 	'guardian.identity-api.consents.read.self',
 	'guardian.identity-api.consents.update.self',
 	'guardian.identity-api.cookies.create.self.secure',
+	'guardian.members-data-api.complete.read.self.secure',
+	'guardian.members-data-api.read.self',
+	'guardian.members-data-api.update.self.secure',
 ];
 
 export const ManageMyAccountOpenIdClient = async () => {
