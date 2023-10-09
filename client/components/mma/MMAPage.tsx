@@ -119,6 +119,14 @@ const ValueOfSupport = lazy(() =>
 	})),
 );
 
+const ValueOfDigiSubSupport = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digisubs/ValueOfDigiSubSupport'
+	).then(({ ValueOfDigiSubSupport }) => ({
+		default: ValueOfDigiSubSupport,
+	})),
+);
+
 const SaveOptions = lazy(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/SaveOptions'
@@ -661,6 +669,11 @@ const MMARouter = () => {
 											/>
 										</>
 									)}
+
+									<Route
+										path="value"
+										element={<ValueOfDigiSubSupport />}
+									/>
 								</Route>
 							),
 						)}

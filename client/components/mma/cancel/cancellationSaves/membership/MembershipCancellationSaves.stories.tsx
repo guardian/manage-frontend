@@ -15,7 +15,7 @@ import { SwitchThankYou } from './SwitchThankYou';
 import { ValueOfSupport } from './ValueOfSupport';
 
 export default {
-	title: 'Pages/CancellationSave',
+	title: 'Pages/MembershipCancellationSave',
 	component: CancellationContainer,
 	decorators: [ReactRouterDecorator],
 	parameters: {
