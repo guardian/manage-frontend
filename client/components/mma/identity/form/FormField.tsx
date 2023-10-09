@@ -73,7 +73,7 @@ export const FormSelectField = <T,>(props: FormSelectProps<T>) => {
 			label={props.label}
 			formikProps={props.formikProps}
 		>
-			<Field component="select" name={name}>
+			<Field component="select" name={name} data-qm-masking="blocklist">
 				<option disabled={firstOptionDisabled} value="">
 					{firstOptionLabel}
 				</option>
@@ -90,7 +90,7 @@ const getInputFieldOfType = (type: string) => {
 			label={props.label}
 			formikProps={props.formikProps}
 		>
-			<Field type={type} />
+			<Field type={type} data-qm-masking="blocklist" />
 		</FormField>
 	);
 };

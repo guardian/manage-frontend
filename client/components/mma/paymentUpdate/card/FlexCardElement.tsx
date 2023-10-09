@@ -59,13 +59,15 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
 				label="Card Number"
 				cornerHint={numberCornerHint()}
 			>
-				<CardNumberElement
-					options={{
-						style: baseStyle,
-						placeholder: '•••• •••• •••• ••••',
-					}}
-					onReady={props.setCardNumberElement}
-				/>
+				<span data-qm-masking="blocklist">
+					<CardNumberElement
+						options={{
+							style: baseStyle,
+							placeholder: '•••• •••• •••• ••••',
+						}}
+						onReady={props.setCardNumberElement}
+					/>
+				</span>
 			</FieldWrapper>
 			<div
 				css={css`
@@ -78,22 +80,26 @@ export const FlexCardElement = (props: FlexCardElementProps) => (
 				`}
 			>
 				<FieldWrapper width="50%" label="Expiry Date">
-					<CardExpiryElement
-						options={{
-							style: baseStyle,
-							placeholder: 'MM/YY',
-						}}
-						onReady={props.setCardExpiryElement}
-					/>
+					<span data-qm-masking="blocklist">
+						<CardExpiryElement
+							options={{
+								style: baseStyle,
+								placeholder: 'MM/YY',
+							}}
+							onReady={props.setCardExpiryElement}
+						/>
+					</span>
 				</FieldWrapper>
 				<FieldWrapper width="50%" label="CVC">
-					<CardCvcElement
-						options={{
-							style: baseStyle,
-							placeholder: '123',
-						}}
-						onReady={props.setCardCVCElement}
-					/>
+					<span data-qm-masking="blocklist">
+						<CardCvcElement
+							options={{
+								style: baseStyle,
+								placeholder: '123',
+							}}
+							onReady={props.setCardCVCElement}
+						/>
+					</span>
 				</FieldWrapper>
 			</div>
 		</div>

@@ -143,7 +143,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 						<>
 							<ul css={keyValuePairCss}>
 								<li css={keyCss}>Payment method</li>
-								<li css={valueCss}>
+								<li css={valueCss} data-qm-masking="blocklist">
 									{subscription.card && (
 										<CardDisplay
 											inErrorState={hasPaymentFailure}
@@ -225,6 +225,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 								)}
 							</span>
 							<span
+								data-qm-masking="blocklist"
 								css={css`
 									${valueCss};
 									color: ${hasPaymentFailure

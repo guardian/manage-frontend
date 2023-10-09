@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import { headline, space } from '@guardian/source-foundations';
 import { min } from 'date-fns';
-import { dateString } from '../../../../shared/dates';
-import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
-import type { MembersDataApiResponse } from '../../../../shared/productResponse';
-import { isProduct } from '../../../../shared/productResponse';
+import { dateString } from '@/shared/dates';
+import type { MPAPIResponse } from '@/shared/mpapiResponse';
+import type { MembersDataApiResponse } from '@/shared/productResponse';
+import { isProduct } from '@/shared/productResponse';
 
 interface PersonalisedHeaderProps {
 	mdapiResponse: MembersDataApiResponse;
@@ -57,6 +57,7 @@ export const PersonalisedHeader = ({
 					${headline.large({ fontWeight: 'bold' })};
 					margin-bottom: 0;
 				`}
+				data-qm-masking="blocklist"
 			>
 				{calculateTimeOfDay()}, {userDetails.firstName ?? 'supporter'}
 			</h2>

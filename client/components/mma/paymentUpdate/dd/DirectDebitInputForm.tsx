@@ -147,6 +147,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 				}
 			>
 				<input
+					data-qm-masking="blocklist"
 					type="text"
 					css={inputBoxBaseStyle}
 					placeholder="First Name Surname"
@@ -174,6 +175,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 					}
 				>
 					<input
+						data-qm-masking="blocklist"
 						type="text"
 						pattern="[0-9]{2}[\-\s]?[0-9]{2}[\-\s]?[0-9]{2}"
 						title="Sort Code must contain 6 numbers (optionally separated by a - or space)"
@@ -191,6 +193,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 					}
 				>
 					<input
+						data-qm-masking="blocklist"
 						type="text"
 						pattern="[0-9]{7,}"
 						css={{ ...bulletsStyling, ...inputBoxBaseStyle }}

@@ -12,18 +12,18 @@ import {
 	cancellationFormatDate,
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
-} from '../../../../shared/dates';
+} from '@/shared/dates';
 import type {
 	MembersDataApiUser,
 	PaidSubscriptionPlan,
 	ProductDetail,
 	Subscription,
-} from '../../../../shared/productResponse';
-import { getMainPlan, isGift } from '../../../../shared/productResponse';
+} from '@/shared/productResponse';
+import { getMainPlan, isGift } from '@/shared/productResponse';
 import {
 	calculateSupporterPlusTitle,
 	GROUPED_PRODUCT_TYPES,
-} from '../../../../shared/productTypes';
+} from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
@@ -54,6 +54,7 @@ const PaymentMethod = ({
 		css={css`
 			${textSans.medium()};
 		`}
+		data-qm-masking="blocklist"
 	>
 		{subscription.card && (
 			<CardDisplay
@@ -220,7 +221,7 @@ export const ProductCard = ({
 											? 'Supporter ID'
 											: 'Subscription ID'}
 									</dt>
-									<dd>
+									<dd data-qm-masking="blocklist">
 										{
 											productDetail.subscription
 												.subscriptionId

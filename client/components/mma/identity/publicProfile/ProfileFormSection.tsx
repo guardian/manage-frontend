@@ -45,7 +45,11 @@ const fieldSetCss = {
 
 const ProfileForm = (props: FormikProps<User> & ProfileFormSectionProps) => (
 	<Form>
-		<fieldset css={fieldSetCss} disabled={props.isSubmitting}>
+		<fieldset
+			css={fieldSetCss}
+			disabled={props.isSubmitting}
+			data-qm-masking="blocklist"
+		>
 			{usernameInput(props)}
 			<Button
 				disabled={props.isSubmitting}

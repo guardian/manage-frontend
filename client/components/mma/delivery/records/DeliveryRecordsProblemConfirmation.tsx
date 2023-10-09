@@ -1,9 +1,8 @@
 import { css } from '@emotion/react';
 import {
-	brand,
 	from,
 	headline,
-	neutral,
+	palette,
 	space,
 	textSans,
 	until,
@@ -11,16 +10,13 @@ import {
 import { LinkButton } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import {
-	DATE_FNS_SHORT_OUTPUT_FORMAT,
-	dateString,
-} from '../../../../../shared/dates';
+import { DATE_FNS_SHORT_OUTPUT_FORMAT, dateString } from '@/shared/dates';
 import type {
 	DeliveryRecordApiItem,
 	PaidSubscriptionPlan,
 	Subscription,
-} from '../../../../../shared/productResponse';
-import { getMainPlan } from '../../../../../shared/productResponse';
+} from '@/shared/productResponse';
+import { getMainPlan } from '@/shared/productResponse';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { InfoIconDark } from '../../shared/assets/InfoIconDark';
 import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
@@ -126,7 +122,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 			/>
 			<h2
 				css={css`
-					border-top: 1px solid ${neutral['86']};
+					border-top: 1px solid ${palette.neutral['86']};
 					${headline.small()};
 					font-weight: bold;
 					${until.tablet} {
@@ -151,7 +147,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 					margin: ${space[3]}px 0;
 					padding: ${space[3]}px ${space[3]}px ${space[3]}px
 						${space[3] * 2 + 17}px;
-					background-color: ${neutral[97]};
+					background-color: ${palette.neutral[97]};
 					${textSans.small()};
 					${from.tablet} {
 						margin: ${space[5]}px 0;
@@ -165,7 +161,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 						left: ${space[3]}px;
 					`}
 				>
-					<InfoIconDark fillColor={brand[500]} />
+					<InfoIconDark fillColor={palette.brand[500]} />
 				</i>
 				{deliveryProblemCredit?.showCredit
 					? `Thank you for reporting your delivery problem${
@@ -185,7 +181,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 			</span>
 			<section
 				css={css`
-					border: 1px solid ${neutral['86']};
+					border: 1px solid ${palette.neutral['86']};
 					margin-bottom: ${deliveryAddressContext.address &&
 					deliveryAddressContext.productsAffected &&
 					deliveryAddressContext.productsAffected?.length > 0
@@ -197,8 +193,8 @@ const DeliveryRecordsProblemConfirmationFC = (
 					css={css`
 						margin: 0;
 						padding: 14px ${space[3]}px;
-						background-color: ${neutral['97']};
-						border-bottom: 1px solid ${neutral['86']};
+						background-color: ${palette.neutral['97']};
+						border-bottom: 1px solid ${palette.neutral['86']};
 						${textSans.medium({ fontWeight: 'bold' })};
 						${from.tablet} {
 							padding: 14px ${space[5]}px;
@@ -242,7 +238,9 @@ const DeliveryRecordsProblemConfirmationFC = (
 					</div>
 					<div>
 						<dt css={dtCss}>Subscription ID:</dt>
-						<dd css={ddCss}>{props.subscriptionId}</dd>
+						<dd css={ddCss} data-qm-masking="blocklist">
+							{props.subscriptionId}
+						</dd>
 					</div>
 					<div>
 						<dt css={dtCss}>Product:</dt>
@@ -323,7 +321,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 							${textSans.medium()};
 							padding: ${space[5]}px;
 							margin: ${space[5]}px;
-							background-color: ${neutral['97']};
+							background-color: ${palette.neutral['97']};
 						`}
 					>
 						<div
@@ -377,7 +375,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 				deliveryAddressContext.productsAffected?.length > 0 && (
 					<section
 						css={css`
-							border: 1px solid ${neutral['86']};
+							border: 1px solid ${palette.neutral['86']};
 							margin-bottom: ${space[9]}px;
 						`}
 					>
@@ -385,8 +383,9 @@ const DeliveryRecordsProblemConfirmationFC = (
 							css={css`
 								margin: 0;
 								padding: 14px ${space[3]}px;
-								background-color: ${neutral['97']};
-								border-bottom: 1px solid ${neutral['86']};
+								background-color: ${palette.neutral['97']};
+								border-bottom: 1px solid
+									${palette.neutral['86']};
 								${textSans.medium({ fontWeight: 'bold' })};
 								${from.tablet} {
 									padding: 14px ${space[5]}px;

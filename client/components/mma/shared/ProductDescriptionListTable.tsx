@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import {
 	from,
 	headline,
-	neutral,
+	palette,
 	space,
 	textSans,
 	until,
@@ -59,7 +59,7 @@ export const ProductDescriptionListTable = (
 		${headline.xxsmall({ fontWeight: 'bold' })};
 		margin: 0;
 		padding: ${space[3]}px ${space[5]}px;
-		background-color: ${neutral[97]};
+		background-color: ${palette.neutral[97]};
 		${until.tablet} {
 			font-size: 1.0625rem;
 			line-height: 1.6;
@@ -121,7 +121,7 @@ export const ProductDescriptionListTable = (
 		<div
 			css={css`
 				${textSans.medium()};
-				border: 1px solid ${props.borderColour || neutral[20]};
+				border: 1px solid ${props.borderColour || palette.neutral[20]};
 				display: flex;
 				flex-wrap: wrap;
 				margin: ${space[5]}px 0;
@@ -161,17 +161,19 @@ export const ProductDescriptionListTable = (
 							margin: 0;
 							background-color: ${showAlternativeTableRowBgColours &&
 							currentRow % 2 === (props.tableHeading ? 1 : 0)
-								? neutral[97]
+								? palette.neutral[97]
 								: 'transparent'};
 							border-bottom: ${!isLastTableRow && !isFirstCollum
 									? `1px solid ${
-											props.borderColour || neutral[20]
+											props.borderColour ||
+											palette.neutral[20]
 									  };`
 									: 'none;'}
 								${from.tablet} {
 								border-bottom: ${!isLastTableRow
 									? `1px solid ${
-											props.borderColour || neutral[20]
+											props.borderColour ||
+											palette.neutral[20]
 									  }`
 									: 'none'};
 								width: ${tableEntry.spanTwoCols ||
@@ -200,7 +202,10 @@ export const ProductDescriptionListTable = (
 						<dt css={tableEntryTitleCss(!!tableEntry.spanTwoCols)}>
 							{tableEntry.title}
 						</dt>
-						<dd css={tableValueCss(!!tableEntry.spanTwoCols)}>
+						<dd
+							css={tableValueCss(!!tableEntry.spanTwoCols)}
+							data-qm-masking="blocklist"
+						>
 							{tableEntry.value}
 						</dd>
 					</dl>

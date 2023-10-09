@@ -1,11 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import {
-	error,
-	focusHalo,
-	neutral,
-	textSans,
-} from '@guardian/source-foundations';
+import { focusHalo, palette, textSans } from '@guardian/source-foundations';
 import type * as React from 'react';
 import { ErrorIcon } from '../../shared/assets/ErrorIcon';
 
@@ -31,17 +26,18 @@ export const Select = (props: SelectProps) => (
 	<label
 		css={css`
 			display: block;
-			color: ${neutral['7']};
+			color: ${palette.neutral['7']};
 			${textSans.medium()} ${props.additionalCSS};
 			font-weight: bold;
 		`}
+		data-qm-masking="blocklist"
 	>
 		{props.label}
 		{props.inErrorState && (
 			<span
 				css={css`
 					display: block;
-					color: ${error[400]};
+					color: ${palette.error[400]};
 				`}
 			>
 				<ErrorIcon />
@@ -61,17 +57,19 @@ export const Select = (props: SelectProps) => (
 				width: 100%;
 				max-width: ${props.width}ch;
 				${textSans.medium()}
-				color: ${neutral['7']};
+				color: ${palette.neutral['7']};
 				box-sizing: border-box;
 				margin-top: 4px;
 				padding: 8px 0 8px 4px;
 				border: ${props.inErrorState ? 4 : 2}px solid
-					${props.inErrorState ? error[400] : neutral['60']};
+					${props.inErrorState
+						? palette.error[400]
+						: palette.neutral['60']};
 				&:focus {
 					${focusHalo};
 				}
 				& option {
-					line-height: '40px';
+					line-height: 40px;
 					font-size: 1.0625rem;
 				}
 			`}

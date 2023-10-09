@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { textSans } from '@guardian/source-foundations';
-import type { DeliveryAddress } from '../../../../../shared/productResponse';
+import type { DeliveryAddress } from '@/shared/productResponse';
 import { COUNTRIES } from '../../identity/models';
 
 export const DeliveryAddressDisplay = (props: DeliveryAddress) => {
@@ -15,6 +15,7 @@ export const DeliveryAddressDisplay = (props: DeliveryAddress) => {
 				}
 				${textSans.medium()}
 			`}
+			data-qm-masking="blocklist"
 		>
 			<span>{props.addressLine1}</span>
 			{props.addressLine2 && <span>{props.addressLine2}</span>}

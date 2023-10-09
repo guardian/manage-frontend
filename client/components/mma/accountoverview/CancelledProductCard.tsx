@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import { LinkButton, Stack } from '@guardian/source-react-components';
 import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
-import { parseDate } from '../../../../shared/dates';
-import type { CancelledProductDetail } from '../../../../shared/productResponse';
-import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import { parseDate } from '@/shared/dates';
+import type { CancelledProductDetail } from '@/shared/productResponse';
+import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
 import { Card } from '../shared/Card';
@@ -53,7 +53,7 @@ export const CancelledProductCard = ({
 											? 'Supporter ID'
 											: 'Subscription ID'}
 									</dt>
-									<dd>
+									<dd data-qm-masking="blocklist">
 										{
 											productDetail.subscription
 												.subscriptionId
