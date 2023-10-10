@@ -1,6 +1,7 @@
 import type { Meta, StoryFn } from '@storybook/react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
+import { ConfirmDigisubDiscount } from '@/client/components/mma/cancel/cancellationSaves/digisubs/ConfirmDigisubDiscount';
 import { ValueOfDigiSubSupport } from '@/client/components/mma/cancel/cancellationSaves/digisubs/ValueOfDigiSubSupport';
 import { SelectReason } from '@/client/components/mma/cancel/cancellationSaves/SelectReason';
 import { digitalPackPaidByDirectDebit } from '@/client/fixtures/productBuilder/testProducts';
@@ -34,10 +35,11 @@ export const ValueOfDigiSubsSupportPage: StoryFn<
 	return <ValueOfDigiSubSupport />;
 };
 
-/*export const ConfirmDiscount: StoryFn<typeof ConfirmDigisubDiscount> = () => {
+export const ConfirmDiscount: StoryFn<typeof ConfirmDigisubDiscount> = () => {
 	return <ConfirmDigisubDiscount />;
 };
 
+/*
 export const ConfirmCancellation: StoryFn<
 	typeof ConfirmDigisubCancellation
 > = () => {
