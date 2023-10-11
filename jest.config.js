@@ -27,6 +27,7 @@ module.exports = {
 				],
 			},
 		},
+		CYPRESS: 'false',
 	},
 	preset: 'ts-jest',
 	testEnvironment: 'jsdom',
@@ -35,4 +36,7 @@ module.exports = {
 		'<rootDir>/cdk/',
 		'<rootDir>/node_modules/',
 	],
+	moduleNameMapper: {
+		'^@/(.*)$': '<rootDir>/$1',
+	},
 };

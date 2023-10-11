@@ -60,7 +60,7 @@ export const verifyOAuthCookies = async (
 	}
 };
 
-const setLocalStateFromIdToken = (
+export const setLocalStateFromIdToken = (
 	res: Response,
 	idToken: OktaJwtVerifier.Jwt,
 ) => {
@@ -81,6 +81,9 @@ const setLocalStateFromIdToken = (
 // Allows relative paths starting with '/' and strips trailing slashes and query params.
 export const sanitizeReturnPath = (returnPath: string) => {
 	try {
+		if (returnPath.match(/^(https?:)?\/\//)) {
+			return '/';
+		}
 		const url = new URL(`https://example.com${returnPath}`);
 		if (url.pathname.endsWith('/')) {
 			return url.pathname.slice(0, -1);
@@ -155,16 +158,14 @@ export const withOAuth = async (
 			return next();
 		}
 
-		console.log(
-			'  OAUTH FLOW: No access token or ID token found, performing auth code flow',
-		);
-		// We don't have the tokens, so we need to get them.
+		// We don't have the tokens, or they're invalid, so we need to get them.
 		return performAuthorizationCodeFlow(req, res, {
 			redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
 			scopes,
 			returnPath,
 		});
 	} catch (err) {
+		console.error(err);
 		return handleOAuthMiddlewareError(err, res);
 	}
 };
