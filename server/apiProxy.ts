@@ -7,11 +7,12 @@ import { X_GU_ID_FORWARDED_SCOPE } from '../shared/identity';
 import { MDA_TEST_USER_HEADER } from '../shared/productResponse';
 import { conf } from './config';
 import { log, putMetric } from './log';
-import { getCookiesOrEmptyString } from './middleware/identityMiddleware';
 import { augmentRedirectURL } from './middleware/requestMiddleware';
 
 type BodyHandler = (res: Response, body: Buffer) => void;
 type JsonString = Buffer | string | undefined;
+
+const getCookiesOrEmptyString = (req: Request) => req.header('cookie') || '';
 
 export const straightThroughBodyHandler: BodyHandler = (res, body) =>
 	res.send(body);

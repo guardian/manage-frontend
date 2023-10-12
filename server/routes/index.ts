@@ -7,3 +7,4 @@ export { routeProvider as productsProvider } from './products';
 export { router as idapi } from './idapi';
 export { router as mpapi } from './mpapi';
 export { router as aapi } from './aapi';
+export { router as oauth } from './oauth';
