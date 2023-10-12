@@ -8,7 +8,7 @@ import {
 } from '@/shared/fileUploadUtils';
 import { getConfig } from '../idapiConfig';
 import { setOptions } from '../idapiProxy';
-import { withIdentity } from '../middleware/identityMiddleware';
+import { withOAuth } from '../middleware/identityMiddleware';
 import { handleError, jsonOrEmpty } from '../util';
 
 interface AvatarAPIErrorResponse {
@@ -26,7 +26,7 @@ const sendAvatarAPIErrorResponse = (
 
 const router = Router();
 
-router.use(withIdentity(401));
+router.use(withOAuth);
 
 router.get(
 	'/avatar',

@@ -3,7 +3,7 @@ import https from 'https';
 import type { NextFunction, Request, Response } from 'express';
 import { Router } from 'express';
 import { log } from '../log';
-import { withIdentity } from '../middleware/identityMiddleware';
+import { withOAuth } from '../middleware/identityMiddleware';
 import { getConfig, getOptions } from '../mpapiConfig';
 import { handleError, mimicResponse } from '../util';
 
@@ -26,7 +26,7 @@ const makeMpapiRequest = (options: RequestOptions, res: Response) => {
 
 router.get(
 	'/user/mobile-subscriptions',
-	withIdentity(),
+	withOAuth,
 	async (_req: Request, res: Response, next: NextFunction) => {
 		let config;
 		try {
