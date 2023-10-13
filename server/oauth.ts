@@ -20,21 +20,50 @@ export interface VerifiedOAuthCookies {
 	idToken?: OktaJwtVerifier.Jwt;
 }
 
-const oauthTokenVerifier = (oktaConfig: OktaConfig) =>
+const sharedTokenVerifierOptions = (
+	oktaConfig: OktaConfig,
+): OktaJwtVerifier.VerifierOptions => ({
+	issuer: joinUrl(oktaConfig.orgUrl, '/oauth2/', oktaConfig.authServerId),
+	clientId: oktaConfig.clientId,
+});
+
+/**
+ * By default, the access token is verified by checking:
+ * - It has the correct audience (the URL of the resource server that should accept the token)
+ *   This is checked using the expectedAudience parameter of the verifyAccessToken method.
+ * - It has the correct issuer (the URL of the authorization server that issued the token)
+ *   This is checked using the issuer property of the OktaJwtVerifier constructor.
+ * Additionally, we check that the client ID (cid) matches the client ID of the MMA application.
+ * This ensures that MMA only accepts access tokens that it has generated.
+ * This is checked using the optional assertClaims parameter of the verifyAccessToken method.
+ */
+const oauthAccessTokenVerifier = (oktaConfig: OktaConfig) =>
 	new OktaJwtVerifier({
-		issuer: joinUrl(oktaConfig.orgUrl, '/oauth2/', oktaConfig.authServerId),
+		...sharedTokenVerifierOptions(oktaConfig),
+		assertClaims: {
+			cid: oktaConfig.clientId,
+		},
+	});
+
+/**
+ * By default, the ID token is verified by checking:
+ * - Its client ID matches the client ID of the MMA application
+ *   This is checked using the expectedClientId parameter of the verifyIdToken method.
+ * - It has the correct issuer (the URL of the authorization server that issued the token)
+ *   This is checked using the issuer property of the OktaJwtVerifier constructor.
+ * We don't need to make any custom assertClaims checks for the ID token.
+ */
+const oauthIdTokenVerifier = (oktaConfig: OktaConfig) =>
+	new OktaJwtVerifier({
+		...sharedTokenVerifierOptions(oktaConfig),
 	});
 
 export const verifyAccessToken = async (token: string) => {
 	const oktaConfig = await getOktaConfig();
 	try {
-		const jwt = await oauthTokenVerifier(oktaConfig).verifyAccessToken(
-			token,
-			// The aud claim in the access token must match the audience
-			// set on the authorization server in Okta, which is the full URL
-			// with trailing slash
-			joinUrl(oktaConfig.orgUrl, '/'),
-		);
+		const jwt = await oauthAccessTokenVerifier(
+			oktaConfig,
+		).verifyAccessToken(token, joinUrl(oktaConfig.orgUrl, '/'));
 		return jwt;
 	} catch (error) {
 		console.error('OAuth / Access Token / Verification Error', error);
@@ -44,10 +73,8 @@ export const verifyAccessToken = async (token: string) => {
 export const verifyIdToken = async (token: string) => {
 	const oktaConfig = await getOktaConfig();
 	try {
-		const jwt = await oauthTokenVerifier(oktaConfig).verifyIdToken(
+		const jwt = await oauthIdTokenVerifier(oktaConfig).verifyIdToken(
 			token,
-			// The aud claim in the ID token must match the client ID
-			// This is to verify that the ID token was issued by MMA.
 			oktaConfig.clientId,
 		);
 		return jwt;
