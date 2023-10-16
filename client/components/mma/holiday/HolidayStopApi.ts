@@ -81,11 +81,6 @@ export interface GetHolidayStopsResponse {
 	existing: HolidayStopRequest[];
 }
 
-export interface ReloadableGetHolidayStopsResponse
-	extends GetHolidayStopsResponse {
-	existingHolidayStopToAmend?: HolidayStopRequest;
-}
-
 interface RawGetHolidayStopsResponse {
 	issueSpecifics: Array<{
 		issueDayOfWeek: number;
@@ -134,8 +129,8 @@ export interface CreateOrAmendHolidayStopsResponse {
 export class CreateOrAmendHolidayStopsAsyncLoader extends AsyncLoader<CreateOrAmendHolidayStopsResponse> {}
 
 export function isHolidayStopsResponse(
-	data: ReloadableGetHolidayStopsResponse | {} | undefined,
-): data is ReloadableGetHolidayStopsResponse {
+	data: GetHolidayStopsResponse | {} | undefined,
+): data is GetHolidayStopsResponse {
 	return !!data && data.hasOwnProperty('existing');
 }
 

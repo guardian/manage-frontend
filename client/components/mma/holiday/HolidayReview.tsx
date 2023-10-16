@@ -21,9 +21,9 @@ import {
 } from './HolidayQuestionsModal';
 import type {
 	CreateOrAmendHolidayStopsResponse,
+	GetHolidayStopsResponse,
 	HolidayStopDetail,
 	HolidayStopRequest,
-	ReloadableGetHolidayStopsResponse,
 } from './HolidayStopApi';
 import {
 	CreateOrAmendHolidayStopsAsyncLoader,
@@ -42,7 +42,7 @@ const getPerformCreateOrAmendFetcher =
 		selectedRange: DateRange,
 		subscriptionName: string,
 		isTestUser: boolean,
-		existingHolidayStopToAmend?: HolidayStopRequest,
+		existingHolidayStopToAmend: HolidayStopRequest | null,
 	) =>
 	() =>
 		fetchWithDefaultParameters(
@@ -94,6 +94,7 @@ export const HolidayReview = () => {
 		selectedRange,
 		publicationsImpacted,
 		holidayStopResponse,
+		existingHolidayStopToAmend,
 		setExistingHolidayStopToAmend,
 	} = useContext(HolidayStopsContext) as HolidayStopsContextInterface;
 
@@ -102,7 +103,7 @@ export const HolidayReview = () => {
 	const routerState = location.state as HolidayStopsRouterState;
 
 	const buildActualRenderer = (
-		holidayStopsResponse: ReloadableGetHolidayStopsResponse,
+		holidayStopsResponse: GetHolidayStopsResponse,
 		productDetail: ProductDetail,
 		selectedRange: DateRange,
 		publicationsImpacted: HolidayStopDetail[],
@@ -189,7 +190,7 @@ export const HolidayReview = () => {
 								selectedRange,
 								productDetail.subscription.subscriptionId,
 								productDetail.isTestUser,
-								holidayStopsResponse.existingHolidayStopToAmend,
+								existingHolidayStopToAmend,
 							)}
 							render={(_: CreateOrAmendHolidayStopsResponse) => (
 								<Navigate
@@ -198,12 +199,12 @@ export const HolidayReview = () => {
 								/>
 							)}
 							errorRender={getRenderCreateOrAmendError(
-								holidayStopsResponse.existingHolidayStopToAmend
+								existingHolidayStopToAmend
 									? 'amending'
 									: 'creating',
 							)}
 							loadingMessage={`${
-								holidayStopsResponse.existingHolidayStopToAmend
+								existingHolidayStopToAmend
 									? 'Amending'
 									: 'Creating'
 							} your suspension...`}
