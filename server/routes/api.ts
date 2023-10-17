@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/node';
 import { Router } from 'express';
+import { withOktaSeverSideValidation } from '@/server/middleware/OktaServerSideAuthMiddleware';
 import type { MembersDataApiResponse } from '../../shared/productResponse';
 import { isProduct, MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import {
@@ -209,9 +210,14 @@ router.get(
 		'subscriptionName',
 	]),
 );
-router.post('/holidays', holidayStopAPI('/hsr', 'HOLIDAY_STOP_CREATE'));
+router.post(
+	'/holidays',
+	withOktaSeverSideValidation,
+	holidayStopAPI('/hsr', 'HOLIDAY_STOP_CREATE'),
+);
 router.patch(
 	'/holidays/:subscriptionName/:sfId',
+	withOktaSeverSideValidation,
 	holidayStopAPI('hsr/:subscriptionName/:sfId', 'HOLIDAY_STOP_AMEND', [
 		'subscriptionName',
 		'sfId',
@@ -219,6 +225,7 @@ router.patch(
 );
 router.delete(
 	'/holidays/:subscriptionName/:sfId',
+	withOktaSeverSideValidation,
 	holidayStopAPI('hsr/:subscriptionName/:sfId', 'HOLIDAY_STOP_WITHDRAW', [
 		'subscriptionName',
 		'sfId',
