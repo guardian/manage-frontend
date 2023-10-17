@@ -23,31 +23,37 @@ export const withOktaSeverSideValidation = async (
 	if (CYPRESS === 'SKIP_IDAPI') {
 		return next();
 	}
+
+	console.log(`MY USELESS MIDDLEWARE WAS CALLED with url  ${req.url}`);
+
 	const locallyValidatedUserId = res.locals?.identity?.userId;
 
 	if (!locallyValidatedUserId) {
 		if (signinRequired()) {
 			console.log(
-				'error: could not find user id in request, expected local token validation to happen before server side check!',
+				'error: no user in request for a sign-in required endpoint! this should have failed local validation',
 			);
 			res.send(500);
 		} else {
 			console.log(
-				' no credentials, but they were optional so server side validation is skipped!',
+				'no credentials, but they were optional so server side validation is skipped!',
 			);
 		}
 		return {};
 	}
 
-	console.log(`MY USELESS MIDDLEWARE WAS CALLED with url  ${req.url}`);
 	const authHeader = `Bearer ${req.signedCookies['GU_ACCESS_TOKEN']}`;
-	// maybe move the actual okta code to oauth.ts or maybe rename to something that makes sense?
+	// -------
+	// this code is copied from oauth.ts, maybe this server side validation code could be moved there?
+	// or maybe this could be extracted somewhere or exported.
+	// In some way we should remove this duplication probably
 	const oktaConfig = await getOktaConfig();
 	const issuerUrl = joinUrl(
 		oktaConfig.orgUrl,
 		'/oauth2/',
 		oktaConfig.authServerId,
 	);
+	// ------
 
 	const oktaResponse = await fetch(`${issuerUrl}/v1/userinfo/`, {
 		method: 'GET',
@@ -58,9 +64,17 @@ export const withOktaSeverSideValidation = async (
 	});
 	console.log(`n=>> response from okta was status: ${oktaResponse.status}`);
 	if (oktaResponse.status != 200) {
-		console.log('invalid credentials! failing server side validation!');
-		res.send(401);
-		return {};
+		if (signinRequired()) {
+			console.log('invalid credentials! failing server side validation!');
+			res.send(401);
+			return {};
+		} else {
+			console.log(
+				'invalid credentials but signin is not required, removing user data from request',
+			);
+			// todo we should probably have this code in a common location between local and server side validation
+			delete res.locals.identity;
+		}
 	} else {
 		const userInfo = await oktaResponse.json<UserInfo>();
 

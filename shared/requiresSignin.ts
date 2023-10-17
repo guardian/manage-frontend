@@ -7,10 +7,10 @@ const publicPaths = [
 	'/api/reminders/cancel/',
 	'/api/public/reminders/',
 	'/api/help-centre/',
-	'/cancel-reminders/',
-	'/create-reminder/',
-	'/help-centre/',
-	'/maintenance/',
+	'/cancel-reminders/', //TODO can't see any endpoint with this prefix
+	'/create-reminder/', //TODO can't see any endpoint with this prefix
+	'/help-centre/', //TODO can't see any endpoint with this prefix
+	'/maintenance/', //TODO can't see any endpoint with this prefix
 ];
 
 export const requiresSignin = (path: string) => {
