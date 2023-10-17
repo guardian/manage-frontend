@@ -14,7 +14,8 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "strict": true
   },
   "exclude": ["cypress/**", "cdk/**", "cypress.config.ts"]
 }
