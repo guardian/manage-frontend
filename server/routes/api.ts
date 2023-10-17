@@ -126,6 +126,7 @@ router.post(
 
 router.post(
 	'/supporter-plus-cancel/:subscriptionName',
+	withOktaSeverSideValidation,
 	productMoveAPI(
 		'supporter-plus-cancel/:subscriptionName',
 		'CANCEL_SUPPORTER_PLUS',
@@ -133,7 +134,11 @@ router.post(
 	),
 );
 
-router.post('/payment/card', stripeSetupIntentHandler);
+router.post(
+	'/payment/card',
+	withOktaSeverSideValidation,
+	stripeSetupIntentHandler,
+);
 router.post(
 	'/payment/card/:subscriptionName',
 	membersDataApiHandler(
@@ -163,10 +168,12 @@ router.post(
 
 router.post(
 	'/case/:caseId?',
+	withOktaSeverSideValidation,
 	cancellationSfCasesAPI('case', 'CREATE_CANCELLATION_CASE'),
 );
 router.patch(
 	'/case/:caseId?',
+	withOktaSeverSideValidation,
 	cancellationSfCasesAPI('case/:caseId', 'UPDATE_CANCELLATION_CASE', [
 		'caseId',
 	]),
@@ -183,6 +190,7 @@ router.post(
 
 router.post(
 	'/update-supporter-plus-amount/:subscriptionName',
+	withOktaSeverSideValidation,
 	productMoveAPI(
 		'update-supporter-plus-amount/:subscriptionName',
 		'MOVE_PRODUCT_UPDATE_AMOUNT',
@@ -250,6 +258,7 @@ router.get(
 );
 router.post(
 	'/delivery-records/:subscriptionName',
+	withOktaSeverSideValidation,
 	deliveryRecordsAPI(
 		'delivery-records/:subscriptionName',
 		'DELIVERY_PROBLEM_CREATE',
@@ -297,7 +306,7 @@ router.get('/known-issues', async (_, response) => {
 router.get('/help-centre/article/:article', getArticleHandler);
 router.get('/help-centre/topic/:topic', getTopicHandler);
 
-router.post('/contact-us', contactUsFormHandler);
+router.post('/contact-us', withOktaSeverSideValidation, contactUsFormHandler);
 
 router.post('/reminders/create', createOneOffReminderHandler); // requires sign-in
 router.post(
