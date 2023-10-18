@@ -412,6 +412,51 @@ const Form = (props: FormProps) => {
 				</p>
 				{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
 			</Stack>
+
+			<p
+				css={css`
+					display: block;
+					${textSans.medium()};
+					border: 4px solid ${brand[500]};
+					padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
+					margin: ${space[3]}px 0;
+					position: relative;
+					${from.tablet} {
+						display: inline-block;
+						vertical-align: top;
+						margin: 2px 0 ${space[3]}px ${space[3]}px;
+						width: calc(100% - (30ch + ${space[3]}px + 2px));
+					}
+				`}
+			>
+				<i
+					css={css`
+						width: 17px;
+						height: 17px;
+						position: absolute;
+						top: ${space[5]}px;
+						left: ${space[5]}px;
+					`}
+				>
+					<InfoIconDark fillColor={brand[500]} />
+				</i>
+				Changed address? Please{' '}
+				<span
+					css={css`
+						cursor: pointer;
+						color: ${brand[500]};
+						text-decoration: underline;
+					`}
+					onClick={() =>
+						setTopCallCentreNumbersVisibility(
+							!showTopCallCentreNumbers,
+						)
+					}
+				>
+					call our customer support team
+				</span>
+				to update your delivery details.
+			</p>
 		</>
 	);
 };
