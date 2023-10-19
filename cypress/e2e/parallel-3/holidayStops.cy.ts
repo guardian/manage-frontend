@@ -78,45 +78,6 @@ describe('Holiday stops', () => {
 		cy.get('@create_holiday_stop.all').should('have.length', 1);
 	});
 
-	it('can amend a non-confirmed holiday stop', () => {
-		cy.visit('/suspend/guardianweekly');
-		cy.wait('@fetch_existing_holidays');
-		cy.wait('@product_detail');
-		cy.get('[data-cy="create-suspension-cta"] button').click();
-
-		// Selects 09/02/2022 - 11/02/2022
-		cy.get('[data-cy="date-picker"] div').eq(9).click();
-		cy.get('[data-cy="date-picker"] div').eq(11).click();
-		cy.wait('@fetch_potential_holidays');
-		cy.findByText('Review details').click();
-
-		cy.findByText('Amend').click();
-
-		cy.findByText('Choose the dates you will be away').should('exist');
-		cy.findByText('Please select your new dates...').should('exist');
-		cy.get('[aria-label="day"]').eq(0).should('have.value', '9');
-		cy.get('[aria-label="month"]').eq(0).should('have.value', '2');
-		cy.get('[aria-label="year"]').eq(0).should('have.value', '2022');
-		cy.get('[aria-label="day"]').eq(1).should('have.value', '11');
-		cy.get('[aria-label="month"]').eq(1).should('have.value', '2');
-		cy.get('[aria-label="year"]').eq(1).should('have.value', '2022');
-
-		cy.get('[data-cy="date-picker"] div').eq(16).click();
-		cy.get('[data-cy="date-picker"] div').eq(18).click();
-		cy.wait('@fetch_potential_holidays');
-
-		// Selects 16/02/2022 - 18/02/2022
-		cy.get('[aria-label="day"]').eq(0).should('have.value', '16');
-		cy.get('[aria-label="day"]').eq(1).should('have.value', '18');
-
-		// Total issues suspended
-		cy.get('[data-cy="suspension-issue-count"]').eq(0).contains('1 issue');
-
-		cy.get('@fetch_existing_holidays.all').should('have.length', 1);
-		cy.get('@product_detail.all').should('have.length', 1);
-		cy.get('@fetch_potential_holidays.all').should('have.length', 2);
-	});
-
 	it('can not create a holiday stop for date range when there are no deliveries', () => {
 		cy.intercept('GET', '/api/holidays/*/potential?*', {
 			statusCode: 200,

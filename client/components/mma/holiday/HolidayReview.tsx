@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { space, until } from '@guardian/source-foundations';
 import { Button, InlineError } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import type { DateRange } from '../../../../shared/dates';
 import { DATE_FNS_INPUT_FORMAT, dateString } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
@@ -21,9 +21,9 @@ import {
 } from './HolidayQuestionsModal';
 import type {
 	CreateOrAmendHolidayStopsResponse,
+	GetHolidayStopsResponse,
 	HolidayStopDetail,
 	HolidayStopRequest,
-	ReloadableGetHolidayStopsResponse,
 } from './HolidayStopApi';
 import {
 	CreateOrAmendHolidayStopsAsyncLoader,
@@ -42,7 +42,7 @@ const getPerformCreateOrAmendFetcher =
 		selectedRange: DateRange,
 		subscriptionName: string,
 		isTestUser: boolean,
-		existingHolidayStopToAmend?: HolidayStopRequest,
+		existingHolidayStopToAmend: HolidayStopRequest | null,
 	) =>
 	() =>
 		fetchWithDefaultParameters(
@@ -94,15 +94,14 @@ export const HolidayReview = () => {
 		selectedRange,
 		publicationsImpacted,
 		holidayStopResponse,
-		setExistingHolidayStopToAmend,
+		existingHolidayStopToAmend,
 	} = useContext(HolidayStopsContext) as HolidayStopsContextInterface;
 
-	const navigate = useNavigate();
 	const location = useLocation();
 	const routerState = location.state as HolidayStopsRouterState;
 
 	const buildActualRenderer = (
-		holidayStopsResponse: ReloadableGetHolidayStopsResponse,
+		holidayStopsResponse: GetHolidayStopsResponse,
 		productDetail: ProductDetail,
 		selectedRange: DateRange,
 		publicationsImpacted: HolidayStopDetail[],
@@ -189,7 +188,7 @@ export const HolidayReview = () => {
 								selectedRange,
 								productDetail.subscription.subscriptionId,
 								productDetail.isTestUser,
-								holidayStopsResponse.existingHolidayStopToAmend,
+								existingHolidayStopToAmend,
 							)}
 							render={(_: CreateOrAmendHolidayStopsResponse) => (
 								<Navigate
@@ -198,12 +197,12 @@ export const HolidayReview = () => {
 								/>
 							)}
 							errorRender={getRenderCreateOrAmendError(
-								holidayStopsResponse.existingHolidayStopToAmend
+								existingHolidayStopToAmend
 									? 'amending'
 									: 'creating',
 							)}
 							loadingMessage={`${
-								holidayStopsResponse.existingHolidayStopToAmend
+								existingHolidayStopToAmend
 									? 'Amending'
 									: 'Creating'
 							} your suspension...`}
@@ -216,7 +215,7 @@ export const HolidayReview = () => {
 						css={[
 							buttonBarCss,
 							{
-								justifyContent: 'space-between',
+								justifyContent: 'flex-end',
 								marginTop: '20px',
 								[until.mobileMedium]: {
 									flexDirection: 'column',
@@ -226,36 +225,10 @@ export const HolidayReview = () => {
 						]}
 					>
 						<div
-							css={{
-								marginTop: '20px',
-								alignSelf: 'flex-start',
-							}}
-						>
-							<Button
-								onClick={() => {
-									setExistingHolidayStopToAmend({
-										dateRange: selectedRange,
-										publicationsImpacted,
-										mutabilityFlags: {
-											isEndDateEditable: true,
-											isFullyMutable: true,
-										},
-									});
-									navigate('../amend', {
-										state: routerState,
-									});
-								}}
-								priority="secondary"
-							>
-								Amend
-							</Button>
-						</div>
-						<div
 							css={[
 								buttonBarCss,
 								{
 									marginTop: '20px',
-									alignSelf: 'flex-end',
 								},
 							]}
 						>
