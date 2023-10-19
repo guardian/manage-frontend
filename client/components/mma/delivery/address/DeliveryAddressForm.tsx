@@ -107,6 +107,8 @@ const Form = (props: FormProps) => {
 			return `${friendlyProductName}`;
 		});
 
+	console.log(subscriptionsNames);
+
 	const handleFormSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
@@ -137,106 +139,334 @@ const Form = (props: FormProps) => {
 		}
 	};
 
+	const hasNationalDelivery = Object.values(
+		contactIdToArrayOfProductDetailAndProductType,
+	)
+		.flatMap(flattenEquivalent)
+		.map(({ productDetail }) => {
+			const hasProducts = GROUPED_PRODUCT_TYPES.subscriptions
+				.mapGroupedToSpecific(productDetail)
+				.productType.includes('national delivery');
+			return `${hasProducts}`;
+		});
+
 	return (
 		<>
-			<form action="#" onSubmit={handleFormSubmit}>
-				<fieldset
-					css={{
-						border: `1px solid ${neutral['86']}`,
-						padding: '48px 14px 14px',
-						position: 'relative',
-						marginBottom: `${space[5]}px`,
-						label: {
-							marginTop: `${space[3]}px`,
-						},
-					}}
-				>
-					<legend
-						css={css`
-							width: 100%;
-							position: absolute;
-							top: 0;
-							left: 0;
-							padding: 0 14px;
-							${textSans.medium()};
-							font-weight: bold;
-							line-height: 48px;
-							background-color: ${neutral['97']};
-							border-bottom: 1px solid ${neutral['86']};
-						`}
-					>
-						Delivery address
-						{props.productType.delivery
-							?.enableDeliveryInstructionsUpdate &&
-							' and instructions'}
-					</legend>
-					<Input
-						label={'Address line 1'}
-						width={30}
-						value={addressStateObject.addressLine1}
-						changeSetState={addressSetStateObject.setAddressLine1}
-						inErrorState={
-							props.formStatus === formStates.VALIDATION_ERROR &&
-							!props.formErrors.addressLine1?.isValid
-						}
-						errorMessage={props.formErrors.addressLine1?.message}
-					/>
-					<Input
-						label="Address line 2"
-						width={30}
-						value={addressStateObject.addressLine2 || ''}
-						changeSetState={addressSetStateObject.setAddressLine2}
-						optional={true}
-					/>
-					<Input
-						label="Town or City"
-						width={30}
-						value={addressStateObject.town || ''}
-						changeSetState={addressSetStateObject.setTown}
-						inErrorState={
-							props.formStatus === formStates.VALIDATION_ERROR &&
-							!props.formErrors.town?.isValid
-						}
-						errorMessage={props.formErrors.town?.message}
-					/>
-					<Input
-						label="County or State"
-						width={30}
-						value={addressStateObject.region || ''}
-						optional={true}
-						changeSetState={addressSetStateObject.setRegion}
-					/>
-					<Input
-						label="Postcode/Zipcode"
-						width={11}
-						value={addressStateObject.postcode}
-						changeSetState={addressSetStateObject.setPostcode}
-						inErrorState={
-							props.formStatus === formStates.VALIDATION_ERROR &&
-							!props.formErrors.postcode?.isValid
-						}
-						errorMessage={props.formErrors.postcode?.message}
-					/>
-					<Select
-						label={'Country'}
-						options={COUNTRIES.map((country) => {
-							return {
-								name: country.name,
-								value: country.name,
-							};
-						})}
-						width={30}
-						additionalCSS={css`
-							margin-top: 14px;
-						`}
-						value={addressStateObject.country}
-						changeSetState={addressSetStateObject.setCountry}
-						inErrorState={
-							props.formStatus === formStates.VALIDATION_ERROR &&
-							!props.formErrors.country?.isValid
-						}
-						errorMessage={props.formErrors.country?.message}
-					/>
+			{!hasNationalDelivery && (
+				<>
+					<form action="#" onSubmit={handleFormSubmit}>
+						<fieldset
+							css={{
+								border: `1px solid ${neutral['86']}`,
+								padding: '48px 14px 14px',
+								position: 'relative',
+								marginBottom: `${space[5]}px`,
+								label: {
+									marginTop: `${space[3]}px`,
+								},
+							}}
+						>
+							<legend
+								css={css`
+									width: 100%;
+									position: absolute;
+									top: 0;
+									left: 0;
+									padding: 0 14px;
+									${textSans.medium()};
+									font-weight: bold;
+									line-height: 48px;
+									background-color: ${neutral['97']};
+									border-bottom: 1px solid ${neutral['86']};
+								`}
+							>
+								Delivery address
+								{props.productType.delivery
+									?.enableDeliveryInstructionsUpdate &&
+									' and instructions'}
+							</legend>
+							<Input
+								label={'Address line 1'}
+								width={30}
+								value={addressStateObject.addressLine1}
+								changeSetState={
+									addressSetStateObject.setAddressLine1
+								}
+								inErrorState={
+									props.formStatus ===
+										formStates.VALIDATION_ERROR &&
+									!props.formErrors.addressLine1?.isValid
+								}
+								errorMessage={
+									props.formErrors.addressLine1?.message
+								}
+							/>
+							<Input
+								label="Address line 2"
+								width={30}
+								value={addressStateObject.addressLine2 || ''}
+								changeSetState={
+									addressSetStateObject.setAddressLine2
+								}
+								optional={true}
+							/>
+							<Input
+								label="Town or City"
+								width={30}
+								value={addressStateObject.town || ''}
+								changeSetState={addressSetStateObject.setTown}
+								inErrorState={
+									props.formStatus ===
+										formStates.VALIDATION_ERROR &&
+									!props.formErrors.town?.isValid
+								}
+								errorMessage={props.formErrors.town?.message}
+							/>
+							<Input
+								label="County or State"
+								width={30}
+								value={addressStateObject.region || ''}
+								optional={true}
+								changeSetState={addressSetStateObject.setRegion}
+							/>
+							<Input
+								label="Postcode/Zipcode"
+								width={11}
+								value={addressStateObject.postcode}
+								changeSetState={
+									addressSetStateObject.setPostcode
+								}
+								inErrorState={
+									props.formStatus ===
+										formStates.VALIDATION_ERROR &&
+									!props.formErrors.postcode?.isValid
+								}
+								errorMessage={
+									props.formErrors.postcode?.message
+								}
+							/>
+							<Select
+								label={'Country'}
+								options={COUNTRIES.map((country) => {
+									return {
+										name: country.name,
+										value: country.name,
+									};
+								})}
+								width={30}
+								additionalCSS={css`
+									margin-top: 14px;
+								`}
+								value={addressStateObject.country}
+								changeSetState={
+									addressSetStateObject.setCountry
+								}
+								inErrorState={
+									props.formStatus ===
+										formStates.VALIDATION_ERROR &&
+									!props.formErrors.country?.isValid
+								}
+								errorMessage={props.formErrors.country?.message}
+							/>
+							{props.productType.delivery
+								?.enableDeliveryInstructionsUpdate && (
+								<label
+									css={css`
+										display: block;
+										color: ${neutral['7']};
+										${textSans.medium()};
+										font-weight: bold;
+									`}
+								>
+									Instructions
+									<div>
+										<div
+											css={css`
+												display: inline-block;
+												vertical-align: top;
+												margin-top: 4px;
+												width: 100%;
+												max-width: 30ch;
+											`}
+										>
+											<textarea
+												id="delivery-instructions"
+												name="instructions"
+												rows={2}
+												maxLength={250}
+												value={
+													addressStateObject.instructions
+												}
+												onChange={(
+													e: ChangeEvent<HTMLTextAreaElement>,
+												) => {
+													addressSetStateObject.setInstructions(
+														e.target.value,
+													);
+													setInstructionsRemainingCharacters(
+														250 -
+															e.target.value
+																.length,
+													);
+												}}
+												css={css`
+													width: 100%;
+													border: 2px solid
+														${neutral['60']};
+													padding: 12px;
+													resize: vertical;
+													${textSans.medium()};
+												`}
+											/>
+											<span
+												css={css`
+													display: block;
+													text-align: right;
+													${textSans.small()};
+													color: ${neutral[46]};
+												`}
+											>
+												{
+													instructionsRemainingCharacters
+												}{' '}
+												characters remaining
+											</span>
+										</div>
+										<p
+											css={css`
+												display: block;
+												${textSans.medium()};
+												border: 4px solid ${brand[500]};
+												padding: ${space[5]}px
+													${space[5]}px ${space[5]}px
+													49px;
+												margin: ${space[3]}px 0;
+												position: relative;
+												${from.tablet} {
+													display: inline-block;
+													vertical-align: top;
+													margin: 2px 0 ${space[3]}px
+														${space[3]}px;
+													width: calc(
+														100% -
+															(
+																30ch +
+																	${space[3]}px +
+																	2px
+															)
+													);
+												}
+											`}
+										>
+											<i
+												css={css`
+													width: 17px;
+													height: 17px;
+													position: absolute;
+													top: ${space[5]}px;
+													left: ${space[5]}px;
+												`}
+											>
+												<InfoIconDark
+													fillColor={brand[500]}
+												/>
+											</i>
+											Delivery instructions are only
+											applicable for newspaper deliveries.
+											They do not apply to Guardian
+											Weekly.
+										</p>
+									</div>
+								</label>
+							)}
+						</fieldset>
+						<CheckboxGroup
+							name="instructions-checkbox"
+							error={
+								props.formStatus ===
+									formStates.VALIDATION_ERROR &&
+								!acknowledgementChecked
+									? 'Please indicate that you understand which subscriptions this change will affect.'
+									: undefined
+							}
+						>
+							<Checkbox
+								value="acknowledged"
+								label="I understand that this address change will affect the following subscriptions"
+								checked={acknowledgementChecked}
+								onChange={(
+									e: ChangeEvent<HTMLInputElement>,
+								) => {
+									setAcknowledgementState(e.target.checked);
+								}}
+							/>
+						</CheckboxGroup>
+						{props.warning && (
+							<ProductDescriptionListTable
+								content={props.warning}
+								seperateEachRow
+							/>
+						)}
+						<div
+							css={css`
+								margin-top: ${space[5]}px;
+								* {
+									display: inline-block;
+								}
+								${from.tablet} {
+									margin-top: ${space[6]}px;
+								}
+							`}
+						>
+							<Button type="submit">Review details</Button>
+							<Link
+								to={NAV_LINKS.accountOverview.link}
+								css={css`
+									${textSans.medium()};
+									font-weight: bold;
+									margin-left: 22px;
+									color: ${brand[400]};
+								`}
+							>
+								Cancel
+							</Link>
+						</div>
+					</form>
+
+					<Stack space={5}>
+						<p
+							css={css`
+								${textSans.medium()};
+								margin: ${space[12]}px 0 0;
+								color: ${neutral[46]};
+							`}
+						>
+							If you need separate delivery addresses for each of
+							your subscriptions, please{' '}
+							<span
+								css={css`
+									cursor: pointer;
+									color: ${brand[500]};
+									text-decoration: underline;
+								`}
+								onClick={() =>
+									setTopCallCentreNumbersVisibility(
+										!showTopCallCentreNumbers,
+									)
+								}
+							>
+								contact us
+							</span>
+							.
+						</p>
+						{showTopCallCentreNumbers && (
+							<CallCentreEmailAndNumbers />
+						)}
+					</Stack>
+				</>
+			)}
+			{hasNationalDelivery && (
+				<>
 					{props.productType.delivery
 						?.enableDeliveryInstructionsUpdate && (
 						<label
@@ -294,169 +524,58 @@ const Form = (props: FormProps) => {
 										characters remaining
 									</span>
 								</div>
-								<p
-									css={css`
-										display: block;
-										${textSans.medium()};
-										border: 4px solid ${brand[500]};
-										padding: ${space[5]}px ${space[5]}px
-											${space[5]}px 49px;
-										margin: ${space[3]}px 0;
-										position: relative;
-										${from.tablet} {
-											display: inline-block;
-											vertical-align: top;
-											margin: 2px 0 ${space[3]}px
-												${space[3]}px;
-											width: calc(
-												100% -
-													(30ch + ${space[3]}px + 2px)
-											);
-										}
-									`}
-								>
-									<i
-										css={css`
-											width: 17px;
-											height: 17px;
-											position: absolute;
-											top: ${space[5]}px;
-											left: ${space[5]}px;
-										`}
-									>
-										<InfoIconDark fillColor={brand[500]} />
-									</i>
-									Delivery instructions are only applicable
-									for newspaper deliveries. They do not apply
-									to Guardian Weekly.
-								</p>
 							</div>
 						</label>
 					)}
-				</fieldset>
-				<CheckboxGroup
-					name="instructions-checkbox"
-					error={
-						props.formStatus === formStates.VALIDATION_ERROR &&
-						!acknowledgementChecked
-							? 'Please indicate that you understand which subscriptions this change will affect.'
-							: undefined
-					}
-				>
-					<Checkbox
-						value="acknowledged"
-						label="I understand that this address change will affect the following subscriptions"
-						checked={acknowledgementChecked}
-						onChange={(e: ChangeEvent<HTMLInputElement>) => {
-							setAcknowledgementState(e.target.checked);
-						}}
-					/>
-				</CheckboxGroup>
-				{props.warning && (
-					<ProductDescriptionListTable
-						content={props.warning}
-						seperateEachRow
-					/>
-				)}
-				<div
-					css={css`
-						margin-top: ${space[5]}px;
-						* {
-							display: inline-block;
-						}
-						${from.tablet} {
-							margin-top: ${space[6]}px;
-						}
-					`}
-				>
-					<Button type="submit">Review details</Button>
-					<Link
-						to={NAV_LINKS.accountOverview.link}
+					<p
 						css={css`
+							display: block;
 							${textSans.medium()};
-							font-weight: bold;
-							margin-left: 22px;
-							color: ${brand[400]};
+							border: 4px solid ${brand[500]};
+							padding: ${space[5]}px ${space[5]}px ${space[5]}px
+								49px;
+							margin: ${space[3]}px 0;
+							position: relative;
+							${from.tablet} {
+								display: inline-block;
+								vertical-align: top;
+								margin: 2px 0 ${space[3]}px ${space[3]}px;
+								width: calc(
+									100% - (30ch + ${space[3]}px + 2px)
+								);
+							}
 						`}
 					>
-						Cancel
-					</Link>
-				</div>
-			</form>
-
-			<Stack space={5}>
-				<p
-					css={css`
-						${textSans.medium()};
-						margin: ${space[12]}px 0 0;
-						color: ${neutral[46]};
-					`}
-				>
-					If you need separate delivery addresses for each of your
-					subscriptions, please{' '}
-					<span
-						css={css`
-							cursor: pointer;
-							color: ${brand[500]};
-							text-decoration: underline;
-						`}
-						onClick={() =>
-							setTopCallCentreNumbersVisibility(
-								!showTopCallCentreNumbers,
-							)
-						}
-					>
-						contact us
-					</span>
-					.
-				</p>
-				{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
-			</Stack>
-
-			<p
-				css={css`
-					display: block;
-					${textSans.medium()};
-					border: 4px solid ${brand[500]};
-					padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
-					margin: ${space[3]}px 0;
-					position: relative;
-					${from.tablet} {
-						display: inline-block;
-						vertical-align: top;
-						margin: 2px 0 ${space[3]}px ${space[3]}px;
-						width: calc(100% - (30ch + ${space[3]}px + 2px));
-					}
-				`}
-			>
-				<i
-					css={css`
-						width: 17px;
-						height: 17px;
-						position: absolute;
-						top: ${space[5]}px;
-						left: ${space[5]}px;
-					`}
-				>
-					<InfoIconDark fillColor={brand[500]} />
-				</i>
-				Changed address? Please{' '}
-				<span
-					css={css`
-						cursor: pointer;
-						color: ${brand[500]};
-						text-decoration: underline;
-					`}
-					onClick={() =>
-						setTopCallCentreNumbersVisibility(
-							!showTopCallCentreNumbers,
-						)
-					}
-				>
-					call our customer support team
-				</span>
-				to update your delivery details.
-			</p>
+						<i
+							css={css`
+								width: 17px;
+								height: 17px;
+								position: absolute;
+								top: ${space[5]}px;
+								left: ${space[5]}px;
+							`}
+						>
+							<InfoIconDark fillColor={brand[500]} />
+						</i>
+						Changed address? Please{' '}
+						<span
+							css={css`
+								cursor: pointer;
+								color: ${brand[500]};
+								text-decoration: underline;
+							`}
+							onClick={() =>
+								setTopCallCentreNumbersVisibility(
+									!showTopCallCentreNumbers,
+								)
+							}
+						>
+							call our customer support team
+						</span>
+						to update your delivery details.
+					</p>
+				</>
+			)}
 		</>
 	);
 };
