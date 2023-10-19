@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (compact layout and contact options hidden) with live chat feature switches disabled shows email and phone contacts only 1`] = `
-Array [
+[
   .emotion-0 {
   border-top: 1px solid #DCDCDC;
   margin-top: 30px;
@@ -398,7 +398,7 @@ Array [
 `;
 
 exports[`HelpCentreContactOptions Help Centre landing page with live chat feature switch disabled shows email and phone contacts only 1`] = `
-Array [
+[
   .emotion-0 {
   border-top: 1px solid #DCDCDC;
   margin-top: 30px;
@@ -795,7 +795,7 @@ Array [
 `;
 
 exports[`HelpCentreContactOptions Help Centre landing page with live chat feature switch enabled shows the live chat contact box 1`] = `
-Array [
+[
   .emotion-0 {
   border-top: 1px solid #DCDCDC;
   margin-top: 30px;
