@@ -1,9 +1,7 @@
 import { css } from '@emotion/react';
 import {
-	brand,
 	from,
 	headline,
-	neutral,
 	palette,
 	space,
 	textSans,
@@ -18,14 +16,11 @@ import {
 import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import type { DeliveryAddress } from '../../../../../shared/productResponse';
-import type {
-	ProductType,
-	WithProductType,
-} from '../../../../../shared/productTypes';
-import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
-import { addressChangeAffectedInfo } from '../../../../utilities/deliveryAddress';
-import { flattenEquivalent } from '../../../../utilities/utils';
+import { addressChangeAffectedInfo } from '@/client/utilities/deliveryAddress';
+import { flattenEquivalent } from '@/client/utilities/utils';
+import type { DeliveryAddress } from '@/shared/productResponse';
+import type { ProductType, WithProductType } from '@/shared/productTypes';
+import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { CallCentreNumbers } from '../../../shared/CallCentreNumbers';
 import { Input } from '../../../shared/Input';
@@ -156,7 +151,7 @@ const Form = (props: FormProps) => {
 					<form action="#" onSubmit={handleFormSubmit}>
 						<fieldset
 							css={{
-								border: `1px solid ${neutral['86']}`,
+								border: `1px solid ${palette.neutral['86']}`,
 								padding: '48px 14px 14px',
 								position: 'relative',
 								marginBottom: `${space[5]}px`,
@@ -175,8 +170,9 @@ const Form = (props: FormProps) => {
 									${textSans.medium()};
 									font-weight: bold;
 									line-height: 48px;
-									background-color: ${neutral['97']};
-									border-bottom: 1px solid ${neutral['86']};
+									background-color: ${palette.neutral['97']};
+									border-bottom: 1px solid
+										${palette.neutral['86']};
 								`}
 							>
 								Delivery address
@@ -272,7 +268,7 @@ const Form = (props: FormProps) => {
 								<label
 									css={css`
 										display: block;
-										color: ${neutral['7']};
+										color: ${palette.neutral['7']};
 										${textSans.medium()};
 										font-weight: bold;
 									`}
@@ -311,7 +307,7 @@ const Form = (props: FormProps) => {
 												css={css`
 													width: 100%;
 													border: 2px solid
-														${neutral['60']};
+														${palette.neutral['60']};
 													padding: 12px;
 													resize: vertical;
 													${textSans.medium()};
@@ -322,7 +318,8 @@ const Form = (props: FormProps) => {
 													display: block;
 													text-align: right;
 													${textSans.small()};
-													color: ${neutral[46]};
+													color: ${palette
+														.neutral[46]};
 												`}
 											>
 												{
@@ -335,7 +332,8 @@ const Form = (props: FormProps) => {
 											css={css`
 												display: block;
 												${textSans.medium()};
-												border: 4px solid ${brand[500]};
+												border: 4px solid
+													${palette.brand[500]};
 												padding: ${space[5]}px
 													${space[5]}px ${space[5]}px
 													49px;
@@ -367,7 +365,9 @@ const Form = (props: FormProps) => {
 												`}
 											>
 												<InfoIconDark
-													fillColor={brand[500]}
+													fillColor={
+														palette.brand[500]
+													}
 												/>
 											</i>
 											Delivery instructions are only
@@ -424,7 +424,7 @@ const Form = (props: FormProps) => {
 									${textSans.medium()};
 									font-weight: bold;
 									margin-left: 22px;
-									color: ${brand[400]};
+									color: ${palette.brand[400]};
 								`}
 							>
 								Cancel
@@ -437,7 +437,7 @@ const Form = (props: FormProps) => {
 							css={css`
 								${textSans.medium()};
 								margin: ${space[12]}px 0 0;
-								color: ${neutral[46]};
+								color: ${palette.neutral[46]};
 							`}
 						>
 							If you need separate delivery addresses for each of
@@ -445,7 +445,7 @@ const Form = (props: FormProps) => {
 							<span
 								css={css`
 									cursor: pointer;
-									color: ${brand[500]};
+									color: ${palette.brand[500]};
 									text-decoration: underline;
 								`}
 								onClick={() =>
@@ -493,13 +493,13 @@ const Form = (props: FormProps) => {
 								left: ${space[5]}px;
 							`}
 						>
-							<InfoIconDark fillColor={brand[500]} />
+							<InfoIconDark fillColor={palette.brand[500]} />
 						</i>
 						Changed address? Please{' '}
 						<span
 							css={css`
 								cursor: pointer;
-								color: ${brand[500]};
+								color: ${palette.brand[500]};
 								text-decoration: underline;
 							`}
 							onClick={() =>
@@ -526,7 +526,7 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 		useContext(ContactIdContext);
 
 	const subHeadingCss = `
-		border-top: 1px solid ${neutral['86']};
+		border-top: 1px solid ${palette.neutral['86']};
 		${headline.small()};
 		font-weight: bold;
 		margin-top: 50px;
