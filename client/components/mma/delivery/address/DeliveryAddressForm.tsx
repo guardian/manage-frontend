@@ -4,6 +4,7 @@ import {
 	from,
 	headline,
 	neutral,
+	palette,
 	space,
 	textSans,
 	until,
@@ -106,8 +107,6 @@ const Form = (props: FormProps) => {
 				.friendlyName();
 			return `${friendlyProductName}`;
 		});
-
-	console.log(subscriptionsNames);
 
 	const handleFormSubmit = (e: FormEvent) => {
 		e.preventDefault();
@@ -467,79 +466,18 @@ const Form = (props: FormProps) => {
 			)}
 			{hasNationalDelivery && (
 				<>
-					{props.productType.delivery
-						?.enableDeliveryInstructionsUpdate && (
-						<label
-							css={css`
-								display: block;
-								color: ${neutral['7']};
-								${textSans.medium()};
-								font-weight: bold;
-							`}
-						>
-							Instructions
-							<div>
-								<div
-									css={css`
-										display: inline-block;
-										vertical-align: top;
-										margin-top: 4px;
-										width: 100%;
-										max-width: 30ch;
-									`}
-								>
-									<textarea
-										id="delivery-instructions"
-										name="instructions"
-										rows={2}
-										maxLength={250}
-										value={addressStateObject.instructions}
-										onChange={(
-											e: ChangeEvent<HTMLTextAreaElement>,
-										) => {
-											addressSetStateObject.setInstructions(
-												e.target.value,
-											);
-											setInstructionsRemainingCharacters(
-												250 - e.target.value.length,
-											);
-										}}
-										css={css`
-											width: 100%;
-											border: 2px solid ${neutral['60']};
-											padding: 12px;
-											resize: vertical;
-											${textSans.medium()};
-										`}
-									/>
-									<span
-										css={css`
-											display: block;
-											text-align: right;
-											${textSans.small()};
-											color: ${neutral[46]};
-										`}
-									>
-										{instructionsRemainingCharacters}{' '}
-										characters remaining
-									</span>
-								</div>
-							</div>
-						</label>
-					)}
 					<p
 						css={css`
 							display: block;
 							${textSans.medium()};
-							border: 4px solid ${brand[500]};
+							border: 4px solid ${palette.brand['500']};
 							padding: ${space[5]}px ${space[5]}px ${space[5]}px
 								49px;
-							margin: ${space[3]}px 0;
+							margin-top: 12px;
 							position: relative;
 							${from.tablet} {
 								display: inline-block;
 								vertical-align: top;
-								margin: 2px 0 ${space[3]}px ${space[3]}px;
 								width: calc(
 									100% - (30ch + ${space[3]}px + 2px)
 								);
@@ -574,6 +512,7 @@ const Form = (props: FormProps) => {
 						</span>
 						to update your delivery details.
 					</p>
+					{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
 				</>
 			)}
 		</>
@@ -597,18 +536,31 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 		};
 	`;
 
+	const hasNationalDelivery = Object.values(
+		contactIdToArrayOfProductDetailAndProductType,
+	)
+		.flatMap(flattenEquivalent)
+		.map(({ productDetail }) => {
+			const hasProducts = GROUPED_PRODUCT_TYPES.subscriptions
+				.mapGroupedToSpecific(productDetail)
+				.productType.includes('national delivery');
+			return `${hasProducts}`;
+		});
+
 	return (
 		<>
-			<ProgressIndicator
-				steps={[
-					{ title: 'Update', isCurrentStep: true },
-					{ title: 'Review' },
-					{ title: 'Confirmation' },
-				]}
-				additionalCSS={css`
-					margin-top: ${space[5]}px;
-				`}
-			/>
+			{!hasNationalDelivery && (
+				<ProgressIndicator
+					steps={[
+						{ title: 'Update', isCurrentStep: true },
+						{ title: 'Review' },
+						{ title: 'Confirmation' },
+					]}
+					additionalCSS={css`
+						margin-top: ${space[5]}px;
+					`}
+				/>
+			)}
 			<h2
 				css={css`
 					${subHeadingCss}
