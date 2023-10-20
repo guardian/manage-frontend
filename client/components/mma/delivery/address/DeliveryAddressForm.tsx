@@ -487,7 +487,7 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 						}
 					>
 						call our customer support team
-					</span>
+					</span>{' '}
 					to update your delivery details.
 				</p>
 				{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
