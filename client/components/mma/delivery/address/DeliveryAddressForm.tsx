@@ -28,8 +28,8 @@ import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { COUNTRIES } from '../../identity/models';
 import { InfoIconDark } from '../../shared/assets/InfoIconDark';
 import { InfoSection } from '../../shared/InfoSection';
-import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
 import type { ProductDescriptionListKeyValue } from '../../shared/ProductDescriptionListTable';
+import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import type { AddressSetStateObject } from './DeliveryAddressFormContext';
 import {
@@ -438,12 +438,16 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 		contactIdToArrayOfProductDetailAndProductType,
 	)
 		.flatMap(flattenEquivalent)
-		.map(({ productDetail }) => {
-			const hasProducts = GROUPED_PRODUCT_TYPES.subscriptions
+		.some(({ productDetail }) => {
+			console.log(productDetail);
+			return GROUPED_PRODUCT_TYPES.subscriptions
 				.mapGroupedToSpecific(productDetail)
-				.productType.includes('national delivery');
-			return `${hasProducts}`;
+				.productType.includes('nationaldelivery');
 		});
+
+	console.log(contactIdToArrayOfProductDetailAndProductType);
+
+	console.log(hasNationalDelivery);
 
 	if (hasNationalDelivery) {
 		return (
