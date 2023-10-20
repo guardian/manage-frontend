@@ -498,18 +498,16 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 
 	return (
 		<>
-			{!hasNationalDelivery && (
-				<ProgressIndicator
-					steps={[
-						{ title: 'Update', isCurrentStep: true },
-						{ title: 'Review' },
-						{ title: 'Confirmation' },
-					]}
-					additionalCSS={css`
-						margin-top: ${space[5]}px;
-					`}
-				/>
-			)}
+			<ProgressIndicator
+				steps={[
+					{ title: 'Update', isCurrentStep: true },
+					{ title: 'Review' },
+					{ title: 'Confirmation' },
+				]}
+				additionalCSS={css`
+					margin-top: ${space[5]}px;
+				`}
+			/>
 			<h2
 				css={css`
 					${subHeadingCss}
