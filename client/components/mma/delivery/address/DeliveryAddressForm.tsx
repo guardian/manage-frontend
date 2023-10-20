@@ -441,7 +441,7 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 		.some(({ productDetail }) => {
 			return GROUPED_PRODUCT_TYPES.subscriptions
 				.mapGroupedToSpecific(productDetail)
-				.productType.includes('nationaldelivery');
+				.productType === 'nationaldelivery';
 		});
 
 	if (hasNationalDelivery) {
