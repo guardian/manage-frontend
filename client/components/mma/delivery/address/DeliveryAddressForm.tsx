@@ -439,15 +439,10 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 	)
 		.flatMap(flattenEquivalent)
 		.some(({ productDetail }) => {
-			console.log(productDetail);
 			return GROUPED_PRODUCT_TYPES.subscriptions
 				.mapGroupedToSpecific(productDetail)
 				.productType.includes('nationaldelivery');
 		});
-
-	console.log(contactIdToArrayOfProductDetailAndProductType);
-
-	console.log(hasNationalDelivery);
 
 	if (hasNationalDelivery) {
 		return (
