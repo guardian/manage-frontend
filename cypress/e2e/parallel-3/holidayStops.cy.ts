@@ -41,6 +41,13 @@ describe('Holiday stops', () => {
 				message: 'success',
 			},
 		}).as('create_holiday_stop');
+
+		cy.intercept('PATCH', '/api/holidays/**', {
+			statusCode: 200,
+			body: {
+				message: 'success',
+			},
+		}).as('amend_holiday_stop');
 	});
 
 	it('can add a new holiday stop and add another', () => {
@@ -129,6 +136,10 @@ describe('Holiday stops', () => {
 
 		cy.get('@fetch_existing_holidays.all').should('have.length', 1);
 		cy.get('@product_detail.all').should('have.length', 1);
+
+		cy.findByText('Confirm').click();
+		cy.wait('@amend_holiday_stop');
+		cy.findByText('Your schedule has been set');
 	});
 
 	it('can delete an existing holiday stop from overview page', () => {
