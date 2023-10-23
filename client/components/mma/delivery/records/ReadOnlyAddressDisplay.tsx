@@ -6,7 +6,7 @@ import type { DeliveryAddress } from '../../../../../shared/productResponse';
 import { DeliveryAddressDisplay } from '../address/DeliveryAddressDisplay';
 
 interface ReadOnlyAddressDisplayProps {
-	showEditButton?: true;
+	showEditButton?: boolean;
 	editButtonCallback?: () => void;
 	address: DeliveryAddress;
 	instructions?: string;
