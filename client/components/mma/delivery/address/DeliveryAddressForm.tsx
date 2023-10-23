@@ -1,9 +1,8 @@
 import { css } from '@emotion/react';
 import {
-	brand,
 	from,
 	headline,
-	neutral,
+	palette,
 	space,
 	textSans,
 	until,
@@ -17,14 +16,11 @@ import {
 import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import type { DeliveryAddress } from '../../../../../shared/productResponse';
-import type {
-	ProductType,
-	WithProductType,
-} from '../../../../../shared/productTypes';
-import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
-import { addressChangeAffectedInfo } from '../../../../utilities/deliveryAddress';
-import { flattenEquivalent } from '../../../../utilities/utils';
+import { addressChangeAffectedInfo } from '@/client/utilities/deliveryAddress';
+import { flattenEquivalent } from '@/client/utilities/utils';
+import type { DeliveryAddress } from '@/shared/productResponse';
+import type { ProductType, WithProductType } from '@/shared/productTypes';
+import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { CallCentreNumbers } from '../../../shared/CallCentreNumbers';
 import { Input } from '../../../shared/Input';
@@ -32,8 +28,8 @@ import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { COUNTRIES } from '../../identity/models';
 import { InfoIconDark } from '../../shared/assets/InfoIconDark';
 import { InfoSection } from '../../shared/InfoSection';
-import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
 import type { ProductDescriptionListKeyValue } from '../../shared/ProductDescriptionListTable';
+import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
 import type { AddressSetStateObject } from './DeliveryAddressFormContext';
 import {
@@ -142,7 +138,7 @@ const Form = (props: FormProps) => {
 			<form action="#" onSubmit={handleFormSubmit}>
 				<fieldset
 					css={{
-						border: `1px solid ${neutral['86']}`,
+						border: `1px solid ${palette.neutral['86']}`,
 						padding: '48px 14px 14px',
 						position: 'relative',
 						marginBottom: `${space[5]}px`,
@@ -161,8 +157,8 @@ const Form = (props: FormProps) => {
 							${textSans.medium()};
 							font-weight: bold;
 							line-height: 48px;
-							background-color: ${neutral['97']};
-							border-bottom: 1px solid ${neutral['86']};
+							background-color: ${palette.neutral['97']};
+							border-bottom: 1px solid ${palette.neutral['86']};
 						`}
 					>
 						Delivery address
@@ -242,7 +238,7 @@ const Form = (props: FormProps) => {
 						<label
 							css={css`
 								display: block;
-								color: ${neutral['7']};
+								color: ${palette.neutral['7']};
 								${textSans.medium()};
 								font-weight: bold;
 							`}
@@ -276,7 +272,8 @@ const Form = (props: FormProps) => {
 										}}
 										css={css`
 											width: 100%;
-											border: 2px solid ${neutral['60']};
+											border: 2px solid
+												${palette.neutral['60']};
 											padding: 12px;
 											resize: vertical;
 											${textSans.medium()};
@@ -287,7 +284,7 @@ const Form = (props: FormProps) => {
 											display: block;
 											text-align: right;
 											${textSans.small()};
-											color: ${neutral[46]};
+											color: ${palette.neutral[46]};
 										`}
 									>
 										{instructionsRemainingCharacters}{' '}
@@ -298,7 +295,7 @@ const Form = (props: FormProps) => {
 									css={css`
 										display: block;
 										${textSans.medium()};
-										border: 4px solid ${brand[500]};
+										border: 4px solid ${palette.brand[500]};
 										padding: ${space[5]}px ${space[5]}px
 											${space[5]}px 49px;
 										margin: ${space[3]}px 0;
@@ -324,7 +321,9 @@ const Form = (props: FormProps) => {
 											left: ${space[5]}px;
 										`}
 									>
-										<InfoIconDark fillColor={brand[500]} />
+										<InfoIconDark
+											fillColor={palette.brand[500]}
+										/>
 									</i>
 									Delivery instructions are only applicable
 									for newspaper deliveries. They do not apply
@@ -376,7 +375,7 @@ const Form = (props: FormProps) => {
 							${textSans.medium()};
 							font-weight: bold;
 							margin-left: 22px;
-							color: ${brand[400]};
+							color: ${palette.brand[400]};
 						`}
 					>
 						Cancel
@@ -389,7 +388,7 @@ const Form = (props: FormProps) => {
 					css={css`
 						${textSans.medium()};
 						margin: ${space[12]}px 0 0;
-						color: ${neutral[46]};
+						color: ${palette.neutral[46]};
 					`}
 				>
 					If you need separate delivery addresses for each of your
@@ -397,7 +396,7 @@ const Form = (props: FormProps) => {
 					<span
 						css={css`
 							cursor: pointer;
-							color: ${brand[500]};
+							color: ${palette.brand[500]};
 							text-decoration: underline;
 						`}
 						onClick={() =>
@@ -421,9 +420,11 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 	const [formErrors, setFormErrors] = useState({ isValid: false });
 	const contactIdToArrayOfProductDetailAndProductType =
 		useContext(ContactIdContext);
+	const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
+		useState<boolean>(false);
 
 	const subHeadingCss = `
-		border-top: 1px solid ${neutral['86']};
+		border-top: 1px solid ${palette.neutral['86']};
 		${headline.small()};
 		font-weight: bold;
 		margin-top: 50px;
@@ -432,6 +433,67 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 			line-height: 1.6;
 		};
 	`;
+
+	const hasNationalDelivery = Object.values(
+		contactIdToArrayOfProductDetailAndProductType,
+	)
+		.flatMap(flattenEquivalent)
+		.some(({ productDetail }) => {
+			return GROUPED_PRODUCT_TYPES.subscriptions
+				.mapGroupedToSpecific(productDetail)
+				.productType === 'nationaldelivery';
+		});
+
+	if (hasNationalDelivery) {
+		return (
+			<>
+				<p
+					css={css`
+						display: block;
+						${textSans.medium()};
+						border: 4px solid ${palette.brand['500']};
+						padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
+						margin-top: 12px;
+						position: relative;
+						${from.tablet} {
+							display: inline-block;
+							vertical-align: top;
+							width: calc(100% - (30ch + ${space[3]}px + 2px));
+						}
+					`}
+				>
+					<i
+						css={css`
+							width: 17px;
+							height: 17px;
+							position: absolute;
+							top: ${space[5]}px;
+							left: ${space[5]}px;
+						`}
+					>
+						<InfoIconDark fillColor={palette.brand[500]} />
+					</i>
+					Changed address? Please{' '}
+					<span
+						css={css`
+							cursor: pointer;
+							color: ${palette.brand[500]};
+							text-decoration: underline;
+						`}
+						onClick={() =>
+							setTopCallCentreNumbersVisibility(
+								!showTopCallCentreNumbers,
+							)
+						}
+					>
+						call our customer support team
+					</span>{' '}
+					to update your delivery details.
+				</p>
+				{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
+			</>
+		);
+	}
 
 	return (
 		<>
