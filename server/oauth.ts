@@ -24,7 +24,6 @@ export const oauthCookieOptions: CookieOptions = {
 	signed: true,
 	secure: true,
 	httpOnly: true,
-	sameSite: 'strict',
 };
 
 const sharedTokenVerifierOptions = (
