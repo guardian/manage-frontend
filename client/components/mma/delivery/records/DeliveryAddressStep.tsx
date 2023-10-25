@@ -24,7 +24,10 @@ import {
 	isProduct,
 	MembersDataApiAsyncLoader,
 } from '../../../../../shared/productResponse';
-import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
+import {
+	GROUPED_PRODUCT_TYPES,
+	PRODUCT_TYPES,
+} from '../../../../../shared/productTypes';
 import {
 	addressChangeAffectedInfo,
 	getValidDeliveryAddressChangeEffectiveDates,
@@ -36,6 +39,7 @@ import { Input } from '../../../shared/Input';
 import { COUNTRIES } from '../../identity/models';
 import { InfoIconDark } from '../../shared/assets/InfoIconDark';
 import { AsyncLoader } from '../../shared/AsyncLoader';
+import { CallCentrePrompt } from '../../shared/CallCentrePrompt';
 import { InfoSection } from '../../shared/InfoSection';
 import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
 import type { ProductDescriptionListKeyValue } from '../../shared/ProductDescriptionListTable';
@@ -82,6 +86,15 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 	const [formErrors, setFormErrors] = useState<FormValidationResponse>({
 		isValid: false,
 	});
+
+	const groupedProductType =
+		GROUPED_PRODUCT_TYPES[props.productDetail.mmaCategory];
+	const specificProductType = groupedProductType.mapGroupedToSpecific(
+		props.productDetail,
+	);
+
+	const isNationalDelivery =
+		specificProductType === PRODUCT_TYPES.nationaldelivery;
 
 	const [showCallCentreNumbers, setCallCentreNumbersVisibility] =
 		useState<boolean>(false);
@@ -173,6 +186,30 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 					.friendlyName();
 				return `${friendlyProductName}`;
 			});
+
+		const hasNationalDelivery = Object.values(
+			contactIdToArrayOfProductDetailAndProductType,
+		)
+			.flatMap(flattenEquivalent)
+			.some(({ productDetail }) => {
+				return (
+					GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
+						productDetail,
+					).productType === 'nationaldelivery'
+				);
+			});
+
+		if (hasNationalDelivery) {
+			return (
+				<div
+					css={css`
+						margin-top: ${space[3]}px;
+					`}
+				>
+					<CallCentrePrompt />
+				</div>
+			);
+		}
 
 		return (
 			<>
@@ -599,18 +636,29 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		);
 	}
 	return (
-		<ReadOnlyAddressDisplay
-			showEditButton
-			editButtonCallback={() => {
-				props.setAddressValidationState(false);
-				setStatus(Status.Edit);
-			}}
-			address={newAddress}
-			instructions={
-				(props.enableDeliveryInstructions &&
-					deliveryAddressContext.address?.instructions) ||
-				undefined
-			}
-		/>
+		<>
+			<ReadOnlyAddressDisplay
+				showEditButton={!isNationalDelivery}
+				editButtonCallback={() => {
+					props.setAddressValidationState(false);
+					setStatus(Status.Edit);
+				}}
+				address={newAddress}
+				instructions={
+					(props.enableDeliveryInstructions &&
+						deliveryAddressContext.address?.instructions) ||
+					undefined
+				}
+			/>
+			{isNationalDelivery && (
+				<div
+					css={css`
+						padding: ${space[2]}px;
+					`}
+				>
+					<CallCentrePrompt />
+				</div>
+			)}
+		</>
 	);
 };

@@ -27,6 +27,7 @@ import { Input } from '../../../shared/Input';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { COUNTRIES } from '../../identity/models';
 import { InfoIconDark } from '../../shared/assets/InfoIconDark';
+import { CallCentrePrompt } from '../../shared/CallCentrePrompt';
 import { InfoSection } from '../../shared/InfoSection';
 import type { ProductDescriptionListKeyValue } from '../../shared/ProductDescriptionListTable';
 import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
@@ -420,8 +421,6 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 	const [formErrors, setFormErrors] = useState({ isValid: false });
 	const contactIdToArrayOfProductDetailAndProductType =
 		useContext(ContactIdContext);
-	const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
-		useState<boolean>(false);
 
 	const subHeadingCss = `
 		border-top: 1px solid ${palette.neutral['86']};
@@ -439,59 +438,22 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 	)
 		.flatMap(flattenEquivalent)
 		.some(({ productDetail }) => {
-			return GROUPED_PRODUCT_TYPES.subscriptions
-				.mapGroupedToSpecific(productDetail)
-				.productType === 'nationaldelivery';
+			return (
+				GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
+					productDetail,
+				).productType === 'nationaldelivery'
+			);
 		});
 
 	if (hasNationalDelivery) {
 		return (
-			<>
-				<p
-					css={css`
-						display: block;
-						${textSans.medium()};
-						border: 4px solid ${palette.brand['500']};
-						padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
-						margin-top: 12px;
-						position: relative;
-						${from.tablet} {
-							display: inline-block;
-							vertical-align: top;
-							width: calc(100% - (30ch + ${space[3]}px + 2px));
-						}
-					`}
-				>
-					<i
-						css={css`
-							width: 17px;
-							height: 17px;
-							position: absolute;
-							top: ${space[5]}px;
-							left: ${space[5]}px;
-						`}
-					>
-						<InfoIconDark fillColor={palette.brand[500]} />
-					</i>
-					Changed address? Please{' '}
-					<span
-						css={css`
-							cursor: pointer;
-							color: ${palette.brand[500]};
-							text-decoration: underline;
-						`}
-						onClick={() =>
-							setTopCallCentreNumbersVisibility(
-								!showTopCallCentreNumbers,
-							)
-						}
-					>
-						call our customer support team
-					</span>{' '}
-					to update your delivery details.
-				</p>
-				{showTopCallCentreNumbers && <CallCentreEmailAndNumbers />}
-			</>
+			<div
+				css={css`
+					margin-top: ${space[3]}px;
+				`}
+			>
+				<CallCentrePrompt />
+			</div>
 		);
 	}
 
