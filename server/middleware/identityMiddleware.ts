@@ -88,8 +88,7 @@ export const authenticateWithOAuth = async (
 			}
 
 			const { accessToken, idToken } = await verifyOAuthCookies(req);
-			const idapiCookies = allIdapiCookiesSet(req);
-			if (idapiCookies && accessToken && idToken) {
+			if (allIdapiCookiesSet(req) && accessToken && idToken) {
 				// The user has valid access and ID tokens, and the full set of IDAPI cookies,
 				// so they're signed in. We set req.locals.identity so that the frontend can
 				// correctly show the user as signed in and continue to the route.
@@ -120,8 +119,7 @@ export const authenticateWithOAuth = async (
 			// and add the result to res.locals (which will get passed to the frontend
 			// and correctly show if the user is signed in).
 			const { accessToken, idToken } = await verifyOAuthCookies(req);
-			const idapiCookies = allIdapiCookiesSet(req);
-			if (idapiCookies && accessToken && idToken) {
+			if (allIdapiCookiesSet(req) && accessToken && idToken) {
 				setLocalStateFromIdTokenOrUserCookie(req, res, idToken);
 				// The user is signed in.
 				return next();
