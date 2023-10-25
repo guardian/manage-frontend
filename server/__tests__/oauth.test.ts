@@ -115,8 +115,6 @@ describe('verifyOAuthCookies', () => {
 	});
 
 	it('returns an empty object if the ID token is invalid', async () => {
-		// (oauth.verifyIdToken as jest.Mock).mockResolvedValue(null);
-
 		const req = {
 			signedCookies: {
 				GU_ACCESS_TOKEN: 'access-token',
