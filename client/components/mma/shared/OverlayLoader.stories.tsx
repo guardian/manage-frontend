@@ -1,5 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
-import type { OverlayLoaderProps } from './OverlayLoader';
+import type { Meta } from '@storybook/react';
 import { OverlayLoader } from './OverlayLoader';
 
 export default {
@@ -13,8 +12,4 @@ export default {
 	},
 } as Meta<typeof OverlayLoader>;
 
-const Template: StoryFn<typeof OverlayLoader> = (args: OverlayLoaderProps) => (
-	<OverlayLoader {...args} />
-);
-
-export const Default = Template.bind({});
+export const Default = {};

@@ -1,7 +1,6 @@
-import { brand, neutral } from '@guardian/source-foundations';
-import type { Meta, StoryFn } from '@storybook/react';
+import { palette } from '@guardian/source-foundations';
+import type { Meta } from '@storybook/react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
-import type { LinkButtonProps } from './Buttons';
 import { LinkButton } from './Buttons';
 
 export default {
@@ -64,45 +63,47 @@ export default {
 	},
 } as Meta<typeof LinkButton>;
 
-const Template: StoryFn<typeof LinkButton> = (args: LinkButtonProps) => (
-	<LinkButton {...args} />
-);
+export const Default = {};
 
-export const Default = Template.bind({});
-
-export const BoldWithBrandColours = Template.bind({});
-BoldWithBrandColours.args = {
-	fontWeight: 'bold',
-	colour: brand[800],
-	textColour: brand[400],
+export const BoldWithBrandColours = {
+	args: {
+		fontWeight: 'bold',
+		colour: palette.brand[800],
+		textColour: palette.brand[400],
+	},
 };
 
-export const WithAlert = Template.bind({});
-WithAlert.args = {
-	alert: true,
-	fontWeight: 'bold',
-	colour: brand[400],
-	textColour: neutral[100],
+export const WithAlert = {
+	args: {
+		alert: true,
+		fontWeight: 'bold',
+		colour: palette.brand[400],
+		textColour: palette.neutral[100],
+	},
 };
 
-export const WithRightArrow = Template.bind({});
-WithRightArrow.args = {
-	right: true,
+export const WithRightArrow = {
+	args: {
+		right: true,
+	},
 };
 
-export const WithLeftArrow = Template.bind({});
-WithLeftArrow.args = {
-	left: true,
+export const WithLeftArrow = {
+	args: {
+		left: true,
+	},
 };
 
-export const PrimaryWithRightArrow = Template.bind({});
-PrimaryWithRightArrow.args = {
-	primary: true,
-	right: true,
+export const PrimaryWithRightArrow = {
+	args: {
+		primary: true,
+		right: true,
+	},
 };
 
-export const HollowWithLeftArrow = Template.bind({});
-HollowWithLeftArrow.args = {
-	hollow: true,
-	left: true,
+export const HollowWithLeftArrow = {
+	args: {
+		hollow: true,
+		left: true,
+	},
 };

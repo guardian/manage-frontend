@@ -1,4 +1,4 @@
-import type { Meta , StoryFn } from '@storybook/react';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
@@ -44,23 +44,27 @@ export const Review: StoryFn<typeof DeliveryAddressReview> = () => {
 	return <DeliveryAddressReview productType={PRODUCT_TYPES.guardianweekly} />;
 };
 
-export const Confirmation: StoryFn<typeof DeliveryAddressConfirmation> = () => {
-	return (
-		<DeliveryAddressConfirmation
-			productType={PRODUCT_TYPES.guardianweekly}
-		/>
-	);
-};
+export const Confirmation: StoryObj<typeof DeliveryAddressConfirmation> = {
+	render: () => {
+		return (
+			<DeliveryAddressConfirmation
+				productType={PRODUCT_TYPES.guardianweekly}
+			/>
+		);
+	},
 
-Confirmation.parameters = {
-	msw: [
-		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(
-				ctx.json(toMembersDataApiResponse(guardianWeeklyPaidByCard())),
-			);
-		}),
-		rest.put('/api/delivery/address/update/*', (_req, res, ctx) => {
-			return res(ctx.status(200));
-		}),
-	],
+	parameters: {
+		msw: [
+			rest.get('/api/me/mma', (_req, res, ctx) => {
+				return res(
+					ctx.json(
+						toMembersDataApiResponse(guardianWeeklyPaidByCard()),
+					),
+				);
+			}),
+			rest.put('/api/delivery/address/update/*', (_req, res, ctx) => {
+				return res(ctx.status(200));
+			}),
+		],
+	},
 };

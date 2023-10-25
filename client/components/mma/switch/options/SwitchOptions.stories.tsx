@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import {
 	contributionPaidByPayPal,
@@ -27,21 +27,23 @@ export const AboveThreshold: StoryFn<typeof SwitchOptions> = () => (
 	<SwitchOptions />
 );
 
-export const BelowThreshold: StoryFn<typeof SwitchOptions> = () => (
-	<SwitchOptions />
-);
+export const BelowThreshold: StoryObj<typeof SwitchOptions> = {
+	render: () => <SwitchOptions />,
 
-BelowThreshold.parameters = {
-	reactRouter: {
-		state: { productDetail: contributionPaidByPayPal() },
+	parameters: {
+		reactRouter: {
+			state: { productDetail: contributionPaidByPayPal() },
+		},
 	},
 };
 
-export const FromApp: StoryFn<typeof SwitchOptions> = () => <SwitchOptions />;
+export const FromApp: StoryObj<typeof SwitchOptions> = {
+	render: () => <SwitchOptions />,
 
-FromApp.parameters = {
-	reactRouter: {
-		container: <SwitchContainer isFromApp={true} />,
-		state: { productDetail: contributionPaidByPayPal() },
+	parameters: {
+		reactRouter: {
+			container: <SwitchContainer isFromApp={true} />,
+			state: { productDetail: contributionPaidByPayPal() },
+		},
 	},
 };

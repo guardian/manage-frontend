@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import {
 	contributionPaidByPayPal,
@@ -28,20 +28,22 @@ export default {
 
 export const Default: StoryFn<typeof SwitchComplete> = () => <SwitchComplete />;
 
-export const YearlyOtherCurrency: StoryFn<typeof SwitchComplete> = () => (
-	<SwitchComplete />
-);
+export const YearlyOtherCurrency: StoryObj<typeof SwitchComplete> = {
+	render: () => <SwitchComplete />,
 
-YearlyOtherCurrency.parameters = {
-	reactRouter: {
-		state: { productDetail: contributionPaidByPayPal() },
+	parameters: {
+		reactRouter: {
+			state: { productDetail: contributionPaidByPayPal() },
+		},
 	},
 };
 
-export const FromApp: StoryFn<typeof SwitchComplete> = () => <SwitchComplete />;
+export const FromApp: StoryObj<typeof SwitchComplete> = {
+	render: () => <SwitchComplete />,
 
-FromApp.parameters = {
-	reactRouter: {
-		container: <SwitchContainer isFromApp={true} />,
+	parameters: {
+		reactRouter: {
+			container: <SwitchContainer isFromApp={true} />,
+		},
 	},
 };

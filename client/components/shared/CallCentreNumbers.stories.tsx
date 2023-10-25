@@ -16,10 +16,15 @@ const Template: StoryFn<typeof CallCentreNumbers> = (
 	return <CallCentreNumbers {...args} />;
 };
 
-export const Default = Template.bind({});
+export const Default = {
+	render: Template,
+};
 
-export const WithCustomPrefix = Template.bind({});
-WithCustomPrefix.args = {
-	prefixText:
-		'If you’re not sure what’s best for you or would like help, to contact us',
+export const WithCustomPrefix = {
+	render: Template,
+
+	args: {
+		prefixText:
+			'If you’re not sure what’s best for you or would like help, to contact us',
+	},
 };

@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { SectionContent } from '../../shared/SectionContent';
@@ -15,24 +15,26 @@ export default {
 	},
 } as Meta<typeof ContactUs>;
 
-export const Default: StoryFn<typeof ContactUs> = () => {
-	return (
-		<>
-			<SectionHeader title="Need to contact us?" />
-			<KnownIssues issues={[]} />
-			<SectionContent>
-				<ContactUs />
-			</SectionContent>
-		</>
-	);
-};
+export const Default: StoryObj<typeof ContactUs> = {
+	render: () => {
+		return (
+			<>
+				<SectionHeader title="Need to contact us?" />
+				<KnownIssues issues={[]} />
+				<SectionContent>
+					<ContactUs />
+				</SectionContent>
+			</>
+		);
+	},
 
-Default.parameters = {
-	msw: [
-		rest.get('/api/known-issues/', (_req, res, ctx) => {
-			return res(ctx.json([]));
-		}),
-	],
+	parameters: {
+		msw: [
+			rest.get('/api/known-issues/', (_req, res, ctx) => {
+				return res(ctx.json([]));
+			}),
+		],
+	},
 };
 
 const knownIssue = [
@@ -42,38 +44,43 @@ const knownIssue = [
 	},
 ];
 
-export const WithKnownIssue: StoryFn<typeof ContactUs> = () => {
-	return (
+export const WithKnownIssue: StoryObj<typeof ContactUs> = {
+	render: () => {
+		return (
+			<>
+				<SectionHeader title="Need to contact us?" />
+				<KnownIssues issues={knownIssue} />
+				<SectionContent>
+					<ContactUs />
+				</SectionContent>
+			</>
+		);
+	},
+
+	parameters: {
+		msw: [
+			rest.get('/api/known-issues/', (_req, res, ctx) => {
+				return res(ctx.json(knownIssue));
+			}),
+		],
+	},
+};
+
+export const TopicSelected: StoryObj<typeof ContactUs> = {
+	render: () => (
 		<>
 			<SectionHeader title="Need to contact us?" />
-			<KnownIssues issues={knownIssue} />
+			<KnownIssues issues={[]} />
 			<SectionContent>
 				<ContactUs />
 			</SectionContent>
 		</>
-	);
-};
+	),
 
-WithKnownIssue.parameters = {
-	msw: [
-		rest.get('/api/known-issues/', (_req, res, ctx) => {
-			return res(ctx.json(knownIssue));
-		}),
-	],
-};
-
-export const TopicSelected: StoryFn<typeof ContactUs> = () => (
-	<>
-		<SectionHeader title="Need to contact us?" />
-		<KnownIssues issues={[]} />
-		<SectionContent>
-			<ContactUs />
-		</SectionContent>
-	</>
-);
-TopicSelected.parameters = {
-	reactRouter: {
-		location: '/contact-us/billing',
-		path: '/contact-us/:urlTopicId',
+	parameters: {
+		reactRouter: {
+			location: '/contact-us/billing',
+			path: '/contact-us/:urlTopicId',
+		},
 	},
 };

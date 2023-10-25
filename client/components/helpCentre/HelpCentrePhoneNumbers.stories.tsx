@@ -1,5 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
-import type { HelpCentrePhoneNumbersProps } from './HelpCentrePhoneNumbers';
+import type { Meta } from '@storybook/react';
 import { HelpCentrePhoneNumbers } from './HelpCentrePhoneNumbers';
 
 export default {
@@ -15,13 +14,10 @@ export default {
 	},
 } as Meta<typeof HelpCentrePhoneNumbers>;
 
-const Template: StoryFn<typeof HelpCentrePhoneNumbers> = (
-	args: HelpCentrePhoneNumbersProps,
-) => <HelpCentrePhoneNumbers {...args} />;
+export const Default = {};
 
-export const Default = Template.bind({});
-
-export const CompactLayout = Template.bind({});
-CompactLayout.args = {
-	compactLayout: true,
+export const CompactLayout = {
+	args: {
+		compactLayout: true,
+	},
 };

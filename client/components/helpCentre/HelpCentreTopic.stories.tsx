@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { SectionContent } from '../shared/SectionContent';
@@ -33,25 +33,27 @@ const topicContent = {
 	],
 };
 
-export const Default: StoryFn<typeof HelpCentreTopic> = () => {
-	return (
-		<>
-			<SectionHeader title="How can we help you?" pageHasNav={true} />
-			<SectionContent hasNav={true}>
-				<HelpCentreTopic />
-			</SectionContent>
-		</>
-	);
-};
+export const Default: StoryObj<typeof HelpCentreTopic> = {
+	render: () => {
+		return (
+			<>
+				<SectionHeader title="How can we help you?" pageHasNav={true} />
+				<SectionContent hasNav={true}>
+					<HelpCentreTopic />
+				</SectionContent>
+			</>
+		);
+	},
 
-Default.parameters = {
-	msw: [
-		rest.get('/api/help-centre/topic/delivery', (_req, res, ctx) => {
-			return res(ctx.json(topicContent));
-		}),
-	],
-	reactRouter: {
-		location: '/topic/delivery',
-		path: '/topic/:topicCode',
+	parameters: {
+		msw: [
+			rest.get('/api/help-centre/topic/delivery', (_req, res, ctx) => {
+				return res(ctx.json(topicContent));
+			}),
+		],
+		reactRouter: {
+			location: '/topic/delivery',
+			path: '/topic/:topicCode',
+		},
 	},
 };

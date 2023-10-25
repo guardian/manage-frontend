@@ -1,5 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
-import type { LoadingProps } from './Spinner';
+import type { Meta } from '@storybook/react';
 import { Spinner } from './Spinner';
 
 export default {
@@ -23,18 +22,16 @@ export default {
 	},
 } as Meta<typeof Spinner>;
 
-const Template: StoryFn<typeof Spinner> = (args: LoadingProps) => (
-	<Spinner {...args} />
-);
+export const Default = {};
 
-export const Default = Template.bind({});
-
-export const Scaled = Template.bind({});
-Scaled.args = {
-	scale: 2,
+export const Scaled = {
+	args: {
+		scale: 2,
+	},
 };
 
-export const WithLoadingMessage = Template.bind({});
-WithLoadingMessage.args = {
-	loadingMessage: 'Loading your account details...',
+export const WithLoadingMessage = {
+	args: {
+		loadingMessage: 'Loading your account details...',
+	},
 };

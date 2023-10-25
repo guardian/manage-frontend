@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import type { ProductTypeWithDeliveryRecordsProperties } from '../../../../../shared/productTypes';
@@ -28,46 +28,51 @@ export default {
 	},
 } as Meta<typeof DeliveryRecordsContainer>;
 
-export const DeliveryHistory: StoryFn<typeof DeliveryRecords> = () => {
-	return <DeliveryRecords />;
-};
+export const DeliveryHistory: StoryObj<typeof DeliveryRecords> = {
+	render: () => {
+		return <DeliveryRecords />;
+	},
 
-DeliveryHistory.parameters = {
-	msw: [
-		rest.get('/api/delivery-records/*', (_req, res, ctx) => {
-			return res(ctx.json(deliveryRecordsWithDelivery));
-		}),
-	],
-};
-
-export const Review: StoryFn<typeof DeliveryRecordsProblemReview> = () => {
-	return <DeliveryRecordsProblemReview />;
-};
-
-Review.parameters = {
-	msw: [
-		rest.get('/api/delivery-records/*', (_req, res, ctx) => {
-			return res(ctx.json(deliveryRecordsWithDelivery));
-		}),
-	],
-	reactRouter: {
-		state: { affectedRecords: deliveryRecordsWithDelivery.results },
+	parameters: {
+		msw: [
+			rest.get('/api/delivery-records/*', (_req, res, ctx) => {
+				return res(ctx.json(deliveryRecordsWithDelivery));
+			}),
+		],
 	},
 };
 
-export const Confirmation: StoryFn<
-	typeof DeliveryRecordsProblemConfirmation
-> = () => {
-	return <DeliveryRecordsProblemConfirmation />;
+export const Review: StoryObj<typeof DeliveryRecordsProblemReview> = {
+	render: () => {
+		return <DeliveryRecordsProblemReview />;
+	},
+
+	parameters: {
+		msw: [
+			rest.get('/api/delivery-records/*', (_req, res, ctx) => {
+				return res(ctx.json(deliveryRecordsWithDelivery));
+			}),
+		],
+		reactRouter: {
+			state: { affectedRecords: deliveryRecordsWithDelivery.results },
+		},
+	},
 };
 
-Confirmation.parameters = {
-	msw: [
-		rest.get('/api/delivery-records/*', (_req, res, ctx) => {
-			return res(ctx.json(deliveryRecordsWithDelivery));
-		}),
-		rest.post('/api/delivery-records/*', (_req, res, ctx) => {
-			return res(ctx.json(deliveryRecordsWithDelivery));
-		}),
-	],
-};
+export const Confirmation: StoryObj<typeof DeliveryRecordsProblemConfirmation> =
+	{
+		render: () => {
+			return <DeliveryRecordsProblemConfirmation />;
+		},
+
+		parameters: {
+			msw: [
+				rest.get('/api/delivery-records/*', (_req, res, ctx) => {
+					return res(ctx.json(deliveryRecordsWithDelivery));
+				}),
+				rest.post('/api/delivery-records/*', (_req, res, ctx) => {
+					return res(ctx.json(deliveryRecordsWithDelivery));
+				}),
+			],
+		},
+	};

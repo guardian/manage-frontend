@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
@@ -36,34 +36,40 @@ export const SelectReason: StoryFn<typeof CancellationReasonSelection> = () => {
 	return <CancellationReasonSelection />;
 };
 
-export const ContactCustomerService: StoryFn<
+export const ContactCustomerService: StoryObj<
 	typeof CancellationReasonSelection
-> = () => <CancellationReasonSelection />;
+> = {
+	render: () => <CancellationReasonSelection />,
 
-ContactCustomerService.parameters = {
-	reactRouter: {
-		state: { productDetail: guardianWeeklyPaidByCard() },
-		container: (
-			<CancellationContainer productType={PRODUCT_TYPES.guardianweekly} />
-		),
+	parameters: {
+		reactRouter: {
+			state: { productDetail: guardianWeeklyPaidByCard() },
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.guardianweekly}
+				/>
+			),
+		},
 	},
 };
 
-export const Review: StoryFn<typeof CancellationContainer> = () => {
-	return <CancellationReasonReview />;
-};
+export const Review: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancellationReasonReview />;
+	},
 
-Review.parameters = {
-	msw: [
-		rest.post('/api/case', (_req, res, ctx) => {
-			return res(ctx.json({ id: 'caseId' }));
-		}),
-	],
-	reactRouter: {
-		state: {
-			productDetail: contributionPaidByPayPal(),
-			selectedReasonId: 'mma_editorial',
-			cancellationPolicy: 'Today',
+	parameters: {
+		msw: [
+			rest.post('/api/case', (_req, res, ctx) => {
+				return res(ctx.json({ id: 'caseId' }));
+			}),
+		],
+		reactRouter: {
+			state: {
+				productDetail: contributionPaidByPayPal(),
+				selectedReasonId: 'mma_editorial',
+				cancellationPolicy: 'Today',
+			},
 		},
 	},
 };

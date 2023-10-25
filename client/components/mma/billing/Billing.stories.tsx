@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { featureSwitches } from '@/shared/featureSwitches';
@@ -27,65 +27,69 @@ export default {
 	},
 } as Meta<typeof Billing>;
 
-export const NoSubscription: StoryFn<typeof Billing> = () => {
-	return <Billing />;
+export const NoSubscription: StoryObj<typeof Billing> = {
+	render: () => {
+		return <Billing />;
+	},
+
+	parameters: {
+		msw: [
+			rest.get('/api/me/mma', (_req, res, ctx) => {
+				return res(ctx.json(toMembersDataApiResponse()));
+			}),
+			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+				return res(
+					ctx.json({
+						subscriptions: [],
+					}),
+				);
+			}),
+			rest.get('/api/invoices', (_req, res, ctx) => {
+				return res(ctx.json({ invoices: [] }));
+			}),
+
+			rest.get('/idapi/user', (_req, res, ctx) => {
+				return res(ctx.json(user));
+			}),
+		],
+	},
 };
 
-NoSubscription.parameters = {
-	msw: [
-		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(ctx.json(toMembersDataApiResponse()));
-		}),
-		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-			return res(
-				ctx.json({
-					subscriptions: [],
-				}),
-			);
-		}),
-		rest.get('/api/invoices', (_req, res, ctx) => {
-			return res(ctx.json({ invoices: [] }));
-		}),
+export const WithSubscriptions: StoryObj<typeof Billing> = {
+	render: () => {
+		featureSwitches['appSubscriptions'] = true;
 
-		rest.get('/idapi/user', (_req, res, ctx) => {
-			return res(ctx.json(user));
-		}),
-	],
-};
+		return <Billing />;
+	},
 
-export const WithSubscriptions: StoryFn<typeof Billing> = () => {
-	featureSwitches['appSubscriptions'] = true;
-
-	return <Billing />;
-};
-
-WithSubscriptions.parameters = {
-	msw: [
-		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(
-				ctx.json(
-					toMembersDataApiResponse(
-						guardianWeeklyPaidByCard(),
-						digitalPackPaidByDirectDebit(),
-						newspaperVoucherPaidByPaypal(),
+	parameters: {
+		msw: [
+			rest.get('/api/me/mma', (_req, res, ctx) => {
+				return res(
+					ctx.json(
+						toMembersDataApiResponse(
+							guardianWeeklyPaidByCard(),
+							digitalPackPaidByDirectDebit(),
+							newspaperVoucherPaidByPaypal(),
+						),
 					),
-				),
-			);
-		}),
-		rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-			return res(
-				ctx.json({
-					subscriptions: [
-						InAppPurchase,
-						InAppPurchaseIos,
-						InAppPurchaseAndroid,
-						PuzzleAppPurchaseAndroid,
-					],
-				}),
-			);
-		}),
-		rest.get('/api/invoices', (_req, res, ctx) => {
-			return res(ctx.json({ invoices: [guardianWeeklyCardInvoice] }));
-		}),
-	],
+				);
+			}),
+			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+				return res(
+					ctx.json({
+						subscriptions: [
+							InAppPurchase,
+							InAppPurchaseIos,
+							InAppPurchaseAndroid,
+							PuzzleAppPurchaseAndroid,
+						],
+					}),
+				);
+			}),
+			rest.get('/api/invoices', (_req, res, ctx) => {
+				return res(ctx.json({ invoices: [guardianWeeklyCardInvoice] }));
+			}),
+		],
+	},
 };
