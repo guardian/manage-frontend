@@ -84,7 +84,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 		jest.spyOn(oauth, 'verifyAccessToken').mockResolvedValue({
 			isExpired: () => true,
 			claims: {
-				scp: oauth.scopes,
+				scp: oauth.scopes as readonly oauth.Scopes[],
 			},
 		} as Jwt);
 		jest.spyOn(oauth, 'verifyIdToken').mockResolvedValue({
@@ -127,7 +127,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 		jest.spyOn(oauth, 'verifyAccessToken').mockResolvedValue({
 			isExpired: () => false,
 			claims: {
-				scp: oauth.scopes,
+				scp: oauth.scopes as readonly oauth.Scopes[],
 			},
 		} as Jwt);
 		jest.spyOn(oauth, 'verifyIdToken').mockResolvedValue(idToken);
@@ -172,7 +172,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 		jest.spyOn(oauth, 'verifyAccessToken').mockResolvedValue({
 			isExpired: () => false,
 			claims: {
-				scp: oauth.scopes,
+				scp: oauth.scopes as readonly oauth.Scopes[],
 			},
 		} as Jwt);
 		jest.spyOn(oauth, 'verifyIdToken').mockResolvedValue(idToken);
@@ -288,7 +288,7 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 		jest.spyOn(oauth, 'verifyAccessToken').mockResolvedValue({
 			isExpired: () => false,
 			claims: {
-				scp: oauth.scopes,
+				scp: oauth.scopes as readonly oauth.Scopes[],
 			},
 		} as Jwt);
 		jest.spyOn(oauth, 'verifyIdToken').mockResolvedValue(idToken);

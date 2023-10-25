@@ -4,6 +4,7 @@
 
 import type { Jwt } from '@okta/jwt-verifier';
 import type { Request } from 'express';
+import type { Scopes } from '../oauth';
 import * as oauth from '../oauth';
 import { scopes } from '../oauth';
 
@@ -61,7 +62,7 @@ describe('verifyOAuthCookies', () => {
 			.mockResolvedValue({
 				isExpired: () => false,
 				claims: {
-					scp: scopes,
+					scp: scopes as readonly Scopes[],
 				},
 			} as Jwt);
 
@@ -97,7 +98,7 @@ describe('verifyOAuthCookies', () => {
 			.mockResolvedValue({
 				isExpired: () => true,
 				claims: {
-					scp: scopes,
+					scp: scopes as readonly Scopes[],
 				},
 			} as Jwt);
 
@@ -127,7 +128,7 @@ describe('verifyOAuthCookies', () => {
 			.mockResolvedValue({
 				isExpired: () => false,
 				claims: {
-					scp: scopes,
+					scp: scopes as readonly Scopes[],
 				},
 			} as Jwt);
 

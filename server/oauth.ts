@@ -89,22 +89,7 @@ export const verifyIdToken = async (token: string) => {
 	}
 };
 
-export type Scopes =
-	| 'openid'
-	| 'profile'
-	| 'email'
-	| 'guardian.avatar-api.read.self'
-	| 'guardian.avatar-api.update.self'
-	| 'guardian.identity-api.newsletters.read.self'
-	| 'guardian.identity-api.newsletters.update.self'
-	| 'guardian.identity-api.user.read.self.secure'
-	| 'guardian.identity-api.user.update.self.secure'
-	| 'guardian.identity-api.user.username.create.self.secure'
-	| 'guardian.identity-api.consents.read.self'
-	| 'guardian.identity-api.consents.update.self'
-	| 'guardian.identity-api.cookies.create.self.secure';
-
-export const scopes: Scopes[] = [
+export const scopes = [
 	'openid',
 	'profile',
 	'email',
@@ -118,7 +103,8 @@ export const scopes: Scopes[] = [
 	'guardian.identity-api.consents.read.self',
 	'guardian.identity-api.consents.update.self',
 	'guardian.identity-api.cookies.create.self.secure',
-];
+] as const;
+export type Scopes = typeof scopes[number];
 
 export const ManageMyAccountOpenIdClient = async () => {
 	const oktaConfig = await getOktaConfig();
@@ -156,7 +142,7 @@ export const ManageMyAccountOpenIdClient = async () => {
  */
 interface PerformAuthorizationCodeFlowOptions {
 	redirectUri: string;
-	scopes: Scopes[];
+	scopes: readonly Scopes[];
 	sessionToken?: string | null;
 	returnPath?: string;
 }
