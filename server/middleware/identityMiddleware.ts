@@ -24,7 +24,7 @@ import {
 	sanitizeReturnPath,
 	scopes,
 	setLocalStateFromIdTokenOrUserCookie,
-	verifyOAuthCookies,
+	verifyOAuthCookiesLocally,
 } from '@/server/oauth';
 import { getConfig as getOktaConfig } from '@/server/oktaConfig';
 import {
@@ -87,7 +87,9 @@ export const authenticateWithOAuth = async (
 				});
 			}
 
-			const { accessToken, idToken } = await verifyOAuthCookies(req);
+			const { accessToken, idToken } = await verifyOAuthCookiesLocally(
+				req,
+			);
 			if (allIdapiCookiesSet(req) && accessToken && idToken) {
 				// The user has valid access and ID tokens, and the full set of IDAPI cookies,
 				// so they're signed in. We set req.locals.identity so that the frontend can
@@ -118,7 +120,9 @@ export const authenticateWithOAuth = async (
 			// If we do have access and ID token cookies, we can attempt to verify them
 			// and add the result to res.locals (which will get passed to the frontend
 			// and correctly show if the user is signed in).
-			const { accessToken, idToken } = await verifyOAuthCookies(req);
+			const { accessToken, idToken } = await verifyOAuthCookiesLocally(
+				req,
+			);
 			if (allIdapiCookiesSet(req) && accessToken && idToken) {
 				setLocalStateFromIdTokenOrUserCookie(req, res, idToken);
 				// The user is signed in.

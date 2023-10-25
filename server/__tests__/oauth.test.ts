@@ -44,7 +44,7 @@ describe('sanitizeReturnPath', () => {
 	});
 });
 
-describe('verifyOAuthCookies', () => {
+describe('verifyOAuthCookiesLocally', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
@@ -70,7 +70,7 @@ describe('verifyOAuthCookies', () => {
 			.spyOn(oauth, 'verifyIdToken')
 			.mockResolvedValue({} as Jwt);
 
-		const verify = await oauth.verifyOAuthCookies(req);
+		const verify = await oauth.verifyOAuthCookiesLocally(req);
 
 		expect(spyOnVerifyAccessToken).toHaveBeenCalledWith('access-token');
 		expect(spyOnVerifyIdToken).toHaveBeenCalledWith('id-token');
@@ -106,7 +106,7 @@ describe('verifyOAuthCookies', () => {
 			.spyOn(oauth, 'verifyIdToken')
 			.mockResolvedValue({} as Jwt);
 
-		const verify = await oauth.verifyOAuthCookies(req);
+		const verify = await oauth.verifyOAuthCookiesLocally(req);
 
 		expect(spyOnVerifyAccessToken).toHaveBeenCalledWith(
 			'invalid-access-token',
@@ -136,7 +136,7 @@ describe('verifyOAuthCookies', () => {
 			.spyOn(oauth, 'verifyIdToken')
 			.mockResolvedValue(null as unknown as Jwt);
 
-		const verify = await oauth.verifyOAuthCookies(
+		const verify = await oauth.verifyOAuthCookiesLocally(
 			req as unknown as Request,
 		);
 

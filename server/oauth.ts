@@ -288,8 +288,17 @@ export const performAuthorizationCodeFlow = async (
 	return res.redirect(303, authorizeUrl);
 };
 
-// Returns either an object with the verified access and ID tokens, or an empty object.
-export const verifyOAuthCookies = async (
+/**
+ * @name verifyOAuthCookiesLocally
+ *
+ * This verifies the tokens locally, i.e. without making a request to the Okta API,
+ * by verifying the signature and checking the claims and expiry and ensuring that
+ * the scopes are all the ones we expect.
+ *
+ * @param req - the Express request object
+ * @returns either an object containing the verified access and ID tokens, or an empty object
+ */
+export const verifyOAuthCookiesLocally = async (
 	req: Request,
 ): Promise<VerifiedOAuthCookies> => {
 	const accessTokenCookie = req.signedCookies['GU_ACCESS_TOKEN'];
