@@ -1,3 +1,4 @@
+import { userEvent, within } from '@storybook/testing-library';
 import { CallCentrePrompt } from './CallCentrePrompt';
 
 export default {
@@ -7,6 +8,10 @@ export default {
 
 export const Default = {};
 
-// export const Expanded = {
-// 	play:
-// }
+export const Expanded = {
+	play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+		const buttonLink = canvas.getByText('call our customer support team');
+		await userEvent.click(buttonLink);
+	},
+};
