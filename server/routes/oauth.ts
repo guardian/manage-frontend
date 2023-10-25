@@ -2,11 +2,9 @@ import type { Request, Response } from 'express';
 import { Router } from 'express';
 import ms from 'ms';
 import {
-	exchangeAccessTokenForCookies,
-	ManageMyAccountOpenIdClient,
+	getOpenIdClient,
 	oauthCookieOptions,
 	OAuthStateCookieName,
-	setIDAPICookies,
 } from '@/server/oauth';
 import { conf } from '../config';
 
@@ -32,7 +30,7 @@ router.get('/callback', async (req: Request, res: Response) => {
 		).toString(),
 	);
 
-	const OpenIdClient = await ManageMyAccountOpenIdClient();
+	const OpenIdClient = await getOpenIdClient();
 
 	const callbackParams = OpenIdClient.callbackParams(req);
 
@@ -74,20 +72,6 @@ router.get('/callback', async (req: Request, res: Response) => {
 
 		// Delete state cookie, for it is no longer needed
 		res.clearCookie(OAuthStateCookieName, oauthCookieOptions);
-
-		// Exchange the access token for IDAPI cookies.  To maintain dual
-		// running of new, OAuth-powered API routes and 'classic' IDAPI
-		// cookie-powered routes, we need to ensure that GU_U, SC_GU_U and
-		// SC_GU_LA cookies are set.  We mint fresh cookies on IDAPI and set
-		// them here.
-		const cookies = await exchangeAccessTokenForCookies(
-			tokenSet.access_token,
-		);
-		if (cookies) {
-			setIDAPICookies(res, cookies);
-		} else {
-			throw new Error('No cookies returned from IDAPI.');
-		}
 
 		// Redirect to the original return path, if set, or the homepage
 		res.redirect(state.returnPath || '/');

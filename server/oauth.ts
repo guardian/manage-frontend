@@ -3,13 +3,11 @@ import { joinUrl } from '@guardian/libs';
 import OktaJwtVerifier from '@okta/jwt-verifier';
 import type { CookieOptions, Request, Response } from 'express';
 import ms from 'ms';
-import type { IssuerMetadata } from 'openid-client';
+import type { Client, IssuerMetadata } from 'openid-client';
 import { generators, Issuer } from 'openid-client';
 import { conf } from '@/server/config';
 import type { OktaConfig } from '@/server/oktaConfig';
 import { getConfig as getOktaConfig } from '@/server/oktaConfig';
-import type { IdapiConfig } from './idapiConfig';
-import { getConfig } from './idapiConfig';
 
 export const OAuthAccessTokenCookieName = 'GU_ACCESS_TOKEN';
 export const OAuthIdTokenCookieName = 'GU_ID_TOKEN';
@@ -26,10 +24,37 @@ export const oauthCookieOptions: CookieOptions = {
 	httpOnly: true,
 };
 
+/**
+ * @function getOktaOrgUrl
+ *
+ * In PROD and CODE, our Okta org URL comes directly from the Okta config.
+ * In DEV, we always want it to point to CODE, despite the fact that the Okta config
+ * for DEV points to the DEV org URL. This is so we can use the same Okta auth server
+ * in DEV and CODE.
+ */
+const getOktaOrgUrl = (oktaConfig: OktaConfig) => {
+	const { orgUrl } = oktaConfig;
+	switch (conf.STAGE) {
+		case 'PROD':
+		case 'CODE':
+			return orgUrl;
+		case 'DEV':
+		default:
+			return orgUrl.replace(
+				'.thegulocal.com',
+				'.code.dev-theguardian.com',
+			);
+	}
+};
+
 const sharedTokenVerifierOptions = (
 	oktaConfig: OktaConfig,
 ): OktaJwtVerifier.VerifierOptions => ({
-	issuer: joinUrl(oktaConfig.orgUrl, '/oauth2/', oktaConfig.authServerId),
+	issuer: joinUrl(
+		getOktaOrgUrl(oktaConfig),
+		'/oauth2/',
+		oktaConfig.authServerId,
+	),
 	clientId: oktaConfig.clientId,
 });
 
@@ -69,7 +94,7 @@ export const verifyAccessToken = async (token: string) => {
 	try {
 		const jwt = await oauthAccessTokenVerifier(
 			oktaConfig,
-		).verifyAccessToken(token, joinUrl(oktaConfig.orgUrl, '/'));
+		).verifyAccessToken(token, joinUrl(getOktaOrgUrl(oktaConfig), '/'));
 		return jwt;
 	} catch (error) {
 		console.error('OAuth / Access Token / Verification Error', error);
@@ -102,12 +127,10 @@ export const scopes = [
 	'guardian.identity-api.user.username.create.self.secure',
 	'guardian.identity-api.consents.read.self',
 	'guardian.identity-api.consents.update.self',
-	'guardian.identity-api.cookies.create.self.secure',
 ] as const;
 export type Scopes = typeof scopes[number];
 
-export const ManageMyAccountOpenIdClient = async () => {
-	const oktaConfig = await getOktaConfig();
+export const ManageMyAccountOpenIdClient = async (oktaConfig: OktaConfig) => {
 	const issuer = joinUrl(
 		oktaConfig.orgUrl,
 		'/oauth2/',
@@ -132,6 +155,62 @@ export const ManageMyAccountOpenIdClient = async () => {
 		client_secret: oktaConfig.clientSecret,
 		redirect_uris: [`https://manage.${conf.DOMAIN}/oauth/callback`],
 	});
+};
+
+/**
+ * @class DevManageMyAccountOpenIdClient
+ *
+ * DEV ONLY
+ *
+ * Uses two issuers: one based on the dev config, which is used for
+ * routing to local Gateway for the authorization, and one pointing
+ * directly to CODE, which is used for the token exchange.
+ */
+const DevManageMyAccountOpenIdClient = (oktaConfig: OktaConfig) => {
+	const issuer = joinUrl(
+		'https://profile.code.dev-theguardian.com/oauth2/',
+		oktaConfig.authServerId,
+	);
+	const devIssuer = joinUrl(
+		oktaConfig.orgUrl,
+		'/oauth2/',
+		oktaConfig.authServerId,
+	);
+	const OIDC_METADATA: IssuerMetadata = {
+		issuer,
+		authorization_endpoint: joinUrl(devIssuer, '/v1/authorize'),
+		token_endpoint: joinUrl(devIssuer, '/v1/token'),
+		jwks_uri: joinUrl(devIssuer, '/v1/keys'),
+		userinfo_endpoint: joinUrl(devIssuer, '/v1/userinfo'),
+		registration_endpoint: joinUrl(devIssuer, '/oauth2/v1/clients'),
+		introspection_endpoint: joinUrl(devIssuer, '/v1/introspect'),
+		revocation_endpoint: joinUrl(devIssuer, '/v1/revoke'),
+		end_session_endpoint: joinUrl(devIssuer, '/v1/logout'),
+	};
+
+	const OIDCIssuer = new Issuer(OIDC_METADATA);
+
+	return new OIDCIssuer.Client({
+		client_id: oktaConfig.clientId,
+		client_secret: oktaConfig.clientSecret,
+		redirect_uris: [`https://manage.${conf.DOMAIN}/oauth/callback`],
+	});
+};
+
+/**
+ * @function getOpenIdClient
+ *
+ * Used to determine which OpenIdClient to get based on the stage and headers
+ * In development, we use the dev issuer to simulate a custom domain, so we
+ * want the DevProfileIdClient
+ * In production, we use the production issuer, so we want the ManageMyAccountOpenIdClient
+ */
+export const getOpenIdClient = async (): Promise<Client> => {
+	const oktaConfig = await getOktaConfig();
+	if (conf.STAGE === 'DEV') {
+		return DevManageMyAccountOpenIdClient(oktaConfig);
+	}
+	return ManageMyAccountOpenIdClient(oktaConfig);
 };
 
 /**
@@ -168,7 +247,7 @@ export const performAuthorizationCodeFlow = async (
 		returnPath,
 	}: PerformAuthorizationCodeFlowOptions,
 ) => {
-	const OpenIdClient = await ManageMyAccountOpenIdClient();
+	const OpenIdClient = await getOpenIdClient();
 
 	// Encode the returnPath, a state token, and the PKCE code verifier into a state cookie
 	const stateToken = crypto.randomBytes(16).toString('base64');
@@ -207,63 +286,6 @@ export const performAuthorizationCodeFlow = async (
 
 	// redirect the user to the authorize URL
 	return res.redirect(303, authorizeUrl);
-};
-
-export interface IdapiCookie {
-	key: string;
-	value: string;
-	sessionCookie?: boolean;
-}
-
-export interface IdapiCookies {
-	values: IdapiCookie[];
-	expiresAt: string;
-}
-
-export const exchangeAccessTokenForCookies = async (token: string) => {
-	let idapiConfig: IdapiConfig;
-	try {
-		idapiConfig = await getConfig();
-	} catch (e) {
-		throw new Error('Error loading a valid config');
-	}
-	try {
-		const response = await fetch(
-			`https://${idapiConfig.host}/auth/oauth-token?format=cookies&persist=true`,
-			{
-				method: 'POST',
-				body: JSON.stringify({
-					token,
-				}),
-			},
-		);
-		if (!response.ok) {
-			throw new Error(
-				`Error fetching cookies from IDAPI: status ${response.status}.`,
-			);
-		}
-		const json = await response.json();
-		return json.cookies;
-	} catch (error) {
-		throw new Error(error);
-	}
-};
-
-const idapiCookieOptions = (key: string): CookieOptions => ({
-	domain: `.${conf.DOMAIN}`,
-	httpOnly: !['GU_U', 'GU_SO'].includes(key), // unless GU_U/GU_SO cookie, set to true
-	secure: true,
-	sameSite: 'lax',
-	path: '/',
-});
-
-export const setIDAPICookies = (res: Response, cookies: IdapiCookies) => {
-	const { values } = cookies;
-	values.forEach(({ key, value }) => {
-		res.cookie(key, value, {
-			...idapiCookieOptions(key),
-		});
-	});
 };
 
 // Returns either an object with the verified access and ID tokens, or an empty object.
