@@ -43,6 +43,7 @@ jobs:
         uses: guardian/actions-riff-raff@v2
         with:
           app: manage-frontend
+          buildNumberOffset: 10000
           configPath: ./riff-raff.yaml
           contentDirectories: |
             assets-static:
