@@ -6,8 +6,8 @@ import { LOGGING_CODE_SUFFIX_HEADER } from '../shared/globals';
 import { X_GU_ID_FORWARDED_SCOPE } from '../shared/identity';
 import { MDA_TEST_USER_HEADER } from '../shared/productResponse';
 import { conf } from './config';
+import { getCookiesOrEmptyString } from './idapiAuth';
 import { log, putMetric } from './log';
-import { getCookiesOrEmptyString } from './middleware/identityMiddleware';
 import { augmentRedirectURL } from './middleware/requestMiddleware';
 
 type BodyHandler = (res: Response, body: Buffer) => void;

@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
-import type express from 'express';
 import { DEFAULT_PAGE_TITLE } from '../../shared/helpCentreConfig';
 import { conf } from '../config';
 import { html } from '../html';
@@ -12,9 +11,6 @@ import {
 } from './frontendCommon';
 
 const router = Router();
-
-export const getCookiesOrEmptyString = (req: express.Request) =>
-	req.header('cookie') || '';
 
 router.use(withIdentity());
 

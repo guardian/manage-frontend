@@ -27,6 +27,11 @@ module.exports = {
 				],
 			},
 		},
+		// Webpack's DefinePlugin bakes 'CYPRESS = "SKIP_IDAPI"' into the compiled code
+		// when building for Cypress. This is used to skip the auth middleware in Cypress.
+		// In Jest, we want to run the auth middleware, and in any case we need to set
+		// CYPRESS to something, otherwise Jest won't run.
+		CYPRESS: 'false',
 	},
 	preset: 'ts-jest',
 	testEnvironment: 'jsdom',
@@ -35,4 +40,7 @@ module.exports = {
 		'<rootDir>/cdk/',
 		'<rootDir>/node_modules/',
 	],
+	moduleNameMapper: {
+		'^@/(.*)$': '<rootDir>/$1',
+	},
 };
