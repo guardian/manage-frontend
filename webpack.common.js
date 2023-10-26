@@ -13,9 +13,18 @@ const assetsPluginInstance = new AssetsPlugin({
 	path: path.resolve(__dirname, './dist/'),
 });
 
+const offsetBuildNumber = (buildNumber, offset) => {
+	const intBuildNumber = parseInt(buildNumber);
+	if (isNaN(intBuildNumber)) {
+		return buildNumber;
+	} else {
+		return (intBuildNumber + offset).toString();
+	}
+};
+
 const definePlugin = new webpack.DefinePlugin({
 	WEBPACK_BUILD: process.env.GITHUB_RUN_NUMBER
-		? `'${process.env.GITHUB_RUN_NUMBER}'`
+		? `'${offsetBuildNumber(process.env.GITHUB_RUN_NUMBER, 10000)}'`
 		: `'DEV_${new Date().getTime()}'`,
 	GIT_COMMIT_HASH: process.env.GITHUB_SHA
 		? `'${process.env.GITHUB_SHA}'`
