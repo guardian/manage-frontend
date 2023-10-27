@@ -1,6 +1,18 @@
 import { joinUrl } from '@guardian/libs';
 import type { NextFunction, Request, Response } from 'express';
 import fetch from 'node-fetch';
+import { conf } from '@/server/config';
+import {
+	clearIdentityLocalState,
+	getIdentityLocalState,
+	setIdentityLocalState,
+} from '@/server/IdentityLocalState';
+import {
+	OAuthAccessTokenCookieName,
+	performAuthorizationCodeFlow,
+	sanitizeReturnPath,
+	scopes,
+} from '@/server/oauth';
 import { getConfig as getOktaConfig } from '@/server/oktaConfig';
 import { requiresSignin } from '../../shared/requiresSignin';
 
@@ -24,25 +36,25 @@ export const withOktaSeverSideValidation = async (
 		return next();
 	}
 
-	console.log(`MY USELESS MIDDLEWARE WAS CALLED with url  ${req.url}`);
+	console.log(`Validating token server side for url: ${req.url}`);
 
-	const locallyValidatedUserId = res.locals?.identity?.userId;
-
-	if (!locallyValidatedUserId) {
+	const locallyValidatedIdentityData = getIdentityLocalState(res);
+	const accessToken = req.signedCookies[OAuthAccessTokenCookieName];
+	if (
+		!accessToken ||
+		!locallyValidatedIdentityData ||
+		!locallyValidatedIdentityData.userId
+	) {
 		if (signinRequired()) {
+			//TODO what is the proper way to log errors ? console.error ?
 			console.log(
-				'error: no user in request for a sign-in required endpoint! this should have failed local validation',
+				'error: no access token or user in request for a sign-in required endpoint! this should have failed local validation',
 			);
 			res.send(500);
-		} else {
-			console.log(
-				'no credentials, but they were optional so server side validation is skipped!',
-			);
 		}
 		return {};
 	}
 
-	const authHeader = `Bearer ${req.signedCookies['GU_ACCESS_TOKEN']}`;
 	// -------
 	// this code is copied from oauth.ts, maybe this server side validation code could be moved there?
 	// or maybe this could be extracted somewhere or exported.
@@ -59,37 +71,44 @@ export const withOktaSeverSideValidation = async (
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: authHeader,
+			Authorization: `Bearer ${accessToken}`,
 		},
 	});
-	console.log(`n=>> response from okta was status: ${oktaResponse.status}`);
+
+	console.log(`okta response status: ${oktaResponse.status}`);
 	if (oktaResponse.status != 200) {
+		clearIdentityLocalState(res);
+
 		if (signinRequired()) {
-			console.log('invalid credentials! failing server side validation!');
-			res.send(401);
-			return {};
-		} else {
-			console.log(
-				'invalid credentials but signin is not required, removing user data from request',
-			);
-			// todo we should probably have this code in a common location between local and server side validation
-			delete res.locals.identity;
+			// TODO maybe extract this to a common location with the local validation ? (what to do when credentials are not valid)
+
+			// TODO I'm not sure this even works because most of the places we do server side would not redirect properly even if local validation failed
+			// they would just throw an error and you would have to reload the whole page
+
+			// Get the path of the current page and use it as our returnPath after the OAuth callback.
+			return performAuthorizationCodeFlow(req, res, {
+				redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
+				scopes,
+				returnPath: sanitizeReturnPath(req.originalUrl),
+			});
 		}
+		return {};
 	} else {
 		const userInfo = await oktaResponse.json<UserInfo>();
-
-		if (userInfo.legacy_identity_id != locallyValidatedUserId) {
+		if (
+			userInfo.legacy_identity_id != locallyValidatedIdentityData.userId
+		) {
 			console.log("userId in token doesn't match userInfo response!");
 			res.send(500);
 			return {};
 		}
-
-		res.locals.identity = {
-			signInStatus: 'signedInRecently',
+		setIdentityLocalState(res, {
+			signInStatus: 'signedInRecently', // TODO can I hardcode this here or do I need to check something else ?
 			userId: userInfo.legacy_identity_id,
 			name: userInfo.name,
 			email: userInfo.email,
-		};
+		});
+
 		return next();
 	}
 };

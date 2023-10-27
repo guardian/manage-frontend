@@ -106,6 +106,7 @@ export const authenticateWithOAuth = async (
 				returnPath,
 			});
 		} else {
+			//TODO do we need to also do this with server side validation?
 			// The route does not require signin (but the user _may_ be signed in)
 			/////////////////////////////////////////////////////////////////////////////////////
 			// If we have a GU_SO cookie, we've signed out recently, so we need to delete

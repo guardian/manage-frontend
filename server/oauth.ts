@@ -6,6 +6,7 @@ import ms from 'ms';
 import type { Client, IssuerMetadata } from 'openid-client';
 import { generators, Issuer } from 'openid-client';
 import { conf } from '@/server/config';
+import { setIdentityLocalState } from '@/server/IdentityLocalState';
 import type { OktaConfig } from '@/server/oktaConfig';
 import { getConfig as getOktaConfig } from '@/server/oktaConfig';
 
@@ -301,8 +302,8 @@ export const performAuthorizationCodeFlow = async (
 export const verifyOAuthCookiesLocally = async (
 	req: Request,
 ): Promise<VerifiedOAuthCookies> => {
-	const accessTokenCookie = req.signedCookies['GU_ACCESS_TOKEN'];
-	const idTokenCookie = req.signedCookies['GU_ID_TOKEN'];
+	const accessTokenCookie = req.signedCookies[OAuthAccessTokenCookieName];
+	const idTokenCookie = req.signedCookies[OAuthIdTokenCookieName];
 
 	if (accessTokenCookie && idTokenCookie) {
 		const accessToken = await verifyAccessToken(accessTokenCookie);
@@ -346,12 +347,27 @@ export const setLocalStateFromIdTokenOrUserCookie = (
 	// but not the other fields. This will allow the frontend to show the
 	// signed in menu, but not show the user's name or email.
 	const hasIdTokenOrUserCookie = idToken || req.cookies['GU_U'];
-	res.locals.identity = {
+
+	let identityIdClaim: string | undefined;
+	let nameClaim: string | undefined;
+	let emailClaim: string | undefined;
+
+	if (typeof idToken?.claims.legacy_identity_id === 'string') {
+		identityIdClaim = idToken?.claims.legacy_identity_id;
+	}
+	if (typeof idToken?.claims.name === 'string') {
+		nameClaim = idToken?.claims.name;
+	}
+	if (typeof idToken?.claims.email === 'string') {
+		emailClaim = idToken?.claims.email;
+	}
+
+	setIdentityLocalState(res, {
 		signInStatus: hasIdTokenOrUserCookie ? 'signedInRecently' : undefined,
-		userId: idToken?.claims.legacy_identity_id,
-		name: idToken?.claims.name,
-		email: idToken?.claims.email,
-	};
+		userId: identityIdClaim,
+		name: nameClaim,
+		email: emailClaim,
+	});
 };
 
 // Sanitize the return path to prevent open redirects.
