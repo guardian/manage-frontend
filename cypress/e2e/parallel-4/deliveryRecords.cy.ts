@@ -22,11 +22,6 @@ describe('Delivery records', () => {
 	beforeEach(() => {
 		signInAndAcceptCookies();
 
-		cy.intercept('GET', '/api/me/mma?productType=HomeDelivery', {
-			statusCode: 200,
-			body: toMembersDataApiResponse(nationalDelivery()),
-		}).as('national_product_detail');
-
 		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(guardianWeeklyPaidByCard()),
@@ -358,7 +353,13 @@ describe('Delivery records', () => {
 	});
 
 	it('does not allow you to update National delivery address before reporting a problem', () => {
+		cy.intercept('GET', '/api/me/mma?productType=HomeDelivery', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(nationalDelivery()),
+		}).as('national_product_detail');
+
 		cy.visit('/delivery/nationaldelivery/records');
+
 		cy.wait('@national_product_detail');
 		cy.wait('@delivery_records');
 
