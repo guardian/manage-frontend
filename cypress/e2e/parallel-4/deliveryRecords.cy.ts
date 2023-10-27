@@ -15,11 +15,17 @@ import { singleContributionsAPIResponse } from '../../../client/fixtures/singleC
 import {
 	guardianWeeklyPaidByCard,
 	homeDelivery,
+	nationalDelivery,
 } from '../../../client/fixtures/productBuilder/testProducts';
 
 describe('Delivery records', () => {
 	beforeEach(() => {
 		signInAndAcceptCookies();
+
+		cy.intercept('GET', '/api/me/mma?productType=HomeDelivery', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(nationalDelivery()),
+		}).as('national_product_detail');
 
 		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
@@ -349,6 +355,35 @@ describe('Delivery records', () => {
 		cy.findByRole('button', { name: 'Review your report' }).should('exist');
 
 		cy.get('@address_update.all').should('have.length', 1);
+	});
+
+	it('does not allow you to update National delivery address before reporting a problem', () => {
+		cy.visit('/delivery/nationaldelivery/records');
+		cy.wait('@national_product_detail');
+		cy.wait('@delivery_records');
+
+		cy.findByRole('button', { name: 'Report a problem' }).click();
+
+		cy.findByText(
+			'Step 1. What type of problem are you experiencing?',
+		).should('exist');
+		cy.findByRole('radio', { name: 'Damaged paper' }).click();
+		cy.findByRole('textbox', { name: 'Please specify' }).type('Pages torn');
+		cy.findByRole('button', { name: 'Continue to Step 2 & 3' }).click();
+
+		cy.findByText(
+			'Step 2. Select the date you have experienced the problem',
+		).should('exist');
+		cy.findByText(
+			'Step 3. Check your current delivery address and instructions',
+		).should('exist');
+		cy.findByText('Kings Place').should('exist');
+
+		cy.findByRole('button', { name: 'Update' }).should('not.exist');
+
+		cy.findByText(/Changed address?/).should('exist');
+
+		cy.findByRole('button', { name: 'Review your report' }).should('exist');
 	});
 
 	it('displays an error message if a delivery problem is not selected', () => {

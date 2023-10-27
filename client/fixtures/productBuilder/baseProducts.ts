@@ -383,6 +383,72 @@ export function baseHomeDelivery(): ProductDetail {
 	};
 }
 
+export function baseNationalDelivery(): ProductDetail {
+	return {
+		mmaCategory: 'subscriptions',
+		tier: 'Newspaper - National Delivery',
+		isPaidTier: true,
+		selfServiceCancellation: {
+			isAllowed: false,
+			shouldDisplayEmail: false,
+			phoneRegionsToDisplay: ['UK & ROW'],
+		},
+		joinDate: '2021-12-15',
+		optIn: true,
+		subscription: {
+			contactId: '0039E00001KA26BQAT',
+			deliveryAddress: {
+				addressLine1: 'Kings Place',
+				addressLine2: '90 York Way',
+				town: 'Derby',
+				postcode: 'DE10FD',
+				country: 'United Kingdom',
+			},
+			safeToUpdatePaymentMethod: true,
+			start: '2021-12-24',
+			end: '2022-12-15',
+			nextPaymentPrice: 3250,
+			nextPaymentDate: '2021-12-24',
+			lastPaymentDate: null,
+			chargedThroughDate: null,
+			renewalDate: '2022-12-15',
+			anniversaryDate: '2022-12-24',
+			cancelledAt: false,
+			subscriberId: 'A-S00293857',
+			subscriptionId: 'A-S00293857',
+			trialLength: -37,
+			autoRenew: true,
+			currentPlans: [
+				{
+					name: 'Everyday',
+					start: '2021-12-24',
+					end: '2022-12-15',
+					shouldBeVisible: true,
+					chargedThrough: null,
+					price: 3250,
+					currency: '£',
+					currencyISO: 'GBP',
+					billingPeriod: 'month',
+					daysOfWeek: [
+						'Monday',
+						'Tuesday',
+						'Wednesday',
+						'Thursday',
+						'Friday',
+						'Saturday',
+						'Sunday',
+					],
+				},
+			],
+			futurePlans: [],
+			readerType: 'Direct',
+			accountId: '8ad0965d7dbcc507017dbe20afd33ac4',
+			deliveryAddressChangeEffectiveDate: '2022-02-11',
+		},
+		isTestUser: false,
+	};
+}
+
 export function baseSupporterPlus(): ProductDetail {
 	return {
 		mmaCategory: 'recurringSupport',
