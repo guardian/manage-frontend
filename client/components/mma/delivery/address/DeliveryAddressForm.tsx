@@ -437,12 +437,8 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 		contactIdToArrayOfProductDetailAndProductType,
 	)
 		.flatMap(flattenEquivalent)
-		.some(({ productDetail }) => {
-			return (
-				GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
-					productDetail,
-				).productType === 'nationaldelivery'
-			);
+		.some(({ productType }) => {
+			return productType.productType === 'nationaldelivery';
 		});
 
 	if (hasNationalDelivery) {

@@ -1,5 +1,6 @@
 import {
 	guardianWeeklyPaidByCard,
+	nationalDelivery,
 	supporterPlus,
 } from '../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
@@ -17,21 +18,6 @@ describe('Delivery address', () => {
 			),
 		}).as('product_detail');
 
-		cy.intercept('GET', '/api/cancelled/', {
-			statusCode: 200,
-			body: [],
-		}).as('cancelled');
-	});
-
-	it('Can update delivery address. Navigating from account overview', () => {
-		cy.intercept('GET', '/api/me/mma', {
-			statusCode: 200,
-			body: toMembersDataApiResponse(
-				guardianWeeklyPaidByCard(),
-				supporterPlus(),
-			),
-		}).as('mma');
-
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
 			statusCode: 200,
 			body: { subscriptions: [] },
@@ -46,6 +32,21 @@ describe('Delivery address', () => {
 			statusCode: 200,
 			body: 'success',
 		}).as('address_update');
+
+		cy.intercept('GET', '/api/cancelled/', {
+			statusCode: 200,
+			body: [],
+		}).as('cancelled');
+	});
+
+	it('Can update delivery address. Navigating from account overview', () => {
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(
+				guardianWeeklyPaidByCard(),
+				supporterPlus(),
+			),
+		}).as('mma');
 
 		cy.visit('/');
 		cy.wait('@mma');
@@ -76,6 +77,30 @@ describe('Delivery address', () => {
 		cy.get('@address_update.all').should('have.length', 1);
 	});
 
+	it('Cannot update National delivery address. Navigating from account overview', () => {
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(nationalDelivery(), supporterPlus()),
+		}).as('mma');
+
+		cy.visit('/');
+		cy.wait('@mma');
+		cy.wait('@cancelled');
+		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
+
+		cy.findByText('Manage subscription').click();
+
+		cy.intercept('GET', '/api/me/mma?productType=ContentSubscription', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(nationalDelivery(), supporterPlus()),
+		});
+
+		cy.findByText('Manage delivery address').click();
+
+		cy.findByText(/Changed address?/).should('exist');
+	});
+
 	it('Shows updated address when returning to manage subscription page', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
@@ -84,21 +109,6 @@ describe('Delivery address', () => {
 				supporterPlus(),
 			),
 		}).as('mma');
-
-		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
-			statusCode: 200,
-			body: { subscriptions: [] },
-		}).as('mobile_subscriptions');
-
-		cy.intercept('GET', '/api/me/one-off-contributions', {
-			statusCode: 200,
-			body: [],
-		}).as('single_contributions');
-
-		cy.intercept('PUT', '/api/delivery/address/update/**', {
-			statusCode: 200,
-			body: 'success',
-		}).as('address_update');
 
 		cy.visit('/');
 		cy.wait('@mma');

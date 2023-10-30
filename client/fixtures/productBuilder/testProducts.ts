@@ -6,6 +6,7 @@ import {
 	baseGuardianWeekly,
 	baseHomeDelivery,
 	baseMembership,
+	baseNationalDelivery,
 	baseSupporterPlus,
 } from './baseProducts';
 import { cards, ProductBuilder } from './productBuilder';
@@ -130,6 +131,12 @@ export function newspaperVoucherPaidByPaypal(email?: string) {
 
 export function homeDelivery() {
 	return new ProductBuilder(baseHomeDelivery())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function nationalDelivery() {
+	return new ProductBuilder(baseNationalDelivery())
 		.payByCard()
 		.getProductDetailObject();
 }
