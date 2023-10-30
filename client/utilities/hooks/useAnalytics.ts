@@ -82,11 +82,11 @@ export const useAnalytics = () => {
 
 	const initialiseQm = () => {
 		loadScript(
-			'https://cdn.quantummetric.com/instrumentation/1.32.18/quantum-gnm.js',
+			'https://cdn.quantummetric.com/instrumentation/1.34.2/quantum-gnm.js',
 			{
 				async: true,
 				integrity:
-					'sha384-JB9+fEddky647lwDnP+fbHslLQq+tyL6ozahvpgl4fxgCWjU5e6qxU8FIcCYiosU',
+					'sha384-O/Wm75sIcMf+y0pE610VpMvesCfEQOMsZTycQXJFVBvMy2MmOWDXqAqZl2mQAq0J',
 				crossOrigin: 'anonymous',
 			},
 		)
