@@ -85,6 +85,8 @@ function getPaymentInterval(interval: string) {
 		return 'annual';
 	} else if (interval === 'month') {
 		return 'monthly';
+	} else if (interval === 'quarter') {
+		return 'quarterly';
 	}
 }
 
