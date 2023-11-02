@@ -150,7 +150,7 @@ export class ProductBuilder {
 		return this;
 	}
 
-	withBillingPeriod(billingPeriod: 'month' | 'year') {
+	withBillingPeriod(billingPeriod: 'month' | 'year' | 'quarter') {
 		const { plan, currentPlans, futurePlans } =
 			this.productToBuild.subscription;
 		if (plan) {
