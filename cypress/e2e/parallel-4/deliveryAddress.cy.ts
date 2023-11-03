@@ -101,6 +101,30 @@ describe('Delivery address', () => {
 		cy.findByText(/Changed address?/).should('exist');
 	});
 
+	it('Cannot update Guardian Weekly address, if also have National delivery', () => {
+		cy.intercept('GET', '/api/me/mma**', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(
+				nationalDelivery(),
+				guardianWeeklyPaidByCard(),
+				supporterPlus(),
+			),
+		}).as('mma');
+
+		cy.visit('/guardianweekly');
+
+		cy.wait('@mma');
+
+		cy.findByText('Manage delivery address').click();
+
+		cy.intercept('GET', '/api/me/mma?productType=ContentSubscription', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(nationalDelivery(), supporterPlus()),
+		});
+
+		cy.findByText(/Changed address?/).should('exist');
+	});
+
 	it('Shows updated address when returning to manage subscription page', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
