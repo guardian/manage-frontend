@@ -1,6 +1,5 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta } from '@storybook/react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
-import type { HeaderProps } from './Header';
 import { Header } from './Header';
 
 export default {
@@ -21,18 +20,16 @@ export default {
 	},
 } as Meta<typeof Header>;
 
-const Template: StoryFn<typeof Header> = (args: HeaderProps) => (
-	<Header {...args} />
-);
+export const Initial = {};
 
-export const Initial = Template.bind({});
-
-export const SignedOut = Template.bind({});
-SignedOut.args = {
-	signInStatus: 'signedOut',
+export const SignedOut = {
+	args: {
+		signInStatus: 'signedOut',
+	},
 };
 
-export const SignedIn = Template.bind({});
-SignedIn.args = {
-	signInStatus: 'signedIn',
+export const SignedIn = {
+	args: {
+		signInStatus: 'signedIn',
+	},
 };

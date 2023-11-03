@@ -24,4 +24,6 @@ const Template: StoryFn<typeof DateInput> = (args: DateInputProps) => {
 	return <DateInput {...args} />;
 };
 
-export const Default = Template.bind({});
+export const Default = {
+	render: Template,
+};

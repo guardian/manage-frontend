@@ -1,4 +1,4 @@
-import type { Meta , StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { user } from '@/client/fixtures/user';
@@ -13,14 +13,16 @@ export default {
 	},
 } as Meta<typeof PublicProfile>;
 
-export const Default: StoryFn<typeof PublicProfile> = () => {
-	return <PublicProfile />;
-};
+export const Default: StoryObj<typeof PublicProfile> = {
+	render: () => {
+		return <PublicProfile />;
+	},
 
-Default.parameters = {
-	msw: [
-		rest.get('/idapi/user', (_req, res, ctx) => {
-			return res(ctx.json(user));
-		}),
-	],
+	parameters: {
+		msw: [
+			rest.get('/idapi/user', (_req, res, ctx) => {
+				return res(ctx.json(user));
+			}),
+		],
+	},
 };

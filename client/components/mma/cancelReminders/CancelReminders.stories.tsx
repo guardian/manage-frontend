@@ -1,4 +1,4 @@
-import type { Meta , StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancelReminders } from './CancelReminders';
@@ -16,26 +16,30 @@ export default {
 	},
 } as Meta<typeof CancelReminders>;
 
-export const Error: StoryFn<typeof CancelReminders> = () => {
-	return <CancelReminders />;
+export const Error: StoryObj<typeof CancelReminders> = {
+	render: () => {
+		return <CancelReminders />;
+	},
+
+	parameters: {
+		msw: [
+			rest.post('/api/reminders/cancel', (_req, res, ctx) => {
+				return res(ctx.status(500));
+			}),
+		],
+	},
 };
 
-Error.parameters = {
-	msw: [
-		rest.post('/api/reminders/cancel', (_req, res, ctx) => {
-			return res(ctx.status(500));
-		}),
-	],
-};
+export const Success: StoryObj<typeof CancelReminders> = {
+	render: () => {
+		return <CancelReminders />;
+	},
 
-export const Success: StoryFn<typeof CancelReminders> = () => {
-	return <CancelReminders />;
-};
-
-Success.parameters = {
-	msw: [
-		rest.post('/api/reminders/cancel', (_req, res, ctx) => {
-			return res(ctx.status(200));
-		}),
-	],
+	parameters: {
+		msw: [
+			rest.post('/api/reminders/cancel', (_req, res, ctx) => {
+				return res(ctx.status(200));
+			}),
+		],
+	},
 };

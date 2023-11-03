@@ -1,11 +1,17 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import { userEvent, within } from '@storybook/testing-library';
 import { CallCentrePrompt } from './CallCentrePrompt';
 
 export default {
 	component: CallCentrePrompt,
 	title: 'Components/CallCentrePrompt',
-} as Meta<typeof CallCentrePrompt>;
+};
 
-export const Default: StoryFn<typeof CallCentrePrompt> = () => {
-	return <CallCentrePrompt />;
+export const Default = {};
+
+export const Expanded = {
+	play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+		const buttonLink = canvas.getByText('call our customer support team');
+		await userEvent.click(buttonLink);
+	},
 };

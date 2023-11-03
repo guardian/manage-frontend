@@ -1,4 +1,4 @@
-import type { Meta , StoryFn } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { Help } from './Help';
 

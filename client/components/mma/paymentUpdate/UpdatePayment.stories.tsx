@@ -1,4 +1,4 @@
-import type { Meta , StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
@@ -22,56 +22,64 @@ const setSiteKey = () => {
 	};
 };
 
-export const GuardianWeeklyCard: StoryFn<typeof PaymentDetailUpdate> = () => {
-	setSiteKey();
-	return <PaymentDetailUpdate productType={PRODUCT_TYPES.guardianweekly} />;
-};
+export const GuardianWeeklyCard: StoryObj<typeof PaymentDetailUpdate> = {
+	render: () => {
+		setSiteKey();
+		return (
+			<PaymentDetailUpdate productType={PRODUCT_TYPES.guardianweekly} />
+		);
+	},
 
-GuardianWeeklyCard.parameters = {
-	reactRouter: {
-		state: {
-			productDetail: guardianWeeklyPaidByCard(),
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: guardianWeeklyPaidByCard(),
+			},
+			container: (
+				<PaymentDetailUpdateContainer
+					productType={PRODUCT_TYPES.guardianweekly}
+				/>
+			),
 		},
-		container: (
-			<PaymentDetailUpdateContainer
-				productType={PRODUCT_TYPES.guardianweekly}
-			/>
-		),
 	},
 };
 
-export const NewspaperVoucherPaypal: StoryFn<
-	typeof PaymentDetailUpdate
-> = () => {
-	setSiteKey();
-	return <PaymentDetailUpdate productType={PRODUCT_TYPES.voucher} />;
-};
+export const NewspaperVoucherPaypal: StoryObj<typeof PaymentDetailUpdate> = {
+	render: () => {
+		setSiteKey();
+		return <PaymentDetailUpdate productType={PRODUCT_TYPES.voucher} />;
+	},
 
-NewspaperVoucherPaypal.parameters = {
-	reactRouter: {
-		state: {
-			productDetail: newspaperVoucherPaidByPaypal(),
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: newspaperVoucherPaidByPaypal(),
+			},
+			container: (
+				<PaymentDetailUpdateContainer
+					productType={PRODUCT_TYPES.voucher}
+				/>
+			),
 		},
-		container: (
-			<PaymentDetailUpdateContainer productType={PRODUCT_TYPES.voucher} />
-		),
 	},
 };
 
-export const GuardianWeeklyExpiredCard: StoryFn<
-	typeof PaymentDetailUpdate
-> = () => {
-	setSiteKey();
-	return <PaymentDetailUpdate productType={PRODUCT_TYPES.guardianweekly} />;
-};
+export const GuardianWeeklyExpiredCard: StoryObj<typeof PaymentDetailUpdate> = {
+	render: () => {
+		setSiteKey();
+		return (
+			<PaymentDetailUpdate productType={PRODUCT_TYPES.guardianweekly} />
+		);
+	},
 
-GuardianWeeklyExpiredCard.parameters = {
-	reactRouter: {
-		state: { productDetail: guardianWeeklyExpiredCard() },
-		container: (
-			<PaymentDetailUpdateContainer
-				productType={PRODUCT_TYPES.guardianweekly}
-			/>
-		),
+	parameters: {
+		reactRouter: {
+			state: { productDetail: guardianWeeklyExpiredCard() },
+			container: (
+				<PaymentDetailUpdateContainer
+					productType={PRODUCT_TYPES.guardianweekly}
+				/>
+			),
+		},
 	},
 };

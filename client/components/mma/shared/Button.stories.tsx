@@ -1,6 +1,5 @@
-import { brand } from '@guardian/source-foundations';
-import type { Meta, StoryFn } from '@storybook/react';
-import type { ButtonProps } from './Buttons';
+import { palette } from '@guardian/source-foundations';
+import type { Meta } from '@storybook/react';
 import { Button } from './Buttons';
 
 export default {
@@ -61,47 +60,50 @@ export default {
 	},
 } as Meta<typeof Button>;
 
-const Template: StoryFn<typeof Button> = (args: ButtonProps) => (
-	<Button {...args} />
-);
+export const Default = {};
 
-export const Default = Template.bind({});
-
-export const Bold = Template.bind({});
-Bold.args = {
-	fontWeight: 'bold',
+export const Bold = {
+	args: {
+		fontWeight: 'bold',
+	},
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-	disabled: true,
+export const Disabled = {
+	args: {
+		disabled: true,
+	},
 };
 
-export const WithBrandColours = Template.bind({});
-WithBrandColours.args = {
-	colour: brand[800],
-	textColour: brand[400],
+export const WithBrandColours = {
+	args: {
+		colour: palette.brand[800],
+		textColour: palette.brand[400],
+	},
 };
 
-export const WithRightArrow = Template.bind({});
-WithRightArrow.args = {
-	right: true,
+export const WithRightArrow = {
+	args: {
+		right: true,
+	},
 };
 
-export const DisabledWithRightArrow = Template.bind({});
-DisabledWithRightArrow.args = {
-	disabled: true,
-	right: true,
+export const DisabledWithRightArrow = {
+	args: {
+		disabled: true,
+		right: true,
+	},
 };
 
-export const PrimaryWithRightArrow = Template.bind({});
-PrimaryWithRightArrow.args = {
-	primary: true,
-	right: true,
+export const PrimaryWithRightArrow = {
+	args: {
+		primary: true,
+		right: true,
+	},
 };
 
-export const HollowWithLeftArrow = Template.bind({});
-HollowWithLeftArrow.args = {
-	hollow: true,
-	left: true,
+export const HollowWithLeftArrow = {
+	args: {
+		hollow: true,
+		left: true,
+	},
 };

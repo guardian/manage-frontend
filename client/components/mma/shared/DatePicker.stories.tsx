@@ -22,20 +22,28 @@ const Template: StoryFn<typeof DatePicker> = (args: DatePickerProps) => {
 	return <DatePicker {...args} />;
 };
 
-export const Default = Template.bind({});
-
-export const WithExistingDates = Template.bind({});
-WithExistingDates.args = {
-	existingDates: [
-		{ start: new Date('2022-01-24'), end: new Date('2022-01-26') },
-		{ start: new Date('2022-02-14'), end: new Date('2022-02-18') },
-	],
+export const Default = {
+	render: Template,
 };
 
-export const WithAmendment = Template.bind({});
-WithAmendment.args = {
-	amendableDateRange: {
-		start: new Date('2022-02-21'),
-		end: new Date('2022-02-23'),
+export const WithExistingDates = {
+	render: Template,
+
+	args: {
+		existingDates: [
+			{ start: new Date('2022-01-24'), end: new Date('2022-01-26') },
+			{ start: new Date('2022-02-14'), end: new Date('2022-02-18') },
+		],
+	},
+};
+
+export const WithAmendment = {
+	render: Template,
+
+	args: {
+		amendableDateRange: {
+			start: new Date('2022-02-21'),
+			end: new Date('2022-02-23'),
+		},
 	},
 };

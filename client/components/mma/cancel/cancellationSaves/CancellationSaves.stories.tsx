@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
@@ -40,22 +40,24 @@ export const SwitchReview: StoryFn<typeof MembershipSwitch> = () => {
 	return <MembershipSwitch />;
 };
 
-export const LandingPage: StoryFn<
-	typeof MembershipCancellationLanding
-> = () => {
-	return <MembershipCancellationLanding />;
-};
+export const LandingPage: StoryObj<typeof MembershipCancellationLanding> = {
+	render: () => {
+		return <MembershipCancellationLanding />;
+	},
 
-LandingPage.parameters = {
-	msw: [
-		rest.get('/api/me/mma', (_req, res, ctx) => {
-			return res(
-				ctx.json(
-					toMembersDataApiResponse(membershipSupporterCurrencyUSD()),
-				),
-			);
-		}),
-	],
+	parameters: {
+		msw: [
+			rest.get('/api/me/mma', (_req, res, ctx) => {
+				return res(
+					ctx.json(
+						toMembersDataApiResponse(
+							membershipSupporterCurrencyUSD(),
+						),
+					),
+				);
+			}),
+		],
+	},
 };
 
 export const SwitchOptions: StoryFn<typeof SaveOptions> = () => {

@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
@@ -19,43 +19,52 @@ export default {
 	},
 } as Meta<typeof ManageProduct>;
 
-export const GuardianWeekly: StoryFn<typeof ManageProduct> = () => {
-	return <ManageProduct productType={PRODUCT_TYPES.guardianweekly} />;
-};
+export const GuardianWeekly: StoryObj<typeof ManageProduct> = {
+	render: () => {
+		return <ManageProduct productType={PRODUCT_TYPES.guardianweekly} />;
+	},
 
-GuardianWeekly.parameters = {
-	reactRouter: {
-		state: { productDetail: guardianWeeklyPaidByCard() },
+	parameters: {
+		reactRouter: {
+			state: { productDetail: guardianWeeklyPaidByCard() },
+		},
 	},
 };
 
-export const DigitalSubscription: StoryFn<typeof ManageProduct> = () => {
-	return <ManageProduct productType={PRODUCT_TYPES.digipack} />;
-};
+export const DigitalSubscription: StoryObj<typeof ManageProduct> = {
+	render: () => {
+		return <ManageProduct productType={PRODUCT_TYPES.digipack} />;
+	},
 
-DigitalSubscription.parameters = {
-	reactRouter: {
-		state: { productDetail: digitalPackPaidByDirectDebit() },
+	parameters: {
+		reactRouter: {
+			state: { productDetail: digitalPackPaidByDirectDebit() },
+		},
 	},
 };
 
-export const NewspaperSubscriptionCard: StoryFn<typeof ManageProduct> = () => {
-	return <ManageProduct productType={PRODUCT_TYPES.digitalvoucher} />;
-};
+export const NewspaperSubscriptionCard: StoryObj<typeof ManageProduct> = {
+	render: () => {
+		return <ManageProduct productType={PRODUCT_TYPES.digitalvoucher} />;
+	},
 
-NewspaperSubscriptionCard.parameters = {
-	reactRouter: {
-		state: { productDetail: newspaperVoucherPaidByPaypal() },
+	parameters: {
+		reactRouter: {
+			state: { productDetail: newspaperVoucherPaidByPaypal() },
+		},
 	},
 };
 
 featureSwitches.supporterPlusUpdateAmount = true;
-export const SupporterPlus: StoryFn<typeof ManageProduct> = () => {
-	return <ManageProduct productType={PRODUCT_TYPES.supporterplus} />;
-};
 
-SupporterPlus.parameters = {
-	reactRouter: {
-		state: { productDetail: supporterPlusAnnual() },
+export const SupporterPlus: StoryObj<typeof ManageProduct> = {
+	render: () => {
+		return <ManageProduct productType={PRODUCT_TYPES.supporterplus} />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: { productDetail: supporterPlusAnnual() },
+		},
 	},
 };

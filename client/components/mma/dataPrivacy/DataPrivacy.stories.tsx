@@ -1,4 +1,4 @@
-import type { Meta , StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { consents } from '../../../fixtures/consents';
@@ -14,17 +14,19 @@ export default {
 	},
 } as Meta<typeof DataPrivacy>;
 
-export const Default: StoryFn<typeof DataPrivacy> = () => {
-	return <DataPrivacy />;
-};
+export const Default: StoryObj<typeof DataPrivacy> = {
+	render: () => {
+		return <DataPrivacy />;
+	},
 
-Default.parameters = {
-	msw: [
-		rest.get('/idapi/user/consents', (_req, res, ctx) => {
-			return res(ctx.json(consents));
-		}),
-		rest.get('/idapi/user', (_req, res, ctx) => {
-			return res(ctx.json(user));
-		}),
-	],
+	parameters: {
+		msw: [
+			rest.get('/idapi/user/consents', (_req, res, ctx) => {
+				return res(ctx.json(consents));
+			}),
+			rest.get('/idapi/user', (_req, res, ctx) => {
+				return res(ctx.json(user));
+			}),
+		],
+	},
 };

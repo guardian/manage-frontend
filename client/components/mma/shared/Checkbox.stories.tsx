@@ -1,5 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
-import type { CheckboxProps } from './Checkbox';
+import type { Meta } from '@storybook/react';
 import { Checkbox } from './Checkbox';
 
 export default {
@@ -23,24 +22,23 @@ export default {
 	},
 } as Meta<typeof Checkbox>;
 
-const Template: StoryFn<typeof Checkbox> = (args: CheckboxProps) => (
-	<Checkbox {...args} />
-);
+export const Default = {};
 
-export const Default = Template.bind({});
-
-export const Checked = Template.bind({});
-Checked.args = {
-	checked: true,
+export const Checked = {
+	args: {
+		checked: true,
+	},
 };
 
-export const WithLabel = Template.bind({});
-WithLabel.args = {
-	label: 'Guardian Weekly newsletter',
+export const WithLabel = {
+	args: {
+		label: 'Guardian Weekly newsletter',
+	},
 };
 
-export const WithMaxWidth = Template.bind({});
-WithMaxWidth.args = {
-	label: 'Guardian Weekly newsletter',
-	maxWidth: '8ch',
+export const WithMaxWidth = {
+	args: {
+		label: 'Guardian Weekly newsletter',
+		maxWidth: '8ch',
+	},
 };

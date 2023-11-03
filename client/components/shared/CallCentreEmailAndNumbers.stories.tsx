@@ -19,14 +19,22 @@ const Template: StoryFn<typeof CallCentreEmailAndNumbers> = (
 	return <CallCentreEmailAndNumbers {...args} />;
 };
 
-export const Default = Template.bind({});
-
-export const WithEmailHidden = Template.bind({});
-WithEmailHidden.args = {
-	hideEmailAddress: true,
+export const Default = {
+	render: Template,
 };
 
-export const WithCompactLayout = Template.bind({});
-WithCompactLayout.args = {
-	compactLayout: true,
+export const WithEmailHidden = {
+	render: Template,
+
+	args: {
+		hideEmailAddress: true,
+	},
+};
+
+export const WithCompactLayout = {
+	render: Template,
+
+	args: {
+		compactLayout: true,
+	},
 };

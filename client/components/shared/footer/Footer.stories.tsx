@@ -1,4 +1,4 @@
-import type { ComponentStory, Meta } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react';
 import { Footer } from './Footer';
 import { MinimalFooter } from './MinimalFooter';
 
@@ -13,8 +13,6 @@ export default {
 	},
 } as Meta;
 
-export const Default: ComponentStory<typeof Footer> = () => <Footer />;
+export const Default: StoryFn<typeof Footer> = () => <Footer />;
 
-export const Minimal: ComponentStory<typeof MinimalFooter> = () => (
-	<MinimalFooter />
-);
+export const Minimal: StoryFn<typeof MinimalFooter> = () => <MinimalFooter />;

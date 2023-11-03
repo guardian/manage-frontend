@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { SectionContent } from '../shared/SectionContent';
@@ -40,31 +40,33 @@ const articleContent = {
 	],
 };
 
-export const Default: StoryFn<typeof HelpCentreArticle> = () => {
-	return (
-		<>
-			<SectionHeader title="How can we help you?" pageHasNav={true} />
-			<SectionContent hasNav={true}>
-				<HelpCentreArticle />
-			</SectionContent>
-		</>
-	);
-};
+export const Default: StoryObj<typeof HelpCentreArticle> = {
+	render: () => {
+		return (
+			<>
+				<SectionHeader title="How can we help you?" pageHasNav={true} />
+				<SectionContent hasNav={true}>
+					<HelpCentreArticle />
+				</SectionContent>
+			</>
+		);
+	},
 
-Default.parameters = {
-	msw: [
-		rest.get('/api/known-issues/', (_req, res, ctx) => {
-			return res(ctx.json([]));
-		}),
-		rest.get(
-			'/api/help-centre/article/i-need-to-pause-my-delivery',
-			(_req, res, ctx) => {
-				return res(ctx.json(articleContent));
-			},
-		),
-	],
-	reactRouter: {
-		location: '/article/i-need-to-pause-my-delivery',
-		path: '/article/:articleCode',
+	parameters: {
+		msw: [
+			rest.get('/api/known-issues/', (_req, res, ctx) => {
+				return res(ctx.json([]));
+			}),
+			rest.get(
+				'/api/help-centre/article/i-need-to-pause-my-delivery',
+				(_req, res, ctx) => {
+					return res(ctx.json(articleContent));
+				},
+			),
+		],
+		reactRouter: {
+			location: '/article/i-need-to-pause-my-delivery',
+			path: '/article/:articleCode',
+		},
 	},
 };

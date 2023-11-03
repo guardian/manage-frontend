@@ -29,22 +29,34 @@ const Template: StoryFn<typeof Main> = (args: MainProps) => (
 	</Main>
 );
 
-export const SignedOut = Template.bind({});
-SignedOut.args = {
-	signInStatus: 'signedOut',
+export const SignedOut = {
+	render: Template,
+
+	args: {
+		signInStatus: 'signedOut',
+	},
 };
 
-export const SignedIn = Template.bind({});
-SignedIn.args = {
-	signInStatus: 'signedIn',
+export const SignedIn = {
+	render: Template,
+
+	args: {
+		signInStatus: 'signedIn',
+	},
 };
 
-export const HelpCentreSignedOut = Template.bind({});
-HelpCentreSignedOut.args = {
-	signInStatus: 'signedOut',
+export const HelpCentreSignedOut = {
+	render: Template,
+
+	args: {
+		signInStatus: 'signedOut',
+	},
 };
 
-export const HelpCentreSignedIn = Template.bind({});
-HelpCentreSignedIn.args = {
-	signInStatus: 'signedIn',
+export const HelpCentreSignedIn = {
+	render: Template,
+
+	args: {
+		signInStatus: 'signedIn',
+	},
 };

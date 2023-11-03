@@ -17,4 +17,6 @@ const Template: StoryFn<typeof FormError> = (args: FormErrorProps) => {
 	return <FormError {...args} />;
 };
 
-export const Default = Template.bind({});
+export const Default = {
+	render: Template,
+};
