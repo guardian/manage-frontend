@@ -1,15 +1,24 @@
 import { css } from '@emotion/react';
+import { palette, space, textSans, until } from '@guardian/source-foundations';
 import {
-	headline,
-	palette,
-	space,
-	textSans,
-	until,
-} from '@guardian/source-foundations';
+	Stack,
+	SvgCalendar,
+	SvgClock,
+	SvgCreditCard,
+} from '@guardian/source-react-components';
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
+import { UpdateAmount } from '@/client/components/mma/accountoverview/updateAmount/UpdateAmount';
+import { BasicProductInfoTable } from '@/client/components/mma/shared/BasicProductInfoTable';
+import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymentDetails';
+import { PaymentDetailsTable } from '@/client/components/mma/shared/PaymentDetailsTable';
+import {
+	iconListCss,
+	listWithDividersCss,
+	whatHappensNextIconCss,
+} from '@/client/styles/GenericStyles';
+import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
-import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
@@ -45,18 +54,14 @@ import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
-import { BasicProductInfoTable } from '../shared/BasicProductInfoTable';
 import { LinkButton } from '../shared/Buttons';
-import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
-import { PaymentDetailsTable } from '../shared/PaymentDetailsTable';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTable';
 import { NewsletterOptinSection } from './NewsletterOptinSection';
 import { SixForSixExplainerIfApplicable } from './SixForSixExplainer';
-import { UpdateAmount } from './updateAmount/UpdateAmount';
 
 const subHeadingTitleCss = `
-    ${headline.small()};
+    font-size: 2.125rem;
     font-weight: bold;
     ${until.tablet} {
       font-size: 1.25rem;
@@ -64,8 +69,7 @@ const subHeadingTitleCss = `
     };
   `;
 const subHeadingBorderTopCss = `
-    border-top: 1px solid ${palette.neutral['86']};
-    margin: 50px 0 ${space[5]}px;
+    margin: 16px 0 32px;
   `;
 export const subHeadingCss = `
     ${subHeadingBorderTopCss}
@@ -105,6 +109,9 @@ const InnerContent = ({
 		!!productDetail.alertText,
 	);
 
+	const nextPaymentAmount = productDetail.subscription.nextPaymentPrice;
+	const nextPaymentDate = productDetail.subscription.nextPaymentDate;
+
 	const maybePatronSuffix =
 		productDetail.subscription.readerType === 'Patron' ? ' - Patron' : '';
 
@@ -129,7 +136,8 @@ const InnerContent = ({
 						margin: 0;
 					`}
 				>
-					{specificProductType.productTitle(mainPlan)}
+					Manage{' '}
+					{specificProductType.productTitle(mainPlan).toLowerCase()}
 					{maybePatronSuffix}
 				</h2>
 				{isGift(productDetail.subscription) && (
@@ -187,10 +195,78 @@ const InnerContent = ({
 			<h2
 				css={css`
 					${subHeadingCss}
+					font-size: 20px;
+					font-weight: bold;
+					margin-bottom: 16px;
 				`}
 			>
 				Payment
 			</h2>
+
+			<section
+				css={css`
+					border-bottom: 1px solid ${palette.neutral[86]};
+					padding-bottom: ${space[5]}px;
+				`}
+			>
+				<Stack space={5}>
+					<div
+						css={css`
+							border-top: 1px solid ${palette.neutral[86]};
+							padding-bottom: ${space[1]}px;
+						`}
+					></div>
+					<ul
+						css={[
+							iconListCss,
+							listWithDividersCss,
+							whatHappensNextIconCss,
+						]}
+					>
+						<li>
+							<SvgClock size="medium" />
+							<span>
+								<strong
+									css={css`
+										padding-bottom: ${space[1]}px;
+									`}
+								>
+									Next monthly payment
+								</strong>
+								<br />
+								{nextPaymentAmount}
+							</span>
+						</li>
+						<li>
+							<SvgCalendar size="medium" />
+							<span>
+								<strong
+									css={css`
+										padding-bottom: ${space[1]}px;
+									`}
+								>
+									Next payment date
+								</strong>
+								<br /> {nextPaymentDate}
+							</span>
+						</li>
+						<li>
+							<SvgCreditCard size="medium" />
+							<span data-qm-masking="blocklist">
+								<strong
+									css={css`
+										padding-bottom: ${space[1]}px;
+									`}
+								>
+									Payment Method
+								</strong>
+								<br /> blah
+							</span>
+						</li>
+					</ul>
+				</Stack>
+			</section>
+
 			<SixForSixExplainerIfApplicable
 				additionalCss={css`
 					${textSans.medium()};
@@ -471,7 +547,7 @@ export const ManageProduct = (props: WithProductType<ProductType>) => {
 	return (
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}
-			pageTitle={`Manage ${
+			pageTitle={`Your ${
 				GROUPED_PRODUCT_TYPES[props.productType.groupedProductType]
 					.shortFriendlyName ||
 				GROUPED_PRODUCT_TYPES[
