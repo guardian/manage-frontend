@@ -11,7 +11,7 @@ import { Link, Navigate, useLocation } from 'react-router-dom';
 import { UpdateAmount } from '@/client/components/mma/accountoverview/updateAmount/UpdateAmount';
 import { BasicProductInfoTable } from '@/client/components/mma/shared/BasicProductInfoTable';
 import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymentDetails';
-import { PaymentDetailsTable } from '@/client/components/mma/shared/PaymentDetailsTable';
+import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
 import {
 	iconListCss,
 	listWithDividersCss,
@@ -108,9 +108,6 @@ const InnerContent = ({
 		overiddenAmount,
 		!!productDetail.alertText,
 	);
-
-	const nextPaymentAmount = productDetail.subscription.nextPaymentPrice;
-	const nextPaymentDate = productDetail.subscription.nextPaymentDate;
 
 	const maybePatronSuffix =
 		productDetail.subscription.readerType === 'Patron' ? ' - Patron' : '';
@@ -231,10 +228,10 @@ const InnerContent = ({
 										padding-bottom: ${space[1]}px;
 									`}
 								>
-									Next monthly payment
+									Next payment
 								</strong>
 								<br />
-								{nextPaymentAmount}
+								{nextPaymentDetails?.paymentValue}
 							</span>
 						</li>
 						<li>
@@ -247,7 +244,8 @@ const InnerContent = ({
 								>
 									Next payment date
 								</strong>
-								<br /> {nextPaymentDate}
+								<br />{' '}
+								{nextPaymentDetails?.nextPaymentDateValue}
 							</span>
 						</li>
 						<li>
@@ -260,7 +258,10 @@ const InnerContent = ({
 								>
 									Payment Method
 								</strong>
-								<br /> blah
+								<br />{' '}
+								<PaymentDetails
+									subscription={productDetail.subscription}
+								/>
 							</span>
 						</li>
 					</ul>
@@ -272,11 +273,6 @@ const InnerContent = ({
 					${textSans.medium()};
 				`}
 				mainPlan={mainPlan}
-				hasCancellationPending={hasCancellationPending}
-			/>
-			<PaymentDetailsTable
-				productDetail={productDetail}
-				nextPaymentDetails={nextPaymentDetails}
 				hasCancellationPending={hasCancellationPending}
 			/>
 			{productDetail.isPaidTier &&
