@@ -275,27 +275,25 @@ const InnerContent = ({
 				mainPlan={mainPlan}
 				hasCancellationPending={hasCancellationPending}
 			/>
-			{productDetail.isPaidTier &&
-				productDetail.subscription.safeToUpdatePaymentMethod &&
-				!productDetail.subscription.payPalEmail && (
-					<LinkButton
-						colour={
-							productDetail.alertText
-								? palette.brand[400]
-								: palette.brand[800]
-						}
-						textColour={
-							productDetail.alertText
-								? palette.neutral[100]
-								: palette.brand[400]
-						}
-						fontWeight={'bold'}
-						alert={!!productDetail.alertText}
-						text="Update payment method"
-						to={`/payment/${specificProductType.urlPart}`}
-						state={{ productDetail: productDetail }}
-					/>
-				)}
+			<section
+				css={css`
+					margin-top: ${space[4]}px;
+				`}
+			>
+				{productDetail.isPaidTier &&
+					productDetail.subscription.safeToUpdatePaymentMethod &&
+					!productDetail.subscription.payPalEmail && (
+						<LinkButton
+							colour={palette.brand[400]}
+							textColour={palette.neutral[100]}
+							fontWeight={'bold'}
+							alert={!!productDetail.alertText}
+							text="Update payment method"
+							to={`/payment/${specificProductType.urlPart}`}
+							state={{ productDetail: productDetail }}
+						/>
+					)}
+			</section>
 
 			{specificProductType.delivery?.showAddress?.(
 				productDetail.subscription,
