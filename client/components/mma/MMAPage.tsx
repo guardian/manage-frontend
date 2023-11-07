@@ -105,15 +105,15 @@ const ExecuteCancellation = lazy(() =>
 
 const MembershipCancellationLanding = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/MembershipCancellationLanding'
-	).then(({ MembershipCancellationLanding }) => ({
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancellationLanding'
+	).then(({ CancellationLanding: MembershipCancellationLanding }) => ({
 		default: MembershipCancellationLanding,
 	})),
 );
 
 const ValueOfSupport = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/ValueOfSupport'
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/ValueOfSupport'
 	).then(({ ValueOfSupport }) => ({
 		default: ValueOfSupport,
 	})),
@@ -121,7 +121,7 @@ const ValueOfSupport = lazy(() =>
 
 const SaveOptions = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SaveOptions'
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/SaveOptions'
 	).then(({ SaveOptions }) => ({
 		default: SaveOptions,
 	})),
@@ -129,7 +129,7 @@ const SaveOptions = lazy(() =>
 
 const MembershipSwitch = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/MembershipSwitch'
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/MembershipSwitch'
 	).then(({ MembershipSwitch }) => ({
 		default: MembershipSwitch,
 	})),
@@ -137,7 +137,7 @@ const MembershipSwitch = lazy(() =>
 
 const SelectReason = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SelectReason'
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/SelectReason'
 	).then(({ SelectReason }) => ({
 		default: SelectReason,
 	})),
@@ -145,7 +145,7 @@ const SelectReason = lazy(() =>
 
 const ContinueMembershipConfirmation = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/ContinueMembershipConfirmation'
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/ContinueMembershipConfirmation'
 	).then(({ ContinueMembershipConfirmation }) => ({
 		default: ContinueMembershipConfirmation,
 	})),
@@ -153,7 +153,7 @@ const ContinueMembershipConfirmation = lazy(() =>
 
 const ConfirmMembershipCancellation = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/ConfirmMembershipCancellation'
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/ConfirmMembershipCancellation'
 	).then(({ ConfirmMembershipCancellation }) => ({
 		default: ConfirmMembershipCancellation,
 	})),
@@ -161,7 +161,7 @@ const ConfirmMembershipCancellation = lazy(() =>
 
 const SwitchThankYou = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SwitchThankYou'
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/SwitchThankYou'
 	).then(({ SwitchThankYou }) => ({
 		default: SwitchThankYou,
 	})),

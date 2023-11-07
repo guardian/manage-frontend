@@ -13,31 +13,34 @@ import { useLocation, useNavigate } from 'react-router';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
-} from '../../../../../shared/dates';
+} from '../../../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
 	ProductDetail,
-} from '../../../../../shared/productResponse';
+} from '../../../../../../shared/productResponse';
 import {
 	getMainPlan,
 	MDA_TEST_USER_HEADER,
-} from '../../../../../shared/productResponse';
-import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
+} from '../../../../../../shared/productResponse';
+import type { ProductTypeWithCancellationFlow } from '../../../../../../shared/productTypes';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 	wideButtonCss,
-} from '../../../../styles/ButtonStyles';
-import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
-import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
-import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
+} from '../../../../../styles/ButtonStyles';
+import {
+	headingCss,
+	sectionSpacing,
+} from '../../../../../styles/GenericStyles';
+import { GenericErrorScreen } from '../../../../shared/GenericErrorScreen';
+import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
-} from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
-import type { CancellationReason } from '../cancellationReason';
-import { membershipCancellationReasons } from '../membership/MembershipCancellationReasons';
+} from '../../CancellationContainer';
+import { CancellationContext } from '../../CancellationContainer';
+import type { CancellationReason } from '../../cancellationReason';
+import { membershipCancellationReasons } from '../../membership/MembershipCancellationReasons';
 import { paragraphListCss } from './SaveStyles';
 
 const reasonLegendCss = css`
