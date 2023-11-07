@@ -10,30 +10,30 @@ import { Navigate, useLocation, useNavigate } from 'react-router';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
-} from '../../../../../shared/dates';
-import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { getMainPlan } from '../../../../../shared/productResponse';
+} from '../../../../../../shared/dates';
+import type { PaidSubscriptionPlan } from '../../../../../../shared/productResponse';
+import { getMainPlan } from '../../../../../../shared/productResponse';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
-} from '../../../../styles/ButtonStyles';
+} from '../../../../../styles/ButtonStyles';
 import {
 	headingCss,
 	iconListCss,
 	sectionSpacing,
 	whatHappensNextIconCss,
-} from '../../../../styles/GenericStyles';
-import { getOldMembershipPrice } from '../../../../utilities/membershipPriceRise';
-import { Heading } from '../../shared/Heading';
+} from '../../../../../styles/GenericStyles';
+import { getOldMembershipPrice } from '../../../../../utilities/membershipPriceRise';
+import { Heading } from '../../../shared/Heading';
 import type {
 	CancellationContextInterface,
 	CancellationPageTitleInterface,
 	CancellationRouterState,
-} from '../CancellationContainer';
+} from '../../CancellationContainer';
 import {
 	CancellationContext,
 	CancellationPageTitleContext,
-} from '../CancellationContainer';
+} from '../../CancellationContainer';
 
 export const SwitchThankYou = () => {
 	const navigate = useNavigate();
