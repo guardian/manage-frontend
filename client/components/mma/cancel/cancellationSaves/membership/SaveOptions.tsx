@@ -13,32 +13,32 @@ import {
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
-import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { getMainPlan } from '../../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../shared/productTypes';
+import type { PaidSubscriptionPlan } from '../../../../../../shared/productResponse';
+import { getMainPlan } from '../../../../../../shared/productResponse';
+import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../../shared/productTypes';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
-} from '../../../../styles/ButtonStyles';
+} from '../../../../../styles/ButtonStyles';
 import {
 	headingCss,
 	productTitleCss,
 	sectionSpacing,
-} from '../../../../styles/GenericStyles';
+} from '../../../../../styles/GenericStyles';
 import {
 	getNewMembershipPrice,
 	getOldMembershipPrice,
-} from '../../../../utilities/membershipPriceRise';
-import { benefitsConfiguration } from '../../shared/benefits/BenefitsConfiguration';
-import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
-import { Card } from '../../shared/Card';
-import { Heading } from '../../shared/Heading';
-import { ProgressStepper } from '../../shared/ProgressStepper';
+} from '../../../../../utilities/membershipPriceRise';
+import { benefitsConfiguration } from '../../../shared/benefits/BenefitsConfiguration';
+import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
+import { Card } from '../../../shared/Card';
+import { Heading } from '../../../shared/Heading';
+import { ProgressStepper } from '../../../shared/ProgressStepper';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
-} from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
+} from '../../CancellationContainer';
+import { CancellationContext } from '../../CancellationContainer';
 import {
 	cardHeaderDivCss,
 	cardSectionCss,

@@ -3,7 +3,6 @@ import { textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router';
-import { featureSwitches } from '../../../../../shared/featureSwitches';
 import type {
 	MembersDataApiResponse,
 	PaidSubscriptionPlan,
@@ -17,7 +16,6 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
-import { getNewMembershipPrice } from '../../../../utilities/membershipPriceRise';
 import { allRecurringProductsDetailFetcher } from '../../../../utilities/productUtils';
 import type { PhoneRegionKey } from '../../../shared/CallCenterEmailAndNumbers';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
@@ -27,36 +25,7 @@ import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingV
 import { Heading } from '../../shared/Heading';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-
-function ineligibleForSave(
-	products: ProductDetail[],
-	membershipToCancel: ProductDetail,
-) {
-	const inPaymentFailure = products.find((product) => product.alertText);
-
-	const hasOtherProduct = products.find(
-		(product) =>
-			product.mmaCategory != 'membership' &&
-			!product.subscription.cancelledAt,
-	);
-
-	const membershipTierIsNotSupporter =
-		membershipToCancel.tier !== 'Supporter';
-
-	const mainPlan = getMainPlan(
-		membershipToCancel.subscription,
-	) as PaidSubscriptionPlan;
-
-	const hasBeenPriceRisen =
-		getNewMembershipPrice(mainPlan) === mainPlan.price / 100;
-
-	return (
-		inPaymentFailure ||
-		hasOtherProduct ||
-		membershipTierIsNotSupporter ||
-		hasBeenPriceRisen
-	);
-}
+import { ineligibleForSave } from './eligibilityCheck';
 
 function getPhoneRegion(currencyIso: CurrencyIso): PhoneRegionKey {
 	switch (currencyIso) {
@@ -70,14 +39,13 @@ function getPhoneRegion(currencyIso: CurrencyIso): PhoneRegionKey {
 	}
 }
 
-export const MembershipCancellationLanding = () => {
+export const CancellationLanding = () => {
 	const navigate = useNavigate();
-	const cancellationContext = useContext(
+	const { productDetail: productToCancel } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
-	const membership = cancellationContext.productDetail;
 
-	if (!membership) {
+	if (!productToCancel) {
 		return <Navigate to="/" />;
 	}
 
@@ -99,10 +67,7 @@ export const MembershipCancellationLanding = () => {
 		return <GenericErrorScreen />;
 	}
 
-	if (
-		featureSwitches.membershipSave &&
-		ineligibleForSave(data.products as ProductDetail[], membership)
-	) {
+	if (ineligibleForSave(data.products as ProductDetail[], productToCancel)) {
 		return (
 			<Navigate
 				to="../"
@@ -114,7 +79,7 @@ export const MembershipCancellationLanding = () => {
 	}
 
 	const mainPlan = getMainPlan(
-		membership.subscription,
+		productToCancel.subscription,
 	) as PaidSubscriptionPlan;
 
 	const phoneRegion = getPhoneRegion(mainPlan.currencyISO as CurrencyIso);
@@ -149,7 +114,7 @@ export const MembershipCancellationLanding = () => {
 					<CallCentreEmailAndNumbers
 						hideEmailAddress={true}
 						phoneRegionFilterKeys={
-							membership.selfServiceCancellation
+							productToCancel.selfServiceCancellation
 								.phoneRegionsToDisplay
 						}
 						openPhoneRegion={phoneRegion}
@@ -168,6 +133,7 @@ export const MembershipCancellationLanding = () => {
 					</p>
 					<div css={buttonLayoutCss}>
 						<Button
+							// ToDo: navigate to different routes depending on the product journey
 							onClick={() =>
 								navigate('../details', {
 									state: { user: data.user },

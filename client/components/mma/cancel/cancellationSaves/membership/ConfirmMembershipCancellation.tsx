@@ -3,25 +3,25 @@ import { palette, space, textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { MDA_TEST_USER_HEADER } from '../../../../../shared/productResponse';
+import { MDA_TEST_USER_HEADER } from '../../../../../../shared/productResponse';
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
-} from '../../../../../shared/productResponse';
-import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
-import { stackedButtonLayoutCss } from '../../../../styles/ButtonStyles';
-import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
-import { createProductDetailFetcher } from '../../../../utilities/productUtils';
-import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
-import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
-import { Heading } from '../../shared/Heading';
-import { ProgressStepper } from '../../shared/ProgressStepper';
+} from '../../../../../../shared/productResponse';
+import type { ProductTypeWithCancellationFlow } from '../../../../../../shared/productTypes';
+import { stackedButtonLayoutCss } from '../../../../../styles/ButtonStyles';
+import { fetchWithDefaultParameters } from '../../../../../utilities/fetch';
+import { createProductDetailFetcher } from '../../../../../utilities/productUtils';
+import { GenericErrorScreen } from '../../../../shared/GenericErrorScreen';
+import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
+import { Heading } from '../../../shared/Heading';
+import { ProgressStepper } from '../../../shared/ProgressStepper';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
-} from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
-import type { OptionalCancellationReasonId } from '../cancellationReason';
+} from '../../CancellationContainer';
+import { CancellationContext } from '../../CancellationContainer';
+import type { OptionalCancellationReasonId } from '../../cancellationReason';
 
 export const ConfirmMembershipCancellation = () => {
 	const navigate = useNavigate();

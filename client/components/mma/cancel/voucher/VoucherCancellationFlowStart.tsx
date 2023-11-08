@@ -33,24 +33,6 @@ export const voucherCancellationFlowStart = ({
 				We’re sorry to hear you’re thinking of cancelling your voucher
 				subscription
 			</Heading>
-
-			<p>
-				We understand that some of you may have concerns about claiming
-				your paper during the COVID-19 outbreak. We are now offering all
-				our voucher customers a holiday suspension of up to 10 weeks,
-				which you can arrange{' '}
-				<a
-					css={hrefStyle}
-					href="/suspend/voucher"
-					onClick={trackCancellationClickEvent(
-						'voucher_holiday_suspension',
-					)}
-				>
-					online
-				</a>
-				.
-			</p>
-
 			<p>
 				You can also opt for home delivery. Sign up to a free trial with{' '}
 				<a
