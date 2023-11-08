@@ -203,7 +203,8 @@ const InnerContent = ({
 
 			<h2
 				css={css`
-					${subHeadingCss};
+					${textSans.medium({ fontWeight: 'bold' })}
+					font-style: normal;
 					font-size: 20px;
 					font-weight: bold;
 					margin-bottom: 16px;
