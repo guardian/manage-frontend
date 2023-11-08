@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { palette, space, textSans, until } from '@guardian/source-foundations';
 import {
+	LinkButton,
 	Stack,
 	SvgCalendar,
 	SvgClock,
@@ -12,6 +13,10 @@ import { UpdateAmount } from '@/client/components/mma/accountoverview/updateAmou
 import { BasicProductInfoTable } from '@/client/components/mma/shared/BasicProductInfoTable';
 import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymentDetails';
 import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
+import {
+	buttonCentredCss,
+	stackedButtonLayoutCss,
+} from '@/client/styles/ButtonStyles';
 import {
 	iconListCss,
 	listWithDividersCss,
@@ -57,7 +62,6 @@ import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
-import { LinkButton } from '../shared/Buttons';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTable';
 import { NewsletterOptinSection } from './NewsletterOptinSection';
@@ -265,7 +269,7 @@ const InnerContent = ({
 								>
 									Payment Method
 								</strong>
-								<br />{' '}
+								<br />
 								<PaymentDetails
 									subscription={productDetail.subscription}
 								/>
@@ -287,19 +291,26 @@ const InnerContent = ({
 					margin-top: ${space[4]}px;
 				`}
 			>
-				{productDetail.isPaidTier &&
-					productDetail.subscription.safeToUpdatePaymentMethod &&
-					!productDetail.subscription.payPalEmail && (
-						<LinkButton
-							colour={palette.brand[400]}
-							textColour={palette.neutral[100]}
-							fontWeight={'bold'}
-							alert={!!productDetail.alertText}
-							text="Update payment method"
-							to={`/payment/${specificProductType.urlPart}`}
-							state={{ productDetail: productDetail }}
+				<div css={stackedButtonLayoutCss}>
+					{productDetail.isPaidTier &&
+						productDetail.subscription.safeToUpdatePaymentMethod &&
+						!productDetail.subscription.payPalEmail && (
+							<LinkButton
+								href={`/payment/${specificProductType.urlPart}`}
+								cssOverrides={buttonCentredCss}
+							>
+								Update payment method
+							</LinkButton>
+						)}
+
+					{!hasCancellationPending && (
+						<CancellationCTA
+							productDetail={productDetail}
+							friendlyName={groupedProductType.friendlyName()}
+							specificProductType={specificProductType}
 						/>
 					)}
+				</div>
 			</section>
 
 			{specificProductType.delivery?.showAddress?.(
@@ -343,14 +354,18 @@ const InnerContent = ({
 									: []),
 							]}
 						/>
-						<LinkButton
-							colour={palette.brand[800]}
-							textColour={palette.brand[400]}
-							fontWeight="bold"
-							text="Manage delivery address"
-							to={`/delivery/${specificProductType.urlPart}/address`}
-							state={productDetail}
-						/>
+						<div css={stackedButtonLayoutCss}>
+							<LinkButton
+								cssOverrides={css`
+									color: ${palette.brand[400]};
+									background-color: ${palette.brand[800]};
+									justify-content: center;
+								`}
+								href={`/delivery/${specificProductType.urlPart}/address`}
+							>
+								Manage delivery address
+							</LinkButton>
+						</div>
 					</>
 				)}
 
@@ -370,14 +385,18 @@ const InnerContent = ({
 					>
 						Check delivery history and report an issue.
 					</p>
-					<LinkButton
-						colour={palette.brand[800]}
-						textColour={palette.brand[400]}
-						fontWeight="bold"
-						text="Manage delivery history"
-						to={`/delivery/${specificProductType.urlPart}/records`}
-						state={{ productDetail }}
-					/>
+					<div css={stackedButtonLayoutCss}>
+						<LinkButton
+							cssOverrides={css`
+								color: ${palette.brand[400]};
+								background-color: ${palette.brand[800]};
+								justify-content: center;
+							`}
+							href={`/delivery/${specificProductType.urlPart}/records`}
+						>
+							Manage delivery history
+						</LinkButton>
+					</div>
 				</>
 			)}
 
@@ -403,14 +422,18 @@ const InnerContent = ({
 							{specificProductType.holidayStops.issueKeyword} on
 							the first bill after the suspension date.
 						</p>
-						<LinkButton
-							colour={palette.brand[800]}
-							textColour={palette.brand[400]}
-							fontWeight="bold"
-							text="Manage suspensions"
-							to={`/suspend/${specificProductType.urlPart}`}
-							state={{ productDetail }}
-						/>
+						<div css={stackedButtonLayoutCss}>
+							<LinkButton
+								cssOverrides={css`
+									color: ${palette.brand[400]};
+									background-color: ${palette.brand[800]};
+									justify-content: center;
+								`}
+								href={`/suspend/${specificProductType.urlPart}`}
+							>
+								Manage suspensions
+							</LinkButton>
+						</div>
 					</>
 				)}
 
@@ -456,14 +479,6 @@ const InnerContent = ({
 					activeNewletterIDs={
 						specificProductType.productPageNewsletterIDs
 					}
-				/>
-			)}
-
-			{!hasCancellationPending && (
-				<CancellationCTA
-					productDetail={productDetail}
-					friendlyName={groupedProductType.friendlyName()}
-					specificProductType={specificProductType}
 				/>
 			)}
 		</>
