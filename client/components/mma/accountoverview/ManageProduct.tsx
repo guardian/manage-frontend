@@ -132,7 +132,7 @@ const InnerContent = ({
 			<PaymentFailureAlertIfApplicable productDetails={[productDetail]} />
 			<div
 				css={css`
-					${subHeadingBorderTopCss}
+					${subHeadingBorderTopCss};
 					display: flex;
 					align-items: start;
 					justify-content: space-between;
@@ -140,7 +140,7 @@ const InnerContent = ({
 			>
 				<h2
 					css={css`
-						${subHeadingTitleCss}
+						${subHeadingTitleCss};
 						margin: 0;
 					`}
 				>
@@ -202,7 +202,7 @@ const InnerContent = ({
 
 			<h2
 				css={css`
-					${subHeadingCss}
+					${subHeadingCss};
 					font-size: 20px;
 					font-weight: bold;
 					margin-bottom: 16px;
