@@ -22,7 +22,7 @@ import {
 	listWithDividersCss,
 	whatHappensNextIconCss,
 } from '@/client/styles/GenericStyles';
-import { linkAdditionCss } from '@/client/styles/LinkStyles';
+import { linkCss } from '@/client/styles/LinkStyles';
 import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {
@@ -498,27 +498,39 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 		!props.productDetail.selfServiceCancellation.isAllowed ||
 		!props.specificProductType.cancellation;
 	return (
-		<div
-			css={css`
-				${textSans.medium()};
-				color: ${palette.neutral[46]};
-				margin-left: 20px;
-				margin-top: 16px;
-				justify-content: center;
-			`}
-		>
-			{shouldContactUsToCancel &&
-				`Would you like to cancel your ${props.friendlyName}? `}
-			<Link
-				css={linkAdditionCss}
-				to={'/cancel/' + props.specificProductType.urlPart}
-				state={{ productDetail: props.productDetail }}
-			>
-				{shouldContactUsToCancel
-					? 'Contact us'
-					: `Cancel ${props.friendlyName}`}
-			</Link>
-		</div>
+		<>
+			{shouldContactUsToCancel && (
+				<div
+					css={css`
+						${textSans.medium()};
+						color: ${palette.neutral[46]};
+						margin-left: 20px;
+						margin-top: 16px;
+						justify-content: center;
+					`}
+				>
+					Would you like to cancel your {props.friendlyName}?
+					<Link
+						css={css`
+							${textSans.medium()};
+							color: ${palette.brand[400]};
+							font-weight: 700;
+							text-decoration-line: underline;
+							justify-content: center;
+							margin-left: 5px;
+						`}
+						to={'/cancel/' + props.specificProductType.urlPart}
+						state={{ productDetail: props.productDetail }}
+					>
+						Contact us
+					</Link>
+				</div>
+			)}
+
+			{!shouldContactUsToCancel && (
+				<div css={linkCss}> Cancel {props.friendlyName} </div>
+			)}
+		</>
 	);
 };
 
