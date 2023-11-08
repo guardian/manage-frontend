@@ -33,7 +33,10 @@ import type {
 	ProductType,
 	WithProductType,
 } from '../../../../shared/productTypes';
-import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import {
+	calculateMonthlyOrAnnualFromBillingPeriod,
+	GROUPED_PRODUCT_TYPES,
+} from '../../../../shared/productTypes';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -108,6 +111,10 @@ const InnerContent = ({
 		overiddenAmount,
 		!!productDetail.alertText,
 	);
+
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		nextPaymentDetails?.paymentInterval,
+	).toLocaleLowerCase();
 
 	const maybePatronSuffix =
 		productDetail.subscription.readerType === 'Patron' ? ' - Patron' : '';
@@ -228,7 +235,7 @@ const InnerContent = ({
 										padding-bottom: ${space[1]}px;
 									`}
 								>
-									Next payment
+									Next {monthlyOrAnnual} payment
 								</strong>
 								<br />
 								{nextPaymentDetails?.paymentValue}
@@ -476,7 +483,7 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 	return (
 		<div
 			css={css`
-				margin: ${space[24]}px 0 0 auto;
+				margin: ${space[4]}px 0 0 auto;
 				${textSans.medium()}
 				color: ${palette.neutral[46]};
 			`}
@@ -485,7 +492,8 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 				`Would you like to cancel your ${props.friendlyName}? `}
 			<Link
 				css={css`
-					color: ${palette.brand['500']};
+					color: ${palette.brand['400']};
+					text-decoration: underline;
 				`}
 				to={'/cancel/' + props.specificProductType.urlPart}
 				state={{ productDetail: props.productDetail }}

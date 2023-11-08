@@ -245,7 +245,7 @@ export function calculateSupporterPlusTitle(billingPeriod: string) {
 }
 
 export function calculateMonthlyOrAnnualFromBillingPeriod(
-	billingPeriod: string,
+	billingPeriod: string | undefined,
 ) {
 	if (billingPeriod === 'month') {
 		return 'Monthly';
