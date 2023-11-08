@@ -14,6 +14,10 @@ import { BasicProductInfoTable } from '@/client/components/mma/shared/BasicProdu
 import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymentDetails';
 import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
 import {
+	linkAdditionCss,
+	nonLinkCss,
+} from '@/client/components/mma/upgrade/UpgradeSupportStyles';
+import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 } from '@/client/styles/ButtonStyles';
@@ -496,20 +500,11 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 		!props.productDetail.selfServiceCancellation.isAllowed ||
 		!props.specificProductType.cancellation;
 	return (
-		<div
-			css={css`
-				margin: ${space[4]}px 0 0 auto;
-				${textSans.medium()}
-				color: ${palette.neutral[46]};
-			`}
-		>
+		<div css={nonLinkCss}>
 			{shouldContactUsToCancel &&
 				`Would you like to cancel your ${props.friendlyName}? `}
 			<Link
-				css={css`
-					color: ${palette.brand['400']};
-					text-decoration: underline;
-				`}
+				css={linkAdditionCss}
 				to={'/cancel/' + props.specificProductType.urlPart}
 				state={{ productDetail: props.productDetail }}
 			>
