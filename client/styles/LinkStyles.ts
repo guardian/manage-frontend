@@ -17,14 +17,3 @@ export const linkCss = css`
 		margin-left: 20px;
 	}
 `;
-
-export const linkAdditionCss = css`
-	${textSans.medium()};
-	a {
-		color: ${palette.brand[400]};
-	}
-	color: ${palette.brand[400]};
-	font-weight: 700;
-	text-decoration-line: underline;
-	justify-content: center;
-`;
