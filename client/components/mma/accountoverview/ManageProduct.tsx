@@ -504,7 +504,6 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 					css={css`
 						${textSans.medium()};
 						color: ${palette.neutral[46]};
-						margin-left: 20px;
 						margin-top: 16px;
 						justify-content: center;
 					`}
