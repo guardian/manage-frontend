@@ -22,7 +22,7 @@ import {
 	listWithDividersCss,
 	whatHappensNextIconCss,
 } from '@/client/styles/GenericStyles';
-import { linkAdditionCss, nonLinkCss } from '@/client/styles/LinkStyles';
+import { linkAdditionCss } from '@/client/styles/LinkStyles';
 import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {
@@ -497,7 +497,15 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 		!props.productDetail.selfServiceCancellation.isAllowed ||
 		!props.specificProductType.cancellation;
 	return (
-		<div css={nonLinkCss}>
+		<div
+			css={css`
+				${textSans.medium()};
+				color: ${palette.neutral[46]};
+				margin-left: 20px;
+				margin-top: 16px;
+				justify-content: center;
+			`}
+		>
 			{shouldContactUsToCancel &&
 				`Would you like to cancel your ${props.friendlyName}? `}
 			<Link

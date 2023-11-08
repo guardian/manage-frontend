@@ -10,17 +10,7 @@ export const linkCss = css`
 	font-weight: 700;
 	text-decoration-line: underline;
 	margin-top: 10px;
-	display: flex;
-	justify-content: center;
-	${from.tablet} {
-		margin-left: 20px;
-	}
-`;
-
-export const nonLinkCss = css`
-	${textSans.medium()};
-	color: ${palette.neutral[46]};
-	margin-top: 10px;
+	margin-left: 20px;
 	display: flex;
 	justify-content: center;
 	${from.tablet} {
@@ -36,9 +26,5 @@ export const linkAdditionCss = css`
 	color: ${palette.brand[400]};
 	font-weight: 700;
 	text-decoration-line: underline;
-	display: inline;
 	justify-content: center;
-	${from.tablet} {
-		margin-left: 20px;
-	}
 `;
