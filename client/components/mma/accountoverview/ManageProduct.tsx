@@ -14,10 +14,6 @@ import { BasicProductInfoTable } from '@/client/components/mma/shared/BasicProdu
 import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymentDetails';
 import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
 import {
-	linkAdditionCss,
-	nonLinkCss,
-} from '@/client/components/mma/upgrade/UpgradeSupportStyles';
-import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 } from '@/client/styles/ButtonStyles';
@@ -26,6 +22,7 @@ import {
 	listWithDividersCss,
 	whatHappensNextIconCss,
 } from '@/client/styles/GenericStyles';
+import { linkAdditionCss, nonLinkCss } from '@/client/styles/LinkStyles';
 import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {

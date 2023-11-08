@@ -27,6 +27,7 @@ import {
 	sectionSpacing,
 	whatHappensNextIconCss,
 } from '../../../styles/GenericStyles';
+import { linkCss } from '../../../styles/LinkStyles';
 import {
 	signInContentContainerCss,
 	signInCss,
@@ -39,7 +40,6 @@ import type {
 	UpgradeSupportInterface,
 } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
-import { linkCss } from './UpgradeSupportStyles';
 
 export const UpgradeSupportSwitchThankYou = () => {
 	const upgradeSupportContext = useContext(
