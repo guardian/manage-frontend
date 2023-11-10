@@ -527,7 +527,13 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 			)}
 
 			{!shouldContactUsToCancel && (
-				<div css={linkCss}> Cancel {props.friendlyName} </div>
+				<Link
+					css={linkCss}
+					to={'/cancel/' + props.specificProductType.urlPart}
+				>
+					{' '}
+					Cancel {props.friendlyName}{' '}
+				</Link>
 			)}
 		</>
 	);
