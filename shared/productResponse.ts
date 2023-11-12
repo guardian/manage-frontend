@@ -241,12 +241,20 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	};
 };
 
-export const isSpecificProductType = (
+export function getSpecificProductTypeFromProduct(
 	productDetail: ProductDetail,
-	targetProductType: ProductType,
-) => {
+): ProductType {
 	const groupedProductType = GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
 	const specificProductType =
 		groupedProductType.mapGroupedToSpecific(productDetail);
+	return specificProductType;
+}
+
+export function isSpecificProductType(
+	productDetail: ProductDetail,
+	targetProductType: ProductType,
+): boolean {
+	const specificProductType =
+		getSpecificProductTypeFromProduct(productDetail);
 	return specificProductType === targetProductType;
-};
+}

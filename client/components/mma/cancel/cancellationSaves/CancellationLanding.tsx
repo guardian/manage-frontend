@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { textSans } from '@guardian/source-foundations';
+import { space, textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router';
@@ -8,9 +8,11 @@ import type {
 	PaidSubscriptionPlan,
 	ProductDetail,
 } from '../../../../../shared/productResponse';
-import { getMainPlan } from '../../../../../shared/productResponse';
-import { buttonLayoutCss } from '../../../../styles/ButtonStyles';
-import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
+import {
+	getMainPlan,
+	getSpecificProductTypeFromProduct,
+} from '../../../../../shared/productResponse';
+import { headingCss } from '../../../../styles/GenericStyles';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import {
 	LoadingState,
@@ -26,6 +28,20 @@ import { Heading } from '../../shared/Heading';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import { ineligibleForSave } from './eligibilityCheck';
+
+function getNextRoute(productToCancel: ProductDetail): string {
+	const specificProductTypeKey =
+		getSpecificProductTypeFromProduct(productToCancel).productType;
+
+	switch (specificProductTypeKey) {
+		case 'membership': {
+			return '../details';
+		}
+		default: {
+			return '/';
+		}
+	}
+}
 
 function getPhoneRegion(currencyIso: CurrencyIso): PhoneRegionKey {
 	switch (currencyIso) {
@@ -86,14 +102,18 @@ export const CancellationLanding = () => {
 
 	return (
 		<>
-			<section css={sectionSpacing}>
-				<Stack space={3}>
+			<section
+				css={css`
+					margin-top: ${space[4]}px;
+				`}
+			>
+				<Stack space={1}>
 					<h2 css={headingCss}>
 						We're sorry to hear you're thinking of leaving
 					</h2>
 					<p
 						css={css`
-							${textSans.medium()}
+							${textSans.medium()};
 						`}
 					>
 						To cancel today, please choose from the following
@@ -101,15 +121,22 @@ export const CancellationLanding = () => {
 					</p>
 				</Stack>
 			</section>
-			<section css={sectionSpacing}>
+			<section
+				css={css`
+					margin-top: ${space[6] + space[2]}px;
+				`}
+			>
 				<Stack space={3}>
-					<Heading sansSerif>Call us to cancel</Heading>
+					<Heading borderless sansSerif level="3">
+						Contact us
+					</Heading>
 					<p
 						css={css`
-							${textSans.medium()}
+							${textSans.medium()};
+							margin: 0;
 						`}
 					>
-						Phone one of our customer service agents.
+						Speak to our customer service team.
 					</p>
 					<CallCentreEmailAndNumbers
 						hideEmailAddress={true}
@@ -121,26 +148,35 @@ export const CancellationLanding = () => {
 					/>
 				</Stack>
 			</section>
-			<section css={sectionSpacing}>
-				<Stack space={3}>
-					<Heading sansSerif>Cancel online</Heading>
-					<p
-						css={css`
-							${textSans.medium()}
-						`}
-					>
-						Continue without speaking to our customer service team.
-					</p>
-					<div css={buttonLayoutCss}>
+			<section
+				css={css`
+					margin-top: ${space[6] + space[2]}px;
+				`}
+			>
+				<Stack space={2}>
+					<span>
+						<Heading borderless sansSerif level="3">
+							Cancel online
+						</Heading>
+						<p
+							css={css`
+								${textSans.medium()};
+								margin: 0;
+							`}
+						>
+							End your subscription with just a few clicks.
+						</p>
+					</span>
+					<div>
 						<Button
-							// ToDo: navigate to different routes depending on the product journey
+							priority="subdued"
 							onClick={() =>
-								navigate('../details', {
+								navigate(getNextRoute(productToCancel), {
 									state: { user: data.user },
 								})
 							}
 						>
-							Cancel online
+							Continue to cancel online
 						</Button>
 					</div>
 				</Stack>
