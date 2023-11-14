@@ -15,9 +15,16 @@ import {
 } from '@guardian/source-react-components';
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
+import { PageContainer } from '@/client/components/mma/Page';
+import { ErrorIcon } from '@/client/components/mma/shared/assets/ErrorIcon';
+import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '@/client/components/mma/shared/asyncComponents/DefaultLoadingView';
 import { BasicProductInfoTable } from '@/client/components/mma/shared/BasicProductInfoTable';
 import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymentDetails';
 import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
+import { PaymentFailureAlertIfApplicable } from '@/client/components/mma/shared/PaymentFailureAlertIfApplicable';
+import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
+import { NAV_LINKS } from '@/client/components/shared/nav/NavConfig';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
@@ -27,6 +34,11 @@ import {
 	listWithDividersCss,
 	whatHappensNextIconCss,
 } from '@/client/styles/GenericStyles';
+import {
+	LoadingState,
+	useAsyncLoader,
+} from '@/client/utilities/hooks/useAsyncLoader';
+import { createProductDetailFetcher } from '@/client/utilities/productUtils';
 import { cancellationFormatDate } from '@/shared/dates';
 import type {
 	MembersDataApiResponse,
@@ -35,18 +47,6 @@ import type {
 import { getMainPlan, isProduct } from '@/shared/productResponse';
 import type { ProductType, WithProductType } from '@/shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
-import {
-	LoadingState,
-	useAsyncLoader,
-} from '../../../utilities/hooks/useAsyncLoader';
-import { createProductDetailFetcher } from '../../../utilities/productUtils';
-import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
-import { NAV_LINKS } from '../../shared/nav/NavConfig';
-import { PageContainer } from '../Page';
-import { ErrorIcon } from '../shared/assets/ErrorIcon';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
-import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
-import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 
 const subHeadingTitleCss = `
     ${headline.medium()};

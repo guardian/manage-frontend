@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
-import { ManageProductV2 } from '@/client/components/mma/accountoverview/ManageProductV2';
+import { ManageProductV2 } from '@/client/components/mma/accountoverview/manageProducts/ManageProductV2';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
-import { digitalPackPaidByDirectDebit } from '../../../fixtures/productBuilder/testProducts';
+import { digitalPackPaidByDirectDebit } from '../../../../fixtures/productBuilder/testProducts';
 
 export default {
 	title: 'Pages/ManageProductV2',
