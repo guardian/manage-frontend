@@ -13,14 +13,12 @@ import {
 	SvgClock,
 	SvgCreditCard,
 } from '@guardian/source-react-components';
-import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { PageContainer } from '@/client/components/mma/Page';
 import { ErrorIcon } from '@/client/components/mma/shared/assets/ErrorIcon';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '@/client/components/mma/shared/asyncComponents/DefaultLoadingView';
 import { BasicProductInfoTable } from '@/client/components/mma/shared/BasicProductInfoTable';
-import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymentDetails';
 import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
 import { PaymentFailureAlertIfApplicable } from '@/client/components/mma/shared/PaymentFailureAlertIfApplicable';
 import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
@@ -82,15 +80,6 @@ const InnerContent = ({
 
 	const cancelledCopy =
 		specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
-
-	const [overiddenAmount] = useState<number | null>(null);
-
-	const nextPaymentDetails = getNextPaymentDetails(
-		mainPlan,
-		productDetail.subscription,
-		overiddenAmount,
-		!!productDetail.alertText,
-	);
 
 	const maybePatronSuffix =
 		productDetail.subscription.readerType === 'Patron' ? ' - Patron' : '';
@@ -191,7 +180,6 @@ const InnerContent = ({
 										Next payment
 									</strong>
 									<br />
-									{nextPaymentDetails}
 								</>
 							</span>
 						</li>
