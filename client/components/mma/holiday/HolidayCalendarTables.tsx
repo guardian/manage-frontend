@@ -6,6 +6,7 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
+import { flushSync } from 'react-dom';
 import type { DateStates } from '../../../../shared/dates';
 import {
 	dateAddDays,
@@ -153,59 +154,71 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
 	);
 
 	const dayMouseDown = (day: Date) => {
-		const targetStateDayIndex = holidayDates.findIndex(
-			(holidayDate) => holidayDate.date.valueOf() === day.valueOf(),
-		);
-		if (
-			!inSelectionMode &&
-			targetStateDayIndex > -1 &&
-			holidayDates[targetStateDayIndex].isActive &&
-			!holidayDates[targetStateDayIndex].isExisting
-		) {
-			setStartOfSelectionDateIndex(targetStateDayIndex);
-			setHolidayDates(
-				holidayDates.map((holidayDate, holidayDateIndex) => ({
-					...holidayDate,
-					isSelected:
-						holidayDateIndex === targetStateDayIndex ? true : false,
-				})),
-			);
-			setSelectionModeTo(true);
-		} else if (inSelectionMode) {
-			setSelectionModeTo(false);
-		}
-		setMouseDownStartDate(day);
-	};
-
-	const dayMouseEnter = (day: Date) => {
-		if (
-			inSelectionMode &&
-			dateIsSameOrAfter(
-				day,
-				props.maybeLockedStartDate || props.minimumDate,
-			) &&
-			dateIsSameOrBefore(day, props.maximumDate)
-		) {
+		flushSync(() => {
 			const targetStateDayIndex = holidayDates.findIndex(
 				(holidayDate) => holidayDate.date.valueOf() === day.valueOf(),
 			);
-			if (targetStateDayIndex > -1 && startOfSelectionDateIndex > -1) {
-				const dateIndexesThatShouldBeSelected = selectDatesFromRange(
-					holidayDates,
-					startOfSelectionDateIndex,
-					targetStateDayIndex,
-				);
+			if (
+				!inSelectionMode &&
+				targetStateDayIndex > -1 &&
+				holidayDates[targetStateDayIndex].isActive &&
+				!holidayDates[targetStateDayIndex].isExisting
+			) {
+				setStartOfSelectionDateIndex(targetStateDayIndex);
 				setHolidayDates(
 					holidayDates.map((holidayDate, holidayDateIndex) => ({
 						...holidayDate,
-						isSelected: dateIndexesThatShouldBeSelected.some(
-							(selectedIndex) =>
-								selectedIndex === holidayDateIndex,
-						),
+						isSelected:
+							holidayDateIndex === targetStateDayIndex
+								? true
+								: false,
 					})),
 				);
+				setSelectionModeTo(true);
+			} else if (inSelectionMode) {
+				setSelectionModeTo(false);
 			}
-		}
+
+			setMouseDownStartDate(day);
+		});
+	};
+
+	const dayMouseEnter = (day: Date) => {
+		flushSync(() => {
+			if (
+				inSelectionMode &&
+				dateIsSameOrAfter(
+					day,
+					props.maybeLockedStartDate || props.minimumDate,
+				) &&
+				dateIsSameOrBefore(day, props.maximumDate)
+			) {
+				const targetStateDayIndex = holidayDates.findIndex(
+					(holidayDate) =>
+						holidayDate.date.valueOf() === day.valueOf(),
+				);
+				if (
+					targetStateDayIndex > -1 &&
+					startOfSelectionDateIndex > -1
+				) {
+					const dateIndexesThatShouldBeSelected =
+						selectDatesFromRange(
+							holidayDates,
+							startOfSelectionDateIndex,
+							targetStateDayIndex,
+						);
+					setHolidayDates(
+						holidayDates.map((holidayDate, holidayDateIndex) => ({
+							...holidayDate,
+							isSelected: dateIndexesThatShouldBeSelected.some(
+								(selectedIndex) =>
+									selectedIndex === holidayDateIndex,
+							),
+						})),
+					);
+				}
+			}
+		});
 	};
 
 	const dayTouchStart = (day: Date) => {
@@ -213,28 +226,30 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
 	};
 
 	const dayMouseUp = (day: Date) => {
-		const inDraggingMode =
-			!!mouseDownStartDate &&
-			mouseDownStartDate.valueOf() !== day.valueOf();
-		if (!inSelectionMode || inDraggingMode) {
-			const selectedDatesRange = holidayDates.filter(
-				(holidayDate) => holidayDate.isSelected,
-			);
-			if (selectedDatesRange.length > 0) {
-				const selecteRangeStartDate = selectedDatesRange[0].date;
-				const selecteRangeEndDate =
-					selectedDatesRange[selectedDatesRange.length - 1].date;
+		flushSync(() => {
+			const inDraggingMode =
+				!!mouseDownStartDate &&
+				mouseDownStartDate.valueOf() !== day.valueOf();
+			if (!inSelectionMode || inDraggingMode) {
+				const selectedDatesRange = holidayDates.filter(
+					(holidayDate) => holidayDate.isSelected,
+				);
+				if (selectedDatesRange.length > 0) {
+					const selecteRangeStartDate = selectedDatesRange[0].date;
+					const selecteRangeEndDate =
+						selectedDatesRange[selectedDatesRange.length - 1].date;
 
-				props.handleRangeChoosen({
-					startDate: selecteRangeStartDate,
-					endDate: selecteRangeEndDate,
-				});
+					props.handleRangeChoosen({
+						startDate: selecteRangeStartDate,
+						endDate: selecteRangeEndDate,
+					});
+				}
 			}
-		}
-		if (inDraggingMode) {
-			setSelectionModeTo(false);
-			setMouseDownStartDate(null);
-		}
+			if (inDraggingMode) {
+				setSelectionModeTo(false);
+				setMouseDownStartDate(null);
+			}
+		});
 	};
 
 	return (

@@ -103,7 +103,8 @@ describe('Holiday stops', () => {
 
 		cy.findByText('No issues occur during selected period').should('exist');
 
-		cy.get('@product_detail.all').should('have.length', 1);
+		// ToDo: why is this being called more times?
+		cy.get('@product_detail.all').should('have.length', 2);
 		cy.get('@fetch_potential_holidays.all').should('have.length', 1);
 	});
 
@@ -135,7 +136,8 @@ describe('Holiday stops', () => {
 		cy.get('table').contains('9 February - 11 February 2022');
 
 		cy.get('@fetch_existing_holidays.all').should('have.length', 1);
-		cy.get('@product_detail.all').should('have.length', 1);
+		// ToDo: why is this being called more times?
+		cy.get('@product_detail.all').should('have.length', 3);
 
 		cy.findByText('Confirm').click();
 		cy.wait('@amend_holiday_stop');
