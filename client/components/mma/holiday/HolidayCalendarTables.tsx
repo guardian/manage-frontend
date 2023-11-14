@@ -154,33 +154,29 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
 	);
 
 	const dayMouseDown = (day: Date) => {
-		flushSync(() => {
-			const targetStateDayIndex = holidayDates.findIndex(
-				(holidayDate) => holidayDate.date.valueOf() === day.valueOf(),
+		const targetStateDayIndex = holidayDates.findIndex(
+			(holidayDate) => holidayDate.date.valueOf() === day.valueOf(),
+		);
+		if (
+			!inSelectionMode &&
+			targetStateDayIndex > -1 &&
+			holidayDates[targetStateDayIndex].isActive &&
+			!holidayDates[targetStateDayIndex].isExisting
+		) {
+			setStartOfSelectionDateIndex(targetStateDayIndex);
+			setHolidayDates(
+				holidayDates.map((holidayDate, holidayDateIndex) => ({
+					...holidayDate,
+					isSelected:
+						holidayDateIndex === targetStateDayIndex ? true : false,
+				})),
 			);
-			if (
-				!inSelectionMode &&
-				targetStateDayIndex > -1 &&
-				holidayDates[targetStateDayIndex].isActive &&
-				!holidayDates[targetStateDayIndex].isExisting
-			) {
-				setStartOfSelectionDateIndex(targetStateDayIndex);
-				setHolidayDates(
-					holidayDates.map((holidayDate, holidayDateIndex) => ({
-						...holidayDate,
-						isSelected:
-							holidayDateIndex === targetStateDayIndex
-								? true
-								: false,
-					})),
-				);
-				setSelectionModeTo(true);
-			} else if (inSelectionMode) {
-				setSelectionModeTo(false);
-			}
+			setSelectionModeTo(true);
+		} else if (inSelectionMode) {
+			setSelectionModeTo(false);
+		}
 
-			setMouseDownStartDate(day);
-		});
+		setMouseDownStartDate(day);
 	};
 
 	const dayMouseEnter = (day: Date) => {
@@ -226,30 +222,28 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
 	};
 
 	const dayMouseUp = (day: Date) => {
-		flushSync(() => {
-			const inDraggingMode =
-				!!mouseDownStartDate &&
-				mouseDownStartDate.valueOf() !== day.valueOf();
-			if (!inSelectionMode || inDraggingMode) {
-				const selectedDatesRange = holidayDates.filter(
-					(holidayDate) => holidayDate.isSelected,
-				);
-				if (selectedDatesRange.length > 0) {
-					const selecteRangeStartDate = selectedDatesRange[0].date;
-					const selecteRangeEndDate =
-						selectedDatesRange[selectedDatesRange.length - 1].date;
+		const inDraggingMode =
+			!!mouseDownStartDate &&
+			mouseDownStartDate.valueOf() !== day.valueOf();
+		if (!inSelectionMode || inDraggingMode) {
+			const selectedDatesRange = holidayDates.filter(
+				(holidayDate) => holidayDate.isSelected,
+			);
+			if (selectedDatesRange.length > 0) {
+				const selecteRangeStartDate = selectedDatesRange[0].date;
+				const selecteRangeEndDate =
+					selectedDatesRange[selectedDatesRange.length - 1].date;
 
-					props.handleRangeChoosen({
-						startDate: selecteRangeStartDate,
-						endDate: selecteRangeEndDate,
-					});
-				}
+				props.handleRangeChoosen({
+					startDate: selecteRangeStartDate,
+					endDate: selecteRangeEndDate,
+				});
 			}
-			if (inDraggingMode) {
-				setSelectionModeTo(false);
-				setMouseDownStartDate(null);
-			}
-		});
+		}
+		if (inDraggingMode) {
+			setSelectionModeTo(false);
+			setMouseDownStartDate(null);
+		}
 	};
 
 	return (
