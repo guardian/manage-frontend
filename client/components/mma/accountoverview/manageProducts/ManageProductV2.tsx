@@ -45,7 +45,10 @@ import type {
 } from '@/shared/productResponse';
 import { getMainPlan, isProduct } from '@/shared/productResponse';
 import type { ProductType, WithProductType } from '@/shared/productTypes';
-import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
+import {
+	calculateMonthlyOrAnnualFromBillingPeriod,
+	GROUPED_PRODUCT_TYPES,
+} from '@/shared/productTypes';
 
 const subHeadingTitleCss = `
     ${headline.medium()};
@@ -69,7 +72,6 @@ const InnerContent = ({
 	productDetail,
 }: InnerContentProps) => {
 	const mainPlan = getMainPlan(productDetail.subscription);
-	console.log(mainPlan);
 	if (!mainPlan) {
 		throw new Error('mainPlan does not exist in manageProductV2 page');
 	}
@@ -95,6 +97,12 @@ const InnerContent = ({
 
 	const maybePatronSuffix =
 		productDetail.subscription.readerType === 'Patron' ? ' - Patron' : '';
+
+	console.log(nextPaymentDetails?.paymentInterval);
+
+	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
+		nextPaymentDetails?.paymentInterval,
+	).toLowerCase();
 
 	return (
 		<>
@@ -189,7 +197,8 @@ const InnerContent = ({
 											padding-bottom: ${space[1]}px;
 										`}
 									>
-										Next payment
+										Next {monthlyOrAnnual}
+										{''} payment
 									</strong>
 									<br /> {nextPaymentDetails?.paymentValue}
 								</>
