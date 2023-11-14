@@ -19,6 +19,7 @@ import { ErrorIcon } from '@/client/components/mma/shared/assets/ErrorIcon';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '@/client/components/mma/shared/asyncComponents/DefaultLoadingView';
 import { BasicProductInfoTable } from '@/client/components/mma/shared/BasicProductInfoTable';
+import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymentDetails';
 import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
 import { PaymentFailureAlertIfApplicable } from '@/client/components/mma/shared/PaymentFailureAlertIfApplicable';
 import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
@@ -68,11 +69,22 @@ const InnerContent = ({
 	productDetail,
 }: InnerContentProps) => {
 	const mainPlan = getMainPlan(productDetail.subscription);
+	console.log(mainPlan);
 	if (!mainPlan) {
 		throw new Error('mainPlan does not exist in manageProductV2 page');
 	}
 
+	const nextPaymentDetails = getNextPaymentDetails(
+		mainPlan,
+		productDetail.subscription,
+		null,
+		!!productDetail.alertText,
+	);
+
+	console.log(nextPaymentDetails);
+
 	const specificProductType = manageProductV2Props.productType;
+
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
 
@@ -179,7 +191,7 @@ const InnerContent = ({
 									>
 										Next payment
 									</strong>
-									<br />
+									<br /> {nextPaymentDetails?.paymentValue}
 								</>
 							</span>
 						</li>
@@ -193,8 +205,9 @@ const InnerContent = ({
 										`}
 									>
 										Next payment date
-									</strong>
+									</strong>{' '}
 									<br />
+									{nextPaymentDetails?.nextPaymentDateValue}
 								</>
 							</span>
 						</li>

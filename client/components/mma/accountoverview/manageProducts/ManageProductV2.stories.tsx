@@ -9,6 +9,10 @@ export default {
 	component: ManageProductV2,
 	decorators: [ReactRouterDecorator],
 	parameters: {
+		reactRouter: {
+			state: { productDetail: digitalPackPaidByDirectDebit() },
+			nextPaymentDate: '20 March',
+		},
 		layout: 'fullscreen',
 	},
 } as Meta<typeof ManageProductV2>;
@@ -16,11 +20,5 @@ export default {
 export const DigitalSubscription: StoryObj<typeof ManageProductV2> = {
 	render: () => {
 		return <ManageProductV2 productType={PRODUCT_TYPES.digipack} />;
-	},
-
-	parameters: {
-		reactRouter: {
-			state: { productDetail: digitalPackPaidByDirectDebit() },
-		},
 	},
 };
