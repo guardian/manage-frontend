@@ -47,12 +47,6 @@ export const DigiSubDiscountConfirm = () => {
 				`}
 			>
 				<Stack space={5}>
-					<div
-						css={css`
-							border-top: 1px solid ${palette.neutral[86]};
-							padding-bottom: ${space[1]}px;
-						`}
-					></div>
 					<ul
 						css={[
 							iconListCss,
