@@ -25,7 +25,7 @@ export const SingleContributionCard = ({
 		<Stack space={4}>
 			<Card>
 				<Card.Header backgroundColor={productColour.singleContribution}>
-					<h3 css={productCardTitleCss(true)}>Single Support</h3>
+					<h3 css={productCardTitleCss(true)}>One-time Support</h3>
 				</Card.Header>
 				<Card.Section>
 					<div
@@ -50,7 +50,7 @@ export const SingleContributionCard = ({
 											}
 										`}
 									>
-										<dt>Single contribution of</dt>
+										<dt>One-time contribution of</dt>
 										<dd>
 											{convertCurrencyToSymbol(
 												contribution.currency,

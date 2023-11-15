@@ -41,7 +41,7 @@ if (featureSwitches.singleContributions) {
 			cy.wait('@mobile_subscriptions');
 			cy.wait('@single_contributions');
 
-			cy.findByText('Single Support');
+			cy.findByText('One-time Support');
 			cy.findByText('$50');
 			cy.findByText('15 May 2023');
 			cy.findByText('Subscriptions');

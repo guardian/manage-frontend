@@ -92,7 +92,7 @@ if (featureSwitches.membershipSave) {
 				/We're sorry to hear you're thinking of leaving/,
 			).should('exist');
 			cy.findByRole('button', {
-				name: 'Cancel online',
+				name: 'Continue to cancel online',
 			}).click();
 
 			cy.findByText(/Thank you for supporting the Guardian/).should(
@@ -131,7 +131,7 @@ if (featureSwitches.membershipSave) {
 				/We're sorry to hear you're thinking of leaving/,
 			).should('exist');
 			cy.findByRole('button', {
-				name: 'Cancel online',
+				name: 'Continue to cancel online',
 			}).click();
 
 			cy.findByText(/Thank you for supporting the Guardian/).should(
@@ -172,7 +172,7 @@ if (featureSwitches.membershipSave) {
 				/We're sorry to hear you're thinking of leaving/,
 			).should('exist');
 			cy.findByRole('button', {
-				name: 'Cancel online',
+				name: 'Continue to cancel online',
 			}).click();
 
 			cy.findByText(/Thank you for supporting the Guardian/).should(
