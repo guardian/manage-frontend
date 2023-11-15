@@ -17,7 +17,7 @@ import type {
 } from '../../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../../shared/productResponse';
 import type { ProductSwitchType } from '../../../../../../shared/productSwitchTypes';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../../shared/productTypes';
+import { calculateBillingPeriod } from '../../../../../../shared/productTypes';
 import {
 	buttonCentredCss,
 	buttonMutedCss,
@@ -208,8 +208,7 @@ export const MembershipSwitch = () => {
 	}${getOldMembershipPrice(mainPlan)}`;
 
 	const billingPeriod = mainPlan.billingPeriod;
-	const monthlyOrAnnual =
-		calculateMonthlyOrAnnualFromBillingPeriod(billingPeriod);
+	const monthlyOrAnnual = calculateBillingPeriod(billingPeriod);
 	const indefiniteArticle = monthlyOrAnnual === 'Monthly' ? 'a' : 'an';
 	const paymentDay = parseDate(mainPlan.chargedThrough ?? undefined).dateStr(
 		'do',

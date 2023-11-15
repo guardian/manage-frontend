@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
+import { calculateBillingPeriod } from '../../../../shared/productTypes';
 import { formatAmount } from '../../../utilities/utils';
 
 export const SwitchPaymentInfo = ({
@@ -18,8 +18,7 @@ export const SwitchPaymentInfo = ({
 	billingPeriod: string;
 	nextPaymentDate: string;
 }) => {
-	const monthlyOrAnnual =
-		calculateMonthlyOrAnnualFromBillingPeriod(billingPeriod).toLowerCase();
+	const monthlyOrAnnual = calculateBillingPeriod(billingPeriod).toLowerCase();
 
 	return (
 		<>

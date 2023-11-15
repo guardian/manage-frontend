@@ -15,7 +15,7 @@ import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../../shared/productResponse';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../../../shared/productTypes';
+import { calculateBillingPeriod } from '../../../../../../shared/productTypes';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
@@ -86,8 +86,7 @@ export const SaveOptions = () => {
 		membership.subscription,
 	) as PaidSubscriptionPlan;
 	const billingPeriod = mainPlan.billingPeriod;
-	const monthlyOrAnnual =
-		calculateMonthlyOrAnnualFromBillingPeriod(billingPeriod);
+	const monthlyOrAnnual = calculateBillingPeriod(billingPeriod);
 
 	const oldPriceDisplay = `${mainPlan.currency}${getOldMembershipPrice(
 		mainPlan,

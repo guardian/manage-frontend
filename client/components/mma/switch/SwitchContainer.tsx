@@ -9,7 +9,7 @@ import type {
 } from '../../../../shared/productResponse';
 import { getMainPlan, isProduct } from '../../../../shared/productResponse';
 import {
-	calculateMonthlyOrAnnualFromBillingPeriod,
+	calculateBillingPeriod,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
@@ -149,9 +149,7 @@ const RenderedPage = (props: {
 	const mainPlan = getMainPlan(
 		props.contributionToSwitch.subscription,
 	) as PaidSubscriptionPlan;
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
-	);
+	const monthlyOrAnnual = calculateBillingPeriod(mainPlan.billingPeriod);
 
 	return (
 		<SwitchPageContainer>
