@@ -170,5 +170,4 @@ export const nonServiceableCountries: string[] = [
 	'Wallis and Futuna',
 	'Western Sahara',
 	'Zambia',
-	'United Kingdom',
 ];
