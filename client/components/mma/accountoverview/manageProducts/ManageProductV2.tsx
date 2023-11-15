@@ -93,8 +93,6 @@ const InnerContent = ({
 	const cancelledCopy =
 		specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
 
-	console.log(nextPaymentDetails?.paymentInterval);
-
 	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
 		nextPaymentDetails?.paymentInterval,
 	).toLowerCase();
@@ -150,17 +148,13 @@ const InnerContent = ({
 				productDetail={productDetail}
 			/>
 
-			<h2
+			<h3
 				css={css`
 					${textSans.medium({ fontWeight: 'bold' })}
-					font-style: normal;
-					font-size: 20px;
-					font-weight: bold;
-					margin-bottom: 16px;
 				`}
 			>
 				Payment
-			</h2>
+			</h3>
 
 			<section
 				css={css`

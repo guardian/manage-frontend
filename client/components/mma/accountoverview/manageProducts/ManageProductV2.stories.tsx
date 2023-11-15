@@ -11,7 +11,6 @@ export default {
 	parameters: {
 		reactRouter: {
 			state: { productDetail: digitalPackPaidByDirectDebit() },
-			nextPaymentDate: '20 March',
 		},
 		layout: 'fullscreen',
 	},
