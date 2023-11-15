@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { space, textSans } from '@guardian/source-foundations';
 import { Link } from 'react-router-dom';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '../../../../shared/productTypes';
+import { calculateBillingPeriod } from '../../../../shared/productTypes';
 import {
 	convertCurrencyToSymbol,
 	isCurrencyIso,
@@ -35,8 +35,7 @@ export const SupporterPlusTsAndCs = ({
 	}
 
 	const currencySymbol = convertCurrencyToSymbol(currencyISO);
-	const monthlyOrAnnual =
-		calculateMonthlyOrAnnualFromBillingPeriod(billingPeriod);
+	const monthlyOrAnnual = calculateBillingPeriod(billingPeriod);
 	const monthlyThreshold = getBenefitsThreshold(currencyISO, 'month');
 	const annualThreshold = getBenefitsThreshold(currencyISO, 'year');
 

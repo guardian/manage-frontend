@@ -244,14 +244,15 @@ export function calculateSupporterPlusTitle(billingPeriod: string) {
 	return 'recurring support';
 }
 
-export function calculateMonthlyOrAnnualFromBillingPeriod(
-	billingPeriod: string | undefined,
-) {
+export function calculateBillingPeriod(billingPeriod: string | undefined) {
 	if (billingPeriod === 'month') {
 		return 'Monthly';
 	}
 	if (billingPeriod === 'year') {
 		return 'Annual';
+	}
+	if (billingPeriod === 'quarterly') {
+		return 'Quarterly';
 	}
 
 	throw new Error('No billing period for subscription');
@@ -323,7 +324,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			}
 
 			const paidPlan = mainPlan as PaidSubscriptionPlan;
-			return `${calculateMonthlyOrAnnualFromBillingPeriod(
+			return `${calculateBillingPeriod(
 				paidPlan.billingPeriod,
 			)} contribution`;
 		},
@@ -687,7 +688,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 						productDetail.subscription,
 					) as PaidSubscriptionPlan
 				).billingPeriod;
-				return `${calculateMonthlyOrAnnualFromBillingPeriod(
+				return `${calculateBillingPeriod(
 					billingPeriod,
 				)} support + extras cancelled`;
 			},
