@@ -16,7 +16,7 @@ import { useContext } from 'react';
 import { useLocation } from 'react-router';
 import { formatAmount } from '@/client/utilities/utils';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
-import { calculateMonthlyOrAnnualFromBillingPeriod } from '@/shared/productTypes';
+import { calculateBillingPeriod } from '@/shared/productTypes';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
@@ -151,7 +151,7 @@ export const UpgradeSupportThankYou = () => {
 								</strong>
 								<br />
 								From {nextBillingDate}, your ongoing{' '}
-								{calculateMonthlyOrAnnualFromBillingPeriod(
+								{calculateBillingPeriod(
 									billingPeriod,
 								).toLowerCase()}{' '}
 								payment will be {currency}

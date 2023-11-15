@@ -9,7 +9,7 @@ import type {
 } from '../../../../shared/productResponse';
 import { getMainPlan, isProduct } from '../../../../shared/productResponse';
 import {
-	calculateMonthlyOrAnnualFromBillingPeriod,
+	calculateBillingPeriod,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
 import {
@@ -114,9 +114,7 @@ export const UpgradeSupportContainer = () => {
 		contribution.subscription,
 	) as PaidSubscriptionPlan;
 
-	const monthlyOrAnnual = calculateMonthlyOrAnnualFromBillingPeriod(
-		mainPlan.billingPeriod,
-	);
+	const monthlyOrAnnual = calculateBillingPeriod(mainPlan.billingPeriod);
 
 	const inPaymentFailure = !!contribution.alertText;
 	const pageTitle = `Your ${monthlyOrAnnual.toLowerCase()} support`;

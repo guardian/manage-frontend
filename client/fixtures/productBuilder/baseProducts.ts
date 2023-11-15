@@ -153,7 +153,7 @@ export function baseDigitalPack(): ProductDetail {
 			safeToUpdatePaymentMethod: true,
 			start: '2021-11-27',
 			end: '2022-11-11',
-			nextPaymentPrice: 599,
+			nextPaymentPrice: 1499,
 			nextPaymentDate: '2021-11-27',
 			lastPaymentDate: null,
 			chargedThroughDate: null,
