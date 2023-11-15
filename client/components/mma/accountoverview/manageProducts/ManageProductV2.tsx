@@ -55,7 +55,7 @@ const subHeadingTitleCss = `
     font-weight: bold;
     ${until.tablet} {
       ${headline.xxsmall()};
-      line-height: 1.6;
+      font-weight: bold;
     };
   `;
 const subHeadingBorderTopCss = `
@@ -83,8 +83,6 @@ const InnerContent = ({
 		!!productDetail.alertText,
 	);
 
-	console.log(nextPaymentDetails);
-
 	const specificProductType = manageProductV2Props.productType;
 
 	const groupedProductType =
@@ -94,9 +92,6 @@ const InnerContent = ({
 
 	const cancelledCopy =
 		specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
-
-	const maybePatronSuffix =
-		productDetail.subscription.readerType === 'Patron' ? ' - Patron' : '';
 
 	console.log(nextPaymentDetails?.paymentInterval);
 
@@ -123,7 +118,6 @@ const InnerContent = ({
 				>
 					Manage{' '}
 					{specificProductType.productTitle(mainPlan).toLowerCase()}
-					{maybePatronSuffix}
 				</h2>
 			</div>
 
@@ -257,13 +251,19 @@ const InnerContent = ({
 							</LinkButton>
 						)}
 
-					{!hasCancellationPending && (
-						<CancellationCTA
-							productDetail={productDetail}
-							friendlyName={groupedProductType.friendlyName()}
-							specificProductType={specificProductType}
-						/>
-					)}
+					<div
+						css={css`
+							margin-left: ${space[5]}px;
+						`}
+					>
+						{!hasCancellationPending && (
+							<CancellationCTA
+								productDetail={productDetail}
+								friendlyName={groupedProductType.friendlyName()}
+								specificProductType={specificProductType}
+							/>
+						)}
+					</div>
 				</div>
 			</section>
 		</>
