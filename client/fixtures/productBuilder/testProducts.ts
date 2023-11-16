@@ -52,6 +52,13 @@ export function digitalPackPaidByDirectDebit() {
 		.getProductDetailObject();
 }
 
+export function digitalPackWithPaymentFailure() {
+	return new ProductBuilder(baseDigitalPack())
+		.payByDirectDebit()
+		.withAlertText('Payment failed')
+		.getProductDetailObject();
+}
+
 export function annualContributionPaidByCardWithCurrency(
 	currency: CurrencyIso,
 ) {
