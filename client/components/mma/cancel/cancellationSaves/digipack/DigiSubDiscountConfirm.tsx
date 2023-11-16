@@ -9,12 +9,14 @@ import {
 } from '@guardian/source-react-components';
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router';
-import type { CancellationContextInterface ,
+import type {
+	CancellationContextInterface,
 	CancellationPageTitleInterface,
-	CancellationRouterState} from '@/client/components/mma/cancel/CancellationContainer';
+	CancellationRouterState,
+} from '@/client/components/mma/cancel/CancellationContainer';
 import {
 	CancellationContext,
-	CancellationPageTitleContext
+	CancellationPageTitleContext,
 } from '@/client/components/mma/cancel/CancellationContainer';
 import { linkCss } from '@/client/components/mma/upgrade/UpgradeSupportStyles';
 import {
