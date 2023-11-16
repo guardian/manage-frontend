@@ -116,7 +116,7 @@ export const DigiSubDiscountConfirm = () => {
 										padding-bottom: ${space[1]}px;
 									`}
 								>
-									25% discount for 3 months
+									25% discount for ABC
 								</strong>
 								<br />
 								You’ll pay X per {mainPlan.billingPeriod} for Y,
