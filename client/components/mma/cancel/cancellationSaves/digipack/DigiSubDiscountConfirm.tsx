@@ -73,7 +73,7 @@ export const DigiSubDiscountConfirm = () => {
 					margin-bottom: 32px;
 				`}
 			>
-				<h1 css={headingCss}>Discount confirmed</h1>
+				<h2 css={headingCss}>Discount confirmed</h2>
 				Thank you for continuing to fund our journalism.
 			</section>
 
