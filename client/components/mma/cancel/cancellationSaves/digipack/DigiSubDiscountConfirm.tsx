@@ -31,7 +31,6 @@ import {
 	headingCss,
 	iconListCss,
 	listWithDividersCss,
-	sectionSpacing,
 	whatHappensNextIconCss,
 } from '../../../../../styles/GenericStyles';
 
@@ -66,15 +65,21 @@ export const DigiSubDiscountConfirm = () => {
 
 	return (
 		<>
-			<section css={sectionSpacing}>
+			<section
+				css={css`
+					padding-top: ${space[4]}px;
+					margin-bottom: 32px;
+				`}
+			>
 				<h1 css={headingCss}>Discount confirmed</h1>
 				Thank you for continuing to fund our journalism.
 			</section>
 
 			<section
 				css={css`
-					margin-top: 52px;
+					margin-top: 20px;
 					border-bottom: 1px solid ${palette.neutral[86]};
+					border-top: 1px solid ${palette.neutral[86]};
 					padding-bottom: ${space[5]}px;
 				`}
 			>
@@ -144,7 +149,7 @@ export const DigiSubDiscountConfirm = () => {
 						href="https://theguardian.com"
 						cssOverrides={buttonCentredCss}
 					>
-						Continue to the Guardian
+						Go to Guardian homepage
 					</LinkButton>
 					<div css={linkCss}>
 						<a href="/">Back to account overview </a>
