@@ -72,7 +72,8 @@ const DiscountOffer = ({
 							padding-top: ${space[1]}px;
 						`}
 					>
-						Retain exclusive access to our daily Editions app
+						Exclusive access to the Editions app (our daily digital
+						newspaper)
 					</span>
 				</li>
 			</ul>
