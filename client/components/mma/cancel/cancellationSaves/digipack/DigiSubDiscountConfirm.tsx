@@ -23,10 +23,10 @@ import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 } from '@/client/styles/ButtonStyles';
-import { getOldMembershipPrice } from '@/client/utilities/membershipPriceRise';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
+import { calculateBillingPeriod } from '@/shared/productTypes';
 import {
 	headingCss,
 	iconListCss,
@@ -49,15 +49,17 @@ export const DigiSubDiscountConfirm = () => {
 
 	const mainPlan = getMainPlan(digiSub.subscription) as PaidSubscriptionPlan;
 
-	const priceDisplay = `${mainPlan.currency}${getOldMembershipPrice(
-		mainPlan,
-	)}`;
+	const priceDisplay = `${mainPlan.currency}${mainPlan.price / 100}`;
 
 	const nextBillingDate = parseDate(
 		mainPlan.chargedThrough ?? undefined,
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
 	const userEmailAddress = routerState?.user?.email;
+
+	const billingPeriod = calculateBillingPeriod(
+		mainPlan.billingPeriod,
+	).toLowerCase();
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Your subscription');
@@ -117,8 +119,8 @@ export const DigiSubDiscountConfirm = () => {
 									25% discount for 3 months
 								</strong>
 								<br />
-								You’ll pay £11.99 per month for 3 months, then
-								£14.99 per month
+								You’ll pay X per {mainPlan.billingPeriod} for Y,
+								then Z per {mainPlan.billingPeriod}
 							</span>
 						</li>
 						<li>
@@ -132,8 +134,8 @@ export const DigiSubDiscountConfirm = () => {
 									Your billing date
 								</strong>
 								<br />
-								From {nextBillingDate}, your ongoing monthly
-								payment will be {priceDisplay}.
+								From {nextBillingDate}, your ongoing{' '}
+								{billingPeriod} payment will be {priceDisplay}.
 							</span>
 						</li>
 					</ul>
