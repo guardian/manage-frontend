@@ -8,13 +8,23 @@ import {
 	SvgGift,
 } from '@guardian/source-react-components';
 import { useContext, useEffect } from 'react';
-import type { CancellationPageTitleInterface } from '@/client/components/mma/cancel/CancellationContainer';
-import { CancellationPageTitleContext } from '@/client/components/mma/cancel/CancellationContainer';
+import { useLocation } from 'react-router';
+import type { CancellationContextInterface ,
+	CancellationPageTitleInterface,
+	CancellationRouterState} from '@/client/components/mma/cancel/CancellationContainer';
+import {
+	CancellationContext,
+	CancellationPageTitleContext
+} from '@/client/components/mma/cancel/CancellationContainer';
 import { linkCss } from '@/client/components/mma/upgrade/UpgradeSupportStyles';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 } from '@/client/styles/ButtonStyles';
+import { getOldMembershipPrice } from '@/client/utilities/membershipPriceRise';
+import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
+import type { PaidSubscriptionPlan } from '@/shared/productResponse';
+import { getMainPlan } from '@/shared/productResponse';
 import {
 	headingCss,
 	iconListCss,
@@ -28,6 +38,26 @@ export const DigiSubDiscountConfirm = () => {
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
+	const cancellationContext = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
+	const digiSub = cancellationContext.productDetail;
+
+	const mainPlan = getMainPlan(digiSub.subscription) as PaidSubscriptionPlan;
+
+	const priceDisplay = `${mainPlan.currency}${getOldMembershipPrice(
+		mainPlan,
+	)}`;
+
+	const nextBillingDate = parseDate(
+		mainPlan.chargedThrough ?? undefined,
+	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
+
+	const userEmailAddress = routerState?.user?.email;
+
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Your subscription');
 	}, []);
@@ -35,13 +65,13 @@ export const DigiSubDiscountConfirm = () => {
 	return (
 		<>
 			<section css={sectionSpacing}>
-				<Stack space={4}>
-					<h2 css={headingCss}>Discount confirmed</h2>
-				</Stack>
+				<h1 css={headingCss}>Discount confirmed</h1>
+				Thank you for continuing to fund our journalism.
 			</section>
 
 			<section
 				css={css`
+					margin-top: 52px;
 					border-bottom: 1px solid ${palette.neutral[86]};
 					padding-bottom: ${space[5]}px;
 				`}
@@ -65,8 +95,8 @@ export const DigiSubDiscountConfirm = () => {
 									Check your email
 								</strong>
 								<br />
-								We have sent you a discount confirmation to
-								XXX@gmail.com
+								We have sent you a discount confirmation to{' '}
+								{userEmailAddress}
 							</span>
 						</li>
 						<li>
@@ -95,14 +125,18 @@ export const DigiSubDiscountConfirm = () => {
 									Your billing date
 								</strong>
 								<br />
-								From 5 February 2022, your ongoing monthly
-								payment will be £9.
+								From {nextBillingDate}, your ongoing monthly
+								payment will be {priceDisplay}.
 							</span>
 						</li>
 					</ul>
 				</Stack>
 			</section>
-			<section css={sectionSpacing}>
+			<section
+				css={css`
+					margin-top: 32px;
+				`}
+			>
 				<div css={stackedButtonLayoutCss}>
 					<LinkButton
 						href="https://theguardian.com"
