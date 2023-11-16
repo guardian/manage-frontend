@@ -21,7 +21,11 @@ import type {
 } from '../../CancellationContainer';
 import { CancellationContext } from '../../CancellationContainer';
 
-const Offer = () => (
+const DiscountOffer = ({
+	handleDiscountOfferClick,
+}: {
+	handleDiscountOfferClick: () => void;
+}) => (
 	<Stack
 		space={4}
 		css={css`
@@ -75,7 +79,10 @@ const Offer = () => (
 		</div>
 		<div css={buttonContainerCss}>
 			<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-				<Button cssOverrides={buttonCentredCss}>
+				<Button
+					cssOverrides={buttonCentredCss}
+					onClick={handleDiscountOfferClick}
+				>
 					Keep support with discount
 				</Button>
 			</ThemeProvider>
@@ -101,6 +108,10 @@ export const ThankYouOffer = () => {
 		new Date(productDetail.joinDate),
 		'yyyy',
 	);
+
+	const hasDiscountLive = false; // ToDo
+	const hasPaymentFailure = !!productDetail.alertText;
+	const eligibleForDiscount = !hasDiscountLive && !hasPaymentFailure;
 
 	return (
 		<section
@@ -138,7 +149,13 @@ export const ThankYouOffer = () => {
 						world. We're so grateful.
 					</p>
 				</Stack>
-				<Offer />
+				{eligibleForDiscount && (
+					<DiscountOffer
+						handleDiscountOfferClick={() =>
+							navigate('todo', { state: { ...routerState } })
+						}
+					/>
+				)}
 				<div>
 					<h3
 						css={css`
