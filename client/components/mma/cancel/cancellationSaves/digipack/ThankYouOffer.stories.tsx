@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
-import { digitalPackPaidByDirectDebit } from '@/client/fixtures/productBuilder/testProducts';
+import {
+	digitalPackPaidByDirectDebit,
+	digitalPackWithPaymentFailure,
+} from '@/client/fixtures/productBuilder/testProducts';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { CancellationContainer } from '../../CancellationContainer';
 import { ThankYouOffer } from './ThankYouOffer';
@@ -23,6 +26,24 @@ export const Default: StoryObj<typeof ThankYouOffer> = {
 		reactRouter: {
 			state: {
 				productDetail: digitalPackPaidByDirectDebit(),
+				user: { email: 'test@test.com' },
+			},
+			container: (
+				<CancellationContainer productType={PRODUCT_TYPES.digipack} />
+			),
+		},
+	},
+};
+
+export const IneligibleForDiscount: StoryObj<typeof ThankYouOffer> = {
+	render: () => {
+		return <ThankYouOffer />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: digitalPackWithPaymentFailure(),
 				user: { email: 'test@test.com' },
 			},
 			container: (
