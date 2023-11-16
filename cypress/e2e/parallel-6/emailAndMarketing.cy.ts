@@ -5,7 +5,6 @@ import { newsletters } from '../../../client/fixtures/newsletters';
 import { consents } from '../../../client/fixtures/consents';
 import { newsletterSubscriptions } from '../../../client/fixtures/newsletterSubscriptions';
 import { InAppPurchase } from '../../../client/fixtures/inAppPurchase';
-import { featureSwitches } from '../../../shared/featureSwitches';
 
 describe('Email and Marketing page', () => {
 	beforeEach(() => {

@@ -129,7 +129,6 @@ const AccountOverviewPage = () => {
 	}
 
 	if (
-		featureSwitches.singleContributions &&
 		singleContributions.length > 0 &&
 		!productCategories.includes('subscriptions')
 	) {
@@ -139,8 +138,7 @@ const AccountOverviewPage = () => {
 	if (
 		allActiveProductDetails.length === 0 &&
 		appSubscriptions.length === 0 &&
-		(singleContributions.length === 0 ||
-			!featureSwitches.singleContributions)
+		singleContributions.length === 0
 	) {
 		return <EmptyAccountOverview />;
 	}
@@ -250,8 +248,7 @@ const AccountOverviewPage = () => {
 										subscription={subscription}
 									/>
 								))}
-							{featureSwitches.singleContributions &&
-								category === 'subscriptions' &&
+							{category === 'subscriptions' &&
 								singleContributions.length > 0 && (
 									<SingleContributionCard
 										singleContributions={
