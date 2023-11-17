@@ -1,3 +1,5 @@
+import { css } from '@emotion/react';
+import { textSans } from '@guardian/source-foundations';
 import {
 	Accordion,
 	AccordionRow,
@@ -82,10 +84,22 @@ export const CallCentreAccordion = ({
 			{filteredPhoneData.map((phoneRegion) => {
 				return (
 					<AccordionRow
+						cssOverrides={css`
+							> button {
+								> strong {
+									${textSans.medium()};
+								}
+							}
+						`}
 						key={phoneRegion.key}
 						label={phoneRegion.title}
 					>
-						<Stack space={2}>
+						<Stack
+							space={2}
+							css={css`
+								${textSans.medium()};
+							`}
+						>
 							{showEmailAddress && (
 								<>
 									<div>Email:</div>
