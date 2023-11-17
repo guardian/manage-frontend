@@ -3,7 +3,6 @@ import * as React from 'react';
 import type { DeliveryRecordDetail } from '../client/components/mma/delivery/records/deliveryRecordsApi';
 import { AsyncLoader } from '../client/components/mma/shared/AsyncLoader';
 import type { CardProps } from '../client/components/mma/shared/CardDisplay';
-import type { PhoneRegionKey } from '../client/components/shared/CallCenterEmailAndNumbers';
 import { GROUPED_PRODUCT_TYPES } from './productTypes';
 import type { GroupedProductTypeKeys, ProductType } from './productTypes';
 
@@ -59,6 +58,8 @@ export const MDA_TEST_USER_HEADER = 'X-Gu-Membership-Test-User';
 
 export const sortByJoinDate = (a: ProductDetail, b: ProductDetail) =>
 	b.joinDate.localeCompare(a.joinDate);
+
+export type PhoneRegionKey = 'US' | 'AUS' | 'UK & ROW';
 
 export interface SelfServiceCancellation {
 	isAllowed: boolean;

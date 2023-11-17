@@ -6,6 +6,7 @@ import { Navigate, useNavigate } from 'react-router';
 import type {
 	MembersDataApiResponse,
 	PaidSubscriptionPlan,
+	PhoneRegionKey,
 	ProductDetail,
 } from '../../../../../shared/productResponse';
 import {
@@ -19,7 +20,6 @@ import {
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
 import { allRecurringProductsDetailFetcher } from '../../../../utilities/productUtils';
-import type { PhoneRegionKey } from '../../../shared/CallCenterEmailAndNumbers';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
