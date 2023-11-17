@@ -19,6 +19,9 @@ function GreyBulletpoints() {
 			height="17"
 			viewBox="0 0 16 17"
 			fill="none"
+			css={css`
+				padding-top: 5px;
+			`}
 		>
 			<circle cx="8" cy="8.13672" r="8" fill="#DCDCDC" />
 		</svg>
@@ -92,7 +95,7 @@ export const ConfirmCancellation = () => {
 			<section
 				css={css`
 					margin-top: 32px;
-					margin-bottom: 36px;
+					margin-bottom: 32px;
 				`}
 			>
 				<BenefitsNotAvailable />
@@ -126,6 +129,7 @@ export const ConfirmCancellation = () => {
 						justify-content: center;
 						margin-left: ${space[5]}px;
 						margin-top: ${space[4]}px;
+						display: flex;
 					`}
 					to={'/'} //todo update link
 				>
