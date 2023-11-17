@@ -73,7 +73,7 @@ export const DigiSubDiscountConfirm = () => {
 					margin-bottom: 32px;
 				`}
 			>
-				<h1 css={headingCss}>Discount confirmed</h1>
+				<h2 css={headingCss}>Discount confirmed</h2>
 				Thank you for continuing to fund our journalism.
 			</section>
 
@@ -116,7 +116,7 @@ export const DigiSubDiscountConfirm = () => {
 										padding-bottom: ${space[1]}px;
 									`}
 								>
-									25% discount for 3 months
+									25% discount for ABC
 								</strong>
 								<br />
 								You’ll pay X per {mainPlan.billingPeriod} for Y,

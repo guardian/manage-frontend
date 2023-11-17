@@ -125,11 +125,10 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 									consent,
 							  ) &&
 									featureSwitches.appSubscriptions) ||
-							  (userHasSingleContributionWithConsent(
+							  userHasSingleContributionWithConsent(
 									singleContributions,
 									consent,
-							  ) &&
-									featureSwitches.singleContributions)
+							  )
 							: true,
 				);
 
