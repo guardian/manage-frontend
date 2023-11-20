@@ -123,6 +123,7 @@ export const ConfirmCancellation = () => {
 					cssOverrides={css`
 						display: flex;
 						margin-left: ${space[5]}px;
+						justify-content: center;
 					`}
 					priority="subdued"
 				>
