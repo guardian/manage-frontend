@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { benefitsCss } from '@/client/components/mma/shared/benefits/BenefitsStyles';
 import { stackedButtonLayoutCss } from '@/client/styles/ButtonStyles';
 
-function GreyBulletpoints() {
+function GreyBulletpoint() {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
