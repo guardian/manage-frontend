@@ -11,6 +11,7 @@ const mainPlan = (billingPeriod: string) => ({
 	currency: '£',
 	currencyISO: 'GBP',
 	billingPeriod,
+	features: '',
 });
 
 const productType = PRODUCT_TYPES['contributions'];

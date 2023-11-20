@@ -50,6 +50,7 @@ export function baseMembership(): ProductDetail {
 				start: '',
 				end: '',
 				shouldBeVisible: false,
+				features: '',
 			},
 			currentPlans: [
 				{
@@ -172,6 +173,7 @@ export function baseDigitalPack(): ProductDetail {
 				start: '2022-12-23',
 				end: '2024-12-11',
 				shouldBeVisible: true,
+				features: '',
 			},
 			currentPlans: [],
 			futurePlans: [

@@ -137,6 +137,7 @@ export interface PaidSubscriptionPlan
 	end: string;
 	chargedThrough?: string | null;
 	price: number;
+	features: string;
 }
 
 export function isPaidSubscriptionPlan(
