@@ -48,22 +48,22 @@ const BenefitsNotAvailable = () => (
 			</div>
 			<ul css={benefitsCss}>
 				<li>
-					<GreyBulletpoints />
+					<GreyBulletpoint />
 					Funding independent journalism
 				</li>
 				<li>
-					<GreyBulletpoints />A regular supporter newsletter
+					<GreyBulletpoint />A regular supporter newsletter
 				</li>
 				<li>
-					<GreyBulletpoints />
+					<GreyBulletpoint />
 					Unlimited access in our app
 				</li>
 				<li>
-					<GreyBulletpoints />
+					<GreyBulletpoint />
 					Ad-free reading
 				</li>
 				<li>
-					<GreyBulletpoints />
+					<GreyBulletpoint />
 					Offline reading
 				</li>
 			</ul>
