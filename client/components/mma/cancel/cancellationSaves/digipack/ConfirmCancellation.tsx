@@ -7,7 +7,6 @@ import {
 	textSans,
 } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
-import { Link } from 'react-router-dom';
 import { benefitsCss } from '@/client/components/mma/shared/benefits/BenefitsStyles';
 import { stackedButtonLayoutCss } from '@/client/styles/ButtonStyles';
 
@@ -120,21 +119,15 @@ export const ConfirmCancellation = () => {
 				>
 					Cancel subscription
 				</Button>
-				<Link
-					css={css`
-						${textSans.medium()};
-						color: ${palette.brand[400]};
-						font-weight: 700;
-						text-decoration-line: underline;
-						justify-content: center;
-						margin-left: ${space[5]}px;
-						margin-top: ${space[4]}px;
+				<Button
+					cssOverrides={css`
 						display: flex;
+						margin-left: ${space[5]}px;
 					`}
-					to={'/'} //todo update link
+					priority="subdued"
 				>
 					Go back to discount
-				</Link>
+				</Button>
 			</div>
 		</section>
 	);
