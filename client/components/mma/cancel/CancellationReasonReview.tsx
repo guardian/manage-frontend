@@ -16,7 +16,6 @@ import type {
 } from '../../../../shared/productTypes';
 import { sans } from '../../../styles/fonts';
 import { measure } from '../../../styles/typography';
-import { trackEvent } from '../../../utilities/analytics';
 import { useFetch } from '../../../utilities/hooks/useFetch';
 import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
@@ -50,12 +49,6 @@ const getPatchUpdateCaseFunc =
 			Description: feedback,
 			Subject: 'Online Cancellation Query',
 		});
-
-const gaTrackFeedback = (actionString: string) =>
-	trackEvent({
-		eventCategory: 'feedback',
-		eventAction: actionString,
-	});
 
 const ContactUs = (reason: CancellationReason) =>
 	reason.hideContactUs ? (
@@ -117,7 +110,6 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 	const submitFeedback = () => {
 		if (feedback.length) {
 			setHasHitSubmit(true);
-			gaTrackFeedback('submitted');
 		}
 		setFeedbackValidationErrorState(!feedback.length);
 	};
@@ -209,7 +201,6 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 									props.caseId,
 									feedback,
 								)();
-								gaTrackFeedback('submitted silently');
 							}
 						}}
 					/>
