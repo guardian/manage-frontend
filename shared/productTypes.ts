@@ -313,7 +313,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		shouldShowJoinDateNotStartDate: true,
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.SimilarProducts,
 			SoftOptInIDs.SupporterNewsletter,
 		],
 	},
@@ -338,7 +337,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		updateAmountMdaEndpoint: 'contribution-update-amount',
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.SimilarProducts,
 			SoftOptInIDs.SupporterNewsletter,
 		],
 		cancellation: {
@@ -404,7 +402,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SimilarProducts,
 			SoftOptInIDs.SupporterNewsletter,
 		],
 	},
@@ -421,7 +418,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SimilarProducts,
 			SoftOptInIDs.SupporterNewsletter,
 		],
 		holidayStops: {
@@ -461,7 +457,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SimilarProducts,
 			SoftOptInIDs.SupporterNewsletter,
 		],
 		holidayStops: {
@@ -501,7 +496,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SimilarProducts,
 			SoftOptInIDs.SupporterNewsletter,
 		],
 		holidayStops: {
@@ -551,7 +545,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SimilarProducts,
 			SoftOptInIDs.SupporterNewsletter,
 		],
 		holidayStops: {
@@ -576,7 +569,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.GuardianWeeklyNewsletter,
-			SoftOptInIDs.SimilarProducts,
 		],
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION', // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
 		renewalMetadata: {
@@ -630,7 +622,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.DigitalSubscriberPreview,
-			SoftOptInIDs.SimilarProducts,
 			SoftOptInIDs.SupporterNewsletter,
 		],
 		cancellation: {
@@ -675,7 +666,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.SimilarProducts,
 			SoftOptInIDs.SupporterNewsletter,
 			SoftOptInIDs.DigitalSubscriberPreview,
 		],
@@ -716,7 +706,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.DigitalSubscriberPreview,
-			SoftOptInIDs.SimilarProducts,
 			SoftOptInIDs.SupporterNewsletter,
 		],
 	},

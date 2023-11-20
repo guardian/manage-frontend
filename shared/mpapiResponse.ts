@@ -18,13 +18,11 @@ export function isValidAppSubscription(subscription: AppSubscription) {
 
 export const AppSubscriptionSoftOptInIds: string[] = [
 	SoftOptInIDs.SupportOnboarding,
-	SoftOptInIDs.SimilarProducts,
 	SoftOptInIDs.SupporterNewsletter,
 ];
 
 export const SingleContributionSoftOptInIds: string[] = [
 	SoftOptInIDs.SupportOnboarding,
-	SoftOptInIDs.SimilarProducts,
 	SoftOptInIDs.SupporterNewsletter,
 ];
 
