@@ -3,24 +3,18 @@ import { space, textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router';
+import { CallCentreAccordion } from '@/client/components/shared/CallCentreAccordion';
 import type {
 	MembersDataApiResponse,
-	PaidSubscriptionPlan,
-	PhoneRegionKey,
 	ProductDetail,
 } from '../../../../../shared/productResponse';
-import {
-	getMainPlan,
-	getSpecificProductTypeFromProduct,
-} from '../../../../../shared/productResponse';
+import { getSpecificProductTypeFromProduct } from '../../../../../shared/productResponse';
 import { headingCss } from '../../../../styles/GenericStyles';
-import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
 import { allRecurringProductsDetailFetcher } from '../../../../utilities/productUtils';
-import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
@@ -40,18 +34,6 @@ function getNextRoute(productToCancel: ProductDetail): string {
 		default: {
 			return '/';
 		}
-	}
-}
-
-function getPhoneRegion(currencyIso: CurrencyIso): PhoneRegionKey {
-	switch (currencyIso) {
-		case 'USD':
-		case 'CAD':
-			return 'US';
-		case 'AUD':
-			return 'AUS';
-		default:
-			return 'UK & ROW';
 	}
 }
 
@@ -94,12 +76,6 @@ export const CancellationLanding = () => {
 		);
 	}
 
-	const mainPlan = getMainPlan(
-		productToCancel.subscription,
-	) as PaidSubscriptionPlan;
-
-	const phoneRegion = getPhoneRegion(mainPlan.currencyISO as CurrencyIso);
-
 	return (
 		<>
 			<section
@@ -126,25 +102,25 @@ export const CancellationLanding = () => {
 					margin-top: ${space[6] + space[2]}px;
 				`}
 			>
-				<Stack space={3}>
-					<Heading borderless sansSerif level="3">
-						Contact us
-					</Heading>
-					<p
-						css={css`
-							${textSans.medium()};
-							margin: 0;
-						`}
-					>
-						Speak to our customer service team.
-					</p>
-					<CallCentreEmailAndNumbers
-						hideEmailAddress={true}
+				<Stack space={4}>
+					<div>
+						<Heading borderless sansSerif level="3">
+							Contact us
+						</Heading>
+						<p
+							css={css`
+								${textSans.medium()};
+								margin: 0;
+							`}
+						>
+							Speak to our customer service team.
+						</p>
+					</div>
+					<CallCentreAccordion
 						phoneRegionFilterKeys={
 							productToCancel.selfServiceCancellation
 								.phoneRegionsToDisplay
 						}
-						openPhoneRegion={phoneRegion}
 					/>
 				</Stack>
 			</section>

@@ -9,7 +9,7 @@ import type { PhoneRegionKey } from '@/shared/productResponse';
 import { customerHelpEmailAddress, phoneData } from './callCentreData';
 
 type CallCentreAccordionProps = {
-	showEmailAddress: boolean;
+	showEmailAddress?: boolean;
 	phoneRegionFilterKeys?: PhoneRegionKey[];
 };
 
