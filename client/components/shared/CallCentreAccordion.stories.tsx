@@ -2,8 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library';
 import { CallCentreAccordion } from './CallCentreAccordion';
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
 export default {
 	title: 'Components/CallCentreAccordion',
 	component: CallCentreAccordion,
@@ -14,7 +12,6 @@ export const Closed: StoryObj = {};
 export const Open: StoryObj = {
 	args: { showEmailAddress: true },
 	play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-		await sleep(1);
 		const canvas = within(canvasElement);
 		const button = canvas.getAllByText('Show')[0];
 		await userEvent.click(button);
@@ -23,7 +20,6 @@ export const Open: StoryObj = {
 
 export const OpenHideEmail: StoryObj = {
 	play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-		await sleep(1);
 		const canvas = within(canvasElement);
 		const button = canvas.getAllByText('Show')[0];
 		await userEvent.click(button);
