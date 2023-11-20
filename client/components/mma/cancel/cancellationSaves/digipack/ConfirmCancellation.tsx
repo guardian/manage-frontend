@@ -88,7 +88,7 @@ export const ConfirmCancellation = () => {
 					}
 				`}
 			>
-				Losing you supporter extras
+				Losing your supporter extras
 			</h1>
 			Please keep in mind that you will be losing access to your supporter
 			extras if you cancel today.
