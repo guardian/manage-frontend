@@ -15,20 +15,13 @@ interface Event {
 
 export const MMA_AB_TEST_DIMENSION_VALUE = ''; // this can be used for a/b testing
 
-export const trackEvent = (
-	{ eventCategory, eventAction, product, eventLabel, eventValue }: Event,
-	alsoTrackInGA = true,
-) => {
-	if (alsoTrackInGA && window.ga) {
-		window.ga(
-			'send',
-			'event',
-			eventCategory,
-			eventAction,
-			eventLabel,
-			eventValue,
-		);
-	}
+export const trackEvent = ({
+	eventCategory,
+	eventAction,
+	product,
+	eventLabel,
+	eventValue,
+}: Event) => {
 	if (window.guardian && window.guardian.ophan) {
 		const ophanProduct: OphanProduct | undefined =
 			product &&
@@ -58,10 +51,10 @@ export const trackEvent = (
 	}
 };
 
-export const trackEventInOphanOnly = (event: Event) => trackEvent(event, false);
+export const trackEventInOphanOnly = (event: Event) => trackEvent(event);
 
 export const applyAnyOptimiseExperiments = () => {
-	if (typeof window !== 'undefined' && window.ga && window.dataLayer) {
+	if (typeof window !== 'undefined' && window.dataLayer) {
 		window.dataLayer.push({ event: 'optimize.activate' });
 	}
 };
