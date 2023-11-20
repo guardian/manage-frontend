@@ -1,6 +1,8 @@
 import { css } from '@emotion/react';
-import { from, neutral, space, textSans } from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { useState } from 'react';
+import type { PhoneRegionKey } from '@/shared/productResponse';
+import { customerHelpEmailAddress, phoneData } from './callCentreData';
 import type { CallCentreNumbersProps } from './CallCentreNumbers';
 
 const contactUsStyles = {
@@ -15,64 +17,6 @@ const callCenterStyles = css({
 	fontWeight: 'normal',
 });
 
-export type PhoneRegionKey = 'US' | 'AUS' | 'UK & ROW';
-
-interface PhoneRegion {
-	key: PhoneRegionKey;
-	title: string;
-	openingHours: string[];
-	phoneNumbers: Array<{ phoneNumber: string; suffix?: string }>;
-	additionalOpeningHoursInfo?: string;
-}
-
-const EMAIL_ADDRESS: string = 'customer.help@theguardian.com';
-
-const PHONE_DATA: PhoneRegion[] = [
-	{
-		key: 'UK & ROW',
-		title: 'United Kingdom, Europe and rest of world',
-		openingHours: [
-			'8am - 6pm Monday - Friday (GMT/BST)',
-			'9am - 6pm Saturday - Sunday (GMT/BST)',
-		],
-		phoneNumbers: [
-			{
-				phoneNumber: '+44 (0) 330 333 6767',
-			},
-		],
-	},
-	{
-		key: 'AUS',
-		title: 'Australia, New Zealand, and Asia Pacific',
-		openingHours: ['9am - 5pm Monday - Friday (AEDT)'],
-		phoneNumbers: [
-			{
-				phoneNumber: '1800 773 766',
-				suffix: '(within Australia)',
-			},
-			{
-				phoneNumber: '+61 28076 8599',
-				suffix: '(outside Australia)',
-			},
-		],
-	},
-	{
-		key: 'US',
-		title: 'Canada and USA',
-		openingHours: ['9am - 5pm on weekdays (EST/EDT)'],
-		phoneNumbers: [
-			{
-				phoneNumber: '1-844-632-2010',
-				suffix: '(toll free USA)',
-			},
-			{
-				phoneNumber: '+1 917-900-4663',
-				suffix: '(outside USA)',
-			},
-		],
-	},
-];
-
 export interface CallCentreEmailAndNumbersProps extends CallCentreNumbersProps {
 	hideEmailAddress?: boolean;
 	phoneRegionFilterKeys?: PhoneRegionKey[];
@@ -84,7 +28,7 @@ export interface CallCentreEmailAndNumbersProps extends CallCentreNumbersProps {
 export const CallCentreEmailAndNumbers = (
 	props: CallCentreEmailAndNumbersProps,
 ) => {
-	const filteredPhoneData = PHONE_DATA.filter(
+	const filteredPhoneData = phoneData.filter(
 		(phoneRegion) =>
 			!props.phoneRegionFilterKeys ||
 			props.phoneRegionFilterKeys.includes(phoneRegion.key),
@@ -113,8 +57,8 @@ export const CallCentreEmailAndNumbers = (
 		isOpen
 			? `
         font-weight: bold;
-        background-color: ${neutral['97']};
-        border-bottom: 1px solid ${neutral['86']};
+        background-color: ${palette.neutral['97']};
+        border-bottom: 1px solid ${palette.neutral['86']};
       `
 			: ''
 	}
@@ -123,8 +67,8 @@ export const CallCentreEmailAndNumbers = (
       display: block;
       width: 7px;
       height: 7px;
-      border-top: 2px solid ${neutral['7']};
-      border-right: 2px solid ${neutral['7']};
+      border-top: 2px solid ${palette.neutral['7']};
+      border-right: 2px solid ${palette.neutral['7']};
       position: absolute;
       top: 50%;
       transform: ${
@@ -146,7 +90,7 @@ export const CallCentreEmailAndNumbers = (
         left: 0;
         width: 100%;
         height: 1px;
-        background-color: ${neutral['86']}
+        background-color: ${palette.neutral['86']}
       }
     `
 	}
@@ -171,7 +115,7 @@ export const CallCentreEmailAndNumbers = (
 
 	const innerSectionCss = (isOpen: boolean) => `
     display: ${isOpen ? 'block' : 'none'};
-    background-color: ${neutral['97']};
+    background-color: ${palette.neutral['97']};
     padding: ${space[4]}px;
   `;
 
@@ -207,7 +151,7 @@ export const CallCentreEmailAndNumbers = (
 			<div
 				css={css`
 					width: 100%;
-					border: 1px solid ${neutral['86']};
+					border: 1px solid ${palette.neutral['86']};
 				`}
 			>
 				{filteredPhoneData.map((phoneRegion, index) => {
@@ -255,7 +199,7 @@ export const CallCentreEmailAndNumbers = (
 												word-break: break-word;
 											`}
 										>
-											{EMAIL_ADDRESS}
+											{customerHelpEmailAddress}
 										</span>
 									</>
 								)}
