@@ -144,7 +144,6 @@ function cancellationCaseFetch(
 			reason: selectedReasonId,
 			product: productType.cancellation.sfCaseProduct,
 			subscriptionName: productDetail.subscription.subscriptionId,
-			gaData: '' + JSON.stringify(window.gaData),
 		}),
 		headers: {
 			'Content-Type': 'application/json',

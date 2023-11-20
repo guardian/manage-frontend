@@ -5,8 +5,6 @@ import { useLocation } from 'react-router-dom';
 
 declare global {
 	interface Window {
-		ga?: any;
-		gaData?: string;
 		dataLayer?: any;
 	}
 }
