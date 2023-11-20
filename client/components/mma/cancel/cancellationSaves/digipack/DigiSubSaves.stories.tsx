@@ -1,6 +1,7 @@
-import type { Meta, StoryFn , StoryObj } from '@storybook/react';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
+import { ConfirmCancellation } from '@/client/components/mma/cancel/cancellationSaves/digipack/ConfirmCancellation';
 import { DigiSubDiscountConfirm } from '@/client/components/mma/cancel/cancellationSaves/digipack/DigiSubDiscountConfirm';
 import { ThankYouOffer } from '@/client/components/mma/cancel/cancellationSaves/digipack/ThankYouOffer';
 import {
@@ -51,4 +52,10 @@ export const IneligibleForDiscount: StoryObj<typeof ThankYouOffer> = {
 			},
 		},
 	},
+};
+
+export const ConfirmDigiSubCancellation: StoryFn<
+	typeof ConfirmCancellation
+> = () => {
+	return <ConfirmCancellation />;
 };
