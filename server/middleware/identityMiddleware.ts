@@ -210,7 +210,7 @@ const authenticateWithIdapi: (statusCodeOverride?: number) => RequestHandler =
 								// If the request to manage contains sign-in token query parameters,
 								// but they are not needed because the user is already signed in,
 								// redirect them to the same url, but with the sign-in token query parameters removed.
-								// This ensures the sensitive query parameters will not be recorded by GA or Ophan,
+								// This ensures the sensitive query parameters will not be recorded by Ophan,
 								// in addition to the url the user sees in the browser being simpler.
 								if (containsSignInTokenQueryParameters(req)) {
 									// Note it is vital that updateManageUrl() removes the auto sign-in query parameters,
