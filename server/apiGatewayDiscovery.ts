@@ -8,7 +8,6 @@ import type { AdditionalHeaderGenerator, Headers } from './apiProxy';
 import { proxyApiHandler, straightThroughBodyHandler } from './apiProxy';
 import {
 	APIGateway,
-	AWS_REGION,
 	CloudFormation,
 	generateAwsSignatureHeaders,
 } from './awsIntegration';
@@ -44,22 +43,8 @@ const toDefinedPhysicalResourceId =
 		);
 	};
 
-const getHost = (
-	stackName: string,
-	stackResourceSummaries?: StackResourceSummaries,
-) => {
-	const hosts = stackResourceSummaries
-		?.filter(byResourceType('AWS::ApiGateway::RestApi'))
-		.map(toDefinedPhysicalResourceId(stackName))
-		.map(
-			(apiGatewayId) =>
-				`${apiGatewayId}.execute-api.${AWS_REGION}.amazonaws.com`,
-		);
-	if (hosts && hosts.length === 1) {
-		return hosts[0];
-	}
-	log.error(`${(hosts || []).length} hosts for ${stackName}, expected 1`);
-};
+const getHost = (apiName: ApiName, stage: string) =>
+	`${apiName}-${stage.toLowerCase()}.support.guardianapis.com`;
 
 const lookupApiKey = async (apiKey: string) =>
 	(
@@ -77,6 +62,7 @@ const getApiKeyPromise = (
 		?.filter(byResourceType('AWS::ApiGateway::ApiKey'))
 		.map(toDefinedPhysicalResourceId(stackName))
 		.map(lookupApiKey);
+
 	if (apiKeyPromises && apiKeyPromises.length === 1) {
 		return apiKeyPromises[0];
 	}
@@ -110,7 +96,7 @@ function getHostAndApiKeyForStack(
 	})
 		.promise()
 		.then(async (result) => ({
-			host: getHost(stackName, result.StackResourceSummaries),
+			host: getHost(apiName, stage),
 			apiKey: await getApiKeyPromise(
 				stackName,
 				result.StackResourceSummaries,
@@ -156,6 +142,7 @@ const getApiGateway = (
 				const stage = isTestUser
 					? testUserApiStage
 					: normalUserApiStage;
+
 				if (!apiKey) {
 					log.error(`Missing API Key for ${stage} ${apiName}`);
 					res.status(500).send();
