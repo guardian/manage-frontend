@@ -121,7 +121,7 @@
     "msw": "0.48.2",
     "msw-storybook-addon": "1.8.0",
     "node-polyfill-webpack-plugin": "1.1.4",
-    "nodemon": "2.0.22",
+    "nodemon": "3.0.1",
     "prettier": "2.5.1",
     "raw-loader": "4.0.2",
     "react-test-renderer": "18.2.0",
