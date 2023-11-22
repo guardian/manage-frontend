@@ -11,6 +11,7 @@ const mainPlan = (billingPeriod: string) => ({
 	currencyISO: 'GBP',
 	billingPeriod,
 	price: 500,
+	features: '',
 });
 
 const productType = PRODUCT_TYPES['supporterplus'];

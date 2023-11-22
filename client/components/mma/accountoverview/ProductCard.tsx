@@ -123,6 +123,11 @@ export const ProductCard = ({
 		groupedProductType.mapGroupedToSpecific(productDetail);
 
 	const isPatron = productDetail.subscription.readerType === 'Patron';
+
+	const entitledToEvents =
+		['Partner', 'Patron'].includes(productDetail.tier) &&
+		(mainPlan as PaidSubscriptionPlan).features.includes('Events');
+
 	const productTitle = `${specificProductType.productTitle(mainPlan)}${
 		isPatron ? ' — Patron' : ''
 	}`;
@@ -379,6 +384,33 @@ export const ProductCard = ({
 						</div>
 					</div>
 				</Card.Section>
+				{entitledToEvents && (
+					<Card.Section>
+						<div>
+							<h4 css={sectionHeadingCss}>
+								Guardian Live - Eventbrite discount codes
+							</h4>
+							<div>
+								<dl css={keyValueCss}>
+									<dt>{atob('TFBQRlJFRTZHTFRY')}</dt>
+									<dd>
+										gives you 6 free tickets each year (1
+										per event)
+									</dd>
+								</dl>
+							</div>
+							<div>
+								<dl css={keyValueCss}>
+									<dt>{atob('TFBQMjAyR0xUWA==')}</dt>
+									<dd>
+										gives you 20% off an extra 2 tickets per
+										event
+									</dd>
+								</dl>
+							</div>
+						</div>
+					</Card.Section>
+				)}
 				{productDetail.isPaidTier && (
 					<Card.Section>
 						<div css={productDetailLayoutCss}>
