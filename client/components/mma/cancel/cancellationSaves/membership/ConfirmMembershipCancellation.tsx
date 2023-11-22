@@ -50,6 +50,7 @@ export const ConfirmMembershipCancellation = () => {
 				reason: selectedReasonId,
 				product: productType.cancellation.sfCaseProduct,
 				subscriptionName: productDetail.subscription.subscriptionId,
+				gaData: '',
 			}),
 			headers: {
 				'Content-Type': 'application/json',
