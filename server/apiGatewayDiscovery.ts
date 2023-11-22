@@ -3,7 +3,7 @@ import type {
 	StackResourceSummary,
 } from 'aws-sdk/clients/cloudformation';
 import type express from 'express';
-import { MDA_TEST_USER_HEADER } from '../shared/productResponse';
+import { MDA_TEST_USER_HEADER } from '@/shared/productResponse';
 import type { AdditionalHeaderGenerator, Headers } from './apiProxy';
 import { proxyApiHandler, straightThroughBodyHandler } from './apiProxy';
 import {
@@ -43,8 +43,13 @@ const toDefinedPhysicalResourceId =
 		);
 	};
 
-const getHost = (apiName: ApiName, stage: string) =>
-	`${apiName}-${stage.toLowerCase()}.support.guardianapis.com`;
+// CODE example: my-api-name-code.support.guardianapis.com
+// PROD example: my-api-name.support.guardianapis.com
+const getHost = (apiName: ApiName, stage: string) => {
+	const stageString = stage.toUpperCase() === 'PROD' ? '' : `-${stage}`;
+
+	return `${apiName}${stageString}.support.guardianapis.com`.toLowerCase();
+};
 
 const lookupApiKey = async (apiKey: string) =>
 	(
