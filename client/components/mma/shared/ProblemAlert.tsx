@@ -11,10 +11,15 @@ import type { ProductDetail } from '../../../../shared/productResponse';
 import { ErrorIcon } from './assets/ErrorIcon';
 import { LinkButton } from './Buttons';
 
+type ProblemAlertState = {
+	productDetail: ProductDetail;
+	isFromApp?: boolean;
+};
+
 interface AlertButtonProps {
 	title: string;
 	link: string;
-	state?: ProductDetail;
+	state?: ProblemAlertState;
 }
 
 interface ProblemAlertProps {

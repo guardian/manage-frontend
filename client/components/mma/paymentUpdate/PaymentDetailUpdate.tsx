@@ -53,7 +53,8 @@ import { ContactUs } from './ContactUs';
 import { CurrentPaymentDetails } from './CurrentPaymentDetail';
 import { DirectDebitInputForm } from './dd/DirectDebitInputForm';
 import type { NewPaymentMethodDetail } from './NewPaymentMethodDetail';
-import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
+import type { PaymentUpdateContextInterface } from './PaymentDetailUpdateContainer';
+import { PaymentUpdateContext } from './PaymentDetailUpdateContainer';
 
 export enum PaymentMethod {
 	Card = 'Credit card / debit card',
@@ -219,9 +220,9 @@ export interface PaymentUpdaterStepState {
 }
 
 export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
-	const productDetail = useContext(
-		PaymentUpdateProductDetailContext,
-	) as ProductDetail;
+	const { productDetail, isFromApp } = useContext(
+		PaymentUpdateContext,
+	) as PaymentUpdateContextInterface;
 
 	const currentPaymentMethod = subscriptionToPaymentMethod(productDetail);
 
@@ -316,6 +317,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 								newSubscriptionData[0].subscription,
 							),
 						newSubscriptionData,
+						isFromApp: isFromApp,
 					},
 				});
 			}
