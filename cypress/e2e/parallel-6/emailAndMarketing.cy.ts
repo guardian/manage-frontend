@@ -5,12 +5,11 @@ import { newsletters } from '../../../client/fixtures/newsletters';
 import { consents } from '../../../client/fixtures/consents';
 import { newsletterSubscriptions } from '../../../client/fixtures/newsletterSubscriptions';
 import { InAppPurchase } from '../../../client/fixtures/inAppPurchase';
+import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 
 describe('Email and Marketing page', () => {
 	beforeEach(() => {
-		cy.session('auth', () => {
-			cy.setCookie('gu-cmp-disabled', 'true');
-		});
+		signInAndAcceptCookies();
 
 		cy.intercept('GET', '/idapi/user', {
 			body: userResponse,
@@ -64,7 +63,7 @@ describe('Email and Marketing page', () => {
 		cy.wait('@consents');
 		cy.wait('@reminders');
 
-		cy.findByText('Similar Guardian products');
+		cy.findByText('Guardian products and support');
 		cy.findByText('Your subscription/support');
 		cy.findByText('Supporter newsletter');
 	});
@@ -91,7 +90,7 @@ describe('Email and Marketing page', () => {
 		cy.wait('@consents');
 		cy.wait('@reminders');
 
-		cy.findByText('Similar Guardian products');
+		cy.findByText('Guardian products and support');
 		cy.findByText('Your subscription/support');
 		cy.findByText('Supporter newsletter');
 	});

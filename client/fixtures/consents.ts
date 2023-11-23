@@ -62,10 +62,10 @@ export const consents = [
 		id: 'similar_guardian_products',
 		isOptOut: false,
 		isChannel: false,
-		isProduct: true,
-		name: 'Similar Guardian products',
+		isProduct: false,
+		name: 'Guardian products and support',
 		description:
-			'Information on similar products and further ways to support our independent journalism.',
+			'Information on our products and ways to support and enjoy our independent journalism.',
 	},
 	{
 		id: 'market_research_optout',
