@@ -15,6 +15,7 @@ if (typeof window !== 'undefined' && window.guardian && window.guardian.dsn) {
 	});
 }
 
-const element = document.getElementById('app') as HTMLElement;
+const element = document.getElementById('app');
+if (!(element instanceof HTMLElement)) throw Error('Invalid app element');
 const root = createRoot(element);
 root.render(MMAPage);
