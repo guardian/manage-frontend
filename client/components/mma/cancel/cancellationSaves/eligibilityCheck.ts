@@ -1,4 +1,4 @@
-import { getNewMembershipPrice } from '@/client/utilities/membershipPriceRise';
+import { getNewMembershipPrice } from '@/client/utilities/pricingConfig/membershipPriceRise';
 import type {
 	PaidSubscriptionPlan,
 	ProductDetail,

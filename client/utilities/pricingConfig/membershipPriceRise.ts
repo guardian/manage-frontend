@@ -1,5 +1,9 @@
-import type { PaidSubscriptionPlan } from '../../shared/productResponse';
-import type { MembershipCurrencyIso } from './currencyIso';
+import type { PaidSubscriptionPlan } from '../../../shared/productResponse';
+import type { MembershipCurrencyIso } from '../currencyIso';
+
+/* 
+	Pricing for 2023 Membership Price Rise and Save Journey
+*/
 
 const newSupporterMembershipByCountryGroup: Record<
 	MembershipCurrencyIso,

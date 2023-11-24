@@ -28,7 +28,7 @@ import {
 import {
 	getNewMembershipPrice,
 	getOldMembershipPrice,
-} from '../../../../../utilities/membershipPriceRise';
+} from '../../../../../utilities/pricingConfig/membershipPriceRise';
 import { benefitsConfiguration } from '../../../shared/benefits/BenefitsConfiguration';
 import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
 import { Card } from '../../../shared/Card';

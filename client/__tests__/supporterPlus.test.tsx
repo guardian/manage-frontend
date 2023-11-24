@@ -1,7 +1,7 @@
 import {
 	getSupporterPlusSuggestedAmountsAnnual,
 	getSupporterPlusSuggestedAmountsMonthly,
-} from '../utilities/supportPricing/suggestedAmounts';
+} from '../utilities/pricingConfig/suggestedAmounts';
 
 describe('suggested support amounts for monthly', () => {
 	it.each([

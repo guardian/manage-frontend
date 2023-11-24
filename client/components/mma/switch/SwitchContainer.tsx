@@ -17,11 +17,11 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
+import { getBenefitsThreshold } from '../../../utilities/pricingConfig/supporterPlusPricing';
 import {
 	createProductDetailFetcher,
 	isNonServiceableCountry,
 } from '../../../utilities/productUtils';
-import { getBenefitsThreshold } from '../../../utilities/supportPricing/supporterPlusPricing';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
