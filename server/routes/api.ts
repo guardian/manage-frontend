@@ -64,14 +64,22 @@ router.get(
 				),
 		)
 			.then((productDetails) => {
-				mdapiResponse.products = productDetails;
+				mdapiResponse.products = productDetails.map((productDetail) => {
+					productDetail.alertText = 'payment failure';
+					return productDetail;
+				});
 				response.json(mdapiResponse);
 			})
 			.catch((error) => {
 				const errorMessage = `Unexpected error when augmenting members-data-api response with 'deliveryAddressChangeEffectiveDate' error message was ${error}`;
 				log.error(errorMessage, error);
 				Sentry.captureMessage(errorMessage);
-				mdapiResponse.products = augmentedWithTestUser;
+				mdapiResponse.products = augmentedWithTestUser.map(
+					(productDetail) => {
+						productDetail.alertText = 'payment failure';
+						return productDetail;
+					},
+				);
 				response.json(mdapiResponse); // fallback to sending the response augmented with just isTestUser
 			});
 	})(
