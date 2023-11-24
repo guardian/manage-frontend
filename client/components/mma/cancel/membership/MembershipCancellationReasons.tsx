@@ -10,19 +10,13 @@ export const membershipCancellationReasons: CancellationReason[] = [
 		saveBody: [
 			'Making a smaller contribution to the Guardian can be an inexpensive way of keeping journalism open for everyone to read and enjoy. There are a number of flexible ways to support us and one of our customer service specialist would be happy to hear from you.',
 		],
-		// alternateFeedbackThankYouBody: "One of our customer service specialists will be in touch shortly."
 	},
 	{
 		reasonId: 'mma_payment_issue',
 		linkLabel: "I didn't expect The Guardian to take another payment",
 		saveTitle: 'We are sorry that you have been charged again',
 		saveBody: PaymentIssue,
-		// TODO restore commented after Coronavirus
-		// saveBody: "We’d like to know more details to help resolve the issue. One of our customer service specialists will be more than happy to assist.",
-		// alternateFeedbackIntro: "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible",
 		alternateFeedbackIntro: '',
-		// alternateFeedbackThankYouTitle: "Thank you.",
-		// alternateFeedbackThankYouBody: "One of our customer service specialists will be in touch shortly."
 	},
 	{
 		reasonId: 'mma_editorial',
@@ -71,7 +65,6 @@ export const membershipCancellationReasons: CancellationReason[] = [
 		saveTitle:
 			'We understand that sometimes the news cycle can feel a little overwhelming.',
 		saveBody: BreakFromNewsWithGW,
-		// alternateFeedbackIntro: "Alternatively please provide some more details in the form below and we’ll get back to you as soon as possible"
 	},
 	{
 		reasonId: 'mma_values',
