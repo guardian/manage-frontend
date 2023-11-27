@@ -81,7 +81,7 @@ const newDigisubPricePerCurrency: Record<
 };
 
 function getDigisubPrice(
-	{ currency, billingPeriod }: PaidSubscriptionPlan,
+	{ currencyISO, billingPeriod }: PaidSubscriptionPlan,
 	pricePerCurrency: Record<CurrencyIso, Record<BillingPeriod, number>>,
 ): number {
 	if (!isOneOf(billingPeriods)(billingPeriod)) {
@@ -89,11 +89,11 @@ function getDigisubPrice(
 	}
 
 	// Use USD for International pricing as fallback
-	if (!isOneOf(CurrencyIsos)(currency)) {
+	if (!isOneOf(CurrencyIsos)(currencyISO)) {
 		return pricePerCurrency['USD'][billingPeriod];
 	}
 
-	return pricePerCurrency[currency][billingPeriod];
+	return pricePerCurrency[currencyISO][billingPeriod];
 }
 
 export function getNewDigisubPrice(plan: PaidSubscriptionPlan): number {
