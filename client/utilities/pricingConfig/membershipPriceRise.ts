@@ -61,13 +61,13 @@ const oldSupporterMembershipByCountryGroup: Record<
 };
 
 function getMembershipPrice(
-	{ currency, billingPeriod }: PaidSubscriptionPlan,
+	{ currencyISO, billingPeriod }: PaidSubscriptionPlan,
 	pricePerCurrency: Record<
 		MembershipCurrencyIso,
 		Record<'month' | 'year', number>
 	>,
 ): number {
-	if (!isOneOf(MembershipCurrencyIsos)(currency)) {
+	if (!isOneOf(MembershipCurrencyIsos)(currencyISO)) {
 		throw new Error('Unsupported membership currency');
 	}
 
@@ -75,7 +75,7 @@ function getMembershipPrice(
 		throw new Error('Unsupported membership billing period');
 	}
 
-	return pricePerCurrency[currency][billingPeriod];
+	return pricePerCurrency[currencyISO][billingPeriod];
 }
 
 export function getNewMembershipPrice(plan: PaidSubscriptionPlan): number {
