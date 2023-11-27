@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, space } from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source-foundations';
 import { parseDate } from '@/shared/dates';
 import type { ProductDetail } from '@/shared/productResponse';
 
@@ -8,6 +8,28 @@ export interface ProductInfoTableProps {
 }
 
 export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
+	const tableEntryCss = () => {
+		return css`
+			display: inline-block;
+			vertical-align: top;
+			${textSans.medium()};
+			margin-right: ${space[2]}px;
+		`;
+	};
+
+	const tableValueCss = () => {
+		return css`
+			color: #606060;
+			display: inline-block;
+			vertical-align: top;
+			padding-right: 32px;
+			width: 100%;
+			${from.tablet} {
+				width: auto;
+			}
+		`;
+	};
+
 	return (
 		<>
 			<div
@@ -20,33 +42,12 @@ export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
 				`}
 			>
 				<div className="subscription-id">
-					<span
-						css={css`
-							margin-right: ${space[2]}px;
-						`}
-					>
-						Subscription ID
-					</span>
-					<span
-						css={css`
-							margin-right: 32px;
-							color: #606060;
-						`}
-					>
+					<span css={tableEntryCss}>Subscription ID</span>
+					<span css={tableValueCss}>
 						{props.productDetail.subscription.subscriptionId}
 					</span>
-					<span
-						css={css`
-							margin-right: ${space[2]}px;
-						`}
-					>
-						Start Date
-					</span>
-					<span
-						css={css`
-							color: #606060;
-						`}
-					>
+					<span css={tableEntryCss}>Start Date</span>
+					<span css={tableValueCss}>
 						{props.productDetail.subscription.start
 							? parseDate(
 									props.productDetail.subscription.start,
