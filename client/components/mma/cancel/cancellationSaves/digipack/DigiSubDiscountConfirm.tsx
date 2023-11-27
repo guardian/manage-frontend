@@ -26,7 +26,7 @@ import {
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
-import { calculateBillingPeriod } from '@/shared/productTypes';
+import { calculateBillingPeriodAdjective } from '@/shared/productTypes';
 import {
 	headingCss,
 	iconListCss,
@@ -57,7 +57,7 @@ export const DigiSubDiscountConfirm = () => {
 
 	const userEmailAddress = routerState?.user?.email;
 
-	const billingPeriod = calculateBillingPeriod(
+	const billingPeriod = calculateBillingPeriodAdjective(
 		mainPlan.billingPeriod,
 	).toLowerCase();
 

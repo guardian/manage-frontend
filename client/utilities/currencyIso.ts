@@ -1,6 +1,7 @@
+import { isOneOf } from '@guardian/libs';
 import * as Sentry from '@sentry/browser';
 
-const CurrencyIsos = ['GBP', 'USD', 'AUD', 'EUR', 'NZD', 'CAD'] as const;
+export const CurrencyIsos = ['GBP', 'USD', 'AUD', 'EUR', 'NZD', 'CAD'] as const;
 export type CurrencyIso = typeof CurrencyIsos[number];
 
 type CurrencySymbol = '£' | '$' | '€';
@@ -15,7 +16,7 @@ const currencySymbols: Record<CurrencyIso, CurrencySymbol> = {
 };
 
 export function isCurrencyIso(currency: string): currency is CurrencyIso {
-	return CurrencyIsos.includes(currency as CurrencyIso);
+	return isOneOf(CurrencyIsos)(currency);
 }
 
 export function convertCurrencyToSymbol(

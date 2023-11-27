@@ -12,7 +12,7 @@ import {
 } from '@guardian/source-react-components';
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { calculateBillingPeriod } from '../../../../../shared/productTypes';
+import { calculateBillingPeriodAdjective } from '../../../../../shared/productTypes';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import { getSupporterPlusSuggestedAmountsFromMainPlan } from '../../../../utilities/pricingConfig/suggestedAmounts';
@@ -63,7 +63,7 @@ function validateChoice(
 	mainPlan: PaidSubscriptionPlan,
 ): string | null {
 	const chosenOptionNum = Number(chosenAmount);
-	const monthlyOrAnnual = calculateBillingPeriod(
+	const monthlyOrAnnual = calculateBillingPeriodAdjective(
 		mainPlan.billingPeriod,
 	).toLocaleLowerCase();
 
@@ -100,7 +100,7 @@ export const SupporterPlusUpdateAmountForm = (
 	];
 
 	const minPriceDisplay = `${props.mainPlan.currency}${priceConfig.minAmount}`;
-	const monthlyOrAnnual = calculateBillingPeriod(
+	const monthlyOrAnnual = calculateBillingPeriodAdjective(
 		props.mainPlan.billingPeriod,
 	);
 

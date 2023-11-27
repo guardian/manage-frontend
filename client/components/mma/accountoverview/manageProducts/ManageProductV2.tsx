@@ -46,7 +46,7 @@ import type {
 import { getMainPlan, isProduct } from '@/shared/productResponse';
 import type { ProductType, WithProductType } from '@/shared/productTypes';
 import {
-	calculateBillingPeriod,
+	calculateBillingPeriodAdjective,
 	GROUPED_PRODUCT_TYPES,
 } from '@/shared/productTypes';
 
@@ -93,7 +93,7 @@ const InnerContent = ({
 	const cancelledCopy =
 		specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
 
-	const monthlyOrAnnual = calculateBillingPeriod(
+	const monthlyOrAnnual = calculateBillingPeriodAdjective(
 		nextPaymentDetails?.paymentInterval,
 	).toLowerCase();
 
