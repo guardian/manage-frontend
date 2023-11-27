@@ -13,7 +13,7 @@ export function ineligibleForSave(
 		return isMembershipIneligible(products, productToCancel);
 	}
 
-	return true;
+	return false;
 }
 
 function isMembershipIneligible(
