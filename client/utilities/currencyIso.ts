@@ -3,9 +3,9 @@ import * as Sentry from '@sentry/browser';
 const CurrencyIsos = ['GBP', 'USD', 'AUD', 'EUR', 'NZD', 'CAD'] as const;
 export type CurrencyIso = typeof CurrencyIsos[number];
 
-export type MembershipCurrencyIso = 'GBP' | 'USD' | 'AUD' | 'EUR' | 'CAD';
+type CurrencySymbol = '£' | '$' | '€';
 
-const currencySymbols: Record<CurrencyIso, string> = {
+const currencySymbols: Record<CurrencyIso, CurrencySymbol> = {
 	GBP: '£',
 	USD: '$',
 	AUD: '$',
@@ -18,10 +18,19 @@ export function isCurrencyIso(currency: string): currency is CurrencyIso {
 	return CurrencyIsos.includes(currency as CurrencyIso);
 }
 
-export function convertCurrencyToSymbol(currency: string): string {
-	const symbol = currencySymbols[currency as CurrencyIso];
-	if (symbol === undefined) {
+export function convertCurrencyToSymbol(
+	currency: string,
+): CurrencySymbol | undefined {
+	if (!isCurrencyIso(currency)) {
 		Sentry.captureException(`Unrecognized currency code: ${currency}`);
+		return undefined;
 	}
-	return symbol;
+
+	return convertCurrencyIsoToSymbol(currency);
+}
+
+export function convertCurrencyIsoToSymbol(
+	currency: CurrencyIso,
+): CurrencySymbol {
+	return currencySymbols[currency];
 }

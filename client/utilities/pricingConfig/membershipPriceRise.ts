@@ -1,9 +1,10 @@
 import type { PaidSubscriptionPlan } from '../../../shared/productResponse';
-import type { MembershipCurrencyIso } from '../currencyIso';
+import type { CurrencyIso } from '../currencyIso';
 
 /* 
 	Pricing for 2023 Membership Price Rise and Save Journey
 */
+export type MembershipCurrencyIso = Exclude<CurrencyIso, 'NZD'>;
 
 const newSupporterMembershipByCountryGroup: Record<
 	MembershipCurrencyIso,

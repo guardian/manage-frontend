@@ -8,19 +8,21 @@ import { getMainPlan } from '@/shared/productResponse';
 export function ineligibleForSave(
 	products: ProductDetail[],
 	productToCancel: ProductDetail,
-) {
+): boolean {
 	if (productToCancel.mmaCategory === 'membership') {
 		return isMembershipIneligible(products, productToCancel);
 	}
+
+	return true;
 }
 
 function isMembershipIneligible(
 	products: ProductDetail[],
 	productToCancel: ProductDetail,
-) {
-	const inPaymentFailure = products.find((product) => product.alertText);
+): boolean {
+	const inPaymentFailure = !!products.find((product) => product.alertText);
 
-	const hasOtherProduct = products.find(
+	const hasOtherProduct = !!products.find(
 		(product) =>
 			product.mmaCategory != 'membership' &&
 			!product.subscription.cancelledAt,
