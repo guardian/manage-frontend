@@ -1,7 +1,13 @@
 import { css } from '@emotion/react';
-import { palette } from '@guardian/source-foundations';
+import { palette, space } from '@guardian/source-foundations';
+import { parseDate } from '@/shared/dates';
+import type { ProductDetail } from '@/shared/productResponse';
 
-export const ProductInfoTableV2 = () => {
+export interface ProductInfoTableProps {
+	productDetail: ProductDetail;
+}
+
+export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
 	return (
 		<>
 			<div
@@ -10,13 +16,13 @@ export const ProductInfoTableV2 = () => {
 					display: flex;
 					width: 803px;
 					flex-wrap: wrap;
-					padding: 16px 24px;
+					padding: ${space[4]}px ${space[6]}px;
 				`}
 			>
 				<div className="subscription-id">
 					<span
 						css={css`
-							margin-right: 8px;
+							margin-right: ${space[2]}px;
 						`}
 					>
 						Subscription ID
@@ -27,11 +33,11 @@ export const ProductInfoTableV2 = () => {
 							color: #606060;
 						`}
 					>
-						test
+						{props.productDetail.subscription.subscriptionId}
 					</span>
 					<span
 						css={css`
-							margin-right: 8px;
+							margin-right: ${space[2]}px;
 						`}
 					>
 						Start Date
@@ -41,7 +47,11 @@ export const ProductInfoTableV2 = () => {
 							color: #606060;
 						`}
 					>
-						test
+						{props.productDetail.subscription.start
+							? parseDate(
+									props.productDetail.subscription.start,
+							  ).dateStr()
+							: '-'}
 					</span>
 				</div>
 			</div>
