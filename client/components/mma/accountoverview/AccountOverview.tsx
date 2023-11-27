@@ -43,6 +43,7 @@ import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import type { IsFromAppProps } from '../shared/IsFromAppProps';
 import { nonServiceableCountries } from '../shared/NonServiceableCountries';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { CancelledProductCard } from './CancelledProductCard';
@@ -69,7 +70,7 @@ const subHeadingCss = css`
 	}
 `;
 
-const AccountOverviewPage = () => {
+const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const {
 		data: accountOverviewResponse,
 		loadingState,
@@ -173,6 +174,7 @@ const AccountOverviewPage = () => {
 
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}
+				isFromApp={isFromApp}
 			/>
 			{productCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
@@ -272,13 +274,13 @@ const accountOverviewFetcher = () =>
 		allSingleProductsDetailFetcher(),
 	]);
 
-export const AccountOverview = () => {
+export const AccountOverview = ({ isFromApp }: IsFromAppProps) => {
 	return (
 		<PageContainer
 			selectedNavItem={NAV_LINKS.accountOverview}
 			pageTitle="Account overview"
 		>
-			<AccountOverviewPage />
+			<AccountOverviewPage isFromApp={isFromApp} />
 		</PageContainer>
 	);
 };

@@ -7,9 +7,11 @@ import {
 import { paymentMethods } from '../../../client/fixtures/stripe';
 import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
 import {
+	digitalPackPaidByCardWithPaymentFailure,
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
 } from '../../../client/fixtures/productBuilder/testProducts';
+import { singleContributionsAPIResponse } from '../../../client/fixtures/singleContribution';
 
 describe('Update payment details', () => {
 	beforeEach(() => {
@@ -90,10 +92,96 @@ describe('Update payment details', () => {
 		cy.wait('@refetch_subscription');
 
 		cy.findByText('Your payment details were updated successfully');
+		cy.findByText('Back to Account overview').should('exist');
 
 		cy.get('@createSetupIntent.all').should('have.length', 1);
 		cy.get('@confirmCardSetup.all').should('have.length', 1);
 		cy.get('@scala_backend.all').should('have.length', 1);
+	});
+
+	it('Completes card payment update with app redirect from account overview', () => {
+		cy.intercept('GET', '/api/me/mma*', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(
+				digitalPackPaidByCardWithPaymentFailure(),
+			),
+		}).as('product_detail');
+
+		cy.intercept('GET', '/api/me/mma/**', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(
+				digitalPackPaidByCardWithPaymentFailure(),
+			),
+		}).as('refetch_subscription');
+
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: singleContributionsAPIResponse,
+		}).as('single_contributions');
+
+		cy.intercept('GET', '/api/cancelled/', {
+			statusCode: 200,
+			body: [],
+		}).as('cancelled');
+
+		cy.intercept('POST', '/api/payment/card', {
+			statusCode: 200,
+			body: stripeSetupIntent,
+		}).as('createSetupIntent');
+
+		cy.intercept('POST', '/api/payment/card/**', {
+			statusCode: 200,
+			body: executePaymentUpdateResponse,
+		}).as('update_payment');
+
+		cy.intercept('POST', 'https://api.stripe.com/v1/setup_intents/**', {
+			statusCode: 200,
+			body: { status: 'succeeded' },
+		}).as('confirmCardSetup');
+
+		cy.intercept('POST', 'https://api.stripe.com/v1/payment_methods', {
+			statusCode: 200,
+			body: paymentMethods,
+		});
+
+		cy.visit('/app');
+
+		cy.findByText('A payment needs your attention').should('exist');
+		cy.findAllByText('Update payment method').first().click();
+
+		cy.findByText('Your current payment method').should('exist');
+		cy.resolve('Stripe').should((value) => {
+			expect(value).to.be.ok;
+		});
+
+		cy.fillElementsInput('cardNumber', '4242424242424242');
+		cy.fillElementsInput('cardExpiry', '1025');
+		cy.fillElementsInput('cardCvc', '123');
+
+		cy.get('#recaptcha *> iframe').then(($iframe) => {
+			const $body = $iframe.contents().find('body');
+			cy.wrap($body)
+				.find('.recaptcha-checkbox-border')
+				.should('be.visible')
+				.click()
+				.then(() => {
+					// wait for recaptcha to resolve
+					cy.wait(1000);
+
+					cy.findByText('Update payment method').click();
+				});
+		});
+
+		cy.wait('@update_payment');
+		cy.wait('@refetch_subscription');
+
+		cy.findByText('Your payment details were updated successfully');
+		cy.findByText('Return to the app').should('exist');
 	});
 
 	it('Shows correct error messages for direct debit form', () => {

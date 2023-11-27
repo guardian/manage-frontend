@@ -423,6 +423,10 @@ const MMARouter = () => {
 				>
 					<Routes>
 						<Route path="/" element={<AccountOverview />} />
+						<Route
+							path="/app"
+							element={<AccountOverview isFromApp />}
+						/>
 						<Route path="/billing" element={<Billing />} />
 						<Route path="/data-privacy" element={<DataPrivacy />} />
 						<Route

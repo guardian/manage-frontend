@@ -1,9 +1,10 @@
 import { css } from '@emotion/react';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import type { IsFromAppProps } from './IsFromAppProps';
 import { ProblemAlert } from './ProblemAlert';
 
-interface PaymentFailureAlertIfApplicableProps {
+interface PaymentFailureAlertIfApplicableProps extends IsFromAppProps {
 	productDetails: ProductDetail[];
 }
 
@@ -13,6 +14,7 @@ function findPaymentFailureProduct(allProductDetails: ProductDetail[]) {
 }
 
 export const PaymentFailureAlertIfApplicable = ({
+	isFromApp,
 	productDetails,
 }: PaymentFailureAlertIfApplicableProps) => {
 	const productDetail = findPaymentFailureProduct(productDetails);
@@ -32,7 +34,7 @@ export const PaymentFailureAlertIfApplicable = ({
 						productDetail.mmaCategory
 					].mapGroupedToSpecific(productDetail).urlPart
 				}`,
-				state: productDetail,
+				state: { productDetail, isFromApp },
 			}}
 			additionalcss={css`
 				margin-top: 30px;

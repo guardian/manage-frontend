@@ -1,17 +1,21 @@
-import { css } from '@emotion/react';
+import { css, ThemeProvider } from '@emotion/react';
 import {
-	brand,
 	from,
 	headline,
-	neutral,
+	palette,
 	space,
 	textSans,
 	until,
 } from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+import {
+	Button,
+	buttonThemeReaderRevenueBrand,
+	LinkButton,
+} from '@guardian/source-react-components';
 import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { buttonCentredCss } from '@/client/styles/ButtonStyles';
 import type {
 	ProductDetail,
 	Subscription,
@@ -25,12 +29,14 @@ import {
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { ArrowIcon } from '../shared/assets/ArrowIcon';
-import { LinkButton } from '../shared/Buttons';
+import { LinkButton as MMALinkButton } from '../shared/Buttons';
 import { CardDisplay } from '../shared/CardDisplay';
 import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
+import type { IsFromAppProps } from '../shared/IsFromAppProps';
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
-import { PaymentUpdateProductDetailContext } from './PaymentDetailUpdateContainer';
+import type { PaymentUpdateContextInterface } from './PaymentDetailUpdateContainer';
+import { PaymentUpdateContext } from './PaymentDetailUpdateContainer';
 
 interface ConfirmedNewPaymentDetailsRendererProps {
 	subscription: Subscription;
@@ -69,7 +75,7 @@ const valueCss = css`
 `;
 
 const subHeadingCss = `
-      border-top: 1px solid ${neutral['86']};
+      border-top: 1px solid ${palette.neutral['86']};
       ${headline.small()};
       font-weight: bold;
       margin-top: ${space[9]}px;
@@ -105,7 +111,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 		return (
 			<div
 				css={css`
-					border: 1px solid ${neutral[86]};
+					border: 1px solid ${palette.neutral[86]};
 					margin-bottom: ${space[6]}px;
 				`}
 			>
@@ -114,7 +120,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 						display: flex;
 						justify-content: space-between;
 						align-items: start;
-						background-color: ${brand[400]};
+						background-color: ${palette.brand[400]};
 						${from.mobileLandscape} {
 							align-items: center;
 						}
@@ -126,7 +132,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 							font-weight: bold;
 							margin: 0;
 							padding: ${space[3]}px;
-							color: ${neutral[100]};
+							color: ${palette.neutral[100]};
 							${until.mobileLandscape} {
 								padding: ${space[3]}px;
 							}
@@ -235,7 +241,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 									<span
 										css={css`
 											${valueCss};
-											color: ${neutral[7]};
+											color: ${palette.neutral[7]};
 										`}
 									>
 										{subscription.card.expiry.month} /{' '}
@@ -251,7 +257,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 					<div
 						css={css`
 							padding: ${space[3]}px;
-							border-top: 1px solid ${neutral[86]};
+							border-top: 1px solid ${palette.neutral[86]};
 							${from.tablet} {
 								padding: ${space[5]}px;
 								display: flex;
@@ -327,7 +333,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 	); // unsupported operation currently
 };
 
-interface PaymentMethodUpdatedProps {
+interface PaymentMethodUpdatedProps extends IsFromAppProps {
 	subs: WithSubscription[] | {};
 	paymentFailureRecoveryMessage: string;
 	subHasExpectedPaymentType: boolean;
@@ -335,6 +341,7 @@ interface PaymentMethodUpdatedProps {
 }
 
 export const PaymentMethodUpdated = ({
+	isFromApp,
 	subs,
 	paymentFailureRecoveryMessage,
 	subHasExpectedPaymentType,
@@ -380,14 +387,25 @@ export const PaymentMethodUpdated = ({
 			</h2>
 			<span> You are helping to support independent journalism.</span>
 			<div css={{ marginTop: `${space[9]}px` }}>
-				<LinkButton
-					to="/"
-					text="Back to Account overview"
-					colour={brand[400]}
-					textColour={neutral[100]}
-					fontWeight="bold"
-					right
-				/>
+				{isFromApp ? (
+					<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
+						<LinkButton
+							href="x-gu://mma/payment-update?success"
+							cssOverrides={buttonCentredCss}
+						>
+							Return to the app
+						</LinkButton>
+					</ThemeProvider>
+				) : (
+					<MMALinkButton
+						to="/"
+						text="Back to Account overview"
+						colour={palette.brand[400]}
+						textColour={palette.neutral[100]}
+						fontWeight="bold"
+						right
+					/>
+				)}
 			</div>
 		</>
 	) : (
@@ -412,9 +430,9 @@ export const PaymentMethodUpdated = ({
 };
 
 export const PaymentDetailUpdateConfirmation = () => {
-	const previousProductDetail = useContext(
-		PaymentUpdateProductDetailContext,
-	) as ProductDetail;
+	const { productDetail: previousProductDetail, isFromApp } = useContext(
+		PaymentUpdateContext,
+	) as PaymentUpdateContextInterface;
 
 	const location = useLocation();
 	const state = location.state as {
@@ -431,6 +449,7 @@ export const PaymentDetailUpdateConfirmation = () => {
 			paymentFailureRecoveryMessage={state.paymentFailureRecoveryMessage}
 			subHasExpectedPaymentType={state.subHasExpectedPaymentType}
 			previousProductDetail={previousProductDetail}
+			isFromApp={isFromApp}
 		/>
 	) : (
 		<Navigate to="/" />
