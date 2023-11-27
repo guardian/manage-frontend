@@ -64,7 +64,7 @@ function getMembershipPrice(
 		MembershipCurrencyIso,
 		Record<'Monthly' | 'Annual', number>
 	>,
-) {
+): number {
 	const currency = plan.currencyISO as MembershipCurrencyIso;
 	const monthlyOrAnnual =
 		plan.billingPeriod === 'month' ? 'Monthly' : 'Annual';
