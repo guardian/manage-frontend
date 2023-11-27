@@ -244,7 +244,7 @@ export function calculateSupporterPlusTitle(billingPeriod: string) {
 	return 'recurring support';
 }
 
-export function calculateBillingPeriodAdjective(
+export function getBillingPeriodAdjective(
 	billingPeriod: string | undefined,
 ): 'Monthly' | 'Annual' | 'Quarterly' {
 	if (billingPeriod === 'month') {
@@ -325,7 +325,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			}
 
 			const paidPlan = mainPlan as PaidSubscriptionPlan;
-			return `${calculateBillingPeriodAdjective(
+			return `${getBillingPeriodAdjective(
 				paidPlan.billingPeriod,
 			)} contribution`;
 		},
@@ -680,7 +680,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 						productDetail.subscription,
 					) as PaidSubscriptionPlan
 				).billingPeriod;
-				return `${calculateBillingPeriodAdjective(
+				return `${getBillingPeriodAdjective(
 					billingPeriod,
 				)} support + extras cancelled`;
 			},

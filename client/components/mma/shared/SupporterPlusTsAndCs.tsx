@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { space, textSans } from '@guardian/source-foundations';
 import * as Sentry from '@sentry/browser';
 import { Link } from 'react-router-dom';
-import { calculateBillingPeriodAdjective } from '../../../../shared/productTypes';
+import { getBillingPeriodAdjective } from '../../../../shared/productTypes';
 import {
 	convertCurrencyToSymbol,
 	isCurrencyIso,
@@ -37,7 +37,7 @@ export const SupporterPlusTsAndCs = ({
 	}
 
 	const currencySymbol = convertCurrencyToSymbol(currencyISO);
-	const monthlyOrAnnual = calculateBillingPeriodAdjective(billingPeriod);
+	const monthlyOrAnnual = getBillingPeriodAdjective(billingPeriod);
 	const monthlyThreshold = getBenefitsThreshold(currencyISO, 'month');
 	const annualThreshold = getBenefitsThreshold(currencyISO, 'year');
 
