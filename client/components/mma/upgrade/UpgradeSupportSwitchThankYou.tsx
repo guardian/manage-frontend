@@ -16,7 +16,7 @@ import {
 import { useContext } from 'react';
 import { useLocation } from 'react-router';
 import { formatAmount } from '@/client/utilities/utils';
-import { calculateBillingPeriod } from '@/shared/productTypes';
+import { getBillingPeriodAdjective } from '@/shared/productTypes';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
@@ -153,7 +153,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 								charged {currency}
 								{formatAmount(amountPayableToday)}. From{' '}
 								{nextPaymentDate}, your ongoing{' '}
-								{calculateBillingPeriod(
+								{getBillingPeriodAdjective(
 									billingPeriod,
 								).toLowerCase()}{' '}
 								payment will be {currency}

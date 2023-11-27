@@ -14,13 +14,19 @@ import {
 	productDetailLayoutCss,
 } from './ProductCardStyles';
 
+function getAmountDisplay(contribution: SingleProductDetail): string {
+	const currencySymbol = convertCurrencyToSymbol(contribution.currency);
+	return currencySymbol
+		? `${currencySymbol}${contribution.price}`
+		: `${contribution.price} ${contribution.currency}`;
+}
+
 export const SingleContributionCard = ({
 	singleContributions,
 }: {
 	singleContributions: SingleProductDetail[];
 }) => {
 	const navigate = useNavigate();
-
 	return (
 		<Stack space={4}>
 			<Card>
@@ -52,10 +58,7 @@ export const SingleContributionCard = ({
 									>
 										<dt>One-time contribution of</dt>
 										<dd>
-											{convertCurrencyToSymbol(
-												contribution.currency,
-											)}
-											{contribution.price}
+											{getAmountDisplay(contribution)}
 										</dd>
 									</div>
 									<div>

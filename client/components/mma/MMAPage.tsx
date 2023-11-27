@@ -4,10 +4,7 @@ import { breakpoints, from, space } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import {
-	featureSwitches,
-	initFeatureSwitchUrlParamOverride,
-} from '../../../shared/featureSwitches';
+import { initFeatureSwitchUrlParamOverride } from '../../../shared/featureSwitches';
 import type {
 	ProductType,
 	ProductTypeWithDeliveryRecordsProperties,
@@ -623,48 +620,44 @@ const MMARouter = () => {
 										path="confirmed"
 										element={<ExecuteCancellation />}
 									/>
-									{featureSwitches.membershipSave && (
-										<>
-											<Route
-												path="landing"
-												element={
-													<MembershipCancellationLanding />
-												}
-											/>
-											<Route
-												path="details"
-												element={<ValueOfSupport />}
-											/>
-											<Route
-												path="offers"
-												element={<SaveOptions />}
-											/>
-											<Route
-												path="reasons"
-												element={<SelectReason />}
-											/>
-											<Route
-												path="switch-offer"
-												element={<MembershipSwitch />}
-											/>
-											<Route
-												path="thank-you"
-												element={
-													<ContinueMembershipConfirmation />
-												}
-											/>
-											<Route
-												path="confirm"
-												element={
-													<ConfirmMembershipCancellation />
-												}
-											/>
-											<Route
-												path="switch-thank-you"
-												element={<SwitchThankYou />}
-											/>
-										</>
-									)}
+									<Route
+										path="landing"
+										element={
+											<MembershipCancellationLanding />
+										}
+									/>
+									<Route
+										path="details"
+										element={<ValueOfSupport />}
+									/>
+									<Route
+										path="offers"
+										element={<SaveOptions />}
+									/>
+									<Route
+										path="reasons"
+										element={<SelectReason />}
+									/>
+									<Route
+										path="switch-offer"
+										element={<MembershipSwitch />}
+									/>
+									<Route
+										path="thank-you"
+										element={
+											<ContinueMembershipConfirmation />
+										}
+									/>
+									<Route
+										path="confirm"
+										element={
+											<ConfirmMembershipCancellation />
+										}
+									/>
+									<Route
+										path="switch-thank-you"
+										element={<SwitchThankYou />}
+									/>
 								</Route>
 							),
 						)}

@@ -1,6 +1,6 @@
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import type { ContributionInterval } from '../../../../utilities/supportPricing/contributionsAmount';
-import { contributionAmountsLookup } from '../../../../utilities/supportPricing/contributionsAmount';
+import type { ContributionInterval } from '../../../../utilities/pricingConfig/contributionsAmount';
+import { contributionAmountsLookup } from '../../../../utilities/pricingConfig/contributionsAmount';
 
 export const getIsPayingMinAmount = (mainPlan: PaidSubscriptionPlan) => {
 	const currentContributionOptions = (contributionAmountsLookup[

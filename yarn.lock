@@ -2916,12 +2916,7 @@
     "@typescript-eslint/eslint-plugin" "5.46.1"
     "@typescript-eslint/parser" "5.59.9"
 
-"@guardian/libs@15.7.1":
-  version "15.7.1"
-  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-15.7.1.tgz#48f37dafbea1119a3e0aa7063b51d6ff0cd07053"
-  integrity sha512-7Q4iuojbETOxa/VQHj78G7iQyP5cWEGE5Rc12BL6lAo32sX11Qzb3ZpYK/jP3g4OCLlf8jgnL5e4yeeVNw09mg==
-
-"@guardian/libs@^15.6.4":
+"@guardian/libs@15.9.1", "@guardian/libs@^15.6.4":
   version "15.9.1"
   resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-15.9.1.tgz#6846c9f0debb19d650f1775b21314a99ea80248d"
   integrity sha512-Mns6Gc3MQacVxQ44Ei5HaVak3y9HYQF5kZ4lZGnacJfRdWAfW9K5K5rphf7mSgqkygOGoTs5TMQ3gO37MP8hbw==
