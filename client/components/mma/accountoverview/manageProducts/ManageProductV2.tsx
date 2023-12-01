@@ -59,7 +59,7 @@ const subHeadingTitleCss = `
     };
   `;
 const subHeadingBorderTopCss = `
-    margin: 16px 0 32px;
+    margin: 16px 0 16px;
   `;
 
 interface InnerContentProps {

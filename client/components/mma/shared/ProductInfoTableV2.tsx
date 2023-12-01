@@ -22,8 +22,6 @@ export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
 			${until.tablet} {
 				width: 351px;
 			}
-			${until.tablet} {
-			}
 			flex-wrap: wrap;
 			padding: ${space[4]}px ${space[6]}px;
 		`;
