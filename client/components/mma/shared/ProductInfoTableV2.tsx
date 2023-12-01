@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans, until } from '@guardian/source-foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans,
+	until,
+} from '@guardian/source-foundations';
 import { parseDate } from '@/shared/dates';
 import type { ProductDetail } from '@/shared/productResponse';
 
@@ -11,15 +17,12 @@ export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
 	const valueBoxCss = () => {
 		return css`
 			background-color: ${palette.neutral[97]};
-			display: flex;
-			width: 803px;
-			${until.desktop} {
-				width: auto;
-			}
-			flex-wrap: wrap;
 			padding: ${space[4]}px ${space[6]}px;
 			${until.tablet} {
 				padding: ${space[4]}px ${space[4]}px;
+			}
+			${from.tablet} {
+				display: flex;
 			}
 		`;
 	};
@@ -34,15 +37,25 @@ export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
 	const tableValueCss = () => {
 		return css`
 			color: #606060;
-			padding-right: 32px;
-			width: 100%;
+			${from.tablet} {
+				padding-right: 32px;
+			}
+		`;
+	};
+
+	const boxSpacingCss = () => {
+		return css`
+			display: flex;
+			${until.tablet} {
+				justify-content: space-between;
+			}
 		`;
 	};
 
 	return (
 		<>
 			<div css={valueBoxCss}>
-				<div className="subscription-id">
+				<div css={boxSpacingCss}>
 					<span css={tableEntryCss}>Subscription ID</span>
 					<span css={tableValueCss}>
 						{props.productDetail.subscription.subscriptionId}
@@ -51,14 +64,13 @@ export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
 				<section
 					css={css`
 						${until.tablet} {
-							width: 319px;
 							border-top: 1px solid ${palette.neutral[86]};
 							padding-top: ${space[3]}px;
 							margin-top: ${space[3]}px;
 						}
 					`}
 				>
-					<div>
+					<div css={boxSpacingCss}>
 						<span css={tableEntryCss}>Start Date</span>
 						<span css={tableValueCss}>
 							{props.productDetail.subscription.start
