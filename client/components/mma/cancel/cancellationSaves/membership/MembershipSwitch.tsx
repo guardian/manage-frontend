@@ -17,7 +17,7 @@ import type {
 } from '../../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../../shared/productResponse';
 import type { ProductSwitchType } from '../../../../../../shared/productSwitchTypes';
-import { calculateBillingPeriod } from '../../../../../../shared/productTypes';
+import { getBillingPeriodAdjective } from '../../../../../../shared/productTypes';
 import {
 	buttonCentredCss,
 	buttonMutedCss,
@@ -35,7 +35,7 @@ import {
 	sectionSpacing,
 	smallPrintCss,
 } from '../../../../../styles/GenericStyles';
-import { getOldMembershipPrice } from '../../../../../utilities/membershipPriceRise';
+import { getOldMembershipPrice } from '../../../../../utilities/pricingConfig/membershipPriceRise';
 import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Card } from '../../../shared/Card';
 import { Heading } from '../../../shared/Heading';
@@ -208,7 +208,7 @@ export const MembershipSwitch = () => {
 	}${getOldMembershipPrice(mainPlan)}`;
 
 	const billingPeriod = mainPlan.billingPeriod;
-	const monthlyOrAnnual = calculateBillingPeriod(billingPeriod);
+	const monthlyOrAnnual = getBillingPeriodAdjective(billingPeriod);
 	const indefiniteArticle = monthlyOrAnnual === 'Monthly' ? 'a' : 'an';
 	const paymentDay = parseDate(mainPlan.chargedThrough ?? undefined).dateStr(
 		'do',

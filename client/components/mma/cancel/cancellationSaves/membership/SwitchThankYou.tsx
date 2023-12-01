@@ -23,7 +23,7 @@ import {
 	sectionSpacing,
 	whatHappensNextIconCss,
 } from '../../../../../styles/GenericStyles';
-import { getOldMembershipPrice } from '../../../../../utilities/membershipPriceRise';
+import { getOldMembershipPrice } from '../../../../../utilities/pricingConfig/membershipPriceRise';
 import { Heading } from '../../../shared/Heading';
 import type {
 	CancellationContextInterface,

@@ -1,3 +1,4 @@
+import { isOneOf } from '@guardian/libs';
 import type { PaidSubscriptionPlan } from '../../../shared/productResponse';
 import type { CurrencyIso } from '../currencyIso';
 import { isCurrencyIso } from '../currencyIso';
@@ -12,6 +13,8 @@ type SuggestedAmountsLookup = Record<
 	}
 >;
 
+const billingPeriods = ['month', 'year'] as const;
+
 export function getContributionSuggestedAmounts(
 	mainPlan: PaidSubscriptionPlan,
 ) {
@@ -20,14 +23,14 @@ export function getContributionSuggestedAmounts(
 		? mainPlan.currencyISO
 		: 'international';
 
-	return suggestedAmountsLookup[currencyISO][
-		mainPlan.billingPeriod as 'month' | 'year'
-	](currentAmount);
-}
+	if (!isOneOf(billingPeriods)(mainPlan.billingPeriod)) {
+		throw new Error(`Unexpected billing period: ${mainPlan.billingPeriod}`);
+	}
 
-/* 
-	ToDo: we need a more flexible way of calculating these suggested amounts, which came from a spreadsheet
-*/
+	return suggestedAmountsLookup[currencyISO][mainPlan.billingPeriod](
+		currentAmount,
+	);
+}
 
 const suggestedAmountsLookup: SuggestedAmountsLookup = {
 	GBP: {

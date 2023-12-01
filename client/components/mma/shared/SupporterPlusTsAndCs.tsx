@@ -1,12 +1,13 @@
 import { css } from '@emotion/react';
 import { space, textSans } from '@guardian/source-foundations';
+import * as Sentry from '@sentry/browser';
 import { Link } from 'react-router-dom';
-import { calculateBillingPeriod } from '../../../../shared/productTypes';
+import { getBillingPeriodAdjective } from '../../../../shared/productTypes';
 import {
 	convertCurrencyToSymbol,
 	isCurrencyIso,
 } from '../../../utilities/currencyIso';
-import { getBenefitsThreshold } from '../../../utilities/supportPricing/supporterPlusPricing';
+import { getBenefitsThreshold } from '../../../utilities/pricingConfig/supporterPlusPricing';
 import { formatAmount } from '../../../utilities/utils';
 
 const smallPrintCss = css`
@@ -31,11 +32,12 @@ export const SupporterPlusTsAndCs = ({
 	billingPeriod: string;
 }) => {
 	if (!isCurrencyIso(currencyISO)) {
+		Sentry.captureException(`Invalid currency: ${currencyISO}`);
 		throw new Error('Invalid currency');
 	}
 
 	const currencySymbol = convertCurrencyToSymbol(currencyISO);
-	const monthlyOrAnnual = calculateBillingPeriod(billingPeriod);
+	const monthlyOrAnnual = getBillingPeriodAdjective(billingPeriod);
 	const monthlyThreshold = getBenefitsThreshold(currencyISO, 'month');
 	const annualThreshold = getBenefitsThreshold(currencyISO, 'year');
 

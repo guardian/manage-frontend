@@ -15,7 +15,7 @@ import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../../shared/productResponse';
-import { calculateBillingPeriod } from '../../../../../../shared/productTypes';
+import { getBillingPeriodAdjective } from '../../../../../../shared/productTypes';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
@@ -28,7 +28,7 @@ import {
 import {
 	getNewMembershipPrice,
 	getOldMembershipPrice,
-} from '../../../../../utilities/membershipPriceRise';
+} from '../../../../../utilities/pricingConfig/membershipPriceRise';
 import { benefitsConfiguration } from '../../../shared/benefits/BenefitsConfiguration';
 import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
 import { Card } from '../../../shared/Card';
@@ -86,7 +86,7 @@ export const SaveOptions = () => {
 		membership.subscription,
 	) as PaidSubscriptionPlan;
 	const billingPeriod = mainPlan.billingPeriod;
-	const monthlyOrAnnual = calculateBillingPeriod(billingPeriod);
+	const monthlyOrAnnual = getBillingPeriodAdjective(billingPeriod);
 
 	const oldPriceDisplay = `${mainPlan.currency}${getOldMembershipPrice(
 		mainPlan,

@@ -9,7 +9,7 @@ import type {
 } from '../../../../shared/productResponse';
 import { getMainPlan, isProduct } from '../../../../shared/productResponse';
 import {
-	calculateBillingPeriod,
+	getBillingPeriodAdjective,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
@@ -17,11 +17,11 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
+import { getBenefitsThreshold } from '../../../utilities/pricingConfig/supporterPlusPricing';
 import {
 	createProductDetailFetcher,
 	isNonServiceableCountry,
 } from '../../../utilities/productUtils';
-import { getBenefitsThreshold } from '../../../utilities/supportPricing/supporterPlusPricing';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
@@ -149,7 +149,7 @@ const RenderedPage = (props: {
 	const mainPlan = getMainPlan(
 		props.contributionToSwitch.subscription,
 	) as PaidSubscriptionPlan;
-	const monthlyOrAnnual = calculateBillingPeriod(mainPlan.billingPeriod);
+	const monthlyOrAnnual = getBillingPeriodAdjective(mainPlan.billingPeriod);
 
 	return (
 		<SwitchPageContainer>

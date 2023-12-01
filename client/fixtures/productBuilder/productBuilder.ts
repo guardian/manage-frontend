@@ -6,7 +6,7 @@ import type {
 } from '../../../shared/productResponse';
 import type { GroupedProductTypeKeys } from '../../../shared/productTypes';
 import type { CurrencyIso } from '../../utilities/currencyIso';
-import { convertCurrencyToSymbol } from '../../utilities/currencyIso';
+import { convertCurrencyIsoToSymbol } from '../../utilities/currencyIso';
 
 export const cards = {
 	visaActive: () => {
@@ -128,7 +128,7 @@ export class ProductBuilder {
 	withCurrency(currencyIso: CurrencyIso) {
 		const { plan, currentPlans, futurePlans } =
 			this.productToBuild.subscription;
-		const currencySymbol = convertCurrencyToSymbol(currencyIso);
+		const currencySymbol = convertCurrencyIsoToSymbol(currencyIso);
 		if (plan) {
 			plan.currencyISO = currencyIso;
 			plan.currency = currencySymbol;

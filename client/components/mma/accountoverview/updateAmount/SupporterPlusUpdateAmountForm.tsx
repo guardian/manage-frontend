@@ -12,11 +12,11 @@ import {
 } from '@guardian/source-react-components';
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
-import { calculateBillingPeriod } from '../../../../../shared/productTypes';
+import { getBillingPeriodAdjective } from '../../../../../shared/productTypes';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
-import { getSupporterPlusSuggestedAmountsFromMainPlan } from '../../../../utilities/supportPricing/suggestedAmounts';
-import { supporterPlusPriceConfigByCountryGroup } from '../../../../utilities/supportPricing/supporterPlusPricing';
+import { getSupporterPlusSuggestedAmountsFromMainPlan } from '../../../../utilities/pricingConfig/suggestedAmounts';
+import { supporterPlusPriceConfigByCountryGroup } from '../../../../utilities/pricingConfig/supporterPlusPricing';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 
@@ -63,7 +63,7 @@ function validateChoice(
 	mainPlan: PaidSubscriptionPlan,
 ): string | null {
 	const chosenOptionNum = Number(chosenAmount);
-	const monthlyOrAnnual = calculateBillingPeriod(
+	const monthlyOrAnnual = getBillingPeriodAdjective(
 		mainPlan.billingPeriod,
 	).toLocaleLowerCase();
 
@@ -100,7 +100,7 @@ export const SupporterPlusUpdateAmountForm = (
 	];
 
 	const minPriceDisplay = `${props.mainPlan.currency}${priceConfig.minAmount}`;
-	const monthlyOrAnnual = calculateBillingPeriod(
+	const monthlyOrAnnual = getBillingPeriodAdjective(
 		props.mainPlan.billingPeriod,
 	);
 
