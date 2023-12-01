@@ -13,45 +13,38 @@ export interface ProductInfoTableProps {
 	productDetail: ProductDetail;
 }
 
+const valueBoxCss = css`
+	background-color: ${palette.neutral[97]};
+	padding: ${space[4]}px ${space[6]}px;
+	${until.tablet} {
+		padding: ${space[4]}px ${space[4]}px;
+	}
+	${from.tablet} {
+		display: flex;
+	}
+	border-radius: 4px;
+`;
+
+const tableEntryCss = css`
+	${textSans.medium()};
+	margin-right: ${space[2]}px;
+`;
+
+const tableValueCss = css`
+	color: #606060;
+	${from.tablet} {
+		padding-right: 32px;
+	}
+`;
+
+const boxSpacingCss = css`
+	display: flex;
+	${until.tablet} {
+		justify-content: space-between;
+	}
+`;
+
 export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
-	const valueBoxCss = () => {
-		return css`
-			background-color: ${palette.neutral[97]};
-			padding: ${space[4]}px ${space[6]}px;
-			${until.tablet} {
-				padding: ${space[4]}px ${space[4]}px;
-			}
-			${from.tablet} {
-				display: flex;
-			}
-		`;
-	};
-
-	const tableEntryCss = () => {
-		return css`
-			${textSans.medium()};
-			margin-right: ${space[2]}px;
-		`;
-	};
-
-	const tableValueCss = () => {
-		return css`
-			color: #606060;
-			${from.tablet} {
-				padding-right: 32px;
-			}
-		`;
-	};
-
-	const boxSpacingCss = () => {
-		return css`
-			display: flex;
-			${until.tablet} {
-				justify-content: space-between;
-			}
-		`;
-	};
-
 	return (
 		<>
 			<div css={valueBoxCss}>
