@@ -13,7 +13,7 @@ export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
 			background-color: ${palette.neutral[97]};
 			display: flex;
 			width: 803px;
-			${until.tablet} {
+			${until.desktop} {
 				width: auto;
 			}
 			flex-wrap: wrap;
@@ -23,7 +23,7 @@ export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
 
 	const tableEntryCss = () => {
 		return css`
-			${textSans.medium()};
+			${textSans.small()};
 			margin-right: ${space[2]}px;
 		`;
 	};
