@@ -21,7 +21,7 @@ import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingV
 import { Heading } from '../../shared/Heading';
 import type { CancellationContextInterface } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import { ineligibleForSave } from './eligibilityCheck';
+import { ineligibleForSave } from './saveEligibilityCheck';
 
 function getNextRoute(productToCancel: ProductDetail): string {
 	const specificProductTypeKey =

@@ -20,6 +20,7 @@ import type {
 	CancellationRouterState,
 } from '../../CancellationContainer';
 import { CancellationContext } from '../../CancellationContainer';
+import { eligibleForDigisubDiscount } from '../saveEligibilityCheck';
 
 const DiscountOffer = ({
 	handleDiscountOfferClick,
@@ -110,9 +111,7 @@ export const ThankYouOffer = () => {
 		'yyyy',
 	);
 
-	const hasDiscountLive = false; // ToDo
-	const hasPaymentFailure = !!productDetail.alertText;
-	const eligibleForDiscount = !hasDiscountLive && !hasPaymentFailure;
+	const eligibleForDiscount = eligibleForDigisubDiscount(productDetail);
 
 	return (
 		<section

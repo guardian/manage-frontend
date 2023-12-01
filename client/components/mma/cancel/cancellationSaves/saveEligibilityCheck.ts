@@ -1,9 +1,11 @@
+import { getNewDigisubPrice } from '@/client/utilities/pricingConfig/digisubDiscountPricing';
 import { getNewMembershipPrice } from '@/client/utilities/pricingConfig/membershipPriceRise';
 import type {
 	PaidSubscriptionPlan,
 	ProductDetail,
+	Subscription,
 } from '@/shared/productResponse';
-import { getMainPlan } from '@/shared/productResponse';
+import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
 
 export function ineligibleForSave(
 	products: ProductDetail[],
@@ -43,4 +45,24 @@ function isMembershipIneligible(
 		membershipTierIsNotSupporter ||
 		hasBeenPriceRisen
 	);
+}
+
+export function eligibleForDigisubDiscount(
+	productDetail: ProductDetail,
+): boolean {
+	const hasPaymentFailure = !!productDetail.alertText;
+	return hasNewPrice(productDetail.subscription) && !hasPaymentFailure;
+}
+
+function hasNewPrice(subscription: Subscription): boolean {
+	if (subscription.nextPaymentPrice === null) {
+		return false;
+	}
+
+	const mainPlan = getMainPlan(subscription);
+	if (!isPaidSubscriptionPlan(mainPlan)) {
+		return false;
+	}
+
+	return subscription.nextPaymentPrice / 100 === getNewDigisubPrice(mainPlan);
 }
