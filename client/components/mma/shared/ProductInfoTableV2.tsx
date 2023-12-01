@@ -32,7 +32,6 @@ const tableEntryCss = css`
 
 const tableValueCss = css`
 	color: ${palette.neutral[38]};
-	${palette.neutral[38]}
 	${from.tablet} {
 		padding-right: 32px;
 	}
