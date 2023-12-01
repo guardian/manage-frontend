@@ -18,12 +18,15 @@ export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
 			}
 			flex-wrap: wrap;
 			padding: ${space[4]}px ${space[6]}px;
+			${until.tablet} {
+				padding: ${space[4]}px ${space[4]}px;
+			}
 		`;
 	};
 
 	const tableEntryCss = () => {
 		return css`
-			${textSans.small()};
+			${textSans.medium()};
 			margin-right: ${space[2]}px;
 		`;
 	};
