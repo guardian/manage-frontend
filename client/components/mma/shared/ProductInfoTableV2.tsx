@@ -1,11 +1,5 @@
 import { css } from '@emotion/react';
-import {
-	from,
-	palette,
-	space,
-	textSans,
-	until,
-} from '@guardian/source-foundations';
+import { palette, space, textSans, until } from '@guardian/source-foundations';
 import { parseDate } from '@/shared/dates';
 import type { ProductDetail } from '@/shared/productResponse';
 
@@ -20,7 +14,7 @@ export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
 			display: flex;
 			width: 803px;
 			${until.tablet} {
-				width: 351px;
+				width: auto;
 			}
 			flex-wrap: wrap;
 			padding: ${space[4]}px ${space[6]}px;
@@ -39,9 +33,6 @@ export const ProductInfoTableV2 = (props: ProductInfoTableProps) => {
 			color: #606060;
 			padding-right: 32px;
 			width: 100%;
-			${from.tablet} {
-				width: auto;
-			}
 		`;
 	};
 
