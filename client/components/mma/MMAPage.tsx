@@ -164,6 +164,30 @@ const SwitchThankYou = lazy(() =>
 	})),
 );
 
+const ConfirmDigiSubCancellation = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/ConfirmDigiSubCancellation'
+	).then(({ ConfirmDigiSubCancellation: ConfirmDigiSubCancellation }) => ({
+		default: ConfirmDigiSubCancellation,
+	})),
+);
+
+const DigiSubThankYouOffer = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/ThankYouOffer'
+	).then(({ ThankYouOffer: ThankYouOffer }) => ({
+		default: ThankYouOffer,
+	})),
+);
+
+const ConfirmDigiSubDiscount = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/DigiSubDiscountConfirm'
+	).then(({ DigiSubDiscountConfirm: DigiSubDiscountConfirm }) => ({
+		default: DigiSubDiscountConfirm,
+	})),
+);
+
 const PaymentDetailUpdateContainer = lazy(() =>
 	import(
 		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateContainer'
@@ -657,6 +681,19 @@ const MMARouter = () => {
 									<Route
 										path="switch-thank-you"
 										element={<SwitchThankYou />}
+									/>
+									<Route
+										path="confirm"
+										element={<ConfirmDigiSubCancellation />}
+									/>
+
+									<Route
+										path="discount-offer"
+										element={<ConfirmDigiSubDiscount />}
+									/>
+									<Route
+										path="thank-you"
+										element={<DigiSubThankYouOffer />}
 									/>
 								</Route>
 							),
