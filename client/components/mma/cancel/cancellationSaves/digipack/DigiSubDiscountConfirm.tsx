@@ -23,10 +23,15 @@ import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 } from '@/client/styles/ButtonStyles';
+import {
+	getDiscountMonthsForDigisub,
+	getNewDigisubPrice,
+	getOldDigisubPrice,
+} from '@/client/utilities/pricingConfig/digisubDiscountPricing';
+import { formatAmount } from '@/client/utilities/utils';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
-import { getBillingPeriodAdjective } from '@/shared/productTypes';
 import {
 	headingCss,
 	iconListCss,
@@ -49,17 +54,16 @@ export const DigiSubDiscountConfirm = () => {
 
 	const mainPlan = getMainPlan(digiSub.subscription) as PaidSubscriptionPlan;
 
-	const priceDisplay = `${mainPlan.currency}${mainPlan.price / 100}`;
+	const currencySymbol = mainPlan.currency;
+	const discountMonths = getDiscountMonthsForDigisub(digiSub);
+	const discountedPrice = getOldDigisubPrice(mainPlan);
+	const newPrice = getNewDigisubPrice(mainPlan);
 
 	const nextBillingDate = parseDate(
-		mainPlan.chargedThrough ?? undefined,
+		digiSub.subscription.nextPaymentDate ?? undefined,
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
 	const userEmailAddress = routerState?.user?.email;
-
-	const billingPeriod = getBillingPeriodAdjective(
-		mainPlan.billingPeriod,
-	).toLowerCase();
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Your subscription');
@@ -116,11 +120,15 @@ export const DigiSubDiscountConfirm = () => {
 										padding-bottom: ${space[1]}px;
 									`}
 								>
-									25% discount for ABC
+									25% discount for {discountMonths} months
 								</strong>
 								<br />
-								You’ll pay X per {mainPlan.billingPeriod} for Y,
-								then Z per {mainPlan.billingPeriod}
+								You’ll pay {currencySymbol}
+								{formatAmount(discountedPrice)} per{' '}
+								{mainPlan.billingPeriod} for {discountMonths}{' '}
+								months, then {currencySymbol}
+								{formatAmount(newPrice)} per{' '}
+								{mainPlan.billingPeriod}
 							</span>
 						</li>
 						<li>
@@ -134,8 +142,7 @@ export const DigiSubDiscountConfirm = () => {
 									Your billing date
 								</strong>
 								<br />
-								From {nextBillingDate}, your ongoing{' '}
-								{billingPeriod} payment will be {priceDisplay}.
+								{nextBillingDate}
 							</span>
 						</li>
 					</ul>

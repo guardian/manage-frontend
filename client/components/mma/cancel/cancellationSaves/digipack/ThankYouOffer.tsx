@@ -12,6 +12,14 @@ import {
 	buttonCentredCss,
 	buttonContainerCss,
 } from '@/client/styles/ButtonStyles';
+import {
+	getDiscountMonthsForDigisub,
+	getNewDigisubPrice,
+	getOldDigisubPrice,
+} from '@/client/utilities/pricingConfig/digisubDiscountPricing';
+import { formatAmount } from '@/client/utilities/utils';
+import type { PaidSubscriptionPlan } from '@/shared/productResponse';
+import { getMainPlan } from '@/shared/productResponse';
 import { dateString } from '../../../../../../shared/dates';
 import { benefitsCss } from '../../../shared/benefits/BenefitsStyles';
 import { Heading } from '../../../shared/Heading';
@@ -23,9 +31,17 @@ import { CancellationContext } from '../../CancellationContainer';
 import { eligibleForDigisubDiscount } from '../saveEligibilityCheck';
 
 const DiscountOffer = ({
+	currencySymbol,
+	discountMonths,
+	discountedPrice,
 	handleDiscountOfferClick,
+	newPrice,
 }: {
+	currencySymbol: string;
+	discountMonths: number;
+	discountedPrice: number;
 	handleDiscountOfferClick: () => void;
+	newPrice: number;
 }) => (
 	<Stack
 		space={4}
@@ -52,7 +68,10 @@ const DiscountOffer = ({
 							padding-top: ${space[1]}px;
 						`}
 					>
-						Get a 25% discount for 3 months (x, then y)
+						Get a 25% discount for {discountMonths} months (
+						{currencySymbol}
+						{formatAmount(discountedPrice)}, then {currencySymbol}
+						{newPrice})
 					</span>
 				</li>
 				<li>
@@ -111,7 +130,14 @@ export const ThankYouOffer = () => {
 		'yyyy',
 	);
 
+	const mainPlan = getMainPlan(
+		productDetail.subscription,
+	) as PaidSubscriptionPlan;
+
 	const eligibleForDiscount = eligibleForDigisubDiscount(productDetail);
+	const discountMonths = getDiscountMonthsForDigisub(productDetail);
+	const discountedPrice = getOldDigisubPrice(mainPlan);
+	const newPrice = getNewDigisubPrice(mainPlan);
 
 	return (
 		<section
@@ -151,9 +177,13 @@ export const ThankYouOffer = () => {
 				</Stack>
 				{eligibleForDiscount && (
 					<DiscountOffer
+						currencySymbol={mainPlan.currency}
+						discountMonths={discountMonths}
+						discountedPrice={discountedPrice}
 						handleDiscountOfferClick={() =>
 							navigate('todo', { state: { ...routerState } })
 						}
+						newPrice={newPrice}
 					/>
 				)}
 				<div>
