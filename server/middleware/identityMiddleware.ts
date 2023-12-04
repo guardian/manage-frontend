@@ -1,6 +1,5 @@
 import url from 'url';
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
-import fetch from 'node-fetch';
 import { handleAwsRelatedError } from '@/server/awsIntegration';
 import { conf } from '@/server/config';
 import type { RedirectResponseBody } from '@/server/idapiAuth';

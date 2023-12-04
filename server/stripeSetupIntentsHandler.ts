@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/node';
 import type express from 'express';
-import fetch from 'node-fetch';
 import type { StripeSetupIntent } from '../shared/stripeSetupIntent';
 import { STRIPE_PUBLIC_KEY_HEADER } from '../shared/stripeSetupIntent';
 import { log, putMetric } from './log';

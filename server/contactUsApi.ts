@@ -1,6 +1,5 @@
 import { captureMessage } from '@sentry/node';
 import type { Request, Response } from 'express';
-import fetch from 'node-fetch';
 import { contactUsConfig } from '../shared/contactUsConfig';
 import type { ContactUsReq } from '../shared/contactUsTypes';
 import {

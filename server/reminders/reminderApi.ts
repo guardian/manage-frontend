@@ -1,7 +1,6 @@
 import crypto from 'crypto';
 import { captureMessage } from '@sentry/node';
 import type { Request, Response } from 'express';
-import fetch from 'node-fetch';
 import { s3ConfigPromise } from '../awsIntegration';
 import { conf } from '../config';
 import type { ReminderType } from './reminderData';

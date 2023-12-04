@@ -1,7 +1,6 @@
 import { parse } from 'url';
 import * as Sentry from '@sentry/node';
 import type { Request, Response } from 'express';
-import fetch from 'node-fetch';
 import { LOGGING_CODE_SUFFIX_HEADER } from '../shared/globals';
 import { X_GU_ID_FORWARDED_SCOPE } from '../shared/identity';
 import { MDA_TEST_USER_HEADER } from '../shared/productResponse';
@@ -103,7 +102,7 @@ export const proxyApiHandler =
 				)),
 			},
 		})
-			.then((intermediateResponse) => {
+			.then(async (intermediateResponse) => {
 				// tslint:disable-next-line:no-object-mutation
 				res.locals.loggingDetail.status = intermediateResponse.status;
 				// tslint:disable-next-line:no-object-mutation
@@ -138,7 +137,8 @@ export const proxyApiHandler =
 						),
 					);
 				}
-				return intermediateResponse.buffer();
+				const arrayBuffer = await intermediateResponse.arrayBuffer();
+				return Buffer.from(arrayBuffer);
 			})
 			.then((body) => {
 				const suitableLog = res.locals.loggingDetail.isOK
