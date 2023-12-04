@@ -18,10 +18,10 @@ import { PageContainer } from '@/client/components/mma/Page';
 import { ErrorIcon } from '@/client/components/mma/shared/assets/ErrorIcon';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '@/client/components/mma/shared/asyncComponents/DefaultLoadingView';
-import { BasicProductInfoTable } from '@/client/components/mma/shared/BasicProductInfoTable';
 import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymentDetails';
 import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
 import { PaymentFailureAlertIfApplicable } from '@/client/components/mma/shared/PaymentFailureAlertIfApplicable';
+import { ProductInfoTableV2 } from '@/client/components/mma/shared/ProductInfoTableV2';
 import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
 import { NAV_LINKS } from '@/client/components/shared/nav/NavConfig';
 import {
@@ -59,7 +59,7 @@ const subHeadingTitleCss = `
     };
   `;
 const subHeadingBorderTopCss = `
-    margin: 16px 0 32px;
+    margin: 16px 0 16px;
   `;
 
 interface InnerContentProps {
@@ -143,10 +143,7 @@ const InnerContent = ({
 				</p>
 			)}
 
-			<BasicProductInfoTable
-				groupedProductType={groupedProductType}
-				productDetail={productDetail}
-			/>
+			<ProductInfoTableV2 productDetail={productDetail} />
 
 			<h3
 				css={css`

@@ -145,7 +145,7 @@
     "@guardian/commercial": "11.19.1",
     "@guardian/consent-management-platform": "13.7.1",
     "@guardian/libs": "15.9.1",
-    "@guardian/source-foundations": "13.0.0",
+    "@guardian/source-foundations": "13.2.0",
     "@guardian/source-react-components": "16.0.1",
     "@guardian/source-react-components-development-kitchen": "14.0.2",
     "@okta/jwt-verifier": "3.0.1",
