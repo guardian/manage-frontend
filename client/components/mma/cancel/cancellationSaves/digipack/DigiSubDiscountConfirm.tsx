@@ -32,7 +32,6 @@ import { formatAmount } from '@/client/utilities/utils';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
-import { getBillingPeriodAdjective } from '@/shared/productTypes';
 import {
 	headingCss,
 	iconListCss,
@@ -61,14 +60,10 @@ export const DigiSubDiscountConfirm = () => {
 	const newPrice = getNewDigisubPrice(mainPlan);
 
 	const nextBillingDate = parseDate(
-		mainPlan.chargedThrough ?? undefined,
+		digiSub.subscription.nextPaymentDate ?? undefined,
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
 	const userEmailAddress = routerState?.user?.email;
-
-	const billingPeriod = getBillingPeriodAdjective(
-		mainPlan.billingPeriod,
-	).toLowerCase();
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Your subscription');
@@ -147,9 +142,7 @@ export const DigiSubDiscountConfirm = () => {
 									Your billing date
 								</strong>
 								<br />
-								From {nextBillingDate}, your ongoing{' '}
-								{billingPeriod} payment will be {currencySymbol}
-								{formatAmount(discountedPrice)}.
+								{nextBillingDate}
 							</span>
 						</li>
 					</ul>
