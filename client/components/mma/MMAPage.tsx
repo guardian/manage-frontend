@@ -66,6 +66,11 @@ const ManageProduct = lazy(() =>
 		/* webpackChunkName: "ManageProduct" */ './accountoverview/ManageProduct'
 	).then(({ ManageProduct }) => ({ default: ManageProduct })),
 );
+const ManageProductV2 = lazy(() =>
+	import(
+		/* webpackChunkName: "ManageProduct" */ './accountoverview/manageProducts/ManageProductV2'
+	).then(({ ManageProductV2 }) => ({ default: ManageProductV2 })),
+);
 const CancellationContainer = lazy(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/CancellationContainer'
@@ -499,17 +504,28 @@ const MMARouter = () => {
 							</Route>
 						))}
 						{Object.values(PRODUCT_TYPES).map(
-							(productType: ProductType) => (
-								<Route
-									key={productType.urlPart}
-									path={`/${productType.urlPart}`}
-									element={
-										<ManageProduct
-											productType={productType}
-										/>
-									}
-								/>
-							),
+							(productType: ProductType) =>
+								productType.urlPart === 'digital' ? (
+									<Route
+										key={productType.urlPart}
+										path={`/${productType.urlPart}`}
+										element={
+											<ManageProductV2
+												productType={productType}
+											/>
+										}
+									/>
+								) : (
+									<Route
+										key={productType.urlPart}
+										path={`/${productType.urlPart}`}
+										element={
+											<ManageProduct
+												productType={productType}
+											/>
+										}
+									/>
+								),
 						)}
 						{Object.values(PRODUCT_TYPES)
 							.filter(hasDeliveryFlow)
