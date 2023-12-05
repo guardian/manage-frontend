@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "nodemon --inspect ./dist/server",
+    "cypress:start": "RUNNING_IN_CYPRESS=true nodemon --inspect ./dist/server",
     "type-check": "tsc --skipLibCheck",
     "lint": "eslint 'client/**' 'server/**' 'shared/**'",
     "bundle": "copy-node-modules . ./dist && yarn webpack --config webpack.production.js",
@@ -20,9 +21,12 @@
     "updateSnapshot": "jest -u",
     "storybook": "storybook dev -p 6006 -s 'static'",
     "build-storybook": "storybook build -s '.storybook/static'",
-    "cypress:open": "DEBUG=cypress:* cypress open",
-    "cypress:run": "cypress run",
-    "cypress:server": "yarn bundle-dev-server && (yarn bundle-dev-server-cypress -w & yarn start & yarn serve-dev-cypress)",
+    "cypress:mocked:open": "DEBUG=cypress:* cypress open --config '{\"e2e\":{\"specPattern\":\"cypress/tests/mocked/**/*.cy.{js,jsx,ts,tsx}\"}}' --e2e --browser chrome",
+    "cypress:mocked:run": "cypress run --config '{\"e2e\":{\"specPattern\":\"cypress/tests/mocked/**/*.cy.{js,jsx,ts,tsx}\"}}' --e2e --browser chrome",
+    "cypress:mocked:server": "yarn bundle-dev-server && (yarn bundle-dev-server-cypress -w & yarn start & yarn serve-dev-cypress)",
+    "cypress:e2e:open": "cypress open --config '{\"e2e\":{\"specPattern\":\"cypress/tests/e2e/**/*.cy.{js,jsx,ts,tsx}\"}}' --e2e --browser chrome",
+    "cypress:e2e:run": "cypress run --config '{\"e2e\":{\"specPattern\":\"cypress/tests/e2e/**/*.cy.{js,jsx,ts,tsx}\"}}' --e2e --browser chrome",
+    "cypress:e2e:server": "yarn bundle-dev-server && (yarn bundle-dev-server -w & yarn cypress:start & yarn serve-dev-cypress)",
     "chromatic": "chromatic"
   },
   "lint-staged": {

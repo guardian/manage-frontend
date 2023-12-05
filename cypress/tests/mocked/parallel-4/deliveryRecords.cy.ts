@@ -1,22 +1,22 @@
-import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
 	deliveryRecordsWithNoDeliveries,
 	deliveryRecordsWithDelivery,
 	deliveryRecordsWithReportedProblem,
-} from '../../../client/fixtures/deliveryRecords';
-import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
-import { potentialDeliveries } from '../../../client/fixtures/holidays';
+} from '../../../../client/fixtures/deliveryRecords';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
+import { potentialDeliveries } from '../../../../client/fixtures/holidays';
 import {
 	dateAddDays,
 	dateString,
 	DATE_FNS_INPUT_FORMAT,
-} from '../../../shared/dates';
-import { singleContributionsAPIResponse } from '../../../client/fixtures/singleContribution';
+} from '../../../../shared/dates';
+import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
 import {
 	guardianWeeklyPaidByCard,
 	homeDelivery,
 	nationalDelivery,
-} from '../../../client/fixtures/productBuilder/testProducts';
+} from '../../../../client/fixtures/productBuilder/testProducts';
 
 describe('Delivery records', () => {
 	beforeEach(() => {

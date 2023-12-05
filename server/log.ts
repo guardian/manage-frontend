@@ -21,6 +21,9 @@ interface MetricLoggingFields {
 }
 
 export const putMetric = (fields: MetricLoggingFields) => {
+	if (process.env.RUNNING_IN_CYPRESS === 'true') {
+		return;
+	}
 	const dimensions = {
 		Stage: conf.STAGE,
 		outcome: fields.isOK ? 'SUCCESS' : 'ERROR',

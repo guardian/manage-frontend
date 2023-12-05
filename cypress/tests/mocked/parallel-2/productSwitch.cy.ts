@@ -1,15 +1,15 @@
-import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
-import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 import {
 	productMovePreviewResponse,
 	productMoveSuccessfulResponse,
-} from '../../../client/fixtures/productMove';
+} from '../../../../client/fixtures/productMove';
 import {
 	contributionAboveSupporterPlusThreshold,
 	contributionPaidByPayPalAboveSupporterPlusThreshold,
 	contributionWithPaymentFailure,
 	nonServicedCountryContributor,
-} from '../../../client/fixtures/productBuilder/testProducts';
+} from '../../../../client/fixtures/productBuilder/testProducts';
 
 const setSignInStatus = () => {
 	cy.window().then((window) => {
