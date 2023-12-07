@@ -3,6 +3,7 @@ import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
 import { ConfirmDigiSubCancellation } from '@/client/components/mma/cancel/cancellationSaves/digipack/ConfirmDigiSubCancellation';
 import { DigiSubDiscountConfirm } from '@/client/components/mma/cancel/cancellationSaves/digipack/DigiSubDiscountConfirm';
+import { SelectCancellationReason } from '@/client/components/mma/cancel/cancellationSaves/digipack/SelectCancellationReason';
 import { ThankYouOffer } from '@/client/components/mma/cancel/cancellationSaves/digipack/ThankYouOffer';
 import {
 	digitalPackPaidByDirectDebit,
@@ -58,4 +59,10 @@ export const ConfirmCancellation: StoryFn<
 	typeof ConfirmDigiSubCancellation
 > = () => {
 	return <ConfirmDigiSubCancellation />;
+};
+
+export const DigiSubCancellationReason: StoryFn<
+	typeof SelectCancellationReason
+> = () => {
+	return <SelectCancellationReason />;
 };

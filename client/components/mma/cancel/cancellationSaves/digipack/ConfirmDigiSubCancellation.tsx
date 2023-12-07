@@ -11,10 +11,9 @@ import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import type {
 	CancellationContextInterface,
-	CancellationRouterState} from '@/client/components/mma/cancel/CancellationContainer';
-import {
-	CancellationContext
+	CancellationRouterState,
 } from '@/client/components/mma/cancel/CancellationContainer';
+import { CancellationContext } from '@/client/components/mma/cancel/CancellationContainer';
 import type { OptionalCancellationReasonId } from '@/client/components/mma/cancel/cancellationReason';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import { benefitsCss } from '@/client/components/mma/shared/benefits/BenefitsStyles';
@@ -24,10 +23,9 @@ import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { createProductDetailFetcher } from '@/client/utilities/productUtils';
 import type {
 	MembersDataApiResponse,
-	ProductDetail} from '@/shared/productResponse';
-import {
-	MDA_TEST_USER_HEADER
+	ProductDetail,
 } from '@/shared/productResponse';
+import { MDA_TEST_USER_HEADER } from '@/shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '@/shared/productTypes';
 
 function GreyBulletpoint() {
@@ -188,7 +186,7 @@ export const ConfirmDigiSubCancellation = () => {
 				setIsSubmitting(false);
 				setLoadingFailed(true);
 			} else {
-				navigate('../reasons', {
+				navigate('/cancel/digital/cancel-reason', {
 					state: { ...routerState, journeyCompleted: true },
 				});
 			}

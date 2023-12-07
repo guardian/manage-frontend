@@ -193,6 +193,14 @@ const ConfirmDigiSubDiscount = lazy(() =>
 	})),
 );
 
+const SelectDigiSubCancellationReason = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/SelectCancellationReason'
+	).then(({ SelectCancellationReason: SelectCancellationReason }) => ({
+		default: SelectCancellationReason,
+	})),
+);
+
 const PaymentDetailUpdateContainer = lazy(() =>
 	import(
 		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateContainer'
@@ -698,23 +706,26 @@ const MMARouter = () => {
 										path="switch-thank-you"
 										element={<SwitchThankYou />}
 									/>
-									<>
-										<Route
-											path="confirm-cancel"
-											element={
-												<ConfirmDigiSubCancellation />
-											}
-										/>
 
-										<Route
-											path="confirm-discount"
-											element={<ConfirmDigiSubDiscount />}
-										/>
-										<Route
-											path="discount-offer"
-											element={<DigiSubThankYouOffer />}
-										/>
-									</>
+									<Route
+										path="confirm-cancel"
+										element={<ConfirmDigiSubCancellation />}
+									/>
+
+									<Route
+										path="confirm-discount"
+										element={<ConfirmDigiSubDiscount />}
+									/>
+									<Route
+										path="discount-offer"
+										element={<DigiSubThankYouOffer />}
+									/>
+									<Route
+										path="cancel-reason"
+										element={
+											<SelectDigiSubCancellationReason />
+										}
+									/>
 								</Route>
 							),
 						)}
