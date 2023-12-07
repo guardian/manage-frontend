@@ -701,7 +701,7 @@ const MMARouter = () => {
 									{productType.urlPart === 'digital' && (
 										<>
 											<Route
-												path="confirm-cencel"
+												path="confirm-cancel"
 												element={
 													<ConfirmDigiSubCancellation />
 												}

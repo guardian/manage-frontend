@@ -168,7 +168,7 @@ export const ThankYouOffer = () => {
 					<Button
 						priority="subdued"
 						onClick={() =>
-							navigate('../confirm', {
+							navigate('/cancel/digital/confirm-cancel', {
 								state: { ...routerState },
 							})
 						}

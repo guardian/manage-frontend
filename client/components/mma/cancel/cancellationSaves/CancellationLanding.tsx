@@ -152,7 +152,7 @@ export const CancellationLanding = () => {
 									window.location.href.includes('digital');
 
 								const targetUrl = currentUrlContainsDigital
-									? '/cancel/digital/offer'
+									? '/cancel/digital/discount-offer'
 									: nextRoute;
 
 								navigate(targetUrl, {
