@@ -146,11 +146,19 @@ export const CancellationLanding = () => {
 					<div>
 						<Button
 							priority="subdued"
-							onClick={() =>
-								navigate(getNextRoute(productToCancel), {
+							onClick={() => {
+								const nextRoute = getNextRoute(productToCancel);
+								const currentUrlContainsDigital =
+									window.location.href.includes('digital');
+
+								const targetUrl = currentUrlContainsDigital
+									? '/cancel/digital/offer'
+									: nextRoute;
+
+								navigate(targetUrl, {
 									state: { user: data.user },
-								})
-							}
+								});
+							}}
 						>
 							Continue to cancel online
 						</Button>
