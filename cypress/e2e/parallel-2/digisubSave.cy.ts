@@ -23,7 +23,7 @@ describe('Cancel digi sub', () => {
 			body: { message: 'success' },
 		}).as('create_case_in_salesforce');
 
-		cy.intercept('GET', '/api/me/mma?productType=**', {
+		cy.intercept('GET', '/api/me/mma?productType=Digipack', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(DigiSubSelfCancelEnabled),
 		});
@@ -67,5 +67,6 @@ describe('Cancel digi sub', () => {
 		cy.visit('/');
 
 		cy.findByText('Manage subscription').click();
+		cy.findByText('Cancel subscription').click();
 	});
 });

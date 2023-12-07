@@ -22,6 +22,7 @@ import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymen
 import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
 import { PaymentFailureAlertIfApplicable } from '@/client/components/mma/shared/PaymentFailureAlertIfApplicable';
 import { ProductInfoTableV2 } from '@/client/components/mma/shared/ProductInfoTableV2';
+import { linkCss } from '@/client/components/mma/upgrade/UpgradeSupportStyles';
 import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
 import { NAV_LINKS } from '@/client/components/shared/nav/NavConfig';
 import {
@@ -270,7 +271,7 @@ interface CancellationCTAProps {
 const CancellationCTA = (props: CancellationCTAProps) => {
 	return (
 		<>
-			<Link to={'/cancel/digital/landing'}>
+			<Link css={linkCss} to={'/cancel/digital/landing'}>
 				Cancel {props.friendlyName}{' '}
 			</Link>
 		</>
