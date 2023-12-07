@@ -698,29 +698,23 @@ const MMARouter = () => {
 										path="switch-thank-you"
 										element={<SwitchThankYou />}
 									/>
-									{productType.urlPart === 'digital' && (
-										<>
-											<Route
-												path="confirm-cancel"
-												element={
-													<ConfirmDigiSubCancellation />
-												}
-											/>
+									<>
+										<Route
+											path="confirm-cancel"
+											element={
+												<ConfirmDigiSubCancellation />
+											}
+										/>
 
-											<Route
-												path="confirm-discount"
-												element={
-													<ConfirmDigiSubDiscount />
-												}
-											/>
-											<Route
-												path="discount-offer"
-												element={
-													<DigiSubThankYouOffer />
-												}
-											/>
-										</>
-									)}
+										<Route
+											path="confirm-discount"
+											element={<ConfirmDigiSubDiscount />}
+										/>
+										<Route
+											path="discount-offer"
+											element={<DigiSubThankYouOffer />}
+										/>
+									</>
 								</Route>
 							),
 						)}

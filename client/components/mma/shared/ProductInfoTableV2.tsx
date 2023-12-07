@@ -31,6 +31,7 @@ const tableEntryCss = css`
 `;
 
 const tableValueCss = css`
+	${textSans.medium()};
 	color: ${palette.neutral[38]};
 	${from.tablet} {
 		padding-right: 32px;
