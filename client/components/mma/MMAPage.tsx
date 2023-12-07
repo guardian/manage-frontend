@@ -711,7 +711,12 @@ const MMARouter = () => {
 										path="confirm-cancel"
 										element={<ConfirmDigiSubCancellation />}
 									/>
-
+									<Route
+										path="cancel-reason"
+										element={
+											<SelectDigiSubCancellationReason />
+										}
+									/>
 									<Route
 										path="confirm-discount"
 										element={<ConfirmDigiSubDiscount />}
@@ -719,12 +724,6 @@ const MMARouter = () => {
 									<Route
 										path="discount-offer"
 										element={<DigiSubThankYouOffer />}
-									/>
-									<Route
-										path="cancel-reason"
-										element={
-											<SelectDigiSubCancellationReason />
-										}
 									/>
 								</Route>
 							),

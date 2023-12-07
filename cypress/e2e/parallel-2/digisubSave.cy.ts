@@ -63,10 +63,40 @@ describe('Cancel digi sub', () => {
 		}).as('cancel_digisub');
 	});
 
-	it('cancels Guardian Weekly (reason: I dont have time to use my subscription, effective: today)', () => {
+	it('cancels Digi Sub and cannot go back into journey', () => {
 		cy.visit('/');
 
 		cy.findByText('Manage subscription').click();
 		cy.findByText('Cancel subscription').click();
+		cy.findByText('Continue to cancel online').click();
+		cy.findByText('Continue to cancel').click();
+		cy.findByRole('button', {
+			name: 'Cancel subscription',
+		}).click();
+
+		//TODO Uncomment when the path works properly!
+		//cy.findByText(/Your subscription has been cancelled/).should('exist');
+
+		//TODO uncomment when not going back is implemented
+		//cy.go('back');
+
+		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
+	});
+
+	it('adds discount Digi Sub and cannot renter journey', () => {
+		cy.visit('/');
+
+		cy.findByText('Manage subscription').click();
+		cy.findByText('Cancel subscription').click();
+		cy.findByText('Continue to cancel online').click();
+		cy.findByRole('button', {
+			name: 'Keep support with discount',
+		}).click();
+
+		//TODO Below can be implemented once new endpoint and navigation back into journey is complete
+		//cy.findByText('Discount confirmed');
+		//uncomment when not going back is implemented
+		//cy.go('back');
+		//cy.findByRole('heading', { name: 'Account overview' }).should('exist');
 	});
 });
