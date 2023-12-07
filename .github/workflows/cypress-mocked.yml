@@ -31,8 +31,6 @@ jobs:
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
-        env:
-          IDAPI_CLIENT_ACCESS_TOKEN: ${{ secrets.IDAPI_CLIENT_ACCESS_TOKEN }}
         with:
           start: yarn cypress:mocked:server
           wait-on: 'http://localhost:9234, http://localhost:9233'
