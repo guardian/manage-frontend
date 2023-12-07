@@ -66,6 +66,11 @@ const ManageProduct = lazy(() =>
 		/* webpackChunkName: "ManageProduct" */ './accountoverview/ManageProduct'
 	).then(({ ManageProduct }) => ({ default: ManageProduct })),
 );
+const ManageProductV2 = lazy(() =>
+	import(
+		/* webpackChunkName: "ManageProduct" */ './accountoverview/manageProducts/ManageProductV2'
+	).then(({ ManageProductV2 }) => ({ default: ManageProductV2 })),
+);
 const CancellationContainer = lazy(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/CancellationContainer'
@@ -161,6 +166,30 @@ const SwitchThankYou = lazy(() =>
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/SwitchThankYou'
 	).then(({ SwitchThankYou }) => ({
 		default: SwitchThankYou,
+	})),
+);
+
+const ConfirmDigiSubCancellation = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/ConfirmDigiSubCancellation'
+	).then(({ ConfirmDigiSubCancellation: ConfirmDigiSubCancellation }) => ({
+		default: ConfirmDigiSubCancellation,
+	})),
+);
+
+const DigiSubThankYouOffer = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/ThankYouOffer'
+	).then(({ ThankYouOffer: ThankYouOffer }) => ({
+		default: ThankYouOffer,
+	})),
+);
+
+const ConfirmDigiSubDiscount = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/DigiSubDiscountConfirm'
+	).then(({ DigiSubDiscountConfirm: DigiSubDiscountConfirm }) => ({
+		default: DigiSubDiscountConfirm,
 	})),
 );
 
@@ -475,17 +504,28 @@ const MMARouter = () => {
 							</Route>
 						))}
 						{Object.values(PRODUCT_TYPES).map(
-							(productType: ProductType) => (
-								<Route
-									key={productType.urlPart}
-									path={`/${productType.urlPart}`}
-									element={
-										<ManageProduct
-											productType={productType}
-										/>
-									}
-								/>
-							),
+							(productType: ProductType) =>
+								productType.urlPart === 'digital' ? (
+									<Route
+										key={productType.urlPart}
+										path={`/${productType.urlPart}`}
+										element={
+											<ManageProductV2
+												productType={productType}
+											/>
+										}
+									/>
+								) : (
+									<Route
+										key={productType.urlPart}
+										path={`/${productType.urlPart}`}
+										element={
+											<ManageProduct
+												productType={productType}
+											/>
+										}
+									/>
+								),
 						)}
 						{Object.values(PRODUCT_TYPES)
 							.filter(hasDeliveryFlow)
@@ -658,6 +698,29 @@ const MMARouter = () => {
 										path="switch-thank-you"
 										element={<SwitchThankYou />}
 									/>
+									{productType.urlPart === 'digital' && (
+										<>
+											<Route
+												path="confirm-cancel"
+												element={
+													<ConfirmDigiSubCancellation />
+												}
+											/>
+
+											<Route
+												path="confirm-discount"
+												element={
+													<ConfirmDigiSubDiscount />
+												}
+											/>
+											<Route
+												path="discount-offer"
+												element={
+													<DigiSubThankYouOffer />
+												}
+											/>
+										</>
+									)}
 								</Route>
 							),
 						)}

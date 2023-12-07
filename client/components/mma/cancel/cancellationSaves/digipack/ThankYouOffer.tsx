@@ -198,7 +198,9 @@ export const ThankYouOffer = () => {
 					<Button
 						priority="subdued"
 						onClick={() =>
-							navigate('todo', { state: { ...routerState } })
+							navigate('/cancel/digital/confirm-cancel', {
+								state: { ...routerState },
+							})
 						}
 					>
 						Continue to cancel

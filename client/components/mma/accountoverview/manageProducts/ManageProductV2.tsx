@@ -268,44 +268,11 @@ interface CancellationCTAProps {
 }
 
 const CancellationCTA = (props: CancellationCTAProps) => {
-	const shouldContactUsToCancel =
-		!props.productDetail.selfServiceCancellation.isAllowed ||
-		!props.specificProductType.cancellation;
 	return (
 		<>
-			{shouldContactUsToCancel && (
-				<div
-					css={css`
-						${textSans.medium()};
-						color: ${palette.neutral[46]};
-						margin-top: 16px;
-						justify-content: center;
-					`}
-				>
-					Would you like to cancel your {props.friendlyName}?
-					<Link
-						css={css`
-							${textSans.medium()};
-							color: ${palette.brand[400]};
-							font-weight: 700;
-							text-decoration-line: underline;
-							justify-content: center;
-							margin-left: 5px;
-						`}
-						to={'/cancel/' + props.specificProductType.urlPart}
-						state={{ productDetail: props.productDetail }}
-					>
-						Contact us
-					</Link>
-				</div>
-			)}
-
-			{!shouldContactUsToCancel && (
-				<Link to={'/cancel/' + props.specificProductType.urlPart}>
-					{' '}
-					Cancel {props.friendlyName}{' '}
-				</Link>
-			)}
+			<Link to={'/cancel/digital/landing'}>
+				Cancel {props.friendlyName}{' '}
+			</Link>
 		</>
 	);
 };
