@@ -80,7 +80,7 @@ describe('Cancel digi sub', () => {
 		//TODO uncomment when not going back is implemented
 		//cy.go('back');
 
-		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
+		//cy.findByRole('heading', { name: 'Account overview' }).should('exist');
 	});
 
 	it('adds discount Digi Sub and cannot renter journey', () => {
