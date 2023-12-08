@@ -186,7 +186,7 @@ export const ConfirmDigiSubCancellation = () => {
 				setIsSubmitting(false);
 				setLoadingFailed(true);
 			} else {
-				navigate('/cancel/digital/cancel-reason', {
+				navigate('../cancel-reason', {
 					state: { ...routerState, journeyCompleted: true },
 				});
 			}
