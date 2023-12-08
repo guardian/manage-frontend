@@ -7,13 +7,14 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import {
+	Button,
 	LinkButton,
 	Stack,
 	SvgCalendar,
 	SvgClock,
 	SvgCreditCard,
 } from '@guardian/source-react-components';
-import { Link, Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/client/components/mma/Page';
 import { ErrorIcon } from '@/client/components/mma/shared/assets/ErrorIcon';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
@@ -22,7 +23,6 @@ import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymen
 import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
 import { PaymentFailureAlertIfApplicable } from '@/client/components/mma/shared/PaymentFailureAlertIfApplicable';
 import { ProductInfoTableV2 } from '@/client/components/mma/shared/ProductInfoTableV2';
-import { linkCss } from '@/client/components/mma/upgrade/UpgradeSupportStyles';
 import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
 import { NAV_LINKS } from '@/client/components/shared/nav/NavConfig';
 import {
@@ -72,6 +72,8 @@ const InnerContent = ({
 	manageProductV2Props,
 	productDetail,
 }: InnerContentProps) => {
+	const navigate = useNavigate();
+
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
 		throw new Error('mainPlan does not exist in manageProductV2 page');
@@ -249,31 +251,21 @@ const InnerContent = ({
 						`}
 					>
 						{!hasCancellationPending && (
-							<CancellationCTA
-								productDetail={productDetail}
-								friendlyName={groupedProductType.friendlyName()}
-								specificProductType={specificProductType}
-							/>
+							<Button
+								priority="subdued"
+								onClick={() => {
+									navigate(
+										'/cancel/' +
+											specificProductType.urlPart,
+									);
+								}}
+							>
+								Cancel {groupedProductType.friendlyName()}
+							</Button>
 						)}
 					</div>
 				</div>
 			</section>
-		</>
-	);
-};
-
-interface CancellationCTAProps {
-	productDetail: ProductDetail;
-	friendlyName: string;
-	specificProductType: ProductType;
-}
-
-const CancellationCTA = (props: CancellationCTAProps) => {
-	return (
-		<>
-			<Link css={linkCss} to={'/cancel/digital/landing'}>
-				Cancel {props.friendlyName}{' '}
-			</Link>
 		</>
 	);
 };

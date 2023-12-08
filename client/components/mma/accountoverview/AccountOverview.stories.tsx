@@ -31,7 +31,6 @@ import { user } from '../../../fixtures/user';
 import { AccountOverview } from './AccountOverview';
 
 featureSwitches['appSubscriptions'] = true;
-featureSwitches['singleContributions'] = true;
 
 export default {
 	title: 'Pages/AccountOverview',
