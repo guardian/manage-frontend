@@ -6,12 +6,18 @@ import {
 	Stack,
 	SvgTickRound,
 } from '@guardian/source-react-components';
+import { captureMessage } from '@sentry/browser';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
 } from '@/client/styles/ButtonStyles';
+import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import {
+	LoadingState,
+	useAsyncLoader,
+} from '@/client/utilities/hooks/useAsyncLoader';
 import {
 	getDiscountMonthsForDigisub,
 	getNewDigisubPrice,
@@ -21,6 +27,8 @@ import { formatAmount } from '@/client/utilities/utils';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
 import { dateString } from '../../../../../../shared/dates';
+import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../../../shared/asyncComponents/DefaultLoadingView';
 import { benefitsCss } from '../../../shared/benefits/BenefitsStyles';
 import { Heading } from '../../../shared/Heading';
 import type {
@@ -28,7 +36,6 @@ import type {
 	CancellationRouterState,
 } from '../../CancellationContainer';
 import { CancellationContext } from '../../CancellationContainer';
-import { eligibleForDigisubDiscount } from '../saveEligibilityCheck';
 
 const DiscountOffer = ({
 	currencySymbol,
@@ -111,6 +118,10 @@ const DiscountOffer = ({
 	</Stack>
 );
 
+type EligibilityResponse = {
+	valid: boolean;
+};
+
 export const ThankYouOffer = () => {
 	const navigate = useNavigate();
 	const cancellationContext = useContext(
@@ -118,8 +129,37 @@ export const ThankYouOffer = () => {
 	) as CancellationContextInterface;
 	const productDetail = cancellationContext.productDetail;
 
+	const {
+		data,
+		loadingState,
+	}: {
+		data: EligibilityResponse | null;
+		loadingState: LoadingState;
+	} = useAsyncLoader(
+		() =>
+			fetchWithDefaultParameters('/api/discounts/check-eligibility', {
+				method: 'POST',
+				body: JSON.stringify({
+					subscriptionNumber:
+						productDetail.subscription.subscriptionId,
+					discountProductRatePlanId:
+						'2c92c0f962cec7990162d3882afc52dd',
+				}),
+			}),
+		JsonResponseHandler,
+	);
+
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
+
+	if (loadingState == LoadingState.IsLoading) {
+		return <DefaultLoadingView loadingMessage="Loading..." />;
+	}
+	if (loadingState == LoadingState.HasError) {
+		captureMessage('Error loading discount eligibility');
+	}
+
+	const eligibleForDiscount = data?.valid;
 
 	if (!productDetail) {
 		return <Navigate to="/" />;
@@ -134,7 +174,6 @@ export const ThankYouOffer = () => {
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
 
-	const eligibleForDiscount = eligibleForDigisubDiscount(productDetail);
 	const discountMonths = getDiscountMonthsForDigisub(productDetail);
 	const discountedPrice = getOldDigisubPrice(mainPlan);
 	const newPrice = getNewDigisubPrice(mainPlan);
@@ -180,9 +219,28 @@ export const ThankYouOffer = () => {
 						currencySymbol={mainPlan.currency}
 						discountMonths={discountMonths}
 						discountedPrice={discountedPrice}
-						handleDiscountOfferClick={() =>
-							navigate('todo', { state: { ...routerState } })
-						}
+						handleDiscountOfferClick={async () => {
+							try {
+								const result = await fetchWithDefaultParameters(
+									'/api/discounts/apply-discount',
+									{
+										method: 'POST',
+										body: JSON.stringify({
+											subscriptionNumber:
+												productDetail.subscription,
+											discountProductRatePlanId: 'todo',
+										}),
+									},
+								).then((response) => response.text());
+								if (result === 'Success') {
+									navigate('todo', {
+										state: { ...routerState },
+									});
+								}
+							} catch (e) {
+								console.error(e);
+							}
+						}}
 						newPrice={newPrice}
 					/>
 				)}

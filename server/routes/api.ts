@@ -172,6 +172,13 @@ router.patch(
 );
 
 router.post(
+	'/discounts/check-eligibility',
+	proxyApiHandler('discount-api-code.support.guardianapis.com')(
+		straightThroughBodyHandler,
+	)('check-eligibility', 'DISCOUNTS'),
+);
+
+router.post(
 	'/product-move/:switchType/:subscriptionName',
 	productMoveAPI(
 		'product-move/:switchType/:subscriptionName',

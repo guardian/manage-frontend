@@ -1,4 +1,5 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
 import { ConfirmDigiSubCancellation } from '@/client/components/mma/cancel/cancellationSaves/digipack/ConfirmDigiSubCancellation';
@@ -38,6 +39,13 @@ export const EligibleForDiscount: StoryObj<typeof ThankYouOffer> = {
 	render: () => {
 		return <ThankYouOffer />;
 	},
+	parameters: {
+		msw: [
+			rest.post('/api/discounts/check-eligibility', (_req, res, ctx) => {
+				return res(ctx.json({ valid: true }));
+			}),
+		],
+	},
 };
 
 export const IneligibleForDiscount: StoryObj<typeof ThankYouOffer> = {
@@ -51,6 +59,11 @@ export const IneligibleForDiscount: StoryObj<typeof ThankYouOffer> = {
 				user: { email: 'test@test.com' },
 			},
 		},
+		msw: [
+			rest.post('/api/discounts/check-eligibility', (_req, res, ctx) => {
+				return res(ctx.json({ valid: false }));
+			}),
+		],
 	},
 };
 
