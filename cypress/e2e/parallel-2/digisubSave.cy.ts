@@ -59,7 +59,7 @@ describe('Cancel digi sub', () => {
 	});
 
 	it('cancels Digi Sub and cannot go back into journey', () => {
-		cy.visit('/');
+		cy.visit('/?withFeature=digisubSave');
 
 		cy.findByText('Manage subscription').click();
 		cy.findByText('Cancel subscription').click();
@@ -77,7 +77,7 @@ describe('Cancel digi sub', () => {
 	});
 
 	it('adds discount Digi Sub and cannot renter journey', () => {
-		cy.visit('/');
+		cy.visit('/?withFeature=digisubSave');
 
 		cy.findByText('Manage subscription').click();
 		cy.findByText('Cancel subscription').click();
