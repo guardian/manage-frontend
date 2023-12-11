@@ -22,7 +22,10 @@ import {
 	getMainPlan,
 	MDA_TEST_USER_HEADER,
 } from '../../../../../shared/productResponse';
-import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
+import {
+	GROUPED_PRODUCT_TYPES,
+	type ProductTypeWithCancellationFlow,
+} from '../../../../../shared/productTypes';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
@@ -100,7 +103,11 @@ const ReasonSelection = ({
 			`}
 		>
 			<legend css={reasonLegendCss}>
-				Why did you cancel your {productType.friendlyName()} today?
+				Why did you cancel your{' '}
+				{GROUPED_PRODUCT_TYPES[
+					productType.groupedProductType
+				].friendlyName()}{' '}
+				today?
 			</legend>
 			<RadioGroup
 				name="issue_type"
@@ -202,12 +209,14 @@ export const SelectReason = () => {
 		mainPlan.chargedThrough ?? undefined,
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
+	const navigateToReminder = productType.productType === 'membership';
+
 	const submitReason = async () => {
 		{
 			const canContinue = !!selectedReasonId.length;
 			if (canContinue) {
 				await postReason();
-				navigate('../reminder', {
+				navigate(navigateToReminder ? '../reminder' : './', {
 					state: {
 						selectedReasonId,
 					},
@@ -254,7 +263,11 @@ export const SelectReason = () => {
 	return (
 		<section css={sectionSpacing}>
 			<h2 css={headingCss}>
-				Your {productType.friendlyName()} has been cancelled
+				Your{' '}
+				{GROUPED_PRODUCT_TYPES[
+					productType.groupedProductType
+				].friendlyName()}{' '}
+				has been cancelled
 			</h2>
 			<CancellationInfo
 				userEmailAddress={userEmailAddress}
