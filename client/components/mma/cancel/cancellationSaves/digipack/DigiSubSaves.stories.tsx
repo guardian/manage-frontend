@@ -3,13 +3,13 @@ import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
 import { ConfirmDigiSubCancellation } from '@/client/components/mma/cancel/cancellationSaves/digipack/ConfirmDigiSubCancellation';
 import { DigiSubDiscountConfirm } from '@/client/components/mma/cancel/cancellationSaves/digipack/DigiSubDiscountConfirm';
-import { SelectCancellationReason } from '@/client/components/mma/cancel/cancellationSaves/digipack/SelectCancellationReason';
 import { ThankYouOffer } from '@/client/components/mma/cancel/cancellationSaves/digipack/ThankYouOffer';
 import {
 	digitalPackPaidByDirectDebit,
 	digitalPackWithPaymentFailure,
 } from '@/client/fixtures/productBuilder/testProducts';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
+import { SelectReason } from '../SelectReason';
 
 export default {
 	title: 'Pages/DigiSubSaves',
@@ -61,8 +61,6 @@ export const ConfirmCancellation: StoryFn<
 	return <ConfirmDigiSubCancellation />;
 };
 
-export const DigiSubCancellationReason: StoryFn<
-	typeof SelectCancellationReason
-> = () => {
-	return <SelectCancellationReason />;
+export const DigiSubCancellationReason: StoryFn<typeof SelectReason> = () => {
+	return <SelectReason />;
 };

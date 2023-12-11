@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
 	InlineError,
@@ -10,38 +10,42 @@ import {
 import type { FormEvent } from 'react';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { digipackCancellationReasons } from '@/client/components/mma/cancel/digipack/DigipackCancellationReasons';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
-} from '../../../../../../shared/dates';
+} from '../../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
 	ProductDetail,
-} from '../../../../../../shared/productResponse';
+} from '../../../../../shared/productResponse';
 import {
 	getMainPlan,
 	MDA_TEST_USER_HEADER,
-} from '../../../../../../shared/productResponse';
-import type { ProductTypeWithCancellationFlow } from '../../../../../../shared/productTypes';
+} from '../../../../../shared/productResponse';
+import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 	wideButtonCss,
-} from '../../../../../styles/ButtonStyles';
-import {
-	headingCss,
-	paragraphListCss,
-	sectionSpacing,
-} from '../../../../../styles/GenericStyles';
-import { GenericErrorScreen } from '../../../../shared/GenericErrorScreen';
-import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
+} from '../../../../styles/ButtonStyles';
+import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
+import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
+import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
-} from '../../CancellationContainer';
-import { CancellationContext } from '../../CancellationContainer';
-import type { CancellationReason } from '../../cancellationReason';
+} from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
+import type { CancellationReason } from '../cancellationReason';
+
+const paragraphListCss = css`
+	${textSans.medium()};
+	${from.tablet} {
+		span {
+			display: block;
+		}
+	}
+`;
 
 const reasonLegendCss = css`
 	display: block;
@@ -75,7 +79,11 @@ const CancellationInfo = ({
 	</ul>
 );
 
-const ReasonSelection = (props: {
+const ReasonSelection = ({
+	productType,
+	setSelectedReasonId,
+}: {
+	productType: ProductTypeWithCancellationFlow;
 	setSelectedReasonId: React.Dispatch<React.SetStateAction<string>>;
 }) => {
 	return (
@@ -83,7 +91,7 @@ const ReasonSelection = (props: {
 			onChange={(event: FormEvent<HTMLFieldSetElement>) => {
 				const target: HTMLInputElement =
 					event.target as HTMLInputElement;
-				props.setSelectedReasonId(target.value);
+				setSelectedReasonId(target.value);
 			}}
 			css={css`
 				margin: 0 0 ${space[5]}px;
@@ -92,7 +100,7 @@ const ReasonSelection = (props: {
 			`}
 		>
 			<legend css={reasonLegendCss}>
-				Why did you cancel your subscription today?
+				Why did you cancel your {productType.friendlyName()} today?
 			</legend>
 			<RadioGroup
 				name="issue_type"
@@ -102,7 +110,7 @@ const ReasonSelection = (props: {
 					padding-top: ${space[4]}px;
 				`}
 			>
-				{digipackCancellationReasons.map(
+				{productType.cancellation.reasons.map(
 					(reason: CancellationReason) => (
 						<div
 							key={reason.reasonId}
@@ -171,7 +179,7 @@ function updateZuoraCancellationReason(
 	);
 }
 
-export const SelectCancellationReason = () => {
+export const SelectReason = () => {
 	const navigate = useNavigate();
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const [loadingFailed, setLoadingFailed] = useState<boolean>(false);
@@ -199,7 +207,7 @@ export const SelectCancellationReason = () => {
 			const canContinue = !!selectedReasonId.length;
 			if (canContinue) {
 				await postReason();
-				navigate('./', {
+				navigate('../reminder', {
 					state: {
 						selectedReasonId,
 					},
@@ -245,7 +253,9 @@ export const SelectCancellationReason = () => {
 
 	return (
 		<section css={sectionSpacing}>
-			<h2 css={headingCss}>Your subscription has been cancelled</h2>
+			<h2 css={headingCss}>
+				Your {productType.friendlyName()} has been cancelled
+			</h2>
 			<CancellationInfo
 				userEmailAddress={userEmailAddress}
 				benefitsEndDate={benefitsEndDate}
@@ -262,7 +272,10 @@ export const SelectCancellationReason = () => {
 					Please take a moment to tell us more about your decision.
 				</span>
 			</p>
-			<ReasonSelection setSelectedReasonId={setSelectedReasonId} />
+			<ReasonSelection
+				productType={productType}
+				setSelectedReasonId={setSelectedReasonId}
+			/>
 			{inValidationErrorState && !selectedReasonId.length && (
 				<InlineError
 					cssOverrides={css`

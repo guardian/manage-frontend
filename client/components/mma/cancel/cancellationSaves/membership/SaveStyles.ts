@@ -41,12 +41,3 @@ export const errorSummaryOverrideCss = css`
 		border-radius: 6px;
 	}
 `;
-
-export const paragraphListCss = css`
-	${textSans.medium()};
-	${from.tablet} {
-		span {
-			display: block;
-		}
-	}
-`;

@@ -7,9 +7,9 @@ import { ConfirmMembershipCancellation } from './membership/ConfirmMembershipCan
 import { ContinueMembershipConfirmation } from './membership/ContinueMembershipConfirmation';
 import { MembershipSwitch } from './membership/MembershipSwitch';
 import { SaveOptions } from './membership/SaveOptions';
-import { SelectReason } from './membership/SelectReason';
 import { SwitchThankYou } from './membership/SwitchThankYou';
 import { ValueOfSupport } from './membership/ValueOfSupport';
+import { SelectReason } from './SelectReason';
 
 export default {
 	title: 'Pages/CancellationSave',

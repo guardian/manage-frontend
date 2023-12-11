@@ -142,7 +142,7 @@ const MembershipSwitch = lazy(() =>
 
 const SelectReason = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/SelectReason'
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SelectReason'
 	).then(({ SelectReason }) => ({
 		default: SelectReason,
 	})),
@@ -193,14 +193,6 @@ const ConfirmDigiSubDiscount = lazy(() =>
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/DigiSubDiscountConfirm'
 	).then(({ DigiSubDiscountConfirm: DigiSubDiscountConfirm }) => ({
 		default: DigiSubDiscountConfirm,
-	})),
-);
-
-const SelectDigiSubCancellationReason = lazy(() =>
-	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/SelectCancellationReason'
-	).then(({ SelectCancellationReason: SelectCancellationReason }) => ({
-		default: SelectCancellationReason,
 	})),
 );
 
@@ -714,12 +706,6 @@ const MMARouter = () => {
 									<Route
 										path="confirm-cancel"
 										element={<ConfirmDigiSubCancellation />}
-									/>
-									<Route
-										path="cancel-reason"
-										element={
-											<SelectDigiSubCancellationReason />
-										}
 									/>
 									<Route
 										path="confirm-discount"

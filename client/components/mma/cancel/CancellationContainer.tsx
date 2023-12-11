@@ -166,7 +166,6 @@ function userIsNavigatingBackFromCompletePage(hasCompleted: boolean) {
 	return (
 		hasCompleted &&
 		!location.pathname.includes('reasons') &&
-		!location.pathname.includes('cancel-reason') &&
 		!location.pathname.includes('switch-thank-you')
 	);
 }
