@@ -208,20 +208,28 @@ export const ConfirmDigiSubCancellation = () => {
 				margin-top: ${space[4]}px;
 			`}
 		>
-			<h1
-				css={css`
-					${headline.xsmall({ fontWeight: 'bold' })};
-					margin-top: 0;
-					margin-bottom: 0;
-					${from.tablet} {
-						${headline.medium({ fontWeight: 'bold' })};
-					}
-				`}
-			>
-				Losing your supporter extras
-			</h1>
-			Please keep in mind that you will be losing access to your supporter
-			extras if you cancel today.
+			<Stack space={1}>
+				<h1
+					css={css`
+						${headline.xsmall({ fontWeight: 'bold' })};
+						margin-top: 0;
+						margin-bottom: 0;
+						${from.tablet} {
+							${headline.medium({ fontWeight: 'bold' })};
+						}
+					`}
+				>
+					Losing your supporter extras
+				</h1>
+				<div
+					css={css`
+						${textSans.medium()};
+					`}
+				>
+					Please keep in mind that you will be losing access to your
+					supporter extras if you cancel today.
+				</div>
+			</Stack>
 			<section
 				css={css`
 					margin-top: 32px;
