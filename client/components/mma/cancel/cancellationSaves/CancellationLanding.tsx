@@ -149,11 +149,11 @@ export const CancellationLanding = () => {
 					<div>
 						<Button
 							priority="subdued"
-							onClick={() => {
+							onClick={() =>
 								navigate(getNextRoute(productToCancel), {
 									state: { user: data.user },
-								});
-							}}
+								})
+							}
 						>
 							Continue to cancel online
 						</Button>
