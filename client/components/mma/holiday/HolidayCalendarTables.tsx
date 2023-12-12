@@ -6,6 +6,7 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
+import { flushSync } from 'react-dom';
 import type { DateStates } from '../../../../shared/dates';
 import {
 	dateAddDays,
@@ -174,38 +175,46 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
 		} else if (inSelectionMode) {
 			setSelectionModeTo(false);
 		}
+
 		setMouseDownStartDate(day);
 	};
 
 	const dayMouseEnter = (day: Date) => {
-		if (
-			inSelectionMode &&
-			dateIsSameOrAfter(
-				day,
-				props.maybeLockedStartDate || props.minimumDate,
-			) &&
-			dateIsSameOrBefore(day, props.maximumDate)
-		) {
-			const targetStateDayIndex = holidayDates.findIndex(
-				(holidayDate) => holidayDate.date.valueOf() === day.valueOf(),
-			);
-			if (targetStateDayIndex > -1 && startOfSelectionDateIndex > -1) {
-				const dateIndexesThatShouldBeSelected = selectDatesFromRange(
-					holidayDates,
-					startOfSelectionDateIndex,
-					targetStateDayIndex,
+		flushSync(() => {
+			if (
+				inSelectionMode &&
+				dateIsSameOrAfter(
+					day,
+					props.maybeLockedStartDate || props.minimumDate,
+				) &&
+				dateIsSameOrBefore(day, props.maximumDate)
+			) {
+				const targetStateDayIndex = holidayDates.findIndex(
+					(holidayDate) =>
+						holidayDate.date.valueOf() === day.valueOf(),
 				);
-				setHolidayDates(
-					holidayDates.map((holidayDate, holidayDateIndex) => ({
-						...holidayDate,
-						isSelected: dateIndexesThatShouldBeSelected.some(
-							(selectedIndex) =>
-								selectedIndex === holidayDateIndex,
-						),
-					})),
-				);
+				if (
+					targetStateDayIndex > -1 &&
+					startOfSelectionDateIndex > -1
+				) {
+					const dateIndexesThatShouldBeSelected =
+						selectDatesFromRange(
+							holidayDates,
+							startOfSelectionDateIndex,
+							targetStateDayIndex,
+						);
+					setHolidayDates(
+						holidayDates.map((holidayDate, holidayDateIndex) => ({
+							...holidayDate,
+							isSelected: dateIndexesThatShouldBeSelected.some(
+								(selectedIndex) =>
+									selectedIndex === holidayDateIndex,
+							),
+						})),
+					);
+				}
 			}
-		}
+		});
 	};
 
 	const dayTouchStart = (day: Date) => {
