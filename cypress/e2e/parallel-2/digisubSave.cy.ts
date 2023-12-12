@@ -87,7 +87,7 @@ describe('Cancel digi sub', () => {
 		}).click();
 
 		//TODO Below can be implemented once new endpoint is completed
-		//cy.findByText('Discount confirmed');m
+		//cy.findByText('Discount confirmed');
 		//cy.go('back');
 		//cy.findByRole('heading', { name: 'Account overview' }).should('exist');
 	});

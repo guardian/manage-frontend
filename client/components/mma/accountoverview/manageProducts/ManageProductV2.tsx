@@ -14,7 +14,7 @@ import {
 	SvgClock,
 	SvgCreditCard,
 } from '@guardian/source-react-components';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/client/components/mma/Page';
 import { ErrorIcon } from '@/client/components/mma/shared/assets/ErrorIcon';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
@@ -275,6 +275,8 @@ interface ManageProductV2RouterState {
 }
 
 const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
+	const navigate = useNavigate();
+
 	const request = createProductDetailFetcher(
 		props.productType.allProductsProductTypeFilterString,
 	);
@@ -292,7 +294,8 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 	}
 
 	if (data == null || data.products.length == 0) {
-		return <Navigate to="/" />;
+		navigate('/');
+		return null;
 	}
 
 	const productDetail = data.products.filter(isProduct)[0];
