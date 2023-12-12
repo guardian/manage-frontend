@@ -11,10 +11,9 @@ import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import type {
 	CancellationContextInterface,
-	CancellationRouterState} from '@/client/components/mma/cancel/CancellationContainer';
-import {
-	CancellationContext
+	CancellationRouterState,
 } from '@/client/components/mma/cancel/CancellationContainer';
+import { CancellationContext } from '@/client/components/mma/cancel/CancellationContainer';
 import type { OptionalCancellationReasonId } from '@/client/components/mma/cancel/cancellationReason';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import { benefitsCss } from '@/client/components/mma/shared/benefits/BenefitsStyles';
@@ -24,10 +23,9 @@ import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { createProductDetailFetcher } from '@/client/utilities/productUtils';
 import type {
 	MembersDataApiResponse,
-	ProductDetail} from '@/shared/productResponse';
-import {
-	MDA_TEST_USER_HEADER
+	ProductDetail,
 } from '@/shared/productResponse';
+import { MDA_TEST_USER_HEADER } from '@/shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '@/shared/productTypes';
 
 function GreyBulletpoint() {
@@ -210,20 +208,28 @@ export const ConfirmDigiSubCancellation = () => {
 				margin-top: ${space[4]}px;
 			`}
 		>
-			<h1
-				css={css`
-					${headline.xsmall({ fontWeight: 'bold' })};
-					margin-top: 0;
-					margin-bottom: 0;
-					${from.tablet} {
-						${headline.medium({ fontWeight: 'bold' })};
-					}
-				`}
-			>
-				Losing your supporter extras
-			</h1>
-			Please keep in mind that you will be losing access to your supporter
-			extras if you cancel today.
+			<Stack space={1}>
+				<h1
+					css={css`
+						${headline.xsmall({ fontWeight: 'bold' })};
+						margin-top: 0;
+						margin-bottom: 0;
+						${from.tablet} {
+							${headline.medium({ fontWeight: 'bold' })};
+						}
+					`}
+				>
+					Losing your supporter extras
+				</h1>
+				<div
+					css={css`
+						${textSans.medium()};
+					`}
+				>
+					Please keep in mind that you will be losing access to your
+					supporter extras if you cancel today.
+				</div>
+			</Stack>
 			<section
 				css={css`
 					margin-top: 32px;

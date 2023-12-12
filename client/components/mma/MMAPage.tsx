@@ -4,7 +4,10 @@ import { breakpoints, from, space } from '@guardian/source-foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { initFeatureSwitchUrlParamOverride } from '../../../shared/featureSwitches';
+import {
+	featureSwitches,
+	initFeatureSwitchUrlParamOverride,
+} from '../../../shared/featureSwitches';
 import type {
 	ProductType,
 	ProductTypeWithDeliveryRecordsProperties,
@@ -139,7 +142,7 @@ const MembershipSwitch = lazy(() =>
 
 const SelectReason = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/SelectReason'
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SelectReason'
 	).then(({ SelectReason }) => ({
 		default: SelectReason,
 	})),
@@ -505,7 +508,8 @@ const MMARouter = () => {
 						))}
 						{Object.values(PRODUCT_TYPES).map(
 							(productType: ProductType) =>
-								productType.urlPart === 'digital' ? (
+								featureSwitches.digisubSave &&
+								productType.productType === 'digipack' ? (
 									<Route
 										key={productType.urlPart}
 										path={`/${productType.urlPart}`}
@@ -698,29 +702,19 @@ const MMARouter = () => {
 										path="switch-thank-you"
 										element={<SwitchThankYou />}
 									/>
-									{productType.urlPart === 'digital' && (
-										<>
-											<Route
-												path="confirm-cancel"
-												element={
-													<ConfirmDigiSubCancellation />
-												}
-											/>
 
-											<Route
-												path="confirm-discount"
-												element={
-													<ConfirmDigiSubDiscount />
-												}
-											/>
-											<Route
-												path="discount-offer"
-												element={
-													<DigiSubThankYouOffer />
-												}
-											/>
-										</>
-									)}
+									<Route
+										path="confirm-cancel"
+										element={<ConfirmDigiSubCancellation />}
+									/>
+									<Route
+										path="confirm-discount"
+										element={<ConfirmDigiSubDiscount />}
+									/>
+									<Route
+										path="discount-offer"
+										element={<DigiSubThankYouOffer />}
+									/>
 								</Route>
 							),
 						)}

@@ -10,6 +10,7 @@ import {
 	digitalPackWithPaymentFailure,
 } from '@/client/fixtures/productBuilder/testProducts';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
+import { SelectReason } from '../SelectReason';
 
 export default {
 	title: 'Pages/DigiSubSaves',
@@ -71,4 +72,8 @@ export const ConfirmCancellation: StoryFn<
 	typeof ConfirmDigiSubCancellation
 > = () => {
 	return <ConfirmDigiSubCancellation />;
+};
+
+export const DigiSubCancellationReason: StoryFn<typeof SelectReason> = () => {
+	return <SelectReason />;
 };

@@ -6,11 +6,6 @@ describe('Cancel digi sub', () => {
 	beforeEach(() => {
 		signInAndAcceptCookies();
 
-		const DigiSubSelfCancelEnabled = JSON.parse(
-			JSON.stringify(digitalPackPaidByDirectDebit()),
-		);
-		DigiSubSelfCancelEnabled.selfServiceCancellation.isAllowed = true;
-
 		cy.intercept('POST', '/api/case', {
 			statusCode: 200,
 			body: {
@@ -23,14 +18,14 @@ describe('Cancel digi sub', () => {
 			body: { message: 'success' },
 		}).as('create_case_in_salesforce');
 
-		cy.intercept('GET', '/api/me/mma?productType=**', {
+		cy.intercept('GET', '/api/me/mma?productType=Digipack', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(DigiSubSelfCancelEnabled),
+			body: toMembersDataApiResponse(digitalPackPaidByDirectDebit()),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(DigiSubSelfCancelEnabled),
+			body: toMembersDataApiResponse(digitalPackPaidByDirectDebit()),
 		});
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -63,9 +58,37 @@ describe('Cancel digi sub', () => {
 		}).as('cancel_digisub');
 	});
 
-	it('cancels Guardian Weekly (reason: I dont have time to use my subscription, effective: today)', () => {
-		cy.visit('/');
+	it('cancels Digi Sub and cannot go back into journey', () => {
+		cy.visit('/?withFeature=digisubSave');
 
 		cy.findByText('Manage subscription').click();
+		cy.findByText('Cancel subscription').click();
+		cy.findByText('Continue to cancel online').click();
+		cy.findByText('Continue to cancel').click();
+		cy.findByRole('button', {
+			name: 'Cancel subscription',
+		}).click();
+
+		cy.findByText(/Your subscription has been cancelled/).should('exist');
+
+		cy.go('back');
+
+		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
+	});
+
+	it('adds discount Digi Sub and cannot renter journey', () => {
+		cy.visit('/?withFeature=digisubSave');
+
+		cy.findByText('Manage subscription').click();
+		cy.findByText('Cancel subscription').click();
+		cy.findByText('Continue to cancel online').click();
+		cy.findByRole('button', {
+			name: 'Keep support with discount',
+		}).click();
+
+		//TODO Below can be implemented once new endpoint is completed
+		//cy.findByText('Discount confirmed');m
+		//cy.go('back');
+		//cy.findByRole('heading', { name: 'Account overview' }).should('exist');
 	});
 });

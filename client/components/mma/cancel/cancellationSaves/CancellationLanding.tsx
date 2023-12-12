@@ -31,6 +31,9 @@ function getNextRoute(productToCancel: ProductDetail): string {
 		case 'membership': {
 			return '../details';
 		}
+		case 'digipack': {
+			return '../discount-offer';
+		}
 		default: {
 			return '/';
 		}
@@ -146,19 +149,11 @@ export const CancellationLanding = () => {
 					<div>
 						<Button
 							priority="subdued"
-							onClick={() => {
-								const nextRoute = getNextRoute(productToCancel);
-								const currentUrlContainsDigital =
-									window.location.href.includes('digital');
-
-								const targetUrl = currentUrlContainsDigital
-									? '/cancel/digital/discount-offer'
-									: nextRoute;
-
-								navigate(targetUrl, {
+							onClick={() =>
+								navigate(getNextRoute(productToCancel), {
 									state: { user: data.user },
-								});
-							}}
+								})
+							}
 						>
 							Continue to cancel online
 						</Button>
