@@ -3,11 +3,11 @@ import { ReactRouterDecorator } from '../../../../../../.storybook/ReactRouterDe
 import { PRODUCT_TYPES } from '../../../../../../shared/productTypes';
 import { membershipSupporterCurrencyUSD } from '../../../../../fixtures/productBuilder/testProducts';
 import { CancellationContainer } from '../../CancellationContainer';
+import { SelectReason } from '../SelectReason';
 import { ConfirmMembershipCancellation } from './ConfirmMembershipCancellation';
 import { ContinueMembershipConfirmation } from './ContinueMembershipConfirmation';
 import { MembershipSwitch } from './MembershipSwitch';
 import { SaveOptions } from './SaveOptions';
-import { SelectReason } from './SelectReason';
 import { SwitchThankYou } from './SwitchThankYou';
 import { ValueOfSupport } from './ValueOfSupport';
 
