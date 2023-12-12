@@ -5,6 +5,7 @@ import { isProduct, MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import {
 	cancellationSfCasesAPI,
 	deliveryRecordsAPI,
+	discountAPI,
 	holidayStopAPI,
 	invoicingAPI,
 	productMoveAPI,
@@ -173,9 +174,7 @@ router.patch(
 
 router.post(
 	'/discounts/check-eligibility',
-	proxyApiHandler('discount-api-code.support.guardianapis.com')(
-		straightThroughBodyHandler,
-	)('check-eligibility', 'DISCOUNTS'),
+	discountAPI('check-eligibility', 'DISCOUNTS'),
 );
 
 router.post(
