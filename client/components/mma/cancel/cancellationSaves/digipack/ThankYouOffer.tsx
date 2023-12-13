@@ -6,9 +6,10 @@ import {
 	Stack,
 	SvgTickRound,
 } from '@guardian/source-react-components';
+import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { captureMessage } from '@sentry/browser';
-import { useContext } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router';
+import { useContext, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
@@ -37,19 +38,25 @@ import type {
 } from '../../CancellationContainer';
 import { CancellationContext } from '../../CancellationContainer';
 
+type DiscountOfferProps = {
+	currencySymbol: string;
+	discountMonths: number;
+	discountedPrice: number;
+	isDiscountLoading: boolean;
+	hasDiscountFailed: boolean;
+	handleDiscountOfferClick: () => void;
+	newPrice: number;
+};
+
 const DiscountOffer = ({
 	currencySymbol,
 	discountMonths,
 	discountedPrice,
+	isDiscountLoading,
+	hasDiscountFailed,
 	handleDiscountOfferClick,
 	newPrice,
-}: {
-	currencySymbol: string;
-	discountMonths: number;
-	discountedPrice: number;
-	handleDiscountOfferClick: () => void;
-	newPrice: number;
-}) => (
+}: DiscountOfferProps) => (
 	<Stack
 		space={4}
 		css={css`
@@ -110,11 +117,19 @@ const DiscountOffer = ({
 				<Button
 					cssOverrides={buttonCentredCss}
 					onClick={handleDiscountOfferClick}
+					isLoading={isDiscountLoading}
 				>
 					Keep support with discount
 				</Button>
 			</ThemeProvider>
 		</div>
+		{hasDiscountFailed && (
+			<ErrorSummary
+				message={
+					'We were unable to apply your discount. Please try again'
+				}
+			/>
+		)}
 	</Stack>
 );
 
@@ -152,6 +167,9 @@ export const ThankYouOffer = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 
+	const [isDiscountLoading, setIsDiscountLoading] = useState<boolean>(false);
+	const [hasDiscountFailed, setHasDiscountFailed] = useState<boolean>(false);
+
 	if (loadingState == LoadingState.IsLoading) {
 		return <DefaultLoadingView loadingMessage="Loading..." />;
 	}
@@ -162,7 +180,8 @@ export const ThankYouOffer = () => {
 	const eligibleForDiscount = data?.valid;
 
 	if (!productDetail) {
-		return <Navigate to="/" />;
+		navigate('/');
+		return null;
 	}
 
 	const supportStartYear = dateString(
@@ -177,6 +196,40 @@ export const ThankYouOffer = () => {
 	const discountMonths = getDiscountMonthsForDigisub(productDetail);
 	const discountedPrice = getOldDigisubPrice(mainPlan);
 	const newPrice = getNewDigisubPrice(mainPlan);
+
+	const handleDiscountOfferClick = async () => {
+		if (isDiscountLoading) {
+			return;
+		}
+
+		try {
+			setIsDiscountLoading(true);
+
+			const result = await fetchWithDefaultParameters(
+				'/api/discounts/apply-discount',
+				{
+					method: 'POST',
+					body: JSON.stringify({
+						subscriptionNumber: productDetail.subscription,
+						discountProductRatePlanId: 'todo',
+					}),
+				},
+			).then((response) => response.text());
+
+			if (result === 'Success') {
+				setIsDiscountLoading(false);
+				navigate('./confirm-discount', {
+					state: { ...routerState },
+				});
+			} else {
+				setIsDiscountLoading(false);
+				setHasDiscountFailed(true);
+			}
+		} catch (e) {
+			setIsDiscountLoading(false);
+			setHasDiscountFailed(true);
+		}
+	};
 
 	return (
 		<section
@@ -219,28 +272,9 @@ export const ThankYouOffer = () => {
 						currencySymbol={mainPlan.currency}
 						discountMonths={discountMonths}
 						discountedPrice={discountedPrice}
-						handleDiscountOfferClick={async () => {
-							try {
-								const result = await fetchWithDefaultParameters(
-									'/api/discounts/apply-discount',
-									{
-										method: 'POST',
-										body: JSON.stringify({
-											subscriptionNumber:
-												productDetail.subscription,
-											discountProductRatePlanId: 'todo',
-										}),
-									},
-								).then((response) => response.text());
-								if (result === 'Success') {
-									navigate('todo', {
-										state: { ...routerState },
-									});
-								}
-							} catch (e) {
-								console.error(e);
-							}
-						}}
+						isDiscountLoading={isDiscountLoading}
+						hasDiscountFailed={hasDiscountFailed}
+						handleDiscountOfferClick={handleDiscountOfferClick}
 						newPrice={newPrice}
 					/>
 				)}
