@@ -47,7 +47,9 @@ jobs:
         uses: cypress-io/github-action@v6
         env:
           CYPRESS_IDAPI_CLIENT_ACCESS_TOKEN: ${{ secrets.IDAPI_CLIENT_ACCESS_TOKEN }}
-          # Required for the Cypress tests to run as we're unable to verify the created certs
+          # This env variable prevents Node from rejecting self-signed TLS certificates. It's
+          # required for the Cypress tests to run as we're unable to verify the created certs.
+          # See: https://nodejs.org/api/cli.html#node_tls_reject_unauthorizedvalue
           NODE_TLS_REJECT_UNAUTHORIZED: 0
         with:
           start: yarn cypress:e2e:server
