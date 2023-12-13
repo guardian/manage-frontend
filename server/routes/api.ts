@@ -173,8 +173,13 @@ router.patch(
 );
 
 router.post(
-	'/discounts/check-eligibility',
-	discountAPI('check-eligibility', 'DISCOUNTS'),
+	'/discounts/preview-discount',
+	discountAPI('preview-discount', 'PREVIEW_DISCOUNT'),
+);
+
+router.post(
+	'/discounts/apply-discount',
+	discountAPI('apply-discount', 'APPLY_DISCOUNT'),
 );
 
 router.post(

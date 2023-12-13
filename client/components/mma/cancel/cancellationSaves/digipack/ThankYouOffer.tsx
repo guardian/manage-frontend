@@ -22,7 +22,6 @@ import {
 import {
 	getDiscountMonthsForDigisub,
 	getNewDigisubPrice,
-	getOldDigisubPrice,
 } from '@/client/utilities/pricingConfig/digisubDiscountPricing';
 import { formatAmount } from '@/client/utilities/utils';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
@@ -133,8 +132,9 @@ const DiscountOffer = ({
 	</Stack>
 );
 
-type EligibilityResponse = {
+type DiscountPreviewResponse = {
 	valid: boolean;
+	discountedPrice: number;
 };
 
 export const ThankYouOffer = () => {
@@ -148,15 +148,16 @@ export const ThankYouOffer = () => {
 		data,
 		loadingState,
 	}: {
-		data: EligibilityResponse | null;
+		data: DiscountPreviewResponse | null;
 		loadingState: LoadingState;
 	} = useAsyncLoader(
 		() =>
-			fetchWithDefaultParameters('/api/discounts/check-eligibility', {
+			fetchWithDefaultParameters('/api/discounts/preview-discount', {
 				method: 'POST',
 				body: JSON.stringify({
 					subscriptionNumber:
 						productDetail.subscription.subscriptionId,
+					// Todo: make this fetch rate plan from config
 					discountProductRatePlanId:
 						'2c92c0f962cec7990162d3882afc52dd',
 				}),
@@ -194,7 +195,6 @@ export const ThankYouOffer = () => {
 	) as PaidSubscriptionPlan;
 
 	const discountMonths = getDiscountMonthsForDigisub(productDetail);
-	const discountedPrice = getOldDigisubPrice(mainPlan);
 	const newPrice = getNewDigisubPrice(mainPlan);
 
 	const handleDiscountOfferClick = async () => {
@@ -205,18 +205,20 @@ export const ThankYouOffer = () => {
 		try {
 			setIsDiscountLoading(true);
 
-			const result = await fetchWithDefaultParameters(
+			const response = await fetchWithDefaultParameters(
 				'/api/discounts/apply-discount',
 				{
 					method: 'POST',
 					body: JSON.stringify({
-						subscriptionNumber: productDetail.subscription,
-						discountProductRatePlanId: 'todo',
+						subscriptionNumber:
+							productDetail.subscription.subscriptionId,
+						discountProductRatePlanId:
+							'2c92c0f962cec7990162d3882afc52dd',
 					}),
 				},
-			).then((response) => response.text());
+			);
 
-			if (result === 'Success') {
+			if (response.ok) {
 				setIsDiscountLoading(false);
 				navigate('./confirm-discount', {
 					state: { ...routerState },
@@ -271,7 +273,7 @@ export const ThankYouOffer = () => {
 					<DiscountOffer
 						currencySymbol={mainPlan.currency}
 						discountMonths={discountMonths}
-						discountedPrice={discountedPrice}
+						discountedPrice={data.discountedPrice}
 						isDiscountLoading={isDiscountLoading}
 						hasDiscountFailed={hasDiscountFailed}
 						handleDiscountOfferClick={handleDiscountOfferClick}
