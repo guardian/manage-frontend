@@ -719,7 +719,7 @@ export const GROUPED_PRODUCT_TYPES: {
 	membership: {
 		...PRODUCT_TYPES.membership, // TODO: Can we omit 'groupedProductType' and 'softOptInIDs' from spread properties as omitted from type
 		mapGroupedToSpecific: () => PRODUCT_TYPES.membership,
-		groupFriendlyName: 'membership',
+		groupFriendlyName: 'Membership',
 		showSupporterId: true,
 		supportTheGuardianSectionProps: {
 			supportReferer: 'account_overview_membership_section',

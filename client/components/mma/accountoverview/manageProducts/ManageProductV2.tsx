@@ -7,13 +7,14 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import {
+	Button,
 	LinkButton,
 	Stack,
 	SvgCalendar,
 	SvgClock,
 	SvgCreditCard,
 } from '@guardian/source-react-components';
-import { Link, Navigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/client/components/mma/Page';
 import { ErrorIcon } from '@/client/components/mma/shared/assets/ErrorIcon';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
@@ -71,6 +72,8 @@ const InnerContent = ({
 	manageProductV2Props,
 	productDetail,
 }: InnerContentProps) => {
+	const navigate = useNavigate();
+
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
 		throw new Error('mainPlan does not exist in manageProductV2 page');
@@ -248,64 +251,21 @@ const InnerContent = ({
 						`}
 					>
 						{!hasCancellationPending && (
-							<CancellationCTA
-								productDetail={productDetail}
-								friendlyName={groupedProductType.friendlyName()}
-								specificProductType={specificProductType}
-							/>
+							<Button
+								priority="subdued"
+								onClick={() => {
+									navigate(
+										'/cancel/' +
+											specificProductType.urlPart,
+									);
+								}}
+							>
+								Cancel {groupedProductType.friendlyName()}
+							</Button>
 						)}
 					</div>
 				</div>
 			</section>
-		</>
-	);
-};
-
-interface CancellationCTAProps {
-	productDetail: ProductDetail;
-	friendlyName: string;
-	specificProductType: ProductType;
-}
-
-const CancellationCTA = (props: CancellationCTAProps) => {
-	const shouldContactUsToCancel =
-		!props.productDetail.selfServiceCancellation.isAllowed ||
-		!props.specificProductType.cancellation;
-	return (
-		<>
-			{shouldContactUsToCancel && (
-				<div
-					css={css`
-						${textSans.medium()};
-						color: ${palette.neutral[46]};
-						margin-top: 16px;
-						justify-content: center;
-					`}
-				>
-					Would you like to cancel your {props.friendlyName}?
-					<Link
-						css={css`
-							${textSans.medium()};
-							color: ${palette.brand[400]};
-							font-weight: 700;
-							text-decoration-line: underline;
-							justify-content: center;
-							margin-left: 5px;
-						`}
-						to={'/cancel/' + props.specificProductType.urlPart}
-						state={{ productDetail: props.productDetail }}
-					>
-						Contact us
-					</Link>
-				</div>
-			)}
-
-			{!shouldContactUsToCancel && (
-				<Link to={'/cancel/' + props.specificProductType.urlPart}>
-					{' '}
-					Cancel {props.friendlyName}{' '}
-				</Link>
-			)}
 		</>
 	);
 };
@@ -315,6 +275,8 @@ interface ManageProductV2RouterState {
 }
 
 const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
+	const navigate = useNavigate();
+
 	const request = createProductDetailFetcher(
 		props.productType.allProductsProductTypeFilterString,
 	);
@@ -332,7 +294,8 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 	}
 
 	if (data == null || data.products.length == 0) {
-		return <Navigate to="/" />;
+		navigate('/');
+		return null;
 	}
 
 	const productDetail = data.products.filter(isProduct)[0];

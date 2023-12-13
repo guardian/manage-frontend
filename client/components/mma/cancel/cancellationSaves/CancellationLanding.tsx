@@ -31,6 +31,9 @@ function getNextRoute(productToCancel: ProductDetail): string {
 		case 'membership': {
 			return '../details';
 		}
+		case 'digipack': {
+			return '../discount-offer';
+		}
 		default: {
 			return '/';
 		}

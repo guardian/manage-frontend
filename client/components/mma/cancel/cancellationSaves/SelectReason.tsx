@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
 	InlineError,
@@ -13,35 +13,42 @@ import { useLocation, useNavigate } from 'react-router';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
-} from '../../../../../../shared/dates';
+} from '../../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
 	ProductDetail,
-} from '../../../../../../shared/productResponse';
+} from '../../../../../shared/productResponse';
 import {
 	getMainPlan,
 	MDA_TEST_USER_HEADER,
-} from '../../../../../../shared/productResponse';
-import type { ProductTypeWithCancellationFlow } from '../../../../../../shared/productTypes';
+} from '../../../../../shared/productResponse';
+import {
+	GROUPED_PRODUCT_TYPES,
+	type ProductTypeWithCancellationFlow,
+} from '../../../../../shared/productTypes';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 	wideButtonCss,
-} from '../../../../../styles/ButtonStyles';
-import {
-	headingCss,
-	sectionSpacing,
-} from '../../../../../styles/GenericStyles';
-import { GenericErrorScreen } from '../../../../shared/GenericErrorScreen';
-import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
+} from '../../../../styles/ButtonStyles';
+import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
+import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
+import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
-} from '../../CancellationContainer';
-import { CancellationContext } from '../../CancellationContainer';
-import type { CancellationReason } from '../../cancellationReason';
-import { membershipCancellationReasons } from '../../membership/MembershipCancellationReasons';
-import { paragraphListCss } from './SaveStyles';
+} from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
+import type { CancellationReason } from '../cancellationReason';
+
+const paragraphListCss = css`
+	${textSans.medium()};
+	${from.tablet} {
+		span {
+			display: block;
+		}
+	}
+`;
 
 const reasonLegendCss = css`
 	display: block;
@@ -75,7 +82,11 @@ const CancellationInfo = ({
 	</ul>
 );
 
-const ReasonSelection = (props: {
+const ReasonSelection = ({
+	productType,
+	setSelectedReasonId,
+}: {
+	productType: ProductTypeWithCancellationFlow;
 	setSelectedReasonId: React.Dispatch<React.SetStateAction<string>>;
 }) => {
 	return (
@@ -83,7 +94,7 @@ const ReasonSelection = (props: {
 			onChange={(event: FormEvent<HTMLFieldSetElement>) => {
 				const target: HTMLInputElement =
 					event.target as HTMLInputElement;
-				props.setSelectedReasonId(target.value);
+				setSelectedReasonId(target.value);
 			}}
 			css={css`
 				margin: 0 0 ${space[5]}px;
@@ -92,7 +103,11 @@ const ReasonSelection = (props: {
 			`}
 		>
 			<legend css={reasonLegendCss}>
-				Why did you cancel your Membership today?
+				Why did you cancel your{' '}
+				{GROUPED_PRODUCT_TYPES[
+					productType.groupedProductType
+				].friendlyName()}{' '}
+				today?
 			</legend>
 			<RadioGroup
 				name="issue_type"
@@ -102,7 +117,7 @@ const ReasonSelection = (props: {
 					padding-top: ${space[4]}px;
 				`}
 			>
-				{membershipCancellationReasons.map(
+				{productType.cancellation.reasons.map(
 					(reason: CancellationReason) => (
 						<div
 							key={reason.reasonId}
@@ -194,12 +209,14 @@ export const SelectReason = () => {
 		mainPlan.chargedThrough ?? undefined,
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
+	const navigateToReminder = productType.productType === 'membership';
+
 	const submitReason = async () => {
 		{
 			const canContinue = !!selectedReasonId.length;
 			if (canContinue) {
 				await postReason();
-				navigate('../reminder', {
+				navigate(navigateToReminder ? '../reminder' : '/', {
 					state: {
 						selectedReasonId,
 					},
@@ -245,14 +262,20 @@ export const SelectReason = () => {
 
 	return (
 		<section css={sectionSpacing}>
-			<h2 css={headingCss}>Your Membership has been cancelled</h2>
+			<h2 css={headingCss}>
+				Your{' '}
+				{GROUPED_PRODUCT_TYPES[
+					productType.groupedProductType
+				].friendlyName()}{' '}
+				has been cancelled
+			</h2>
 			<CancellationInfo
 				userEmailAddress={userEmailAddress}
 				benefitsEndDate={benefitsEndDate}
 			/>
 			<p
 				css={css`
-					${paragraphListCss}
+					${paragraphListCss};
 					border-top: 1px solid ${palette.neutral[86]};
 					padding-top: ${space[5]}px;
 				`}
@@ -262,7 +285,10 @@ export const SelectReason = () => {
 					Please take a moment to tell us more about your decision.
 				</span>
 			</p>
-			<ReasonSelection setSelectedReasonId={setSelectedReasonId} />
+			<ReasonSelection
+				productType={productType}
+				setSelectedReasonId={setSelectedReasonId}
+			/>
 			{inValidationErrorState && !selectedReasonId.length && (
 				<InlineError
 					cssOverrides={css`

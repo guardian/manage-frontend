@@ -142,8 +142,6 @@ export const WithIAP: StoryObj<typeof EmailAndMarketing> = {
 
 export const WithSingleContribution: StoryObj<typeof EmailAndMarketing> = {
 	render: () => {
-		featureSwitches['singleContributions'] = true;
-
 		return <EmailAndMarketing />;
 	},
 

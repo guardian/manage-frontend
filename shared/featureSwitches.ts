@@ -4,7 +4,7 @@ export const initFeatureSwitchUrlParamOverride = () => {
 	if (param) {
 		for (const [key, value] of Object.entries(featureSwitches)) {
 			if (!value) {
-				featureSwitches[key] = param === key;
+				featureSwitches[key as FeatureSwitchName] = param === key;
 			}
 		}
 	}
@@ -22,8 +22,16 @@ export const initFeatureSwitchUrlParamOverride = () => {
  * name provided then the function will return false and the feature switch
  * will be set to off.
  */
-export const featureSwitches: Record<string, boolean> = {
+
+type FeatureSwitchName =
+	| 'exampleFeature'
+	| 'appSubscriptions'
+	| 'supporterPlusUpdateAmount'
+	| 'digisubSave';
+
+export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	exampleFeature: false,
 	appSubscriptions: true,
 	supporterPlusUpdateAmount: true,
+	digisubSave: false,
 };

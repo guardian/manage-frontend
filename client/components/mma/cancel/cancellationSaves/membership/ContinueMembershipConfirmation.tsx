@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
+import { from, space, textSans } from '@guardian/source-foundations';
 import { Button, LinkButton, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
@@ -15,7 +15,6 @@ import { getNewMembershipPrice } from '../../../../../utilities/pricingConfig/me
 import { ProgressStepper } from '../../../shared/ProgressStepper';
 import type { CancellationContextInterface } from '../../CancellationContainer';
 import { CancellationContext } from '../../CancellationContainer';
-import { paragraphListCss } from './SaveStyles';
 
 export const ContinueMembershipConfirmation = () => {
 	const navigate = useNavigate();
@@ -47,7 +46,16 @@ export const ContinueMembershipConfirmation = () => {
 			/>
 			<Stack space={4}>
 				<h2 css={headingCss}>Thank you for keeping your Membership</h2>
-				<p css={paragraphListCss}>
+				<p
+					css={css`
+						${textSans.medium()};
+						${from.tablet} {
+							span {
+								display: block;
+							}
+						}
+					`}
+				>
 					The price of your Membership is {newMembershipPriceDisplay}/
 					{mainPlan.billingPeriod}.{' '}
 					<span>
