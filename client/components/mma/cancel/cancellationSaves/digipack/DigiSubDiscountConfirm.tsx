@@ -23,11 +23,7 @@ import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 } from '@/client/styles/ButtonStyles';
-import {
-	getDiscountMonthsForDigisub,
-	getNewDigisubPrice,
-	getOldDigisubPrice,
-} from '@/client/utilities/pricingConfig/digisubDiscountPricing';
+import { getDiscountMonthsForDigisub } from '@/client/utilities/pricingConfig/digisubDiscountPricing';
 import { formatAmount } from '@/client/utilities/utils';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
@@ -56,8 +52,8 @@ export const DigiSubDiscountConfirm = () => {
 
 	const currencySymbol = mainPlan.currency;
 	const discountMonths = getDiscountMonthsForDigisub(digiSub);
-	const discountedPrice = getOldDigisubPrice(mainPlan);
-	const newPrice = getNewDigisubPrice(mainPlan);
+	const discountedPrice = 0; // ToDo: get the discounted  preview response
+	const newPrice = 0; // ToDo: get the future price from the product
 
 	const nextBillingDate = parseDate(
 		digiSub.subscription.nextPaymentDate ?? undefined,

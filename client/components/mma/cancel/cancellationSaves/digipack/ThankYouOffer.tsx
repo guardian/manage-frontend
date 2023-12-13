@@ -19,10 +19,7 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '@/client/utilities/hooks/useAsyncLoader';
-import {
-	getDiscountMonthsForDigisub,
-	getNewDigisubPrice,
-} from '@/client/utilities/pricingConfig/digisubDiscountPricing';
+import { getDiscountMonthsForDigisub } from '@/client/utilities/pricingConfig/digisubDiscountPricing';
 import { formatAmount } from '@/client/utilities/utils';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
@@ -195,7 +192,7 @@ export const ThankYouOffer = () => {
 	) as PaidSubscriptionPlan;
 
 	const discountMonths = getDiscountMonthsForDigisub(productDetail);
-	const newPrice = getNewDigisubPrice(mainPlan);
+	const newPrice = 0; // ToDo: get from the actual product
 
 	const handleDiscountOfferClick = async () => {
 		if (isDiscountLoading) {
