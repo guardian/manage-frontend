@@ -2,40 +2,32 @@ import { signInOkta } from '../../lib/signInOkta';
 
 describe('E2E with Okta', () => {
 	beforeEach(() => {
+		Cypress.config('defaultCommandTimeout', 30_000);
+
 		cy.clearAllCookies();
 		signInOkta();
-		cy.get('h1', {
-			timeout: 30000,
-		}).should('contain', 'Account overview');
+		cy.get('h1').should('contain', 'Account overview');
 	});
 
 	context('account overview tab', () => {
 		it('should contain an email address', () => {
-			cy.findByText('Email address', {
-				timeout: 30000,
-			});
+			cy.findByText('Email address');
 		});
 	});
 
 	context('profile tab', () => {
 		it('should contain a username', () => {
 			cy.visit('/public-settings');
-			cy.findByText('Username', {
-				timeout: 30000,
-			});
+			cy.findByText('Username');
 		});
 	});
 
 	context('emails tab', () => {
 		it('should allow the user to update their email preferences', () => {
 			cy.visit('/email-prefs');
-			cy.findByText('Guardian products and support', {
-				timeout: 30000,
-			}).click();
+			cy.findByText('Guardian products and support').click();
 			cy.visit('/email-prefs');
-			cy.findByText('Guardian products and support', {
-				timeout: 30000,
-			})
+			cy.findByText('Guardian products and support')
 				.parents('div')
 				.get('input[type="checkbox"]')
 				.should('be.checked');
@@ -43,22 +35,16 @@ describe('E2E with Okta', () => {
 
 		it('should allow the user to unsubscribe from all emails', () => {
 			cy.visit('/email-prefs');
-			cy.findByText('Unsubscribe from all emails', {
-				timeout: 30000,
-			}).click();
+			cy.findByText('Unsubscribe from all emails').click();
 			cy.visit('/email-prefs');
-			cy.get('input[type="checkbox"]', {
-				timeout: 30000,
-			}).should('not.be.checked');
+			cy.get('input[type="checkbox"]').should('not.be.checked');
 		});
 	});
 
 	context('settings tab', () => {
 		it('should allow the user to update their personal information', () => {
 			cy.visit('/account-settings');
-			cy.findByLabelText('First Name', {
-				timeout: 30000,
-			}).clear();
+			cy.findByLabelText('First Name').clear();
 			cy.findByLabelText('Last Name').clear();
 			cy.findByLabelText('First Name').type('Test');
 			cy.findByLabelText('Last Name').type('User');
@@ -74,9 +60,6 @@ describe('E2E with Okta', () => {
 			cy.visit('/help');
 			cy.findByText(
 				'If you still can’t find what you need and want to contact us, check',
-				{
-					timeout: 30000,
-				},
 			)
 				.parent()
 				.findByText('here')
@@ -89,9 +72,7 @@ describe('E2E with Okta', () => {
 			cy.solveGoogleReCAPTCHA();
 			cy.wait(1000);
 			cy.findByText('Submit').click();
-			cy.findByText('Thank you for contacting us', {
-				timeout: 30000,
-			});
+			cy.findByText('Thank you for contacting us');
 		});
 	});
 });
