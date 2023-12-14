@@ -12,7 +12,6 @@ import { useLocation } from 'react-router';
 import type {
 	CancellationContextInterface,
 	CancellationPageTitleInterface,
-	CancellationRouterState,
 } from '@/client/components/mma/cancel/CancellationContainer';
 import {
 	CancellationContext,
@@ -34,6 +33,7 @@ import {
 	listWithDividersCss,
 	whatHappensNextIconCss,
 } from '../../../../../styles/GenericStyles';
+import type { DigisubCancellationRouterState } from './ThankYouOffer';
 
 export const DigiSubDiscountConfirm = () => {
 	const pageTitleContext = useContext(
@@ -45,15 +45,16 @@ export const DigiSubDiscountConfirm = () => {
 	) as CancellationContextInterface;
 
 	const location = useLocation();
-	const routerState = location.state as CancellationRouterState;
+	const routerState = location.state as DigisubCancellationRouterState;
 	const digiSub = cancellationContext.productDetail;
 
 	const mainPlan = getMainPlan(digiSub.subscription) as PaidSubscriptionPlan;
 
 	const currencySymbol = mainPlan.currency;
 	const discountMonths = getDiscountMonthsForDigisub(digiSub);
-	const discountedPrice = 0; // ToDo: get the discounted  preview response
-	const newPrice = 0; // ToDo: get the future price from the product
+	const discountedPrice = routerState.discountedPrice;
+	const newPrice =
+		(digiSub.subscription.nextPaymentPrice ?? mainPlan.price) / 100;
 
 	const nextBillingDate = parseDate(
 		digiSub.subscription.nextPaymentDate ?? undefined,

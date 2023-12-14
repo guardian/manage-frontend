@@ -134,6 +134,11 @@ type DiscountPreviewResponse = {
 	discountedPrice: number;
 };
 
+export interface DigisubCancellationRouterState
+	extends CancellationRouterState {
+	discountedPrice: number;
+}
+
 export const ThankYouOffer = () => {
 	const navigate = useNavigate();
 	const cancellationContext = useContext(
@@ -192,7 +197,8 @@ export const ThankYouOffer = () => {
 	) as PaidSubscriptionPlan;
 
 	const discountMonths = getDiscountMonthsForDigisub(productDetail);
-	const newPrice = 0; // ToDo: get from the actual product
+	const newPrice =
+		(productDetail.subscription.nextPaymentPrice ?? mainPlan.price) / 100;
 
 	const handleDiscountOfferClick = async () => {
 		if (isDiscountLoading) {
@@ -215,10 +221,18 @@ export const ThankYouOffer = () => {
 				},
 			);
 
+			const newRouterState: DigisubCancellationRouterState = {
+				...routerState,
+				discountedPrice: data?.discountedPrice ?? 0,
+				journeyCompleted: true,
+			};
+
 			if (response.ok) {
 				setIsDiscountLoading(false);
-				navigate('./confirm-discount', {
-					state: { ...routerState },
+				navigate('../confirm-discount', {
+					state: {
+						...newRouterState,
+					},
 				});
 			} else {
 				setIsDiscountLoading(false);
