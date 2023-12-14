@@ -182,17 +182,17 @@ const ConfirmDigiSubCancellation = lazy(() =>
 
 const DigiSubThankYouOffer = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/ThankYouOffer'
-	).then(({ ThankYouOffer: ThankYouOffer }) => ({
-		default: ThankYouOffer,
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/DigiSubThankYouOffer'
+	).then(({ DigiSubThankYouOffer: DigiSubThankYouOffer }) => ({
+		default: DigiSubThankYouOffer,
 	})),
 );
 
-const ConfirmDigiSubDiscount = lazy(() =>
+const DigiSubDiscountConfirmed = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/DigiSubDiscountConfirm'
-	).then(({ DigiSubDiscountConfirm: DigiSubDiscountConfirm }) => ({
-		default: DigiSubDiscountConfirm,
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/DigiSubDiscountConfirmed'
+	).then(({ DigiSubDiscountConfirmed: DigiSubDiscountConfirmed }) => ({
+		default: DigiSubDiscountConfirmed,
 	})),
 );
 
@@ -708,12 +708,12 @@ const MMARouter = () => {
 										element={<ConfirmDigiSubCancellation />}
 									/>
 									<Route
-										path="confirm-discount"
-										element={<ConfirmDigiSubDiscount />}
-									/>
-									<Route
 										path="discount-offer"
 										element={<DigiSubThankYouOffer />}
+									/>
+									<Route
+										path="discount-confirmed"
+										element={<DigiSubDiscountConfirmed />}
 									/>
 								</Route>
 							),

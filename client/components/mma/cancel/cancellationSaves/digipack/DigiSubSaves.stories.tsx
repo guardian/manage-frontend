@@ -3,8 +3,8 @@ import { rest } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
 import { ConfirmDigiSubCancellation } from '@/client/components/mma/cancel/cancellationSaves/digipack/ConfirmDigiSubCancellation';
-import { DigiSubDiscountConfirm } from '@/client/components/mma/cancel/cancellationSaves/digipack/DigiSubDiscountConfirm';
-import { ThankYouOffer } from '@/client/components/mma/cancel/cancellationSaves/digipack/ThankYouOffer';
+import { DigiSubDiscountConfirmed } from '@/client/components/mma/cancel/cancellationSaves/digipack/DigiSubDiscountConfirmed';
+import { DigiSubThankYouOffer } from '@/client/components/mma/cancel/cancellationSaves/digipack/DigiSubThankYouOffer';
 import {
 	digitalPackPaidByDirectDebit,
 	digitalPackWithPaymentFailure,
@@ -31,14 +31,14 @@ export default {
 } as Meta<typeof CancellationContainer>;
 
 export const DiscountThankYouPage: StoryFn<
-	typeof DigiSubDiscountConfirm
+	typeof DigiSubDiscountConfirmed
 > = () => {
-	return <DigiSubDiscountConfirm />;
+	return <DigiSubDiscountConfirmed />;
 };
 
-export const EligibleForDiscount: StoryObj<typeof ThankYouOffer> = {
+export const EligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 	render: () => {
-		return <ThankYouOffer />;
+		return <DigiSubThankYouOffer />;
 	},
 	parameters: {
 		msw: [
@@ -49,9 +49,9 @@ export const EligibleForDiscount: StoryObj<typeof ThankYouOffer> = {
 	},
 };
 
-export const IneligibleForDiscount: StoryObj<typeof ThankYouOffer> = {
+export const IneligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 	render: () => {
-		return <ThankYouOffer />;
+		return <DigiSubThankYouOffer />;
 	},
 	parameters: {
 		reactRouter: {

@@ -33,9 +33,9 @@ import {
 	listWithDividersCss,
 	whatHappensNextIconCss,
 } from '../../../../../styles/GenericStyles';
-import type { DigisubCancellationRouterState } from './ThankYouOffer';
+import type { DigisubCancellationRouterState } from './DigiSubThankYouOffer';
 
-export const DigiSubDiscountConfirm = () => {
+export const DigiSubDiscountConfirmed = () => {
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;

@@ -88,7 +88,7 @@ describe('Cancel digi sub', () => {
 		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
 	});
 
-	it('goes back to discount screen, applies discount to Digi Sub and cannot renter journey', () => {
+	it('goes back to discount screen, applies discount to Digi Sub and cannot re-enter journey', () => {
 		cy.visit('/?withFeature=digisubSave');
 
 		cy.findByText('Manage subscription').click();

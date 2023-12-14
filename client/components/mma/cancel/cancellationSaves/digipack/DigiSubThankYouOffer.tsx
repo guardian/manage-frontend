@@ -139,7 +139,7 @@ export interface DigisubCancellationRouterState
 	discountedPrice: number;
 }
 
-export const ThankYouOffer = () => {
+export const DigiSubThankYouOffer = () => {
 	const navigate = useNavigate();
 	const cancellationContext = useContext(
 		CancellationContext,
@@ -229,7 +229,7 @@ export const ThankYouOffer = () => {
 
 			if (response.ok) {
 				setIsDiscountLoading(false);
-				navigate('../confirm-discount', {
+				navigate('../discount-confirmed', {
 					state: {
 						...newRouterState,
 					},
