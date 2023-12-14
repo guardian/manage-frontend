@@ -19,7 +19,10 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '@/client/utilities/hooks/useAsyncLoader';
-import { getDiscountMonthsForDigisub } from '@/client/utilities/pricingConfig/digisubDiscountPricing';
+import {
+	getDiscountMonthsForDigisub,
+	getDiscountRatePlanId,
+} from '@/client/utilities/pricingConfig/digisubDiscountPricing';
 import { formatAmount } from '@/client/utilities/utils';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
@@ -145,6 +148,7 @@ export const DigiSubThankYouOffer = () => {
 		CancellationContext,
 	) as CancellationContextInterface;
 	const productDetail = cancellationContext.productDetail;
+	const discountMonths = getDiscountMonthsForDigisub(productDetail);
 
 	const {
 		data,
@@ -159,9 +163,8 @@ export const DigiSubThankYouOffer = () => {
 				body: JSON.stringify({
 					subscriptionNumber:
 						productDetail.subscription.subscriptionId,
-					// Todo: make this fetch rate plan from config
 					discountProductRatePlanId:
-						'2c92c0f962cec7990162d3882afc52dd',
+						getDiscountRatePlanId(discountMonths),
 				}),
 			}),
 		JsonResponseHandler,
@@ -196,7 +199,6 @@ export const DigiSubThankYouOffer = () => {
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
 
-	const discountMonths = getDiscountMonthsForDigisub(productDetail);
 	const newPrice =
 		(productDetail.subscription.nextPaymentPrice ?? mainPlan.price) / 100;
 
@@ -216,7 +218,7 @@ export const DigiSubThankYouOffer = () => {
 						subscriptionNumber:
 							productDetail.subscription.subscriptionId,
 						discountProductRatePlanId:
-							'2c92c0f962cec7990162d3882afc52dd',
+							getDiscountRatePlanId(discountMonths),
 					}),
 				},
 			);
