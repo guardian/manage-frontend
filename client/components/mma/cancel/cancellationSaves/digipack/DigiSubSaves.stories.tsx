@@ -77,11 +77,21 @@ export const IneligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 	},
 };
 
-export const ConfirmCancellation: StoryFn<
-	typeof ConfirmDigiSubCancellation
-> = () => {
-	return <ConfirmDigiSubCancellation />;
-};
+export const ConfirmCancellation: StoryObj<typeof ConfirmDigiSubCancellation> =
+	{
+		render: () => {
+			return <ConfirmDigiSubCancellation />;
+		},
+		parameters: {
+			reactRouter: {
+				state: {
+					productDetail: digitalPackWithPaymentFailure(),
+					user: { email: 'test@test.com' },
+					eligibleForDiscount: true,
+				},
+			},
+		},
+	};
 
 export const DigiSubCancellationReason: StoryFn<typeof SelectReason> = () => {
 	return <SelectReason />;
