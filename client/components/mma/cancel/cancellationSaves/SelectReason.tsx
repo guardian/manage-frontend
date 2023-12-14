@@ -216,7 +216,7 @@ export const SelectReason = () => {
 			const canContinue = !!selectedReasonId.length;
 			if (canContinue) {
 				await postReason();
-				navigate(navigateToReminder ? '../reminder' : './', {
+				navigate(navigateToReminder ? '../reminder' : '/', {
 					state: {
 						selectedReasonId,
 					},
