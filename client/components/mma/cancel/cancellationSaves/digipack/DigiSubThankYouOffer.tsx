@@ -139,7 +139,8 @@ type DiscountPreviewResponse = {
 
 export interface DigisubCancellationRouterState
 	extends CancellationRouterState {
-	discountedPrice: number;
+	discountedPrice?: number;
+	eligibleForDiscount: boolean;
 }
 
 export const DigiSubThankYouOffer = () => {
@@ -202,6 +203,12 @@ export const DigiSubThankYouOffer = () => {
 	const newPrice =
 		(productDetail.subscription.nextPaymentPrice ?? mainPlan.price) / 100;
 
+	const newRouterState: DigisubCancellationRouterState = {
+		...routerState,
+		discountedPrice: data?.discountedPrice,
+		eligibleForDiscount: data?.valid ?? false,
+	};
+
 	const handleDiscountOfferClick = async () => {
 		if (isDiscountLoading) {
 			return;
@@ -223,17 +230,12 @@ export const DigiSubThankYouOffer = () => {
 				},
 			);
 
-			const newRouterState: DigisubCancellationRouterState = {
-				...routerState,
-				discountedPrice: data?.discountedPrice ?? 0,
-				journeyCompleted: true,
-			};
-
 			if (response.ok) {
 				setIsDiscountLoading(false);
 				navigate('../discount-confirmed', {
 					state: {
 						...newRouterState,
+						journeyCompleted: true,
 					},
 				});
 			} else {
@@ -306,7 +308,7 @@ export const DigiSubThankYouOffer = () => {
 						priority="subdued"
 						onClick={() =>
 							navigate('../confirm-cancel', {
-								state: { ...routerState },
+								state: { ...newRouterState },
 							})
 						}
 					>

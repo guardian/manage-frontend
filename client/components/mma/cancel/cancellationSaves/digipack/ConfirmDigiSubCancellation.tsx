@@ -9,10 +9,7 @@ import {
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import type {
-	CancellationContextInterface,
-	CancellationRouterState,
-} from '@/client/components/mma/cancel/CancellationContainer';
+import type { CancellationContextInterface } from '@/client/components/mma/cancel/CancellationContainer';
 import { CancellationContext } from '@/client/components/mma/cancel/CancellationContainer';
 import type { OptionalCancellationReasonId } from '@/client/components/mma/cancel/cancellationReason';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
@@ -27,6 +24,7 @@ import type {
 } from '@/shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '@/shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '@/shared/productTypes';
+import type { DigisubCancellationRouterState } from './DigiSubThankYouOffer';
 
 function GreyBulletpoint() {
 	return (
@@ -99,7 +97,8 @@ export const ConfirmDigiSubCancellation = () => {
 	const [loadingFailed, setLoadingFailed] = useState<boolean>(false);
 
 	const location = useLocation();
-	const routerState = location.state as CancellationRouterState;
+	const routerState = location.state as DigisubCancellationRouterState;
+	const eligibleForDiscount = routerState?.eligibleForDiscount;
 
 	const reason: OptionalCancellationReasonId =
 		'mma_membership_cancellation_default'; //reason needs to be provided as undefined doesn't work. Reason updated if user provides one on next screen.
@@ -260,21 +259,23 @@ export const ConfirmDigiSubCancellation = () => {
 				>
 					Cancel subscription
 				</Button>
-				<Button
-					onClick={() =>
-						navigate('../discount-offer', {
-							state: { ...routerState },
-						})
-					}
-					cssOverrides={css`
-						display: flex;
-						margin-left: ${space[5]}px;
-						justify-content: center;
-					`}
-					priority="subdued"
-				>
-					Go back to discount
-				</Button>
+				{eligibleForDiscount && (
+					<Button
+						onClick={() =>
+							navigate('../discount-offer', {
+								state: { ...routerState },
+							})
+						}
+						cssOverrides={css`
+							display: flex;
+							margin-left: ${space[5]}px;
+							justify-content: center;
+						`}
+						priority="subdued"
+					>
+						Go back to discount
+					</Button>
+				)}
 			</div>
 		</section>
 	);

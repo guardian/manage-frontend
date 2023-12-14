@@ -7,6 +7,7 @@ import {
 	SvgEnvelope,
 	SvgGift,
 } from '@guardian/source-react-components';
+import { captureException } from '@sentry/browser';
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import type {
@@ -18,6 +19,7 @@ import {
 	CancellationPageTitleContext,
 } from '@/client/components/mma/cancel/CancellationContainer';
 import { linkCss } from '@/client/components/mma/upgrade/UpgradeSupportStyles';
+import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
@@ -65,6 +67,12 @@ export const DigiSubDiscountConfirmed = () => {
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Your subscription');
 	}, []);
+
+	if (!discountedPrice) {
+		const message = 'No discounted price found in router state';
+		captureException(message);
+		return <GenericErrorScreen loggingMessage={message} />;
+	}
 
 	return (
 		<>
