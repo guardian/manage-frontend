@@ -30,10 +30,19 @@ export default {
 	},
 } as Meta<typeof CancellationContainer>;
 
-export const DiscountThankYouPage: StoryFn<
-	typeof DigiSubDiscountConfirmed
-> = () => {
-	return <DigiSubDiscountConfirmed />;
+export const DiscountConfirmed: StoryObj<typeof DigiSubDiscountConfirmed> = {
+	render: () => {
+		return <DigiSubDiscountConfirmed />;
+	},
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: digitalPackPaidByDirectDebit(),
+				user: { email: 'test@test.com' },
+				discountedPrice: 111.75,
+			},
+		},
+	},
 };
 
 export const EligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
@@ -43,7 +52,7 @@ export const EligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 	parameters: {
 		msw: [
 			rest.post('/api/discounts/preview-discount', (_req, res, ctx) => {
-				return res(ctx.json({ valid: true }));
+				return res(ctx.json({ valid: true, discountedPrice: 111.75 }));
 			}),
 		],
 	},
