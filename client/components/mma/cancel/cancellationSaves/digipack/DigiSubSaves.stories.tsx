@@ -42,7 +42,7 @@ export const EligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 	},
 	parameters: {
 		msw: [
-			rest.post('/api/discounts/check-eligibility', (_req, res, ctx) => {
+			rest.post('/api/discounts/preview-discount', (_req, res, ctx) => {
 				return res(ctx.json({ valid: true }));
 			}),
 		],
@@ -61,7 +61,7 @@ export const IneligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 			},
 		},
 		msw: [
-			rest.post('/api/discounts/check-eligibility', (_req, res, ctx) => {
+			rest.post('/api/discounts/preview-discount', (_req, res, ctx) => {
 				return res(ctx.json({ valid: false }));
 			}),
 		],
