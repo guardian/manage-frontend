@@ -113,7 +113,7 @@ export const s3TextFilePromise = (
 		const s3PromiseResult = await S3.getObject(filePath).promise();
 		if (
 			s3PromiseResult.Body &&
-			s3PromiseResult.ContentType === 'text/plain'
+			s3PromiseResult.ContentType === 'application/json'
 		) {
 			return s3PromiseResult.Body.toString();
 		}
