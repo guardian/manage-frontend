@@ -27,6 +27,7 @@ const apiNames = [
 	'invoicing-api',
 	'contact-us-api',
 	'product-move-api',
+	'discount-api',
 ] as const;
 type ApiName = typeof apiNames[number];
 
@@ -191,6 +192,9 @@ const getApiGateway = (
 			},
 	};
 };
+
+const discountAPIGateway = getApiGateway('support', 'discount-api');
+export const discountAPI = discountAPIGateway.authorisedExpressCallback;
 
 const cancellationSfCasesAPIGateway = getApiGateway(
 	'membership',

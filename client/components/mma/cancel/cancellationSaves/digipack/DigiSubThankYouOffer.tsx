@@ -6,21 +6,29 @@ import {
 	Stack,
 	SvgTickRound,
 } from '@guardian/source-react-components';
-import { useContext } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router';
+import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
+import { captureMessage } from '@sentry/browser';
+import { useContext, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
 } from '@/client/styles/ButtonStyles';
+import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import {
+	LoadingState,
+	useAsyncLoader,
+} from '@/client/utilities/hooks/useAsyncLoader';
 import {
 	getDiscountMonthsForDigisub,
-	getNewDigisubPrice,
-	getOldDigisubPrice,
+	getDiscountRatePlanId,
 } from '@/client/utilities/pricingConfig/digisubDiscountPricing';
 import { formatAmount } from '@/client/utilities/utils';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
 import { dateString } from '../../../../../../shared/dates';
+import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
+import { DefaultLoadingView } from '../../../shared/asyncComponents/DefaultLoadingView';
 import { benefitsCss } from '../../../shared/benefits/BenefitsStyles';
 import { Heading } from '../../../shared/Heading';
 import type {
@@ -28,21 +36,26 @@ import type {
 	CancellationRouterState,
 } from '../../CancellationContainer';
 import { CancellationContext } from '../../CancellationContainer';
-import { eligibleForDigisubDiscount } from '../saveEligibilityCheck';
+
+type DiscountOfferProps = {
+	currencySymbol: string;
+	discountMonths: number;
+	discountedPrice: number;
+	isDiscountLoading: boolean;
+	hasDiscountFailed: boolean;
+	handleDiscountOfferClick: () => void;
+	newPrice: number;
+};
 
 const DiscountOffer = ({
 	currencySymbol,
 	discountMonths,
 	discountedPrice,
+	isDiscountLoading,
+	hasDiscountFailed,
 	handleDiscountOfferClick,
 	newPrice,
-}: {
-	currencySymbol: string;
-	discountMonths: number;
-	discountedPrice: number;
-	handleDiscountOfferClick: () => void;
-	newPrice: number;
-}) => (
+}: DiscountOfferProps) => (
 	<Stack
 		space={4}
 		css={css`
@@ -103,26 +116,79 @@ const DiscountOffer = ({
 				<Button
 					cssOverrides={buttonCentredCss}
 					onClick={handleDiscountOfferClick}
+					isLoading={isDiscountLoading}
 				>
 					Keep support with discount
 				</Button>
 			</ThemeProvider>
 		</div>
+		{hasDiscountFailed && (
+			<ErrorSummary
+				message={
+					'We were unable to apply your discount. Please try again'
+				}
+			/>
+		)}
 	</Stack>
 );
 
-export const ThankYouOffer = () => {
+type DiscountPreviewResponse = {
+	valid: boolean;
+	discountedPrice: number;
+};
+
+export interface DigisubCancellationRouterState
+	extends CancellationRouterState {
+	discountedPrice?: number;
+	eligibleForDiscount: boolean;
+}
+
+export const DigiSubThankYouOffer = () => {
 	const navigate = useNavigate();
 	const cancellationContext = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
 	const productDetail = cancellationContext.productDetail;
+	const discountMonths = getDiscountMonthsForDigisub(productDetail);
+
+	const {
+		data,
+		loadingState,
+	}: {
+		data: DiscountPreviewResponse | null;
+		loadingState: LoadingState;
+	} = useAsyncLoader(
+		() =>
+			fetchWithDefaultParameters('/api/discounts/preview-discount', {
+				method: 'POST',
+				body: JSON.stringify({
+					subscriptionNumber:
+						productDetail.subscription.subscriptionId,
+					discountProductRatePlanId:
+						getDiscountRatePlanId(discountMonths),
+				}),
+			}),
+		JsonResponseHandler,
+	);
 
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 
+	const [isDiscountLoading, setIsDiscountLoading] = useState<boolean>(false);
+	const [hasDiscountFailed, setHasDiscountFailed] = useState<boolean>(false);
+
+	if (loadingState == LoadingState.IsLoading) {
+		return <DefaultLoadingView loadingMessage="Loading..." />;
+	}
+	if (loadingState == LoadingState.HasError) {
+		captureMessage('Error loading discount eligibility');
+	}
+
+	const eligibleForDiscount = data?.valid;
+
 	if (!productDetail) {
-		return <Navigate to="/" />;
+		navigate('/');
+		return null;
 	}
 
 	const supportStartYear = dateString(
@@ -134,10 +200,53 @@ export const ThankYouOffer = () => {
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
 
-	const eligibleForDiscount = eligibleForDigisubDiscount(productDetail);
-	const discountMonths = getDiscountMonthsForDigisub(productDetail);
-	const discountedPrice = getOldDigisubPrice(mainPlan);
-	const newPrice = getNewDigisubPrice(mainPlan);
+	const newPrice =
+		(productDetail.subscription.nextPaymentPrice ?? mainPlan.price) / 100;
+
+	const newRouterState: DigisubCancellationRouterState = {
+		...routerState,
+		discountedPrice: data?.discountedPrice,
+		eligibleForDiscount: data?.valid ?? false,
+	};
+
+	const handleDiscountOfferClick = async () => {
+		if (isDiscountLoading) {
+			return;
+		}
+
+		try {
+			setIsDiscountLoading(true);
+
+			const response = await fetchWithDefaultParameters(
+				'/api/discounts/apply-discount',
+				{
+					method: 'POST',
+					body: JSON.stringify({
+						subscriptionNumber:
+							productDetail.subscription.subscriptionId,
+						discountProductRatePlanId:
+							getDiscountRatePlanId(discountMonths),
+					}),
+				},
+			);
+
+			if (response.ok) {
+				setIsDiscountLoading(false);
+				navigate('../discount-confirmed', {
+					state: {
+						...newRouterState,
+						journeyCompleted: true,
+					},
+				});
+			} else {
+				setIsDiscountLoading(false);
+				setHasDiscountFailed(true);
+			}
+		} catch (e) {
+			setIsDiscountLoading(false);
+			setHasDiscountFailed(true);
+		}
+	};
 
 	return (
 		<section
@@ -179,10 +288,10 @@ export const ThankYouOffer = () => {
 					<DiscountOffer
 						currencySymbol={mainPlan.currency}
 						discountMonths={discountMonths}
-						discountedPrice={discountedPrice}
-						handleDiscountOfferClick={() =>
-							navigate('todo', { state: { ...routerState } })
-						}
+						discountedPrice={data.discountedPrice}
+						isDiscountLoading={isDiscountLoading}
+						hasDiscountFailed={hasDiscountFailed}
+						handleDiscountOfferClick={handleDiscountOfferClick}
 						newPrice={newPrice}
 					/>
 				)}
@@ -199,7 +308,7 @@ export const ThankYouOffer = () => {
 						priority="subdued"
 						onClick={() =>
 							navigate('../confirm-cancel', {
-								state: { ...routerState },
+								state: { ...newRouterState },
 							})
 						}
 					>

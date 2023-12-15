@@ -53,6 +53,18 @@ describe('Cancel digi sub', () => {
 			body: { cancellationEffectiveDate: '2022-02-05' },
 		}).as('get_cancellation_date');
 
+		cy.intercept('POST', 'api/discounts/preview-discount', {
+			statusCode: 200,
+			body: {
+				valid: true,
+				discountedPrice: 111.75,
+			},
+		}).as('preview_discount');
+
+		cy.intercept('POST', 'api/discounts/apply-discount', {
+			statusCode: 200,
+		}).as('apply_discount');
+
 		cy.intercept('POST', 'api/cancel/**', {
 			statusCode: 200,
 		}).as('cancel_digisub');
@@ -76,19 +88,28 @@ describe('Cancel digi sub', () => {
 		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
 	});
 
-	it('adds discount Digi Sub and cannot renter journey', () => {
+	it('goes back to discount screen, applies discount to Digi Sub and cannot re-enter journey', () => {
 		cy.visit('/?withFeature=digisubSave');
 
 		cy.findByText('Manage subscription').click();
 		cy.findByText('Cancel subscription').click();
 		cy.findByText('Continue to cancel online').click();
+
+		cy.wait('@preview_discount');
+
+		cy.findByText('Continue to cancel').click();
+
+		cy.findByText('Go back to discount').click();
+
 		cy.findByRole('button', {
 			name: 'Keep support with discount',
 		}).click();
 
-		//TODO Below can be implemented once new endpoint is completed
-		//cy.findByText('Discount confirmed');
-		//cy.go('back');
-		//cy.findByRole('heading', { name: 'Account overview' }).should('exist');
+		cy.wait('@apply_discount');
+
+		cy.findByText('Discount confirmed');
+
+		cy.go('back');
+		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
 	});
 });

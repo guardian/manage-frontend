@@ -5,6 +5,7 @@ import { isProduct, MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import {
 	cancellationSfCasesAPI,
 	deliveryRecordsAPI,
+	discountAPI,
 	holidayStopAPI,
 	invoicingAPI,
 	productMoveAPI,
@@ -169,6 +170,16 @@ router.patch(
 	cancellationSfCasesAPI('case/:caseId', 'UPDATE_CANCELLATION_CASE', [
 		'caseId',
 	]),
+);
+
+router.post(
+	'/discounts/preview-discount',
+	discountAPI('preview-discount', 'PREVIEW_DISCOUNT'),
+);
+
+router.post(
+	'/discounts/apply-discount',
+	discountAPI('apply-discount', 'APPLY_DISCOUNT'),
 );
 
 router.post(

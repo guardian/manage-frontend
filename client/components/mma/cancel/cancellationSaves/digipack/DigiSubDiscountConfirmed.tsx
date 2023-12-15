@@ -7,27 +7,24 @@ import {
 	SvgEnvelope,
 	SvgGift,
 } from '@guardian/source-react-components';
+import { captureException } from '@sentry/browser';
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import type {
 	CancellationContextInterface,
 	CancellationPageTitleInterface,
-	CancellationRouterState,
 } from '@/client/components/mma/cancel/CancellationContainer';
 import {
 	CancellationContext,
 	CancellationPageTitleContext,
 } from '@/client/components/mma/cancel/CancellationContainer';
 import { linkCss } from '@/client/components/mma/upgrade/UpgradeSupportStyles';
+import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
 import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 } from '@/client/styles/ButtonStyles';
-import {
-	getDiscountMonthsForDigisub,
-	getNewDigisubPrice,
-	getOldDigisubPrice,
-} from '@/client/utilities/pricingConfig/digisubDiscountPricing';
+import { getDiscountMonthsForDigisub } from '@/client/utilities/pricingConfig/digisubDiscountPricing';
 import { formatAmount } from '@/client/utilities/utils';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
@@ -38,8 +35,9 @@ import {
 	listWithDividersCss,
 	whatHappensNextIconCss,
 } from '../../../../../styles/GenericStyles';
+import type { DigisubCancellationRouterState } from './DigiSubThankYouOffer';
 
-export const DigiSubDiscountConfirm = () => {
+export const DigiSubDiscountConfirmed = () => {
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
@@ -49,15 +47,16 @@ export const DigiSubDiscountConfirm = () => {
 	) as CancellationContextInterface;
 
 	const location = useLocation();
-	const routerState = location.state as CancellationRouterState;
+	const routerState = location.state as DigisubCancellationRouterState;
 	const digiSub = cancellationContext.productDetail;
 
 	const mainPlan = getMainPlan(digiSub.subscription) as PaidSubscriptionPlan;
 
 	const currencySymbol = mainPlan.currency;
 	const discountMonths = getDiscountMonthsForDigisub(digiSub);
-	const discountedPrice = getOldDigisubPrice(mainPlan);
-	const newPrice = getNewDigisubPrice(mainPlan);
+	const discountedPrice = routerState.discountedPrice;
+	const newPrice =
+		(digiSub.subscription.nextPaymentPrice ?? mainPlan.price) / 100;
 
 	const nextBillingDate = parseDate(
 		digiSub.subscription.nextPaymentDate ?? undefined,
@@ -68,6 +67,12 @@ export const DigiSubDiscountConfirm = () => {
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Your subscription');
 	}, []);
+
+	if (!discountedPrice) {
+		const message = 'No discounted price found in router state';
+		captureException(message);
+		return <GenericErrorScreen loggingMessage={message} />;
+	}
 
 	return (
 		<>

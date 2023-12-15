@@ -1,18 +1,18 @@
 import type { Meta, StoryFn } from '@storybook/react';
-import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
-import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
-import { membershipSupporterCurrencyUSD } from '../../../../fixtures/productBuilder/testProducts';
-import { CancellationContainer } from '../CancellationContainer';
-import { ConfirmMembershipCancellation } from './membership/ConfirmMembershipCancellation';
-import { ContinueMembershipConfirmation } from './membership/ContinueMembershipConfirmation';
-import { MembershipSwitch } from './membership/MembershipSwitch';
-import { SaveOptions } from './membership/SaveOptions';
-import { SwitchThankYou } from './membership/SwitchThankYou';
-import { ValueOfSupport } from './membership/ValueOfSupport';
-import { SelectReason } from './SelectReason';
+import { ReactRouterDecorator } from '../../../../../../.storybook/ReactRouterDecorator';
+import { PRODUCT_TYPES } from '../../../../../../shared/productTypes';
+import { membershipSupporterCurrencyUSD } from '../../../../../fixtures/productBuilder/testProducts';
+import { CancellationContainer } from '../../CancellationContainer';
+import { SelectReason } from '../SelectReason';
+import { ConfirmMembershipCancellation } from './ConfirmMembershipCancellation';
+import { ContinueMembershipConfirmation } from './ContinueMembershipConfirmation';
+import { MembershipSwitch } from './MembershipSwitch';
+import { SaveOptions } from './SaveOptions';
+import { SwitchThankYou } from './SwitchThankYou';
+import { ValueOfSupport } from './ValueOfSupport';
 
 export default {
-	title: 'Pages/CancellationSave',
+	title: 'Pages/MembershipSave',
 	component: CancellationContainer,
 	decorators: [ReactRouterDecorator],
 	parameters: {

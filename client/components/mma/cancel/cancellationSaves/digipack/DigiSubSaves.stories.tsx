@@ -1,9 +1,10 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { rest } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
 import { ConfirmDigiSubCancellation } from '@/client/components/mma/cancel/cancellationSaves/digipack/ConfirmDigiSubCancellation';
-import { DigiSubDiscountConfirm } from '@/client/components/mma/cancel/cancellationSaves/digipack/DigiSubDiscountConfirm';
-import { ThankYouOffer } from '@/client/components/mma/cancel/cancellationSaves/digipack/ThankYouOffer';
+import { DigiSubDiscountConfirmed } from '@/client/components/mma/cancel/cancellationSaves/digipack/DigiSubDiscountConfirmed';
+import { DigiSubThankYouOffer } from '@/client/components/mma/cancel/cancellationSaves/digipack/DigiSubThankYouOffer';
 import {
 	digitalPackPaidByDirectDebit,
 	digitalPackWithPaymentFailure,
@@ -29,21 +30,37 @@ export default {
 	},
 } as Meta<typeof CancellationContainer>;
 
-export const DiscountThankYouPage: StoryFn<
-	typeof DigiSubDiscountConfirm
-> = () => {
-	return <DigiSubDiscountConfirm />;
-};
-
-export const EligibleForDiscount: StoryObj<typeof ThankYouOffer> = {
+export const DiscountConfirmed: StoryObj<typeof DigiSubDiscountConfirmed> = {
 	render: () => {
-		return <ThankYouOffer />;
+		return <DigiSubDiscountConfirmed />;
+	},
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: digitalPackPaidByDirectDebit(),
+				user: { email: 'test@test.com' },
+				discountedPrice: 111.75,
+			},
+		},
 	},
 };
 
-export const IneligibleForDiscount: StoryObj<typeof ThankYouOffer> = {
+export const EligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 	render: () => {
-		return <ThankYouOffer />;
+		return <DigiSubThankYouOffer />;
+	},
+	parameters: {
+		msw: [
+			rest.post('/api/discounts/preview-discount', (_req, res, ctx) => {
+				return res(ctx.json({ valid: true, discountedPrice: 111.75 }));
+			}),
+		],
+	},
+};
+
+export const IneligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
+	render: () => {
+		return <DigiSubThankYouOffer />;
 	},
 	parameters: {
 		reactRouter: {
@@ -52,14 +69,29 @@ export const IneligibleForDiscount: StoryObj<typeof ThankYouOffer> = {
 				user: { email: 'test@test.com' },
 			},
 		},
+		msw: [
+			rest.post('/api/discounts/preview-discount', (_req, res, ctx) => {
+				return res(ctx.json({ valid: false }));
+			}),
+		],
 	},
 };
 
-export const ConfirmCancellation: StoryFn<
-	typeof ConfirmDigiSubCancellation
-> = () => {
-	return <ConfirmDigiSubCancellation />;
-};
+export const ConfirmCancellation: StoryObj<typeof ConfirmDigiSubCancellation> =
+	{
+		render: () => {
+			return <ConfirmDigiSubCancellation />;
+		},
+		parameters: {
+			reactRouter: {
+				state: {
+					productDetail: digitalPackWithPaymentFailure(),
+					user: { email: 'test@test.com' },
+					eligibleForDiscount: true,
+				},
+			},
+		},
+	};
 
 export const DigiSubCancellationReason: StoryFn<typeof SelectReason> = () => {
 	return <SelectReason />;
