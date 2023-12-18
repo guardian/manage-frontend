@@ -154,29 +154,24 @@ export const DigiSubThankYouOffer = () => {
 	const [discountPreview, setDiscountPreview] =
 		useState<DiscountPreviewResponse | null>(null);
 
-	try {
-		useEffect(() => {
-			setIsPreviewDiscountLoading(true);
-			fetchWithDefaultParameters('/api/discounts/preview-discount', {
-				method: 'POST',
-				body: JSON.stringify({
-					subscriptionNumber:
-						productDetail.subscription.subscriptionId,
-					discountProductRatePlanId:
-						getDiscountRatePlanId(discountMonths),
-				}),
-			}).then((response) => {
-				if (response.ok) {
-					response.json().then((data) => {
-						setDiscountPreview(data);
-					});
-				}
-				setIsPreviewDiscountLoading(false);
-			});
-		}, []);
-	} catch (e) {
-		console.log(e);
-	}
+	useEffect(() => {
+		setIsPreviewDiscountLoading(true);
+		fetchWithDefaultParameters('/api/discounts/preview-discount', {
+			method: 'POST',
+			body: JSON.stringify({
+				subscriptionNumber: productDetail.subscription.subscriptionId,
+				discountProductRatePlanId:
+					getDiscountRatePlanId(discountMonths),
+			}),
+		}).then((response) => {
+			if (response.ok) {
+				response.json().then((data) => {
+					setDiscountPreview(data);
+				});
+			}
+			setIsPreviewDiscountLoading(false);
+		});
+	}, []);
 
 	if (isPreviewDiscountLoading) {
 		return <DefaultLoadingView loadingMessage="Loading..." />;
