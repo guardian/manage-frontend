@@ -39,7 +39,9 @@ export const DiscountConfirmed: StoryObj<typeof DigiSubDiscountConfirmed> = {
 			state: {
 				productDetail: digitalPackPaidByDirectDebit(),
 				user: { email: 'test@test.com' },
+				eligibleForDiscount: true,
 				discountedPrice: 111.75,
+				discountPeriod: '3 months',
 			},
 		},
 	},
@@ -52,7 +54,13 @@ export const EligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 	parameters: {
 		msw: [
 			rest.post('/api/discounts/preview-discount', (_req, res, ctx) => {
-				return res(ctx.json({ valid: true, discountedPrice: 111.75 }));
+				return res(
+					ctx.json({
+						discountedPrice: 111.75,
+						upToPeriods: '12',
+						upToPeriodsType: 'Months',
+					}),
+				);
 			}),
 		],
 	},
@@ -71,7 +79,7 @@ export const IneligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 		},
 		msw: [
 			rest.post('/api/discounts/preview-discount', (_req, res, ctx) => {
-				return res(ctx.json({ valid: false }));
+				return res(ctx.status(400));
 			}),
 		],
 	},
