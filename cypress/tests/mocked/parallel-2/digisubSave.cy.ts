@@ -1,6 +1,13 @@
 import { digitalPackPaidByDirectDebit } from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
+import { DiscountPreviewResponse } from '../../../../client/utilities/discountPreview';
+
+const discountPreviewResponse: DiscountPreviewResponse = {
+	discountedPrice: 111.75,
+	upToPeriods: 3,
+	upToPeriodsType: 'Months',
+};
 
 describe('Cancel digi sub', () => {
 	beforeEach(() => {
@@ -55,9 +62,7 @@ describe('Cancel digi sub', () => {
 
 		cy.intercept('POST', 'api/discounts/preview-discount', {
 			statusCode: 200,
-			body: {
-				discountedPrice: 111.75,
-			},
+			body: discountPreviewResponse,
 		}).as('preview_discount');
 
 		cy.intercept('POST', 'api/discounts/apply-discount', {
@@ -87,6 +92,30 @@ describe('Cancel digi sub', () => {
 		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
 	});
 
+	it('cancels after ineligible for discount', () => {
+		cy.intercept('POST', 'api/discounts/preview-discount', {
+			statusCode: 400,
+		}).as('preview_discount_ineligible');
+
+		cy.visit('/?withFeature=digisubSave');
+
+		cy.findByText('Manage subscription').click();
+		cy.findByText('Cancel subscription').click();
+		cy.findByText('Continue to cancel online').click();
+
+		cy.findByText(/discount/).should('not.exist');
+
+		cy.findByText('Continue to cancel').click();
+
+		cy.findByText(/Go back to discount/).should('not.exist');
+
+		cy.findByRole('button', {
+			name: 'Cancel subscription',
+		}).click();
+
+		cy.findByText(/Your subscription has been cancelled/).should('exist');
+	});
+
 	it('goes back to discount screen, applies discount to Digi Sub and cannot re-enter journey', () => {
 		cy.visit('/?withFeature=digisubSave');
 
@@ -103,8 +132,6 @@ describe('Cancel digi sub', () => {
 		cy.findByRole('button', {
 			name: 'Keep support with discount',
 		}).click();
-
-		cy.wait('@apply_discount');
 
 		cy.findByText('Discount confirmed');
 
