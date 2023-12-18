@@ -257,6 +257,11 @@ const InnerContent = ({
 									navigate(
 										'/cancel/' +
 											specificProductType.urlPart,
+										{
+											state: {
+												productDetail: productDetail,
+											},
+										},
 									);
 								}}
 							>
