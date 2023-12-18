@@ -79,9 +79,9 @@ const HelpCentreRouter = () => {
 
 	const knownIssues: KnownIssueObj[] = [
 		{
-			date: '4th Dec 2023 12:45',
+			date: '18th Dec 2023 11:45',
 			message:
-				'Due to a technical issue, Customer Service phonelines in the USA & Canada are currently not available. Live chat and email are unaffected.',
+				'Our customer service contact centre, including live chat, will be closed on Christmas Day, Boxing Day and New Year’s Day.',
 		},
 	];
 
