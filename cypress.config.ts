@@ -4,9 +4,7 @@ export default defineConfig({
 	viewportWidth: 1500,
 	viewportHeight: 860,
 	video: false,
-	failOnStatusCode: false,
 	chromeWebSecurity: false,
-	experimentalSessionSupport: true,
 	blockHosts: [
 		'*ophan.theguardian.com',
 		'pixel.adsafeprotected.com',
@@ -26,11 +24,10 @@ export default defineConfig({
 		openMode: 0,
 	},
 	e2e: {
-		// We've imported your old cypress plugins here.
-		// You may want to clean this up later by importing these.
+		specPattern: 'cypress/tests/**/*.cy.{js,jsx,ts,tsx}',
 		setupNodeEvents(on, config) {
 			return require('./cypress/plugins/index.ts')(on, config);
 		},
-		baseUrl: 'http://localhost:9234/',
+		baseUrl: 'https://manage.thegulocal.com',
 	},
 });

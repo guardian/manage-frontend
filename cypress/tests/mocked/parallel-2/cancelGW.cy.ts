@@ -1,6 +1,6 @@
-import { guardianWeeklyPaidByCard } from '../../../client/fixtures/productBuilder/testProducts';
-import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
-import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
+import { guardianWeeklyPaidByCard } from '../../../../client/fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Cancel guardian weekly', () => {
 	beforeEach(() => {

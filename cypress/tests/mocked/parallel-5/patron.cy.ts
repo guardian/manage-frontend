@@ -1,9 +1,9 @@
 import {
 	guardianWeeklyPaidByCard,
 	patronDigitalPack,
-} from '../../../client/fixtures/productBuilder/testProducts';
-import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
-import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
+} from '../../../../client/fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('patron test', () => {
 	beforeEach(() => {

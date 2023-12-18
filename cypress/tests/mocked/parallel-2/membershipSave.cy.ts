@@ -2,10 +2,10 @@ import {
 	contributionPaidByCard,
 	guardianWeeklyExpiredCard,
 	membershipSupporterWithOldPrice,
-} from '../../../client/fixtures/productBuilder/testProducts';
-import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
-import { productMovePreviewResponse } from '../../../client/fixtures/productMove';
-import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
+} from '../../../../client/fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
+import { productMovePreviewResponse } from '../../../../client/fixtures/productMove';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Cancel Membership saves', () => {
 	const setSignInStatus = () => {

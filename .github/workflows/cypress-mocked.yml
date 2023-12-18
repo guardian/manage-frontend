@@ -1,4 +1,4 @@
-name: manage-frontend cypress
+name: manage-frontend cypress (mocked)
 on:
   push:
     branches-ignore:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   cypress:
-    name: Manage-frontend Cypress
+    name: Manage-frontend Cypress (mocked)
     runs-on: ubuntu-latest
 
     permissions:
@@ -31,12 +31,11 @@ jobs:
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
-        env:
-          IDAPI_CLIENT_ACCESS_TOKEN: ${{ secrets.IDAPI_CLIENT_ACCESS_TOKEN }}
         with:
-          start: yarn cypress:server
+          start: yarn cypress:mocked:server
           wait-on: 'http://localhost:9234, http://localhost:9233'
           wait-on-timeout: 30
           quiet: true
           browser: chrome
-          spec: cypress/e2e/parallel-${{ matrix.group }}/*.ts
+          spec: cypress/tests/mocked/parallel-${{ matrix.group }}/*.cy.ts
+          config: baseUrl=http://localhost:9234

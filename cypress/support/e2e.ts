@@ -33,6 +33,7 @@ declare global {
 			resolve(name: string): Chainable<Element>;
 			getIframeBody(selector: string): Chainable<Element>;
 			findByText(text: string): Chainable<Element>;
+			solveGoogleReCAPTCHA(): Chainable<Element>;
 		}
 	}
 }

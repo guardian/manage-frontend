@@ -34,5 +34,8 @@ export const getConfig = async (): Promise<OktaConfig> => {
 	if (!isValidConfig(config)) {
 		throw new Error('Error loading a valid config');
 	}
+	if (process.env.RUNNING_IN_CYPRESS === 'true') {
+		config.useOkta = true;
+	}
 	return config;
 };

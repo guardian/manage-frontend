@@ -28,3 +28,4 @@ manage-frontend.zip
 test-report.xml
 
 cypress/screenshots
+cypress.env.json

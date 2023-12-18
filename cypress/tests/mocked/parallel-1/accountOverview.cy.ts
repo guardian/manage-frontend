@@ -1,6 +1,6 @@
-import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
-import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
-import { singleContributionsAPIResponse } from '../../../client/fixtures/singleContribution';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
+import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
 
 describe('single contributions test', () => {
 	beforeEach(() => {

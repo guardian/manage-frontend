@@ -1,6 +1,6 @@
-import { digitalPackPaidByDirectDebit } from '../../../client/fixtures/productBuilder/testProducts';
-import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
-import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
+import { digitalPackPaidByDirectDebit } from '../../../../client/fixtures/productBuilder/testProducts';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Cancel digi sub', () => {
 	beforeEach(() => {

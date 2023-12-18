@@ -1,5 +1,5 @@
-import { user as userResponse } from '../../../client/fixtures/user';
-import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
+import { user as userResponse } from '../../../../client/fixtures/user';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Settings Form', () => {
 	beforeEach(() => {

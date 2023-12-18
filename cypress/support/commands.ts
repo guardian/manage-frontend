@@ -55,6 +55,16 @@ Cypress.Commands.add('iframeLoaded', { prevSubject: 'element' }, ($iframe) => {
 	});
 });
 
+Cypress.Commands.add('solveGoogleReCAPTCHA', () => {
+	cy.get('#recaptcha *> iframe').then(($iframe) => {
+		const $body = $iframe.contents().find('body');
+		cy.wrap($body)
+			.find('.recaptcha-checkbox-border')
+			.should('be.visible')
+			.click();
+	});
+});
+
 Cypress.Commands.add('resolve', (name, options = {}) => {
 	const getValue = () => {
 		// @ts-ignore

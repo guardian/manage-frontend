@@ -1,17 +1,17 @@
-import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
 	stripeSetupIntent,
 	executePaymentUpdateResponse,
 	ddPaymentMethod,
-} from '../../../client/fixtures/payment';
-import { paymentMethods } from '../../../client/fixtures/stripe';
-import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
+} from '../../../../client/fixtures/payment';
+import { paymentMethods } from '../../../../client/fixtures/stripe';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 import {
 	digitalPackPaidByCardWithPaymentFailure,
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
-} from '../../../client/fixtures/productBuilder/testProducts';
-import { singleContributionsAPIResponse } from '../../../client/fixtures/singleContribution';
+} from '../../../../client/fixtures/productBuilder/testProducts';
+import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
 
 describe('Update payment details', () => {
 	beforeEach(() => {

@@ -1,11 +1,11 @@
-import { user as userResponse } from '../../../client/fixtures/user';
-import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
-import { singleContributionsAPIResponse } from '../../../client/fixtures/singleContribution';
-import { newsletters } from '../../../client/fixtures/newsletters';
-import { consents } from '../../../client/fixtures/consents';
-import { newsletterSubscriptions } from '../../../client/fixtures/newsletterSubscriptions';
-import { InAppPurchase } from '../../../client/fixtures/inAppPurchase';
-import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
+import { user as userResponse } from '../../../../client/fixtures/user';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
+import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
+import { newsletters } from '../../../../client/fixtures/newsletters';
+import { consents } from '../../../../client/fixtures/consents';
+import { newsletterSubscriptions } from '../../../../client/fixtures/newsletterSubscriptions';
+import { InAppPurchase } from '../../../../client/fixtures/inAppPurchase';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Email and Marketing page', () => {
 	beforeEach(() => {

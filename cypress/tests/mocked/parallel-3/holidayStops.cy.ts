@@ -1,4 +1,4 @@
-import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
 	potentialDeliveries,
 	noPotentialDeliveries,
@@ -7,9 +7,9 @@ import {
 	multiplePotentialDeliveries,
 	existingHolidaysFirstIssueDecember,
 	yearSpanningPotentialDeliveries,
-} from '../../../client/fixtures/holidays';
-import { guardianWeeklyPaidByCard } from '../../../client/fixtures/productBuilder/testProducts';
-import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
+} from '../../../../client/fixtures/holidays';
+import { guardianWeeklyPaidByCard } from '../../../../client/fixtures/productBuilder/testProducts';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Holiday stops', () => {
 	beforeEach(() => {

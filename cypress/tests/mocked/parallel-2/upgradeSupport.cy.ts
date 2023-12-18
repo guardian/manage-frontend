@@ -1,10 +1,10 @@
-import { toMembersDataApiResponse } from '../../../client/fixtures/mdapiResponse';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
 	contributionPaidByCard,
 	contributionPaidByPayPal,
-} from '../../../client/fixtures/productBuilder/testProducts';
-import { productMovePreviewResponse } from '../../../client/fixtures/productMove';
-import { signInAndAcceptCookies } from '../../lib/signInAndAcceptCookies';
+} from '../../../../client/fixtures/productBuilder/testProducts';
+import { productMovePreviewResponse } from '../../../../client/fixtures/productMove';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('upgrade support', () => {
 	beforeEach(() => {
