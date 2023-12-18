@@ -7,18 +7,14 @@ import {
 	SvgTickRound,
 } from '@guardian/source-react-components';
 import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
-import { captureMessage } from '@sentry/browser';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
 } from '@/client/styles/ButtonStyles';
+import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
-import {
-	LoadingState,
-	useAsyncLoader,
-} from '@/client/utilities/hooks/useAsyncLoader';
 import {
 	getDiscountMonthsForDigisub,
 	getDiscountRatePlanId,
@@ -27,7 +23,6 @@ import { formatAmount } from '@/client/utilities/utils';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
 import { dateString } from '../../../../../../shared/dates';
-import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../../shared/asyncComponents/DefaultLoadingView';
 import { benefitsCss } from '../../../shared/benefits/BenefitsStyles';
 import { Heading } from '../../../shared/Heading';
@@ -41,7 +36,7 @@ type DiscountOfferProps = {
 	currencySymbol: string;
 	discountMonths: number;
 	discountedPrice: number;
-	isDiscountLoading: boolean;
+	isApplyDiscountLoading: boolean;
 	hasDiscountFailed: boolean;
 	handleDiscountOfferClick: () => void;
 	newPrice: number;
@@ -51,7 +46,7 @@ const DiscountOffer = ({
 	currencySymbol,
 	discountMonths,
 	discountedPrice,
-	isDiscountLoading,
+	isApplyDiscountLoading: isDiscountLoading,
 	hasDiscountFailed,
 	handleDiscountOfferClick,
 	newPrice,
@@ -132,11 +127,6 @@ const DiscountOffer = ({
 	</Stack>
 );
 
-type DiscountPreviewResponse = {
-	valid: boolean;
-	discountedPrice: number;
-};
-
 export interface DigisubCancellationRouterState
 	extends CancellationRouterState {
 	discountedPrice?: number;
@@ -149,16 +139,24 @@ export const DigiSubThankYouOffer = () => {
 		CancellationContext,
 	) as CancellationContextInterface;
 	const productDetail = cancellationContext.productDetail;
+
+	const location = useLocation();
+	const routerState = location.state as CancellationRouterState;
+
 	const discountMonths = getDiscountMonthsForDigisub(productDetail);
 
-	const {
-		data,
-		loadingState,
-	}: {
-		data: DiscountPreviewResponse | null;
-		loadingState: LoadingState;
-	} = useAsyncLoader(
-		() =>
+	const [isApplyDiscountLoading, setIsApplyDiscountLoading] =
+		useState<boolean>(false);
+	const [hasDiscountFailed, setHasDiscountFailed] = useState<boolean>(false);
+
+	const [isPreviewDiscountLoading, setIsPreviewDiscountLoading] =
+		useState<boolean>(false);
+	const [discountPreview, setDiscountPreview] =
+		useState<DiscountPreviewResponse | null>(null);
+
+	try {
+		useEffect(() => {
+			setIsPreviewDiscountLoading(true);
 			fetchWithDefaultParameters('/api/discounts/preview-discount', {
 				method: 'POST',
 				body: JSON.stringify({
@@ -167,24 +165,22 @@ export const DigiSubThankYouOffer = () => {
 					discountProductRatePlanId:
 						getDiscountRatePlanId(discountMonths),
 				}),
-			}),
-		JsonResponseHandler,
-	);
+			}).then((response) => {
+				if (response.ok) {
+					response.json().then((data) => {
+						setDiscountPreview(data);
+					});
+				}
+				setIsPreviewDiscountLoading(false);
+			});
+		}, []);
+	} catch (e) {
+		console.log(e);
+	}
 
-	const location = useLocation();
-	const routerState = location.state as CancellationRouterState;
-
-	const [isDiscountLoading, setIsDiscountLoading] = useState<boolean>(false);
-	const [hasDiscountFailed, setHasDiscountFailed] = useState<boolean>(false);
-
-	if (loadingState == LoadingState.IsLoading) {
+	if (isPreviewDiscountLoading) {
 		return <DefaultLoadingView loadingMessage="Loading..." />;
 	}
-	if (loadingState == LoadingState.HasError) {
-		captureMessage('Error loading discount eligibility');
-	}
-
-	const eligibleForDiscount = data?.valid;
 
 	if (!productDetail) {
 		navigate('/');
@@ -205,17 +201,17 @@ export const DigiSubThankYouOffer = () => {
 
 	const newRouterState: DigisubCancellationRouterState = {
 		...routerState,
-		discountedPrice: data?.discountedPrice,
-		eligibleForDiscount: data?.valid ?? false,
+		discountedPrice: discountPreview?.discountedPrice,
+		eligibleForDiscount: discountPreview !== null,
 	};
 
 	const handleDiscountOfferClick = async () => {
-		if (isDiscountLoading) {
+		if (isApplyDiscountLoading) {
 			return;
 		}
 
 		try {
-			setIsDiscountLoading(true);
+			setIsApplyDiscountLoading(true);
 
 			const response = await fetchWithDefaultParameters(
 				'/api/discounts/apply-discount',
@@ -231,7 +227,7 @@ export const DigiSubThankYouOffer = () => {
 			);
 
 			if (response.ok) {
-				setIsDiscountLoading(false);
+				setIsApplyDiscountLoading(false);
 				navigate('../discount-confirmed', {
 					state: {
 						...newRouterState,
@@ -239,11 +235,11 @@ export const DigiSubThankYouOffer = () => {
 					},
 				});
 			} else {
-				setIsDiscountLoading(false);
+				setIsApplyDiscountLoading(false);
 				setHasDiscountFailed(true);
 			}
 		} catch (e) {
-			setIsDiscountLoading(false);
+			setIsApplyDiscountLoading(false);
 			setHasDiscountFailed(true);
 		}
 	};
@@ -284,12 +280,12 @@ export const DigiSubThankYouOffer = () => {
 						world. We're so grateful.
 					</p>
 				</Stack>
-				{eligibleForDiscount && (
+				{discountPreview && (
 					<DiscountOffer
 						currencySymbol={mainPlan.currency}
 						discountMonths={discountMonths}
-						discountedPrice={data.discountedPrice}
-						isDiscountLoading={isDiscountLoading}
+						discountedPrice={discountPreview.discountedPrice}
+						isApplyDiscountLoading={isApplyDiscountLoading}
 						hasDiscountFailed={hasDiscountFailed}
 						handleDiscountOfferClick={handleDiscountOfferClick}
 						newPrice={newPrice}
