@@ -29,3 +29,4 @@ test-report.xml
 
 cypress/screenshots
 cypress.env.json
+cypress/downloads/downloads.html

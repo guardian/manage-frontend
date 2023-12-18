@@ -15,10 +15,6 @@ import {
 } from '@/client/styles/ButtonStyles';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
-import {
-	getDiscountMonthsForDigisub,
-	getDiscountRatePlanId,
-} from '@/client/utilities/pricingConfig/digisubDiscountPricing';
 import { formatAmount } from '@/client/utilities/utils';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
@@ -34,7 +30,7 @@ import { CancellationContext } from '../../CancellationContainer';
 
 type DiscountOfferProps = {
 	currencySymbol: string;
-	discountMonths: number;
+	discountPeriod: string;
 	discountedPrice: number;
 	isApplyDiscountLoading: boolean;
 	hasDiscountFailed: boolean;
@@ -44,7 +40,7 @@ type DiscountOfferProps = {
 
 const DiscountOffer = ({
 	currencySymbol,
-	discountMonths,
+	discountPeriod,
 	discountedPrice,
 	isApplyDiscountLoading: isDiscountLoading,
 	hasDiscountFailed,
@@ -76,7 +72,7 @@ const DiscountOffer = ({
 							padding-top: ${space[1]}px;
 						`}
 					>
-						Get a 25% discount for {discountMonths} months (
+						Get a 25% discount for {discountPeriod} (
 						{currencySymbol}
 						{formatAmount(discountedPrice)}, then {currencySymbol}
 						{newPrice})
@@ -127,10 +123,17 @@ const DiscountOffer = ({
 	</Stack>
 );
 
+function getDiscountPeriod(discountPreview: DiscountPreviewResponse): string {
+	return `${
+		discountPreview.upToPeriods
+	} ${discountPreview.upToPeriodsType.toLowerCase()}`;
+}
+
 export interface DigisubCancellationRouterState
 	extends CancellationRouterState {
-	discountedPrice?: number;
 	eligibleForDiscount: boolean;
+	discountedPrice?: number;
+	discountPeriod?: string;
 }
 
 export const DigiSubThankYouOffer = () => {
@@ -142,8 +145,6 @@ export const DigiSubThankYouOffer = () => {
 
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
-
-	const discountMonths = getDiscountMonthsForDigisub(productDetail);
 
 	const [isApplyDiscountLoading, setIsApplyDiscountLoading] =
 		useState<boolean>(false);
@@ -160,8 +161,6 @@ export const DigiSubThankYouOffer = () => {
 			method: 'POST',
 			body: JSON.stringify({
 				subscriptionNumber: productDetail.subscription.subscriptionId,
-				discountProductRatePlanId:
-					getDiscountRatePlanId(discountMonths),
 			}),
 		}).then((response) => {
 			if (response.ok) {
@@ -198,6 +197,9 @@ export const DigiSubThankYouOffer = () => {
 		...routerState,
 		discountedPrice: discountPreview?.discountedPrice,
 		eligibleForDiscount: discountPreview !== null,
+		discountPeriod: discountPreview
+			? getDiscountPeriod(discountPreview)
+			: undefined,
 	};
 
 	const handleDiscountOfferClick = async () => {
@@ -215,8 +217,6 @@ export const DigiSubThankYouOffer = () => {
 					body: JSON.stringify({
 						subscriptionNumber:
 							productDetail.subscription.subscriptionId,
-						discountProductRatePlanId:
-							getDiscountRatePlanId(discountMonths),
 					}),
 				},
 			);
@@ -278,7 +278,7 @@ export const DigiSubThankYouOffer = () => {
 				{discountPreview && (
 					<DiscountOffer
 						currencySymbol={mainPlan.currency}
-						discountMonths={discountMonths}
+						discountPeriod={getDiscountPeriod(discountPreview)}
 						discountedPrice={discountPreview.discountedPrice}
 						isApplyDiscountLoading={isApplyDiscountLoading}
 						hasDiscountFailed={hasDiscountFailed}

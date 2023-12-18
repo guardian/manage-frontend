@@ -56,7 +56,6 @@ describe('Cancel digi sub', () => {
 		cy.intercept('POST', 'api/discounts/preview-discount', {
 			statusCode: 200,
 			body: {
-				valid: true,
 				discountedPrice: 111.75,
 			},
 		}).as('preview_discount');

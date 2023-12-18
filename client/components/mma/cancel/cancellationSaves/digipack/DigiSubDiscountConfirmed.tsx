@@ -24,7 +24,6 @@ import {
 	buttonCentredCss,
 	stackedButtonLayoutCss,
 } from '@/client/styles/ButtonStyles';
-import { getDiscountMonthsForDigisub } from '@/client/utilities/pricingConfig/digisubDiscountPricing';
 import { formatAmount } from '@/client/utilities/utils';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
@@ -53,7 +52,7 @@ export const DigiSubDiscountConfirmed = () => {
 	const mainPlan = getMainPlan(digiSub.subscription) as PaidSubscriptionPlan;
 
 	const currencySymbol = mainPlan.currency;
-	const discountMonths = getDiscountMonthsForDigisub(digiSub);
+	const discountPeriod = routerState.discountPeriod;
 	const discountedPrice = routerState.discountedPrice;
 	const newPrice =
 		(digiSub.subscription.nextPaymentPrice ?? mainPlan.price) / 100;
@@ -125,13 +124,13 @@ export const DigiSubDiscountConfirmed = () => {
 										padding-bottom: ${space[1]}px;
 									`}
 								>
-									25% discount for {discountMonths} months
+									25% discount for {discountPeriod}
 								</strong>
 								<br />
 								You’ll pay {currencySymbol}
 								{formatAmount(discountedPrice)} per{' '}
-								{mainPlan.billingPeriod} for {discountMonths}{' '}
-								months, then {currencySymbol}
+								{mainPlan.billingPeriod} for {discountPeriod},
+								then {currencySymbol}
 								{formatAmount(newPrice)} per{' '}
 								{mainPlan.billingPeriod}
 							</span>
