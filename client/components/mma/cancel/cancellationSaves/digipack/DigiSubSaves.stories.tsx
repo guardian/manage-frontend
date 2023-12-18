@@ -41,7 +41,7 @@ export const DiscountConfirmed: StoryObj<typeof DigiSubDiscountConfirmed> = {
 				user: { email: 'test@test.com' },
 				eligibleForDiscount: true,
 				discountedPrice: 111.75,
-				discountPeriod: '3 months',
+				discountPeriod: '12 months',
 			},
 		},
 	},
