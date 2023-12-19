@@ -36,7 +36,7 @@ export const CancellationSaveEligibilityCheck = () => {
 	}
 
 	if (!routerState?.dontShowOffer && productHasSaveJourney(productDetail)) {
-		return <Navigate to="./landing" />;
+		return <Navigate to="./landing" state={{ ...routerState }} />;
 	}
 
 	return <CancellationReasonSelection />;
