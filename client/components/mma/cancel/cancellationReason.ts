@@ -50,6 +50,7 @@ export type CancellationReasonId =
 	| 'mma_no_need'
 	| 'mma_dont_know_what_for'
 	| 'mma_other'
-	| 'mma_membership_cancellation_default';
+	| 'mma_membership_cancellation_default'
+	| 'mma_cancellation_default';
 
 export type OptionalCancellationReasonId = CancellationReasonId | undefined;

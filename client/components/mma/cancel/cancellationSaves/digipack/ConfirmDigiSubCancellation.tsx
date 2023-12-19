@@ -100,8 +100,7 @@ export const ConfirmDigiSubCancellation = () => {
 	const routerState = location.state as DigisubCancellationRouterState;
 	const eligibleForDiscount = routerState?.eligibleForDiscount;
 
-	const reason: OptionalCancellationReasonId =
-		'mma_membership_cancellation_default'; //reason needs to be provided as undefined doesn't work. Reason updated if user provides one on next screen.
+	const reason: OptionalCancellationReasonId = 'mma_cancellation_default'; //reason needs to be provided as undefined doesn't work. Reason updated if user provides one on next screen.
 
 	const createCase = (
 		selectedReasonId: string,
