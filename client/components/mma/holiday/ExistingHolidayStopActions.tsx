@@ -1,7 +1,7 @@
 import { Button } from '@guardian/source-react-components';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import {
@@ -40,7 +40,7 @@ const DeleteHolidayStop = (props: {
 					[MDA_TEST_USER_HEADER]: `${props.isTestUser}`,
 				},
 			}),
-		JsonResponseProcessor,
+		JsonResponseHandler,
 	);
 
 	if (loadingState == LoadingState.HasError) {

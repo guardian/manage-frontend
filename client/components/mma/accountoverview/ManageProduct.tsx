@@ -8,7 +8,7 @@ import {
 } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {
@@ -441,7 +441,7 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 		data,
 		loadingState,
 	}: { data: MembersDataApiResponse | null; loadingState: LoadingState } =
-		useAsyncLoader<MembersDataApiResponse>(request, JsonResponseProcessor);
+		useAsyncLoader<MembersDataApiResponse>(request, JsonResponseHandler);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;

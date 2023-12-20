@@ -16,7 +16,7 @@ import {
 import type { FormEvent } from 'react';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
@@ -320,7 +320,7 @@ const ReasonPickerWithCancellationDate = ({
 		loadingState: LoadingState;
 	} = useAsyncLoader(
 		cancellationDateFetcher(productDetail.subscription.subscriptionId),
-		JsonResponseProcessor,
+		JsonResponseHandler,
 	);
 
 	if (loadingState == LoadingState.HasError) {

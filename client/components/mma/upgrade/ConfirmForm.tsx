@@ -19,8 +19,8 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-	JsonResponseProcessor,
-	TextResponseProcessor,
+	JsonResponseHandler,
+	TextResponseHandler,
 } from '@/client/utilities/responseHandlers';
 import { formatAmount } from '@/client/utilities/utils';
 import { dateString } from '../../../../shared/dates';
@@ -330,7 +330,7 @@ export const ConfirmForm = ({
 					'recurring-contribution-to-supporter-plus',
 					checkChargeAmount,
 					false,
-				).then((r) => JsonResponseProcessor(r));
+				).then((r) => JsonResponseHandler(r));
 
 				if (data === null) {
 					setIsConfirmationLoading(false);
@@ -345,7 +345,7 @@ export const ConfirmForm = ({
 				const data = await updateContributionAmountFetch(
 					chosenAmount,
 					subscription.subscriptionId,
-				).then((r) => TextResponseProcessor(r));
+				).then((r) => TextResponseHandler(r));
 
 				if (data === null) {
 					setIsConfirmationLoading(false);

@@ -1,4 +1,4 @@
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import type { MembersDataApiResponse } from '../../../../shared/productResponse';
 import { isProduct } from '../../../../shared/productResponse';
 import {
@@ -14,10 +14,7 @@ export const SubscriptionInformation = () => {
 	}: {
 		data: MembersDataApiResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(
-		allRecurringProductsDetailFetcher,
-		JsonResponseProcessor,
-	);
+	} = useAsyncLoader(allRecurringProductsDetailFetcher, JsonResponseHandler);
 
 	if (loadingState === LoadingState.IsLoading) {
 		return (

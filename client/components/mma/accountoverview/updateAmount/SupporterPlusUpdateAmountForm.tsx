@@ -11,7 +11,7 @@ import {
 	TextInput,
 } from '@guardian/source-react-components';
 import { useEffect, useState } from 'react';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getBillingPeriodAdjective } from '../../../../../shared/productTypes';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
@@ -186,7 +186,7 @@ export const SupporterPlusUpdateAmountForm = (
 		);
 
 		try {
-			const data = await JsonResponseProcessor(response);
+			const data = await JsonResponseHandler(response);
 			if (data === null) {
 				setUpdateFailedStatus(true);
 				setShowUpdateLoader(false);

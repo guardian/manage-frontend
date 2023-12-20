@@ -3,13 +3,13 @@ export type ResponseProcessor = (
 ) => Promise<unknown>;
 type ResponseTransformer = (response: Response) => Promise<unknown>;
 
-export const JsonResponseProcessor: ResponseProcessor = (
+export const JsonResponseHandler: ResponseProcessor = (
 	response: Response | Response[],
 ) => {
 	return handleResponses(response, (r: Response) => r.json());
 };
 
-export const TextResponseProcessor: ResponseProcessor = (
+export const TextResponseHandler: ResponseProcessor = (
 	response: Response | Response[],
 ) => {
 	return handleResponses(response, (r: Response) => r.text());

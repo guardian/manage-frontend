@@ -9,7 +9,7 @@ import {
 import { Stack } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
@@ -74,7 +74,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const { data: accountOverviewResponse, loadingState } =
 		useAsyncLoader<AccountOverviewResponse>(
 			accountOverviewFetcher,
-			JsonResponseProcessor,
+			JsonResponseHandler,
 		);
 
 	if (loadingState == LoadingState.HasError) {

@@ -17,7 +17,7 @@ import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScree
 import { stackedButtonLayoutCss } from '@/client/styles/ButtonStyles';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { createProductDetailFetcher } from '@/client/utilities/productUtils';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
@@ -148,7 +148,7 @@ export const ConfirmDigiSubCancellation = () => {
 				productDetail,
 			);
 
-			const caseData = await JsonResponseProcessor(caseResponse);
+			const caseData = await JsonResponseHandler(caseResponse);
 
 			if (caseData === null) {
 				setIsSubmitting(false);
@@ -164,7 +164,7 @@ export const ConfirmDigiSubCancellation = () => {
 				),
 			);
 
-			const cancelData = await JsonResponseProcessor(cancelResponse);
+			const cancelData = await JsonResponseHandler(cancelResponse);
 
 			if (cancelData === null) {
 				setIsSubmitting(false);

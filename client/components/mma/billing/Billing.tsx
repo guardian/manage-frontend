@@ -10,7 +10,7 @@ import {
 } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { parseDate } from '../../../../shared/dates';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
@@ -391,7 +391,7 @@ const BillingPage = () => {
 	}: {
 		data: BillingResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(billingFetcher, JsonResponseProcessor);
+	} = useAsyncLoader(billingFetcher, JsonResponseHandler);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;

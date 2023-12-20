@@ -3,7 +3,7 @@ import { palette, space, textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { MDA_TEST_USER_HEADER } from '../../../../../../shared/productResponse';
 import type {
 	MembersDataApiResponse,
@@ -85,7 +85,7 @@ export const ConfirmMembershipCancellation = () => {
 				productDetail,
 			);
 
-			const caseData = await JsonResponseProcessor(caseResponse);
+			const caseData = await JsonResponseHandler(caseResponse);
 
 			if (caseData === null) {
 				setIsSubmitting(false);
@@ -101,7 +101,7 @@ export const ConfirmMembershipCancellation = () => {
 				),
 			);
 
-			const cancelData = await JsonResponseProcessor(cancelResponse);
+			const cancelData = await JsonResponseHandler(cancelResponse);
 
 			if (cancelData === null) {
 				setIsSubmitting(false);

@@ -10,7 +10,7 @@ import {
 import type { FormEvent } from 'react';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
@@ -242,7 +242,7 @@ export const SelectReason = () => {
 				updateZuoraCancellationReason(selectedReasonId, productDetail),
 			]);
 
-			const data = await JsonResponseProcessor(response);
+			const data = await JsonResponseHandler(response);
 
 			if (data === null) {
 				setIsSubmitting(false);

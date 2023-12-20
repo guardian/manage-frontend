@@ -9,7 +9,7 @@ import {
 } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
-import { TextResponseProcessor } from '@/client/utilities/responseHandlers';
+import { TextResponseHandler } from '@/client/utilities/responseHandlers';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { augmentBillingPeriod } from '../../../../../shared/productResponse';
 import type { ProductType } from '../../../../../shared/productTypes';
@@ -178,7 +178,7 @@ export const ContributionUpdateAmountForm = (
 			props.subscriptionId,
 		);
 
-		const data = await TextResponseProcessor(response);
+		const data = await TextResponseHandler(response);
 		if (data === null) {
 			trackEvent({
 				eventCategory: 'amount_change',

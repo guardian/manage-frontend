@@ -10,7 +10,7 @@ import {
 import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { dateString, parseDate } from '../../../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
@@ -244,7 +244,7 @@ export const MembershipSwitch = () => {
 		try {
 			setIsSwitching(true);
 			const response = await productMoveFetch();
-			const data = await JsonResponseProcessor(response);
+			const data = await JsonResponseHandler(response);
 
 			if (data === null) {
 				setIsSwitching(false);

@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { headline, space, textSans, until } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { formatAmount } from '@/client/utilities/utils';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
@@ -48,7 +48,7 @@ export const UpgradeSupport = () => {
 					false,
 					true,
 				),
-			JsonResponseProcessor,
+			JsonResponseHandler,
 		);
 
 	return (

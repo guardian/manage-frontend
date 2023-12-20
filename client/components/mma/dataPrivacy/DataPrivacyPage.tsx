@@ -1,7 +1,7 @@
 import type { CMP } from '@guardian/consent-management-platform/dist/types';
 import { from } from '@guardian/source-foundations';
 import { useEffect, useState } from 'react';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { gridItemPlacement } from '../../../styles/grid';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
@@ -39,7 +39,7 @@ export const DataPrivacyPage = () => {
 	}: {
 		data: DataPrivacyResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(dataPrivacyFetcher, JsonResponseProcessor);
+	} = useAsyncLoader(dataPrivacyFetcher, JsonResponseHandler);
 
 	useEffect(() => {
 		if (dataPrivacyResponse) {

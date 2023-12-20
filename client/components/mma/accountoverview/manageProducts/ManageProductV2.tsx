@@ -38,7 +38,7 @@ import {
 	useAsyncLoader,
 } from '@/client/utilities/hooks/useAsyncLoader';
 import { createProductDetailFetcher } from '@/client/utilities/productUtils';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { cancellationFormatDate } from '@/shared/dates';
 import type {
 	MembersDataApiResponse,
@@ -288,7 +288,7 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 
 	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
 		request,
-		JsonResponseProcessor,
+		JsonResponseHandler,
 	);
 
 	if (loadingState == LoadingState.HasError) {

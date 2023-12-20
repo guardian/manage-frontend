@@ -10,7 +10,7 @@ import {
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { SwitchErrorSummary } from '@/client/components/shared/productSwitch/SwitchErrorSummary';
-import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { dateString } from '../../../../../shared/dates';
 import type {
 	PreviewResponse,
@@ -145,7 +145,7 @@ export const SwitchReview = () => {
 				false,
 				checkChargeAmountBeforeUpdate,
 			);
-			const data = await JsonResponseProcessor(response);
+			const data = await JsonResponseHandler(response);
 
 			if (data === null) {
 				setIsSwitching(false);
@@ -176,7 +176,7 @@ export const SwitchReview = () => {
 		loadingState: LoadingState;
 	} = useAsyncLoader(
 		() => productMoveFetch(true, false),
-		JsonResponseProcessor,
+		JsonResponseHandler,
 	);
 
 	if (loadingState == LoadingState.HasError) {
