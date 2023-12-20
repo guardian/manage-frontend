@@ -10,6 +10,7 @@ import {
 } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
+import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
 import { parseDate } from '../../../../shared/dates';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
@@ -38,7 +39,6 @@ import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
-	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';

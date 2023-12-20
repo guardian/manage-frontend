@@ -1,11 +1,11 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { Outlet } from 'react-router';
+import { handleResponses } from '@/client/utilities/responseHandlers';
 import type { DateRange } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import type { ProductTypeWithHolidayStopsFlow } from '../../../../shared/productTypes';
 import {
-	handleResponses,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';

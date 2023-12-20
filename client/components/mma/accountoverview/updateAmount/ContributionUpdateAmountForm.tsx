@@ -9,12 +9,12 @@ import {
 } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
+import { TextResponseProcessor } from '@/client/utilities/responseHandlers';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { augmentBillingPeriod } from '../../../../../shared/productResponse';
 import type { ProductType } from '../../../../../shared/productTypes';
 import { trackEvent } from '../../../../utilities/analytics';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
-import { TextResponseProcessor } from '../../../../utilities/hooks/useAsyncLoader';
 import type { ContributionInterval } from '../../../../utilities/pricingConfig/contributionsAmount';
 import { contributionAmountsLookup } from '../../../../utilities/pricingConfig/contributionsAmount';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';

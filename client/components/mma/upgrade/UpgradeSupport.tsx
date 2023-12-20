@@ -2,14 +2,12 @@ import { css } from '@emotion/react';
 import { headline, space, textSans, until } from '@guardian/source-foundations';
 import { Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
+import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
 import { formatAmount } from '@/client/utilities/utils';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
 import type { LoadingState } from '../../../utilities/hooks/useAsyncLoader';
-import {
-	JsonResponseProcessor,
-	useAsyncLoader,
-} from '../../../utilities/hooks/useAsyncLoader';
+import { useAsyncLoader } from '../../../utilities/hooks/useAsyncLoader';
 import { getContributionSuggestedAmounts } from '../../../utilities/pricingConfig/suggestedAmounts';
 import { getBenefitsThreshold } from '../../../utilities/pricingConfig/supporterPlusPricing';
 import { productMoveFetch } from '../../../utilities/productUtils';

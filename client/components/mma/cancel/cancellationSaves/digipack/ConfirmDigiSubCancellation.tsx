@@ -16,8 +16,8 @@ import { benefitsCss } from '@/client/components/mma/shared/benefits/BenefitsSty
 import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
 import { stackedButtonLayoutCss } from '@/client/styles/ButtonStyles';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
-import { JsonResponseProcessor } from '@/client/utilities/hooks/useAsyncLoader';
 import { createProductDetailFetcher } from '@/client/utilities/productUtils';
+import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
 import type {
 	MembersDataApiResponse,
 	ProductDetail,

@@ -34,11 +34,11 @@ import {
 	whatHappensNextIconCss,
 } from '@/client/styles/GenericStyles';
 import {
-	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '@/client/utilities/hooks/useAsyncLoader';
 import { createProductDetailFetcher } from '@/client/utilities/productUtils';
+import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
 import { cancellationFormatDate } from '@/shared/dates';
 import type {
 	MembersDataApiResponse,

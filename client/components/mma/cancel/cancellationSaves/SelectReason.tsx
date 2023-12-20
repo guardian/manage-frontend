@@ -10,6 +10,7 @@ import {
 import type { FormEvent } from 'react';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
@@ -32,7 +33,6 @@ import {
 	wideButtonCss,
 } from '../../../../styles/ButtonStyles';
 import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
-import { JsonResponseProcessor } from '../../../../utilities/hooks/useAsyncLoader';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import type {
 	CancellationContextInterface,

@@ -1,6 +1,7 @@
 import type { Context, ReactNode } from 'react';
 import { createContext, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
+import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
 import type {
 	MembersDataApiResponse,
 	MembersDataApiUser,
@@ -13,7 +14,6 @@ import {
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
 import {
-	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';

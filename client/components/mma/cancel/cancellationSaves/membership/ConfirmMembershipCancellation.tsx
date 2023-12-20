@@ -3,7 +3,7 @@ import { palette, space, textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { JsonResponseProcessor } from '@/client/utilities/hooks/useAsyncLoader';
+import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
 import { MDA_TEST_USER_HEADER } from '../../../../../../shared/productResponse';
 import type {
 	MembersDataApiResponse,

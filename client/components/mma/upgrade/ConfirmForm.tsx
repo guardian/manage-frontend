@@ -18,6 +18,10 @@ import { ToggleSwitch } from '@guardian/source-react-components-development-kitc
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
+import {
+	JsonResponseProcessor,
+	TextResponseProcessor,
+} from '@/client/utilities/responseHandlers';
 import { formatAmount } from '@/client/utilities/utils';
 import { dateString } from '../../../../shared/dates';
 import type {
@@ -35,11 +39,7 @@ import {
 	whatHappensNextIconCss,
 } from '../../../styles/GenericStyles';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
-import {
-	JsonResponseProcessor,
-	LoadingState,
-	TextResponseProcessor,
-} from '../../../utilities/hooks/useAsyncLoader';
+import { LoadingState } from '../../../utilities/hooks/useAsyncLoader';
 import {
 	calculateAmountPayableToday,
 	calculateCheckChargeAmountBeforeUpdate,

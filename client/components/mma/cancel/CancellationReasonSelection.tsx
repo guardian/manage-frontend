@@ -16,6 +16,7 @@ import {
 import type { FormEvent } from 'react';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
@@ -24,7 +25,6 @@ import type { ProductDetail } from '../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
-	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';

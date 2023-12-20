@@ -4,6 +4,7 @@ import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { CallCentreAccordion } from '@/client/components/shared/CallCentreAccordion';
+import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
@@ -11,7 +12,6 @@ import type {
 import { getSpecificProductTypeFromProduct } from '../../../../../shared/productResponse';
 import { headingCss } from '../../../../styles/GenericStyles';
 import {
-	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';

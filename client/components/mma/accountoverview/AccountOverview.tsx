@@ -9,6 +9,7 @@ import {
 import { Stack } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
+import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
@@ -29,7 +30,6 @@ import {
 } from '../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
-	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';

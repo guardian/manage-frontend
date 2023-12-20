@@ -1,7 +1,7 @@
+import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
 import type { MembersDataApiResponse } from '../../../../shared/productResponse';
 import { isProduct } from '../../../../shared/productResponse';
 import {
-	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';

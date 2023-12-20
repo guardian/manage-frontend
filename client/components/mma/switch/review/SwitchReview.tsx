@@ -10,6 +10,7 @@ import {
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { SwitchErrorSummary } from '@/client/components/shared/productSwitch/SwitchErrorSummary';
+import { JsonResponseProcessor } from '@/client/utilities/responseHandlers';
 import { dateString } from '../../../../../shared/dates';
 import type {
 	PreviewResponse,
@@ -26,7 +27,6 @@ import {
 	sectionSpacing,
 } from '../../../../styles/GenericStyles';
 import {
-	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
