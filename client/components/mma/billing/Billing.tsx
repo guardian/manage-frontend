@@ -38,7 +38,7 @@ import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
-	JsonTransform,
+	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -391,7 +391,7 @@ const BillingPage = () => {
 	}: {
 		data: BillingResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(billingFetcher, JsonTransform);
+	} = useAsyncLoader(billingFetcher, JsonResponseProcessor);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;

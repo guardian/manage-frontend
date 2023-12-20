@@ -2,23 +2,20 @@ import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import { trackEvent } from '../analytics';
 
-interface ResponseProcessor {
-	(resp: Response | Response[]): Promise<unknown>;
-}
+type ResponseProcessor = (response: Response | Response[]) => Promise<unknown>;
+type ResponseTransformer = (response: Response) => Promise<unknown>;
 
-export const JsonResponseHandler: ResponseProcessor = (
+export const JsonResponseProcessor: ResponseProcessor = (
 	response: Response | Response[],
 ) => {
 	return handleResponses(response, (r: Response) => r.json());
 };
 
-export const TextResponseHandler: ResponseProcessor = (
+export const TextResponseProcessor: ResponseProcessor = (
 	response: Response | Response[],
 ) => {
 	return handleResponses(response, (r: Response) => r.text());
 };
-type ResponseTransformer = (response: Response) => Promise<unknown>;
-export const JsonTransform = (response: Response) => response.json();
 
 export function handleResponses(
 	response: Response | Response[],
@@ -66,7 +63,7 @@ export enum LoadingState {
 
 export function useAsyncLoader<T>(
 	asyncFetch: () => Promise<Response | Response[]>,
-	responseTransform: ResponseTransformer,
+	responseProcessor: ResponseProcessor,
 ): {
 	data: T | null;
 	error: Error | ErrorEvent | string | undefined;
@@ -93,7 +90,7 @@ export function useAsyncLoader<T>(
 		if (loadingState == LoadingState.IsLoading) {
 			asyncFetch()
 				.then((response) =>
-					handleResponses(response, responseTransform),
+					handleResponses(response, responseProcessor),
 				)
 				.then((data) => {
 					setData(data as T);

@@ -32,7 +32,7 @@ import {
 	wideButtonCss,
 } from '../../../../styles/ButtonStyles';
 import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
-import { JsonResponseHandler } from '../../../../utilities/hooks/useAsyncLoader';
+import { JsonResponseProcessor } from '../../../../utilities/hooks/useAsyncLoader';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import type {
 	CancellationContextInterface,
@@ -242,7 +242,7 @@ export const SelectReason = () => {
 				updateZuoraCancellationReason(selectedReasonId, productDetail),
 			]);
 
-			const data = await JsonResponseHandler(response);
+			const data = await JsonResponseProcessor(response);
 
 			if (data === null) {
 				setIsSubmitting(false);

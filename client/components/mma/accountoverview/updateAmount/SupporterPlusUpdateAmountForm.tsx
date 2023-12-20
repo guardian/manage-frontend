@@ -15,7 +15,7 @@ import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse
 import { getBillingPeriodAdjective } from '../../../../../shared/productTypes';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
-import { JsonResponseHandler } from '../../../../utilities/hooks/useAsyncLoader';
+import { JsonResponseProcessor } from '../../../../utilities/hooks/useAsyncLoader';
 import { getSupporterPlusSuggestedAmountsFromMainPlan } from '../../../../utilities/pricingConfig/suggestedAmounts';
 import { supporterPlusPriceConfigByCountryGroup } from '../../../../utilities/pricingConfig/supporterPlusPricing';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
@@ -186,7 +186,7 @@ export const SupporterPlusUpdateAmountForm = (
 		);
 
 		try {
-			const data = await JsonResponseHandler(response);
+			const data = await JsonResponseProcessor(response);
 			if (data === null) {
 				setUpdateFailedStatus(true);
 				setShowUpdateLoader(false);

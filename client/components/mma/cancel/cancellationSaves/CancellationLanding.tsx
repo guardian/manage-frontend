@@ -11,7 +11,7 @@ import type {
 import { getSpecificProductTypeFromProduct } from '../../../../../shared/productResponse';
 import { headingCss } from '../../../../styles/GenericStyles';
 import {
-	JsonTransform,
+	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
@@ -62,7 +62,10 @@ export const CancellationLanding = () => {
 	}: {
 		data: MembersDataApiResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(allRecurringProductsDetailFetcher, JsonTransform);
+	} = useAsyncLoader(
+		allRecurringProductsDetailFetcher,
+		JsonResponseProcessor,
+	);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;

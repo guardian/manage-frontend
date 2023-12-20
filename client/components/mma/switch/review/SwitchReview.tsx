@@ -26,8 +26,7 @@ import {
 	sectionSpacing,
 } from '../../../../styles/GenericStyles';
 import {
-	JsonResponseHandler,
-	JsonTransform,
+	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
@@ -146,7 +145,7 @@ export const SwitchReview = () => {
 				false,
 				checkChargeAmountBeforeUpdate,
 			);
-			const data = await JsonResponseHandler(response);
+			const data = await JsonResponseProcessor(response);
 
 			if (data === null) {
 				setIsSwitching(false);
@@ -175,7 +174,10 @@ export const SwitchReview = () => {
 	}: {
 		data: PreviewResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(() => productMoveFetch(true, false), JsonTransform);
+	} = useAsyncLoader(
+		() => productMoveFetch(true, false),
+		JsonResponseProcessor,
+	);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;

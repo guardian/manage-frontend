@@ -34,7 +34,7 @@ import {
 	whatHappensNextIconCss,
 } from '@/client/styles/GenericStyles';
 import {
-	JsonTransform,
+	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '@/client/utilities/hooks/useAsyncLoader';
@@ -288,7 +288,7 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 
 	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
 		request,
-		JsonTransform,
+		JsonResponseProcessor,
 	);
 
 	if (loadingState == LoadingState.HasError) {

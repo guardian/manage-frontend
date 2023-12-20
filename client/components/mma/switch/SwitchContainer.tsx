@@ -14,7 +14,7 @@ import {
 } from '../../../../shared/productTypes';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
 import {
-	JsonTransform,
+	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -106,7 +106,7 @@ const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 
 	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
 		request,
-		JsonTransform,
+		JsonResponseProcessor,
 	);
 
 	if (loadingState == LoadingState.HasError) {

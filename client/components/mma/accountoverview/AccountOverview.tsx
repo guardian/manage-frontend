@@ -29,7 +29,7 @@ import {
 } from '../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
-	JsonTransform,
+	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -74,7 +74,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const { data: accountOverviewResponse, loadingState } =
 		useAsyncLoader<AccountOverviewResponse>(
 			accountOverviewFetcher,
-			JsonTransform,
+			JsonResponseProcessor,
 		);
 
 	if (loadingState == LoadingState.HasError) {

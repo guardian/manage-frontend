@@ -14,7 +14,7 @@ import type {
 	WithProductType,
 } from '../../../../shared/productTypes';
 import {
-	JsonTransform,
+	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -54,7 +54,7 @@ const AsyncLoadedCancellationContainer = (
 
 	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
 		request,
-		JsonTransform,
+		JsonResponseProcessor,
 	);
 
 	if (loadingState == LoadingState.HasError) {

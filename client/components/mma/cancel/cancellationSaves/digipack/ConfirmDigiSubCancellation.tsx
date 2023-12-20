@@ -16,7 +16,7 @@ import { benefitsCss } from '@/client/components/mma/shared/benefits/BenefitsSty
 import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
 import { stackedButtonLayoutCss } from '@/client/styles/ButtonStyles';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
-import { JsonResponseHandler } from '@/client/utilities/hooks/useAsyncLoader';
+import { JsonResponseProcessor } from '@/client/utilities/hooks/useAsyncLoader';
 import { createProductDetailFetcher } from '@/client/utilities/productUtils';
 import type {
 	MembersDataApiResponse,
@@ -148,7 +148,7 @@ export const ConfirmDigiSubCancellation = () => {
 				productDetail,
 			);
 
-			const caseData = await JsonResponseHandler(caseResponse);
+			const caseData = await JsonResponseProcessor(caseResponse);
 
 			if (caseData === null) {
 				setIsSubmitting(false);
@@ -164,7 +164,7 @@ export const ConfirmDigiSubCancellation = () => {
 				),
 			);
 
-			const cancelData = await JsonResponseHandler(cancelResponse);
+			const cancelData = await JsonResponseProcessor(cancelResponse);
 
 			if (cancelData === null) {
 				setIsSubmitting(false);

@@ -13,7 +13,7 @@ import {
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
 import {
-	JsonTransform,
+	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -79,7 +79,7 @@ export const UpgradeSupportContainer = () => {
 
 	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
 		request,
-		JsonTransform,
+		JsonResponseProcessor,
 	);
 
 	if (loadingState == LoadingState.HasError) {

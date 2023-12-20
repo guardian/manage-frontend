@@ -36,9 +36,9 @@ import {
 } from '../../../styles/GenericStyles';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
-	JsonResponseHandler,
+	JsonResponseProcessor,
 	LoadingState,
-	TextResponseHandler,
+	TextResponseProcessor,
 } from '../../../utilities/hooks/useAsyncLoader';
 import {
 	calculateAmountPayableToday,
@@ -330,7 +330,7 @@ export const ConfirmForm = ({
 					'recurring-contribution-to-supporter-plus',
 					checkChargeAmount,
 					false,
-				).then((r) => JsonResponseHandler(r));
+				).then((r) => JsonResponseProcessor(r));
 
 				if (data === null) {
 					setIsConfirmationLoading(false);
@@ -345,7 +345,7 @@ export const ConfirmForm = ({
 				const data = await updateContributionAmountFetch(
 					chosenAmount,
 					subscription.subscriptionId,
-				).then((r) => TextResponseHandler(r));
+				).then((r) => TextResponseProcessor(r));
 
 				if (data === null) {
 					setIsConfirmationLoading(false);

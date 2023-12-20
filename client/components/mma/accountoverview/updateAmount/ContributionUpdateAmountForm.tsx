@@ -14,7 +14,7 @@ import { augmentBillingPeriod } from '../../../../../shared/productResponse';
 import type { ProductType } from '../../../../../shared/productTypes';
 import { trackEvent } from '../../../../utilities/analytics';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
-import { TextResponseHandler } from '../../../../utilities/hooks/useAsyncLoader';
+import { TextResponseProcessor } from '../../../../utilities/hooks/useAsyncLoader';
 import type { ContributionInterval } from '../../../../utilities/pricingConfig/contributionsAmount';
 import { contributionAmountsLookup } from '../../../../utilities/pricingConfig/contributionsAmount';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
@@ -178,7 +178,7 @@ export const ContributionUpdateAmountForm = (
 			props.subscriptionId,
 		);
 
-		const data = await TextResponseHandler(response);
+		const data = await TextResponseProcessor(response);
 		if (data === null) {
 			trackEvent({
 				eventCategory: 'amount_change',

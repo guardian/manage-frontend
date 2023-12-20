@@ -24,7 +24,7 @@ import type { ProductDetail } from '../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
-	JsonTransform,
+	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -320,7 +320,7 @@ const ReasonPickerWithCancellationDate = ({
 		loadingState: LoadingState;
 	} = useAsyncLoader(
 		cancellationDateFetcher(productDetail.subscription.subscriptionId),
-		JsonTransform,
+		JsonResponseProcessor,
 	);
 
 	if (loadingState == LoadingState.HasError) {

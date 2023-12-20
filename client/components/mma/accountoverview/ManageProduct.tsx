@@ -26,7 +26,7 @@ import type {
 } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
-	JsonTransform,
+	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -441,7 +441,7 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 		data,
 		loadingState,
 	}: { data: MembersDataApiResponse | null; loadingState: LoadingState } =
-		useAsyncLoader<MembersDataApiResponse>(request, JsonTransform);
+		useAsyncLoader<MembersDataApiResponse>(request, JsonResponseProcessor);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;

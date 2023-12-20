@@ -35,7 +35,7 @@ import {
 	sectionSpacing,
 	smallPrintCss,
 } from '../../../../../styles/GenericStyles';
-import { JsonResponseHandler } from '../../../../../utilities/hooks/useAsyncLoader';
+import { JsonResponseProcessor } from '../../../../../utilities/hooks/useAsyncLoader';
 import { getOldMembershipPrice } from '../../../../../utilities/pricingConfig/membershipPriceRise';
 import { Card } from '../../../shared/Card';
 import { Heading } from '../../../shared/Heading';
@@ -244,7 +244,7 @@ export const MembershipSwitch = () => {
 		try {
 			setIsSwitching(true);
 			const response = await productMoveFetch();
-			const data = await JsonResponseHandler(response);
+			const data = await JsonResponseProcessor(response);
 
 			if (data === null) {
 				setIsSwitching(false);

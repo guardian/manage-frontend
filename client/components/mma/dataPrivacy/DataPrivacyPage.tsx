@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { gridItemPlacement } from '../../../styles/grid';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
-	JsonTransform,
+	JsonResponseProcessor,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -39,7 +39,7 @@ export const DataPrivacyPage = () => {
 	}: {
 		data: DataPrivacyResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(dataPrivacyFetcher, JsonTransform);
+	} = useAsyncLoader(dataPrivacyFetcher, JsonResponseProcessor);
 
 	useEffect(() => {
 		if (dataPrivacyResponse) {

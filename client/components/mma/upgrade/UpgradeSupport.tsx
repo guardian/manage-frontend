@@ -7,7 +7,7 @@ import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
 import type { LoadingState } from '../../../utilities/hooks/useAsyncLoader';
 import {
-	JsonTransform,
+	JsonResponseProcessor,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
 import { getContributionSuggestedAmounts } from '../../../utilities/pricingConfig/suggestedAmounts';
@@ -50,7 +50,7 @@ export const UpgradeSupport = () => {
 					false,
 					true,
 				),
-			JsonTransform,
+			JsonResponseProcessor,
 		);
 
 	return (
