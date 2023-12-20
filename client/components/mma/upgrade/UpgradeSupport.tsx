@@ -6,7 +6,6 @@ import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { formatAmount } from '@/client/utilities/utils';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
-import type { LoadingState } from '../../../utilities/hooks/useAsyncLoader';
 import { useAsyncLoader } from '../../../utilities/hooks/useAsyncLoader';
 import { getContributionSuggestedAmounts } from '../../../utilities/pricingConfig/suggestedAmounts';
 import { getBenefitsThreshold } from '../../../utilities/pricingConfig/supporterPlusPricing';
@@ -35,10 +34,7 @@ export const UpgradeSupport = () => {
 		mainPlan.billingPeriod as 'month' | 'year',
 	);
 
-	const {
-		data: previewResponse,
-		loadingState: previewLoadingState,
-	}: { data: PreviewResponse | null; loadingState: LoadingState } =
+	const { data: previewResponse, loadingState: previewLoadingState } =
 		useAsyncLoader<PreviewResponse>(
 			() =>
 				productMoveFetch(

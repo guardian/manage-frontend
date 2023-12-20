@@ -437,11 +437,10 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 		props.productType.allProductsProductTypeFilterString,
 	);
 
-	const {
-		data,
-		loadingState,
-	}: { data: MembersDataApiResponse | null; loadingState: LoadingState } =
-		useAsyncLoader<MembersDataApiResponse>(request, JsonResponseHandler);
+	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
+		request,
+		JsonResponseHandler,
+	);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
