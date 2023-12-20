@@ -1,11 +1,11 @@
 import type { MembersDataApiResponse } from '../../../../shared/productResponse';
 import { isProduct } from '../../../../shared/productResponse';
 import {
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
 import { allRecurringProductsDetailFetcher } from '../../../utilities/productUtils';
-import { JsonResponseHandler } from '../../mma/shared/asyncComponents/DefaultApiResponseHandler';
 
 export const SubscriptionInformation = () => {
 	const {
@@ -14,7 +14,7 @@ export const SubscriptionInformation = () => {
 	}: {
 		data: MembersDataApiResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(allRecurringProductsDetailFetcher, JsonResponseHandler);
+	} = useAsyncLoader(allRecurringProductsDetailFetcher, JsonTransform);
 
 	if (loadingState === LoadingState.IsLoading) {
 		return (

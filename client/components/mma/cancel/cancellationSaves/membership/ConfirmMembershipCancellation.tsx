@@ -3,6 +3,7 @@ import { palette, space, textSans } from '@guardian/source-foundations';
 import { Button, Stack } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { JsonResponseHandler } from '@/client/utilities/hooks/useAsyncLoader';
 import { MDA_TEST_USER_HEADER } from '../../../../../../shared/productResponse';
 import type {
 	MembersDataApiResponse,
@@ -13,7 +14,6 @@ import { stackedButtonLayoutCss } from '../../../../../styles/ButtonStyles';
 import { fetchWithDefaultParameters } from '../../../../../utilities/fetch';
 import { createProductDetailFetcher } from '../../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../../shared/GenericErrorScreen';
-import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Heading } from '../../../shared/Heading';
 import { ProgressStepper } from '../../../shared/ProgressStepper';
 import type {

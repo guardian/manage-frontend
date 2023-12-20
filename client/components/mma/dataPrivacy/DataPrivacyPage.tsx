@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { gridItemPlacement } from '../../../styles/grid';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -14,7 +15,6 @@ import { ConsentOptions, mapSubscriptions } from '../identity/identity';
 import { Lines } from '../identity/Lines';
 import type { ConsentOption } from '../identity/models';
 import { Actions, useConsentOptions } from '../identity/useConsentOptions';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { CookiesOnThisBrowserSection } from './CookiesOnTheBrowserSection';
 import { dataPrivacyWrapper } from './DataPrivacy.styles';
@@ -39,7 +39,7 @@ export const DataPrivacyPage = () => {
 	}: {
 		data: DataPrivacyResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(dataPrivacyFetcher, JsonResponseHandler);
+	} = useAsyncLoader(dataPrivacyFetcher, JsonTransform);
 
 	useEffect(() => {
 		if (dataPrivacyResponse) {

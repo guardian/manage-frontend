@@ -14,6 +14,7 @@ import type {
 	WithProductType,
 } from '../../../../shared/productTypes';
 import {
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -23,7 +24,6 @@ import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../holiday/HolidayStopApi';
 import { PageContainer } from '../Page';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import type {
 	CancellationReason,
@@ -54,7 +54,7 @@ const AsyncLoadedCancellationContainer = (
 
 	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
 		request,
-		JsonResponseHandler,
+		JsonTransform,
 	);
 
 	if (loadingState == LoadingState.HasError) {

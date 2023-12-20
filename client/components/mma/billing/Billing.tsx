@@ -38,6 +38,7 @@ import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -49,7 +50,6 @@ import { SixForSixExplainerIfApplicable } from '../accountoverview/SixForSixExpl
 import { PageContainer } from '../Page';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { BasicProductInfoTable } from '../shared/BasicProductInfoTable';
 import { LinkButton } from '../shared/Buttons';
@@ -391,7 +391,7 @@ const BillingPage = () => {
 	}: {
 		data: BillingResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(billingFetcher, JsonResponseHandler);
+	} = useAsyncLoader(billingFetcher, JsonTransform);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;

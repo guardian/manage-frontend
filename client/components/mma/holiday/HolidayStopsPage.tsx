@@ -5,13 +5,12 @@ import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import type { ProductTypeWithHolidayStopsFlow } from '../../../../shared/productTypes';
 import {
+	handleResponses,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
-import { handleResponses } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
-import type { ResponseProcessor } from '../shared/asyncComponents/ResponseProcessor';
 import { embellishExistingHolidayStops } from './HolidayStopApi';
 import type {
 	GetHolidayStopsResponse,
@@ -20,9 +19,7 @@ import type {
 } from './HolidayStopApi';
 import { HolidayStopsContext } from './HolidayStopsContainer';
 
-const HolidayStopsResponseHandler: ResponseProcessor = (
-	response: Response | Response[],
-) => {
+const HolidayStopsResponseHandler = (response: Response | Response[]) => {
 	return handleResponses(response, embellishExistingHolidayStops);
 };
 

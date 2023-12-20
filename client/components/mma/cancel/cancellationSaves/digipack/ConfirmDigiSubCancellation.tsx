@@ -12,11 +12,11 @@ import { useLocation, useNavigate } from 'react-router';
 import type { CancellationContextInterface } from '@/client/components/mma/cancel/CancellationContainer';
 import { CancellationContext } from '@/client/components/mma/cancel/CancellationContainer';
 import type { OptionalCancellationReasonId } from '@/client/components/mma/cancel/cancellationReason';
-import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import { benefitsCss } from '@/client/components/mma/shared/benefits/BenefitsStyles';
 import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
 import { stackedButtonLayoutCss } from '@/client/styles/ButtonStyles';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import { JsonResponseHandler } from '@/client/utilities/hooks/useAsyncLoader';
 import { createProductDetailFetcher } from '@/client/utilities/productUtils';
 import type {
 	MembersDataApiResponse,

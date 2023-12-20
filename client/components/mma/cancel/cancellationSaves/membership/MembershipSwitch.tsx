@@ -35,8 +35,8 @@ import {
 	sectionSpacing,
 	smallPrintCss,
 } from '../../../../../styles/GenericStyles';
+import { JsonResponseHandler } from '../../../../../utilities/hooks/useAsyncLoader';
 import { getOldMembershipPrice } from '../../../../../utilities/pricingConfig/membershipPriceRise';
-import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Card } from '../../../shared/Card';
 import { Heading } from '../../../shared/Heading';
 import { PaymentDetails } from '../../../shared/PaymentDetails';

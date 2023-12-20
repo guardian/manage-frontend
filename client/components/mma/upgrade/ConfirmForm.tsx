@@ -35,7 +35,11 @@ import {
 	whatHappensNextIconCss,
 } from '../../../styles/GenericStyles';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
-import { LoadingState } from '../../../utilities/hooks/useAsyncLoader';
+import {
+	JsonResponseHandler,
+	LoadingState,
+	TextResponseHandler,
+} from '../../../utilities/hooks/useAsyncLoader';
 import {
 	calculateAmountPayableToday,
 	calculateCheckChargeAmountBeforeUpdate,
@@ -44,10 +48,6 @@ import { productMoveFetch } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { SwitchErrorSummary } from '../../shared/productSwitch/SwitchErrorSummary';
 import { SwitchPaymentInfo } from '../../shared/productSwitch/SwitchPaymentInfo';
-import {
-	JsonResponseHandler,
-	TextResponseHandler,
-} from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { Heading } from '../shared/Heading';
 import { PaymentDetails } from '../shared/PaymentDetails';

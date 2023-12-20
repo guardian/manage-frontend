@@ -13,6 +13,7 @@ import {
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
 import {
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -20,7 +21,6 @@ import { createProductDetailFetcher } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 
 export interface UpgradeSupportInterface {
@@ -79,7 +79,7 @@ export const UpgradeSupportContainer = () => {
 
 	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
 		request,
-		JsonResponseHandler,
+		JsonTransform,
 	);
 
 	if (loadingState == LoadingState.HasError) {

@@ -24,13 +24,13 @@ import type { ProductDetail } from '../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
 import { hasCancellationFlow } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
 import type { CancellationContextInterface } from './CancellationContainer';
@@ -320,7 +320,7 @@ const ReasonPickerWithCancellationDate = ({
 		loadingState: LoadingState;
 	} = useAsyncLoader(
 		cancellationDateFetcher(productDetail.subscription.subscriptionId),
-		JsonResponseHandler,
+		JsonTransform,
 	);
 
 	if (loadingState == LoadingState.HasError) {

@@ -4,10 +4,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import {
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import type {
 	HolidayStopRequest,
@@ -40,7 +40,7 @@ const DeleteHolidayStop = (props: {
 					[MDA_TEST_USER_HEADER]: `${props.isTestUser}`,
 				},
 			}),
-		JsonResponseHandler,
+		JsonTransform,
 	);
 
 	if (loadingState == LoadingState.HasError) {

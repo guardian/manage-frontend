@@ -26,6 +26,8 @@ import {
 	sectionSpacing,
 } from '../../../../styles/GenericStyles';
 import {
+	JsonResponseHandler,
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
@@ -33,7 +35,6 @@ import { formatAmount } from '../../../../utilities/utils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { SwitchPaymentInfo } from '../../../shared/productSwitch/SwitchPaymentInfo';
 import { SwitchOffsetPaymentIcon } from '../../shared/assets/SwitchOffsetPaymentIcon';
-import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 import { BenefitsToggle } from '../../shared/benefits/BenefitsToggle';
 import { Card } from '../../shared/Card';
@@ -174,10 +175,7 @@ export const SwitchReview = () => {
 	}: {
 		data: PreviewResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(
-		() => productMoveFetch(true, false),
-		JsonResponseHandler,
-	);
+	} = useAsyncLoader(() => productMoveFetch(true, false), JsonTransform);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;

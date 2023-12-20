@@ -11,12 +11,12 @@ import type {
 import { getSpecificProductTypeFromProduct } from '../../../../../shared/productResponse';
 import { headingCss } from '../../../../styles/GenericStyles';
 import {
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../../utilities/hooks/useAsyncLoader';
 import { allRecurringProductsDetailFetcher } from '../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
-import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 import { Heading } from '../../shared/Heading';
 import type {
@@ -62,7 +62,7 @@ export const CancellationLanding = () => {
 	}: {
 		data: MembersDataApiResponse | null;
 		loadingState: LoadingState;
-	} = useAsyncLoader(allRecurringProductsDetailFetcher, JsonResponseHandler);
+	} = useAsyncLoader(allRecurringProductsDetailFetcher, JsonTransform);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;

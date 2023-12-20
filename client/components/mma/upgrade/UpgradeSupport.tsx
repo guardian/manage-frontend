@@ -5,11 +5,14 @@ import { useContext, useState } from 'react';
 import { formatAmount } from '@/client/utilities/utils';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
-import { useAsyncLoader } from '../../../utilities/hooks/useAsyncLoader';
+import type { LoadingState } from '../../../utilities/hooks/useAsyncLoader';
+import {
+	JsonTransform,
+	useAsyncLoader,
+} from '../../../utilities/hooks/useAsyncLoader';
 import { getContributionSuggestedAmounts } from '../../../utilities/pricingConfig/suggestedAmounts';
 import { getBenefitsThreshold } from '../../../utilities/pricingConfig/supporterPlusPricing';
 import { productMoveFetch } from '../../../utilities/productUtils';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { ConfirmForm } from './ConfirmForm';
 import { UpgradeSupportAmountForm } from './UpgradeSupportAmountForm';
 import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
@@ -34,7 +37,10 @@ export const UpgradeSupport = () => {
 		mainPlan.billingPeriod as 'month' | 'year',
 	);
 
-	const { data: previewResponse, loadingState: previewLoadingState } =
+	const {
+		data: previewResponse,
+		loadingState: previewLoadingState,
+	}: { data: PreviewResponse | null; loadingState: LoadingState } =
 		useAsyncLoader<PreviewResponse>(
 			() =>
 				productMoveFetch(
@@ -44,7 +50,7 @@ export const UpgradeSupport = () => {
 					false,
 					true,
 				),
-			JsonResponseHandler,
+			JsonTransform,
 		);
 
 	return (

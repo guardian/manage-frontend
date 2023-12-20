@@ -29,6 +29,7 @@ import {
 } from '../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -41,7 +42,6 @@ import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import type { IsFromAppProps } from '../shared/IsFromAppProps';
 import { nonServiceableCountries } from '../shared/NonServiceableCountries';
@@ -71,13 +71,10 @@ const subHeadingCss = css`
 `;
 
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
-	const {
-		data: accountOverviewResponse,
-		loadingState,
-	}: {
-		data: AccountOverviewResponse | null;
-		loadingState: LoadingState;
-	} = useAsyncLoader(accountOverviewFetcher, JsonResponseHandler);
+	const { data: accountOverviewResponse, loadingState } = useAsyncLoader(
+		accountOverviewFetcher,
+		JsonTransform,
+	);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
@@ -96,7 +93,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributions,
-	] = accountOverviewResponse;
+	] = accountOverviewResponse as AccountOverviewResponse;
 
 	const allActiveProductDetails = mdapiResponse.products
 		.filter(isProduct)

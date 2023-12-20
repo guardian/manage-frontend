@@ -32,8 +32,8 @@ import {
 	wideButtonCss,
 } from '../../../../styles/ButtonStyles';
 import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
+import { JsonResponseHandler } from '../../../../utilities/hooks/useAsyncLoader';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
-import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,

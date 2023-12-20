@@ -17,7 +17,6 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/client/components/mma/Page';
 import { ErrorIcon } from '@/client/components/mma/shared/assets/ErrorIcon';
-import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '@/client/components/mma/shared/asyncComponents/DefaultLoadingView';
 import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymentDetails';
 import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
@@ -35,6 +34,7 @@ import {
 	whatHappensNextIconCss,
 } from '@/client/styles/GenericStyles';
 import {
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '@/client/utilities/hooks/useAsyncLoader';
@@ -288,7 +288,7 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 
 	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
 		request,
-		JsonResponseHandler,
+		JsonTransform,
 	);
 
 	if (loadingState == LoadingState.HasError) {

@@ -14,6 +14,7 @@ import {
 } from '../../../../shared/productTypes';
 import type { CurrencyIso } from '../../../utilities/currencyIso';
 import {
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -25,7 +26,6 @@ import {
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 
 export interface SwitchRouterState {
@@ -106,7 +106,7 @@ const AsyncLoadedSwitchContainer = (props: { isFromApp?: boolean }) => {
 
 	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
 		request,
-		JsonResponseHandler,
+		JsonTransform,
 	);
 
 	if (loadingState == LoadingState.HasError) {

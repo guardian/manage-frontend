@@ -26,6 +26,7 @@ import type {
 } from '../../../../shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
+	JsonTransform,
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
@@ -43,7 +44,6 @@ import { DeliveryAddressDisplay } from '../delivery/address/DeliveryAddressDispl
 import { PageContainer } from '../Page';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { BasicProductInfoTable } from '../shared/BasicProductInfoTable';
 import { LinkButton } from '../shared/Buttons';
@@ -437,10 +437,11 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 		props.productType.allProductsProductTypeFilterString,
 	);
 
-	const { data, loadingState } = useAsyncLoader<MembersDataApiResponse>(
-		request,
-		JsonResponseHandler,
-	);
+	const {
+		data,
+		loadingState,
+	}: { data: MembersDataApiResponse | null; loadingState: LoadingState } =
+		useAsyncLoader<MembersDataApiResponse>(request, JsonTransform);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
