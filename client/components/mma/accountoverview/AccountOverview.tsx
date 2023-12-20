@@ -71,10 +71,11 @@ const subHeadingCss = css`
 `;
 
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
-	const { data: accountOverviewResponse, loadingState } = useAsyncLoader(
-		accountOverviewFetcher,
-		JsonTransform,
-	);
+	const { data: accountOverviewResponse, loadingState } =
+		useAsyncLoader<AccountOverviewResponse>(
+			accountOverviewFetcher,
+			JsonTransform,
+		);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
@@ -93,7 +94,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributions,
-	] = accountOverviewResponse as AccountOverviewResponse;
+	] = accountOverviewResponse;
 
 	const allActiveProductDetails = mdapiResponse.products
 		.filter(isProduct)
