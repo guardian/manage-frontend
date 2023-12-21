@@ -1,7 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import { palette } from '@guardian/source-foundations';
-import type { Inlineable } from './inlineable';
 
 interface CardExpiryDetails {
 	month: number;
@@ -14,7 +13,7 @@ export interface CardProps {
 	stripePublicKeyForUpdate?: string;
 }
 
-interface CardDisplayProps extends CardProps, Inlineable {
+interface CardDisplayProps extends CardProps {
 	cssOverrides?: SerializedStyles;
 	inErrorState?: boolean;
 }

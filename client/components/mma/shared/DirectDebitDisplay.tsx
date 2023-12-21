@@ -2,7 +2,6 @@ import { css } from '@emotion/react';
 import { from, palette } from '@guardian/source-foundations';
 import type { DirectDebitDetails } from '../../../../shared/productResponse';
 import { DirectDebitLogo } from './assets/DirectDebitLogo';
-import type { Inlineable } from './inlineable';
 
 const NUMBER_OF_ACCOUNT_NUMBER_DIGITS_TO_SHOW = 3;
 
@@ -54,11 +53,12 @@ export const sanitiseAccountNumber = (
 	);
 };
 
-interface DirectDebitDisplayProps extends DirectDebitDetails, Inlineable {
+interface DirectDebitDisplayProps extends DirectDebitDetails {
 	showAccountName?: true;
 	inErrorState?: boolean;
 	onlyAccountEnding?: true;
 	onlySortCode?: true;
+	inline?: true;
 }
 
 export const DirectDebitDisplay = (props: DirectDebitDisplayProps) => {
