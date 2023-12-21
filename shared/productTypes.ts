@@ -33,7 +33,7 @@ import { SoftOptInIDs } from './softOptInIDs';
 
 type ProductFriendlyName =
 	| 'Membership'
-	| 'recurring contribution' // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
+	| 'recurring contribution'
 	| 'newspaper subscription'
 	| 'newspaper voucher subscription'
 	| 'newspaper subscription card'
