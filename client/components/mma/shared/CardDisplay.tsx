@@ -124,6 +124,8 @@ export const cardTypeToSVG = (
 						/>
 					</svg>
 				);
+			default:
+				return null;
 		}
 	})();
 

@@ -80,6 +80,8 @@ export const getNextPaymentDetails = (
 			nextPaymentDateValue,
 		};
 	}
+
+	return;
 };
 
 export const NewPaymentPriceAlert = () => (

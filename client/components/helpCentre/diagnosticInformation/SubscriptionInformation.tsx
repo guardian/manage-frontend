@@ -51,6 +51,7 @@ export const SubscriptionInformation = () => {
 								</li>
 							);
 						}
+						return null;
 					})
 				) : (
 					<li>User has no subscription</li>

@@ -106,6 +106,7 @@ export function getLogos(paymentMethod: PaymentMethod) {
 			/>
 		);
 	}
+	return null;
 }
 
 const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {

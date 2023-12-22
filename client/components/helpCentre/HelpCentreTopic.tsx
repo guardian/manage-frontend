@@ -34,6 +34,7 @@ export const HelpCentreTopic = () => {
 						`Fetching topic ${topicCode} returned ${response.status}.`,
 					);
 					navigate('/help-centre');
+					return null;
 				}
 			})
 			.then((topicData) => {

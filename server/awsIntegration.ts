@@ -99,6 +99,8 @@ export const s3FilePromise = <ConfigInterface>(
 			`S3 error fetching ${fileKey} in '${bucket}'`,
 			s3PromiseResult,
 		);
+
+		return;
 	})();
 
 export const s3TextFilePromise = (
@@ -121,6 +123,8 @@ export const s3TextFilePromise = (
 			`S3 error fetching ${fileKey} in '${bucket}'`,
 			s3PromiseResult,
 		);
+
+		return;
 	})();
 
 export const putMetricDataPromise = (

@@ -52,11 +52,11 @@ router.get(
 			});
 			const json = await jsonOrEmpty(response);
 			if (!response.ok) {
-				res.status(response.status).send(json);
+				return res.status(response.status).send(json);
 			} else if (response.status === 204) {
 				return res.sendStatus(204);
 			} else {
-				res.json(json);
+				return res.json(json);
 			}
 		} catch (error) {
 			sendAvatarAPIErrorResponse(
@@ -67,6 +67,7 @@ router.get(
 				500,
 				res,
 			);
+			return;
 		}
 	},
 );
@@ -127,11 +128,11 @@ router.post(
 			});
 			const json = await jsonOrEmpty(response);
 			if (!response.ok) {
-				res.status(response.status).send(json);
+				return res.status(response.status).send(json);
 			} else if (response.status === 204) {
 				return res.sendStatus(204);
 			} else {
-				res.json(json);
+				return res.json(json);
 			}
 		} catch (error) {
 			sendAvatarAPIErrorResponse(

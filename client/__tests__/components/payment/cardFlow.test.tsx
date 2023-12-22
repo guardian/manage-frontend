@@ -98,6 +98,7 @@ describe('CardInputForm.tsx and stripeCardInputForm.tsx', () => {
 						if (url.includes('/api/payment/card')) {
 							return stripeSetupIntent;
 						}
+						return null;
 					},
 				});
 			});

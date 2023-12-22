@@ -39,6 +39,7 @@ export const getRecaptchaPublicKey = async () => {
 			err,
 		);
 		Sentry.captureException(err);
+		return;
 	}
 };
 
@@ -57,5 +58,6 @@ export const getStripePublicKeys = async () => {
 			err,
 		);
 		Sentry.captureException(err);
+		return;
 	}
 };
