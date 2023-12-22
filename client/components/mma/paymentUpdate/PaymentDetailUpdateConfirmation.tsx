@@ -94,6 +94,8 @@ function getPaymentInterval(interval: string) {
 	} else if (interval === 'quarter') {
 		return 'quarterly';
 	}
+
+	return;
 }
 
 export const ConfirmedNewPaymentDetailsRenderer = ({

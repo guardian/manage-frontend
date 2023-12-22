@@ -5,7 +5,6 @@
     "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
     "noEmit": true,
-    "noImplicitReturns": false,
     "noUncheckedIndexedAccess": false,
     "noUnusedParameters": true,
     "types": ["node", "jest"],

@@ -30,7 +30,7 @@ export const contactUsFormHandler = async (req: Request, res: Response) => {
 		return res.status(500).send();
 	}
 
-	fetch(apiConfig.host, {
+	return fetch(apiConfig.host, {
 		method: 'POST',
 		body: JSON.stringify(validBody),
 		headers: {
@@ -44,14 +44,14 @@ export const contactUsFormHandler = async (req: Request, res: Response) => {
 				log.error(errorMessage);
 				captureMessage(errorMessage);
 			}
-			res.status(contactUsAPIResponse.status).send();
+			return res.status(contactUsAPIResponse.status).send();
 		})
 		.catch((error) => {
 			const errorMessage =
 				'Unexpected error when trying to contact contact-us-api endpoint.';
 			log.error(errorMessage, error);
 			captureMessage(errorMessage);
-			res.status(500).send();
+			return res.status(500).send();
 		});
 };
 

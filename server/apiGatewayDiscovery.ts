@@ -60,6 +60,7 @@ const getHost = (
 		return hosts[0];
 	}
 	log.error(`${(hosts || []).length} hosts for ${stackName}, expected 1`);
+	return;
 };
 
 const lookupApiKey = async (apiKey: string) =>
@@ -86,6 +87,7 @@ const getApiKeyPromise = (
 			(apiKeyPromises || []).length
 		} API keys for ${stackName}, expected 1`,
 	);
+	return;
 };
 
 interface HostAndApiKey {

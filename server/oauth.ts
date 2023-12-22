@@ -98,6 +98,7 @@ export const verifyAccessToken = async (token: string) => {
 		return jwt;
 	} catch (error) {
 		console.error('OAuth / Access Token / Verification Error', error);
+		return;
 	}
 };
 
@@ -111,6 +112,7 @@ export const verifyIdToken = async (token: string) => {
 		return jwt;
 	} catch (error) {
 		console.error('OAuth / ID Token / Verification Error', error);
+		return;
 	}
 };
 

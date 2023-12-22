@@ -296,6 +296,8 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 					return 'MEMBERSHIP_PARTNER';
 				case 'Patron':
 					return 'MEMBERSHIP_PATRON';
+				default:
+					return;
 			}
 		},
 		cancellation: {

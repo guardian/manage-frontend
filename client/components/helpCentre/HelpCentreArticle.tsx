@@ -49,6 +49,7 @@ export const HelpCentreArticle = () => {
 						`Fetching article ${articleCode} returned ${response.status}.`,
 					);
 					navigate('/help-centre');
+					return null;
 				}
 			})
 			.then((articleData) => setArticle(articleData as Article))

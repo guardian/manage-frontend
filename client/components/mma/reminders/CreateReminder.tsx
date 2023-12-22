@@ -63,6 +63,7 @@ export const CreateReminder = ({ reminderType }: CreateReminderProps) => {
 						);
 					} else {
 						setStatus('SUCCESS');
+						return;
 					}
 				})
 				.catch((err) => {
