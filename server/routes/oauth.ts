@@ -1,17 +1,15 @@
 import type { Request, Response } from 'express';
 import { Router } from 'express';
 import ms from 'ms';
-import {
-	getOpenIdClient,
-	oauthCookieOptions,
-	OAuthStateCookieName,
-} from '@/server/oauth';
+import { getOpenIdClient } from '@/server/oauth';
+import { oauthCookieOptions, OAuthStateCookieName } from '@/server/oauthConfig';
 import { conf } from '../config';
+import { log } from '../log';
 
 const router = Router();
 
 const handleCallbackRouteError = (err: Error, res: Response) => {
-	console.error('OAuth / Callback endpoint error: ', err);
+	log.error('OAuth / Callback endpoint error: ', err);
 	res.redirect('/maintenance');
 };
 

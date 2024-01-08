@@ -6,11 +6,11 @@ interface CommonGlobals {
 	dsn: string | null;
 }
 
-interface IdentityDetails {
+export interface IdentityDetails {
 	userId?: string;
 	email?: string;
 	displayName?: string;
-	signInStatus?: string;
+	signInStatus?: 'signedInRecently' | 'signedInNotRecently' | 'notSignedIn';
 }
 
 export interface Globals extends CommonGlobals {

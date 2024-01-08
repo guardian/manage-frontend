@@ -7,6 +7,8 @@ import type { Request, Response } from 'express';
 import { conf } from '@/server/config';
 import { authenticateWithOAuth } from '@/server/middleware/identityMiddleware';
 import * as oauth from '@/server/oauth';
+import type { Scopes } from '../../oauthConfig';
+import { oauthCookieOptions, scopes } from '../../oauthConfig';
 
 jest.mock('@/server/idapiConfig', () => ({
 	getConfig: () => ({
@@ -51,18 +53,18 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 
 		expect(res.clearCookie).toHaveBeenCalledWith(
 			'GU_ACCESS_TOKEN',
-			oauth.oauthCookieOptions,
+			oauthCookieOptions,
 		);
 		expect(res.clearCookie).toHaveBeenCalledWith(
 			'GU_ID_TOKEN',
-			oauth.oauthCookieOptions,
+			oauthCookieOptions,
 		);
 		expect(oauth.performAuthorizationCodeFlow).toHaveBeenCalledWith(
 			req,
 			res,
 			{
 				redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
-				scopes: oauth.scopes,
+				scopes,
 				returnPath: '/profile',
 			},
 		);
@@ -84,7 +86,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 		jest.spyOn(oauth, 'verifyAccessToken').mockResolvedValue({
 			isExpired: () => true,
 			claims: {
-				scp: oauth.scopes as readonly oauth.Scopes[],
+				scp: scopes as readonly Scopes[],
 			},
 		} as Jwt);
 		jest.spyOn(oauth, 'verifyIdToken').mockResolvedValue({
@@ -98,7 +100,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 			res,
 			{
 				redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
-				scopes: oauth.scopes,
+				scopes,
 				returnPath: '/profile',
 			},
 		);
@@ -127,7 +129,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 		jest.spyOn(oauth, 'verifyAccessToken').mockResolvedValue({
 			isExpired: () => false,
 			claims: {
-				scp: oauth.scopes as readonly oauth.Scopes[],
+				scp: scopes as readonly Scopes[],
 			},
 		} as Jwt);
 		jest.spyOn(oauth, 'verifyIdToken').mockResolvedValue(idToken);
@@ -139,7 +141,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 			res,
 			{
 				redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
-				scopes: oauth.scopes,
+				scopes,
 				returnPath: '/profile',
 			},
 		);
@@ -172,7 +174,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 		jest.spyOn(oauth, 'verifyAccessToken').mockResolvedValue({
 			isExpired: () => false,
 			claims: {
-				scp: oauth.scopes as readonly oauth.Scopes[],
+				scp: scopes as readonly Scopes[],
 			},
 		} as Jwt);
 		jest.spyOn(oauth, 'verifyIdToken').mockResolvedValue(idToken);
@@ -215,11 +217,11 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 
 		expect(res.clearCookie).toHaveBeenCalledWith(
 			'GU_ACCESS_TOKEN',
-			oauth.oauthCookieOptions,
+			oauthCookieOptions,
 		);
 		expect(res.clearCookie).toHaveBeenCalledWith(
 			'GU_ID_TOKEN',
-			oauth.oauthCookieOptions,
+			oauthCookieOptions,
 		);
 		expect(next).toHaveBeenCalled();
 	});
@@ -288,7 +290,7 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 		jest.spyOn(oauth, 'verifyAccessToken').mockResolvedValue({
 			isExpired: () => false,
 			claims: {
-				scp: oauth.scopes as readonly oauth.Scopes[],
+				scp: scopes as readonly Scopes[],
 			},
 		} as Jwt);
 		jest.spyOn(oauth, 'verifyIdToken').mockResolvedValue(idToken);

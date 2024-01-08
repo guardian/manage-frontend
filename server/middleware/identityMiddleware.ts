@@ -17,15 +17,17 @@ import {
 } from '@/server/middleware/requestMiddleware';
 import {
 	allIdapiCookiesSet,
-	OAuthAccessTokenCookieName,
-	oauthCookieOptions,
-	OAuthIdTokenCookieName,
 	performAuthorizationCodeFlow,
 	sanitizeReturnPath,
-	scopes,
 	setLocalStateFromIdTokenOrUserCookie,
 	verifyOAuthCookiesLocally,
 } from '@/server/oauth';
+import {
+	OAuthAccessTokenCookieName,
+	oauthCookieOptions,
+	OAuthIdTokenCookieName,
+	scopes,
+} from '@/server/oauthConfig';
 import { getConfig as getOktaConfig } from '@/server/oktaConfig';
 import {
 	getScopeFromRequestPathOrEmptyString,
@@ -36,7 +38,7 @@ import { requiresSignin } from '@/shared/requiresSignin';
 declare const CYPRESS: string;
 
 const handleIdentityMiddlewareError = (err: Error, res: Response) => {
-	console.log('OAuth / Middleware / Error', err);
+	log.error('OAuth / Middleware / Error', err);
 	res.redirect('/maintenance');
 };
 
@@ -143,7 +145,6 @@ export const authenticateWithOAuth = async (
 			return next();
 		}
 	} catch (err) {
-		console.error(err);
 		return handleIdentityMiddlewareError(err, res);
 	}
 };
