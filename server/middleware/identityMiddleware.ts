@@ -42,6 +42,11 @@ const handleIdentityMiddlewareError = (err: Error, res: Response) => {
 	res.redirect('/maintenance');
 };
 
+const clearOAuthCookies = (res: Response) => {
+	res.clearCookie(OAuthAccessTokenCookieName, oauthCookieOptions);
+	res.clearCookie(OAuthIdTokenCookieName, oauthCookieOptions);
+};
+
 export const withIdentity: (statusCodeOverride?: number) => RequestHandler =
 	(statusCodeOverride?: number) =>
 	async (req: Request, res: Response, next: NextFunction) => {
@@ -74,30 +79,42 @@ export const authenticateWithOAuth = async (
 	const returnPath = sanitizeReturnPath(req.originalUrl);
 
 	try {
+		const verifiedTokens = await verifyOAuthCookiesLocally(req);
+		const guSoTimestamp = parseInt(req.cookies['GU_SO']);
 		if (requiresSignin(req.originalUrl)) {
 			// The route requires signin
 			/////////////////////////////////////////////////////////////////////////////////////
-			// If we have a GU_SO cookie, we've signed out recently, so we need to delete
-			// the access and ID tokens from the browser and perform the OAuth flow again.
-			if (req.cookies['GU_SO']) {
-				res.clearCookie(OAuthAccessTokenCookieName, oauthCookieOptions);
-				res.clearCookie(OAuthIdTokenCookieName, oauthCookieOptions);
-				return performAuthorizationCodeFlow(req, res, {
-					redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
-					scopes,
-					returnPath,
-				});
-			}
-
-			const { accessToken, idToken } = await verifyOAuthCookiesLocally(
-				req,
-			);
-			if (allIdapiCookiesSet(req) && accessToken && idToken) {
-				// The user has valid access and ID tokens, and the full set of IDAPI cookies,
-				// so they're signed in. We set req.locals.identity so that the frontend can
-				// correctly show the user as signed in and continue to the route.
-				setLocalStateFromIdTokenOrUserCookie(req, res, idToken);
-				return next();
+			if (verifiedTokens?.accessToken && verifiedTokens?.idToken) {
+				// Check GU_SO cookie timestamp (we want to know if the user has signed out _after_ these tokens were issued,
+				// so we can redirect them to the OAuth flow to get new tokens for the currently signed-in user (if any).
+				if (
+					guSoTimestamp &&
+					typeof verifiedTokens.accessToken.claims.iat === 'number' &&
+					guSoTimestamp > verifiedTokens.accessToken.claims.iat &&
+					// Check that the GU_SO cookie value is not set into the future to avoid a redirect loop
+					// where the middleware will continually keep running performAuthorizationCodeFlow().
+					guSoTimestamp <= Math.floor(Date.now() / 1000)
+				) {
+					clearOAuthCookies(res);
+					return performAuthorizationCodeFlow(req, res, {
+						redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
+						scopes,
+						returnPath,
+					});
+				}
+				// At this point, the GU_SO cookie is either not set, or it's older than the tokens,
+				// so we know the tokens belong to the currently signed-in user.
+				if (allIdapiCookiesSet(req)) {
+					// The user has valid access and ID tokens, and the full set of IDAPI cookies,
+					// so they're signed in. We set req.locals.identity so that the frontend can
+					// correctly show the user as signed in and continue to the route.
+					setLocalStateFromIdTokenOrUserCookie(
+						req,
+						res,
+						verifiedTokens.idToken,
+					);
+					return next();
+				}
 			}
 
 			// We don't have the tokens, or they're invalid, or we're missing IDAPI cookies,
@@ -110,38 +127,28 @@ export const authenticateWithOAuth = async (
 		} else {
 			// The route does not require signin (but the user _may_ be signed in)
 			/////////////////////////////////////////////////////////////////////////////////////
-			// If we have a GU_SO cookie, we've signed out recently, so we need to delete
-			// the access and ID tokens from the browser and continue to the route.
-			if (req.cookies['GU_SO']) {
-				res.clearCookie(OAuthAccessTokenCookieName, oauthCookieOptions);
-				res.clearCookie(OAuthIdTokenCookieName, oauthCookieOptions);
-				// The user is totally signed out.
-				return next();
+			if (verifiedTokens?.accessToken && verifiedTokens?.idToken) {
+				// Check GU_SO cookie timestamp
+				if (
+					guSoTimestamp &&
+					typeof verifiedTokens.accessToken.claims.iat === 'number' &&
+					guSoTimestamp > verifiedTokens.accessToken.claims.iat &&
+					// Check that the GU_SO cookie value is not set into the future to avoid clearing
+					// the OAuth cookies when the GU_SO cookie has an invalid value.
+					guSoTimestamp <= Math.floor(Date.now() / 1000)
+				) {
+					clearOAuthCookies(res);
+					return next();
+				}
 			}
 
-			// If we do have access and ID token cookies, we can attempt to verify them
-			// and add the result to res.locals (which will get passed to the frontend
-			// and correctly show if the user is signed in).
-			const { accessToken, idToken } = await verifyOAuthCookiesLocally(
+			// Set as much as possible of the local state from the available combination of
+			// GU_U and the ID token.
+			setLocalStateFromIdTokenOrUserCookie(
 				req,
+				res,
+				verifiedTokens?.idToken,
 			);
-			if (allIdapiCookiesSet(req) && accessToken && idToken) {
-				setLocalStateFromIdTokenOrUserCookie(req, res, idToken);
-				// The user is signed in.
-				return next();
-			}
-
-			// If they do _not_ have valid access/ID tokens, but _do_ have a GU_U cookie,
-			// they are 'maybe signed in', and we can at least show the signed in header
-			// on the frontend by setting local state. This is because the GU_U cookie is
-			// set by Gateway during the OAuth flow.
-			if (req.cookies['GU_U']) {
-				setLocalStateFromIdTokenOrUserCookie(req, res);
-				// The user is maybe signed in.
-				return next();
-			}
-
-			// They have neither tokens nor the GU_U cookie, so they're completely signed out.
 			return next();
 		}
 	} catch (err) {
