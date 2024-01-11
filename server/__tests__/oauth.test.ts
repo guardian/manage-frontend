@@ -114,7 +114,7 @@ describe('verifyOAuthCookiesLocally', () => {
 			'invalid-access-token',
 		);
 		expect(spyOnVerifyIdToken).toHaveBeenCalledWith('id-token');
-		expect(verify).toEqual({});
+		expect(verify).toEqual(undefined);
 	});
 
 	it('returns an empty object if the ID token is invalid', async () => {
@@ -144,7 +144,7 @@ describe('verifyOAuthCookiesLocally', () => {
 
 		expect(spyOnVerifyAccessToken).toHaveBeenCalledWith('access-token');
 		expect(spyOnVerifyIdToken).toHaveBeenCalledWith('invalid-id-token');
-		expect(verify).toEqual({});
+		expect(verify).toEqual(undefined);
 	});
 });
 

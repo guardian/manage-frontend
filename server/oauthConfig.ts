@@ -7,8 +7,8 @@ export const OAuthIdTokenCookieName = 'GU_ID_TOKEN';
 export const OAuthStateCookieName = 'GU_oidc_auth_state';
 
 export interface VerifiedOAuthCookies {
-	accessToken?: OktaJwtVerifier.Jwt;
-	idToken?: OktaJwtVerifier.Jwt;
+	accessToken: OktaJwtVerifier.Jwt;
+	idToken: OktaJwtVerifier.Jwt;
 }
 
 export const oauthCookieOptions: CookieOptions = {

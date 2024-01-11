@@ -279,7 +279,7 @@ export const performAuthorizationCodeFlow = async (
  */
 export const verifyOAuthCookiesLocally = async (
 	req: Request,
-): Promise<VerifiedOAuthCookies> => {
+): Promise<VerifiedOAuthCookies | undefined> => {
 	const accessTokenCookie = req.signedCookies[OAuthAccessTokenCookieName];
 	const idTokenCookie = req.signedCookies[OAuthIdTokenCookieName];
 
@@ -300,13 +300,7 @@ export const verifyOAuthCookiesLocally = async (
 				accessToken,
 				idToken,
 			};
-		} else {
-			// Access or ID token invalid, return empty object
-			return {};
 		}
-	} else {
-		// No access token or ID token cookie found, return empty object
-		return {};
 	}
 };
 
