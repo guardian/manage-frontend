@@ -71,6 +71,9 @@ const cancelLinkCss = css`
     	padding-top: ${space[1]}px;
     	padding-left: 0;
     };
+    &:hover {
+    	text-decoration-thickness: 3px;
+    }
   `;
 
 interface InnerContentProps {
