@@ -33,5 +33,5 @@ export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	exampleFeature: false,
 	appSubscriptions: true,
 	supporterPlusUpdateAmount: true,
-	digisubSave: false,
+	digisubSave: true,
 };

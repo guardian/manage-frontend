@@ -7,14 +7,13 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import {
-	Button,
 	LinkButton,
 	Stack,
 	SvgCalendar,
 	SvgClock,
 	SvgCreditCard,
 } from '@guardian/source-react-components';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/client/components/mma/Page';
 import { ErrorIcon } from '@/client/components/mma/shared/assets/ErrorIcon';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
@@ -52,15 +51,26 @@ import {
 } from '@/shared/productTypes';
 
 const subHeadingTitleCss = `
-    ${headline.medium()};
-    font-weight: bold;
-    ${until.tablet} {
-      ${headline.xxsmall()};
-      font-weight: bold;
-    };
-  `;
+	${headline.medium()};
+	font-weight: bold;
+	${until.tablet} {
+		${headline.xxsmall()};
+		font-weight: bold;
+	};
+	`;
 const subHeadingBorderTopCss = `
     margin: 16px 0 16px;
+  `;
+
+const cancelLinkCss = css`
+	color: ${palette.brand['400']};
+	font-weight: bold;
+	text-decoration: underline;
+	padding-left: ${space[2]}px;
+	${until.tablet} {
+    	padding-top: ${space[1]}px;
+    	padding-left: 0;
+    };
   `;
 
 interface InnerContentProps {
@@ -72,7 +82,7 @@ const InnerContent = ({
 	manageProductV2Props,
 	productDetail,
 }: InnerContentProps) => {
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
@@ -92,6 +102,8 @@ const InnerContent = ({
 		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
 
 	const hasCancellationPending = productDetail.subscription.cancelledAt;
+
+	const isSelfServeCancellationAllowed = productDetail.selfServiceCancellation.isAllowed;
 
 	const cancelledCopy =
 		specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
@@ -244,31 +256,23 @@ const InnerContent = ({
 								Update payment method
 							</LinkButton>
 						)}
-
-					<div
-						css={css`
-							margin-left: ${space[5]}px;
-						`}
-					>
-						{!hasCancellationPending && (
-							<Button
-								priority="subdued"
-								onClick={() => {
-									navigate(
-										'/cancel/' +
-											specificProductType.urlPart,
-										{
-											state: {
-												productDetail: productDetail,
-											},
-										},
-									);
-								}}
+					{!hasCancellationPending && !isSelfServeCancellationAllowed && (
+						<div
+							css={css`
+								display: flex;
+								align-items: center;
+								justify-content: center;
+							`}
+						>
+							<Link
+								css={cancelLinkCss}
+								to={'/cancel/' + specificProductType.urlPart}
+								state={{ productDetail: productDetail }}
 							>
-								Cancel {groupedProductType.friendlyName()}
-							</Button>
-						)}
-					</div>
+								Cancel subscription
+							</Link>
+						</div>
+					)}
 				</div>
 			</section>
 		</>
