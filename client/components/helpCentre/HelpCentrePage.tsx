@@ -79,6 +79,11 @@ const HelpCentreRouter = () => {
 
 	const knownIssues: KnownIssueObj[] = [
 		{
+			date: '19th Jan 2024 14:00',
+			message:
+				'Scheduled maintenance work will take place between 3am - 6am GMT on Sunday 21 January. During this period, certain features may be unavailable on the My Account section of theguardian.com.',
+		},
+		{
 			date: '4th Dec 2023 12:45',
 			message:
 				'Due to a technical issue, Customer Service phonelines in the USA & Canada are currently not available. Live chat and email are unaffected.',
