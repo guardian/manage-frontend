@@ -82,8 +82,6 @@ const InnerContent = ({
 	manageProductV2Props,
 	productDetail,
 }: InnerContentProps) => {
-	// const navigate = useNavigate();
-
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
 		throw new Error('mainPlan does not exist in manageProductV2 page');
