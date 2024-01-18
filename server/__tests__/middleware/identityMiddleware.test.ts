@@ -221,7 +221,6 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 			cookies: {
 				GU_U: 'gu_u',
 				SC_GU_U: 'sc_gu_u',
-				SC_GU_LA: 'sc_gu_la',
 			},
 			originalUrl: '/profile',
 		} as Request;
@@ -375,7 +374,6 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 			cookies: {
 				GU_U: 'gu_u',
 				SC_GU_U: 'sc_gu_u',
-				SC_GU_LA: 'sc_gu_la',
 			},
 			originalUrl: '/help-centre',
 		} as Request;
