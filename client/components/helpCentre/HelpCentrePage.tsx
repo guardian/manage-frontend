@@ -79,6 +79,11 @@ const HelpCentreRouter = () => {
 
 	const knownIssues: KnownIssueObj[] = [
 		{
+			date: '18th Jan 2024 12:15',
+			message:
+				'We are currently investigating reports of a technical issue for customers signing into The Guardian live app on Android. We are working to resolve this and apologise for any inconvenience caused.',
+		},
+		{
 			date: '4th Dec 2023 12:45',
 			message:
 				'Due to a technical issue, Customer Service phonelines in the USA & Canada are currently not available. Live chat and email are unaffected.',
