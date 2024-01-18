@@ -10,6 +10,7 @@ export enum LoadingState {
 }
 
 export function useAsyncLoader<T>(
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the final output of the promise
 	asyncFetch: () => Promise<any>,
 	responseProcessor: ResponseProcessor,
 ): {
@@ -29,6 +30,7 @@ export function useAsyncLoader<T>(
 		trackEvent({
 			eventCategory: 'asyncLoader',
 			eventAction: 'error',
+			// eslint-disable-next-line @typescript-eslint/no-base-to-string -- Error.toString will output a string
 			eventLabel: error ? error.toString() : undefined,
 		});
 		Sentry.captureException(error);

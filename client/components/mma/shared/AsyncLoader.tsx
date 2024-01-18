@@ -121,6 +121,7 @@ export class AsyncLoader<
 		trackEvent({
 			eventCategory: 'asyncLoader',
 			eventAction: 'error',
+			// eslint-disable-next-line @typescript-eslint/no-base-to-string -- Error.toString will output a string
 			eventLabel: error ? error.toString() : undefined,
 		});
 		Sentry.captureException(error);

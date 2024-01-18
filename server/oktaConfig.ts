@@ -12,6 +12,7 @@ export interface OktaConfig {
 	cookieSecret: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume the config argument could be a range of types?
 const isValidConfig = (config: any): config is OktaConfig =>
 	typeof config.useOkta === 'boolean' &&
 	config.orgUrl &&

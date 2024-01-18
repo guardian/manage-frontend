@@ -6,6 +6,7 @@ export interface MockableExpressRequest {
 	path: string;
 	get: (name: string) => string | undefined;
 	header: (name: string) => string | undefined;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the query attribute?
 	query: any;
 }
 

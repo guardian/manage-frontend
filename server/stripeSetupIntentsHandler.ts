@@ -96,6 +96,7 @@ export const stripeSetupIntentHandler = async (
 								stripeResponse.status
 							} ${
 								stripeResponse.statusText
+								// eslint-disable-next-line @typescript-eslint/no-base-to-string -- we believe this function will not evaluate to '[object Object'
 							} : ${stripeResponse.text()}`,
 						);
 					}
