@@ -154,6 +154,7 @@ describe('setLocalStateFromIdTokenOrUserCookie', () => {
 			cookies: {
 				GU_U: 'gu_u',
 				SC_GU_U: 'sc_gu_u',
+				SC_GU_LA: 'sc_gu_la',
 			},
 		} as Request;
 		const res = {} as Response;
@@ -196,6 +197,7 @@ describe('setLocalStateFromIdTokenOrUserCookie', () => {
 			cookies: {
 				GU_U: 'gu_u',
 				SC_GU_U: 'sc_gu_u',
+				SC_GU_LA: 'sc_gu_la',
 			},
 		} as Request;
 		const res = {} as Response;
@@ -214,6 +216,7 @@ describe('setLocalStateFromIdTokenOrUserCookie', () => {
 		const req = {
 			cookies: {
 				SC_GU_U: 'sc_gu_u',
+				SC_GU_LA: 'sc_gu_la',
 			},
 		} as Request;
 		const res = {} as Response;
