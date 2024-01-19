@@ -348,6 +348,6 @@ export const sanitizeReturnPath = (returnPath: string) => {
 };
 
 export const allIdapiCookiesSet = (req: Request) => {
-	const idapiCookies = ['GU_U', 'SC_GU_U'];
+	const idapiCookies = ['GU_U', 'SC_GU_U', 'SC_GU_LA'];
 	return idapiCookies.every((cookie) => req.cookies[cookie]);
 };

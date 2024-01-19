@@ -9,7 +9,6 @@ import { conf } from './config';
 import { getCookiesOrEmptyString } from './idapiAuth';
 import { log, putMetric } from './log';
 import { augmentRedirectURL } from './middleware/requestMiddleware';
-import { OAuthAccessTokenCookieName } from './oauthConfig';
 
 type BodyHandler = (res: Response, body: Buffer) => void;
 type JsonString = Buffer | string | undefined;
@@ -87,34 +86,12 @@ export const proxyApiHandler =
 			outgoingURL,
 		};
 
-		const authorizationOrCookieHeader = ({
-			req,
-			host,
-		}: {
-			req: Request;
-			host: string;
-		}): Headers => {
-			switch (host) {
-				case 'members-data-api.' + conf.DOMAIN:
-					return {
-						Authorization: `Bearer ${req.signedCookies[OAuthAccessTokenCookieName]}`,
-					};
-				default:
-					// TODO: This is legacy code!
-					// We don't want to send literally all cookies to APIs so when
-					// we migrate to Okta tokens entirely we should remove this
-					return {
-						Cookie: getCookiesOrEmptyString(req),
-					};
-			}
-		};
-
 		fetch(outgoingURL, {
 			method: httpMethod,
 			body: requestBody,
 			headers: {
-				...authorizationOrCookieHeader({ req, host }),
 				'Content-Type': 'application/json', // TODO: set this from the client req headers (would need to check all client calls actually specify content-type)
+				Cookie: getCookiesOrEmptyString(req),
 				[X_GU_ID_FORWARDED_SCOPE]:
 					req.header(X_GU_ID_FORWARDED_SCOPE) || '',
 				...headers,
