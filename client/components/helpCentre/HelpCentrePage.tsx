@@ -79,9 +79,9 @@ const HelpCentreRouter = () => {
 
 	const knownIssues: KnownIssueObj[] = [
 		{
-			date: '18th Jan 2024 12:15',
+			date: '19th Jan 2024 14:00',
 			message:
-				'We are currently investigating reports of a technical issue for customers signing into The Guardian live app on Android. We are working to resolve this and apologise for any inconvenience caused.',
+				'Scheduled maintenance work will take place between 3am - 6am GMT on Sunday 21 January. During this period, certain features may be unavailable on the My Account section of theguardian.com.',
 		},
 		{
 			date: '4th Dec 2023 12:45',
