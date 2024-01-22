@@ -3,10 +3,12 @@
  */
 
 import type { Jwt, JwtClaims } from '@okta/jwt-verifier';
+import type OktaJwtVerifier from '@okta/jwt-verifier';
 import type { Request, Response } from 'express';
 import { conf } from '@/server/config';
 import { authenticateWithOAuth } from '@/server/middleware/identityMiddleware';
 import * as oauth from '@/server/oauth';
+import type { OktaConfig } from '@/server/oktaConfig';
 import type { Scopes, VerifiedOAuthCookies } from '../../oauthConfig';
 import { oauthCookieOptions, scopes } from '../../oauthConfig';
 
@@ -30,6 +32,8 @@ jest.mock('@/server/oauth', () => ({
 	verifyIdToken: jest.fn(),
 	verifyAccessToken: jest.fn(),
 	setLocalStateFromIdTokenOrUserCookie: jest.fn(),
+	idTokenIsRecent: jest.fn(),
+	revokeAccessToken: jest.fn(),
 }));
 const mockedVerifyOAuthCookiesLocally = jest.mocked<
 	(req: Request) => Promise<VerifiedOAuthCookies | undefined>
@@ -40,6 +44,22 @@ const mockedVerifyIdToken = jest.mocked<
 const mockedVerifyAccessToken = jest.mocked<
 	(token: string) => Promise<Jwt | undefined>
 >(oauth.verifyAccessToken);
+const mockedIdTokenIsRecent = jest.mocked<
+	(token: OktaJwtVerifier.Jwt, maxAge: number) => boolean
+>(oauth.idTokenIsRecent);
+const mockedRevokeAccessToken = jest.mocked<(token: string) => Promise<void>>(
+	oauth.revokeAccessToken,
+);
+
+const oktaConfig: OktaConfig = {
+	useOkta: true,
+	maxAge: 1800,
+	orgUrl: 'https://example.com',
+	authServerId: 'foo',
+	clientId: 'bar',
+	clientSecret: 'baz',
+	cookieSecret: 'qux',
+};
 
 describe('authenticateWithOAuth middleware - route requires signin', () => {
 	beforeEach(() => {
@@ -75,7 +95,12 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 
 		const next = jest.fn();
 
-		await authenticateWithOAuth(req, res as unknown as Response, next);
+		await authenticateWithOAuth(
+			req,
+			res as unknown as Response,
+			next,
+			oktaConfig,
+		);
 
 		expect(res.clearCookie).toHaveBeenCalledWith(
 			'GU_ACCESS_TOKEN',
@@ -121,9 +146,16 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 			}),
 		);
 
+		mockedIdTokenIsRecent.mockReturnValue(true);
+
 		const next = jest.fn();
 
-		await authenticateWithOAuth(req, res as unknown as Response, next);
+		await authenticateWithOAuth(
+			req,
+			res as unknown as Response,
+			next,
+			oktaConfig,
+		);
 
 		expect(oauth.performAuthorizationCodeFlow).toHaveBeenCalledWith(
 			req,
@@ -158,8 +190,14 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 		mockedVerifyIdToken.mockResolvedValue({
 			isExpired: () => true,
 		} as Jwt);
+		mockedIdTokenIsRecent.mockReturnValue(true);
 		const next = jest.fn();
-		await authenticateWithOAuth(req, res as unknown as Response, next);
+		await authenticateWithOAuth(
+			req,
+			res as unknown as Response,
+			next,
+			oktaConfig,
+		);
 		expect(oauth.performAuthorizationCodeFlow).toHaveBeenCalledWith(
 			req,
 			res,
@@ -198,8 +236,14 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 			},
 		} as Jwt);
 		mockedVerifyIdToken.mockResolvedValue(idToken);
+		mockedIdTokenIsRecent.mockReturnValue(true);
 		const next = jest.fn();
-		await authenticateWithOAuth(req, res as unknown as Response, next);
+		await authenticateWithOAuth(
+			req,
+			res as unknown as Response,
+			next,
+			oktaConfig,
+		);
 		expect(oauth.performAuthorizationCodeFlow).toHaveBeenCalledWith(
 			req,
 			res,
@@ -245,14 +289,66 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 				idToken: idToken as unknown as Jwt,
 			}),
 		);
+		mockedIdTokenIsRecent.mockReturnValue(true);
 		const next = jest.fn();
-		await authenticateWithOAuth(req, res as unknown as Response, next);
+		await authenticateWithOAuth(
+			req,
+			res as unknown as Response,
+			next,
+			oktaConfig,
+		);
 		expect(oauth.setLocalStateFromIdTokenOrUserCookie).toHaveBeenCalledWith(
 			req,
 			res,
 			idToken,
+			oktaConfig.maxAge,
 		);
 		expect(next).toHaveBeenCalled();
+	});
+
+	it('revokes and deletes access token and redirects to /reauthenticate if the ID token is expired', async () => {
+		const req = {
+			signedCookies: {},
+			cookies: {
+				GU_SO: '1000',
+			},
+			originalUrl: '/profile',
+		} as Request;
+
+		const res = {
+			clearCookie: jest.fn(),
+			redirect: jest.fn(),
+		};
+
+		mockedVerifyOAuthCookiesLocally.mockReturnValue(
+			Promise.resolve({
+				accessToken: {
+					claims: {
+						iat: 2000,
+					} as JwtClaims,
+				} as Jwt,
+				idToken: {} as Jwt,
+			}),
+		);
+
+		mockedIdTokenIsRecent.mockReturnValue(false);
+
+		const next = jest.fn();
+
+		await authenticateWithOAuth(
+			req,
+			res as unknown as Response,
+			next,
+			oktaConfig,
+		);
+
+		expect(mockedRevokeAccessToken).toHaveBeenCalled();
+		expect(res.clearCookie).toHaveBeenCalledTimes(2);
+		expect(res.redirect).toHaveBeenCalledWith(
+			expect.stringContaining('/reauthenticate'),
+		);
+		expect(oauth.performAuthorizationCodeFlow).not.toHaveBeenCalled();
+		expect(next).not.toHaveBeenCalled();
 	});
 });
 
@@ -287,7 +383,12 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 			}),
 		);
 
-		await authenticateWithOAuth(req, res as unknown as Response, next);
+		await authenticateWithOAuth(
+			req,
+			res as unknown as Response,
+			next,
+			oktaConfig,
+		);
 
 		expect(res.clearCookie).toHaveBeenCalledWith(
 			'GU_ACCESS_TOKEN',
@@ -326,7 +427,12 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 			}),
 		);
 
-		await authenticateWithOAuth(req, res as unknown as Response, next);
+		await authenticateWithOAuth(
+			req,
+			res as unknown as Response,
+			next,
+			oktaConfig,
+		);
 
 		expect(next).toHaveBeenCalled();
 	});
@@ -346,11 +452,17 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 		);
 
 		const next = jest.fn();
-		await authenticateWithOAuth(req, res as unknown as Response, next);
+		await authenticateWithOAuth(
+			req,
+			res as unknown as Response,
+			next,
+			oktaConfig,
+		);
 		expect(oauth.setLocalStateFromIdTokenOrUserCookie).toHaveBeenCalledWith(
 			req,
 			res,
 			undefined,
+			oktaConfig.maxAge,
 		);
 		expect(next).toHaveBeenCalled();
 	});
@@ -364,7 +476,12 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 
 		const next = jest.fn();
 
-		await authenticateWithOAuth(req, {} as Response, next);
+		await authenticateWithOAuth(
+			req,
+			{} as unknown as Response,
+			next,
+			oktaConfig,
+		);
 
 		expect(next).toHaveBeenCalled();
 	});
@@ -398,13 +515,65 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 				idToken: idToken as unknown as Jwt,
 			}),
 		);
+		mockedIdTokenIsRecent.mockReturnValue(true);
 		const next = jest.fn();
-		await authenticateWithOAuth(req, res as unknown as Response, next);
+		await authenticateWithOAuth(
+			req,
+			res as unknown as Response,
+			next,
+			oktaConfig,
+		);
 		expect(oauth.setLocalStateFromIdTokenOrUserCookie).toHaveBeenCalledWith(
 			req,
 			res,
 			idToken,
+			oktaConfig.maxAge,
 		);
 		expect(next).toHaveBeenCalled();
+	});
+
+	it('revokes and deletes access token and redirects to /reauthenticate if the ID token is expired', async () => {
+		const req = {
+			signedCookies: {},
+			cookies: {
+				GU_SO: '1000',
+			},
+			originalUrl: '/profile',
+		} as Request;
+
+		const res = {
+			clearCookie: jest.fn(),
+			redirect: jest.fn(),
+		};
+
+		mockedVerifyOAuthCookiesLocally.mockReturnValue(
+			Promise.resolve({
+				accessToken: {
+					claims: {
+						iat: 2000,
+					} as JwtClaims,
+				} as Jwt,
+				idToken: {} as Jwt,
+			}),
+		);
+
+		mockedIdTokenIsRecent.mockReturnValue(false);
+
+		const next = jest.fn();
+
+		await authenticateWithOAuth(
+			req,
+			res as unknown as Response,
+			next,
+			oktaConfig,
+		);
+
+		expect(mockedRevokeAccessToken).toHaveBeenCalled();
+		expect(res.clearCookie).toHaveBeenCalledTimes(2);
+		expect(res.redirect).toHaveBeenCalledWith(
+			expect.stringContaining('/reauthenticate'),
+		);
+		expect(oauth.performAuthorizationCodeFlow).not.toHaveBeenCalled();
+		expect(next).not.toHaveBeenCalled();
 	});
 });

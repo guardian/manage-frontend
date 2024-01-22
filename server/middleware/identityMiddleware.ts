@@ -1,4 +1,5 @@
 import url from 'url';
+import type OktaJwtVerifier from '@okta/jwt-verifier';
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import fetch from 'node-fetch';
 import { handleAwsRelatedError } from '@/server/awsIntegration';
@@ -17,7 +18,9 @@ import {
 } from '@/server/middleware/requestMiddleware';
 import {
 	allIdapiCookiesSet,
+	idTokenIsRecent,
 	performAuthorizationCodeFlow,
+	revokeAccessToken,
 	sanitizeReturnPath,
 	setLocalStateFromIdTokenOrUserCookie,
 	verifyOAuthCookiesLocally,
@@ -28,6 +31,7 @@ import {
 	OAuthIdTokenCookieName,
 	scopes,
 } from '@/server/oauthConfig';
+import type { OktaConfig } from '@/server/oktaConfig';
 import { getConfig as getOktaConfig } from '@/server/oktaConfig';
 import {
 	getScopeFromRequestPathOrEmptyString,
@@ -42,10 +46,24 @@ const handleIdentityMiddlewareError = (err: Error, res: Response) => {
 	res.redirect('/maintenance');
 };
 
-const clearOAuthCookies = (res: Response) => {
+export const clearOAuthCookies = (res: Response) => {
 	res.clearCookie(OAuthAccessTokenCookieName, oauthCookieOptions);
 	res.clearCookie(OAuthIdTokenCookieName, oauthCookieOptions);
 };
+
+const signedOutAfterTokensIssued = ({
+	guSoTimestamp,
+	accessToken,
+}: {
+	guSoTimestamp: number;
+	accessToken: OktaJwtVerifier.Jwt;
+}) =>
+	guSoTimestamp &&
+	typeof accessToken.claims.iat === 'number' &&
+	guSoTimestamp > accessToken.claims.iat &&
+	// Check that the GU_SO cookie value is not set into the future to avoid a redirect loop
+	// where the middleware may continually keep running performAuthorizationCodeFlow().
+	guSoTimestamp <= Math.floor(Date.now() / 1000);
 
 export const withIdentity: (statusCodeOverride?: number) => RequestHandler =
 	(statusCodeOverride?: number) =>
@@ -55,9 +73,14 @@ export const withIdentity: (statusCodeOverride?: number) => RequestHandler =
 		}
 
 		try {
-			const { useOkta } = await getOktaConfig();
-			if (useOkta) {
-				return authenticateWithOAuth(req, res, next);
+			const oktaConfigOverride =
+				process.env.RUNNING_IN_CYPRESS === 'true' &&
+				req.cookies['okta-config-override']
+					? JSON.parse(req.cookies['okta-config-override'])
+					: {};
+			const oktaConfig = await getOktaConfig(oktaConfigOverride);
+			if (oktaConfig.useOkta) {
+				return authenticateWithOAuth(req, res, next, oktaConfig);
 			} else {
 				return authenticateWithIdapi(statusCodeOverride)(
 					req,
@@ -74,6 +97,7 @@ export const authenticateWithOAuth = async (
 	req: Request,
 	res: Response,
 	next: NextFunction,
+	oktaConfig: OktaConfig,
 ) => {
 	// Get the path of the current page and use it as our returnPath after the OAuth callback.
 	const returnPath = sanitizeReturnPath(req.originalUrl);
@@ -88,12 +112,10 @@ export const authenticateWithOAuth = async (
 				// Check GU_SO cookie timestamp (we want to know if the user has signed out _after_ these tokens were issued,
 				// so we can redirect them to the OAuth flow to get new tokens for the currently signed-in user (if any).
 				if (
-					guSoTimestamp &&
-					typeof verifiedTokens.accessToken.claims.iat === 'number' &&
-					guSoTimestamp > verifiedTokens.accessToken.claims.iat &&
-					// Check that the GU_SO cookie value is not set into the future to avoid a redirect loop
-					// where the middleware will continually keep running performAuthorizationCodeFlow().
-					guSoTimestamp <= Math.floor(Date.now() / 1000)
+					signedOutAfterTokensIssued({
+						guSoTimestamp,
+						accessToken: verifiedTokens.accessToken,
+					})
 				) {
 					clearOAuthCookies(res);
 					return performAuthorizationCodeFlow(req, res, {
@@ -104,6 +126,33 @@ export const authenticateWithOAuth = async (
 				}
 				// At this point, the GU_SO cookie is either not set, or it's older than the tokens,
 				// so we know the tokens belong to the currently signed-in user.
+
+				// Check the recency of the ID token (it must be within the configured maxAge in the Okta config).
+				// If it is not recent, we need to do the following:
+				// 1. Revoke the access token with Okta
+				// 2. Clear the OAuth cookies
+				// 3. Redirect the user to the /reauthenticate route in Gateway, which always shows a sign-in form.
+				// We need to send the user to /reauthenticate manually because there is undocumented Okta behaviour
+				// where a user of FEDERATED or SOCIAL auth type will be automatically granted new tokens by Okta
+				// irrespective of the max_age value in the OAuth request. If we run the standard OAuth callback flow
+				// here, we'll end up in a redirect loop.
+				if (
+					!idTokenIsRecent(verifiedTokens.idToken, oktaConfig.maxAge)
+				) {
+					await revokeAccessToken(
+						req.signedCookies[OAuthAccessTokenCookieName],
+					);
+					clearOAuthCookies(res);
+					const returnUrl = `https://manage.${conf.DOMAIN}${returnPath}`;
+					return res.redirect(
+						`https://profile.${
+							conf.DOMAIN
+						}/reauthenticate?returnUrl=${encodeURIComponent(
+							returnUrl,
+						)}`,
+					);
+				}
+
 				if (allIdapiCookiesSet(req)) {
 					// The user has valid access and ID tokens, and the full set of IDAPI cookies,
 					// so they're signed in. We set req.locals.identity so that the frontend can
@@ -112,6 +161,7 @@ export const authenticateWithOAuth = async (
 						req,
 						res,
 						verifiedTokens.idToken,
+						oktaConfig.maxAge,
 					);
 					return next();
 				}
@@ -125,20 +175,36 @@ export const authenticateWithOAuth = async (
 				returnPath,
 			});
 		} else {
-			// The route does not require signin (but the user _may_ be signed in)
-			/////////////////////////////////////////////////////////////////////////////////////
+			// The route does not require signin (but the user _may_ be signed in), e.g. help centre
+			////////////////////////////////////////////////////////////////////////////////////////
 			if (verifiedTokens?.accessToken && verifiedTokens?.idToken) {
 				// Check GU_SO cookie timestamp
 				if (
-					guSoTimestamp &&
-					typeof verifiedTokens.accessToken.claims.iat === 'number' &&
-					guSoTimestamp > verifiedTokens.accessToken.claims.iat &&
-					// Check that the GU_SO cookie value is not set into the future to avoid clearing
-					// the OAuth cookies when the GU_SO cookie has an invalid value.
-					guSoTimestamp <= Math.floor(Date.now() / 1000)
+					signedOutAfterTokensIssued({
+						guSoTimestamp,
+						accessToken: verifiedTokens.accessToken,
+					})
 				) {
 					clearOAuthCookies(res);
 					return next();
+				}
+			}
+
+			if (verifiedTokens?.idToken) {
+				// Check the recency of the ID token, if set (it must be within the configured maxAge in the Okta config).
+				// If it is not recent, we need to do the following:
+				// 1. Revoke the access token with Okta (if it exists)
+				// 2. Clear the OAuth cookies
+				// We do not redirect to /reauthenticate here because these routes do not require signin.
+				if (
+					!idTokenIsRecent(verifiedTokens?.idToken, oktaConfig.maxAge)
+				) {
+					if (verifiedTokens?.accessToken) {
+						await revokeAccessToken(
+							req.signedCookies[OAuthAccessTokenCookieName],
+						);
+					}
+					clearOAuthCookies(res);
 				}
 			}
 
@@ -148,6 +214,7 @@ export const authenticateWithOAuth = async (
 				req,
 				res,
 				verifiedTokens?.idToken,
+				oktaConfig.maxAge,
 			);
 			return next();
 		}
