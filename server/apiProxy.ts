@@ -10,6 +10,7 @@ import { getCookiesOrEmptyString } from './idapiAuth';
 import { log, putMetric } from './log';
 import { augmentRedirectURL } from './middleware/requestMiddleware';
 import { OAuthAccessTokenCookieName } from './oauthConfig';
+import { getConfig as getOktaConfig } from './oktaConfig';
 
 type BodyHandler = (res: Response, body: Buffer) => void;
 type JsonString = Buffer | string | undefined;
@@ -87,13 +88,20 @@ export const proxyApiHandler =
 			outgoingURL,
 		};
 
-		const authorizationOrCookieHeader = ({
+		const authorizationOrCookieHeader = async ({
 			req,
 			host,
 		}: {
 			req: Request;
 			host: string;
-		}): Headers => {
+		}): Promise<Headers> => {
+			// If Okta is disabled, always return the cookie header
+			const { useOkta } = await getOktaConfig();
+			if (!useOkta) {
+				return {
+					Cookie: getCookiesOrEmptyString(req),
+				};
+			}
 			switch (host) {
 				case 'members-data-api.' + conf.DOMAIN:
 					return {
@@ -113,7 +121,7 @@ export const proxyApiHandler =
 			method: httpMethod,
 			body: requestBody,
 			headers: {
-				...authorizationOrCookieHeader({ req, host }),
+				...(await authorizationOrCookieHeader({ req, host })),
 				'Content-Type': 'application/json', // TODO: set this from the client req headers (would need to check all client calls actually specify content-type)
 				[X_GU_ID_FORWARDED_SCOPE]:
 					req.header(X_GU_ID_FORWARDED_SCOPE) || '',
