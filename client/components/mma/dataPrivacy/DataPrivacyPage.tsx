@@ -1,6 +1,7 @@
 import type { CMP } from '@guardian/consent-management-platform/dist/types';
 import { from } from '@guardian/source-foundations';
 import { useEffect, useState } from 'react';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { gridItemPlacement } from '../../../styles/grid';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
@@ -14,7 +15,6 @@ import { ConsentOptions, mapSubscriptions } from '../identity/identity';
 import { Lines } from '../identity/Lines';
 import type { ConsentOption } from '../identity/models';
 import { Actions, useConsentOptions } from '../identity/useConsentOptions';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { CookiesOnThisBrowserSection } from './CookiesOnTheBrowserSection';
 import { dataPrivacyWrapper } from './DataPrivacy.styles';

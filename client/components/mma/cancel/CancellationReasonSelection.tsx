@@ -16,6 +16,7 @@ import {
 import type { FormEvent } from 'react';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
@@ -30,7 +31,6 @@ import {
 import { hasCancellationFlow } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
 import type { CancellationContextInterface } from './CancellationContainer';

@@ -9,6 +9,7 @@ import {
 import { Stack } from '@guardian/source-react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
@@ -41,7 +42,6 @@ import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import type { IsFromAppProps } from '../shared/IsFromAppProps';
 import { nonServiceableCountries } from '../shared/NonServiceableCountries';
@@ -71,13 +71,11 @@ const subHeadingCss = css`
 `;
 
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
-	const {
-		data: accountOverviewResponse,
-		loadingState,
-	}: {
-		data: AccountOverviewResponse | null;
-		loadingState: LoadingState;
-	} = useAsyncLoader(accountOverviewFetcher, JsonResponseHandler);
+	const { data: accountOverviewResponse, loadingState } =
+		useAsyncLoader<AccountOverviewResponse>(
+			accountOverviewFetcher,
+			JsonResponseHandler,
+		);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;

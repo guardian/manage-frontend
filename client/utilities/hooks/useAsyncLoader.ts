@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
-import type { ResponseProcessor } from '../../components/mma/shared/asyncComponents/ResponseProcessor';
 import { trackEvent } from '../analytics';
+import type { ResponseProcessor } from '../responseHandlers';
 
 export enum LoadingState {
 	IsLoading,
@@ -10,7 +10,7 @@ export enum LoadingState {
 }
 
 export function useAsyncLoader<T>(
-	asyncFetch: () => Promise<any>,
+	asyncFetch: () => Promise<Response | Response[]>,
 	responseProcessor: ResponseProcessor,
 ): {
 	data: T | null;
@@ -39,7 +39,7 @@ export function useAsyncLoader<T>(
 			asyncFetch()
 				.then((response) => responseProcessor(response))
 				.then((data) => {
-					setData(data);
+					setData(data as T);
 					setLoadingState(LoadingState.HasLoaded);
 				})
 				.catch((e) => handleError(e));

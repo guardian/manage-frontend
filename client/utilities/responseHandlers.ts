@@ -1,4 +1,7 @@
-import type { ResponseProcessor } from './ResponseProcessor';
+export type ResponseProcessor = (
+	response: Response | Response[],
+) => Promise<unknown>;
+type ResponseTransformer = (response: Response) => Promise<unknown>;
 
 export const JsonResponseHandler: ResponseProcessor = (
 	response: Response | Response[],
@@ -14,8 +17,8 @@ export const TextResponseHandler: ResponseProcessor = (
 
 export function handleResponses(
 	response: Response | Response[],
-	transformResponse: (response: Response) => any,
-): Promise<any> {
+	transformResponse: ResponseTransformer,
+) {
 	if (hasBadResponse(response)) {
 		throw new Error('Invalid API response');
 	}
@@ -37,7 +40,10 @@ function hasBadResponse(responses: Response | Response[]) {
 	return !responses.ok;
 }
 
-function handleSingleResponse(response: Response, transformResponse: any) {
+function handleSingleResponse(
+	response: Response,
+	transformResponse: ResponseTransformer,
+) {
 	const locationHeader = response.headers.get('Location');
 	if (response.status === 401 && locationHeader && window !== undefined) {
 		window.location.replace(locationHeader);

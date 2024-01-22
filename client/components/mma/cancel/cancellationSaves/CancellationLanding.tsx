@@ -4,6 +4,7 @@ import { Button, Stack } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { CallCentreAccordion } from '@/client/components/shared/CallCentreAccordion';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
@@ -16,7 +17,6 @@ import {
 } from '../../../../utilities/hooks/useAsyncLoader';
 import { allRecurringProductsDetailFetcher } from '../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
-import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 import { Heading } from '../../shared/Heading';
 import type {

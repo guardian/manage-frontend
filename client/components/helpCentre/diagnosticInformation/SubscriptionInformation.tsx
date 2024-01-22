@@ -1,3 +1,4 @@
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import type { MembersDataApiResponse } from '../../../../shared/productResponse';
 import { isProduct } from '../../../../shared/productResponse';
 import {
@@ -5,7 +6,6 @@ import {
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
 import { allRecurringProductsDetailFetcher } from '../../../utilities/productUtils';
-import { JsonResponseHandler } from '../../mma/shared/asyncComponents/DefaultApiResponseHandler';
 
 export const SubscriptionInformation = () => {
 	const {

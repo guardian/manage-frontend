@@ -8,6 +8,7 @@ import {
 } from '@guardian/source-foundations';
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {
@@ -43,7 +44,6 @@ import { DeliveryAddressDisplay } from '../delivery/address/DeliveryAddressDispl
 import { PageContainer } from '../Page';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { BasicProductInfoTable } from '../shared/BasicProductInfoTable';
 import { LinkButton } from '../shared/Buttons';

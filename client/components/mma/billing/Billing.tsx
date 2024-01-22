@@ -10,6 +10,7 @@ import {
 } from '@guardian/source-foundations';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { parseDate } from '../../../../shared/dates';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type {
@@ -49,7 +50,6 @@ import { SixForSixExplainerIfApplicable } from '../accountoverview/SixForSixExpl
 import { PageContainer } from '../Page';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { GiftIcon } from '../shared/assets/GiftIcon';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { BasicProductInfoTable } from '../shared/BasicProductInfoTable';
 import { LinkButton } from '../shared/Buttons';

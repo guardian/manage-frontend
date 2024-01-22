@@ -17,7 +17,6 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/client/components/mma/Page';
 import { ErrorIcon } from '@/client/components/mma/shared/assets/ErrorIcon';
-import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '@/client/components/mma/shared/asyncComponents/DefaultLoadingView';
 import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymentDetails';
 import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
@@ -39,6 +38,7 @@ import {
 	useAsyncLoader,
 } from '@/client/utilities/hooks/useAsyncLoader';
 import { createProductDetailFetcher } from '@/client/utilities/productUtils';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { cancellationFormatDate } from '@/shared/dates';
 import type {
 	MembersDataApiResponse,

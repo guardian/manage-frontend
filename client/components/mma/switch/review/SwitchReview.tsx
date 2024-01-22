@@ -10,6 +10,7 @@ import {
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { SwitchErrorSummary } from '@/client/components/shared/productSwitch/SwitchErrorSummary';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { dateString } from '../../../../../shared/dates';
 import type {
 	PreviewResponse,
@@ -33,7 +34,6 @@ import { formatAmount } from '../../../../utilities/utils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { SwitchPaymentInfo } from '../../../shared/productSwitch/SwitchPaymentInfo';
 import { SwitchOffsetPaymentIcon } from '../../shared/assets/SwitchOffsetPaymentIcon';
-import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 import { BenefitsToggle } from '../../shared/benefits/BenefitsToggle';
 import { Card } from '../../shared/Card';

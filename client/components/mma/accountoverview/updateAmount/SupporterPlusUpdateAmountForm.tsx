@@ -11,13 +11,13 @@ import {
 	TextInput,
 } from '@guardian/source-react-components';
 import { useEffect, useState } from 'react';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getBillingPeriodAdjective } from '../../../../../shared/productTypes';
 import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import { getSupporterPlusSuggestedAmountsFromMainPlan } from '../../../../utilities/pricingConfig/suggestedAmounts';
 import { supporterPlusPriceConfigByCountryGroup } from '../../../../utilities/pricingConfig/supporterPlusPricing';
-import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 
 const smallPrintCss = css`

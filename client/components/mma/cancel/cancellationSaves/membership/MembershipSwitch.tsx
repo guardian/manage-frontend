@@ -10,6 +10,7 @@ import {
 import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import { dateString, parseDate } from '../../../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
@@ -36,7 +37,6 @@ import {
 	smallPrintCss,
 } from '../../../../../styles/GenericStyles';
 import { getOldMembershipPrice } from '../../../../../utilities/pricingConfig/membershipPriceRise';
-import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Card } from '../../../shared/Card';
 import { Heading } from '../../../shared/Heading';
 import { PaymentDetails } from '../../../shared/PaymentDetails';

@@ -18,6 +18,10 @@ import { ToggleSwitch } from '@guardian/source-react-components-development-kitc
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
+import {
+	JsonResponseHandler,
+	TextResponseHandler,
+} from '@/client/utilities/responseHandlers';
 import { formatAmount } from '@/client/utilities/utils';
 import { dateString } from '../../../../shared/dates';
 import type {
@@ -44,10 +48,6 @@ import { productMoveFetch } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { SwitchErrorSummary } from '../../shared/productSwitch/SwitchErrorSummary';
 import { SwitchPaymentInfo } from '../../shared/productSwitch/SwitchPaymentInfo';
-import {
-	JsonResponseHandler,
-	TextResponseHandler,
-} from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { Heading } from '../shared/Heading';
 import { PaymentDetails } from '../shared/PaymentDetails';

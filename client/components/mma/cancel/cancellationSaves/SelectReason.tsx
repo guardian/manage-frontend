@@ -10,6 +10,7 @@ import {
 import type { FormEvent } from 'react';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
@@ -33,7 +34,6 @@ import {
 } from '../../../../styles/ButtonStyles';
 import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
-import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,

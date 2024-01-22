@@ -1,6 +1,7 @@
 import type { Context, ReactNode } from 'react';
 import { createContext, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
+import { JsonResponseHandler } from '@/client/utilities/responseHandlers';
 import type {
 	MembersDataApiResponse,
 	MembersDataApiUser,
@@ -25,7 +26,6 @@ import {
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 
 export interface SwitchRouterState {
