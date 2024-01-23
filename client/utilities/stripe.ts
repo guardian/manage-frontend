@@ -25,6 +25,7 @@ const stripeScriptHasBeenAddedToPage = (): boolean =>
 	!!document.querySelector("script[src^='https://js.stripe.com']");
 
 export const useStripeSDK = (stripeKey: string) => {
+	// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents -- can we assume StripeSDK has somehow been given a type of any (otherwise I don't understand what the linter is complaining about)?
 	const [stripeObjects, setStripeObjects] = useState<StripeSDK | null>(null);
 
 	useEffect(() => {

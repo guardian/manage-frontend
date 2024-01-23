@@ -32,6 +32,7 @@ export const Settings = (_: { path?: string }) => {
 		}
 	}, [error]);
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the argument object is an error object?
 	const handleGeneralError = (e: any) => {
 		setError(true);
 		Sentry.captureException(e);

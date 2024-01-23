@@ -8,6 +8,7 @@ enum ActionType {
 
 interface Action {
 	type: ActionType;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're assuming the payload attribute can contain a range of differently typed things?
 	payload?: any;
 }
 
@@ -19,12 +20,15 @@ enum FetchStatus {
 }
 
 interface ApiFetchState {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're assuming the data attribute can contain a range of differently typed things?
 	data: any;
 	error: string | null;
 	status: FetchStatus;
 }
 
 const ActionFetch = (): Action => ({ type: ActionType.FETCH });
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the ActionSuccess function's argument can contain a range of differently typed things?
 const ActionSuccess = (payload: any): Action => ({
 	type: ActionType.SUCCESS,
 	payload,
@@ -68,10 +72,14 @@ const reducer = (state: ApiFetchState, action: Action): ApiFetchState => {
 };
 
 export const useAsyncSource = (
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the array can contain a range of differently typed things? And the promise is un-type-able?
 	getter: (...args: any[]) => Promise<any>,
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the errorHandler function's argument is an error object?
 	errorHandler?: (e: any) => void,
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the array can contain a range of differently typed things?
 ): [ApiFetchState, (...args: any[]) => Promise<ApiFetchState>] => {
 	const [state, dispatch] = useReducer(reducer, initialState);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the doFetch function's argument can contain a range of differently typed things?
 	const doFetch = async (...args: any[]) => {
 		dispatch(ActionFetch());
 		try {

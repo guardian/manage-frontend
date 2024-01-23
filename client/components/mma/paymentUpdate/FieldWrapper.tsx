@@ -126,6 +126,7 @@ export class FieldWrapper extends React.Component<
 	}
 
 	private validateField =
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're assuming the argument object is an event object?
 		(otherOnChange?: (event: any) => void) =>
 		(field: { error: StripeError }) => {
 			if (otherOnChange) {

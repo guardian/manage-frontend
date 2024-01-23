@@ -159,6 +159,7 @@ export const authenticateWithOAuth = async (
 const authenticateWithIdapi: (statusCodeOverride?: number) => RequestHandler =
 	(statusCodeOverride?: number) =>
 	(req: Request, res: Response, next: NextFunction) => {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the detail argument?
 		const errorHandler = (message: string, detail?: any) => {
 			handleAwsRelatedError(message, detail);
 			res.redirect('/maintenance');
