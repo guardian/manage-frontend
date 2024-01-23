@@ -93,6 +93,8 @@ const InnerContent = ({
 
 	const hasCancellationPending = productDetail.subscription.cancelledAt;
 
+	const isSelfServeCancellationAllowed = productDetail.selfServiceCancellation.isAllowed;
+
 	const cancelledCopy =
 		specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
 
@@ -250,7 +252,7 @@ const InnerContent = ({
 							margin-left: ${space[5]}px;
 						`}
 					>
-						{!hasCancellationPending && (
+						{!hasCancellationPending && isSelfServeCancellationAllowed && (
 							<Button
 								priority="subdued"
 								onClick={() => {
