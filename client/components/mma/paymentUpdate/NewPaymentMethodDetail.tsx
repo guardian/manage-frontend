@@ -8,7 +8,6 @@ export interface NewPaymentMethodDetail {
 	readonly name: PaymentUpdateTypeName;
 	readonly apiUrlPart: PaymentUpdateTypeApiUrlPart;
 	readonly detailToPayloadObject: () => object;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're assuming the matchesResponse argument can be anything?
 	readonly matchesResponse: (response: any) => boolean;
 	readonly subHasExpectedPaymentType: (
 		subscription?: Subscription,

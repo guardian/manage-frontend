@@ -15,7 +15,6 @@ export const getConfig = async (): Promise<IdapiConfig> => {
 	return config;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume the config argument could be a range of types?
 const isValidConfig = (config: any): config is MpapiConfig =>
 	config.host && config.accessToken;
 

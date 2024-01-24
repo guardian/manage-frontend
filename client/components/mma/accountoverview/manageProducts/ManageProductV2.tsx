@@ -93,9 +93,6 @@ const InnerContent = ({
 
 	const hasCancellationPending = productDetail.subscription.cancelledAt;
 
-	const isSelfServeCancellationAllowed =
-		productDetail.selfServiceCancellation.isAllowed;
-
 	const cancelledCopy =
 		specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
 
@@ -253,26 +250,24 @@ const InnerContent = ({
 							margin-left: ${space[5]}px;
 						`}
 					>
-						{!hasCancellationPending &&
-							isSelfServeCancellationAllowed && (
-								<Button
-									priority="subdued"
-									onClick={() => {
-										navigate(
-											'/cancel/' +
-												specificProductType.urlPart,
-											{
-												state: {
-													productDetail:
-														productDetail,
-												},
+						{!hasCancellationPending && (
+							<Button
+								priority="subdued"
+								onClick={() => {
+									navigate(
+										'/cancel/' +
+											specificProductType.urlPart,
+										{
+											state: {
+												productDetail: productDetail,
 											},
-										);
-									}}
-								>
-									Cancel {groupedProductType.friendlyName()}
-								</Button>
-							)}
+										},
+									);
+								}}
+							>
+								Cancel {groupedProductType.friendlyName()}
+							</Button>
+						)}
 					</div>
 				</div>
 			</section>

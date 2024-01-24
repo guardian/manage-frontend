@@ -160,7 +160,6 @@ const createReminder = (
 	});
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the body argument?
 const cancelReminder = (body: any) =>
 	fetch(cancelRemindersEndpoint, {
 		method: 'POST',
@@ -170,7 +169,6 @@ const cancelReminder = (body: any) =>
 		body,
 	});
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the body argument?
 const reactivateReminder = (body: any) =>
 	fetch(reactivateRemindersEndpoint, {
 		method: 'POST',

@@ -17,7 +17,7 @@ const executePaymentUpdate = jest.fn((_: NewPaymentMethodDetail) =>
 	Promise.resolve(null),
 );
 
-const stripePaymentMethod: Partial<PaymentMethod> = {
+const stripePaymentMethod: PaymentMethod | unknown = {
 	id: 'stripePaymentMethodId',
 	created: 0,
 	card: {

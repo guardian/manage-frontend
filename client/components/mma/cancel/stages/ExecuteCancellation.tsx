@@ -110,7 +110,7 @@ const getCancellationSummaryWithReturnButton = (body: ReactNode) => () =>
 
 const getCaseUpdatingCancellationSummary =
 	(
-		caseId: string,
+		caseId: string | '',
 		productType: ProductTypeWithCancellationFlow,
 		cancelledProductDetail: ProductDetail,
 	) =>

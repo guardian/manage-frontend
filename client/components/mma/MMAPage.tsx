@@ -36,7 +36,6 @@ import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Ophan events are diverse (and unguessable?)
 const record = (event: any) => {
 	if (window.guardian?.ophan?.record) {
 		window.guardian.ophan.record(event);

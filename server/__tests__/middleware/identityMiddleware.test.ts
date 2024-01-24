@@ -2,13 +2,11 @@
  * @jest-environment node
  */
 
-import type { Jwt, JwtClaims } from '@okta/jwt-verifier';
+import type { Jwt } from '@okta/jwt-verifier';
 import type { Request, Response } from 'express';
 import { conf } from '@/server/config';
 import { authenticateWithOAuth } from '@/server/middleware/identityMiddleware';
 import * as oauth from '@/server/oauth';
-import type { Scopes, VerifiedOAuthCookies } from '../../oauthConfig';
-import { oauthCookieOptions, scopes } from '../../oauthConfig';
 
 jest.mock('@/server/idapiConfig', () => ({
 	getConfig: () => ({
@@ -23,23 +21,6 @@ jest.mock('@/server/oktaConfig', () => ({
 		clientId: 'bar',
 	}),
 }));
-jest.mock('@/server/oauth', () => ({
-	...jest.requireActual('@/server/oauth'),
-	verifyOAuthCookiesLocally: jest.fn(),
-	performAuthorizationCodeFlow: jest.fn(),
-	verifyIdToken: jest.fn(),
-	verifyAccessToken: jest.fn(),
-	setLocalStateFromIdTokenOrUserCookie: jest.fn(),
-}));
-const mockedVerifyOAuthCookiesLocally = jest.mocked<
-	(req: Request) => Promise<VerifiedOAuthCookies | undefined>
->(oauth.verifyOAuthCookiesLocally);
-const mockedVerifyIdToken = jest.mocked<
-	(token: string) => Promise<Jwt | undefined>
->(oauth.verifyIdToken);
-const mockedVerifyAccessToken = jest.mocked<
-	(token: string) => Promise<Jwt | undefined>
->(oauth.verifyAccessToken);
 
 describe('authenticateWithOAuth middleware - route requires signin', () => {
 	beforeEach(() => {
@@ -49,11 +30,11 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 		}));
 	});
 
-	it('clears cookies and calls performAuthorizationCodeFlow if GU_SO is set and is more recent than tokens', async () => {
+	it('clears cookies and calls performAuthorizationCodeFlow if GU_SO is set', async () => {
 		const req = {
 			signedCookies: {},
 			cookies: {
-				GU_SO: '2000',
+				GU_SO: '1234567890',
 			},
 			originalUrl: '/profile',
 		} as Request;
@@ -62,16 +43,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 			clearCookie: jest.fn(),
 		};
 
-		mockedVerifyOAuthCookiesLocally.mockReturnValue(
-			Promise.resolve({
-				accessToken: {
-					claims: {
-						iat: 1000,
-					} as JwtClaims,
-				} as Jwt,
-				idToken: {} as Jwt,
-			}),
-		);
+		jest.spyOn(oauth, 'performAuthorizationCodeFlow').mockImplementation();
 
 		const next = jest.fn();
 
@@ -79,58 +51,18 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 
 		expect(res.clearCookie).toHaveBeenCalledWith(
 			'GU_ACCESS_TOKEN',
-			oauthCookieOptions,
+			oauth.oauthCookieOptions,
 		);
 		expect(res.clearCookie).toHaveBeenCalledWith(
 			'GU_ID_TOKEN',
-			oauthCookieOptions,
+			oauth.oauthCookieOptions,
 		);
 		expect(oauth.performAuthorizationCodeFlow).toHaveBeenCalledWith(
 			req,
 			res,
 			{
 				redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
-				scopes,
-				returnPath: '/profile',
-			},
-		);
-		expect(next).not.toHaveBeenCalled();
-	});
-
-	it('calls performAuthorizationCodeFlow if GU_SO is set, but is older than tokens, and IDAPI cookies are not set', async () => {
-		const req = {
-			signedCookies: {},
-			cookies: {
-				GU_SO: '1000',
-			},
-			originalUrl: '/profile',
-		} as Request;
-
-		const res = {
-			clearCookie: jest.fn(),
-		};
-
-		mockedVerifyOAuthCookiesLocally.mockReturnValue(
-			Promise.resolve({
-				accessToken: {
-					claims: {
-						iat: 2000,
-					} as JwtClaims,
-				} as Jwt,
-				idToken: {} as Jwt,
-			}),
-		);
-
-		const next = jest.fn();
-
-		await authenticateWithOAuth(req, res as unknown as Response, next);
-
-		expect(oauth.performAuthorizationCodeFlow).toHaveBeenCalledWith(
-			req,
-			res,
-			{
-				redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
-				scopes,
+				scopes: oauth.scopes,
 				returnPath: '/profile',
 			},
 		);
@@ -149,15 +81,16 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 		const res = {
 			clearCookie: jest.fn(),
 		};
-		mockedVerifyAccessToken.mockResolvedValue({
+		jest.spyOn(oauth, 'verifyAccessToken').mockResolvedValue({
 			isExpired: () => true,
 			claims: {
-				scp: scopes as readonly Scopes[],
+				scp: oauth.scopes as readonly oauth.Scopes[],
 			},
 		} as Jwt);
-		mockedVerifyIdToken.mockResolvedValue({
+		jest.spyOn(oauth, 'verifyIdToken').mockResolvedValue({
 			isExpired: () => true,
 		} as Jwt);
+		jest.spyOn(oauth, 'performAuthorizationCodeFlow').mockImplementation();
 		const next = jest.fn();
 		await authenticateWithOAuth(req, res as unknown as Response, next);
 		expect(oauth.performAuthorizationCodeFlow).toHaveBeenCalledWith(
@@ -165,7 +98,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 			res,
 			{
 				redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
-				scopes,
+				scopes: oauth.scopes,
 				returnPath: '/profile',
 			},
 		);
@@ -191,13 +124,14 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 				email: 'email',
 			},
 		} as unknown as Jwt;
-		mockedVerifyAccessToken.mockResolvedValue({
+		jest.spyOn(oauth, 'verifyAccessToken').mockResolvedValue({
 			isExpired: () => false,
 			claims: {
-				scp: scopes as readonly Scopes[],
+				scp: oauth.scopes as readonly oauth.Scopes[],
 			},
 		} as Jwt);
-		mockedVerifyIdToken.mockResolvedValue(idToken);
+		jest.spyOn(oauth, 'verifyIdToken').mockResolvedValue(idToken);
+		jest.spyOn(oauth, 'performAuthorizationCodeFlow').mockImplementation();
 		const next = jest.fn();
 		await authenticateWithOAuth(req, res as unknown as Response, next);
 		expect(oauth.performAuthorizationCodeFlow).toHaveBeenCalledWith(
@@ -205,7 +139,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 			res,
 			{
 				redirectUri: `https://manage.${conf.DOMAIN}/oauth/callback`,
-				scopes,
+				scopes: oauth.scopes,
 				returnPath: '/profile',
 			},
 		);
@@ -221,6 +155,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 			cookies: {
 				GU_U: 'gu_u',
 				SC_GU_U: 'sc_gu_u',
+				SC_GU_LA: 'sc_gu_la',
 			},
 			originalUrl: '/profile',
 		} as Request;
@@ -233,18 +168,18 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 				name: 'name',
 				email: 'email',
 			},
-		};
-		mockedVerifyOAuthCookiesLocally.mockReturnValue(
-			Promise.resolve({
-				accessToken: {
-					isExpired: () => false,
-					claims: {
-						scp: scopes as readonly Scopes[],
-					},
-				} as Jwt,
-				idToken: idToken as unknown as Jwt,
-			}),
-		);
+		} as unknown as Jwt;
+		jest.spyOn(oauth, 'verifyAccessToken').mockResolvedValue({
+			isExpired: () => false,
+			claims: {
+				scp: oauth.scopes as readonly oauth.Scopes[],
+			},
+		} as Jwt);
+		jest.spyOn(oauth, 'verifyIdToken').mockResolvedValue(idToken);
+		jest.spyOn(
+			oauth,
+			'setLocalStateFromIdTokenOrUserCookie',
+		).mockImplementation();
 		const next = jest.fn();
 		await authenticateWithOAuth(req, res as unknown as Response, next);
 		expect(oauth.setLocalStateFromIdTokenOrUserCookie).toHaveBeenCalledWith(
@@ -261,11 +196,11 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 		jest.clearAllMocks();
 	});
 
-	it('clears cookies and calls next() if GU_SO is set and more recent than the tokens', async () => {
+	it('clears cookies and calls next() if GU_SO is set', async () => {
 		const req = {
 			signedCookies: {},
 			cookies: {
-				GU_SO: '2000',
+				GU_SO: '1234567890',
 			},
 			originalUrl: '/help-centre',
 		} as Request;
@@ -275,64 +210,23 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 		};
 
 		const next = jest.fn();
-
-		mockedVerifyOAuthCookiesLocally.mockReturnValue(
-			Promise.resolve({
-				accessToken: {
-					claims: {
-						iat: 1000,
-					} as JwtClaims,
-				} as Jwt,
-				idToken: {} as Jwt,
-			}),
-		);
 
 		await authenticateWithOAuth(req, res as unknown as Response, next);
 
 		expect(res.clearCookie).toHaveBeenCalledWith(
 			'GU_ACCESS_TOKEN',
-			oauthCookieOptions,
+			oauth.oauthCookieOptions,
 		);
 		expect(res.clearCookie).toHaveBeenCalledWith(
 			'GU_ID_TOKEN',
-			oauthCookieOptions,
+			oauth.oauthCookieOptions,
 		);
-		expect(next).toHaveBeenCalled();
-	});
-
-	it('sets local state and calls next() if GU_SO is set, but is older than the tokens', async () => {
-		const req = {
-			signedCookies: {},
-			cookies: {
-				GU_SO: '1000',
-			},
-			originalUrl: '/help-centre',
-		} as Request;
-
-		const res = {
-			clearCookie: jest.fn(),
-		};
-
-		const next = jest.fn();
-
-		mockedVerifyOAuthCookiesLocally.mockReturnValue(
-			Promise.resolve({
-				accessToken: {
-					claims: {
-						iat: 2000,
-					} as JwtClaims,
-				} as Jwt,
-				idToken: {} as Jwt,
-			}),
-		);
-
-		await authenticateWithOAuth(req, res as unknown as Response, next);
-
 		expect(next).toHaveBeenCalled();
 	});
 
 	it('sets local state and calls next() if GU_U is set', async () => {
 		const req = {
+			signedCookies: {},
 			cookies: {
 				GU_U: 'gu_u',
 			},
@@ -341,16 +235,15 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 
 		const res = {};
 
-		mockedVerifyOAuthCookiesLocally.mockReturnValue(
-			Promise.resolve(undefined),
-		);
-
+		jest.spyOn(
+			oauth,
+			'setLocalStateFromIdTokenOrUserCookie',
+		).mockImplementation();
 		const next = jest.fn();
 		await authenticateWithOAuth(req, res as unknown as Response, next);
 		expect(oauth.setLocalStateFromIdTokenOrUserCookie).toHaveBeenCalledWith(
 			req,
 			res,
-			undefined,
 		);
 		expect(next).toHaveBeenCalled();
 	});
@@ -371,9 +264,14 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 
 	it('sets local state and calls next() if the access and ID tokens are valid and IDAPI cookies are set', async () => {
 		const req = {
+			signedCookies: {
+				GU_ACCESS_TOKEN: 'access-token',
+				GU_ID_TOKEN: 'id-token',
+			},
 			cookies: {
 				GU_U: 'gu_u',
 				SC_GU_U: 'sc_gu_u',
+				SC_GU_LA: 'sc_gu_la',
 			},
 			originalUrl: '/help-centre',
 		} as Request;
@@ -387,17 +285,17 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 				email: 'email',
 			},
 		} as unknown as Jwt;
-		mockedVerifyOAuthCookiesLocally.mockReturnValue(
-			Promise.resolve({
-				accessToken: {
-					isExpired: () => false,
-					claims: {
-						scp: scopes as readonly Scopes[],
-					},
-				} as Jwt,
-				idToken: idToken as unknown as Jwt,
-			}),
-		);
+		jest.spyOn(oauth, 'verifyAccessToken').mockResolvedValue({
+			isExpired: () => false,
+			claims: {
+				scp: oauth.scopes as readonly oauth.Scopes[],
+			},
+		} as Jwt);
+		jest.spyOn(oauth, 'verifyIdToken').mockResolvedValue(idToken);
+		jest.spyOn(
+			oauth,
+			'setLocalStateFromIdTokenOrUserCookie',
+		).mockImplementation();
 		const next = jest.fn();
 		await authenticateWithOAuth(req, res as unknown as Response, next);
 		expect(oauth.setLocalStateFromIdTokenOrUserCookie).toHaveBeenCalledWith(

@@ -121,7 +121,6 @@ export class AsyncLoader<
 		trackEvent({
 			eventCategory: 'asyncLoader',
 			eventAction: 'error',
-			 
 			eventLabel: error ? error.toString() : undefined,
 		});
 		Sentry.captureException(error);

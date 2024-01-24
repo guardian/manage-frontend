@@ -96,7 +96,6 @@ export const stripeSetupIntentHandler = async (
 								stripeResponse.status
 							} ${
 								stripeResponse.statusText
-								 
 							} : ${stripeResponse.text()}`,
 						);
 					}

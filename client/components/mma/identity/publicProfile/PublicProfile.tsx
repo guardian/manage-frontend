@@ -24,7 +24,6 @@ export const PublicProfile = (_: { path?: string }) => {
 
 	const errorRef = createRef<GenericErrorMessageRef>();
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the argument object is an error object?
 	const handleGeneralError = (e: any) => {
 		setError(true);
 		Sentry.captureException(e);

@@ -15,7 +15,6 @@ enum ActionType {
 
 interface Action {
 	type: ActionType;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're assuming the payload attribute can contain a range of differently typed things?
 	payload?: any;
 }
 

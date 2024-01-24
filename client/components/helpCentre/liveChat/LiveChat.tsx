@@ -16,7 +16,6 @@ let areAgentsAvailable = false;
 
 const initESW = (
 	gslbBaseUrl: string | null,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Salesforce provides this object
 	liveChatAPI: any,
 	targetElement: HTMLElement,
 	identityID: string,

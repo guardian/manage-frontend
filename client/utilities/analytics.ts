@@ -52,3 +52,9 @@ export const trackEvent = ({
 };
 
 export const trackEventInOphanOnly = (event: Event) => trackEvent(event);
+
+export const applyAnyOptimiseExperiments = () => {
+	if (typeof window !== 'undefined' && window.dataLayer) {
+		window.dataLayer.push({ event: 'optimize.activate' });
+	}
+};

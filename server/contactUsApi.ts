@@ -56,7 +56,6 @@ export const contactUsFormHandler = async (req: Request, res: Response) => {
 };
 
 const parseAndValidate = async (
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the body argument?
 	body: any,
 ): Promise<ContactUsReq | undefined> => {
 	try {
@@ -93,7 +92,6 @@ const validateFileAttachment = (fileName: string, base64String: string) =>
 	validateBase64FileSize(base64String) &&
 	validateImageFileExtension(fileName);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the body argument?
 const validateContactUsFormBody = async (body: any): Promise<boolean> =>
 	body &&
 	body.topic &&
@@ -159,7 +157,6 @@ const validateTopics = (
 	return true;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the body argument?
 const buildContactUsReqBody = (body: any): ContactUsReq => {
 	const attachment =
 		body.attachment?.name && body.attachment?.contents

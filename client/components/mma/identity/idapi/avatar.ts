@@ -20,7 +20,6 @@ interface AvatarNotFoundError {
 type AvatarError = AvatarValidationError | AvatarNotFoundError;
 
 const isAvatarAPIErrorResponse = (
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we rely on Avatar returning something; we check to see if it is an error response
 	response: any,
 ): response is AvatarAPIErrorResponse => {
 	if (response.message && response.errors) {

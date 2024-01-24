@@ -137,7 +137,7 @@ export function baseDigitalPack(): ProductDetail {
 		tier: 'Digital Pack',
 		isPaidTier: true,
 		selfServiceCancellation: {
-			isAllowed: true,
+			isAllowed: false,
 			shouldDisplayEmail: false,
 			phoneRegionsToDisplay: ['UK & ROW'],
 		},

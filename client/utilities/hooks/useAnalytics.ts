@@ -3,6 +3,12 @@ import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+declare global {
+	interface Window {
+		dataLayer?: any;
+	}
+}
+
 export const useAnalytics = () => {
 	const location = useLocation();
 	const [cmpIsInitialised, setCmpIsInitialised] = useState<boolean>(false);

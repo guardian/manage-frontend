@@ -28,7 +28,6 @@ import { aCss, textSmall } from '../sharedStyles';
 interface SettingsFormProps {
 	user: User;
 	saveUser: (values: User) => Promise<User>;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the onError function's argument is an error object?
 	onError: (error: any) => void;
 	onSuccess: (input: User, response: User) => void;
 	onDone: () => void;
