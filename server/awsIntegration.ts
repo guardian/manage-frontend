@@ -115,7 +115,7 @@ export const s3TextFilePromise = (
 		const s3PromiseResult = await S3.getObject(filePath).promise();
 		if (
 			s3PromiseResult.Body &&
-			s3PromiseResult.ContentType === 'text/plain'
+			s3PromiseResult.ContentType === 'application/json'
 		) {
 			// eslint-disable-next-line @typescript-eslint/no-base-to-string -- we rely on the S3 object to honour its contract
 			return s3PromiseResult.Body.toString();
