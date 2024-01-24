@@ -126,15 +126,17 @@ export class FieldWrapper extends React.Component<
 	}
 
 	private validateField =
-		(otherOnChange?: (event: any) => void) =>
-		(field: { error: StripeError }) => {
-			if (otherOnChange) {
-				otherOnChange(field);
-			}
-			this.setState({
-				error: field.error?.message ? field.error : {},
-			});
-		};
+		 
+
+			(otherOnChange?: (event: any) => void) =>
+			(field: { error: StripeError }) => {
+				if (otherOnChange) {
+					otherOnChange(field);
+				}
+				this.setState({
+					error: field.error?.message ? field.error : {},
+				});
+			};
 
 	private toggleFocus = () => {
 		this.setState({

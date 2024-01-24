@@ -3,11 +3,13 @@
  */
 
 import type { Jwt } from '@okta/jwt-verifier';
-import type { Request } from 'express';
-import type { Scopes } from '../oauth';
+import type { Request, Response } from 'express';
+import * as identityLocalState from '../identityLocalState';
 import * as oauth from '../oauth';
-import { scopes } from '../oauth';
+import type { Scopes } from '../oauthConfig';
+import { scopes } from '../oauthConfig';
 
+jest.mock('@/server/log');
 jest.mock('@/server/idapiConfig', () => ({
 	getConfig: () => ({
 		idapiBaseUrl: 'https://idapi.example.com',
@@ -112,7 +114,7 @@ describe('verifyOAuthCookiesLocally', () => {
 			'invalid-access-token',
 		);
 		expect(spyOnVerifyIdToken).toHaveBeenCalledWith('id-token');
-		expect(verify).toEqual({});
+		expect(verify).toEqual(undefined);
 	});
 
 	it('returns an empty object if the ID token is invalid', async () => {
@@ -142,6 +144,85 @@ describe('verifyOAuthCookiesLocally', () => {
 
 		expect(spyOnVerifyAccessToken).toHaveBeenCalledWith('access-token');
 		expect(spyOnVerifyIdToken).toHaveBeenCalledWith('invalid-id-token');
-		expect(verify).toEqual({});
+		expect(verify).toEqual(undefined);
+	});
+});
+
+describe('setLocalStateFromIdTokenOrUserCookie', () => {
+	it('sets the local state from the ID token if it exists', () => {
+		const req = {
+			cookies: {
+				GU_U: 'gu_u',
+				SC_GU_U: 'sc_gu_u',
+			},
+		} as Request;
+		const res = {} as Response;
+		const spyOnSetIdentityLocalState = jest
+			.spyOn(identityLocalState, 'setIdentityLocalState')
+			.mockImplementation();
+
+		const idToken = {
+			claims: {
+				legacy_identity_id: 'legacy_identity_id',
+				name: 'name',
+				email: 'email',
+				iss: 'https://example.com',
+				aud: 'foo',
+				iat: 1234567890,
+				exp: 1234567890,
+				sub: 'sub',
+			},
+			header: {
+				alg: 'RS256',
+				typ: 'typ',
+				kid: 'kid',
+			},
+			isExpired: () => false,
+			isNotBefore: () => false,
+		} as Jwt;
+
+		oauth.setLocalStateFromIdTokenOrUserCookie(req, res, idToken);
+
+		expect(spyOnSetIdentityLocalState).toHaveBeenCalledWith(res, {
+			signInStatus: 'signedInRecently',
+			userId: 'legacy_identity_id',
+			displayName: 'name',
+			email: 'email',
+		});
+	});
+
+	it('sets the local state from the GU_U cookie if it exists', () => {
+		const req = {
+			cookies: {
+				GU_U: 'gu_u',
+				SC_GU_U: 'sc_gu_u',
+			},
+		} as Request;
+		const res = {} as Response;
+		const spyOnSetIdentityLocalState = jest
+			.spyOn(identityLocalState, 'setIdentityLocalState')
+			.mockImplementation();
+
+		oauth.setLocalStateFromIdTokenOrUserCookie(req, res);
+
+		expect(spyOnSetIdentityLocalState).toHaveBeenCalledWith(res, {
+			signInStatus: 'signedInRecently',
+		});
+	});
+
+	it("does not set 'signedInRecently' if neither the ID token nor the GU_U cookie exist", () => {
+		const req = {
+			cookies: {
+				SC_GU_U: 'sc_gu_u',
+			},
+		} as Request;
+		const res = {} as Response;
+		const spyOnSetIdentityLocalState = jest
+			.spyOn(identityLocalState, 'setIdentityLocalState')
+			.mockImplementation();
+
+		oauth.setLocalStateFromIdTokenOrUserCookie(req, res);
+
+		expect(spyOnSetIdentityLocalState).toHaveBeenCalledWith(res, {});
 	});
 });

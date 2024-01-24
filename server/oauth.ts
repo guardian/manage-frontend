@@ -1,28 +1,24 @@
 import crypto from 'crypto';
 import { joinUrl } from '@guardian/libs';
 import OktaJwtVerifier from '@okta/jwt-verifier';
-import type { CookieOptions, Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import ms from 'ms';
 import type { Client, IssuerMetadata } from 'openid-client';
 import { generators, Issuer } from 'openid-client';
 import { conf } from '@/server/config';
+import { setIdentityLocalState } from '@/server/identityLocalState';
+import { log } from '@/server/log';
+import type { Scopes, VerifiedOAuthCookies } from '@/server/oauthConfig';
+import {
+	IdTokenClaims,
+	OAuthAccessTokenCookieName,
+	oauthCookieOptions,
+	OAuthIdTokenCookieName,
+	OAuthStateCookieName,
+	scopes,
+} from '@/server/oauthConfig';
 import type { OktaConfig } from '@/server/oktaConfig';
 import { getConfig as getOktaConfig } from '@/server/oktaConfig';
-
-export const OAuthAccessTokenCookieName = 'GU_ACCESS_TOKEN';
-export const OAuthIdTokenCookieName = 'GU_ID_TOKEN';
-export const OAuthStateCookieName = 'GU_oidc_auth_state';
-
-export interface VerifiedOAuthCookies {
-	accessToken?: OktaJwtVerifier.Jwt;
-	idToken?: OktaJwtVerifier.Jwt;
-}
-
-export const oauthCookieOptions: CookieOptions = {
-	signed: true,
-	secure: true,
-	httpOnly: true,
-};
 
 /**
  * @function getOktaOrgUrl
@@ -97,7 +93,7 @@ export const verifyAccessToken = async (token: string) => {
 		).verifyAccessToken(token, joinUrl(getOktaOrgUrl(oktaConfig), '/'));
 		return jwt;
 	} catch (error) {
-		console.error('OAuth / Access Token / Verification Error', error);
+		log.error('OAuth / Access Token / Verification Error', error);
 	}
 };
 
@@ -110,26 +106,9 @@ export const verifyIdToken = async (token: string) => {
 		);
 		return jwt;
 	} catch (error) {
-		console.error('OAuth / ID Token / Verification Error', error);
+		log.error('OAuth / ID Token / Verification Error', error);
 	}
 };
-
-export const scopes = [
-	'openid',
-	'profile',
-	'email',
-	'guardian.avatar-api.read.self',
-	'guardian.avatar-api.update.self',
-	'guardian.identity-api.newsletters.read.self',
-	'guardian.identity-api.newsletters.update.self',
-	'guardian.identity-api.user.read.self.secure',
-	'guardian.identity-api.user.update.self.secure',
-	'guardian.identity-api.user.username.create.self.secure',
-	'guardian.identity-api.consents.read.self',
-	'guardian.identity-api.consents.update.self',
-] as const;
-export type Scopes = typeof scopes[number];
-
 export const ManageMyAccountOpenIdClient = async (oktaConfig: OktaConfig) => {
 	const issuer = joinUrl(
 		oktaConfig.orgUrl,
@@ -300,9 +279,9 @@ export const performAuthorizationCodeFlow = async (
  */
 export const verifyOAuthCookiesLocally = async (
 	req: Request,
-): Promise<VerifiedOAuthCookies> => {
-	const accessTokenCookie = req.signedCookies['GU_ACCESS_TOKEN'];
-	const idTokenCookie = req.signedCookies['GU_ID_TOKEN'];
+): Promise<VerifiedOAuthCookies | undefined> => {
+	const accessTokenCookie = req.signedCookies[OAuthAccessTokenCookieName];
+	const idTokenCookie = req.signedCookies[OAuthIdTokenCookieName];
 
 	if (accessTokenCookie && idTokenCookie) {
 		const accessToken = await verifyAccessToken(accessTokenCookie);
@@ -321,13 +300,7 @@ export const verifyOAuthCookiesLocally = async (
 				accessToken,
 				idToken,
 			};
-		} else {
-			// Access or ID token invalid, return empty object
-			return {};
 		}
-	} else {
-		// No access token or ID token cookie found, return empty object
-		return {};
 	}
 };
 
@@ -346,12 +319,14 @@ export const setLocalStateFromIdTokenOrUserCookie = (
 	// but not the other fields. This will allow the frontend to show the
 	// signed in menu, but not show the user's name or email.
 	const hasIdTokenOrUserCookie = idToken || req.cookies['GU_U'];
-	res.locals.identity = {
+
+	const result = IdTokenClaims.safeParse(idToken?.claims);
+	setIdentityLocalState(res, {
 		signInStatus: hasIdTokenOrUserCookie ? 'signedInRecently' : undefined,
-		userId: idToken?.claims.legacy_identity_id,
-		name: idToken?.claims.name,
-		email: idToken?.claims.email,
-	};
+		userId: result.success ? result.data.legacy_identity_id : undefined,
+		displayName: result.success ? result.data.name : undefined,
+		email: result.success ? result.data.email : undefined,
+	});
 };
 
 // Sanitize the return path to prevent open redirects.
@@ -373,6 +348,6 @@ export const sanitizeReturnPath = (returnPath: string) => {
 };
 
 export const allIdapiCookiesSet = (req: Request) => {
-	const idapiCookies = ['GU_U', 'SC_GU_U', 'SC_GU_LA'];
+	const idapiCookies = ['GU_U', 'SC_GU_U'];
 	return idapiCookies.every((cookie) => req.cookies[cookie]);
 };

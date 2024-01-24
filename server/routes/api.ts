@@ -23,6 +23,7 @@ import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } fr
 import { getArticleHandler, getTopicHandler } from '../helpCentreApi';
 import { log } from '../log';
 import { withIdentity } from '../middleware/identityMiddleware';
+import { withOktaServerSideValidation } from '../middleware/oktaServerSideAuthMiddleware';
 import {
 	cancelReminderHandler,
 	createOneOffReminderHandler,
@@ -126,6 +127,7 @@ router.post(
 
 router.post(
 	'/supporter-plus-cancel/:subscriptionName',
+	withOktaServerSideValidation,
 	productMoveAPI(
 		'supporter-plus-cancel/:subscriptionName',
 		'CANCEL_SUPPORTER_PLUS',
@@ -133,7 +135,11 @@ router.post(
 	),
 );
 
-router.post('/payment/card', stripeSetupIntentHandler);
+router.post(
+	'/payment/card',
+	withOktaServerSideValidation,
+	stripeSetupIntentHandler,
+);
 router.post(
 	'/payment/card/:subscriptionName',
 	membersDataApiHandler(
@@ -163,10 +169,12 @@ router.post(
 
 router.post(
 	'/case/:caseId?',
+	withOktaServerSideValidation,
 	cancellationSfCasesAPI('case', 'CREATE_CANCELLATION_CASE'),
 );
 router.patch(
 	'/case/:caseId?',
+	withOktaServerSideValidation,
 	cancellationSfCasesAPI('case/:caseId', 'UPDATE_CANCELLATION_CASE', [
 		'caseId',
 	]),
@@ -184,6 +192,7 @@ router.post(
 
 router.post(
 	'/product-move/:switchType/:subscriptionName',
+	withOktaServerSideValidation,
 	productMoveAPI(
 		'product-move/:switchType/:subscriptionName',
 		'MOVE_PRODUCT',
@@ -193,6 +202,7 @@ router.post(
 
 router.post(
 	'/update-supporter-plus-amount/:subscriptionName',
+	withOktaServerSideValidation,
 	productMoveAPI(
 		'update-supporter-plus-amount/:subscriptionName',
 		'MOVE_PRODUCT_UPDATE_AMOUNT',
@@ -220,9 +230,14 @@ router.get(
 		'subscriptionName',
 	]),
 );
-router.post('/holidays', holidayStopAPI('/hsr', 'HOLIDAY_STOP_CREATE'));
+router.post(
+	'/holidays',
+	withOktaServerSideValidation,
+	holidayStopAPI('/hsr', 'HOLIDAY_STOP_CREATE'),
+);
 router.patch(
 	'/holidays/:subscriptionName/:sfId',
+	withOktaServerSideValidation,
 	holidayStopAPI('hsr/:subscriptionName/:sfId', 'HOLIDAY_STOP_AMEND', [
 		'subscriptionName',
 		'sfId',
@@ -230,6 +245,7 @@ router.patch(
 );
 router.delete(
 	'/holidays/:subscriptionName/:sfId',
+	withOktaServerSideValidation,
 	holidayStopAPI('hsr/:subscriptionName/:sfId', 'HOLIDAY_STOP_WITHDRAW', [
 		'subscriptionName',
 		'sfId',
@@ -254,6 +270,7 @@ router.get(
 );
 router.post(
 	'/delivery-records/:subscriptionName',
+	withOktaServerSideValidation,
 	deliveryRecordsAPI(
 		'delivery-records/:subscriptionName',
 		'DELIVERY_PROBLEM_CREATE',

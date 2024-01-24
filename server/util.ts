@@ -30,6 +30,7 @@ export const csrfValidateMiddleware = csrf({
 });
 
 export const handleError = (
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the error attribute?
 	error: any,
 	res: ExpressResponse,
 	next: NextFunction,

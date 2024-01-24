@@ -32,10 +32,12 @@ const imgCss = css({
 	width: '60px',
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the argument object is an error object?
 const isEmptyAvatarError = (e: any): boolean => {
 	return e.type && e.type === ErrorTypes.NOT_FOUND;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the argument object is an error object?
 const errorHandler = (e: any) => {
 	if (isEmptyAvatarError(e)) {
 		return;
@@ -136,6 +138,7 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 		</div>
 	);
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the argument object might lack a message attribute
 	const getErrorMessage = (error: any) => {
 		let message;
 		if (error.type && error.type === ErrorTypes.VALIDATION) {

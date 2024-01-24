@@ -79,6 +79,7 @@ interface UserAPIErrorResponse {
 const getOrEmpty = (user: IdapiUserDetails) => (path: string) =>
 	get(user, path, '');
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we check input to see if it's a UserAPIErrorResponse object
 const isErrorResponse = (error: any): error is UserAPIErrorResponse => {
 	return error.status && error.status === 'error';
 };

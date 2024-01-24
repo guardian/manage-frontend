@@ -73,7 +73,7 @@ router.get('/sitemap.txt', async (_, res: Response) => {
 			const statusCode = data ? 200 : 404;
 			res.status(statusCode)
 				.contentType('text/plain')
-				.send(data || []);
+				.send(data ?? []);
 		})
 		.catch((error) => {
 			const errorMessage = `File ${filePath} not found`;
