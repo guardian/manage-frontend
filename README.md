@@ -20,7 +20,7 @@ DEV only Dependencies
 
 ## Dependencies
 
--   [`identity-frontend`](https://github.com/guardian/identity-frontend)
+-   [`gateway`](https://github.com/guardian/gateway)
 -   [IDAPI](https://github.com/guardian/identity)
 -   [`members-data-api`](https://github.com/guardian/members-data-api)
 -   [`holiday-stop-api` ](https://github.com/guardian/support-service-lambdas/tree/master/handlers/holiday-stop-api)
@@ -31,7 +31,11 @@ DEV only Dependencies
 
 ## Basic DEV environment
 
-NOTE: nginx proxies CODE instances of [`identity-frontend`](https://github.com/guardian/identity-frontend) for sign-in and [`members-data-api`](https://github.com/guardian/members-data-api) **if they're not running locally**. See sections further down if you need to actually develop either of those services in parallel with `manage-frontend`.
+NOTE: nginx proxies CODE instances of [`gateway`] for sign-in and [`members-data-api`](https://github.com/guardian/members-data-api) **if they're not running locally**. See sections further down if you need to actually develop either of those services in parallel with `manage-frontend`.
+
+**Note:** When using the local proxy, the sign-in flow for social logins (for example Google) doesn't quite work as the provider has no knowledge of the proxy and redirects back to CODE which doesn't know how to handle the request. The solution is to either use a username/password to sign in or if you need social login run [`gateway`] locally.
+
+[`gateway`]: https://github.com/guardian/gateway
 
 #### One-off setup
 

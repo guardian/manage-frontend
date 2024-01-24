@@ -25,6 +25,7 @@ const stripeScriptHasBeenAddedToPage = (): boolean =>
 	!!document.querySelector("script[src^='https://js.stripe.com']");
 
 export const useStripeSDK = (stripeKey: string) => {
+	 
 	const [stripeObjects, setStripeObjects] = useState<StripeSDK | null>(null);
 
 	useEffect(() => {

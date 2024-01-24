@@ -6,6 +6,7 @@ export interface IdapiConfig {
 	accessToken: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume the config argument could be a range of types?
 const isValidConfig = (config: any): config is IdapiConfig =>
 	config.host && config.accessToken;
 

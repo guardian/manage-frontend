@@ -46,6 +46,7 @@ export const CloudFormation = new AWS.CloudFormation(standardAwsConfig);
 
 const CloudWatch = new AWS.CloudWatch(standardAwsConfig);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the detail argument?
 export const handleAwsRelatedError = (message: string, detail?: any) => {
 	log.error(message, detail);
 	Sentry.captureMessage(message);
@@ -75,6 +76,7 @@ export const s3FilePromise = <ConfigInterface>(
 
 		if (s3PromiseResult.Body) {
 			try {
+				 
 				const parsed = JSON.parse(s3PromiseResult.Body.toString());
 				const missingProperties = fieldNamesToValidate.filter(
 					(field) => !parsed.hasOwnProperty(field),
@@ -113,8 +115,9 @@ export const s3TextFilePromise = (
 		const s3PromiseResult = await S3.getObject(filePath).promise();
 		if (
 			s3PromiseResult.Body &&
-			s3PromiseResult.ContentType === 'text/plain'
+			s3PromiseResult.ContentType === 'application/json'
 		) {
+			 
 			return s3PromiseResult.Body.toString();
 		}
 		handleAwsRelatedError(

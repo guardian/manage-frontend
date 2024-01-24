@@ -82,14 +82,9 @@ const divCss = (hasNav: boolean | undefined) => css`
 	}
 `;
 
-const defaultDispatch = (_value: SetStateAction<string | undefined>) => {
-	return;
-};
-
-export const SelectedTopicObjectContext =
-	createContext<Dispatch<SetStateAction<string | undefined>>>(
-		defaultDispatch,
-	);
+export const SelectedTopicObjectContext = createContext<
+	Dispatch<SetStateAction<string | undefined>>
+>(undefined!);
 
 export const SectionContent = (props: SectionContentProps) => {
 	const [selectedTopicId, setSelectedTopicId] = useState<string | undefined>(
