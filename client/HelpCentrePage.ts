@@ -8,17 +8,12 @@ import { HelpCentrePage } from './components/helpCentre/HelpCentrePage';
 declare let WEBPACK_BUILD: string;
 
 if (typeof window !== 'undefined' && window.guardian && window.guardian.dsn) {
-	console.log('Initialising Sentry');
 	Sentry.init({
 		dsn: window.guardian.dsn,
 		release: WEBPACK_BUILD || 'local',
 		environment: window.guardian.domain,
 	});
 
-	console.log(
-		'Setting the referrer as tag gu:referrer',
-		document.referrer || 'none',
-	);
 	Sentry.setTag('gu:referrer', document.referrer || 'none');
 }
 
