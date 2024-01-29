@@ -10,7 +10,7 @@ const router = Router();
 
 const handleCallbackRouteError = (err: Error, res: Response) => {
 	log.error('OAuth / Callback endpoint error: ', err);
-	res.redirect('/maintenance');
+	res.redirect('/sign-in-error');
 };
 
 router.get('/callback', async (req: Request, res: Response) => {

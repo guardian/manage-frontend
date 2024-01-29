@@ -43,7 +43,7 @@ declare const CYPRESS: string;
 
 const handleIdentityMiddlewareError = (err: Error, res: Response) => {
 	log.error('OAuth / Middleware / Error', err);
-	res.redirect('/maintenance');
+	res.redirect('/sign-in-error');
 };
 
 export const clearOAuthCookies = (res: Response) => {
@@ -229,7 +229,7 @@ const authenticateWithIdapi: (statusCodeOverride?: number) => RequestHandler =
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the detail argument?
 		const errorHandler = (message: string, detail?: any) => {
 			handleAwsRelatedError(message, detail);
-			res.redirect('/maintenance');
+			res.redirect('/sign-in-error');
 		};
 
 		const useRefererHeaderForManageUrl = !!statusCodeOverride;
