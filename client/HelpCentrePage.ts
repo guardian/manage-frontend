@@ -13,6 +13,8 @@ if (typeof window !== 'undefined' && window.guardian && window.guardian.dsn) {
 		release: WEBPACK_BUILD || 'local',
 		environment: window.guardian.domain,
 	});
+
+	Sentry.setTag('gu:referrer', document.referrer || 'none');
 }
 
 const element = document.getElementById('app');
