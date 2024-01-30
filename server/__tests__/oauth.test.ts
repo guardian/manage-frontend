@@ -9,6 +9,14 @@ import * as oauth from '../oauth';
 import type { Scopes } from '../oauthConfig';
 import { scopes } from '../oauthConfig';
 
+const oktaConfig = {
+	useOkta: true,
+	orgUrl: 'https://example.com',
+	authServerId: 'foo',
+	clientId: 'bar',
+	maxAge: 1800,
+};
+
 jest.mock('@/server/log');
 jest.mock('@/server/idapiConfig', () => ({
 	getConfig: () => ({
@@ -16,12 +24,7 @@ jest.mock('@/server/idapiConfig', () => ({
 	}),
 }));
 jest.mock('@/server/oktaConfig', () => ({
-	getConfig: () => ({
-		useOkta: true,
-		orgUrl: 'https://example.com',
-		authServerId: 'foo',
-		clientId: 'bar',
-	}),
+	getConfig: () => oktaConfig,
 }));
 
 describe('sanitizeReturnPath', () => {
@@ -149,7 +152,11 @@ describe('verifyOAuthCookiesLocally', () => {
 });
 
 describe('setLocalStateFromIdTokenOrUserCookie', () => {
-	it('sets the local state from the ID token if it exists', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('sets the local state from the ID token if it exists', async () => {
 		const req = {
 			cookies: {
 				GU_U: 'gu_u',
@@ -160,6 +167,8 @@ describe('setLocalStateFromIdTokenOrUserCookie', () => {
 		const spyOnSetIdentityLocalState = jest
 			.spyOn(identityLocalState, 'setIdentityLocalState')
 			.mockImplementation();
+
+		jest.spyOn(oauth, 'signInStatus').mockReturnValue('signedInRecently');
 
 		const idToken = {
 			claims: {
@@ -181,7 +190,12 @@ describe('setLocalStateFromIdTokenOrUserCookie', () => {
 			isNotBefore: () => false,
 		} as Jwt;
 
-		oauth.setLocalStateFromIdTokenOrUserCookie(req, res, idToken);
+		oauth.setLocalStateFromIdTokenOrUserCookie(
+			req,
+			res,
+			idToken,
+			oktaConfig.maxAge,
+		);
 
 		expect(spyOnSetIdentityLocalState).toHaveBeenCalledWith(res, {
 			signInStatus: 'signedInRecently',
@@ -191,7 +205,7 @@ describe('setLocalStateFromIdTokenOrUserCookie', () => {
 		});
 	});
 
-	it('sets the local state from the GU_U cookie if it exists', () => {
+	it('sets the local state from the GU_U cookie if it exists', async () => {
 		const req = {
 			cookies: {
 				GU_U: 'gu_u',
@@ -203,14 +217,23 @@ describe('setLocalStateFromIdTokenOrUserCookie', () => {
 			.spyOn(identityLocalState, 'setIdentityLocalState')
 			.mockImplementation();
 
-		oauth.setLocalStateFromIdTokenOrUserCookie(req, res);
+		jest.spyOn(oauth, 'signInStatus').mockReturnValue(
+			'signedInNotRecently',
+		);
+
+		oauth.setLocalStateFromIdTokenOrUserCookie(
+			req,
+			res,
+			undefined,
+			oktaConfig.maxAge,
+		);
 
 		expect(spyOnSetIdentityLocalState).toHaveBeenCalledWith(res, {
-			signInStatus: 'signedInRecently',
+			signInStatus: 'signedInNotRecently',
 		});
 	});
 
-	it("does not set 'signedInRecently' if neither the ID token nor the GU_U cookie exist", () => {
+	it("does not set 'signedInRecently' if neither the ID token nor the GU_U cookie exist", async () => {
 		const req = {
 			cookies: {
 				SC_GU_U: 'sc_gu_u',
@@ -221,8 +244,160 @@ describe('setLocalStateFromIdTokenOrUserCookie', () => {
 			.spyOn(identityLocalState, 'setIdentityLocalState')
 			.mockImplementation();
 
-		oauth.setLocalStateFromIdTokenOrUserCookie(req, res);
+		jest.spyOn(oauth, 'signInStatus').mockReturnValue('notSignedIn');
 
-		expect(spyOnSetIdentityLocalState).toHaveBeenCalledWith(res, {});
+		oauth.setLocalStateFromIdTokenOrUserCookie(
+			req,
+			res,
+			undefined,
+			oktaConfig.maxAge,
+		);
+
+		expect(spyOnSetIdentityLocalState).toHaveBeenCalledWith(res, {
+			displayName: undefined,
+			email: undefined,
+			signInStatus: 'notSignedIn',
+			userId: undefined,
+		});
+	});
+
+	afterAll(() => {
+		// Needed because we're mocking signInStatus here but using it further down
+		jest.restoreAllMocks();
+	});
+});
+
+describe('signInStatus', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('returns signedInRecently if the ID token is recent', async () => {
+		jest.spyOn(oauth, 'idTokenIsRecent').mockReturnValue(true);
+		const idToken = {} as Jwt;
+		const guUCookie = 1234567890;
+
+		const status = oauth.signInStatus(
+			idToken,
+			guUCookie,
+			oktaConfig.maxAge,
+		);
+
+		expect(status).toEqual('signedInRecently');
+	});
+
+	it('returns signedInNotRecently if the ID token is not recent', async () => {
+		jest.spyOn(oauth, 'idTokenIsRecent').mockReturnValue(false);
+		const idToken = {} as Jwt;
+		const guUCookie = 1234567890;
+
+		const status = oauth.signInStatus(
+			idToken,
+			guUCookie,
+			oktaConfig.maxAge,
+		);
+
+		expect(status).toEqual('signedInNotRecently');
+	});
+	it('returns signedInNotRecently if the GU_U cookie exists, but the ID token does not', async () => {
+		const guUCookie = 1234567890;
+
+		const status = oauth.signInStatus(
+			undefined,
+			guUCookie,
+			oktaConfig.maxAge,
+		);
+
+		expect(status).toEqual('signedInNotRecently');
+	});
+	it('returns notSignedIn if neither the GU_U cookie nor the ID token exist', async () => {
+		const status = oauth.signInStatus(
+			undefined,
+			undefined,
+			oktaConfig.maxAge,
+		);
+
+		expect(status).toEqual('notSignedIn');
+	});
+
+	afterAll(() => {
+		// Needed because we're mocking idTokenIsRecent here but using it further down
+		jest.restoreAllMocks();
+	});
+});
+
+describe('idTokenIsRecent', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('returns true if the ID token is not expired', async () => {
+		const idToken = {
+			claims: {
+				auth_time: Date.now() / 1000 - 100,
+			},
+		} as unknown as Jwt;
+
+		const isRecent = oauth.idTokenIsRecent(idToken, oktaConfig.maxAge);
+
+		expect(isRecent).toEqual(true);
+	});
+
+	it('returns false if the ID token does not have an auth_time claim', async () => {
+		const idToken = {
+			claims: {},
+		} as unknown as Jwt;
+
+		const isRecent = oauth.idTokenIsRecent(idToken, oktaConfig.maxAge);
+
+		expect(isRecent).toEqual(false);
+	});
+
+	it('returns false if the ID token has an auth_time claim that is not a number', async () => {
+		const idToken = {
+			claims: {
+				auth_time: 'foo',
+			},
+		} as unknown as Jwt;
+
+		const isRecent = oauth.idTokenIsRecent(idToken, oktaConfig.maxAge);
+
+		expect(isRecent).toEqual(false);
+	});
+
+	it('returns false if the ID token has an auth_time claim that is less than 0', async () => {
+		const idToken = {
+			claims: {
+				auth_time: -1,
+			},
+		} as unknown as Jwt;
+
+		const isRecent = oauth.idTokenIsRecent(idToken, oktaConfig.maxAge);
+
+		expect(isRecent).toEqual(false);
+	});
+
+	it('returns false if the ID token has an auth_time claim that is greater than the current time', async () => {
+		const idToken = {
+			claims: {
+				auth_time: Date.now() / 1000 + 100,
+			},
+		} as unknown as Jwt;
+
+		const isRecent = oauth.idTokenIsRecent(idToken, oktaConfig.maxAge);
+
+		expect(isRecent).toEqual(false);
+	});
+
+	it('returns false if the ID token is expired', async () => {
+		const idToken = {
+			claims: {
+				auth_time: Date.now() / 1000 - 10000,
+			},
+		} as unknown as Jwt;
+
+		const isRecent = oauth.idTokenIsRecent(idToken, oktaConfig.maxAge);
+
+		expect(isRecent).toEqual(false);
 	});
 });

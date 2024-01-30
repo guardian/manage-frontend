@@ -7,6 +7,7 @@ jest.mock('@/server/oauth');
 
 const oktaConfig: OktaConfig = {
 	useOkta: true,
+	maxAge: 1800,
 	orgUrl: 'https://example.com',
 	authServerId: 'foo',
 	clientId: 'bar',

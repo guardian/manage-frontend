@@ -227,6 +227,7 @@ export const performAuthorizationCodeFlow = async (
 	}: PerformAuthorizationCodeFlowOptions,
 ) => {
 	const OpenIdClient = await getOpenIdClient();
+	const oktaConfig = await getOktaConfig();
 
 	// Encode the returnPath, a state token, and the PKCE code verifier into a state cookie
 	const stateToken = crypto.randomBytes(16).toString('base64');
@@ -258,13 +259,24 @@ export const performAuthorizationCodeFlow = async (
 		code_challenge: codeChallenge,
 		code_challenge_method: codeChallengeMethod,
 		response_type: 'code',
-		// A max age of 30 minutes means that the user will be prompted to re-authenticate
-		// after 30 minutes of inactivity
-		max_age: Math.floor(ms('30m') / 1000),
+		// A max age value means that the user will be prompted to re-authenticate
+		// after that many seconds of inactivity. This only works for users who have not signed in
+		// with FEDERATED or SOCIAL type sessions, because Okta will automatically refresh
+		// the tokens for those users if they have an active session of any age.
+		max_age: oktaConfig.maxAge,
 	});
 
 	// redirect the user to the authorize URL
 	return res.redirect(303, authorizeUrl);
+};
+
+export const revokeAccessToken = async (token: string) => {
+	const openIdClient = await getOpenIdClient();
+	try {
+		await openIdClient.revoke(token, 'access_token');
+	} catch (error) {
+		log.error('OAuth / Revoke Access Token / Error', error);
+	}
 };
 
 /**
@@ -304,10 +316,81 @@ export const verifyOAuthCookiesLocally = async (
 	}
 };
 
+/**
+ * @name idTokenIsRecent
+ *
+ * @description Verifies that the ID token is for a session which was created within the session
+ * lifetime value (30 minutes by default). This is because Okta will automatically
+ * refresh the tokens if the user has an active session of any age when the session
+ * if of FEDERATED or SOCIAL type, even if the max_age parameter is sent in the
+ * /authorize request.
+ *
+ * We only verify the ID token because the Okta documentation says that the auth_time claim
+ * is a base claim, always present in the ID token. See:
+ * https://developer.okta.com/docs/reference/api/oidc/#claims-in-the-payload-section
+ *
+ * @param idToken - the ID token to check
+ * @param maxAge - the maximum permitted age of the ID token, in seconds
+ */
+export const idTokenIsRecent = (
+	idToken: OktaJwtVerifier.Jwt,
+	maxAge: number,
+) => {
+	const nowSeconds = Math.floor(Date.now() / 1000);
+	const authTime = idToken.claims.auth_time;
+
+	if (
+		!authTime ||
+		typeof authTime !== 'number' ||
+		authTime < 0 ||
+		authTime > nowSeconds
+	) {
+		log.error('OAuth / ID Token / Invalid auth_time claim', {
+			authTime: idToken.claims.auth_time,
+		});
+		return false;
+	}
+
+	if (nowSeconds - authTime > maxAge) {
+		log.info('OAuth / ID Token / auth_time claim is too old');
+		return false;
+	}
+
+	return true;
+};
+
+/**
+ * @name signInStatus
+ *
+ * @description Returns one of three values:
+ * - 'signedInRecently' if the user has a recent ID token.
+ * - 'signedInNotRecently' if the user has a valid ID token but it's not recent,
+ *   or if the user has only a GU_U cookie, but no ID token.
+ * - 'notSignedIn' if the user has no ID token or GU_U cookie.
+ *
+ * @param idToken - the ID token to check (optional)
+ * @param guUCookie - the GU_U cookie to check (optional)
+ * @param maxAge - the maximum permitted age of the ID token, in seconds
+ */
+export const signInStatus = (
+	idToken: OktaJwtVerifier.Jwt | undefined,
+	guUCookie: number | undefined,
+	maxAge: number,
+) => {
+	const tokenIsRecent = idToken && idTokenIsRecent(idToken, maxAge);
+	if (tokenIsRecent) {
+		return 'signedInRecently';
+	} else if (idToken || guUCookie) {
+		return 'signedInNotRecently';
+	}
+	return 'notSignedIn';
+};
+
 export const setLocalStateFromIdTokenOrUserCookie = (
 	req: Request,
 	res: Response,
-	idToken?: OktaJwtVerifier.Jwt,
+	idToken: OktaJwtVerifier.Jwt | undefined,
+	maxAge: number,
 ) => {
 	// Mirrors the response we got previously from the auth/redirect endpoint
 	// in IDAPI. We store the user's ID, name and email on the identity object
@@ -318,11 +401,11 @@ export const setLocalStateFromIdTokenOrUserCookie = (
 	// Otherwise, if the GU_U cookie exists, we simply set 'signInStatus',
 	// but not the other fields. This will allow the frontend to show the
 	// signed in menu, but not show the user's name or email.
-	const hasIdTokenOrUserCookie = idToken || req.cookies['GU_U'];
-
+	const guUCookie = req.cookies['GU_U'];
 	const result = IdTokenClaims.safeParse(idToken?.claims);
+
 	setIdentityLocalState(res, {
-		signInStatus: hasIdTokenOrUserCookie ? 'signedInRecently' : undefined,
+		signInStatus: signInStatus(idToken, guUCookie, maxAge),
 		userId: result.success ? result.data.legacy_identity_id : undefined,
 		displayName: result.success ? result.data.name : undefined,
 		email: result.success ? result.data.email : undefined,

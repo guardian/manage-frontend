@@ -1,19 +1,21 @@
 import type { Request, Response } from 'express';
 import { Router } from 'express';
-import ms from 'ms';
 import { getOpenIdClient } from '@/server/oauth';
 import { oauthCookieOptions, OAuthStateCookieName } from '@/server/oauthConfig';
 import { conf } from '../config';
 import { log } from '../log';
+import { getConfig as getOktaConfig } from '../oktaConfig';
 
 const router = Router();
 
 const handleCallbackRouteError = (err: Error, res: Response) => {
 	log.error('OAuth / Callback endpoint error: ', err);
-	res.redirect('/maintenance');
+	res.redirect('/sign-in-error');
 };
 
 router.get('/callback', async (req: Request, res: Response) => {
+	const oktaConfig = await getOktaConfig();
+
 	// Read the state cookie
 	if (!req.signedCookies[OAuthStateCookieName]) {
 		return handleCallbackRouteError(
@@ -61,11 +63,11 @@ router.get('/callback', async (req: Request, res: Response) => {
 		// Set the access token and ID tokens as cookies
 		res.cookie('GU_ACCESS_TOKEN', tokenSet.access_token, {
 			...oauthCookieOptions,
-			maxAge: ms('30m'), // Same expiry as set in Okta
+			maxAge: oktaConfig.maxAge * 1000, // Same expiry as set in Okta, but in ms
 		});
 		res.cookie('GU_ID_TOKEN', tokenSet.id_token, {
 			...oauthCookieOptions,
-			maxAge: ms('30m'), // Same expiry as set in Okta
+			maxAge: oktaConfig.maxAge * 1000, // Same expiry as set in Okta, but in ms
 		});
 
 		// Delete state cookie, for it is no longer needed

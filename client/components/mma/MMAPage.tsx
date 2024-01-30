@@ -35,6 +35,7 @@ import { Main } from '../shared/Main';
 import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
+import { SignInError } from './signInError/SignInError';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Ophan events are diverse (and unguessable?)
 const record = (event: any) => {
@@ -782,7 +783,13 @@ const MMARouter = () => {
 								<CreateReminder reminderType={'RECURRING'} />
 							}
 						/>
+						{/*Does not require sign in*/}
 						<Route path="/maintenance" element={<Maintenance />} />
+						{/*Does not require sign in*/}
+						<Route
+							path="/sign-in-error"
+							element={<SignInError />}
+						/>
 						<Route path="*" element={<Navigate to="/" />} />
 					</Routes>
 				</ErrorBoundary>

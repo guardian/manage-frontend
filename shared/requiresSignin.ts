@@ -11,6 +11,7 @@ const publicPaths = [
 	'/create-reminder/',
 	'/help-centre/',
 	'/maintenance/',
+	'/sign-in-error/',
 ];
 
 export const requiresSignin = (path: string) => {
