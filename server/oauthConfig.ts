@@ -40,5 +40,6 @@ export const scopes = [
 	'guardian.identity-api.consents.update.self',
 	'guardian.members-data-api.complete.read.self.secure',
 	'guardian.members-data-api.read.self',
+	'guardian.members-data-api.update.self.secure',
 ] as const;
 export type Scopes = typeof scopes[number];
