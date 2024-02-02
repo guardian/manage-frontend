@@ -58,7 +58,7 @@ export const Default: StoryObj<typeof EmailAndMarketing> = {
 			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
 				return res(ctx.json([]));
 			}),
-			rest.get('/idapi/user/consents', (_req, res, ctx) => {
+			rest.get('/idapi/consents', (_req, res, ctx) => {
 				return res(ctx.json(consents));
 			}),
 			rest.get('/api/reminders/status', (_req, res, ctx) => {
@@ -93,7 +93,7 @@ export const WithNoProducts: StoryObj<typeof EmailAndMarketing> = {
 			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
 				return res(ctx.json([]));
 			}),
-			rest.get('/idapi/user/consents', (_req, res, ctx) => {
+			rest.get('/idapi/consents', (_req, res, ctx) => {
 				return res(ctx.json(consents));
 			}),
 			rest.get('/api/reminders/status', (_req, res, ctx) => {
@@ -130,7 +130,7 @@ export const WithIAP: StoryObj<typeof EmailAndMarketing> = {
 			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
 				return res(ctx.json([]));
 			}),
-			rest.get('/idapi/user/consents', (_req, res, ctx) => {
+			rest.get('/idapi/consents', (_req, res, ctx) => {
 				return res(ctx.json(consents));
 			}),
 			rest.get('/api/reminders/status', (_req, res, ctx) => {
@@ -165,7 +165,7 @@ export const WithSingleContribution: StoryObj<typeof EmailAndMarketing> = {
 			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
 				return res(ctx.json(singleContributionsAPIResponse));
 			}),
-			rest.get('/idapi/user/consents', (_req, res, ctx) => {
+			rest.get('/idapi/consents', (_req, res, ctx) => {
 				return res(ctx.json(consents));
 			}),
 			rest.get('/api/reminders/status', (_req, res, ctx) => {

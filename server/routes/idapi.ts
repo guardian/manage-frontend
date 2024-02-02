@@ -71,7 +71,7 @@ router.patch(
 );
 
 router.get(
-	'/user/consents',
+	'/consents',
 	csrfValidateMiddleware,
 	idapiProxyHandler<ConsentAPIResponse[]>({
 		url: '/consents?filter=all',

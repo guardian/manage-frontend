@@ -25,7 +25,7 @@ type DataPrivacyResponse = [ConsentOption[], UserAPI.UserAPIResponse];
 
 const dataPrivacyFetcher = () =>
 	Promise.all([
-		fetchWithDefaultParameters('/idapi/user/consents'),
+		fetchWithDefaultParameters('/idapi/consents'),
 		fetchWithDefaultParameters('/idapi/user'),
 	]);
 

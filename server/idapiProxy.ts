@@ -233,16 +233,11 @@ export const idapiProxyHandler =
 					? req.body
 					: undefined,
 			});
-			console.log(url);
-			console.log(response.status);
 			if (response.status === 204) {
 				return res.sendStatus(204);
 			} else {
 				try {
 					const json = await response.json();
-					if (response.status >= 400) {
-						console.log('IDAPI ERROR: ', json);
-					}
 					if (processData) {
 						return processData(json, res);
 					} else {
