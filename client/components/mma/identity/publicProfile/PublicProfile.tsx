@@ -43,10 +43,7 @@ export const PublicProfile = (_: { path?: string }) => {
 			.catch(handleGeneralError);
 	}, []);
 
-	const saveUser = async (originalUser: User, values: User) => {
-		const changedUser = { ...originalUser, ...values };
-		return await Users.saveChanges(originalUser, changedUser);
-	};
+	const setUsername = async (values: User) => await Users.setUsername(values);
 
 	useEffect(() => {
 		if (error && errorRef.current) {
@@ -75,7 +72,7 @@ export const PublicProfile = (_: { path?: string }) => {
 		<>
 			<ProfileFormSection
 				user={u}
-				saveUser={(values) => saveUser(u, values)}
+				saveUser={(values) => setUsername(values)}
 				onError={handleGeneralError}
 				onSuccess={setUser}
 			/>

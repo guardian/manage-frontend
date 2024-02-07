@@ -2,6 +2,7 @@ import { get } from 'lodash';
 import {
 	addCSRFToken,
 	fetchWithDefaultParameters,
+	postRequest,
 	putRequest,
 } from '@/client/utilities/fetch';
 import type { User, UserError } from '../models';
@@ -193,4 +194,22 @@ export const read = async (): Promise<User> => {
 		url,
 	).then((response) => response.json());
 	return toUser(response);
+};
+
+export const setUsername = async (user: Partial<User>): Promise<User> => {
+	const url = '/idapi/user/username';
+	const body = toUserApiRequest(user);
+	console.log('sending', body);
+	try {
+		const response: UserAPIResponse = await fetchWithDefaultParameters(
+			url,
+			addCSRFToken(postRequest(body)),
+		).then((response) => response.json());
+		if (isErrorResponse(response)) {
+			throw toUserError(response);
+		}
+		return toUser(response);
+	} catch (e) {
+		throw isErrorResponse(e) ? toUserError(e) : e;
+	}
 };

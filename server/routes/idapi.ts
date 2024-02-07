@@ -99,6 +99,15 @@ router.delete(
 	}),
 );
 
+router.post(
+	'/user/username',
+	csrfValidateMiddleware,
+	idapiProxyHandler({
+		url: '/user/me/username',
+		method: 'POST',
+	}),
+);
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the err argument?
 router.use((err: any, _: Request, res: Response, next: NextFunction) => {
 	if (err.code && err.code === 'EBADCSRFTOKEN') {
