@@ -72,6 +72,9 @@ export const Users: UserCollection = {
 	getChangedFields(original: User, changed: User): Partial<User> {
 		return diffWithCompositeFields(original, changed);
 	},
+	async setUsername(user: User): Promise<User> {
+		return await UserAPI.setUsername(user);
+	},
 };
 
 export const ConsentOptions: ConsentOptionCollection = {

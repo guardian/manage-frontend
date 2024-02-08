@@ -16,9 +16,18 @@ describe('E2E with Okta', () => {
 	});
 
 	context('profile tab', () => {
-		it('should contain a username', () => {
+		it('should allow the user to set a username', () => {
+			const randomUsername = `testuser${Math.floor(
+				Math.random() * 100000,
+			)}`;
 			cy.visit('/public-settings');
-			cy.findByText('Username');
+			cy.get('input[name="username"]').type(randomUsername);
+			cy.findByText('Save changes').click();
+			cy.visit('/public-settings');
+			cy.get('span[data-cy="username-display"]').should(
+				'contain',
+				randomUsername,
+			);
 		});
 	});
 

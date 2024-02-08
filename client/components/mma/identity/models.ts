@@ -57,6 +57,7 @@ export interface UserCollection {
 	save: (user: User) => Promise<User>;
 	saveChanges: (original: User, changed: User) => Promise<User>;
 	getChangedFields: (original: User, changed: User) => Partial<User>;
+	setUsername: (user: User) => Promise<User>;
 }
 
 export interface ConsentOption {
