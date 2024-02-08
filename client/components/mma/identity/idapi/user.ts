@@ -198,8 +198,11 @@ export const read = async (): Promise<User> => {
 
 export const setUsername = async (user: Partial<User>): Promise<User> => {
 	const url = '/idapi/user/username';
-	const body = toUserApiRequest(user);
-	console.log('sending', body);
+	const body = {
+		publicFields: {
+			username: user.username,
+		},
+	};
 	try {
 		const response: UserAPIResponse = await fetchWithDefaultParameters(
 			url,

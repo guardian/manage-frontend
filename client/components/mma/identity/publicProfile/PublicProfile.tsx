@@ -60,7 +60,9 @@ export const PublicProfile = (_: { path?: string }) => {
 	const usernameDisplay = (u: User) => (
 		<>
 			<WithStandardTopMargin>
-				<PageSection title="Username">{u.username}</PageSection>
+				<PageSection title="Username">
+					<span data-cy="username-display">{u.username}</span>
+				</PageSection>
 			</WithStandardTopMargin>
 			<WithStandardTopMargin>
 				<Lines n={1} />
