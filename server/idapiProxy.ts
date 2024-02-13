@@ -198,13 +198,13 @@ export const idapiProxyHandler =
 		url,
 		method = 'GET',
 		processData,
-		sendAuthHeader,
+		sendAuthHeader = false,
 	}: {
 		url: string;
 		method?: HTTPMethod;
 		processData?: (json: T, res: Response) => Response | void;
 		useOAuth?: boolean;
-		sendAuthHeader: boolean;
+		sendAuthHeader?: boolean;
 	}) =>
 	async (req: Request, res: Response, next: NextFunction) => {
 		let config;
