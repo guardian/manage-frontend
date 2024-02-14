@@ -30,7 +30,7 @@ describe('Email and Marketing page', () => {
 			body: newsletterSubscriptions,
 		}).as('newsletter_subscriptions');
 
-		cy.intercept('GET', '/idapi/user/consents', {
+		cy.intercept('GET', '/idapi/consents', {
 			statusCode: 200,
 			body: consents,
 		}).as('consents');

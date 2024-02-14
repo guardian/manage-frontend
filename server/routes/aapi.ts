@@ -9,6 +9,7 @@ import {
 import { getConfig } from '../idapiConfig';
 import { setOptions } from '../idapiProxy';
 import { withIdentity } from '../middleware/identityMiddleware';
+import { getConfig as getOktaConfig } from '../oktaConfig';
 import { handleError, jsonOrEmpty } from '../util';
 
 interface AvatarAPIErrorResponse {
@@ -38,11 +39,15 @@ router.get(
 			handleError(e, res, next);
 			return;
 		}
+		const { useOkta } = await getOktaConfig();
 		const options = setOptions({
+			sendAuthHeader: true,
+			useOkta,
 			path: '/v1/avatars/user/me/active',
 			subdomain: 'avatar',
 			method: 'GET',
 			cookies: req.cookies,
+			signedCookies: req.signedCookies,
 			config,
 		});
 		try {
@@ -100,11 +105,15 @@ router.post(
 				handleError(e, res, next);
 				return;
 			}
+			const { useOkta } = await getOktaConfig();
 			const options = setOptions({
+				sendAuthHeader: true,
+				useOkta,
 				path: '/v1/avatars',
 				subdomain: 'avatar',
 				method: 'POST',
 				cookies: req.cookies,
+				signedCookies: req.signedCookies,
 				config,
 			});
 			// Recerate a FormData payload from the Base64-encoded file contents string.

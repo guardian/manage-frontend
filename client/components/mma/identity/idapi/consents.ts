@@ -31,7 +31,7 @@ export const consentToConsentOption = (
 };
 
 export const read = async (): Promise<ConsentOption[]> => {
-	const url = '/idapi/user/consents';
+	const url = '/idapi/consents';
 	return await fetchWithDefaultParameters(url)
 		.then((response) => response.json() as Promise<ConsentAPIResponse[]>)
 		.then((consents) => consents.map(consentToConsentOption));
