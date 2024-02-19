@@ -108,12 +108,7 @@ export const proxyApiHandler =
 						Authorization: `Bearer ${req.signedCookies[OAuthAccessTokenCookieName]}`,
 					};
 				default:
-					// TODO: This is legacy code!
-					// We don't want to send literally all cookies to APIs so when
-					// we migrate to Okta tokens entirely we should remove this
-					return {
-						Cookie: getCookiesOrEmptyString(req),
-					};
+					return {};
 			}
 		};
 
