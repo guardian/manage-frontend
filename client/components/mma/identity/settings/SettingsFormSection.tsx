@@ -6,7 +6,6 @@ import type { FC } from 'react';
 import { Button } from '../../shared/Buttons';
 import {
 	FormEmailField,
-	FormNumberField,
 	FormSelectField,
 	FormTextField,
 } from '../form/FormField';
@@ -173,7 +172,7 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 					formikProps={props}
 					labelModifier={(o: string) => `+${o}`}
 				/>
-				<FormNumberField
+				<FormTextField
 					name="localNumber"
 					label="Local Number"
 					formikProps={props}
