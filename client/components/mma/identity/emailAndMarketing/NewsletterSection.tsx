@@ -91,7 +91,7 @@ export const NewsletterSection: FC<NewsletterSectionProps> = (props) => {
         The Guardian’s newsletters include content from our website, which may
         be funded by outside parties. Newsletters may also display information
         about Guardian News and Media's other products, services or events
-        (such as Guardian Jobs or Masterclasses), chosen charities or online
+        (such as Guardian Jobs), chosen charities or online
         advertisements.
       `}
 		>
