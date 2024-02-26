@@ -98,3 +98,4 @@ const getInputFieldOfType = (type: string) => {
 export const FormTextField = getInputFieldOfType('text');
 export const FormNumberField = getInputFieldOfType('number');
 export const FormEmailField = getInputFieldOfType('email');
+export const FormTelephoneField = getInputFieldOfType('tel');
