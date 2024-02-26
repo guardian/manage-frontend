@@ -148,7 +148,7 @@
     "@guardian/ab-core": "2.0.0",
     "@guardian/ab-react": "2.0.1",
     "@guardian/commercial": "11.19.1",
-    "@guardian/consent-management-platform": "13.8.0",
+    "@guardian/consent-management-platform": "13.11.1",
     "@guardian/libs": "15.9.1",
     "@guardian/source-foundations": "13.2.0",
     "@guardian/source-react-components": "16.0.1",
