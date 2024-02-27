@@ -2932,27 +2932,27 @@
   resolved "https://registry.yarnpkg.com/@guardian/ab-react/-/ab-react-2.0.1.tgz#f018898de584c8e70a48e69ec9e499e08f512cc5"
   integrity sha512-iOKbIxoLwRMv2eHddxL5l9mNBy/B9QaOOJgA3VUdo/jH5cUVzbF6W8yYDGcZJTolIVhSu5GPR8fitsOoup6Vww==
 
-"@guardian/commercial@11.19.1":
-  version "11.19.1"
-  resolved "https://registry.yarnpkg.com/@guardian/commercial/-/commercial-11.19.1.tgz#390b24b3a0975c1501b1e329bcf64f1684f3240d"
-  integrity sha512-dJ1RVxaSKOxFL+CZ5fPWc728E+tfG8MDuFP0IW+HtFeYWq/aF3MCXlNr7dswyn9LP7qSEOkuv43YJJADNv3/KA==
+"@guardian/commercial@16.0.0":
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/commercial/-/commercial-16.0.0.tgz#e46cd939ee0f98d84bfc21124f93d4b2d6b041e5"
+  integrity sha512-nR6vBM7Bu5E49m4vWMeeTg1fsM/hsiTKY32r/R3YlMMYbYf2OBk/ExZg+EwMiXA11Z6euUriutSKEiQQ10LdTw==
   dependencies:
     "@changesets/cli" "^2.26.2"
+    "@guardian/ophan-tracker-js" "2.0.4"
+    "@guardian/prebid.js" "8.34.0"
     "@octokit/core" "^4.0.5"
     fastdom "^1.0.11"
     lodash-es "^4.17.21"
-    ophan-tracker-js "^2.0.1"
-    prebid.js guardian/prebid.js#0b4cccd55ab4e170b36bb944e9bdd2807a9da1c5
     process "^0.11.10"
     raven-js "^3.27.2"
-    tslib "^2.5.3"
+    tslib "^2.6.2"
     web-vitals "^3.3.2"
     wolfy87-eventemitter "^5.2.9"
 
-"@guardian/consent-management-platform@13.8.0":
-  version "13.8.0"
-  resolved "https://registry.yarnpkg.com/@guardian/consent-management-platform/-/consent-management-platform-13.8.0.tgz#60d1d319a2b438cdc8c6587ac20adf7b553815d3"
-  integrity sha512-J8YBXxpl/oGLmDGtjvkSwGmkaTJtnr/rxmYJAynaX0dkqopdDvG9REdbxMZBz3kugBpqHzhREzAk5Ut/uiyl8w==
+"@guardian/consent-management-platform@13.11.1":
+  version "13.11.1"
+  resolved "https://registry.yarnpkg.com/@guardian/consent-management-platform/-/consent-management-platform-13.11.1.tgz#dac49f3920238e60251fa5b7705c9ada9e12a882"
+  integrity sha512-cU9ssmMVV6EpX7H9QVAf0gdPrIdrGkvi/5ylGXF6xGvyvJ6CwUxM+vZhhm5tujoCiq6EuAVJX1tiZ3oHQMEdZg==
 
 "@guardian/eslint-config-typescript@9.0.2":
   version "9.0.2"
@@ -2991,10 +2991,15 @@
     "@typescript-eslint/eslint-plugin" "6.18.0"
     "@typescript-eslint/parser" "6.18.0"
 
-"@guardian/libs@15.9.1", "@guardian/libs@^15.6.4":
+"@guardian/libs@15.9.1":
   version "15.9.1"
   resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-15.9.1.tgz#6846c9f0debb19d650f1775b21314a99ea80248d"
   integrity sha512-Mns6Gc3MQacVxQ44Ei5HaVak3y9HYQF5kZ4lZGnacJfRdWAfW9K5K5rphf7mSgqkygOGoTs5TMQ3gO37MP8hbw==
+
+"@guardian/libs@^16.0.0":
+  version "16.0.2"
+  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-16.0.2.tgz#df739ffa67f938e125330b52587b33622f8ff797"
+  integrity sha512-GC3DTyRAWMYNOheSnQES24CA2k9WKZiv+WnZbe3hPu6MsZwjeSeRvylJ+VXk7d2ndX5uDW1OdwkWBX45fVXqsA==
 
 "@guardian/node-riffraff-artifact@0.2.2":
   version "0.2.2"
@@ -3009,6 +3014,34 @@
     temp "^0.9.1"
     yaml "^1.7.2"
     yargs "^15.4.1"
+
+"@guardian/ophan-tracker-js@2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-2.0.4.tgz#899cf3b3d91d403fb5afb6842b258fff1c286c60"
+  integrity sha512-kwUNUSfnL8SQwzTlVzInYh7a6VSMFy3zEq2A6Hm7cmKSbl8D7ed03y7ANqquViFuPffRZRQ0IrkJHSbMnsRmrA==
+
+"@guardian/prebid.js@8.34.0":
+  version "8.34.0"
+  resolved "https://registry.yarnpkg.com/@guardian/prebid.js/-/prebid.js-8.34.0.tgz#6ab69684d254e52c44a0fe58ad5fc334ee133953"
+  integrity sha512-DLH/EuWGsM6oZcMVm+qsuWhYPl+TE4nqkDzAVJRjOkiP3AHHOZ7AnQaGzF9Y9tG3EeFU/iJwqJ43JlIjDBOt1A==
+  dependencies:
+    "@babel/core" "^7.23.2"
+    "@babel/plugin-transform-runtime" "^7.18.9"
+    "@babel/preset-env" "^7.16.8"
+    "@babel/runtime" "^7.18.9"
+    "@guardian/libs" "^16.0.0"
+    core-js "^3.13.0"
+    core-js-pure "^3.13.0"
+    criteo-direct-rsa-validate "^1.1.0"
+    crypto-js "^4.2.0"
+    dlv "1.1.3"
+    dset "3.1.2"
+    express "^4.15.4"
+    fun-hooks "^0.9.9"
+    just-clone "^1.0.2"
+    live-connect-js "^6.3.4"
+  optionalDependencies:
+    fsevents "^2.3.2"
 
 "@guardian/prettier@1.0.0":
   version "1.0.0"
@@ -11723,17 +11756,17 @@ listr2@^4.0.5:
     through "^2.3.8"
     wrap-ansi "^7.0.0"
 
-live-connect-common@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/live-connect-common/-/live-connect-common-1.0.0.tgz#9cb558cd665c0418271770854538243420cd1354"
-  integrity sha512-LBZsvykcGeVRYI1eqqXrrNZsoBdL2a8cpyrYPIiGAF/CpixbyRbvqGslaFw511lH294QB16J3fYYg21aYuaM2Q==
+live-connect-common@^v3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/live-connect-common/-/live-connect-common-3.1.1.tgz#7d0474bce04d6c03fb7157abebd37b0deac437a6"
+  integrity sha512-sV0oUvJnaTN41f30hOo3wDjZL2y8TYu5BQKvlxmek7Agpe2AGGN/dsPA8i2sHkessRKpcTfrPjmpnG2bIxq7Gg==
 
-live-connect-js@^5.0.0:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/live-connect-js/-/live-connect-js-5.0.1.tgz#152372cf757e8af8eb4829f32979669b26cd9052"
-  integrity sha512-X/fFbKGG8MahpqIuxndApAc9udj1g5NIxL95zKPzvqoipPYoeqvh7SCDly1hPvbqsfFj/DIbOfdWbttXzCSryw==
+live-connect-js@^6.3.4:
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/live-connect-js/-/live-connect-js-6.6.0.tgz#0e668e7e51188ac503b5151c74bcd8552e3a92ce"
+  integrity sha512-007CQoS/ebr0iv1Bvj1D9YK5nOkQG6GJXBHnHtT2CRAwFs7Da+wequFnfpZ5I9TwhzCwZ+oPuInRp7qaSwfVvQ==
   dependencies:
-    live-connect-common "^1.0.0"
+    live-connect-common "^v3.1.1"
     tiny-hashes "1.0.1"
 
 load-yaml-file@^0.2.0:
@@ -12766,11 +12799,6 @@ ophan-tracker-js@1.3.16:
   resolved "https://registry.yarnpkg.com/ophan-tracker-js/-/ophan-tracker-js-1.3.16.tgz#0f4c14924d44eced7fa311cb6a9318a20325a680"
   integrity sha512-kiWNxgHoGl4IDWNmcOQ+r4MNT6/WKPKhIJuKsJkd2YA8VQ5TJ4DTu4ht5WGegOawAfbhA3pOMd12yOK8vdnyaA==
 
-ophan-tracker-js@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/ophan-tracker-js/-/ophan-tracker-js-2.0.2.tgz#c67c19a646340d9afebb4104b1b2d209a449767b"
-  integrity sha512-cAVIFZbMAUmAhRYSma2Q833DmbWsfH0hySh6BeuKrK2rcvkS8dB8v3AHudHQrASMIzrgHXjbsHB0A9AusFIg2Q==
-
 optionator@^0.9.3:
   version "0.9.3"
   resolved "https://registry.yarnpkg.com/optionator/-/optionator-0.9.3.tgz#007397d44ed1872fdc6ed31360190f81814e2c64"
@@ -13238,28 +13266,6 @@ postcss@^8.4.21:
     nanoid "^3.3.6"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
-
-prebid.js@guardian/prebid.js#0b4cccd55ab4e170b36bb944e9bdd2807a9da1c5:
-  version "7.54.5"
-  resolved "https://codeload.github.com/guardian/prebid.js/tar.gz/0b4cccd55ab4e170b36bb944e9bdd2807a9da1c5"
-  dependencies:
-    "@babel/core" "^7.23.2"
-    "@babel/plugin-transform-runtime" "^7.18.9"
-    "@babel/preset-env" "^7.16.8"
-    "@babel/runtime" "^7.18.9"
-    "@guardian/libs" "^15.6.4"
-    core-js "^3.13.0"
-    core-js-pure "^3.13.0"
-    criteo-direct-rsa-validate "^1.1.0"
-    crypto-js "^4.2.0"
-    dlv "1.1.3"
-    dset "3.1.2"
-    express "^4.15.4"
-    fun-hooks "^0.9.9"
-    just-clone "^1.0.2"
-    live-connect-js "^5.0.0"
-  optionalDependencies:
-    fsevents "^2.3.2"
 
 preferred-pm@^3.0.0:
   version "3.1.2"
@@ -15274,7 +15280,7 @@ tsconfig-paths@^3.15.0:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tslib@2.6.2, tslib@^2.0.1, tslib@^2.5.3:
+tslib@2.6.2, tslib@^2.0.1, tslib@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.2.tgz#703ac29425e7b37cd6fd456e92404d46d1f3e4ae"
   integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
