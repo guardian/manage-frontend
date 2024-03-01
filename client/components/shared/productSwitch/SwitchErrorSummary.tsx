@@ -27,9 +27,9 @@ const SwitchErrorContext = ({
 			persists get in touch at{' '}
 			<a
 				css={errorSummaryLinkCss}
-				href="mailto:customer.help@guardian.com"
+				href="mailto:customer.help@theguardian.com"
 			>
-				customer.help@guardian.com
+				customer.help@theguardian.com
 			</a>
 			.
 		</>
