@@ -9,7 +9,7 @@ export const useConsent = () => {
 				// Default to GB so it works when no geolocation
 				// cookie is present (eg. local development)
 				country:
-					(getGeoLocation() as CountryCode) ?? ('GB' as CountryCode),
+					(getGeoLocation() ?? 'GB') as CountryCode,
 			});
 		});
 	}, []);
