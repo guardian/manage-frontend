@@ -77,13 +77,7 @@ const HelpCentreRouter = () => {
 	]
 	*/
 
-	const knownIssues: KnownIssueObj[] = [
-		{
-			date: '6th Mar 2024 12:25',
-			message:
-				'Due to a technical issue, Customer Service phone lines in the USA, Canada & Australia are currently not available. Live chat and email are unaffected.',
-		},
-	];
+	const knownIssues: KnownIssueObj[] = [];
 
 	return (
 		<Main signInStatus={signInStatus} isHelpCentrePage>
