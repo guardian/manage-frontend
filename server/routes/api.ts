@@ -10,6 +10,7 @@ import {
 	holidayStopAPI,
 	invoicingAPI,
 	productMoveAPI,
+	productSwitchAPI,
 } from '../apiGatewayDiscovery';
 import {
 	customMembersDataApiHandler,
@@ -194,7 +195,7 @@ router.post(
 router.post(
 	'/product-move/:switchType/:subscriptionName',
 	withOktaServerSideValidation,
-	productMoveAPI(
+	productSwitchAPI(
 		'product-move/:switchType/:subscriptionName',
 		'MOVE_PRODUCT',
 		['switchType', 'subscriptionName'],
