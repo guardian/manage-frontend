@@ -6,6 +6,7 @@ import { default as express } from 'express';
 import helmet from 'helmet';
 import { MAX_FILE_ATTACHMENT_SIZE_KB } from '../shared/fileUploadUtils';
 import { conf } from './config';
+import { defualtSrc } from './cspConfig';
 import { log } from './log';
 import { getConfig } from './oktaConfig';
 import * as routes from './routes';
@@ -37,7 +38,15 @@ if (conf.DOMAIN === 'thegulocal.com') {
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 
-server.use(helmet());
+server.use(
+	helmet({
+		contentSecurityPolicy: {
+			directives: {
+				defaultSrc: ["'self'", defualtSrc[conf.STAGE].flat().join(' ')],
+			},
+		},
+	}),
+);
 
 const serveStaticAssets: RequestHandler = express.static(__dirname + '/static');
 
