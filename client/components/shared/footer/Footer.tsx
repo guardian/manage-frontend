@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import type { CMP } from '@guardian/consent-management-platform/dist/types';
+import type { CMP } from '@guardian/libs';
 import { from, palette } from '@guardian/source-foundations';
 import { BackToTop } from '@guardian/source-react-components';
 import type { SyntheticEvent } from 'react';
@@ -178,7 +178,7 @@ export const Footer = () => {
 	const [importedCmp, setImportedCmp] = useState<CMP | null>(null);
 
 	useEffect(() => {
-		import('@guardian/consent-management-platform').then(({ cmp }) => {
+		import('@guardian/libs').then(({ cmp }) => {
 			setImportedCmp(cmp);
 		});
 	}, []);

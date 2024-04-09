@@ -27,19 +27,17 @@ export const useAnalytics = () => {
 	};
 
 	useEffect(() => {
-		import('@guardian/consent-management-platform').then(
-			({ onConsentChange, getConsentFor }) => {
-				onConsentChange((consentState) => {
-					const qmConsentState = getConsentFor('qm', consentState);
+		import('@guardian/libs').then(({ onConsentChange, getConsentFor }) => {
+			onConsentChange((consentState) => {
+				const qmConsentState = getConsentFor('qm', consentState);
 
-					if (qmConsentState && !qmIsInitialised) {
-						initialiseQm();
-					}
+				if (qmConsentState && !qmIsInitialised) {
+					initialiseQm();
+				}
 
-					setCmpIsInitialised(true);
-				});
-			},
-		);
+				setCmpIsInitialised(true);
+			});
+		});
 	}, []);
 
 	useEffect(() => {

@@ -2932,10 +2932,10 @@
   resolved "https://registry.yarnpkg.com/@guardian/ab-react/-/ab-react-2.0.1.tgz#f018898de584c8e70a48e69ec9e499e08f512cc5"
   integrity sha512-iOKbIxoLwRMv2eHddxL5l9mNBy/B9QaOOJgA3VUdo/jH5cUVzbF6W8yYDGcZJTolIVhSu5GPR8fitsOoup6Vww==
 
-"@guardian/commercial@17.1.1":
-  version "17.1.1"
-  resolved "https://registry.yarnpkg.com/@guardian/commercial/-/commercial-17.1.1.tgz#ff98beb2435ba0882ea486b38a8873c3229ae173"
-  integrity sha512-DQkiX3lalNSqIj/u3tghxFBElJ/xv8+feV6fxveQhUwnPMYw8vOCIg1QZoPcyl0eDgwbl7JubK4MOccX+5AhGA==
+"@guardian/commercial@17.9.0":
+  version "17.9.0"
+  resolved "https://registry.yarnpkg.com/@guardian/commercial/-/commercial-17.9.0.tgz#45f1d276bb0253262beb94a28733b0a0368c0704"
+  integrity sha512-XC9SJ7wXgBHbsBdtOY3X4c17CnOvg7XLSAIGSvQWguKnNSCAW2CwG/o6NP4ybJtySPYP5T99n1+6XjpsnNd+2Q==
   dependencies:
     "@changesets/cli" "^2.26.2"
     "@guardian/ophan-tracker-js" "2.0.4"
@@ -2948,11 +2948,6 @@
     tslib "^2.6.2"
     web-vitals "^3.3.2"
     wolfy87-eventemitter "^5.2.9"
-
-"@guardian/consent-management-platform@13.12.0":
-  version "13.12.0"
-  resolved "https://registry.yarnpkg.com/@guardian/consent-management-platform/-/consent-management-platform-13.12.0.tgz#7cd52881ac017eca8697b368c313678664acc10e"
-  integrity sha512-weLk3tR1ZtMvn5tfTFItvbIT84JFaXMdP5zcbu1Aynt+eTKZD8oVKTtuvdg6ZmTuxsEOIfsel0fFirjDUo5ccQ==
 
 "@guardian/eslint-config-typescript@9.0.2":
   version "9.0.2"
@@ -2991,10 +2986,10 @@
     "@typescript-eslint/eslint-plugin" "6.18.0"
     "@typescript-eslint/parser" "6.18.0"
 
-"@guardian/libs@15.9.1":
-  version "15.9.1"
-  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-15.9.1.tgz#6846c9f0debb19d650f1775b21314a99ea80248d"
-  integrity sha512-Mns6Gc3MQacVxQ44Ei5HaVak3y9HYQF5kZ4lZGnacJfRdWAfW9K5K5rphf7mSgqkygOGoTs5TMQ3gO37MP8hbw==
+"@guardian/libs@16.1.0":
+  version "16.1.0"
+  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-16.1.0.tgz#70d986a312a04e609a89ef1a631f6a3000e322da"
+  integrity sha512-nb7r0C+UO4P6f0wH8sATtGYnGrfqCzOX4M1Pp2G+uj9c3tehMRSum4mgnqxSAVXN50LtkL2bwd4u3Ichk6670Q==
 
 "@guardian/libs@^16.0.0":
   version "16.0.2"
