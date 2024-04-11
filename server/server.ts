@@ -39,6 +39,14 @@ if (conf.DOMAIN === 'thegulocal.com') {
 
 server.use(helmet());
 
+server.use(function (_: Request, res: Response, next: NextFunction) {
+	res.setHeader(
+		'Content-Security-Policy-Report-Only',
+		'report-to /csp-audit-report-endpoint',
+	);
+	next();
+});
+
 const serveStaticAssets: RequestHandler = express.static(__dirname + '/static');
 
 /** static asses are cached by fastly */
