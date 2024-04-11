@@ -40,10 +40,12 @@ if (conf.DOMAIN === 'thegulocal.com') {
 server.use(helmet());
 
 server.use(function (_: Request, res: Response, next: NextFunction) {
-	res.setHeader(
-		'Content-Security-Policy-Report-Only',
-		'report-to /csp-audit-report-endpoint',
-	);
+	res.set({
+		'Report-To':
+			'{ "group": "csp-endpoint", "endpoints": [ { "url": "/csp-audit-report-endpoint" } ] }',
+		'Content-Security-Policy-Report-Only':
+			'report-uri /csp-audit-report-endpoint; report-to csp-endpoint; default-src https:',
+	});
 	next();
 });
 

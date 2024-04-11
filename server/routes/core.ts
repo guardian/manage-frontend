@@ -10,7 +10,7 @@ const router = Router();
 
 router.get('/csp-audit-report-endpoint', (req: Request, res: Response) => {
 	log.info(`CSP_AUDIT: ${req.body}`);
-	res.status(202).send();
+	res.status(204).send();
 });
 
 router.get(
