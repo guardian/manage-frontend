@@ -41,8 +41,10 @@ server.use(helmet());
 
 server.use(function (_: Request, res: Response, next: NextFunction) {
 	res.set({
-		'Report-To': `{ "group": "csp-endpoint", "endpoints": [ { "url": "${conf.DOMAIN}/csp-audit-report-endpoint" } ] }`,
-		'Content-Security-Policy-Report-Only': `report-uri ${conf.DOMAIN}/csp-audit-report-endpoint; report-to csp-endpoint; default-src https:`,
+		'Report-To':
+			'{ "group": "csp-endpoint", "endpoints": [ { "url": "/api/csp-audit-report-endpoint" } ] }',
+		'Content-Security-Policy-Report-Only':
+			'report-uri /api/csp-audit-report-endpoint; report-to csp-endpoint; default-src https:',
 	});
 	next();
 });

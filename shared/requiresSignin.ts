@@ -7,6 +7,7 @@ const publicPaths = [
 	'/api/reminders/cancel/',
 	'/api/public/reminders/',
 	'/api/help-centre/',
+	'/api/csp-audit-report-endpoint/',
 	'/cancel-reminders/',
 	'/create-reminder/',
 	'/help-centre/',

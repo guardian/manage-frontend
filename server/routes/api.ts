@@ -339,4 +339,10 @@ router.get(
 router.post('/reminders/cancel', cancelReminderHandler);
 router.post('/reminders/reactivate', reactivateReminderHandler);
 
+router.post('/csp-audit-report-endpoint', (req, res) => {
+	const parsedBody = JSON.parse(req.body.toString());
+	log.warn(JSON.stringify(parsedBody));
+	res.status(204).end();
+});
+
 export { router };
