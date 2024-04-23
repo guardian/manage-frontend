@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/node';
 import { Router } from 'express';
+import { featureSwitches } from '../../shared/featureSwitches';
 import type { MembersDataApiResponse } from '../../shared/productResponse';
 import { isProduct, MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import {
@@ -338,5 +339,13 @@ router.get(
 );
 router.post('/reminders/cancel', cancelReminderHandler);
 router.post('/reminders/reactivate', reactivateReminderHandler);
+
+if (featureSwitches.cspSecurityAudit) {
+	router.post('/csp-audit-report-endpoint', (req, res) => {
+		const parsedBody = JSON.parse(req.body.toString());
+		log.warn(JSON.stringify(parsedBody));
+		res.status(204).end();
+	});
+}
 
 export { router };

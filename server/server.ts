@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import { default as express } from 'express';
 import helmet from 'helmet';
+import { featureSwitches } from '../shared/featureSwitches';
 import { MAX_FILE_ATTACHMENT_SIZE_KB } from '../shared/fileUploadUtils';
 import { conf } from './config';
 import { log } from './log';
@@ -38,6 +39,18 @@ if (conf.DOMAIN === 'thegulocal.com') {
 }
 
 server.use(helmet());
+
+if (featureSwitches.cspSecurityAudit) {
+	server.use(function (_: Request, res: Response, next: NextFunction) {
+		res.set({
+			'Report-To':
+				'{ "group": "csp-endpoint", "endpoints": [ { "url": "/api/csp-audit-report-endpoint" } ] }',
+			'Content-Security-Policy-Report-Only':
+				'report-uri /api/csp-audit-report-endpoint; report-to csp-endpoint; default-src https:',
+		});
+		next();
+	});
+}
 
 const serveStaticAssets: RequestHandler = express.static(__dirname + '/static');
 
