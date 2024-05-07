@@ -200,7 +200,7 @@ router.post(
 	productMoveAPI(
 		'product-move/to-recurring-contribution/:subscriptionName',
 		'MOVE_PRODUCT',
-		['switchType', 'subscriptionName'],
+		['subscriptionName'],
 	),
 );
 // recurring contribution to supporter plus is using the new api
@@ -210,7 +210,7 @@ router.post(
 	productSwitchAPI(
 		'product-move/recurring-contribution-to-supporter-plus/:subscriptionName',
 		'MOVE_PRODUCT',
-		['switchType', 'subscriptionName'],
+		['subscriptionName'],
 	),
 );
 
