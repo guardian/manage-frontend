@@ -50,7 +50,7 @@ if (featureSwitches.cspSecurityAudit) {
 		res.set({
 			'Report-To':
 				'{ "group": "csp-endpoint", "endpoints": [ { "url": "/api/csp-audit-report-endpoint" } ] }',
-			'Content-Security-Policy-Report-Only': csp.join('; '),
+			'Content-Security-Policy-Report-Only': `${csp.join('; ')};`,
 		});
 		next();
 	});
