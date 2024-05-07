@@ -1,8 +1,8 @@
 import * as Sentry from '@sentry/node';
 import { Router } from 'express';
-import { featureSwitches } from '../../shared/featureSwitches';
-import type { MembersDataApiResponse } from '../../shared/productResponse';
-import { isProduct, MDA_TEST_USER_HEADER } from '../../shared/productResponse';
+import { featureSwitches } from '@/shared/featureSwitches';
+import type { MembersDataApiResponse } from '@/shared/productResponse';
+import { isProduct, MDA_TEST_USER_HEADER } from '@/shared/productResponse';
 import {
 	cancellationSfCasesAPI,
 	deliveryRecordsAPI,
@@ -192,8 +192,20 @@ router.post(
 	discountAPI('apply-discount', 'APPLY_DISCOUNT'),
 );
 
+// The two switch types are using different apis for now, membership to recurring contribution
+// is using the old api
 router.post(
-	'/product-move/:switchType/:subscriptionName',
+	'/product-move/to-recurring-contribution/:subscriptionName',
+	withOktaServerSideValidation,
+	productMoveAPI(
+		'product-move/:switchType/:subscriptionName',
+		'MOVE_PRODUCT',
+		['switchType', 'subscriptionName'],
+	),
+);
+// recurring contribution to supporter plus is using the new api
+router.post(
+	'/product-move/recurring-contribution-to-supporter-plus/:subscriptionName',
 	withOktaServerSideValidation,
 	productSwitchAPI(
 		'product-move/:switchType/:subscriptionName',
