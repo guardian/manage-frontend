@@ -41,12 +41,16 @@ if (conf.DOMAIN === 'thegulocal.com') {
 server.use(helmet());
 
 if (featureSwitches.cspSecurityAudit) {
+	const csp = [
+		'report-uri /api/csp-audit-report-endpoint',
+		'report-to csp-endpoint',
+		"default-src 'self' https://sourcepoint.theguardian.com",
+	];
 	server.use(function (_: Request, res: Response, next: NextFunction) {
 		res.set({
 			'Report-To':
 				'{ "group": "csp-endpoint", "endpoints": [ { "url": "/api/csp-audit-report-endpoint" } ] }',
-			'Content-Security-Policy-Report-Only':
-				'report-uri /api/csp-audit-report-endpoint; report-to csp-endpoint; default-src https:',
+			'Content-Security-Policy-Report-Only': `${csp.join('; ')};`,
 		});
 		next();
 	});
