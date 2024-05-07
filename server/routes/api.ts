@@ -198,7 +198,7 @@ router.post(
 	'/product-move/to-recurring-contribution/:subscriptionName',
 	withOktaServerSideValidation,
 	productMoveAPI(
-		'product-move/:switchType/:subscriptionName',
+		'product-move/to-recurring-contribution/:subscriptionName',
 		'MOVE_PRODUCT',
 		['switchType', 'subscriptionName'],
 	),
@@ -208,7 +208,7 @@ router.post(
 	'/product-move/recurring-contribution-to-supporter-plus/:subscriptionName',
 	withOktaServerSideValidation,
 	productSwitchAPI(
-		'product-move/:switchType/:subscriptionName',
+		'product-move/recurring-contribution-to-supporter-plus/:subscriptionName',
 		'MOVE_PRODUCT',
 		['switchType', 'subscriptionName'],
 	),
