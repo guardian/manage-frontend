@@ -28,6 +28,7 @@ const apiNames = [
 	'contact-us-api',
 	'product-move-api',
 	'discount-api',
+	'product-switch-api',
 ] as const;
 type ApiName = typeof apiNames[number];
 
@@ -219,6 +220,14 @@ const productMoveAPIGateway = getApiGateway(
 	generateAwsSignatureHeaders,
 );
 export const productMoveAPI = productMoveAPIGateway.authorisedExpressCallback;
+
+const productSwitchAPIGateway = getApiGateway(
+	'support',
+	'product-switch-api',
+	generateAwsSignatureHeaders,
+);
+export const productSwitchAPI =
+	productSwitchAPIGateway.authorisedExpressCallback;
 
 const invoicingAPIGateway = getApiGateway(
 	'support',
