@@ -9,7 +9,7 @@ interface Step {
 }
 
 interface ProgressIndicatorProps {
-	steps: [Step, Step, Step];
+	steps: [Step, Step, ...Step[]];
 	additionalCSS?: SerializedStyles;
 }
 

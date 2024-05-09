@@ -12,7 +12,7 @@ import type {
 } from './CancellationContainer';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 
-function productHasSaveJourney(productToCancel: ProductDetail): boolean {
+function productHasEarlySaveJourney(productToCancel: ProductDetail): boolean {
 	const specificProductTypeKey =
 		getSpecificProductTypeFromProduct(productToCancel).productType;
 
@@ -22,7 +22,7 @@ function productHasSaveJourney(productToCancel: ProductDetail): boolean {
 	);
 }
 
-export const CancellationSaveEligibilityCheck = () => {
+export const CancellationJourneyFunnel = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 
@@ -35,7 +35,10 @@ export const CancellationSaveEligibilityCheck = () => {
 		return <Navigate to="/" />;
 	}
 
-	if (!routerState?.dontShowOffer && productHasSaveJourney(productDetail)) {
+	if (
+		!routerState?.dontShowOffer &&
+		productHasEarlySaveJourney(productDetail)
+	) {
 		return <Navigate to="./landing" state={{ ...routerState }} />;
 	}
 

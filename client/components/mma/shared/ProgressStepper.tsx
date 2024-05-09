@@ -4,12 +4,14 @@ import { palette, space, textSansBold14 } from '@guardian/source/foundations';
 import { TickInCircle } from './assets/TickInCircle';
 
 interface Step {
-	title: string;
+	title?: string;
 	isCurrentStep?: true;
+	forceStepComplete?: true;
 }
 
 export interface ProgressStepperProps {
 	steps: Step[];
+	selectedStep?: number;
 	additionalCSS?: SerializedStyles;
 }
 
@@ -65,8 +67,8 @@ const Step = ({
 						: ''}
 				`}
 			>
-				<span>{step.title}</span>
-				{index < currentStep ? (
+				{step.title && <span>{step.title}</span>}
+				{index < currentStep || step.forceStepComplete ? (
 					<div>
 						<TickInCircle fill={palette.brand[400]} />
 					</div>
@@ -118,7 +120,7 @@ export const ProgressStepper = ({
 		>
 			{steps.map((step, index) => (
 				<Step
-					key={step.title}
+					key={`progressStep${index}`}
 					step={step}
 					currentStep={currentStep}
 					index={index}

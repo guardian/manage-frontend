@@ -4,10 +4,14 @@ import {
 	Button,
 	InlineError,
 	SvgArrowRightStraight,
+	SvgSpinner,
 } from '@guardian/source/react-components';
 import type { ChangeEvent, FC } from 'react';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
+import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import { featureSwitches } from '@/shared/featureSwitches';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import type {
@@ -227,6 +231,8 @@ interface ConfirmCancellationAndReturnRowProps
 	deliveryCredits?: DeliveryRecordDetail[];
 }
 
+type ShowOfferState = 'pending' | true | false;
+
 const ConfirmCancellationAndReturnRow = (
 	props: ConfirmCancellationAndReturnRowProps,
 ) => {
@@ -236,6 +242,42 @@ const ConfirmCancellationAndReturnRow = (
 		cancellationPolicy: string;
 	};
 	const navigate = useNavigate();
+	const { productDetail } = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+	const [showOfferBeforeCancelling, setShowOfferBeforeCancelling] =
+		useState<ShowOfferState>(
+			featureSwitches.supporterplusCancellationOffer ? 'pending' : false,
+		);
+	const [offerDetails, setOfferDetails] =
+		useState<DiscountPreviewResponse | null>(null);
+	useEffect(() => {
+		(async () => {
+			try {
+				const response = await fetchWithDefaultParameters(
+					'/api/discounts/preview-discount',
+					{
+						method: 'POST',
+						body: JSON.stringify({
+							subscriptionNumber:
+								productDetail.subscription.subscriptionId,
+						}),
+					},
+				);
+
+				if (response.ok) {
+					// api returns a 400 response if the user is not eligible
+					setShowOfferBeforeCancelling(true);
+					const offerData = await response.json();
+					setOfferDetails(offerData);
+				} else {
+					setShowOfferBeforeCancelling(false);
+				}
+			} catch (e) {
+				setShowOfferBeforeCancelling(false);
+			}
+		})();
+	}, []);
 
 	return (
 		<>
@@ -259,23 +301,47 @@ const ConfirmCancellationAndReturnRow = (
 						}}
 					>
 						<Button
-							icon={<SvgArrowRightStraight />}
+							icon={
+								showOfferBeforeCancelling === 'pending' ? (
+									<SvgSpinner size="xsmall" />
+								) : (
+									<SvgArrowRightStraight />
+								)
+							}
 							iconSide="right"
+							disabled={showOfferBeforeCancelling === 'pending'}
+							aria-disabled={
+								showOfferBeforeCancelling === 'pending'
+							}
 							onClick={() => {
 								if (props.onClick) {
 									props.onClick();
 								}
-								navigate('../confirmed', {
-									state: {
-										...routerState,
-										caseId: props.caseId,
-										holidayStops: props.holidayStops,
-										deliveryCredits: props.deliveryCredits,
-									},
-								});
+								if (showOfferBeforeCancelling) {
+									navigate('../offer', {
+										state: {
+											...routerState,
+											...offerDetails,
+											caseId: props.caseId,
+											holidayStops: props.holidayStops,
+											deliveryCredits:
+												props.deliveryCredits,
+										},
+									});
+								} else {
+									navigate('../confirmed', {
+										state: {
+											...routerState,
+											caseId: props.caseId,
+											holidayStops: props.holidayStops,
+											deliveryCredits:
+												props.deliveryCredits,
+										},
+									});
+								}
 							}}
 						>
-							Confirm cancellation
+							Continue to cancellation
 						</Button>
 					</div>
 					<div>

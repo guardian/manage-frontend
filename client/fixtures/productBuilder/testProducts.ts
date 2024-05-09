@@ -203,6 +203,14 @@ export function supporterPlus() {
 		.getProductDetailObject();
 }
 
+export function supporterPlusMonthlyAllAccessDigital() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.withPrice(1000)
+		.withBillingPeriod('month')
+		.getProductDetailObject();
+}
+
 export function supporterPlusAnnual() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()

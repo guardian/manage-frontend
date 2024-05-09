@@ -194,6 +194,7 @@ export interface Subscription {
 	account?: {
 		accountName: string;
 	};
+	//cancellationOfferIsActive?: boolean;
 	// THIS IS NOT PART OF THE members-data-api RESPONSE (it's injected server-side - see server/routes/api.ts)
 	deliveryAddressChangeEffectiveDate?: string;
 	cancellationEffectiveDate?: string;
