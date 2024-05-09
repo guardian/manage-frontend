@@ -104,6 +104,12 @@ const SavedCancellation = lazy(() =>
 	).then(({ SavedCancellation }) => ({ default: SavedCancellation })),
 );
 
+const ConfirmCancellation = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/stages/ConfirmCancellation'
+	).then(({ ConfirmCancellation }) => ({ default: ConfirmCancellation })),
+);
+
 const ExecuteCancellation = lazy(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/stages/ExecuteCancellation'
@@ -683,6 +689,10 @@ const MMARouter = () => {
 									<Route
 										path="saved"
 										element={<SavedCancellation />}
+									/>
+									<Route
+										path="confirm"
+										element={<ConfirmCancellation />}
 									/>
 									<Route
 										path="confirmed"

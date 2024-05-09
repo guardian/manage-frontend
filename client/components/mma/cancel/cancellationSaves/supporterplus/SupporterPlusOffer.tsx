@@ -184,7 +184,7 @@ export const SupporterPlusOffer = () => {
 				icon={<SvgArrowRightStraight />}
 				iconSide="right"
 				onClick={() => {
-					navigate('../confirmed', {
+					navigate('../confirm', {
 						state: routerState,
 					});
 				}}

@@ -227,6 +227,10 @@ describe('Cancel Supporter Plus', () => {
 				name: 'No thanks, continue to cancel',
 			}).click();
 
+			cy.findByRole('button', {
+				name: 'Confirm cancellation',
+			}).click();
+
 			cy.wait('@create_case_in_salesforce');
 			cy.wait('@cancel_supporter_plus');
 			cy.wait('@get_cancelled_product');
