@@ -97,6 +97,10 @@ describe('Cancel Supporter Plus', () => {
 
 		cy.findByRole('button', { name: 'Continue to cancellation' }).click();
 
+		cy.findByRole('button', {
+			name: 'Confirm cancellation',
+		}).click();
+
 		cy.wait('@create_case_in_salesforce');
 		cy.wait('@cancel_supporter_plus');
 		cy.wait('@get_failed_cancellation');
@@ -106,7 +110,7 @@ describe('Cancel Supporter Plus', () => {
 		});
 	});
 
-	it('allows self-service cancellation of Supporter Plus', () => {
+	it('user successfully cancels (not eligable for offer)', () => {
 		setupCancellation();
 
 		cy.intercept('GET', '/api/me/mma/**', {
@@ -122,6 +126,10 @@ describe('Cancel Supporter Plus', () => {
 		cy.wait('@get_case');
 
 		cy.findByRole('button', { name: 'Continue to cancellation' }).click();
+
+		cy.findByRole('button', {
+			name: 'Confirm cancellation',
+		}).click();
 
 		cy.wait('@create_case_in_salesforce');
 		cy.wait('@cancel_supporter_plus');
@@ -140,7 +148,7 @@ describe('Cancel Supporter Plus', () => {
 			upToPeriods: 2,
 			upToPeriodsType: 'Months',
 		};
-		it('allows user to accept offer instead of cancelling', () => {
+		it('user accepts offer instead of cancelling', () => {
 			cy.intercept('GET', '/api/me/mma', {
 				statusCode: 200,
 				body: toMembersDataApiResponse(supporterPlus()),

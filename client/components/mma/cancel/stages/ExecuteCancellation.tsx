@@ -4,6 +4,7 @@ import { Button } from '@guardian/source/react-components';
 import type { ReactNode } from 'react';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { featureSwitches } from '@/shared/featureSwitches';
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
@@ -18,6 +19,7 @@ import { createProductDetailFetcher } from '../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { AsyncLoader } from '../../shared/AsyncLoader';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
+import { ProgressStepper } from '../../shared/ProgressStepper';
 import type {
 	CancellationContextInterface,
 	CancellationRouterState,
@@ -28,6 +30,10 @@ import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 import { getCancellationSummary, isCancelled } from '../CancellationSummary';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
+
+interface RouterState extends CancellationRouterState {
+	eligibleForOffer?: boolean;
+}
 
 class PerformCancelAsyncLoader extends AsyncLoader<MembersDataApiResponse> {}
 
@@ -150,7 +156,7 @@ const escalatedConfirmationBody = (
 
 export const ExecuteCancellation = () => {
 	const location = useLocation();
-	const routerState = location.state as CancellationRouterState;
+	const routerState = location.state as RouterState;
 
 	if (!routerState?.selectedReasonId || !routerState?.caseId) {
 		return <Navigate to="../" />;
@@ -174,16 +180,31 @@ export const ExecuteCancellation = () => {
 
 	return (
 		<>
-			<ProgressIndicator
-				steps={[
-					{ title: 'Reason' },
-					{ title: 'Review' },
-					{ title: 'Confirmation', isCurrentStep: true },
-				]}
-				additionalCSS={css`
-					margin: ${space[5]}px 0 ${space[12]}px;
-				`}
-			/>
+			{!routerState.eligibleForOffer && (
+				<>
+					{featureSwitches.supporterplusCancellationOffer &&
+					productType.productType === 'supporterplus' ? (
+						<ProgressStepper
+							steps={[{}, {}, {}, { isCurrentStep: true }]}
+							additionalCSS={css`
+								margin: ${space[5]}px 0 ${space[12]}px;
+							`}
+						/>
+					) : (
+						<ProgressIndicator
+							steps={[
+								{ title: 'Reason' },
+								{ title: 'Review' },
+								{ title: 'Confirmation', isCurrentStep: true },
+							]}
+							additionalCSS={css`
+								margin: ${space[5]}px 0 ${space[12]}px;
+							`}
+						/>
+					)}
+				</>
+			)}
+
 			{isProduct(productDetail) ? (
 				escalationCauses.length > 0 ? (
 					<CaseUpdateAsyncLoader

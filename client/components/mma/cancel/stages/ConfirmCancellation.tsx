@@ -19,6 +19,7 @@ interface RouterSate extends DiscountPreviewResponse {
 	caseId: string;
 	holidayStops?: OutstandingHolidayStop[];
 	deliveryCredits?: DeliveryRecordDetail[];
+	eligibleForOffer: boolean;
 }
 
 export const ConfirmCancellation = () => {
@@ -29,7 +30,12 @@ export const ConfirmCancellation = () => {
 	return (
 		<>
 			<ProgressStepper
-				steps={[{}, {}, {}, { isCurrentStep: true }]}
+				steps={[
+					{},
+					{},
+					{ isCurrentStep: !routerState.eligibleForOffer },
+					{ isCurrentStep: routerState.eligibleForOffer },
+				]}
 				additionalCSS={css`
 					margin: ${space[5]}px 0 ${space[12]}px;
 				`}

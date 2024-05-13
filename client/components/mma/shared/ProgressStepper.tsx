@@ -5,7 +5,7 @@ import { TickInCircle } from './assets/TickInCircle';
 
 interface Step {
 	title?: string;
-	isCurrentStep?: true;
+	isCurrentStep?: boolean;
 	forceStepComplete?: true;
 }
 

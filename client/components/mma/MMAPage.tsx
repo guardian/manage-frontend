@@ -691,10 +691,6 @@ const MMARouter = () => {
 										element={<SavedCancellation />}
 									/>
 									<Route
-										path="confirm"
-										element={<ConfirmCancellation />}
-									/>
-									<Route
 										path="confirmed"
 										element={<ExecuteCancellation />}
 									/>
@@ -744,7 +740,12 @@ const MMARouter = () => {
 									<Route
 										path="confirm"
 										element={
-											<ConfirmMembershipCancellation />
+											productType.urlPart ===
+											'membership' ? (
+												<ConfirmMembershipCancellation />
+											) : (
+												<ConfirmCancellation />
+											)
 										}
 									/>
 									<Route

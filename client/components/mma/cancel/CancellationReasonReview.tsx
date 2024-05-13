@@ -35,6 +35,7 @@ import type {
 } from '../holiday/HolidayStopApi';
 import { Heading } from '../shared/Heading';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
+import { ProgressStepper } from '../shared/ProgressStepper';
 import type { CancellationContextInterface } from './CancellationContainer';
 import { CancellationContext } from './CancellationContainer';
 import { cancellationEffectiveToday } from './cancellationContexts';
@@ -329,9 +330,11 @@ const ConfirmCancellationAndReturnRow = (
 										},
 									});
 								} else {
-									navigate('../confirmed', {
+									navigate('../confirm', {
 										state: {
 											...routerState,
+											eligibleForOffer:
+												showOfferBeforeCancelling,
 											caseId: props.caseId,
 											holidayStops: props.holidayStops,
 											deliveryCredits:
@@ -471,16 +474,26 @@ export const CancellationReasonReview = () => {
 
 	return (
 		<>
-			<ProgressIndicator
-				steps={[
-					{ title: 'Reason' },
-					{ title: 'Review', isCurrentStep: true },
-					{ title: 'Confirmation' },
-				]}
-				additionalCSS={css`
-					margin: ${space[5]}px 0 ${space[12]}px;
-				`}
-			/>
+			{featureSwitches.supporterplusCancellationOffer &&
+			productType.productType === 'supporterplus' ? (
+				<ProgressStepper
+					steps={[{}, { isCurrentStep: true }, {}, {}]}
+					additionalCSS={css`
+						margin: ${space[5]}px 0 ${space[12]}px;
+					`}
+				/>
+			) : (
+				<ProgressIndicator
+					steps={[
+						{ title: 'Reason' },
+						{ title: 'Review', isCurrentStep: true },
+						{ title: 'Confirmation' },
+					]}
+					additionalCSS={css`
+						margin: ${space[5]}px 0 ${space[12]}px;
+					`}
+				/>
+			)}
 			<WithStandardTopMargin>
 				{isLoading() ? (
 					!loadingHasFailed && (
