@@ -41,10 +41,17 @@ if (conf.DOMAIN === 'thegulocal.com') {
 server.use(helmet());
 
 if (featureSwitches.cspSecurityAudit) {
+	const cspDefaultSrcAllowList = [
+		"'self'",
+		'https://sourcepoint.theguardian.com',
+		'https://gnm-app.quantummetric.com',
+		'https://assets.guim.co.uk',
+		'https://ophan.theguardian.com',
+	].join(' ');
 	const csp = [
 		'report-uri /api/csp-audit-report-endpoint',
 		'report-to csp-endpoint',
-		"default-src 'self' https://sourcepoint.theguardian.com",
+		`default-src ${cspDefaultSrcAllowList}`,
 	];
 	server.use(function (_: Request, res: Response, next: NextFunction) {
 		res.set({
