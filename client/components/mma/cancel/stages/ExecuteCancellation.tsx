@@ -32,7 +32,7 @@ import { getCancellationSummary, isCancelled } from '../CancellationSummary';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
 
 interface RouterState extends CancellationRouterState {
-	eligibleForOffer?: boolean;
+	eligibleForFreePeriodOffer?: boolean;
 }
 
 class PerformCancelAsyncLoader extends AsyncLoader<MembersDataApiResponse> {}
@@ -180,7 +180,7 @@ export const ExecuteCancellation = () => {
 
 	return (
 		<>
-			{!routerState.eligibleForOffer && (
+			{!routerState.eligibleForFreePeriodOffer && (
 				<>
 					{featureSwitches.supporterplusCancellationOffer &&
 					productType.productType === 'supporterplus' ? (

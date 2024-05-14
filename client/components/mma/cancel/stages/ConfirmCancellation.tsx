@@ -19,7 +19,7 @@ interface RouterSate extends DiscountPreviewResponse {
 	caseId: string;
 	holidayStops?: OutstandingHolidayStop[];
 	deliveryCredits?: DeliveryRecordDetail[];
-	eligibleForOffer: boolean;
+	eligibleForFreePeriodOffer: boolean;
 }
 
 export const ConfirmCancellation = () => {
@@ -33,8 +33,8 @@ export const ConfirmCancellation = () => {
 				steps={[
 					{},
 					{},
-					{ isCurrentStep: !routerState.eligibleForOffer },
-					{ isCurrentStep: routerState.eligibleForOffer },
+					{ isCurrentStep: !routerState.eligibleForFreePeriodOffer },
+					{ isCurrentStep: routerState.eligibleForFreePeriodOffer },
 				]}
 				additionalCSS={css`
 					margin: ${space[5]}px 0 ${space[12]}px;

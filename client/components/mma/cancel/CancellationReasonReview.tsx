@@ -243,41 +243,46 @@ const ConfirmCancellationAndReturnRow = (
 		cancellationPolicy: string;
 	};
 	const navigate = useNavigate();
-	const { productDetail } = useContext(
+	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
+	const isSupporterPlusAndFreePeriodOfferIsActive =
+		featureSwitches.supporterplusCancellationOffer &&
+		productType.productType === 'supporterplus';
 	const [showOfferBeforeCancelling, setShowOfferBeforeCancelling] =
 		useState<ShowOfferState>(
-			featureSwitches.supporterplusCancellationOffer ? 'pending' : false,
+			isSupporterPlusAndFreePeriodOfferIsActive ? 'pending' : false,
 		);
 	const [offerDetails, setOfferDetails] =
 		useState<DiscountPreviewResponse | null>(null);
 	useEffect(() => {
-		(async () => {
-			try {
-				const response = await fetchWithDefaultParameters(
-					'/api/discounts/preview-discount',
-					{
-						method: 'POST',
-						body: JSON.stringify({
-							subscriptionNumber:
-								productDetail.subscription.subscriptionId,
-						}),
-					},
-				);
+		if (isSupporterPlusAndFreePeriodOfferIsActive) {
+			(async () => {
+				try {
+					const response = await fetchWithDefaultParameters(
+						'/api/discounts/preview-discount',
+						{
+							method: 'POST',
+							body: JSON.stringify({
+								subscriptionNumber:
+									productDetail.subscription.subscriptionId,
+							}),
+						},
+					);
 
-				if (response.ok) {
-					// api returns a 400 response if the user is not eligible
-					setShowOfferBeforeCancelling(true);
-					const offerData = await response.json();
-					setOfferDetails(offerData);
-				} else {
+					if (response.ok) {
+						// api returns a 400 response if the user is not eligible
+						setShowOfferBeforeCancelling(true);
+						const offerData = await response.json();
+						setOfferDetails(offerData);
+					} else {
+						setShowOfferBeforeCancelling(false);
+					}
+				} catch (e) {
 					setShowOfferBeforeCancelling(false);
 				}
-			} catch (e) {
-				setShowOfferBeforeCancelling(false);
-			}
-		})();
+			})();
+		}
 	}, []);
 
 	return (
@@ -330,21 +335,30 @@ const ConfirmCancellationAndReturnRow = (
 										},
 									});
 								} else {
-									navigate('../confirm', {
-										state: {
-											...routerState,
-											eligibleForOffer:
-												showOfferBeforeCancelling,
-											caseId: props.caseId,
-											holidayStops: props.holidayStops,
-											deliveryCredits:
-												props.deliveryCredits,
+									navigate(
+										productType.productType ===
+											'supporterplus'
+											? '../confirm'
+											: '../confirmed',
+										{
+											state: {
+												...routerState,
+												eligibleForFreePeriodOffer:
+													false,
+												caseId: props.caseId,
+												holidayStops:
+													props.holidayStops,
+												deliveryCredits:
+													props.deliveryCredits,
+											},
 										},
-									});
+									);
 								}
 							}}
 						>
-							Continue to cancellation
+							{productType.productType === 'supporterplus'
+								? 'Continue to cancellation'
+								: 'Confirm cancellation'}
 						</Button>
 					</div>
 					<div>

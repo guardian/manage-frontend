@@ -26,7 +26,7 @@ interface RouterSate extends DiscountPreviewResponse {
 	caseId: string;
 	holidayStops?: OutstandingHolidayStop[];
 	deliveryCredits?: DeliveryRecordDetail[];
-	eligibleForOffer: boolean;
+	eligibleForFreePeriodOffer: boolean;
 }
 
 export const SupporterPlusOffer = () => {
@@ -188,7 +188,7 @@ export const SupporterPlusOffer = () => {
 					navigate('../confirm', {
 						state: {
 							...routerState,
-							eligibleForOffer: true,
+							eligibleForFreePeriodOffer: true,
 						},
 					});
 				}}
