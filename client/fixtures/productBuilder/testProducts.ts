@@ -66,6 +66,13 @@ export function digitalPackPaidByCardWithPaymentFailure() {
 		.getProductDetailObject();
 }
 
+export function monthlyContributionPaidByCard() {
+	return new ProductBuilder(baseContribution())
+		.payByCard()
+		.withPrice(400)
+		.getProductDetailObject();
+}
+
 export function annualContributionPaidByCardWithCurrency(
 	currency: CurrencyIso,
 ) {

@@ -1,7 +1,6 @@
 import {
 	guardianWeeklyPaidByCard,
 	nationalDelivery,
-	supporterPlus,
 } from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
@@ -12,10 +11,7 @@ describe('Delivery address', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=ContentSubscription', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(
-				guardianWeeklyPaidByCard(),
-				supporterPlus(),
-			),
+			body: toMembersDataApiResponse(guardianWeeklyPaidByCard()),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -42,10 +38,7 @@ describe('Delivery address', () => {
 	it('Can update delivery address. Navigating from account overview', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(
-				guardianWeeklyPaidByCard(),
-				supporterPlus(),
-			),
+			body: toMembersDataApiResponse(guardianWeeklyPaidByCard()),
 		}).as('mma');
 
 		cy.visit('/');
@@ -80,7 +73,7 @@ describe('Delivery address', () => {
 	it('Cannot update National delivery address. Navigating from account overview', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(nationalDelivery(), supporterPlus()),
+			body: toMembersDataApiResponse(nationalDelivery()),
 		}).as('mma');
 
 		cy.visit('/');
@@ -93,7 +86,7 @@ describe('Delivery address', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=ContentSubscription', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(nationalDelivery(), supporterPlus()),
+			body: toMembersDataApiResponse(nationalDelivery()),
 		});
 
 		cy.findByText('Manage delivery address').click();
@@ -107,7 +100,6 @@ describe('Delivery address', () => {
 			body: toMembersDataApiResponse(
 				nationalDelivery(),
 				guardianWeeklyPaidByCard(),
-				supporterPlus(),
 			),
 		}).as('mma');
 
@@ -119,7 +111,7 @@ describe('Delivery address', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=ContentSubscription', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(nationalDelivery(), supporterPlus()),
+			body: toMembersDataApiResponse(nationalDelivery()),
 		});
 
 		cy.findByText(/Changed address?/).should('exist');
@@ -128,10 +120,7 @@ describe('Delivery address', () => {
 	it('Shows updated address when returning to manage subscription page', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(
-				guardianWeeklyPaidByCard(),
-				supporterPlus(),
-			),
+			body: toMembersDataApiResponse(guardianWeeklyPaidByCard()),
 		}).as('mma');
 
 		cy.visit('/');

@@ -160,7 +160,8 @@ const RenderedPage = (props: {
 					user: props.user,
 					mainPlan,
 					monthlyOrAnnual,
-					supporterPlusTitle: `${monthlyOrAnnual} + extras`,
+					supporterPlusTitle:
+						PRODUCT_TYPES.supporterplus.productTitle(),
 					thresholds: getThresholds(
 						mainPlan,
 						monthlyOrAnnual == 'Monthly',

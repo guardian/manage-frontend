@@ -67,8 +67,11 @@ describe('product switching', () => {
 		cy.visit('/');
 		setSignInStatus();
 
-		cy.findAllByText('Change to monthly + extras').should('have.length', 2);
-		cy.findAllByText('Change to monthly + extras').last().click();
+		cy.findAllByText('Change to all-access digital').should(
+			'have.length',
+			2,
+		);
+		cy.findAllByText('Change to all-access digital').last().click();
 		cy.findByText('Your current support').should('exist');
 
 		cy.findByRole('button', {
@@ -205,11 +208,17 @@ describe('product switching', () => {
 		cy.visit('/');
 		setSignInStatus();
 
-		cy.findAllByText('Change to monthly + extras').should('have.length', 0);
+		cy.findAllByText('Change to all-access digital').should(
+			'have.length',
+			0,
+		);
 
 		cy.visit('/switch');
 
 		cy.findByRole('heading', { name: 'Account overview' }).should('exist');
-		cy.findAllByText('Change to monthly + extras').should('have.length', 0);
+		cy.findAllByText('Change to all-access digital').should(
+			'have.length',
+			0,
+		);
 	});
 });

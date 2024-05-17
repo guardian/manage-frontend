@@ -23,6 +23,7 @@ import {
 	isSpecificProductType,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
+import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
 import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
@@ -108,15 +109,17 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	);
 
 	const productCategories = [
-		...allActiveProductDetails,
-		...allCancelledProductDetails,
-	]
-		.map(
-			(product: ProductDetail | CancelledProductDetail) =>
-				product.mmaCategory,
-		)
-		.filter((value, index, self) => self.indexOf(value) === index);
-
+		...new Set(
+			[...allActiveProductDetails, ...allCancelledProductDetails].map(
+				(product: ProductDetail | CancelledProductDetail) => {
+					if (product.mmaCategory === 'recurringSupport') {
+						return 'subscriptions';
+					}
+					return product.mmaCategory;
+				},
+			),
+		),
+	];
 	const appSubscriptions = mpapiResponse.subscriptions.filter(
 		isValidAppSubscription,
 	);
@@ -165,6 +168,15 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		!hasDigiSubAndContribution &&
 		!hasNonServiceableCountry;
 
+	const visualProductGroupingCategory = (
+		product: ProductDetail | CancelledProductDetail,
+	): GroupedProductTypeKeys => {
+		if (product.mmaCategory === 'recurringSupport') {
+			return 'subscriptions';
+		}
+		return product.mmaCategory;
+	};
+
 	return (
 		<>
 			<PersonalisedHeader
@@ -179,12 +191,15 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			{productCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
-					(activeProduct) => activeProduct.mmaCategory === category,
+					(activeProduct) =>
+						visualProductGroupingCategory(activeProduct) ===
+						category,
 				);
 				const cancelledProductsInCategory =
 					allCancelledProductDetails.filter(
-						(activeProduct) =>
-							activeProduct.mmaCategory === category,
+						(cancelledProduct) =>
+							visualProductGroupingCategory(cancelledProduct) ===
+							category,
 					);
 
 				return (

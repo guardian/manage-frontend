@@ -1,4 +1,3 @@
-import { capitalize } from 'lodash';
 import type { ReactNode } from 'react';
 import type {
 	CancellationReason,
@@ -28,7 +27,7 @@ import type {
 	SubscriptionPlan,
 	SubscriptionWithDeliveryAddress,
 } from './productResponse';
-import { getMainPlan, isGift } from './productResponse';
+import { isGift } from './productResponse';
 import { SoftOptInIDs } from './softOptInIDs';
 
 type ProductFriendlyName =
@@ -39,8 +38,7 @@ type ProductFriendlyName =
 	| 'newspaper subscription card'
 	| 'newspaper home delivery subscription'
 	| 'digital subscription'
-	| 'monthly + extras'
-	| 'annual + extras'
+	| 'all-access digital subscription'
 	| 'Guardian Weekly subscription'
 	| 'subscription'
 	| 'recurring support'
@@ -93,9 +91,7 @@ interface CancellationFlowProperties {
 	startPageOfferEffectiveDateOptions?: true;
 	hideReasonTitlePrefix?: true;
 	alternateSummaryMainPara?: string;
-	alternateSummaryHeading: (
-		productDetail: ProductDetail,
-	) => string | undefined;
+	alternateSummaryHeading?: string;
 	shouldHideSummaryMainPara?: true;
 	summaryReasonSpecificPara: (
 		reasonId: OptionalCancellationReasonId,
@@ -233,17 +229,6 @@ const calculateProductTitle =
 	(baseProductTitle: string) => (mainPlan?: SubscriptionPlan) =>
 		baseProductTitle + (mainPlan?.name ? ` - ${mainPlan.name}` : '');
 
-export function calculateSupporterPlusTitle(billingPeriod: string) {
-	if (billingPeriod === 'month') {
-		return 'monthly + extras';
-	}
-	if (billingPeriod === 'year') {
-		return 'annual + extras';
-	}
-
-	return 'recurring support';
-}
-
 export function getBillingPeriodAdjective(
 	billingPeriod: string | undefined,
 ): 'Monthly' | 'Annual' | 'Quarterly' {
@@ -302,7 +287,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			reasons: membershipCancellationReasons,
 			sfCaseProduct: 'Membership',
 			startPageBody: membershipCancellationFlowStart,
-			alternateSummaryHeading: () => undefined,
 			hideReasonTitlePrefix: true,
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
@@ -347,7 +331,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			sfCaseProduct: 'Recurring - Contributions',
 			startPageBody: contributionsCancellationFlowStart,
 			shouldHideSummaryMainPara: true,
-			alternateSummaryHeading: () => undefined,
 			summaryReasonSpecificPara: (
 				reasonId: OptionalCancellationReasonId,
 			) => {
@@ -528,7 +511,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			startPageOfferEffectiveDateOptions: true,
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
-			alternateSummaryHeading: () => undefined,
 			alternateSupportButtonText: () => undefined,
 			alternateSupportButtonUrlSuffix: () => undefined,
 			swapFeedbackAndContactUs: true,
@@ -601,7 +583,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			startPageOfferEffectiveDateOptions: true,
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
-			alternateSummaryHeading: () => undefined,
 			alternateSupportButtonText: () => undefined,
 			alternateSupportButtonUrlSuffix: () => undefined,
 			swapFeedbackAndContactUs: true,
@@ -633,33 +614,14 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			startPageBody: digipackCancellationFlowStart,
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
-			alternateSummaryHeading: () => undefined,
 			alternateSupportButtonText: () => undefined,
 			alternateSupportButtonUrlSuffix: () => undefined,
 			swapFeedbackAndContactUs: true,
 		},
 	},
 	supporterplus: {
-		productTitle: (mainPlan?: SubscriptionPlan) => {
-			if (!mainPlan) {
-				return 'Recurring support';
-			}
-
-			const paidMainPlan = mainPlan as PaidSubscriptionPlan;
-			return `${capitalize(
-				calculateSupporterPlusTitle(paidMainPlan.billingPeriod),
-			)}`;
-		},
-		friendlyName: (productDetail?: ProductDetail) => {
-			if (!productDetail) {
-				return 'recurring support';
-			}
-
-			const billingPeriod = (
-				getMainPlan(productDetail.subscription) as PaidSubscriptionPlan
-			).billingPeriod;
-			return calculateSupporterPlusTitle(billingPeriod);
-		},
+		productTitle: () => 'All-access digital',
+		friendlyName: () => 'all-access digital subscription',
 		productType: 'supporterplus',
 		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'SupporterPlus',
@@ -674,16 +636,8 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		cancellation: {
 			alternateSummaryMainPara:
 				"This is immediate and you will not be charged again. If you've cancelled within the first 14 days, we'll send you a full refund.",
-			alternateSummaryHeading: (productDetail: ProductDetail) => {
-				const billingPeriod = (
-					getMainPlan(
-						productDetail.subscription,
-					) as PaidSubscriptionPlan
-				).billingPeriod;
-				return `${getBillingPeriodAdjective(
-					billingPeriod,
-				)} support + extras cancelled`;
-			},
+			alternateSummaryHeading:
+				'Your All-access digital subscription is cancelled',
 			linkOnProductPage: true,
 			reasons: shuffledSupporterPlusCancellationReasons,
 			sfCaseProduct: 'Supporter Plus',
@@ -728,9 +682,9 @@ export const GROUPED_PRODUCT_TYPES: {
 		},
 	},
 	recurringSupport: {
-		productTitle: () => 'Recurring support',
-		friendlyName: () => 'recurring support',
-		groupFriendlyName: 'recurring support',
+		productTitle: () => 'Subscription',
+		friendlyName: () => 'subscription',
+		groupFriendlyName: 'subscription',
 		allProductsProductTypeFilterString: 'SupporterPlus', // this will only return SupporterPlus, and not Contributions
 		urlPart: 'recurringsupport',
 		mapGroupedToSpecific: (

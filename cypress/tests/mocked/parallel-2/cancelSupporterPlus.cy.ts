@@ -11,10 +11,10 @@ describe('Cancel Supporter Plus', () => {
 		cy.wait('@mobile_subscriptions');
 		cy.wait('@single_contributions');
 
-		cy.findByText('Manage recurring support').click();
+		cy.findByText('Manage subscription').click();
 
 		cy.findByRole('link', {
-			name: 'Cancel recurring support',
+			name: 'Cancel subscription',
 		}).click();
 	};
 
@@ -123,7 +123,7 @@ describe('Cancel Supporter Plus', () => {
 		cy.wait('@get_cancelled_product');
 
 		cy.findByRole('heading', {
-			name: 'Monthly support + extras cancelled',
+			name: 'Your All-access digital subscription is cancelled',
 		});
 
 		cy.get('@get_cancellation_date.all').should('have.length', 0);

@@ -20,10 +20,7 @@ import type {
 	Subscription,
 } from '@/shared/productResponse';
 import { getMainPlan, isGift } from '@/shared/productResponse';
-import {
-	calculateSupporterPlusTitle,
-	GROUPED_PRODUCT_TYPES,
-} from '@/shared/productTypes';
+import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
@@ -373,11 +370,7 @@ export const ProductCard = ({
 											})
 										}
 									>
-										Change to{' '}
-										{calculateSupporterPlusTitle(
-											(mainPlan as PaidSubscriptionPlan)
-												.billingPeriod,
-										)}
+										Change to all-access digital
 									</Button>
 								</ThemeProvider>
 							)}
