@@ -16,8 +16,14 @@ import { BenefitsToggle } from '../../../shared/benefits/BenefitsToggle';
 import { Heading } from '../../../shared/Heading';
 import { getNextPaymentDetails } from '../../../shared/NextPaymentDetails';
 import { ProgressStepper } from '../../../shared/ProgressStepper';
-import type { CancellationContextInterface } from '../../CancellationContainer';
-import { CancellationContext } from '../../CancellationContainer';
+import type {
+	CancellationContextInterface,
+	CancellationPageTitleInterface,
+} from '../../CancellationContainer';
+import {
+	CancellationContext,
+	CancellationPageTitleContext,
+} from '../../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../../cancellationReason';
 
 interface RouterSate extends DiscountPreviewResponse {
@@ -39,6 +45,7 @@ export const SupporterPlusOffer = () => {
 	) as CancellationContextInterface;
 
 	const productDetail = cancellationContext.productDetail;
+	const productType = cancellationContext.productType;
 	const mainPlan = getMainPlan(productDetail.subscription);
 
 	const currentSubscriptionBoxCss = css`
@@ -76,6 +83,14 @@ export const SupporterPlusOffer = () => {
 		null,
 		false,
 	);
+
+	const pageTitleContext = useContext(
+		CancellationPageTitleContext,
+	) as CancellationPageTitleInterface;
+
+	pageTitleContext.setPageTitle(
+		`Cancel ${productType.shortFriendlyName || productType.friendlyName()}`,
+	); // reset the page title here incase you are coming back from the offer review page where the page title was changed
 
 	return (
 		<>

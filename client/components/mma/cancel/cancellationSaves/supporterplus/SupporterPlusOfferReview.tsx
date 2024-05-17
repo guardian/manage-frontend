@@ -4,6 +4,7 @@ import {
 	Button,
 	SvgArrowRightStraight,
 } from '@guardian/source-react-components';
+import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
@@ -12,6 +13,8 @@ import type { OutstandingHolidayStop } from '../../../holiday/HolidayStopApi';
 import { BenefitsToggle } from '../../../shared/benefits/BenefitsToggle';
 import { Heading } from '../../../shared/Heading';
 import { ProgressStepper } from '../../../shared/ProgressStepper';
+import type { CancellationPageTitleInterface } from '../../CancellationContainer';
+import { CancellationPageTitleContext } from '../../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../../cancellationReason';
 
 interface RouterSate extends DiscountPreviewResponse {
@@ -32,6 +35,12 @@ export const SupporterPlusOfferReview = () => {
 		padding: ${space[5]}px;
 		${textSans.medium()};
 	`;
+
+	const pageTitleContext = useContext(
+		CancellationPageTitleContext,
+	) as CancellationPageTitleInterface;
+
+	pageTitleContext.setPageTitle('Redeem Offer');
 
 	return (
 		<>
