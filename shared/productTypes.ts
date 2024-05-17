@@ -91,7 +91,6 @@ interface CancellationFlowProperties {
 	startPageOfferEffectiveDateOptions?: true;
 	hideReasonTitlePrefix?: true;
 	alternateSummaryMainPara?: string;
-	alternateSummaryHeading?: string;
 	shouldHideSummaryMainPara?: true;
 	summaryReasonSpecificPara: (
 		reasonId: OptionalCancellationReasonId,
@@ -636,8 +635,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		cancellation: {
 			alternateSummaryMainPara:
 				"This is immediate and you will not be charged again. If you've cancelled within the first 14 days, we'll send you a full refund.",
-			alternateSummaryHeading:
-				'Your All-access digital subscription is cancelled',
 			linkOnProductPage: true,
 			reasons: shuffledSupporterPlusCancellationReasons,
 			sfCaseProduct: 'Supporter Plus',

@@ -108,18 +108,16 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			b.subscription.start.localeCompare(a.subscription.start),
 	);
 
-	const productCategories = [
-		...new Set(
-			[...allActiveProductDetails, ...allCancelledProductDetails].map(
-				(product: ProductDetail | CancelledProductDetail) => {
-					if (product.mmaCategory === 'recurringSupport') {
-						return 'subscriptions';
-					}
-					return product.mmaCategory;
-				},
-			),
-		),
-	];
+	const allProductCategories = [
+		...allActiveProductDetails,
+		...allCancelledProductDetails,
+	].map((product: ProductDetail | CancelledProductDetail) => {
+		if (product.mmaCategory === 'recurringSupport') {
+			return 'subscriptions';
+		}
+		return product.mmaCategory;
+	});
+	const uniqueProductCategories = [...new Set(allProductCategories)];
 	const appSubscriptions = mpapiResponse.subscriptions.filter(
 		isValidAppSubscription,
 	);
@@ -127,16 +125,16 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	if (
 		featureSwitches.appSubscriptions &&
 		appSubscriptions.length > 0 &&
-		!productCategories.includes('subscriptions')
+		!uniqueProductCategories.includes('subscriptions')
 	) {
-		productCategories.push('subscriptions');
+		uniqueProductCategories.push('subscriptions');
 	}
 
 	if (
 		singleContributions.length > 0 &&
-		!productCategories.includes('subscriptions')
+		!uniqueProductCategories.includes('subscriptions')
 	) {
-		productCategories.push('subscriptions');
+		uniqueProductCategories.push('subscriptions');
 	}
 
 	if (
@@ -188,7 +186,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				productDetails={allActiveProductDetails}
 				isFromApp={isFromApp}
 			/>
-			{productCategories.map((category) => {
+			{uniqueProductCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
 					(activeProduct) =>
