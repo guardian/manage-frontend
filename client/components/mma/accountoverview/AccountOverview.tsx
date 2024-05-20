@@ -113,11 +113,13 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		...allCancelledProductDetails,
 	].map((product: ProductDetail | CancelledProductDetail) => {
 		if (product.mmaCategory === 'recurringSupport') {
-			return 'subscriptions';
+			return 'subscriptions'; // we want to override the display text in MMA for RC/S+ but not affect functionality
 		}
 		return product.mmaCategory;
 	});
+
 	const uniqueProductCategories = [...new Set(allProductCategories)];
+
 	const appSubscriptions = mpapiResponse.subscriptions.filter(
 		isValidAppSubscription,
 	);
