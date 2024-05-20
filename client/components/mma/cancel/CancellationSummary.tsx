@@ -36,12 +36,9 @@ const actuallyCancelled = (
 						`,
 					]}
 				>
-					{productType.cancellation?.alternateSummaryHeading(
+					{`Your ${productType.friendlyName(
 						cancelledProductDetail,
-					) ||
-						`Your ${productType.friendlyName(
-							cancelledProductDetail,
-						)} is cancelled`}
+					)} is cancelled`}
 				</Heading>
 				{productType.cancellation &&
 					!productType.cancellation.shouldHideSummaryMainPara && (

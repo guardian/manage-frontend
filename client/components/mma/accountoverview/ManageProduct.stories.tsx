@@ -5,6 +5,7 @@ import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
+	monthlyContributionPaidByCard,
 	newspaperVoucherPaidByPaypal,
 	supporterPlusAnnual,
 } from '../../../fixtures/productBuilder/testProducts';
@@ -51,6 +52,18 @@ export const NewspaperSubscriptionCard: StoryObj<typeof ManageProduct> = {
 	parameters: {
 		reactRouter: {
 			state: { productDetail: newspaperVoucherPaidByPaypal() },
+		},
+	},
+};
+
+export const Contribution: StoryObj<typeof ManageProduct> = {
+	render: () => {
+		return <ManageProduct productType={PRODUCT_TYPES.contributions} />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: { productDetail: monthlyContributionPaidByCard() },
 		},
 	},
 };

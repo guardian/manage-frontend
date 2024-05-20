@@ -19,11 +19,11 @@ describe('Cancel contribution', () => {
 
 		setSignInStatus();
 
-		cy.findByText('Manage recurring support').click();
+		cy.findByText('Manage subscription').click();
 		cy.wait('@cancelled');
 
 		cy.findByRole('link', {
-			name: 'Cancel recurring support',
+			name: 'Cancel subscription',
 		}).click();
 	};
 

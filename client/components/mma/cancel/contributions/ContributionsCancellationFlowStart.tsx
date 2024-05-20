@@ -5,13 +5,13 @@ import { Heading } from '../../shared/Heading';
 export const contributionsCancellationFlowStart = () => (
 	<Stack space={4}>
 		<Heading cssOverrides={measure.heading}>
-			We’re sorry to see you go…
+			We’re sorry to see you go …
 		</Heading>
 
 		<p>
 			<strong>
-				…please could you take a moment to tell us why you would like to
-				cancel today?
+				… please could you take a moment to tell us why you would like
+				to cancel today?
 			</strong>
 			<br />
 			As a reader-funded organisation, we rely on the generous support

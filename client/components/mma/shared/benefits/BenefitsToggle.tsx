@@ -28,7 +28,7 @@ export const BenefitsToggle = (props: { productType: ProductTypeKeys }) => {
 				aria-controls="benefits"
 				onClick={() => setShowBenefits(!showBenefits)}
 			>
-				{showBenefits ? 'hide' : 'view'} extras
+				{showBenefits ? 'hide' : 'view'} benefits
 			</button>
 		</>
 	);

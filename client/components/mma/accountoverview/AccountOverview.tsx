@@ -23,6 +23,7 @@ import {
 	isSpecificProductType,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
+import type { GroupedProductTypeKeys } from '../../../../shared/productTypes';
 import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
@@ -107,15 +108,17 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			b.subscription.start.localeCompare(a.subscription.start),
 	);
 
-	const productCategories = [
+	const allProductCategories = [
 		...allActiveProductDetails,
 		...allCancelledProductDetails,
-	]
-		.map(
-			(product: ProductDetail | CancelledProductDetail) =>
-				product.mmaCategory,
-		)
-		.filter((value, index, self) => self.indexOf(value) === index);
+	].map((product: ProductDetail | CancelledProductDetail) => {
+		if (product.mmaCategory === 'recurringSupport') {
+			return 'subscriptions'; // we want to override the display text in MMA for RC/S+ but not affect functionality
+		}
+		return product.mmaCategory;
+	});
+
+	const uniqueProductCategories = [...new Set(allProductCategories)];
 
 	const appSubscriptions = mpapiResponse.subscriptions.filter(
 		isValidAppSubscription,
@@ -124,16 +127,16 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	if (
 		featureSwitches.appSubscriptions &&
 		appSubscriptions.length > 0 &&
-		!productCategories.includes('subscriptions')
+		!uniqueProductCategories.includes('subscriptions')
 	) {
-		productCategories.push('subscriptions');
+		uniqueProductCategories.push('subscriptions');
 	}
 
 	if (
 		singleContributions.length > 0 &&
-		!productCategories.includes('subscriptions')
+		!uniqueProductCategories.includes('subscriptions')
 	) {
-		productCategories.push('subscriptions');
+		uniqueProductCategories.push('subscriptions');
 	}
 
 	if (
@@ -165,6 +168,15 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		!hasDigiSubAndContribution &&
 		!hasNonServiceableCountry;
 
+	const visualProductGroupingCategory = (
+		product: ProductDetail | CancelledProductDetail,
+	): GroupedProductTypeKeys => {
+		if (product.mmaCategory === 'recurringSupport') {
+			return 'subscriptions';
+		}
+		return product.mmaCategory;
+	};
+
 	return (
 		<>
 			<PersonalisedHeader
@@ -176,15 +188,18 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				productDetails={allActiveProductDetails}
 				isFromApp={isFromApp}
 			/>
-			{productCategories.map((category) => {
+			{uniqueProductCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
-					(activeProduct) => activeProduct.mmaCategory === category,
+					(activeProduct) =>
+						visualProductGroupingCategory(activeProduct) ===
+						category,
 				);
 				const cancelledProductsInCategory =
 					allCancelledProductDetails.filter(
-						(activeProduct) =>
-							activeProduct.mmaCategory === category,
+						(cancelledProduct) =>
+							visualProductGroupingCategory(cancelledProduct) ===
+							category,
 					);
 
 				return (
