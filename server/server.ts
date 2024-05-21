@@ -51,7 +51,7 @@ if (featureSwitches.cspSecurityAudit) {
 	const csp = [
 		'report-uri /api/csp-audit-report-endpoint',
 		'report-to csp-endpoint',
-		`default-src ${cspDefaultSrcAllowList}`,
+		`default-src ${cspDefaultSrcAllowList}; default-style 'unsafe-inline'`,
 	];
 	server.use(function (_: Request, res: Response, next: NextFunction) {
 		res.set({
