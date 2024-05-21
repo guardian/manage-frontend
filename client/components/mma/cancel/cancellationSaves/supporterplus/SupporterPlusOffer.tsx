@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { getMainPlan } from '@/shared/productResponse';
+import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import type { DeliveryRecordDetail } from '../../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../../holiday/HolidayStopApi';
 import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
@@ -48,6 +49,13 @@ export const SupporterPlusOffer = () => {
 	const productType = cancellationContext.productType;
 	const mainPlan = getMainPlan(productDetail.subscription);
 
+	const pageTitleContext = useContext(
+		CancellationPageTitleContext,
+	) as CancellationPageTitleInterface;
+
+	const groupedProductType =
+		GROUPED_PRODUCT_TYPES[productType.groupedProductType];
+
 	const currentSubscriptionBoxCss = css`
 		display: flex;
 		justify-content: space-between;
@@ -84,12 +92,11 @@ export const SupporterPlusOffer = () => {
 		false,
 	);
 
-	const pageTitleContext = useContext(
-		CancellationPageTitleContext,
-	) as CancellationPageTitleInterface;
-
 	pageTitleContext.setPageTitle(
-		`Cancel ${productType.shortFriendlyName || productType.friendlyName()}`,
+		`Cancel ${
+			groupedProductType.shortFriendlyName ||
+			groupedProductType.friendlyName()
+		}`,
 	); // reset the page title here incase you are coming back from the offer review page where the page title was changed
 
 	return (

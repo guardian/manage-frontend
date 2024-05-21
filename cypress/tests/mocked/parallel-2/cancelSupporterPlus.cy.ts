@@ -136,7 +136,7 @@ describe('Cancel Supporter Plus', () => {
 		cy.wait('@get_cancelled_product');
 
 		cy.findByRole('heading', {
-			name: 'Your all-access digital subscription is cancelled',
+			name: 'Your all-access digital is cancelled',
 		});
 
 		cy.get('@get_cancellation_date.all').should('have.length', 0);
@@ -244,7 +244,7 @@ describe('Cancel Supporter Plus', () => {
 			cy.wait('@get_cancelled_product');
 
 			cy.findByRole('heading', {
-				name: 'Monthly support + extras cancelled',
+				name: 'Your all-access digital is cancelled',
 			});
 
 			cy.get('@get_cancellation_date.all').should('have.length', 0);
