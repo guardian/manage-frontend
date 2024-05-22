@@ -6,10 +6,12 @@ import {
 	contributionCancelled,
 	contributionPaidByPayPal,
 	guardianWeeklyPaidByCard,
+	supporterPlusMonthlyAllAccessDigital,
 } from '../../../fixtures/productBuilder/testProducts';
 import { CancellationContainer } from './CancellationContainer';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
+import { SupporterPlusOffer } from './cancellationSaves/supporterplus/SupporterPlusOffer';
 import { getCancellationSummary } from './CancellationSummary';
 import { contributionsCancellationReasons } from './contributions/ContributionsCancellationReasons';
 import { otherCancellationReason } from './supporterplus/SupporterplusCancellationReasons';
@@ -69,6 +71,28 @@ export const Review: StoryObj<typeof CancellationContainer> = {
 				productDetail: contributionPaidByPayPal(),
 				selectedReasonId: 'mma_editorial',
 				cancellationPolicy: 'Today',
+			},
+		},
+	},
+};
+
+export const Offer: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <SupporterPlusOffer />;
+	},
+
+	parameters: {
+		msw: [
+			rest.post('/api/case', (_req, res, ctx) => {
+				return res(ctx.json({ id: 'caseId' }));
+			}),
+		],
+		reactRouter: {
+			state: {
+				productDetail: supporterPlusMonthlyAllAccessDigital(),
+				discountedPrice: 0,
+				upToPeriods: 2,
+				upToPeriodsType: 'months',
 			},
 		},
 	},

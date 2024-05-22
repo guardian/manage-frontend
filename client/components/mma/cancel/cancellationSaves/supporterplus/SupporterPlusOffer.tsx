@@ -3,9 +3,11 @@ import { palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
 	SvgArrowRightStraight,
+	SvgGift,
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Ribbon } from '@/client/components/shared/Ribbon';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { getMainPlan } from '@/shared/productResponse';
@@ -13,7 +15,6 @@ import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import type { DeliveryRecordDetail } from '../../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../../holiday/HolidayStopApi';
 import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
-import { BenefitsToggle } from '../../../shared/benefits/BenefitsToggle';
 import { Heading } from '../../../shared/Heading';
 import { getNextPaymentDetails } from '../../../shared/NextPaymentDetails';
 import { ProgressStepper } from '../../../shared/ProgressStepper';
@@ -56,33 +57,12 @@ export const SupporterPlusOffer = () => {
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[productType.groupedProductType];
 
-	const currentSubscriptionBoxCss = css`
-		display: flex;
-		justify-content: space-between;
-		border: 1px solid ${palette.neutral[86]};
-		padding: ${space[5]}px;
-		${textSans.medium()};
-		dt {
-			font-weight: bold;
-		}
-	`;
-
 	const availableOfferBoxCss = css`
 		${textSans.medium()};
 		border: 1px solid ${palette.neutral[86]};
 		display: flex;
 		flex-wrap: wrap;
 		margin: ${space[5]}px 0;
-	`;
-
-	const availableOfferBoxTitleCss = css`
-		${textSans.medium()};
-		text-align: center;
-		background-color: ${palette.neutral[20]};
-		color: ${palette.neutral[100]};
-		padding: ${space[3]}px;
-		margin: 0;
-		width: 100%;
 	`;
 
 	const nextPaymentDetails = getNextPaymentDetails(
@@ -104,21 +84,25 @@ export const SupporterPlusOffer = () => {
 			<ProgressStepper
 				steps={[{}, {}, { isCurrentStep: true }, {}]}
 				additionalCSS={css`
-					margin: ${space[5]}px 0 ${space[12]}px;
+					margin: ${space[8]}px 0 ${space[9]}px;
 				`}
 			/>
 			<Heading
 				cssOverrides={[
 					measure.heading,
 					css`
-						margin-bottom: ${space[6]}px;
+						margin-bottom: ${space[1]}px;
 					`,
 				]}
 			>
-				Headline asking the user to consider the offer
+				This doesn't have to be goodbye
 			</Heading>
+			<h3>
+				Enjoy free access to the Guardian's independent journalism with
+				this offer
+			</h3>
+			{/*
 			<div>
-				<h3>Your current subscription</h3>
 				<dl css={currentSubscriptionBoxCss}>
 					<dt>
 						All-access digital
@@ -134,17 +118,25 @@ export const SupporterPlusOffer = () => {
 					</dd>
 				</dl>
 			</div>
+			*/}
 			<div>
-				<h3>Available offer</h3>
 				<div css={availableOfferBoxCss}>
-					<h4 css={availableOfferBoxTitleCss}>
-						An exclusive offer for you
-					</h4>
+					<Ribbon
+						copy="Exclusive for you"
+						icon={
+							<SvgGift
+								isAnnouncedByScreenReader
+								size="medium"
+								//theme={{ fill: 'red' }}
+							/>
+						}
+					/>
 					<div
 						css={css`
 							padding: ${space[3]}px;
 						`}
 					>
+						<p>{nextPaymentDetails?.paymentValue}</p>
 						<h4>
 							{routerState.upToPeriods}{' '}
 							{routerState.upToPeriodsType.toLowerCase()} free of
