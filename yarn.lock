@@ -2978,7 +2978,7 @@
     "@typescript-eslint/parser" "6.18.0"
     eslint-plugin-import "2.29.1"
 
-"@guardian/eslint-plugin-source-react-components@25.0.0":
+"@guardian/eslint-plugin-source-react-components@24.0.1":
   version "24.0.1"
   resolved "https://registry.yarnpkg.com/@guardian/eslint-plugin-source-react-components/-/eslint-plugin-source-react-components-24.0.1.tgz#e70ce2b8e249bb6790d10be2e3c91223a6c802d1"
   integrity sha512-2opgruOKoCp1tAW2vdhl+UpHq2osoN4DAQqrtNsWUCqXtdqAxsXLM9jWqwUzTY68EjFoqg3whxJrbFYWByILCQ==
@@ -3043,17 +3043,17 @@
   resolved "https://registry.yarnpkg.com/@guardian/prettier/-/prettier-1.0.0.tgz#a5dd832e2ce31c6f723f0af77fe116b32b4695ff"
   integrity sha512-srnhPn3hcSv14mDotFQN0CfN3k8MaGsXdK8BXAG95QQxM69Ybi16o4/Xqe361fwDEp7m+9jf03sETcMi8WsDlA==
 
-"@guardian/source-foundations@13.2.0":
-  version "13.2.0"
-  resolved "https://registry.yarnpkg.com/@guardian/source-foundations/-/source-foundations-13.2.0.tgz#ef2da59a089f83606b9afd333d5f02c77cd882b5"
-  integrity sha512-HKgpuzk00+JiqLB2cMln5gJXvu1lQ2OcfqX8s7w0kPdnC3cSBw/emziM3bx4ib3GXs5CMjQb6g3rhGy/DCjLKg==
+"@guardian/source-foundations@16.0.0":
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/source-foundations/-/source-foundations-16.0.0.tgz#dd4821dffa8aabcfb21d3fc76b0f416bf67aa577"
+  integrity sha512-bdRcJTEJ6tGmibGRwhQcY70NMACHCcsnNsiWRwW1fSPpvcAuR4xvXmn3UlaL1U/RO4Yk1YvJjPiV/n9WHnjbjQ==
   dependencies:
     mini-svg-data-uri "1.4.4"
 
-"@guardian/source-react-components-development-kitchen@14.0.2":
-  version "14.0.2"
-  resolved "https://registry.yarnpkg.com/@guardian/source-react-components-development-kitchen/-/source-react-components-development-kitchen-14.0.2.tgz#c8bab2cf21717b5c857dad075bca8a12112c0b13"
-  integrity sha512-F5nDwRuekC9ZUSEy+FdXMnke/q/rYi4Mple2t1rv6d61oHsOnnGxReQtfPYyVnYv5zGYo8phlOtLGstSQg3DRQ==
+"@guardian/source-react-components-development-kitchen@21.0.0":
+  version "21.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/source-react-components-development-kitchen/-/source-react-components-development-kitchen-21.0.0.tgz#8f428c9506289fd8e26dd6381f9f82158547f8f4"
+  integrity sha512-rhh9wv9PsNqkOJGWWc7iqoGvhvPPYaKDA3TF6xIpV6KVQAuESIkBmL7NrbEyBO2btStJ6UMTtGd0kpCZPrRr5Q==
 
 "@guardian/source-react-components@25.0.0":
   version "25.0.0"
