@@ -1,4 +1,4 @@
-import { css, ThemeProvider } from '@emotion/react';
+import { css } from '@emotion/react';
 import {
 	from,
 	headline,
@@ -9,8 +9,8 @@ import {
 } from '@guardian/source-foundations';
 import {
 	Button,
-	buttonThemeReaderRevenueBrand,
 	LinkButton,
+	themeButtonReaderRevenueBrand,
 } from '@guardian/source-react-components';
 import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext } from 'react';
@@ -388,14 +388,13 @@ export const PaymentMethodUpdated = ({
 			<span> You are helping to support independent journalism.</span>
 			<div css={{ marginTop: `${space[9]}px` }}>
 				{isFromApp ? (
-					<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-						<LinkButton
-							href="x-gu://mma/payment-update?success"
-							cssOverrides={buttonCentredCss}
-						>
-							Return to the app
-						</LinkButton>
-					</ThemeProvider>
+					<LinkButton
+						theme={themeButtonReaderRevenueBrand}
+						href="x-gu://mma/payment-update?success"
+						cssOverrides={buttonCentredCss}
+					>
+						Return to the app
+					</LinkButton>
 				) : (
 					<MMALinkButton
 						to="/"

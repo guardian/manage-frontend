@@ -1,11 +1,11 @@
-import { css, ThemeProvider } from '@emotion/react';
+import { css } from '@emotion/react';
 import { from, palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
-	buttonThemeReaderRevenueBrand,
 	Stack,
 	SvgClock,
 	SvgCreditCard,
+	themeButtonReaderRevenueBrand,
 } from '@guardian/source-react-components';
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
@@ -296,20 +296,19 @@ export const SwitchReview = () => {
 				</Stack>
 			</section>
 			<section css={buttonLayoutCss}>
-				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-					<Button
-						isLoading={isSwitching}
-						cssOverrides={buttonCentredCss}
-						onClick={() =>
-							confirmSwitch(
-								previewResponse.amountPayableToday,
-								previewResponse.checkChargeAmountBeforeUpdate,
-							)
-						}
-					>
-						Confirm {isAboveThreshold ? 'change' : 'upgrade'}
-					</Button>
-				</ThemeProvider>
+				<Button
+					theme={themeButtonReaderRevenueBrand}
+					isLoading={isSwitching}
+					cssOverrides={buttonCentredCss}
+					onClick={() =>
+						confirmSwitch(
+							previewResponse.amountPayableToday,
+							previewResponse.checkChargeAmountBeforeUpdate,
+						)
+					}
+				>
+					Confirm {isAboveThreshold ? 'change' : 'upgrade'}
+				</Button>
 				<Button
 					priority="tertiary"
 					cssOverrides={[buttonCentredCss, buttonMutedCss]}

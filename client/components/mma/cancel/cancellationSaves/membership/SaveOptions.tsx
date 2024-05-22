@@ -1,4 +1,4 @@
-import { css, ThemeProvider } from '@emotion/react';
+import { css } from '@emotion/react';
 import {
 	from,
 	palette,
@@ -8,8 +8,8 @@ import {
 } from '@guardian/source-foundations';
 import {
 	Button,
-	buttonThemeReaderRevenueBrand,
 	Stack,
+	themeButtonReaderRevenueBrand,
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
@@ -150,18 +150,15 @@ export const SaveOptions = () => {
 							benefits={benefitsConfiguration['membership']}
 						/>
 						<section css={[cardSectionCss, buttonContainerCss]}>
-							<ThemeProvider
-								theme={buttonThemeReaderRevenueBrand}
+							<Button
+								theme={themeButtonReaderRevenueBrand}
+								cssOverrides={buttonCentredCss}
+								size="small"
+								onClick={() => navigate('../thank-you')}
 							>
-								<Button
-									cssOverrides={buttonCentredCss}
-									size="small"
-									onClick={() => navigate('../thank-you')}
-								>
-									Keep my Membership for {newPriceDisplay}/
-									{billingPeriod}
-								</Button>
-							</ThemeProvider>
+								Keep my Membership for {newPriceDisplay}/
+								{billingPeriod}
+							</Button>
 						</section>
 					</Card.Section>
 				</Card>
@@ -194,21 +191,18 @@ export const SaveOptions = () => {
 							benefits={benefitsConfiguration['contributions']}
 						/>
 						<section css={[cardSectionCss, buttonContainerCss]}>
-							<ThemeProvider
-								theme={buttonThemeReaderRevenueBrand}
+							<Button
+								theme={themeButtonReaderRevenueBrand}
+								cssOverrides={buttonCentredCss}
+								size="small"
+								onClick={() =>
+									navigate('../switch-offer', {
+										state: { ...routerState },
+									})
+								}
 							>
-								<Button
-									cssOverrides={buttonCentredCss}
-									size="small"
-									onClick={() =>
-										navigate('../switch-offer', {
-											state: { ...routerState },
-										})
-									}
-								>
-									Become a recurring contributor
-								</Button>
-							</ThemeProvider>
+								Become a recurring contributor
+							</Button>
 						</section>
 					</Card.Section>
 				</Card>

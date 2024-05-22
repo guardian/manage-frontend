@@ -1,11 +1,10 @@
 import url from 'url';
-import { ThemeProvider } from '@emotion/react';
 import {
-	buttonThemeDefault,
-	buttonThemeReaderRevenueBrand,
-	buttonThemeReaderRevenueBrandAlt,
 	LinkButton,
 	SvgArrowRightStraight,
+	themeButton,
+	themeButtonReaderRevenueBrand,
+	themeButtonReaderRevenueBrandAlt,
 } from '@guardian/source-react-components';
 import { conf } from '../../../server/config';
 import { trackEvent } from '../../utilities/analytics';
@@ -56,31 +55,30 @@ export const SupportTheGuardianButton = (
 	props: SupportTheGuardianButtonProps,
 ) => {
 	const mapThemes = {
-		default: buttonThemeDefault,
-		brand: buttonThemeReaderRevenueBrand,
-		brandAlt: buttonThemeReaderRevenueBrandAlt,
+		default: themeButton,
+		brand: themeButtonReaderRevenueBrand,
+		brandAlt: themeButtonReaderRevenueBrandAlt,
 	};
 
 	const theme = mapThemes[props.theme ?? 'default'];
 
 	return (
-		<ThemeProvider theme={theme}>
-			<LinkButton
-				href={buildSupportHref(props)}
-				icon={<SvgArrowRightStraight />}
-				iconSide="right"
-				nudgeIcon={true}
-				size={props.size}
-				onClick={() => {
-					trackEvent({
-						eventCategory: 'href',
-						eventAction: 'support_the_guardian',
-						eventLabel: 'support_from_' + props.supportReferer,
-					});
-				}}
-			>
-				{props.alternateButtonText || 'Support the Guardian'}
-			</LinkButton>
-		</ThemeProvider>
+		<LinkButton
+			theme={theme}
+			href={buildSupportHref(props)}
+			icon={<SvgArrowRightStraight />}
+			iconSide="right"
+			nudgeIcon={true}
+			size={props.size}
+			onClick={() => {
+				trackEvent({
+					eventCategory: 'href',
+					eventAction: 'support_the_guardian',
+					eventLabel: 'support_from_' + props.supportReferer,
+				});
+			}}
+		>
+			{props.alternateButtonText || 'Support the Guardian'}
+		</LinkButton>
 	);
 };

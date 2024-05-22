@@ -1,9 +1,9 @@
-import { css, ThemeProvider } from '@emotion/react';
+import { css } from '@emotion/react';
 import { palette, space, textSans, until } from '@guardian/source-foundations';
 import {
 	Button,
-	buttonThemeReaderRevenueBrand,
 	Stack,
+	themeButtonReaderRevenueBrand,
 } from '@guardian/source-react-components';
 import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -259,21 +259,20 @@ export const SwitchOptions = () => {
 				css={[buttonContainerCss, buttonIsStuck && buttonStuckCss]}
 				ref={buttonContainerRef}
 			>
-				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-					<Button
-						size="small"
-						cssOverrides={buttonCentredCss}
-						onClick={() =>
-							navigate('review', {
-								state: routerState,
-							})
-						}
-					>
-						{isAboveThreshold
-							? 'Add extras'
-							: `Upgrade to ${mainPlan.currency}${threshold} per ${mainPlan.billingPeriod}`}
-					</Button>
-				</ThemeProvider>
+				<Button
+					theme={themeButtonReaderRevenueBrand}
+					size="small"
+					cssOverrides={buttonCentredCss}
+					onClick={() =>
+						navigate('review', {
+							state: routerState,
+						})
+					}
+				>
+					{isAboveThreshold
+						? 'Add extras'
+						: `Upgrade to ${mainPlan.currency}${threshold} per ${mainPlan.billingPeriod}`}
+				</Button>
 			</section>
 
 			<section>

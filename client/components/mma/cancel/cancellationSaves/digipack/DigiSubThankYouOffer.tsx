@@ -1,10 +1,10 @@
-import { css, ThemeProvider } from '@emotion/react';
+import { css } from '@emotion/react';
 import { from, headline, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
-	buttonThemeReaderRevenueBrand,
 	Stack,
 	SvgTickRound,
+	themeButtonReaderRevenueBrand,
 } from '@guardian/source-react-components';
 import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useEffect, useState } from 'react';
@@ -103,15 +103,14 @@ const DiscountOffer = ({
 			</ul>
 		</div>
 		<div css={buttonContainerCss}>
-			<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-				<Button
-					cssOverrides={buttonCentredCss}
-					onClick={handleDiscountOfferClick}
-					isLoading={isDiscountLoading}
-				>
-					Keep support with discount
-				</Button>
-			</ThemeProvider>
+			<Button
+				theme={themeButtonReaderRevenueBrand}
+				cssOverrides={buttonCentredCss}
+				onClick={handleDiscountOfferClick}
+				isLoading={isDiscountLoading}
+			>
+				Keep support with discount
+			</Button>
 		</div>
 		{hasDiscountFailed && (
 			<ErrorSummary
