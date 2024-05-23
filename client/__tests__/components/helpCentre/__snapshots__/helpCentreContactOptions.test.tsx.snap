@@ -5,7 +5,7 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
   .emotion-0 {
   border-top: 1px solid #DCDCDC;
   margin-top: 30px;
-  font-family: GH Guardian Headline,Guardian Egyptian Web,Georgia,serif;
+  font-family: "GH Guardian Headline","Guardian Egyptian Web",Georgia,serif;
   font-size: 1.75rem;
   line-height: 1.15;
   font-weight: 700;
@@ -44,7 +44,7 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
 }
 
 .emotion-2 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -106,7 +106,7 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
 }
 
 .emotion-5 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -115,7 +115,7 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
 }
 
 .emotion-6 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 700;
@@ -124,7 +124,7 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
 }
 
 .emotion-7 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -133,7 +133,7 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
 }
 
 .emotion-8 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -156,7 +156,7 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
 }
 
 .emotion-12 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -402,7 +402,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
   .emotion-0 {
   border-top: 1px solid #DCDCDC;
   margin-top: 30px;
-  font-family: GH Guardian Headline,Guardian Egyptian Web,Georgia,serif;
+  font-family: "GH Guardian Headline","Guardian Egyptian Web",Georgia,serif;
   font-size: 1.75rem;
   line-height: 1.15;
   font-weight: 700;
@@ -441,7 +441,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
 }
 
 .emotion-2 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -503,7 +503,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
 }
 
 .emotion-5 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -512,7 +512,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
 }
 
 .emotion-6 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 700;
@@ -521,7 +521,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
 }
 
 .emotion-7 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -530,7 +530,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
 }
 
 .emotion-8 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -553,7 +553,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
 }
 
 .emotion-12 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -799,7 +799,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
   .emotion-0 {
   border-top: 1px solid #DCDCDC;
   margin-top: 30px;
-  font-family: GH Guardian Headline,Guardian Egyptian Web,Georgia,serif;
+  font-family: "GH Guardian Headline","Guardian Egyptian Web",Georgia,serif;
   font-size: 1.75rem;
   line-height: 1.15;
   font-weight: 700;
@@ -820,7 +820,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
     Still can’t find what you’re looking for?
   </h2>,
   .emotion-0 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -852,7 +852,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
 }
 
 .emotion-0 a {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 0.9375rem;
   line-height: 1.3;
   font-weight: 400;
@@ -896,7 +896,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
   -ms-flex-direction: column;
   flex-direction: column;
   border: 1px solid #DCDCDC;
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -910,7 +910,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
 }
 
 .emotion-3 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.25rem;
   line-height: 1.3;
   font-weight: 700;
@@ -1006,10 +1006,12 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
   -webkit-text-decoration: none;
   text-decoration: none;
   white-space: nowrap;
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  vertical-align: middle;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 700;
+  font-style: normal;
   --source-text-decoration-thickness: 2px;
   height: 44px;
   min-height: 44px;
@@ -1076,7 +1078,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 }
 
 .emotion-15 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.25rem;
   line-height: 1.3;
   font-weight: 700;
@@ -1108,7 +1110,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 
 .emotion-17 {
   display: none;
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -1142,7 +1144,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 }
 
 .emotion-20 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -1204,7 +1206,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 }
 
 .emotion-23 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -1227,7 +1229,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 }
 
 .emotion-27 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 1.0625rem;
   line-height: 1.3;
   font-weight: 400;
@@ -1291,7 +1293,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 
 .emotion-46 {
   margin: 0;
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 0.9375rem;
   line-height: 1.3;
   font-weight: 700;
@@ -1299,7 +1301,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
 }
 
 .emotion-47 {
-  font-family: GuardianTextSans,Guardian Text Sans Web,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   font-size: 0.9375rem;
   line-height: 1.3;
   font-weight: 400;

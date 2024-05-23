@@ -1,12 +1,12 @@
-import { css, ThemeProvider } from '@emotion/react';
+import { css } from '@emotion/react';
 import { space } from '@guardian/source-foundations';
 import {
 	Button,
-	buttonThemeReaderRevenueBrand,
 	ChoiceCard,
 	ChoiceCardGroup,
 	Stack,
 	TextInput,
+	themeButtonReaderRevenueBrand,
 } from '@guardian/source-react-components';
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useEffect, useState } from 'react';
@@ -235,21 +235,18 @@ export const UpgradeSupportAmountForm = ({
 						!errorMessage &&
 						!!chosenAmount && (
 							<section css={buttonContainerCss}>
-								<ThemeProvider
-									theme={buttonThemeReaderRevenueBrand}
+								<Button
+									theme={themeButtonReaderRevenueBrand}
+									cssOverrides={buttonCentredCss}
+									onClick={() => {
+										setContinuedToConfirmation(true);
+										scrollToConfirmChange();
+									}}
 								>
-									<Button
-										cssOverrides={buttonCentredCss}
-										onClick={() => {
-											setContinuedToConfirmation(true);
-											scrollToConfirmChange();
-										}}
-									>
-										Continue with {currencySymbol}
-										{formatAmount(chosenAmount)}/
-										{mainPlan.billingPeriod}
-									</Button>
-								</ThemeProvider>
+									Continue with {currencySymbol}
+									{formatAmount(chosenAmount)}/
+									{mainPlan.billingPeriod}
+								</Button>
 							</section>
 						)}
 				</Stack>

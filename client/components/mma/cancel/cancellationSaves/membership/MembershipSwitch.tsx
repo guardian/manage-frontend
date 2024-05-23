@@ -1,11 +1,11 @@
-import { css, ThemeProvider } from '@emotion/react';
+import { css } from '@emotion/react';
 import { palette, space, textSans } from '@guardian/source-foundations';
 import {
 	Button,
-	buttonThemeReaderRevenueBrand,
 	Stack,
 	SvgClock,
 	SvgCreditCard,
+	themeButtonReaderRevenueBrand,
 } from '@guardian/source-react-components';
 import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
 import { useContext, useEffect, useState } from 'react';
@@ -307,15 +307,14 @@ export const MembershipSwitch = () => {
 			)}
 
 			<section css={[sectionSpacing, stackedButtonLayoutCss]}>
-				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-					<Button
-						cssOverrides={[buttonCentredCss, wideButtonCss]}
-						isLoading={isSwitching}
-						onClick={confirmSwitch}
-					>
-						Confirm change
-					</Button>
-				</ThemeProvider>
+				<Button
+					theme={themeButtonReaderRevenueBrand}
+					cssOverrides={[buttonCentredCss, wideButtonCss]}
+					isLoading={isSwitching}
+					onClick={confirmSwitch}
+				>
+					Confirm change
+				</Button>
 				<Button
 					priority="tertiary"
 					cssOverrides={[buttonCentredCss, buttonMutedCss]}

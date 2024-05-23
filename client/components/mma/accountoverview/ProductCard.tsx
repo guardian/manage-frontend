@@ -1,10 +1,10 @@
-import { css, ThemeProvider } from '@emotion/react';
+import { css } from '@emotion/react';
 import { palette, textSans } from '@guardian/source-foundations';
 import {
 	Button,
-	buttonThemeReaderRevenueBrand,
 	Stack,
 	SvgInfoRound,
+	themeButtonReaderRevenueBrand,
 } from '@guardian/source-react-components';
 import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
 import { useNavigate } from 'react-router';
@@ -352,27 +352,23 @@ export const ProductCard = ({
 								</Button>
 							)}
 							{showSwitchButton && (
-								<ThemeProvider
-									theme={buttonThemeReaderRevenueBrand}
+								<Button
+									theme={themeButtonReaderRevenueBrand}
+									size="small"
+									cssOverrides={css`
+										justify-content: center;
+									`}
+									onClick={() =>
+										navigate(`/switch`, {
+											state: {
+												productDetail: productDetail,
+												user: user,
+											},
+										})
+									}
 								>
-									<Button
-										size="small"
-										cssOverrides={css`
-											justify-content: center;
-										`}
-										onClick={() =>
-											navigate(`/switch`, {
-												state: {
-													productDetail:
-														productDetail,
-													user: user,
-												},
-											})
-										}
-									>
-										Change to all-access digital
-									</Button>
-								</ThemeProvider>
+									Change to all-access digital
+								</Button>
 							)}
 						</div>
 					</div>
@@ -385,7 +381,7 @@ export const ProductCard = ({
 							</h4>
 							<div>
 								<dl css={keyValueCss}>
-									<dt>{atob('TFBQRlJFRTZHTFRY')}</dt>
+									<dt>{window.atob('TFBQRlJFRTZHTFRY')}</dt>
 									<dd>
 										gives you 6 free tickets each year (1
 										per event)
@@ -394,7 +390,7 @@ export const ProductCard = ({
 							</div>
 							<div>
 								<dl css={keyValueCss}>
-									<dt>{atob('TFBQMjAyR0xUWA==')}</dt>
+									<dt>{window.atob('TFBQMjAyR0xUWA==')}</dt>
 									<dd>
 										gives you 20% off an extra 2 tickets per
 										event

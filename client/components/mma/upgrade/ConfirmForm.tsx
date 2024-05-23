@@ -1,4 +1,4 @@
-import { css, ThemeProvider } from '@emotion/react';
+import { css } from '@emotion/react';
 import {
 	from,
 	palette,
@@ -8,11 +8,11 @@ import {
 } from '@guardian/source-foundations';
 import {
 	Button,
-	buttonThemeReaderRevenueBrand,
 	Stack,
 	SvgClock,
 	SvgCreditCard,
 	SvgReload,
+	themeButtonReaderRevenueBrand,
 } from '@guardian/source-react-components';
 import { ToggleSwitch } from '@guardian/source-react-components-development-kitchen';
 import type { Dispatch, SetStateAction } from 'react';
@@ -408,16 +408,15 @@ export const ConfirmForm = ({
 				/>
 			)}
 			<section css={buttonContainerCss}>
-				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-					<Button
-						cssOverrides={buttonCentredCss}
-						onClick={confirmOnClick}
-						isLoading={isConfirmationLoading}
-					>
-						Confirm {increaseText} to {currencySymbol}
-						{formatAmount(chosenAmount)}/{mainPlan.billingPeriod}
-					</Button>
-				</ThemeProvider>
+				<Button
+					theme={themeButtonReaderRevenueBrand}
+					cssOverrides={buttonCentredCss}
+					onClick={confirmOnClick}
+					isLoading={isConfirmationLoading}
+				>
+					Confirm {increaseText} to {currencySymbol}
+					{formatAmount(chosenAmount)}/{mainPlan.billingPeriod}
+				</Button>
 			</section>
 			{confirmationError && (
 				<section id="upgradeSupportErrorMessage">

@@ -1,4 +1,4 @@
-import { css, ThemeProvider } from '@emotion/react';
+import { css } from '@emotion/react';
 import {
 	from,
 	headline,
@@ -8,12 +8,12 @@ import {
 	until,
 } from '@guardian/source-foundations';
 import {
-	buttonThemeReaderRevenueBrand,
 	LinkButton,
 	Stack,
 	SvgCalendar,
 	SvgClock,
 	SvgEnvelope,
+	themeButtonReaderRevenueBrand,
 } from '@guardian/source-react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
@@ -161,14 +161,13 @@ const AppThankYouBanner = (props: {
 			</h2>
 			<p css={thankYouBannerSubheadingCss}>One last step ...</p>
 			<div css={thankYouBannerButtonCss}>
-				<ThemeProvider theme={buttonThemeReaderRevenueBrand}>
-					<LinkButton
-						href="x-gu://mma/success"
-						cssOverrides={buttonCentredCss}
-					>
-						Activate full app access now
-					</LinkButton>
-				</ThemeProvider>
+				<LinkButton
+					theme={themeButtonReaderRevenueBrand}
+					href="x-gu://mma/success"
+					cssOverrides={buttonCentredCss}
+				>
+					Activate full app access now
+				</LinkButton>
 			</div>
 			<p css={thankYouBannerCopyCss}>
 				If you don’t complete this step, you may be unable to access the

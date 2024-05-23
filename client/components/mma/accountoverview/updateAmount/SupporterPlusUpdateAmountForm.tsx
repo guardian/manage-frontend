@@ -1,14 +1,14 @@
-import { css, ThemeProvider } from '@emotion/react';
+import { css } from '@emotion/react';
 import { palette, space, textSans, until } from '@guardian/source-foundations';
 import {
 	Button,
-	buttonThemeReaderRevenueBrand,
 	ChoiceCard,
 	ChoiceCardGroup,
 	InlineError,
 	Link,
 	SvgInfoRound,
 	TextInput,
+	themeButtonReaderRevenueBrand,
 } from '@guardian/source-react-components';
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
@@ -323,17 +323,14 @@ export const SupporterPlusUpdateAmountForm = (
 								buttonContainerCss,
 							]}
 						>
-							<ThemeProvider
-								theme={buttonThemeReaderRevenueBrand}
+							<Button
+								theme={themeButtonReaderRevenueBrand}
+								cssOverrides={buttonCentredCss}
+								onClick={changeAmountClick}
+								size="small"
 							>
-								<Button
-									cssOverrides={buttonCentredCss}
-									onClick={changeAmountClick}
-									size="small"
-								>
-									Change amount
-								</Button>
-							</ThemeProvider>
+								Change amount
+							</Button>
 						</section>
 						<div
 							css={css`
