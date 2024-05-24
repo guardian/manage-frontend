@@ -12,6 +12,8 @@ import { CancellationContainer } from './CancellationContainer';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { SupporterPlusOffer } from './cancellationSaves/supporterplus/SupporterPlusOffer';
+import { SupporterPlusOfferConfirmed } from './cancellationSaves/supporterplus/SupporterPlusOfferConfirmed';
+import { SupporterPlusOfferReview } from './cancellationSaves/supporterplus/SupporterPlusOfferReview';
 import { getCancellationSummary } from './CancellationSummary';
 import { contributionsCancellationReasons } from './contributions/ContributionsCancellationReasons';
 import { otherCancellationReason } from './supporterplus/SupporterplusCancellationReasons';
@@ -93,8 +95,54 @@ export const Offer: StoryObj<typeof CancellationContainer> = {
 				discountedPrice: 0,
 				upToPeriods: 2,
 				upToPeriodsType: 'months',
+				firstDiscountedPaymentDate: '2024-05-30',
+				nextNonDiscountedPaymentDate: '2024-07-30',
 			},
 		},
+	},
+};
+
+export const OfferReview: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <SupporterPlusOfferReview />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: {
+				discountedPrice: 0,
+				upToPeriods: 2,
+				upToPeriodsType: 'months',
+				firstDiscountedPaymentDate: '2024-05-30',
+				nextNonDiscountedPaymentDate: '2024-07-30',
+			},
+		},
+	},
+};
+
+/*
+const response = await fetchWithDefaultParameters(
+					'/api/discounts/apply-discount',
+					{
+						method: 'POST',
+						body: JSON.stringify({
+							subscriptionNumber:
+								productDetail.subscription.subscriptionId,
+						}),
+					},
+				);
+*/
+export const OfferConfirmed: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <SupporterPlusOfferConfirmed />;
+	},
+
+	parameters: {
+		msw: [
+			rest.post('/api/discounts/apply-discount', (_req, res, ctx) => {
+				return res(ctx.status(200));
+			}),
+		],
 	},
 };
 

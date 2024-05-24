@@ -147,6 +147,8 @@ describe('Cancel Supporter Plus', () => {
 			discountedPrice: 0,
 			upToPeriods: 2,
 			upToPeriodsType: 'Months',
+			firstDiscountedPaymentDate: '2024-05-30',
+			nextNonDiscountedPaymentDate: '2024-07-30',
 		};
 		it('user accepts offer instead of cancelling', () => {
 			cy.intercept('GET', '/api/me/mma', {
@@ -182,13 +184,13 @@ describe('Cancel Supporter Plus', () => {
 				name: 'Continue to cancellation',
 			}).click();
 
-			cy.findByRole('button', { name: 'Redeem the offer' }).click();
+			cy.findByRole('button', { name: 'Redeem your offer' }).click();
 
 			cy.findByRole('button', {
-				name: 'Confirm your 2 months free offer',
+				name: 'Confirm your offer',
 			}).click();
 
-			cy.findByText('Headline for the offer confirmation page');
+			cy.findByText('Thank you for choosing to stay with us');
 			cy.wait('@apply_discount');
 		});
 

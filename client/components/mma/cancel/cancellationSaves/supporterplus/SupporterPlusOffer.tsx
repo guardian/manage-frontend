@@ -1,22 +1,28 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
 import {
-	Button,
-	SvgArrowRightStraight,
-	SvgGift,
-} from '@guardian/source-react-components';
+	neutral,
+	palette,
+	space,
+	textEgyptian17,
+	textSans12,
+	textSans15,
+	textSans17,
+	textSansBold24,
+} from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
+import { capitalize } from 'lodash';
 import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Ribbon } from '@/client/components/shared/Ribbon';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
-import { getMainPlan } from '@/shared/productResponse';
-import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
+import { parseDate } from '@/shared/dates';
+import { number2words } from '@/shared/numberUtils';
+import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
 import type { DeliveryRecordDetail } from '../../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../../holiday/HolidayStopApi';
 import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
 import { Heading } from '../../../shared/Heading';
-import { getNextPaymentDetails } from '../../../shared/NextPaymentDetails';
 import { ProgressStepper } from '../../../shared/ProgressStepper';
 import type {
 	CancellationContextInterface,
@@ -47,37 +53,79 @@ export const SupporterPlusOffer = () => {
 	) as CancellationContextInterface;
 
 	const productDetail = cancellationContext.productDetail;
-	const productType = cancellationContext.productType;
 	const mainPlan = getMainPlan(productDetail.subscription);
 
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
-	const groupedProductType =
-		GROUPED_PRODUCT_TYPES[productType.groupedProductType];
+	const offerPeriodWord = number2words(routerState.upToPeriods);
+	const offerPeriodType = routerState.upToPeriodsType.toLowerCase();
+	const nextNonDiscountedPaymentDate = parseDate(
+		routerState.nextNonDiscountedPaymentDate,
+		'yyyy-MM-dd',
+	).dateStr();
+
+	const standfirstCss = css`
+		${textEgyptian17};
+		color: ${neutral[7]};
+		margin: 0 0 ${space[10]}px;
+	`;
 
 	const availableOfferBoxCss = css`
-		${textSans.medium()};
+		${textSans17};
 		border: 1px solid ${palette.neutral[86]};
 		display: flex;
 		flex-wrap: wrap;
 		margin: ${space[5]}px 0;
+		position: relative;
+		width: 100%;
 	`;
 
-	const nextPaymentDetails = getNextPaymentDetails(
-		mainPlan,
-		productDetail?.subscription,
-		null,
-		false,
-	);
+	const ribbonCss = css`
+		transform: translate(4px, -50%);
+		position: absolute;
+		top: 0;
+		right: 0;
+	`;
 
-	pageTitleContext.setPageTitle(
-		`Cancel ${
-			groupedProductType.shortFriendlyName ||
-			groupedProductType.friendlyName()
-		}`,
-	); // reset the page title here incase you are coming back from the offer review page where the page title was changed
+	const strikethroughPriceCss = css`
+		${textSans17};
+		color: ${neutral[46]};
+		margin: 0;
+	`;
+
+	const offerBoxTitleCss = css`
+		${textSansBold24};
+		color: ${neutral[7]};
+		margin: 0;
+	`;
+
+	const billingResumptionDateCss = css`
+		${textSans15};
+		color: ${neutral[38]};
+		margin: 0;
+	`;
+
+	const offerButtonCss = css`
+		margin: ${space[5]}px 0;
+		width: 100%;
+		justify-content: center;
+	`;
+
+	const cancelButtonCss = css`
+		margin: ${space[3]}px 0;
+		width: 100%;
+		justify-content: center;
+	`;
+
+	const termsCss = css`
+		${textSans12};
+		color: ${palette.neutral[46]};
+		margin-top: ${space[3]}px;
+	`;
+
+	pageTitleContext.setPageTitle('Your exclusive offer');
 
 	return (
 		<>
@@ -97,107 +145,84 @@ export const SupporterPlusOffer = () => {
 			>
 				This doesn't have to be goodbye
 			</Heading>
-			<h3>
-				Enjoy free access to the Guardian's independent journalism with
-				this offer
+			<h3 css={standfirstCss}>
+				Instead of cancelling, enjoy {offerPeriodWord} {offerPeriodType}{' '}
+				with all your existing benefits - for free
 			</h3>
-			{/*
-			<div>
-				<dl css={currentSubscriptionBoxCss}>
-					<dt>
-						All-access digital
-						<BenefitsToggle productType="supporterplus" />
-					</dt>
-					<dd>
-						{nextPaymentDetails && (
-							<>
-								{nextPaymentDetails.paymentValueShort}/
-								{nextPaymentDetails.paymentInterval}
-							</>
-						)}
-					</dd>
-				</dl>
-			</div>
-			*/}
-			<div>
-				<div css={availableOfferBoxCss}>
-					<Ribbon
-						copy="Exclusive for you"
-						icon={
-							<SvgGift
-								isAnnouncedByScreenReader
-								size="medium"
-								//theme={{ fill: 'red' }}
-							/>
-						}
-					/>
-					<div
+			<div css={availableOfferBoxCss}>
+				<Ribbon
+					copy="Exclusive for you"
+					ribbonColour={palette.neutral[60]}
+					copyColour={palette.neutral[0]}
+					additionalCss={ribbonCss}
+				/>
+				<div
+					css={css`
+						padding: ${space[6]}px ${space[3]}px ${space[5]}px;
+						width: 100%;
+					`}
+				>
+					{isPaidSubscriptionPlan(mainPlan) && (
+						<p css={strikethroughPriceCss}>
+							<s>
+								{mainPlan.currency}
+								{mainPlan.price / 100}/{mainPlan.billingPeriod}
+							</s>
+						</p>
+					)}
+
+					<h4 css={offerBoxTitleCss}>
+						{capitalize(offerPeriodWord)} {offerPeriodType} free
+					</h4>
+					<p css={billingResumptionDateCss}>
+						Billing resumes on {nextNonDiscountedPaymentDate}
+					</p>
+					<Button
+						onClick={() => {
+							navigate('../offer-review', {
+								state: routerState,
+							});
+						}}
+						cssOverrides={offerButtonCss}
+					>
+						Redeem your offer
+					</Button>
+					<p
 						css={css`
-							padding: ${space[3]}px;
+							margin: 0 0 ${space[5]}px;
+							${textSans15};
 						`}
 					>
-						<p>{nextPaymentDetails?.paymentValue}</p>
-						<h4>
-							{routerState.upToPeriods}{' '}
-							{routerState.upToPeriodsType.toLowerCase()} free of
-							your All-access digital subscription
-						</h4>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing
-							elit. Curabitur pharetra, velit id varius pretium,
-							nibh nisi sodales.
-						</p>
-						<BenefitsSection
-							benefits={[
-								{
-									name: '',
-									description: 'Lorem ipsum dolor sit',
-								},
-								{
-									name: '',
-									description: 'Lorem ipsum dolor sit',
-								},
-								{
-									name: '',
-									description: 'Lorem ipsum dolor sit',
-								},
-								{
-									name: '',
-									description: 'Lorem ipsum dolor sit',
-								},
-							]}
-						/>
-						<Button
-							icon={<SvgArrowRightStraight />}
-							iconSide="right"
-							onClick={() => {
-								navigate('../offer-review', {
-									state: routerState,
-								});
-							}}
-						>
-							Redeem the offer
-						</Button>
-					</div>
+						Keep your existing benefits:
+					</p>
+					<BenefitsSection
+						small
+						benefits={[
+							{
+								name: '',
+								description:
+									'Unlimited access to the Guardian app',
+							},
+							{
+								name: '',
+								description:
+									'Ad-free reading across all your devices',
+							},
+							{
+								name: '',
+								description: 'Exclusive supporter newsletter',
+							},
+							{
+								name: '',
+								description: 'Far fewer asks for support when',
+							},
+						]}
+					/>
 				</div>
 			</div>
-			{/*
-			<dl>
-				<dt>DiscountPrice</dt>
-				<dd>{routerState.discountedPrice}</dd>
-
-				<dt>upToPeriods</dt>
-				<dd>{routerState.upToPeriods}</dd>
-
-
-				<dt>upToPeriodsType</dt>
-				<dd>{routerState.upToPeriodsType}</dd>
-
-			</dl>
-			*/}
 			<Button
-				icon={<SvgArrowRightStraight />}
-				iconSide="right"
+				priority="tertiary"
+				cssOverrides={cancelButtonCss}
 				onClick={() => {
 					navigate('../confirm', {
 						state: {
@@ -210,13 +235,21 @@ export const SupporterPlusOffer = () => {
 				No thanks, continue to cancel
 			</Button>
 			<Button
-				iconSide="right"
+				priority="subdued"
+				cssOverrides={cancelButtonCss}
 				onClick={() => {
 					navigate('/');
 				}}
 			>
 				Return to your account
 			</Button>
+			<p css={termsCss}>
+				Lorem ipsum dolor sit amet, consec tetur adipiscing elit. Nam
+				condimentum tempus diam, ultricies sollicitudin erat facilisis
+				eget. Vestibulum rhoncus dui vel eros laoreet consectetur.
+				Vivamus eget elementum ligula, vitae pharetra quam. Nullam at
+				ligula sed metu
+			</p>
 		</>
 	);
 };

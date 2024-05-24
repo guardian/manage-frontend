@@ -63,7 +63,7 @@ const BenefitsNotAvailable = () => (
 			>
 				Extras you'll lose:
 			</div>
-			<ul css={benefitsCss}>
+			<ul css={benefitsCss()}>
 				<li>
 					<GreyBulletpoint />
 					Funding independent journalism

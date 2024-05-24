@@ -59,6 +59,8 @@ export const EligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 						discountedPrice: 111.75,
 						upToPeriods: '12',
 						upToPeriodsType: 'Months',
+						firstDiscountedPaymentDate: '2024-05-30',
+						nextNonDiscountedPaymentDate: '2024-07-30',
 					}),
 				);
 			}),

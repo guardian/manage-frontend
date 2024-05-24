@@ -46,7 +46,7 @@ export const UpgradeBenefitsCard = ({
 			>
 				{amountChosenMessage} unlocks:
 			</div>
-			<ul css={benefitsCss}>
+			<ul css={benefitsCss()}>
 				{benefits.map((benefit) => (
 					<UpgradeBenefit key={benefit.name} benefit={benefit} />
 				))}
