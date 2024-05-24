@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { from, neutral, space, until } from '@guardian/source-foundations';
-import { Button, InlineError } from '@guardian/source-react-components';
+import { from, neutral, space, until } from '@guardian/source/foundations';
+import { Button, InlineError } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
 import { startCase } from 'lodash';
 import { createContext, useContext, useEffect, useState } from 'react';

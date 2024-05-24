@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { from, space, textSans } from '@guardian/source-foundations';
-import { Button, LinkButton, Stack } from '@guardian/source-react-components';
+import { from, space, textSans } from '@guardian/source/foundations';
+import { Button, LinkButton, Stack } from '@guardian/source/react-components';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { cancellationFormatDate } from '../../../../../../shared/dates';

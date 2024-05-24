@@ -7,8 +7,8 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
-import { Stack } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { Stack } from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';

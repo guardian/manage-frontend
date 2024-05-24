@@ -6,8 +6,8 @@ import {
 	neutral,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import { captureException, captureMessage } from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import * as React from 'react';

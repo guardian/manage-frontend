@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, until } from '@guardian/source-foundations';
+import { palette, until } from '@guardian/source/foundations';
 import { sans } from '../../../styles/fonts';
 
 const inputBoxCss = css({

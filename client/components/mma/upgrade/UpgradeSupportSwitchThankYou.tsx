@@ -5,14 +5,14 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import {
 	LinkButton,
 	Stack,
 	SvgCalendar,
 	SvgClock,
 	SvgEnvelope,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { useContext } from 'react';
 import { useLocation } from 'react-router';
 import { formatAmount } from '@/client/utilities/utils';

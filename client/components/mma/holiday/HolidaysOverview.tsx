@@ -1,5 +1,5 @@
-import { from, until } from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+import { from, until } from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import type * as React from 'react';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';

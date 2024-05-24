@@ -1,6 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { brand, from, neutral, textSans } from '@guardian/source-foundations';
+import { brand, from, neutral, textSans } from '@guardian/source/foundations';
 import { TickInCircle } from './assets/TickInCircle';
 
 interface Step {

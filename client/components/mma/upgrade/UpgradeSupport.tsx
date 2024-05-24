@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { headline, space, textSans, until } from '@guardian/source-foundations';
-import { Stack } from '@guardian/source-react-components';
+import { headline, space, textSans, until } from '@guardian/source/foundations';
+import { Stack } from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { formatAmount } from '@/client/utilities/utils';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';

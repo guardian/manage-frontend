@@ -1,5 +1,5 @@
-import { palette } from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+import { palette } from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import { useState } from 'react';
 
 export type HideFunction = () => void;

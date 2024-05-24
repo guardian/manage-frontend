@@ -6,7 +6,7 @@ import {
 	palette,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import type { ReactElement } from 'react';
 import { useContext, useEffect } from 'react';
 import { gridBase, gridColumns, gridItemPlacement } from '../../styles/grid';

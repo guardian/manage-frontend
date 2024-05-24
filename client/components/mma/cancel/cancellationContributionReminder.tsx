@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
-import { Button, Radio, RadioGroup } from '@guardian/source-react-components';
+import { space } from '@guardian/source/foundations';
+import { Button, Radio, RadioGroup } from '@guardian/source/react-components';
 import { useEffect, useState } from 'react';
 import type * as React from 'react';
 import { useNavigate } from 'react-router';

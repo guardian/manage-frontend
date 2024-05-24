@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
+import { space } from '@guardian/source/foundations';
 import {
 	Button,
 	ChoiceCard,
@@ -7,7 +7,7 @@ import {
 	Stack,
 	TextInput,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import {

@@ -5,7 +5,7 @@ import {
 	neutral,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import { captureException } from '@sentry/browser';
 import { useNavigate, useParams } from 'react-router-dom';
 import { contactUsConfig } from '../../../../shared/contactUsConfig';

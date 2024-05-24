@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, palette, textSans } from '@guardian/source-foundations';
+import { from, palette, textSans } from '@guardian/source/foundations';
 
 export const linkCss = css`
 	${textSans.medium()};

@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+import { space } from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { isProduct } from '../../../../shared/productResponse';

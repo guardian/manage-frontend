@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { space, textSans } from '@guardian/source-foundations';
-import { SvgCrossRound, SvgTickRound } from '@guardian/source-react-components';
+import { space, textSans } from '@guardian/source/foundations';
+import { SvgCrossRound, SvgTickRound } from '@guardian/source/react-components';
 import type { ProductBenefit } from './BenefitsConfiguration';
 import { benefitsCss, unavailableBenefitsCss } from './BenefitsStyles';
 

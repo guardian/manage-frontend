@@ -6,7 +6,7 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import { useState } from 'react';
 import { parseDate } from '@/shared/dates';
 import type { InvoiceDataApiItem } from '@/shared/productResponse';

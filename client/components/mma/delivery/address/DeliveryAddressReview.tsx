@@ -7,8 +7,8 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
-import { Button, Stack } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { Button, Stack } from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type {

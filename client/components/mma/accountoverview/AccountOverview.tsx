@@ -5,8 +5,8 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
-import { Stack } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
 import { featureSwitches } from '../../../../shared/featureSwitches';

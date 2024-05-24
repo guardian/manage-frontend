@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source/foundations';
 
 export const signInCss = css`
 	display: grid;

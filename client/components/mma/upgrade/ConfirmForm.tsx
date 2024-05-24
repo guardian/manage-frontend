@@ -5,7 +5,7 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
@@ -13,8 +13,8 @@ import {
 	SvgCreditCard,
 	SvgReload,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
-import { ToggleSwitch } from '@guardian/source-react-components-development-kitchen';
+} from '@guardian/source/react-components';
+import { ToggleSwitch } from '@guardian/source-development-kitchen/react-components';
 import type { Dispatch, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';

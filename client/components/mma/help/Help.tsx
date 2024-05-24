@@ -6,8 +6,8 @@ import {
 	neutral,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
-import { LinkButton, Stack } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { LinkButton, Stack } from '@guardian/source/react-components';
 import { useState } from 'react';
 import { trackEvent } from '../../../utilities/analytics';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';

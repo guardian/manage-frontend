@@ -1,6 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { focusHalo, palette, textSans } from '@guardian/source-foundations';
+import { focusHalo, palette, textSans } from '@guardian/source/foundations';
 import { useEffect, useRef } from 'react';
 import type * as React from 'react';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';

@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand, space } from '@guardian/source-foundations';
+import { brand, space } from '@guardian/source/foundations';
 import { Link } from 'react-router-dom';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {

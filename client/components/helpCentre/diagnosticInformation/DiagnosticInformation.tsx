@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+import { space } from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import { useRef, useState } from 'react';
 import { h2Css } from '../HelpCentreStyles';
 import { AccountInformation } from './AccountInformation';

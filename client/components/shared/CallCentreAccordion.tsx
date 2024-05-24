@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
-import { textSans } from '@guardian/source-foundations';
+import { textSans } from '@guardian/source/foundations';
 import {
 	Accordion,
 	AccordionRow,
 	Stack,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import type { PhoneRegionKey } from '@/shared/productResponse';
 import { customerHelpEmailAddress, phoneData } from './callCentreData';
 

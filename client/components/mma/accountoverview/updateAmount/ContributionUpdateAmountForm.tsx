@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import { palette, space, textSans } from '@guardian/source/foundations';
 import {
 	Button,
 	ChoiceCard,
 	ChoiceCardGroup,
 	InlineError,
 	TextInput,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';

@@ -4,7 +4,7 @@ import {
 	Stack,
 	SvgCalendar,
 	SvgEnvelope,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { useContext, useEffect } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import {

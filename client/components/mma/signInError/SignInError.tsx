@@ -6,8 +6,8 @@ import {
 	neutral,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
-import { LinkButton } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { LinkButton } from '@guardian/source/react-components';
 import { conf } from '@/server/config';
 
 const containerStyle = css`

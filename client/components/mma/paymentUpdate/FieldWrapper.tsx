@@ -5,18 +5,23 @@ import {
 	FocusStyleManager,
 	neutral,
 	textSans,
-} from '@guardian/source-foundations';
-import { InlineError } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { InlineError } from '@guardian/source/react-components';
 import type { StripeError } from '@stripe/stripe-js';
 import * as React from 'react';
 
 FocusStyleManager.onlyShowFocusOnTabs();
+
+export interface FieldChangeEvent extends React.ChangeEvent<HTMLInputElement> {
+	error: StripeError;
+}
+
 interface FieldWrapperProps {
 	label: string;
 	width: string;
 	children: JSX.Element;
 	cornerHint?: JSX.Element;
-	onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	onChange?: (event: FieldChangeEvent) => void;
 }
 
 interface FieldWrapperState {
@@ -126,9 +131,8 @@ export class FieldWrapper extends React.Component<
 	}
 
 	private validateField =
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're assuming the argument object is an event object?
-		(otherOnChange?: (event: any) => void) =>
-		(field: { error: StripeError }) => {
+		(otherOnChange?: (event: FieldChangeEvent) => void) =>
+		(field: FieldChangeEvent) => {
 			if (otherOnChange) {
 				otherOnChange(field);
 			}

@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from } from '@guardian/source-foundations';
+import { from } from '@guardian/source/foundations';
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import type { ReminderType } from '../identity/idapi/supportReminders';

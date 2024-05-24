@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { space, until } from '@guardian/source-foundations';
-import { Button, InlineError } from '@guardian/source-react-components';
+import { space, until } from '@guardian/source/foundations';
+import { Button, InlineError } from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import type { DateRange } from '../../../../shared/dates';

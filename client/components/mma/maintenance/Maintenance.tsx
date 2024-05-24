@@ -6,7 +6,7 @@ import {
 	neutral,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 
 const containerStyle = css`
 	max-width: ${breakpoints.wide}px;

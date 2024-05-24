@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { from, headline, neutral, space } from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+import { from, headline, neutral, space } from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import { useState } from 'react';
 import type { Topic } from '../../../../shared/contactUsTypes';
 import { TopicButton } from './TopicButton';

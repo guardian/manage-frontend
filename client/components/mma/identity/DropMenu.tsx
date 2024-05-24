@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 import type { FC, ReactNode } from 'react';
 import { useState } from 'react';
 import { serif } from '../../../styles/fonts';

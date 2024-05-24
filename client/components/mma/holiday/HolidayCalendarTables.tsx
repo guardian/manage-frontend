@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
-import { from, space } from '@guardian/source-foundations';
+import { from, space } from '@guardian/source/foundations';
 import {
 	Button,
 	SvgArrowLeftStraight,
 	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import type { DateStates } from '../../../../shared/dates';
 import {

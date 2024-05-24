@@ -1,4 +1,4 @@
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 import { Modal } from './Modal';
 
 interface HolidayAnniversaryDateExplainerModalProps {

@@ -1,4 +1,4 @@
-import { from, space } from '@guardian/source-foundations';
+import { from, space } from '@guardian/source/foundations';
 
 export const gridColumns = {
 	default: 4,

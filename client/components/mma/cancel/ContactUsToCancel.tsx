@@ -6,8 +6,8 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
-import { LinkButton } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { LinkButton } from '@guardian/source/react-components';
 import type { SelfServiceCancellation } from '../../../../shared/productResponse';
 import type { GroupedProductType } from '../../../../shared/productTypes';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';

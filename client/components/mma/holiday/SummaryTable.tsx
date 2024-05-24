@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, palette, until } from '@guardian/source-foundations';
+import { from, palette, until } from '@guardian/source/foundations';
 import type { DateRange } from '../../../../shared/dates';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,

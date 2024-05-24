@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source/foundations';
 import { GiftIcon } from '../../shared/assets/GiftIcon';
 
 interface ProductDetailsTableProps {

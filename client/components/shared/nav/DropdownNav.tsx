@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand, from, neutral, space } from '@guardian/source-foundations';
+import { brand, from, neutral, space } from '@guardian/source/foundations';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gridItemPlacement } from '../../../styles/grid';

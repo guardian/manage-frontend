@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, neutral, space, textSans } from '@guardian/source-foundations';
+import { from, neutral, space, textSans } from '@guardian/source/foundations';
 import { getHelpSectionIcon } from '../mma/shared/assets/HelpSectionIcons';
 import { CallCentreEmailAndNumbers } from '../shared/CallCenterEmailAndNumbers';
 

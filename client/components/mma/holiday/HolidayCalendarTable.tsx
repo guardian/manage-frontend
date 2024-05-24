@@ -7,7 +7,7 @@ import {
 	neutral,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import {
 	dateAddDays,
 	getWeekDay,

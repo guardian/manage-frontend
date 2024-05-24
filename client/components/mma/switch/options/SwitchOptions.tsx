@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans, until } from '@guardian/source-foundations';
+import { palette, space, textSans, until } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
-import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
+} from '@guardian/source/react-components';
+import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';

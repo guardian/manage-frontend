@@ -1,4 +1,4 @@
-import { Button } from '@guardian/source-react-components';
+import { Button } from '@guardian/source/react-components';
 import {
 	dataPrivacyHeadingCss,
 	dataPrivacyParagraphCss,

@@ -1,4 +1,4 @@
-import { from } from '@guardian/source-foundations';
+import { from } from '@guardian/source/foundations';
 import { gridItemPlacement } from '../../../../styles/grid';
 import type { RoundelProps } from './Roundel';
 import { Roundel } from './Roundel';

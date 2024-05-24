@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, palette } from '@guardian/source-foundations';
+import { from, palette } from '@guardian/source/foundations';
 import type { FormikProps, FormikState } from 'formik';
 import { Form, withFormik } from 'formik';
 import type { FC } from 'react';

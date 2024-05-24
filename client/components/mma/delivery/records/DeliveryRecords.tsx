@@ -7,8 +7,8 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
-import { Button, Stack } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { Button, Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';

@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
-import { space, until } from '@guardian/source-foundations';
+import { space, until } from '@guardian/source/foundations';
 import {
 	Button,
 	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
-import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
+} from '@guardian/source/react-components';
+import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import * as Sentry from '@sentry/browser';
 import {
 	CardNumberElement,

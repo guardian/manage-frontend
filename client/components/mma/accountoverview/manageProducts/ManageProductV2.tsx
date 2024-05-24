@@ -5,7 +5,7 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import {
 	Button,
 	LinkButton,
@@ -13,7 +13,7 @@ import {
 	SvgCalendar,
 	SvgClock,
 	SvgCreditCard,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/client/components/mma/Page';
 import { ErrorIcon } from '@/client/components/mma/shared/assets/ErrorIcon';
@@ -93,7 +93,8 @@ const InnerContent = ({
 
 	const hasCancellationPending = productDetail.subscription.cancelledAt;
 
-	const isSelfServeCancellationAllowed = productDetail.selfServiceCancellation.isAllowed;
+	const isSelfServeCancellationAllowed =
+		productDetail.selfServiceCancellation.isAllowed;
 
 	const cancelledCopy =
 		specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
@@ -252,24 +253,26 @@ const InnerContent = ({
 							margin-left: ${space[5]}px;
 						`}
 					>
-						{!hasCancellationPending && isSelfServeCancellationAllowed && (
-							<Button
-								priority="subdued"
-								onClick={() => {
-									navigate(
-										'/cancel/' +
-											specificProductType.urlPart,
-										{
-											state: {
-												productDetail: productDetail,
+						{!hasCancellationPending &&
+							isSelfServeCancellationAllowed && (
+								<Button
+									priority="subdued"
+									onClick={() => {
+										navigate(
+											'/cancel/' +
+												specificProductType.urlPart,
+											{
+												state: {
+													productDetail:
+														productDetail,
+												},
 											},
-										},
-									);
-								}}
-							>
-								Cancel {groupedProductType.friendlyName()}
-							</Button>
-						)}
+										);
+									}}
+								>
+									Cancel {groupedProductType.friendlyName()}
+								</Button>
+							)}
 					</div>
 				</div>
 			</section>

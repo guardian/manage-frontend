@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand, from, textSans } from '@guardian/source-foundations';
+import { brand, from, textSans } from '@guardian/source/foundations';
 import { useState } from 'react';
 
 interface DeliveryRecordInstructionsProps {

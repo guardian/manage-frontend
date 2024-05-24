@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import { palette, space, textSans } from '@guardian/source/foundations';
 import {
 	LinkButton,
 	Stack,
 	SvgCalendar,
 	SvgEnvelope,
 	SvgGift,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { captureException } from '@sentry/browser';
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router';

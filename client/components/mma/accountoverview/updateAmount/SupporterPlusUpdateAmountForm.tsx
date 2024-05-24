@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans, until } from '@guardian/source-foundations';
+import { palette, space, textSans, until } from '@guardian/source/foundations';
 import {
 	Button,
 	ChoiceCard,
@@ -9,7 +9,7 @@ import {
 	SvgInfoRound,
 	TextInput,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getBillingPeriodAdjective } from '../../../../../shared/productTypes';

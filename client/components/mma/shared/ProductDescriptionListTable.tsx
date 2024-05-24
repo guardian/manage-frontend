@@ -6,7 +6,7 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import type { ReactElement } from 'react';
 
 export interface ProductDescriptionListKeyValue {

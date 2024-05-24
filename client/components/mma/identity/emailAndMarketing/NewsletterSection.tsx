@@ -1,4 +1,4 @@
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 import uniq from 'lodash/uniq';
 import type { FC } from 'react';
 import { DropMenu } from '../DropMenu';

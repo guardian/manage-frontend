@@ -6,13 +6,13 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import {
 	Button,
 	Checkbox,
 	CheckboxGroup,
 	Stack,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';

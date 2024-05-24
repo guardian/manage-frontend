@@ -4,8 +4,8 @@ import {
 	palette,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
-import { SvgChevronLeftSingle } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { SvgChevronLeftSingle } from '@guardian/source/react-components';
 import { Link } from 'react-router-dom';
 
 const dividerCss = css`

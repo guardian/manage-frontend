@@ -1,4 +1,4 @@
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 
 export const standardAlternateFeedbackIntro =
 	'Please share any further thoughts you have about cancelling — you can help us improve. Thank you.';

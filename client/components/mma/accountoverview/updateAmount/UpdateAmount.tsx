@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, space } from '@guardian/source-foundations';
+import { palette, space } from '@guardian/source/foundations';
 import { capitalize } from 'lodash';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';

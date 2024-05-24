@@ -1,4 +1,4 @@
-import { brand } from '@guardian/source-foundations';
+import { brand } from '@guardian/source/foundations';
 
 interface HelpIconProps {
 	overrideFillColor?: string;

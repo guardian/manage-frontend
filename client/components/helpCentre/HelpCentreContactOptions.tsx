@@ -5,8 +5,8 @@ import {
 	neutral,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import { useState } from 'react';
 import { CallCentreEmailAndNumbers } from '../shared/CallCenterEmailAndNumbers';
 import { HelpCentreEmailAndLiveChat } from './HelpCentreEmailAndLiveChat';

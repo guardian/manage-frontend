@@ -5,8 +5,8 @@ import {
 	palette,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
-import { Button, Stack } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { Button, Stack } from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import type { CancellationContextInterface } from '@/client/components/mma/cancel/CancellationContainer';

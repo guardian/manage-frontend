@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, until } from '@guardian/source-foundations';
+import { space, until } from '@guardian/source/foundations';
 
 export const errorSummaryOverrideCss = css`
 	${until.tablet} {

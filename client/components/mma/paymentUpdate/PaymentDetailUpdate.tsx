@@ -7,14 +7,14 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import {
 	Button,
 	Radio,
 	RadioGroup,
 	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
-import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
+} from '@guardian/source/react-components';
+import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import * as Sentry from '@sentry/browser';
 import type * as React from 'react';
 import { useContext, useState } from 'react';

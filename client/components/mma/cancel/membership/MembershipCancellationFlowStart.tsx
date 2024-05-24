@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 import type { ProductDetail } from '../../../../../shared/productResponse';
 import { trackEvent } from '../../../../utilities/analytics';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';

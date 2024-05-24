@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { from, neutral, space, textSans } from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+import { from, neutral, space, textSans } from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { trackEvent } from '../../utilities/analytics';
 import { getHelpSectionIcon } from '../mma/shared/assets/HelpSectionIcons';

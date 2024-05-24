@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import { palette, space, textSans } from '@guardian/source/foundations';
 import type { ReactElement } from 'react';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
 

@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, palette } from '@guardian/source-foundations';
+import { from, palette } from '@guardian/source/foundations';
 import type { DirectDebitDetails } from '../../../../shared/productResponse';
 import { DirectDebitLogo } from './assets/DirectDebitLogo';
 import type { Inlineable } from './inlineable';

@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
-import { Button, Stack } from '@guardian/source-react-components';
+import { palette, space, textSans } from '@guardian/source/foundations';
+import { Button, Stack } from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { MDA_TEST_USER_HEADER } from '../../../../../../shared/productResponse';

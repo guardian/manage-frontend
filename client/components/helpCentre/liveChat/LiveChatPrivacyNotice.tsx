@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand, from, space, textSans } from '@guardian/source-foundations';
+import { brand, from, space, textSans } from '@guardian/source/foundations';
 import { conf } from '../../../../server/config';
 
 export const LiveChatPrivacyNotice = () => {

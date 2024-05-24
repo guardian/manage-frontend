@@ -5,7 +5,7 @@ import {
 	palette,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import { useEffect, useState } from 'react';
 import type { MembersDataApiResponse } from '../../../shared/productResponse';
 import { isProduct } from '../../../shared/productResponse';

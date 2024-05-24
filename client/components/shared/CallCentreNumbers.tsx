@@ -1,4 +1,4 @@
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 
 export const ukPhoneNumberWithoutPrefix = '0330 333 6790';
 

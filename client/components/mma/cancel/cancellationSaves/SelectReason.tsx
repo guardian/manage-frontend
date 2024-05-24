@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source/foundations';
 import {
 	Button,
 	InlineError,
 	Radio,
 	RadioGroup,
 	Stack,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import type { FormEvent } from 'react';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';

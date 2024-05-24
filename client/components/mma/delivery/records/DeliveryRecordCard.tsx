@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
-import { Checkbox, CheckboxGroup } from '@guardian/source-react-components';
+import { from, palette, space, textSans } from '@guardian/source/foundations';
+import { Checkbox, CheckboxGroup } from '@guardian/source/react-components';
 import type { FormEvent } from 'react';
 import { dateIsAfter, parseDate } from '@/shared/dates';
 import type { DeliveryRecordApiItem } from '@/shared/productResponse';

@@ -1,4 +1,4 @@
-import { from, palette } from '@guardian/source-foundations';
+import { from, palette } from '@guardian/source/foundations';
 import type { FC, ReactNode } from 'react';
 import { sans } from '../../../styles/fonts';
 

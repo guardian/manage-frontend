@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
-import { Button, Radio, RadioGroup } from '@guardian/source-react-components';
+import { from, palette, space, textSans } from '@guardian/source/foundations';
+import { Button, Radio, RadioGroup } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import type { FormEvent } from 'react';
 import { useEffect, useState } from 'react';

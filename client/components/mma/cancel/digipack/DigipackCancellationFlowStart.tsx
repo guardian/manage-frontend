@@ -1,4 +1,4 @@
-import { Stack } from '@guardian/source-react-components';
+import { Stack } from '@guardian/source/react-components';
 import { measure } from '../../../../styles/typography';
 import { Heading } from '../../shared/Heading';
 

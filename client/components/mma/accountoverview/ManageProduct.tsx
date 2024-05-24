@@ -5,7 +5,7 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { featureSwitches } from '@/shared/featureSwitches';

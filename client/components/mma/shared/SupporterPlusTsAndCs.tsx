@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, textSans } from '@guardian/source-foundations';
+import { space, textSans } from '@guardian/source/foundations';
 import * as Sentry from '@sentry/browser';
 import { Link } from 'react-router-dom';
 import { getBillingPeriodAdjective } from '../../../../shared/productTypes';

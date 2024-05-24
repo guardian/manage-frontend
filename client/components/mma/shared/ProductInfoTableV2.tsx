@@ -5,7 +5,7 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import { parseDate } from '@/shared/dates';
 import type { ProductDetail } from '@/shared/productResponse';
 

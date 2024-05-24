@@ -7,7 +7,7 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
 import { parseDate } from '../../../../shared/dates';

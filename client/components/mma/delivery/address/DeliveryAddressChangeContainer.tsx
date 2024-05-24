@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from } from '@guardian/source-foundations';
+import { from } from '@guardian/source/foundations';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import type { MembersDataApiResponse } from '../../../../../shared/productResponse';

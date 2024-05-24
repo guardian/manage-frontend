@@ -9,8 +9,8 @@ import {
 	text,
 	textSans,
 	transitions,
-} from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import { useEffect, useState } from 'react';
 import type * as React from 'react';
 import { ErrorIcon } from '../../mma/shared/assets/ErrorIcon';

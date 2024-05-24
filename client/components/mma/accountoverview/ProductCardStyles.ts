@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, headline, space, textSans } from '@guardian/source-foundations';
+import { from, headline, space, textSans } from '@guardian/source/foundations';
 import { textColour } from './ProductCardConfiguration';
 
 export const productCardTitleCss = (dark?: boolean) => css`

@@ -5,7 +5,7 @@ import {
 	from,
 	neutral,
 	space,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import { Link } from 'react-router-dom';
 import { sans } from '../../../styles/fonts';
 import type { MenuSpecificNavItem, NavItem } from './NavConfig';

@@ -5,7 +5,7 @@ import {
 	headline,
 	palette,
 	textSans,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
 
 interface HeadingProps {

@@ -7,7 +7,7 @@ import {
 	space,
 	textSans,
 	titlepiece,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import Color from 'color';
 import { Link } from 'react-router-dom';
 import { gridBase, gridItemPlacement } from '../../styles/grid';

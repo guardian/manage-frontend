@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import { from, headline, space, textSans } from '@guardian/source-foundations';
+import { from, headline, space, textSans } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
 	SvgTickRound,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
-import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
+} from '@guardian/source/react-components';
+import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import {

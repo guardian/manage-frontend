@@ -1,4 +1,4 @@
-import { palette, textSansSizes } from '@guardian/source-foundations';
+import { palette, textSansSizes } from '@guardian/source/foundations';
 import type { Context, Dispatch, SetStateAction } from 'react';
 import { createContext, useState } from 'react';
 import { serif } from '../../styles/fonts';

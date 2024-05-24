@@ -5,12 +5,12 @@ import {
 	neutral,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import {
 	Button,
 	Checkbox,
 	CheckboxGroup,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import Color from 'color';
 import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 import { useContext, useState } from 'react';

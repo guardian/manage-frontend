@@ -6,7 +6,7 @@ import {
 	palette,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { ErrorIcon } from './assets/ErrorIcon';
 import { LinkButton } from './Buttons';

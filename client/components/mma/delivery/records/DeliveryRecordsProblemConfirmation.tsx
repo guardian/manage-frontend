@@ -6,8 +6,8 @@ import {
 	space,
 	textSans,
 	until,
-} from '@guardian/source-foundations';
-import { LinkButton } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { LinkButton } from '@guardian/source/react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { DATE_FNS_SHORT_OUTPUT_FORMAT, dateString } from '@/shared/dates';

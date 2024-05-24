@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
+import { from, palette, space, textSans } from '@guardian/source/foundations';
 import { useState } from 'react';
 import type { PhoneRegionKey } from '@/shared/productResponse';
 import { customerHelpEmailAddress, phoneData } from './callCentreData';

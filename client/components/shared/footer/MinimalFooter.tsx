@@ -1,7 +1,7 @@
 import {
 	FooterLinks,
 	FooterWithContents,
-} from '@guardian/source-react-components-development-kitchen';
+} from '@guardian/source-development-kitchen/react-components';
 
 export const MinimalFooter = () => {
 	return (

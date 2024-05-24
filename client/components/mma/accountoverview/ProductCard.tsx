@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import { palette, textSans } from '@guardian/source-foundations';
+import { palette, textSans } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
 	SvgInfoRound,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
-import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
+} from '@guardian/source/react-components';
+import { InfoSummary } from '@guardian/source-development-kitchen/react-components';
 import { useNavigate } from 'react-router';
 import {
 	cancellationFormatDate,

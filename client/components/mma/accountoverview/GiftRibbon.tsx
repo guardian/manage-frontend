@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 
 export const GiftRibbon = ({ inverted }: { inverted?: boolean }) => {
 	const colourText = inverted ? palette.brand[400] : palette.brandAlt[400];

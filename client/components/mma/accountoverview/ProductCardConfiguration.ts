@@ -1,4 +1,4 @@
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 import type { ProductTypeKeys } from '../../../../shared/productTypes';
 
 export const textColour = {

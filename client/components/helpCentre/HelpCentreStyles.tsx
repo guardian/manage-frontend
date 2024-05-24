@@ -5,7 +5,7 @@ import {
 	neutral,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 
 export const linkAnchorStyle = css`
 	display: inline-block;

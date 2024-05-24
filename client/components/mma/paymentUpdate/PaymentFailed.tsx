@@ -5,11 +5,11 @@ import {
 	neutral,
 	space,
 	textSans,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import {
 	Button,
 	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 
