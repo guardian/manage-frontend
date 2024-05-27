@@ -1,5 +1,10 @@
 import { css } from '@emotion/react';
-import { from, headline, neutral, space } from '@guardian/source/foundations';
+import {
+	from,
+	headlineBold28,
+	neutral,
+	space,
+} from '@guardian/source/foundations';
 import { helpCentreConfig } from './HelpCentreConfig';
 import { HelpCentreContactOptions } from './HelpCentreContactOptions';
 import { HelpCentreLandingMoreTopics } from './HelpCentreLandingMoreTopics';
@@ -8,7 +13,7 @@ import { HelpTopicBox } from './HelpTopicBox';
 const subtitleStyles = css`
 	margin-top: 30px;
 	margin-bottom: ${space[6]}px;
-	${headline.small({ fontWeight: 'bold' })};
+	${headlineBold28};
 	border-top: 1px solid ${neutral['86']};
 	${from.tablet} {
 		margin-bottom: ${space[6]}px;

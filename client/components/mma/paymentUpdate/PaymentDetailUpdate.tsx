@@ -1,11 +1,10 @@
 import { css } from '@emotion/react';
 import {
-	brand,
 	from,
-	headline,
-	neutral,
+	headlineBold28,
+	palette,
 	space,
-	textSans,
+	textSans17,
 	until,
 } from '@guardian/source/foundations';
 import {
@@ -66,9 +65,8 @@ export enum PaymentMethod {
 }
 
 const subHeadingCss = css`
-	border-top: 1px solid ${neutral['86']};
-	${headline.small()};
-	font-weight: bold;
+	border-top: 1px solid ${palette.neutral['86']};
+	${headlineBold28};
 	margin-top: 50px;
 	${until.tablet} {
 		font-size: 1.25rem;
@@ -98,7 +96,7 @@ export function getLogos(paymentMethod: PaymentMethod) {
 	} else if (paymentMethod === PaymentMethod.DirectDebit) {
 		return (
 			<DirectDebitLogo
-				fill={brand[400]}
+				fill={palette.brand[400]}
 				additionalCss={css`
 					width: 47px;
 					height: 16px;
@@ -116,22 +114,23 @@ const PaymentMethodRadioButton = (props: PaymentMethodRadioButtonProps) => {
 		align-items: center;
 		padding: ${space[4]}px;
 		margin-bottom: ${space[4]}px;
-		${textSans.medium({ lineHeight: 'regular' })};
+		${textSans17};
+		line-height: normal;
 		font-weight: bold;
-		color: ${neutral[46]};
+		color: ${palette.neutral[46]};
 		border-radius: 4px;
-		box-shadow: inset 0px 0px 0px 2px ${neutral[46]};
+		box-shadow: inset 0px 0px 0px 2px ${palette.neutral[46]};
 		cursor: pointer;
 
 		&:hover {
-			box-shadow: inset 0px 0px 0px 4px ${brand[500]};
+			box-shadow: inset 0px 0px 0px 4px ${palette.brand[500]};
 		}
 	`;
 
 	const checkedRadioStyles = css`
-		box-shadow: inset 0px 0px 0px 4px ${brand[500]};
+		box-shadow: inset 0px 0px 0px 4px ${palette.brand[500]};
 		background-color: #e3f6ff;
-		color: ${brand[400]};
+		color: ${palette.brand[400]};
 	`;
 
 	return (
@@ -464,7 +463,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				{productDetail.subscription.payPalEmail && (
 					<p
 						css={css`
-							${textSans.medium()}
+							${textSans17};
 						`}
 					>
 						To update your payment details, please login to your
@@ -510,12 +509,12 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 							icon={<SvgArrowRightStraight />}
 							iconSide="right"
 							cssOverrides={css`
-								background-color: ${neutral[86]};
-								color: ${neutral[46]};
+								background-color: ${palette.neutral[86]};
+								color: ${palette.neutral[46]};
 
 								:hover {
-									background-color: ${neutral[86]};
-									color: ${neutral[46]};
+									background-color: ${palette.neutral[86]};
+									color: ${palette.neutral[46]};
 								}
 
 								cursor: not-allowed;

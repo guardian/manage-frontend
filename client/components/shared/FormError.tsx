@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source/foundations';
+import { palette, space, textSans17 } from '@guardian/source/foundations';
 import type { ReactElement } from 'react';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
 
 const dlStyles = css`
 	position: relative;
 	padding: ${space[5]}px ${space[5]}px ${space[5]}px 50px;
-	${textSans.medium()};
+	${textSans17};
 	border: 4px solid ${palette.error[400]};
 `;
 

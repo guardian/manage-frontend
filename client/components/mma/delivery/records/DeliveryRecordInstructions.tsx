@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand, from, textSans } from '@guardian/source/foundations';
+import { from, palette, textSansItalic15 } from '@guardian/source/foundations';
 import { useState } from 'react';
 
 interface DeliveryRecordInstructionsProps {
@@ -22,7 +22,7 @@ export const DeliveryRecordInstructions = (
 			>
 				{props.message.length > maxMessageLength &&
 				!showFullinstructions
-					? `${props.message.substr(0, maxMessageLength)}...`
+					? `${props.message.substring(0, maxMessageLength)}...`
 					: props.message}
 			</p>
 			<span
@@ -31,8 +31,8 @@ export const DeliveryRecordInstructions = (
 						? 'block'
 						: 'none'};
 					text-align: left;
-					${textSans.small({ fontStyle: 'italic' })};
-					color: ${brand[500]};
+					${textSansItalic15};
+					color: ${palette.brand[500]};
 					cursor: pointer;
 				`}
 				onClick={() => {

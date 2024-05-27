@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand, space } from '@guardian/source/foundations';
+import { palette, space } from '@guardian/source/foundations';
 import { parseDate } from '../../../../shared/dates';
 import type {
 	Subscription,
@@ -96,7 +96,7 @@ export const NewPaymentPriceAlert = () => (
 				margin-bottom: 4px;
 			`}
 		>
-			<InfoIconDark fillColor={brand[500]} />
+			<InfoIconDark fillColor={palette.brand[500]} />
 		</span>
 		<span
 			css={css`

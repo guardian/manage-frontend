@@ -1,6 +1,11 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { focusHalo, palette, textSans } from '@guardian/source/foundations';
+import {
+	focusHalo,
+	palette,
+	textSans17,
+	textSansBold17,
+} from '@guardian/source/foundations';
 import type * as React from 'react';
 import { ErrorIcon } from '../../shared/assets/ErrorIcon';
 
@@ -27,8 +32,8 @@ export const Select = (props: SelectProps) => (
 		css={css`
 			display: block;
 			color: ${palette.neutral['7']};
-			${textSans.medium()} ${props.additionalCSS};
-			font-weight: bold;
+			${textSansBold17};
+			${props.additionalCSS};
 		`}
 		data-qm-masking="blocklist"
 	>
@@ -56,7 +61,7 @@ export const Select = (props: SelectProps) => (
 				display: block;
 				width: 100%;
 				max-width: ${props.width}ch;
-				${textSans.medium()}
+				${textSans17};
 				color: ${palette.neutral['7']};
 				box-sizing: border-box;
 				margin-top: 4px;

@@ -1,5 +1,10 @@
 import { css } from '@emotion/react';
-import { neutral, space, textSans, until } from '@guardian/source/foundations';
+import {
+	palette,
+	space,
+	textSans14,
+	until,
+} from '@guardian/source/foundations';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { trackEvent } from '../../utilities/analytics';
@@ -22,7 +27,7 @@ const moreTopicsStyles = css({
 });
 
 const showHideCss = css`
-	${textSans.xsmall()};
+	${textSans14};
 	margin-left: ${space[3]}px;
 	${until.mobileMedium} {
 		display: none;
@@ -31,7 +36,7 @@ const showHideCss = css`
 
 const liStyles = (index: number, length: number) => css`
 	${innerSectionDivCss};
-	${index < length - 1 && `border-bottom: 1px solid ${neutral[86]}`};
+	${index < length - 1 && `border-bottom: 1px solid ${palette.neutral[86]}`};
 `;
 
 export const HelpCentreLandingMoreTopics = () => {

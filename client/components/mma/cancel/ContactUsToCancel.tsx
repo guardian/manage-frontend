@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
-	neutral,
+	headlineBold28,
+	palette,
 	space,
-	textSans,
+	textSans17,
 	until,
 } from '@guardian/source/foundations';
 import { LinkButton } from '@guardian/source/react-components';
@@ -22,8 +22,7 @@ interface ContactUsToCancelProps {
 
 export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
 	const subHeadingTitleCss = `
-		${headline.small()};
-		font-weight: bold;
+		${headlineBold28};
 		${until.tablet} {
 			font-size: 1.25rem;
 			line-height: 1.6;
@@ -31,7 +30,7 @@ export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
 	`;
 
 	const subHeadingBorderTopCss = `
-		border-top: 1px solid ${neutral['86']};
+		border-top: 1px solid ${palette.neutral['86']};
 		margin: 50px 0 ${space[5]}px;
 	`;
 
@@ -61,7 +60,7 @@ export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
 			/>
 			<p
 				css={css`
-					${textSans.medium()}
+					${textSans17};
 				`}
 			>
 				Please contact our Customer Service team. You can find the

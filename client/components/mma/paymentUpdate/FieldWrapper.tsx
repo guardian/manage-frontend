@@ -3,8 +3,8 @@ import {
 	error,
 	focusHalo,
 	FocusStyleManager,
-	neutral,
-	textSans,
+	palette,
+	textSansBold17,
 } from '@guardian/source/foundations';
 import { InlineError } from '@guardian/source/react-components';
 import type { StripeError } from '@stripe/stripe-js';
@@ -62,7 +62,7 @@ export class FieldWrapper extends React.Component<
 		if (this.state.error?.message) {
 			borderCss = '4px solid ' + error[400];
 		} else {
-			borderCss = '2px solid ' + neutral[60];
+			borderCss = '2px solid ' + palette.neutral[60];
 		}
 
 		return (
@@ -91,8 +91,8 @@ export class FieldWrapper extends React.Component<
 					<div>
 						<label
 							css={css`
-								${textSans.medium({ fontWeight: 'bold' })};
-								color: ${neutral[7]};
+								${textSansBold17};
+								color: ${palette.neutral[7]};
 							`}
 						>
 							{this.props.label}

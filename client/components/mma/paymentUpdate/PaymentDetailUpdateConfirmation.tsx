@@ -1,10 +1,11 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
+	headlineBold28,
 	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold17,
 	until,
 } from '@guardian/source/foundations';
 import {
@@ -51,7 +52,7 @@ const keyValuePairCss = css`
 `;
 
 const keyCss = css`
-	${textSans.medium({ fontWeight: 'bold' })};
+	${textSansBold17};
 	padding: 0 ${space[2]}px 0 0;
 	display: inline-block;
 	vertical-align: top;
@@ -63,7 +64,7 @@ const keyCss = css`
 `;
 
 const valueCss = css`
-	${textSans.medium()};
+	${textSans17};
 	padding: 0;
 	display: inline-block;
 	vertical-align: top;
@@ -76,8 +77,7 @@ const valueCss = css`
 
 const subHeadingCss = `
       border-top: 1px solid ${palette.neutral['86']};
-      ${headline.small()};
-      font-weight: bold;
+	  ${headlineBold28};
       margin-top: ${space[9]}px;
 
       ${until.tablet} {

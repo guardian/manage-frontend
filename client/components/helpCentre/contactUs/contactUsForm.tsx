@@ -1,6 +1,13 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source/foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans15,
+	textSans17,
+	textSansBold17,
+} from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useEffect, useState } from 'react';
@@ -228,7 +235,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 						float: left;
 						background-color: ${palette.neutral[97]};
 						border-bottom: 1px solid ${palette.neutral[86]};
-						${textSans.medium({ fontWeight: 'bold' })};
+						${textSansBold17};
 						${from.tablet} {
 							padding: ${space[3]}px ${space[5]}px;
 						}
@@ -238,7 +245,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 				</legend>
 				<p
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 						margin: ${space[5]}px;
 						:before {
 							display: block;
@@ -256,7 +263,9 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 				<Input
 					label="Full Name"
 					width={50}
-					changeSetState={(newName) => setName(newName.substr(0, 50))}
+					changeSetState={(newName) =>
+						setName(newName.substring(0, 50))
+					}
 					value={name}
 					additionalCss={css`
 						margin: ${space[5]}px;
@@ -272,7 +281,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 					secondaryLabel="If you are contacting us regarding an account you hold with us you must use the email you registered with"
 					width={50}
 					changeSetState={(newEmail) =>
-						setEmail(newEmail.substr(0, 50))
+						setEmail(newEmail.substring(0, 50))
 					}
 					value={email}
 					additionalCss={css`
@@ -290,7 +299,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 						type="text"
 						width={50}
 						changeSetState={(newSubject) =>
-							setSubject(newSubject.substr(0, 100))
+							setSubject(newSubject.substring(0, 100))
 						}
 						value={subject}
 						additionalCss={css`
@@ -307,7 +316,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 						css={css`
 							display: block;
 							color: ${palette.neutral[7]};
-							${textSans.medium({ fontWeight: 'bold' })};
+							${textSansBold17};
 							max-width: 50ch;
 							margin: ${space[5]}px;
 						`}
@@ -327,7 +336,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 					css={css`
 						display: block;
 						color: ${palette.neutral[7]};
-						${textSans.medium({ fontWeight: 'bold' })};
+						${textSansBold17};
 						max-width: 50ch;
 						margin: ${space[5]}px;
 					`}
@@ -372,14 +381,14 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 								: `2px solid ${palette.neutral[60]}`};
 							padding: 12px;
 							resize: vertical;
-							${textSans.medium()};
+							${textSans17};
 						`}
 					/>
 					<span
 						css={css`
 							display: block;
 							text-align: right;
-							${textSans.small()};
+							${textSans15};
 							color: ${palette.neutral[46]};
 						`}
 					>
@@ -439,8 +448,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 							css={css`
 								display: block;
 								color: ${palette.error[400]};
-								${textSans.medium({ fontWeight: 'bold' })};
-								font-weight: normal;
+								${textSans17};
 							`}
 						>
 							<i

@@ -1,10 +1,12 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
+	headlineBold28,
 	palette,
 	space,
-	textSans,
+	textSans15,
+	textSans17,
+	textSansBold17,
 	until,
 } from '@guardian/source/foundations';
 import {
@@ -155,7 +157,7 @@ const Form = (props: FormProps) => {
 							top: 0;
 							left: 0;
 							padding: 0 14px;
-							${textSans.medium()};
+							${textSans17};
 							font-weight: bold;
 							line-height: 48px;
 							background-color: ${palette.neutral['97']};
@@ -240,7 +242,7 @@ const Form = (props: FormProps) => {
 							css={css`
 								display: block;
 								color: ${palette.neutral['7']};
-								${textSans.medium()};
+								${textSans17};
 								font-weight: bold;
 							`}
 						>
@@ -277,14 +279,14 @@ const Form = (props: FormProps) => {
 												${palette.neutral['60']};
 											padding: 12px;
 											resize: vertical;
-											${textSans.medium()};
+											${textSans17};
 										`}
 									/>
 									<span
 										css={css`
 											display: block;
 											text-align: right;
-											${textSans.small()};
+											${textSans15};
 											color: ${palette.neutral[46]};
 										`}
 									>
@@ -295,7 +297,7 @@ const Form = (props: FormProps) => {
 								<p
 									css={css`
 										display: block;
-										${textSans.medium()};
+										${textSans17};
 										border: 4px solid ${palette.brand[500]};
 										padding: ${space[5]}px ${space[5]}px
 											${space[5]}px 49px;
@@ -373,8 +375,7 @@ const Form = (props: FormProps) => {
 					<Link
 						to={NAV_LINKS.accountOverview.link}
 						css={css`
-							${textSans.medium()};
-							font-weight: bold;
+							${textSansBold17};
 							margin-left: 22px;
 							color: ${palette.brand[400]};
 						`}
@@ -387,7 +388,7 @@ const Form = (props: FormProps) => {
 			<Stack space={5}>
 				<p
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 						margin: ${space[12]}px 0 0;
 						color: ${palette.neutral[46]};
 					`}
@@ -424,8 +425,7 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 
 	const subHeadingCss = `
 		border-top: 1px solid ${palette.neutral['86']};
-		${headline.small()};
-		font-weight: bold;
+		${headlineBold28};
 		margin-top: 50px;
 		${until.tablet} {
 			font-size: 1.25rem;

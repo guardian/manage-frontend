@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import {
-	brand,
 	from,
-	headline,
-	neutral,
+	headlineBold20,
+	headlineBold28,
+	palette,
 	space,
-	textSans,
+	textSans17,
 } from '@guardian/source/foundations';
 import { LinkButton, Stack } from '@guardian/source/react-components';
 import { useState } from 'react';
@@ -67,18 +67,18 @@ const listItemStyle = css`
 `;
 
 const listItemAnchorStyle = css`
-	${textSans.medium()};
-	color: ${neutral[20]};
+	${textSans17};
+	color: ${palette.neutral[20]};
 	text-decoration: underline;
 `;
 
 const h2Style = css`
-	border-top: 1px solid ${neutral['86']};
+	border-top: 1px solid ${palette.neutral['86']};
 	margin-top: 30px;
 	${from.tablet} {
 		margin-top: 40px;
 	}
-	${headline.small({ fontWeight: 'bold' })};
+	${headlineBold28};
 `;
 
 const h3Style = css`
@@ -86,21 +86,21 @@ const h3Style = css`
 	${from.tablet} {
 		margin-top: 40px;
 	}
-	${headline.xxsmall({ fontWeight: 'bold' })};
+	${headlineBold20};
 `;
 
 const callCentreToggleSpanStyle = (isOpen: boolean) => css`
 	cursor: pointer;
 	text-decoration: underline;
-	color: ${brand[500]};
+	color: ${palette.brand[500]};
 	position: relative;
 	:after {
 		content: '';
 		display: block;
 		width: 7px;
 		height: 7px;
-		border-top: 2px solid ${brand['500']};
-		border-right: 2px solid ${brand['500']};
+		border-top: 2px solid ${palette.brand['500']};
+		border-right: 2px solid ${palette.brand['500']};
 		position: absolute;
 		top: 50%;
 		transform: ${isOpen
@@ -112,7 +112,7 @@ const callCentreToggleSpanStyle = (isOpen: boolean) => css`
 `;
 
 const pStyle = css`
-	${textSans.medium()};
+	${textSans17};
 	margin-top: 30px;
 	${from.tablet} {
 		margin-top: 40px;
@@ -136,7 +136,7 @@ export const Help = () => {
 			<h3 css={h3Style}>Can’t find what you’re looking for?</h3>
 			<p
 				css={css`
-					${textSans.medium()};
+					${textSans17};
 				`}
 			>
 				Visit our Help Centre to find more useful information
@@ -156,7 +156,7 @@ export const Help = () => {
 			<Stack space={5}>
 				<p
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 						margin: 30px 0 0;
 					`}
 				>

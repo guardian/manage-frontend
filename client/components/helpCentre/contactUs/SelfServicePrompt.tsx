@@ -1,6 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { brand, space, textSans } from '@guardian/source/foundations';
+import { palette, space, textSansBold17 } from '@guardian/source/foundations';
 import { LinkButton } from '@guardian/source/react-components';
 import { trackEvent } from '../../../utilities/analytics';
 import { InfoIconDark } from '../../mma/shared/assets/InfoIconDark';
@@ -19,8 +19,8 @@ interface SelfServicePromptProps {
 export const SelfServicePrompt = (props: SelfServicePromptProps) => {
 	const divCss = css`
 		display: block;
-		${textSans.medium({ fontWeight: 'bold' })};
-		border: 4px solid ${brand[500]};
+		${textSansBold17};
+		border: 4px solid ${palette.brand[500]};
 		padding: ${space[5]}px ${space[5]}px ${space[5]}px 53px;
 		margin: ${space[3]}px 0;
 		position: relative;
@@ -37,7 +37,7 @@ export const SelfServicePrompt = (props: SelfServicePromptProps) => {
 		margin-top: ${space[5]}px;
 		text-decoration: underline;
 		font-weight: normal;
-		color: ${brand[500]};
+		color: ${palette.brand[500]};
 	`;
 
 	const onServicelinkClick = () =>
@@ -58,7 +58,7 @@ export const SelfServicePrompt = (props: SelfServicePromptProps) => {
 					left: ${space[5]}px;
 				`}
 			>
-				<InfoIconDark fillColor={brand[500]} />
+				<InfoIconDark fillColor={palette.brand[500]} />
 			</i>
 			{props.copy.map((paragraph, index) => (
 				<p key={`ssb-${index}`} css={pCss}>

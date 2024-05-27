@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { textSans } from '@guardian/source/foundations';
+import { textSans17 } from '@guardian/source/foundations';
 import {
 	Accordion,
 	AccordionRow,
@@ -31,7 +31,7 @@ export const CallCentreAccordion = ({
 						cssOverrides={css`
 							> button {
 								> strong {
-									${textSans.medium()};
+									${textSans17};
 								}
 							}
 						`}
@@ -41,7 +41,7 @@ export const CallCentreAccordion = ({
 						<Stack
 							space={2}
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 							`}
 						>
 							{showEmailAddress && (

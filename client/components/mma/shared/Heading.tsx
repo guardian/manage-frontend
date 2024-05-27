@@ -2,9 +2,11 @@ import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
+	headlineBold24,
+	headlineBold28,
 	palette,
-	textSans,
+	textSansBold20,
+	textSansBold24,
 } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
 
@@ -24,16 +26,11 @@ export const Heading = (props: HeadingProps) => {
 		  `;
 
 	const headingStyles = css`
-		${props.sansSerif
-			? textSans.large({ fontWeight: 'bold' })
-			: headline.xsmall({ fontWeight: 'bold' })};
-
+		${props.sansSerif ? textSansBold20 : headlineBold24};
 		margin-top: 0;
 		margin-bottom: 0;
 		${from.tablet} {
-			${props.sansSerif
-				? textSans.xlarge({ fontWeight: 'bold' })
-				: headline.small({ fontWeight: 'bold' })};
+			${props.sansSerif ? textSansBold24 : headlineBold28};
 		} ;
 	`;
 

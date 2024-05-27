@@ -1,5 +1,9 @@
 import { css } from '@emotion/react';
-import { headline, space } from '@guardian/source/foundations';
+import {
+	headlineBold42,
+	headlineMedium17,
+	space,
+} from '@guardian/source/foundations';
 import { min } from 'date-fns';
 import { dateString } from '@/shared/dates';
 import type { MPAPIResponse } from '@/shared/mpapiResponse';
@@ -54,7 +58,7 @@ export const PersonalisedHeader = ({
 		>
 			<h2
 				css={css`
-					${headline.large({ fontWeight: 'bold' })};
+					${headlineBold42};
 					margin-bottom: 0;
 				`}
 				data-qm-masking="blocklist"
@@ -63,7 +67,7 @@ export const PersonalisedHeader = ({
 			</h2>
 			<p
 				css={css`
-					${headline.xxxsmall()};
+					${headlineMedium17};
 				`}
 			>
 				Thank you for funding the Guardian since {supportStartYear}

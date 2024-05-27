@@ -1,24 +1,18 @@
 import { css } from '@emotion/react';
-import {
-	neutral,
-	palette,
-	space,
-	textSans,
-} from '@guardian/source/foundations';
+import { palette, space, textSans17 } from '@guardian/source/foundations';
 import { SvgChevronLeftSingle } from '@guardian/source/react-components';
 import { Link } from 'react-router-dom';
 
 const dividerCss = css`
 	margin-top: ${space[12]}px;
 	padding-top: ${space[9]}px;
-	border-top: 1px solid ${neutral['86']};
+	border-top: 1px solid ${palette.neutral['86']};
 `;
 
 const linkCss = css`
 	display: flex;
 	align-items: center;
-	${textSans.medium()};
-	color: ${palette.brand[500]};
+	${textSans17}: color: ${palette.brand[500]};
 	&:hover,
 	&:focus {
 		text-decoration: underline;

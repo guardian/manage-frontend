@@ -18,11 +18,11 @@ const dashifySortCode = (sortCode: string) => {
 		return cleanedSortCode;
 	}
 	return (
-		cleanedSortCode.substr(0, 2) +
+		cleanedSortCode.substring(0, 2) +
 		'-' +
-		cleanedSortCode.substr(2, 2) +
+		cleanedSortCode.substring(2, 4) +
 		'-' +
-		cleanedSortCode.substr(4, 2)
+		cleanedSortCode.substring(4, 6)
 	);
 };
 

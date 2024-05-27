@@ -1,5 +1,12 @@
 import { css } from '@emotion/react';
-import { from, headline, space, textSans } from '@guardian/source/foundations';
+import {
+	from,
+	headlineBold24,
+	headlineBold34,
+	space,
+	textSans17,
+	textSansBold20,
+} from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
@@ -58,7 +65,7 @@ const DiscountOffer = ({
 		<div>
 			<div
 				css={css`
-					${textSans.large({ fontWeight: 'bold' })}
+					${textSansBold20};
 					margin-bottom: ${space[2]}px;
 				`}
 			>
@@ -247,11 +254,11 @@ export const DigiSubThankYouOffer = () => {
 			<Stack space={6}>
 				<h2
 					css={css`
-						${headline.xsmall({ fontWeight: 'bold' })};
+						${headlineBold24};
 						margin-top: 0;
 						margin-bottom: 0;
 						${from.tablet} {
-							${headline.medium({ fontWeight: 'bold' })};
+							${headlineBold34};
 						}
 					`}
 				>
@@ -264,7 +271,7 @@ export const DigiSubThankYouOffer = () => {
 					</Heading>
 					<p
 						css={css`
-							${textSans.medium()};
+							${textSans17};
 						`}
 					>
 						Since you first joined as a Guardian supporter, we've
@@ -288,7 +295,7 @@ export const DigiSubThankYouOffer = () => {
 				<div>
 					<h3
 						css={css`
-							${textSans.large({ fontWeight: 'bold' })};
+							${textSansBold20};
 							margin: 0;
 						`}
 					>

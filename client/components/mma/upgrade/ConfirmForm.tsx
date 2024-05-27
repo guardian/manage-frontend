@@ -3,7 +3,10 @@ import {
 	from,
 	palette,
 	space,
-	textSans,
+	textSans15,
+	textSans17,
+	textSansBold17,
+	textSansBold20,
 	until,
 } from '@guardian/source/foundations';
 import {
@@ -89,7 +92,7 @@ const WhatHappensNext = ({
 				>
 					<h3
 						css={css`
-							${textSans.large({ fontWeight: 'bold' })};
+							${textSansBold20};
 							padding-top: ${space[1]}px;
 							margin: 0;
 						`}
@@ -190,7 +193,7 @@ const RoundUp = ({
 			<div>
 				<div
 					css={css`
-						${textSans.medium({ fontWeight: 'bold' })};
+						${textSansBold17};
 						padding-right: ${space[4]}px;
 						color: ${hasRoundedUp
 							? palette.neutral[0]
@@ -203,9 +206,9 @@ const RoundUp = ({
 				<div
 					css={css`
 						${until.tablet} {
-							${textSans.small()};
+							${textSans15};
 						}
-						${textSans.medium()};
+						${textSans17};
 						color: ${palette.neutral[46]};
 					`}
 				>
@@ -380,7 +383,7 @@ export const ConfirmForm = ({
 				</Heading>
 				<div
 					css={css`
-						${textSans.medium()}
+						${textSans17};
 					`}
 				>
 					You've selected to support {currencySymbol}

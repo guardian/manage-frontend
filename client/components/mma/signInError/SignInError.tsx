@@ -2,10 +2,10 @@ import { css } from '@emotion/react';
 import {
 	breakpoints,
 	from,
-	headline,
-	neutral,
+	headlineBold34,
+	palette,
 	space,
-	textSans,
+	textSans17,
 } from '@guardian/source/foundations';
 import { LinkButton } from '@guardian/source/react-components';
 import { conf } from '@/server/config';
@@ -14,8 +14,8 @@ const containerStyle = css`
 	max-width: ${breakpoints.wide}px;
 	margin: 0 auto;
 	padding: ${space[12]}px 0;
-	border-left: 1px solid ${neutral[86]};
-	border-right: 1px solid ${neutral[86]};
+	border-left: 1px solid ${palette.neutral[86]};
+	border-right: 1px solid ${palette.neutral[86]};
 	height: 100%;
 `;
 
@@ -28,14 +28,14 @@ const wrapperStyle = css`
 `;
 
 const headingStyle = css`
-	${headline.medium({ fontWeight: 'bold' })};
+	${headlineBold34};
 	margin: 0;
 	padding-bottom: ${space[4]}px;
-	border-bottom: 1px solid ${neutral['86']};
+	border-bottom: 1px solid ${palette.neutral['86']};
 `;
 
 const grafStyle = css`
-	${textSans.medium()};
+	${textSans17};
 	margin-top: ${space[4]}px;
 	margin-bottom: ${space[4]}px;
 `;

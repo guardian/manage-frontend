@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { textSans } from '@guardian/source/foundations';
+import { textSans17 } from '@guardian/source/foundations';
 import type * as React from 'react';
 
 type PaginationChangeCallBack = () => void;
@@ -35,7 +35,7 @@ export const PaginationNav = (props: PaginationNavProps) => {
 						<li
 							key={`deliveryRecordsNavItem-${pagesArrIndex}`}
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 								text-align: center;
 								display: inline-block;
 								position: relative;
@@ -80,7 +80,7 @@ export const PaginationNav = (props: PaginationNavProps) => {
 			</ul>
 			<span
 				css={css`
-					${textSans.medium()};
+					${textSans17};
 					color: #767676;
 					display: block;
 					width: 100%;

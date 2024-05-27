@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
 import {
-	headline,
+	headlineBold24,
+	headlineBold34,
 	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold20,
 	until,
 } from '@guardian/source/foundations';
 import {
@@ -72,9 +74,9 @@ export const UpgradeSupportThankYou = () => {
 					<h2
 						css={css`
 							margin: 0;
-							${headline.medium({ fontWeight: 'bold' })};
+							${headlineBold34};
 							${until.tablet} {
-								${headline.xsmall({ fontWeight: 'bold' })};
+								${headlineBold24};
 							}
 						`}
 					>
@@ -84,7 +86,7 @@ export const UpgradeSupportThankYou = () => {
 				<Stack space={4}>
 					<div
 						css={css`
-							${textSans.medium()}
+							${textSans17};
 							margin-bottom: 32px;
 						`}
 					>
@@ -109,7 +111,7 @@ export const UpgradeSupportThankYou = () => {
 					>
 						<h3
 							css={css`
-								${textSans.large({ fontWeight: 'bold' })};
+								${textSansBold20};
 								padding-top: ${space[1]}px;
 								margin: 0;
 							`}

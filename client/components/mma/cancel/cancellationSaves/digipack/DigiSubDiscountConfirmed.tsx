@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source/foundations';
+import { palette, space, textSans17 } from '@guardian/source/foundations';
 import {
 	LinkButton,
 	Stack,
@@ -79,7 +79,7 @@ export const DigiSubDiscountConfirmed = () => {
 				css={css`
 					padding-top: ${space[4]}px;
 					margin-bottom: 32px;
-					${textSans.medium()};
+					${textSans17};
 				`}
 			>
 				<h2 css={headingCss}>Discount confirmed</h2>

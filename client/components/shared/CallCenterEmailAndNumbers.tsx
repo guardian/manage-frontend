@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source/foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans17,
+	textSansBold17,
+} from '@guardian/source/foundations';
 import { useState } from 'react';
 import type { PhoneRegionKey } from '@/shared/productResponse';
 import { customerHelpEmailAddress, phoneData } from './callCentreData';
@@ -48,7 +54,7 @@ export const CallCentreEmailAndNumbers = (
 		useState<number>(initialIndex);
 
 	const sectionTitleCss = (isOpen: boolean, isNotFirstOption: boolean) => `
-    ${textSans.medium()};
+	${textSans17};
     margin: 0;
     padding: ${space[4]}px ${space[4] * 2 + 15}px ${space[4]}px ${space[4]}px;
     position: relative;
@@ -120,7 +126,7 @@ export const CallCentreEmailAndNumbers = (
   `;
 
 	const innerSectionPCss = `
-    ${textSans.medium()};
+	${textSans17};
     margin-bottom: 0;
     & + p {
       margin-top: ${space[4]}px;
@@ -134,7 +140,7 @@ export const CallCentreEmailAndNumbers = (
   `;
 
 	const innerSectionTitleCss = `
-    ${textSans.medium()};
+	${textSans17};
     margin: 6px 0 4px;
   `;
 
@@ -193,9 +199,7 @@ export const CallCentreEmailAndNumbers = (
 										</h4>
 										<span
 											css={css`
-												${textSans.medium({
-													fontWeight: 'bold',
-												})};
+												${textSansBold17};
 												word-break: break-word;
 											`}
 										>

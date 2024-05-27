@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
 import {
-	headline,
+	headlineBold20,
+	headlineBold34,
 	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold17,
 	until,
 } from '@guardian/source/foundations';
 import {
@@ -52,11 +54,9 @@ import {
 } from '@/shared/productTypes';
 
 const subHeadingTitleCss = `
-    ${headline.medium()};
-    font-weight: bold;
+	${headlineBold34};
     ${until.tablet} {
-      ${headline.xxsmall()};
-      font-weight: bold;
+	  ${headlineBold20};
     };
   `;
 const subHeadingBorderTopCss = `
@@ -128,7 +128,7 @@ const InnerContent = ({
 			{hasCancellationPending && (
 				<p
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 					`}
 				>
 					<ErrorIcon fill={palette.brandAlt[200]} />
@@ -153,7 +153,7 @@ const InnerContent = ({
 
 			<h3
 				css={css`
-					${textSans.medium({ fontWeight: 'bold' })}
+					${textSansBold17};
 				`}
 			>
 				Payment

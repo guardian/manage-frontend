@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { brand, from, space, textSans } from '@guardian/source/foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans15,
+	textSansBold15,
+} from '@guardian/source/foundations';
 import { conf } from '../../../../server/config';
 
 export const LiveChatPrivacyNotice = () => {
@@ -20,14 +26,14 @@ export const LiveChatPrivacyNotice = () => {
 	`;
 	const titleCss = css`
 		margin: 0;
-		${textSans.small({ fontWeight: 'bold' })};
+		${textSansBold15};
 	`;
 	const paragraphCss = css`
-		${textSans.small()};
+		${textSans15};
 		max-width: 830px;
 		margin: 0;
 		a {
-			color: ${brand[500]};
+			color: ${palette.brand[500]};
 			text-decoration: underline;
 		}
 	`;
@@ -60,8 +66,8 @@ export const LiveChatPrivacyNoticeLink = () => {
 		margin-bottom: ${space[2]}px;
 		text-align: right;
 		a {
-			${textSans.small()};
-			color: ${brand[500]};
+			${textSans15};
+			color: ${palette.brand[500]};
 			text-decoration: underline;
 		}
 	`;

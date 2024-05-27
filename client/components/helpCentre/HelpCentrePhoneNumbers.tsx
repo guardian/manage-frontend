@@ -1,17 +1,23 @@
 import { css } from '@emotion/react';
-import { from, neutral, space, textSans } from '@guardian/source/foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans17,
+	textSansBold20,
+} from '@guardian/source/foundations';
 import { getHelpSectionIcon } from '../mma/shared/assets/HelpSectionIcons';
 import { CallCentreEmailAndNumbers } from '../shared/CallCenterEmailAndNumbers';
 
 const containerCss = css`
-	border-top: 1px solid ${neutral['86']};
-	border-left: 1px solid ${neutral['86']};
-	border-right: 1px solid ${neutral['86']};
+	border-top: 1px solid ${palette.neutral['86']};
+	border-left: 1px solid ${palette.neutral['86']};
+	border-right: 1px solid ${palette.neutral['86']};
 `;
 
 const headingCss = css`
-	${textSans.large({ fontWeight: 'bold' })};
-	color: ${neutral[20]};
+	${textSansBold20};
+	color: ${palette.neutral[20]};
 	position: relative;
 	margin: 0;
 	padding: 18px 0 18px 60px;
@@ -38,7 +44,7 @@ const headingIconWideCss = css`
 
 const subtitleCss = css`
 	display: none;
-	${textSans.medium()};
+	${textSans17};
 	padding: 0 ${space[4]}px ${space[4]}px ${space[4]}px;
 	margin: 0;
 `;

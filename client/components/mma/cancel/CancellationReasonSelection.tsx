@@ -3,7 +3,7 @@ import {
 	from,
 	palette,
 	space,
-	textSans,
+	textSansBold17,
 	until,
 } from '@guardian/source/foundations';
 import {
@@ -103,7 +103,7 @@ const ReasonPicker = ({
 							float: left;
 							background-color: ${palette.neutral[97]};
 							border-bottom: 1px solid ${palette.neutral[86]};
-							${textSans.medium({ fontWeight: 'bold' })};
+							${textSansBold17}
 							${from.tablet} {
 								padding: ${space[3]}px ${space[5]}px;
 							}
@@ -184,7 +184,7 @@ const ReasonPicker = ({
 									background-color: ${palette.neutral[97]};
 									border-bottom: 1px solid
 										${palette.neutral[86]};
-									${textSans.medium({ fontWeight: 'bold' })};
+									${textSansBold17}
 									${from.tablet} {
 										padding: ${space[3]}px ${space[5]}px;
 									}

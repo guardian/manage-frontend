@@ -2,11 +2,11 @@ import { css } from '@emotion/react';
 import {
 	breakpoints,
 	from,
-	neutral,
 	palette,
 	space,
-	textSans,
-	titlepiece,
+	textSans17,
+	textSansBold17,
+	titlepiece42,
 } from '@guardian/source/foundations';
 import Color from 'color';
 import { Link } from 'react-router-dom';
@@ -20,8 +20,8 @@ interface SectionHeaderProps {
 const chevronCss = css`
 	width: 7px;
 	height: 7px;
-	border-top: 2px solid ${neutral['7']};
-	border-right: 2px solid ${neutral['7']};
+	border-top: 2px solid ${palette.neutral['7']};
+	border-right: 2px solid ${palette.neutral['7']};
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%) rotate(-135deg);
@@ -53,13 +53,13 @@ const divCss = css`
 `;
 
 const linkCss = css`
-	${textSans.medium()};
+	${textSans17};
 	color: ${palette.neutral[0]};
 	position: relative;
 `;
 
 const spanCss = css`
-	${textSans.medium({ fontWeight: 'bold' })};
+	${textSansBold17};
 	color: ${palette.neutral[0]};
 `;
 
@@ -73,7 +73,7 @@ export const SectionHeader = (props: SectionHeaderProps) => {
 		: gridItemPlacement(3, 14);
 
 	const h1Css = (pageHasNav: boolean | undefined) => css`
-		font: ${titlepiece.small()};
+		${titlepiece42};
 		font-size: 2rem;
 		${{ ...gridItemPlacement(1, 12) }};
 		margin: ${space[9]}px 0 0 0;

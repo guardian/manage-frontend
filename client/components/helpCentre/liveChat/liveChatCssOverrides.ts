@@ -1,9 +1,8 @@
 import { css } from '@emotion/react';
 import {
-	brand,
-	neutral,
+	palette,
 	space,
-	textSans,
+	textSans14,
 	until,
 } from '@guardian/source/foundations';
 
@@ -53,12 +52,12 @@ export const liveChatCss = css`
 	}
 	.waitingStateButtonContainer .waitingCancelChat {
 		border-radius: 0;
-		border: 1px solid ${brand['500']};
-		background-color: ${neutral['100']};
+		border: 1px solid ${palette.brand['500']};
+		background-color: ${palette.neutral['100']};
 		font-weight: bold;
 	}
 	.waitingStateButtonContainer .waitingCancelChat .label {
-		color: ${brand['500']};
+		color: ${palette.brand['500']};
 	}
 	.waitingStateButtonContainer .waitingCancelChat:focus {
 		text-decoration: none;
@@ -102,36 +101,36 @@ export const liveChatCss = css`
 		border-radius: 0;
 	}
 	.dialogButtonContainer button:nth-of-type(odd) {
-		background: ${brand['500']};
+		background: ${palette.brand['500']};
 	}
 	.dialogButtonContainer button:nth-of-type(odd):hover {
-		background: ${brand['400']};
+		background: ${palette.brand['400']};
 	}
 	.dialogButtonContainer button .label {
 		font-weight: bold;
 	}
 	.dialogButtonContainer button:nth-of-type(odd) .label {
-		color: ${neutral['100']};
+		color: ${palette.neutral['100']};
 	}
 	.dialogButtonContainer button:nth-of-type(odd):focus {
 		text-decoration: none;
 	}
 	.dialogButtonContainer button:nth-of-type(even) {
-		border: 1px solid ${brand['500']};
-		background: ${neutral['100']};
+		border: 1px solid ${palette.brand['500']};
+		background: ${palette.neutral['100']};
 	}
 	.embeddedServiceSidebarButton.uiButton--inverse:not(:disabled):focus,
 	.embeddedServiceSidebarButton.uiButton--inverse:not(:disabled):hover {
-		background: ${neutral['100']};
+		background: ${palette.neutral['100']};
 	}
 	.dialogButtonContainer button:nth-of-type(even):hover {
-		border: 1px solid ${brand['400']};
+		border: 1px solid ${palette.brand['400']};
 	}
 	.dialogButtonContainer button:nth-of-type(even) span {
-		color: ${brand['500']};
+		color: ${palette.brand['500']};
 	}
 	.dialogButtonContainer button:nth-of-type(even):hover span {
-		color: ${brand['400']};
+		color: ${palette.brand['400']};
 	}
 	.embeddedServiceLiveAgentStateWaiting .embeddedServiceLoadingBalls {
 		align-self: normal;
@@ -144,14 +143,13 @@ export const liveChatCss = css`
 	.dialogTextContainer #dialogTextTitle,
 	.dialogTextContainer #dialogTextBody,
 	.prechat--no-agents-msg-holder p {
-		${textSans.medium()};
+		${textSans14};
 		text-align: left;
-		color: ${neutral['46']};
-		font-size: 14px;
+		color: ${palette.neutral['46']};
 		padding: 0;
 	}
 	.prechat--no-agents-msg-holder p a {
-		color: ${brand['500']};
+		color: ${palette.brand['500']};
 	}
 	.waitingStateContent .waitingGreetingContent,
 	.dialogTextContainer {
@@ -171,7 +169,7 @@ export const liveChatCss = css`
 		text-align: left;
 		margin-left: 0;
 		margin-right: 0;
-		color: ${neutral['46']};
+		color: ${palette.neutral['46']};
 	}
 	.endChatContainer button {
 		font-weight: bold;
@@ -180,21 +178,21 @@ export const liveChatCss = css`
 		margin-top: ${space[3]}px;
 	}
 	.endChatContainer button:nth-of-type(even) .label {
-		color: ${brand['500']};
+		color: ${palette.brand['500']};
 		text-decoration: underline;
 	}
 	.endChatContainer .endChatButton:focus {
-		background: ${brand['500']};
+		background: ${palette.brand['500']};
 		text-decoration: none;
 	}
 	.embeddedServiceLiveAgentStateChatEventMessage .eventMessage,
 	.messageArea .chatSessionStartTime {
 		font-size: 13px;
-		color: ${neutral['46']};
+		color: ${palette.neutral['46']};
 	}
 
 	.chatContent .chat-content.agent a {
-		color: ${neutral['100']};
+		color: ${palette.neutral['100']};
 		text-decoration: underline;
 	}
 `;

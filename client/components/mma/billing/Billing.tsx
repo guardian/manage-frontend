@@ -1,11 +1,10 @@
 import { css } from '@emotion/react';
 import {
-	brand,
-	brandAlt,
-	headline,
-	neutral,
+	headlineBold20,
+	headlineBold28,
+	palette,
 	space,
-	textSans,
+	textSans17,
 	until,
 } from '@guardian/source/foundations';
 import { capitalize } from 'lodash';
@@ -73,7 +72,7 @@ type BillingResponse = [
 ];
 
 const subHeadingTitleCss = `
-${headline.small({ fontWeight: 'bold' })};
+${headlineBold28};
 ${until.tablet} {
   font-size: 1.25rem;
   line-height: 1.6;
@@ -81,7 +80,7 @@ ${until.tablet} {
 `;
 
 const subHeadingBorderTopCss = css`
-	border-top: 1px solid ${neutral['86']};
+	border-top: 1px solid ${palette.neutral['86']};
 	margin: ${space[12]}px 0 ${space[5]}px;
 `;
 
@@ -221,10 +220,10 @@ function renderProductBillingInfo([mmaCategory, productDetails]: [
 							{hasCancellationPending && (
 								<p
 									css={css`
-										${textSans.medium()};
+										${textSans17};
 									`}
 								>
-									<ErrorIcon fill={brandAlt[200]} />
+									<ErrorIcon fill={palette.brandAlt[200]} />
 									<span
 										css={css`
 											margin-left: ${space[2]}px;
@@ -246,7 +245,7 @@ function renderProductBillingInfo([mmaCategory, productDetails]: [
 							/>
 							<SixForSixExplainerIfApplicable
 								additionalCss={css`
-									${textSans.medium()};
+									${textSans17};
 								`}
 								mainPlan={mainPlan}
 								hasCancellationPending={hasCancellationPending}
@@ -263,13 +262,13 @@ function renderProductBillingInfo([mmaCategory, productDetails]: [
 									<LinkButton
 										colour={
 											productDetail.alertText
-												? brand[400]
-												: brand[800]
+												? palette.brand[400]
+												: palette.brand[800]
 										}
 										textColour={
 											productDetail.alertText
-												? neutral[100]
-												: brand[400]
+												? palette.neutral[100]
+												: palette.brand[400]
 										}
 										fontWeight={'bold'}
 										alert={!!productDetail.alertText}
@@ -327,10 +326,10 @@ function getAppStoreMessage(subscription: AppSubscription) {
 function renderInAppPurchase(subscription: AppSubscription) {
 	const tableHeadingCss = css`
 		width: 100%;
-		${headline.xxsmall({ fontWeight: 'bold' })};
+		${headlineBold20};
 		margin: 0;
 		padding: ${space[3]}px ${space[5]}px;
-		background-color: ${neutral[97]};
+		background-color: ${palette.neutral[97]};
 		${until.tablet} {
 			font-size: 1.0625rem;
 			line-height: 1.6;
@@ -351,8 +350,8 @@ function renderInAppPurchase(subscription: AppSubscription) {
 			</h2>
 			<div
 				css={css`
-					${textSans.medium()};
-					border: 1px solid ${neutral[86]};
+					${textSans17};
+					border: 1px solid ${palette.neutral[86]};
 					display: flex;
 					flex-wrap: wrap;
 					margin: ${space[5]}px 0;

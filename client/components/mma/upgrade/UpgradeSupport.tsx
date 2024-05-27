@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { headline, space, textSans, until } from '@guardian/source/foundations';
+import {
+	headlineBold24,
+	headlineBold34,
+	space,
+	textSans17,
+	until,
+} from '@guardian/source/foundations';
 import { Stack } from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { formatAmount } from '@/client/utilities/utils';
@@ -59,9 +65,9 @@ export const UpgradeSupport = () => {
 						<h2
 							css={css`
 								margin: 0;
-								${headline.medium({ fontWeight: 'bold' })};
+								${headlineBold34};
 								${until.tablet} {
-									${headline.xsmall({ fontWeight: 'bold' })};
+									${headlineBold24};
 								}
 							`}
 						>
@@ -69,7 +75,7 @@ export const UpgradeSupport = () => {
 						</h2>
 						<div
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 								padding-bottom: ${space[2]}px;
 								${until.tablet} {
 									padding-bottom: ${space[4]}px;

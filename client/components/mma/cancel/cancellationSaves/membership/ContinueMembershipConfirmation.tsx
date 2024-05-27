@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, space, textSans } from '@guardian/source/foundations';
+import { from, space, textSans17 } from '@guardian/source/foundations';
 import { Button, LinkButton, Stack } from '@guardian/source/react-components';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
@@ -48,7 +48,7 @@ export const ContinueMembershipConfirmation = () => {
 				<h2 css={headingCss}>Thank you for keeping your Membership</h2>
 				<p
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 						${from.tablet} {
 							span {
 								display: block;

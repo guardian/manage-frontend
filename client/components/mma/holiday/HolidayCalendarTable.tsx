@@ -1,12 +1,10 @@
 import { css } from '@emotion/react';
 import {
-	brand,
-	brandAlt,
 	from,
-	labs,
-	neutral,
+	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold17,
 } from '@guardian/source/foundations';
 import {
 	dateAddDays,
@@ -57,12 +55,12 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
 	`;
 
 	const monthTitleCss = css`
-		${textSans.medium({ fontWeight: 'bold' })};
+		${textSansBold17};
 		line-height: 35px;
 		text-align: center;
 		display: block;
 		padding: ${space[2]}px 0 5px;
-		border: 1px solid ${neutral[86]};
+		border: 1px solid ${palette.neutral[86]};
 		border-bottom: 0;
 	`;
 
@@ -71,13 +69,13 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
 		width: 14.2%;
 		text-align: center;
 		padding: 0 0 ${space[3]}px;
-		${textSans.medium({ fontWeight: 'bold' })};
+		${textSansBold17};
 		text-decoration: none;
 		&:first-of-type {
-			border-left: 1px solid ${neutral[86]};
+			border-left: 1px solid ${palette.neutral[86]};
 		}
 		&:last-of-type {
-			border-right: 1px solid ${neutral[86]};
+			border-right: 1px solid ${palette.neutral[86]};
 		}
 	`;
 
@@ -94,10 +92,18 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
 			cellRowNumber === Math.round(cellRowNumber);
 		const isCellOnLastRow =
 			Math.floor(finalDateIndex / 7) === Math.floor(cellRowNumber);
-		const borderTopColor = isActive ? neutral[86] : neutral[93];
-		const borderRightColor = isActive ? neutral[86] : neutral[93];
-		const borderLeftColor = isActive ? neutral[86] : neutral[93];
-		const borderBottomColor = isActive ? neutral[86] : neutral[93];
+		const borderTopColor = isActive
+			? palette.neutral[86]
+			: palette.neutral[93];
+		const borderRightColor = isActive
+			? palette.neutral[86]
+			: palette.neutral[93];
+		const borderLeftColor = isActive
+			? palette.neutral[86]
+			: palette.neutral[93];
+		const borderBottomColor = isActive
+			? palette.neutral[86]
+			: palette.neutral[93];
 		return css`
 			flex-grow: 1;
 			width: 14.2%;
@@ -111,8 +117,8 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
 				? `1px solid ${borderBottomColor}`
 				: 'none'};
 			padding: ${space[3]}px 0;
-			${textSans.medium()};
-			color: ${neutral[7]};
+			${textSans17};
+			color: ${palette.neutral[7]};
 			opacity: ${isActive ? '1' : '0.5'};
 			cursor: ${isActive ? 'pointer' : 'default'};
 			user-select: none;
@@ -125,7 +131,7 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
           height: 0;
           border-left: 8px solid transparent;
           border-right: 8px solid transparent;
-          border-bottom: 8px solid ${brand[400]};
+          border-bottom: 8px solid ${palette.brand[400]};
           position: absolute;
           top: 0;
           left: -4px;
@@ -144,7 +150,9 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
           width: 100%;
           height: 100%;
           padding: 4px;
-          background-color: ${isSelected ? brandAlt[400] : labs[400]};
+          background-color: ${
+				isSelected ? palette.brandAlt[400] : palette.labs[400]
+			};
           z-index: -1;
         }
       `
@@ -153,7 +161,7 @@ export const HolidayCalendarTable = (props: HolidayCalendarTableProps) => {
 				vertical-align: top;
 			}
 			&:hover {
-				outline: 2px solid ${brandAlt[400]};
+				outline: 2px solid ${palette.brandAlt[400]};
 				outline-offset: -8px;
 			}
 		`;

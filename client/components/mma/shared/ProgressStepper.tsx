@@ -1,6 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source/foundations';
+import { palette, space, textSansBold14 } from '@guardian/source/foundations';
 import { TickInCircle } from './assets/TickInCircle';
 
 interface Step {
@@ -23,7 +23,7 @@ const NumberedBullet = ({
 	return (
 		<div
 			css={css`
-				${textSans.xsmall({ fontWeight: 'bold' })};
+				${textSansBold14};
 				color: ${palette.neutral[100]};
 				width: 22px;
 				height: 22px;
@@ -51,7 +51,7 @@ const Step = ({
 	return (
 		<div
 			css={css`
-				${textSans.xsmall({ fontWeight: 'bold' })};
+				${textSansBold14};
 				color: ${index > currentStep
 					? palette.neutral[46]
 					: palette.brand[400]};

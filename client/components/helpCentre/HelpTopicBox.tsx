@@ -1,5 +1,10 @@
 import { css } from '@emotion/react';
-import { from, neutral, space, textSans } from '@guardian/source/foundations';
+import {
+	from,
+	palette,
+	space,
+	textSansBold17,
+} from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { trackEvent } from '../../utilities/analytics';
@@ -17,7 +22,7 @@ interface HelpTopicBoxProps {
 }
 
 const boxHolderStyle = css`
-	border: 1px solid ${neutral['86']};
+	border: 1px solid ${palette.neutral['86']};
 	flex-basis: 100%;
 	display: flex;
 	flex-direction: column;
@@ -33,12 +38,12 @@ const boxHolderStyle = css`
 `;
 
 const boxTitleStyle = css`
-	${textSans.medium({ fontWeight: 'bold' })};
+	${textSansBold17};
 	color: #333333;
 	position: relative;
 	margin: 0;
 	padding: 18px 0 18px 60px;
-	border-bottom: 1px solid ${neutral['86']};
+	border-bottom: 1px solid ${palette.neutral['86']};
 	width: 100%;
 `;
 

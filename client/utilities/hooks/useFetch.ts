@@ -45,7 +45,9 @@ export function useFetch<T = unknown>(
 
 	useEffect(() => {
 		// Do nothing if the url is not given
-		if (!url) return;
+		if (!url) {
+			return;
+		}
 
 		const fetchData = async () => {
 			dispatch({ type: 'loading' });
@@ -64,11 +66,15 @@ export function useFetch<T = unknown>(
 
 				const data = (await response.json()) as T;
 				cache.current[url] = data;
-				if (cancelRequest.current) return;
+				if (cancelRequest.current) {
+					return;
+				}
 
 				dispatch({ type: 'fetched', payload: data });
 			} catch (error) {
-				if (cancelRequest.current) return;
+				if (cancelRequest.current) {
+					return;
+				}
 
 				dispatch({ type: 'error', payload: error as Error });
 			}

@@ -1,6 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { brand } from '@guardian/source/foundations';
+import { palette } from '@guardian/source/foundations';
 
 interface LoadingCircleIconProps {
 	additionalCss?: SerializedStyles;
@@ -14,7 +14,7 @@ const lightblueStyles = css`
 	fill: transparent;
 `;
 const darkblueStyles = css`
-	stroke: ${brand['400']};
+	stroke: ${palette.brand['400']};
 	stroke-dasharray: 820;
 	stroke-dashoffset: 820;
 	stroke-width: ${circleLineThickness};

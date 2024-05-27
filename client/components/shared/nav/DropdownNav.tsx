@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand, from, neutral, space } from '@guardian/source/foundations';
+import { from, neutral, palette, space } from '@guardian/source/foundations';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gridItemPlacement } from '../../../styles/grid';
@@ -11,8 +11,8 @@ import { NAV_LINKS } from './NavConfig';
 const dropdownNavCss = (showMenu: boolean) =>
 	css({
 		display: `${showMenu ? 'block' : 'none'}`,
-		background: brand[400],
-		borderTop: `1px solid ${brand[600]}`,
+		background: palette.brand[400],
+		borderTop: `1px solid ${palette.brand[600]}`,
 		position: 'absolute',
 		top: '50px',
 		left: 0,
@@ -65,7 +65,7 @@ const dropdownNavItemCss = css({
 	display: 'flex',
 	alignItems: 'center',
 	':hover, :focus': {
-		backgroundColor: brand[300],
+		backgroundColor: palette.brand[300],
 		textDecoration: 'none',
 	},
 	':focus': {
@@ -80,7 +80,7 @@ const dropdownNavItemCss = css({
 		right: 0,
 		width: 'calc(100% - 46px)',
 		height: '1px',
-		backgroundColor: `${brand[600]}`,
+		backgroundColor: `${palette.brand[600]}`,
 	},
 	[from.desktop]: {
 		padding: '18px 14px',

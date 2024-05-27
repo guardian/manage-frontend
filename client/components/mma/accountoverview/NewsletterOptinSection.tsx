@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { neutral, space, textSans } from '@guardian/source/foundations';
+import { palette, space, textSans17 } from '@guardian/source/foundations';
 import { Button, Checkbox } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
 import type { ChangeEvent, FormEvent } from 'react';
@@ -158,7 +158,7 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
 					<Fragment key={newsletter.id}>
 						<p
 							css={css`
-								${textSans.medium()}
+								${textSans17};
 							`}
 						>
 							{newsletter.description}
@@ -170,7 +170,7 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
 							<fieldset
 								css={css`
 									padding: ${space[3]}px ${space[5]}px;
-									border: 1px solid ${neutral[86]};
+									border: 1px solid ${palette.neutral[86]};
 									margin-bottom: ${space[5]}px;
 								`}
 							>

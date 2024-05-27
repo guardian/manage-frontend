@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, textSans } from '@guardian/source/foundations';
+import { space, textSans17 } from '@guardian/source/foundations';
 import { Button, Stack } from '@guardian/source/react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
@@ -58,7 +58,7 @@ export const ValueOfSupport = () => {
 				</h2>
 				<p
 					css={css`
-						${textSans.medium()}
+						${textSans17};
 					`}
 				>
 					Since you first joined as a Guardian Member, we've lived

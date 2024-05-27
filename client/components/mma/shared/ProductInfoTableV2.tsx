@@ -3,7 +3,7 @@ import {
 	from,
 	palette,
 	space,
-	textSans,
+	textSans17,
 	until,
 } from '@guardian/source/foundations';
 import { parseDate } from '@/shared/dates';
@@ -26,12 +26,12 @@ const valueBoxCss = css`
 `;
 
 const tableEntryCss = css`
-	${textSans.medium()};
+	${textSans17};
 	margin-right: ${space[2]}px;
 `;
 
 const tableValueCss = css`
-	${textSans.medium()};
+	${textSans17};
 	color: ${palette.neutral[38]};
 	${from.tablet} {
 		padding-right: 32px;

@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand, neutral, space, textSans } from '@guardian/source/foundations';
+import { palette, space, textSans17 } from '@guardian/source/foundations';
 import type * as React from 'react';
 import { InfoIconDark } from './assets/InfoIconDark';
 
@@ -10,8 +10,8 @@ interface InfoSectionProps {
 export const InfoSection = (props: InfoSectionProps) => (
 	<p
 		css={css`
-			${textSans.medium()};
-			background-color: ${neutral[97]};
+			${textSans17};
+			background-color: ${palette.neutral[97]};
 			padding: ${space[5]}px ${space[5]}px ${space[5]}px 49px;
 			margin-bottom: 12px;
 			position: relative;
@@ -26,7 +26,7 @@ export const InfoSection = (props: InfoSectionProps) => (
 				left: ${space[5]}px;
 			`}
 		>
-			<InfoIconDark fillColor={brand[500]} />
+			<InfoIconDark fillColor={palette.brand[500]} />
 		</i>
 		{props.children}
 	</p>

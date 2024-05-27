@@ -1,5 +1,10 @@
 import { css } from '@emotion/react';
-import { from, headline, neutral, space } from '@guardian/source/foundations';
+import {
+	from,
+	headlineBold20,
+	palette,
+	space,
+} from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { useState } from 'react';
 import type { Topic } from '../../../../shared/contactUsTypes';
@@ -24,8 +29,8 @@ export const TopicForm = (props: TopicFormProps) => {
 		<>
 			<h2
 				css={css`
-					${headline.xxsmall({ fontWeight: 'bold' })};
-					border-top: 1px solid ${neutral[86]};
+					${headlineBold20};
+					border-top: 1px solid ${palette.neutral[86]};
 					margin-top: ${space[6]}px;
 					padding: ${space[1]}px 0;
 					${from.desktop} {

@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import {
-	brand,
 	from,
-	headline,
-	neutral,
+	headlineBold28,
+	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold17,
 	until,
 } from '@guardian/source/foundations';
 import { Button, Stack } from '@guardian/source/react-components';
@@ -43,9 +43,8 @@ export const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 	}
 
 	const subHeadingCss = `
-    border-top: 1px solid ${neutral['86']};
-    ${headline.small()};
-    font-weight: bold;
+    border-top: 1px solid ${palette.neutral['86']};
+	${headlineBold28};
     margin-top: 50px;
     ${until.tablet} {
       font-size: 1.25rem;
@@ -94,7 +93,7 @@ export const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 				)}
 				<section
 					css={css`
-						border: 1px solid ${neutral['86']};
+						border: 1px solid ${palette.neutral['86']};
 						margin-top: ${space[5]}px;
 					`}
 				>
@@ -102,9 +101,9 @@ export const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 						css={css`
 							margin: 0;
 							padding: ${space[3]}px;
-							background-color: ${neutral['97']};
-							border-bottom: 1px solid ${neutral['86']};
-							${textSans.medium({ fontWeight: 'bold' })};
+							background-color: ${palette.neutral['97']};
+							border-bottom: 1px solid ${palette.neutral['86']};
+							${textSansBold17};
 							${from.tablet} {
 								padding: ${space[3]}px ${space[5]}px;
 							}
@@ -118,7 +117,7 @@ export const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 					<dl
 						css={css`
 							padding: 0 ${space[3]}px;
-							${textSans.medium()};
+							${textSans17};
 							display: flex;
 							flex-wrap: wrap;
 							flex-direction: column;
@@ -181,7 +180,7 @@ export const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 				</section>
 				<p
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 						margin-top: ${space[9]}px;
 					`}
 				>
@@ -217,10 +216,10 @@ export const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 					<Link
 						to={'..'}
 						css={css`
-							${textSans.medium()};
+							${textSans17};
 							font-weight: bold;
 							margin-left: 22px;
-							color: ${brand[400]};
+							color: ${palette.brand[400]};
 						`}
 					>
 						Go back
@@ -229,9 +228,9 @@ export const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 				<Stack space={5}>
 					<p
 						css={css`
-							${textSans.medium()};
+							${textSans17};
 							margin: ${space[12]}px 0 0;
-							color: ${neutral[46]};
+							color: ${palette.neutral[46]};
 						`}
 					>
 						If you need separate delivery addresses for each of your
@@ -239,7 +238,7 @@ export const DeliveryAddressReview = (props: WithProductType<ProductType>) => {
 						<span
 							css={css`
 								cursor: pointer;
-								color: ${brand[500]};
+								color: ${palette.brand[500]};
 								text-decoration: underline;
 							`}
 							onClick={() =>

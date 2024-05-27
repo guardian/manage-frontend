@@ -1,10 +1,11 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
+	headlineBold20,
 	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold17,
 	until,
 } from '@guardian/source/foundations';
 import { useState } from 'react';
@@ -124,7 +125,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 
 	const tableTitleCss2 = css`
 		display: table-cell;
-		${headline.xxsmall({ fontWeight: 'bold' })};
+		${headlineBold20};
 		padding: ${space[5]}px;
 		background-color: ${palette.neutral[97]};
 		border-bottom: 1px solid ${palette.neutral[86]};
@@ -141,7 +142,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 	const thCss2 = css`
 		display: table-cell;
 		text-align: left;
-		${textSans.medium({ fontWeight: 'bold' })}
+		${textSansBold17};
 		padding: ${space[5]}px;
 		${until.tablet} {
 			padding: ${space[3]}px;
@@ -164,7 +165,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 
 	const tdCss2 = (rowIndex: number, title?: string) => css`
 		display: block;
-		${textSans.medium()}
+		${textSans17};
 		padding: ${space[3]}px ${space[3]}px 0;
 		:last-of-type {
 			${until.tablet} {
@@ -176,8 +177,8 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 			display: ${title ? 'inline-block' : 'none'};
 			width: calc(60% - ${space[3]}px);
 			padding-right: ${space[3]}px;
-			${textSans.medium({ fontWeight: 'bold' })}
-			content: "${title}";
+			${textSansBold17};
+			content: '${title}';
 		}
 		${from.tablet} {
 			display: table-cell;

@@ -1,8 +1,14 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source/foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans15,
+	textSans17,
+} from '@guardian/source/foundations';
 
 export const benefitsCss = css`
-	${textSans.medium()};
+	${textSans17};
 	color: ${palette.neutral[7]};
 	list-style: none;
 	margin: 0 0 0 -4px;
@@ -31,7 +37,7 @@ export const lineBreakCss = css`
 `;
 
 export const benefitsButtonCss = css`
-	${textSans.small()}
+	${textSans15};
 	margin-top: ${space[1]}px;
 	padding: 0;
 	color: ${palette.brand[500]};

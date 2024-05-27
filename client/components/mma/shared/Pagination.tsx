@@ -1,6 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { neutral, space, textSans } from '@guardian/source/foundations';
+import { neutral, space, textSans17 } from '@guardian/source/foundations';
 import {
 	SvgChevronLeftSingle,
 	SvgChevronRightSingle,
@@ -97,7 +97,7 @@ export const Pagination = (props: PaginationProps) => {
 			<div
 				css={css`
 					display: flex;
-					${textSans.medium()}
+					${textSans17};
 					color: ${neutral[46]};
 					> span {
 						margin-right: ${space[3]}px;

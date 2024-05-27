@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import {
-	headline,
+	headlineBold28,
 	palette,
 	space,
-	textSans,
+	textSans17,
 	until,
 } from '@guardian/source/foundations';
 import { Stack } from '@guardian/source/react-components';
@@ -64,7 +64,7 @@ type AccountOverviewResponse = [
 const subHeadingCss = css`
 	margin: ${space[12]}px 0 ${space[6]}px;
 	border-top: 1px solid ${palette.neutral['86']};
-	${headline.small({ fontWeight: 'bold' })};
+	${headlineBold28};
 	${until.tablet} {
 		font-size: 1.25rem;
 		line-height: 1.6;
@@ -241,7 +241,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 									<div>
 										<p
 											css={css`
-												${textSans.medium()}
+												${textSans17};
 											`}
 										>
 											{
