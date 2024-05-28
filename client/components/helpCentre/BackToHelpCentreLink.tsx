@@ -12,7 +12,8 @@ const dividerCss = css`
 const linkCss = css`
 	display: flex;
 	align-items: center;
-	${textSans17}: color: ${palette.brand[500]};
+	${textSans17};
+	color: ${palette.brand[500]};
 	&:hover,
 	&:focus {
 		text-decoration: underline;
