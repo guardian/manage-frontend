@@ -1,13 +1,15 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
+	headlineBold28,
 	palette,
 	space,
-	textSans,
+	textSans15,
+	textSans17,
+	textSansBold17,
 	until,
-} from '@guardian/source-foundations';
-import { LinkButton } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { LinkButton } from '@guardian/source/react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { DATE_FNS_SHORT_OUTPUT_FORMAT, dateString } from '@/shared/dates';
@@ -123,8 +125,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 			<h2
 				css={css`
 					border-top: 1px solid ${palette.neutral['86']};
-					${headline.small()};
-					font-weight: bold;
+					${headlineBold28};
 					${until.tablet} {
 						font-size: 1.25rem;
 						line-height: 1.6;
@@ -135,7 +136,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 			</h2>
 			<p
 				css={css`
-					${textSans.medium()};
+					${textSans17};
 				`}
 			>
 				Your delivery problem report has been successfully submitted.
@@ -148,7 +149,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 					padding: ${space[3]}px ${space[3]}px ${space[3]}px
 						${space[3] * 2 + 17}px;
 					background-color: ${palette.neutral[97]};
-					${textSans.small()};
+					${textSans15};
 					${from.tablet} {
 						margin: ${space[5]}px 0;
 					}
@@ -195,7 +196,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 						padding: 14px ${space[3]}px;
 						background-color: ${palette.neutral['97']};
 						border-bottom: 1px solid ${palette.neutral['86']};
-						${textSans.medium({ fontWeight: 'bold' })};
+						${textSansBold17};
 						${from.tablet} {
 							padding: 14px ${space[5]}px;
 						}
@@ -206,7 +207,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 				<dl
 					css={css`
 						padding: 0 ${space[3]}px;
-						${textSans.medium()};
+						${textSans17};
 						display: flex;
 						flex-wrap: wrap;
 						flex-direction: column;
@@ -318,7 +319,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 				{deliveryProblemCredit?.showCredit && (
 					<dl
 						css={css`
-							${textSans.medium()};
+							${textSans17};
 							padding: ${space[5]}px;
 							margin: ${space[5]}px;
 							background-color: ${palette.neutral['97']};
@@ -386,7 +387,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 								background-color: ${palette.neutral['97']};
 								border-bottom: 1px solid
 									${palette.neutral['86']};
-								${textSans.medium({ fontWeight: 'bold' })};
+								${textSansBold17};
 								${from.tablet} {
 									padding: 14px ${space[5]}px;
 								}
@@ -414,7 +415,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 						>
 							<p
 								css={css`
-									${textSans.medium()}
+									${textSans17};
 								`}
 							>
 								Your change of address affects the following

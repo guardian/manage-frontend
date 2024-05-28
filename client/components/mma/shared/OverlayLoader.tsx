@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { textSans } from '@guardian/source-foundations';
+import { textSans17 } from '@guardian/source/foundations';
 import { Spinner } from '../../shared/Spinner';
 
 const overlay = css`
@@ -18,7 +18,7 @@ const overlay = css`
 	width: 100%;
 	height: 100%;
 	text-align: center;
-	${textSans.medium()};
+	${textSans17};
 `;
 
 const overlayDialog = css`

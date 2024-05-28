@@ -4,8 +4,9 @@ import {
 	from,
 	palette,
 	space,
-	textSans,
-} from '@guardian/source-foundations';
+	textSans17,
+	textSansBold17,
+} from '@guardian/source/foundations';
 import { useEffect, useState } from 'react';
 import type { MembersDataApiResponse } from '../../../shared/productResponse';
 import { isProduct } from '../../../shared/productResponse';
@@ -127,13 +128,13 @@ export const KnownIssues = (props: KnownIssuesProp) => {
 	`;
 
 	const h4Css = css`
-		${textSans.medium({ fontWeight: 'bold' })};
+		${textSansBold17};
 		color: ${palette.error[400]};
 		margin: 0;
 	`;
 
 	const aCss = css`
-		${textSans.medium()};
+		${textSans17};
 		text-decoration: underline;
 		color: ${palette.neutral[0]};
 	`;

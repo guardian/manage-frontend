@@ -1,11 +1,5 @@
 import { css } from '@emotion/react';
-import {
-	brand,
-	brandAlt,
-	from,
-	neutral,
-	space,
-} from '@guardian/source-foundations';
+import { from, palette, space } from '@guardian/source/foundations';
 import { Link } from 'react-router-dom';
 import { sans } from '../../../styles/fonts';
 import type { MenuSpecificNavItem, NavItem } from './NavConfig';
@@ -36,12 +30,12 @@ const leftNavLinkCss = (isSelected: boolean | undefined) =>
 		overflow: 'hidden',
 		whiteSpace: 'nowrap',
 		textOverflow: 'ellipsis',
-		background: neutral['100'],
-		color: brand[400],
+		background: palette.neutral['100'],
+		color: palette.brand[400],
 
 		[from.desktop]: {
 			borderLeft: `${space[2]}px solid ${
-				isSelected ? brandAlt[400] : neutral['46']
+				isSelected ? palette.brandAlt[400] : palette.neutral['46']
 			}`,
 			boxShadow: isSelected ? '0 1px 0 white' : undefined,
 			minHeight: 0,
@@ -54,18 +48,20 @@ const leftNavLinkCss = (isSelected: boolean | undefined) =>
 				right: 0,
 				height: '1px',
 				width: 'calc(100% - 22px)',
-				backgroundColor: neutral['86'],
+				backgroundColor: palette.neutral['86'],
 			},
 
 			':hover': {
-				backgroundColor: isSelected ? neutral['100'] : neutral['97'],
+				backgroundColor: isSelected
+					? palette.neutral['100']
+					: palette.neutral['97'],
 			},
 		},
 	});
 
 const leftNavItemCss = (isSelected: boolean | undefined) => ({
 	margin: 0,
-	background: isSelected ? neutral['100'] : neutral['86'],
+	background: isSelected ? palette.neutral['100'] : palette.neutral['86'],
 	display: 'block',
 	width: '100%',
 	[from.tablet]: {

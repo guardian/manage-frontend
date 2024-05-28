@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import type { CMP } from '@guardian/libs';
-import { from, palette } from '@guardian/source-foundations';
-import { BackToTop } from '@guardian/source-react-components';
+import { from, palette } from '@guardian/source/foundations';
+import { BackToTop } from '@guardian/source/react-components';
 import type { SyntheticEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { headline } from '../../../styles/fonts';

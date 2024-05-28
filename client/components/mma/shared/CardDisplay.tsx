@@ -1,6 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 import type { Inlineable } from './inlineable';
 
 interface CardExpiryDetails {

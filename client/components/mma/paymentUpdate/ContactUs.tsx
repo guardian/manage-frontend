@@ -1,14 +1,8 @@
 import { css } from '@emotion/react';
-import {
-	brand,
-	from,
-	neutral,
-	space,
-	textSans,
-} from '@guardian/source-foundations';
+import { from, palette, space, textSans17 } from '@guardian/source/foundations';
 
 const privacyNoticeLinkCss = css`
-	color: ${brand[500]};
+	color: ${palette.brand[500]};
 	text-decoration: underline;
 `;
 
@@ -16,9 +10,9 @@ export const ContactUs = () => (
 	<p
 		css={css`
 			width: 100%;
-			border-top: 1px solid ${neutral[86]};
-			${textSans.medium()};
-			color: ${neutral[46]};
+			border-top: 1px solid ${palette.neutral[86]};
+			${textSans17};
+			color: ${palette.neutral[46]};
 			margin: 0;
 			padding-top: ${space[4]}px;
 

@@ -1,13 +1,13 @@
 import { css } from '@emotion/react';
 import {
-	brand,
 	from,
-	headline,
-	neutral,
+	headlineBold20,
+	palette,
 	space,
-	textSans,
-} from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+	textSans15,
+	textSansBold17,
+} from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import { captureException, captureMessage } from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
@@ -66,7 +66,7 @@ export const HelpCentreArticle = () => {
 
 	const articleContainerCss = css`
 		max-width: 620px;
-		color: ${neutral['7']};
+		color: ${palette.neutral['7']};
 	`;
 	setPageTitle(article?.title);
 
@@ -133,7 +133,7 @@ interface ArticleBodyProps {
 
 const ArticleBody = (props: ArticleBodyProps) => {
 	const aCss = css`
-		color: ${brand[500]};
+		color: ${palette.brand[500]};
 		text-decoration: underline;
 	`;
 	const ulCss = css`
@@ -155,7 +155,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
 		}
 	`;
 	const articleBodyH2Css = css`
-		${headline.xxsmall({ fontWeight: 'bold' })};
+		${headlineBold20};
 		margin: ${space[6]}px 0 ${space[2]}px;
 		b {
 			font-weight: 700;
@@ -252,7 +252,7 @@ const ArticleBody = (props: ArticleBodyProps) => {
 const articleFeedbackWidgetCss = css`
 	display: flex;
 	flex-direction: column;
-	border: 1px solid ${neutral[86]};
+	border: 1px solid ${palette.neutral[86]};
 	padding: ${space[4]}px ${space[3]}px;
 	margin: 36px 0 48px;
 	${from.desktop} {
@@ -265,7 +265,7 @@ const articleFeedbackWidgetCss = css`
 	}
 	& p {
 		margin: 0;
-		${textSans.medium({ fontWeight: 'bold' })}
+		${textSansBold17};
 	}
 	& .buttonDiv {
 		min-height: 36px;
@@ -282,7 +282,7 @@ const articleFeedbackWidgetCss = css`
 			}
 		}
 		& p {
-			${textSans.small({ fontWeight: 'regular' })}
+			${textSans15};
 		}
 	}
 `;

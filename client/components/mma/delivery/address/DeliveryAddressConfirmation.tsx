@@ -2,13 +2,14 @@ import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
+	headlineBold28,
 	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold17,
 	until,
-} from '@guardian/source-foundations';
-import { Stack } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { Stack } from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { dateString } from '../../../../../shared/dates';
@@ -60,8 +61,7 @@ const AddressConfirmation = (props: ProductType) => {
 
 	const subHeadingCss = `
     border-top: 1px solid ${palette.neutral['86']};
-    ${headline.small()};
-    font-weight: bold;
+	${headlineBold28};
     margin-top: 50px;
     ${until.tablet} {
       font-size: 1.25rem;
@@ -119,7 +119,7 @@ const AddressConfirmation = (props: ProductType) => {
 								background-color: ${palette.neutral['97']};
 								border-bottom: 1px solid
 									${palette.neutral['86']};
-								${textSans.medium({ fontWeight: 'bold' })};
+								${textSansBold17};
 								${from.tablet} {
 									padding: ${space[3]}px ${space[5]}px;
 								}
@@ -132,7 +132,7 @@ const AddressConfirmation = (props: ProductType) => {
 						<dl
 							css={css`
 								padding: 0 ${space[3]}px;
-								${textSans.medium()};
+								${textSans17};
 								display: flex;
 								flex-wrap: wrap;
 								flex-direction: column;
@@ -195,7 +195,7 @@ const AddressConfirmation = (props: ProductType) => {
 					</section>
 					<p
 						css={css`
-							${textSans.medium()};
+							${textSans17};
 							margin-top: ${space[9]}px;
 						`}
 					>
@@ -236,7 +236,7 @@ const AddressConfirmation = (props: ProductType) => {
 					<Stack space={5}>
 						<p
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 								margin: ${space[12]}px 0 0;
 								color: ${palette.neutral[46]};
 							`}
@@ -334,7 +334,7 @@ export const SuccessMessage = (props: SuccessMessageProps) => (
 			box-sizing: border-box;
 			padding: 14px 14px 14px 50px;
 			margin-bottom: 50px;
-			${textSans.medium()};
+			${textSans17};
 			font-weight: bold;
 			${props.additionalCss}
 		`}

@@ -3,10 +3,11 @@ import {
 	from,
 	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold17,
 	until,
-} from '@guardian/source-foundations';
-import { InlineError } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { InlineError } from '@guardian/source/react-components';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
@@ -42,7 +43,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 	`;
 
 	const keyCss = css`
-		${textSans.medium({ fontWeight: 'bold' })};
+		${textSansBold17};
 		padding: 0 ${space[2]}px 0 0;
 		display: inline-block;
 		vertical-align: top;
@@ -50,7 +51,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 	`;
 
 	const valueCss = css`
-		${textSans.medium()};
+		${textSans17};
 		padding: 0;
 		display: inline-block;
 		vertical-align: top;

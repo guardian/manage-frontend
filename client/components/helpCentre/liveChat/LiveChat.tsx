@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import {
 	Button,
 	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { conf } from '../../../../server/config';

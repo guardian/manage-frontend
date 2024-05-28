@@ -1,4 +1,4 @@
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 import * as React from 'react';
 import { sans } from '../../../../styles/fonts';
 

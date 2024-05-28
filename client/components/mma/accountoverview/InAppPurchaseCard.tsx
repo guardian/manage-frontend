@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
-import { space, textSans } from '@guardian/source-foundations';
-import { Button, Stack } from '@guardian/source-react-components';
-import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
+import { space, textSans17 } from '@guardian/source/foundations';
+import { Button, Stack } from '@guardian/source/react-components';
+import { InfoSummary } from '@guardian/source-development-kitchen/react-components';
 import { capitalize } from 'lodash';
 import { useNavigate } from 'react-router';
 import { dateString } from '../../../../shared/dates';
@@ -78,7 +78,7 @@ export const InAppPurchaseCard = ({
 					>
 						<div
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 							`}
 						>
 							You have unlimited access to the Guardian{' '}

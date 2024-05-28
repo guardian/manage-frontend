@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brandAlt, neutral, space } from '@guardian/source-foundations';
+import { brandAlt, neutral, space } from '@guardian/source/foundations';
 import Color from 'color';
 import type * as React from 'react';
 import { Link } from 'react-router-dom';

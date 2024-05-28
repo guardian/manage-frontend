@@ -3,20 +3,25 @@ import {
 	error,
 	focusHalo,
 	FocusStyleManager,
-	neutral,
-	textSans,
-} from '@guardian/source-foundations';
-import { InlineError } from '@guardian/source-react-components';
+	palette,
+	textSansBold17,
+} from '@guardian/source/foundations';
+import { InlineError } from '@guardian/source/react-components';
 import type { StripeError } from '@stripe/stripe-js';
 import * as React from 'react';
 
 FocusStyleManager.onlyShowFocusOnTabs();
+
+export interface FieldChangeEvent extends React.ChangeEvent<HTMLInputElement> {
+	error: StripeError;
+}
+
 interface FieldWrapperProps {
 	label: string;
 	width: string;
 	children: JSX.Element;
 	cornerHint?: JSX.Element;
-	onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	onChange?: (event: FieldChangeEvent) => void;
 }
 
 interface FieldWrapperState {
@@ -57,7 +62,7 @@ export class FieldWrapper extends React.Component<
 		if (this.state.error?.message) {
 			borderCss = '4px solid ' + error[400];
 		} else {
-			borderCss = '2px solid ' + neutral[60];
+			borderCss = '2px solid ' + palette.neutral[60];
 		}
 
 		return (
@@ -86,8 +91,8 @@ export class FieldWrapper extends React.Component<
 					<div>
 						<label
 							css={css`
-								${textSans.medium({ fontWeight: 'bold' })};
-								color: ${neutral[7]};
+								${textSansBold17};
+								color: ${palette.neutral[7]};
 							`}
 						>
 							{this.props.label}
@@ -126,9 +131,8 @@ export class FieldWrapper extends React.Component<
 	}
 
 	private validateField =
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're assuming the argument object is an event object?
-		(otherOnChange?: (event: any) => void) =>
-		(field: { error: StripeError }) => {
+		(otherOnChange?: (event: FieldChangeEvent) => void) =>
+		(field: FieldChangeEvent) => {
 			if (otherOnChange) {
 				otherOnChange(field);
 			}

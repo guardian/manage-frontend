@@ -1,18 +1,20 @@
 import { css } from '@emotion/react';
 import {
-	headline,
+	headlineBold24,
+	headlineBold34,
 	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold20,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import {
 	LinkButton,
 	Stack,
 	SvgCalendar,
 	SvgClock,
 	SvgEnvelope,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { useContext } from 'react';
 import { useLocation } from 'react-router';
 import { formatAmount } from '@/client/utilities/utils';
@@ -71,9 +73,9 @@ export const UpgradeSupportSwitchThankYou = () => {
 					<h2
 						css={css`
 							margin: 0;
-							${headline.medium({ fontWeight: 'bold' })};
+							${headlineBold34};
 							${until.tablet} {
-								${headline.xsmall({ fontWeight: 'bold' })};
+								${headlineBold24};
 							}
 						`}
 					>
@@ -83,7 +85,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 				<Stack space={4}>
 					<div
 						css={css`
-							${textSans.medium()}
+							${textSans17};
 							margin-bottom: 32px;
 						`}
 					>
@@ -108,7 +110,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 					>
 						<h3
 							css={css`
-								${textSans.large({ fontWeight: 'bold' })};
+								${textSansBold20};
 								padding-top: ${space[1]}px;
 								margin: 0;
 							`}

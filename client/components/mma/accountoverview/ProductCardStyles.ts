@@ -1,21 +1,28 @@
 import { css } from '@emotion/react';
-import { from, headline, space, textSans } from '@guardian/source-foundations';
+import {
+	from,
+	headlineBold20,
+	headlineBold28,
+	space,
+	textSans17,
+	textSansBold17,
+} from '@guardian/source/foundations';
 import { textColour } from './ProductCardConfiguration';
 
 export const productCardTitleCss = (dark?: boolean) => css`
-	${headline.xxsmall({ fontWeight: 'bold' })};
+	${headlineBold20};
 	color: ${dark ? textColour.dark : textColour.light};
 	margin-top: 0;
 	margin-bottom: ${space[1]}px;
 	max-width: calc(100% - 97px); // Leave space for gift ribbon
 
 	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
+		${headlineBold28};
 	}
 `;
 
 export const sectionHeadingCss = css`
-	${textSans.medium({ fontWeight: 'bold' })};
+	${textSansBold17};
 	margin-top: 0;
 	margin-bottom: ${space[2]}px;
 `;
@@ -37,7 +44,7 @@ export const productDetailLayoutCss = css`
 `;
 
 export const keyValueCss = css`
-	${textSans.medium()};
+	${textSans17};
 	margin: 0;
 
 	div + div {

@@ -2,11 +2,12 @@ import { css } from '@emotion/react';
 import {
 	breakpoints,
 	from,
-	headline,
+	headlineBold24,
+	headlineBold42,
 	palette,
 	space,
-	textSans,
-} from '@guardian/source-foundations';
+	textSansBold15,
+} from '@guardian/source/foundations';
 import type { ReactElement } from 'react';
 import { useContext, useEffect } from 'react';
 import { gridBase, gridColumns, gridItemPlacement } from '../../styles/grid';
@@ -92,7 +93,7 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 	`;
 
 	const titleCss = css`
-		${headline.xsmall({ fontWeight: 'bold' })};
+		${headlineBold24};
 		font-size: 1.4375rem;
 		grid-column: 1 / -1;
 		margin-top: 28px;
@@ -101,7 +102,7 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 
 		${props.compactTitle &&
 		`
-			${textSans.small({ fontWeight: 'bold' })};
+			${textSansBold15};
 			margin-top: ${space[1]}px;
 			margin-bottom: ${space[1]}px;
 		`}
@@ -113,14 +114,14 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 		${from.tablet} {
 			${props.compactTitle &&
 			`
-				${headline.xsmall({ fontWeight: 'bold' })};
+				${headlineBold24};
 				margin-top: 28px;
 				margin-bottom: ${space[2]}px;
 			`}
 		}
 
 		${from.desktop} {
-			${headline.large({ fontWeight: 'bold' })};
+			${headlineBold42};
 			grid-column: 5 / span 8;
 			margin: 0;
 			padding: ${space[1]}px ${space[2]}px;

@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { space, textSans } from '@guardian/source-foundations';
-import { Button, Stack } from '@guardian/source-react-components';
+import { space, textSans17 } from '@guardian/source/foundations';
+import { Button, Stack } from '@guardian/source/react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { CallCentreAccordion } from '@/client/components/shared/CallCentreAccordion';
@@ -98,7 +98,7 @@ export const CancellationLanding = () => {
 					</h2>
 					<p
 						css={css`
-							${textSans.medium()};
+							${textSans17};
 						`}
 					>
 						To cancel today, please choose from the following
@@ -118,7 +118,7 @@ export const CancellationLanding = () => {
 						</Heading>
 						<p
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 								margin: 0;
 							`}
 						>
@@ -145,7 +145,7 @@ export const CancellationLanding = () => {
 						</Heading>
 						<p
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 								margin: 0;
 							`}
 						>

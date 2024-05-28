@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import {
-	headline,
+	headlineBold28,
 	palette,
 	space,
-	textSans,
+	textSans17,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import { useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { featureSwitches } from '@/shared/featureSwitches';
@@ -56,8 +56,7 @@ import { SixForSixExplainerIfApplicable } from './SixForSixExplainer';
 import { UpdateAmount } from './updateAmount/UpdateAmount';
 
 const subHeadingTitleCss = `
-    ${headline.small()};
-    font-weight: bold;
+	${headlineBold28};
     ${until.tablet} {
       font-size: 1.25rem;
       line-height: 1.6;
@@ -146,7 +145,7 @@ const InnerContent = ({
 			{hasCancellationPending && (
 				<p
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 					`}
 				>
 					<ErrorIcon fill={palette.brandAlt[200]} />
@@ -193,7 +192,7 @@ const InnerContent = ({
 			</h2>
 			<SixForSixExplainerIfApplicable
 				additionalCss={css`
-					${textSans.medium()};
+					${textSans17};
 				`}
 				mainPlan={mainPlan}
 				hasCancellationPending={hasCancellationPending}
@@ -288,7 +287,7 @@ const InnerContent = ({
 					</h2>
 					<p
 						css={css`
-							${textSans.medium()}
+							${textSans17};
 						`}
 					>
 						Check delivery history and report an issue.
@@ -317,7 +316,7 @@ const InnerContent = ({
 						</h2>
 						<p
 							css={css`
-								${textSans.medium()}
+								${textSans17};
 							`}
 						>
 							Don’t fret - you can manage your suspensions by
@@ -349,7 +348,7 @@ const InnerContent = ({
 						</h2>
 						<p
 							css={css`
-								${textSans.medium()}
+								${textSans17};
 							`}
 						>
 							To renew this one-off{' '}
@@ -359,7 +358,7 @@ const InnerContent = ({
 						<CallCentreEmailAndNumbers />
 						<p
 							css={css`
-								${textSans.medium()}
+								${textSans17};
 							`}
 						>
 							Alternatively, if you would prefer to start a
@@ -407,7 +406,7 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 		<div
 			css={css`
 				margin: ${space[24]}px 0 0 auto;
-				${textSans.medium()}
+				${textSans17};
 				color: ${palette.neutral[46]};
 			`}
 		>

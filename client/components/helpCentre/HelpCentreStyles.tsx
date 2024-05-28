@@ -1,19 +1,19 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
-	neutral,
+	headlineBold28,
+	palette,
 	space,
-	textSans,
-} from '@guardian/source-foundations';
+	textSans17,
+} from '@guardian/source/foundations';
 
 export const linkAnchorStyle = css`
 	display: inline-block;
 	width: 100%;
-	${textSans.medium()};
-	color: ${neutral['7']};
+	${textSans17};
+	color: ${palette.neutral['7']};
 	:visited {
-		color: ${neutral['7']};
+		color: ${palette.neutral['7']};
 	}
 `;
 
@@ -21,8 +21,8 @@ export const linkArrowStyle = css`
 	display: block;
 	width: 7px;
 	height: 7px;
-	border-top: 2px solid ${neutral['7']};
-	border-right: 2px solid ${neutral['7']};
+	border-top: 2px solid ${palette.neutral['7']};
+	border-right: 2px solid ${palette.neutral['7']};
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%) rotate(45deg);
@@ -37,13 +37,13 @@ export const linksListStyle = css`
 
 export const linkListItemStyle = css`
 	padding: ${space[3]}px ${space[5]}px ${space[3]}px 0;
-	border-bottom: 1px solid ${neutral['86']};
+	border-bottom: 1px solid ${palette.neutral['86']};
 	position: relative;
 `;
 
 export const containterCss = css`
 	width: 100%;
-	border: 1px solid ${neutral['86']};
+	border: 1px solid ${palette.neutral['86']};
 `;
 
 export const sectionTitleCss = (
@@ -53,8 +53,8 @@ export const sectionTitleCss = (
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	color: ${neutral['7']};
-	${textSans.medium()};
+	color: ${palette.neutral['7']};
+	${textSans17};
 	margin: 0;
 	padding: ${space[4]}px 14px ${space[4]}px ${space[3]}px;
 	${from.desktop} {
@@ -67,8 +67,8 @@ export const sectionTitleCss = (
 		display: block;
 		width: 7px;
 		height: 7px;
-		border-top: 2px solid ${neutral['7']};
-		border-right: 2px solid ${neutral['7']};
+		border-top: 2px solid ${palette.neutral['7']};
+		border-right: 2px solid ${palette.neutral['7']};
 		position: absolute;
 		top: 50%;
 		transform: translateY(${isOpen ? '-10%' : '-50%'})
@@ -89,13 +89,13 @@ export const sectionTitleCss = (
       left: 0px;
       width: 100%;
       height: 1px;
-      background-color: ${neutral['86']}
+      background-color: ${palette.neutral['86']}
     }
   `}
 `;
 
 export const innerSectionDivCss = css`
-	${textSans.medium()};
+	${textSans17};
 	margin-bottom: 0;
 	padding: ${space[4]}px ${space[5]}px ${space[4]}px 0;
 	margin: 0 ${space[3]}px;
@@ -108,15 +108,15 @@ export const innerSectionCss = (isOpen: boolean) => css`
 	padding: 0;
 	list-style: none;
 	background-color: rgba(193, 216, 252, 0.3);
-	border-top: 1px solid ${neutral[86]};
+	border-top: 1px solid ${palette.neutral[86]};
 `;
 
 export const h2Css = css`
 	margin-top: 0;
 	margin-bottom: ${space[6]}px;
 	padding-top: 2px;
-	border-top: 1px solid ${neutral['86']};
-	${headline.small({ fontWeight: 'bold' })};
+	border-top: 1px solid ${palette.neutral['86']};
+	${headlineBold28};
 	${from.desktop} {
 		font-size: 32px;
 	}

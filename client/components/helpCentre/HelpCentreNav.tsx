@@ -1,11 +1,12 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	neutral,
+	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold20,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { helpCentreNavConfig } from './HelpCentreConfig';
@@ -33,25 +34,27 @@ const desktopUlCss = css`
 `;
 
 const desktopLiCss = (isSelectedTopic: boolean, isFirstTopic: boolean) => css`
-	${textSans.medium()};
-	color: ${neutral['7']};
+	${textSans17};
+	color: ${palette.neutral['7']};
 	border-left: ${isSelectedTopic
 		? `${space[2]}px solid #121212`
 		: `${space[2]}px solid #dcdcdc`};
 	font-weight: ${isSelectedTopic ? '700' : 'normal'};
 	cursor: pointer;
 	:hover {
-		background-color: ${isSelectedTopic ? 'transparent' : neutral['93']};
+		background-color: ${isSelectedTopic
+			? 'transparent'
+			: palette.neutral['93']};
 	}
 	::after {
 		content: '';
 		display: block;
-		border-bottom: 1px solid ${neutral['86']};
+		border-bottom: 1px solid ${palette.neutral['86']};
 	}
 	::before {
 		content: '';
 		display: ${isFirstTopic ? 'block' : 'none'};
-		border-top: 1px solid ${neutral['86']};
+		border-top: 1px solid ${palette.neutral['86']};
 	}
 `;
 
@@ -68,7 +71,7 @@ const mobileLiCss = (topicIndex: number) => css`
 
 const divCss = css`
 	width: 100%;
-	border: 1px solid ${neutral['86']};
+	border: 1px solid ${palette.neutral['86']};
 	${from.desktop} {
 		display: none;
 	}
@@ -89,7 +92,7 @@ export const HelpCentreNav = (props: HelpCentreNavProps) => {
 
 	const h2Css = css`
 		${sectionTitleCss(open, false)};
-		${textSans.large({ fontWeight: 'bold' })};
+		${textSansBold20};
 		${from.tablet} {
 			padding: ${space[3]}px ${space[3] * 2 + 15}px ${space[3]}px
 				${space[5]}px;

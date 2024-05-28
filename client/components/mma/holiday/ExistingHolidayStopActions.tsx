@@ -1,4 +1,4 @@
-import { Button } from '@guardian/source-react-components';
+import { Button } from '@guardian/source/react-components';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../../shared/dates';

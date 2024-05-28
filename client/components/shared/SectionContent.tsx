@@ -5,7 +5,7 @@ import {
 	palette,
 	space,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { createContext, useState } from 'react';
 import { gridBase, gridItemPlacement } from '../../styles/grid';
@@ -84,7 +84,7 @@ const divCss = (hasNav: boolean | undefined) => css`
 
 export const SelectedTopicObjectContext = createContext<
 	Dispatch<SetStateAction<string | undefined>>
->(undefined!);  
+>(undefined!);
 
 export const SectionContent = (props: SectionContentProps) => {
 	const [selectedTopicId, setSelectedTopicId] = useState<string | undefined>(

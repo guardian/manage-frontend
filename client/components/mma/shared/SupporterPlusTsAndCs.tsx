@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, textSans } from '@guardian/source-foundations';
+import { space, textSans12 } from '@guardian/source/foundations';
 import * as Sentry from '@sentry/browser';
 import { Link } from 'react-router-dom';
 import { getBillingPeriodAdjective } from '../../../../shared/productTypes';
@@ -11,7 +11,7 @@ import { getBenefitsThreshold } from '../../../utilities/pricingConfig/supporter
 import { formatAmount } from '../../../utilities/utils';
 
 const smallPrintCss = css`
-	${textSans.xxsmall()};
+	${textSans12};
 	margin-top: 0;
 	margin-bottom: 0;
 	color: #606060;

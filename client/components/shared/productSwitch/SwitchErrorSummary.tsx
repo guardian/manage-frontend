@@ -1,4 +1,4 @@
-import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
+import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import { Link } from 'react-router-dom';
 import {
 	errorSummaryBlockLinkCss,

@@ -1,12 +1,15 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
+	headlineBold24,
+	headlineBold28,
 	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold17,
+	textSansBold20,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import {
 	LinkButton,
 	Stack,
@@ -14,7 +17,7 @@ import {
 	SvgClock,
 	SvgEnvelope,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
@@ -121,20 +124,20 @@ const thankYouBannerCss = css`
 `;
 
 const thankYouBannerHeadingCss = css`
-	${headline.xsmall({ fontWeight: 'bold' })}
+	${headlineBold24};
 	margin-top: 0;
 	margin-bottom: ${space[5]}px;
 	max-width: 30ch;
 `;
 
 const thankYouBannerSubheadingCss = css`
-	${textSans.large({ fontWeight: 'bold' })};
+	${textSansBold20};
 	margin: 0;
 	border-top: 1px solid rgba(255, 255, 255, 0.6);
 `;
 
 const thankYouBannerCopyCss = css`
-	${textSans.medium()};
+	${textSans17};
 	margin: 0;
 	max-width: 45ch;
 `;
@@ -222,12 +225,12 @@ const WhatHappensNext = (props: {
 };
 
 const thankYouCss = css`
-	${headline.xsmall({ fontWeight: 'bold' })};
+	${headlineBold24};
 	margin-top: 0;
 	margin-bottom: 0;
 
 	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
+		${headlineBold28};
 		span {
 			display: block;
 			color: ${palette.brand['500']};
@@ -280,12 +283,12 @@ const signInContentContainerCss = css`
 `;
 
 const signInHeadingCss = css`
-	${textSans.medium({ fontWeight: 'bold' })};
+	${textSansBold17};
 	margin: 0;
 `;
 
 const signInParaCss = css`
-	${textSans.medium()};
+	${textSans17};
 	margin: 0;
 	max-width: 64%;
 `;

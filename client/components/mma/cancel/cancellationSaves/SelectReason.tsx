@@ -1,12 +1,18 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans17,
+	textSansBold17,
+} from '@guardian/source/foundations';
 import {
 	Button,
 	InlineError,
 	Radio,
 	RadioGroup,
 	Stack,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import type { FormEvent } from 'react';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
@@ -42,7 +48,7 @@ import { CancellationContext } from '../CancellationContainer';
 import type { CancellationReason } from '../cancellationReason';
 
 const paragraphListCss = css`
-	${textSans.medium()};
+	${textSans17};
 	${from.tablet} {
 		span {
 			display: block;
@@ -55,7 +61,7 @@ const reasonLegendCss = css`
 	width: 100%;
 	float: left;
 	margin-top: ${space[2]}px;
-	${textSans.medium({ fontWeight: 'bold' })};
+	${textSansBold17};
 `;
 
 const CancellationInfo = ({

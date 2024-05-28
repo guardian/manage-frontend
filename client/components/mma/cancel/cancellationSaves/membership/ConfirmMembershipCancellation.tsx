@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
-import { Button, Stack } from '@guardian/source-react-components';
+import { palette, space, textSans17 } from '@guardian/source/foundations';
+import { Button, Stack } from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { MDA_TEST_USER_HEADER } from '../../../../../../shared/productResponse';
@@ -156,7 +156,7 @@ export const ConfirmMembershipCancellation = () => {
 				</Heading>
 				<p
 					css={css`
-						${textSans.medium()}
+						${textSans17};
 					`}
 				>
 					Please keep in mind that you will be losing access to your
@@ -164,7 +164,7 @@ export const ConfirmMembershipCancellation = () => {
 				</p>
 				<p
 					css={css`
-						${textSans.medium()}
+						${textSans17};
 					`}
 				>
 					If you cancel you will not be able to rejoin the Guardian

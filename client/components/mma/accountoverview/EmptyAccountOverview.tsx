@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import {
-	headline,
+	headlineBold28,
 	palette,
 	space,
-	textSans,
+	textSans17,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import { useState } from 'react';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
@@ -26,8 +26,7 @@ export const EmptyAccountOverview = () => {
 				css={css`
 					margin-top: 50px;
 					border-top: 1px solid ${palette.neutral['86']};
-					${headline.small()};
-					font-weight: bold;
+					${headlineBold28};
 					${until.tablet} {
 						font-size: 1.25rem;
 						line-height: 1.6;
@@ -38,7 +37,7 @@ export const EmptyAccountOverview = () => {
 			</h2>
 			<p
 				css={css`
-					${textSans.medium()};
+					${textSans17};
 				`}
 			>
 				When you subscribe or contribute, you’ll be able to see your
@@ -48,7 +47,7 @@ export const EmptyAccountOverview = () => {
 			</p>
 			<dl
 				css={css`
-					${textSans.medium()}
+					${textSans17};
 					background-color: ${palette.neutral[97]};
 					border: 1px solid ${palette.neutral[86]};
 					margin: 30px 0 0 0;
@@ -80,7 +79,7 @@ export const EmptyAccountOverview = () => {
 			</dl>
 			<p
 				css={css`
-					${textSans.medium()};
+					${textSans17};
 					margin: ${space[6]}px 0 30px 0;
 				`}
 			>
@@ -110,7 +109,7 @@ export const EmptyAccountOverview = () => {
 					css={css`
 						margin: 0;
 						padding: 0;
-						${textSans.medium()}
+						${textSans17};
 					`}
 				>
 					If you are already supporting the Guardian, it may be linked

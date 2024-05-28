@@ -1,13 +1,14 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
+	headlineBold28,
 	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold17,
 	until,
-} from '@guardian/source-foundations';
-import { Button, Stack } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { Button, Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
@@ -226,7 +227,7 @@ const DeliveryRecordsProblemReviewFC = (
 			<h2
 				css={css`
 					border-top: 1px solid ${palette.neutral['86']};
-					${headline.small({ fontWeight: 'bold' })};
+					${headlineBold28};
 					${until.tablet} {
 						font-size: 1.25rem;
 						line-height: 1.6;
@@ -246,7 +247,7 @@ const DeliveryRecordsProblemReviewFC = (
 						padding: ${space[3]}px;
 						background-color: ${palette.neutral['97']};
 						border-bottom: 1px solid ${palette.neutral['86']};
-						${textSans.medium({ fontWeight: 'bold' })};
+						${textSansBold17};
 						${from.tablet} {
 							padding: ${space[3]}px ${space[5]}px;
 						}
@@ -257,7 +258,7 @@ const DeliveryRecordsProblemReviewFC = (
 				<dl
 					css={css`
 						padding: 0 ${space[3]}px;
-						${textSans.medium()};
+						${textSans17};
 						display: flex;
 						flex-wrap: wrap;
 						flex-direction: column;
@@ -343,9 +344,7 @@ const DeliveryRecordsProblemReviewFC = (
 						>
 							<h4
 								css={css`
-									${textSans.medium({
-										fontWeight: 'bold',
-									})};
+									${textSansBold17};
 									margin: 0;
 								`}
 							>
@@ -390,7 +389,7 @@ const DeliveryRecordsProblemReviewFC = (
 						>
 							<h4
 								css={css`
-									${textSans.medium()};
+									${textSans17};
 									margin: 0;
 								`}
 							>
@@ -441,7 +440,7 @@ const DeliveryRecordsProblemReviewFC = (
 								margin: ${space[3]}px;
 								padding: 0 ${space[3]}px 0
 									${space[5] + space[2]}px;
-								${textSans.medium()};
+								${textSans17};
 								${from.tablet} {
 									margin: ${space[5]}px;
 									padding: 0 ${space[5]}px 0
@@ -481,7 +480,7 @@ const DeliveryRecordsProblemReviewFC = (
 						</span>
 						<dl
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 								padding: ${space[3]}px;
 								margin: ${space[3]}px;
 								background-color: ${palette.neutral['97']};
@@ -564,7 +563,7 @@ const DeliveryRecordsProblemReviewFC = (
 								margin: ${space[3]}px;
 								padding: 0 ${space[3]}px 0
 									${space[5] + space[2]}px;
-								${textSans.medium()};
+								${textSans17};
 								${from.tablet} {
 									margin: ${space[5]}px;
 									padding: 0 ${space[5]}px 0
@@ -618,7 +617,7 @@ const DeliveryRecordsProblemReviewFC = (
 				</Button>
 				<Button
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 						background-color: transparent;
 						font-weight: bold;
 						margin-left: 22px;
@@ -642,7 +641,7 @@ const DeliveryRecordsProblemReviewFC = (
 			<Stack space={5}>
 				<p
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 						margin: ${space[6]}px 0 0;
 						color: ${palette.neutral[46]};
 					`}

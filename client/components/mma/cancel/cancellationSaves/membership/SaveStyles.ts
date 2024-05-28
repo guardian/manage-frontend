@@ -3,9 +3,10 @@ import {
 	from,
 	palette,
 	space,
-	textSans,
+	textSansBold17,
+	textSansBold20,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 
 export const cardSectionCss = css`
 	margin-top: ${space[5]}px;
@@ -16,7 +17,7 @@ export const cardSectionCss = css`
 `;
 
 export const newAmountCss = css`
-	${textSans.medium({ fontWeight: 'bold' })};
+	${textSansBold17};
 	padding-top: ${space[3]}px;
 	margin-top: ${space[4]}px;
 	margin-bottom: 0;
@@ -24,7 +25,7 @@ export const newAmountCss = css`
 `;
 
 export const productSubtitleCss = css`
-	${textSans.large({ fontWeight: 'bold' })};
+	${textSansBold20};
 	color: ${palette.neutral[100]};
 	margin: 0;
 	max-width: 20ch;

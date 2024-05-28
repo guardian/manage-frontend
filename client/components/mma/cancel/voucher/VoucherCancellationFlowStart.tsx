@@ -1,4 +1,4 @@
-import { Stack } from '@guardian/source-react-components';
+import { Stack } from '@guardian/source/react-components';
 import type { ProductDetail } from '../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../shared/productResponse';
 import { measure } from '../../../../styles/typography';

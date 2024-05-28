@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, space, until } from '@guardian/source-foundations';
+import { from, space, until } from '@guardian/source/foundations';
 
 export const buttonCentredCss = css`
 	justify-content: center;

@@ -1,12 +1,13 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
+	headlineBold20,
 	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold17,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import type { ReactElement } from 'react';
 
 export interface ProductDescriptionListKeyValue {
@@ -33,7 +34,7 @@ export const ProductDescriptionListTable = (
 			width: ${isTwoColWidth ? '100%' : `calc(60% - ${space[3]}px)`};
 			padding-right: ${space[3]}px;
 			margin: ${isTwoColWidth ? `0 0 ${space[3]}px` : '0'};
-			${textSans.medium({ fontWeight: 'bold' })}
+			${textSansBold17};
 			${from.tablet} {
 				padding-right: ${space[5]}px;
 				width: 16ch;
@@ -56,7 +57,7 @@ export const ProductDescriptionListTable = (
 
 	const tableHeadingCss = css`
 		width: 100%;
-		${headline.xxsmall({ fontWeight: 'bold' })};
+		${headlineBold20};
 		margin: 0;
 		padding: ${space[3]}px ${space[5]}px;
 		background-color: ${palette.neutral[97]};
@@ -120,7 +121,7 @@ export const ProductDescriptionListTable = (
 	return (
 		<div
 			css={css`
-				${textSans.medium()};
+				${textSans17};
 				border: 1px solid ${props.borderColour || palette.neutral[20]};
 				display: flex;
 				flex-wrap: wrap;

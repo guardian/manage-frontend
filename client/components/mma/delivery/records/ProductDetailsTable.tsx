@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
+import { from, palette, space, textSans17 } from '@guardian/source/foundations';
 import { GiftIcon } from '../../shared/assets/GiftIcon';
 
 interface ProductDetailsTableProps {
@@ -10,7 +10,7 @@ interface ProductDetailsTableProps {
 
 export const ProductDetailsTable = (props: ProductDetailsTableProps) => {
 	const dlCss = css`
-		${textSans.medium()};
+		${textSans17};
 		padding: ${space[3]}px;
 		margin: 0;
 		${from.tablet} {

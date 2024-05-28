@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, palette } from '@guardian/source-foundations';
+import { from, palette } from '@guardian/source/foundations';
 import type { DirectDebitDetails } from '../../../../shared/productResponse';
 import { DirectDebitLogo } from './assets/DirectDebitLogo';
 import type { Inlineable } from './inlineable';
@@ -18,11 +18,11 @@ const dashifySortCode = (sortCode: string) => {
 		return cleanedSortCode;
 	}
 	return (
-		cleanedSortCode.substr(0, 2) +
+		cleanedSortCode.substring(0, 2) +
 		'-' +
-		cleanedSortCode.substr(2, 2) +
+		cleanedSortCode.substring(2, 4) +
 		'-' +
-		cleanedSortCode.substr(4, 2)
+		cleanedSortCode.substring(4, 6)
 	);
 };
 

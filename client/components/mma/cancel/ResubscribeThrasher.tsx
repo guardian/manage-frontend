@@ -1,4 +1,4 @@
-import { from, palette } from '@guardian/source-foundations';
+import { from, palette } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
 import {
 	getScopeFromRequestPathOrEmptyString,

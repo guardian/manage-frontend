@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans, until } from '@guardian/source-foundations';
+import {
+	palette,
+	space,
+	textSans14,
+	textSans17,
+	until,
+} from '@guardian/source/foundations';
 import {
 	Button,
 	ChoiceCard,
@@ -9,7 +15,7 @@ import {
 	SvgInfoRound,
 	TextInput,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getBillingPeriodAdjective } from '../../../../../shared/productTypes';
@@ -21,7 +27,7 @@ import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResp
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 
 const smallPrintCss = css`
-	${textSans.xsmall()};
+	${textSans14};
 	margin-top: 0;
 	margin-bottom: 0;
 	color: #606060;
@@ -220,7 +226,7 @@ export const SupporterPlusUpdateAmountForm = (
 						padding: ${space[3]}px ${space[5]}px;
 						margin: 0;
 						border-bottom: 1px solid ${palette.neutral[20]};
-						${textSans.medium()};
+						${textSans17};
 					`}
 				>
 					<dt
@@ -242,7 +248,7 @@ export const SupporterPlusUpdateAmountForm = (
 				</dl>
 				<div
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 						padding: ${space[3]}px ${space[5]}px;
 					`}
 				>

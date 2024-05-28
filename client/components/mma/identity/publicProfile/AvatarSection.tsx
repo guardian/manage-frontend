@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 import * as Sentry from '@sentry/browser';
 import { Form, Formik } from 'formik';
 import { useEffect } from 'react';
@@ -138,7 +138,7 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 		</div>
 	);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the argument object might lack a message attribute
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the argument object might lack a message attribute
 	const getErrorMessage = (error: any) => {
 		let message;
 		if (error.type && error.type === ErrorTypes.VALIDATION) {

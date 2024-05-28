@@ -1,16 +1,15 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import {
-	background,
 	focusHalo,
 	height,
 	palette,
 	space,
-	text,
-	textSans,
+	textSansBold17,
 	transitions,
-} from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
+import Color from 'color';
 import { useEffect, useState } from 'react';
 import type * as React from 'react';
 import { ErrorIcon } from '../../mma/shared/assets/ErrorIcon';
@@ -36,8 +35,7 @@ export const UploadFileInput = (props: UploadFileUploadProps) => {
 			css={css`
 				display: block;
 				color: ${palette.neutral['7']};
-				${textSans.medium()};
-				font-weight: bold;
+				${textSansBold17};
 				${props.additionalCss}
 			`}
 		>
@@ -113,8 +111,8 @@ export const UploadFileInput = (props: UploadFileUploadProps) => {
 						align-items: center;
 						box-sizing: border-box;
 						border: none;
-						background-color: ${background.ctaSecondary};
-						color: ${text.ctaSecondary};
+						background-color: ${palette.brand[800]};
+						color: ${palette.brand[400]};
 						cursor: pointer;
 						transition: ${transitions.medium};
 						text-decoration: none;
@@ -123,7 +121,9 @@ export const UploadFileInput = (props: UploadFileUploadProps) => {
 							${focusHalo};
 						}
 						&:hover {
-							background-color: ${background.ctaSecondaryHover};
+							background-color: ${Color(palette.brand[800], 'hex')
+								.darken(0.1)
+								.string()};
 						}
 					`}
 				>

@@ -1,32 +1,33 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
+	headlineBold20,
+	headlineBold34,
 	palette,
 	space,
-	textSans,
+	textSans15,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import { gridColumns } from '../../../styles/grid';
 
 export const dataPrivacyHeadingCss = css`
 	margin: 0;
 	margin-bottom: 0.5rem;
-	${headline.xxsmall({ fontWeight: 'bold' })}
+	${headlineBold20};
 	color: ${palette.neutral[7]};
 `;
 
 export const dataPrivacyParagraphCss = css`
 	margin-bottom: 0.5rem;
 	margin-top: 0.5rem;
-	${textSans.small()}
+	${textSans15};
 	color: ${palette.neutral[7]};
 `;
 
 export const dataPrivacyUnorderedListCss = css`
 	margin: 0;
 	padding-left: 20px;
-	${textSans.small()}
+	${textSans15};
 	color: ${palette.neutral[7]};
 	li {
 		list-style: none;
@@ -70,7 +71,7 @@ export const dataPrivacyVideoOverlay = css`
 `;
 
 export const dataPrivacyVideoTextHeadline = css`
-	${headline.medium({ fontWeight: 'bold' })};
+	${headlineBold34};
 	left: 25%;
 	bottom: 0;
 	position: absolute;

@@ -1,11 +1,18 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans, until } from '@guardian/source-foundations';
+import {
+	palette,
+	space,
+	textSans17,
+	textSansBold17,
+	textSansBold20,
+	until,
+} from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
-import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
+} from '@guardian/source/react-components';
+import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -38,7 +45,7 @@ const cardHeaderDivCss = css`
 `;
 
 const productSubtitleCss = css`
-	${textSans.medium({ fontWeight: 'bold' })};
+	${textSansBold17};
 	color: ${palette.neutral[100]};
 	margin: 0;
 	max-width: 20ch;
@@ -67,8 +74,9 @@ const buttonStuckCss = css`
 `;
 
 const fromAppHeadingCss = css`
-	${textSans.large({ fontWeight: 'bold', lineHeight: 'regular' })}
-	color:${palette.brand[500]};
+	${textSansBold20};
+	line-height: normal;
+	color: ${palette.brand[500]};
 	margin-bottom: 0;
 `;
 
@@ -156,7 +164,7 @@ export const SwitchOptions = () => {
 					</h2>
 					<p
 						css={css`
-							${textSans.medium()}
+							${textSans17};
 						`}
 					>
 						{isAboveThreshold
@@ -190,7 +198,7 @@ export const SwitchOptions = () => {
 					<Card.Section>
 						<div
 							css={css`
-								${textSans.medium()}
+								${textSans17};
 							`}
 						>
 							You pay {mainPlan.currency}
@@ -211,7 +219,7 @@ export const SwitchOptions = () => {
 					{isAboveThreshold && !switchContext.isFromApp && (
 						<p
 							css={css`
-								${textSans.medium()}
+								${textSans17};
 								margin: 0;
 							`}
 						>
@@ -223,7 +231,7 @@ export const SwitchOptions = () => {
 					{!isAboveThreshold && !switchContext.isFromApp && (
 						<p
 							css={css`
-								${textSans.medium()}
+								${textSans17};
 								margin: 0;
 							`}
 						>

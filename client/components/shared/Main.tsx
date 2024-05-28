@@ -1,4 +1,4 @@
-import { palette, textSansSizes } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 import type { Context, Dispatch, SetStateAction } from 'react';
 import { createContext, useState } from 'react';
 import { serif } from '../../styles/fonts';
@@ -44,7 +44,7 @@ export const Main = ({
 						color: palette.brand[400],
 						position: 'absolute',
 						textAlign: 'center',
-						fontSize: `${textSansSizes.xxsmall}px`,
+						fontSize: '12px',
 						':focus': {
 							position: 'static',
 						},

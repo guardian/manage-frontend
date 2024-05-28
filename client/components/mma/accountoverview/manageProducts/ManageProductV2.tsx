@@ -1,11 +1,13 @@
 import { css } from '@emotion/react';
 import {
-	headline,
+	headlineBold20,
+	headlineBold34,
 	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold17,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import {
 	Button,
 	LinkButton,
@@ -13,7 +15,7 @@ import {
 	SvgCalendar,
 	SvgClock,
 	SvgCreditCard,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PageContainer } from '@/client/components/mma/Page';
 import { ErrorIcon } from '@/client/components/mma/shared/assets/ErrorIcon';
@@ -52,11 +54,9 @@ import {
 } from '@/shared/productTypes';
 
 const subHeadingTitleCss = `
-    ${headline.medium()};
-    font-weight: bold;
+	${headlineBold34};
     ${until.tablet} {
-      ${headline.xxsmall()};
-      font-weight: bold;
+	  ${headlineBold20};
     };
   `;
 const subHeadingBorderTopCss = `
@@ -93,7 +93,8 @@ const InnerContent = ({
 
 	const hasCancellationPending = productDetail.subscription.cancelledAt;
 
-	const isSelfServeCancellationAllowed = productDetail.selfServiceCancellation.isAllowed;
+	const isSelfServeCancellationAllowed =
+		productDetail.selfServiceCancellation.isAllowed;
 
 	const cancelledCopy =
 		specificProductType.cancelledCopy || groupedProductType.cancelledCopy;
@@ -127,7 +128,7 @@ const InnerContent = ({
 			{hasCancellationPending && (
 				<p
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 					`}
 				>
 					<ErrorIcon fill={palette.brandAlt[200]} />
@@ -152,7 +153,7 @@ const InnerContent = ({
 
 			<h3
 				css={css`
-					${textSans.medium({ fontWeight: 'bold' })}
+					${textSansBold17};
 				`}
 			>
 				Payment
@@ -252,24 +253,26 @@ const InnerContent = ({
 							margin-left: ${space[5]}px;
 						`}
 					>
-						{!hasCancellationPending && isSelfServeCancellationAllowed && (
-							<Button
-								priority="subdued"
-								onClick={() => {
-									navigate(
-										'/cancel/' +
-											specificProductType.urlPart,
-										{
-											state: {
-												productDetail: productDetail,
+						{!hasCancellationPending &&
+							isSelfServeCancellationAllowed && (
+								<Button
+									priority="subdued"
+									onClick={() => {
+										navigate(
+											'/cancel/' +
+												specificProductType.urlPart,
+											{
+												state: {
+													productDetail:
+														productDetail,
+												},
 											},
-										},
-									);
-								}}
-							>
-								Cancel {groupedProductType.friendlyName()}
-							</Button>
-						)}
+										);
+									}}
+								>
+									Cancel {groupedProductType.friendlyName()}
+								</Button>
+							)}
 					</div>
 				</div>
 			</section>

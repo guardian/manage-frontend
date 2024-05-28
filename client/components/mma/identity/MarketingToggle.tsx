@@ -1,6 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { ToggleSwitch } from '@guardian/source-react-components-development-kitchen';
+import { ToggleSwitch } from '@guardian/source-development-kitchen/react-components';
 import type { FC } from 'react';
 import { standardSansText, toggleDescriptionPadding } from './sharedStyles';
 

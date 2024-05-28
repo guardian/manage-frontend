@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
-	neutral,
+	headlineBold20,
+	palette,
 	space,
-	textSans,
-} from '@guardian/source-foundations';
+	textSans17,
+} from '@guardian/source/foundations';
 import { captureException } from '@sentry/browser';
 import { useNavigate, useParams } from 'react-router-dom';
 import { contactUsConfig } from '../../../../shared/contactUsConfig';
@@ -167,9 +167,9 @@ export const ContactUs = () => {
 			<div>
 				<h1
 					css={css`
-						${headline.xxsmall({ fontWeight: 'bold' })};
+						${headlineBold20};
 						margin: 0;
-						border-top: 1px solid ${neutral[86]};
+						border-top: 1px solid ${palette.neutral[86]};
 						${from.desktop} {
 							font-size: 1.75rem;
 							border-top: 0;
@@ -181,7 +181,7 @@ export const ContactUs = () => {
 				<p
 					css={css`
 						margin-top: ${space[5]}px;
-						${textSans.medium()};
+						${textSans17};
 						max-width: 620px;
 					`}
 				>

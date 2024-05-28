@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
-	neutral,
+	headlineBold28,
+	palette,
 	space,
-	textSans,
-} from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+	textSans17,
+} from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import { useState } from 'react';
 import { CallCentreEmailAndNumbers } from '../shared/CallCenterEmailAndNumbers';
 import { HelpCentreEmailAndLiveChat } from './HelpCentreEmailAndLiveChat';
@@ -23,9 +23,9 @@ interface HelpCentreContactOptionsProps {
 }
 
 const baseSubtitleStyles = css`
-	border-top: 1px solid ${neutral['86']};
+	border-top: 1px solid ${palette.neutral['86']};
 	margin-top: 30px;
-	${headline.small({ fontWeight: 'bold' })};
+	${headlineBold28};
 `;
 
 const subtitleStyles = css`
@@ -47,7 +47,7 @@ const liveChatSubtitleStyles = css`
 `;
 
 const emailAndLiveChatSubheadingCss = css`
-	${textSans.medium()};
+	${textSans17};
 	margin-bottom: ${space[1]}px;
 	max-width: 320px;
 	${from.tablet} {

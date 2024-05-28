@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
-import { palette, space, until } from '@guardian/source-foundations';
+import { palette, space, until } from '@guardian/source/foundations';
 import {
 	Button,
 	InlineError,
 	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import type { ChangeEvent, FC } from 'react';
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';

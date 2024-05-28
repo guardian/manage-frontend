@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
+import { space } from '@guardian/source/foundations';
 import { useState } from 'react';
 import type { ProductTypeKeys } from '../../../../../shared/productTypes';
 import { expanderButtonCss } from '../../../shared/ExpanderButton';

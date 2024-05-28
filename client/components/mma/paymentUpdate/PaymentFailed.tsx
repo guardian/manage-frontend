@@ -1,15 +1,9 @@
 import { css } from '@emotion/react';
-import {
-	brand,
-	from,
-	neutral,
-	space,
-	textSans,
-} from '@guardian/source-foundations';
+import { from, palette, space, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 
@@ -24,11 +18,11 @@ export function PaymentFailed() {
 		<>
 			<div
 				css={css`
-					border-top: 1px solid ${neutral['86']};
+					border-top: 1px solid ${palette.neutral['86']};
 					text-align: left;
 					margin-top: ${space[9]}px;
 					margin-bottom: ${space[6]}px;
-					${textSans.medium()}
+					${textSans17};
 				`}
 			>
 				<p
@@ -53,14 +47,14 @@ export function PaymentFailed() {
 			</Button>
 			<div
 				css={css`
-					border-top: 1px solid ${neutral[86]};
-					${textSans.medium()};
-					color: ${neutral[46]};
+					border-top: 1px solid ${palette.neutral[86]};
+					${textSans17};
+					color: ${palette.neutral[46]};
 					padding-top: ${space[4]}px;
 					margin-top: ${space[6]}px;
 
 					a {
-						color: ${brand[500]};
+						color: ${palette.brand[500]};
 					}
 
 					${from.tablet} {

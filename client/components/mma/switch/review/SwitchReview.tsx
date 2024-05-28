@@ -1,12 +1,18 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans17,
+	textSansBold17,
+} from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
 	SvgClock,
 	SvgCreditCard,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { SwitchErrorSummary } from '@/client/components/shared/productSwitch/SwitchErrorSummary';
@@ -47,7 +53,7 @@ import type {
 import { SwitchContext } from '../SwitchContainer';
 
 const newAmountCss = css`
-	${textSans.medium({ fontWeight: 'bold' })};
+	${textSansBold17};
 	padding-top: ${space[3]}px;
 	margin-top: ${space[4]}px;
 	margin-bottom: 0;
@@ -201,7 +207,7 @@ export const SwitchReview = () => {
 					<Heading sansSerif>Review change</Heading>
 					<p
 						css={css`
-							${textSans.medium()};
+							${textSans17};
 						`}
 					>
 						{isAboveThreshold
@@ -224,7 +230,7 @@ export const SwitchReview = () => {
 						<Card.Section>
 							<p
 								css={css`
-									${textSans.medium()};
+									${textSans17};
 									margin: 0;
 									max-width: 40ch;
 								`}

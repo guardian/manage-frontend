@@ -1,13 +1,13 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import { palette, space, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
 	SvgClock,
 	SvgCreditCard,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
-import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
+} from '@guardian/source/react-components';
+import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { dateString, parseDate } from '../../../../../../shared/dates';
@@ -77,7 +77,7 @@ const YourNewSupport = ({
 				<Card.Section>
 					<p
 						css={css`
-							${textSans.medium()};
+							${textSans17};
 							margin: 0;
 						`}
 					>
@@ -265,7 +265,7 @@ export const MembershipSwitch = () => {
 				<Heading sansSerif>Review and confirm change</Heading>
 				<p
 					css={css`
-						${textSans.medium()}
+						${textSans17};
 						margin: 0;
 					`}
 				>
@@ -286,7 +286,7 @@ export const MembershipSwitch = () => {
 			<section css={sectionSpacing}>
 				<p
 					css={css`
-						${textSans.medium()}
+						${textSans17};
 						border-top: 1px solid ${palette.neutral[86]};
 						padding-top: ${space[5]}px;
 					`}

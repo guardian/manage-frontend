@@ -5,7 +5,7 @@ import {
 	themeButton,
 	themeButtonReaderRevenueBrand,
 	themeButtonReaderRevenueBrandAlt,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { conf } from '../../../server/config';
 import { trackEvent } from '../../utilities/analytics';
 

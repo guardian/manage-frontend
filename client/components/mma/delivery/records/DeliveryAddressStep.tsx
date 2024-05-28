@@ -1,16 +1,16 @@
 import { css } from '@emotion/react';
 import {
-	brand,
 	from,
-	neutral,
+	palette,
 	space,
-	textSans,
-} from '@guardian/source-foundations';
+	textSans15,
+	textSans17,
+} from '@guardian/source/foundations';
 import {
 	Button,
 	Checkbox,
 	CheckboxGroup,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import Color from 'color';
 import type { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 import { useContext, useState } from 'react';
@@ -339,8 +339,8 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 							<label
 								css={css`
 									display: block;
-									color: ${neutral['7']};
-									${textSans.medium()};
+									color: ${palette.neutral['7']};
+									${textSans17};
 									font-weight: bold;
 								`}
 							>
@@ -378,18 +378,18 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 											css={css`
 												width: 100%;
 												border: 2px solid
-													${neutral['60']};
+													${palette.neutral['60']};
 												padding: 12px;
 												resize: vertical;
-												${textSans.medium()};
+												${textSans17};
 											`}
 										/>
 										<span
 											css={css`
 												display: block;
 												text-align: right;
-												${textSans.small()};
-												color: ${neutral[46]};
+												${textSans15};
+												color: ${palette.neutral[46]};
 											`}
 										>
 											{instructionsRemainingCharacters}{' '}
@@ -399,8 +399,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 									<p
 										css={css`
 											display: block;
-											${textSans.medium()};
-											border: 4px solid ${brand[500]};
+											${textSans17};
+											border: 4px solid
+												${palette.brand[500]};
 											padding: ${space[5]}px ${space[5]}px
 												${space[5]}px 49px;
 											margin: ${space[3]}px 0;
@@ -429,7 +430,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 											`}
 										>
 											<InfoIconDark
-												fillColor={brand[500]}
+												fillColor={palette.brand[500]}
 											/>
 										</i>
 										Delivery instructions are only
@@ -477,10 +478,13 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 						<Button
 							type="submit"
 							css={css`
-								color: ${brand[400]};
-								background-color: ${brand[800]};
+								color: ${palette.brand[400]};
+								background-color: ${palette.brand[800]};
 								:hover {
-									background-color: ${Color(brand[800], 'hex')
+									background-color: ${Color(
+										palette.brand[800],
+										'hex',
+									)
 										.darken(0.1)
 										.string()};
 								}
@@ -499,7 +503,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 							}}
 							css={css`
 								margin-top: ${space[5]}px;
-								color: ${brand[400]};
+								color: ${palette.brand[400]};
 								background-color: transparent;
 								:hover {
 									background-color: transparent;
@@ -513,8 +517,8 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 				{productsAffected.length > 1 && (
 					<p
 						css={css`
-							${textSans.medium()};
-							background-color: ${neutral[97]};
+							${textSans17};
+							background-color: ${palette.neutral[97]};
 							padding: ${space[5]}px ${space[5]}px ${space[5]}px
 								49px;
 							margin: ${space[5]}px 0 ${space[3]}px;
@@ -530,14 +534,14 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 								left: ${space[5]}px;
 							`}
 						>
-							<InfoIconDark fillColor={brand[500]} />
+							<InfoIconDark fillColor={palette.brand[500]} />
 						</i>
 						If you need seperate delivery addresses for each of your
 						subscriptions, please{' '}
 						<span
 							css={css`
 								cursor: pointer;
-								color: ${brand[500]};
+								color: ${palette.brand[500]};
 								text-decoration: underline;
 							`}
 							onClick={() =>

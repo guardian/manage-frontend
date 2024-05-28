@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, space, textSans } from '@guardian/source-foundations';
+import { from, space, textSansBold17 } from '@guardian/source/foundations';
 import type { Topic } from '../../../../shared/contactUsTypes';
 import { TopicIcon } from './TopicIcon';
 
@@ -24,7 +24,7 @@ export const TopicButton = (props: TopicButtonProps) => (
 			border-radius: 4px;
 			background-color: ${props.isSelected ? '#e3f6ff' : '#F6F6F6'};
 			padding: ${space[5]}px ${space[3]}px;
-			${textSans.medium({ fontWeight: 'bold' })};
+			${textSansBold17};
 			color: #052962;
 			text-align: center;
 			cursor: ${props.isSelected ? 'auto' : 'pointer'};

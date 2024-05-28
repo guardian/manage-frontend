@@ -1,4 +1,4 @@
-import { neutral } from '@guardian/source-foundations';
+import { neutral } from '@guardian/source/foundations';
 import { CommentsIcon } from '../../mma/shared/assets/CommentsIcon';
 import { CreditCardIcon } from '../../mma/shared/assets/CreditCardIcon';
 import { DeliveryIcon } from '../../mma/shared/assets/DeliveryIcon';

@@ -1,4 +1,4 @@
-import { from, until } from '@guardian/source-foundations';
+import { from, until } from '@guardian/source/foundations';
 import type {
 	DirectDebitDetails,
 	Subscription,

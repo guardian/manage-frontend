@@ -1,4 +1,4 @@
-import { from, neutral } from '@guardian/source-foundations';
+import { from, neutral } from '@guardian/source/foundations';
 
 interface SignoutIconProps {
 	overrideFillColor?: string;

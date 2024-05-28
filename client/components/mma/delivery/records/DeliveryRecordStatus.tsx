@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { brand, space } from '@guardian/source-foundations';
+import { palette, space } from '@guardian/source/foundations';
 import { capitalize } from 'lodash';
 import { ErrorIcon } from '../../shared/assets/ErrorIcon';
 import { HolidayStopIcon } from '../../shared/assets/HolidayStopIcon';
@@ -131,7 +131,10 @@ export const RecordStatus = (props: RecordStatusProps) => {
 							left: 0;
 						`}
 					>
-						<InfoIconDark fillColor={brand[500]} size={22} />
+						<InfoIconDark
+							fillColor={palette.brand[500]}
+							size={22}
+						/>
 					</i>
 					{changesMessage}
 				</span>

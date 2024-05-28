@@ -1,4 +1,4 @@
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 import type * as React from 'react';
 
 export interface CheckboxProps {

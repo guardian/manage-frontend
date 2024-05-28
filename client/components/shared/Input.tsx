@@ -1,6 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { focusHalo, palette, textSans } from '@guardian/source-foundations';
+import { focusHalo, palette, textSans17 } from '@guardian/source/foundations';
 import { useEffect, useRef } from 'react';
 import type * as React from 'react';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
@@ -41,7 +41,7 @@ export const Input = (props: InputProps) => {
 			css={css`
 				display: block;
 				color: ${palette.neutral['7']};
-				${textSans.medium()};
+				${textSans17};
 				font-weight: bold;
 				${props.additionalCss}
 			`}
@@ -92,7 +92,7 @@ export const Input = (props: InputProps) => {
 				{props.prefixValue && (
 					<span
 						css={css`
-							${textSans.medium()};
+							${textSans17};
 							position: relative;
 							z-index: 2;
 							left: 1ch;
@@ -128,7 +128,7 @@ export const Input = (props: InputProps) => {
 							: `100%`};
 						max-width: ${props.width}ch;
 						height: 44px;
-						${textSans.medium()}
+						${textSans17};
 						color: ${palette.neutral['7']};
 						margin-top: 4px;
 						padding: 0 8px;

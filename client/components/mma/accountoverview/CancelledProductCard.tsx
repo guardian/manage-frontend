@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { LinkButton, Stack } from '@guardian/source-react-components';
-import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
+import { LinkButton, Stack } from '@guardian/source/react-components';
+import { InfoSummary } from '@guardian/source-development-kitchen/react-components';
 import { parseDate } from '@/shared/dates';
 import type { CancelledProductDetail } from '@/shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';

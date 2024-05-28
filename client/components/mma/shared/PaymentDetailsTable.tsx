@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { neutral } from '@guardian/source-foundations';
+import { neutral } from '@guardian/source/foundations';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { PaypalLogo } from './assets/PaypalLogo';
 import { CardDisplay } from './CardDisplay';

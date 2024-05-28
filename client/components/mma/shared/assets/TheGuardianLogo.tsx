@@ -1,4 +1,4 @@
-import { from } from '@guardian/source-foundations';
+import { from } from '@guardian/source/foundations';
 
 interface TheGuardianLogoProps {
 	width?: number;

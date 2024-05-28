@@ -7,8 +7,6 @@ module.exports = {
 		'plugin:react/recommended',
 		'plugin:react/jsx-runtime',
 		'plugin:jest/recommended',
-		'plugin:@guardian/source-foundations/recommended',
-		'plugin:@guardian/source-react-components/recommended',
 	],
 	plugins: ['react', 'jest'],
 	settings: {

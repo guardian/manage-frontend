@@ -1,5 +1,5 @@
-import { ButtonLink, Stack } from '@guardian/source-react-components';
-import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
+import { ButtonLink, Stack } from '@guardian/source/react-components';
+import { InfoSummary } from '@guardian/source-development-kitchen/react-components';
 import { useState } from 'react';
 import { CallCentreEmailAndNumbers } from '@/client/components/shared/CallCenterEmailAndNumbers';
 

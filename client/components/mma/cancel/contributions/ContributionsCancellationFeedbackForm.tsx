@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Button } from '@guardian/source-react-components';
+import { Button } from '@guardian/source/react-components';
 import { useState } from 'react';
 import type * as React from 'react';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';

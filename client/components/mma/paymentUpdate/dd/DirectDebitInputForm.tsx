@@ -1,16 +1,16 @@
 import { css } from '@emotion/react';
-import { from, space, until } from '@guardian/source-foundations';
+import { from, space, until } from '@guardian/source/foundations';
 import {
 	Button,
 	Checkbox,
 	SvgArrowRightStraight,
-} from '@guardian/source-react-components';
-import { ErrorSummary } from '@guardian/source-react-components-development-kitchen';
+} from '@guardian/source/react-components';
+import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import { useState } from 'react';
-import type * as React from 'react';
 import { sans } from '../../../../styles/fonts';
 import { processResponse } from '../../../../utilities/utils';
 import { cleanSortCode } from '../../shared/DirectDebitDisplay';
+import type { FieldChangeEvent } from '../FieldWrapper';
 import { FieldWrapper } from '../FieldWrapper';
 import type { NewPaymentMethodDetail } from '../NewPaymentMethodDetail';
 import { DirectDebitLegal } from './DirectDebitLegal';
@@ -142,7 +142,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 			<FieldWrapper
 				width="100%"
 				label="Account holder name"
-				onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+				onChange={(event: FieldChangeEvent) =>
 					setAccountName(event.target.value)
 				}
 			>
@@ -170,7 +170,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 				<FieldWrapper
 					width="220px"
 					label="Sort Code"
-					onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+					onChange={(event: FieldChangeEvent) =>
 						setSortCode(cleanSortCode(event.target.value))
 					}
 				>
@@ -188,7 +188,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 				<FieldWrapper
 					width="100%"
 					label="Account Number"
-					onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+					onChange={(event: FieldChangeEvent) =>
 						setAccountNumber(event.target.value)
 					}
 				>

@@ -1,5 +1,9 @@
 import { css } from '@emotion/react';
-import { space, textSans } from '@guardian/source-foundations';
+import {
+	space,
+	textSans14,
+	textSansBold17,
+} from '@guardian/source/foundations';
 import type { Stripe } from '@stripe/stripe-js';
 import { useEffect } from 'react';
 import type { Grecaptcha } from '../../../../utilities/captcha';
@@ -58,7 +62,7 @@ export function Recaptcha({
 		<div css={{ marginBottom: `${space[9]}px` }}>
 			<span
 				css={css`
-					${textSans.medium({ fontWeight: 'bold' })};
+					${textSansBold17};
 				`}
 			>
 				Security check
@@ -74,7 +78,7 @@ export function Recaptcha({
 				css={css`
 					width: 300px;
 					margin-top: ${space[3]}px;
-					${textSans.xsmall()}
+					${textSans14};
 				`}
 			>
 				By ticking this box, you agree to let Google perform a security

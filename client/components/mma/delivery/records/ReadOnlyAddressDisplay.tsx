@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { brand, from, space, textSans } from '@guardian/source-foundations';
-import { Button } from '@guardian/source-react-components';
+import { from, palette, space, textSans17 } from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import Color from 'color';
 import type { DeliveryAddress } from '../../../../../shared/productResponse';
 import { DeliveryAddressDisplay } from '../address/DeliveryAddressDisplay';
@@ -13,7 +13,7 @@ interface ReadOnlyAddressDisplayProps {
 }
 export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 	const dtCss = (ignoreMinWidthAtNonMobile?: boolean) => `
-    ${textSans.medium()};
+	${textSans17};
     font-weight: bold;
     display: table-cell;
     vertical-align: top;
@@ -25,7 +25,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 `;
 
 	const ddCss = `
-    ${textSans.medium()};
+	${textSans17};
     display: table-cell;
     vertical-align: top;
     margin-left: 0;
@@ -65,10 +65,13 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 							css={css`
 								display: block;
 								margin-top: ${space[5]}px;
-								color: ${brand[400]};
-								background-color: ${brand[800]};
+								color: ${palette.brand[400]};
+								background-color: ${palette.brand[800]};
 								:hover {
-									background-color: ${Color(brand[800], 'hex')
+									background-color: ${Color(
+										palette.brand[800],
+										'hex',
+									)
 										.darken(0.1)
 										.string()};
 								}
@@ -104,11 +107,11 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 								css={css`
 									display: block;
 									margin-top: ${space[5]}px;
-									color: ${brand[400]};
-									background-color: ${brand[800]};
+									color: ${palette.brand[400]};
+									background-color: ${palette.brand[800]};
 									:hover {
 										background-color: ${Color(
-											brand[800],
+											palette.brand[800],
 											'hex',
 										)
 											.darken(0.1)

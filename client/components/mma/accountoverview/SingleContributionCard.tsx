@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
-import { Button, Stack } from '@guardian/source-react-components';
+import { space } from '@guardian/source/foundations';
+import { Button, Stack } from '@guardian/source/react-components';
 import { useNavigate } from 'react-router';
 import { convertTimestampToDate } from '../../../../shared/dates';
 import type { SingleProductDetail } from '../../../../shared/productResponse';

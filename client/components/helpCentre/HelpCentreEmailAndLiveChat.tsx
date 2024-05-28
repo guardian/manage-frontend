@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans17,
+	textSansBold20,
+} from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
@@ -19,14 +25,14 @@ const contactBoxContainerCss = css`
 	display: flex;
 	flex-direction: column;
 	border: 1px solid ${palette.neutral[86]};
-	${textSans.medium()};
+	${textSans17};
 	${from.phablet} {
 		width: calc(50% - ${space[5] / 2}px);
 	}
 `;
 
 const contactBoxHeadingCss = css`
-	${textSans.large({ fontWeight: 'bold' })};
+	${textSansBold20};
 	color: ${palette.neutral[20]};
 	position: relative;
 	margin: 0;

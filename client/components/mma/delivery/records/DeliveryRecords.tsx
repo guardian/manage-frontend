@@ -1,14 +1,16 @@
 import { css } from '@emotion/react';
 import {
-	brand,
 	from,
-	headline,
+	headlineBold28,
 	neutral,
+	palette,
 	space,
-	textSans,
+	textSans15,
+	textSans17,
+	textSansBold17,
 	until,
-} from '@guardian/source-foundations';
-import { Button, Stack } from '@guardian/source-react-components';
+} from '@guardian/source/foundations';
+import { Button, Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -305,7 +307,7 @@ export const DeliveryRecords = () => {
 					<h2
 						css={css`
 							border-top: 1px solid ${neutral['86']};
-							${headline.small({ fontWeight: 'bold' })};
+							${headlineBold28};
 							${until.tablet} {
 								font-size: 1.25rem;
 								line-height: 1.6;
@@ -320,12 +322,12 @@ export const DeliveryRecords = () => {
 							PageStatus.ReportIssueStep2
 								? space[12]
 								: space[5]}px;
-							${textSans.medium()};
+							${textSans17};
 						`}
 					>
 						<p
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 							`}
 						>
 							Have you been experiencing problems with your
@@ -337,14 +339,14 @@ export const DeliveryRecords = () => {
 						</p>
 						<p
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 							`}
 						>
 							Please remember, you can also{' '}
 							<span
 								css={css`
 									cursor: pointer;
-									color: ${brand[500]};
+									color: ${palette.brand[500]};
 									text-decoration: underline;
 								`}
 								onClick={() =>
@@ -369,7 +371,7 @@ export const DeliveryRecords = () => {
 									padding: ${space[3]}px ${space[3]}px
 										${space[3]}px ${space[3] * 2 + 17}px;
 									background-color: ${neutral[97]};
-									${textSans.small()};
+									${textSans15};
 									${from.tablet} {
 										margin: ${space[5]}px 0;
 									}
@@ -382,7 +384,9 @@ export const DeliveryRecords = () => {
 										left: ${space[3]}px;
 									`}
 								>
-									<InfoIconDark fillColor={brand[500]} />
+									<InfoIconDark
+										fillColor={palette.brand[500]}
+									/>
 								</i>
 								You don't have any available delivery history to
 								report. Your deliveries may be too far in the
@@ -448,8 +452,7 @@ export const DeliveryRecords = () => {
 			<h2
 				css={css`
 					border-top: 1px solid ${neutral['86']};
-					${headline.small()};
-					font-weight: bold;
+					${headlineBold28};
 					opacity: ${pageStatus === PageStatus.ReportIssueStep1 &&
 					filteredData.length > 0
 						? '0.5'
@@ -461,7 +464,7 @@ export const DeliveryRecords = () => {
               border-right: 1px solid ${neutral['86']};
               margin: 0;
               padding: 14px 14px 14px;
-              ${textSans.medium({ fontWeight: 'bold' })};
+			  ${textSansBold17};
             `
 						: ''}
 					${until.tablet} {
@@ -483,7 +486,7 @@ export const DeliveryRecords = () => {
 				(data.results.length === 0 ? (
 					<p
 						css={css`
-							${textSans.medium()};
+							${textSans17};
 						`}
 					>
 						You haven't had a delivery for this subscription yet. In
@@ -493,7 +496,7 @@ export const DeliveryRecords = () => {
 					<>
 						<p
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 							`}
 						>
 							You currently have no deliveries that you can report
@@ -502,14 +505,14 @@ export const DeliveryRecords = () => {
 						</p>
 						<p
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 							`}
 						>
 							If you are still having problems please{' '}
 							<span
 								css={css`
 									cursor: pointer;
-									color: ${brand[500]};
+									color: ${palette.brand[500]};
 									text-decoration: underline;
 								`}
 								onClick={() =>
@@ -576,9 +579,7 @@ export const DeliveryRecords = () => {
 								padding: ${space[3]}px;
 								background-color: ${neutral['97']};
 								border-bottom: 1px solid ${neutral['86']};
-								${textSans.medium({
-									fontWeight: 'bold',
-								})};
+								${textSansBold17};
 								${from.tablet} {
 									padding: ${space[3]}px ${space[5]}px;
 								}
@@ -667,12 +668,12 @@ export const DeliveryRecords = () => {
 						</Button>
 						<Button
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 								background-color: transparent;
 								font-weight: bold;
 								margin-left: 22px;
 								padding: 0;
-								color: ${brand[400]};
+								color: ${palette.brand[400]};
 								:hover {
 									background-color: transparent;
 								}
@@ -686,7 +687,7 @@ export const DeliveryRecords = () => {
 						<Stack space={5}>
 							<p
 								css={css`
-									${textSans.medium()};
+									${textSans17};
 									color: ${neutral[46]};
 									margin: ${space[6]}px 0 0;
 								`}
@@ -696,7 +697,7 @@ export const DeliveryRecords = () => {
 								<span
 									css={css`
 										cursor: pointer;
-										color: ${brand[500]};
+										color: ${palette.brand[500]};
 										text-decoration: underline;
 									`}
 									onClick={() =>

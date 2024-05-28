@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
+import { space } from '@guardian/source/foundations';
 import { Link } from 'react-router-dom';
 import { trackEvent } from '../../utilities/analytics';
 import {

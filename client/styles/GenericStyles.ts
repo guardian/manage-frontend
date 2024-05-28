@@ -1,12 +1,14 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headline,
+	headlineBold24,
+	headlineBold28,
 	palette,
 	space,
-	textSans,
+	textSans12,
+	textSans17,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 
 export const sectionSpacing = css`
 	margin-top: ${space[6]}px;
@@ -16,11 +18,11 @@ export const sectionSpacing = css`
 `;
 
 export const headingCss = css`
-	${headline.xsmall({ fontWeight: 'bold' })};
+	${headlineBold24};
 	margin-top: 0;
 	margin-bottom: 0;
 	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
+		${headlineBold28};
 	}
 	span {
 		display: block;
@@ -35,7 +37,7 @@ export const whatHappensNextIconCss = css`
 `;
 
 export const iconListCss = css`
-	${textSans.medium()};
+	${textSans17};
 	list-style: none;
 	padding: 0;
 	margin-bottom: 0;
@@ -58,17 +60,17 @@ export const iconListCss = css`
 `;
 
 export const productTitleCss = css`
-	${headline.xsmall({ fontWeight: 'bold' })};
+	${headlineBold24};
 	color: ${palette.neutral[100]};
 	margin: 0;
 	max-width: 20ch;
 	${from.tablet} {
-		${headline.small({ fontWeight: 'bold' })};
+		${headlineBold28};
 	}
 `;
 
 export const smallPrintCss = css`
-	${textSans.xxsmall()};
+	${textSans12};
 	margin-top: 0;
 	margin-bottom: 0;
 	color: #606060;
@@ -102,7 +104,7 @@ export const listWithDividersCss = css`
 `;
 
 export const paragraphListCss = css`
-	${textSans.medium()};
+	${textSans17};
 	${from.tablet} {
 		span {
 			display: block;

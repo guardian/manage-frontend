@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source-foundations';
+import { space } from '@guardian/source/foundations';
 import {
 	Button,
 	LinkButton,
 	SvgArrowLeftStraight,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';

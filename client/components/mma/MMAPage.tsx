@@ -1,6 +1,6 @@
 import { css, Global } from '@emotion/react';
 import { ABProvider, useAB } from '@guardian/ab-react';
-import { breakpoints, from, space } from '@guardian/source-foundations';
+import { breakpoints, from, space } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';

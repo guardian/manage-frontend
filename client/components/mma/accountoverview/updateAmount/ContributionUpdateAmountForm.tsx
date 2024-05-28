@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans } from '@guardian/source-foundations';
+import { palette, space, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	ChoiceCard,
 	ChoiceCardGroup,
 	InlineError,
 	TextInput,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
@@ -240,7 +240,7 @@ export const ContributionUpdateAmountForm = (
 						padding: ${space[3]}px ${space[5]}px;
 						margin: 0;
 						border-bottom: 1px solid ${palette.neutral[20]};
-						${textSans.medium()};
+						${textSans17};
 					`}
 				>
 					<dt
@@ -264,7 +264,7 @@ export const ContributionUpdateAmountForm = (
 				</dl>
 				<div
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 						padding: ${space[3]}px ${space[5]}px;
 					`}
 				>

@@ -1,4 +1,4 @@
-import { brand } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 
 interface NewspaperVoucherIconProps {
 	overrideFillColor?: string;
@@ -10,7 +10,7 @@ export const NewspaperVoucherIcon = (props: NewspaperVoucherIconProps) => (
 			fillRule="evenodd"
 			clipRule="evenodd"
 			d="M15.1579 17.1L14.2342 18H0.947368L0 17.1V0.9L0.947368 0H11.3921L15.1579 3.6V17.1Z"
-			fill={props.overrideFillColor || brand[400]}
+			fill={props.overrideFillColor || palette.brand[400]}
 		/>
 		<path
 			fillRule="evenodd"

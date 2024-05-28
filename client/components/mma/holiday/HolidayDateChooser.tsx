@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { from, neutral, space, until } from '@guardian/source-foundations';
-import { Button, InlineError } from '@guardian/source-react-components';
+import { from, palette, space, until } from '@guardian/source/foundations';
+import { Button, InlineError } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
 import { startCase } from 'lodash';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -53,7 +53,7 @@ export const cancelLinkCss = css({
 	fontWeight: 'bold',
 	textDecoration: 'underline',
 	fontSize: '16px',
-	color: `${neutral['7']}`,
+	color: `${palette.neutral['7']}`,
 });
 
 export const buttonBarCss = css({
@@ -79,9 +79,9 @@ const fixedButtonFooterCss = css({
 		bottom: 0,
 		left: 0,
 		right: 0,
-		background: neutral[100],
+		background: palette.neutral[100],
 		padding: '10px',
-		boxShadow: '0 0 5px' + neutral[60],
+		boxShadow: '0 0 5px' + palette.neutral[60],
 	},
 });
 
@@ -488,7 +488,7 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 								fontWeight: 'bold',
 								textDecoration: 'underline',
 								fontSize: '16px',
-								color: neutral[20],
+								color: palette.neutral[20],
 							}}
 							to=".."
 							state={routerState}

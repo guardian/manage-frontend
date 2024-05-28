@@ -4,7 +4,7 @@ import {
 	from,
 	palette,
 	space,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { TheGuardianLogo } from '../mma/shared/assets/TheGuardianLogo';
 import { DropdownNav } from './nav/DropdownNav';

@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import { palette, textSans } from '@guardian/source-foundations';
+import { palette, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
 	SvgInfoRound,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
-import { InfoSummary } from '@guardian/source-react-components-development-kitchen';
+} from '@guardian/source/react-components';
+import { InfoSummary } from '@guardian/source-development-kitchen/react-components';
 import { useNavigate } from 'react-router';
 import {
 	cancellationFormatDate,
@@ -49,7 +49,7 @@ const PaymentMethod = ({
 }) => (
 	<div
 		css={css`
-			${textSans.medium()};
+			${textSans17}
 		`}
 		data-qm-masking="blocklist"
 	>
@@ -165,7 +165,7 @@ export const ProductCard = ({
 		productCardConfiguration[specificProductType.productType];
 
 	const benefitsTextCss = css`
-		${textSans.medium()}
+		${textSans17};
 		margin: 0;
 		max-width: 35ch;
 	`;
@@ -456,7 +456,7 @@ export const ProductCard = ({
 						<h4 css={sectionHeadingCss}>Payment</h4>
 						<p
 							css={css`
-								${textSans.medium()};
+								${textSans17};
 								margin: 0;
 							`}
 						>

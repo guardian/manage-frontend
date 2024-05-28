@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { textSans } from '@guardian/source-foundations';
+import { textSans15 } from '@guardian/source/foundations';
 
 type GiftArrowAlign = 'left' | 'right';
 
@@ -44,7 +44,7 @@ export const GiftIcon = (props: GiftIconProps) => (
 		</svg>
 		<span
 			css={css`
-				${textSans.small()};
+				${textSans15};
 				font-size: 17px;
 				font-weight: bold;
 				font-style: normal;

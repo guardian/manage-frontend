@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
-import { Checkbox, CheckboxGroup } from '@guardian/source-react-components';
+import { from, palette, space, textSans17 } from '@guardian/source/foundations';
+import { Checkbox, CheckboxGroup } from '@guardian/source/react-components';
 import type { FormEvent } from 'react';
 import { dateIsAfter, parseDate } from '@/shared/dates';
 import type { DeliveryRecordApiItem } from '@/shared/productResponse';
@@ -25,7 +25,7 @@ interface DeliveryRecordCardProps {
 
 export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 	const dtCss = (ignoreMinWidthAtNonMobile?: boolean) => `
-        ${textSans.medium()};
+		${textSans17};
         font-weight: bold;
         display: inline-block;
         vertical-align: top;
@@ -37,7 +37,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
     `;
 
 	const ddCss = `
-        ${textSans.medium()};
+		${textSans17};
         display: inline-block;
         vertical-align: top;
         margin-left: 0;

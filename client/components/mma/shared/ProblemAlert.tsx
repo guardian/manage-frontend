@@ -1,12 +1,12 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import {
-	brand,
 	neutral,
 	palette,
 	space,
-	textSans,
-} from '@guardian/source-foundations';
+	textSans17,
+	textSansBold17,
+} from '@guardian/source/foundations';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { ErrorIcon } from './assets/ErrorIcon';
 import { LinkButton } from './Buttons';
@@ -50,7 +50,7 @@ export const ProblemAlert = (props: ProblemAlertProps) => (
 		</i>
 		<h4
 			css={css`
-				${textSans.medium({ fontWeight: 'bold' })};
+				${textSansBold17};
 				margin: 0;
 			`}
 		>
@@ -60,7 +60,7 @@ export const ProblemAlert = (props: ProblemAlertProps) => (
 			css={css`
 				margin: ${space[2]}px 0 ${props.button ? `${space[3]}px` : '0'}
 					0;
-				${textSans.medium()};
+				${textSans17};
 			`}
 		>
 			{props.message}
@@ -71,7 +71,7 @@ export const ProblemAlert = (props: ProblemAlertProps) => (
 				state={props.button.state}
 				text={props.button.title}
 				fontWeight={'bold'}
-				colour={brand[400]}
+				colour={palette.brand[400]}
 				textColour={neutral[100]}
 			/>
 		)}

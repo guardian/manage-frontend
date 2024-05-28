@@ -1,4 +1,4 @@
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 import type { FC } from 'react';
 import { sans } from '../../../styles/fonts';
 import { Checkbox } from '../shared/Checkbox';

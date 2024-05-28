@@ -2,7 +2,7 @@ import {
 	Hide,
 	SvgCrossRound,
 	SvgTickRound,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import type { ProductBenefit } from './BenefitsConfiguration';
 import { benefitsCss, unavailableBenefitsCss } from './BenefitsStyles';
 

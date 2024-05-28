@@ -1,4 +1,4 @@
-import { from } from '@guardian/source-foundations';
+import { from } from '@guardian/source/foundations';
 
 export interface RoundelProps {
 	size?: number;

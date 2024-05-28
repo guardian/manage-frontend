@@ -1,6 +1,13 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
-import { Button, Radio, RadioGroup } from '@guardian/source-react-components';
+import {
+	from,
+	palette,
+	space,
+	textSans15,
+	textSans17,
+	textSansBold17,
+} from '@guardian/source/foundations';
+import { Button, Radio, RadioGroup } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import type { FormEvent } from 'react';
 import { useEffect, useState } from 'react';
@@ -109,7 +116,7 @@ export const DeliveryRecordProblemForm = (
 						float: left;
 						background-color: ${palette.neutral[97]};
 						border-bottom: 1px solid ${palette.neutral[86]};
-						${textSans.medium({ fontWeight: 'bold' })};
+						${textSansBold17};
 						${from.tablet} {
 							padding: ${space[3]}px ${space[5]}px;
 						}
@@ -140,7 +147,7 @@ export const DeliveryRecordProblemForm = (
 								<li
 									key={`deliveryProblemRadio-${index}`}
 									css={css`
-										${textSans.medium()};
+										${textSans17}
 									`}
 								>
 									<Radio
@@ -183,7 +190,7 @@ export const DeliveryRecordProblemForm = (
 													<span
 														css={css`
 															font-style: italic;
-															${textSans.small()};
+															${textSans15}
 														`}
 													>
 														{!deliveryProblemRadioOption.messageIsMandatory &&
@@ -231,7 +238,7 @@ export const DeliveryRecordProblemForm = (
 																		.neutral[60]};
 														width: 100%;
 														padding: 12px;
-														${textSans.medium()};
+														${textSans17}
 														${from.tablet} {
 															max-width: 460px;
 														}
@@ -273,7 +280,7 @@ export const DeliveryRecordProblemForm = (
 					<Button type="submit">Continue to Step 2 &amp; 3</Button>
 					<Button
 						css={css`
-							${textSans.medium()};
+							${textSans17}
 							background-color: transparent;
 							font-weight: bold;
 							margin-left: 22px;

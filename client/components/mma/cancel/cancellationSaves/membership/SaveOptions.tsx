@@ -3,14 +3,15 @@ import {
 	from,
 	palette,
 	space,
-	textSans,
+	textSans17,
+	textSansBold14,
 	until,
-} from '@guardian/source-foundations';
+} from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
 	themeButtonReaderRevenueBrand,
-} from '@guardian/source-react-components';
+} from '@guardian/source/react-components';
 import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../../shared/productResponse';
@@ -49,7 +50,7 @@ const NewPriceIcon = () => {
 	return (
 		<div
 			css={css`
-				${textSans.xsmall({ fontWeight: 'bold' })};
+				${textSansBold14};
 				color: ${palette.sport[300]};
 				background-color: ${palette.neutral[100]};
 				border: 1px solid ${palette.sport[300]};
@@ -119,7 +120,7 @@ export const SaveOptions = () => {
 				</section>
 				<p
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 					`}
 				>
 					Enjoy all of your exclusive benefits. The new price has
@@ -169,7 +170,7 @@ export const SaveOptions = () => {
 				</section>
 				<p
 					css={css`
-						${textSans.medium()};
+						${textSans17};
 					`}
 				>
 					You will lose access to some of your benefits, but will keep
@@ -210,7 +211,7 @@ export const SaveOptions = () => {
 					<Heading sansSerif>Cancel your Membership</Heading>
 					<p
 						css={css`
-							${textSans.medium()};
+							${textSans17};
 						`}
 					>
 						Please note if you cancel you will not be able to rejoin

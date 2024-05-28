@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { space, textSans } from '@guardian/source-foundations';
-import { SvgCrossRound, SvgTickRound } from '@guardian/source-react-components';
+import { space, textSansBold17 } from '@guardian/source/foundations';
+import { SvgCrossRound, SvgTickRound } from '@guardian/source/react-components';
 import type { ProductBenefit } from './BenefitsConfiguration';
 import { benefitsCss, unavailableBenefitsCss } from './BenefitsStyles';
 
@@ -40,7 +40,7 @@ export const UpgradeBenefitsCard = ({
 		>
 			<div
 				css={css`
-					${textSans.medium({ fontWeight: 'bold' })}
+					${textSansBold17};
 					margin-bottom: ${space[2]}px;
 				`}
 			>

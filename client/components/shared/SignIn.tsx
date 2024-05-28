@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { from, palette, space, textSans } from '@guardian/source-foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans17,
+	textSansBold17,
+} from '@guardian/source/foundations';
 
 export const signInCss = css`
 	display: grid;
@@ -20,12 +26,12 @@ export const signInCss = css`
 `;
 
 export const signInHeadingCss = css`
-	${textSans.medium({ fontWeight: 'bold' })};
+	${textSansBold17};
 	margin: 0;
 `;
 
 export const signInParaCss = css`
-	${textSans.medium()};
+	${textSans17};
 	margin: 0;
 	max-width: 64%;
 `;

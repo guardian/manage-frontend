@@ -1,4 +1,4 @@
-import { palette } from '@guardian/source-foundations';
+import { palette } from '@guardian/source/foundations';
 import type { Meta } from '@storybook/react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { LinkButton } from './Buttons';
