@@ -29,6 +29,7 @@ const apiNames = [
 	'product-move-api',
 	'discount-api',
 	'product-switch-api',
+	'update-supporter-plus-amount',
 ] as const;
 type ApiName = typeof apiNames[number];
 
@@ -228,6 +229,14 @@ const productSwitchAPIGateway = getApiGateway(
 );
 export const productSwitchAPI =
 	productSwitchAPIGateway.authorisedExpressCallback;
+
+const updateSupporterPlusAmountAPIGateway = getApiGateway(
+	'support',
+	'update-supporter-plus-amount',
+	generateAwsSignatureHeaders,
+);
+export const updateSupporterPlusAmountAPI =
+	updateSupporterPlusAmountAPIGateway.authorisedExpressCallback;
 
 const invoicingAPIGateway = getApiGateway(
 	'support',
