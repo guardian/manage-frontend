@@ -11,6 +11,7 @@ import {
 	invoicingAPI,
 	productMoveAPI,
 	productSwitchAPI,
+	updateSupporterPlusAmountAPI,
 } from '../apiGatewayDiscovery';
 import {
 	customMembersDataApiHandler,
@@ -217,9 +218,9 @@ router.post(
 router.post(
 	'/update-supporter-plus-amount/:subscriptionName',
 	withOktaServerSideValidation,
-	productMoveAPI(
+	updateSupporterPlusAmountAPI(
 		'update-supporter-plus-amount/:subscriptionName',
-		'MOVE_PRODUCT_UPDATE_AMOUNT',
+		'UPDATE_SUPPORTER_PLUS_AMOUNT',
 		['subscriptionName'],
 	),
 );
