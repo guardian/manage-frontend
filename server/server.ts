@@ -52,7 +52,7 @@ if (featureSwitches.cspSecurityAudit) {
 		'report-uri /api/csp-audit-report-endpoint',
 		'report-to csp-endpoint',
 		`default-src ${cspDefaultSrcAllowList}`,
-		`default-style 'unsafe-inline'`, // this is unsafe but needed for now for emotion
+		`style-src 'unsafe-inline'`, // this is unsafe but needed for now for emotion
 	];
 	server.use(function (_: Request, res: Response, next: NextFunction) {
 		res.set({
