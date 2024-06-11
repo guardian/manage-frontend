@@ -1,13 +1,18 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { palette, space, textSansBold17 } from '@guardian/source/foundations';
+import {
+	palette,
+	space,
+	textSansBold15,
+	textSansBold17,
+} from '@guardian/source/foundations';
 import type { ReactElement } from 'react';
 
 type IconSide = 'left' | 'right';
 
 const ribbonTailCss = css`
 	clip-path: polygon(100vw 0, 0 0, var(--r) 50%, 0 100%, 100vw 100%);
-	border-image: conic-gradient(var(--ribbonColour) 0 0) fill 0; //100vw;
+	border-image: conic-gradient(var(--ribbonColour) 0 0) fill 0;
 `;
 
 const ribbonIconLeft = css`
@@ -24,6 +29,11 @@ const ribbonShapeCss = css`
 	padding-right: ${space[5]}px;
 	line-height: 1.8;
 	width: fit-content;
+`;
+
+const smallOverrideCss = css`
+	${textSansBold15};
+	line-height: 1.8;
 `;
 
 const ribbonRoundedCornersLeftCss = css`
@@ -43,6 +53,7 @@ export const Ribbon = ({
 	icon,
 	iconSide,
 	withoutTail,
+	small,
 	roundedCornersLeft,
 	roundedCornersRight,
 	additionalCss,
@@ -53,6 +64,7 @@ export const Ribbon = ({
 	icon?: ReactElement;
 	iconSide?: IconSide;
 	withoutTail?: true;
+	small?: true;
 	roundedCornersLeft?: true;
 	roundedCornersRight?: true;
 	additionalCss?: SerializedStyles;
@@ -65,6 +77,7 @@ export const Ribbon = ({
 				roundedCornersRight && ribbonRoundedCornersRightCss,
 				icon && iconSide === 'left' && ribbonIconLeft,
 				!withoutTail && ribbonTailCss,
+				small && smallOverrideCss,
 				additionalCss,
 			]}
 			style={{

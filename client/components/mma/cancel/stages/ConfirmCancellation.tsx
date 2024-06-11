@@ -1,9 +1,6 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source/foundations';
-import {
-	Button,
-	SvgArrowRightStraight,
-} from '@guardian/source/react-components';
+import { from, palette, space } from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import { useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
@@ -53,6 +50,45 @@ export const ConfirmCancellation = () => {
 
 	const subscription = productDetail.subscription;
 
+	const youllLoseList = css`
+		padding: 0;
+		padding-inline-start: 14px;
+		li + li {
+			margin-top: ${space[3]}px;
+		}
+	`;
+
+	const loseDateCss = css`
+		:before {
+			content: '';
+			display: block;
+			width: 100%;
+			max-width: 580px;
+			height: 1px;
+			background-color: ${palette.neutral[86]};
+			margin: ${space[6]}px 0;
+		}
+		margin: 0;
+	`;
+
+	const buttonHolderCss = css`
+		display: flex;
+		flex-direction: column;
+		gap: ${space[4]}px;
+		margin-top: ${space[9]}px;
+		${from.desktop} {
+			flex-direction: row;
+		}
+	`;
+
+	const ctaBtnCss = css`
+		width: 100%;
+		justify-content: center;
+		${from.desktop} {
+			width: fit-content;
+		}
+	`;
+
 	return (
 		<>
 			<ProgressStepper
@@ -63,10 +99,11 @@ export const ConfirmCancellation = () => {
 					{ isCurrentStep: routerState.eligibleForFreePeriodOffer },
 				]}
 				additionalCSS={css`
-					margin: ${space[5]}px 0 ${space[12]}px;
+					margin: ${space[8]}px 0 ${space[9]}px;
 				`}
 			/>
 			<Heading
+				borderless
 				cssOverrides={[
 					measure.heading,
 					css`
@@ -81,14 +118,14 @@ export const ConfirmCancellation = () => {
 					If you confirm your cancellation, you will lose the
 					following benefits:
 				</p>
-				<ul>
+				<ul css={youllLoseList}>
 					<li>Unlimited access to the Guardian app</li>
 					<li>Ad-free reading across all your devices</li>
 					<li>Exclusive supporter newsletter</li>
 					<li>Far fewer asks for support when you're signed in</li>
 				</ul>
 				{subscription.nextPaymentDate && (
-					<p>
+					<p css={loseDateCss}>
 						You will lose/no longer be able to access these benefits
 						from{' '}
 						{parseDate(
@@ -98,25 +135,27 @@ export const ConfirmCancellation = () => {
 						.
 					</p>
 				)}
-				<Button
-					icon={<SvgArrowRightStraight />}
-					iconSide="right"
-					onClick={() => {
-						navigate('../confirmed', {
-							state: routerState,
-						});
-					}}
-				>
-					Confirm cancellation
-				</Button>
-				<Button
-					iconSide="right"
-					onClick={() => {
-						navigate('/');
-					}}
-				>
-					Keep my subscription
-				</Button>
+				<div css={buttonHolderCss}>
+					<Button
+						cssOverrides={ctaBtnCss}
+						onClick={() => {
+							navigate('../confirmed', {
+								state: routerState,
+							});
+						}}
+					>
+						Confirm cancellation
+					</Button>
+					<Button
+						cssOverrides={ctaBtnCss}
+						priority="tertiary"
+						onClick={() => {
+							navigate('/');
+						}}
+					>
+						Keep my subscription
+					</Button>
+				</div>
 			</div>
 		</>
 	);

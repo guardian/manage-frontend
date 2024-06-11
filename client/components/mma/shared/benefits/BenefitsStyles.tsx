@@ -7,8 +7,8 @@ import {
 	textSans17,
 } from '@guardian/source/foundations';
 
-export const benefitsCss = (small?: boolean) => css`
-	${small ? textSans15 : textSans17};
+export const benefitsCss = css`
+	${textSans17};
 	color: ${palette.neutral[7]};
 	list-style: none;
 	margin: 0 0 0 -4px;

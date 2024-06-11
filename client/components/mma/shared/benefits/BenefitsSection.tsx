@@ -1,3 +1,5 @@
+import { css } from '@emotion/react';
+import { textSans15 } from '@guardian/source/foundations';
 import {
 	Hide,
 	SvgCrossRound,
@@ -48,7 +50,16 @@ const Benefit = ({
 
 export const BenefitsSection = ({ benefits, small }: BenefitsSectionProps) => {
 	return (
-		<ul id="benefits" css={benefitsCss(!!small)}>
+		<ul
+			id="benefits"
+			css={[
+				benefitsCss,
+				small &&
+					css`
+						${textSans15}
+					`,
+			]}
+		>
 			{benefits.map((benefit, benefitIndex) => (
 				<Benefit
 					key={`benefit-${benefitIndex}`}

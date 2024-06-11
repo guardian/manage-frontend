@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import {
+	from,
 	neutral,
 	palette,
 	space,
@@ -7,12 +8,15 @@ import {
 	textSans17,
 	textSansBold17,
 } from '@guardian/source/foundations';
-import { Button } from '@guardian/source/react-components';
+import { Button, SvgSpinner } from '@guardian/source/react-components';
+import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import { capitalize } from 'lodash';
-import { useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import type { ReactElement } from 'react';
+import { useContext, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
+import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { parseDate } from '@/shared/dates';
 import { number2words } from '@/shared/numberUtils';
 import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
@@ -20,14 +24,8 @@ import type { DeliveryRecordDetail } from '../../../delivery/records/deliveryRec
 import type { OutstandingHolidayStop } from '../../../holiday/HolidayStopApi';
 import { Heading } from '../../../shared/Heading';
 import { ProgressStepper } from '../../../shared/ProgressStepper';
-import type {
-	CancellationContextInterface,
-	CancellationPageTitleInterface,
-} from '../../CancellationContainer';
-import {
-	CancellationContext,
-	CancellationPageTitleContext,
-} from '../../CancellationContainer';
+import type { CancellationContextInterface } from '../../CancellationContainer';
+import { CancellationContext } from '../../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../../cancellationReason';
 
 interface RouterSate extends DiscountPreviewResponse {
@@ -37,6 +35,8 @@ interface RouterSate extends DiscountPreviewResponse {
 	holidayStops?: OutstandingHolidayStop[];
 	deliveryCredits?: DeliveryRecordDetail[];
 }
+
+type OfferApiCallStatus = 'NOT_READY' | 'PENDING' | 'FAILED' | 'SUCCESS';
 
 export const SupporterPlusOfferReview = () => {
 	const location = useLocation();
@@ -61,18 +61,21 @@ export const SupporterPlusOfferReview = () => {
 		'yyyy-MM-dd',
 	).dateStr();
 
-	const pageTitleContext = useContext(
-		CancellationPageTitleContext,
-	) as CancellationPageTitleInterface;
-
-	pageTitleContext.setPageTitle('Your exclusive offer');
+	const [performingDiscountStatus, setPerformingDiscountStatus] =
+		useState<OfferApiCallStatus>('NOT_READY');
 
 	const yourOfferBoxCss = css`
-		border: 1px solid ${palette.neutral[86]};
-		padding: ${space[5]}px;
+		background-color: #fbf6ef;
+		padding: ${space[4]}px ${space[6]}px;
+		display: flex;
+		flex-direction: column;
 		h4 {
 			${textSansBold17};
 			margin: 0;
+		}
+		${from.desktop} {
+			flex-direction: row;
+			gap: 1ch;
 		}
 	`;
 
@@ -84,26 +87,34 @@ export const SupporterPlusOfferReview = () => {
 
 	const whatsNextTitleCss = css`
 		${textSansBold17};
+		margin-top: ${space[8]}px;
 	`;
 
 	const whatsNextListCss = css`
 		padding: 0;
-		list-style-position: inside;
+		padding-inline-start: 14px;
 		li + li {
 			margin-top: ${space[3]}px;
 		}
 	`;
 
-	const offerBtnCss = css`
-		margin-top: ${space[9]}px;
-		width: 100%;
-		justify-content: center;
+	const buttonsCtaHolder = css`
+		margin: ${space[9]}px 0 ${space[6]}px;
+		display: flex;
+		flex-direction: column;
+		gap: ${space[5]}px;
+		${from.desktop} {
+			flex-direction: row;
+			gap: ${space[6]}px;
+		}
 	`;
 
-	const cancelButtonCss = css`
-		margin: ${space[6]}px 0;
+	const ctaBtnCss = css`
 		width: 100%;
 		justify-content: center;
+		${from.desktop} {
+			width: fit-content;
+		}
 	`;
 
 	const termsCss = css`
@@ -112,15 +123,49 @@ export const SupporterPlusOfferReview = () => {
 		margin-top: ${space[3]}px;
 	`;
 
+	const confirmBtnIconProps: { icon?: ReactElement; iconSide?: 'right' } = {};
+	if (performingDiscountStatus === 'PENDING') {
+		confirmBtnIconProps.icon = <SvgSpinner size="xsmall" />;
+		confirmBtnIconProps.iconSide = 'right';
+	}
+
+	const handleConfirmClick = async () => {
+		setPerformingDiscountStatus('PENDING');
+
+		try {
+			const response = await fetchWithDefaultParameters(
+				'/api/discounts/apply-discount',
+				{
+					method: 'POST',
+					body: JSON.stringify({
+						subscriptionNumber:
+							productDetail.subscription.subscriptionId,
+					}),
+				},
+			);
+
+			if (response.ok) {
+				navigate('../offer-confirmed', {
+					state: routerState,
+				});
+			} else {
+				setPerformingDiscountStatus('FAILED');
+			}
+		} catch (e) {
+			setPerformingDiscountStatus('FAILED');
+		}
+	};
+
 	return (
 		<>
 			<ProgressStepper
 				steps={[{}, {}, {}, { isCurrentStep: true }]}
 				additionalCSS={css`
-					margin: ${space[5]}px 0 ${space[12]}px;
+					margin: ${space[8]}px 0 ${space[9]}px;
 				`}
 			/>
 			<Heading
+				borderless
 				cssOverrides={[
 					measure.heading,
 					css`
@@ -144,7 +189,7 @@ export const SupporterPlusOfferReview = () => {
 					access to your digital subscription
 				</h4>
 			</div>
-			<h3 css={whatsNextTitleCss}>What will happen next?</h3>
+			<h3 css={whatsNextTitleCss}>If you choose to stay with us:</h3>
 			<ul css={whatsNextListCss}>
 				<li>
 					Your {offerPeriodWord} {offerPeriodType} of free access will
@@ -157,25 +202,43 @@ export const SupporterPlusOfferReview = () => {
 				</li>
 				<li>You may cancel your subscription at any time</li>
 			</ul>
-			<Button
-				cssOverrides={offerBtnCss}
-				onClick={() => {
-					navigate('../offer-confirmed', {
-						state: routerState,
-					});
-				}}
-			>
-				Confirm your offer
-			</Button>
-			<Button
-				priority="subdued"
-				cssOverrides={cancelButtonCss}
-				onClick={() => {
-					navigate('..');
-				}}
-			>
-				Go back
-			</Button>
+			{performingDiscountStatus === 'FAILED' && (
+				<ErrorSummary
+					cssOverrides={css`
+						margin-top: ${space[9]}px;
+					`}
+					message="Unable to complete request"
+					context={
+						<>
+							We're sorry, but we couldn't complete your request
+							at this time.
+							<br />
+							Please try again later. If the problem persists,
+							contact our support team for assistance.
+							<br />
+							<Link to="/">Return to your account</Link>
+						</>
+					}
+				/>
+			)}
+			<div css={buttonsCtaHolder}>
+				<Button
+					cssOverrides={ctaBtnCss}
+					{...confirmBtnIconProps}
+					onClick={handleConfirmClick}
+				>
+					Confirm your offer
+				</Button>
+				<Button
+					priority="subdued"
+					cssOverrides={ctaBtnCss}
+					onClick={() => {
+						navigate('..');
+					}}
+				>
+					Go back
+				</Button>
+			</div>
 			<p css={termsCss}>
 				Lorem ipsum dolor sit amet, consec tetur adipiscing elit. Nam
 				condimentum tempus diam, ultricies sollicitudin erat facilisis

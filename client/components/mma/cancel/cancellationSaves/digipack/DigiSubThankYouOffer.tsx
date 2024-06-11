@@ -71,7 +71,7 @@ const DiscountOffer = ({
 			>
 				A subscription offer just for you
 			</div>
-			<ul css={benefitsCss()}>
+			<ul css={benefitsCss}>
 				<li>
 					<SvgTickRound isAnnouncedByScreenReader size="medium" />
 					<span

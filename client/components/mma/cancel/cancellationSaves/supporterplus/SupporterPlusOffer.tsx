@@ -26,14 +26,8 @@ import type { OutstandingHolidayStop } from '../../../holiday/HolidayStopApi';
 import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
 import { Heading } from '../../../shared/Heading';
 import { ProgressStepper } from '../../../shared/ProgressStepper';
-import type {
-	CancellationContextInterface,
-	CancellationPageTitleInterface,
-} from '../../CancellationContainer';
-import {
-	CancellationContext,
-	CancellationPageTitleContext,
-} from '../../CancellationContainer';
+import type { CancellationContextInterface } from '../../CancellationContainer';
+import { CancellationContext } from '../../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../../cancellationReason';
 
 interface RouterSate extends DiscountPreviewResponse {
@@ -56,10 +50,6 @@ export const SupporterPlusOffer = () => {
 
 	const productDetail = cancellationContext.productDetail;
 	const mainPlan = getMainPlan(productDetail.subscription);
-
-	const pageTitleContext = useContext(
-		CancellationPageTitleContext,
-	) as CancellationPageTitleInterface;
 
 	const offerPeriodWord = number2words(routerState.upToPeriods);
 	const offerPeriodType = routerState.upToPeriodsType.toLowerCase();
@@ -105,8 +95,11 @@ export const SupporterPlusOffer = () => {
 			position: absolute;
 			z-index: -1;
 			height: 100%;
-			object-fit: cover;
-			object-position: left center;
+			background-color: ${palette.culture[800]};
+			img {
+				height: 100%;
+				margin-left: auto;
+			}
 		}
 	`;
 
@@ -165,8 +158,6 @@ export const SupporterPlusOffer = () => {
 		margin-top: ${space[3]}px;
 	`;
 
-	pageTitleContext.setPageTitle('Your exclusive offer');
-
 	return (
 		<>
 			<ProgressStepper
@@ -180,7 +171,7 @@ export const SupporterPlusOffer = () => {
 				cssOverrides={[
 					measure.heading,
 					css`
-						margin-bottom: ${space[1]}px;
+						margin-bottom: ${space[2]}px;
 					`,
 				]}
 			>
@@ -191,18 +182,20 @@ export const SupporterPlusOffer = () => {
 				benefits — for free.
 			</h3>
 			<div css={availableOfferBoxCss}>
-				<img
-					src="https://raw.githubusercontent.com/julien-gargot/images-placeholder/master/placeholder-landscape.png"
-					width="351"
-					height="172"
-					css={mobileHeaderImageCss}
-				/>
+				<picture css={mobileHeaderImageCss}>
+					<source
+						srcSet="https://media.guim.co.uk/c9287b29f36749b27a6d85a8fa07d865aa7c7299/0_0_1660_1868/889.png"
+						media="(min-width: 980px)"
+					/>
+					<img src="https://media.guim.co.uk/63d17ee19313703129fbbeacceaafcd6d1cc1014/0_0_1404_716/500.png" />
+				</picture>
 				<Ribbon
-					copy="Exclusive for you"
+					copy="Your one-time offer"
 					ribbonColour={palette.brand[500]}
 					copyColour={palette.neutral[100]}
 					roundedCornersRight
 					withoutTail
+					small
 					additionalCss={ribbonCss}
 				/>
 				<div css={availableOfferBoxInnerCss}>
