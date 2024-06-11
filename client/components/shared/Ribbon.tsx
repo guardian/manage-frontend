@@ -5,24 +5,35 @@ import type { ReactElement } from 'react';
 
 type IconSide = 'left' | 'right';
 
-const ribbonShapeCss = (
-	backgroundColor: string,
-	copyColour: string,
-	iconSide?: IconSide,
-	additionalCss?: SerializedStyles,
-) => css`
-		display: inline-flex;
-		${textSansBold17};
-		color: ${copyColour};
-		background-color: ${backgroundColor};
-		--r: 0.8em;
-		padding-left: calc(var(--r) + ${space[iconSide === 'left' ? 2 : 5]}px);
-		padding-right: ${space[5]}px;
-		line-height: 1.8;
-		clip-path: polygon(100vw 0, 0 0, var(--r) 50%, 0 100%, 100vw 100%);
-		border-image: conic-gradient(#000000 0 0) fill 0 //100vw;;
-		width: fit-content;
-		${additionalCss}
+const ribbonTailCss = css`
+	clip-path: polygon(100vw 0, 0 0, var(--r) 50%, 0 100%, 100vw 100%);
+	border-image: conic-gradient(var(--ribbonColour) 0 0) fill 0; //100vw;
+`;
+
+const ribbonIconLeft = css`
+	padding-left: calc(var(--r) + ${space[5]}px);
+`;
+
+const ribbonShapeCss = css`
+	display: inline-flex;
+	${textSansBold17};
+	color: var(--copyColour);
+	background-color: var(--ribbonColour);
+	--r: 0.8em;
+	padding-left: calc(var(--r) + ${space[2]}px);
+	padding-right: ${space[5]}px;
+	line-height: 1.8;
+	width: fit-content;
+`;
+
+const ribbonRoundedCornersLeftCss = css`
+	border-top-left-radius: ${space[1]}px;
+	border-bottom-left-radius: ${space[1]}px;
+`;
+
+const ribbonRoundedCornersRightCss = css`
+	border-top-right-radius: ${space[1]}px;
+	border-bottom-right-radius: ${space[1]}px;
 `;
 
 export const Ribbon = ({
@@ -31,6 +42,9 @@ export const Ribbon = ({
 	copyColour,
 	icon,
 	iconSide,
+	withoutTail,
+	roundedCornersLeft,
+	roundedCornersRight,
 	additionalCss,
 }: {
 	copy: string;
@@ -38,16 +52,26 @@ export const Ribbon = ({
 	copyColour?: string;
 	icon?: ReactElement;
 	iconSide?: IconSide;
+	withoutTail?: true;
+	roundedCornersLeft?: true;
+	roundedCornersRight?: true;
 	additionalCss?: SerializedStyles;
 }) => {
 	return (
 		<div
-			css={ribbonShapeCss(
-				ribbonColour || palette.neutral[10],
-				copyColour || palette.neutral[100],
-				icon && (iconSide || 'left'),
+			css={[
+				ribbonShapeCss,
+				roundedCornersLeft && ribbonRoundedCornersLeftCss,
+				roundedCornersRight && ribbonRoundedCornersRightCss,
+				icon && iconSide === 'left' && ribbonIconLeft,
+				!withoutTail && ribbonTailCss,
 				additionalCss,
-			)}
+			]}
+			style={{
+				['--ribbonColour' as string]:
+					ribbonColour || palette.neutral[10],
+				['--copyColour' as string]: copyColour || palette.neutral[100],
+			}}
 		>
 			{iconSide !== 'right' && icon}
 			{copy}

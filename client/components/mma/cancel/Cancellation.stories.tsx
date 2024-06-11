@@ -120,18 +120,6 @@ export const OfferReview: StoryObj<typeof CancellationContainer> = {
 	},
 };
 
-/*
-const response = await fetchWithDefaultParameters(
-					'/api/discounts/apply-discount',
-					{
-						method: 'POST',
-						body: JSON.stringify({
-							subscriptionNumber:
-								productDetail.subscription.subscriptionId,
-						}),
-					},
-				);
-*/
 export const OfferConfirmed: StoryObj<typeof CancellationContainer> = {
 	render: () => {
 		return <SupporterPlusOfferConfirmed />;

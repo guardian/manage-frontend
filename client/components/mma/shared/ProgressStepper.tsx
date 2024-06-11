@@ -1,6 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { palette, space, textSansBold14 } from '@guardian/source/foundations';
+import { palette, textSansBold14 } from '@guardian/source/foundations';
 import { TickInCircle } from './assets/TickInCircle';
 
 interface Step {
@@ -17,24 +17,34 @@ export interface ProgressStepperProps {
 
 const NumberedBullet = ({
 	stepNumber,
+	isCurrentStep,
 	backgroundColor,
 }: {
 	stepNumber: number;
+	isCurrentStep?: boolean;
 	backgroundColor: string;
 }) => {
 	return (
 		<div
-			css={css`
-				${textSansBold14};
-				color: ${palette.neutral[100]};
-				width: 22px;
-				height: 22px;
-				background-color: ${backgroundColor};
-				border-radius: 50%;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			`}
+			css={[
+				css`
+					${textSansBold14};
+					color: ${palette.neutral[100]};
+					width: 22px;
+					height: 22px;
+					background-color: ${backgroundColor};
+					border-radius: 50%;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				`,
+				isCurrentStep &&
+					css`
+						outline: 2px solid ${palette.neutral[100]};
+						box-shadow: 0 0 0 4px ${backgroundColor};
+						z-index: 1;
+					`,
+			]}
 		>
 			{stepNumber}
 		</div>
@@ -75,6 +85,7 @@ const Step = ({
 				) : (
 					<NumberedBullet
 						stepNumber={index + 1}
+						isCurrentStep={index === currentStep}
 						backgroundColor={
 							index > currentStep
 								? palette.neutral[60]
@@ -103,15 +114,15 @@ export const ProgressStepper = ({
 					position: relative;
 					display: block;
 					top: -0.75rem;
-					left: calc(50% + 11px + ${space[2]}px);
-					width: calc(100% - 22px - 2 * ${space[2]}px);
+					left: calc(50% + 11px);
+					width: calc(100% - 22px);
 					height: 2px;
 					background-color: ${palette.neutral[60]};
 					order: -1;
 				}
 				> :first-of-type:after {
-					left: calc(22px + ${space[2]}px);
-					width: calc(200% - 33px - 2 * ${space[2]}px);
+					left: 22px;
+					width: calc(200% - 33px);
 				}
 				> :nth-of-type(-n + ${currentStep}):after {
 					background-color: ${palette.brand[400]};

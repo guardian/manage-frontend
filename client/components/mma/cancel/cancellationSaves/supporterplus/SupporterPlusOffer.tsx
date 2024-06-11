@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import {
+	from,
 	neutral,
 	palette,
 	space,
@@ -7,7 +8,8 @@ import {
 	textSans12,
 	textSans15,
 	textSans17,
-	textSansBold24,
+	textSans20,
+	textSansBold28,
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
@@ -69,7 +71,7 @@ export const SupporterPlusOffer = () => {
 	const standfirstCss = css`
 		${textEgyptian17};
 		color: ${neutral[7]};
-		margin: 0 0 ${space[10]}px;
+		margin: 0 0 ${space[8]}px;
 	`;
 
 	const availableOfferBoxCss = css`
@@ -77,26 +79,54 @@ export const SupporterPlusOffer = () => {
 		border: 1px solid ${palette.neutral[86]};
 		display: flex;
 		flex-wrap: wrap;
-		margin: ${space[5]}px 0;
-		position: relative;
+		margin: ${space[5]}px 0 ${space[8]}px;
 		width: 100%;
+		position: relative;
+		${from.desktop} {
+			border: none;
+		}
+	`;
+
+	const availableOfferBoxInnerCss = css`
+		padding: ${space[2]}px ${space[4]}px ${space[5]}px;
+		width: 100%;
+		${from.desktop} {
+			background-color: ${palette.neutral[100]};
+			width: 363px;
+			padding-top: ${space[3] + space[4] + 30}px;
+			margin: ${space[6]}px;
+		}
+	`;
+
+	const mobileHeaderImageCss = css`
+		width: 100%;
+		height: auto;
+		${from.desktop} {
+			position: absolute;
+			z-index: -1;
+			height: 100%;
+			object-fit: cover;
+			object-position: left center;
+		}
 	`;
 
 	const ribbonCss = css`
-		transform: translate(4px, -50%);
-		position: absolute;
-		top: 0;
-		right: 0;
+		transform: translateY(-50%);
+		${from.desktop} {
+			transform: translateY(0);
+			position: absolute;
+			top: ${space[6] + space[4]}px;
+		}
 	`;
 
 	const strikethroughPriceCss = css`
-		${textSans17};
+		${textSans20};
 		color: ${neutral[46]};
 		margin: 0;
 	`;
 
 	const offerBoxTitleCss = css`
-		${textSansBold24};
+		${textSansBold28};
 		color: ${neutral[7]};
 		margin: 0;
 	`;
@@ -108,15 +138,25 @@ export const SupporterPlusOffer = () => {
 	`;
 
 	const offerButtonCss = css`
-		margin: ${space[5]}px 0;
+		margin: ${space[5]}px 0 ${space[6]}px;
 		width: 100%;
 		justify-content: center;
 	`;
 
+	const cancelBtnHolderCss = css`
+		${from.desktop} {
+			display: flex;
+			justify-content: space-between;
+		}
+	`;
+
 	const cancelButtonCss = css`
-		margin: ${space[3]}px 0;
+		margin: 0 0 ${space[3]}px;
 		width: 100%;
 		justify-content: center;
+		${from.desktop} {
+			width: fit-content;
+		}
 	`;
 
 	const termsCss = css`
@@ -136,6 +176,7 @@ export const SupporterPlusOffer = () => {
 				`}
 			/>
 			<Heading
+				borderless
 				cssOverrides={[
 					measure.heading,
 					css`
@@ -146,22 +187,25 @@ export const SupporterPlusOffer = () => {
 				This doesn't have to be goodbye
 			</Heading>
 			<h3 css={standfirstCss}>
-				Instead of cancelling, enjoy {offerPeriodWord} {offerPeriodType}{' '}
-				with all your existing benefits - for free
+				Instead of cancelling, enjoy two months with all your existing
+				benefits — for free.
 			</h3>
 			<div css={availableOfferBoxCss}>
+				<img
+					src="https://raw.githubusercontent.com/julien-gargot/images-placeholder/master/placeholder-landscape.png"
+					width="351"
+					height="172"
+					css={mobileHeaderImageCss}
+				/>
 				<Ribbon
 					copy="Exclusive for you"
-					ribbonColour={palette.neutral[60]}
-					copyColour={palette.neutral[0]}
+					ribbonColour={palette.brand[500]}
+					copyColour={palette.neutral[100]}
+					roundedCornersRight
+					withoutTail
 					additionalCss={ribbonCss}
 				/>
-				<div
-					css={css`
-						padding: ${space[6]}px ${space[3]}px ${space[5]}px;
-						width: 100%;
-					`}
-				>
+				<div css={availableOfferBoxInnerCss}>
 					{isPaidSubscriptionPlan(mainPlan) && (
 						<p css={strikethroughPriceCss}>
 							<s>
@@ -195,54 +239,64 @@ export const SupporterPlusOffer = () => {
 					>
 						Keep your existing benefits:
 					</p>
-					<BenefitsSection
-						small
-						benefits={[
-							{
-								name: '',
-								description:
-									'Unlimited access to the Guardian app',
-							},
-							{
-								name: '',
-								description:
-									'Ad-free reading across all your devices',
-							},
-							{
-								name: '',
-								description: 'Exclusive supporter newsletter',
-							},
-							{
-								name: '',
-								description: 'Far fewer asks for support when',
-							},
-						]}
-					/>
+					<div
+						css={css`
+							max-width: 290px;
+						`}
+					>
+						<BenefitsSection
+							small
+							benefits={[
+								{
+									name: '',
+									description:
+										'Unlimited access to the Guardian app',
+								},
+								{
+									name: '',
+									description:
+										'Ad-free reading across all your devices',
+								},
+								{
+									name: '',
+									description:
+										'Exclusive supporter newsletter',
+								},
+								{
+									name: '',
+									description:
+										"Far fewer asks for support when you're signed in",
+								},
+							]}
+						/>
+					</div>
 				</div>
 			</div>
-			<Button
-				priority="tertiary"
-				cssOverrides={cancelButtonCss}
-				onClick={() => {
-					navigate('../confirm', {
-						state: {
-							...routerState,
-							eligibleForFreePeriodOffer: true,
-						},
-					});
-				}}
-			>
-				No thanks, continue to cancel
-			</Button>
-			<Button
-				priority="subdued"
-				cssOverrides={cancelButtonCss}
-				onClick={() => {
-					navigate('/');
-				}}
-			>
-				Return to your account
-			</Button>
+			<div css={cancelBtnHolderCss}>
+				<Button
+					priority="tertiary"
+					cssOverrides={cancelButtonCss}
+					onClick={() => {
+						navigate('../confirm', {
+							state: {
+								...routerState,
+								eligibleForFreePeriodOffer: true,
+							},
+						});
+					}}
+				>
+					No thanks, continue to cancel
+				</Button>
+				<Button
+					priority="subdued"
+					cssOverrides={cancelButtonCss}
+					onClick={() => {
+						navigate('/');
+					}}
+				>
+					Return to your account
+				</Button>
+			</div>
 			<p css={termsCss}>
 				Lorem ipsum dolor sit amet, consec tetur adipiscing elit. Nam
 				condimentum tempus diam, ultricies sollicitudin erat facilisis
