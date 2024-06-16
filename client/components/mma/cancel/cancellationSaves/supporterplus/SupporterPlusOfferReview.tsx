@@ -38,6 +38,65 @@ interface RouterSate extends DiscountPreviewResponse {
 
 type OfferApiCallStatus = 'NOT_READY' | 'PENDING' | 'FAILED' | 'SUCCESS';
 
+const yourOfferBoxCss = css`
+	background-color: #fbf6ef;
+	padding: ${space[4]}px ${space[6]}px;
+	display: flex;
+	flex-direction: column;
+	h4 {
+		${textSansBold17};
+		margin: 0;
+	}
+	${from.desktop} {
+		flex-direction: row;
+		gap: 1ch;
+	}
+`;
+
+const strikethroughPriceCss = css`
+	${textSans17};
+	color: ${neutral[46]};
+	margin: 0;
+`;
+
+const whatsNextTitleCss = css`
+	${textSansBold17};
+	margin-top: ${space[8]}px;
+`;
+
+const whatsNextListCss = css`
+	padding: 0;
+	padding-inline-start: 14px;
+	li + li {
+		margin-top: ${space[3]}px;
+	}
+`;
+
+const buttonsCtaHolder = css`
+	margin: ${space[9]}px 0 ${space[6]}px;
+	display: flex;
+	flex-direction: column;
+	gap: ${space[5]}px;
+	${from.desktop} {
+		flex-direction: row;
+		gap: ${space[6]}px;
+	}
+`;
+
+const ctaBtnCss = css`
+	width: 100%;
+	justify-content: center;
+	${from.desktop} {
+		width: fit-content;
+	}
+`;
+
+const termsCss = css`
+	${textSans12};
+	color: ${palette.neutral[46]};
+	margin-top: ${space[3]}px;
+`;
+
 export const SupporterPlusOfferReview = () => {
 	const location = useLocation();
 	const routerState = location.state as RouterSate;
@@ -63,65 +122,6 @@ export const SupporterPlusOfferReview = () => {
 
 	const [performingDiscountStatus, setPerformingDiscountStatus] =
 		useState<OfferApiCallStatus>('NOT_READY');
-
-	const yourOfferBoxCss = css`
-		background-color: #fbf6ef;
-		padding: ${space[4]}px ${space[6]}px;
-		display: flex;
-		flex-direction: column;
-		h4 {
-			${textSansBold17};
-			margin: 0;
-		}
-		${from.desktop} {
-			flex-direction: row;
-			gap: 1ch;
-		}
-	`;
-
-	const strikethroughPriceCss = css`
-		${textSans17};
-		color: ${neutral[46]};
-		margin: 0;
-	`;
-
-	const whatsNextTitleCss = css`
-		${textSansBold17};
-		margin-top: ${space[8]}px;
-	`;
-
-	const whatsNextListCss = css`
-		padding: 0;
-		padding-inline-start: 14px;
-		li + li {
-			margin-top: ${space[3]}px;
-		}
-	`;
-
-	const buttonsCtaHolder = css`
-		margin: ${space[9]}px 0 ${space[6]}px;
-		display: flex;
-		flex-direction: column;
-		gap: ${space[5]}px;
-		${from.desktop} {
-			flex-direction: row;
-			gap: ${space[6]}px;
-		}
-	`;
-
-	const ctaBtnCss = css`
-		width: 100%;
-		justify-content: center;
-		${from.desktop} {
-			width: fit-content;
-		}
-	`;
-
-	const termsCss = css`
-		${textSans12};
-		color: ${palette.neutral[46]};
-		margin-top: ${space[3]}px;
-	`;
 
 	const confirmBtnIconProps: { icon?: ReactElement; iconSide?: 'right' } = {};
 	if (performingDiscountStatus === 'PENDING') {

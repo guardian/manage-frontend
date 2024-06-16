@@ -23,7 +23,7 @@ const adFree = {
 };
 
 export interface ProductBenefit {
-	name: string;
+	name?: string;
 	description?: string;
 	isUnavailable?: boolean;
 }

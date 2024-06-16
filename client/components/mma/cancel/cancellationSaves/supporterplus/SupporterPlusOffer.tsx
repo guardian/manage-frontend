@@ -39,6 +39,106 @@ interface RouterSate extends DiscountPreviewResponse {
 	eligibleForFreePeriodOffer: boolean;
 }
 
+const standfirstCss = css`
+	${textEgyptian17};
+	color: ${neutral[7]};
+	margin: 0 0 ${space[8]}px;
+`;
+
+const availableOfferBoxCss = css`
+	${textSans17};
+	border: 1px solid ${palette.neutral[86]};
+	display: flex;
+	flex-wrap: wrap;
+	margin: ${space[5]}px 0 ${space[8]}px;
+	width: 100%;
+	position: relative;
+	${from.desktop} {
+		border: none;
+	}
+`;
+
+const availableOfferBoxInnerCss = css`
+	padding: ${space[2]}px ${space[4]}px ${space[5]}px;
+	width: 100%;
+	${from.desktop} {
+		background-color: ${palette.neutral[100]};
+		width: 363px;
+		padding-top: ${space[3] + space[4] + 30}px;
+		margin: ${space[6]}px;
+	}
+`;
+
+const mobileHeaderImageCss = css`
+	width: 100%;
+	height: auto;
+	${from.desktop} {
+		position: absolute;
+		z-index: -1;
+		height: 100%;
+		background-color: ${palette.culture[800]};
+		img {
+			height: 100%;
+			margin-left: auto;
+		}
+	}
+`;
+
+const ribbonCss = css`
+	transform: translateY(-50%);
+	${from.desktop} {
+		transform: translateY(0);
+		position: absolute;
+		top: ${space[6] + space[4]}px;
+	}
+`;
+
+const strikethroughPriceCss = css`
+	${textSans20};
+	color: ${neutral[46]};
+	margin: 0;
+`;
+
+const offerBoxTitleCss = css`
+	${textSansBold28};
+	color: ${neutral[7]};
+	margin: 0;
+`;
+
+const billingResumptionDateCss = css`
+	${textSans15};
+	color: ${neutral[38]};
+	margin: 0;
+`;
+
+const offerButtonCss = css`
+	margin: ${space[5]}px 0 ${space[6]}px;
+	width: 100%;
+	justify-content: center;
+`;
+
+const cancelBtnHolderCss = css`
+	${from.desktop} {
+		display: flex;
+		justify-content: space-between;
+	}
+`;
+
+const cancelButtonCss = css`
+	margin: 0 0 ${space[3]}px;
+	width: 100%;
+	justify-content: center;
+	${from.desktop} {
+		width: fit-content;
+	}
+`;
+
+const termsCss = css`
+	${textSans12};
+	color: ${palette.neutral[46]};
+	margin-top: ${space[3]}px;
+`;
+
 export const SupporterPlusOffer = () => {
 	const location = useLocation();
 	const routerState = location.state as RouterSate;
@@ -57,106 +157,6 @@ export const SupporterPlusOffer = () => {
 		routerState.nextNonDiscountedPaymentDate,
 		'yyyy-MM-dd',
 	).dateStr();
-
-	const standfirstCss = css`
-		${textEgyptian17};
-		color: ${neutral[7]};
-		margin: 0 0 ${space[8]}px;
-	`;
-
-	const availableOfferBoxCss = css`
-		${textSans17};
-		border: 1px solid ${palette.neutral[86]};
-		display: flex;
-		flex-wrap: wrap;
-		margin: ${space[5]}px 0 ${space[8]}px;
-		width: 100%;
-		position: relative;
-		${from.desktop} {
-			border: none;
-		}
-	`;
-
-	const availableOfferBoxInnerCss = css`
-		padding: ${space[2]}px ${space[4]}px ${space[5]}px;
-		width: 100%;
-		${from.desktop} {
-			background-color: ${palette.neutral[100]};
-			width: 363px;
-			padding-top: ${space[3] + space[4] + 30}px;
-			margin: ${space[6]}px;
-		}
-	`;
-
-	const mobileHeaderImageCss = css`
-		width: 100%;
-		height: auto;
-		${from.desktop} {
-			position: absolute;
-			z-index: -1;
-			height: 100%;
-			background-color: ${palette.culture[800]};
-			img {
-				height: 100%;
-				margin-left: auto;
-			}
-		}
-	`;
-
-	const ribbonCss = css`
-		transform: translateY(-50%);
-		${from.desktop} {
-			transform: translateY(0);
-			position: absolute;
-			top: ${space[6] + space[4]}px;
-		}
-	`;
-
-	const strikethroughPriceCss = css`
-		${textSans20};
-		color: ${neutral[46]};
-		margin: 0;
-	`;
-
-	const offerBoxTitleCss = css`
-		${textSansBold28};
-		color: ${neutral[7]};
-		margin: 0;
-	`;
-
-	const billingResumptionDateCss = css`
-		${textSans15};
-		color: ${neutral[38]};
-		margin: 0;
-	`;
-
-	const offerButtonCss = css`
-		margin: ${space[5]}px 0 ${space[6]}px;
-		width: 100%;
-		justify-content: center;
-	`;
-
-	const cancelBtnHolderCss = css`
-		${from.desktop} {
-			display: flex;
-			justify-content: space-between;
-		}
-	`;
-
-	const cancelButtonCss = css`
-		margin: 0 0 ${space[3]}px;
-		width: 100%;
-		justify-content: center;
-		${from.desktop} {
-			width: fit-content;
-		}
-	`;
-
-	const termsCss = css`
-		${textSans12};
-		color: ${palette.neutral[46]};
-		margin-top: ${space[3]}px;
-	`;
 
 	return (
 		<>
@@ -241,22 +241,18 @@ export const SupporterPlusOffer = () => {
 							small
 							benefits={[
 								{
-									name: '',
 									description:
 										'Unlimited access to the Guardian app',
 								},
 								{
-									name: '',
 									description:
 										'Ad-free reading across all your devices',
 								},
 								{
-									name: '',
 									description:
 										'Exclusive supporter newsletter',
 								},
 								{
-									name: '',
 									description:
 										"Far fewer asks for support when you're signed in",
 								},

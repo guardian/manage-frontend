@@ -29,6 +29,45 @@ interface RouterSate extends DiscountPreviewResponse {
 	eligibleForFreePeriodOffer: boolean;
 }
 
+const youllLoseList = css`
+	padding: 0;
+	padding-inline-start: 14px;
+	li + li {
+		margin-top: ${space[3]}px;
+	}
+`;
+
+const loseDateCss = css`
+	:before {
+		content: '';
+		display: block;
+		width: 100%;
+		max-width: 580px;
+		height: 1px;
+		background-color: ${palette.neutral[86]};
+		margin: ${space[6]}px 0;
+	}
+	margin: 0;
+`;
+
+const buttonHolderCss = css`
+	display: flex;
+	flex-direction: column;
+	gap: ${space[4]}px;
+	margin-top: ${space[9]}px;
+	${from.desktop} {
+		flex-direction: row;
+	}
+`;
+
+const ctaBtnCss = css`
+	width: 100%;
+	justify-content: center;
+	${from.desktop} {
+		width: fit-content;
+	}
+`;
+
 export const ConfirmCancellation = () => {
 	const location = useLocation();
 	const routerState = location.state as RouterSate;
@@ -49,45 +88,6 @@ export const ConfirmCancellation = () => {
 	}, []);
 
 	const subscription = productDetail.subscription;
-
-	const youllLoseList = css`
-		padding: 0;
-		padding-inline-start: 14px;
-		li + li {
-			margin-top: ${space[3]}px;
-		}
-	`;
-
-	const loseDateCss = css`
-		:before {
-			content: '';
-			display: block;
-			width: 100%;
-			max-width: 580px;
-			height: 1px;
-			background-color: ${palette.neutral[86]};
-			margin: ${space[6]}px 0;
-		}
-		margin: 0;
-	`;
-
-	const buttonHolderCss = css`
-		display: flex;
-		flex-direction: column;
-		gap: ${space[4]}px;
-		margin-top: ${space[9]}px;
-		${from.desktop} {
-			flex-direction: row;
-		}
-	`;
-
-	const ctaBtnCss = css`
-		width: 100%;
-		justify-content: center;
-		${from.desktop} {
-			width: fit-content;
-		}
-	`;
 
 	return (
 		<>
