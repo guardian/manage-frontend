@@ -1,5 +1,5 @@
 import { palette } from '@guardian/source/foundations';
-import type { ProductTypeKeys } from '../../../../shared/productTypes';
+import type { ProductTypeKeys } from '@/shared/productTypes';
 
 export const textColour = {
 	light: palette.neutral[100],
@@ -46,6 +46,10 @@ export const productCardConfiguration: {
 	},
 	supporterplus: {
 		colour: productColour.supporterPlus,
+		showBenefitsSection: true,
+	},
+	tierthree: {
+		colour: productColour.supporterPlus, //TODO: what values for this?
 		showBenefitsSection: true,
 	},
 	digipack: {

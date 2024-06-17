@@ -40,6 +40,7 @@ type ProductFriendlyName =
 	| 'digital subscription'
 	| 'all-access digital subscription'
 	| 'Guardian Weekly subscription'
+	| 'digital + print subscription'
 	| 'subscription'
 	| 'recurring support'
 	| 'guardian patron';
@@ -54,6 +55,7 @@ type ProductUrlPart =
 	| 'digital'
 	| 'support'
 	| 'guardianweekly'
+	| 'digital+print'
 	| 'subscriptions'
 	| 'recurringsupport'
 	| 'guardianpatron';
@@ -64,6 +66,7 @@ type SfCaseProduct =
 	| 'Guardian Weekly'
 	| 'Digital Pack Subscriptions'
 	| 'Supporter Plus'
+	| 'Tier Three'
 	| 'Guardian Patron';
 export type AllProductsProductTypeFilterString =
 	| 'Weekly'
@@ -257,6 +260,7 @@ export type ProductTypeKeys =
 	| 'guardianweekly'
 	| 'digipack'
 	| 'supporterplus'
+	| 'tierthree'
 	| 'guardianpatron';
 
 export type GroupedProductTypeKeys =
@@ -591,6 +595,59 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			explicitSingleDayOfWeek: 'Friday',
 		},
 	},
+	tierthree: {
+		productTitle: () => 'Digital + Print',
+		friendlyName: () => 'digital + print subscription',
+		shortFriendlyName: 'Print + Digital',
+		productType: 'tierthree',
+		groupedProductType: 'recurringSupport',
+		allProductsProductTypeFilterString: 'Weekly',
+		urlPart: 'digital+print',
+		softOptInIDs: [
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SupporterNewsletter,
+			SoftOptInIDs.DigitalSubscriberPreview,
+			SoftOptInIDs.GuardianWeeklyNewsletter,
+		],
+		getOphanProductType: () => 'PRINT_SUBSCRIPTION', //TODO what should this be?
+		renewalMetadata: {
+			//TODO Don't think we need this, all T3s are auto renewing
+			alternateButtonText: 'Subscribe here',
+			urlSuffix: 'subscribe/weekly',
+			supportReferer: 'gw_renewal',
+		},
+		holidayStops: {
+			issueKeyword: 'issue',
+		},
+		delivery: {
+			showAddress: showDeliveryAddressCheck,
+			enableDeliveryInstructionsUpdate: false,
+			records: {
+				productNameForProblemReport: 'Tier Three Guardian Weekly',
+				numberOfProblemRecordsToShow: 4,
+				contactUserOnExistingProblemReport: false,
+				availableProblemTypes: commonDeliveryProblemTypes,
+			},
+		},
+		cancellation: {
+			linkOnProductPage: true,
+			reasons: gwCancellationReasons,
+			sfCaseProduct: 'Tier Three',
+			checkForOutstandingCredits: true,
+			flowWrapper: physicalSubsCancellationFlowWrapper,
+			startPageBody: gwCancellationFlowStart,
+			startPageOfferEffectiveDateOptions: true,
+			summaryReasonSpecificPara: () => undefined,
+			onlyShowSupportSectionIfAlternateText: false,
+			alternateSupportButtonText: () => undefined,
+			alternateSupportButtonUrlSuffix: () => undefined,
+			swapFeedbackAndContactUs: true,
+		},
+		fulfilmentDateCalculator: {
+			productFilenamePart: 'Guardian Weekly',
+			explicitSingleDayOfWeek: 'Friday',
+		},
+	},
 	digipack: {
 		productTitle: () => 'Digital Subscription',
 		friendlyName: () => 'digital subscription',
@@ -692,6 +749,8 @@ export const GROUPED_PRODUCT_TYPES: {
 				return PRODUCT_TYPES.supporterplus;
 			} else if (productDetail.tier === 'Contributor') {
 				return PRODUCT_TYPES.contributions;
+			} else if (productDetail.tier == 'Tier Three') {
+				return PRODUCT_TYPES.tierthree;
 			}
 			throw `Specific product type for tier '${productDetail.tier}' not found.`;
 		},
@@ -722,6 +781,10 @@ export const GROUPED_PRODUCT_TYPES: {
 				return PRODUCT_TYPES.guardianweekly;
 			} else if (productDetail.tier.startsWith('guardianpatron')) {
 				return PRODUCT_TYPES.guardianpatron;
+			} else if (productDetail.tier == 'Tier Three') {
+				// TODO: Duplicate from recurring support to get change address to work with this line
+				// https://github.com/guardian/manage-frontend/blob/af1a67ca70f5002a7410774f0f5389897205a794/client/components/mma/delivery/address/DeliveryAddressForm.tsx#L103
+				return PRODUCT_TYPES.tierthree;
 			}
 			throw `Specific product type for tier '${productDetail.tier}' not found.`;
 		},

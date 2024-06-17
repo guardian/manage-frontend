@@ -1,4 +1,4 @@
-import type { ProductTypeKeys } from '../../../../../shared/productTypes';
+import type { ProductTypeKeys } from '@/shared/productTypes';
 
 /* Product Switch Benefits */
 
@@ -22,6 +22,11 @@ const adFree = {
 	description: 'Avoid ads on all your devices',
 };
 
+const guardianWeekly = {
+	name: 'Guardian Weekly',
+	description: 'Print magazine delivered to your door every week ',
+};
+
 export interface ProductBenefit {
 	name?: string;
 	description?: string;
@@ -42,6 +47,13 @@ export const benefitsConfiguration: {
 		},
 	],
 	supporterplus: [supporterNewsletter, uninterruptedReading, newsApp, adFree],
+	tierthree: [
+		guardianWeekly,
+		supporterNewsletter,
+		uninterruptedReading,
+		newsApp,
+		adFree,
+	],
 	membership: [newsApp, uninterruptedReading, supporterNewsletter],
 	digipack: [],
 	digitalvoucher: [],
