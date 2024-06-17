@@ -80,6 +80,7 @@ export const HelpCentreContactOptions = (
 	return (
 		<>
 			<h2
+				id="contact-options"
 				css={
 					isLiveChatFeatureEnabled()
 						? liveChatSubtitleStyles

@@ -216,7 +216,7 @@ export const ProductCard = ({
 							have any questions, feel free to{' '}
 							{
 								<Link
-									to="/help-centre"
+									to="/help-centre#contact-options"
 									css={css`
 										text-decoration: underline;
 										color: ${palette.brand[500]};

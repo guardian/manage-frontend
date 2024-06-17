@@ -9,6 +9,7 @@ import {
 	textSans15,
 	textSans17,
 	textSans20,
+	textSansBold15,
 	textSansBold28,
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
@@ -18,7 +19,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Ribbon } from '@/client/components/shared/Ribbon';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
-import { parseDate } from '@/shared/dates';
+import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import { number2words } from '@/shared/numberUtils';
 import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
 import type { DeliveryRecordDetail } from '../../../delivery/records/deliveryRecordsApi';
@@ -70,13 +71,15 @@ const availableOfferBoxInnerCss = css`
 `;
 
 const mobileHeaderImageCss = css`
+	display: flex;
+	justify-content: center;
 	width: 100%;
 	height: auto;
+	background-color: ${palette.culture[800]};
 	${from.desktop} {
 		position: absolute;
 		z-index: -1;
 		height: 100%;
-		background-color: ${palette.culture[800]};
 		img {
 			height: 100%;
 			margin-left: auto;
@@ -115,10 +118,22 @@ const offerButtonCss = css`
 	margin: ${space[5]}px 0 ${space[6]}px;
 	width: 100%;
 	justify-content: center;
+	${from.desktop} {
+		margin-bottom: ${space[5]}px;
+	}
+`;
+
+const benefitsSubTitleCss = css`
+	margin: 0 0 ${space[5]}px;
+	${textSansBold15};
+	${from.desktop} {
+		border-top: 1px solid ${palette.neutral[86]};
+		padding-top: ${space[3]}px;
+	}
 `;
 
 const cancelBtnHolderCss = css`
-	${from.desktop} {
+	${from.phablet} {
 		display: flex;
 		justify-content: space-between;
 	}
@@ -156,7 +171,7 @@ export const SupporterPlusOffer = () => {
 	const nextNonDiscountedPaymentDate = parseDate(
 		routerState.nextNonDiscountedPaymentDate,
 		'yyyy-MM-dd',
-	).dateStr();
+	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
 	return (
 		<>
@@ -224,12 +239,7 @@ export const SupporterPlusOffer = () => {
 					>
 						Redeem your offer
 					</Button>
-					<p
-						css={css`
-							margin: 0 0 ${space[5]}px;
-							${textSans15};
-						`}
-					>
+					<p css={benefitsSubTitleCss}>
 						Keep your existing benefits:
 					</p>
 					<div

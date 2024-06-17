@@ -1,6 +1,6 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { palette, textSansBold14 } from '@guardian/source/foundations';
+import { palette, textSansBold12 } from '@guardian/source/foundations';
 import { TickInCircle } from './assets/TickInCircle';
 
 interface Step {
@@ -19,19 +19,23 @@ const NumberedBullet = ({
 	stepNumber,
 	isCurrentStep,
 	backgroundColor,
+	copyColor,
+	withBorder,
 }: {
 	stepNumber: number;
 	isCurrentStep?: boolean;
 	backgroundColor: string;
+	copyColor?: string;
+	withBorder?: true;
 }) => {
 	return (
 		<div
 			css={[
 				css`
-					${textSansBold14};
-					color: ${palette.neutral[100]};
-					width: 22px;
-					height: 22px;
+					${textSansBold12};
+					color: ${copyColor || palette.neutral[100]};
+					width: 24px;
+					height: 24px;
 					background-color: ${backgroundColor};
 					border-radius: 50%;
 					display: flex;
@@ -43,6 +47,11 @@ const NumberedBullet = ({
 						outline: 2px solid ${palette.neutral[100]};
 						box-shadow: 0 0 0 4px ${backgroundColor};
 						z-index: 1;
+					`,
+				!isCurrentStep &&
+					withBorder &&
+					css`
+						border: 2px solid ${copyColor || palette.neutral[100]};
 					`,
 			]}
 		>
@@ -60,40 +69,46 @@ const Step = ({
 	currentStep: number;
 	index: number;
 }) => {
+	const isFutureStep = index > currentStep;
+	const futureStepProps: {
+		copyColor?: string;
+		withBorder?: true;
+	} = {};
+	if (isFutureStep) {
+		futureStepProps.copyColor = palette.neutral[46];
+		futureStepProps.withBorder = true;
+	}
 	return (
 		<div
 			css={css`
-				${textSansBold14};
-				color: ${index > currentStep
-					? palette.neutral[46]
-					: palette.brand[400]};
-				flex: ${index > 0 ? '1' : '0.5'};
+				${textSansBold12};
+				z-index: 1;
+				${index > 0
+					? 'display: flex; flex-direction: column; align-items: center;'
+					: ''}
 			`}
 		>
-			<div
-				css={css`
-					${index > 0
-						? 'display: flex; flex-direction: column; align-items: center;'
-						: ''}
-				`}
-			>
-				{step.title && <span>{step.title}</span>}
-				{index < currentStep || step.forceStepComplete ? (
-					<div>
-						<TickInCircle fill={palette.brand[400]} />
-					</div>
-				) : (
-					<NumberedBullet
-						stepNumber={index + 1}
-						isCurrentStep={index === currentStep}
-						backgroundColor={
-							index > currentStep
-								? palette.neutral[60]
-								: palette.brand[400]
-						}
+			{step.title && <span>{step.title}</span>}
+			{index < currentStep || step.forceStepComplete ? (
+				<div>
+					<TickInCircle
+						fill={palette.brand[400]}
+						additionalCss={css`
+							width: 24px;
+							height: 24px;
+						`}
 					/>
-				)}
-			</div>
+				</div>
+			) : (
+				<NumberedBullet
+					stepNumber={index + 1}
+					isCurrentStep={index === currentStep}
+					backgroundColor={
+						isFutureStep ? palette.neutral[100] : palette.brand[400]
+					}
+					{...futureStepProps}
+				/>
+			)}
 		</div>
 	);
 };
@@ -103,30 +118,31 @@ export const ProgressStepper = ({
 	additionalCSS,
 }: ProgressStepperProps) => {
 	const currentStep = steps.findIndex((step) => step.isCurrentStep) || 0;
+	const completedStepsPercentage = (currentStep / (steps.length - 1)) * 100;
 	return (
 		<div
 			css={css`
-				margin-top: 10px;
 				display: flex;
-				${additionalCSS};
-				> :not(:last-child):after {
+				justify-content: space-between;
+				max-width: 519px;
+				margin-top: 10px;
+				position: relative;
+				:before {
 					content: '';
-					position: relative;
-					display: block;
-					top: -0.75rem;
-					left: calc(50% + 11px);
-					width: calc(100% - 22px);
+					position: absolute;
+					top: 50%;
+					left: 0;
+					z-index: 0;
+					transform: translateY(-50%);
+					width: 100%;
 					height: 2px;
-					background-color: ${palette.neutral[60]};
-					order: -1;
+					background: linear-gradient(
+						to right,
+						${palette.brand[400]} ${completedStepsPercentage}%,
+						${palette.neutral[46]} ${completedStepsPercentage}%
+					);
 				}
-				> :first-of-type:after {
-					left: 22px;
-					width: calc(200% - 33px);
-				}
-				> :nth-of-type(-n + ${currentStep}):after {
-					background-color: ${palette.brand[400]};
-				}
+				${additionalCSS};
 			`}
 		>
 			{steps.map((step, index) => (
