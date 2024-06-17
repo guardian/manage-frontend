@@ -226,6 +226,13 @@ export function supporterPlusCancelled() {
 		.getProductDetailObject();
 }
 
+export function supporterPlusInOfferPeriod() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.inOfferPeriod()
+		.getProductDetailObject();
+}
+
 export function patronDigitalPack() {
 	return new ProductBuilder(baseDigitalPack())
 		.payByCard()

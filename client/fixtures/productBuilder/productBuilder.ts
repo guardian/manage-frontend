@@ -115,6 +115,11 @@ export class ProductBuilder {
 		return this;
 	}
 
+	inOfferPeriod() {
+		this.productToBuild.subscription.inDiscountPeriod = true;
+		return this;
+	}
+
 	asPatron() {
 		this.productToBuild.subscription.readerType = 'Patron';
 		return this;

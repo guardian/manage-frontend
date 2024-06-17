@@ -4,6 +4,10 @@ const num =
 	);
 const tens = 'twenty thirty forty fifty sixty seventy eighty ninety'.split(' ');
 
+/*
+ * returns the written words for a given number.
+ * Note: number must be uint (positive integar) and between 0 - 999,999
+ */
 export const number2words = (n: number): string => {
 	if (n < 20) {
 		return num[n];
