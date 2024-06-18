@@ -1,6 +1,6 @@
 import type { ProductTypeKeys } from '@/shared/productTypes';
 
-/* Product Switch Benefits */
+/* Product Switch Benefits, these are also shown on product cards */
 
 const supporterNewsletter = {
 	name: 'A regular supporter newsletter.',
