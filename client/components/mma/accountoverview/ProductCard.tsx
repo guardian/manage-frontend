@@ -230,8 +230,6 @@ export const ProductCard = ({
 					}
 				/>
 			)}
-
-			{/* href="/help-centre" */}
 			<Card>
 				<Card.Header backgroundColor={cardConfig.colour}>
 					<h3 css={productCardTitleCss(cardConfig.invertText)}>

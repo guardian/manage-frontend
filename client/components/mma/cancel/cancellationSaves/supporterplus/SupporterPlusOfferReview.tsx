@@ -4,6 +4,8 @@ import {
 	neutral,
 	palette,
 	space,
+	textEgyptian17,
+	textEgyptianBold17,
 	textSans12,
 	textSans17,
 	textSansBold17,
@@ -17,7 +19,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
-import { parseDate } from '@/shared/dates';
+import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import { number2words } from '@/shared/numberUtils';
 import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
 import type { DeliveryRecordDetail } from '../../../delivery/records/deliveryRecordsApi';
@@ -60,11 +62,15 @@ const strikethroughPriceCss = css`
 `;
 
 const whatsNextTitleCss = css`
-	${textSansBold17};
-	margin-top: ${space[8]}px;
+	${textEgyptianBold17};
+	margin-top: ${space[6]}px;
+	${from.desktop} {
+		margin-top: ${space[8]}px;
+	}
 `;
 
 const whatsNextListCss = css`
+	${textEgyptian17};
 	padding: 0;
 	padding-inline-start: 14px;
 	li + li {
@@ -73,13 +79,14 @@ const whatsNextListCss = css`
 `;
 
 const buttonsCtaHolder = css`
-	margin: ${space[9]}px 0 ${space[6]}px;
+	margin: ${space[8]}px 0 ${space[6]}px;
 	display: flex;
 	flex-direction: column;
-	gap: ${space[5]}px;
-	${from.desktop} {
+	gap: ${space[2]}px;
+	${from.phablet} {
 		flex-direction: row;
 		gap: ${space[6]}px;
+		margin-top: ${space[9]}px;
 	}
 `;
 
@@ -114,11 +121,11 @@ export const SupporterPlusOfferReview = () => {
 	const firstDiscountedPaymentDate = parseDate(
 		routerState.firstDiscountedPaymentDate,
 		'yyyy-MM-dd',
-	).dateStr();
+	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 	const nextNonDiscountedPaymentDate = parseDate(
 		routerState.nextNonDiscountedPaymentDate,
 		'yyyy-MM-dd',
-	).dateStr();
+	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
 	const [performingDiscountStatus, setPerformingDiscountStatus] =
 		useState<OfferApiCallStatus>('NOT_READY');
@@ -240,11 +247,10 @@ export const SupporterPlusOfferReview = () => {
 				</Button>
 			</div>
 			<p css={termsCss}>
-				Lorem ipsum dolor sit amet, consec tetur adipiscing elit. Nam
-				condimentum tempus diam, ultricies sollicitudin erat facilisis
-				eget. Vestibulum rhoncus dui vel eros laoreet consectetur.
-				Vivamus eget elementum ligula, vitae pharetra quam. Nullam at
-				ligula sed metu
+				If you cancel during the free period, you will lose access to
+				your benefits at the end of the free period. If you cancel after
+				the free period, your subscription will end at the end of your
+				current monthly payment period.
 			</p>
 		</>
 	);

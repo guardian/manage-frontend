@@ -18,19 +18,23 @@ interface DownloadAppCtaProps {
 const appAdCss = css`
 	background-color: ${palette.sport[800]};
 	padding: ${space[3]}px ${space[3]}px ${space[5]}px;
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
 	h4 {
 		${textSansBold17};
 		margin: 0 ${space[5]}px 0 0;
 	}
 	p {
-		margin: ${space[1]}px ${space[5]}px ${space[4]}px 0;
+		margin: ${space[1]}px ${space[5]}px 0 0;
 	}
 	${from.tablet} {
 		padding: ${space[6]}px;
 	}
+`;
+
+const inlineContentsCss = css`
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: ${space[4]}px;
 `;
 
 const appIconContainerCss = css`
@@ -44,23 +48,31 @@ const appIconContainerCss = css`
 export const DownloadAppCta = (props: DownloadAppCtaProps) => {
 	return (
 		<div css={[appAdCss, props.additionalCss]}>
+			<div css={inlineContentsCss}>
+				<div>
+					<h4>If you haven't already, download the Guardian App</h4>
+					<p>
+						Unlock limitless Guardian journalism in our quality news
+						app today.
+					</p>
+				</div>
+				<i css={appIconContainerCss}>
+					<SvgRoundelBrand />
+				</i>
+			</div>
 			<div>
-				<h4>If you haven't already, download the Guardian App</h4>
-				<p>
-					Unlock limitless Guardian journalism in our quality news app
-					today.
-				</p>
 				<AppleAppStoreButton
 					link={iosAppUrl}
+					overrideButtonHeight="36px"
 					additionalCss={css`
 						margin-right: ${space[3]}px;
 					`}
 				/>
-				<AndroidPlayStoreButton link={androidAppUrl} />
+				<AndroidPlayStoreButton
+					link={androidAppUrl}
+					overrideButtonHeight="36px"
+				/>
 			</div>
-			<i css={appIconContainerCss}>
-				<SvgRoundelBrand />
-			</i>
 		</div>
 	);
 };

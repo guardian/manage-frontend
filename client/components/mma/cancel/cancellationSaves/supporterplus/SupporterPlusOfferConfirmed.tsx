@@ -1,10 +1,11 @@
 import { css } from '@emotion/react';
 import {
+	between,
 	from,
 	palette,
 	space,
 	textEgyptian17,
-	textSans17,
+	textEgyptianBold17,
 	textSansBold17,
 } from '@guardian/source/foundations';
 import { Button, LinkButton } from '@guardian/source/react-components';
@@ -12,15 +13,26 @@ import { useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
-import { parseDate } from '@/shared/dates';
+import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import { DownloadAppCta } from '../../../shared/DownloadAppCta';
 import { Heading } from '../../../shared/Heading';
-import type { CancellationPageTitleInterface } from '../../CancellationContainer';
-import { CancellationPageTitleContext } from '../../CancellationContainer';
+import type {
+	CancellationContextInterface,
+	CancellationPageTitleInterface,
+} from '../../CancellationContainer';
+import {
+	CancellationContext,
+	CancellationPageTitleContext,
+} from '../../CancellationContainer';
+import { getUpdateCasePromise } from '../../caseUpdate';
+
+interface RouterState extends DiscountPreviewResponse {
+	caseId: string;
+}
 
 const standfirstCss = css`
 	${textEgyptian17};
-	color: ${palette.neutral[20]};
+	color: ${palette.neutral[7]};
 	margin-top: 0;
 `;
 
@@ -30,10 +42,11 @@ const nextStepsCss = css`
 	padding: ${space[5]}px 0 ${space[6]}px;
 	margin: ${space[5]}px 0 ${space[6]}px;
 	h4 {
-		${textSansBold17};
+		${textEgyptianBold17};
 		margin: 0;
 	}
 	ul {
+		${textEgyptian17};
 		padding: 0;
 		padding-inline-start: 14px;
 		margin: ${space[3]}px 0 0;
@@ -66,8 +79,19 @@ const benefitsCss = css`
 		padding: 0;
 		picture {
 			order: 2;
-			max-width: 47.5%;
 		}
+	}
+`;
+
+const pictureAlignmentCss = css`
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	${between.desktop.and.leftCol} {
+		align-items: center;
+	}
+	${from.leftCol} {
+		max-width: 361px;
 	}
 `;
 
@@ -80,7 +104,7 @@ const benefitsLeftSideCss = css`
 const mobileHeroHRCss = css`
 	height: 1px;
 	width: calc(100% - 40px);
-	background-color: ${palette.neutral[46]};
+	background-color: ${palette.neutral[60]};
 	margin: 0 auto ${space[3]}px;
 	${from.desktop} {
 		display: none;
@@ -95,7 +119,7 @@ const appAdCss = css`
 `;
 
 const dontForgetCss = css`
-	${textSans17};
+	${textEgyptian17};
 	margin: ${space[6]}px 0 0;
 	padding-top: ${space[5]}px;
 	border-top: 1px solid ${palette.neutral[86]};
@@ -110,7 +134,7 @@ const onwardJourneyBtnsContainerCss = css`
 	flex-direction: column;
 	gap: ${space[5]}px;
 	margin-top: ${space[8]}px;
-	${from.desktop} {
+	${from.phablet} {
 		flex-direction: row;
 		gap: ${space[4]}px;
 	}
@@ -125,23 +149,37 @@ const buttonCentredCss = css`
 	}
 `;
 
+const updateSalesforceCase = async (isTestUser: boolean, caseId: string) => {
+	await getUpdateCasePromise(isTestUser, '_OFFER', caseId, {
+		Description: 'User took offer instead of cancelling',
+		Subject: 'Cancellation Save Discount - Free for 2 months',
+	});
+};
+
 export const SupporterPlusOfferConfirmed = () => {
+	const location = useLocation();
+	const routerState = location.state as RouterState;
+	const navigate = useNavigate();
+
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
+	const cancellationContext = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+
+	const productDetail = cancellationContext.productDetail;
+
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Confirmation');
+		updateSalesforceCase(productDetail.isTestUser, routerState.caseId);
 	}, []);
-
-	const location = useLocation();
-	const routerState = location.state as DiscountPreviewResponse;
-	const navigate = useNavigate();
 
 	const nextNonDiscountedPaymentDate = parseDate(
 		routerState.nextNonDiscountedPaymentDate,
 		'yyyy-MM-dd',
-	).dateStr();
+	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
 	return (
 		<>
@@ -177,16 +215,20 @@ export const SupporterPlusOfferConfirmed = () => {
 				</ul>
 			</div>
 			<div css={benefitsCss}>
-				<picture>
+				<picture css={pictureAlignmentCss}>
 					<source
 						srcSet="https://media.guim.co.uk/4642d75e4282cf62980b6aa60eb5f710a6795e82/0_0_1444_872/1000.png"
-						media="(min-width: 980px)"
+						media="(min-width: 1140px)"
+					/>
+					<source
+						srcSet="https://media.guim.co.uk/7a20e5ce7fd500ec7bac3ec372d7d1e041f5bfe5/0_0_1252_1100/500.png"
+						media="(min-width: 980px) and (max-width: 1139px)"
 					/>
 					<img src="https://media.guim.co.uk/63d17ee19313703129fbbeacceaafcd6d1cc1014/0_0_1404_716/500.png" />
 				</picture>
 				<div css={mobileHeroHRCss}></div>
 				<div css={benefitsLeftSideCss}>
-					<h4>With your offer, you will continue to enjoy</h4>
+					<h4>With your offer, you will continue to enjoy:</h4>
 					<ul>
 						<li>Unlimited access to the Guardian app</li>
 						<li>Ad-free reading across all your devices</li>

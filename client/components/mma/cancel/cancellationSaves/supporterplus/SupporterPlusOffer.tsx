@@ -70,7 +70,7 @@ const availableOfferBoxInnerCss = css`
 	}
 `;
 
-const mobileHeaderImageCss = css`
+const headerImageCss = css`
 	display: flex;
 	justify-content: center;
 	width: 100%;
@@ -80,9 +80,11 @@ const mobileHeaderImageCss = css`
 		position: absolute;
 		z-index: -1;
 		height: 100%;
+		overflow: hidden;
+		justify-content: flex-start;
 		img {
 			height: 100%;
-			margin-left: auto;
+			margin-left: 389px;
 		}
 	}
 `;
@@ -197,7 +199,7 @@ export const SupporterPlusOffer = () => {
 				benefits — for free.
 			</h3>
 			<div css={availableOfferBoxCss}>
-				<picture css={mobileHeaderImageCss}>
+				<picture css={headerImageCss}>
 					<source
 						srcSet="https://media.guim.co.uk/c9287b29f36749b27a6d85a8fa07d865aa7c7299/0_0_1660_1868/889.png"
 						media="(min-width: 980px)"
@@ -297,11 +299,8 @@ export const SupporterPlusOffer = () => {
 				</Button>
 			</div>
 			<p css={termsCss}>
-				Lorem ipsum dolor sit amet, consec tetur adipiscing elit. Nam
-				condimentum tempus diam, ultricies sollicitudin erat facilisis
-				eget. Vestibulum rhoncus dui vel eros laoreet consectetur.
-				Vivamus eget elementum ligula, vitae pharetra quam. Nullam at
-				ligula sed metu
+				Your monthly payments will automatically resume on{' '}
+				{nextNonDiscountedPaymentDate} unless you cancel
 			</p>
 		</>
 	);

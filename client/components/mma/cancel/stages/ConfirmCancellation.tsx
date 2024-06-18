@@ -1,11 +1,16 @@
 import { css } from '@emotion/react';
-import { from, palette, space } from '@guardian/source/foundations';
+import {
+	from,
+	palette,
+	space,
+	textEgyptian17,
+} from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
-import { parseDate } from '@/shared/dates';
+import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
 import { Heading } from '../../shared/Heading';
@@ -29,6 +34,10 @@ interface RouterSate extends DiscountPreviewResponse {
 	eligibleForFreePeriodOffer: boolean;
 }
 
+const copyCss = css`
+	${textEgyptian17};
+`;
+
 const youllLoseList = css`
 	padding: 0;
 	padding-inline-start: 14px;
@@ -50,20 +59,22 @@ const loseDateCss = css`
 	margin: 0;
 `;
 
-const buttonHolderCss = css`
+const buttonsCtaHolder = css`
+	margin-top: ${space[8]}px;
 	display: flex;
 	flex-direction: column;
-	gap: ${space[4]}px;
-	margin-top: ${space[9]}px;
-	${from.desktop} {
+	gap: ${space[2]}px;
+	${from.phablet} {
 		flex-direction: row;
+		gap: ${space[6]}px;
+		margin-top: ${space[9]}px;
 	}
 `;
 
 const ctaBtnCss = css`
 	width: 100%;
 	justify-content: center;
-	${from.desktop} {
+	${from.phablet} {
 		width: fit-content;
 	}
 `;
@@ -113,7 +124,7 @@ export const ConfirmCancellation = () => {
 			>
 				Is this really goodbye?
 			</Heading>
-			<div>
+			<div css={copyCss}>
 				<p>
 					If you confirm your cancellation, you will lose the
 					following benefits:
@@ -126,16 +137,15 @@ export const ConfirmCancellation = () => {
 				</ul>
 				{subscription.nextPaymentDate && (
 					<p css={loseDateCss}>
-						You will lose/no longer be able to access these benefits
-						from{' '}
+						You will no longer have access to these benefits from{' '}
 						{parseDate(
 							subscription.nextPaymentDate,
 							'yyyy-MM-dd',
-						).dateStr()}
+						).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
 						.
 					</p>
 				)}
-				<div css={buttonHolderCss}>
+				<div css={buttonsCtaHolder}>
 					<Button
 						cssOverrides={ctaBtnCss}
 						onClick={() => {
