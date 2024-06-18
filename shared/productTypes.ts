@@ -598,7 +598,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	tierthree: {
 		productTitle: () => 'Digital + Print',
 		friendlyName: () => 'digital + print subscription',
-		shortFriendlyName: 'Print + Digital',
 		productType: 'tierthree',
 		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'Weekly',
