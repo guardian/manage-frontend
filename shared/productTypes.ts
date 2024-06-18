@@ -775,10 +775,6 @@ export const GROUPED_PRODUCT_TYPES: {
 				return PRODUCT_TYPES.guardianweekly;
 			} else if (productDetail.tier.startsWith('guardianpatron')) {
 				return PRODUCT_TYPES.guardianpatron;
-			} else if (productDetail.tier == 'Tier Three') {
-				// TODO: Duplicate from recurring support to get change address to work with this line
-				// https://github.com/guardian/manage-frontend/blob/af1a67ca70f5002a7410774f0f5389897205a794/client/components/mma/delivery/address/DeliveryAddressForm.tsx#L103
-				return PRODUCT_TYPES.tierthree;
 			}
 			throw `Specific product type for tier '${productDetail.tier}' not found.`;
 		},

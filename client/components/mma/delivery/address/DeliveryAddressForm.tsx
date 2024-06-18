@@ -100,7 +100,9 @@ const Form = (props: FormProps) => {
 	)
 		.flatMap(flattenEquivalent)
 		.map(({ productDetail }) => {
-			const friendlyProductName = GROUPED_PRODUCT_TYPES.subscriptions
+			const friendlyProductName = GROUPED_PRODUCT_TYPES[
+				productDetail.mmaCategory
+			]
 				.mapGroupedToSpecific(productDetail)
 				.friendlyName();
 			return `${friendlyProductName}`;
