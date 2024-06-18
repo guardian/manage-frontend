@@ -24,7 +24,7 @@ const adFree = {
 
 const guardianWeekly = {
 	name: 'Guardian Weekly',
-	description: 'Print magazine delivered to your door every week ',
+	description: 'Print magazine delivered to your door every week',
 };
 
 export interface ProductBenefit {

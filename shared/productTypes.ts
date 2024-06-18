@@ -610,12 +610,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			SoftOptInIDs.GuardianWeeklyNewsletter,
 		],
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION', //TODO what should this be?
-		renewalMetadata: {
-			//TODO Don't think we need this, all T3s are auto renewing
-			alternateButtonText: 'Subscribe here',
-			urlSuffix: 'subscribe/weekly',
-			supportReferer: 'gw_renewal',
-		},
 		holidayStops: {
 			issueKeyword: 'issue',
 		},

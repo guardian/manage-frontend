@@ -49,7 +49,7 @@ export const productCardConfiguration: {
 		showBenefitsSection: true,
 	},
 	tierthree: {
-		colour: productColour.supporterPlus, //TODO: what values for this?
+		colour: productColour.supporterPlus,
 		showBenefitsSection: true,
 	},
 	digipack: {
