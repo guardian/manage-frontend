@@ -240,7 +240,7 @@ export const SupporterPlusOfferReview = () => {
 					priority="subdued"
 					cssOverrides={ctaBtnCss}
 					onClick={() => {
-						navigate('..');
+						navigate('../offer');
 					}}
 				>
 					Go back
