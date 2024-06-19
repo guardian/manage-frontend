@@ -87,7 +87,7 @@ export const HelpCentreContactOptions = (
 						: subtitleStyles
 				}
 			>
-				Still can’t find what you’re looking for?
+				Contact our Customer Services Team
 			</h2>
 
 			{isLiveChatFeatureEnabled() ? (
