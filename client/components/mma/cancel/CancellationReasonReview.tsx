@@ -8,7 +8,7 @@ import {
 } from '@guardian/source/react-components';
 import type { ChangeEvent, FC } from 'react';
 import { useContext, useEffect, useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { featureSwitches } from '@/shared/featureSwitches';
@@ -21,7 +21,6 @@ import type {
 import { sans } from '../../../styles/fonts';
 import { measure } from '../../../styles/typography';
 import { useFetch } from '../../../utilities/hooks/useFetch';
-import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { Spinner } from '../../shared/Spinner';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
@@ -59,9 +58,25 @@ const ContactUs = (reason: CancellationReason) =>
 	reason.hideContactUs ? (
 		<></>
 	) : (
-		<CallCentreNumbers
-			prefixText={reason.alternateCallUsPrefix || 'To contact us'}
-		/>
+		<p
+			css={css`
+				margin: 0;
+			`}
+		>
+			If you have any questions, feel free to{' '}
+			{
+				<Link
+					to="/help-centre#contact-options"
+					css={css`
+						text-decoration: underline;
+						color: ${palette.brand[500]};
+					`}
+				>
+					contact our support team
+				</Link>
+			}
+			.
+		</p>
 	);
 
 interface FeedbackFormProps
