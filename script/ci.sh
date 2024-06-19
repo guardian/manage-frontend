@@ -14,9 +14,10 @@ yarn test
 yarn bundle
 
 cp package.json dist
+cp yarn.lock dist
 
 cd dist
 
-yarn install --production
+yarn install --production --frozen-lockfile
 
 zip -FSr "${ROOT_DIR}/manage-frontend.zip" ./*
