@@ -152,7 +152,7 @@ const buttonCentredCss = css`
 const updateSalesforceCase = async (isTestUser: boolean, caseId: string) => {
 	await getUpdateCasePromise(isTestUser, '_OFFER', caseId, {
 		Description: 'User took offer instead of cancelling',
-		Subject: 'Cancellation Save Discount - Free for 2 months',
+		Subject: 'Online Cancellation Save Discount - Free for 2 months',
 	});
 };
 
