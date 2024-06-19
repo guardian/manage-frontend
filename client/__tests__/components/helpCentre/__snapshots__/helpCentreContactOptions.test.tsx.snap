@@ -23,6 +23,7 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
 
 <h2
     className="emotion-0"
+    id="contact-options"
   >
     Still can’t find what you’re looking for?
   </h2>,
@@ -427,6 +428,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
 
 <h2
     className="emotion-0"
+    id="contact-options"
   >
     Still can’t find what you’re looking for?
   </h2>,
@@ -831,6 +833,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
 
 <h2
     className="emotion-0"
+    id="contact-options"
   >
     Still can’t find what you’re looking for?
   </h2>,
