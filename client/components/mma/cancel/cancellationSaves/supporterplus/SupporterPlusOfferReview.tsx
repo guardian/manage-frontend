@@ -248,9 +248,9 @@ export const SupporterPlusOfferReview = () => {
 			</div>
 			<p css={termsCss}>
 				If you cancel during the free period, you will lose access to
-				your benefits at the end of the free period. If you cancel after
-				the free period, your subscription will end at the end of your
-				current monthly payment period.
+				your benefits on the day we usually take payment. If you cancel
+				after the free period, your subscription will end at the end of
+				your current monthly payment period.
 			</p>
 		</>
 	);
