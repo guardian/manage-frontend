@@ -247,7 +247,10 @@ export const SupporterPlusOfferReview = () => {
 					priority="subdued"
 					cssOverrides={ctaBtnCss}
 					onClick={() => {
-						navigate('../offer');
+						navigate('../offer', { state: routerState });
+						// we need to explicitly pass the state here to
+						// avoid a render in the previous page where the
+						// state is not yet available
 					}}
 				>
 					Go back
