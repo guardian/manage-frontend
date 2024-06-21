@@ -130,10 +130,17 @@ export const SupporterPlusOfferReview = () => {
 	const [performingDiscountStatus, setPerformingDiscountStatus] =
 		useState<OfferApiCallStatus>('NOT_READY');
 
-	const confirmBtnIconProps: { icon?: ReactElement; iconSide?: 'right' } = {};
+	const confirmBtnIconProps: {
+		icon?: ReactElement;
+		iconSide?: 'right';
+		disabled?: true;
+		['aria-disabled']?: true;
+	} = {};
 	if (performingDiscountStatus === 'PENDING') {
 		confirmBtnIconProps.icon = <SvgSpinner size="xsmall" />;
 		confirmBtnIconProps.iconSide = 'right';
+		confirmBtnIconProps.disabled = true;
+		confirmBtnIconProps['aria-disabled'] = true;
 	}
 
 	const handleConfirmClick = async () => {

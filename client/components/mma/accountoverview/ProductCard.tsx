@@ -206,30 +206,31 @@ export const ProductCard = ({
 					}
 				/>
 			)}
-			{productDetail.subscription.inDiscountPeriod && (
-				<SuccessSummary
-					message="Your offer is active"
-					context={
-						<>
-							Your two months free is now active until{' '}
-							{nextPaymentDetails?.nextPaymentDateValue}. If you
-							have any questions, feel free to{' '}
-							{
-								<Link
-									to="/help-centre#contact-options"
-									css={css`
-										text-decoration: underline;
-										color: ${palette.brand[500]};
-									`}
-								>
-									contact our support team
-								</Link>
-							}
-							.
-						</>
-					}
-				/>
-			)}
+			{!hasCancellationPending &&
+				productDetail.subscription.inDiscountPeriod && (
+					<SuccessSummary
+						message="Your offer is active"
+						context={
+							<>
+								Your two months free is now active until{' '}
+								{nextPaymentDetails?.nextPaymentDateValue}. If
+								you have any questions, feel free to{' '}
+								{
+									<Link
+										to="/help-centre#contact-options"
+										css={css`
+											text-decoration: underline;
+											color: ${palette.brand[500]};
+										`}
+									>
+										contact our support team
+									</Link>
+								}
+								.
+							</>
+						}
+					/>
+				)}
 			<Card>
 				<Card.Header backgroundColor={cardConfig.colour}>
 					<h3 css={productCardTitleCss(cardConfig.invertText)}>
