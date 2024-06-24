@@ -17,6 +17,7 @@ The mocked tests use the following commands in `package.json`:
 -   `yarn cypress:mocked:server`: starts a dev server (essentially the same as the standard `yarn watch` command but with the `CYPRESS` variable set to `'SKIP_IDAPI'`, and doesn't open a new browser tab).
 -   `yarn cypress:mocked:open`: opens the Cypress test runner in mocked mode.
 -   `yarn cypress:mocked:run`: runs the Cypress tests headless in mocked mode.
+-   `yarn cypress:mocked:runOnly [file to run]`: runs one Cypress test file eg. `yarn cypress:mocked:runOnly cypress/tests/mocked/parallel-3/holidayStops.cy.ts`
 
 In CI, the mocked tests are run by the `cypress-mocked.yml` GitHub Actions job.
 
