@@ -85,6 +85,41 @@ describe('Holiday stops', () => {
 		cy.get('@create_holiday_stop.all').should('have.length', 1);
 	});
 
+	it('can add a new holiday stop for Tier Three', () => {
+		cy.visit('/suspend/digital+print');
+		cy.wait('@fetch_existing_holidays');
+		cy.wait('@product_detail');
+		cy.get('[data-cy="create-suspension-cta"] button').click();
+
+		cy.findByText('Choose the dates you will be away');
+
+		// Selects 09/02/2022 - 11/02/2022
+		cy.get('[data-cy="date-picker"] div').eq(9).click();
+		cy.get('[data-cy="date-picker"] div').eq(11).click();
+		cy.wait('@fetch_potential_holidays');
+
+		// Total issues suspended
+		cy.get('[data-cy="suspension-issue-count"]').eq(0).contains('1 issue');
+
+		cy.findByText('Review details').click();
+
+		cy.get('table').contains('9 February - 11 February 2022');
+		cy.get('table').contains('1 issue');
+		cy.get('table').contains('£2.89 off your 1 February 2023 payment');
+
+		cy.findByText('Confirm').click();
+
+		cy.wait('@create_holiday_stop');
+		cy.findByText('Your schedule has been set').should('exist');
+
+		cy.findByText('Schedule another suspension').click();
+		cy.wait('@fetch_existing_holidays');
+		cy.wait('@product_detail');
+
+		cy.get('@fetch_existing_holidays.all').should('have.length', 2);
+		cy.get('@create_holiday_stop.all').should('have.length', 1);
+	});
+
 	it('can not create a holiday stop for date range when there are no deliveries', () => {
 		cy.intercept('GET', '/api/holidays/*/potential?*', {
 			statusCode: 200,
