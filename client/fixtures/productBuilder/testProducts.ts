@@ -219,6 +219,15 @@ export function supporterPlusAnnual() {
 		.getProductDetailObject();
 }
 
+export function supporterPlusAnnualCancelled() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.withPrice(9500)
+		.withBillingPeriod('year')
+		.cancel()
+		.getProductDetailObject();
+}
+
 export function supporterPlusCancelled() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()

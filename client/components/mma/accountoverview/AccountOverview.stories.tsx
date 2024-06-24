@@ -24,6 +24,7 @@ import {
 	membershipSupporter,
 	newspaperVoucherPaidByPaypal,
 	supporterPlus,
+	supporterPlusAnnualCancelled,
 	supporterPlusCancelled,
 	supporterPlusInOfferPeriod,
 } from '../../../fixtures/productBuilder/testProducts';
@@ -221,6 +222,7 @@ export const WithCancelledSubscriptions: StoryObj<typeof AccountOverview> = {
 							contributionCancelled(),
 							guardianWeeklyCancelled(),
 							supporterPlusCancelled(),
+							supporterPlusAnnualCancelled(),
 						),
 					),
 				);
