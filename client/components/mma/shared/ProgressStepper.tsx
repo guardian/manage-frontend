@@ -1,6 +1,10 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { palette, textSansBold12 } from '@guardian/source/foundations';
+import {
+	palette,
+	textSansBold12,
+	textSansBold14,
+} from '@guardian/source/foundations';
 import { TickInCircle } from './assets/TickInCircle';
 
 interface Step {
@@ -83,14 +87,30 @@ const Step = ({
 			css={css`
 				${textSansBold12};
 				z-index: 1;
+				width: 24px;
 				${index > 0
 					? 'display: flex; flex-direction: column; align-items: center;'
 					: ''}
 			`}
 		>
-			{step.title && <span>{step.title}</span>}
-			{index < currentStep || step.forceStepComplete ? (
-				<div>
+			{step.title && (
+				<span
+					css={css`
+						${textSansBold14};
+					`}
+				>
+					{step.title}
+				</span>
+			)}
+			<div
+				css={[
+					!!step.title &&
+						css`
+							margin-top: 4px;
+						`,
+				]}
+			>
+				{index < currentStep || step.forceStepComplete ? (
 					<TickInCircle
 						fill={palette.brand[400]}
 						additionalCss={css`
@@ -98,17 +118,19 @@ const Step = ({
 							height: 24px;
 						`}
 					/>
-				</div>
-			) : (
-				<NumberedBullet
-					stepNumber={index + 1}
-					isCurrentStep={index === currentStep}
-					backgroundColor={
-						isFutureStep ? palette.neutral[100] : palette.brand[400]
-					}
-					{...futureStepProps}
-				/>
-			)}
+				) : (
+					<NumberedBullet
+						stepNumber={index + 1}
+						isCurrentStep={index === currentStep}
+						backgroundColor={
+							isFutureStep
+								? palette.neutral[100]
+								: palette.brand[400]
+						}
+						{...futureStepProps}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };
@@ -119,31 +141,42 @@ export const ProgressStepper = ({
 }: ProgressStepperProps) => {
 	const currentStep = steps.findIndex((step) => step.isCurrentStep) || 0;
 	const completedStepsPercentage = (currentStep / (steps.length - 1)) * 100;
+	const stepsHaveTitles = steps.some((step) => {
+		return !!step.title;
+	});
 	return (
 		<div
-			css={css`
-				display: flex;
-				justify-content: space-between;
-				max-width: 519px;
-				margin-top: 10px;
-				position: relative;
-				:before {
-					content: '';
-					position: absolute;
-					top: 50%;
-					left: 0;
-					z-index: 0;
-					transform: translateY(-50%);
-					width: 100%;
-					height: 2px;
-					background: linear-gradient(
-						to right,
-						${palette.brand[400]} ${completedStepsPercentage}%,
-						${palette.neutral[46]} ${completedStepsPercentage}%
-					);
-				}
-				${additionalCSS};
-			`}
+			css={[
+				css`
+					display: flex;
+					justify-content: space-between;
+					max-width: 519px;
+					margin-top: 10px;
+					position: relative;
+					:before {
+						content: '';
+						position: absolute;
+						top: 50%;
+						left: 0;
+						z-index: 0;
+						transform: translateY(-50%);
+						width: 100%;
+						height: 2px;
+						background: linear-gradient(
+							to right,
+							${palette.brand[400]} ${completedStepsPercentage}%,
+							${palette.neutral[46]} ${completedStepsPercentage}%
+						);
+					}
+					${additionalCSS};
+				`,
+				stepsHaveTitles &&
+					css`
+						:before {
+							top: calc(50% + 0.5em + 4px);
+						}
+					`,
+			]}
 		>
 			{steps.map((step, index) => (
 				<Step
