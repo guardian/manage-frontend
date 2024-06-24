@@ -27,6 +27,7 @@ import {
 	supporterPlusAnnualCancelled,
 	supporterPlusCancelled,
 	supporterPlusInOfferPeriod,
+	tierThree,
 } from '../../../fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../fixtures/singleContribution';
 import { user } from '../../../fixtures/user';
@@ -91,6 +92,7 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 							newspaperVoucherPaidByPaypal(),
 							membershipSupporter(),
 							supporterPlus(),
+							tierThree(),
 						),
 					),
 				);
@@ -223,6 +225,7 @@ export const WithCancelledSubscriptions: StoryObj<typeof AccountOverview> = {
 							guardianWeeklyCancelled(),
 							supporterPlusCancelled(),
 							supporterPlusAnnualCancelled(),
+							tierThree(),
 						),
 					),
 				);

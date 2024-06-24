@@ -9,6 +9,7 @@ import {
 	newspaperVoucherPaidByPaypal,
 	supporterPlusAnnual,
 	supporterPlusMonthlyAllAccessDigital,
+	tierThree,
 } from '../../../fixtures/productBuilder/testProducts';
 import { ManageProduct } from './ManageProduct';
 
@@ -29,6 +30,18 @@ export const GuardianWeekly: StoryObj<typeof ManageProduct> = {
 	parameters: {
 		reactRouter: {
 			state: { productDetail: guardianWeeklyPaidByCard() },
+		},
+	},
+};
+
+export const TierThree: StoryObj<typeof ManageProduct> = {
+	render: () => {
+		return <ManageProduct productType={PRODUCT_TYPES.tierthree} />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: { productDetail: tierThree() },
 		},
 	},
 };

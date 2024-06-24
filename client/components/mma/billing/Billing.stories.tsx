@@ -14,6 +14,7 @@ import {
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
 	newspaperVoucherPaidByPaypal,
+	tierThree,
 } from '../../../fixtures/productBuilder/testProducts';
 import { user } from '../../../fixtures/user';
 import { Billing } from './Billing';
@@ -71,6 +72,7 @@ export const WithSubscriptions: StoryObj<typeof Billing> = {
 							guardianWeeklyPaidByCard(),
 							digitalPackPaidByDirectDebit(),
 							newspaperVoucherPaidByPaypal(),
+							tierThree(),
 						),
 					),
 				);

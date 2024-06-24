@@ -4,13 +4,16 @@ import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { existingHolidays } from '../../../fixtures/holidays';
 import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
-import { guardianWeeklyPaidByCard } from '../../../fixtures/productBuilder/testProducts';
+import {
+	guardianWeeklyPaidByCard,
+	tierThree,
+} from '../../../fixtures/productBuilder/testProducts';
 import { HolidayDateChooser } from './HolidayDateChooser';
 import { HolidaysOverview } from './HolidaysOverview';
 import { HolidayStopsContainer } from './HolidayStopsContainer';
 
 const productTypeWithHolidayStops = {
-	...PRODUCT_TYPES.guardianweekly,
+	...PRODUCT_TYPES.tierthree,
 	holidayStops: {
 		issueKeyword: 'issue',
 	},
@@ -31,7 +34,7 @@ export default {
 	},
 } as Meta<typeof HolidayStopsContainer>;
 
-export const ManageGuardianWeekly: StoryObj<typeof HolidaysOverview> = {
+export const ManageTierThree: StoryObj<typeof HolidaysOverview> = {
 	render: () => {
 		return <HolidaysOverview />;
 	},
@@ -39,11 +42,7 @@ export const ManageGuardianWeekly: StoryObj<typeof HolidaysOverview> = {
 	parameters: {
 		msw: [
 			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(guardianWeeklyPaidByCard()),
-					),
-				);
+				return res(ctx.json(toMembersDataApiResponse(tierThree())));
 			}),
 			rest.get('/api/holidays/*', (_req, res, ctx) => {
 				return res(ctx.json(existingHolidays));
@@ -52,7 +51,7 @@ export const ManageGuardianWeekly: StoryObj<typeof HolidaysOverview> = {
 	},
 };
 
-export const CreateGuardianWeekly: StoryObj<typeof HolidayDateChooser> = {
+export const CreateTierThree: StoryObj<typeof HolidayDateChooser> = {
 	render: () => {
 		return <HolidayDateChooser />;
 	},

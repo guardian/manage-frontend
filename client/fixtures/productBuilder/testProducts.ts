@@ -8,6 +8,7 @@ import {
 	baseMembership,
 	baseNationalDelivery,
 	baseSupporterPlus,
+	baseTierThree,
 } from './baseProducts';
 import { cards, ProductBuilder } from './productBuilder';
 
@@ -239,6 +240,12 @@ export function supporterPlusInOfferPeriod() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()
 		.inOfferPeriod()
+		.getProductDetailObject();
+}
+
+export function tierThree() {
+	return new ProductBuilder(baseTierThree())
+		.payByCard()
 		.getProductDetailObject();
 }
 
