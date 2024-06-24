@@ -165,7 +165,6 @@ type ReaderType = 'Gift' | 'Direct' | 'Agent' | 'Complementary' | 'Patron';
 
 export interface Subscription {
 	accountId?: string;
-	subscriberId?: string; // this has not been removed from the backend yet
 	subscriptionId: string;
 	start?: string;
 	end: string;
