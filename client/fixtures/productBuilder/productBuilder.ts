@@ -116,7 +116,9 @@ export class ProductBuilder {
 	}
 
 	inOfferPeriod() {
-		this.productToBuild.subscription.inDiscountPeriod = true;
+		this.productToBuild.subscription.nextPaymentDate = '2023-03-20';
+		this.productToBuild.subscription.potentialCancellationDate =
+			'2023-02-20';
 		return this;
 	}
 

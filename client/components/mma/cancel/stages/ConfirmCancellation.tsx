@@ -135,11 +135,11 @@ export const ConfirmCancellation = () => {
 					<li>Exclusive supporter newsletter</li>
 					<li>Far fewer asks for support when you're signed in</li>
 				</ul>
-				{subscription.nextPaymentDate && (
+				{subscription.potentialCancellationDate && (
 					<p css={loseDateCss}>
 						You will no longer have access to these benefits from{' '}
 						{parseDate(
-							subscription.nextPaymentDate,
+							subscription.potentialCancellationDate,
 							'yyyy-MM-dd',
 						).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
 						.

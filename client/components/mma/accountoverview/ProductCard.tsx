@@ -207,7 +207,10 @@ export const ProductCard = ({
 				/>
 			)}
 			{!hasCancellationPending &&
-				productDetail.subscription.inDiscountPeriod && (
+				productDetail.subscription.nextPaymentDate &&
+				productDetail.subscription.potentialCancellationDate &&
+				productDetail.subscription.nextPaymentDate !==
+					productDetail.subscription.potentialCancellationDate && (
 					<SuccessSummary
 						message="Your offer is active"
 						context={

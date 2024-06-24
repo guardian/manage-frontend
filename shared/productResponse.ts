@@ -174,6 +174,7 @@ export interface Subscription {
 	cancelledAt: boolean;
 	nextPaymentDate: string | null;
 	lastPaymentDate: string | null;
+	potentialCancellationDate: string | null;
 	chargedThroughDate: string | null;
 	nextPaymentPrice: number | null;
 	paymentMethod?: string;
@@ -188,7 +189,6 @@ export interface Subscription {
 	futurePlans: Array<SubscriptionPlan | PaidSubscriptionPlan>;
 	plan?: PaidSubscriptionPlan; // this is used for memberships (remove when memberships no longer exist)
 	trialLength: number;
-	inDiscountPeriod?: boolean;
 	readerType: ReaderType;
 	deliveryAddress?: DeliveryAddress;
 	contactId?: string;
