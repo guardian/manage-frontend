@@ -1,7 +1,9 @@
+import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 
 interface TickInCircleProps {
 	fill?: string;
+	additionalCss?: SerializedStyles;
 }
 
 export const TickInCircle = (props: TickInCircleProps) => (
@@ -10,9 +12,12 @@ export const TickInCircle = (props: TickInCircleProps) => (
 		height="22"
 		viewBox="0 0 22 22"
 		fill="none"
-		css={css`
-			vertical-align: top;
-		`}
+		css={[
+			css`
+				vertical-align: top;
+			`,
+			props.additionalCss,
+		]}
 	>
 		<circle cx="11" cy="11" r="11" fill={props.fill || '#22874D'} />
 		<path

@@ -24,7 +24,9 @@ import {
 	membershipSupporter,
 	newspaperVoucherPaidByPaypal,
 	supporterPlus,
+	supporterPlusAnnualCancelled,
 	supporterPlusCancelled,
+	supporterPlusInOfferPeriod,
 } from '../../../fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../fixtures/singleContribution';
 import { user } from '../../../fixtures/user';
@@ -220,6 +222,7 @@ export const WithCancelledSubscriptions: StoryObj<typeof AccountOverview> = {
 							contributionCancelled(),
 							guardianWeeklyCancelled(),
 							supporterPlusCancelled(),
+							supporterPlusAnnualCancelled(),
 						),
 					),
 				);
@@ -315,6 +318,33 @@ export const WithSingleContribution: StoryObj<typeof AccountOverview> = {
 			}),
 			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
 				return res(ctx.json(singleContributionsAPIResponse));
+			}),
+		],
+	},
+};
+
+export const WithSupporterPlusDuringOffer: StoryObj<typeof AccountOverview> = {
+	render: () => {
+		return <AccountOverview />;
+	},
+
+	parameters: {
+		msw: [
+			rest.get('/api/cancelled/', (_req, res, ctx) => {
+				return res(ctx.json([]));
+			}),
+			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
+				return res(ctx.json({ subscriptions: [] }));
+			}),
+			rest.get('/api/me/mma', (_req, res, ctx) => {
+				return res(
+					ctx.json(
+						toMembersDataApiResponse(supporterPlusInOfferPeriod()),
+					),
+				);
+			}),
+			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
+				return res(ctx.json([]));
 			}),
 		],
 	},

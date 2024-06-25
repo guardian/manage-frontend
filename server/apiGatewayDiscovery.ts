@@ -165,10 +165,7 @@ const getApiGateway = (
 				} else if (!host) {
 					log.error(`Missing host for ${stage} ${apiName}`);
 					res.status(500).send();
-				} else if (
-					!res.locals.identity &&
-					!res.locals.identity.userId
-				) {
+				} else if (!res.locals.identity?.userId) {
 					log.error(`Missing identity ID on the request object`);
 					res.status(500).send();
 				} else {

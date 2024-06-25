@@ -1,3 +1,5 @@
+import { css } from '@emotion/react';
+import { textSans15 } from '@guardian/source/foundations';
 import {
 	Hide,
 	SvgCrossRound,
@@ -8,32 +10,62 @@ import { benefitsCss, unavailableBenefitsCss } from './BenefitsStyles';
 
 interface BenefitsSectionProps {
 	benefits: ProductBenefit[];
+	small?: true;
 }
 
-const Benefit = ({ benefit }: { benefit: ProductBenefit }) => {
+const Benefit = ({
+	benefit,
+	small,
+}: {
+	benefit: ProductBenefit;
+	small?: boolean;
+}) => {
 	return (
 		<li css={benefit.isUnavailable ? unavailableBenefitsCss : ''}>
 			{benefit.isUnavailable ? (
-				<SvgCrossRound isAnnouncedByScreenReader size="small" />
+				<SvgCrossRound
+					isAnnouncedByScreenReader
+					size={small ? 'xsmall' : 'small'}
+				/>
 			) : (
-				<SvgTickRound isAnnouncedByScreenReader size="small" />
+				<SvgTickRound
+					isAnnouncedByScreenReader
+					size={small ? 'xsmall' : 'small'}
+				/>
 			)}
 			<span>
-				<strong>{benefit.name}</strong>
-				<Hide from="tablet">
-					<br />
-				</Hide>{' '}
+				{benefit.name && (
+					<>
+						<strong>{benefit.name}</strong>
+						<Hide from="tablet">
+							<br />
+						</Hide>{' '}
+					</>
+				)}
 				{benefit.description}
 			</span>
 		</li>
 	);
 };
 
-export const BenefitsSection = ({ benefits }: BenefitsSectionProps) => {
+export const BenefitsSection = ({ benefits, small }: BenefitsSectionProps) => {
 	return (
-		<ul id="benefits" css={benefitsCss}>
-			{benefits.map((benefit) => (
-				<Benefit key={benefit.name} benefit={benefit} />
+		<ul
+			id="benefits"
+			css={[
+				benefitsCss,
+				small &&
+					css`
+						${textSans15}
+					`,
+			]}
+		>
+			{benefits.map((benefit, benefitIndex) => (
+				<Benefit
+					key={`benefit-${benefitIndex}`}
+					benefit={benefit}
+					small={!!small}
+				/>
 			))}
 		</ul>
 	);

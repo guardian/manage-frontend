@@ -3,11 +3,15 @@ import { palette, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
+	SvgGift,
 	SvgInfoRound,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
-import { InfoSummary } from '@guardian/source-development-kitchen/react-components';
-import { useNavigate } from 'react-router';
+import {
+	InfoSummary,
+	SuccessSummary,
+} from '@guardian/source-development-kitchen/react-components';
+import { Link, useNavigate } from 'react-router-dom';
 import {
 	cancellationFormatDate,
 	DATE_FNS_LONG_OUTPUT_FORMAT,
@@ -23,6 +27,7 @@ import { getMainPlan, isGift } from '@/shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
+import { Ribbon } from '../../shared/Ribbon';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
@@ -31,7 +36,6 @@ import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { PaypalDisplay } from '../shared/PaypalDisplay';
 import { SepaDisplay } from '../shared/SepaDisplay';
-import { GiftRibbon } from './GiftRibbon';
 import { productCardConfiguration } from './ProductCardConfiguration';
 import {
 	keyValueCss,
@@ -164,6 +168,19 @@ export const ProductCard = ({
 	const cardConfig =
 		productCardConfiguration[specificProductType.productType];
 
+	const giftRibbonColour = cardConfig.invertText
+		? palette.brand[400]
+		: palette.brandAlt[400];
+	const giftRibbonCopyColour = cardConfig.invertText
+		? palette.brandAlt[400]
+		: palette.brand[400];
+	const giftRibbonCss = css`
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		right: 0;
+	`;
+
 	const benefitsTextCss = css`
 		${textSans17};
 		margin: 0;
@@ -189,13 +206,53 @@ export const ProductCard = ({
 					}
 				/>
 			)}
+			{!hasCancellationPending &&
+				productDetail.subscription.nextPaymentDate &&
+				productDetail.subscription.potentialCancellationDate &&
+				productDetail.subscription.nextPaymentDate !==
+					productDetail.subscription.potentialCancellationDate && (
+					<SuccessSummary
+						message="Your offer is active"
+						context={
+							<>
+								Your two months free is now active until{' '}
+								{nextPaymentDetails?.nextPaymentDateValue}. If
+								you have any questions, feel free to{' '}
+								{
+									<Link
+										to="/help-centre#contact-options"
+										css={css`
+											text-decoration: underline;
+											color: ${palette.brand[500]};
+										`}
+									>
+										contact our support team
+									</Link>
+								}
+								.
+							</>
+						}
+					/>
+				)}
 			<Card>
 				<Card.Header backgroundColor={cardConfig.colour}>
 					<h3 css={productCardTitleCss(cardConfig.invertText)}>
 						{productTitle}
 					</h3>
 					{isGifted && (
-						<GiftRibbon inverted={cardConfig.invertText} />
+						<Ribbon
+							copy="Gift"
+							ribbonColour={giftRibbonColour}
+							copyColour={giftRibbonCopyColour}
+							icon={
+								<SvgGift
+									isAnnouncedByScreenReader
+									size="small"
+									theme={{ fill: giftRibbonCopyColour }}
+								/>
+							}
+							additionalCss={giftRibbonCss}
+						/>
 					)}
 				</Card.Header>
 

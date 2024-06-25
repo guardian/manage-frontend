@@ -23,8 +23,9 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
 
 <h2
     className="emotion-0"
+    id="contact-options"
   >
-    Still can’t find what you’re looking for?
+    Contact our Customer Services Team
   </h2>,
   .emotion-0 {
   display: -webkit-box;
@@ -427,8 +428,9 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
 
 <h2
     className="emotion-0"
+    id="contact-options"
   >
-    Still can’t find what you’re looking for?
+    Contact our Customer Services Team
   </h2>,
   .emotion-0 {
   display: -webkit-box;
@@ -831,8 +833,9 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
 
 <h2
     className="emotion-0"
+    id="contact-options"
   >
-    Still can’t find what you’re looking for?
+    Contact our Customer Services Team
   </h2>,
   .emotion-0 {
   font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;

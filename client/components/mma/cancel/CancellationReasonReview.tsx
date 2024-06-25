@@ -4,10 +4,14 @@ import {
 	Button,
 	InlineError,
 	SvgArrowRightStraight,
+	SvgSpinner,
 } from '@guardian/source/react-components';
 import type { ChangeEvent, FC } from 'react';
-import { useContext, useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
+import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import { featureSwitches } from '@/shared/featureSwitches';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import type {
@@ -17,7 +21,6 @@ import type {
 import { sans } from '../../../styles/fonts';
 import { measure } from '../../../styles/typography';
 import { useFetch } from '../../../utilities/hooks/useFetch';
-import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { Spinner } from '../../shared/Spinner';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
@@ -31,6 +34,7 @@ import type {
 } from '../holiday/HolidayStopApi';
 import { Heading } from '../shared/Heading';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
+import { ProgressStepper } from '../shared/ProgressStepper';
 import type { CancellationContextInterface } from './CancellationContainer';
 import { CancellationContext } from './CancellationContainer';
 import { cancellationEffectiveToday } from './cancellationContexts';
@@ -54,9 +58,25 @@ const ContactUs = (reason: CancellationReason) =>
 	reason.hideContactUs ? (
 		<></>
 	) : (
-		<CallCentreNumbers
-			prefixText={reason.alternateCallUsPrefix || 'To contact us'}
-		/>
+		<p
+			css={css`
+				margin: 0;
+			`}
+		>
+			If you have any questions, feel free to{' '}
+			{
+				<Link
+					to="/help-centre#contact-options"
+					css={css`
+						text-decoration: underline;
+						color: ${palette.brand[500]};
+					`}
+				>
+					contact our support team
+				</Link>
+			}
+			.
+		</p>
 	);
 
 interface FeedbackFormProps
@@ -227,6 +247,8 @@ interface ConfirmCancellationAndReturnRowProps
 	deliveryCredits?: DeliveryRecordDetail[];
 }
 
+type ShowOfferState = 'pending' | true | false;
+
 const ConfirmCancellationAndReturnRow = (
 	props: ConfirmCancellationAndReturnRowProps,
 ) => {
@@ -236,6 +258,47 @@ const ConfirmCancellationAndReturnRow = (
 		cancellationPolicy: string;
 	};
 	const navigate = useNavigate();
+	const { productDetail, productType } = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+	const isSupporterPlusAndFreePeriodOfferIsActive =
+		featureSwitches.supporterplusCancellationOffer &&
+		productType.productType === 'supporterplus';
+	const [showOfferBeforeCancelling, setShowOfferBeforeCancelling] =
+		useState<ShowOfferState>(
+			isSupporterPlusAndFreePeriodOfferIsActive ? 'pending' : false,
+		);
+	const [offerDetails, setOfferDetails] =
+		useState<DiscountPreviewResponse | null>(null);
+	useEffect(() => {
+		if (isSupporterPlusAndFreePeriodOfferIsActive) {
+			(async () => {
+				try {
+					const response = await fetchWithDefaultParameters(
+						'/api/discounts/preview-discount',
+						{
+							method: 'POST',
+							body: JSON.stringify({
+								subscriptionNumber:
+									productDetail.subscription.subscriptionId,
+							}),
+						},
+					);
+
+					if (response.ok) {
+						// api returns a 400 response if the user is not eligible
+						setShowOfferBeforeCancelling(true);
+						const offerData = await response.json();
+						setOfferDetails(offerData);
+					} else {
+						setShowOfferBeforeCancelling(false);
+					}
+				} catch (e) {
+					setShowOfferBeforeCancelling(false);
+				}
+			})();
+		}
+	}, []);
 
 	return (
 		<>
@@ -259,23 +322,58 @@ const ConfirmCancellationAndReturnRow = (
 						}}
 					>
 						<Button
-							icon={<SvgArrowRightStraight />}
+							icon={
+								showOfferBeforeCancelling === 'pending' ? (
+									<SvgSpinner size="xsmall" />
+								) : (
+									<SvgArrowRightStraight />
+								)
+							}
 							iconSide="right"
+							disabled={showOfferBeforeCancelling === 'pending'}
+							aria-disabled={
+								showOfferBeforeCancelling === 'pending'
+							}
 							onClick={() => {
 								if (props.onClick) {
 									props.onClick();
 								}
-								navigate('../confirmed', {
-									state: {
-										...routerState,
-										caseId: props.caseId,
-										holidayStops: props.holidayStops,
-										deliveryCredits: props.deliveryCredits,
-									},
-								});
+								if (showOfferBeforeCancelling) {
+									navigate('../offer', {
+										state: {
+											...routerState,
+											...offerDetails,
+											caseId: props.caseId,
+											holidayStops: props.holidayStops,
+											deliveryCredits:
+												props.deliveryCredits,
+										},
+									});
+								} else {
+									navigate(
+										productType.productType ===
+											'supporterplus'
+											? '../confirm'
+											: '../confirmed',
+										{
+											state: {
+												...routerState,
+												eligibleForFreePeriodOffer:
+													false,
+												caseId: props.caseId,
+												holidayStops:
+													props.holidayStops,
+												deliveryCredits:
+													props.deliveryCredits,
+											},
+										},
+									);
+								}
 							}}
 						>
-							Confirm cancellation
+							{productType.productType === 'supporterplus'
+								? 'Continue to cancellation'
+								: 'Confirm cancellation'}
 						</Button>
 					</div>
 					<div>
@@ -405,16 +503,26 @@ export const CancellationReasonReview = () => {
 
 	return (
 		<>
-			<ProgressIndicator
-				steps={[
-					{ title: 'Reason' },
-					{ title: 'Review', isCurrentStep: true },
-					{ title: 'Confirmation' },
-				]}
-				additionalCSS={css`
-					margin: ${space[5]}px 0 ${space[12]}px;
-				`}
-			/>
+			{featureSwitches.supporterplusCancellationOffer &&
+			productType.productType === 'supporterplus' ? (
+				<ProgressStepper
+					steps={[{}, { isCurrentStep: true }, {}, {}]}
+					additionalCSS={css`
+						margin: ${space[5]}px 0 ${space[12]}px;
+					`}
+				/>
+			) : (
+				<ProgressIndicator
+					steps={[
+						{ title: 'Reason' },
+						{ title: 'Review', isCurrentStep: true },
+						{ title: 'Confirmation' },
+					]}
+					additionalCSS={css`
+						margin: ${space[5]}px 0 ${space[12]}px;
+					`}
+				/>
+			)}
 			<WithStandardTopMargin>
 				{isLoading() ? (
 					!loadingHasFailed && (

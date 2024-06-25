@@ -8,6 +8,7 @@ import {
 	monthlyContributionPaidByCard,
 	newspaperVoucherPaidByPaypal,
 	supporterPlusAnnual,
+	supporterPlusMonthlyAllAccessDigital,
 } from '../../../fixtures/productBuilder/testProducts';
 import { ManageProduct } from './ManageProduct';
 
@@ -78,6 +79,18 @@ export const SupporterPlus: StoryObj<typeof ManageProduct> = {
 	parameters: {
 		reactRouter: {
 			state: { productDetail: supporterPlusAnnual() },
+		},
+	},
+};
+
+export const SupporterPlusAllAccessDigital: StoryObj<typeof ManageProduct> = {
+	render: () => {
+		return <ManageProduct productType={PRODUCT_TYPES.supporterplus} />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: { productDetail: supporterPlusMonthlyAllAccessDigital() },
 		},
 	},
 };

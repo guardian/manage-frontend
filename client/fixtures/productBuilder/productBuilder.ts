@@ -115,6 +115,13 @@ export class ProductBuilder {
 		return this;
 	}
 
+	inOfferPeriod() {
+		this.productToBuild.subscription.nextPaymentDate = '2023-03-20';
+		this.productToBuild.subscription.potentialCancellationDate =
+			'2023-02-20';
+		return this;
+	}
+
 	asPatron() {
 		this.productToBuild.subscription.readerType = 'Patron';
 		return this;

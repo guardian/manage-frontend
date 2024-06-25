@@ -1,6 +1,11 @@
-import { supporterPlus } from '../../../../client/fixtures/productBuilder/testProducts';
+import {
+	supporterPlus,
+	supporterPlusCancelled,
+} from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
+import { featureSwitches } from '../../../../shared/featureSwitches';
+import { DiscountPreviewResponse } from '../../../../client/utilities/discountPreview';
 
 describe('Cancel Supporter Plus', () => {
 	const setupCancellation = () => {
@@ -90,7 +95,11 @@ describe('Cancel Supporter Plus', () => {
 
 		cy.wait('@get_case');
 
-		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
+		cy.findByRole('button', { name: 'Continue to cancellation' }).click();
+
+		cy.findByRole('button', {
+			name: 'Confirm cancellation',
+		}).click();
 
 		cy.wait('@create_case_in_salesforce');
 		cy.wait('@cancel_supporter_plus');
@@ -101,7 +110,7 @@ describe('Cancel Supporter Plus', () => {
 		});
 	});
 
-	it('allows self-service cancellation of Supporter Plus', () => {
+	it('user successfully cancels (not eligable for offer)', () => {
 		setupCancellation();
 
 		cy.intercept('GET', '/api/me/mma/**', {
@@ -116,16 +125,214 @@ describe('Cancel Supporter Plus', () => {
 
 		cy.wait('@get_case');
 
-		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
+		cy.findByRole('button', { name: 'Continue to cancellation' }).click();
+
+		cy.findByRole('button', {
+			name: 'Confirm cancellation',
+		}).click();
 
 		cy.wait('@create_case_in_salesforce');
 		cy.wait('@cancel_supporter_plus');
 		cy.wait('@get_cancelled_product');
 
 		cy.findByRole('heading', {
-			name: 'Your all-access digital subscription is cancelled',
+			name: 'Your subscription has been cancelled',
 		});
 
 		cy.get('@get_cancellation_date.all').should('have.length', 0);
 	});
+
+	if (featureSwitches.supporterplusCancellationOffer) {
+		const discountPreviewResponse: DiscountPreviewResponse = {
+			discountedPrice: 0,
+			upToPeriods: 2,
+			upToPeriodsType: 'Months',
+			firstDiscountedPaymentDate: '2024-05-30',
+			nextNonDiscountedPaymentDate: '2024-07-30',
+		};
+		it('user accepts offer instead of cancelling', () => {
+			cy.intercept('GET', '/api/me/mma', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(supporterPlus()),
+			}).as('mma');
+
+			cy.intercept('GET', '/api/me/mma?productType=SupporterPlus', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(supporterPlus()),
+			});
+
+			cy.intercept('POST', 'api/discounts/preview-discount', {
+				statusCode: 200,
+				body: discountPreviewResponse,
+			}).as('preview_discount');
+
+			cy.intercept('POST', 'api/discounts/apply-discount', {
+				statusCode: 200,
+			}).as('apply_discount');
+
+			setupCancellation();
+
+			cy.findByRole('radio', {
+				name: 'I am unhappy with some editorial decisions',
+			}).click();
+			cy.findByRole('button', { name: 'Continue' }).click();
+
+			cy.wait('@get_case');
+			cy.wait('@preview_discount');
+
+			cy.findByRole('button', {
+				name: 'Continue to cancellation',
+			}).click();
+
+			cy.findByRole('button', { name: 'Redeem your offer' }).click();
+
+			cy.findByRole('button', {
+				name: 'Confirm your offer',
+			}).click();
+
+			cy.findByText('Thank you for choosing to stay with us');
+			cy.wait('@apply_discount');
+		});
+
+		it('user gets to offer review page and clicks go back', () => {
+			cy.intercept('GET', '/api/me/mma', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(supporterPlus()),
+			}).as('mma');
+
+			cy.intercept('GET', '/api/me/mma?productType=SupporterPlus', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(supporterPlus()),
+			});
+
+			cy.intercept('POST', 'api/discounts/preview-discount', {
+				statusCode: 200,
+				body: discountPreviewResponse,
+			}).as('preview_discount');
+
+			setupCancellation();
+
+			cy.findByRole('radio', {
+				name: 'I am unhappy with some editorial decisions',
+			}).click();
+			cy.findByRole('button', { name: 'Continue' }).click();
+
+			cy.wait('@get_case');
+			cy.wait('@preview_discount');
+
+			cy.findByRole('button', {
+				name: 'Continue to cancellation',
+			}).click();
+
+			cy.findByRole('button', { name: 'Redeem your offer' }).click();
+
+			cy.findByRole('button', {
+				name: 'Go back',
+			}).click();
+
+			cy.findByRole('button', { name: 'Redeem your offer' });
+		});
+
+		it('user accepts offer but api call fails', () => {
+			cy.intercept('GET', '/api/me/mma', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(supporterPlus()),
+			}).as('mma');
+
+			cy.intercept('GET', '/api/me/mma?productType=SupporterPlus', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(supporterPlus()),
+			});
+
+			cy.intercept('POST', 'api/discounts/preview-discount', {
+				statusCode: 200,
+				body: discountPreviewResponse,
+			}).as('preview_discount');
+
+			cy.intercept('POST', 'api/discounts/apply-discount', {
+				statusCode: 500,
+			}).as('apply_discount');
+
+			setupCancellation();
+
+			cy.findByRole('radio', {
+				name: 'I am unhappy with some editorial decisions',
+			}).click();
+			cy.findByRole('button', { name: 'Continue' }).click();
+
+			cy.wait('@get_case');
+			cy.wait('@preview_discount');
+
+			cy.findByRole('button', {
+				name: 'Continue to cancellation',
+			}).click();
+
+			cy.findByRole('button', { name: 'Redeem your offer' }).click();
+
+			cy.findByRole('button', {
+				name: 'Confirm your offer',
+			}).click();
+
+			cy.wait('@apply_discount');
+			cy.findByText('Unable to complete request');
+		});
+
+		it("user see's offer but still decides to cancel", () => {
+			cy.intercept('GET', '/api/me/mma', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(supporterPlus()),
+			}).as('mma');
+
+			cy.intercept('GET', '/api/me/mma/**', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(supporterPlusCancelled()),
+			}).as('get_cancelled_product');
+
+			cy.intercept('GET', '/api/me/mma?productType=SupporterPlus', {
+				statusCode: 200,
+				body: toMembersDataApiResponse(supporterPlus()),
+			});
+
+			cy.intercept('POST', 'api/discounts/preview-discount', {
+				statusCode: 200,
+				body: discountPreviewResponse,
+			}).as('preview_discount');
+
+			cy.intercept('POST', 'api/discounts/apply-discount', {
+				statusCode: 200,
+			}).as('apply_discount');
+
+			setupCancellation();
+
+			cy.findByRole('radio', {
+				name: 'I am unhappy with some editorial decisions',
+			}).click();
+			cy.findByRole('button', { name: 'Continue' }).click();
+
+			cy.wait('@get_case');
+			cy.wait('@preview_discount');
+
+			cy.findByRole('button', {
+				name: 'Continue to cancellation',
+			}).click();
+
+			cy.findByRole('button', {
+				name: 'No thanks, continue to cancel',
+			}).click();
+
+			cy.findByRole('button', {
+				name: 'Confirm cancellation',
+			}).click();
+
+			cy.wait('@create_case_in_salesforce');
+			cy.wait('@cancel_supporter_plus');
+			cy.wait('@get_cancelled_product');
+
+			cy.findByRole('heading', {
+				name: 'Your subscription has been cancelled',
+			});
+
+			cy.get('@get_cancellation_date.all').should('have.length', 0);
+		});
+	}
 });

@@ -25,6 +25,12 @@ const actuallyCancelled = (
 ) => {
 	const deliveryRecordsLink: string = `/delivery/${productType.urlPart}/records`;
 	const subscription = productDetail.subscription;
+	const headingCopy =
+		productType.productType === 'supporterplus'
+			? 'Your subscription has been cancelled'
+			: `Your ${productType.friendlyName(
+					cancelledProductDetail,
+			  )} is cancelled`;
 	return (
 		<>
 			<WithStandardTopMargin>
@@ -36,9 +42,7 @@ const actuallyCancelled = (
 						`,
 					]}
 				>
-					{`Your ${productType.friendlyName(
-						cancelledProductDetail,
-					)} is cancelled`}
+					{headingCopy}
 				</Heading>
 				{productType.cancellation &&
 					!productType.cancellation.shouldHideSummaryMainPara && (

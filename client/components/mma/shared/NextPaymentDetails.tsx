@@ -16,6 +16,7 @@ export interface NextPaymentDetails {
 	paymentInterval: string;
 	paymentKey: string;
 	paymentValue: string;
+	paymentValueShort: string;
 	isNewPaymentValue?: boolean;
 	nextPaymentDateKey: string;
 	nextPaymentDateValue?: string;
@@ -46,14 +47,22 @@ export const getNextPaymentDetails = (
 			paymentInterval,
 		)} payment`;
 
-		const paymentValue =
-			subscription.readerType === 'Patron'
-				? 'not applicable'
-				: `${mainPlan.currency}${(
-						overiddenAmount ||
-						(subscription.nextPaymentPrice ?? mainPlan.price) /
-							100.0
-				  ).toFixed(2)} ${mainPlan.currencyISO}`;
+		const getPaymentValue = (shortVersion?: 'short') => {
+			if (subscription.readerType === 'Patron') {
+				return 'not applicable';
+			}
+			const amount =
+				overiddenAmount ||
+				(subscription.nextPaymentPrice ?? mainPlan.price) / 100;
+			if (shortVersion === 'short') {
+				return `${mainPlan.currency}${
+					Number.isInteger(amount) ? amount : amount.toFixed(2)
+				}`;
+			}
+			return `${mainPlan.currency}${amount.toFixed(2)} ${
+				mainPlan.currencyISO
+			}`;
+		};
 
 		const nextPaymentDateValue =
 			subscription.readerType === 'Patron'
@@ -74,7 +83,8 @@ export const getNextPaymentDetails = (
 		return {
 			paymentInterval,
 			paymentKey,
-			paymentValue,
+			paymentValue: getPaymentValue(),
+			paymentValueShort: getPaymentValue('short'),
 			isNewPaymentValue,
 			nextPaymentDateKey: 'Next payment date',
 			nextPaymentDateValue,

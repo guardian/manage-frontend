@@ -621,6 +621,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	supporterplus: {
 		productTitle: () => 'All-access digital',
 		friendlyName: () => 'all-access digital subscription',
+		shortFriendlyName: 'all-access digital',
 		productType: 'supporterplus',
 		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'SupporterPlus',

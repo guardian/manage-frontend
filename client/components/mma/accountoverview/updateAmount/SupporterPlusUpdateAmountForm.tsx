@@ -270,10 +270,10 @@ export const SupporterPlusUpdateAmountForm = (
 							<>
 								{getSupporterPlusSuggestedAmountsFromMainPlan(
 									props.mainPlan,
-								).map((amount) => (
+								).map((amount, index) => (
 									<ChoiceCard
 										id={`amount-${amount}`}
-										key={amount}
+										key={`sp-amount-${amount}-index-${index}`}
 										value={amount.toString()}
 										label={amountLabel(amount)}
 										checked={selectedValue === amount}

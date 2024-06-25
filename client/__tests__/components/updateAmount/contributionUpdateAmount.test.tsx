@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { UpdateAmount } from '../../../components/mma/accountoverview/updateAmount/UpdateAmount';
 
@@ -38,7 +38,7 @@ it.each([
 	['year', 10],
 ])(
 	'renders validation error if %s amount below %i',
-	(billingPeriod, expectedMinAmount) => {
+	async (billingPeriod, expectedMinAmount) => {
 		render(
 			<UpdateAmount
 				subscriptionId="A-123"
@@ -63,14 +63,16 @@ it.each([
 		// click on the change amount button again and then check to make sure that the validation error message shows up
 		fireEvent.click(screen.getByText('Change amount'));
 
-		// assert that the minimum amount validation error message is shown
-		expect(
-			screen.queryByText(
-				`There is a minimum ${billingPeriod}ly contribution amount of £${expectedMinAmount.toFixed(
-					2,
-				)} GBP`,
-			),
-		).toBeTruthy();
+		await waitFor(() => {
+			// assert that the minimum amount validation error message is shown
+			expect(
+				screen.queryByText(
+					`There is a minimum ${billingPeriod}ly contribution amount of £${expectedMinAmount.toFixed(
+						2,
+					)} GBP`,
+				),
+			).toBeTruthy();
+		});
 	},
 );
 
@@ -79,7 +81,7 @@ it.each([
 	['year', 2000],
 ])(
 	'renders validation error if %s amount above %i',
-	(billingPeriod, expectedMaxAmount) => {
+	async (billingPeriod, expectedMaxAmount) => {
 		render(
 			<UpdateAmount
 				subscriptionId="A-123"
@@ -104,18 +106,20 @@ it.each([
 		// click on the change amount button again and then check to make sure that the validation error message shows up
 		fireEvent.click(screen.getByText('Change amount'));
 
-		// assert that the maximum amount validation error message is shown
-		expect(
-			screen.queryByText(
-				`There is a maximum ${billingPeriod}ly contribution amount of £${expectedMaxAmount.toFixed(
-					2,
-				)} GBP`,
-			),
-		).toBeTruthy();
+		await waitFor(() => {
+			// assert that the maximum amount validation error message is shown
+			expect(
+				screen.queryByText(
+					`There is a maximum ${billingPeriod}ly contribution amount of £${expectedMaxAmount.toFixed(
+						2,
+					)} GBP`,
+				),
+			).toBeTruthy();
+		});
 	},
 );
 
-it('renders validation error if blank input is provided', () => {
+it('renders validation error if blank input is provided', async () => {
 	render(
 		<UpdateAmount
 			subscriptionId="A-123"
@@ -137,8 +141,10 @@ it('renders validation error if blank input is provided', () => {
 		target: { value: '' },
 	});
 
-	// click on the change amount button again and then check to make sure that the validation error message shows up
-	fireEvent.click(screen.getByText('Change amount'));
+	await waitFor(() => {
+		// click on the change amount button again and then check to make sure that the validation error message shows up
+		fireEvent.click(screen.getByText('Change amount'));
+	});
 
 	// assert that the maximum amount validation error message is shown
 	expect(
@@ -148,7 +154,7 @@ it('renders validation error if blank input is provided', () => {
 	).toBeTruthy();
 });
 
-it('renders validation error if a string is attempted to be input', () => {
+it('renders validation error if a string is attempted to be input', async () => {
 	render(
 		<UpdateAmount
 			subscriptionId="A-123"
@@ -173,15 +179,17 @@ it('renders validation error if a string is attempted to be input', () => {
 	// click on the change amount button again and then check to make sure that the validation error message shows up
 	fireEvent.click(screen.getByText('Change amount'));
 
-	// assert that the maximum amount validation error message is shown
-	expect(
-		screen.queryByText(
-			'There is a problem with the amount you have selected, please make sure it is a valid amount',
-		),
-	).toBeTruthy();
+	await waitFor(() => {
+		// assert that the maximum amount validation error message is shown
+		expect(
+			screen.queryByText(
+				'There is a problem with the amount you have selected, please make sure it is a valid amount',
+			),
+		).toBeTruthy();
+	});
 });
 
-it('updates amount is valid value is input', () => {
+it('updates amount is valid value is input', async () => {
 	render(
 		<UpdateAmount
 			subscriptionId="A-123"
@@ -205,5 +213,8 @@ it('updates amount is valid value is input', () => {
 
 	// click on the change amount button again and then check to make sure that the validation error message shows up
 	fireEvent.click(screen.getByText('Change amount'));
-	expect(screen.queryByText('Updating...')).toBeTruthy();
+
+	await waitFor(() => {
+		expect(screen.queryByText('Updating...')).toBeTruthy();
+	});
 });

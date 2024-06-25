@@ -82,11 +82,11 @@ const CancellationContainer = lazy(() =>
 	).then(({ CancellationContainer }) => ({ default: CancellationContainer })),
 );
 
-const CancellationSaveEligibilityCheck = lazy(() =>
+const CancellationJourneyFunnel = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/CancellationSaveEligibilityCheck'
-	).then(({ CancellationSaveEligibilityCheck }) => ({
-		default: CancellationSaveEligibilityCheck,
+		/* webpackChunkName: "Cancellation" */ './cancel/CancellationJourneyFunnel'
+	).then(({ CancellationJourneyFunnel }) => ({
+		default: CancellationJourneyFunnel,
 	})),
 );
 
@@ -102,6 +102,12 @@ const SavedCancellation = lazy(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/stages/SavedCancellation'
 	).then(({ SavedCancellation }) => ({ default: SavedCancellation })),
+);
+
+const ConfirmCancellation = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/stages/ConfirmCancellation'
+	).then(({ ConfirmCancellation }) => ({ default: ConfirmCancellation })),
 );
 
 const ExecuteCancellation = lazy(() =>
@@ -123,6 +129,30 @@ const ValueOfSupport = lazy(() =>
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/ValueOfSupport'
 	).then(({ ValueOfSupport }) => ({
 		default: ValueOfSupport,
+	})),
+);
+
+const SupporterPlusOffer = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/supporterplus/SupporterPlusOffer'
+	).then(({ SupporterPlusOffer }) => ({
+		default: SupporterPlusOffer,
+	})),
+);
+
+const SupporterPlusOfferReview = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/supporterplus/SupporterPlusOfferReview'
+	).then(({ SupporterPlusOfferReview }) => ({
+		default: SupporterPlusOfferReview,
+	})),
+);
+
+const SupporterPlusOfferConfirmed = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/supporterplus/SupporterPlusOfferConfirmed'
+	).then(({ SupporterPlusOfferConfirmed }) => ({
+		default: SupporterPlusOfferConfirmed,
 	})),
 );
 
@@ -650,9 +680,7 @@ const MMARouter = () => {
 								>
 									<Route
 										index
-										element={
-											<CancellationSaveEligibilityCheck />
-										}
+										element={<CancellationJourneyFunnel />}
 									/>
 									<Route
 										path="review"
@@ -677,6 +705,21 @@ const MMARouter = () => {
 										element={<ValueOfSupport />}
 									/>
 									<Route
+										path="offer"
+										element={<SupporterPlusOffer />}
+									/>
+									<Route
+										path="offer-review"
+										element={<SupporterPlusOfferReview />}
+									/>
+									<Route
+										path="offer-confirmed"
+										element={
+											<SupporterPlusOfferConfirmed />
+										}
+									/>
+
+									<Route
 										path="offers"
 										element={<SaveOptions />}
 									/>
@@ -697,7 +740,12 @@ const MMARouter = () => {
 									<Route
 										path="confirm"
 										element={
-											<ConfirmMembershipCancellation />
+											productType.urlPart ===
+											'membership' ? (
+												<ConfirmMembershipCancellation />
+											) : (
+												<ConfirmCancellation />
+											)
 										}
 									/>
 									<Route

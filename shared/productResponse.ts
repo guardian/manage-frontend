@@ -174,6 +174,7 @@ export interface Subscription {
 	cancelledAt: boolean;
 	nextPaymentDate: string | null;
 	lastPaymentDate: string | null;
+	potentialCancellationDate: string | null;
 	chargedThroughDate: string | null;
 	nextPaymentPrice: number | null;
 	paymentMethod?: string;

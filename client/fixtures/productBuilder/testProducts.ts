@@ -203,6 +203,14 @@ export function supporterPlus() {
 		.getProductDetailObject();
 }
 
+export function supporterPlusMonthlyAllAccessDigital() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.withPrice(1000)
+		.withBillingPeriod('month')
+		.getProductDetailObject();
+}
+
 export function supporterPlusAnnual() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()
@@ -211,10 +219,26 @@ export function supporterPlusAnnual() {
 		.getProductDetailObject();
 }
 
+export function supporterPlusAnnualCancelled() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.withPrice(9500)
+		.withBillingPeriod('year')
+		.cancel()
+		.getProductDetailObject();
+}
+
 export function supporterPlusCancelled() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()
 		.cancel()
+		.getProductDetailObject();
+}
+
+export function supporterPlusInOfferPeriod() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.inOfferPeriod()
 		.getProductDetailObject();
 }
 

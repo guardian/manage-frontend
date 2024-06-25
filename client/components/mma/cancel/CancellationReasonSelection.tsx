@@ -16,6 +16,7 @@ import {
 import type { FormEvent } from 'react';
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { featureSwitches } from '@/shared/featureSwitches';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
@@ -33,6 +34,7 @@ import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
+import { ProgressStepper } from '../shared/ProgressStepper';
 import type { CancellationContextInterface } from './CancellationContainer';
 import { CancellationContext } from './CancellationContainer';
 import {
@@ -70,16 +72,27 @@ const ReasonPicker = ({
 
 	return (
 		<>
-			<ProgressIndicator
-				steps={[
-					{ title: 'Reason', isCurrentStep: true },
-					{ title: 'Review' },
-					{ title: 'Confirmation' },
-				]}
-				additionalCSS={css`
-					margin: ${space[5]}px 0 ${space[12]}px;
-				`}
-			/>
+			{featureSwitches.supporterplusCancellationOffer &&
+			productType.productType === 'supporterplus' ? (
+				<ProgressStepper
+					steps={[{ isCurrentStep: true }, {}, {}, {}]}
+					additionalCSS={css`
+						margin: ${space[5]}px 0 ${space[12]}px;
+					`}
+				/>
+			) : (
+				<ProgressIndicator
+					steps={[
+						{ title: 'Reason', isCurrentStep: true },
+						{ title: 'Review' },
+						{ title: 'Confirmation' },
+					]}
+					additionalCSS={css`
+						margin: ${space[5]}px 0 ${space[12]}px;
+					`}
+				/>
+			)}
+
 			{productType.cancellation.startPageBody(productDetail)}
 			<WithStandardTopMargin>
 				<fieldset
