@@ -23,6 +23,7 @@
     "build-storybook": "storybook build -s '.storybook/static'",
     "cypress:mocked:open": "DEBUG=cypress:* cypress open --config '{\"e2e\":{\"specPattern\":\"cypress/tests/mocked/**/*.cy.{js,jsx,ts,tsx}\"}}' --e2e --browser chrome",
     "cypress:mocked:run": "cypress run --config '{\"e2e\":{\"specPattern\":\"cypress/tests/mocked/**/*.cy.{js,jsx,ts,tsx}\"}}' --e2e --browser chrome",
+    "cypress:mocked:runOnly": "cypress run --e2e --browser chrome --spec ",
     "cypress:mocked:server": "yarn bundle-dev-server && (yarn bundle-dev-server-cypress -w & yarn start & yarn serve-dev-cypress)",
     "cypress:e2e:open": "cypress open --config '{\"e2e\":{\"specPattern\":\"cypress/tests/e2e/**/*.cy.{js,jsx,ts,tsx}\"}}' --e2e --browser chrome",
     "cypress:e2e:run": "cypress run --config '{\"e2e\":{\"specPattern\":\"cypress/tests/e2e/**/*.cy.{js,jsx,ts,tsx}\"}}' --e2e --browser chrome",
