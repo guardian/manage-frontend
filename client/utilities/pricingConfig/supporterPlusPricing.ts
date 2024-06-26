@@ -10,32 +10,32 @@ export const supporterPlusPriceConfigByCountryGroup: Record<
 	Record<string, PriceConfig>
 > = {
 	GBP: {
-		month: { minAmount: 10, maxAmount: 166 },
-		year: { minAmount: 95, maxAmount: 2000 },
+		month: { minAmount: 12, maxAmount: 166 },
+		year: { minAmount: 120, maxAmount: 2000 },
 	},
 	USD: {
-		month: { minAmount: 13, maxAmount: 800 },
-		year: { minAmount: 120, maxAmount: 10000 },
+		month: { minAmount: 15, maxAmount: 800 },
+		year: { minAmount: 150, maxAmount: 10000 },
 	},
 	EUR: {
-		month: { minAmount: 10, maxAmount: 166 },
-		year: { minAmount: 95, maxAmount: 2000 },
+		month: { minAmount: 12, maxAmount: 166 },
+		year: { minAmount: 120, maxAmount: 2000 },
 	},
 	AUD: {
-		month: { minAmount: 17, maxAmount: 200 },
-		year: { minAmount: 160, maxAmount: 2000 },
+		month: { minAmount: 20, maxAmount: 200 },
+		year: { minAmount: 200, maxAmount: 2000 },
 	},
 	NZD: {
-		month: { minAmount: 17, maxAmount: 200 },
-		year: { minAmount: 160, maxAmount: 2000 },
+		month: { minAmount: 20, maxAmount: 200 },
+		year: { minAmount: 200, maxAmount: 2000 },
 	},
 	CAD: {
-		month: { minAmount: 13, maxAmount: 166 },
-		year: { minAmount: 120, maxAmount: 2000 },
+		month: { minAmount: 15, maxAmount: 166 },
+		year: { minAmount: 150, maxAmount: 2000 },
 	},
 	international: {
-		month: { minAmount: 13, maxAmount: 166 },
-		year: { minAmount: 120, maxAmount: 2000 },
+		month: { minAmount: 15, maxAmount: 166 },
+		year: { minAmount: 150, maxAmount: 2000 },
 	},
 };
 
