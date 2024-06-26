@@ -1,6 +1,6 @@
 # manage.theguardian.com
 
-This README contains mainly set-up information.
+This README contains mainly set-up information!
 
 [SEE THE WIKI FOR MAIN DOCUMENTATION!](https://github.com/guardian/manage-frontend/wiki)
 
