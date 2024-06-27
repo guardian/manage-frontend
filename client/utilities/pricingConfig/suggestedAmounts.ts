@@ -65,19 +65,19 @@ const suggestedAmountsLookup: SuggestedAmountsLookup = {
 
 function getGbpMonthly(amount: number) {
 	if (amount <= 3) {
-		return [5, 7, 10];
+		return [5, 7, 12];
 	}
 	if (amount <= 8) {
 		return [10, 12, 15];
 	}
-	if (amount <= 9) {
+	if (amount === 9) {
 		return [12, 15, 17];
 	}
 	if (amount <= 13) {
 		return [15, 17, 20];
 	}
-	if (amount <= 18) {
-		return [20, 22, 25];
+	if (amount <= 23) {
+		return [25, 27, 30];
 	}
 	if (amount <= 23) {
 		return [25, 27, 30];
@@ -85,7 +85,7 @@ function getGbpMonthly(amount: number) {
 	if (amount <= 28) {
 		return [30, 32, 35];
 	}
-	if (amount <= 29) {
+	if (amount === 29) {
 		return [35, 37, 40];
 	}
 	if (amount <= 35) {
@@ -97,34 +97,37 @@ function getGbpMonthly(amount: number) {
 
 function getGbpAnnual(amount: number) {
 	if (amount <= 11) {
-		return [20, 30, 95];
+		return [20, 30, 120];
 	}
 	if (amount <= 13) {
-		return [25, 40, 95];
+		return [25, 40, 120];
 	}
 	if (amount <= 16) {
-		return [30, 40, 95];
+		return [30, 40, 120];
 	}
 	if (amount <= 18) {
-		return [35, 40, 95];
+		return [35, 40, 120];
 	}
-	if (amount <= 19) {
-		return [40, 50, 95];
+	if (amount === 19) {
+		return [40, 50, 120];
 	}
 	if (amount <= 50) {
-		return [60, 70, 95];
+		return [60, 70, 120];
 	}
 	if (amount <= 59) {
-		return [70, 80, 95];
+		return [70, 80, 120];
+	}
+	if (amount <= 59) {
+		return [70, 80, 120];
 	}
 	if (amount <= 69) {
-		return [80, 90, 95];
-	}
-	if (amount <= 80) {
-		return [95, 100, 110];
+		return [80, 90, 120];
 	}
 	if (amount <= 89) {
-		return [99, 110, 120];
+		return [95, 110, 120];
+	}
+	if (amount <= 94) {
+		return [95, 130, 140];
 	}
 	if (amount <= 100) {
 		return [120, 130, 140];
@@ -141,12 +144,12 @@ function getGbpAnnual(amount: number) {
 
 function getUsdMonthly(amount: number) {
 	if (amount <= 4) {
-		return [5, 7, 13];
+		return [5, 7, 15];
 	}
 	if (amount <= 8) {
 		return [10, 13, 15];
 	}
-	if (amount <= 9) {
+	if (amount === 9) {
 		return [13, 15, 17];
 	}
 	if (amount <= 18) {
@@ -158,7 +161,7 @@ function getUsdMonthly(amount: number) {
 	if (amount <= 28) {
 		return [30, 32, 35];
 	}
-	if (amount <= 29) {
+	if (amount === 29) {
 		return [35, 37, 40];
 	}
 	if (amount <= 35) {
@@ -170,31 +173,31 @@ function getUsdMonthly(amount: number) {
 
 function getUsdAnnual(amount: number) {
 	if (amount <= 10) {
-		return [20, 30, 120];
+		return [20, 30, 150];
 	}
 	if (amount <= 20) {
-		return [40, 50, 120];
+		return [40, 50, 150];
 	}
 	if (amount <= 30) {
-		return [50, 60, 120];
+		return [50, 60, 150];
 	}
 	if (amount <= 39) {
-		return [60, 70, 120];
+		return [60, 70, 150];
 	}
 	if (amount <= 50) {
-		return [75, 80, 120];
+		return [75, 80, 150];
 	}
 	if (amount <= 55) {
-		return [80, 90, 120];
+		return [80, 90, 150];
 	}
 	if (amount <= 59) {
-		return [90, 100, 120];
+		return [90, 100, 150];
 	}
 	if (amount <= 70) {
-		return [100, 110, 120];
+		return [100, 110, 150];
 	}
 	if (amount <= 89) {
-		return [120, 130, 140];
+		return [120, 130, 150];
 	}
 	if (amount <= 99) {
 		return [130, 140, 150];
@@ -217,12 +220,12 @@ function getUsdAnnual(amount: number) {
 
 function getEuroMonthly(amount: number) {
 	if (amount <= 4) {
-		return [6, 8, 10];
+		return [6, 8, 12];
 	}
 	if (amount <= 8) {
 		return [10, 12, 15];
 	}
-	if (amount <= 9) {
+	if (amount === 9) {
 		return [15, 17, 20];
 	}
 	if (amount <= 18) {
@@ -231,7 +234,7 @@ function getEuroMonthly(amount: number) {
 	if (amount <= 28) {
 		return [30, 32, 35];
 	}
-	if (amount <= 29) {
+	if (amount === 29) {
 		return [35, 37, 40];
 	}
 	if (amount <= 35) {
@@ -307,25 +310,25 @@ function getAusMonthly(amount: number) {
 
 function getAusAnnual(amount: number) {
 	if (amount <= 19) {
-		return [40, 50, 160];
+		return [40, 50, 200];
 	}
 	if (amount <= 29) {
-		return [50, 60, 160];
+		return [50, 60, 200];
 	}
 	if (amount <= 44) {
-		return [60, 70, 160];
+		return [60, 70, 200];
 	}
 	if (amount <= 49) {
-		return [70, 80, 160];
+		return [70, 80, 200];
 	}
 	if (amount <= 69) {
-		return [80, 90, 160];
+		return [80, 90, 200];
 	}
 	if (amount <= 79) {
-		return [100, 110, 160];
+		return [100, 110, 200];
 	}
 	if (amount <= 151) {
-		return [160, 170, 180];
+		return [160, 170, 200];
 	}
 	if (amount <= 169) {
 		return [180, 190, 200];
