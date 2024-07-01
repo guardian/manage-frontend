@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import { http } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { SectionContent } from '../shared/SectionContent';
 import { SectionHeader } from '../shared/SectionHeader';
@@ -54,13 +54,21 @@ export const Default: StoryObj<typeof HelpCentreArticle> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/known-issues/', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/known-issues/', () => {
+				return new Response(JSON.stringify([]), {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				});
 			}),
-			rest.get(
+			http.get(
 				'/api/help-centre/article/i-need-to-pause-my-delivery',
-				(_req, res, ctx) => {
-					return res(ctx.json(articleContent));
+				() => {
+					return new Response(JSON.stringify(articleContent), {
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					});
 				},
 			),
 		],
