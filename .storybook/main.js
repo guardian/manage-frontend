@@ -3,6 +3,7 @@ const path = require('path');
 
 module.exports = {
 	stories: ['../client/**/*.stories.@(js|jsx|ts|tsx)'],
+
 	addons: [
 		'@storybook/addon-essentials',
 		'@storybook/addon-webpack5-compiler-babel',
@@ -15,6 +16,8 @@ module.exports = {
 	},
 
 	docs: {},
+
+	staticDirs: ['./static'],
 
 	webpackFinal: async (config, { configType }) => {
 		config.module.rules.push({
