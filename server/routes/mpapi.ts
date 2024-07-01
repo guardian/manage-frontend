@@ -36,7 +36,7 @@ router.get(
 			return;
 		}
 
-		if (!res.locals.identity && !res.locals.identity.userId) {
+		if (!res.locals.identity?.userId) {
 			log.error(
 				`Missing identity ID on the request object when fetching mobile subscriptions`,
 			);
