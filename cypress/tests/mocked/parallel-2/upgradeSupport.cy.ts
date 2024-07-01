@@ -70,6 +70,10 @@ describe('upgrade support', () => {
 			body: {},
 		}).as('failed_product_move');
 
+		cy.get(
+			'[data-cy="contribution-amount-choices"] label:nth-of-type(3)',
+		).click();
+
 		cy.findByRole('button', {
 			name: /Continue with/,
 		}).click();
@@ -85,6 +89,10 @@ describe('upgrade support', () => {
 
 	it('Does not allow user to navigate back to first page after completion', () => {
 		cy.visit('/upgrade-support');
+
+		cy.get(
+			'[data-cy="contribution-amount-choices"] label:nth-of-type(3)',
+		).click();
 
 		cy.findByRole('button', {
 			name: /Continue with/,
