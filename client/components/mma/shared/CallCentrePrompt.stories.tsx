@@ -1,4 +1,4 @@
-import { userEvent, within } from '@storybook/testing-library';
+import { userEvent, within } from '@storybook/test';
 import { CallCentrePrompt } from './CallCentrePrompt';
 
 export default {
