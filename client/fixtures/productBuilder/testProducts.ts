@@ -212,6 +212,14 @@ export function supporterPlusMonthlyAllAccessDigital() {
 		.getProductDetailObject();
 }
 
+export function supporterPlusMonthlyAllAccessDigitalBeforePriceRise() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.withPrice(1000)
+		.withBillingPeriod('month')
+		.getProductDetailObject();
+}
+
 export function supporterPlusAnnual() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()
