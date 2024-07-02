@@ -16,7 +16,6 @@ export const signInOkta = () => {
 	cy.visit('/');
 	cy.createTestUser({
 		isUserEmailValidated: true,
-		doNotSetUsername: true,
 	})?.then(({ emailAddress, finalPassword }) => {
 		cy.get('input[name=email]').type(emailAddress);
 		cy.get('input[name=password]').type(finalPassword);
