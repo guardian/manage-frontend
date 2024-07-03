@@ -154,7 +154,7 @@ export const createTestUser = ({
 			})
 			.then((res) => {
 				return cy.wrap({
-					emailAddress: finalEmail,
+					emailAddress: res.body.emailAddress as string,
 					cookies: res.body.values as IDAPITestUserResponse,
 					finalPassword,
 				});
