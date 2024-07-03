@@ -312,7 +312,6 @@ export const SupporterPlusUpdateAmountForm = (
 							>
 								<TextInput
 									label={otherAmountLabel}
-									data-cy="supporter-plus-other-amount-input"
 									error={
 										(shouldShowOtherAmountErrorMessage &&
 											errorMessage) ||

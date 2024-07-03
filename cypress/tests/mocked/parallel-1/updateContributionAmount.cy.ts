@@ -138,8 +138,11 @@ describe('Update contribution amount', () => {
 			'[data-cy="supporter-plus-amount-choices"] label:last-of-type',
 		).click();
 
-		cy.get('[data-cy="supporter-plus-other-amount-input"]').clear();
-		cy.get('[data-cy="supporter-plus-other-amount-input"]').type('11');
+		cy.contains('label', 'Other amount (£)').parent().find('input').clear();
+		cy.contains('label', 'Other amount (£)')
+			.parent()
+			.find('input')
+			.type('11');
 
 		cy.contains(
 			/If you would like to change your monthly amount below £\d{2,3} please call us via the/,
@@ -153,8 +156,11 @@ describe('Update contribution amount', () => {
 			/£\d{2,3} per month is the new minimum payment to receive this subscription.$/,
 		).should('exist');
 
-		cy.get('[data-cy="supporter-plus-other-amount-input"]').clear();
-		cy.get('[data-cy="supporter-plus-other-amount-input"]').type('16');
+		cy.contains('label', 'Other amount (£)').parent().find('input').clear();
+		cy.contains('label', 'Other amount (£)')
+			.parent()
+			.find('input')
+			.type('16');
 
 		cy.findByText('Change amount').click();
 
