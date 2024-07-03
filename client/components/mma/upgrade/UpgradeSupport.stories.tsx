@@ -1,5 +1,5 @@
 import type { Meta, StoryFn } from '@storybook/react';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
 import { contributionPaidByCard } from '../../../fixtures/productBuilder/testProducts';
@@ -24,15 +24,11 @@ export default {
 			container: <UpgradeSupportContainer />,
 		},
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(contributionPaidByCard()),
-					),
-				);
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse(contributionPaidByCard()))
 			}),
-			rest.post('/api/product-move/*', (_req, res, ctx) => {
-				return res(ctx.json(productMovePreviewResponse));
+			http.post('/api/product-move/*', () => {
+				return HttpResponse.json(productMovePreviewResponse)
 			}),
 		],
 	},

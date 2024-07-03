@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { http } from 'msw';
+import {http, HttpResponse} from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { SectionContent } from '../../shared/SectionContent';
 import { SectionHeader } from '../../shared/SectionHeader';
@@ -31,11 +31,7 @@ export const Default: StoryObj<typeof ContactUs> = {
 	parameters: {
 		msw: [
 			http.get('/api/known-issues/', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 		],
 	},
@@ -64,11 +60,7 @@ export const WithKnownIssue: StoryObj<typeof ContactUs> = {
 	parameters: {
 		msw: [
 			http.get('/api/known-issues/', () => {
-				return new Response(JSON.stringify(knownIssue), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json(knownIssue)
 			}),
 		],
 	},

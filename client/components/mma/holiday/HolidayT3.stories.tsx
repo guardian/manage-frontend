@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import {http, HttpResponse} from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { existingHolidays } from '../../../fixtures/holidays';
@@ -41,11 +41,11 @@ export const ManageTierThree: StoryObj<typeof HolidaysOverview> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(ctx.json(toMembersDataApiResponse(tierThree())));
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse(tierThree()))
 			}),
-			rest.get('/api/holidays/*', (_req, res, ctx) => {
-				return res(ctx.json(existingHolidays));
+			http.get('/api/holidays/*', () => {
+				return HttpResponse.json(existingHolidays)
 			}),
 		],
 	},
@@ -58,15 +58,11 @@ export const CreateTierThree: StoryObj<typeof HolidayDateChooser> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(guardianWeeklyPaidByCard()),
-					),
-				);
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse(guardianWeeklyPaidByCard()))
 			}),
-			rest.get('/api/holidays/*', (_req, res, ctx) => {
-				return res(ctx.json(existingHolidays));
+			http.get('/api/holidays/*', () => {
+				return HttpResponse.json(existingHolidays)
 			}),
 		],
 	},

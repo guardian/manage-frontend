@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import {http, HttpResponse} from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
 import {
@@ -35,14 +35,10 @@ export const Membership: StoryObj<typeof CancellationLanding> = {
 			),
 		},
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(
-							membershipSupporterCurrencyUSD(),
-						),
-					),
-				);
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse(
+					membershipSupporterCurrencyUSD(),
+				))
 			}),
 		],
 	},
@@ -64,14 +60,10 @@ export const DigiPack: StoryObj<typeof CancellationLanding> = {
 			),
 		},
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(
-							digitalPackPaidByDirectDebit(),
-						),
-					),
-				);
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse(
+					digitalPackPaidByDirectDebit(),
+				))
 			}),
 		],
 	},

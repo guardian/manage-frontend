@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { http } from 'msw';
+import {http, HttpResponse} from 'msw';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import {
@@ -52,42 +52,19 @@ export const NoSubscription: StoryObj<typeof AccountOverview> = {
 	parameters: {
 		msw: [
 			http.get('/api/cancelled/', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return new Response(JSON.stringify({ subscriptions: [] }), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json({subscriptions: []})
 			}),
 			http.get('/api/me/mma', () => {
-				return new Response(
-					JSON.stringify(toMembersDataApiResponse()),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json(toMembersDataApiResponse)
 			}),
 			http.get('/idapi/user', () => {
-				return new Response(JSON.stringify(user), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json(user)
 			}),
 			http.get('/api/me/one-off-contributions', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 		],
 	},
@@ -101,44 +78,23 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 	parameters: {
 		msw: [
 			http.get('/api/cancelled/', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 			http.get('/api/me/mma', () => {
-				return new Response(
-					JSON.stringify(
-						toMembersDataApiResponse(
-							guardianWeeklyPaidByCard(),
-							digitalPackPaidByDirectDebit(),
-							newspaperVoucherPaidByPaypal(),
-							membershipSupporter(),
-							supporterPlus(),
-							tierThree(),
-						),
-					),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json(toMembersDataApiResponse(
+					guardianWeeklyPaidByCard(),
+					digitalPackPaidByDirectDebit(),
+					newspaperVoucherPaidByPaypal(),
+					membershipSupporter(),
+					supporterPlus(),
+					tierThree(),
+				))
 			}),
 			http.get('/api/me/one-off-contributions', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 		],
 	},
@@ -154,37 +110,16 @@ export const WithContributionAndSwitchPossible: StoryObj<
 	parameters: {
 		msw: [
 			http.get('/api/cancelled/', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return new Response(JSON.stringify({ subscriptions: [] }), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json({ subscriptions: [] })
 			}),
 			http.get('/api/me/mma', () => {
-				return new Response(
-					JSON.stringify(
-						toMembersDataApiResponse(contributionPaidByPayPal()),
-					),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json(toMembersDataApiResponse(contributionPaidByPayPal()))
 			}),
 			http.get('/api/me/one-off-contributions', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 		],
 	},
@@ -200,40 +135,19 @@ export const WithContributionInPaymentFailure: StoryObj<
 	parameters: {
 		msw: [
 			http.get('/api/cancelled/', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return new Response(JSON.stringify({ subscriptions: [] }), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json({subscriptions: []})
 			}),
 			http.get('/api/me/mma', () => {
-				return new Response(
-					JSON.stringify(
-						toMembersDataApiResponse(
-							contributionPaymentFailure,
-							supporterPlus(),
-						),
-					),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json(toMembersDataApiResponse(
+					contributionPaymentFailure,
+					supporterPlus(),
+				))
 			}),
 			http.get('/api/me/one-off-contributions', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 		],
 	},
@@ -254,40 +168,19 @@ export const WithContributionAndSwitchNotPossible: StoryObj<
 	parameters: {
 		msw: [
 			http.get('/api/cancelled/', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return new Response(JSON.stringify({ subscriptions: [] }), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json({subscriptions: []})
 			}),
 			http.get('/api/me/mma', () => {
-				return new Response(
-					JSON.stringify(
-						toMembersDataApiResponse(
-							contributionPaidByPayPal(),
-							digitalPackPaidByDirectDebit(),
-						),
-					),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json(toMembersDataApiResponse(
+					contributionPaidByPayPal(),
+					digitalPackPaidByDirectDebit(),
+				))
 			}),
 			http.get('/api/me/one-off-contributions', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 		],
 	},
@@ -301,49 +194,25 @@ export const WithCancelledSubscriptions: StoryObj<typeof AccountOverview> = {
 	parameters: {
 		msw: [
 			http.get('/api/cancelled/', () => {
-				return new Response(
-					JSON.stringify([
-						cancelledContribution,
-						cancelledGuardianWeekly,
-					]),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json([
+					cancelledContribution,
+					cancelledGuardianWeekly,
+				])
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return new Response(JSON.stringify({ subscriptions: [] }), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json({subscriptions: []})
 			}),
 			http.get('/api/me/mma', () => {
-				return new Response(
-					JSON.stringify(
-						toMembersDataApiResponse(
-							contributionCancelled(),
-							guardianWeeklyCancelled(),
-							supporterPlusCancelled(),
-							supporterPlusAnnualCancelled(),
-							tierThree(),
-						),
-					),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json(toMembersDataApiResponse(
+					contributionCancelled(),
+					guardianWeeklyCancelled(),
+					supporterPlusCancelled(),
+					supporterPlusAnnualCancelled(),
+					tierThree(),
+				))
 			}),
 			http.get('/api/me/one-off-contributions', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 		],
 	},
@@ -357,40 +226,19 @@ export const WithGiftSubscriptions: StoryObj<typeof AccountOverview> = {
 	parameters: {
 		msw: [
 			http.get('/api/cancelled/', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return new Response(JSON.stringify({ subscriptions: [] }), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json({subscriptions: []})
 			}),
 			http.get('/api/me/mma', () => {
-				return new Response(
-					JSON.stringify(
-						toMembersDataApiResponse(
-							guardianWeeklyGiftRecipient(),
-							guardianWeeklyGiftPurchase(),
-						),
-					),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json(toMembersDataApiResponse(
+					guardianWeeklyGiftRecipient(),
+					guardianWeeklyGiftPurchase(),
+				))
 			}),
 			http.get('/api/me/one-off-contributions', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 		],
 	},
@@ -404,45 +252,24 @@ export const WithAppSubscriptions: StoryObj<typeof AccountOverview> = {
 	parameters: {
 		msw: [
 			http.get('/api/cancelled/', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return new Response(
-					JSON.stringify({
-						subscriptions: [
-							CancelledInAppPurchase,
-							InAppPurchaseIos,
-							PuzzleAppPurchaseAndroid,
-							PuzzleAppPurchaseIos,
-						],
-					}),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json({
+					subscriptions: [
+						CancelledInAppPurchase,
+						InAppPurchaseIos,
+						PuzzleAppPurchaseAndroid,
+						PuzzleAppPurchaseIos,
+					],
+				})
 			}),
 			http.get('/api/me/mma', () => {
-				return new Response(
-					JSON.stringify(toMembersDataApiResponse()),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json(toMembersDataApiResponse())
+
 			}),
 			http.get('/api/me/one-off-contributions', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 		],
 	},
@@ -456,38 +283,16 @@ export const WithSingleContribution: StoryObj<typeof AccountOverview> = {
 	parameters: {
 		msw: [
 			http.get('/api/cancelled/', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return new Response(JSON.stringify({ subscriptions: [] }), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json({subscriptions: []})
 			}),
 			http.get('/api/me/mma', () => {
-				return new Response(
-					JSON.stringify(toMembersDataApiResponse()),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json(toMembersDataApiResponse())
 			}),
 			http.get('/api/me/one-off-contributions', () => {
-				return new Response(
-					JSON.stringify(singleContributionsAPIResponse),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json(singleContributionsAPIResponse)
 			}),
 		],
 	},
@@ -501,37 +306,16 @@ export const WithSupporterPlusDuringOffer: StoryObj<typeof AccountOverview> = {
 	parameters: {
 		msw: [
 			http.get('/api/cancelled/', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return new Response(JSON.stringify({ subscriptions: [] }), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json({subscriptions: []})
 			}),
 			http.get('/api/me/mma', () => {
-				return new Response(
-					JSON.stringify(
-						toMembersDataApiResponse(supporterPlusInOfferPeriod()),
-					),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json(toMembersDataApiResponse(supporterPlusInOfferPeriod()))
 			}),
 			http.get('/api/me/one-off-contributions', () => {
-				return new Response(JSON.stringify([]), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				});
+				return HttpResponse.json([])
 			}),
 		],
 	},

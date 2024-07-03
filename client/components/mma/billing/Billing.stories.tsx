@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import { http } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
@@ -35,22 +35,34 @@ export const NoSubscription: StoryObj<typeof Billing> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(ctx.json(toMembersDataApiResponse()));
+			http.get('/api/me/mma', () => {
+				return new Response(JSON.stringify(toMembersDataApiResponse()), {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(
-					ctx.json({
-						subscriptions: [],
-					}),
-				);
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return new Response(JSON.stringify({subscriptions: []}), {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
 			}),
-			rest.get('/api/invoices', (_req, res, ctx) => {
-				return res(ctx.json({ invoices: [] }));
+			http.get('/api/invoices', () => {
+				return new Response(JSON.stringify({invoices: []}), {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
 			}),
 
-			rest.get('/idapi/user', (_req, res, ctx) => {
-				return res(ctx.json(user));
+			http.get('/idapi/user', () => {
+				return new Response(JSON.stringify(user), {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
 			}),
 		],
 	},
@@ -65,32 +77,38 @@ export const WithSubscriptions: StoryObj<typeof Billing> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(
-							guardianWeeklyPaidByCard(),
-							digitalPackPaidByDirectDebit(),
-							newspaperVoucherPaidByPaypal(),
-							tierThree(),
-						),
-					),
-				);
+			http.get('/api/me/mma', () => {
+				return new Response(JSON.stringify(toMembersDataApiResponse(
+					guardianWeeklyPaidByCard(),
+					digitalPackPaidByDirectDebit(),
+					newspaperVoucherPaidByPaypal(),
+					tierThree(),
+				)), {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(
-					ctx.json({
-						subscriptions: [
-							InAppPurchase,
-							InAppPurchaseIos,
-							InAppPurchaseAndroid,
-							PuzzleAppPurchaseAndroid,
-						],
-					}),
-				);
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return new Response(JSON.stringify({
+					subscriptions: [
+						InAppPurchase,
+						InAppPurchaseIos,
+						InAppPurchaseAndroid,
+						PuzzleAppPurchaseAndroid,
+					],
+				}), {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
 			}),
-			rest.get('/api/invoices', (_req, res, ctx) => {
-				return res(ctx.json({ invoices: [guardianWeeklyCardInvoice] }));
+			http.get('/api/invoices', () => {
+				return new Response(JSON.stringify({ invoices: [guardianWeeklyCardInvoice] }), {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
 			}),
 		],
 	},

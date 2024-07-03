@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { http } from 'msw';
+import {http, HttpResponse} from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import {
 	annualContributionPaidByCardWithCurrency,
@@ -23,14 +23,7 @@ export default {
 		},
 		msw: [
 			http.post('/api/product-move/*', () => {
-				return new Response(
-					JSON.stringify(productMovePreviewResponse),
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					},
-				);
+				return HttpResponse.json(productMovePreviewResponse)
 			}),
 		],
 	},
