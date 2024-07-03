@@ -190,6 +190,11 @@
     "yup": "0.28.5",
     "zod": "3.22.4"
   },
+  "resolutions": {
+    "jest-environment-jsdom/**/ws": ">=8.17.1",
+    "storybook/**/ws": ">=8.17.1",
+    "webpack-bundle-analyzer/ws": ">=7.5.10"
+  },
   "license": "UNLICENSED",
   "msw": {
     "workerDirectory": ".storybook/static"
