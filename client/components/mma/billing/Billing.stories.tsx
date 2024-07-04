@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { http } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
@@ -36,33 +36,16 @@ export const NoSubscription: StoryObj<typeof Billing> = {
 	parameters: {
 		msw: [
 			http.get('/api/me/mma', () => {
-				return new Response(JSON.stringify(toMembersDataApiResponse()), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				})
+				return HttpResponse.json(toMembersDataApiResponse());
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return new Response(JSON.stringify({subscriptions: []}), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				})
+				return HttpResponse.json({ subscriptions: [] });
 			}),
 			http.get('/api/invoices', () => {
-				return new Response(JSON.stringify({invoices: []}), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				})
+				return HttpResponse.json({ invoices: [] });
 			}),
-
 			http.get('/idapi/user', () => {
-				return new Response(JSON.stringify(user), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				})
+				return HttpResponse.json(user);
 			}),
 		],
 	},
@@ -78,37 +61,29 @@ export const WithSubscriptions: StoryObj<typeof Billing> = {
 	parameters: {
 		msw: [
 			http.get('/api/me/mma', () => {
-				return new Response(JSON.stringify(toMembersDataApiResponse(
-					guardianWeeklyPaidByCard(),
-					digitalPackPaidByDirectDebit(),
-					newspaperVoucherPaidByPaypal(),
-					tierThree(),
-				)), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				})
+				return HttpResponse.json(
+					toMembersDataApiResponse(
+						guardianWeeklyPaidByCard(),
+						digitalPackPaidByDirectDebit(),
+						newspaperVoucherPaidByPaypal(),
+						tierThree(),
+					),
+				);
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return new Response(JSON.stringify({
+				return HttpResponse.json({
 					subscriptions: [
 						InAppPurchase,
 						InAppPurchaseIos,
 						InAppPurchaseAndroid,
 						PuzzleAppPurchaseAndroid,
 					],
-				}), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				})
+				});
 			}),
 			http.get('/api/invoices', () => {
-				return new Response(JSON.stringify({ invoices: [guardianWeeklyCardInvoice] }), {
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				})
+				return HttpResponse.json({
+					invoices: [guardianWeeklyCardInvoice],
+				});
 			}),
 		],
 	},
