@@ -10,37 +10,6 @@ export default {
 	},
 } as Meta<typeof ProgressStepper>;
 
-export const Default: StoryFn<typeof ProgressStepper> = () => {
-	return (
-		<>
-			<ProgressStepper
-				steps={[{ title: 'Reason' }, { title: 'Review' }]}
-			/>
-			<ProgressStepper
-				steps={[
-					{ title: 'Reason' },
-					{ title: 'Review', isCurrentStep: true },
-					{ title: 'Confirmation' },
-				]}
-			/>
-			<ProgressStepper
-				steps={[
-					{ title: 'Reason', isCurrentStep: true },
-					{ title: 'Review' },
-					{ title: 'Confirmation' },
-				]}
-			/>
-			<ProgressStepper
-				steps={[
-					{ title: 'Reason' },
-					{ title: 'Review' },
-					{ title: 'Confirmation', isCurrentStep: true },
-				]}
-			/>
-		</>
-	);
-};
-
 export const OldVersion: StoryFn<typeof ProgressIndicator> = () => {
 	return (
 		<ProgressIndicator
