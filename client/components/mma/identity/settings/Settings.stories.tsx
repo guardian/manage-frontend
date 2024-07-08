@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { user } from '@/client/fixtures/user';
 import { Settings } from './Settings';
@@ -20,8 +20,8 @@ export const Default: StoryObj<typeof Settings> = {
 
 	parameters: {
 		msw: [
-			rest.get('/idapi/user', (_req, res, ctx) => {
-				return res(ctx.json(user));
+			http.get('/idapi/user', () => {
+				return HttpResponse.json(user)
 			}),
 		],
 	},

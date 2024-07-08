@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import {http, HttpResponse} from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
 import { HelpCentre } from './HelpCentre';
@@ -24,8 +24,8 @@ export const Default: StoryObj<typeof HelpCentre> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/known-issues/', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/known-issues/', () => {
+				return HttpResponse.json([])
 			}),
 		],
 	},

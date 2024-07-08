@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import {http, HttpResponse} from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { SectionContent } from '../shared/SectionContent';
 import { SectionHeader } from '../shared/SectionHeader';
@@ -47,8 +47,8 @@ export const Default: StoryObj<typeof HelpCentreTopic> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/help-centre/topic/delivery', (_req, res, ctx) => {
-				return res(ctx.json(topicContent));
+			http.get('/api/help-centre/topic/delivery', () => {
+				return HttpResponse.json(topicContent)
 			}),
 		],
 		reactRouter: {
