@@ -1,23 +1,24 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { ProgressIndicator } from './ProgressIndicator';
-import { ProgressStepper } from './ProgressStepper';
 
 export default {
 	title: 'Components/ProgressIndicator',
-	component: ProgressStepper,
+	component: ProgressIndicator,
 	parameters: {
 		layout: 'fullscreen',
 	},
-} as Meta<typeof ProgressStepper>;
+} as Meta<typeof ProgressIndicator>;
 
-export const OldVersion: StoryFn<typeof ProgressIndicator> = () => {
-	return (
-		<ProgressIndicator
-			steps={[
-				{ title: 'Reason' },
-				{ title: 'Review', isCurrentStep: true },
-				{ title: 'Confirmation' },
-			]}
-		/>
-	);
+export const OldVersion: StoryObj<typeof ProgressIndicator> = {
+	render: () => {
+		return (
+			<ProgressIndicator
+				steps={[
+					{ title: 'Reason' },
+					{ title: 'Review', isCurrentStep: true },
+					{ title: 'Confirmation' },
+				]}
+			/>
+		);
+	},
 };
