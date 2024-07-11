@@ -39,7 +39,7 @@ router.use(async (_: Request, res: Response) => {
 		),
 	});
 
-	res.send(htmlStrAndScriptHashes);
+	res.send(htmlStrAndScriptHashes.body);
 });
 
 export { router };
