@@ -120,7 +120,7 @@ export const consents = [
 		isProduct: false,
 		name: 'Jobs',
 		description:
-			'Receive weekly newsletters with our latest jobs listings, as well as tips and advice from Guardian Jobs on taking your next career step.',
+			'Find your next job with the Guardian Jobs weekly email. Get the latest job listings, as well as tips and advice on taking your next career step.',
 	},
 	{
 		id: 'guardian_weekly_newsletter',
