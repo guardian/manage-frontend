@@ -41,11 +41,13 @@ if (conf.DOMAIN === 'thegulocal.com') {
 server.use(helmet());
 
 export const createCsp = (hashes: string[]) => {
-	return `script-src ${hashes
-		.map((hash) => `'sha256-${hash}'`)
-		.join(
-			' ',
-		)} 'strict-dynamic'; style-src 'unsafe-inline'; object-src 'none'; base-uri 'none';`;
+	const prefixedHashes = hashes.map((hash) => `'sha256-${hash}'`);
+	const csp = [
+		`script-src ${prefixedHashes.join(' ')} 'strict-dynamic'`,
+		`style-src 'unsafe-inline'`,
+		`object-src 'none'`,
+	];
+	return csp.join('; ');
 };
 
 server.use(function (_: Request, res: Response, next: NextFunction) {
