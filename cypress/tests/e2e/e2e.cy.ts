@@ -34,9 +34,9 @@ describe('E2E with Okta', () => {
 	context('emails tab', () => {
 		it('should allow the user to update their email preferences', () => {
 			cy.visit('/email-prefs');
-			cy.findByText('Guardian products and support').click();
+			cy.get('[data-cy="similar_guardian_products"]').click();
 			cy.visit('/email-prefs');
-			cy.findByText('Guardian products and support')
+			cy.get('[data-cy="similar_guardian_products"]')
 				.parents('div')
 				.get('input[type="checkbox"]')
 				.should('be.checked');
