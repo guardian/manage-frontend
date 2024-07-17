@@ -93,6 +93,7 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 	} = props;
 	return (
 		<div
+			data-cy={id}
 			onClick={(e) => {
 				// Checkboxes inside labels will trigger click events twice.
 				// Ignore the input click event

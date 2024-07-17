@@ -114,6 +114,7 @@ exports[`NewsletterPreference component renders correctly and displays marketing
 
 <div
   className="emotion-0"
+  data-cy="13"
   onClick={[Function]}
 >
   <div
@@ -292,6 +293,7 @@ exports[`NewsletterPreference component will select the checkbox when the select
 
 <div
   className="emotion-0"
+  data-cy="13"
   onClick={[Function]}
 >
   <div
