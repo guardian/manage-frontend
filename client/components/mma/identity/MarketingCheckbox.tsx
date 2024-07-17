@@ -40,6 +40,7 @@ export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
 	const { id, description, selected, title, onClick } = props;
 	return (
 		<div
+			data-cy={id}
 			onClick={(e) => {
 				// Checkboxes inside labels will trigger click events twice.
 				// Ignore the input click event

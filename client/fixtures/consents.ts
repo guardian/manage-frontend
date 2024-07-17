@@ -63,7 +63,7 @@ export const consents = [
 		isOptOut: false,
 		isChannel: false,
 		isProduct: false,
-		name: 'Guardian products and support',
+		name: 'Similar Guardian products',
 		description:
 			'Information on our products and ways to support and enjoy our independent journalism.',
 	},
