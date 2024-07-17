@@ -137,7 +137,9 @@ export const toUser = (response: UserAPIResponse): User => {
 		localNumber: getFromUser('privateFields.telephoneNumber.localNumber'),
 		registrationLocation: getFromUser('privateFields.registrationLocation'),
 		consents,
-		validated: user.statusFields.userEmailValidated,
+		// We don't always receive a full user response from IDAPI, so we shouldn't
+		// assume that the statusFields object is always present.
+		validated: user?.statusFields?.userEmailValidated,
 	};
 };
 
