@@ -30,7 +30,10 @@ import {
 	getNewMembershipPrice,
 	getOldMembershipPrice,
 } from '../../../../../utilities/pricingConfig/membershipPriceRise';
-import { benefitsConfiguration } from '../../../shared/benefits/BenefitsConfiguration';
+import {
+	benefitsConfiguration,
+	filterBenefitByRegion,
+} from '../../../shared/benefits/BenefitsConfiguration';
 import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
 import { Card } from '../../../shared/Card';
 import { Heading } from '../../../shared/Heading';
@@ -148,7 +151,14 @@ export const SaveOptions = () => {
 					</Card.Header>
 					<Card.Section>
 						<BenefitsSection
-							benefits={benefitsConfiguration['membership']}
+							benefits={benefitsConfiguration[
+								'membership'
+							].filter((benefit) =>
+								filterBenefitByRegion(
+									benefit,
+									mainPlan.currencyISO,
+								),
+							)}
 						/>
 						<section css={[cardSectionCss, buttonContainerCss]}>
 							<Button
@@ -189,7 +199,14 @@ export const SaveOptions = () => {
 					</Card.Header>
 					<Card.Section>
 						<BenefitsSection
-							benefits={benefitsConfiguration['contributions']}
+							benefits={benefitsConfiguration[
+								'contributions'
+							].filter((benefit) =>
+								filterBenefitByRegion(
+									benefit,
+									mainPlan.currencyISO,
+								),
+							)}
 						/>
 						<section css={[cardSectionCss, buttonContainerCss]}>
 							<Button

@@ -266,6 +266,7 @@ export const ProductCard = ({
 						</p>
 						<BenefitsToggle
 							productType={specificProductType.productType}
+							subscriptionPlan={mainPlan}
 						/>
 					</Card.Section>
 				)}
