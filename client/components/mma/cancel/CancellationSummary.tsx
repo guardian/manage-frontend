@@ -1,11 +1,17 @@
 import { css } from '@emotion/react';
-import { palette, space } from '@guardian/source/foundations';
+import {
+	palette,
+	space,
+	textEgyptianBold17,
+} from '@guardian/source/foundations';
 import { Link } from 'react-router-dom';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {
+	PaidSubscriptionPlan,
 	ProductDetail,
 	Subscription,
 } from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import type { ProductType } from '../../../../shared/productTypes';
 import { measure } from '../../../styles/typography';
 import { hasDeliveryRecordsFlow } from '../../../utilities/productUtils';
@@ -21,16 +27,16 @@ import { ResubscribeThrasher } from './ResubscribeThrasher';
 const actuallyCancelled = (
 	productType: ProductType,
 	productDetail: ProductDetail,
-	cancelledProductDetail: ProductDetail,
 ) => {
 	const deliveryRecordsLink: string = `/delivery/${productType.urlPart}/records`;
 	const subscription = productDetail.subscription;
+	const mainPlan = getMainPlan(
+		productDetail.subscription,
+	) as PaidSubscriptionPlan;
 	const headingCopy =
 		productType.productType === 'supporterplus'
 			? 'Your subscription has been cancelled'
-			: `Your ${productType.friendlyName(
-					cancelledProductDetail,
-			  )} is cancelled`;
+			: `Your ${productType.friendlyName(productDetail)} is cancelled`;
 	return (
 		<>
 			<WithStandardTopMargin>
@@ -54,12 +60,13 @@ const actuallyCancelled = (
 										You will continue to receive the
 										benefits of your{' '}
 										{productType.friendlyName(
-											cancelledProductDetail,
+											productDetail,
 										)}{' '}
 										until{' '}
 										<b>
 											{cancellationFormatDate(
-												subscription.cancellationEffectiveDate,
+												productDetail.subscription
+													.cancellationEffectiveDate,
 											)}
 										</b>
 										. You will not be charged again. If you
@@ -130,18 +137,21 @@ const actuallyCancelled = (
 										reason,
 									)) && (
 									<>
+										<h4
+											css={css`
+												${textEgyptianBold17};
+												margin-bottom: ${space[3]}px;
+											`}
+										>
+											Support us another way
+										</h4>
 										<p>
-											{productType.cancellation &&
-											productType.cancellation
-												.summaryReasonSpecificPara &&
-											productType.cancellation.summaryReasonSpecificPara(
+											{productType?.cancellation?.summaryReasonSpecificPara(
 												reason,
-											)
-												? productType.cancellation.summaryReasonSpecificPara(
-														reason,
-												  )
-												: 'If you are interested in supporting our journalism in other ways, ' +
-												  'please consider either a contribution or a subscription.'}
+												mainPlan.currencyISO,
+											) ||
+												'If you are interested in supporting our journalism in other ways, ' +
+													'please consider either a contribution or a subscription.'}
 										</p>
 										<div css={{ marginBottom: '30px' }}>
 											<SupportTheGuardianButton
@@ -184,18 +194,14 @@ export const isCancelled = (subscription: Subscription) =>
 	Object.keys(subscription).length === 0 || subscription.cancelledAt;
 
 export const getCancellationSummary =
-	(productType: ProductType, cancelledProductDetail: ProductDetail) =>
+	(productType: ProductType, preCancelledProductDetail: ProductDetail) =>
 	(productDetail: ProductDetail) =>
 		isCancelled(productDetail.subscription) ? (
-			actuallyCancelled(
-				productType,
-				productDetail,
-				cancelledProductDetail,
-			)
+			actuallyCancelled(productType, productDetail)
 		) : (
 			<GenericErrorScreen
 				loggingMessage={`${productType.friendlyName(
-					cancelledProductDetail,
+					preCancelledProductDetail,
 				)} cancellation call succeeded but subsequent product detail doesn't show as cancelled`}
 			/>
 		);

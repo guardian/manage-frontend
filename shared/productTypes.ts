@@ -1,4 +1,7 @@
 import type { ReactNode } from 'react';
+import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
+import type { CurrencyIso } from '@/client/utilities/currencyIso';
+import { convertCurrencyIsoToSymbol } from '@/client/utilities/currencyIso';
 import type {
 	CancellationReason,
 	OptionalCancellationReasonId,
@@ -79,7 +82,8 @@ export type AllProductsProductTypeFilterString =
 	| 'Digipack'
 	| 'SupporterPlus'
 	| 'ContentSubscription'
-	| 'GuardianPatron';
+	| 'GuardianPatron'
+	| 'TierThree';
 
 interface CancellationFlowProperties {
 	reasons: CancellationReason[];
@@ -97,6 +101,7 @@ interface CancellationFlowProperties {
 	shouldHideSummaryMainPara?: true;
 	summaryReasonSpecificPara: (
 		reasonId: OptionalCancellationReasonId,
+		currencyISO?: CurrencyIso,
 	) => string | undefined;
 	onlyShowSupportSectionIfAlternateText: boolean;
 	alternateSupportButtonText: (
@@ -600,7 +605,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		friendlyName: () => 'digital + print subscription',
 		productType: 'tierthree',
 		groupedProductType: 'recurringSupport',
-		allProductsProductTypeFilterString: 'Weekly',
+		allProductsProductTypeFilterString: 'TierThree',
 		urlPart: 'digital+print',
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
@@ -628,9 +633,14 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			sfCaseProduct: 'Tier Three',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
-			startPageBody: gwCancellationFlowStart,
+			startPageBody: tierThreeCancellationFlowStart,
 			startPageOfferEffectiveDateOptions: true,
-			summaryReasonSpecificPara: () => undefined,
+			summaryReasonSpecificPara: (_, currencyISO?: CurrencyIso) => {
+				const currencySymbol = convertCurrencyIsoToSymbol(
+					currencyISO || 'USD',
+				);
+				return `Your support, no matter what amount, allows us to fund independent Guardian journalism. You can support us from as little as ${currencySymbol}1. It only takes a minute but makes a big difference.`;
+			},
 			onlyShowSupportSectionIfAlternateText: false,
 			alternateSupportButtonText: () => undefined,
 			alternateSupportButtonUrlSuffix: () => undefined,

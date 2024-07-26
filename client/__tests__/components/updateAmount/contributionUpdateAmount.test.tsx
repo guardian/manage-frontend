@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { UpdateAmount } from '../../../components/mma/accountoverview/updateAmount/UpdateAmount';
 
@@ -9,7 +10,7 @@ const mainPlan = (billingPeriod: string) => ({
 	name: '',
 	shouldBeVisible: false,
 	currency: '£',
-	currencyISO: 'GBP',
+	currencyISO: 'GBP' as CurrencyIso,
 	billingPeriod,
 	features: '',
 });

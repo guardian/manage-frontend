@@ -5,7 +5,7 @@ import { InfoIcon } from '../shared/assets/InfoIcon';
 import { Modal } from './Modal';
 
 export const creditExplainerSentence = (issueKeyword: string) =>
-	`You will be credited for each suspended ${issueKeyword} on the next bill after the ${issueKeyword} date.`;
+	`You will be credited for each suspended ${issueKeyword} on your next bill after the ${issueKeyword} date.`;
 
 interface HolidayQuestionsModalProps {
 	annualIssueLimit: number;

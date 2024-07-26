@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import * as React from 'react';
+import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import type { DeliveryRecordDetail } from '../client/components/mma/delivery/records/deliveryRecordsApi';
 import { AsyncLoader } from '../client/components/mma/shared/AsyncLoader';
 import type { CardProps } from '../client/components/mma/shared/CardDisplay';
@@ -119,7 +120,7 @@ interface SepaDetails {
 
 interface CurrencyAndBillingPeriodDetail {
 	currency: string;
-	currencyISO: string;
+	currencyISO: CurrencyIso;
 	billingPeriod: string;
 }
 

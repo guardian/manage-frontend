@@ -118,7 +118,7 @@ const getCaseUpdatingCancellationSummary =
 	(
 		caseId: string,
 		productType: ProductTypeWithCancellationFlow,
-		cancelledProductDetail: ProductDetail,
+		preCancelledProductDetail: ProductDetail,
 	) =>
 	(mdapiResponse: MembersDataApiResponse) => {
 		const productDetail = (mdapiResponse.products[0] as ProductDetail) || {
@@ -128,7 +128,7 @@ const getCaseUpdatingCancellationSummary =
 		const render = getCancellationSummaryWithReturnButton(
 			getCancellationSummary(
 				productType,
-				cancelledProductDetail,
+				preCancelledProductDetail,
 			)(productDetail),
 		);
 		return caseId ? (
