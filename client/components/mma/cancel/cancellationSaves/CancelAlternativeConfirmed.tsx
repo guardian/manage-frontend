@@ -14,17 +14,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
-import { DownloadAppCta } from '../../../shared/DownloadAppCta';
-import { Heading } from '../../../shared/Heading';
+import { DownloadAppCta } from '../../shared/DownloadAppCta';
+import { Heading } from '../../shared/Heading';
 import type {
 	CancellationContextInterface,
 	CancellationPageTitleInterface,
-} from '../../CancellationContainer';
+} from '../CancellationContainer';
 import {
 	CancellationContext,
 	CancellationPageTitleContext,
-} from '../../CancellationContainer';
-import { getUpdateCasePromise } from '../../caseUpdate';
+} from '../CancellationContainer';
+import { getUpdateCasePromise } from '../caseUpdate';
 
 interface RouterState extends DiscountPreviewResponse {
 	caseId: string;
@@ -149,14 +149,20 @@ const buttonCentredCss = css`
 	}
 `;
 
-const updateSalesforceCase = async (isTestUser: boolean, caseId: string) => {
-	await getUpdateCasePromise(isTestUser, '_OFFER', caseId, {
-		Description: 'User took offer instead of cancelling',
-		Subject: 'Online Cancellation Save Discount - Free for 2 months',
+const updateSalesforceCase = async (
+	isTestUser: boolean,
+	caseId: string,
+	loggingCodeSuffix: string,
+	description: string,
+	subject: string,
+) => {
+	await getUpdateCasePromise(isTestUser, loggingCodeSuffix, caseId, {
+		Description: description,
+		Subject: subject,
 	});
 };
 
-export const SupporterPlusOfferConfirmed = () => {
+export const CancelAlternativeConfirmed = () => {
 	const location = useLocation();
 	const routerState = location.state as RouterState;
 	const navigate = useNavigate();
@@ -170,16 +176,40 @@ export const SupporterPlusOfferConfirmed = () => {
 	) as CancellationContextInterface;
 
 	const productDetail = cancellationContext.productDetail;
-
-	useEffect(() => {
-		pageTitleContext.setPageTitle('Confirmation');
-		updateSalesforceCase(productDetail.isTestUser, routerState.caseId);
-	}, []);
+	const productType = cancellationContext.productType;
 
 	const nextNonDiscountedPaymentDate = parseDate(
 		routerState.nextNonDiscountedPaymentDate,
 		'yyyy-MM-dd',
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
+
+	const offerPeriodType = routerState.upToPeriodsType.toLowerCase();
+
+	const alternativeIsOffer = productType.productType === 'supporterplus';
+	const alternativeIsPause = productType.productType === 'contributions';
+
+	const sfCaseDebugSuffix = `_${alternativeIsOffer ? 'OFFER' : ''}${
+		alternativeIsPause ? 'PAUSE' : ''
+	}`;
+	const sfCaseDescription = `User ${alternativeIsOffer ? 'took offer' : ''}${
+		alternativeIsPause ? 'paused' : ''
+	} instead of cancelling`;
+	const sfCaseSubject = `Online Cancellation Save Discount - ${
+		alternativeIsOffer ? 'Free' : ''
+	}${alternativeIsPause ? 'Pause' : ''} for ${
+		routerState.upToPeriods
+	} ${offerPeriodType}`;
+
+	useEffect(() => {
+		pageTitleContext.setPageTitle('Confirmation');
+		updateSalesforceCase(
+			productDetail.isTestUser,
+			routerState.caseId,
+			sfCaseDebugSuffix,
+			sfCaseDescription,
+			sfCaseSubject,
+		);
+	}, []);
 
 	return (
 		<>
@@ -204,46 +234,55 @@ export const SupporterPlusOfferConfirmed = () => {
 						You will receive an email confirming the details of your
 						offer
 					</li>
-					<li>
-						You will continue enjoying all the benefits of your
-						All-access digital subscription – for free
-					</li>
+					{alternativeIsOffer && (
+						<li>
+							You will continue enjoying all the benefits of your
+							All-access digital subscription – for free
+						</li>
+					)}
 					<li>
 						You will not be billed until{' '}
 						{nextNonDiscountedPaymentDate}
 					</li>
 				</ul>
 			</div>
-			<div css={benefitsCss}>
-				<picture css={pictureAlignmentCss}>
-					<source
-						srcSet="https://media.guim.co.uk/4642d75e4282cf62980b6aa60eb5f710a6795e82/0_0_1444_872/1000.png"
-						media="(min-width: 1140px)"
-					/>
-					<source
-						srcSet="https://media.guim.co.uk/7a20e5ce7fd500ec7bac3ec372d7d1e041f5bfe5/0_0_1252_1100/500.png"
-						media="(min-width: 980px) and (max-width: 1139px)"
-					/>
-					<img src="https://media.guim.co.uk/63d17ee19313703129fbbeacceaafcd6d1cc1014/0_0_1404_716/500.png" />
-				</picture>
-				<div css={mobileHeroHRCss}></div>
-				<div css={benefitsLeftSideCss}>
-					<h4>With your offer, you will continue to enjoy:</h4>
-					<ul>
-						<li>Unlimited access to the Guardian app</li>
-						<li>Ad-free reading across all your devices</li>
-						<li>Exclusive supporter newsletter</li>
-						<li>
-							Far fewer asks for support when you're signed in
-						</li>
-					</ul>
-				</div>
-			</div>
-			<DownloadAppCta additionalCss={appAdCss} />
-			<p css={dontForgetCss}>
-				Don't forget to sign in on all your devices to enjoy your
-				benefits.
-			</p>
+			{alternativeIsOffer && (
+				<>
+					<div css={benefitsCss}>
+						<picture css={pictureAlignmentCss}>
+							<source
+								srcSet="https://media.guim.co.uk/4642d75e4282cf62980b6aa60eb5f710a6795e82/0_0_1444_872/1000.png"
+								media="(min-width: 1140px)"
+							/>
+							<source
+								srcSet="https://media.guim.co.uk/7a20e5ce7fd500ec7bac3ec372d7d1e041f5bfe5/0_0_1252_1100/500.png"
+								media="(min-width: 980px) and (max-width: 1139px)"
+							/>
+							<img src="https://media.guim.co.uk/63d17ee19313703129fbbeacceaafcd6d1cc1014/0_0_1404_716/500.png" />
+						</picture>
+						<div css={mobileHeroHRCss}></div>
+						<div css={benefitsLeftSideCss}>
+							<h4>
+								With your offer, you will continue to enjoy:
+							</h4>
+							<ul>
+								<li>Unlimited access to the Guardian app</li>
+								<li>Ad-free reading across all your devices</li>
+								<li>Exclusive supporter newsletter</li>
+								<li>
+									Far fewer asks for support when you're
+									signed in
+								</li>
+							</ul>
+						</div>
+					</div>
+					<DownloadAppCta additionalCss={appAdCss} />
+					<p css={dontForgetCss}>
+						Don't forget to sign in on all your devices to enjoy
+						your benefits.
+					</p>
+				</>
+			)}
 			<div css={onwardJourneyBtnsContainerCss}>
 				<LinkButton
 					href="https://theguardian.com"
