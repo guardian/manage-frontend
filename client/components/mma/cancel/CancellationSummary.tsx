@@ -193,15 +193,16 @@ const actuallyCancelled = (
 export const isCancelled = (subscription: Subscription) =>
 	Object.keys(subscription).length === 0 || subscription.cancelledAt;
 
-export const getCancellationSummary =
-	(productType: ProductType, preCancelledProductDetail: ProductDetail) =>
-	(productDetail: ProductDetail) =>
-		isCancelled(productDetail.subscription) ? (
-			actuallyCancelled(productType, productDetail)
-		) : (
-			<GenericErrorScreen
-				loggingMessage={`${productType.friendlyName(
-					preCancelledProductDetail,
-				)} cancellation call succeeded but subsequent product detail doesn't show as cancelled`}
-			/>
-		);
+export const getCancellationSummary = (
+	productType: ProductType,
+	productDetail: ProductDetail,
+) =>
+	isCancelled(productDetail.subscription) ? (
+		actuallyCancelled(productType, productDetail)
+	) : (
+		<GenericErrorScreen
+			loggingMessage={`${productType.friendlyName(
+				productDetail,
+			)} cancellation call succeeded but subsequent product detail doesn't show as cancelled`}
+		/>
+	);
