@@ -23,13 +23,13 @@ import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import { number2words } from '@/shared/numberUtils';
 import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
-import type { DeliveryRecordDetail } from '../../../delivery/records/deliveryRecordsApi';
-import type { OutstandingHolidayStop } from '../../../holiday/HolidayStopApi';
-import { Heading } from '../../../shared/Heading';
-import { ProgressStepper } from '../../../shared/ProgressStepper';
-import type { CancellationContextInterface } from '../../CancellationContainer';
-import { CancellationContext } from '../../CancellationContainer';
-import type { OptionalCancellationReasonId } from '../../cancellationReason';
+import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
+import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
+import { Heading } from '../../shared/Heading';
+import { ProgressStepper } from '../../shared/ProgressStepper';
+import type { CancellationContextInterface } from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
+import type { OptionalCancellationReasonId } from '../cancellationReason';
 
 interface RouterSate extends DiscountPreviewResponse {
 	selectedReasonId: OptionalCancellationReasonId;
@@ -105,7 +105,7 @@ const termsCss = css`
 	margin-top: ${space[3]}px;
 `;
 
-export const SupporterPlusOfferReview = () => {
+export const CancelAlternativeReview = () => {
 	const location = useLocation();
 	const routerState = location.state as RouterSate;
 	const navigate = useNavigate();
@@ -115,6 +115,7 @@ export const SupporterPlusOfferReview = () => {
 	) as CancellationContextInterface;
 
 	const productDetail = cancellationContext.productDetail;
+	const productType = cancellationContext.productType;
 	const mainPlan = getMainPlan(productDetail.subscription);
 
 	const offerPeriodWord = number2words(routerState.upToPeriods);
@@ -149,6 +150,9 @@ export const SupporterPlusOfferReview = () => {
 		confirmBtnIconProps['aria-disabled'] = true;
 	}
 
+	const alternativeIsOffer = productType.productType === 'supporterplus';
+	const alternativeIsPause = productType.productType === 'contributions';
+
 	const handleConfirmClick = async () => {
 		setPerformingDiscountStatus('PENDING');
 
@@ -165,7 +169,10 @@ export const SupporterPlusOfferReview = () => {
 			);
 
 			if (response.ok) {
-				navigate('../offer-confirmed', {
+				const confirmedUrlPart = `../${
+					(alternativeIsOffer && 'offer-confirmed') || ''
+				}${(alternativeIsPause && 'pause-confirmed') || ''}`;
+				navigate(confirmedUrlPart, {
 					state: routerState,
 				});
 			} else {
@@ -193,10 +200,11 @@ export const SupporterPlusOfferReview = () => {
 					`,
 				]}
 			>
-				Your offer
+				{alternativeIsOffer && 'Your offer'}
+				{alternativeIsPause && "Let's confirm the details"}
 			</Heading>
 			<div css={yourOfferBoxCss}>
-				{isPaidSubscriptionPlan(mainPlan) && (
+				{alternativeIsOffer && isPaidSubscriptionPlan(mainPlan) && (
 					<p css={strikethroughPriceCss}>
 						<s>
 							{mainPlan.currency}
@@ -206,22 +214,45 @@ export const SupporterPlusOfferReview = () => {
 					</p>
 				)}
 				<h4>
-					{capitalize(offerPeriodWord)} {offerPeriodType} of free
-					access to your digital subscription
+					{alternativeIsOffer &&
+						`${capitalize(
+							offerPeriodWord,
+						)} ${offerPeriodType} of free access to your digital subscription`}
+					{alternativeIsPause &&
+						`You'd like to pause your recurring support for ${offerPeriodWord} ${offerPeriodType}`}
 				</h4>
 			</div>
-			<h3 css={whatsNextTitleCss}>If you choose to stay with us:</h3>
+			<h3 css={whatsNextTitleCss}>
+				{alternativeIsOffer && 'If you choose to stay with us:'}
+				{alternativeIsPause && 'This means:'}
+			</h3>
 			<ul css={whatsNextListCss}>
-				<li>
-					Your {offerPeriodWord} {offerPeriodType} of free access will
-					begin on {firstDiscountedPaymentDate} (when your next
-					payment would usually be due)
-				</li>
-				<li>
-					Unless you cancel before, your payment will resume on{' '}
-					{nextNonDiscountedPaymentDate}
-				</li>
-				<li>You may cancel your subscription at any time</li>
+				{alternativeIsOffer && (
+					<>
+						<li>
+							Your {offerPeriodWord} {offerPeriodType} of free
+							access will begin on {firstDiscountedPaymentDate}{' '}
+							(when your next payment would usually be due)
+						</li>
+						<li>
+							Unless you cancel before, your payment will resume
+							on {nextNonDiscountedPaymentDate}
+						</li>
+						<li>You may cancel your subscription at any time</li>
+					</>
+				)}
+				{alternativeIsPause && (
+					<>
+						<li>
+							Unless you cancel before, your recurring payment
+							will resume on {nextNonDiscountedPaymentDate}
+						</li>
+						<li>
+							You may return to cancel your recurring support in
+							the meantime.
+						</li>
+					</>
+				)}
 			</ul>
 			{performingDiscountStatus === 'FAILED' && (
 				<ErrorSummary
@@ -254,7 +285,10 @@ export const SupporterPlusOfferReview = () => {
 					priority="subdued"
 					cssOverrides={ctaBtnCss}
 					onClick={() => {
-						navigate('../offer', { state: routerState });
+						const backUrl = `../${
+							alternativeIsOffer ? 'offer' : ''
+						}${alternativeIsPause ? 'pause' : ''}`;
+						navigate(backUrl, { state: routerState });
 						// we need to explicitly pass the state here to
 						// avoid a render in the previous page where the
 						// state is not yet available

@@ -21,19 +21,19 @@ import { getMaxNonDiscountedPrice } from '@/client/utilities/discountPreview';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
-import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
-import { DownloadAppCta } from '../../../shared/DownloadAppCta';
-import { DownloadFeastAppCta } from '../../../shared/DownloadFeastAppCta';
-import { Heading } from '../../../shared/Heading';
+import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
+import { DownloadAppCta } from '../../shared/DownloadAppCta';
+import { DownloadFeastAppCta } from '../../shared/DownloadFeastAppCta';
+import { Heading } from '../../shared/Heading';
 import type {
 	CancellationContextInterface,
 	CancellationPageTitleInterface,
-} from '../../CancellationContainer';
+} from '../CancellationContainer';
 import {
 	CancellationContext,
 	CancellationPageTitleContext,
-} from '../../CancellationContainer';
-import { getUpdateCasePromise } from '../../caseUpdate';
+} from '../CancellationContainer';
+import { getUpdateCasePromise } from '../caseUpdate';
 
 interface RouterState extends DiscountPreviewResponse {
 	caseId: string;
@@ -157,14 +157,20 @@ const buttonCentredCss = css`
 	}
 `;
 
-const updateSalesforceCase = async (isTestUser: boolean, caseId: string) => {
-	await getUpdateCasePromise(isTestUser, '_OFFER', caseId, {
-		Description: 'User took offer instead of cancelling',
-		Subject: 'Online Cancellation Save Discount - Free for 2 months',
+const updateSalesforceCase = async (
+	isTestUser: boolean,
+	caseId: string,
+	loggingCodeSuffix: string,
+	description: string,
+	subject: string,
+) => {
+	await getUpdateCasePromise(isTestUser, loggingCodeSuffix, caseId, {
+		Description: description,
+		Subject: subject,
 	});
 };
 
-export const SupporterPlusOfferConfirmed = () => {
+export const CancelAlternativeConfirmed = () => {
 	const location = useLocation();
 	const routerState = location.state as RouterState;
 	const navigate = useNavigate();
@@ -178,6 +184,7 @@ export const SupporterPlusOfferConfirmed = () => {
 	) as CancellationContextInterface;
 
 	const productDetail = cancellationContext.productDetail;
+	const productType = cancellationContext.productType;
 	const mainPlan = getMainPlan(
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
@@ -196,6 +203,33 @@ export const SupporterPlusOfferConfirmed = () => {
 		routerState.nonDiscountedPayments,
 		true,
 	);
+	const offerPeriodType = routerState.upToPeriodsType.toLowerCase();
+
+	const alternativeIsOffer = productType.productType === 'supporterplus';
+	const alternativeIsPause = productType.productType === 'contributions';
+
+	const sfCaseDebugSuffix = `_${alternativeIsOffer ? 'OFFER' : ''}${
+		alternativeIsPause ? 'PAUSE' : ''
+	}`;
+	const sfCaseDescription = `User ${alternativeIsOffer ? 'took offer' : ''}${
+		alternativeIsPause ? 'paused' : ''
+	} instead of cancelling`;
+	const sfCaseSubject = `Online Cancellation Save Discount - ${
+		alternativeIsOffer ? 'Free' : ''
+	}${alternativeIsPause ? 'Pause' : ''} for ${
+		routerState.upToPeriods
+	} ${offerPeriodType}`;
+
+	useEffect(() => {
+		pageTitleContext.setPageTitle('Confirmation');
+		updateSalesforceCase(
+			productDetail.isTestUser,
+			routerState.caseId,
+			sfCaseDebugSuffix,
+			sfCaseDescription,
+			sfCaseSubject,
+		);
+	}, []);
 
 	return (
 		<>
@@ -221,10 +255,12 @@ export const SupporterPlusOfferConfirmed = () => {
 						You will receive an email confirming the details of your
 						offer
 					</li>
-					<li>
-						You will continue enjoying all the benefits of your
-						All-access digital subscription – for free
-					</li>
+					{alternativeIsOffer && (
+						<li>
+							You will continue enjoying all the benefits of your
+							All-access digital subscription – for free
+						</li>
+					)}
 					<li>
 						You will not be billed until{' '}
 						{nextNonDiscountedPaymentDate} after which you will pay{' '}
@@ -234,7 +270,9 @@ export const SupporterPlusOfferConfirmed = () => {
 					</li>
 				</ul>
 			</div>
-			<div css={benefitsCss}>
+			{alternativeIsOffer && (
+				<>
+					<div css={benefitsCss}>
 				<picture css={pictureAlignmentCss}>
 					<source
 						srcSet="https://media.guim.co.uk/4642d75e4282cf62980b6aa60eb5f710a6795e82/0_0_1444_872/1000.png"
@@ -283,6 +321,8 @@ export const SupporterPlusOfferConfirmed = () => {
 					benefits.
 				</p>
 			</div>
+				</>
+			)}
 			<div css={onwardJourneyBtnsContainerCss}>
 				<LinkButton
 					href="https://theguardian.com"

@@ -70,10 +70,15 @@ const ReasonPicker = ({
 		productType: ProductTypeWithCancellationFlow;
 	};
 
+	const shouldUseProgressStepper =
+		(featureSwitches.supporterplusCancellationOffer &&
+			productType.productType === 'supporterplus') ||
+		(featureSwitches.contributionCancellationBreak &&
+			productType.productType === 'contributions');
+
 	return (
 		<>
-			{featureSwitches.supporterplusCancellationOffer &&
-			productType.productType === 'supporterplus' ? (
+			{shouldUseProgressStepper ? (
 				<ProgressStepper
 					steps={[{ isCurrentStep: true }, {}, {}, {}]}
 					additionalCSS={css`

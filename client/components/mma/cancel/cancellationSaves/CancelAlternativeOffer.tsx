@@ -10,6 +10,7 @@ import {
 	textSans17,
 	textSans20,
 	textSansBold15,
+	textSansBold20,
 	textSansBold28,
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
@@ -23,14 +24,15 @@ import { getMaxNonDiscountedPrice } from '@/client/utilities/discountPreview';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import { number2words } from '@/shared/numberUtils';
 import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
-import type { DeliveryRecordDetail } from '../../../delivery/records/deliveryRecordsApi';
-import type { OutstandingHolidayStop } from '../../../holiday/HolidayStopApi';
-import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
-import { Heading } from '../../../shared/Heading';
-import { ProgressStepper } from '../../../shared/ProgressStepper';
-import type { CancellationContextInterface } from '../../CancellationContainer';
-import { CancellationContext } from '../../CancellationContainer';
-import type { OptionalCancellationReasonId } from '../../cancellationReason';
+import type { ProductTypeKeys } from '@/shared/productTypes';
+import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
+import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
+import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
+import { Heading } from '../../shared/Heading';
+import { ProgressStepper } from '../../shared/ProgressStepper';
+import type { CancellationContextInterface } from '../CancellationContainer';
+import { CancellationContext } from '../CancellationContainer';
+import type { OptionalCancellationReasonId } from '../cancellationReason';
 
 interface RouterSate extends DiscountPreviewResponse {
 	selectedReasonId: OptionalCancellationReasonId;
@@ -66,7 +68,7 @@ const availableOfferBoxInnerCss = css`
 	${from.tablet} {
 		background-color: ${palette.neutral[100]};
 		width: 363px;
-		padding-top: ${space[3] + space[4] + 30}px;
+		padding-top: var(--offerBoxTopPadding);
 		margin: ${space[6]}px;
 	}
 `;
@@ -106,7 +108,6 @@ const strikethroughPriceCss = css`
 `;
 
 const offerBoxTitleCss = css`
-	${textSansBold28};
 	color: ${neutral[7]};
 	margin: 0;
 `;
@@ -157,7 +158,7 @@ const termsCss = css`
 	margin-top: ${space[3]}px;
 `;
 
-export const SupporterPlusOffer = () => {
+export const CancelAlternativeOffer = () => {
 	const location = useLocation();
 	const routerState = location.state as RouterSate;
 	const navigate = useNavigate();
@@ -167,6 +168,7 @@ export const SupporterPlusOffer = () => {
 	) as CancellationContextInterface;
 
 	const productDetail = cancellationContext.productDetail;
+	const productType = cancellationContext.productType;
 	const mainPlan = getMainPlan(productDetail.subscription);
 
 	const offerPeriodWord = number2words(routerState.upToPeriods);
@@ -180,6 +182,27 @@ export const SupporterPlusOffer = () => {
 		routerState.nonDiscountedPayments,
 		true,
 	);
+	const alternativeIsOffer = productType.productType === 'supporterplus';
+	const alternativeIsPause = productType.productType === 'contributions';
+
+	const standfirstCopy: Partial<Record<ProductTypeKeys, string>> = {
+		supporterplus: `Instead of cancelling, enjoy ${offerPeriodWord} ${offerPeriodType} with all your existing benefits — for free.`,
+		contributions: `Instead of cancelling, you can pause your recurring payment for ${offerPeriodWord} ${offerPeriodType}.`,
+	};
+
+	const heroImageSrc: Partial<
+		Record<ProductTypeKeys, { mobile: string; desktop: string }>
+	> = {
+		supporterplus: {
+			mobile: 'https://media.guim.co.uk/63d17ee19313703129fbbeacceaafcd6d1cc1014/0_0_1404_716/500.png',
+			desktop:
+				'https://i.guim.co.uk/img/media/02c17de8ea17126fbd87f6567ce5cd80f128546d/0_0_2212_1869/2000.png?width=1000&quality=75&s=492edad637979aa4e57e957cb12cd4f1',
+		},
+		contributions: {
+			mobile: '',
+			desktop: '',
+		},
+	};
 
 	return (
 		<>
@@ -201,28 +224,36 @@ export const SupporterPlusOffer = () => {
 				This doesn't have to be goodbye
 			</Heading>
 			<h3 css={standfirstCss}>
-				Instead of cancelling, enjoy two months with all your existing
-				benefits — for free.
+				{standfirstCopy[productType.productType]}
 			</h3>
 			<div css={availableOfferBoxCss}>
 				<picture css={headerImageCss}>
 					<source
-						srcSet="https://i.guim.co.uk/img/media/02c17de8ea17126fbd87f6567ce5cd80f128546d/0_0_2212_1869/2000.png?width=1000&quality=75&s=492edad637979aa4e57e957cb12cd4f1"
+						srcSet={heroImageSrc.supporterplus?.desktop}
 						media="(min-width: 740px)"
 					/>
-					<img src="https://media.guim.co.uk/63d17ee19313703129fbbeacceaafcd6d1cc1014/0_0_1404_716/500.png" />
+					<img src={heroImageSrc.supporterplus?.mobile} />
 				</picture>
-				<Ribbon
-					copy="Your one-time offer"
-					ribbonColour={palette.brand[500]}
-					copyColour={palette.neutral[100]}
-					roundedCornersRight
-					withoutTail
-					small
-					additionalCss={ribbonCss}
-				/>
-				<div css={availableOfferBoxInnerCss}>
-					{isPaidSubscriptionPlan(mainPlan) && (
+				{alternativeIsOffer && (
+					<Ribbon
+						copy="Your one-time offer"
+						ribbonColour={palette.brand[500]}
+						copyColour={palette.neutral[100]}
+						roundedCornersRight
+						withoutTail
+						small
+						additionalCss={ribbonCss}
+					/>
+				)}
+				<div
+					css={availableOfferBoxInnerCss}
+					style={{
+						['--offerBoxTopPadding' as string]: alternativeIsOffer
+							? `${space[3] + space[4] + 30}px`
+							: `${space[4]}px`,
+					}}
+				>
+					{alternativeIsOffer && isPaidSubscriptionPlan(mainPlan) && (
 						<p css={strikethroughPriceCss}>
 							<s>
 								{mainPlan.currency}
@@ -232,52 +263,73 @@ export const SupporterPlusOffer = () => {
 						</p>
 					)}
 
-					<h4 css={offerBoxTitleCss}>
-						{capitalize(offerPeriodWord)} {offerPeriodType} free
+					<h4
+						css={[
+							offerBoxTitleCss,
+							css`
+								${alternativeIsOffer && textSansBold28}
+								${alternativeIsPause && textSansBold20}
+							`,
+						]}
+					>
+						{alternativeIsOffer &&
+							`${capitalize(
+								offerPeriodWord,
+							)} ${offerPeriodType} free`}
+						{alternativeIsPause &&
+							`Would you like to pause your recurring payment for ${offerPeriodWord} ${offerPeriodType}?`}
 					</h4>
 					<p css={billingResumptionDateCss}>
 						Billing resumes on {nextNonDiscountedPaymentDate}
 					</p>
 					<Button
 						onClick={() => {
-							navigate('../offer-review', {
+							const reviewUrlPart = `../${
+								(alternativeIsOffer && 'offer-review') || ''
+							}${(alternativeIsPause && 'pause-review') || ''}`;
+							navigate(reviewUrlPart, {
 								state: routerState,
 							});
 						}}
 						cssOverrides={offerButtonCss}
 					>
-						Redeem your offer
+						{alternativeIsOffer && 'Redeem your offer'}
+						{alternativeIsPause && 'Yes, pause my payment'}
 					</Button>
-					<p css={benefitsSubTitleCss}>
-						Keep your existing benefits:
-					</p>
-					<div
-						css={css`
-							max-width: 290px;
-						`}
-					>
-						<BenefitsSection
-							small
-							benefits={[
-								{
-									description:
-										'Unlimited access to the Guardian app',
-								},
-								{
-									description:
-										'Ad-free reading across all your devices',
-								},
-								{
-									description:
-										'Exclusive supporter newsletter',
-								},
-								{
-									description:
-										"Far fewer asks for support when you're signed in",
-								},
-							]}
-						/>
-					</div>
+					{alternativeIsOffer && (
+						<>
+							<p css={benefitsSubTitleCss}>
+								Keep your existing benefits:
+							</p>
+							<div
+								css={css`
+									max-width: 290px;
+								`}
+							>
+								<BenefitsSection
+									small
+									benefits={[
+										{
+											description:
+												'Unlimited access to the Guardian app',
+										},
+										{
+											description:
+												'Ad-free reading across all your devices',
+										},
+										{
+											description:
+												'Exclusive supporter newsletter',
+										},
+										{
+											description:
+												"Far fewer asks for support when you're signed in",
+										},
+									]}
+								/>
+							</div>
+						</>
+					)}
 				</div>
 			</div>
 			<div css={cancelBtnHolderCss}>

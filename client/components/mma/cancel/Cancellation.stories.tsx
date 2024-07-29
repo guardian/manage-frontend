@@ -11,9 +11,9 @@ import {
 import { CancellationContainer } from './CancellationContainer';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
-import { SupporterPlusOffer } from './cancellationSaves/supporterplus/SupporterPlusOffer';
-import { SupporterPlusOfferConfirmed } from './cancellationSaves/supporterplus/SupporterPlusOfferConfirmed';
-import { SupporterPlusOfferReview } from './cancellationSaves/supporterplus/SupporterPlusOfferReview';
+import { CancelAlternativeConfirmed } from './cancellationSaves/CancelAlternativeConfirmed';
+import { CancelAlternativeOffer } from './cancellationSaves/CancelAlternativeOffer';
+import { CancelAlternativeReview } from './cancellationSaves/CancelAlternativeReview';
 import { getCancellationSummary } from './CancellationSummary';
 import { contributionsCancellationReasons } from './contributions/ContributionsCancellationReasons';
 import { ConfirmCancellation } from './stages/ConfirmCancellation';
@@ -81,7 +81,7 @@ export const Review: StoryObj<typeof CancellationContainer> = {
 
 export const Offer: StoryObj<typeof CancellationContainer> = {
 	render: () => {
-		return <SupporterPlusOffer />;
+		return <CancelAlternativeOffer />;
 	},
 
 	parameters: {
@@ -100,18 +100,24 @@ export const Offer: StoryObj<typeof CancellationContainer> = {
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
 		},
 	},
 };
 
 export const OfferReview: StoryObj<typeof CancellationContainer> = {
 	render: () => {
-		return <SupporterPlusOfferReview />;
+		return <CancelAlternativeReview />;
 	},
 
 	parameters: {
 		reactRouter: {
 			state: {
+				productDetail: supporterPlusMonthlyAllAccessDigital(),
 				discountedPrice: 0,
 				upToPeriods: 2,
 				upToPeriodsType: 'months',
@@ -119,6 +125,11 @@ export const OfferReview: StoryObj<typeof CancellationContainer> = {
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
 		},
 		msw: [
 			http.post('/api/discounts/apply-discount', () => {
@@ -132,14 +143,99 @@ export const OfferReview: StoryObj<typeof CancellationContainer> = {
 
 export const OfferConfirmed: StoryObj<typeof CancellationContainer> = {
 	render: () => {
-		return <SupporterPlusOfferConfirmed />;
+		return <CancelAlternativeConfirmed />;
 	},
 	parameters: {
 		reactRouter: {
 			state: {
+				upToPeriods: 2,
+				upToPeriodsType: 'months',
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
+		},
+	},
+};
+
+export const Pause: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeOffer />;
+	},
+
+	parameters: {
+		msw: [
+			http.post('/api/case', () => {
+				return HttpResponse.json({ id: 'caseId' });
+			}),
+		],
+		reactRouter: {
+			state: {
+				discountedPrice: 0,
+				upToPeriods: 2,
+				upToPeriodsType: 'months',
+				firstDiscountedPaymentDate: '2024-05-30',
+				nextNonDiscountedPaymentDate: '2024-07-30',
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
+		},
+	},
+};
+
+export const PauseReview: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeReview />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: {
+				discountedPrice: 0,
+				upToPeriods: 2,
+				upToPeriodsType: 'months',
+				firstDiscountedPaymentDate: '2024-05-30',
+				nextNonDiscountedPaymentDate: '2024-07-30',
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
+		},
+		msw: [
+			http.post('/api/discounts/apply-discount', () => {
+				return new HttpResponse(null, {
+					status: 201,
+				});
+			}),
+		],
+	},
+};
+
+export const PauseConfirmed: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeConfirmed />;
+	},
+	parameters: {
+		reactRouter: {
+			state: {
+				upToPeriods: 2,
+				upToPeriodsType: 'months',
+				nextNonDiscountedPaymentDate: '2024-07-30',
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
 		},
 	},
 };

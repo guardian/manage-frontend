@@ -15,6 +15,7 @@ import { featureSwitches } from '@/shared/featureSwitches';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import type {
+	ProductTypeKeys,
 	ProductTypeWithCancellationFlow,
 	WithProductType,
 } from '../../../../shared/productTypes';
@@ -264,14 +265,39 @@ const ConfirmCancellationAndReturnRow = (
 	const isSupporterPlusAndFreePeriodOfferIsActive =
 		featureSwitches.supporterplusCancellationOffer &&
 		productType.productType === 'supporterplus';
-	const [showOfferBeforeCancelling, setShowOfferBeforeCancelling] =
-		useState<ShowOfferState>(
-			isSupporterPlusAndFreePeriodOfferIsActive ? 'pending' : false,
-		);
-	const [offerDetails, setOfferDetails] =
+
+	const isContributionAndBreakFeatureIsActive =
+		featureSwitches.contributionCancellationBreak &&
+		productType.productType === 'contributions';
+
+	const [
+		showAlternativeBeforeCancelling,
+		setShowAlternativeBeforeCancelling,
+	] = useState<ShowOfferState>(
+		isSupporterPlusAndFreePeriodOfferIsActive ||
+			isContributionAndBreakFeatureIsActive
+			? 'pending'
+			: false,
+	);
+	const [discountPreviewDetails, setDiscountPreviewDetails] =
 		useState<DiscountPreviewResponse | null>(null);
+
+	const productHasAlternativeRecommendation =
+		productType.productType === 'supporterplus' ||
+		productType.productType === 'contributions';
+
+	const cancelAlternativeUrlPartLookup: Partial<
+		Record<ProductTypeKeys, string>
+	> = {
+		supporterplus: 'offer',
+		contributions: 'pause',
+	};
+
 	useEffect(() => {
-		if (isSupporterPlusAndFreePeriodOfferIsActive) {
+		if (
+			isSupporterPlusAndFreePeriodOfferIsActive ||
+			isContributionAndBreakFeatureIsActive
+		) {
 			(async () => {
 				try {
 					const response = await fetchWithDefaultParameters(
@@ -287,14 +313,14 @@ const ConfirmCancellationAndReturnRow = (
 
 					if (response.ok) {
 						// api returns a 400 response if the user is not eligible
-						setShowOfferBeforeCancelling(true);
+						setShowAlternativeBeforeCancelling(true);
 						const offerData = await response.json();
-						setOfferDetails(offerData);
+						setDiscountPreviewDetails(offerData);
 					} else {
-						setShowOfferBeforeCancelling(false);
+						setShowAlternativeBeforeCancelling(false);
 					}
 				} catch (e) {
-					setShowOfferBeforeCancelling(false);
+					setShowAlternativeBeforeCancelling(false);
 				}
 			})();
 		}
@@ -323,26 +349,34 @@ const ConfirmCancellationAndReturnRow = (
 					>
 						<Button
 							icon={
-								showOfferBeforeCancelling === 'pending' ? (
+								showAlternativeBeforeCancelling ===
+								'pending' ? (
 									<SvgSpinner size="xsmall" />
 								) : (
 									<SvgArrowRightStraight />
 								)
 							}
 							iconSide="right"
-							disabled={showOfferBeforeCancelling === 'pending'}
+							disabled={
+								showAlternativeBeforeCancelling === 'pending'
+							}
 							aria-disabled={
-								showOfferBeforeCancelling === 'pending'
+								showAlternativeBeforeCancelling === 'pending'
 							}
 							onClick={() => {
 								if (props.onClick) {
 									props.onClick();
 								}
-								if (showOfferBeforeCancelling) {
-									navigate('../offer', {
+								if (showAlternativeBeforeCancelling) {
+									const cancelAlternativeUrlPart =
+										cancelAlternativeUrlPartLookup[
+											productType.productType
+										] || '';
+
+									navigate(`../${cancelAlternativeUrlPart}`, {
 										state: {
 											...routerState,
-											...offerDetails,
+											...discountPreviewDetails,
 											caseId: props.caseId,
 											holidayStops: props.holidayStops,
 											deliveryCredits:
@@ -351,8 +385,7 @@ const ConfirmCancellationAndReturnRow = (
 									});
 								} else {
 									navigate(
-										productType.productType ===
-											'supporterplus'
+										productHasAlternativeRecommendation
 											? '../confirm'
 											: '../confirmed',
 										{
@@ -371,7 +404,7 @@ const ConfirmCancellationAndReturnRow = (
 								}
 							}}
 						>
-							{productType.productType === 'supporterplus'
+							{productHasAlternativeRecommendation
 								? 'Continue to cancellation'
 								: 'Confirm cancellation'}
 						</Button>
@@ -501,10 +534,15 @@ export const CancellationReasonReview = () => {
 		return <SaveBody caseId={caseId} />;
 	};
 
+	const shouldUseProgressStepper =
+		(featureSwitches.supporterplusCancellationOffer &&
+			productType.productType === 'supporterplus') ||
+		(featureSwitches.contributionCancellationBreak &&
+			productType.productType === 'contributions');
+
 	return (
 		<>
-			{featureSwitches.supporterplusCancellationOffer &&
-			productType.productType === 'supporterplus' ? (
+			{shouldUseProgressStepper ? (
 				<ProgressStepper
 					steps={[{}, { isCurrentStep: true }, {}, {}]}
 					additionalCSS={css`
