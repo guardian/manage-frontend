@@ -28,6 +28,11 @@ describe('Cancel contribution', () => {
 	};
 
 	beforeEach(() => {
+		const contributionCancelled = JSON.parse(
+			JSON.stringify(contributionPaidByCard()),
+		);
+		contributionCancelled.subscription.cancelledAt = true;
+
 		cy.setCookie('GU_mvt_id', '0');
 
 		signInAndAcceptCookies();
@@ -66,8 +71,9 @@ describe('Cancel contribution', () => {
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(),
+			body: toMembersDataApiResponse(contributionCancelled),
 		}).as('new_product_detail');
+
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,
 			body: [],

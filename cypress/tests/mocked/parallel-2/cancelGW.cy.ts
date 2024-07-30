@@ -3,13 +3,18 @@ import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiRespo
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Cancel guardian weekly', () => {
+	const GWwithSelfCancelEnabled = JSON.parse(
+		JSON.stringify(guardianWeeklyPaidByCard()),
+	);
+	GWwithSelfCancelEnabled.selfServiceCancellation.isAllowed = true;
+
+	const GWSelfCancelEnabledAndCancelled = JSON.parse(
+		JSON.stringify(guardianWeeklyPaidByCard()),
+	);
+	GWSelfCancelEnabledAndCancelled.subscription.cancelledAt = true;
+
 	beforeEach(() => {
 		signInAndAcceptCookies();
-
-		const GWwithSelfCancelEnabled = JSON.parse(
-			JSON.stringify(guardianWeeklyPaidByCard()),
-		);
-		GWwithSelfCancelEnabled.selfServiceCancellation.isAllowed = true;
 
 		cy.intercept('POST', '/api/case', {
 			statusCode: 200,
@@ -45,7 +50,7 @@ describe('Cancel guardian weekly', () => {
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(),
+			body: toMembersDataApiResponse(GWwithSelfCancelEnabled),
 		}).as('new_product_detail');
 
 		cy.intercept('GET', '/api/cancelled/', {
@@ -105,6 +110,11 @@ describe('Cancel guardian weekly', () => {
 	});
 
 	it('cancels Guardian Weekly (reason: I dont have time to use my subscription, effective: next billing date)', () => {
+		cy.intercept('GET', '/api/me/mma/**', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(GWSelfCancelEnabledAndCancelled),
+		}).as('new_product_detail');
+
 		cy.visit('/');
 
 		cy.findByText('Manage subscription').click();
