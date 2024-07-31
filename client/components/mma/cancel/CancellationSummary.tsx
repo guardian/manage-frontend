@@ -5,6 +5,7 @@ import {
 	textEgyptianBold17,
 } from '@guardian/source/foundations';
 import { Link } from 'react-router-dom';
+import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
@@ -30,9 +31,14 @@ const actuallyCancelled = (
 ) => {
 	const deliveryRecordsLink: string = `/delivery/${productType.urlPart}/records`;
 	const subscription = productDetail.subscription;
-	const mainPlan = getMainPlan(
-		productDetail.subscription,
-	) as PaidSubscriptionPlan;
+	let currencySymbol: undefined | CurrencyIso;
+	if (Object.keys(subscription).length) {
+		const mainPlan = getMainPlan(
+			productDetail.subscription,
+		) as PaidSubscriptionPlan;
+		currencySymbol = mainPlan.currencyISO;
+	}
+
 	const headingCopy =
 		productType.productType === 'supporterplus'
 			? 'Your subscription has been cancelled'
@@ -148,7 +154,7 @@ const actuallyCancelled = (
 										<p>
 											{productType?.cancellation?.summaryReasonSpecificPara(
 												reason,
-												mainPlan.currencyISO,
+												currencySymbol,
 											) ||
 												'If you are interested in supporting our journalism in other ways, ' +
 													'please consider either a contribution or a subscription.'}
