@@ -62,7 +62,7 @@ describe('Cancel Supporter Plus', () => {
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(),
+			body: toMembersDataApiResponse(supporterPlus()),
 		}).as('new_product_detail');
 
 		cy.intercept('GET', '/api/cancelled/', {
@@ -115,7 +115,7 @@ describe('Cancel Supporter Plus', () => {
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(),
+			body: toMembersDataApiResponse(supporterPlusCancelled()),
 		}).as('get_cancelled_product');
 
 		cy.findByRole('radio', {

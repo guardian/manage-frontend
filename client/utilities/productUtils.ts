@@ -42,21 +42,21 @@ export const createProductDetailFetcher =
 		productTypeFilter: AllProductsProductTypeFilterString,
 		subscriptionName?: string,
 	) =>
-	() =>
-		fetchWithDefaultParameters(
+	() => {
+		const apiUrl =
 			'/api/me/mma' +
-				(subscriptionName
-					? `/${subscriptionName}`
-					: `?productType=${productTypeFilter}`),
-			{
-				headers: {
-					[X_GU_ID_FORWARDED_SCOPE]:
-						getScopeFromRequestPathOrEmptyString(
-							window.location.href,
-						),
-				},
+			(subscriptionName
+				? `/${subscriptionName}`
+				: `?productType=${productTypeFilter}`);
+
+		return fetchWithDefaultParameters(apiUrl, {
+			headers: {
+				[X_GU_ID_FORWARDED_SCOPE]: getScopeFromRequestPathOrEmptyString(
+					window.location.href,
+				),
 			},
-		);
+		});
+	};
 
 export const createProductDetailFetch = (
 	productTypeFilter: AllProductsProductTypeFilterString,

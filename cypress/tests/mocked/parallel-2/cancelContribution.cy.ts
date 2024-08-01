@@ -68,6 +68,7 @@ describe('Cancel contribution', () => {
 			statusCode: 200,
 			body: toMembersDataApiResponse(),
 		}).as('new_product_detail');
+
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,
 			body: [],
