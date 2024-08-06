@@ -32,8 +32,8 @@ const guardianWeekly = {
 };
 
 const partnerOffers: ProductBenefit = {
-	name: 'Exclusive access',
-	description: ' to partner offers',
+	name: 'Exclusive partner offers.',
+	description: 'Opportunities to access to discounts and tickets.',
 	specificToRegions: ['AUD'],
 };
 
