@@ -113,7 +113,7 @@ export const HolidaysOverview = () => {
 								{holidayStopResponse.annualIssueLimit}{' '}
 								{productType.holidayStops.issueKeyword}s
 							</strong>{' '}
-							per year of your subscription. <br />
+							per year on your subscription. <br />
 						</div>
 						{productType.holidayStops.alternateNoticeString && (
 							<div>

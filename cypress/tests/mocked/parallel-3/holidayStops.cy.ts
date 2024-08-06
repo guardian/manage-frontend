@@ -8,7 +8,10 @@ import {
 	existingHolidaysFirstIssueDecember,
 	yearSpanningPotentialDeliveries,
 } from '../../../../client/fixtures/holidays';
-import { guardianWeeklyPaidByCard } from '../../../../client/fixtures/productBuilder/testProducts';
+import {
+	guardianWeeklyPaidByCard,
+	tierThree,
+} from '../../../../client/fixtures/productBuilder/testProducts';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Holiday stops', () => {
@@ -86,6 +89,10 @@ describe('Holiday stops', () => {
 	});
 
 	it('can add a new holiday stop for Tier Three', () => {
+		cy.intercept('GET', '/api/me/mma?productType=TierThree', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(tierThree()),
+		}).as('product_detail');
 		cy.visit('/suspend/digital+print');
 		cy.wait('@fetch_existing_holidays');
 		cy.wait('@product_detail');

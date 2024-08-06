@@ -19,7 +19,6 @@ import {
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getBillingPeriodAdjective } from '../../../../../shared/productTypes';
-import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import { getSupporterPlusSuggestedAmountsFromMainPlan } from '../../../../utilities/pricingConfig/suggestedAmounts';
 import { supporterPlusPriceConfigByCountryGroup } from '../../../../utilities/pricingConfig/supporterPlusPricing';
@@ -106,7 +105,7 @@ export const SupporterPlusUpdateAmountForm = (
 	props: SupporterPlusUpdateAmountFormProps,
 ) => {
 	const priceConfig = (supporterPlusPriceConfigByCountryGroup[
-		props.mainPlan.currencyISO as CurrencyIso
+		props.mainPlan.currencyISO
 	] || supporterPlusPriceConfigByCountryGroup.international)[
 		props.mainPlan.billingPeriod
 	];

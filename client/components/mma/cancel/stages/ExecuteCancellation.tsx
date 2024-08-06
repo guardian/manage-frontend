@@ -115,21 +115,14 @@ const getCancellationSummaryWithReturnButton = (body: ReactNode) => () =>
 	);
 
 const getCaseUpdatingCancellationSummary =
-	(
-		caseId: string,
-		productType: ProductTypeWithCancellationFlow,
-		cancelledProductDetail: ProductDetail,
-	) =>
+	(caseId: string, productType: ProductTypeWithCancellationFlow) =>
 	(mdapiResponse: MembersDataApiResponse) => {
 		const productDetail = (mdapiResponse.products[0] as ProductDetail) || {
 			subscription: {},
 		};
 
 		const render = getCancellationSummaryWithReturnButton(
-			getCancellationSummary(
-				productType,
-				cancelledProductDetail,
-			)(productDetail),
+			getCancellationSummary(productType, productDetail),
 		);
 		return caseId ? (
 			<CaseUpdateAsyncLoader
@@ -232,7 +225,6 @@ export const ExecuteCancellation = () => {
 						render={getCaseUpdatingCancellationSummary(
 							caseId,
 							productType,
-							productDetail,
 						)}
 						loadingMessage="Performing your cancellation..."
 					/>

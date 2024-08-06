@@ -10,7 +10,6 @@ import { Stack } from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { formatAmount } from '@/client/utilities/utils';
 import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
-import type { CurrencyIso } from '../../../utilities/currencyIso';
 import { useAsyncLoader } from '../../../utilities/hooks/useAsyncLoader';
 import { getContributionSuggestedAmounts } from '../../../utilities/pricingConfig/suggestedAmounts';
 import { getBenefitsThreshold } from '../../../utilities/pricingConfig/supporterPlusPricing';
@@ -36,7 +35,7 @@ export const UpgradeSupport = () => {
 
 	const currentAmount = mainPlan.price / 100;
 	const threshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
+		mainPlan.currencyISO,
 		mainPlan.billingPeriod as 'month' | 'year',
 	);
 

@@ -1,5 +1,5 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
-import {http, HttpResponse} from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
@@ -66,7 +66,7 @@ export const Review: StoryObj<typeof CancellationContainer> = {
 	parameters: {
 		msw: [
 			http.post('/api/case', () => {
-				return HttpResponse.json({ id: 'caseId' })
+				return HttpResponse.json({ id: 'caseId' });
 			}),
 		],
 		reactRouter: {
@@ -87,7 +87,7 @@ export const Offer: StoryObj<typeof CancellationContainer> = {
 	parameters: {
 		msw: [
 			http.post('/api/case', () => {
-				return HttpResponse.json({ id: 'caseId' })
+				return HttpResponse.json({ id: 'caseId' });
 			}),
 		],
 		reactRouter: {
@@ -122,7 +122,7 @@ export const OfferReview: StoryObj<typeof CancellationContainer> = {
 			http.post('/api/discounts/apply-discount', () => {
 				return new HttpResponse(null, {
 					status: 201,
-				})
+				});
 			}),
 		],
 	},
@@ -168,5 +168,5 @@ export const Confirmation: StoryFn<typeof CancellationContainer> = () => {
 	return getCancellationSummary(
 		PRODUCT_TYPES.contributions,
 		contributionCancelled(),
-	)(contributionCancelled());
+	);
 };

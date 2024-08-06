@@ -1,20 +1,20 @@
-import { guardianWeeklyPaidByCard } from '../../../../client/fixtures/productBuilder/testProducts';
+import { tierThree } from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
-describe('Cancel guardian weekly', () => {
-	const GWwithSelfCancelEnabled = JSON.parse(
-		JSON.stringify(guardianWeeklyPaidByCard()),
-	);
-	GWwithSelfCancelEnabled.selfServiceCancellation.isAllowed = true;
-
-	const GWSelfCancelEnabledAndCancelled = JSON.parse(
-		JSON.stringify(guardianWeeklyPaidByCard()),
-	);
-	GWSelfCancelEnabledAndCancelled.subscription.cancelledAt = true;
-
+describe('Cancel tier three', () => {
 	beforeEach(() => {
 		signInAndAcceptCookies();
+
+		const tierThreeWithSelfCancelEnabled = JSON.parse(
+			JSON.stringify(tierThree()),
+		);
+		tierThreeWithSelfCancelEnabled.selfServiceCancellation.isAllowed = true;
+
+		const postCancelTierThree = JSON.parse(JSON.stringify(tierThree()));
+		postCancelTierThree.subscription.cancelledAt = true;
+		postCancelTierThree.subscription.cancellationEffectiveDate =
+			'2024-07-25';
 
 		cy.intercept('POST', '/api/case', {
 			statusCode: 200,
@@ -28,14 +28,14 @@ describe('Cancel guardian weekly', () => {
 			body: { message: 'success' },
 		}).as('create_case_in_salesforce');
 
-		cy.intercept('GET', '/api/me/mma?productType=GuardianWeekly', {
+		cy.intercept('GET', '/api/me/mma?productType=TierThree', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(GWwithSelfCancelEnabled),
+			body: toMembersDataApiResponse(tierThreeWithSelfCancelEnabled),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(GWwithSelfCancelEnabled),
+			body: toMembersDataApiResponse(tierThreeWithSelfCancelEnabled),
 		});
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -50,7 +50,7 @@ describe('Cancel guardian weekly', () => {
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(GWwithSelfCancelEnabled),
+			body: toMembersDataApiResponse(postCancelTierThree),
 		}).as('new_product_detail');
 
 		cy.intercept('GET', '/api/cancelled/', {
@@ -78,9 +78,14 @@ describe('Cancel guardian weekly', () => {
 				Id: 'yo',
 			},
 		}).as('cancel_gw_deliveryrecords');
+
+		cy.intercept('GET', 'api/existing-payment-options', {
+			statusCode: 200,
+			body: [],
+		});
 	});
 
-	it('cancels Guardian Weekly (reason: I dont have time to use my subscription, effective: today)', () => {
+	it('cancels tier three (reason: I dont have time to use my subscription, effective: next billing date)', () => {
 		cy.visit('/');
 
 		cy.findByText('Manage subscription').click();
@@ -89,6 +94,11 @@ describe('Cancel guardian weekly', () => {
 		cy.findByRole('link', {
 			name: 'Cancel subscription',
 		}).click();
+
+		cy.findByText(
+			'We’re sorry to hear you’re thinking of cancelling your digital + print subscription',
+		).should('exist');
+
 		cy.findAllByRole('radio').eq(6).click();
 
 		cy.findAllByRole('radio').check('Today');
@@ -105,41 +115,6 @@ describe('Cancel guardian weekly', () => {
 		cy.findByText(
 			'Your cancellation request has been successfully submitted. Our customer service team will try their best to contact you as soon as possible to confirm the cancellation and refund any credit you are owed.',
 		).should('exist');
-
-		cy.get('@get_cancellation_date.all').should('have.length', 1);
-	});
-
-	it('cancels Guardian Weekly (reason: I dont have time to use my subscription, effective: next billing date)', () => {
-		cy.intercept('GET', '/api/me/mma/**', {
-			statusCode: 200,
-			body: toMembersDataApiResponse(GWSelfCancelEnabledAndCancelled),
-		}).as('new_product_detail');
-
-		cy.visit('/');
-
-		cy.findByText('Manage subscription').click();
-		cy.wait('@cancelled');
-
-		cy.findByRole('link', {
-			name: 'Cancel subscription',
-		}).click();
-		cy.findAllByRole('radio').eq(6).click();
-
-		cy.get('input[type="radio"][value="EndOfLastInvoicePeriod"]').click();
-		cy.findByRole('button', { name: 'Continue' }).click();
-
-		cy.wait('@get_case');
-
-		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
-
-		cy.wait('@cancel_gw_holidays');
-		cy.wait('@cancel_gw_deliveryrecords');
-		cy.wait('@create_case_in_salesforce');
-		cy.wait('@new_product_detail');
-
-		cy.findByText('Your Guardian Weekly subscription is cancelled').should(
-			'exist',
-		);
 
 		cy.get('@get_cancellation_date.all').should('have.length', 1);
 	});

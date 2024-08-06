@@ -9,6 +9,7 @@ import {
 	contributionPaidByPayPalAboveSupporterPlusThreshold,
 	contributionWithPaymentFailure,
 	nonServicedCountryContributor,
+	supporterPlusMonthlyAllAccessDigital,
 } from '../../../../client/fixtures/productBuilder/testProducts';
 
 const setSignInStatus = () => {
@@ -121,6 +122,22 @@ describe('product switching', () => {
 		).should('exist');
 
 		cy.get('@mdapi_get_contribution.all').should('have.length', 1);
+	});
+
+	it('Does not allow switching from supporter plus to supporter plus', () => {
+		cy.intercept('GET', '/api/me/mma*', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(
+				supporterPlusMonthlyAllAccessDigital(),
+			),
+		});
+
+		cy.visit('/switch');
+		setSignInStatus();
+
+		cy.findByText('There is a problem with your subscription type').should(
+			'exist',
+		);
 	});
 
 	it('Does not allow user to navigate back to switch review and confirmation pages after switch completion', () => {

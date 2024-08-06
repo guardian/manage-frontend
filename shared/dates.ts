@@ -8,11 +8,10 @@ export const DATE_FNS_SHORT_OUTPUT_FORMAT = 'd MMM yyyy'; // example: 5 Jan 2019
 export const cancellationFormatDate = (
 	cancellationEffectiveDate?: string,
 	outputFormat: string = DATE_FNS_SHORT_OUTPUT_FORMAT,
-) => {
-	return cancellationEffectiveDate === undefined
+) =>
+	cancellationEffectiveDate === undefined
 		? 'today'
 		: parseDate(cancellationEffectiveDate).dateStr(outputFormat);
-};
 
 export interface ParsedDate {
 	date: Date;
