@@ -77,7 +77,13 @@ const HelpCentreRouter = () => {
 	]
 	*/
 
-	const knownIssues: KnownIssueObj[] = [];
+	const knownIssues: KnownIssueObj[] = [
+		{
+			date: '7th Aug 2024 5:00 pm',
+			message:
+				'We are experiencing an unexpected interruption across Customer Service phone lines and live chat. We recommend contacting us via email until full service is restored.',
+		},
+	];
 
 	return (
 		<Main signInStatus={signInStatus} isHelpCentrePage>
