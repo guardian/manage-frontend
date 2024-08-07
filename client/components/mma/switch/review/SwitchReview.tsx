@@ -239,7 +239,10 @@ export const SwitchReview = () => {
 								including full access to our app and ad-free
 								reading
 							</p>
-							<BenefitsToggle productType="supporterplus" />
+							<BenefitsToggle
+								productType="supporterplus"
+								subscriptionPlan={mainPlan}
+							/>
 							<p css={newAmountCss}>
 								{mainPlan.currency}
 								{formatAmount(newAmount)}/

@@ -1,3 +1,7 @@
+import {
+	type CurrencyIso,
+	isCurrencyIso,
+} from '@/client/utilities/currencyIso';
 import type { ProductTypeKeys } from '@/shared/productTypes';
 
 /* Product Switch Benefits, these are also shown on product cards */
@@ -23,14 +27,41 @@ const adFree = {
 };
 
 const guardianWeekly = {
-	name: 'Guardian Weekly',
+	name: 'Guardian Weekly.',
 	description: 'Print magazine delivered to your door every week',
+};
+
+const partnerOffers: ProductBenefit = {
+	name: 'Exclusive partner offers.',
+	description: 'Opportunities to access to discounts and tickets',
+	specificToRegions: ['AUD'],
 };
 
 export interface ProductBenefit {
 	name?: string;
 	description?: string;
 	isUnavailable?: boolean;
+	specificToRegions?: CurrencyIso[];
+}
+
+export function filterBenefitByRegion(
+	benefit: {
+		specificToRegions?: CurrencyIso[];
+	},
+	currencyIso: string,
+) {
+	if (isCurrencyIso(currencyIso)) {
+		if (benefit.specificToRegions !== undefined) {
+			return benefit.specificToRegions.includes(currencyIso);
+		}
+
+		return true;
+	}
+
+	/*	If we don't have a valid currency
+	 	only show a benefit which is not region specific
+	*/
+	return benefit.specificToRegions === undefined;
 }
 
 export const supporterPlusSwitchBenefits = [newsApp, adFree];
@@ -46,13 +77,20 @@ export const benefitsConfiguration: {
 			isUnavailable: true,
 		},
 	],
-	supporterplus: [supporterNewsletter, uninterruptedReading, newsApp, adFree],
+	supporterplus: [
+		supporterNewsletter,
+		uninterruptedReading,
+		newsApp,
+		adFree,
+		partnerOffers,
+	],
 	tierthree: [
 		guardianWeekly,
 		supporterNewsletter,
 		uninterruptedReading,
 		newsApp,
 		adFree,
+		partnerOffers,
 	],
 	membership: [newsApp, uninterruptedReading, supporterNewsletter],
 	digipack: [],
