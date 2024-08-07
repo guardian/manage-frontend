@@ -120,6 +120,7 @@ server.use(routes.core);
 server.use('/oauth', routes.oauth);
 server.use('/profile/', routes.profile);
 server.use('/api/', routes.api);
+server.use('/newspaperArchive', routes.newspaperArchive);
 server.use('/idapi', routes.idapi);
 server.use('/mpapi', routes.mpapi);
 server.use('/aapi', routes.aapi);
