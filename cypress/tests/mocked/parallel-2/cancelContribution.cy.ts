@@ -1,6 +1,7 @@
 import { contributionPaidByCard } from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
+import { featureSwitches } from '../../../../shared/featureSwitches';
 
 describe('Cancel contribution', () => {
 	const setSignInStatus = () => {
@@ -83,6 +84,48 @@ describe('Cancel contribution', () => {
 			statusCode: 200,
 		}).as('cancel_contribution');
 	});
+
+	if (featureSwitches.contributionCancellationBreak) {
+		const discountPreviewResponse: DiscountPreviewResponse = {
+			discountedPrice: 0,
+			upToPeriods: 2,
+			upToPeriodsType: 'Months',
+			firstDiscountedPaymentDate: '2024-05-30',
+			nextNonDiscountedPaymentDate: '2024-07-30',
+		};
+		it('user accepts pause instead of cancelling', () => {
+			setupCancellation();
+			cy.intercept('POST', 'api/discounts/preview-discount', {
+				statusCode: 200,
+				body: discountPreviewResponse,
+			}).as('preview_discount');
+
+			cy.intercept('POST', 'api/discounts/apply-discount', {
+				statusCode: 200,
+			}).as('apply_discount');
+
+			cy.findByRole('radio', {
+				name: 'As the result of a specific article I read',
+			}).click();
+			cy.findByRole('button', { name: 'Continue' }).click();
+
+			cy.wait('@get_case');
+			cy.wait('@preview_discount');
+
+			cy.findByRole('button', {
+				name: 'Continue to cancellation',
+			}).click();
+
+			cy.findByRole('button', { name: 'Yes, pause my payment' }).click();
+
+			cy.findByRole('button', {
+				name: 'Confirm your offer',
+			}).click();
+
+			cy.findByText('Thank you for choosing to stay with us');
+			cy.wait('@apply_discount');
+		});
+	}
 
 	it('cancels contribution (reason: As a result of a specific article I read)', () => {
 		setupCancellation();
