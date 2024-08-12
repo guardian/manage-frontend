@@ -133,6 +133,8 @@ export const proxyApiHandler =
 				// tslint:disable-next-line:no-object-mutation
 				res.locals.loggingDetail.status = intermediateResponse.status;
 				// tslint:disable-next-line:no-object-mutation
+				console.log('server/apiProxy');
+				console.log(JSON.stringify(res));
 				res.locals.loggingDetail.isOK = intermediateResponse.ok;
 
 				res.status(intermediateResponse.status);
@@ -167,6 +169,8 @@ export const proxyApiHandler =
 				return intermediateResponse.buffer();
 			})
 			.then((body) => {
+				console.log('apiProxy - body');
+				console.log(JSON.stringify(res));
 				const suitableLog = res.locals.loggingDetail.isOK
 					? log.info
 					: log.warn;
