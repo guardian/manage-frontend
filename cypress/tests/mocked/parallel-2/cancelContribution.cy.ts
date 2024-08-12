@@ -136,6 +136,7 @@ describe('Cancel contribution', () => {
 
 		cy.wait('@get_case');
 
+		cy.findByRole('button', { name: 'Continue to cancellation' }).click();
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
 		cy.wait('@create_case_in_salesforce');
@@ -207,6 +208,7 @@ describe('Cancel contribution', () => {
 		cy.findByText(
 			'Thank you for your ongoing support. Once you’ve completed your cancellation below, you can set up a new product via our online checkouts.',
 		).should('exist');
+		cy.findByRole('button', { name: 'Continue to cancellation' }).click();
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
 		cy.wait('@create_case_in_salesforce');
@@ -260,6 +262,7 @@ describe('Cancel contribution', () => {
 
 		cy.wait('@get_case');
 
+		cy.findByRole('button', { name: 'Continue to cancellation' }).click();
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
 		cy.wait('@create_case_in_salesforce');
