@@ -3,6 +3,16 @@ import type { Request, Response } from 'express';
 import fetch from 'node-fetch';
 import { withIdentity } from '../middleware/identityMiddleware';
 
+type NewspapersRequestBody = {
+	expires?: number; // defaults to 24 hours
+	'query-string'?: string;
+};
+
+// { url: "https://<subdomain>.newspapers.com/…?tpa=<token>" }
+type NewspapersResponseBody = {
+	url: string;
+};
+
 function base64(input: string) {
 	return Buffer.from(input).toString('base64');
 }
@@ -12,13 +22,9 @@ router.use(withIdentity(401));
 
 router.get('/auth', async (_req: Request, res: Response) => {
 	const subdomain = 'theguardian';
-	const authKey = process.env.newspaperArchive;
+	const authKey = '';
 	const authHeader = base64(`${subdomain}:${authKey}`);
-	const requestBody = {
-		expires: 86400, // optional, defaults to 24 hours,
-		'query-string':
-			'xid=1234&utm_campaign=awesome-campaign&utm_medium=referral&utm_source=editorial&utm_content=&utm_term=',
-	};
+	const requestBody: NewspapersRequestBody = {};
 
 	const response = await fetch(
 		'https://www.newspapers.com/api/userauth/public/get-tpa-token',
@@ -30,9 +36,9 @@ router.get('/auth', async (_req: Request, res: Response) => {
 			method: 'POST',
 			body: JSON.stringify(requestBody),
 		},
-	); // { url: "https://<subdomain>.newspapers.com/…?tpa=<token>" }
+	);
 
-	const responseJson = await response.json();
+	const responseJson = (await response.json()) as NewspapersResponseBody;
 	res.redirect(responseJson.url);
 });
 
