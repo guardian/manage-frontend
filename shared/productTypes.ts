@@ -693,6 +693,8 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			SoftOptInIDs.SupporterNewsletter,
 			SoftOptInIDs.DigitalSubscriberPreview,
 		],
+		cancelledCopy:
+			'Your subscription has been cancelled. You are able to access your subscription until',
 		cancellation: {
 			alternateSummaryMainPara:
 				"This is immediate and you will not be charged again. If you've cancelled within the first 14 days, we'll send you a full refund.",

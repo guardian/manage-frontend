@@ -1,5 +1,6 @@
 import {
 	contributionPaidByCard,
+	supporterPlusCancelled,
 	supporterPlusMonthlyAllAccessDigital,
 	supporterPlusMonthlyAllAccessDigitalBeforePriceRise,
 } from '../../../../client/fixtures/productBuilder/testProducts';
@@ -116,6 +117,19 @@ describe('Update contribution amount', () => {
 		cy.contains(
 			'We have successfully updated the amount of your support.',
 		).should('exist');
+	});
+
+	it('Should not be able to change amount of cancelled supporterplus', () => {
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(supporterPlusCancelled()),
+		});
+		cy.visit('/?withFeature=supporterPlusUpdateAmount');
+
+		setSignInStatus();
+
+		cy.findByText('Manage subscription').click();
+		cy.wait('@cancelled');
 	});
 
 	it('Updates supporter plus amount (for user on old lower min amount)', () => {
