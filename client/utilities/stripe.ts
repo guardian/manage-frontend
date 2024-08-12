@@ -13,6 +13,11 @@ export function getStripeKey(
 				? window.guardian?.stripeKeyAustralia?.test
 				: window.guardian?.stripeKeyAustralia?.default;
 
+		case 'United States':
+			return isTestUser
+				? window.guardian?.stripeKeyUnitedStates?.test
+				: window.guardian?.stripeKeyUnitedStates?.default;
+
 		default:
 			return isTestUser
 				? window.guardian?.stripeKeyDefaultCurrencies?.test

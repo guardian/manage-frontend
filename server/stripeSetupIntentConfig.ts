@@ -7,6 +7,7 @@ export interface StripePublicKeySet {
 }
 export interface StripePublicKeys {
 	stripeKeyAustralia: StripePublicKeySet;
+	stripeKeyUnitedStates: StripePublicKeySet;
 	stripeKeyDefaultCurrencies: StripePublicKeySet;
 }
 
