@@ -171,12 +171,17 @@ export const ExecuteCancellation = () => {
 			routerState.deliveryCredits.length > 0,
 	});
 
+	const useProgressStepper =
+		(featureSwitches.supporterplusCancellationOffer &&
+			productType.productType === 'supporterplus') ||
+		(featureSwitches.contributionCancellationPause &&
+			productType.productType === 'contributions');
+
 	return (
 		<>
 			{!routerState.eligibleForFreePeriodOffer && (
 				<>
-					{featureSwitches.supporterplusCancellationOffer &&
-					productType.productType === 'supporterplus' ? (
+					{useProgressStepper ? (
 						<ProgressStepper
 							steps={[{}, {}, {}, { isCurrentStep: true }]}
 							additionalCSS={css`

@@ -267,7 +267,7 @@ const ConfirmCancellationAndReturnRow = (
 		productType.productType === 'supporterplus';
 
 	const isContributionAndBreakFeatureIsActive =
-		featureSwitches.contributionCancellationBreak &&
+		featureSwitches.contributionCancellationPause &&
 		productType.productType === 'contributions';
 
 	const [
@@ -537,7 +537,7 @@ export const CancellationReasonReview = () => {
 	const shouldUseProgressStepper =
 		(featureSwitches.supporterplusCancellationOffer &&
 			productType.productType === 'supporterplus') ||
-		(featureSwitches.contributionCancellationBreak &&
+		(featureSwitches.contributionCancellationPause &&
 			productType.productType === 'contributions');
 
 	return (

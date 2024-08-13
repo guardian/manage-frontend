@@ -73,7 +73,7 @@ const ReasonPicker = ({
 	const shouldUseProgressStepper =
 		(featureSwitches.supporterplusCancellationOffer &&
 			productType.productType === 'supporterplus') ||
-		(featureSwitches.contributionCancellationBreak &&
+		(featureSwitches.contributionCancellationPause &&
 			productType.productType === 'contributions');
 
 	return (

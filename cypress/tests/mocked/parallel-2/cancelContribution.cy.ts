@@ -2,6 +2,7 @@ import { contributionPaidByCard } from '../../../../client/fixtures/productBuild
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 import { featureSwitches } from '../../../../shared/featureSwitches';
+import { DiscountPreviewResponse } from '../../../../client/utilities/discountPreview';
 
 describe('Cancel contribution', () => {
 	const setSignInStatus = () => {
@@ -85,7 +86,7 @@ describe('Cancel contribution', () => {
 		}).as('cancel_contribution');
 	});
 
-	if (featureSwitches.contributionCancellationBreak) {
+	if (featureSwitches.contributionCancellationPause) {
 		const discountPreviewResponse: DiscountPreviewResponse = {
 			discountedPrice: 0,
 			upToPeriods: 2,

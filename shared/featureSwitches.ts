@@ -29,7 +29,7 @@ type FeatureSwitchName =
 	| 'supporterPlusUpdateAmount'
 	| 'digisubSave'
 	| 'supporterplusCancellationOffer'
-	| 'contributionCancellationBreak';
+	| 'contributionCancellationPause';
 
 export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	exampleFeature: false,
@@ -37,5 +37,5 @@ export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	supporterPlusUpdateAmount: true,
 	digisubSave: true,
 	supporterplusCancellationOffer: true,
-	contributionCancellationBreak: true,
+	contributionCancellationPause: true,
 };

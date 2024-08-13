@@ -63,6 +63,15 @@ const nextStepsCss = css`
 	}
 `;
 
+const nextStepsWithSuffixText = css`
+	padding-bottom: ${space[6]}px;
+	margin-bottom: ${space[6]}px;
+	${from.desktop} {
+		padding-bottom: ${space[6]}px;
+		margin-bottom: ${space[6]}px;
+	}
+`;
+
 const benefitsCss = css`
 	display: flex;
 	flex-direction: column;
@@ -132,9 +141,6 @@ const dontForgetCss = css`
 	p {
 		margin: 0;
 	}
-	${from.desktop} {
-		padding: ${space[4]}px ${space[4]}px ${space[4]}px ${space[5]}px;
-	}
 `;
 
 const onwardJourneyBtnsContainerCss = css`
@@ -189,11 +195,6 @@ export const CancelAlternativeConfirmed = () => {
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
 
-	useEffect(() => {
-		pageTitleContext.setPageTitle('Confirmation');
-		updateSalesforceCase(productDetail.isTestUser, routerState.caseId);
-	}, []);
-
 	const nextNonDiscountedPaymentDate = parseDate(
 		routerState.nextNonDiscountedPaymentDate,
 		'yyyy-MM-dd',
@@ -247,7 +248,12 @@ export const CancelAlternativeConfirmed = () => {
 			<h3 css={standfirstCss}>
 				Your valued support powers independent journalism.
 			</h3>
-			<div css={nextStepsCss}>
+			<div
+				css={[
+					nextStepsCss,
+					alternativeIsPause && nextStepsWithSuffixText,
+				]}
+			>
 				<h4>What happens next?</h4>
 
 				<ul>
@@ -273,55 +279,64 @@ export const CancelAlternativeConfirmed = () => {
 			{alternativeIsOffer && (
 				<>
 					<div css={benefitsCss}>
-				<picture css={pictureAlignmentCss}>
-					<source
-						srcSet="https://media.guim.co.uk/4642d75e4282cf62980b6aa60eb5f710a6795e82/0_0_1444_872/1000.png"
-						media="(min-width: 1140px)"
-					/>
-					<source
-						srcSet="https://media.guim.co.uk/7a20e5ce7fd500ec7bac3ec372d7d1e041f5bfe5/0_0_1252_1100/500.png"
-						media="(min-width: 980px) and (max-width: 1139px)"
-					/>
-					<img src="https://media.guim.co.uk/63d17ee19313703129fbbeacceaafcd6d1cc1014/0_0_1404_716/500.png" />
-				</picture>
-				<div css={mobileHeroHRCss}></div>
-				<div css={benefitsLeftSideCss}>
-					<h4>With your offer, you will continue to enjoy:</h4>
-					<BenefitsSection
-						small
-						benefits={[
-							{
-								description:
-									'Unlimited access to the Guardian app',
-							},
-							{
-								description:
-									'Ad-free reading across all your devices',
-							},
-							{
-								description: 'Exclusive supporter newsletter',
-							},
-							{
-								description:
-									"Far fewer asks for support when you're signed in",
-							},
-						]}
-					/>
-				</div>
-			</div>
-			<DownloadAppCta additionalCss={appAdCss} />
-			<DownloadFeastAppCta additionalCss={appAdCss} />
-			<div css={dontForgetCss}>
-				<SvgInfoRound
-					size="small"
-					theme={{ fill: palette.brand[400] }}
-				/>
-				<p>
-					Don't forget to sign in on all your devices to enjoy your
-					benefits.
-				</p>
-			</div>
+						<picture css={pictureAlignmentCss}>
+							<source
+								srcSet="https://media.guim.co.uk/4642d75e4282cf62980b6aa60eb5f710a6795e82/0_0_1444_872/1000.png"
+								media="(min-width: 1140px)"
+							/>
+							<source
+								srcSet="https://media.guim.co.uk/7a20e5ce7fd500ec7bac3ec372d7d1e041f5bfe5/0_0_1252_1100/500.png"
+								media="(min-width: 980px) and (max-width: 1139px)"
+							/>
+							<img src="https://media.guim.co.uk/63d17ee19313703129fbbeacceaafcd6d1cc1014/0_0_1404_716/500.png" />
+						</picture>
+						<div css={mobileHeroHRCss}></div>
+						<div css={benefitsLeftSideCss}>
+							<h4>
+								With your offer, you will continue to enjoy:
+							</h4>
+							<BenefitsSection
+								small
+								benefits={[
+									{
+										description:
+											'Unlimited access to the Guardian app',
+									},
+									{
+										description:
+											'Ad-free reading across all your devices',
+									},
+									{
+										description:
+											'Exclusive supporter newsletter',
+									},
+									{
+										description:
+											"Far fewer asks for support when you're signed in",
+									},
+								]}
+							/>
+						</div>
+					</div>
+					<DownloadAppCta additionalCss={appAdCss} />
+					<DownloadFeastAppCta additionalCss={appAdCss} />
+					<div css={dontForgetCss}>
+						<SvgInfoRound
+							size="small"
+							theme={{ fill: palette.brand[400] }}
+						/>
+						<p>
+							Don't forget to sign in on all your devices to enjoy
+							your benefits.
+						</p>
+					</div>
 				</>
+			)}
+			{alternativeIsPause && (
+				<p css={dontForgetCss}>
+					Don't forget to sign in on all your devices to get the best
+					experience
+				</p>
 			)}
 			<div css={onwardJourneyBtnsContainerCss}>
 				<LinkButton
