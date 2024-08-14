@@ -6,6 +6,7 @@ import {
 	contributionCancelled,
 	contributionPaidByPayPal,
 	guardianWeeklyPaidByCard,
+	supporterPlusCancelled,
 	supporterPlusMonthlyAllAccessDigital,
 } from '../../../fixtures/productBuilder/testProducts';
 import { CancellationContainer } from './CancellationContainer';
@@ -17,6 +18,7 @@ import { CancelAlternativeReview } from './cancellationSaves/CancelAlternativeRe
 import { getCancellationSummary } from './CancellationSummary';
 import { contributionsCancellationReasons } from './contributions/ContributionsCancellationReasons';
 import { ConfirmCancellation } from './stages/ConfirmCancellation';
+import { getCancellationSummaryWithReturnButton } from './stages/ExecuteCancellation';
 import { otherCancellationReason } from './supporterplus/SupporterplusCancellationReasons';
 
 const contributions = PRODUCT_TYPES.contributions;
@@ -263,12 +265,60 @@ export const SupportplusCancelConfirm: StoryObj<typeof CancellationContainer> =
 		},
 	};
 
-export const Confirmation: StoryFn<typeof CancellationContainer> = () => {
+export const ConfirmationContribution: StoryFn<
+	typeof CancellationContainer
+> = () => {
 	// @ts-expect-error set identity details email in the window
 	window.guardian = { identityDetails: { email: 'test' } };
 
 	return getCancellationSummary(
 		PRODUCT_TYPES.contributions,
 		contributionCancelled(),
+	);
+};
+
+export const ConfirmationContributionWithPause: StoryFn<
+	typeof CancellationContainer
+> = () => {
+	// @ts-expect-error set identity details email in the window
+	window.guardian = { identityDetails: { email: 'test' } };
+
+	const eligibleForOffer = false;
+	const eligibleForPause = true;
+
+	return (
+		<>
+			{getCancellationSummaryWithReturnButton(
+				getCancellationSummary(
+					PRODUCT_TYPES.contributions,
+					contributionCancelled(),
+					eligibleForOffer,
+					eligibleForPause,
+				),
+			)()}
+		</>
+	);
+};
+
+export const ConfirmationSupporterPlusWithOffer: StoryFn<
+	typeof CancellationContainer
+> = () => {
+	// @ts-expect-error set identity details email in the window
+	window.guardian = { identityDetails: { email: 'test' } };
+
+	const eligibleForOffer = true;
+	const eligibleForPause = false;
+
+	return (
+		<>
+			{getCancellationSummaryWithReturnButton(
+				getCancellationSummary(
+					PRODUCT_TYPES.supporterplus,
+					supporterPlusCancelled(),
+					eligibleForOffer,
+					eligibleForPause,
+				),
+			)()}
+		</>
 	);
 };

@@ -340,7 +340,8 @@ export const CancelAlternativeOffer = () => {
 						navigate('../confirm', {
 							state: {
 								...routerState,
-								eligibleForFreePeriodOffer: true,
+								eligibleForFreePeriodOffer: alternativeIsOffer,
+								eligibleForPause: alternativeIsPause,
 							},
 						});
 					}}

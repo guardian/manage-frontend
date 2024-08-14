@@ -126,6 +126,44 @@ describe('Cancel contribution', () => {
 			cy.findByText('Thank you for choosing to stay with us');
 			cy.wait('@apply_discount');
 		});
+
+		it("User see's pause offer but decides to cnacel anyway", () => {
+			setupCancellation();
+			cy.intercept('POST', 'api/discounts/preview-discount', {
+				statusCode: 200,
+				body: discountPreviewResponse,
+			}).as('preview_discount');
+
+			cy.findByRole('radio', {
+				name: 'As the result of a specific article I read',
+			}).click();
+			cy.findByRole('button', { name: 'Continue' }).click();
+
+			cy.wait('@get_case');
+			cy.wait('@preview_discount');
+
+			cy.findByRole('button', {
+				name: 'Continue to cancellation',
+			}).click();
+
+			cy.findByRole('button', {
+				name: 'No thanks, continue to cancel',
+			}).click();
+
+			cy.findByRole('button', { name: 'Confirm cancellation' }).click();
+
+			cy.wait('@create_case_in_salesforce');
+			cy.wait('@cancel_contribution');
+			cy.wait('@new_product_detail');
+
+			cy.findByRole('heading', {
+				name: 'Your subscription has been cancelled',
+			});
+
+			cy.get('@create_case_in_salesforce.all').should('have.length', 1);
+			cy.get('@cancel_contribution.all').should('have.length', 1);
+			cy.get('@get_cancellation_date.all').should('have.length', 0);
+		});
 	}
 
 	it('cancels contribution (reason: As a result of a specific article I read)', () => {
@@ -145,7 +183,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled',
+			name: 'Your subscription has been cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -189,7 +227,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled',
+			name: 'Your subscription has been cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -217,7 +255,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled',
+			name: 'Your subscription has been cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -271,7 +309,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled',
+			name: 'Your subscription has been cancelled',
 		});
 
 		cy.get('@get_cancellation_date.all').should('have.length', 0);

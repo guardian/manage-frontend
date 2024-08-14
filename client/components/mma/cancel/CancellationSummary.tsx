@@ -28,7 +28,20 @@ import { ResubscribeThrasher } from './ResubscribeThrasher';
 const actuallyCancelled = (
 	productType: ProductType,
 	productDetail: ProductDetail,
+	eligableForOffer?: boolean,
+	eligibleForPause?: boolean,
 ) => {
+	const isSupportPlus = productType.productType === 'supporterplus';
+	const isContribution = productType.productType === 'contributions';
+
+	let showReminder: boolean = !!productType.cancellation?.shouldShowReminder;
+	if (isSupportPlus && eligableForOffer) {
+		showReminder = false;
+	}
+	if (isContribution && eligibleForPause) {
+		showReminder = false;
+	}
+
 	const deliveryRecordsLink: string = `/delivery/${productType.urlPart}/records`;
 	const subscription = productDetail.subscription;
 	let currencySymbol: undefined | CurrencyIso;
@@ -40,7 +53,8 @@ const actuallyCancelled = (
 	}
 
 	const headingCopy =
-		productType.productType === 'supporterplus'
+		productType.productType === 'supporterplus' ||
+		productType.productType === 'contributions'
 			? 'Your subscription has been cancelled'
 			: `Your ${productType.friendlyName(productDetail)} is cancelled`;
 	return (
@@ -91,10 +105,12 @@ const actuallyCancelled = (
 								))}
 						</p>
 					)}
+				{isContribution && eligibleForPause && (
+					<p>This is immediate and you will not be charged again.</p>
+				)}
 			</WithStandardTopMargin>
-			{productType.cancellation?.shouldShowReminder && (
-				<CancellationContributionReminder />
-			)}
+
+			{showReminder && <CancellationContributionReminder />}
 
 			{!productType.cancellation?.shouldHideThrasher && (
 				<ResubscribeThrasher
@@ -202,9 +218,16 @@ export const isCancelled = (subscription: Subscription) =>
 export const getCancellationSummary = (
 	productType: ProductType,
 	productDetail: ProductDetail,
+	eligableForOffer?: boolean,
+	eligibleForPause?: boolean,
 ) =>
 	isCancelled(productDetail.subscription) ? (
-		actuallyCancelled(productType, productDetail)
+		actuallyCancelled(
+			productType,
+			productDetail,
+			eligableForOffer,
+			eligibleForPause,
+		)
 	) : (
 		<GenericErrorScreen
 			loggingMessage={`${productType.friendlyName(

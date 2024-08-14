@@ -334,6 +334,8 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			SoftOptInIDs.SupporterNewsletter,
 		],
 		cancellation: {
+			alternateSummaryMainPara:
+				'This is immediate and you will not be charged again.',
 			linkOnProductPage: true,
 			reasons: shuffledContributionsCancellationReasons,
 			sfCaseProduct: 'Recurring - Contributions',
