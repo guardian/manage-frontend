@@ -127,6 +127,21 @@ export class ProductBuilder {
 		return this;
 	}
 
+	asPatronTier() {
+		this.productToBuild.tier = 'Patron';
+		return this;
+	}
+
+	withEvents() {
+		const currentPlans = this.productToBuild.subscription.currentPlans;
+		for (const currentPlan of currentPlans) {
+			if (isPaidSubscriptionPlan(currentPlan)) {
+				currentPlan.features = 'Fancy Events';
+			}
+		}
+		return this;
+	}
+
 	nonServiceableCountry() {
 		this.productToBuild.billingCountry = 'New Caledonia';
 		return this;

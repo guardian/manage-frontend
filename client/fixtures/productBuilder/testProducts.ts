@@ -263,3 +263,13 @@ export function patronDigitalPack() {
 		.asPatron()
 		.getProductDetailObject();
 }
+
+export function patronMembership() {
+	return new ProductBuilder(baseMembership())
+		.payByCard()
+		.withPrice(10000)
+		.asPatron()
+		.asPatronTier()
+		.withEvents()
+		.getProductDetailObject();
+}
