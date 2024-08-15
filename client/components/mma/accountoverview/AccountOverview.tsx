@@ -45,7 +45,10 @@ import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import { DownloadAppCtaVariation1 } from '../shared/DownloadAppCtaVariation1';
+import { DownloadFeastAppCtaWithImage } from '../shared/DownloadFeastAppCtaWithImage';
 import type { IsFromAppProps } from '../shared/IsFromAppProps';
+import { NewspaperArchiveCta } from '../shared/NewspaperArchiveCta';
 import { nonServiceableCountries } from '../shared/NonServiceableCountries';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { CancelledProductCard } from './CancelledProductCard';
@@ -165,6 +168,10 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		allActiveProductDetails.some((productDetail) =>
 			isSpecificProductType(productDetail, PRODUCT_TYPES.digipack),
 		);
+
+	const hasDigitalPlusPrint = allActiveProductDetails.some((productDetail) =>
+		isSpecificProductType(productDetail, PRODUCT_TYPES.tierthree),
+	);
 
 	const hasNonServiceableCountry = nonServiceableCountries.includes(
 		allActiveProductDetails.find(isProduct)?.billingCountry as string,
@@ -290,6 +297,18 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					</Fragment>
 				);
 			})}
+			{hasDigitalPlusPrint && (
+				<>
+					<h2 css={subHeadingCss}>
+						Get the most out of your benefits
+					</h2>
+					<Stack space={6}>
+						<NewspaperArchiveCta />
+						<DownloadAppCtaVariation1 />
+						<DownloadFeastAppCtaWithImage />
+					</Stack>
+				</>
+			)}
 		</>
 	);
 };
