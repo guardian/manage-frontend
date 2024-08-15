@@ -49,6 +49,19 @@ const viewportEntries = Object.entries(breakpoints).map(([name, width]) => {
 	];
 });
 
+const extraViewPorts = {
+	largeTablet: {
+		name: 'Tablet upper bounds',
+		styles: {
+			width: `${breakpoints.desktop - 1}px`,
+			height: `${breakpoints.desktop + 399}px`,
+		},
+	},
+};
+
 export const viewport = {
-	viewports: Object.fromEntries(viewportEntries),
+	viewports: {
+		...Object.fromEntries(viewportEntries),
+		...extraViewPorts,
+	},
 };

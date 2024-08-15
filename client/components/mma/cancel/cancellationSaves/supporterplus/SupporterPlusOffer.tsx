@@ -54,7 +54,7 @@ const availableOfferBoxCss = css`
 	margin: ${space[5]}px 0 ${space[8]}px;
 	width: 100%;
 	position: relative;
-	${from.desktop} {
+	${from.tablet} {
 		border: none;
 	}
 `;
@@ -62,7 +62,7 @@ const availableOfferBoxCss = css`
 const availableOfferBoxInnerCss = css`
 	padding: ${space[2]}px ${space[4]}px ${space[5]}px;
 	width: 100%;
-	${from.desktop} {
+	${from.tablet} {
 		background-color: ${palette.neutral[100]};
 		width: 363px;
 		padding-top: ${space[3] + space[4] + 30}px;
@@ -76,7 +76,7 @@ const headerImageCss = css`
 	width: 100%;
 	height: auto;
 	background-color: ${palette.culture[800]};
-	${from.desktop} {
+	${from.tablet} {
 		position: absolute;
 		z-index: -1;
 		height: 100%;
@@ -91,7 +91,7 @@ const headerImageCss = css`
 
 const ribbonCss = css`
 	transform: translateY(-50%);
-	${from.desktop} {
+	${from.tablet} {
 		transform: translateY(0);
 		position: absolute;
 		top: ${space[6] + space[4]}px;
@@ -120,7 +120,7 @@ const offerButtonCss = css`
 	margin: ${space[5]}px 0 ${space[6]}px;
 	width: 100%;
 	justify-content: center;
-	${from.desktop} {
+	${from.tablet} {
 		margin-bottom: ${space[5]}px;
 	}
 `;
@@ -128,7 +128,7 @@ const offerButtonCss = css`
 const benefitsSubTitleCss = css`
 	margin: 0 0 ${space[5]}px;
 	${textSansBold15};
-	${from.desktop} {
+	${from.tablet} {
 		border-top: 1px solid ${palette.neutral[86]};
 		padding-top: ${space[3]}px;
 	}
@@ -145,7 +145,7 @@ const cancelButtonCss = css`
 	margin: 0 0 ${space[3]}px;
 	width: 100%;
 	justify-content: center;
-	${from.desktop} {
+	${from.tablet} {
 		width: fit-content;
 	}
 `;
@@ -201,8 +201,8 @@ export const SupporterPlusOffer = () => {
 			<div css={availableOfferBoxCss}>
 				<picture css={headerImageCss}>
 					<source
-						srcSet="https://media.guim.co.uk/c9287b29f36749b27a6d85a8fa07d865aa7c7299/0_0_1660_1868/889.png"
-						media="(min-width: 980px)"
+						srcSet="https://i.guim.co.uk/img/media/02c17de8ea17126fbd87f6567ce5cd80f128546d/0_0_2212_1869/2000.png?width=1000&quality=75&s=492edad637979aa4e57e957cb12cd4f1"
+						media="(min-width: 740px)"
 					/>
 					<img src="https://media.guim.co.uk/63d17ee19313703129fbbeacceaafcd6d1cc1014/0_0_1404_716/500.png" />
 				</picture>
