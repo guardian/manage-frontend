@@ -1,7 +1,7 @@
+import type { Subscription } from '@/shared/productResponse';
 import {
 	guardianWeeklySubscriptionAustralia,
 	guardianWeeklySubscriptionCard,
-	guardianWeeklySubscriptionUnitedStates,
 } from '../../../fixtures/subscription';
 import { getStripeKey } from '../../../utilities/stripe';
 
@@ -44,6 +44,17 @@ test('Uses Australian Stripe key for Australian delivery address', () => {
 });
 
 test('Uses United States Stripe key for United States delivery address', () => {
+	const guardianWeeklySubscriptionUnitedStates: Subscription = {
+		...guardianWeeklySubscriptionAustralia,
+		deliveryAddress: {
+			addressLine1: 'Line 1',
+			addressLine2: 'Line 2',
+			town: 'New York',
+			postcode: '10001',
+			country: 'United States',
+		},
+	};
+
 	const stripePublicKey = getStripeKey(
 		guardianWeeklySubscriptionUnitedStates.deliveryAddress?.country,
 		false,

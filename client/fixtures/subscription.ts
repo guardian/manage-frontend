@@ -115,60 +115,6 @@ export const guardianWeeklySubscriptionAustralia: Subscription = {
 	deliveryAddressChangeEffectiveDate: '2021-12-24',
 };
 
-export const guardianWeeklySubscriptionUnitedStates: Subscription = {
-	paymentMethod: 'Card',
-	card: {
-		last4: '4242',
-		expiry: {
-			month: 3,
-			year: 2033,
-		},
-		type: 'Visa',
-		stripePublicKeyForUpdate: 'pk_test_123',
-		email: 'test.user@example.com',
-	},
-	contactId: '0039E00001KA26BQAT',
-	deliveryAddress: {
-		addressLine1: 'Kings Place',
-		addressLine2: '90 York Way',
-		town: 'New York',
-		region: 'NY',
-		postcode: '10001',
-		country: 'United States',
-	},
-	safeToUpdatePaymentMethod: true,
-	start: '2021-12-24',
-	end: '2022-12-15',
-	nextPaymentPrice: 3250,
-	nextPaymentDate: '2021-12-24',
-	lastPaymentDate: null,
-	potentialCancellationDate: null,
-	chargedThroughDate: null,
-	renewalDate: '2022-12-15',
-	anniversaryDate: '2022-12-24',
-	cancelledAt: false,
-	subscriptionId: 'A-S00293857',
-	trialLength: 9,
-	autoRenew: true,
-	currentPlans: [],
-	futurePlans: [
-		{
-			name: null,
-			start: '2021-12-24',
-			end: '2022-12-15',
-			shouldBeVisible: true,
-			chargedThrough: null,
-			price: 3250,
-			currency: '$',
-			currencyISO: 'AUD',
-			billingPeriod: 'month',
-		},
-	],
-	readerType: 'Direct',
-	accountId: '8ad0965d7dbcc507017dbe20afd33ac4',
-	deliveryAddressChangeEffectiveDate: '2021-12-24',
-};
-
 export const digitalSubscriptionDD: Subscription = {
 	paymentMethod: 'DirectDebit',
 	account: {
