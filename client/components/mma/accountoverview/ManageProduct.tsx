@@ -109,7 +109,8 @@ const InnerContent = ({
 
 	const showSupporterPlusUpdateAmount =
 		specificProductType.productType === 'supporterplus' &&
-		featureSwitches.supporterPlusUpdateAmount;
+		featureSwitches.supporterPlusUpdateAmount &&
+		!hasCancellationPending;
 
 	return (
 		<>
