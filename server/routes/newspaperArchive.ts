@@ -16,38 +16,30 @@ type NewspapersResponseBody = {
 };
 
 type NewspaperArchiveConfig = {
-	authKey: string;
+	authString: string;
 };
 
 function base64(input: string) {
 	return Buffer.from(input).toString('base64');
 }
 
-export const newspaperArchiveConfigPromise: Promise<
+const newspaperArchiveConfigPromise: Promise<
 	NewspaperArchiveConfig | undefined
-> = s3ConfigPromise<NewspaperArchiveConfig>('authKey')('newspaper-archive');
-
-let authKey: string;
+> = s3ConfigPromise<NewspaperArchiveConfig>('authString')('newspaper-archive');
 
 const router = Router();
 
 router.use(withIdentity(401));
 
 router.get('/auth', async (_req: Request, res: Response) => {
-	const subdomain = 'theguardian';
-
-	if (authKey === undefined) {
-		const config = await newspaperArchiveConfigPromise;
-
-		if (config?.authKey !== undefined) {
-			authKey = config?.authKey;
-		} else {
-			log.error(`Missing newspaper archive auth key`);
-			res.status(500).send();
-		}
+	const config = await newspaperArchiveConfigPromise;
+	const authString = config?.authString;
+	if (authString === undefined) {
+		log.error(`Missing newspaper archive auth key`);
+		res.status(500).send();
 	}
 
-	const authHeader = base64(`${subdomain}:${authKey}`);
+	const authHeader = base64(`${authString}`);
 	const requestBody: NewspapersRequestBody = {};
 
 	const response = await fetch(
