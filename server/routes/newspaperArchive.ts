@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import fetch from 'node-fetch';
+import { s3ConfigPromise } from '../awsIntegration';
+import { log } from '../log';
 import { withIdentity } from '../middleware/identityMiddleware';
 
 type NewspapersRequestBody = {
@@ -13,16 +15,38 @@ type NewspapersResponseBody = {
 	url: string;
 };
 
+type NewspaperArchiveConfig = {
+	authKey: string;
+};
+
 function base64(input: string) {
 	return Buffer.from(input).toString('base64');
 }
 
+export const newspaperArchiveConfigPromise: Promise<
+	NewspaperArchiveConfig | undefined
+> = s3ConfigPromise<NewspaperArchiveConfig>('authKey')('newspaper-archive');
+
+let authKey: string;
+
 const router = Router();
+
 router.use(withIdentity(401));
 
 router.get('/auth', async (_req: Request, res: Response) => {
 	const subdomain = 'theguardian';
-	const authKey = '';
+
+	if (authKey === undefined) {
+		const config = await newspaperArchiveConfigPromise;
+
+		if (config?.authKey !== undefined) {
+			authKey = config?.authKey;
+		} else {
+			log.error(`Missing newspaper archive auth key`);
+			res.status(500).send();
+		}
+	}
+
 	const authHeader = base64(`${subdomain}:${authKey}`);
 	const requestBody: NewspapersRequestBody = {};
 
