@@ -435,7 +435,7 @@ export const ProductCard = ({
 					<Card.Section>
 						<div>
 							<h4 css={sectionHeadingCss}>
-								Guardian Live - Eventbrite discount codes
+								Guardian Live - Ticket Tailor promo codes
 							</h4>
 							<div>
 								<dl css={keyValueCss}>
