@@ -44,8 +44,8 @@ const copyContainerCss = css`
 
 const heroImageContainerCss = css`
 	background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
+	flex-grow: 1;
 	order: 1;
-	width: 100%;
 	${from.tablet} {
 		background: none;
 		order: 2;
@@ -74,9 +74,8 @@ export const NewspaperArchiveCta = (props: NewspaperArchiveCtaProps) => {
 				<div css={copyContainerCss}>
 					<h4>The Guardian Newspaper archive</h4>
 					<p>
-						Journey through more than 200 years of the Guardian and
-						Observer and search through every page printed in our
-						newspapers.
+						Lorem ipsum dolor sit amet, consectetuer adipiscing
+						elit. Anean commodo ligula eget dolor.
 					</p>
 					<LinkButton
 						href={'dobedo'}

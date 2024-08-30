@@ -54,8 +54,8 @@ const appStoreBtnsContainerCss = css`
 
 const heroImageContainerCss = css`
 	background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
+	flex-grow: 1;
 	order: 1;
-	width: 100%;
 	${from.tablet} {
 		background: none;
 		order: 2;
