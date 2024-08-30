@@ -45,6 +45,7 @@ const copyContainerCss = css`
 const heroImageContainerCss = css`
 	background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
 	order: 1;
+	width: 100%;
 	${from.tablet} {
 		background: none;
 		order: 2;
@@ -53,7 +54,6 @@ const heroImageContainerCss = css`
 
 const heroImageCss = css`
 	margin: 0 auto;
-	width: 100%;
 	max-width: 450px;
 	${from.tablet} {
 		max-width: 340px;
