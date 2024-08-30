@@ -32,6 +32,7 @@ const containerCss = css`
 const inlineContentsCss = css`
 	display: flex;
 	flex-direction: column;
+	column-gap: ${space[3]}px;
 	${from.tablet} {
 		flex-direction: row;
 	}
@@ -57,7 +58,7 @@ const heroImageCss = css`
 	order: 1;
 	${from.tablet} {
 		order: 2;
-		max-width: 293px;
+		max-width: 340px;
 	}
 `;
 
