@@ -26,6 +26,7 @@ const containerCss = css`
 const inlineContentsCss = css`
 	display: flex;
 	flex-direction: column;
+	column-gap: ${space[3]}px;
 	${from.tablet} {
 		flex-direction: row;
 	}
