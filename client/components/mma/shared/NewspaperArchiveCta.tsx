@@ -47,7 +47,7 @@ const heroImageCss = css`
 	order: 1;
 	${from.tablet} {
 		order: 2;
-		max-width: 293px;
+		max-width: 340px;
 	}
 `;
 
