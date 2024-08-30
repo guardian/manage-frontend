@@ -5,6 +5,7 @@ import {
 	palette,
 	space,
 	textSansBold17,
+	until,
 } from '@guardian/source/foundations';
 import { androidFeastAppUrl, iosFeastAppUrl } from '@/shared/externalLinks';
 import { AndroidPlayStoreButton } from './assets/AndroidPlayStoreButton';
@@ -65,6 +66,9 @@ const heroImageContainerCss = css`
 const heroImageCss = css`
 	margin: 0 auto;
 	max-width: 450px;
+	${until.tablet} {
+		width: 100%;
+	}
 	${from.tablet} {
 		max-width: 340px;
 	}

@@ -1,6 +1,11 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { from, space, textSansBold17 } from '@guardian/source/foundations';
+import {
+	from,
+	space,
+	textSansBold17,
+	until,
+} from '@guardian/source/foundations';
 import { androidAppUrl, iosAppUrl } from '@/shared/externalLinks';
 import { AndroidPlayStoreButton } from './assets/AndroidPlayStoreButton';
 import { AppleAppStoreButton } from './assets/AppleAppStoreButton';
@@ -59,6 +64,9 @@ const heroImageContainerCss = css`
 const heroImageCss = css`
 	margin: 0 auto;
 	max-width: 450px;
+	${until.tablet} {
+		width: 100%;
+	}
 	${from.tablet} {
 		max-width: 340px;
 	}
