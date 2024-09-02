@@ -24,6 +24,8 @@ export const putMetric = (fields: MetricLoggingFields) => {
 	if (process.env.RUNNING_IN_CYPRESS === 'true') {
 		return;
 	}
+	console.log('putMetric');
+	console.log(JSON.stringify(fields));
 	const dimensions = {
 		Stage: conf.STAGE,
 		outcome: fields.isOK ? 'SUCCESS' : 'ERROR',

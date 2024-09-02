@@ -86,6 +86,8 @@ export const stripeSetupIntentHandler = async (
 					response.locals.loggingDetail.status =
 						stripeResponse.status;
 					// tslint:disable-next-line:no-object-mutation
+					console.log('stripeSetuoIntents');
+					console.log(JSON.stringify(response));
 					response.locals.loggingDetail.isOK = stripeResponse.ok;
 
 					if (stripeResponse.ok) {
@@ -102,6 +104,8 @@ export const stripeSetupIntentHandler = async (
 					}
 				})
 				.then((setupIntent: StripeSetupIntent) => {
+					console.log('setupIntent');
+					console.log(JSON.stringify(response));
 					const suitableLog = response.locals.loggingDetail.isOK
 						? log.info
 						: log.warning;
