@@ -154,7 +154,7 @@
     "@guardian/libs": "16.1.0",
     "@guardian/source": "1.0.2",
     "@guardian/source-development-kitchen": "1.0.0",
-    "@okta/jwt-verifier": "3.0.1",
+    "@okta/jwt-verifier": "^4.0.1",
     "@sentry/browser": "5.22.3",
     "@sentry/node": "5.22.3",
     "@stripe/react-stripe-js": "1.16.5",
