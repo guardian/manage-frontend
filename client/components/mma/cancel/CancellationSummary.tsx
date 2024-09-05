@@ -45,18 +45,17 @@ const actuallyCancelled = (
 	const deliveryRecordsLink: string = `/delivery/${productType.urlPart}/records`;
 	const subscription = productDetail.subscription;
 	let currencySymbol: undefined | CurrencyIso;
+	let contributionheadingCopy = '';
 	if (Object.keys(subscription).length) {
 		const mainPlan = getMainPlan(
 			productDetail.subscription,
 		) as PaidSubscriptionPlan;
 		currencySymbol = mainPlan.currencyISO;
+		if (isContribution) {
+			contributionheadingCopy = `Your ${mainPlan.billingPeriod}ly support has been cancelled`;
+		}
 	}
 
-	const headingCopy =
-		productType.productType === 'supporterplus' ||
-		productType.productType === 'contributions'
-			? 'Your subscription has been cancelled'
-			: `Your ${productType.friendlyName(productDetail)} is cancelled`;
 	return (
 		<>
 			<WithStandardTopMargin>
@@ -68,7 +67,13 @@ const actuallyCancelled = (
 						`,
 					]}
 				>
-					{headingCopy}
+					{isSupportPlus && 'Your subscription has been cancelled'}
+					{isContribution && contributionheadingCopy}
+					{!isSupportPlus &&
+						!isContribution &&
+						`Your ${productType.friendlyName(
+							productDetail,
+						)} is cancelled`}
 				</Heading>
 				{productType.cancellation &&
 					!productType.cancellation.shouldHideSummaryMainPara && (

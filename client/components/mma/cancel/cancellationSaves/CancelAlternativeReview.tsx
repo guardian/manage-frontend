@@ -244,13 +244,14 @@ export const CancelAlternativeReview = () => {
 				{alternativeIsPause && (
 					<>
 						<li>
-							Unless you cancel before, your recurring payment
-							will resume on {nextNonDiscountedPaymentDate}
+							Unless you cancel before, your monthly support will
+							resume on {nextNonDiscountedPaymentDate}
 						</li>
 						<li>
-							You may return to cancel your recurring support in
-							the meantime.
+							You'll continue to receive our monthly support
+							newsletter (unless you've opted out)
 						</li>
+						<li>You may return to cancel at any time.</li>
 					</>
 				)}
 			</ul>
@@ -279,7 +280,8 @@ export const CancelAlternativeReview = () => {
 					{...confirmBtnIconProps}
 					onClick={handleConfirmClick}
 				>
-					Confirm your offer
+					{alternativeIsOffer ? 'Confirm your offer' : ''}
+					{alternativeIsPause ? 'Confirm pausing your support' : ''}
 				</Button>
 				<Button
 					priority="subdued"

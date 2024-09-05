@@ -120,14 +120,14 @@ describe('Cancel contribution', () => {
 			cy.findByRole('button', { name: 'Yes, pause my payment' }).click();
 
 			cy.findByRole('button', {
-				name: 'Confirm your offer',
+				name: 'Confirm pausing your support',
 			}).click();
 
 			cy.findByText('Thank you for choosing to stay with us');
 			cy.wait('@apply_discount');
 		});
 
-		it("User see's pause offer but decides to cnacel anyway", () => {
+		it("User see's pause offer but decides to cancel anyway", () => {
 			setupCancellation();
 			cy.intercept('POST', 'api/discounts/preview-discount', {
 				statusCode: 200,

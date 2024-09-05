@@ -258,8 +258,11 @@ export const CancelAlternativeConfirmed = () => {
 
 				<ul>
 					<li>
-						You will receive an email confirming the details of your
-						offer
+						You will receive an email confirming
+						{alternativeIsOffer ? ' the details of your' : ''}
+						{alternativeIsPause
+							? " you've paused your support"
+							: ''}
 					</li>
 					{alternativeIsOffer && (
 						<li>
