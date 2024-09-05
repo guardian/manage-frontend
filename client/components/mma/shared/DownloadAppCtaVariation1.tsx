@@ -91,8 +91,9 @@ export const DownloadAppCtaVariation1 = (
 				<div css={copyContainerCss}>
 					<h4>The Guardian News app</h4>
 					<p>
-						Unlock limitless Guardian journalism in our quality news
-						app today.
+						Never miss a story with unlimited access to our quality
+						news app, plus enjoy personalised recommendations and
+						offline reading.
 					</p>
 					<div css={appStoreBtnsContainerCss}>
 						<AppleAppStoreButton

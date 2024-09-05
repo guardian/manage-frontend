@@ -92,8 +92,8 @@ export const DownloadFeastAppCtaWithImage = (
 				<div css={copyContainerCss}>
 					<h4>The Guardian Feast app</h4>
 					<p>
-						Make a feast out of anything with the Guardian’s new
-						recipe app.
+						Discover thousands of recipes from the Guardian and
+						Observer in our ultimate cooking companion app.
 					</p>
 					<div css={appStoreBtnsContainerCss}>
 						<AppleAppStoreButton
