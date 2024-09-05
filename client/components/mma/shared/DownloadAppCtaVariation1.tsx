@@ -54,6 +54,7 @@ const copyContainerCss = css`
 	${from.tablet} {
 		order: 1;
 		margin: 0 0 ${space[6]}px;
+		padding: 0;
 	}
 `;
 
