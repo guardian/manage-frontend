@@ -103,6 +103,7 @@ export const NewspaperArchiveCta = (props: NewspaperArchiveCtaProps) => {
 							margin-top: ${space[5]}px;
 						`}
 						onClick={onExploreBtnClick}
+						size="small"
 					>
 						Explore the website
 					</LinkButton>
