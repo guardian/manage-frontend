@@ -2,9 +2,11 @@ import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import {
 	from,
-	palette,
 	space,
+	textSans15,
+	textSans17,
 	textSansBold17,
+	textSansBold20,
 	until,
 } from '@guardian/source/foundations';
 import { androidFeastAppUrl, iosFeastAppUrl } from '@/shared/externalLinks';
@@ -16,16 +18,23 @@ interface DownloadFeastAppCtaWithImageProps {
 }
 
 const containerCss = css`
-	background-color: ${palette.culture[800]};
+	background-color: #e1e5d5;
 	h4 {
 		${textSansBold17};
 		margin: 0 ${space[5]}px 0 0;
 	}
 	p {
+		${textSans15};
 		margin: ${space[1]}px ${space[5]}px 0 0;
 	}
 	${from.tablet} {
 		padding: ${space[6]}px 0 0 ${space[6]}px;
+		h4 {
+			${textSansBold20};
+		}
+		p {
+			${textSans17};
+		}
 	}
 `;
 

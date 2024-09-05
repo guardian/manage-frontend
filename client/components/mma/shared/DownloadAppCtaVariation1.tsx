@@ -3,7 +3,10 @@ import { css } from '@emotion/react';
 import {
 	from,
 	space,
+	textSans15,
+	textSans17,
 	textSansBold17,
+	textSansBold20,
 	until,
 } from '@guardian/source/foundations';
 import { androidAppUrl, iosAppUrl } from '@/shared/externalLinks';
@@ -15,16 +18,23 @@ interface DownloadAppCtaVariation1Props {
 }
 
 const containerCss = css`
-	background-color: #f0f3f8;
+	background-color: #e1eaf7;
 	h4 {
 		${textSansBold17};
 		margin: 0 ${space[5]}px 0 0;
 	}
 	p {
+		${textSans15};
 		margin: ${space[1]}px ${space[5]}px 0 0;
 	}
 	${from.tablet} {
 		padding: ${space[6]}px 0 0 ${space[6]}px;
+		h4 {
+			${textSansBold20};
+		}
+		p {
+			${textSans17};
+		}
 	}
 `;
 
