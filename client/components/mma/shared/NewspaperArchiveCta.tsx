@@ -98,7 +98,7 @@ export const NewspaperArchiveCta = (props: NewspaperArchiveCtaProps) => {
 						newspapers.
 					</p>
 					<LinkButton
-						href={'dobedo'}
+						href={'/newspaperArchive/auth'}
 						cssOverrides={css`
 							margin-top: ${space[5]}px;
 						`}
