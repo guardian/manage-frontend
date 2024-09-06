@@ -104,6 +104,8 @@ export const NewspaperArchiveCta = (props: NewspaperArchiveCtaProps) => {
 						`}
 						onClick={onExploreBtnClick}
 						size="small"
+						target="_blank"
+						rel="noopener noreferrer"
 					>
 						Explore the website
 					</LinkButton>
