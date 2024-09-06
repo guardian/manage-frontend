@@ -4,4 +4,5 @@ export type DiscountPreviewResponse = {
 	upToPeriodsType: string;
 	firstDiscountedPaymentDate: string;
 	nextNonDiscountedPaymentDate: string;
+	nonDiscountedPayments: Array<{ date: string; amount: number }>;
 };

@@ -127,6 +127,14 @@ export const SupporterPlusOfferReview = () => {
 		'yyyy-MM-dd',
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
+	const strikethroughPrice = routerState.nonDiscountedPayments.reduce(
+		(prev, current) =>
+			prev && prev.amount > current.amount ? prev : current,
+	).amount;
+	const humanReadableStrikethroughPrice = Number.isInteger(strikethroughPrice)
+		? strikethroughPrice
+		: strikethroughPrice.toFixed(2);
+
 	const [performingDiscountStatus, setPerformingDiscountStatus] =
 		useState<OfferApiCallStatus>('NOT_READY');
 
@@ -194,7 +202,8 @@ export const SupporterPlusOfferReview = () => {
 					<p css={strikethroughPriceCss}>
 						<s>
 							{mainPlan.currency}
-							{mainPlan.price / 100}/{mainPlan.billingPeriod}
+							{humanReadableStrikethroughPrice}/
+							{mainPlan.billingPeriod}
 						</s>
 					</p>
 				)}

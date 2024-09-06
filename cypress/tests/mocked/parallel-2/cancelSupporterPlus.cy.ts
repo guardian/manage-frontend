@@ -149,6 +149,7 @@ describe('Cancel Supporter Plus', () => {
 			upToPeriodsType: 'Months',
 			firstDiscountedPaymentDate: '2024-05-30',
 			nextNonDiscountedPaymentDate: '2024-07-30',
+			nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.5 }],
 		};
 		it('user accepts offer instead of cancelling', () => {
 			cy.intercept('GET', '/api/me/mma', {
@@ -183,6 +184,8 @@ describe('Cancel Supporter Plus', () => {
 			cy.findByRole('button', {
 				name: 'Continue to cancellation',
 			}).click();
+
+			cy.findByText('£14.50/month');
 
 			cy.findByRole('button', { name: 'Redeem your offer' }).click();
 
