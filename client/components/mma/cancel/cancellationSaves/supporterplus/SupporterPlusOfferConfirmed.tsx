@@ -13,6 +13,7 @@ import { useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
+import { getMaxNonDiscountedPrice } from '@/client/utilities/discountPreview';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
@@ -186,15 +187,10 @@ export const SupporterPlusOfferConfirmed = () => {
 		'yyyy-MM-dd',
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
-	const nextNonDiscountedPrice = routerState.nonDiscountedPayments.reduce(
-		(prev, current) =>
-			prev && prev.amount > current.amount ? prev : current,
-	).amount;
-	const humanReadableNextNonDiscountedPrice = Number.isInteger(
-		nextNonDiscountedPrice,
-	)
-		? nextNonDiscountedPrice
-		: nextNonDiscountedPrice.toFixed(2);
+	const humanReadableNextNonDiscountedPrice = getMaxNonDiscountedPrice(
+		routerState.nonDiscountedPayments,
+		true,
+	);
 
 	return (
 		<>

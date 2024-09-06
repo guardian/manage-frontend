@@ -18,6 +18,7 @@ import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
+import { getMaxNonDiscountedPrice } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import { number2words } from '@/shared/numberUtils';
@@ -127,13 +128,10 @@ export const SupporterPlusOfferReview = () => {
 		'yyyy-MM-dd',
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
-	const strikethroughPrice = routerState.nonDiscountedPayments.reduce(
-		(prev, current) =>
-			prev && prev.amount > current.amount ? prev : current,
-	).amount;
-	const humanReadableStrikethroughPrice = Number.isInteger(strikethroughPrice)
-		? strikethroughPrice
-		: strikethroughPrice.toFixed(2);
+	const humanReadableStrikethroughPrice = getMaxNonDiscountedPrice(
+		routerState.nonDiscountedPayments,
+		true,
+	);
 
 	const [performingDiscountStatus, setPerformingDiscountStatus] =
 		useState<OfferApiCallStatus>('NOT_READY');
