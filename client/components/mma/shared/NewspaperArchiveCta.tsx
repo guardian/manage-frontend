@@ -113,7 +113,7 @@ export const NewspaperArchiveCta = (props: NewspaperArchiveCtaProps) => {
 				<div css={heroImageContainerCss}>
 					<img
 						css={heroImageCss}
-						src="https://i.guim.co.uk/img/media/a3400ec516a9b46348cc6d898441b6c4e20a52af/0_0_1172_728/500.png?width=400&quality=75&s=79a92c6634c653e25047589a1832a343"
+						src="https://i.guim.co.uk/img/media/336f4eb3feac3317de5d92f7df9f0c2564afe28f/0_0_1360_740/1000.png?width=1000&quality=75&s=f9c061523ac93e79d187415a8702a9cb"
 					/>
 				</div>
 			</div>

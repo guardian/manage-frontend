@@ -113,7 +113,7 @@ export const DownloadAppCtaVariation1 = (
 				<div css={heroImageContainerCss}>
 					<img
 						css={heroImageCss}
-						src="https://i.guim.co.uk/img/media/a3400ec516a9b46348cc6d898441b6c4e20a52af/0_0_1172_728/500.png?width=400&quality=75&s=79a92c6634c653e25047589a1832a343"
+						src="https://i.guim.co.uk/img/media/b78dc3cead7cdb7c2b31367a156ae34335239757/0_0_5440_2960/1000.png?width=1000&quality=75&s=74b7b2b58c094ef7534bb3e08a8e848c"
 					/>
 				</div>
 			</div>

@@ -112,7 +112,7 @@ export const DownloadFeastAppCtaWithImage = (
 				<div css={heroImageContainerCss}>
 					<img
 						css={heroImageCss}
-						src="https://i.guim.co.uk/img/media/a3400ec516a9b46348cc6d898441b6c4e20a52af/0_0_1172_728/500.png?width=400&quality=75&s=79a92c6634c653e25047589a1832a343"
+						src="https://i.guim.co.uk/img/media/acaeaf4cf9d5c51317be78a8927613ac6eb927cb/0_0_1360_740/1000.png?width=1000&quality=75&s=75ce87c89bcc216ed535833347064985"
 					/>
 				</div>
 			</div>
