@@ -13,7 +13,10 @@ import { useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
+import { getMaxNonDiscountedPrice } from '@/client/utilities/discountPreview';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
+import type { PaidSubscriptionPlan } from '@/shared/productResponse';
+import { getMainPlan } from '@/shared/productResponse';
 import { DownloadAppCta } from '../../../shared/DownloadAppCta';
 import { Heading } from '../../../shared/Heading';
 import type {
@@ -170,6 +173,9 @@ export const SupporterPlusOfferConfirmed = () => {
 	) as CancellationContextInterface;
 
 	const productDetail = cancellationContext.productDetail;
+	const mainPlan = getMainPlan(
+		productDetail.subscription,
+	) as PaidSubscriptionPlan;
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Confirmation');
@@ -180,6 +186,11 @@ export const SupporterPlusOfferConfirmed = () => {
 		routerState.nextNonDiscountedPaymentDate,
 		'yyyy-MM-dd',
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
+
+	const humanReadableNextNonDiscountedPrice = getMaxNonDiscountedPrice(
+		routerState.nonDiscountedPayments,
+		true,
+	);
 
 	return (
 		<>
@@ -210,7 +221,10 @@ export const SupporterPlusOfferConfirmed = () => {
 					</li>
 					<li>
 						You will not be billed until{' '}
-						{nextNonDiscountedPaymentDate}
+						{nextNonDiscountedPaymentDate} after which you will pay{' '}
+						{mainPlan.currency}
+						{humanReadableNextNonDiscountedPrice}/
+						{mainPlan.billingPeriod}
 					</li>
 				</ul>
 			</div>

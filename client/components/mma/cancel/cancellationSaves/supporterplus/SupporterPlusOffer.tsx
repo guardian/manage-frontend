@@ -19,6 +19,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Ribbon } from '@/client/components/shared/Ribbon';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
+import { getMaxNonDiscountedPrice } from '@/client/utilities/discountPreview';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import { number2words } from '@/shared/numberUtils';
 import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
@@ -175,6 +176,11 @@ export const SupporterPlusOffer = () => {
 		'yyyy-MM-dd',
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
+	const humanReadableStrikethroughPrice = getMaxNonDiscountedPrice(
+		routerState.nonDiscountedPayments,
+		true,
+	);
+
 	return (
 		<>
 			<ProgressStepper
@@ -220,7 +226,8 @@ export const SupporterPlusOffer = () => {
 						<p css={strikethroughPriceCss}>
 							<s>
 								{mainPlan.currency}
-								{mainPlan.price / 100}/{mainPlan.billingPeriod}
+								{humanReadableStrikethroughPrice}/
+								{mainPlan.billingPeriod}
 							</s>
 						</p>
 					)}

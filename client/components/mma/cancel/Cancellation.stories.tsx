@@ -98,6 +98,7 @@ export const Offer: StoryObj<typeof CancellationContainer> = {
 				upToPeriodsType: 'months',
 				firstDiscountedPaymentDate: '2024-05-30',
 				nextNonDiscountedPaymentDate: '2024-07-30',
+				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
 		},
 	},
@@ -116,6 +117,7 @@ export const OfferReview: StoryObj<typeof CancellationContainer> = {
 				upToPeriodsType: 'months',
 				firstDiscountedPaymentDate: '2024-05-30',
 				nextNonDiscountedPaymentDate: '2024-07-30',
+				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
 		},
 		msw: [
@@ -136,6 +138,7 @@ export const OfferConfirmed: StoryObj<typeof CancellationContainer> = {
 		reactRouter: {
 			state: {
 				nextNonDiscountedPaymentDate: '2024-07-30',
+				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
 		},
 	},
@@ -156,6 +159,9 @@ export const SupportplusCancelConfirm: StoryObj<typeof CancellationContainer> =
 					upToPeriodsType: 'months',
 					firstDiscountedPaymentDate: '2024-05-30',
 					nextNonDiscountedPaymentDate: '2024-07-30',
+					nonDiscountedPayments: [
+						{ date: '2024-07-30', amount: 14.99 },
+					],
 				},
 			},
 		},
