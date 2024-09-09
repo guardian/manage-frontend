@@ -1,22 +1,17 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import {
-	from,
-	palette,
-	space,
-	textSansBold17,
-} from '@guardian/source/foundations';
-import { SvgRoundelBrand } from '@guardian/source/react-components';
-import { androidAppUrl, iosAppUrl } from '@/shared/externalLinks';
+import { from, space, textSansBold17 } from '@guardian/source/foundations';
+import { androidFeastAppUrl, iosFeastAppUrl } from '@/shared/externalLinks';
 import { AndroidPlayStoreButton } from './assets/AndroidPlayStoreButton';
 import { AppleAppStoreButton } from './assets/AppleAppStoreButton';
+import { FeastAppIcon } from './assets/FeastAppIcon';
 
-interface DownloadAppCtaProps {
+interface DownloadFeastAppCtaProps {
 	additionalCss?: SerializedStyles;
 }
 
 const appAdCss = css`
-	background-color: ${palette.sport[800]};
+	background-color: #e1e5d5;
 	padding: ${space[3]}px ${space[3]}px ${space[5]}px;
 	h4 {
 		${textSansBold17};
@@ -25,6 +20,7 @@ const appAdCss = css`
 	p {
 		margin: ${space[1]}px ${space[5]}px 0 0;
 	}
+
 	${from.tablet} {
 		padding: ${space[6]}px ${space[12]}px ${space[6]}px ${space[6]}px;
 	}
@@ -42,7 +38,6 @@ const appIconContainerCss = css`
 	min-width: 55px;
 	height: 55px;
 	border-radius: 10px;
-	background-color: ${palette.brand[400]};
 	${from.tablet} {
 		width: 70px;
 		min-width: 70px;
@@ -50,31 +45,31 @@ const appIconContainerCss = css`
 	}
 `;
 
-export const DownloadAppCta = (props: DownloadAppCtaProps) => {
+export const DownloadFeastAppCta = (props: DownloadFeastAppCtaProps) => {
 	return (
 		<div css={[appAdCss, props.additionalCss]}>
 			<div css={inlineContentsCss}>
 				<div>
-					<h4>If you haven't already, download the Guardian App</h4>
+					<h4>If you haven't already, download the Feast App</h4>
 					<p>
-						Unlock limitless Guardian journalism in our quality news
-						app today.
+						Make a feast out of anything with the Guardian's new
+						recipe app - Feast.
 					</p>
 				</div>
 				<i css={appIconContainerCss}>
-					<SvgRoundelBrand />
+					<FeastAppIcon />
 				</i>
 			</div>
 			<div>
 				<AppleAppStoreButton
-					link={iosAppUrl}
+					link={iosFeastAppUrl}
 					overrideButtonHeight="36px"
 					additionalCss={css`
 						margin-right: ${space[3]}px;
 					`}
 				/>
 				<AndroidPlayStoreButton
-					link={androidAppUrl}
+					link={androidFeastAppUrl}
 					overrideButtonHeight="36px"
 				/>
 			</div>

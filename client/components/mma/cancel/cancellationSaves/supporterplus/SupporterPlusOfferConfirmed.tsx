@@ -8,7 +8,11 @@ import {
 	textEgyptianBold17,
 	textSansBold17,
 } from '@guardian/source/foundations';
-import { Button, LinkButton } from '@guardian/source/react-components';
+import {
+	Button,
+	LinkButton,
+	SvgInfoRound,
+} from '@guardian/source/react-components';
 import { useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
@@ -17,7 +21,9 @@ import { getMaxNonDiscountedPrice } from '@/client/utilities/discountPreview';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
+import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
 import { DownloadAppCta } from '../../../shared/DownloadAppCta';
+import { DownloadFeastAppCta } from '../../../shared/DownloadFeastAppCta';
 import { Heading } from '../../../shared/Heading';
 import type {
 	CancellationContextInterface,
@@ -40,10 +46,7 @@ const standfirstCss = css`
 `;
 
 const nextStepsCss = css`
-	border-top: 1px solid ${palette.neutral[86]};
-	border-bottom: 1px solid ${palette.neutral[86]};
-	padding: ${space[5]}px 0 ${space[6]}px;
-	margin: ${space[5]}px 0 ${space[6]}px;
+	margin: ${space[4]}px 0 ${space[8]}px;
 	h4 {
 		${textEgyptianBold17};
 		margin: 0;
@@ -56,8 +59,7 @@ const nextStepsCss = css`
 		line-height: 1.8rem;
 	}
 	${from.desktop} {
-		padding-bottom: ${space[8]}px;
-		margin-bottom: ${space[8]}px;
+		margin: ${space[6]}px 0 ${space[8]}px;
 	}
 `;
 
@@ -71,10 +73,7 @@ const benefitsCss = css`
 		margin: 0;
 	}
 	ul {
-		padding: 0;
-		padding-inline-start: 14px;
-		margin: ${space[3]}px 0 0;
-		line-height: 1.8rem;
+		margin-top: ${space[4]}px;
 	}
 	${from.desktop} {
 		flex-direction: row;
@@ -122,13 +121,19 @@ const appAdCss = css`
 `;
 
 const dontForgetCss = css`
-	${textEgyptian17};
-	margin: ${space[6]}px 0 0;
-	padding-top: ${space[5]}px;
-	border-top: 1px solid ${palette.neutral[86]};
+	display: flex;
+	gap: ${space[2]}px;
+	margin-top: ${space[6]}px;
+	border: 1px solid ${palette.neutral[86]};
+	padding: ${space[4]}px ${space[4]}px ${space[4]}px ${space[3]}px;
+	svg {
+		flex-shrink: 0;
+	}
+	p {
+		margin: 0;
+	}
 	${from.desktop} {
-		margin-top: ${space[8]}px;
-		padding-top: ${space[6]}px;
+		padding: ${space[4]}px ${space[4]}px ${space[4]}px ${space[5]}px;
 	}
 `;
 
@@ -136,7 +141,7 @@ const onwardJourneyBtnsContainerCss = css`
 	display: flex;
 	flex-direction: column;
 	gap: ${space[5]}px;
-	margin-top: ${space[8]}px;
+	margin-top: ${space[12]}px;
 	${from.phablet} {
 		flex-direction: row;
 		gap: ${space[4]}px;
@@ -210,6 +215,7 @@ export const SupporterPlusOfferConfirmed = () => {
 			</h3>
 			<div css={nextStepsCss}>
 				<h4>What happens next?</h4>
+
 				<ul>
 					<li>
 						You will receive an email confirming the details of your
@@ -243,21 +249,40 @@ export const SupporterPlusOfferConfirmed = () => {
 				<div css={mobileHeroHRCss}></div>
 				<div css={benefitsLeftSideCss}>
 					<h4>With your offer, you will continue to enjoy:</h4>
-					<ul>
-						<li>Unlimited access to the Guardian app</li>
-						<li>Ad-free reading across all your devices</li>
-						<li>Exclusive supporter newsletter</li>
-						<li>
-							Far fewer asks for support when you're signed in
-						</li>
-					</ul>
+					<BenefitsSection
+						small
+						benefits={[
+							{
+								description:
+									'Unlimited access to the Guardian app',
+							},
+							{
+								description:
+									'Ad-free reading across all your devices',
+							},
+							{
+								description: 'Exclusive supporter newsletter',
+							},
+							{
+								description:
+									"Far fewer asks for support when you're signed in",
+							},
+						]}
+					/>
 				</div>
 			</div>
 			<DownloadAppCta additionalCss={appAdCss} />
-			<p css={dontForgetCss}>
-				Don't forget to sign in on all your devices to enjoy your
-				benefits.
-			</p>
+			<DownloadFeastAppCta additionalCss={appAdCss} />
+			<div css={dontForgetCss}>
+				<SvgInfoRound
+					size="small"
+					theme={{ fill: palette.brand[400] }}
+				/>
+				<p>
+					Don't forget to sign in on all your devices to enjoy your
+					benefits.
+				</p>
+			</div>
 			<div css={onwardJourneyBtnsContainerCss}>
 				<LinkButton
 					href="https://theguardian.com"
