@@ -63,7 +63,9 @@ const appStoreBtnsContainerCss = css`
 `;
 
 const heroImageContainerCss = css`
+	align-items: flex-end;
 	background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
+	display: flex;
 	flex-grow: 1;
 	order: 1;
 	${from.tablet} {
