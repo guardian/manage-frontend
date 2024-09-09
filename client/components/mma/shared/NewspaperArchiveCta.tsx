@@ -1,6 +1,7 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import {
+	breakpoints,
 	culture,
 	from,
 	space,
@@ -60,10 +61,14 @@ const copyContainerCss = css`
 
 const heroImageContainerCss = css`
 	background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
 	flex-grow: 1;
 	order: 1;
 	${from.tablet} {
 		background: none;
+		justify-content: flex-end;
 		order: 2;
 	}
 `;
@@ -111,10 +116,16 @@ export const NewspaperArchiveCta = (props: NewspaperArchiveCtaProps) => {
 					</LinkButton>
 				</div>
 				<div css={heroImageContainerCss}>
-					<img
-						css={heroImageCss}
-						src="https://i.guim.co.uk/img/media/336f4eb3feac3317de5d92f7df9f0c2564afe28f/0_0_1360_740/1000.png?width=1000&quality=75&s=f9c061523ac93e79d187415a8702a9cb"
-					/>
+					<picture>
+						<source
+							srcSet="https://i.guim.co.uk/img/media/336f4eb3feac3317de5d92f7df9f0c2564afe28f/0_0_1360_740/1000.png?width=1000&quality=75&s=f9c061523ac93e79d187415a8702a9cb"
+							media={`(min-width: ${breakpoints.tablet}px)`}
+						/>
+						<img
+							css={heroImageCss}
+							src="https://i.guim.co.uk/img/media/cabda220dba5cdcd8f5fe06b451a2cc1c2dbe849/0_0_1360_740/1000.png?width=800&quality=75&s=b5ce36af1901a720308f57adf094bfd8"
+						/>
+					</picture>
 				</div>
 			</div>
 		</div>
