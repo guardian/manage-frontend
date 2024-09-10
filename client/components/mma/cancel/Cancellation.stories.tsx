@@ -182,6 +182,7 @@ export const Pause: StoryObj<typeof CancellationContainer> = {
 				upToPeriodsType: 'months',
 				firstDiscountedPaymentDate: '2024-05-30',
 				nextNonDiscountedPaymentDate: '2024-07-30',
+				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
 			container: (
 				<CancellationContainer
@@ -205,6 +206,7 @@ export const PauseReview: StoryObj<typeof CancellationContainer> = {
 				upToPeriodsType: 'months',
 				firstDiscountedPaymentDate: '2024-05-30',
 				nextNonDiscountedPaymentDate: '2024-07-30',
+				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
 			container: (
 				<CancellationContainer
@@ -232,6 +234,7 @@ export const PauseConfirmed: StoryObj<typeof CancellationContainer> = {
 				upToPeriods: 2,
 				upToPeriodsType: 'months',
 				nextNonDiscountedPaymentDate: '2024-07-30',
+				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
 			container: (
 				<CancellationContainer

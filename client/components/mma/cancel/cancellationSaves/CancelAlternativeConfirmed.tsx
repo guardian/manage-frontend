@@ -141,6 +141,9 @@ const dontForgetCss = css`
 	p {
 		margin: 0;
 	}
+	${from.desktop} {
+		padding: ${space[4]}px ${space[4]}px ${space[4]}px ${space[5]}px;
+	}
 `;
 
 const onwardJourneyBtnsContainerCss = css`
@@ -255,11 +258,10 @@ export const CancelAlternativeConfirmed = () => {
 				]}
 			>
 				<h4>What happens next?</h4>
-
 				<ul>
 					<li>
 						You will receive an email confirming
-						{alternativeIsOffer ? ' the details of your' : ''}
+						{alternativeIsOffer ? ' the details of your offer' : ''}
 						{alternativeIsPause
 							? " you've paused your support"
 							: ''}
