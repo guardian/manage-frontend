@@ -21,8 +21,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { addressChangeAffectedInfo } from '@/client/utilities/deliveryAddress';
 import { flattenEquivalent } from '@/client/utilities/utils';
 import type { DeliveryAddress } from '@/shared/productResponse';
+import { getSpecificProductTypeFromTier } from '@/shared/productResponse';
 import type { ProductType, WithProductType } from '@/shared/productTypes';
-import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { CallCentreNumbers } from '../../../shared/CallCentreNumbers';
 import { Input } from '../../../shared/Input';
@@ -100,11 +100,10 @@ const Form = (props: FormProps) => {
 	)
 		.flatMap(flattenEquivalent)
 		.map(({ productDetail }) => {
-			const friendlyProductName = GROUPED_PRODUCT_TYPES[
-				productDetail.mmaCategory
-			]
-				.mapGroupedToSpecific(productDetail)
-				.friendlyName();
+			const specificProductType = getSpecificProductTypeFromTier(
+				productDetail.tier,
+			);
+			const friendlyProductName = specificProductType.friendlyName();
 			return `${friendlyProductName}`;
 		});
 

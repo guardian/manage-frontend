@@ -3,6 +3,7 @@ import { LinkButton, Stack } from '@guardian/source/react-components';
 import { InfoSummary } from '@guardian/source-development-kitchen/react-components';
 import { parseDate } from '@/shared/dates';
 import type { CancelledProductDetail } from '@/shared/productResponse';
+import { getSpecificProductTypeFromTier } from '@/shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
@@ -20,16 +21,20 @@ export const CancelledProductCard = ({
 }: {
 	productDetail: CancelledProductDetail;
 }) => {
-	const groupedProductType = GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
-	const specificProductType =
-		groupedProductType.mapGroupedToSpecific(productDetail);
+	const specificProductType = getSpecificProductTypeFromTier(
+		productDetail.tier,
+	);
+	const groupedProductType =
+		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
 
 	const cardConfig =
 		productCardConfiguration[specificProductType.productType];
 
 	const showSubscribeAgainButton =
-		productDetail.mmaCategory !== 'membership' &&
-		productDetail.mmaCategory !== 'recurringSupport';
+		specificProductType.groupedProductType !== 'membership' &&
+		specificProductType.groupedProductType !== 'recurringSupport' &&
+		specificProductType.groupedProductType !==
+			'recurringSupportWithBenefits';
 
 	return (
 		<Stack space={4}>

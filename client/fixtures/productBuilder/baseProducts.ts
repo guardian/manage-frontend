@@ -14,7 +14,6 @@ import type { ProductDetail } from '../../../shared/productResponse';
 
 export function baseMembership(): ProductDetail {
 	return {
-		mmaCategory: 'membership',
 		tier: 'Supporter',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -75,7 +74,6 @@ export function baseMembership(): ProductDetail {
 
 export function baseGuardianWeekly(): ProductDetail {
 	return {
-		mmaCategory: 'subscriptions',
 		tier: 'Guardian Weekly - Domestic',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -133,7 +131,6 @@ export function baseGuardianWeekly(): ProductDetail {
 
 export function baseDigitalPack(): ProductDetail {
 	return {
-		mmaCategory: 'subscriptions',
 		tier: 'Digital Pack',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -198,7 +195,6 @@ export function baseDigitalPack(): ProductDetail {
 
 export function baseContribution(): ProductDetail {
 	return {
-		mmaCategory: 'recurringSupport',
 		tier: 'Contributor',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -255,7 +251,6 @@ export function baseContribution(): ProductDetail {
 
 export function baseDigitalVoucher(): ProductDetail {
 	return {
-		mmaCategory: 'subscriptions',
 		tier: 'Newspaper Digital Voucher',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -321,7 +316,6 @@ export function baseDigitalVoucher(): ProductDetail {
 
 export function baseHomeDelivery(): ProductDetail {
 	return {
-		mmaCategory: 'subscriptions',
 		tier: 'Newspaper Delivery',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -388,7 +382,6 @@ export function baseHomeDelivery(): ProductDetail {
 
 export function baseNationalDelivery(): ProductDetail {
 	return {
-		mmaCategory: 'subscriptions',
 		tier: 'Newspaper - National Delivery',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -454,7 +447,6 @@ export function baseNationalDelivery(): ProductDetail {
 
 export function baseSupporterPlus(): ProductDetail {
 	return {
-		mmaCategory: 'recurringSupport',
 		tier: 'Supporter Plus',
 		isPaidTier: true,
 		isTestUser: false,
@@ -503,7 +495,6 @@ export function baseSupporterPlus(): ProductDetail {
 
 export function baseTierThree(): ProductDetail {
 	return {
-		mmaCategory: 'recurringSupport',
 		tier: 'Tier Three',
 		isPaidTier: true,
 		selfServiceCancellation: {

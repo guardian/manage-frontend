@@ -1,7 +1,6 @@
 import type { CancelledProductDetail } from '../../shared/productResponse';
 
 export const cancelledContribution: CancelledProductDetail = {
-	mmaCategory: 'recurringSupport',
 	tier: 'Contributor',
 	joinDate: '2022-01-05',
 	subscription: {
@@ -15,7 +14,6 @@ export const cancelledContribution: CancelledProductDetail = {
 };
 
 export const cancelledGuardianWeekly: CancelledProductDetail = {
-	mmaCategory: 'subscriptions',
 	tier: 'Guardian Weekly - Domestic',
 	joinDate: '2022-01-05',
 	subscription: {

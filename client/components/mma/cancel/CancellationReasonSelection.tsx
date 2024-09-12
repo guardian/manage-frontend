@@ -386,7 +386,7 @@ export const CancellationReasonSelection = () => {
 				selfServiceCancellation={productDetail.selfServiceCancellation}
 				subscriptionId={productDetail.subscription.subscriptionId}
 				groupedProductType={
-					GROUPED_PRODUCT_TYPES[productDetail.mmaCategory]
+					GROUPED_PRODUCT_TYPES[productType.groupedProductType]
 				}
 			/>
 		);

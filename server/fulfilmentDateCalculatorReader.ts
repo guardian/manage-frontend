@@ -1,7 +1,9 @@
 import * as Sentry from '@sentry/browser';
 import type { ProductDetail } from '../shared/productResponse';
-import { getMainPlan } from '../shared/productResponse';
-import { GROUPED_PRODUCT_TYPES } from '../shared/productTypes';
+import {
+	getMainPlan,
+	getSpecificProductTypeFromTier,
+} from '../shared/productResponse';
 import { s3FilePromise } from './awsIntegration';
 import { conf } from './config';
 import { log } from './log';
@@ -20,7 +22,7 @@ const getDeliveryAddressChangeEffectiveDateForToday = async (
 			`fulfilment-date-calculator-${conf.STAGE.toLowerCase()}`,
 			`${filenameProductPart}/${new Date()
 				.toISOString()
-				.substr(0, 10)}_${filenameProductPart}.json`,
+				.substring(0, 10)}_${filenameProductPart}.json`,
 			...daysOfWeek,
 		);
 	return (
@@ -43,7 +45,10 @@ const getDeliveryAddressChangeEffectiveDateForToday = async (
 
 export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday =
 	async (productDetail: ProductDetail) => {
-		if (productDetail.mmaCategory !== 'subscriptions') {
+		const specificProductType = getSpecificProductTypeFromTier(
+			productDetail.tier,
+		);
+		if (specificProductType.groupedProductType !== 'subscriptions') {
 			return productDetail;
 		}
 
@@ -54,14 +59,11 @@ export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday 
 			log.error(missingMainPlanErrorMsg);
 			Sentry.captureMessage(missingMainPlanErrorMsg);
 		}
-		const productType =
-			GROUPED_PRODUCT_TYPES.subscriptions.mapGroupedToSpecific(
-				productDetail,
-			);
 		const maybeFulfilmentDateCalculatorProductFilenamePart =
-			productType.fulfilmentDateCalculator?.productFilenamePart;
+			specificProductType.fulfilmentDateCalculator?.productFilenamePart;
 		const maybeExplicitSingleDayOfWeek =
-			productType.fulfilmentDateCalculator?.explicitSingleDayOfWeek;
+			specificProductType.fulfilmentDateCalculator
+				?.explicitSingleDayOfWeek;
 		const maybeDaysOfWeek = maybeExplicitSingleDayOfWeek
 			? [maybeExplicitSingleDayOfWeek]
 			: mainPlan.daysOfWeek;
@@ -76,7 +78,7 @@ export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday 
 			maybeFulfilmentDateCalculatorProductFilenamePart &&
 			!(maybeDeliveryAddressChangeEffectiveDate && maybeDaysOfWeek)
 		) {
-			const errorMessage = `Expected 'deliveryAddressChangeEffectiveDate' to be available for ${productType.friendlyName()}, but wasn't.`;
+			const errorMessage = `Expected 'deliveryAddressChangeEffectiveDate' to be available for ${specificProductType.friendlyName()}, but wasn't.`;
 			log.error(errorMessage);
 			Sentry.captureMessage(errorMessage);
 		}

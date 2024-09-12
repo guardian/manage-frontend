@@ -21,6 +21,7 @@ import type {
 	ProductDetail,
 } from '../../../../../shared/productResponse';
 import {
+	getSpecificProductTypeFromTier,
 	isProduct,
 	MembersDataApiAsyncLoader,
 } from '../../../../../shared/productResponse';
@@ -87,10 +88,8 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		isValid: false,
 	});
 
-	const groupedProductType =
-		GROUPED_PRODUCT_TYPES[props.productDetail.mmaCategory];
-	const specificProductType = groupedProductType.mapGroupedToSpecific(
-		props.productDetail,
+	const specificProductType = getSpecificProductTypeFromTier(
+		props.productDetail.tier,
 	);
 
 	const isNationalDelivery =
@@ -181,9 +180,10 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		)
 			.flatMap(flattenEquivalent)
 			.map(({ productDetail }) => {
-				const friendlyProductName = GROUPED_PRODUCT_TYPES.subscriptions
-					.mapGroupedToSpecific(productDetail)
-					.friendlyName();
+				const specificProductType = getSpecificProductTypeFromTier(
+					productDetail.tier,
+				);
+				const friendlyProductName = specificProductType.friendlyName();
 				return `${friendlyProductName}`;
 			});
 

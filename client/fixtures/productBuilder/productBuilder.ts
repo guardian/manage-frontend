@@ -4,7 +4,6 @@ import type {
 	ProductDetail,
 	SubscriptionPlan,
 } from '../../../shared/productResponse';
-import type { GroupedProductTypeKeys } from '../../../shared/productTypes';
 import type { CurrencyIso } from '../../utilities/currencyIso';
 import { convertCurrencyIsoToSymbol } from '../../utilities/currencyIso';
 
@@ -44,11 +43,6 @@ export class ProductBuilder {
 
 	getProductDetailObject() {
 		return this.productToBuild;
-	}
-
-	mmaCategory(category: GroupedProductTypeKeys) {
-		this.productToBuild.mmaCategory = category;
-		return this;
 	}
 
 	tier(tier: string) {

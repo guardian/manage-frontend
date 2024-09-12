@@ -45,6 +45,7 @@ type ProductFriendlyName =
 	| 'Guardian Weekly subscription'
 	| 'digital + print subscription'
 	| 'subscription'
+	| 'support'
 	| 'recurring support'
 	| 'guardian patron';
 type ProductUrlPart =
@@ -271,6 +272,7 @@ export type ProductTypeKeys =
 export type GroupedProductTypeKeys =
 	| 'membership'
 	| 'recurringSupport'
+	| 'recurringSupportWithBenefits'
 	| 'subscriptions';
 
 export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
@@ -606,7 +608,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		productTitle: () => 'Digital + Print',
 		friendlyName: () => 'digital + print subscription',
 		productType: 'tierthree',
-		groupedProductType: 'recurringSupport',
+		groupedProductType: 'recurringSupportWithBenefits',
 		allProductsProductTypeFilterString: 'TierThree',
 		urlPart: 'digital+print',
 		softOptInIDs: [
@@ -685,7 +687,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		friendlyName: () => 'all-access digital subscription',
 		shortFriendlyName: 'all-access digital',
 		productType: 'supporterplus',
-		groupedProductType: 'recurringSupport',
+		groupedProductType: 'recurringSupportWithBenefits',
 		allProductsProductTypeFilterString: 'SupporterPlus',
 		urlPart: 'support',
 		getOphanProductType: () => 'SUPPORTER_PLUS',
@@ -744,6 +746,15 @@ export const GROUPED_PRODUCT_TYPES: {
 		},
 	},
 	recurringSupport: {
+		productTitle: () => 'Support',
+		friendlyName: () => 'support',
+		groupFriendlyName: 'support',
+		allProductsProductTypeFilterString: 'Contribution',
+		urlPart: 'recurringsupport',
+		mapGroupedToSpecific: () => PRODUCT_TYPES.contributions,
+		showSupporterId: true,
+	},
+	recurringSupportWithBenefits: {
 		productTitle: () => 'Subscription',
 		friendlyName: () => 'subscription',
 		groupFriendlyName: 'subscription',
@@ -754,8 +765,6 @@ export const GROUPED_PRODUCT_TYPES: {
 		) => {
 			if (productDetail.tier === 'Supporter Plus') {
 				return PRODUCT_TYPES.supporterplus;
-			} else if (productDetail.tier === 'Contributor') {
-				return PRODUCT_TYPES.contributions;
 			} else if (productDetail.tier == 'Tier Three') {
 				return PRODUCT_TYPES.tierthree;
 			}

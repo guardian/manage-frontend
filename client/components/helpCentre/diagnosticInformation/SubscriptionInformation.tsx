@@ -1,5 +1,8 @@
 import type { MembersDataApiResponse } from '../../../../shared/productResponse';
-import { isProduct } from '../../../../shared/productResponse';
+import {
+	getSpecificProductTypeFromTier,
+	isProduct,
+} from '../../../../shared/productResponse';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -44,9 +47,12 @@ export const SubscriptionInformation = () => {
 				{data.products.length > 0 ? (
 					data.products.map((product) => {
 						if (isProduct(product)) {
+							const specificProductType =
+								getSpecificProductTypeFromTier(product.tier);
 							return (
 								<li>
-									{product.tier} - {product.mmaCategory} -{' '}
+									{product.tier} -{' '}
+									{specificProductType.groupedProductType} -{' '}
 									{product.subscription.subscriptionId}
 								</li>
 							);

@@ -23,7 +23,11 @@ import type {
 	ProductDetail,
 	Subscription,
 } from '@/shared/productResponse';
-import { getMainPlan, isGift } from '@/shared/productResponse';
+import {
+	getMainPlan,
+	getSpecificProductTypeFromTier,
+	isGift,
+} from '@/shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
@@ -119,9 +123,11 @@ export const ProductCard = ({
 		throw new Error('mainPlan does not exist in ProductCard');
 	}
 
-	const groupedProductType = GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
-	const specificProductType =
-		groupedProductType.mapGroupedToSpecific(productDetail);
+	const specificProductType = getSpecificProductTypeFromTier(
+		productDetail.tier,
+	);
+	const groupedProductType =
+		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
 
 	const isPatron = productDetail.subscription.readerType === 'Patron';
 

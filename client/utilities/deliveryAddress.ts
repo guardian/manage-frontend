@@ -1,8 +1,8 @@
 import { capitalize } from 'lodash';
 import { parseDate } from '../../shared/dates';
 import type { ProductDetail, Subscription } from '../../shared/productResponse';
+import { getSpecificProductTypeFromTier } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
-import { GROUPED_PRODUCT_TYPES } from '../../shared/productTypes';
 import type { SubscriptionEffectiveData } from '../components/mma/delivery/address/DeliveryAddressFormContext';
 import { flattenEquivalent } from './utils';
 
@@ -35,10 +35,7 @@ export const getValidDeliveryAddressChangeEffectiveDates = (
 		.filter(hasContactId)
 		.map((productDetail) => ({
 			productDetail,
-			productType:
-				GROUPED_PRODUCT_TYPES[
-					productDetail.mmaCategory
-				].mapGroupedToSpecific(productDetail),
+			productType: getSpecificProductTypeFromTier(productDetail.tier),
 		}))
 		.filter((_) => _.productType.delivery?.showAddress)
 		.reduce(
