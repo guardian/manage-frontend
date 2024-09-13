@@ -103,7 +103,7 @@ const Form = (props: FormProps) => {
 			const specificProductType = getSpecificProductTypeFromTier(
 				productDetail.tier,
 			);
-			const friendlyProductName = specificProductType.friendlyName();
+			const friendlyProductName = specificProductType.friendlyName;
 			return `${friendlyProductName}`;
 		});
 

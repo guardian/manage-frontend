@@ -183,7 +183,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 				const specificProductType = getSpecificProductTypeFromTier(
 					productDetail.tier,
 				);
-				const friendlyProductName = specificProductType.friendlyName();
+				const friendlyProductName = specificProductType.friendlyName;
 				return `${friendlyProductName}`;
 			});
 

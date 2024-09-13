@@ -247,7 +247,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 						<dt css={dtCss}>Product:</dt>
 						<dd css={ddCss}>
 							{productType.shortFriendlyName ||
-								productType.friendlyName()}
+								productType.friendlyName}
 						</dd>
 					</div>
 					<div>

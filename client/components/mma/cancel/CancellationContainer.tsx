@@ -63,9 +63,7 @@ const AsyncLoadedCancellationContainer = (
 	if (loadingState == LoadingState.IsLoading) {
 		return (
 			<DefaultLoadingView
-				loadingMessage={`Checking the status of your ${props.productType.friendlyName(
-					undefined,
-				)}...`}
+				loadingMessage={`Checking the status of your ${props.productType.friendlyName}...`}
 			/>
 		);
 	}
@@ -136,7 +134,7 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const [pageTitle, setPageTitle] = useState<string>(
 		`Cancel ${
 			groupedProductType.shortFriendlyName ||
-			groupedProductType.friendlyName()
+			groupedProductType.friendlyName
 		}`,
 	);
 

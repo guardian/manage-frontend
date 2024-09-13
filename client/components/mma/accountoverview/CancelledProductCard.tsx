@@ -39,7 +39,7 @@ export const CancelledProductCard = ({
 	return (
 		<Stack space={4}>
 			<InfoSummary
-				message={`Your ${groupedProductType.friendlyName()} has been cancelled`}
+				message={`Your ${groupedProductType.friendlyName} has been cancelled`}
 			/>
 			<Card>
 				<Card.Header backgroundColor={cardConfig.colour}>

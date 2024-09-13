@@ -141,7 +141,7 @@ const DeliveryRecordsProblemReviewFC = (
 	const repeatDeliveryProblem = checkForExistingDeliveryProblem(data.results);
 	const subscription = productDetail.subscription;
 	const productName = capitalize(
-		productType.shortFriendlyName || productType.friendlyName(),
+		productType.shortFriendlyName || productType.friendlyName,
 	);
 	const subscriptionCurrency = mainPlan.currency;
 	const deliveryProblemMap = data.deliveryProblemMap;

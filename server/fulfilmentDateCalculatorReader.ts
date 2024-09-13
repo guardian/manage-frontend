@@ -78,7 +78,7 @@ export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday 
 			maybeFulfilmentDateCalculatorProductFilenamePart &&
 			!(maybeDeliveryAddressChangeEffectiveDate && maybeDaysOfWeek)
 		) {
-			const errorMessage = `Expected 'deliveryAddressChangeEffectiveDate' to be available for ${specificProductType.friendlyName()}, but wasn't.`;
+			const errorMessage = `Expected 'deliveryAddressChangeEffectiveDate' to be available for ${specificProductType.friendlyName}, but wasn't.`;
 			log.error(errorMessage);
 			Sentry.captureMessage(errorMessage);
 		}

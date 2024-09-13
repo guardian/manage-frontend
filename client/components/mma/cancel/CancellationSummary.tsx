@@ -54,6 +54,10 @@ const actuallyCancelled = (
 		if (isContribution) {
 			contributionheadingCopy = `Your ${mainPlan.billingPeriod}ly support has been cancelled`;
 		}
+	} else {
+		if (isContribution) {
+			contributionheadingCopy = 'Your support has been cancelled';
+		}
 	}
 
 	return (
@@ -71,9 +75,7 @@ const actuallyCancelled = (
 					{isContribution && contributionheadingCopy}
 					{!isSupportPlus &&
 						!isContribution &&
-						`Your ${productType.friendlyName(
-							productDetail,
-						)} is cancelled`}
+						`Your ${productType.friendlyName} is cancelled`}
 				</Heading>
 				{productType.cancellation &&
 					!productType.cancellation.shouldHideSummaryMainPara && (
@@ -84,10 +86,7 @@ const actuallyCancelled = (
 									<>
 										You will continue to receive the
 										benefits of your{' '}
-										{productType.friendlyName(
-											productDetail,
-										)}{' '}
-										until{' '}
+										{productType.friendlyName} until{' '}
 										<b>
 											{cancellationFormatDate(
 												productDetail.subscription
@@ -235,8 +234,6 @@ export const getCancellationSummary = (
 		)
 	) : (
 		<GenericErrorScreen
-			loggingMessage={`${productType.friendlyName(
-				productDetail,
-			)} cancellation call succeeded but subsequent product detail doesn't show as cancelled`}
+			loggingMessage={`${productType.friendlyName} cancellation call succeeded but subsequent product detail doesn't show as cancelled`}
 		/>
 	);

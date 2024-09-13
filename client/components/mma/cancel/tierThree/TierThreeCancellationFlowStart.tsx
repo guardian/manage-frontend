@@ -16,7 +16,7 @@ export const tierThreeCancellationFlowStart = () => (
 	<Stack space={4}>
 		<Heading cssOverrides={measure.heading}>
 			We’re sorry to hear you’re thinking of cancelling your{' '}
-			{PRODUCT_TYPES.tierthree.friendlyName()}
+			{PRODUCT_TYPES.tierthree.friendlyName}
 		</Heading>
 
 		<p>

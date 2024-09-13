@@ -1,4 +1,4 @@
-import { contributionPaidByCard } from '../../../../client/fixtures/productBuilder/testProducts';
+import { monthlyContributionPaidByCard } from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 import { featureSwitches } from '../../../../shared/featureSwitches';
@@ -21,11 +21,11 @@ describe('Cancel contribution', () => {
 
 		setSignInStatus();
 
-		cy.findByText('Manage subscription').click();
+		cy.findByText('Manage support').click();
 		cy.wait('@cancelled');
 
 		cy.findByRole('link', {
-			name: 'Cancel subscription',
+			name: 'Cancel support',
 		}).click();
 	};
 
@@ -48,12 +48,12 @@ describe('Cancel contribution', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contributionPaidByCard()),
+			body: toMembersDataApiResponse(monthlyContributionPaidByCard()),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contributionPaidByCard()),
+			body: toMembersDataApiResponse(monthlyContributionPaidByCard()),
 		});
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -93,6 +93,7 @@ describe('Cancel contribution', () => {
 			upToPeriodsType: 'Months',
 			firstDiscountedPaymentDate: '2024-05-30',
 			nextNonDiscountedPaymentDate: '2024-07-30',
+			nonDiscountedPayments: [{ date: '2024-07-30', amount: 7 }],
 		};
 		it('user accepts pause instead of cancelling', () => {
 			setupCancellation();
@@ -157,7 +158,7 @@ describe('Cancel contribution', () => {
 			cy.wait('@new_product_detail');
 
 			cy.findByRole('heading', {
-				name: 'Your subscription has been cancelled',
+				name: 'Your support has been cancelled',
 			});
 
 			cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -183,7 +184,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your subscription has been cancelled',
+			name: 'Your support has been cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -227,7 +228,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your subscription has been cancelled',
+			name: 'Your support has been cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -255,7 +256,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your subscription has been cancelled',
+			name: 'Your support has been cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -309,7 +310,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your subscription has been cancelled',
+			name: 'Your support has been cancelled',
 		});
 
 		cy.get('@get_cancellation_date.all').should('have.length', 0);

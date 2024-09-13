@@ -68,7 +68,7 @@ describe('Update contribution amount', () => {
 
 		setSignInStatus();
 
-		cy.findByText('Manage subscription').click();
+		cy.findByText('Manage support').click();
 		cy.wait('@cancelled');
 
 		cy.findByText('Change amount').click();

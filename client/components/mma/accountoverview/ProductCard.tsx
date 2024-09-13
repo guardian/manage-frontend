@@ -169,7 +169,7 @@ export const ProductCard = ({
 	const productBenefits =
 		specificProductType.productType === 'supporterplus'
 			? 'supporter benefits'
-			: groupedProductType.friendlyName();
+			: groupedProductType.friendlyName;
 
 	const cardConfig =
 		productCardConfiguration[specificProductType.productType];
@@ -197,7 +197,7 @@ export const ProductCard = ({
 		<Stack space={4}>
 			{hasCancellationPending && productDetail.subscription.end && (
 				<InfoSummary
-					message={`Your ${groupedProductType.friendlyName()} has been cancelled`}
+					message={`Your ${groupedProductType.friendlyName} has been cancelled`}
 					context={
 						<>
 							You are able to access your {productBenefits} until{' '}
@@ -389,8 +389,10 @@ export const ProductCard = ({
 								<Button
 									aria-label={`${specificProductType.productTitle(
 										mainPlan,
-									)} : Manage ${groupedProductType.friendlyName()}`}
-									data-cy={`Manage ${groupedProductType.friendlyName()}`}
+									)} : Manage ${
+										groupedProductType.friendlyName
+									}`}
+									data-cy={`Manage ${groupedProductType.friendlyName}`}
 									size="small"
 									cssOverrides={css`
 										justify-content: center;
@@ -412,7 +414,7 @@ export const ProductCard = ({
 										);
 									}}
 								>
-									{`Manage ${groupedProductType.friendlyName()}`}
+									{`Manage ${groupedProductType.friendlyName}`}
 								</Button>
 							)}
 							{showSwitchButton && (

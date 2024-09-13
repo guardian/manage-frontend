@@ -103,7 +103,7 @@ export const HolidaysOverview = () => {
 
 	return (
 		<>
-			<h1>Suspend {productType.friendlyName()}</h1>
+			<h1>Suspend {productType.friendlyName}</h1>
 			{productDetail.subscription.autoRenew ? (
 				<OverviewRow heading="How">
 					<>

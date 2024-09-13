@@ -87,7 +87,7 @@ export const PaymentDetailUpdateContainer = (
 						props.productType.allProductsProductTypeFilterString,
 					)}
 					render={renderContextAndOutletContainer(isFromApp)}
-					loadingMessage={`Retrieving current payment details for your ${props.productType.friendlyName()}...`}
+					loadingMessage={`Retrieving current payment details for your ${props.productType.friendlyName}...`}
 				/>
 			)}
 		</PageContainer>

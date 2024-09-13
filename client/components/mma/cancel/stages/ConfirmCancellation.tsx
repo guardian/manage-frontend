@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
+import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
 import { Heading } from '../../shared/Heading';
@@ -90,19 +91,23 @@ export const ConfirmCancellation = () => {
 
 	const productDetail = cancellationContext.productDetail;
 	const productType = cancellationContext.productType;
+	const groupedProductType =
+		GROUPED_PRODUCT_TYPES[productType.groupedProductType];
 
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
-	useEffect(() => {
-		pageTitleContext.setPageTitle('Cancel subscription');
-	}, []);
-
 	const subscription = productDetail.subscription;
 
 	const alternativeIsOffer = productType.productType === 'supporterplus';
 	const alternativeIsPause = productType.productType === 'contributions';
+
+	useEffect(() => {
+		pageTitleContext.setPageTitle(
+			`Cancel ${groupedProductType.friendlyName}`,
+		);
+	}, []);
 
 	return (
 		<>
