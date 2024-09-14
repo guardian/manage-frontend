@@ -193,6 +193,14 @@ export const ProductCard = ({
 		max-width: 35ch;
 	`;
 
+	const isInPausePeriod = true;
+	const isInOfferPeriod =
+		!hasCancellationPending &&
+		productDetail.subscription.nextPaymentDate &&
+		productDetail.subscription.potentialCancellationDate &&
+		productDetail.subscription.nextPaymentDate !==
+			productDetail.subscription.potentialCancellationDate;
+
 	return (
 		<Stack space={4}>
 			{hasCancellationPending && productDetail.subscription.end && (
@@ -212,34 +220,54 @@ export const ProductCard = ({
 					}
 				/>
 			)}
-			{!hasCancellationPending &&
-				productDetail.subscription.nextPaymentDate &&
-				productDetail.subscription.potentialCancellationDate &&
-				productDetail.subscription.nextPaymentDate !==
-					productDetail.subscription.potentialCancellationDate && (
-					<SuccessSummary
-						message="Your offer is active"
-						context={
-							<>
-								Your two months free is now active until{' '}
-								{nextPaymentDetails?.nextPaymentDateValue}. If
-								you have any questions, feel free to{' '}
-								{
-									<Link
-										to="/help-centre#contact-options"
-										css={css`
-											text-decoration: underline;
-											color: ${palette.brand[500]};
-										`}
-									>
-										contact our support team
-									</Link>
-								}
-								.
-							</>
-						}
-					/>
-				)}
+			{isInOfferPeriod && (
+				<SuccessSummary
+					message="Your offer is active"
+					context={
+						<>
+							Your two months free is now active until{' '}
+							{nextPaymentDetails?.nextPaymentDateValue}. If you
+							have any questions, feel free to{' '}
+							{
+								<Link
+									to="/help-centre#contact-options"
+									css={css`
+										text-decoration: underline;
+										color: ${palette.brand[500]};
+									`}
+								>
+									contact our support team
+								</Link>
+							}
+							.
+						</>
+					}
+				/>
+			)}
+			{isInPausePeriod && (
+				<SuccessSummary
+					message="You have paused your support"
+					context={
+						<>
+							Your support is now paused until{' '}
+							{nextPaymentDetails?.nextPaymentDateValue}. If you
+							have any questions, feel free to{' '}
+							{
+								<Link
+									to="/help-centre#contact-options"
+									css={css`
+										text-decoration: underline;
+										color: ${palette.brand[500]};
+									`}
+								>
+									contact our support team
+								</Link>
+							}
+							.
+						</>
+					}
+				/>
+			)}
 			<Card>
 				<Card.Header backgroundColor={cardConfig.colour}>
 					<h3 css={productCardTitleCss(cardConfig.invertText)}>

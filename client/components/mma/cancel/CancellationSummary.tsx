@@ -38,9 +38,6 @@ const actuallyCancelled = (
 	if (isSupportPlus && eligableForOffer) {
 		showReminder = false;
 	}
-	if (isContribution && eligibleForPause) {
-		showReminder = false;
-	}
 
 	const deliveryRecordsLink: string = `/delivery/${productType.urlPart}/records`;
 	const subscription = productDetail.subscription;

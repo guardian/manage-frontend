@@ -107,13 +107,14 @@ const ReturnToAccountButton = () => {
 	);
 };
 
-export const getCancellationSummaryWithReturnButton = (body: ReactNode) => () =>
-	(
-		<div>
-			{body}
-			<ReturnToAccountButton />
-		</div>
-	);
+export const getCancellationSummaryWithReturnButton =
+	(body: ReactNode, excludeReturnButton?: boolean) => () =>
+		(
+			<div>
+				{body}
+				{excludeReturnButton && <ReturnToAccountButton />}
+			</div>
+		);
 
 const getCaseUpdatingCancellationSummary =
 	(
@@ -134,6 +135,7 @@ const getCaseUpdatingCancellationSummary =
 				eligableForOffer,
 				eligibleForPause,
 			),
+			!!productType.cancellation?.shouldShowReminder || eligibleForPause,
 		);
 		return caseId ? (
 			<CaseUpdateAsyncLoader
