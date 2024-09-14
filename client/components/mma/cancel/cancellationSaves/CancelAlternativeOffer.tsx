@@ -62,6 +62,12 @@ const availableOfferBoxCss = css`
 	}
 `;
 
+const offerBoxWithoutImageCss = css`
+	${from.tablet} {
+		border: 1px solid ${palette.neutral[93]};
+	}
+`;
+
 const availableOfferBoxInnerCss = css`
 	padding: ${space[2]}px ${space[4]}px ${space[5]}px;
 	width: 100%;
@@ -70,6 +76,15 @@ const availableOfferBoxInnerCss = css`
 		width: 363px;
 		padding-top: var(--offerBoxTopPadding);
 		margin: ${space[6]}px;
+	}
+`;
+
+const offerBoxInnerWithoutImageCss = css`
+	padding: ${space[4]}px;
+	${from.tablet} {
+		width: 410px;
+		padding: ${space[6]}px;
+		margin: 0;
 	}
 `;
 
@@ -190,19 +205,16 @@ export const CancelAlternativeOffer = () => {
 		contributions: `Instead of cancelling, you can pause your recurring payment for ${offerPeriodWord} ${offerPeriodType}.`,
 	};
 
-	const heroImageSrc: Partial<
-		Record<ProductTypeKeys, { mobile: string; desktop: string }>
-	> = {
-		supporterplus: {
-			mobile: 'https://media.guim.co.uk/63d17ee19313703129fbbeacceaafcd6d1cc1014/0_0_1404_716/500.png',
-			desktop:
-				'https://i.guim.co.uk/img/media/02c17de8ea17126fbd87f6567ce5cd80f128546d/0_0_2212_1869/2000.png?width=1000&quality=75&s=492edad637979aa4e57e957cb12cd4f1',
-		},
-		contributions: {
-			mobile: '',
-			desktop: '',
-		},
+	const heroImageSrc: { mobile: string; desktop: string } = {
+		mobile: alternativeIsOffer
+			? 'https://media.guim.co.uk/63d17ee19313703129fbbeacceaafcd6d1cc1014/0_0_1404_716/500.png'
+			: '',
+		desktop: alternativeIsOffer
+			? 'https://i.guim.co.uk/img/media/02c17de8ea17126fbd87f6567ce5cd80f128546d/0_0_2212_1869/2000.png?width=1000&quality=75&s=492edad637979aa4e57e957cb12cd4f1'
+			: '',
 	};
+
+	const withHeroImage = !!heroImageSrc.mobile && !!heroImageSrc.desktop;
 
 	return (
 		<>
@@ -226,14 +238,22 @@ export const CancelAlternativeOffer = () => {
 			<h3 css={standfirstCss}>
 				{standfirstCopy[productType.productType]}
 			</h3>
-			<div css={availableOfferBoxCss}>
-				<picture css={headerImageCss}>
-					<source
-						srcSet={heroImageSrc.supporterplus?.desktop}
-						media="(min-width: 740px)"
-					/>
-					<img src={heroImageSrc.supporterplus?.mobile} />
-				</picture>
+			<div
+				css={[
+					availableOfferBoxCss,
+					!withHeroImage && offerBoxWithoutImageCss,
+				]}
+			>
+				{withHeroImage && (
+					<picture css={headerImageCss}>
+						<source
+							srcSet={heroImageSrc.desktop}
+							media="(min-width: 740px)"
+						/>
+						<img src={heroImageSrc.mobile} />
+					</picture>
+				)}
+
 				{alternativeIsOffer && (
 					<Ribbon
 						copy="Your one-time offer"
@@ -246,7 +266,10 @@ export const CancelAlternativeOffer = () => {
 					/>
 				)}
 				<div
-					css={availableOfferBoxInnerCss}
+					css={[
+						availableOfferBoxInnerCss,
+						!withHeroImage && offerBoxInnerWithoutImageCss,
+					]}
 					style={{
 						['--offerBoxTopPadding' as string]: alternativeIsOffer
 							? `${space[3] + space[4] + 30}px`
@@ -277,7 +300,7 @@ export const CancelAlternativeOffer = () => {
 								offerPeriodWord,
 							)} ${offerPeriodType} free`}
 						{alternativeIsPause &&
-							`Would you like to pause your recurring payment for ${offerPeriodWord} ${offerPeriodType}?`}
+							`Would you like to pause your support to the Guardian for ${offerPeriodWord} ${offerPeriodType}?`}
 					</h4>
 					<p css={billingResumptionDateCss}>
 						Billing resumes on {nextNonDiscountedPaymentDate}
@@ -294,7 +317,7 @@ export const CancelAlternativeOffer = () => {
 						cssOverrides={offerButtonCss}
 					>
 						{alternativeIsOffer && 'Redeem your offer'}
-						{alternativeIsPause && 'Yes, pause my payment'}
+						{alternativeIsPause && 'Yes, pause my support'}
 					</Button>
 					{alternativeIsOffer && (
 						<>
