@@ -381,10 +381,16 @@ export const CancelAlternativeOffer = () => {
 					Return to your account
 				</Button>
 			</div>
-			<p css={termsCss}>
-				Your monthly payments will automatically resume on{' '}
-				{nextNonDiscountedPaymentDate} unless you cancel
-			</p>
+			{isPaidSubscriptionPlan(mainPlan) && (
+				<p css={termsCss}>
+					{mainPlan.currency}
+					{humanReadableStrikethroughPrice}/{mainPlan.billingPeriod}
+					Your {mainPlan.billingPeriod}ly payments of{' '}
+					{mainPlan.currency}
+					{humanReadableStrikethroughPrice} will automatically resume
+					on {nextNonDiscountedPaymentDate} unless you cancel
+				</p>
+			)}
 		</>
 	);
 };
