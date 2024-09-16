@@ -383,8 +383,6 @@ export const CancelAlternativeOffer = () => {
 			</div>
 			{isPaidSubscriptionPlan(mainPlan) && (
 				<p css={termsCss}>
-					{mainPlan.currency}
-					{humanReadableStrikethroughPrice}/{mainPlan.billingPeriod}
 					Your {mainPlan.billingPeriod}ly payments of{' '}
 					{mainPlan.currency}
 					{humanReadableStrikethroughPrice} will automatically resume
