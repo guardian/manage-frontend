@@ -299,12 +299,28 @@ export const CancelAlternativeReview = () => {
 					Go back
 				</Button>
 			</div>
-			<p css={termsCss}>
-				If you cancel during the free period, you will lose access to
-				your benefits on the day we usually take payment. If you cancel
-				after the free period, your subscription will end at the end of
-				your current monthly payment period.
-			</p>
+			{isPaidSubscriptionPlan(mainPlan) && (
+				<>
+					{alternativeIsOffer && (
+						<p css={termsCss}>
+							If you cancel during the free period, you will lose
+							access to your benefits on the day we usually take
+							payment. If you cancel after the free period, your
+							subscription will end at the end of your current
+							{mainPlan.billingPeriod}ly payment period.
+						</p>
+					)}
+					{alternativeIsPause && (
+						<p css={termsCss}>
+							If you cancel during the paused period, your{' '}
+							{mainPlan.billingPeriod}ly payments will not
+							automatically resume. If you cancel after the paused
+							period, cancellation will take effect immediately
+							and you will not be charged again.
+						</p>
+					)}
+				</>
+			)}
 		</>
 	);
 };
