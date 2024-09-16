@@ -118,7 +118,7 @@ describe('Cancel contribution', () => {
 				name: 'Continue to cancellation',
 			}).click();
 
-			cy.findByRole('button', { name: 'Yes, pause my payment' }).click();
+			cy.findByRole('button', { name: 'Yes, pause my support' }).click();
 
 			cy.findByRole('button', {
 				name: 'Confirm pausing your support',
@@ -158,7 +158,7 @@ describe('Cancel contribution', () => {
 			cy.wait('@new_product_detail');
 
 			cy.findByRole('heading', {
-				name: 'Your support has been cancelled',
+				name: 'Your monthly support has been cancelled',
 			});
 
 			cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -184,7 +184,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your support has been cancelled',
+			name: 'Your monthly support has been cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -228,7 +228,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your support has been cancelled',
+			name: 'Your monthly support has been cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -256,7 +256,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your support has been cancelled',
+			name: 'Your monthly support has been cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -310,7 +310,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your support has been cancelled',
+			name: 'Your monthly support has been cancelled',
 		});
 
 		cy.get('@get_cancellation_date.all').should('have.length', 0);

@@ -4,6 +4,7 @@ import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
 	contributionCancelled,
+	contributionPaidByCard,
 	contributionPaidByPayPal,
 	guardianWeeklyPaidByCard,
 	supporterPlusCancelled,
@@ -277,6 +278,7 @@ export const ConfirmationContribution: StoryFn<
 	return getCancellationSummary(
 		PRODUCT_TYPES.contributions,
 		contributionCancelled(),
+		contributionPaidByCard(),
 	);
 };
 
@@ -295,6 +297,7 @@ export const ConfirmationContributionWithPause: StoryFn<
 				getCancellationSummary(
 					PRODUCT_TYPES.contributions,
 					contributionCancelled(),
+					contributionPaidByCard(),
 					eligibleForOffer,
 					eligibleForPause,
 				),
@@ -318,6 +321,7 @@ export const ConfirmationSupporterPlusWithOffer: StoryFn<
 				getCancellationSummary(
 					PRODUCT_TYPES.supporterplus,
 					supporterPlusCancelled(),
+					contributionPaidByCard(),
 					eligibleForOffer,
 					eligibleForPause,
 				),

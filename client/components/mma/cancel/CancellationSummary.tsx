@@ -4,7 +4,6 @@ import {
 	space,
 	textEgyptianBold17,
 } from '@guardian/source/foundations';
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import { cancellationFormatDate } from '../../../../shared/dates';
@@ -22,26 +21,18 @@ import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton'
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { Heading } from '../shared/Heading';
 import { hrefStyle } from './cancellationConstants';
-import type { CancellationContextInterface } from './CancellationContainer';
-import { CancellationContext } from './CancellationContainer';
-import { CancellationReasonContext } from './cancellationContexts';
 import { CancellationContributionReminder } from './cancellationContributionReminder';
+import type { CancellationReasonId } from './cancellationReason';
 import { ResubscribeThrasher } from './ResubscribeThrasher';
 
 const actuallyCancelled = (
 	productType: ProductType,
 	productDetail: ProductDetail,
+	productDetailBeforeCancelling: ProductDetail,
 	eligableForOffer?: boolean,
 	eligibleForPause?: boolean,
+	cancellationReasonId?: CancellationReasonId,
 ) => {
-	const cancellationReasonId = useContext(CancellationReasonContext);
-
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
-
-	const productDetailFromContext = cancellationContext.productDetail;
-
 	const isSupportPlus = productType.productType === 'supporterplus';
 	const isContribution = productType.productType === 'contributions';
 
@@ -54,11 +45,11 @@ const actuallyCancelled = (
 	let currencySymbol: undefined | CurrencyIso;
 	let contributionheadingCopy = '';
 	if (
-		productDetailFromContext &&
-		Object.keys(productDetailFromContext.subscription).length
+		productDetailBeforeCancelling &&
+		Object.keys(productDetailBeforeCancelling.subscription).length
 	) {
 		const mainPlan = getMainPlan(
-			productDetailFromContext.subscription,
+			productDetailBeforeCancelling.subscription,
 		) as PaidSubscriptionPlan;
 		currencySymbol = mainPlan.currencyISO;
 		if (isContribution) {
@@ -224,18 +215,23 @@ export const isCancelled = (subscription: Subscription) =>
 export const getCancellationSummary = (
 	productType: ProductType,
 	productDetail: ProductDetail,
+	productDetailBeforeCancelling: ProductDetail,
 	eligableForOffer?: boolean,
 	eligibleForPause?: boolean,
-) =>
-	isCancelled(productDetail.subscription) ? (
+	cancellationReasonId?: CancellationReasonId,
+) => {
+	return isCancelled(productDetail.subscription) ? (
 		actuallyCancelled(
 			productType,
 			productDetail,
+			productDetailBeforeCancelling,
 			eligableForOffer,
 			eligibleForPause,
+			cancellationReasonId,
 		)
 	) : (
 		<GenericErrorScreen
 			loggingMessage={`${productType.friendlyName} cancellation call succeeded but subsequent product detail doesn't show as cancelled`}
 		/>
 	);
+};

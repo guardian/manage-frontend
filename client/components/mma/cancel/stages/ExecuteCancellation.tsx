@@ -25,9 +25,15 @@ import type {
 	CancellationRouterState,
 } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import { cancellationEffectiveToday } from '../cancellationContexts';
+import {
+	cancellationEffectiveToday,
+	CancellationReasonContext,
+} from '../cancellationContexts';
 import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
-import type { OptionalCancellationReasonId } from '../cancellationReason';
+import type {
+	CancellationReasonId,
+	OptionalCancellationReasonId,
+} from '../cancellationReason';
 import { getCancellationSummary, isCancelled } from '../CancellationSummary';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
 
@@ -120,8 +126,10 @@ const getCaseUpdatingCancellationSummary =
 	(
 		caseId: string,
 		productType: ProductTypeWithCancellationFlow,
+		productDetailBeforeCancelling: ProductDetail,
 		eligableForOffer?: boolean,
 		eligibleForPause?: boolean,
+		cancellationReasonId?: CancellationReasonId,
 	) =>
 	(mdapiResponse: MembersDataApiResponse) => {
 		const productDetail = (mdapiResponse.products[0] as ProductDetail) || {
@@ -132,8 +140,10 @@ const getCaseUpdatingCancellationSummary =
 			getCancellationSummary(
 				productType,
 				productDetail,
+				productDetailBeforeCancelling,
 				eligableForOffer,
 				eligibleForPause,
+				cancellationReasonId,
 			),
 			!!productType.cancellation?.shouldShowReminder || eligibleForPause,
 		);
@@ -173,6 +183,8 @@ export const ExecuteCancellation = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
+
+	const cancellationReasonId = useContext(CancellationReasonContext);
 
 	const alternativeIsOffer = productType.productType === 'supporterplus';
 	const alternativeIsPause = productType.productType === 'contributions';
@@ -250,8 +262,10 @@ export const ExecuteCancellation = () => {
 						render={getCaseUpdatingCancellationSummary(
 							caseId,
 							productType,
+							productDetail,
 							routerState.eligibleForFreePeriodOffer,
 							routerState.eligibleForPause,
+							cancellationReasonId,
 						)}
 						loadingMessage="Performing your cancellation..."
 					/>
