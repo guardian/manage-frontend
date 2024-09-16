@@ -4,6 +4,7 @@ import {
 	space,
 	textEgyptianBold17,
 } from '@guardian/source/foundations';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import { cancellationFormatDate } from '../../../../shared/dates';
@@ -21,6 +22,8 @@ import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton'
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { Heading } from '../shared/Heading';
 import { hrefStyle } from './cancellationConstants';
+import type { CancellationContextInterface } from './CancellationContainer';
+import { CancellationContext } from './CancellationContainer';
 import { CancellationReasonContext } from './cancellationContexts';
 import { CancellationContributionReminder } from './cancellationContributionReminder';
 import { ResubscribeThrasher } from './ResubscribeThrasher';
@@ -31,6 +34,14 @@ const actuallyCancelled = (
 	eligableForOffer?: boolean,
 	eligibleForPause?: boolean,
 ) => {
+	const cancellationReasonId = useContext(CancellationReasonContext);
+
+	const cancellationContext = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+
+	const productDetailFromContext = cancellationContext.productDetail;
+
 	const isSupportPlus = productType.productType === 'supporterplus';
 	const isContribution = productType.productType === 'contributions';
 
@@ -40,20 +51,20 @@ const actuallyCancelled = (
 	}
 
 	const deliveryRecordsLink: string = `/delivery/${productType.urlPart}/records`;
-	const subscription = productDetail.subscription;
 	let currencySymbol: undefined | CurrencyIso;
 	let contributionheadingCopy = '';
-	if (Object.keys(subscription).length) {
+	if (
+		productDetailFromContext &&
+		Object.keys(productDetailFromContext.subscription).length
+	) {
 		const mainPlan = getMainPlan(
-			productDetail.subscription,
+			productDetailFromContext.subscription,
 		) as PaidSubscriptionPlan;
 		currencySymbol = mainPlan.currencyISO;
 		if (isContribution) {
-			contributionheadingCopy = `Your ${mainPlan.billingPeriod}ly support has been cancelled`;
-		}
-	} else {
-		if (isContribution) {
-			contributionheadingCopy = 'Your support has been cancelled';
+			contributionheadingCopy = `Your ${
+				mainPlan ? `${mainPlan.billingPeriod}ly ` : ''
+			}support has been cancelled`;
 		}
 	}
 
@@ -79,7 +90,7 @@ const actuallyCancelled = (
 						<p>
 							{productType.cancellation
 								?.alternateSummaryMainPara ||
-								(subscription.end ? (
+								(productDetail.subscription.end ? (
 									<>
 										You will continue to receive the
 										benefits of your{' '}
@@ -151,61 +162,55 @@ const actuallyCancelled = (
 								.
 							</p>
 						)}
-						<CancellationReasonContext.Consumer>
-							{(reason) =>
-								(!productType.cancellation ||
-									!productType.cancellation
-										.onlyShowSupportSectionIfAlternateText ||
-									productType.cancellation.summaryReasonSpecificPara(
-										reason,
-									)) && (
-									<>
-										<h4
-											css={css`
-												${textEgyptianBold17};
-												margin-bottom: ${space[3]}px;
-											`}
-										>
-											Support us another way
-										</h4>
-										<p>
-											{productType?.cancellation?.summaryReasonSpecificPara(
-												reason,
-												currencySymbol,
-											) ||
-												'If you are interested in supporting our journalism in other ways, ' +
-													'please consider either a contribution or a subscription.'}
-										</p>
-										<div css={{ marginBottom: '30px' }}>
-											<SupportTheGuardianButton
-												urlSuffix={
-													productType.cancellation &&
-													productType.cancellation
-														.alternateSupportButtonUrlSuffix &&
-													productType.cancellation.alternateSupportButtonUrlSuffix(
-														reason,
-													)
-												}
-												alternateButtonText={
-													productType.cancellation &&
-													productType.cancellation
-														.alternateSupportButtonText &&
-													productType.cancellation.alternateSupportButtonText(
-														reason,
-													)
-												}
-												supportReferer={
-													productType.urlPart +
-													'_cancellation_summary'
-												}
-												theme="brand"
-												size="small"
-											/>
-										</div>
-									</>
-								)
-							}
-						</CancellationReasonContext.Consumer>
+						(!productType.cancellation || !productType.cancellation
+						.onlyShowSupportSectionIfAlternateText ||
+						productType.cancellation.summaryReasonSpecificPara(
+						cancellationReasonId, )) && (
+						<>
+							<h4
+								css={css`
+									${textEgyptianBold17};
+									margin-bottom: ${space[3]}px;
+								`}
+							>
+								Support us another way
+							</h4>
+							<p>
+								{productType?.cancellation?.summaryReasonSpecificPara(
+									cancellationReasonId,
+									currencySymbol,
+								) ||
+									'If you are interested in supporting our journalism in other ways, ' +
+										'please consider either a contribution or a subscription.'}
+							</p>
+							<div css={{ marginBottom: '30px' }}>
+								<SupportTheGuardianButton
+									urlSuffix={
+										productType.cancellation &&
+										productType.cancellation
+											.alternateSupportButtonUrlSuffix &&
+										productType.cancellation.alternateSupportButtonUrlSuffix(
+											cancellationReasonId,
+										)
+									}
+									alternateButtonText={
+										productType.cancellation &&
+										productType.cancellation
+											.alternateSupportButtonText &&
+										productType.cancellation.alternateSupportButtonText(
+											cancellationReasonId,
+										)
+									}
+									supportReferer={
+										productType.urlPart +
+										'_cancellation_summary'
+									}
+									theme="brand"
+									size="small"
+								/>
+							</div>
+						</>
+						)
 					</WithStandardTopMargin>
 				</ResubscribeThrasher>
 			)}

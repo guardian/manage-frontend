@@ -193,8 +193,12 @@ export const ProductCard = ({
 		max-width: 35ch;
 	`;
 
-	const isInPausePeriod = true;
-	const isInOfferPeriod =
+	const canBeInOfferPeriod =
+		specificProductType.productType === 'supporterplus';
+	const canBeInPausePeriod =
+		specificProductType.productType === 'contributions';
+
+	const isInOfferOrPausePeriod =
 		!hasCancellationPending &&
 		productDetail.subscription.nextPaymentDate &&
 		productDetail.subscription.potentialCancellationDate &&
@@ -220,7 +224,7 @@ export const ProductCard = ({
 					}
 				/>
 			)}
-			{isInOfferPeriod && (
+			{canBeInOfferPeriod && isInOfferOrPausePeriod && (
 				<SuccessSummary
 					message="Your offer is active"
 					context={
@@ -244,7 +248,7 @@ export const ProductCard = ({
 					}
 				/>
 			)}
-			{isInPausePeriod && (
+			{canBeInPausePeriod && isInOfferOrPausePeriod && (
 				<SuccessSummary
 					message="You have paused your support"
 					context={

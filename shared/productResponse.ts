@@ -113,7 +113,7 @@ export interface CancelledProductDetail {
 export function isProduct(
 	data: MembersDataApiItem | undefined,
 ): data is ProductDetail {
-	return !!data && data.hasOwnProperty('tier');
+	return productTiers.includes((data as ProductDetail)?.tier);
 }
 
 export interface Card extends CardProps {
