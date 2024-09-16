@@ -143,7 +143,7 @@ export class ProductBuilder {
 	}
 
 	nonServiceableCountry() {
-		this.productToBuild.billingCountry = 'New Caledonia';
+		this.productToBuild.billingCountry = 'Qatar';
 		return this;
 	}
 
