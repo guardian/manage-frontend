@@ -118,7 +118,7 @@ export const getCancellationSummaryWithReturnButton =
 		(
 			<div>
 				{body}
-				{excludeReturnButton && <ReturnToAccountButton />}
+				{!excludeReturnButton && <ReturnToAccountButton />}
 			</div>
 		);
 
