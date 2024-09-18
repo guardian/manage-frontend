@@ -1,13 +1,18 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source/foundations';
+import { from, space } from '@guardian/source/foundations';
 import {
 	Button,
 	LinkButton,
-	SvgArrowLeftStraight,
+	SvgSpinner,
 } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
+import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTypes';
+import { featureSwitches } from '@/shared/featureSwitches';
+import type { TrueFalsePending } from '@/shared/generalTypes';
 import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
@@ -30,9 +35,27 @@ const container = css`
 	}
 `;
 
+const buttonsCss = css`
+	display: flex;
+	flex-direction: column;
+	gap: ${space[5]}px;
+	${from.tablet} {
+		flex-direction: row;
+	}
+`;
+
+const buttonCss = css`
+	justify-content: center;
+	${from.tablet} {
+		&:last-child {
+			margin-left: auto;
+		}
+	}
+`;
+
 export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 	SaveBodyProps
-> = ({ caseId }: SaveBodyProps) => {
+> = ({ caseId, holidayStops, deliveryCredits }: SaveBodyProps) => {
 	const [showAmountUpdateForm, setShowUpdateForm] = useState(false);
 
 	const location = useLocation();
@@ -41,6 +64,60 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
+
+	const isSupporterPlusAndFreePeriodOfferIsActive =
+		featureSwitches.supporterplusCancellationOffer &&
+		productType.productType === 'supporterplus';
+
+	const isContributionAndBreakFeatureIsActive =
+		featureSwitches.contributionCancellationPause &&
+		productType.productType === 'contributions';
+
+	const [
+		showAlternativeBeforeCancelling,
+		setShowAlternativeBeforeCancelling,
+	] = useState<TrueFalsePending>(
+		isSupporterPlusAndFreePeriodOfferIsActive ||
+			isContributionAndBreakFeatureIsActive
+			? 'pending'
+			: false,
+	);
+
+	const [discountPreviewDetails, setDiscountPreviewDetails] =
+		useState<DiscountPreviewResponse | null>(null);
+
+	useEffect(() => {
+		if (
+			isSupporterPlusAndFreePeriodOfferIsActive ||
+			isContributionAndBreakFeatureIsActive
+		) {
+			(async () => {
+				try {
+					const response = await fetchWithDefaultParameters(
+						'/api/discounts/preview-discount',
+						{
+							method: 'POST',
+							body: JSON.stringify({
+								subscriptionNumber:
+									productDetail.subscription.subscriptionId,
+							}),
+						},
+					);
+
+					if (response.ok) {
+						// api returns a 400 response if the user is not eligible
+						setShowAlternativeBeforeCancelling(true);
+						const offerData = await response.json();
+						setDiscountPreviewDetails(offerData);
+					} else {
+						setShowAlternativeBeforeCancelling(false);
+					}
+				} catch (e) {
+					setShowAlternativeBeforeCancelling(false);
+				}
+			})();
+		}
+	}, []);
 
 	if (!productType || !productDetail || !routerState.selectedReasonId) {
 		return <Navigate to="../" />;
@@ -69,15 +146,30 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 	};
 
 	const onCancelClicked = () => {
-		trackEventInOphanOnly({
-			eventCategory: 'cancellation_flow_financial_circumstances',
-			eventAction: 'click',
-			eventLabel: 'cancel',
-		});
+		if (showAlternativeBeforeCancelling) {
+			const cancelAlternativeUrlPart =
+				cancelAlternativeUrlPartLookup[productType.productType] || '';
 
-		navigate('../confirmed', {
-			state: { ...routerState, caseId },
-		});
+			navigate(`../${cancelAlternativeUrlPart}`, {
+				state: {
+					...routerState,
+					...discountPreviewDetails,
+					caseId,
+					holidayStops,
+					deliveryCredits,
+				},
+			});
+		} else {
+			trackEventInOphanOnly({
+				eventCategory: 'cancellation_flow_financial_circumstances',
+				eventAction: 'click',
+				eventLabel: 'cancel',
+			});
+
+			navigate('../confirmed', {
+				state: { ...routerState, caseId },
+			});
+		}
 	};
 
 	const onReturnClicked = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -131,45 +223,52 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 							}
 							mode="CANCELLATION_SAVE"
 							onUpdateConfirmed={onUpdateConfirmed}
+							withReturnToAccountOverviewButton
 						/>
 					) : (
-						<div
-							css={css`
-								& > * + * {
-									margin-left: ${space[4]}px;
-								}
-							`}
-						>
-							<Button onClick={onReduceClicked}>
+						<div css={buttonsCss}>
+							<Button
+								onClick={onReduceClicked}
+								cssOverrides={buttonCss}
+							>
 								Reduce amount
 							</Button>
 
 							<Button
+								icon={
+									showAlternativeBeforeCancelling ===
+									'pending' ? (
+										<SvgSpinner size="xsmall" />
+									) : undefined
+								}
+								iconSide="right"
+								disabled={
+									showAlternativeBeforeCancelling ===
+									'pending'
+								}
+								aria-disabled={
+									showAlternativeBeforeCancelling ===
+									'pending'
+								}
 								onClick={onCancelClicked}
-								priority="subdued"
+								priority="tertiary"
+								cssOverrides={buttonCss}
 							>
 								I still want to cancel
 							</Button>
+
+							<LinkButton
+								href="/"
+								onClick={onReturnClicked}
+								priority="subdued"
+								cssOverrides={buttonCss}
+							>
+								Return to your account
+							</LinkButton>
 						</div>
 					)}
 				</>
 			)}
-
-			<div
-				css={css`
-					margin-top: ${space[24]}px;
-				`}
-			>
-				<LinkButton
-					href="/"
-					onClick={onReturnClicked}
-					priority="tertiary"
-					icon={<SvgArrowLeftStraight />}
-					iconSide="left"
-				>
-					Return to your account
-				</LinkButton>
-			</div>
 		</div>
 	);
 };

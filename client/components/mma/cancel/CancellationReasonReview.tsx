@@ -11,11 +11,12 @@ import { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
+import type { TrueFalsePending } from '@/shared/generalTypes';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import type {
-	ProductTypeKeys,
 	ProductTypeWithCancellationFlow,
 	WithProductType,
 } from '../../../../shared/productTypes';
@@ -248,8 +249,6 @@ interface ConfirmCancellationAndReturnRowProps
 	deliveryCredits?: DeliveryRecordDetail[];
 }
 
-type ShowOfferState = 'pending' | true | false;
-
 const ConfirmCancellationAndReturnRow = (
 	props: ConfirmCancellationAndReturnRowProps,
 ) => {
@@ -273,7 +272,7 @@ const ConfirmCancellationAndReturnRow = (
 	const [
 		showAlternativeBeforeCancelling,
 		setShowAlternativeBeforeCancelling,
-	] = useState<ShowOfferState>(
+	] = useState<TrueFalsePending>(
 		isSupporterPlusAndFreePeriodOfferIsActive ||
 			isContributionAndBreakFeatureIsActive
 			? 'pending'
@@ -285,13 +284,6 @@ const ConfirmCancellationAndReturnRow = (
 	const productHasAlternativeRecommendation =
 		productType.productType === 'supporterplus' ||
 		productType.productType === 'contributions';
-
-	const cancelAlternativeUrlPartLookup: Partial<
-		Record<ProductTypeKeys, string>
-	> = {
-		supporterplus: 'offer',
-		contributions: 'pause',
-	};
 
 	useEffect(() => {
 		if (
@@ -521,6 +513,8 @@ export const CancellationReasonReview = () => {
 	const renderSaveBody = (
 		saveBody: string[] | React.FC<SaveBodyProps>,
 		caseId: string,
+		holidayStops?: OutstandingHolidayStop[],
+		deliveryCredits?: DeliveryRecordDetail[],
 	) => {
 		if (saveBody.length && typeof saveBody === 'object') {
 			<>
@@ -531,7 +525,13 @@ export const CancellationReasonReview = () => {
 			return <p id="save_body">{saveBody}</p>;
 		}
 		const SaveBody = saveBody as FC<SaveBodyProps>;
-		return <SaveBody caseId={caseId} />;
+		return (
+			<SaveBody
+				caseId={caseId}
+				holidayStops={holidayStops}
+				deliveryCredits={deliveryCredits}
+			/>
+		);
 	};
 
 	const shouldUseProgressStepper =
@@ -591,10 +591,22 @@ export const CancellationReasonReview = () => {
 						)}
 
 						{reason.saveBody &&
-							renderSaveBody(reason.saveBody, caseId)}
+							renderSaveBody(
+								reason.saveBody,
+								caseId,
+								holidayStopCreditFetch.data
+									?.publicationsToRefund,
+								deliveryProblemCreditFetch.data?.results,
+							)}
 						{needsCancellationEscalation &&
 							reason.escalationSaveBody &&
-							renderSaveBody(reason.escalationSaveBody, caseId)}
+							renderSaveBody(
+								reason.escalationSaveBody,
+								caseId,
+								holidayStopCreditFetch.data
+									?.publicationsToRefund,
+								deliveryProblemCreditFetch.data?.results,
+							)}
 
 						{caseId && !reason.skipFeedback ? (
 							<FeedbackFormAndContactUs

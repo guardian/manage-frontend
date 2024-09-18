@@ -62,7 +62,6 @@ export const contributionsCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’d like to support you, but at a lower amount',
 		saveBody: ContributionsCancellationFlowFinancialSaveAttempt,
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
-		hideSaveActions: true,
 		skipFeedback: true,
 		hideContactUs: true,
 	},

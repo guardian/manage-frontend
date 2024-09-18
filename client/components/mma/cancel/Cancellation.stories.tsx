@@ -82,6 +82,26 @@ export const Review: StoryObj<typeof CancellationContainer> = {
 	},
 };
 
+export const ReviewWithReduceAmount: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancellationReasonReview />;
+	},
+
+	parameters: {
+		msw: [
+			http.post('/api/case', () => {
+				return HttpResponse.json({ id: 'caseId' });
+			}),
+		],
+		reactRouter: {
+			state: {
+				productDetail: contributionPaidByPayPal(),
+				selectedReasonId: 'mma_financial_circumstances',
+			},
+		},
+	},
+};
+
 export const Offer: StoryObj<typeof CancellationContainer> = {
 	render: () => {
 		return <CancelAlternativeOffer />;
