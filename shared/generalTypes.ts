@@ -1,1 +1,1 @@
-export type TrueFalsePending = 'pending' | true | false;
+export type TrueFalsePending = 'pending' | boolean;

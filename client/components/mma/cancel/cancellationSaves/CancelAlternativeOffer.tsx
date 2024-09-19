@@ -214,7 +214,8 @@ export const CancelAlternativeOffer = () => {
 			: '',
 	};
 
-	const withHeroImage = !!heroImageSrc.mobile && !!heroImageSrc.desktop;
+	const withHeroImage =
+		Boolean(heroImageSrc.mobile) && Boolean(heroImageSrc.desktop);
 
 	return (
 		<>
