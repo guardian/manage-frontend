@@ -23,7 +23,11 @@ import type {
 	ProductDetail,
 	Subscription,
 } from '@/shared/productResponse';
-import { getMainPlan, isGift } from '@/shared/productResponse';
+import {
+	getMainPlan,
+	getSpecificProductTypeFromTier,
+	isGift,
+} from '@/shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
@@ -119,9 +123,11 @@ export const ProductCard = ({
 		throw new Error('mainPlan does not exist in ProductCard');
 	}
 
-	const groupedProductType = GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
-	const specificProductType =
-		groupedProductType.mapGroupedToSpecific(productDetail);
+	const specificProductType = getSpecificProductTypeFromTier(
+		productDetail.tier,
+	);
+	const groupedProductType =
+		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
 
 	const isPatron = productDetail.subscription.readerType === 'Patron';
 
@@ -163,7 +169,7 @@ export const ProductCard = ({
 	const productBenefits =
 		specificProductType.productType === 'supporterplus'
 			? 'supporter benefits'
-			: groupedProductType.friendlyName();
+			: groupedProductType.friendlyName;
 
 	const cardConfig =
 		productCardConfiguration[specificProductType.productType];
@@ -187,11 +193,23 @@ export const ProductCard = ({
 		max-width: 35ch;
 	`;
 
+	const canBeInOfferPeriod =
+		specificProductType.productType === 'supporterplus';
+	const canBeInPausePeriod =
+		specificProductType.productType === 'contributions';
+
+	const isInOfferOrPausePeriod =
+		!hasCancellationPending &&
+		productDetail.subscription.nextPaymentDate &&
+		productDetail.subscription.potentialCancellationDate &&
+		productDetail.subscription.nextPaymentDate !==
+			productDetail.subscription.potentialCancellationDate;
+
 	return (
 		<Stack space={4}>
 			{hasCancellationPending && productDetail.subscription.end && (
 				<InfoSummary
-					message={`Your ${groupedProductType.friendlyName()} has been cancelled`}
+					message={`Your ${groupedProductType.friendlyName} has been cancelled`}
 					context={
 						<>
 							You are able to access your {productBenefits} until{' '}
@@ -206,34 +224,54 @@ export const ProductCard = ({
 					}
 				/>
 			)}
-			{!hasCancellationPending &&
-				productDetail.subscription.nextPaymentDate &&
-				productDetail.subscription.potentialCancellationDate &&
-				productDetail.subscription.nextPaymentDate !==
-					productDetail.subscription.potentialCancellationDate && (
-					<SuccessSummary
-						message="Your offer is active"
-						context={
-							<>
-								Your two months free is now active until{' '}
-								{nextPaymentDetails?.nextPaymentDateValue}. If
-								you have any questions, feel free to{' '}
-								{
-									<Link
-										to="/help-centre#contact-options"
-										css={css`
-											text-decoration: underline;
-											color: ${palette.brand[500]};
-										`}
-									>
-										contact our support team
-									</Link>
-								}
-								.
-							</>
-						}
-					/>
-				)}
+			{canBeInOfferPeriod && isInOfferOrPausePeriod && (
+				<SuccessSummary
+					message="Your offer is active"
+					context={
+						<>
+							Your two months free is now active until{' '}
+							{nextPaymentDetails?.nextPaymentDateValue}. If you
+							have any questions, feel free to{' '}
+							{
+								<Link
+									to="/help-centre#contact-options"
+									css={css`
+										text-decoration: underline;
+										color: ${palette.brand[500]};
+									`}
+								>
+									contact our support team
+								</Link>
+							}
+							.
+						</>
+					}
+				/>
+			)}
+			{canBeInPausePeriod && isInOfferOrPausePeriod && (
+				<SuccessSummary
+					message="You have paused your support"
+					context={
+						<>
+							Your support is now paused until{' '}
+							{nextPaymentDetails?.nextPaymentDateValue}. If you
+							have any questions, feel free to{' '}
+							{
+								<Link
+									to="/help-centre#contact-options"
+									css={css`
+										text-decoration: underline;
+										color: ${palette.brand[500]};
+									`}
+								>
+									contact our support team
+								</Link>
+							}
+							.
+						</>
+					}
+				/>
+			)}
 			<Card>
 				<Card.Header backgroundColor={cardConfig.colour}>
 					<h3 css={productCardTitleCss(cardConfig.invertText)}>
@@ -383,8 +421,10 @@ export const ProductCard = ({
 								<Button
 									aria-label={`${specificProductType.productTitle(
 										mainPlan,
-									)} : Manage ${groupedProductType.friendlyName()}`}
-									data-cy={`Manage ${groupedProductType.friendlyName()}`}
+									)} : Manage ${
+										groupedProductType.friendlyName
+									}`}
+									data-cy={`Manage ${groupedProductType.friendlyName}`}
 									size="small"
 									cssOverrides={css`
 										justify-content: center;
@@ -406,7 +446,7 @@ export const ProductCard = ({
 										);
 									}}
 								>
-									{`Manage ${groupedProductType.friendlyName()}`}
+									{`Manage ${groupedProductType.friendlyName}`}
 								</Button>
 							)}
 							{showSwitchButton && (

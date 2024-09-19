@@ -19,6 +19,7 @@ import type {
 	SingleProductDetail,
 } from '../../../../shared/productResponse';
 import {
+	getSpecificProductTypeFromTier,
 	isProduct,
 	isSpecificProductType,
 	sortByJoinDate,
@@ -112,10 +113,16 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		...allActiveProductDetails,
 		...allCancelledProductDetails,
 	].map((product: ProductDetail | CancelledProductDetail) => {
-		if (product.mmaCategory === 'recurringSupport') {
+		const specificProductType = getSpecificProductTypeFromTier(
+			product.tier,
+		);
+		if (
+			specificProductType.groupedProductType ===
+			'recurringSupportWithBenefits'
+		) {
 			return 'subscriptions'; // we want to override the display text in MMA for RC/S+ but not affect functionality
 		}
-		return product.mmaCategory;
+		return specificProductType.groupedProductType;
 	});
 
 	const uniqueProductCategories = [...new Set(allProductCategories)];
@@ -171,10 +178,16 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
 	): GroupedProductTypeKeys => {
-		if (product.mmaCategory === 'recurringSupport') {
+		const specificProductType = getSpecificProductTypeFromTier(
+			product.tier,
+		);
+		if (
+			specificProductType.groupedProductType ===
+			'recurringSupportWithBenefits'
+		) {
 			return 'subscriptions';
 		}
-		return product.mmaCategory;
+		return specificProductType.groupedProductType;
 	};
 
 	return (

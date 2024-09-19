@@ -84,7 +84,7 @@ export const DeliveryRecordsContainer = (
 						props.productType.allProductsProductTypeFilterString,
 					)}
 					render={handleMembersDataResponse(props.productType)}
-					loadingMessage={`Retrieving details of your ${props.productType.friendlyName()}...`}
+					loadingMessage={`Retrieving details of your ${props.productType.friendlyName}...`}
 				/>
 			)}
 		</PageContainer>

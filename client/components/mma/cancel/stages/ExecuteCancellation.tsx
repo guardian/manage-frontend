@@ -25,14 +25,21 @@ import type {
 	CancellationRouterState,
 } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
-import { cancellationEffectiveToday } from '../cancellationContexts';
+import {
+	cancellationEffectiveToday,
+	CancellationReasonContext,
+} from '../cancellationContexts';
 import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
-import type { OptionalCancellationReasonId } from '../cancellationReason';
+import type {
+	CancellationReasonId,
+	OptionalCancellationReasonId,
+} from '../cancellationReason';
 import { getCancellationSummary, isCancelled } from '../CancellationSummary';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
 
 interface RouterState extends CancellationRouterState {
 	eligibleForFreePeriodOffer?: boolean;
+	eligibleForPause?: boolean;
 }
 
 class PerformCancelAsyncLoader extends AsyncLoader<MembersDataApiResponse> {}
@@ -106,23 +113,39 @@ const ReturnToAccountButton = () => {
 	);
 };
 
-const getCancellationSummaryWithReturnButton = (body: ReactNode) => () =>
-	(
-		<div>
-			{body}
-			<ReturnToAccountButton />
-		</div>
-	);
+export const getCancellationSummaryWithReturnButton =
+	(body: ReactNode, excludeReturnButton?: boolean) => () =>
+		(
+			<div>
+				{body}
+				{!excludeReturnButton && <ReturnToAccountButton />}
+			</div>
+		);
 
 const getCaseUpdatingCancellationSummary =
-	(caseId: string, productType: ProductTypeWithCancellationFlow) =>
+	(
+		caseId: string,
+		productType: ProductTypeWithCancellationFlow,
+		productDetailBeforeCancelling: ProductDetail,
+		eligableForOffer?: boolean,
+		eligibleForPause?: boolean,
+		cancellationReasonId?: CancellationReasonId,
+	) =>
 	(mdapiResponse: MembersDataApiResponse) => {
 		const productDetail = (mdapiResponse.products[0] as ProductDetail) || {
 			subscription: {},
 		};
 
 		const render = getCancellationSummaryWithReturnButton(
-			getCancellationSummary(productType, productDetail),
+			getCancellationSummary(
+				productType,
+				productDetail,
+				productDetailBeforeCancelling,
+				eligableForOffer,
+				eligibleForPause,
+				cancellationReasonId,
+			),
+			!!productType.cancellation?.shouldShowReminder || eligibleForPause,
 		);
 		return caseId ? (
 			<CaseUpdateAsyncLoader
@@ -161,6 +184,11 @@ export const ExecuteCancellation = () => {
 		CancellationContext,
 	) as CancellationContextInterface;
 
+	const cancellationReasonId = useContext(CancellationReasonContext);
+
+	const alternativeIsOffer = productType.productType === 'supporterplus';
+	const alternativeIsPause = productType.productType === 'contributions';
+
 	const escalationCauses = generateEscalationCausesList({
 		isEffectiveToday:
 			routerState.cancellationPolicy === cancellationEffectiveToday,
@@ -171,32 +199,41 @@ export const ExecuteCancellation = () => {
 			routerState.deliveryCredits.length > 0,
 	});
 
+	const useProgressStepper =
+		(featureSwitches.supporterplusCancellationOffer &&
+			productType.productType === 'supporterplus') ||
+		(featureSwitches.contributionCancellationPause &&
+			productType.productType === 'contributions');
+
 	return (
 		<>
-			{!routerState.eligibleForFreePeriodOffer && (
-				<>
-					{featureSwitches.supporterplusCancellationOffer &&
-					productType.productType === 'supporterplus' ? (
-						<ProgressStepper
-							steps={[{}, {}, {}, { isCurrentStep: true }]}
-							additionalCSS={css`
-								margin: ${space[5]}px 0 ${space[12]}px;
-							`}
-						/>
-					) : (
-						<ProgressIndicator
-							steps={[
-								{ title: 'Reason' },
-								{ title: 'Review' },
-								{ title: 'Confirmation', isCurrentStep: true },
-							]}
-							additionalCSS={css`
-								margin: ${space[5]}px 0 ${space[12]}px;
-							`}
-						/>
-					)}
-				</>
-			)}
+			{(alternativeIsOffer && !routerState.eligibleForFreePeriodOffer) ||
+				(alternativeIsPause && !routerState.eligibleForPause && (
+					<>
+						{useProgressStepper ? (
+							<ProgressStepper
+								steps={[{}, {}, {}, { isCurrentStep: true }]}
+								additionalCSS={css`
+									margin: ${space[5]}px 0 ${space[12]}px;
+								`}
+							/>
+						) : (
+							<ProgressIndicator
+								steps={[
+									{ title: 'Reason' },
+									{ title: 'Review' },
+									{
+										title: 'Confirmation',
+										isCurrentStep: true,
+									},
+								]}
+								additionalCSS={css`
+									margin: ${space[5]}px 0 ${space[12]}px;
+								`}
+							/>
+						)}
+					</>
+				))}
 
 			{isProduct(productDetail) ? (
 				escalationCauses.length > 0 ? (
@@ -225,6 +262,10 @@ export const ExecuteCancellation = () => {
 						render={getCaseUpdatingCancellationSummary(
 							caseId,
 							productType,
+							productDetail,
+							routerState.eligibleForFreePeriodOffer,
+							routerState.eligibleForPause,
+							cancellationReasonId,
 						)}
 						loadingMessage="Performing your cancellation..."
 					/>

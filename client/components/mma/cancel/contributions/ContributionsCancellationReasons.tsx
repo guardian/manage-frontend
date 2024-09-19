@@ -61,6 +61,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
 		reasonId: 'mma_prefer_lower_amount',
 		linkLabel: 'I’d like to support you, but at a lower amount',
 		saveBody: ContributionsCancellationFlowFinancialSaveAttempt,
+		savedBody: ContributionsCancellationAmountUpdatedSaved,
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 		hideSaveActions: true,
 		skipFeedback: true,
@@ -69,8 +70,12 @@ export const contributionsCancellationReasons: CancellationReason[] = [
 	{
 		reasonId: 'mma_prefer_less_frequent',
 		linkLabel: 'I’d like to support you, but less frequently',
-		saveBody: financialCircumstances,
+		saveBody: ContributionsCancellationFlowFinancialSaveAttempt,
+		savedBody: ContributionsCancellationAmountUpdatedSaved,
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
+		hideSaveActions: true,
+		skipFeedback: true,
+		hideContactUs: true,
 	},
 	{
 		reasonId: 'mma_one_off',

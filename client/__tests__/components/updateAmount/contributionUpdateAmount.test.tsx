@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { UpdateAmount } from '../../../components/mma/accountoverview/updateAmount/UpdateAmount';
@@ -41,13 +42,15 @@ it.each([
 	'renders validation error if %s amount below %i',
 	async (billingPeriod, expectedMinAmount) => {
 		render(
-			<UpdateAmount
-				subscriptionId="A-123"
-				mainPlan={mainPlan(billingPeriod)}
-				amountUpdateStateChange={jest.fn()}
-				nextPaymentDate="2050-10-29"
-				productType={productType}
-			/>,
+			<BrowserRouter>
+				<UpdateAmount
+					subscriptionId="A-123"
+					mainPlan={mainPlan(billingPeriod)}
+					amountUpdateStateChange={jest.fn()}
+					nextPaymentDate="2050-10-29"
+					productType={productType}
+				/>
+			</BrowserRouter>,
 		);
 
 		fireEvent.click(screen.getByText('Change amount'));
@@ -84,13 +87,15 @@ it.each([
 	'renders validation error if %s amount above %i',
 	async (billingPeriod, expectedMaxAmount) => {
 		render(
-			<UpdateAmount
-				subscriptionId="A-123"
-				mainPlan={mainPlan(billingPeriod)}
-				amountUpdateStateChange={jest.fn()}
-				nextPaymentDate="2050-10-29"
-				productType={productType}
-			/>,
+			<BrowserRouter>
+				<UpdateAmount
+					subscriptionId="A-123"
+					mainPlan={mainPlan(billingPeriod)}
+					amountUpdateStateChange={jest.fn()}
+					nextPaymentDate="2050-10-29"
+					productType={productType}
+				/>
+			</BrowserRouter>,
 		);
 
 		fireEvent.click(screen.getByText('Change amount'));
@@ -122,13 +127,15 @@ it.each([
 
 it('renders validation error if blank input is provided', async () => {
 	render(
-		<UpdateAmount
-			subscriptionId="A-123"
-			mainPlan={mainPlan('month')}
-			amountUpdateStateChange={jest.fn()}
-			nextPaymentDate="2050-10-29"
-			productType={productType}
-		/>,
+		<BrowserRouter>
+			<UpdateAmount
+				subscriptionId="A-123"
+				mainPlan={mainPlan('month')}
+				amountUpdateStateChange={jest.fn()}
+				nextPaymentDate="2050-10-29"
+				productType={productType}
+			/>
+		</BrowserRouter>,
 	);
 
 	fireEvent.click(screen.getByText('Change amount'));
@@ -157,13 +164,15 @@ it('renders validation error if blank input is provided', async () => {
 
 it('renders validation error if a string is attempted to be input', async () => {
 	render(
-		<UpdateAmount
-			subscriptionId="A-123"
-			mainPlan={mainPlan('month')}
-			amountUpdateStateChange={jest.fn()}
-			nextPaymentDate="2050-10-29"
-			productType={productType}
-		/>,
+		<BrowserRouter>
+			<UpdateAmount
+				subscriptionId="A-123"
+				mainPlan={mainPlan('month')}
+				amountUpdateStateChange={jest.fn()}
+				nextPaymentDate="2050-10-29"
+				productType={productType}
+			/>
+		</BrowserRouter>,
 	);
 
 	fireEvent.click(screen.getByText('Change amount'));
@@ -190,15 +199,17 @@ it('renders validation error if a string is attempted to be input', async () => 
 	});
 });
 
-it('updates amount is valid value is input', async () => {
+it('updates amount if valid value is input', async () => {
 	render(
-		<UpdateAmount
-			subscriptionId="A-123"
-			mainPlan={mainPlan('month')}
-			amountUpdateStateChange={jest.fn()}
-			nextPaymentDate="2050-10-29"
-			productType={productType}
-		/>,
+		<BrowserRouter>
+			<UpdateAmount
+				subscriptionId="A-123"
+				mainPlan={mainPlan('month')}
+				amountUpdateStateChange={jest.fn()}
+				nextPaymentDate="2050-10-29"
+				productType={productType}
+			/>
+		</BrowserRouter>,
 	);
 
 	fireEvent.click(screen.getByText('Change amount'));

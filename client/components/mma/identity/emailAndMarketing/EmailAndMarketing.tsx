@@ -14,7 +14,7 @@ import type {
 	ProductDetail,
 	SingleProductDetail,
 } from '../../../../../shared/productResponse';
-import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
+import { getSpecificProductTypeFromTier } from '../../../../../shared/productResponse';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import {
 	allRecurringProductsDetailFetcher,
@@ -220,10 +220,9 @@ function userHasProductWithConsent(
 	consent: ConsentOption,
 ) {
 	return productDetails.some((productDetail) => {
-		const groupedProductType =
-			GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
-		const specificProductType =
-			groupedProductType.mapGroupedToSpecific(productDetail);
+		const specificProductType = getSpecificProductTypeFromTier(
+			productDetail.tier,
+		);
 		return specificProductType.softOptInIDs.includes(consent.id);
 	});
 }

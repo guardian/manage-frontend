@@ -9,8 +9,10 @@ import {
 } from '@guardian/source/foundations';
 import { InlineError } from '@guardian/source/react-components';
 import type { ProductDetail } from '../../../../shared/productResponse';
-import { getMainPlan } from '../../../../shared/productResponse';
-import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
+import {
+	getMainPlan,
+	getSpecificProductTypeFromTier,
+} from '../../../../shared/productResponse';
 import { PaypalLogo } from '../shared/assets/PaypalLogo';
 import { CardDisplay } from '../shared/CardDisplay';
 import {
@@ -26,15 +28,15 @@ function cardExpired(year: number, month: number) {
 	return expiryTimestamp < now;
 }
 
-export const CurrentPaymentDetails = (props: ProductDetail) => {
-	const { subscription } = props;
+export const CurrentPaymentDetails = (productDetail: ProductDetail) => {
+	const { subscription } = productDetail;
 
 	const mainPlan = getMainPlan(subscription);
 	const hasCancellationPending: boolean = subscription.cancelledAt;
 
-	const groupedProductType = GROUPED_PRODUCT_TYPES[props.mmaCategory];
-
-	const specificProductType = groupedProductType.mapGroupedToSpecific(props);
+	const specificProductType = getSpecificProductTypeFromTier(
+		productDetail.tier,
+	);
 
 	const keyValuePairCss = css`
 		list-style: none;
@@ -64,7 +66,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 		}
 	`;
 
-	const hasPaymentFailure: boolean = !!props.alertText;
+	const hasPaymentFailure: boolean = !!productDetail.alertText;
 
 	return (
 		<div
@@ -140,7 +142,7 @@ export const CurrentPaymentDetails = (props: ProductDetail) => {
 						}
 					`}
 				>
-					{props.isPaidTier && (
+					{productDetail.isPaidTier && (
 						<>
 							<ul css={keyValuePairCss}>
 								<li css={keyCss}>Payment method</li>

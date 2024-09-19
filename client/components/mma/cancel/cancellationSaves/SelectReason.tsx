@@ -110,9 +110,10 @@ const ReasonSelection = ({
 		>
 			<legend css={reasonLegendCss}>
 				Why did you cancel your{' '}
-				{GROUPED_PRODUCT_TYPES[
-					productType.groupedProductType
-				].friendlyName()}{' '}
+				{
+					GROUPED_PRODUCT_TYPES[productType.groupedProductType]
+						.friendlyName
+				}{' '}
 				today?
 			</legend>
 			<RadioGroup
@@ -270,9 +271,10 @@ export const SelectReason = () => {
 		<section css={sectionSpacing}>
 			<h2 css={headingCss}>
 				Your{' '}
-				{GROUPED_PRODUCT_TYPES[
-					productType.groupedProductType
-				].friendlyName()}{' '}
+				{
+					GROUPED_PRODUCT_TYPES[productType.groupedProductType]
+						.friendlyName
+				}{' '}
 				has been cancelled
 			</h2>
 			<CancellationInfo

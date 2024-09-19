@@ -353,7 +353,7 @@ const InnerContent = ({
 							`}
 						>
 							To renew this one-off{' '}
-							{specificProductType.friendlyName()}, please contact
+							{specificProductType.friendlyName}, please contact
 							us.
 						</p>
 						<CallCentreEmailAndNumbers />
@@ -363,8 +363,8 @@ const InnerContent = ({
 							`}
 						>
 							Alternatively, if you would prefer to start a
-							recurring {specificProductType.friendlyName()} you
-							can explore payment options and subscribe online by
+							recurring {specificProductType.friendlyName} you can
+							explore payment options and subscribe online by
 							clicking the button below.
 						</p>
 						<SupportTheGuardianButton
@@ -385,7 +385,7 @@ const InnerContent = ({
 			{!hasCancellationPending && (
 				<CancellationCTA
 					productDetail={productDetail}
-					friendlyName={groupedProductType.friendlyName()}
+					friendlyName={groupedProductType.friendlyName}
 					specificProductType={specificProductType}
 				/>
 			)}
@@ -474,9 +474,8 @@ export const ManageProduct = (props: WithProductType<ProductType>) => {
 			pageTitle={`Manage ${
 				GROUPED_PRODUCT_TYPES[props.productType.groupedProductType]
 					.shortFriendlyName ||
-				GROUPED_PRODUCT_TYPES[
-					props.productType.groupedProductType
-				].friendlyName()
+				GROUPED_PRODUCT_TYPES[props.productType.groupedProductType]
+					.friendlyName
 			}`}
 			minimalFooter
 		>

@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
-	getSpecificProductTypeFromProduct,
+	getSpecificProductTypeFromTier,
 	type ProductDetail,
 } from '@/shared/productResponse';
 import { CancellationContext } from './CancellationContainer';
@@ -13,8 +13,9 @@ import type {
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 
 function productHasEarlySaveJourney(productToCancel: ProductDetail): boolean {
-	const specificProductTypeKey =
-		getSpecificProductTypeFromProduct(productToCancel).productType;
+	const specificProductTypeKey = getSpecificProductTypeFromTier(
+		productToCancel.tier,
+	).productType;
 
 	return (
 		specificProductTypeKey === 'membership' ||

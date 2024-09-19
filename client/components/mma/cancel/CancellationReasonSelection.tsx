@@ -70,10 +70,15 @@ const ReasonPicker = ({
 		productType: ProductTypeWithCancellationFlow;
 	};
 
+	const shouldUseProgressStepper =
+		(featureSwitches.supporterplusCancellationOffer &&
+			productType.productType === 'supporterplus') ||
+		(featureSwitches.contributionCancellationPause &&
+			productType.productType === 'contributions');
+
 	return (
 		<>
-			{featureSwitches.supporterplusCancellationOffer &&
-			productType.productType === 'supporterplus' ? (
+			{shouldUseProgressStepper ? (
 				<ProgressStepper
 					steps={[{ isCurrentStep: true }, {}, {}, {}]}
 					additionalCSS={css`
@@ -381,7 +386,7 @@ export const CancellationReasonSelection = () => {
 				selfServiceCancellation={productDetail.selfServiceCancellation}
 				subscriptionId={productDetail.subscription.subscriptionId}
 				groupedProductType={
-					GROUPED_PRODUCT_TYPES[productDetail.mmaCategory]
+					GROUPED_PRODUCT_TYPES[productType.groupedProductType]
 				}
 			/>
 		);

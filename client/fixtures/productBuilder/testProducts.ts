@@ -70,6 +70,7 @@ export function digitalPackPaidByCardWithPaymentFailure() {
 export function monthlyContributionPaidByCard() {
 	return new ProductBuilder(baseContribution())
 		.payByCard()
+		.withBillingPeriod('month')
 		.withPrice(400)
 		.getProductDetailObject();
 }

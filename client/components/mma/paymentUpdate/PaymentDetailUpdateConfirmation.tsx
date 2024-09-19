@@ -25,9 +25,9 @@ import type {
 import {
 	formatDate,
 	getMainPlan,
+	getSpecificProductTypeFromTier,
 	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
-import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { ArrowIcon } from '../shared/assets/ArrowIcon';
 import { LinkButton as MMALinkButton } from '../shared/Buttons';
@@ -102,10 +102,8 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 	previousProductDetail,
 }: ConfirmedNewPaymentDetailsRendererProps) => {
 	const mainPlan = getMainPlan(subscription);
-	const groupedProductType =
-		GROUPED_PRODUCT_TYPES[previousProductDetail.mmaCategory];
-	const specificProductType = groupedProductType.mapGroupedToSpecific(
-		previousProductDetail,
+	const specificProductType = getSpecificProductTypeFromTier(
+		previousProductDetail.tier,
 	);
 	if (subHasExpectedPaymentType && isPaidSubscriptionPlan(mainPlan)) {
 		return (

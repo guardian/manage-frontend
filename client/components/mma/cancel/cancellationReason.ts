@@ -1,7 +1,11 @@
+import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
+import type { OutstandingHolidayStop } from '../holiday/HolidayStopApi';
 import type { SavedBodyProps } from './stages/SavedCancellation';
 
 export interface SaveBodyProps {
 	caseId: string;
+	holidayStops?: OutstandingHolidayStop[];
+	deliveryCredits?: DeliveryRecordDetail[];
 }
 
 export interface CancellationReason {

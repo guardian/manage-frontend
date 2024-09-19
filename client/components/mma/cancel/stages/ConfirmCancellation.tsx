@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
+import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
 import { Heading } from '../../shared/Heading';
@@ -89,16 +90,24 @@ export const ConfirmCancellation = () => {
 	) as CancellationContextInterface;
 
 	const productDetail = cancellationContext.productDetail;
+	const productType = cancellationContext.productType;
+	const groupedProductType =
+		GROUPED_PRODUCT_TYPES[productType.groupedProductType];
 
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
-	useEffect(() => {
-		pageTitleContext.setPageTitle('Cancel subscription');
-	}, []);
-
 	const subscription = productDetail.subscription;
+
+	const alternativeIsOffer = productType.productType === 'supporterplus';
+	const alternativeIsPause = productType.productType === 'contributions';
+
+	useEffect(() => {
+		pageTitleContext.setPageTitle(
+			`Cancel ${groupedProductType.friendlyName}`,
+		);
+	}, []);
 
 	return (
 		<>
@@ -125,24 +134,37 @@ export const ConfirmCancellation = () => {
 				Is this really goodbye?
 			</Heading>
 			<div css={copyCss}>
-				<p>
-					If you confirm your cancellation, you will lose the
-					following benefits:
-				</p>
-				<ul css={youllLoseList}>
-					<li>Unlimited access to the Guardian app</li>
-					<li>Ad-free reading across all your devices</li>
-					<li>Exclusive supporter newsletter</li>
-					<li>Far fewer asks for support when you're signed in</li>
-				</ul>
-				{subscription.potentialCancellationDate && (
-					<p css={loseDateCss}>
-						You will no longer have access to these benefits from{' '}
-						{parseDate(
-							subscription.potentialCancellationDate,
-							'yyyy-MM-dd',
-						).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
-						.
+				{alternativeIsOffer && (
+					<>
+						<p>
+							If you confirm your cancellation, you will lose the
+							following benefits:
+						</p>
+						<ul css={youllLoseList}>
+							<li>Unlimited access to the Guardian app</li>
+							<li>Ad-free reading across all your devices</li>
+							<li>Exclusive supporter newsletter</li>
+							<li>
+								Far fewer asks for support when you're signed in
+							</li>
+						</ul>
+						{subscription.potentialCancellationDate && (
+							<p css={loseDateCss}>
+								You will no longer have access to these benefits
+								from{' '}
+								{parseDate(
+									subscription.potentialCancellationDate,
+									'yyyy-MM-dd',
+								).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
+								.
+							</p>
+						)}
+					</>
+				)}
+				{alternativeIsPause && (
+					<p>
+						If you confirm your cancellation, you will no longer be
+						supporting the Guardian's reader-funded journalism.
 					</p>
 				)}
 				<div css={buttonsCtaHolder}>
@@ -163,7 +185,8 @@ export const ConfirmCancellation = () => {
 							navigate('/');
 						}}
 					>
-						Keep my subscription
+						{alternativeIsOffer && 'Keep my subscription'}
+						{alternativeIsPause && 'Keep supporting'}
 					</Button>
 				</div>
 			</div>

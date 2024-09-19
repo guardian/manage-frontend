@@ -270,7 +270,7 @@ const InnerContent = ({
 										);
 									}}
 								>
-									Cancel {groupedProductType.friendlyName()}
+									Cancel {groupedProductType.friendlyName}
 								</Button>
 							)}
 					</div>
@@ -329,9 +329,8 @@ export const ManageProductV2 = (props: WithProductType<ProductType>) => {
 			pageTitle={`Your ${
 				GROUPED_PRODUCT_TYPES[props.productType.groupedProductType]
 					.shortFriendlyName ||
-				GROUPED_PRODUCT_TYPES[
-					props.productType.groupedProductType
-				].friendlyName()
+				GROUPED_PRODUCT_TYPES[props.productType.groupedProductType]
+					.friendlyName
 			}`}
 			minimalFooter
 		>

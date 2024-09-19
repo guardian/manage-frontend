@@ -4,8 +4,8 @@ import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import type { DeliveryRecordDetail } from '../client/components/mma/delivery/records/deliveryRecordsApi';
 import { AsyncLoader } from '../client/components/mma/shared/AsyncLoader';
 import type { CardProps } from '../client/components/mma/shared/CardDisplay';
-import { GROUPED_PRODUCT_TYPES } from './productTypes';
-import type { GroupedProductTypeKeys, ProductType } from './productTypes';
+import { PRODUCT_TYPES } from './productTypes';
+import type { ProductType } from './productTypes';
 
 export type DeliveryRecordApiItem = DeliveryRecordDetail;
 
@@ -68,22 +68,43 @@ export interface SelfServiceCancellation {
 	phoneRegionsToDisplay: PhoneRegionKey[];
 }
 
+export const productTiers = [
+	'guardianpatron',
+	'Tier Three',
+	'Digital Pack',
+	'Newspaper - National Delivery',
+	'Supporter',
+	'Supporter Plus',
+	'Guardian Weekly - ROW',
+	'Guardian Weekly - Domestic',
+	'Newspaper Digital Voucher',
+	'Contributor',
+	'Guardian Weekly Zone A',
+	'Guardian Weekly Zone B',
+	'Guardian Weekly Zone C',
+	'Newspaper Voucher',
+	'Newspaper Delivery',
+	'Friend',
+	'Patron',
+	'Partner',
+];
+
+export type ProductTier = typeof productTiers[number];
+
 export interface ProductDetail extends WithSubscription {
 	isTestUser: boolean; // THIS IS NOT PART OF THE members-data-api RESPONSE (but inferred from a header)
 	isPaidTier: boolean;
 	regNumber?: string;
 	optIn?: boolean;
 	key?: string;
-	tier: string;
+	tier: ProductTier;
 	joinDate: string;
-	mmaCategory: GroupedProductTypeKeys;
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
 	billingCountry?: string;
 }
 
 export interface CancelledProductDetail {
-	mmaCategory: GroupedProductTypeKeys;
 	tier: string;
 	joinDate: string;
 	subscription: CancelledSubscription;
@@ -92,7 +113,7 @@ export interface CancelledProductDetail {
 export function isProduct(
 	data: MembersDataApiItem | undefined,
 ): data is ProductDetail {
-	return !!data && data.hasOwnProperty('tier');
+	return productTiers.includes((data as ProductDetail)?.tier);
 }
 
 export interface Card extends CardProps {
@@ -244,20 +265,60 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	};
 };
 
-export function getSpecificProductTypeFromProduct(
-	productDetail: ProductDetail,
+export function getSpecificProductTypeFromTier(
+	productTier: ProductTier,
 ): ProductType {
-	const groupedProductType = GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
-	const specificProductType =
-		groupedProductType.mapGroupedToSpecific(productDetail);
-	return specificProductType;
+	let productType: ProductType = {} as ProductType;
+	switch (productTier) {
+		case 'Friend':
+		case 'Patron':
+		case 'Supporter':
+			productType = PRODUCT_TYPES.membership;
+			break;
+		case 'Contributor':
+			productType = PRODUCT_TYPES.contributions;
+			break;
+		case 'Tier Three':
+			productType = PRODUCT_TYPES.tierthree;
+			break;
+		case 'Newspaper Voucher':
+			productType = PRODUCT_TYPES.voucher;
+			break;
+		case 'Digital Pack':
+			productType = PRODUCT_TYPES.digipack;
+			break;
+		case 'Newspaper Delivery':
+			productType = PRODUCT_TYPES.homedelivery;
+			break;
+		case 'Supporter Plus':
+			productType = PRODUCT_TYPES.supporterplus;
+			break;
+		case 'Newspaper Digital Voucher':
+			productType = PRODUCT_TYPES.digitalvoucher;
+			break;
+		case 'guardianpatron':
+			productType = PRODUCT_TYPES.guardianpatron;
+			break;
+		case 'Guardian Weekly Zone A':
+		case 'Guardian Weekly Zone B':
+		case 'Guardian Weekly Zone C':
+		case 'Guardian Weekly - ROW':
+		case 'Guardian Weekly - Domestic':
+			productType = PRODUCT_TYPES.guardianweekly;
+			break;
+		case 'Newspaper - National Delivery':
+			productType = PRODUCT_TYPES.nationaldelivery;
+			break;
+	}
+	return productType;
 }
 
 export function isSpecificProductType(
 	productDetail: ProductDetail,
 	targetProductType: ProductType,
 ): boolean {
-	const specificProductType =
-		getSpecificProductTypeFromProduct(productDetail);
+	const specificProductType = getSpecificProductTypeFromTier(
+		productDetail.tier,
+	);
 	return specificProductType === targetProductType;
 }
