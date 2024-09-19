@@ -306,7 +306,7 @@ export const CancelAlternativeReview = () => {
 							If you cancel during the free period, you will lose
 							access to your benefits on the day we usually take
 							payment. If you cancel after the free period, your
-							subscription will end at the end of your current
+							subscription will end at the end of your current{' '}
 							{mainPlan.billingPeriod}ly payment period.
 						</p>
 					)}
