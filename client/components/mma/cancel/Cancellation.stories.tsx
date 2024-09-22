@@ -321,6 +321,7 @@ export const ConfirmationContributionWithPause: StoryFn<
 					eligibleForOffer,
 					eligibleForPause,
 				),
+				eligibleForPause,
 			)()}
 		</>
 	);
