@@ -166,7 +166,7 @@
     "cookie-parser": "1.4.4",
     "csurf": "1.10.0",
     "date-fns": "2.16.1",
-    "express": "4.17.3",
+    "express": "4.20.0",
     "formik": "2.2.9",
     "helmet": "3.23.3",
     "jest-environment-jsdom": "29.7.0",
