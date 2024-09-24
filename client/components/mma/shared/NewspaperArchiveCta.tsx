@@ -123,7 +123,7 @@ export const NewspaperArchiveCta = (props: NewspaperArchiveCtaProps) => {
 						/>
 						<img
 							css={heroImageCss}
-							src="https://i.guim.co.uk/img/media/cabda220dba5cdcd8f5fe06b451a2cc1c2dbe849/0_0_1360_740/1000.png?width=800&quality=75&s=b5ce36af1901a720308f57adf094bfd8"
+							src="https://i.guim.co.uk/img/media/52c51fe217b39f647b8acc67bd19dcca20866f7e/0_0_1360_740/1000.png?width=800&quality=75&s=103107cb3d85fec2679bb60893794bc1"
 						/>
 					</picture>
 				</div>
