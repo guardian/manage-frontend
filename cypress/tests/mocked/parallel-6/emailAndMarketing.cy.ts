@@ -63,7 +63,7 @@ describe('Email and Marketing page', () => {
 		cy.wait('@consents');
 		cy.wait('@reminders');
 
-		cy.get('[data-cy="similar_guardian_products"]');
+		cy.get('[data-cy="guardian_products_services"]');
 		cy.findByText('Your subscription/support');
 		cy.findByText('Supporter newsletter');
 	});
@@ -90,7 +90,7 @@ describe('Email and Marketing page', () => {
 		cy.wait('@consents');
 		cy.wait('@reminders');
 
-		cy.get('[data-cy="similar_guardian_products"]');
+		cy.get('[data-cy="guardian_products_services"]');
 		cy.findByText('Your subscription/support');
 		cy.findByText('Supporter newsletter');
 	});

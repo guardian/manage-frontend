@@ -90,7 +90,7 @@ export const user = {
 			},
 			{
 				actor: 'user',
-				id: 'similar_guardian_products',
+				id: 'guardian_products_services',
 				version: 0,
 				consented: false,
 				timestamp: '2021-11-23T22:43:25Z',

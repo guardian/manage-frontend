@@ -19,7 +19,7 @@ const supportReminderConsent = (consents: ConsentOption[]): ConsentOption[] =>
 
 const marketingEmailConsents = (consents: ConsentOption[]): ConsentOption[] => {
 	const ids = [
-		'similar_guardian_products',
+		'guardian_products_services',
 		'supporter',
 		'jobs',
 		'events',
