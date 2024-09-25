@@ -194,7 +194,8 @@
     "@storybook/core-server@7.6.20/ws": "^8.17.1",
     "jsdom@^20.0.0/ws": "^8.17.1",
     "puppeteer-core@^2.1.1/ws": "^6.2.3",
-    "webpack-bundle-analyzer@4.5.0/ws": "^7.5.10"
+    "webpack-bundle-analyzer@4.5.0/ws": "^7.5.10",
+    "msw/path-to-regexp": "8.0.0"
   },
   "license": "UNLICENSED",
   "msw": {
