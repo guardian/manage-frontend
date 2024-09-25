@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { palette } from '@guardian/source/foundations';
-import type { ProductDetail } from '../../../../../shared/productResponse';
 import { trackEvent } from '../../../../utilities/analytics';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
 import { hrefStyle } from '../cancellationConstants';
@@ -40,41 +39,39 @@ const clickHereToFindOutMoreAboutOurNewFeatures = (
 	</a>
 );
 
-export const membershipCancellationFlowStart = ({ tier }: ProductDetail) => (
+export const membershipCancellationFlowStart = () => (
 	<>
-		{tier !== 'Friend' && (
-			<div
+		<div
+			css={{
+				backgroundColor: palette.neutral[93],
+				padding: '10px 20px',
+				marginBottom: '40px',
+			}}
+		>
+			<h4
 				css={{
-					backgroundColor: palette.neutral[93],
-					padding: '10px 20px',
-					marginBottom: '40px',
+					marginTop: '0',
+					marginBottom: '10px',
 				}}
 			>
-				<h4
+				If you cancel your Membership you will miss out on:
+			</h4>
+			<ul css={benefitsCss}>
+				<li css={cssBullet()}>Access to events tickets</li>
+				<li css={cssBullet()}>
+					Exclusive emails from our membership editor
+				</li>
+				<li
 					css={{
-						marginTop: '0',
-						marginBottom: '10px',
+						...cssBullet('100%'),
+						paddingTop: '5px',
 					}}
 				>
-					If you cancel your Membership you will miss out on:
-				</h4>
-				<ul css={benefitsCss}>
-					<li css={cssBullet()}>Access to events tickets</li>
-					<li css={cssBullet()}>
-						Exclusive emails from our membership editor
-					</li>
-					<li
-						css={{
-							...cssBullet('100%'),
-							paddingTop: '5px',
-						}}
-					>
-						Free access to the premium tier of the Guardian app -{' '}
-						{clickHereToFindOutMoreAboutOurNewFeatures}
-					</li>
-				</ul>
-			</div>
-		)}
+					Free access to the premium tier of the Guardian app -{' '}
+					{clickHereToFindOutMoreAboutOurNewFeatures}
+				</li>
+			</ul>
+		</div>
 		<WithStandardTopMargin>
 			<p
 				css={{
