@@ -84,7 +84,6 @@ export const productTiers = [
 	'Guardian Weekly Zone C',
 	'Newspaper Voucher',
 	'Newspaper Delivery',
-	'Friend',
 	'Patron',
 	'Partner',
 ];
@@ -270,7 +269,7 @@ export function getSpecificProductTypeFromTier(
 ): ProductType {
 	let productType: ProductType = {} as ProductType;
 	switch (productTier) {
-		case 'Friend':
+		case 'Partner':
 		case 'Patron':
 		case 'Supporter':
 			productType = PRODUCT_TYPES.membership;
