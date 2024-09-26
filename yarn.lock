@@ -3491,6 +3491,11 @@
     yaml "^1.7.2"
     yargs "^15.4.1"
 
+"@guardian/ophan-tracker-js@file:../ophan/tracker-js":
+  version "2.2.3"
+  dependencies:
+    "@guardian/tsconfig" "^1.0.0"
+
 "@guardian/prebid.js@8.52.0-3":
   version "8.52.0-3"
   resolved "https://registry.yarnpkg.com/@guardian/prebid.js/-/prebid.js-8.52.0-3.tgz#da72200e0bb92ca00182fbaae96463437cdb573d"
@@ -3537,6 +3542,11 @@
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@guardian/tsconfig/-/tsconfig-0.1.6.tgz#2cc3ecce09e84b6bcaea8a1150c7b590e908d2a9"
   integrity sha512-5GMp2tBMaIxxInmWGDZI9O3v76hbW2CV/3hnWhDDvtXZvgOFs3K41plkAoc+GpPNLZTrtJlAaHHhbZcDDGI9/w==
+
+"@guardian/tsconfig@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/tsconfig/-/tsconfig-1.0.0.tgz#c86b8cf51ccb53b2783eeffb6d5f256c59094217"
+  integrity sha512-xgajw/jq4lEtQoN72vnmiXeRnejUcd3DgNFmH6TfAbWV6NRK4KC4hAjzKf0H69zBSJMxEfFVfGKP9wBzGII7qg==
 
 "@humanwhocodes/config-array@^0.11.11":
   version "0.11.11"
@@ -13582,11 +13592,6 @@ openid-client@5.6.1:
     lru-cache "^6.0.0"
     object-hash "^2.2.0"
     oidc-token-hash "^5.0.3"
-
-ophan-tracker-js@1.3.16:
-  version "1.3.16"
-  resolved "https://registry.yarnpkg.com/ophan-tracker-js/-/ophan-tracker-js-1.3.16.tgz#0f4c14924d44eced7fa311cb6a9318a20325a680"
-  integrity sha512-kiWNxgHoGl4IDWNmcOQ+r4MNT6/WKPKhIJuKsJkd2YA8VQ5TJ4DTu4ht5WGegOawAfbhA3pOMd12yOK8vdnyaA==
 
 optionator@^0.9.3:
   version "0.9.3"

@@ -36,12 +36,11 @@ import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
 import { SignInError } from './signInError/SignInError';
+import ophan from "@guardian/ophan-tracker-js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Ophan events are diverse (and unguessable?)
 const record = (event: any) => {
-	if (window.guardian?.ophan?.record) {
-		window.guardian.ophan.record(event);
-	}
+	ophan.record(event);
 };
 
 initFeatureSwitchUrlParamOverride();

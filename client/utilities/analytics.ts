@@ -1,6 +1,6 @@
-import type { OphanProduct } from '../../shared/ophanTypes';
 import type { ProductDetail } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
+import ophan from "@guardian/ophan-tracker-js";
 
 interface Event {
 	eventCategory: string;
@@ -22,13 +22,12 @@ export const trackEvent = ({
 	eventLabel,
 	eventValue,
 }: Event) => {
-	if (window.guardian && window.guardian.ophan) {
-		const ophanProduct: OphanProduct | undefined =
+		const ophanProduct =
 			product &&
 			product.productType.getOphanProductType &&
 			product.productType.getOphanProductType(product.productDetail);
 
-		window.guardian.ophan.record({
+		ophan.record({
 			componentEvent: {
 				component: {
 					componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
@@ -48,7 +47,6 @@ export const trackEvent = ({
 				abTest: window.guardian.abTest,
 			},
 		});
-	}
 };
 
 export const trackEventInOphanOnly = (event: Event) => trackEvent(event);

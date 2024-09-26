@@ -2,6 +2,7 @@ import { loadScript } from '@guardian/libs';
 import * as Sentry from '@sentry/browser';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import ophan from "@guardian/ophan-tracker-js";
 
 export const useAnalytics = () => {
 	const location = useLocation();
@@ -45,17 +46,11 @@ export const useAnalytics = () => {
 			return;
 		}
 
-		if (
-			window.guardian &&
-			window.guardian.ophan &&
-			window.guardian.ophan.sendInitialEvent
-		) {
-			if (window.guardian.spaTransition) {
-				window.guardian.ophan.sendInitialEvent(window.location.href);
-			} else {
-				// tslint:disable-next-line:no-object-mutation
-				window.guardian.spaTransition = true;
-			}
+		if (window.guardian.spaTransition) {
+			ophan.sendInitialEvent(window.location.href);
+		} else {
+			// tslint:disable-next-line:no-object-mutation
+			window.guardian.spaTransition = true;
 		}
 	}, [location, cmpIsInitialised]);
 };
