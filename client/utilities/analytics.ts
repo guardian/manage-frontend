@@ -1,6 +1,6 @@
 import type { ProductDetail } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
-import ophan from "@guardian/ophan-tracker-js";
+import ophan from "@guardian/ophan-tracker-js/MMA";
 
 interface Event {
 	eventCategory: string;

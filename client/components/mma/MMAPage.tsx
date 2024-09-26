@@ -36,7 +36,7 @@ import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
 import { SignInError } from './signInError/SignInError';
-import ophan from "@guardian/ophan-tracker-js";
+import ophan from "@guardian/ophan-tracker-js/MMA";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Ophan events are diverse (and unguessable?)
 const record = (event: any) => {
