@@ -1,4 +1,5 @@
 import url from 'url';
+import ophan from '@guardian/ophan-tracker-js/MMA';
 import {
 	LinkButton,
 	SvgArrowRightStraight,
@@ -8,7 +9,6 @@ import {
 } from '@guardian/source/react-components';
 import { conf } from '../../../server/config';
 import { trackEvent } from '../../utilities/analytics';
-import ophan from "@guardian/ophan-tracker-js/MMA";
 
 export interface SupportTheGuardianButtonProps {
 	supportReferer: string;
@@ -31,10 +31,7 @@ const buildAcquisitionData = (componentId: string) => ({
 	source: 'GUARDIAN_WEB',
 	componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
 	componentId,
-	referrerPageviewId:
-		hasWindow && ophan
-			? ophan.viewId
-			: undefined,
+	referrerPageviewId: hasWindow && ophan ? ophan.viewId : undefined,
 	referrerUrl: hasWindow ? window.location.href : undefined,
 });
 

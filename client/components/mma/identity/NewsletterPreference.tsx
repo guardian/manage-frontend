@@ -1,8 +1,9 @@
+import ophan from '@guardian/ophan-tracker-js/MMA';
 import { palette } from '@guardian/source/foundations';
 import type { FC } from 'react';
 import { sans } from '../../../styles/fonts';
 import { Checkbox } from '../shared/Checkbox';
-import ophan from '@guardian/ophan-tracker-js/MMA';
+
 interface NewsletterPreferenceProps {
 	id: string;
 	description: string;
