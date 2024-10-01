@@ -176,7 +176,7 @@
     "node-fetch": "2.6.7",
     "number-to-words": "1.2.4",
     "openid-client": "5.6.1",
-		"@guardian/ophan-tracker-js": "file:/Users/Jonathan_Flynn/Documents/repos/ophan/tracker-js/",
+    "@guardian/ophan-tracker-js": "2.2.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router": "6.2.2",
