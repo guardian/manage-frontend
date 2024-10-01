@@ -8,6 +8,7 @@ import {
 } from '@guardian/source/react-components';
 import { conf } from '../../../server/config';
 import { trackEvent } from '../../utilities/analytics';
+import ophan from "@guardian/ophan-tracker-js/MMA";
 
 export interface SupportTheGuardianButtonProps {
 	supportReferer: string;
@@ -31,8 +32,8 @@ const buildAcquisitionData = (componentId: string) => ({
 	componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
 	componentId,
 	referrerPageviewId:
-		hasWindow && window.guardian.ophan
-			? window.guardian.ophan.viewId
+		hasWindow && ophan
+			? ophan.viewId
 			: undefined,
 	referrerUrl: hasWindow ? window.location.href : undefined,
 });
