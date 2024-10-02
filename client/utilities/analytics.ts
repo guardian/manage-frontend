@@ -1,4 +1,4 @@
-import type { OphanProduct } from '../../shared/ophanTypes';
+import ophan from '@guardian/ophan-tracker-js/MMA';
 import type { ProductDetail } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
 
@@ -22,33 +22,31 @@ export const trackEvent = ({
 	eventLabel,
 	eventValue,
 }: Event) => {
-	if (window.guardian && window.guardian.ophan) {
-		const ophanProduct: OphanProduct | undefined =
-			product &&
-			product.productType.getOphanProductType &&
-			product.productType.getOphanProductType(product.productDetail);
+	const ophanProduct =
+		product &&
+		product.productType.getOphanProductType &&
+		product.productType.getOphanProductType(product.productDetail);
 
-		window.guardian.ophan.record({
-			componentEvent: {
-				component: {
-					componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
-					products: ophanProduct ? [ophanProduct] : undefined,
-					campaignCode: window.guardian.INTCMP,
-					labels: [
-						eventCategory.toUpperCase(),
-						eventAction.toUpperCase(),
-						...(eventLabel ? [eventLabel.toUpperCase()] : []),
-						...(MMA_AB_TEST_DIMENSION_VALUE
-							? [MMA_AB_TEST_DIMENSION_VALUE]
-							: []),
-					],
-				},
-				action: 'VIEW',
-				value: eventValue !== undefined ? `${eventValue}` : undefined,
-				abTest: window.guardian.abTest,
+	ophan.record({
+		componentEvent: {
+			component: {
+				componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
+				products: ophanProduct ? [ophanProduct] : undefined,
+				campaignCode: window.guardian.INTCMP,
+				labels: [
+					eventCategory.toUpperCase(),
+					eventAction.toUpperCase(),
+					...(eventLabel ? [eventLabel.toUpperCase()] : []),
+					...(MMA_AB_TEST_DIMENSION_VALUE
+						? [MMA_AB_TEST_DIMENSION_VALUE]
+						: []),
+				],
 			},
-		});
-	}
+			action: 'VIEW',
+			value: eventValue !== undefined ? `${eventValue}` : undefined,
+			abTest: window.guardian.abTest,
+		},
+	});
 };
 
 export const trackEventInOphanOnly = (event: Event) => trackEvent(event);

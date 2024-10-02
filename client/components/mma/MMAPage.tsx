@@ -1,5 +1,6 @@
 import { css, Global } from '@emotion/react';
 import { ABProvider, useAB } from '@guardian/ab-react';
+import ophan from '@guardian/ophan-tracker-js/MMA';
 import { breakpoints, from, space } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
@@ -39,9 +40,7 @@ import { SignInError } from './signInError/SignInError';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Ophan events are diverse (and unguessable?)
 const record = (event: any) => {
-	if (window.guardian?.ophan?.record) {
-		window.guardian.ophan.record(event);
-	}
+	ophan.record(event);
 };
 
 initFeatureSwitchUrlParamOverride();

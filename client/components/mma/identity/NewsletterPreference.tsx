@@ -1,3 +1,4 @@
+import ophan from '@guardian/ophan-tracker-js/MMA';
 import { palette } from '@guardian/source/foundations';
 import type { FC } from 'react';
 import { sans } from '../../../styles/fonts';
@@ -107,7 +108,7 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 				// If we have an identityName id then this is a newsletter subscription event
 				// and we want to log it in Ophan
 				if (identityName) {
-					window?.guardian?.ophan?.record({
+					ophan.record({
 						componentEvent: {
 							component: {
 								componentType: 'NEWSLETTER_SUBSCRIPTION',

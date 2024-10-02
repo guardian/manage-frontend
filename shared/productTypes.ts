@@ -1,3 +1,4 @@
+import type { Product } from '@guardian/ophan-tracker-js';
 import type { ReactNode } from 'react';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
@@ -21,7 +22,6 @@ import { shuffledSupporterPlusCancellationReasons } from '../client/components/m
 import { voucherCancellationFlowStart } from '../client/components/mma/cancel/voucher/VoucherCancellationFlowStart';
 import { voucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
 import type { SupportTheGuardianButtonProps } from '../client/components/shared/SupportTheGuardianButton';
-import type { OphanProduct } from './ophanTypes';
 import type {
 	PaidSubscriptionPlan,
 	ProductDetail,
@@ -169,9 +169,7 @@ export interface ProductType {
 	urlPart: ProductUrlPart;
 	softOptInIDs: string[];
 	legacyUrlPart?: string; // could easily adapt to be string[] if multiple were required in future
-	getOphanProductType?: (
-		productDetail: ProductDetail,
-	) => OphanProduct | undefined;
+	getOphanProductType?: (productDetail: ProductDetail) => Product | undefined;
 	showSupporterId?: boolean;
 	tierLabel?: string;
 	renewalMetadata?: SupportTheGuardianButtonProps;
@@ -717,7 +715,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'GuardianPatron',
 		urlPart: 'guardianpatron',
-		getOphanProductType: () => 'GUARDIAN_PATRON', //TODO: This value doesn't exist in Ophan yet
+		getOphanProductType: () => 'GUARDIAN_PATRON',
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
