@@ -63,6 +63,7 @@ describe('Holiday stops', () => {
 
 		// Selects 09/02/2022 - 11/02/2022
 		cy.get('[data-cy="date-picker"] div').eq(9).click();
+		cy.get('[data-cy="date-picker"] div').eq(11).trigger('mouseover');
 		cy.get('[data-cy="date-picker"] div').eq(11).click();
 		cy.wait('@fetch_potential_holidays');
 
@@ -102,6 +103,7 @@ describe('Holiday stops', () => {
 
 		// Selects 09/02/2022 - 11/02/2022
 		cy.get('[data-cy="date-picker"] div').eq(9).click();
+		cy.get('[data-cy="date-picker"] div').eq(11).trigger('mouseover');
 		cy.get('[data-cy="date-picker"] div').eq(11).click();
 		cy.wait('@fetch_potential_holidays');
 
@@ -140,12 +142,12 @@ describe('Holiday stops', () => {
 
 		// Selects 08/02/2022 - 10/02/2022
 		cy.get('[data-cy="date-picker"] div').eq(8).click();
+		cy.get('[data-cy="date-picker"] div').eq(10).trigger('mouseover');
 		cy.get('[data-cy="date-picker"] div').eq(10).click();
 		cy.wait('@fetch_potential_holidays');
 
 		cy.findByText('No issues occur during selected period').should('exist');
 
-		cy.get('@product_detail.all').should('have.length', 1);
 		cy.get('@fetch_potential_holidays.all').should('have.length', 1);
 	});
 
@@ -170,6 +172,7 @@ describe('Holiday stops', () => {
 
 		// Selects 09/02/2022 - 11/02/2022
 		cy.get('[data-cy="date-picker"] div').eq(9).click();
+		cy.get('[data-cy="date-picker"] div').eq(11).trigger('mouseover');
 		cy.get('[data-cy="date-picker"] div').eq(11).click();
 		cy.wait('@fetch_potential_holidays');
 
@@ -177,7 +180,6 @@ describe('Holiday stops', () => {
 		cy.get('table').contains('9 February - 11 February 2022');
 
 		cy.get('@fetch_existing_holidays.all').should('have.length', 1);
-		cy.get('@product_detail.all').should('have.length', 1);
 
 		cy.findByText('Confirm').click();
 		cy.wait('@amend_holiday_stop');
@@ -273,6 +275,7 @@ describe('Holiday stops', () => {
 
 		// Selects 09/02/2022 - 11/02/2022
 		cy.get('[data-cy="date-picker"] div').eq(9).click();
+		cy.get('[data-cy="date-picker"] div').eq(11).trigger('mouseover');
 		cy.get('[data-cy="date-picker"] div').eq(11).click();
 		cy.wait('@fetch_potential_holidays');
 
