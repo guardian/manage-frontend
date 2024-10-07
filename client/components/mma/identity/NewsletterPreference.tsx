@@ -91,34 +91,30 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 		identityName,
 		onClick,
 	} = props;
+	const accessibleLabel = `${title} (${frequency})`;
+
+	const interact = () => {
+		onClick(id);
+		// If we have an identityName id then this is a newsletter subscription event
+		// and we want to log it in Ophan
+		if (identityName) {
+			window?.guardian?.ophan?.record({
+				componentEvent: {
+					component: {
+						componentType: 'NEWSLETTER_SUBSCRIPTION',
+						id: identityName,
+					},
+					action: 'CLICK',
+					value: selected ? 'untick' : 'tick',
+				},
+			});
+		}
+	};
+
 	return (
 		<div
 			data-cy={id}
-			onClick={(e) => {
-				// Checkboxes inside labels will trigger click events twice.
-				// Ignore the input click event
-				if (
-					e.target instanceof Element &&
-					e.target.nodeName === 'INPUT'
-				) {
-					return;
-				}
-				onClick(id);
-				// If we have an identityName id then this is a newsletter subscription event
-				// and we want to log it in Ophan
-				if (identityName) {
-					window?.guardian?.ophan?.record({
-						componentEvent: {
-							component: {
-								componentType: 'NEWSLETTER_SUBSCRIPTION',
-								id: identityName,
-							},
-							action: 'CLICK',
-							value: selected ? 'untick' : 'tick',
-						},
-					});
-				}
-			}}
+			onClick={interact}
 			css={[
 				standardText,
 				{
@@ -132,9 +128,9 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 			<div css={{ position: 'absolute', left: 0 }}>
 				<Checkbox
 					checked={!!selected}
-					onChange={(_) => {
-						return;
-					}}
+					onChange={interact}
+					label={accessibleLabel}
+					hideLabel={true}
 				/>
 			</div>
 			{title && getTitle(title)}
