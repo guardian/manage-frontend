@@ -23,7 +23,7 @@ import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
 import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
 import { DownloadAppCta } from '../../shared/DownloadAppCta';
-import { DownloadFeastAppCta } from '../../shared/DownloadFeastAppCta';
+import { DownloadFeastAppCtaWithIcon } from '../../shared/DownloadFeastAppCtaWithIcon';
 import { Heading } from '../../shared/Heading';
 import type {
 	CancellationContextInterface,
@@ -324,7 +324,7 @@ export const CancelAlternativeConfirmed = () => {
 						</div>
 					</div>
 					<DownloadAppCta additionalCss={appAdCss} />
-					<DownloadFeastAppCta additionalCss={appAdCss} />
+					<DownloadFeastAppCtaWithIcon additionalCss={appAdCss} />
 					<div css={dontForgetCss}>
 						<SvgInfoRound
 							size="small"
