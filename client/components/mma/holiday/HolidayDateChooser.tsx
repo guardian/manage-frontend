@@ -203,7 +203,6 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 			const maybeLockedStartDate = extractMaybeLockedStartDate(
 				existingHolidayStopToAmend,
 			);
-
 			setSelectedRange(existingHolidayStopToAmend.dateRange);
 			setValidationErrorMessage(
 				`Please select your new ${
