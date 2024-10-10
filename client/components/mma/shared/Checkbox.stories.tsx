@@ -8,6 +8,7 @@ export default {
 		checked: false,
 		required: undefined,
 		label: '',
+		hideLabel: false,
 		checkboxFill: undefined,
 		maxWidth: '',
 	},
@@ -33,6 +34,13 @@ export const Checked = {
 export const WithLabel = {
 	args: {
 		label: 'Guardian Weekly newsletter',
+	},
+};
+
+export const WithHiddenLabel = {
+	args: {
+		label: 'Guardian Weekly newsletter',
+		hideLabel: true,
 	},
 };
 

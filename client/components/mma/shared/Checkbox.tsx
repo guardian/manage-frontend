@@ -1,11 +1,12 @@
 import { palette } from '@guardian/source/foundations';
-import type * as React from 'react';
 
 export interface CheckboxProps {
 	checked: boolean;
 	required?: true;
 	onChange: (newValue: boolean) => void;
-	label?: string;
+	// A label should always be provided for accessibility reasons, it can be hidden with the hideLabel prop.
+	label: string;
+	hideLabel?: boolean;
 	checkboxFill?: string;
 	maxWidth?: string;
 }
@@ -45,25 +46,20 @@ export const Checkbox = (props: CheckboxProps) => (
 			}}
 			// accessibility props below
 			role="checkbox"
+			aria-label={props.label}
 			aria-checked={props.checked}
 			tabIndex={0}
-			onKeyPress={() => props.onChange(!props.checked)}
-		>
-			<input
-				type="checkbox"
-				css={{
-					position: 'absolute',
-					zIndex: -999999,
-					overflow: 'hidden',
-					opacity: 0,
-				}}
-				onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-					props.onChange(event.target.checked)
+			onKeyDown={(e) => {
+				// https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/checkbox_role
+				// Space should toggle the checkbox
+				// This is handled implicitly when using a native input[type="checkbox"]
+				if (e.key === ' ') {
+					// Prevent the page from jumping when the space key is pressed
+					e.preventDefault();
+					props.onChange(!props.checked);
 				}
-				checked={props.checked}
-				required={props.required}
-				tabIndex={-1}
-			/>
+			}}
+		>
 			<div
 				css={{
 					position: 'absolute',
@@ -88,6 +84,6 @@ export const Checkbox = (props: CheckboxProps) => (
 				/>
 			</div>
 		</div>
-		<span>{props.label}</span>
+		{!props.hideLabel && <span>{props.label}</span>}
 	</label>
 );

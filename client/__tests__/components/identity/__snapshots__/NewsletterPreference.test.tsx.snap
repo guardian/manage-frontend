@@ -51,13 +51,6 @@ exports[`NewsletterPreference component renders correctly and displays marketing
 
 .emotion-4 {
   position: absolute;
-  z-index: -999999;
-  overflow: hidden;
-  opacity: 0;
-}
-
-.emotion-5 {
-  position: absolute;
   left: 3px;
   top: 5px;
   width: 12px;
@@ -69,7 +62,7 @@ exports[`NewsletterPreference component renders correctly and displays marketing
   text-align: right;
 }
 
-.emotion-6 {
+.emotion-5 {
   width: 2px;
   height: 6px;
   border-color: #FFFFFF;
@@ -80,7 +73,7 @@ exports[`NewsletterPreference component renders correctly and displays marketing
   transition-delay: .1s;
 }
 
-.emotion-7 {
+.emotion-6 {
   font-size: 14px;
   font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   cursor: pointer;
@@ -91,24 +84,24 @@ exports[`NewsletterPreference component renders correctly and displays marketing
   margin: 0;
 }
 
-.emotion-8 {
+.emotion-7 {
   padding: 2.88px 0 0 0;
 }
 
-.emotion-9 {
+.emotion-8 {
   font-size: 12px;
   line-height: 16px;
   margin: 3px 0 0 0;
   opacity: 0.75;
 }
 
-.emotion-10 {
+.emotion-9 {
   display: inline-block;
   margin-right: 8px;
   vertical-align: middle;
 }
 
-.emotion-11 {
+.emotion-10 {
   fill: #DCDCDC;
 }
 
@@ -125,47 +118,40 @@ exports[`NewsletterPreference component renders correctly and displays marketing
     >
       <div
         aria-checked={false}
+        aria-label="Test title (Test frequency)"
         className="checkbox emotion-3"
-        onKeyPress={[Function]}
+        onKeyDown={[Function]}
         role="checkbox"
         tabIndex={0}
       >
-        <input
-          checked={false}
-          className="emotion-4"
-          onChange={[Function]}
-          tabIndex={-1}
-          type="checkbox"
-        />
         <div
-          className="emotion-5"
+          className="emotion-4"
         >
           <div
-            className="emotion-6"
+            className="emotion-5"
           />
         </div>
       </div>
-      <span />
     </label>
   </div>
   <p
-    className="emotion-7"
+    className="emotion-6"
   >
     Test title
   </p>
   <p
-    className="emotion-8"
+    className="emotion-7"
   >
     Test description
   </p>
   <p
-    className="emotion-9"
+    className="emotion-8"
   >
     <span
-      className="emotion-10"
+      className="emotion-9"
     >
       <svg
-        className="emotion-11"
+        className="emotion-10"
         height="11px"
         viewBox="0 0 11 11"
         width="11px"
@@ -230,13 +216,6 @@ exports[`NewsletterPreference component will select the checkbox when the select
 
 .emotion-4 {
   position: absolute;
-  z-index: -999999;
-  overflow: hidden;
-  opacity: 0;
-}
-
-.emotion-5 {
-  position: absolute;
   left: 3px;
   top: 5px;
   width: 12px;
@@ -248,7 +227,7 @@ exports[`NewsletterPreference component will select the checkbox when the select
   text-align: right;
 }
 
-.emotion-6 {
+.emotion-5 {
   width: 12px;
   height: 6px;
   border-color: #FFFFFF;
@@ -259,7 +238,7 @@ exports[`NewsletterPreference component will select the checkbox when the select
   transition-delay: .1s;
 }
 
-.emotion-7 {
+.emotion-6 {
   font-size: 14px;
   font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   cursor: pointer;
@@ -270,24 +249,24 @@ exports[`NewsletterPreference component will select the checkbox when the select
   margin: 0;
 }
 
-.emotion-8 {
+.emotion-7 {
   padding: 2.88px 0 0 0;
 }
 
-.emotion-9 {
+.emotion-8 {
   font-size: 12px;
   line-height: 16px;
   margin: 3px 0 0 0;
   opacity: 0.75;
 }
 
-.emotion-10 {
+.emotion-9 {
   display: inline-block;
   margin-right: 8px;
   vertical-align: middle;
 }
 
-.emotion-11 {
+.emotion-10 {
   fill: #DCDCDC;
 }
 
@@ -304,47 +283,40 @@ exports[`NewsletterPreference component will select the checkbox when the select
     >
       <div
         aria-checked={true}
+        aria-label="Test title (Test frequency)"
         className="checkbox emotion-3"
-        onKeyPress={[Function]}
+        onKeyDown={[Function]}
         role="checkbox"
         tabIndex={0}
       >
-        <input
-          checked={true}
-          className="emotion-4"
-          onChange={[Function]}
-          tabIndex={-1}
-          type="checkbox"
-        />
         <div
-          className="emotion-5"
+          className="emotion-4"
         >
           <div
-            className="emotion-6"
+            className="emotion-5"
           />
         </div>
       </div>
-      <span />
     </label>
   </div>
   <p
-    className="emotion-7"
+    className="emotion-6"
   >
     Test title
   </p>
   <p
-    className="emotion-8"
+    className="emotion-7"
   >
     Test description
   </p>
   <p
-    className="emotion-9"
+    className="emotion-8"
   >
     <span
-      className="emotion-10"
+      className="emotion-9"
     >
       <svg
-        className="emotion-11"
+        className="emotion-10"
         height="11px"
         viewBox="0 0 11 11"
         width="11px"

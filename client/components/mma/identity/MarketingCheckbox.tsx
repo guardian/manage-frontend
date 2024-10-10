@@ -5,7 +5,7 @@ import { standardSansText } from './sharedStyles';
 interface MarketingCheckboxProps {
 	id: string;
 	description?: string;
-	title?: string;
+	title: string;
 	selected?: boolean;
 	onClick: (id: string) => {};
 }
@@ -38,18 +38,11 @@ const getDescription = (description: MarketingCheckboxProps['description']) => (
 
 export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
 	const { id, description, selected, title, onClick } = props;
+
 	return (
 		<div
 			data-cy={id}
-			onClick={(e) => {
-				// Checkboxes inside labels will trigger click events twice.
-				// Ignore the input click event
-				if (
-					e.target instanceof Element &&
-					e.target.nodeName === 'INPUT'
-				) {
-					return;
-				}
+			onClick={() => {
 				onClick(id);
 			}}
 			css={[
@@ -64,9 +57,9 @@ export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
 			<div css={{ position: 'absolute', left: 0 }}>
 				<Checkbox
 					checked={!!selected}
-					onChange={(_) => {
-						return;
-					}}
+					onChange={() => onClick(id)}
+					label={title}
+					hideLabel={true}
 				/>
 			</div>
 			{title && getTitle(title)}
