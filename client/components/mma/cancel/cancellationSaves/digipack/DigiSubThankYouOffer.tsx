@@ -130,9 +130,7 @@ const DiscountOffer = ({
 );
 
 function getDiscountPeriod(discountPreview: DiscountPreviewResponse): string {
-	return `${
-		discountPreview.upToPeriods
-	} ${discountPreview.upToPeriodsType.toLowerCase()}`;
+	return `${discountPreview.upToPeriods} ${discountPreview.upToPeriodsType}`;
 }
 
 export interface DigisubCancellationRouterState

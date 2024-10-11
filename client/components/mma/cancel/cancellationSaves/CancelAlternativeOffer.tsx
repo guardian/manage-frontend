@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import {
 	from,
 	neutral,
+	news,
 	palette,
 	space,
 	textEgyptian17,
@@ -122,6 +123,11 @@ const strikethroughPriceCss = css`
 	margin: 0;
 `;
 
+const discountedPriceSpan = css`
+	${textSansBold20};
+	color: ${news[500]};
+`;
+
 const offerBoxTitleCss = css`
 	color: ${neutral[7]};
 	margin: 0;
@@ -187,7 +193,7 @@ export const CancelAlternativeOffer = () => {
 	const mainPlan = getMainPlan(productDetail.subscription);
 
 	const offerPeriodWord = number2words(routerState.upToPeriods);
-	const offerPeriodType = routerState.upToPeriodsType.toLowerCase();
+	const offerPeriodType = routerState.upToPeriodsType;
 	const nextNonDiscountedPaymentDate = parseDate(
 		routerState.nextNonDiscountedPaymentDate,
 		'yyyy-MM-dd',
@@ -200,8 +206,18 @@ export const CancelAlternativeOffer = () => {
 	const alternativeIsOffer = productType.productType === 'supporterplus';
 	const alternativeIsPause = productType.productType === 'contributions';
 
+	const offerIsPercentageOrFree: 'percentage' | 'free' | false =
+		alternativeIsOffer &&
+		(routerState.discountPercentage < 100 ? 'percentage' : 'free');
+
 	const standfirstCopy: Partial<Record<ProductTypeKeys, string>> = {
-		supporterplus: `Instead of cancelling, enjoy ${offerPeriodWord} ${offerPeriodType} with all your existing benefits — for free.`,
+		supporterplus: `Instead of cancelling, enjoy ${
+			offerIsPercentageOrFree === 'percentage'
+				? `${routerState.discountPercentage}% off for `
+				: ''
+		}${offerPeriodWord} ${offerPeriodType} with all your existing benefits${
+			offerIsPercentageOrFree === 'free' ? ' — for free' : ''
+		}.`,
 		contributions: `Instead of cancelling, you can pause your recurring payment for ${offerPeriodWord} ${offerPeriodType}.`,
 	};
 
@@ -284,6 +300,14 @@ export const CancelAlternativeOffer = () => {
 								{humanReadableStrikethroughPrice}/
 								{mainPlan.billingPeriod}
 							</s>
+							{offerIsPercentageOrFree === 'percentage' && (
+								<span css={discountedPriceSpan}>
+									{' '}
+									{mainPlan.currency}
+									{routerState.discountedPrice}/
+									{mainPlan.billingPeriod}
+								</span>
+							)}
 						</p>
 					)}
 
@@ -296,15 +320,20 @@ export const CancelAlternativeOffer = () => {
 							`,
 						]}
 					>
-						{alternativeIsOffer &&
-							`${capitalize(
-								offerPeriodWord,
-							)} ${offerPeriodType} free`}
+						{offerIsPercentageOrFree &&
+						offerIsPercentageOrFree === 'free'
+							? `${capitalize(
+									offerPeriodWord,
+							  )} ${offerPeriodType} free`
+							: 'New copy needed'}
 						{alternativeIsPause &&
 							`Would you like to pause your support to the Guardian for ${offerPeriodWord} ${offerPeriodType}?`}
 					</h4>
 					<p css={billingResumptionDateCss}>
-						Billing resumes on {nextNonDiscountedPaymentDate}
+						{offerIsPercentageOrFree === 'percentage' &&
+						isPaidSubscriptionPlan(mainPlan)
+							? `You will pay ${mainPlan.currency}${routerState.discountedPrice} for the next 12 months then ${mainPlan.currency}${humanReadableStrikethroughPrice}/${mainPlan.billingPeriod}`
+							: `Billing resumes on ${nextNonDiscountedPaymentDate}`}
 					</p>
 					<Button
 						onClick={() => {

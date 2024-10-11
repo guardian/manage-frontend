@@ -89,8 +89,9 @@ describe('Cancel contribution', () => {
 	if (featureSwitches.contributionCancellationPause) {
 		const discountPreviewResponse: DiscountPreviewResponse = {
 			discountedPrice: 0,
+			discountPercentage: 100,
 			upToPeriods: 2,
-			upToPeriodsType: 'Months',
+			upToPeriodsType: 'month',
 			firstDiscountedPaymentDate: '2024-05-30',
 			nextNonDiscountedPaymentDate: '2024-07-30',
 			nonDiscountedPayments: [{ date: '2024-07-30', amount: 7 }],

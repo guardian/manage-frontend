@@ -1,5 +1,5 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
-import {http, HttpResponse} from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
 import { ConfirmDigiSubCancellation } from '@/client/components/mma/cancel/cancellationSaves/digipack/ConfirmDigiSubCancellation';
@@ -57,10 +57,10 @@ export const EligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 				return HttpResponse.json({
 					discountedPrice: 111.75,
 					upToPeriods: '12',
-					upToPeriodsType: 'Months',
+					upToPeriodsType: 'month',
 					firstDiscountedPaymentDate: '2024-05-30',
 					nextNonDiscountedPaymentDate: '2024-07-30',
-				})
+				});
 			}),
 		],
 	},
@@ -81,7 +81,7 @@ export const IneligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 			http.post('/api/discounts/preview-discount', () => {
 				return new HttpResponse(null, {
 					status: 400,
-				})
+				});
 			}),
 		],
 	},

@@ -9,11 +9,18 @@ import {
 import type { ChangeEvent, FC } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
+import type {
+	DiscountPeriodType,
+	DiscountPreviewResponse,
+} from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
-import type { TrueFalsePending } from '@/shared/generalTypes';
+import type {
+	TrueFalsePending} from '@/shared/generalTypes';
+import {
+	appendCorrectPluralisation
+} from '@/shared/generalTypes';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../../shared/dates';
 import {
 	getMainPlan,
@@ -292,6 +299,21 @@ const ConfirmCancellationAndReturnRow = (
 		productType.productType === 'supporterplus' ||
 		productType.productType === 'contributions';
 
+	const sanitizeOfferData = (
+		offerData: DiscountPreviewResponse,
+	): DiscountPreviewResponse => {
+		if (offerData.upToPeriodsType) {
+			return {
+				...offerData,
+				upToPeriodsType: appendCorrectPluralisation(
+					offerData.upToPeriodsType,
+					offerData.upToPeriods,
+				) as DiscountPeriodType,
+			};
+		}
+		return offerData;
+	};
+
 	useEffect(() => {
 		if (
 			isSupporterPlusAndFreePeriodOfferIsActive ||
@@ -314,7 +336,8 @@ const ConfirmCancellationAndReturnRow = (
 						// api returns a 400 response if the user is not eligible
 						setShowAlternativeBeforeCancelling(true);
 						const offerData = await response.json();
-						setDiscountPreviewDetails(offerData);
+						const sanitizedOfferData = sanitizeOfferData(offerData);
+						setDiscountPreviewDetails(sanitizedOfferData);
 					} else {
 						setShowAlternativeBeforeCancelling(false);
 					}

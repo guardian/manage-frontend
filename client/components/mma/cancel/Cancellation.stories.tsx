@@ -7,6 +7,7 @@ import {
 	contributionPaidByCard,
 	contributionPaidByPayPal,
 	guardianWeeklyPaidByCard,
+	supporterPlusAnnual,
 	supporterPlusCancelled,
 	supporterPlusMonthlyAllAccessDigital,
 } from '../../../fixtures/productBuilder/testProducts';
@@ -102,7 +103,7 @@ export const ReviewWithReduceAmount: StoryObj<typeof CancellationContainer> = {
 	},
 };
 
-export const Offer: StoryObj<typeof CancellationContainer> = {
+export const OfferMonthly: StoryObj<typeof CancellationContainer> = {
 	render: () => {
 		return <CancelAlternativeOffer />;
 	},
@@ -117,8 +118,9 @@ export const Offer: StoryObj<typeof CancellationContainer> = {
 			state: {
 				productDetail: supporterPlusMonthlyAllAccessDigital(),
 				discountedPrice: 0,
+				discountPercentage: 100,
 				upToPeriods: 2,
-				upToPeriodsType: 'months',
+				upToPeriodsType: 'month',
 				firstDiscountedPaymentDate: '2024-05-30',
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
@@ -132,7 +134,38 @@ export const Offer: StoryObj<typeof CancellationContainer> = {
 	},
 };
 
-export const OfferReview: StoryObj<typeof CancellationContainer> = {
+export const OfferYearly: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeOffer />;
+	},
+
+	parameters: {
+		msw: [
+			http.post('/api/case', () => {
+				return HttpResponse.json({ id: 'caseId' });
+			}),
+		],
+		reactRouter: {
+			state: {
+				productDetail: supporterPlusAnnual(),
+				discountedPrice: 90,
+				discountPercentage: 25,
+				upToPeriods: 1,
+				upToPeriodsType: 'year',
+				firstDiscountedPaymentDate: '2024-05-30',
+				nextNonDiscountedPaymentDate: '2025-05-30',
+				nonDiscountedPayments: [{ date: '2025-05-30', amount: 120 }],
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
+		},
+	},
+};
+
+export const OfferReviewMonthly: StoryObj<typeof CancellationContainer> = {
 	render: () => {
 		return <CancelAlternativeReview />;
 	},
@@ -142,8 +175,9 @@ export const OfferReview: StoryObj<typeof CancellationContainer> = {
 			state: {
 				productDetail: supporterPlusMonthlyAllAccessDigital(),
 				discountedPrice: 0,
+				discountPercentage: 100,
 				upToPeriods: 2,
-				upToPeriodsType: 'months',
+				upToPeriodsType: 'month',
 				firstDiscountedPaymentDate: '2024-05-30',
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
@@ -164,7 +198,40 @@ export const OfferReview: StoryObj<typeof CancellationContainer> = {
 	},
 };
 
-export const OfferConfirmed: StoryObj<typeof CancellationContainer> = {
+export const OfferReviewYearly: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeReview />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: supporterPlusAnnual(),
+				discountedPrice: 90,
+				discountPercentage: 25,
+				upToPeriods: 1,
+				upToPeriodsType: 'year',
+				firstDiscountedPaymentDate: '2024-05-30',
+				nextNonDiscountedPaymentDate: '2025-05-30',
+				nonDiscountedPayments: [{ date: '2025-05-30', amount: 120 }],
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
+		},
+		msw: [
+			http.post('/api/discounts/apply-discount', () => {
+				return new HttpResponse(null, {
+					status: 201,
+				});
+			}),
+		],
+	},
+};
+
+export const OfferConfirmedMonthly: StoryObj<typeof CancellationContainer> = {
 	render: () => {
 		return <CancelAlternativeConfirmed />;
 	},
@@ -172,9 +239,34 @@ export const OfferConfirmed: StoryObj<typeof CancellationContainer> = {
 		reactRouter: {
 			state: {
 				upToPeriods: 2,
-				upToPeriodsType: 'months',
+				upToPeriodsType: 'month',
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
+		},
+	},
+};
+
+export const OfferConfirmedYearly: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeConfirmed />;
+	},
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: supporterPlusAnnual(),
+				upToPeriods: 1,
+				upToPeriodsType: 'year',
+				discountPercentage: 25,
+				discountedPrice: 90,
+				firstDiscountedPaymentDate: '2024-05-30',
+				nextNonDiscountedPaymentDate: '2025-05-30',
+				nonDiscountedPayments: [{ date: '2025-05-30', amount: 120 }],
 			},
 			container: (
 				<CancellationContainer
@@ -199,8 +291,9 @@ export const Pause: StoryObj<typeof CancellationContainer> = {
 		reactRouter: {
 			state: {
 				discountedPrice: 0,
+				discountPercentage: 100,
 				upToPeriods: 2,
-				upToPeriodsType: 'months',
+				upToPeriodsType: 'month',
 				firstDiscountedPaymentDate: '2024-05-30',
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
@@ -223,8 +316,9 @@ export const PauseReview: StoryObj<typeof CancellationContainer> = {
 		reactRouter: {
 			state: {
 				discountedPrice: 0,
+				discountPercentage: 100,
 				upToPeriods: 2,
-				upToPeriodsType: 'months',
+				upToPeriodsType: 'month',
 				firstDiscountedPaymentDate: '2024-05-30',
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
@@ -253,7 +347,7 @@ export const PauseConfirmed: StoryObj<typeof CancellationContainer> = {
 		reactRouter: {
 			state: {
 				upToPeriods: 2,
-				upToPeriodsType: 'months',
+				upToPeriodsType: 'month',
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
@@ -278,7 +372,7 @@ export const SupportplusCancelConfirm: StoryObj<typeof CancellationContainer> =
 					eligibleForFreePeriodOffer: true,
 					discountedPrice: 0,
 					upToPeriods: 2,
-					upToPeriodsType: 'months',
+					upToPeriodsType: 'month',
 					firstDiscountedPaymentDate: '2024-05-30',
 					nextNonDiscountedPaymentDate: '2024-07-30',
 					nonDiscountedPayments: [
