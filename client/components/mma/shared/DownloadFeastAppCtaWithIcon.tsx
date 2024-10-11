@@ -6,7 +6,7 @@ import { AndroidPlayStoreButton } from './assets/AndroidPlayStoreButton';
 import { AppleAppStoreButton } from './assets/AppleAppStoreButton';
 import { FeastAppIcon } from './assets/FeastAppIcon';
 
-interface DownloadFeastAppCtaProps {
+interface DownloadFeastAppCtaWithIconProps {
 	additionalCss?: SerializedStyles;
 }
 
@@ -45,7 +45,9 @@ const appIconContainerCss = css`
 	}
 `;
 
-export const DownloadFeastAppCta = (props: DownloadFeastAppCtaProps) => {
+export const DownloadFeastAppCtaWithIcon = (
+	props: DownloadFeastAppCtaWithIconProps,
+) => {
 	return (
 		<div css={[appAdCss, props.additionalCss]}>
 			<div css={inlineContentsCss}>
