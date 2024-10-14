@@ -3491,8 +3491,10 @@
     yaml "^1.7.2"
     yargs "^15.4.1"
 
-"@guardian/ophan-tracker-js@file:../ophan/tracker-js":
-  version "2.2.3"
+"@guardian/ophan-tracker-js@2.2.6":
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-2.2.6.tgz#9798b8aa74507ba3a4d054cd1743cfacb83639ca"
+  integrity sha512-q7v2jbp00x+ItVrM8FOQQpRPWtwJSm0wJe5L+rKEM2m5ttOUV9gM2nc3k2mxIkoNhCYbgpgm3EBX/3mUAEA5Iw==
   dependencies:
     "@guardian/tsconfig" "^1.0.0"
 
