@@ -47,7 +47,6 @@ export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
 				standardSansText,
 				{
 					marginTop: '12px',
-					paddingLeft: '30px',
 				},
 			]}
 		>

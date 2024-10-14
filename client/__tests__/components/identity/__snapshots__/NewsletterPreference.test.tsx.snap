@@ -234,7 +234,6 @@ html:not(.src-focus-disabled) .emotion-2:focus {
 
 <div
   className="emotion-0"
-  data-cy="13"
 >
   <div
     className="emotion-1"
@@ -244,6 +243,7 @@ html:not(.src-focus-disabled) .emotion-2:focus {
       aria-label="Test title (Test frequency)"
       checked={false}
       className="emotion-2"
+      data-cy="13"
       id=":r0:"
       onChange={[Function]}
       type="checkbox"
@@ -535,7 +535,6 @@ html:not(.src-focus-disabled) .emotion-2:focus {
 
 <div
   className="emotion-0"
-  data-cy="13"
 >
   <div
     className="emotion-1"
@@ -545,6 +544,7 @@ html:not(.src-focus-disabled) .emotion-2:focus {
       aria-label="Test title (Test frequency)"
       checked={true}
       className="emotion-2"
+      data-cy="13"
       id=":r1:"
       onChange={[Function]}
       type="checkbox"

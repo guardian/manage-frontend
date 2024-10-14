@@ -37,19 +37,26 @@ describe('E2E with Okta', () => {
 			cy.get('[data-cy="similar_guardian_products"]').click();
 			cy.visit('/email-prefs');
 			cy.get('[data-cy="similar_guardian_products"]')
-				.parents('div')
-				.get('.checkbox')
-				.should('have.attr', 'aria-checked')
-				.and('eq', 'true');
+				.find('input[type=checkbox]')
+				.should('be.checked');
 		});
 
 		it('should allow the user to unsubscribe from all emails', () => {
 			cy.visit('/email-prefs');
 			cy.findByText('Unsubscribe from all emails').click();
 			cy.visit('/email-prefs');
-			cy.get('.checkbox')
-				.should('have.attr', 'aria-checked')
-				.and('eq', 'false');
+
+			cy.get('[data-cy="similar_guardian_products"]')
+				.find('input[type=checkbox]')
+				.should('not.be.checked');
+
+			cy.get('[data-cy="your_newsletters"]')
+				.find('a')
+				.click({ multiple: true });
+
+			cy.get('[data-cy="your_newsletters"]')
+				.find('input[type=checkbox]')
+				.should('not.be.checked');
 		});
 	});
 

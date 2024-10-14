@@ -82,6 +82,7 @@ export const NewsletterSection: FC<NewsletterSectionProps> = (props) => {
 	const { newsletters, clickHandler } = props;
 	return (
 		<PageSection
+			testSelector="your_newsletters"
 			title="Your newsletters"
 			description={`
         Our regular newsletters help you get closer to our quality,

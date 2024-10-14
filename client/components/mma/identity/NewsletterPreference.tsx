@@ -115,7 +115,6 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 	return (
 		<div
 			key={id}
-			data-cy={id}
 			css={[
 				standardText,
 				{
@@ -126,6 +125,7 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 			]}
 		>
 			<Checkbox
+				data-cy={id}
 				checked={!!selected}
 				onChange={interact}
 				label={title && getTitle(title)}
