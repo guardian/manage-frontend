@@ -7,70 +7,187 @@ exports[`NewsletterPreference component renders correctly and displays marketing
   line-height: 1.333;
   margin-top: 12px;
   padding-left: 30px;
-  position: relative;
 }
 
 .emotion-1 {
-  position: absolute;
-  left: 0;
-}
-
-.emotion-2 {
+  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 44px;
   cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  margin-bottom: 12px;
 }
 
-.emotion-2:hover .checkbox {
-  box-shadow: 0 0 0 3px #EDEDED;
+.emotion-1:hover input {
+  border: 2px solid #0077B6;
 }
 
-.emotion-3 {
-  -webkit-transition: all .2s ease-in-out;
-  transition: all .2s ease-in-out;
-  border: 1px solid #999999;
-  min-width: 18px;
-  height: 18px;
+.emotion-1:hover input:indeterminate:after {
+  margin: -1px;
+}
+
+.emotion-1:active input {
+  border-color: #0077B6;
+}
+
+.emotion-2 {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  box-sizing: border-box;
   display: inline-block;
-  margin: 3px;
-  margin-right: 10px;
-  background: #FFFFFF;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  margin: 0 8px 0 0;
+  border: 1px solid currentColor;
+  background: transparent;
+  border-radius: 4px;
   position: relative;
+  -webkit-transition: box-shadow .2s cubic-bezier(.64, .57, .67, 1.53);
+  transition: box-shadow .2s cubic-bezier(.64, .57, .67, 1.53);
+  transition-delay: 0.08s;
+  color: #707070;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.emotion-2:focus {
   outline: 0;
 }
 
-.emotion-3:focus {
-  box-shadow: 0 0 0 3px #FFE500;
+html:not(.src-focus-disabled) .emotion-2:focus {
+  box-shadow: 0 0 0 3px #0077B6;
+}
+
+@supports ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none)) {
+  .emotion-2 {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+  }
+
+  .emotion-2:checked {
+    border: 2px solid #0077B6;
+  }
+
+  .emotion-2:checked~span:before {
+    right: 0;
+  }
+
+  .emotion-2:checked~span:after {
+    top: 0;
+  }
+
+  .emotion-2:indeterminate:after {
+    font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    font-weight: 400;
+    font-style: normal;
+    --source-text-decoration-thickness: 3px;
+    color: #707070;
+    content: '-';
+    position: absolute;
+    top: -7px;
+    left: 6px;
+    z-index: 5;
+  }
+}
+
+@supports (
+		(appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none)
+	) {
+  .emotion-3 {
+    position: absolute;
+    width: 6px;
+    height: 12px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    top: 14px;
+    left: 9px;
+    pointer-events: none;
+  }
+
+  .emotion-3:after,
+  .emotion-3:before {
+    position: absolute;
+    display: block;
+    background-color: #0077B6;
+    -webkit-transition: all .2s cubic-bezier(.64, .57, .67, 1.53) ease-in-out;
+    transition: all .2s cubic-bezier(.64, .57, .67, 1.53) ease-in-out;
+    content: '';
+  }
+
+  .emotion-3:before {
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    right: 100%;
+    transition-delay: 0.05s;
+  }
+
+  .emotion-3:after {
+    bottom: 0;
+    right: 0;
+    top: 100%;
+    width: 2px;
+    transition-delay: 0.1s;
+  }
+}
+
+@supports ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none)) {
+  .emotion-3 {
+    top: 15px;
+    left: 9px;
+  }
+}
+
+@supports ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none)) {
+  .emotion-3 {
+    top: 5px;
+  }
 }
 
 .emotion-4 {
-  position: absolute;
-  left: 3px;
-  top: 5px;
-  width: 12px;
-  height: 6px;
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  text-align: right;
+  cursor: pointer;
 }
 
 .emotion-5 {
-  width: 2px;
-  height: 6px;
-  border-color: #FFFFFF;
-  border-width: 0 0 2px 2px;
-  border-style: solid;
-  -webkit-transition: all .2s ease-in-out;
-  transition: all .2s ease-in-out;
-  transition-delay: .1s;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 400;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
+  color: #121212;
+  width: 100%;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 400;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
+  margin-top: 1px;
+}
+
+.emotion-5:empty {
+  margin-top: 2px;
 }
 
 .emotion-6 {
@@ -85,84 +202,102 @@ exports[`NewsletterPreference component renders correctly and displays marketing
 }
 
 .emotion-7 {
-  padding: 2.88px 0 0 0;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  font-weight: 400;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
+  color: #707070;
 }
 
 .emotion-8 {
+  padding: 2.88px 0 0 0;
+}
+
+.emotion-9 {
   font-size: 12px;
   line-height: 16px;
   margin: 3px 0 0 0;
   opacity: 0.75;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: inline-block;
   margin-right: 8px;
   vertical-align: middle;
 }
 
-.emotion-10 {
+.emotion-11 {
   fill: #DCDCDC;
 }
 
 <div
   className="emotion-0"
   data-cy="13"
-  onClick={[Function]}
 >
   <div
     className="emotion-1"
   >
-    <label
+    <input
+      aria-invalid={false}
+      aria-label="Test title (Test frequency)"
+      checked={false}
       className="emotion-2"
+      id=":r0:"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="emotion-3"
+    />
+    <label
+      className="emotion-4"
+      htmlFor=":r0:"
     >
-      <div
-        aria-checked={false}
-        aria-label="Test title (Test frequency)"
-        className="checkbox emotion-3"
-        onKeyDown={[Function]}
-        role="checkbox"
-        tabIndex={0}
-      >
+      <div>
         <div
-          className="emotion-4"
+          className="emotion-5"
         >
-          <div
-            className="emotion-5"
-          />
+          <p
+            className="emotion-6"
+          >
+            Test title
+          </p>
+        </div>
+        <div
+          className="emotion-7"
+        >
+          <div>
+            <p
+              className="emotion-8"
+            >
+              Test description
+            </p>
+            <p
+              className="emotion-9"
+            >
+              <span
+                className="emotion-10"
+              >
+                <svg
+                  className="emotion-11"
+                  height="11px"
+                  viewBox="0 0 11 11"
+                  width="11px"
+                >
+                  <path
+                    d="M5.4 0C2.4 0 0 2.4 0 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4S8.4 0 5.4 0zm3 6.8H4.7V1.7h.7L6 5.4l2.4.6v.8z"
+                  />
+                </svg>
+              </span>
+              Test frequency
+            </p>
+          </div>
         </div>
       </div>
     </label>
   </div>
-  <p
-    className="emotion-6"
-  >
-    Test title
-  </p>
-  <p
-    className="emotion-7"
-  >
-    Test description
-  </p>
-  <p
-    className="emotion-8"
-  >
-    <span
-      className="emotion-9"
-    >
-      <svg
-        className="emotion-10"
-        height="11px"
-        viewBox="0 0 11 11"
-        width="11px"
-      >
-        <path
-          d="M5.4 0C2.4 0 0 2.4 0 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4S8.4 0 5.4 0zm3 6.8H4.7V1.7h.7L6 5.4l2.4.6v.8z"
-        />
-      </svg>
-    </span>
-    Test frequency
-  </p>
 </div>
 `;
 
@@ -173,69 +308,187 @@ exports[`NewsletterPreference component will select the checkbox when the select
   line-height: 1.333;
   margin-top: 12px;
   padding-left: 30px;
-  position: relative;
 }
 
 .emotion-1 {
-  position: absolute;
-  left: 0;
-}
-
-.emotion-2 {
+  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 44px;
   cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  margin-bottom: 12px;
 }
 
-.emotion-2:hover .checkbox {
-  box-shadow: 0 0 0 3px #EDEDED;
+.emotion-1:hover input {
+  border: 2px solid #0077B6;
 }
 
-.emotion-3 {
-  -webkit-transition: all .2s ease-in-out;
-  transition: all .2s ease-in-out;
-  min-width: 18px;
-  height: 18px;
+.emotion-1:hover input:indeterminate:after {
+  margin: -1px;
+}
+
+.emotion-1:active input {
+  border-color: #0077B6;
+}
+
+.emotion-2 {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  box-sizing: border-box;
   display: inline-block;
-  margin: 3px;
-  margin-right: 10px;
-  background: #22874D;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  margin: 0 8px 0 0;
+  border: 1px solid currentColor;
+  background: transparent;
+  border-radius: 4px;
   position: relative;
+  -webkit-transition: box-shadow .2s cubic-bezier(.64, .57, .67, 1.53);
+  transition: box-shadow .2s cubic-bezier(.64, .57, .67, 1.53);
+  transition-delay: 0.08s;
+  color: #707070;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.emotion-2:focus {
   outline: 0;
 }
 
-.emotion-3:focus {
-  box-shadow: 0 0 0 3px #FFE500;
+html:not(.src-focus-disabled) .emotion-2:focus {
+  box-shadow: 0 0 0 3px #0077B6;
+}
+
+@supports ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none)) {
+  .emotion-2 {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+  }
+
+  .emotion-2:checked {
+    border: 2px solid #0077B6;
+  }
+
+  .emotion-2:checked~span:before {
+    right: 0;
+  }
+
+  .emotion-2:checked~span:after {
+    top: 0;
+  }
+
+  .emotion-2:indeterminate:after {
+    font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    font-weight: 400;
+    font-style: normal;
+    --source-text-decoration-thickness: 3px;
+    color: #707070;
+    content: '-';
+    position: absolute;
+    top: -7px;
+    left: 6px;
+    z-index: 5;
+  }
+}
+
+@supports (
+		(appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none)
+	) {
+  .emotion-3 {
+    position: absolute;
+    width: 6px;
+    height: 12px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    top: 14px;
+    left: 9px;
+    pointer-events: none;
+  }
+
+  .emotion-3:after,
+  .emotion-3:before {
+    position: absolute;
+    display: block;
+    background-color: #0077B6;
+    -webkit-transition: all .2s cubic-bezier(.64, .57, .67, 1.53) ease-in-out;
+    transition: all .2s cubic-bezier(.64, .57, .67, 1.53) ease-in-out;
+    content: '';
+  }
+
+  .emotion-3:before {
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    right: 100%;
+    transition-delay: 0.05s;
+  }
+
+  .emotion-3:after {
+    bottom: 0;
+    right: 0;
+    top: 100%;
+    width: 2px;
+    transition-delay: 0.1s;
+  }
+}
+
+@supports ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none)) {
+  .emotion-3 {
+    top: 15px;
+    left: 9px;
+  }
+}
+
+@supports ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none)) {
+  .emotion-3 {
+    top: 5px;
+  }
 }
 
 .emotion-4 {
-  position: absolute;
-  left: 3px;
-  top: 5px;
-  width: 12px;
-  height: 6px;
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  text-align: right;
+  cursor: pointer;
 }
 
 .emotion-5 {
-  width: 12px;
-  height: 6px;
-  border-color: #FFFFFF;
-  border-width: 0 0 2px 2px;
-  border-style: solid;
-  -webkit-transition: all .2s ease-in-out;
-  transition: all .2s ease-in-out;
-  transition-delay: .1s;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 400;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
+  color: #121212;
+  width: 100%;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 400;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
+  margin-top: 1px;
+}
+
+.emotion-5:empty {
+  margin-top: 2px;
 }
 
 .emotion-6 {
@@ -250,83 +503,101 @@ exports[`NewsletterPreference component will select the checkbox when the select
 }
 
 .emotion-7 {
-  padding: 2.88px 0 0 0;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+  font-weight: 400;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
+  color: #707070;
 }
 
 .emotion-8 {
+  padding: 2.88px 0 0 0;
+}
+
+.emotion-9 {
   font-size: 12px;
   line-height: 16px;
   margin: 3px 0 0 0;
   opacity: 0.75;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: inline-block;
   margin-right: 8px;
   vertical-align: middle;
 }
 
-.emotion-10 {
+.emotion-11 {
   fill: #DCDCDC;
 }
 
 <div
   className="emotion-0"
   data-cy="13"
-  onClick={[Function]}
 >
   <div
     className="emotion-1"
   >
-    <label
+    <input
+      aria-invalid={false}
+      aria-label="Test title (Test frequency)"
+      checked={true}
       className="emotion-2"
+      id=":r1:"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="emotion-3"
+    />
+    <label
+      className="emotion-4"
+      htmlFor=":r1:"
     >
-      <div
-        aria-checked={true}
-        aria-label="Test title (Test frequency)"
-        className="checkbox emotion-3"
-        onKeyDown={[Function]}
-        role="checkbox"
-        tabIndex={0}
-      >
+      <div>
         <div
-          className="emotion-4"
+          className="emotion-5"
         >
-          <div
-            className="emotion-5"
-          />
+          <p
+            className="emotion-6"
+          >
+            Test title
+          </p>
+        </div>
+        <div
+          className="emotion-7"
+        >
+          <div>
+            <p
+              className="emotion-8"
+            >
+              Test description
+            </p>
+            <p
+              className="emotion-9"
+            >
+              <span
+                className="emotion-10"
+              >
+                <svg
+                  className="emotion-11"
+                  height="11px"
+                  viewBox="0 0 11 11"
+                  width="11px"
+                >
+                  <path
+                    d="M5.4 0C2.4 0 0 2.4 0 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4S8.4 0 5.4 0zm3 6.8H4.7V1.7h.7L6 5.4l2.4.6v.8z"
+                  />
+                </svg>
+              </span>
+              Test frequency
+            </p>
+          </div>
         </div>
       </div>
     </label>
   </div>
-  <p
-    className="emotion-6"
-  >
-    Test title
-  </p>
-  <p
-    className="emotion-7"
-  >
-    Test description
-  </p>
-  <p
-    className="emotion-8"
-  >
-    <span
-      className="emotion-9"
-    >
-      <svg
-        className="emotion-10"
-        height="11px"
-        viewBox="0 0 11 11"
-        width="11px"
-      >
-        <path
-          d="M5.4 0C2.4 0 0 2.4 0 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4S8.4 0 5.4 0zm3 6.8H4.7V1.7h.7L6 5.4l2.4.6v.8z"
-        />
-      </svg>
-    </span>
-    Test frequency
-  </p>
 </div>
 `;

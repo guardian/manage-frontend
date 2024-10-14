@@ -43,9 +43,6 @@ export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
 		<div
 			key={id}
 			data-cy={id}
-			onClick={() => {
-				onClick(id);
-			}}
 			css={[
 				standardSansText,
 				{

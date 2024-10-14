@@ -47,7 +47,6 @@ const consentPreference = (
 	const { id, name, description, subscribed } = consent;
 	const props = {
 		id,
-		key: id,
 		title: name,
 		description,
 		selected: subscribed,

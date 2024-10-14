@@ -116,7 +116,6 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 		<div
 			key={id}
 			data-cy={id}
-			onClick={interact}
 			css={[
 				standardText,
 				{
