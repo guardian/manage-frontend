@@ -9,8 +9,15 @@ import {
 	baseNationalDelivery,
 	baseSupporterPlus,
 	baseTierThree,
+	baseVoucher,
 } from './baseProducts';
 import { cards, ProductBuilder } from './productBuilder';
+
+export function voucherPaidByCard() {
+	return new ProductBuilder(baseVoucher())
+		.payByCard()
+		.getProductDetailObject();
+}
 
 export function guardianWeeklyPaidByCard() {
 	return new ProductBuilder(baseGuardianWeekly())
