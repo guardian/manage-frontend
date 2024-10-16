@@ -1,5 +1,5 @@
+import { Checkbox } from '@guardian/source/react-components';
 import type { FC } from 'react';
-import { Checkbox } from '../shared/Checkbox';
 import { standardSansText } from './sharedStyles';
 
 interface MarketingCheckboxProps {
@@ -41,29 +41,21 @@ export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
 
 	return (
 		<div
+			key={id}
 			data-cy={id}
-			onClick={() => {
-				onClick(id);
-			}}
 			css={[
 				standardSansText,
 				{
 					marginTop: '12px',
-					paddingLeft: '30px',
-					position: 'relative',
 				},
 			]}
 		>
-			<div css={{ position: 'absolute', left: 0 }}>
-				<Checkbox
-					checked={!!selected}
-					onChange={() => onClick(id)}
-					label={title}
-					hideLabel={true}
-				/>
-			</div>
-			{title && getTitle(title)}
-			{description && getDescription(description)}
+			<Checkbox
+				checked={!!selected}
+				onChange={() => onClick(id)}
+				label={getTitle(title)}
+				supporting={getDescription(description)}
+			/>
 		</div>
 	);
 };

@@ -249,6 +249,70 @@ export function baseContribution(): ProductDetail {
 	};
 }
 
+export function baseVoucher(): ProductDetail {
+	return {
+		tier: 'Newspaper Voucher',
+		isPaidTier: true,
+		selfServiceCancellation: {
+			isAllowed: false,
+			phoneRegionsToDisplay: ['UK & ROW'],
+			shouldDisplayEmail: false,
+		},
+		joinDate: '2021-11-26',
+		optIn: true,
+		billingCountry: 'United Kingdom',
+		subscription: {
+			contactId: '0039E00001KA26BQAT',
+			deliveryAddress: {
+				addressLine1: 'Kings Place',
+				addressLine2: '90 York Way',
+				town: 'London',
+				postcode: 'N1 9GU',
+				country: 'United Kingdom',
+			},
+			safeToUpdatePaymentMethod: true,
+			start: '2021-12-06',
+			end: '2022-11-26',
+			nextPaymentPrice: 5699,
+			nextPaymentDate: '2024-10-29',
+			lastPaymentDate: null,
+			potentialCancellationDate: '2024-10-29',
+			anniversaryDate: '2022-12-06',
+			autoRenew: true,
+			cancelledAt: false,
+			subscriptionId: 'A-S00285104',
+			trialLength: -2629,
+			chargedThroughDate: null,
+			renewalDate: '2022-11-26',
+			currentPlans: [
+				{
+					name: 'Sixday',
+					start: '2021-12-06',
+					end: '2022-11-26',
+					shouldBeVisible: true,
+					chargedThrough: null,
+					price: 5699,
+					currency: '£',
+					currencyISO: 'GBP',
+					billingPeriod: 'month',
+					daysOfWeek: [
+						'Monday',
+						'Tuesday',
+						'Wednesday',
+						'Thursday',
+						'Friday',
+						'Saturday',
+					],
+				},
+			],
+			futurePlans: [],
+			readerType: 'Direct',
+			accountId: '8ad0824e7d584341017d5bc38c0d52dc',
+		},
+		isTestUser: false,
+	};
+}
+
 export function baseDigitalVoucher(): ProductDetail {
 	return {
 		tier: 'Newspaper Digital Voucher',

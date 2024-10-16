@@ -1,7 +1,8 @@
+import { css } from '@emotion/react';
 import { palette } from '@guardian/source/foundations';
+import { Checkbox } from '@guardian/source/react-components';
 import type { FC } from 'react';
 import { sans } from '../../../styles/fonts';
-import { Checkbox } from '../shared/Checkbox';
 
 interface NewsletterPreferenceProps {
 	id: string;
@@ -113,29 +114,31 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 
 	return (
 		<div
-			data-cy={id}
-			onClick={interact}
+			key={id}
 			css={[
 				standardText,
 				{
 					lineHeight: '1.333',
 					marginTop: '12px',
-					paddingLeft: '30px',
-					position: 'relative',
 				},
 			]}
 		>
-			<div css={{ position: 'absolute', left: 0 }}>
-				<Checkbox
-					checked={!!selected}
-					onChange={interact}
-					label={accessibleLabel}
-					hideLabel={true}
-				/>
-			</div>
-			{title && getTitle(title)}
-			{getDescription(description)}
-			{frequency && getFrequency(frequency)}
+			<Checkbox
+				data-cy={id}
+				checked={!!selected}
+				onChange={interact}
+				label={title && getTitle(title)}
+				aria-label={accessibleLabel}
+				supporting={
+					<div>
+						{getDescription(description)}
+						{frequency && getFrequency(frequency)}
+					</div>
+				}
+				cssOverrides={css`
+					align-items: start;
+				`}
+			/>
 		</div>
 	);
 };

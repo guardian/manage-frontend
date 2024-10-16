@@ -1,6 +1,10 @@
 import { css } from '@emotion/react';
 import { space, until } from '@guardian/source/foundations';
-import { Button, InlineError } from '@guardian/source/react-components';
+import {
+	Button,
+	Checkbox,
+	InlineError,
+} from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import type { DateRange } from '../../../../shared/dates';
@@ -12,7 +16,6 @@ import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 import { InfoIcon } from '../shared/assets/InfoIcon';
 import { LinkButton } from '../shared/Buttons';
-import { Checkbox } from '../shared/Checkbox';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
 import { buttonBarCss, cancelLinkCss } from './HolidayDateChooser';
 import {
@@ -138,15 +141,17 @@ export const HolidayReview = () => {
 								}}
 							>
 								<Checkbox
-									checked={isCheckboxConfirmed}
-									onChange={(newValue) =>
-										setIsCheckboxConfirmed(newValue)
-									}
 									label={
 										productType.holidayStops
 											.explicitConfirmationRequired
 											.checkboxLabel
 									}
+									checked={isCheckboxConfirmed}
+									onChange={() => {
+										setIsCheckboxConfirmed(
+											!isCheckboxConfirmed,
+										);
+									}}
 								/>
 							</div>
 							<Modal
@@ -212,17 +217,12 @@ export const HolidayReview = () => {
 					</div>
 				) : (
 					<div
-						css={[
-							buttonBarCss,
-							{
-								justifyContent: 'flex-end',
-								marginTop: '20px',
-								[until.mobileMedium]: {
-									flexDirection: 'column',
-									marginTop: 0,
-								},
+						css={{
+							marginTop: '20px',
+							[until.mobileMedium]: {
+								marginTop: 0,
 							},
-						]}
+						}}
 					>
 						<div
 							css={[
@@ -253,7 +253,11 @@ export const HolidayReview = () => {
 						{!!productType.holidayStops
 							.explicitConfirmationRequired &&
 							!isCheckboxConfirmed && (
-								<InlineError>
+								<InlineError
+									cssOverrides={css`
+										margin-top: ${space[3]}px;
+									`}
+								>
 									Please confirm you will destroy the affected
 									vouchers by checking the box.
 								</InlineError>

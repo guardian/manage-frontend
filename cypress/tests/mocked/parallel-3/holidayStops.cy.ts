@@ -11,6 +11,7 @@ import {
 import {
 	guardianWeeklyPaidByCard,
 	tierThree,
+	voucherPaidByCard,
 } from '../../../../client/fixtures/productBuilder/testProducts';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
@@ -51,6 +52,46 @@ describe('Holiday stops', () => {
 				message: 'success',
 			},
 		}).as('amend_holiday_stop');
+	});
+
+	it('can add a holiday stop - voucher subscription', () => {
+		cy.intercept('GET', '/api/me/mma?productType=Voucher', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(voucherPaidByCard()),
+		}).as('product_detail');
+		cy.visit('/suspend/voucher');
+		cy.wait('@fetch_existing_holidays');
+		cy.wait('@product_detail');
+		cy.get('[data-cy="create-suspension-cta"] button').click();
+		cy.findByText('Choose the dates you will be away');
+		// Selects 09/02/2022 - 11/02/2022
+		cy.get('[data-cy="date-picker"] div').eq(9).click();
+		cy.get('[data-cy="date-picker"] div').eq(11).trigger('mouseover');
+		cy.get('[data-cy="date-picker"] div').eq(11).click();
+		cy.wait('@fetch_potential_holidays');
+
+		// Total issues suspended
+		cy.get('[data-cy="suspension-issue-count"]')
+			.eq(0)
+			.contains('1 voucher');
+
+		cy.findByText('Review details').click();
+
+		cy.get('table').contains('9 February - 11 February 2022');
+		cy.get('table').contains('1 voucher');
+		cy.get('table').contains('£2.89 off your 1 February 2023 payment');
+
+		cy.findByLabelText(
+			'I confirm that I will destroy suspended vouchers.',
+		).click();
+		cy.findByLabelText(
+			'I confirm that I will destroy suspended vouchers.',
+		).should('be.checked');
+
+		cy.findByText('Confirm').click();
+
+		cy.wait('@create_holiday_stop');
+		cy.findByText('Your schedule has been set').should('exist');
 	});
 
 	it('can add a new holiday stop and add another', () => {

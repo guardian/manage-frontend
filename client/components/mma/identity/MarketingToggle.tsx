@@ -21,6 +21,7 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 	const { id, description, selected, title, onClick } = props;
 	return (
 		<div
+			key={id}
 			data-cy={id}
 			css={[
 				standardSansText,
