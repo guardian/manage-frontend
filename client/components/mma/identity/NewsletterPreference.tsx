@@ -120,7 +120,6 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 				{
 					lineHeight: '1.333',
 					marginTop: '12px',
-					paddingLeft: '30px',
 				},
 			]}
 		>

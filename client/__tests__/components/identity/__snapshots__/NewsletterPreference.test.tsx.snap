@@ -6,7 +6,6 @@ exports[`NewsletterPreference component renders correctly and displays marketing
   font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   line-height: 1.333;
   margin-top: 12px;
-  padding-left: 30px;
 }
 
 .emotion-1 {
@@ -307,7 +306,6 @@ exports[`NewsletterPreference component will select the checkbox when the select
   font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   line-height: 1.333;
   margin-top: 12px;
-  padding-left: 30px;
 }
 
 .emotion-1 {

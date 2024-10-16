@@ -7,7 +7,6 @@ interface PageSectionProps {
 	title?: string;
 	description?: string | ReactNode;
 	subtext?: string;
-	testSelector?: string;
 }
 
 const getTitle = (title: PageSectionProps['title']) => (
@@ -51,10 +50,9 @@ const getSubtext = (subtext: PageSectionProps['subtext']) => (
 );
 
 export const PageSection: FC<PageSectionProps> = (props) => {
-	const { children, description, title, subtext, testSelector } = props;
+	const { children, description, title, subtext } = props;
 	return (
 		<div
-			data-cy={testSelector}
 			css={{
 				[from.desktop]: {
 					display: 'flex',

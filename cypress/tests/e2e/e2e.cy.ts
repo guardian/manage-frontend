@@ -50,11 +50,15 @@ describe('E2E with Okta', () => {
 				.find('input[type=checkbox]')
 				.should('not.be.checked');
 
-			cy.get('[data-cy="your_newsletters"]')
+			cy.findByText('Your newsletters')
+				.parent()
+				.parent()
 				.find('a')
 				.click({ multiple: true });
 
-			cy.get('[data-cy="your_newsletters"]')
+			cy.findByText('Your newsletters')
+				.parent()
+				.parent()
 				.find('input[type=checkbox]')
 				.should('not.be.checked');
 		});
