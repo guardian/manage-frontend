@@ -57,10 +57,11 @@ router.get('/auth', async (req: Request, res: Response) => {
 	const responseJson = (await response.json()) as NewspapersResponseBody;
 	const tpaToken = new URL(responseJson.url).searchParams.get('tpa');
 
-	const archiveReturnUrl = req.query['ncom-return-url'];
-
-	if (archiveReturnUrl && typeof archiveReturnUrl === 'string') {
-		return res.redirect(archiveReturnUrl + '?tpa=' + tpaToken);
+	const archiveReturnUrlString = req.query['ncom-return-url'];
+	if (archiveReturnUrlString && typeof archiveReturnUrlString === 'string') {
+		const archiveReturnUrl = new URL(archiveReturnUrlString);
+		archiveReturnUrl.searchParams.set('tpa', tpaToken ?? '');
+		return res.redirect(archiveReturnUrl.toString());
 	}
 
 	return res.redirect(responseJson.url);
