@@ -31,7 +31,7 @@ const router = Router();
 
 router.use(withIdentity(401));
 
-router.get('/auth', async (_req: Request, res: Response) => {
+router.get('/auth', async (req: Request, res: Response) => {
 	const config = await newspaperArchiveConfigPromise;
 	const authString = config?.authString;
 	if (authString === undefined) {
@@ -55,7 +55,15 @@ router.get('/auth', async (_req: Request, res: Response) => {
 	);
 
 	const responseJson = (await response.json()) as NewspapersResponseBody;
-	res.redirect(responseJson.url);
+	const tpaToken = new URL(responseJson.url).searchParams.get('tpa');
+
+	const archiveReturnUrl = req.query['ncom-return-url'];
+
+	if (archiveReturnUrl && typeof archiveReturnUrl === 'string') {
+		return res.redirect(archiveReturnUrl + '?tpa=' + tpaToken);
+	}
+
+	return res.redirect(responseJson.url);
 });
 
 export { router };
