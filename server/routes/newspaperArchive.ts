@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import fetch from 'node-fetch';
+import { X_GU_ID_FORWARDED_SCOPE } from '@/shared/identity';
+import { authorizationOrCookieHeader } from '../apiProxy';
 import { s3ConfigPromise } from '../awsIntegration';
 import { log } from '../log';
 import { withIdentity } from '../middleware/identityMiddleware';
@@ -39,6 +41,14 @@ router.get('/auth', async (req: Request, res: Response) => {
 		res.status(500).send();
 	}
 
+	console.log('start', new Date().toTimeString());
+	const hasCorrectProduct = await checkSupporterStatus(req);
+
+	console.log(hasCorrectProduct);
+	if (!hasCorrectProduct) {
+		return res.redirect('/');
+	}
+
 	const authHeader = base64(`${authString}`);
 	const requestBody: NewspapersRequestBody = {};
 
@@ -69,3 +79,31 @@ router.get('/auth', async (req: Request, res: Response) => {
 });
 
 export { router };
+
+async function checkSupporterStatus(req: Request): Promise<boolean> {
+	console.log('checking');
+	const supporterAttributesResponse = await getSupporterStatus(req);
+	console.log('supporterAttributesResponse', supporterAttributesResponse);
+	// const supporterAttributes = await supporterAttributesResponse.json();
+	// console.log('supporterAttributes', supporterAttributes);
+	return true;
+	// return (
+	// 	supporterAttributes.contentAccess['guardianWeeklySubscriber'] &&
+	// 	supporterAttributes.contentAccess['supporterPlus']
+	// );
+}
+
+async function getSupporterStatus(req: Request) {
+	const host = 'members-data-api.';
+	const domain = 'code.dev-theguardian.com';
+
+	return fetch(`https://${host}${domain}/user-attributes/me`, {
+		method: 'GET',
+		headers: {
+			...(await authorizationOrCookieHeader({ req, host })),
+			'Content-Type': 'application/json',
+			[X_GU_ID_FORWARDED_SCOPE]:
+				req.header(X_GU_ID_FORWARDED_SCOPE) || '',
+		},
+	});
+}

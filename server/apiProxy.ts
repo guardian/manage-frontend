@@ -88,30 +88,6 @@ export const proxyApiHandler =
 			outgoingURL,
 		};
 
-		const authorizationOrCookieHeader = async ({
-			req,
-			host,
-		}: {
-			req: Request;
-			host: string;
-		}): Promise<Headers> => {
-			// If Okta is disabled, always return the cookie header
-			const { useOkta } = await getOktaConfig();
-			if (!useOkta) {
-				return {
-					Cookie: getCookiesOrEmptyString(req),
-				};
-			}
-			switch (host) {
-				case 'members-data-api.' + conf.DOMAIN:
-					return {
-						Authorization: `Bearer ${req.signedCookies[OAuthAccessTokenCookieName]}`,
-					};
-				default:
-					return {};
-			}
-		};
-
 		fetch(outgoingURL, {
 			method: httpMethod,
 			body: requestBody,
@@ -192,6 +168,32 @@ export const proxyApiHandler =
 				res.status(500).send('Something broke!');
 			});
 	};
+
+export const authorizationOrCookieHeader = async ({
+	req,
+	host,
+}: {
+	req: Request;
+	host: string;
+}): Promise<Headers> => {
+	// If Okta is disabled, always return the cookie header
+	const { useOkta } = await getOktaConfig();
+	console.log('useOkta', useOkta);
+	console.log(req.signedCookies[OAuthAccessTokenCookieName]);
+	if (!useOkta) {
+		return {
+			Cookie: getCookiesOrEmptyString(req),
+		};
+	}
+	switch (host) {
+		case 'members-data-api.' + conf.DOMAIN:
+			return {
+				Authorization: `Bearer ${req.signedCookies[OAuthAccessTokenCookieName]}`,
+			};
+		default:
+			return {};
+	}
+};
 
 export const customMembersDataApiHandler = proxyApiHandler(
 	'members-data-api.' + conf.DOMAIN,
