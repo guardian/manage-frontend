@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 import { X_GU_ID_FORWARDED_SCOPE } from '@/shared/identity';
 import { authorizationOrCookieHeader } from '../apiProxy';
 import { s3ConfigPromise } from '../awsIntegration';
+import { conf } from '../config';
 import { log } from '../log';
 import { withIdentity } from '../middleware/identityMiddleware';
 
@@ -38,14 +39,13 @@ router.get('/auth', async (req: Request, res: Response) => {
 	const authString = config?.authString;
 	if (authString === undefined) {
 		log.error(`Missing newspaper archive auth key`);
-		res.status(500).send();
+		return res.sendStatus(500);
 	}
 
-	console.log('start', new Date().toTimeString());
-	const hasCorrectProduct = await checkSupporterStatus(req);
+	const hasCorrectEntitlement = await checkSupporterEntitlement(req);
 
-	console.log(hasCorrectProduct);
-	if (!hasCorrectProduct) {
+	if (!hasCorrectEntitlement) {
+		// ToDo: show the user an error/info page
 		return res.redirect('/');
 	}
 
@@ -64,6 +64,7 @@ router.get('/auth', async (req: Request, res: Response) => {
 		},
 	);
 
+	// ToDo: we have zod on the server, we could parse the responses with that
 	const responseJson = (await response.json()) as NewspapersResponseBody;
 
 	const archiveReturnUrlString = req.query['ncom-return-url'];
@@ -80,24 +81,21 @@ router.get('/auth', async (req: Request, res: Response) => {
 
 export { router };
 
-async function checkSupporterStatus(req: Request): Promise<boolean> {
-	console.log('checking');
+async function checkSupporterEntitlement(req: Request): Promise<boolean> {
 	const supporterAttributesResponse = await getSupporterStatus(req);
-	console.log('supporterAttributesResponse', supporterAttributesResponse);
-	// const supporterAttributes = await supporterAttributesResponse.json();
-	// console.log('supporterAttributes', supporterAttributes);
-	return true;
-	// return (
-	// 	supporterAttributes.contentAccess['guardianWeeklySubscriber'] &&
-	// 	supporterAttributes.contentAccess['supporterPlus']
-	// );
+	const supporterAttributes = await supporterAttributesResponse.json();
+
+	// ToDo: this should return a flag that represents either Tier 3 or a newspaperArchive specific entitlement
+	return (
+		supporterAttributes.contentAccess['guardianWeeklySubscriber'] &&
+		supporterAttributes.contentAccess['supporterPlus']
+	);
 }
 
 async function getSupporterStatus(req: Request) {
-	const host = 'members-data-api.';
-	const domain = 'code.dev-theguardian.com';
+	const host = 'members-data-api.' + conf.DOMAIN;
 
-	return fetch(`https://${host}${domain}/user-attributes/me`, {
+	return fetch(`https://${host}/user-attributes/me`, {
 		method: 'GET',
 		headers: {
 			...(await authorizationOrCookieHeader({ req, host })),
