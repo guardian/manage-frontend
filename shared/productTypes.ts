@@ -47,6 +47,7 @@ type ProductFriendlyName =
 	| 'subscription'
 	| 'support'
 	| 'recurring support'
+	| 'guardian light'
 	| 'guardian patron';
 type ProductUrlPart =
 	| 'membership'
@@ -62,6 +63,7 @@ type ProductUrlPart =
 	| 'digital+print'
 	| 'subscriptions'
 	| 'recurringsupport'
+	| 'guardianlight'
 	| 'guardianpatron';
 type SfCaseProduct =
 	| 'Membership'
@@ -71,6 +73,7 @@ type SfCaseProduct =
 	| 'Digital Pack Subscriptions'
 	| 'Supporter Plus'
 	| 'Tier Three'
+	| 'Guardian Light'
 	| 'Guardian Patron';
 export type AllProductsProductTypeFilterString =
 	| 'Weekly'
@@ -84,12 +87,12 @@ export type AllProductsProductTypeFilterString =
 	| 'SupporterPlus'
 	| 'ContentSubscription'
 	| 'GuardianPatron'
+	| 'GuardianLight'
 	| 'TierThree';
 
 interface CancellationFlowProperties {
 	reasons: CancellationReason[];
 	sfCaseProduct: SfCaseProduct;
-	linkOnProductPage?: true;
 	checkForOutstandingCredits?: true;
 	flowWrapper?: (
 		productDetail: ProductDetail,
@@ -176,7 +179,6 @@ export interface ProductType {
 	showSupporterId?: boolean;
 	tierLabel?: string;
 	renewalMetadata?: SupportTheGuardianButtonProps;
-	noProductSupportUrlSuffix?: string;
 	cancellation?: CancellationFlowProperties; // undefined 'cancellation' means no cancellation flow
 	cancelledCopy?: string;
 	showTrialRemainingIfApplicable?: true;
@@ -264,6 +266,7 @@ export type ProductTypeKeys =
 	| 'digipack'
 	| 'supporterplus'
 	| 'tierthree'
+	| 'guardianlight'
 	| 'guardianpatron';
 
 export type GroupedProductTypeKeys =
@@ -326,7 +329,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		allProductsProductTypeFilterString: 'Contribution',
 		urlPart: 'contributions',
 		getOphanProductType: () => 'RECURRING_CONTRIBUTION',
-		noProductSupportUrlSuffix: '/contribute',
 		updateAmountMdaEndpoint: 'contribution-update-amount',
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
@@ -335,7 +337,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		cancellation: {
 			alternateSummaryMainPara:
 				'This is immediate and you will not be charged again.',
-			linkOnProductPage: true,
 			reasons: shuffledContributionsCancellationReasons,
 			sfCaseProduct: 'Recurring - Contributions',
 			startPageBody: contributionsCancellationFlowStart,
@@ -501,7 +502,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			enableDeliveryInstructionsUpdate: true,
 		},
 		cancellation: {
-			linkOnProductPage: true,
 			reasons: shuffledVoucherCancellationReasons,
 			sfCaseProduct: 'Voucher Subscriptions',
 			checkForOutstandingCredits: true,
@@ -573,7 +573,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			},
 		},
 		cancellation: {
-			linkOnProductPage: true,
 			reasons: shuffledGWCancellationReasons,
 			sfCaseProduct: 'Guardian Weekly',
 			checkForOutstandingCredits: true,
@@ -619,7 +618,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			},
 		},
 		cancellation: {
-			linkOnProductPage: true,
 			reasons: shuffledTierThreeCancellationReasons,
 			sfCaseProduct: 'Tier Three',
 			checkForOutstandingCredits: true,
@@ -658,7 +656,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			SoftOptInIDs.SupporterNewsletter,
 		],
 		cancellation: {
-			linkOnProductPage: true,
 			reasons: shuffledDigipackCancellationReasons,
 			sfCaseProduct: 'Digital Pack Subscriptions',
 			startPageBody: digipackCancellationFlowStart,
@@ -689,7 +686,6 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		cancellation: {
 			alternateSummaryMainPara:
 				"This is immediate and you will not be charged again. If you've cancelled within the first 14 days, we'll send you a full refund.",
-			linkOnProductPage: true,
 			reasons: shuffledSupporterPlusCancellationReasons,
 			sfCaseProduct: 'Supporter Plus',
 			startPageBody: supporterplusCancellationFlowStart,
@@ -715,6 +711,54 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			SoftOptInIDs.DigitalSubscriberPreview,
 			SoftOptInIDs.SupporterNewsletter,
 		],
+	},
+	guardianlight: {
+		productTitle: () => 'Guardian Light',
+		friendlyName: 'guardian light',
+		productType: 'guardianlight',
+		groupedProductType: 'recurringSupport',
+		allProductsProductTypeFilterString: 'GuardianLight',
+		urlPart: 'guardianlight',
+		getOphanProductType: () => 'GUARDIAN_LIGHT',
+		softOptInIDs: [
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SupporterNewsletter,
+		],
+		cancellation: {
+			alternateSummaryMainPara:
+				'This is immediate and you will not be charged again.',
+			reasons: shuffledContributionsCancellationReasons,
+			sfCaseProduct: 'Guardian Light',
+			startPageBody: contributionsCancellationFlowStart,
+			shouldHideSummaryMainPara: true,
+			summaryReasonSpecificPara: (
+				reasonId: OptionalCancellationReasonId,
+			) => {
+				switch (reasonId) {
+					case 'mma_financial_circumstances':
+					case 'mma_value_for_money':
+						return 'You can support The Guardian’s independent journalism with a One-time contribution, from as little as £1 – and it only takes a minute.';
+					default:
+						return undefined;
+				}
+			},
+			onlyShowSupportSectionIfAlternateText: true,
+			alternateSupportButtonText: (
+				reasonId: OptionalCancellationReasonId,
+			) => {
+				switch (reasonId) {
+					case 'mma_financial_circumstances':
+					case 'mma_value_for_money':
+						return 'Make a One-time contribution';
+					default:
+						return undefined;
+				}
+			},
+			alternateSupportButtonUrlSuffix: () => undefined,
+			swapFeedbackAndContactUs: true,
+			shouldHideThrasher: true,
+			shouldShowReminder: true,
+		},
 	},
 };
 
