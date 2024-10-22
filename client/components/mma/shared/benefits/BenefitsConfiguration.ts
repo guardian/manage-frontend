@@ -105,6 +105,7 @@ export const benefitsConfiguration: Record<ProductTypeKeys,ProductBenefit[]> = {
 	nationaldelivery: [],
 	voucher: [],
 	guardianweekly: [],
+	guardianlight: [],
 	guardianpatron: [],
 };
 

@@ -86,6 +86,7 @@ export const productTiers = [
 	'Newspaper Delivery',
 	'Patron',
 	'Partner',
+	'Guardian Light',
 ];
 
 export type ProductTier = typeof productTiers[number];
@@ -296,6 +297,9 @@ export function getSpecificProductTypeFromTier(
 			break;
 		case 'Newspaper Digital Voucher':
 			productType = PRODUCT_TYPES.digitalvoucher;
+			break;
+		case 'Guardian Light':
+			productType = PRODUCT_TYPES.guardianlight;
 			break;
 		case 'guardianpatron':
 			productType = PRODUCT_TYPES.guardianpatron;
