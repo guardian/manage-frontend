@@ -3,6 +3,7 @@ import {
 	baseContribution,
 	baseDigitalPack,
 	baseDigitalVoucher,
+	baseGuardianLight,
 	baseGuardianWeekly,
 	baseHomeDelivery,
 	baseMembership,
@@ -256,6 +257,12 @@ export function supporterPlusInOfferPeriod() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()
 		.inOfferPeriod()
+		.getProductDetailObject();
+}
+
+export function guardianLight() {
+	return new ProductBuilder(baseGuardianLight())
+		.payByCard()
 		.getProductDetailObject();
 }
 
