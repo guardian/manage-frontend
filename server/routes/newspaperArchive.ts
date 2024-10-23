@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import fetch from 'node-fetch';
+import { z } from 'zod';
 import { authorizationOrCookieHeader } from '../apiProxy';
 import { s3ConfigPromise } from '../awsIntegration';
 import { conf } from '../config';
@@ -13,9 +14,13 @@ type NewspapersRequestBody = {
 };
 
 // { url: "https://<subdomain>.newspapers.com/…?tpa=<token>" }
-type NewspapersResponseBody = {
-	url: string;
-};
+const NewspapersResponseSchema = z.object({
+	url: z.string(),
+});
+
+const UserAttributesSchema = z.object({
+	contentAccess: z.record(z.string(), z.boolean()),
+});
 
 type NewspaperArchiveConfig = {
 	authString: string;
@@ -64,8 +69,9 @@ router.get('/auth', async (req: Request, res: Response) => {
 			},
 		);
 
-		// ToDo: we have zod on the server, we could parse the responses with that
-		const responseJson = (await response.json()) as NewspapersResponseBody;
+		const responseJson = NewspapersResponseSchema.parse(
+			await response.json(),
+		);
 
 		const archiveReturnUrlString = req.query['ncom-return-url'];
 		if (
@@ -92,7 +98,9 @@ export { router };
 
 async function checkSupporterEntitlement(req: Request): Promise<boolean> {
 	const supporterAttributesResponse = await getSupporterStatus(req);
-	const supporterAttributes = await supporterAttributesResponse.json();
+	const supporterAttributes = UserAttributesSchema.parse(
+		await supporterAttributesResponse.json(),
+	);
 
 	// ToDo: this should return a flag that represents either Tier 3 or a newspaperArchive specific entitlement
 	return (
