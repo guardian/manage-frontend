@@ -178,8 +178,6 @@ export const authorizationOrCookieHeader = async ({
 }): Promise<Headers> => {
 	// If Okta is disabled, always return the cookie header
 	const { useOkta } = await getOktaConfig();
-	console.log('useOkta', useOkta);
-	console.log(req.signedCookies[OAuthAccessTokenCookieName]);
 	if (!useOkta) {
 		return {
 			Cookie: getCookiesOrEmptyString(req),
