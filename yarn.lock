@@ -3491,10 +3491,10 @@
     yaml "^1.7.2"
     yargs "^15.4.1"
 
-"@guardian/ophan-tracker-js@2.2.6":
-  version "2.2.6"
-  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-2.2.6.tgz#9798b8aa74507ba3a4d054cd1743cfacb83639ca"
-  integrity sha512-q7v2jbp00x+ItVrM8FOQQpRPWtwJSm0wJe5L+rKEM2m5ttOUV9gM2nc3k2mxIkoNhCYbgpgm3EBX/3mUAEA5Iw==
+"@guardian/ophan-tracker-js@0.0.0-canary-20241023094429":
+  version "0.0.0-canary-20241023094429"
+  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-0.0.0-canary-20241023094429.tgz#b47de95ba573e1817ce6165d6bf6139a21b0a2a7"
+  integrity sha512-bhwuQeKJLlO/zylRKPN0Q2xyfHTddEIxX3BnfxorkZWHKP8uesyMrC7lvSuGpO6RnL4A7KA6dL5JgeZEuW3K7Q==
   dependencies:
     "@guardian/tsconfig" "^1.0.0"
 
