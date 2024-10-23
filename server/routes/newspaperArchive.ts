@@ -69,7 +69,9 @@ router.get('/auth', async (req: Request, res: Response) => {
 			},
 		);
 
-	  const responseJson = NewspapersResponseSchema.parse(await response.json());
+		const responseJson = NewspapersResponseSchema.parse(
+			await response.json(),
+		);
 
 		const archiveReturnUrlString = req.query['ncom-return-url'];
 		if (
