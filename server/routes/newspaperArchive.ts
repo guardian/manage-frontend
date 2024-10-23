@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import fetch from 'node-fetch';
-import { X_GU_ID_FORWARDED_SCOPE } from '@/shared/identity';
 import { authorizationOrCookieHeader } from '../apiProxy';
 import { s3ConfigPromise } from '../awsIntegration';
 import { conf } from '../config';
@@ -99,9 +98,6 @@ async function getSupporterStatus(req: Request) {
 		method: 'GET',
 		headers: {
 			...(await authorizationOrCookieHeader({ req, host })),
-			'Content-Type': 'application/json',
-			[X_GU_ID_FORWARDED_SCOPE]:
-				req.header(X_GU_ID_FORWARDED_SCOPE) || '',
 		},
 	});
 }
