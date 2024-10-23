@@ -2,7 +2,6 @@ import { Router } from 'express';
 import type { Request, Response } from 'express';
 import fetch from 'node-fetch';
 import { z } from 'zod';
-import { X_GU_ID_FORWARDED_SCOPE } from '@/shared/identity';
 import { authorizationOrCookieHeader } from '../apiProxy';
 import { s3ConfigPromise } from '../awsIntegration';
 import { conf } from '../config';
@@ -40,47 +39,57 @@ const router = Router();
 router.use(withIdentity(401));
 
 router.get('/auth', async (req: Request, res: Response) => {
-	const config = await newspaperArchiveConfigPromise;
-	const authString = config?.authString;
-	if (authString === undefined) {
-		log.error(`Missing newspaper archive auth key`);
+	try {
+		const config = await newspaperArchiveConfigPromise;
+		const authString = config?.authString;
+		if (authString === undefined) {
+			log.error(`Missing newspaper archive auth key`);
+			return res.sendStatus(500);
+		}
+
+		const hasCorrectEntitlement = await checkSupporterEntitlement(req);
+
+		if (!hasCorrectEntitlement) {
+			// ToDo: show the user an error/info page
+			return res.redirect('/');
+		}
+
+		const authHeader = base64(`${authString}`);
+		const requestBody: NewspapersRequestBody = {};
+
+		const response = await fetch(
+			'https://www.newspapers.com/api/userauth/public/get-tpa-token',
+			{
+				headers: {
+					Authorization: `Basic ${authHeader}`,
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
+				body: JSON.stringify(requestBody),
+			},
+		);
+
+	  const responseJson = NewspapersResponseSchema.parse(await response.json());
+
+		const archiveReturnUrlString = req.query['ncom-return-url'];
+		if (
+			archiveReturnUrlString &&
+			typeof archiveReturnUrlString === 'string'
+		) {
+			const tpaToken = new URL(responseJson.url).searchParams.get('tpa');
+
+			const archiveReturnUrl = new URL(archiveReturnUrlString);
+			archiveReturnUrl.searchParams.set('tpa', tpaToken ?? '');
+			return res.redirect(archiveReturnUrl.toString());
+		}
+
+		return res.redirect(responseJson.url);
+	} catch (e) {
+		log.error(
+			`Something went wrong authenticating with newspapers.com. ${e}`,
+		);
 		return res.sendStatus(500);
 	}
-
-	const hasCorrectEntitlement = await checkSupporterEntitlement(req);
-
-	if (!hasCorrectEntitlement) {
-		// ToDo: show the user an error/info page
-		return res.redirect('/');
-	}
-
-	const authHeader = base64(`${authString}`);
-	const requestBody: NewspapersRequestBody = {};
-
-	const response = await fetch(
-		'https://www.newspapers.com/api/userauth/public/get-tpa-token',
-		{
-			headers: {
-				Authorization: `Basic ${authHeader}`,
-				'Content-Type': 'application/json',
-			},
-			method: 'POST',
-			body: JSON.stringify(requestBody),
-		},
-	);
-
-	const responseJson = NewspapersResponseSchema.parse(await response.json());
-
-	const archiveReturnUrlString = req.query['ncom-return-url'];
-	if (archiveReturnUrlString && typeof archiveReturnUrlString === 'string') {
-		const tpaToken = new URL(responseJson.url).searchParams.get('tpa');
-
-		const archiveReturnUrl = new URL(archiveReturnUrlString);
-		archiveReturnUrl.searchParams.set('tpa', tpaToken ?? '');
-		return res.redirect(archiveReturnUrl.toString());
-	}
-
-	return res.redirect(responseJson.url);
 });
 
 export { router };
@@ -105,9 +114,6 @@ async function getSupporterStatus(req: Request) {
 		method: 'GET',
 		headers: {
 			...(await authorizationOrCookieHeader({ req, host })),
-			'Content-Type': 'application/json',
-			[X_GU_ID_FORWARDED_SCOPE]:
-				req.header(X_GU_ID_FORWARDED_SCOPE) || '',
 		},
 	});
 }
