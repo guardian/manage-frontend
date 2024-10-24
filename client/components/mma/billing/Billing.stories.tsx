@@ -12,6 +12,7 @@ import { guardianWeeklyCardInvoice } from '../../../fixtures/invoices';
 import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
 import {
 	digitalPackPaidByDirectDebit,
+	guardianLight,
 	guardianWeeklyPaidByCard,
 	newspaperVoucherPaidByPaypal,
 	tierThree,
@@ -67,6 +68,7 @@ export const WithSubscriptions: StoryObj<typeof Billing> = {
 						digitalPackPaidByDirectDebit(),
 						newspaperVoucherPaidByPaypal(),
 						tierThree(),
+						guardianLight(),
 					),
 				);
 			}),
