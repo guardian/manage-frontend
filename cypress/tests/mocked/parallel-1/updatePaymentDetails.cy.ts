@@ -346,7 +346,7 @@ describe('Update payment details', () => {
 		cy.findByText('Recaptcha has not been completed.');
 	});
 
-	it.only('allows payment update for Guardian light product', () => {
+	it('allows payment update for Guardian light product', () => {
 		cy.intercept('GET', '/api/me/mma*', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(guardianLight()),
