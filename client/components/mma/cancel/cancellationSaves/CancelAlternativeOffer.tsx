@@ -2,27 +2,30 @@ import { css } from '@emotion/react';
 import {
 	from,
 	neutral,
-	news,
 	palette,
 	space,
 	textEgyptian17,
 	textSans12,
-	textSans15,
 	textSans17,
 	textSans20,
 	textSansBold15,
 	textSansBold20,
+	textSansBold24,
 	textSansBold28,
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Ribbon } from '@/client/components/shared/Ribbon';
+import { Pill } from '@/client/components/shared/Pill';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { getMaxNonDiscountedPrice } from '@/client/utilities/discountPreview';
-import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
+import {
+	DATE_FNS_LONG_OUTPUT_FORMAT,
+	getAppropriateReadableTimePeriod,
+	parseDate,
+} from '@/shared/dates';
 import { number2words } from '@/shared/numberUtils';
 import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
 import type { ProductTypeKeys } from '@/shared/productTypes';
@@ -75,7 +78,7 @@ const availableOfferBoxInnerCss = css`
 	${from.tablet} {
 		background-color: ${palette.neutral[100]};
 		width: 363px;
-		padding-top: var(--offerBoxTopPadding);
+		padding: var(--offerBoxTopPadding) ${space[6]}px ${space[5]}px;
 		margin: ${space[6]}px;
 	}
 `;
@@ -108,12 +111,14 @@ const headerImageCss = css`
 	}
 `;
 
-const ribbonCss = css`
+const pillCss = css`
 	transform: translateY(-50%);
+	margin-left: ${space[4]}px;
 	${from.tablet} {
-		transform: translateY(0);
+		margin-left: 0;
 		position: absolute;
-		top: ${space[6] + space[4]}px;
+		top: ${space[6]}px;
+		left: ${space[12]}px;
 	}
 `;
 
@@ -125,7 +130,7 @@ const strikethroughPriceCss = css`
 
 const discountedPriceSpan = css`
 	${textSansBold20};
-	color: ${news[500]};
+	color: ${neutral[0]};
 `;
 
 const offerBoxTitleCss = css`
@@ -134,7 +139,7 @@ const offerBoxTitleCss = css`
 `;
 
 const billingResumptionDateCss = css`
-	${textSans15};
+	${textSans12};
 	color: ${neutral[38]};
 	margin: 0;
 `;
@@ -145,6 +150,13 @@ const offerButtonCss = css`
 	justify-content: center;
 	${from.tablet} {
 		margin-bottom: ${space[5]}px;
+	}
+`;
+
+const offerButtonSmallBottomMargin = css`
+	margin-bottom: ${space[2]}px;
+	${from.tablet} {
+		margin-bottom: ${space[2]}px;
 	}
 `;
 
@@ -211,13 +223,12 @@ export const CancelAlternativeOffer = () => {
 		(routerState.discountPercentage < 100 ? 'percentage' : 'free');
 
 	const standfirstCopy: Partial<Record<ProductTypeKeys, string>> = {
-		supporterplus: `Instead of cancelling, enjoy ${
+		supporterplus:
 			offerIsPercentageOrFree === 'percentage'
-				? `${routerState.discountPercentage}% off for `
-				: ''
-		}${offerPeriodWord} ${offerPeriodType} with all your existing benefits${
-			offerIsPercentageOrFree === 'free' ? ' — for free' : ''
-		}.`,
+				? `Instead of cancelling, take ${routerState.discountPercentage}% off and keep enjoying all your existing benefits.`
+				: `Instead of cancelling, enjoy ${offerPeriodWord} ${offerPeriodType} with all your existing benefits${
+						offerIsPercentageOrFree === 'free' ? ' — for free' : ''
+				  }.`,
 		contributions: `Instead of cancelling, you can pause your recurring payment for ${offerPeriodWord} ${offerPeriodType}.`,
 	};
 
@@ -270,16 +281,16 @@ export const CancelAlternativeOffer = () => {
 						<img src={heroImageSrc.mobile} />
 					</picture>
 				)}
-
 				{alternativeIsOffer && (
-					<Ribbon
+					<Pill
 						copy="Your one-time offer"
-						ribbonColour={palette.brand[500]}
-						copyColour={palette.neutral[100]}
-						roundedCornersRight
-						withoutTail
-						small
-						additionalCss={ribbonCss}
+						colour={
+							offerIsPercentageOrFree === 'percentage'
+								? palette.news[400]
+								: palette.brand[500]
+						}
+						sharpLeftSideMobileOnly
+						additionalCss={pillCss}
 					/>
 				)}
 				<div
@@ -289,10 +300,26 @@ export const CancelAlternativeOffer = () => {
 					]}
 					style={{
 						['--offerBoxTopPadding' as string]: alternativeIsOffer
-							? `${space[3] + space[4] + 30}px`
+							? `${space[8]}px`
 							: `${space[4]}px`,
 					}}
 				>
+					{offerIsPercentageOrFree === 'percentage' && (
+						<h4
+							css={[
+								offerBoxTitleCss,
+								css`
+									${textSansBold24}
+								`,
+							]}
+						>
+							{routerState.discountPercentage}% off for{' '}
+							{getAppropriateReadableTimePeriod(
+								routerState.upToPeriods,
+								offerPeriodType,
+							)}
+						</h4>
+					)}
 					{alternativeIsOffer && isPaidSubscriptionPlan(mainPlan) && (
 						<p css={strikethroughPriceCss}>
 							<s>
@@ -310,31 +337,36 @@ export const CancelAlternativeOffer = () => {
 							)}
 						</p>
 					)}
-
-					<h4
-						css={[
-							offerBoxTitleCss,
-							css`
-								${alternativeIsOffer && textSansBold28}
-								${alternativeIsPause && textSansBold20}
-							`,
-						]}
-					>
-						{offerIsPercentageOrFree &&
-						offerIsPercentageOrFree === 'free'
-							? `${capitalize(
-									offerPeriodWord,
-							  )} ${offerPeriodType} free`
-							: 'New copy needed'}
-						{alternativeIsPause &&
-							`Would you like to pause your support to the Guardian for ${offerPeriodWord} ${offerPeriodType}?`}
-					</h4>
-					<p css={billingResumptionDateCss}>
-						{offerIsPercentageOrFree === 'percentage' &&
-						isPaidSubscriptionPlan(mainPlan)
-							? `You will pay ${mainPlan.currency}${routerState.discountedPrice} for the next 12 months then ${mainPlan.currency}${humanReadableStrikethroughPrice}/${mainPlan.billingPeriod}`
-							: `Billing resumes on ${nextNonDiscountedPaymentDate}`}
-					</p>
+					{alternativeIsPause && (
+						<h4
+							css={[
+								offerBoxTitleCss,
+								css`
+									${textSansBold20}
+								`,
+							]}
+						>
+							Would you like to pause your support to the Guardian
+							for {offerPeriodWord} {offerPeriodType}?
+						</h4>
+					)}
+					{offerIsPercentageOrFree === 'free' && (
+						<h4
+							css={[
+								offerBoxTitleCss,
+								css`
+									${textSansBold28}
+								`,
+							]}
+						>
+							{capitalize(offerPeriodWord)} {offerPeriodType} free
+						</h4>
+					)}
+					{offerIsPercentageOrFree === 'free' && (
+						<p css={billingResumptionDateCss}>
+							Billing resumes on {nextNonDiscountedPaymentDate}
+						</p>
+					)}
 					<Button
 						onClick={() => {
 							const reviewUrlPart = `../${
@@ -344,11 +376,39 @@ export const CancelAlternativeOffer = () => {
 								state: routerState,
 							});
 						}}
-						cssOverrides={offerButtonCss}
+						cssOverrides={[
+							offerButtonCss,
+							css`
+								${offerIsPercentageOrFree === 'percentage'
+									? offerButtonSmallBottomMargin
+									: ''}
+							`,
+						]}
 					>
 						{alternativeIsOffer && 'Redeem your offer'}
 						{alternativeIsPause && 'Yes, pause my support'}
 					</Button>
+					{offerIsPercentageOrFree === 'percentage' &&
+						isPaidSubscriptionPlan(mainPlan) && (
+							<p
+								css={[
+									billingResumptionDateCss,
+									css`
+										margin-bottom: ${space[5]}px;
+									`,
+								]}
+							>
+								You will pay {mainPlan.currency}
+								{routerState.discountedPrice} for the next{' '}
+								{routerState.upToPeriods} {offerPeriodType} then{' '}
+								{mainPlan.currency}
+								{getMaxNonDiscountedPrice(
+									routerState.nonDiscountedPayments,
+									true,
+								)}
+								/{mainPlan.billingPeriod}
+							</p>
+						)}
 					{alternativeIsOffer && (
 						<>
 							<p css={benefitsSubTitleCss}>
@@ -365,6 +425,10 @@ export const CancelAlternativeOffer = () => {
 										{
 											description:
 												'Unlimited access to the Guardian app',
+										},
+										{
+											description:
+												'Unlimited access to the Guardian Feast App',
 										},
 										{
 											description:

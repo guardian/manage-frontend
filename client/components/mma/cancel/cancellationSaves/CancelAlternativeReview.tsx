@@ -16,6 +16,7 @@ import { capitalize } from 'lodash';
 import type { ReactElement } from 'react';
 import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Ribbon } from '@/client/components/shared/Ribbon';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { getMaxNonDiscountedPrice } from '@/client/utilities/discountPreview';
@@ -44,6 +45,7 @@ type OfferApiCallStatus = 'NOT_READY' | 'PENDING' | 'FAILED' | 'SUCCESS';
 const yourOfferBoxCss = css`
 	background-color: #fbf6ef;
 	padding: ${space[4]}px ${space[6]}px;
+	position: relative;
 	h4 {
 		${textSansBold17};
 		margin: 0;
@@ -51,6 +53,13 @@ const yourOfferBoxCss = css`
 	p {
 		margin: 0;
 	}
+`;
+
+const ribbonCss = css`
+	position: absolute;
+	top: 0;
+	left: ${space[3]}px;
+	transform: translateY(-50%);
 `;
 
 const yourOfferBoxFlexCss = css`
@@ -66,6 +75,12 @@ const strikethroughPriceCss = css`
 	${textSans17};
 	color: ${neutral[46]};
 	margin: 0;
+`;
+
+const percentageOfferSubText = css`
+	${textSans12};
+	color: ${neutral[38]};
+	margin-top: ${space[2]}px;
 `;
 
 const whatsNextTitleCss = css`
@@ -212,8 +227,37 @@ export const CancelAlternativeReview = () => {
 				{alternativeIsOffer && 'Your offer'}
 				{alternativeIsPause && "Let's confirm the details"}
 			</Heading>
-			<div css={yourOfferBoxCss}>
-				<div css={yourOfferBoxFlexCss}>
+			<div
+				css={[
+					yourOfferBoxCss,
+					offerIsPercentageOrFree === 'percentage' &&
+						css`
+							padding-top: ${space[6]}px;
+						`,
+				]}
+			>
+				{offerIsPercentageOrFree === 'percentage' && (
+					<Ribbon
+						copy={`${routerState.discountPercentage}% off`}
+						ribbonColour={palette.news[400]}
+						copyColour={palette.neutral[100]}
+						roundedCornersLeft
+						roundedCornersRight
+						withoutTail
+						small
+						additionalCss={ribbonCss}
+					/>
+				)}
+				<div
+					css={[
+						yourOfferBoxFlexCss,
+						offerIsPercentageOrFree === 'percentage' &&
+							css`
+								gap: 1ch;
+								flex-direction: row;
+							`,
+					]}
+				>
 					{alternativeIsOffer && isPaidSubscriptionPlan(mainPlan) && (
 						<p css={strikethroughPriceCss}>
 							<s>
@@ -245,14 +289,23 @@ export const CancelAlternativeReview = () => {
 				{alternativeIsOffer &&
 					isPaidSubscriptionPlan(mainPlan) &&
 					offerIsPercentageOrFree === 'percentage' && (
-						<p>
-							Instead of cancelling, enjoy{' '}
-							{routerState.discountPercentage}% off for{' '}
-							{offerPeriodWord} {mainPlan.billingPeriod} and keep
-							enjoying all your existing benefits
-						</p>
+						<p>For your {capitalize(productType.friendlyName)}</p>
 					)}
 			</div>
+			{offerIsPercentageOrFree === 'percentage' &&
+				isPaidSubscriptionPlan(mainPlan) && (
+					<p css={percentageOfferSubText}>
+						You will pay {mainPlan.currency}
+						{routerState.discountedPrice} for the next{' '}
+						{routerState.upToPeriods} {offerPeriodType} then{' '}
+						{mainPlan.currency}
+						{getMaxNonDiscountedPrice(
+							routerState.nonDiscountedPayments,
+							true,
+						)}
+						/{mainPlan.billingPeriod}
+					</p>
+				)}
 			<h3 css={whatsNextTitleCss}>
 				{alternativeIsOffer && 'If you choose to stay with us:'}
 				{alternativeIsPause && 'This means:'}
