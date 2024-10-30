@@ -141,7 +141,7 @@
     "webpack": "5.92.1",
     "webpack-bundle-analyzer": "4.5.0",
     "webpack-cli": "5.1.1",
-    "webpack-dev-server": "5.0.4",
+    "webpack-dev-server": "5.1.0",
     "webpack-merge": "5.8.0",
     "webpack-node-externals": "3.0.0",
     "whatwg-fetch": "2.0.4"
@@ -189,6 +189,9 @@
     "winston": "3.2.1",
     "yup": "0.28.5",
     "zod": "3.22.4"
+  },
+  "resolutions": {
+    "http-proxy-middleware": "^2.0.7"
   },
   "license": "UNLICENSED",
   "msw": {
