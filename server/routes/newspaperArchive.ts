@@ -82,11 +82,7 @@ router.get('/auth', async (req: Request, res: Response) => {
 
 			const archiveReturnUrl = new URL(archiveReturnUrlString);
 
-			if (
-				!archiveReturnUrl.hostname.endsWith(
-					'theguardian.newspapers.com',
-				)
-			) {
+			if (archiveReturnUrl.hostname !== 'theguardian.newspapers.com') {
 				log.error('Invalid ncom return URL hostname');
 				return res.redirect(responseJson.url);
 			}
