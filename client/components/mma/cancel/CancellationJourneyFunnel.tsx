@@ -58,5 +58,9 @@ export const CancellationJourneyFunnel = () => {
 		return <Navigate to="./landing" state={{ ...routerState }} />;
 	}
 
+	if (!productType.cancellation?.reasons) {
+		return <Navigate to="./confirm" state={{ ...routerState }} />;
+	}
+
 	return <CancellationReasonSelection />;
 };

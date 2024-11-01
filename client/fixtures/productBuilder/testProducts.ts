@@ -273,6 +273,13 @@ export function guardianLight() {
 		.getProductDetailObject();
 }
 
+export function guardianLightCancelled() {
+	return new ProductBuilder(baseGuardianLight())
+		.payByCard()
+		.cancel()
+		.getProductDetailObject();
+}
+
 export function tierThree() {
 	return new ProductBuilder(baseTierThree())
 		.payByCard()

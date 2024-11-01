@@ -35,6 +35,13 @@ interface RouterSate extends DiscountPreviewResponse {
 	eligibleForFreePeriodOffer: boolean;
 }
 
+const headingWithContentAbove = css`
+	margin-bottom: ${space[6]}px;
+`;
+const headingWithoutContentAbove = css`
+	margin: ${space[9]}px 0 ${space[6]}px;
+`;
+
 const copyCss = css`
 	${textEgyptian17};
 `;
@@ -100,8 +107,16 @@ export const ConfirmCancellation = () => {
 
 	const subscription = productDetail.subscription;
 
-	const alternativeIsOffer = productType.productType === 'supporterplus';
-	const alternativeIsPause = productType.productType === 'contributions';
+	const productIsSubscription = productType.productType === 'supporterplus'; // will we migrate other product like Guardian weekly over to this cancellation flow at some point?
+	const productIsContribution = productType.productType === 'contributions';
+	const productIsGuardianLight = productType.productType === 'guardianlight';
+
+	const progressStepperArray = [
+		{},
+		{},
+		{ isCurrentStep: !routerState.eligibleForFreePeriodOffer },
+		{ isCurrentStep: routerState.eligibleForFreePeriodOffer },
+	];
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle(
@@ -111,30 +126,27 @@ export const ConfirmCancellation = () => {
 
 	return (
 		<>
-			<ProgressStepper
-				steps={[
-					{},
-					{},
-					{ isCurrentStep: !routerState.eligibleForFreePeriodOffer },
-					{ isCurrentStep: routerState.eligibleForFreePeriodOffer },
-				]}
-				additionalCSS={css`
-					margin: ${space[8]}px 0 ${space[9]}px;
-				`}
-			/>
+			{productType.cancellation?.reasons && (
+				<ProgressStepper
+					steps={progressStepperArray}
+					additionalCSS={css`
+						margin: ${space[8]}px 0 ${space[9]}px;
+					`}
+				/>
+			)}
 			<Heading
 				borderless
 				cssOverrides={[
 					measure.heading,
-					css`
-						margin-bottom: ${space[6]}px;
-					`,
+					productType.cancellation?.reasons
+						? headingWithContentAbove
+						: headingWithoutContentAbove,
 				]}
 			>
 				Is this really goodbye?
 			</Heading>
 			<div css={copyCss}>
-				{alternativeIsOffer && (
+				{(productIsSubscription && (
 					<>
 						<p>
 							If you confirm your cancellation, you will lose the
@@ -160,13 +172,19 @@ export const ConfirmCancellation = () => {
 							</p>
 						)}
 					</>
-				)}
-				{alternativeIsPause && (
-					<p>
-						If you confirm your cancellation, you will no longer be
-						supporting the Guardian's reader-funded journalism.
-					</p>
-				)}
+				)) ||
+					(productIsContribution && (
+						<p>
+							If you confirm your cancellation, you will no longer
+							be supporting the Guardian's reader-funded
+							journalism.
+						</p>
+					)) ||
+					(productIsGuardianLight && (
+						<p>
+							Specific message for Guardian Light product holders.
+						</p>
+					))}
 				<div css={buttonsCtaHolder}>
 					<Button
 						cssOverrides={ctaBtnCss}
@@ -185,8 +203,9 @@ export const ConfirmCancellation = () => {
 							navigate('/');
 						}}
 					>
-						{alternativeIsOffer && 'Keep my subscription'}
-						{alternativeIsPause && 'Keep supporting'}
+						{productIsSubscription
+							? 'Keep my subscription'
+							: 'Keep supporting'}
 					</Button>
 				</div>
 			</div>

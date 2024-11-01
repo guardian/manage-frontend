@@ -92,7 +92,7 @@ export type AllProductsProductTypeFilterString =
 	| 'TierThree';
 
 interface CancellationFlowProperties {
-	reasons: CancellationReason[];
+	reasons?: CancellationReason[];
 	sfCaseProduct: SfCaseProduct;
 	checkForOutstandingCredits?: true;
 	flowWrapper?: (
@@ -104,12 +104,12 @@ interface CancellationFlowProperties {
 	hideReasonTitlePrefix?: true;
 	alternateSummaryMainPara?: string;
 	shouldHideSummaryMainPara?: true;
-	summaryReasonSpecificPara: (
+	summaryReasonSpecificPara?: (
 		reasonId: OptionalCancellationReasonId,
 		currencyISO?: CurrencyIso,
 	) => string | undefined;
 	onlyShowSupportSectionIfAlternateText: boolean;
-	alternateSupportButtonText: (
+	alternateSupportButtonText?: (
 		reasonId: OptionalCancellationReasonId,
 	) => string | undefined;
 	alternateSupportButtonUrlSuffix: (
@@ -728,33 +728,10 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		cancellation: {
 			alternateSummaryMainPara:
 				'This is immediate and you will not be charged again.',
-			reasons: shuffledContributionsCancellationReasons,
 			sfCaseProduct: 'Guardian Light',
 			startPageBody: contributionsCancellationFlowStart,
 			shouldHideSummaryMainPara: true,
-			summaryReasonSpecificPara: (
-				reasonId: OptionalCancellationReasonId,
-			) => {
-				switch (reasonId) {
-					case 'mma_financial_circumstances':
-					case 'mma_value_for_money':
-						return 'You can support The Guardian’s independent journalism with a One-time contribution, from as little as £1 – and it only takes a minute.';
-					default:
-						return undefined;
-				}
-			},
 			onlyShowSupportSectionIfAlternateText: true,
-			alternateSupportButtonText: (
-				reasonId: OptionalCancellationReasonId,
-			) => {
-				switch (reasonId) {
-					case 'mma_financial_circumstances':
-					case 'mma_value_for_money':
-						return 'Make a One-time contribution';
-					default:
-						return undefined;
-				}
-			},
 			alternateSupportButtonUrlSuffix: () => undefined,
 			swapFeedbackAndContactUs: true,
 			shouldHideThrasher: true,
