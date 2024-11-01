@@ -6,7 +6,11 @@ import {
 	contributionCancelled,
 	contributionPaidByCard,
 	contributionPaidByPayPal,
+	guardianLight,
+	guardianLightCancelled,
 	guardianWeeklyPaidByCard,
+	monthlyContributionPaidByCard,
+	supporterPlus,
 	supporterPlusCancelled,
 	supporterPlusMonthlyAllAccessDigital,
 } from '../../../fixtures/productBuilder/testProducts';
@@ -19,13 +23,19 @@ import { CancelAlternativeReview } from './cancellationSaves/CancelAlternativeRe
 import { getCancellationSummary } from './CancellationSummary';
 import { contributionsCancellationReasons } from './contributions/ContributionsCancellationReasons';
 import { ConfirmCancellation } from './stages/ConfirmCancellation';
-import { getCancellationSummaryWithReturnButton } from './stages/ExecuteCancellation';
+import {
+	ExecuteCancellation,
+	getCancellationSummaryWithReturnButton,
+} from './stages/ExecuteCancellation';
 import { otherCancellationReason } from './supporterplus/SupporterplusCancellationReasons';
+import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
 
 const contributions = PRODUCT_TYPES.contributions;
+/*
 contributions.cancellation!.reasons = contributionsCancellationReasons.concat(
 	otherCancellationReason,
 );
+*/
 
 export default {
 	title: 'Pages/Cancellation',
@@ -35,13 +45,22 @@ export default {
 		layout: 'fullscreen',
 		reactRouter: {
 			state: { productDetail: contributionPaidByPayPal() },
-			container: <CancellationContainer productType={contributions} />,
 		},
 	},
 } as Meta<typeof CancellationContainer>;
 
-export const SelectReason: StoryFn<typeof CancellationReasonSelection> = () => {
-	return <CancellationReasonSelection />;
+export const SelectReason: StoryObj<typeof CancellationReasonSelection> = {
+	render: () => <CancellationReasonSelection />,
+
+	parameters: {
+		reactRouter: {
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
+		},
+	},
 };
 
 export const ContactCustomerService: StoryObj<
@@ -98,6 +117,61 @@ export const ReviewWithReduceAmount: StoryObj<typeof CancellationContainer> = {
 				productDetail: contributionPaidByPayPal(),
 				selectedReasonId: 'mma_financial_circumstances',
 			},
+		},
+	},
+};
+
+export const ReviewGuardianLight: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <ConfirmCancellation />;
+	},
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: guardianLight(),
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.guardianlight}
+				/>
+			),
+		},
+	},
+};
+
+export const ConfirmationGuardianLight: StoryObj<typeof ExecuteCancellation> = {
+	render: () => {
+		// @ts-expect-error set identity details email in the window
+		window.guardian = { identityDetails: { email: 'test' } };
+		return <ExecuteCancellation />;
+	},
+	parameters: {
+		msw: [
+			http.patch('/api/case/**', () => {
+				return HttpResponse.json({ id: 'caseId' });
+			}),
+			http.get('/api/me/mma/**', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(guardianLightCancelled()),
+				);
+			}),
+			http.post('/api/cancel/**', () => {
+				return new HttpResponse(null, {
+					status: 201,
+				});
+			}),
+		],
+		reactRouter: {
+			state: {
+				productDetail: guardianLight(),
+				selectedReasonId: '1',
+				caseId: 'caseId',
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.guardianlight}
+				/>
+			),
 		},
 	},
 };
@@ -285,68 +359,128 @@ export const SupportplusCancelConfirm: StoryObj<typeof CancellationContainer> =
 						{ date: '2024-07-30', amount: 14.99 },
 					],
 				},
+				container: (
+					<CancellationContainer
+						productType={PRODUCT_TYPES.supporterplus}
+					/>
+				),
 			},
 		},
 	};
 
-export const ConfirmationContribution: StoryFn<
-	typeof CancellationContainer
-> = () => {
-	// @ts-expect-error set identity details email in the window
-	window.guardian = { identityDetails: { email: 'test' } };
-
-	return getCancellationSummary(
-		PRODUCT_TYPES.contributions,
-		contributionCancelled(),
-		contributionPaidByCard(),
-	);
+export const ConfirmationContribution: StoryObj<typeof ExecuteCancellation> = {
+	render: () => {
+		// @ts-expect-error set identity details email in the window
+		window.guardian = { identityDetails: { email: 'test' } };
+		return <ExecuteCancellation />;
+	},
+	parameters: {
+		msw: [
+			http.patch('/api/case/**', () => {
+				return HttpResponse.json({ id: 'caseId' });
+			}),
+			http.get('/api/me/mma/**', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(contributionCancelled()),
+				);
+			}),
+			http.post('/api/cancel/**', () => {
+				return new HttpResponse(null, {
+					status: 201,
+				});
+			}),
+		],
+		reactRouter: {
+			state: {
+				productDetail: contributionPaidByCard(),
+				selectedReasonId: '1',
+				caseId: 'caseId',
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
+		},
+	},
 };
 
-export const ConfirmationContributionWithPause: StoryFn<
-	typeof CancellationContainer
-> = () => {
-	// @ts-expect-error set identity details email in the window
-	window.guardian = { identityDetails: { email: 'test' } };
-
-	const eligibleForOffer = false;
-	const eligibleForPause = true;
-
-	return (
-		<>
-			{getCancellationSummaryWithReturnButton(
-				getCancellationSummary(
-					PRODUCT_TYPES.contributions,
-					contributionCancelled(),
-					contributionPaidByCard(),
-					eligibleForOffer,
-					eligibleForPause,
-				),
-				eligibleForPause,
-			)()}
-		</>
-	);
+export const ConfirmationContributionWithPause: StoryObj<
+	typeof ExecuteCancellation
+> = {
+	render: () => {
+		// @ts-expect-error set identity details email in the window
+		window.guardian = { identityDetails: { email: 'test' } };
+		return <ExecuteCancellation />;
+	},
+	parameters: {
+		msw: [
+			http.patch('/api/case/**', () => {
+				return HttpResponse.json({ id: 'caseId' });
+			}),
+			http.get('/api/me/mma/**', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(contributionCancelled()),
+				);
+			}),
+			http.post('/api/cancel/**', () => {
+				return new HttpResponse(null, {
+					status: 201,
+				});
+			}),
+		],
+		reactRouter: {
+			state: {
+				productDetail: contributionPaidByCard(),
+				eligibleForPause: true,
+				selectedReasonId: '1',
+				caseId: 'caseId',
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
+		},
+	},
 };
 
-export const ConfirmationSupporterPlusWithOffer: StoryFn<
-	typeof CancellationContainer
-> = () => {
-	// @ts-expect-error set identity details email in the window
-	window.guardian = { identityDetails: { email: 'test' } };
-
-	const eligibleForOffer = true;
-	const eligibleForPause = false;
-
-	return (
-		<>
-			{getCancellationSummaryWithReturnButton(
-				getCancellationSummary(
-					PRODUCT_TYPES.supporterplus,
-					supporterPlusCancelled(),
-					contributionPaidByCard(),
-					eligibleForOffer,
-					eligibleForPause,
-				),
-			)()}
-		</>
-	);
+export const ConfirmationSupporterPlusWithOffer: StoryObj<
+	typeof ExecuteCancellation
+> = {
+	render: () => {
+		// @ts-expect-error set identity details email in the window
+		window.guardian = { identityDetails: { email: 'test' } };
+		return <ExecuteCancellation />;
+	},
+	parameters: {
+		msw: [
+			http.patch('/api/case/**', () => {
+				return HttpResponse.json({ id: 'caseId' });
+			}),
+			http.get('/api/me/mma/**', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(supporterPlusCancelled()),
+				);
+			}),
+			http.post('/api/cancel/**', () => {
+				return new HttpResponse(null, {
+					status: 201,
+				});
+			}),
+		],
+		reactRouter: {
+			state: {
+				productDetail: supporterPlus(),
+				eligibleForOffer: true,
+				selectedReasonId: '1',
+				caseId: 'caseId',
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
+		},
+	},
 };
