@@ -3,8 +3,9 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
 	getSpecificProductTypeFromTier,
-	type ProductDetail,
+	isPaidSubscriptionPlan,
 } from '@/shared/productResponse';
+import type { ProductTypeKeys } from '@/shared/productTypes';
 import { CancellationContext } from './CancellationContainer';
 import type {
 	CancellationContextInterface,
@@ -12,14 +13,10 @@ import type {
 } from './CancellationContainer';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 
-function productHasEarlySaveJourney(productToCancel: ProductDetail): boolean {
-	const specificProductTypeKey = getSpecificProductTypeFromTier(
-		productToCancel.tier,
-	).productType;
-
+function productHasEarlySaveJourney(productTypeKey: ProductTypeKeys): boolean {
 	return (
-		specificProductTypeKey === 'membership' ||
-		(featureSwitches.digisubSave && specificProductTypeKey === 'digipack')
+		productTypeKey === 'membership' ||
+		(featureSwitches.digisubSave && productTypeKey === 'digipack')
 	);
 }
 
@@ -36,9 +33,20 @@ export const CancellationJourneyFunnel = () => {
 		return <Navigate to="/" />;
 	}
 
+	const productType = getSpecificProductTypeFromTier(productDetail.tier);
+	const productTypeKey = productType.productType;
+
+	const possiblePaidPlan = productDetail.subscription.currentPlans[0];
+	const qmEventString = `cancellation start | ${productType.friendlyName}${
+		isPaidSubscriptionPlan(possiblePaidPlan)
+			? ` | billing period: ${possiblePaidPlan.billingPeriod}`
+			: ''
+	}`;
+	window.QuantumMetricAPI?.sendEvent(184, 0, qmEventString);
+
 	if (
 		!routerState?.dontShowOffer &&
-		productHasEarlySaveJourney(productDetail)
+		productHasEarlySaveJourney(productTypeKey)
 	) {
 		return <Navigate to="./landing" state={{ ...routerState }} />;
 	}

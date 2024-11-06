@@ -27,9 +27,13 @@ export interface Globals extends CommonGlobals {
 	stripeKeyAustralia?: StripePublicKeySet;
 	stripeKeyDefaultCurrencies?: StripePublicKeySet;
 }
+interface QuantumMetricAPIPartial {
+	sendEvent: (param1: number, param2: number, event: string) => void;
+}
 declare global {
 	interface Window {
 		guardian: Globals;
+		QuantumMetricAPI: QuantumMetricAPIPartial;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the embedded_svc attribute?
 		embedded_svc: any;
 	}
