@@ -65,8 +65,11 @@ const signedOutAfterTokensIssued = ({
 	// where the middleware may continually keep running performAuthorizationCodeFlow().
 	guSoTimestamp <= Math.floor(Date.now() / 1000);
 
-export const withIdentity: (statusCodeOverride?: number) => RequestHandler =
-	(statusCodeOverride?: number) =>
+export const withIdentity: (
+	statusCodeOverride?: number,
+	keepQueryParams?: boolean,
+) => RequestHandler =
+	(statusCodeOverride?: number, keepQueryParams?: boolean) =>
 	async (req: Request, res: Response, next: NextFunction) => {
 		if (CYPRESS === 'SKIP_IDAPI') {
 			return next();
@@ -80,7 +83,13 @@ export const withIdentity: (statusCodeOverride?: number) => RequestHandler =
 					: {};
 			const oktaConfig = await getOktaConfig(oktaConfigOverride);
 			if (oktaConfig.useOkta) {
-				return authenticateWithOAuth(req, res, next, oktaConfig);
+				return authenticateWithOAuth(
+					req,
+					res,
+					next,
+					oktaConfig,
+					keepQueryParams,
+				);
 			} else {
 				return authenticateWithIdapi(statusCodeOverride)(
 					req,
@@ -98,10 +107,12 @@ export const authenticateWithOAuth = async (
 	res: Response,
 	next: NextFunction,
 	oktaConfig: OktaConfig,
+	keepQueryParams: boolean = false,
 ) => {
 	// Get the path of the current page and use it as our returnPath after the OAuth callback.
-	const returnPath = sanitizeReturnPath(req.originalUrl);
-
+	const returnPath = keepQueryParams
+		? req.originalUrl
+		: sanitizeReturnPath(req.originalUrl);
 	try {
 		const verifiedTokens = await verifyOAuthCookiesLocally(req);
 		const guSoTimestamp = parseInt(req.cookies['GU_SO']);

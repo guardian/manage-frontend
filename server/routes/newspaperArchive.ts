@@ -36,7 +36,7 @@ const newspaperArchiveConfigPromise: Promise<
 
 const router = Router();
 
-router.use(withIdentity(401));
+router.use(withIdentity(401, true));
 
 router.get('/auth', async (req: Request, res: Response) => {
 	try {
@@ -81,6 +81,12 @@ router.get('/auth', async (req: Request, res: Response) => {
 			const tpaToken = new URL(responseJson.url).searchParams.get('tpa');
 
 			const archiveReturnUrl = new URL(archiveReturnUrlString);
+
+			if (archiveReturnUrl.hostname !== 'theguardian.newspapers.com') {
+				log.error('Invalid ncom return URL hostname');
+				return res.redirect(responseJson.url);
+			}
+
 			archiveReturnUrl.searchParams.set('tpa', tpaToken ?? '');
 			return res.redirect(archiveReturnUrl.toString());
 		}
