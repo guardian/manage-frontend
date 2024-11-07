@@ -37,12 +37,19 @@ export const CancellationJourneyFunnel = () => {
 	const productTypeKey = productType.productType;
 
 	const possiblePaidPlan = productDetail.subscription.currentPlans[0];
-	const qmEventString = `cancellation start | ${productType.friendlyName}${
-		isPaidSubscriptionPlan(possiblePaidPlan)
-			? ` | billing period: ${possiblePaidPlan.billingPeriod}`
-			: ''
-	}`;
-	window.QuantumMetricAPI?.sendEvent(184, 0, qmEventString);
+	const qmEventId = 184;
+	const qmIsConversionEvent = 0;
+	const qmEvent = [
+		'cancellation start',
+		productType.friendlyName,
+		isPaidSubscriptionPlan(possiblePaidPlan) &&
+			`billing period: ${possiblePaidPlan.billingPeriod}`,
+	].filter(Boolean);
+	window.QuantumMetricAPI?.sendEvent(
+		qmEventId,
+		qmIsConversionEvent,
+		qmEvent.join(' | '),
+	);
 
 	if (
 		!routerState?.dontShowOffer &&

@@ -28,7 +28,12 @@ export interface Globals extends CommonGlobals {
 	stripeKeyDefaultCurrencies?: StripePublicKeySet;
 }
 interface QuantumMetricAPIPartial {
-	sendEvent: (param1: number, param2: number, event: string) => void;
+	sendEvent: (
+		eventId: number | string,
+		conversion?: number | boolean,
+		eventValue?: number | string,
+		attributes?: Record<string, string | boolean | number | undefined>,
+	) => void;
 }
 declare global {
 	interface Window {
