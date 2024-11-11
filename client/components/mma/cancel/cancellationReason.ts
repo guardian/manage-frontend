@@ -37,6 +37,7 @@ export type CancellationReasonId =
 	| 'mma_cost_of_living'
 	| 'mma_cutting_subscriptions'
 	| 'mma_payment_issue'
+	| 'mma_price_increase'
 	| 'mma_article'
 	| 'mma_editorial'
 	| 'mma_benefits'

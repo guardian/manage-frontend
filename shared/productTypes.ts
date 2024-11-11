@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
+import { tierThreeCancellationReasons } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationReasons';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import { convertCurrencyIsoToSymbol } from '@/client/utilities/currencyIso';
 import type {
@@ -629,7 +630,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		},
 		cancellation: {
 			linkOnProductPage: true,
-			reasons: gwCancellationReasons,
+			reasons: tierThreeCancellationReasons,
 			sfCaseProduct: 'Tier Three',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
