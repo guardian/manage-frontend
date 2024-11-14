@@ -1,4 +1,7 @@
-import { guardianLight, guardianLightCancelled } from '../../../../client/fixtures/productBuilder/testProducts';
+import {
+	guardianLight,
+	guardianLightCancelled,
+} from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
@@ -75,7 +78,7 @@ describe('Cancel Guardian Light', () => {
 		}).as('cancel_guardian_light');
 	});
 
-	it.only('user successfully cancels', () => {
+	it('user successfully cancels', () => {
 		setupCancellation();
 
 		cy.intercept('GET', '/api/me/mma?productType=GuardianLight', {
@@ -83,7 +86,7 @@ describe('Cancel Guardian Light', () => {
 			body: toMembersDataApiResponse(guardianLightCancelled()),
 		}).as('get_cancelled_product');
 
-		cy.findByText('Specific message for Guardian Light product holders.');
+		cy.findByText('Is this really goodbye?');
 
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
@@ -93,34 +96,5 @@ describe('Cancel Guardian Light', () => {
 		cy.findByRole('heading', {
 			name: 'Your guardian light is cancelled',
 		});
-		/*
-		cy.intercept('GET', '/api/me/mma/**', {
-			statusCode: 200,
-			body: toMembersDataApiResponse(supporterPlusCancelled()),
-		}).as('get_cancelled_product');
-
-		cy.findByRole('radio', {
-			name: 'I am unhappy with some editorial decisions',
-		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
-
-		cy.wait('@get_case');
-
-		cy.findByRole('button', { name: 'Continue to cancellation' }).click();
-
-		cy.findByRole('button', {
-			name: 'Confirm cancellation',
-		}).click();
-
-		cy.wait('@create_case_in_salesforce');
-		cy.wait('@cancel_supporter_plus');
-		cy.wait('@get_cancelled_product');
-
-		cy.findByRole('heading', {
-			name: 'Your subscription has been cancelled',
-		});
-
-		cy.get('@get_cancellation_date.all').should('have.length', 0);
-		*/
 	});
 });

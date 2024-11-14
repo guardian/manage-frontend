@@ -716,7 +716,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		productTitle: () => 'Guardian Light',
 		friendlyName: 'guardian light',
 		productType: 'guardianlight',
-		groupedProductType: 'recurringSupport',
+		groupedProductType: 'recurringSupportWithBenefits',
 		allProductsProductTypeFilterString: 'GuardianLight',
 		urlPart: 'guardianlight',
 		getOphanProductType: () => 'GUARDIAN_LIGHT',
@@ -725,16 +725,12 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			SoftOptInIDs.SupporterNewsletter,
 		],
 		cancellation: {
-			alternateSummaryMainPara:
-				'This is immediate and you will not be charged again.',
 			sfCaseProduct: 'Guardian Light',
 			startPageBody: contributionsCancellationFlowStart,
-			shouldHideSummaryMainPara: true,
 			onlyShowSupportSectionIfAlternateText: true,
 			alternateSupportButtonUrlSuffix: () => undefined,
 			swapFeedbackAndContactUs: true,
 			shouldHideThrasher: true,
-			shouldShowReminder: true,
 		},
 	},
 };

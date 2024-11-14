@@ -1,6 +1,7 @@
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
 	contributionCancelled,
@@ -9,7 +10,6 @@ import {
 	guardianLight,
 	guardianLightCancelled,
 	guardianWeeklyPaidByCard,
-	monthlyContributionPaidByCard,
 	supporterPlus,
 	supporterPlusCancelled,
 	supporterPlusMonthlyAllAccessDigital,
@@ -20,22 +20,8 @@ import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { CancelAlternativeConfirmed } from './cancellationSaves/CancelAlternativeConfirmed';
 import { CancelAlternativeOffer } from './cancellationSaves/CancelAlternativeOffer';
 import { CancelAlternativeReview } from './cancellationSaves/CancelAlternativeReview';
-import { getCancellationSummary } from './CancellationSummary';
-import { contributionsCancellationReasons } from './contributions/ContributionsCancellationReasons';
 import { ConfirmCancellation } from './stages/ConfirmCancellation';
-import {
-	ExecuteCancellation,
-	getCancellationSummaryWithReturnButton,
-} from './stages/ExecuteCancellation';
-import { otherCancellationReason } from './supporterplus/SupporterplusCancellationReasons';
-import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
-
-const contributions = PRODUCT_TYPES.contributions;
-/*
-contributions.cancellation!.reasons = contributionsCancellationReasons.concat(
-	otherCancellationReason,
-);
-*/
+import { ExecuteCancellation } from './stages/ExecuteCancellation';
 
 export default {
 	title: 'Pages/Cancellation',
