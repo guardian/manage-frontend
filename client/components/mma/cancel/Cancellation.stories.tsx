@@ -24,11 +24,8 @@ import { CancelAlternativeReview } from './cancellationSaves/CancelAlternativeRe
 import { contributionsCancellationReasons } from './contributions/ContributionsCancellationReasons';
 import { gwCancellationReasons } from './gw/GwCancellationReasons';
 import { ConfirmCancellation } from './stages/ConfirmCancellation';
-import {
-	otherCancellationReason,
-	supporterplusCancellationReasons,
-} from './supporterplus/SupporterplusCancellationReasons';
-
+import { ExecuteCancellation } from './stages/ExecuteCancellation';
+import { otherCancellationReason } from './supporterplus/SupporterplusCancellationReasons';
 
 const contributions = PRODUCT_TYPES.contributions;
 contributions.cancellation!.reasons = contributionsCancellationReasons.concat(

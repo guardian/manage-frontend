@@ -181,9 +181,32 @@ export const ConfirmCancellation = () => {
 						</p>
 					)) ||
 					(productIsGuardianLight && (
-						<p>
-							Specific message for Guardian Light product holders.
-						</p>
+						<>
+							<p>
+								If you confirm your cancellation, you will lose
+								the following benefits:
+							</p>
+							<ul css={youllLoseList}>
+								<li>Unlimited access to the Guardian app</li>
+								<li>Ad-free reading across all your devices</li>
+								<li>Exclusive supporter newsletter</li>
+								<li>
+									Far fewer asks for support when you're
+									signed in
+								</li>
+							</ul>
+							{subscription.potentialCancellationDate && (
+								<p css={loseDateCss}>
+									You will no longer have access to these
+									benefits from{' '}
+									{parseDate(
+										subscription.potentialCancellationDate,
+										'yyyy-MM-dd',
+									).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
+									.
+								</p>
+							)}
+						</>
 					))}
 				<div css={buttonsCtaHolder}>
 					<Button
@@ -203,7 +226,7 @@ export const ConfirmCancellation = () => {
 							navigate('/');
 						}}
 					>
-						{productIsSubscription
+						{productIsSubscription || productIsGuardianLight
 							? 'Keep my subscription'
 							: 'Keep supporting'}
 					</Button>
