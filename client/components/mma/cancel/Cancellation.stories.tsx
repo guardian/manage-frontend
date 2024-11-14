@@ -23,9 +23,7 @@ import { CancelAlternativeOffer } from './cancellationSaves/CancelAlternativeOff
 import { CancelAlternativeReview } from './cancellationSaves/CancelAlternativeReview';
 import { contributionsCancellationReasons } from './contributions/ContributionsCancellationReasons';
 import { ConfirmCancellation } from './stages/ConfirmCancellation';
-import {
-	ExecuteCancellation,
-} from './stages/ExecuteCancellation';
+import { ExecuteCancellation } from './stages/ExecuteCancellation';
 import { otherCancellationReason } from './supporterplus/SupporterplusCancellationReasons';
 
 const contributions = PRODUCT_TYPES.contributions;

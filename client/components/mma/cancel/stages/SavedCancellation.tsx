@@ -41,7 +41,7 @@ export const SavedCancellation = () => {
 		return <Navigate to="../" />;
 	}
 
-	const reason = productType.cancellation.reasons.find(
+	const reason = productType.cancellation.reasons?.find(
 		(reason) => reason.reasonId === selectedReasonId,
 	) as CancellationReason;
 

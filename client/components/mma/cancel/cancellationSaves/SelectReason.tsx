@@ -89,10 +89,12 @@ const CancellationInfo = ({
 );
 
 const ReasonSelection = ({
-	productType,
+	groupedProductFriendlyName,
+	cancellationReasons,
 	setSelectedReasonId,
 }: {
-	productType: ProductTypeWithCancellationFlow;
+	groupedProductFriendlyName: string;
+	cancellationReasons: CancellationReason[];
 	setSelectedReasonId: React.Dispatch<React.SetStateAction<string>>;
 }) => {
 	return (
@@ -109,12 +111,7 @@ const ReasonSelection = ({
 			`}
 		>
 			<legend css={reasonLegendCss}>
-				Why did you cancel your{' '}
-				{
-					GROUPED_PRODUCT_TYPES[productType.groupedProductType]
-						.friendlyName
-				}{' '}
-				today?
+				Why did you cancel your {groupedProductFriendlyName} today?
 			</legend>
 			<RadioGroup
 				name="issue_type"
@@ -124,32 +121,30 @@ const ReasonSelection = ({
 					padding-top: ${space[4]}px;
 				`}
 			>
-				{productType.cancellation.reasons.map(
-					(reason: CancellationReason) => (
-						<div
-							key={reason.reasonId}
-							css={css`
-								border: 1px solid ${palette.neutral[86]};
-								border-radius: 4px;
-								padding: ${space[1]}px ${space[3]}px;
-								margin-bottom: ${space[3]}px;
+				{cancellationReasons.map((reason: CancellationReason) => (
+					<div
+						key={reason.reasonId}
+						css={css`
+							border: 1px solid ${palette.neutral[86]};
+							border-radius: 4px;
+							padding: ${space[1]}px ${space[3]}px;
+							margin-bottom: ${space[3]}px;
+						`}
+					>
+						<Radio
+							name="cancellation-reason"
+							value={reason.reasonId}
+							label={reason.linkLabel}
+							cssOverrides={css`
+								vertical-align: top;
+								text-transform: lowercase;
+								:checked + div label:first-of-type {
+									font-weight: bold;
+								}
 							`}
-						>
-							<Radio
-								name="cancellation-reason"
-								value={reason.reasonId}
-								label={reason.linkLabel}
-								cssOverrides={css`
-									vertical-align: top;
-									text-transform: lowercase;
-									:checked + div label:first-of-type {
-										font-weight: bold;
-									}
-								`}
-							/>
-						</div>
-					),
-				)}
+						/>
+					</div>
+				))}
 			</RadioGroup>
 		</fieldset>
 	);
@@ -266,6 +261,11 @@ export const SelectReason = () => {
 			<GenericErrorScreen loggingMessage="Cancel journey case id api call failed during the cancellation process" />
 		);
 	}
+	if (!productType.cancellation.reasons) {
+		return (
+			<GenericErrorScreen loggingMessage="Got to the cancellation /reasons page with a productType that doesn't have any cancellation reasons." />
+		);
+	}
 
 	return (
 		<section css={sectionSpacing}>
@@ -293,10 +293,16 @@ export const SelectReason = () => {
 					Please take a moment to tell us more about your decision.
 				</span>
 			</p>
-			<ReasonSelection
-				productType={productType}
-				setSelectedReasonId={setSelectedReasonId}
-			/>
+			{!!productType.cancellation.reasons && (
+				<ReasonSelection
+					groupedProductFriendlyName={
+						GROUPED_PRODUCT_TYPES[productType.groupedProductType]
+							.friendlyName
+					}
+					cancellationReasons={productType.cancellation.reasons}
+					setSelectedReasonId={setSelectedReasonId}
+				/>
+			)}
 			{inValidationErrorState && !selectedReasonId.length && (
 				<InlineError
 					cssOverrides={css`

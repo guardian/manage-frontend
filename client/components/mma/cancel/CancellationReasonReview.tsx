@@ -450,7 +450,7 @@ export const CancellationReasonReview = () => {
 		cancellationPolicy: string;
 	};
 
-	if (!routerState?.selectedReasonId) {
+	if (!routerState?.selectedReasonId || !productType.cancellation.reasons) {
 		return <Navigate to=".." />;
 	}
 	return <ValidatedCancellationReasonReview />;
