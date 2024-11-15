@@ -15,7 +15,11 @@ import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTyp
 import { featureSwitches } from '@/shared/featureSwitches';
 import type { TrueFalsePending } from '@/shared/generalTypes';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../../shared/dates';
-import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
+import {
+	getMainPlan,
+	isPaidSubscriptionPlan,
+	MDA_TEST_USER_HEADER,
+} from '../../../../shared/productResponse';
 import type {
 	ProductTypeWithCancellationFlow,
 	WithProductType,
@@ -261,9 +265,12 @@ const ConfirmCancellationAndReturnRow = (
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
+	const mainPlan = getMainPlan(productDetail.subscription);
 	const isSupporterPlusAndFreePeriodOfferIsActive =
 		featureSwitches.supporterplusCancellationOffer &&
-		productType.productType === 'supporterplus';
+		productType.productType === 'supporterplus' &&
+		isPaidSubscriptionPlan(mainPlan) &&
+		mainPlan.billingPeriod.toLowerCase() === 'month';
 
 	const isContributionAndBreakFeatureIsActive =
 		featureSwitches.contributionCancellationPause &&
