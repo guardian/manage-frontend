@@ -346,12 +346,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 				switch (reasonId) {
 					case 'mma_financial_circumstances':
 					case 'mma_value_for_money':
-					case 'mma_one_off':
 						return 'You can support The Guardian’s independent journalism with a One-time contribution, from as little as £1 – and it only takes a minute.';
-					case 'mma_wants_annual_contribution':
-						return 'You can support The Guardian’s independent journalism for the long term with an annual contribution.';
-					case 'mma_wants_monthly_contribution':
-						return 'You can support The Guardian’s independent journalism for the long term with a monthly contribution.';
 					default:
 						return undefined;
 				}
@@ -363,12 +358,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 				switch (reasonId) {
 					case 'mma_financial_circumstances':
 					case 'mma_value_for_money':
-					case 'mma_one_off':
 						return 'Make a One-time contribution';
-					case 'mma_wants_annual_contribution':
-						return 'Make an annual contribution';
-					case 'mma_wants_monthly_contribution':
-						return 'Make a monthly contribution';
 					default:
 						return undefined;
 				}
