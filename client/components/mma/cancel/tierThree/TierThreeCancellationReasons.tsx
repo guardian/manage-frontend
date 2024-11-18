@@ -6,7 +6,7 @@ import {
 import type { CancellationReason } from '../cancellationReason';
 import { BreakFromNewsWithAlternative } from '../GenericSaveBodyResponses';
 
-export const gwCancellationReasons: CancellationReason[] = [
+export const tierThreeCancellationReasons: CancellationReason[] = [
 	{
 		reasonId: 'mma_editorial',
 		linkLabel: 'I am unhappy with Guardian journalism',
@@ -98,7 +98,7 @@ export const otherCancellationReason: CancellationReason[] = [
 	},
 ];
 
-export const shuffledGWCancellationReasons: CancellationReason[] = [
-	...(shuffleArray(gwCancellationReasons) as CancellationReason[]),
+export const shuffledTierThreeCancellationReasons: CancellationReason[] = [
+	...(shuffleArray(tierThreeCancellationReasons) as CancellationReason[]),
 	...otherCancellationReason,
 ];

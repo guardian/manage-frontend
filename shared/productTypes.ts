@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
+import { shuffledTierThreeCancellationReasons } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationReasons';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import { convertCurrencyIsoToSymbol } from '@/client/utilities/currencyIso';
 import type {
@@ -9,17 +10,17 @@ import type {
 import { contributionsCancellationFlowStart } from '../client/components/mma/cancel/contributions/ContributionsCancellationFlowStart';
 import { shuffledContributionsCancellationReasons } from '../client/components/mma/cancel/contributions/ContributionsCancellationReasons';
 import { digipackCancellationFlowStart } from '../client/components/mma/cancel/digipack/DigipackCancellationFlowStart';
-import { digipackCancellationReasons } from '../client/components/mma/cancel/digipack/DigipackCancellationReasons';
+import { shuffledDigipackCancellationReasons } from '../client/components/mma/cancel/digipack/DigipackCancellationReasons';
 import { gwCancellationFlowStart } from '../client/components/mma/cancel/gw/GwCancellationFlowStart';
-import { gwCancellationReasons } from '../client/components/mma/cancel/gw/GwCancellationReasons';
+import { shuffledGWCancellationReasons } from '../client/components/mma/cancel/gw/GwCancellationReasons';
 import { membershipCancellationFlowStart } from '../client/components/mma/cancel/membership/MembershipCancellationFlowStart';
-import { membershipCancellationReasons } from '../client/components/mma/cancel/membership/MembershipCancellationReasons';
+import { shuffledMembershipCancellationReasons } from '../client/components/mma/cancel/membership/MembershipCancellationReasons';
 import type { RestOfCancellationFlow } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
 import { physicalSubsCancellationFlowWrapper } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
 import { supporterplusCancellationFlowStart } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationFlowStart';
 import { shuffledSupporterPlusCancellationReasons } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationReasons';
 import { voucherCancellationFlowStart } from '../client/components/mma/cancel/voucher/VoucherCancellationFlowStart';
-import { voucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
+import { shuffledVoucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
 import type { SupportTheGuardianButtonProps } from '../client/components/shared/SupportTheGuardianButton';
 import type { OphanProduct } from './ophanTypes';
 import type {
@@ -290,7 +291,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			}
 		},
 		cancellation: {
-			reasons: membershipCancellationReasons,
+			reasons: shuffledMembershipCancellationReasons,
 			sfCaseProduct: 'Membership',
 			startPageBody: membershipCancellationFlowStart,
 			hideReasonTitlePrefix: true,
@@ -345,12 +346,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 				switch (reasonId) {
 					case 'mma_financial_circumstances':
 					case 'mma_value_for_money':
-					case 'mma_one_off':
 						return 'You can support The Guardian’s independent journalism with a One-time contribution, from as little as £1 – and it only takes a minute.';
-					case 'mma_wants_annual_contribution':
-						return 'You can support The Guardian’s independent journalism for the long term with an annual contribution.';
-					case 'mma_wants_monthly_contribution':
-						return 'You can support The Guardian’s independent journalism for the long term with a monthly contribution.';
 					default:
 						return undefined;
 				}
@@ -362,12 +358,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 				switch (reasonId) {
 					case 'mma_financial_circumstances':
 					case 'mma_value_for_money':
-					case 'mma_one_off':
 						return 'Make a One-time contribution';
-					case 'mma_wants_annual_contribution':
-						return 'Make an annual contribution';
-					case 'mma_wants_monthly_contribution':
-						return 'Make a monthly contribution';
 					default:
 						return undefined;
 				}
@@ -511,7 +502,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		},
 		cancellation: {
 			linkOnProductPage: true,
-			reasons: voucherCancellationReasons,
+			reasons: shuffledVoucherCancellationReasons,
 			sfCaseProduct: 'Voucher Subscriptions',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
@@ -583,7 +574,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		},
 		cancellation: {
 			linkOnProductPage: true,
-			reasons: gwCancellationReasons,
+			reasons: shuffledGWCancellationReasons,
 			sfCaseProduct: 'Guardian Weekly',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
@@ -629,7 +620,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		},
 		cancellation: {
 			linkOnProductPage: true,
-			reasons: gwCancellationReasons,
+			reasons: shuffledTierThreeCancellationReasons,
 			sfCaseProduct: 'Tier Three',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
@@ -668,7 +659,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		],
 		cancellation: {
 			linkOnProductPage: true,
-			reasons: digipackCancellationReasons,
+			reasons: shuffledDigipackCancellationReasons,
 			sfCaseProduct: 'Digital Pack Subscriptions',
 			startPageBody: digipackCancellationFlowStart,
 			summaryReasonSpecificPara: () => undefined,

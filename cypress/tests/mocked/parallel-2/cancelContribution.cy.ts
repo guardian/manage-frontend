@@ -107,7 +107,7 @@ describe('Cancel contribution', () => {
 			}).as('apply_discount');
 
 			cy.findByRole('radio', {
-				name: 'As the result of a specific article I read',
+				name: 'I am unhappy with some editorial decisions',
 			}).click();
 			cy.findByRole('button', { name: 'Continue' }).click();
 
@@ -136,7 +136,7 @@ describe('Cancel contribution', () => {
 			}).as('preview_discount');
 
 			cy.findByRole('radio', {
-				name: 'As the result of a specific article I read',
+				name: 'I am unhappy with some editorial decisions',
 			}).click();
 			cy.findByRole('button', { name: 'Continue' }).click();
 
@@ -167,10 +167,10 @@ describe('Cancel contribution', () => {
 		});
 	}
 
-	it('cancels contribution (reason: As a result of a specific article I read)', () => {
+	it('cancels contribution (reason: I am unhappy with some editorial decisions)', () => {
 		setupCancellation();
 		cy.findByRole('radio', {
-			name: 'As the result of a specific article I read',
+			name: 'I am unhappy with some editorial decisions',
 		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
@@ -236,10 +236,10 @@ describe('Cancel contribution', () => {
 		cy.get('@get_cancellation_date.all').should('have.length', 0);
 	});
 
-	it('cancels contribution with save body string (reason: I’d like to get something in return for my support)', () => {
+	it('cancels contribution with save body string (reason: I’m not fully satisfied with the product features or benefits)', () => {
 		setupCancellation();
 		cy.findAllByRole('radio', {
-			name: 'I’d like to get something ‘in return’ for my support, e.g. digital features',
+			name: 'I’m not fully satisfied with the product features or benefits',
 		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
