@@ -1,3 +1,4 @@
+import { shuffleArray } from '@/client/utilities/utils';
 import { standardAlternateFeedbackIntro } from '../cancellationConstants';
 import type { CancellationReason } from '../cancellationReason';
 import { ContributionsCancellationAmountUpdatedSaved } from './ContributionsCancellationAmountUpdatedSaved';
@@ -81,11 +82,7 @@ export const otherCancellationReason: CancellationReason[] = [
 	},
 ];
 
-const shuffledArray = [...contributionsCancellationReasons].sort(
-	() => 0.5 - Math.random(),
-);
-
 export const shuffledContributionsCancellationReasons: CancellationReason[] = [
-	...shuffledArray,
+	...(shuffleArray(contributionsCancellationReasons) as CancellationReason[]),
 	...otherCancellationReason,
 ];

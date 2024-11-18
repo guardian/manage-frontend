@@ -6,6 +6,9 @@ export function flattenEquivalent<T>(x: T): T {
 	return x;
 }
 
+export const shuffleArray = (array: unknown[]) =>
+	[...array].sort(() => 0.5 - Math.random());
+
 export function formatAmount(amount: number) {
 	return Number.isInteger(amount) ? amount : amount.toFixed(2);
 }
