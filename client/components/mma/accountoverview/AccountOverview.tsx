@@ -303,7 +303,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 						Get the most out of your benefits
 					</h2>
 					<Stack space={6}>
-						<NewspaperArchiveCta />
+						{featureSwitches.digitalArchiveCta && (
+							<NewspaperArchiveCta />
+						)}
 						<DownloadAppCtaVariation1 />
 						<DownloadFeastAppCtaWithImage />
 					</Stack>

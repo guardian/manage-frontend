@@ -2,8 +2,8 @@ import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import {
 	breakpoints,
-	culture,
 	from,
+	palette,
 	space,
 	textSans15,
 	textSans17,
@@ -11,7 +11,10 @@ import {
 	textSansBold20,
 	until,
 } from '@guardian/source/foundations';
-import { LinkButton } from '@guardian/source/react-components';
+import {
+	LinkButton,
+	SvgArrowRightStraight,
+} from '@guardian/source/react-components';
 import { trackEvent } from '@/client/utilities/analytics';
 
 interface NewspaperArchiveCtaProps {
@@ -19,7 +22,8 @@ interface NewspaperArchiveCtaProps {
 }
 
 const containerCss = css`
-	background-color: ${culture[700]};
+	background-color: #1e3e72;
+	color: ${palette.neutral[100]};
 	h4 {
 		${textSansBold17};
 		margin: 0 ${space[5]}px 0 0;
@@ -104,26 +108,32 @@ export const NewspaperArchiveCta = (props: NewspaperArchiveCtaProps) => {
 					</p>
 					<LinkButton
 						href={'/newspaperArchive/auth'}
+						priority="tertiary"
+						theme={{
+							backgroundTertiary: palette.neutral[100],
+						}}
 						cssOverrides={css`
 							margin-top: ${space[5]}px;
 						`}
+						icon={<SvgArrowRightStraight />}
+						iconSide="right"
 						onClick={onExploreBtnClick}
 						size="small"
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						Explore the website
+						Explore the archive
 					</LinkButton>
 				</div>
 				<div css={heroImageContainerCss}>
 					<picture>
 						<source
-							srcSet="https://i.guim.co.uk/img/media/336f4eb3feac3317de5d92f7df9f0c2564afe28f/0_0_1360_740/1000.png?width=1000&quality=75&s=f9c061523ac93e79d187415a8702a9cb"
+							srcSet="https://i.guim.co.uk/img/media/f7dfa19a4902203e3bc0e61268c822c01a341b51/0_0_1357_740/1000.png?width=1000&quality=75&s=887d21d6bddd50218ce2c5746e4af519"
 							media={`(min-width: ${breakpoints.tablet}px)`}
 						/>
 						<img
 							css={heroImageCss}
-							src="https://i.guim.co.uk/img/media/52c51fe217b39f647b8acc67bd19dcca20866f7e/0_0_1360_740/1000.png?width=800&quality=75&s=103107cb3d85fec2679bb60893794bc1"
+							src="https://i.guim.co.uk/img/media/f7dfa19a4902203e3bc0e61268c822c01a341b51/0_0_1357_740/1000.png?width=700&quality=75&s=bc4fb813a0d89c5e2e590b0569543985"
 						/>
 					</picture>
 				</div>
