@@ -7,7 +7,6 @@ import {
 	textEgyptian17,
 	textSans12,
 	textSans17,
-	textSans20,
 	textSansBold15,
 	textSansBold20,
 	textSansBold24,
@@ -73,7 +72,7 @@ const offerBoxWithoutImageCss = css`
 `;
 
 const availableOfferBoxInnerCss = css`
-	padding: ${space[2]}px ${space[4]}px ${space[5]}px;
+	padding: 0 ${space[4]}px ${space[5]}px;
 	width: 100%;
 	${from.tablet} {
 		background-color: ${palette.neutral[100]};
@@ -123,7 +122,7 @@ const pillCss = css`
 `;
 
 const strikethroughPriceCss = css`
-	${textSans20};
+	${textSans17};
 	color: ${neutral[46]};
 	margin: 0;
 `;
@@ -144,6 +143,13 @@ const billingResumptionDateCss = css`
 	margin: 0;
 `;
 
+const billingResumptionDatePercentageOfferCss = css`
+	margin-bottom: ${space[6]}px;
+	${from.tablet} {
+		margin-bottom: ${space[5]}px;
+	}
+`;
+
 const offerButtonCss = css`
 	margin: ${space[5]}px 0 ${space[6]}px;
 	width: 100%;
@@ -161,11 +167,12 @@ const offerButtonSmallBottomMargin = css`
 `;
 
 const benefitsSubTitleCss = css`
-	margin: 0 0 ${space[5]}px;
+	margin: 0 0 ${space[3]}px;
 	${textSansBold15};
 	${from.tablet} {
 		border-top: 1px solid ${palette.neutral[86]};
 		padding-top: ${space[3]}px;
+		margin-bottom: ${space[4]}px;
 	}
 `;
 
@@ -289,7 +296,6 @@ export const CancelAlternativeOffer = () => {
 								? palette.news[400]
 								: palette.brand[500]
 						}
-						sharpLeftSideMobileOnly
 						additionalCss={pillCss}
 					/>
 				)}
@@ -393,9 +399,7 @@ export const CancelAlternativeOffer = () => {
 							<p
 								css={[
 									billingResumptionDateCss,
-									css`
-										margin-bottom: ${space[5]}px;
-									`,
+									billingResumptionDatePercentageOfferCss,
 								]}
 							>
 								You will pay {mainPlan.currency}
