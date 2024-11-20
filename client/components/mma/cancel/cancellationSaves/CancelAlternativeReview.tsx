@@ -397,15 +397,36 @@ export const CancelAlternativeReview = () => {
 			</div>
 			{isPaidSubscriptionPlan(mainPlan) && (
 				<>
-					{alternativeIsOffer && (
-						<p css={termsCss}>
-							If you cancel during the free period, you will lose
-							access to your benefits on the day we usually take
-							payment. If you cancel after the free period, your
-							subscription will end at the end of your current{' '}
-							{mainPlan.billingPeriod}ly payment period.
-						</p>
-					)}
+					{alternativeIsOffer &&
+						offerIsPercentageOrFree === 'free' && (
+							<p css={termsCss}>
+								If you cancel during the free period, you will
+								lose access to your benefits on the day we
+								usually take payment. If you cancel after the
+								free period, your subscription will end at the
+								end of your current {mainPlan.billingPeriod}ly
+								payment period.
+							</p>
+						)}
+					{alternativeIsOffer &&
+						offerIsPercentageOrFree === 'percentage' && (
+							<p css={termsCss}>
+								If you take up the{' '}
+								{routerState.discountPercentage}% off offer and
+								cancel during that {mainPlan.billingPeriod}, you
+								will lose access to your benefits at the end of
+								the {mainPlan.billingPeriod}. If you cancel
+								after the offer, when your {mainPlan.currency}
+								{getMaxNonDiscountedPrice(
+									routerState.nonDiscountedPayments,
+									true,
+								)}
+								/{mainPlan.billingPeriod} payment automatically
+								resumes, your subscription will end at the end
+								of your current {mainPlan.billingPeriod}ly
+								payment period
+							</p>
+						)}
 					{alternativeIsPause && (
 						<p css={termsCss}>
 							If you cancel during the paused period, your{' '}

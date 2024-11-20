@@ -173,9 +173,8 @@ export const getAppropriateReadableTimePeriod = (
 			unitsToSingularHigherPeriod: 7,
 		},
 	];
-	const periodTypeSingularLowerCase = periodType.endsWith('s')
-		? periodType.substring(0, periodType.length - 1).toLowerCase()
-		: periodType.toLowerCase();
+	const periodTypeSingularLowerCase =
+		periodTypeToSingular(periodType).toLowerCase();
 	const periodTypeInComparisonTimePeriods = orderdTimePeriods.find(
 		(element) => element.peroidName === periodTypeSingularLowerCase,
 	);
@@ -203,4 +202,10 @@ export const getAppropriateReadableTimePeriod = (
 	} else {
 		return `${number2words(unit)} ${periodType}`;
 	}
+};
+
+export const periodTypeToSingular = (periodType: string) => {
+	return periodType.endsWith('s')
+		? periodType.substring(0, periodType.length - 1)
+		: periodType;
 };
