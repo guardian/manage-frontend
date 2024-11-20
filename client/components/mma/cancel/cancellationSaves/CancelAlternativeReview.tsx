@@ -325,7 +325,14 @@ export const CancelAlternativeReview = () => {
 								`Unless you cancel before, your payment will resume on ${nextNonDiscountedPaymentDate}`}
 							{offerIsPercentageOrFree === 'percentage' &&
 								isPaidSubscriptionPlan(mainPlan) &&
-								`Unless you cancel before, you will be charged ${mainPlan.currency}${routerState.discountedPrice} on ${firstDiscountedPaymentDate}`}
+								`Unless you cancel before then, your ${
+									mainPlan.currency
+								}${getMaxNonDiscountedPrice(
+									routerState.nonDiscountedPayments,
+									true,
+								)}/${
+									mainPlan.billingPeriod
+								} payment will automatically resume on ${nextNonDiscountedPaymentDate}`}
 						</li>
 						<li>You may cancel your subscription at any time</li>
 					</>

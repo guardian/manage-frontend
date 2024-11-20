@@ -484,7 +484,9 @@ export const CancelAlternativeOffer = () => {
 					Your {mainPlan.billingPeriod}ly payments of{' '}
 					{mainPlan.currency}
 					{humanReadableStrikethroughPrice} will automatically resume
-					on {nextNonDiscountedPaymentDate} unless you cancel
+					on {nextNonDiscountedPaymentDate} unless you cancel. Cannot
+					be used together with any other subscription offer you may
+					currently have.
 				</p>
 			)}
 		</>
