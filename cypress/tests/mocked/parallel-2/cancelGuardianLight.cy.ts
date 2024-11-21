@@ -14,10 +14,10 @@ describe('Cancel Guardian Light', () => {
 		cy.wait('@mobile_subscriptions');
 		cy.wait('@single_contributions');
 
-		cy.findByText('Manage support').click();
+		cy.findByText('Manage subscription').click();
 
 		cy.findByRole('link', {
-			name: 'Cancel support',
+			name: 'Cancel subscription',
 		}).click();
 	};
 

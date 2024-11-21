@@ -396,7 +396,7 @@ describe('Update payment details', () => {
 		cy.wait('@product_detail');
 		cy.wait('@mobile_subscriptions');
 		cy.wait('@single_contributions');
-		cy.findByText('Manage support').click();
+		cy.findByText('Manage subscription').click();
 		cy.wait('@cancelled');
 
 		cy.findByText('Update payment method').click();
