@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { authorizationOrCookieHeader } from '../apiProxy';
 import { s3ConfigPromise } from '../awsIntegration';
 import { conf } from '../config';
-import { log } from '../log';
+import { log, putMetric } from '../log';
 import { withIdentity } from '../middleware/identityMiddleware';
 
 type NewspapersRequestBody = {
@@ -78,6 +78,10 @@ router.get('/auth', async (req: Request, res: Response) => {
 			archiveReturnUrlString &&
 			typeof archiveReturnUrlString === 'string'
 		) {
+			putMetric({
+				loggingCode: 'REDIRECT_FROM_NEWSPAPERS_COM',
+				isOK: true,
+			});
 			const tpaToken = new URL(responseJson.url).searchParams.get('tpa');
 
 			const archiveReturnUrl = new URL(archiveReturnUrlString);
