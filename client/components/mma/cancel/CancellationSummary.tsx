@@ -167,7 +167,7 @@ const actuallyCancelled = (
 								Support us another way
 							</h4>
 							<p>
-								{productType?.cancellation?.summaryReasonSpecificPara(
+								{productType?.cancellation?.summaryReasonSpecificPara?.(
 									cancellationReasonId,
 									currencySymbol,
 								) ||

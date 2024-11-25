@@ -100,6 +100,7 @@ export const benefitsConfiguration: {
 	nationaldelivery: [],
 	voucher: [],
 	guardianweekly: [],
+	guardianlight: [],
 	guardianpatron: [],
 };
 

@@ -76,6 +76,12 @@ const ReasonPicker = ({
 		(featureSwitches.contributionCancellationPause &&
 			productType.productType === 'contributions');
 
+	if (!productType.cancellation.reasons) {
+		return (
+			<GenericErrorScreen loggingMessage="Got to the cancellation reasons selection page with a productType that doesn't have any cancellation reasons." />
+		);
+	}
+
 	return (
 		<>
 			{shouldUseProgressStepper ? (
