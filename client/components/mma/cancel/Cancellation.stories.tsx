@@ -98,6 +98,11 @@ export const Review: StoryObj<typeof CancellationContainer> = {
 				selectedReasonId: 'mma_editorial',
 				cancellationPolicy: 'Today',
 			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
 		},
 	},
 };
@@ -118,6 +123,11 @@ export const ReviewWithReduceAmount: StoryObj<typeof CancellationContainer> = {
 				productDetail: contributionPaidByPayPal(),
 				selectedReasonId: 'mma_financial_circumstances',
 			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
 		},
 	},
 };
