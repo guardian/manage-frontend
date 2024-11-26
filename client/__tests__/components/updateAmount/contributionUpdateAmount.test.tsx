@@ -1,10 +1,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
+import type { BillingPeriod } from '@/shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { UpdateAmount } from '../../../components/mma/accountoverview/updateAmount/UpdateAmount';
 
-const mainPlan = (billingPeriod: string) => ({
+const mainPlan = (billingPeriod: BillingPeriod) => ({
 	start: '2019-10-30',
 	end: '2050-10-30',
 	price: 500,
@@ -45,7 +46,7 @@ it.each([
 			<BrowserRouter>
 				<UpdateAmount
 					subscriptionId="A-123"
-					mainPlan={mainPlan(billingPeriod)}
+					mainPlan={mainPlan(billingPeriod as BillingPeriod)}
 					amountUpdateStateChange={jest.fn()}
 					nextPaymentDate="2050-10-29"
 					productType={productType}
@@ -90,7 +91,7 @@ it.each([
 			<BrowserRouter>
 				<UpdateAmount
 					subscriptionId="A-123"
-					mainPlan={mainPlan(billingPeriod)}
+					mainPlan={mainPlan(billingPeriod as BillingPeriod)}
 					amountUpdateStateChange={jest.fn()}
 					nextPaymentDate="2050-10-29"
 					productType={productType}

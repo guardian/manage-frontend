@@ -27,6 +27,7 @@ import {
 	getMainPlan,
 	getSpecificProductTypeFromTier,
 	isGift,
+	isPaidSubscriptionPlan,
 } from '@/shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
@@ -224,30 +225,33 @@ export const ProductCard = ({
 					}
 				/>
 			)}
-			{canBeInOfferPeriod && isInOfferOrPausePeriod && (
-				<SuccessSummary
-					message="Your offer is active"
-					context={
-						<>
-							Your two months free is now active until{' '}
-							{nextPaymentDetails?.nextPaymentDateValue}. If you
-							have any questions, feel free to{' '}
-							{
-								<Link
-									to="/help-centre#contact-options"
-									css={css`
-										text-decoration: underline;
-										color: ${palette.brand[500]};
-									`}
-								>
-									contact our support team
-								</Link>
-							}
-							.
-						</>
-					}
-				/>
-			)}
+			{canBeInOfferPeriod &&
+				isInOfferOrPausePeriod &&
+				isPaidSubscriptionPlan(mainPlan) &&
+				mainPlan.billingPeriod === 'month' && (
+					<SuccessSummary
+						message="Your offer is active"
+						context={
+							<>
+								Your two months free is now active until{' '}
+								{nextPaymentDetails?.nextPaymentDateValue}. If
+								you have any questions, feel free to{' '}
+								{
+									<Link
+										to="/help-centre#contact-options"
+										css={css`
+											text-decoration: underline;
+											color: ${palette.brand[500]};
+										`}
+									>
+										contact our support team
+									</Link>
+								}
+								.
+							</>
+						}
+					/>
+				)}
 			{canBeInPausePeriod && isInOfferOrPausePeriod && (
 				<SuccessSummary
 					message="You have paused your support"

@@ -24,6 +24,7 @@ import { shuffledVoucherCancellationReasons } from '../client/components/mma/can
 import type { SupportTheGuardianButtonProps } from '../client/components/shared/SupportTheGuardianButton';
 import type { OphanProduct } from './ophanTypes';
 import type {
+	BillingPeriod,
 	PaidSubscriptionPlan,
 	ProductDetail,
 	Subscription,
@@ -235,7 +236,7 @@ const calculateProductTitle =
 		baseProductTitle + (mainPlan?.name ? ` - ${mainPlan.name}` : '');
 
 export function getBillingPeriodAdjective(
-	billingPeriod: string | undefined,
+	billingPeriod?: BillingPeriod,
 ): 'Monthly' | 'Annual' | 'Quarterly' {
 	if (billingPeriod === 'month') {
 		return 'Monthly';
@@ -243,7 +244,7 @@ export function getBillingPeriodAdjective(
 	if (billingPeriod === 'year') {
 		return 'Annual';
 	}
-	if (billingPeriod === 'quarterly') {
+	if (billingPeriod === 'quarter') {
 		return 'Quarterly';
 	}
 

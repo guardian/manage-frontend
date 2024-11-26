@@ -24,6 +24,7 @@ import { useNavigate } from 'react-router';
 import { formatAmount } from '@/client/utilities/utils';
 import { dateString } from '../../../../shared/dates';
 import type {
+	BillingPeriod,
 	PaidSubscriptionPlan,
 	Subscription,
 } from '../../../../shared/productResponse';
@@ -169,7 +170,7 @@ const RoundUp = ({
 	thresholdAmount: number;
 	chosenAmountPreRoundup: number;
 	currencySymbol: string;
-	billingPeriod: string;
+	billingPeriod: BillingPeriod;
 }) => {
 	const [hasRoundedUp, setHasRoundedUp] = useState<boolean>(false);
 
