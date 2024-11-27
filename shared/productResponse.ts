@@ -138,14 +138,16 @@ interface SepaDetails {
 	iban: string;
 }
 
+export type BillingPeriod = 'month' | '6 weeks' | 'quarter' | 'year';
+
 interface CurrencyAndBillingPeriodDetail {
 	currency: string;
 	currencyISO: CurrencyIso;
-	billingPeriod: string;
+	billingPeriod: BillingPeriod;
 }
 
 // 6 weeks billingPeriod referes to GW 6 for 6 up front payment (not to be confused with one off contributions which don't come through in this response
-export const augmentBillingPeriod = (billingPeriod: string) =>
+export const augmentBillingPeriod = (billingPeriod: BillingPeriod) =>
 	billingPeriod === '6 weeks' ? 'one-off' : `${billingPeriod}ly`;
 
 export const isSixForSix = (planName: string | null) =>

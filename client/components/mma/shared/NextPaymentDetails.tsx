@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { palette, space } from '@guardian/source/foundations';
 import { parseDate } from '../../../../shared/dates';
 import type {
+	BillingPeriod,
 	Subscription,
 	SubscriptionPlan,
 } from '../../../../shared/productResponse';
@@ -13,7 +14,7 @@ import {
 import { InfoIconDark } from './assets/InfoIconDark';
 
 export interface NextPaymentDetails {
-	paymentInterval: string;
+	paymentInterval: BillingPeriod;
 	paymentKey: string;
 	paymentValue: string;
 	paymentValueShort: string;

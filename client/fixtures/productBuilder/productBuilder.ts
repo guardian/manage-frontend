@@ -1,4 +1,5 @@
 import type {
+	BillingPeriod,
 	Card,
 	PaidSubscriptionPlan,
 	ProductDetail,
@@ -166,7 +167,7 @@ export class ProductBuilder {
 		return this;
 	}
 
-	withBillingPeriod(billingPeriod: 'month' | 'year' | 'quarter') {
+	withBillingPeriod(billingPeriod: BillingPeriod) {
 		const { plan, currentPlans, futurePlans } =
 			this.productToBuild.subscription;
 		if (plan) {
