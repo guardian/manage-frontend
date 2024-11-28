@@ -344,17 +344,24 @@ export const CancelAlternativeOffer = () => {
 						</p>
 					)}
 					{alternativeIsPause && (
-						<h4
-							css={[
-								offerBoxTitleCss,
-								css`
-									${textSansBold20}
-								`,
-							]}
-						>
-							Would you like to pause your support to the Guardian
-							for {offerPeriodWord} {offerPeriodType}?
-						</h4>
+						<>
+							<h4
+								css={[
+									offerBoxTitleCss,
+									css`
+										${textSansBold20}
+									`,
+								]}
+							>
+								Would you like to pause your support to the
+								Guardian for {offerPeriodWord} {offerPeriodType}
+								?
+							</h4>
+							<p css={billingResumptionDateCss}>
+								Billing resumes on{' '}
+								{nextNonDiscountedPaymentDate}
+							</p>
+						</>
 					)}
 					{offerIsPercentageOrFree === 'free' && (
 						<h4
