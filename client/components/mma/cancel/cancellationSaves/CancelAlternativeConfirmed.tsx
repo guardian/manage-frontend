@@ -290,7 +290,9 @@ export const CancelAlternativeConfirmed = () => {
 								{firstDiscountedPaymentDate}
 							</li>
 						)}
-					{alternativeIsOffer && offerIsPercentageOrFree === 'free' && (
+					{((alternativeIsOffer &&
+						offerIsPercentageOrFree === 'free') ||
+						alternativeIsPause) && (
 						<li>
 							You will not be billed until{' '}
 							{nextNonDiscountedPaymentDate} after which you will
