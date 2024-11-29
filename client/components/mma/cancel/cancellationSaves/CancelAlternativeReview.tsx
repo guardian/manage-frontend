@@ -16,6 +16,7 @@ import { capitalize } from 'lodash';
 import type { ReactElement } from 'react';
 import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Ribbon } from '@/client/components/shared/Ribbon';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { getMaxNonDiscountedPrice } from '@/client/utilities/discountPreview';
@@ -44,12 +45,26 @@ type OfferApiCallStatus = 'NOT_READY' | 'PENDING' | 'FAILED' | 'SUCCESS';
 const yourOfferBoxCss = css`
 	background-color: #fbf6ef;
 	padding: ${space[4]}px ${space[6]}px;
-	display: flex;
-	flex-direction: column;
+	position: relative;
 	h4 {
 		${textSansBold17};
 		margin: 0;
 	}
+	p {
+		margin: 0;
+	}
+`;
+
+const ribbonCss = css`
+	position: absolute;
+	top: 0;
+	left: ${space[3]}px;
+	transform: translateY(-50%);
+`;
+
+const yourOfferBoxFlexCss = css`
+	display: flex;
+	flex-direction: column;
 	${from.desktop} {
 		flex-direction: row;
 		gap: 1ch;
@@ -60,6 +75,12 @@ const strikethroughPriceCss = css`
 	${textSans17};
 	color: ${neutral[46]};
 	margin: 0;
+`;
+
+const percentageOfferSubText = css`
+	${textSans12};
+	color: ${neutral[38]};
+	margin-top: ${space[2]}px;
 `;
 
 const whatsNextTitleCss = css`
@@ -119,7 +140,7 @@ export const CancelAlternativeReview = () => {
 	const mainPlan = getMainPlan(productDetail.subscription);
 
 	const offerPeriodWord = number2words(routerState.upToPeriods);
-	const offerPeriodType = routerState.upToPeriodsType.toLowerCase();
+	const offerPeriodType = routerState.upToPeriodsType;
 	const firstDiscountedPaymentDate = parseDate(
 		routerState.firstDiscountedPaymentDate,
 		'yyyy-MM-dd',
@@ -152,6 +173,9 @@ export const CancelAlternativeReview = () => {
 
 	const alternativeIsOffer = productType.productType === 'supporterplus';
 	const alternativeIsPause = productType.productType === 'contributions';
+	const offerIsPercentageOrFree: 'percentage' | 'free' | false =
+		alternativeIsOffer &&
+		(routerState.discountPercentage < 100 ? 'percentage' : 'free');
 
 	const handleConfirmClick = async () => {
 		setPerformingDiscountStatus('PENDING');
@@ -203,25 +227,85 @@ export const CancelAlternativeReview = () => {
 				{alternativeIsOffer && 'Your offer'}
 				{alternativeIsPause && "Let's confirm the details"}
 			</Heading>
-			<div css={yourOfferBoxCss}>
-				{alternativeIsOffer && isPaidSubscriptionPlan(mainPlan) && (
-					<p css={strikethroughPriceCss}>
-						<s>
-							{mainPlan.currency}
-							{humanReadableStrikethroughPrice}/
-							{mainPlan.billingPeriod}
-						</s>
+			<div
+				css={[
+					yourOfferBoxCss,
+					offerIsPercentageOrFree === 'percentage' &&
+						css`
+							padding-top: ${space[6]}px;
+						`,
+				]}
+			>
+				{offerIsPercentageOrFree === 'percentage' && (
+					<Ribbon
+						copy={`${routerState.discountPercentage}% off`}
+						ribbonColour={palette.news[400]}
+						copyColour={palette.neutral[100]}
+						roundedCornersLeft
+						roundedCornersRight
+						withoutTail
+						small
+						additionalCss={ribbonCss}
+					/>
+				)}
+				<div
+					css={[
+						yourOfferBoxFlexCss,
+						offerIsPercentageOrFree === 'percentage' &&
+							css`
+								gap: 1ch;
+								flex-direction: row;
+							`,
+					]}
+				>
+					{alternativeIsOffer && isPaidSubscriptionPlan(mainPlan) && (
+						<p css={strikethroughPriceCss}>
+							<s>
+								{mainPlan.currency}
+								{humanReadableStrikethroughPrice}/
+								{mainPlan.billingPeriod}
+							</s>
+						</p>
+					)}
+					<h4>
+						{alternativeIsOffer &&
+							offerIsPercentageOrFree === 'free' &&
+							`${capitalize(
+								offerPeriodWord,
+							)} ${offerPeriodType} of free access to your digital subscription`}
+						{alternativeIsOffer &&
+							isPaidSubscriptionPlan(mainPlan) &&
+							offerIsPercentageOrFree === 'percentage' && (
+								<>
+									{mainPlan.currency}
+									{routerState.discountedPrice}/
+									{mainPlan.billingPeriod}
+								</>
+							)}
+						{alternativeIsPause &&
+							`You'd like to pause your recurring support for ${offerPeriodWord} ${offerPeriodType}`}
+					</h4>
+				</div>
+				{alternativeIsOffer &&
+					isPaidSubscriptionPlan(mainPlan) &&
+					offerIsPercentageOrFree === 'percentage' && (
+						<p>For your {capitalize(productType.friendlyName)}</p>
+					)}
+			</div>
+			{offerIsPercentageOrFree === 'percentage' &&
+				isPaidSubscriptionPlan(mainPlan) && (
+					<p css={percentageOfferSubText}>
+						You will pay {mainPlan.currency}
+						{routerState.discountedPrice} for the next{' '}
+						{routerState.upToPeriods} {offerPeriodType} then{' '}
+						{mainPlan.currency}
+						{getMaxNonDiscountedPrice(
+							routerState.nonDiscountedPayments,
+							true,
+						)}
+						/{mainPlan.billingPeriod}
 					</p>
 				)}
-				<h4>
-					{alternativeIsOffer &&
-						`${capitalize(
-							offerPeriodWord,
-						)} ${offerPeriodType} of free access to your digital subscription`}
-					{alternativeIsPause &&
-						`You'd like to pause your recurring support for ${offerPeriodWord} ${offerPeriodType}`}
-				</h4>
-			</div>
 			<h3 css={whatsNextTitleCss}>
 				{alternativeIsOffer && 'If you choose to stay with us:'}
 				{alternativeIsPause && 'This means:'}
@@ -230,13 +314,25 @@ export const CancelAlternativeReview = () => {
 				{alternativeIsOffer && (
 					<>
 						<li>
-							Your {offerPeriodWord} {offerPeriodType} of free
-							access will begin on {firstDiscountedPaymentDate}{' '}
-							(when your next payment would usually be due)
+							{offerIsPercentageOrFree === 'free' &&
+								`Your ${offerPeriodWord} ${offerPeriodType} of free access will begin on ${firstDiscountedPaymentDate} (when your next payment would usually be due)`}
+							{offerIsPercentageOrFree === 'percentage' &&
+								isPaidSubscriptionPlan(mainPlan) &&
+								`You will benefit from the discounted rate, and will be charged ${mainPlan.currency}${routerState.discountedPrice} on your next payment date`}
 						</li>
 						<li>
-							Unless you cancel before, your payment will resume
-							on {nextNonDiscountedPaymentDate}
+							{offerIsPercentageOrFree === 'free' &&
+								`Unless you cancel before, your payment will resume on ${nextNonDiscountedPaymentDate}`}
+							{offerIsPercentageOrFree === 'percentage' &&
+								isPaidSubscriptionPlan(mainPlan) &&
+								`Unless you cancel before then, your ${
+									mainPlan.currency
+								}${getMaxNonDiscountedPrice(
+									routerState.nonDiscountedPayments,
+									true,
+								)}/${
+									mainPlan.billingPeriod
+								} payment will automatically resume on ${nextNonDiscountedPaymentDate}`}
 						</li>
 						<li>You may cancel your subscription at any time</li>
 					</>
@@ -301,15 +397,36 @@ export const CancelAlternativeReview = () => {
 			</div>
 			{isPaidSubscriptionPlan(mainPlan) && (
 				<>
-					{alternativeIsOffer && (
-						<p css={termsCss}>
-							If you cancel during the free period, you will lose
-							access to your benefits on the day we usually take
-							payment. If you cancel after the free period, your
-							subscription will end at the end of your current{' '}
-							{mainPlan.billingPeriod}ly payment period.
-						</p>
-					)}
+					{alternativeIsOffer &&
+						offerIsPercentageOrFree === 'free' && (
+							<p css={termsCss}>
+								If you cancel during the free period, you will
+								lose access to your benefits on the day we
+								usually take payment. If you cancel after the
+								free period, your subscription will end at the
+								end of your current {mainPlan.billingPeriod}ly
+								payment period.
+							</p>
+						)}
+					{alternativeIsOffer &&
+						offerIsPercentageOrFree === 'percentage' && (
+							<p css={termsCss}>
+								If you take up the{' '}
+								{routerState.discountPercentage}% off offer and
+								cancel during that {mainPlan.billingPeriod}, you
+								will lose access to your benefits at the end of
+								the {mainPlan.billingPeriod}. If you cancel
+								after the offer, when your {mainPlan.currency}
+								{getMaxNonDiscountedPrice(
+									routerState.nonDiscountedPayments,
+									true,
+								)}
+								/{mainPlan.billingPeriod} payment automatically
+								resumes, your subscription will end at the end
+								of your current {mainPlan.billingPeriod}ly
+								payment period
+							</p>
+						)}
 					{alternativeIsPause && (
 						<p css={termsCss}>
 							If you cancel during the paused period, your{' '}

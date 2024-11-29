@@ -203,14 +203,23 @@ export const CancelAlternativeConfirmed = () => {
 		'yyyy-MM-dd',
 	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
 
+	const firstDiscountedPaymentDate = parseDate(
+		routerState.firstDiscountedPaymentDate,
+		'yyyy-MM-dd',
+	).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT);
+
 	const humanReadableNextNonDiscountedPrice = getMaxNonDiscountedPrice(
 		routerState.nonDiscountedPayments,
 		true,
 	);
-	const offerPeriodType = routerState.upToPeriodsType.toLowerCase();
+	const offerPeriodType = routerState.upToPeriodsType;
 
 	const alternativeIsOffer = productType.productType === 'supporterplus';
 	const alternativeIsPause = productType.productType === 'contributions';
+
+	const offerIsPercentageOrFree: 'percentage' | 'free' | false =
+		alternativeIsOffer &&
+		(routerState.discountPercentage < 100 ? 'percentage' : 'free');
 
 	const sfCaseDebugSuffix = `_${alternativeIsOffer ? 'OFFER' : ''}${
 		alternativeIsPause ? 'PAUSE' : ''
@@ -269,16 +278,29 @@ export const CancelAlternativeConfirmed = () => {
 					{alternativeIsOffer && (
 						<li>
 							You will continue enjoying all the benefits of your
-							All-access digital subscription – for free
+							All-access digital subscription
+							{offerIsPercentageOrFree === 'free' &&
+								' – for free'}
 						</li>
 					)}
-					<li>
-						You will not be billed until{' '}
-						{nextNonDiscountedPaymentDate} after which you will pay{' '}
-						{mainPlan.currency}
-						{humanReadableNextNonDiscountedPrice}/
-						{mainPlan.billingPeriod}
-					</li>
+					{alternativeIsOffer &&
+						offerIsPercentageOrFree === 'percentage' && (
+							<li>
+								You will be billed at the discounted rate on{' '}
+								{firstDiscountedPaymentDate}
+							</li>
+						)}
+					{((alternativeIsOffer &&
+						offerIsPercentageOrFree === 'free') ||
+						alternativeIsPause) && (
+						<li>
+							You will not be billed until{' '}
+							{nextNonDiscountedPaymentDate} after which you will
+							pay {mainPlan.currency}
+							{humanReadableNextNonDiscountedPrice}/
+							{mainPlan.billingPeriod}
+						</li>
+					)}
 				</ul>
 			</div>
 			{alternativeIsOffer && (

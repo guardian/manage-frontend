@@ -1,4 +1,7 @@
 import { format, parse } from 'date-fns';
+import type { DiscountPeriodType } from '@/client/utilities/discountPreview';
+import { appendCorrectPluralisation } from './generalTypes';
+import { number2words } from './numberUtils';
 
 export const DATE_FNS_INPUT_FORMAT = 'yyyy-MM-dd'; // example: 1969-07-16
 
@@ -136,3 +139,73 @@ export const getOldestDate = (dates: Date[]) =>
 export function convertTimestampToDate(timestamp: number): string {
 	return dateString(new Date(timestamp), DATE_FNS_LONG_OUTPUT_FORMAT);
 }
+
+interface OrderdTimePeriod {
+	peroidName: 'day' | 'week' | 'month' | 'quarter' | 'year';
+	higherPeriod?: string;
+	unitsToSingularHigherPeriod?: number;
+}
+
+export const getAppropriateReadableTimePeriod = (
+	unit: number,
+	periodType: DiscountPeriodType,
+) => {
+	const orderdTimePeriods: OrderdTimePeriod[] = [
+		{ peroidName: 'year' },
+		{
+			peroidName: 'quarter',
+			higherPeriod: 'year',
+			unitsToSingularHigherPeriod: 4,
+		},
+		{
+			peroidName: 'month',
+			higherPeriod: 'year',
+			unitsToSingularHigherPeriod: 12,
+		},
+		{
+			peroidName: 'week',
+			higherPeriod: 'month',
+			unitsToSingularHigherPeriod: 4,
+		},
+		{
+			peroidName: 'day',
+			higherPeriod: 'week',
+			unitsToSingularHigherPeriod: 7,
+		},
+	];
+	const periodTypeSingularLowerCase =
+		periodTypeToSingular(periodType).toLowerCase();
+	const periodTypeInComparisonTimePeriods = orderdTimePeriods.find(
+		(element) => element.peroidName === periodTypeSingularLowerCase,
+	);
+	if (!periodTypeInComparisonTimePeriods) {
+		return `${number2words(unit)} ${periodType}`;
+	}
+	// is there a higher applicable time period eg week instead of day
+	// and is the unit a multiple of the number of units it takes to make
+	// a singular unit of the higher time period
+	if (
+		periodTypeInComparisonTimePeriods.higherPeriod &&
+		periodTypeInComparisonTimePeriods.unitsToSingularHigherPeriod &&
+		unit % periodTypeInComparisonTimePeriods.unitsToSingularHigherPeriod ===
+			0
+	) {
+		const numberOfHigherPeriods =
+			unit /
+			periodTypeInComparisonTimePeriods.unitsToSingularHigherPeriod;
+		return `${number2words(
+			numberOfHigherPeriods,
+		)} ${appendCorrectPluralisation(
+			periodTypeInComparisonTimePeriods.higherPeriod,
+			numberOfHigherPeriods,
+		)}`;
+	} else {
+		return `${number2words(unit)} ${periodType}`;
+	}
+};
+
+export const periodTypeToSingular = (periodType: string) => {
+	return periodType.endsWith('s')
+		? periodType.substring(0, periodType.length - 1)
+		: periodType;
+};

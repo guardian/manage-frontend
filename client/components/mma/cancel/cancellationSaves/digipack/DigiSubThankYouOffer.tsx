@@ -23,6 +23,7 @@ import {
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { formatAmount } from '@/client/utilities/utils';
+import { appendCorrectPluralisation } from '@/shared/generalTypes';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
 import { dateString } from '../../../../../../shared/dates';
@@ -130,9 +131,10 @@ const DiscountOffer = ({
 );
 
 function getDiscountPeriod(discountPreview: DiscountPreviewResponse): string {
-	return `${
-		discountPreview.upToPeriods
-	} ${discountPreview.upToPeriodsType.toLowerCase()}`;
+	return `${discountPreview.upToPeriods} ${appendCorrectPluralisation(
+		discountPreview.upToPeriodsType,
+		discountPreview.upToPeriods,
+	)}`;
 }
 
 export interface DigisubCancellationRouterState
