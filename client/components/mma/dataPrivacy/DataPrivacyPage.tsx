@@ -9,6 +9,7 @@ import {
 } from '../../../utilities/hooks/useAsyncLoader';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
+import { APIUseCredentials, identityFetch } from '../identity/idapi/fetch';
 import * as UserAPI from '../identity/idapi/user';
 import { ConsentOptions, mapSubscriptions } from '../identity/identity';
 import { Lines } from '../identity/Lines';
@@ -21,12 +22,13 @@ import { dataPrivacyWrapper } from './DataPrivacy.styles';
 import { LearnMoreSection } from './LearnMoreSection';
 import { YourDataSection } from './YourDataSection';
 
-type DataPrivacyResponse = [ConsentOption[], UserAPI.UserAPIResponse];
+type DataPrivacyResponse = [ConsentOption[], UserAPI.UserAPIResponse, any];
 
 const dataPrivacyFetcher = () =>
 	Promise.all([
 		fetchWithDefaultParameters('/idapi/consents'),
 		fetchWithDefaultParameters('/idapi/user'),
+		identityFetch('/users/me/consents', APIUseCredentials({})),
 	]);
 
 export const DataPrivacyPage = () => {
@@ -66,7 +68,8 @@ export const DataPrivacyPage = () => {
 	 * @param {DataPrivacyResponse} response
 	 */
 	const handleResponse = (response: DataPrivacyResponse) => {
-		const [consentOptions, userResponse] = response;
+		const [consentOptions, userResponse, consentResponse] = response;
+		console.log('CONSENT RESPONSE', consentResponse);
 		const user = UserAPI.toUser(userResponse);
 		const consentOpt = mapSubscriptions(user.consents, consentOptions);
 		dispatch(options(consentOpt));
