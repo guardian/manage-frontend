@@ -192,12 +192,13 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const shouldShowTmpDiscount =
 		allActiveProductDetails.some(
 			(product) =>
-				product.tier === 'Tier Three' ||
-				product.tier === 'Digital Pack' ||
-				product.tier === 'Supporter' ||
-				product.tier === 'Supporter Plus' ||
-				product.tier === 'Patron' ||
-				product.tier === 'Partner',
+				product.billingCountry === 'United Kingdom' &&
+				(product.tier === 'Tier Three' ||
+					product.tier === 'Digital Pack' ||
+					product.tier === 'Supporter' ||
+					product.tier === 'Supporter Plus' ||
+					product.tier === 'Patron' ||
+					product.tier === 'Partner'),
 		) && !tmpDiscountAppliedCookieExists;
 
 	const visualProductGroupingCategory = (
