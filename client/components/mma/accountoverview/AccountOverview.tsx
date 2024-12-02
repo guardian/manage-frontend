@@ -190,6 +190,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	);
 
 	const shouldShowTmpDiscount =
+		featureSwitches.tmpDiscount &&
 		allActiveProductDetails.some(
 			(product) =>
 				product.billingCountry === 'United Kingdom' &&
@@ -199,7 +200,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					product.tier === 'Supporter Plus' ||
 					product.tier === 'Patron' ||
 					product.tier === 'Partner'),
-		) && !tmpDiscountAppliedCookieExists;
+		) &&
+		!tmpDiscountAppliedCookieExists;
 
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
