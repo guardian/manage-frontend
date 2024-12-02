@@ -192,6 +192,8 @@ router.post(
 	discountAPI('apply-discount', 'APPLY_DISCOUNT'),
 );
 
+router.post('/discounts/send-email', discountAPI('send-email', 'SEND_EMAIL'));
+
 // The two switch types are using different apis for now, membership to recurring contribution
 // is using the old api
 router.post(
