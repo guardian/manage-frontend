@@ -193,6 +193,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const tmpDiscountFinishTimestamp = tmpDiscountFinishTime.getTime();
 
 	const shouldShowTmpDiscount =
+		featureSwitches.tmpDiscountBanner &&
 		Date.now() < tmpDiscountFinishTimestamp &&
 		allActiveProductDetails.some(
 			(product) =>
