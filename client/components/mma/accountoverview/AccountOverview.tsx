@@ -186,11 +186,14 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		!hasNonServiceableCountry;
 
 	const tmpDiscountAppliedCookieExists = !!getCookie(
-		'gu_tmp_discount_dec_2024',
+		'gu_tmp_discount_dec_4-5th_2024',
 	);
 
+	const tmpDiscountFinishTime = new Date('December 6, 2024 00:00:01');
+	const tmpDiscountFinishTimestamp = tmpDiscountFinishTime.getTime();
+
 	const shouldShowTmpDiscount =
-		featureSwitches.tmpDiscount &&
+		Date.now() < tmpDiscountFinishTimestamp &&
 		allActiveProductDetails.some(
 			(product) =>
 				product.billingCountry === 'United Kingdom' &&

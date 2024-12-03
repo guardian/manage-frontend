@@ -43,7 +43,7 @@ export const TmpLinkDiscount = ({ userEmail }: { userEmail: string }) => {
 
 		if (response.ok) {
 			document.cookie =
-				'gu_tmp_discount_dec_2024=true; expires=Mon, 23 Dec 2024 23:59:59 GMT;';
+				'gu_tmp_discount_dec_4-5th_2024=true; expires=Mon, 6 Dec 2024 00:0:01 GMT;';
 
 			setCurrentStatus('POST_SUCCESS');
 		} else {
@@ -55,7 +55,7 @@ export const TmpLinkDiscount = ({ userEmail }: { userEmail: string }) => {
 
 	if (currentStatus === 'POST_SUCCESS') {
 		return (
-			<p>Thank you, you should receive an confirmation email shortly.</p>
+			<p>Thank you, you should receive a confirmation email shortly.</p>
 		);
 	}
 	if (currentStatus === 'POST_ERROR') {
@@ -74,9 +74,9 @@ export const TmpLinkDiscount = ({ userEmail }: { userEmail: string }) => {
 				</div>
 			)}
 			<p>
-				If you wish to request a refund for your subscription or
-				contribution during the period of industrial action, please
-				click{' '}
+				If you wish to request a refund for your digital subscription
+				during the period of industrial action; Wednesday 4th and
+				Thursday 5th December, please click{' '}
 				<ButtonLink
 					iconSide="left"
 					priority="primary"
@@ -88,8 +88,8 @@ export const TmpLinkDiscount = ({ userEmail }: { userEmail: string }) => {
 			</p>
 			<p css={termsCss}>
 				Refunds will be deducted from your next payment. If your payment
-				has already been processed, the refund will appear the payment
-				after.
+				is due in the next 14 days, the refund will appear in the
+				payment after.
 			</p>
 		</div>
 	);
