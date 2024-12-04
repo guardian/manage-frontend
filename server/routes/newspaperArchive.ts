@@ -50,8 +50,7 @@ router.get('/auth', async (req: Request, res: Response) => {
 		const hasCorrectEntitlement = await checkSupporterEntitlement(req);
 
 		if (!hasCorrectEntitlement) {
-			// ToDo: show the user an error/info page
-			return res.redirect('/');
+			return res.redirect('/?missingNewspaperArchiveEntitlement=true');
 		}
 
 		const authHeader = base64(`${authString}`);

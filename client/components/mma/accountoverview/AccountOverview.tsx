@@ -54,6 +54,7 @@ import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIf
 import { CancelledProductCard } from './CancelledProductCard';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
+import { MaybeNewspaperArchiveInfo } from './MaybeNewspaperArchiveInfo';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 import { SingleContributionCard } from './SingleContributionCard';
@@ -203,6 +204,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				mdapiResponse={mdapiResponse}
 				mpapiResponse={mpapiResponse}
 			/>
+			<MaybeNewspaperArchiveInfo />
 
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}
