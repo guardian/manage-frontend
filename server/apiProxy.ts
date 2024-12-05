@@ -185,9 +185,6 @@ export const authorizationOrCookieHeader = async ({
 	}
 	switch (host) {
 		case 'members-data-api.' + conf.DOMAIN:
-			return {
-				Authorization: `Bearer ${req.signedCookies[OAuthAccessTokenCookieName]}`,
-			};
 		case 'user-benefits.' + conf.API_DOMAIN:
 			return {
 				Authorization: `Bearer ${req.signedCookies[OAuthAccessTokenCookieName]}`,
