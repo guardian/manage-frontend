@@ -188,6 +188,10 @@ export const authorizationOrCookieHeader = async ({
 			return {
 				Authorization: `Bearer ${req.signedCookies[OAuthAccessTokenCookieName]}`,
 			};
+		case 'user-benefits.' + conf.API_DOMAIN:
+			return {
+				Authorization: `Bearer ${req.signedCookies[OAuthAccessTokenCookieName]}`,
+			};
 		default:
 			return {};
 	}

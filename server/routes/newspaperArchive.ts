@@ -18,8 +18,8 @@ const NewspapersResponseSchema = z.object({
 	url: z.string(),
 });
 
-const UserAttributesSchema = z.object({
-	contentAccess: z.record(z.string(), z.boolean()),
+const userBenefitsSchema = z.object({
+	benefits: z.array(z.string()),
 });
 
 type NewspaperArchiveConfig = {
@@ -47,13 +47,16 @@ router.get('/auth', async (req: Request, res: Response) => {
 			return res.sendStatus(500);
 		}
 
+		console.log('Checking supporter entitlement');
 		const hasCorrectEntitlement = await checkSupporterEntitlement(req);
 
 		if (!hasCorrectEntitlement) {
 			// ToDo: show the user an error/info page
+			console.log('User does not have the newspaper archive entitlement');
 			return res.redirect('/');
 		}
 
+		console.log('User has the newspaper archive entitlement');
 		const authHeader = base64(`${authString}`);
 		const requestBody: NewspapersRequestBody = {};
 
@@ -107,22 +110,15 @@ router.get('/auth', async (req: Request, res: Response) => {
 export { router };
 
 async function checkSupporterEntitlement(req: Request): Promise<boolean> {
-	const supporterAttributesResponse = await getSupporterStatus(req);
-	const supporterAttributes = UserAttributesSchema.parse(
-		await supporterAttributesResponse.json(),
-	);
-
-	// ToDo: this should return a flag that represents either Tier 3 or a newspaperArchive specific entitlement
-	return (
-		supporterAttributes.contentAccess['guardianWeeklySubscriber'] &&
-		supporterAttributes.contentAccess['supporterPlus']
-	);
+	const json = await getSupporterStatus(req).then((res) => res.json());
+	const supporterAttributes = userBenefitsSchema.parse(json);
+	return supporterAttributes.benefits.includes('newspaperArchive');
 }
 
 async function getSupporterStatus(req: Request) {
-	const host = 'members-data-api.' + conf.DOMAIN;
+	const host = 'user-benefits.' + conf.API_DOMAIN;
 
-	return fetch(`https://${host}/user-attributes/me`, {
+	return fetch(`https://${host}/benefits/me`, {
 		method: 'GET',
 		headers: {
 			...(await authorizationOrCookieHeader({ req, host })),
