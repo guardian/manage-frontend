@@ -110,8 +110,9 @@ router.get('/auth', async (req: Request, res: Response) => {
 export { router };
 
 async function checkSupporterEntitlement(req: Request): Promise<boolean> {
-	const json = await getSupporterStatus(req).then((res) => res.json());
-	const supporterAttributes = userBenefitsSchema.parse(json);
+	const supporterAttributes = await getSupporterStatus(req)
+		.then((res) => res.json())
+		.then((json) => userBenefitsSchema.parse(json));
 	return supporterAttributes.benefits.includes('newspaperArchive');
 }
 
