@@ -188,8 +188,7 @@
     "ua-parser-js": "1.0.34",
     "winston": "3.2.1",
     "yup": "0.28.5",
-    "zod": "3.22.4",
-    "@guardian/support-service-lambdas": "guardian/support-service-lambdas#e85abcf1851ac970329eb34c131ccf3f4c67359c"
+    "zod": "3.22.4"
   },
   "resolutions": {
     "http-proxy-middleware": "^2.0.7"

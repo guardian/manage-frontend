@@ -64,19 +64,10 @@ const common = {
 };
 
 const server = merge(common, {
-	entry: {
-		server: './server/server',
-		productBenefitSchemas:
-			'@guardian/support-service-lambdas/modules/product-benefits/src/schemas',
-	},
+	entry: './server/server',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: (pathData) => {
-			if (pathData.runtime === 'productBenefitSchemas') {
-				return 'node_modules/@guardian/support-service-lambdas/modules/product-benefits/src/schemas.js';
-			}
-			return '[name].js';
-		},
+		filename: 'server.js',
 		publicPath: '/',
 	},
 	target: 'node',
