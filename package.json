@@ -150,7 +150,7 @@
     "@emotion/react": "11.11.1",
     "@guardian/ab-core": "2.0.0",
     "@guardian/ab-react": "2.0.1",
-    "@guardian/commercial": "21.0.3",
+    "@guardian/commercial": "23.7.4",
     "@guardian/libs": "16.1.0",
     "@guardian/source": "1.0.2",
     "@guardian/source-development-kitchen": "1.0.0",
