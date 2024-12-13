@@ -203,7 +203,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			return (
 				(product.tier === 'Tier Three' ||
 					product.tier === 'Guardian Weekly - ROW') &&
-				product.billingCountry === 'Canada'
+				product.subscription.deliveryAddress?.country.toUpperCase() ===
+					'CANADA'
 			);
 		},
 	);
