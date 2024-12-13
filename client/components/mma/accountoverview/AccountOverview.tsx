@@ -200,11 +200,12 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 
 	const possiblyAffectedByCanadaPostStrike = allActiveProductDetails.some(
 		(product) => {
+			const deliveryCountry =
+				product.subscription.deliveryAddress?.country.toUpperCase();
 			return (
 				(product.tier === 'Tier Three' ||
 					product.tier === 'Guardian Weekly - ROW') &&
-				product.subscription.deliveryAddress?.country.toUpperCase() ===
-					'CANADA'
+				(deliveryCountry === 'CANADA' || deliveryCountry === 'CA')
 			);
 		},
 	);
