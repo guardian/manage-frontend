@@ -25,7 +25,7 @@ export const CanadaStrike = () => (
 						href="mailto:customer.help@theguardian.com"
 						priority="primary"
 					>
-						customer.help@guardian.co.uk
+						customer.help@theguardian.com
 					</Link>
 				</p>
 			</div>
