@@ -2989,6 +2989,11 @@
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.9.1.tgz#4ffb0055f7ef676ebc3a5a91fb621393294e2f43"
   integrity sha512-gJB6HLm5rYwSLI6PQa+X1t5CFGrv1J1TWG+sOyMCeKz2ojaj6Fnl/rZEspogG+cvqbt4AE/2eIyD2QfLKTBNlQ==
 
+"@emotion/hash@^0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.9.2.tgz#ff9221b9f58b4dfe61e619a7788734bd63f6898b"
+  integrity sha512-MyqliTZGuOm3+5ZRSaaBGP3USLw6+EGykkwZns2EPC5g8jJ4z9OrdZY9apkl3+UP9+sdz76YYkwCKP5gh8iY3g==
+
 "@emotion/jest@11.9.1":
   version "11.9.1"
   resolved "https://registry.yarnpkg.com/@emotion/jest/-/jest-11.9.1.tgz#65224814552eab6acb923504e597c6f6b67e90d6"
@@ -3010,15 +3015,20 @@
   resolved "https://registry.yarnpkg.com/@emotion/memoize/-/memoize-0.8.1.tgz#c1ddb040429c6d21d38cc945fe75c818cfb68e17"
   integrity sha512-W2P2c/VRW1/1tLox0mVUalvnWXxavmv/Oum2aPsRcoDJuob75FC3Y8FbpfLwUegRcxINtGUMPq0tFCvYNTBXNA==
 
-"@emotion/react@11.11.1":
-  version "11.11.1"
-  resolved "https://registry.yarnpkg.com/@emotion/react/-/react-11.11.1.tgz#b2c36afac95b184f73b08da8c214fdf861fa4157"
-  integrity sha512-5mlW1DquU5HaxjLkfkGN1GA/fvVGdyHURRiX/0FHl2cfIfRxSOfmxEH5YS43edp0OldZrZ+dkBKbngxcNCdZvA==
+"@emotion/memoize@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@emotion/memoize/-/memoize-0.9.0.tgz#745969d649977776b43fc7648c556aaa462b4102"
+  integrity sha512-30FAj7/EoJ5mwVPOWhAyCX+FPfMDrVecJAM+Iw9NRoSl4BBAQeqj4cApHHUXOVvIPgLVDsCFoz/hGD+5QQD1GQ==
+
+"@emotion/react@11.11.3":
+  version "11.11.3"
+  resolved "https://registry.yarnpkg.com/@emotion/react/-/react-11.11.3.tgz#96b855dc40a2a55f52a72f518a41db4f69c31a25"
+  integrity sha512-Cnn0kuq4DoONOMcnoVsTOR8E+AdnKFf//6kUWc4LCdnxj31pZWn7rIULd6Y7/Js1PiPHzn7SKCM9vB/jBni8eA==
   dependencies:
     "@babel/runtime" "^7.18.3"
     "@emotion/babel-plugin" "^11.11.0"
     "@emotion/cache" "^11.11.0"
-    "@emotion/serialize" "^1.1.2"
+    "@emotion/serialize" "^1.1.3"
     "@emotion/use-insertion-effect-with-fallbacks" "^1.0.1"
     "@emotion/utils" "^1.2.1"
     "@emotion/weak-memoize" "^0.3.1"
@@ -3035,10 +3045,26 @@
     "@emotion/utils" "^1.2.1"
     csstype "^3.0.2"
 
+"@emotion/serialize@^1.1.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@emotion/serialize/-/serialize-1.3.3.tgz#d291531005f17d704d0463a032fe679f376509e8"
+  integrity sha512-EISGqt7sSNWHGI76hC7x1CksiXPahbxEOrC5RjmFRJTqLyEK9/9hZvBbiYn70dw4wuwMKiEMCUlR6ZXTSWQqxA==
+  dependencies:
+    "@emotion/hash" "^0.9.2"
+    "@emotion/memoize" "^0.9.0"
+    "@emotion/unitless" "^0.10.0"
+    "@emotion/utils" "^1.4.2"
+    csstype "^3.0.2"
+
 "@emotion/sheet@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@emotion/sheet/-/sheet-1.2.2.tgz#d58e788ee27267a14342303e1abb3d508b6d0fec"
   integrity sha512-0QBtGvaqtWi+nx6doRwDdBIzhNdZrXUppvTM4dtZZWEGTXL/XE/yJxLMGlDT1Gt+UHH5IX1n+jkXyytE/av7OA==
+
+"@emotion/unitless@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.10.0.tgz#2af2f7c7e5150f497bdabd848ce7b218a27cf745"
+  integrity sha512-dFoMUuQA20zvtVTuxZww6OHoJYgrzfKM1t52mVySDJnMSEa08ruEvdYQbhvyu6soU+NeLVd3yKfTfT0NeV6qGg==
 
 "@emotion/unitless@^0.8.1":
   version "0.8.1"
@@ -3054,6 +3080,11 @@
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-1.2.1.tgz#bbab58465738d31ae4cb3dbb6fc00a5991f755e4"
   integrity sha512-Y2tGf3I+XVnajdItskUCn6LX+VUDmP6lTL4fcqsXAv43dnlbZiuW4MWQW38rW/BVWSE7Q/7+XQocmpnRYILUmg==
+
+"@emotion/utils@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-1.4.2.tgz#6df6c45881fcb1c412d6688a311a98b7f59c1b52"
+  integrity sha512-3vLclRofFziIa3J2wDh9jjbkUz9qk5Vi3IZ/FSTKViB0k+ef0fPV7dYrUIugbgupYDx7v9ud/SjrtEP8Y4xLoA==
 
 "@emotion/weak-memoize@^0.3.1":
   version "0.3.1"
@@ -3260,10 +3291,10 @@
     eslint-plugin-eslint-comments "3.2.0"
     eslint-plugin-import "2.29.1"
 
-"@guardian/libs@16.1.3":
-  version "16.1.3"
-  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-16.1.3.tgz#e40bfe7641ff84db0f4ac1f862cfbf9d047b61f5"
-  integrity sha512-n8iv8De6lGSGcIyagbK79gv5tK5o+bRbsWSsYH+v6ob2HNwjVSkwY+Ang+snQWp6DPed+iHvnQQK5pWXnXMfOA==
+"@guardian/libs@17.0.0":
+  version "17.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-17.0.0.tgz#cf33caf631bc9a375ef215236927cc74c07fde04"
+  integrity sha512-9/DshbBrF+0DyLuKiDIzRr9t/NYGuv5fDJVZwHs73H4AQBaC0er+9aKUjjRueDILKKefOaBVTerWm2Jw4YCmmQ==
 
 "@guardian/libs@^18.0.0":
   version "18.0.2"
@@ -3314,15 +3345,15 @@
   resolved "https://registry.yarnpkg.com/@guardian/prettier/-/prettier-1.0.0.tgz#a5dd832e2ce31c6f723f0af77fe116b32b4695ff"
   integrity sha512-srnhPn3hcSv14mDotFQN0CfN3k8MaGsXdK8BXAG95QQxM69Ybi16o4/Xqe361fwDEp7m+9jf03sETcMi8WsDlA==
 
-"@guardian/source-development-kitchen@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@guardian/source-development-kitchen/-/source-development-kitchen-2.0.0.tgz#d191249f152f1ead84ccfd9c8f10479e535bdb53"
-  integrity sha512-c24K+zZlTVZtuSH425DbKPGU31ukR82yKdP8T8yqMzlrjd4fvh2J0EgruAf+o2kjZHD51pLxki/ypzd9asdVeA==
+"@guardian/source-development-kitchen@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/source-development-kitchen/-/source-development-kitchen-4.0.0.tgz#8a4beb0de83d82475a5b366f3ded050b45681e9c"
+  integrity sha512-83HgSJjfTriPvJPkBx8XZPZA3X/btVQYGk5obo8xMD8Wi/xl38fk5F7c/WYPVA94MNkmXVZbgemTz2uzRlmI+Q==
 
-"@guardian/source@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@guardian/source/-/source-3.0.0.tgz#faf8f6f5977fe107793a56b7f4e3ae918d1cc80e"
-  integrity sha512-ocdnSojiVmPaDXnPSMo9FQbPgP00JzR74AftgCDqcLTo9uXgLmO0w9TADMHm48MhNsHqH1RDqgDdStd37Qbctw==
+"@guardian/source@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/source/-/source-4.0.0.tgz#a45e4412fbbbbd2c0cdb7d4ddc4986fae36c16e1"
+  integrity sha512-Ls3W0b/zktU/BF7A5S8qh0Z3vlrtmxsN6lUdh2n7MIUdbBvhP63AN2Po56DwdsUHQU6joMebzfHbCSzkm2xJww==
   dependencies:
     mini-svg-data-uri "1.4.4"
 
