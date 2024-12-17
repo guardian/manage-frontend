@@ -3345,15 +3345,15 @@
   resolved "https://registry.yarnpkg.com/@guardian/prettier/-/prettier-1.0.0.tgz#a5dd832e2ce31c6f723f0af77fe116b32b4695ff"
   integrity sha512-srnhPn3hcSv14mDotFQN0CfN3k8MaGsXdK8BXAG95QQxM69Ybi16o4/Xqe361fwDEp7m+9jf03sETcMi8WsDlA==
 
-"@guardian/source-development-kitchen@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@guardian/source-development-kitchen/-/source-development-kitchen-4.0.0.tgz#8a4beb0de83d82475a5b366f3ded050b45681e9c"
-  integrity sha512-83HgSJjfTriPvJPkBx8XZPZA3X/btVQYGk5obo8xMD8Wi/xl38fk5F7c/WYPVA94MNkmXVZbgemTz2uzRlmI+Q==
+"@guardian/source-development-kitchen@5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/source-development-kitchen/-/source-development-kitchen-5.0.0.tgz#1b6e5d32745da87ddde496850cf2c6396aeb24ef"
+  integrity sha512-trKVTK7tg6ytTtRUXWLfuCkt5qhpyI2EjOXnuOn8SBXkhq0JQLk+ok13vrYsvqjwDdrGLY1eCVLwQfDkmqdFfA==
 
-"@guardian/source@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@guardian/source/-/source-4.0.0.tgz#a45e4412fbbbbd2c0cdb7d4ddc4986fae36c16e1"
-  integrity sha512-Ls3W0b/zktU/BF7A5S8qh0Z3vlrtmxsN6lUdh2n7MIUdbBvhP63AN2Po56DwdsUHQU6joMebzfHbCSzkm2xJww==
+"@guardian/source@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/source/-/source-6.0.0.tgz#31cfe59c38462003404192e7345cf2ff4e0f6cf3"
+  integrity sha512-LsUXAo0d2hYQ1M/Nn9sLx6VEH1zMtr3rk0RG5r0T843d0ZWCTaP2gX3AOdD8S9XPESSWEH8/wxuQkPiCzI18nw==
   dependencies:
     mini-svg-data-uri "1.4.4"
 

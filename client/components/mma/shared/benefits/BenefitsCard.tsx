@@ -1,6 +1,9 @@
 import { css } from '@emotion/react';
 import { space, textSansBold17 } from '@guardian/source/foundations';
-import { SvgCrossRound, SvgTickRound } from '@guardian/source/react-components';
+import {
+	SvgCrossRoundFilled,
+	SvgTickRound,
+} from '@guardian/source/react-components';
 import type { ProductBenefit } from './BenefitsConfiguration';
 import { benefitsCss, unavailableBenefitsCss } from './BenefitsStyles';
 
@@ -8,7 +11,7 @@ const UpgradeBenefit = ({ benefit }: { benefit: ProductBenefit }) => {
 	return (
 		<li css={benefit.isUnavailable ? unavailableBenefitsCss : ''}>
 			{benefit.isUnavailable ? (
-				<SvgCrossRound isAnnouncedByScreenReader size="medium" />
+				<SvgCrossRoundFilled isAnnouncedByScreenReader size="medium" />
 			) : (
 				<SvgTickRound isAnnouncedByScreenReader size="medium" />
 			)}
