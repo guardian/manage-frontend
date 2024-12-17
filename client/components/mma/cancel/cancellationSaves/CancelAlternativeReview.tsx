@@ -10,7 +10,7 @@ import {
 	textSans17,
 	textSansBold17,
 } from '@guardian/source/foundations';
-import { Button, SvgSpinner } from '@guardian/source/react-components';
+import { Button, Spinner } from '@guardian/source/react-components';
 import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import { capitalize } from 'lodash';
 import type { ReactElement } from 'react';
@@ -165,7 +165,7 @@ export const CancelAlternativeReview = () => {
 		['aria-disabled']?: true;
 	} = {};
 	if (performingDiscountStatus === 'PENDING') {
-		confirmBtnIconProps.icon = <SvgSpinner size="xsmall" />;
+		confirmBtnIconProps.icon = <Spinner size="xsmall" />;
 		confirmBtnIconProps.iconSide = 'right';
 		confirmBtnIconProps.disabled = true;
 		confirmBtnIconProps['aria-disabled'] = true;
