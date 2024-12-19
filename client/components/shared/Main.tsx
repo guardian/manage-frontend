@@ -75,7 +75,11 @@ export const Main = ({
 						{children}
 					</main>
 				</div>
-				{hasMinimalFooter ? <MinimalFooter /> : <Footer />}
+				{hasMinimalFooter ? (
+					<MinimalFooter />
+				) : (
+					<Footer hideSupport={!!isHelpCentrePage} />
+				)}
 			</div>
 		</HasMinimalFooterContext.Provider>
 	);
