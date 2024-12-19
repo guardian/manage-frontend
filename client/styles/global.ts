@@ -1,4 +1,7 @@
-import { headline, serif } from './fonts';
+import {
+	headlineBold14Object,
+	textEgyptian14Object,
+} from '@guardian/source/foundations';
 
 export const global = `
 html {
@@ -42,11 +45,11 @@ h5,
 h6 {
   color: inherit;
   font-weight: 500;
-  font-family: ${serif};
+  font-family: ${textEgyptian14Object.fontFamily};
 }
 
 h1 {
-  font-family: ${headline};
+  font-family: ${headlineBold14Object.fontFamily};
 }
 
 

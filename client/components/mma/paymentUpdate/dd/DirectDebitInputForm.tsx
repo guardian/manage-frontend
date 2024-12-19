@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, space, until } from '@guardian/source/foundations';
+import { from, space, textSans17, until } from '@guardian/source/foundations';
 import {
 	Button,
 	Checkbox,
@@ -7,7 +7,6 @@ import {
 } from '@guardian/source/react-components';
 import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import { useState } from 'react';
-import { sans } from '../../../../styles/fonts';
 import { processResponse } from '../../../../utilities/utils';
 import { cleanSortCode } from '../../shared/DirectDebitDisplay';
 import type { FieldChangeEvent } from '../FieldWrapper';
@@ -16,29 +15,28 @@ import type { NewPaymentMethodDetail } from '../NewPaymentMethodDetail';
 import { DirectDebitLegal } from './DirectDebitLegal';
 import { NewDirectDebitPaymentMethodDetail } from './NewDirectDebitPaymentMethodDetail';
 
-const inputBoxBaseStyle = {
-	width: '100%',
-	height: '100%',
-	fontFamily: sans,
-	fontSize: '17px',
-	border: 'none',
-	outline: 'none',
-	'::placeholder': {
-		color: '#c4c4c4',
-	},
-	':-ms-input-placeholder': {
-		color: '#c4c4c4',
-	},
-};
+const inputBoxBaseStyle = css`
+	width: 100%;
+	height: 100%;
+	${textSans17};
+	border: none;
+	outline: none;
+	::placeholder: {
+		color: #c4c4c4;
+	}
+	:-ms-input-placeholder: {
+		color: #c4c4c4;
+	}
+`;
 
-const bulletsStyling = {
-	'::placeholder': {
-		fontSize: '14px',
-	},
-	':-ms-input-placeholder': {
-		fontSize: '14px',
-	},
-};
+const bulletsStyling = css`
+	::placeholder {
+		font-size: 14px;
+	}
+	:-ms-input-placeholder {
+		font-size: 14px;
+	}
+`;
 
 interface DirectDebitValidationResponse {
 	data: {
@@ -179,7 +177,10 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 						type="text"
 						pattern="[0-9]{2}[\-\s]?[0-9]{2}[\-\s]?[0-9]{2}"
 						title="Sort Code must contain 6 numbers (optionally separated by a - or space)"
-						css={{ ...bulletsStyling, ...inputBoxBaseStyle }}
+						css={css`
+							${bulletsStyling};
+							${inputBoxBaseStyle}
+						`}
 						placeholder="•• •• ••"
 						name="Sort Code"
 						required
@@ -196,7 +197,10 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 						data-qm-masking="blocklist"
 						type="text"
 						pattern="[0-9]{7,}"
-						css={{ ...bulletsStyling, ...inputBoxBaseStyle }}
+						css={css`
+							${bulletsStyling};
+							${inputBoxBaseStyle}
+						`}
 						placeholder="•••• ••••"
 						name="Account Number"
 						title="Account Number should typically be 8 digits"
@@ -255,10 +259,10 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 
 				{error ? (
 					<div
-						css={{
-							marginTop: `${space[9]}px`,
-							marginBottom: `${space[9]}px`,
-						}}
+						css={css`
+							margin-top: ${space[9]}px;
+							margin-bottom: ${space[9]}px;
+						`}
 					>
 						<ErrorSummary message={error} />
 					</div>

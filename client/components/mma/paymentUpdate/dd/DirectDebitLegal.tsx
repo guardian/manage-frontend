@@ -1,20 +1,19 @@
-import { palette } from '@guardian/source/foundations';
+import { css } from '@emotion/react';
+import { palette, textSans12 } from '@guardian/source/foundations';
 import * as React from 'react';
-import { sans } from '../../../../styles/fonts';
 
-const hrefStyle = {
-	color: palette.neutral[46],
-	textDecoration: 'underline',
-	cursor: 'pointer',
-};
+const hrefStyle = css`
+	color: ${palette.neutral[46]};
+	text-decoration: underline;
+	cursor: pointer;
+`;
 
-const baseStyle = {
-	color: palette.neutral[46],
-	fontSize: '12px',
-	fontFamily: sans,
-	flexGrow: 1,
-	marginTop: '10px',
-};
+const baseStyle = css`
+	color: ${palette.neutral[46]};
+	${textSans12};
+	flex-grow: 1;
+	margin-top: 10px;
+`;
 
 export class GoCardlessGuarantee extends React.Component<
 	{ inner?: true },
@@ -26,7 +25,11 @@ export class GoCardlessGuarantee extends React.Component<
 
 	public render(): React.ReactNode {
 		return (
-			<div css={this.props.inner ? { paddingTop: '5px' } : baseStyle}>
+			<div
+				css={css`
+					${this.props.inner ? `padding-top: 5px;` : baseStyle}
+				`}
+			>
 				Your payments are protected by the{' '}
 				<a
 					css={hrefStyle}
@@ -37,10 +40,10 @@ export class GoCardlessGuarantee extends React.Component<
 					Direct&nbsp;Debit&nbsp;guarantee.
 				</a>
 				<ul
-					css={{
-						display: this.state.expanded ? 'block' : 'none',
-						paddingLeft: '30px',
-					}}
+					css={css`
+						display: ${this.state.expanded ? 'block' : 'none'};
+						padding-left: 30px;
+					`}
 				>
 					<li>
 						The Guarantee is offered by all banks and building
@@ -90,10 +93,10 @@ interface DirectDebitLegalProps {
 
 export const DirectDebitLegal = (props: DirectDebitLegalProps) => (
 	<div
-		css={{
-			...baseStyle,
-			maxWidth: '590px',
-		}}
+		css={css`
+			${baseStyle};
+			maxw-width: 590px;
+		`}
 	>
 		<p>
 			<strong>Payments by GoCardless </strong>

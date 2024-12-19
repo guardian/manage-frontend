@@ -1,8 +1,12 @@
 import { css } from '@emotion/react';
-import { palette } from '@guardian/source/foundations';
+import {
+	palette,
+	space,
+	textSans14,
+	textSansBold14,
+} from '@guardian/source/foundations';
 import { Checkbox } from '@guardian/source/react-components';
 import type { FC } from 'react';
-import { sans } from '../../../styles/fonts';
 
 interface NewsletterPreferenceProps {
 	id: string;
@@ -13,11 +17,6 @@ interface NewsletterPreferenceProps {
 	selected?: boolean;
 	onClick: (id: string) => {};
 }
-
-const standardText = {
-	fontSize: '14px',
-	fontFamily: sans,
-};
 
 const clockSVG = (
 	<svg
@@ -32,17 +31,12 @@ const clockSVG = (
 
 const getTitle = (title: NewsletterPreferenceProps['title']) => (
 	<p
-		css={[
-			standardText,
-			{
-				cursor: 'pointer',
-				fontSize: '14px',
-				lineHeight: '22px',
-				fontFamily: sans,
-				fontWeight: 'bold',
-				margin: '0',
-			},
-		]}
+		css={css`
+			${textSansBold14};
+			cursor: pointer;
+			line-height: 22px;
+			margin: 0;
+		`}
 	>
 		{title}
 	</p>
@@ -115,13 +109,11 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 	return (
 		<div
 			key={id}
-			css={[
-				standardText,
-				{
-					lineHeight: '1.333',
-					marginTop: '12px',
-				},
-			]}
+			css={css`
+				${textSans14};
+				lineheight: 1.333;
+				margin-top: ${space[3]}px;
+			`}
 		>
 			<Checkbox
 				data-cy={id}

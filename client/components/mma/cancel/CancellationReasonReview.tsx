@@ -1,5 +1,10 @@
 import { css } from '@emotion/react';
-import { palette, space, until } from '@guardian/source/foundations';
+import {
+	palette,
+	space,
+	textSans14,
+	until,
+} from '@guardian/source/foundations';
 import {
 	Button,
 	InlineError,
@@ -24,7 +29,6 @@ import type {
 	ProductTypeWithCancellationFlow,
 	WithProductType,
 } from '../../../../shared/productTypes';
-import { sans } from '../../../styles/fonts';
 import { measure } from '../../../styles/typography';
 import { useFetch } from '../../../utilities/hooks/useFetch';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
@@ -186,12 +190,11 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 				/>
 				<div css={{ textAlign: 'right' }}>
 					<div
-						css={{
-							fontSize: 'small',
-							color: palette.neutral[46],
-							fontFamily: sans,
-							paddingBottom: '10px',
-						}}
+						css={css`
+							${textSans14};
+							color: ${palette.neutral[46]};
+							padding-bottom: 10px;
+						`}
 					>
 						You have {props.characterLimit - feedback.length}{' '}
 						characters remaining

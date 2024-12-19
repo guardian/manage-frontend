@@ -1,5 +1,12 @@
 import { css } from '@emotion/react';
-import { from, palette, space, until } from '@guardian/source/foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans14,
+	textSansBold17,
+	until,
+} from '@guardian/source/foundations';
 import { Button, InlineError } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
 import { startCase } from 'lodash';
@@ -15,7 +22,6 @@ import {
 	parseDate,
 } from '../../../../shared/dates';
 import { isProduct } from '../../../../shared/productResponse';
-import { sans } from '../../../styles/fonts';
 import { trackEvent } from '../../../utilities/analytics';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { InfoIcon } from '../shared/assets/InfoIcon';
@@ -47,43 +53,40 @@ import type {
 } from './HolidayStopsContainer';
 import { HolidayStopsContext } from './HolidayStopsContainer';
 
-export const cancelLinkCss = css({
-	marginRight: '20px',
-	fontFamily: sans,
-	fontWeight: 'bold',
-	textDecoration: 'underline',
-	fontSize: '16px',
-	color: `${palette.neutral['7']}`,
-});
+export const cancelLinkCss = css`
+	margin-right: ${space[5]}px;
+	${textSansBold17};
+	textdecoration: underline;
+	color: ${palette.neutral['7']};
+`;
 
-export const buttonBarCss = css({
-	display: 'flex',
-	alignItems: 'center',
-	marginTop: '40px',
-	flexWrap: 'wrap',
-});
+export const buttonBarCss = css`
+	display: flex;
+	align-items: center;
+	margin-top: 40px;
+	flex-wrap: wrap;
+`;
 
-const oneAtATimeStyles = css({
-	fontFamily: sans,
-	fontSize: '14px',
-	marginBottom: '27px',
-});
+const oneAtATimeStyles = css`
+	${textSans14};
+	margin-bottom: '27px';
+`;
 
-const fixedButtonFooterCss = css({
-	[until.mobileLandscape]: {
-		justifyContent: 'space-between',
-	},
-	[until.phablet]: {
-		position: 'fixed',
-		zIndex: 998,
-		bottom: 0,
-		left: 0,
-		right: 0,
-		background: palette.neutral[100],
-		padding: '10px',
-		boxShadow: '0 0 5px' + palette.neutral[60],
-	},
-});
+const fixedButtonFooterCss = css`
+	${until.mobileLandscape} {
+		justify-content: space-between;
+	}
+	${until.phablet} {
+		position: fixed;
+		z-index: 998;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: ${palette.neutral[100]};
+		padding: 10px;
+		box-shadow: 0 0 5px ${palette.neutral[60]};
+	} ;
+`;
 
 export interface SharedHolidayDateChooserState {
 	selectedRange: DateRange;
@@ -381,16 +384,20 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 						)}
 					</p>
 					<div css={oneAtATimeStyles}>
-						<div css={{ margin: '10px' }}>
+						<div
+							css={css`
+								margin: 10px;
+							`}
+						>
 							<InfoIcon />
 							You can schedule one suspension at a time.
 						</div>
 						<div
-							css={{
-								[from.mobileLandscape]: {
-									display: 'none',
-								},
-							}}
+							css={css`
+								${from.mobileLandscape} {
+									display: none;
+								}
+							`}
 						>
 							<HolidayQuestionsModal
 								annualIssueLimit={
@@ -459,17 +466,19 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 					<div
 						css={[
 							buttonBarCss,
-							{ justifyContent: 'flex-end' },
+							css`
+								justify-content: flex-end;
+							`,
 							fixedButtonFooterCss,
 						]}
 					>
 						<div
-							css={{
-								marginRight: '30px',
-								[until.mobileLandscape]: {
-									display: 'none',
-								},
-							}}
+							css={css`
+								margin-right: 30px;
+								${until.mobileLandscape} {
+									display: none;
+								}
+							`}
 						>
 							<HolidayQuestionsModal
 								annualIssueLimit={
@@ -481,14 +490,12 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 							/>
 						</div>
 						<Link
-							css={{
-								marginRight: `${space[5]}px`,
-								fontFamily: sans,
-								fontWeight: 'bold',
-								textDecoration: 'underline',
-								fontSize: '16px',
-								color: palette.neutral[20],
-							}}
+							css={css`
+								margin-right: ${space[5]}px;
+								${textSansBold17};
+								textdecoration: underline;
+								color: ${palette.neutral[20]};
+							`}
 							to=".."
 							state={routerState}
 						>
@@ -515,11 +522,11 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 						</div>
 					</div>
 					<div
-						css={{
-							marginTop: `${space[5]}px`,
-							display: 'flex',
-							justifyContent: 'flex-end',
-						}}
+						css={css`
+							margin-top: ${space[5]}px;
+							display: flex;
+							justify-content: flex-end;
+						`}
 					>
 						{showReviewWarning && (
 							<InlineError>

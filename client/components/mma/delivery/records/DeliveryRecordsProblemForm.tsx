@@ -3,9 +3,9 @@ import {
 	from,
 	palette,
 	space,
-	textSans15,
 	textSans17,
 	textSansBold17,
+	textSansItalic15,
 } from '@guardian/source/foundations';
 import { Button, Radio, RadioGroup } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
@@ -189,8 +189,7 @@ export const DeliveryRecordProblemForm = (
 													Please specify
 													<span
 														css={css`
-															font-style: italic;
-															${textSans15}
+															${textSansItalic15}
 														`}
 													>
 														{!deliveryProblemRadioOption.messageIsMandatory &&
