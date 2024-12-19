@@ -51,7 +51,6 @@ import type { IsFromAppProps } from '../shared/IsFromAppProps';
 import { NewspaperArchiveCta } from '../shared/NewspaperArchiveCta';
 import { nonServiceableCountries } from '../shared/NonServiceableCountries';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
-import { CanadaStrike } from './CanadaStrike';
 import { CancelledProductCard } from './CancelledProductCard';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
@@ -198,18 +197,6 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		return specificProductType.groupedProductType;
 	};
 
-	const possiblyAffectedByCanadaPostStrike = allActiveProductDetails.some(
-		(product) => {
-			const deliveryCountry =
-				product.subscription.deliveryAddress?.country.toUpperCase();
-			return (
-				(product.tier === 'Tier Three' ||
-					product.tier === 'Guardian Weekly - ROW') &&
-				(deliveryCountry === 'CANADA' || deliveryCountry === 'CA')
-			);
-		},
-	);
-
 	return (
 		<>
 			<PersonalisedHeader
@@ -221,7 +208,6 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				productDetails={allActiveProductDetails}
 				isFromApp={isFromApp}
 			/>
-			{possiblyAffectedByCanadaPostStrike && <CanadaStrike />}
 			{uniqueProductCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
