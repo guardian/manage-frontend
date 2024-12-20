@@ -51,7 +51,7 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 			<h3 css={dataPrivacyHeadingCss}>Your account data</h3>
 			<p css={dataPrivacyParagraphCss}>
 				What we mean by your account data is information you provide
-				when you register with us:
+				when you create an account:
 			</p>
 			<ul css={dataPrivacyUnorderedListCss}>
 				<li>First name and last name</li>
