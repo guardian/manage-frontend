@@ -15,4 +15,8 @@ export default {
 
 export const Default: StoryFn<typeof Footer> = () => <Footer />;
 
+export const WithoutSupport: StoryFn<typeof Footer> = () => (
+	<Footer hideSupport />
+);
+
 export const Minimal: StoryFn<typeof MinimalFooter> = () => <MinimalFooter />;
