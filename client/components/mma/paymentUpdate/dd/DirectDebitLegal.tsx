@@ -95,7 +95,7 @@ export const DirectDebitLegal = (props: DirectDebitLegalProps) => (
 	<div
 		css={css`
 			${baseStyle};
-			maxw-width: 590px;
+			max-width: 590px;
 		`}
 	>
 		<p>

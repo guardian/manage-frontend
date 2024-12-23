@@ -69,7 +69,7 @@ export const buttonBarCss = css`
 
 const oneAtATimeStyles = css`
 	${textSans14};
-	margin-bottom: '27px';
+	margin-bottom: 27px;
 `;
 
 const fixedButtonFooterCss = css`
