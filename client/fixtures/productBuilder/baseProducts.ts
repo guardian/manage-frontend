@@ -125,7 +125,6 @@ export function baseGuardianWeekly(): ProductDetail {
 			deliveryAddressChangeEffectiveDate: '2021-12-10',
 		},
 		isTestUser: false,
-		key: '1638374153759',
 	};
 }
 
@@ -374,7 +373,6 @@ export function baseDigitalVoucher(): ProductDetail {
 			accountId: '8ad0824e7d584341017d5bc38c0d52dc',
 		},
 		isTestUser: false,
-		key: '1639394814906',
 	};
 }
 

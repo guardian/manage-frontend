@@ -2,9 +2,13 @@
 
 exports[`NewsletterPreference component renders correctly and displays marketing information 1`] = `
 .emotion-0 {
-  font-size: 14px;
-  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-  line-height: 1.333;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  font-weight: 400;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
+  lineheight: 1.333;
   margin-top: 12px;
 }
 
@@ -14,17 +18,12 @@ exports[`NewsletterPreference component renders correctly and displays marketing
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  min-height: 44px;
-  cursor: pointer;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  margin-bottom: 12px;
+  padding: 10px 0;
+  cursor: pointer;
 }
 
 .emotion-1:hover input {
@@ -118,7 +117,7 @@ html:not(.src-focus-disabled) .emotion-2:focus {
     -moz-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
-    top: 14px;
+    top: 15px;
     left: 9px;
     pointer-events: none;
   }
@@ -150,19 +149,6 @@ html:not(.src-focus-disabled) .emotion-2:focus {
   }
 }
 
-@supports ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none)) {
-  .emotion-3 {
-    top: 15px;
-    left: 9px;
-  }
-}
-
-@supports ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none)) {
-  .emotion-3 {
-    top: 5px;
-  }
-}
-
 .emotion-4 {
   cursor: pointer;
 }
@@ -176,12 +162,6 @@ html:not(.src-focus-disabled) .emotion-2:focus {
   --source-text-decoration-thickness: 2px;
   color: #121212;
   width: 100%;
-  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-  font-size: 1.0625rem;
-  line-height: 1.3;
-  font-weight: 400;
-  font-style: normal;
-  --source-text-decoration-thickness: 2px;
   margin-top: 1px;
 }
 
@@ -190,13 +170,14 @@ html:not(.src-focus-disabled) .emotion-2:focus {
 }
 
 .emotion-6 {
-  font-size: 14px;
-  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  font-weight: 700;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
   cursor: pointer;
-  font-size: 14px;
   line-height: 22px;
-  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-  font-weight: bold;
   margin: 0;
 }
 
@@ -302,9 +283,13 @@ html:not(.src-focus-disabled) .emotion-2:focus {
 
 exports[`NewsletterPreference component will select the checkbox when the selected prop is passed 1`] = `
 .emotion-0 {
-  font-size: 14px;
-  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-  line-height: 1.333;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  font-weight: 400;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
+  lineheight: 1.333;
   margin-top: 12px;
 }
 
@@ -314,17 +299,12 @@ exports[`NewsletterPreference component will select the checkbox when the select
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  min-height: 44px;
-  cursor: pointer;
   -webkit-align-items: flex-start;
   -webkit-box-align: flex-start;
   -ms-flex-align: flex-start;
   align-items: flex-start;
-  margin-bottom: 12px;
+  padding: 10px 0;
+  cursor: pointer;
 }
 
 .emotion-1:hover input {
@@ -418,7 +398,7 @@ html:not(.src-focus-disabled) .emotion-2:focus {
     -moz-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
-    top: 14px;
+    top: 15px;
     left: 9px;
     pointer-events: none;
   }
@@ -450,19 +430,6 @@ html:not(.src-focus-disabled) .emotion-2:focus {
   }
 }
 
-@supports ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none)) {
-  .emotion-3 {
-    top: 15px;
-    left: 9px;
-  }
-}
-
-@supports ((appearance: none) or (-webkit-appearance: none) or (-moz-appearance: none)) {
-  .emotion-3 {
-    top: 5px;
-  }
-}
-
 .emotion-4 {
   cursor: pointer;
 }
@@ -476,12 +443,6 @@ html:not(.src-focus-disabled) .emotion-2:focus {
   --source-text-decoration-thickness: 2px;
   color: #121212;
   width: 100%;
-  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-  font-size: 1.0625rem;
-  line-height: 1.3;
-  font-weight: 400;
-  font-style: normal;
-  --source-text-decoration-thickness: 2px;
   margin-top: 1px;
 }
 
@@ -490,13 +451,14 @@ html:not(.src-focus-disabled) .emotion-2:focus {
 }
 
 .emotion-6 {
-  font-size: 14px;
-  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-family: GuardianTextSans,"Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  font-weight: 700;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
   cursor: pointer;
-  font-size: 14px;
   line-height: 22px;
-  font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-  font-weight: bold;
   margin: 0;
 }
 
