@@ -3291,10 +3291,10 @@
     eslint-plugin-eslint-comments "3.2.0"
     eslint-plugin-import "2.29.1"
 
-"@guardian/libs@17.0.0":
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-17.0.0.tgz#cf33caf631bc9a375ef215236927cc74c07fde04"
-  integrity sha512-9/DshbBrF+0DyLuKiDIzRr9t/NYGuv5fDJVZwHs73H4AQBaC0er+9aKUjjRueDILKKefOaBVTerWm2Jw4YCmmQ==
+"@guardian/libs@^17.0.0":
+  version "17.0.1"
+  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-17.0.1.tgz#cf0f1ea6cf21f0889dcf7c0cd6a2b92bf9f47f39"
+  integrity sha512-uv+EF+lAgeSzBllULwT6morI/fsJWml8ROT2f/xLl2IejMio1zRt3HfTijdzVr4hYHlcGWntcHfrThjgqJgFHA==
 
 "@guardian/libs@^18.0.0":
   version "18.0.2"
@@ -3345,10 +3345,10 @@
   resolved "https://registry.yarnpkg.com/@guardian/prettier/-/prettier-1.0.0.tgz#a5dd832e2ce31c6f723f0af77fe116b32b4695ff"
   integrity sha512-srnhPn3hcSv14mDotFQN0CfN3k8MaGsXdK8BXAG95QQxM69Ybi16o4/Xqe361fwDEp7m+9jf03sETcMi8WsDlA==
 
-"@guardian/source-development-kitchen@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@guardian/source-development-kitchen/-/source-development-kitchen-7.0.0.tgz#b0538bde6a1e0b6b3c920fd0000061d9b6a8f091"
-  integrity sha512-POh5HRbNp3z9KcF/EFrI9f9IvZWG/fiABv1v1m+YKGh32s1QilOxnFYwYNUknUg1ermRjDtYsDSIxmF9XSDOwQ==
+"@guardian/source-development-kitchen@^7.0.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@guardian/source-development-kitchen/-/source-development-kitchen-7.1.0.tgz#6b8a636d71b2b827ac5d6db31f3b0e6c1d32eeb7"
+  integrity sha512-rVJDH4HPEsU7UqXjchAcAWwuTdmSd3h7ISmRJMJ5p/hNohKGwB9GM6jHtbHYXOL7o2wjH7c6ZYL8Tn+/83huKw==
 
 "@guardian/source@^8.0.1":
   version "8.0.1"
