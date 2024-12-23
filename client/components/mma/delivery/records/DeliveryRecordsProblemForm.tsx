@@ -127,7 +127,7 @@ export const DeliveryRecordProblemForm = (
 				<RadioGroup
 					name="issue_type"
 					orientation="vertical"
-					css={css`
+					cssOverrides={css`
 						display: block;
 					`}
 				>
@@ -156,7 +156,7 @@ export const DeliveryRecordProblemForm = (
 										label={capitalize(
 											deliveryProblemRadioOption.label,
 										)}
-										css={css`
+										cssOverrides={css`
 											vertical-align: top;
 											text-transform: lowercase;
 											:checked + div label:first-of-type {
@@ -278,7 +278,7 @@ export const DeliveryRecordProblemForm = (
 				<>
 					<Button type="submit">Continue to Step 2 &amp; 3</Button>
 					<Button
-						css={css`
+						cssOverrides={css`
 							${textSans17}
 							background-color: transparent;
 							font-weight: bold;

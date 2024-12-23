@@ -301,7 +301,7 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 				});
 				bootstrapChat();
 			}}
-			css={props.liveChatButtonCss}
+			cssOverrides={props.liveChatButtonCss}
 			icon={
 				liveChatIsLoading ? (
 					<LoadingCircleIcon

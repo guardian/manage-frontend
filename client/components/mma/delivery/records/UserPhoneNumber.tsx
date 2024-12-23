@@ -137,7 +137,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
 												label={phoneType}
 												supporting="Enter your phone number"
 												width={30}
-												css={css`
+												cssOverrides={css`
 													max-width: 100%;
 												`}
 												value={
@@ -217,7 +217,7 @@ export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
 									label="Phone number"
 									supporting="Enter your phone number"
 									width={30}
-									css={css`
+									cssOverrides={css`
 										max-width: 100%;
 										margin-bottom: ${space[5]}px;
 									`}

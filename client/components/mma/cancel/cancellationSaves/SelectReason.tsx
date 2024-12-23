@@ -119,7 +119,7 @@ const ReasonSelection = ({
 			<RadioGroup
 				name="issue_type"
 				orientation="vertical"
-				css={css`
+				cssOverrides={css`
 					display: block;
 					padding-top: ${space[4]}px;
 				`}
@@ -139,7 +139,7 @@ const ReasonSelection = ({
 								name="cancellation-reason"
 								value={reason.reasonId}
 								label={reason.linkLabel}
-								css={css`
+								cssOverrides={css`
 									vertical-align: top;
 									text-transform: lowercase;
 									:checked + div label:first-of-type {
