@@ -382,13 +382,14 @@ const InnerContent = ({
 				/>
 			)}
 
-			{!hasCancellationPending && (
-				<CancellationCTA
-					productDetail={productDetail}
-					friendlyName={groupedProductType.friendlyName}
-					specificProductType={specificProductType}
-				/>
-			)}
+			{!hasCancellationPending &&
+				productDetail.billingCountry !== 'United States' && (
+					<CancellationCTA
+						productDetail={productDetail}
+						friendlyName={groupedProductType.friendlyName}
+						specificProductType={specificProductType}
+					/>
+				)}
 		</>
 	);
 };
