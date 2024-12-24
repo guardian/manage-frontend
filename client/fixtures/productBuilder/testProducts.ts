@@ -212,6 +212,13 @@ export function supporterPlus() {
 		.getProductDetailObject();
 }
 
+export function supporterPlusUSA() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.inUSA()
+		.getProductDetailObject();
+}
+
 export function supporterPlusMonthlyAllAccessDigital() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()
