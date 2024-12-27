@@ -13,7 +13,12 @@ import type { GuAsgCapacity } from '@guardian/cdk/lib/types';
 import type { App } from 'aws-cdk-lib';
 import { Duration } from 'aws-cdk-lib';
 import { CfnDashboard } from 'aws-cdk-lib/aws-cloudwatch';
-import { InstanceClass, InstanceSize, InstanceType } from 'aws-cdk-lib/aws-ec2';
+import {
+	InstanceClass,
+	InstanceSize,
+	InstanceType,
+	UserData,
+} from 'aws-cdk-lib/aws-ec2';
 import { Protocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnRecordSet } from 'aws-cdk-lib/aws-route53';
@@ -45,38 +50,42 @@ export class ManageFrontend extends GuStack {
 			default: `/${this.stage}/${this.stack}/${app}/serverRavenDSN`,
 		});
 
-		// intentionally removed tabs from the following string for bash's sake!
-		const userData = `#!/bin/bash -ev
-# get runnable tar from S3
-aws --region ${this.region} s3 cp s3://membership-dist/${this.stack}/${this.stage}/${app}/manage-frontend.zip /tmp
-mkdir /etc/gu
-unzip /tmp/manage-frontend.zip -d /etc/gu/dist/
-# add user
-groupadd manage-frontend
-useradd -r -s /usr/bin/nologin -g manage-frontend manage-frontend
-touch /var/log/manage-frontend.log
-chown -R manage-frontend:manage-frontend /etc/gu
-chown manage-frontend:manage-frontend /var/log/manage-frontend.log
-# write out systemd file
-cat >/etc/systemd/system/manage-frontend.service <<EOL
-[Service]
-ExecStart=/usr/bin/node /etc/gu/dist/server.js
-Restart=always
-StandardOutput=syslog
-StandardError=syslog
-SyslogIdentifier=manage-frontend
-User=manage-frontend
-Group=manage-frontend
-Environment=STAGE=${this.stage}
-Environment=CLIENT_DSN=${clientRavenDSN.valueAsString}
-Environment=SERVER_DSN=${serverRavenDSN.valueAsString}
-[Install]
-WantedBy=multi-user.target
-EOL
-# RUN
-systemctl enable manage-frontend
-systemctl start manage-frontend
-/opt/cloudwatch-logs/configure-logs application ${this.stack} ${this.stage} ${app} /var/log/manage-frontend.log`;
+		const userData = UserData.forLinux();
+		userData.addCommands(
+			[
+				`#!/bin/bash -ev`,
+				`# get runnable tar from S3`,
+				`aws --region ${this.region} s3 cp s3://membership-dist/${this.stack}/${this.stage}/${app}/manage-frontend.zip /tmp`,
+				`mkdir /etc/gu`,
+				`unzip /tmp/manage-frontend.zip -d /etc/gu/dist/`,
+				`# add user`,
+				`groupadd manage-frontend`,
+				`useradd -r -s /usr/bin/nologin -g manage-frontend manage-frontend`,
+				`touch /var/log/manage-frontend.log`,
+				`chown -R manage-frontend:manage-frontend /etc/gu`,
+				`chown manage-frontend:manage-frontend /var/log/manage-frontend.log`,
+				`# write out systemd file`,
+				`cat >/etc/systemd/system/manage-frontend.service <<EOL`,
+				`[Service]`,
+				`ExecStart=/usr/bin/node /etc/gu/dist/server.js`,
+				`Restart=always`,
+				`StandardOutput=syslog`,
+				`StandardError=syslog`,
+				`SyslogIdentifier=manage-frontend`,
+				`User=manage-frontend`,
+				`Group=manage-frontend`,
+				`Environment=STAGE=${this.stage}`,
+				`Environment=CLIENT_DSN=${clientRavenDSN.valueAsString}`,
+				`Environment=SERVER_DSN=${serverRavenDSN.valueAsString}`,
+				`[Install]`,
+				`WantedBy=multi-user.target`,
+				`EOL`,
+				`# RUN`,
+				`systemctl enable manage-frontend`,
+				`systemctl start manage-frontend`,
+				`/opt/cloudwatch-logs/configure-logs application ${this.stack} ${this.stage} ${app} /var/log/manage-frontend.log`,
+			].join('\n'),
+		);
 
 		const logGroup = new LogGroup(this, 'ManageFrontendLogGroup', {
 			logGroupName: `support-manage-frontend-${this.stage}`,
