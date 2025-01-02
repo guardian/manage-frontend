@@ -137,6 +137,11 @@ export class ProductBuilder {
 		return this;
 	}
 
+	inUSA() {
+		this.productToBuild.billingCountry = 'United States';
+		return this;
+	}
+
 	nonServiceableCountry() {
 		this.productToBuild.billingCountry = 'Qatar';
 		return this;

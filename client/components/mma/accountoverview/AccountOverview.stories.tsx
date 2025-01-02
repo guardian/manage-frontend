@@ -28,6 +28,7 @@ import {
 	supporterPlusAnnualCancelled,
 	supporterPlusCancelled,
 	supporterPlusInOfferPeriod,
+	supporterPlusUSA,
 	tierThree,
 } from '../../../fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../fixtures/singleContribution';
@@ -95,6 +96,31 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 						supporterPlus(),
 						tierThree(),
 					),
+				);
+			}),
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
+			}),
+		],
+	},
+};
+
+export const WithUSASubscription: StoryObj<typeof AccountOverview> = {
+	render: () => {
+		return <AccountOverview />;
+	},
+
+	parameters: {
+		msw: [
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
+			}),
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
+			}),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(supporterPlusUSA()),
 				);
 			}),
 			http.get('/api/me/one-off-contributions', () => {
