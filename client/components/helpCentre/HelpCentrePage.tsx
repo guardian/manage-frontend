@@ -77,13 +77,7 @@ const HelpCentreRouter = () => {
 	]
 	*/
 
-	const knownIssues: KnownIssueObj[] = [
-		{
-			date: '23rd Dec 2024 13:00',
-			message:
-				'Our customer service contact centre, including phone lines & live chat, is closed on Christmas Day, Boxing Day and New Year’s Day UK time. Replies to emails may take a little longer during this period.',
-		},
-	];
+	const knownIssues: KnownIssueObj[] = [];
 
 	return (
 		<Main signInStatus={signInStatus} isHelpCentrePage>
