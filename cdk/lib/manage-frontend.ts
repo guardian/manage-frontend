@@ -50,41 +50,38 @@ export class ManageFrontend extends GuStack {
 			default: `/${this.stage}/${this.stack}/${app}/serverRavenDSN`,
 		});
 
-		const userData = UserData.forLinux();
+		const userData = UserData.forLinux({ shebang: '#!/bin/bash -ev' });
 		userData.addCommands(
-			[
-				`#!/bin/bash -ev`,
-				`# get runnable tar from S3`,
-				`aws --region ${this.region} s3 cp s3://membership-dist/${this.stack}/${this.stage}/${app}/manage-frontend.zip /tmp`,
-				`mkdir /etc/gu`,
-				`unzip /tmp/manage-frontend.zip -d /etc/gu/dist/`,
-				`# add user`,
-				`groupadd manage-frontend`,
-				`useradd -r -s /usr/bin/nologin -g manage-frontend manage-frontend`,
-				`touch /var/log/manage-frontend.log`,
-				`chown -R manage-frontend:manage-frontend /etc/gu`,
-				`chown manage-frontend:manage-frontend /var/log/manage-frontend.log`,
-				`# write out systemd file`,
-				`cat >/etc/systemd/system/manage-frontend.service <<EOL`,
-				`[Service]`,
-				`ExecStart=/usr/bin/node /etc/gu/dist/server.js`,
-				`Restart=always`,
-				`StandardOutput=syslog`,
-				`StandardError=syslog`,
-				`SyslogIdentifier=manage-frontend`,
-				`User=manage-frontend`,
-				`Group=manage-frontend`,
-				`Environment=STAGE=${this.stage}`,
-				`Environment=CLIENT_DSN=${clientRavenDSN.valueAsString}`,
-				`Environment=SERVER_DSN=${serverRavenDSN.valueAsString}`,
-				`[Install]`,
-				`WantedBy=multi-user.target`,
-				`EOL`,
-				`# RUN`,
-				`systemctl enable manage-frontend`,
-				`systemctl start manage-frontend`,
-				`/opt/cloudwatch-logs/configure-logs application ${this.stack} ${this.stage} ${app} /var/log/manage-frontend.log`,
-			].join('\n'),
+			`# get runnable tar from S3
+aws --region ${this.region} s3 cp s3://membership-dist/${this.stack}/${this.stage}/${app}/manage-frontend.zip /tmp
+mkdir /etc/gu
+unzip /tmp/manage-frontend.zip -d /etc/gu/dist/
+# add user
+groupadd manage-frontend
+useradd -r -s /usr/bin/nologin -g manage-frontend manage-frontend
+touch /var/log/manage-frontend.log
+chown -R manage-frontend:manage-frontend /etc/gu
+chown manage-frontend:manage-frontend /var/log/manage-frontend.log
+# write out systemd file
+cat >/etc/systemd/system/manage-frontend.service <<EOL
+[Service]
+ExecStart=/usr/bin/node /etc/gu/dist/server.js
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=manage-frontend
+User=manage-frontend
+Group=manage-frontend
+Environment=STAGE=${this.stage}
+Environment=CLIENT_DSN=${clientRavenDSN.valueAsString}
+Environment=SERVER_DSN=${serverRavenDSN.valueAsString}
+[Install]
+WantedBy=multi-user.target
+EOL
+# RUN
+systemctl enable manage-frontend
+systemctl start manage-frontend
+/opt/cloudwatch-logs/configure-logs application ${this.stack} ${this.stage} ${app} /var/log/manage-frontend.log`,
 		);
 
 		const logGroup = new LogGroup(this, 'ManageFrontendLogGroup', {
