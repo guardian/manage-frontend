@@ -1,10 +1,9 @@
 import { css } from '@emotion/react';
 import type { CMP } from '@guardian/libs';
-import { from, palette } from '@guardian/source/foundations';
+import { from, headlineBold24, palette } from '@guardian/source/foundations';
 import { BackToTop } from '@guardian/source/react-components';
 import type { SyntheticEvent } from 'react';
 import { useEffect, useState } from 'react';
-import { headline } from '../../../styles/fonts';
 import { isInUSA as isUserInUSA } from '../../../utilities/geolocation';
 import { SupportTheGuardianButton } from '../SupportTheGuardianButton';
 import { footerlinks } from './Footerlinks';
@@ -119,10 +118,8 @@ const supportStyles = css`
 
 const supportTitleStyles = css`
 	color: ${palette.brandAlt[400]};
-	font-family: ${headline};
-	font-size: 24px;
+	${headlineBold24};
 	line-height: 24px;
-	font-weight: bold;
 	margin-top: 3px;
 	margin-bottom: 12px;
 	${from.phablet} {

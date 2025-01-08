@@ -1,10 +1,6 @@
 import { css } from '@emotion/react';
 import { from, space } from '@guardian/source/foundations';
-import {
-	Button,
-	LinkButton,
-	SvgSpinner,
-} from '@guardian/source/react-components';
+import { Button, LinkButton, Spinner } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
 import { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
@@ -238,7 +234,7 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 								icon={
 									showAlternativeBeforeCancelling ===
 									'pending' ? (
-										<SvgSpinner size="xsmall" />
+										<Spinner size="xsmall" />
 									) : undefined
 								}
 								iconSide="right"

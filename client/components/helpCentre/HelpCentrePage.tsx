@@ -1,8 +1,8 @@
 import { css, Global } from '@emotion/react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { fonts } from '@/client/styles/fonts';
 import { initFeatureSwitchUrlParamOverride } from '../../../shared/featureSwitches';
-import { fonts } from '../../styles/fonts';
 import { global } from '../../styles/global';
 import { useAnalytics } from '../../utilities/hooks/useAnalytics';
 import { useConsent } from '../../utilities/hooks/useConsent';

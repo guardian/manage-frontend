@@ -616,7 +616,7 @@ const DeliveryRecordsProblemReviewFC = (
 					Submit your report
 				</Button>
 				<Button
-					css={css`
+					cssOverrides={css`
 						${textSans17};
 						background-color: transparent;
 						font-weight: bold;

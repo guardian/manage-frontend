@@ -74,7 +74,7 @@ export const sectionTitleCss = (
 		transform: translateY(${isOpen ? '-10%' : '-50%'})
 			${isOpen ? 'rotate(-45deg)' : 'rotate(135deg)'};
 		transition: transform 0.4s;
-		right: 0;
+		right: ${space[3]}px;
 		${from.desktop} {
 			right: 17px;
 		}

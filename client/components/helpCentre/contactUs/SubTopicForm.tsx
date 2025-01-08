@@ -66,7 +66,7 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
 				<RadioGroup
 					name="issue_type"
 					orientation="vertical"
-					css={css`
+					cssOverrides={css`
 						display: block;
 					`}
 				>
@@ -92,7 +92,7 @@ export const SubTopicForm = (props: SubTopicFormProps) => {
 									value={subTopic.id}
 									label={subTopic.name}
 									checked={subTopic.id === selectedId}
-									css={css`
+									cssOverrides={css`
 										vertical-align: top;
 										text-transform: lowercase;
 										:checked + div label:first-of-type {

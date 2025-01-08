@@ -132,7 +132,7 @@ const ReasonPicker = ({
 					<RadioGroup
 						name="issue_type"
 						orientation="vertical"
-						css={css`
+						cssOverrides={css`
 							display: block;
 							padding: ${space[5]}px;
 						`}
@@ -144,7 +144,7 @@ const ReasonPicker = ({
 									name="cancellation-reason"
 									value={reason.reasonId}
 									label={reason.linkLabel}
-									css={css`
+									cssOverrides={css`
 										vertical-align: top;
 										text-transform: lowercase;
 										:checked + div label:first-of-type {
@@ -214,7 +214,7 @@ const ReasonPicker = ({
 							<RadioGroup
 								name="issue_type"
 								orientation="vertical"
-								css={css`
+								cssOverrides={css`
 									display: block;
 									padding: ${space[5]}px;
 								`}

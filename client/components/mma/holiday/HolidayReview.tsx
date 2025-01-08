@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { space, until } from '@guardian/source/foundations';
+import { space, textSans14, until } from '@guardian/source/foundations';
 import {
 	Button,
 	Checkbox,
@@ -11,7 +11,6 @@ import type { DateRange } from '../../../../shared/dates';
 import { DATE_FNS_INPUT_FORMAT, dateString } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
-import { sans } from '../../../styles/fonts';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 import { InfoIcon } from '../shared/assets/InfoIcon';
@@ -76,7 +75,12 @@ const getPerformCreateOrAmendFetcher =
 
 const getRenderCreateOrAmendError = (modificationKeyword: string) => () =>
 	(
-		<div css={{ textAlign: 'left', marginTop: '10px' }}>
+		<div
+			css={css`
+				text-align: left;
+				margin-top: 10px;
+			`}
+		>
 			<h2>
 				Sorry, {modificationKeyword} your holiday suspension failed.
 			</h2>
@@ -124,7 +128,11 @@ export const HolidayReview = () => {
 						annualIssueLimit={holidayStopsResponse.annualIssueLimit}
 						holidayStopFlowProperties={productType.holidayStops}
 					/>
-					<div css={{ height: '25px' }} />
+					<div
+						css={css`
+							height: 25px;
+						`}
+					/>
 					<SummaryTable
 						data={{ selectedRange, publicationsImpacted }}
 						alternateSuspendedColumnHeading="To be suspended"
@@ -135,10 +143,10 @@ export const HolidayReview = () => {
 					{productType.holidayStops.explicitConfirmationRequired && (
 						<>
 							<div
-								css={{
-									marginTop: '20px',
-									marginBottom: '10px',
-								}}
+								css={css`
+									margin-top: 20px;
+									margin-bottom: 10px;
+								`}
 							>
 								<Checkbox
 									label={
@@ -157,13 +165,12 @@ export const HolidayReview = () => {
 							<Modal
 								instigator={
 									<a
-										css={{
-											fontFamily: sans,
-											fontSize: '14px',
-											cursor: 'pointer',
-											textDecoration: 'underline',
-											margin: '10px',
-										}}
+										css={css`
+											${textSans14};
+											cursor: pointer;
+											text-decoration: underline;
+											margin: 10px;
+										`}
 									>
 										<InfoIcon />
 										Tell me more
@@ -187,7 +194,12 @@ export const HolidayReview = () => {
 					)}
 				</div>
 				{isExecuting ? (
-					<div css={{ marginTop: '40px', textAlign: 'right' }}>
+					<div
+						css={css`
+							margin-top: 40px;
+							text-align: right;
+						`}
+					>
 						<CreateOrAmendHolidayStopsAsyncLoader
 							fetch={getPerformCreateOrAmendFetcher(
 								selectedRange,
@@ -217,19 +229,19 @@ export const HolidayReview = () => {
 					</div>
 				) : (
 					<div
-						css={{
-							marginTop: '20px',
-							[until.mobileMedium]: {
-								marginTop: 0,
+						css={css`
+							margin-top: ${space[5]}px;
+							${until.mobileMedium} {
+								margin-top: 0;
 							},
-						}}
+						`}
 					>
 						<div
 							css={[
 								buttonBarCss,
-								{
-									marginTop: '20px',
-								},
+								css`
+									margin-top: ${space[5]}px;
+								`,
 							]}
 						>
 							<Link

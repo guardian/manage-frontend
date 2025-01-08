@@ -1,28 +1,31 @@
 import { css } from '@emotion/react';
-import { palette, until } from '@guardian/source/foundations';
-import { sans } from '../../../styles/fonts';
+import {
+	palette,
+	textSans14,
+	textSans17,
+	until,
+} from '@guardian/source/foundations';
 
-const inputBoxCss = css({
-	fontFamily: sans,
-	border: 0,
-	width: '50px',
-	fontSize: '16px',
-	appearance: 'textfield',
-	textAlign: 'center',
-	padding: 0,
-	margin: 0,
-});
+const inputBoxCss = css`
+	${textSans17};
+	border: 0;
+	width: 50px;
+	appearance: textfield;
+	text-align: center;
+	padding: 0;
+	margin: 0;
+`;
 
-const dayMonthCss = css(inputBoxCss, {
-	width: '25px',
-});
+const dayMonthCss = css`
+	width: 25px;
+`;
 
-const dividerCss = css({
-	display: 'inline-block',
-	fontSize: '16px',
-	padding: 0,
-	margin: 0,
-});
+const dividerCss = css`
+	${textSans17};
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+`;
 
 export interface DateInputProps {
 	date: Date;
@@ -33,36 +36,41 @@ export interface DateInputProps {
 export const DateInput = (props: DateInputProps) => (
 	<>
 		<div
-			css={{
-				fontFamily: sans,
-				fontSize: '14px',
-				[until.desktop]: {
-					display: 'none',
-				},
-			}}
+			css={css`
+				${textSans14};
+				${until.desktop} {
+					display: none;
+				}
+			`}
 		>
 			{props.labelText}
 			<br />
 		</div>
 		<fieldset
-			css={{
-				border: '1px solid' + palette.neutral[86],
-				padding: '5px',
-				whiteSpace: 'nowrap',
-				margin: 0,
-			}}
+			css={css`
+				border: 1px solid ${palette.neutral[86]};
+				padding: 5px;
+				white-space: nowrap;
+				margin: 0;
+			`}
 			aria-describedby="validation-message"
 			disabled={props.disabled}
 		>
 			<input
-				css={dayMonthCss}
+				css={css`
+					${inputBoxCss};
+					${dayMonthCss};
+				`}
 				aria-label="day"
 				value={props.date.getDate()}
 				readOnly // TODO: remove and replace with onChange when input boxes become active
 			/>
 			<div css={dividerCss}>/</div>
 			<input
-				css={dayMonthCss}
+				css={css`
+					${inputBoxCss};
+					${dayMonthCss};
+				`}
 				aria-label="month"
 				value={props.date.getMonth() + 1}
 				readOnly // TODO: remove and replace with onChange when input boxes become active

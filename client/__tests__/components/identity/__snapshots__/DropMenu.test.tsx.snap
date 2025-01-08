@@ -10,9 +10,12 @@ exports[`DropMenu displays the text in the supplied color 1`] = `
 }
 
 .emotion-1 {
-  font-size: 17px;
-  font-family: "GuardianTextEgyptian",Georgia,serif;
-  font-weight: bold;
+  font-family: GuardianTextEgyptian,"Guardian Text Egyptian Web",Georgia,serif;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 700;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
   line-height: 24px;
   text-transform: capitalize;
   display: block;
@@ -39,7 +42,7 @@ exports[`DropMenu displays the text in the supplied color 1`] = `
   margin-left: 4px;
 }
 
-.emotion-1.open:after {
+.emotion-1.open:after: {
   -webkit-transform: rotate(225deg);
   -moz-transform: rotate(225deg);
   -ms-transform: rotate(225deg);
@@ -78,9 +81,12 @@ exports[`DropMenu if closed, opens and shows children on click 1`] = `
 }
 
 .emotion-1 {
-  font-size: 17px;
-  font-family: "GuardianTextEgyptian",Georgia,serif;
-  font-weight: bold;
+  font-family: GuardianTextEgyptian,"Guardian Text Egyptian Web",Georgia,serif;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 700;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
   line-height: 24px;
   text-transform: capitalize;
   display: block;
@@ -107,7 +113,7 @@ exports[`DropMenu if closed, opens and shows children on click 1`] = `
   margin-left: 4px;
 }
 
-.emotion-1.open:after {
+.emotion-1.open:after: {
   -webkit-transform: rotate(225deg);
   -moz-transform: rotate(225deg);
   -ms-transform: rotate(225deg);
@@ -150,9 +156,12 @@ exports[`DropMenu if open, closes and hides children on click 1`] = `
 }
 
 .emotion-1 {
-  font-size: 17px;
-  font-family: "GuardianTextEgyptian",Georgia,serif;
-  font-weight: bold;
+  font-family: GuardianTextEgyptian,"Guardian Text Egyptian Web",Georgia,serif;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 700;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
   line-height: 24px;
   text-transform: capitalize;
   display: block;
@@ -179,7 +188,7 @@ exports[`DropMenu if open, closes and hides children on click 1`] = `
   margin-left: 4px;
 }
 
-.emotion-1.open:after {
+.emotion-1.open:after: {
   -webkit-transform: rotate(225deg);
   -moz-transform: rotate(225deg);
   -ms-transform: rotate(225deg);
@@ -218,9 +227,12 @@ exports[`DropMenu initalises in the unopened state and displays the title 1`] = 
 }
 
 .emotion-1 {
-  font-size: 17px;
-  font-family: "GuardianTextEgyptian",Georgia,serif;
-  font-weight: bold;
+  font-family: GuardianTextEgyptian,"Guardian Text Egyptian Web",Georgia,serif;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 700;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
   line-height: 24px;
   text-transform: capitalize;
   display: block;
@@ -247,7 +259,7 @@ exports[`DropMenu initalises in the unopened state and displays the title 1`] = 
   margin-left: 4px;
 }
 
-.emotion-1.open:after {
+.emotion-1.open:after: {
   -webkit-transform: rotate(225deg);
   -moz-transform: rotate(225deg);
   -ms-transform: rotate(225deg);

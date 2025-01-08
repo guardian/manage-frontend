@@ -57,7 +57,7 @@ const DiscountOffer = ({
 }: DiscountOfferProps) => (
 	<Stack
 		space={4}
-		css={css`
+		cssOverrides={css`
 			background-color: #f3f7fe;
 			border-radius: 4px;
 			padding: ${space[4]}px;

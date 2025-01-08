@@ -35,7 +35,6 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 			<div css={{ left: 0 }}>
 				<ToggleSwitch
 					cssOverrides={css`
-						${standardSansText};
 						display: flex;
 						button {
 							align-self: flex-start;

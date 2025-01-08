@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { from, palette, until } from '@guardian/source/foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans17,
+	until,
+} from '@guardian/source/foundations';
 import type { DateRange } from '../../../../shared/dates';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
@@ -10,7 +16,6 @@ import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
-import { sans } from '../../../styles/fonts';
 import { ExpanderButton } from '../../shared/ExpanderButton';
 import { CollatedCredits } from './CollatedCredits';
 import { ExistingHolidayStopActions } from './ExistingHolidayStopActions';
@@ -22,10 +27,10 @@ import type {
 	MinimalHolidayStopRequest,
 } from './HolidayStopApi';
 
-const cellCss = css({
-	padding: '8px 16px 8px 16px',
-	border: '1px solid ' + palette.neutral[86],
-});
+const cellCss = css`
+	padding: ${space[2]}px ${space[4]}px;
+	border: 1px solid ${palette.neutral[86]};
+`;
 
 interface SummaryTableProps {
 	data: HolidayStopRequest[] | SharedHolidayDateChooserState;
@@ -88,9 +93,9 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
 		</ExpanderButton>
 	);
 
-	const withdrawnRelatedCSS = css({
-		textDecoration: 'line-through',
-	});
+	const withdrawnRelatedCSS = css`
+		text-decoration: line-through;
+	`;
 
 	return props.asTD ? (
 		<tr>
@@ -111,7 +116,9 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
 	) : (
 		<div
 			css={[
-				{ marginBottom: '20px' },
+				css`
+					margin-bottom: ${space[5]}px;
+				`,
 				props.withdrawnDate && withdrawnRelatedCSS,
 			]}
 		>
@@ -119,10 +126,10 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
 				css={[
 					cellCss,
 					props.withdrawnDate && withdrawnRelatedCSS,
-					{
-						backgroundColor: palette.neutral[97],
-						borderBottom: 0,
-					},
+					css`
+						background-color: ${palette.neutral[97]};
+						border-bottom: 0;
+					`,
 				]}
 			>
 				{dateRangeStr}
@@ -130,7 +137,14 @@ const SummaryTableRow = (props: SummaryTableRowProps) => {
 			<div css={[cellCss, props.withdrawnDate && withdrawnRelatedCSS]}>
 				{detailPart}
 			</div>
-			<div css={[cellCss, { borderTop: 0 }]}>
+			<div
+				css={[
+					cellCss,
+					css`
+						border-top: 0;
+					`,
+				]}
+			>
 				{props.isOperatingOnNewHolidayStop ? (
 					<>
 						<strong>Expected Credits</strong>
@@ -166,42 +180,57 @@ export const SummaryTable = (props: SummaryTableProps) => {
 
 	return (
 		<div
-			css={{
-				fontFamily: sans,
-				fontSize: '16px',
-			}}
+			css={css`
+				${textSans17};
+			`}
 		>
 			<table
-				css={{
-					width: '100%',
-					borderCollapse: 'collapse',
-					tr: {
-						textAlign: 'left',
-					},
-					th: [
-						cellCss,
-						{
-							backgroundColor: palette.neutral[97],
-							margin: 0,
-						},
-					],
-					td: cellCss,
-					[until.tablet]: {
-						display: 'none',
-					},
-				}}
+				css={css`
+					width: 100%;
+					border-collapse: collapse;
+					tr {
+						text-align: left;
+					}
+					th {
+						${cellCss};
+						background-color: ${palette.neutral[97]};
+						margin: 0;
+					}
+					td {
+						${cellCss};
+					}
+					${until.tablet} {
+						display: none;
+					}
+				`}
 			>
 				<tbody>
 					<tr>
-						<th css={{ minWidth: '225px' }}>Duration</th>
-						<th css={{ minWidth: '225px' }}>
+						<th
+							css={css`
+								min-width: 225px;
+							`}
+						>
+							Duration
+						</th>
+						<th
+							css={css`
+								min-width: 225px;
+							`}
+						>
 							{props.alternateSuspendedColumnHeading ||
 								'Suspended'}
 						</th>
 						{isOperatingOnNewHolidayStop ? (
 							<th>Expected Credits</th>
 						) : (
-							<th css={{ minWidth: '205px' }}>Actions</th>
+							<th
+								css={css`
+									min-width: 205px;
+								`}
+							>
+								Actions
+							</th>
 						)}
 					</tr>
 					{holidayStopRequestsList.map(
@@ -221,11 +250,11 @@ export const SummaryTable = (props: SummaryTableProps) => {
 				</tbody>
 			</table>
 			<div
-				css={{
-					[from.tablet]: {
-						display: 'none',
+				css={css`
+					${from.tablet} {
+						display: none;
 					},
-				}}
+				`}
 			>
 				{holidayStopRequestsList.map((holidayStopRequest, index) => (
 					<SummaryTableRow

@@ -1,10 +1,15 @@
 import { css } from '@emotion/react';
-import { palette, space, until } from '@guardian/source/foundations';
+import {
+	palette,
+	space,
+	textSans14,
+	until,
+} from '@guardian/source/foundations';
 import {
 	Button,
 	InlineError,
+	Spinner,
 	SvgArrowRightStraight,
-	SvgSpinner,
 } from '@guardian/source/react-components';
 import type { ChangeEvent, FC } from 'react';
 import { useContext, useEffect, useState } from 'react';
@@ -24,11 +29,10 @@ import type {
 	ProductTypeWithCancellationFlow,
 	WithProductType,
 } from '../../../../shared/productTypes';
-import { sans } from '../../../styles/fonts';
 import { measure } from '../../../styles/typography';
 import { useFetch } from '../../../utilities/hooks/useFetch';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
-import { Spinner } from '../../shared/Spinner';
+import { Spinner as SpinnerWithMessage } from '../../shared/Spinner';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import type {
 	DeliveryRecordDetail,
@@ -186,12 +190,11 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 				/>
 				<div css={{ textAlign: 'right' }}>
 					<div
-						css={{
-							fontSize: 'small',
-							color: palette.neutral[46],
-							fontFamily: sans,
-							paddingBottom: '10px',
-						}}
+						css={css`
+							${textSans14};
+							color: ${palette.neutral[46]};
+							padding-bottom: 10px;
+						`}
 					>
 						You have {props.characterLimit - feedback.length}{' '}
 						characters remaining
@@ -363,7 +366,7 @@ const ConfirmCancellationAndReturnRow = (
 							icon={
 								showAlternativeBeforeCancelling ===
 								'pending' ? (
-									<SvgSpinner size="xsmall" />
+									<Spinner size="xsmall" />
 								) : (
 									<SvgArrowRightStraight />
 								)
@@ -584,7 +587,7 @@ export const CancellationReasonReview = () => {
 			<WithStandardTopMargin>
 				{isLoading() ? (
 					!loadingHasFailed && (
-						<Spinner loadingMessage="Checking details" />
+						<SpinnerWithMessage loadingMessage="Checking details" />
 					)
 				) : (
 					<>

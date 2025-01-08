@@ -667,7 +667,7 @@ export const DeliveryRecords = () => {
 							Review your report
 						</Button>
 						<Button
-							css={css`
+							cssOverrides={css`
 								${textSans17};
 								background-color: transparent;
 								font-weight: bold;

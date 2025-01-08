@@ -442,7 +442,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 						)}
 					</fieldset>
 					<CheckboxGroup
-						css={css`
+						cssOverrides={css`
 							margin-top: ${space[5]}px;
 						`}
 						name="instructions-checkbox"
@@ -477,7 +477,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 					>
 						<Button
 							type="submit"
-							css={css`
+							cssOverrides={css`
 								color: ${palette.brand[400]};
 								background-color: ${palette.brand[800]};
 								:hover {
@@ -501,7 +501,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 								props.setAddressValidationState(true);
 								setStatus(Status.ReadOnly);
 							}}
-							css={css`
+							cssOverrides={css`
 								margin-top: ${space[5]}px;
 								color: ${palette.brand[400]};
 								background-color: transparent;

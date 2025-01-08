@@ -4,6 +4,7 @@ import { breakpoints, from, space } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { fonts } from '@/client/styles/fonts';
 import {
 	featureSwitches,
 	initFeatureSwitchUrlParamOverride,
@@ -16,7 +17,6 @@ import type {
 import { PRODUCT_TYPES } from '../../../shared/productTypes';
 import { abSwitches } from '../../experiments/abSwitches';
 import { tests } from '../../experiments/abTests';
-import { fonts } from '../../styles/fonts';
 import { global } from '../../styles/global';
 import { getCookie } from '../../utilities/cookies';
 import { useAnalytics } from '../../utilities/hooks/useAnalytics';

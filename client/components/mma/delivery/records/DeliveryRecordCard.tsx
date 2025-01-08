@@ -83,7 +83,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 				>
 					<CheckboxGroup
 						name={props.deliveryRecord.id}
-						css={css`
+						cssOverrides={css`
 							position: relative;
 							top: 50%;
 							transform: translateY(-50%);
@@ -93,7 +93,7 @@ export const DeliveryRecordCard = (props: DeliveryRecordCardProps) => {
 							value={props.deliveryRecord.id}
 							checked={props.isChecked}
 							label=""
-							css={css`
+							cssOverrides={css`
 								margin-right: 0;
 							`}
 							onChange={(event: FormEvent<HTMLInputElement>) => {
