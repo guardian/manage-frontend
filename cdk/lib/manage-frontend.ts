@@ -13,7 +13,12 @@ import type { GuAsgCapacity } from '@guardian/cdk/lib/types';
 import type { App } from 'aws-cdk-lib';
 import { Duration } from 'aws-cdk-lib';
 import { CfnDashboard } from 'aws-cdk-lib/aws-cloudwatch';
-import { InstanceClass, InstanceSize, InstanceType } from 'aws-cdk-lib/aws-ec2';
+import {
+	InstanceClass,
+	InstanceSize,
+	InstanceType,
+	UserData,
+} from 'aws-cdk-lib/aws-ec2';
 import { Protocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnRecordSet } from 'aws-cdk-lib/aws-route53';
@@ -45,9 +50,9 @@ export class ManageFrontend extends GuStack {
 			default: `/${this.stage}/${this.stack}/${app}/serverRavenDSN`,
 		});
 
-		// intentionally removed tabs from the following string for bash's sake!
-		const userData = `#!/bin/bash -ev
-# get runnable tar from S3
+		const userData = UserData.forLinux({ shebang: '#!/bin/bash -ev' });
+		userData.addCommands(
+			`# get runnable tar from S3
 aws --region ${this.region} s3 cp s3://membership-dist/${this.stack}/${this.stage}/${app}/manage-frontend.zip /tmp
 mkdir /etc/gu
 unzip /tmp/manage-frontend.zip -d /etc/gu/dist/
@@ -76,7 +81,8 @@ EOL
 # RUN
 systemctl enable manage-frontend
 systemctl start manage-frontend
-/opt/cloudwatch-logs/configure-logs application ${this.stack} ${this.stage} ${app} /var/log/manage-frontend.log`;
+/opt/cloudwatch-logs/configure-logs application ${this.stack} ${this.stage} ${app} /var/log/manage-frontend.log`,
+		);
 
 		const logGroup = new LogGroup(this, 'ManageFrontendLogGroup', {
 			logGroupName: `support-manage-frontend-${this.stage}`,
