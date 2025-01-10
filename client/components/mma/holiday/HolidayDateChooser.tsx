@@ -165,7 +165,7 @@ const validateIssuesSelected = (
 };
 
 export const HolidayDateChooserStateContext = createContext<
-	SharedHolidayDateChooserState | {}
+	SharedHolidayDateChooserState | object
 >({});
 
 interface HolidayDateChooserProps {
@@ -191,7 +191,7 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 	const [validationErrorMessage, setValidationErrorMessage] =
 		useState<React.ReactNode | null>(null);
 
-	const [showReviewWarning, setShowReviewWarning] = useState<Boolean>(false);
+	const [showReviewWarning, setShowReviewWarning] = useState<boolean>(false);
 
 	const navigate = useNavigate();
 
@@ -215,7 +215,7 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 				}...`,
 			);
 		}
-	}, []);
+	}, [existingHolidayStopToAmend, holidayStopResponse, setSelectedRange]);
 
 	const onChange =
 		(
@@ -251,7 +251,7 @@ export const HolidayDateChooser = (props: HolidayDateChooserProps) => {
 						return response.json();
 					}
 					return Promise.reject(
-						`${response.status} from holiday-stop-api`,
+						new Error(`${response.status} from holiday-stop-api`),
 					);
 				})
 				.then(({ potentials }: PotentialHolidayStopsResponse) => {

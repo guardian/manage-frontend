@@ -42,35 +42,36 @@ export const DeliveryRecordProblemForm = (
 ) => {
 	const [selectedDeliveryProblem, setSelectedDeliveryProblem] =
 		useState<SelectedDeliveryProblem | null>(null);
+
 	useEffect(() => {
+		const validateForm = () => {
+			if (!selectedDeliveryProblem) {
+				return {
+					isValid: false,
+					message: 'Please select the type of problem',
+				};
+			} else {
+				const deliveryProblem = props.problemTypes.find(
+					(issue) => issue.label === selectedDeliveryProblem?.value,
+				);
+				const isValid = !(
+					deliveryProblem?.messageIsMandatory &&
+					!selectedDeliveryProblem?.message
+				);
+				return {
+					isValid,
+					...(!isValid && {
+						message: 'Step 1: Please complete the required field.',
+					}),
+				};
+			}
+		};
 		const validateDetails: ValidateDetails = validateForm();
 		props.updateValidationStatusCallback(
 			validateDetails.isValid,
 			validateDetails.message,
 		);
-	}, [selectedDeliveryProblem]);
-	const validateForm = () => {
-		if (!selectedDeliveryProblem) {
-			return {
-				isValid: false,
-				message: 'Please select the type of problem',
-			};
-		} else {
-			const deliveryProblem = props.problemTypes.find(
-				(issue) => issue.label === selectedDeliveryProblem?.value,
-			);
-			const isValid = !(
-				deliveryProblem?.messageIsMandatory &&
-				!selectedDeliveryProblem?.message
-			);
-			return {
-				isValid,
-				...(!isValid && {
-					message: 'Step 1: Please complete the required field.',
-				}),
-			};
-		}
-	};
+	}, [selectedDeliveryProblem, props]);
 	return (
 		<form
 			onSubmit={(event: FormEvent) => {

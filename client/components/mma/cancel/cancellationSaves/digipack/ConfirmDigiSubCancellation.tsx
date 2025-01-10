@@ -190,7 +190,7 @@ export const ConfirmDigiSubCancellation = () => {
 					state: { ...routerState, journeyCompleted: true },
 				});
 			}
-		} catch (e) {
+		} catch {
 			setIsSubmitting(false);
 			setLoadingFailed(true);
 		}

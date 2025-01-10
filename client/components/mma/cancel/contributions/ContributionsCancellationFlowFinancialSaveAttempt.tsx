@@ -108,12 +108,16 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 					} else {
 						setShowAlternativeBeforeCancelling(false);
 					}
-				} catch (e) {
+				} catch {
 					setShowAlternativeBeforeCancelling(false);
 				}
 			})();
 		}
-	}, []);
+	}, [
+		isContributionAndBreakFeatureIsActive,
+		isSupporterPlusAndFreePeriodOfferIsActive,
+		productDetail.subscription.subscriptionId,
+	]);
 
 	if (!productType || !productDetail || !routerState.selectedReasonId) {
 		return <Navigate to="../" />;

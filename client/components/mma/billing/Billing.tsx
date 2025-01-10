@@ -62,9 +62,10 @@ interface ProductDetailWithInvoice extends ProductDetail {
 	invoices: InvoiceDataApiItem[];
 }
 
-type ProductGroupingToProductDetails = {
-	[productGrouping in GroupedProductTypeKeys]: ProductDetailWithInvoice[];
-};
+type ProductGroupingToProductDetails = Record<
+	GroupedProductTypeKeys,
+	ProductDetailWithInvoice[]
+>;
 
 type BillingResponse = [
 	MembersDataApiResponse,

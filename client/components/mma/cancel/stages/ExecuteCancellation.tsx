@@ -174,17 +174,17 @@ export const ExecuteCancellation = () => {
 	const location = useLocation();
 	const routerState = location.state as RouterState;
 
-	if (!routerState?.selectedReasonId || !routerState?.caseId) {
-		return <Navigate to="../" />;
-	}
-
-	const caseId = routerState.caseId;
-
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
 
 	const cancellationReasonId = useContext(CancellationReasonContext);
+
+	if (!routerState?.selectedReasonId || !routerState?.caseId) {
+		return <Navigate to="../" />;
+	}
+
+	const caseId = routerState.caseId;
 
 	const alternativeIsOffer = productType.productType === 'supporterplus';
 	const alternativeIsPause = productType.productType === 'contributions';

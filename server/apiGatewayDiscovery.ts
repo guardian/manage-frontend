@@ -15,23 +15,20 @@ import {
 import { conf } from './config';
 import { log } from './log';
 
-const isProd = conf.STAGE.toUpperCase() === 'PROD';
+type ApiName =
+	| 'cancellation-sf-cases-api'
+	| 'delivery-records-api'
+	| 'holiday-stop-api'
+	| 'invoicing-api'
+	| 'contact-us-api'
+	| 'product-move-api'
+	| 'discount-api'
+	| 'product-switch-api'
+	| 'update-supporter-plus-amount';
 
+const isProd = conf.STAGE.toUpperCase() === 'PROD';
 const normalUserApiStage = isProd ? 'PROD' : 'CODE';
 const testUserApiStage = 'CODE';
-
-const apiNames = [
-	'cancellation-sf-cases-api',
-	'delivery-records-api',
-	'holiday-stop-api',
-	'invoicing-api',
-	'contact-us-api',
-	'product-move-api',
-	'discount-api',
-	'product-switch-api',
-	'update-supporter-plus-amount',
-] as const;
-type ApiName = typeof apiNames[number];
 
 const byResourceType =
 	(resourceTypeFilter: string) => (resource: StackResourceSummary) =>

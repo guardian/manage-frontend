@@ -255,7 +255,7 @@ export const SelectReason = () => {
 				setIsSubmitting(false);
 				setLoadingFailed(true);
 			}
-		} catch (e) {
+		} catch {
 			setIsSubmitting(false);
 			setLoadingFailed(true);
 		}

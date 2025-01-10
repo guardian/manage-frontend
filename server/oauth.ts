@@ -425,7 +425,7 @@ export const sanitizeReturnPath = (returnPath: string) => {
 		} else {
 			return url.pathname;
 		}
-	} catch (err) {
+	} catch {
 		return '/';
 	}
 };

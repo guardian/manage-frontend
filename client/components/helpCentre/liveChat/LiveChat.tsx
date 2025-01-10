@@ -226,13 +226,15 @@ const initLiveChat = (
 					targetElement,
 					identityID,
 					loginEmail,
-				).catch(() => reject());
+				).catch(() =>
+					reject(new Error('livechat initESW function error')),
+				);
 				resolve(true);
 			};
 
 			// tslint:disable-next-line:no-object-mutation
 			liveChatScript.onerror = () => {
-				reject();
+				reject(new Error('liveChatScript error'));
 			};
 
 			document.body.appendChild(liveChatScript);

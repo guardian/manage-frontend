@@ -10,7 +10,7 @@ interface MarketingToggleProps {
 	title?: string;
 	selected?: boolean;
 	divCss?: SerializedStyles;
-	onClick: (id: string) => {};
+	onClick: (id: string) => unknown;
 }
 
 const getDescription = (description: MarketingToggleProps['description']) => (

@@ -15,7 +15,7 @@ export const base64FromFile = (file: File) => {
 		reader.addEventListener(
 			'error',
 			() => {
-				reject();
+				reject(new Error('base64FromFile error'));
 			},
 			false,
 		);

@@ -57,12 +57,12 @@ export const HelpCentreArticle = () => {
 					`Failed to fetch article ${articleCode}. Error: ${error}`,
 				),
 			);
-	}, [articleCode]);
+	}, [articleCode, navigate]);
 
 	const setSelectedTopicId = React.useContext(SelectedTopicObjectContext);
 	useEffect(() => {
 		setSelectedTopicId(article?.topics[0].path);
-	}, [article]);
+	}, [article, setSelectedTopicId]);
 
 	const articleContainerCss = css`
 		max-width: 620px;

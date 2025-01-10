@@ -122,7 +122,7 @@ export interface DeliveryRecordsContextInterface {
 }
 
 export const DeliveryRecordsContext: Context<
-	DeliveryRecordsContextInterface | {}
+	DeliveryRecordsContextInterface | object
 > = createContext({});
 
 const renderContextAndOutletContainer =

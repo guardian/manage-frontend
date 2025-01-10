@@ -332,7 +332,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 };
 
 interface PaymentMethodUpdatedProps extends IsFromAppProps {
-	subs: WithSubscription[] | {};
+	subs: WithSubscription[] | object;
 	paymentFailureRecoveryMessage: string;
 	subHasExpectedPaymentType: boolean;
 	previousProductDetail: ProductDetail;

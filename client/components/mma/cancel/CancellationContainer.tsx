@@ -82,7 +82,7 @@ export interface CancellationContextInterface {
 	productType: ProductTypeWithCancellationFlow;
 }
 
-export const CancellationContext: Context<CancellationContextInterface | {}> =
+export const CancellationContext: Context<CancellationContextInterface | object> =
 	createContext({});
 
 const contextAndOutletContainer = (
@@ -114,7 +114,7 @@ export interface CancellationPageTitleInterface {
 }
 
 export const CancellationPageTitleContext: Context<
-	CancellationPageTitleInterface | {}
+	CancellationPageTitleInterface | object
 > = createContext({});
 
 export const CancellationContainer = (props: WithProductType<ProductType>) => {

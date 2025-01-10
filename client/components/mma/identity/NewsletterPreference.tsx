@@ -15,7 +15,7 @@ interface NewsletterPreferenceProps {
 	frequency: string;
 	title: string;
 	selected?: boolean;
-	onClick: (id: string) => {};
+	onClick: (id: string) => unknown;
 }
 
 const clockSVG = (

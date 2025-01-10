@@ -7,7 +7,7 @@ import { MarketingToggle } from '../MarketingToggle';
 import type { ConsentOption } from '../models';
 import { PageSection } from '../PageSection';
 
-type ClickHandler = (id: string) => {};
+type ClickHandler = (id: string) => unknown;
 
 interface ConsentSectionProps {
 	clickHandler: ClickHandler;

@@ -55,7 +55,7 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
 					);
 
 				setNewsletters(mappedFilteredNewsletters);
-			} catch (e) {
+			} catch {
 				Sentry.captureException(
 					'Failed to load either newsletters/restricted or users/me/newsletters or both',
 				);
@@ -64,7 +64,7 @@ export const NewsletterOptinSection = (props: NewsletterOptinSectionProps) => {
 		if (props.activeNewletterIDs.length > 0) {
 			makeRestrictedNewslettersAPICall();
 		}
-	}, []);
+	}, [props.activeNewletterIDs]);
 
 	if (newsletters?.length) {
 		const checkboxChangeHandler = (

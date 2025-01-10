@@ -82,7 +82,7 @@ const scrollToErrorMessage = () => {
 	const errorMessageElement = document.getElementById(
 		'productSwitchErrorMessage',
 	);
-	errorMessageElement && errorMessageElement.scrollIntoView();
+	errorMessageElement?.scrollIntoView();
 };
 
 const productSwitchType: ProductSwitchType =
@@ -167,7 +167,7 @@ export const SwitchReview = () => {
 					},
 				});
 			}
-		} catch (e) {
+		} catch {
 			setIsSwitching(false);
 			setSwitchingError(true);
 			scrollToErrorMessage();

@@ -21,7 +21,7 @@ interface UserPhoneNumberProps {
 	callback: (phoneNumber: ContactPhoneNumbers) => void;
 }
 
-type EditPhoneNumber = { [phoneType in ContactPhoneNumbersType]: boolean };
+type EditPhoneNumber = Record<ContactPhoneNumbersType, boolean>;
 
 export const UserPhoneNumber = (props: UserPhoneNumberProps) => {
 	const [showPhoneInput, setShowPhoneInput] = useState(false);

@@ -66,7 +66,7 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 
 	useEffect(() => {
 		getAvatar();
-	}, []);
+	}, [getAvatar]);
 
 	const avatarDisplay = () => {
 		const url = isSuccessful(avatarGetState)
