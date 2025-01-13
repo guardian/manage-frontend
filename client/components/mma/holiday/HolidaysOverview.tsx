@@ -40,6 +40,7 @@ import { SummaryTable } from './SummaryTable';
 
 interface OverviewRowProps {
 	heading: string;
+	fullWidth?: boolean;
 	children: React.ReactNode;
 }
 
@@ -69,7 +70,7 @@ const OverviewRow = (props: OverviewRowProps) => (
 		</div>
 		<div
 			css={css`
-				flex: 0 1 450px;
+				flex: 0 1 ${props.fullWidth ? '100%' : '450px'};
 			`}
 		>
 			{props.children}
@@ -285,7 +286,7 @@ export const HolidaysOverview = () => {
 							/>
 						</OverviewRow>
 					)}
-					<OverviewRow heading="Details">
+					<OverviewRow heading="Details" fullWidth>
 						{holidayStopResponse.existing.length > 0 ? (
 							<SummaryTable
 								data={holidayStopResponse.existing}

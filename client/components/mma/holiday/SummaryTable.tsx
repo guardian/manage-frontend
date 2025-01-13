@@ -208,14 +208,20 @@ export const SummaryTable = (props: SummaryTableProps) => {
 					<tr>
 						<th
 							css={css`
-								min-width: 225px;
+								min-width: 39%;
+								${from.wide} {
+									min-width: 34%;
+								}
 							`}
 						>
 							Duration
 						</th>
 						<th
 							css={css`
-								min-width: 225px;
+								min-width: 39%;
+								${from.wide} {
+									min-width: 34%;
+								}
 							`}
 						>
 							{props.alternateSuspendedColumnHeading ||
@@ -226,7 +232,7 @@ export const SummaryTable = (props: SummaryTableProps) => {
 						) : (
 							<th
 								css={css`
-									min-width: 205px;
+									min-width: 61%;
 								`}
 							>
 								Actions

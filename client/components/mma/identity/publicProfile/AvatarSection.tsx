@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import { palette, textSans14 } from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
 import { Form, Formik } from 'formik';
 import { useEffect } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import { trackEvent } from '../../../../utilities/analytics';
 import { Spinner } from '../../../shared/Spinner';
-import { Button } from '../../shared/Buttons';
 import * as AvatarAPI from '../idapi/avatar';
 import { IdentityLocations } from '../IdentityLocations';
 import { ErrorTypes } from '../models';
@@ -26,7 +26,7 @@ interface AvatarSectionProps {
 
 const imgCss = css`
 	border: 0;
-	borderradius: 50%;
+	border-radius: 50%;
 	height: 60px;
 	width: 60px;
 `;
@@ -109,9 +109,10 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 					</label>
 					<Button
 						disabled={formikBag.isSubmitting}
-						text="Upload image"
 						onClick={() => formikBag.submitForm()}
-					/>
+					>
+						Upload image
+					</Button>
 				</Form>
 			)}
 		</Formik>
