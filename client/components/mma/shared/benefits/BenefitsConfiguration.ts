@@ -21,6 +21,11 @@ const newsApp = {
 	description: 'Read our reporting on the go',
 };
 
+const feastApp = {
+	name: 'Unlimited access to the Guardian Feast App',
+	description: 'Make a feast out of anything with the Guardian’s recipe app',
+};
+
 const adFree = {
 	name: 'Ad-free reading.',
 	description: 'Avoid ads on all your devices',
@@ -64,7 +69,7 @@ export function filterBenefitByRegion(
 	return benefit.specificToRegions === undefined;
 }
 
-export const supporterPlusSwitchBenefits = [newsApp, adFree];
+export const supporterPlusSwitchBenefits = [newsApp, feastApp, adFree];
 
 export const benefitsConfiguration: {
 	[productType in ProductTypeKeys]: ProductBenefit[];
@@ -81,6 +86,7 @@ export const benefitsConfiguration: {
 		supporterNewsletter,
 		uninterruptedReading,
 		newsApp,
+		feastApp,
 		adFree,
 		partnerOffers,
 	],
@@ -89,6 +95,7 @@ export const benefitsConfiguration: {
 		supporterNewsletter,
 		uninterruptedReading,
 		newsApp,
+		feastApp,
 		adFree,
 		partnerOffers,
 	],
