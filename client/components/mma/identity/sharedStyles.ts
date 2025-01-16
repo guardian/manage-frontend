@@ -44,7 +44,7 @@ const inputCss = css`
 	color: ${palette.neutral[7]};
 	display: inline-block;
 	padding: ${space[2]}px ${space[2]}px 7px;
-	lineheight: 1.4;
+	line-height: 1.4;
 	outline: none;
 	border-radius: 0;
 	width: 100%;
@@ -69,10 +69,19 @@ export const labelCss = css`
 	margin: 5px 0 24px 0;
 	display: block;
 	width: 100%;
-	& input:not([type='file']), & textarea: ${[inputCss, lightBorder]};
-	& input[type='file']: ${inputCss};
-	& textarea: ${textareaCss};
-	& select: ${selectCss};
+	& input:not([type='file']),
+	& textarea {
+		${[inputCss, lightBorder]}
+	}
+	& input[type='file'] {
+		${inputCss}
+	}
+	& textarea {
+		${textareaCss}
+	}
+	& select {
+		${selectCss}
+	}
 `;
 
 export const errorMessageCss = css`

@@ -11,6 +11,8 @@ interface FormFieldProps<T> {
 	children: ReactElement<FormInputProps<T>>;
 }
 
+type InputFieldTypes = 'text' | 'number' | 'email' | 'tel';
+
 // Use Omit<T, K> when TS @ >= 3.5
 type FormInputProps<T> = Pick<
 	FormFieldProps<T>,
@@ -83,7 +85,7 @@ export const FormSelectField = <T,>(props: FormSelectProps<T>) => {
 	);
 };
 
-const getInputFieldOfType = (type: string) => {
+const getInputFieldOfType = (type: InputFieldTypes) => {
 	return <T,>(props: FormInputProps<T>) => (
 		<FormField
 			name={props.name}
