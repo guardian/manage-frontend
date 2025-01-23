@@ -1,7 +1,6 @@
 {
   "name": "manage-frontend",
   "version": "1.0.0",
-  "type": "module",
   "scripts": {
     "start": "nodemon --inspect ./dist/server",
     "cypress:start": "RUNNING_IN_CYPRESS=true nodemon --inspect ./dist/server",

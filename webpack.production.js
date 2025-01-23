@@ -1,8 +1,10 @@
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import { merge } from 'webpack-merge';
-import { client, server } from './webpack.common.js';
+/* eslint-disable @typescript-eslint/no-var-requires -- minimising changes */
+const BundleAnalyzerPlugin =
+	require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { merge } = require('webpack-merge');
+const { client, server } = require('./webpack.common.js');
 
-export default [
+module.exports = [
 	merge(client, {
 		mode: 'production',
 		output: {

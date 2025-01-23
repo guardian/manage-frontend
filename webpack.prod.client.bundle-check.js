@@ -1,15 +1,14 @@
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import { merge } from 'webpack-merge';
-import { client } from './webpack.common.js';
+/* eslint-disable @typescript-eslint/no-var-requires -- minimising changes */
+const path = require('path');
+const BundleAnalyzerPlugin =
+	require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { merge } = require('webpack-merge');
+const { client } = require('./webpack.common.js');
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-export default merge(client, {
+module.exports = merge(client, {
 	mode: 'production',
 	output: {
-		path: resolve(__dirname, '../tmp_client_bundle'),
+		path: path.resolve(__dirname, '../tmp_client_bundle'),
 		chunkFilename: '[name].[chunkhash].js',
 	},
 	plugins: [

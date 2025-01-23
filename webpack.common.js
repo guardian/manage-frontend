@@ -1,18 +1,16 @@
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import AssetsPlugin from 'assets-webpack-plugin';
-import babelLoaderExcludeNodeModulesExcept from 'babel-loader-exclude-node-modules-except';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
-import GitRevisionPlugin from 'git-revision-webpack-plugin';
-import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
-import webpack from 'webpack';
-import { merge } from 'webpack-merge';
-import nodeExternals from 'webpack-node-externals';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+/* eslint-disable @typescript-eslint/no-var-requires -- minimising changes */
+const path = require('path');
+const AssetsPlugin = require('assets-webpack-plugin');
+const babelLoaderExcludeNodeModulesExcept = require('babel-loader-exclude-node-modules-except');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const GitRevisionPlugin = require('git-revision-webpack-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const webpack = require('webpack');
+const { merge } = require('webpack-merge');
+const nodeExternals = require('webpack-node-externals');
 
 const assetsPluginInstance = new AssetsPlugin({
-	path: resolve(__dirname, './dist/'),
+	path: path.resolve(__dirname, './dist/'),
 });
 
 const definePlugin = new webpack.DefinePlugin({
@@ -28,8 +26,8 @@ const definePlugin = new webpack.DefinePlugin({
 const copyPlugin = new CopyWebpackPlugin({
 	patterns: [
 		{
-			from: resolve(__dirname, 'package.json'),
-			to: resolve(__dirname, 'dist', 'static', 'package.json'),
+			from: path.resolve(__dirname, 'package.json'),
+			to: path.resolve(__dirname, 'dist', 'static', 'package.json'),
 		},
 	],
 });
@@ -59,7 +57,7 @@ const common = {
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.json'],
 		alias: {
-			'@': resolve(__dirname, '.'),
+			'@': path.resolve(__dirname, '.'),
 		},
 	},
 	plugins: [definePlugin, assetsPluginInstance],
@@ -68,7 +66,7 @@ const common = {
 const server = merge(common, {
 	entry: './server/server',
 	output: {
-		path: resolve(__dirname, 'dist'),
+		path: path.resolve(__dirname, 'dist'),
 		filename: 'server.js',
 		publicPath: '/',
 	},
@@ -118,7 +116,7 @@ const client = merge(common, {
 		'help-centre': ['whatwg-fetch', './client/HelpCentrePage'],
 	},
 	output: {
-		path: resolve(__dirname, 'dist', 'static'),
+		path: path.resolve(__dirname, 'dist', 'static'),
 		filename: '[name].js',
 		chunkFilename: '[name].js',
 		publicPath: '/static/',
@@ -152,11 +150,15 @@ const client = merge(common, {
 			{
 				test: /\.css$/i,
 				type: 'asset/source',
-				include: [resolve(__dirname, 'node_modules')],
+				include: [path.resolve(__dirname, 'node_modules')],
 			},
 		],
 	},
 	plugins: [copyPlugin, nodePolyfillPlugin],
 });
 
-export { client, server, babelCommon };
+module.exports = {
+	client: client,
+	server: server,
+	babelCommon: babelCommon,
+};
