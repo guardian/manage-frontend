@@ -43,6 +43,8 @@ export const DeliveryRecordProblemForm = (
 	const [selectedDeliveryProblem, setSelectedDeliveryProblem] =
 		useState<SelectedDeliveryProblem | null>(null);
 
+	const { problemTypes, updateValidationStatusCallback } = props;
+
 	useEffect(() => {
 		const validateForm = () => {
 			if (!selectedDeliveryProblem) {
@@ -51,7 +53,7 @@ export const DeliveryRecordProblemForm = (
 					message: 'Please select the type of problem',
 				};
 			} else {
-				const deliveryProblem = props.problemTypes.find(
+				const deliveryProblem = problemTypes.find(
 					(issue) => issue.label === selectedDeliveryProblem?.value,
 				);
 				const isValid = !(
@@ -67,11 +69,11 @@ export const DeliveryRecordProblemForm = (
 			}
 		};
 		const validateDetails: ValidateDetails = validateForm();
-		props.updateValidationStatusCallback(
+		updateValidationStatusCallback(
 			validateDetails.isValid,
 			validateDetails.message,
 		);
-	}, [selectedDeliveryProblem, props]);
+	}, [selectedDeliveryProblem]); // eslint-disable-line react-hooks/exhaustive-deps -- disabling here to avoid a re-render loop with the 'problemTypes' and 'updateValidationStatusCallback' props
 	return (
 		<form
 			onSubmit={(event: FormEvent) => {
@@ -143,7 +145,7 @@ export const DeliveryRecordProblemForm = (
 							}
 						`}
 					>
-						{props.problemTypes.map(
+						{problemTypes.map(
 							(deliveryProblemRadioOption, index) => (
 								<li
 									key={`deliveryProblemRadio-${index}`}
