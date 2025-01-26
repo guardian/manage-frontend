@@ -264,6 +264,7 @@ const ConfirmCancellationAndReturnRow = (
 		selectedReasonId: OptionalCancellationReasonId;
 		cancellationPolicy: string;
 	};
+
 	const navigate = useNavigate();
 	const { productDetail, productType } = useContext(
 		CancellationContext,
@@ -515,7 +516,7 @@ const ValidatedCancellationReasonReview = () => {
 	const cancellationCaseFetch = useFetch<{ id: string }>('/api/case', {
 		method: 'POST',
 		body: JSON.stringify({
-			reason: routerState.selectedReasonId,
+			reason: selectedReasonId,
 			product: productType.cancellation.sfCaseProduct,
 			subscriptionName: productDetail.subscription.subscriptionId,
 			gaData: '',
