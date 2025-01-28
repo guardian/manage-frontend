@@ -53,10 +53,22 @@ const consentPreference = (
 	};
 	switch (uxType) {
 		case 'checkbox': {
-			return <MarketingCheckbox {...props} onClick={clickHandler} />;
+			return (
+				<MarketingCheckbox
+					key={`${id}-marketting-checkbox`}
+					{...props}
+					onClick={clickHandler}
+				/>
+			);
 		}
 		case 'toggle': {
-			return <MarketingToggle {...props} onClick={clickHandler} />;
+			return (
+				<MarketingToggle
+					key={`${id}-marketting-toggle`}
+					{...props}
+					onClick={clickHandler}
+				/>
+			);
 		}
 	}
 };
