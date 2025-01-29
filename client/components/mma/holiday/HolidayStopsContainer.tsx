@@ -44,7 +44,7 @@ export interface HolidayStopsContextInterface {
 	setShouldReload: Dispatch<SetStateAction<boolean>>;
 }
 
-export const HolidayStopsContext: Context<HolidayStopsContextInterface | {}> =
+export const HolidayStopsContext: Context<HolidayStopsContextInterface | object> =
 	createContext({});
 
 const handleMembersDataResponse =

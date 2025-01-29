@@ -52,7 +52,7 @@ export const SwitchThankYou = () => {
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Change your support');
-	}, []);
+	}, [pageTitleContext]);
 
 	if (!membership) {
 		return <Navigate to="/" />;

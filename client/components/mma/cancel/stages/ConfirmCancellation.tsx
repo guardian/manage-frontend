@@ -107,7 +107,7 @@ export const ConfirmCancellation = () => {
 		pageTitleContext.setPageTitle(
 			`Cancel ${groupedProductType.friendlyName}`,
 		);
-	}, []);
+	}, [groupedProductType.friendlyName, pageTitleContext]);
 
 	return (
 		<>

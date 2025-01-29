@@ -142,7 +142,7 @@ export const SupporterPlusUpdateAmountForm = (
 		if (otherAmount !== defaultOtherAmount) {
 			setHasInteractedWithOtherAmount(true);
 		}
-	}, [otherAmount]);
+	}, [otherAmount, defaultOtherAmount]);
 
 	useEffect(() => {
 		const newErrorMessage = validateChoice(
@@ -154,13 +154,22 @@ export const SupporterPlusUpdateAmountForm = (
 			props.mainPlan,
 		);
 		setErrorMessage(newErrorMessage);
-	}, [otherAmount, selectedValue]);
+	}, [
+		otherAmount,
+		selectedValue,
+		chosenAmount,
+		isOtherAmountSelected,
+		priceConfig.minAmount,
+		priceConfig.maxAmount,
+		props.currentAmount,
+		props.mainPlan,
+	]);
 
 	useEffect(() => {
 		if (confirmedAmount) {
 			props.onUpdateConfirmed(confirmedAmount);
 		}
-	}, [confirmedAmount]);
+	}, [confirmedAmount, props]);
 
 	const pendingAmount = Number(
 		isOtherAmountSelected ? otherAmount : selectedValue,

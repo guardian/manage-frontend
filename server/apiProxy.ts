@@ -24,7 +24,7 @@ function safeJsonParse(jsonStr: JsonString): object | JsonString {
 			return JSON.parse(jsonStr.toString());
 		}
 		return jsonStr;
-	} catch (e) {
+	} catch {
 		return jsonStr;
 	}
 }

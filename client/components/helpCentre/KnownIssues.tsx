@@ -84,7 +84,7 @@ export const KnownIssues = (props: KnownIssuesProp) => {
 				}
 			}
 		})();
-	}, []);
+	}, [props.issues]);
 
 	const containerCss = css`
 		border-left: 1px solid #dcdcdc;

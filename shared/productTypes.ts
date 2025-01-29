@@ -273,7 +273,7 @@ export type GroupedProductTypeKeys =
 	| 'recurringSupportWithBenefits'
 	| 'subscriptions';
 
-export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
+export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 	membership: {
 		productTitle: () => 'Guardian Membership',
 		friendlyName: 'Membership',
@@ -718,10 +718,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		],
 	},
 };
-
-export const GROUPED_PRODUCT_TYPES: {
-	[productKey in GroupedProductTypeKeys]: GroupedProductType;
-} = {
+export const GROUPED_PRODUCT_TYPES: Record<
+	GroupedProductTypeKeys,
+	GroupedProductType
+> = {
 	membership: {
 		...PRODUCT_TYPES.membership, // TODO: Can we omit 'groupedProductType' and 'softOptInIDs' from spread properties as omitted from type
 		groupFriendlyName: 'Membership',

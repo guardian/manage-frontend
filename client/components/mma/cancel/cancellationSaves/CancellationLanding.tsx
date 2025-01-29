@@ -53,10 +53,6 @@ export const CancellationLanding = () => {
 		CancellationContext,
 	) as CancellationContextInterface;
 
-	if (!productToCancel) {
-		return <Navigate to="/" />;
-	}
-
 	const {
 		data,
 		loadingState,
@@ -65,6 +61,9 @@ export const CancellationLanding = () => {
 		loadingState: LoadingState;
 	} = useAsyncLoader(allRecurringProductsDetailFetcher, JsonResponseHandler);
 
+	if (!productToCancel) {
+		return <Navigate to="/" />;
+	}
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
 	}

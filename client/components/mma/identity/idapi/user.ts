@@ -182,7 +182,10 @@ export const write = async (user: Partial<User>): Promise<User> => {
 			addCSRFToken(putRequest(body)),
 		).then((response) => response.json());
 		if (isErrorResponse(response)) {
-			throw toUserError(response);
+			const userErrorObj = toUserError(response);
+			throw new Error(`Error: ${userErrorObj.type}`, {
+				cause: userErrorObj.error,
+			});
 		}
 		return toUser(response);
 	} catch (e) {
@@ -211,7 +214,10 @@ export const setUsername = async (user: Partial<User>): Promise<User> => {
 			addCSRFToken(postRequest(body)),
 		).then((response) => response.json());
 		if (isErrorResponse(response)) {
-			throw toUserError(response);
+			const userErrorObj = toUserError(response);
+			throw new Error(`Error: ${userErrorObj.type}`, {
+				cause: userErrorObj.error,
+			});
 		}
 		return toUser(response);
 	} catch (e) {

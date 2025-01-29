@@ -160,7 +160,7 @@ export const ContributionUpdateAmountForm = (
 		if (otherAmount !== defaultOtherAmount) {
 			setHasInteractedWithOtherAmount(true);
 		}
-	}, [otherAmount]);
+	}, [otherAmount, defaultOtherAmount]);
 
 	useEffect(() => {
 		const newErrorMessage = validateChoice(
@@ -172,13 +172,22 @@ export const ContributionUpdateAmountForm = (
 			props.mainPlan,
 		);
 		setErrorMessage(newErrorMessage);
-	}, [otherAmount, selectedValue]);
+	}, [
+		otherAmount,
+		selectedValue,
+		chosenAmount,
+		isOtherAmountSelected,
+		currentContributionOptions.minAmount,
+		currentContributionOptions.maxAmount,
+		props.currentAmount,
+		props.mainPlan,
+	]);
 
 	useEffect(() => {
 		if (confirmedAmount) {
 			props.onUpdateConfirmed(confirmedAmount);
 		}
-	}, [confirmedAmount]);
+	}, [confirmedAmount, props]);
 
 	const changeAmountClick = async () => {
 		setHasSubmitted(true);

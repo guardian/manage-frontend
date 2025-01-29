@@ -42,35 +42,38 @@ export const DeliveryRecordProblemForm = (
 ) => {
 	const [selectedDeliveryProblem, setSelectedDeliveryProblem] =
 		useState<SelectedDeliveryProblem | null>(null);
+
+	const { problemTypes, updateValidationStatusCallback } = props;
+
 	useEffect(() => {
+		const validateForm = () => {
+			if (!selectedDeliveryProblem) {
+				return {
+					isValid: false,
+					message: 'Please select the type of problem',
+				};
+			} else {
+				const deliveryProblem = problemTypes.find(
+					(issue) => issue.label === selectedDeliveryProblem?.value,
+				);
+				const isValid = !(
+					deliveryProblem?.messageIsMandatory &&
+					!selectedDeliveryProblem?.message
+				);
+				return {
+					isValid,
+					...(!isValid && {
+						message: 'Step 1: Please complete the required field.',
+					}),
+				};
+			}
+		};
 		const validateDetails: ValidateDetails = validateForm();
-		props.updateValidationStatusCallback(
+		updateValidationStatusCallback(
 			validateDetails.isValid,
 			validateDetails.message,
 		);
-	}, [selectedDeliveryProblem]);
-	const validateForm = () => {
-		if (!selectedDeliveryProblem) {
-			return {
-				isValid: false,
-				message: 'Please select the type of problem',
-			};
-		} else {
-			const deliveryProblem = props.problemTypes.find(
-				(issue) => issue.label === selectedDeliveryProblem?.value,
-			);
-			const isValid = !(
-				deliveryProblem?.messageIsMandatory &&
-				!selectedDeliveryProblem?.message
-			);
-			return {
-				isValid,
-				...(!isValid && {
-					message: 'Step 1: Please complete the required field.',
-				}),
-			};
-		}
-	};
+	}, [selectedDeliveryProblem]); // eslint-disable-line react-hooks/exhaustive-deps -- disabling here to avoid a re-render loop with the 'problemTypes' and 'updateValidationStatusCallback' props
 	return (
 		<form
 			onSubmit={(event: FormEvent) => {
@@ -142,7 +145,7 @@ export const DeliveryRecordProblemForm = (
 							}
 						`}
 					>
-						{props.problemTypes.map(
+						{problemTypes.map(
 							(deliveryProblemRadioOption, index) => (
 								<li
 									key={`deliveryProblemRadio-${index}`}

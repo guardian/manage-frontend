@@ -7,7 +7,7 @@ import { MarketingToggle } from '../MarketingToggle';
 import type { ConsentOption } from '../models';
 import { PageSection } from '../PageSection';
 
-type ClickHandler = (id: string) => {};
+type ClickHandler = (id: string) => unknown;
 
 interface ConsentSectionProps {
 	clickHandler: ClickHandler;
@@ -53,10 +53,22 @@ const consentPreference = (
 	};
 	switch (uxType) {
 		case 'checkbox': {
-			return <MarketingCheckbox {...props} onClick={clickHandler} />;
+			return (
+				<MarketingCheckbox
+					key={`${id}-marketting-checkbox`}
+					{...props}
+					onClick={clickHandler}
+				/>
+			);
 		}
 		case 'toggle': {
-			return <MarketingToggle {...props} onClick={clickHandler} />;
+			return (
+				<MarketingToggle
+					key={`${id}-marketting-toggle`}
+					{...props}
+					onClick={clickHandler}
+				/>
+			);
 		}
 	}
 };

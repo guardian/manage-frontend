@@ -17,7 +17,7 @@ export interface HasMinimalFooterInterface {
 	setHasMinimalFooter: Dispatch<SetStateAction<boolean>>;
 }
 
-export const HasMinimalFooterContext: Context<HasMinimalFooterInterface | {}> =
+export const HasMinimalFooterContext: Context<HasMinimalFooterInterface | object> =
 	createContext({});
 
 export const Main = ({

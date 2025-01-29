@@ -242,7 +242,14 @@ export const CancelAlternativeConfirmed = () => {
 			sfCaseDescription,
 			sfCaseSubject,
 		);
-	}, []);
+	}, [
+		pageTitleContext,
+		productDetail.isTestUser,
+		routerState.caseId,
+		sfCaseDebugSuffix,
+		sfCaseDescription,
+		sfCaseSubject,
+	]);
 
 	return (
 		<>

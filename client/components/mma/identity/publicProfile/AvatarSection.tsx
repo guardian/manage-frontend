@@ -3,7 +3,7 @@ import { palette, textSans14 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
 import { Form, Formik } from 'formik';
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import { trackEvent } from '../../../../utilities/analytics';
 import { Spinner } from '../../../shared/Spinner';
@@ -64,9 +64,9 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 		file: File | null;
 	}
 
-	useEffect(() => {
+	useCallback(() => {
 		getAvatar();
-	}, []);
+	}, [getAvatar]);
 
 	const avatarDisplay = () => {
 		const url = isSuccessful(avatarGetState)

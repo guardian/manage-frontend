@@ -20,7 +20,7 @@ export type MembersDataApiResponse = {
 	products: MembersDataApiItem[];
 };
 
-export type MembersDataApiItem = ProductDetail | {};
+export type MembersDataApiItem = ProductDetail | object;
 
 export type SingleProductDetail = {
 	created: number;

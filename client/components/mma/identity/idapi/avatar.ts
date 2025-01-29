@@ -53,7 +53,10 @@ export const read = async () => {
 		res.json(),
 	);
 	if (isAvatarAPIErrorResponse(response)) {
-		throw toAvatarError(response);
+		const avatarErrorObj = toAvatarError(response);
+		throw new Error(`Error: ${avatarErrorObj.type}`, {
+			cause: avatarErrorObj.error,
+		});
 	}
 	return response;
 };
@@ -76,6 +79,9 @@ export const write = async (file: File) => {
 		},
 	}).then((res) => res.json());
 	if (isAvatarAPIErrorResponse(response)) {
-		throw toAvatarError(response);
+		const avatarErrorObj = toAvatarError(response);
+		throw new Error(`Error: ${avatarErrorObj.type}`, {
+			cause: avatarErrorObj.error,
+		});
 	}
 };

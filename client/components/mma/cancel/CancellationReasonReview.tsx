@@ -264,6 +264,7 @@ const ConfirmCancellationAndReturnRow = (
 		selectedReasonId: OptionalCancellationReasonId;
 		cancellationPolicy: string;
 	};
+
 	const navigate = useNavigate();
 	const { productDetail, productType } = useContext(
 		CancellationContext,
@@ -334,12 +335,16 @@ const ConfirmCancellationAndReturnRow = (
 					} else {
 						setShowAlternativeBeforeCancelling(false);
 					}
-				} catch (e) {
+				} catch {
 					setShowAlternativeBeforeCancelling(false);
 				}
 			})();
 		}
-	}, []);
+	}, [
+		isContributionAndBreakFeatureIsActive,
+		isSupporterPlusAndFreePeriodOfferIsActive,
+		productDetail.subscription.subscriptionId,
+	]);
 
 	return (
 		<>
@@ -439,10 +444,6 @@ const ConfirmCancellationAndReturnRow = (
 };
 
 export const CancellationReasonReview = () => {
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
-
 	const location = useLocation();
 	const routerState = location.state as {
 		selectedReasonId: OptionalCancellationReasonId;
@@ -452,6 +453,19 @@ export const CancellationReasonReview = () => {
 	if (!routerState?.selectedReasonId) {
 		return <Navigate to=".." />;
 	}
+	return <ValidatedCancellationReasonReview />;
+};
+
+const ValidatedCancellationReasonReview = () => {
+	const { productDetail, productType } = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+
+	const location = useLocation();
+	const routerState = location.state as {
+		selectedReasonId: OptionalCancellationReasonId;
+		cancellationPolicy: string;
+	};
 
 	const { selectedReasonId, cancellationPolicy } = routerState;
 
@@ -502,7 +516,7 @@ export const CancellationReasonReview = () => {
 	const cancellationCaseFetch = useFetch<{ id: string }>('/api/case', {
 		method: 'POST',
 		body: JSON.stringify({
-			reason: routerState.selectedReasonId,
+			reason: selectedReasonId,
 			product: productType.cancellation.sfCaseProduct,
 			subscriptionName: productDetail.subscription.subscriptionId,
 			gaData: '',

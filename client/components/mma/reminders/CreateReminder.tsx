@@ -59,7 +59,7 @@ export const CreateReminder = ({ reminderType }: CreateReminderProps) => {
 				.then((response) => {
 					if (!response.ok) {
 						return Promise.reject(
-							`Received status ${response.status}`,
+							new Error(`Received status ${response.status}`),
 						);
 					} else {
 						setStatus('SUCCESS');
@@ -72,7 +72,7 @@ export const CreateReminder = ({ reminderType }: CreateReminderProps) => {
 					);
 				});
 		}
-	}, []);
+	}, [reminderType]);
 
 	const successCopy =
 		reminderType === 'ONE_OFF'

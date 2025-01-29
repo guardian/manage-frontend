@@ -129,7 +129,7 @@ export interface CreateOrAmendHolidayStopsResponse {
 export class CreateOrAmendHolidayStopsAsyncLoader extends AsyncLoader<CreateOrAmendHolidayStopsResponse> {}
 
 export function isHolidayStopsResponse(
-	data: GetHolidayStopsResponse | {} | undefined,
+	data: GetHolidayStopsResponse | object | undefined,
 ): data is GetHolidayStopsResponse {
 	return !!data && data.hasOwnProperty('existing');
 }

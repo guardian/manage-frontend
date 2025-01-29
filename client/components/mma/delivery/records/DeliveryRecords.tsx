@@ -152,6 +152,7 @@ export const DeliveryRecords = () => {
 			setStep3formValidationState(!addressInValidState);
 		}
 	}, [addressInValidState]);
+
 	const enableDeliveryInstructions =
 		!!productType.delivery.enableDeliveryInstructionsUpdate;
 	const step1FormRadioOptionCallback = (value: string) =>

@@ -63,7 +63,7 @@ const parseAndValidate = async (
 		const bodyAsJson = body ? JSON.parse(body) : '{}';
 		const isBodyValid = await validateContactUsFormBody(bodyAsJson);
 		return isBodyValid ? buildContactUsReqBody(bodyAsJson) : undefined;
-	} catch (error) {
+	} catch {
 		return undefined;
 	}
 };

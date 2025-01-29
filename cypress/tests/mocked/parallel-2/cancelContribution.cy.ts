@@ -1,8 +1,8 @@
-import { monthlyContributionPaidByCard } from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
-import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
+import { monthlyContributionPaidByCard } from '../../../../client/fixtures/productBuilder/testProducts';
+import type { DiscountPreviewResponse } from '../../../../client/utilities/discountPreview';
 import { featureSwitches } from '../../../../shared/featureSwitches';
-import { DiscountPreviewResponse } from '../../../../client/utilities/discountPreview';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Cancel contribution', () => {
 	const setSignInStatus = () => {

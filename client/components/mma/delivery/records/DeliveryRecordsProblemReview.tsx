@@ -50,13 +50,13 @@ export const DeliveryRecordsProblemReview = () => {
 	const location = useLocation();
 	const routerState = location.state as DeliveryRecordsRouterState;
 
-	if (!routerState) {
-		return <Navigate to=".." />;
-	}
-
 	const { productDetail } = useContext(
 		DeliveryRecordsContext,
 	) as DeliveryRecordsContextInterface;
+
+	if (!routerState) {
+		return <Navigate to=".." />;
+	}
 
 	const subscription = productDetail.subscription;
 	const isTestUser = productDetail.isTestUser;

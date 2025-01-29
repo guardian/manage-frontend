@@ -178,7 +178,7 @@ export const DigiSubThankYouOffer = () => {
 			}
 			setIsPreviewDiscountLoading(false);
 		});
-	}, []);
+	}, [productDetail.subscription.subscriptionId]);
 
 	if (isPreviewDiscountLoading) {
 		return <DefaultLoadingView loadingMessage="Loading..." />;
@@ -241,7 +241,7 @@ export const DigiSubThankYouOffer = () => {
 				setIsApplyDiscountLoading(false);
 				setHasDiscountFailed(true);
 			}
-		} catch (e) {
+		} catch {
 			setIsApplyDiscountLoading(false);
 			setHasDiscountFailed(true);
 		}

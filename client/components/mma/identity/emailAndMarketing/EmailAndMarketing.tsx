@@ -139,7 +139,7 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 			}
 		};
 		makeInitialAPICalls();
-	}, []);
+	}, [dispatch, error, options]);
 
 	const newsletters = ConsentOptions.newsletters(state.options);
 	const consents = ConsentOptions.consents(state.options);
@@ -151,7 +151,7 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 		if (state.error && errorRef.current) {
 			window.scrollTo(0, errorRef.current.offsetTop - 20);
 		}
-	}, [state.error]);
+	}, [state.error, errorRef]);
 
 	const errorMessage = (
 		<WithStandardTopMargin>

@@ -202,7 +202,7 @@ export const CancelAlternativeReview = () => {
 			} else {
 				setPerformingDiscountStatus('FAILED');
 			}
-		} catch (e) {
+		} catch {
 			setPerformingDiscountStatus('FAILED');
 		}
 	};
