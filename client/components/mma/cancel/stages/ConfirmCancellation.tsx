@@ -109,7 +109,8 @@ export const ConfirmCancellation = () => {
 
 	const productIsSubscription = productType.productType === 'supporterplus'; // will we migrate other product like Guardian weekly over to this cancellation flow at some point?
 	const productIsContribution = productType.productType === 'contributions';
-	const productIsGuardianLight = productType.productType === 'guardianlight';
+	const productIsGuardianAdLite =
+		productType.productType === 'guardianadlite';
 
 	const progressStepperArray = [
 		{},
@@ -180,7 +181,7 @@ export const ConfirmCancellation = () => {
 							journalism.
 						</p>
 					)) ||
-					(productIsGuardianLight && (
+					(productIsGuardianAdLite && (
 						<>
 							<p>
 								If you confirm your cancellation, you will lose
@@ -212,6 +213,7 @@ export const ConfirmCancellation = () => {
 					<Button
 						cssOverrides={ctaBtnCss}
 						onClick={() => {
+							console.log('confirm cancellation click!');
 							navigate('../confirmed', {
 								state: routerState,
 							});
@@ -226,7 +228,7 @@ export const ConfirmCancellation = () => {
 							navigate('/');
 						}}
 					>
-						{productIsSubscription || productIsGuardianLight
+						{productIsSubscription || productIsGuardianAdLite
 							? 'Keep my subscription'
 							: 'Keep supporting'}
 					</Button>

@@ -7,8 +7,8 @@ import {
 	contributionCancelled,
 	contributionPaidByCard,
 	contributionPaidByPayPal,
-	guardianLight,
-	guardianLightCancelled,
+	guardianAdLite,
+	guardianAdLiteCancelled,
 	guardianWeeklyPaidByCard,
 	supporterPlus,
 	supporterPlusAnnual,
@@ -125,60 +125,61 @@ export const ReviewWithReduceAmount: StoryObj<typeof CancellationContainer> = {
 	},
 };
 
-export const ReviewGuardianLight: StoryObj<typeof CancellationContainer> = {
+export const ReviewGuardianAdLite: StoryObj<typeof CancellationContainer> = {
 	render: () => {
 		return <ConfirmCancellation />;
 	},
 	parameters: {
 		reactRouter: {
 			state: {
-				productDetail: guardianLight(),
+				productDetail: guardianAdLite(),
 			},
 			container: (
 				<CancellationContainer
-					productType={PRODUCT_TYPES.guardianlight}
+					productType={PRODUCT_TYPES.guardianadlite}
 				/>
 			),
 		},
 	},
 };
 
-export const ConfirmationGuardianLight: StoryObj<typeof ExecuteCancellation> = {
-	render: () => {
-		// @ts-expect-error set identity details email in the window
-		window.guardian = { identityDetails: { email: 'test' } };
-		return <ExecuteCancellation />;
-	},
-	parameters: {
-		msw: [
-			http.patch('/api/case/**', () => {
-				return HttpResponse.json({ id: 'caseId' });
-			}),
-			http.get('/api/me/mma/**', () => {
-				return HttpResponse.json(
-					toMembersDataApiResponse(guardianLightCancelled()),
-				);
-			}),
-			http.post('/api/cancel/**', () => {
-				return new HttpResponse(null, {
-					status: 201,
-				});
-			}),
-		],
-		reactRouter: {
-			state: {
-				productDetail: guardianLight(),
-				selectedReasonId: '1',
-				caseId: 'caseId',
-			},
-			container: (
-				<CancellationContainer
-					productType={PRODUCT_TYPES.guardianlight}
-				/>
-			),
+export const ConfirmationGuardianAdLite: StoryObj<typeof ExecuteCancellation> =
+	{
+		render: () => {
+			// @ts-expect-error set identity details email in the window
+			window.guardian = { identityDetails: { email: 'test' } };
+			return <ExecuteCancellation />;
 		},
-	},
-};
+		parameters: {
+			msw: [
+				http.patch('/api/case/**', () => {
+					return HttpResponse.json({ id: 'caseId' });
+				}),
+				http.get('/api/me/mma/**', () => {
+					return HttpResponse.json(
+						toMembersDataApiResponse(guardianAdLiteCancelled()),
+					);
+				}),
+				http.post('/api/cancel/**', () => {
+					return new HttpResponse(null, {
+						status: 201,
+					});
+				}),
+			],
+			reactRouter: {
+				state: {
+					productDetail: guardianAdLite(),
+					selectedReasonId: '1',
+					caseId: 'caseId',
+				},
+				container: (
+					<CancellationContainer
+						productType={PRODUCT_TYPES.guardianadlite}
+					/>
+				),
+			},
+		},
+	};
 
 export const OfferMonthly: StoryObj<typeof CancellationContainer> = {
 	render: () => {

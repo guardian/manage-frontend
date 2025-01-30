@@ -17,7 +17,7 @@ import {
 	contributionCancelled,
 	contributionPaidByPayPal,
 	digitalPackPaidByDirectDebit,
-	guardianLight,
+	guardianAdLite,
 	guardianWeeklyCancelled,
 	guardianWeeklyGiftPurchase,
 	guardianWeeklyGiftRecipient,
@@ -363,7 +363,7 @@ export const WithSupporterPlusDuringOffer: StoryObj<typeof AccountOverview> = {
 	},
 };
 
-export const WithGuardianLight: StoryObj<typeof AccountOverview> = {
+export const WithGuardianAdLite: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
@@ -378,7 +378,7 @@ export const WithGuardianLight: StoryObj<typeof AccountOverview> = {
 			}),
 			http.get('/api/me/mma', () => {
 				return HttpResponse.json(
-					toMembersDataApiResponse(guardianLight()),
+					toMembersDataApiResponse(guardianAdLite()),
 				);
 			}),
 			http.get('/api/me/one-off-contributions', () => {
