@@ -1,18 +1,18 @@
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
-	stripeSetupIntent,
-	executePaymentUpdateResponse,
 	ddPaymentMethod,
+	executePaymentUpdateResponse,
+	stripeSetupIntent,
 } from '../../../../client/fixtures/payment';
-import { paymentMethods } from '../../../../client/fixtures/stripe';
-import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 import {
 	digitalPackPaidByCardWithPaymentFailure,
 	digitalPackPaidByDirectDebit,
-	guardianLight,
+	guardianAdLite,
 	guardianWeeklyPaidByCard,
 } from '../../../../client/fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
+import { paymentMethods } from '../../../../client/fixtures/stripe';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Update payment details', () => {
 	beforeEach(() => {
@@ -346,15 +346,15 @@ describe('Update payment details', () => {
 		cy.findByText('Recaptcha has not been completed.');
 	});
 
-	it('allows payment update for Guardian light product', () => {
+	it('allows payment update for Guardian ad-lite product', () => {
 		cy.intercept('GET', '/api/me/mma*', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianLight()),
+			body: toMembersDataApiResponse(guardianAdLite()),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianLight()),
+			body: toMembersDataApiResponse(guardianAdLite()),
 		}).as('refetch_subscription');
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {

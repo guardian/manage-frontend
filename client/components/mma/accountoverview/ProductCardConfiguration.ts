@@ -45,7 +45,7 @@ export const productCardConfiguration: Record<
 	contributions: {
 		colour: productColour.recurringContribution,
 	},
-	guardianlight: {
+	guardianadlite: {
 		colour: productColour.recurringContribution,
 	},
 	supporterplus: {

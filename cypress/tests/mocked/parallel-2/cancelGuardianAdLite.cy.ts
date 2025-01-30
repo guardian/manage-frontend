@@ -1,11 +1,11 @@
-import {
-	guardianLight,
-	guardianLightCancelled,
-} from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
+import {
+	guardianAdLite,
+	guardianAdLiteCancelled,
+} from '../../../../client/fixtures/productBuilder/testProducts';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
-describe('Cancel Guardian Light', () => {
+describe('Cancel Guardian Ad-Lite', () => {
 	const setupCancellation = () => {
 		cy.visit('/');
 
@@ -38,14 +38,14 @@ describe('Cancel Guardian Light', () => {
 			body: { message: 'success' },
 		}).as('create_case_in_salesforce');
 
-		cy.intercept('GET', '/api/me/mma?productType=GuardianLight', {
+		cy.intercept('GET', '/api/me/mma?productType=GuardianAdLite', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianLight()),
+			body: toMembersDataApiResponse(guardianAdLite()),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianLight()),
+			body: toMembersDataApiResponse(guardianAdLite()),
 		}).as('mma');
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -60,7 +60,7 @@ describe('Cancel Guardian Light', () => {
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianLight()),
+			body: toMembersDataApiResponse(guardianAdLite()),
 		}).as('new_product_detail');
 
 		cy.intercept('GET', '/api/cancelled/', {
@@ -75,26 +75,26 @@ describe('Cancel Guardian Light', () => {
 
 		cy.intercept('POST', '/api/cancel/**', {
 			statusCode: 200,
-		}).as('cancel_guardian_light');
+		}).as('cancel_guardian_ad_lite');
 	});
 
 	it('user successfully cancels', () => {
 		setupCancellation();
 
-		cy.intercept('GET', '/api/me/mma?productType=GuardianLight', {
+		cy.intercept('GET', '/api/me/mma?productType=GuardianAdLite', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(guardianLightCancelled()),
+			body: toMembersDataApiResponse(guardianAdLiteCancelled()),
 		}).as('get_cancelled_product');
 
 		cy.findByText('Is this really goodbye?');
 
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
-		cy.wait('@cancel_guardian_light');
+		cy.wait('@cancel_guardian_ad_lite');
 		cy.wait('@get_cancelled_product');
 
 		cy.findByRole('heading', {
-			name: 'Your guardian light is cancelled',
+			name: 'Your guardian ad-lite is cancelled',
 		});
 	});
 });

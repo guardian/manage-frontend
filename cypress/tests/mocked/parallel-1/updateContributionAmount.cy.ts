@@ -1,10 +1,10 @@
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
 	contributionPaidByCard,
 	supporterPlusCancelled,
 	supporterPlusMonthlyAllAccessDigital,
 	supporterPlusMonthlyAllAccessDigitalBeforePriceRise,
 } from '../../../../client/fixtures/productBuilder/testProducts';
-import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Update contribution amount', () => {

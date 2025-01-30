@@ -4,7 +4,7 @@ import { featureSwitches } from '../../../../shared/featureSwitches';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
 	digitalPackPaidByDirectDebit,
-	guardianLight,
+	guardianAdLite,
 	guardianWeeklyPaidByCard,
 	monthlyContributionPaidByCard,
 	newspaperVoucherPaidByPaypal,
@@ -109,14 +109,14 @@ export const SupporterPlusAllAccessDigital: StoryObj<typeof ManageProduct> = {
 	},
 };
 
-export const GuardianLight: StoryObj<typeof ManageProduct> = {
+export const GuardianAdLite: StoryObj<typeof ManageProduct> = {
 	render: () => {
-		return <ManageProduct productType={PRODUCT_TYPES.guardianlight} />;
+		return <ManageProduct productType={PRODUCT_TYPES.guardianadlite} />;
 	},
 
 	parameters: {
 		reactRouter: {
-			state: { productDetail: guardianLight() },
+			state: { productDetail: guardianAdLite() },
 		},
 	},
 };

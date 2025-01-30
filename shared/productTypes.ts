@@ -48,7 +48,7 @@ type ProductFriendlyName =
 	| 'subscription'
 	| 'support'
 	| 'recurring support'
-	| 'guardian light'
+	| 'guardian ad-lite'
 	| 'guardian patron';
 type ProductUrlPart =
 	| 'membership'
@@ -64,7 +64,7 @@ type ProductUrlPart =
 	| 'digital+print'
 	| 'subscriptions'
 	| 'recurringsupport'
-	| 'guardianlight'
+	| 'guardianadlite'
 	| 'guardianpatron';
 type SfCaseProduct =
 	| 'Membership'
@@ -74,7 +74,7 @@ type SfCaseProduct =
 	| 'Digital Pack Subscriptions'
 	| 'Supporter Plus'
 	| 'Tier Three'
-	| 'Guardian Light'
+	| 'Guardian Ad-Lite'
 	| 'Guardian Patron';
 export type AllProductsProductTypeFilterString =
 	| 'Weekly'
@@ -88,7 +88,7 @@ export type AllProductsProductTypeFilterString =
 	| 'SupporterPlus'
 	| 'ContentSubscription'
 	| 'GuardianPatron'
-	| 'GuardianLight'
+	| 'GuardianAdLite'
 	| 'TierThree';
 
 interface CancellationFlowProperties {
@@ -118,6 +118,11 @@ interface CancellationFlowProperties {
 	swapFeedbackAndContactUs?: true;
 	shouldShowReminder?: true;
 	shouldHideThrasher?: true;
+}
+
+interface CancellationFlowPropertiesMandatoryReasons
+	extends CancellationFlowProperties {
+	reasons: CancellationReason[];
 }
 
 export interface HolidayStopFlowProperties {
@@ -209,6 +214,11 @@ export interface ProductTypeWithCancellationFlow extends ProductType {
 	cancellation: CancellationFlowProperties;
 }
 
+export interface ProductTypeWithCancellationFlowMandatoryReasons
+	extends ProductType {
+	cancellation: CancellationFlowPropertiesMandatoryReasons;
+}
+
 export interface ProductTypeWithDeliveryRecordsProperties extends ProductType {
 	delivery: {
 		records: DeliveryRecordsProperties;
@@ -267,7 +277,7 @@ export type ProductTypeKeys =
 	| 'digipack'
 	| 'supporterplus'
 	| 'tierthree'
-	| 'guardianlight'
+	| 'guardianadlite'
 	| 'guardianpatron';
 
 export type GroupedProductTypeKeys =
@@ -713,20 +723,20 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			SoftOptInIDs.SupporterNewsletter,
 		],
 	},
-	guardianlight: {
-		productTitle: () => 'Guardian Light',
-		friendlyName: 'guardian light',
-		productType: 'guardianlight',
+	guardianadlite: {
+		productTitle: () => 'Guardian Ad-Lite',
+		friendlyName: 'guardian ad-lite',
+		productType: 'guardianadlite',
 		groupedProductType: 'recurringSupportWithBenefits',
-		allProductsProductTypeFilterString: 'GuardianLight',
-		urlPart: 'guardianlight',
-		getOphanProductType: () => 'GUARDIAN_LIGHT',
+		allProductsProductTypeFilterString: 'GuardianAdLite',
+		urlPart: 'guardianadlite',
+		getOphanProductType: () => 'GUARDIAN_AD_LITE',
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.SupporterNewsletter,
 		],
 		cancellation: {
-			sfCaseProduct: 'Guardian Light',
+			sfCaseProduct: 'Guardian Ad-Lite',
 			startPageBody: contributionsCancellationFlowStart,
 			onlyShowSupportSectionIfAlternateText: true,
 			alternateSupportButtonUrlSuffix: () => undefined,

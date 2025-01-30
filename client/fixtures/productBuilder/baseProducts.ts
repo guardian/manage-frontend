@@ -11,7 +11,7 @@ import type { ProductDetail } from '../../../shared/productResponse';
 // 	| 'digipack'
 // 	| 'supporterplus'
 // 	| 'guardianpatron';
-// 	| 'guardianlight';
+// 	| 'guardianadlite';
 
 export function baseMembership(): ProductDetail {
 	return {
@@ -508,9 +508,9 @@ export function baseNationalDelivery(): ProductDetail {
 	};
 }
 
-export function baseGuardianLight(): ProductDetail {
+export function baseGuardianAdLite(): ProductDetail {
 	return {
-		tier: 'Guardian Light',
+		tier: 'Guardian Ad-Lite',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: true,
