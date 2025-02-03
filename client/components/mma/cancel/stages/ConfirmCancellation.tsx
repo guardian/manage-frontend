@@ -213,7 +213,6 @@ export const ConfirmCancellation = () => {
 					<Button
 						cssOverrides={ctaBtnCss}
 						onClick={() => {
-							console.log('confirm cancellation click!');
 							navigate('../confirmed', {
 								state: routerState,
 							});

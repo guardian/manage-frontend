@@ -81,7 +81,7 @@ describe('Cancel Guardian Ad-Lite', () => {
 	it('user successfully cancels', () => {
 		setupCancellation();
 
-		cy.intercept('GET', '/api/me/mma?productType=GuardianAdLite', {
+		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(guardianAdLiteCancelled()),
 		}).as('get_cancelled_product');
