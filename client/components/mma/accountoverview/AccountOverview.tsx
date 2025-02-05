@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import {
+	from,
 	headlineBold28,
 	palette,
 	space,
@@ -66,12 +67,15 @@ type AccountOverviewResponse = [
 ];
 
 const subHeadingCss = css`
-	margin: ${space[12]}px 0 ${space[6]}px;
+	margin: ${space[6]}px 0 ${space[6]}px;
 	border-top: 1px solid ${palette.neutral['86']};
 	${headlineBold28};
 	${until.tablet} {
 		font-size: 1.25rem;
 		line-height: 1.6;
+	}
+	${from.tablet} {
+		margin-top: ${space[8]}px;
 	}
 `;
 

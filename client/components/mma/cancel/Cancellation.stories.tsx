@@ -9,6 +9,7 @@ import {
 	contributionPaidByPayPal,
 	guardianAdLite,
 	guardianAdLiteCancelled,
+	guardianAdLiteInCoolingOffPeriod,
 	guardianWeeklyPaidByCard,
 	supporterPlus,
 	supporterPlusAnnual,
@@ -119,6 +120,26 @@ export const ReviewWithReduceAmount: StoryObj<typeof CancellationContainer> = {
 			container: (
 				<CancellationContainer
 					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
+		},
+	},
+};
+
+export const ReviewGuardianAdLiteInCoolingOffPeriod: StoryObj<
+	typeof CancellationContainer
+> = {
+	render: () => {
+		return <ConfirmCancellation />;
+	},
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: guardianAdLiteInCoolingOffPeriod(),
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.guardianadlite}
 				/>
 			),
 		},

@@ -1,6 +1,8 @@
 import { css } from '@emotion/react';
 import {
-	headlineBold42,
+	from,
+	headlineBold24,
+	headlineBold34,
 	headlineMedium17,
 	space,
 } from '@guardian/source/foundations';
@@ -53,12 +55,18 @@ export const PersonalisedHeader = ({
 	return (
 		<hgroup
 			css={css`
-				margin-top: ${space[12]}px;
+				margin-top: ${space[6]}px;
+				${from.tablet} {
+					margin-top: ${space[8]}px;
+				}
 			`}
 		>
 			<h2
 				css={css`
-					${headlineBold42};
+					${headlineBold24};
+					${from.tablet} {
+						${headlineBold34};
+					}
 					margin-bottom: 0;
 				`}
 				data-qm-masking="blocklist"

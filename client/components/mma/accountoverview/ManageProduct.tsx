@@ -64,7 +64,7 @@ const subHeadingTitleCss = `
   `;
 const subHeadingBorderTopCss = `
     border-top: 1px solid ${palette.neutral['86']};
-    margin: 50px 0 ${space[5]}px;
+    margin: ${space[10]}px 0 ${space[5]}px;
   `;
 export const subHeadingCss = `
     ${subHeadingBorderTopCss}

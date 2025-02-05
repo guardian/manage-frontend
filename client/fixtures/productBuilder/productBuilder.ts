@@ -117,6 +117,17 @@ export class ProductBuilder {
 		return this;
 	}
 
+	withPotentialCancellationDate() {
+		this.productToBuild.subscription.potentialCancellationDate =
+			'2025-02-20';
+		return this;
+	}
+
+	inCoolingOffPeriod() {
+		this.productToBuild.inCoolingOffPeriod = true;
+		return this;
+	}
+
 	asPatron() {
 		this.productToBuild.subscription.readerType = 'Patron';
 		return this;
