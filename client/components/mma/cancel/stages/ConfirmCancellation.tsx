@@ -144,7 +144,9 @@ export const ConfirmCancellation = () => {
 						: headingWithoutContentAbove,
 				]}
 			>
-				Is this really goodbye?
+				{productIsGuardianAdLite
+					? `Cancel your ${productType.productTitle()} subscription`
+					: 'Is this really goodbye?'}
 			</Heading>
 			<div css={copyCss}>
 				{(productIsSubscription && (
@@ -184,27 +186,26 @@ export const ConfirmCancellation = () => {
 					(productIsGuardianAdLite && (
 						<>
 							<p>
-								If you confirm your cancellation, you will lose
-								the following benefits:
+								If you confirm your cancellation, we will ask
+								you for your consent and you will start to see
+								personalised advertising across your devices.
 							</p>
-							<ul css={youllLoseList}>
-								<li>Unlimited access to the Guardian app</li>
-								<li>Ad-free reading across all your devices</li>
-								<li>Exclusive supporter newsletter</li>
-								<li>
-									Far fewer asks for support when you're
-									signed in
-								</li>
-							</ul>
-							{subscription.potentialCancellationDate && (
-								<p css={loseDateCss}>
-									You will no longer have access to these
-									benefits from{' '}
-									{parseDate(
-										subscription.potentialCancellationDate,
-										'yyyy-MM-dd',
-									).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
-									.
+							{!productDetail.inCoolingOffPeriod &&
+								subscription.potentialCancellationDate && (
+									<p>
+										You will no longer have access to these
+										benefits from{' '}
+										{parseDate(
+											subscription.potentialCancellationDate,
+											'yyyy-MM-dd',
+										).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
+										.
+									</p>
+								)}
+							{productDetail.inCoolingOffPeriod && (
+								<p>
+									After you cancel you will no longer have
+									access to these benefits.
 								</p>
 							)}
 						</>

@@ -45,12 +45,12 @@ export const productCardConfiguration: Record<
 	contributions: {
 		colour: productColour.recurringContribution,
 	},
-	guardianadlite: {
-		colour: productColour.recurringContribution,
-	},
 	supporterplus: {
 		colour: productColour.supporterPlus,
 		showBenefitsSection: true,
+	},
+	guardianadlite: {
+		colour: productColour.supporterPlus,
 	},
 	tierthree: {
 		colour: productColour.supporterPlus,

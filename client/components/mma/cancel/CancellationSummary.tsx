@@ -35,6 +35,7 @@ const actuallyCancelled = (
 ) => {
 	const isSupportPlus = productType.productType === 'supporterplus';
 	const isContribution = productType.productType === 'contributions';
+	const isGuardianAdLite = productType.productType === 'guardianadlite';
 
 	let showReminder: boolean = !!productType.cancellation?.shouldShowReminder;
 	if (isSupportPlus && eligableForOffer) {
@@ -63,6 +64,7 @@ const actuallyCancelled = (
 		<>
 			<WithStandardTopMargin>
 				<Heading
+					borderless
 					cssOverrides={[
 						measure.heading,
 						css`
@@ -70,10 +72,13 @@ const actuallyCancelled = (
 						`,
 					]}
 				>
-					{isSupportPlus && 'Your subscription has been cancelled'}
+					{isSupportPlus ||
+						(isGuardianAdLite &&
+							'Your subscription has been cancelled')}
 					{isContribution && contributionheadingCopy}
 					{!isSupportPlus &&
 						!isContribution &&
+						!isGuardianAdLite &&
 						`Your ${productType.friendlyName} is cancelled`}
 				</Heading>
 				{productType.cancellation &&

@@ -101,6 +101,7 @@ export interface ProductDetail extends WithSubscription {
 	joinDate: string;
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
+	inCoolingOffPeriod?: boolean;
 	billingCountry?: string;
 }
 

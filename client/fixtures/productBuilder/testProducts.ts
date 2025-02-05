@@ -270,6 +270,14 @@ export function supporterPlusInOfferPeriod() {
 export function guardianAdLite() {
 	return new ProductBuilder(baseGuardianAdLite())
 		.payByCard()
+		.withPotentialCancellationDate()
+		.getProductDetailObject();
+}
+
+export function guardianAdLiteInCoolingOffPeriod() {
+	return new ProductBuilder(baseGuardianAdLite())
+		.payByCard()
+		.inCoolingOffPeriod()
 		.getProductDetailObject();
 }
 
