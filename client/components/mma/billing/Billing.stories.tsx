@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
@@ -35,22 +35,17 @@ export const NoSubscription: StoryObj<typeof Billing> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(ctx.json(toMembersDataApiResponse()));
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse());
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(
-					ctx.json({
-						subscriptions: [],
-					}),
-				);
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
 			}),
-			rest.get('/api/invoices', (_req, res, ctx) => {
-				return res(ctx.json({ invoices: [] }));
+			http.get('/api/invoices', () => {
+				return HttpResponse.json({ invoices: [] });
 			}),
-
-			rest.get('/idapi/user', (_req, res, ctx) => {
-				return res(ctx.json(user));
+			http.get('/idapi/user', () => {
+				return HttpResponse.json(user);
 			}),
 		],
 	},
@@ -65,32 +60,30 @@ export const WithSubscriptions: StoryObj<typeof Billing> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(
-							guardianWeeklyPaidByCard(),
-							digitalPackPaidByDirectDebit(),
-							newspaperVoucherPaidByPaypal(),
-							tierThree(),
-						),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(
+						guardianWeeklyPaidByCard(),
+						digitalPackPaidByDirectDebit(),
+						newspaperVoucherPaidByPaypal(),
+						tierThree(),
 					),
 				);
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(
-					ctx.json({
-						subscriptions: [
-							InAppPurchase,
-							InAppPurchaseIos,
-							InAppPurchaseAndroid,
-							PuzzleAppPurchaseAndroid,
-						],
-					}),
-				);
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({
+					subscriptions: [
+						InAppPurchase,
+						InAppPurchaseIos,
+						InAppPurchaseAndroid,
+						PuzzleAppPurchaseAndroid,
+					],
+				});
 			}),
-			rest.get('/api/invoices', (_req, res, ctx) => {
-				return res(ctx.json({ invoices: [guardianWeeklyCardInvoice] }));
+			http.get('/api/invoices', () => {
+				return HttpResponse.json({
+					invoices: [guardianWeeklyCardInvoice],
+				});
 			}),
 		],
 	},

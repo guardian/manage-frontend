@@ -41,13 +41,6 @@ export const DataPrivacyPage = () => {
 		loadingState: LoadingState;
 	} = useAsyncLoader(dataPrivacyFetcher, JsonResponseHandler);
 
-	useEffect(() => {
-		if (dataPrivacyResponse) {
-			handleResponse(dataPrivacyResponse);
-		}
-		loadCMP();
-	}, [dataPrivacyResponse]);
-
 	/**
 	 * This function imports and loads the cmp app to the state value, importedCmp
 	 *
@@ -58,21 +51,22 @@ export const DataPrivacyPage = () => {
 		});
 	};
 
-	/**
-	 * This function uses the responses from the dataPrivacyFetcher api calls
-	 * to get the users subscriptions/consents and dispatch the options to the
-	 * store.
-	 *
-	 * @param {DataPrivacyResponse} response
-	 */
-	const handleResponse = (response: DataPrivacyResponse) => {
-		const [consentOptions, userResponse] = response;
-		const user = UserAPI.toUser(userResponse);
-		const consentOpt = mapSubscriptions(user.consents, consentOptions);
-		dispatch(options(consentOpt));
-	};
-
 	const consents = ConsentOptions.consents(state.options);
+
+	useEffect(() => {
+		if (dataPrivacyResponse) {
+			/**
+			 * Use the response from the dataPrivacyFetcher api call
+			 * to get the users subscriptions/consents and dispatch the options to the
+			 * store.
+			 */
+			const [consentOptions, userResponse] = dataPrivacyResponse;
+			const user = UserAPI.toUser(userResponse);
+			const consentOpt = mapSubscriptions(user.consents, consentOptions);
+			dispatch(options(consentOpt));
+		}
+		loadCMP();
+	}, [dataPrivacyResponse, dispatch, options]);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;

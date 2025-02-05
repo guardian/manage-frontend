@@ -5,7 +5,7 @@ import {
 } from './DataPrivacy.styles';
 
 interface CookiesOnThisBrowserSectionProps {
-	onClick: Function;
+	onClick: () => unknown;
 }
 
 export const CookiesOnThisBrowserSection = (

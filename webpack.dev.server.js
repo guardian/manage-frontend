@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires -- minimising changes */
 const { merge } = require('webpack-merge');
-const common = require('./webpack.common.js');
+const { server } = require('./webpack.common.js');
 
-module.exports = merge(common.server, {
+module.exports = merge(server, {
 	devtool: 'inline-source-map',
 	mode: 'development',
 });

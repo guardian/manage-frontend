@@ -1,6 +1,8 @@
 import {
 	contributionPaidByCard,
-	supporterPlus,
+	supporterPlusCancelled,
+	supporterPlusMonthlyAllAccessDigital,
+	supporterPlusMonthlyAllAccessDigitalBeforePriceRise,
 } from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
@@ -66,7 +68,7 @@ describe('Update contribution amount', () => {
 
 		setSignInStatus();
 
-		cy.findByText('Manage subscription').click();
+		cy.findByText('Manage support').click();
 		cy.wait('@cancelled');
 
 		cy.findByText('Change amount').click();
@@ -87,7 +89,55 @@ describe('Update contribution amount', () => {
 	it('Updates supporter plus amount', () => {
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(supporterPlus()),
+			body: toMembersDataApiResponse(
+				supporterPlusMonthlyAllAccessDigital(),
+			),
+		});
+		cy.visit('/?withFeature=supporterPlusUpdateAmount');
+
+		setSignInStatus();
+
+		cy.findByText('Manage subscription').click();
+		cy.wait('@cancelled');
+
+		cy.findByText('Change amount').click();
+
+		cy.contains(
+			/£\d{2,3} per month is the minimum payment to receive this subscription./,
+		).should('exist');
+
+		cy.get(
+			'[data-cy="supporter-plus-amount-choices"] label:first-of-type',
+		).click();
+
+		cy.findByText('Change amount').click();
+
+		cy.wait('@supporter_plus_update_amount');
+
+		cy.contains(
+			'We have successfully updated the amount of your support.',
+		).should('exist');
+	});
+
+	it('Should not be able to change amount of cancelled supporterplus', () => {
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(supporterPlusCancelled()),
+		});
+		cy.visit('/?withFeature=supporterPlusUpdateAmount');
+
+		setSignInStatus();
+
+		cy.findByText('Manage subscription').click();
+		cy.wait('@cancelled');
+	});
+
+	it('Updates supporter plus amount (for user on old lower min amount)', () => {
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(
+				supporterPlusMonthlyAllAccessDigitalBeforePriceRise(),
+			),
 		});
 		cy.visit('/?withFeature=supporterPlusUpdateAmount');
 
@@ -99,8 +149,32 @@ describe('Update contribution amount', () => {
 		cy.findByText('Change amount').click();
 
 		cy.get(
-			'[data-cy="supporter-plus-amount-choices"] label:first-of-type',
+			'[data-cy="supporter-plus-amount-choices"] label:last-of-type',
 		).click();
+
+		cy.contains('label', 'Other amount (£)').parent().find('input').clear();
+		cy.contains('label', 'Other amount (£)')
+			.parent()
+			.find('input')
+			.type('11');
+
+		cy.contains(
+			/If you would like to change your monthly amount below £\d{2,3} please call us via the/,
+		).should('exist');
+
+		cy.contains(
+			/£\d{2,3} per month is the new minimum payment to receive this subscription. Please call our customer service team to lower your monthly amount below £\d{2,3} via the Help Centre/,
+		).should('exist');
+
+		cy.contains(
+			/£\d{2,3} per month is the new minimum payment to receive this subscription.$/,
+		).should('exist');
+
+		cy.contains('label', 'Other amount (£)').parent().find('input').clear();
+		cy.contains('label', 'Other amount (£)')
+			.parent()
+			.find('input')
+			.type('16');
 
 		cy.findByText('Change amount').click();
 

@@ -4,6 +4,7 @@ import { breakpoints, from, space } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { fonts } from '@/client/styles/fonts';
 import {
 	featureSwitches,
 	initFeatureSwitchUrlParamOverride,
@@ -16,7 +17,6 @@ import type {
 import { PRODUCT_TYPES } from '../../../shared/productTypes';
 import { abSwitches } from '../../experiments/abSwitches';
 import { tests } from '../../experiments/abTests';
-import { fonts } from '../../styles/fonts';
 import { global } from '../../styles/global';
 import { getCookie } from '../../utilities/cookies';
 import { useAnalytics } from '../../utilities/hooks/useAnalytics';
@@ -132,27 +132,27 @@ const ValueOfSupport = lazy(() =>
 	})),
 );
 
-const SupporterPlusOffer = lazy(() =>
+const CancelAlternativeOffer = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/supporterplus/SupporterPlusOffer'
-	).then(({ SupporterPlusOffer }) => ({
-		default: SupporterPlusOffer,
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeOffer'
+	).then(({ CancelAlternativeOffer }) => ({
+		default: CancelAlternativeOffer,
 	})),
 );
 
-const SupporterPlusOfferReview = lazy(() =>
+const CancelAlternativeReview = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/supporterplus/SupporterPlusOfferReview'
-	).then(({ SupporterPlusOfferReview }) => ({
-		default: SupporterPlusOfferReview,
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeReview'
+	).then(({ CancelAlternativeReview }) => ({
+		default: CancelAlternativeReview,
 	})),
 );
 
-const SupporterPlusOfferConfirmed = lazy(() =>
+const CancelAlternativeConfirmed = lazy(() =>
 	import(
-		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/supporterplus/SupporterPlusOfferConfirmed'
-	).then(({ SupporterPlusOfferConfirmed }) => ({
-		default: SupporterPlusOfferConfirmed,
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeConfirmed'
+	).then(({ CancelAlternativeConfirmed }) => ({
+		default: CancelAlternativeConfirmed,
 	})),
 );
 
@@ -706,17 +706,27 @@ const MMARouter = () => {
 									/>
 									<Route
 										path="offer"
-										element={<SupporterPlusOffer />}
+										element={<CancelAlternativeOffer />}
+									/>
+									<Route
+										path="pause"
+										element={<CancelAlternativeOffer />}
+									/>
+									<Route
+										path="pause-review"
+										element={<CancelAlternativeReview />}
 									/>
 									<Route
 										path="offer-review"
-										element={<SupporterPlusOfferReview />}
+										element={<CancelAlternativeReview />}
 									/>
 									<Route
 										path="offer-confirmed"
-										element={
-											<SupporterPlusOfferConfirmed />
-										}
+										element={<CancelAlternativeConfirmed />}
+									/>
+									<Route
+										path="pause-confirmed"
+										element={<CancelAlternativeConfirmed />}
 									/>
 
 									<Route

@@ -34,11 +34,10 @@ describe('E2E with Okta', () => {
 	context('emails tab', () => {
 		it('should allow the user to update their email preferences', () => {
 			cy.visit('/email-prefs');
-			cy.findByText('Guardian products and support').click();
+			cy.get('[data-cy="similar_guardian_products"]').click();
 			cy.visit('/email-prefs');
-			cy.findByText('Guardian products and support')
-				.parents('div')
-				.get('input[type="checkbox"]')
+			cy.get('[data-cy="similar_guardian_products"]')
+				.find('input[type=checkbox]')
 				.should('be.checked');
 		});
 
@@ -46,7 +45,22 @@ describe('E2E with Okta', () => {
 			cy.visit('/email-prefs');
 			cy.findByText('Unsubscribe from all emails').click();
 			cy.visit('/email-prefs');
-			cy.get('input[type="checkbox"]').should('not.be.checked');
+
+			cy.get('[data-cy="similar_guardian_products"]')
+				.find('input[type=checkbox]')
+				.should('not.be.checked');
+
+			cy.findByText('Your newsletters')
+				.parent()
+				.parent()
+				.find('a')
+				.click({ multiple: true });
+
+			cy.findByText('Your newsletters')
+				.parent()
+				.parent()
+				.find('input[type=checkbox]')
+				.should('not.be.checked');
 		});
 	});
 

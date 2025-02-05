@@ -50,13 +50,13 @@ export const DeliveryRecordsProblemReview = () => {
 	const location = useLocation();
 	const routerState = location.state as DeliveryRecordsRouterState;
 
-	if (!routerState) {
-		return <Navigate to=".." />;
-	}
-
 	const { productDetail } = useContext(
 		DeliveryRecordsContext,
 	) as DeliveryRecordsContextInterface;
+
+	if (!routerState) {
+		return <Navigate to=".." />;
+	}
 
 	const subscription = productDetail.subscription;
 	const isTestUser = productDetail.isTestUser;
@@ -141,7 +141,7 @@ const DeliveryRecordsProblemReviewFC = (
 	const repeatDeliveryProblem = checkForExistingDeliveryProblem(data.results);
 	const subscription = productDetail.subscription;
 	const productName = capitalize(
-		productType.shortFriendlyName || productType.friendlyName(),
+		productType.shortFriendlyName || productType.friendlyName,
 	);
 	const subscriptionCurrency = mainPlan.currency;
 	const deliveryProblemMap = data.deliveryProblemMap;
@@ -616,7 +616,7 @@ const DeliveryRecordsProblemReviewFC = (
 					Submit your report
 				</Button>
 				<Button
-					css={css`
+					cssOverrides={css`
 						${textSans17};
 						background-color: transparent;
 						font-weight: bold;

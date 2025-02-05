@@ -19,7 +19,6 @@ import {
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { getBillingPeriodAdjective } from '../../../../../shared/productTypes';
-import type { CurrencyIso } from '../../../../utilities/currencyIso';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import { getSupporterPlusSuggestedAmountsFromMainPlan } from '../../../../utilities/pricingConfig/suggestedAmounts';
 import { supporterPlusPriceConfigByCountryGroup } from '../../../../utilities/pricingConfig/supporterPlusPricing';
@@ -80,7 +79,13 @@ function validateChoice(
 	} else if (!chosenAmount || isNaN(chosenOptionNum)) {
 		return 'There is a problem with the amount you have selected, please make sure it is a valid amount';
 	} else if (!isNaN(chosenOptionNum) && chosenOptionNum < minAmount) {
-		return `${mainPlan.currency}${minAmount} per ${mainPlan.billingPeriod} is the minimum payment to receive this subscription. Please call our customer service team to lower your ${monthlyOrAnnual} amount below ${mainPlan.currency}${minAmount} via the Help Centre`;
+		return `${mainPlan.currency}${minAmount} per ${
+			mainPlan.billingPeriod
+		} is the ${
+			currentAmount < minAmount ? 'new ' : ''
+		}minimum payment to receive this subscription. Please call our customer service team to lower your ${monthlyOrAnnual} amount below ${
+			mainPlan.currency
+		}${minAmount} via the Help Centre`;
 	} else if (!isNaN(chosenOptionNum) && chosenOptionNum > maxAmount) {
 		return `There is a maximum ${mainPlan.billingPeriod}ly amount of ${mainPlan.currency}${maxAmount} ${mainPlan.currencyISO}`;
 	}
@@ -100,10 +105,12 @@ export const SupporterPlusUpdateAmountForm = (
 	props: SupporterPlusUpdateAmountFormProps,
 ) => {
 	const priceConfig = (supporterPlusPriceConfigByCountryGroup[
-		props.mainPlan.currencyISO as CurrencyIso
+		props.mainPlan.currencyISO
 	] || supporterPlusPriceConfigByCountryGroup.international)[
 		props.mainPlan.billingPeriod
 	];
+	const currentAmountIsBelowNewMin =
+		props.currentAmount < priceConfig.minAmount;
 
 	const minPriceDisplay = `${props.mainPlan.currency}${priceConfig.minAmount}`;
 	const monthlyOrAnnual = getBillingPeriodAdjective(
@@ -135,7 +142,7 @@ export const SupporterPlusUpdateAmountForm = (
 		if (otherAmount !== defaultOtherAmount) {
 			setHasInteractedWithOtherAmount(true);
 		}
-	}, [otherAmount]);
+	}, [otherAmount, defaultOtherAmount]);
 
 	useEffect(() => {
 		const newErrorMessage = validateChoice(
@@ -147,13 +154,22 @@ export const SupporterPlusUpdateAmountForm = (
 			props.mainPlan,
 		);
 		setErrorMessage(newErrorMessage);
-	}, [otherAmount, selectedValue]);
+	}, [
+		otherAmount,
+		selectedValue,
+		chosenAmount,
+		isOtherAmountSelected,
+		priceConfig.minAmount,
+		priceConfig.maxAmount,
+		props.currentAmount,
+		props.mainPlan,
+	]);
 
 	useEffect(() => {
 		if (confirmedAmount) {
 			props.onUpdateConfirmed(confirmedAmount);
 		}
-	}, [confirmedAmount]);
+	}, [confirmedAmount, props]);
 
 	const pendingAmount = Number(
 		isOtherAmountSelected ? otherAmount : selectedValue,
@@ -355,9 +371,12 @@ export const SupporterPlusUpdateAmountForm = (
 								size="medium"
 							/>
 							<p>
-								If you would like to lower your{' '}
-								{monthlyOrAnnual.toLowerCase()} amount below{' '}
-								{minPriceDisplay} please call us via the{' '}
+								If you would like to{' '}
+								{currentAmountIsBelowNewMin
+									? 'change'
+									: 'lower'}{' '}
+								your {monthlyOrAnnual.toLowerCase()} amount
+								below {minPriceDisplay} please call us via the{' '}
 								<Link href="/help-centre#call-us">
 									Help Centre
 								</Link>
@@ -365,7 +384,8 @@ export const SupporterPlusUpdateAmountForm = (
 						</div>
 						<p css={smallPrintCss}>
 							{minPriceDisplay} per {props.mainPlan.billingPeriod}{' '}
-							is the minimum payment to receive this subscription.
+							is the {currentAmountIsBelowNewMin ? 'new ' : ''}
+							minimum payment to receive this subscription.
 						</p>
 					</div>
 				</div>

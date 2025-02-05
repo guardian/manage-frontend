@@ -1,14 +1,16 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import type { CurrencyIso } from '@/client/utilities/currencyIso';
+import type { BillingPeriod } from '@/shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { UpdateAmount } from '../../../components/mma/accountoverview/updateAmount/UpdateAmount';
 
-const mainPlan = (billingPeriod: string) => ({
+const mainPlan = (billingPeriod: BillingPeriod) => ({
 	start: '2019-10-30',
 	end: '2050-10-30',
 	name: '',
 	shouldBeVisible: false,
 	currency: '£',
-	currencyISO: 'GBP',
+	currencyISO: 'GBP' as CurrencyIso,
 	billingPeriod,
 	price: 500,
 	features: '',
@@ -42,7 +44,7 @@ it.each([
 		render(
 			<UpdateAmount
 				subscriptionId="A-123"
-				mainPlan={mainPlan(billingPeriod)}
+				mainPlan={mainPlan(billingPeriod as BillingPeriod)}
 				amountUpdateStateChange={jest.fn()}
 				nextPaymentDate="2050-10-29"
 				productType={productType}
@@ -80,7 +82,7 @@ it.each([
 		render(
 			<UpdateAmount
 				subscriptionId="A-123"
-				mainPlan={mainPlan(billingPeriod)}
+				mainPlan={mainPlan(billingPeriod as BillingPeriod)}
 				amountUpdateStateChange={jest.fn()}
 				nextPaymentDate="2050-10-29"
 				productType={productType}

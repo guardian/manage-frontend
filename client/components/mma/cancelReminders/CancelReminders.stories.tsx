@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import {http, HttpResponse} from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancelReminders } from './CancelReminders';
 
@@ -23,8 +23,10 @@ export const Error: StoryObj<typeof CancelReminders> = {
 
 	parameters: {
 		msw: [
-			rest.post('/api/reminders/cancel', (_req, res, ctx) => {
-				return res(ctx.status(500));
+			http.post('/api/reminders/cancel', () => {
+				return new HttpResponse(null, {
+					status: 500,
+				})
 			}),
 		],
 	},
@@ -37,8 +39,10 @@ export const Success: StoryObj<typeof CancelReminders> = {
 
 	parameters: {
 		msw: [
-			rest.post('/api/reminders/cancel', (_req, res, ctx) => {
-				return res(ctx.status(200));
+			http.post('/api/reminders/cancel', () => {
+				return new HttpResponse(null, {
+					status: 200,
+				})
 			}),
 		],
 	},

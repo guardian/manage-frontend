@@ -28,14 +28,16 @@ type FeatureSwitchName =
 	| 'appSubscriptions'
 	| 'supporterPlusUpdateAmount'
 	| 'digisubSave'
-	| 'cspSecurityAudit'
-	| 'supporterplusCancellationOffer';
+	| 'supporterplusCancellationOffer'
+	| 'contributionCancellationPause'
+	| 'digitalArchiveCta';
 
 export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	exampleFeature: false,
 	appSubscriptions: true,
 	supporterPlusUpdateAmount: true,
 	digisubSave: true,
-	cspSecurityAudit: true,
 	supporterplusCancellationOffer: true,
+	contributionCancellationPause: true,
+	digitalArchiveCta: false,
 };

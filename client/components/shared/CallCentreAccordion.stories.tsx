@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/testing-library';
+import { userEvent, within } from '@storybook/test';
 import { CallCentreAccordion } from './CallCentreAccordion';
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));

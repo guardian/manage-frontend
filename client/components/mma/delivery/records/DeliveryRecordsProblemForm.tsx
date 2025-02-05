@@ -3,9 +3,9 @@ import {
 	from,
 	palette,
 	space,
-	textSans15,
 	textSans17,
 	textSansBold17,
+	textSansItalic15,
 } from '@guardian/source/foundations';
 import { Button, Radio, RadioGroup } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
@@ -42,35 +42,38 @@ export const DeliveryRecordProblemForm = (
 ) => {
 	const [selectedDeliveryProblem, setSelectedDeliveryProblem] =
 		useState<SelectedDeliveryProblem | null>(null);
+
+	const { problemTypes, updateValidationStatusCallback } = props;
+
 	useEffect(() => {
+		const validateForm = () => {
+			if (!selectedDeliveryProblem) {
+				return {
+					isValid: false,
+					message: 'Please select the type of problem',
+				};
+			} else {
+				const deliveryProblem = problemTypes.find(
+					(issue) => issue.label === selectedDeliveryProblem?.value,
+				);
+				const isValid = !(
+					deliveryProblem?.messageIsMandatory &&
+					!selectedDeliveryProblem?.message
+				);
+				return {
+					isValid,
+					...(!isValid && {
+						message: 'Step 1: Please complete the required field.',
+					}),
+				};
+			}
+		};
 		const validateDetails: ValidateDetails = validateForm();
-		props.updateValidationStatusCallback(
+		updateValidationStatusCallback(
 			validateDetails.isValid,
 			validateDetails.message,
 		);
-	}, [selectedDeliveryProblem]);
-	const validateForm = () => {
-		if (!selectedDeliveryProblem) {
-			return {
-				isValid: false,
-				message: 'Please select the type of problem',
-			};
-		} else {
-			const deliveryProblem = props.problemTypes.find(
-				(issue) => issue.label === selectedDeliveryProblem?.value,
-			);
-			const isValid = !(
-				deliveryProblem?.messageIsMandatory &&
-				!selectedDeliveryProblem?.message
-			);
-			return {
-				isValid,
-				...(!isValid && {
-					message: 'Step 1: Please complete the required field.',
-				}),
-			};
-		}
-	};
+	}, [selectedDeliveryProblem]); // eslint-disable-line react-hooks/exhaustive-deps -- disabling here to avoid a re-render loop with the 'problemTypes' and 'updateValidationStatusCallback' props
 	return (
 		<form
 			onSubmit={(event: FormEvent) => {
@@ -127,7 +130,7 @@ export const DeliveryRecordProblemForm = (
 				<RadioGroup
 					name="issue_type"
 					orientation="vertical"
-					css={css`
+					cssOverrides={css`
 						display: block;
 					`}
 				>
@@ -142,7 +145,7 @@ export const DeliveryRecordProblemForm = (
 							}
 						`}
 					>
-						{props.problemTypes.map(
+						{problemTypes.map(
 							(deliveryProblemRadioOption, index) => (
 								<li
 									key={`deliveryProblemRadio-${index}`}
@@ -156,7 +159,7 @@ export const DeliveryRecordProblemForm = (
 										label={capitalize(
 											deliveryProblemRadioOption.label,
 										)}
-										css={css`
+										cssOverrides={css`
 											vertical-align: top;
 											text-transform: lowercase;
 											:checked + div label:first-of-type {
@@ -189,8 +192,7 @@ export const DeliveryRecordProblemForm = (
 													Please specify
 													<span
 														css={css`
-															font-style: italic;
-															${textSans15}
+															${textSansItalic15}
 														`}
 													>
 														{!deliveryProblemRadioOption.messageIsMandatory &&
@@ -279,7 +281,7 @@ export const DeliveryRecordProblemForm = (
 				<>
 					<Button type="submit">Continue to Step 2 &amp; 3</Button>
 					<Button
-						css={css`
+						cssOverrides={css`
 							${textSans17}
 							background-color: transparent;
 							font-weight: bold;

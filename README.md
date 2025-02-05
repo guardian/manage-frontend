@@ -1,8 +1,9 @@
-# manage.theguardian.com
+# Welcome to [manage.theguardian.com](https://manage.theguardian.com) repo!
+🤝 This code is owned by the SR Value team, please feel free to [join our chat room](https://mail.google.com/mail/u/0/#chat/space/AAAAuotUxTg) for advice 🤝
 
-This README contains mainly set-up information.
+💡 This README contains mainly set-up information. 💡
 
-[SEE THE WIKI FOR MAIN DOCUMENTATION!](https://github.com/guardian/manage-frontend/wiki)
+[Please see the wiki for the main documentation](https://github.com/guardian/manage-frontend/wiki)
 
 ## Technologies
 

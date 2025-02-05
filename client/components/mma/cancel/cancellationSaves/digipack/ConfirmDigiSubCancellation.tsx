@@ -48,7 +48,7 @@ function GreyBulletpoint() {
 const BenefitsNotAvailable = () => (
 	<Stack
 		space={4}
-		css={css`
+		cssOverrides={css`
 			background-color: #f3f7fe;
 			border-radius: 4px;
 			padding: ${space[4]}px;
@@ -190,7 +190,7 @@ export const ConfirmDigiSubCancellation = () => {
 					state: { ...routerState, journeyCompleted: true },
 				});
 			}
-		} catch (e) {
+		} catch {
 			setIsSubmitting(false);
 			setLoadingFailed(true);
 		}

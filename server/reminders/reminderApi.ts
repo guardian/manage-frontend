@@ -20,7 +20,7 @@ const getReminderHmacKey = (): Promise<string> =>
 		if (result?.reminderHmacKey) {
 			return result.reminderHmacKey;
 		} else {
-			return Promise.reject('Failed to get reminder Hmac key');
+			return Promise.reject(new Error('Failed to get reminder Hmac key'));
 		}
 	});
 
@@ -51,7 +51,7 @@ const parseCreateReminderRequest = (
 			return { reminderData, token };
 		}
 		return undefined;
-	} catch (err) {
+	} catch {
 		return undefined;
 	}
 };

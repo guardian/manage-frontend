@@ -6,6 +6,28 @@ export function flattenEquivalent<T>(x: T): T {
 	return x;
 }
 
+/*
+ * implementation of the Fisher–Yates Shuffle algorithm
+ * example here: https://bost.ocks.org/mike/shuffle/
+ */
+export const shuffleArray = (array: unknown[]) => {
+	let currentIndex = array.length;
+
+	// While there remain elements to shuffle...
+	while (currentIndex != 0) {
+		// Pick a remaining element...
+		const randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex--;
+
+		// And swap it with the current element.
+		[array[currentIndex], array[randomIndex]] = [
+			array[randomIndex],
+			array[currentIndex],
+		];
+	}
+	return array;
+};
+
 export function formatAmount(amount: number) {
 	return Number.isInteger(amount) ? amount : amount.toFixed(2);
 }

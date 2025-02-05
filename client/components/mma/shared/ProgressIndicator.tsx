@@ -8,7 +8,7 @@ interface Step {
 	isCurrentStep?: true;
 }
 
-interface ProgressIndicatorProps {
+export interface ProgressIndicatorProps {
 	steps: [Step, Step, ...Step[]];
 	additionalCSS?: SerializedStyles;
 }

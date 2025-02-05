@@ -46,7 +46,7 @@ export function useAsyncLoader<T>(
 				})
 				.catch((e) => handleError(e));
 		}
-	}, [loadingState]);
+	}, [loadingState, asyncFetch, responseProcessor]);
 
 	return { data, error, loadingState };
 }

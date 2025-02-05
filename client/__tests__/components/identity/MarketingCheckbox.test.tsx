@@ -26,7 +26,7 @@ describe('MarketingCheckbox component', () => {
 		render(marketingCheckbox(false));
 
 		const checkboxRoles = screen.getAllByRole('checkbox');
-		expect(checkboxRoles).toHaveLength(2);
+		expect(checkboxRoles).toHaveLength(1);
 		checkboxRoles.map((role) => expect(role).not.toBeChecked());
 
 		expect(screen.getByText('Test title')).toBeVisible();

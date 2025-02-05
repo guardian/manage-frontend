@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { space, textSans12 } from '@guardian/source/foundations';
 import * as Sentry from '@sentry/browser';
 import { Link } from 'react-router-dom';
+import type { BillingPeriod } from '@/shared/productResponse';
 import { getBillingPeriodAdjective } from '../../../../shared/productTypes';
 import {
 	convertCurrencyToSymbol,
@@ -29,7 +30,7 @@ export const SupporterPlusTsAndCs = ({
 	billingPeriod,
 }: {
 	currencyISO: string;
-	billingPeriod: string;
+	billingPeriod: BillingPeriod;
 }) => {
 	if (!isCurrencyIso(currencyISO)) {
 		Sentry.captureException(`Invalid currency: ${currencyISO}`);

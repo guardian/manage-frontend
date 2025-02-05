@@ -1,3 +1,4 @@
+import { shuffleArray } from '@/client/utilities/utils';
 import type { CancellationReason } from '../cancellationReason';
 import { BreakFromNewsWithGW, PaymentIssue } from '../GenericSaveBodyResponses';
 
@@ -75,6 +76,9 @@ export const membershipCancellationReasons: CancellationReason[] = [
 			'If there’s anything we can do differently please take a moment to give us some feedback',
 		],
 	},
+];
+
+export const otherCancellationReason: CancellationReason[] = [
 	{
 		reasonId: 'mma_other',
 		linkLabel: 'Other',
@@ -84,4 +88,9 @@ export const membershipCancellationReasons: CancellationReason[] = [
 			'If there’s anything we can do differently please take a moment to give us some feedback',
 		],
 	},
+];
+
+export const shuffledMembershipCancellationReasons: CancellationReason[] = [
+	...(shuffleArray(membershipCancellationReasons) as CancellationReason[]),
+	...otherCancellationReason,
 ];

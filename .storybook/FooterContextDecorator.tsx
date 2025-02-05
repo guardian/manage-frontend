@@ -1,8 +1,8 @@
-import { DecoratorFn } from '@storybook/react';
+import { Decorator } from '@storybook/react';
 import { HasMinimalFooterContext } from '../client/components/shared/Main';
 import { useState } from 'react';
 
-export const FooterContextDecorator: DecoratorFn = (Story, context) => {
+export const FooterContextDecorator: Decorator = (Story, context) => {
 	const [_, setHasMinimalFooter] = useState<boolean>(false);
 
 	return (

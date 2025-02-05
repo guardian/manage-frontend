@@ -3,14 +3,22 @@ const path = require('path');
 
 module.exports = {
 	stories: ['../client/**/*.stories.@(js|jsx|ts|tsx)'],
-	addons: ['@storybook/addon-essentials'],
+
+	addons: [
+		'@storybook/addon-essentials',
+		'@storybook/addon-webpack5-compiler-babel',
+		'@chromatic-com/storybook',
+	],
+
 	framework: {
 		name: '@storybook/react-webpack5',
 		options: {},
 	},
-	docs: {
-		autodocs: false,
-	},
+
+	docs: {},
+
+	staticDirs: ['./static'],
+
 	webpackFinal: async (config, { configType }) => {
 		config.module.rules.push({
 			test: /\.(ts|tsx)$/,
@@ -53,5 +61,9 @@ module.exports = {
 			'@': path.resolve(__dirname, '../'),
 		};
 		return config;
+	},
+
+	typescript: {
+		reactDocgen: 'react-docgen-typescript',
 	},
 };

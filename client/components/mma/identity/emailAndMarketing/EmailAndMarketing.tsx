@@ -14,7 +14,7 @@ import type {
 	ProductDetail,
 	SingleProductDetail,
 } from '../../../../../shared/productResponse';
-import { GROUPED_PRODUCT_TYPES } from '../../../../../shared/productTypes';
+import { getSpecificProductTypeFromTier } from '../../../../../shared/productResponse';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import {
 	allRecurringProductsDetailFetcher,
@@ -139,7 +139,7 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 			}
 		};
 		makeInitialAPICalls();
-	}, []);
+	}, [dispatch, error, options]);
 
 	const newsletters = ConsentOptions.newsletters(state.options);
 	const consents = ConsentOptions.consents(state.options);
@@ -151,7 +151,7 @@ export const EmailAndMarketing = (_: { path?: string }) => {
 		if (state.error && errorRef.current) {
 			window.scrollTo(0, errorRef.current.offsetTop - 20);
 		}
-	}, [state.error]);
+	}, [state.error, errorRef]);
 
 	const errorMessage = (
 		<WithStandardTopMargin>
@@ -220,10 +220,9 @@ function userHasProductWithConsent(
 	consent: ConsentOption,
 ) {
 	return productDetails.some((productDetail) => {
-		const groupedProductType =
-			GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
-		const specificProductType =
-			groupedProductType.mapGroupedToSpecific(productDetail);
+		const specificProductType = getSpecificProductTypeFromTier(
+			productDetail.tier,
+		);
 		return specificProductType.softOptInIDs.includes(consent.id);
 	});
 }

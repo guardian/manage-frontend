@@ -87,7 +87,7 @@ export function useFetch<T = unknown>(
 		return () => {
 			cancelRequest.current = true;
 		};
-	}, [url]);
+	}, [url]); // eslint-disable-line react-hooks/exhaustive-deps -- disabling here to avoid a re-render loop with the 'options' parameter
 
 	return state;
 }

@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { space } from '@guardian/source/foundations';
+import type { BillingPeriod } from '@/shared/productResponse';
 import { getBillingPeriodAdjective } from '../../../../shared/productTypes';
 import { formatAmount } from '../../../utilities/utils';
 
@@ -15,7 +16,7 @@ export const SwitchPaymentInfo = ({
 	alreadyPayingAboveThreshold: boolean;
 	currencySymbol: string;
 	supporterPlusPurchaseAmount: number;
-	billingPeriod: string;
+	billingPeriod: BillingPeriod;
 	nextPaymentDate: string;
 }) => {
 	const monthlyOrAnnual =

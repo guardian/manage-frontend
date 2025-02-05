@@ -47,7 +47,7 @@ const AddressConfirmation = (props: ProductType) => {
 		AddressChangedInformationContext,
 	);
 
-	const productName = props.friendlyName();
+	const productName = props.friendlyName;
 
 	if (isAddress(addressContext.addressStateObject)) {
 		productDetail.subscription.deliveryAddress = {

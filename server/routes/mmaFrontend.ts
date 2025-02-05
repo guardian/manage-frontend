@@ -1,8 +1,9 @@
 import type { Request, Response } from 'express';
 import { Router } from 'express';
 import { conf } from '../config';
-import { html } from '../html';
+import { htmlAndScriptHashes } from '../html';
 import { withIdentity } from '../middleware/identityMiddleware';
+import { createCsp } from '../server';
 import { csrfValidateMiddleware } from '../util';
 import {
 	clientDSN,
@@ -23,19 +24,27 @@ router.use(withIdentity(), async (req: Request, res: Response) => {
 		sameSite: 'strict',
 	});
 
-	res.send(
-		html({
-			title,
-			src,
-			globals: {
-				domain: conf.DOMAIN,
-				dsn: clientDSN,
-				identityDetails: res.locals.identity,
-				recaptchaPublicKey: await getRecaptchaPublicKey(),
-				...(await getStripePublicKeys()),
-			},
-		}),
-	);
+	const htmlStrAndScriptHashes = htmlAndScriptHashes({
+		title,
+		src,
+		globals: {
+			domain: conf.DOMAIN,
+			dsn: clientDSN,
+			identityDetails: res.locals.identity,
+			recaptchaPublicKey: await getRecaptchaPublicKey(),
+			...(await getStripePublicKeys()),
+		},
+	});
+
+	res.set({
+		'Report-To':
+			'{ "group": "csp-endpoint", "endpoints": [ { "url": "/api/csp-audit-report-endpoint" } ] }',
+		'Content-Security-Policy-Report-Only': createCsp(
+			htmlStrAndScriptHashes.hashes,
+		),
+	});
+
+	res.send(htmlStrAndScriptHashes.body);
 });
 
 export { router };

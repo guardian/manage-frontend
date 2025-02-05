@@ -1,3 +1,4 @@
+import { shuffleArray } from '@/client/utilities/utils';
 import {
 	inOrderToImproveSubs,
 	standardAlternateFeedbackIntro,
@@ -86,10 +87,18 @@ export const voucherCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’ve had problems redeeming my vouchers',
 		alternateFeedbackIntro: inOrderToImproveSubs,
 	},
+];
+
+export const otherCancellationReason: CancellationReason[] = [
 	{
 		reasonId: 'mma_other',
 		linkLabel: 'None of the above',
 		saveTitle: 'Other',
 		alternateFeedbackIntro: inOrderToImproveSubs,
 	},
+];
+
+export const shuffledVoucherCancellationReasons: CancellationReason[] = [
+	...(shuffleArray(voucherCancellationReasons) as CancellationReason[]),
+	...otherCancellationReason,
 ];

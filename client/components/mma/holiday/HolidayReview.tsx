@@ -1,18 +1,20 @@
 import { css } from '@emotion/react';
-import { space, until } from '@guardian/source/foundations';
-import { Button, InlineError } from '@guardian/source/react-components';
+import { space, textSans14, until } from '@guardian/source/foundations';
+import {
+	Button,
+	Checkbox,
+	InlineError,
+} from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import type { DateRange } from '../../../../shared/dates';
 import { DATE_FNS_INPUT_FORMAT, dateString } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
-import { sans } from '../../../styles/fonts';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 import { InfoIcon } from '../shared/assets/InfoIcon';
 import { LinkButton } from '../shared/Buttons';
-import { Checkbox } from '../shared/Checkbox';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
 import { buttonBarCss, cancelLinkCss } from './HolidayDateChooser';
 import {
@@ -73,7 +75,12 @@ const getPerformCreateOrAmendFetcher =
 
 const getRenderCreateOrAmendError = (modificationKeyword: string) => () =>
 	(
-		<div css={{ textAlign: 'left', marginTop: '10px' }}>
+		<div
+			css={css`
+				text-align: left;
+				margin-top: 10px;
+			`}
+		>
 			<h2>
 				Sorry, {modificationKeyword} your holiday suspension failed.
 			</h2>
@@ -121,7 +128,11 @@ export const HolidayReview = () => {
 						annualIssueLimit={holidayStopsResponse.annualIssueLimit}
 						holidayStopFlowProperties={productType.holidayStops}
 					/>
-					<div css={{ height: '25px' }} />
+					<div
+						css={css`
+							height: 25px;
+						`}
+					/>
 					<SummaryTable
 						data={{ selectedRange, publicationsImpacted }}
 						alternateSuspendedColumnHeading="To be suspended"
@@ -132,33 +143,34 @@ export const HolidayReview = () => {
 					{productType.holidayStops.explicitConfirmationRequired && (
 						<>
 							<div
-								css={{
-									marginTop: '20px',
-									marginBottom: '10px',
-								}}
+								css={css`
+									margin-top: 20px;
+									margin-bottom: 10px;
+								`}
 							>
 								<Checkbox
-									checked={isCheckboxConfirmed}
-									onChange={(newValue) =>
-										setIsCheckboxConfirmed(newValue)
-									}
 									label={
 										productType.holidayStops
 											.explicitConfirmationRequired
 											.checkboxLabel
 									}
+									checked={isCheckboxConfirmed}
+									onChange={() => {
+										setIsCheckboxConfirmed(
+											!isCheckboxConfirmed,
+										);
+									}}
 								/>
 							</div>
 							<Modal
 								instigator={
 									<a
-										css={{
-											fontFamily: sans,
-											fontSize: '14px',
-											cursor: 'pointer',
-											textDecoration: 'underline',
-											margin: '10px',
-										}}
+										css={css`
+											${textSans14};
+											cursor: pointer;
+											text-decoration: underline;
+											margin: 10px;
+										`}
 									>
 										<InfoIcon />
 										Tell me more
@@ -182,7 +194,12 @@ export const HolidayReview = () => {
 					)}
 				</div>
 				{isExecuting ? (
-					<div css={{ marginTop: '40px', textAlign: 'right' }}>
+					<div
+						css={css`
+							margin-top: 40px;
+							text-align: right;
+						`}
+					>
 						<CreateOrAmendHolidayStopsAsyncLoader
 							fetch={getPerformCreateOrAmendFetcher(
 								selectedRange,
@@ -212,24 +229,19 @@ export const HolidayReview = () => {
 					</div>
 				) : (
 					<div
-						css={[
-							buttonBarCss,
-							{
-								justifyContent: 'flex-end',
-								marginTop: '20px',
-								[until.mobileMedium]: {
-									flexDirection: 'column',
-									marginTop: 0,
-								},
+						css={css`
+							margin-top: ${space[5]}px;
+							${until.mobileMedium} {
+								margin-top: 0;
 							},
-						]}
+						`}
 					>
 						<div
 							css={[
 								buttonBarCss,
-								{
-									marginTop: '20px',
-								},
+								css`
+									margin-top: ${space[5]}px;
+								`,
 							]}
 						>
 							<Link
@@ -253,7 +265,11 @@ export const HolidayReview = () => {
 						{!!productType.holidayStops
 							.explicitConfirmationRequired &&
 							!isCheckboxConfirmed && (
-								<InlineError>
+								<InlineError
+									cssOverrides={css`
+										margin-top: ${space[3]}px;
+									`}
+								>
 									Please confirm you will destroy the affected
 									vouchers by checking the box.
 								</InlineError>

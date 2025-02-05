@@ -1,5 +1,5 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
 import { guardianWeeklyPaidByCard } from '@/client/fixtures/productBuilder/testProducts';
@@ -23,12 +23,8 @@ export default {
 			),
 		},
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(guardianWeeklyPaidByCard()),
-					),
-				);
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse(guardianWeeklyPaidByCard()))
 			}),
 		],
 	},
@@ -55,15 +51,13 @@ export const Confirmation: StoryObj<typeof DeliveryAddressConfirmation> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(guardianWeeklyPaidByCard()),
-					),
-				);
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse(guardianWeeklyPaidByCard()))
 			}),
-			rest.put('/api/delivery/address/update/*', (_req, res, ctx) => {
-				return res(ctx.status(200));
+			http.put('/api/delivery/address/update/*', () => {
+				return new HttpResponse(null, {
+					status: 200,
+				})
 			}),
 		],
 	},

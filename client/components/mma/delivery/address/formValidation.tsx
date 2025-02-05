@@ -37,9 +37,8 @@ export const isFormValid = (
 		isPostcodeInM25(formData.postcode);
 
 	const enteredPostcodeIsInValidArea =
-		!subscriptionsNames.includes(
-			PRODUCT_TYPES.homedelivery.friendlyName(),
-		) || enteredPostcodeIsInM25;
+		!subscriptionsNames.includes(PRODUCT_TYPES.homedelivery.friendlyName) ||
+		enteredPostcodeIsInM25;
 
 	const postcode = {
 		isValid: postcodeEnteredCheck && enteredPostcodeIsInValidArea,
@@ -50,7 +49,7 @@ export const isFormValid = (
 	};
 
 	const userHasVoucherSubscription = subscriptionsNames.includes(
-		PRODUCT_TYPES.voucher.friendlyName(),
+		PRODUCT_TYPES.voucher.friendlyName,
 	);
 
 	const country = {

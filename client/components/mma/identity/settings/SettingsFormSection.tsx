@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import { from, palette } from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import type { FormikProps, FormikState } from 'formik';
 import { Form, withFormik } from 'formik';
 import type { FC } from 'react';
-import { Button } from '../../shared/Buttons';
 import {
 	FormEmailField,
 	FormSelectField,
@@ -122,13 +122,13 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 	);
 	const deletePhoneNumberButton = (
 		<Button
-			text="Delete Phone Number"
-			type="button"
 			onClick={async () => {
 				const response = await deletePhoneNumber();
 				props.resetForm({ values: response });
 			}}
-		/>
+		>
+			Delete Phone Number
+		</Button>
 	);
 	return (
 		<Form>
@@ -258,10 +258,10 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 			<PageSection>
 				<Button
 					disabled={props.isSubmitting}
-					text="Save changes"
-					type="button"
 					onClick={() => props.submitForm()}
-				/>
+				>
+					Save changes
+				</Button>
 			</PageSection>
 		</Form>
 	);

@@ -65,7 +65,7 @@ export const TopicForm = (props: TopicFormProps) => {
 			</div>
 			{requiresSubmitButton && (
 				<Button
-					css={css`
+					cssOverrides={css`
 						margin-top: ${space[6]}px;
 					`}
 					onClick={() => {

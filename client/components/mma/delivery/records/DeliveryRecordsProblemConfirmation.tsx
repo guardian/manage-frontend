@@ -247,7 +247,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 						<dt css={dtCss}>Product:</dt>
 						<dd css={ddCss}>
 							{productType.shortFriendlyName ||
-								productType.friendlyName()}
+								productType.friendlyName}
 						</dd>
 					</div>
 					<div>
@@ -431,7 +431,7 @@ const DeliveryRecordsProblemConfirmationFC = (
 					</section>
 				)}
 			<LinkButton
-				css={css`
+				cssOverrides={css`
 					margin-top: ${space[3]}px;
 					${from.tablet} {
 						margin-top: ${space[5]}px;

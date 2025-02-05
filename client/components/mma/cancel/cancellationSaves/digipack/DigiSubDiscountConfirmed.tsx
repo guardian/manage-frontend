@@ -65,7 +65,7 @@ export const DigiSubDiscountConfirmed = () => {
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Your subscription');
-	}, []);
+	}, [pageTitleContext]);
 
 	if (!discountedPrice) {
 		const message = 'No discounted price found in router state';

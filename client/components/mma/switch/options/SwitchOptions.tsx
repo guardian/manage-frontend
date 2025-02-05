@@ -130,6 +130,32 @@ export const SwitchOptions = () => {
 
 	const navigate = useNavigate();
 
+	if (contributionToSwitch.tier === 'Supporter Plus') {
+		return (
+			<section css={sectionSpacing}>
+				<ErrorSummary
+					cssOverrides={errorSummaryOverrideCss}
+					message="There is a problem with your subscription type"
+					context={
+						<>
+							Your subscription does not allow you to perform this
+							switch.
+							<Link
+								css={[
+									errorSummaryLinkCss,
+									errorSummaryBlockLinkCss,
+								]}
+								to="/"
+							>
+								Return to account overview
+							</Link>
+						</>
+					}
+				/>
+			</section>
+		);
+	}
+
 	return (
 		<>
 			{contributionToSwitch.alertText && (

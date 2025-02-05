@@ -62,7 +62,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 					{!props.instructions && props.showEditButton && (
 						<Button
 							onClick={() => props.editButtonCallback?.()}
-							css={css`
+							cssOverrides={css`
 								display: block;
 								margin-top: ${space[5]}px;
 								color: ${palette.brand[400]};
@@ -104,7 +104,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 						{props.showEditButton && (
 							<Button
 								onClick={() => props.editButtonCallback?.()}
-								css={css`
+								cssOverrides={css`
 									display: block;
 									margin-top: ${space[5]}px;
 									color: ${palette.brand[400]};
