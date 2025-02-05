@@ -3,6 +3,7 @@ import {
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../shared/identity';
 import type { ProductDetail } from '../../shared/productResponse';
+import { MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import type { ProductSwitchType } from '../../shared/productSwitchTypes';
 import type {
 	AllProductsProductTypeFilterString,
@@ -24,6 +25,7 @@ export const productMoveFetch = (
 	productSwitchType: ProductSwitchType,
 	checkChargeAmountBeforeUpdate: boolean,
 	preview: boolean,
+	isTestUser: boolean,
 ) =>
 	fetch(`/api/product-move/${productSwitchType}/${subscriptionId}`, {
 		method: 'POST',
@@ -34,6 +36,7 @@ export const productMoveFetch = (
 		}),
 		headers: {
 			'Content-Type': 'application/json',
+			[MDA_TEST_USER_HEADER]: `${isTestUser}`,
 		},
 	});
 

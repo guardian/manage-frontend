@@ -261,7 +261,7 @@ export const ConfirmForm = ({
 	previewResponse,
 	previewLoadingState,
 }: ConfirmFormProps) => {
-	const { mainPlan, subscription, inPaymentFailure } = useContext(
+	const { mainPlan, subscription, inPaymentFailure, isTestUser } = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
@@ -334,6 +334,7 @@ export const ConfirmForm = ({
 					'recurring-contribution-to-supporter-plus',
 					checkChargeAmount,
 					false,
+					isTestUser,
 				).then((r) => JsonResponseHandler(r));
 
 				if (data === null) {

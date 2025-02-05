@@ -21,7 +21,7 @@ import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 export const UpgradeSupport = () => {
-	const { mainPlan, subscription } = useContext(
+	const { mainPlan, subscription, isTestUser } = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
@@ -48,6 +48,7 @@ export const UpgradeSupport = () => {
 					'recurring-contribution-to-supporter-plus',
 					false,
 					true,
+					isTestUser,
 				),
 			JsonResponseHandler,
 		);
