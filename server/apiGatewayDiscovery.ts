@@ -149,7 +149,13 @@ const getApiGateway = (
 				shouldNotLogBody?: boolean,
 			) =>
 			async (req: express.Request, res: express.Response) => {
-				const isTestUser = req.header(MDA_TEST_USER_HEADER) === 'true';
+				const testUserHeader = req.header(MDA_TEST_USER_HEADER);
+				if (testUserHeader === undefined) {
+					log.error(
+						`${path} request will not work for test users - missing ${MDA_TEST_USER_HEADER} header`,
+					);
+				}
+				const isTestUser = testUserHeader === 'true';
 				const { host, apiKey } = await (isTestUser
 					? testModeConfigPromise
 					: normalModeConfigPromise);
