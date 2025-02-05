@@ -150,7 +150,10 @@ const getApiGateway = (
 			) =>
 			async (req: express.Request, res: express.Response) => {
 				const testUserHeader = req.header(MDA_TEST_USER_HEADER);
-				if (!['true', 'false'].includes(testUserHeader ?? '')) {
+				if (
+					testUserHeader === undefined ||
+					!['true', 'false'].includes(testUserHeader)
+				) {
 					log.error(
 						`${path} request will not work for test users - missing ${MDA_TEST_USER_HEADER} header: '${testUserHeader}'`,
 					);
