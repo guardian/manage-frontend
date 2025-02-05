@@ -28,6 +28,7 @@ export interface UpgradeSupportInterface {
 	subscription: Subscription;
 	inPaymentFailure: boolean;
 	user?: MembersDataApiUser;
+	isTestUser: boolean;
 }
 
 export interface UpgradeRouterState {
@@ -127,6 +128,7 @@ export const UpgradeSupportContainer = () => {
 					subscription: contribution.subscription,
 					inPaymentFailure,
 					user: data.user,
+					isTestUser: contribution.isTestUser,
 				}}
 			>
 				<Outlet />
