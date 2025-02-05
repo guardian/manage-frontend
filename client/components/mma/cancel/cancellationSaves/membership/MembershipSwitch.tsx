@@ -13,7 +13,9 @@ import { Navigate, useLocation, useNavigate } from 'react-router';
 import { dateString, parseDate } from '../../../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
-	Subscription,
+	Subscription} from '../../../../../../shared/productResponse';
+import {
+	MDA_TEST_USER_HEADER
 } from '../../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../../shared/productResponse';
 import type { ProductSwitchType } from '../../../../../../shared/productSwitchTypes';
@@ -232,6 +234,7 @@ export const MembershipSwitch = () => {
 				}),
 				headers: {
 					'Content-Type': 'application/json',
+					[MDA_TEST_USER_HEADER]: `${membership.isTestUser}`,
 				},
 			},
 		);

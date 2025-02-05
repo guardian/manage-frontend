@@ -16,6 +16,7 @@ import {
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { SwitchErrorSummary } from '@/client/components/shared/productSwitch/SwitchErrorSummary';
+import { MDA_TEST_USER_HEADER } from '@/shared/productResponse';
 import { dateString } from '../../../../../shared/dates';
 import type {
 	PreviewResponse,
@@ -127,6 +128,7 @@ export const SwitchReview = () => {
 				}),
 				headers: {
 					'Content-Type': 'application/json',
+					[MDA_TEST_USER_HEADER]: `${contributionToSwitch.isTestUser}`,
 				},
 			},
 		);
