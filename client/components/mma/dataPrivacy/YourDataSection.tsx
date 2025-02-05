@@ -50,20 +50,12 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 		<>
 			<h3 css={dataPrivacyHeadingCss}>Your account data</h3>
 			<p css={dataPrivacyParagraphCss}>
-				What we mean by your account data
+				What we mean by your account data is information you provide
+				when you create an account:
 			</p>
 			<ul css={dataPrivacyUnorderedListCss}>
-				<li>
-					Information you provide when you register with us e.g. email
-					address
-				</li>
-				<li>
-					Information about the products or services you buy from us
-				</li>
-				<li>
-					Pages you view on theguardian.com or other Guardian websites
-					when signed in and your region
-				</li>
+				<li>First name and last name</li>
+				<li>Email address</li>
 			</ul>
 
 			<Lines n={1} />

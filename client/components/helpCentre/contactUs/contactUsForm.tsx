@@ -112,34 +112,6 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 			},
 		});
 
-	useEffect(() => {
-		if (window.grecaptcha) {
-			renderReCaptcha();
-		} else {
-			const script = document.createElement('script');
-			script.setAttribute(
-				'src',
-				'https://www.google.com/recaptcha/api.js?onload=v2ReCaptchaOnLoadCallback&render=explicit',
-			);
-			// tslint:disable-next-line:no-object-mutation
-			window.v2ReCaptchaOnLoadCallback = renderReCaptcha;
-			document.head.appendChild(script);
-		}
-	}, []);
-
-	useEffect(() => {
-		if (!formValidationState.fileAttachment.isValid) {
-			validateForm();
-		}
-	}, [fileAttachment]);
-
-	const renderReCaptcha = () => {
-		window.grecaptcha.render('recaptcha', {
-			sitekey: window.guardian?.recaptchaPublicKey,
-			callback: (token: string) => setCaptchaToken(token),
-		});
-	};
-
 	const validateForm = () => {
 		const isNameValid = !!name.length;
 		const isEmailValid = isEmail(email);
@@ -178,6 +150,34 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 			},
 		});
 		return isFormInValidState;
+	};
+
+	useEffect(() => {
+		if (window.grecaptcha) {
+			renderReCaptcha();
+		} else {
+			const script = document.createElement('script');
+			script.setAttribute(
+				'src',
+				'https://www.google.com/recaptcha/api.js?onload=v2ReCaptchaOnLoadCallback&render=explicit',
+			);
+			// tslint:disable-next-line:no-object-mutation
+			window.v2ReCaptchaOnLoadCallback = renderReCaptcha;
+			document.head.appendChild(script);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (!formValidationState.fileAttachment.isValid) {
+			validateForm();
+		}
+	});
+
+	const renderReCaptcha = () => {
+		window.grecaptcha.render('recaptcha', {
+			sitekey: window.guardian?.recaptchaPublicKey,
+			callback: (token: string) => setCaptchaToken(token),
+		});
 	};
 
 	return (

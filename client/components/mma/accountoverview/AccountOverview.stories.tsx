@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
-import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
-import { featureSwitches } from '../../../../shared/featureSwitches';
+import { http, HttpResponse } from 'msw';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import { featureSwitches } from '@/shared/featureSwitches';
 import {
 	cancelledContribution,
 	cancelledGuardianWeekly,
@@ -23,10 +23,12 @@ import {
 	guardianWeeklyPaidByCard,
 	membershipSupporter,
 	newspaperVoucherPaidByPaypal,
+	patronMembership,
 	supporterPlus,
 	supporterPlusAnnualCancelled,
 	supporterPlusCancelled,
 	supporterPlusInOfferPeriod,
+	supporterPlusUSA,
 	tierThree,
 } from '../../../fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../fixtures/singleContribution';
@@ -51,20 +53,20 @@ export const NoSubscription: StoryObj<typeof AccountOverview> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/cancelled/', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(ctx.json({ subscriptions: [] }));
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
 			}),
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(ctx.json(toMembersDataApiResponse()));
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse());
 			}),
-			rest.get('/idapi/user', (_req, res, ctx) => {
-				return res(ctx.json(user));
+			http.get('/idapi/user', () => {
+				return HttpResponse.json(user);
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
 			}),
 		],
 	},
@@ -77,28 +79,52 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/cancelled/', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(ctx.json({ subscriptions: [] }));
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
 			}),
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(
-							guardianWeeklyPaidByCard(),
-							digitalPackPaidByDirectDebit(),
-							newspaperVoucherPaidByPaypal(),
-							membershipSupporter(),
-							supporterPlus(),
-							tierThree(),
-						),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(
+						guardianWeeklyPaidByCard(),
+						digitalPackPaidByDirectDebit(),
+						newspaperVoucherPaidByPaypal(),
+						membershipSupporter(),
+						patronMembership(),
+						supporterPlus(),
+						tierThree(),
 					),
 				);
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
+			}),
+		],
+	},
+};
+
+export const WithUSASubscription: StoryObj<typeof AccountOverview> = {
+	render: () => {
+		return <AccountOverview />;
+	},
+
+	parameters: {
+		msw: [
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
+			}),
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
+			}),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(supporterPlusUSA()),
+				);
+			}),
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
 			}),
 		],
 	},
@@ -113,21 +139,19 @@ export const WithContributionAndSwitchPossible: StoryObj<
 
 	parameters: {
 		msw: [
-			rest.get('/api/cancelled/', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(ctx.json({ subscriptions: [] }));
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
 			}),
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(contributionPaidByPayPal()),
-					),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(contributionPaidByPayPal()),
 				);
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
 			}),
 		],
 	},
@@ -142,24 +166,22 @@ export const WithContributionInPaymentFailure: StoryObj<
 
 	parameters: {
 		msw: [
-			rest.get('/api/cancelled/', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(ctx.json({ subscriptions: [] }));
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
 			}),
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(
-							contributionPaymentFailure,
-							supporterPlus(),
-						),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(
+						contributionPaymentFailure,
+						supporterPlus(),
 					),
 				);
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
 			}),
 		],
 	},
@@ -179,24 +201,22 @@ export const WithContributionAndSwitchNotPossible: StoryObj<
 
 	parameters: {
 		msw: [
-			rest.get('/api/cancelled/', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(ctx.json({ subscriptions: [] }));
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
 			}),
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(
-							contributionPaidByPayPal(),
-							digitalPackPaidByDirectDebit(),
-						),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(
+						contributionPaidByPayPal(),
+						digitalPackPaidByDirectDebit(),
 					),
 				);
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
 			}),
 		],
 	},
@@ -209,29 +229,28 @@ export const WithCancelledSubscriptions: StoryObj<typeof AccountOverview> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/cancelled/', (_req, res, ctx) => {
-				return res(
-					ctx.json([cancelledContribution, cancelledGuardianWeekly]),
-				);
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([
+					cancelledContribution,
+					cancelledGuardianWeekly,
+				]);
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(ctx.json({ subscriptions: [] }));
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
 			}),
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(
-							contributionCancelled(),
-							guardianWeeklyCancelled(),
-							supporterPlusCancelled(),
-							supporterPlusAnnualCancelled(),
-							tierThree(),
-						),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(
+						contributionCancelled(),
+						guardianWeeklyCancelled(),
+						supporterPlusCancelled(),
+						supporterPlusAnnualCancelled(),
+						tierThree(),
 					),
 				);
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
 			}),
 		],
 	},
@@ -244,24 +263,22 @@ export const WithGiftSubscriptions: StoryObj<typeof AccountOverview> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/cancelled/', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(ctx.json({ subscriptions: [] }));
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
 			}),
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(
-							guardianWeeklyGiftRecipient(),
-							guardianWeeklyGiftPurchase(),
-						),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(
+						guardianWeeklyGiftRecipient(),
+						guardianWeeklyGiftPurchase(),
 					),
 				);
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
 			}),
 		],
 	},
@@ -274,26 +291,24 @@ export const WithAppSubscriptions: StoryObj<typeof AccountOverview> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/cancelled/', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(
-					ctx.json({
-						subscriptions: [
-							CancelledInAppPurchase,
-							InAppPurchaseIos,
-							PuzzleAppPurchaseAndroid,
-							PuzzleAppPurchaseIos,
-						],
-					}),
-				);
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({
+					subscriptions: [
+						CancelledInAppPurchase,
+						InAppPurchaseIos,
+						PuzzleAppPurchaseAndroid,
+						PuzzleAppPurchaseIos,
+					],
+				});
 			}),
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(ctx.json(toMembersDataApiResponse()));
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse());
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
 			}),
 		],
 	},
@@ -306,21 +321,17 @@ export const WithSingleContribution: StoryObj<typeof AccountOverview> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/cancelled/', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(
-					ctx.json({
-						subscriptions: [],
-					}),
-				);
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
 			}),
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(ctx.json(toMembersDataApiResponse()));
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse());
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json(singleContributionsAPIResponse));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json(singleContributionsAPIResponse);
 			}),
 		],
 	},
@@ -333,21 +344,19 @@ export const WithSupporterPlusDuringOffer: StoryObj<typeof AccountOverview> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/cancelled/', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(ctx.json({ subscriptions: [] }));
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
 			}),
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(supporterPlusInOfferPeriod()),
-					),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(supporterPlusInOfferPeriod()),
 				);
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
 			}),
 		],
 	},

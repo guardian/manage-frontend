@@ -38,7 +38,7 @@ export const useAnalytics = () => {
 				setCmpIsInitialised(true);
 			});
 		});
-	}, []);
+	}, [qmIsInitialised]);
 
 	useEffect(() => {
 		if (!cmpIsInitialised) {

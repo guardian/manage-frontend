@@ -1,28 +1,38 @@
 import { css } from '@emotion/react';
-import { palette, space, until } from '@guardian/source/foundations';
+import {
+	palette,
+	space,
+	textSans14,
+	until,
+} from '@guardian/source/foundations';
 import {
 	Button,
 	InlineError,
+	Spinner,
 	SvgArrowRightStraight,
-	SvgSpinner,
 } from '@guardian/source/react-components';
 import type { ChangeEvent, FC } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
+import type {
+	DiscountPeriodType,
+	DiscountPreviewResponse,
+} from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
+import type { TrueFalsePending } from '@/shared/generalTypes';
+import { appendCorrectPluralisation } from '@/shared/generalTypes';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import type {
 	ProductTypeWithCancellationFlow,
 	WithProductType,
 } from '../../../../shared/productTypes';
-import { sans } from '../../../styles/fonts';
 import { measure } from '../../../styles/typography';
 import { useFetch } from '../../../utilities/hooks/useFetch';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
-import { Spinner } from '../../shared/Spinner';
+import { Spinner as SpinnerWithMessage } from '../../shared/Spinner';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import type {
 	DeliveryRecordDetail,
@@ -180,12 +190,11 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 				/>
 				<div css={{ textAlign: 'right' }}>
 					<div
-						css={{
-							fontSize: 'small',
-							color: palette.neutral[46],
-							fontFamily: sans,
-							paddingBottom: '10px',
-						}}
+						css={css`
+							${textSans14};
+							color: ${palette.neutral[46]};
+							padding-bottom: 10px;
+						`}
 					>
 						You have {props.characterLimit - feedback.length}{' '}
 						characters remaining
@@ -247,8 +256,6 @@ interface ConfirmCancellationAndReturnRowProps
 	deliveryCredits?: DeliveryRecordDetail[];
 }
 
-type ShowOfferState = 'pending' | true | false;
-
 const ConfirmCancellationAndReturnRow = (
 	props: ConfirmCancellationAndReturnRowProps,
 ) => {
@@ -257,6 +264,7 @@ const ConfirmCancellationAndReturnRow = (
 		selectedReasonId: OptionalCancellationReasonId;
 		cancellationPolicy: string;
 	};
+
 	const navigate = useNavigate();
 	const { productDetail, productType } = useContext(
 		CancellationContext,
@@ -264,14 +272,47 @@ const ConfirmCancellationAndReturnRow = (
 	const isSupporterPlusAndFreePeriodOfferIsActive =
 		featureSwitches.supporterplusCancellationOffer &&
 		productType.productType === 'supporterplus';
-	const [showOfferBeforeCancelling, setShowOfferBeforeCancelling] =
-		useState<ShowOfferState>(
-			isSupporterPlusAndFreePeriodOfferIsActive ? 'pending' : false,
-		);
-	const [offerDetails, setOfferDetails] =
+
+	const isContributionAndBreakFeatureIsActive =
+		featureSwitches.contributionCancellationPause &&
+		productType.productType === 'contributions';
+
+	const [
+		showAlternativeBeforeCancelling,
+		setShowAlternativeBeforeCancelling,
+	] = useState<TrueFalsePending>(
+		isSupporterPlusAndFreePeriodOfferIsActive ||
+			isContributionAndBreakFeatureIsActive
+			? 'pending'
+			: false,
+	);
+	const [discountPreviewDetails, setDiscountPreviewDetails] =
 		useState<DiscountPreviewResponse | null>(null);
+
+	const productHasAlternativeRecommendation =
+		productType.productType === 'supporterplus' ||
+		productType.productType === 'contributions';
+
+	const sanitizeOfferData = (
+		offerData: DiscountPreviewResponse,
+	): DiscountPreviewResponse => {
+		if (offerData.upToPeriodsType) {
+			return {
+				...offerData,
+				upToPeriodsType: appendCorrectPluralisation(
+					offerData.upToPeriodsType,
+					offerData.upToPeriods,
+				) as DiscountPeriodType,
+			};
+		}
+		return offerData;
+	};
+
 	useEffect(() => {
-		if (isSupporterPlusAndFreePeriodOfferIsActive) {
+		if (
+			isSupporterPlusAndFreePeriodOfferIsActive ||
+			isContributionAndBreakFeatureIsActive
+		) {
 			(async () => {
 				try {
 					const response = await fetchWithDefaultParameters(
@@ -287,18 +328,23 @@ const ConfirmCancellationAndReturnRow = (
 
 					if (response.ok) {
 						// api returns a 400 response if the user is not eligible
-						setShowOfferBeforeCancelling(true);
+						setShowAlternativeBeforeCancelling(true);
 						const offerData = await response.json();
-						setOfferDetails(offerData);
+						const sanitizedOfferData = sanitizeOfferData(offerData);
+						setDiscountPreviewDetails(sanitizedOfferData);
 					} else {
-						setShowOfferBeforeCancelling(false);
+						setShowAlternativeBeforeCancelling(false);
 					}
-				} catch (e) {
-					setShowOfferBeforeCancelling(false);
+				} catch {
+					setShowAlternativeBeforeCancelling(false);
 				}
 			})();
 		}
-	}, []);
+	}, [
+		isContributionAndBreakFeatureIsActive,
+		isSupporterPlusAndFreePeriodOfferIsActive,
+		productDetail.subscription.subscriptionId,
+	]);
 
 	return (
 		<>
@@ -323,26 +369,34 @@ const ConfirmCancellationAndReturnRow = (
 					>
 						<Button
 							icon={
-								showOfferBeforeCancelling === 'pending' ? (
-									<SvgSpinner size="xsmall" />
+								showAlternativeBeforeCancelling ===
+								'pending' ? (
+									<Spinner size="xsmall" />
 								) : (
 									<SvgArrowRightStraight />
 								)
 							}
 							iconSide="right"
-							disabled={showOfferBeforeCancelling === 'pending'}
+							disabled={
+								showAlternativeBeforeCancelling === 'pending'
+							}
 							aria-disabled={
-								showOfferBeforeCancelling === 'pending'
+								showAlternativeBeforeCancelling === 'pending'
 							}
 							onClick={() => {
 								if (props.onClick) {
 									props.onClick();
 								}
-								if (showOfferBeforeCancelling) {
-									navigate('../offer', {
+								if (showAlternativeBeforeCancelling) {
+									const cancelAlternativeUrlPart =
+										cancelAlternativeUrlPartLookup[
+											productType.productType
+										] || '';
+
+									navigate(`../${cancelAlternativeUrlPart}`, {
 										state: {
 											...routerState,
-											...offerDetails,
+											...discountPreviewDetails,
 											caseId: props.caseId,
 											holidayStops: props.holidayStops,
 											deliveryCredits:
@@ -351,8 +405,7 @@ const ConfirmCancellationAndReturnRow = (
 									});
 								} else {
 									navigate(
-										productType.productType ===
-											'supporterplus'
+										productHasAlternativeRecommendation
 											? '../confirm'
 											: '../confirmed',
 										{
@@ -371,7 +424,7 @@ const ConfirmCancellationAndReturnRow = (
 								}
 							}}
 						>
-							{productType.productType === 'supporterplus'
+							{productHasAlternativeRecommendation
 								? 'Continue to cancellation'
 								: 'Confirm cancellation'}
 						</Button>
@@ -391,10 +444,6 @@ const ConfirmCancellationAndReturnRow = (
 };
 
 export const CancellationReasonReview = () => {
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
-
 	const location = useLocation();
 	const routerState = location.state as {
 		selectedReasonId: OptionalCancellationReasonId;
@@ -404,6 +453,19 @@ export const CancellationReasonReview = () => {
 	if (!routerState?.selectedReasonId) {
 		return <Navigate to=".." />;
 	}
+	return <ValidatedCancellationReasonReview />;
+};
+
+const ValidatedCancellationReasonReview = () => {
+	const { productDetail, productType } = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+
+	const location = useLocation();
+	const routerState = location.state as {
+		selectedReasonId: OptionalCancellationReasonId;
+		cancellationPolicy: string;
+	};
 
 	const { selectedReasonId, cancellationPolicy } = routerState;
 
@@ -454,7 +516,7 @@ export const CancellationReasonReview = () => {
 	const cancellationCaseFetch = useFetch<{ id: string }>('/api/case', {
 		method: 'POST',
 		body: JSON.stringify({
-			reason: routerState.selectedReasonId,
+			reason: selectedReasonId,
 			product: productType.cancellation.sfCaseProduct,
 			subscriptionName: productDetail.subscription.subscriptionId,
 			gaData: '',
@@ -488,6 +550,8 @@ export const CancellationReasonReview = () => {
 	const renderSaveBody = (
 		saveBody: string[] | React.FC<SaveBodyProps>,
 		caseId: string,
+		holidayStops?: OutstandingHolidayStop[],
+		deliveryCredits?: DeliveryRecordDetail[],
 	) => {
 		if (saveBody.length && typeof saveBody === 'object') {
 			<>
@@ -498,13 +562,24 @@ export const CancellationReasonReview = () => {
 			return <p id="save_body">{saveBody}</p>;
 		}
 		const SaveBody = saveBody as FC<SaveBodyProps>;
-		return <SaveBody caseId={caseId} />;
+		return (
+			<SaveBody
+				caseId={caseId}
+				holidayStops={holidayStops}
+				deliveryCredits={deliveryCredits}
+			/>
+		);
 	};
+
+	const shouldUseProgressStepper =
+		(featureSwitches.supporterplusCancellationOffer &&
+			productType.productType === 'supporterplus') ||
+		(featureSwitches.contributionCancellationPause &&
+			productType.productType === 'contributions');
 
 	return (
 		<>
-			{featureSwitches.supporterplusCancellationOffer &&
-			productType.productType === 'supporterplus' ? (
+			{shouldUseProgressStepper ? (
 				<ProgressStepper
 					steps={[{}, { isCurrentStep: true }, {}, {}]}
 					additionalCSS={css`
@@ -526,7 +601,7 @@ export const CancellationReasonReview = () => {
 			<WithStandardTopMargin>
 				{isLoading() ? (
 					!loadingHasFailed && (
-						<Spinner loadingMessage="Checking details" />
+						<SpinnerWithMessage loadingMessage="Checking details" />
 					)
 				) : (
 					<>
@@ -553,10 +628,22 @@ export const CancellationReasonReview = () => {
 						)}
 
 						{reason.saveBody &&
-							renderSaveBody(reason.saveBody, caseId)}
+							renderSaveBody(
+								reason.saveBody,
+								caseId,
+								holidayStopCreditFetch.data
+									?.publicationsToRefund,
+								deliveryProblemCreditFetch.data?.results,
+							)}
 						{needsCancellationEscalation &&
 							reason.escalationSaveBody &&
-							renderSaveBody(reason.escalationSaveBody, caseId)}
+							renderSaveBody(
+								reason.escalationSaveBody,
+								caseId,
+								holidayStopCreditFetch.data
+									?.publicationsToRefund,
+								deliveryProblemCreditFetch.data?.results,
+							)}
 
 						{caseId && !reason.skipFeedback ? (
 							<FeedbackFormAndContactUs

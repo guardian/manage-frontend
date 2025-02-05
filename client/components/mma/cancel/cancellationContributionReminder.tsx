@@ -17,7 +17,7 @@ const containerStyles = css`
 
 const setReminderContainerStyles = css`
 	& > * + * {
-		margin-top: ${space[9]}px;
+		margin-top: ${space[5]}px;
 	}
 `;
 
@@ -177,7 +177,7 @@ export const CancellationContributionReminder: React.FC = () => {
 								onClick={() => navigate('/')}
 								cssOverrides={buttonCentredCss}
 							>
-								Back to your account
+								Return to your account
 							</Button>
 						</div>
 					</div>

@@ -1,5 +1,5 @@
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
 import { ConfirmDigiSubCancellation } from '@/client/components/mma/cancel/cancellationSaves/digipack/ConfirmDigiSubCancellation';
@@ -53,16 +53,14 @@ export const EligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 	},
 	parameters: {
 		msw: [
-			rest.post('/api/discounts/preview-discount', (_req, res, ctx) => {
-				return res(
-					ctx.json({
-						discountedPrice: 111.75,
-						upToPeriods: '12',
-						upToPeriodsType: 'Months',
-						firstDiscountedPaymentDate: '2024-05-30',
-						nextNonDiscountedPaymentDate: '2024-07-30',
-					}),
-				);
+			http.post('/api/discounts/preview-discount', () => {
+				return HttpResponse.json({
+					discountedPrice: 111.75,
+					upToPeriods: '12',
+					upToPeriodsType: 'month',
+					firstDiscountedPaymentDate: '2024-05-30',
+					nextNonDiscountedPaymentDate: '2024-07-30',
+				});
 			}),
 		],
 	},
@@ -80,8 +78,10 @@ export const IneligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 			},
 		},
 		msw: [
-			rest.post('/api/discounts/preview-discount', (_req, res, ctx) => {
-				return res(ctx.status(400));
+			http.post('/api/discounts/preview-discount', () => {
+				return new HttpResponse(null, {
+					status: 400,
+				});
 			}),
 		],
 	},

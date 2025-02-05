@@ -37,9 +37,11 @@ export const HelpCentreTopic = () => {
 				}
 			})
 			.then((topicData) => {
-				topicData.topics
-					? setMoreTopics(topicData as MoreTopics)
-					: setSingleTopic(topicData as SingleTopic);
+				if (topicData.topics) {
+					setMoreTopics(topicData as MoreTopics);
+				} else {
+					setSingleTopic(topicData as SingleTopic);
+				}
 			})
 			.catch((error) =>
 				captureException(
@@ -47,7 +49,7 @@ export const HelpCentreTopic = () => {
 				),
 			);
 		setSelectedTopicObject(topicCode);
-	}, [topicCode]);
+	}, [topicCode, navigate, setSelectedTopicObject]);
 
 	return (
 		<>

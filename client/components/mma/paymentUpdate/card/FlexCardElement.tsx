@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { from, space } from '@guardian/source/foundations';
+import { from, space, textSans17Object } from '@guardian/source/foundations';
 import {
 	CardCvcElement,
 	CardExpiryElement,
@@ -7,7 +7,6 @@ import {
 } from '@stripe/react-stripe-js';
 import type { StripeElementBase } from '@stripe/stripe-js';
 import type { Dispatch, SetStateAction } from 'react';
-import { sans } from '../../../../styles/fonts';
 import { FieldWrapper } from '../FieldWrapper';
 import { getLogos, PaymentMethod } from '../PaymentDetailUpdate';
 
@@ -24,8 +23,7 @@ interface FlexCardElementProps {
 
 const baseStyle = {
 	base: {
-		fontSize: '17px',
-		fontFamily: sans,
+		...{ textSans17Object },
 		'::placeholder': {
 			color: '#c4c4c4',
 		},
@@ -48,11 +46,11 @@ const numberCornerHint = () => (
 export const FlexCardElement = (props: FlexCardElementProps) => (
 	<>
 		<div
-			css={{
-				marginTop: `${space[9]}px`,
-				marginBottom: `${space[9]}px`,
-				textAlign: 'left',
-			}}
+			css={css`
+				margin-top: ${space[9]}px;
+				margin-bottom: ${space[9]}px;
+				textalign: left;
+			`}
 		>
 			<FieldWrapper
 				width="100%"

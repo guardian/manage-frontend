@@ -1012,9 +1012,10 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1442,7 +1443,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
             >
               <path
                 clipRule="evenodd"
-                d="M1 12.956h18.274l-7.167 8.575.932.932L23 12.478v-.956l-9.96-9.985-.932.932 7.166 8.575H1v1.912Z"
+                d="M1 12.956h18.274l-7.167 8.575.932.932L23 12.478v-.956l-9.96-9.985-.932.932 7.166 8.575H1z"
                 fillRule="evenodd"
               />
             </svg>

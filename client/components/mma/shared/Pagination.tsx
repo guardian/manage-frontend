@@ -69,7 +69,7 @@ export const Pagination = (props: PaginationProps) => {
 				.map((pageNumber) => pageNumber + rangeStartNumber)
 				.filter((pageNum) => pageNum <= numberOfPages),
 		);
-	}, [props.currentPage]);
+	}, [props.currentPage, numberOfPages, numberOfResultsToShowBeforeEllipsis]);
 
 	const shouldShowPrev = props.currentPage > 1;
 	const shouldShowLeftSideEllipsis =

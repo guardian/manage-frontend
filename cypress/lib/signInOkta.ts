@@ -19,6 +19,8 @@ export const signInOkta = () => {
 		doNotSetUsername: true,
 	})?.then(({ emailAddress, finalPassword }) => {
 		cy.get('input[name=email]').type(emailAddress);
+		cy.get('[data-cy="main-form-submit-button"]').click();
+		cy.contains('Sign in with password instead').click();
 		cy.get('input[name=password]').type(finalPassword);
 		cy.get('[data-cy="main-form-submit-button"]').click();
 	});

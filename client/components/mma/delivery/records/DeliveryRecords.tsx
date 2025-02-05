@@ -152,6 +152,7 @@ export const DeliveryRecords = () => {
 			setStep3formValidationState(!addressInValidState);
 		}
 	}, [addressInValidState]);
+
 	const enableDeliveryInstructions =
 		!!productType.delivery.enableDeliveryInstructionsUpdate;
 	const step1FormRadioOptionCallback = (value: string) =>
@@ -297,7 +298,7 @@ export const DeliveryRecords = () => {
 				`}
 			>
 				<ProductDetailsTable
-					productName={capitalize(productType.friendlyName())}
+					productName={capitalize(productType.friendlyName)}
 					subscriptionId={productDetail.subscription.subscriptionId}
 					isGift={isGift(productDetail.subscription)}
 				/>
@@ -548,7 +549,7 @@ export const DeliveryRecords = () => {
 						)}
 						productName={capitalize(
 							productType.shortFriendlyName ||
-								productType.friendlyName(),
+								productType.friendlyName,
 						)}
 					/>
 				),
@@ -667,7 +668,7 @@ export const DeliveryRecords = () => {
 							Review your report
 						</Button>
 						<Button
-							css={css`
+							cssOverrides={css`
 								${textSans17};
 								background-color: transparent;
 								font-weight: bold;

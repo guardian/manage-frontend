@@ -13,9 +13,11 @@ export const useHelpArticleSeo = (article?: Article) => {
 			if (scriptElt) {
 				scriptElt.remove();
 			}
-			article && addStructuredData(article);
+			if (article) {
+				addStructuredData(article);
+			}
 		}
-	}, [location]);
+	}, [location, article]);
 };
 
 const addStructuredData = (article: Article) => {

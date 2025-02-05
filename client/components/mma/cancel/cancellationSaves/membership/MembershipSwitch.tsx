@@ -193,7 +193,7 @@ export const MembershipSwitch = () => {
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Change your support');
-	}, []);
+	}, [pageTitleContext]);
 
 	if (!membership) {
 		return <Navigate to="/" />;
@@ -254,7 +254,7 @@ export const MembershipSwitch = () => {
 					state: { ...routerState, journeyCompleted: true },
 				});
 			}
-		} catch (e) {
+		} catch {
 			setIsSwitching(false);
 			setSwitchingError(true);
 		}

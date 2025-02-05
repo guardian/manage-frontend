@@ -248,32 +248,29 @@ const InnerContent = ({
 							</LinkButton>
 						)}
 
-					<div
-						css={css`
-							margin-left: ${space[5]}px;
-						`}
-					>
-						{!hasCancellationPending &&
-							isSelfServeCancellationAllowed && (
-								<Button
-									priority="subdued"
-									onClick={() => {
-										navigate(
-											'/cancel/' +
-												specificProductType.urlPart,
-											{
-												state: {
-													productDetail:
-														productDetail,
-												},
+					{!hasCancellationPending &&
+						isSelfServeCancellationAllowed &&
+						productDetail.billingCountry !== 'United States' && (
+							<Button
+								priority="subdued"
+								onClick={() => {
+									navigate(
+										'/cancel/' +
+											specificProductType.urlPart,
+										{
+											state: {
+												productDetail: productDetail,
 											},
-										);
-									}}
-								>
-									Cancel {groupedProductType.friendlyName()}
-								</Button>
-							)}
-					</div>
+										},
+									);
+								}}
+								cssOverrides={css`
+									margin-left: ${space[5]}px;
+								`}
+							>
+								Cancel {groupedProductType.friendlyName}
+							</Button>
+						)}
 				</div>
 			</section>
 		</>
@@ -329,9 +326,8 @@ export const ManageProductV2 = (props: WithProductType<ProductType>) => {
 			pageTitle={`Your ${
 				GROUPED_PRODUCT_TYPES[props.productType.groupedProductType]
 					.shortFriendlyName ||
-				GROUPED_PRODUCT_TYPES[
-					props.productType.groupedProductType
-				].friendlyName()
+				GROUPED_PRODUCT_TYPES[props.productType.groupedProductType]
+					.friendlyName
 			}`}
 			minimalFooter
 		>

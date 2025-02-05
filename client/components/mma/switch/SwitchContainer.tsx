@@ -12,7 +12,6 @@ import {
 	getBillingPeriodAdjective,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
-import type { CurrencyIso } from '../../../utilities/currencyIso';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -53,7 +52,7 @@ export interface Thresholds {
 	isAboveThreshold: boolean;
 }
 
-export const SwitchContext: Context<SwitchContextInterface | {}> =
+export const SwitchContext: Context<SwitchContextInterface | object> =
 	createContext({});
 
 export const SwitchContainer = (props: { isFromApp?: boolean }) => {
@@ -183,13 +182,10 @@ function getThresholds(
 	monthly: boolean,
 ): Thresholds {
 	const monthlyThreshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
+		mainPlan.currencyISO,
 		'month',
 	);
-	const annualThreshold = getBenefitsThreshold(
-		mainPlan.currencyISO as CurrencyIso,
-		'year',
-	);
+	const annualThreshold = getBenefitsThreshold(mainPlan.currencyISO, 'year');
 	const thresholdForBillingPeriod = monthly
 		? monthlyThreshold
 		: annualThreshold;

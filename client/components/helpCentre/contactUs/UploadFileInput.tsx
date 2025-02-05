@@ -29,7 +29,7 @@ export const UploadFileInput = (props: UploadFileUploadProps) => {
 	const [selectedFile, setSelectedFile] = useState<File | undefined>();
 	useEffect(() => {
 		props.changeSetState?.(selectedFile);
-	}, [selectedFile]);
+	}, [selectedFile, props]);
 	return (
 		<label
 			css={css`

@@ -14,7 +14,6 @@ import type { ProductDetail } from '../../../shared/productResponse';
 
 export function baseMembership(): ProductDetail {
 	return {
-		mmaCategory: 'membership',
 		tier: 'Supporter',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -75,7 +74,6 @@ export function baseMembership(): ProductDetail {
 
 export function baseGuardianWeekly(): ProductDetail {
 	return {
-		mmaCategory: 'subscriptions',
 		tier: 'Guardian Weekly - Domestic',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -127,13 +125,11 @@ export function baseGuardianWeekly(): ProductDetail {
 			deliveryAddressChangeEffectiveDate: '2021-12-10',
 		},
 		isTestUser: false,
-		key: '1638374153759',
 	};
 }
 
 export function baseDigitalPack(): ProductDetail {
 	return {
-		mmaCategory: 'subscriptions',
 		tier: 'Digital Pack',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -198,7 +194,6 @@ export function baseDigitalPack(): ProductDetail {
 
 export function baseContribution(): ProductDetail {
 	return {
-		mmaCategory: 'recurringSupport',
 		tier: 'Contributor',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -253,9 +248,72 @@ export function baseContribution(): ProductDetail {
 	};
 }
 
+export function baseVoucher(): ProductDetail {
+	return {
+		tier: 'Newspaper Voucher',
+		isPaidTier: true,
+		selfServiceCancellation: {
+			isAllowed: false,
+			phoneRegionsToDisplay: ['UK & ROW'],
+			shouldDisplayEmail: false,
+		},
+		joinDate: '2021-11-26',
+		optIn: true,
+		billingCountry: 'United Kingdom',
+		subscription: {
+			contactId: '0039E00001KA26BQAT',
+			deliveryAddress: {
+				addressLine1: 'Kings Place',
+				addressLine2: '90 York Way',
+				town: 'London',
+				postcode: 'N1 9GU',
+				country: 'United Kingdom',
+			},
+			safeToUpdatePaymentMethod: true,
+			start: '2021-12-06',
+			end: '2022-11-26',
+			nextPaymentPrice: 5699,
+			nextPaymentDate: '2024-10-29',
+			lastPaymentDate: null,
+			potentialCancellationDate: '2024-10-29',
+			anniversaryDate: '2022-12-06',
+			autoRenew: true,
+			cancelledAt: false,
+			subscriptionId: 'A-S00285104',
+			trialLength: -2629,
+			chargedThroughDate: null,
+			renewalDate: '2022-11-26',
+			currentPlans: [
+				{
+					name: 'Sixday',
+					start: '2021-12-06',
+					end: '2022-11-26',
+					shouldBeVisible: true,
+					chargedThrough: null,
+					price: 5699,
+					currency: '£',
+					currencyISO: 'GBP',
+					billingPeriod: 'month',
+					daysOfWeek: [
+						'Monday',
+						'Tuesday',
+						'Wednesday',
+						'Thursday',
+						'Friday',
+						'Saturday',
+					],
+				},
+			],
+			futurePlans: [],
+			readerType: 'Direct',
+			accountId: '8ad0824e7d584341017d5bc38c0d52dc',
+		},
+		isTestUser: false,
+	};
+}
+
 export function baseDigitalVoucher(): ProductDetail {
 	return {
-		mmaCategory: 'subscriptions',
 		tier: 'Newspaper Digital Voucher',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -315,13 +373,11 @@ export function baseDigitalVoucher(): ProductDetail {
 			accountId: '8ad0824e7d584341017d5bc38c0d52dc',
 		},
 		isTestUser: false,
-		key: '1639394814906',
 	};
 }
 
 export function baseHomeDelivery(): ProductDetail {
 	return {
-		mmaCategory: 'subscriptions',
 		tier: 'Newspaper Delivery',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -388,7 +444,6 @@ export function baseHomeDelivery(): ProductDetail {
 
 export function baseNationalDelivery(): ProductDetail {
 	return {
-		mmaCategory: 'subscriptions',
 		tier: 'Newspaper - National Delivery',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -454,7 +509,6 @@ export function baseNationalDelivery(): ProductDetail {
 
 export function baseSupporterPlus(): ProductDetail {
 	return {
-		mmaCategory: 'recurringSupport',
 		tier: 'Supporter Plus',
 		isPaidTier: true,
 		isTestUser: false,
@@ -503,7 +557,6 @@ export function baseSupporterPlus(): ProductDetail {
 
 export function baseTierThree(): ProductDetail {
 	return {
-		mmaCategory: 'recurringSupport',
 		tier: 'Tier Three',
 		isPaidTier: true,
 		selfServiceCancellation: {
@@ -512,7 +565,7 @@ export function baseTierThree(): ProductDetail {
 			phoneRegionsToDisplay: ['UK & ROW', 'US', 'AUS'],
 		},
 		billingCountry: 'United Kingdom',
-		joinDate: '2024-06-13',
+		joinDate: '2021-11-29',
 		optIn: true,
 		subscription: {
 			paymentMethod: 'Card',
@@ -532,15 +585,15 @@ export function baseTierThree(): ProductDetail {
 				country: 'United Kingdom',
 			},
 			safeToUpdatePaymentMethod: true,
-			start: '2024-06-28',
-			end: '2025-06-13',
+			start: '2021-12-24',
+			end: '2022-12-15',
 			nextPaymentPrice: 2500,
 			nextPaymentDate: '2024-06-28',
 			lastPaymentDate: null,
 			potentialCancellationDate: null,
 			chargedThroughDate: null,
-			renewalDate: '2025-06-13',
-			anniversaryDate: '2025-06-28',
+			renewalDate: '2022-12-15',
+			anniversaryDate: '2022-12-24',
 			cancelledAt: false,
 			subscriptionId: 'A-S00897035',
 			trialLength: 4,
@@ -560,8 +613,8 @@ export function baseTierThree(): ProductDetail {
 			futurePlans: [
 				{
 					name: null,
-					start: '2024-06-28',
-					end: '2025-06-13',
+					start: '2021-12-10',
+					end: '2022-11-29',
 					shouldBeVisible: true,
 					chargedThrough: null,
 					price: 2500,

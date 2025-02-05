@@ -23,8 +23,8 @@ interface AlertButtonProps {
 }
 
 interface ProblemAlertProps {
-	title: string;
-	message: string;
+	title?: string;
+	message: string | React.ReactElement;
 	button?: AlertButtonProps;
 	additionalcss?: SerializedStyles;
 }
@@ -48,23 +48,30 @@ export const ProblemAlert = (props: ProblemAlertProps) => (
 		>
 			<ErrorIcon />
 		</i>
-		<h4
-			css={css`
-				${textSansBold17};
-				margin: 0;
-			`}
-		>
-			{props.title}
-		</h4>
-		<p
-			css={css`
-				margin: ${space[2]}px 0 ${props.button ? `${space[3]}px` : '0'}
-					0;
-				${textSans17};
-			`}
-		>
-			{props.message}
-		</p>
+		{props.title && (
+			<h4
+				css={css`
+					${textSansBold17};
+					margin: 0;
+				`}
+			>
+				{props.title}
+			</h4>
+		)}
+		{typeof props.message === 'string' ? (
+			<p
+				css={css`
+					margin: ${space[2]}px 0
+						${props.button ? `${space[3]}px` : '0'} 0;
+					${textSans17};
+				`}
+			>
+				{props.message}
+			</p>
+		) : (
+			props.message
+		)}
+
 		{props.button && (
 			<LinkButton
 				to={props.button.link}

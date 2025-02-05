@@ -1,5 +1,7 @@
-import { contributionPaidByCard } from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
+import { monthlyContributionPaidByCard } from '../../../../client/fixtures/productBuilder/testProducts';
+import type { DiscountPreviewResponse } from '../../../../client/utilities/discountPreview';
+import { featureSwitches } from '../../../../shared/featureSwitches';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Cancel contribution', () => {
@@ -19,11 +21,11 @@ describe('Cancel contribution', () => {
 
 		setSignInStatus();
 
-		cy.findByText('Manage subscription').click();
+		cy.findByText('Manage support').click();
 		cy.wait('@cancelled');
 
 		cy.findByRole('link', {
-			name: 'Cancel subscription',
+			name: 'Cancel support',
 		}).click();
 	};
 
@@ -46,12 +48,12 @@ describe('Cancel contribution', () => {
 
 		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contributionPaidByCard()),
+			body: toMembersDataApiResponse(monthlyContributionPaidByCard()),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(contributionPaidByCard()),
+			body: toMembersDataApiResponse(monthlyContributionPaidByCard()),
 		});
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
@@ -68,6 +70,7 @@ describe('Cancel contribution', () => {
 			statusCode: 200,
 			body: toMembersDataApiResponse(),
 		}).as('new_product_detail');
+
 		cy.intercept('GET', '/api/cancelled/', {
 			statusCode: 200,
 			body: [],
@@ -83,15 +86,98 @@ describe('Cancel contribution', () => {
 		}).as('cancel_contribution');
 	});
 
-	it('cancels contribution (reason: As a result of a specific article I read)', () => {
+	if (featureSwitches.contributionCancellationPause) {
+		const discountPreviewResponse: DiscountPreviewResponse = {
+			discountedPrice: 0,
+			discountPercentage: 100,
+			upToPeriods: 2,
+			upToPeriodsType: 'month',
+			firstDiscountedPaymentDate: '2024-05-30',
+			nextNonDiscountedPaymentDate: '2024-07-30',
+			nonDiscountedPayments: [{ date: '2024-07-30', amount: 7 }],
+		};
+		it('user accepts pause instead of cancelling', () => {
+			setupCancellation();
+			cy.intercept('POST', 'api/discounts/preview-discount', {
+				statusCode: 200,
+				body: discountPreviewResponse,
+			}).as('preview_discount');
+
+			cy.intercept('POST', 'api/discounts/apply-discount', {
+				statusCode: 200,
+			}).as('apply_discount');
+
+			cy.findByRole('radio', {
+				name: 'I am unhappy with some editorial decisions',
+			}).click();
+			cy.findByRole('button', { name: 'Continue' }).click();
+
+			cy.wait('@get_case');
+			cy.wait('@preview_discount');
+
+			cy.findByRole('button', {
+				name: 'Continue to cancellation',
+			}).click();
+
+			cy.findByRole('button', { name: 'Yes, pause my support' }).click();
+
+			cy.findByRole('button', {
+				name: 'Confirm pausing your support',
+			}).click();
+
+			cy.findByText('Thank you for choosing to stay with us');
+			cy.wait('@apply_discount');
+		});
+
+		it("User see's pause offer but decides to cancel anyway", () => {
+			setupCancellation();
+			cy.intercept('POST', 'api/discounts/preview-discount', {
+				statusCode: 200,
+				body: discountPreviewResponse,
+			}).as('preview_discount');
+
+			cy.findByRole('radio', {
+				name: 'I am unhappy with some editorial decisions',
+			}).click();
+			cy.findByRole('button', { name: 'Continue' }).click();
+
+			cy.wait('@get_case');
+			cy.wait('@preview_discount');
+
+			cy.findByRole('button', {
+				name: 'Continue to cancellation',
+			}).click();
+
+			cy.findByRole('button', {
+				name: 'No thanks, continue to cancel',
+			}).click();
+
+			cy.findByRole('button', { name: 'Confirm cancellation' }).click();
+
+			cy.wait('@create_case_in_salesforce');
+			cy.wait('@cancel_contribution');
+			cy.wait('@new_product_detail');
+
+			cy.findByRole('heading', {
+				name: 'Your monthly support has been cancelled',
+			});
+
+			cy.get('@create_case_in_salesforce.all').should('have.length', 1);
+			cy.get('@cancel_contribution.all').should('have.length', 1);
+			cy.get('@get_cancellation_date.all').should('have.length', 0);
+		});
+	}
+
+	it('cancels contribution (reason: I am unhappy with some editorial decisions)', () => {
 		setupCancellation();
 		cy.findByRole('radio', {
-			name: 'As the result of a specific article I read',
+			name: 'I am unhappy with some editorial decisions',
 		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.wait('@get_case');
 
+		cy.findByRole('button', { name: 'Continue to cancellation' }).click();
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
 		cy.wait('@create_case_in_salesforce');
@@ -99,7 +185,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled',
+			name: 'Your monthly support has been cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -143,7 +229,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled',
+			name: 'Your monthly support has been cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -151,10 +237,10 @@ describe('Cancel contribution', () => {
 		cy.get('@get_cancellation_date.all').should('have.length', 0);
 	});
 
-	it('cancels contribution with save body string (reason: I’d like to get something in return for my support)', () => {
+	it('cancels contribution with save body string (reason: I’m not fully satisfied with the product features or benefits)', () => {
 		setupCancellation();
 		cy.findAllByRole('radio', {
-			name: 'I’d like to get something ‘in return’ for my support, e.g. digital features',
+			name: 'I’m not fully satisfied with the product features or benefits',
 		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
@@ -163,6 +249,7 @@ describe('Cancel contribution', () => {
 		cy.findByText(
 			'Thank you for your ongoing support. Once you’ve completed your cancellation below, you can set up a new product via our online checkouts.',
 		).should('exist');
+		cy.findByRole('button', { name: 'Continue to cancellation' }).click();
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
 		cy.wait('@create_case_in_salesforce');
@@ -170,7 +257,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled',
+			name: 'Your monthly support has been cancelled',
 		});
 
 		cy.get('@create_case_in_salesforce.all').should('have.length', 1);
@@ -216,6 +303,7 @@ describe('Cancel contribution', () => {
 
 		cy.wait('@get_case');
 
+		cy.findByRole('button', { name: 'Continue to cancellation' }).click();
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
 		cy.wait('@create_case_in_salesforce');
@@ -223,7 +311,7 @@ describe('Cancel contribution', () => {
 		cy.wait('@new_product_detail');
 
 		cy.findByRole('heading', {
-			name: 'Your recurring contribution is cancelled',
+			name: 'Your monthly support has been cancelled',
 		});
 
 		cy.get('@get_cancellation_date.all').should('have.length', 0);

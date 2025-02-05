@@ -9,8 +9,15 @@ import {
 	baseNationalDelivery,
 	baseSupporterPlus,
 	baseTierThree,
+	baseVoucher,
 } from './baseProducts';
 import { cards, ProductBuilder } from './productBuilder';
+
+export function voucherPaidByCard() {
+	return new ProductBuilder(baseVoucher())
+		.payByCard()
+		.getProductDetailObject();
+}
 
 export function guardianWeeklyPaidByCard() {
 	return new ProductBuilder(baseGuardianWeekly())
@@ -70,6 +77,7 @@ export function digitalPackPaidByCardWithPaymentFailure() {
 export function monthlyContributionPaidByCard() {
 	return new ProductBuilder(baseContribution())
 		.payByCard()
+		.withBillingPeriod('month')
 		.withPrice(400)
 		.getProductDetailObject();
 }
@@ -204,10 +212,25 @@ export function supporterPlus() {
 		.getProductDetailObject();
 }
 
+export function supporterPlusUSA() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.inUSA()
+		.getProductDetailObject();
+}
+
 export function supporterPlusMonthlyAllAccessDigital() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()
 		.withPrice(1200)
+		.withBillingPeriod('month')
+		.getProductDetailObject();
+}
+
+export function supporterPlusMonthlyAllAccessDigitalBeforePriceRise() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.withPrice(1000)
 		.withBillingPeriod('month')
 		.getProductDetailObject();
 }
@@ -253,5 +276,15 @@ export function patronDigitalPack() {
 	return new ProductBuilder(baseDigitalPack())
 		.payByCard()
 		.asPatron()
+		.getProductDetailObject();
+}
+
+export function patronMembership() {
+	return new ProductBuilder(baseMembership())
+		.payByCard()
+		.withPrice(10000)
+		.asPatron()
+		.asPatronTier()
+		.withEvents()
 		.getProductDetailObject();
 }

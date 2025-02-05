@@ -1,7 +1,12 @@
-import { palette } from '@guardian/source/foundations';
+import { css } from '@emotion/react';
+import {
+	palette,
+	space,
+	textSans14,
+	textSansBold14,
+} from '@guardian/source/foundations';
+import { Checkbox } from '@guardian/source/react-components';
 import type { FC } from 'react';
-import { sans } from '../../../styles/fonts';
-import { Checkbox } from '../shared/Checkbox';
 
 interface NewsletterPreferenceProps {
 	id: string;
@@ -10,13 +15,8 @@ interface NewsletterPreferenceProps {
 	frequency: string;
 	title: string;
 	selected?: boolean;
-	onClick: (id: string) => {};
+	onClick: (id: string) => unknown;
 }
-
-const standardText = {
-	fontSize: '14px',
-	fontFamily: sans,
-};
 
 const clockSVG = (
 	<svg
@@ -31,17 +31,12 @@ const clockSVG = (
 
 const getTitle = (title: NewsletterPreferenceProps['title']) => (
 	<p
-		css={[
-			standardText,
-			{
-				cursor: 'pointer',
-				fontSize: '14px',
-				lineHeight: '22px',
-				fontFamily: sans,
-				fontWeight: 'bold',
-				margin: '0',
-			},
-		]}
+		css={css`
+			${textSansBold14};
+			cursor: pointer;
+			line-height: 22px;
+			margin: 0;
+		`}
 	>
 		{title}
 	</p>
@@ -91,54 +86,51 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 		identityName,
 		onClick,
 	} = props;
+	const accessibleLabel = `${title} (${frequency})`;
+
+	const interact = () => {
+		onClick(id);
+		// If we have an identityName id then this is a newsletter subscription event
+		// and we want to log it in Ophan
+		if (identityName) {
+			window?.guardian?.ophan?.record({
+				componentEvent: {
+					component: {
+						componentType: 'NEWSLETTER_SUBSCRIPTION',
+						id: identityName,
+					},
+					action: 'CLICK',
+					value: selected ? 'untick' : 'tick',
+				},
+			});
+		}
+	};
+
 	return (
 		<div
-			onClick={(e) => {
-				// Checkboxes inside labels will trigger click events twice.
-				// Ignore the input click event
-				if (
-					e.target instanceof Element &&
-					e.target.nodeName === 'INPUT'
-				) {
-					return;
-				}
-				onClick(id);
-				// If we have an identityName id then this is a newsletter subscription event
-				// and we want to log it in Ophan
-				if (identityName) {
-					window?.guardian?.ophan?.record({
-						componentEvent: {
-							component: {
-								componentType: 'NEWSLETTER_SUBSCRIPTION',
-								id: identityName,
-							},
-							action: 'CLICK',
-							value: selected ? 'untick' : 'tick',
-						},
-					});
-				}
-			}}
-			css={[
-				standardText,
-				{
-					lineHeight: '1.333',
-					marginTop: '12px',
-					paddingLeft: '30px',
-					position: 'relative',
-				},
-			]}
+			key={id}
+			css={css`
+				${textSans14};
+				lineheight: 1.333;
+				margin-top: ${space[3]}px;
+			`}
 		>
-			<div css={{ position: 'absolute', left: 0 }}>
-				<Checkbox
-					checked={!!selected}
-					onChange={(_) => {
-						return;
-					}}
-				/>
-			</div>
-			{title && getTitle(title)}
-			{getDescription(description)}
-			{frequency && getFrequency(frequency)}
+			<Checkbox
+				data-cy={id}
+				checked={!!selected}
+				onChange={interact}
+				label={title && getTitle(title)}
+				aria-label={accessibleLabel}
+				supporting={
+					<div>
+						{getDescription(description)}
+						{frequency && getFrequency(frequency)}
+					</div>
+				}
+				cssOverrides={css`
+					align-items: start;
+				`}
+			/>
 		</div>
 	);
 };

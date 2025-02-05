@@ -110,15 +110,16 @@ const ReasonSelection = ({
 		>
 			<legend css={reasonLegendCss}>
 				Why did you cancel your{' '}
-				{GROUPED_PRODUCT_TYPES[
-					productType.groupedProductType
-				].friendlyName()}{' '}
+				{
+					GROUPED_PRODUCT_TYPES[productType.groupedProductType]
+						.friendlyName
+				}{' '}
 				today?
 			</legend>
 			<RadioGroup
 				name="issue_type"
 				orientation="vertical"
-				css={css`
+				cssOverrides={css`
 					display: block;
 					padding-top: ${space[4]}px;
 				`}
@@ -138,7 +139,7 @@ const ReasonSelection = ({
 								name="cancellation-reason"
 								value={reason.reasonId}
 								label={reason.linkLabel}
-								css={css`
+								cssOverrides={css`
 									vertical-align: top;
 									text-transform: lowercase;
 									:checked + div label:first-of-type {
@@ -254,7 +255,7 @@ export const SelectReason = () => {
 				setIsSubmitting(false);
 				setLoadingFailed(true);
 			}
-		} catch (e) {
+		} catch {
 			setIsSubmitting(false);
 			setLoadingFailed(true);
 		}
@@ -270,9 +271,10 @@ export const SelectReason = () => {
 		<section css={sectionSpacing}>
 			<h2 css={headingCss}>
 				Your{' '}
-				{GROUPED_PRODUCT_TYPES[
-					productType.groupedProductType
-				].friendlyName()}{' '}
+				{
+					GROUPED_PRODUCT_TYPES[productType.groupedProductType]
+						.friendlyName
+				}{' '}
 				has been cancelled
 			</h2>
 			<CancellationInfo

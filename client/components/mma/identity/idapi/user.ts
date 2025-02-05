@@ -137,7 +137,9 @@ export const toUser = (response: UserAPIResponse): User => {
 		localNumber: getFromUser('privateFields.telephoneNumber.localNumber'),
 		registrationLocation: getFromUser('privateFields.registrationLocation'),
 		consents,
-		validated: user.statusFields.userEmailValidated,
+		// We don't always receive a full user response from IDAPI, so we shouldn't
+		// assume that the statusFields object is always present.
+		validated: user?.statusFields?.userEmailValidated,
 	};
 };
 
@@ -180,7 +182,10 @@ export const write = async (user: Partial<User>): Promise<User> => {
 			addCSRFToken(putRequest(body)),
 		).then((response) => response.json());
 		if (isErrorResponse(response)) {
-			throw toUserError(response);
+			const userErrorObj = toUserError(response);
+			throw new Error(`Error: ${userErrorObj.type}`, {
+				cause: userErrorObj.error,
+			});
 		}
 		return toUser(response);
 	} catch (e) {
@@ -209,7 +214,10 @@ export const setUsername = async (user: Partial<User>): Promise<User> => {
 			addCSRFToken(postRequest(body)),
 		).then((response) => response.json());
 		if (isErrorResponse(response)) {
-			throw toUserError(response);
+			const userErrorObj = toUserError(response);
+			throw new Error(`Error: ${userErrorObj.type}`, {
+				cause: userErrorObj.error,
+			});
 		}
 		return toUser(response);
 	} catch (e) {

@@ -1,10 +1,10 @@
 import type {
+	BillingPeriod,
 	Card,
 	PaidSubscriptionPlan,
 	ProductDetail,
 	SubscriptionPlan,
 } from '../../../shared/productResponse';
-import type { GroupedProductTypeKeys } from '../../../shared/productTypes';
 import type { CurrencyIso } from '../../utilities/currencyIso';
 import { convertCurrencyIsoToSymbol } from '../../utilities/currencyIso';
 
@@ -44,11 +44,6 @@ export class ProductBuilder {
 
 	getProductDetailObject() {
 		return this.productToBuild;
-	}
-
-	mmaCategory(category: GroupedProductTypeKeys) {
-		this.productToBuild.mmaCategory = category;
-		return this;
 	}
 
 	tier(tier: string) {
@@ -127,8 +122,28 @@ export class ProductBuilder {
 		return this;
 	}
 
+	asPatronTier() {
+		this.productToBuild.tier = 'Patron';
+		return this;
+	}
+
+	withEvents() {
+		const currentPlans = this.productToBuild.subscription.currentPlans;
+		for (const currentPlan of currentPlans) {
+			if (isPaidSubscriptionPlan(currentPlan)) {
+				currentPlan.features = 'Fancy Events';
+			}
+		}
+		return this;
+	}
+
+	inUSA() {
+		this.productToBuild.billingCountry = 'United States';
+		return this;
+	}
+
 	nonServiceableCountry() {
-		this.productToBuild.billingCountry = 'New Caledonia';
+		this.productToBuild.billingCountry = 'Qatar';
 		return this;
 	}
 
@@ -157,7 +172,7 @@ export class ProductBuilder {
 		return this;
 	}
 
-	withBillingPeriod(billingPeriod: 'month' | 'year' | 'quarter') {
+	withBillingPeriod(billingPeriod: BillingPeriod) {
 		const { plan, currentPlans, futurePlans } =
 			this.productToBuild.subscription;
 		if (plan) {

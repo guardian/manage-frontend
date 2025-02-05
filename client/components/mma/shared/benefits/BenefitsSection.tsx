@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { textSans15 } from '@guardian/source/foundations';
 import {
 	Hide,
-	SvgCrossRound,
+	SvgCrossRoundFilled,
 	SvgTickRound,
 } from '@guardian/source/react-components';
 import type { ProductBenefit } from './BenefitsConfiguration';
@@ -23,7 +23,7 @@ const Benefit = ({
 	return (
 		<li css={benefit.isUnavailable ? unavailableBenefitsCss : ''}>
 			{benefit.isUnavailable ? (
-				<SvgCrossRound
+				<SvgCrossRoundFilled
 					isAnnouncedByScreenReader
 					size={small ? 'xsmall' : 'small'}
 				/>

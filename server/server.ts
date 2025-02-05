@@ -4,7 +4,6 @@ import cookieParser from 'cookie-parser';
 import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import { default as express } from 'express';
 import helmet from 'helmet';
-import { featureSwitches } from '../shared/featureSwitches';
 import { MAX_FILE_ATTACHMENT_SIZE_KB } from '../shared/fileUploadUtils';
 import { conf } from './config';
 import { log } from './log';
@@ -18,6 +17,7 @@ const server = express();
 const oktaConfig = await getConfig();
 
 declare let WEBPACK_BUILD: string;
+
 if (conf.SERVER_DSN) {
 	Sentry.init({
 		dsn: conf.SERVER_DSN,
@@ -40,29 +40,30 @@ if (conf.DOMAIN === 'thegulocal.com') {
 
 server.use(helmet());
 
-if (featureSwitches.cspSecurityAudit) {
-	const cspDefaultSrcAllowList = [
-		"'self'",
-		'https://sourcepoint.theguardian.com',
-		'https://gnm-app.quantummetric.com',
-		'https://assets.guim.co.uk',
-		'https://ophan.theguardian.com',
-	].join(' ');
+export const createCsp = (hashes: string[]) => {
+	const prefixedHashes = hashes.map((hash) => `'sha256-${hash}'`);
 	const csp = [
-		'report-uri /api/csp-audit-report-endpoint',
-		'report-to csp-endpoint',
-		`default-src ${cspDefaultSrcAllowList}`,
-		`style-src 'unsafe-inline'`, // this is unsafe but needed for now for emotion
+		`script-src ${prefixedHashes.join(' ')} 'strict-dynamic'`,
+		`style-src 'unsafe-inline'`,
+		`object-src 'none'`,
 	];
-	server.use(function (_: Request, res: Response, next: NextFunction) {
-		res.set({
-			'Report-To':
-				'{ "group": "csp-endpoint", "endpoints": [ { "url": "/api/csp-audit-report-endpoint" } ] }',
-			'Content-Security-Policy-Report-Only': `${csp.join('; ')};`,
-		});
-		next();
+	return csp.join('; ');
+};
+
+server.use(function (_: Request, res: Response, next: NextFunction) {
+	/*
+	 * This sets a default csp header, this is overriden in:
+	 * - mmaFrontend.ts
+	 * - helpcentreFrontend.ts
+	 * Where a more specific policy with script hashes can be added
+	 */
+	res.set({
+		'Report-To':
+			'{ "group": "csp-endpoint", "endpoints": [ { "url": "/api/csp-audit-report-endpoint" } ] }',
+		'Content-Security-Policy-Report-Only': createCsp([]),
 	});
-}
+	next();
+});
 
 const serveStaticAssets: RequestHandler = express.static(__dirname + '/static');
 
@@ -119,6 +120,7 @@ server.use(routes.core);
 server.use('/oauth', routes.oauth);
 server.use('/profile/', routes.profile);
 server.use('/api/', routes.api);
+server.use('/newspaperArchive', routes.newspaperArchive);
 server.use('/idapi', routes.idapi);
 server.use('/mpapi', routes.mpapi);
 server.use('/aapi', routes.aapi);

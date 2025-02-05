@@ -85,7 +85,7 @@ export const wideButtonCss = css`
 export const wideButtonLayoutCss = css`
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
+	justify-content: flex-start;
 
 	> * + * {
 		margin-top: ${space[3]}px;

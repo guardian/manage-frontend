@@ -38,9 +38,10 @@ interface ProductCardConfiguration {
  * of the product type definitions.
  */
 
-export const productCardConfiguration: {
-	[productType in ProductTypeKeys]: ProductCardConfiguration;
-} = {
+export const productCardConfiguration: Record<
+	ProductTypeKeys,
+	ProductCardConfiguration
+> = {
 	contributions: {
 		colour: productColour.recurringContribution,
 	},

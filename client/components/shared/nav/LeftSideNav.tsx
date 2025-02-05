@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
-import { from, palette, space } from '@guardian/source/foundations';
+import { from, palette, space, textSans20 } from '@guardian/source/foundations';
 import { Link } from 'react-router-dom';
-import { sans } from '../../../styles/fonts';
 import type { MenuSpecificNavItem, NavItem } from './NavConfig';
 import { NAV_LINKS, PROFILE_HOST_NAME } from './NavConfig';
 
@@ -16,48 +15,44 @@ const leftNavCss = css({
 });
 
 const leftNavLinkCss = (isSelected: boolean | undefined) =>
-	css({
-		fontSize: '1.25rem',
-		fontWeight: isSelected ? 'bold' : 'normal',
-		lineHeight: '1.25rem',
-		fontFamily: sans,
-		display: 'block',
-		boxSizing: 'border-box',
-		padding: '4px 0 0 5px',
-		letterSpacing: '-0.02rem',
-		textAlign: 'left',
-		textDecoration: 'none',
-		overflow: 'hidden',
-		whiteSpace: 'nowrap',
-		textOverflow: 'ellipsis',
-		background: palette.neutral['100'],
-		color: palette.brand[400],
-
-		[from.desktop]: {
-			borderLeft: `${space[2]}px solid ${
-				isSelected ? palette.brandAlt[400] : palette.neutral['46']
-			}`,
-			boxShadow: isSelected ? '0 1px 0 white' : undefined,
-			minHeight: 0,
-			padding: '18px 0 18px 22px',
-			position: 'relative',
-			' :after': {
-				content: "''",
-				position: 'absolute',
-				bottom: 0,
-				right: 0,
-				height: '1px',
-				width: 'calc(100% - 22px)',
-				backgroundColor: palette.neutral['86'],
-			},
-
-			':hover': {
-				backgroundColor: isSelected
-					? palette.neutral['100']
-					: palette.neutral['97'],
-			},
-		},
-	});
+	css`
+		${textSans20};
+		font-weight: ${isSelected ? 'bold' : 'normal'};
+		line-height: 1.25rem;
+		letter-spacing: -0.02rem;
+		text-align: left;
+		text-decoration: none;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		display: block;
+		box-sizing: border-box;
+		padding: 4px 0 0 5px;
+		overflow: hidden;
+		background: ${palette.neutral['100']};
+		color: ${palette.brand[400]};
+		${from.desktop} {
+			border-left: ${space[2]}px solid
+				${isSelected ? palette.brandAlt[400] : palette.neutral['46']};
+			box-shadow: ${isSelected ? palette.brandAlt[400] : palette.neutral['46']};
+			min-height: 0;
+			padding: 18px 0 18px 22px;
+			position: relative;
+			:after {
+				content: "";
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				height: 1px;
+				width: calc(100% - 22px);
+				background-color: ${palette.neutral['86']};
+			}
+			:hover {
+				background-color: isSelected
+					? ${palette.neutral['100']}
+					: ${palette.neutral['97']};
+			}
+		}
+	`;
 
 const leftNavItemCss = (isSelected: boolean | undefined) => ({
 	margin: 0,

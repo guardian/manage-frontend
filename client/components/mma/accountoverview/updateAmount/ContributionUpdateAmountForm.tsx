@@ -1,14 +1,16 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans17 } from '@guardian/source/foundations';
+import { from, palette, space, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	ChoiceCard,
 	ChoiceCardGroup,
 	InlineError,
+	LinkButton,
 	TextInput,
 } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
 import { augmentBillingPeriod } from '../../../../../shared/productResponse';
 import type { ProductType } from '../../../../../shared/productTypes';
@@ -30,7 +32,21 @@ interface ContributionUpdateAmountFormProps {
 	nextPaymentDate: string | null;
 	mode: ContributionUpdateAmountFormMode;
 	onUpdateConfirmed: (updatedAmount: number) => void;
+	withReturnToAccountOverviewButton?: true;
 }
+
+const buttonsCss = css`
+	display: flex;
+	flex-direction: column;
+	gap: ${space[5]}px;
+	${from.tablet} {
+		flex-direction: row;
+	}
+`;
+
+const buttonCss = css`
+	justify-content: center;
+`;
 
 const getAmountUpdater = (
 	newAmount: number,
@@ -133,11 +149,18 @@ export const ContributionUpdateAmountForm = (
 	const [confirmedAmount, setConfirmedAmount] = useState<number | null>(null);
 	const chosenAmount = isOtherAmountSelected ? otherAmount : selectedValue;
 
+	const navigate = useNavigate();
+
+	const onReturnClicked = (event: React.MouseEvent<HTMLAnchorElement>) => {
+		event.preventDefault();
+		navigate('/');
+	};
+
 	useEffect(() => {
 		if (otherAmount !== defaultOtherAmount) {
 			setHasInteractedWithOtherAmount(true);
 		}
-	}, [otherAmount]);
+	}, [otherAmount, defaultOtherAmount]);
 
 	useEffect(() => {
 		const newErrorMessage = validateChoice(
@@ -149,13 +172,22 @@ export const ContributionUpdateAmountForm = (
 			props.mainPlan,
 		);
 		setErrorMessage(newErrorMessage);
-	}, [otherAmount, selectedValue]);
+	}, [
+		otherAmount,
+		selectedValue,
+		chosenAmount,
+		isOtherAmountSelected,
+		currentContributionOptions.minAmount,
+		currentContributionOptions.maxAmount,
+		props.currentAmount,
+		props.mainPlan,
+	]);
 
 	useEffect(() => {
 		if (confirmedAmount) {
 			props.onUpdateConfirmed(confirmedAmount);
 		}
-	}, [confirmedAmount]);
+	}, [confirmedAmount, props]);
 
 	const changeAmountClick = async () => {
 		setHasSubmitted(true);
@@ -364,7 +396,21 @@ export const ContributionUpdateAmountForm = (
 					</div>
 				</div>
 			</div>
-			<Button onClick={changeAmountClick}>Change amount</Button>
+			<div css={buttonsCss}>
+				<Button onClick={changeAmountClick} cssOverrides={buttonCss}>
+					Change amount
+				</Button>
+				{props.withReturnToAccountOverviewButton && (
+					<LinkButton
+						href="/"
+						onClick={onReturnClicked}
+						priority="subdued"
+						cssOverrides={buttonCss}
+					>
+						Return to your account
+					</LinkButton>
+				)}
+			</div>
 		</>
 	);
 };

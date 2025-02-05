@@ -1,4 +1,11 @@
-import { from, until } from '@guardian/source/foundations';
+import { css } from '@emotion/react';
+import {
+	from,
+	space,
+	textEgyptianBold17,
+	textSans14,
+	until,
+} from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import type * as React from 'react';
 import { useContext } from 'react';
@@ -13,7 +20,6 @@ import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
-import { sans } from '../../../styles/fonts';
 import { InfoIcon } from '../shared/assets/InfoIcon';
 import { CollatedCredits } from './CollatedCredits';
 import {
@@ -34,25 +40,38 @@ import { SummaryTable } from './SummaryTable';
 
 interface OverviewRowProps {
 	heading: string;
+	fullWidth?: boolean;
 	children: React.ReactNode;
 }
 
 const OverviewRow = (props: OverviewRowProps) => (
 	<div
-		css={{
-			display: 'flex',
-			flexWrap: 'wrap',
-			alignItems: 'top',
-			marginBottom: '20px',
-		}}
+		css={css`
+			display: flex;
+			flex-wrap: wrap;
+			align-items: start;
+			margin-bottom: ${space[5]}px;
+		`}
 	>
-		<div css={{ flex: '1 1 180px' }}>
-			<h3 css={{ marginTop: '0', paddingTop: '0' }}>{props.heading}</h3>
+		<div
+			css={css`
+				flex: 1 0 180px;
+			`}
+		>
+			<h3
+				css={css`
+					${textEgyptianBold17};
+					margin-top: 0;
+					padding-top: 0;
+				`}
+			>
+				{props.heading}
+			</h3>
 		</div>
 		<div
-			css={{
-				flex: '4 4 350px',
-			}}
+			css={css`
+				flex: 0 1 ${props.fullWidth ? '100%' : '450px'};
+			`}
 		>
 			{props.children}
 		</div>
@@ -103,7 +122,7 @@ export const HolidaysOverview = () => {
 
 	return (
 		<>
-			<h1>Suspend {productType.friendlyName()}</h1>
+			<h1>Suspend {productType.friendlyName}</h1>
 			{productDetail.subscription.autoRenew ? (
 				<OverviewRow heading="How">
 					<>
@@ -113,7 +132,7 @@ export const HolidaysOverview = () => {
 								{holidayStopResponse.annualIssueLimit}{' '}
 								{productType.holidayStops.issueKeyword}s
 							</strong>{' '}
-							per year of your subscription. <br />
+							per year on your subscription. <br />
 						</div>
 						{productType.holidayStops.alternateNoticeString && (
 							<div>
@@ -138,13 +157,12 @@ export const HolidaysOverview = () => {
 							</div>
 						)}
 						<div
-							css={{
-								fontFamily: sans,
-								fontSize: '14px',
-								margin: '10px',
-								display: 'flex',
-								alignItems: 'top',
-							}}
+							css={css`
+								${textSans14};
+								margin: 10px;
+								display: flex;
+								align-items: top;
+							`}
 						>
 							<InfoIcon />
 							<div>
@@ -245,13 +263,13 @@ export const HolidaysOverview = () => {
 								</div>
 							)}
 							<div
-								css={{
-									textAlign: 'right',
-									marginTop: '10px',
-									[from.phablet]: {
-										display: 'none',
-									},
-								}}
+								css={css`
+									text-align: right;
+									margin-top: 10px;
+									${from.phablet} {
+										display: none;
+									}
+								`}
 							>
 								{productDetail.subscription.autoRenew &&
 									createSuspensionButton}
@@ -268,7 +286,7 @@ export const HolidaysOverview = () => {
 							/>
 						</OverviewRow>
 					)}
-					<OverviewRow heading="Details">
+					<OverviewRow heading="Details" fullWidth>
 						{holidayStopResponse.existing.length > 0 ? (
 							<SummaryTable
 								data={holidayStopResponse.existing}
@@ -288,17 +306,22 @@ export const HolidaysOverview = () => {
 				</>
 			)}
 			<div
-				css={{
-					display: 'flex',
-					justifyContent: 'space-between',
-					alignItems: 'center',
-					marginTop: '30px',
-					[until.phablet]: {
-						flexDirection: 'column-reverse',
-					},
-				}}
+				css={css`
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					margin-top: 30px;
+					${until.phablet} {
+						flex-direction: column-reverse;
+					}
+				`}
 			>
-				<div css={{ marginTop: '10px', alignSelf: 'flex-start' }}>
+				<div
+					css={css`
+						margin-top: 10px;
+						align-self: flex-start;
+					`}
+				>
 					<Button
 						onClick={() => {
 							navigate('/');
@@ -310,7 +333,10 @@ export const HolidaysOverview = () => {
 				</div>
 				<div
 					data-cy="create-suspension-cta"
-					css={{ marginTop: '10px', alignSelf: 'flex-end' }}
+					css={css`
+						margin-top: 10px;
+						align-self: flex-end;
+					`}
 				>
 					{productDetail.subscription.autoRenew &&
 						createSuspensionButton}

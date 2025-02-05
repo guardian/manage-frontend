@@ -195,15 +195,16 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
 					startOfSelectionDateIndex,
 					targetStateDayIndex,
 				);
-				setHolidayDates(
-					holidayDates.map((holidayDate, holidayDateIndex) => ({
+				const updatedHolidayDates = holidayDates.map(
+					(holidayDate, holidayDateIndex) => ({
 						...holidayDate,
 						isSelected: dateIndexesThatShouldBeSelected.some(
 							(selectedIndex) =>
 								selectedIndex === holidayDateIndex,
 						),
-					})),
+					}),
 				);
+				setHolidayDates(updatedHolidayDates);
 			}
 		}
 	};
@@ -224,7 +225,6 @@ export const HolidayCalendarTables = (props: HolidayCalendarTablesProps) => {
 				const selecteRangeStartDate = selectedDatesRange[0].date;
 				const selecteRangeEndDate =
 					selectedDatesRange[selectedDatesRange.length - 1].date;
-
 				props.handleRangeChoosen({
 					startDate: selecteRangeStartDate,
 					endDate: selecteRangeEndDate,

@@ -84,7 +84,7 @@ export const DeliveryRecordsContainer = (
 						props.productType.allProductsProductTypeFilterString,
 					)}
 					render={handleMembersDataResponse(props.productType)}
-					loadingMessage={`Retrieving details of your ${props.productType.friendlyName()}...`}
+					loadingMessage={`Retrieving details of your ${props.productType.friendlyName}...`}
 				/>
 			)}
 		</PageContainer>
@@ -122,7 +122,7 @@ export interface DeliveryRecordsContextInterface {
 }
 
 export const DeliveryRecordsContext: Context<
-	DeliveryRecordsContextInterface | {}
+	DeliveryRecordsContextInterface | object
 > = createContext({});
 
 const renderContextAndOutletContainer =

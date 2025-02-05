@@ -40,7 +40,7 @@ export const useStripeSDK = (stripeKey: string) => {
 				setStripeObjects(newStripe);
 			});
 		}
-	}, []);
+	}, [stripeKey, stripeObjects]);
 
 	return stripeObjects;
 };

@@ -19,6 +19,7 @@ import type {
 	SingleProductDetail,
 } from '../../../../shared/productResponse';
 import {
+	getSpecificProductTypeFromTier,
 	isProduct,
 	isSpecificProductType,
 	sortByJoinDate,
@@ -44,7 +45,10 @@ import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import { DownloadAppCtaVariation1 } from '../shared/DownloadAppCtaVariation1';
+import { DownloadFeastAppCtaWithImage } from '../shared/DownloadFeastAppCtaWithImage';
 import type { IsFromAppProps } from '../shared/IsFromAppProps';
+import { NewspaperArchiveCta } from '../shared/NewspaperArchiveCta';
 import { nonServiceableCountries } from '../shared/NonServiceableCountries';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { CancelledProductCard } from './CancelledProductCard';
@@ -112,10 +116,16 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		...allActiveProductDetails,
 		...allCancelledProductDetails,
 	].map((product: ProductDetail | CancelledProductDetail) => {
-		if (product.mmaCategory === 'recurringSupport') {
+		const specificProductType = getSpecificProductTypeFromTier(
+			product.tier,
+		);
+		if (
+			specificProductType.groupedProductType ===
+			'recurringSupportWithBenefits'
+		) {
 			return 'subscriptions'; // we want to override the display text in MMA for RC/S+ but not affect functionality
 		}
-		return product.mmaCategory;
+		return specificProductType.groupedProductType;
 	});
 
 	const uniqueProductCategories = [...new Set(allProductCategories)];
@@ -159,6 +169,10 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			isSpecificProductType(productDetail, PRODUCT_TYPES.digipack),
 		);
 
+	const hasDigitalPlusPrint = allActiveProductDetails.some((productDetail) =>
+		isSpecificProductType(productDetail, PRODUCT_TYPES.tierthree),
+	);
+
 	const hasNonServiceableCountry = nonServiceableCountries.includes(
 		allActiveProductDetails.find(isProduct)?.billingCountry as string,
 	);
@@ -171,10 +185,16 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
 	): GroupedProductTypeKeys => {
-		if (product.mmaCategory === 'recurringSupport') {
+		const specificProductType = getSpecificProductTypeFromTier(
+			product.tier,
+		);
+		if (
+			specificProductType.groupedProductType ===
+			'recurringSupportWithBenefits'
+		) {
 			return 'subscriptions';
 		}
-		return product.mmaCategory;
+		return specificProductType.groupedProductType;
 	};
 
 	return (
@@ -277,6 +297,20 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					</Fragment>
 				);
 			})}
+			{hasDigitalPlusPrint && (
+				<>
+					<h2 css={subHeadingCss}>
+						Get the most out of your benefits
+					</h2>
+					<Stack space={6}>
+						{featureSwitches.digitalArchiveCta && (
+							<NewspaperArchiveCta />
+						)}
+						<DownloadAppCtaVariation1 />
+						<DownloadFeastAppCtaWithImage />
+					</Stack>
+				</>
+			)}
 		</>
 	);
 };

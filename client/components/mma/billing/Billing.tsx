@@ -29,6 +29,7 @@ import type {
 } from '../../../../shared/productResponse';
 import {
 	getMainPlan,
+	getSpecificProductTypeFromTier,
 	isGift,
 	isProduct,
 	sortByJoinDate,
@@ -61,9 +62,10 @@ interface ProductDetailWithInvoice extends ProductDetail {
 	invoices: InvoiceDataApiItem[];
 }
 
-type MMACategoryToProductDetails = {
-	[mmaCategory in GroupedProductTypeKeys]: ProductDetailWithInvoice[];
-};
+type ProductGroupingToProductDetails = Record<
+	GroupedProductTypeKeys,
+	ProductDetailWithInvoice[]
+>;
 
 type BillingResponse = [
 	MembersDataApiResponse,
@@ -115,31 +117,33 @@ function joinInvoicesWithProductsInCategories(
 		}
 	});
 
-	const mmaCategoryToProductDetails =
+	const productGroupingToProductDetails =
 		organiseProductsIntoCategory(allProductDetails);
-	return { allProductDetails, mmaCategoryToProductDetails };
+	return { allProductDetails, productGroupingToProductDetails };
 }
 
 function organiseProductsIntoCategory(allProductDetails: ProductDetail[]) {
-	return allProductDetails.reduce(
-		(accumulator, productDetail) => ({
+	return allProductDetails.reduce((accumulator, productDetail) => {
+		const specificProductType = getSpecificProductTypeFromTier(
+			productDetail.tier,
+		);
+		return {
 			...accumulator,
-			[productDetail.mmaCategory]: [
-				...(accumulator[productDetail.mmaCategory] || []),
+			[specificProductType.groupedProductType]: [
+				...(accumulator[specificProductType.groupedProductType] || []),
 				productDetail,
 			],
-		}),
-		{} as MMACategoryToProductDetails,
-	);
+		};
+	}, {} as ProductGroupingToProductDetails);
 }
 
-function renderProductBillingInfo([mmaCategory, productDetails]: [
+function renderProductBillingInfo([productGrouping, productDetails]: [
 	string,
 	ProductDetailWithInvoice[],
 ]) {
 	return (
 		productDetails.length > 0 && (
-			<Fragment key={mmaCategory}>
+			<Fragment key={productGrouping}>
 				{productDetails.map((productDetail) => {
 					const mainPlan = getMainPlan(productDetail.subscription);
 					if (!mainPlan) {
@@ -147,10 +151,13 @@ function renderProductBillingInfo([mmaCategory, productDetails]: [
 							'mainPlan does not exist for product in billing page',
 						);
 					}
+					const specificProductType = getSpecificProductTypeFromTier(
+						productDetail.tier,
+					);
 					const groupedProductType =
-						GROUPED_PRODUCT_TYPES[productDetail.mmaCategory];
-					const specificProductType =
-						groupedProductType.mapGroupedToSpecific(productDetail);
+						GROUPED_PRODUCT_TYPES[
+							specificProductType.groupedProductType
+						];
 					const hasCancellationPending =
 						productDetail.subscription.cancelledAt;
 					const cancelledCopy =
@@ -372,11 +379,11 @@ function renderInAppPurchase(subscription: AppSubscription) {
 }
 
 function BillingDetailsComponent(props: {
-	mmaCategoryToProductDetails: MMACategoryToProductDetails;
+	productGroupingToProductDetails: ProductGroupingToProductDetails;
 }) {
 	return (
 		<>
-			{Object.entries(props.mmaCategoryToProductDetails).map(
+			{Object.entries(props.productGroupingToProductDetails).map(
 				renderProductBillingInfo,
 			)}
 		</>
@@ -409,7 +416,7 @@ const BillingPage = () => {
 		isValidAppSubscription,
 	);
 
-	const { allProductDetails, mmaCategoryToProductDetails } =
+	const { allProductDetails, productGroupingToProductDetails } =
 		joinInvoicesWithProductsInCategories(mdapiResponse, invoicesResponse);
 
 	if (
@@ -428,7 +435,9 @@ const BillingPage = () => {
 				appSubscriptions.map(renderInAppPurchase)}
 
 			<BillingDetailsComponent
-				mmaCategoryToProductDetails={mmaCategoryToProductDetails}
+				productGroupingToProductDetails={
+					productGroupingToProductDetails
+				}
 			/>
 		</>
 	);

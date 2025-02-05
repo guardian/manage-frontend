@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { rest } from 'msw';
+import {http, HttpResponse} from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { consents } from '@/client/fixtures/consents';
 import { InAppPurchase } from '@/client/fixtures/inAppPurchase';
@@ -32,37 +32,33 @@ export const Default: StoryObj<typeof EmailAndMarketing> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(
-					ctx.json(
-						toMembersDataApiResponse(
-							guardianWeeklyPaidByCard(),
-							digitalPackPaidByDirectDebit(),
-							newspaperVoucherPaidByPaypal(),
-						),
-					),
-				);
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse(
+					guardianWeeklyPaidByCard(),
+					digitalPackPaidByDirectDebit(),
+					newspaperVoucherPaidByPaypal(),
+				))
 			}),
-			rest.get('/idapi/user', (_req, res, ctx) => {
-				return res(ctx.json(user));
+			http.get('/idapi/user', () => {
+				return HttpResponse.json(user)
 			}),
-			rest.get('/idapi/newsletters', (_req, res, ctx) => {
-				return res(ctx.json(newsletters));
+			http.get('/idapi/newsletters', () => {
+				return HttpResponse.json(newsletters)
 			}),
-			rest.get('/idapi/user/newsletters', (_req, res, ctx) => {
-				return res(ctx.json(newsletterSubscriptions));
+			http.get('/idapi/user/newsletters', () => {
+				return HttpResponse.json(newsletterSubscriptions)
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(ctx.json({ subscriptions: [] }));
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] })
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([])
 			}),
-			rest.get('/idapi/consents', (_req, res, ctx) => {
-				return res(ctx.json(consents));
+			http.get('/idapi/consents', () => {
+				return HttpResponse.json(consents)
 			}),
-			rest.get('/api/reminders/status', (_req, res, ctx) => {
-				return res(ctx.json({ recurringStatus: 'NotSet' }));
+			http.get('/api/reminders/status', () => {
+				return HttpResponse.json({ recurringStatus: 'NotSet' })
 			}),
 		],
 	},
@@ -75,29 +71,29 @@ export const WithNoProducts: StoryObj<typeof EmailAndMarketing> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(ctx.json(toMembersDataApiResponse()));
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse())
 			}),
-			rest.get('/idapi/user', (_req, res, ctx) => {
-				return res(ctx.json(user));
+			http.get('/idapi/user', () => {
+				return HttpResponse.json(user)
 			}),
-			rest.get('/idapi/newsletters', (_req, res, ctx) => {
-				return res(ctx.json(newsletters));
+			http.get('/idapi/newsletters', () => {
+				return HttpResponse.json(newsletters)
 			}),
-			rest.get('/idapi/user/newsletters', (_req, res, ctx) => {
-				return res(ctx.json(newsletterSubscriptions));
+			http.get('/idapi/user/newsletters', () => {
+				return HttpResponse.json(newsletterSubscriptions)
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(ctx.json({ subscriptions: [] }));
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({subscriptions: []})
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([])
 			}),
-			rest.get('/idapi/consents', (_req, res, ctx) => {
-				return res(ctx.json(consents));
+			http.get('/idapi/consents', () => {
+				return HttpResponse.json(consents)
 			}),
-			rest.get('/api/reminders/status', (_req, res, ctx) => {
-				return res(ctx.json({ recurringStatus: 'NotSet' }));
+			http.get('/api/reminders/status', () => {
+				return HttpResponse.json({ recurringStatus: 'NotSet' })
 			}),
 		],
 	},
@@ -112,29 +108,29 @@ export const WithIAP: StoryObj<typeof EmailAndMarketing> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(ctx.json(toMembersDataApiResponse()));
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse())
 			}),
-			rest.get('/idapi/user', (_req, res, ctx) => {
-				return res(ctx.json(user));
+			http.get('/idapi/user', () => {
+				return HttpResponse.json(user)
 			}),
-			rest.get('/idapi/newsletters', (_req, res, ctx) => {
-				return res(ctx.json(newsletters));
+			http.get('/idapi/newsletters', () => {
+				return HttpResponse.json(newsletters)
 			}),
-			rest.get('/idapi/user/newsletters', (_req, res, ctx) => {
-				return res(ctx.json(newsletterSubscriptions));
+			http.get('/idapi/user/newsletters', () => {
+				return HttpResponse.json(newsletterSubscriptions)
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(ctx.json({ subscriptions: [InAppPurchase] }));
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [InAppPurchase] })
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json([]));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([])
 			}),
-			rest.get('/idapi/consents', (_req, res, ctx) => {
-				return res(ctx.json(consents));
+			http.get('/idapi/consents', () => {
+				return HttpResponse.json(consents)
 			}),
-			rest.get('/api/reminders/status', (_req, res, ctx) => {
-				return res(ctx.json({ recurringStatus: 'NotSet' }));
+			http.get('/api/reminders/status', () => {
+				return HttpResponse.json({ recurringStatus: 'NotSet' })
 			}),
 		],
 	},
@@ -147,29 +143,29 @@ export const WithSingleContribution: StoryObj<typeof EmailAndMarketing> = {
 
 	parameters: {
 		msw: [
-			rest.get('/api/me/mma', (_req, res, ctx) => {
-				return res(ctx.json(toMembersDataApiResponse()));
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(toMembersDataApiResponse())
 			}),
-			rest.get('/idapi/user', (_req, res, ctx) => {
-				return res(ctx.json(user));
+			http.get('/idapi/user', () => {
+				return HttpResponse.json(user)
 			}),
-			rest.get('/idapi/newsletters', (_req, res, ctx) => {
-				return res(ctx.json(newsletters));
+			http.get('/idapi/newsletters', () => {
+				return HttpResponse.json(newsletters)
 			}),
-			rest.get('/idapi/user/newsletters', (_req, res, ctx) => {
-				return res(ctx.json(newsletterSubscriptions));
+			http.get('/idapi/user/newsletters', () => {
+				return HttpResponse.json(newsletterSubscriptions)
 			}),
-			rest.get('/mpapi/user/mobile-subscriptions', (_req, res, ctx) => {
-				return res(ctx.json({ subscriptions: [] }));
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] })
 			}),
-			rest.get('/api/me/one-off-contributions', (_req, res, ctx) => {
-				return res(ctx.json(singleContributionsAPIResponse));
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json(singleContributionsAPIResponse)
 			}),
-			rest.get('/idapi/consents', (_req, res, ctx) => {
-				return res(ctx.json(consents));
+			http.get('/idapi/consents', () => {
+				return HttpResponse.json(consents)
 			}),
-			rest.get('/api/reminders/status', (_req, res, ctx) => {
-				return res(ctx.json({ recurringStatus: 'NotSet' }));
+			http.get('/api/reminders/status', () => {
+				return HttpResponse.json({ recurringStatus: 'NotSet' })
 			}),
 		],
 	},

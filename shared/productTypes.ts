@@ -1,4 +1,8 @@
 import type { ReactNode } from 'react';
+import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
+import { shuffledTierThreeCancellationReasons } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationReasons';
+import type { CurrencyIso } from '@/client/utilities/currencyIso';
+import { convertCurrencyIsoToSymbol } from '@/client/utilities/currencyIso';
 import type {
 	CancellationReason,
 	OptionalCancellationReasonId,
@@ -6,21 +10,21 @@ import type {
 import { contributionsCancellationFlowStart } from '../client/components/mma/cancel/contributions/ContributionsCancellationFlowStart';
 import { shuffledContributionsCancellationReasons } from '../client/components/mma/cancel/contributions/ContributionsCancellationReasons';
 import { digipackCancellationFlowStart } from '../client/components/mma/cancel/digipack/DigipackCancellationFlowStart';
-import { digipackCancellationReasons } from '../client/components/mma/cancel/digipack/DigipackCancellationReasons';
+import { shuffledDigipackCancellationReasons } from '../client/components/mma/cancel/digipack/DigipackCancellationReasons';
 import { gwCancellationFlowStart } from '../client/components/mma/cancel/gw/GwCancellationFlowStart';
-import { gwCancellationReasons } from '../client/components/mma/cancel/gw/GwCancellationReasons';
+import { shuffledGWCancellationReasons } from '../client/components/mma/cancel/gw/GwCancellationReasons';
 import { membershipCancellationFlowStart } from '../client/components/mma/cancel/membership/MembershipCancellationFlowStart';
-import { membershipCancellationReasons } from '../client/components/mma/cancel/membership/MembershipCancellationReasons';
+import { shuffledMembershipCancellationReasons } from '../client/components/mma/cancel/membership/MembershipCancellationReasons';
 import type { RestOfCancellationFlow } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
 import { physicalSubsCancellationFlowWrapper } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
 import { supporterplusCancellationFlowStart } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationFlowStart';
 import { shuffledSupporterPlusCancellationReasons } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationReasons';
 import { voucherCancellationFlowStart } from '../client/components/mma/cancel/voucher/VoucherCancellationFlowStart';
-import { voucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
+import { shuffledVoucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
 import type { SupportTheGuardianButtonProps } from '../client/components/shared/SupportTheGuardianButton';
 import type { OphanProduct } from './ophanTypes';
 import type {
-	CancelledProductDetail,
+	BillingPeriod,
 	PaidSubscriptionPlan,
 	ProductDetail,
 	Subscription,
@@ -42,6 +46,7 @@ type ProductFriendlyName =
 	| 'Guardian Weekly subscription'
 	| 'digital + print subscription'
 	| 'subscription'
+	| 'support'
 	| 'recurring support'
 	| 'guardian patron';
 type ProductUrlPart =
@@ -79,7 +84,8 @@ export type AllProductsProductTypeFilterString =
 	| 'Digipack'
 	| 'SupporterPlus'
 	| 'ContentSubscription'
-	| 'GuardianPatron';
+	| 'GuardianPatron'
+	| 'TierThree';
 
 interface CancellationFlowProperties {
 	reasons: CancellationReason[];
@@ -97,6 +103,7 @@ interface CancellationFlowProperties {
 	shouldHideSummaryMainPara?: true;
 	summaryReasonSpecificPara: (
 		reasonId: OptionalCancellationReasonId,
+		currencyISO?: CurrencyIso,
 	) => string | undefined;
 	onlyShowSupportSectionIfAlternateText: boolean;
 	alternateSupportButtonText: (
@@ -156,7 +163,7 @@ interface DeliveryProperties {
 
 export interface ProductType {
 	productTitle: (mainPlan?: SubscriptionPlan) => string;
-	friendlyName: (productDetail?: ProductDetail) => ProductFriendlyName;
+	friendlyName: ProductFriendlyName;
 	shortFriendlyName?: string;
 	productType: ProductTypeKeys;
 	groupedProductType: GroupedProductTypeKeys;
@@ -190,9 +197,6 @@ export interface GroupedProductType
 		ProductType,
 		'productType' | 'groupedProductType' | 'softOptInIDs'
 	> {
-	mapGroupedToSpecific: (
-		productDetail: ProductDetail | CancelledProductDetail,
-	) => ProductType;
 	groupFriendlyName: string;
 	supportTheGuardianSectionProps?: SupportTheGuardianButtonProps & {
 		message: string;
@@ -232,7 +236,7 @@ const calculateProductTitle =
 		baseProductTitle + (mainPlan?.name ? ` - ${mainPlan.name}` : '');
 
 export function getBillingPeriodAdjective(
-	billingPeriod: string | undefined,
+	billingPeriod?: BillingPeriod,
 ): 'Monthly' | 'Annual' | 'Quarterly' {
 	if (billingPeriod === 'month') {
 		return 'Monthly';
@@ -240,7 +244,7 @@ export function getBillingPeriodAdjective(
 	if (billingPeriod === 'year') {
 		return 'Annual';
 	}
-	if (billingPeriod === 'quarterly') {
+	if (billingPeriod === 'quarter') {
 		return 'Quarterly';
 	}
 
@@ -266,12 +270,13 @@ export type ProductTypeKeys =
 export type GroupedProductTypeKeys =
 	| 'membership'
 	| 'recurringSupport'
+	| 'recurringSupportWithBenefits'
 	| 'subscriptions';
 
-export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
+export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 	membership: {
 		productTitle: () => 'Guardian Membership',
-		friendlyName: () => 'Membership',
+		friendlyName: 'Membership',
 		productType: 'membership',
 		groupedProductType: 'membership',
 		allProductsProductTypeFilterString: 'Membership',
@@ -287,7 +292,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			}
 		},
 		cancellation: {
-			reasons: membershipCancellationReasons,
+			reasons: shuffledMembershipCancellationReasons,
 			sfCaseProduct: 'Membership',
 			startPageBody: membershipCancellationFlowStart,
 			hideReasonTitlePrefix: true,
@@ -316,7 +321,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 				paidPlan.billingPeriod,
 			)} contribution`;
 		},
-		friendlyName: () => 'recurring contribution',
+		friendlyName: 'recurring contribution',
 		productType: 'contributions',
 		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'Contribution',
@@ -329,6 +334,8 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			SoftOptInIDs.SupporterNewsletter,
 		],
 		cancellation: {
+			alternateSummaryMainPara:
+				'This is immediate and you will not be charged again.',
 			linkOnProductPage: true,
 			reasons: shuffledContributionsCancellationReasons,
 			sfCaseProduct: 'Recurring - Contributions',
@@ -340,12 +347,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 				switch (reasonId) {
 					case 'mma_financial_circumstances':
 					case 'mma_value_for_money':
-					case 'mma_one_off':
 						return 'You can support The Guardian’s independent journalism with a One-time contribution, from as little as £1 – and it only takes a minute.';
-					case 'mma_wants_annual_contribution':
-						return 'You can support The Guardian’s independent journalism for the long term with an annual contribution.';
-					case 'mma_wants_monthly_contribution':
-						return 'You can support The Guardian’s independent journalism for the long term with a monthly contribution.';
 					default:
 						return undefined;
 				}
@@ -357,12 +359,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 				switch (reasonId) {
 					case 'mma_financial_circumstances':
 					case 'mma_value_for_money':
-					case 'mma_one_off':
 						return 'Make a One-time contribution';
-					case 'mma_wants_annual_contribution':
-						return 'Make an annual contribution';
-					case 'mma_wants_monthly_contribution':
-						return 'Make a monthly contribution';
 					default:
 						return undefined;
 				}
@@ -376,7 +373,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	// FIXME: DEPRECATED: once Braze templates have been updated to use voucher/homedelivery, then replace with redirect to /subscriptions for anything with 'paper' in the URL
 	newspaper: {
 		productTitle: calculateProductTitle('Newspaper subscription'),
-		friendlyName: () => 'newspaper subscription',
+		friendlyName: 'newspaper subscription',
 		productType: 'newspaper',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Paper',
@@ -395,7 +392,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	homedelivery: {
 		productTitle: calculateProductTitle('Newspaper Delivery'),
-		friendlyName: () => 'newspaper home delivery subscription',
+		friendlyName: 'newspaper home delivery subscription',
 		shortFriendlyName: 'newspaper home delivery',
 		productType: 'homedelivery',
 		groupedProductType: 'subscriptions',
@@ -434,7 +431,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	nationaldelivery: {
 		productTitle: calculateProductTitle('Newspaper Delivery'),
-		friendlyName: () => 'newspaper home delivery subscription',
+		friendlyName: 'newspaper home delivery subscription',
 		shortFriendlyName: 'newspaper home delivery',
 		productType: 'nationaldelivery',
 		groupedProductType: 'subscriptions',
@@ -473,7 +470,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	voucher: {
 		productTitle: calculateProductTitle('Newspaper Voucher'),
-		friendlyName: () => 'newspaper voucher subscription',
+		friendlyName: 'newspaper voucher subscription',
 		shortFriendlyName: 'newspaper voucher booklet',
 		productType: 'voucher',
 		groupedProductType: 'subscriptions',
@@ -506,7 +503,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		},
 		cancellation: {
 			linkOnProductPage: true,
-			reasons: voucherCancellationReasons,
+			reasons: shuffledVoucherCancellationReasons,
 			sfCaseProduct: 'Voucher Subscriptions',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
@@ -521,7 +518,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	digitalvoucher: {
 		productTitle: calculateProductTitle('Newspaper Subscription Card'),
-		friendlyName: () => 'newspaper subscription card',
+		friendlyName: 'newspaper subscription card',
 		productType: 'digitalvoucher',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'DigitalVoucher',
@@ -547,7 +544,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	guardianweekly: {
 		productTitle: () => 'Guardian Weekly',
-		friendlyName: () => 'Guardian Weekly subscription',
+		friendlyName: 'Guardian Weekly subscription',
 		shortFriendlyName: 'Guardian Weekly',
 		productType: 'guardianweekly',
 		groupedProductType: 'subscriptions',
@@ -578,7 +575,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		},
 		cancellation: {
 			linkOnProductPage: true,
-			reasons: gwCancellationReasons,
+			reasons: shuffledGWCancellationReasons,
 			sfCaseProduct: 'Guardian Weekly',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
@@ -597,10 +594,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	tierthree: {
 		productTitle: () => 'Digital + Print',
-		friendlyName: () => 'digital + print subscription',
+		friendlyName: 'digital + print subscription',
 		productType: 'tierthree',
-		groupedProductType: 'recurringSupport',
-		allProductsProductTypeFilterString: 'Weekly',
+		groupedProductType: 'recurringSupportWithBenefits',
+		allProductsProductTypeFilterString: 'TierThree',
 		urlPart: 'digital+print',
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
@@ -624,13 +621,18 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		},
 		cancellation: {
 			linkOnProductPage: true,
-			reasons: gwCancellationReasons,
+			reasons: shuffledTierThreeCancellationReasons,
 			sfCaseProduct: 'Tier Three',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
-			startPageBody: gwCancellationFlowStart,
+			startPageBody: tierThreeCancellationFlowStart,
 			startPageOfferEffectiveDateOptions: true,
-			summaryReasonSpecificPara: () => undefined,
+			summaryReasonSpecificPara: (_, currencyISO?: CurrencyIso) => {
+				const currencySymbol = convertCurrencyIsoToSymbol(
+					currencyISO || 'USD',
+				);
+				return `Your support, no matter what amount, allows us to fund independent Guardian journalism. You can support us from as little as ${currencySymbol}1. It only takes a minute but makes a big difference.`;
+			},
 			onlyShowSupportSectionIfAlternateText: false,
 			alternateSupportButtonText: () => undefined,
 			alternateSupportButtonUrlSuffix: () => undefined,
@@ -643,7 +645,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	digipack: {
 		productTitle: () => 'Digital Subscription',
-		friendlyName: () => 'digital subscription',
+		friendlyName: 'digital subscription',
 		productType: 'digipack',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Digipack',
@@ -658,7 +660,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		],
 		cancellation: {
 			linkOnProductPage: true,
-			reasons: digipackCancellationReasons,
+			reasons: shuffledDigipackCancellationReasons,
 			sfCaseProduct: 'Digital Pack Subscriptions',
 			startPageBody: digipackCancellationFlowStart,
 			summaryReasonSpecificPara: () => undefined,
@@ -670,10 +672,10 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	supporterplus: {
 		productTitle: () => 'All-access digital',
-		friendlyName: () => 'all-access digital subscription',
+		friendlyName: 'all-access digital subscription',
 		shortFriendlyName: 'all-access digital',
 		productType: 'supporterplus',
-		groupedProductType: 'recurringSupport',
+		groupedProductType: 'recurringSupportWithBenefits',
 		allProductsProductTypeFilterString: 'SupporterPlus',
 		urlPart: 'support',
 		getOphanProductType: () => 'SUPPORTER_PLUS',
@@ -683,6 +685,8 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 			SoftOptInIDs.SupporterNewsletter,
 			SoftOptInIDs.DigitalSubscriberPreview,
 		],
+		cancelledCopy:
+			'Your subscription has been cancelled. You are able to access your subscription until',
 		cancellation: {
 			alternateSummaryMainPara:
 				"This is immediate and you will not be charged again. If you've cancelled within the first 14 days, we'll send you a full refund.",
@@ -700,7 +704,7 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 	},
 	guardianpatron: {
 		productTitle: () => 'Guardian Patron',
-		friendlyName: () => 'guardian patron',
+		friendlyName: 'guardian patron',
 		productType: 'guardianpatron',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'GuardianPatron',
@@ -714,13 +718,12 @@ export const PRODUCT_TYPES: { [productKey in ProductTypeKeys]: ProductType } = {
 		],
 	},
 };
-
-export const GROUPED_PRODUCT_TYPES: {
-	[productKey in GroupedProductTypeKeys]: GroupedProductType;
-} = {
+export const GROUPED_PRODUCT_TYPES: Record<
+	GroupedProductTypeKeys,
+	GroupedProductType
+> = {
 	membership: {
 		...PRODUCT_TYPES.membership, // TODO: Can we omit 'groupedProductType' and 'softOptInIDs' from spread properties as omitted from type
-		mapGroupedToSpecific: () => PRODUCT_TYPES.membership,
 		groupFriendlyName: 'Membership',
 		showSupporterId: true,
 		supportTheGuardianSectionProps: {
@@ -730,53 +733,27 @@ export const GROUPED_PRODUCT_TYPES: {
 		},
 	},
 	recurringSupport: {
+		productTitle: () => 'Support',
+		friendlyName: 'support',
+		groupFriendlyName: 'support',
+		allProductsProductTypeFilterString: 'Contribution',
+		urlPart: 'recurringsupport',
+		showSupporterId: true,
+	},
+	recurringSupportWithBenefits: {
 		productTitle: () => 'Subscription',
-		friendlyName: () => 'subscription',
+		friendlyName: 'subscription',
 		groupFriendlyName: 'subscription',
 		allProductsProductTypeFilterString: 'SupporterPlus', // this will only return SupporterPlus, and not Contributions
 		urlPart: 'recurringsupport',
-		mapGroupedToSpecific: (
-			productDetail: ProductDetail | CancelledProductDetail,
-		) => {
-			if (productDetail.tier === 'Supporter Plus') {
-				return PRODUCT_TYPES.supporterplus;
-			} else if (productDetail.tier === 'Contributor') {
-				return PRODUCT_TYPES.contributions;
-			} else if (productDetail.tier == 'Tier Three') {
-				return PRODUCT_TYPES.tierthree;
-			}
-			throw `Specific product type for tier '${productDetail.tier}' not found.`;
-		},
 		showSupporterId: true,
 	},
 	subscriptions: {
 		productTitle: () => 'Subscription',
-		friendlyName: () => 'subscription',
+		friendlyName: 'subscription',
 		groupFriendlyName: 'subscriptions',
 		allProductsProductTypeFilterString: 'ContentSubscription',
 		urlPart: 'subscriptions',
-		mapGroupedToSpecific: (
-			productDetail: ProductDetail | CancelledProductDetail,
-		) => {
-			if (productDetail.tier === 'Digital Pack') {
-				return PRODUCT_TYPES.digipack;
-			} else if (productDetail.tier === 'Newspaper Delivery') {
-				return PRODUCT_TYPES.homedelivery;
-			} else if (productDetail.tier === 'Newspaper - National Delivery') {
-				return PRODUCT_TYPES.nationaldelivery;
-			} else if (productDetail.tier === 'Newspaper Voucher') {
-				return PRODUCT_TYPES.voucher;
-			} else if (
-				productDetail.tier.startsWith('Newspaper Digital Voucher')
-			) {
-				return PRODUCT_TYPES.digitalvoucher;
-			} else if (productDetail.tier.startsWith('Guardian Weekly')) {
-				return PRODUCT_TYPES.guardianweekly;
-			} else if (productDetail.tier.startsWith('guardianpatron')) {
-				return PRODUCT_TYPES.guardianpatron;
-			}
-			throw `Specific product type for tier '${productDetail.tier}' not found.`;
-		},
 		cancelledCopy:
 			'Your subscription has been cancelled. You are able to access your subscription until',
 	},

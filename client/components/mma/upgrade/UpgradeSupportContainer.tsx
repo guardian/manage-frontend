@@ -37,7 +37,7 @@ export interface UpgradeRouterState {
 	journeyCompleted: boolean;
 }
 
-export const UpgradeSupportContext: Context<UpgradeSupportInterface | {}> =
+export const UpgradeSupportContext: Context<UpgradeSupportInterface | object> =
 	createContext({});
 
 const UpgradeSupportPageContainer = ({

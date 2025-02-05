@@ -77,7 +77,7 @@ const subHeadingCss = css`
 interface PaymentMethodProps {
 	value: PaymentMethod;
 	updatePaymentMethod: (newPaymentMethod: PaymentMethod) => void;
-	directDebitIsAllowed: Boolean;
+	directDebitIsAllowed: boolean;
 }
 
 interface PaymentMethodRadioButtonProps extends PaymentMethodProps {

@@ -1,10 +1,14 @@
 import { css } from '@emotion/react';
-import { brandAlt, neutral, space } from '@guardian/source/foundations';
+import {
+	brandAlt,
+	neutral,
+	space,
+	textSans17Object,
+} from '@guardian/source/foundations';
 import Color from 'color';
 import type * as React from 'react';
 import { Link } from 'react-router-dom';
 import type { ProductDetail } from '../../../../shared/productResponse';
-import { sans } from '../../../styles/fonts';
 import { ArrowIcon } from './assets/ArrowIcon';
 import { ErrorIcon } from './assets/ErrorIcon';
 import { TickIcon } from './assets/TickIcon';
@@ -113,8 +117,7 @@ const buttonCss = ({
 		hollow,
 	);
 	return css({
-		fontSize: '16px',
-		fontFamily: sans,
+		...textSans17Object,
 		borderRadius: '1000px',
 		alignItems: 'center',
 		position: 'relative',

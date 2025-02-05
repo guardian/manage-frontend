@@ -1,3 +1,4 @@
+import { shuffleArray } from '@/client/utilities/utils';
 import {
 	inOrderToImproveSubs,
 	standardAlternateFeedbackIntro,
@@ -86,10 +87,18 @@ export const gwCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I don’t want an auto-renewing subscription',
 		skipFeedback: true,
 	},
+];
+
+export const otherCancellationReason: CancellationReason[] = [
 	{
 		reasonId: 'mma_other',
 		linkLabel: 'None of the above',
 		saveTitle: 'Other',
 		alternateFeedbackIntro: inOrderToImproveSubs,
 	},
+];
+
+export const shuffledGWCancellationReasons: CancellationReason[] = [
+	...(shuffleArray(gwCancellationReasons) as CancellationReason[]),
+	...otherCancellationReason,
 ];

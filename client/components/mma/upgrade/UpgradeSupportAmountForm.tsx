@@ -26,10 +26,9 @@ import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 async function scrollToConfirmChange() {
 	const confirmElement = await waitForElement('#confirm-change');
-	confirmElement &&
-		confirmElement.scrollIntoView({
-			behavior: 'smooth',
-		});
+	confirmElement?.scrollIntoView({
+		behavior: 'smooth',
+	});
 	parent.location.hash = 'confirm-change';
 }
 
@@ -143,7 +142,14 @@ export const UpgradeSupportAmountForm = ({
 		setIsOtherAmountSelected(chosenAmount === otherAmountSelected);
 
 		setErrorMessage(newErrorMessage);
-	}, [otherAmountSelected, chosenAmount]);
+	}, [
+		otherAmountSelected,
+		chosenAmount,
+		currentAmount,
+		isOtherAmountSelected,
+		priceConfig.maxAmount,
+		priceConfig.minAmount,
+	]);
 
 	return (
 		<>

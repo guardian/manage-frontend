@@ -10,11 +10,15 @@ exports[`DropMenu displays the text in the supplied color 1`] = `
 }
 
 .emotion-1 {
-  font-size: 17px;
-  font-family: "GuardianTextEgyptian",Georgia,serif;
-  font-weight: bold;
+  font-family: GuardianTextEgyptian,"Guardian Text Egyptian Web",Georgia,serif;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 700;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
   line-height: 24px;
   text-transform: capitalize;
+  display: block;
   color: green;
 }
 
@@ -38,7 +42,7 @@ exports[`DropMenu displays the text in the supplied color 1`] = `
   margin-left: 4px;
 }
 
-.emotion-1.open:after {
+.emotion-1.open:after: {
   -webkit-transform: rotate(225deg);
   -moz-transform: rotate(225deg);
   -ms-transform: rotate(225deg);
@@ -47,13 +51,23 @@ exports[`DropMenu displays the text in the supplied color 1`] = `
 
 <div
   className="emotion-0"
+  role="heading"
 >
-  <div
+  <a
+    aria-controls=":r0:"
+    aria-expanded={false}
     className="emotion-1"
+    href="#"
+    id=":r0:"
     onClick={[Function]}
+    onKeyDown={[Function]}
+    role="button"
   >
     TEST DROPMENU
-  </div>
+  </a>
+  <div
+    id=":r0:"
+  />
 </div>
 `;
 
@@ -67,11 +81,15 @@ exports[`DropMenu if closed, opens and shows children on click 1`] = `
 }
 
 .emotion-1 {
-  font-size: 17px;
-  font-family: "GuardianTextEgyptian",Georgia,serif;
-  font-weight: bold;
+  font-family: GuardianTextEgyptian,"Guardian Text Egyptian Web",Georgia,serif;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 700;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
   line-height: 24px;
   text-transform: capitalize;
+  display: block;
   color: blue;
 }
 
@@ -95,7 +113,7 @@ exports[`DropMenu if closed, opens and shows children on click 1`] = `
   margin-left: 4px;
 }
 
-.emotion-1.open:after {
+.emotion-1.open:after: {
   -webkit-transform: rotate(225deg);
   -moz-transform: rotate(225deg);
   -ms-transform: rotate(225deg);
@@ -105,15 +123,25 @@ exports[`DropMenu if closed, opens and shows children on click 1`] = `
 <div>
   <div
     class="emotion-0"
+    role="heading"
   >
-    <div
+    <a
+      aria-controls=":r1:"
+      aria-expanded="true"
       class="open emotion-1"
+      href="#"
+      id=":r1:"
+      role="button"
     >
       TEST DROPMENU
+    </a>
+    <div
+      id=":r1:"
+    >
+      <p>
+        TEST_CONTENT
+      </p>
     </div>
-    <p>
-      TEST_CONTENT
-    </p>
   </div>
 </div>
 `;
@@ -128,11 +156,15 @@ exports[`DropMenu if open, closes and hides children on click 1`] = `
 }
 
 .emotion-1 {
-  font-size: 17px;
-  font-family: "GuardianTextEgyptian",Georgia,serif;
-  font-weight: bold;
+  font-family: GuardianTextEgyptian,"Guardian Text Egyptian Web",Georgia,serif;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 700;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
   line-height: 24px;
   text-transform: capitalize;
+  display: block;
   color: blue;
 }
 
@@ -156,7 +188,7 @@ exports[`DropMenu if open, closes and hides children on click 1`] = `
   margin-left: 4px;
 }
 
-.emotion-1.open:after {
+.emotion-1.open:after: {
   -webkit-transform: rotate(225deg);
   -moz-transform: rotate(225deg);
   -ms-transform: rotate(225deg);
@@ -166,12 +198,21 @@ exports[`DropMenu if open, closes and hides children on click 1`] = `
 <div>
   <div
     class="emotion-0"
+    role="heading"
   >
-    <div
+    <a
+      aria-controls=":r2:"
+      aria-expanded="false"
       class="emotion-1"
+      href="#"
+      id=":r2:"
+      role="button"
     >
       TEST DROPMENU
-    </div>
+    </a>
+    <div
+      id=":r2:"
+    />
   </div>
 </div>
 `;
@@ -186,11 +227,15 @@ exports[`DropMenu initalises in the unopened state and displays the title 1`] = 
 }
 
 .emotion-1 {
-  font-size: 17px;
-  font-family: "GuardianTextEgyptian",Georgia,serif;
-  font-weight: bold;
+  font-family: GuardianTextEgyptian,"Guardian Text Egyptian Web",Georgia,serif;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 700;
+  font-style: normal;
+  --source-text-decoration-thickness: 2px;
   line-height: 24px;
   text-transform: capitalize;
+  display: block;
   color: blue;
 }
 
@@ -214,7 +259,7 @@ exports[`DropMenu initalises in the unopened state and displays the title 1`] = 
   margin-left: 4px;
 }
 
-.emotion-1.open:after {
+.emotion-1.open:after: {
   -webkit-transform: rotate(225deg);
   -moz-transform: rotate(225deg);
   -ms-transform: rotate(225deg);
@@ -224,12 +269,21 @@ exports[`DropMenu initalises in the unopened state and displays the title 1`] = 
 <div>
   <div
     class="emotion-0"
+    role="heading"
   >
-    <div
+    <a
+      aria-controls=":r0:"
+      aria-expanded="false"
       class="emotion-1"
+      href="#"
+      id=":r0:"
+      role="button"
     >
       TEST DROPMENU
-    </div>
+    </a>
+    <div
+      id=":r0:"
+    />
   </div>
 </div>
 `;

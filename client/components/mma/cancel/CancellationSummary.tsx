@@ -1,11 +1,18 @@
 import { css } from '@emotion/react';
-import { palette, space } from '@guardian/source/foundations';
+import {
+	palette,
+	space,
+	textEgyptianBold17,
+} from '@guardian/source/foundations';
 import { Link } from 'react-router-dom';
+import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {
+	PaidSubscriptionPlan,
 	ProductDetail,
 	Subscription,
 } from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import type { ProductType } from '../../../../shared/productTypes';
 import { measure } from '../../../styles/typography';
 import { hasDeliveryRecordsFlow } from '../../../utilities/productUtils';
@@ -14,23 +21,44 @@ import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton'
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { Heading } from '../shared/Heading';
 import { hrefStyle } from './cancellationConstants';
-import { CancellationReasonContext } from './cancellationContexts';
 import { CancellationContributionReminder } from './cancellationContributionReminder';
+import type { CancellationReasonId } from './cancellationReason';
 import { ResubscribeThrasher } from './ResubscribeThrasher';
 
 const actuallyCancelled = (
 	productType: ProductType,
 	productDetail: ProductDetail,
-	cancelledProductDetail: ProductDetail,
+	productDetailBeforeCancelling: ProductDetail,
+	eligableForOffer?: boolean,
+	eligibleForPause?: boolean,
+	cancellationReasonId?: CancellationReasonId,
 ) => {
+	const isSupportPlus = productType.productType === 'supporterplus';
+	const isContribution = productType.productType === 'contributions';
+
+	let showReminder: boolean = !!productType.cancellation?.shouldShowReminder;
+	if (isSupportPlus && eligableForOffer) {
+		showReminder = false;
+	}
+
 	const deliveryRecordsLink: string = `/delivery/${productType.urlPart}/records`;
-	const subscription = productDetail.subscription;
-	const headingCopy =
-		productType.productType === 'supporterplus'
-			? 'Your subscription has been cancelled'
-			: `Your ${productType.friendlyName(
-					cancelledProductDetail,
-			  )} is cancelled`;
+	let currencySymbol: undefined | CurrencyIso;
+	let contributionheadingCopy = '';
+	if (
+		productDetailBeforeCancelling &&
+		Object.keys(productDetailBeforeCancelling.subscription).length
+	) {
+		const mainPlan = getMainPlan(
+			productDetailBeforeCancelling.subscription,
+		) as PaidSubscriptionPlan;
+		currencySymbol = mainPlan.currencyISO;
+		if (isContribution) {
+			contributionheadingCopy = `Your ${
+				mainPlan ? `${mainPlan.billingPeriod}ly ` : ''
+			}support has been cancelled`;
+		}
+	}
+
 	return (
 		<>
 			<WithStandardTopMargin>
@@ -42,24 +70,26 @@ const actuallyCancelled = (
 						`,
 					]}
 				>
-					{headingCopy}
+					{isSupportPlus && 'Your subscription has been cancelled'}
+					{isContribution && contributionheadingCopy}
+					{!isSupportPlus &&
+						!isContribution &&
+						`Your ${productType.friendlyName} is cancelled`}
 				</Heading>
 				{productType.cancellation &&
 					!productType.cancellation.shouldHideSummaryMainPara && (
 						<p>
 							{productType.cancellation
 								?.alternateSummaryMainPara ||
-								(subscription.end ? (
+								(productDetail.subscription.end ? (
 									<>
 										You will continue to receive the
 										benefits of your{' '}
-										{productType.friendlyName(
-											cancelledProductDetail,
-										)}{' '}
-										until{' '}
+										{productType.friendlyName} until{' '}
 										<b>
 											{cancellationFormatDate(
-												subscription.cancellationEffectiveDate,
+												productDetail.subscription
+													.cancellationEffectiveDate,
 											)}
 										</b>
 										. You will not be charged again. If you
@@ -78,10 +108,12 @@ const actuallyCancelled = (
 								))}
 						</p>
 					)}
+				{isContribution && eligibleForPause && (
+					<p>This is immediate and you will not be charged again.</p>
+				)}
 			</WithStandardTopMargin>
-			{productType.cancellation?.shouldShowReminder && (
-				<CancellationContributionReminder />
-			)}
+
+			{showReminder && <CancellationContributionReminder />}
 
 			{!productType.cancellation?.shouldHideThrasher && (
 				<ResubscribeThrasher
@@ -121,58 +153,55 @@ const actuallyCancelled = (
 								.
 							</p>
 						)}
-						<CancellationReasonContext.Consumer>
-							{(reason) =>
-								(!productType.cancellation ||
-									!productType.cancellation
-										.onlyShowSupportSectionIfAlternateText ||
-									productType.cancellation.summaryReasonSpecificPara(
-										reason,
-									)) && (
-									<>
-										<p>
-											{productType.cancellation &&
-											productType.cancellation
-												.summaryReasonSpecificPara &&
-											productType.cancellation.summaryReasonSpecificPara(
-												reason,
-											)
-												? productType.cancellation.summaryReasonSpecificPara(
-														reason,
-												  )
-												: 'If you are interested in supporting our journalism in other ways, ' +
-												  'please consider either a contribution or a subscription.'}
-										</p>
-										<div css={{ marginBottom: '30px' }}>
-											<SupportTheGuardianButton
-												urlSuffix={
-													productType.cancellation &&
-													productType.cancellation
-														.alternateSupportButtonUrlSuffix &&
-													productType.cancellation.alternateSupportButtonUrlSuffix(
-														reason,
-													)
-												}
-												alternateButtonText={
-													productType.cancellation &&
-													productType.cancellation
-														.alternateSupportButtonText &&
-													productType.cancellation.alternateSupportButtonText(
-														reason,
-													)
-												}
-												supportReferer={
-													productType.urlPart +
-													'_cancellation_summary'
-												}
-												theme="brand"
-												size="small"
-											/>
-										</div>
-									</>
-								)
-							}
-						</CancellationReasonContext.Consumer>
+						(!productType.cancellation || !productType.cancellation
+						.onlyShowSupportSectionIfAlternateText ||
+						productType.cancellation.summaryReasonSpecificPara(
+						cancellationReasonId, )) && (
+						<>
+							<h4
+								css={css`
+									${textEgyptianBold17};
+									margin-bottom: ${space[3]}px;
+								`}
+							>
+								Support us another way
+							</h4>
+							<p>
+								{productType?.cancellation?.summaryReasonSpecificPara(
+									cancellationReasonId,
+									currencySymbol,
+								) ||
+									'If you are interested in supporting our journalism in other ways, ' +
+										'please consider either a contribution or a subscription.'}
+							</p>
+							<div css={{ marginBottom: '30px' }}>
+								<SupportTheGuardianButton
+									urlSuffix={
+										productType.cancellation &&
+										productType.cancellation
+											.alternateSupportButtonUrlSuffix &&
+										productType.cancellation.alternateSupportButtonUrlSuffix(
+											cancellationReasonId,
+										)
+									}
+									alternateButtonText={
+										productType.cancellation &&
+										productType.cancellation
+											.alternateSupportButtonText &&
+										productType.cancellation.alternateSupportButtonText(
+											cancellationReasonId,
+										)
+									}
+									supportReferer={
+										productType.urlPart +
+										'_cancellation_summary'
+									}
+									theme="brand"
+									size="small"
+								/>
+							</div>
+						</>
+						)
 					</WithStandardTopMargin>
 				</ResubscribeThrasher>
 			)}
@@ -183,19 +212,26 @@ const actuallyCancelled = (
 export const isCancelled = (subscription: Subscription) =>
 	Object.keys(subscription).length === 0 || subscription.cancelledAt;
 
-export const getCancellationSummary =
-	(productType: ProductType, cancelledProductDetail: ProductDetail) =>
-	(productDetail: ProductDetail) =>
-		isCancelled(productDetail.subscription) ? (
-			actuallyCancelled(
-				productType,
-				productDetail,
-				cancelledProductDetail,
-			)
-		) : (
-			<GenericErrorScreen
-				loggingMessage={`${productType.friendlyName(
-					cancelledProductDetail,
-				)} cancellation call succeeded but subsequent product detail doesn't show as cancelled`}
-			/>
-		);
+export const getCancellationSummary = (
+	productType: ProductType,
+	productDetail: ProductDetail,
+	productDetailBeforeCancelling: ProductDetail,
+	eligableForOffer?: boolean,
+	eligibleForPause?: boolean,
+	cancellationReasonId?: CancellationReasonId,
+) => {
+	return isCancelled(productDetail.subscription) ? (
+		actuallyCancelled(
+			productType,
+			productDetail,
+			productDetailBeforeCancelling,
+			eligableForOffer,
+			eligibleForPause,
+			cancellationReasonId,
+		)
+	) : (
+		<GenericErrorScreen
+			loggingMessage={`${productType.friendlyName} cancellation call succeeded but subsequent product detail doesn't show as cancelled`}
+		/>
+	);
+};

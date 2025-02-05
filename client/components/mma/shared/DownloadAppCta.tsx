@@ -26,7 +26,7 @@ const appAdCss = css`
 		margin: ${space[1]}px ${space[5]}px 0 0;
 	}
 	${from.tablet} {
-		padding: ${space[6]}px;
+		padding: ${space[6]}px ${space[12]}px ${space[6]}px ${space[6]}px;
 	}
 `;
 
@@ -43,6 +43,11 @@ const appIconContainerCss = css`
 	height: 55px;
 	border-radius: 10px;
 	background-color: ${palette.brand[400]};
+	${from.tablet} {
+		width: 70px;
+		min-width: 70px;
+		height: 70px;
+	}
 `;
 
 export const DownloadAppCta = (props: DownloadAppCtaProps) => {

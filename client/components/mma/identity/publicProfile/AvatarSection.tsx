@@ -1,18 +1,17 @@
 import { css } from '@emotion/react';
-import { palette } from '@guardian/source/foundations';
+import { palette, textSans14 } from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
 import { Form, Formik } from 'formik';
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import type { ChangeEvent, FC } from 'react';
-import { sans } from '../../../../styles/fonts';
 import { trackEvent } from '../../../../utilities/analytics';
 import { Spinner } from '../../../shared/Spinner';
-import { Button } from '../../shared/Buttons';
 import * as AvatarAPI from '../idapi/avatar';
 import { IdentityLocations } from '../IdentityLocations';
 import { ErrorTypes } from '../models';
 import { PageSection } from '../PageSection';
-import { errorMessageCss, labelCss, textSmall } from '../sharedStyles';
+import { errorMessageCss, labelCss } from '../sharedStyles';
 import {
 	getData,
 	isErrored,
@@ -25,12 +24,12 @@ interface AvatarSectionProps {
 	userId: string;
 }
 
-const imgCss = css({
-	border: '0',
-	borderRadius: '50%',
-	height: '60px',
-	width: '60px',
-});
+const imgCss = css`
+	border: 0;
+	border-radius: 50%;
+	height: 60px;
+	width: 60px;
+`;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the argument object is an error object?
 const isEmptyAvatarError = (e: any): boolean => {
@@ -65,9 +64,9 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 		file: File | null;
 	}
 
-	useEffect(() => {
+	useCallback(() => {
 		getAvatar();
-	}, []);
+	}, [getAvatar]);
 
 	const avatarDisplay = () => {
 		const url = isSuccessful(avatarGetState)
@@ -110,9 +109,10 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 					</label>
 					<Button
 						disabled={formikBag.isSubmitting}
-						text="Upload image"
 						onClick={() => formikBag.submitForm()}
-					/>
+					>
+						Upload image
+					</Button>
 				</Form>
 			)}
 		</Formik>
@@ -120,18 +120,15 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 
 	const avatarUploadSuccessNotice = () => (
 		<div
-			css={[
-				textSmall,
-				{
-					lineHeight: '18px',
-					fontFamily: sans,
-					borderBottom: `1px solid ${palette.success[400]}`,
-					borderTop: `1px solid ${palette.success[400]}`,
-					color: palette.success[400],
-					marginTop: '6px',
-					padding: '7px 8px',
-				},
-			]}
+			css={css`
+				${textSans14};
+				line-height: 18px;
+				border-bottom: 1px solid ${palette.success[400]};
+				border-top: 1px solid ${palette.success[400]};
+				color: ${palette.success[400]};
+				margin-top: 6px;
+				padding: 7px 8px;
+			`}
 		>
 			Thank you for uploading your avatar. It will be checked by Guardian
 			moderators shortly.
