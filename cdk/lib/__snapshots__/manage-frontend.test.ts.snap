@@ -2400,6 +2400,7 @@ Object {
           },
           "InstanceType": "t4g.small",
           "MetadataOptions": Object {
+            "HttpTokens": "required",
             "InstanceMetadataTags": "enabled",
           },
           "SecurityGroupIds": Array [

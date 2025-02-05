@@ -109,7 +109,6 @@ systemctl start manage-frontend
 				InstanceClass.T4G,
 				InstanceSize.SMALL,
 			),
-			withoutImdsv2: true,
 			monitoringConfiguration: {
 				noMonitoring: true,
 			},
