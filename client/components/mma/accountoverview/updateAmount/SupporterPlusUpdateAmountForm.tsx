@@ -18,6 +18,7 @@ import {
 } from '@guardian/source/react-components';
 import { useEffect, useState } from 'react';
 import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import { MDA_TEST_USER_HEADER } from '../../../../../shared/productResponse';
 import { getBillingPeriodAdjective } from '../../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import { getSupporterPlusSuggestedAmountsFromMainPlan } from '../../../../utilities/pricingConfig/suggestedAmounts';
@@ -50,12 +51,19 @@ const buttonCentredCss = css`
 	justify-content: center;
 `;
 
-const getAmountUpdater = (newAmount: number, subscriptionName: string) =>
+const getAmountUpdater = (
+	newAmount: number,
+	subscriptionName: string,
+	isTestUser: boolean,
+) =>
 	fetchWithDefaultParameters(
 		`/api/update-supporter-plus-amount/${subscriptionName}`,
 		{
 			method: 'POST',
 			body: JSON.stringify({ newPaymentAmount: newAmount }),
+			headers: {
+				[MDA_TEST_USER_HEADER]: `${isTestUser}`,
+			},
 		},
 	);
 
@@ -99,6 +107,7 @@ interface SupporterPlusUpdateAmountFormProps {
 	currentAmount: number;
 	nextPaymentDate: string | null;
 	onUpdateConfirmed: (updatedAmount: number) => void;
+	isTestUser: boolean;
 }
 
 export const SupporterPlusUpdateAmountForm = (
@@ -205,6 +214,7 @@ export const SupporterPlusUpdateAmountForm = (
 		const response = await getAmountUpdater(
 			pendingAmount,
 			props.subscriptionId,
+			props.isTestUser,
 		);
 
 		try {

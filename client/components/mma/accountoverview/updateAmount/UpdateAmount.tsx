@@ -19,6 +19,7 @@ interface UpdateAmountProps {
 	productType: ProductType;
 	nextPaymentDate: string | null;
 	amountUpdateStateChange: Dispatch<SetStateAction<number | null>>;
+	isTestUser: boolean;
 }
 
 export const UpdateAmount = (props: UpdateAmountProps) => {
