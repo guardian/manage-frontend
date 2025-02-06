@@ -50,6 +50,7 @@ it.each([
 					amountUpdateStateChange={jest.fn()}
 					nextPaymentDate="2050-10-29"
 					productType={productType}
+					isTestUser={false}
 				/>
 			</BrowserRouter>,
 		);
@@ -95,6 +96,7 @@ it.each([
 					amountUpdateStateChange={jest.fn()}
 					nextPaymentDate="2050-10-29"
 					productType={productType}
+					isTestUser={false}
 				/>
 			</BrowserRouter>,
 		);
@@ -135,6 +137,7 @@ it('renders validation error if blank input is provided', async () => {
 				amountUpdateStateChange={jest.fn()}
 				nextPaymentDate="2050-10-29"
 				productType={productType}
+				isTestUser={false}
 			/>
 		</BrowserRouter>,
 	);
@@ -172,6 +175,7 @@ it('renders validation error if a string is attempted to be input', async () => 
 				amountUpdateStateChange={jest.fn()}
 				nextPaymentDate="2050-10-29"
 				productType={productType}
+				isTestUser={false}
 			/>
 		</BrowserRouter>,
 	);
@@ -209,6 +213,7 @@ it('updates amount if valid value is input', async () => {
 				amountUpdateStateChange={jest.fn()}
 				nextPaymentDate="2050-10-29"
 				productType={productType}
+				isTestUser={false}
 			/>
 		</BrowserRouter>,
 	);

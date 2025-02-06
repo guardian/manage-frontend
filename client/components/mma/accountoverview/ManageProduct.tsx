@@ -176,6 +176,7 @@ const InnerContent = ({
 					productType={specificProductType}
 					nextPaymentDate={productDetail.subscription.nextPaymentDate}
 					amountUpdateStateChange={setOveriddenAmount}
+					isTestUser={productDetail.isTestUser}
 				/>
 			) : (
 				<BasicProductInfoTable
