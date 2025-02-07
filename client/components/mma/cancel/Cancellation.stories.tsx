@@ -26,7 +26,10 @@ import { contributionsCancellationReasons } from './contributions/ContributionsC
 import { gwCancellationReasons } from './gw/GwCancellationReasons';
 import { ConfirmCancellation } from './stages/ConfirmCancellation';
 import { ExecuteCancellation } from './stages/ExecuteCancellation';
-import { otherCancellationReason } from './supporterplus/SupporterplusCancellationReasons';
+import {
+	otherCancellationReason,
+	supporterplusCancellationReasons,
+} from './supporterplus/SupporterplusCancellationReasons';
 
 const contributions = PRODUCT_TYPES.contributions;
 contributions.cancellation!.reasons = contributionsCancellationReasons.concat(

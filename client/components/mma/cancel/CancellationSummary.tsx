@@ -72,9 +72,8 @@ const actuallyCancelled = (
 						`,
 					]}
 				>
-					{isSupportPlus ||
-						(isGuardianAdLite &&
-							'Your subscription has been cancelled')}
+					{(isSupportPlus || isGuardianAdLite) &&
+						'Your subscription has been cancelled'}
 					{isContribution && contributionheadingCopy}
 					{!isSupportPlus &&
 						!isContribution &&
