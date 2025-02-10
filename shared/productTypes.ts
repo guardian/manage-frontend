@@ -743,7 +743,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			swapFeedbackAndContactUs: true,
 			shouldHideThrasher: true,
 			alternateSummaryMainPara:
-				'This is immediate and you will not be charged.',
+				"This is immediate and you will not be charged again. If you've cancelled within the first 14 days, your subscription will stop immediately and we will not take the first payment from you.",
 		},
 	},
 };

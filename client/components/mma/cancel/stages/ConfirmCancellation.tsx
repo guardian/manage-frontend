@@ -188,28 +188,18 @@ export const ConfirmCancellation = () => {
 					(productIsGuardianAdLite && (
 						<>
 							<p>
-								If you confirm your cancellation, we will ask
-								you for your consent and you will start to see
-								personalised advertising across your devices.
-							</p>
-							{!isInTrialPeriod &&
-								subscription.potentialCancellationDate && (
-									<p>
-										You will no longer have access to these
-										benefits from{' '}
-										{parseDate(
+								If you confirm your cancellation you will start
+								to see personalised advertising on the Guardian
+								website across your devices from{' '}
+								{!isInTrialPeriod &&
+								subscription.potentialCancellationDate
+									? parseDate(
 											subscription.potentialCancellationDate,
 											'yyyy-MM-dd',
-										).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)}
-										.
-									</p>
-								)}
-							{isInTrialPeriod && (
-								<p>
-									Your cancellation is immediate and you will
-									not be charged.
-								</p>
-							)}
+									  ).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)
+									: 'now on'}
+								.
+							</p>
 						</>
 					))}
 				<div css={buttonsCtaHolder}>
