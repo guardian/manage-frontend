@@ -86,7 +86,7 @@ describe('Cancel Guardian Ad-Lite', () => {
 			body: toMembersDataApiResponse(guardianAdLiteCancelled()),
 		}).as('get_cancelled_product');
 
-		cy.findByText('Is this really goodbye?');
+		cy.findByText('Cancel your Guardian Ad-Lite subscription');
 
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
@@ -94,7 +94,7 @@ describe('Cancel Guardian Ad-Lite', () => {
 		cy.wait('@get_cancelled_product');
 
 		cy.findByRole('heading', {
-			name: 'Your guardian ad-lite is cancelled',
+			name: 'Your subscription has been cancelled',
 		});
 	});
 });
