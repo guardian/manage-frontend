@@ -274,10 +274,10 @@ export function guardianAdLite() {
 		.getProductDetailObject();
 }
 
-export function guardianAdLiteInCoolingOffPeriod() {
+export function guardianAdLiteInTrialPeriod() {
 	return new ProductBuilder(baseGuardianAdLite())
 		.payByCard()
-		.inCoolingOffPeriod()
+		.inTrialPeriod()
 		.getProductDetailObject();
 }
 

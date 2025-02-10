@@ -123,8 +123,8 @@ export class ProductBuilder {
 		return this;
 	}
 
-	inCoolingOffPeriod() {
-		this.productToBuild.inCoolingOffPeriod = true;
+	inTrialPeriod() {
+		this.productToBuild.subscription.trialLength = 2;
 		return this;
 	}
 

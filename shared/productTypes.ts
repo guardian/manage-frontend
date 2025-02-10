@@ -743,7 +743,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			swapFeedbackAndContactUs: true,
 			shouldHideThrasher: true,
 			alternateSummaryMainPara:
-				"This is immediate and you will not be charged again. If you've cancelled within the first 14 days, we'll send you a full refund.",
+				'This is immediate and you will not be charged.',
 		},
 	},
 };

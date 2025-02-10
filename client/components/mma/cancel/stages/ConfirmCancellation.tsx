@@ -112,6 +112,8 @@ export const ConfirmCancellation = () => {
 	const productIsGuardianAdLite =
 		productType.productType === 'guardianadlite';
 
+	const isInTrialPeriod = subscription.trialLength > 0;
+
 	const progressStepperArray = [
 		{},
 		{},
@@ -190,7 +192,7 @@ export const ConfirmCancellation = () => {
 								you for your consent and you will start to see
 								personalised advertising across your devices.
 							</p>
-							{!productDetail.inCoolingOffPeriod &&
+							{!isInTrialPeriod &&
 								subscription.potentialCancellationDate && (
 									<p>
 										You will no longer have access to these
@@ -202,10 +204,10 @@ export const ConfirmCancellation = () => {
 										.
 									</p>
 								)}
-							{productDetail.inCoolingOffPeriod && (
+							{isInTrialPeriod && (
 								<p>
-									After you cancel you will no longer have
-									access to these benefits.
+									Your cancellation is immediate and you will
+									not be charged.
 								</p>
 							)}
 						</>
