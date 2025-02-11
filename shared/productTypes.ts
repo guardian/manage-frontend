@@ -733,7 +733,6 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		getOphanProductType: () => 'GUARDIAN_AD_LITE',
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.SupporterNewsletter,
 		],
 		cancellation: {
 			sfCaseProduct: 'Guardian Ad-Lite',
