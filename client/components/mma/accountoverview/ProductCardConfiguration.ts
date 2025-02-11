@@ -49,6 +49,9 @@ export const productCardConfiguration: Record<
 		colour: productColour.supporterPlus,
 		showBenefitsSection: true,
 	},
+	guardianadlite: {
+		colour: productColour.supporterPlus,
+	},
 	tierthree: {
 		colour: productColour.supporterPlus,
 		showBenefitsSection: true,

@@ -277,7 +277,10 @@ export const ProductCard = ({
 				/>
 			)}
 			<Card>
-				<Card.Header backgroundColor={cardConfig.colour}>
+				<Card.Header
+					backgroundColor={cardConfig.colour}
+					minHeightOverride="auto"
+				>
 					<h3 css={productCardTitleCss(cardConfig.invertText)}>
 						{productTitle}
 					</h3>
@@ -312,6 +315,18 @@ export const ProductCard = ({
 						/>
 					</Card.Section>
 				)}
+				{specificProductType.productType === 'guardianadlite' &&
+					nextPaymentDetails && (
+						<Card.Section backgroundColor="#edf5fA">
+							<p css={benefitsTextCss}>
+								You’re subscribed to{' '}
+								{specificProductType.productTitle()} and pay{' '}
+								{nextPaymentDetails.paymentValueShort} a{' '}
+								{nextPaymentDetails.paymentInterval} for
+								non-personalised advertising.
+							</p>
+						</Card.Section>
+					)}
 				<Card.Section>
 					<div css={productDetailLayoutCss}>
 						<div>

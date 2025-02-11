@@ -11,6 +11,7 @@ import type { ProductDetail } from '../../../shared/productResponse';
 // 	| 'digipack'
 // 	| 'supporterplus'
 // 	| 'guardianpatron';
+// 	| 'guardianadlite';
 
 export function baseMembership(): ProductDetail {
 	return {
@@ -502,6 +503,61 @@ export function baseNationalDelivery(): ProductDetail {
 			readerType: 'Direct',
 			accountId: '8ad0965d7dbcc507017dbe20afd33ac4',
 			deliveryAddressChangeEffectiveDate: '2022-02-11',
+		},
+		isTestUser: false,
+	};
+}
+
+export function baseGuardianAdLite(): ProductDetail {
+	return {
+		tier: 'Guardian Ad-Lite',
+		isPaidTier: true,
+		selfServiceCancellation: {
+			isAllowed: true,
+			shouldDisplayEmail: true,
+			phoneRegionsToDisplay: ['UK & ROW', 'US', 'AUS'],
+		},
+		joinDate: '2022-07-20',
+		optIn: true,
+		subscription: {
+			contactId: '0039E00001KA26BQAT',
+			deliveryAddress: {
+				addressLine1: 'Kings Place',
+				addressLine2: '90 York Place',
+				town: 'London',
+				postcode: 'N1 9GU',
+				country: 'United Kingdom',
+			},
+			safeToUpdatePaymentMethod: true,
+			start: '2022-07-20',
+			end: '2022-08-20',
+			nextPaymentPrice: 700,
+			nextPaymentDate: '2022-08-20',
+			lastPaymentDate: '2022-07-20',
+			potentialCancellationDate: null,
+			chargedThroughDate: '2022-08-20',
+			renewalDate: '2023-07-20',
+			anniversaryDate: '2023-07-20',
+			cancelledAt: false,
+			subscriptionId: 'A-S00303371',
+			trialLength: -2,
+			autoRenew: true,
+			currentPlans: [
+				{
+					name: null,
+					start: '2022-07-20',
+					end: '2023-07-20',
+					shouldBeVisible: true,
+					chargedThrough: '2022-08-20',
+					price: 700,
+					currency: '£',
+					currencyISO: 'GBP',
+					billingPeriod: 'month',
+				},
+			],
+			futurePlans: [],
+			readerType: 'Direct',
+			accountId: '8ad09f8a7e25bda3017e296317464818',
 		},
 		isTestUser: false,
 	};

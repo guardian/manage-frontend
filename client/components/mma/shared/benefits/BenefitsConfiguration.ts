@@ -71,42 +71,44 @@ export function filterBenefitByRegion(
 
 export const supporterPlusSwitchBenefits = [newsApp, feastApp, adFree];
 
-export const benefitsConfiguration: Record<ProductTypeKeys,ProductBenefit[]> = {
-	contributions: [
-		supporterNewsletter,
-		uninterruptedReading,
-		{
-			...newsApp,
-			isUnavailable: true,
-		},
-	],
-	supporterplus: [
-		supporterNewsletter,
-		uninterruptedReading,
-		newsApp,
-		feastApp,
-		adFree,
-		partnerOffers,
-	],
-	tierthree: [
-		guardianWeekly,
-		supporterNewsletter,
-		uninterruptedReading,
-		newsApp,
-		feastApp,
-		adFree,
-		partnerOffers,
-	],
-	membership: [newsApp, uninterruptedReading, supporterNewsletter],
-	digipack: [],
-	digitalvoucher: [],
-	newspaper: [],
-	homedelivery: [],
-	nationaldelivery: [],
-	voucher: [],
-	guardianweekly: [],
-	guardianpatron: [],
-};
+export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
+	{
+		contributions: [
+			supporterNewsletter,
+			uninterruptedReading,
+			{
+				...newsApp,
+				isUnavailable: true,
+			},
+		],
+		supporterplus: [
+			supporterNewsletter,
+			uninterruptedReading,
+			newsApp,
+			feastApp,
+			adFree,
+			partnerOffers,
+		],
+		tierthree: [
+			guardianWeekly,
+			supporterNewsletter,
+			uninterruptedReading,
+			newsApp,
+			feastApp,
+			adFree,
+			partnerOffers,
+		],
+		membership: [newsApp, uninterruptedReading, supporterNewsletter],
+		digipack: [],
+		digitalvoucher: [],
+		newspaper: [],
+		homedelivery: [],
+		nationaldelivery: [],
+		voucher: [],
+		guardianweekly: [],
+		guardianadlite: [],
+		guardianpatron: [],
+	};
 
 export function getUpgradeBenefits(
 	supportProduct: 'contributions' | 'supporterplus',

@@ -1,17 +1,18 @@
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
-	stripeSetupIntent,
-	executePaymentUpdateResponse,
 	ddPaymentMethod,
+	executePaymentUpdateResponse,
+	stripeSetupIntent,
 } from '../../../../client/fixtures/payment';
-import { paymentMethods } from '../../../../client/fixtures/stripe';
-import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 import {
 	digitalPackPaidByCardWithPaymentFailure,
 	digitalPackPaidByDirectDebit,
+	guardianAdLite,
 	guardianWeeklyPaidByCard,
 } from '../../../../client/fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
+import { paymentMethods } from '../../../../client/fixtures/stripe';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Update payment details', () => {
 	beforeEach(() => {
@@ -343,5 +344,88 @@ describe('Update payment details', () => {
 		cy.findByText('Update payment method').click();
 
 		cy.findByText('Recaptcha has not been completed.');
+	});
+
+	it('allows payment update for Guardian ad-lite product', () => {
+		cy.intercept('GET', '/api/me/mma*', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(guardianAdLite()),
+		}).as('product_detail');
+
+		cy.intercept('GET', '/api/me/mma/**', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(guardianAdLite()),
+		}).as('refetch_subscription');
+
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
+		cy.intercept('GET', '/api/me/one-off-contributions', {
+			statusCode: 200,
+			body: singleContributionsAPIResponse,
+		}).as('single_contributions');
+
+		cy.intercept('GET', '/api/cancelled/', {
+			statusCode: 200,
+			body: [],
+		}).as('cancelled');
+
+		cy.intercept('POST', '/api/payment/card', {
+			statusCode: 200,
+			body: stripeSetupIntent,
+		}).as('createSetupIntent');
+
+		cy.intercept('POST', '/api/payment/card/**', {
+			statusCode: 200,
+			body: executePaymentUpdateResponse,
+		}).as('update_payment');
+
+		cy.intercept('POST', 'https://api.stripe.com/v1/setup_intents/**', {
+			statusCode: 200,
+			body: { status: 'succeeded' },
+		}).as('confirmCardSetup');
+
+		cy.intercept('POST', 'https://api.stripe.com/v1/payment_methods', {
+			statusCode: 200,
+			body: paymentMethods,
+		});
+
+		cy.visit('/');
+		cy.wait('@product_detail');
+		cy.wait('@mobile_subscriptions');
+		cy.wait('@single_contributions');
+		cy.findByText('Manage subscription').click();
+		cy.wait('@cancelled');
+
+		cy.findByText('Update payment method').click();
+
+		cy.resolve('Stripe').should((value) => {
+			expect(value).to.be.ok;
+		});
+
+		cy.fillElementsInput('cardNumber', '4242424242424242');
+		cy.fillElementsInput('cardExpiry', '1025');
+		cy.fillElementsInput('cardCvc', '123');
+
+		cy.get('#recaptcha *> iframe').then(($iframe) => {
+			const $body = $iframe.contents().find('body');
+			cy.wrap($body)
+				.find('.recaptcha-checkbox-border')
+				.should('be.visible')
+				.click()
+				.then(() => {
+					// wait for recaptcha to resolve
+					cy.wait(1000);
+
+					cy.findByText('Update payment method').click();
+				});
+		});
+
+		cy.wait('@update_payment');
+		cy.wait('@refetch_subscription');
+
+		cy.findByText('Your payment details were updated successfully');
 	});
 });

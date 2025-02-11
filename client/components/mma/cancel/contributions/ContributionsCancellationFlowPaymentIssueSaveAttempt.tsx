@@ -38,7 +38,11 @@ export const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
 		CancellationContext,
 	) as CancellationContextInterface;
 
-	if (!productType || !productDetail || !routerState.selectedReasonId) {
+	if (
+		!productType.cancellation.reasons ||
+		!productDetail ||
+		!routerState.selectedReasonId
+	) {
 		return <Navigate to="../" />;
 	}
 
@@ -54,7 +58,7 @@ export const ContributionsCancellationFlowPaymentIssueSaveAttempt = (
 	};
 
 	const onUpdateConfirmed = (updatedAmount: number) => {
-		const reason = productType.cancellation.reasons.find(
+		const reason = productType.cancellation.reasons?.find(
 			(reason) => reason.reasonId === routerState.selectedReasonId,
 		) as CancellationReason;
 

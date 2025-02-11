@@ -3,6 +3,7 @@ import {
 	baseContribution,
 	baseDigitalPack,
 	baseDigitalVoucher,
+	baseGuardianAdLite,
 	baseGuardianWeekly,
 	baseHomeDelivery,
 	baseMembership,
@@ -263,6 +264,27 @@ export function supporterPlusInOfferPeriod() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()
 		.inOfferPeriod()
+		.getProductDetailObject();
+}
+
+export function guardianAdLite() {
+	return new ProductBuilder(baseGuardianAdLite())
+		.payByCard()
+		.withPotentialCancellationDate()
+		.getProductDetailObject();
+}
+
+export function guardianAdLiteInTrialPeriod() {
+	return new ProductBuilder(baseGuardianAdLite())
+		.payByCard()
+		.inTrialPeriod()
+		.getProductDetailObject();
+}
+
+export function guardianAdLiteCancelled() {
+	return new ProductBuilder(baseGuardianAdLite())
+		.payByCard()
+		.cancel()
 		.getProductDetailObject();
 }
 

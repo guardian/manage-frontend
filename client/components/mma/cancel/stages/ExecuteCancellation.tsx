@@ -124,12 +124,12 @@ export const getCancellationSummaryWithReturnButton =
 
 const getCaseUpdatingCancellationSummary =
 	(
-		caseId: string,
 		productType: ProductTypeWithCancellationFlow,
 		productDetailBeforeCancelling: ProductDetail,
 		eligableForOffer?: boolean,
 		eligibleForPause?: boolean,
 		cancellationReasonId?: CancellationReasonId,
+		caseId?: string,
 	) =>
 	(mdapiResponse: MembersDataApiResponse) => {
 		const productDetail = (mdapiResponse.products[0] as ProductDetail) || {
@@ -179,13 +179,18 @@ export const ExecuteCancellation = () => {
 	) as CancellationContextInterface;
 
 	const cancellationReasonId = useContext(CancellationReasonContext);
+	const productHasReasonSelection = productType.cancellation.reasons?.length
+		? true
+		: false;
 
-	if (!routerState?.selectedReasonId || !routerState?.caseId) {
+	if (
+		productHasReasonSelection &&
+		(!routerState?.selectedReasonId || !routerState?.caseId)
+	) {
 		return <Navigate to="../" />;
 	}
 
 	const caseId = routerState.caseId;
-
 	const alternativeIsOffer = productType.productType === 'supporterplus';
 	const alternativeIsPause = productType.productType === 'contributions';
 
@@ -236,7 +241,7 @@ export const ExecuteCancellation = () => {
 				))}
 
 			{isProduct(productDetail) ? (
-				escalationCauses.length > 0 ? (
+				escalationCauses.length > 0 && caseId ? (
 					<CaseUpdateAsyncLoader
 						fetch={getCaseUpdateFuncForEscalation(
 							caseId,
@@ -260,12 +265,12 @@ export const ExecuteCancellation = () => {
 							),
 						)}
 						render={getCaseUpdatingCancellationSummary(
-							caseId,
 							productType,
 							productDetail,
 							routerState.eligibleForFreePeriodOffer,
 							routerState.eligibleForPause,
 							cancellationReasonId,
+							caseId,
 						)}
 						loadingMessage="Performing your cancellation..."
 					/>

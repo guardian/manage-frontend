@@ -24,9 +24,11 @@ import { featureSwitches } from '@/shared/featureSwitches';
 import type { TrueFalsePending } from '@/shared/generalTypes';
 import { appendCorrectPluralisation } from '@/shared/generalTypes';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../../shared/dates';
+import type { ProductDetail } from '../../../../shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import type {
 	ProductTypeWithCancellationFlow,
+	ProductTypeWithCancellationFlowMandatoryReasons,
 	WithProductType,
 } from '../../../../shared/productTypes';
 import { measure } from '../../../styles/typography';
@@ -450,17 +452,30 @@ export const CancellationReasonReview = () => {
 		cancellationPolicy: string;
 	};
 
-	if (!routerState?.selectedReasonId) {
-		return <Navigate to=".." />;
-	}
-	return <ValidatedCancellationReasonReview />;
-};
-
-const ValidatedCancellationReasonReview = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
 
+	if (!routerState?.selectedReasonId || !productType?.cancellation.reasons) {
+		return <Navigate to=".." />;
+	}
+	return (
+		<ValidatedCancellationReasonReview
+			productDetail={productDetail}
+			productType={
+				productType as ProductTypeWithCancellationFlowMandatoryReasons
+			}
+		/>
+	);
+};
+
+const ValidatedCancellationReasonReview = ({
+	productDetail,
+	productType,
+}: {
+	productDetail: ProductDetail;
+	productType: ProductTypeWithCancellationFlowMandatoryReasons;
+}) => {
 	const location = useLocation();
 	const routerState = location.state as {
 		selectedReasonId: OptionalCancellationReasonId;

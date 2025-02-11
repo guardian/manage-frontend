@@ -12,6 +12,7 @@ export type OphanProduct =
 	| 'PAPER_SUBSCRIPTION_SUNDAY'
 	| 'PRINT_SUBSCRIPTION'
 	| 'APP_PREMIUM_TIER'
+	| 'GUARDIAN_AD_LITE'
 	| 'GUARDIAN_PATRON';
 
 type OphanAction =
