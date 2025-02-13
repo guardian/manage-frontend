@@ -6,6 +6,7 @@ import {
 	digitalPackPaidByDirectDebit,
 	guardianAdLite,
 	guardianWeeklyPaidByCard,
+	homeDeliverySunday,
 	monthlyContributionPaidByCard,
 	newspaperVoucherPaidByPaypal,
 	supporterPlusAnnual,
@@ -117,6 +118,18 @@ export const GuardianAdLite: StoryObj<typeof ManageProduct> = {
 	parameters: {
 		reactRouter: {
 			state: { productDetail: guardianAdLite() },
+		},
+	},
+};
+
+export const NewspaperDeliverySunday: StoryObj<typeof ManageProduct> = {
+	render: () => {
+		return <ManageProduct productType={PRODUCT_TYPES.homedelivery} />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: { productDetail: homeDeliverySunday() },
 		},
 	},
 };
