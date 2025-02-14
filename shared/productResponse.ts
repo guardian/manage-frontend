@@ -105,7 +105,7 @@ export interface ProductDetail extends WithSubscription {
 }
 
 export interface CancelledProductDetail {
-	tier: string;
+	tier: ProductTier;
 	joinDate: string;
 	subscription: CancelledSubscription;
 }

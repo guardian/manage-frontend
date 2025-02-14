@@ -727,13 +727,11 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		productTitle: () => 'Guardian Ad-Lite',
 		friendlyName: 'guardian ad-lite',
 		productType: 'guardianadlite',
-		groupedProductType: 'recurringSupportWithBenefits',
+		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'GuardianAdLite',
 		urlPart: 'guardianadlite',
 		getOphanProductType: () => 'GUARDIAN_AD_LITE',
-		softOptInIDs: [
-			SoftOptInIDs.SupportOnboarding,
-		],
+		softOptInIDs: [SoftOptInIDs.SupportOnboarding],
 		cancellation: {
 			sfCaseProduct: 'Guardian Ad-Lite',
 			startPageBody: contributionsCancellationFlowStart,
