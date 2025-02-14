@@ -58,7 +58,10 @@ export const CancellationJourneyFunnel = () => {
 		return <Navigate to="./landing" state={{ ...routerState }} />;
 	}
 
-	if (!productType.cancellation?.reasons) {
+	if (
+		Object.hasOwn(productType, 'cancellation') &&
+		!productType.cancellation?.reasons
+	) {
 		return <Navigate to="./confirm" state={{ ...routerState }} />;
 	}
 

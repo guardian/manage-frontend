@@ -6,8 +6,10 @@ import {
 	baseGuardianAdLite,
 	baseGuardianWeekly,
 	baseHomeDelivery,
+	baseHomeDeliverySunday,
 	baseMembership,
 	baseNationalDelivery,
+	basePatron,
 	baseSupporterPlus,
 	baseTierThree,
 	baseVoucher,
@@ -166,6 +168,12 @@ export function homeDelivery() {
 		.getProductDetailObject();
 }
 
+export function homeDeliverySunday() {
+	return new ProductBuilder(baseHomeDeliverySunday())
+		.payByCard()
+		.getProductDetailObject();
+}
+
 export function nationalDelivery() {
 	return new ProductBuilder(baseNationalDelivery())
 		.payByCard()
@@ -290,6 +298,12 @@ export function guardianAdLiteCancelled() {
 
 export function tierThree() {
 	return new ProductBuilder(baseTierThree())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function patron() {
+	return new ProductBuilder(basePatron())
 		.payByCard()
 		.getProductDetailObject();
 }
