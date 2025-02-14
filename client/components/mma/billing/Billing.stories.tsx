@@ -13,6 +13,7 @@ import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
 import {
 	digitalPackPaidByDirectDebit,
 	guardianAdLite,
+	guardianAdLiteCancelled,
 	guardianWeeklyPaidByCard,
 	newspaperVoucherPaidByPaypal,
 	tierThree,
@@ -69,6 +70,7 @@ export const WithSubscriptions: StoryObj<typeof Billing> = {
 						newspaperVoucherPaidByPaypal(),
 						tierThree(),
 						guardianAdLite(),
+						guardianAdLiteCancelled(),
 					),
 				);
 			}),

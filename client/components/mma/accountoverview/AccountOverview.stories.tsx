@@ -4,6 +4,7 @@ import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
 	cancelledContribution,
+	cancelledGuardianAdLite,
 	cancelledGuardianWeekly,
 } from '../../../fixtures/cancelledProductDetail';
 import {
@@ -18,6 +19,7 @@ import {
 	contributionPaidByPayPal,
 	digitalPackPaidByDirectDebit,
 	guardianAdLite,
+	guardianAdLiteCancelled,
 	guardianWeeklyCancelled,
 	guardianWeeklyGiftPurchase,
 	guardianWeeklyGiftRecipient,
@@ -236,6 +238,7 @@ export const WithCancelledSubscriptions: StoryObj<typeof AccountOverview> = {
 				return HttpResponse.json([
 					cancelledContribution,
 					cancelledGuardianWeekly,
+					cancelledGuardianAdLite,
 				]);
 			}),
 			http.get('/mpapi/user/mobile-subscriptions', () => {
@@ -248,6 +251,7 @@ export const WithCancelledSubscriptions: StoryObj<typeof AccountOverview> = {
 						guardianWeeklyCancelled(),
 						supporterPlusCancelled(),
 						supporterPlusAnnualCancelled(),
+						guardianAdLiteCancelled(),
 						tierThree(),
 					),
 				);
