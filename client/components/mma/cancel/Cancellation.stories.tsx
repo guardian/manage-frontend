@@ -17,6 +17,7 @@ import {
 	supporterPlusMonthlyAllAccessDigital,
 } from '../../../fixtures/productBuilder/testProducts';
 import { CancellationContainer } from './CancellationContainer';
+import { CancellationJourneyFunnel } from './CancellationJourneyFunnel';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { CancelAlternativeConfirmed } from './cancellationSaves/CancelAlternativeConfirmed';
@@ -75,7 +76,7 @@ export const SelectReason: StoryObj<typeof CancellationReasonSelection> = {
 export const ContactCustomerService: StoryObj<
 	typeof CancellationReasonSelection
 > = {
-	render: () => <CancellationReasonSelection />,
+	render: () => <CancellationJourneyFunnel />,
 
 	parameters: {
 		reactRouter: {
