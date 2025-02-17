@@ -23,12 +23,10 @@ import {
 } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
-import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { hasCancellationFlow } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
@@ -44,7 +42,6 @@ import {
 import type { CancellationDateResponse } from './cancellationDateResponse';
 import { cancellationDateFetcher } from './cancellationDateResponse';
 import type { CancellationReason } from './cancellationReason';
-import { ContactUsToCancel } from './ContactUsToCancel';
 
 interface ReasonPickerProps {
 	productType: ProductTypeWithCancellationFlow;
@@ -382,21 +379,6 @@ export const CancellationReasonSelection = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
-
-	if (
-		!productDetail.selfServiceCancellation.isAllowed ||
-		!hasCancellationFlow(productType)
-	) {
-		return (
-			<ContactUsToCancel
-				selfServiceCancellation={productDetail.selfServiceCancellation}
-				subscriptionId={productDetail.subscription.subscriptionId}
-				groupedProductType={
-					GROUPED_PRODUCT_TYPES[productType.groupedProductType]
-				}
-			/>
-		);
-	}
 
 	if (productType.cancellation.startPageOfferEffectiveDateOptions) {
 		return (
