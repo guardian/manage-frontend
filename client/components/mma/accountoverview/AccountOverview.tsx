@@ -10,6 +10,7 @@ import {
 import { Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
+import { getCookie } from '@/client/utilities/cookies';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
@@ -39,6 +40,7 @@ import {
 	allRecurringProductsDetailFetcher,
 	allSingleProductsDetailFetcher,
 } from '../../../utilities/productUtils';
+import { KnownIssues } from '../../helpCentre/KnownIssues';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
@@ -58,6 +60,7 @@ import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 import { SingleContributionCard } from './SingleContributionCard';
+import { TmpLinkDiscount } from './TmpLinkDiscount';
 
 type AccountOverviewResponse = [
 	MembersDataApiResponse,
@@ -186,6 +189,28 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		!hasDigiSubAndContribution &&
 		!hasNonServiceableCountry;
 
+	const tmpDiscountAppliedCookieExists = !!getCookie(
+		'gu_tmp_discount_dec_4-5th_2024',
+	);
+
+	const tmpDiscountFinishTime = new Date('December 6, 2024 00:00:01');
+	const tmpDiscountFinishTimestamp = tmpDiscountFinishTime.getTime();
+
+	const shouldShowTmpDiscount =
+		featureSwitches.tmpDiscountBanner &&
+		Date.now() < tmpDiscountFinishTimestamp &&
+		allActiveProductDetails.some(
+			(product) =>
+				product.billingCountry === 'United Kingdom' &&
+				(product.tier === 'Tier Three' ||
+					product.tier === 'Digital Pack' ||
+					product.tier === 'Supporter' ||
+					product.tier === 'Supporter Plus' ||
+					product.tier === 'Patron' ||
+					product.tier === 'Partner'),
+		) &&
+		!tmpDiscountAppliedCookieExists;
+
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
 	): GroupedProductTypeKeys => {
@@ -212,6 +237,23 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				productDetails={allActiveProductDetails}
 				isFromApp={isFromApp}
 			/>
+			{shouldShowTmpDiscount && (
+				<KnownIssues
+					issues={[
+						{
+							date: '4 Dec 2024 00:00',
+							message: (
+								<TmpLinkDiscount
+									userEmail={mdapiResponse.user?.email || ''}
+								/>
+							),
+						},
+					]}
+					withoutContainerBorders
+					subduedStyle
+				/>
+			)}
+
 			{uniqueProductCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
