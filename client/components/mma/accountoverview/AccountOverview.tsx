@@ -155,6 +155,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 
 	if (
 		allActiveProductDetails.length === 0 &&
+		allCancelledProductDetails.length === 0 &&
 		appSubscriptions.length === 0 &&
 		singleContributions.length === 0
 	) {
