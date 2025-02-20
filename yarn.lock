@@ -3329,15 +3329,15 @@
     read-package-up "11.0.0"
     typescript-eslint "8.16.0"
 
-"@guardian/libs@^17.0.0":
-  version "17.0.1"
-  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-17.0.1.tgz#cf0f1ea6cf21f0889dcf7c0cd6a2b92bf9f47f39"
-  integrity sha512-uv+EF+lAgeSzBllULwT6morI/fsJWml8ROT2f/xLl2IejMio1zRt3HfTijdzVr4hYHlcGWntcHfrThjgqJgFHA==
-
 "@guardian/libs@^18.0.0":
   version "18.0.2"
   resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-18.0.2.tgz#dfccae411f1b2ddb650d9344acc999d85cbba96b"
   integrity sha512-MX7mo/ZADgJJ9uMBHw9SoJBW1AJXB8Vg3NFUkpfJ7uwkN0LKHHxi8w2YkZDMPUDcMx5I3dpIf1LuqQQLR6RAVA==
+
+"@guardian/libs@^21.1.0":
+  version "21.1.0"
+  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-21.1.0.tgz#24450f6fd87363177fe96f516e255ad44120ed1c"
+  integrity sha512-M02tJniKcRDLYPIxJ/KYViLTjugjnzmNi/UTDKZm38xc6hjOPNnhFPBw59W2DlGENrMt58+m7qYAcdMmcEp+KQ==
 
 "@guardian/node-riffraff-artifact@0.2.2":
   version "0.2.2"
