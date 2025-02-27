@@ -191,7 +191,7 @@ const initESW = (
 				{
 					baseLiveAgentContentURL:
 						'https://c.la12s-core1.sfdc-cehfhs.salesforceliveagent.com/content',
-					deploymentId: '5729E000000CbOY',
+					deploymentId: '5729E0000008PBe',
 					buttonId: '5739E0000008QCo',
 					baseLiveAgentURL:
 						'https://d.la12s-core1.sfdc-cehfhs.salesforceliveagent.com/chat',
