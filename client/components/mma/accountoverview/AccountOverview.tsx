@@ -111,6 +111,10 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		.filter(isProduct)
 		.sort(sortByJoinDate);
 
+	const activeProductsNotPendingCancellation = allActiveProductDetails.filter(
+		(product: ProductDetail) => !product.subscription.cancelledAt,
+	);
+
 	const allCancelledProductDetails = cancelledProductsResponse.sort(
 		(a: CancelledProductDetail, b: CancelledProductDetail) =>
 			b.subscription.start.localeCompare(a.subscription.start),
@@ -252,6 +256,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 												.subscriptionId
 										}
 										productDetail={cancelledProductDetail}
+										hasOtherActiveSubs={
+											!!activeProductsNotPendingCancellation.length
+										}
 									/>
 								),
 							)}
