@@ -175,6 +175,7 @@ export interface ProductType {
 	shortFriendlyName?: string;
 	productType: ProductTypeKeys;
 	groupedProductType: GroupedProductTypeKeys;
+	checkoutUrlPart?: string;
 	allProductsProductTypeFilterString: AllProductsProductTypeFilterString;
 	urlPart: ProductUrlPart;
 	softOptInIDs: string[];
@@ -339,6 +340,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'recurringSupport',
 		allProductsProductTypeFilterString: 'Contribution',
 		urlPart: 'contributions',
+		checkoutUrlPart: '/contribute', // https://support.theguardian.com/uk/contribute
 		getOphanProductType: () => 'RECURRING_CONTRIBUTION',
 		updateAmountMdaEndpoint: 'contribution-update-amount',
 		softOptInIDs: [
@@ -389,6 +391,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Paper',
 		urlPart: 'paper',
+		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
 		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
 		delivery: {
@@ -409,6 +412,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'HomeDelivery',
 		urlPart: 'homedelivery',
+		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
 		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
 		softOptInIDs: [
@@ -448,6 +452,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'HomeDelivery',
 		urlPart: 'nationaldelivery',
+		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
 		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
 		softOptInIDs: [
@@ -487,6 +492,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Voucher',
 		urlPart: 'voucher',
+		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
 		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
 		softOptInIDs: [
@@ -533,6 +539,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'DigitalVoucher',
 		urlPart: 'subscriptioncard',
+		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
 		legacyUrlPart: 'digitalvoucher',
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
 		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
@@ -560,6 +567,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Weekly',
 		urlPart: 'guardianweekly',
+		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.GuardianWeeklyNewsletter,
@@ -608,6 +616,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'recurringSupportWithBenefits',
 		allProductsProductTypeFilterString: 'TierThree',
 		urlPart: 'digital+print',
+		checkoutUrlPart: '/support', // https://support.theguardian.com/uk/support
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.SupporterNewsletter,
@@ -685,6 +694,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'recurringSupportWithBenefits',
 		allProductsProductTypeFilterString: 'SupporterPlus',
 		urlPart: 'support',
+		checkoutUrlPart: '/support', // https://support.theguardian.com/uk/support
 		getOphanProductType: () => 'SUPPORTER_PLUS',
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
@@ -730,6 +740,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'GuardianAdLite',
 		urlPart: 'guardianadlite',
+		checkoutUrlPart: '/guardian-ad-lite', // https://support.theguardian.com/uk/guardian-ad-lite
 		getOphanProductType: () => 'GUARDIAN_AD_LITE',
 		softOptInIDs: [SoftOptInIDs.SupportOnboarding],
 		cancellation: {

@@ -18,8 +18,10 @@ import {
 
 export const CancelledProductCard = ({
 	productDetail,
+	hasOtherActiveSubs,
 }: {
 	productDetail: CancelledProductDetail;
+	hasOtherActiveSubs: boolean;
 }) => {
 	const specificProductType = getSpecificProductTypeFromTier(
 		productDetail.tier,
@@ -31,10 +33,7 @@ export const CancelledProductCard = ({
 		productCardConfiguration[specificProductType.productType];
 
 	const showSubscribeAgainButton =
-		specificProductType.groupedProductType !== 'membership' &&
-		specificProductType.groupedProductType !== 'recurringSupport' &&
-		specificProductType.groupedProductType !==
-			'recurringSupportWithBenefits';
+		!!specificProductType.checkoutUrlPart && !hasOtherActiveSubs;
 
 	return (
 		<Stack space={4}>
@@ -100,7 +99,7 @@ export const CancelledProductCard = ({
 						<div css={wideButtonLayoutCss}>
 							{showSubscribeAgainButton && (
 								<LinkButton
-									href="https://support.theguardian.com/uk/subscribe"
+									href={`https://support.theguardian.com/${specificProductType.checkoutUrlPart}`}
 									size="small"
 									cssOverrides={css`
 										justify-content: center;
@@ -110,11 +109,18 @@ export const CancelledProductCard = ({
 										trackEvent({
 											eventCategory: 'href',
 											eventAction: 'click',
-											eventLabel: 'subscribe_again',
+											eventLabel: `${
+												groupedProductType.showSupporterId
+													? 'support'
+													: 'subscribe'
+											}_again`,
 										});
 									}}
 								>
-									Subscribe again
+									{groupedProductType.showSupporterId
+										? 'Support'
+										: 'Subscribe'}{' '}
+									again
 								</LinkButton>
 							)}
 						</div>
