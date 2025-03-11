@@ -23,17 +23,12 @@ export const productMoveFetch = (
 	subscriptionId: string,
 	price: number,
 	productSwitchType: ProductSwitchType,
-	checkChargeAmountBeforeUpdate: boolean,
 	preview: boolean,
 	isTestUser: boolean,
 ) =>
 	fetch(`/api/product-move/${productSwitchType}/${subscriptionId}`, {
 		method: 'POST',
-		body: JSON.stringify({
-			price,
-			preview,
-			checkChargeAmountBeforeUpdate,
-		}),
+		body: JSON.stringify({ preview, price }),
 		headers: {
 			'Content-Type': 'application/json',
 			[MDA_TEST_USER_HEADER]: `${isTestUser}`,

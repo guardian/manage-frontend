@@ -5,7 +5,6 @@ export const productMovePreviewResponse: PreviewResponse = {
 	supporterPlusPurchaseAmount: 12.0,
 	contributionRefundAmount: -5,
 	nextPaymentDate: '2023-03-20',
-	checkChargeAmountBeforeUpdate: false,
 };
 
 export const productMoveSuccessfulResponse = {
