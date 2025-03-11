@@ -46,7 +46,6 @@ export const UpgradeSupport = () => {
 					subscription.subscriptionId,
 					threshold,
 					'recurring-contribution-to-supporter-plus',
-					false,
 					true,
 					isTestUser,
 				),

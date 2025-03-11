@@ -40,10 +40,7 @@ import {
 } from '../../../styles/GenericStyles';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import { LoadingState } from '../../../utilities/hooks/useAsyncLoader';
-import {
-	calculateAmountPayableToday,
-	calculateCheckChargeAmountBeforeUpdate,
-} from '../../../utilities/productMovePreview';
+import { calculateAmountPayableToday } from '../../../utilities/productMovePreview';
 import { productMoveFetch } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { SwitchErrorSummary } from '../../shared/productSwitch/SwitchErrorSummary';
@@ -304,9 +301,6 @@ export const ConfirmForm = ({
 		'd MMMM',
 	);
 
-	const checkChargeAmount =
-		calculateCheckChargeAmountBeforeUpdate(amountPayableToday);
-
 	const confirmOnClick = async () => {
 		if (isConfirmationLoading) {
 			return;
@@ -332,7 +326,6 @@ export const ConfirmForm = ({
 					subscription.subscriptionId,
 					chosenAmount,
 					'recurring-contribution-to-supporter-plus',
-					checkChargeAmount,
 					false,
 					isTestUser,
 				).then((r) => JsonResponseHandler(r));

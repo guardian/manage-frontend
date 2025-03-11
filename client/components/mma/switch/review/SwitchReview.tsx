@@ -16,7 +16,7 @@ import {
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { SwitchErrorSummary } from '@/client/components/shared/productSwitch/SwitchErrorSummary';
-import { MDA_TEST_USER_HEADER } from '@/shared/productResponse';
+import { productMoveFetch } from '@/client/utilities/productUtils';
 import { dateString } from '../../../../../shared/dates';
 import type {
 	PreviewResponse,
@@ -113,30 +113,7 @@ export const SwitchReview = () => {
 
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 
-	const productMoveFetch = (
-		preview: boolean,
-		checkChargeAmountBeforeUpdate: boolean,
-	) =>
-		fetch(
-			`/api/product-move/${productSwitchType}/${contributionToSwitch.subscription.subscriptionId}`,
-			{
-				method: 'POST',
-				body: JSON.stringify({
-					price: newAmount,
-					preview,
-					checkChargeAmountBeforeUpdate,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-					[MDA_TEST_USER_HEADER]: `${contributionToSwitch.isTestUser}`,
-				},
-			},
-		);
-
-	const confirmSwitch = async (
-		amount: number,
-		checkChargeAmountBeforeUpdate: boolean,
-	) => {
+	const confirmSwitch = async (amount: number) => {
 		if (isSwitching) {
 			return;
 		}
@@ -150,8 +127,11 @@ export const SwitchReview = () => {
 		try {
 			setIsSwitching(true);
 			const response = await productMoveFetch(
+				contributionToSwitch.subscription.subscriptionId,
+				newAmount,
+				productSwitchType,
 				false,
-				checkChargeAmountBeforeUpdate,
+				contributionToSwitch.isTestUser,
 			);
 			const data = await JsonResponseHandler(response);
 
@@ -183,7 +163,14 @@ export const SwitchReview = () => {
 		data: PreviewResponse | null;
 		loadingState: LoadingState;
 	} = useAsyncLoader(
-		() => productMoveFetch(true, false),
+		() =>
+			productMoveFetch(
+				contributionToSwitch.subscription.subscriptionId,
+				newAmount,
+				productSwitchType,
+				true,
+				contributionToSwitch.isTestUser,
+			),
 		JsonResponseHandler,
 	);
 
@@ -312,10 +299,7 @@ export const SwitchReview = () => {
 					isLoading={isSwitching}
 					cssOverrides={buttonCentredCss}
 					onClick={() =>
-						confirmSwitch(
-							previewResponse.amountPayableToday,
-							previewResponse.checkChargeAmountBeforeUpdate,
-						)
+						confirmSwitch(previewResponse.amountPayableToday)
 					}
 				>
 					Confirm {isAboveThreshold ? 'change' : 'upgrade'}

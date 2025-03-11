@@ -7,5 +7,4 @@ export interface PreviewResponse {
 	supporterPlusPurchaseAmount: number;
 	contributionRefundAmount: number;
 	nextPaymentDate: string;
-	checkChargeAmountBeforeUpdate: boolean;
 }
