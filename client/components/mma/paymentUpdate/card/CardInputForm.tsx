@@ -2,7 +2,6 @@ import { Elements } from '@stripe/react-stripe-js';
 import { useStripeSDK } from '../../../../utilities/stripe';
 import type { NewPaymentMethodDetail } from '../NewPaymentMethodDetail';
 import { StripeCardInputForm } from './stripeCardInputForm';
-import { StripeCheckoutSessionButton } from './StripeCheckoutSessionButton';
 
 export interface CardInputFormProps {
 	stripeApiKey: string;
@@ -20,10 +19,6 @@ export const CardInputForm = (props: CardInputFormProps) => {
 
 	return (
 		<>
-			{/* Temporary Implementation Only - For development only */}
-			<StripeCheckoutSessionButton stripeApiKey={props.stripeApiKey} />
-			{/* Temporary Implementation Only - For development only */}
-
 			<Elements
 				stripe={stripePromise}
 				options={{
