@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/node';
 import type express from 'express';
 import fetch from 'node-fetch';
+import { conf } from '../server/config';
 import { STRIPE_PUBLIC_KEY_HEADER } from '../shared/stripeSetupIntent';
 import { log, putMetric } from './log';
 import { stripeSetupIntentConfigPromise } from './stripeSetupIntentConfig';
@@ -10,14 +11,19 @@ export const stripeSetupCheckoutHandler = async (
 	response: express.Response,
 ) => {
 	// Read Request JSON Body
-	let clientRequestBody = request.body.toString();
-	if (!clientRequestBody) {
+	const clientRequestBodyData = request.body.toString();
+	if (!clientRequestBodyData) {
 		response.status(400).send('missing request body');
 		return;
-	} else {
-		clientRequestBody = JSON.parse(clientRequestBody);
 	}
 
+	// Map request
+	const clientRequestBody: {
+		paymentMethodTypes: string[];
+		productTypeUrlPart: string;
+	} = JSON.parse(clientRequestBodyData);
+
+	// Get Stripe Secret Key
 	stripeSetupIntentConfigPromise
 		.then((stripePublicToSecretKeyMapping) => {
 			if (!stripePublicToSecretKeyMapping) {
@@ -56,9 +62,8 @@ export const stripeSetupCheckoutHandler = async (
 			const requestBody = new URLSearchParams({
 				mode: 'setup',
 				// customer: 'cus_123456789', // Replace with actual Stripe Customer ID
-				success_url:
-					'https://yourwebsite.com/success?session_id={CHECKOUT_SESSION_ID}',
-				cancel_url: 'https://yourwebsite.com/cancel',
+				success_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}`,
+				cancel_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}`,
 				...paymentMethodTypes,
 			}).toString();
 

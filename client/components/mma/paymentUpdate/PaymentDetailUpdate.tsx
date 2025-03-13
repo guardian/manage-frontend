@@ -382,6 +382,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 					return stripePublicKey ? (
 						<StripeCheckoutSessionButton
 							stripeApiKey={stripePublicKey}
+							productTypeUrlPart={props.productType.urlPart}
 						/>
 					) : (
 						<GenericErrorScreen loggingMessage="No existing card information to update from" />

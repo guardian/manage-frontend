@@ -7,6 +7,7 @@ import { LoadingCircleIcon } from '../../shared/assets/LoadingCircleIcon';
 
 export interface StripeCheckoutSessionButtonProps {
 	stripeApiKey: string;
+	productTypeUrlPart: string;
 }
 
 interface StripeCheckoutSession {
@@ -34,6 +35,7 @@ export const StripeCheckoutSessionButton = (
 			},
 			body: JSON.stringify({
 				paymentMethodTypes: ['card'],
+				productTypeUrlPart: props.productTypeUrlPart,
 			}),
 		})
 			.then((response) => {
@@ -57,8 +59,6 @@ export const StripeCheckoutSessionButton = (
 			.catch((error) => {
 				Sentry.captureException(error);
 				setPreparingCheckoutError(error);
-			})
-			.finally(() => {
 				setPreparingCheckout(false);
 			});
 	};
