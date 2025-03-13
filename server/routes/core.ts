@@ -88,18 +88,27 @@ router.get('/sitemap.txt', async (_, res: Response) => {
  * The current owners are listed below.
  * For each owner, please add github name and verification file.
  */
+const verificationFiles: Array<{ owner: string; filename: string }> = [
+	{
+		owner: 'kelvin-chappell',
+		filename: 'google6e3510e8603d6b4c.html',
+	},
+	{
+		owner: 'john-duffell',
+		filename: 'google499559a5c868dea3.html',
+	},
+	{
+		owner: 'richard-bangay',
+		filename: 'google7e53090f90b876c1.html',
+	},
+];
 
-// kelvin-chappell
-router.get('/google6e3510e8603d6b4c.html', (_, res: Response) => {
-	res.contentType('text/html').send(
-		'google-site-verification: google6e3510e8603d6b4c.html',
-	);
-});
-// johnduffell
-router.get('/google499559a5c868dea3.html', (_, res: Response) => {
-	res.contentType('text/html').send(
-		'google-site-verification: google499559a5c868dea3.html',
-	);
+verificationFiles.forEach(function (verificationFile) {
+	router.get(`/${verificationFile.filename}`, (_, res: Response) => {
+		res.contentType('text/html').send(
+			`google-site-verification: ${verificationFile.filename}`,
+		);
+	});
 });
 
 /*
