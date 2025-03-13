@@ -48,6 +48,7 @@ import { cardTypeToSVG } from '../shared/CardDisplay';
 import { OverlayLoader } from '../shared/OverlayLoader';
 import { augmentPaymentFailureAlertText } from '../shared/PaymentFailureAlertIfApplicable';
 import { CardInputForm } from './card/CardInputForm';
+import { StripeCheckoutSessionButton } from './card/StripeCheckoutSessionButton';
 import { ContactUs } from './ContactUs';
 import { CurrentPaymentDetails } from './CurrentPaymentDetail';
 import { DirectDebitInputForm } from './dd/DirectDebitInputForm';
@@ -218,6 +219,10 @@ export interface PaymentUpdaterStepState {
 	newSubscriptionData?: WithSubscription[];
 }
 
+// DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY
+const STRIPE_CHECKOUT_SESSION_MODE = true;
+// DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY
+
 export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 	const { productDetail, isFromApp } = useContext(
 		PaymentUpdateContext,
@@ -372,6 +377,17 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 					<GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
 				);
 			case PaymentMethod.Card:
+				// DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY
+				if (STRIPE_CHECKOUT_SESSION_MODE) {
+					return stripePublicKey ? (
+						<StripeCheckoutSessionButton
+							stripeApiKey={stripePublicKey}
+						/>
+					) : (
+						<GenericErrorScreen loggingMessage="No existing card information to update from" />
+					);
+				}
+				// DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY
 				return stripePublicKey ? (
 					<CardInputForm
 						stripeApiKey={stripePublicKey}
