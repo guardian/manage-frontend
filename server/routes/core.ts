@@ -95,6 +95,12 @@ router.get('/google6e3510e8603d6b4c.html', (_, res: Response) => {
 		'google-site-verification: google6e3510e8603d6b4c.html',
 	);
 });
+// johnduffell
+router.get('/google499559a5c868dea3.html', (_, res: Response) => {
+	res.contentType('text/html').send(
+		'google-site-verification: google499559a5c868dea3.html',
+	);
+});
 
 /*
  * end of Google Search Console verification files
