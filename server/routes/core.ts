@@ -3,7 +3,7 @@ import type { Request, Response } from 'express';
 import { Router } from 'express';
 import { middlewareFailIfAnyAPIGatewayCredsAreMissing } from '../apiGatewayDiscovery';
 import { s3TextFilePromise } from '../awsIntegration';
-import { conf, Environments } from '../config';
+import { conf } from '../config';
 import { log } from '../log';
 
 const router = Router();
@@ -54,9 +54,7 @@ router.get('/robots.txt', (_, res: Response) => {
 		allowHelpCentre + disallowGoogleAdsBots + helpCentreSitemap;
 	const preProdAccessList = disallowAll;
 	const accessList =
-		conf.ENVIRONMENT === Environments.AWS
-			? prodAccessList
-			: preProdAccessList;
+		conf.STAGE === 'PROD' ? prodAccessList : preProdAccessList;
 	res.contentType('text/plain').send(accessList);
 });
 
