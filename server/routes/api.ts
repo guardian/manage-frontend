@@ -32,6 +32,7 @@ import {
 	publicCreateReminderHandler,
 	reactivateReminderHandler,
 } from '../reminders/reminderApi';
+import { stripeSetupCheckoutHandler } from '../stripeSetupCheckoutHandler';
 import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
 
 const router = Router();
@@ -157,6 +158,11 @@ router.post(
 		'MDA_UPDATE_PAYMENT_DIRECT_DEBIT',
 		['subscriptionName'],
 	),
+);
+router.post(
+	'/payment/checkout-session',
+	withOktaServerSideValidation,
+	stripeSetupCheckoutHandler,
 );
 
 router.post(
