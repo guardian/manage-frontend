@@ -62,7 +62,7 @@ export const stripeSetupCheckoutHandler = async (
 			const requestBody = new URLSearchParams({
 				mode: 'setup',
 				// customer: 'cus_123456789', // Replace with actual Stripe Customer ID
-				success_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}`,
+				success_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}/checkout-session-return?id={CHECKOUT_SESSION_ID}`,
 				cancel_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}`,
 				...paymentMethodTypes,
 			}).toString();
