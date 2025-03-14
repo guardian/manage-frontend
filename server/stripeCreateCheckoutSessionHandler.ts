@@ -51,6 +51,10 @@ export const stripeCreateCheckoutSessionHandler = async (
 				success_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}/checkout-session-return?id={CHECKOUT_SESSION_ID}&paymentMethodType=${clientRequestBody.paymentMethodType}`,
 				cancel_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}`,
 				'payment_method_types[0]': clientRequestBody.paymentMethodType,
+				/**
+				 * https://docs.stripe.com/api/checkout/sessions/create?lang=php#create_checkout_session-customer_email
+				 */
+				customer_email: response.locals.identity?.email || '',
 			}).toString();
 
 			// tslint:disable-next-line:no-object-mutation
