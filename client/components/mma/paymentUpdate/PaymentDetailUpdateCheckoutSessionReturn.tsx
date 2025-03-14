@@ -1,11 +1,12 @@
-import { useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useCallback, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { getNavItemFromFlowReferrer } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 
 export const PaymentDetailUpdateCheckoutSessionReturn = () => {
+	const navigate = useNavigate();
 	const location = useLocation();
 	const routerState = location.state as {
 		productDetail: ProductDetail;
@@ -23,11 +24,22 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 	const queryParams = new URLSearchParams(location.search);
 	const sessionId = queryParams.get('id'); // Read the 'session_id' query parameter
 
+	const navigateToFailedPage = useCallback(() => {
+		const failedPagePath = location.pathname.replace(/[^/]+$/, 'failed');
+		navigate(failedPagePath, {
+			state: {
+				newPaymentMethodDetailFriendlyName: 'Payment Method',
+			},
+		});
+	}, [location.pathname, navigate]);
+
 	useEffect(() => {
 		if (sessionId) {
-			// Fetch the payment method information
+			console.log('sessionId:', sessionId);
+		} else {
+			navigateToFailedPage();
 		}
-	}, [sessionId]);
+	}, [sessionId, navigateToFailedPage]);
 
 	return sessionId ? (
 		<PageContainer
@@ -36,7 +48,5 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 		>
 			<DefaultLoadingView loadingMessage="Obtaining payment method information..." />
 		</PageContainer>
-	) : (
-		<Navigate to="/" />
-	);
+	) : null;
 };
