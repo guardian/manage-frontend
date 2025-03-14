@@ -53,7 +53,7 @@ export const StripeCheckoutSessionButton = (
 				[STRIPE_PUBLIC_KEY_HEADER]: props.stripeApiKey,
 			},
 			body: JSON.stringify({
-				paymentMethodTypes: props.paymentMethodType,
+				paymentMethodType: props.paymentMethodType,
 				productTypeUrlPart: props.productTypeUrlPart,
 			}),
 		})
