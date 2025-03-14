@@ -227,10 +227,6 @@ export interface PaymentUpdaterStepState {
 	newSubscriptionData?: WithSubscription[];
 }
 
-// DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY
-const STRIPE_CHECKOUT_SESSION_MODE = true;
-// DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY
-
 export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const state = location.state as {
@@ -398,9 +394,9 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 					<GenericErrorScreen loggingMessage="No Stripe key provided to enable adding a payment method" />
 				);
 			case PaymentMethod.Card:
-				// DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY
-				if (STRIPE_CHECKOUT_SESSION_MODE) {
-					return stripePublicKey ? (
+				return stripePublicKey ? (
+					<>
+						{/* // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY */}
 						<StripeCheckoutSessionButton
 							stripeApiKey={stripePublicKey}
 							productTypeUrlPart={props.productType.urlPart}
@@ -408,23 +404,23 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 								StripeCheckoutSessionPaymentMethodType.Card
 							}
 						/>
-					) : (
-						<GenericErrorScreen loggingMessage="No existing card information to update from" />
-					);
-				}
-				// DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY
-				return stripePublicKey ? (
-					<CardInputForm
-						stripeApiKey={stripePublicKey}
-						newPaymentMethodDetailUpdater={
-							newPaymentMethodDetailUpdater
-						}
-						userEmail={
-							subscription.card?.email ||
-							window.guardian.identityDetails.email
-						}
-						executePaymentUpdate={executePaymentUpdate}
-					/>
+						<hr></hr>
+						<h4>
+							<b>Legacy implementation</b>
+						</h4>
+						{/* // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY */}
+						<CardInputForm
+							stripeApiKey={stripePublicKey}
+							newPaymentMethodDetailUpdater={
+								newPaymentMethodDetailUpdater
+							}
+							userEmail={
+								subscription.card?.email ||
+								window.guardian.identityDetails.email
+							}
+							executePaymentUpdate={executePaymentUpdate}
+						/>
+					</>
 				) : (
 					<GenericErrorScreen loggingMessage="No existing card information to update from" />
 				);
