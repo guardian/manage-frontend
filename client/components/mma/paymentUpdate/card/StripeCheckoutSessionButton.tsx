@@ -1,18 +1,37 @@
 import { css } from '@emotion/react';
 import { Button, SvgExternal } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
+import type { PaymentMethod } from '@stripe/stripe-js';
 import { useState } from 'react';
 import { STRIPE_PUBLIC_KEY_HEADER } from '../../../../../shared/stripeSetupIntent';
 import { LoadingCircleIcon } from '../../shared/assets/LoadingCircleIcon';
 
+export enum StripeCheckoutSessionPaymentMethodType {
+	Card = 'card',
+}
+
 export interface StripeCheckoutSessionButtonProps {
 	stripeApiKey: string;
 	productTypeUrlPart: string;
+	paymentMethodType: StripeCheckoutSessionPaymentMethodType;
 }
 
+/**
+ * https://docs.stripe.com/api/checkout/sessions/object
+ */
 export interface StripeCheckoutSession {
 	id: string;
-	url: string;
+	url?: string;
+
+	/**
+	 * https://docs.stripe.com/api/setup_intents/object
+	 */
+	setup_intent?: {
+		/**
+		 * https://docs.stripe.com/api/payment_methods/object
+		 */
+		payment_method?: PaymentMethod;
+	};
 }
 
 export const StripeCheckoutSessionButton = (
@@ -34,7 +53,7 @@ export const StripeCheckoutSessionButton = (
 				[STRIPE_PUBLIC_KEY_HEADER]: props.stripeApiKey,
 			},
 			body: JSON.stringify({
-				paymentMethodTypes: ['card'],
+				paymentMethodTypes: props.paymentMethodType,
 				productTypeUrlPart: props.productTypeUrlPart,
 			}),
 		})
@@ -54,7 +73,7 @@ export const StripeCheckoutSessionButton = (
 			})
 			.then((checkoutSession: StripeCheckoutSession) => {
 				// Redirect to Checkout
-				window.location.href = checkoutSession.url;
+				window.location.href = checkoutSession.url ?? '/';
 			})
 			.catch((error) => {
 				Sentry.captureException(error);

@@ -19,7 +19,7 @@ export const stripeCreateCheckoutSessionHandler = async (
 
 	// Map request
 	const clientRequestBody: {
-		paymentMethodTypes: string[];
+		paymentMethodType: 'card';
 		productTypeUrlPart: string;
 	} = JSON.parse(clientRequestBodyData);
 
@@ -44,27 +44,13 @@ export const stripeCreateCheckoutSessionHandler = async (
 				);
 			}
 
-			// Map Payment types to object array
-			const paymentMethodTypes: Record<string, unknown> = {};
-			if (clientRequestBody.paymentMethodTypes) {
-				for (
-					let i = 0;
-					i < clientRequestBody.paymentMethodTypes.length;
-					i++
-				) {
-					paymentMethodTypes[`payment_method_types[${i}]`] =
-						clientRequestBody.paymentMethodTypes[i];
-				}
-			}
-
 			const httpMethod = 'POST';
 			const outgoingURL = 'https://api.stripe.com/v1/checkout/sessions';
 			const requestBody = new URLSearchParams({
 				mode: 'setup',
-				// customer: 'cus_123456789', // Replace with actual Stripe Customer ID
-				success_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}/checkout-session-return?id={CHECKOUT_SESSION_ID}`,
+				success_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}/checkout-session-return?id={CHECKOUT_SESSION_ID}&paymentMethodType=${clientRequestBody.paymentMethodType}`,
 				cancel_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}`,
-				...paymentMethodTypes,
+				'payment_method_types[0]': clientRequestBody.paymentMethodType,
 			}).toString();
 
 			// tslint:disable-next-line:no-object-mutation
