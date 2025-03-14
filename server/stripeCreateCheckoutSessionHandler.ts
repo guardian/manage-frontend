@@ -1,12 +1,12 @@
 import * as Sentry from '@sentry/node';
 import type express from 'express';
 import fetch from 'node-fetch';
-import { conf } from '../server/config';
 import { STRIPE_PUBLIC_KEY_HEADER } from '../shared/stripeSetupIntent';
+import { conf } from './config';
 import { log, putMetric } from './log';
 import { stripeSetupIntentConfigPromise } from './stripeSetupIntentConfig';
 
-export const stripeSetupCheckoutHandler = async (
+export const stripeCreateCheckoutSessionHandler = async (
 	request: express.Request,
 	response: express.Response,
 ) => {

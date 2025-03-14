@@ -32,7 +32,8 @@ import {
 	publicCreateReminderHandler,
 	reactivateReminderHandler,
 } from '../reminders/reminderApi';
-import { stripeSetupCheckoutHandler } from '../stripeSetupCheckoutHandler';
+import { stripeCreateCheckoutSessionHandler } from '../stripeCreateCheckoutSessionHandler';
+import { stripeGetCheckoutSessionHandler } from '../stripeGetCheckoutSessionHandler';
 import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
 
 const router = Router();
@@ -162,7 +163,12 @@ router.post(
 router.post(
 	'/payment/checkout-session',
 	withOktaServerSideValidation,
-	stripeSetupCheckoutHandler,
+	stripeCreateCheckoutSessionHandler,
+);
+router.get(
+	'/payment/checkout-session/:id',
+	withOktaServerSideValidation,
+	stripeGetCheckoutSessionHandler,
 );
 
 router.post(
