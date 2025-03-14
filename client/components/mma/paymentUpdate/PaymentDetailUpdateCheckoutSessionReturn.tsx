@@ -1,62 +1,86 @@
-import { useCallback, useEffect } from 'react';
+import * as Sentry from '@sentry/browser';
+import { useCallback, useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import type { ProductDetail } from '../../../../shared/productResponse';
-import { getNavItemFromFlowReferrer } from '../../shared/nav/NavConfig';
-import { PageContainer } from '../Page';
+import { getStripeKey } from '@/client/utilities/stripe';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import type { PaymentUpdateContextInterface } from './PaymentDetailUpdateContainer';
+import { PaymentUpdateContext } from './PaymentDetailUpdateContainer';
 
 export const PaymentDetailUpdateCheckoutSessionReturn = () => {
+	const { productDetail } = useContext(
+		PaymentUpdateContext,
+	) as PaymentUpdateContextInterface;
 	const navigate = useNavigate();
 	const location = useLocation();
-	const routerState = location.state as {
-		productDetail: ProductDetail;
-		flowReferrer?: {
-			title: string;
-			link: string;
-		};
-		isFromApp?: boolean;
-	};
-	const navItemReferrer = getNavItemFromFlowReferrer(
-		routerState?.flowReferrer?.title,
-	);
 
 	// Parse the query parameters
 	const queryParams = new URLSearchParams(location.search);
 	const sessionId = queryParams.get('id'); // Read the 'session_id' query parameter
 
 	const navigateToFailedPage = useCallback(() => {
-		const failedPagePath = location.pathname.replace(/[^/]+$/, 'failed');
-
-		/**
-		 * Well, I don't like this approach because the "failed" page is
-		 * loading the current payment methods of the user, but at the same
-		 * time I do not want to create a new page just for this purpose.
-		 * Let's see if we can improve this in the future by avoiding the
-		 * "failed" page to load the payment methods or the requirement
-		 * of having to pass the state to the "failed" page (in that case
-		 * we could just include the component here without having to navigate).
-		 */
-		navigate(failedPagePath, {
+		navigate('../failed', {
 			state: {
 				newPaymentMethodDetailFriendlyName: 'Payment Method',
 			},
 		});
-	}, [location.pathname, navigate]);
+	}, [navigate]);
+
+	const obtainCheckoutSessionDetails = useCallback(
+		async (id: string): Promise<void> => {
+			// const checkoutSessionResponse = await fetch(
+			// 	`/api/payment/checkout-session/${id}`,
+			// 	{
+			// 		method: 'GET',
+			// 		credentials: 'include',
+			// 		headers: {
+			// 			[STRIPE_PUBLIC_KEY_HEADER]: props.stripeApiKey,
+			// 		},
+			// 	},
+			// );
+			// #region Get Stripe Secret Key
+			let stripePublicKey: string | undefined;
+			if (productDetail.subscription.card) {
+				stripePublicKey =
+					productDetail.subscription.card.stripePublicKeyForUpdate;
+			} else {
+				stripePublicKey = getStripeKey(
+					productDetail.billingCountry ||
+						productDetail.subscription.deliveryAddress?.country,
+					productDetail.isTestUser,
+				);
+			}
+			// #endregion
+
+			console.log('id', id);
+			console.log('stripePublicKey', stripePublicKey);
+			throw new Error('ola');
+		},
+		[productDetail],
+	);
 
 	useEffect(() => {
 		if (sessionId) {
-			console.log('sessionId:', sessionId);
+			obtainCheckoutSessionDetails(sessionId)
+				.then(() => {
+					console.log('Checkout Session Details Loaded');
+				})
+				.catch(() => {
+					Sentry.captureException(
+						'Failed to load Checkout Session Details',
+						{
+							extra: {
+								sessionId,
+							},
+						},
+					);
+					navigateToFailedPage();
+				});
 		} else {
 			navigateToFailedPage();
 		}
-	}, [sessionId, navigateToFailedPage]);
+	}, [sessionId, navigateToFailedPage, obtainCheckoutSessionDetails]);
 
 	return sessionId ? (
-		<PageContainer
-			selectedNavItem={navItemReferrer}
-			pageTitle="Manage payment method"
-		>
-			<DefaultLoadingView loadingMessage="Obtaining payment method information..." />
-		</PageContainer>
+		<DefaultLoadingView loadingMessage="Obtaining payment method information..." />
 	) : null;
 };

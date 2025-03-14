@@ -629,6 +629,12 @@ const MMARouter = () => {
 										}
 									/>
 									<Route
+										path="checkout-session-return"
+										element={
+											<PaymentDetailUpdateCheckoutSessionReturn />
+										}
+									/>
+									<Route
 										path="updated"
 										element={
 											<PaymentDetailUpdateConfirmation />
