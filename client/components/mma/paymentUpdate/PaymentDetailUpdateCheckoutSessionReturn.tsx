@@ -4,13 +4,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { getStripeKey } from '@/client/utilities/stripe';
 import { STRIPE_PUBLIC_KEY_HEADER } from '@/shared/stripeSetupIntent';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
-import { NewCardPaymentMethodDetail } from './card/NewCardPaymentMethodDetail';
-import type { StripePaymentMethod as StripeCardPaymentMethod } from './card/NewCardPaymentMethodDetail';
 import {
 	type StripeCheckoutSession,
 	StripeCheckoutSessionPaymentMethodType,
 } from './card/StripeCheckoutSessionButton';
-import type { NewPaymentMethodDetail } from './NewPaymentMethodDetail';
 import type { PaymentUpdateContextInterface } from './PaymentDetailUpdateContainer';
 import { PaymentUpdateContext } from './PaymentDetailUpdateContainer';
 
@@ -103,45 +100,12 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 						navigateToFailedPage();
 					}
 
-					// Build detail
-					let detail: NewPaymentMethodDetail | null = null;
-					switch (paymentMethodType) {
-						case StripeCheckoutSessionPaymentMethodType.Card:
-							detail = new NewCardPaymentMethodDetail(
-								checkoutSession?.setup_intent
-									?.payment_method as StripeCardPaymentMethod,
-								obtainStripeApiKey(),
-							);
-							break;
-						default:
-							Sentry.captureException(
-								'Payment Method Type processing not implemented',
-								{
-									extra: {
-										paymentMethodType,
-									},
-								},
-							);
-							navigateToFailedPage();
-					}
-
-					// Validate detail
-					if (!detail) {
-						Sentry.captureException(
-							'Failed to build Payment Method Details',
-							{
-								extra: {
-									sessionId,
-								},
-							},
-						);
-						navigateToFailedPage();
-					}
-
 					// Execute Payment Update
 					navigate('../', {
 						state: {
-							newPaymentMethodDetail: detail,
+							paymentMethodInfo:
+								checkoutSession?.setup_intent?.payment_method,
+							paymentMethodType,
 						},
 					});
 				})
