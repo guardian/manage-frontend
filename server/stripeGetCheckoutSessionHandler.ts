@@ -69,7 +69,7 @@ export const stripeGetCheckoutSessionHandler = async (
 						return stripeResponse.json();
 					} else {
 						throw new Error(
-							`Failed to create CheckoutSession : ${
+							`Failed to get CheckoutSession ${checkoutSessionId} : ${
 								stripeResponse.status
 							} ${
 								stripeResponse.statusText

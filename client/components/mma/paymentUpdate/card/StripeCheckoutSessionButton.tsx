@@ -10,7 +10,7 @@ export interface StripeCheckoutSessionButtonProps {
 	productTypeUrlPart: string;
 }
 
-interface StripeCheckoutSession {
+export interface StripeCheckoutSession {
 	id: string;
 	url: string;
 }

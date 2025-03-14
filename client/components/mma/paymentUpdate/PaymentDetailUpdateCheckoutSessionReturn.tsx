@@ -2,7 +2,9 @@ import * as Sentry from '@sentry/browser';
 import { useCallback, useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getStripeKey } from '@/client/utilities/stripe';
+import { STRIPE_PUBLIC_KEY_HEADER } from '@/shared/stripeSetupIntent';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import type { StripeCheckoutSession } from './card/StripeCheckoutSessionButton';
 import type { PaymentUpdateContextInterface } from './PaymentDetailUpdateContainer';
 import { PaymentUpdateContext } from './PaymentDetailUpdateContainer';
 
@@ -26,17 +28,7 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 	}, [navigate]);
 
 	const obtainCheckoutSessionDetails = useCallback(
-		async (id: string): Promise<void> => {
-			// const checkoutSessionResponse = await fetch(
-			// 	`/api/payment/checkout-session/${id}`,
-			// 	{
-			// 		method: 'GET',
-			// 		credentials: 'include',
-			// 		headers: {
-			// 			[STRIPE_PUBLIC_KEY_HEADER]: props.stripeApiKey,
-			// 		},
-			// 	},
-			// );
+		async (id: string): Promise<StripeCheckoutSession> => {
 			// #region Get Stripe Secret Key
 			let stripePublicKey: string | undefined;
 			if (productDetail.subscription.card) {
@@ -51,9 +43,17 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 			}
 			// #endregion
 
-			console.log('id', id);
-			console.log('stripePublicKey', stripePublicKey);
-			throw new Error('ola');
+			const checkoutSessionResponse = await fetch(
+				`/api/payment/checkout-session/${id}`,
+				{
+					method: 'GET',
+					credentials: 'include',
+					headers: {
+						[STRIPE_PUBLIC_KEY_HEADER]: stripePublicKey ?? '',
+					},
+				},
+			);
+			return checkoutSessionResponse.json();
 		},
 		[productDetail],
 	);
@@ -61,8 +61,11 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 	useEffect(() => {
 		if (sessionId) {
 			obtainCheckoutSessionDetails(sessionId)
-				.then(() => {
-					console.log('Checkout Session Details Loaded');
+				.then((checkoutSession: StripeCheckoutSession) => {
+					console.log(
+						'Checkout Session Details Loaded',
+						checkoutSession,
+					);
 				})
 				.catch(() => {
 					Sentry.captureException(
