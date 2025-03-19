@@ -34,9 +34,10 @@ import {
 	isPaidSubscriptionPlan,
 	isProduct,
 } from '../../../../shared/productResponse';
-import type {
-	ProductType,
-	WithProductType,
+import {
+	PRODUCT_TYPES,
+	type ProductType,
+	type WithProductType,
 } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
 import { createProductDetailFetch } from '../../../utilities/productUtils';
@@ -373,6 +374,35 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 		return stripePublicKey || '';
 	}, [productDetail]);
 
+	const isSundayTheObserverSubscription = (): boolean => {
+		if (
+			[
+				PRODUCT_TYPES.homedelivery.urlPart,
+				PRODUCT_TYPES.digitalvoucher.urlPart,
+			].includes(props.productType.urlPart)
+		) {
+			// Get plans
+			const subscriptionPlans = (() => {
+				if (productDetail.subscription.currentPlans.length > 0) {
+					return productDetail.subscription.currentPlans;
+				} else if (productDetail.subscription.futurePlans.length > 0) {
+					return productDetail.subscription.futurePlans;
+				}
+				return [];
+			})();
+
+			// Look for Sunday plans only
+			if (
+				subscriptionPlans.length === 1 &&
+				subscriptionPlans[0].daysOfWeek?.length === 1 &&
+				subscriptionPlans[0].daysOfWeek[0] === 'Sunday'
+			) {
+				return true;
+			}
+		}
+		return false;
+	};
+
 	const getInputForm = (subscription: Subscription, isTestUser: boolean) => {
 		const stripePublicKey: string = obtainStripePublicApiKey();
 
@@ -396,30 +426,27 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 			case PaymentMethod.Card:
 				return stripePublicKey ? (
 					<>
-						{/* // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY */}
-						<StripeCheckoutSessionButton
-							stripeApiKey={stripePublicKey}
-							productTypeUrlPart={props.productType.urlPart}
-							paymentMethodType={
-								StripeCheckoutSessionPaymentMethodType.Card
-							}
-						/>
-						<hr></hr>
-						<h4>
-							<b>Legacy implementation</b>
-						</h4>
-						{/* // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY // DEV ONLY */}
-						<CardInputForm
-							stripeApiKey={stripePublicKey}
-							newPaymentMethodDetailUpdater={
-								newPaymentMethodDetailUpdater
-							}
-							userEmail={
-								subscription.card?.email ||
-								window.guardian.identityDetails.email
-							}
-							executePaymentUpdate={executePaymentUpdate}
-						/>
+						{isSundayTheObserverSubscription() ? (
+							<StripeCheckoutSessionButton
+								stripeApiKey={stripePublicKey}
+								productTypeUrlPart={props.productType.urlPart}
+								paymentMethodType={
+									StripeCheckoutSessionPaymentMethodType.Card
+								}
+							/>
+						) : (
+							<CardInputForm
+								stripeApiKey={stripePublicKey}
+								newPaymentMethodDetailUpdater={
+									newPaymentMethodDetailUpdater
+								}
+								userEmail={
+									subscription.card?.email ||
+									window.guardian.identityDetails.email
+								}
+								executePaymentUpdate={executePaymentUpdate}
+							/>
+						)}
 					</>
 				) : (
 					<GenericErrorScreen loggingMessage="No existing card information to update from" />
