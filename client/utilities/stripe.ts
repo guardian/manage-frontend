@@ -3,6 +3,8 @@ import type { Stripe as StripeSDK } from '@stripe/stripe-js/pure';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { useEffect, useState } from 'react';
 import type { ProductDetail } from '@/shared/productResponse';
+import type { ProductType } from '@/shared/productTypes';
+import { isSundayTheObserverSubscription } from './sundayTheObserverSubscription';
 
 export function getStripeKey(
 	country: string | undefined,
@@ -47,8 +49,17 @@ export const useStripeSDK = (stripeKey: string) => {
 };
 
 export const getStripeKeyByProductDetail = (
+	productType: ProductType,
 	productDetail: ProductDetail,
 ): string => {
+	// Check if the product is a Sunday The Observer subscription
+	if (isSundayTheObserverSubscription(productType, productDetail)) {
+		// return window.guardian?.stripeKeySundayTheObserver ?? '';
+		console.warn(
+			'Subscription is a "Sunday - The Observer" Subscription. Pick the right key is not implemented yet.',
+		);
+	}
+
 	let stripePublicKey: string | undefined;
 	if (productDetail.subscription.card) {
 		stripePublicKey =

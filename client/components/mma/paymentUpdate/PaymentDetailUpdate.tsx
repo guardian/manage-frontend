@@ -360,8 +360,10 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 		setSelectedPaymentMethod(newPaymentMethod);
 
 	const getInputForm = (subscription: Subscription, isTestUser: boolean) => {
-		const stripePublicKey: string =
-			getStripeKeyByProductDetail(productDetail);
+		const stripePublicKey: string = getStripeKeyByProductDetail(
+			props.productType,
+			productDetail,
+		);
 
 		switch (selectedPaymentMethod) {
 			case PaymentMethod.ResetRequired:
@@ -467,7 +469,10 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				case StripeCheckoutSessionPaymentMethodType.Card:
 					detail = new NewCardPaymentMethodDetail(
 						state?.paymentMethodInfo as StripeCardPaymentMethod,
-						getStripeKeyByProductDetail(productDetail),
+						getStripeKeyByProductDetail(
+							props.productType,
+							productDetail,
+						),
 					);
 					break;
 				default:
@@ -490,6 +495,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 		state?.paymentMethodInfo,
 		state?.paymentMethodType,
 		executePaymentUpdate,
+		props.productType,
 		productDetail,
 	]);
 
