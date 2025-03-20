@@ -52,15 +52,20 @@ export const getStripeKeyByProduct = (
 	productType: ProductType,
 	productDetail: ProductDetail,
 ): string => {
-	// Check if the product is a Sunday The Observer subscription
+	let stripePublicKey: string | undefined;
+
+	/**
+	 * By doing this here (instead of "getStripeKey") we are forcing users
+	 * to update their Stripe key for Sunday The Observer subscriptions.
+	 * Change this if we run into issues.
+	 */
 	if (isSundayTheObserverSubscription(productType, productDetail)) {
-		// return window.guardian?.stripeKeySundayTheObserver ?? '';
-		console.warn(
-			'Subscription is a "Sunday - The Observer" Subscription. Pick the right key is not implemented yet.',
-		);
+		stripePublicKey = productDetail.isTestUser
+			? window.guardian?.stripeKeyTortoiseMedia?.test
+			: window.guardian?.stripeKeyTortoiseMedia?.default;
+		return stripePublicKey || '';
 	}
 
-	let stripePublicKey: string | undefined;
 	if (productDetail.subscription.card) {
 		stripePublicKey =
 			productDetail.subscription.card.stripePublicKeyForUpdate;
