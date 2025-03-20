@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/browser';
 import { useCallback, useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getStripeKey } from '@/client/utilities/stripe';
+import { getStripeKeyByProductDetail } from '@/client/utilities/stripe';
 import { STRIPE_PUBLIC_KEY_HEADER } from '@/shared/stripeSetupIntent';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import {
@@ -35,21 +35,6 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 		[navigate],
 	);
 
-	const obtainStripeApiKey = useCallback((): string => {
-		let stripePublicKey: string | undefined;
-		if (productDetail.subscription.card) {
-			stripePublicKey =
-				productDetail.subscription.card.stripePublicKeyForUpdate;
-		} else {
-			stripePublicKey = getStripeKey(
-				productDetail.billingCountry ||
-					productDetail.subscription.deliveryAddress?.country,
-				productDetail.isTestUser,
-			);
-		}
-		return stripePublicKey || '';
-	}, [productDetail]);
-
 	const obtainCheckoutSessionDetails = useCallback(
 		async (id: string): Promise<StripeCheckoutSession> => {
 			const checkoutSessionResponse = await fetch(
@@ -58,13 +43,14 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 					method: 'GET',
 					credentials: 'include',
 					headers: {
-						[STRIPE_PUBLIC_KEY_HEADER]: obtainStripeApiKey() ?? '',
+						[STRIPE_PUBLIC_KEY_HEADER]:
+							getStripeKeyByProductDetail(productDetail) ?? '',
 					},
 				},
 			);
 			return checkoutSessionResponse.json();
 		},
-		[obtainStripeApiKey],
+		[productDetail],
 	);
 
 	useEffect(() => {
@@ -129,7 +115,6 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 		navigate,
 		navigateToFailedPage,
 		obtainCheckoutSessionDetails,
-		obtainStripeApiKey,
 	]);
 
 	return sessionId && paymentMethodType ? (

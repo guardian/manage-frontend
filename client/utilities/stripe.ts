@@ -2,6 +2,7 @@
 import type { Stripe as StripeSDK } from '@stripe/stripe-js/pure';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { useEffect, useState } from 'react';
+import type { ProductDetail } from '@/shared/productResponse';
 
 export function getStripeKey(
 	country: string | undefined,
@@ -43,4 +44,21 @@ export const useStripeSDK = (stripeKey: string) => {
 	}, [stripeKey, stripeObjects]);
 
 	return stripeObjects;
+};
+
+export const getStripeKeyByProductDetail = (
+	productDetail: ProductDetail,
+): string => {
+	let stripePublicKey: string | undefined;
+	if (productDetail.subscription.card) {
+		stripePublicKey =
+			productDetail.subscription.card.stripePublicKeyForUpdate;
+	} else {
+		stripePublicKey = getStripeKey(
+			productDetail.billingCountry ||
+				productDetail.subscription.deliveryAddress?.country,
+			productDetail.isTestUser,
+		);
+	}
+	return stripePublicKey || '';
 };

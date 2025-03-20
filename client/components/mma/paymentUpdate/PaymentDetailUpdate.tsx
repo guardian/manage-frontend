@@ -41,7 +41,7 @@ import {
 } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
 import { createProductDetailFetch } from '../../../utilities/productUtils';
-import { getStripeKey } from '../../../utilities/stripe';
+import { getStripeKeyByProductDetail } from '../../../utilities/stripe';
 import { processResponse } from '../../../utilities/utils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
@@ -359,21 +359,6 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 	const updatePaymentMethod = (newPaymentMethod: PaymentMethod) =>
 		setSelectedPaymentMethod(newPaymentMethod);
 
-	const obtainStripePublicApiKey = useCallback((): string => {
-		let stripePublicKey: string | undefined;
-		if (productDetail.subscription.card) {
-			stripePublicKey =
-				productDetail.subscription.card.stripePublicKeyForUpdate;
-		} else {
-			stripePublicKey = getStripeKey(
-				productDetail.billingCountry ||
-					productDetail.subscription.deliveryAddress?.country,
-				productDetail.isTestUser,
-			);
-		}
-		return stripePublicKey || '';
-	}, [productDetail]);
-
 	const isSundayTheObserverSubscription = (): boolean => {
 		if (
 			[
@@ -404,7 +389,8 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 	};
 
 	const getInputForm = (subscription: Subscription, isTestUser: boolean) => {
-		const stripePublicKey: string = obtainStripePublicApiKey();
+		const stripePublicKey: string =
+			getStripeKeyByProductDetail(productDetail);
 
 		switch (selectedPaymentMethod) {
 			case PaymentMethod.ResetRequired:
@@ -507,7 +493,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				case StripeCheckoutSessionPaymentMethodType.Card:
 					detail = new NewCardPaymentMethodDetail(
 						state?.paymentMethodInfo as StripeCardPaymentMethod,
-						obtainStripePublicApiKey(),
+						getStripeKeyByProductDetail(productDetail),
 					);
 					break;
 				default:
@@ -529,8 +515,8 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 	}, [
 		state?.paymentMethodInfo,
 		state?.paymentMethodType,
-		obtainStripePublicApiKey,
 		executePaymentUpdate,
+		productDetail,
 	]);
 
 	return (
