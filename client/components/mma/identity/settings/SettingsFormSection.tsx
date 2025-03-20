@@ -3,7 +3,7 @@ import { from, palette } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import type { FormikProps, FormikState } from 'formik';
 import { Form, withFormik } from 'formik';
-import type { FC } from 'react';
+import { type FC } from 'react';
 import {
 	FormEmailField,
 	FormSelectField,
@@ -20,6 +20,7 @@ import {
 	ErrorTypes,
 	PHONE_CALLING_CODES,
 	RegistrationLocations,
+	RegistrationLocationStatesByLocation,
 	Titles,
 } from '../models';
 import { PageSection } from '../PageSection';
@@ -48,6 +49,32 @@ const registrationLocationLabelModifier = (location: string) => {
 			return `I prefer not to say`;
 		default:
 			return location;
+	}
+};
+const registrationLocationStates = (
+	props: FormikProps<User> & SettingsFormProps,
+) => {
+	switch (props.values.registrationLocation) {
+		case 'Australia':
+			return [
+				...RegistrationLocationStatesByLocation['Australia'],
+				...RegistrationLocationStatesByLocation.general,
+			];
+		case 'United States':
+			return [
+				...RegistrationLocationStatesByLocation['United States'],
+				...RegistrationLocationStatesByLocation.general,
+			];
+		default:
+			return [];
+	}
+};
+const registrationLocationStateLabelModifier = (state: string) => {
+	switch (state) {
+		case 'Prefer not to say':
+			return `I prefer not to say`;
+		default:
+			return state;
 	}
 };
 
@@ -247,6 +274,19 @@ const BaseForm = (props: FormikProps<User> & SettingsFormProps) => {
 					firstOptionDisabled={true}
 					formikProps={props}
 				/>
+				{['Australia', 'United States'].includes(
+					props.values.registrationLocation,
+				) && (
+					<FormSelectField
+						name="registrationLocationState"
+						label="State/Territory"
+						labelModifier={registrationLocationStateLabelModifier}
+						options={registrationLocationStates(props)}
+						firstOptionLabel="Unknown"
+						firstOptionDisabled={true}
+						formikProps={props}
+					/>
+				)}
 			</PageSection>
 			{lines()}
 			<PageSection title="Delete account">
@@ -272,6 +312,16 @@ const FormikForm = withFormik({
 	handleSubmit: async (values, formikBag) => {
 		const { resetForm, setSubmitting, setStatus } = formikBag;
 		const { saveUser, onSuccess, onError, onDone } = formikBag.props;
+
+		// if registrationLocation is not Australia or United States, set registrationLocationState to blank
+		if (
+			!['Australia', 'United States'].includes(
+				values.registrationLocation,
+			)
+		) {
+			values.registrationLocationState = '';
+		}
+
 		setStatus(undefined);
 		try {
 			const response = await saveUser(values);
