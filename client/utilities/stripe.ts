@@ -48,7 +48,7 @@ export const useStripeSDK = (stripeKey: string) => {
 	return stripeObjects;
 };
 
-export const getStripeKeyByProductDetail = (
+export const getStripeKeyByProduct = (
 	productType: ProductType,
 	productDetail: ProductDetail,
 ): string => {

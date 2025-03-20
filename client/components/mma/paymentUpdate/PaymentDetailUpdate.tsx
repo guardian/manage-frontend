@@ -41,7 +41,7 @@ import {
 } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
 import { createProductDetailFetch } from '../../../utilities/productUtils';
-import { getStripeKeyByProductDetail } from '../../../utilities/stripe';
+import { getStripeKeyByProduct } from '../../../utilities/stripe';
 import { processResponse } from '../../../utilities/utils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
@@ -360,7 +360,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 		setSelectedPaymentMethod(newPaymentMethod);
 
 	const getInputForm = (subscription: Subscription, isTestUser: boolean) => {
-		const stripePublicKey: string = getStripeKeyByProductDetail(
+		const stripePublicKey: string = getStripeKeyByProduct(
 			props.productType,
 			productDetail,
 		);
@@ -469,10 +469,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				case StripeCheckoutSessionPaymentMethodType.Card:
 					detail = new NewCardPaymentMethodDetail(
 						state?.paymentMethodInfo as StripeCardPaymentMethod,
-						getStripeKeyByProductDetail(
-							props.productType,
-							productDetail,
-						),
+						getStripeKeyByProduct(props.productType, productDetail),
 					);
 					break;
 				default:

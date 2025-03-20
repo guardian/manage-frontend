@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/browser';
 import { useCallback, useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getStripeKeyByProductDetail } from '@/client/utilities/stripe';
+import { getStripeKeyByProduct } from '@/client/utilities/stripe';
 import type { ProductType, WithProductType } from '@/shared/productTypes';
 import { STRIPE_PUBLIC_KEY_HEADER } from '@/shared/stripeSetupIntent';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
@@ -47,7 +47,7 @@ export const PaymentDetailUpdateCheckoutSessionReturn = (
 					credentials: 'include',
 					headers: {
 						[STRIPE_PUBLIC_KEY_HEADER]:
-							getStripeKeyByProductDetail(
+							getStripeKeyByProduct(
 								props.productType,
 								productDetail,
 							) ?? '',
