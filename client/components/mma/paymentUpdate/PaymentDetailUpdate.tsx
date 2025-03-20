@@ -19,6 +19,7 @@ import type { PaymentMethod as StripeCheckoutSessionPaymentMethod } from '@strip
 import type * as React from 'react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { isSundayTheObserverSubscription } from '@/client/utilities/sundayTheObserverSubscription';
 import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
@@ -35,7 +36,6 @@ import {
 	isProduct,
 } from '../../../../shared/productResponse';
 import {
-	PRODUCT_TYPES,
 	type ProductType,
 	type WithProductType,
 } from '../../../../shared/productTypes';
@@ -359,35 +359,6 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 	const updatePaymentMethod = (newPaymentMethod: PaymentMethod) =>
 		setSelectedPaymentMethod(newPaymentMethod);
 
-	const isSundayTheObserverSubscription = (): boolean => {
-		if (
-			[
-				PRODUCT_TYPES.homedelivery.urlPart,
-				PRODUCT_TYPES.digitalvoucher.urlPart,
-			].includes(props.productType.urlPart)
-		) {
-			// Get plans
-			const subscriptionPlans = (() => {
-				if (productDetail.subscription.currentPlans.length > 0) {
-					return productDetail.subscription.currentPlans;
-				} else if (productDetail.subscription.futurePlans.length > 0) {
-					return productDetail.subscription.futurePlans;
-				}
-				return [];
-			})();
-
-			// Look for Sunday plans only
-			if (
-				subscriptionPlans.length === 1 &&
-				subscriptionPlans[0].daysOfWeek?.length === 1 &&
-				subscriptionPlans[0].daysOfWeek[0] === 'Sunday'
-			) {
-				return true;
-			}
-		}
-		return false;
-	};
-
 	const getInputForm = (subscription: Subscription, isTestUser: boolean) => {
 		const stripePublicKey: string =
 			getStripeKeyByProductDetail(productDetail);
@@ -412,7 +383,10 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 			case PaymentMethod.Card:
 				return stripePublicKey ? (
 					<>
-						{isSundayTheObserverSubscription() ? (
+						{isSundayTheObserverSubscription(
+							props.productType,
+							productDetail,
+						) ? (
 							<StripeCheckoutSessionButton
 								stripeApiKey={stripePublicKey}
 								productTypeUrlPart={props.productType.urlPart}
