@@ -1,7 +1,7 @@
 import {
-	sundayTheObserverHomeDeliveryProduct,
-	sundayTheObserverSubscriptionCardProduct,
-} from '@/client/fixtures/productDetail';
+	baseDigitalVoucher,
+	baseHomeDeliverySunday,
+} from '@/client/fixtures/productBuilder/baseProducts';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
 	guardianWeeklySubscriptionAustralia,
@@ -48,10 +48,12 @@ test('Uses Australian Stripe key for Australian delivery address', () => {
 });
 
 test('Uses Tortoise Media Stripe key for Sunday The Observer Home Delivery subscription', () => {
+	const productDetail = baseHomeDeliverySunday();
+
 	const stripePublicKeyDefaultUser = getStripeKeyByProduct(
 		PRODUCT_TYPES.homedelivery,
 		{
-			...sundayTheObserverHomeDeliveryProduct,
+			...productDetail,
 			isTestUser: false,
 		},
 	);
@@ -62,7 +64,7 @@ test('Uses Tortoise Media Stripe key for Sunday The Observer Home Delivery subsc
 	const stripePublicKeyTestUser = getStripeKeyByProduct(
 		PRODUCT_TYPES.homedelivery,
 		{
-			...sundayTheObserverHomeDeliveryProduct,
+			...productDetail,
 			isTestUser: true,
 		},
 	);
@@ -72,10 +74,12 @@ test('Uses Tortoise Media Stripe key for Sunday The Observer Home Delivery subsc
 });
 
 test('Uses Tortoise Media Stripe key for Sunday The Observer Subscription Card (Test user)', () => {
+	const productDetail = baseDigitalVoucher();
+
 	const stripePublicKeyDefaultUser = getStripeKeyByProduct(
 		PRODUCT_TYPES.digitalvoucher,
 		{
-			...sundayTheObserverSubscriptionCardProduct,
+			...productDetail,
 			isTestUser: false,
 		},
 	);
@@ -86,7 +90,7 @@ test('Uses Tortoise Media Stripe key for Sunday The Observer Subscription Card (
 	const stripePublicKeyTestUser = getStripeKeyByProduct(
 		PRODUCT_TYPES.digitalvoucher,
 		{
-			...sundayTheObserverSubscriptionCardProduct,
+			...productDetail,
 			isTestUser: true,
 		},
 	);

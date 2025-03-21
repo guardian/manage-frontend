@@ -9,6 +9,7 @@ import {
 	digitalPackPaidByDirectDebit,
 	guardianAdLite,
 	guardianWeeklyPaidByCard,
+	homeDeliverySunday,
 } from '../../../../client/fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
 import { paymentMethods } from '../../../../client/fixtures/stripe';
@@ -98,6 +99,46 @@ describe('Update payment details', () => {
 		cy.get('@createSetupIntent.all').should('have.length', 1);
 		cy.get('@confirmCardSetup.all').should('have.length', 1);
 		cy.get('@scala_backend.all').should('have.length', 1);
+	});
+
+	it('Complete card payment update through Stripe Checkout', () => {
+		cy.intercept('GET', '/api/me/mma*', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(homeDeliverySunday()),
+		}).as('product_detail');
+
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
+		cy.intercept('GET', 'api/invoices', {
+			statusCode: 200,
+			body: { invoices: [] },
+		}).as('invoices');
+
+		cy.visit('/billing');
+		cy.wait('@product_detail');
+		cy.wait('@mobile_subscriptions');
+		cy.wait('@invoices');
+
+		// Billing page "Update payment method" button click
+		cy.findByText('Update payment method').click();
+
+		const targetUrl = `https://test-${new Date().getTime()}.thegulocal.com`;
+		cy.intercept('POST', 'api/payment/checkout-session', {
+			statusCode: 200,
+			body: { id: '0', url: targetUrl },
+		}).as('checkout_session');
+
+		// Manage payment method page "Update payment method" button click
+		cy.findByText('Update payment method').click();
+
+		// Wait for checkout session creation
+		cy.wait('@checkout_session');
+
+		// Evaluate if the session was redirected to the correct URL
+		cy.url().should('include', targetUrl);
 	});
 
 	it('Completes card payment update with app redirect from account overview', () => {

@@ -110,7 +110,7 @@ export const StripeCheckoutSessionButton = (
 				margin-bottom: 36px;
 			`}
 		>
-			Update Payment Method
+			Update payment method
 		</Button>
 	);
 };
