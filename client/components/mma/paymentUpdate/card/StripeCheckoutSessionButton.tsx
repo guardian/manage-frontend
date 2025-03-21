@@ -1,5 +1,8 @@
 import { css } from '@emotion/react';
-import { Button, SvgExternal } from '@guardian/source/react-components';
+import {
+	Button,
+	SvgArrowRightStraight,
+} from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
 import type { PaymentMethod } from '@stripe/stripe-js';
 import { useState } from 'react';
@@ -98,7 +101,7 @@ export const StripeCheckoutSessionButton = (
 						`}
 					/>
 				) : (
-					<SvgExternal />
+					<SvgArrowRightStraight />
 				)
 			}
 			iconSide="right"
@@ -107,7 +110,7 @@ export const StripeCheckoutSessionButton = (
 				margin-bottom: 36px;
 			`}
 		>
-			UpdatePaymentMethod_StripeCheckoutButton
+			Update Payment Method
 		</Button>
 	);
 };
