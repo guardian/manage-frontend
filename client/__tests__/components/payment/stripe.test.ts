@@ -1,5 +1,5 @@
 import {
-	baseDigitalVoucher,
+	baseDigitalVoucherSunday,
 	baseHomeDeliverySunday,
 } from '@/client/fixtures/productBuilder/baseProducts';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
@@ -74,7 +74,7 @@ test('Uses Tortoise Media Stripe key for Sunday The Observer Home Delivery subsc
 });
 
 test('Uses Tortoise Media Stripe key for Sunday The Observer Subscription Card (Test user)', () => {
-	const productDetail = baseDigitalVoucher();
+	const productDetail = baseDigitalVoucherSunday();
 
 	const stripePublicKeyDefaultUser = getStripeKeyByProduct(
 		PRODUCT_TYPES.digitalvoucher,
