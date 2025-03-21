@@ -1,8 +1,13 @@
 import {
+	baseDigitalVoucherSunday,
+	baseHomeDeliverySunday,
+} from '@/client/fixtures/productBuilder/baseProducts';
+import { PRODUCT_TYPES } from '@/shared/productTypes';
+import {
 	guardianWeeklySubscriptionAustralia,
 	guardianWeeklySubscriptionCard,
 } from '../../../fixtures/subscription';
-import { getStripeKey } from '../../../utilities/stripe';
+import { getStripeKey, getStripeKeyByProduct } from '../../../utilities/stripe';
 
 // @ts-expect-error
 window.guardian = {
@@ -13,6 +18,10 @@ window.guardian = {
 	stripeKeyDefaultCurrencies: {
 		test: 'testKeyDefaultCurrencies',
 		default: 'defaultKeyDefaultCurrencies',
+	},
+	stripeKeyTortoiseMedia: {
+		test: 'testKeyTortoiseMedia',
+		default: 'defaultKeyTortoiseMedia',
 	},
 };
 
@@ -35,5 +44,57 @@ test('Uses Australian Stripe key for Australian delivery address', () => {
 
 	expect(stripePublicKey).toEqual(
 		window.guardian.stripeKeyAustralia?.default,
+	);
+});
+
+test('Uses Tortoise Media Stripe key for Sunday The Observer Home Delivery subscription', () => {
+	const productDetail = baseHomeDeliverySunday();
+
+	const stripePublicKeyDefaultUser = getStripeKeyByProduct(
+		PRODUCT_TYPES.homedelivery,
+		{
+			...productDetail,
+			isTestUser: false,
+		},
+	);
+	expect(stripePublicKeyDefaultUser).toEqual(
+		window.guardian.stripeKeyTortoiseMedia?.default,
+	);
+
+	const stripePublicKeyTestUser = getStripeKeyByProduct(
+		PRODUCT_TYPES.homedelivery,
+		{
+			...productDetail,
+			isTestUser: true,
+		},
+	);
+	expect(stripePublicKeyTestUser).toEqual(
+		window.guardian.stripeKeyTortoiseMedia?.test,
+	);
+});
+
+test('Uses Tortoise Media Stripe key for Sunday The Observer Subscription Card (Test user)', () => {
+	const productDetail = baseDigitalVoucherSunday();
+
+	const stripePublicKeyDefaultUser = getStripeKeyByProduct(
+		PRODUCT_TYPES.digitalvoucher,
+		{
+			...productDetail,
+			isTestUser: false,
+		},
+	);
+	expect(stripePublicKeyDefaultUser).toEqual(
+		window.guardian.stripeKeyTortoiseMedia?.default,
+	);
+
+	const stripePublicKeyTestUser = getStripeKeyByProduct(
+		PRODUCT_TYPES.digitalvoucher,
+		{
+			...productDetail,
+			isTestUser: true,
+		},
+	);
+	expect(stripePublicKeyTestUser).toEqual(
+		window.guardian.stripeKeyTortoiseMedia?.test,
 	);
 });

@@ -26,6 +26,7 @@ export interface Globals extends CommonGlobals {
 	recaptchaPublicKey?: string;
 	stripeKeyAustralia?: StripePublicKeySet;
 	stripeKeyDefaultCurrencies?: StripePublicKeySet;
+	stripeKeyTortoiseMedia?: StripePublicKeySet;
 }
 interface QuantumMetricAPIPartial {
 	sendEvent: (
