@@ -17,6 +17,7 @@ import {
 	membersDataApiHandler,
 	proxyApiHandler,
 	straightThroughBodyHandler,
+	userBenefitsApiHandler,
 } from '../apiProxy';
 import { s3FilePromise } from '../awsIntegration';
 import { conf } from '../config';
@@ -358,5 +359,10 @@ router.post('/csp-audit-report-endpoint', (req, res) => {
 	log.warn(JSON.stringify(parsedBody));
 	res.status(204).end();
 });
+
+router.get(
+	'/benefits/me',
+	userBenefitsApiHandler('benefits/me', 'USER_BENEFITS'),
+);
 
 export { router };

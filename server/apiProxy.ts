@@ -200,3 +200,6 @@ export const customMembersDataApiHandler = proxyApiHandler(
 export const membersDataApiHandler = customMembersDataApiHandler(
 	straightThroughBodyHandler,
 );
+export const userBenefitsApiHandler = proxyApiHandler(
+	'user-benefits.' + conf.API_DOMAIN,
+)(straightThroughBodyHandler);
