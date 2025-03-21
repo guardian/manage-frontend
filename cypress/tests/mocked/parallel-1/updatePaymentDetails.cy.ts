@@ -125,7 +125,7 @@ describe('Update payment details', () => {
 		// Billing page "Update payment method" button click
 		cy.findByText('Update payment method').click();
 
-		const targetUrl = `https://google.com`;
+		const targetUrl = `https://www.google.com`;
 		cy.intercept('POST', 'api/payment/checkout-session', {
 			statusCode: 200,
 			body: { id: '0', url: targetUrl },
