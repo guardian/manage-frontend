@@ -25,6 +25,7 @@ type UserPrivateFields = Partial<
 		| 'postcode'
 		| 'country'
 		| 'registrationLocation'
+		| 'registrationLocationState'
 	>
 > & {
 	telephoneNumber?: {
@@ -39,6 +40,10 @@ const userErrorMessageMap = new Map([
 	[
 		'user.privateFields.registrationLocation',
 		'Please select a location from the list or "I prefer not to say"',
+	],
+	[
+		'user.privateFields.registrationLocationState',
+		'Please select a state/territory from the list or "I prefer not to say"',
 	],
 ]);
 
@@ -111,6 +116,7 @@ const toUserApiRequest = (user: Partial<User>): UserAPIRequest => {
 			country: user.country,
 			telephoneNumber,
 			registrationLocation: user.registrationLocation,
+			registrationLocationState: user.registrationLocationState,
 		},
 		primaryEmailAddress: user.primaryEmailAddress,
 	};
@@ -136,6 +142,9 @@ export const toUser = (response: UserAPIResponse): User => {
 		countryCode: getFromUser('privateFields.telephoneNumber.countryCode'),
 		localNumber: getFromUser('privateFields.telephoneNumber.localNumber'),
 		registrationLocation: getFromUser('privateFields.registrationLocation'),
+		registrationLocationState: getFromUser(
+			'privateFields.registrationLocationState',
+		),
 		consents,
 		// We don't always receive a full user response from IDAPI, so we shouldn't
 		// assume that the statusFields object is always present.
