@@ -77,7 +77,13 @@ const HelpCentreRouter = () => {
 	]
 	*/
 
-	const knownIssues: KnownIssueObj[] = [];
+	const knownIssues: KnownIssueObj[] = [
+		{
+			date: '25th Mar 2025 10:30 am',
+			message:
+				'We are experiencing an issue with our Telephone lines and are currently unable to answer your call.  You can continue to contact us via Email or Live Chat.  Thank you for your patience while we investigate the issue.',
+		},
+	];
 
 	return (
 		<Main signInStatus={signInStatus} isHelpCentrePage>
