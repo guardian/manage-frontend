@@ -73,7 +73,7 @@ test('Uses Tortoise Media Stripe keys for Observer (Sunday) Home Delivery subscr
 	);
 });
 
-test('Uses Tortoise Media Stripe key for Sunday The Observer Subscription Card (Test user)', () => {
+test('Uses Tortoise Media Stripe keys for Observer (Sunday) Subscription Card', () => {
 	const productDetail = baseDigitalVoucherSunday();
 
 	const stripePublicKeyDefaultUser = getStripeKeyByProduct(
