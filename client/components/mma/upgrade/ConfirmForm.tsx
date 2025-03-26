@@ -28,7 +28,7 @@ import type {
 	PaidSubscriptionPlan,
 	Subscription,
 } from '../../../../shared/productResponse';
-import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
+import type { SwitchPreviewResponse } from '../../../../shared/productSwitchTypes';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
@@ -246,7 +246,7 @@ interface ConfirmFormProps {
 	setChosenAmount: Dispatch<SetStateAction<number | null>>;
 	threshold: number;
 	suggestedAmounts: number[];
-	previewResponse: PreviewResponse | null;
+	previewResponse: SwitchPreviewResponse | null;
 	previewLoadingState: LoadingState;
 }
 

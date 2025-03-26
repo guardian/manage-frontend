@@ -1,0 +1,1357 @@
+{
+  "v": 5,
+  "entries": {
+    "pages-helpcentre--default": {
+      "type": "story",
+      "id": "pages-helpcentre--default",
+      "name": "Default",
+      "title": "Pages/HelpCentre",
+      "importPath": "./client/components/helpCentre/HelpCentre.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-helpcentre--with-known-issue": {
+      "type": "story",
+      "id": "pages-helpcentre--with-known-issue",
+      "name": "With Known Issue",
+      "title": "Pages/HelpCentre",
+      "importPath": "./client/components/helpCentre/HelpCentre.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-helpcentrearticle--default": {
+      "type": "story",
+      "id": "pages-helpcentrearticle--default",
+      "name": "Default",
+      "title": "Pages/HelpCentreArticle",
+      "importPath": "./client/components/helpCentre/HelpCentreArticle.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-help-centre-help-centre-phone-numbers--default": {
+      "type": "story",
+      "id": "components-help-centre-help-centre-phone-numbers--default",
+      "name": "Default",
+      "title": "Components/Help Centre/Help Centre Phone Numbers",
+      "importPath": "./client/components/helpCentre/HelpCentrePhoneNumbers.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-help-centre-help-centre-phone-numbers--compact-layout": {
+      "type": "story",
+      "id": "components-help-centre-help-centre-phone-numbers--compact-layout",
+      "name": "Compact Layout",
+      "title": "Components/Help Centre/Help Centre Phone Numbers",
+      "importPath": "./client/components/helpCentre/HelpCentrePhoneNumbers.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-helpcentretopic--default": {
+      "type": "story",
+      "id": "pages-helpcentretopic--default",
+      "name": "Default",
+      "title": "Pages/HelpCentreTopic",
+      "importPath": "./client/components/helpCentre/HelpCentreTopic.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-contactus--default": {
+      "type": "story",
+      "id": "pages-contactus--default",
+      "name": "Default",
+      "title": "Pages/ContactUs",
+      "importPath": "./client/components/helpCentre/contactUs/ContactUs.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-contactus--with-known-issue": {
+      "type": "story",
+      "id": "pages-contactus--with-known-issue",
+      "name": "With Known Issue",
+      "title": "Pages/ContactUs",
+      "importPath": "./client/components/helpCentre/contactUs/ContactUs.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-contactus--topic-selected": {
+      "type": "story",
+      "id": "pages-contactus--topic-selected",
+      "name": "Topic Selected",
+      "title": "Pages/ContactUs",
+      "importPath": "./client/components/helpCentre/contactUs/ContactUs.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-accountoverview--no-subscription": {
+      "type": "story",
+      "id": "pages-accountoverview--no-subscription",
+      "name": "No Subscription",
+      "title": "Pages/AccountOverview",
+      "importPath": "./client/components/mma/accountoverview/AccountOverview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-accountoverview--with-subscriptions": {
+      "type": "story",
+      "id": "pages-accountoverview--with-subscriptions",
+      "name": "With Subscriptions",
+      "title": "Pages/AccountOverview",
+      "importPath": "./client/components/mma/accountoverview/AccountOverview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-accountoverview--with-usa-subscription": {
+      "type": "story",
+      "id": "pages-accountoverview--with-usa-subscription",
+      "name": "With USA Subscription",
+      "title": "Pages/AccountOverview",
+      "importPath": "./client/components/mma/accountoverview/AccountOverview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-accountoverview--with-contribution-and-switch-possible": {
+      "type": "story",
+      "id": "pages-accountoverview--with-contribution-and-switch-possible",
+      "name": "With Contribution And Switch Possible",
+      "title": "Pages/AccountOverview",
+      "importPath": "./client/components/mma/accountoverview/AccountOverview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-accountoverview--with-contribution-in-payment-failure": {
+      "type": "story",
+      "id": "pages-accountoverview--with-contribution-in-payment-failure",
+      "name": "With Contribution In Payment Failure",
+      "title": "Pages/AccountOverview",
+      "importPath": "./client/components/mma/accountoverview/AccountOverview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-accountoverview--with-contribution-and-switch-not-possible": {
+      "type": "story",
+      "id": "pages-accountoverview--with-contribution-and-switch-not-possible",
+      "name": "With Contribution And Switch Not Possible",
+      "title": "Pages/AccountOverview",
+      "importPath": "./client/components/mma/accountoverview/AccountOverview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-accountoverview--with-cancelled-subscriptions": {
+      "type": "story",
+      "id": "pages-accountoverview--with-cancelled-subscriptions",
+      "name": "With Cancelled Subscriptions",
+      "title": "Pages/AccountOverview",
+      "importPath": "./client/components/mma/accountoverview/AccountOverview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-accountoverview--with-gift-subscriptions": {
+      "type": "story",
+      "id": "pages-accountoverview--with-gift-subscriptions",
+      "name": "With Gift Subscriptions",
+      "title": "Pages/AccountOverview",
+      "importPath": "./client/components/mma/accountoverview/AccountOverview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-accountoverview--with-app-subscriptions": {
+      "type": "story",
+      "id": "pages-accountoverview--with-app-subscriptions",
+      "name": "With App Subscriptions",
+      "title": "Pages/AccountOverview",
+      "importPath": "./client/components/mma/accountoverview/AccountOverview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-accountoverview--with-single-contribution": {
+      "type": "story",
+      "id": "pages-accountoverview--with-single-contribution",
+      "name": "With Single Contribution",
+      "title": "Pages/AccountOverview",
+      "importPath": "./client/components/mma/accountoverview/AccountOverview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-accountoverview--with-supporter-plus-during-offer": {
+      "type": "story",
+      "id": "pages-accountoverview--with-supporter-plus-during-offer",
+      "name": "With Supporter Plus During Offer",
+      "title": "Pages/AccountOverview",
+      "importPath": "./client/components/mma/accountoverview/AccountOverview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-accountoverview--with-guardian-ad-lite": {
+      "type": "story",
+      "id": "pages-accountoverview--with-guardian-ad-lite",
+      "name": "With Guardian Ad Lite",
+      "title": "Pages/AccountOverview",
+      "importPath": "./client/components/mma/accountoverview/AccountOverview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-manageproduct--guardian-weekly": {
+      "type": "story",
+      "id": "pages-manageproduct--guardian-weekly",
+      "name": "Guardian Weekly",
+      "title": "Pages/ManageProduct",
+      "importPath": "./client/components/mma/accountoverview/ManageProduct.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-manageproduct--tier-three": {
+      "type": "story",
+      "id": "pages-manageproduct--tier-three",
+      "name": "Tier Three",
+      "title": "Pages/ManageProduct",
+      "importPath": "./client/components/mma/accountoverview/ManageProduct.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-manageproduct--digital-subscription": {
+      "type": "story",
+      "id": "pages-manageproduct--digital-subscription",
+      "name": "Digital Subscription",
+      "title": "Pages/ManageProduct",
+      "importPath": "./client/components/mma/accountoverview/ManageProduct.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-manageproduct--newspaper-subscription-card": {
+      "type": "story",
+      "id": "pages-manageproduct--newspaper-subscription-card",
+      "name": "Newspaper Subscription Card",
+      "title": "Pages/ManageProduct",
+      "importPath": "./client/components/mma/accountoverview/ManageProduct.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-manageproduct--contribution": {
+      "type": "story",
+      "id": "pages-manageproduct--contribution",
+      "name": "Contribution",
+      "title": "Pages/ManageProduct",
+      "importPath": "./client/components/mma/accountoverview/ManageProduct.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-manageproduct--supporter-plus": {
+      "type": "story",
+      "id": "pages-manageproduct--supporter-plus",
+      "name": "Supporter Plus",
+      "title": "Pages/ManageProduct",
+      "importPath": "./client/components/mma/accountoverview/ManageProduct.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-manageproduct--supporter-plus-all-access-digital": {
+      "type": "story",
+      "id": "pages-manageproduct--supporter-plus-all-access-digital",
+      "name": "Supporter Plus All Access Digital",
+      "title": "Pages/ManageProduct",
+      "importPath": "./client/components/mma/accountoverview/ManageProduct.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-manageproduct--guardian-ad-lite": {
+      "type": "story",
+      "id": "pages-manageproduct--guardian-ad-lite",
+      "name": "Guardian Ad Lite",
+      "title": "Pages/ManageProduct",
+      "importPath": "./client/components/mma/accountoverview/ManageProduct.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-manageproduct--newspaper-delivery-sunday": {
+      "type": "story",
+      "id": "pages-manageproduct--newspaper-delivery-sunday",
+      "name": "Newspaper Delivery Sunday",
+      "title": "Pages/ManageProduct",
+      "importPath": "./client/components/mma/accountoverview/ManageProduct.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-manageproductv2--digital-subscription": {
+      "type": "story",
+      "id": "pages-manageproductv2--digital-subscription",
+      "name": "Digital Subscription",
+      "title": "Pages/ManageProductV2",
+      "importPath": "./client/components/mma/accountoverview/manageProducts/ManageProductV2.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-billing--no-subscription": {
+      "type": "story",
+      "id": "pages-billing--no-subscription",
+      "name": "No Subscription",
+      "title": "Pages/Billing",
+      "importPath": "./client/components/mma/billing/Billing.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-billing--with-subscriptions": {
+      "type": "story",
+      "id": "pages-billing--with-subscriptions",
+      "name": "With Subscriptions",
+      "title": "Pages/Billing",
+      "importPath": "./client/components/mma/billing/Billing.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--select-reason": {
+      "type": "story",
+      "id": "pages-cancellation--select-reason",
+      "name": "Select Reason",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--contact-customer-service": {
+      "type": "story",
+      "id": "pages-cancellation--contact-customer-service",
+      "name": "Contact Customer Service",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--review": {
+      "type": "story",
+      "id": "pages-cancellation--review",
+      "name": "Review",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--review-with-reduce-amount": {
+      "type": "story",
+      "id": "pages-cancellation--review-with-reduce-amount",
+      "name": "Review With Reduce Amount",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--review-guardian-ad-lite-in-trial-period": {
+      "type": "story",
+      "id": "pages-cancellation--review-guardian-ad-lite-in-trial-period",
+      "name": "Review Guardian Ad Lite In Trial Period",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--review-guardian-ad-lite": {
+      "type": "story",
+      "id": "pages-cancellation--review-guardian-ad-lite",
+      "name": "Review Guardian Ad Lite",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--confirmation-guardian-ad-lite": {
+      "type": "story",
+      "id": "pages-cancellation--confirmation-guardian-ad-lite",
+      "name": "Confirmation Guardian Ad Lite",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--offer-monthly": {
+      "type": "story",
+      "id": "pages-cancellation--offer-monthly",
+      "name": "Offer Monthly",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--offer-yearly": {
+      "type": "story",
+      "id": "pages-cancellation--offer-yearly",
+      "name": "Offer Yearly",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--switch-yearly": {
+      "type": "story",
+      "id": "pages-cancellation--switch-yearly",
+      "name": "Switch Yearly",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--offer-review-monthly": {
+      "type": "story",
+      "id": "pages-cancellation--offer-review-monthly",
+      "name": "Offer Review Monthly",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--offer-review-yearly": {
+      "type": "story",
+      "id": "pages-cancellation--offer-review-yearly",
+      "name": "Offer Review Yearly",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--switch-review-yearly": {
+      "type": "story",
+      "id": "pages-cancellation--switch-review-yearly",
+      "name": "Switch Review Yearly",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--offer-confirmed-monthly": {
+      "type": "story",
+      "id": "pages-cancellation--offer-confirmed-monthly",
+      "name": "Offer Confirmed Monthly",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--offer-confirmed-yearly": {
+      "type": "story",
+      "id": "pages-cancellation--offer-confirmed-yearly",
+      "name": "Offer Confirmed Yearly",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--pause": {
+      "type": "story",
+      "id": "pages-cancellation--pause",
+      "name": "Pause",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--pause-review": {
+      "type": "story",
+      "id": "pages-cancellation--pause-review",
+      "name": "Pause Review",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--pause-confirmed": {
+      "type": "story",
+      "id": "pages-cancellation--pause-confirmed",
+      "name": "Pause Confirmed",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--supportplus-cancel-confirm": {
+      "type": "story",
+      "id": "pages-cancellation--supportplus-cancel-confirm",
+      "name": "Supportplus Cancel Confirm",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--switch-yearly-confirmed": {
+      "type": "story",
+      "id": "pages-cancellation--switch-yearly-confirmed",
+      "name": "Switch Yearly Confirmed",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--confirmation-contribution": {
+      "type": "story",
+      "id": "pages-cancellation--confirmation-contribution",
+      "name": "Confirmation Contribution",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--confirmation-contribution-with-pause": {
+      "type": "story",
+      "id": "pages-cancellation--confirmation-contribution-with-pause",
+      "name": "Confirmation Contribution With Pause",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellation--confirmation-supporter-plus-with-offer": {
+      "type": "story",
+      "id": "pages-cancellation--confirmation-supporter-plus-with-offer",
+      "name": "Confirmation Supporter Plus With Offer",
+      "title": "Pages/Cancellation",
+      "importPath": "./client/components/mma/cancel/Cancellation.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellationlanding--membership": {
+      "type": "story",
+      "id": "pages-cancellationlanding--membership",
+      "name": "Membership",
+      "title": "Pages/CancellationLanding",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/CancellationLanding.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancellationlanding--digi-pack": {
+      "type": "story",
+      "id": "pages-cancellationlanding--digi-pack",
+      "name": "Digi Pack",
+      "title": "Pages/CancellationLanding",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/CancellationLanding.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-digisubsaves--discount-confirmed": {
+      "type": "story",
+      "id": "pages-digisubsaves--discount-confirmed",
+      "name": "Discount Confirmed",
+      "title": "Pages/DigiSubSaves",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/digipack/DigiSubSaves.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-digisubsaves--eligible-for-discount": {
+      "type": "story",
+      "id": "pages-digisubsaves--eligible-for-discount",
+      "name": "Eligible For Discount",
+      "title": "Pages/DigiSubSaves",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/digipack/DigiSubSaves.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-digisubsaves--ineligible-for-discount": {
+      "type": "story",
+      "id": "pages-digisubsaves--ineligible-for-discount",
+      "name": "Ineligible For Discount",
+      "title": "Pages/DigiSubSaves",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/digipack/DigiSubSaves.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-digisubsaves--confirm-cancellation": {
+      "type": "story",
+      "id": "pages-digisubsaves--confirm-cancellation",
+      "name": "Confirm Cancellation",
+      "title": "Pages/DigiSubSaves",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/digipack/DigiSubSaves.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-digisubsaves--digi-sub-cancellation-reason": {
+      "type": "story",
+      "id": "pages-digisubsaves--digi-sub-cancellation-reason",
+      "name": "Digi Sub Cancellation Reason",
+      "title": "Pages/DigiSubSaves",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/digipack/DigiSubSaves.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-membershipsave--value-of-support-page": {
+      "type": "story",
+      "id": "pages-membershipsave--value-of-support-page",
+      "name": "Value Of Support Page",
+      "title": "Pages/MembershipSave",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/membership/MembershipSaves.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-membershipsave--switch-review": {
+      "type": "story",
+      "id": "pages-membershipsave--switch-review",
+      "name": "Switch Review",
+      "title": "Pages/MembershipSave",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/membership/MembershipSaves.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-membershipsave--switch-options": {
+      "type": "story",
+      "id": "pages-membershipsave--switch-options",
+      "name": "Switch Options",
+      "title": "Pages/MembershipSave",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/membership/MembershipSaves.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-membershipsave--reasons": {
+      "type": "story",
+      "id": "pages-membershipsave--reasons",
+      "name": "Reasons",
+      "title": "Pages/MembershipSave",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/membership/MembershipSaves.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-membershipsave--continue-membership": {
+      "type": "story",
+      "id": "pages-membershipsave--continue-membership",
+      "name": "Continue Membership",
+      "title": "Pages/MembershipSave",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/membership/MembershipSaves.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-membershipsave--confirm-cancellation": {
+      "type": "story",
+      "id": "pages-membershipsave--confirm-cancellation",
+      "name": "Confirm Cancellation",
+      "title": "Pages/MembershipSave",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/membership/MembershipSaves.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-membershipsave--switch-complete-thank-you": {
+      "type": "story",
+      "id": "pages-membershipsave--switch-complete-thank-you",
+      "name": "Switch Complete Thank You",
+      "title": "Pages/MembershipSave",
+      "importPath": "./client/components/mma/cancel/cancellationSaves/membership/MembershipSaves.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancelreminders--error": {
+      "type": "story",
+      "id": "pages-cancelreminders--error",
+      "name": "Error",
+      "title": "Pages/CancelReminders",
+      "importPath": "./client/components/mma/cancelReminders/CancelReminders.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-cancelreminders--success": {
+      "type": "story",
+      "id": "pages-cancelreminders--success",
+      "name": "Success",
+      "title": "Pages/CancelReminders",
+      "importPath": "./client/components/mma/cancelReminders/CancelReminders.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-dataprivacy--default": {
+      "type": "story",
+      "id": "pages-dataprivacy--default",
+      "name": "Default",
+      "title": "Pages/DataPrivacy",
+      "importPath": "./client/components/mma/dataPrivacy/DataPrivacy.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-deliveryaddress--update-delivery-address": {
+      "type": "story",
+      "id": "pages-deliveryaddress--update-delivery-address",
+      "name": "Update Delivery Address",
+      "title": "Pages/DeliveryAddress",
+      "importPath": "./client/components/mma/delivery/address/DeliveryAddress.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-deliveryaddress--review": {
+      "type": "story",
+      "id": "pages-deliveryaddress--review",
+      "name": "Review",
+      "title": "Pages/DeliveryAddress",
+      "importPath": "./client/components/mma/delivery/address/DeliveryAddress.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-deliveryaddress--confirmation": {
+      "type": "story",
+      "id": "pages-deliveryaddress--confirmation",
+      "name": "Confirmation",
+      "title": "Pages/DeliveryAddress",
+      "importPath": "./client/components/mma/delivery/address/DeliveryAddress.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-deliveryhistory--delivery-history": {
+      "type": "story",
+      "id": "pages-deliveryhistory--delivery-history",
+      "name": "Delivery History",
+      "title": "Pages/DeliveryHistory",
+      "importPath": "./client/components/mma/delivery/records/DeliveryRecords.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-deliveryhistory--review": {
+      "type": "story",
+      "id": "pages-deliveryhistory--review",
+      "name": "Review",
+      "title": "Pages/DeliveryHistory",
+      "importPath": "./client/components/mma/delivery/records/DeliveryRecords.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-deliveryhistory--confirmation": {
+      "type": "story",
+      "id": "pages-deliveryhistory--confirmation",
+      "name": "Confirmation",
+      "title": "Pages/DeliveryHistory",
+      "importPath": "./client/components/mma/delivery/records/DeliveryRecords.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-help--default": {
+      "type": "story",
+      "id": "pages-help--default",
+      "name": "Default",
+      "title": "Pages/Help",
+      "importPath": "./client/components/mma/help/Help.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-holidaystops--manage-guardian-weekly": {
+      "type": "story",
+      "id": "pages-holidaystops--manage-guardian-weekly",
+      "name": "Manage Guardian Weekly",
+      "title": "Pages/HolidayStops",
+      "importPath": "./client/components/mma/holiday/Holiday.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-holidaystops--create-guardian-weekly": {
+      "type": "story",
+      "id": "pages-holidaystops--create-guardian-weekly",
+      "name": "Create Guardian Weekly",
+      "title": "Pages/HolidayStops",
+      "importPath": "./client/components/mma/holiday/Holiday.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-holidaystops--manage-tier-three": {
+      "type": "story",
+      "id": "pages-holidaystops--manage-tier-three",
+      "name": "Manage Tier Three",
+      "title": "Pages/HolidayStops",
+      "importPath": "./client/components/mma/holiday/HolidayT3.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-holidaystops--create-tier-three": {
+      "type": "story",
+      "id": "pages-holidaystops--create-tier-three",
+      "name": "Create Tier Three",
+      "title": "Pages/HolidayStops",
+      "importPath": "./client/components/mma/holiday/HolidayT3.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-emailandmarketing--default": {
+      "type": "story",
+      "id": "pages-emailandmarketing--default",
+      "name": "Default",
+      "title": "Pages/EmailAndMarketing",
+      "importPath": "./client/components/mma/identity/emailAndMarketing/EmailAndMarketing.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-emailandmarketing--with-no-products": {
+      "type": "story",
+      "id": "pages-emailandmarketing--with-no-products",
+      "name": "With No Products",
+      "title": "Pages/EmailAndMarketing",
+      "importPath": "./client/components/mma/identity/emailAndMarketing/EmailAndMarketing.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-emailandmarketing--with-iap": {
+      "type": "story",
+      "id": "pages-emailandmarketing--with-iap",
+      "name": "With IAP",
+      "title": "Pages/EmailAndMarketing",
+      "importPath": "./client/components/mma/identity/emailAndMarketing/EmailAndMarketing.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-emailandmarketing--with-single-contribution": {
+      "type": "story",
+      "id": "pages-emailandmarketing--with-single-contribution",
+      "name": "With Single Contribution",
+      "title": "Pages/EmailAndMarketing",
+      "importPath": "./client/components/mma/identity/emailAndMarketing/EmailAndMarketing.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-profile--default": {
+      "type": "story",
+      "id": "pages-profile--default",
+      "name": "Default",
+      "title": "Pages/Profile",
+      "importPath": "./client/components/mma/identity/publicProfile/PublicProfile.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-settings--default": {
+      "type": "story",
+      "id": "pages-settings--default",
+      "name": "Default",
+      "title": "Pages/Settings",
+      "importPath": "./client/components/mma/identity/settings/Settings.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-maintenance--default": {
+      "type": "story",
+      "id": "pages-maintenance--default",
+      "name": "Default",
+      "title": "Pages/Maintenance",
+      "importPath": "./client/components/mma/maintenance/Maintenance.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-updatepayment--guardian-weekly-card": {
+      "type": "story",
+      "id": "pages-updatepayment--guardian-weekly-card",
+      "name": "Guardian Weekly Card",
+      "title": "Pages/UpdatePayment",
+      "importPath": "./client/components/mma/paymentUpdate/UpdatePayment.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-updatepayment--newspaper-voucher-paypal": {
+      "type": "story",
+      "id": "pages-updatepayment--newspaper-voucher-paypal",
+      "name": "Newspaper Voucher Paypal",
+      "title": "Pages/UpdatePayment",
+      "importPath": "./client/components/mma/paymentUpdate/UpdatePayment.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-updatepayment--guardian-weekly-expired-card": {
+      "type": "story",
+      "id": "pages-updatepayment--guardian-weekly-expired-card",
+      "name": "Guardian Weekly Expired Card",
+      "title": "Pages/UpdatePayment",
+      "importPath": "./client/components/mma/paymentUpdate/UpdatePayment.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-basicproductinfotable--default": {
+      "type": "story",
+      "id": "components-basicproductinfotable--default",
+      "name": "Default",
+      "title": "Components/BasicProductInfoTable",
+      "importPath": "./client/components/mma/shared/BasicProductInfoTable.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-button--default": {
+      "type": "story",
+      "id": "components-button--default",
+      "name": "Default",
+      "title": "Components/Button",
+      "importPath": "./client/components/mma/shared/Button.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-button--bold": {
+      "type": "story",
+      "id": "components-button--bold",
+      "name": "Bold",
+      "title": "Components/Button",
+      "importPath": "./client/components/mma/shared/Button.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-button--disabled": {
+      "type": "story",
+      "id": "components-button--disabled",
+      "name": "Disabled",
+      "title": "Components/Button",
+      "importPath": "./client/components/mma/shared/Button.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-button--with-brand-colours": {
+      "type": "story",
+      "id": "components-button--with-brand-colours",
+      "name": "With Brand Colours",
+      "title": "Components/Button",
+      "importPath": "./client/components/mma/shared/Button.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-button--with-right-arrow": {
+      "type": "story",
+      "id": "components-button--with-right-arrow",
+      "name": "With Right Arrow",
+      "title": "Components/Button",
+      "importPath": "./client/components/mma/shared/Button.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-button--disabled-with-right-arrow": {
+      "type": "story",
+      "id": "components-button--disabled-with-right-arrow",
+      "name": "Disabled With Right Arrow",
+      "title": "Components/Button",
+      "importPath": "./client/components/mma/shared/Button.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-button--primary-with-right-arrow": {
+      "type": "story",
+      "id": "components-button--primary-with-right-arrow",
+      "name": "Primary With Right Arrow",
+      "title": "Components/Button",
+      "importPath": "./client/components/mma/shared/Button.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-button--hollow-with-left-arrow": {
+      "type": "story",
+      "id": "components-button--hollow-with-left-arrow",
+      "name": "Hollow With Left Arrow",
+      "title": "Components/Button",
+      "importPath": "./client/components/mma/shared/Button.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-callcentreprompt--default": {
+      "type": "story",
+      "id": "components-callcentreprompt--default",
+      "name": "Default",
+      "title": "Components/CallCentrePrompt",
+      "importPath": "./client/components/mma/shared/CallCentrePrompt.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-callcentreprompt--expanded": {
+      "type": "story",
+      "id": "components-callcentreprompt--expanded",
+      "name": "Expanded",
+      "title": "Components/CallCentrePrompt",
+      "importPath": "./client/components/mma/shared/CallCentrePrompt.stories.tsx",
+      "tags": ["dev", "test", "play-fn"]
+    },
+    "components-date-input--default": {
+      "type": "story",
+      "id": "components-date-input--default",
+      "name": "Default",
+      "title": "Components/Date Input",
+      "importPath": "./client/components/mma/shared/DateInput.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-datepicker--default": {
+      "type": "story",
+      "id": "components-datepicker--default",
+      "name": "Default",
+      "title": "Components/DatePicker",
+      "importPath": "./client/components/mma/shared/DatePicker.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-datepicker--with-existing-dates": {
+      "type": "story",
+      "id": "components-datepicker--with-existing-dates",
+      "name": "With Existing Dates",
+      "title": "Components/DatePicker",
+      "importPath": "./client/components/mma/shared/DatePicker.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-datepicker--with-amendment": {
+      "type": "story",
+      "id": "components-datepicker--with-amendment",
+      "name": "With Amendment",
+      "title": "Components/DatePicker",
+      "importPath": "./client/components/mma/shared/DatePicker.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-downloadappctavariation1--default": {
+      "type": "story",
+      "id": "components-downloadappctavariation1--default",
+      "name": "Default",
+      "title": "Components/DownloadAppCtaVariation1",
+      "importPath": "./client/components/mma/shared/DownloadAppCtaVariation1.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-downloadfeastappctawithimage--default": {
+      "type": "story",
+      "id": "components-downloadfeastappctawithimage--default",
+      "name": "Default",
+      "title": "Components/DownloadFeastAppCtaWithImage",
+      "importPath": "./client/components/mma/shared/DownloadFeastAppCtaWithImage.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-linkbutton--default": {
+      "type": "story",
+      "id": "components-linkbutton--default",
+      "name": "Default",
+      "title": "Components/LinkButton",
+      "importPath": "./client/components/mma/shared/LinkButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-linkbutton--bold-with-brand-colours": {
+      "type": "story",
+      "id": "components-linkbutton--bold-with-brand-colours",
+      "name": "Bold With Brand Colours",
+      "title": "Components/LinkButton",
+      "importPath": "./client/components/mma/shared/LinkButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-linkbutton--with-alert": {
+      "type": "story",
+      "id": "components-linkbutton--with-alert",
+      "name": "With Alert",
+      "title": "Components/LinkButton",
+      "importPath": "./client/components/mma/shared/LinkButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-linkbutton--with-right-arrow": {
+      "type": "story",
+      "id": "components-linkbutton--with-right-arrow",
+      "name": "With Right Arrow",
+      "title": "Components/LinkButton",
+      "importPath": "./client/components/mma/shared/LinkButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-linkbutton--with-left-arrow": {
+      "type": "story",
+      "id": "components-linkbutton--with-left-arrow",
+      "name": "With Left Arrow",
+      "title": "Components/LinkButton",
+      "importPath": "./client/components/mma/shared/LinkButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-linkbutton--primary-with-right-arrow": {
+      "type": "story",
+      "id": "components-linkbutton--primary-with-right-arrow",
+      "name": "Primary With Right Arrow",
+      "title": "Components/LinkButton",
+      "importPath": "./client/components/mma/shared/LinkButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-linkbutton--hollow-with-left-arrow": {
+      "type": "story",
+      "id": "components-linkbutton--hollow-with-left-arrow",
+      "name": "Hollow With Left Arrow",
+      "title": "Components/LinkButton",
+      "importPath": "./client/components/mma/shared/LinkButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-newpaperarchivecta--default": {
+      "type": "story",
+      "id": "components-newpaperarchivecta--default",
+      "name": "Default",
+      "title": "Components/NewpaperArchiveCta",
+      "importPath": "./client/components/mma/shared/NewspaperArchiveCta.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-overlayloader--default": {
+      "type": "story",
+      "id": "components-overlayloader--default",
+      "name": "Default",
+      "title": "Components/OverlayLoader",
+      "importPath": "./client/components/mma/shared/OverlayLoader.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-productinfotablev2--default": {
+      "type": "story",
+      "id": "components-productinfotablev2--default",
+      "name": "Default",
+      "title": "Components/ProductInfoTableV2",
+      "importPath": "./client/components/mma/shared/ProductInfoTableV2.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-progressindicator--old-version": {
+      "type": "story",
+      "id": "components-progressindicator--old-version",
+      "name": "Old Version",
+      "title": "Components/ProgressIndicator",
+      "importPath": "./client/components/mma/shared/ProgressIndicator.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-progressstepper--with-title-with-current-step": {
+      "type": "story",
+      "id": "components-progressstepper--with-title-with-current-step",
+      "name": "With Title With Current Step",
+      "title": "Components/ProgressStepper",
+      "importPath": "./client/components/mma/shared/ProgressStepper.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-progressstepper--without-title-with-current-step": {
+      "type": "story",
+      "id": "components-progressstepper--without-title-with-current-step",
+      "name": "Without Title With Current Step",
+      "title": "Components/ProgressStepper",
+      "importPath": "./client/components/mma/shared/ProgressStepper.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-signinerror--default": {
+      "type": "story",
+      "id": "pages-signinerror--default",
+      "name": "Default",
+      "title": "Pages/SignInError",
+      "importPath": "./client/components/mma/signInError/SignInError.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-switchcomplete--default": {
+      "type": "story",
+      "id": "pages-switchcomplete--default",
+      "name": "Default",
+      "title": "Pages/SwitchComplete",
+      "importPath": "./client/components/mma/switch/complete/SwitchComplete.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-switchcomplete--yearly-other-currency": {
+      "type": "story",
+      "id": "pages-switchcomplete--yearly-other-currency",
+      "name": "Yearly Other Currency",
+      "title": "Pages/SwitchComplete",
+      "importPath": "./client/components/mma/switch/complete/SwitchComplete.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-switchcomplete--from-app": {
+      "type": "story",
+      "id": "pages-switchcomplete--from-app",
+      "name": "From App",
+      "title": "Pages/SwitchComplete",
+      "importPath": "./client/components/mma/switch/complete/SwitchComplete.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-switchoptions--above-threshold": {
+      "type": "story",
+      "id": "pages-switchoptions--above-threshold",
+      "name": "Above Threshold",
+      "title": "Pages/SwitchOptions",
+      "importPath": "./client/components/mma/switch/options/SwitchOptions.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-switchoptions--below-threshold": {
+      "type": "story",
+      "id": "pages-switchoptions--below-threshold",
+      "name": "Below Threshold",
+      "title": "Pages/SwitchOptions",
+      "importPath": "./client/components/mma/switch/options/SwitchOptions.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-switchoptions--from-app": {
+      "type": "story",
+      "id": "pages-switchoptions--from-app",
+      "name": "From App",
+      "title": "Pages/SwitchOptions",
+      "importPath": "./client/components/mma/switch/options/SwitchOptions.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-switchreview--default": {
+      "type": "story",
+      "id": "pages-switchreview--default",
+      "name": "Default",
+      "title": "Pages/SwitchReview",
+      "importPath": "./client/components/mma/switch/review/SwitchReview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-switchreview--with-pay-pal-payment": {
+      "type": "story",
+      "id": "pages-switchreview--with-pay-pal-payment",
+      "name": "With Pay Pal Payment",
+      "title": "Pages/SwitchReview",
+      "importPath": "./client/components/mma/switch/review/SwitchReview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-switchreview--with-direct-debit-payment": {
+      "type": "story",
+      "id": "pages-switchreview--with-direct-debit-payment",
+      "name": "With Direct Debit Payment",
+      "title": "Pages/SwitchReview",
+      "importPath": "./client/components/mma/switch/review/SwitchReview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-switchreview--with-sepa-payment": {
+      "type": "story",
+      "id": "pages-switchreview--with-sepa-payment",
+      "name": "With SEPA Payment",
+      "title": "Pages/SwitchReview",
+      "importPath": "./client/components/mma/switch/review/SwitchReview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-switchreview--yearly-other-currency": {
+      "type": "story",
+      "id": "pages-switchreview--yearly-other-currency",
+      "name": "Yearly Other Currency",
+      "title": "Pages/SwitchReview",
+      "importPath": "./client/components/mma/switch/review/SwitchReview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-switchreview--from-app": {
+      "type": "story",
+      "id": "pages-switchreview--from-app",
+      "name": "From App",
+      "title": "Pages/SwitchReview",
+      "importPath": "./client/components/mma/switch/review/SwitchReview.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-upgradesupport--upgrade-support-value": {
+      "type": "story",
+      "id": "pages-upgradesupport--upgrade-support-value",
+      "name": "Upgrade Support Value",
+      "title": "Pages/UpgradeSupport",
+      "importPath": "./client/components/mma/upgrade/UpgradeSupport.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-upgradesupport--upgrade-support-switch-thank-you-page": {
+      "type": "story",
+      "id": "pages-upgradesupport--upgrade-support-switch-thank-you-page",
+      "name": "Upgrade Support Switch Thank You Page",
+      "title": "Pages/UpgradeSupport",
+      "importPath": "./client/components/mma/upgrade/UpgradeSupport.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "pages-upgradesupport--upgrade-support-thank-you-page": {
+      "type": "story",
+      "id": "pages-upgradesupport--upgrade-support-thank-you-page",
+      "name": "Upgrade Support Thank You Page",
+      "title": "Pages/UpgradeSupport",
+      "importPath": "./client/components/mma/upgrade/UpgradeSupport.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-callcentreaccordion--closed": {
+      "type": "story",
+      "id": "components-callcentreaccordion--closed",
+      "name": "Closed",
+      "title": "Components/CallCentreAccordion",
+      "importPath": "./client/components/shared/CallCentreAccordion.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-callcentreaccordion--open": {
+      "type": "story",
+      "id": "components-callcentreaccordion--open",
+      "name": "Open",
+      "title": "Components/CallCentreAccordion",
+      "importPath": "./client/components/shared/CallCentreAccordion.stories.tsx",
+      "tags": ["dev", "test", "play-fn"]
+    },
+    "components-callcentreaccordion--open-hide-email": {
+      "type": "story",
+      "id": "components-callcentreaccordion--open-hide-email",
+      "name": "Open Hide Email",
+      "title": "Components/CallCentreAccordion",
+      "importPath": "./client/components/shared/CallCentreAccordion.stories.tsx",
+      "tags": ["dev", "test", "play-fn"]
+    },
+    "components-callcentreemailandnumbers--default": {
+      "type": "story",
+      "id": "components-callcentreemailandnumbers--default",
+      "name": "Default",
+      "title": "Components/CallCentreEmailAndNumbers",
+      "importPath": "./client/components/shared/CallCentreEmailAndNumbers.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-callcentreemailandnumbers--with-email-hidden": {
+      "type": "story",
+      "id": "components-callcentreemailandnumbers--with-email-hidden",
+      "name": "With Email Hidden",
+      "title": "Components/CallCentreEmailAndNumbers",
+      "importPath": "./client/components/shared/CallCentreEmailAndNumbers.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-callcentreemailandnumbers--with-compact-layout": {
+      "type": "story",
+      "id": "components-callcentreemailandnumbers--with-compact-layout",
+      "name": "With Compact Layout",
+      "title": "Components/CallCentreEmailAndNumbers",
+      "importPath": "./client/components/shared/CallCentreEmailAndNumbers.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-callcentrenumbers--default": {
+      "type": "story",
+      "id": "components-callcentrenumbers--default",
+      "name": "Default",
+      "title": "Components/CallCentreNumbers",
+      "importPath": "./client/components/shared/CallCentreNumbers.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-callcentrenumbers--with-custom-prefix": {
+      "type": "story",
+      "id": "components-callcentrenumbers--with-custom-prefix",
+      "name": "With Custom Prefix",
+      "title": "Components/CallCentreNumbers",
+      "importPath": "./client/components/shared/CallCentreNumbers.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-expanderbutton--default": {
+      "type": "story",
+      "id": "components-expanderbutton--default",
+      "name": "Default",
+      "title": "Components/ExpanderButton",
+      "importPath": "./client/components/shared/ExpanderButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-formerror--default": {
+      "type": "story",
+      "id": "components-formerror--default",
+      "name": "Default",
+      "title": "Components/FormError",
+      "importPath": "./client/components/shared/FormError.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-header--initial": {
+      "type": "story",
+      "id": "components-header--initial",
+      "name": "Initial",
+      "title": "Components/Header",
+      "importPath": "./client/components/shared/Header.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-header--signed-out": {
+      "type": "story",
+      "id": "components-header--signed-out",
+      "name": "Signed Out",
+      "title": "Components/Header",
+      "importPath": "./client/components/shared/Header.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-header--signed-in": {
+      "type": "story",
+      "id": "components-header--signed-in",
+      "name": "Signed In",
+      "title": "Components/Header",
+      "importPath": "./client/components/shared/Header.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "layouts-main--signed-out": {
+      "type": "story",
+      "id": "layouts-main--signed-out",
+      "name": "Signed Out",
+      "title": "Layouts/Main",
+      "importPath": "./client/components/shared/Main.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "layouts-main--signed-in": {
+      "type": "story",
+      "id": "layouts-main--signed-in",
+      "name": "Signed In",
+      "title": "Layouts/Main",
+      "importPath": "./client/components/shared/Main.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "layouts-main--help-centre-signed-out": {
+      "type": "story",
+      "id": "layouts-main--help-centre-signed-out",
+      "name": "Help Centre Signed Out",
+      "title": "Layouts/Main",
+      "importPath": "./client/components/shared/Main.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "layouts-main--help-centre-signed-in": {
+      "type": "story",
+      "id": "layouts-main--help-centre-signed-in",
+      "name": "Help Centre Signed In",
+      "title": "Layouts/Main",
+      "importPath": "./client/components/shared/Main.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-spinner--default": {
+      "type": "story",
+      "id": "components-spinner--default",
+      "name": "Default",
+      "title": "Components/Spinner",
+      "importPath": "./client/components/shared/Spinner.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-spinner--scaled": {
+      "type": "story",
+      "id": "components-spinner--scaled",
+      "name": "Scaled",
+      "title": "Components/Spinner",
+      "importPath": "./client/components/shared/Spinner.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-spinner--with-loading-message": {
+      "type": "story",
+      "id": "components-spinner--with-loading-message",
+      "name": "With Loading Message",
+      "title": "Components/Spinner",
+      "importPath": "./client/components/shared/Spinner.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-supporttheguardianbutton--default": {
+      "type": "story",
+      "id": "components-supporttheguardianbutton--default",
+      "name": "Default",
+      "title": "Components/SupportTheGuardianButton",
+      "importPath": "./client/components/shared/SupportTheGuardianButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-supporttheguardianbutton--with-small-size": {
+      "type": "story",
+      "id": "components-supporttheguardianbutton--with-small-size",
+      "name": "With Small Size",
+      "title": "Components/SupportTheGuardianButton",
+      "importPath": "./client/components/shared/SupportTheGuardianButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-supporttheguardianbutton--with-brand-theme": {
+      "type": "story",
+      "id": "components-supporttheguardianbutton--with-brand-theme",
+      "name": "With Brand Theme",
+      "title": "Components/SupportTheGuardianButton",
+      "importPath": "./client/components/shared/SupportTheGuardianButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-supporttheguardianbutton--with-brand-alt-theme": {
+      "type": "story",
+      "id": "components-supporttheguardianbutton--with-brand-alt-theme",
+      "name": "With Brand Alt Theme",
+      "title": "Components/SupportTheGuardianButton",
+      "importPath": "./client/components/shared/SupportTheGuardianButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-supporttheguardianbutton--with-alternate-button-text": {
+      "type": "story",
+      "id": "components-supporttheguardianbutton--with-alternate-button-text",
+      "name": "With Alternate Button Text",
+      "title": "Components/SupportTheGuardianButton",
+      "importPath": "./client/components/shared/SupportTheGuardianButton.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-withstandardtopmargin--default": {
+      "type": "story",
+      "id": "components-withstandardtopmargin--default",
+      "name": "Default",
+      "title": "Components/WithStandardTopMargin",
+      "importPath": "./client/components/shared/WithStandardTopMargin.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-footer--default": {
+      "type": "story",
+      "id": "components-footer--default",
+      "name": "Default",
+      "title": "Components/Footer",
+      "importPath": "./client/components/shared/footer/Footer.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-footer--without-support": {
+      "type": "story",
+      "id": "components-footer--without-support",
+      "name": "Without Support",
+      "title": "Components/Footer",
+      "importPath": "./client/components/shared/footer/Footer.stories.tsx",
+      "tags": ["dev", "test"]
+    },
+    "components-footer--minimal": {
+      "type": "story",
+      "id": "components-footer--minimal",
+      "name": "Minimal",
+      "title": "Components/Footer",
+      "importPath": "./client/components/shared/footer/Footer.stories.tsx",
+      "tags": ["dev", "test"]
+    }
+  }
+}

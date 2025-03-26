@@ -87,14 +87,27 @@ export function monthlyContributionPaidByCard() {
 		.getProductDetailObject();
 }
 
+export function annualContributionPaidByCardUSA(price?: number) {
+	return new ProductBuilder(baseContribution())
+		.payByCard()
+		.withBillingPeriod('year')
+		.withCurrency('USD')
+		.withPrice(price ?? 300)
+		.inUSA()
+		.getProductDetailObject();
+}
+
 export function annualContributionPaidByCardWithCurrency(
 	currency: CurrencyIso,
+	billingCountry: string,
+	price?: number,
 ) {
 	return new ProductBuilder(baseContribution())
 		.payByCard()
 		.withBillingPeriod('year')
 		.withCurrency(currency)
-		.withPrice(300)
+		.withPrice(price ?? 300)
+		.inBillingCountry(billingCountry)
 		.getProductDetailObject();
 }
 

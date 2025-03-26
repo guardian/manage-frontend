@@ -21,7 +21,6 @@ import type {
 	MembersDataApiUser,
 	PaidSubscriptionPlan,
 	ProductDetail,
-	Subscription,
 } from '@/shared/productResponse';
 import {
 	getMainPlan,
@@ -36,11 +35,8 @@ import { Ribbon } from '../../shared/Ribbon';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
-import { CardDisplay } from '../shared/CardDisplay';
-import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
-import { PaypalDisplay } from '../shared/PaypalDisplay';
-import { SepaDisplay } from '../shared/SepaDisplay';
+import { PaymentMethoDisplay } from '../shared/PaymentMethodDisplay';
 import { productCardConfiguration } from './ProductCardConfiguration';
 import {
 	keyValueCss,
@@ -49,46 +45,7 @@ import {
 	sectionHeadingCss,
 } from './ProductCardStyles';
 
-const PaymentMethod = ({
-	subscription,
-	inPaymentFailure,
-}: {
-	subscription: Subscription;
-	inPaymentFailure: boolean;
-}) => (
-	<div
-		css={css`
-			${textSans17}
-		`}
-		data-qm-masking="blocklist"
-	>
-		{subscription.card && (
-			<CardDisplay
-				inErrorState={inPaymentFailure}
-				cssOverrides={css`
-					margin: 0;
-				`}
-				{...subscription.card}
-			/>
-		)}
-		{subscription.payPalEmail && (
-			<PaypalDisplay inline={true} payPalId={subscription.payPalEmail} />
-		)}
-		{subscription.sepaMandate && (
-			<SepaDisplay
-				inline={true}
-				accountName={subscription.sepaMandate.accountName}
-				iban={subscription.sepaMandate.iban}
-			/>
-		)}
-		{subscription.mandate && (
-			<DirectDebitDisplay inline={true} {...subscription.mandate} />
-		)}
-		{subscription.stripePublicKeyForCardAddition && (
-			<span>No Payment Method</span>
-		)}
-	</div>
-);
+
 
 const NewPriceAlert = () => {
 	const iconCss = css`
@@ -534,7 +491,7 @@ export const ProductCard = ({
 						<div css={productDetailLayoutCss}>
 							<div>
 								<h4 css={sectionHeadingCss}>Payment method</h4>
-								<PaymentMethod
+								<PaymentMethoDisplay
 									subscription={productDetail.subscription}
 									inPaymentFailure={hasPaymentFailure}
 								/>

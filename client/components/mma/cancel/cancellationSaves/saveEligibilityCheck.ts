@@ -4,6 +4,7 @@ import type {
 	ProductDetail,
 } from '@/shared/productResponse';
 import { getMainPlan, getSpecificProductType } from '@/shared/productResponse';
+import type { OptionalCancellationReasonId } from '../cancellationReason';
 
 export function ineligibleForSave(
 	products: ProductDetail[],
@@ -47,3 +48,13 @@ function isMembershipIneligible(
 		hasBeenPriceRisen
 	);
 }
+
+export const reasonIsEligibleForSwitch = (
+	selectedReasonId: OptionalCancellationReasonId,
+) =>
+	selectedReasonId === 'mma_break_from_news' ||
+	selectedReasonId === 'mma_benefits' ||
+	selectedReasonId === 'mma_financial_circumstances' ||
+	selectedReasonId === 'mma_dont_read_enough' ||
+	selectedReasonId === 'mma_support_another_way' ||
+	selectedReasonId === 'mma_values';

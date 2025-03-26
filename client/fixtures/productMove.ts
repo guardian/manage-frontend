@@ -1,6 +1,6 @@
-import type { PreviewResponse } from '../../shared/productSwitchTypes';
+import type { SwitchPreviewResponse } from '../../shared/productSwitchTypes';
 
-export const productMovePreviewResponse: PreviewResponse = {
+export const productMovePreviewResponse: SwitchPreviewResponse = {
 	amountPayableToday: 5.0,
 	supporterPlusPurchaseAmount: 12.0,
 	contributionRefundAmount: -5,

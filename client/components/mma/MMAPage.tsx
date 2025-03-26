@@ -140,11 +140,35 @@ const CancelAlternativeOffer = lazy(() =>
 	})),
 );
 
+const CancelAlternativeSwitch = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeSwitch'
+	).then(({ CancelAlternativeSwitch }) => ({
+		default: CancelAlternativeSwitch,
+	})),
+);
+
+const CancelAlternativeContactUs = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeContactUs'
+	).then(({ CancelAlternativeContactUs }) => ({
+		default: CancelAlternativeContactUs,
+	})),
+);
+
 const CancelAlternativeReview = lazy(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeReview'
 	).then(({ CancelAlternativeReview }) => ({
 		default: CancelAlternativeReview,
+	})),
+);
+
+const CancelAlternativeSwitchReview = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeSwitchReview'
+	).then(({ CancelAlternativeSwitchReview }) => ({
+		default: CancelAlternativeSwitchReview,
 	})),
 );
 
@@ -727,12 +751,26 @@ const MMARouter = () => {
 										element={<CancelAlternativeOffer />}
 									/>
 									<Route
+										path="switch"
+										element={<CancelAlternativeSwitch />}
+									/>
+									<Route
+										path="contact-us"
+										element={<CancelAlternativeContactUs />}
+									/>
+									<Route
 										path="pause-review"
 										element={<CancelAlternativeReview />}
 									/>
 									<Route
 										path="offer-review"
 										element={<CancelAlternativeReview />}
+									/>
+									<Route
+										path="switch-review"
+										element={
+											<CancelAlternativeSwitchReview />
+										}
 									/>
 									<Route
 										path="offer-confirmed"
@@ -742,7 +780,10 @@ const MMARouter = () => {
 										path="pause-confirmed"
 										element={<CancelAlternativeConfirmed />}
 									/>
-
+									<Route
+										path="switch-confirmed"
+										element={<CancelAlternativeConfirmed />}
+									/>
 									<Route
 										path="offers"
 										element={<SaveOptions />}
