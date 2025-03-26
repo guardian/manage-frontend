@@ -47,7 +47,7 @@ test('Uses Australian Stripe key for Australian delivery address', () => {
 	);
 });
 
-test('Uses Tortoise Media Stripe key for Sunday The Observer Home Delivery subscription', () => {
+test('Uses Tortoise Media Stripe keys for Observer (Sunday) Home Delivery subscription', () => {
 	const productDetail = baseHomeDeliverySunday();
 
 	const stripePublicKeyDefaultUser = getStripeKeyByProduct(
