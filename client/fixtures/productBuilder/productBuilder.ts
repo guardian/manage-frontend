@@ -148,6 +148,11 @@ export class ProductBuilder {
 		return this;
 	}
 
+	inBillingCountry(country: string) {
+		this.productToBuild.billingCountry = country;
+		return this;
+	}
+
 	inUSA() {
 		this.productToBuild.billingCountry = 'United States';
 		return this;

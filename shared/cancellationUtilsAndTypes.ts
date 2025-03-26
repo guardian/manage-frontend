@@ -1,8 +1,16 @@
-import type { ProductTypeKeys } from './productTypes';
-
-export const cancelAlternativeUrlPartLookup: Partial<
-	Record<ProductTypeKeys, string>
-> = {
-	supporterplus: 'offer',
-	contributions: 'pause',
+export const cancelAlternativeUrlPartLookup = (
+	isPossibleOffer: boolean,
+	isPossiblePause: boolean,
+	isPossibleSwitch: boolean,
+): string => {
+	if (isPossibleOffer) {
+		return 'offer';
+	}
+	if (isPossiblePause) {
+		return 'pause';
+	}
+	if (isPossibleSwitch) {
+		return 'switch';
+	}
+	return '';
 };

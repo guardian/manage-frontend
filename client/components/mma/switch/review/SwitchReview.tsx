@@ -19,8 +19,8 @@ import { SwitchErrorSummary } from '@/client/components/shared/productSwitch/Swi
 import { productMoveFetch } from '@/client/utilities/productUtils';
 import { dateString } from '../../../../../shared/dates';
 import type {
-	PreviewResponse,
 	ProductSwitchType,
+	SwitchPreviewResponse,
 } from '../../../../../shared/productSwitchTypes';
 import {
 	buttonCentredCss,
@@ -160,7 +160,7 @@ export const SwitchReview = () => {
 		data: previewResponse,
 		loadingState,
 	}: {
-		data: PreviewResponse | null;
+		data: SwitchPreviewResponse | null;
 		loadingState: LoadingState;
 	} = useAsyncLoader(
 		() =>
