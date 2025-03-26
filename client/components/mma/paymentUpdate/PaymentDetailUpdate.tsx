@@ -463,30 +463,25 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 
 	useEffect(() => {
 		if (state?.paymentMethodInfo) {
-			// Build detail
-			let detail: NewPaymentMethodDetail | null = null;
-			switch (state.paymentMethodType) {
-				case StripeCheckoutSessionPaymentMethodType.Card:
-					detail = new NewCardPaymentMethodDetail(
-						state?.paymentMethodInfo as StripeCardPaymentMethod,
-						getStripeKeyByProduct(props.productType, productDetail),
-					);
-					break;
-				default:
-					Sentry.captureException(
-						'Payment Method Type processing not implemented',
-						{
-							extra: {
-								paymentMethodType: state.paymentMethodType,
-							},
+			if (
+				state.paymentMethodType !==
+				StripeCheckoutSessionPaymentMethodType.Card
+			) {
+				Sentry.captureException(
+					'Payment Method Type processing not implemented',
+					{
+						extra: {
+							paymentMethodType: state.paymentMethodType,
 						},
-					);
+					},
+				);
+				return;
 			}
-
-			// Execute the payment update
-			if (detail) {
-				executePaymentUpdate(detail);
-			}
+			const detail = new NewCardPaymentMethodDetail(
+				state?.paymentMethodInfo as StripeCardPaymentMethod,
+				getStripeKeyByProduct(props.productType, productDetail),
+			);
+			executePaymentUpdate(detail);
 		}
 	}, [
 		state?.paymentMethodInfo,
