@@ -26,17 +26,25 @@ export const PaymentDetailUpdateCheckoutSessionReturn = (
 	const sessionId = queryParams.get('id'); // Read the 'session_id' query parameter
 	const paymentMethodType = queryParams.get('paymentMethodType'); // Read the 'paymentMethodType' query parameter
 
-	const navigateToFailedPage = useCallback(
-		(newPaymentMethodDetailFriendlyName?: string) => {
-			navigate('../failed', {
-				state: {
-					newPaymentMethodDetailFriendlyName:
-						newPaymentMethodDetailFriendlyName || 'Payment Method',
-				},
-			});
-		},
-		[navigate],
-	);
+	const getNewPaymentMethodDetailFriendlyNameFromPaymentMethodType =
+		useCallback((): string => {
+			switch (paymentMethodType) {
+				case StripeCheckoutSessionPaymentMethodType.Card:
+					return 'Credit Card';
+				default:
+					// A default designation that fits the current copywriting
+					return 'Payment Method';
+			}
+		}, [paymentMethodType]);
+
+	const navigateToFailedPage = useCallback(() => {
+		navigate('../failed', {
+			state: {
+				newPaymentMethodDetailFriendlyName:
+					getNewPaymentMethodDetailFriendlyNameFromPaymentMethodType(),
+			},
+		});
+	}, [navigate, getNewPaymentMethodDetailFriendlyNameFromPaymentMethodType]);
 
 	const obtainCheckoutSessionDetails = useCallback(
 		async (id: string): Promise<StripeCheckoutSession> => {
