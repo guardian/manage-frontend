@@ -42,12 +42,10 @@ export const StripeCheckoutSessionButton = (
 	props: StripeCheckoutSessionButtonProps,
 ) => {
 	const [preparingCheckout, setPreparingCheckout] = useState<boolean>(false);
-	const [, setPreparingCheckoutError] = useState<Error | null>(null);
 
 	const loadSetupIntent = () => {
 		// Start loading
 		setPreparingCheckout(true);
-		setPreparingCheckoutError(null);
 
 		// Create Checkout Session on the server
 		fetch('/api/payment/checkout-session', {
@@ -81,7 +79,6 @@ export const StripeCheckoutSessionButton = (
 			})
 			.catch((error) => {
 				Sentry.captureException(error);
-				setPreparingCheckoutError(error);
 				setPreparingCheckout(false);
 			});
 	};
