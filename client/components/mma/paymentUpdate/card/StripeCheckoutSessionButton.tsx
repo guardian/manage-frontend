@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { space } from '@guardian/source/foundations';
 import {
 	Button,
 	SvgArrowRightStraight,
@@ -106,8 +107,8 @@ export const StripeCheckoutSessionButton = (
 			}
 			iconSide="right"
 			cssOverrides={css`
-				margin-top: 16px;
-				margin-bottom: 36px;
+				margin-top: ${space[4]}px;
+				margin-bottom: ${space[9]}px;
 			`}
 		>
 			Update payment method
