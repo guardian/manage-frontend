@@ -1,3 +1,4 @@
+import { featureSwitches } from '@/shared/featureSwitches';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
 	ddPaymentMethod,
@@ -102,6 +103,8 @@ describe('Update payment details', () => {
 	});
 
 	it('Complete card payment update through Stripe Checkout', () => {
+		featureSwitches.tortoiseStripeCheckout = true;
+
 		const productDetail = homeDeliverySunday();
 		const stripeCheckoutUrl = `https://www.google.com`;
 
