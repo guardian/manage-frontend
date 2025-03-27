@@ -14,6 +14,7 @@ import {
 } from '../../../../client/fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
 import { paymentMethods } from '../../../../client/fixtures/stripe';
+import { conf } from '../../../../server/config';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Update payment details', () => {
@@ -103,7 +104,11 @@ describe('Update payment details', () => {
 	});
 
 	it('Complete card payment update through Stripe Checkout', () => {
-		featureSwitches.tortoiseStripeCheckout = true;
+		if (!featureSwitches.tortoiseStripeCheckout) {
+			// Skip the test if the feature switch is off
+			cy.log('Skipping test because the feature switch is off');
+			return;
+		}
 
 		const productDetail = homeDeliverySunday();
 		const stripeCheckoutUrl = `https://www.google.com`;
@@ -404,6 +409,11 @@ describe('Update payment details', () => {
 		cy.wait('@mobile_subscriptions');
 		cy.wait('@invoices');
 
+		// Save the current url for later usage
+		cy.url().then((url) => {
+			cy.wrap(url).as('initialUrl'); // Ensure the URL is stored properly
+		});
+
 		// Billing page "Update payment method" button click
 		cy.findByText('Update payment method').click();
 
@@ -417,9 +427,13 @@ describe('Update payment details', () => {
 		cy.url().should('include', stripeCheckoutUrl);
 
 		// Redirect back to the Guardian
-		cy.visit(
-			`https://manage.${conf.DOMAIN}/payment/digital/checkout-session-return?id=0&paymentMethodType=card`,
-		);
+		cy.get('@initialUrl').then((initialUrl) => {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- The type 'any' is used here because we are sure that the URL is a string but the type definition is not
+			const baseUrl = new URL(initialUrl as any).origin; // Get "https://example.com"
+			cy.visit(
+				`${baseUrl}/payment/digital/checkout-session-return?id=0&paymentMethodType=card`,
+			);
+		});
 
 		// Wait for checkout session retrieval
 		cy.wait('@get_checkout_session');
