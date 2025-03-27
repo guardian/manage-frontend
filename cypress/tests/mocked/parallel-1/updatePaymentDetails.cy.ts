@@ -1,3 +1,4 @@
+import { featureSwitches } from '@/shared/featureSwitches';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
 	ddPaymentMethod,
@@ -9,9 +10,11 @@ import {
 	digitalPackPaidByDirectDebit,
 	guardianAdLite,
 	guardianWeeklyPaidByCard,
+	homeDeliverySunday,
 } from '../../../../client/fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
 import { paymentMethods } from '../../../../client/fixtures/stripe';
+import { conf } from '../../../../server/config';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Update payment details', () => {
@@ -98,6 +101,353 @@ describe('Update payment details', () => {
 		cy.get('@createSetupIntent.all').should('have.length', 1);
 		cy.get('@confirmCardSetup.all').should('have.length', 1);
 		cy.get('@scala_backend.all').should('have.length', 1);
+	});
+
+	it('Complete card payment update through Stripe Checkout', () => {
+		if (!featureSwitches.tortoiseStripeCheckout) {
+			// Skip the test if the feature switch is off
+			cy.log('Skipping test because the feature switch is off');
+			return;
+		}
+
+		const productDetail = homeDeliverySunday();
+		const stripeCheckoutUrl = `https://www.google.com`;
+
+		// #region Intercepts
+		cy.intercept('GET', '/api/me/mma*', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(productDetail),
+		}).as('product_detail');
+
+		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {
+			statusCode: 200,
+			body: { subscriptions: [] },
+		}).as('mobile_subscriptions');
+
+		cy.intercept('GET', 'api/invoices', {
+			statusCode: 200,
+			body: { invoices: [] },
+		}).as('invoices');
+
+		cy.intercept('POST', 'api/payment/checkout-session', {
+			statusCode: 200,
+			body: { id: '0', url: stripeCheckoutUrl },
+		}).as('create_checkout_session');
+
+		cy.intercept('GET', `api/payment/checkout-session/0`, {
+			statusCode: 200,
+			body: {
+				id: '0',
+				url: stripeCheckoutUrl,
+				object: 'checkout.session',
+				adaptive_pricing: null,
+				after_expiration: null,
+				allow_promotion_codes: null,
+				amount_subtotal: null,
+				amount_total: null,
+				automatic_tax: {
+					enabled: false,
+					liability: null,
+					status: null,
+				},
+				billing_address_collection: null,
+				cancel_url: `https://manage.${conf.DOMAIN}/payment/subscriptioncard`,
+				client_reference_id: null,
+				client_secret: null,
+				collected_information: {
+					shipping_details: null,
+				},
+				consent: null,
+				consent_collection: null,
+				created: 1743088342,
+				currency: null,
+				currency_conversion: null,
+				custom_fields: [],
+				custom_text: {
+					after_submit: null,
+					shipping_address: null,
+					submit: null,
+					terms_of_service_acceptance: null,
+				},
+				customer: null,
+				customer_creation: 'if_required',
+				customer_details: {
+					address: null,
+					email: 'developer@guardian.co.uk',
+					name: 'Developer',
+					phone: null,
+					tax_exempt: null,
+					tax_ids: [],
+				},
+				customer_email: 'developer@guardian.co.uk',
+				discounts: null,
+				expires_at: 1743174742,
+				invoice: null,
+				invoice_creation: null,
+				livemode: false,
+				locale: null,
+				metadata: {},
+				mode: 'setup',
+				payment_intent: null,
+				payment_link: null,
+				payment_method_collection: 'always',
+				payment_method_configuration_details: null,
+				payment_method_options: {
+					card: {
+						request_three_d_secure: 'automatic',
+					},
+				},
+				payment_method_types: ['card'],
+				payment_status: 'no_payment_required',
+				permissions: null,
+				phone_number_collection: {
+					enabled: false,
+				},
+				recovered_from: null,
+				saved_payment_method_options: null,
+				setup_intent: {
+					id: 'seti_1R7I6UFNFWz7WMIhvjGlJ2lv',
+					object: 'setup_intent',
+					application: null,
+					automatic_payment_methods: null,
+					cancellation_reason: null,
+					client_secret:
+						'seti_1R7I6UFNFWz7WMIhvjGlJ2lv_secret_S1KmQocYfiWm7XS7orp3GxbVWp5Q59k',
+					created: 1743088342,
+					customer: null,
+					description: null,
+					flow_directions: null,
+					last_setup_error: null,
+					latest_attempt: 'setatt_1R7I6oFNFWz7WMIhElATmpaz',
+					livemode: false,
+					mandate: null,
+					metadata: {},
+					next_action: null,
+					on_behalf_of: null,
+					payment_method: {
+						id: 'pm_1R7I6oFNFWz7WMIhoWFlhS1T',
+						object: 'payment_method',
+						allow_redisplay: 'always',
+						billing_details: {
+							address: {
+								city: null,
+								country: 'PT',
+								line1: null,
+								line2: null,
+								postal_code: null,
+								state: null,
+							},
+							email: 'developer@guardian.co.uk',
+							name: 'Developer',
+							phone: null,
+						},
+						card: {
+							brand: 'mastercard',
+							checks: {
+								address_line1_check: null,
+								address_postal_code_check: null,
+								cvc_check: 'pass',
+							},
+							country: 'US',
+							display_brand: 'mastercard',
+							exp_month: 11,
+							exp_year: 2025,
+							fingerprint: 'NDbG5kODznDuXICS',
+							funding: 'credit',
+							generated_from: null,
+							last4: '4444',
+							networks: {
+								available: ['mastercard'],
+								preferred: null,
+							},
+							regulated_status: 'unregulated',
+							three_d_secure_usage: {
+								supported: true,
+							},
+							wallet: null,
+						},
+						created: 1743088362,
+						customer: null,
+						livemode: false,
+						metadata: {},
+						type: 'card',
+					},
+					payment_method_configuration_details: null,
+					payment_method_options: {
+						card: {
+							mandate_options: null,
+							network: null,
+							request_three_d_secure: 'automatic',
+						},
+					},
+					payment_method_types: ['card'],
+					single_use_mandate: null,
+					status: 'succeeded',
+					usage: 'off_session',
+				},
+				shipping_address_collection: null,
+				shipping_cost: null,
+				shipping_details: null,
+				shipping_options: [],
+				status: 'complete',
+				submit_type: null,
+				subscription: null,
+				success_url: `https://manage.${conf.DOMAIN}/payment/subscriptioncard/checkout-session-return?id={CHECKOUT_SESSION_ID}&paymentMethodType=card`,
+				total_details: null,
+				ui_mode: 'hosted',
+			},
+		}).as('get_checkout_session');
+
+		cy.intercept(
+			'POST',
+			`/api/payment/card/${productDetail.subscription.subscriptionId}`,
+			{
+				statusCode: 200,
+				body: {
+					type: 'mastercard',
+					last4: '4444',
+					expiryMonth: 11,
+					expiryYear: 2025,
+				},
+			},
+		).as('execute_update_payment');
+
+		cy.intercept(
+			'GET',
+			`/api/me/mma/${productDetail.subscription.subscriptionId}`,
+			{
+				statusCode: 200,
+				body: {
+					user: {
+						email: 'developer@guardian.co.uk',
+					},
+					products: [
+						{
+							mmaCategory: 'subscriptions',
+							tier: 'Newspaper Digital Voucher',
+							isPaidTier: true,
+							selfServiceCancellation: {
+								isAllowed: false,
+								shouldDisplayEmail: false,
+								phoneRegionsToDisplay: ['UK & ROW'],
+							},
+							billingCountry: 'United Kingdom',
+							joinDate: '2025-03-19',
+							optIn: true,
+							subscription: {
+								paymentMethod: 'Card',
+								card: {
+									last4: '4444',
+									expiry: {
+										month: 11,
+										year: 2025,
+									},
+									type: 'MasterCard',
+									stripePublicKeyForUpdate:
+										'pk_test_Qm3CGRdrV4WfGYCpm0sftR0f',
+									email: 'developer@guardian.co.uk',
+								},
+								contactId: '003UD00000SakVlYAJ',
+								deliveryAddress: {
+									addressLine1: '90 York Way',
+									addressLine2: 'Kings Place',
+									town: 'London',
+									postcode: 'N1 9AG',
+									country: 'United Kingdom',
+								},
+								safeToUpdatePaymentMethod: true,
+								start: '2025-03-30',
+								end: '2026-03-19',
+								nextPaymentPrice: 1599,
+								nextPaymentDate: '2025-03-30',
+								potentialCancellationDate: '2025-03-30',
+								lastPaymentDate: null,
+								chargedThroughDate: null,
+								renewalDate: '2026-03-19',
+								anniversaryDate: '2026-03-30',
+								cancelledAt: false,
+								subscriptionId: 'A-S00968890',
+								trialLength: 3,
+								autoRenew: true,
+								plan: {
+									name: 'Newspaper Digital Voucher',
+									price: 1599,
+									currency: '£',
+									currencyISO: 'GBP',
+									billingPeriod: 'month',
+								},
+								currentPlans: [],
+								futurePlans: [
+									{
+										name: 'Sunday',
+										start: '2025-03-30',
+										end: '2026-03-19',
+										shouldBeVisible: true,
+										chargedThrough: null,
+										price: 1599,
+										currency: '£',
+										currencyISO: 'GBP',
+										billingPeriod: 'month',
+										features: '',
+										daysOfWeek: ['Sunday'],
+									},
+								],
+								readerType: 'Direct',
+								accountId: '8ad0855895aa29180195aef9334d4457',
+								cancellationEffectiveDate: null,
+							},
+							isTestUser: false,
+						},
+					],
+				},
+			},
+		).as('get_update_payment');
+		// #endregion
+
+		cy.visit('/billing');
+		cy.wait('@product_detail');
+		cy.wait('@mobile_subscriptions');
+		cy.wait('@invoices');
+
+		// Save the current url for later usage
+		cy.url().then((url) => {
+			cy.wrap(url).as('initialUrl'); // Ensure the URL is stored properly
+		});
+
+		// Billing page "Update payment method" button click
+		cy.findByText('Update payment method').click();
+
+		// Manage payment method page "Update payment method" button click
+		cy.findByText('Update payment method').click();
+
+		// Wait for checkout session creation
+		cy.wait('@create_checkout_session');
+
+		// Evaluate if the session was redirected to the correct URL
+		cy.url().should('include', stripeCheckoutUrl);
+
+		// Redirect back to the Guardian
+		cy.get('@initialUrl').then((initialUrl) => {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- The type 'any' is used here because we are sure that the URL is a string but the type definition is not
+			const baseUrl = new URL(initialUrl as any).origin; // Get "https://example.com"
+			cy.visit(
+				`${baseUrl}/payment/digital/checkout-session-return?id=0&paymentMethodType=card`,
+			);
+		});
+
+		// Wait for checkout session retrieval
+		cy.wait('@get_checkout_session');
+
+		// Wait for payment update
+		cy.wait('@execute_update_payment');
+		cy.log('Payment update executed successfully');
+
+		// Wait for updated payment details
+		cy.wait('@get_update_payment');
+
+		// Final assertions
+		cy.findByText('Your payment details were updated successfully');
+		cy.findByText('Back to Account overview').should('exist');
 	});
 
 	it('Completes card payment update with app redirect from account overview', () => {
