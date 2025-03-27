@@ -20,6 +20,7 @@ import type * as React from 'react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { isSundayTheObserverSubscription } from '@/client/utilities/sundayTheObserverSubscription';
+import { featureSwitches } from '@/shared/featureSwitches';
 import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
@@ -385,7 +386,8 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 			case PaymentMethod.Card:
 				return stripePublicKey ? (
 					<>
-						{isSundayTheObserverSubscription(
+						{featureSwitches.tortoiseStripeCheckout &&
+						isSundayTheObserverSubscription(
 							props.productType,
 							productDetail,
 						) ? (
