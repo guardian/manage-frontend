@@ -241,6 +241,14 @@ const PaymentDetailUpdate = lazy(() =>
 	).then(({ PaymentDetailUpdate }) => ({ default: PaymentDetailUpdate })),
 );
 
+const PaymentDetailUpdateCheckoutSessionReturn = lazy(() =>
+	import(
+		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateCheckoutSessionReturn'
+	).then(({ PaymentDetailUpdateCheckoutSessionReturn }) => ({
+		default: PaymentDetailUpdateCheckoutSessionReturn,
+	})),
+);
+
 const PaymentDetailUpdateConfirmation = lazy(() =>
 	import(
 		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateConfirmation'
@@ -616,6 +624,14 @@ const MMARouter = () => {
 										index
 										element={
 											<PaymentDetailUpdate
+												productType={productType}
+											/>
+										}
+									/>
+									<Route
+										path="checkout-session-return"
+										element={
+											<PaymentDetailUpdateCheckoutSessionReturn
 												productType={productType}
 											/>
 										}
