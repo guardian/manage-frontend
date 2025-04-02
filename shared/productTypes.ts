@@ -73,7 +73,7 @@ type SfCaseProduct =
 	| 'Guardian Weekly'
 	| 'Digital Pack Subscriptions'
 	| 'Supporter Plus'
-	| 'Tier Three'
+	| 'Tier '
 	| 'Guardian Ad-Lite'
 	| 'Guardian Patron';
 export type AllProductsProductTypeFilterString =
@@ -89,7 +89,7 @@ export type AllProductsProductTypeFilterString =
 	| 'ContentSubscription'
 	| 'GuardianPatron'
 	| 'GuardianAdLite'
-	| 'TierThree';
+	| 'Tier';
 
 interface CancellationFlowProperties {
 	reasons?: CancellationReason[];
@@ -277,7 +277,7 @@ export type ProductTypeKeys =
 	| 'guardianweekly'
 	| 'digipack'
 	| 'supporterplus'
-	| 'tierthree'
+	| 'tier'
 	| 'guardianadlite'
 	| 'guardianpatron';
 
@@ -422,7 +422,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		],
 		holidayStops: {
 			issueKeyword: 'paper',
-			alternateNoticeString: "three day's notice",
+			alternateNoticeString: "two working days' notice",
 		},
 		delivery: {
 			showAddress: showDeliveryAddressCheck,
@@ -463,7 +463,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		],
 		holidayStops: {
 			issueKeyword: 'paper',
-			alternateNoticeString: "three day's notice",
+			alternateNoticeString: "three days' notice",
 		},
 		delivery: {
 			showAddress: showDeliveryAddressCheck,
