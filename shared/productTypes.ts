@@ -422,6 +422,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		],
 		holidayStops: {
 			issueKeyword: 'paper',
+			alternateNoticeString: "three day's notice",
 		},
 		delivery: {
 			showAddress: showDeliveryAddressCheck,
@@ -462,6 +463,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		],
 		holidayStops: {
 			issueKeyword: 'paper',
+			alternateNoticeString: "three day's notice",
 		},
 		delivery: {
 			showAddress: showDeliveryAddressCheck,
