@@ -582,6 +582,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 		holidayStops: {
 			issueKeyword: 'issue',
+			alternateNoticeString: "notice by the Tuesday of the week before your issue is due",
 		},
 		delivery: {
 			showAddress: showDeliveryAddressCheck,
