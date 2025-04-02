@@ -73,7 +73,7 @@ type SfCaseProduct =
 	| 'Guardian Weekly'
 	| 'Digital Pack Subscriptions'
 	| 'Supporter Plus'
-	| 'Tier '
+	| 'Tier Three'
 	| 'Guardian Ad-Lite'
 	| 'Guardian Patron';
 export type AllProductsProductTypeFilterString =
@@ -89,7 +89,7 @@ export type AllProductsProductTypeFilterString =
 	| 'ContentSubscription'
 	| 'GuardianPatron'
 	| 'GuardianAdLite'
-	| 'Tier';
+	| 'TierThree';
 
 interface CancellationFlowProperties {
 	reasons?: CancellationReason[];
@@ -277,7 +277,7 @@ export type ProductTypeKeys =
 	| 'guardianweekly'
 	| 'digipack'
 	| 'supporterplus'
-	| 'tier'
+	| 'tierthree'
 	| 'guardianadlite'
 	| 'guardianpatron';
 
