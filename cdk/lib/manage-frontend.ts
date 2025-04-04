@@ -19,7 +19,8 @@ import {
 	InstanceType,
 	UserData,
 } from 'aws-cdk-lib/aws-ec2';
-import { Protocol } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import type { CfnListener } from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import { Protocol, SslPolicy } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnRecordSet } from 'aws-cdk-lib/aws-route53';
 
@@ -193,6 +194,8 @@ systemctl start manage-frontend
 			timeout: Duration.seconds(5),
 			protocol: Protocol.HTTP,
 		});
+
+		(nodeApp.listener.node.defaultChild as CfnListener).sslPolicy = SslPolicy.TLS13_RES;
 
 		new CfnRecordSet(this, 'AliasRecord', {
 			name: props.domain,
