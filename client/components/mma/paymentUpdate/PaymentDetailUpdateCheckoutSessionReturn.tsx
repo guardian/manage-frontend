@@ -2,7 +2,6 @@ import * as Sentry from '@sentry/browser';
 import { useCallback, useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getStripeKeyByProduct } from '@/client/utilities/stripe';
-import type { ProductType, WithProductType } from '@/shared/productTypes';
 import { STRIPE_PUBLIC_KEY_HEADER } from '@/shared/stripeSetupIntent';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import {
@@ -12,9 +11,7 @@ import {
 import type { PaymentUpdateContextInterface } from './PaymentDetailUpdateContainer';
 import { PaymentUpdateContext } from './PaymentDetailUpdateContainer';
 
-export const PaymentDetailUpdateCheckoutSessionReturn = (
-	props: WithProductType<ProductType>,
-) => {
+export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 	const { productDetail } = useContext(
 		PaymentUpdateContext,
 	) as PaymentUpdateContextInterface;
@@ -55,16 +52,13 @@ export const PaymentDetailUpdateCheckoutSessionReturn = (
 					credentials: 'include',
 					headers: {
 						[STRIPE_PUBLIC_KEY_HEADER]:
-							getStripeKeyByProduct(
-								props.productType,
-								productDetail,
-							) ?? '',
+							getStripeKeyByProduct(productDetail) ?? '',
 					},
 				},
 			);
 			return checkoutSessionResponse.json();
 		},
-		[props.productType, productDetail],
+		[productDetail],
 	);
 
 	useEffect(() => {

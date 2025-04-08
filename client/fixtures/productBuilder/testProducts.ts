@@ -3,12 +3,13 @@ import {
 	baseContribution,
 	baseDigitalPack,
 	baseDigitalVoucher,
+	baseDigitalVoucherObserver,
 	baseGuardianAdLite,
 	baseGuardianWeekly,
 	baseHomeDelivery,
-	baseHomeDeliverySunday,
 	baseMembership,
 	baseNationalDelivery,
+	baseObserverDeliverySunday as baseObserverDelivery,
 	basePatron,
 	baseSupporterPlus,
 	baseTierThree,
@@ -156,6 +157,12 @@ export function nonServicedCountryContributor() {
 		.getProductDetailObject();
 }
 
+export function newspaperVoucherObserver() {
+	return new ProductBuilder(baseDigitalVoucherObserver())
+		.payByCard()
+		.getProductDetailObject();
+}
+
 export function newspaperVoucherPaidByPaypal(email?: string) {
 	return new ProductBuilder(baseDigitalVoucher())
 		.payByPayPal(email)
@@ -168,14 +175,14 @@ export function homeDelivery() {
 		.getProductDetailObject();
 }
 
-export function homeDeliverySunday() {
-	return new ProductBuilder(baseHomeDeliverySunday())
+export function observerDelivery() {
+	return new ProductBuilder(baseObserverDelivery())
 		.payByCard()
 		.getProductDetailObject();
 }
 
-export function homeDeliverySundayPaidByDirectDebit() {
-	return new ProductBuilder(baseHomeDeliverySunday())
+export function observerDeliveryPaidByDirectDebit() {
+	return new ProductBuilder(baseObserverDelivery())
 		.payByDirectDebit()
 		.getProductDetailObject();
 }

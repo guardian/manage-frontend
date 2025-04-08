@@ -2,9 +2,7 @@
 import type { Stripe as StripeSDK } from '@stripe/stripe-js/pure';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { useEffect, useState } from 'react';
-import { featureSwitches } from '@/shared/featureSwitches';
 import type { ProductDetail } from '@/shared/productResponse';
-import type { ProductType } from '@/shared/productTypes';
 import { isSundayTheObserverSubscription } from './sundayTheObserverSubscription';
 
 export function getStripeKey(
@@ -49,10 +47,7 @@ export const useStripeSDK = (stripeKey: string) => {
 	return stripeObjects;
 };
 
-export const getStripeKeyByProduct = (
-	productType: ProductType,
-	productDetail: ProductDetail,
-): string => {
+export const getStripeKeyByProduct = (productDetail: ProductDetail): string => {
 	let stripePublicKey: string | undefined;
 
 	/**
@@ -60,10 +55,7 @@ export const getStripeKeyByProduct = (
 	 * to update their Stripe key for Sunday The Observer subscriptions.
 	 * Change this if we run into issues.
 	 */
-	if (
-		featureSwitches.tortoiseStripeCheckout &&
-		isSundayTheObserverSubscription(productType, productDetail)
-	) {
+	if (isSundayTheObserverSubscription(productDetail)) {
 		stripePublicKey = productDetail.isTestUser
 			? window.guardian?.stripeKeyTortoiseMedia?.test
 			: window.guardian?.stripeKeyTortoiseMedia?.default;

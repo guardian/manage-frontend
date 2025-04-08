@@ -6,9 +6,9 @@ import {
 	digitalPackPaidByDirectDebit,
 	guardianAdLite,
 	guardianWeeklyPaidByCard,
-	homeDeliverySunday,
 	monthlyContributionPaidByCard,
 	newspaperVoucherPaidByPaypal,
+	observerDelivery,
 	supporterPlusAnnual,
 	supporterPlusMonthlyAllAccessDigital,
 	tierThree,
@@ -129,7 +129,7 @@ export const NewspaperDeliverySunday: StoryObj<typeof ManageProduct> = {
 
 	parameters: {
 		reactRouter: {
-			state: { productDetail: homeDeliverySunday() },
+			state: { productDetail: observerDelivery() },
 		},
 	},
 };

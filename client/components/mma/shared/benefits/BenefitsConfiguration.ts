@@ -108,6 +108,8 @@ export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
 		guardianweekly: [],
 		guardianadlite: [],
 		guardianpatron: [],
+		observer: [],
+		digitalvoucherobserver: [],
 	};
 
 export function getUpgradeBenefits(

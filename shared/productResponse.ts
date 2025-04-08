@@ -88,6 +88,8 @@ export const productTiers = [
 	'Patron',
 	'Partner',
 	'Guardian Ad-Lite',
+	'Newspaper Delivery - Observer',
+	'Newspaper Digital Voucher - Observer',
 ];
 
 export type ProductTier = typeof productTiers[number];
@@ -269,9 +271,7 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	};
 };
 
-export function getSpecificProductTypeFromTier(
-	productTier: ProductTier,
-): ProductType {
+export function getSpecificProductType(productTier: ProductTier): ProductType {
 	let productType: ProductType = {} as ProductType;
 	switch (productTier) {
 		case 'Partner':
@@ -316,6 +316,12 @@ export function getSpecificProductTypeFromTier(
 		case 'Newspaper - National Delivery':
 			productType = PRODUCT_TYPES.nationaldelivery;
 			break;
+		case 'Newspaper Delivery - Observer':
+			productType = PRODUCT_TYPES.observer;
+			break;
+		case 'Newspaper Digital Voucher - Observer':
+			productType = PRODUCT_TYPES.digitalvoucherobserver;
+			break;
 	}
 	return productType;
 }
@@ -324,8 +330,6 @@ export function isSpecificProductType(
 	productDetail: ProductDetail,
 	targetProductType: ProductType,
 ): boolean {
-	const specificProductType = getSpecificProductTypeFromTier(
-		productDetail.tier,
-	);
+	const specificProductType = getSpecificProductType(productDetail.tier);
 	return specificProductType === targetProductType;
 }

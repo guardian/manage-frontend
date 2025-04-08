@@ -21,7 +21,6 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { isSundayTheObserverSubscription } from '@/client/utilities/sundayTheObserverSubscription';
 import { DirectDebitGatewayOwner } from '@/shared/directDebit';
-import { featureSwitches } from '@/shared/featureSwitches';
 import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
@@ -362,10 +361,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 		setSelectedPaymentMethod(newPaymentMethod);
 
 	const getInputForm = (subscription: Subscription, isTestUser: boolean) => {
-		const stripePublicKey: string = getStripeKeyByProduct(
-			props.productType,
-			productDetail,
-		);
+		const stripePublicKey: string = getStripeKeyByProduct(productDetail);
 
 		switch (selectedPaymentMethod) {
 			case PaymentMethod.ResetRequired:
@@ -387,11 +383,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 			case PaymentMethod.Card:
 				return stripePublicKey ? (
 					<>
-						{featureSwitches.tortoiseStripeCheckout &&
-						isSundayTheObserverSubscription(
-							props.productType,
-							productDetail,
-						) ? (
+						{isSundayTheObserverSubscription(productDetail) ? (
 							<StripeCheckoutSessionButton
 								stripeApiKey={stripePublicKey}
 								productTypeUrlPart={props.productType.urlPart}
@@ -448,11 +440,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 						testUser={isTestUser}
 						executePaymentUpdate={executePaymentUpdate}
 						gatewayOwner={
-							featureSwitches.tortoiseStripeCheckout &&
-							isSundayTheObserverSubscription(
-								props.productType,
-								productDetail,
-							)
+							isSundayTheObserverSubscription(productDetail)
 								? DirectDebitGatewayOwner.TortoiseMedia
 								: undefined
 						}
@@ -491,7 +479,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 			}
 			const detail = new NewCardPaymentMethodDetail(
 				state?.paymentMethodInfo as StripeCardPaymentMethod,
-				getStripeKeyByProduct(props.productType, productDetail),
+				getStripeKeyByProduct(productDetail),
 			);
 			executePaymentUpdate(detail);
 		}

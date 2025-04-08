@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import type { ProductDetail } from '../../../../shared/productResponse';
-import { getSpecificProductTypeFromTier } from '../../../../shared/productResponse';
+import { getSpecificProductType } from '../../../../shared/productResponse';
 import type { IsFromAppProps } from './IsFromAppProps';
 import { ProblemAlert } from './ProblemAlert';
 
@@ -30,7 +30,7 @@ export const PaymentFailureAlertIfApplicable = ({
 			button={{
 				title: 'Update payment method',
 				link: `/payment/${
-					getSpecificProductTypeFromTier(productDetail.tier).urlPart
+					getSpecificProductType(productDetail.tier).urlPart
 				}`,
 				state: { productDetail, isFromApp },
 			}}
