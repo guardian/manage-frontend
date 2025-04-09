@@ -7,6 +7,7 @@ import {
 	baseGuardianAdLite,
 	baseGuardianWeekly,
 	baseHomeDelivery,
+	baseHomeDeliverySundayPlus,
 	baseMembership,
 	baseNationalDelivery,
 	baseObserverDeliverySunday as baseObserverDelivery,
@@ -311,6 +312,12 @@ export function guardianAdLiteCancelled() {
 
 export function tierThree() {
 	return new ProductBuilder(baseTierThree())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function homeDeliverySundayPlus() {
+	return new ProductBuilder(baseHomeDeliverySundayPlus())
 		.payByCard()
 		.getProductDetailObject();
 }

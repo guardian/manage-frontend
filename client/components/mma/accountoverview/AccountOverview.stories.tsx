@@ -24,6 +24,7 @@ import {
 	guardianWeeklyGiftPurchase,
 	guardianWeeklyGiftRecipient,
 	guardianWeeklyPaidByCard,
+	homeDeliverySundayPlus,
 	membershipSupporter,
 	newspaperVoucherObserver,
 	newspaperVoucherPaidByPaypal,
@@ -102,6 +103,7 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 						supporterPlus(),
 						tierThree(),
 						observerDelivery(),
+						homeDeliverySundayPlus(),
 					),
 				);
 			}),
