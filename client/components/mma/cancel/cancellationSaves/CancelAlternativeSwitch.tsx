@@ -116,6 +116,7 @@ const contactUsDescriptionCss = css`
 	margin: ${space[2]}px 0 ${space[5]}px;
 	${from.tablet} {
 		margin: ${space[2]}px 0 ${space[6]}px;
+		max-width: 466px;
 	}
 `;
 
@@ -142,7 +143,7 @@ const availableOfferBoxInnerCss = css`
 	${from.tablet} {
 		background-color: ${palette.neutral[100]};
 		width: 366px;
-		padding: ${space[5]}px ${space[6]}px ${space[5]}px;
+		padding: ${space[6]}px ${space[6]}px ${space[5]}px;
 		margin: ${space[6]}px;
 	}
 `;
@@ -203,17 +204,17 @@ const strikethroughPriceCss = css`
 `;
 
 const offerButtonCss = css`
-	margin: ${space[5]}px 0 0;
+	margin: ${space[4]}px 0 0;
 	width: 100%;
 	justify-content: center;
 `;
 
 const benefitsSubTitleCss = css`
-	margin: 0 0 ${space[3]}px;
+	margin: 0 0 ${space[2]}px;
 	${textSansBold15};
 	${from.tablet} {
 		border-top: 1px solid ${palette.neutral[86]};
-		padding-top: ${space[3]}px;
+		padding-top: ${space[2]}px;
 		margin-bottom: ${space[4]}px;
 	}
 `;
@@ -237,7 +238,7 @@ const cancelButtonCss = css`
 const termsCss = css`
 	${textSans12};
 	color: ${palette.neutral[46]};
-	margin-top: ${space[3]}px;
+	margin: ${space[2]}px 0 ${space[6]}px;
 `;
 
 export const CancelAlternativeSwitch = () => {
@@ -343,7 +344,7 @@ export const CancelAlternativeSwitch = () => {
 									state: routerState,
 								});
 							}}
-							cssOverrides={[offerButtonCss]}
+							cssOverrides={offerButtonCss}
 						>
 							Redeem the offer
 						</Button>
@@ -359,7 +360,7 @@ export const CancelAlternativeSwitch = () => {
 						</p>
 						<div
 							css={css`
-								max-width: 290px;
+								max-width: 320px;
 							`}
 						>
 							<BenefitsSection
@@ -371,7 +372,7 @@ export const CancelAlternativeSwitch = () => {
 									},
 									{
 										description:
-											'Unlimited access to the Guardian Feast App',
+											'Unlimited access to the Guardian Feast app',
 									},
 									{
 										description:

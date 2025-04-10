@@ -46,14 +46,13 @@ type OfferApiCallStatus = 'NOT_READY' | 'PENDING' | 'FAILED' | 'SUCCESS';
 
 const yourOfferBoxCss = css`
 	background-color: #fbf6ef;
-	padding: ${space[4]}px ${space[6]}px;
+	padding: ${space[4]}px ${space[3]}px;
 	position: relative;
 	h4 {
 		${textSansBold17};
-		margin: 0;
 	}
-	p {
-		margin: 0;
+	${from.tablet} {
+		padding: ${space[4]}px;
 	}
 `;
 
@@ -70,6 +69,7 @@ const yourOfferBoxHeaderCss = css`
 
 const yourOfferBoxSubHeaderCss = css`
 	${textSansBold17};
+	margin: 2px 0 ${space[1]}px;
 	color: ${neutral[7]};
 `;
 
@@ -81,12 +81,13 @@ const strikethroughPriceCss = css`
 const percentageOfferSubText = css`
 	${textSans12};
 	color: ${neutral[38]};
-	margin-top: ${space[2]}px;
+	margin: 0;
 `;
 
 const pricingDetailsCss = css`
-	margin-top: ${space[4]}px;
+	margin-top: ${space[5]}px;
 	& summary {
+		${textSans15};
 		color: ${palette.brand[500]};
 		text-decoration: underline;
 		list-style: none;
@@ -111,6 +112,7 @@ const pricingDetailsTable = css`
 	margin-top: ${space[4]}px;
 	border-collapse: collapse;
 	${textSans15};
+	width: 100%;
 	& tbody {
 		border-top: 1px solid ${neutral[86]};
 	}
@@ -158,6 +160,7 @@ const whatsNextUlCss = css`
 	${textEgyptian17};
 	& li {
 		margin-left: 1em;
+		max-width: 650px;
 	}
 	& li + li {
 		margin-top: ${space[3]}px;
@@ -188,6 +191,12 @@ const termsCss = css`
 	${textSans12};
 	color: ${palette.neutral[46]};
 	margin-top: ${space[3]}px;
+`;
+
+const mobileOnlyBreakPointCss = css`
+	${from.tablet} {
+		display: none;
+	}
 `;
 
 export const CancelAlternativeSwitchReview = () => {
@@ -283,7 +292,7 @@ export const CancelAlternativeSwitchReview = () => {
 			</Heading>
 			{isPaidSubscriptionPlan(mainPlan) && (
 				<>
-					<div css={[yourOfferBoxCss]}>
+					<div css={yourOfferBoxCss}>
 						<div css={[yourOfferBoxFlexCss]}>
 							<h3 css={yourOfferBoxHeaderCss}>
 								{mainPlan.currency}
@@ -353,8 +362,13 @@ export const CancelAlternativeSwitchReview = () => {
 										{offsetPrice > 0 && (
 											<tr>
 												<td>
-													Amount offset from Recurring
-													annual support
+													Amount offset from your{' '}
+													<br
+														css={
+															mobileOnlyBreakPointCss
+														}
+													/>
+													recurring annual support
 												</td>
 												<td>
 													-{mainPlan.currency}
