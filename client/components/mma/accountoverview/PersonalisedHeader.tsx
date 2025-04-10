@@ -7,6 +7,7 @@ import {
 	space,
 } from '@guardian/source/foundations';
 import { min } from 'date-fns';
+import { isSundayTheObserverSubscription } from '@/client/utilities/sundayTheObserverSubscription';
 import { dateString } from '@/shared/dates';
 import type { MPAPIResponse } from '@/shared/mpapiResponse';
 import type { MembersDataApiResponse } from '@/shared/productResponse';
@@ -52,6 +53,11 @@ export const PersonalisedHeader = ({
 
 	const supportStartYear = dateString(oldestDate, 'MMMM yyyy');
 
+	const isSoleyObserverProductOwner =
+		mpapiResponse.subscriptions.length === 0 &&
+		productDetails.length === 1 &&
+		isSundayTheObserverSubscription(productDetails[0]);
+
 	return (
 		<hgroup
 			css={css`
@@ -73,13 +79,15 @@ export const PersonalisedHeader = ({
 			>
 				{calculateTimeOfDay()}, {userDetails.firstName ?? 'supporter'}
 			</h2>
-			<p
-				css={css`
-					${headlineMedium17};
-				`}
-			>
-				Thank you for funding the Guardian since {supportStartYear}
-			</p>
+			{!isSoleyObserverProductOwner && (
+				<p
+					css={css`
+						${headlineMedium17};
+					`}
+				>
+					Thank you for funding the Guardian since {supportStartYear}
+				</p>
+			)}
 		</hgroup>
 	);
 };

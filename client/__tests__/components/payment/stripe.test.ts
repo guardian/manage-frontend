@@ -1,8 +1,7 @@
 import {
-	baseDigitalVoucherSunday,
-	baseObserverDeliverySunday,
+	baseDigitalVoucherObserver,
+	baseObserverDelivery,
 } from '@/client/fixtures/productBuilder/baseProducts';
-import { featureSwitches } from '@/shared/featureSwitches';
 import {
 	guardianWeeklySubscriptionAustralia,
 	guardianWeeklySubscriptionCard,
@@ -48,7 +47,7 @@ test('Uses Australian Stripe key for Australian delivery address', () => {
 });
 
 test('Uses Tortoise Media Stripe keys for Observer (Sunday) Home Delivery subscription', () => {
-	const productDetail = baseObserverDeliverySunday();
+	const productDetail = baseObserverDelivery();
 
 	const stripePublicKeyDefaultUser = getStripeKeyByProduct({
 		...productDetail,
@@ -68,7 +67,7 @@ test('Uses Tortoise Media Stripe keys for Observer (Sunday) Home Delivery subscr
 });
 
 test('Uses Tortoise Media Stripe keys for Observer (Sunday) Subscription Card', () => {
-	const productDetail = baseDigitalVoucherSunday();
+	const productDetail = baseDigitalVoucherObserver();
 
 	const stripePublicKeyDefaultUser = getStripeKeyByProduct({
 		...productDetail,

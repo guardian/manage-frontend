@@ -501,64 +501,7 @@ export function baseDigitalVoucher(): ProductDetail {
 	};
 }
 
-export function baseDigitalVoucherSunday(): ProductDetail {
-	return {
-		tier: 'Newspaper Digital Voucher',
-		isPaidTier: true,
-		selfServiceCancellation: {
-			isAllowed: false,
-			shouldDisplayEmail: false,
-			phoneRegionsToDisplay: ['UK & ROW'],
-		},
-		joinDate: '2021-11-26',
-		optIn: true,
-		subscription: {
-			contactId: '0039E00001KA26BQAT',
-			deliveryAddress: {
-				addressLine1: 'Kings Place',
-				addressLine2: '90 York Way',
-				town: 'London',
-				postcode: 'N1 9GU',
-				country: 'United Kingdom',
-			},
-			safeToUpdatePaymentMethod: true,
-			start: '2021-12-06',
-			end: '2022-11-26',
-			nextPaymentPrice: 5299,
-			nextPaymentDate: '2021-12-06',
-			lastPaymentDate: null,
-			potentialCancellationDate: null,
-			chargedThroughDate: null,
-			renewalDate: '2022-11-26',
-			anniversaryDate: '2022-12-06',
-			cancelledAt: false,
-			subscriptionId: 'A-S00285104',
-			trialLength: -7,
-			autoRenew: true,
-			currentPlans: [],
-			futurePlans: [
-				{
-					name: 'Sunday',
-					start: '2025-03-30',
-					end: '2026-03-19',
-					shouldBeVisible: true,
-					chargedThrough: null,
-					price: 1599,
-					currency: '£',
-					currencyISO: 'GBP',
-					billingPeriod: 'month',
-					features: '',
-					daysOfWeek: ['Sunday'],
-				},
-			],
-			readerType: 'Direct',
-			accountId: '8ad0824e7d584341017d5bc38c0d52dc',
-		},
-		isTestUser: false,
-	};
-}
-
-export function baseObserverDeliverySunday(): ProductDetail {
+export function baseObserverDelivery(): ProductDetail {
 	return {
 		tier: 'Newspaper Delivery - Observer',
 		isPaidTier: true,

@@ -10,7 +10,7 @@ import {
 	baseHomeDeliverySundayPlus,
 	baseMembership,
 	baseNationalDelivery,
-	baseObserverDeliverySunday as baseObserverDelivery,
+	baseObserverDelivery,
 	basePatron,
 	baseSupporterPlus,
 	baseTierThree,
