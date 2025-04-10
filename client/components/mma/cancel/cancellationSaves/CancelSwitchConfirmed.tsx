@@ -51,7 +51,7 @@ const nextStepsCss = css`
 		margin: ${space[3]}px 0 0;
 		line-height: 1.8rem;
 	}
-	${from.desktop} {
+	${from.tablet} {
 		margin: ${space[6]}px 0 ${space[8]}px;
 	}
 `;
@@ -61,6 +61,7 @@ const benefitsCss = css`
 	flex-direction: column;
 	background-color: ${palette.culture[800]};
 	border: 1px solid ${neutral[86]};
+	overflow: hidden;
 	h4 {
 		${textSansBold17};
 		margin: 0;
@@ -68,7 +69,7 @@ const benefitsCss = css`
 	ul {
 		margin-top: ${space[4]}px;
 	}
-	${from.desktop} {
+	${from.tablet} {
 		flex-direction: row;
 		justify-content: space-between;
 		border: none;
@@ -82,7 +83,13 @@ const pictureAlignmentCss = css`
 	display: flex;
 	justify-content: center;
 	align-items: flex-end;
-	${until.desktop} {
+	${between.tablet.and.desktop} {
+		transform: scale(125%) translate(8%, -6%);
+	}
+	${from.desktop} {
+		transform: scale(150%) translate(8%, 15%);
+	}
+	${until.tablet} {
 		border-bottom: 1px solid ${neutral[86]};
 	}
 	${between.desktop.and.leftCol} {
@@ -94,15 +101,19 @@ const pictureAlignmentCss = css`
 `;
 
 const benefitsLeftSideCss = css`
-	${from.desktop} {
+	${from.tablet} {
 		padding: ${space[6]}px;
+	}
+	${between.tablet.and.desktop} {
+		min-width: 408px;
 	}
 `;
 
 const benefitsWhiteContainerCss = css`
 	background-color: ${neutral[100]};
-	padding: ${space[5]}px ${space[6]}px;
-	${from.desktop} {
+	padding: ${space[3]}px;
+	${from.tablet} {
+		padding: ${space[5]}px;
 		border-radius: ${space[2]}px;
 		max-width: 360px;
 	}
@@ -110,7 +121,7 @@ const benefitsWhiteContainerCss = css`
 
 const appAdCss = css`
 	margin-top: ${space[5]}px;
-	${from.desktop} {
+	${from.tablet} {
 		margin-top: ${space[6]}px;
 	}
 `;
@@ -137,7 +148,7 @@ const buttonCentredCss = css`
 	width: 100%;
 	justify-content: center;
 	margin: 0;
-	${from.desktop} {
+	${from.tablet} {
 		width: fit-content;
 	}
 `;
@@ -247,7 +258,7 @@ export const CancelSwitchConfirmed = () => {
 								},
 								{
 									description:
-										'Unlimited access to the Guardian Feast App',
+										'Unlimited access to the Guardian Feast app',
 								},
 								{
 									description:

@@ -119,6 +119,7 @@ const headerImageCss = css`
 		img {
 			height: 100%;
 			margin-left: 389px;
+			transform: scale(150%) translate(15%, 17%);
 		}
 	}
 `;
