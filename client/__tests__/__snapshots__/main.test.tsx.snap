@@ -754,16 +754,6 @@ html:not(.src-focus-disabled) .emotion-63 :focus {
                     Facebook
                   </a>
                 </li>
-                <li
-                  className="emotion-15"
-                >
-                  <a
-                    className="emotion-16"
-                    href="https://twitter.com/guardian"
-                  >
-                    Twitter
-                  </a>
-                </li>
               </ul>
               <ul
                 className="emotion-14"
