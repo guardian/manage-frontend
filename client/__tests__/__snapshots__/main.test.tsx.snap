@@ -247,7 +247,7 @@ exports[`Main renders something 1`] = `
   cursor: pointer;
 }
 
-.emotion-57 {
+.emotion-55 {
   width: 50%;
   border-left: 1px solid rgba(255, 255, 255, 0.3);
   padding-left: 10px;
@@ -255,18 +255,18 @@ exports[`Main renders something 1`] = `
 }
 
 @media (min-width: 660px) {
-  .emotion-57 {
+  .emotion-55 {
     width: 312px;
   }
 }
 
 @media (min-width: 740px) {
-  .emotion-57 {
+  .emotion-55 {
     border-top: 0;
   }
 }
 
-.emotion-58 {
+.emotion-56 {
   color: #FFE500;
   font-family: "GH Guardian Headline","Guardian Egyptian Web",Georgia,serif;
   font-size: 1.5rem;
@@ -280,19 +280,19 @@ exports[`Main renders something 1`] = `
 }
 
 @media (min-width: 660px) {
-  .emotion-58 {
+  .emotion-56 {
     font-size: 32px;
     line-height: 32px;
   }
 }
 
-.emotion-59 {
+.emotion-57 {
   display: inline-block;
   margin-right: 10px;
   margin-bottom: 6px;
 }
 
-.emotion-60 {
+.emotion-58 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -330,24 +330,24 @@ exports[`Main renders something 1`] = `
   color: #052962;
 }
 
-.emotion-60:disabled {
+.emotion-58:disabled {
   cursor: not-allowed;
 }
 
-.emotion-60:focus {
+.emotion-58:focus {
   outline: 0;
 }
 
-html:not(.src-focus-disabled) .emotion-60:focus {
+html:not(.src-focus-disabled) .emotion-58:focus {
   outline: 5px solid #0077B6;
   outline-offset: 3px;
 }
 
-.emotion-60:hover {
+.emotion-58:hover {
   background-color: #FFD213;
 }
 
-.emotion-60 svg {
+.emotion-58 svg {
   -webkit-flex: 0 0 auto;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
@@ -358,15 +358,15 @@ html:not(.src-focus-disabled) .emotion-60:focus {
   height: auto;
 }
 
-.emotion-60 .src-button-space {
+.emotion-58 .src-button-space {
   width: 8px;
 }
 
-.emotion-60 svg {
+.emotion-58 svg {
   margin-right: -4px;
 }
 
-.emotion-60 svg {
+.emotion-58 svg {
   -webkit-transform: translate(0, 0);
   -moz-transform: translate(0, 0);
   -ms-transform: translate(0, 0);
@@ -375,22 +375,22 @@ html:not(.src-focus-disabled) .emotion-60:focus {
   transition: .2s cubic-bezier(.64, .57, .67, 1.53);
 }
 
-.emotion-60:hover svg,
-.emotion-60:focus svg {
+.emotion-58:hover svg,
+.emotion-58:focus svg {
   -webkit-transform: translate(2px, 0);
   -moz-transform: translate(2px, 0);
   -ms-transform: translate(2px, 0);
   transform: translate(2px, 0);
 }
 
-.emotion-61 {
+.emotion-59 {
   padding-bottom: 24px;
   padding-left: 20px;
   padding-right: 20px;
   position: relative;
 }
 
-.emotion-62 {
+.emotion-60 {
   font-size: 16px;
   color: #FFFFFF;
   font-weight: bold;
@@ -404,11 +404,11 @@ html:not(.src-focus-disabled) .emotion-60:focus {
   transform: translateY(-50%);
 }
 
-.emotion-62:hover {
+.emotion-60:hover {
   color: #FFE500;
 }
 
-.emotion-63 {
+.emotion-61 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -432,19 +432,19 @@ html:not(.src-focus-disabled) .emotion-60:focus {
   white-space: nowrap;
 }
 
-.emotion-63 :hover {
+.emotion-61 :hover {
   color: #FFE500;
 }
 
-.emotion-63 :focus {
+.emotion-61 :focus {
   outline: 0;
 }
 
-html:not(.src-focus-disabled) .emotion-63 :focus {
+html:not(.src-focus-disabled) .emotion-61 :focus {
   box-shadow: 0 0 0 3px #0077B6;
 }
 
-.emotion-64 {
+.emotion-62 {
   height: 44px;
   width: 44px;
   display: -webkit-box;
@@ -464,19 +464,19 @@ html:not(.src-focus-disabled) .emotion-63 :focus {
   margin-left: 8px;
 }
 
-.emotion-64 svg {
+.emotion-62 svg {
   height: 26px;
   width: 26px;
   fill: #052962;
 }
 
-.emotion-65 {
+.emotion-63 {
   padding-top: 26px;
   font-size: 12px;
 }
 
 @media (min-width: 740px) {
-  .emotion-65 {
+  .emotion-63 {
     padding-top: 6px;
   }
 }
@@ -800,18 +800,18 @@ html:not(.src-focus-disabled) .emotion-63 :focus {
                 </li>
               </ul>
               <div
-                className="emotion-57"
+                className="emotion-55"
               >
                 <div
-                  className="emotion-58"
+                  className="emotion-56"
                 >
                   Support the Guardian
                 </div>
                 <div
-                  className="emotion-59"
+                  className="emotion-57"
                 >
                   <a
-                    className="emotion-60"
+                    className="emotion-58"
                     href="https://support.thegulocal.com/contribute?INTCMP=mma_footer_support_contribute&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_contribute%22%7D&displayExistingPaymentOptions=true"
                     onClick={[Function]}
                   >
@@ -837,18 +837,18 @@ html:not(.src-focus-disabled) .emotion-63 :focus {
             </div>
           </div>
           <div
-            className="emotion-61"
+            className="emotion-59"
           >
             <div
-              className="emotion-62"
+              className="emotion-60"
             >
               <a
-                className="emotion-63"
+                className="emotion-61"
                 href="#top"
               >
                 Back to top
                 <div
-                  className="emotion-64"
+                  className="emotion-62"
                 >
                   <svg
                     aria-hidden={true}
@@ -866,7 +866,7 @@ html:not(.src-focus-disabled) .emotion-63 :focus {
               </a>
             </div>
             <div
-              className="emotion-65"
+              className="emotion-63"
             >
               © 
               2022
