@@ -174,6 +174,12 @@ export function homeDeliverySunday() {
 		.getProductDetailObject();
 }
 
+export function homeDeliverySundayPaidByDirectDebit() {
+	return new ProductBuilder(baseHomeDeliverySunday())
+		.payByDirectDebit()
+		.getProductDetailObject();
+}
+
 export function nationalDelivery() {
 	return new ProductBuilder(baseNationalDelivery())
 		.payByCard()

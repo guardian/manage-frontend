@@ -4,6 +4,7 @@ import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import type { DeliveryRecordDetail } from '../client/components/mma/delivery/records/deliveryRecordsApi';
 import { AsyncLoader } from '../client/components/mma/shared/AsyncLoader';
 import type { CardProps } from '../client/components/mma/shared/CardDisplay';
+import type { DirectDebitGatewayOwner } from './directDebit';
 import { PRODUCT_TYPES } from './productTypes';
 import type { ProductType } from './productTypes';
 
@@ -125,6 +126,7 @@ export interface DirectDebitDetails {
 	accountName: string;
 	accountNumber: string;
 	sortCode: string;
+	gatewayOwner?: DirectDebitGatewayOwner;
 }
 
 export interface SubscriptionPlan {

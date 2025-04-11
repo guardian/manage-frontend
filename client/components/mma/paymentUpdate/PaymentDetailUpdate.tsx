@@ -20,6 +20,7 @@ import type * as React from 'react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { isSundayTheObserverSubscription } from '@/client/utilities/sundayTheObserverSubscription';
+import { DirectDebitGatewayOwner } from '@/shared/directDebit';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
 	getScopeFromRequestPathOrEmptyString,
@@ -446,6 +447,15 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 						}
 						testUser={isTestUser}
 						executePaymentUpdate={executePaymentUpdate}
+						gatewayOwner={
+							featureSwitches.tortoiseStripeCheckout &&
+							isSundayTheObserverSubscription(
+								props.productType,
+								productDetail,
+							)
+								? DirectDebitGatewayOwner.TortoiseMedia
+								: undefined
+						}
 					/>
 				);
 			case PaymentMethod.Unknown:

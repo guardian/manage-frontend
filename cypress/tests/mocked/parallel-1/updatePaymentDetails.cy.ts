@@ -11,11 +11,13 @@ import {
 	guardianAdLite,
 	guardianWeeklyPaidByCard,
 	homeDeliverySunday,
+	homeDeliverySundayPaidByDirectDebit,
 } from '../../../../client/fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
 import { paymentMethods } from '../../../../client/fixtures/stripe';
 import { conf } from '../../../../server/config';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
+import { DirectDebitGatewayOwner } from '../../../../shared/directDebit';
 
 describe('Update payment details', () => {
 	beforeEach(() => {
@@ -598,6 +600,59 @@ describe('Update payment details', () => {
 		cy.intercept('POST', '/api/payment/dd/**', {
 			statusCode: 200,
 			body: ddPaymentMethod,
+		}).as('scala_backend');
+
+		cy.visit('/payment/digital');
+
+		cy.wait('@product_detail');
+		cy.findByText('Your current payment method');
+
+		cy.get(`[data-cy="Direct debit"] input`).click();
+
+		cy.findByText('Update your payment method');
+
+		cy.get('input[name="Account holder name"]').type('JON R HEE');
+		cy.get('input[name="Sort Code"]').type('200000');
+		cy.get('input[name="Account Number"]').type('55779911');
+
+		cy.get('input[name="accountHolderConfirmation"').click();
+		cy.findByText('Update payment method').click();
+
+		cy.wait('@validate_dd');
+		cy.wait('@scala_backend');
+		cy.wait('@refetch_subscription');
+
+		cy.findByText('Your payment details were updated successfully');
+
+		cy.get('@scala_backend.all').should('have.length', 1);
+	});
+
+	it('Complete direct debit payment update for Observer - Sunday Only', () => {
+		cy.intercept('GET', '/api/me/mma?productType=*', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(
+				homeDeliverySundayPaidByDirectDebit(),
+			),
+		}).as('product_detail');
+
+		cy.intercept('GET', '/api/me/mma/**', {
+			statusCode: 200,
+			body: toMembersDataApiResponse(
+				homeDeliverySundayPaidByDirectDebit(),
+			),
+		}).as('refetch_subscription');
+
+		cy.intercept('POST', '/api/validate/payment/**', {
+			statusCode: 200,
+			body: { data: { accountValid: true } },
+		}).as('validate_dd');
+
+		cy.intercept('POST', '/api/payment/dd/**', {
+			statusCode: 200,
+			body: {
+				...ddPaymentMethod,
+				gatewayOwner: DirectDebitGatewayOwner.TortoiseMedia,
+			},
 		}).as('scala_backend');
 
 		cy.visit('/payment/digital');
