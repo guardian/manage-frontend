@@ -22,7 +22,6 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 	const queryParams = new URLSearchParams(location.search);
 	const sessionId = queryParams.get('id'); // Read the 'session_id' query parameter
 	const paymentMethodType = queryParams.get('paymentMethodType'); // Read the 'paymentMethodType' query parameter
-	const subscriptionId = queryParams.get('subscriptionId'); // Read the 'subscriptionId' query parameter
 
 	const getNewPaymentMethodDetailFriendlyNameFromPaymentMethodType =
 		useCallback((): string => {
@@ -40,9 +39,14 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 			state: {
 				newPaymentMethodDetailFriendlyName:
 					getNewPaymentMethodDetailFriendlyNameFromPaymentMethodType(),
+				productDetail,
 			},
 		});
-	}, [navigate, getNewPaymentMethodDetailFriendlyNameFromPaymentMethodType]);
+	}, [
+		navigate,
+		getNewPaymentMethodDetailFriendlyNameFromPaymentMethodType,
+		productDetail,
+	]);
 
 	const obtainCheckoutSessionDetails = useCallback(
 		async (id: string): Promise<StripeCheckoutSession> => {
@@ -101,7 +105,7 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 							paymentMethodInfo:
 								checkoutSession?.setup_intent?.payment_method,
 							paymentMethodType,
-							subscriptionId,
+							productDetail,
 						},
 					});
 				})
@@ -122,7 +126,7 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 	}, [
 		sessionId,
 		paymentMethodType,
-		subscriptionId,
+		productDetail,
 		navigate,
 		navigateToFailedPage,
 		obtainCheckoutSessionDetails,

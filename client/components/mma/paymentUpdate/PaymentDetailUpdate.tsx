@@ -333,6 +333,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 								),
 							newSubscriptionData,
 							isFromApp: isFromApp,
+							productDetail,
 						},
 					});
 				}
@@ -342,6 +343,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 					state: {
 						newPaymentMethodDetailFriendlyName:
 							newPaymentMethodDetail.friendlyName,
+						productDetail,
 					},
 				});
 			}
