@@ -85,7 +85,6 @@ export const PaymentDetailUpdateContainer = (
 			link: string;
 		};
 		isFromApp?: boolean;
-		subscriptionId?: string;
 	}
 
 	const [queryParameters] = useSearchParams();
@@ -97,16 +96,6 @@ export const PaymentDetailUpdateContainer = (
 	const navItemReferrer = getNavItemFromFlowReferrer(
 		routerState?.flowReferrer?.title,
 	);
-
-	/**
-	 * Get the subscriptionId:
-	 *  - If the user is entering by "checkout-session-return", we need to get the subscriptionId from the query parameters
-	 *  - After that we can get the subscriptionId from the router state
-	 */
-	const subscriptionId: string | undefined =
-		routerState?.subscriptionId ??
-		queryParameters.get('subscriptionId') ??
-		undefined;
 
 	return (
 		<PageContainer
@@ -126,7 +115,7 @@ export const PaymentDetailUpdateContainer = (
 					)}
 					render={renderContextAndOutletContainer(
 						isFromApp,
-						subscriptionId,
+						queryParameters.get('subscriptionId') ?? undefined,
 					)}
 					loadingMessage={`Retrieving current payment details for your ${props.productType.friendlyName}...`}
 				/>
