@@ -390,6 +390,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 								paymentMethodType={
 									StripeCheckoutSessionPaymentMethodType.Card
 								}
+								subscriptionId={subscription.subscriptionId}
 							/>
 						) : (
 							<CardInputForm
