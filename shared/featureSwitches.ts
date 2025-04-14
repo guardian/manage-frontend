@@ -30,8 +30,7 @@ type FeatureSwitchName =
 	| 'digisubSave'
 	| 'supporterplusCancellationOffer'
 	| 'contributionCancellationPause'
-	| 'digitalArchiveCta'
-	| 'tortoiseStripeCheckout';
+	| 'digitalArchiveCta';
 
 export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	exampleFeature: false,
@@ -41,5 +40,4 @@ export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	supporterplusCancellationOffer: true,
 	contributionCancellationPause: true,
 	digitalArchiveCta: false,
-	tortoiseStripeCheckout: false,
 };

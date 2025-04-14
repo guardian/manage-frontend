@@ -25,7 +25,7 @@ import type {
 } from '@/shared/productResponse';
 import {
 	getMainPlan,
-	getSpecificProductTypeFromTier,
+	getSpecificProductType,
 	isGift,
 	isPaidSubscriptionPlan,
 } from '@/shared/productResponse';
@@ -124,9 +124,7 @@ export const ProductCard = ({
 		throw new Error('mainPlan does not exist in ProductCard');
 	}
 
-	const specificProductType = getSpecificProductTypeFromTier(
-		productDetail.tier,
-	);
+	const specificProductType = getSpecificProductType(productDetail.tier);
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
 

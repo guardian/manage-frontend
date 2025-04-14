@@ -25,7 +25,7 @@ import type {
 import {
 	formatDate,
 	getMainPlan,
-	getSpecificProductTypeFromTier,
+	getSpecificProductType,
 	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
@@ -102,7 +102,7 @@ export const ConfirmedNewPaymentDetailsRenderer = ({
 	previousProductDetail,
 }: ConfirmedNewPaymentDetailsRendererProps) => {
 	const mainPlan = getMainPlan(subscription);
-	const specificProductType = getSpecificProductTypeFromTier(
+	const specificProductType = getSpecificProductType(
 		previousProductDetail.tier,
 	);
 	if (subHasExpectedPaymentType && isPaidSubscriptionPlan(mainPlan)) {

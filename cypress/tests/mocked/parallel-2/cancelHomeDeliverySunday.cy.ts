@@ -1,5 +1,5 @@
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
-import { homeDeliverySunday } from '../../../../client/fixtures/productBuilder/testProducts';
+import { observerDelivery } from '../../../../client/fixtures/productBuilder/testProducts';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Cancel home delivery - Sunday', () => {
@@ -7,7 +7,7 @@ describe('Cancel home delivery - Sunday', () => {
 		signInAndAcceptCookies();
 
 		const baseHomeDeliverySundayResponse = JSON.parse(
-			JSON.stringify(homeDeliverySunday()),
+			JSON.stringify(observerDelivery()),
 		);
 
 		cy.intercept('GET', '/api/me/mma?productType=HomeDelivery', {

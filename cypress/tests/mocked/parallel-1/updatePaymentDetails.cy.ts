@@ -1,4 +1,3 @@
-import { featureSwitches } from '@/shared/featureSwitches';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
 	ddPaymentMethod,
@@ -10,14 +9,14 @@ import {
 	digitalPackPaidByDirectDebit,
 	guardianAdLite,
 	guardianWeeklyPaidByCard,
-	homeDeliverySunday,
-	homeDeliverySundayPaidByDirectDebit,
+	observerDelivery,
+	observerDeliveryPaidByDirectDebit,
 } from '../../../../client/fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
 import { paymentMethods } from '../../../../client/fixtures/stripe';
 import { conf } from '../../../../server/config';
-import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 import { DirectDebitGatewayOwner } from '../../../../shared/directDebit';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Update payment details', () => {
 	beforeEach(() => {
@@ -106,13 +105,7 @@ describe('Update payment details', () => {
 	});
 
 	it('Complete card payment update through Stripe Checkout', () => {
-		if (!featureSwitches.tortoiseStripeCheckout) {
-			// Skip the test if the feature switch is off
-			cy.log('Skipping test because the feature switch is off');
-			return;
-		}
-
-		const productDetail = homeDeliverySunday();
+		const productDetail = observerDelivery();
 		const stripeCheckoutUrl = `https://www.google.com`;
 
 		// #region Intercepts
@@ -325,7 +318,6 @@ describe('Update payment details', () => {
 					},
 					products: [
 						{
-							mmaCategory: 'subscriptions',
 							tier: 'Newspaper Digital Voucher',
 							isPaidTier: true,
 							selfServiceCancellation: {
@@ -631,14 +623,14 @@ describe('Update payment details', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
-				homeDeliverySundayPaidByDirectDebit(),
+				observerDeliveryPaidByDirectDebit(),
 			),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(
-				homeDeliverySundayPaidByDirectDebit(),
+				observerDeliveryPaidByDirectDebit(),
 			),
 		}).as('refetch_subscription');
 

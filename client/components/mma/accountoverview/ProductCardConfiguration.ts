@@ -85,4 +85,10 @@ export const productCardConfiguration: Record<
 	guardianpatron: {
 		colour: productColour.membership,
 	},
+	observer: {
+		colour: productColour.newspaper,
+	},
+	digitalvoucherobserver: {
+		colour: productColour.newspaper,
+	},
 };

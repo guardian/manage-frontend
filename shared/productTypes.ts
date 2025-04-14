@@ -49,7 +49,9 @@ type ProductFriendlyName =
 	| 'support'
 	| 'recurring support'
 	| 'guardian ad-lite'
-	| 'guardian patron';
+	| 'guardian patron'
+	| 'newspaper delivery - Observer subscription'
+	| 'newspaper subscription card - Observer';
 type ProductUrlPart =
 	| 'membership'
 	| 'contributions'
@@ -279,7 +281,9 @@ export type ProductTypeKeys =
 	| 'supporterplus'
 	| 'tierthree'
 	| 'guardianadlite'
-	| 'guardianpatron';
+	| 'guardianpatron'
+	| 'observer'
+	| 'digitalvoucherobserver';
 
 export type GroupedProductTypeKeys =
 	| 'membership'
@@ -445,6 +449,47 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			productFilenamePart: 'Newspaper - Home Delivery',
 		},
 	},
+	observer: {
+		productTitle: () => 'Newspaper Delivery - Observer Subscription',
+		friendlyName: 'newspaper delivery - Observer subscription',
+		shortFriendlyName: 'newspaper delivery - Observer subscription',
+		productType: 'homedelivery',
+		groupedProductType: 'subscriptions',
+		allProductsProductTypeFilterString: 'HomeDelivery',
+		urlPart: 'homedelivery',
+		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
+		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
+		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+		softOptInIDs: [
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SubscriberPreview,
+			SoftOptInIDs.SupporterNewsletter,
+		],
+		holidayStops: {
+			issueKeyword: 'paper',
+			alternateNoticeString: "two working days' notice",
+		},
+		delivery: {
+			showAddress: showDeliveryAddressCheck,
+			enableDeliveryInstructionsUpdate: true,
+			records: {
+				productNameForProblemReport: 'Home Delivery',
+				showDeliveryInstructions: true,
+				numberOfProblemRecordsToShow: 14,
+				contactUserOnExistingProblemReport: true,
+				availableProblemTypes: [
+					{
+						label: 'Instructions Not Followed',
+						messageIsMandatory: true,
+					},
+					...commonDeliveryProblemTypes,
+				],
+			},
+		},
+		fulfilmentDateCalculator: {
+			productFilenamePart: 'Newspaper - Home Delivery',
+		},
+	},
 	nationaldelivery: {
 		productTitle: calculateProductTitle('Newspaper Delivery'),
 		friendlyName: 'newspaper home delivery subscription',
@@ -561,6 +606,33 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			showAddress: showDeliveryAddressCheck,
 		},
 	},
+	digitalvoucherobserver: {
+		productTitle: () => 'Newspaper Subscription Card - Observer',
+		friendlyName: 'newspaper subscription card - Observer',
+		productType: 'digitalvoucher',
+		groupedProductType: 'subscriptions',
+		allProductsProductTypeFilterString: 'DigitalVoucher',
+		urlPart: 'subscriptioncard',
+		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
+		legacyUrlPart: 'digitalvoucher',
+		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
+		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+		softOptInIDs: [
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SubscriberPreview,
+			SoftOptInIDs.SupporterNewsletter,
+		],
+		holidayStops: {
+			issueKeyword: 'issue',
+			alternateNoticeString: "one day's notice",
+			additionalHowAdvice:
+				'Please note you will not be able to redeem your paper on any days that you have a suspension in place.',
+			hideDeliveryRedirectionHelpBullet: true,
+		},
+		delivery: {
+			showAddress: showDeliveryAddressCheck,
+		},
+	},
 	guardianweekly: {
 		productTitle: () => 'Guardian Weekly',
 		friendlyName: 'Guardian Weekly subscription',
@@ -582,7 +654,8 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 		holidayStops: {
 			issueKeyword: 'issue',
-			alternateNoticeString: "notice by the Tuesday of the week before your issue is due",
+			alternateNoticeString:
+				'notice by the Tuesday of the week before your issue is due',
 		},
 		delivery: {
 			showAddress: showDeliveryAddressCheck,
