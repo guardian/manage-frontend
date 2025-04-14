@@ -21,6 +21,7 @@ export const stripeCreateCheckoutSessionHandler = async (
 	const clientRequestBody: {
 		paymentMethodType: 'card';
 		productTypeUrlPart: string;
+		subscriptionId: string;
 	} = JSON.parse(clientRequestBodyData);
 
 	// Get Stripe Secret Key
@@ -48,7 +49,7 @@ export const stripeCreateCheckoutSessionHandler = async (
 			const outgoingURL = 'https://api.stripe.com/v1/checkout/sessions';
 			const requestBody = new URLSearchParams({
 				mode: 'setup',
-				success_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}/checkout-session-return?id={CHECKOUT_SESSION_ID}&paymentMethodType=${clientRequestBody.paymentMethodType}`,
+				success_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}/checkout-session-return?id={CHECKOUT_SESSION_ID}&paymentMethodType=${clientRequestBody.paymentMethodType}&subscriptionId=${clientRequestBody.subscriptionId}`,
 				cancel_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}`,
 				'payment_method_types[0]': clientRequestBody.paymentMethodType,
 				/**
