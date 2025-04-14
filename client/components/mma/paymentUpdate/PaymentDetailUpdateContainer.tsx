@@ -1,6 +1,11 @@
 import type { Context } from 'react';
 import { createContext } from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import {
+	Navigate,
+	Outlet,
+	useLocation,
+	useSearchParams,
+} from 'react-router-dom';
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
@@ -23,7 +28,8 @@ export interface PaymentUpdateContextInterface {
 }
 
 const renderContextAndOutletContainer =
-	(isFromApp?: boolean) => (mdapiResponse: MembersDataApiResponse) => {
+	(isFromApp?: boolean, subscriptionId?: string) =>
+	(mdapiResponse: MembersDataApiResponse) => {
 		const filteredProductDetails = mdapiResponse.products
 			.filter(isProduct)
 			.filter(
@@ -42,6 +48,26 @@ const renderContextAndOutletContainer =
 					<Outlet />
 				</PaymentUpdateContext.Provider>
 			);
+		} else if (subscriptionId) {
+			const filteredProductDetailsWithSubscriptionId =
+				filteredProductDetails.filter(
+					(productDetail) =>
+						productDetail.subscription.subscriptionId ===
+						subscriptionId,
+				);
+			if (filteredProductDetailsWithSubscriptionId.length === 1) {
+				return (
+					<PaymentUpdateContext.Provider
+						value={{
+							productDetail:
+								filteredProductDetailsWithSubscriptionId[0],
+							isFromApp,
+						}}
+					>
+						<Outlet />
+					</PaymentUpdateContext.Provider>
+				);
+			}
 		}
 		return <Navigate to="/" />;
 	};
@@ -59,8 +85,10 @@ export const PaymentDetailUpdateContainer = (
 			link: string;
 		};
 		isFromApp?: boolean;
+		subscriptionId?: string;
 	}
 
+	const [queryParameters] = useSearchParams();
 	const location = useLocation();
 	const routerState = location.state as LocationState;
 	const productDetail = routerState?.productDetail;
@@ -69,6 +97,16 @@ export const PaymentDetailUpdateContainer = (
 	const navItemReferrer = getNavItemFromFlowReferrer(
 		routerState?.flowReferrer?.title,
 	);
+
+	/**
+	 * Get the subscriptionId:
+	 *  - If the user is entering by "checkout-session-return", we need to get the subscriptionId from the query parameters
+	 *  - After that we can get the subscriptionId from the router state
+	 */
+	const subscriptionId: string | undefined =
+		routerState?.subscriptionId ??
+		queryParameters.get('subscriptionId') ??
+		undefined;
 
 	return (
 		<PageContainer
@@ -86,7 +124,10 @@ export const PaymentDetailUpdateContainer = (
 					fetch={createProductDetailFetcher(
 						props.productType.allProductsProductTypeFilterString,
 					)}
-					render={renderContextAndOutletContainer(isFromApp)}
+					render={renderContextAndOutletContainer(
+						isFromApp,
+						subscriptionId,
+					)}
 					loadingMessage={`Retrieving current payment details for your ${props.productType.friendlyName}...`}
 				/>
 			)}
