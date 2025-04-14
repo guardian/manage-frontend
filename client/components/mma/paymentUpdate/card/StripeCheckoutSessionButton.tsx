@@ -18,6 +18,7 @@ export interface StripeCheckoutSessionButtonProps {
 	stripeApiKey: string;
 	productTypeUrlPart: string;
 	paymentMethodType: StripeCheckoutSessionPaymentMethodType;
+	subscriptionId: string;
 }
 
 /**
@@ -57,6 +58,7 @@ export const StripeCheckoutSessionButton = (
 			body: JSON.stringify({
 				paymentMethodType: props.paymentMethodType,
 				productTypeUrlPart: props.productTypeUrlPart,
+				subscriptionId: props.subscriptionId,
 			}),
 		})
 			.then((response) => {
