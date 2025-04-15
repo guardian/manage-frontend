@@ -115,7 +115,7 @@ export const PaymentDetailUpdateContainer = (
 					)}
 					render={renderContextAndOutletContainer(
 						isFromApp,
-						queryParameters.get('subscriptionId') ?? undefined,
+						queryParameters.get('subscriptionId') ?? undefined, // for internal links we use the context instead of query params
 					)}
 					loadingMessage={`Retrieving current payment details for your ${props.productType.friendlyName}...`}
 				/>
