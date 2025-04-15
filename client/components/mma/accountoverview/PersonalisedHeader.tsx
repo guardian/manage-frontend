@@ -7,7 +7,7 @@ import {
 	space,
 } from '@guardian/source/foundations';
 import { min } from 'date-fns';
-import { isSundayTheObserverSubscription } from '@/client/utilities/sundayTheObserverSubscription';
+import { isNotSundayTheObserverSubscription } from '@/client/utilities/sundayTheObserverSubscription';
 import { dateString } from '@/shared/dates';
 import type { MPAPIResponse } from '@/shared/mpapiResponse';
 import type { MembersDataApiResponse } from '@/shared/productResponse';
@@ -55,8 +55,7 @@ export const PersonalisedHeader = ({
 
 	const isSoleyObserverProductOwner =
 		mpapiResponse.subscriptions.length === 0 &&
-		productDetails.length === 1 &&
-		isSundayTheObserverSubscription(productDetails[0]);
+		!productDetails.some(isNotSundayTheObserverSubscription);
 
 	return (
 		<hgroup
