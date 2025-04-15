@@ -1,6 +1,11 @@
 import type { Context } from 'react';
 import { createContext } from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import {
+	Navigate,
+	Outlet,
+	useLocation,
+	useSearchParams,
+} from 'react-router-dom';
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
@@ -23,7 +28,8 @@ export interface PaymentUpdateContextInterface {
 }
 
 const renderContextAndOutletContainer =
-	(isFromApp?: boolean) => (mdapiResponse: MembersDataApiResponse) => {
+	(isFromApp?: boolean, subscriptionId?: string) =>
+	(mdapiResponse: MembersDataApiResponse) => {
 		const filteredProductDetails = mdapiResponse.products
 			.filter(isProduct)
 			.filter(
@@ -42,6 +48,26 @@ const renderContextAndOutletContainer =
 					<Outlet />
 				</PaymentUpdateContext.Provider>
 			);
+		} else if (subscriptionId) {
+			const filteredProductDetailsWithSubscriptionId =
+				filteredProductDetails.filter(
+					(productDetail) =>
+						productDetail.subscription.subscriptionId ===
+						subscriptionId,
+				);
+			if (filteredProductDetailsWithSubscriptionId.length === 1) {
+				return (
+					<PaymentUpdateContext.Provider
+						value={{
+							productDetail:
+								filteredProductDetailsWithSubscriptionId[0],
+							isFromApp,
+						}}
+					>
+						<Outlet />
+					</PaymentUpdateContext.Provider>
+				);
+			}
 		}
 		return <Navigate to="/" />;
 	};
@@ -61,6 +87,7 @@ export const PaymentDetailUpdateContainer = (
 		isFromApp?: boolean;
 	}
 
+	const [queryParameters] = useSearchParams();
 	const location = useLocation();
 	const routerState = location.state as LocationState;
 	const productDetail = routerState?.productDetail;
@@ -86,7 +113,10 @@ export const PaymentDetailUpdateContainer = (
 					fetch={createProductDetailFetcher(
 						props.productType.allProductsProductTypeFilterString,
 					)}
-					render={renderContextAndOutletContainer(isFromApp)}
+					render={renderContextAndOutletContainer(
+						isFromApp,
+						queryParameters.get('subscriptionId') ?? undefined, // for internal links we use the context instead of query params
+					)}
 					loadingMessage={`Retrieving current payment details for your ${props.productType.friendlyName}...`}
 				/>
 			)}

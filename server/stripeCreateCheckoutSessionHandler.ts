@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/node';
 import type express from 'express';
 import fetch from 'node-fetch';
+import type { StripeCreateCheckoutSessionRequest } from '@/shared/requests/stripe-create-checkout-session';
 import { STRIPE_PUBLIC_KEY_HEADER } from '../shared/stripeSetupIntent';
 import { conf } from './config';
 import { log, putMetric } from './log';
@@ -18,10 +19,9 @@ export const stripeCreateCheckoutSessionHandler = async (
 	}
 
 	// Map request
-	const clientRequestBody: {
-		paymentMethodType: 'card';
-		productTypeUrlPart: string;
-	} = JSON.parse(clientRequestBodyData);
+	const clientRequestBody: StripeCreateCheckoutSessionRequest = JSON.parse(
+		clientRequestBodyData,
+	);
 
 	// Get Stripe Secret Key
 	stripeSetupIntentConfigPromise
@@ -48,7 +48,7 @@ export const stripeCreateCheckoutSessionHandler = async (
 			const outgoingURL = 'https://api.stripe.com/v1/checkout/sessions';
 			const requestBody = new URLSearchParams({
 				mode: 'setup',
-				success_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}/checkout-session-return?id={CHECKOUT_SESSION_ID}&paymentMethodType=${clientRequestBody.paymentMethodType}`,
+				success_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}/checkout-session-return?id={CHECKOUT_SESSION_ID}&paymentMethodType=${clientRequestBody.paymentMethodType}&subscriptionId=${clientRequestBody.subscriptionId}`,
 				cancel_url: `https://manage.${conf.DOMAIN}/payment/${clientRequestBody.productTypeUrlPart}`,
 				'payment_method_types[0]': clientRequestBody.paymentMethodType,
 				/**

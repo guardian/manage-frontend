@@ -39,9 +39,14 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 			state: {
 				newPaymentMethodDetailFriendlyName:
 					getNewPaymentMethodDetailFriendlyNameFromPaymentMethodType(),
+				productDetail,
 			},
 		});
-	}, [navigate, getNewPaymentMethodDetailFriendlyNameFromPaymentMethodType]);
+	}, [
+		navigate,
+		getNewPaymentMethodDetailFriendlyNameFromPaymentMethodType,
+		productDetail,
+	]);
 
 	const obtainCheckoutSessionDetails = useCallback(
 		async (id: string): Promise<StripeCheckoutSession> => {
@@ -100,6 +105,7 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 							paymentMethodInfo:
 								checkoutSession?.setup_intent?.payment_method,
 							paymentMethodType,
+							productDetail,
 						},
 					});
 				})
@@ -120,6 +126,7 @@ export const PaymentDetailUpdateCheckoutSessionReturn = () => {
 	}, [
 		sessionId,
 		paymentMethodType,
+		productDetail,
 		navigate,
 		navigateToFailedPage,
 		obtainCheckoutSessionDetails,

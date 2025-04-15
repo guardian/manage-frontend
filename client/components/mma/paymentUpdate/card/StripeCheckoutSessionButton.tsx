@@ -7,6 +7,7 @@ import {
 import * as Sentry from '@sentry/browser';
 import type { PaymentMethod } from '@stripe/stripe-js';
 import { useState } from 'react';
+import type { StripeCreateCheckoutSessionRequest } from '@/shared/requests/stripe-create-checkout-session';
 import { STRIPE_PUBLIC_KEY_HEADER } from '../../../../../shared/stripeSetupIntent';
 import { LoadingCircleIcon } from '../../shared/assets/LoadingCircleIcon';
 
@@ -18,6 +19,7 @@ export interface StripeCheckoutSessionButtonProps {
 	stripeApiKey: string;
 	productTypeUrlPart: string;
 	paymentMethodType: StripeCheckoutSessionPaymentMethodType;
+	subscriptionId: string;
 }
 
 /**
@@ -48,16 +50,18 @@ export const StripeCheckoutSessionButton = (
 		setPreparingCheckout(true);
 
 		// Create Checkout Session on the server
+		const body: StripeCreateCheckoutSessionRequest = {
+			paymentMethodType: props.paymentMethodType,
+			productTypeUrlPart: props.productTypeUrlPart,
+			subscriptionId: props.subscriptionId,
+		};
 		fetch('/api/payment/checkout-session', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
 				[STRIPE_PUBLIC_KEY_HEADER]: props.stripeApiKey,
 			},
-			body: JSON.stringify({
-				paymentMethodType: props.paymentMethodType,
-				productTypeUrlPart: props.productTypeUrlPart,
-			}),
+			body: JSON.stringify(body),
 		})
 			.then((response) => {
 				if (response.ok) {
