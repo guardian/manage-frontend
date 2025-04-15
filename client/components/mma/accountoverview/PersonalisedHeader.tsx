@@ -53,7 +53,7 @@ export const PersonalisedHeader = ({
 
 	const supportStartYear = dateString(oldestDate, 'MMMM yyyy');
 
-	const isSoleyObserverProductOwner =
+	const onlyHasObserverProducts =
 		mpapiResponse.subscriptions.length === 0 &&
 		!productDetails.some(isGuardianProduct);
 
@@ -78,7 +78,7 @@ export const PersonalisedHeader = ({
 			>
 				{calculateTimeOfDay()}, {userDetails.firstName ?? 'supporter'}
 			</h2>
-			{!isSoleyObserverProductOwner && (
+			{!onlyHasObserverProducts && (
 				<p
 					css={css`
 						${headlineMedium17};
