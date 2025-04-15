@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/node';
 import type express from 'express';
 import fetch from 'node-fetch';
+import type { StripeCreateCheckoutSessionRequest } from '@/shared/requests/stripe-create-checkout-session';
 import { STRIPE_PUBLIC_KEY_HEADER } from '../shared/stripeSetupIntent';
 import { conf } from './config';
 import { log, putMetric } from './log';
@@ -18,11 +19,9 @@ export const stripeCreateCheckoutSessionHandler = async (
 	}
 
 	// Map request
-	const clientRequestBody: {
-		paymentMethodType: 'card';
-		productTypeUrlPart: string;
-		subscriptionId: string;
-	} = JSON.parse(clientRequestBodyData);
+	const clientRequestBody: StripeCreateCheckoutSessionRequest = JSON.parse(
+		clientRequestBodyData,
+	);
 
 	// Get Stripe Secret Key
 	stripeSetupIntentConfigPromise
