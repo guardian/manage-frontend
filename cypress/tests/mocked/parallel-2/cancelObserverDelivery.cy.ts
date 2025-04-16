@@ -2,7 +2,7 @@ import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiRespo
 import { observerDelivery } from '../../../../client/fixtures/productBuilder/testProducts';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
-describe('Cancel Observer delivery', () => {
+describe('Cancel Observer delivery (inside M25)', () => {
 	beforeEach(() => {
 		signInAndAcceptCookies();
 
