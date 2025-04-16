@@ -10,7 +10,7 @@ import { min } from 'date-fns';
 import { dateString } from '@/shared/dates';
 import type { MPAPIResponse } from '@/shared/mpapiResponse';
 import type { MembersDataApiResponse } from '@/shared/productResponse';
-import { isGuardianProduct } from '@/shared/productResponse';
+import { isObserverProduct } from '@/shared/productResponse';
 import { isProduct } from '@/shared/productResponse';
 
 interface PersonalisedHeaderProps {
@@ -55,7 +55,7 @@ export const PersonalisedHeader = ({
 
 	const onlyHasObserverProducts =
 		mpapiResponse.subscriptions.length === 0 &&
-		!productDetails.some(isGuardianProduct);
+		productDetails.every(isObserverProduct);
 
 	return (
 		<hgroup

@@ -119,13 +119,6 @@ export function isProduct(
 	return productTiers.includes((data as ProductDetail)?.tier);
 }
 
-export const isGuardianProduct = (productDetail: ProductDetail): boolean => {
-	return (
-		productDetail.tier !== 'Newspaper Delivery - Observer' &&
-		productDetail.tier !== 'Newspaper Digital Voucher - Observer'
-	);
-};
-
 export const isObserverProduct = (productDetail: ProductDetail): boolean => {
 	return (
 		productDetail.tier === 'Newspaper Delivery - Observer' ||
