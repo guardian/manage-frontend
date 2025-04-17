@@ -7,10 +7,10 @@ import {
 	space,
 } from '@guardian/source/foundations';
 import { min } from 'date-fns';
-import { isSundayTheObserverSubscription } from '@/client/utilities/sundayTheObserverSubscription';
 import { dateString } from '@/shared/dates';
 import type { MPAPIResponse } from '@/shared/mpapiResponse';
 import type { MembersDataApiResponse } from '@/shared/productResponse';
+import { isObserverProduct } from '@/shared/productResponse';
 import { isProduct } from '@/shared/productResponse';
 
 interface PersonalisedHeaderProps {
@@ -53,10 +53,9 @@ export const PersonalisedHeader = ({
 
 	const supportStartYear = dateString(oldestDate, 'MMMM yyyy');
 
-	const isSoleyObserverProductOwner =
+	const onlyHasObserverProducts =
 		mpapiResponse.subscriptions.length === 0 &&
-		productDetails.length === 1 &&
-		isSundayTheObserverSubscription(productDetails[0]);
+		productDetails.every(isObserverProduct);
 
 	return (
 		<hgroup
@@ -79,7 +78,7 @@ export const PersonalisedHeader = ({
 			>
 				{calculateTimeOfDay()}, {userDetails.firstName ?? 'supporter'}
 			</h2>
-			{!isSoleyObserverProductOwner && (
+			{!onlyHasObserverProducts && (
 				<p
 					css={css`
 						${headlineMedium17};

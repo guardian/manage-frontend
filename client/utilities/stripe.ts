@@ -3,7 +3,7 @@ import type { Stripe as StripeSDK } from '@stripe/stripe-js/pure';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { useEffect, useState } from 'react';
 import type { ProductDetail } from '@/shared/productResponse';
-import { isSundayTheObserverSubscription } from './sundayTheObserverSubscription';
+import { isObserverProduct } from '@/shared/productResponse';
 
 export function getStripeKey(
 	country: string | undefined,
@@ -55,7 +55,7 @@ export const getStripeKeyByProduct = (productDetail: ProductDetail): string => {
 	 * to update their Stripe key for Sunday The Observer subscriptions.
 	 * Change this if we run into issues.
 	 */
-	if (isSundayTheObserverSubscription(productDetail)) {
+	if (isObserverProduct(productDetail)) {
 		stripePublicKey = productDetail.isTestUser
 			? window.guardian?.stripeKeyTortoiseMedia?.test
 			: window.guardian?.stripeKeyTortoiseMedia?.default;

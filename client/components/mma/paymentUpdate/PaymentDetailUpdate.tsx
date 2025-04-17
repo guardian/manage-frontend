@@ -19,7 +19,6 @@ import type { PaymentMethod as StripeCheckoutSessionPaymentMethod } from '@strip
 import type * as React from 'react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { isSundayTheObserverSubscription } from '@/client/utilities/sundayTheObserverSubscription';
 import { DirectDebitGatewayOwner } from '@/shared/directDebit';
 import {
 	getScopeFromRequestPathOrEmptyString,
@@ -31,6 +30,7 @@ import type {
 	Subscription,
 	WithSubscription,
 } from '../../../../shared/productResponse';
+import { isObserverProduct } from '../../../../shared/productResponse';
 import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
@@ -385,7 +385,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 			case PaymentMethod.Card:
 				return stripePublicKey ? (
 					<>
-						{isSundayTheObserverSubscription(productDetail) ? (
+						{isObserverProduct(productDetail) ? (
 							<StripeCheckoutSessionButton
 								stripeApiKey={stripePublicKey}
 								productTypeUrlPart={props.productType.urlPart}
@@ -443,7 +443,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 						testUser={isTestUser}
 						executePaymentUpdate={executePaymentUpdate}
 						gatewayOwner={
-							isSundayTheObserverSubscription(productDetail)
+							isObserverProduct(productDetail)
 								? DirectDebitGatewayOwner.TortoiseMedia
 								: undefined
 						}
