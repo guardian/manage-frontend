@@ -114,6 +114,34 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 	},
 };
 
+export const WithOnlyObserverSubscriptions: StoryObj<typeof AccountOverview> = {
+	render: () => {
+		return <AccountOverview />;
+	},
+
+	parameters: {
+		msw: [
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
+			}),
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
+			}),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(
+						newspaperVoucherObserver(),
+						observerDelivery(),
+					),
+				);
+			}),
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
+			}),
+		],
+	},
+};
+
 export const WithUSASubscription: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
