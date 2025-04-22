@@ -58,7 +58,7 @@ describe('E2E with Okta', () => {
 					// Only include <a> elements that don't contain a button with text "Observer newsletter"
 					return !el
 						.querySelector('button')
-						?.textContent?.includes('Observer newsletter');
+						?.textContent?.includes('View Observer Newsletters');
 				})
 				.click({ multiple: true });
 
