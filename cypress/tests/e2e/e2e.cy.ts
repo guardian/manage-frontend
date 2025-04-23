@@ -54,6 +54,12 @@ describe('E2E with Okta', () => {
 				.parent()
 				.parent()
 				.find('a')
+				.filter((index, el) => {
+					// Only include <a> elements that don't contain a button with text "Observer newsletter"
+					return !el
+						.querySelector('button')
+						?.textContent?.includes('View Observer Newsletters');
+				})
 				.click({ multiple: true });
 
 			cy.findByText('Your newsletters')
