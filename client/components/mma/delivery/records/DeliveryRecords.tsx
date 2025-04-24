@@ -429,23 +429,30 @@ export const DeliveryRecords = () => {
 						)}
 						{(pageStatus === PageStatus.ReportIssueStep1 ||
 							pageStatus === PageStatus.ReportIssueStep2) && (
-							<DeliveryRecordProblemForm
-								showNextStepButton={
-									pageStatus !== PageStatus.ReportIssueStep2
-								}
-								onResetDeliveryRecordsPage={
-									resetDeliveryRecordsPage
-								}
-								onFormSubmit={step1FormSubmitListener}
-								inValidationState={step1formValidationState}
-								updateValidationStatusCallback={
-									step1FormUpdateCallback
-								}
-								updateRadioSelectionCallback={
-									step1FormRadioOptionCallback
-								}
-								problemTypes={problemTypes}
-							/>
+							<>
+								<p>
+									Have you tried updating your delivery
+									instructions
+								</p>
+								<DeliveryRecordProblemForm
+									showNextStepButton={
+										pageStatus !==
+										PageStatus.ReportIssueStep2
+									}
+									onResetDeliveryRecordsPage={
+										resetDeliveryRecordsPage
+									}
+									onFormSubmit={step1FormSubmitListener}
+									inValidationState={step1formValidationState}
+									updateValidationStatusCallback={
+										step1FormUpdateCallback
+									}
+									updateRadioSelectionCallback={
+										step1FormRadioOptionCallback
+									}
+									problemTypes={problemTypes}
+								/>
+							</>
 						)}
 					</div>
 				</>

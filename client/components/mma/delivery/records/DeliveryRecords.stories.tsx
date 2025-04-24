@@ -4,11 +4,17 @@ import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecor
 import type { ProductTypeWithDeliveryRecordsProperties } from '../../../../../shared/productTypes';
 import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { deliveryRecordsWithDelivery } from '../../../../fixtures/deliveryRecords';
-import { guardianWeeklyPaidByCard } from '../../../../fixtures/productBuilder/testProducts';
+import {
+	guardianWeeklyPaidByCard,
+	homeDelivery,
+} from '../../../../fixtures/productBuilder/testProducts';
 import { DeliveryRecords } from './DeliveryRecords';
 import { DeliveryRecordsContainer } from './DeliveryRecordsContainer';
 import { DeliveryRecordsProblemConfirmation } from './DeliveryRecordsProblemConfirmation';
 import { DeliveryRecordsProblemReview } from './DeliveryRecordsProblemReview';
+
+const deliveryRecordsGW = deliveryRecordsWithDelivery();
+const deliveryRecordsHomeDelivery = deliveryRecordsWithDelivery(true);
 
 export default {
 	component: DeliveryRecordsContainer,
@@ -28,7 +34,7 @@ export default {
 	},
 } as Meta<typeof DeliveryRecordsContainer>;
 
-export const DeliveryHistory: StoryObj<typeof DeliveryRecords> = {
+export const DeliveryHistoryGuardianWeekly: StoryObj<typeof DeliveryRecords> = {
 	render: () => {
 		return <DeliveryRecords />;
 	},
@@ -36,13 +42,15 @@ export const DeliveryHistory: StoryObj<typeof DeliveryRecords> = {
 	parameters: {
 		msw: [
 			http.get('/api/delivery-records/*', () => {
-				return HttpResponse.json(deliveryRecordsWithDelivery)
+				return HttpResponse.json(deliveryRecordsGW);
 			}),
 		],
 	},
 };
 
-export const Review: StoryObj<typeof DeliveryRecordsProblemReview> = {
+export const ReviewGuardianWeekly: StoryObj<
+	typeof DeliveryRecordsProblemReview
+> = {
 	render: () => {
 		return <DeliveryRecordsProblemReview />;
 	},
@@ -50,29 +58,56 @@ export const Review: StoryObj<typeof DeliveryRecordsProblemReview> = {
 	parameters: {
 		msw: [
 			http.get('/api/delivery-records/*', () => {
-				return HttpResponse.json(deliveryRecordsWithDelivery)
+				return HttpResponse.json(deliveryRecordsGW);
 			}),
 		],
 		reactRouter: {
-			state: { affectedRecords: deliveryRecordsWithDelivery.results },
+			state: { affectedRecords: deliveryRecordsGW.results },
 		},
 	},
 };
 
-export const Confirmation: StoryObj<typeof DeliveryRecordsProblemConfirmation> =
-	{
-		render: () => {
-			return <DeliveryRecordsProblemConfirmation />;
-		},
+export const ConfirmationGuardianWeekly: StoryObj<
+	typeof DeliveryRecordsProblemConfirmation
+> = {
+	render: () => {
+		return <DeliveryRecordsProblemConfirmation />;
+	},
 
-		parameters: {
-			msw: [
-				http.get('/api/delivery-records/*', () => {
-					return HttpResponse.json(deliveryRecordsWithDelivery)
-				}),
-				http.post('/api/delivery-records/*', () => {
-					return HttpResponse.json(deliveryRecordsWithDelivery)
-				}),
-			],
+	parameters: {
+		msw: [
+			http.get('/api/delivery-records/*', () => {
+				return HttpResponse.json(deliveryRecordsGW);
+			}),
+			http.post('/api/delivery-records/*', () => {
+				return HttpResponse.json(deliveryRecordsGW);
+			}),
+		],
+	},
+};
+
+export const DeliveryHistoryNewspaperDelivery: StoryObj<
+	typeof DeliveryRecords
+> = {
+	render: () => {
+		return <DeliveryRecords />;
+	},
+
+	parameters: {
+		msw: [
+			http.get('/api/delivery-records/*', () => {
+				return HttpResponse.json(deliveryRecordsHomeDelivery);
+			}),
+		],
+		reactRouter: {
+			state: { productDetail: homeDelivery() },
+			container: (
+				<DeliveryRecordsContainer
+					productType={
+						PRODUCT_TYPES.homedelivery as ProductTypeWithDeliveryRecordsProperties
+					}
+				/>
+			),
 		},
-	};
+	},
+};
