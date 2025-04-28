@@ -10,6 +10,7 @@ interface ReadOnlyAddressDisplayProps {
 	editButtonCallback?: () => void;
 	address: DeliveryAddress;
 	instructions?: string;
+	promptIfInstructionsNotSet?: true;
 }
 export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 	const dtCss = (ignoreMinWidthAtNonMobile?: boolean) => `
@@ -30,6 +31,10 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
     vertical-align: top;
     margin-left: 0;
 `;
+
+	const showInstructions =
+		!!props.instructions || props.promptIfInstructionsNotSet;
+
 	return (
 		<dl
 			css={css`
@@ -59,7 +64,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 					`}
 				>
 					<DeliveryAddressDisplay {...props.address} />
-					{!props.instructions && props.showEditButton && (
+					{!showInstructions && props.showEditButton && (
 						<Button
 							onClick={() => props.editButtonCallback?.()}
 							cssOverrides={css`
@@ -82,7 +87,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 					)}
 				</dd>
 			</div>
-			{props.instructions && (
+			{showInstructions && (
 				<div
 					css={css`
 						display: table-row;
@@ -100,7 +105,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 							${ddCss}
 						`}
 					>
-						{props.instructions}
+						{props.instructions || "No delivery instructions set. Have you thought about setting some?"}
 						{props.showEditButton && (
 							<Button
 								onClick={() => props.editButtonCallback?.()}

@@ -430,10 +430,6 @@ export const DeliveryRecords = () => {
 						{(pageStatus === PageStatus.ReportIssueStep1 ||
 							pageStatus === PageStatus.ReportIssueStep2) && (
 							<>
-								<p>
-									Have you tried updating your delivery
-									instructions
-								</p>
 								<DeliveryRecordProblemForm
 									showNextStepButton={
 										pageStatus !==

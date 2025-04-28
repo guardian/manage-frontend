@@ -70,6 +70,11 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		Error,
 	}
 
+	console.log(
+		'props.enableDeliveryInstructions = ',
+		props.enableDeliveryInstructions,
+	);
+
 	const [status, setStatus] = useState(Status.ReadOnly);
 
 	const deliveryAddressContext = useContext(DeliveryRecordsAddressContext);
@@ -649,6 +654,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 						deliveryAddressContext.address?.instructions) ||
 					undefined
 				}
+				promptIfInstructionsNotSet
 			/>
 			{isNationalDelivery && (
 				<div
