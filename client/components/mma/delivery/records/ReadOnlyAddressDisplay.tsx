@@ -3,6 +3,7 @@ import { from, palette, space, textSans17 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import Color from 'color';
 import type { DeliveryAddress } from '../../../../../shared/productResponse';
+import { InfoSection } from '../../shared/InfoSection';
 import { DeliveryAddressDisplay } from '../address/DeliveryAddressDisplay';
 
 interface ReadOnlyAddressDisplayProps {
@@ -41,6 +42,8 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 				margin: 0;
 				padding: ${space[3]}px;
 				display: table;
+				border-collapse: seperate;
+				border-spacing: 0 ${space[5]}px;
 				${from.tablet} {
 					padding: ${space[5]}px;
 				}
@@ -105,13 +108,18 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 							${ddCss}
 						`}
 					>
-						{props.instructions || "No delivery instructions set. Have you thought about setting some?"}
+						{props.instructions || (
+							<InfoSection>
+								No delivery instructions set. Have you thought
+								about adding some?
+							</InfoSection>
+						)}
 						{props.showEditButton && (
 							<Button
 								onClick={() => props.editButtonCallback?.()}
 								cssOverrides={css`
 									display: block;
-									margin-top: ${space[5]}px;
+									margin-top: ${space[8]}px;
 									color: ${palette.brand[400]};
 									background-color: ${palette.brand[800]};
 									:hover {
@@ -124,7 +132,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 									}
 								`}
 							>
-								Update
+								Edit
 							</Button>
 						)}
 					</dd>

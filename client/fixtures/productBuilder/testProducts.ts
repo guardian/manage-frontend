@@ -176,6 +176,13 @@ export function homeDelivery() {
 		.getProductDetailObject();
 }
 
+export function homeDeliveryWithInstructions(instructions: string) {
+	return new ProductBuilder(baseHomeDelivery())
+		.withDeliveryInstructions(instructions)
+		.payByCard()
+		.getProductDetailObject();
+}
+
 export function observerDelivery() {
 	return new ProductBuilder(baseObserverDelivery())
 		.payByCard()

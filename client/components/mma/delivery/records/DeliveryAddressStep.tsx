@@ -5,6 +5,7 @@ import {
 	space,
 	textSans15,
 	textSans17,
+	until,
 } from '@guardian/source/foundations';
 import {
 	Button,
@@ -69,11 +70,6 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		Confirmation,
 		Error,
 	}
-
-	console.log(
-		'props.enableDeliveryInstructions = ',
-		props.enableDeliveryInstructions,
-	);
 
 	const [status, setStatus] = useState(Status.ReadOnly);
 
@@ -199,6 +195,15 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 			.some(({ productType }) => {
 				return productType.productType === 'nationaldelivery';
 			});
+
+		const deliveryInstructionsInfoCss = css`
+			margin-top: ${space[3]}px;
+			${from.wide} {
+				display: inline-block;
+				margin: ${space[1]}px 0 ${space[3]}px ${space[3]}px;
+				width: calc(100% - (30ch + ${space[3]}px + 2px));
+			}
+		`;
 
 		if (hasNationalDelivery) {
 			return (
@@ -401,47 +406,15 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 											characters remaining
 										</span>
 									</div>
-									<p
-										css={css`
-											display: block;
-											${textSans17};
-											border: 4px solid
-												${palette.brand[500]};
-											padding: ${space[5]}px ${space[5]}px
-												${space[5]}px 49px;
-											margin: ${space[3]}px 0;
-											position: relative;
-											${from.tablet} {
-												display: inline-block;
-												margin: 2px 0 ${space[3]}px
-													${space[3]}px;
-												width: calc(
-													100% -
-														(
-															30ch + ${space[3]}px +
-																2px
-														)
-												);
-											}
-										`}
+									<InfoSection
+										additionalCSS={
+											deliveryInstructionsInfoCss
+										}
 									>
-										<i
-											css={css`
-												width: 17px;
-												height: 17px;
-												position: absolute;
-												top: ${space[5]}px;
-												left: ${space[5]}px;
-											`}
-										>
-											<InfoIconDark
-												fillColor={palette.brand[500]}
-											/>
-										</i>
 										Delivery instructions are only
 										applicable for newspaper deliveries.
 										They do not apply to Guardian Weekly.
-									</p>
+									</InfoSection>
 								</div>
 							</label>
 						)}
@@ -507,7 +480,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 								setStatus(Status.ReadOnly);
 							}}
 							cssOverrides={css`
-								margin-top: ${space[5]}px;
+								${until.mobileLandscape} {
+									margin-top: ${space[5]}px;
+								}
 								color: ${palette.brand[400]};
 								background-color: transparent;
 								:hover {
