@@ -629,7 +629,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 						deliveryAddressContext.address?.instructions) ||
 					undefined
 				}
-				promptIfInstructionsNotSet
+				promptIfInstructionsNotSet={
+					props.enableDeliveryInstructions || undefined
+				}
 			/>
 			{isNationalDelivery && (
 				<div
