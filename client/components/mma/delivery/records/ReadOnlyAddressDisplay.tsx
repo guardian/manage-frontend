@@ -108,6 +108,11 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 							${ddCss}
 						`}
 					>
+						{!!props.instructions && (
+							<InfoSection>
+								Please make sure these instructions are correct
+							</InfoSection>
+						)}
 						{props.instructions || (
 							<InfoSection>
 								No delivery instructions set. Have you thought

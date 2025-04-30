@@ -29,7 +29,7 @@ describe('Delivery records', () => {
 
 		cy.intercept('GET', '/api/delivery-records/*', {
 			statusCode: 200,
-			body: deliveryRecordsWithDelivery,
+			body: deliveryRecordsWithDelivery(),
 		}).as('delivery_records');
 
 		cy.intercept('GET', '/api/holidays/*/potential?*', {
@@ -78,7 +78,7 @@ describe('Delivery records', () => {
 			`/api/delivery-records/${secondarySubscriptionId}`,
 			{
 				statusCode: 200,
-				body: deliveryRecordsWithDelivery,
+				body: deliveryRecordsWithDelivery(),
 			},
 		).as('fetch_potential_holidays_for_secondary_sub');
 
@@ -175,7 +175,7 @@ describe('Delivery records', () => {
 
 		deliveryRecordsWithDeliveryProblem.results = [
 			...deliveryRecordsWithDeliveryProblem.results,
-			...deliveryRecordsWithDelivery.results,
+			...deliveryRecordsWithDelivery().results,
 		];
 
 		cy.intercept('GET', '/api/delivery-records/A-S00293857', {
