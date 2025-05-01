@@ -172,6 +172,14 @@ const CancelAlternativeSwitchReview = lazy(() =>
 	})),
 );
 
+const CancelAlternativeSwitchConfirmed = lazy(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelSwitchConfirmed'
+	).then(({ CancelSwitchConfirmed }) => ({
+		default: CancelSwitchConfirmed,
+	})),
+);
+
 const CancelAlternativeConfirmed = lazy(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeConfirmed'
@@ -782,7 +790,9 @@ const MMARouter = () => {
 									/>
 									<Route
 										path="switch-confirmed"
-										element={<CancelAlternativeConfirmed />}
+										element={
+											<CancelAlternativeSwitchConfirmed />
+										}
 									/>
 									<Route
 										path="offers"

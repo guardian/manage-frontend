@@ -131,6 +131,9 @@ const dontForgetCss = css`
 	padding-top: ${space[5]}px;
 	margin-top: ${space[6]}px;
 	border-top: 1px solid ${palette.neutral[86]};
+	${from.tablet} {
+		padding-top: ${space[6]}px;
+	}
 `;
 
 const onwardJourneyBtnsContainerCss = css`
@@ -138,7 +141,7 @@ const onwardJourneyBtnsContainerCss = css`
 	flex-direction: column;
 	gap: ${space[5]}px;
 	margin-top: ${space[9]}px;
-	dontForgetCss${from.phablet} {
+	${from.phablet} {
 		flex-direction: row;
 		gap: ${space[4]}px;
 	}

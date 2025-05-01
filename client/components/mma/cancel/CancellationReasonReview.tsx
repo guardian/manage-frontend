@@ -284,6 +284,7 @@ const ConfirmCancellationAndReturnRow = (
 	const mainPlan = getMainPlan(productDetail.subscription);
 	const isAnnualBilling =
 		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'year';
+
 	const isAnnualContributionAndDiscountIsActive =
 		productType.productType === 'contributions' && isAnnualBilling;
 

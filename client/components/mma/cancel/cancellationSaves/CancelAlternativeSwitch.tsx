@@ -143,7 +143,7 @@ const availableOfferBoxInnerCss = css`
 	${from.tablet} {
 		background-color: ${palette.neutral[100]};
 		width: 366px;
-		padding: ${space[6]}px ${space[6]}px ${space[5]}px;
+		padding: ${space[6]}px ${space[4]}px ${space[5]}px;
 		margin: ${space[6]}px;
 	}
 `;
@@ -237,6 +237,7 @@ const cancelButtonCss = css`
 
 const termsCss = css`
 	${textSans12};
+	text-align: center;
 	color: ${palette.neutral[46]};
 	margin: ${space[2]}px 0 ${space[6]}px;
 `;
@@ -276,6 +277,14 @@ export const CancelAlternativeSwitch = () => {
 			productDetail.billingCountry === 'United Kingdom' &&
 			mainPlan.price / 100 <= supporterplusThreshold * 0.5 &&
 			reasonIsEligibleForSwitch(routerState.selectedReasonId);
+
+		const amountPayableTodayBigNumber = Math.floor(
+			routerState.amountPayableToday,
+		);
+		const amountPayableTodaySmallNumber = Math.floor(
+			(routerState.amountPayableToday - amountPayableTodayBigNumber) *
+				100,
+		);
 
 		return (
 			<>
@@ -325,13 +334,17 @@ export const CancelAlternativeSwitch = () => {
 							additionalCss={pillCss}
 						/>
 						<h4 css={offerBoxHeaderCss}>
-							Unlock All-access digital for
+							Unlock one year of All-access digital
 							<br />
 							<span css={offerHeaderPriceCss}>
 								{mainPlan.currency}
-								{Math.ceil(routerState.amountPayableToday)}
+								{amountPayableTodayBigNumber}
 							</span>
-							<span>/year </span>
+							<span>
+								{!!amountPayableTodaySmallNumber &&
+									`.${amountPayableTodaySmallNumber}`}
+								/year{' '}
+							</span>
 							<s css={strikethroughPriceCss}>
 								{mainPlan.currency}
 								{routerState.supporterPlusPurchaseAmount}/
@@ -349,7 +362,7 @@ export const CancelAlternativeSwitch = () => {
 							Redeem the offer
 						</Button>
 						<p css={termsCss}>
-							You will pay {mainPlan.currency}
+							You will pay an extra {mainPlan.currency}
 							{routerState.amountPayableToday} for the next 12
 							months then {mainPlan.currency}
 							{routerState.supporterPlusPurchaseAmount}
@@ -458,11 +471,6 @@ export const CancelAlternativeSwitch = () => {
 						Return to your account
 					</Button>
 				</div>
-				<p css={termsCss}>
-					Ollicitudin erat facilisis eget. Vestibulum rhoncus dui vel
-					eros laoreet consectetur. Vivamus eget elementum ligula,
-					vitae pharetra quam. Nullam at ligula sed metu
-				</p>
 			</>
 		);
 	} else {

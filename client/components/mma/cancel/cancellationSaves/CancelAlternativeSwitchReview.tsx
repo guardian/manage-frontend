@@ -8,10 +8,9 @@ import {
 	textEgyptianBold17,
 	textSans12,
 	textSans15,
-	textSans17,
 	textSansBold15,
 	textSansBold17,
-	textSansBold24,
+	textSansBold20,
 } from '@guardian/source/foundations';
 import { Button, Spinner } from '@guardian/source/react-components';
 import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
@@ -19,7 +18,7 @@ import type { ReactElement } from 'react';
 import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
-import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import { productMoveFetch } from '@/client/utilities/productUtils';
 import type { MonthsOrYears } from '@/shared/dates';
 import { dateString } from '@/shared/dates';
 import { getAppropriateReadableTimePeriod } from '@/shared/dates';
@@ -46,7 +45,7 @@ type OfferApiCallStatus = 'NOT_READY' | 'PENDING' | 'FAILED' | 'SUCCESS';
 
 const yourOfferBoxCss = css`
 	background-color: #fbf6ef;
-	padding: ${space[4]}px ${space[3]}px;
+	padding: ${space[3]}px;
 	position: relative;
 	h4 {
 		${textSansBold17};
@@ -62,57 +61,26 @@ const yourOfferBoxFlexCss = css`
 `;
 
 const yourOfferBoxHeaderCss = css`
-	${textSansBold24};
+	${textSansBold20};
 	color: ${neutral[7]};
 	margin: 0;
-`;
-
-const yourOfferBoxSubHeaderCss = css`
-	${textSansBold17};
-	margin: 2px 0 ${space[1]}px;
-	color: ${neutral[7]};
-`;
-
-const strikethroughPriceCss = css`
-	${textSans17};
-	color: ${neutral[46]};
 `;
 
 const percentageOfferSubText = css`
 	${textSans12};
 	color: ${neutral[38]};
-	margin: 0;
-`;
-
-const pricingDetailsCss = css`
-	margin-top: ${space[5]}px;
-	& summary {
-		${textSans15};
-		color: ${palette.brand[500]};
-		text-decoration: underline;
-		list-style: none;
-		& :marker {
-			display: none;
-		}
-		&:after {
-			content: '⌃';
-			margin-left: ${space[0]}px;
-			display: inline-block;
-			transform: translateY(-1px) rotate(180deg);
-		}
-	}
-	&[open] {
-		& summary:after {
-			transform: translateY(4px);
-		}
-	}
+	margin: ${space[1]}px 0 0;
 `;
 
 const pricingDetailsTable = css`
-	margin-top: ${space[4]}px;
+	margin-top: ${space[6]}px;
 	border-collapse: collapse;
 	${textSans15};
 	width: 100%;
+	& thead th {
+		text-align: left;
+		padding-bottom: ${space[2]}px;
+	}
 	& tbody {
 		border-top: 1px solid ${neutral[86]};
 	}
@@ -123,7 +91,7 @@ const pricingDetailsTable = css`
 		padding-bottom: ${space[2]}px;
 	}
 	& tbody tr + tr td {
-		padding-top: ${space[1]}px;
+		padding-top: ${space[2]}px;
 	}
 	& td {
 		padding: 0;
@@ -247,15 +215,16 @@ export const CancelAlternativeSwitchReview = () => {
 		setPerformingDiscountStatus('PENDING');
 
 		try {
-			const response = await fetchWithDefaultParameters(
-				'/api/discounts/apply-discount',
-				{
-					method: 'POST',
-					body: JSON.stringify({
-						subscriptionNumber:
-							productDetail.subscription.subscriptionId,
-					}),
-				},
+			// TODO ****** refactor the productMoveFetch function to omit price if calling the 'recurring-contribution-to-supporter-plus' version
+			// eg don't pass the price if you're calling the switch api (contribution to supporterplus), do if you're calling the move api
+			// (membership to contribution)
+			//
+			const response = await productMoveFetch(
+				productDetail.subscription.subscriptionId,
+				42,
+				'recurring-contribution-to-supporter-plus',
+				false,
+				productDetail.isTestUser,
 			);
 
 			if (response.ok) {
@@ -288,106 +257,100 @@ export const CancelAlternativeSwitchReview = () => {
 					`,
 				]}
 			>
-				Your offer
+				Your one-time offer
 			</Heading>
 			{isPaidSubscriptionPlan(mainPlan) && (
 				<>
 					<div css={yourOfferBoxCss}>
 						<div css={[yourOfferBoxFlexCss]}>
 							<h3 css={yourOfferBoxHeaderCss}>
+								One year of All access digital for{' '}
 								{mainPlan.currency}
 								{routerState.amountPayableToday}
+							</h3>
+							<p css={percentageOfferSubText}>
+								You will pay {mainPlan.currency}
+								{routerState.amountPayableToday} today for the
+								next{' '}
+								{getAppropriateReadableTimePeriod(
+									routerState.discount.upToPeriods,
+									offerPeriodType,
+									{
+										preferredPeriodType: 'month',
+										maxPreferenceValue: 12,
+										preferNumberedOutput: true,
+									},
+								)}{' '}
+								then{' '}
 								<span
 									css={css`
-										${textSansBold17};
+										white-space: nowrap;
 									`}
 								>
-									/{offerPeriodType}{' '}
-								</span>
-								<s css={strikethroughPriceCss}>
 									{mainPlan.currency}
 									{routerState.supporterPlusPurchaseAmount}/
 									{mainPlan.billingPeriod}
-								</s>
-							</h3>
-							<h4 css={yourOfferBoxSubHeaderCss}>
-								For your All-access digital subscription
-							</h4>
-							{isPaidSubscriptionPlan(mainPlan) && (
-								<p css={percentageOfferSubText}>
-									You will pay {mainPlan.currency}
-									{routerState.amountPayableToday} for the
-									next{' '}
-									{getAppropriateReadableTimePeriod(
-										routerState.discount.upToPeriods,
-										offerPeriodType,
-										{
-											preferredPeriodType: 'month',
-											maxPreferenceValue: 12,
-											preferNumberedOutput: true,
-										},
-									)}{' '}
-									then {mainPlan.currency}
-									{routerState.supporterPlusPurchaseAmount}/
-									{mainPlan.billingPeriod}
-								</p>
-							)}
-							<details css={pricingDetailsCss}>
-								<summary>Pricing details</summary>
-								<table css={pricingDetailsTable}>
-									<tbody>
+								</span>{' '}
+								unless you cancel
+							</p>
+							<table css={pricingDetailsTable}>
+								<thead>
+									<tr>
+										<th>Pricing details</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											All-access digital |{' '}
+											{
+												routerState.discount
+													.discountPercentage
+											}
+											% off
+										</td>
+										<td>
+											<s css={subduedCopy}>
+												{mainPlan.currency}
+												{
+													routerState.supporterPlusPurchaseAmount
+												}
+											</s>{' '}
+											{mainPlan.currency}
+											{
+												routerState.discount
+													.discountedPrice
+											}
+										</td>
+									</tr>
+									{offsetPrice > 0 && (
 										<tr>
 											<td>
-												All-access digital |{' '}
-												{
-													routerState.discount
-														.discountPercentage
-												}
-												% off
-											</td>
-											<td>
-												<s css={subduedCopy}>
-													{mainPlan.currency}
-													{
-														routerState.supporterPlusPurchaseAmount
+												Amount offset from your{' '}
+												<br
+													css={
+														mobileOnlyBreakPointCss
 													}
-												</s>{' '}
-												{mainPlan.currency}
-												{
-													routerState.discount
-														.discountedPrice
-												}
+												/>
+												recurring annual support
 											</td>
-										</tr>
-										{offsetPrice > 0 && (
-											<tr>
-												<td>
-													Amount offset from your{' '}
-													<br
-														css={
-															mobileOnlyBreakPointCss
-														}
-													/>
-													recurring annual support
-												</td>
-												<td>
-													-{mainPlan.currency}
-													{offsetPrice.toFixed(2)}
-												</td>
-											</tr>
-										)}
-									</tbody>
-									<tfoot>
-										<tr>
-											<th>Total</th>
 											<td>
-												{mainPlan.currency}
-												{routerState.amountPayableToday}
+												-{mainPlan.currency}
+												{offsetPrice.toFixed(2)}
 											</td>
 										</tr>
-									</tfoot>
-								</table>
-							</details>
+									)}
+								</tbody>
+								<tfoot>
+									<tr>
+										<th>Total</th>
+										<td>
+											{mainPlan.currency}
+											{routerState.amountPayableToday}
+										</td>
+									</tr>
+								</tfoot>
+							</table>
 						</div>
 					</div>
 
@@ -459,9 +422,24 @@ export const CancelAlternativeSwitchReview = () => {
 			{isPaidSubscriptionPlan(mainPlan) && (
 				<>
 					<p css={termsCss}>
-						Ollicitudin erat facilisis eget. Vestibulum rhoncus dui
-						vel eros laoreet consectetur. Vivamus eget elementum
-						ligula, vitae pharetra quam. Nullam at ligula sed metu
+						The All-access digital subscription will auto-renew each
+						year. You will be charged the subscription amounts using
+						your chosen payment method at each renewal unless you
+						cancel. You can cancel your subscription at any time
+						before your next renewal date.
+					</p>
+					<p css={termsCss}>
+						If you cancel within 14 days of taking out a All-access
+						digital subscription, you’ll receive a full refund and
+						your subscription will stop immediately. Cancellation of
+						your subscription made after 14 days will take effect at
+						the end of your current annual payment period. To
+						cancel, go to Manage My Account or see our Terms.
+					</p>
+					<p css={termsCss}>
+						By proceeding, you are agreeing to our Terms and
+						Conditions. To find out what personal data we collect
+						and how we use it, please visit our Privacy Policy.
 					</p>
 				</>
 			)}
