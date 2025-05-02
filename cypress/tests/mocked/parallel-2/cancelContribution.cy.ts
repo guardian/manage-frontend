@@ -320,7 +320,7 @@ describe('Cancel contribution', () => {
 		cy.get('@get_cancellation_date.all').should('have.length', 0);
 	});
 
-	it.only('user (annual) switches to supporter-plus at a discount instead of cancelling', () => {
+	it('user (annual) switches to supporter-plus at a discount instead of cancelling', () => {
 		const productSwitchPreviewWithSwitchDiscount = {
 			supporterPlusPurchaseAmount: 120,
 			nextPaymentDate: '2026-03-20',
