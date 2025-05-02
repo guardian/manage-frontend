@@ -24,7 +24,7 @@ import type {
 } from '@/shared/productResponse';
 import {
 	getMainPlan,
-	getSpecificProductType,
+	getSpecificProductTypeFromTier,
 	isGift,
 	isPaidSubscriptionPlan,
 } from '@/shared/productResponse';
@@ -44,8 +44,6 @@ import {
 	productDetailLayoutCss,
 	sectionHeadingCss,
 } from './ProductCardStyles';
-
-
 
 const NewPriceAlert = () => {
 	const iconCss = css`
@@ -81,7 +79,9 @@ export const ProductCard = ({
 		throw new Error('mainPlan does not exist in ProductCard');
 	}
 
-	const specificProductType = getSpecificProductType(productDetail.tier);
+	const specificProductType = getSpecificProductTypeFromTier(
+		productDetail.tier,
+	);
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
 

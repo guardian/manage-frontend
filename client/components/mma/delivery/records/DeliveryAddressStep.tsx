@@ -21,7 +21,7 @@ import type {
 	ProductDetail,
 } from '../../../../../shared/productResponse';
 import {
-	getSpecificProductType,
+	getSpecificProductTypeFromTier,
 	isProduct,
 	MembersDataApiAsyncLoader,
 } from '../../../../../shared/productResponse';
@@ -88,7 +88,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		isValid: false,
 	});
 
-	const specificProductType = getSpecificProductType(
+	const specificProductType = getSpecificProductTypeFromTier(
 		props.productDetail.tier,
 	);
 
@@ -180,7 +180,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		)
 			.flatMap(flattenEquivalent)
 			.map(({ productDetail }) => {
-				const specificProductType = getSpecificProductType(
+				const specificProductType = getSpecificProductTypeFromTier(
 					productDetail.tier,
 				);
 				const friendlyProductName = specificProductType.friendlyName;

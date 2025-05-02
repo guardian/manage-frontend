@@ -1,6 +1,6 @@
 import type { MembersDataApiResponse } from '../../../../shared/productResponse';
 import {
-	getSpecificProductType,
+	getSpecificProductTypeFromTier,
 	isProduct,
 } from '../../../../shared/productResponse';
 import {
@@ -47,9 +47,8 @@ export const SubscriptionInformation = () => {
 				{data.products.length > 0 ? (
 					data.products.map((product) => {
 						if (isProduct(product)) {
-							const specificProductType = getSpecificProductType(
-								product.tier,
-							);
+							const specificProductType =
+								getSpecificProductTypeFromTier(product.tier);
 							return (
 								<li>
 									{product.tier} -{' '}
