@@ -10,7 +10,7 @@ export function ineligibleForSave(
 	products: ProductDetail[],
 	productToCancel: ProductDetail,
 ): boolean {
-	const productType = getSpecificProductType(productToCancel.tier);
+	const productType = getSpecificProductTypeFromTier(productToCancel.tier);
 	if (productType.productType === 'membership') {
 		return isMembershipIneligible(products, productToCancel);
 	}
@@ -25,7 +25,7 @@ function isMembershipIneligible(
 	const inPaymentFailure = !!products.find((product) => product.alertText);
 
 	const hasOtherProduct = !!products.find((product) => {
-		const productType = getSpecificProductType(product.tier);
+		const productType = getSpecificProductTypeFromTier(product.tier);
 		return (
 			productType.productType != 'membership' &&
 			!product.subscription.cancelledAt

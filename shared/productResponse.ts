@@ -283,7 +283,9 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	};
 };
 
-export function getSpecificProductType(productTier: ProductTier): ProductType {
+export function getSpecificProductTypeFromTier(
+	productTier: ProductTier,
+): ProductType {
 	let productType: ProductType = {} as ProductType;
 	switch (productTier) {
 		case 'Partner':
@@ -342,6 +344,8 @@ export function isSpecificProductType(
 	productDetail: ProductDetail,
 	targetProductType: ProductType,
 ): boolean {
-	const specificProductType = getSpecificProductType(productDetail.tier);
+	const specificProductType = getSpecificProductTypeFromTier(
+		productDetail.tier,
+	);
 	return specificProductType === targetProductType;
 }
