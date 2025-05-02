@@ -18,7 +18,7 @@ import type { ReactElement } from 'react';
 import { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
-import { productMoveFetch } from '@/client/utilities/productUtils';
+import { contribToSupporterPlusFetch } from '@/client/utilities/productUtils';
 import type { MonthsOrYears } from '@/shared/dates';
 import { dateString } from '@/shared/dates';
 import { getAppropriateReadableTimePeriod } from '@/shared/dates';
@@ -215,14 +215,8 @@ export const CancelAlternativeSwitchReview = () => {
 		setPerformingDiscountStatus('PENDING');
 
 		try {
-			// TODO ****** refactor the productMoveFetch function to omit price if calling the 'recurring-contribution-to-supporter-plus' version
-			// eg don't pass the price if you're calling the switch api (contribution to supporterplus), do if you're calling the move api
-			// (membership to contribution)
-			//
-			const response = await productMoveFetch(
+			const response = await contribToSupporterPlusFetch(
 				productDetail.subscription.subscriptionId,
-				42,
-				'recurring-contribution-to-supporter-plus',
 				false,
 				productDetail.isTestUser,
 			);

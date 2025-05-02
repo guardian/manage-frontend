@@ -1,7 +1,3 @@
-export type ProductSwitchType =
-	| 'to-recurring-contribution'
-	| 'recurring-contribution-to-supporter-plus';
-
 export interface SwitchPreviewResponse {
 	amountPayableToday: number;
 	supporterPlusPurchaseAmount: number;

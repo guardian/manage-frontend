@@ -7,7 +7,7 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { getBenefitsThreshold } from '@/client/utilities/pricingConfig/supporterPlusPricing';
-import { productMoveFetch } from '@/client/utilities/productUtils';
+import { contribToSupporterPlusFetch } from '@/client/utilities/productUtils';
 import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
 import type { TrueFalsePending } from '@/shared/generalTypes';
@@ -129,10 +129,8 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 					mainPlan.price / 100 <= supporterplusThreshold * 0.5 &&
 					reasonIsEligibleForSwitch(routerState.selectedReasonId);
 				try {
-					const response = await productMoveFetch(
+					const response = await contribToSupporterPlusFetch(
 						productDetail.subscription.subscriptionId,
-						supporterplusThreshold,
-						'recurring-contribution-to-supporter-plus',
 						true,
 						productDetail.isTestUser,
 					);

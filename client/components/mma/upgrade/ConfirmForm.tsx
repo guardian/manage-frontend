@@ -41,7 +41,7 @@ import {
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import { LoadingState } from '../../../utilities/hooks/useAsyncLoader';
 import { calculateAmountPayableToday } from '../../../utilities/productMovePreview';
-import { productMoveFetch } from '../../../utilities/productUtils';
+import { contribToSupporterPlusFetch } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { SwitchErrorSummary } from '../../shared/productSwitch/SwitchErrorSummary';
 import { SwitchPaymentInfo } from '../../shared/productSwitch/SwitchPaymentInfo';
@@ -322,10 +322,8 @@ export const ConfirmForm = ({
 
 		try {
 			if (aboveThreshold) {
-				const data = await productMoveFetch(
+				const data = await contribToSupporterPlusFetch(
 					subscription.subscriptionId,
-					chosenAmount,
-					'recurring-contribution-to-supporter-plus',
 					false,
 					isTestUser,
 				).then((r) => JsonResponseHandler(r));
