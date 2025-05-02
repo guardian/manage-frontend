@@ -16,12 +16,9 @@ import {
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { SwitchErrorSummary } from '@/client/components/shared/productSwitch/SwitchErrorSummary';
-import { productMoveFetch } from '@/client/utilities/productUtils';
+import { contribToSupporterPlusFetch } from '@/client/utilities/productUtils';
 import { dateString } from '../../../../../shared/dates';
-import type {
-	ProductSwitchType,
-	SwitchPreviewResponse,
-} from '../../../../../shared/productSwitchTypes';
+import type { SwitchPreviewResponse } from '../../../../../shared/productSwitchTypes';
 import {
 	buttonCentredCss,
 	buttonMutedCss,
@@ -86,9 +83,6 @@ const scrollToErrorMessage = () => {
 	errorMessageElement?.scrollIntoView();
 };
 
-const productSwitchType: ProductSwitchType =
-	'recurring-contribution-to-supporter-plus';
-
 export const SwitchReview = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -126,13 +120,12 @@ export const SwitchReview = () => {
 
 		try {
 			setIsSwitching(true);
-			const response = await productMoveFetch(
+			const response = await contribToSupporterPlusFetch(
 				contributionToSwitch.subscription.subscriptionId,
-				newAmount,
-				productSwitchType,
 				false,
 				contributionToSwitch.isTestUser,
 			);
+
 			const data = await JsonResponseHandler(response);
 
 			if (data === null) {
@@ -164,10 +157,8 @@ export const SwitchReview = () => {
 		loadingState: LoadingState;
 	} = useAsyncLoader(
 		() =>
-			productMoveFetch(
+			contribToSupporterPlusFetch(
 				contributionToSwitch.subscription.subscriptionId,
-				newAmount,
-				productSwitchType,
 				true,
 				contributionToSwitch.isTestUser,
 			),

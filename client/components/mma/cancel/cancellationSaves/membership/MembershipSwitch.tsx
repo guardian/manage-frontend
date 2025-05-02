@@ -10,6 +10,7 @@ import {
 import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
+import { membershipToContribFetch } from '@/client/utilities/productUtils';
 import { dateString, parseDate } from '../../../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
@@ -17,7 +18,6 @@ import type {
 } from '../../../../../../shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '../../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../../shared/productResponse';
-import type { ProductSwitchType } from '../../../../../../shared/productSwitchTypes';
 import { getBillingPeriodAdjective } from '../../../../../../shared/productTypes';
 import {
 	buttonCentredCss,
@@ -219,25 +219,6 @@ export const MembershipSwitch = () => {
 			? 'every month'
 			: parseDate(mainPlan.chargedThrough ?? undefined).dateStr('MMMM');
 
-	const productSwitchType: ProductSwitchType = 'to-recurring-contribution';
-
-	const productMoveFetch = () =>
-		fetch(
-			`/api/product-move/${productSwitchType}/${membership.subscription.subscriptionId}`,
-			{
-				method: 'POST',
-				body: JSON.stringify({
-					price: getOldMembershipPrice(mainPlan),
-					preview: false,
-					checkChargeAmountBeforeUpdate: false,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-					[MDA_TEST_USER_HEADER]: `${membership.isTestUser}`,
-				},
-			},
-		);
-
 	const confirmSwitch = async () => {
 		if (isSwitching) {
 			return;
@@ -245,7 +226,12 @@ export const MembershipSwitch = () => {
 
 		try {
 			setIsSwitching(true);
-			const response = await productMoveFetch();
+			const response = await membershipToContribFetch(
+				membership.subscription.subscriptionId,
+				getOldMembershipPrice(mainPlan),
+				false,
+				membership.isTestUser,
+			);
 			const data = await JsonResponseHandler(response);
 
 			if (data === null) {
