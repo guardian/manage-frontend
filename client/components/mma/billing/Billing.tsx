@@ -29,7 +29,7 @@ import type {
 } from '../../../../shared/productResponse';
 import {
 	getMainPlan,
-	getSpecificProductTypeFromTier,
+	getSpecificProductType,
 	isGift,
 	isProduct,
 	sortByJoinDate,
@@ -124,9 +124,7 @@ function joinInvoicesWithProductsInCategories(
 
 function organiseProductsIntoCategory(allProductDetails: ProductDetail[]) {
 	return allProductDetails.reduce((accumulator, productDetail) => {
-		const specificProductType = getSpecificProductTypeFromTier(
-			productDetail.tier,
-		);
+		const specificProductType = getSpecificProductType(productDetail.tier);
 		return {
 			...accumulator,
 			[specificProductType.groupedProductType]: [
@@ -151,7 +149,7 @@ function renderProductBillingInfo([productGrouping, productDetails]: [
 							'mainPlan does not exist for product in billing page',
 						);
 					}
-					const specificProductType = getSpecificProductTypeFromTier(
+					const specificProductType = getSpecificProductType(
 						productDetail.tier,
 					);
 					const groupedProductType =

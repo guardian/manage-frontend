@@ -6,6 +6,7 @@ import type { ConsentOption } from '../models';
 import { NewsletterGroup } from '../models';
 import { NewsletterPreference } from '../NewsletterPreference';
 import { PageSection } from '../PageSection';
+import { ObserverNewsletterLink } from './ObserverNewsletterLink';
 
 type ClickHandler = (id: string) => unknown;
 
@@ -96,6 +97,7 @@ export const NewsletterSection: FC<NewsletterSectionProps> = (props) => {
       `}
 		>
 			{newsletterPreferenceGroups(newsletters, clickHandler)}
+			<ObserverNewsletterLink />
 		</PageSection>
 	);
 };

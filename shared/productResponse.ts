@@ -4,6 +4,7 @@ import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import type { DeliveryRecordDetail } from '../client/components/mma/delivery/records/deliveryRecordsApi';
 import { AsyncLoader } from '../client/components/mma/shared/AsyncLoader';
 import type { CardProps } from '../client/components/mma/shared/CardDisplay';
+import type { DirectDebitGatewayOwner } from './directDebit';
 import { PRODUCT_TYPES } from './productTypes';
 import type { ProductType } from './productTypes';
 
@@ -87,6 +88,8 @@ export const productTiers = [
 	'Patron',
 	'Partner',
 	'Guardian Ad-Lite',
+	'Newspaper Delivery - Observer',
+	'Newspaper Digital Voucher - Observer',
 ];
 
 export type ProductTier = typeof productTiers[number];
@@ -116,6 +119,13 @@ export function isProduct(
 	return productTiers.includes((data as ProductDetail)?.tier);
 }
 
+export const isObserverProduct = (productDetail: ProductDetail): boolean => {
+	return (
+		productDetail.tier === 'Newspaper Delivery - Observer' ||
+		productDetail.tier === 'Newspaper Digital Voucher - Observer'
+	);
+};
+
 export interface Card extends CardProps {
 	stripePublicKeyForUpdate: string;
 	email?: string;
@@ -125,6 +135,7 @@ export interface DirectDebitDetails {
 	accountName: string;
 	accountNumber: string;
 	sortCode: string;
+	gatewayOwner?: DirectDebitGatewayOwner;
 }
 
 export interface SubscriptionPlan {
@@ -267,9 +278,7 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	};
 };
 
-export function getSpecificProductTypeFromTier(
-	productTier: ProductTier,
-): ProductType {
+export function getSpecificProductType(productTier: ProductTier): ProductType {
 	let productType: ProductType = {} as ProductType;
 	switch (productTier) {
 		case 'Partner':
@@ -314,6 +323,12 @@ export function getSpecificProductTypeFromTier(
 		case 'Newspaper - National Delivery':
 			productType = PRODUCT_TYPES.nationaldelivery;
 			break;
+		case 'Newspaper Delivery - Observer':
+			productType = PRODUCT_TYPES.observer;
+			break;
+		case 'Newspaper Digital Voucher - Observer':
+			productType = PRODUCT_TYPES.digitalvoucherobserver;
+			break;
 	}
 	return productType;
 }
@@ -322,8 +337,6 @@ export function isSpecificProductType(
 	productDetail: ProductDetail,
 	targetProductType: ProductType,
 ): boolean {
-	const specificProductType = getSpecificProductTypeFromTier(
-		productDetail.tier,
-	);
+	const specificProductType = getSpecificProductType(productDetail.tier);
 	return specificProductType === targetProductType;
 }

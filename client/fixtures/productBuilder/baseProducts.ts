@@ -381,6 +381,62 @@ export function baseVoucher(): ProductDetail {
 	};
 }
 
+export function baseDigitalVoucherObserver(): ProductDetail {
+	return {
+		tier: 'Newspaper Digital Voucher - Observer',
+		isPaidTier: true,
+		selfServiceCancellation: {
+			isAllowed: false,
+			shouldDisplayEmail: false,
+			phoneRegionsToDisplay: ['UK & ROW'],
+		},
+		joinDate: '2021-11-26',
+		optIn: true,
+		subscription: {
+			contactId: '0039E00001KA26BQAT',
+			deliveryAddress: {
+				addressLine1: 'Kings Place',
+				addressLine2: '90 York Way',
+				town: 'London',
+				postcode: 'N1 9GU',
+				country: 'United Kingdom',
+			},
+			safeToUpdatePaymentMethod: true,
+			start: '2021-12-06',
+			end: '2022-11-26',
+			nextPaymentPrice: 5299,
+			nextPaymentDate: '2021-12-06',
+			lastPaymentDate: null,
+			potentialCancellationDate: null,
+			chargedThroughDate: null,
+			renewalDate: '2022-11-26',
+			anniversaryDate: '2022-12-06',
+			cancelledAt: false,
+			subscriptionId: 'A-S00285104',
+			trialLength: -7,
+			autoRenew: true,
+			currentPlans: [
+				{
+					name: 'Sunday',
+					start: '2021-12-06',
+					end: '2022-11-26',
+					shouldBeVisible: true,
+					chargedThrough: null,
+					price: 5299,
+					currency: '£',
+					currencyISO: 'GBP',
+					billingPeriod: 'month',
+					daysOfWeek: ['Sunday'],
+				},
+			],
+			futurePlans: [],
+			readerType: 'Direct',
+			accountId: '8ad0824e7d584341017d5bc38c0d52dc',
+		},
+		isTestUser: false,
+	};
+}
+
 export function baseDigitalVoucher(): ProductDetail {
 	return {
 		tier: 'Newspaper Digital Voucher',
@@ -445,9 +501,9 @@ export function baseDigitalVoucher(): ProductDetail {
 	};
 }
 
-export function baseHomeDeliverySunday(): ProductDetail {
+export function baseObserverDelivery(): ProductDetail {
 	return {
-		tier: 'Newspaper Delivery',
+		tier: 'Newspaper Delivery - Observer',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: false,
@@ -522,6 +578,64 @@ export function baseHomeDeliverySunday(): ProductDetail {
 			],
 			readerType: 'Direct',
 			accountId: '8ad0824e7d584341017d5bc38c0d52dc',
+		},
+		isTestUser: false,
+	};
+}
+
+export function baseHomeDeliverySundayPlus(): ProductDetail {
+	return {
+		tier: 'Newspaper Delivery',
+		isPaidTier: true,
+		selfServiceCancellation: {
+			isAllowed: false,
+			shouldDisplayEmail: false,
+			phoneRegionsToDisplay: ['UK & ROW'],
+		},
+		joinDate: '2021-12-15',
+		optIn: true,
+		subscription: {
+			contactId: '0039E00001KA26BQAT',
+			deliveryAddress: {
+				addressLine1: 'Kings Place',
+				addressLine2: '90 York Way',
+				town: 'Canberra',
+				region: 'ACT',
+				postcode: '2601',
+				country: 'Australia',
+			},
+			safeToUpdatePaymentMethod: true,
+			start: '2021-12-24',
+			end: '2022-12-15',
+			nextPaymentPrice: 3250,
+			nextPaymentDate: '2021-12-24',
+			lastPaymentDate: null,
+			potentialCancellationDate: null,
+			chargedThroughDate: null,
+			renewalDate: '2022-12-15',
+			anniversaryDate: '2022-12-24',
+			cancelledAt: false,
+			subscriptionId: 'A-S00293857',
+			trialLength: -37,
+			autoRenew: true,
+			currentPlans: [
+				{
+					name: 'Sunday plus Digital Subscription',
+					start: '2021-12-24',
+					end: '2022-12-15',
+					shouldBeVisible: true,
+					chargedThrough: null,
+					price: 3250,
+					currency: '£',
+					currencyISO: 'GBP',
+					billingPeriod: 'month',
+					daysOfWeek: ['Sunday'],
+				},
+			],
+			futurePlans: [],
+			readerType: 'Direct',
+			accountId: '8ad0965d7dbcc507017dbe20afd33ac4',
+			deliveryAddressChangeEffectiveDate: '2022-02-11',
 		},
 		isTestUser: false,
 	};

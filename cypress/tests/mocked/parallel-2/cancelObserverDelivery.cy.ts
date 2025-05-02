@@ -1,23 +1,23 @@
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
-import { homeDeliverySunday } from '../../../../client/fixtures/productBuilder/testProducts';
+import { observerDelivery } from '../../../../client/fixtures/productBuilder/testProducts';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
-describe('Cancel home delivery - Sunday', () => {
+describe('Cancel Observer delivery (inside M25)', () => {
 	beforeEach(() => {
 		signInAndAcceptCookies();
 
-		const baseHomeDeliverySundayResponse = JSON.parse(
-			JSON.stringify(homeDeliverySunday()),
+		const baseObserverDeliveryResponse = JSON.parse(
+			JSON.stringify(observerDelivery()),
 		);
 
 		cy.intercept('GET', '/api/me/mma?productType=HomeDelivery', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(baseHomeDeliverySundayResponse),
+			body: toMembersDataApiResponse(baseObserverDeliveryResponse),
 		});
 
 		cy.intercept('GET', '/api/me/mma', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(baseHomeDeliverySundayResponse),
+			body: toMembersDataApiResponse(baseObserverDeliveryResponse),
 		});
 
 		cy.intercept('GET', '/mpapi/user/mobile-subscriptions', {

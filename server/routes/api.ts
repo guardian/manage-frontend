@@ -17,6 +17,7 @@ import {
 	membersDataApiHandler,
 	proxyApiHandler,
 	straightThroughBodyHandler,
+	userBenefitsApiHandler,
 } from '../apiProxy';
 import { s3FilePromise } from '../awsIntegration';
 import { conf } from '../config';
@@ -32,6 +33,8 @@ import {
 	publicCreateReminderHandler,
 	reactivateReminderHandler,
 } from '../reminders/reminderApi';
+import { stripeCreateCheckoutSessionHandler } from '../stripeCreateCheckoutSessionHandler';
+import { stripeGetCheckoutSessionHandler } from '../stripeGetCheckoutSessionHandler';
 import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
 
 const router = Router();
@@ -157,6 +160,16 @@ router.post(
 		'MDA_UPDATE_PAYMENT_DIRECT_DEBIT',
 		['subscriptionName'],
 	),
+);
+router.post(
+	'/payment/checkout-session',
+	withOktaServerSideValidation,
+	stripeCreateCheckoutSessionHandler,
+);
+router.get(
+	'/payment/checkout-session/:id',
+	withOktaServerSideValidation,
+	stripeGetCheckoutSessionHandler,
 );
 
 router.post(
@@ -358,5 +371,10 @@ router.post('/csp-audit-report-endpoint', (req, res) => {
 	log.warn(JSON.stringify(parsedBody));
 	res.status(204).end();
 });
+
+router.get(
+	'/benefits/me',
+	userBenefitsApiHandler('benefits/me', 'USER_BENEFITS'),
+);
 
 export { router };

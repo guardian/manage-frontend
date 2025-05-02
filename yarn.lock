@@ -3334,10 +3334,10 @@
   resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-18.0.2.tgz#dfccae411f1b2ddb650d9344acc999d85cbba96b"
   integrity sha512-MX7mo/ZADgJJ9uMBHw9SoJBW1AJXB8Vg3NFUkpfJ7uwkN0LKHHxi8w2YkZDMPUDcMx5I3dpIf1LuqQQLR6RAVA==
 
-"@guardian/libs@^21.1.0":
-  version "21.1.0"
-  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-21.1.0.tgz#24450f6fd87363177fe96f516e255ad44120ed1c"
-  integrity sha512-M02tJniKcRDLYPIxJ/KYViLTjugjnzmNi/UTDKZm38xc6hjOPNnhFPBw59W2DlGENrMt58+m7qYAcdMmcEp+KQ==
+"@guardian/libs@^22.0.0":
+  version "22.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-22.0.0.tgz#26b3b8460a9299f86a7e94f638c7546c426f30a2"
+  integrity sha512-qAQ8hQcRaL0H3h5vR6QXv6wtHu+XCfK6jM28QNz0d94EyHfiS01i4AMv8JlX1a3efehfoh00WVg/LzjsGRoJJw==
 
 "@guardian/node-riffraff-artifact@0.2.2":
   version "0.2.2"

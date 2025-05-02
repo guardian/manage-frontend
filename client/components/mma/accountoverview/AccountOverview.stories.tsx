@@ -24,9 +24,11 @@ import {
 	guardianWeeklyGiftPurchase,
 	guardianWeeklyGiftRecipient,
 	guardianWeeklyPaidByCard,
-	homeDeliverySunday,
+	homeDeliverySundayPlus,
 	membershipSupporter,
+	newspaperVoucherObserver,
 	newspaperVoucherPaidByPaypal,
+	observerDelivery,
 	patronMembership,
 	supporterPlus,
 	supporterPlusAnnualCancelled,
@@ -95,11 +97,41 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 						guardianWeeklyPaidByCard(),
 						digitalPackPaidByDirectDebit(),
 						newspaperVoucherPaidByPaypal(),
+						newspaperVoucherObserver(),
 						membershipSupporter(),
 						patronMembership(),
 						supporterPlus(),
 						tierThree(),
-						homeDeliverySunday(),
+						observerDelivery(),
+						homeDeliverySundayPlus(),
+					),
+				);
+			}),
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
+			}),
+		],
+	},
+};
+
+export const WithOnlyObserverSubscriptions: StoryObj<typeof AccountOverview> = {
+	render: () => {
+		return <AccountOverview />;
+	},
+
+	parameters: {
+		msw: [
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
+			}),
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
+			}),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(
+						newspaperVoucherObserver(),
+						observerDelivery(),
 					),
 				);
 			}),

@@ -42,6 +42,7 @@ export const UpdateAmount = (props: UpdateAmountProps) => {
 				currentAmount={currentAmount}
 				onUpdateConfirmed={(updatedAmount) => {
 					setConfirmedAmount(updatedAmount);
+					props.amountUpdateStateChange(updatedAmount);
 					setStatus(Status.CONFIRMED);
 				}}
 			/>
@@ -52,6 +53,7 @@ export const UpdateAmount = (props: UpdateAmountProps) => {
 				mode="MANAGE"
 				onUpdateConfirmed={(updatedAmount) => {
 					setConfirmedAmount(updatedAmount);
+					props.amountUpdateStateChange(updatedAmount);
 					setStatus(Status.CONFIRMED);
 				}}
 			/>

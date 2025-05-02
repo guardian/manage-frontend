@@ -79,10 +79,6 @@ export const footerlinks: FooterLink[][] = [
 			title: 'Facebook',
 			link: `https://www.facebook.com/theguardian`,
 		},
-		{
-			title: 'Twitter',
-			link: `https://twitter.com/guardian`,
-		},
 	],
 	[
 		{

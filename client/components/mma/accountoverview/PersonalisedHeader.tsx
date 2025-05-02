@@ -10,6 +10,7 @@ import { min } from 'date-fns';
 import { dateString } from '@/shared/dates';
 import type { MPAPIResponse } from '@/shared/mpapiResponse';
 import type { MembersDataApiResponse } from '@/shared/productResponse';
+import { isObserverProduct } from '@/shared/productResponse';
 import { isProduct } from '@/shared/productResponse';
 
 interface PersonalisedHeaderProps {
@@ -52,6 +53,10 @@ export const PersonalisedHeader = ({
 
 	const supportStartYear = dateString(oldestDate, 'MMMM yyyy');
 
+	const onlyHasObserverProducts =
+		mpapiResponse.subscriptions.length === 0 &&
+		productDetails.every(isObserverProduct);
+
 	return (
 		<hgroup
 			css={css`
@@ -73,13 +78,15 @@ export const PersonalisedHeader = ({
 			>
 				{calculateTimeOfDay()}, {userDetails.firstName ?? 'supporter'}
 			</h2>
-			<p
-				css={css`
-					${headlineMedium17};
-				`}
-			>
-				Thank you for funding the Guardian since {supportStartYear}
-			</p>
+			{!onlyHasObserverProducts && (
+				<p
+					css={css`
+						${headlineMedium17};
+					`}
+				>
+					Thank you for funding the Guardian since {supportStartYear}
+				</p>
+			)}
 		</hgroup>
 	);
 };

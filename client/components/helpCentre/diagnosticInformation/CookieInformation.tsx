@@ -2,9 +2,9 @@ import { getCookie } from '../../../utilities/cookies';
 
 const cookieNames = [
 	'gu_hide_support_messaging',
-	'gu_digital_subscriber',
-	'gu_paying_member',
-	'gu_recurring_contributor',
+	'GU_AF1',
+	'gu_allow_reject_all',
+	'gu_user_benefits_expiry',
 ];
 
 /**
