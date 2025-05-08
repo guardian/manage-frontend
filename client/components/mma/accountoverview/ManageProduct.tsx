@@ -6,8 +6,13 @@ import {
 	textSans17,
 	until,
 } from '@guardian/source/foundations';
+import {
+	Button,
+	themeButtonReaderRevenueBrand,
+} from '@guardian/source/react-components';
 import { useState } from 'react';
-import { Link, Navigate, useLocation } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { stackedButtonLayoutCss } from '@/client/styles/ButtonStyles';
 import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {
@@ -80,6 +85,7 @@ const InnerContent = ({
 	manageProductProps,
 	productDetail,
 }: InnerContentProps) => {
+	const navigate = useNavigate();
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
 		throw new Error('mainPlan does not exist in manageProduct page');
@@ -204,27 +210,50 @@ const InnerContent = ({
 				nextPaymentDetails={nextPaymentDetails}
 				hasCancellationPending={hasCancellationPending}
 			/>
-			{productDetail.isPaidTier &&
-				productDetail.subscription.safeToUpdatePaymentMethod &&
-				!productDetail.subscription.payPalEmail && (
-					<LinkButton
-						colour={
-							productDetail.alertText
-								? palette.brand[400]
-								: palette.brand[800]
+			<div css={stackedButtonLayoutCss}>
+				{productDetail.isPaidTier &&
+					productDetail.subscription.safeToUpdatePaymentMethod &&
+					!productDetail.subscription.payPalEmail && (
+						<LinkButton
+							colour={
+								productDetail.alertText
+									? palette.brand[400]
+									: palette.brand[800]
+							}
+							textColour={
+								productDetail.alertText
+									? palette.neutral[100]
+									: palette.brand[400]
+							}
+							fontWeight={'bold'}
+							alert={!!productDetail.alertText}
+							text="Update payment method"
+							to={`/payment/${specificProductType.urlPart}`}
+							state={{ productDetail: productDetail }}
+						/>
+					)}
+				{nextPaymentDetails?.paymentInterval === 'month' && (
+					<Button
+						theme={themeButtonReaderRevenueBrand}
+						size="small"
+						cssOverrides={css`
+							justify-content: center;
+						`}
+						onClick={() =>
+							navigate(
+								`/subscriptions/${productDetail.subscription.subscriptionId}/change-billing-frequency`,
+								{
+									state: {
+										productDetail,
+									},
+								},
+							)
 						}
-						textColour={
-							productDetail.alertText
-								? palette.neutral[100]
-								: palette.brand[400]
-						}
-						fontWeight={'bold'}
-						alert={!!productDetail.alertText}
-						text="Update payment method"
-						to={`/payment/${specificProductType.urlPart}`}
-						state={{ productDetail: productDetail }}
-					/>
+					>
+						Change to Annual Contribution
+					</Button>
 				)}
+			</div>
 
 			{specificProductType.delivery?.showAddress?.(
 				productDetail.subscription,
