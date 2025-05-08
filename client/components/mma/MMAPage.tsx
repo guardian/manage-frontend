@@ -448,6 +448,14 @@ const SubscriptionsContainer = lazy(() =>
 	})),
 );
 
+const ChangeBillingFrequency = lazy(() =>
+	import(
+		/* webpackChunkName: "Subscriptions" */ './subscriptions/ChangeBillingFrequency'
+	).then(({ ChangeBillingFrequency }) => ({
+		default: ChangeBillingFrequency,
+	})),
+);
+
 const GenericErrorContainer = (props: { children: ReactNode }) => (
 	<section
 		css={css`
@@ -848,10 +856,10 @@ const MMARouter = () => {
 							path={'/subscriptions/:subscriptionId'}
 							element={<SubscriptionsContainer />}
 						>
-							{/* <Route
+							<Route
 								path="change-billing-frequency"
-								element={<MembershipSwitch />}
-							/> */}
+								element={<ChangeBillingFrequency />}
+							/>
 						</Route>
 						{/*Does not require sign in*/}
 						<Route
