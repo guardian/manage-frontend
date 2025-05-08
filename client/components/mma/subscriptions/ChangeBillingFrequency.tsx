@@ -176,7 +176,7 @@ const TsAndCs = ({
 	</section>
 );
 
-function ChangeErrorContext() {
+const ChangeErrorContext = () => {
 	return (
 		<>
 			Please ensure your payment details are correct. If the problem
@@ -190,7 +190,7 @@ function ChangeErrorContext() {
 			.
 		</>
 	);
-}
+};
 
 // Main Component
 export const ChangeBillingFrequency = () => {
