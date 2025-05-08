@@ -103,6 +103,14 @@ export class ProductBuilder {
 		return this;
 	}
 
+	withDeliveryInstructions(instructions: string) {
+		if (this.productToBuild.subscription.deliveryAddress) {
+			this.productToBuild.subscription.deliveryAddress.instructions =
+				instructions;
+		}
+		return this;
+	}
+
 	cancel() {
 		this.productToBuild.subscription.cancelledAt = true;
 		this.productToBuild.subscription.cancellationEffectiveDate =
