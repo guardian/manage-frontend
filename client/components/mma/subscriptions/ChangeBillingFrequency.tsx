@@ -17,7 +17,6 @@ import type {
 } from '../../../../shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
-import type { ProductSwitchType } from '../../../../shared/productSwitchTypes';
 import { getBillingPeriodAdjective } from '../../../../shared/productTypes';
 import {
 	buttonCentredCss,
@@ -36,7 +35,10 @@ import {
 	sectionSpacing,
 	smallPrintCss,
 } from '../../../styles/GenericStyles';
-import { getOldMembershipPrice } from '../../../utilities/pricingConfig/membershipPriceRise';
+import {
+	getNewMembershipPrice,
+	getOldMembershipPrice,
+} from '../../../utilities/pricingConfig/membershipPriceRise';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
@@ -52,6 +54,7 @@ import {
 	SubscriptionsPageTitleContext,
 } from './SubscriptionsContainer';
 
+// Utility Components
 const YourNewSupport = ({
 	contributionPriceDisplay,
 	billingPeriod,
@@ -60,39 +63,37 @@ const YourNewSupport = ({
 	contributionPriceDisplay: string;
 	billingPeriod: string;
 	monthlyOrAnnual: string;
-}) => {
-	return (
-		<section css={sectionSpacing}>
-			<Heading
-				sansSerif
-				cssOverrides={css`
-					margin-bottom: ${space[3]}px;
-				`}
-			>
-				Your new support
-			</Heading>
-			<Card>
-				<Card.Header backgroundColor={palette.brand[400]}>
-					<h3 css={productTitleCss}>{monthlyOrAnnual}</h3>
-				</Card.Header>
-				<Card.Section>
-					<p
-						css={css`
-							${textSans17};
-							margin: 0;
-						`}
-					>
-						{monthlyOrAnnual} support with fewer funding asks and an
-						exclusive email from the newsroom
-					</p>
-					<p css={newAmountCss}>
-						{contributionPriceDisplay}/{billingPeriod}
-					</p>
-				</Card.Section>
-			</Card>
-		</section>
-	);
-};
+}) => (
+	<section css={sectionSpacing}>
+		<Heading
+			sansSerif
+			cssOverrides={css`
+				margin-bottom: ${space[3]}px;
+			`}
+		>
+			Your new support
+		</Heading>
+		<Card>
+			<Card.Header backgroundColor={palette.brand[400]}>
+				<h3 css={productTitleCss}>{monthlyOrAnnual}</h3>
+			</Card.Header>
+			<Card.Section>
+				<p
+					css={css`
+						${textSans17};
+						margin: 0;
+					`}
+				>
+					{monthlyOrAnnual} support with fewer funding asks and an
+					exclusive email from the newsroom
+				</p>
+				<p css={newAmountCss}>
+					{contributionPriceDisplay}/{billingPeriod}
+				</p>
+			</Card.Section>
+		</Card>
+	</section>
+);
 
 const WhatHappensNext = (props: {
 	contributionPriceDisplay: string;
@@ -175,18 +176,32 @@ const TsAndCs = ({
 	</section>
 );
 
+function ChangeErrorContext() {
+	return (
+		<>
+			Please ensure your payment details are correct. If the problem
+			persists get in touch at{' '}
+			<a
+				css={errorSummaryLinkCss}
+				href="mailto:customer.help@guardian.com"
+			>
+				customer.help@guardian.com
+			</a>
+			.
+		</>
+	);
+}
+
+// Main Component
 export const ChangeBillingFrequency = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const routerState = location.state as SubscriptionsRouterState;
-
 	const subscriptionsContext: SubscriptionsContextInterface =
 		useContext(SubscriptionsContext);
 	const productDetail = subscriptionsContext.productDetail;
-
-	const [isSwitching, setIsSwitching] = useState<boolean>(false);
-	const [switchingError, setSwitchingError] = useState<boolean>(false);
-
+	const [isChanging, setIsChanging] = useState<boolean>(false);
+	const [changingError, setChangingError] = useState<boolean>(false);
 	const pageTitleContext: SubscriptionsPageTitleInterface = useContext(
 		SubscriptionsPageTitleContext,
 	);
@@ -205,26 +220,38 @@ export const ChangeBillingFrequency = () => {
 		productDetail.subscription,
 	) as PaidSubscriptionPlan;
 
+	if (mainPlan.billingPeriod !== 'month') {
+		return <Navigate to="/" />;
+	}
+
 	const contributionPriceDisplay = `${
 		mainPlan.currency
-	}${getOldMembershipPrice(mainPlan)}`;
+	}${getNewMembershipPrice({
+		...mainPlan,
+		billingPeriod: 'year',
+	})}`;
 
 	const billingPeriod = mainPlan.billingPeriod;
-	const monthlyOrAnnual = getBillingPeriodAdjective(billingPeriod);
-	const indefiniteArticle = monthlyOrAnnual === 'Monthly' ? 'a' : 'an';
+	const currentBillingPeriodAdjective =
+		getBillingPeriodAdjective(billingPeriod);
+	const nextBillingPeriodAdjective = getBillingPeriodAdjective('year');
+	const currentIndefiniteArticle =
+		currentBillingPeriodAdjective === 'Monthly' ? 'a' : 'an';
+	const nextIndefiniteArticle =
+		nextBillingPeriodAdjective === 'Monthly' ? 'a' : 'an';
 	const paymentDay = parseDate(mainPlan.chargedThrough ?? undefined).dateStr(
 		'do',
 	);
 	const paymentMonth =
-		monthlyOrAnnual === 'Monthly'
+		currentBillingPeriodAdjective === 'Monthly'
 			? 'every month'
 			: parseDate(mainPlan.chargedThrough ?? undefined).dateStr('MMMM');
 
-	const productSwitchType: ProductSwitchType = 'to-recurring-contribution';
-
-	const productMoveFetch = () =>
+	const changeBillingFrequencyFetch = () =>
 		fetch(
-			`/api/product-move/${productSwitchType}/${productDetail.subscription.subscriptionId}`,
+			`/api/change-billing-frequency/${'productSwitchType'}/${
+				productDetail.subscription.subscriptionId
+			}`,
 			{
 				method: 'POST',
 				body: JSON.stringify({
@@ -239,29 +266,30 @@ export const ChangeBillingFrequency = () => {
 			},
 		);
 
-	const confirmSwitch = async () => {
-		if (isSwitching) {
+	const confirmChange = async () => {
+		if (isChanging) {
 			return;
 		}
 
 		try {
-			setIsSwitching(true);
-			const response = await productMoveFetch();
+			setIsChanging(true);
+			const response = await changeBillingFrequencyFetch();
 			const data = await JsonResponseHandler(response);
 
 			if (data === null) {
-				setIsSwitching(false);
-				setSwitchingError(true);
+				setIsChanging(false);
+				setChangingError(true);
 			} else {
 				navigate('../switch-thank-you', {
 					state: { ...routerState, journeyCompleted: true },
 				});
 			}
 		} catch {
-			setIsSwitching(false);
-			setSwitchingError(true);
+			setIsChanging(false);
+			setChangingError(true);
 		}
 	};
+
 	return (
 		<>
 			<section css={sectionSpacing}>
@@ -272,15 +300,16 @@ export const ChangeBillingFrequency = () => {
 						margin: 0;
 					`}
 				>
-					Please confirm that you’re changing support type from a
-					Membership to {indefiniteArticle} {monthlyOrAnnual}{' '}
+					Please confirm that you’re changing support type from{' '}
+					{currentIndefiniteArticle} {currentBillingPeriodAdjective}{' '}
+					to {nextIndefiniteArticle} {nextBillingPeriodAdjective}{' '}
 					contribution.
 				</p>
 			</section>
 			<YourNewSupport
 				contributionPriceDisplay={contributionPriceDisplay}
-				billingPeriod={billingPeriod}
-				monthlyOrAnnual={monthlyOrAnnual}
+				billingPeriod="year"
+				monthlyOrAnnual={nextBillingPeriodAdjective}
 			/>
 			<WhatHappensNext
 				contributionPriceDisplay={contributionPriceDisplay}
@@ -299,11 +328,11 @@ export const ChangeBillingFrequency = () => {
 					new members.
 				</p>
 			</section>
-			{switchingError && (
+			{changingError && (
 				<section css={sectionSpacing} id="productSwitchErrorMessage">
 					<ErrorSummary
 						message={'We were unable to change your support'}
-						context={<SwitchErrorContext />}
+						context={<ChangeErrorContext />}
 						cssOverrides={errorSummaryOverrideCss}
 					/>
 				</section>
@@ -313,17 +342,24 @@ export const ChangeBillingFrequency = () => {
 				<Button
 					theme={themeButtonReaderRevenueBrand}
 					cssOverrides={[buttonCentredCss, wideButtonCss]}
-					isLoading={isSwitching}
-					onClick={confirmSwitch}
+					isLoading={isChanging}
+					onClick={confirmChange}
 				>
 					Confirm change
 				</Button>
 				<Button
 					priority="tertiary"
 					cssOverrides={[buttonCentredCss, buttonMutedCss]}
-					onClick={() =>
-						navigate('../offers', { state: { ...routerState } })
-					}
+					onClick={() => {
+						if (
+							window.history.state &&
+							window.history.state.idx > 0
+						) {
+							navigate(-1); // Go back if there is history
+						} else {
+							navigate('/'); // Redirect to "/" if no history
+						}
+					}}
 				>
 					Back
 				</Button>
@@ -336,19 +372,3 @@ export const ChangeBillingFrequency = () => {
 		</>
 	);
 };
-
-function SwitchErrorContext() {
-	return (
-		<>
-			Please ensure your payment details are correct. If the problem
-			persists get in touch at{' '}
-			<a
-				css={errorSummaryLinkCss}
-				href="mailto:customer.help@guardian.com"
-			>
-				customer.help@guardian.com
-			</a>
-			.
-		</>
-	);
-}
