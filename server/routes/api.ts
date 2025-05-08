@@ -228,6 +228,21 @@ router.post(
 );
 
 router.post(
+	'/product-move/change-billing-frequency-from-monthly-to-annual/:subscriptionName',
+	// withOktaServerSideValidation,
+	// productSwitchAPI(
+	// 	'product-move/change-billing-frequency-from-monthly-to-annual/:subscriptionName',
+	// 	'MOVE_PRODUCT',
+	// 	['subscriptionName'],
+	// ),
+	(_, response) => {
+		response.status(200).send({
+			ok: true,
+		});
+	},
+);
+
+router.post(
 	'/update-supporter-plus-amount/:subscriptionName',
 	withOktaServerSideValidation,
 	updateSupporterPlusAmountAPI(

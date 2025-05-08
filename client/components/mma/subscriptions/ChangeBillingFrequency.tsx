@@ -280,7 +280,7 @@ export const ChangeBillingFrequency = () => {
 				setIsChanging(false);
 				setChangingError(true);
 			} else {
-				navigate('../switch-thank-you', {
+				navigate('../change-billing-frequency-thank-you', {
 					state: { ...routerState, journeyCompleted: true },
 				});
 			}
