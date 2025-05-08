@@ -35,10 +35,7 @@ import {
 	sectionSpacing,
 	smallPrintCss,
 } from '../../../styles/GenericStyles';
-import {
-	getNewMembershipPrice,
-	getOldMembershipPrice,
-} from '../../../utilities/pricingConfig/membershipPriceRise';
+import { getNewMembershipPrice } from '../../../utilities/pricingConfig/membershipPriceRise';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { Card } from '../shared/Card';
 import { Heading } from '../shared/Heading';
@@ -53,6 +50,13 @@ import {
 	SubscriptionsContext,
 	SubscriptionsPageTitleContext,
 } from './SubscriptionsContainer';
+
+// Utility Functions
+const getIndefiniteArticleForBillingPeriodAdjective = (
+	billingPeriodAdjective: string,
+) => {
+	return billingPeriodAdjective === 'Monthly' ? 'a' : 'an';
+};
 
 // Utility Components
 const YourNewSupport = ({
@@ -236,9 +240,12 @@ export const ChangeBillingFrequency = () => {
 		getBillingPeriodAdjective(billingPeriod);
 	const nextBillingPeriodAdjective = getBillingPeriodAdjective('year');
 	const currentIndefiniteArticle =
-		currentBillingPeriodAdjective === 'Monthly' ? 'a' : 'an';
-	const nextIndefiniteArticle =
-		nextBillingPeriodAdjective === 'Monthly' ? 'a' : 'an';
+		getIndefiniteArticleForBillingPeriodAdjective(
+			currentBillingPeriodAdjective,
+		);
+	const nextIndefiniteArticle = getIndefiniteArticleForBillingPeriodAdjective(
+		nextBillingPeriodAdjective,
+	);
 	const paymentDay = parseDate(mainPlan.chargedThrough ?? undefined).dateStr(
 		'do',
 	);
@@ -249,16 +256,9 @@ export const ChangeBillingFrequency = () => {
 
 	const changeBillingFrequencyFetch = () =>
 		fetch(
-			`/api/change-billing-frequency/${'productSwitchType'}/${
-				productDetail.subscription.subscriptionId
-			}`,
+			`/api/product-move/change-billing-frequency-from-monthly-to-annual/${productDetail.subscription.subscriptionId}`,
 			{
 				method: 'POST',
-				body: JSON.stringify({
-					price: getOldMembershipPrice(mainPlan),
-					preview: false,
-					checkChargeAmountBeforeUpdate: false,
-				}),
 				headers: {
 					'Content-Type': 'application/json',
 					[MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`,
