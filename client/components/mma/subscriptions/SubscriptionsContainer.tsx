@@ -63,7 +63,7 @@ const AsyncLoadedSubscriptionsContainer = (props: {
 };
 
 export interface SubscriptionsContextInterface {
-	productDetail: ProductDetail;
+	productDetail?: ProductDetail;
 }
 
 export const SubscriptionsContext: Context<
@@ -81,7 +81,7 @@ export interface SubscriptionsRouterState {
 }
 
 export interface SubscriptionsPageTitleInterface {
-	setPageTitle: Dispatch<SetStateAction<string>>;
+	setPageTitle?: Dispatch<SetStateAction<string>>;
 }
 
 export const SubscriptionsPageTitleContext: Context<

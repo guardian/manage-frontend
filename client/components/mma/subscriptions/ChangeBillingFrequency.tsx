@@ -192,7 +192,9 @@ export const ChangeBillingFrequency = () => {
 	);
 
 	useEffect(() => {
-		pageTitleContext.setPageTitle('Change billing frequency');
+		if (pageTitleContext.setPageTitle) {
+			pageTitleContext.setPageTitle('Change billing frequency');
+		}
 	}, [pageTitleContext]);
 
 	if (!productDetail) {
