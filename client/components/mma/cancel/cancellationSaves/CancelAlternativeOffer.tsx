@@ -439,7 +439,7 @@ export const CancelAlternativeOffer = () => {
 										},
 										{
 											description:
-												'Unlimited access to the Guardian Feast App',
+												'Unlimited access to the Guardian Feast app',
 										},
 										{
 											description:

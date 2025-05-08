@@ -16,12 +16,9 @@ import {
 import { useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { SwitchErrorSummary } from '@/client/components/shared/productSwitch/SwitchErrorSummary';
-import { MDA_TEST_USER_HEADER } from '@/shared/productResponse';
+import { contribToSupporterPlusFetch } from '@/client/utilities/productUtils';
 import { dateString } from '../../../../../shared/dates';
-import type {
-	PreviewResponse,
-	ProductSwitchType,
-} from '../../../../../shared/productSwitchTypes';
+import type { SwitchPreviewResponse } from '../../../../../shared/productSwitchTypes';
 import {
 	buttonCentredCss,
 	buttonMutedCss,
@@ -86,9 +83,6 @@ const scrollToErrorMessage = () => {
 	errorMessageElement?.scrollIntoView();
 };
 
-const productSwitchType: ProductSwitchType =
-	'recurring-contribution-to-supporter-plus';
-
 export const SwitchReview = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -113,30 +107,7 @@ export const SwitchReview = () => {
 
 	const newAmount = Math.max(threshold, mainPlan.price / 100);
 
-	const productMoveFetch = (
-		preview: boolean,
-		checkChargeAmountBeforeUpdate: boolean,
-	) =>
-		fetch(
-			`/api/product-move/${productSwitchType}/${contributionToSwitch.subscription.subscriptionId}`,
-			{
-				method: 'POST',
-				body: JSON.stringify({
-					price: newAmount,
-					preview,
-					checkChargeAmountBeforeUpdate,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-					[MDA_TEST_USER_HEADER]: `${contributionToSwitch.isTestUser}`,
-				},
-			},
-		);
-
-	const confirmSwitch = async (
-		amount: number,
-		checkChargeAmountBeforeUpdate: boolean,
-	) => {
+	const confirmSwitch = async (amount: number) => {
 		if (isSwitching) {
 			return;
 		}
@@ -149,10 +120,12 @@ export const SwitchReview = () => {
 
 		try {
 			setIsSwitching(true);
-			const response = await productMoveFetch(
+			const response = await contribToSupporterPlusFetch(
+				contributionToSwitch.subscription.subscriptionId,
 				false,
-				checkChargeAmountBeforeUpdate,
+				contributionToSwitch.isTestUser,
 			);
+
 			const data = await JsonResponseHandler(response);
 
 			if (data === null) {
@@ -180,10 +153,15 @@ export const SwitchReview = () => {
 		data: previewResponse,
 		loadingState,
 	}: {
-		data: PreviewResponse | null;
+		data: SwitchPreviewResponse | null;
 		loadingState: LoadingState;
 	} = useAsyncLoader(
-		() => productMoveFetch(true, false),
+		() =>
+			contribToSupporterPlusFetch(
+				contributionToSwitch.subscription.subscriptionId,
+				true,
+				contributionToSwitch.isTestUser,
+			),
 		JsonResponseHandler,
 	);
 
@@ -312,10 +290,7 @@ export const SwitchReview = () => {
 					isLoading={isSwitching}
 					cssOverrides={buttonCentredCss}
 					onClick={() =>
-						confirmSwitch(
-							previewResponse.amountPayableToday,
-							previewResponse.checkChargeAmountBeforeUpdate,
-						)
+						confirmSwitch(previewResponse.amountPayableToday)
 					}
 				>
 					Confirm {isAboveThreshold ? 'change' : 'upgrade'}

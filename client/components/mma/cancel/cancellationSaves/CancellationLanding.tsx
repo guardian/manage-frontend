@@ -8,7 +8,7 @@ import type {
 	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../../shared/productResponse';
-import { getSpecificProductType } from '../../../../../shared/productResponse';
+import { getSpecificProductTypeFromTier } from '../../../../../shared/productResponse';
 import { headingCss } from '../../../../styles/GenericStyles';
 import {
 	LoadingState,
@@ -27,7 +27,7 @@ import { CancellationContext } from '../CancellationContainer';
 import { ineligibleForSave } from './saveEligibilityCheck';
 
 function getNextRoute(productToCancel: ProductDetail): string {
-	const specificProductTypeKey = getSpecificProductType(
+	const specificProductTypeKey = getSpecificProductTypeFromTier(
 		productToCancel.tier,
 	).productType;
 
