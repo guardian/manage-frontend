@@ -440,6 +440,14 @@ const CreateReminder = lazy(() =>
 	).then(({ CreateReminder }) => ({ default: CreateReminder })),
 );
 
+const SubscriptionsContainer = lazy(() =>
+	import(
+		/* webpackChunkName: "Subscriptions" */ './subscriptions/SubscriptionsContainer'
+	).then(({ SubscriptionsContainer }) => ({
+		default: SubscriptionsContainer,
+	})),
+);
+
 const GenericErrorContainer = (props: { children: ReactNode }) => (
 	<section
 		css={css`
@@ -836,6 +844,15 @@ const MMARouter = () => {
 								),
 							)}
 						<Route path="/help" element={<Help />} />
+						<Route
+							path={'/subscriptions/:subscriptionId'}
+							element={<SubscriptionsContainer />}
+						>
+							{/* <Route
+								path="change-billing-frequency"
+								element={<MembershipSwitch />}
+							/> */}
+						</Route>
 						{/*Does not require sign in*/}
 						<Route
 							path="/cancel-reminders/:reminderCode"
