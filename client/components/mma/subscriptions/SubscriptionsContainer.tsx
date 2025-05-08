@@ -18,6 +18,30 @@ import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 
+// Contexts
+export interface SubscriptionsContextInterface {
+	productDetail?: ProductDetail;
+}
+
+export const SubscriptionsContext: Context<
+	SubscriptionsContextInterface | object
+> = createContext({});
+
+export interface SubscriptionsPageTitleInterface {
+	setPageTitle?: Dispatch<SetStateAction<string>>;
+}
+
+export const SubscriptionsPageTitleContext: Context<
+	SubscriptionsPageTitleInterface | object
+> = createContext({});
+
+// Utility Functions
+const contextAndOutletContainer = (productDetail: ProductDetail) => (
+	<SubscriptionsContext.Provider value={{ productDetail }}>
+		<Outlet />
+	</SubscriptionsContext.Provider>
+);
+
 const renderProductOrReturnToAccountOverview = (
 	mdapiResponse: MembersDataApiResponse,
 ) => {
@@ -26,12 +50,12 @@ const renderProductOrReturnToAccountOverview = (
 		.filter((productDetail) => !productDetail.subscription.cancelledAt);
 
 	if (filteredProductDetails.length === 1) {
-		console.warn('here', filteredProductDetails[0]);
 		return contextAndOutletContainer(filteredProductDetails[0]);
 	}
 	return <Navigate to="/" />;
 };
 
+// Async Component
 const AsyncLoadedSubscriptionsContainer = (props: {
 	subscriptionId: string;
 }) => {
@@ -62,31 +86,10 @@ const AsyncLoadedSubscriptionsContainer = (props: {
 	return renderProductOrReturnToAccountOverview(data);
 };
 
-export interface SubscriptionsContextInterface {
-	productDetail?: ProductDetail;
-}
-
-export const SubscriptionsContext: Context<
-	SubscriptionsContextInterface | object
-> = createContext({});
-
-const contextAndOutletContainer = (productDetail: ProductDetail) => (
-	<SubscriptionsContext.Provider value={{ productDetail }}>
-		<Outlet />
-	</SubscriptionsContext.Provider>
-);
-
+// Main Component
 export interface SubscriptionsRouterState {
 	productDetail: ProductDetail;
 }
-
-export interface SubscriptionsPageTitleInterface {
-	setPageTitle?: Dispatch<SetStateAction<string>>;
-}
-
-export const SubscriptionsPageTitleContext: Context<
-	SubscriptionsPageTitleInterface | object
-> = createContext({});
 
 export const SubscriptionsContainer = () => {
 	const location = useLocation();
