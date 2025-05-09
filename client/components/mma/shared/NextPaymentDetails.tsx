@@ -21,6 +21,7 @@ export interface NextPaymentDetails {
 	isNewPaymentValue?: boolean;
 	nextPaymentDateKey: string;
 	nextPaymentDateValue?: string;
+	currentPriceValue?: string;
 }
 
 export const getNextPaymentDetails = (
@@ -89,6 +90,9 @@ export const getNextPaymentDetails = (
 			isNewPaymentValue,
 			nextPaymentDateKey: 'Next payment date',
 			nextPaymentDateValue,
+			currentPriceValue: `${mainPlan.currency}${(
+				(subscription.plan?.price ?? 0) / 100
+			).toFixed(2)} ${mainPlan.currencyISO}`,
 		};
 	}
 };

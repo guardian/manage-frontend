@@ -13,10 +13,9 @@ import { Navigate, useLocation, useNavigate } from 'react-router';
 import { dateString, parseDate } from '../../../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
-	Subscription} from '../../../../../../shared/productResponse';
-import {
-	MDA_TEST_USER_HEADER
+	Subscription,
 } from '../../../../../../shared/productResponse';
+import { MDA_TEST_USER_HEADER } from '../../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../../shared/productResponse';
 import type { ProductSwitchType } from '../../../../../../shared/productSwitchTypes';
 import { getBillingPeriodAdjective } from '../../../../../../shared/productTypes';
@@ -262,6 +261,17 @@ export const MembershipSwitch = () => {
 			setSwitchingError(true);
 		}
 	};
+
+	if (
+		membership.subscription.futurePlans.length > 0 &&
+		membership.subscription.futurePlans[0].tier &&
+		membership.subscription.futurePlans[0].tier === 'Contributor'
+	) {
+		// Switch already planned, so navigate to Overview
+		navigate('/');
+		return null;
+	}
+
 	return (
 		<>
 			<section css={sectionSpacing}>
