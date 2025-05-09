@@ -204,13 +204,13 @@ export const ProductCard = ({
 		productDetail.subscription.nextPaymentDate !==
 			productDetail.subscription.potentialCancellationDate;
 
-	const futureProductType =
+	const futureProductTitle =
 		productDetail.subscription.futurePlans.length > 0 &&
 		productDetail.subscription.futurePlans[0].tier &&
-		getSpecificProductType(productDetail.subscription.futurePlans[0].tier);
-	const futureProductTitle =
-		futureProductType && futureProductType !== specificProductType
-			? futureProductType.productTitle(mainPlan)
+		productDetail.tier
+			? getSpecificProductType(
+					productDetail.subscription.futurePlans[0].tier,
+			  ).productTitle(mainPlan)
 			: null;
 
 	return (
