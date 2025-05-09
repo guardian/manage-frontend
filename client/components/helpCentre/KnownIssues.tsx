@@ -27,13 +27,15 @@ import { ErrorIcon } from '../mma/shared/assets/ErrorIcon';
 
 export interface KnownIssueObj {
 	date: string; // "29 Aug 1997 02:40"
-	message: string;
+	message: string | React.ReactElement;
 	link?: string; // optional href that is rendered after the message
 	affectedProducts?: string[]; // maps to productDetail.tier property
 }
 
 interface KnownIssuesProp {
 	issues: KnownIssueObj[];
+	withoutContainerBorders?: true;
+	subduedStyle?: true;
 }
 
 export const KnownIssues = (props: KnownIssuesProp) => {
@@ -142,14 +144,31 @@ export const KnownIssues = (props: KnownIssuesProp) => {
 	return (
 		<>
 			{!!issuesData.length && (
-				<div css={containerCss}>
+				<div css={props.withoutContainerBorders ? '' : containerCss}>
 					{issuesData.map((issue, index) => (
 						<div key={`issue${index}`} css={issuesContainerCss}>
-							<div css={divCss}>
-								<i css={iconCss}>
-									<ErrorIcon />
-								</i>
-								<h4 css={h4Css}>{issue.message}</h4>
+							<div
+								css={[
+									divCss,
+									props.subduedStyle &&
+										css`
+											border-color: ${palette
+												.neutral[60]};
+											padding: ${space[3]}px ${space[6]}px;
+										`,
+								]}
+							>
+								{!props.subduedStyle && (
+									<i css={iconCss}>
+										<ErrorIcon />
+									</i>
+								)}
+
+								{typeof issue.message === 'string' ? (
+									<h4 css={h4Css}>{issue.message}</h4>
+								) : (
+									issue.message
+								)}
 								{issue.link && (
 									<a
 										css={aCss}
