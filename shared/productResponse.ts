@@ -139,6 +139,7 @@ export interface DirectDebitDetails {
 }
 
 export interface SubscriptionPlan {
+	tier?: ProductTier;
 	name: string | null;
 	start?: string;
 	shouldBeVisible: boolean;
