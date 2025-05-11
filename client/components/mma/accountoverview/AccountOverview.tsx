@@ -58,6 +58,7 @@ import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 import { SingleContributionCard } from './SingleContributionCard';
+import { TestBrazeContentCard } from './TestBrazeContentCard';
 
 type AccountOverviewResponse = [
 	MembersDataApiResponse,
@@ -212,6 +213,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				mdapiResponse={mdapiResponse}
 				mpapiResponse={mpapiResponse}
 			/>
+
+			<TestBrazeContentCard />
 
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}

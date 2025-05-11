@@ -136,6 +136,7 @@
     "whatwg-fetch": "2.0.4"
   },
   "dependencies": {
+    "@braze/web-sdk": "5.8.1",
     "@emotion/react": "11.11.3",
     "@guardian/ab-core": "2.0.0",
     "@guardian/ab-react": "2.0.1",

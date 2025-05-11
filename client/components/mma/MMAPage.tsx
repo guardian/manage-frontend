@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { fonts } from '@/client/styles/fonts';
+import { useBraze } from '@/client/utilities/hooks/useBraze';
 import {
 	featureSwitches,
 	initFeatureSwitchUrlParamOverride,
@@ -507,6 +508,7 @@ const MMARouter = () => {
 	}, [ABTestAPI]);
 
 	useAnalytics();
+	useBraze();
 	useConsent();
 	useScrollToTop();
 
