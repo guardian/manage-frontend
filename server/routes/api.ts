@@ -20,6 +20,7 @@ import {
 	userBenefitsApiHandler,
 } from '../apiProxy';
 import { s3FilePromise } from '../awsIntegration';
+import { brazeSdkDetailsHandler } from '../brazeSdkHandler';
 import { conf } from '../config';
 import { contactUsFormHandler } from '../contactUsApi';
 import { augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday } from '../fulfilmentDateCalculatorReader';
@@ -375,6 +376,12 @@ router.post('/csp-audit-report-endpoint', (req, res) => {
 router.get(
 	'/benefits/me',
 	userBenefitsApiHandler('benefits/me', 'USER_BENEFITS'),
+);
+
+router.get(
+	'/braze-sdk-details',
+	withOktaServerSideValidation,
+	brazeSdkDetailsHandler,
 );
 
 export { router };
