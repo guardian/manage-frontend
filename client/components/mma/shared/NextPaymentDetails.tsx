@@ -83,6 +83,12 @@ export const getNextPaymentDetails = (
 			mainPlan.price !== planAfterMainPlan.price &&
 			!isSixForSix(mainPlan.name);
 
+		const currentPaidSubscriptionPlan: PaidSubscriptionPlan | undefined = (
+			subscription.currentPlans[0] as PaidSubscriptionPlan
+		)?.price
+			? (subscription.currentPlans[0] as PaidSubscriptionPlan)
+			: undefined;
+
 		return {
 			paymentInterval,
 			paymentKey,
@@ -91,14 +97,11 @@ export const getNextPaymentDetails = (
 			isNewPaymentValue,
 			nextPaymentDateKey: 'Next payment date',
 			nextPaymentDateValue,
-			currentPriceValue: (
-				subscription.currentPlans?.[0] as PaidSubscriptionPlan
-			)?.price
-				? `${mainPlan.currency}${(
-						(subscription.currentPlans[0] as PaidSubscriptionPlan)
-							.price / 100
-				  ).toFixed(2)} ${mainPlan.currencyISO}`
-				: 'not available',
+			currentPriceValue: currentPaidSubscriptionPlan
+				? `${currentPaidSubscriptionPlan.currency}${(
+						currentPaidSubscriptionPlan.price / 100
+				  ).toFixed(2)} ${currentPaidSubscriptionPlan.currencyISO}`
+				: getPaymentValue(),
 		};
 	}
 };
