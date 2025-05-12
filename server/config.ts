@@ -1,5 +1,7 @@
+type Stages = 'DEV' | 'CODE' | 'PROD';
+
 interface Config {
-	readonly STAGE: string;
+	readonly STAGE: Stages;
 	readonly DOMAIN: string;
 	readonly API_DOMAIN: string;
 	readonly ENVIRONMENT: Environments;
@@ -36,7 +38,7 @@ const getDomain = () => {
 };
 
 export const conf: Config = {
-	STAGE: stage || 'DEV',
+	STAGE: (stage as Stages) || 'DEV',
 	DOMAIN: getDomain(),
 	API_DOMAIN:
 		stage === 'PROD' ? 'guardianapis.com' : 'code.dev-guardianapis.com',
