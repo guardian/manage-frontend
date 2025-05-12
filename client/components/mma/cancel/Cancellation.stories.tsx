@@ -523,6 +523,7 @@ export const PauseReview: StoryObj<typeof CancellationContainer> = {
 	parameters: {
 		reactRouter: {
 			state: {
+				productDetail: contributionPaidByPayPal(),
 				discountedPrice: 0,
 				discountPercentage: 100,
 				upToPeriods: 2,
@@ -550,6 +551,7 @@ export const PauseConfirmed: StoryObj<typeof CancellationContainer> = {
 	parameters: {
 		reactRouter: {
 			state: {
+				productDetail: contributionPaidByPayPal(),
 				upToPeriods: 2,
 				upToPeriodsType: 'months',
 				nextNonDiscountedPaymentDate: '2024-07-30',
