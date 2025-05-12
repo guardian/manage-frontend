@@ -284,14 +284,19 @@ const ConfirmCancellationAndReturnRow = (
 	const mainPlan = getMainPlan(productDetail.subscription);
 	const isAnnualBilling =
 		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'year';
+	const isMonthlyBilling =
+		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'month';
 
 	const isAnnualContributionAndDiscountIsActive =
-		productType.productType === 'contributions' && isAnnualBilling;
+		productType.productType === 'contributions' &&
+		isAnnualBilling &&
+		reasonIsEligibleForSwitch(routerState.selectedReasonId);
 
 	const isContributionAndBreakFeatureIsActive =
 		!isAnnualContributionAndDiscountIsActive &&
 		featureSwitches.contributionCancellationPause &&
-		productType.productType === 'contributions';
+		productType.productType === 'contributions' &&
+		isMonthlyBilling;
 
 	const [
 		showAlternativeBeforeCancelling,

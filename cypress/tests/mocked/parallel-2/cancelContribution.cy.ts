@@ -370,7 +370,7 @@ describe('Cancel contribution', () => {
 		).as('switch_discount');
 
 		cy.findByRole('radio', {
-			name: 'I am unhappy with some editorial decisions',
+			name: 'I’m taking a break from news',
 		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
@@ -389,5 +389,39 @@ describe('Cancel contribution', () => {
 
 		cy.findByText('Thank you for choosing to stay with us');
 		cy.wait('@switch_discount');
+	});
+
+	it('user (annual) cannot take switch discount (ineligable reason selected)', () => {
+		const switchContribution = toMembersDataApiResponse(
+			annualContributionPaidByCardWithCurrency(
+				'GBP',
+				'United Kingdom',
+				1200,
+			),
+		);
+
+		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
+			statusCode: 200,
+			body: switchContribution,
+		});
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: switchContribution,
+		});
+
+		setupCancellation();
+
+		cy.findByRole('radio', {
+			name: 'I am unhappy with some editorial decisions',
+		}).click();
+		cy.findByRole('button', { name: 'Continue' }).click();
+
+		cy.findByRole('button', {
+			name: 'Continue to cancellation',
+		}).click();
+
+		cy.findByText(
+			"If you confirm your cancellation, you will no longer be supporting the Guardian's reader-funded journalism.",
+		).should('exist');
 	});
 });
