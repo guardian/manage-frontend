@@ -16,7 +16,6 @@ import type {
 	PaidSubscriptionPlan,
 	Subscription,
 } from '../../../../../../shared/productResponse';
-import { MDA_TEST_USER_HEADER } from '../../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../../shared/productResponse';
 import { getBillingPeriodAdjective } from '../../../../../../shared/productTypes';
 import {

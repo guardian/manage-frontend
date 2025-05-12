@@ -3,7 +3,10 @@ import type {
 	PaidSubscriptionPlan,
 	ProductDetail,
 } from '@/shared/productResponse';
-import { getMainPlan, getSpecificProductType } from '@/shared/productResponse';
+import {
+	getMainPlan,
+	getSpecificProductTypeFromTier,
+} from '@/shared/productResponse';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 
 export function ineligibleForSave(
