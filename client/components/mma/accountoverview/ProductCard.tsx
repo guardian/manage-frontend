@@ -442,7 +442,7 @@ export const ProductCard = ({
 									)}
 								{futureProductTitle && (
 									<div>
-										<dt>Next product</dt>
+										<dt>Switching to</dt>
 										<dd>{futureProductTitle}</dd>
 									</div>
 								)}
