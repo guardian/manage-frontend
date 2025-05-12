@@ -3,6 +3,7 @@ import { palette, space } from '@guardian/source/foundations';
 import { parseDate } from '../../../../shared/dates';
 import type {
 	BillingPeriod,
+	PaidSubscriptionPlan,
 	Subscription,
 	SubscriptionPlan,
 } from '../../../../shared/productResponse';
@@ -21,6 +22,7 @@ export interface NextPaymentDetails {
 	isNewPaymentValue?: boolean;
 	nextPaymentDateKey: string;
 	nextPaymentDateValue?: string;
+	currentPriceValue?: string;
 }
 
 export const getNextPaymentDetails = (
@@ -81,6 +83,12 @@ export const getNextPaymentDetails = (
 			mainPlan.price !== planAfterMainPlan.price &&
 			!isSixForSix(mainPlan.name);
 
+		const currentPaidSubscriptionPlan: PaidSubscriptionPlan | undefined = (
+			subscription.currentPlans[0] as PaidSubscriptionPlan
+		)?.price
+			? (subscription.currentPlans[0] as PaidSubscriptionPlan)
+			: undefined;
+
 		return {
 			paymentInterval,
 			paymentKey,
@@ -89,6 +97,11 @@ export const getNextPaymentDetails = (
 			isNewPaymentValue,
 			nextPaymentDateKey: 'Next payment date',
 			nextPaymentDateValue,
+			currentPriceValue: currentPaidSubscriptionPlan
+				? `${currentPaidSubscriptionPlan.currency}${(
+						currentPaidSubscriptionPlan.price / 100
+				  ).toFixed(2)} ${currentPaidSubscriptionPlan.currencyISO}`
+				: getPaymentValue(),
 		};
 	}
 };

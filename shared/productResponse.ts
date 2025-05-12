@@ -139,6 +139,7 @@ export interface DirectDebitDetails {
 }
 
 export interface SubscriptionPlan {
+	tier?: ProductTier;
 	name: string | null;
 	start?: string;
 	shouldBeVisible: boolean;
@@ -221,6 +222,10 @@ export interface Subscription {
 	autoRenew: boolean;
 	currentPlans: Array<SubscriptionPlan | PaidSubscriptionPlan>;
 	futurePlans: Array<SubscriptionPlan | PaidSubscriptionPlan>;
+
+	/**
+	 * @deprecated
+	 */
 	plan?: PaidSubscriptionPlan; // this is used for memberships (remove when memberships no longer exist)
 	trialLength: number;
 	readerType: ReaderType;

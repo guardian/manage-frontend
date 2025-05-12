@@ -173,57 +173,64 @@ export const SaveOptions = () => {
 						</section>
 					</Card.Section>
 				</Card>
-				<section css={sectionSpacing}>
-					<Heading sansSerif>
-						Stay a supporter at no extra cost
-					</Heading>
-				</section>
-				<p
-					css={css`
-						${textSans17};
-					`}
-				>
-					You will lose access to some of your benefits, but will keep
-					funding Guardian journalism.
-				</p>
-				<Card>
-					<Card.Header backgroundColor={palette.brand[400]}>
-						<div css={cardHeaderDivCss}>
-							<h3 css={productTitleCss}>
-								{monthlyOrAnnual} contribution
-							</h3>
-							<p css={productSubtitleCss}>
-								{oldPriceDisplay}/{billingPeriod}
-							</p>
-						</div>
-					</Card.Header>
-					<Card.Section>
-						<BenefitsSection
-							benefits={benefitsConfiguration[
-								'contributions'
-							].filter((benefit) =>
-								filterBenefitByRegion(
-									benefit,
-									mainPlan.currencyISO,
-								),
-							)}
-						/>
-						<section css={[cardSectionCss, buttonContainerCss]}>
-							<Button
-								theme={themeButtonReaderRevenueBrand}
-								cssOverrides={buttonCentredCss}
-								size="small"
-								onClick={() =>
-									navigate('../switch-offer', {
-										state: { ...routerState },
-									})
-								}
-							>
-								Become a recurring contributor
-							</Button>
+				{membership.subscription.futurePlans[0]?.tier !==
+					'Contributor' && (
+					<>
+						<section css={sectionSpacing}>
+							<Heading sansSerif>
+								Stay a supporter at no extra cost
+							</Heading>
 						</section>
-					</Card.Section>
-				</Card>
+						<p
+							css={css`
+								${textSans17};
+							`}
+						>
+							You will lose access to some of your benefits, but
+							will keep funding Guardian journalism.
+						</p>
+						<Card>
+							<Card.Header backgroundColor={palette.brand[400]}>
+								<div css={cardHeaderDivCss}>
+									<h3 css={productTitleCss}>
+										{monthlyOrAnnual} contribution
+									</h3>
+									<p css={productSubtitleCss}>
+										{oldPriceDisplay}/{billingPeriod}
+									</p>
+								</div>
+							</Card.Header>
+							<Card.Section>
+								<BenefitsSection
+									benefits={benefitsConfiguration[
+										'contributions'
+									].filter((benefit) =>
+										filterBenefitByRegion(
+											benefit,
+											mainPlan.currencyISO,
+										),
+									)}
+								/>
+								<section
+									css={[cardSectionCss, buttonContainerCss]}
+								>
+									<Button
+										theme={themeButtonReaderRevenueBrand}
+										cssOverrides={buttonCentredCss}
+										size="small"
+										onClick={() =>
+											navigate('../switch-offer', {
+												state: { ...routerState },
+											})
+										}
+									>
+										Become a recurring contributor
+									</Button>
+								</section>
+							</Card.Section>
+						</Card>
+					</>
+				)}
 				<section css={sectionSpacing}>
 					<Heading sansSerif>Cancel your Membership</Heading>
 					<p

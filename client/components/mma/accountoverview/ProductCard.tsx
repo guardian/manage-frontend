@@ -204,6 +204,14 @@ export const ProductCard = ({
 		productDetail.subscription.nextPaymentDate !==
 			productDetail.subscription.potentialCancellationDate;
 
+	const futureProductTitle =
+		productDetail.subscription.futurePlans[0]?.tier &&
+		productDetail.tier
+			? getSpecificProductType(
+					productDetail.subscription.futurePlans[0].tier,
+			  ).productTitle(mainPlan)
+			: null;
+
 	return (
 		<Stack space={4}>
 			{hasCancellationPending && productDetail.subscription.end && (
@@ -303,7 +311,7 @@ export const ProductCard = ({
 					<Card.Section backgroundColor="#edf5fA">
 						<p css={benefitsTextCss}>
 							You’re supporting the Guardian with{' '}
-							{nextPaymentDetails.paymentValue} per{' '}
+							{nextPaymentDetails.currentPriceValue} per{' '}
 							{nextPaymentDetails.paymentInterval}, and have
 							access to exclusive extras.
 						</p>
@@ -431,6 +439,12 @@ export const ProductCard = ({
 											</dd>
 										</div>
 									)}
+								{futureProductTitle && (
+									<div>
+										<dt>Switching to</dt>
+										<dd>{futureProductTitle}</dd>
+									</div>
+								)}
 							</dl>
 						</div>
 						<div css={wideButtonLayoutCss}>
