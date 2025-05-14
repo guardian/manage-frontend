@@ -22,7 +22,7 @@ const newsApp = {
 };
 
 const feastApp = {
-	name: 'Unlimited access to the Guardian Feast App',
+	name: 'Unlimited access to the Guardian Feast app',
 	description: 'Make a feast out of anything with the Guardian’s recipe app',
 };
 
