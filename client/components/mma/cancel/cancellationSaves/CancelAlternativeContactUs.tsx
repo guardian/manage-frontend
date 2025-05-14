@@ -5,22 +5,17 @@ import {
 	palette,
 	space,
 	textEgyptian17,
-	textSans12,
 	textSans15,
 	textSans17,
 	textSansBold20,
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
-import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
-import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
 import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
 import { Heading } from '../../shared/Heading';
 import { ProgressStepper } from '../../shared/ProgressStepper';
-import type { CancellationContextInterface } from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 
 interface RouterSate {
@@ -140,23 +135,10 @@ const cancelButtonCss = css`
 	}
 `;
 
-const termsCss = css`
-	${textSans12};
-	color: ${palette.neutral[46]};
-	margin-top: ${space[3]}px;
-`;
-
 export const CancelAlternativeContactUs = () => {
 	const location = useLocation();
 	const routerState = location.state as RouterSate;
 	const navigate = useNavigate();
-
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
-
-	const productDetail = cancellationContext.productDetail;
-	const mainPlan = getMainPlan(productDetail.subscription);
 
 	const standfirstCopy: string =
 		'Consider staying a Guardian supporter and continue making great impact in support of open, independent journalism.';
@@ -256,13 +238,6 @@ export const CancelAlternativeContactUs = () => {
 					Return to your account
 				</Button>
 			</div>
-			{isPaidSubscriptionPlan(mainPlan) && (
-				<p css={termsCss}>
-					Ollicitudin erat facilisis eget. Vestibulum rhoncus dui vel
-					eros laoreet consectetur. Vivamus eget elementum ligula,
-					vitae pharetra quam. Nullam at ligula sed metu
-				</p>
-			)}
 		</>
 	);
 };
