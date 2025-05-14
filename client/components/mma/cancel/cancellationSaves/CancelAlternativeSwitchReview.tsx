@@ -219,6 +219,7 @@ export const CancelAlternativeSwitchReview = () => {
 				productDetail.subscription.subscriptionId,
 				false,
 				productDetail.isTestUser,
+				true,
 			);
 
 			if (response.ok) {

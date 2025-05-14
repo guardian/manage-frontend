@@ -384,6 +384,7 @@ const ConfirmCancellationAndReturnRow = (
 						productDetail.subscription.subscriptionId,
 						true,
 						productDetail.isTestUser,
+						true,
 					);
 
 					if (response.ok) {

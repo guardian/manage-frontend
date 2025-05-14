@@ -37,12 +37,13 @@ export const contribToSupporterPlusFetch = (
 	subscriptionId: string,
 	preview: boolean,
 	isTestUser: boolean,
+	applyDiscountIfAvailable?: boolean,
 ) =>
 	fetch(
 		`/api/product-move/recurring-contribution-to-supporter-plus/${subscriptionId}`,
 		{
 			method: 'POST',
-			body: JSON.stringify({ preview }),
+			body: JSON.stringify({ preview, applyDiscountIfAvailable }),
 			headers: {
 				'Content-Type': 'application/json',
 				[MDA_TEST_USER_HEADER]: `${isTestUser}`,

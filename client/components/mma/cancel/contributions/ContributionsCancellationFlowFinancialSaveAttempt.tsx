@@ -138,6 +138,7 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 						productDetail.subscription.subscriptionId,
 						true,
 						productDetail.isTestUser,
+						true,
 					);
 
 					if (response.ok) {
