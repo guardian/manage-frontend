@@ -259,7 +259,7 @@ export const CancelAlternativeSwitchReview = () => {
 					<div css={yourOfferBoxCss}>
 						<div css={[yourOfferBoxFlexCss]}>
 							<h3 css={yourOfferBoxHeaderCss}>
-								One year of All access digital for{' '}
+								One year of All-access digital for{' '}
 								{mainPlan.currency}
 								{routerState.amountPayableToday}
 							</h3>
