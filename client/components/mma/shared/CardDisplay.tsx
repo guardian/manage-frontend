@@ -146,7 +146,12 @@ export const CardDisplay = (props: CardDisplayProps) => {
 				${props.cssOverrides}
 			`}
 		>
-			{cardTypeToSVG(props.type)}{' '}
+			{cardTypeToSVG(
+				props.type,
+				css`
+					transform: translateY(2px);
+				`,
+			)}{' '}
 			<span
 				css={css`
 					margin-left: 3px;

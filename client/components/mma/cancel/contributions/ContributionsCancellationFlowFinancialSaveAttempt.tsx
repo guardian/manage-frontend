@@ -6,9 +6,12 @@ import { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import { getBenefitsThreshold } from '@/client/utilities/pricingConfig/supporterPlusPricing';
+import { contribToSupporterPlusFetch } from '@/client/utilities/productUtils';
 import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
 import type { TrueFalsePending } from '@/shared/generalTypes';
+import type { SwitchPreviewResponse } from '@/shared/productSwitchTypes';
 import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
@@ -23,6 +26,7 @@ import type {
 } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import type { SaveBodyProps } from '../cancellationReason';
+import { reasonIsEligibleForSwitch } from '../cancellationSaves/saveEligibilityCheck';
 import { getIsPayingMinAmount } from './utils';
 
 const container = css`
@@ -60,33 +64,39 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
-
-	const isSupporterPlusAndFreePeriodOfferIsActive =
-		featureSwitches.supporterplusCancellationOffer &&
-		productType.productType === 'supporterplus';
-
+	const mainPlan = getMainPlan(productDetail.subscription);
+	const isAnnualBilling =
+		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'year';
+	const isMonthlyBilling =
+		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'month';
+	const isAnnualContributionAndDiscountIsActive =
+		productType.productType === 'contributions' &&
+		isAnnualBilling &&
+		reasonIsEligibleForSwitch(routerState.selectedReasonId);
 	const isContributionAndBreakFeatureIsActive =
 		featureSwitches.contributionCancellationPause &&
-		productType.productType === 'contributions';
+		productType.productType === 'contributions' &&
+		isMonthlyBilling;
 
 	const [
 		showAlternativeBeforeCancelling,
 		setShowAlternativeBeforeCancelling,
 	] = useState<TrueFalsePending>(
-		isSupporterPlusAndFreePeriodOfferIsActive ||
-			isContributionAndBreakFeatureIsActive
-			? 'pending'
-			: false,
+		isContributionAndBreakFeatureIsActive ? 'pending' : false,
 	);
+	const [
+		showContactDetailsBeforeCancelling,
+		setShowContactDetailsBeforeCancelling,
+	] = useState(false);
 
 	const [discountPreviewDetails, setDiscountPreviewDetails] =
 		useState<DiscountPreviewResponse | null>(null);
 
+	const [switchDiscountPreviewDetails, setSwitchDiscountPreviewDetails] =
+		useState<SwitchPreviewResponse | null>(null);
+
 	useEffect(() => {
-		if (
-			isSupporterPlusAndFreePeriodOfferIsActive ||
-			isContributionAndBreakFeatureIsActive
-		) {
+		if (isContributionAndBreakFeatureIsActive) {
 			(async () => {
 				try {
 					const response = await fetchWithDefaultParameters(
@@ -112,11 +122,52 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 					setShowAlternativeBeforeCancelling(false);
 				}
 			})();
+		} else if (isAnnualContributionAndDiscountIsActive) {
+			const supporterplusThreshold = getBenefitsThreshold(
+				mainPlan.currencyISO,
+				mainPlan.billingPeriod as 'month' | 'year',
+			);
+			(async () => {
+				const eligableForContactDetailsBeforeCancelling =
+					productDetail.billingCountry === 'United Kingdom' &&
+					isPaidSubscriptionPlan(mainPlan) &&
+					mainPlan.price / 100 <= supporterplusThreshold * 0.5 &&
+					reasonIsEligibleForSwitch(routerState.selectedReasonId);
+				try {
+					const response = await contribToSupporterPlusFetch(
+						productDetail.subscription.subscriptionId,
+						true,
+						productDetail.isTestUser,
+						true,
+					);
+
+					if (response.ok) {
+						// api returns a 400 response if the user is not eligible
+						setShowAlternativeBeforeCancelling(true);
+						const offerData = await response.json();
+						setSwitchDiscountPreviewDetails(offerData);
+					} else {
+						setShowAlternativeBeforeCancelling(false);
+						setShowContactDetailsBeforeCancelling(
+							eligableForContactDetailsBeforeCancelling,
+						);
+					}
+				} catch {
+					setShowAlternativeBeforeCancelling(false);
+					setShowContactDetailsBeforeCancelling(
+						eligableForContactDetailsBeforeCancelling,
+					);
+				}
+			})();
 		}
 	}, [
 		isContributionAndBreakFeatureIsActive,
-		isSupporterPlusAndFreePeriodOfferIsActive,
 		productDetail.subscription.subscriptionId,
+		productDetail.billingCountry,
+		productDetail.isTestUser,
+		isAnnualContributionAndDiscountIsActive,
+		mainPlan,
+		routerState.selectedReasonId,
 	]);
 
 	if (!productType || !productDetail || !routerState.selectedReasonId) {
@@ -147,13 +198,27 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 
 	const onCancelClicked = () => {
 		if (showAlternativeBeforeCancelling) {
-			const cancelAlternativeUrlPart =
-				cancelAlternativeUrlPartLookup[productType.productType] || '';
+			const cancelAlternativeUrlPart = cancelAlternativeUrlPartLookup(
+				false,
+				isContributionAndBreakFeatureIsActive,
+				isAnnualContributionAndDiscountIsActive,
+			);
 
 			navigate(`../${cancelAlternativeUrlPart}`, {
 				state: {
 					...routerState,
-					...discountPreviewDetails,
+					...(isAnnualContributionAndDiscountIsActive
+						? switchDiscountPreviewDetails
+						: discountPreviewDetails),
+					caseId,
+					holidayStops,
+					deliveryCredits,
+				},
+			});
+		} else if (showContactDetailsBeforeCancelling) {
+			navigate('../contact-us', {
+				state: {
+					...routerState,
 					caseId,
 					holidayStops,
 					deliveryCredits,
@@ -176,8 +241,6 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 		event.preventDefault();
 		navigate('/');
 	};
-
-	const mainPlan = getMainPlan(productDetail.subscription);
 
 	if (!isPaidSubscriptionPlan(mainPlan)) {
 		Sentry.captureMessage(

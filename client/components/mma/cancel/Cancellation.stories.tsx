@@ -4,6 +4,8 @@ import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
+	annualContributionPaidByCardUSA,
+	annualContributionPaidByCardWithCurrency,
 	contributionCancelled,
 	contributionPaidByCard,
 	contributionPaidByPayPal,
@@ -21,8 +23,12 @@ import { CancellationJourneyFunnel } from './CancellationJourneyFunnel';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { CancelAlternativeConfirmed } from './cancellationSaves/CancelAlternativeConfirmed';
+import { CancelAlternativeContactUs } from './cancellationSaves/CancelAlternativeContactUs';
 import { CancelAlternativeOffer } from './cancellationSaves/CancelAlternativeOffer';
 import { CancelAlternativeReview } from './cancellationSaves/CancelAlternativeReview';
+import { CancelAlternativeSwitch } from './cancellationSaves/CancelAlternativeSwitch';
+import { CancelAlternativeSwitchReview } from './cancellationSaves/CancelAlternativeSwitchReview';
+import { CancelSwitchConfirmed } from './cancellationSaves/CancelSwitchConfirmed';
 import { contributionsCancellationReasons } from './contributions/ContributionsCancellationReasons';
 import { gwCancellationReasons } from './gw/GwCancellationReasons';
 import { ConfirmCancellation } from './stages/ConfirmCancellation';
@@ -53,9 +59,6 @@ export default {
 	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
-		reactRouter: {
-			state: { productDetail: contributionPaidByPayPal() },
-		},
 	},
 } as Meta<typeof CancellationContainer>;
 
@@ -64,6 +67,7 @@ export const SelectReason: StoryObj<typeof CancellationReasonSelection> = {
 
 	parameters: {
 		reactRouter: {
+			state: { productDetail: contributionPaidByPayPal() },
 			container: (
 				<CancellationContainer
 					productType={PRODUCT_TYPES.contributions}
@@ -267,6 +271,90 @@ export const OfferYearly: StoryObj<typeof CancellationContainer> = {
 	},
 };
 
+export const SwitchYearly: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeSwitch />;
+	},
+
+	parameters: {
+		msw: [
+			http.post('/api/case', () => {
+				return HttpResponse.json({ id: 'caseId' });
+			}),
+		],
+		reactRouter: {
+			state: {
+				productDetail: annualContributionPaidByCardWithCurrency(
+					'GBP',
+					'United Kingdom',
+					6000,
+				),
+				selectedReasonId: 'mma_break_from_news',
+				supporterPlusPurchaseAmount: 120,
+				nextPaymentDate: '2025-05-30',
+				amountPayableToday: 58.39,
+				contributionRefundAmount: -1.61,
+				discount: {
+					discountedPrice: 60,
+					discountPercentage: 50,
+					upToPeriods: 1,
+					upToPeriodsType: 'Years',
+				},
+			},
+			container: <CancellationContainer productType={contributions} />,
+		},
+	},
+};
+
+export const SwitchYearlyOutsideUK: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeSwitch />;
+	},
+
+	parameters: {
+		msw: [
+			http.post('/api/case', () => {
+				return HttpResponse.json({ id: 'caseId' });
+			}),
+		],
+		reactRouter: {
+			state: {
+				productDetail: annualContributionPaidByCardUSA(6000),
+				supporterPlusPurchaseAmount: 120,
+				nextPaymentDate: '2025-05-30',
+				amountPayableToday: 58.39,
+				contributionRefundAmount: -1.61,
+				discount: {
+					discountedPrice: 60,
+					discountPercentage: 50,
+					upToPeriods: 1,
+					upToPeriodsType: 'Years',
+				},
+			},
+			container: <CancellationContainer productType={contributions} />,
+		},
+	},
+};
+
+export const SwitchContactUs: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeContactUs />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: annualContributionPaidByCardWithCurrency(
+					'GBP',
+					'United Kingdom',
+					6000,
+				),
+			},
+			container: <CancellationContainer productType={contributions} />,
+		},
+	},
+};
+
 export const OfferReviewMonthly: StoryObj<typeof CancellationContainer> = {
 	render: () => {
 		return <CancelAlternativeReview />;
@@ -325,6 +413,42 @@ export const OfferReviewYearly: StoryObj<typeof CancellationContainer> = {
 	},
 };
 
+export const SwitchReviewYearly: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeSwitchReview />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: annualContributionPaidByCardWithCurrency(
+					'GBP',
+					'United Kingdom',
+					6000,
+				),
+				supporterPlusPurchaseAmount: 120,
+				nextPaymentDate: '2025-05-30',
+				amountPayableToday: 58.39,
+				contributionRefundAmount: -1.61,
+				discount: {
+					discountedPrice: 60,
+					discountPercentage: 50,
+					upToPeriods: 1,
+					upToPeriodsType: 'Years',
+				},
+			},
+			container: <CancellationContainer productType={contributions} />,
+		},
+		msw: [
+			http.post('/api/discounts/apply-discount', () => {
+				return new HttpResponse(null, {
+					status: 201,
+				});
+			}),
+		],
+	},
+};
+
 export const OfferConfirmedMonthly: StoryObj<typeof CancellationContainer> = {
 	render: () => {
 		return <CancelAlternativeConfirmed />;
@@ -332,6 +456,7 @@ export const OfferConfirmedMonthly: StoryObj<typeof CancellationContainer> = {
 	parameters: {
 		reactRouter: {
 			state: {
+				productDetail: contributionPaidByPayPal(),
 				upToPeriods: 2,
 				upToPeriodsType: 'months',
 				nextNonDiscountedPaymentDate: '2024-07-30',
@@ -376,6 +501,7 @@ export const Pause: StoryObj<typeof CancellationContainer> = {
 		],
 		reactRouter: {
 			state: {
+				productDetail: contributionPaidByPayPal(),
 				discountedPrice: 0,
 				discountPercentage: 100,
 				upToPeriods: 2,
@@ -397,6 +523,7 @@ export const PauseReview: StoryObj<typeof CancellationContainer> = {
 	parameters: {
 		reactRouter: {
 			state: {
+				productDetail: contributionPaidByPayPal(),
 				discountedPrice: 0,
 				discountPercentage: 100,
 				upToPeriods: 2,
@@ -424,6 +551,7 @@ export const PauseConfirmed: StoryObj<typeof CancellationContainer> = {
 	parameters: {
 		reactRouter: {
 			state: {
+				productDetail: contributionPaidByPayPal(),
 				upToPeriods: 2,
 				upToPeriodsType: 'months',
 				nextNonDiscountedPaymentDate: '2024-07-30',
@@ -461,6 +589,34 @@ export const SupportplusCancelConfirm: StoryObj<typeof CancellationContainer> =
 			},
 		},
 	};
+
+export const SwitchYearlyConfirmed: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelSwitchConfirmed />;
+	},
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: annualContributionPaidByCardWithCurrency(
+					'GBP',
+					'United Kingdom',
+					6000,
+				),
+				supporterPlusPurchaseAmount: 120,
+				nextPaymentDate: '2025-05-30',
+				amountPayableToday: 58.39,
+				contributionRefundAmount: -1.61,
+				discount: {
+					discountedPrice: 60,
+					discountPercentage: 50,
+					upToPeriods: 1,
+					upToPeriodsType: 'Years',
+				},
+			},
+			container: <CancellationContainer productType={contributions} />,
+		},
+	},
+};
 
 export const ConfirmationContribution: StoryObj<typeof ExecuteCancellation> = {
 	render: () => {

@@ -14,17 +14,22 @@ import {
 import type { ChangeEvent, FC } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import type {
-	DiscountPeriodType,
-	DiscountPreviewResponse,
-} from '@/client/utilities/discountPreview';
+import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import { getBenefitsThreshold } from '@/client/utilities/pricingConfig/supporterPlusPricing';
+import { contribToSupporterPlusFetch } from '@/client/utilities/productUtils';
 import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
 import type { TrueFalsePending } from '@/shared/generalTypes';
 import { appendCorrectPluralisation } from '@/shared/generalTypes';
+import type { SwitchPreviewResponse } from '@/shared/productSwitchTypes';
+import type { MonthsOrYears } from '../../../../shared/dates';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
+import {
+	getMainPlan,
+	isPaidSubscriptionPlan,
+} from '../../../../shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import type {
 	ProductTypeWithCancellationFlow,
@@ -57,6 +62,7 @@ import type {
 	OptionalCancellationReasonId,
 	SaveBodyProps,
 } from './cancellationReason';
+import { reasonIsEligibleForSwitch } from './cancellationSaves/saveEligibilityCheck';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from './caseUpdate';
 
 const getPatchUpdateCaseFunc =
@@ -275,21 +281,42 @@ const ConfirmCancellationAndReturnRow = (
 		featureSwitches.supporterplusCancellationOffer &&
 		productType.productType === 'supporterplus';
 
+	const mainPlan = getMainPlan(productDetail.subscription);
+	const isAnnualBilling =
+		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'year';
+	const isMonthlyBilling =
+		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'month';
+
+	const isAnnualContributionAndDiscountIsActive =
+		productType.productType === 'contributions' &&
+		isAnnualBilling &&
+		reasonIsEligibleForSwitch(routerState.selectedReasonId);
+
 	const isContributionAndBreakFeatureIsActive =
+		!isAnnualContributionAndDiscountIsActive &&
 		featureSwitches.contributionCancellationPause &&
-		productType.productType === 'contributions';
+		productType.productType === 'contributions' &&
+		isMonthlyBilling;
 
 	const [
 		showAlternativeBeforeCancelling,
 		setShowAlternativeBeforeCancelling,
 	] = useState<TrueFalsePending>(
 		isSupporterPlusAndFreePeriodOfferIsActive ||
+			isAnnualContributionAndDiscountIsActive ||
 			isContributionAndBreakFeatureIsActive
 			? 'pending'
 			: false,
 	);
+	const [
+		showContactDetailsBeforeCancelling,
+		setShowContactDetailsBeforeCancelling,
+	] = useState(false);
 	const [discountPreviewDetails, setDiscountPreviewDetails] =
 		useState<DiscountPreviewResponse | null>(null);
+
+	const [switchDiscountPreviewDetails, setSwitchDiscountPreviewDetails] =
+		useState<SwitchPreviewResponse | null>(null);
 
 	const productHasAlternativeRecommendation =
 		productType.productType === 'supporterplus' ||
@@ -304,7 +331,7 @@ const ConfirmCancellationAndReturnRow = (
 				upToPeriodsType: appendCorrectPluralisation(
 					offerData.upToPeriodsType,
 					offerData.upToPeriods,
-				) as DiscountPeriodType,
+				) as MonthsOrYears,
 			};
 		}
 		return offerData;
@@ -341,11 +368,53 @@ const ConfirmCancellationAndReturnRow = (
 					setShowAlternativeBeforeCancelling(false);
 				}
 			})();
+		} else if (isAnnualContributionAndDiscountIsActive) {
+			const supporterplusThreshold = getBenefitsThreshold(
+				mainPlan.currencyISO,
+				mainPlan.billingPeriod as 'month' | 'year',
+			);
+			(async () => {
+				const eligableForContactDetailsBeforeCancelling =
+					productDetail.billingCountry === 'United Kingdom' &&
+					isPaidSubscriptionPlan(mainPlan) &&
+					mainPlan.price / 100 <= supporterplusThreshold * 0.5 &&
+					reasonIsEligibleForSwitch(routerState.selectedReasonId);
+				try {
+					const response = await contribToSupporterPlusFetch(
+						productDetail.subscription.subscriptionId,
+						true,
+						productDetail.isTestUser,
+						true,
+					);
+
+					if (response.ok) {
+						// api returns a 400 response if the user is not eligible
+						setShowAlternativeBeforeCancelling(true);
+						const offerData = await response.json();
+						setSwitchDiscountPreviewDetails(offerData);
+					} else {
+						setShowAlternativeBeforeCancelling(false);
+						setShowContactDetailsBeforeCancelling(
+							eligableForContactDetailsBeforeCancelling,
+						);
+					}
+				} catch {
+					setShowAlternativeBeforeCancelling(false);
+					setShowContactDetailsBeforeCancelling(
+						eligableForContactDetailsBeforeCancelling,
+					);
+				}
+			})();
 		}
 	}, [
 		isContributionAndBreakFeatureIsActive,
 		isSupporterPlusAndFreePeriodOfferIsActive,
+		isAnnualContributionAndDiscountIsActive,
 		productDetail.subscription.subscriptionId,
+		mainPlan,
+		productDetail.isTestUser,
+		productDetail.billingCountry,
+		routerState.selectedReasonId,
 	]);
 
 	return (
@@ -391,14 +460,28 @@ const ConfirmCancellationAndReturnRow = (
 								}
 								if (showAlternativeBeforeCancelling) {
 									const cancelAlternativeUrlPart =
-										cancelAlternativeUrlPartLookup[
-											productType.productType
-										] || '';
+										cancelAlternativeUrlPartLookup(
+											isSupporterPlusAndFreePeriodOfferIsActive,
+											isContributionAndBreakFeatureIsActive,
+											isAnnualContributionAndDiscountIsActive,
+										);
 
 									navigate(`../${cancelAlternativeUrlPart}`, {
 										state: {
 											...routerState,
-											...discountPreviewDetails,
+											...(isAnnualContributionAndDiscountIsActive
+												? switchDiscountPreviewDetails
+												: discountPreviewDetails),
+											caseId: props.caseId,
+											holidayStops: props.holidayStops,
+											deliveryCredits:
+												props.deliveryCredits,
+										},
+									});
+								} else if (showContactDetailsBeforeCancelling) {
+									navigate('../contact-us', {
+										state: {
+											...routerState,
 											caseId: props.caseId,
 											holidayStops: props.holidayStops,
 											deliveryCredits:
