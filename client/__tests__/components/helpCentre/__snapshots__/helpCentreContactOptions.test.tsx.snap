@@ -378,7 +378,7 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
                 className="emotion-20"
               >
                  
-                (toll free USA)
+                (toll free CAN/USA)
               </span>
             </span>
             <span
@@ -389,7 +389,7 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
                 className="emotion-20"
               >
                  
-                (outside USA)
+                (outside CAN/USA)
               </span>
             </span>
             <span
@@ -783,7 +783,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
                 className="emotion-20"
               >
                  
-                (toll free USA)
+                (toll free CAN/USA)
               </span>
             </span>
             <span
@@ -794,7 +794,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
                 className="emotion-20"
               >
                  
-                (outside USA)
+                (outside CAN/USA)
               </span>
             </span>
             <span
@@ -1666,7 +1666,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
                   className="emotion-32"
                 >
                    
-                  (toll free USA)
+                  (toll free CAN/USA)
                 </span>
               </span>
               <span
@@ -1677,7 +1677,7 @@ html:not(.src-focus-disabled) .emotion-7:focus {
                   className="emotion-32"
                 >
                    
-                  (outside USA)
+                  (outside CAN/USA)
                 </span>
               </span>
               <span
