@@ -258,9 +258,9 @@ export const CancelAlternativeSwitch = () => {
 		'Consider staying a Guardian supporter and continue making great impact in support of open, independent journalism.';
 
 	const heroImageSrc: { mobile: string; desktop: string } = {
-		mobile: 'https://media.guim.co.uk/63d17ee19313703129fbbeacceaafcd6d1cc1014/0_0_1404_716/500.png',
+		mobile: 'https://i.guim.co.uk/img/media/e13b475f7a975afa38b5e00331751546dfba2bed/0_0_5620_2868/1000.png?width=800&quality=75&s=1776221b7bd9e98f45ff0cbb4effd975',
 		desktop:
-			'https://i.guim.co.uk/img/media/02c17de8ea17126fbd87f6567ce5cd80f128546d/0_0_2212_1869/2000.png?width=1000&quality=75&s=492edad637979aa4e57e957cb12cd4f1',
+			'https://i.guim.co.uk/img/media/d86386198722e7b1a53b4823c9b135e73dc06590/0_0_8880_7728/2000.png?width=1000&quality=75&s=43192499f268f350221dfcb3ffd98c50',
 	};
 
 	const withHeroImage =
