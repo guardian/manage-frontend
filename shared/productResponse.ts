@@ -123,7 +123,8 @@ export function isProduct(
 export const isObserverProduct = (productDetail: ProductDetail): boolean => {
 	return (
 		productDetail.tier === 'Newspaper Delivery - Observer' ||
-		productDetail.tier === 'Newspaper Digital Voucher - Observer'
+		productDetail.tier === 'Newspaper Digital Voucher - Observer' ||
+		productDetail.tier === 'Newspaper Voucher - Observer'
 	);
 };
 
