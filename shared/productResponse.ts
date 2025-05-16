@@ -90,6 +90,7 @@ export const productTiers = [
 	'Guardian Ad-Lite',
 	'Newspaper Delivery - Observer',
 	'Newspaper Digital Voucher - Observer',
+	'Newspaper Voucher - Observer',
 ];
 
 export type ProductTier = typeof productTiers[number];

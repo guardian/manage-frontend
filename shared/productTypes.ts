@@ -51,7 +51,8 @@ type ProductFriendlyName =
 	| 'guardian ad-lite'
 	| 'guardian patron'
 	| 'newspaper delivery - Observer subscription'
-	| 'newspaper subscription card - Observer';
+	| 'newspaper subscription card - Observer'
+	| 'newspaper voucher subscription - Observer';
 type ProductUrlPart =
 	| 'membership'
 	| 'contributions'
@@ -283,7 +284,8 @@ export type ProductTypeKeys =
 	| 'guardianadlite'
 	| 'guardianpatron'
 	| 'observer'
-	| 'digitalvoucherobserver';
+	| 'digitalvoucherobserver'
+	| 'voucherobserver';
 
 export type GroupedProductTypeKeys =
 	| 'membership'
@@ -534,6 +536,54 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 	voucher: {
 		productTitle: calculateProductTitle('Newspaper Voucher'),
 		friendlyName: 'newspaper voucher subscription',
+		shortFriendlyName: 'newspaper voucher booklet',
+		productType: 'voucher',
+		groupedProductType: 'subscriptions',
+		allProductsProductTypeFilterString: 'Voucher',
+		urlPart: 'voucher',
+		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
+		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
+		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+		softOptInIDs: [
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SubscriberPreview,
+			SoftOptInIDs.SupporterNewsletter,
+		],
+		holidayStops: {
+			issueKeyword: 'voucher',
+			alternateNoticeString: "one day's notice",
+			additionalHowAdvice:
+				'Please discard suspended vouchers before the voucher dates. Please note that historical suspensions may not appear here.',
+			hideDeliveryRedirectionHelpBullet: true,
+			explicitConfirmationRequired: {
+				checkboxLabel:
+					'I confirm that I will destroy suspended vouchers.',
+				explainerModalTitle: 'Destroying your vouchers',
+				explainerModalBody:
+					'We monitor voucher usage and reserve the right to cancel credits where vouchers have been used during the suspension period.',
+			},
+		},
+		delivery: {
+			showAddress: showDeliveryAddressCheck,
+			enableDeliveryInstructionsUpdate: true,
+		},
+		cancellation: {
+			reasons: shuffledVoucherCancellationReasons,
+			sfCaseProduct: 'Voucher Subscriptions',
+			checkForOutstandingCredits: true,
+			flowWrapper: physicalSubsCancellationFlowWrapper,
+			startPageBody: voucherCancellationFlowStart,
+			startPageOfferEffectiveDateOptions: true,
+			summaryReasonSpecificPara: () => undefined,
+			onlyShowSupportSectionIfAlternateText: false,
+			alternateSupportButtonText: () => undefined,
+			alternateSupportButtonUrlSuffix: () => undefined,
+			swapFeedbackAndContactUs: true,
+		},
+	},
+	voucherobserver: {
+		productTitle: calculateProductTitle('Newspaper Voucher - Observer'),
+		friendlyName: 'newspaper voucher subscription - Observer',
 		shortFriendlyName: 'newspaper voucher booklet',
 		productType: 'voucher',
 		groupedProductType: 'subscriptions',
