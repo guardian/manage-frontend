@@ -381,6 +381,65 @@ export function baseVoucher(): ProductDetail {
 	};
 }
 
+export function baseVoucherObserver(): ProductDetail {
+	return {
+		tier: 'Newspaper Voucher - Observer',
+		isPaidTier: true,
+		selfServiceCancellation: {
+			isAllowed: false,
+			shouldDisplayEmail: false,
+			phoneRegionsToDisplay: ['UK & ROW'],
+		},
+		joinDate: '2025-05-16',
+		optIn: true,
+		billingCountry: 'United Kingdom',
+		subscription: {
+			contactId: '0039E00001KA26BQAT',
+			deliveryAddress: {
+				addressLine1: 'Kings Place',
+				addressLine2: '90 York Way',
+				town: 'London',
+				postcode: 'N1 9GU',
+				country: 'United Kingdom',
+			},
+			safeToUpdatePaymentMethod: true,
+			start: '2025-06-15',
+			end: '2026-05-16',
+			nextPaymentPrice: 1599,
+			nextPaymentDate: '2025-06-15',
+			lastPaymentDate: null,
+			potentialCancellationDate: '2025-06-15',
+			anniversaryDate: '2026-06-15',
+			autoRenew: true,
+			cancelledAt: false,
+			subscriptionId: 'A-S00285105',
+			trialLength: 30,
+			chargedThroughDate: null,
+			renewalDate: '2026-05-16',
+			currentPlans: [],
+			futurePlans: [
+				{
+					tier: 'Newspaper Voucher - Observer',
+					name: 'Sunday',
+					start: '2025-06-15',
+					end: '2026-05-16',
+					shouldBeVisible: true,
+					chargedThrough: null,
+					price: 1599,
+					currency: '£',
+					currencyISO: 'GBP',
+					billingPeriod: 'month',
+					features: '',
+					daysOfWeek: ['Sunday'],
+				},
+			],
+			readerType: 'Direct',
+			accountId: '6ad08ec296d239070196d841dth3132d',
+		},
+		isTestUser: false,
+	};
+}
+
 export function baseDigitalVoucherObserver(): ProductDetail {
 	return {
 		tier: 'Newspaper Digital Voucher - Observer',

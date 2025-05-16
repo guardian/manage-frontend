@@ -337,6 +337,9 @@ export function getSpecificProductTypeFromTier(
 		case 'Newspaper Digital Voucher - Observer':
 			productType = PRODUCT_TYPES.digitalvoucherobserver;
 			break;
+		case 'Newspaper Voucher - Observer':
+			productType = PRODUCT_TYPES.voucherobserver;
+			break;
 	}
 	return productType;
 }
