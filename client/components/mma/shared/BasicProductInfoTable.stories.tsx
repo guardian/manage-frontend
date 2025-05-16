@@ -1,6 +1,6 @@
 import type { Meta, StoryFn } from '@storybook/react';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
-import { newspaperVoucherPaidByPaypal } from '../../../fixtures/productBuilder/testProducts';
+import { newspaperDigitalVoucherPaidByPaypal } from '../../../fixtures/productBuilder/testProducts';
 import { BasicProductInfoTable } from './BasicProductInfoTable';
 
 export default {
@@ -11,6 +11,6 @@ export default {
 export const Default: StoryFn<typeof BasicProductInfoTable> = () => (
 	<BasicProductInfoTable
 		groupedProductType={GROUPED_PRODUCT_TYPES.subscriptions}
-		productDetail={newspaperVoucherPaidByPaypal()}
+		productDetail={newspaperDigitalVoucherPaidByPaypal()}
 	/>
 );

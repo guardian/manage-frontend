@@ -90,6 +90,7 @@ export const productTiers = [
 	'Guardian Ad-Lite',
 	'Newspaper Delivery - Observer',
 	'Newspaper Digital Voucher - Observer',
+	'Newspaper Voucher - Observer',
 ];
 
 export type ProductTier = typeof productTiers[number];
@@ -122,7 +123,8 @@ export function isProduct(
 export const isObserverProduct = (productDetail: ProductDetail): boolean => {
 	return (
 		productDetail.tier === 'Newspaper Delivery - Observer' ||
-		productDetail.tier === 'Newspaper Digital Voucher - Observer'
+		productDetail.tier === 'Newspaper Digital Voucher - Observer' ||
+		productDetail.tier === 'Newspaper Voucher - Observer'
 	);
 };
 
@@ -335,6 +337,9 @@ export function getSpecificProductTypeFromTier(
 			break;
 		case 'Newspaper Digital Voucher - Observer':
 			productType = PRODUCT_TYPES.digitalvoucherobserver;
+			break;
+		case 'Newspaper Voucher - Observer':
+			productType = PRODUCT_TYPES.voucherobserver;
 			break;
 	}
 	return productType;

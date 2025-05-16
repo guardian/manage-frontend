@@ -91,4 +91,7 @@ export const productCardConfiguration: Record<
 	digitalvoucherobserver: {
 		colour: productColour.newspaper,
 	},
+	voucherobserver: {
+		colour: productColour.newspaper,
+	},
 };

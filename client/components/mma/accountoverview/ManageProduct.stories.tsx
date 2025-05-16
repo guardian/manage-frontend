@@ -7,7 +7,7 @@ import {
 	guardianAdLite,
 	guardianWeeklyPaidByCard,
 	monthlyContributionPaidByCard,
-	newspaperVoucherPaidByPaypal,
+	newspaperDigitalVoucherPaidByPaypal,
 	observerDelivery,
 	supporterPlusAnnual,
 	supporterPlusMonthlyAllAccessDigital,
@@ -67,7 +67,7 @@ export const NewspaperSubscriptionCard: StoryObj<typeof ManageProduct> = {
 
 	parameters: {
 		reactRouter: {
-			state: { productDetail: newspaperVoucherPaidByPaypal() },
+			state: { productDetail: newspaperDigitalVoucherPaidByPaypal() },
 		},
 	},
 };

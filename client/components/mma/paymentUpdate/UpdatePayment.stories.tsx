@@ -4,7 +4,7 @@ import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
 	guardianWeeklyExpiredCard,
 	guardianWeeklyPaidByCard,
-	newspaperVoucherPaidByPaypal,
+	newspaperDigitalVoucherPaidByPaypal,
 } from '../../../fixtures/productBuilder/testProducts';
 import { PaymentDetailUpdate } from './PaymentDetailUpdate';
 import { PaymentDetailUpdateContainer } from './PaymentDetailUpdateContainer';
@@ -53,7 +53,7 @@ export const NewspaperVoucherPaypal: StoryObj<typeof PaymentDetailUpdate> = {
 	parameters: {
 		reactRouter: {
 			state: {
-				productDetail: newspaperVoucherPaidByPaypal(),
+				productDetail: newspaperDigitalVoucherPaidByPaypal(),
 			},
 			container: (
 				<PaymentDetailUpdateContainer
