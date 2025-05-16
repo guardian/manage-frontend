@@ -162,7 +162,9 @@ export const ProductCard = ({
 			productDetail.subscription.potentialCancellationDate;
 
 	const futureProductTitle =
-		productDetail.subscription.futurePlans[0]?.tier && productDetail.tier
+		productDetail.subscription.futurePlans[0]?.tier &&
+		productDetail.tier &&
+		productDetail.subscription.currentPlans.length > 0
 			? getSpecificProductTypeFromTier(
 					productDetail.subscription.futurePlans[0].tier,
 			  ).productTitle(mainPlan)
