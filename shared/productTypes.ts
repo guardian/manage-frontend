@@ -582,7 +582,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 	},
 	voucherobserver: {
-		productTitle: calculateProductTitle('Newspaper Voucher - Observer'),
+		productTitle: () => 'Newspaper Voucher - Observer',
 		friendlyName: 'newspaper voucher subscription - Observer',
 		shortFriendlyName: 'newspaper voucher booklet',
 		productType: 'voucher',
