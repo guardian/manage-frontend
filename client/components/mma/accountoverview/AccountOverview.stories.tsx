@@ -26,9 +26,10 @@ import {
 	guardianWeeklyPaidByCard,
 	homeDeliverySundayPlus,
 	membershipSupporter,
-	newspaperVoucherObserver,
-	newspaperVoucherPaidByPaypal,
+	newspaperDigitalVoucherObserver,
+	newspaperDigitalVoucherPaidByPaypal,
 	observerDelivery,
+	observerVoucherPaidByCard,
 	patronMembership,
 	supporterPlus,
 	supporterPlusAnnualCancelled,
@@ -36,6 +37,7 @@ import {
 	supporterPlusInOfferPeriod,
 	supporterPlusUSA,
 	tierThree,
+	voucherPaidByCard,
 } from '../../../fixtures/productBuilder/testProducts';
 import { singleContributionsAPIResponse } from '../../../fixtures/singleContribution';
 import { user } from '../../../fixtures/user';
@@ -96,14 +98,15 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 					toMembersDataApiResponse(
 						guardianWeeklyPaidByCard(),
 						digitalPackPaidByDirectDebit(),
-						newspaperVoucherPaidByPaypal(),
-						newspaperVoucherObserver(),
+						newspaperDigitalVoucherPaidByPaypal(),
 						membershipSupporter(),
 						patronMembership(),
 						supporterPlus(),
 						tierThree(),
-						observerDelivery(),
 						homeDeliverySundayPlus(),
+						voucherPaidByCard(),
+						observerDelivery(),
+						newspaperDigitalVoucherObserver(),
 					),
 				);
 			}),
@@ -130,8 +133,9 @@ export const WithOnlyObserverSubscriptions: StoryObj<typeof AccountOverview> = {
 			http.get('/api/me/mma', () => {
 				return HttpResponse.json(
 					toMembersDataApiResponse(
-						newspaperVoucherObserver(),
+						newspaperDigitalVoucherObserver(),
 						observerDelivery(),
+						observerVoucherPaidByCard(),
 					),
 				);
 			}),

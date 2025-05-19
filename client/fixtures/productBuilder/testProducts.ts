@@ -15,6 +15,7 @@ import {
 	baseSupporterPlus,
 	baseTierThree,
 	baseVoucher,
+	baseVoucherObserver,
 } from './baseProducts';
 import { cards, ProductBuilder } from './productBuilder';
 
@@ -171,13 +172,13 @@ export function nonServicedCountryContributor() {
 		.getProductDetailObject();
 }
 
-export function newspaperVoucherObserver() {
+export function newspaperDigitalVoucherObserver() {
 	return new ProductBuilder(baseDigitalVoucherObserver())
 		.payByCard()
 		.getProductDetailObject();
 }
 
-export function newspaperVoucherPaidByPaypal(email?: string) {
+export function newspaperDigitalVoucherPaidByPaypal(email?: string) {
 	return new ProductBuilder(baseDigitalVoucher())
 		.payByPayPal(email)
 		.getProductDetailObject();
@@ -192,6 +193,12 @@ export function homeDelivery() {
 export function homeDeliveryWithInstructions(instructions: string) {
 	return new ProductBuilder(baseHomeDelivery())
 		.withDeliveryInstructions(instructions)
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function observerVoucherPaidByCard() {
+	return new ProductBuilder(baseVoucherObserver())
 		.payByCard()
 		.getProductDetailObject();
 }

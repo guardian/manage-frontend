@@ -15,7 +15,7 @@ import {
 	guardianAdLite,
 	guardianAdLiteCancelled,
 	guardianWeeklyPaidByCard,
-	newspaperVoucherPaidByPaypal,
+	newspaperDigitalVoucherPaidByPaypal,
 	tierThree,
 } from '../../../fixtures/productBuilder/testProducts';
 import { user } from '../../../fixtures/user';
@@ -67,7 +67,7 @@ export const WithSubscriptions: StoryObj<typeof Billing> = {
 					toMembersDataApiResponse(
 						guardianWeeklyPaidByCard(),
 						digitalPackPaidByDirectDebit(),
-						newspaperVoucherPaidByPaypal(),
+						newspaperDigitalVoucherPaidByPaypal(),
 						tierThree(),
 						guardianAdLite(),
 						guardianAdLiteCancelled(),
