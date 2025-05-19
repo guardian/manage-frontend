@@ -424,4 +424,43 @@ describe('Cancel contribution', () => {
 			"If you confirm your cancellation, you will no longer be supporting the Guardian's reader-funded journalism.",
 		).should('exist');
 	});
+
+	it('user (annual) cannot take switch discount (billing country is not United Kingdom)', () => {
+		const switchContribution = toMembersDataApiResponse(
+			annualContributionPaidByCardWithCurrency('GBP', 'Germany', 1200),
+		);
+
+		cy.intercept(
+			'POST',
+			'/api/product-move/recurring-contribution-to-supporter-plus/**',
+		).as('switch_discount');
+
+		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
+			statusCode: 200,
+			body: switchContribution,
+		});
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: switchContribution,
+		});
+
+		setupCancellation();
+
+		cy.findByRole('radio', {
+			name: 'I am unhappy with some editorial decisions',
+		}).click();
+		cy.findByRole('button', { name: 'Continue' }).click();
+
+		cy.findByRole('button', {
+			name: 'Continue to cancellation',
+		}).click();
+
+		cy.findByText(
+			"If you confirm your cancellation, you will no longer be supporting the Guardian's reader-funded journalism.",
+		).should('exist');
+
+		cy.get('@switch_discount.all').then((interceptions) => {
+			expect(interceptions).to.have.length(0);
+		});
+	});
 });
