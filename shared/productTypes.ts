@@ -462,11 +462,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
 		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
-		softOptInIDs: [
-			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SupporterNewsletter,
-		],
+		softOptInIDs: [],
 		holidayStops: {
 			issueKeyword: 'paper',
 			alternateNoticeString: "two working days' notice",
@@ -592,11 +588,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
 		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
-		softOptInIDs: [
-			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SupporterNewsletter,
-		],
+		softOptInIDs: [],
 		holidayStops: {
 			issueKeyword: 'voucher',
 			alternateNoticeString: "one day's notice",
@@ -667,11 +659,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		legacyUrlPart: 'digitalvoucher',
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
 		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
-		softOptInIDs: [
-			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SupporterNewsletter,
-		],
+		softOptInIDs: [],
 		holidayStops: {
 			issueKeyword: 'issue',
 			alternateNoticeString: "one day's notice",
