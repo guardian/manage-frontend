@@ -287,8 +287,12 @@ const ConfirmCancellationAndReturnRow = (
 	const isMonthlyBilling =
 		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'month';
 
+	const allowCountrySwitchDiscount =
+		productDetail.billingCountry === 'United Kingdom';
+
 	const isAnnualContributionAndDiscountIsActive =
 		productType.productType === 'contributions' &&
+		allowCountrySwitchDiscount &&
 		isAnnualBilling &&
 		reasonIsEligibleForSwitch(routerState.selectedReasonId);
 
