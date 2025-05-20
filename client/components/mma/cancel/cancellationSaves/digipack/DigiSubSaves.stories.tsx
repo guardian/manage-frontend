@@ -1,4 +1,4 @@
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
@@ -11,6 +11,11 @@ import {
 } from '@/client/fixtures/productBuilder/testProducts';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { SelectReason } from '../SelectReason';
+
+const digiSubWithSortedReasons = PRODUCT_TYPES.digipack;
+digiSubWithSortedReasons.cancellation!.reasons?.sort((a, b) =>
+	a.reasonId.localeCompare(b.reasonId),
+);
 
 export default {
 	title: 'Pages/DigiSubSaves',
@@ -103,6 +108,16 @@ export const ConfirmCancellation: StoryObj<typeof ConfirmDigiSubCancellation> =
 		},
 	};
 
-export const DigiSubCancellationReason: StoryFn<typeof SelectReason> = () => {
-	return <SelectReason />;
+export const DigiSubCancellationReason: StoryObj<typeof SelectReason> = {
+	render: () => <SelectReason />,
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: digitalPackPaidByDirectDebit(),
+			},
+			container: (
+				<CancellationContainer productType={digiSubWithSortedReasons} />
+			),
+		},
+	},
 };
