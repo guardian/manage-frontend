@@ -61,3 +61,7 @@ export const reasonIsEligibleForSwitch = (
 	selectedReasonId === 'mma_dont_read_enough' ||
 	selectedReasonId === 'mma_support_another_way' ||
 	selectedReasonId === 'mma_values';
+
+export const allowCountrySwitchDiscount = (
+	billingCountry: string | undefined,
+) => billingCountry === 'United Kingdom';

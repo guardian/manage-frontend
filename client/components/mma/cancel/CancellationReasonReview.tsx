@@ -62,7 +62,10 @@ import type {
 	OptionalCancellationReasonId,
 	SaveBodyProps,
 } from './cancellationReason';
-import { reasonIsEligibleForSwitch } from './cancellationSaves/saveEligibilityCheck';
+import {
+	allowCountrySwitchDiscount,
+	reasonIsEligibleForSwitch,
+} from './cancellationSaves/saveEligibilityCheck';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from './caseUpdate';
 
 const getPatchUpdateCaseFunc =
@@ -287,12 +290,9 @@ const ConfirmCancellationAndReturnRow = (
 	const isMonthlyBilling =
 		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'month';
 
-	const allowCountrySwitchDiscount =
-		productDetail.billingCountry === 'United Kingdom';
-
 	const isAnnualContributionAndDiscountIsActive =
 		productType.productType === 'contributions' &&
-		allowCountrySwitchDiscount &&
+		allowCountrySwitchDiscount(productDetail.billingCountry) &&
 		isAnnualBilling &&
 		reasonIsEligibleForSwitch(routerState.selectedReasonId);
 
