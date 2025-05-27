@@ -67,6 +67,7 @@ router.get('/callback', async (req: Request, res: Response) => {
 		});
 		res.cookie('GU_ID_TOKEN', tokenSet.id_token, {
 			...oauthCookieOptions,
+			httpOnly: false,
 			maxAge: oktaConfig.maxAge * 1000, // Same expiry as set in Okta, but in ms
 		});
 
