@@ -320,6 +320,77 @@ describe('Cancel contribution', () => {
 		cy.get('@get_cancellation_date.all').should('have.length', 0);
 	});
 
+	it('user (annual) switches to supporter-plus at a discount instead of cancelling (choosing financial reasons)', () => {
+		const productSwitchPreviewWithSwitchDiscount = {
+			supporterPlusPurchaseAmount: 120,
+			nextPaymentDate: '2026-03-20',
+			amountPayableToday: 0,
+			contributionRefundAmount: -60,
+			discount: {
+				discountedPrice: 60,
+				discountPercentage: 50,
+				upToPeriods: 1,
+				upToPeriodsType: 'Years',
+			},
+		};
+		const switchContribution = toMembersDataApiResponse(
+			annualContributionPaidByCardWithCurrency(
+				'GBP',
+				'United Kingdom',
+				1200,
+			),
+		);
+
+		cy.intercept('GET', '/api/me/mma?productType=Contribution', {
+			statusCode: 200,
+			body: switchContribution,
+		});
+		cy.intercept('GET', '/api/me/mma', {
+			statusCode: 200,
+			body: switchContribution,
+		});
+
+		setupCancellation();
+
+		cy.intercept(
+			'POST',
+			'/api/product-move/recurring-contribution-to-supporter-plus/**',
+			(req) => {
+				if (req.body.preview === true) {
+					req.reply({
+						statusCode: 200,
+						body: productSwitchPreviewWithSwitchDiscount,
+					});
+				} else {
+					req.reply({
+						statusCode: 200,
+					});
+				}
+			},
+		).as('switch_discount');
+
+		cy.findByRole('radio', {
+			name: 'I can no longer afford to support you',
+		}).click();
+		cy.findByRole('button', { name: 'Continue' }).click();
+
+		cy.wait('@get_case');
+		cy.wait('@switch_discount');
+
+		cy.findByRole('button', {
+			name: 'I still want to cancel',
+		}).click();
+
+		cy.findByRole('button', { name: 'Redeem the offer' }).click();
+
+		cy.findByRole('button', {
+			name: 'Confirm your offer',
+		}).click();
+
+		cy.findByText('Thank you for choosing to stay with us');
+		cy.wait('@switch_discount');
+	});
+
 	it('user (annual) switches to supporter-plus at a discount instead of cancelling', () => {
 		const productSwitchPreviewWithSwitchDiscount = {
 			supporterPlusPurchaseAmount: 120,
@@ -447,17 +518,15 @@ describe('Cancel contribution', () => {
 		setupCancellation();
 
 		cy.findByRole('radio', {
-			name: 'I am unhappy with some editorial decisions',
+			name: 'I can no longer afford to support you',
 		}).click();
 		cy.findByRole('button', { name: 'Continue' }).click();
 
 		cy.findByRole('button', {
-			name: 'Continue to cancellation',
+			name: 'I still want to cancel',
 		}).click();
 
-		cy.findByText(
-			"If you confirm your cancellation, you will no longer be supporting the Guardian's reader-funded journalism.",
-		).should('exist');
+		cy.findByText('Your yearly support has been cancelled').should('exist');
 
 		cy.get('@switch_discount.all').then((interceptions) => {
 			expect(interceptions).to.have.length(0);

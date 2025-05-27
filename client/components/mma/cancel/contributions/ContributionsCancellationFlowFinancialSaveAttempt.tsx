@@ -26,7 +26,10 @@ import type {
 } from '../CancellationContainer';
 import { CancellationContext } from '../CancellationContainer';
 import type { SaveBodyProps } from '../cancellationReason';
-import { reasonIsEligibleForSwitch } from '../cancellationSaves/saveEligibilityCheck';
+import {
+	allowCountrySwitchDiscount,
+	reasonIsEligibleForSwitch,
+} from '../cancellationSaves/saveEligibilityCheck';
 import { getIsPayingMinAmount } from './utils';
 
 const container = css`
@@ -71,6 +74,7 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'month';
 	const isAnnualContributionAndDiscountIsActive =
 		productType.productType === 'contributions' &&
+		allowCountrySwitchDiscount(productDetail.billingCountry) &&
 		isAnnualBilling &&
 		reasonIsEligibleForSwitch(routerState.selectedReasonId);
 	const isContributionAndBreakFeatureIsActive =
