@@ -4,15 +4,29 @@ import {
 	openSession,
 	subscribeToContentCardsUpdates,
 } from '@braze/web-sdk';
+import { getCookie } from '@guardian/libs';
 import { useEffect, useState } from 'react';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
+import { parseJwt } from '../cookies';
 
 export const useBraze = () => {
 	const [brazeIsInitialised, setBrazeIsInitialised] =
 		useState<boolean>(false);
 
 	const initialiseBrazeSDK = async () => {
-		const brazeUUID = 'YOUR_BRAZE_ID_HERE';
+		const guIdTokenCookie = getCookie({
+			name: 'GU_ID_TOKEN',
+			shouldMemoize: true,
+		});
+		if (!guIdTokenCookie) {
+			return;
+		}
+		const decodedGuIdToken = parseJwt(guIdTokenCookie);
+
+		const brazeUUID = decodedGuIdToken?.braze_uuid;
+		if (!brazeUUID) {
+			return;
+		}
 
 		const brazeSdkConfigResponse = await fetch('/api/braze-sdk-details', {
 			method: 'GET',
@@ -24,13 +38,13 @@ export const useBraze = () => {
 		if (brazeSdkConfig.apiKey && brazeSdkConfig.sdkEndpoint) {
 			initialize(brazeSdkConfig.apiKey, {
 				baseUrl: brazeSdkConfig.sdkEndpoint,
+				allowUserSuppliedJavascript: true,
 			});
 
 			// if you use Content Cards
-			subscribeToContentCardsUpdates(function (cards) {
-				console.log(cards.lastUpdated);
-				// cards have been updated
-			});
+			//subscribeToContentCardsUpdates(function (cards) {
+			//console.log("---------------------- ", cards);
+			//});
 
 			changeUser(brazeUUID);
 

@@ -58,6 +58,7 @@ import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 import { SingleContributionCard } from './SingleContributionCard';
+import { TestBrazeBanner } from './TestBrazeBanner';
 import { TestBrazeContentCard } from './TestBrazeContentCard';
 
 type AccountOverviewResponse = [
@@ -326,6 +327,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					</Stack>
 				</>
 			)}
+			<TestBrazeBanner />
+			<div id="braze-banner-ref"></div>
 		</>
 	);
 };

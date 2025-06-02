@@ -3,6 +3,21 @@ import {
 	textEgyptian14Object,
 } from '@guardian/source/foundations';
 
+const brazeOverrides = `
+	body .ab-feed {
+		border-radius: 0;
+		box-shadow: none;
+		background-color: transparent;
+	}
+	body .ab-feed .ab-feed-body {
+		padding: 0;
+		border: 0;
+	}
+	.ab-feed-buttons-wrapper {
+		display: none;
+	}
+`;
+
 export const global = `
 html {
   box-sizing: border-box;
@@ -75,4 +90,5 @@ address {
   font-style: normal;
   word-break: keep-all;
 }
+${brazeOverrides}
 `;
