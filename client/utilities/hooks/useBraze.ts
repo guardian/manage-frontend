@@ -1,9 +1,4 @@
-import {
-	changeUser,
-	initialize,
-	openSession,
-	subscribeToContentCardsUpdates,
-} from '@braze/web-sdk';
+import { changeUser, initialize, openSession } from '@braze/web-sdk';
 import { getCookie } from '@guardian/libs';
 import { useEffect, useState } from 'react';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
@@ -40,11 +35,6 @@ export const useBraze = () => {
 				baseUrl: brazeSdkConfig.sdkEndpoint,
 				allowUserSuppliedJavascript: true,
 			});
-
-			// if you use Content Cards
-			//subscribeToContentCardsUpdates(function (cards) {
-			//console.log("---------------------- ", cards);
-			//});
 
 			changeUser(brazeUUID);
 

@@ -1,10 +1,6 @@
-import type {
-	ClassicCard,
-	ContentCards} from '@braze/web-sdk';
-import {
-	showContentCards,
-} from '@braze/web-sdk';
-import braze from '@braze/web-sdk';
+import type { ClassicCard, ContentCards } from '@braze/web-sdk';
+import { showContentCards } from '@braze/web-sdk';
+//import braze from '@braze/web-sdk';
 import { getCachedContentCards } from '@braze/web-sdk';
 import { css } from '@emotion/react';
 import { palette } from '@guardian/source/foundations';

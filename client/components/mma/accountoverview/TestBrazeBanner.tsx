@@ -1,9 +1,9 @@
 import {
 	getBanner,
 	insertBanner,
-	subscribeToBannersUpdates,
+	//subscribeToBannersUpdates,
 } from '@braze/web-sdk';
-import braze from '@braze/web-sdk';
+//import braze from '@braze/web-sdk';
 import { useEffect, useRef } from 'react';
 
 export const TestBrazeBanner = () => {
@@ -13,11 +13,11 @@ export const TestBrazeBanner = () => {
 		const sdfbdsgf = 'braze-banner-ref';
 
 		//subscribeToBannersUpdates((banners) => {
-			const mmaBanner = getBanner(sdfbdsgf);
-			if (brazeContainerElement.current) {
-				console.log('check 3');
-				insertBanner(mmaBanner, brazeContainerElement.current);
-			}
+		const mmaBanner = getBanner(sdfbdsgf);
+		if (brazeContainerElement.current) {
+			console.log('check 3');
+			insertBanner(mmaBanner, brazeContainerElement.current);
+		}
 		//});
 	}, []);
 
