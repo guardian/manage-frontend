@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { HttpResponseResolver } from 'msw';
 import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { featureSwitches } from '@/shared/featureSwitches';
@@ -44,6 +45,11 @@ import { user } from '../../../fixtures/user';
 import { AccountOverview } from './AccountOverview';
 
 featureSwitches['appSubscriptions'] = true;
+
+// @ts-expect-error body and respose params have implicit any types
+const networkErrStatusResolver: HttpResponseResolver = (_, res) => {
+	return res.networkError('Somethings wrong with network request');
+};
 
 export default {
 	title: 'Pages/AccountOverview',
@@ -426,6 +432,48 @@ export const WithGuardianAdLite: StoryObj<typeof AccountOverview> = {
 			http.get('/api/me/one-off-contributions', () => {
 				return HttpResponse.json([]);
 			}),
+		],
+	},
+};
+
+export const MpapiRequestFailure: StoryObj<typeof AccountOverview> = {
+	render: () => {
+		return <AccountOverview />;
+	},
+
+	parameters: {
+		msw: [
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
+			}),
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
+			}),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(
+						guardianWeeklyPaidByCard(),
+						digitalPackPaidByDirectDebit(),
+						newspaperDigitalVoucherPaidByPaypal(),
+						membershipSupporter(),
+						patronMembership(),
+						supporterPlus(),
+						tierThree(),
+						homeDeliverySundayPlus(),
+						voucherPaidByCard(),
+						observerDelivery(),
+						newspaperDigitalVoucherObserver(),
+					),
+				);
+			}),
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
+			}),
+
+			http.get(
+				'/mpapi/user/mobile-subscriptions',
+				networkErrStatusResolver,
+			),
 		],
 	},
 };
