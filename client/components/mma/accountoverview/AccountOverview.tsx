@@ -61,12 +61,6 @@ import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 import { SingleContributionCard } from './SingleContributionCard';
 
-type ProductFetchRef =
-	| 'mdapiResponse'
-	| 'cancelledProductsResponse'
-	| 'mpapiResponse'
-	| 'singleContributionsResponse';
-
 interface ProductFetchResponse {
 	mdapiResponse: MembersDataApiResponse;
 	cancelledProductsResponse: CancelledProductDetail[];
@@ -74,10 +68,19 @@ interface ProductFetchResponse {
 	singleContributionsResponse: SingleProductDetail[];
 }
 
-interface ProductFetchAndRef {
-	fetch: Promise<Response>;
-	ref: ProductFetchRef;
-}
+const productFetchPromises = () =>
+	Promise.allSettled([
+		allRecurringProductsDetailFetcher(),
+		fetchWithDefaultParameters('/api/cancelled/'),
+		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions'),
+		allSingleProductsDetailFetcher(),
+	]);
+const productFetchRefs = [
+	'mdapiResponse',
+	'cancelledProductsResponse',
+	'mpapiResponse',
+	'singleContributionsResponse',
+];
 
 const subHeadingCss = css`
 	margin: ${space[6]}px 0 ${space[6]}px;
@@ -94,7 +97,11 @@ const subHeadingCss = css`
 
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const { data: accountOverviewResponse, loadingState } =
-		useAsyncLoaderAllSettled(productFetchCalls, JsonResponseHandler);
+		useAsyncLoaderAllSettled(
+			productFetchPromises,
+			productFetchRefs,
+			JsonResponseHandler,
+		);
 
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
@@ -373,32 +380,11 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	);
 };
 
-const productFetchCalls: ProductFetchAndRef[] = [
-	{
-		fetch: allRecurringProductsDetailFetcher(),
-		ref: 'mdapiResponse',
-	},
-	{
-		fetch: fetchWithDefaultParameters('/api/cancelled/'),
-		ref: 'cancelledProductsResponse',
-	},
-	{
-		fetch: fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions'),
-		ref: 'mpapiResponse',
-	},
-	{
-		fetch: allSingleProductsDetailFetcher(),
-		ref: 'singleContributionsResponse',
-	},
-];
-
-export const AccountOverview = ({ isFromApp }: IsFromAppProps) => {
-	return (
-		<PageContainer
-			selectedNavItem={NAV_LINKS.accountOverview}
-			pageTitle="Account overview"
-		>
-			<AccountOverviewPage isFromApp={isFromApp} />
-		</PageContainer>
-	);
-};
+export const AccountOverview = ({ isFromApp }: IsFromAppProps) => (
+	<PageContainer
+		selectedNavItem={NAV_LINKS.accountOverview}
+		pageTitle="Account overview"
+	>
+		<AccountOverviewPage isFromApp={isFromApp} />
+	</PageContainer>
+);

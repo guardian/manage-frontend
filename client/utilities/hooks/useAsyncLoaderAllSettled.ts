@@ -3,11 +3,6 @@ import { useState } from 'react';
 import type { ResponseProcessor } from '@/client/components/mma/shared/asyncComponents/ResponseProcessor';
 import { trackEvent } from '../analytics';
 
-interface FetchDetails {
-	fetch: Promise<Response>;
-	ref: string;
-}
-
 type ProductFetchRef =
 	| 'mdapiResponse'
 	| 'cancelledProductsResponse'
@@ -20,8 +15,15 @@ export enum LoadingState {
 	HasError,
 }
 
-export const useAsyncLoaderAllSettled = (
-	fetchDetails: FetchDetails[],
+function isFulfilled<T>(
+	val: PromiseSettledResult<T>,
+): val is PromiseFulfilledResult<T> {
+	return val.status === 'fulfilled';
+}
+
+export const useAsyncLoaderAllSettled = <T>(
+	fetchPromises: () => Promise<Array<PromiseSettledResult<T>>>,
+	fetchRefs: string[],
 	responseProcessor: ResponseProcessor,
 ): {
 	data: Partial<Record<ProductFetchRef, unknown>> | null;
@@ -38,21 +40,18 @@ export const useAsyncLoaderAllSettled = (
 
 	const doFetch = async () => {
 		try {
-			const results = await Promise.allSettled(
-				Object.values(fetchDetails).map((entry) => entry.fetch),
-			);
+			const results = await fetchPromises();
 
-			const referencesAndJsonPromises = results.map(
-				async (result, index) => {
-					if (result.status === 'fulfilled') {
-						return {
-							ref: fetchDetails[index].ref,
-							value: await responseProcessor(result.value),
-						};
-					}
-				},
-			);
-
+			const referencesAndJsonPromises = results
+				.filter(isFulfilled)
+				.map(async (result, index) => {
+					return {
+						ref: fetchRefs[index],
+						value: await responseProcessor(
+							result.value as Response,
+						),
+					};
+				});
 			const finalResultArr = await Promise.all(referencesAndJsonPromises);
 			const finalResultObj = finalResultArr.reduce(
 				(obj, item) =>
