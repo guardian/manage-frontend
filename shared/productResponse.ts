@@ -114,6 +114,12 @@ export interface CancelledProductDetail {
 	subscription: CancelledSubscription;
 }
 
+export function isProductResponse(
+	data: unknown,
+): data is MembersDataApiResponse {
+	return !!data && data.hasOwnProperty('products');
+}
+
 export function isProduct(
 	data: MembersDataApiItem | undefined,
 ): data is ProductDetail {
