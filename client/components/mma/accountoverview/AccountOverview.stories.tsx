@@ -47,9 +47,13 @@ import { AccountOverview } from './AccountOverview';
 featureSwitches['appSubscriptions'] = true;
 
 // @ts-expect-error body and respose params have implicit any types
-const networkErrStatusResolver: HttpResponseResolver = (_, res) => {
-	return res.networkError('Something went wrong with the network request');
-};
+const networkErrStatusResolver: HttpResponseResolver = (req, res, ctx) =>
+	res(
+		ctx.status(503),
+		ctx.json({
+			errorMessage: 'Server is unavailable',
+		}),
+	);
 
 export default {
 	title: 'Pages/AccountOverview',

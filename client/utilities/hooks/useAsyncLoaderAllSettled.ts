@@ -3,12 +3,6 @@ import { useState } from 'react';
 import type { ResponseProcessor } from '@/client/components/mma/shared/asyncComponents/ResponseProcessor';
 import { trackEvent } from '../analytics';
 
-type ProductFetchRef =
-	| 'mdapiResponse'
-	| 'cancelledProductsResponse'
-	| 'mpapiResponse'
-	| 'singleContributions';
-
 export enum LoadingState {
 	IsLoading,
 	HasLoaded,
@@ -26,13 +20,11 @@ export const useAsyncLoaderAllSettled = <T>(
 	fetchRefs: string[],
 	responseProcessor: ResponseProcessor,
 ): {
-	data: Partial<Record<ProductFetchRef, unknown>> | null;
+	data: Record<string, unknown> | null;
 	error: Error | ErrorEvent | string | undefined;
 	loadingState: LoadingState;
 } => {
-	const [data, setData] = useState<Partial<
-		Record<ProductFetchRef, unknown>
-	> | null>(null);
+	const [data, setData] = useState<Record<string, unknown> | null>(null);
 	const [error, setError] = useState<Error | ErrorEvent | string>();
 	const [loadingState, setLoadingState] = useState<LoadingState>(
 		LoadingState.IsLoading,
@@ -42,23 +34,13 @@ export const useAsyncLoaderAllSettled = <T>(
 		try {
 			const results = await fetchPromises();
 
-			const referencesAndJsonPromises = results
-				.filter(isFulfilled)
-				.map(async (result, index) => {
-					return {
-						ref: fetchRefs[index],
-						value: await responseProcessor(
-							result.value as Response,
-						),
-					};
-				});
-			const finalResultArr = await Promise.all(referencesAndJsonPromises);
-			const finalResultObj = finalResultArr.reduce(
+			const keyValueResultsArr = await processedResultsArr(results);
+			const keyValueResults = keyValueResultsArr.reduce(
 				(obj, item) =>
 					Object.assign(obj, item ? { [item.ref]: item.value } : {}),
 				{},
 			);
-			setData(finalResultObj);
+			setData(keyValueResults);
 			setLoadingState(LoadingState.HasLoaded);
 		} catch (error) {
 			handleError(error);
@@ -68,6 +50,45 @@ export const useAsyncLoaderAllSettled = <T>(
 	if (loadingState === LoadingState.IsLoading) {
 		doFetch();
 	}
+
+	const processedResultsArr = (
+		fetchResults: Array<PromiseSettledResult<T>>,
+	): Promise<
+		Array<{
+			ref: string;
+			value: unknown;
+		}>
+	> => {
+		const filteredResults = fetchResults.filter(isFulfilled);
+
+		return new Promise((resolve) => {
+			let processedResultsTally = 0;
+			const processedResultsArray: Array<{
+				ref: string;
+				value: unknown;
+			}> = [];
+			filteredResults.forEach(async (result, index) => {
+				try {
+					const processValue = await responseProcessor(
+						result.value as Response,
+					);
+					processedResultsArray.push({
+						ref: fetchRefs[index],
+						value: processValue,
+					});
+					processedResultsTally++;
+				} catch {
+					// encountered an error trying to process the response value
+					// continue with the tally so the other valid responses can still be processed
+					processedResultsTally++;
+				}
+
+				if (processedResultsTally >= filteredResults.length) {
+					resolve(processedResultsArray);
+				}
+			});
+		});
+	};
 
 	const handleError = (error: Error | ErrorEvent | string) => {
 		setError(error);
