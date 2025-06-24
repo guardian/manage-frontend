@@ -10,7 +10,7 @@ import {
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import type { ChangeEvent, FormEvent } from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { ContactUsFormPayload } from '../../../../shared/contactUsTypes';
 import {
 	base64FromFile,
@@ -40,15 +40,20 @@ interface FormElemValidationObject {
 	errorMessage: string;
 }
 
-interface FormValidationState {
+type FieldKey =
+	| 'name'
+	| 'email'
+	| 'subject'
+	| 'message'
+	| 'captcha'
+	| 'fileAttachment';
+
+interface FormValidationState
+	extends Record<FieldKey, FormElemValidationObject> {
 	inValidationMode: boolean;
-	name: FormElemValidationObject;
-	email: FormElemValidationObject;
-	subject: FormElemValidationObject;
-	message: FormElemValidationObject;
-	captcha: FormElemValidationObject;
-	fileAttachment: FormElemValidationObject;
 }
+
+type AutoFocusFieldState = Partial<Record<FieldKey, boolean>>;
 
 type ContactUsFormStatus = 'form' | 'submitting' | 'failure';
 
@@ -83,6 +88,9 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 
 	const mandatoryFieldMessage = 'You cannot leave this field empty';
 
+	const [autoFocusField, setAutoFocusField] = useState<AutoFocusFieldState>(
+		{},
+	);
 	const [formValidationState, setFormValidationState] =
 		useState<FormValidationState>({
 			inValidationMode: false,
@@ -112,45 +120,65 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 			},
 		});
 
-	const validateForm = () => {
-		const isNameValid = !!name.length;
-		const isEmailValid = isEmail(email);
-		const isSubjectValid = !!subject.length;
-		const isDetailsValid = !!message.length;
-		const isFileAttachmentValid =
-			fileAttachment === undefined ||
-			fileAttachment.size / 1024 <= MAX_FILE_ATTACHMENT_SIZE_KB;
-		const isFormInValidState =
-			isNameValid &&
-			isEmailValid &&
-			isSubjectValid &&
-			isDetailsValid &&
-			!!captchaToken.length &&
-			isFileAttachmentValid;
-		setFormValidationState({
-			...formValidationState,
-			inValidationMode: !isFormInValidState,
-			name: { ...formValidationState.name, isValid: isNameValid },
-			email: { ...formValidationState.email, isValid: isEmailValid },
-			subject: {
-				...formValidationState.subject,
-				isValid: isSubjectValid,
-			},
-			message: {
-				...formValidationState.message,
-				isValid: isDetailsValid,
-			},
-			fileAttachment: {
-				...formValidationState.fileAttachment,
-				isValid: isFileAttachmentValid,
-			},
-			captcha: {
-				...formValidationState.captcha,
-				isValid: !!captchaToken.length,
-			},
-		});
-		return isFormInValidState;
-	};
+	const validateForm = useCallback(
+		(doAutoFocus: boolean = false) => {
+			const isNameValid = !!name.trim().length;
+			const isEmailValid = isEmail(email.trim());
+			const isSubjectValid = !!subject.trim().length;
+			const isDetailsValid = !!message.trim().length;
+			const isFileAttachmentValid =
+				fileAttachment === undefined ||
+				fileAttachment.size / 1024 <= MAX_FILE_ATTACHMENT_SIZE_KB;
+
+			const fieldValidations: Record<FieldKey, boolean> = {
+				name: isNameValid,
+				email: isEmailValid,
+				subject: isSubjectValid,
+				message: isDetailsValid,
+				fileAttachment: isFileAttachmentValid,
+				captcha: !!captchaToken.length,
+			};
+
+			const invalidFields = (
+				Object.keys(fieldValidations) as FieldKey[]
+			).filter((field) => !fieldValidations[field]);
+
+			const firstInvalidField = invalidFields[0];
+			const isFormInValidState = !invalidFields.length;
+
+			setFormValidationState((prevState) => ({
+				...prevState,
+				inValidationMode: !isFormInValidState,
+				name: { ...prevState.name, isValid: isNameValid },
+				email: { ...prevState.email, isValid: isEmailValid },
+				subject: {
+					...prevState.subject,
+					isValid: isSubjectValid,
+				},
+				message: {
+					...prevState.message,
+					isValid: isDetailsValid,
+				},
+				fileAttachment: {
+					...prevState.fileAttachment,
+					isValid: isFileAttachmentValid,
+				},
+				captcha: {
+					...prevState.captcha,
+					isValid: !!captchaToken.length,
+				},
+			}));
+
+			if (doAutoFocus && firstInvalidField) {
+				setAutoFocusField({
+					[firstInvalidField]: true,
+				});
+			}
+
+			return isFormInValidState;
+		},
+		[captchaToken, email, fileAttachment, message, name, subject],
+	);
 
 	useEffect(() => {
 		if (window.grecaptcha) {
@@ -173,6 +201,21 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 		}
 	});
 
+	useEffect(() => {
+		if (formValidationState.inValidationMode) {
+			validateForm();
+		}
+	}, [
+		name,
+		email,
+		subject,
+		message,
+		fileAttachment,
+		captchaToken,
+		formValidationState.inValidationMode,
+		validateForm,
+	]);
+
 	const renderReCaptcha = () => {
 		window.grecaptcha.render('recaptcha', {
 			sitekey: window.guardian?.recaptchaPublicKey,
@@ -184,7 +227,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 		<form
 			onSubmit={async (event: FormEvent) => {
 				event.preventDefault();
-				if (validateForm()) {
+				if (validateForm(true)) {
 					setStatus('submitting');
 					props
 						.submitCallback({
@@ -213,11 +256,11 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 		>
 			<fieldset
 				onChange={() => {
-					if (formValidationState.inValidationMode) {
-						validateForm();
-					}
 					if (status === 'failure') {
 						setStatus('form');
+					}
+					if (Object.keys(autoFocusField).length > 0) {
+						setAutoFocusField({});
 					}
 				}}
 				css={css`
@@ -255,7 +298,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 						}
 					`}
 				>
-					Let us know the details of what you’d like to discuss and we
+					Let us know the details of what you'd like to discuss and we
 					will aim to get back to you as soon as possible. Please note
 					if you are contacting us regarding an account you hold with
 					us you will need to use the email you registered with.
@@ -275,6 +318,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 						!formValidationState.name.isValid
 					}
 					errorMessage={formValidationState.name.errorMessage}
+					setFocus={autoFocusField.name}
 				/>
 				<Input
 					label="Email address"
@@ -292,6 +336,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 						!formValidationState.email.isValid
 					}
 					errorMessage={formValidationState.email.errorMessage}
+					setFocus={autoFocusField.email}
 				/>
 				{props.editableSubject ? (
 					<Input
@@ -310,6 +355,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 							!formValidationState.subject.isValid
 						}
 						errorMessage={formValidationState.subject.errorMessage}
+						setFocus={autoFocusField.subject}
 					/>
 				) : (
 					<label
@@ -383,6 +429,11 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 							resize: vertical;
 							${textSans17};
 						`}
+						ref={(el) => {
+							if (el && autoFocusField.message) {
+								el.focus();
+							}
+						}}
 					/>
 					<span
 						css={css`
@@ -413,6 +464,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 					additionalCss={css`
 						margin: ${space[5]}px;
 					`}
+					setFocus={autoFocusField.fileAttachment}
 				/>
 			</fieldset>
 			{status === 'failure' && (
