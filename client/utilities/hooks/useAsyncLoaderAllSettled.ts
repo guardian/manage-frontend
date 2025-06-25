@@ -1,11 +1,12 @@
 import * as Sentry from '@sentry/browser';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ResponseProcessor } from '@/client/components/mma/shared/asyncComponents/ResponseProcessor';
 import { trackEvent } from '../analytics';
 
 export enum LoadingState {
 	IsLoading,
 	HasLoaded,
+	StopLoading,
 	HasError,
 }
 
@@ -15,9 +16,11 @@ function isFulfilled<T>(
 	return val.status === 'fulfilled';
 }
 
-export const useAsyncLoaderAllSettled = <T>(
-	fetchPromises: () => Promise<Array<PromiseSettledResult<T>>>,
-	fetchRefs: string[],
+export const useAsyncLoaderAllSettled = (
+	fetchPromisesAndRefs: () => Array<{
+		promise: Awaited<Promise<unknown>>;
+		ref: string;
+	}>,
 	responseProcessor: ResponseProcessor,
 ): {
 	data: Record<string, unknown> | null;
@@ -30,65 +33,86 @@ export const useAsyncLoaderAllSettled = <T>(
 		LoadingState.IsLoading,
 	);
 
-	const doFetch = async () => {
-		try {
-			const results = await fetchPromises();
+	useEffect(() => {
+		const doFetch = async () => {
+			try {
+				const fetchPromisesAndRefsArr = fetchPromisesAndRefs();
+				const results = await Promise.allSettled(
+					fetchPromisesAndRefsArr.map(
+						(fetchAndRef) => fetchAndRef.promise,
+					),
+				);
+				const fetchRefs = fetchPromisesAndRefsArr.map(
+					(fetchAndRef) => fetchAndRef.ref,
+				);
 
-			const keyValueResultsArr = await processedResultsArr(results);
-			const keyValueResults = keyValueResultsArr.reduce(
-				(obj, item) =>
-					Object.assign(obj, item ? { [item.ref]: item.value } : {}),
-				{},
-			);
-			setData(keyValueResults);
-			setLoadingState(LoadingState.HasLoaded);
-		} catch (error) {
-			handleError(error);
-			setLoadingState(LoadingState.HasError);
-		}
-	};
-	if (loadingState === LoadingState.IsLoading) {
-		doFetch();
-	}
+				const keyValueResultsArr = await processedResultsArr(
+					results,
+					fetchRefs,
+				);
+				const keyValueResults = keyValueResultsArr.reduce(
+					(obj, item) =>
+						Object.assign(
+							obj,
+							item ? { [item.ref]: item.value } : {},
+						),
+					{},
+				);
+				setData(keyValueResults);
+				setLoadingState(LoadingState.HasLoaded);
+			} catch (error) {
+				handleError(error);
+				setLoadingState(LoadingState.HasError);
+			}
+		};
 
-	const processedResultsArr = (
-		fetchResults: Array<PromiseSettledResult<T>>,
-	): Promise<
-		Array<{
-			ref: string;
-			value: unknown;
-		}>
-	> => {
-		const filteredResults = fetchResults.filter(isFulfilled);
-
-		return new Promise((resolve) => {
-			let processedResultsTally = 0;
-			const processedResultsArray: Array<{
+		const processedResultsArr = (
+			fetchResults: Array<PromiseSettledResult<Awaited<unknown>>>,
+			fetchRefs: string[],
+		): Promise<
+			Array<{
 				ref: string;
 				value: unknown;
-			}> = [];
-			filteredResults.forEach(async (result, index) => {
-				try {
-					const processValue = await responseProcessor(
-						result.value as Response,
-					);
-					processedResultsArray.push({
-						ref: fetchRefs[index],
-						value: processValue,
-					});
-					processedResultsTally++;
-				} catch {
-					// encountered an error trying to process the response value
-					// continue with the tally so the other valid responses can still be processed
-					processedResultsTally++;
-				}
+			}>
+		> => {
+			const filteredResults = fetchResults.filter(isFulfilled);
 
-				if (processedResultsTally >= filteredResults.length) {
-					resolve(processedResultsArray);
-				}
+			return new Promise((resolve) => {
+				let processedResultsTally = 0;
+				const processedResultsArray: Array<{
+					ref: string;
+					value: unknown;
+				}> = [];
+				filteredResults.forEach(async (result, index) => {
+					try {
+						const processValue = await responseProcessor(
+							result.value as Response,
+						);
+						processedResultsArray.push({
+							ref: fetchRefs[index],
+							value: processValue,
+						});
+						processedResultsTally++;
+					} catch {
+						// encountered an error trying to process the response value
+						// continue with the tally so the other valid responses can still be processed
+						processedResultsTally++;
+					}
+
+					if (processedResultsTally >= filteredResults.length) {
+						resolve(processedResultsArray);
+					}
+				});
 			});
-		});
-	};
+		};
+
+		if (loadingState === LoadingState.IsLoading) {
+			doFetch();
+		}
+		return () => {
+			setLoadingState(LoadingState.StopLoading);
+		};
+	}, [loadingState, fetchPromisesAndRefs, responseProcessor]);
 
 	const handleError = (error: Error | ErrorEvent | string) => {
 		setError(error);

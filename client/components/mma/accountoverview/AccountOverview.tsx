@@ -68,19 +68,25 @@ interface ProductFetchResponse {
 	singleContributionsResponse: SingleProductDetail[];
 }
 
-const productFetchPromises = () =>
-	Promise.allSettled([
-		allRecurringProductsDetailFetcher(),
-		fetchWithDefaultParameters('/api/cancelled/'),
-		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions'),
-		allSingleProductsDetailFetcher(),
-	]);
-const productFetchRefs = [
-	'mdapiResponse',
-	'cancelledProductsResponse',
-	'mpapiResponse',
-	'singleContributionsResponse',
-];
+const productFetchPromisesAndRefs = () => {
+	return [
+		{ promise: allRecurringProductsDetailFetcher(), ref: 'mdapiResponse' },
+		{
+			promise: fetchWithDefaultParameters('/api/cancelled/'),
+			ref: 'cancelledProductsResponse',
+		},
+		{
+			promise: fetchWithDefaultParameters(
+				'/mpapi/user/mobile-subscriptions',
+			),
+			ref: 'mpapiResponse',
+		},
+		{
+			promise: allSingleProductsDetailFetcher(),
+			ref: 'singleContributionsResponse',
+		},
+	];
+};
 
 const subHeadingCss = css`
 	margin: ${space[6]}px 0 ${space[6]}px;
@@ -98,11 +104,9 @@ const subHeadingCss = css`
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const { data: accountOverviewResponse, loadingState } =
 		useAsyncLoaderAllSettled(
-			productFetchPromises,
-			productFetchRefs,
+			productFetchPromisesAndRefs,
 			JsonResponseHandler,
 		);
-
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
 	}
