@@ -8,14 +8,14 @@ import {
 } from '@guardian/source/foundations';
 import { min } from 'date-fns';
 import { dateString } from '@/shared/dates';
-import type { MPAPIResponse } from '@/shared/mpapiResponse';
+import type { AppSubscription, MPAPIResponse } from '@/shared/mpapiResponse';
 import type { MembersDataApiResponse } from '@/shared/productResponse';
 import { isObserverProduct } from '@/shared/productResponse';
 import { isProduct } from '@/shared/productResponse';
 
 interface PersonalisedHeaderProps {
 	mdapiResponse: MembersDataApiResponse;
-	mpapiResponse: MPAPIResponse;
+	mpapiResponse?: MPAPIResponse;
 }
 
 function calculateTimeOfDay() {
@@ -39,7 +39,7 @@ export const PersonalisedHeader = ({
 	if (
 		!userDetails ||
 		(mdapiResponse.products.length === 0 &&
-			mpapiResponse.subscriptions.length === 0)
+			mpapiResponse?.subscriptions.length === 0)
 	) {
 		return null;
 	}
@@ -48,13 +48,17 @@ export const PersonalisedHeader = ({
 
 	const oldestDate = min([
 		...productDetails.map((p) => new Date(p.joinDate)),
-		...mpapiResponse.subscriptions.map((s) => new Date(s.from)),
+		...(mpapiResponse
+			? mpapiResponse.subscriptions.map(
+					(s: AppSubscription) => new Date(s.from),
+			  )
+			: []),
 	]);
 
 	const supportStartYear = dateString(oldestDate, 'MMMM yyyy');
 
 	const onlyHasObserverProducts =
-		mpapiResponse.subscriptions.length === 0 &&
+		(!mpapiResponse || mpapiResponse.subscriptions.length === 0) &&
 		productDetails.every(isObserverProduct);
 
 	return (
