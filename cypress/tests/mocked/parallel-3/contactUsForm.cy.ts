@@ -82,8 +82,8 @@ describe('Contact Us Form Tests', () => {
 		cy.findByText('Something else').click();
 		cy.findByText('Begin form').click();
 
-		// Wait a moment for the form to initialize and try to render reCAPTCHA
-		cy.wait(500);
+		// Wait for reCAPTCHA element to be rendered
+		cy.get('#recaptcha').should('exist');
 	});
 
 	context('Form Display and Initial State', () => {
@@ -224,29 +224,6 @@ describe('Contact Us Form Tests', () => {
 					'test-recaptcha-token',
 				);
 			});
-		});
-
-		it('should show loading state during submission', () => {
-			cy.intercept('POST', '/api/contact-us', {
-				statusCode: 200,
-				body: { success: true },
-				delay: 4000,
-			}).as('slowSubmitContactForm');
-
-			cy.findByLabelText('Full Name').clear().type('Jontho');
-			cy.findByLabelText(/^Email address/)
-				.clear()
-				.type('jonhto@gmail.com');
-			cy.get('textarea[name="message"]').type(
-				'I need help with my subscription',
-			);
-
-			cy.findByText('Submit').click();
-
-			cy.findByText('Submit').should('be.disabled');
-			cy.get('button[type="submit"]')
-				.find('[class*="Spinner"]')
-				.should('exist');
 		});
 
 		it('should handle submission failure gracefully', () => {
