@@ -12,7 +12,7 @@ describe('YourDataSection', () => {
 			id: 'personalised_advertising',
 			isChannel: false,
 			isProduct: false,
-			name: 'Allow personalised advertising using this data - this supports the Guardian',
+			name: 'Allow personalised advertising using this data',
 			subscribed: false,
 			type: ConsentOptionType.OPT_OUT,
 		},
@@ -49,7 +49,7 @@ describe('YourDataSection', () => {
 		);
 		expect(
 			screen.getAllByText(
-				'Allow personalised advertising using this data - this supports the Guardian',
+				'Allow personalised advertising using this data',
 			),
 		).toBeDefined();
 		expect(
