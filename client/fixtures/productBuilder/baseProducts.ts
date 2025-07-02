@@ -766,13 +766,6 @@ export function baseHomeDelivery(): ProductDetail {
 	};
 }
 
-// export function baseHomeDeliveryPlusDigital(): ProductDetail {
-// 	return {
-// 		...baseHomeDelivery(),
-// 		mmaProductKey: 'Newspaper Delivery + Digital',
-// 	};
-// }
-
 export function baseNationalDelivery(): ProductDetail {
 	return {
 		mmaProductKey: 'Newspaper - National Delivery',
