@@ -1,6 +1,6 @@
 import type { MembersDataApiResponse } from '../../../../shared/productResponse';
 import {
-	getSpecificProductTypeFromTier,
+	getSpecificProductTypeFromProductKey,
 	isProduct,
 } from '../../../../shared/productResponse';
 import {
@@ -48,10 +48,12 @@ export const SubscriptionInformation = () => {
 					data.products.map((product) => {
 						if (isProduct(product)) {
 							const specificProductType =
-								getSpecificProductTypeFromTier(product.tier);
+								getSpecificProductTypeFromProductKey(
+									product.mmaProductKey,
+								);
 							return (
 								<li>
-									{product.tier} -{' '}
+									{product.mmaProductKey} -{' '}
 									{specificProductType.groupedProductType} -{' '}
 									{product.subscription.subscriptionId}
 								</li>

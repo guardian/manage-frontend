@@ -173,7 +173,7 @@ export const SaveOptions = () => {
 						</section>
 					</Card.Section>
 				</Card>
-				{membership.subscription.futurePlans[0]?.tier !==
+				{membership.subscription.futurePlans[0]?.mmaProductKey !==
 					'Contributor' && (
 					<>
 						<section css={sectionSpacing}>
