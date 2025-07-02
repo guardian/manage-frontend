@@ -3,7 +3,7 @@ import { LinkButton, Stack } from '@guardian/source/react-components';
 import { InfoSummary } from '@guardian/source-development-kitchen/react-components';
 import { parseDate } from '@/shared/dates';
 import type { CancelledProductDetail } from '@/shared/productResponse';
-import { getSpecificProductTypeFromTier } from '@/shared/productResponse';
+import { getSpecificProductTypeFromProductKey } from '@/shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
@@ -23,8 +23,8 @@ export const CancelledProductCard = ({
 	productDetail: CancelledProductDetail;
 	hasOtherActiveSubs: boolean;
 }) => {
-	const specificProductType = getSpecificProductTypeFromTier(
-		productDetail.tier,
+	const specificProductType = getSpecificProductTypeFromProductKey(
+		productDetail.mmaProductKey,
 	);
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
@@ -67,7 +67,7 @@ export const CancelledProductCard = ({
 								{groupedProductType.tierLabel && (
 									<div>
 										<dt>{groupedProductType.tierLabel}</dt>
-										<dd>{productDetail.tier}</dd>
+										<dd>{productDetail.mmaProductKey}</dd>
 									</div>
 								)}
 								{productDetail.subscription.start && (

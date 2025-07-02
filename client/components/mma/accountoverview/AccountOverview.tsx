@@ -21,7 +21,7 @@ import type {
 } from '../../../../shared/productResponse';
 import { isProductResponse } from '../../../../shared/productResponse';
 import {
-	getSpecificProductTypeFromTier,
+	getSpecificProductTypeFromProductKey,
 	isProduct,
 	isSpecificProductType,
 	sortByJoinDate,
@@ -168,8 +168,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		...allActiveProductDetails,
 		...allCancelledProductDetails,
 	].map((product: ProductDetail | CancelledProductDetail) => {
-		const specificProductType = getSpecificProductTypeFromTier(
-			product.tier,
+		const specificProductType = getSpecificProductTypeFromProductKey(
+			product.mmaProductKey,
 		);
 		if (
 			specificProductType.groupedProductType ===
@@ -238,8 +238,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
 	): GroupedProductTypeKeys => {
-		const specificProductType = getSpecificProductTypeFromTier(
-			product.tier,
+		const specificProductType = getSpecificProductTypeFromProductKey(
+			product.mmaProductKey,
 		);
 		if (
 			specificProductType.groupedProductType ===
