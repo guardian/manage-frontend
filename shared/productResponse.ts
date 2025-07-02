@@ -101,7 +101,7 @@ export interface ProductDetail extends WithSubscription {
 	regNumber?: string;
 	optIn?: boolean;
 	key?: string;
-	mmaProductKey: ProductTier;
+	tier: ProductTier;
 	joinDate: string;
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
@@ -109,7 +109,7 @@ export interface ProductDetail extends WithSubscription {
 }
 
 export interface CancelledProductDetail {
-	mmaProductKey: ProductTier;
+	tier: ProductTier;
 	joinDate: string;
 	subscription: CancelledSubscription;
 }
@@ -123,15 +123,14 @@ export function isProductResponse(
 export function isProduct(
 	data: MembersDataApiItem | undefined,
 ): data is ProductDetail {
-	return productTiers.includes((data as ProductDetail)?.mmaProductKey);
+	return productTiers.includes((data as ProductDetail)?.tier);
 }
 
 export const isObserverProduct = (productDetail: ProductDetail): boolean => {
 	return (
-		productDetail.mmaProductKey === 'Newspaper Delivery - Observer' ||
-		productDetail.mmaProductKey ===
-			'Newspaper Digital Voucher - Observer' ||
-		productDetail.mmaProductKey === 'Newspaper Voucher - Observer'
+		productDetail.tier === 'Newspaper Delivery - Observer' ||
+		productDetail.tier === 'Newspaper Digital Voucher - Observer' ||
+		productDetail.tier === 'Newspaper Voucher - Observer'
 	);
 };
 
@@ -148,7 +147,7 @@ export interface DirectDebitDetails {
 }
 
 export interface SubscriptionPlan {
-	mmaProductKey?: ProductTier;
+	tier?: ProductTier;
 	name: string | null;
 	start?: string;
 	shouldBeVisible: boolean;
@@ -292,7 +291,7 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	};
 };
 
-export function getSpecificProductTypeFromProductKey(
+export function getSpecificProductTypeFromTier(
 	productTier: ProductTier,
 ): ProductType {
 	let productType: ProductType = {} as ProductType;
@@ -356,8 +355,8 @@ export function isSpecificProductType(
 	productDetail: ProductDetail,
 	targetProductType: ProductType,
 ): boolean {
-	const specificProductType = getSpecificProductTypeFromProductKey(
-		productDetail.mmaProductKey,
+	const specificProductType = getSpecificProductTypeFromTier(
+		productDetail.tier,
 	);
 	return specificProductType === targetProductType;
 }

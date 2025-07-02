@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/browser';
 import type { ProductDetail } from '../shared/productResponse';
 import {
 	getMainPlan,
-	getSpecificProductTypeFromProductKey,
+	getSpecificProductTypeFromTier,
 } from '../shared/productResponse';
 import { s3FilePromise } from './awsIntegration';
 import { conf } from './config';
@@ -45,8 +45,8 @@ const getDeliveryAddressChangeEffectiveDateForToday = async (
 
 export const augmentProductDetailWithDeliveryAddressChangeEffectiveDateForToday =
 	async (productDetail: ProductDetail) => {
-		const specificProductType = getSpecificProductTypeFromProductKey(
-			productDetail.mmaProductKey,
+		const specificProductType = getSpecificProductTypeFromTier(
+			productDetail.tier,
 		);
 		if (specificProductType.groupedProductType !== 'subscriptions') {
 			return productDetail;

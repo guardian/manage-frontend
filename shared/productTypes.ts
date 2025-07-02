@@ -302,7 +302,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		allProductsProductTypeFilterString: 'Membership',
 		urlPart: 'membership',
 		getOphanProductType: (productDetail: ProductDetail) => {
-			switch (productDetail.mmaProductKey) {
+			switch (productDetail.tier) {
 				case 'Supporter':
 					return 'MEMBERSHIP_SUPPORTER';
 				case 'Partner':
