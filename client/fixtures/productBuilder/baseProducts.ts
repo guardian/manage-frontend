@@ -15,7 +15,7 @@ import type { ProductDetail } from '../../../shared/productResponse';
 
 export function baseMembership(): ProductDetail {
 	return {
-		tier: 'Supporter',
+		mmaProductKey: 'Supporter',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: true,
@@ -75,7 +75,7 @@ export function baseMembership(): ProductDetail {
 
 export function basePatron(): ProductDetail {
 	return {
-		tier: 'guardianpatron',
+		mmaProductKey: 'guardianpatron',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: true,
@@ -143,7 +143,7 @@ export function basePatron(): ProductDetail {
 
 export function baseGuardianWeekly(): ProductDetail {
 	return {
-		tier: 'Guardian Weekly - Domestic',
+		mmaProductKey: 'Guardian Weekly - Domestic',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: false,
@@ -199,7 +199,7 @@ export function baseGuardianWeekly(): ProductDetail {
 
 export function baseDigitalPack(): ProductDetail {
 	return {
-		tier: 'Digital Pack',
+		mmaProductKey: 'Digital Pack',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: true,
@@ -263,7 +263,7 @@ export function baseDigitalPack(): ProductDetail {
 
 export function baseContribution(): ProductDetail {
 	return {
-		tier: 'Contributor',
+		mmaProductKey: 'Contributor',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: true,
@@ -319,7 +319,7 @@ export function baseContribution(): ProductDetail {
 
 export function baseVoucher(): ProductDetail {
 	return {
-		tier: 'Newspaper Voucher',
+		mmaProductKey: 'Newspaper Voucher',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: false,
@@ -383,7 +383,7 @@ export function baseVoucher(): ProductDetail {
 
 export function baseVoucherObserver(): ProductDetail {
 	return {
-		tier: 'Newspaper Voucher - Observer',
+		mmaProductKey: 'Newspaper Voucher - Observer',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: false,
@@ -419,7 +419,7 @@ export function baseVoucherObserver(): ProductDetail {
 			currentPlans: [],
 			futurePlans: [
 				{
-					tier: 'Newspaper Voucher - Observer',
+					mmaProductKey: 'Newspaper Voucher - Observer',
 					name: 'Sunday',
 					start: '2025-06-15',
 					end: '2026-05-16',
@@ -442,7 +442,7 @@ export function baseVoucherObserver(): ProductDetail {
 
 export function baseDigitalVoucherObserver(): ProductDetail {
 	return {
-		tier: 'Newspaper Digital Voucher - Observer',
+		mmaProductKey: 'Newspaper Digital Voucher - Observer',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: false,
@@ -498,7 +498,7 @@ export function baseDigitalVoucherObserver(): ProductDetail {
 
 export function baseDigitalVoucher(): ProductDetail {
 	return {
-		tier: 'Newspaper Digital Voucher',
+		mmaProductKey: 'Newspaper Digital Voucher',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: false,
@@ -562,7 +562,7 @@ export function baseDigitalVoucher(): ProductDetail {
 
 export function baseObserverDelivery(): ProductDetail {
 	return {
-		tier: 'Newspaper Delivery - Observer',
+		mmaProductKey: 'Newspaper Delivery - Observer',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: false,
@@ -644,7 +644,7 @@ export function baseObserverDelivery(): ProductDetail {
 
 export function baseHomeDeliverySundayPlus(): ProductDetail {
 	return {
-		tier: 'Newspaper Delivery',
+		mmaProductKey: 'Newspaper Delivery',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: false,
@@ -702,7 +702,7 @@ export function baseHomeDeliverySundayPlus(): ProductDetail {
 
 export function baseHomeDelivery(): ProductDetail {
 	return {
-		tier: 'Newspaper Delivery',
+		mmaProductKey: 'Newspaper Delivery',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: false,
@@ -766,9 +766,16 @@ export function baseHomeDelivery(): ProductDetail {
 	};
 }
 
+export function baseHomeDeliveryPlusDigital(): ProductDetail {
+	return {
+		...baseHomeDelivery(),
+		mmaProductKey: 'Newspaper Delivery + Digital',
+	};
+}
+
 export function baseNationalDelivery(): ProductDetail {
 	return {
-		tier: 'Newspaper - National Delivery',
+		mmaProductKey: 'Newspaper - National Delivery',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: false,
@@ -833,7 +840,7 @@ export function baseNationalDelivery(): ProductDetail {
 
 export function baseGuardianAdLite(): ProductDetail {
 	return {
-		tier: 'Guardian Ad-Lite',
+		mmaProductKey: 'Guardian Ad-Lite',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: true,
@@ -888,7 +895,7 @@ export function baseGuardianAdLite(): ProductDetail {
 
 export function baseSupporterPlus(): ProductDetail {
 	return {
-		tier: 'Supporter Plus',
+		mmaProductKey: 'Supporter Plus',
 		isPaidTier: true,
 		isTestUser: false,
 		selfServiceCancellation: {
@@ -936,7 +943,7 @@ export function baseSupporterPlus(): ProductDetail {
 
 export function baseTierThree(): ProductDetail {
 	return {
-		tier: 'Tier Three',
+		mmaProductKey: 'Tier Three',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: true,

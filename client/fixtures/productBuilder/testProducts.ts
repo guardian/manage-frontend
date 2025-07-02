@@ -7,6 +7,7 @@ import {
 	baseGuardianAdLite,
 	baseGuardianWeekly,
 	baseHomeDelivery,
+	baseHomeDeliveryPlusDigital,
 	baseHomeDeliverySundayPlus,
 	baseMembership,
 	baseNationalDelivery,
@@ -190,6 +191,12 @@ export function homeDelivery() {
 		.getProductDetailObject();
 }
 
+export function homeDeliveryPlusDigital() {
+	return new ProductBuilder(baseHomeDeliveryPlusDigital())
+		.payByCard()
+		.getProductDetailObject();
+}
+
 export function homeDeliveryWithInstructions(instructions: string) {
 	return new ProductBuilder(baseHomeDelivery())
 		.withDeliveryInstructions(instructions)
@@ -251,7 +258,7 @@ export function membershipSupporterCurrencyUSD() {
 export function membershipStaff() {
 	return new ProductBuilder(baseMembership())
 		.payByCard()
-		.tier('Staff Membership')
+		.product('Staff Membership')
 		.withNoCurrentPlans()
 		.getProductDetailObject();
 }

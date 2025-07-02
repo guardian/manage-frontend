@@ -318,7 +318,7 @@ describe('Update payment details', () => {
 					},
 					products: [
 						{
-							tier: 'Newspaper Digital Voucher',
+							mmaProductKey: 'Newspaper Digital Voucher',
 							isPaidTier: true,
 							selfServiceCancellation: {
 								isAllowed: false,
@@ -622,16 +622,12 @@ describe('Update payment details', () => {
 	it('Complete direct debit payment update for Observer - Sunday Only', () => {
 		cy.intercept('GET', '/api/me/mma?productType=*', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(
-				observerDeliveryPaidByDirectDebit(),
-			),
+			body: toMembersDataApiResponse(observerDeliveryPaidByDirectDebit()),
 		}).as('product_detail');
 
 		cy.intercept('GET', '/api/me/mma/**', {
 			statusCode: 200,
-			body: toMembersDataApiResponse(
-				observerDeliveryPaidByDirectDebit(),
-			),
+			body: toMembersDataApiResponse(observerDeliveryPaidByDirectDebit()),
 		}).as('refetch_subscription');
 
 		cy.intercept('POST', '/api/validate/payment/**', {
