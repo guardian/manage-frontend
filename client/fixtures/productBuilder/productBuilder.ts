@@ -46,8 +46,8 @@ export class ProductBuilder {
 		return this.productToBuild;
 	}
 
-	product(productKey: string) {
-		this.productToBuild.mmaProductKey = productKey;
+	tier(tier: string) {
+		this.productToBuild.tier = tier;
 		return this;
 	}
 
@@ -142,7 +142,7 @@ export class ProductBuilder {
 	}
 
 	asPatronTier() {
-		this.productToBuild.mmaProductKey = 'Patron';
+		this.productToBuild.tier = 'Patron';
 		return this;
 	}
 

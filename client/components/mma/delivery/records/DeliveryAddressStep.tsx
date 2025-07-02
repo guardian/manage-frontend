@@ -22,7 +22,7 @@ import type {
 	ProductDetail,
 } from '../../../../../shared/productResponse';
 import {
-	getSpecificProductTypeFromProductKey,
+	getSpecificProductTypeFromTier,
 	isProduct,
 	MembersDataApiAsyncLoader,
 } from '../../../../../shared/productResponse';
@@ -89,8 +89,8 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		isValid: false,
 	});
 
-	const specificProductType = getSpecificProductTypeFromProductKey(
-		props.productDetail.mmaProductKey,
+	const specificProductType = getSpecificProductTypeFromTier(
+		props.productDetail.tier,
 	);
 
 	const isNationalDelivery =
@@ -181,10 +181,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		)
 			.flatMap(flattenEquivalent)
 			.map(({ productDetail }) => {
-				const specificProductType =
-					getSpecificProductTypeFromProductKey(
-						productDetail.mmaProductKey,
-					);
+				const specificProductType = getSpecificProductTypeFromTier(
+					productDetail.tier,
+				);
 				const friendlyProductName = specificProductType.friendlyName;
 				return `${friendlyProductName}`;
 			});

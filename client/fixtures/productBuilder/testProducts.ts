@@ -251,7 +251,7 @@ export function membershipSupporterCurrencyUSD() {
 export function membershipStaff() {
 	return new ProductBuilder(baseMembership())
 		.payByCard()
-		.product('Staff Membership')
+		.tier('Staff Membership')
 		.withNoCurrentPlans()
 		.getProductDetailObject();
 }
