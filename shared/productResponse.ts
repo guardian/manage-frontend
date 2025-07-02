@@ -69,7 +69,7 @@ export interface SelfServiceCancellation {
 	phoneRegionsToDisplay: PhoneRegionKey[];
 }
 
-export const productTiers = [
+const productKeys = [
 	'guardianpatron',
 	'Tier Three',
 	'Digital Pack',
@@ -85,6 +85,7 @@ export const productTiers = [
 	'Guardian Weekly Zone C',
 	'Newspaper Voucher',
 	'Newspaper Delivery',
+	'Newspaper Delivery + Digital',
 	'Patron',
 	'Partner',
 	'Guardian Ad-Lite',
@@ -93,7 +94,7 @@ export const productTiers = [
 	'Newspaper Voucher - Observer',
 ];
 
-export type ProductTier = typeof productTiers[number];
+export type ProductTier = typeof productKeys[number];
 
 export interface ProductDetail extends WithSubscription {
 	isTestUser: boolean; // THIS IS NOT PART OF THE members-data-api RESPONSE (but inferred from a header)
@@ -101,7 +102,7 @@ export interface ProductDetail extends WithSubscription {
 	regNumber?: string;
 	optIn?: boolean;
 	key?: string;
-	tier: ProductTier;
+	mmaProductKey: ProductTier;
 	joinDate: string;
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
@@ -109,7 +110,7 @@ export interface ProductDetail extends WithSubscription {
 }
 
 export interface CancelledProductDetail {
-	tier: ProductTier;
+	mmaProductKey: ProductTier;
 	joinDate: string;
 	subscription: CancelledSubscription;
 }
@@ -123,14 +124,15 @@ export function isProductResponse(
 export function isProduct(
 	data: MembersDataApiItem | undefined,
 ): data is ProductDetail {
-	return productTiers.includes((data as ProductDetail)?.tier);
+	return productKeys.includes((data as ProductDetail)?.mmaProductKey);
 }
 
 export const isObserverProduct = (productDetail: ProductDetail): boolean => {
 	return (
-		productDetail.tier === 'Newspaper Delivery - Observer' ||
-		productDetail.tier === 'Newspaper Digital Voucher - Observer' ||
-		productDetail.tier === 'Newspaper Voucher - Observer'
+		productDetail.mmaProductKey === 'Newspaper Delivery - Observer' ||
+		productDetail.mmaProductKey ===
+			'Newspaper Digital Voucher - Observer' ||
+		productDetail.mmaProductKey === 'Newspaper Voucher - Observer'
 	);
 };
 
@@ -147,7 +149,7 @@ export interface DirectDebitDetails {
 }
 
 export interface SubscriptionPlan {
-	tier?: ProductTier;
+	mmaProductKey?: ProductTier;
 	name: string | null;
 	start?: string;
 	shouldBeVisible: boolean;
@@ -291,7 +293,7 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	};
 };
 
-export function getSpecificProductTypeFromTier(
+export function getSpecificProductTypeFromProductKey(
 	productTier: ProductTier,
 ): ProductType {
 	let productType: ProductType = {} as ProductType;
@@ -314,6 +316,7 @@ export function getSpecificProductTypeFromTier(
 			productType = PRODUCT_TYPES.digipack;
 			break;
 		case 'Newspaper Delivery':
+		case 'Newspaper Delivery + Digital':
 			productType = PRODUCT_TYPES.homedelivery;
 			break;
 		case 'Supporter Plus':
@@ -355,8 +358,8 @@ export function isSpecificProductType(
 	productDetail: ProductDetail,
 	targetProductType: ProductType,
 ): boolean {
-	const specificProductType = getSpecificProductTypeFromTier(
-		productDetail.tier,
+	const specificProductType = getSpecificProductTypeFromProductKey(
+		productDetail.mmaProductKey,
 	);
 	return specificProductType === targetProductType;
 }

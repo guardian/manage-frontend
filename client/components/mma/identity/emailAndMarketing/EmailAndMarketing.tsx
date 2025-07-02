@@ -14,7 +14,7 @@ import type {
 	ProductDetail,
 	SingleProductDetail,
 } from '../../../../../shared/productResponse';
-import { getSpecificProductTypeFromTier } from '../../../../../shared/productResponse';
+import { getSpecificProductTypeFromProductKey } from '../../../../../shared/productResponse';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import {
 	allRecurringProductsDetailFetcher,
@@ -220,8 +220,8 @@ function userHasProductWithConsent(
 	consent: ConsentOption,
 ) {
 	return productDetails.some((productDetail) => {
-		const specificProductType = getSpecificProductTypeFromTier(
-			productDetail.tier,
+		const specificProductType = getSpecificProductTypeFromProductKey(
+			productDetail.mmaProductKey,
 		);
 		return specificProductType.softOptInIDs.includes(consent.id);
 	});

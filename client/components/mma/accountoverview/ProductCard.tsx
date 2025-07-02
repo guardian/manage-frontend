@@ -24,7 +24,7 @@ import type {
 } from '@/shared/productResponse';
 import {
 	getMainPlan,
-	getSpecificProductTypeFromTier,
+	getSpecificProductTypeFromProductKey,
 	isGift,
 	isPaidSubscriptionPlan,
 } from '@/shared/productResponse';
@@ -79,8 +79,8 @@ export const ProductCard = ({
 		throw new Error('mainPlan does not exist in ProductCard');
 	}
 
-	const specificProductType = getSpecificProductTypeFromTier(
-		productDetail.tier,
+	const specificProductType = getSpecificProductTypeFromProductKey(
+		productDetail.mmaProductKey,
 	);
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
@@ -88,7 +88,7 @@ export const ProductCard = ({
 	const isPatron = productDetail.subscription.readerType === 'Patron';
 
 	const entitledToEvents =
-		['Partner', 'Patron'].includes(productDetail.tier) &&
+		['Partner', 'Patron'].includes(productDetail.mmaProductKey) &&
 		(mainPlan as PaidSubscriptionPlan).features.includes('Events');
 
 	const productTitle = `${specificProductType.productTitle(mainPlan)}${
@@ -162,11 +162,11 @@ export const ProductCard = ({
 			productDetail.subscription.potentialCancellationDate;
 
 	const futureProductTitle =
-		productDetail.subscription.futurePlans[0]?.tier &&
-		productDetail.tier &&
+		productDetail.subscription.futurePlans[0]?.mmaProductKey &&
+		productDetail.mmaProductKey &&
 		productDetail.subscription.currentPlans.length > 0
-			? getSpecificProductTypeFromTier(
-					productDetail.subscription.futurePlans[0].tier,
+			? getSpecificProductTypeFromProductKey(
+					productDetail.subscription.futurePlans[0].mmaProductKey,
 			  ).productTitle(mainPlan)
 			: null;
 
@@ -312,7 +312,7 @@ export const ProductCard = ({
 								{groupedProductType.tierLabel && (
 									<div>
 										<dt>{groupedProductType.tierLabel}</dt>
-										<dd>{productDetail.tier}</dd>
+										<dd>{productDetail.mmaProductKey}</dd>
 									</div>
 								)}
 								{subscriptionStartDate && shouldShowStartDate && (
