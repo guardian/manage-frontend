@@ -7,7 +7,6 @@ import {
 	baseGuardianAdLite,
 	baseGuardianWeekly,
 	baseHomeDelivery,
-	baseHomeDeliveryPlusDigital,
 	baseHomeDeliverySundayPlus,
 	baseMembership,
 	baseNationalDelivery,
@@ -187,12 +186,6 @@ export function newspaperDigitalVoucherPaidByPaypal(email?: string) {
 
 export function homeDelivery() {
 	return new ProductBuilder(baseHomeDelivery())
-		.payByCard()
-		.getProductDetailObject();
-}
-
-export function homeDeliveryPlusDigital() {
-	return new ProductBuilder(baseHomeDeliveryPlusDigital())
 		.payByCard()
 		.getProductDetailObject();
 }

@@ -644,7 +644,7 @@ export function baseObserverDelivery(): ProductDetail {
 
 export function baseHomeDeliverySundayPlus(): ProductDetail {
 	return {
-		mmaProductKey: 'Newspaper Delivery',
+		mmaProductKey: 'Newspaper Delivery + Digital',
 		isPaidTier: true,
 		selfServiceCancellation: {
 			isAllowed: false,
@@ -766,12 +766,12 @@ export function baseHomeDelivery(): ProductDetail {
 	};
 }
 
-export function baseHomeDeliveryPlusDigital(): ProductDetail {
-	return {
-		...baseHomeDelivery(),
-		mmaProductKey: 'Newspaper Delivery + Digital',
-	};
-}
+// export function baseHomeDeliveryPlusDigital(): ProductDetail {
+// 	return {
+// 		...baseHomeDelivery(),
+// 		mmaProductKey: 'Newspaper Delivery + Digital',
+// 	};
+// }
 
 export function baseNationalDelivery(): ProductDetail {
 	return {
