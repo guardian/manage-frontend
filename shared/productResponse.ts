@@ -316,8 +316,10 @@ export function getSpecificProductTypeFromProductKey(
 			productType = PRODUCT_TYPES.digipack;
 			break;
 		case 'Newspaper Delivery':
-		case 'Newspaper Delivery + Digital':
 			productType = PRODUCT_TYPES.homedelivery;
+			break;
+		case 'Newspaper Delivery + Digital':
+			productType = PRODUCT_TYPES.homedeliveryplusdigital;
 			break;
 		case 'Supporter Plus':
 			productType = PRODUCT_TYPES.supporterplus;

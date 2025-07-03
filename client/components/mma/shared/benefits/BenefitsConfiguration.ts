@@ -42,6 +42,14 @@ const partnerOffers: ProductBenefit = {
 	specificToRegions: ['AUD'],
 };
 
+const homedeliveryplusdigitalBenefits = [
+	'Unlimited access to the refreshed Guardian app',
+	'Unlimited access to the Guardian Feast app',
+	'Ad-free reading on all your devices',
+	'Exclusive newsletter for supporters, sent every week from the guardian newsroom',
+	'Far fewer asks for support',
+].map((benefit) => ({ description: benefit }));
+
 export interface ProductBenefit {
 	name?: string;
 	description?: string;
@@ -103,6 +111,7 @@ export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
 		digitalvoucher: [],
 		newspaper: [],
 		homedelivery: [],
+		homedeliveryplusdigital: [...homedeliveryplusdigitalBenefits],
 		nationaldelivery: [],
 		voucher: [],
 		guardianweekly: [],

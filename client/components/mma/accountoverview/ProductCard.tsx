@@ -265,6 +265,7 @@ export const ProductCard = ({
 					)}
 				</Card.Header>
 
+				{/* ---- */}
 				{cardConfig.showBenefitsSection && nextPaymentDetails && (
 					<Card.Section backgroundColor="#edf5fA">
 						<p css={benefitsTextCss}>

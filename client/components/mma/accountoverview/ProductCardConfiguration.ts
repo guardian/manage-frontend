@@ -68,6 +68,10 @@ export const productCardConfiguration: Record<
 	homedelivery: {
 		colour: productColour.newspaper,
 	},
+	homedeliveryplusdigital: {
+		colour: productColour.newspaper,
+		showBenefitsSection: true,
+	},
 	nationaldelivery: {
 		colour: productColour.newspaper,
 	},

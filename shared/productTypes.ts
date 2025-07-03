@@ -41,6 +41,7 @@ type ProductFriendlyName =
 	| 'newspaper voucher subscription'
 	| 'newspaper subscription card'
 	| 'newspaper home delivery subscription'
+	| 'newspaper home delivery plus digital subscription'
 	| 'digital subscription'
 	| 'all-access digital subscription'
 	| 'Guardian Weekly subscription'
@@ -85,6 +86,7 @@ export type AllProductsProductTypeFilterString =
 	| 'Voucher'
 	| 'DigitalVoucher'
 	| 'HomeDelivery'
+	| 'HomeDeliveryPlusDigital'
 	| 'Contribution'
 	| 'Membership'
 	| 'Digipack'
@@ -274,6 +276,7 @@ export type ProductTypeKeys =
 	| 'contributions'
 	| 'newspaper'
 	| 'homedelivery'
+	| 'homedeliveryplusdigital'
 	| 'nationaldelivery'
 	| 'voucher'
 	| 'digitalvoucher'
@@ -417,6 +420,47 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		productType: 'homedelivery',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'HomeDelivery',
+		urlPart: 'homedelivery',
+		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
+		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
+		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+		softOptInIDs: [
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.SubscriberPreview,
+			SoftOptInIDs.SupporterNewsletter,
+		],
+		holidayStops: {
+			issueKeyword: 'paper',
+			alternateNoticeString: "two working days' notice",
+		},
+		delivery: {
+			showAddress: showDeliveryAddressCheck,
+			enableDeliveryInstructionsUpdate: true,
+			records: {
+				productNameForProblemReport: 'Home Delivery',
+				showDeliveryInstructions: true,
+				numberOfProblemRecordsToShow: 14,
+				contactUserOnExistingProblemReport: true,
+				availableProblemTypes: [
+					{
+						label: 'Instructions Not Followed',
+						messageIsMandatory: true,
+					},
+					...commonDeliveryProblemTypes,
+				],
+			},
+		},
+		fulfilmentDateCalculator: {
+			productFilenamePart: 'Newspaper - Home Delivery',
+		},
+	},
+	homedeliveryplusdigital: {
+		productTitle: calculateProductTitle('Newspaper Delivery'),
+		friendlyName: 'newspaper home delivery plus digital subscription',
+		shortFriendlyName: 'newspaper home delivery + digital',
+		productType: 'homedeliveryplusdigital',
+		groupedProductType: 'subscriptions',
+		allProductsProductTypeFilterString: 'HomeDeliveryPlusDigital',
 		urlPart: 'homedelivery',
 		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
