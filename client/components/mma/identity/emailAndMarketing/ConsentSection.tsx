@@ -25,9 +25,13 @@ const marketingEmailConsents = (consents: ConsentOption[]): ConsentOption[] => {
 		'events',
 		'offers',
 	];
-	return ConsentOptions.findByIds(consents, ids)
-		// don't show deprecated consents if already false
-		.filter(consent => !!consent.isDeprecated ? consent.subscribed : true);
+	return (
+		ConsentOptions.findByIds(consents, ids)
+			// don't show deprecated consents if already false
+			.filter((consent) =>
+				consent.isDeprecated ? consent.subscribed : true,
+			)
+	);
 };
 
 const smsConsent = (consents: ConsentOption[]): ConsentOption[] =>
