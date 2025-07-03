@@ -73,7 +73,6 @@ export interface ConsentOption {
 	identityName?: string;
 	isProduct?: boolean;
 	isChannel?: boolean;
-	isDeprecated?: boolean;
 }
 
 export interface ConsentOptionCollection {

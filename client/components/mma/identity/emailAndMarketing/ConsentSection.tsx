@@ -18,16 +18,8 @@ const supportReminderConsent = (consents: ConsentOption[]): ConsentOption[] =>
 	ConsentOptions.findByIds(consents, ['support_reminder']);
 
 const marketingEmailConsents = (consents: ConsentOption[]): ConsentOption[] => {
-	const ids = [
-		'similar_guardian_products',
-		'supporter',
-		'jobs',
-		'events',
-		'offers',
-	];
-	return ConsentOptions.findByIds(consents, ids)
-		// don't show deprecated consents if already false
-		.filter(consent => consent.isDeprecated ? consent.subscribed : true);
+	const ids = ['similar_guardian_products', 'jobs', 'events', 'offers'];
+	return ConsentOptions.findByIds(consents, ids);
 };
 
 const smsConsent = (consents: ConsentOption[]): ConsentOption[] =>

@@ -18,8 +18,6 @@ const isConsent = (option: ConsentOption): boolean =>
 	option.type !== ConsentOptionType.NEWSLETTER;
 const isSupportReminderConsent = (option: ConsentOption): boolean =>
 	option.type === ConsentOptionType.SUPPORT_REMINDER;
-const isDeprecated = (option: ConsentOption): boolean =>
-	['supporter'].includes(option.id);
 
 export const mapSubscriptions = (
 	subscriptions: string[],
@@ -30,7 +28,6 @@ export const mapSubscriptions = (
 		subscribed: option.subscribed
 			? true
 			: subscriptions.includes(option.id),
-		isDeprecated: isDeprecated(option),
 	}));
 
 const diff = (a: User, b: User): Partial<User> => {
