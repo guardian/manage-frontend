@@ -11,7 +11,7 @@ import { InlineError } from '@guardian/source/react-components';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import {
 	getMainPlan,
-	getSpecificProductTypeFromProductKey,
+	getSpecificProductTypeFromTier,
 } from '../../../../shared/productResponse';
 import { PaypalLogo } from '../shared/assets/PaypalLogo';
 import { CardDisplay } from '../shared/CardDisplay';
@@ -34,8 +34,8 @@ export const CurrentPaymentDetails = (productDetail: ProductDetail) => {
 	const mainPlan = getMainPlan(subscription);
 	const hasCancellationPending: boolean = subscription.cancelledAt;
 
-	const specificProductType = getSpecificProductTypeFromProductKey(
-		productDetail.mmaProductKey,
+	const specificProductType = getSpecificProductTypeFromTier(
+		productDetail.tier,
 	);
 
 	const keyValuePairCss = css`

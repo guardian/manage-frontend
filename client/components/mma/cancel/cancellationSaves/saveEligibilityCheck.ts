@@ -5,7 +5,7 @@ import type {
 } from '@/shared/productResponse';
 import {
 	getMainPlan,
-	getSpecificProductTypeFromProductKey,
+	getSpecificProductTypeFromTier,
 } from '@/shared/productResponse';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 
@@ -13,9 +13,7 @@ export function ineligibleForSave(
 	products: ProductDetail[],
 	productToCancel: ProductDetail,
 ): boolean {
-	const productType = getSpecificProductTypeFromProductKey(
-		productToCancel.mmaProductKey,
-	);
+	const productType = getSpecificProductTypeFromTier(productToCancel.tier);
 	if (productType.productType === 'membership') {
 		return isMembershipIneligible(products, productToCancel);
 	}
@@ -30,17 +28,14 @@ function isMembershipIneligible(
 	const inPaymentFailure = !!products.find((product) => product.alertText);
 
 	const hasOtherProduct = !!products.find((product) => {
-		const productType = getSpecificProductTypeFromProductKey(
-			product.mmaProductKey,
-		);
+		const productType = getSpecificProductTypeFromTier(product.tier);
 		return (
 			productType.productType != 'membership' &&
 			!product.subscription.cancelledAt
 		);
 	});
 
-	const membershipTierIsNotSupporter =
-		productToCancel.mmaProductKey !== 'Supporter';
+	const membershipTierIsNotSupporter = productToCancel.tier !== 'Supporter';
 
 	const mainPlan = getMainPlan(
 		productToCancel.subscription,

@@ -69,7 +69,7 @@ export interface SelfServiceCancellation {
 	phoneRegionsToDisplay: PhoneRegionKey[];
 }
 
-const productKeys = [
+export const productTiers = [
 	'guardianpatron',
 	'Tier Three',
 	'Digital Pack',
@@ -85,7 +85,6 @@ const productKeys = [
 	'Guardian Weekly Zone C',
 	'Newspaper Voucher',
 	'Newspaper Delivery',
-	'Newspaper Delivery + Digital',
 	'Patron',
 	'Partner',
 	'Guardian Ad-Lite',
@@ -94,7 +93,7 @@ const productKeys = [
 	'Newspaper Voucher - Observer',
 ];
 
-export type ProductTier = typeof productKeys[number];
+export type ProductTier = typeof productTiers[number];
 
 export interface ProductDetail extends WithSubscription {
 	isTestUser: boolean; // THIS IS NOT PART OF THE members-data-api RESPONSE (but inferred from a header)
@@ -102,7 +101,7 @@ export interface ProductDetail extends WithSubscription {
 	regNumber?: string;
 	optIn?: boolean;
 	key?: string;
-	mmaProductKey: ProductTier;
+	tier: ProductTier;
 	joinDate: string;
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
@@ -110,7 +109,7 @@ export interface ProductDetail extends WithSubscription {
 }
 
 export interface CancelledProductDetail {
-	mmaProductKey: ProductTier;
+	tier: ProductTier;
 	joinDate: string;
 	subscription: CancelledSubscription;
 }
@@ -124,15 +123,14 @@ export function isProductResponse(
 export function isProduct(
 	data: MembersDataApiItem | undefined,
 ): data is ProductDetail {
-	return productKeys.includes((data as ProductDetail)?.mmaProductKey);
+	return productTiers.includes((data as ProductDetail)?.tier);
 }
 
 export const isObserverProduct = (productDetail: ProductDetail): boolean => {
 	return (
-		productDetail.mmaProductKey === 'Newspaper Delivery - Observer' ||
-		productDetail.mmaProductKey ===
-			'Newspaper Digital Voucher - Observer' ||
-		productDetail.mmaProductKey === 'Newspaper Voucher - Observer'
+		productDetail.tier === 'Newspaper Delivery - Observer' ||
+		productDetail.tier === 'Newspaper Digital Voucher - Observer' ||
+		productDetail.tier === 'Newspaper Voucher - Observer'
 	);
 };
 
@@ -149,7 +147,7 @@ export interface DirectDebitDetails {
 }
 
 export interface SubscriptionPlan {
-	mmaProductKey?: ProductTier;
+	tier?: ProductTier;
 	name: string | null;
 	start?: string;
 	shouldBeVisible: boolean;
@@ -293,7 +291,7 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	};
 };
 
-export function getSpecificProductTypeFromProductKey(
+export function getSpecificProductTypeFromTier(
 	productTier: ProductTier,
 ): ProductType {
 	let productType: ProductType = {} as ProductType;
@@ -316,7 +314,6 @@ export function getSpecificProductTypeFromProductKey(
 			productType = PRODUCT_TYPES.digipack;
 			break;
 		case 'Newspaper Delivery':
-		case 'Newspaper Delivery + Digital':
 			productType = PRODUCT_TYPES.homedelivery;
 			break;
 		case 'Supporter Plus':
@@ -358,8 +355,8 @@ export function isSpecificProductType(
 	productDetail: ProductDetail,
 	targetProductType: ProductType,
 ): boolean {
-	const specificProductType = getSpecificProductTypeFromProductKey(
-		productDetail.mmaProductKey,
+	const specificProductType = getSpecificProductTypeFromTier(
+		productDetail.tier,
 	);
 	return specificProductType === targetProductType;
 }

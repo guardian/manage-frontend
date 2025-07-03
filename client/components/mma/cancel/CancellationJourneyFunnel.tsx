@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { hasCancellationFlow } from '@/client/utilities/productUtils';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
-	getSpecificProductTypeFromProductKey,
+	getSpecificProductTypeFromTier,
 	isPaidSubscriptionPlan,
 } from '@/shared/productResponse';
 import type { ProductTypeKeys } from '@/shared/productTypes';
@@ -36,9 +36,7 @@ export const CancellationJourneyFunnel = () => {
 		return <Navigate to="/" />;
 	}
 
-	const productType = getSpecificProductTypeFromProductKey(
-		productDetail.mmaProductKey,
-	);
+	const productType = getSpecificProductTypeFromTier(productDetail.tier);
 	const productTypeKey = productType.productType;
 
 	const possiblePaidPlan = productDetail.subscription.currentPlans[0];

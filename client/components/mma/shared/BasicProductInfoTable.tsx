@@ -22,7 +22,7 @@ export const BasicProductInfoTable = (props: BasicProductInfoTableProps) => {
 					? [
 							{
 								title: props.groupedProductType.tierLabel,
-								value: props.productDetail.mmaProductKey,
+								value: props.productDetail.tier,
 							},
 					  ]
 					: []),
