@@ -105,15 +105,6 @@ export const consents = [
 		name: 'Allow personalised advertising using this data',
 	},
 	{
-		id: 'supporter',
-		isOptOut: false,
-		isChannel: false,
-		isProduct: false,
-		name: 'Supporting the Guardian',
-		description:
-			'Stay up-to-date with the latest offers and the aims of the organisation, as well as ways you can enjoy and support our independent journalism.',
-	},
-	{
 		id: 'jobs',
 		isOptOut: false,
 		isChannel: false,
