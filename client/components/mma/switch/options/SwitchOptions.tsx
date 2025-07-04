@@ -130,7 +130,7 @@ export const SwitchOptions = () => {
 
 	const navigate = useNavigate();
 
-	if (contributionToSwitch.tier === 'Supporter Plus') {
+	if (contributionToSwitch.mmaProductKey === 'Supporter Plus') {
 		return (
 			<section css={sectionSpacing}>
 				<ErrorSummary

@@ -4,23 +4,32 @@ import {
 	baseDigitalPack,
 	baseDigitalVoucher,
 	baseDigitalVoucherObserver,
+	baseDigitalVoucherPlus,
 	baseGuardianAdLite,
 	baseGuardianWeekly,
 	baseHomeDelivery,
-	baseHomeDeliverySundayPlus,
+	baseHomeDeliverySaturdayPlus,
 	baseMembership,
 	baseNationalDelivery,
+	baseNationalDeliveryPlus,
 	baseObserverDelivery,
 	basePatron,
 	baseSupporterPlus,
 	baseTierThree,
 	baseVoucher,
 	baseVoucherObserver,
+	baseVoucherPlus,
 } from './baseProducts';
 import { cards, ProductBuilder } from './productBuilder';
 
 export function voucherPaidByCard() {
 	return new ProductBuilder(baseVoucher())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function voucherPlusPaidByCard() {
+	return new ProductBuilder(baseVoucherPlus())
 		.payByCard()
 		.getProductDetailObject();
 }
@@ -184,6 +193,12 @@ export function newspaperDigitalVoucherPaidByPaypal(email?: string) {
 		.getProductDetailObject();
 }
 
+export function newspaperdigitalVoucherPlusPaidByCard() {
+	return new ProductBuilder(baseDigitalVoucherPlus())
+		.payByCard()
+		.getProductDetailObject();
+}
+
 export function homeDelivery() {
 	return new ProductBuilder(baseHomeDelivery())
 		.payByCard()
@@ -221,6 +236,12 @@ export function nationalDelivery() {
 		.getProductDetailObject();
 }
 
+export function nationalDeliveryPlus() {
+	return new ProductBuilder(baseNationalDeliveryPlus())
+		.payByCard()
+		.getProductDetailObject();
+}
+
 export function membershipSupporter() {
 	return new ProductBuilder(baseMembership())
 		.payByCard()
@@ -251,7 +272,7 @@ export function membershipSupporterCurrencyUSD() {
 export function membershipStaff() {
 	return new ProductBuilder(baseMembership())
 		.payByCard()
-		.tier('Staff Membership')
+		.product('Staff Membership')
 		.withNoCurrentPlans()
 		.getProductDetailObject();
 }
@@ -343,8 +364,8 @@ export function tierThree() {
 		.getProductDetailObject();
 }
 
-export function homeDeliverySundayPlus() {
-	return new ProductBuilder(baseHomeDeliverySundayPlus())
+export function homeDeliverySaturdayPlus() {
+	return new ProductBuilder(baseHomeDeliverySaturdayPlus())
 		.payByCard()
 		.getProductDetailObject();
 }

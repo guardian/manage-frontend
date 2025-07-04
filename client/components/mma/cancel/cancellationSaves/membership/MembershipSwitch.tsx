@@ -249,8 +249,8 @@ export const MembershipSwitch = () => {
 
 	if (
 		membership.subscription.futurePlans.length > 0 &&
-		membership.subscription.futurePlans[0].tier &&
-		membership.subscription.futurePlans[0].tier === 'Contributor'
+		membership.subscription.futurePlans[0].mmaProductKey &&
+		membership.subscription.futurePlans[0].mmaProductKey === 'Contributor'
 	) {
 		// Switch already planned, so navigate to Overview
 		navigate('/');
