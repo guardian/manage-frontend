@@ -74,16 +74,19 @@ const productKeys = [
 	'Tier Three',
 	'Digital Pack',
 	'Newspaper - National Delivery',
+	'Newspaper - National Delivery + Digital',
 	'Supporter',
 	'Supporter Plus',
 	'Guardian Weekly - ROW',
 	'Guardian Weekly - Domestic',
 	'Newspaper Digital Voucher',
+	'Newspaper Digital Voucher + Digital',
 	'Contributor',
 	'Guardian Weekly Zone A',
 	'Guardian Weekly Zone B',
 	'Guardian Weekly Zone C',
 	'Newspaper Voucher',
+	'Newspaper Voucher + Digital',
 	'Newspaper Delivery',
 	'Newspaper Delivery + Digital',
 	'Patron',
@@ -293,6 +296,12 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	};
 };
 
+// As of 07/04/25 we have added + Digital variations of the following Newspaper products
+// - Newspaper - National Delivery
+// - Newspaper Digital Voucher
+// - Newspaper Voucher
+// - Newspaper Delivery
+// This is so that we can differentiate them in the future as they have separate digital benefits
 export function getSpecificProductTypeFromProductKey(
 	productTier: ProductTier,
 ): ProductType {
@@ -310,6 +319,7 @@ export function getSpecificProductTypeFromProductKey(
 			productType = PRODUCT_TYPES.tierthree;
 			break;
 		case 'Newspaper Voucher':
+		case 'Newspaper Voucher + Digital':
 			productType = PRODUCT_TYPES.voucher;
 			break;
 		case 'Digital Pack':
@@ -325,6 +335,7 @@ export function getSpecificProductTypeFromProductKey(
 			productType = PRODUCT_TYPES.supporterplus;
 			break;
 		case 'Newspaper Digital Voucher':
+		case 'Newspaper Digital Voucher + Digital':
 			productType = PRODUCT_TYPES.digitalvoucher;
 			break;
 		case 'Guardian Ad-Lite':
@@ -341,6 +352,7 @@ export function getSpecificProductTypeFromProductKey(
 			productType = PRODUCT_TYPES.guardianweekly;
 			break;
 		case 'Newspaper - National Delivery':
+		case 'Newspaper - National Delivery + Digital':
 			productType = PRODUCT_TYPES.nationaldelivery;
 			break;
 		case 'Newspaper Delivery - Observer':
