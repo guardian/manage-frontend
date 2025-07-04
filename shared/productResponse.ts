@@ -296,6 +296,12 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	};
 };
 
+// As of 07/04/25 we have added + Digital variations of the following Newspaper products
+// - Newspaper - National Delivery
+// - Newspaper Digital Voucher
+// - Newspaper Voucher
+// - Newspaper Delivery
+// This is so that we can differentiate them in the future as they have separate digital benefits
 export function getSpecificProductTypeFromProductKey(
 	productTier: ProductTier,
 ): ProductType {
