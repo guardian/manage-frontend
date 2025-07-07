@@ -62,6 +62,10 @@ export const productCardConfiguration: Record<
 	digitalvoucher: {
 		colour: productColour.newspaper,
 	},
+	digitalvoucherplusdigital: {
+		colour: productColour.newspaper,
+		showBenefitsSection: true,
+	},
 	newspaper: {
 		colour: productColour.newspaper,
 	},
@@ -75,8 +79,16 @@ export const productCardConfiguration: Record<
 	nationaldelivery: {
 		colour: productColour.newspaper,
 	},
+	nationaldeliveryplusdigital: {
+		colour: productColour.newspaper,
+		showBenefitsSection: true,
+	},
 	voucher: {
 		colour: productColour.newspaper,
+	},
+	voucherplusdigital: {
+		colour: productColour.newspaper,
+		showBenefitsSection: true,
 	},
 	guardianweekly: {
 		colour: productColour.guardianWeekly,

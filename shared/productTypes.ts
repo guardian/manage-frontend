@@ -39,7 +39,9 @@ type ProductFriendlyName =
 	| 'recurring contribution' // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
 	| 'newspaper subscription'
 	| 'newspaper voucher subscription'
+	| 'newspaper voucher plus digital subscription'
 	| 'newspaper subscription card'
+	| 'newspaper subscription card plus digital'
 	| 'newspaper home delivery subscription'
 	| 'newspaper home delivery plus digital subscription'
 	| 'digital subscription'
@@ -278,8 +280,11 @@ export type ProductTypeKeys =
 	| 'homedelivery'
 	| 'homedeliveryplusdigital'
 	| 'nationaldelivery'
+	| 'nationaldeliveryplusdigital'
 	| 'voucher'
+	| 'voucherplusdigital'
 	| 'digitalvoucher'
+	| 'digitalvoucherplusdigital'
 	| 'guardianweekly'
 	| 'digipack'
 	| 'supporterplus'
@@ -296,7 +301,15 @@ export type GroupedProductTypeKeys =
 	| 'recurringSupportWithBenefits'
 	| 'subscriptions';
 
-export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
+type BaseProductTypeKeys = Exclude<
+	ProductTypeKeys,
+	| 'homedeliveryplusdigital'
+	| 'nationaldeliveryplusdigital'
+	| 'voucherplusdigital'
+	| 'digitalvoucherplusdigital'
+>;
+
+const BASE_PRODUCT_TYPES: Record<BaseProductTypeKeys, ProductType> = {
 	membership: {
 		productTitle: () => 'Guardian Membership',
 		friendlyName: 'Membership',
@@ -420,47 +433,6 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		productType: 'homedelivery',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'HomeDelivery',
-		urlPart: 'homedelivery',
-		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
-		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
-		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
-		softOptInIDs: [
-			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SupporterNewsletter,
-		],
-		holidayStops: {
-			issueKeyword: 'paper',
-			alternateNoticeString: "two working days' notice",
-		},
-		delivery: {
-			showAddress: showDeliveryAddressCheck,
-			enableDeliveryInstructionsUpdate: true,
-			records: {
-				productNameForProblemReport: 'Home Delivery',
-				showDeliveryInstructions: true,
-				numberOfProblemRecordsToShow: 14,
-				contactUserOnExistingProblemReport: true,
-				availableProblemTypes: [
-					{
-						label: 'Instructions Not Followed',
-						messageIsMandatory: true,
-					},
-					...commonDeliveryProblemTypes,
-				],
-			},
-		},
-		fulfilmentDateCalculator: {
-			productFilenamePart: 'Newspaper - Home Delivery',
-		},
-	},
-	homedeliveryplusdigital: {
-		productTitle: calculateProductTitle('Newspaper Delivery'),
-		friendlyName: 'newspaper home delivery plus digital subscription',
-		shortFriendlyName: 'newspaper home delivery + digital',
-		productType: 'homedeliveryplusdigital',
-		groupedProductType: 'subscriptions',
-		allProductsProductTypeFilterString: 'HomeDeliveryPlusDigital',
 		urlPart: 'homedelivery',
 		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
 		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
@@ -913,6 +885,54 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 	},
 };
+
+const createPlusDigitalProductFromProduct = (
+	product: ProductType,
+	productOverwrites: Partial<ProductType>,
+) => {
+	const plusDigitalProduct = {
+		...product,
+		...productOverwrites,
+	};
+
+	return plusDigitalProduct;
+};
+
+export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
+	...BASE_PRODUCT_TYPES,
+	homedeliveryplusdigital: createPlusDigitalProductFromProduct(
+		BASE_PRODUCT_TYPES.homedelivery,
+		{
+			friendlyName: 'newspaper home delivery plus digital subscription',
+			shortFriendlyName: 'newspaper home delivery + digital',
+			productType: 'homedeliveryplusdigital',
+		},
+	),
+	nationaldeliveryplusdigital: createPlusDigitalProductFromProduct(
+		BASE_PRODUCT_TYPES.nationaldelivery,
+		{
+			friendlyName: 'newspaper home delivery plus digital subscription',
+			shortFriendlyName: 'newspaper home delivery + digital',
+			productType: 'nationaldeliveryplusdigital',
+		},
+	),
+	voucherplusdigital: createPlusDigitalProductFromProduct(
+		BASE_PRODUCT_TYPES.voucher,
+		{
+			friendlyName: 'newspaper voucher plus digital subscription',
+			shortFriendlyName: 'newspaper voucher booklet + digital',
+			productType: 'voucherplusdigital',
+		},
+	),
+	digitalvoucherplusdigital: createPlusDigitalProductFromProduct(
+		BASE_PRODUCT_TYPES.digitalvoucher,
+		{
+			friendlyName: 'newspaper subscription card plus digital',
+			productType: 'digitalvoucherplusdigital',
+		},
+	),
+};
+
 export const GROUPED_PRODUCT_TYPES: Record<
 	GroupedProductTypeKeys,
 	GroupedProductType
