@@ -28,8 +28,8 @@ interface IdapiFetchOptions {
 }
 
 interface CookiesWithToken {
-	SC_GU_U: string;
-	[key: string]: string;
+	SC_GU_U?: string;
+	[key: string]: string | undefined;
 }
 
 const getBaseDomain = (): string => {
@@ -45,9 +45,12 @@ const getBaseDomain = (): string => {
 const SECURITY_HEADER_NAME = 'X-GU-ID-FOWARDED-SC-GU-U';
 const SECURITY_COOKIE_NAME = 'SC_GU_U';
 
-const securityCookieToHeader = (cookies: CookiesWithToken) => ({
-	[SECURITY_HEADER_NAME]: cookies[SECURITY_COOKIE_NAME],
-});
+const securityCookieToHeader = (
+	cookies: CookiesWithToken,
+): Record<string, string> =>
+	cookies[SECURITY_COOKIE_NAME]
+		? { [SECURITY_HEADER_NAME]: cookies[SECURITY_COOKIE_NAME] }
+		: {};
 
 const prepareBody = <T>(body: T | undefined) => {
 	if (!body) {
@@ -95,7 +98,10 @@ const idapiOrOAuthHeaders = ({
 			'X-GU-ID-Client-Access-Token': `Bearer ${config.accessToken}`,
 			...securityCookieToHeader(cookies),
 			// Avatar API expects a Cookie header with the SC_GU_U cookie.
-			Cookie: subdomain === 'avatar' ? `SC_GU_U=${cookies.SC_GU_U};` : '',
+			Cookie:
+				subdomain === 'avatar' && cookies.SC_GU_U
+					? `SC_GU_U=${cookies.SC_GU_U};`
+					: '',
 		};
 	}
 };
