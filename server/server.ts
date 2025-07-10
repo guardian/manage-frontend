@@ -40,7 +40,6 @@ if (conf.DOMAIN === 'thegulocal.com') {
 
 server.use(
 	helmet({
-		contentSecurityPolicy: false, // We set CSP manually with createCsp()
 		crossOriginEmbedderPolicy: false, // Required for Sentry, Stripe, and Quantum Metric
 	}),
 );
