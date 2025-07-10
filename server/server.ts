@@ -38,7 +38,7 @@ if (conf.DOMAIN === 'thegulocal.com') {
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 
-server.use(helmet());
+server.use(helmet() as unknown as RequestHandler);
 
 export const createCsp = (hashes: string[]) => {
 	const prefixedHashes = hashes.map((hash) => `'sha256-${hash}'`);
