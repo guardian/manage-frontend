@@ -197,7 +197,7 @@ export const ProductCard = ({
 						message="Your offer is active"
 						context={
 							<>
-								Your two months free is now active until{' '}
+								Your free offer is active until{' '}
 								{nextPaymentDetails?.nextPaymentDateValue}. If
 								you have any questions, feel free to{' '}
 								{
