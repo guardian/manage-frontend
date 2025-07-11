@@ -56,7 +56,7 @@ export const getNextPaymentDetails = (
 			}
 			const amount =
 				overiddenAmount ||
-				(subscription.nextPaymentPrice ?? mainPlan.price) / 100;
+				(subscription.nextPaymentPrice ?? mainPlan.price) / 100; // we have kept the null coalessing check in here incase MDAPI returns a null value for nextPaymentPrice (not expected)
 			if (shortVersion === 'short') {
 				return `${mainPlan.currency}${
 					Number.isInteger(amount) ? amount : amount.toFixed(2)
