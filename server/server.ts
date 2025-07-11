@@ -40,15 +40,22 @@ if (conf.DOMAIN === 'thegulocal.com') {
 
 server.use(
 	helmet({
-		contentSecurityPolicy: false, // We set CSP manually with createCsp()
-		crossOriginEmbedderPolicy: false, // Required for Sentry, Stripe, and Quantum Metric
+		// REQUIRED: We need dynamic CSP per route
+		// All other security headers are enabled by default:
+		// - crossOriginOpenerPolicy: 'same-origin'
+		// - crossOriginResourcePolicy: 'same-origin'
+		// - strictTransportSecurity: max-age=31536000
+		// - xContentTypeOptions: 'nosniff'
+		// - xFrameOptions: 'SAMEORIGIN'
+		// etc.
+		contentSecurityPolicy: false,
 	}),
 );
 
 export const createCsp = (hashes: string[]) => {
 	const prefixedHashes = hashes.map((hash) => `'sha256-${hash}'`);
 	const csp = [
-		`script-src ${prefixedHashes.join(' ')} 'strict-dynamic'`,
+		`script-src ${prefixedHashes.join(' ')} 'strict-dynamic' 'unsafe-eval'`,
 		`style-src 'unsafe-inline'`,
 		`object-src 'none'`,
 	];
