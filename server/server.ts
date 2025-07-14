@@ -55,7 +55,7 @@ server.use(
 export const createCsp = (hashes: string[]) => {
 	const prefixedHashes = hashes.map((hash) => `'sha256-${hash}'`);
 	const csp = [
-		`script-src ${prefixedHashes.join(' ')} 'strict-dynamic' 'unsafe-eval'`,
+		`script-src ${prefixedHashes.join(' ')} 'strict-dynamic'`,
 		`style-src 'unsafe-inline'`,
 		`object-src 'none'`,
 	];
