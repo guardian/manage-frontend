@@ -12,7 +12,7 @@ export const useAnalytics = () => {
 				{
 					async: true,
 					integrity:
-						'sha384-VMLIC70VzACtZAEkPaL+7xW+v0+UjkIUuGxlArtIG+Pzqlp5DkbfVG9tRm75Liwx',
+						'sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb',
 					crossOrigin: 'anonymous',
 				},
 			).catch(() => {
