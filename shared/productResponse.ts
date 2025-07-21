@@ -224,7 +224,7 @@ export interface Subscription {
 	lastPaymentDate: string | null;
 	potentialCancellationDate: string | null;
 	chargedThroughDate: string | null;
-	nextPaymentPrice: number | null;
+	nextPaymentPrice: number;
 	paymentMethod?: string;
 	stripePublicKeyForCardAddition?: string;
 	safeToUpdatePaymentMethod: boolean;
