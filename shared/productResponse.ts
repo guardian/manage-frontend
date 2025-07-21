@@ -319,8 +319,10 @@ export function getSpecificProductTypeFromProductKey(
 			productType = PRODUCT_TYPES.tierthree;
 			break;
 		case 'Newspaper Voucher':
-		case 'Newspaper Voucher + Digital':
 			productType = PRODUCT_TYPES.voucher;
+			break;
+		case 'Newspaper Voucher + Digital':
+			productType = PRODUCT_TYPES.voucherplusdigital;
 			break;
 		case 'Digital Pack':
 			productType = PRODUCT_TYPES.digipack;
@@ -335,8 +337,10 @@ export function getSpecificProductTypeFromProductKey(
 			productType = PRODUCT_TYPES.supporterplus;
 			break;
 		case 'Newspaper Digital Voucher':
-		case 'Newspaper Digital Voucher + Digital':
 			productType = PRODUCT_TYPES.digitalvoucher;
+			break;
+		case 'Newspaper Digital Voucher + Digital':
+			productType = PRODUCT_TYPES.digitalvoucherplusdigital;
 			break;
 		case 'Guardian Ad-Lite':
 			productType = PRODUCT_TYPES.guardianadlite;
@@ -352,8 +356,10 @@ export function getSpecificProductTypeFromProductKey(
 			productType = PRODUCT_TYPES.guardianweekly;
 			break;
 		case 'Newspaper - National Delivery':
-		case 'Newspaper - National Delivery + Digital':
 			productType = PRODUCT_TYPES.nationaldelivery;
+			break;
+		case 'Newspaper - National Delivery + Digital':
+			productType = PRODUCT_TYPES.nationaldeliveryplusdigital;
 			break;
 		case 'Newspaper Delivery - Observer':
 			productType = PRODUCT_TYPES.observer;

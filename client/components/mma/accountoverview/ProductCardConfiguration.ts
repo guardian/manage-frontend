@@ -27,6 +27,7 @@ interface ProductCardConfiguration {
 	colour: string;
 	invertText?: boolean;
 	showBenefitsSection?: boolean;
+	showDigitalBenefitsSection?: boolean;
 }
 
 /**
@@ -64,7 +65,7 @@ export const productCardConfiguration: Record<
 	},
 	digitalvoucherplusdigital: {
 		colour: productColour.newspaper,
-		showBenefitsSection: true,
+		showDigitalBenefitsSection: true,
 	},
 	newspaper: {
 		colour: productColour.newspaper,
@@ -74,21 +75,21 @@ export const productCardConfiguration: Record<
 	},
 	homedeliveryplusdigital: {
 		colour: productColour.newspaper,
-		showBenefitsSection: true,
+		showDigitalBenefitsSection: true,
 	},
 	nationaldelivery: {
 		colour: productColour.newspaper,
 	},
 	nationaldeliveryplusdigital: {
 		colour: productColour.newspaper,
-		showBenefitsSection: true,
+		showDigitalBenefitsSection: true,
 	},
 	voucher: {
 		colour: productColour.newspaper,
 	},
 	voucherplusdigital: {
 		colour: productColour.newspaper,
-		showBenefitsSection: true,
+		showDigitalBenefitsSection: true,
 	},
 	guardianweekly: {
 		colour: productColour.guardianWeekly,

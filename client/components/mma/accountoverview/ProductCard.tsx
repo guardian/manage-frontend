@@ -266,20 +266,21 @@ export const ProductCard = ({
 				</Card.Header>
 
 				{/* ---- */}
-				{cardConfig.showBenefitsSection && nextPaymentDetails && (
-					<Card.Section backgroundColor="#edf5fA">
-						<p css={benefitsTextCss}>
-							You’re supporting the Guardian with{' '}
-							{nextPaymentDetails.currentPriceValue} per{' '}
-							{nextPaymentDetails.paymentInterval}, and have
-							access to exclusive extras.
-						</p>
-						<BenefitsToggle
-							productType={specificProductType.productType}
-							subscriptionPlan={mainPlan}
-						/>
-					</Card.Section>
-				)}
+				{(cardConfig.showBenefitsSection ||
+					cardConfig.showDigitalBenefitsSection) &&
+					nextPaymentDetails && (
+						<Card.Section backgroundColor="#edf5fA">
+							<p css={benefitsTextCss}>
+								{cardConfig.showDigitalBenefitsSection
+									? `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have unlocked the full digital experience:`
+									: `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have access to exclusive extras.`}
+							</p>
+							<BenefitsToggle
+								productType={specificProductType.productType}
+								subscriptionPlan={mainPlan}
+							/>
+						</Card.Section>
+					)}
 				{specificProductType.productType === 'guardianadlite' &&
 					nextPaymentDetails && (
 						<Card.Section backgroundColor="#edf5fA">
