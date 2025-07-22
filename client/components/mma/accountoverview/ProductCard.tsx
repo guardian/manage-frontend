@@ -265,7 +265,6 @@ export const ProductCard = ({
 					)}
 				</Card.Header>
 
-				{/* ---- */}
 				{(cardConfig.showBenefitsSection ||
 					cardConfig.showDigitalBenefitsSection) &&
 					nextPaymentDetails && (
