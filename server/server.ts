@@ -58,6 +58,7 @@ export const createCsp = (hashes: string[]) => {
 		`script-src ${prefixedHashes.join(' ')} 'strict-dynamic'`,
 		`style-src 'unsafe-inline'`,
 		`object-src 'none'`,
+		`report-uri /api/csp-audit-report-endpoint`,
 	];
 	return csp.join('; ');
 };
