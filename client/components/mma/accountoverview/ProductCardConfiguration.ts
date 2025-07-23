@@ -23,12 +23,24 @@ export const productColour = {
 	puzzleApp: palette.lifestyle[300],
 };
 
-interface ProductCardConfiguration {
+type ExclusiveBenefitsSections =
+	| {
+			showBenefitsSection: true;
+			showDigitalBenefitsSection: false;
+	  }
+	| {
+			showBenefitsSection: false;
+			showDigitalBenefitsSection: true;
+	  };
+
+interface ProductCardBase {
 	colour: string;
 	invertText?: boolean;
-	showBenefitsSection?: boolean;
-	showDigitalBenefitsSection?: boolean;
 }
+
+// Type enforces XOR options on the benefits section
+type ProductCardConfiguration = ProductCardBase &
+	Partial<ExclusiveBenefitsSections>;
 
 /**
  * In-app purchases have their own dedicated product card component so are not
