@@ -43,9 +43,14 @@ const partnerOffers: ProductBenefit = {
 };
 
 const plusdigitalBenefits = [
-	{ description: 'Unlimited access to the refreshed Guardian app' },
-	{ description: 'Unlimited access to the Guardian Feast app' },
-	{ description: 'Unlimited access to the Guardian Editions app' },
+	{
+		description:
+			'Unlimited access to the refreshed Guardian app and Guardian Feast app',
+	},
+	{
+		description:
+			'Unlimited access to the Guardian Editions app so you can enjoy newspapers on your mobile and tablet',
+	},
 	{ description: 'Ad-free reading on all your devices' },
 	{
 		description:
