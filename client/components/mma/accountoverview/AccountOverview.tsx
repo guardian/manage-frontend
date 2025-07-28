@@ -19,10 +19,11 @@ import type {
 	ProductDetail,
 	SingleProductDetail,
 } from '../../../../shared/productResponse';
-import { isProductResponse } from '../../../../shared/productResponse';
 import {
 	getSpecificProductTypeFromProductKey,
+	isPlusDigitalProductType,
 	isProduct,
+	isProductResponse,
 	isSpecificProductType,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
@@ -226,6 +227,10 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		isSpecificProductType(productDetail, PRODUCT_TYPES.tierthree),
 	);
 
+	const isPlusDigitalProduct = allActiveProductDetails.some((productDetail) =>
+		isPlusDigitalProductType(productDetail),
+	);
+
 	const hasNonServiceableCountry = nonServiceableCountries.includes(
 		allActiveProductDetails.find(isProduct)?.billingCountry as string,
 	);
@@ -366,7 +371,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					</Fragment>
 				);
 			})}
-			{hasDigitalPlusPrint && (
+			{(hasDigitalPlusPrint || isPlusDigitalProduct) && (
 				<>
 					<h2 css={subHeadingCss}>
 						Get the most out of your benefits
