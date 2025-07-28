@@ -20,12 +20,10 @@ import type {
 	SingleProductDetail,
 } from '../../../../shared/productResponse';
 import {
-	isPlusDigitalProductType,
-	isProductResponse,
-} from '../../../../shared/productResponse';
-import {
 	getSpecificProductTypeFromProductKey,
+	isPlusDigitalProductType,
 	isProduct,
+	isProductResponse,
 	isSpecificProductType,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
