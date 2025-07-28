@@ -383,3 +383,18 @@ export function isSpecificProductType(
 	);
 	return specificProductType === targetProductType;
 }
+
+export const isPlusDigitalProductType = (
+	productDetail: ProductDetail,
+): boolean => {
+	const specificProductType = getSpecificProductTypeFromProductKey(
+		productDetail.mmaProductKey,
+	);
+
+	return [
+		PRODUCT_TYPES.nationaldeliveryplusdigital,
+		PRODUCT_TYPES.voucherplusdigital,
+		PRODUCT_TYPES.homedeliveryplusdigital,
+		PRODUCT_TYPES.digitalvoucherplusdigital,
+	].includes(specificProductType);
+};
