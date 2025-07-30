@@ -928,7 +928,7 @@ export const GROUPED_PRODUCT_TYPES: Record<
 		supportTheGuardianSectionProps: {
 			supportReferer: 'account_overview_membership_section',
 			message:
-				'We no longer have a Membership programme but you can still continue to support the Guardian.',
+				'We no longer have a Membership programme but you can sgtill continue to support the Guardian.',
 		},
 	},
 	recurringSupport: {
