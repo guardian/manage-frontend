@@ -23,11 +23,24 @@ export const productColour = {
 	puzzleApp: palette.lifestyle[300],
 };
 
-interface ProductCardConfiguration {
+type ExclusiveBenefitsSections =
+	| {
+			showBenefitsSection: true;
+			showDigitalBenefitsSection: false;
+	  }
+	| {
+			showBenefitsSection: false;
+			showDigitalBenefitsSection: true;
+	  };
+
+interface ProductCardBase {
 	colour: string;
 	invertText?: boolean;
-	showBenefitsSection?: boolean;
 }
+
+// Type enforces XOR options on the benefits section
+type ProductCardConfiguration = ProductCardBase &
+	Partial<ExclusiveBenefitsSections>;
 
 /**
  * In-app purchases have their own dedicated product card component so are not
@@ -62,17 +75,33 @@ export const productCardConfiguration: Record<
 	digitalvoucher: {
 		colour: productColour.newspaper,
 	},
+	digitalvoucherplusdigital: {
+		colour: productColour.newspaper,
+		showDigitalBenefitsSection: true,
+	},
 	newspaper: {
 		colour: productColour.newspaper,
 	},
 	homedelivery: {
 		colour: productColour.newspaper,
 	},
+	homedeliveryplusdigital: {
+		colour: productColour.newspaper,
+		showDigitalBenefitsSection: true,
+	},
 	nationaldelivery: {
 		colour: productColour.newspaper,
 	},
+	nationaldeliveryplusdigital: {
+		colour: productColour.newspaper,
+		showDigitalBenefitsSection: true,
+	},
 	voucher: {
 		colour: productColour.newspaper,
+	},
+	voucherplusdigital: {
+		colour: productColour.newspaper,
+		showDigitalBenefitsSection: true,
 	},
 	guardianweekly: {
 		colour: productColour.guardianWeekly,

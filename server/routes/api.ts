@@ -369,7 +369,7 @@ router.post('/reminders/reactivate', reactivateReminderHandler);
 
 router.post('/csp-audit-report-endpoint', (req, res) => {
 	const parsedBody = JSON.parse(req.body.toString());
-	log.warn(JSON.stringify(parsedBody));
+	log.warn(`CSP Violation Report: ${JSON.stringify(parsedBody)}`);
 	res.status(204).end();
 });
 

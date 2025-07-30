@@ -38,7 +38,19 @@ if (conf.DOMAIN === 'thegulocal.com') {
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 
-server.use(helmet());
+server.use(
+	helmet({
+		// REQUIRED: We need dynamic CSP per route
+		// All other security headers are enabled by default:
+		// - crossOriginOpenerPolicy: 'same-origin'
+		// - crossOriginResourcePolicy: 'same-origin'
+		// - strictTransportSecurity: max-age=31536000
+		// - xContentTypeOptions: 'nosniff'
+		// - xFrameOptions: 'SAMEORIGIN'
+		// etc.
+		contentSecurityPolicy: false,
+	}),
+);
 
 export const createCsp = (hashes: string[]) => {
 	const prefixedHashes = hashes.map((hash) => `'sha256-${hash}'`);
@@ -46,6 +58,7 @@ export const createCsp = (hashes: string[]) => {
 		`script-src ${prefixedHashes.join(' ')} 'strict-dynamic'`,
 		`style-src 'unsafe-inline'`,
 		`object-src 'none'`,
+		`report-uri /api/csp-audit-report-endpoint`,
 	];
 	return csp.join('; ');
 };

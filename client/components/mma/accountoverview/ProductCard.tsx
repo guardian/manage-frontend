@@ -24,7 +24,7 @@ import type {
 } from '@/shared/productResponse';
 import {
 	getMainPlan,
-	getSpecificProductTypeFromTier,
+	getSpecificProductTypeFromProductKey,
 	isGift,
 	isPaidSubscriptionPlan,
 } from '@/shared/productResponse';
@@ -79,8 +79,8 @@ export const ProductCard = ({
 		throw new Error('mainPlan does not exist in ProductCard');
 	}
 
-	const specificProductType = getSpecificProductTypeFromTier(
-		productDetail.tier,
+	const specificProductType = getSpecificProductTypeFromProductKey(
+		productDetail.mmaProductKey,
 	);
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
@@ -88,7 +88,7 @@ export const ProductCard = ({
 	const isPatron = productDetail.subscription.readerType === 'Patron';
 
 	const entitledToEvents =
-		['Partner', 'Patron'].includes(productDetail.tier) &&
+		['Partner', 'Patron'].includes(productDetail.mmaProductKey) &&
 		(mainPlan as PaidSubscriptionPlan).features.includes('Events');
 
 	const productTitle = `${specificProductType.productTitle(mainPlan)}${
@@ -162,11 +162,11 @@ export const ProductCard = ({
 			productDetail.subscription.potentialCancellationDate;
 
 	const futureProductTitle =
-		productDetail.subscription.futurePlans[0]?.tier &&
-		productDetail.tier &&
+		productDetail.subscription.futurePlans[0]?.mmaProductKey &&
+		productDetail.mmaProductKey &&
 		productDetail.subscription.currentPlans.length > 0
-			? getSpecificProductTypeFromTier(
-					productDetail.subscription.futurePlans[0].tier,
+			? getSpecificProductTypeFromProductKey(
+					productDetail.subscription.futurePlans[0].mmaProductKey,
 			  ).productTitle(mainPlan)
 			: null;
 
@@ -197,7 +197,7 @@ export const ProductCard = ({
 						message="Your offer is active"
 						context={
 							<>
-								Your two months free is now active until{' '}
+								Your free offer is active until{' '}
 								{nextPaymentDetails?.nextPaymentDateValue}. If
 								you have any questions, feel free to{' '}
 								{
@@ -265,20 +265,21 @@ export const ProductCard = ({
 					)}
 				</Card.Header>
 
-				{cardConfig.showBenefitsSection && nextPaymentDetails && (
-					<Card.Section backgroundColor="#edf5fA">
-						<p css={benefitsTextCss}>
-							You’re supporting the Guardian with{' '}
-							{nextPaymentDetails.currentPriceValue} per{' '}
-							{nextPaymentDetails.paymentInterval}, and have
-							access to exclusive extras.
-						</p>
-						<BenefitsToggle
-							productType={specificProductType.productType}
-							subscriptionPlan={mainPlan}
-						/>
-					</Card.Section>
-				)}
+				{(cardConfig.showBenefitsSection ||
+					cardConfig.showDigitalBenefitsSection) &&
+					nextPaymentDetails && (
+						<Card.Section backgroundColor="#edf5fA">
+							<p css={benefitsTextCss}>
+								{cardConfig.showDigitalBenefitsSection
+									? `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have unlocked the full digital experience:`
+									: `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have access to exclusive extras.`}
+							</p>
+							<BenefitsToggle
+								productType={specificProductType.productType}
+								subscriptionPlan={mainPlan}
+							/>
+						</Card.Section>
+					)}
 				{specificProductType.productType === 'guardianadlite' &&
 					nextPaymentDetails && (
 						<Card.Section backgroundColor="#edf5fA">
@@ -312,7 +313,7 @@ export const ProductCard = ({
 								{groupedProductType.tierLabel && (
 									<div>
 										<dt>{groupedProductType.tierLabel}</dt>
-										<dd>{productDetail.tier}</dd>
+										<dd>{productDetail.mmaProductKey}</dd>
 									</div>
 								)}
 								{subscriptionStartDate && shouldShowStartDate && (

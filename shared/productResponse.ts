@@ -69,22 +69,26 @@ export interface SelfServiceCancellation {
 	phoneRegionsToDisplay: PhoneRegionKey[];
 }
 
-export const productTiers = [
+const productKeys = [
 	'guardianpatron',
 	'Tier Three',
 	'Digital Pack',
 	'Newspaper - National Delivery',
+	'Newspaper - National Delivery + Digital',
 	'Supporter',
 	'Supporter Plus',
 	'Guardian Weekly - ROW',
 	'Guardian Weekly - Domestic',
 	'Newspaper Digital Voucher',
+	'Newspaper Digital Voucher + Digital',
 	'Contributor',
 	'Guardian Weekly Zone A',
 	'Guardian Weekly Zone B',
 	'Guardian Weekly Zone C',
 	'Newspaper Voucher',
+	'Newspaper Voucher + Digital',
 	'Newspaper Delivery',
+	'Newspaper Delivery + Digital',
 	'Patron',
 	'Partner',
 	'Guardian Ad-Lite',
@@ -93,7 +97,7 @@ export const productTiers = [
 	'Newspaper Voucher - Observer',
 ];
 
-export type ProductTier = typeof productTiers[number];
+export type ProductTier = typeof productKeys[number];
 
 export interface ProductDetail extends WithSubscription {
 	isTestUser: boolean; // THIS IS NOT PART OF THE members-data-api RESPONSE (but inferred from a header)
@@ -101,7 +105,7 @@ export interface ProductDetail extends WithSubscription {
 	regNumber?: string;
 	optIn?: boolean;
 	key?: string;
-	tier: ProductTier;
+	mmaProductKey: ProductTier;
 	joinDate: string;
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
@@ -109,22 +113,29 @@ export interface ProductDetail extends WithSubscription {
 }
 
 export interface CancelledProductDetail {
-	tier: ProductTier;
+	mmaProductKey: ProductTier;
 	joinDate: string;
 	subscription: CancelledSubscription;
+}
+
+export function isProductResponse(
+	data: unknown,
+): data is MembersDataApiResponse {
+	return !!data && data.hasOwnProperty('products');
 }
 
 export function isProduct(
 	data: MembersDataApiItem | undefined,
 ): data is ProductDetail {
-	return productTiers.includes((data as ProductDetail)?.tier);
+	return productKeys.includes((data as ProductDetail)?.mmaProductKey);
 }
 
 export const isObserverProduct = (productDetail: ProductDetail): boolean => {
 	return (
-		productDetail.tier === 'Newspaper Delivery - Observer' ||
-		productDetail.tier === 'Newspaper Digital Voucher - Observer' ||
-		productDetail.tier === 'Newspaper Voucher - Observer'
+		productDetail.mmaProductKey === 'Newspaper Delivery - Observer' ||
+		productDetail.mmaProductKey ===
+			'Newspaper Digital Voucher - Observer' ||
+		productDetail.mmaProductKey === 'Newspaper Voucher - Observer'
 	);
 };
 
@@ -141,7 +152,7 @@ export interface DirectDebitDetails {
 }
 
 export interface SubscriptionPlan {
-	tier?: ProductTier;
+	mmaProductKey?: ProductTier;
 	name: string | null;
 	start?: string;
 	shouldBeVisible: boolean;
@@ -213,7 +224,7 @@ export interface Subscription {
 	lastPaymentDate: string | null;
 	potentialCancellationDate: string | null;
 	chargedThroughDate: string | null;
-	nextPaymentPrice: number | null;
+	nextPaymentPrice: number;
 	paymentMethod?: string;
 	stripePublicKeyForCardAddition?: string;
 	safeToUpdatePaymentMethod: boolean;
@@ -285,7 +296,13 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	};
 };
 
-export function getSpecificProductTypeFromTier(
+// As of 07/04/25 we have added + Digital variations of the following Newspaper products
+// - Newspaper - National Delivery
+// - Newspaper Digital Voucher
+// - Newspaper Voucher
+// - Newspaper Delivery
+// This is so that we can differentiate them in the future as they have separate digital benefits
+export function getSpecificProductTypeFromProductKey(
 	productTier: ProductTier,
 ): ProductType {
 	let productType: ProductType = {} as ProductType;
@@ -304,17 +321,26 @@ export function getSpecificProductTypeFromTier(
 		case 'Newspaper Voucher':
 			productType = PRODUCT_TYPES.voucher;
 			break;
+		case 'Newspaper Voucher + Digital':
+			productType = PRODUCT_TYPES.voucherplusdigital;
+			break;
 		case 'Digital Pack':
 			productType = PRODUCT_TYPES.digipack;
 			break;
 		case 'Newspaper Delivery':
 			productType = PRODUCT_TYPES.homedelivery;
 			break;
+		case 'Newspaper Delivery + Digital':
+			productType = PRODUCT_TYPES.homedeliveryplusdigital;
+			break;
 		case 'Supporter Plus':
 			productType = PRODUCT_TYPES.supporterplus;
 			break;
 		case 'Newspaper Digital Voucher':
 			productType = PRODUCT_TYPES.digitalvoucher;
+			break;
+		case 'Newspaper Digital Voucher + Digital':
+			productType = PRODUCT_TYPES.digitalvoucherplusdigital;
 			break;
 		case 'Guardian Ad-Lite':
 			productType = PRODUCT_TYPES.guardianadlite;
@@ -331,6 +357,9 @@ export function getSpecificProductTypeFromTier(
 			break;
 		case 'Newspaper - National Delivery':
 			productType = PRODUCT_TYPES.nationaldelivery;
+			break;
+		case 'Newspaper - National Delivery + Digital':
+			productType = PRODUCT_TYPES.nationaldeliveryplusdigital;
 			break;
 		case 'Newspaper Delivery - Observer':
 			productType = PRODUCT_TYPES.observer;
@@ -349,8 +378,23 @@ export function isSpecificProductType(
 	productDetail: ProductDetail,
 	targetProductType: ProductType,
 ): boolean {
-	const specificProductType = getSpecificProductTypeFromTier(
-		productDetail.tier,
+	const specificProductType = getSpecificProductTypeFromProductKey(
+		productDetail.mmaProductKey,
 	);
 	return specificProductType === targetProductType;
 }
+
+export const isPlusDigitalProductType = (
+	productDetail: ProductDetail,
+): boolean => {
+	const specificProductType = getSpecificProductTypeFromProductKey(
+		productDetail.mmaProductKey,
+	);
+
+	return [
+		PRODUCT_TYPES.nationaldeliveryplusdigital,
+		PRODUCT_TYPES.voucherplusdigital,
+		PRODUCT_TYPES.homedeliveryplusdigital,
+		PRODUCT_TYPES.digitalvoucherplusdigital,
+	].includes(specificProductType);
+};
