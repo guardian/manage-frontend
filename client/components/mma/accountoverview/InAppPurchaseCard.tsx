@@ -79,7 +79,7 @@ export const InAppPurchaseCard = ({
 							: productColour.inAppPurchase
 					}
 				>
-					<h3 css={productCardTitleCss(!isPuzzleApp && !isFeastApp)}>
+					<h3 css={productCardTitleCss(!isPuzzleApp)}>
 						{capitalize(appType)} app
 					</h3>
 				</Card.Header>
