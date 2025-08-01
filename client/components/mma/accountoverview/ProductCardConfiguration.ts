@@ -21,6 +21,7 @@ export const productColour = {
 	digital: palette.sport[100],
 	guardianWeekly: '#cadbe8',
 	puzzleApp: palette.lifestyle[300],
+	feastApp: '#FF9500', // Orange color for Feast app
 };
 
 type ExclusiveBenefitsSections =
