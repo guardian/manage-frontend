@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {http, HttpResponse} from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import {
+	accountOverviewHandlers,
+	setHelpCentreScenario,
+} from '../../utilities/mocks/mswHandlers';
 import { SectionContent } from '../shared/SectionContent';
 import { SectionHeader } from '../shared/SectionHeader';
 import { HelpCentreTopic } from './HelpCentreTopic';
@@ -11,27 +14,14 @@ export default {
 	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
+		msw: {
+			handlers: accountOverviewHandlers,
+		},
+	},
+	beforeEach: () => {
+		setHelpCentreScenario.clear();
 	},
 } as Meta<typeof HelpCentreTopic>;
-
-const topicContent = {
-	path: 'delivery',
-	title: 'Delivery',
-	articles: [
-		{
-			path: 'i-need-to-pause-my-delivery',
-			title: 'I need to pause my delivery',
-		},
-		{
-			path: 'my-delivery-is-late-or-missing',
-			title: 'My delivery is late or missing',
-		},
-		{
-			path: 'my-paper-is-missing-a-section',
-			title: 'My paper is missing a section',
-		},
-	],
-};
 
 export const Default: StoryObj<typeof HelpCentreTopic> = {
 	render: () => {
@@ -44,13 +34,10 @@ export const Default: StoryObj<typeof HelpCentreTopic> = {
 			</>
 		);
 	},
-
+	beforeEach: () => {
+		setHelpCentreScenario.default();
+	},
 	parameters: {
-		msw: [
-			http.get('/api/help-centre/topic/delivery', () => {
-				return HttpResponse.json(topicContent)
-			}),
-		],
 		reactRouter: {
 			location: '/topic/delivery',
 			path: '/topic/:topicCode',

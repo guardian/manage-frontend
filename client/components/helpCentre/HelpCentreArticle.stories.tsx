@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {http, HttpResponse} from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import {
+	accountOverviewHandlers,
+	setHelpCentreScenario,
+} from '../../utilities/mocks/mswHandlers';
 import { SectionContent } from '../shared/SectionContent';
 import { SectionHeader } from '../shared/SectionHeader';
 import { HelpCentreArticle } from './HelpCentreArticle';
@@ -14,31 +17,14 @@ export default {
 		chromatic: {
 			viewports: [320, 1300],
 		},
+		msw: {
+			handlers: accountOverviewHandlers,
+		},
+	},
+	beforeEach: () => {
+		setHelpCentreScenario.clear();
 	},
 } as Meta<typeof HelpCentreArticle>;
-
-const articleContent = {
-	title: 'I need to pause my delivery',
-	body: [
-		{
-			element: 'p',
-			content: [
-				{
-					element: 'text',
-					content:
-						'All our print subscribers can apply a holiday suspension to their subscription and get credited the cost for the suspended issues on their next bill date.',
-				},
-			],
-		},
-	],
-	path: 'i-need-to-pause-my-delivery',
-	topics: [
-		{
-			path: 'delivery',
-			title: 'Delivery',
-		},
-	],
-};
 
 export const Default: StoryObj<typeof HelpCentreArticle> = {
 	render: () => {
@@ -51,19 +37,10 @@ export const Default: StoryObj<typeof HelpCentreArticle> = {
 			</>
 		);
 	},
-
+	beforeEach: () => {
+		setHelpCentreScenario.default();
+	},
 	parameters: {
-		msw: [
-			http.get('/api/known-issues/', () => {
-				return HttpResponse.json([])
-			}),
-			http.get(
-				'/api/help-centre/article/i-need-to-pause-my-delivery',
-				() => {
-					return HttpResponse.json(articleContent)
-				},
-			),
-		],
 		reactRouter: {
 			location: '/article/i-need-to-pause-my-delivery',
 			path: '/article/:articleCode',

@@ -8,6 +8,7 @@ module.exports = {
 		'@storybook/addon-essentials',
 		'@storybook/addon-webpack5-compiler-babel',
 		'@chromatic-com/storybook',
+		'msw-storybook-addon',
 	],
 
 	framework: {

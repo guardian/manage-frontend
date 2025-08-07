@@ -1,64 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { HttpResponseResolver } from 'msw';
-import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
-	cancelledContribution,
-	cancelledGuardianAdLite,
-	cancelledGuardianWeekly,
-} from '../../../fixtures/cancelledProductDetail';
-import {
-	CancelledInAppPurchase,
-	InAppPurchaseIos,
-	PuzzleAppPurchaseAndroid,
-	PuzzleAppPurchaseIos,
-} from '../../../fixtures/inAppPurchase';
-import { toMembersDataApiResponse } from '../../../fixtures/mdapiResponse';
-import {
-	contributionCancelled,
-	contributionPaidByPayPal,
-	digitalPackPaidByDirectDebit,
-	guardianAdLite,
-	guardianAdLiteCancelled,
-	guardianWeeklyCancelled,
-	guardianWeeklyGiftPurchase,
-	guardianWeeklyGiftRecipient,
-	guardianWeeklyPaidByCard,
-	homeDelivery,
-	homeDeliverySaturdayPlus,
-	membershipSupporter,
-	nationalDelivery,
-	nationalDeliveryPlus,
-	newspaperDigitalVoucherObserver,
-	newspaperDigitalVoucherPaidByPaypal,
-	newspaperdigitalVoucherPlusPaidByCard,
-	observerDelivery,
-	observerVoucherPaidByCard,
-	patronMembership,
-	supporterPlus,
-	supporterPlusAnnualCancelled,
-	supporterPlusCancelled,
-	supporterPlusInOfferPeriod,
-	supporterPlusUSA,
-	tierThree,
-	voucherPaidByCard,
-	voucherPlusPaidByCard,
-} from '../../../fixtures/productBuilder/testProducts';
-import { singleContributionsAPIResponse } from '../../../fixtures/singleContribution';
-import { user } from '../../../fixtures/user';
+	accountOverviewHandlers,
+	setAccountOverviewScenario,
+} from '../../../utilities/mocks/mswHandlers';
 import { AccountOverview } from './AccountOverview';
 
 featureSwitches['appSubscriptions'] = true;
-
-// @ts-expect-error body and respose params have implicit any types
-const networkErrStatusResolver: HttpResponseResolver = (req, res, ctx) =>
-	res(
-		ctx.status(503),
-		ctx.json({
-			errorMessage: 'Server is unavailable',
-		}),
-	);
 
 export default {
 	title: 'Pages/AccountOverview',
@@ -66,6 +15,12 @@ export default {
 	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
+		msw: {
+			handlers: accountOverviewHandlers,
+		},
+	},
+	beforeEach: () => {
+		setAccountOverviewScenario.clear();
 	},
 } as Meta<typeof AccountOverview>;
 
@@ -73,25 +28,8 @@ export const NoSubscription: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({ subscriptions: [] });
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(toMembersDataApiResponse());
-			}),
-			http.get('/idapi/user', () => {
-				return HttpResponse.json(user);
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.noSubscription();
 	},
 };
 
@@ -99,41 +37,8 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({ subscriptions: [] });
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(
-					toMembersDataApiResponse(
-						guardianWeeklyPaidByCard(),
-						digitalPackPaidByDirectDebit(),
-						newspaperDigitalVoucherPaidByPaypal(),
-						newspaperdigitalVoucherPlusPaidByCard(),
-						membershipSupporter(),
-						patronMembership(),
-						supporterPlus(),
-						tierThree(),
-						homeDelivery(),
-						homeDeliverySaturdayPlus(),
-						voucherPaidByCard(),
-						voucherPlusPaidByCard(),
-						observerDelivery(),
-						newspaperDigitalVoucherObserver(),
-						nationalDelivery(),
-						nationalDeliveryPlus(),
-					),
-				);
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.withSubscriptions();
 	},
 };
 
@@ -141,28 +46,8 @@ export const WithOnlyObserverSubscriptions: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({ subscriptions: [] });
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(
-					toMembersDataApiResponse(
-						newspaperDigitalVoucherObserver(),
-						observerDelivery(),
-						observerVoucherPaidByCard(),
-					),
-				);
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.withOnlyObserverSubscriptions();
 	},
 };
 
@@ -170,24 +55,8 @@ export const WithUSASubscription: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({ subscriptions: [] });
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(
-					toMembersDataApiResponse(supporterPlusUSA()),
-				);
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.withUSASubscription();
 	},
 };
 
@@ -197,24 +66,8 @@ export const WithContributionAndSwitchPossible: StoryObj<
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({ subscriptions: [] });
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(
-					toMembersDataApiResponse(contributionPaidByPayPal()),
-				);
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.withContributionAndSwitchPossible();
 	},
 };
 
@@ -224,33 +77,9 @@ export const WithContributionInPaymentFailure: StoryObj<
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({ subscriptions: [] });
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(
-					toMembersDataApiResponse(
-						contributionPaymentFailure,
-						supporterPlus(),
-					),
-				);
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.withContributionInPaymentFailure();
 	},
-};
-
-const contributionPaymentFailure = {
-	...contributionPaidByPayPal(),
-	alertText: 'Your payment has failed.',
 };
 
 export const WithContributionAndSwitchNotPossible: StoryObj<
@@ -259,27 +88,8 @@ export const WithContributionAndSwitchNotPossible: StoryObj<
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({ subscriptions: [] });
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(
-					toMembersDataApiResponse(
-						contributionPaidByPayPal(),
-						digitalPackPaidByDirectDebit(),
-					),
-				);
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.withContributionAndSwitchNotPossible();
 	},
 };
 
@@ -287,35 +97,8 @@ export const WithCancelledSubscriptions: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([
-					cancelledContribution,
-					cancelledGuardianWeekly,
-					cancelledGuardianAdLite,
-				]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({ subscriptions: [] });
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(
-					toMembersDataApiResponse(
-						contributionCancelled(),
-						guardianWeeklyCancelled(),
-						supporterPlusCancelled(),
-						supporterPlusAnnualCancelled(),
-						guardianAdLiteCancelled(),
-						tierThree(),
-					),
-				);
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.withCancelledSubscriptions();
 	},
 };
 
@@ -323,27 +106,8 @@ export const WithGiftSubscriptions: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({ subscriptions: [] });
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(
-					toMembersDataApiResponse(
-						guardianWeeklyGiftRecipient(),
-						guardianWeeklyGiftPurchase(),
-					),
-				);
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.withGiftSubscriptions();
 	},
 };
 
@@ -351,29 +115,8 @@ export const WithAppSubscriptions: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({
-					subscriptions: [
-						CancelledInAppPurchase,
-						InAppPurchaseIos,
-						PuzzleAppPurchaseAndroid,
-						PuzzleAppPurchaseIos,
-					],
-				});
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(toMembersDataApiResponse());
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.withAppSubscriptions();
 	},
 };
 
@@ -381,22 +124,8 @@ export const WithSingleContribution: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({ subscriptions: [] });
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(toMembersDataApiResponse());
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json(singleContributionsAPIResponse);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.withSingleContribution();
 	},
 };
 
@@ -404,24 +133,8 @@ export const WithSupporterPlusDuringOffer: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({ subscriptions: [] });
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(
-					toMembersDataApiResponse(supporterPlusInOfferPeriod()),
-				);
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.withSupporterPlusDuringOffer();
 	},
 };
 
@@ -429,24 +142,8 @@ export const WithGuardianAdLite: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/mpapi/user/mobile-subscriptions', () => {
-				return HttpResponse.json({ subscriptions: [] });
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(
-					toMembersDataApiResponse(guardianAdLite()),
-				);
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.withGuardianAdLite();
 	},
 };
 
@@ -454,37 +151,7 @@ export const MpapiRequestFailure: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/cancelled/', () => {
-				return HttpResponse.json([]);
-			}),
-			http.get('/api/me/mma', () => {
-				return HttpResponse.json(
-					toMembersDataApiResponse(
-						guardianWeeklyPaidByCard(),
-						digitalPackPaidByDirectDebit(),
-						newspaperDigitalVoucherPaidByPaypal(),
-						membershipSupporter(),
-						patronMembership(),
-						supporterPlus(),
-						tierThree(),
-						homeDeliverySaturdayPlus(),
-						voucherPaidByCard(),
-						observerDelivery(),
-						newspaperDigitalVoucherObserver(),
-					),
-				);
-			}),
-			http.get('/api/me/one-off-contributions', () => {
-				return HttpResponse.json([]);
-			}),
-
-			http.get(
-				'/mpapi/user/mobile-subscriptions',
-				networkErrStatusResolver,
-			),
-		],
+	beforeEach: () => {
+		setAccountOverviewScenario.mpapiRequestFailure();
 	},
 };

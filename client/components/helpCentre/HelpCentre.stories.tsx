@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {http, HttpResponse} from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import {
+	accountOverviewHandlers,
+	setHelpCentreScenario,
+} from '../../utilities/mocks/mswHandlers';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
 import { HelpCentre } from './HelpCentre';
 
@@ -10,6 +13,12 @@ export default {
 	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
+		msw: {
+			handlers: accountOverviewHandlers,
+		},
+	},
+	beforeEach: () => {
+		setHelpCentreScenario.clear();
 	},
 } as Meta<typeof HelpCentre>;
 
@@ -21,13 +30,8 @@ export const Default: StoryObj<typeof HelpCentre> = {
 			</HelpCenterContentWrapper>
 		);
 	},
-
-	parameters: {
-		msw: [
-			http.get('/api/known-issues/', () => {
-				return HttpResponse.json([])
-			}),
-		],
+	beforeEach: () => {
+		setHelpCentreScenario.default();
 	},
 };
 
@@ -46,7 +50,9 @@ export const WithKnownIssue: StoryObj<typeof HelpCentre> = {
 			</HelpCenterContentWrapper>
 		);
 	},
-
+	beforeEach: () => {
+		setHelpCentreScenario.withKnownIssues();
+	},
 	parameters: {
 		chromatic: {
 			viewports: [320, 1300],
