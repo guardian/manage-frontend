@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import {
-	accountOverviewHandlers,
+	mswHandlers,
 	setHelpCentreScenario,
 } from '../../utilities/mocks/mswHandlers';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
@@ -14,7 +14,7 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		msw: {
-			handlers: accountOverviewHandlers,
+			handlers: mswHandlers,
 		},
 	},
 	beforeEach: () => {

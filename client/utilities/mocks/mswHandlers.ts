@@ -155,7 +155,7 @@ const sampleTopicContent = {
 	],
 };
 
-export const accountOverviewHandlers = [
+export const mswHandlers = [
 	http.get('/api/cancelled/', () => {
 		const scenario =
 			localStorage.getItem('accountOverview_cancelled') || 'empty';

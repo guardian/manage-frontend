@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
-	accountOverviewHandlers,
+	mswHandlers,
 	setAccountOverviewScenario,
 } from '../../../utilities/mocks/mswHandlers';
 import { AccountOverview } from './AccountOverview';
@@ -16,7 +16,7 @@ export default {
 	parameters: {
 		layout: 'fullscreen',
 		msw: {
-			handlers: accountOverviewHandlers,
+			handlers: mswHandlers,
 		},
 	},
 	beforeEach: () => {
