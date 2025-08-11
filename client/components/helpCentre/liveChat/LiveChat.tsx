@@ -183,20 +183,20 @@ const initESW = (
 		} else {
 			// Initialise live chat API for DEV1 test sandbox
 			liveChatAPI.init(
-				'https://gnmtouchpoint--dev1.sandbox.my.salesforce.com',
-				'https://gnmtouchpoint--dev1.sandbox.my.salesforce-sites.com/liveagent',
+				'https://gnmtouchpoint--livechat.sandbox.my.salesforce.com',
+				'https://gnmtouchpoint--livechat.sandbox.my.salesforce-sites.com/liveagent',
 				gslbBaseUrl,
-				'00D9E0000004jvh',
+				'00DVc000003BA0j',
 				'Chat_Team',
 				{
 					baseLiveAgentContentURL:
-						'https://c.la2-c1cs-fra.salesforceliveagent.com/content',
-					deploymentId: '5729E000000CbOY',
-					buttonId: '5739E0000008QCo',
+						'https://c.la12s-core1.sfdc-cehfhs.salesforceliveagent.com/content',
+					deploymentId: '5725I0000004RYv',
+					buttonId: '5735I0000004Rj7',
 					baseLiveAgentURL:
-						'https://d.la2-c1cs-fra.salesforceliveagent.com/chat',
+						'https://d.la12s-core1.sfdc-cehfhs.salesforceliveagent.com/chat',
 					eswLiveAgentDevName:
-						'EmbeddedServiceLiveAgent_Parent04I9E0000008OxDUAU_1797a576c18',
+						'EmbeddedServiceLiveAgent_Parent04I5I0000004LLTUA2_1797a9534a2',
 					isOfflineSupportEnabled: false,
 				},
 			);
