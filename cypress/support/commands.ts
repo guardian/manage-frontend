@@ -97,7 +97,6 @@ type IDAPITestUserOptions = {
 	password?: string;
 	deleteAfterMinute?: boolean;
 	isGuestUser?: boolean;
-	doNotSetUsername?: boolean;
 };
 type IDAPITestUserResponse = [
 	{
@@ -129,7 +128,6 @@ export const createTestUser = ({
 	isUserEmailValidated = false,
 	deleteAfterMinute = true,
 	isGuestUser = false,
-	doNotSetUsername = false,
 }: IDAPITestUserOptions) => {
 	// Generate a random email address if none is provided.
 	const finalEmail = primaryEmailAddress || randomMailosaurEmail();
@@ -152,12 +150,11 @@ export const createTestUser = ({
 					password: finalPassword,
 					deleteAfterMinute,
 					isGuestUser,
-					doNotSetUsername,
 				} as IDAPITestUserOptions,
 			})
 			.then((res) => {
 				return cy.wrap({
-					emailAddress: finalEmail,
+					emailAddress: res.body.emailAddress as string,
 					cookies: res.body.values as IDAPITestUserResponse,
 					finalPassword,
 				});
