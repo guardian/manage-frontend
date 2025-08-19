@@ -56,5 +56,8 @@ export function isPuzzle(subscription: AppSubscription) {
 }
 
 export function isFeast(subscription: AppSubscription) {
-	return subscription.productId.includes('Feast');
+	return (
+		subscription.productId.includes('Feast') ||
+		subscription.productId.includes('feast')
+	);
 }
