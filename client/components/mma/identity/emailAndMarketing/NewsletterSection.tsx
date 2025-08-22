@@ -6,8 +6,9 @@ import type { ConsentOption } from '../models';
 import { NewsletterGroup } from '../models';
 import { NewsletterPreference } from '../NewsletterPreference';
 import { PageSection } from '../PageSection';
+import { ObserverNewsletterLink } from './ObserverNewsletterLink';
 
-type ClickHandler = (id: string) => {};
+type ClickHandler = (id: string) => unknown;
 
 interface NewsletterSectionProps {
 	newsletters: ConsentOption[];
@@ -42,7 +43,7 @@ function notEmpty<T>(value: T | undefined): value is T {
 }
 
 function getGroupColor(group: string): string {
-	const colors: { [T in NewsletterGroup]: string } = {
+	const colors: Record<NewsletterGroup, string> = {
 		[NewsletterGroup.newsInBrief]: palette.news[400],
 		[NewsletterGroup.newsInDepth]: palette.news[400],
 		[NewsletterGroup.opinion]: palette.opinion[500],
@@ -96,6 +97,7 @@ export const NewsletterSection: FC<NewsletterSectionProps> = (props) => {
       `}
 		>
 			{newsletterPreferenceGroups(newsletters, clickHandler)}
+			<ObserverNewsletterLink />
 		</PageSection>
 	);
 };

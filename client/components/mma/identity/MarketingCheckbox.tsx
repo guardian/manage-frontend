@@ -1,13 +1,13 @@
+import { Checkbox } from '@guardian/source/react-components';
 import type { FC } from 'react';
-import { Checkbox } from '../shared/Checkbox';
 import { standardSansText } from './sharedStyles';
 
 interface MarketingCheckboxProps {
 	id: string;
 	description?: string;
-	title?: string;
+	title: string;
 	selected?: boolean;
-	onClick: (id: string) => {};
+	onClick: (id: string) => unknown;
 }
 
 const getTitle = (title: MarketingCheckboxProps['title']) => (
@@ -38,39 +38,24 @@ const getDescription = (description: MarketingCheckboxProps['description']) => (
 
 export const MarketingCheckbox: FC<MarketingCheckboxProps> = (props) => {
 	const { id, description, selected, title, onClick } = props;
+
 	return (
 		<div
+			key={id}
 			data-cy={id}
-			onClick={(e) => {
-				// Checkboxes inside labels will trigger click events twice.
-				// Ignore the input click event
-				if (
-					e.target instanceof Element &&
-					e.target.nodeName === 'INPUT'
-				) {
-					return;
-				}
-				onClick(id);
-			}}
 			css={[
 				standardSansText,
 				{
 					marginTop: '12px',
-					paddingLeft: '30px',
-					position: 'relative',
 				},
 			]}
 		>
-			<div css={{ position: 'absolute', left: 0 }}>
-				<Checkbox
-					checked={!!selected}
-					onChange={(_) => {
-						return;
-					}}
-				/>
-			</div>
-			{title && getTitle(title)}
-			{description && getDescription(description)}
+			<Checkbox
+				checked={!!selected}
+				onChange={() => onClick(id)}
+				label={getTitle(title)}
+				supporting={getDescription(description)}
+			/>
 		</div>
 	);
 };

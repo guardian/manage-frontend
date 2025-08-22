@@ -1,7 +1,7 @@
-import { palette } from '@guardian/source/foundations';
+import { css } from '@emotion/react';
+import { palette, textEgyptian14Object } from '@guardian/source/foundations';
 import type { Context, Dispatch, SetStateAction } from 'react';
 import { createContext, useState } from 'react';
-import { serif } from '../../styles/fonts';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { Footer } from './footer/Footer';
 import { MinimalFooter } from './footer/MinimalFooter';
@@ -17,7 +17,7 @@ export interface HasMinimalFooterInterface {
 	setHasMinimalFooter: Dispatch<SetStateAction<boolean>>;
 }
 
-export const HasMinimalFooterContext: Context<HasMinimalFooterInterface | {}> =
+export const HasMinimalFooterContext: Context<HasMinimalFooterInterface | object> =
 	createContext({});
 
 export const Main = ({
@@ -30,25 +30,25 @@ export const Main = ({
 	return (
 		<HasMinimalFooterContext.Provider value={{ setHasMinimalFooter }}>
 			<div
-				css={{
-					display: 'flex',
-					flexDirection: 'column',
-					height: '100vh',
-					alignItems: 'stretch',
-					width: '100%',
-					color: palette.neutral[20],
-				}}
+				css={css`
+					display: flex;
+					flex-direction: column;
+					height: 100vh;
+					align-items: stretch;
+					width: 100%;
+					color: ${palette.neutral[20]};
+				`}
 			>
 				<a
-					css={{
-						color: palette.brand[400],
-						position: 'absolute',
-						textAlign: 'center',
-						fontSize: '12px',
-						':focus': {
-							position: 'static',
-						},
-					}}
+					css={css`
+						color: ${palette.brand[400]};
+						position: absolute;
+						textalign: center;
+						fontsize: 12px;
+						:focus {
+							position: static;
+						}
+					`}
 					href="#maincontent"
 				>
 					Skip to main content
@@ -58,24 +58,28 @@ export const Main = ({
 					isHelpCentrePage={isHelpCentrePage}
 				/>
 				<div
-					css={{
-						flexGrow: 1,
-						flexShrink: 0,
-						display: 'flex',
-						flexDirection: 'column',
-					}}
+					css={css`
+						flex-grow: 1;
+						flex-shrink: 0;
+						display: flex;
+						flex-direction: column;
+					`}
 				>
 					<main
-						css={{
-							fontFamily: serif,
-							flexGrow: 1,
-							flexShrink: 0,
-						}}
+						css={css`
+							font-family: ${textEgyptian14Object.fontFamily};
+							flex-grow: 1;
+							flex-shrink: 0;
+						`}
 					>
 						{children}
 					</main>
 				</div>
-				{hasMinimalFooter ? <MinimalFooter /> : <Footer />}
+				{hasMinimalFooter ? (
+					<MinimalFooter />
+				) : (
+					<Footer hideSupport={!!isHelpCentrePage} />
+				)}
 			</div>
 		</HasMinimalFooterContext.Provider>
 	);

@@ -9,11 +9,11 @@ import {
 import { Stack } from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { formatAmount } from '@/client/utilities/utils';
-import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
+import type { SwitchPreviewResponse } from '../../../../shared/productSwitchTypes';
 import { useAsyncLoader } from '../../../utilities/hooks/useAsyncLoader';
 import { getContributionSuggestedAmounts } from '../../../utilities/pricingConfig/suggestedAmounts';
 import { getBenefitsThreshold } from '../../../utilities/pricingConfig/supporterPlusPricing';
-import { productMoveFetch } from '../../../utilities/productUtils';
+import { contribToSupporterPlusFetch } from '../../../utilities/productUtils';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { ConfirmForm } from './ConfirmForm';
 import { UpgradeSupportAmountForm } from './UpgradeSupportAmountForm';
@@ -21,7 +21,7 @@ import type { UpgradeSupportInterface } from './UpgradeSupportContainer';
 import { UpgradeSupportContext } from './UpgradeSupportContainer';
 
 export const UpgradeSupport = () => {
-	const { mainPlan, subscription } = useContext(
+	const { mainPlan, subscription, isTestUser } = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
@@ -40,14 +40,12 @@ export const UpgradeSupport = () => {
 	);
 
 	const { data: previewResponse, loadingState: previewLoadingState } =
-		useAsyncLoader<PreviewResponse>(
+		useAsyncLoader<SwitchPreviewResponse>(
 			() =>
-				productMoveFetch(
+				contribToSupporterPlusFetch(
 					subscription.subscriptionId,
-					threshold,
-					'recurring-contribution-to-supporter-plus',
-					false,
 					true,
+					isTestUser,
 				),
 			JsonResponseHandler,
 		);

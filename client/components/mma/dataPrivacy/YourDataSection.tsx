@@ -50,20 +50,12 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 		<>
 			<h3 css={dataPrivacyHeadingCss}>Your account data</h3>
 			<p css={dataPrivacyParagraphCss}>
-				What we mean by your account data
+				What we mean by your account data is information you provide
+				when you create an account:
 			</p>
 			<ul css={dataPrivacyUnorderedListCss}>
-				<li>
-					Information you provide when you register with us e.g. email
-					address
-				</li>
-				<li>
-					Information about the products or services you buy from us
-				</li>
-				<li>
-					Pages you view on theguardian.com or other Guardian websites
-					when signed in and your region
-				</li>
+				<li>First name and last name</li>
+				<li>Email address</li>
 			</ul>
 
 			<Lines n={1} />
@@ -74,19 +66,18 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 			<p css={dataPrivacyParagraphCss}>We do this by:</p>
 			<ul css={dataPrivacyUnorderedListCss}>
 				<li>
-					Analysing your account data to predict what you might be
-					interested in
-				</li>
-				<li>
 					Checking if you are already a customer of other trusted
 					partners
+				</li>
+				<li>
+					Generating random identifiers based on your email address
+					for advertising and marketing
 				</li>
 			</ul>
 
 			<p css={dataPrivacyParagraphCss}>
 				Advertising is a crucial source of our funding. You won't see
-				more ads, but your advertising may be more relevant. We don’t
-				share your email with third parties.
+				more ads, but your advertising may be more relevant.
 			</p>
 		</>
 	);

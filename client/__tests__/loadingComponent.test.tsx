@@ -16,7 +16,7 @@ const TestResponseHandler: ResponseProcessor = (
 };
 
 const ErroringResponseHandler: ResponseProcessor = () => {
-	throw 'Errored out';
+	throw new Error('Errored out');
 };
 
 it('renders loading message and loaded message', async () => {

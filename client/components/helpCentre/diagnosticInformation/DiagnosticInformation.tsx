@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { space } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { useRef, useState } from 'react';
+import { UserBenefitsInformation } from '@/client/components/helpCentre/diagnosticInformation/UserBenefitsInformation';
 import { h2Css } from '../HelpCentreStyles';
 import { AccountInformation } from './AccountInformation';
 import { BrowserInformation } from './BrowserInformation';
@@ -78,6 +79,7 @@ export const DiagnosticInformation = () => {
 				<BrowserInformation />
 				<CookieInformation />
 				<AccountInformation />
+				<UserBenefitsInformation />
 				<SubscriptionInformation />
 			</div>
 			<Button

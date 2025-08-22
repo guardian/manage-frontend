@@ -75,7 +75,7 @@ export const ContactUsToCancel = (props: ContactUsToCancelProps) => {
 				}
 			/>
 			<LinkButton
-				css={css`
+				cssOverrides={css`
 					margin-top: ${space[3]}px;
 					${from.tablet} {
 						margin-top: ${space[5]}px;

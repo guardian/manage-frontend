@@ -1,8 +1,9 @@
+import { css } from '@emotion/react';
+import { Button } from '@guardian/source/react-components';
 import type { FormikProps } from 'formik';
 import { Form, withFormik } from 'formik';
 import * as Yup from 'yup';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
-import { Button } from '../../shared/Buttons';
 import { FormTextField } from '../form/FormField';
 import type { User } from '../models';
 import { ErrorTypes } from '../models';
@@ -38,11 +39,11 @@ const usernameInput = (formikProps: FormikProps<User>) => (
 	</>
 );
 
-const fieldSetCss = {
-	border: '0',
-	margin: '0',
-	padding: '0',
-};
+const fieldSetCss = css`
+	border: 0;
+	margin: 0;
+	padding: 0;
+`;
 
 const ProfileForm = (props: FormikProps<User> & ProfileFormSectionProps) => (
 	<Form>
@@ -53,11 +54,11 @@ const ProfileForm = (props: FormikProps<User> & ProfileFormSectionProps) => (
 		>
 			{usernameInput(props)}
 			<Button
-				disabled={props.isSubmitting}
-				text="Save changes"
-				type="button"
 				onClick={() => props.submitForm()}
-			/>
+				disabled={props.isSubmitting}
+			>
+				Save changes
+			</Button>
 		</fieldset>
 	</Form>
 );

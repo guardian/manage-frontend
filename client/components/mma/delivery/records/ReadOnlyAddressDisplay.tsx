@@ -3,6 +3,7 @@ import { from, palette, space, textSans17 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import Color from 'color';
 import type { DeliveryAddress } from '../../../../../shared/productResponse';
+import { InfoSection } from '../../shared/InfoSection';
 import { DeliveryAddressDisplay } from '../address/DeliveryAddressDisplay';
 
 interface ReadOnlyAddressDisplayProps {
@@ -10,6 +11,7 @@ interface ReadOnlyAddressDisplayProps {
 	editButtonCallback?: () => void;
 	address: DeliveryAddress;
 	instructions?: string;
+	promptIfInstructionsNotSet?: true;
 }
 export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 	const dtCss = (ignoreMinWidthAtNonMobile?: boolean) => `
@@ -30,12 +32,18 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
     vertical-align: top;
     margin-left: 0;
 `;
+
+	const showInstructions =
+		!!props.instructions || props.promptIfInstructionsNotSet;
+
 	return (
 		<dl
 			css={css`
 				margin: 0;
 				padding: ${space[3]}px;
 				display: table;
+				border-collapse: seperate;
+				border-spacing: 0 ${space[5]}px;
 				${from.tablet} {
 					padding: ${space[5]}px;
 				}
@@ -59,10 +67,10 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 					`}
 				>
 					<DeliveryAddressDisplay {...props.address} />
-					{!props.instructions && props.showEditButton && (
+					{!showInstructions && props.showEditButton && (
 						<Button
 							onClick={() => props.editButtonCallback?.()}
-							css={css`
+							cssOverrides={css`
 								display: block;
 								margin-top: ${space[5]}px;
 								color: ${palette.brand[400]};
@@ -82,7 +90,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 					)}
 				</dd>
 			</div>
-			{props.instructions && (
+			{showInstructions && (
 				<div
 					css={css`
 						display: table-row;
@@ -100,13 +108,23 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 							${ddCss}
 						`}
 					>
-						{props.instructions}
+						{!!props.instructions && (
+							<InfoSection>
+								Please make sure these instructions are correct
+							</InfoSection>
+						)}
+						{props.instructions || (
+							<InfoSection>
+								No delivery instructions set. Have you thought
+								about adding some?
+							</InfoSection>
+						)}
 						{props.showEditButton && (
 							<Button
 								onClick={() => props.editButtonCallback?.()}
-								css={css`
+								cssOverrides={css`
 									display: block;
-									margin-top: ${space[5]}px;
+									margin-top: ${space[8]}px;
 									color: ${palette.brand[400]};
 									background-color: ${palette.brand[800]};
 									:hover {
@@ -119,7 +137,7 @@ export const ReadOnlyAddressDisplay = (props: ReadOnlyAddressDisplayProps) => {
 									}
 								`}
 							>
-								Update
+								Edit
 							</Button>
 						)}
 					</dd>

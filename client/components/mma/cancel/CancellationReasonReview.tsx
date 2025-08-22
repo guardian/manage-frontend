@@ -1,30 +1,45 @@
 import { css } from '@emotion/react';
-import { palette, space, until } from '@guardian/source/foundations';
+import {
+	palette,
+	space,
+	textSans14,
+	until,
+} from '@guardian/source/foundations';
 import {
 	Button,
 	InlineError,
+	Spinner,
 	SvgArrowRightStraight,
-	SvgSpinner,
 } from '@guardian/source/react-components';
 import type { ChangeEvent, FC } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
+import { getBenefitsThreshold } from '@/client/utilities/pricingConfig/supporterPlusPricing';
+import { contribToSupporterPlusFetch } from '@/client/utilities/productUtils';
 import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
 import type { TrueFalsePending } from '@/shared/generalTypes';
+import { appendCorrectPluralisation } from '@/shared/generalTypes';
+import type { SwitchPreviewResponse } from '@/shared/productSwitchTypes';
+import type { MonthsOrYears } from '../../../../shared/dates';
 import { DATE_FNS_INPUT_FORMAT, parseDate } from '../../../../shared/dates';
+import type { ProductDetail } from '../../../../shared/productResponse';
+import {
+	getMainPlan,
+	isPaidSubscriptionPlan,
+} from '../../../../shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import type {
 	ProductTypeWithCancellationFlow,
+	ProductTypeWithCancellationFlowMandatoryReasons,
 	WithProductType,
 } from '../../../../shared/productTypes';
-import { sans } from '../../../styles/fonts';
 import { measure } from '../../../styles/typography';
 import { useFetch } from '../../../utilities/hooks/useFetch';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
-import { Spinner } from '../../shared/Spinner';
+import { Spinner as SpinnerWithMessage } from '../../shared/Spinner';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import type {
 	DeliveryRecordDetail,
@@ -47,6 +62,10 @@ import type {
 	OptionalCancellationReasonId,
 	SaveBodyProps,
 } from './cancellationReason';
+import {
+	allowCountrySwitchDiscount,
+	reasonIsEligibleForSwitch,
+} from './cancellationSaves/saveEligibilityCheck';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from './caseUpdate';
 
 const getPatchUpdateCaseFunc =
@@ -182,12 +201,11 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 				/>
 				<div css={{ textAlign: 'right' }}>
 					<div
-						css={{
-							fontSize: 'small',
-							color: palette.neutral[46],
-							fontFamily: sans,
-							paddingBottom: '10px',
-						}}
+						css={css`
+							${textSans14};
+							color: ${palette.neutral[46]};
+							padding-bottom: 10px;
+						`}
 					>
 						You have {props.characterLimit - feedback.length}{' '}
 						characters remaining
@@ -257,6 +275,7 @@ const ConfirmCancellationAndReturnRow = (
 		selectedReasonId: OptionalCancellationReasonId;
 		cancellationPolicy: string;
 	};
+
 	const navigate = useNavigate();
 	const { productDetail, productType } = useContext(
 		CancellationContext,
@@ -265,25 +284,62 @@ const ConfirmCancellationAndReturnRow = (
 		featureSwitches.supporterplusCancellationOffer &&
 		productType.productType === 'supporterplus';
 
+	const mainPlan = getMainPlan(productDetail.subscription);
+	const isAnnualBilling =
+		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'year';
+	const isMonthlyBilling =
+		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'month';
+
+	const isAnnualContributionAndDiscountIsActive =
+		productType.productType === 'contributions' &&
+		allowCountrySwitchDiscount(productDetail.billingCountry) &&
+		isAnnualBilling &&
+		reasonIsEligibleForSwitch(routerState.selectedReasonId);
+
 	const isContributionAndBreakFeatureIsActive =
+		!isAnnualContributionAndDiscountIsActive &&
 		featureSwitches.contributionCancellationPause &&
-		productType.productType === 'contributions';
+		productType.productType === 'contributions' &&
+		isMonthlyBilling;
 
 	const [
 		showAlternativeBeforeCancelling,
 		setShowAlternativeBeforeCancelling,
 	] = useState<TrueFalsePending>(
 		isSupporterPlusAndFreePeriodOfferIsActive ||
+			isAnnualContributionAndDiscountIsActive ||
 			isContributionAndBreakFeatureIsActive
 			? 'pending'
 			: false,
 	);
+	const [
+		showContactDetailsBeforeCancelling,
+		setShowContactDetailsBeforeCancelling,
+	] = useState(false);
 	const [discountPreviewDetails, setDiscountPreviewDetails] =
 		useState<DiscountPreviewResponse | null>(null);
+
+	const [switchDiscountPreviewDetails, setSwitchDiscountPreviewDetails] =
+		useState<SwitchPreviewResponse | null>(null);
 
 	const productHasAlternativeRecommendation =
 		productType.productType === 'supporterplus' ||
 		productType.productType === 'contributions';
+
+	const sanitizeOfferData = (
+		offerData: DiscountPreviewResponse,
+	): DiscountPreviewResponse => {
+		if (offerData.upToPeriodsType) {
+			return {
+				...offerData,
+				upToPeriodsType: appendCorrectPluralisation(
+					offerData.upToPeriodsType,
+					offerData.upToPeriods,
+				) as MonthsOrYears,
+			};
+		}
+		return offerData;
+	};
 
 	useEffect(() => {
 		if (
@@ -307,16 +363,63 @@ const ConfirmCancellationAndReturnRow = (
 						// api returns a 400 response if the user is not eligible
 						setShowAlternativeBeforeCancelling(true);
 						const offerData = await response.json();
-						setDiscountPreviewDetails(offerData);
+						const sanitizedOfferData = sanitizeOfferData(offerData);
+						setDiscountPreviewDetails(sanitizedOfferData);
 					} else {
 						setShowAlternativeBeforeCancelling(false);
 					}
-				} catch (e) {
+				} catch {
 					setShowAlternativeBeforeCancelling(false);
 				}
 			})();
+		} else if (isAnnualContributionAndDiscountIsActive) {
+			const supporterplusThreshold = getBenefitsThreshold(
+				mainPlan.currencyISO,
+				mainPlan.billingPeriod as 'month' | 'year',
+			);
+			(async () => {
+				const eligableForContactDetailsBeforeCancelling =
+					productDetail.billingCountry === 'United Kingdom' &&
+					isPaidSubscriptionPlan(mainPlan) &&
+					mainPlan.price / 100 <= supporterplusThreshold * 0.5 &&
+					reasonIsEligibleForSwitch(routerState.selectedReasonId);
+				try {
+					const response = await contribToSupporterPlusFetch(
+						productDetail.subscription.subscriptionId,
+						true,
+						productDetail.isTestUser,
+						true,
+					);
+
+					if (response.ok) {
+						// api returns a 400 response if the user is not eligible
+						setShowAlternativeBeforeCancelling(true);
+						const offerData = await response.json();
+						setSwitchDiscountPreviewDetails(offerData);
+					} else {
+						setShowAlternativeBeforeCancelling(false);
+						setShowContactDetailsBeforeCancelling(
+							eligableForContactDetailsBeforeCancelling,
+						);
+					}
+				} catch {
+					setShowAlternativeBeforeCancelling(false);
+					setShowContactDetailsBeforeCancelling(
+						eligableForContactDetailsBeforeCancelling,
+					);
+				}
+			})();
 		}
-	}, []);
+	}, [
+		isContributionAndBreakFeatureIsActive,
+		isSupporterPlusAndFreePeriodOfferIsActive,
+		isAnnualContributionAndDiscountIsActive,
+		productDetail.subscription.subscriptionId,
+		mainPlan,
+		productDetail.isTestUser,
+		productDetail.billingCountry,
+		routerState.selectedReasonId,
+	]);
 
 	return (
 		<>
@@ -343,7 +446,7 @@ const ConfirmCancellationAndReturnRow = (
 							icon={
 								showAlternativeBeforeCancelling ===
 								'pending' ? (
-									<SvgSpinner size="xsmall" />
+									<Spinner size="xsmall" />
 								) : (
 									<SvgArrowRightStraight />
 								)
@@ -361,14 +464,28 @@ const ConfirmCancellationAndReturnRow = (
 								}
 								if (showAlternativeBeforeCancelling) {
 									const cancelAlternativeUrlPart =
-										cancelAlternativeUrlPartLookup[
-											productType.productType
-										] || '';
+										cancelAlternativeUrlPartLookup(
+											isSupporterPlusAndFreePeriodOfferIsActive,
+											isContributionAndBreakFeatureIsActive,
+											isAnnualContributionAndDiscountIsActive,
+										);
 
 									navigate(`../${cancelAlternativeUrlPart}`, {
 										state: {
 											...routerState,
-											...discountPreviewDetails,
+											...(isAnnualContributionAndDiscountIsActive
+												? switchDiscountPreviewDetails
+												: discountPreviewDetails),
+											caseId: props.caseId,
+											holidayStops: props.holidayStops,
+											deliveryCredits:
+												props.deliveryCredits,
+										},
+									});
+								} else if (showContactDetailsBeforeCancelling) {
+									navigate('../contact-us', {
+										state: {
+											...routerState,
 											caseId: props.caseId,
 											holidayStops: props.holidayStops,
 											deliveryCredits:
@@ -416,19 +533,41 @@ const ConfirmCancellationAndReturnRow = (
 };
 
 export const CancellationReasonReview = () => {
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
-
 	const location = useLocation();
 	const routerState = location.state as {
 		selectedReasonId: OptionalCancellationReasonId;
 		cancellationPolicy: string;
 	};
 
-	if (!routerState?.selectedReasonId) {
+	const { productDetail, productType } = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+
+	if (!routerState?.selectedReasonId || !productType?.cancellation.reasons) {
 		return <Navigate to=".." />;
 	}
+	return (
+		<ValidatedCancellationReasonReview
+			productDetail={productDetail}
+			productType={
+				productType as ProductTypeWithCancellationFlowMandatoryReasons
+			}
+		/>
+	);
+};
+
+const ValidatedCancellationReasonReview = ({
+	productDetail,
+	productType,
+}: {
+	productDetail: ProductDetail;
+	productType: ProductTypeWithCancellationFlowMandatoryReasons;
+}) => {
+	const location = useLocation();
+	const routerState = location.state as {
+		selectedReasonId: OptionalCancellationReasonId;
+		cancellationPolicy: string;
+	};
 
 	const { selectedReasonId, cancellationPolicy } = routerState;
 
@@ -479,7 +618,7 @@ export const CancellationReasonReview = () => {
 	const cancellationCaseFetch = useFetch<{ id: string }>('/api/case', {
 		method: 'POST',
 		body: JSON.stringify({
-			reason: routerState.selectedReasonId,
+			reason: selectedReasonId,
 			product: productType.cancellation.sfCaseProduct,
 			subscriptionName: productDetail.subscription.subscriptionId,
 			gaData: '',
@@ -564,7 +703,7 @@ export const CancellationReasonReview = () => {
 			<WithStandardTopMargin>
 				{isLoading() ? (
 					!loadingHasFailed && (
-						<Spinner loadingMessage="Checking details" />
+						<SpinnerWithMessage loadingMessage="Checking details" />
 					)
 				) : (
 					<>

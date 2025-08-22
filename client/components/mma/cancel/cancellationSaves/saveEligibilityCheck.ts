@@ -5,14 +5,17 @@ import type {
 } from '@/shared/productResponse';
 import {
 	getMainPlan,
-	getSpecificProductTypeFromTier,
+	getSpecificProductTypeFromProductKey,
 } from '@/shared/productResponse';
+import type { OptionalCancellationReasonId } from '../cancellationReason';
 
 export function ineligibleForSave(
 	products: ProductDetail[],
 	productToCancel: ProductDetail,
 ): boolean {
-	const productType = getSpecificProductTypeFromTier(productToCancel.tier);
+	const productType = getSpecificProductTypeFromProductKey(
+		productToCancel.mmaProductKey,
+	);
 	if (productType.productType === 'membership') {
 		return isMembershipIneligible(products, productToCancel);
 	}
@@ -27,14 +30,17 @@ function isMembershipIneligible(
 	const inPaymentFailure = !!products.find((product) => product.alertText);
 
 	const hasOtherProduct = !!products.find((product) => {
-		const productType = getSpecificProductTypeFromTier(product.tier);
+		const productType = getSpecificProductTypeFromProductKey(
+			product.mmaProductKey,
+		);
 		return (
 			productType.productType != 'membership' &&
 			!product.subscription.cancelledAt
 		);
 	});
 
-	const membershipTierIsNotSupporter = productToCancel.tier !== 'Supporter';
+	const membershipTierIsNotSupporter =
+		productToCancel.mmaProductKey !== 'Supporter';
 
 	const mainPlan = getMainPlan(
 		productToCancel.subscription,
@@ -50,3 +56,17 @@ function isMembershipIneligible(
 		hasBeenPriceRisen
 	);
 }
+
+export const reasonIsEligibleForSwitch = (
+	selectedReasonId: OptionalCancellationReasonId,
+) =>
+	selectedReasonId === 'mma_break_from_news' ||
+	selectedReasonId === 'mma_benefits' ||
+	selectedReasonId === 'mma_financial_circumstances' ||
+	selectedReasonId === 'mma_dont_read_enough' ||
+	selectedReasonId === 'mma_support_another_way' ||
+	selectedReasonId === 'mma_values';
+
+export const allowCountrySwitchDiscount = (
+	billingCountry: string | undefined,
+) => billingCountry === 'United Kingdom';

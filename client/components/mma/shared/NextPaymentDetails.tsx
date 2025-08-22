@@ -2,6 +2,8 @@ import { css } from '@emotion/react';
 import { palette, space } from '@guardian/source/foundations';
 import { parseDate } from '../../../../shared/dates';
 import type {
+	BillingPeriod,
+	PaidSubscriptionPlan,
 	Subscription,
 	SubscriptionPlan,
 } from '../../../../shared/productResponse';
@@ -13,13 +15,14 @@ import {
 import { InfoIconDark } from './assets/InfoIconDark';
 
 export interface NextPaymentDetails {
-	paymentInterval: string;
+	paymentInterval: BillingPeriod;
 	paymentKey: string;
 	paymentValue: string;
 	paymentValueShort: string;
 	isNewPaymentValue?: boolean;
 	nextPaymentDateKey: string;
 	nextPaymentDateValue?: string;
+	currentPriceValue?: string;
 }
 
 export const getNextPaymentDetails = (
@@ -53,7 +56,7 @@ export const getNextPaymentDetails = (
 			}
 			const amount =
 				overiddenAmount ||
-				(subscription.nextPaymentPrice ?? mainPlan.price) / 100;
+				(subscription.nextPaymentPrice ?? mainPlan.price) / 100; // we have kept the null coalessing check in here incase MDAPI returns a null value for nextPaymentPrice (not expected)
 			if (shortVersion === 'short') {
 				return `${mainPlan.currency}${
 					Number.isInteger(amount) ? amount : amount.toFixed(2)
@@ -80,6 +83,12 @@ export const getNextPaymentDetails = (
 			mainPlan.price !== planAfterMainPlan.price &&
 			!isSixForSix(mainPlan.name);
 
+		const currentPaidSubscriptionPlan: PaidSubscriptionPlan | undefined = (
+			subscription.currentPlans[0] as PaidSubscriptionPlan
+		)?.price
+			? (subscription.currentPlans[0] as PaidSubscriptionPlan)
+			: undefined;
+
 		return {
 			paymentInterval,
 			paymentKey,
@@ -88,6 +97,11 @@ export const getNextPaymentDetails = (
 			isNewPaymentValue,
 			nextPaymentDateKey: 'Next payment date',
 			nextPaymentDateValue,
+			currentPriceValue: currentPaidSubscriptionPlan
+				? `${currentPaidSubscriptionPlan.currency}${(
+						currentPaidSubscriptionPlan.price / 100
+				  ).toFixed(2)} ${currentPaidSubscriptionPlan.currencyISO}`
+				: getPaymentValue(),
 		};
 	}
 };

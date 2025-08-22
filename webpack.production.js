@@ -2,10 +2,10 @@
 const BundleAnalyzerPlugin =
 	require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { merge } = require('webpack-merge');
-const common = require('./webpack.common.js');
+const { client, server } = require('./webpack.common.js');
 
 module.exports = [
-	merge(common.client, {
+	merge(client, {
 		mode: 'production',
 		output: {
 			chunkFilename: '[name].[chunkhash].js',
@@ -16,7 +16,7 @@ module.exports = [
 			}),
 		],
 	}),
-	merge(common.server, {
+	merge(server, {
 		mode: 'production',
 	}),
 ];

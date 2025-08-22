@@ -125,7 +125,7 @@ export const ConfirmMembershipCancellation = () => {
 					state: { ...routerState, journeyCompleted: true },
 				});
 			}
-		} catch (e) {
+		} catch {
 			setIsSubmitting(false);
 			setLoadingFailed(true);
 		}

@@ -40,7 +40,7 @@ export const CallCentreAccordion = ({
 					>
 						<Stack
 							space={2}
-							css={css`
+							cssOverrides={css`
 								${textSans17};
 							`}
 						>

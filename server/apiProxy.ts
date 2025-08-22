@@ -24,7 +24,7 @@ function safeJsonParse(jsonStr: JsonString): object | JsonString {
 			return JSON.parse(jsonStr.toString());
 		}
 		return jsonStr;
-	} catch (e) {
+	} catch {
 		return jsonStr;
 	}
 }
@@ -86,30 +86,6 @@ export const proxyApiHandler =
 			incomingURL: req.originalUrl,
 			requestBody: safeJsonParse(requestBody),
 			outgoingURL,
-		};
-
-		const authorizationOrCookieHeader = async ({
-			req,
-			host,
-		}: {
-			req: Request;
-			host: string;
-		}): Promise<Headers> => {
-			// If Okta is disabled, always return the cookie header
-			const { useOkta } = await getOktaConfig();
-			if (!useOkta) {
-				return {
-					Cookie: getCookiesOrEmptyString(req),
-				};
-			}
-			switch (host) {
-				case 'members-data-api.' + conf.DOMAIN:
-					return {
-						Authorization: `Bearer ${req.signedCookies[OAuthAccessTokenCookieName]}`,
-					};
-				default:
-					return {};
-			}
 		};
 
 		fetch(outgoingURL, {
@@ -193,9 +169,37 @@ export const proxyApiHandler =
 			});
 	};
 
+export const authorizationOrCookieHeader = async ({
+	req,
+	host,
+}: {
+	req: Request;
+	host: string;
+}): Promise<Headers> => {
+	// If Okta is disabled, always return the cookie header
+	const { useOkta } = await getOktaConfig();
+	if (!useOkta) {
+		return {
+			Cookie: getCookiesOrEmptyString(req),
+		};
+	}
+	switch (host) {
+		case 'members-data-api.' + conf.DOMAIN:
+		case 'user-benefits.' + conf.API_DOMAIN:
+			return {
+				Authorization: `Bearer ${req.signedCookies[OAuthAccessTokenCookieName]}`,
+			};
+		default:
+			return {};
+	}
+};
+
 export const customMembersDataApiHandler = proxyApiHandler(
 	'members-data-api.' + conf.DOMAIN,
 );
 export const membersDataApiHandler = customMembersDataApiHandler(
 	straightThroughBodyHandler,
 );
+export const userBenefitsApiHandler = proxyApiHandler(
+	'user-benefits.' + conf.API_DOMAIN,
+)(straightThroughBodyHandler);

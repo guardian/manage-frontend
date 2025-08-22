@@ -1,5 +1,11 @@
 import { css } from '@emotion/react';
-import { from, palette, until } from '@guardian/source/foundations';
+import {
+	from,
+	palette,
+	space,
+	textSans14,
+	until,
+} from '@guardian/source/foundations';
 import type * as React from 'react';
 import type { DateRange } from '../../../../shared/dates';
 import {
@@ -9,7 +15,6 @@ import {
 	dateIsSame,
 	dateRange,
 } from '../../../../shared/dates';
-import { sans } from '../../../styles/fonts';
 import { HolidayCalendarTables } from '../holiday/HolidayCalendarTables';
 import { DateInput } from './DateInput';
 
@@ -83,11 +88,11 @@ const mergeAdjacentDateRanges = (
 
 const LegendItem = (props: LegendItemProps) => (
 	<div
-		css={{
-			display: 'flex',
-			alignItems: 'center',
-			marginBottom: '10px',
-		}}
+		css={css`
+			display: flex;
+			align-items: center;
+			margin-bottom: 10px;
+		`}
 	>
 		<div
 			css={[
@@ -104,11 +109,10 @@ const LegendItem = (props: LegendItemProps) => (
 			className="DateRangePicker__Date"
 		/>
 		<span
-			css={{
-				marginRight: '20px',
-				fontFamily: sans,
-				fontSize: '14px',
-			}}
+			css={css`
+				margin-right: ${space[5]}px;
+				${textSans14};
+			`}
 		>
 			{props.label}
 		</span>
@@ -131,11 +135,11 @@ export interface DatePickerProps {
 export const DatePicker = (props: DatePickerProps) => (
 	<>
 		<div
-			css={{
-				display: 'flex',
-				alignItems: 'center',
-				flexWrap: 'wrap',
-			}}
+			css={css`
+				display: flex;
+				align-items: center;
+				flex-wrap: wrap;
+			`}
 		>
 			{legendItems(
 				props.issueKeyword,
@@ -146,14 +150,18 @@ export const DatePicker = (props: DatePickerProps) => (
 			))}
 		</div>
 		<div
-			css={{
-				display: 'flex',
-				[until.desktop]: {
-					flexDirection: 'column-reverse',
+			css={css`
+				display: flex;
+				${until.desktop} {
+					flex-direction: column-reverse;
 				},
-			}}
+			`}
 		>
-			<div css={{ flexGrow: 1 }}>
+			<div
+				css={css`
+					flex-grow: 1;
+				`}
+			>
 				<HolidayCalendarTables
 					minimumDate={props.firstAvailableDate}
 					maximumDate={dateAddDays(
@@ -187,42 +195,41 @@ export const DatePicker = (props: DatePickerProps) => (
 			</div>
 
 			<div
-				css={{
-					marginLeft: '18px',
-					width: '136px',
-					display: 'flex',
-					flexDirection: 'column',
-					fontFamily: sans,
-					fontSize: '14px',
-					[until.desktop]: {
-						position: 'sticky',
-						zIndex: 998,
-						top: 0,
-						left: 0,
-						right: 0,
-						width: '100vw',
-						flexDirection: 'row',
-						flexWrap: 'wrap',
-						alignItems: 'center',
-						background: palette.neutral[100],
-						padding: '10px',
-						paddingTop: 0,
-						marginBottom: '15px',
-						marginLeft: '-20px',
-						marginRight: '-20px',
-						boxShadow: '0 3px 5px -3px ' + palette.neutral[60],
-					},
-				}}
+				css={css`
+					margin-left: 18px;
+					width: 136px;
+					display: flex;
+					flex-direction: column;
+					${textSans14};
+					${until.desktop} {
+						position: sticky;
+						zindex: 998;
+						top: 0;
+						left: 0;
+						right: 0;
+						width: 100vw;
+						flex-direction: row;
+						flex-wrap: wrap;
+						align-items: center;
+						background: ${palette.neutral[100]};
+						padding: 10px;
+						padding-top: 0;
+						margin-bottom: 15px;
+						margin-left: -20px;
+						margin-right: -20px;
+						box-shadow: 0 3px 5px -3px ${palette.neutral[60]};
+					}
+				`}
 			>
 				<div
-					css={{
-						[until.desktop]: {
-							display: 'flex',
-							alignItems: 'center',
-							marginRight: '10px',
-							marginTop: '10px',
-						},
-					}}
+					css={css`
+						${until.desktop} {
+							display: flex;
+							align-items: center;
+							margin-right: 10px;
+							margin-top: 10px;
+						}
+					`}
 				>
 					<div>
 						<DateInput
@@ -236,14 +243,22 @@ export const DatePicker = (props: DatePickerProps) => (
 						/>
 					</div>
 					<span
-						css={{
-							margin: '0 5px',
-							[from.desktop]: { display: 'none' },
-						}}
+						css={css`
+							margin: 0 5px;
+							${from.desktop} {
+								display: none;
+							}
+						`}
 					>
 						to
 					</span>
-					<div css={{ [from.desktop]: { marginTop: '8px' } }}>
+					<div
+						css={css`
+							${from.desktop} {
+								margin-top: ${space[2]}px;
+							}
+						`}
+					>
 						<DateInput
 							date={
 								props.selectedRange

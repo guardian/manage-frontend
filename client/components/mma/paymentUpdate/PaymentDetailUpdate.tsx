@@ -15,9 +15,11 @@ import {
 } from '@guardian/source/react-components';
 import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import * as Sentry from '@sentry/browser';
+import type { PaymentMethod as StripeCheckoutSessionPaymentMethod } from '@stripe/stripe-js';
 import type * as React from 'react';
-import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { DirectDebitGatewayOwner } from '@/shared/directDebit';
 import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
@@ -28,18 +30,19 @@ import type {
 	Subscription,
 	WithSubscription,
 } from '../../../../shared/productResponse';
+import { isObserverProduct } from '../../../../shared/productResponse';
 import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
 	isProduct,
 } from '../../../../shared/productResponse';
-import type {
-	ProductType,
-	WithProductType,
+import {
+	type ProductType,
+	type WithProductType,
 } from '../../../../shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
 import { createProductDetailFetch } from '../../../utilities/productUtils';
-import { getStripeKey } from '../../../utilities/stripe';
+import { getStripeKeyByProduct } from '../../../utilities/stripe';
 import { processResponse } from '../../../utilities/utils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
@@ -48,6 +51,14 @@ import { cardTypeToSVG } from '../shared/CardDisplay';
 import { OverlayLoader } from '../shared/OverlayLoader';
 import { augmentPaymentFailureAlertText } from '../shared/PaymentFailureAlertIfApplicable';
 import { CardInputForm } from './card/CardInputForm';
+import {
+	NewCardPaymentMethodDetail,
+	type StripePaymentMethod as StripeCardPaymentMethod,
+} from './card/NewCardPaymentMethodDetail';
+import {
+	StripeCheckoutSessionButton,
+	StripeCheckoutSessionPaymentMethodType,
+} from './card/StripeCheckoutSessionButton';
 import { ContactUs } from './ContactUs';
 import { CurrentPaymentDetails } from './CurrentPaymentDetail';
 import { DirectDebitInputForm } from './dd/DirectDebitInputForm';
@@ -77,7 +88,7 @@ const subHeadingCss = css`
 interface PaymentMethodProps {
 	value: PaymentMethod;
 	updatePaymentMethod: (newPaymentMethod: PaymentMethod) => void;
-	directDebitIsAllowed: Boolean;
+	directDebitIsAllowed: boolean;
 }
 
 interface PaymentMethodRadioButtonProps extends PaymentMethodProps {
@@ -219,6 +230,12 @@ export interface PaymentUpdaterStepState {
 }
 
 export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
+	const location = useLocation();
+	const state = location.state as {
+		paymentMethodInfo?: StripeCheckoutSessionPaymentMethod;
+		paymentMethodType?: StripeCheckoutSessionPaymentMethodType;
+	};
+
 	const { productDetail, isFromApp } = useContext(
 		PaymentUpdateContext,
 	) as PaymentUpdateContextInterface;
@@ -253,82 +270,86 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 
 	const navigate = useNavigate();
 
-	const executePaymentUpdate = async (
-		newPaymentMethodDetail: NewPaymentMethodDetail,
-	) => {
-		setExecutingPaymentUpdate(true);
+	const executePaymentUpdate = useCallback(
+		async (newPaymentMethodDetail: NewPaymentMethodDetail) => {
+			setExecutingPaymentUpdate(true);
 
-		try {
-			const paymentUpdateFetch = await fetch(
-				`/api/payment/${newPaymentMethodDetail.apiUrlPart}/${productDetail.subscription.subscriptionId}`,
-				{
-					credentials: 'include',
-					method: 'POST',
-					body: JSON.stringify(
-						newPaymentMethodDetail.detailToPayloadObject(),
-					),
-					headers: {
-						'Content-Type': 'application/json',
-						[X_GU_ID_FORWARDED_SCOPE]:
-							getScopeFromRequestPathOrEmptyString(
-								window.location.href,
-							),
+			try {
+				const paymentUpdateFetch = await fetch(
+					`/api/payment/${newPaymentMethodDetail.apiUrlPart}/${productDetail.subscription.subscriptionId}`,
+					{
+						credentials: 'include',
+						method: 'POST',
+						body: JSON.stringify(
+							newPaymentMethodDetail.detailToPayloadObject(),
+						),
+						headers: {
+							'Content-Type': 'application/json',
+							[X_GU_ID_FORWARDED_SCOPE]:
+								getScopeFromRequestPathOrEmptyString(
+									window.location.href,
+								),
+						},
 					},
-				},
-			);
+				);
 
-			const response = await processResponse<NewPaymentMethodDetail>(
-				paymentUpdateFetch,
-			);
+				const response = await processResponse<NewPaymentMethodDetail>(
+					paymentUpdateFetch,
+				);
 
-			if (newPaymentMethodDetail.matchesResponse(response)) {
-				const paymentMethodChangeType: string =
-					productDetail.subscription.paymentMethod ===
-					PaymentMethod.ResetRequired
-						? 'reset'
-						: 'update';
+				if (newPaymentMethodDetail.matchesResponse(response)) {
+					const paymentMethodChangeType: string =
+						productDetail.subscription.paymentMethod ===
+						PaymentMethod.ResetRequired
+							? 'reset'
+							: 'update';
 
-				trackEvent({
-					eventCategory: 'payment',
-					eventAction: `${newPaymentMethodDetail.name}_${paymentMethodChangeType}_success`,
-					product: {
-						productType: props.productType,
-						productDetail: productDetail,
-					},
-					eventLabel: props.productType.urlPart,
-				});
+					trackEvent({
+						eventCategory: 'payment',
+						eventAction: `${newPaymentMethodDetail.name}_${paymentMethodChangeType}_success`,
+						product: {
+							productType: props.productType,
+							productDetail: productDetail,
+						},
+						eventLabel: props.productType.urlPart,
+					});
 
-				// refetch subscription from members data api
-				const mdapiResponse = (await createProductDetailFetch(
-					props.productType.allProductsProductTypeFilterString,
-					productDetail.subscription.subscriptionId,
-				)) as MembersDataApiResponse;
+					// refetch subscription from members data api
+					const mdapiResponse = (await createProductDetailFetch(
+						props.productType.allProductsProductTypeFilterString,
+						productDetail.subscription.subscriptionId,
+					)) as MembersDataApiResponse;
 
-				const newSubscriptionData =
-					mdapiResponse.products.filter(isProduct);
+					const newSubscriptionData =
+						mdapiResponse.products.filter(isProduct);
 
-				navigate('updated', {
+					navigate('updated', {
+						state: {
+							paymentFailureRecoveryMessage:
+								newPaymentMethodDetail.paymentFailureRecoveryMessage,
+							subHasExpectedPaymentType:
+								newPaymentMethodDetail.subHasExpectedPaymentType(
+									newSubscriptionData[0].subscription,
+								),
+							newSubscriptionData,
+							isFromApp: isFromApp,
+							productDetail,
+						},
+					});
+				}
+			} catch (error) {
+				console.error('Payment update error:', error);
+				navigate('failed', {
 					state: {
-						paymentFailureRecoveryMessage:
-							newPaymentMethodDetail.paymentFailureRecoveryMessage,
-						subHasExpectedPaymentType:
-							newPaymentMethodDetail.subHasExpectedPaymentType(
-								newSubscriptionData[0].subscription,
-							),
-						newSubscriptionData,
-						isFromApp: isFromApp,
+						newPaymentMethodDetailFriendlyName:
+							newPaymentMethodDetail.friendlyName,
+						productDetail,
 					},
 				});
 			}
-		} catch {
-			navigate('failed', {
-				state: {
-					newPaymentMethodDetailFriendlyName:
-						newPaymentMethodDetail.friendlyName,
-				},
-			});
-		}
-	};
+		},
+		[isFromApp, navigate, productDetail, props.productType],
+	);
 
 	const newPaymentMethodDetailUpdater = (
 		newPaymentMethodDetail: NewPaymentMethodDetail,
@@ -342,17 +363,7 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 		setSelectedPaymentMethod(newPaymentMethod);
 
 	const getInputForm = (subscription: Subscription, isTestUser: boolean) => {
-		let stripePublicKey: string | undefined;
-
-		if (subscription.card) {
-			stripePublicKey = subscription.card.stripePublicKeyForUpdate;
-		} else {
-			stripePublicKey = getStripeKey(
-				productDetail.billingCountry ||
-					subscription.deliveryAddress?.country,
-				isTestUser,
-			);
-		}
+		const stripePublicKey: string = getStripeKeyByProduct(productDetail);
 
 		switch (selectedPaymentMethod) {
 			case PaymentMethod.ResetRequired:
@@ -373,17 +384,30 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				);
 			case PaymentMethod.Card:
 				return stripePublicKey ? (
-					<CardInputForm
-						stripeApiKey={stripePublicKey}
-						newPaymentMethodDetailUpdater={
-							newPaymentMethodDetailUpdater
-						}
-						userEmail={
-							subscription.card?.email ||
-							window.guardian.identityDetails.email
-						}
-						executePaymentUpdate={executePaymentUpdate}
-					/>
+					<>
+						{isObserverProduct(productDetail) ? (
+							<StripeCheckoutSessionButton
+								stripeApiKey={stripePublicKey}
+								productTypeUrlPart={props.productType.urlPart}
+								paymentMethodType={
+									StripeCheckoutSessionPaymentMethodType.Card
+								}
+								subscriptionId={subscription.subscriptionId}
+							/>
+						) : (
+							<CardInputForm
+								stripeApiKey={stripePublicKey}
+								newPaymentMethodDetailUpdater={
+									newPaymentMethodDetailUpdater
+								}
+								userEmail={
+									subscription.card?.email ||
+									window.guardian.identityDetails.email
+								}
+								executePaymentUpdate={executePaymentUpdate}
+							/>
+						)}
+					</>
 				) : (
 					<GenericErrorScreen loggingMessage="No existing card information to update from" />
 				);
@@ -418,6 +442,11 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 						}
 						testUser={isTestUser}
 						executePaymentUpdate={executePaymentUpdate}
+						gatewayOwner={
+							isObserverProduct(productDetail)
+								? DirectDebitGatewayOwner.TortoiseMedia
+								: undefined
+						}
 					/>
 				);
 			case PaymentMethod.Unknown:
@@ -434,6 +463,36 @@ export const PaymentDetailUpdate = (props: WithProductType<ProductType>) => {
 				);
 		}
 	};
+
+	useEffect(() => {
+		if (state?.paymentMethodInfo) {
+			if (
+				state.paymentMethodType !==
+				StripeCheckoutSessionPaymentMethodType.Card
+			) {
+				Sentry.captureException(
+					'Payment Method Type processing not implemented',
+					{
+						extra: {
+							paymentMethodType: state.paymentMethodType,
+						},
+					},
+				);
+				return;
+			}
+			const detail = new NewCardPaymentMethodDetail(
+				state?.paymentMethodInfo as StripeCardPaymentMethod,
+				getStripeKeyByProduct(productDetail),
+			);
+			executePaymentUpdate(detail);
+		}
+	}, [
+		state?.paymentMethodInfo,
+		state?.paymentMethodType,
+		executePaymentUpdate,
+		props.productType,
+		productDetail,
+	]);
 
 	return (
 		<>

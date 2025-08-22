@@ -7,7 +7,7 @@ import { MarketingToggle } from '../MarketingToggle';
 import type { ConsentOption } from '../models';
 import { PageSection } from '../PageSection';
 
-type ClickHandler = (id: string) => {};
+type ClickHandler = (id: string) => unknown;
 
 interface ConsentSectionProps {
 	clickHandler: ClickHandler;
@@ -18,13 +18,7 @@ const supportReminderConsent = (consents: ConsentOption[]): ConsentOption[] =>
 	ConsentOptions.findByIds(consents, ['support_reminder']);
 
 const marketingEmailConsents = (consents: ConsentOption[]): ConsentOption[] => {
-	const ids = [
-		'similar_guardian_products',
-		'supporter',
-		'jobs',
-		'events',
-		'offers',
-	];
+	const ids = ['similar_guardian_products', 'jobs', 'events', 'offers'];
 	return ConsentOptions.findByIds(consents, ids);
 };
 
@@ -47,17 +41,28 @@ const consentPreference = (
 	const { id, name, description, subscribed } = consent;
 	const props = {
 		id,
-		key: id,
 		title: name,
 		description,
 		selected: subscribed,
 	};
 	switch (uxType) {
 		case 'checkbox': {
-			return <MarketingCheckbox {...props} onClick={clickHandler} />;
+			return (
+				<MarketingCheckbox
+					key={`${id}-marketting-checkbox`}
+					{...props}
+					onClick={clickHandler}
+				/>
+			);
 		}
 		case 'toggle': {
-			return <MarketingToggle {...props} onClick={clickHandler} />;
+			return (
+				<MarketingToggle
+					key={`${id}-marketting-toggle`}
+					{...props}
+					onClick={clickHandler}
+				/>
+			);
 		}
 	}
 };

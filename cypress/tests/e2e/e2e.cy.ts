@@ -37,8 +37,7 @@ describe('E2E with Okta', () => {
 			cy.get('[data-cy="similar_guardian_products"]').click();
 			cy.visit('/email-prefs');
 			cy.get('[data-cy="similar_guardian_products"]')
-				.parents('div')
-				.get('input[type="checkbox"]')
+				.find('input[type=checkbox]')
 				.should('be.checked');
 		});
 
@@ -46,7 +45,28 @@ describe('E2E with Okta', () => {
 			cy.visit('/email-prefs');
 			cy.findByText('Unsubscribe from all emails').click();
 			cy.visit('/email-prefs');
-			cy.get('input[type="checkbox"]').should('not.be.checked');
+
+			cy.get('[data-cy="similar_guardian_products"]')
+				.find('input[type=checkbox]')
+				.should('not.be.checked');
+
+			cy.findByText('Your newsletters')
+				.parent()
+				.parent()
+				.find('a')
+				.filter((index, el) => {
+					// Only include <a> elements that don't contain a button with text "Observer newsletter"
+					return !el
+						.querySelector('button')
+						?.textContent?.includes('View Observer Newsletters');
+				})
+				.click({ multiple: true });
+
+			cy.findByText('Your newsletters')
+				.parent()
+				.parent()
+				.find('input[type=checkbox]')
+				.should('not.be.checked');
 		});
 	});
 

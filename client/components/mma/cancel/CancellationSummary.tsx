@@ -35,6 +35,7 @@ const actuallyCancelled = (
 ) => {
 	const isSupportPlus = productType.productType === 'supporterplus';
 	const isContribution = productType.productType === 'contributions';
+	const isGuardianAdLite = productType.productType === 'guardianadlite';
 
 	let showReminder: boolean = !!productType.cancellation?.shouldShowReminder;
 	if (isSupportPlus && eligableForOffer) {
@@ -63,6 +64,7 @@ const actuallyCancelled = (
 		<>
 			<WithStandardTopMargin>
 				<Heading
+					borderless
 					cssOverrides={[
 						measure.heading,
 						css`
@@ -70,10 +72,12 @@ const actuallyCancelled = (
 						`,
 					]}
 				>
-					{isSupportPlus && 'Your subscription has been cancelled'}
+					{(isSupportPlus || isGuardianAdLite) &&
+						'Your subscription has been cancelled'}
 					{isContribution && contributionheadingCopy}
 					{!isSupportPlus &&
 						!isContribution &&
+						!isGuardianAdLite &&
 						`Your ${productType.friendlyName} is cancelled`}
 				</Heading>
 				{productType.cancellation &&
@@ -153,55 +157,57 @@ const actuallyCancelled = (
 								.
 							</p>
 						)}
-						(!productType.cancellation || !productType.cancellation
-						.onlyShowSupportSectionIfAlternateText ||
-						productType.cancellation.summaryReasonSpecificPara(
-						cancellationReasonId, )) && (
-						<>
-							<h4
-								css={css`
-									${textEgyptianBold17};
-									margin-bottom: ${space[3]}px;
-								`}
-							>
-								Support us another way
-							</h4>
-							<p>
-								{productType?.cancellation?.summaryReasonSpecificPara(
-									cancellationReasonId,
-									currencySymbol,
-								) ||
-									'If you are interested in supporting our journalism in other ways, ' +
-										'please consider either a contribution or a subscription.'}
-							</p>
-							<div css={{ marginBottom: '30px' }}>
-								<SupportTheGuardianButton
-									urlSuffix={
-										productType.cancellation &&
-										productType.cancellation
-											.alternateSupportButtonUrlSuffix &&
-										productType.cancellation.alternateSupportButtonUrlSuffix(
-											cancellationReasonId,
-										)
-									}
-									alternateButtonText={
-										productType.cancellation &&
-										productType.cancellation
-											.alternateSupportButtonText &&
-										productType.cancellation.alternateSupportButtonText(
-											cancellationReasonId,
-										)
-									}
-									supportReferer={
-										productType.urlPart +
-										'_cancellation_summary'
-									}
-									theme="brand"
-									size="small"
-								/>
-							</div>
-						</>
-						)
+						{(!productType.cancellation ||
+							!productType.cancellation
+								.onlyShowSupportSectionIfAlternateText ||
+							productType.cancellation.summaryReasonSpecificPara?.(
+								cancellationReasonId,
+							)) && (
+							<>
+								<h4
+									css={css`
+										${textEgyptianBold17};
+										margin-bottom: ${space[3]}px;
+									`}
+								>
+									Support us another way
+								</h4>
+								<p>
+									{productType?.cancellation?.summaryReasonSpecificPara?.(
+										cancellationReasonId,
+										currencySymbol,
+									) ||
+										'If you are interested in supporting our journalism in other ways, ' +
+											'please consider either a contribution or a subscription.'}
+								</p>
+								<div css={{ marginBottom: '30px' }}>
+									<SupportTheGuardianButton
+										urlSuffix={
+											productType.cancellation &&
+											productType.cancellation
+												.alternateSupportButtonUrlSuffix &&
+											productType.cancellation.alternateSupportButtonUrlSuffix(
+												cancellationReasonId,
+											)
+										}
+										alternateButtonText={
+											productType.cancellation &&
+											productType.cancellation
+												.alternateSupportButtonText &&
+											productType.cancellation.alternateSupportButtonText(
+												cancellationReasonId,
+											)
+										}
+										supportReferer={
+											productType.urlPart +
+											'_cancellation_summary'
+										}
+										theme="brand"
+										size="small"
+									/>
+								</div>
+							</>
+						)}
 					</WithStandardTopMargin>
 				</ResubscribeThrasher>
 			)}

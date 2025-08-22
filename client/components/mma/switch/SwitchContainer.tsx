@@ -52,7 +52,7 @@ export interface Thresholds {
 	isAboveThreshold: boolean;
 }
 
-export const SwitchContext: Context<SwitchContextInterface | {}> =
+export const SwitchContext: Context<SwitchContextInterface | object> =
 	createContext({});
 
 export const SwitchContainer = (props: { isFromApp?: boolean }) => {

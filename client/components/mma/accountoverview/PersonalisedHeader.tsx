@@ -1,18 +1,21 @@
 import { css } from '@emotion/react';
 import {
-	headlineBold42,
+	from,
+	headlineBold24,
+	headlineBold34,
 	headlineMedium17,
 	space,
 } from '@guardian/source/foundations';
 import { min } from 'date-fns';
 import { dateString } from '@/shared/dates';
-import type { MPAPIResponse } from '@/shared/mpapiResponse';
+import type { AppSubscription, MPAPIResponse } from '@/shared/mpapiResponse';
 import type { MembersDataApiResponse } from '@/shared/productResponse';
+import { isObserverProduct } from '@/shared/productResponse';
 import { isProduct } from '@/shared/productResponse';
 
 interface PersonalisedHeaderProps {
 	mdapiResponse: MembersDataApiResponse;
-	mpapiResponse: MPAPIResponse;
+	mpapiResponse?: MPAPIResponse;
 }
 
 function calculateTimeOfDay() {
@@ -36,7 +39,7 @@ export const PersonalisedHeader = ({
 	if (
 		!userDetails ||
 		(mdapiResponse.products.length === 0 &&
-			mpapiResponse.subscriptions.length === 0)
+			mpapiResponse?.subscriptions.length === 0)
 	) {
 		return null;
 	}
@@ -45,33 +48,49 @@ export const PersonalisedHeader = ({
 
 	const oldestDate = min([
 		...productDetails.map((p) => new Date(p.joinDate)),
-		...mpapiResponse.subscriptions.map((s) => new Date(s.from)),
+		...(mpapiResponse
+			? mpapiResponse.subscriptions.map(
+					(s: AppSubscription) => new Date(s.from),
+			  )
+			: []),
 	]);
 
 	const supportStartYear = dateString(oldestDate, 'MMMM yyyy');
 
+	const onlyHasObserverProducts =
+		(!mpapiResponse || mpapiResponse.subscriptions.length === 0) &&
+		productDetails.every(isObserverProduct);
+
 	return (
 		<hgroup
 			css={css`
-				margin-top: ${space[12]}px;
+				margin-top: ${space[6]}px;
+				${from.tablet} {
+					margin-top: ${space[8]}px;
+				}
 			`}
 		>
 			<h2
 				css={css`
-					${headlineBold42};
+					${headlineBold24};
+					${from.tablet} {
+						${headlineBold34};
+					}
 					margin-bottom: 0;
 				`}
 				data-qm-masking="blocklist"
 			>
 				{calculateTimeOfDay()}, {userDetails.firstName ?? 'supporter'}
 			</h2>
-			<p
-				css={css`
-					${headlineMedium17};
-				`}
-			>
-				Thank you for funding the Guardian since {supportStartYear}
-			</p>
+			{!onlyHasObserverProducts && (
+				<p
+					css={css`
+						${headlineMedium17};
+					`}
+				>
+					Thank you for funding the Guardian since {supportStartYear}
+				</p>
+			)}
 		</hgroup>
 	);
 };

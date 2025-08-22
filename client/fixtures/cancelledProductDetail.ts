@@ -1,7 +1,7 @@
 import type { CancelledProductDetail } from '../../shared/productResponse';
 
 export const cancelledContribution: CancelledProductDetail = {
-	tier: 'Contributor',
+	mmaProductKey: 'Contributor',
 	joinDate: '2022-01-05',
 	subscription: {
 		subscriptionId: 'A-S00000000',
@@ -14,7 +14,20 @@ export const cancelledContribution: CancelledProductDetail = {
 };
 
 export const cancelledGuardianWeekly: CancelledProductDetail = {
-	tier: 'Guardian Weekly - Domestic',
+	mmaProductKey: 'Guardian Weekly - Domestic',
+	joinDate: '2022-01-05',
+	subscription: {
+		subscriptionId: 'A-S00000000',
+		cancellationEffectiveDate: '2023-02-28',
+		start: '2023-03-10',
+		end: '2023-03-10',
+		readerType: 'Direct',
+		accountId: '00000000',
+	},
+};
+
+export const cancelledGuardianAdLite: CancelledProductDetail = {
+	mmaProductKey: 'Guardian Ad-Lite',
 	joinDate: '2022-01-05',
 	subscription: {
 		subscriptionId: 'A-S00000000',

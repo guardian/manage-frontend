@@ -21,12 +21,12 @@ import type {
 	MembersDataApiUser,
 	PaidSubscriptionPlan,
 	ProductDetail,
-	Subscription,
 } from '@/shared/productResponse';
 import {
 	getMainPlan,
-	getSpecificProductTypeFromTier,
+	getSpecificProductTypeFromProductKey,
 	isGift,
+	isPaidSubscriptionPlan,
 } from '@/shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
@@ -35,11 +35,8 @@ import { Ribbon } from '../../shared/Ribbon';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
-import { CardDisplay } from '../shared/CardDisplay';
-import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
-import { PaypalDisplay } from '../shared/PaypalDisplay';
-import { SepaDisplay } from '../shared/SepaDisplay';
+import { PaymentMethoDisplay } from '../shared/PaymentMethodDisplay';
 import { productCardConfiguration } from './ProductCardConfiguration';
 import {
 	keyValueCss,
@@ -47,47 +44,6 @@ import {
 	productDetailLayoutCss,
 	sectionHeadingCss,
 } from './ProductCardStyles';
-
-const PaymentMethod = ({
-	subscription,
-	inPaymentFailure,
-}: {
-	subscription: Subscription;
-	inPaymentFailure: boolean;
-}) => (
-	<div
-		css={css`
-			${textSans17}
-		`}
-		data-qm-masking="blocklist"
-	>
-		{subscription.card && (
-			<CardDisplay
-				inErrorState={inPaymentFailure}
-				cssOverrides={css`
-					margin: 0;
-				`}
-				{...subscription.card}
-			/>
-		)}
-		{subscription.payPalEmail && (
-			<PaypalDisplay inline={true} payPalId={subscription.payPalEmail} />
-		)}
-		{subscription.sepaMandate && (
-			<SepaDisplay
-				inline={true}
-				accountName={subscription.sepaMandate.accountName}
-				iban={subscription.sepaMandate.iban}
-			/>
-		)}
-		{subscription.mandate && (
-			<DirectDebitDisplay inline={true} {...subscription.mandate} />
-		)}
-		{subscription.stripePublicKeyForCardAddition && (
-			<span>No Payment Method</span>
-		)}
-	</div>
-);
 
 const NewPriceAlert = () => {
 	const iconCss = css`
@@ -123,8 +79,8 @@ export const ProductCard = ({
 		throw new Error('mainPlan does not exist in ProductCard');
 	}
 
-	const specificProductType = getSpecificProductTypeFromTier(
-		productDetail.tier,
+	const specificProductType = getSpecificProductTypeFromProductKey(
+		productDetail.mmaProductKey,
 	);
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
@@ -132,7 +88,7 @@ export const ProductCard = ({
 	const isPatron = productDetail.subscription.readerType === 'Patron';
 
 	const entitledToEvents =
-		['Partner', 'Patron'].includes(productDetail.tier) &&
+		['Partner', 'Patron'].includes(productDetail.mmaProductKey) &&
 		(mainPlan as PaidSubscriptionPlan).features.includes('Events');
 
 	const productTitle = `${specificProductType.productTitle(mainPlan)}${
@@ -205,6 +161,15 @@ export const ProductCard = ({
 		productDetail.subscription.nextPaymentDate !==
 			productDetail.subscription.potentialCancellationDate;
 
+	const futureProductTitle =
+		productDetail.subscription.futurePlans[0]?.mmaProductKey &&
+		productDetail.mmaProductKey &&
+		productDetail.subscription.currentPlans.length > 0
+			? getSpecificProductTypeFromProductKey(
+					productDetail.subscription.futurePlans[0].mmaProductKey,
+			  ).productTitle(mainPlan)
+			: null;
+
 	return (
 		<Stack space={4}>
 			{hasCancellationPending && productDetail.subscription.end && (
@@ -224,30 +189,33 @@ export const ProductCard = ({
 					}
 				/>
 			)}
-			{canBeInOfferPeriod && isInOfferOrPausePeriod && (
-				<SuccessSummary
-					message="Your offer is active"
-					context={
-						<>
-							Your two months free is now active until{' '}
-							{nextPaymentDetails?.nextPaymentDateValue}. If you
-							have any questions, feel free to{' '}
-							{
-								<Link
-									to="/help-centre#contact-options"
-									css={css`
-										text-decoration: underline;
-										color: ${palette.brand[500]};
-									`}
-								>
-									contact our support team
-								</Link>
-							}
-							.
-						</>
-					}
-				/>
-			)}
+			{canBeInOfferPeriod &&
+				isInOfferOrPausePeriod &&
+				isPaidSubscriptionPlan(mainPlan) &&
+				mainPlan.billingPeriod === 'month' && (
+					<SuccessSummary
+						message="Your offer is active"
+						context={
+							<>
+								Your free offer is active until{' '}
+								{nextPaymentDetails?.nextPaymentDateValue}. If
+								you have any questions, feel free to{' '}
+								{
+									<Link
+										to="/help-centre#contact-options"
+										css={css`
+											text-decoration: underline;
+											color: ${palette.brand[500]};
+										`}
+									>
+										contact our support team
+									</Link>
+								}
+								.
+							</>
+						}
+					/>
+				)}
 			{canBeInPausePeriod && isInOfferOrPausePeriod && (
 				<SuccessSummary
 					message="You have paused your support"
@@ -273,7 +241,10 @@ export const ProductCard = ({
 				/>
 			)}
 			<Card>
-				<Card.Header backgroundColor={cardConfig.colour}>
+				<Card.Header
+					backgroundColor={cardConfig.colour}
+					minHeightOverride="auto"
+				>
 					<h3 css={productCardTitleCss(cardConfig.invertText)}>
 						{productTitle}
 					</h3>
@@ -294,20 +265,33 @@ export const ProductCard = ({
 					)}
 				</Card.Header>
 
-				{cardConfig.showBenefitsSection && nextPaymentDetails && (
-					<Card.Section backgroundColor="#edf5fA">
-						<p css={benefitsTextCss}>
-							You’re supporting the Guardian with{' '}
-							{nextPaymentDetails.paymentValue} per{' '}
-							{nextPaymentDetails.paymentInterval}, and have
-							access to exclusive extras.
-						</p>
-						<BenefitsToggle
-							productType={specificProductType.productType}
-							subscriptionPlan={mainPlan}
-						/>
-					</Card.Section>
-				)}
+				{(cardConfig.showBenefitsSection ||
+					cardConfig.showDigitalBenefitsSection) &&
+					nextPaymentDetails && (
+						<Card.Section backgroundColor="#edf5fA">
+							<p css={benefitsTextCss}>
+								{cardConfig.showDigitalBenefitsSection
+									? `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have unlocked the full digital experience:`
+									: `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have access to exclusive extras.`}
+							</p>
+							<BenefitsToggle
+								productType={specificProductType.productType}
+								subscriptionPlan={mainPlan}
+							/>
+						</Card.Section>
+					)}
+				{specificProductType.productType === 'guardianadlite' &&
+					nextPaymentDetails && (
+						<Card.Section backgroundColor="#edf5fA">
+							<p css={benefitsTextCss}>
+								You’re subscribed to{' '}
+								{specificProductType.productTitle()} and pay{' '}
+								{nextPaymentDetails.paymentValueShort} a{' '}
+								{nextPaymentDetails.paymentInterval} for
+								non-personalised advertising.
+							</p>
+						</Card.Section>
+					)}
 				<Card.Section>
 					<div css={productDetailLayoutCss}>
 						<div>
@@ -329,7 +313,7 @@ export const ProductCard = ({
 								{groupedProductType.tierLabel && (
 									<div>
 										<dt>{groupedProductType.tierLabel}</dt>
-										<dd>{productDetail.tier}</dd>
+										<dd>{productDetail.mmaProductKey}</dd>
 									</div>
 								)}
 								{subscriptionStartDate && shouldShowStartDate && (
@@ -414,6 +398,12 @@ export const ProductCard = ({
 											</dd>
 										</div>
 									)}
+								{futureProductTitle && (
+									<div>
+										<dt>Switching to</dt>
+										<dd>{futureProductTitle}</dd>
+									</div>
+								)}
 							</dl>
 						</div>
 						<div css={wideButtonLayoutCss}>
@@ -503,7 +493,7 @@ export const ProductCard = ({
 						<div css={productDetailLayoutCss}>
 							<div>
 								<h4 css={sectionHeadingCss}>Payment method</h4>
-								<PaymentMethod
+								<PaymentMethoDisplay
 									subscription={productDetail.subscription}
 									inPaymentFailure={hasPaymentFailure}
 								/>
@@ -562,6 +552,54 @@ export const ProductCard = ({
 						</p>
 					</Card.Section>
 				)}
+				{productDetail.billingCountry === 'United States' &&
+					!hasCancellationPending && (
+						<Card.Section>
+							<div css={productDetailLayoutCss}>
+								<div>
+									<h4 css={sectionHeadingCss}>
+										Cancel {groupedProductType.friendlyName}
+									</h4>
+									<p
+										css={css`
+											max-width: 350px;
+										`}
+									>
+										Stop your recurring payment, at the end
+										of current billing period.
+									</p>
+								</div>
+								<div css={wideButtonLayoutCss}>
+									<Button
+										aria-label={`Cancel ${specificProductType.productTitle(
+											mainPlan,
+										)}`}
+										size="small"
+										cssOverrides={css`
+											justify-content: center;
+										`}
+										priority="primary"
+										onClick={() => {
+											trackEvent({
+												eventCategory:
+													'account_overview',
+												eventAction: 'click',
+												eventLabel: 'cancel_product',
+											});
+											navigate(
+												`/cancel/${specificProductType.urlPart}`,
+												{
+													state: { productDetail },
+												},
+											);
+										}}
+									>
+										Cancel {groupedProductType.friendlyName}
+									</Button>
+								</div>
+							</div>
+						</Card.Section>
+					)}
 			</Card>
 		</Stack>
 	);

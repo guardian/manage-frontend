@@ -45,7 +45,7 @@ export const CancelReminders = () => {
 		} else {
 			setCancelStatus('FAILURE');
 		}
-	});
+	}, [reminderCode]);
 
 	return (
 		<div css={containerStyle}>

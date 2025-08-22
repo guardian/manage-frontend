@@ -4,9 +4,11 @@ import { featureSwitches } from '../../../../shared/featureSwitches';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
 	digitalPackPaidByDirectDebit,
+	guardianAdLite,
 	guardianWeeklyPaidByCard,
 	monthlyContributionPaidByCard,
-	newspaperVoucherPaidByPaypal,
+	newspaperDigitalVoucherPaidByPaypal,
+	observerDelivery,
 	supporterPlusAnnual,
 	supporterPlusMonthlyAllAccessDigital,
 	tierThree,
@@ -65,7 +67,7 @@ export const NewspaperSubscriptionCard: StoryObj<typeof ManageProduct> = {
 
 	parameters: {
 		reactRouter: {
-			state: { productDetail: newspaperVoucherPaidByPaypal() },
+			state: { productDetail: newspaperDigitalVoucherPaidByPaypal() },
 		},
 	},
 };
@@ -104,6 +106,30 @@ export const SupporterPlusAllAccessDigital: StoryObj<typeof ManageProduct> = {
 	parameters: {
 		reactRouter: {
 			state: { productDetail: supporterPlusMonthlyAllAccessDigital() },
+		},
+	},
+};
+
+export const GuardianAdLite: StoryObj<typeof ManageProduct> = {
+	render: () => {
+		return <ManageProduct productType={PRODUCT_TYPES.guardianadlite} />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: { productDetail: guardianAdLite() },
+		},
+	},
+};
+
+export const NewspaperDeliverySunday: StoryObj<typeof ManageProduct> = {
+	render: () => {
+		return <ManageProduct productType={PRODUCT_TYPES.homedelivery} />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: { productDetail: observerDelivery() },
 		},
 	},
 };

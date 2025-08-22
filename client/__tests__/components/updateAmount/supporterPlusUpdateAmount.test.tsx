@@ -1,9 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
+import type { BillingPeriod } from '@/shared/productResponse';
 import { PRODUCT_TYPES } from '../../../../shared/productTypes';
 import { UpdateAmount } from '../../../components/mma/accountoverview/updateAmount/UpdateAmount';
 
-const mainPlan = (billingPeriod: string) => ({
+const mainPlan = (billingPeriod: BillingPeriod) => ({
 	start: '2019-10-30',
 	end: '2050-10-30',
 	name: '',
@@ -43,10 +44,11 @@ it.each([
 		render(
 			<UpdateAmount
 				subscriptionId="A-123"
-				mainPlan={mainPlan(billingPeriod)}
+				mainPlan={mainPlan(billingPeriod as BillingPeriod)}
 				amountUpdateStateChange={jest.fn()}
 				nextPaymentDate="2050-10-29"
 				productType={productType}
+				isTestUser={false}
 			/>,
 		);
 
@@ -81,10 +83,11 @@ it.each([
 		render(
 			<UpdateAmount
 				subscriptionId="A-123"
-				mainPlan={mainPlan(billingPeriod)}
+				mainPlan={mainPlan(billingPeriod as BillingPeriod)}
 				amountUpdateStateChange={jest.fn()}
 				nextPaymentDate="2050-10-29"
 				productType={productType}
+				isTestUser={false}
 			/>,
 		);
 
@@ -119,6 +122,7 @@ it('renders validation error if blank input is provided', () => {
 			amountUpdateStateChange={jest.fn()}
 			nextPaymentDate="2050-10-29"
 			productType={productType}
+			isTestUser={false}
 		/>,
 	);
 
@@ -152,6 +156,7 @@ it('renders validation error if a string is attempted to be input', () => {
 			amountUpdateStateChange={jest.fn()}
 			nextPaymentDate="2050-10-29"
 			productType={productType}
+			isTestUser={false}
 		/>,
 	);
 
@@ -185,6 +190,7 @@ it('updates amount is valid value is input', async () => {
 			amountUpdateStateChange={jest.fn()}
 			nextPaymentDate="2050-10-29"
 			productType={productType}
+			isTestUser={false}
 		/>,
 	);
 

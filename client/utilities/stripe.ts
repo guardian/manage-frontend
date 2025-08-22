@@ -2,6 +2,8 @@
 import type { Stripe as StripeSDK } from '@stripe/stripe-js/pure';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { useEffect, useState } from 'react';
+import type { ProductDetail } from '@/shared/productResponse';
+import { isObserverProduct } from '@/shared/productResponse';
 
 export function getStripeKey(
 	country: string | undefined,
@@ -40,7 +42,35 @@ export const useStripeSDK = (stripeKey: string) => {
 				setStripeObjects(newStripe);
 			});
 		}
-	}, []);
+	}, [stripeKey, stripeObjects]);
 
 	return stripeObjects;
+};
+
+export const getStripeKeyByProduct = (productDetail: ProductDetail): string => {
+	let stripePublicKey: string | undefined;
+
+	/**
+	 * By doing this here (instead of "getStripeKey") we are forcing users
+	 * to update their Stripe key for Sunday The Observer subscriptions.
+	 * Change this if we run into issues.
+	 */
+	if (isObserverProduct(productDetail)) {
+		stripePublicKey = productDetail.isTestUser
+			? window.guardian?.stripeKeyTortoiseMedia?.test
+			: window.guardian?.stripeKeyTortoiseMedia?.default;
+		return stripePublicKey || '';
+	}
+
+	if (productDetail.subscription.card) {
+		stripePublicKey =
+			productDetail.subscription.card.stripePublicKeyForUpdate;
+	} else {
+		stripePublicKey = getStripeKey(
+			productDetail.billingCountry ||
+				productDetail.subscription.deliveryAddress?.country,
+			productDetail.isTestUser,
+		);
+	}
+	return stripePublicKey || '';
 };

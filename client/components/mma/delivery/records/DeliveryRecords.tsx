@@ -152,6 +152,7 @@ export const DeliveryRecords = () => {
 			setStep3formValidationState(!addressInValidState);
 		}
 	}, [addressInValidState]);
+
 	const enableDeliveryInstructions =
 		!!productType.delivery.enableDeliveryInstructionsUpdate;
 	const step1FormRadioOptionCallback = (value: string) =>
@@ -428,23 +429,26 @@ export const DeliveryRecords = () => {
 						)}
 						{(pageStatus === PageStatus.ReportIssueStep1 ||
 							pageStatus === PageStatus.ReportIssueStep2) && (
-							<DeliveryRecordProblemForm
-								showNextStepButton={
-									pageStatus !== PageStatus.ReportIssueStep2
-								}
-								onResetDeliveryRecordsPage={
-									resetDeliveryRecordsPage
-								}
-								onFormSubmit={step1FormSubmitListener}
-								inValidationState={step1formValidationState}
-								updateValidationStatusCallback={
-									step1FormUpdateCallback
-								}
-								updateRadioSelectionCallback={
-									step1FormRadioOptionCallback
-								}
-								problemTypes={problemTypes}
-							/>
+							<>
+								<DeliveryRecordProblemForm
+									showNextStepButton={
+										pageStatus !==
+										PageStatus.ReportIssueStep2
+									}
+									onResetDeliveryRecordsPage={
+										resetDeliveryRecordsPage
+									}
+									onFormSubmit={step1FormSubmitListener}
+									inValidationState={step1formValidationState}
+									updateValidationStatusCallback={
+										step1FormUpdateCallback
+									}
+									updateRadioSelectionCallback={
+										step1FormRadioOptionCallback
+									}
+									problemTypes={problemTypes}
+								/>
+							</>
 						)}
 					</div>
 				</>
@@ -667,7 +671,7 @@ export const DeliveryRecords = () => {
 							Review your report
 						</Button>
 						<Button
-							css={css`
+							cssOverrides={css`
 								${textSans17};
 								background-color: transparent;
 								font-weight: bold;

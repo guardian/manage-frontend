@@ -156,6 +156,7 @@ const client = merge(common, {
 	},
 	plugins: [copyPlugin, nodePolyfillPlugin],
 });
+
 module.exports = {
 	client: client,
 	server: server,

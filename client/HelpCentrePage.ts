@@ -3,6 +3,8 @@ import 'regenerator-runtime/runtime';
 import * as Sentry from '@sentry/browser';
 import '@guardian/ophan-tracker-js/MMA';
 import { render } from 'react-dom';
+import 'ophan-tracker-js/build/ophan.manage-my-account';
+import { createRoot } from 'react-dom/client';
 import { HelpCentrePage } from './components/helpCentre/HelpCentrePage';
 
 declare let WEBPACK_BUILD: string;
@@ -17,5 +19,6 @@ if (typeof window !== 'undefined' && window.guardian && window.guardian.dsn) {
 	Sentry.setTag('gu:referrer', document.referrer || 'none');
 }
 
-const element = document.getElementById('app');
-render(HelpCentrePage, element);
+const container = document.getElementById('app');
+const root = createRoot(container!);
+root.render(HelpCentrePage);

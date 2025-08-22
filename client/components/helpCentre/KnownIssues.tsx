@@ -29,7 +29,7 @@ export interface KnownIssueObj {
 	date: string; // "29 Aug 1997 02:40"
 	message: string;
 	link?: string; // optional href that is rendered after the message
-	affectedProducts?: string[]; // maps to productDetail.tier property
+	affectedProducts?: string[]; // maps to productDetail.mmaProductKey property
 }
 
 interface KnownIssuesProp {
@@ -72,7 +72,7 @@ export const KnownIssues = (props: KnownIssuesProp) => {
 						await productDetailsResponse.json();
 					const userProductNames = mdapiResponse.products
 						.filter(isProduct)
-						.map((productDetail) => productDetail.tier);
+						.map((productDetail) => productDetail.mmaProductKey);
 
 					const productIssues = unfilteredDateSortedIssues.filter(
 						(issue) =>
@@ -84,7 +84,7 @@ export const KnownIssues = (props: KnownIssuesProp) => {
 				}
 			}
 		})();
-	}, []);
+	}, [props.issues]);
 
 	const containerCss = css`
 		border-left: 1px solid #dcdcdc;

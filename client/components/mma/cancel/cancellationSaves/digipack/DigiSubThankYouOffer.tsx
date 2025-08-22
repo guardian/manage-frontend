@@ -23,6 +23,7 @@ import {
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { formatAmount } from '@/client/utilities/utils';
+import { appendCorrectPluralisation } from '@/shared/generalTypes';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
 import { dateString } from '../../../../../../shared/dates';
@@ -56,7 +57,7 @@ const DiscountOffer = ({
 }: DiscountOfferProps) => (
 	<Stack
 		space={4}
-		css={css`
+		cssOverrides={css`
 			background-color: #f3f7fe;
 			border-radius: 4px;
 			padding: ${space[4]}px;
@@ -130,9 +131,10 @@ const DiscountOffer = ({
 );
 
 function getDiscountPeriod(discountPreview: DiscountPreviewResponse): string {
-	return `${
-		discountPreview.upToPeriods
-	} ${discountPreview.upToPeriodsType.toLowerCase()}`;
+	return `${discountPreview.upToPeriods} ${appendCorrectPluralisation(
+		discountPreview.upToPeriodsType,
+		discountPreview.upToPeriods,
+	)}`;
 }
 
 export interface DigisubCancellationRouterState
@@ -176,7 +178,7 @@ export const DigiSubThankYouOffer = () => {
 			}
 			setIsPreviewDiscountLoading(false);
 		});
-	}, []);
+	}, [productDetail.subscription.subscriptionId]);
 
 	if (isPreviewDiscountLoading) {
 		return <DefaultLoadingView loadingMessage="Loading..." />;
@@ -239,7 +241,7 @@ export const DigiSubThankYouOffer = () => {
 				setIsApplyDiscountLoading(false);
 				setHasDiscountFailed(true);
 			}
-		} catch (e) {
+		} catch {
 			setIsApplyDiscountLoading(false);
 			setHasDiscountFailed(true);
 		}

@@ -21,6 +21,11 @@ const newsApp = {
 	description: 'Read our reporting on the go',
 };
 
+const feastApp = {
+	name: 'Unlimited access to the Guardian Feast app',
+	description: 'Make a feast out of anything with the Guardian’s recipe app',
+};
+
 const adFree = {
 	name: 'Ad-free reading.',
 	description: 'Avoid ads on all your devices',
@@ -36,6 +41,23 @@ const partnerOffers: ProductBenefit = {
 	description: 'Opportunities to access to discounts and tickets',
 	specificToRegions: ['AUD'],
 };
+
+const plusdigitalBenefits = [
+	{
+		description:
+			'Unlimited access to the refreshed Guardian app and Guardian Feast app',
+	},
+	{
+		description:
+			'Unlimited access to the Guardian Editions app so you can enjoy newspapers on your mobile and tablet',
+	},
+	{ description: 'Ad-free reading on all your devices' },
+	{
+		description:
+			'Exclusive newsletter for supporters, sent every week from the Guardian newsroom',
+	},
+	{ description: 'Far fewer asks for support' },
+];
 
 export interface ProductBenefit {
 	name?: string;
@@ -64,44 +86,53 @@ export function filterBenefitByRegion(
 	return benefit.specificToRegions === undefined;
 }
 
-export const supporterPlusSwitchBenefits = [newsApp, adFree];
+export const supporterPlusSwitchBenefits = [newsApp, feastApp, adFree];
 
-export const benefitsConfiguration: {
-	[productType in ProductTypeKeys]: ProductBenefit[];
-} = {
-	contributions: [
-		supporterNewsletter,
-		uninterruptedReading,
-		{
-			...newsApp,
-			isUnavailable: true,
-		},
-	],
-	supporterplus: [
-		supporterNewsletter,
-		uninterruptedReading,
-		newsApp,
-		adFree,
-		partnerOffers,
-	],
-	tierthree: [
-		guardianWeekly,
-		supporterNewsletter,
-		uninterruptedReading,
-		newsApp,
-		adFree,
-		partnerOffers,
-	],
-	membership: [newsApp, uninterruptedReading, supporterNewsletter],
-	digipack: [],
-	digitalvoucher: [],
-	newspaper: [],
-	homedelivery: [],
-	nationaldelivery: [],
-	voucher: [],
-	guardianweekly: [],
-	guardianpatron: [],
-};
+export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
+	{
+		contributions: [
+			supporterNewsletter,
+			uninterruptedReading,
+			{
+				...newsApp,
+				isUnavailable: true,
+			},
+		],
+		supporterplus: [
+			supporterNewsletter,
+			uninterruptedReading,
+			newsApp,
+			feastApp,
+			adFree,
+			partnerOffers,
+		],
+		tierthree: [
+			guardianWeekly,
+			supporterNewsletter,
+			uninterruptedReading,
+			newsApp,
+			feastApp,
+			adFree,
+			partnerOffers,
+		],
+		membership: [newsApp, uninterruptedReading, supporterNewsletter],
+		digipack: [],
+		digitalvoucher: [],
+		newspaper: [],
+		homedelivery: [],
+		homedeliveryplusdigital: [...plusdigitalBenefits],
+		nationaldelivery: [],
+		nationaldeliveryplusdigital: [...plusdigitalBenefits],
+		voucher: [],
+		voucherplusdigital: [...plusdigitalBenefits],
+		guardianweekly: [],
+		guardianadlite: [],
+		guardianpatron: [],
+		observer: [],
+		digitalvoucherobserver: [],
+		digitalvoucherplusdigital: [...plusdigitalBenefits],
+		voucherobserver: [],
+	};
 
 export function getUpgradeBenefits(
 	supportProduct: 'contributions' | 'supporterplus',

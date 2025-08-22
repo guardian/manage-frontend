@@ -3,7 +3,7 @@ import {
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../shared/identity';
 import type { ProductDetail } from '../../shared/productResponse';
-import type { ProductSwitchType } from '../../shared/productSwitchTypes';
+import { MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import type {
 	AllProductsProductTypeFilterString,
 	ProductType,
@@ -18,24 +18,38 @@ export const shouldHaveHolidayStopsFlow = (
 	productType: ProductType,
 ): productType is ProductTypeWithHolidayStopsFlow => !!productType.holidayStops;
 
-export const productMoveFetch = (
+export const membershipToContribFetch = (
 	subscriptionId: string,
 	price: number,
-	productSwitchType: ProductSwitchType,
-	checkChargeAmountBeforeUpdate: boolean,
 	preview: boolean,
+	isTestUser: boolean,
 ) =>
-	fetch(`/api/product-move/${productSwitchType}/${subscriptionId}`, {
+	fetch(`/api/product-move/to-recurring-contribution/${subscriptionId}`, {
 		method: 'POST',
-		body: JSON.stringify({
-			price,
-			preview,
-			checkChargeAmountBeforeUpdate,
-		}),
+		body: JSON.stringify({ preview, price }),
 		headers: {
 			'Content-Type': 'application/json',
+			[MDA_TEST_USER_HEADER]: `${isTestUser}`,
 		},
 	});
+
+export const contribToSupporterPlusFetch = (
+	subscriptionId: string,
+	preview: boolean,
+	isTestUser: boolean,
+	applyDiscountIfAvailable?: boolean,
+) =>
+	fetch(
+		`/api/product-move/recurring-contribution-to-supporter-plus/${subscriptionId}`,
+		{
+			method: 'POST',
+			body: JSON.stringify({ preview, applyDiscountIfAvailable }),
+			headers: {
+				'Content-Type': 'application/json',
+				[MDA_TEST_USER_HEADER]: `${isTestUser}`,
+			},
+		},
+	);
 
 export const createProductDetailFetcher =
 	(

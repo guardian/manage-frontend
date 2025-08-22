@@ -27,10 +27,7 @@ interface IdapiFetchOptions {
 	};
 }
 
-interface CookiesWithToken {
-	SC_GU_U: string;
-	[key: string]: string;
-}
+type CookiesWithToken = Record<string, string>;
 
 const getBaseDomain = (): string => {
 	const { STAGE } = mmaConfig;

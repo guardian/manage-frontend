@@ -28,6 +28,7 @@ export interface UpgradeSupportInterface {
 	subscription: Subscription;
 	inPaymentFailure: boolean;
 	user?: MembersDataApiUser;
+	isTestUser: boolean;
 }
 
 export interface UpgradeRouterState {
@@ -37,7 +38,7 @@ export interface UpgradeRouterState {
 	journeyCompleted: boolean;
 }
 
-export const UpgradeSupportContext: Context<UpgradeSupportInterface | {}> =
+export const UpgradeSupportContext: Context<UpgradeSupportInterface | object> =
 	createContext({});
 
 const UpgradeSupportPageContainer = ({
@@ -127,6 +128,7 @@ export const UpgradeSupportContainer = () => {
 					subscription: contribution.subscription,
 					inPaymentFailure,
 					user: data.user,
+					isTestUser: contribution.isTestUser,
 				}}
 			>
 				<Outlet />

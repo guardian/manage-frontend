@@ -15,23 +15,20 @@ import {
 import { conf } from './config';
 import { log } from './log';
 
-const isProd = conf.STAGE.toUpperCase() === 'PROD';
+type ApiName =
+	| 'cancellation-sf-cases-api'
+	| 'delivery-records-api'
+	| 'holiday-stop-api'
+	| 'invoicing-api'
+	| 'contact-us-api'
+	| 'product-move-api'
+	| 'discount-api'
+	| 'product-switch-api'
+	| 'update-supporter-plus-amount';
 
+const isProd = conf.STAGE.toUpperCase() === 'PROD';
 const normalUserApiStage = isProd ? 'PROD' : 'CODE';
 const testUserApiStage = 'CODE';
-
-const apiNames = [
-	'cancellation-sf-cases-api',
-	'delivery-records-api',
-	'holiday-stop-api',
-	'invoicing-api',
-	'contact-us-api',
-	'product-move-api',
-	'discount-api',
-	'product-switch-api',
-	'update-supporter-plus-amount',
-] as const;
-type ApiName = typeof apiNames[number];
 
 const byResourceType =
 	(resourceTypeFilter: string) => (resource: StackResourceSummary) =>
@@ -152,7 +149,16 @@ const getApiGateway = (
 				shouldNotLogBody?: boolean,
 			) =>
 			async (req: express.Request, res: express.Response) => {
-				const isTestUser = req.header(MDA_TEST_USER_HEADER) === 'true';
+				const testUserHeader = req.header(MDA_TEST_USER_HEADER);
+				if (
+					testUserHeader === undefined ||
+					!['true', 'false'].includes(testUserHeader)
+				) {
+					log.error(
+						`${path} request will not work for test users - missing ${MDA_TEST_USER_HEADER} header: '${testUserHeader}'`,
+					);
+				}
+				const isTestUser = testUserHeader === 'true';
 				const { host, apiKey } = await (isTestUser
 					? testModeConfigPromise
 					: normalModeConfigPromise);

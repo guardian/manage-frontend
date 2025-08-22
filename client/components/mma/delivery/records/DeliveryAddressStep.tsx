@@ -5,6 +5,7 @@ import {
 	space,
 	textSans15,
 	textSans17,
+	until,
 } from '@guardian/source/foundations';
 import {
 	Button,
@@ -21,7 +22,7 @@ import type {
 	ProductDetail,
 } from '../../../../../shared/productResponse';
 import {
-	getSpecificProductTypeFromTier,
+	getSpecificProductTypeFromProductKey,
 	isProduct,
 	MembersDataApiAsyncLoader,
 } from '../../../../../shared/productResponse';
@@ -88,8 +89,8 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		isValid: false,
 	});
 
-	const specificProductType = getSpecificProductTypeFromTier(
-		props.productDetail.tier,
+	const specificProductType = getSpecificProductTypeFromProductKey(
+		props.productDetail.mmaProductKey,
 	);
 
 	const isNationalDelivery =
@@ -180,9 +181,10 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 		)
 			.flatMap(flattenEquivalent)
 			.map(({ productDetail }) => {
-				const specificProductType = getSpecificProductTypeFromTier(
-					productDetail.tier,
-				);
+				const specificProductType =
+					getSpecificProductTypeFromProductKey(
+						productDetail.mmaProductKey,
+					);
 				const friendlyProductName = specificProductType.friendlyName;
 				return `${friendlyProductName}`;
 			});
@@ -194,6 +196,15 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 			.some(({ productType }) => {
 				return productType.productType === 'nationaldelivery';
 			});
+
+		const deliveryInstructionsInfoCss = css`
+			margin-top: ${space[3]}px;
+			${from.wide} {
+				display: inline-block;
+				margin: ${space[1]}px 0 ${space[3]}px ${space[3]}px;
+				width: calc(100% - (30ch + ${space[3]}px + 2px));
+			}
+		`;
 
 		if (hasNationalDelivery) {
 			return (
@@ -396,53 +407,21 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 											characters remaining
 										</span>
 									</div>
-									<p
-										css={css`
-											display: block;
-											${textSans17};
-											border: 4px solid
-												${palette.brand[500]};
-											padding: ${space[5]}px ${space[5]}px
-												${space[5]}px 49px;
-											margin: ${space[3]}px 0;
-											position: relative;
-											${from.tablet} {
-												display: inline-block;
-												margin: 2px 0 ${space[3]}px
-													${space[3]}px;
-												width: calc(
-													100% -
-														(
-															30ch + ${space[3]}px +
-																2px
-														)
-												);
-											}
-										`}
+									<InfoSection
+										additionalCSS={
+											deliveryInstructionsInfoCss
+										}
 									>
-										<i
-											css={css`
-												width: 17px;
-												height: 17px;
-												position: absolute;
-												top: ${space[5]}px;
-												left: ${space[5]}px;
-											`}
-										>
-											<InfoIconDark
-												fillColor={palette.brand[500]}
-											/>
-										</i>
 										Delivery instructions are only
 										applicable for newspaper deliveries.
 										They do not apply to Guardian Weekly.
-									</p>
+									</InfoSection>
 								</div>
 							</label>
 						)}
 					</fieldset>
 					<CheckboxGroup
-						css={css`
+						cssOverrides={css`
 							margin-top: ${space[5]}px;
 						`}
 						name="instructions-checkbox"
@@ -477,7 +456,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 					>
 						<Button
 							type="submit"
-							css={css`
+							cssOverrides={css`
 								color: ${palette.brand[400]};
 								background-color: ${palette.brand[800]};
 								:hover {
@@ -501,8 +480,10 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 								props.setAddressValidationState(true);
 								setStatus(Status.ReadOnly);
 							}}
-							css={css`
-								margin-top: ${space[5]}px;
+							cssOverrides={css`
+								${until.mobileLandscape} {
+									margin-top: ${space[5]}px;
+								}
 								color: ${palette.brand[400]};
 								background-color: transparent;
 								:hover {
@@ -648,6 +629,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 					(props.enableDeliveryInstructions &&
 						deliveryAddressContext.address?.instructions) ||
 					undefined
+				}
+				promptIfInstructionsNotSet={
+					props.enableDeliveryInstructions || undefined
 				}
 			/>
 			{isNationalDelivery && (

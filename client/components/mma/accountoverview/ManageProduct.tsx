@@ -64,7 +64,7 @@ const subHeadingTitleCss = `
   `;
 const subHeadingBorderTopCss = `
     border-top: 1px solid ${palette.neutral['86']};
-    margin: 50px 0 ${space[5]}px;
+    margin: ${space[10]}px 0 ${space[5]}px;
   `;
 export const subHeadingCss = `
     ${subHeadingBorderTopCss}
@@ -176,6 +176,7 @@ const InnerContent = ({
 					productType={specificProductType}
 					nextPaymentDate={productDetail.subscription.nextPaymentDate}
 					amountUpdateStateChange={setOveriddenAmount}
+					isTestUser={productDetail.isTestUser}
 				/>
 			) : (
 				<BasicProductInfoTable
@@ -382,13 +383,14 @@ const InnerContent = ({
 				/>
 			)}
 
-			{!hasCancellationPending && (
-				<CancellationCTA
-					productDetail={productDetail}
-					friendlyName={groupedProductType.friendlyName}
-					specificProductType={specificProductType}
-				/>
-			)}
+			{!hasCancellationPending &&
+				productDetail.billingCountry !== 'United States' && (
+					<CancellationCTA
+						productDetail={productDetail}
+						friendlyName={groupedProductType.friendlyName}
+						specificProductType={specificProductType}
+					/>
+				)}
 		</>
 	);
 };

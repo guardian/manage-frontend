@@ -74,7 +74,7 @@ export const SingleContributionCard = ({
 						</dl>
 						<div css={wideButtonLayoutCss}>
 							<Button
-								css={css`
+								cssOverrides={css`
 									justify-content: center;
 								`}
 								size="small"

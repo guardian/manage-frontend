@@ -1,22 +1,22 @@
-import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
-	deliveryRecordsWithNoDeliveries,
 	deliveryRecordsWithDelivery,
+	deliveryRecordsWithNoDeliveries,
 	deliveryRecordsWithReportedProblem,
 } from '../../../../client/fixtures/deliveryRecords';
-import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 import { potentialDeliveries } from '../../../../client/fixtures/holidays';
-import {
-	dateAddDays,
-	dateString,
-	DATE_FNS_INPUT_FORMAT,
-} from '../../../../shared/dates';
-import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
 	guardianWeeklyPaidByCard,
 	homeDelivery,
 	nationalDelivery,
 } from '../../../../client/fixtures/productBuilder/testProducts';
+import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
+import {
+	DATE_FNS_INPUT_FORMAT,
+	dateAddDays,
+	dateString,
+} from '../../../../shared/dates';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Delivery records', () => {
 	beforeEach(() => {
@@ -29,7 +29,7 @@ describe('Delivery records', () => {
 
 		cy.intercept('GET', '/api/delivery-records/*', {
 			statusCode: 200,
-			body: deliveryRecordsWithDelivery,
+			body: deliveryRecordsWithDelivery(),
 		}).as('delivery_records');
 
 		cy.intercept('GET', '/api/holidays/*/potential?*', {
@@ -78,7 +78,7 @@ describe('Delivery records', () => {
 			`/api/delivery-records/${secondarySubscriptionId}`,
 			{
 				statusCode: 200,
-				body: deliveryRecordsWithDelivery,
+				body: deliveryRecordsWithDelivery(),
 			},
 		).as('fetch_potential_holidays_for_secondary_sub');
 
@@ -175,7 +175,7 @@ describe('Delivery records', () => {
 
 		deliveryRecordsWithDeliveryProblem.results = [
 			...deliveryRecordsWithDeliveryProblem.results,
-			...deliveryRecordsWithDelivery.results,
+			...deliveryRecordsWithDelivery().results,
 		];
 
 		cy.intercept('GET', '/api/delivery-records/A-S00293857', {

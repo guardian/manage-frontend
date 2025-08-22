@@ -1,9 +1,4 @@
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
-import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
-import {
-	productMovePreviewResponse,
-	productMoveSuccessfulResponse,
-} from '../../../../client/fixtures/productMove';
 import {
 	contributionAboveSupporterPlusThreshold,
 	contributionPaidByPayPalAboveSupporterPlusThreshold,
@@ -11,6 +6,11 @@ import {
 	nonServicedCountryContributor,
 	supporterPlusMonthlyAllAccessDigital,
 } from '../../../../client/fixtures/productBuilder/testProducts';
+import {
+	productMovePreviewResponse,
+	productMoveSuccessfulResponse,
+} from '../../../../client/fixtures/productMove';
+import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 const setSignInStatus = () => {
 	cy.window().then((window) => {

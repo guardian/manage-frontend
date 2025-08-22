@@ -1,5 +1,5 @@
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
-import {http, HttpResponse} from 'msw';
+import type { Meta, StoryObj } from '@storybook/react';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
 import { ConfirmDigiSubCancellation } from '@/client/components/mma/cancel/cancellationSaves/digipack/ConfirmDigiSubCancellation';
@@ -11,6 +11,11 @@ import {
 } from '@/client/fixtures/productBuilder/testProducts';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { SelectReason } from '../SelectReason';
+
+const digiSubWithSortedReasons = PRODUCT_TYPES.digipack;
+digiSubWithSortedReasons.cancellation!.reasons?.sort((a, b) =>
+	a.reasonId.localeCompare(b.reasonId),
+);
 
 export default {
 	title: 'Pages/DigiSubSaves',
@@ -57,10 +62,10 @@ export const EligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 				return HttpResponse.json({
 					discountedPrice: 111.75,
 					upToPeriods: '12',
-					upToPeriodsType: 'Months',
+					upToPeriodsType: 'month',
 					firstDiscountedPaymentDate: '2024-05-30',
 					nextNonDiscountedPaymentDate: '2024-07-30',
-				})
+				});
 			}),
 		],
 	},
@@ -81,7 +86,7 @@ export const IneligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 			http.post('/api/discounts/preview-discount', () => {
 				return new HttpResponse(null, {
 					status: 400,
-				})
+				});
 			}),
 		],
 	},
@@ -103,6 +108,16 @@ export const ConfirmCancellation: StoryObj<typeof ConfirmDigiSubCancellation> =
 		},
 	};
 
-export const DigiSubCancellationReason: StoryFn<typeof SelectReason> = () => {
-	return <SelectReason />;
+export const DigiSubCancellationReason: StoryObj<typeof SelectReason> = {
+	render: () => <SelectReason />,
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: digitalPackPaidByDirectDebit(),
+			},
+			container: (
+				<CancellationContainer productType={digiSubWithSortedReasons} />
+			),
+		},
+	},
 };

@@ -1,5 +1,6 @@
+import { css } from '@emotion/react';
+import { space, textSans14 } from '@guardian/source/foundations';
 import type { HolidayStopFlowProperties } from '../../../../shared/productTypes';
-import { sans } from '../../../styles/fonts';
 import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 import { InfoIcon } from '../shared/assets/InfoIcon';
 import { Modal } from './Modal';
@@ -17,13 +18,12 @@ export const HolidayQuestionsModal = (props: HolidayQuestionsModalProps) => (
 		title="We are here to help"
 		instigator={
 			<a
-				css={{
-					fontFamily: sans,
-					fontSize: '14px',
-					cursor: 'pointer',
-					textDecoration: 'underline',
-					margin: '10px',
-				}}
+				css={css`
+					cursor: pointer;
+					${textSans14};
+					textdecoration: underline;
+					margin: 10px;
+				`}
 			>
 				<InfoIcon />
 				Questions? Check here
@@ -74,7 +74,11 @@ export const HolidayQuestionsModal = (props: HolidayQuestionsModalProps) => (
 			</li>
 		</ul>
 		<h3>How to contact us</h3>
-		<div css={{ marginLeft: '20px' }}>
+		<div
+			css={css`
+				margin-left: ${space[5]}px;
+			`}
+		>
 			{/*TODO add email address*/}
 			<CallCentreNumbers />
 		</div>

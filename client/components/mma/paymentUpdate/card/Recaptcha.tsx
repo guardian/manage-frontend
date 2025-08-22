@@ -30,6 +30,19 @@ export function Recaptcha({
 	setRecaptchaToken,
 }: RecaptchaProps) {
 	useEffect(() => {
+		const renderReCaptcha = () => {
+			window.grecaptcha.render('recaptcha', {
+				sitekey: window.guardian?.recaptchaPublicKey,
+				callback: (recaptchaToken: string) =>
+					setRecaptchaToken(recaptchaToken),
+				'expired-callback': resetRecaptcha,
+			});
+		};
+		const resetRecaptcha = () => {
+			setStripeSetupIntent(null);
+			setRecaptchaToken(undefined);
+		};
+
 		if (window.grecaptcha) {
 			renderReCaptcha();
 		} else {
@@ -42,21 +55,7 @@ export function Recaptcha({
 			window.v2ReCaptchaOnLoadCallback = renderReCaptcha;
 			document.head.appendChild(script);
 		}
-	}, []);
-
-	const resetRecaptcha = () => {
-		setStripeSetupIntent(null);
-		setRecaptchaToken(undefined);
-	};
-
-	const renderReCaptcha = () => {
-		window.grecaptcha.render('recaptcha', {
-			sitekey: window.guardian?.recaptchaPublicKey,
-			callback: (recaptchaToken: string) =>
-				setRecaptchaToken(recaptchaToken),
-			'expired-callback': resetRecaptcha,
-		});
-	};
+	}, [setRecaptchaToken, setStripeSetupIntent]);
 
 	return (
 		<div css={{ marginBottom: `${space[9]}px` }}>

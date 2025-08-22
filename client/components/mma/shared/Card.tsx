@@ -9,18 +9,18 @@ export const Card = (props: { children: ReactNode }) => {
 Card.Header = (props: {
 	children: ReactNode;
 	backgroundColor?: string;
-	minHeightTablet?: boolean;
+	minHeightOverride?: string;
 }) => {
 	const headerCss = css`
 		position: relative;
 		padding: ${space[3]}px ${space[4]}px;
-		min-height: 64px;
+		min-height: ${props.minHeightOverride ?? '64px'};
 		background-color: ${props.backgroundColor ?? palette.neutral[97]};
 		border-top-left-radius: 8px;
 		border-top-right-radius: 8px;
 		${from.tablet} {
 			border-radius: 0;
-			min-height: ${props.minHeightTablet ? '128px' : 'auto'};
+			min-height: auto;
 		}
 	`;
 

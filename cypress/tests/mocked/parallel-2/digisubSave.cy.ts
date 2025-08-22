@@ -5,10 +5,12 @@ import { DiscountPreviewResponse } from '../../../../client/utilities/discountPr
 
 const discountPreviewResponse: DiscountPreviewResponse = {
 	discountedPrice: 111.75,
+	discountPercentage: 100,
 	upToPeriods: 3,
-	upToPeriodsType: 'Months',
+	upToPeriodsType: 'month',
 	firstDiscountedPaymentDate: '2024-05-30',
 	nextNonDiscountedPaymentDate: '2024-07-30',
+	nonDiscountedPayments: [{ date: '2024-07-30', amount: 111.75 }],
 };
 
 describe('Cancel digi sub', () => {

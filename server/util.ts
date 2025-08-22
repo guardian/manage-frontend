@@ -52,7 +52,7 @@ export const mimicResponse = (
 export const jsonOrEmpty = async (response: Response) => {
 	try {
 		return await response.json();
-	} catch (e) {
+	} catch {
 		return {};
 	}
 };

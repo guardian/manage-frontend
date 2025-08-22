@@ -10,13 +10,13 @@ import {
 import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
+import { membershipToContribFetch } from '@/client/utilities/productUtils';
 import { dateString, parseDate } from '../../../../../../shared/dates';
 import type {
 	PaidSubscriptionPlan,
 	Subscription,
 } from '../../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../../shared/productResponse';
-import type { ProductSwitchType } from '../../../../../../shared/productSwitchTypes';
 import { getBillingPeriodAdjective } from '../../../../../../shared/productTypes';
 import {
 	buttonCentredCss,
@@ -193,7 +193,7 @@ export const MembershipSwitch = () => {
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Change your support');
-	}, []);
+	}, [pageTitleContext]);
 
 	if (!membership) {
 		return <Navigate to="/" />;
@@ -218,24 +218,6 @@ export const MembershipSwitch = () => {
 			? 'every month'
 			: parseDate(mainPlan.chargedThrough ?? undefined).dateStr('MMMM');
 
-	const productSwitchType: ProductSwitchType = 'to-recurring-contribution';
-
-	const productMoveFetch = () =>
-		fetch(
-			`/api/product-move/${productSwitchType}/${membership.subscription.subscriptionId}`,
-			{
-				method: 'POST',
-				body: JSON.stringify({
-					price: getOldMembershipPrice(mainPlan),
-					preview: false,
-					checkChargeAmountBeforeUpdate: false,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			},
-		);
-
 	const confirmSwitch = async () => {
 		if (isSwitching) {
 			return;
@@ -243,7 +225,12 @@ export const MembershipSwitch = () => {
 
 		try {
 			setIsSwitching(true);
-			const response = await productMoveFetch();
+			const response = await membershipToContribFetch(
+				membership.subscription.subscriptionId,
+				getOldMembershipPrice(mainPlan),
+				false,
+				membership.isTestUser,
+			);
 			const data = await JsonResponseHandler(response);
 
 			if (data === null) {
@@ -254,11 +241,22 @@ export const MembershipSwitch = () => {
 					state: { ...routerState, journeyCompleted: true },
 				});
 			}
-		} catch (e) {
+		} catch {
 			setIsSwitching(false);
 			setSwitchingError(true);
 		}
 	};
+
+	if (
+		membership.subscription.futurePlans.length > 0 &&
+		membership.subscription.futurePlans[0].mmaProductKey &&
+		membership.subscription.futurePlans[0].mmaProductKey === 'Contributor'
+	) {
+		// Switch already planned, so navigate to Overview
+		navigate('/');
+		return null;
+	}
+
 	return (
 		<>
 			<section css={sectionSpacing}>

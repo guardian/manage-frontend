@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import {
+	from,
 	headlineBold28,
 	palette,
 	space,
@@ -19,8 +20,10 @@ import type {
 	SingleProductDetail,
 } from '../../../../shared/productResponse';
 import {
-	getSpecificProductTypeFromTier,
+	getSpecificProductTypeFromProductKey,
+	isPlusDigitalProductType,
 	isProduct,
+	isProductResponse,
 	isSpecificProductType,
 	sortByJoinDate,
 } from '../../../../shared/productResponse';
@@ -32,8 +35,8 @@ import {
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import {
 	LoadingState,
-	useAsyncLoader,
-} from '../../../utilities/hooks/useAsyncLoader';
+	useAsyncLoaderAllSettled,
+} from '../../../utilities/hooks/useAsyncLoaderAllSettled';
 import {
 	allRecurringProductsDetailFetcher,
 	allSingleProductsDetailFetcher,
@@ -45,9 +48,13 @@ import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import { DownloadAppCtaVariation1 } from '../shared/DownloadAppCtaVariation1';
+import { DownloadFeastAppCtaWithImage } from '../shared/DownloadFeastAppCtaWithImage';
 import type { IsFromAppProps } from '../shared/IsFromAppProps';
+import { NewspaperArchiveCta } from '../shared/NewspaperArchiveCta';
 import { nonServiceableCountries } from '../shared/NonServiceableCountries';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
+import { ProblemAlert } from '../shared/ProblemAlert';
 import { CancelledProductCard } from './CancelledProductCard';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
@@ -55,32 +62,52 @@ import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 import { SingleContributionCard } from './SingleContributionCard';
 
-type AccountOverviewResponse = [
-	MembersDataApiResponse,
-	CancelledProductDetail[],
-	MPAPIResponse,
-	SingleProductDetail[],
-];
+interface ProductFetchResponse {
+	mdapiResponse: MembersDataApiResponse;
+	cancelledProductsResponse: CancelledProductDetail[];
+	mpapiResponse: MPAPIResponse;
+	singleContributionsResponse: SingleProductDetail[];
+}
+
+const productFetchPromisesAndRefs = () => {
+	return [
+		{ promise: allRecurringProductsDetailFetcher(), ref: 'mdapiResponse' },
+		{
+			promise: fetchWithDefaultParameters('/api/cancelled/'),
+			ref: 'cancelledProductsResponse',
+		},
+		{
+			promise: fetchWithDefaultParameters(
+				'/mpapi/user/mobile-subscriptions',
+			),
+			ref: 'mpapiResponse',
+		},
+		{
+			promise: allSingleProductsDetailFetcher(),
+			ref: 'singleContributionsResponse',
+		},
+	];
+};
 
 const subHeadingCss = css`
-	margin: ${space[12]}px 0 ${space[6]}px;
+	margin: ${space[6]}px 0 ${space[6]}px;
 	border-top: 1px solid ${palette.neutral['86']};
 	${headlineBold28};
 	${until.tablet} {
 		font-size: 1.25rem;
 		line-height: 1.6;
 	}
+	${from.tablet} {
+		margin-top: ${space[8]}px;
+	}
 `;
 
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
-	const {
-		data: accountOverviewResponse,
-		loadingState,
-	}: {
-		data: AccountOverviewResponse | null;
-		loadingState: LoadingState;
-	} = useAsyncLoader(accountOverviewFetcher, JsonResponseHandler);
-
+	const { data: accountOverviewResponse, loadingState } =
+		useAsyncLoaderAllSettled(
+			productFetchPromisesAndRefs,
+			JsonResponseHandler,
+		);
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
 	}
@@ -93,28 +120,57 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		return <GenericErrorScreen />;
 	}
 
-	const [
+	const {
 		mdapiResponse,
 		cancelledProductsResponse,
 		mpapiResponse,
-		singleContributions,
-	] = accountOverviewResponse;
+		singleContributionsResponse,
+	} = accountOverviewResponse as Partial<ProductFetchResponse>;
+
+	const failedProductRequestMessages = [];
+	if (!cancelledProductsResponse) {
+		failedProductRequestMessages.push(
+			"If you have any cancelled products, we're currently unable to display them. Please try again later",
+		);
+	}
+	if (!mpapiResponse) {
+		failedProductRequestMessages.push(
+			"If you've purchased a subscription through the Guardian app, we're currently unable to display those details. Please try again later.",
+		);
+	}
+	if (!singleContributionsResponse) {
+		failedProductRequestMessages.push(
+			"If you have made a single contribution, we're currently unable to display those details. Please try again later.",
+		);
+	}
+
+	if (!isProductResponse(mdapiResponse)) {
+		return <GenericErrorScreen />;
+	}
+
+	const singleContributions = singleContributionsResponse || [];
 
 	const allActiveProductDetails = mdapiResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
 
-	const allCancelledProductDetails = cancelledProductsResponse.sort(
-		(a: CancelledProductDetail, b: CancelledProductDetail) =>
-			b.subscription.start.localeCompare(a.subscription.start),
+	const activeProductsNotPendingCancellation = allActiveProductDetails.filter(
+		(product: ProductDetail) => !product.subscription.cancelledAt,
 	);
+
+	const allCancelledProductDetails = cancelledProductsResponse
+		? cancelledProductsResponse.sort(
+				(a: CancelledProductDetail, b: CancelledProductDetail) =>
+					b.subscription.start.localeCompare(a.subscription.start),
+		  )
+		: [];
 
 	const allProductCategories = [
 		...allActiveProductDetails,
 		...allCancelledProductDetails,
 	].map((product: ProductDetail | CancelledProductDetail) => {
-		const specificProductType = getSpecificProductTypeFromTier(
-			product.tier,
+		const specificProductType = getSpecificProductTypeFromProductKey(
+			product.mmaProductKey,
 		);
 		if (
 			specificProductType.groupedProductType ===
@@ -127,9 +183,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 
 	const uniqueProductCategories = [...new Set(allProductCategories)];
 
-	const appSubscriptions = mpapiResponse.subscriptions.filter(
-		isValidAppSubscription,
-	);
+	const appSubscriptions = mpapiResponse
+		? mpapiResponse.subscriptions.filter(isValidAppSubscription)
+		: [];
 
 	if (
 		featureSwitches.appSubscriptions &&
@@ -148,6 +204,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 
 	if (
 		allActiveProductDetails.length === 0 &&
+		allCancelledProductDetails.length === 0 &&
 		appSubscriptions.length === 0 &&
 		singleContributions.length === 0
 	) {
@@ -166,6 +223,14 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			isSpecificProductType(productDetail, PRODUCT_TYPES.digipack),
 		);
 
+	const hasDigitalPlusPrint = allActiveProductDetails.some((productDetail) =>
+		isSpecificProductType(productDetail, PRODUCT_TYPES.tierthree),
+	);
+
+	const isPlusDigitalProduct = allActiveProductDetails.some((productDetail) =>
+		isPlusDigitalProductType(productDetail),
+	);
+
 	const hasNonServiceableCountry = nonServiceableCountries.includes(
 		allActiveProductDetails.find(isProduct)?.billingCountry as string,
 	);
@@ -178,8 +243,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
 	): GroupedProductTypeKeys => {
-		const specificProductType = getSpecificProductTypeFromTier(
-			product.tier,
+		const specificProductType = getSpecificProductTypeFromProductKey(
+			product.mmaProductKey,
 		);
 		if (
 			specificProductType.groupedProductType ===
@@ -201,6 +266,19 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				productDetails={allActiveProductDetails}
 				isFromApp={isFromApp}
 			/>
+			{failedProductRequestMessages.length > 0 && (
+				<ProblemAlert
+					message={
+						<>
+							{failedProductRequestMessages.map(
+								(failureMessage) => (
+									<p>{failureMessage}</p>
+								),
+							)}
+						</>
+					}
+				/>
+			)}
 			{uniqueProductCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
@@ -240,6 +318,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 												.subscriptionId
 										}
 										productDetail={cancelledProductDetail}
+										hasOtherActiveSubs={
+											!!activeProductsNotPendingCancellation.length
+										}
 									/>
 								),
 							)}
@@ -290,25 +371,29 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					</Fragment>
 				);
 			})}
+			{(hasDigitalPlusPrint || isPlusDigitalProduct) && (
+				<>
+					<h2 css={subHeadingCss}>
+						Get the most out of your benefits
+					</h2>
+					<Stack space={6}>
+						{featureSwitches.digitalArchiveCta && (
+							<NewspaperArchiveCta />
+						)}
+						<DownloadAppCtaVariation1 />
+						<DownloadFeastAppCtaWithImage />
+					</Stack>
+				</>
+			)}
 		</>
 	);
 };
 
-const accountOverviewFetcher = () =>
-	Promise.all([
-		allRecurringProductsDetailFetcher(),
-		fetchWithDefaultParameters('/api/cancelled/'),
-		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions'),
-		allSingleProductsDetailFetcher(),
-	]);
-
-export const AccountOverview = ({ isFromApp }: IsFromAppProps) => {
-	return (
-		<PageContainer
-			selectedNavItem={NAV_LINKS.accountOverview}
-			pageTitle="Account overview"
-		>
-			<AccountOverviewPage isFromApp={isFromApp} />
-		</PageContainer>
-	);
-};
+export const AccountOverview = ({ isFromApp }: IsFromAppProps) => (
+	<PageContainer
+		selectedNavItem={NAV_LINKS.accountOverview}
+		pageTitle="Account overview"
+	>
+		<AccountOverviewPage isFromApp={isFromApp} />
+	</PageContainer>
+);

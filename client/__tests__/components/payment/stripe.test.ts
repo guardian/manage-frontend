@@ -1,8 +1,12 @@
 import {
+	baseDigitalVoucherObserver,
+	baseObserverDelivery,
+} from '@/client/fixtures/productBuilder/baseProducts';
+import {
 	guardianWeeklySubscriptionAustralia,
 	guardianWeeklySubscriptionCard,
 } from '../../../fixtures/subscription';
-import { getStripeKey } from '../../../utilities/stripe';
+import { getStripeKey, getStripeKeyByProduct } from '../../../utilities/stripe';
 
 // @ts-expect-error
 window.guardian = {
@@ -13,6 +17,10 @@ window.guardian = {
 	stripeKeyDefaultCurrencies: {
 		test: 'testKeyDefaultCurrencies',
 		default: 'defaultKeyDefaultCurrencies',
+	},
+	stripeKeyTortoiseMedia: {
+		test: 'testKeyTortoiseMedia',
+		default: 'defaultKeyTortoiseMedia',
 	},
 };
 
@@ -35,5 +43,45 @@ test('Uses Australian Stripe key for Australian delivery address', () => {
 
 	expect(stripePublicKey).toEqual(
 		window.guardian.stripeKeyAustralia?.default,
+	);
+});
+
+test('Uses Tortoise Media Stripe keys for Observer (Sunday) Home Delivery subscription', () => {
+	const productDetail = baseObserverDelivery();
+
+	const stripePublicKeyDefaultUser = getStripeKeyByProduct({
+		...productDetail,
+		isTestUser: false,
+	});
+	expect(stripePublicKeyDefaultUser).toEqual(
+		window.guardian.stripeKeyTortoiseMedia?.default,
+	);
+
+	const stripePublicKeyTestUser = getStripeKeyByProduct({
+		...productDetail,
+		isTestUser: true,
+	});
+	expect(stripePublicKeyTestUser).toEqual(
+		window.guardian.stripeKeyTortoiseMedia?.test,
+	);
+});
+
+test('Uses Tortoise Media Stripe keys for Observer (Sunday) Subscription Card', () => {
+	const productDetail = baseDigitalVoucherObserver();
+
+	const stripePublicKeyDefaultUser = getStripeKeyByProduct({
+		...productDetail,
+		isTestUser: false,
+	});
+	expect(stripePublicKeyDefaultUser).toEqual(
+		window.guardian.stripeKeyTortoiseMedia?.default,
+	);
+
+	const stripePublicKeyTestUser = getStripeKeyByProduct({
+		...productDetail,
+		isTestUser: true,
+	});
+	expect(stripePublicKeyTestUser).toEqual(
+		window.guardian.stripeKeyTortoiseMedia?.test,
 	);
 });

@@ -23,12 +23,10 @@ import {
 } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
-import { GROUPED_PRODUCT_TYPES } from '../../../../shared/productTypes';
 import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { hasCancellationFlow } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
@@ -44,7 +42,6 @@ import {
 import type { CancellationDateResponse } from './cancellationDateResponse';
 import { cancellationDateFetcher } from './cancellationDateResponse';
 import type { CancellationReason } from './cancellationReason';
-import { ContactUsToCancel } from './ContactUsToCancel';
 
 interface ReasonPickerProps {
 	productType: ProductTypeWithCancellationFlow;
@@ -75,6 +72,12 @@ const ReasonPicker = ({
 			productType.productType === 'supporterplus') ||
 		(featureSwitches.contributionCancellationPause &&
 			productType.productType === 'contributions');
+
+	if (!productType.cancellation.reasons) {
+		return (
+			<GenericErrorScreen loggingMessage="Got to the cancellation reasons selection page with a productType that doesn't have any cancellation reasons." />
+		);
+	}
 
 	return (
 		<>
@@ -132,7 +135,7 @@ const ReasonPicker = ({
 					<RadioGroup
 						name="issue_type"
 						orientation="vertical"
-						css={css`
+						cssOverrides={css`
 							display: block;
 							padding: ${space[5]}px;
 						`}
@@ -144,7 +147,7 @@ const ReasonPicker = ({
 									name="cancellation-reason"
 									value={reason.reasonId}
 									label={reason.linkLabel}
-									css={css`
+									cssOverrides={css`
 										vertical-align: top;
 										text-transform: lowercase;
 										:checked + div label:first-of-type {
@@ -214,7 +217,7 @@ const ReasonPicker = ({
 							<RadioGroup
 								name="issue_type"
 								orientation="vertical"
-								css={css`
+								cssOverrides={css`
 									display: block;
 									padding: ${space[5]}px;
 								`}
@@ -376,21 +379,6 @@ export const CancellationReasonSelection = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
-
-	if (
-		!productDetail.selfServiceCancellation.isAllowed ||
-		!hasCancellationFlow(productType)
-	) {
-		return (
-			<ContactUsToCancel
-				selfServiceCancellation={productDetail.selfServiceCancellation}
-				subscriptionId={productDetail.subscription.subscriptionId}
-				groupedProductType={
-					GROUPED_PRODUCT_TYPES[productType.groupedProductType]
-				}
-			/>
-		);
-	}
 
 	if (productType.cancellation.startPageOfferEffectiveDateOptions) {
 		return (

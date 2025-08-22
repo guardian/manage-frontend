@@ -46,7 +46,7 @@ export function useAsyncLoader<T>(
 				})
 				.catch((e) => handleError(e));
 		}
-	}, [loadingState]);
+	}, [loadingState]); // eslint-disable-line react-hooks/exhaustive-deps -- disabling here to avoid the hook being run too many times - please refactor me I possibly don't want to use the useEffect hook here
 
 	return { data, error, loadingState };
 }

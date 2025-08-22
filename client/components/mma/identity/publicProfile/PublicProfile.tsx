@@ -49,7 +49,7 @@ export const PublicProfile = (_: { path?: string }) => {
 		if (error && errorRef.current) {
 			window.scrollTo(0, errorRef.current.offsetTop - 20);
 		}
-	}, [error]);
+	}, [error, errorRef]);
 
 	const loader = (
 		<WithStandardTopMargin>

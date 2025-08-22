@@ -24,10 +24,11 @@ import { useNavigate } from 'react-router';
 import { formatAmount } from '@/client/utilities/utils';
 import { dateString } from '../../../../shared/dates';
 import type {
+	BillingPeriod,
 	PaidSubscriptionPlan,
 	Subscription,
 } from '../../../../shared/productResponse';
-import type { PreviewResponse } from '../../../../shared/productSwitchTypes';
+import type { SwitchPreviewResponse } from '../../../../shared/productSwitchTypes';
 import {
 	buttonCentredCss,
 	buttonContainerCss,
@@ -39,11 +40,8 @@ import {
 } from '../../../styles/GenericStyles';
 import { fetchWithDefaultParameters } from '../../../utilities/fetch';
 import { LoadingState } from '../../../utilities/hooks/useAsyncLoader';
-import {
-	calculateAmountPayableToday,
-	calculateCheckChargeAmountBeforeUpdate,
-} from '../../../utilities/productMovePreview';
-import { productMoveFetch } from '../../../utilities/productUtils';
+import { calculateAmountPayableToday } from '../../../utilities/productMovePreview';
+import { contribToSupporterPlusFetch } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { SwitchErrorSummary } from '../../shared/productSwitch/SwitchErrorSummary';
 import { SwitchPaymentInfo } from '../../shared/productSwitch/SwitchPaymentInfo';
@@ -169,7 +167,7 @@ const RoundUp = ({
 	thresholdAmount: number;
 	chosenAmountPreRoundup: number;
 	currencySymbol: string;
-	billingPeriod: string;
+	billingPeriod: BillingPeriod;
 }) => {
 	const [hasRoundedUp, setHasRoundedUp] = useState<boolean>(false);
 
@@ -248,7 +246,7 @@ interface ConfirmFormProps {
 	setChosenAmount: Dispatch<SetStateAction<number | null>>;
 	threshold: number;
 	suggestedAmounts: number[];
-	previewResponse: PreviewResponse | null;
+	previewResponse: SwitchPreviewResponse | null;
 	previewLoadingState: LoadingState;
 }
 
@@ -260,7 +258,7 @@ export const ConfirmForm = ({
 	previewResponse,
 	previewLoadingState,
 }: ConfirmFormProps) => {
-	const { mainPlan, subscription, inPaymentFailure } = useContext(
+	const { mainPlan, subscription, inPaymentFailure, isTestUser } = useContext(
 		UpgradeSupportContext,
 	) as UpgradeSupportInterface;
 
@@ -303,9 +301,6 @@ export const ConfirmForm = ({
 		'd MMMM',
 	);
 
-	const checkChargeAmount =
-		calculateCheckChargeAmountBeforeUpdate(amountPayableToday);
-
 	const confirmOnClick = async () => {
 		if (isConfirmationLoading) {
 			return;
@@ -327,12 +322,10 @@ export const ConfirmForm = ({
 
 		try {
 			if (aboveThreshold) {
-				const data = await productMoveFetch(
+				const data = await contribToSupporterPlusFetch(
 					subscription.subscriptionId,
-					chosenAmount,
-					'recurring-contribution-to-supporter-plus',
-					checkChargeAmount,
 					false,
+					isTestUser,
 				).then((r) => JsonResponseHandler(r));
 
 				if (data === null) {

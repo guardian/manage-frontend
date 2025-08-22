@@ -35,6 +35,13 @@ interface RouterSate extends DiscountPreviewResponse {
 	eligibleForFreePeriodOffer: boolean;
 }
 
+const headingWithContentAbove = css`
+	margin-bottom: ${space[6]}px;
+`;
+const headingWithoutContentAbove = css`
+	margin: ${space[9]}px 0 ${space[6]}px;
+`;
+
 const copyCss = css`
 	${textEgyptian17};
 `;
@@ -100,41 +107,51 @@ export const ConfirmCancellation = () => {
 
 	const subscription = productDetail.subscription;
 
-	const alternativeIsOffer = productType.productType === 'supporterplus';
-	const alternativeIsPause = productType.productType === 'contributions';
+	const productIsSubscription = productType.productType === 'supporterplus'; // will we migrate other product like Guardian weekly over to this cancellation flow at some point?
+	const productIsContribution = productType.productType === 'contributions';
+	const productIsGuardianAdLite =
+		productType.productType === 'guardianadlite';
+
+	const isInTrialPeriod = subscription.trialLength > 0;
+
+	const progressStepperArray = [
+		{},
+		{},
+		{ isCurrentStep: !routerState.eligibleForFreePeriodOffer },
+		{ isCurrentStep: routerState.eligibleForFreePeriodOffer },
+	];
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle(
 			`Cancel ${groupedProductType.friendlyName}`,
 		);
-	}, []);
+	}, [groupedProductType.friendlyName, pageTitleContext]);
 
 	return (
 		<>
-			<ProgressStepper
-				steps={[
-					{},
-					{},
-					{ isCurrentStep: !routerState.eligibleForFreePeriodOffer },
-					{ isCurrentStep: routerState.eligibleForFreePeriodOffer },
-				]}
-				additionalCSS={css`
-					margin: ${space[8]}px 0 ${space[9]}px;
-				`}
-			/>
+			{productType.cancellation?.reasons && (
+				<ProgressStepper
+					steps={progressStepperArray}
+					additionalCSS={css`
+						margin: ${space[8]}px 0 ${space[9]}px;
+					`}
+				/>
+			)}
 			<Heading
 				borderless
 				cssOverrides={[
 					measure.heading,
-					css`
-						margin-bottom: ${space[6]}px;
-					`,
+					productType.cancellation?.reasons
+						? headingWithContentAbove
+						: headingWithoutContentAbove,
 				]}
 			>
-				Is this really goodbye?
+				{productIsGuardianAdLite
+					? `Cancel your ${productType.productTitle()} subscription`
+					: 'Is this really goodbye?'}
 			</Heading>
 			<div css={copyCss}>
-				{alternativeIsOffer && (
+				{(productIsSubscription && (
 					<>
 						<p>
 							If you confirm your cancellation, you will lose the
@@ -160,13 +177,31 @@ export const ConfirmCancellation = () => {
 							</p>
 						)}
 					</>
-				)}
-				{alternativeIsPause && (
-					<p>
-						If you confirm your cancellation, you will no longer be
-						supporting the Guardian's reader-funded journalism.
-					</p>
-				)}
+				)) ||
+					(productIsContribution && (
+						<p>
+							If you confirm your cancellation, you will no longer
+							be supporting the Guardian's reader-funded
+							journalism.
+						</p>
+					)) ||
+					(productIsGuardianAdLite && (
+						<>
+							<p>
+								If you confirm your cancellation you will start
+								to see personalised advertising on the Guardian
+								website across your devices from{' '}
+								{!isInTrialPeriod &&
+								subscription.potentialCancellationDate
+									? parseDate(
+											subscription.potentialCancellationDate,
+											'yyyy-MM-dd',
+									  ).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)
+									: 'now on'}
+								.
+							</p>
+						</>
+					))}
 				<div css={buttonsCtaHolder}>
 					<Button
 						cssOverrides={ctaBtnCss}
@@ -185,8 +220,9 @@ export const ConfirmCancellation = () => {
 							navigate('/');
 						}}
 					>
-						{alternativeIsOffer && 'Keep my subscription'}
-						{alternativeIsPause && 'Keep supporting'}
+						{productIsSubscription || productIsGuardianAdLite
+							? 'Keep my subscription'
+							: 'Keep supporting'}
 					</Button>
 				</div>
 			</div>

@@ -3,14 +3,36 @@ import {
 	baseContribution,
 	baseDigitalPack,
 	baseDigitalVoucher,
+	baseDigitalVoucherObserver,
+	baseDigitalVoucherPlus,
+	baseGuardianAdLite,
 	baseGuardianWeekly,
 	baseHomeDelivery,
+	baseHomeDeliverySaturdayPlus,
 	baseMembership,
 	baseNationalDelivery,
+	baseNationalDeliveryPlus,
+	baseObserverDelivery,
+	basePatron,
 	baseSupporterPlus,
 	baseTierThree,
+	baseVoucher,
+	baseVoucherObserver,
+	baseVoucherPlus,
 } from './baseProducts';
 import { cards, ProductBuilder } from './productBuilder';
+
+export function voucherPaidByCard() {
+	return new ProductBuilder(baseVoucher())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function voucherPlusPaidByCard() {
+	return new ProductBuilder(baseVoucherPlus())
+		.payByCard()
+		.getProductDetailObject();
+}
 
 export function guardianWeeklyPaidByCard() {
 	return new ProductBuilder(baseGuardianWeekly())
@@ -75,14 +97,27 @@ export function monthlyContributionPaidByCard() {
 		.getProductDetailObject();
 }
 
+export function annualContributionPaidByCardUSA(price?: number) {
+	return new ProductBuilder(baseContribution())
+		.payByCard()
+		.withBillingPeriod('year')
+		.withCurrency('USD')
+		.withPrice(price ?? 300)
+		.inUSA()
+		.getProductDetailObject();
+}
+
 export function annualContributionPaidByCardWithCurrency(
 	currency: CurrencyIso,
+	billingCountry: string,
+	price?: number,
 ) {
 	return new ProductBuilder(baseContribution())
 		.payByCard()
 		.withBillingPeriod('year')
 		.withCurrency(currency)
-		.withPrice(300)
+		.withPrice(price ?? 300)
+		.inBillingCountry(billingCountry)
 		.getProductDetailObject();
 }
 
@@ -146,9 +181,21 @@ export function nonServicedCountryContributor() {
 		.getProductDetailObject();
 }
 
-export function newspaperVoucherPaidByPaypal(email?: string) {
+export function newspaperDigitalVoucherObserver() {
+	return new ProductBuilder(baseDigitalVoucherObserver())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function newspaperDigitalVoucherPaidByPaypal(email?: string) {
 	return new ProductBuilder(baseDigitalVoucher())
 		.payByPayPal(email)
+		.getProductDetailObject();
+}
+
+export function newspaperdigitalVoucherPlusPaidByCard() {
+	return new ProductBuilder(baseDigitalVoucherPlus())
+		.payByCard()
 		.getProductDetailObject();
 }
 
@@ -158,8 +205,39 @@ export function homeDelivery() {
 		.getProductDetailObject();
 }
 
+export function homeDeliveryWithInstructions(instructions: string) {
+	return new ProductBuilder(baseHomeDelivery())
+		.withDeliveryInstructions(instructions)
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function observerVoucherPaidByCard() {
+	return new ProductBuilder(baseVoucherObserver())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function observerDelivery() {
+	return new ProductBuilder(baseObserverDelivery())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function observerDeliveryPaidByDirectDebit() {
+	return new ProductBuilder(baseObserverDelivery())
+		.payByDirectDebit()
+		.getProductDetailObject();
+}
+
 export function nationalDelivery() {
 	return new ProductBuilder(baseNationalDelivery())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function nationalDeliveryPlus() {
+	return new ProductBuilder(baseNationalDeliveryPlus())
 		.payByCard()
 		.getProductDetailObject();
 }
@@ -194,7 +272,7 @@ export function membershipSupporterCurrencyUSD() {
 export function membershipStaff() {
 	return new ProductBuilder(baseMembership())
 		.payByCard()
-		.tier('Staff Membership')
+		.product('Staff Membership')
 		.withNoCurrentPlans()
 		.getProductDetailObject();
 }
@@ -202,6 +280,13 @@ export function membershipStaff() {
 export function supporterPlus() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()
+		.getProductDetailObject();
+}
+
+export function supporterPlusUSA() {
+	return new ProductBuilder(baseSupporterPlus())
+		.payByCard()
+		.inUSA()
 		.getProductDetailObject();
 }
 
@@ -252,8 +337,41 @@ export function supporterPlusInOfferPeriod() {
 		.getProductDetailObject();
 }
 
+export function guardianAdLite() {
+	return new ProductBuilder(baseGuardianAdLite())
+		.payByCard()
+		.withPotentialCancellationDate()
+		.getProductDetailObject();
+}
+
+export function guardianAdLiteInTrialPeriod() {
+	return new ProductBuilder(baseGuardianAdLite())
+		.payByCard()
+		.inTrialPeriod()
+		.getProductDetailObject();
+}
+
+export function guardianAdLiteCancelled() {
+	return new ProductBuilder(baseGuardianAdLite())
+		.payByCard()
+		.cancel()
+		.getProductDetailObject();
+}
+
 export function tierThree() {
 	return new ProductBuilder(baseTierThree())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function homeDeliverySaturdayPlus() {
+	return new ProductBuilder(baseHomeDeliverySaturdayPlus())
+		.payByCard()
+		.getProductDetailObject();
+}
+
+export function patron() {
+	return new ProductBuilder(basePatron())
 		.payByCard()
 		.getProductDetailObject();
 }

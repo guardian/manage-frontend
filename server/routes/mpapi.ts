@@ -41,6 +41,7 @@ router.get(
 				`Missing identity ID on the request object when fetching mobile subscriptions`,
 			);
 			res.status(500).send();
+			return;
 		}
 
 		const options = getOptions('GET', config, res.locals.identity.userId);

@@ -10,7 +10,7 @@ interface MarketingToggleProps {
 	title?: string;
 	selected?: boolean;
 	divCss?: SerializedStyles;
-	onClick: (id: string) => {};
+	onClick: (id: string) => unknown;
 }
 
 const getDescription = (description: MarketingToggleProps['description']) => (
@@ -21,6 +21,7 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 	const { id, description, selected, title, onClick } = props;
 	return (
 		<div
+			key={id}
 			data-cy={id}
 			css={[
 				standardSansText,
@@ -34,7 +35,6 @@ export const MarketingToggle: FC<MarketingToggleProps> = (props) => {
 			<div css={{ left: 0 }}>
 				<ToggleSwitch
 					cssOverrides={css`
-						${standardSansText};
 						display: flex;
 						button {
 							align-self: flex-start;
