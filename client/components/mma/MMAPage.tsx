@@ -1,5 +1,6 @@
 import { css, Global } from '@emotion/react';
 import { ABProvider, useAB } from '@guardian/ab-react';
+import { recordEvent } from '@guardian/ophan-tracker-js';
 import { breakpoints, from, space } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
@@ -37,12 +38,7 @@ import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
 import { SignInError } from './signInError/SignInError';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Ophan events are diverse (and unguessable?)
-const record = (event: any) => {
-	if (typeof window !== 'undefined' && window.guardian?.ophan) {
-		window.guardian.ophan.record(event);
-	}
-};
+// Clean typed function from ophan-tracker-js - no more window.guardian access needed!
 
 initFeatureSwitchUrlParamOverride();
 
@@ -933,7 +929,7 @@ export const MMAPage = (
 		pageIsSensitive={false}
 		mvtMaxValue={1000000}
 		mvtId={getMvtId()}
-		ophanRecord={record}
+		ophanRecord={recordEvent}
 	>
 		<BrowserRouter>
 			<MMARouter />

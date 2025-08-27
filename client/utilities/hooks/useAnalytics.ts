@@ -1,5 +1,4 @@
 import { loadScript } from '@guardian/libs';
-import '@guardian/ophan-tracker-js/MMA'; // This sets up window.guardian.ophan
 import * as Sentry from '@sentry/browser';
 import { useEffect, useRef } from 'react';
 
@@ -21,20 +20,17 @@ export const useAnalytics = () => {
 			});
 		};
 
-		const initialiseOphen = () => {
-			if (
-				window.guardian &&
-				window.guardian.ophan &&
-				window.guardian.ophan.sendInitialEvent
-			) {
-				if (window.guardian.spaTransition) {
-					window.guardian.ophan.sendInitialEvent(
-						window.location.href,
-					);
-				} else {
-					// tslint:disable-next-line:no-object-mutation
-					window.guardian.spaTransition = true;
-				}
+		const initialiseOphen = async () => {
+			// Dynamic import to avoid server-side execution
+			const { sendInitialEvent } = await import(
+				'@guardian/ophan-tracker-js'
+			);
+
+			if (window.guardian.spaTransition) {
+				sendInitialEvent(window.location.href);
+			} else {
+				// tslint:disable-next-line:no-object-mutation
+				window.guardian.spaTransition = true;
 			}
 		};
 

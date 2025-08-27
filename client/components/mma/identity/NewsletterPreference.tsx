@@ -1,4 +1,4 @@
-import '@guardian/ophan-tracker-js/MMA'; // Sets up window.guardian.ophan
+// recordComponentEvent will be dynamically imported when needed
 import { css } from '@emotion/react';
 import {
 	palette,
@@ -89,21 +89,30 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 	} = props;
 	const accessibleLabel = `${title} (${frequency})`;
 
-	const interact = () => {
+	const interact = async () => {
 		onClick(id);
 		// If we have an identityName id then this is a newsletter subscription event
 		// and we want to log it in Ophan
-		if (identityName) {
-			window?.guardian?.ophan?.record({
-				componentEvent: {
+		if (identityName && typeof window !== 'undefined') {
+			try {
+				const { recordComponentEvent } = await import(
+					'@guardian/ophan-tracker-js'
+				);
+				recordComponentEvent({
 					component: {
 						componentType: 'NEWSLETTER_SUBSCRIPTION',
 						id: identityName,
 					},
 					action: 'CLICK',
 					value: selected ? 'untick' : 'tick',
-				},
-			});
+				});
+			} catch (error) {
+				// Silently fail if ophan tracking fails
+				console.warn(
+					'Failed to record newsletter component event:',
+					error,
+				);
+			}
 		}
 	};
 
