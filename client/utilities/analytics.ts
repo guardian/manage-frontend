@@ -1,3 +1,4 @@
+import ophan from '@guardian/ophan-tracker-js/MMA';
 import type { ProductDetail } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
 
@@ -14,7 +15,7 @@ interface Event {
 
 export const MMA_AB_TEST_DIMENSION_VALUE = ''; // this can be used for a/b testing
 
-export const trackEvent = async ({
+export const trackEvent = ({
 	eventCategory,
 	eventAction,
 	product,
@@ -25,9 +26,6 @@ export const trackEvent = async ({
 	if (typeof window === 'undefined') {
 		return;
 	}
-
-	// Dynamic import to avoid server-side execution
-	const { recordComponentEvent } = await import('@guardian/ophan-tracker-js');
 
 	const ophanProduct =
 		product &&
@@ -42,17 +40,19 @@ export const trackEvent = async ({
 		...(MMA_AB_TEST_DIMENSION_VALUE ? [MMA_AB_TEST_DIMENSION_VALUE] : []),
 	];
 
-	// Use the clean function export with dynamic import
-	recordComponentEvent({
-		component: {
-			componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
-			products: ophanProduct ? [ophanProduct] : undefined,
-			campaignCode: window.guardian.INTCMP,
-			labels,
+	// Use the record function directly from MMA export
+	ophan.record({
+		componentEvent: {
+			component: {
+				componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
+				products: ophanProduct ? [ophanProduct] : undefined,
+				campaignCode: window.guardian.INTCMP,
+				labels,
+			},
+			action: 'VIEW',
+			value: eventValue !== undefined ? `${eventValue}` : undefined,
+			abTest: window.guardian.abTest,
 		},
-		action: 'VIEW',
-		value: eventValue !== undefined ? `${eventValue}` : undefined,
-		abTest: window.guardian.abTest,
 	});
 };
 

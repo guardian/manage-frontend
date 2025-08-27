@@ -30,7 +30,7 @@ const buildAcquisitionData = (componentId: string) => ({
 	source: 'GUARDIAN_WEB',
 	componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
 	componentId,
-	referrerPageviewId: undefined, // Skip pageViewId to avoid async complications
+	referrerPageviewId: hasWindow ? window.guardian.ophan?.viewId : undefined,
 	referrerUrl: hasWindow ? window.location.href : undefined,
 });
 
