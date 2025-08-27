@@ -1,4 +1,4 @@
-import type { Product } from '@guardian/ophan-tracker-js/MMA';
+import type { Product } from '@guardian/ophan-tracker-js';
 import type { ReactNode } from 'react';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
 import { shuffledTierThreeCancellationReasons } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationReasons';
@@ -900,7 +900,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		allProductsProductTypeFilterString: 'GuardianAdLite',
 		urlPart: 'guardianadlite',
 		checkoutUrlPart: '/guardian-ad-lite', // https://support.theguardian.com/uk/guardian-ad-lite
-		getOphanProductType: () => 'GUARDIAN_AD_LITE',
+		getOphanProductType: () => undefined, // Ad Lite not tracked in Ophan
 		softOptInIDs: [SoftOptInIDs.SupportOnboarding],
 		cancellation: {
 			sfCaseProduct: 'Guardian Ad-Lite',

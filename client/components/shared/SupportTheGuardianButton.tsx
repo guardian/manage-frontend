@@ -1,5 +1,4 @@
 import url from 'url';
-import ophan from '@guardian/ophan-tracker-js/MMA';
 import {
 	LinkButton,
 	SvgArrowRightStraight,
@@ -31,7 +30,10 @@ const buildAcquisitionData = (componentId: string) => ({
 	source: 'GUARDIAN_WEB',
 	componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
 	componentId,
-	referrerPageviewId: hasWindow && ophan ? ophan.viewId : undefined,
+	referrerPageviewId:
+		hasWindow && window.guardian?.ophan
+			? window.guardian.ophan.viewId
+			: undefined,
 	referrerUrl: hasWindow ? window.location.href : undefined,
 });
 

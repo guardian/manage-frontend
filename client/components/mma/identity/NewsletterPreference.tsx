@@ -1,4 +1,4 @@
-import ophan from '@guardian/ophan-tracker-js/MMA';
+import '@guardian/ophan-tracker-js/MMA'; // Sets up window.guardian.ophan
 import { css } from '@emotion/react';
 import {
 	palette,

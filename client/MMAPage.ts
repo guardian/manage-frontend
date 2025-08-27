@@ -2,8 +2,6 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import * as Sentry from '@sentry/browser';
 import '@guardian/ophan-tracker-js/MMA';
-import { render } from 'react-dom';
-import 'ophan-tracker-js/build/ophan.manage-my-account';
 import { createRoot } from 'react-dom/client';
 import { MMAPage } from './components/mma/MMAPage';
 

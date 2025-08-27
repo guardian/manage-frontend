@@ -2697,17 +2697,13 @@
     yaml "^1.7.2"
     yargs "^15.4.1"
 
-"@guardian/ophan-tracker-js@0.0.0-canary-20241023094429":
-  version "0.0.0-canary-20241023094429"
-  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-0.0.0-canary-20241023094429.tgz#b47de95ba573e1817ce6165d6bf6139a21b0a2a7"
-  integrity sha512-bhwuQeKJLlO/zylRKPN0Q2xyfHTddEIxX3BnfxorkZWHKP8uesyMrC7lvSuGpO6RnL4A7KA6dL5JgeZEuW3K7Q==
+"@guardian/ophan-tracker-js@2.4.4":
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-2.4.4.tgz#073d0e225a4a7654bc8b9bc210c9085be0f01a8d"
+  integrity sha512-7Nd9p1cuEaXSkisxTQuR6VUX9yxYvEeBMv9HBwAJ/BFUMDprPQhnr5oDGZVnAyd6iVzvCPoH4BN5hkICYP60cg==
   dependencies:
     "@guardian/tsconfig" "^1.0.0"
 
-"@guardian/prebid.js@8.52.0-3":
-  version "8.52.0-3"
-  resolved "https://registry.yarnpkg.com/@guardian/prebid.js/-/prebid.js-8.52.0-3.tgz#da72200e0bb92ca00182fbaae96463437cdb573d"
-  integrity sha512-Euwnn6kbuYFO2HXjScjNMYqi02lmqi6AItkPOZLHXc5RhXr8tTbO8+rmUnXrXWXavxkuQy2yudUdpDqadPLV6Q==
 "@guardian/prebid.js@8.52.0-8":
   version "8.52.0-8"
   resolved "https://registry.yarnpkg.com/@guardian/prebid.js/-/prebid.js-8.52.0-8.tgz#83b75ead885b085df5d871aa490ee10533f2b1df"
@@ -2760,10 +2756,6 @@
   resolved "https://registry.yarnpkg.com/@guardian/tsconfig/-/tsconfig-1.0.0.tgz#c86b8cf51ccb53b2783eeffb6d5f256c59094217"
   integrity sha512-xgajw/jq4lEtQoN72vnmiXeRnejUcd3DgNFmH6TfAbWV6NRK4KC4hAjzKf0H69zBSJMxEfFVfGKP9wBzGII7qg==
 
-"@humanwhocodes/config-array@^0.11.11":
-  version "0.11.11"
-  resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.11.tgz#88a04c570dbbc7dd943e4712429c3df09bc32844"
-  integrity sha512-N2brEuAadi0CcdeMXUkhbZB84eskAc8MEX1By6qEchoVywSgXPIjou4rYsl0V3Hj0ZnuGycGCjdNgockbzeWNA==
 "@humanfs/core@^0.19.1":
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/@humanfs/core/-/core-0.19.1.tgz#17c55ca7d426733fe3c561906b8173c336b40a77"

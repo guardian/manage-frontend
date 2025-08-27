@@ -1,5 +1,5 @@
 import { loadScript } from '@guardian/libs';
-import ophan from '@guardian/ophan-tracker-js/MMA';
+import '@guardian/ophan-tracker-js/MMA'; // This sets up window.guardian.ophan
 import * as Sentry from '@sentry/browser';
 import { useEffect, useRef } from 'react';
 
