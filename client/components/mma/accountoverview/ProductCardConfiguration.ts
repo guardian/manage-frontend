@@ -21,6 +21,7 @@ export const productColour = {
 	digital: palette.sport[100],
 	guardianWeekly: '#cadbe8',
 	puzzleApp: palette.lifestyle[300],
+	feastApp: palette.brand[800], // Same color as Live app (inAppPurchase)
 };
 
 type ExclusiveBenefitsSections =

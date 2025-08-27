@@ -54,3 +54,10 @@ export function determineAppStore(subscription: AppSubscription) {
 export function isPuzzle(subscription: AppSubscription) {
 	return subscription.productId.includes('puzzles');
 }
+
+export function isFeast(subscription: AppSubscription) {
+	return (
+		subscription.productId.includes('Feast') ||
+		subscription.productId.includes('feast')
+	);
+}
