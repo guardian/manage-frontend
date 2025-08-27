@@ -1,6 +1,6 @@
 import { css, Global } from '@emotion/react';
 import { ABProvider, useAB } from '@guardian/ab-react';
-import { recordEvent } from '@guardian/ophan-tracker-js';
+import ophan from '@guardian/ophan-tracker-js/MMA';
 import { breakpoints, from, space } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
@@ -929,7 +929,7 @@ export const MMAPage = (
 		pageIsSensitive={false}
 		mvtMaxValue={1000000}
 		mvtId={getMvtId()}
-		ophanRecord={recordEvent}
+		ophanRecord={ophan.record}
 	>
 		<BrowserRouter>
 			<MMARouter />
