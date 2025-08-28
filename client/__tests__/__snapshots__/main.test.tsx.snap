@@ -604,7 +604,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://undefined/about"
+                    href="https://thegulocal.com/about"
                   >
                     About us
                   </a>
@@ -614,7 +614,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://undefined/help/contact-us"
+                    href="https://thegulocal.com/help/contact-us"
                   >
                     Contact us
                   </a>
@@ -624,7 +624,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://undefined/info/complaints-and-corrections"
+                    href="https://thegulocal.com/info/complaints-and-corrections"
                   >
                     Complaints & corrections
                   </a>
@@ -634,7 +634,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://undefined/securedrop"
+                    href="https://thegulocal.com/securedrop"
                   >
                     Secure Drop
                   </a>
@@ -644,7 +644,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://workforus.undefined"
+                    href="https://workforus.thegulocal.com"
                   >
                     Work for us
                   </a>
@@ -665,7 +665,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://undefined/info/privacy"
+                    href="https://thegulocal.com/info/privacy"
                   >
                     Privacy policy
                   </a>
@@ -675,7 +675,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://undefined/info/cookies"
+                    href="https://thegulocal.com/info/cookies"
                   >
                     Cookie policy
                   </a>
@@ -685,7 +685,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://www.undefined/help/terms-of-service"
+                    href="https://www.thegulocal.com/help/terms-of-service"
                   >
                     Terms & conditions
                   </a>
@@ -695,7 +695,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://www.undefined/help"
+                    href="https://www.thegulocal.com/help"
                   >
                     Help
                   </a>
@@ -709,7 +709,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://undefined/index/subjects/a"
+                    href="https://thegulocal.com/index/subjects/a"
                   >
                     All topics
                   </a>
@@ -719,7 +719,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://undefined/index/contributors"
+                    href="https://thegulocal.com/index/contributors"
                   >
                     All writers
                   </a>
@@ -763,7 +763,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://advertising.undefined"
+                    href="https://advertising.thegulocal.com"
                   >
                     Advertise with us
                   </a>
@@ -773,7 +773,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://undefined/guardian-labs"
+                    href="https://thegulocal.com/guardian-labs"
                   >
                     Guardian Labs
                   </a>
@@ -783,7 +783,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://jobs.undefined/?INTCMP=NGW_FOOTER_UK_GU_JOBS"
+                    href="https://jobs.thegulocal.com/?INTCMP=NGW_FOOTER_UK_GU_JOBS"
                   >
                     Search jobs
                   </a>
@@ -793,7 +793,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-16"
-                    href="https://patrons.undefined/?INTCMP=footer_patrons"
+                    href="https://patrons.thegulocal.com/?INTCMP=footer_patrons"
                   >
                     Patrons
                   </a>
@@ -812,7 +812,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-58"
-                    href="https://support.theguardian.com/contribute?INTCMP=mma_footer_support_contribute&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_contribute%22%2C%22referrerPageviewId%22%3A%22meu7ynw4i5anffr7em7v%22%2C%22referrerUrl%22%3A%22http%3A%2F%2Flocalhost%2F%22%7D&displayExistingPaymentOptions=true"
+                    href="https://support.thegulocal.com/contribute?INTCMP=mma_footer_support_contribute&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_contribute%22%7D&displayExistingPaymentOptions=true"
                     onClick={[Function]}
                   >
                     Support us
