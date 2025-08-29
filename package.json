@@ -164,7 +164,7 @@
     "node-fetch": "2.6.7",
     "number-to-words": "1.2.4",
     "openid-client": "5.6.1",
-    "@guardian/ophan-tracker-js": "2.4.4",
+    "@guardian/ophan-tracker-js": "file:/Users/jonathan_flynn/Documents/guardian_repos/ophan/tracker-js",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router": "6.2.2",

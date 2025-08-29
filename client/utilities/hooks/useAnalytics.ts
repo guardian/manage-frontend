@@ -1,5 +1,5 @@
 import { loadScript } from '@guardian/libs';
-import ophan from '@guardian/ophan-tracker-js/MMA';
+import { init, sendInitialEvent } from '@guardian/ophan-tracker-js/MMA';
 import * as Sentry from '@sentry/browser';
 import { useEffect, useRef } from 'react';
 
@@ -23,8 +23,9 @@ export const useAnalytics = () => {
 
 		const initialiseOphen = () => {
 			if (window.guardian.spaTransition) {
-				ophan.sendInitialEvent(window.location.href);
+				sendInitialEvent(window.location.href);
 			} else {
+				init();
 				// tslint:disable-next-line:no-object-mutation
 				window.guardian.spaTransition = true;
 			}

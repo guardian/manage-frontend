@@ -1,4 +1,4 @@
-import ophan from '@guardian/ophan-tracker-js/MMA';
+import { record } from '@guardian/ophan-tracker-js/MMA';
 import type { ProductDetail } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
 
@@ -41,17 +41,17 @@ export const trackEvent = ({
 	];
 
 	// Use the record function directly from MMA export
-	ophan.record({
+	record({
 		componentEvent: {
 			component: {
 				componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
 				products: ophanProduct ? [ophanProduct] : undefined,
-				campaignCode: window.guardian.INTCMP,
+				campaignCode: window.guardian?.INTCMP,
 				labels,
 			},
 			action: 'VIEW',
 			value: eventValue !== undefined ? `${eventValue}` : undefined,
-			abTest: window.guardian.abTest,
+			abTest: window.guardian?.abTest,
 		},
 	});
 };

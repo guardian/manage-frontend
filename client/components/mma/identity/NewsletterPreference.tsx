@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import ophan from '@guardian/ophan-tracker-js/MMA';
+import { record } from '@guardian/ophan-tracker-js/MMA';
 import {
 	palette,
 	space,
@@ -94,7 +94,7 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 		// If we have an identityName id then this is a newsletter subscription event
 		// and we want to log it in Ophan
 		if (identityName && typeof window !== 'undefined') {
-			ophan.record({
+			record({
 				componentEvent: {
 					component: {
 						componentType: 'NEWSLETTER_SUBSCRIPTION',

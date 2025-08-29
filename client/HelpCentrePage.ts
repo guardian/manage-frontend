@@ -4,9 +4,11 @@ import * as Sentry from '@sentry/browser';
 import { createRoot } from 'react-dom/client';
 import { HelpCentrePage } from './components/helpCentre/HelpCentrePage';
 
-// Initialize ophan on client side only (should the library handle this??)
+// Initialize ophan on client side only
 if (typeof window !== 'undefined') {
-	import('@guardian/ophan-tracker-js/MMA');
+	import('@guardian/ophan-tracker-js/MMA').then(({ init }) => {
+		init();
+	});
 }
 
 declare let WEBPACK_BUILD: string;

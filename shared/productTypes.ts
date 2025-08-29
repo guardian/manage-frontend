@@ -1,4 +1,4 @@
-import type { Product } from '@guardian/ophan-tracker-js';
+import type { Product } from '@guardian/ophan-tracker-js/MMA';
 import type { ReactNode } from 'react';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
 import { shuffledTierThreeCancellationReasons } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationReasons';

@@ -1,4 +1,4 @@
-import type { EventPayload } from '@guardian/ophan-tracker-js';
+import type { EventPayload } from '@guardian/ophan-tracker-js/MMA';
 import type { StripePublicKeySet } from '../server/stripeSetupIntentConfig';
 import type { AbTest } from './ophanTypes';
 
