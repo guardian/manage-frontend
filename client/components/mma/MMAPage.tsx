@@ -38,8 +38,6 @@ import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
 import { SignInError } from './signInError/SignInError';
 
-// Clean typed function from ophan-tracker-js - no more window.guardian access needed!
-
 initFeatureSwitchUrlParamOverride();
 
 // The code below uses magic comments to instruct Webpack on
