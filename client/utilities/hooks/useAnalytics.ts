@@ -1,5 +1,5 @@
 import { loadScript } from '@guardian/libs';
-import { init, sendInitialEvent } from '@guardian/ophan-tracker-js/MMA';
+import { init, sendInitialEvent } from '@guardian/ophan-tracker-js';
 import * as Sentry from '@sentry/browser';
 import { useEffect, useRef } from 'react';
 
@@ -25,7 +25,7 @@ export const useAnalytics = () => {
 			if (window.guardian.spaTransition) {
 				sendInitialEvent(window.location.href);
 			} else {
-				init();
+				init('manage-my-account');
 				// tslint:disable-next-line:no-object-mutation
 				window.guardian.spaTransition = true;
 			}

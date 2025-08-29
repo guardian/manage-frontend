@@ -1,4 +1,5 @@
 import url from 'url';
+import { viewId } from '@guardian/ophan-tracker-js';
 import {
 	LinkButton,
 	SvgArrowRightStraight,
@@ -30,7 +31,7 @@ const buildAcquisitionData = (componentId: string) => ({
 	source: 'GUARDIAN_WEB',
 	componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
 	componentId,
-	referrerPageviewId: hasWindow ? window.guardian.ophan?.viewId : undefined,
+	referrerPageviewId: hasWindow ? viewId : undefined,
 	referrerUrl: hasWindow ? window.location.href : undefined,
 });
 

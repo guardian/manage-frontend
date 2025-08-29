@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { record } from '@guardian/ophan-tracker-js/MMA';
+import { record } from '@guardian/ophan-tracker-js';
 import {
 	palette,
 	space,

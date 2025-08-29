@@ -1,6 +1,6 @@
 import { css, Global } from '@emotion/react';
 import { ABProvider, useAB } from '@guardian/ab-react';
-import { record } from '@guardian/ophan-tracker-js/MMA';
+import { record } from '@guardian/ophan-tracker-js';
 import { breakpoints, from, space } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';

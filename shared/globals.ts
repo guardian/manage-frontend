@@ -1,4 +1,3 @@
-import type { EventPayload } from '@guardian/ophan-tracker-js/MMA';
 import type { StripePublicKeySet } from '../server/stripeSetupIntentConfig';
 import type { AbTest } from './ophanTypes';
 
@@ -23,11 +22,6 @@ export interface Globals extends CommonGlobals {
 	stripeKeyAustralia?: StripePublicKeySet;
 	stripeKeyDefaultCurrencies?: StripePublicKeySet;
 	stripeKeyTortoiseMedia?: StripePublicKeySet;
-	ophan?: {
-		sendInitialEvent: (url?: string, referrer?: string) => void;
-		record: (event: EventPayload) => void;
-		viewId: string;
-	};
 }
 interface QuantumMetricAPIPartial {
 	sendEvent: (

@@ -2702,6 +2702,11 @@
   dependencies:
     "@guardian/tsconfig" "^1.0.0"
 
+"@guardian/ophan-tracker-js@file:/Users/jonathan_flynn/Documents/guardian_repos/ophan/tracker-js":
+  version "2.4.4"
+  dependencies:
+    "@guardian/tsconfig" "^1.0.0"
+
 "@guardian/prebid.js@8.52.0-8":
   version "8.52.0-8"
   resolved "https://registry.npmjs.org/@guardian/prebid.js/-/prebid.js-8.52.0-8.tgz"

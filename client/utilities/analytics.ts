@@ -1,4 +1,4 @@
-import { record } from '@guardian/ophan-tracker-js/MMA';
+import { record } from '@guardian/ophan-tracker-js';
 import type { ProductDetail } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
 
