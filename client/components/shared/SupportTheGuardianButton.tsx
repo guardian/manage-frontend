@@ -1,5 +1,4 @@
 import url from 'url';
-import { viewId } from '@guardian/ophan-tracker-js';
 import {
 	LinkButton,
 	SvgArrowRightStraight,
@@ -7,6 +6,7 @@ import {
 	themeButtonReaderRevenueBrand,
 	themeButtonReaderRevenueBrandAlt,
 } from '@guardian/source/react-components';
+import React from 'react';
 import { conf } from '../../../server/config';
 import { trackEvent } from '../../utilities/analytics';
 
@@ -27,31 +27,53 @@ if (hasWindow) {
 	domain = conf.DOMAIN;
 }
 
-const buildAcquisitionData = (componentId: string) => ({
-	source: 'GUARDIAN_WEB',
-	componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
-	componentId,
-	referrerPageviewId: hasWindow ? viewId : undefined,
-	referrerUrl: hasWindow ? window.location.href : undefined,
-});
+const buildAcquisitionData = async (componentId: string) => {
+	let referrerPageviewId: string | undefined;
 
-const buildSupportHref = (props: SupportTheGuardianButtonProps) =>
-	url.format({
+	if (hasWindow) {
+		try {
+			const { viewId } = await import('@guardian/ophan-tracker-js/MMA');
+			referrerPageviewId = viewId;
+		} catch {
+			referrerPageviewId = undefined;
+		}
+	}
+
+	return {
+		source: 'GUARDIAN_WEB',
+		componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
+		componentId,
+		referrerPageviewId,
+		referrerUrl: hasWindow ? window.location.href : undefined,
+	};
+};
+
+const buildSupportHref = async (props: SupportTheGuardianButtonProps) => {
+	const acquisitionData = await buildAcquisitionData(
+		`mma_${props.supportReferer}`,
+	);
+
+	return url.format({
 		protocol: 'https',
 		host: `support.${domain || 'theguardian.com'}`,
 		pathname: props.urlSuffix || 'contribute',
 		query: {
 			INTCMP: `mma_${props.supportReferer}`,
-			acquisitionData: JSON.stringify(
-				buildAcquisitionData(`mma_${props.supportReferer}`),
-			),
+			acquisitionData: JSON.stringify(acquisitionData),
 			displayExistingPaymentOptions: true,
 		},
 	});
+};
 
 export const SupportTheGuardianButton = (
 	props: SupportTheGuardianButtonProps,
 ) => {
+	const [href, setHref] = React.useState<string>('');
+
+	React.useEffect(() => {
+		buildSupportHref(props).then(setHref);
+	}, [props]);
+
 	const mapThemes = {
 		default: themeButton,
 		brand: themeButtonReaderRevenueBrand,
@@ -63,7 +85,7 @@ export const SupportTheGuardianButton = (
 	return (
 		<LinkButton
 			theme={theme}
-			href={buildSupportHref(props)}
+			href={href}
 			icon={<SvgArrowRightStraight />}
 			iconSide="right"
 			nudgeIcon={true}

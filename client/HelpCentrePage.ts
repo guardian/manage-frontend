@@ -6,8 +6,8 @@ import { HelpCentrePage } from './components/helpCentre/HelpCentrePage';
 
 // Initialize ophan on client side only
 if (typeof window !== 'undefined') {
-	import('@guardian/ophan-tracker-js').then(({ init }) => {
-		init('manage-my-account');
+	import('@guardian/ophan-tracker-js/MMA').then(({ init }) => {
+		init();
 	});
 }
 

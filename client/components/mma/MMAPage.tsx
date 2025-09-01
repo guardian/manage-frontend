@@ -1,6 +1,6 @@
 import { css, Global } from '@emotion/react';
 import { ABProvider, useAB } from '@guardian/ab-react';
-import { record } from '@guardian/ophan-tracker-js';
+import type { EventPayload } from '@guardian/ophan-tracker-js/MMA';
 import { breakpoints, from, space } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
@@ -920,17 +920,33 @@ const getMvtId = (): number => {
 	return mvtId ? parseInt(mvtId) : 0;
 };
 
-export const MMAPage = (
-	<ABProvider
-		arrayOfTestObjects={tests}
-		abTestSwitches={abSwitches}
-		pageIsSensitive={false}
-		mvtMaxValue={1000000}
-		mvtId={getMvtId()}
-		ophanRecord={record}
-	>
-		<BrowserRouter>
-			<MMARouter />
-		</BrowserRouter>
-	</ABProvider>
-);
+const MMAPageComponent = () => {
+	const [ophanRecord, setOphanRecord] = useState<
+		((event: EventPayload, callback?: () => void) => void) | undefined
+	>();
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			import('@guardian/ophan-tracker-js/MMA').then(({ record }) => {
+				setOphanRecord(() => record);
+			});
+		}
+	}, []);
+
+	return (
+		<ABProvider
+			arrayOfTestObjects={tests}
+			abTestSwitches={abSwitches}
+			pageIsSensitive={false}
+			mvtMaxValue={1000000}
+			mvtId={getMvtId()}
+			ophanRecord={ophanRecord}
+		>
+			<BrowserRouter>
+				<MMARouter />
+			</BrowserRouter>
+		</ABProvider>
+	);
+};
+
+export const MMAPage = <MMAPageComponent />;
