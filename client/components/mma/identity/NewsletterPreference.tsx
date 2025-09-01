@@ -92,16 +92,18 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 		onClick(id);
 		// If we have an identityName id then this is a newsletter subscription event
 		// and we want to log it in Ophan
-		if (identityName) {
-			window?.guardian?.ophan?.record({
-				componentEvent: {
-					component: {
-						componentType: 'NEWSLETTER_SUBSCRIPTION',
-						id: identityName,
+		if (identityName && typeof window !== 'undefined') {
+			import('@guardian/ophan-tracker-js/MMA').then(({ record }) => {
+				record({
+					componentEvent: {
+						component: {
+							componentType: 'NEWSLETTER_SUBSCRIPTION',
+							id: identityName,
+						},
+						action: 'CLICK',
+						value: selected ? 'untick' : 'tick',
 					},
-					action: 'CLICK',
-					value: selected ? 'untick' : 'tick',
-				},
+				});
 			});
 		}
 	};

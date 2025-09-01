@@ -812,7 +812,7 @@ html:not(.src-focus-disabled) .emotion-61 :focus {
                 >
                   <a
                     className="emotion-58"
-                    href="https://support.thegulocal.com/contribute?INTCMP=mma_footer_support_contribute&acquisitionData=%7B%22source%22%3A%22GUARDIAN_WEB%22%2C%22componentType%22%3A%22ACQUISITIONS_MANAGE_MY_ACCOUNT%22%2C%22componentId%22%3A%22mma_footer_support_contribute%22%7D&displayExistingPaymentOptions=true"
+                    href=""
                     onClick={[Function]}
                   >
                     Support us
