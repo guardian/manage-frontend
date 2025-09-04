@@ -326,6 +326,8 @@ export const ConfirmForm = ({
 					subscription.subscriptionId,
 					false,
 					isTestUser,
+					undefined,
+					chosenAmount,
 				).then((r) => JsonResponseHandler(r));
 
 				if (data === null) {
