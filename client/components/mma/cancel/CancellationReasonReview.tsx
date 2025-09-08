@@ -357,6 +357,7 @@ const ConfirmCancellationAndReturnRow = (
 									productDetail.subscription.subscriptionId,
 							}),
 							headers: {
+								'Content-Type': 'application/json',
 								[MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`,
 							},
 						},
