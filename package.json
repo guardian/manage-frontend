@@ -140,7 +140,7 @@
     "@guardian/ab-react": "2.0.1",
     "@guardian/commercial": "^23.7.5",
     "@guardian/libs": "^22.0.0",
-    "@guardian/ophan-tracker-js": "0.0.0-canary-20250901081445",
+    "@guardian/ophan-tracker-js": "2.6.0",
     "@guardian/source": "^8.0.1",
     "@guardian/source-development-kitchen": "^7.0.0",
     "@okta/jwt-verifier": "^4.0.1",
