@@ -363,9 +363,10 @@ export const CancelAlternativeSwitchReview = () => {
 							Your payment of {mainPlan.currency}
 							{routerState.amountPayableToday} will be taken on{' '}
 							{humanReadableNextPaymentDate} for the next 12
-							months then {mainPlan.currency}
-							{routerState.supporterPlusPurchaseAmount}/year. Auto
-							renews every year until you cancel.
+							months. After that, you will be charged the standard
+							pricing, using your chosen payment method at each
+							renewal, at the rate then in effect, unless you
+							cancel.
 						</li>
 						<li>You may cancel your subscription at any time.</li>
 					</ul>
