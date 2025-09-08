@@ -356,6 +356,9 @@ const ConfirmCancellationAndReturnRow = (
 								subscriptionNumber:
 									productDetail.subscription.subscriptionId,
 							}),
+							headers: {
+								[MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`,
+							},
 						},
 					);
 
