@@ -43,5 +43,15 @@ export const gwCancellationFlowStart = () => (
 		</p>
 
 		<p>Please could you take a moment to tell us why you want to cancel?</p>
+
+		<p>
+			Upon cancellation for any reason, we shall send no further issues to
+		    you. If you pay for your subscription on a monthly, quarterly or annual 
+			rolling basis, we shall cease debiting any payments from your account or 
+			debit or credit card (as appropriate) at the point of cancellation and 
+			you shall be refunded for issues not issued to you during the remainder 
+			of your current billing period as a result of the cancellation
+		</p>
+		
 	</Stack>
 );
