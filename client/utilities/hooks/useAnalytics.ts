@@ -21,14 +21,13 @@ export const useAnalytics = () => {
 		};
 
 		const initialiseOphen = async () => {
-			const { init, sendInitialEvent } = await import(
+			const { sendInitialEvent } = await import(
 				'@guardian/ophan-tracker-js/MMA'
 			);
 
 			if (window.guardian.spaTransition) {
 				sendInitialEvent(window.location.href);
 			} else {
-				init();
 				// tslint:disable-next-line:no-object-mutation
 				window.guardian.spaTransition = true;
 			}

@@ -4,6 +4,13 @@ import * as Sentry from '@sentry/browser';
 import { createRoot } from 'react-dom/client';
 import { MMAPage } from './components/mma/MMAPage';
 
+// Initialize ophan on client side only
+if (typeof window !== 'undefined') {
+	import('@guardian/ophan-tracker-js/MMA').then(({ init }) => {
+		init();
+	});
+}
+
 declare let WEBPACK_BUILD: string;
 
 if (typeof window !== 'undefined' && window.guardian && window.guardian.dsn) {
