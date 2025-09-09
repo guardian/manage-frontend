@@ -9,10 +9,7 @@ import type {
 	MembersDataApiResponse,
 	ProductDetail,
 } from '../../../../../shared/productResponse';
-import {
-	isProduct,
-	MDA_TEST_USER_HEADER,
-} from '../../../../../shared/productResponse';
+import { isProduct } from '../../../../../shared/productResponse';
 import type {
 	ProductType,
 	ProductTypeWithCancellationFlow,
@@ -53,7 +50,6 @@ const getCancelFunc =
 		productType: ProductType,
 		reason: OptionalCancellationReasonId,
 		withSubscriptionResponseFetcher: () => Promise<Response>,
-		productDetail: ProductDetail,
 	) =>
 	async () => {
 		const isSupporterPlus =
@@ -66,10 +62,7 @@ const getCancelFunc =
 			{
 				method: 'POST',
 				body: JSON.stringify({ reason }),
-				headers: {
-					'Content-Type': 'application/json',
-					[MDA_TEST_USER_HEADER]: `${productDetail.isTestUser}`,
-				},
+				headers: { 'Content-Type': 'application/json' },
 			},
 		); // response is either empty or 404 - neither is useful so fetch subscription to determine cancellation result...
 
@@ -270,7 +263,6 @@ export const ExecuteCancellation = () => {
 								productType.allProductsProductTypeFilterString,
 								productDetail.subscription.subscriptionId,
 							),
-							productDetail,
 						)}
 						render={getCaseUpdatingCancellationSummary(
 							productType,
