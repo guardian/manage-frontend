@@ -1,9 +1,15 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import * as Sentry from '@sentry/browser';
-import 'ophan-tracker-js/build/ophan.manage-my-account';
 import { createRoot } from 'react-dom/client';
 import { MMAPage } from './components/mma/MMAPage';
+
+// Initialize ophan on client side only
+if (typeof window !== 'undefined') {
+	import('@guardian/ophan-tracker-js/MMA').then(({ init }) => {
+		init();
+	});
+}
 
 declare let WEBPACK_BUILD: string;
 

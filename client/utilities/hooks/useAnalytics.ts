@@ -20,20 +20,16 @@ export const useAnalytics = () => {
 			});
 		};
 
-		const initialiseOphen = () => {
-			if (
-				window.guardian &&
-				window.guardian.ophan &&
-				window.guardian.ophan.sendInitialEvent
-			) {
-				if (window.guardian.spaTransition) {
-					window.guardian.ophan.sendInitialEvent(
-						window.location.href,
-					);
-				} else {
-					// tslint:disable-next-line:no-object-mutation
-					window.guardian.spaTransition = true;
-				}
+		const initialiseOphen = async () => {
+			const { sendInitialEvent } = await import(
+				'@guardian/ophan-tracker-js/MMA'
+			);
+
+			if (window.guardian.spaTransition) {
+				sendInitialEvent(window.location.href);
+			} else {
+				// tslint:disable-next-line:no-object-mutation
+				window.guardian.spaTransition = true;
 			}
 		};
 
