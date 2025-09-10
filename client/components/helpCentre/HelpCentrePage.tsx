@@ -128,10 +128,6 @@ const HelpCentreRouter = () => {
 								element={<DiagnosticInformation />}
 							/>
 							<Route
-								path="/help-centre/diagnostic-information/signed-in"
-								element={<DiagnosticInformation />}
-							/>
-							<Route
 								path="/*"
 								element={<Navigate to="/help-centre" />}
 							/>
