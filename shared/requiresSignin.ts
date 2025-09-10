@@ -14,7 +14,7 @@ const publicPaths: PublicPath[] = [
 	'/create-reminder/',
 	{
 		path: '/help-centre/',
-		exclude: '/help-centre/diagnostic-information/signed-in/',
+		exclude: '/help-centre/diagnostic-information/',
 	},
 	'/maintenance/',
 	'/sign-in-error/',
