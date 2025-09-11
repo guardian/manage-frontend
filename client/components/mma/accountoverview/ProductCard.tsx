@@ -269,11 +269,20 @@ export const ProductCard = ({
 					cardConfig.showDigitalBenefitsSection) &&
 					nextPaymentDetails && (
 						<Card.Section backgroundColor="#edf5fA">
-							<p css={benefitsTextCss}>
-								{cardConfig.showDigitalBenefitsSection
-									? `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have unlocked the full digital experience:`
-									: `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have access to exclusive extras.`}
-							</p>
+							{nextPaymentDetails.paymentInterval ===
+							'unknown_billing_period' ? (
+								<p css={benefitsTextCss}>
+									{cardConfig.showDigitalBenefitsSection
+										? `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} and have unlocked the full digital experience:`
+										: `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} and have access to exclusive extras.`}
+								</p>
+							) : (
+								<p css={benefitsTextCss}>
+									{cardConfig.showDigitalBenefitsSection
+										? `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have unlocked the full digital experience:`
+										: `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have access to exclusive extras.`}
+								</p>
+							)}
 							<BenefitsToggle
 								productType={specificProductType.productType}
 								subscriptionPlan={mainPlan}
