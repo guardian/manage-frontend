@@ -110,7 +110,8 @@ const InnerContent = ({
 	const showSupporterPlusUpdateAmount =
 		specificProductType.productType === 'supporterplus' &&
 		featureSwitches.supporterPlusUpdateAmount &&
-		!hasCancellationPending;
+		!hasCancellationPending &&
+		nextPaymentDetails?.paymentInterval !== 'unknown_billing_period';
 
 	return (
 		<>

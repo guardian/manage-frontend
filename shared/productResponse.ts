@@ -164,7 +164,12 @@ interface SepaDetails {
 	iban: string;
 }
 
-export type BillingPeriod = 'month' | '6 weeks' | 'quarter' | 'year';
+export type BillingPeriod =
+	| 'month'
+	| '6 weeks'
+	| 'quarter'
+	| 'year'
+	| 'unknown_billing_period';
 
 interface CurrencyAndBillingPeriodDetail {
 	currency: string;
