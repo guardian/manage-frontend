@@ -124,6 +124,10 @@ const HelpCentreRouter = () => {
 								element={<ContactUs />}
 							/>
 							<Route
+								path="/help-centre/public-diagnostic-information"
+								element={<DiagnosticInformation />}
+							/>
+							<Route
 								path="/help-centre/diagnostic-information"
 								element={<DiagnosticInformation />}
 							/>
