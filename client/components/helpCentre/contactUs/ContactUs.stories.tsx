@@ -1,9 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
-import {
-	mswHandlers,
-	setHelpCentreScenario,
-} from '../../../utilities/mocks/mswHandlers';
 import { SectionContent } from '../../shared/SectionContent';
 import { SectionHeader } from '../../shared/SectionHeader';
 import { KnownIssues } from '../KnownIssues';
@@ -15,12 +12,6 @@ export default {
 	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
-		msw: {
-			handlers: mswHandlers,
-		},
-	},
-	beforeEach: () => {
-		setHelpCentreScenario.clear();
 	},
 } as Meta<typeof ContactUs>;
 
@@ -36,20 +27,25 @@ export const Default: StoryObj<typeof ContactUs> = {
 			</>
 		);
 	},
-	beforeEach: () => {
-		setHelpCentreScenario.default();
+
+	parameters: {
+		msw: [
+			http.get('/api/known-issues/', () => {
+				return HttpResponse.json([]);
+			}),
+		],
 	},
 };
 
+const knownIssue = [
+	{
+		date: '20 Jan 2022 12:00',
+		message: 'Live Chat is currently unavailable.',
+	},
+];
+
 export const WithKnownIssue: StoryObj<typeof ContactUs> = {
 	render: () => {
-		const knownIssue = [
-			{
-				date: '20 Jan 2022 12:00',
-				message: 'Live Chat is currently unavailable.',
-			},
-		];
-
 		return (
 			<>
 				<SectionHeader title="Need to contact us?" />
@@ -60,8 +56,13 @@ export const WithKnownIssue: StoryObj<typeof ContactUs> = {
 			</>
 		);
 	},
-	beforeEach: () => {
-		setHelpCentreScenario.withKnownIssues();
+
+	parameters: {
+		msw: [
+			http.get('/api/known-issues/', () => {
+				return HttpResponse.json(knownIssue);
+			}),
+		],
 	},
 };
 
@@ -75,9 +76,7 @@ export const TopicSelected: StoryObj<typeof ContactUs> = {
 			</SectionContent>
 		</>
 	),
-	beforeEach: () => {
-		setHelpCentreScenario.default();
-	},
+
 	parameters: {
 		reactRouter: {
 			location: '/contact-us/billing',
