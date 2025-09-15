@@ -1,19 +1,13 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["../client/**/*", "../shared/**/*", "../types/**/*", "./**/*"],
-  "exclude": [
-    "../node_modules",
-    "../cypress/**",
-    "../cdk/**",
-    "../coverage/**"
-  ],
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": false,
-    "noEmit": true,
-    "skipLibCheck": true,
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
-    "types": ["node", "jest", "@storybook/react"]
-  }
+    "allowJs": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["../client/**/*", "../shared/**/*", "../types/**/*", "./**/*"],
+  "exclude": ["../node_modules", "../dist", "../cypress"]
 }
