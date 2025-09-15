@@ -2678,10 +2678,12 @@
   resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-18.0.2.tgz#dfccae411f1b2ddb650d9344acc999d85cbba96b"
   integrity sha512-MX7mo/ZADgJJ9uMBHw9SoJBW1AJXB8Vg3NFUkpfJ7uwkN0LKHHxi8w2YkZDMPUDcMx5I3dpIf1LuqQQLR6RAVA==
 
-"@guardian/libs@^22.0.0":
-  version "22.0.0"
-  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-22.0.0.tgz#26b3b8460a9299f86a7e94f638c7546c426f30a2"
-  integrity sha512-qAQ8hQcRaL0H3h5vR6QXv6wtHu+XCfK6jM28QNz0d94EyHfiS01i4AMv8JlX1a3efehfoh00WVg/LzjsGRoJJw==
+"@guardian/libs@^25.3.0":
+  version "25.3.0"
+  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-25.3.0.tgz#9318bbb536b327f55e94411a890b93f6473bddae"
+  integrity sha512-PbbUvgv+wACMq0FlbgsOdwrDApoblSD1Md55YZaEq9YooolWt3p0jhaGlIKOfGovT52o2XVSRfCcLJqlGpRENQ==
+  dependencies:
+    "@guardian/ophan-tracker-js" "2.2.10"
 
 "@guardian/node-riffraff-artifact@0.2.2":
   version "0.2.2"
@@ -2696,6 +2698,13 @@
     temp "^0.9.1"
     yaml "^1.7.2"
     yargs "^15.4.1"
+
+"@guardian/ophan-tracker-js@2.2.10":
+  version "2.2.10"
+  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-2.2.10.tgz#a27abe2444c374ac25e8f9834776a3a8e3961202"
+  integrity sha512-WqE5bPagZ7AYUc2Fb0xDgNfhmdS9wK1IJcUjTD6CrlPim67SiRragw4fy+CP2OwShkfiWFmb9l/TgQLbuvUlIQ==
+  dependencies:
+    "@guardian/tsconfig" "^1.0.0"
 
 "@guardian/prebid.js@8.52.0-8":
   version "8.52.0-8"
@@ -2743,6 +2752,11 @@
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@guardian/tsconfig/-/tsconfig-0.1.6.tgz#2cc3ecce09e84b6bcaea8a1150c7b590e908d2a9"
   integrity sha512-5GMp2tBMaIxxInmWGDZI9O3v76hbW2CV/3hnWhDDvtXZvgOFs3K41plkAoc+GpPNLZTrtJlAaHHhbZcDDGI9/w==
+
+"@guardian/tsconfig@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/tsconfig/-/tsconfig-1.0.0.tgz#c86b8cf51ccb53b2783eeffb6d5f256c59094217"
+  integrity sha512-xgajw/jq4lEtQoN72vnmiXeRnejUcd3DgNFmH6TfAbWV6NRK4KC4hAjzKf0H69zBSJMxEfFVfGKP9wBzGII7qg==
 
 "@humanfs/core@^0.19.1":
   version "0.19.1"
