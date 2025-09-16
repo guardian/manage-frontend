@@ -346,7 +346,8 @@ export const ProductCard = ({
 										</dd>
 									</div>
 								)}
-								{isGifted && !userIsGifter && (
+								{((isGifted && !userIsGifter) ||
+									!productDetail.subscription.autoRenew) && (
 									<div>
 										<dt>End date</dt>
 										<dd>
