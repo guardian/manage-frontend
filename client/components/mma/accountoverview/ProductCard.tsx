@@ -563,7 +563,7 @@ export const ProductCard = ({
 									</h4>
 									{!productDetail.subscription.autoRenew &&
 									!productDetail.subscription
-										.chargedThroughDate ? (
+										.nextPaymentDate ? (
 										<p
 											css={css`
 												max-width: 350px;
@@ -584,14 +584,6 @@ export const ProductCard = ({
 											end of current billing period.
 										</p>
 									)}
-									<p
-										css={css`
-											max-width: 350px;
-										`}
-									>
-										Stop your recurring payment, at the end
-										of current billing period.
-									</p>
 								</div>
 								<div css={wideButtonLayoutCss}>
 									<Button
