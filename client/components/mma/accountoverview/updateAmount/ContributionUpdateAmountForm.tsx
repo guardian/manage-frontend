@@ -132,6 +132,9 @@ export const ContributionUpdateAmountForm = (
 	const [otherAmount, setOtherAmount] = useState<number | null>(
 		defaultOtherAmount,
 	);
+	const [otherAmountInput, setOtherAmountInput] = useState<string>(
+		defaultOtherAmount?.toString() ?? '',
+	);
 	const [isOtherAmountSelected, setIsOtherAmountSelected] = useState<boolean>(
 		defaultIsOtherAmountSelected,
 	);
@@ -154,6 +157,22 @@ export const ContributionUpdateAmountForm = (
 	const onReturnClicked = (event: React.MouseEvent<HTMLAnchorElement>) => {
 		event.preventDefault();
 		navigate('/');
+	};
+
+	const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const next = event.target.value;
+
+		if (next === '') {
+			setOtherAmountInput('');
+			setOtherAmount(null);
+			return;
+		}
+
+		// Whole-string match for a number with up to 2 decimals: optional integer part, optional '.', and 0–2 fractional digits.
+		if (/^\d+(?:\.\d{0,2})?$/.test(next)) {
+			setOtherAmountInput(next);
+			setOtherAmount(Number(next));
+		}
 	};
 
 	useEffect(() => {
@@ -365,15 +384,9 @@ export const ContributionUpdateAmountForm = (
 											errorMessage) ||
 										undefined
 									}
-									type="number"
-									value={otherAmount?.toString() || ''}
-									onChange={(event) =>
-										setOtherAmount(
-											event.target.value
-												? Number(event.target.value)
-												: null,
-										)
-									}
+									type="text"
+									value={otherAmountInput}
+									onChange={onChangeHandler}
 								/>
 							</div>
 						)}
