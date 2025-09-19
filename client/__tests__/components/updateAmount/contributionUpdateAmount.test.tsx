@@ -59,7 +59,7 @@ it.each([
 
 		fireEvent.click(screen.getByLabelText('Other'));
 
-		const otherInputElem = screen.getByRole('spinbutton', {
+		const otherInputElem = screen.getByRole('textbox', {
 			name: /other amount/i,
 		});
 		fireEvent.change(otherInputElem, {
@@ -105,7 +105,7 @@ it.each([
 
 		fireEvent.click(screen.getByLabelText('Other'));
 
-		const otherInputElem = screen.getByRole('spinbutton', {
+		const otherInputElem = screen.getByRole('textbox', {
 			name: /other amount/i,
 		});
 		fireEvent.change(otherInputElem, {
@@ -146,7 +146,7 @@ it('renders validation error if blank input is provided', async () => {
 
 	fireEvent.click(screen.getByLabelText('Other'));
 
-	const otherInputElem = screen.getByRole('spinbutton', {
+	const otherInputElem = screen.getByRole('textbox', {
 		name: /other amount/i,
 	});
 	fireEvent.change(otherInputElem, {
@@ -184,7 +184,7 @@ it('renders validation error if a string is attempted to be input', async () => 
 
 	fireEvent.click(screen.getByLabelText('Other'));
 
-	const otherInputElem = screen.getByRole('spinbutton', {
+	const otherInputElem = screen.getByRole('textbox', {
 		name: /other amount/i,
 	});
 	fireEvent.change(otherInputElem, {
@@ -222,7 +222,7 @@ it('updates amount if valid value is input', async () => {
 
 	fireEvent.click(screen.getByLabelText('Other'));
 
-	const otherInputElem = screen.getByRole('spinbutton', {
+	const otherInputElem = screen.getByRole('textbox', {
 		name: /other amount/i,
 	});
 	fireEvent.change(otherInputElem, {

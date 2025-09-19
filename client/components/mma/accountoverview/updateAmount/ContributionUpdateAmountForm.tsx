@@ -168,7 +168,7 @@ export const ContributionUpdateAmountForm = (
 			return;
 		}
 
-		// Whole-string match for a number with up to 2 decimals: optional integer part, optional '.', and 0–2 fractional digits.
+		// Whole-string match: 1+ digits, optional '.', and 0–2 fractional digits (allows '2', '2.', '2.5', '2.50').
 		if (/^\d+(?:\.\d{0,2})?$/.test(next)) {
 			setOtherAmountInput(next);
 			setOtherAmount(Number(next));
