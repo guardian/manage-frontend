@@ -346,7 +346,8 @@ export const ProductCard = ({
 										</dd>
 									</div>
 								)}
-								{isGifted && !userIsGifter && (
+								{((isGifted && !userIsGifter) ||
+									!productDetail.subscription.autoRenew) && (
 									<div>
 										<dt>End date</dt>
 										<dd>
@@ -565,8 +566,24 @@ export const ProductCard = ({
 											max-width: 350px;
 										`}
 									>
-										Stop your recurring payment, at the end
-										of current billing period.
+										{!productDetail.subscription
+											.autoRenew &&
+										!productDetail.subscription
+											.nextPaymentDate ? (
+											<>
+												This is a one-off payment and
+												will not renew. You’ll continue
+												to enjoy your benefits until the
+												end of the current billing
+												period.
+											</>
+										) : (
+											<>
+												Stop your recurring payment, at
+												the end of current billing
+												period.
+											</>
+										)}
 									</p>
 								</div>
 								<div css={wideButtonLayoutCss}>
