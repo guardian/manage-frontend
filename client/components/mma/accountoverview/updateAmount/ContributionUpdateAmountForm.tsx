@@ -385,6 +385,7 @@ export const ContributionUpdateAmountForm = (
 										undefined
 									}
 									type="text"
+									inputMode="decimal"
 									value={otherAmountInput}
 									onChange={onChangeHandler}
 								/>
