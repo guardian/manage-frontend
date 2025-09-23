@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import type { BillingPeriod } from '@/shared/productResponse';
