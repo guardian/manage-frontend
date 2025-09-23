@@ -53,6 +53,43 @@ export function removeLeadingZeros(input: string): string {
 	return input.replace(/^0+(?=\d)/, '');
 }
 
+/**
+ * Processes user input for decimal amounts by trimming, validating, and normalizing.
+ * Returns the normalized value if valid, null if invalid.
+ * Normalizes comma decimal separators to periods (e.g., '1,5' → '1.5').
+ * Examples: ' 1,5 ' → '1.5', '123.45' → '123.45', 'abc' → null
+ */
+export function processDecimalInput(input: string): string | null {
+	const trimmed = input.trim();
+
+	if (trimmed === '') {
+		return '';
+	}
+
+	if (isValidDecimalInput(trimmed)) {
+		return trimmed.replace(',', '.');
+	}
+
+	return null;
+}
+
+/**
+ * Processes decimal input on blur by removing trailing periods and leading zeros.
+ * Returns the cleaned value or null if the input becomes empty.
+ * Examples: '1.' → '1', '007.5' → '7.5', '00' → '0', '' → null
+ */
+export function processDecimalInputOnBlur(input: string): string | null {
+	let processed = input;
+
+	if (processed.endsWith('.')) {
+		processed = processed.slice(0, -1);
+	}
+
+	processed = removeLeadingZeros(processed);
+
+	return processed === '' ? null : processed;
+}
+
 export const processResponse = <T>(resp: Response): Promise<T | null> => {
 	const locationHeader = resp.headers.get('Location');
 	const allResponsesAreOK = [resp].filter((res) => !res.ok).length === 0;

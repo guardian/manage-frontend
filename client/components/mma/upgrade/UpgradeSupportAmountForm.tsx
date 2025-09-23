@@ -19,8 +19,8 @@ import type { ContributionInterval } from '../../../utilities/pricingConfig/cont
 import { contributionAmountsLookup } from '../../../utilities/pricingConfig/contributionsAmount';
 import {
 	formatAmount,
-	isValidDecimalInput,
-	removeLeadingZeros,
+	processDecimalInput,
+	processDecimalInputOnBlur,
 	waitForElement,
 } from '../../../utilities/utils';
 import { UpgradeBenefitsCard } from '../shared/benefits/BenefitsCard';
@@ -158,38 +158,38 @@ export const UpgradeSupportAmountForm = ({
 	]);
 
 	const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const next = event.target.value.trim();
+		const processedValue = processDecimalInput(event.target.value);
 
-		if (next === '') {
+		if (processedValue === null) {
+			return;
+		}
+
+		if (processedValue === '') {
 			setOtherAmountInput('');
 			setOtherAmountSelected(null);
 			setChosenAmount(null);
 			return;
 		}
 
-		if (isValidDecimalInput(next)) {
-			const normalizedValue = next.replace(',', '.');
-
-			setOtherAmountInput(normalizedValue);
-			setOtherAmountSelected(Number(normalizedValue));
-			setChosenAmount(Number(normalizedValue));
-		}
-
+		setOtherAmountInput(processedValue);
+		setOtherAmountSelected(Number(processedValue));
+		setChosenAmount(Number(processedValue));
 		setContinuedToConfirmation(false);
 	};
 
 	const onBlurHandler = () => {
-		let processed = otherAmountInput;
+		const processedValue = processDecimalInputOnBlur(otherAmountInput);
 
-		if (processed.endsWith('.')) {
-			processed = processed.slice(0, -1);
+		if (processedValue === null) {
+			setOtherAmountInput('');
+			setOtherAmountSelected(null);
+			setChosenAmount(null);
+			return;
 		}
 
-		processed = removeLeadingZeros(processed);
-
-		setOtherAmountInput(processed);
-		setOtherAmountSelected(processed === '' ? null : Number(processed));
-		setChosenAmount(processed === '' ? null : Number(processed));
+		setOtherAmountInput(processedValue);
+		setOtherAmountSelected(Number(processedValue));
+		setChosenAmount(Number(processedValue));
 	};
 
 	return (

@@ -1,5 +1,7 @@
 import {
 	isValidDecimalInput,
+	processDecimalInput,
+	processDecimalInputOnBlur,
 	removeLeadingZeros,
 	shuffleArray,
 } from '../utilities/utils';
@@ -97,5 +99,92 @@ describe('removeLeadingZeros', () => {
 	it('does not modify zero followed by decimal', () => {
 		expect(removeLeadingZeros('0.5')).toBe('0.5');
 		expect(removeLeadingZeros('0.99')).toBe('0.99');
+	});
+});
+
+describe('processDecimalInput', () => {
+	it('returns empty string for empty input', () => {
+		expect(processDecimalInput('')).toBe('');
+		expect(processDecimalInput('   ')).toBe('');
+	});
+
+	it('trims whitespace and validates valid inputs', () => {
+		expect(processDecimalInput(' 123 ')).toBe('123');
+		expect(processDecimalInput('  1.5  ')).toBe('1.5');
+		expect(processDecimalInput(' 999.99 ')).toBe('999.99');
+	});
+
+	it('normalizes comma to period', () => {
+		expect(processDecimalInput('1,5')).toBe('1.5');
+		expect(processDecimalInput(' 123,45 ')).toBe('123.45');
+		expect(processDecimalInput('999,99')).toBe('999.99');
+	});
+
+	it('handles incomplete decimals', () => {
+		expect(processDecimalInput('1.')).toBe('1.');
+		expect(processDecimalInput('123,')).toBe('123.');
+		expect(processDecimalInput(' 1. ')).toBe('1.');
+	});
+
+	it('returns null for invalid inputs', () => {
+		expect(processDecimalInput('abc')).toBe(null);
+		expect(processDecimalInput('1.2.3')).toBe(null);
+		expect(processDecimalInput('1,2,3')).toBe(null);
+		expect(processDecimalInput('1.234')).toBe(null);
+		expect(processDecimalInput('.5')).toBe(null);
+		expect(processDecimalInput('1.2a')).toBe(null);
+		expect(processDecimalInput('1-2')).toBe(null);
+	});
+
+	it('handles mixed whitespace and invalid characters', () => {
+		expect(processDecimalInput(' abc ')).toBe(null);
+		expect(processDecimalInput('  1.2a  ')).toBe(null);
+		expect(processDecimalInput(' .5 ')).toBe(null);
+	});
+});
+
+describe('processDecimalInputOnBlur', () => {
+	it('removes trailing periods', () => {
+		expect(processDecimalInputOnBlur('1.')).toBe('1');
+		expect(processDecimalInputOnBlur('123.')).toBe('123');
+		expect(processDecimalInputOnBlur('999.')).toBe('999');
+	});
+
+	it('removes leading zeros', () => {
+		expect(processDecimalInputOnBlur('007')).toBe('7');
+		expect(processDecimalInputOnBlur('0123')).toBe('123');
+		expect(processDecimalInputOnBlur('00999')).toBe('999');
+	});
+
+	it('handles combination of trailing period and leading zeros', () => {
+		expect(processDecimalInputOnBlur('007.')).toBe('7');
+		expect(processDecimalInputOnBlur('0123.')).toBe('123');
+		expect(processDecimalInputOnBlur('00.')).toBe('0');
+	});
+
+	it('preserves valid decimal numbers', () => {
+		expect(processDecimalInputOnBlur('1.5')).toBe('1.5');
+		expect(processDecimalInputOnBlur('123.45')).toBe('123.45');
+		expect(processDecimalInputOnBlur('0.5')).toBe('0.5');
+	});
+
+	it('handles leading zeros in decimal numbers', () => {
+		expect(processDecimalInputOnBlur('007.5')).toBe('7.5');
+		expect(processDecimalInputOnBlur('0123.45')).toBe('123.45');
+		expect(processDecimalInputOnBlur('00.99')).toBe('0.99');
+	});
+
+	it('preserves single zero', () => {
+		expect(processDecimalInputOnBlur('0')).toBe('0');
+		expect(processDecimalInputOnBlur('0.')).toBe('0');
+	});
+
+	it('returns null for empty input', () => {
+		expect(processDecimalInputOnBlur('')).toBe(null);
+	});
+
+	it('handles edge cases', () => {
+		expect(processDecimalInputOnBlur('000')).toBe('0');
+		expect(processDecimalInputOnBlur('000.')).toBe('0');
 	});
 });

@@ -19,8 +19,8 @@ import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import type { ContributionInterval } from '../../../../utilities/pricingConfig/contributionsAmount';
 import { contributionAmountsLookup } from '../../../../utilities/pricingConfig/contributionsAmount';
 import {
-	isValidDecimalInput,
-	removeLeadingZeros,
+	processDecimalInput,
+	processDecimalInputOnBlur,
 } from '../../../../utilities/utils';
 import { TextResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
@@ -164,33 +164,33 @@ export const ContributionUpdateAmountForm = (
 	};
 
 	const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const next = event.target.value.trim();
+		const processedValue = processDecimalInput(event.target.value);
 
-		if (next === '') {
+		if (processedValue === null) {
+			return;
+		}
+
+		if (processedValue === '') {
 			setOtherAmountInput('');
 			setOtherAmount(null);
 			return;
 		}
 
-		if (isValidDecimalInput(next)) {
-			const normalizedValue = next.replace(',', '.');
-
-			setOtherAmountInput(normalizedValue);
-			setOtherAmount(Number(normalizedValue));
-		}
+		setOtherAmountInput(processedValue);
+		setOtherAmount(Number(processedValue));
 	};
 
 	const onBlurHandler = () => {
-		let processed = otherAmountInput;
+		const processedValue = processDecimalInputOnBlur(otherAmountInput);
 
-		if (processed.endsWith('.')) {
-			processed = processed.slice(0, -1);
+		if (processedValue === null) {
+			setOtherAmountInput('');
+			setOtherAmount(null);
+			return;
 		}
 
-		processed = removeLeadingZeros(processed);
-
-		setOtherAmountInput(processed);
-		setOtherAmount(processed === '' ? null : Number(processed));
+		setOtherAmountInput(processedValue);
+		setOtherAmount(Number(processedValue));
 	};
 
 	useEffect(() => {
