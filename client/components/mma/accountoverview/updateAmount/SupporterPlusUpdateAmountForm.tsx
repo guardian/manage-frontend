@@ -131,6 +131,9 @@ export const SupporterPlusUpdateAmountForm = (
 	const [otherAmount, setOtherAmount] = useState<number | null>(
 		defaultOtherAmount,
 	);
+	const [otherAmountInput, setOtherAmountInput] = useState<string>(
+		defaultOtherAmount?.toString() ?? '',
+	);
 	const [isOtherAmountSelected, setIsOtherAmountSelected] =
 		useState<boolean>(false);
 	const [hasInteractedWithOtherAmount, setHasInteractedWithOtherAmount] =
@@ -228,6 +231,40 @@ export const SupporterPlusUpdateAmountForm = (
 			setUpdateFailedStatus(true);
 			setShowUpdateLoader(false);
 		}
+	};
+
+	const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const next = event.target.value.trim();
+
+		if (next === '') {
+			setOtherAmountInput('');
+			setOtherAmount(null);
+			return;
+		}
+
+		// Whole-string match: 1+ digits, optional '.' or ',', and 0–2 fractional digits (allows '2', '2.', '2,', '2.5', '2,50').
+		if (/^\d+(?:[.,]\d{0,2})?$/.test(next)) {
+			const normalizedValue = next.replace(',', '.');
+
+			setOtherAmountInput(normalizedValue);
+			setOtherAmount(Number(normalizedValue));
+		}
+	};
+
+	const onBlurHandler = () => {
+		let processed = otherAmountInput;
+
+		if (processed.endsWith('.')) {
+			processed = processed.slice(0, -1);
+		}
+
+		// Remove leading zeros
+		if (processed !== '' && processed !== '0') {
+			processed = processed.replace(/^0+(?=\d)/, '');
+		}
+
+		setOtherAmountInput(processed);
+		setOtherAmount(processed === '' ? null : Number(processed));
 	};
 
 	if (showUpdateLoader) {
@@ -335,15 +372,11 @@ export const SupporterPlusUpdateAmountForm = (
 											errorMessage) ||
 										undefined
 									}
-									type="number"
-									value={otherAmount?.toString() || ''}
-									onChange={(event) =>
-										setOtherAmount(
-											event.target.value
-												? Number(event.target.value)
-												: null,
-										)
-									}
+									type="text"
+									inputMode="decimal"
+									value={otherAmountInput}
+									onChange={onChangeHandler}
+									onBlur={onBlurHandler}
 								/>
 							</div>
 						)}

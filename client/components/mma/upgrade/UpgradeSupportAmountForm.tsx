@@ -118,6 +118,7 @@ export const UpgradeSupportAmountForm = ({
 	const [otherAmountSelected, setOtherAmountSelected] = useState<
 		number | null
 	>(null);
+	const [otherAmountInput, setOtherAmountInput] = useState<string>('');
 
 	const [hasInteractedWithOtherAmount, setHasInteractedWithOtherAmount] =
 		useState<boolean>(false);
@@ -150,6 +151,45 @@ export const UpgradeSupportAmountForm = ({
 		priceConfig.maxAmount,
 		priceConfig.minAmount,
 	]);
+
+	const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const next = event.target.value.trim();
+
+		if (next === '') {
+			setOtherAmountInput('');
+			setOtherAmountSelected(null);
+			setChosenAmount(null);
+			return;
+		}
+
+		// Whole-string match: 1+ digits, optional '.' or ',', and 0–2 fractional digits (allows '2', '2.', '2,', '2.5', '2,50').
+		if (/^\d+(?:[.,]\d{0,2})?$/.test(next)) {
+			const normalizedValue = next.replace(',', '.');
+
+			setOtherAmountInput(normalizedValue);
+			setOtherAmountSelected(Number(normalizedValue));
+			setChosenAmount(Number(normalizedValue));
+		}
+
+		setContinuedToConfirmation(false);
+	};
+
+	const onBlurHandler = () => {
+		let processed = otherAmountInput;
+
+		if (processed.endsWith('.')) {
+			processed = processed.slice(0, -1);
+		}
+
+		// Remove leading zeros
+		if (processed !== '' && processed !== '0') {
+			processed = processed.replace(/^0+(?=\d)/, '');
+		}
+
+		setOtherAmountInput(processed);
+		setOtherAmountSelected(processed === '' ? null : Number(processed));
+		setChosenAmount(processed === '' ? null : Number(processed));
+	};
 
 	return (
 		<>
@@ -208,23 +248,13 @@ export const UpgradeSupportAmountForm = ({
 										errorMessage) ||
 									undefined
 								}
-								type="number"
+								type="text"
+								inputMode="decimal"
 								width={30}
-								value={otherAmountSelected?.toString() || ''}
+								value={otherAmountInput}
+								onChange={onChangeHandler}
+								onBlur={onBlurHandler}
 								onWheel={(event) => event.currentTarget.blur()}
-								onChange={(event) => {
-									setChosenAmount(
-										event.target.value
-											? Number(event.target.value)
-											: null,
-									);
-									setOtherAmountSelected(
-										event.target.value
-											? Number(event.target.value)
-											: null,
-									);
-									setContinuedToConfirmation(false);
-								}}
 							/>
 						</div>
 					)}
