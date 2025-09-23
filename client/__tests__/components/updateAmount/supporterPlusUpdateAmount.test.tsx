@@ -148,7 +148,7 @@ it('renders validation error if blank input is provided', () => {
 	).toBeTruthy();
 });
 
-it('renders validation error if a string is attempted to be input', () => {
+it('ignores non-numeric input in the Other amount field', () => {
 	render(
 		<UpdateAmount
 			subscriptionId="A-123"
@@ -167,19 +167,22 @@ it('renders validation error if a string is attempted to be input', () => {
 	const otherInputElem = screen.getByRole('textbox', {
 		name: /other amount/i,
 	});
-	fireEvent.change(otherInputElem, {
-		target: { value: 'twelfty' },
-	});
 
-	// click on the change amount button again and then check to make sure that the validation error message shows up
-	fireEvent.click(screen.getByText('Change amount'));
+	// capture initial value (SupporterPlus pre-fills Other with a default)
+	const initial = (otherInputElem as HTMLInputElement).value;
 
-	// assert that the maximum amount validation error message is shown
+	// attempt to type letters
+	fireEvent.change(otherInputElem, { target: { value: 'twelfty' } });
+
+	// assert: value is unchanged because invalid input is rejected
+	expect((otherInputElem as HTMLInputElement).value).toBe(initial);
+
+	// and no "invalid amount" validation error is shown
 	expect(
 		screen.queryByText(
 			'There is a problem with the amount you have selected, please make sure it is a valid amount',
 		),
-	).toBeTruthy();
+	).not.toBeInTheDocument();
 });
 
 it('updates amount is valid value is input', async () => {

@@ -75,7 +75,7 @@ describe('removeLeadingZeros', () => {
 
 	it('preserves single zero', () => {
 		expect(removeLeadingZeros('0')).toBe('0');
-		expect(removeLeadingZeros('000')).toBe('000');
+		expect(removeLeadingZeros('000')).toBe('0');
 	});
 
 	it('preserves empty string', () => {
@@ -91,7 +91,7 @@ describe('removeLeadingZeros', () => {
 	it('handles decimal numbers correctly', () => {
 		expect(removeLeadingZeros('007.5')).toBe('7.5');
 		expect(removeLeadingZeros('0123.45')).toBe('123.45');
-		expect(removeLeadingZeros('00.99')).toBe('.99');
+		expect(removeLeadingZeros('00.99')).toBe('0.99');
 	});
 
 	it('does not modify zero followed by decimal', () => {
