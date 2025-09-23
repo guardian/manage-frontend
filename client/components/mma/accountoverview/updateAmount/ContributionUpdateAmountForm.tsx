@@ -18,6 +18,10 @@ import { trackEvent } from '../../../../utilities/analytics';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import type { ContributionInterval } from '../../../../utilities/pricingConfig/contributionsAmount';
 import { contributionAmountsLookup } from '../../../../utilities/pricingConfig/contributionsAmount';
+import {
+	isValidDecimalInput,
+	removeLeadingZeros,
+} from '../../../../utilities/utils';
 import { TextResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 
@@ -168,8 +172,7 @@ export const ContributionUpdateAmountForm = (
 			return;
 		}
 
-		// Whole-string match: 1+ digits, optional '.' or ',', and 0–2 fractional digits (allows '2', '2.', '2,', '2.5', '2,50').
-		if (/^\d+(?:[.,]\d{0,2})?$/.test(next)) {
+		if (isValidDecimalInput(next)) {
 			const normalizedValue = next.replace(',', '.');
 
 			setOtherAmountInput(normalizedValue);
@@ -184,10 +187,7 @@ export const ContributionUpdateAmountForm = (
 			processed = processed.slice(0, -1);
 		}
 
-		// Remove leading zeros
-		if (processed !== '' && processed !== '0') {
-			processed = processed.replace(/^0+(?=\d)/, '');
-		}
+		processed = removeLeadingZeros(processed);
 
 		setOtherAmountInput(processed);
 		setOtherAmount(processed === '' ? null : Number(processed));

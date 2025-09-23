@@ -23,6 +23,10 @@ import { getBillingPeriodAdjective } from '../../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import { getSupporterPlusSuggestedAmountsFromMainPlan } from '../../../../utilities/pricingConfig/suggestedAmounts';
 import { supporterPlusPriceConfigByCountryGroup } from '../../../../utilities/pricingConfig/supporterPlusPricing';
+import {
+	isValidDecimalInput,
+	removeLeadingZeros,
+} from '../../../../utilities/utils';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 
@@ -242,8 +246,7 @@ export const SupporterPlusUpdateAmountForm = (
 			return;
 		}
 
-		// Whole-string match: 1+ digits, optional '.' or ',', and 0–2 fractional digits (allows '2', '2.', '2,', '2.5', '2,50').
-		if (/^\d+(?:[.,]\d{0,2})?$/.test(next)) {
+		if (isValidDecimalInput(next)) {
 			const normalizedValue = next.replace(',', '.');
 
 			setOtherAmountInput(normalizedValue);
@@ -258,10 +261,7 @@ export const SupporterPlusUpdateAmountForm = (
 			processed = processed.slice(0, -1);
 		}
 
-		// Remove leading zeros
-		if (processed !== '' && processed !== '0') {
-			processed = processed.replace(/^0+(?=\d)/, '');
-		}
+		processed = removeLeadingZeros(processed);
 
 		setOtherAmountInput(processed);
 		setOtherAmount(processed === '' ? null : Number(processed));

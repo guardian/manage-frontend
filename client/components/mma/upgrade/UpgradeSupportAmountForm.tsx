@@ -17,7 +17,12 @@ import {
 import { twoColumnChoiceCardMobile } from '../../../styles/GenericStyles';
 import type { ContributionInterval } from '../../../utilities/pricingConfig/contributionsAmount';
 import { contributionAmountsLookup } from '../../../utilities/pricingConfig/contributionsAmount';
-import { formatAmount, waitForElement } from '../../../utilities/utils';
+import {
+	formatAmount,
+	isValidDecimalInput,
+	removeLeadingZeros,
+	waitForElement,
+} from '../../../utilities/utils';
 import { UpgradeBenefitsCard } from '../shared/benefits/BenefitsCard';
 import { getUpgradeBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { Heading } from '../shared/Heading';
@@ -162,8 +167,7 @@ export const UpgradeSupportAmountForm = ({
 			return;
 		}
 
-		// Whole-string match: 1+ digits, optional '.' or ',', and 0–2 fractional digits (allows '2', '2.', '2,', '2.5', '2,50').
-		if (/^\d+(?:[.,]\d{0,2})?$/.test(next)) {
+		if (isValidDecimalInput(next)) {
 			const normalizedValue = next.replace(',', '.');
 
 			setOtherAmountInput(normalizedValue);
@@ -181,10 +185,7 @@ export const UpgradeSupportAmountForm = ({
 			processed = processed.slice(0, -1);
 		}
 
-		// Remove leading zeros
-		if (processed !== '' && processed !== '0') {
-			processed = processed.replace(/^0+(?=\d)/, '');
-		}
+		processed = removeLeadingZeros(processed);
 
 		setOtherAmountInput(processed);
 		setOtherAmountSelected(processed === '' ? null : Number(processed));

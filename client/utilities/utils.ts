@@ -32,6 +32,27 @@ export function formatAmount(amount: number) {
 	return Number.isInteger(amount) ? amount : amount.toFixed(2);
 }
 
+/**
+ * Validates if a string represents a valid decimal amount input.
+ * Allows whole numbers, numbers with decimal or comma as decimal separator,
+ * and up to 2 decimal places (e.g., '2', '2.', '2,', '2.5', '2,50').
+ */
+export function isValidDecimalInput(input: string): boolean {
+	return /^\d+(?:[.,]\d{0,2})?$/.test(input);
+}
+
+/**
+ * Removes leading zeros from a numeric string while preserving the number's value.
+ * Keeps at least one digit if the string represents zero.
+ * Examples: '007' → '7', '000' → '0', '0123' → '123'
+ */
+export function removeLeadingZeros(input: string): string {
+	if (input === '' || input === '0') {
+		return input;
+	}
+	return input.replace(/^0+(?=\d)/, '');
+}
+
 export const processResponse = <T>(resp: Response): Promise<T | null> => {
 	const locationHeader = resp.headers.get('Location');
 	const allResponsesAreOK = [resp].filter((res) => !res.ok).length === 0;
