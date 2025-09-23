@@ -160,7 +160,7 @@ export const ContributionUpdateAmountForm = (
 	};
 
 	const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const next = event.target.value;
+		const next = event.target.value.trim();
 
 		if (next === '') {
 			setOtherAmountInput('');
@@ -168,11 +168,29 @@ export const ContributionUpdateAmountForm = (
 			return;
 		}
 
-		// Whole-string match: 1+ digits, optional '.', and 0–2 fractional digits (allows '2', '2.', '2.5', '2.50').
-		if (/^\d+(?:\.\d{0,2})?$/.test(next)) {
-			setOtherAmountInput(next);
-			setOtherAmount(Number(next));
+		// Whole-string match: 1+ digits, optional '.' or ',', and 0–2 fractional digits (allows '2', '2.', '2,', '2.5', '2,50').
+		if (/^\d+(?:[.,]\d{0,2})?$/.test(next)) {
+			const normalizedValue = next.replace(',', '.');
+
+			setOtherAmountInput(normalizedValue);
+			setOtherAmount(Number(normalizedValue));
 		}
+	};
+
+	const onBlurHandler = () => {
+		let processed = otherAmountInput;
+
+		if (processed.endsWith('.')) {
+			processed = processed.slice(0, -1);
+		}
+
+		// Remove leading zeros
+		if (processed !== '' && processed !== '0') {
+			processed = processed.replace(/^0+(?=\d)/, '');
+		}
+
+		setOtherAmountInput(processed);
+		setOtherAmount(processed === '' ? null : Number(processed));
 	};
 
 	useEffect(() => {
@@ -388,6 +406,7 @@ export const ContributionUpdateAmountForm = (
 									inputMode="decimal"
 									value={otherAmountInput}
 									onChange={onChangeHandler}
+									onBlur={onBlurHandler}
 								/>
 							</div>
 						)}

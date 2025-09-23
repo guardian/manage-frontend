@@ -284,7 +284,7 @@ describe('Cancel contribution', () => {
 
 		cy.findByRole('button', { name: 'Reduce amount' }).click();
 
-		cy.get('input[type="text"][inputmode="decimal"]').type('80');
+		cy.findByRole('textbox', { name: /amount/i }).type('80');
 		cy.findByRole('button', { name: 'Change amount' }).click();
 
 		cy.findByText(
