@@ -18,6 +18,10 @@ import { trackEvent } from '../../../../utilities/analytics';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import type { ContributionInterval } from '../../../../utilities/pricingConfig/contributionsAmount';
 import { contributionAmountsLookup } from '../../../../utilities/pricingConfig/contributionsAmount';
+import {
+	processDecimalInput,
+	processDecimalInputOnBlur,
+} from '../../../../utilities/utils';
 import { TextResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 
@@ -132,6 +136,9 @@ export const ContributionUpdateAmountForm = (
 	const [otherAmount, setOtherAmount] = useState<number | null>(
 		defaultOtherAmount,
 	);
+	const [otherAmountInput, setOtherAmountInput] = useState<string>(
+		defaultOtherAmount?.toString() ?? '',
+	);
 	const [isOtherAmountSelected, setIsOtherAmountSelected] = useState<boolean>(
 		defaultIsOtherAmountSelected,
 	);
@@ -154,6 +161,36 @@ export const ContributionUpdateAmountForm = (
 	const onReturnClicked = (event: React.MouseEvent<HTMLAnchorElement>) => {
 		event.preventDefault();
 		navigate('/');
+	};
+
+	const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const processedValue = processDecimalInput(event.target.value);
+
+		if (processedValue === null) {
+			return;
+		}
+
+		if (processedValue === '') {
+			setOtherAmountInput('');
+			setOtherAmount(null);
+			return;
+		}
+
+		setOtherAmountInput(processedValue);
+		setOtherAmount(Number(processedValue));
+	};
+
+	const onBlurHandler = () => {
+		const processedValue = processDecimalInputOnBlur(otherAmountInput);
+
+		if (processedValue === null) {
+			setOtherAmountInput('');
+			setOtherAmount(null);
+			return;
+		}
+
+		setOtherAmountInput(processedValue);
+		setOtherAmount(Number(processedValue));
 	};
 
 	useEffect(() => {
@@ -365,15 +402,11 @@ export const ContributionUpdateAmountForm = (
 											errorMessage) ||
 										undefined
 									}
-									type="number"
-									value={otherAmount?.toString() || ''}
-									onChange={(event) =>
-										setOtherAmount(
-											event.target.value
-												? Number(event.target.value)
-												: null,
-										)
-									}
+									type="text"
+									inputMode="decimal"
+									value={otherAmountInput}
+									onChange={onChangeHandler}
+									onBlur={onBlurHandler}
 								/>
 							</div>
 						)}
