@@ -101,7 +101,7 @@
     "chromatic": "11.20.2",
     "copy-webpack-plugin": "9.1.0",
     "core-js": "3.19.1",
-    "cypress": "^13.16.1",
+    "cypress": "13.17.0",
     "cypress-plugin-stripe-elements": "1.0.2",
     "eslint": "9.15.0",
     "eslint-plugin-cypress": "4.1.0",
