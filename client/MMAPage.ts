@@ -3,13 +3,12 @@ import 'regenerator-runtime/runtime';
 import * as Sentry from '@sentry/browser';
 import { createRoot } from 'react-dom/client';
 import { MMAPage } from './components/mma/MMAPage';
+import { initOphan } from './utilities/initOphan';
+import { registerBfCacheTracking } from './utilities/registerBfCacheTracking';
 
-// Initialize ophan on client side only
-if (typeof window !== 'undefined') {
-	import('@guardian/ophan-tracker-js/MMA').then(({ init }) => {
-		init();
-	});
-}
+// Initialize ophan on client side only and register BFCache tracking
+void initOphan();
+registerBfCacheTracking();
 
 declare let WEBPACK_BUILD: string;
 
