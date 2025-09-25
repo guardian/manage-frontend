@@ -2678,10 +2678,10 @@
   resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-18.0.2.tgz#dfccae411f1b2ddb650d9344acc999d85cbba96b"
   integrity sha512-MX7mo/ZADgJJ9uMBHw9SoJBW1AJXB8Vg3NFUkpfJ7uwkN0LKHHxi8w2YkZDMPUDcMx5I3dpIf1LuqQQLR6RAVA==
 
-"@guardian/libs@^25.3.0":
-  version "25.3.0"
-  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-25.3.0.tgz#9318bbb536b327f55e94411a890b93f6473bddae"
-  integrity sha512-PbbUvgv+wACMq0FlbgsOdwrDApoblSD1Md55YZaEq9YooolWt3p0jhaGlIKOfGovT52o2XVSRfCcLJqlGpRENQ==
+"@guardian/libs@^26.0.0":
+  version "26.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-26.0.0.tgz#f25cf4fc0615ab6b17d6f496603d0e52392d5ad3"
+  integrity sha512-H5b2vgUws0IUpQesJbVK1CXQKrOff853GyWo/yApUonvU0y7Db/OhwMN0Lf67oGnnrTksgl7AQEZIUQB+WR8Eg==
   dependencies:
     "@guardian/ophan-tracker-js" "2.2.10"
 
