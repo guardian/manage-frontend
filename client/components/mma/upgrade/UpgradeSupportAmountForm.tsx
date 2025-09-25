@@ -17,7 +17,12 @@ import {
 import { twoColumnChoiceCardMobile } from '../../../styles/GenericStyles';
 import type { ContributionInterval } from '../../../utilities/pricingConfig/contributionsAmount';
 import { contributionAmountsLookup } from '../../../utilities/pricingConfig/contributionsAmount';
-import { formatAmount, waitForElement } from '../../../utilities/utils';
+import {
+	formatAmount,
+	processDecimalInput,
+	processDecimalInputOnBlur,
+	waitForElement,
+} from '../../../utilities/utils';
 import { UpgradeBenefitsCard } from '../shared/benefits/BenefitsCard';
 import { getUpgradeBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { Heading } from '../shared/Heading';
@@ -118,6 +123,7 @@ export const UpgradeSupportAmountForm = ({
 	const [otherAmountSelected, setOtherAmountSelected] = useState<
 		number | null
 	>(null);
+	const [otherAmountInput, setOtherAmountInput] = useState<string>('');
 
 	const [hasInteractedWithOtherAmount, setHasInteractedWithOtherAmount] =
 		useState<boolean>(false);
@@ -150,6 +156,41 @@ export const UpgradeSupportAmountForm = ({
 		priceConfig.maxAmount,
 		priceConfig.minAmount,
 	]);
+
+	const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const processedValue = processDecimalInput(event.target.value);
+
+		if (processedValue === null) {
+			return;
+		}
+
+		if (processedValue === '') {
+			setOtherAmountInput('');
+			setOtherAmountSelected(null);
+			setChosenAmount(null);
+			return;
+		}
+
+		setOtherAmountInput(processedValue);
+		setOtherAmountSelected(Number(processedValue));
+		setChosenAmount(Number(processedValue));
+		setContinuedToConfirmation(false);
+	};
+
+	const onBlurHandler = () => {
+		const processedValue = processDecimalInputOnBlur(otherAmountInput);
+
+		if (processedValue === null) {
+			setOtherAmountInput('');
+			setOtherAmountSelected(null);
+			setChosenAmount(null);
+			return;
+		}
+
+		setOtherAmountInput(processedValue);
+		setOtherAmountSelected(Number(processedValue));
+		setChosenAmount(Number(processedValue));
+	};
 
 	return (
 		<>
@@ -208,23 +249,13 @@ export const UpgradeSupportAmountForm = ({
 										errorMessage) ||
 									undefined
 								}
-								type="number"
+								type="text"
+								inputMode="decimal"
 								width={30}
-								value={otherAmountSelected?.toString() || ''}
+								value={otherAmountInput}
+								onChange={onChangeHandler}
+								onBlur={onBlurHandler}
 								onWheel={(event) => event.currentTarget.blur()}
-								onChange={(event) => {
-									setChosenAmount(
-										event.target.value
-											? Number(event.target.value)
-											: null,
-									);
-									setOtherAmountSelected(
-										event.target.value
-											? Number(event.target.value)
-											: null,
-									);
-									setContinuedToConfirmation(false);
-								}}
 							/>
 						</div>
 					)}
