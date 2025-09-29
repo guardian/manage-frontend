@@ -1,5 +1,5 @@
 import type { StripePublicKeySet } from '../server/stripeSetupIntentConfig';
-import type { AbTest, OphanComponentEvent } from './ophanTypes';
+import type { AbTest } from './ophanTypes';
 
 interface CommonGlobals {
 	domain: string;
@@ -16,11 +16,6 @@ export interface IdentityDetails {
 export interface Globals extends CommonGlobals {
 	spaTransition?: true;
 	INTCMP?: string;
-	ophan?: {
-		viewId: string;
-		record: (payload: { componentEvent: OphanComponentEvent }) => void;
-		sendInitialEvent: (url?: string, referer?: string) => void;
-	};
 	abTest?: AbTest;
 	identityDetails: IdentityDetails;
 	recaptchaPublicKey?: string;

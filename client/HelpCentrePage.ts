@@ -1,9 +1,14 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import * as Sentry from '@sentry/browser';
-import 'ophan-tracker-js/build/ophan.manage-my-account';
 import { createRoot } from 'react-dom/client';
 import { HelpCentrePage } from './components/helpCentre/HelpCentrePage';
+import { initOphan } from './utilities/initOphan';
+import { registerBfCacheTracking } from './utilities/registerBfCacheTracking';
+
+// Initialize ophan on client side only and register BFCache tracking
+void initOphan();
+registerBfCacheTracking();
 
 declare let WEBPACK_BUILD: string;
 

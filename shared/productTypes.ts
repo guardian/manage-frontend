@@ -1,3 +1,4 @@
+import type { Product } from '@guardian/ophan-tracker-js/MMA';
 import type { ReactNode } from 'react';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
 import { shuffledTierThreeCancellationReasons } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationReasons';
@@ -22,7 +23,6 @@ import { shuffledSupporterPlusCancellationReasons } from '../client/components/m
 import { voucherCancellationFlowStart } from '../client/components/mma/cancel/voucher/VoucherCancellationFlowStart';
 import { shuffledVoucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
 import type { SupportTheGuardianButtonProps } from '../client/components/shared/SupportTheGuardianButton';
-import type { OphanProduct } from './ophanTypes';
 import type {
 	BillingPeriod,
 	PaidSubscriptionPlan,
@@ -187,9 +187,7 @@ export interface ProductType {
 	urlPart: ProductUrlPart;
 	softOptInIDs: string[];
 	legacyUrlPart?: string; // could easily adapt to be string[] if multiple were required in future
-	getOphanProductType?: (
-		productDetail: ProductDetail,
-	) => OphanProduct | undefined;
+	getOphanProductType?: (productDetail: ProductDetail) => Product | undefined;
 	showSupporterId?: boolean;
 	tierLabel?: string;
 	renewalMetadata?: SupportTheGuardianButtonProps;
@@ -886,7 +884,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'GuardianPatron',
 		urlPart: 'guardianpatron',
-		getOphanProductType: () => 'GUARDIAN_PATRON', //TODO: This value doesn't exist in Ophan yet
+		getOphanProductType: () => 'GUARDIAN_PATRON',
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
@@ -902,7 +900,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		allProductsProductTypeFilterString: 'GuardianAdLite',
 		urlPart: 'guardianadlite',
 		checkoutUrlPart: '/guardian-ad-lite', // https://support.theguardian.com/uk/guardian-ad-lite
-		getOphanProductType: () => 'GUARDIAN_AD_LITE',
+		getOphanProductType: () => undefined, // Ad Lite not tracked in Ophan
 		softOptInIDs: [SoftOptInIDs.SupportOnboarding],
 		cancellation: {
 			sfCaseProduct: 'Guardian Ad-Lite',
