@@ -77,7 +77,13 @@ const HelpCentreRouter = () => {
 	]
 	*/
 
-	const knownIssues: KnownIssueObj[] = [];
+	const knownIssues: KnownIssueObj[] = [
+		{
+			date: '7th Oct 2025 11:30 am',
+			message:
+				'Due to industrial action by Canada Post, it is currently not possible to deliver copies of the Guardian Weekly for Canadian subscribers. Subscribers are welcome to pause subscriptions during the period of industrial action.',
+		},
+	];
 
 	return (
 		<Main signInStatus={signInStatus} isHelpCentrePage>
