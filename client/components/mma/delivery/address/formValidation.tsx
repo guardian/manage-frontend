@@ -20,7 +20,7 @@ export const isFormValid = (
 	subscriptionsNames: string[],
 ): FormValidationResponse => {
 	const addressLine1 = {
-		isValid: formData.addressLine1.length > 0,
+		isValid: formData.addressLine1?.length ?? 0 > 0,
 		message: 'Please enter an address',
 	};
 	const town = {
@@ -29,12 +29,13 @@ export const isFormValid = (
 	};
 
 	const postcodeEnteredCheck =
-		formData.postcode.length > 0 && formData.postcode.length < 20;
+		(formData.postcode?.length ?? 0 > 0) &&
+		(formData.postcode?.length ?? 0 < 20);
 
 	const enteredPostcodeIsInM25 =
 		postcodeEnteredCheck &&
 		!isPostcodeOptional('GB') &&
-		isPostcodeInM25(formData.postcode);
+		isPostcodeInM25(formData.postcode || '');
 
 	const enteredPostcodeIsInValidArea =
 		!subscriptionsNames.includes(PRODUCT_TYPES.homedelivery.friendlyName) ||
@@ -57,7 +58,7 @@ export const isFormValid = (
 			? formData.country === 'GB' || formData.country === 'United Kingdom'
 			: true,
 		message:
-			userHasVoucherSubscription && formData.country.length > 0
+			userHasVoucherSubscription && (formData.country?.length ?? 0) > 0
 				? `Voucher subscriptions must be delivered in the UK. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
 				: 'Please select a country',
 	};
