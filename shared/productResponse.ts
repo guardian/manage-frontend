@@ -200,12 +200,12 @@ export function isPaidSubscriptionPlan(
 }
 
 export interface DeliveryAddress {
-	addressLine1: string;
+	addressLine1?: string;
 	addressLine2?: string;
 	town?: string;
 	region?: string;
-	postcode: string;
-	country: string;
+	postcode?: string;
+	country?: string;
 	instructions?: string;
 	addressChangeInformation?: string;
 }
