@@ -12,7 +12,9 @@ export const LearnMoreSection = () => {
 			</h3>
 
 			<p css={dataPrivacyParagraphCss}>
-				For more information about how we use your data, visit our&nbsp;
+				For more information about how we use your data, including the
+				generation of random identifiers based on your email address for
+				advertising and marketing, visit our&nbsp;
 				<a
 					css={aCss}
 					target="_blank"
