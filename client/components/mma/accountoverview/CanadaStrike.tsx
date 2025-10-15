@@ -7,17 +7,11 @@ export const CanadaStrike = () => (
 		message={
 			<div>
 				<p>
-					Due to industrial action by Canada Post, it is not possible
-					to deliver your copies of the Guardian Weekly. You are
-					welcome to pause your subscription during the period of
-					industrial action, details on how to do so can be found{' '}
-					<Link
-						href="https://manage.theguardian.com/help-centre/article/i-need-to-pause-my-delivery"
-						priority="primary"
-					>
-						here
-					</Link>
-					.
+					<b>For Canadian residents only. </b>Please note that Canada
+					Post is currently on strike. If you start a Guardian Weekly
+					subscription today, we will not be able to deliver your
+					copies until postal services resume. We apologise for any
+					inconvenience this may cause.' .
 				</p>
 				<p>
 					If you have reached your allowance limit please contact{' '}
