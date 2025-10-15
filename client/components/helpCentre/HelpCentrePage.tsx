@@ -79,9 +79,9 @@ const HelpCentreRouter = () => {
 
 	const knownIssues: KnownIssueObj[] = [
 		{
-			date: '7th Oct 2025 11:30 am',
+			date: '15th Oct 2025 11:00 am',
 			message:
-				'Due to industrial action by Canada Post, it is currently not possible to deliver copies of the Guardian Weekly for Canadian subscribers. Subscribers are welcome to pause subscriptions during the period of industrial action.',
+				'Due to strike action by Canada Post, the delivery of copies of the Guardian Weekly to Canadian subscribers may be subject to delays. Subscribers are welcome to pause subscriptions during the period of industrial action.',
 		},
 	];
 
