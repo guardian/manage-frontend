@@ -15,7 +15,9 @@ const sentryPlugins = process.env.SENTRY_AUTH_TOKEN
 				authToken: process.env.SENTRY_AUTH_TOKEN,
 				org: 'the-guardian',
 				project: 'manage-frontend-client',
-				release: RELEASE_VERSION,
+				release: {
+					name: RELEASE_VERSION,
+				},
 			}),
 	  ]
 	: [];
