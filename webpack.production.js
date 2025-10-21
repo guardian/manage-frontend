@@ -3,7 +3,7 @@ const BundleAnalyzerPlugin =
 	require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { merge } = require('webpack-merge');
 const { client, server } = require('./webpack.common.js');
-const SentryWebpackPlugin = require('@sentry/webpack-plugin');
+const { sentryWebpackPlugin } = require('@sentry/webpack-plugin');
 
 const RELEASE_VERSION = process.env.GITHUB_RUN_NUMBER
 	? process.env.GITHUB_RUN_NUMBER
@@ -11,7 +11,7 @@ const RELEASE_VERSION = process.env.GITHUB_RUN_NUMBER
 
 const sentryPlugins = process.env.SENTRY_AUTH_TOKEN
 	? [
-			SentryWebpackPlugin({
+			sentryWebpackPlugin({
 				authToken: process.env.SENTRY_AUTH_TOKEN,
 				org: 'the-guardian',
 				project: 'manage-frontend-client',
