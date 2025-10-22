@@ -23,6 +23,7 @@ if (conf.SERVER_DSN) {
 		dsn: conf.SERVER_DSN,
 		release: WEBPACK_BUILD || 'local',
 		environment: conf.DOMAIN,
+		integrations: [Sentry.expressIntegration()],
 	});
 }
 
