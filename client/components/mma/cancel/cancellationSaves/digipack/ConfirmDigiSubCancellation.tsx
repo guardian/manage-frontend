@@ -244,7 +244,7 @@ export const ConfirmDigiSubCancellation = () => {
 					margin-bottom: ${space[4]}px;
 				`}
 			>
-				Please confirm to cancel your digital subscription
+				Please confirm to cancel your Digital Plus subscription
 			</div>
 			<div css={stackedButtonLayoutCss}>
 				<Button
