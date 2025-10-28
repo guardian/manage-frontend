@@ -75,10 +75,10 @@ export const productCardConfiguration: Record<
 	},
 	tierthree: {
 		colour: productColour.supporterPlus,
-		showUnlimitedDigitalBenefitsSection: true,
 	},
 	digipack: {
 		colour: productColour.digital,
+		showUnlimitedDigitalBenefitsSection: true,
 	},
 	digitalvoucher: {
 		colour: productColour.newspaper,

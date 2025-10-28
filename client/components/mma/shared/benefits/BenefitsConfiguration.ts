@@ -37,6 +37,11 @@ const partnerOffers: ProductBenefit = {
 	specificToRegions: ['AUD'],
 };
 
+const guardianWeekly = {
+	name: 'Guardian Weekly.',
+	description: 'Print magazine delivered to your door every week',
+};
+
 const productPlusdigitalBenefits = [
 	{
 		description:
@@ -118,9 +123,17 @@ export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
 			adFree,
 			partnerOffers,
 		],
-		tierthree: digitalPlusBenefits,
+		tierthree: [
+			guardianWeekly,
+			supporterNewsletter,
+			uninterruptedReading,
+			newsApp,
+			feastApp,
+			adFree,
+			partnerOffers,
+		],
 		membership: [newsApp, uninterruptedReading, supporterNewsletter],
-		digipack: [],
+		digipack: digitalPlusBenefits,
 		digitalvoucher: [],
 		newspaper: [],
 		homedelivery: [],

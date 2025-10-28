@@ -387,7 +387,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					</Fragment>
 				);
 			})}
-			{(hasDigitalPlusPrint || isPlusDigitalProduct) && (
+			{(hasDigitalPlusPrint ||
+				isPlusDigitalProduct ||
+				hasDigitalPack) && (
 				<>
 					<h2 css={subHeadingCss}>
 						Get the most out of your benefits
