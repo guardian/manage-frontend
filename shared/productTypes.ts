@@ -44,7 +44,7 @@ type ProductFriendlyName =
 	| 'newspaper subscription card plus digital'
 	| 'newspaper home delivery subscription'
 	| 'newspaper home delivery plus digital subscription'
-	| 'digital subscription'
+	| 'digital plus'
 	| 'all-access digital subscription'
 	| 'Guardian Weekly subscription'
 	| 'digital + print subscription'
@@ -820,8 +820,8 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 	},
 	digipack: {
-		productTitle: () => 'Digital Subscription',
-		friendlyName: 'digital subscription',
+		productTitle: () => 'Digital plus',
+		friendlyName: 'digital plus',
 		productType: 'digipack',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Digipack',

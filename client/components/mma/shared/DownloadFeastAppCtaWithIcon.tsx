@@ -1,7 +1,7 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import { from, space, textSansBold17 } from '@guardian/source/foundations';
-import { androidFeastAppUrl, iosFeastAppUrl } from '@/shared/externalLinks';
+import { StoreLinksMapKey } from '@/shared/externalLinks';
 import { AndroidPlayStoreButton } from './assets/AndroidPlayStoreButton';
 import { AppleAppStoreButton } from './assets/AppleAppStoreButton';
 import { FeastAppIcon } from './assets/FeastAppIcon';
@@ -64,14 +64,14 @@ export const DownloadFeastAppCtaWithIcon = (
 			</div>
 			<div>
 				<AppleAppStoreButton
-					link={iosFeastAppUrl}
+					linkKey={StoreLinksMapKey.IosFeast}
 					overrideButtonHeight="36px"
 					additionalCss={css`
 						margin-right: ${space[3]}px;
 					`}
 				/>
 				<AndroidPlayStoreButton
-					link={androidFeastAppUrl}
+					linkKey={StoreLinksMapKey.AndroidFeast}
 					overrideButtonHeight="36px"
 				/>
 			</div>
