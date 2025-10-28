@@ -31,15 +31,15 @@ const adFree = {
 	description: 'Avoid ads on all your devices',
 };
 
+const guardianWeekly = {
+	name: 'Guardian Weekly.',
+	description: 'Print magazine delivered to your door every week',
+};
+
 const partnerOffers: ProductBenefit = {
 	name: 'Exclusive partner offers.',
 	description: 'Opportunities to access to discounts and tickets',
 	specificToRegions: ['AUD'],
-};
-
-const guardianWeekly = {
-	name: 'Guardian Weekly.',
-	description: 'Print magazine delivered to your door every week',
 };
 
 const productPlusdigitalBenefits = [
