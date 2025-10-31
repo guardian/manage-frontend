@@ -4,14 +4,15 @@ import { Button } from '@guardian/source/react-components';
 
 export const SwitchToAnnualBillingFrequencyAdBanner = () => {
 	return (
-		<div
+		<aside
+			aria-label="Switch to annual billing offer"
 			css={css`
 				border-radius: 12px;
 				background: var(--Brand-brand-alt-brand-alt-400, #ffe500);
 				padding: ${space[6]}px ${space[8]}px;
 			`}
 		>
-			<p
+			<span
 				css={css`
 					height: 24px;
 					padding: 4px 8px;
@@ -28,7 +29,6 @@ export const SwitchToAnnualBillingFrequencyAdBanner = () => {
 						var(--Pillar-sport-sport-800, #f1f8fc)
 					);
 					text-align: center;
-
 					font-family: GuardianTextSans;
 					font-size: 15px;
 					font-style: normal;
@@ -37,7 +37,7 @@ export const SwitchToAnnualBillingFrequencyAdBanner = () => {
 				`}
 			>
 				Offer
-			</p>
+			</span>
 			<div
 				css={css`
 					margin-top: ${space[1]}px;
@@ -66,7 +66,6 @@ export const SwitchToAnnualBillingFrequencyAdBanner = () => {
 				</p>
 				<Button
 					priority="primary"
-					// onClick={startDirectDebitUpdate}
 					style={{
 						height: '17px',
 					}}
@@ -74,6 +73,6 @@ export const SwitchToAnnualBillingFrequencyAdBanner = () => {
 					Switch to annual billing
 				</Button>
 			</div>
-		</div>
+		</aside>
 	);
 };
