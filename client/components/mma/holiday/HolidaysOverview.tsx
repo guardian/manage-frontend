@@ -166,16 +166,6 @@ export const HolidaysOverview = () => {
 						<div css={infoItem}>
 							<InfoIcon />
 							<div>
-								If you have arranged your own delivery with your
-								chosen retailer, you must contact this retailer
-								to suspend deliveries for the duration of your
-								holiday. Otherwise your retailer may charge you
-								for any copies they deliver during your holiday.
-							</div>
-						</div>
-						<div css={infoItem}>
-							<InfoIcon />
-							<div>
 								<strong>
 									{dateString(
 										renewalDate,
@@ -187,6 +177,16 @@ export const HolidaysOverview = () => {
 								The number of{' '}
 								{productType.holidayStops.issueKeyword}s you can
 								suspend per year is reset on this date.
+							</div>
+						</div>
+						<div css={infoItem}>
+							<InfoIcon />
+							<div>
+								If you have arranged your own delivery with your
+								chosen retailer, you must contact this retailer
+								to suspend deliveries for the duration of your
+								holiday. Otherwise your retailer may charge you
+								for any copies they deliver during your holiday.
 							</div>
 						</div>
 						<HolidayQuestionsModal
