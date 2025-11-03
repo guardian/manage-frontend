@@ -78,6 +78,13 @@ const OverviewRow = (props: OverviewRowProps) => (
 	</div>
 );
 
+const infoItem = css`
+	${textSans14};
+	margin: 10px;
+	display: flex;
+	align-items: top;
+`;
+
 export const HolidaysOverview = () => {
 	const holidayStopsContext = useContext(
 		HolidayStopsContext,
@@ -156,14 +163,17 @@ export const HolidaysOverview = () => {
 								{productType.holidayStops.additionalHowAdvice}
 							</div>
 						)}
-						<div
-							css={css`
-								${textSans14};
-								margin: 10px;
-								display: flex;
-								align-items: top;
-							`}
-						>
+						<div css={infoItem}>
+							<InfoIcon />
+							<div>
+								If you have arranged your own delivery with your
+								chosen retailer, you must contact this retailer
+								to suspend deliveries for the duration of your
+								holiday. Otherwise your retailer may charge you
+								for any copies they deliver during your holiday.
+							</div>
+						</div>
+						<div css={infoItem}>
 							<InfoIcon />
 							<div>
 								<strong>
