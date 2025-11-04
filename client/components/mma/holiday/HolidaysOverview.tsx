@@ -18,8 +18,8 @@ import {
 } from '../../../../shared/dates';
 import {
 	getMainPlan,
-	isGuardianPrintProduct,
 	isPaidSubscriptionPlan,
+	isVoucherOrSubscriptionCard,
 } from '../../../../shared/productResponse';
 import { InfoIcon } from '../shared/assets/InfoIcon';
 import { CollatedCredits } from './CollatedCredits';
@@ -98,7 +98,7 @@ export const HolidaysOverview = () => {
 		setSelectedRange,
 	} = holidayStopsContext;
 
-	const isGuardianPrint = isGuardianPrintProduct(productDetail);
+	const isGuardianPrint = isVoucherOrSubscriptionCard(productDetail);
 
 	const navigate = useNavigate();
 	const location = useLocation();

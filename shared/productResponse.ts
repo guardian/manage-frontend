@@ -399,7 +399,7 @@ export const isPlusDigitalProductType = (
 	].includes(specificProductType);
 };
 
-export const isGuardianPrintProduct = (
+export const isVoucherOrSubscriptionCard = (
 	productDetail: ProductDetail,
 ): boolean => {
 	const specificProductType = getSpecificProductTypeFromProductKey(
