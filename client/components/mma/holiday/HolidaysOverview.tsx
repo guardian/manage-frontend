@@ -18,6 +18,7 @@ import {
 } from '../../../../shared/dates';
 import {
 	getMainPlan,
+	isGuardianPrintProduct,
 	isPaidSubscriptionPlan,
 } from '../../../../shared/productResponse';
 import { InfoIcon } from '../shared/assets/InfoIcon';
@@ -96,6 +97,8 @@ export const HolidaysOverview = () => {
 		holidayStopResponse,
 		setSelectedRange,
 	} = holidayStopsContext;
+
+	const isGuardianPrint = isGuardianPrintProduct(productDetail);
 
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -179,16 +182,19 @@ export const HolidaysOverview = () => {
 								suspend per year is reset on this date.
 							</div>
 						</div>
-						<div css={infoItem}>
-							<InfoIcon />
-							<div>
-								If you have arranged your own delivery with your
-								chosen retailer, you must contact this retailer
-								to suspend deliveries for the duration of your
-								holiday. Otherwise your retailer may charge you
-								for any copies they deliver during your holiday.
+						{isGuardianPrint && (
+							<div css={infoItem}>
+								<InfoIcon />
+								<div>
+									If you have arranged your own delivery with
+									your chosen retailer, you must contact this
+									retailer to suspend deliveries for the
+									duration of your holiday. Otherwise your
+									retailer may charge you for any copies they
+									deliver during your holiday.
+								</div>
 							</div>
-						</div>
+						)}
 						<HolidayQuestionsModal
 							annualIssueLimit={
 								holidayStopResponse.annualIssueLimit

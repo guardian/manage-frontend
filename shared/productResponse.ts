@@ -398,3 +398,26 @@ export const isPlusDigitalProductType = (
 		PRODUCT_TYPES.digitalvoucherplusdigital,
 	].includes(specificProductType);
 };
+
+export const isGuardianPrintProduct = (
+	productDetail: ProductDetail,
+): boolean => {
+	const specificProductType = getSpecificProductTypeFromProductKey(
+		productDetail.mmaProductKey,
+	);
+
+	return [
+		PRODUCT_TYPES.nationaldelivery,
+		PRODUCT_TYPES.homedelivery,
+		PRODUCT_TYPES.homedeliveryplusdigital,
+		PRODUCT_TYPES.nationaldelivery,
+		PRODUCT_TYPES.nationaldeliveryplusdigital,
+		PRODUCT_TYPES.voucher,
+		PRODUCT_TYPES.voucherplusdigital,
+		PRODUCT_TYPES.digitalvoucher,
+		PRODUCT_TYPES.digitalvoucherplusdigital,
+		PRODUCT_TYPES.digitalvoucherobserver,
+		PRODUCT_TYPES.voucherobserver,
+		PRODUCT_TYPES.guardianweekly,
+	].includes(specificProductType);
+};
