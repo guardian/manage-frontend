@@ -13,10 +13,12 @@ const assetsPluginInstance = new AssetsPlugin({
 	path: path.resolve(__dirname, './dist/'),
 });
 
+const RELEASE_VERSION = process.env.GITHUB_RUN_NUMBER
+	? process.env.GITHUB_RUN_NUMBER
+	: `DEV_${new Date().getTime()}`;
+
 const definePlugin = new webpack.DefinePlugin({
-	WEBPACK_BUILD: process.env.GITHUB_RUN_NUMBER
-		? `'${process.env.GITHUB_RUN_NUMBER}'`
-		: `'DEV_${new Date().getTime()}'`,
+	WEBPACK_BUILD: `'${RELEASE_VERSION}'`,
 	GIT_COMMIT_HASH: process.env.GITHUB_SHA
 		? `'${process.env.GITHUB_SHA}'`
 		: `'${new GitRevisionPlugin().commithash()}'`,
@@ -157,8 +159,33 @@ const client = merge(common, {
 	plugins: [copyPlugin, nodePolyfillPlugin],
 });
 
+/**
+ * @param {string} project - The Sentry project name (e.g., 'manage-frontend-client')
+ * @returns {Array} Array containing Sentry plugin or empty array
+ */
+const createSentryPlugin = (project) => {
+	if (!process.env.SENTRY_AUTH_TOKEN) {
+		return [];
+	}
+
+	const { sentryWebpackPlugin } = require('@sentry/webpack-plugin');
+
+	return [
+		sentryWebpackPlugin({
+			authToken: process.env.SENTRY_AUTH_TOKEN,
+			org: 'the-guardian',
+			project,
+			release: {
+				name: RELEASE_VERSION,
+			},
+		}),
+	];
+};
+
 module.exports = {
 	client: client,
 	server: server,
 	babelCommon: babelCommon,
+	createSentryPlugin: createSentryPlugin,
+	RELEASE_VERSION: RELEASE_VERSION,
 };

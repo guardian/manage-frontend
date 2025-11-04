@@ -2,7 +2,7 @@
 const BundleAnalyzerPlugin =
 	require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { merge } = require('webpack-merge');
-const { client, server } = require('./webpack.common.js');
+const { client, server, createSentryPlugin } = require('./webpack.common.js');
 
 module.exports = [
 	merge(client, {
@@ -10,10 +10,12 @@ module.exports = [
 		output: {
 			chunkFilename: '[name].[chunkhash].js',
 		},
+		devtool: 'source-map',
 		plugins: [
 			new BundleAnalyzerPlugin({
 				analyzerMode: 'static',
 			}),
+			...createSentryPlugin('manage-frontend-client'),
 		],
 	}),
 	merge(server, {
