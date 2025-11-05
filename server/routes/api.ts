@@ -228,6 +228,16 @@ router.post(
 );
 
 router.post(
+	'/product-switch/frequency/:subscriptionName',
+	withOktaServerSideValidation,
+	productSwitchAPI(
+		'product-switch/frequency/:subscriptionName',
+		'MOVE_PRODUCT',
+		['subscriptionName'],
+	),
+);
+
+router.post(
 	'/update-supporter-plus-amount/:subscriptionName',
 	withOktaServerSideValidation,
 	updateSupporterPlusAmountAPI(
