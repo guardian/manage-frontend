@@ -24,7 +24,7 @@ export const CookiesOnThisBrowserSection = (
 				through personalised advertising.
 			</p>
 			<p css={dataPrivacyParagraphCss}>
-				If you read the Guardian ad free or subscribe to Guardian
+				If you read the Guardian ad-free or subscribe to Guardian
 				Ad-Lite, you can manage the use of cookies on our site for
 				personalised advertising, and disable the sharing of data with
 				partners for personalised advertising purposes by clicking below
