@@ -398,3 +398,20 @@ export const isPlusDigitalProductType = (
 		PRODUCT_TYPES.digitalvoucherplusdigital,
 	].includes(specificProductType);
 };
+
+export const isVoucherOrSubscriptionCard = (
+	productDetail: ProductDetail,
+): boolean => {
+	const specificProductType = getSpecificProductTypeFromProductKey(
+		productDetail.mmaProductKey,
+	);
+
+	return [
+		PRODUCT_TYPES.voucher,
+		PRODUCT_TYPES.voucherplusdigital,
+		PRODUCT_TYPES.digitalvoucher,
+		PRODUCT_TYPES.digitalvoucherplusdigital,
+		PRODUCT_TYPES.digitalvoucherobserver,
+		PRODUCT_TYPES.voucherobserver,
+	].includes(specificProductType);
+};
