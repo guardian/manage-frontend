@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, space } from '@guardian/source/foundations';
+import { space } from '@guardian/source/foundations';
 import { capitalize } from 'lodash';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
@@ -8,8 +8,7 @@ import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse
 import { augmentBillingPeriod } from '../../../../../shared/productResponse';
 import type { ProductType } from '../../../../../shared/productTypes';
 import { SuccessMessage } from '../../delivery/address/DeliveryAddressConfirmation';
-import { Button } from '../../shared/Buttons';
-import { ProductDescriptionListTable } from '../../shared/ProductDescriptionListTable';
+import { ProductDescriptionListTableV2 } from '../../shared/ProductDescriptionListTableV2';
 import { ContributionUpdateAmountForm } from './ContributionUpdateAmountForm';
 import { SupporterPlusUpdateAmountForm } from './SupporterPlusUpdateAmountForm';
 
@@ -75,33 +74,38 @@ export const UpdateAmount = (props: UpdateAmountProps) => {
 					`}
 				/>
 			)}
-			<ProductDescriptionListTable
-				borderColour={palette.neutral[86]}
-				content={[
+			<ProductDescriptionListTableV2
+				rows={[
 					{
-						title: 'Supporter ID',
-						value: props.subscriptionId,
-					},
-					{
-						title: `${capitalize(
-							augmentBillingPeriod(props.mainPlan.billingPeriod),
-						)} amount`,
-						value: `${
-							props.mainPlan.currency
-						}${currentAmount.toFixed(2)} ${
-							props.mainPlan.currencyISO
-						}`,
+						tiles: [
+							{
+								title: 'Supporter ID',
+								value: props.subscriptionId,
+							},
+							{
+								title: `${capitalize(
+									augmentBillingPeriod(
+										props.mainPlan.billingPeriod,
+									),
+								)} amount`,
+								value: `${
+									props.mainPlan.currency
+								}${currentAmount.toFixed(2)} ${
+									props.mainPlan.currencyISO
+								}`,
+							},
+						],
+						actions: [
+							{
+								text: 'Change amount',
+								onClick: () => {
+									setStatus(Status.EDITING);
+								},
+							},
+						],
 					},
 				]}
-			/>
-			<Button
-				colour={palette.brand[800]}
-				textColour={palette.brand[400]}
-				fontWeight="bold"
-				text="Change amount"
-				onClick={() => {
-					setStatus(Status.EDITING);
-				}}
+				separateEachRow
 			/>
 		</>
 	);
