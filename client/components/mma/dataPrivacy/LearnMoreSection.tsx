@@ -14,7 +14,7 @@ export const LearnMoreSection = () => {
 			<p css={dataPrivacyParagraphCss}>
 				For more information about how we use your data, including the
 				generation of random identifiers based on your email address for
-				advertising and marketing, visit our&nbsp;
+				advertising and marketing, visit our{' '}
 				<a
 					css={aCss}
 					target="_blank"
@@ -22,7 +22,7 @@ export const LearnMoreSection = () => {
 					rel="noreferrer"
 				>
 					privacy policy
-				</a>{' '}
+				</a>.
 			</p>
 		</>
 	);
