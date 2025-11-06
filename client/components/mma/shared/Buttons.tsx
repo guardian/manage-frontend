@@ -46,7 +46,7 @@ export interface ButtonProps {
 		| 'right';
 }
 
-interface LinkButtonState {
+export interface LinkButtonState {
 	productDetail: ProductDetail;
 	flowReferrer?: { title: string; link: string };
 }
