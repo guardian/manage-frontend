@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import {
+	from,
 	palette,
 	space,
 	textSans14,
@@ -39,7 +40,7 @@ const ProductDescriptionAction = ({
 	return (
 		<div
 			css={css`
-				// padding: ${space[5]}px;
+				width: 100%;
 			`}
 		>
 			<Button
@@ -48,6 +49,11 @@ const ProductDescriptionAction = ({
 				fontWeight="bold"
 				text={content.text}
 				onClick={content.onClick}
+				width={{
+					initial: '100%',
+					fromMobileLandscape: 'auto',
+				}}
+				justifyContent="center"
 			/>
 		</div>
 	);
@@ -61,12 +67,14 @@ const ProductDescriptionTile = ({
 	return (
 		<div
 			css={css`
-				width: ${content.spanTwoCols ? 400 : 200}px;
+				width: auto;
+				${from.mobileLandscape} {
+					width: ${(content.spanTwoCols ? 400 : 200) - space[4]}px;
+				}
 			`}
 		>
 			<div
 				css={css`
-					padding-right: ${space[4]}px;
 					display: flex;
 					flex-direction: column;
 					gap: ${space[0]}px;
@@ -105,6 +113,12 @@ export const ProductDescriptionRow = ({
 				background-color: ${palette.neutral[97]};
 				padding: ${space[5]}px ${space[4]}px;
 				display: flex;
+				gap: ${space[6]}px;
+				flex-direction: column;
+				${from.mobileLandscape} {
+					flex-direction: row;
+					gap: ${space[4]}px;
+				}
 			`}
 		>
 			<div
@@ -112,7 +126,11 @@ export const ProductDescriptionRow = ({
 				css={css`
 					flex: 1;
 					display: flex;
-					flex-wrap: wrap;
+					gap: ${space[8]}px;
+					${from.mobileLandscape} {
+						flex-wrap: wrap;
+						gap: ${space[4]}px;
+					}
 				`}
 			>
 				{content.tiles.map((item, index) => (
