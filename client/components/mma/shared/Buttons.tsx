@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import {
 	brandAlt,
+	from,
 	neutral,
 	space,
 	textSans17Object,
@@ -31,6 +32,18 @@ export interface ButtonProps {
 	leftTick?: true;
 	alert?: boolean;
 	type?: 'button' | 'submit' | 'reset';
+	width?: {
+		initial?: string;
+		fromMobileLandscape?: string;
+	};
+	justifyContent?:
+		| 'center'
+		| 'start'
+		| 'end'
+		| 'flex-start'
+		| 'flex-end'
+		| 'left'
+		| 'right';
 }
 
 interface LinkButtonState {
@@ -109,6 +122,8 @@ const buttonCss = ({
 	forceCircle,
 	hoverColour,
 	leftTick,
+	width,
+	justifyContent,
 }: ButtonProps) => {
 	const backgroundColour = calcBackgroundColour(
 		disabled,
@@ -151,6 +166,17 @@ const buttonCss = ({
 			  },
 		cursor: disabled ? 'not-allowed' : 'pointer',
 		maxWidth: 'calc(100vw - 40px)',
+		...(width && {
+			...(width?.initial && {
+				width: width.initial,
+			}),
+			...(width?.fromMobileLandscape && {
+				[from.mobileLandscape]: { width: width.fromMobileLandscape },
+			}),
+		}),
+		...(justifyContent && {
+			justifyContent: justifyContent,
+		}),
 	});
 };
 
