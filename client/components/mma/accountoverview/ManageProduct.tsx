@@ -48,7 +48,7 @@ import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView
 import { BasicProductInfoTable } from '../shared/BasicProductInfoTable';
 import { LinkButton } from '../shared/Buttons';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
-import { PaymentDetailsTable } from '../shared/PaymentDetailsTable';
+import { PaymentDetailsTableV2 } from '../shared/PaymentDetailsTableV2';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTable';
 import { NewsletterOptinSection } from './NewsletterOptinSection';
@@ -200,32 +200,12 @@ const InnerContent = ({
 				mainPlan={mainPlan}
 				hasCancellationPending={hasCancellationPending}
 			/>
-			<PaymentDetailsTable
+			<PaymentDetailsTableV2
 				productDetail={productDetail}
 				nextPaymentDetails={nextPaymentDetails}
 				hasCancellationPending={hasCancellationPending}
+				specificProductType={specificProductType}
 			/>
-			{productDetail.isPaidTier &&
-				productDetail.subscription.safeToUpdatePaymentMethod &&
-				!productDetail.subscription.payPalEmail && (
-					<LinkButton
-						colour={
-							productDetail.alertText
-								? palette.brand[400]
-								: palette.brand[800]
-						}
-						textColour={
-							productDetail.alertText
-								? palette.neutral[100]
-								: palette.brand[400]
-						}
-						fontWeight={'bold'}
-						alert={!!productDetail.alertText}
-						text="Update payment method"
-						to={`/payment/${specificProductType.urlPart}`}
-						state={{ productDetail: productDetail }}
-					/>
-				)}
 
 			{specificProductType.delivery?.showAddress?.(
 				productDetail.subscription,
