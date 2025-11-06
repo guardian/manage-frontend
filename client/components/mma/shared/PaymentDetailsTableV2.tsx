@@ -17,6 +17,15 @@ interface PaymentDetailsTableProps {
 	specificProductType: ProductType;
 }
 export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
+	// Evaluate if the current product/subscription is a monthly subscription
+	const isMonthlySubscription = () => {
+		const mainPlan = props.productDetail.subscription.currentPlans?.[0];
+		if (mainPlan && 'billingPeriod' in mainPlan) {
+			return mainPlan.billingPeriod === 'month';
+		}
+		return false;
+	};
+
 	const paymentDetailRows =
 		props.nextPaymentDetails &&
 		props.productDetail.subscription.autoRenew &&
@@ -46,6 +55,14 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 								),
 							},
 						],
+						actions: isMonthlySubscription()
+							? [
+									{
+										text: 'Switch to annual plan',
+										linkTo: `/payment/${props.specificProductType.urlPart}`,
+									},
+							  ]
+							: [],
 					},
 			  ]
 			: [];
