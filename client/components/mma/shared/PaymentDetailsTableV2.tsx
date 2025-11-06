@@ -14,7 +14,7 @@ interface PaymentDetailsTableProps {
 	nextPaymentDetails: NextPaymentDetails | undefined;
 	hasCancellationPending: boolean;
 	tableHeading?: string;
-	specificProductType?: ProductType;
+	specificProductType: ProductType;
 }
 export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 	const paymentDetailRows =
@@ -132,7 +132,7 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 							? [
 									{
 										text: 'Update method',
-										linkTo: `/payment/${props.specificProductType?.urlPart}`,
+										linkTo: `/payment/${props.specificProductType.urlPart}`,
 										alert: !!props.productDetail.alertText,
 										state: {
 											productDetail: props.productDetail,
