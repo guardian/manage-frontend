@@ -7,7 +7,7 @@ import {
 	until,
 } from '@guardian/source/foundations';
 import { useState } from 'react';
-import { Link, Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {
@@ -389,24 +389,24 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 	return (
 		<div
 			css={css`
-				margin: ${space[24]}px 0 0 auto;
+				margin: ${space[10]}px 0 0 auto;
 				${textSans17};
 				color: ${palette.neutral[46]};
 			`}
 		>
 			{shouldContactUsToCancel &&
 				`Would you like to cancel your ${props.friendlyName}? `}
-			<Link
-				css={css`
-					color: ${palette.brand['500']};
-				`}
+			<LinkButton
+				fontWeight={'bold'}
 				to={'/cancel/' + props.specificProductType.urlPart}
 				state={{ productDetail: props.productDetail }}
-			>
-				{shouldContactUsToCancel
-					? 'Contact us'
-					: `Cancel ${props.friendlyName}`}
-			</Link>
+				text={
+					shouldContactUsToCancel
+						? 'Contact us'
+						: `Cancel ${props.friendlyName}`
+				}
+				hollow
+			/>
 		</div>
 	);
 };
