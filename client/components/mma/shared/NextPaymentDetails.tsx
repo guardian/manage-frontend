@@ -8,7 +8,6 @@ import type {
 	SubscriptionPlan,
 } from '../../../../shared/productResponse';
 import {
-	augmentBillingPeriod,
 	isPaidSubscriptionPlan,
 	isSixForSix,
 } from '../../../../shared/productResponse';
@@ -46,9 +45,7 @@ export const getNextPaymentDetails = (
 				? planAfterMainPlan.billingPeriod
 				: mainPlan.billingPeriod;
 
-		const paymentKey = `Next ${augmentBillingPeriod(
-			paymentInterval,
-		)} payment`;
+		const paymentKey = `Per ${paymentInterval}`;
 
 		const getPaymentValue = (shortVersion?: 'short') => {
 			if (subscription.readerType === 'Patron') {
@@ -95,7 +92,7 @@ export const getNextPaymentDetails = (
 			paymentValue: getPaymentValue(),
 			paymentValueShort: getPaymentValue('short'),
 			isNewPaymentValue,
-			nextPaymentDateKey: 'Next payment date',
+			nextPaymentDateKey: 'Next payment due',
 			nextPaymentDateValue,
 			currentPriceValue: currentPaidSubscriptionPlan
 				? `${currentPaidSubscriptionPlan.currency}${(
