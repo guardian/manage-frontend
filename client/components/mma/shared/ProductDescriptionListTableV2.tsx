@@ -7,11 +7,16 @@ import {
 	textSansBold20,
 } from '@guardian/source/foundations';
 import type { ReactElement } from 'react';
-import { Button } from './Buttons';
+import type { ProductDetail } from '@/shared/productResponse';
+import { Button, LinkButton } from './Buttons';
+import type { LinkButtonState } from './Buttons';
 
 export interface ProductDescriptionListRowAction {
 	text: string;
 	onClick?: () => void;
+	linkTo?: string;
+	state?: unknown;
+	alert?: boolean;
 }
 
 export interface ProductDescriptionListRowTile {
@@ -43,18 +48,41 @@ const ProductDescriptionAction = ({
 				width: 100%;
 			`}
 		>
-			<Button
-				colour={palette.brand[800]}
-				textColour={palette.brand[400]}
-				fontWeight="bold"
-				text={content.text}
-				onClick={content.onClick}
-				width={{
-					initial: '100%',
-					fromMobileLandscape: 'auto',
-				}}
-				justifyContent="center"
-			/>
+			{content.onClick ? (
+				<Button
+					colour={palette.brand[800]}
+					textColour={palette.brand[400]}
+					fontWeight="bold"
+					text={content.text}
+					onClick={content.onClick}
+					width={{
+						initial: '100%',
+						fromMobileLandscape: 'auto',
+					}}
+					justifyContent="center"
+				/>
+			) : null}
+			{content.linkTo ? (
+				<LinkButton
+					colour={palette.brand[800]}
+					textColour={palette.brand[400]}
+					fontWeight={'bold'}
+					text={content.text}
+					to={content.linkTo}
+					alert={content.alert}
+					state={
+						content.state as
+							| ProductDetail
+							| LinkButtonState
+							| undefined
+					}
+					width={{
+						initial: '100%',
+						fromMobileLandscape: 'auto',
+					}}
+					justifyContent="center"
+				/>
+			) : null}
 		</div>
 	);
 };
@@ -67,7 +95,7 @@ const ProductDescriptionTile = ({
 	return (
 		<div
 			css={css`
-				width: auto;
+				width: ${content.spanTwoCols ? '100%' : 'auto'};
 				${from.mobileLandscape} {
 					width: ${(content.spanTwoCols ? 400 : 200) - space[4]}px;
 				}
@@ -127,8 +155,8 @@ export const ProductDescriptionRow = ({
 					flex: 1;
 					display: flex;
 					gap: ${space[8]}px;
+					flex-wrap: wrap;
 					${from.mobileLandscape} {
-						flex-wrap: wrap;
 						gap: ${space[4]}px;
 					}
 				`}
