@@ -44,7 +44,6 @@ import {
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
-import { SwitchToAnnualBillingFrequencyAdBanner } from '../ad-banners/SwitchToAnnualBillingFrequencyAdBanner';
 import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
@@ -271,14 +270,14 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 
 	return (
 		<>
-			<div
+			{/* <div
 				className="ad-banners-container"
 				css={css`
 					margin-top: ${space[5]}px;
 				`}
 			>
 				<SwitchToAnnualBillingFrequencyAdBanner />
-			</div>
+			</div> */}
 
 			<PersonalisedHeader
 				mdapiResponse={mdapiResponse}
