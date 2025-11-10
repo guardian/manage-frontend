@@ -7,7 +7,7 @@ import {
 } from '@guardian/source/foundations';
 import type { Context } from 'react';
 import { createContext, useContext } from 'react';
-import { useLocation } from 'react-router';
+import { Navigate, useLocation } from 'react-router';
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
 import {
 	changeSubscriptionBillingFrequencyFetch,
@@ -123,6 +123,12 @@ export const BillingDetailUpdateSwitchFrequency = (
 	const { state } = useLocation();
 	const routerState = state as BillingFrequencySwitchPreviewState | undefined;
 	const preview = routerState?.preview;
+
+	if (!isMonthlySubscription(productDetail)) {
+		// If not monthly, no switch preview to show, redirect to root
+		// TODO: handle this case better in future - perhaps show an error message?
+		return <Navigate to="/" />;
+	}
 
 	return (
 		<>
