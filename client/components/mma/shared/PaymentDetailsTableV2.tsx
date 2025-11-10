@@ -59,7 +59,7 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 							? [
 									{
 										text: 'Switch to annual plan',
-										linkTo: `/payment/${props.specificProductType.urlPart}`,
+										linkTo: `/billing/${props.specificProductType.urlPart}/switch-frequency?subscriptionId=${props.productDetail.subscription.subscriptionId}`,
 									},
 							  ]
 							: [],
