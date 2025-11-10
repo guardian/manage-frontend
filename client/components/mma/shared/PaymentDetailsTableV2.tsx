@@ -1,10 +1,13 @@
-import { css } from '@emotion/react';
-import type { ProductType } from '@/shared/productTypes';
-import type { ProductDetail } from '../../../../shared/productResponse';
-import { PaypalLogo } from './assets/PaypalLogo';
+import { css } from '@emotion/react'; // external lib (style) first
+import { useEffect, useState } from 'react'; // external lib (react) second
+import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
+import { changeSubscriptionBillingFrequencyFetch } from '@/client/utilities/productUtils'; // internal absolute value imports
+import type { ProductType } from '@/shared/productTypes'; // internal absolute type imports
+import type { ProductDetail } from '../../../../shared/productResponse'; // relative type imports (shared)
+import { PaypalLogo } from './assets/PaypalLogo'; // relative value imports
 import { CardDisplay } from './CardDisplay';
 import { DirectDebitDisplay } from './DirectDebitDisplay';
-import type { NextPaymentDetails } from './NextPaymentDetails';
+import type { NextPaymentDetails } from './NextPaymentDetails'; // relative type imports (local)
 import { NewPaymentPriceAlert } from './NextPaymentDetails';
 import { ProductDescriptionListTableV2 } from './ProductDescriptionListTableV2';
 import { SepaDisplay } from './SepaDisplay';
@@ -24,6 +27,44 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 			return mainPlan.billingPeriod === 'month';
 		}
 		return false;
+	};
+
+	// Savings state (from changeSubscriptionBillingFrequencyFetch preview)
+	const [annualSwitchSavings, setAnnualSwitchSavings] = useState<{
+		amount: number;
+		currency: string;
+		period: 'year' | 'month';
+	} | null>(null);
+
+	useEffect(() => {
+		// Only fetch savings if it's a monthly subscription and we haven't fetched yet
+		if (isMonthlySubscription() && annualSwitchSavings === null) {
+			changeSubscriptionBillingFrequencyFetch(
+				props.productDetail.isTestUser,
+				props.productDetail.subscription.subscriptionId,
+				true,
+				'Annual',
+			)
+				.then((res) => res.json())
+				.then((data) => {
+					if (data?.savings?.amount && data?.savings?.currency) {
+						setAnnualSwitchSavings(data.savings);
+					}
+				})
+				.catch(() => {
+					/* swallow errors: non-critical UI enhancement */
+				});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- we intentionally only depend on testUser + subscriptionId to avoid refetch loops; monthly status won't change during session
+	}, [
+		props.productDetail.isTestUser,
+		props.productDetail.subscription.subscriptionId,
+	]);
+
+	const formatSavingsDisplay = (amount: number, currency: string) => {
+		const symbol = convertCurrencyToSymbol(currency);
+		// Amount from savings expected already in major units, display without trailing ISO for consistency with existing promo patterns
+		return symbol ? `${symbol}${amount}` : `${amount} ${currency}`;
 	};
 
 	const paymentDetailRows =
@@ -60,6 +101,14 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 									{
 										text: 'Switch to annual plan',
 										linkTo: `/billing/${props.specificProductType.urlPart}/switch-frequency?subscriptionId=${props.productDetail.subscription.subscriptionId}`,
+										promo:
+											annualSwitchSavings &&
+											annualSwitchSavings.amount > 0
+												? `Switch and save ${formatSavingsDisplay(
+														annualSwitchSavings.amount,
+														annualSwitchSavings.currency,
+												  )}`
+												: undefined,
 									},
 							  ]
 							: [],

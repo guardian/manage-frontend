@@ -4,6 +4,7 @@ import {
 	palette,
 	space,
 	textSans14,
+	textSans15,
 	textSansBold20,
 } from '@guardian/source/foundations';
 import type { ReactElement } from 'react';
@@ -17,6 +18,7 @@ export interface ProductDescriptionListRowAction {
 	linkTo?: string;
 	state?: unknown;
 	alert?: boolean;
+	promo?: string;
 }
 
 export interface ProductDescriptionListRowTile {
@@ -46,43 +48,63 @@ const ProductDescriptionAction = ({
 		<div
 			css={css`
 				width: 100%;
+				display: flex;
+				flex-direction: column;
+				gap: ${space[1]}px;
+				align-items: center;
 			`}
 		>
-			{content.onClick ? (
-				<Button
-					colour={palette.brand[800]}
-					textColour={palette.brand[400]}
-					fontWeight="bold"
-					text={content.text}
-					onClick={content.onClick}
-					width={{
-						initial: '100%',
-						fromMobileLandscape: 'auto',
-					}}
-					justifyContent="center"
-				/>
-			) : null}
-			{content.linkTo ? (
-				<LinkButton
-					colour={palette.brand[800]}
-					textColour={palette.brand[400]}
-					fontWeight={'bold'}
-					text={content.text}
-					to={content.linkTo}
-					alert={content.alert}
-					state={
-						content.state as
-							| ProductDetail
-							| LinkButtonState
-							| undefined
-					}
-					width={{
-						initial: '100%',
-						fromMobileLandscape: 'auto',
-					}}
-					justifyContent="center"
-				/>
-			) : null}
+			<div
+				css={css`
+					width: 100%;
+				`}
+			>
+				{content.onClick ? (
+					<Button
+						colour={palette.brand[800]}
+						textColour={palette.brand[400]}
+						fontWeight="bold"
+						text={content.text}
+						onClick={content.onClick}
+						width={{
+							initial: '100%',
+							fromMobileLandscape: 'auto',
+						}}
+						justifyContent="center"
+					/>
+				) : null}
+				{content.linkTo ? (
+					<LinkButton
+						colour={palette.brand[800]}
+						textColour={palette.brand[400]}
+						fontWeight={'bold'}
+						text={content.text}
+						to={content.linkTo}
+						alert={content.alert}
+						state={
+							content.state as
+								| ProductDetail
+								| LinkButtonState
+								| undefined
+						}
+						width={{
+							initial: '100%',
+							fromMobileLandscape: 'auto',
+						}}
+						justifyContent="center"
+					/>
+				) : null}
+			</div>
+			{content.promo && (
+				<div
+					css={css`
+						${textSans15};
+						color: ${palette.brand[500]};
+					`}
+				>
+					{content.promo}
+				</div>
+			)}
 		</div>
 	);
 };
@@ -139,7 +161,7 @@ export const ProductDescriptionRow = ({
 			css={css`
 				border: 1px solid ${palette.neutral[86]};
 				background-color: ${palette.neutral[97]};
-				padding: ${space[5]}px ${space[4]}px;
+				padding: 0px ${space[4]}px;
 				display: flex;
 				gap: ${space[6]}px;
 				flex-direction: column;
@@ -152,6 +174,7 @@ export const ProductDescriptionRow = ({
 			<div
 				className="content-tiles"
 				css={css`
+					padding: ${space[5]}px 0;
 					flex: 1;
 					display: flex;
 					gap: ${space[8]}px;
