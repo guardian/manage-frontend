@@ -56,7 +56,8 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 				{formatSavingsDisplay(
 					preview.savings.amount,
 					preview.savings.currency,
-				)}
+				)}{' '}
+				a year
 			</h3>
 			<p>
 				{productType.friendlyName} annual plans are billed once a year
