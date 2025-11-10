@@ -1,7 +1,10 @@
 import { css } from '@emotion/react'; // external lib (style) first
 import { useEffect, useState } from 'react'; // external lib (react) second
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
-import { changeSubscriptionBillingFrequencyFetch } from '@/client/utilities/productUtils'; // internal absolute value imports
+import {
+	changeSubscriptionBillingFrequencyFetch,
+	isMonthlySubscription,
+} from '@/client/utilities/productUtils'; // internal absolute value imports
 import type { BillingFrequencySwitchPreview } from '@/shared/billingFrequencySwitchTypes';
 import type { ProductType } from '@/shared/productTypes'; // internal absolute type imports
 import type { ProductDetail } from '../../../../shared/productResponse'; // relative type imports (shared)
@@ -22,15 +25,6 @@ interface PaymentDetailsTableProps {
 	specificProductType: ProductType;
 }
 export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
-	// Evaluate if the current product/subscription is a monthly subscription
-	const isMonthlySubscription = () => {
-		const mainPlan = props.productDetail.subscription.currentPlans?.[0];
-		if (mainPlan && 'billingPeriod' in mainPlan) {
-			return mainPlan.billingPeriod === 'month';
-		}
-		return false;
-	};
-
 	// Store the FULL preview response so it can be passed via router state
 	// to the switch-frequency page for richer UX (dynamic savings messaging, etc.)
 	const [billingSwitchPreview, setBillingSwitchPreview] =
@@ -38,7 +32,10 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 
 	useEffect(() => {
 		// Only fetch savings if it's a monthly subscription and we haven't fetched yet
-		if (isMonthlySubscription() && billingSwitchPreview === null) {
+		if (
+			isMonthlySubscription(props.productDetail) &&
+			billingSwitchPreview === null
+		) {
 			changeSubscriptionBillingFrequencyFetch(
 				props.productDetail.isTestUser,
 				props.productDetail.subscription.subscriptionId,
@@ -94,7 +91,7 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 								),
 							},
 						],
-						actions: isMonthlySubscription()
+						actions: isMonthlySubscription(props.productDetail)
 							? [
 									{
 										text: 'Switch to annual plan',

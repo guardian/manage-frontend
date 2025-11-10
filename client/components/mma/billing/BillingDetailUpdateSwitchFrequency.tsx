@@ -9,7 +9,10 @@ import type { Context } from 'react';
 import { createContext, useContext } from 'react';
 import { useLocation } from 'react-router';
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
-import { changeSubscriptionBillingFrequencyFetch } from '@/client/utilities/productUtils';
+import {
+	changeSubscriptionBillingFrequencyFetch,
+	isMonthlySubscription,
+} from '@/client/utilities/productUtils';
 import type {
 	BillingFrequencySwitchPreview,
 	BillingFrequencySwitchPreviewState,
@@ -93,7 +96,7 @@ const createPreviewFetcher =
 			productDetail.isTestUser,
 			productDetail.subscription.subscriptionId,
 			true,
-			'Annual',
+			isMonthlySubscription(productDetail) ? 'Annual' : 'Month',
 		);
 	};
 

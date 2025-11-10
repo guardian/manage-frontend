@@ -124,6 +124,22 @@ export function isNonServiceableCountry(productDetail: ProductDetail) {
 	return nonServiceableCountries.includes(productDetail.billingCountry ?? '');
 }
 
+export const getOppositeBillingPeriod = (
+	currentBillingPeriod: string | undefined,
+): 'Month' | 'Annual' => {
+	return currentBillingPeriod === 'month' ? 'Annual' : 'Month';
+};
+
+export const isMonthlySubscription = (
+	productDetail: ProductDetail,
+): boolean => {
+	const mainPlan = productDetail.subscription.currentPlans?.[0];
+	if (mainPlan && 'billingPeriod' in mainPlan) {
+		return mainPlan.billingPeriod === 'month';
+	}
+	return false;
+};
+
 export const changeSubscriptionBillingFrequencyFetch = (
 	isTestUser: boolean,
 	subscriptionId: string,
