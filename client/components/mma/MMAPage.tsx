@@ -62,10 +62,12 @@ const BillingDetailUpdateContainer = lazy(() =>
 		default: BillingDetailUpdateContainer,
 	})),
 );
-const BillingDetailUpdate = lazy(() =>
+const BillingDetailUpdateSwitchFrequency = lazy(() =>
 	import(
-		/* webpackChunkName: "BillingDetailUpdate" */ './billing/BillingDetailUpdate'
-	).then(({ BillingDetailUpdate }) => ({ default: BillingDetailUpdate })),
+		/* webpackChunkName: "BillingDetailSwitchFrequencyUpdate" */ './billing/BillingDetailUpdateSwitchFrequency'
+	).then(({ BillingDetailUpdateSwitchFrequency }) => ({
+		default: BillingDetailUpdateSwitchFrequency,
+	})),
 );
 
 const DataPrivacy = lazy(() =>
@@ -541,7 +543,7 @@ const MMARouter = () => {
 							(productType: ProductType) => (
 								<Route
 									key={productType.urlPart}
-									path={`/billing/${productType.urlPart}/switch-frequency`}
+									path={`/billing/${productType.urlPart}`}
 									element={
 										<BillingDetailUpdateContainer
 											productType={productType}
@@ -549,9 +551,9 @@ const MMARouter = () => {
 									}
 								>
 									<Route
-										index
+										path="switch-frequency"
 										element={
-											<BillingDetailUpdate
+											<BillingDetailUpdateSwitchFrequency
 												productType={productType}
 											/>
 										}
