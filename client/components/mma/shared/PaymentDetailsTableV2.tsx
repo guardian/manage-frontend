@@ -35,6 +35,10 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 		currency: string;
 		period: 'year' | 'month';
 	} | null>(null);
+	// Store the FULL preview response so it can be passed via router state
+	// to the switch-frequency page for richer UX (dynamic savings messaging, etc.)
+	const [annualSwitchPreview, setAnnualSwitchPreview] =
+		useState<unknown>(null);
 
 	useEffect(() => {
 		// Only fetch savings if it's a monthly subscription and we haven't fetched yet
@@ -50,6 +54,7 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 					if (data?.savings?.amount && data?.savings?.currency) {
 						setAnnualSwitchSavings(data.savings);
 					}
+					setAnnualSwitchPreview(data);
 				})
 				.catch(() => {
 					/* swallow errors: non-critical UI enhancement */
@@ -101,6 +106,12 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 									{
 										text: 'Switch to annual plan',
 										linkTo: `/billing/${props.specificProductType.urlPart}/switch-frequency?subscriptionId=${props.productDetail.subscription.subscriptionId}`,
+										state: {
+											productDetail: props.productDetail,
+											annualSwitchPreview:
+												annualSwitchPreview ||
+												undefined,
+										},
 										promo:
 											annualSwitchSavings &&
 											annualSwitchSavings.amount > 0
