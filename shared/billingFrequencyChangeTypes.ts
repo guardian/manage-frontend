@@ -1,22 +1,22 @@
 // Types for subscription billing frequency change (preview & switch) responses
 // Derived from frequencyChangeSwitchSuccessResponseSchema and frequencyChangePreviewSuccessResponseSchema
 
-export type FrequencyChangePeriod = 'year' | 'month';
+export type BillingFrequencyChangePeriod = 'year' | 'month';
 
-export interface FrequencyChangePreviewSavings {
+export interface BillingFrequencyChangePreviewSavings {
 	amount: number;
 	currency: string;
-	period: FrequencyChangePeriod;
+	period: BillingFrequencyChangePeriod;
 }
 
 // Placeholder for future detailed invoice preview structure
 export type ZuoraPreviewInvoice = Record<string, unknown>;
 
-export interface FrequencyChangePreviewResponse {
+export interface BillingFrequencyChangePreview {
 	previewInvoices: ZuoraPreviewInvoice[];
-	savings: FrequencyChangePreviewSavings;
+	savings: BillingFrequencyChangePreviewSavings;
 }
 
-export interface FrequencyChangeSwitchResponse {
+export interface BillingFrequencyChangeSwitch {
 	invoiceIds: string[];
 }

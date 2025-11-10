@@ -5,7 +5,6 @@ import type { DeliveryRecordDetail } from '../client/components/mma/delivery/rec
 import { AsyncLoader } from '../client/components/mma/shared/AsyncLoader';
 import type { CardProps } from '../client/components/mma/shared/CardDisplay';
 import type { DirectDebitGatewayOwner } from './directDebit';
-import type { FrequencyChangePreviewResponse } from './frequencyChangeTypes';
 import { PRODUCT_TYPES } from './productTypes';
 import type { ProductType } from './productTypes';
 
@@ -111,10 +110,6 @@ export interface ProductDetail extends WithSubscription {
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
 	billingCountry?: string;
-}
-
-export interface SwitchBillingFrequency extends ProductDetail {
-	preview?: FrequencyChangePreviewResponse;
 }
 
 export interface CancelledProductDetail {

@@ -2,7 +2,7 @@ import { css } from '@emotion/react'; // external lib (style) first
 import { useEffect, useState } from 'react'; // external lib (react) second
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
 import { changeSubscriptionBillingFrequencyFetch } from '@/client/utilities/productUtils'; // internal absolute value imports
-import type { FrequencyChangePreviewResponse } from '@/shared/frequencyChangeTypes';
+import type { BillingFrequencyChangePreview } from '@/shared/billingFrequencyChangeTypes';
 import type { ProductType } from '@/shared/productTypes'; // internal absolute type imports
 import type { ProductDetail } from '../../../../shared/productResponse'; // relative type imports (shared)
 import { PaypalLogo } from './assets/PaypalLogo'; // relative value imports
@@ -10,6 +10,7 @@ import { CardDisplay } from './CardDisplay';
 import { DirectDebitDisplay } from './DirectDebitDisplay';
 import type { NextPaymentDetails } from './NextPaymentDetails'; // relative type imports (local)
 import { NewPaymentPriceAlert } from './NextPaymentDetails';
+import type { ProductDescriptionListRow } from './ProductDescriptionListTableV2';
 import { ProductDescriptionListTableV2 } from './ProductDescriptionListTableV2';
 import { SepaDisplay } from './SepaDisplay';
 
@@ -33,7 +34,7 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 	// Store the FULL preview response so it can be passed via router state
 	// to the switch-frequency page for richer UX (dynamic savings messaging, etc.)
 	const [billingSwitchPreview, setBillingSwitchPreview] =
-		useState<FrequencyChangePreviewResponse | null>(null);
+		useState<BillingFrequencyChangePreview | null>(null);
 
 	useEffect(() => {
 		// Only fetch savings if it's a monthly subscription and we haven't fetched yet
@@ -45,7 +46,7 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 				'Annual',
 			)
 				.then((res) => res.json())
-				.then((data: FrequencyChangePreviewResponse) => {
+				.then((data: BillingFrequencyChangePreview) => {
 					setBillingSwitchPreview(data);
 				})
 				.catch(() => {
@@ -64,7 +65,7 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 		return symbol ? `${symbol}${amount}` : `${amount} ${currency}`;
 	};
 
-	const paymentDetailRows =
+	const paymentDetailRows: ProductDescriptionListRow[] =
 		props.nextPaymentDetails &&
 		props.productDetail.subscription.autoRenew &&
 		!props.hasCancellationPending
@@ -98,12 +99,8 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 									{
 										text: 'Switch to annual plan',
 										linkTo: `/billing/${props.specificProductType.urlPart}/switch-frequency?subscriptionId=${props.productDetail.subscription.subscriptionId}`,
-										state: {
-											...props.productDetail,
-											preview:
-												billingSwitchPreview ||
-												undefined,
-										},
+										state:
+											billingSwitchPreview ?? undefined,
 										promo:
 											billingSwitchPreview &&
 											billingSwitchPreview.savings

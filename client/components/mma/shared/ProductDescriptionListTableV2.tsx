@@ -8,10 +8,8 @@ import {
 	textSansBold20,
 } from '@guardian/source/foundations';
 import type { ReactElement } from 'react';
-import type {
-	ProductDetail,
-	SwitchBillingFrequency,
-} from '@/shared/productResponse';
+import type { BillingFrequencyChangePreview } from '@/shared/billingFrequencyChangeTypes';
+import type { ProductDetail } from '@/shared/productResponse';
 import { Button, LinkButton } from './Buttons';
 import type { LinkButtonState } from './Buttons';
 
@@ -19,7 +17,7 @@ export interface ProductDescriptionListRowAction {
 	text: string;
 	onClick?: () => void;
 	linkTo?: string;
-	state?: ProductDetail | LinkButtonState | SwitchBillingFrequency;
+	state?: ProductDetail | LinkButtonState | BillingFrequencyChangePreview;
 	alert?: boolean;
 	promo?: string;
 }
@@ -30,7 +28,7 @@ export interface ProductDescriptionListRowTile {
 	spanTwoCols?: boolean;
 }
 
-interface ProductDescriptionListRow {
+export interface ProductDescriptionListRow {
 	tiles: ProductDescriptionListRowTile[];
 	actions?: ProductDescriptionListRowAction[];
 }
