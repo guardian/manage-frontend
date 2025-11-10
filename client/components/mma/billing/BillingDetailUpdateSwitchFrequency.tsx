@@ -7,7 +7,7 @@ import {
 } from '@guardian/source/foundations';
 import { useLocation } from 'react-router';
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
-import type { BillingFrequencyChangePreview } from '@/shared/billingFrequencyChangeTypes';
+import type { BillingFrequencySwitchPreviewState } from '@/shared/billingFrequencySwitchTypes';
 import type { ProductType, WithProductType } from '@/shared/productTypes';
 
 const subHeadingCss = css`
@@ -25,7 +25,7 @@ export const BillingDetailUpdateSwitchFrequency = (
 	_props: WithProductType<ProductType>,
 ) => {
 	const { state } = useLocation();
-	const preview = state as BillingFrequencyChangePreview;
+	const routerState = state as BillingFrequencySwitchPreviewState | undefined;
 	const formatSavingsDisplay = (amount: number, currency: string) => {
 		const symbol = convertCurrencyToSymbol(currency);
 		// Amount from savings expected already in major units, display without trailing ISO for consistency with existing promo patterns
@@ -33,17 +33,23 @@ export const BillingDetailUpdateSwitchFrequency = (
 	};
 
 	return (
-		<h3
-			css={css`
-				${subHeadingCss}
-			`}
-		>
-			Switch to an annual plan and save{' '}
-			{preview &&
-				formatSavingsDisplay(
-					preview.savings.amount,
-					preview.savings.currency,
-				)}
-		</h3>
+		<>
+			{routerState && routerState.preview ? (
+				<h3
+					css={css`
+						${subHeadingCss}
+					`}
+				>
+					Switch to an annual plan and save{' '}
+					{routerState.preview &&
+						formatSavingsDisplay(
+							routerState.preview.savings.amount,
+							routerState.preview.savings.currency,
+						)}
+				</h3>
+			) : (
+				<h1>loading</h1>
+			)}
+		</>
 	);
 };

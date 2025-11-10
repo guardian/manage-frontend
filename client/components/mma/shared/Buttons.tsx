@@ -9,7 +9,7 @@ import {
 import Color from 'color';
 import type * as React from 'react';
 import { Link } from 'react-router-dom';
-import type { BillingFrequencyChangePreview } from '@/shared/billingFrequencyChangeTypes';
+import type { BillingFrequencySwitchPreviewState } from '@/shared/billingFrequencySwitchTypes';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { ArrowIcon } from './assets/ArrowIcon';
 import { ErrorIcon } from './assets/ErrorIcon';
@@ -54,7 +54,10 @@ export interface LinkButtonState {
 
 export interface LinkButtonProps extends ButtonProps {
 	to: string;
-	state?: LinkButtonState | ProductDetail | BillingFrequencyChangePreview;
+	state?:
+		| LinkButtonState
+		| ProductDetail
+		| BillingFrequencySwitchPreviewState;
 	ariaLabelText?: string;
 }
 
