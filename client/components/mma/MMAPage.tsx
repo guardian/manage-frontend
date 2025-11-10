@@ -558,16 +558,6 @@ const MMARouter = () => {
 											/>
 										}
 									/>
-									{/* <Route
-										path="updated"
-										element={
-											<PaymentDetailUpdateConfirmation />
-										}
-									/>
-									<Route
-										path="failed"
-										element={<PaymentFailed />}
-									/> */}
 								</Route>
 							),
 						)}

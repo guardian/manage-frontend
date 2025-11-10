@@ -5,15 +5,18 @@ import {
 	space,
 	until,
 } from '@guardian/source/foundations';
-import { useContext } from 'react';
+import type { Context } from 'react';
+import { createContext, useContext } from 'react';
 import { useLocation } from 'react-router';
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
+import { changeSubscriptionBillingFrequencyFetch } from '@/client/utilities/productUtils';
 import type {
 	BillingFrequencySwitchPreview,
 	BillingFrequencySwitchPreviewState,
 } from '@/shared/billingFrequencySwitchTypes';
-import type { ProductDetail } from '@/shared/productResponse';
+import { type ProductDetail } from '@/shared/productResponse';
 import type { ProductType, WithProductType } from '@/shared/productTypes';
+import { AsyncLoader } from '../shared/AsyncLoader';
 import type { BillingUpdateContextInterface } from './BillingDetailUpdateContainer';
 import { BillingUpdateContext } from './BillingDetailUpdateContainer';
 
@@ -28,17 +31,11 @@ const subHeadingCss = css`
 	} ;
 `;
 
-const BillingDetailUpdateSwitchFrequencyDisplay = ({
-	productType,
-	productDetail,
-	isFromApp,
-	preview,
-}: {
-	productType: ProductType;
-	productDetail: ProductDetail;
-	isFromApp?: boolean;
-	preview: BillingFrequencySwitchPreview;
-}) => {
+const BillingDetailUpdateSwitchFrequencyDisplay = () => {
+	const { productType, productDetail, isFromApp, preview } = useContext(
+		BillingDetailUpdateSwitchFrequencyContext,
+	) as BillingDetailUpdateSwitchFrequencyContextInterface;
+
 	const formatSavingsDisplay = (amount: number, currency: string) => {
 		const symbol = convertCurrencyToSymbol(currency);
 		// Amount from savings expected already in major units, display without trailing ISO for consistency with existing promo patterns
@@ -70,8 +67,51 @@ const BillingDetailUpdateSwitchFrequencyDisplay = ({
 	);
 };
 
+const renderContext =
+	(
+		productType: ProductType,
+		productDetail: ProductDetail,
+		isFromApp?: boolean,
+	) =>
+	(preview: BillingFrequencySwitchPreview) => {
+		return (
+			<BillingDetailUpdateSwitchFrequencyContext.Provider
+				value={{
+					productType,
+					productDetail,
+					isFromApp,
+					preview,
+				}}
+			>
+				<BillingDetailUpdateSwitchFrequencyDisplay />
+			</BillingDetailUpdateSwitchFrequencyContext.Provider>
+		);
+	};
+const createPreviewFetcher =
+	(productDetail: ProductDetail) => (): Promise<Response> => {
+		return changeSubscriptionBillingFrequencyFetch(
+			productDetail.isTestUser,
+			productDetail.subscription.subscriptionId,
+			true,
+			'Annual',
+		);
+	};
+
+class BillingFrequencySwitchPreviewAsyncLoader extends AsyncLoader<BillingFrequencySwitchPreview> {}
+
+interface BillingDetailUpdateSwitchFrequencyContextInterface {
+	productType: ProductType;
+	productDetail: ProductDetail;
+	isFromApp?: boolean;
+	preview: BillingFrequencySwitchPreview;
+}
+const BillingDetailUpdateSwitchFrequencyContext: Context<BillingDetailUpdateSwitchFrequencyContextInterface | null> =
+	createContext<BillingDetailUpdateSwitchFrequencyContextInterface | null>(
+		null,
+	);
+
 export const BillingDetailUpdateSwitchFrequency = (
-	_props: WithProductType<ProductType>,
+	props: WithProductType<ProductType>,
 ) => {
 	const { productDetail, isFromApp } = useContext(
 		BillingUpdateContext,
@@ -84,14 +124,26 @@ export const BillingDetailUpdateSwitchFrequency = (
 	return (
 		<>
 			{preview ? (
-				<BillingDetailUpdateSwitchFrequencyDisplay
-					productType={_props.productType}
-					productDetail={productDetail}
-					isFromApp={isFromApp}
-					preview={preview}
-				/>
+				<BillingDetailUpdateSwitchFrequencyContext.Provider
+					value={{
+						productType: props.productType,
+						productDetail,
+						isFromApp,
+						preview,
+					}}
+				>
+					<BillingDetailUpdateSwitchFrequencyDisplay />
+				</BillingDetailUpdateSwitchFrequencyContext.Provider>
 			) : (
-				<h1>loading</h1>
+				<BillingFrequencySwitchPreviewAsyncLoader
+					fetch={createPreviewFetcher(productDetail)}
+					render={renderContext(
+						props.productType,
+						productDetail,
+						isFromApp,
+					)}
+					loadingMessage={`Retrieving switch billing frequency preview for your ${props.productType.friendlyName}...`}
+				/>
 			)}
 		</>
 	);
