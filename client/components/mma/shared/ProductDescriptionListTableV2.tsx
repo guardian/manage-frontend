@@ -160,25 +160,26 @@ export const ProductDescriptionRow = ({
 			css={css`
 				border: 1px solid ${palette.neutral[86]};
 				background-color: ${palette.neutral[97]};
-				padding: 0px ${space[4]}px;
 				display: flex;
 				gap: ${space[6]}px;
 				flex-direction: column;
+				padding: ${space[5]}px;
 				${from.mobileLandscape} {
 					flex-direction: row;
 					gap: ${space[4]}px;
+					padding: 0px ${space[4]}px;
 				}
 			`}
 		>
 			<div
 				className="content-tiles"
 				css={css`
-					padding: ${space[5]}px 0;
 					flex: 1;
 					display: flex;
 					gap: ${space[8]}px;
 					flex-wrap: wrap;
 					${from.mobileLandscape} {
+						padding: ${space[5]}px 0;
 						gap: ${space[4]}px;
 					}
 				`}
