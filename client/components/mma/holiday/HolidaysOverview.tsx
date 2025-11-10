@@ -19,6 +19,7 @@ import {
 import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
+	isVoucherOrSubscriptionCard,
 } from '../../../../shared/productResponse';
 import { InfoIcon } from '../shared/assets/InfoIcon';
 import { CollatedCredits } from './CollatedCredits';
@@ -78,6 +79,13 @@ const OverviewRow = (props: OverviewRowProps) => (
 	</div>
 );
 
+const infoItem = css`
+	${textSans14};
+	margin: 10px;
+	display: flex;
+	align-items: top;
+`;
+
 export const HolidaysOverview = () => {
 	const holidayStopsContext = useContext(
 		HolidayStopsContext,
@@ -89,6 +97,8 @@ export const HolidaysOverview = () => {
 		holidayStopResponse,
 		setSelectedRange,
 	} = holidayStopsContext;
+
+	const isGuardianPrint = isVoucherOrSubscriptionCard(productDetail);
 
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -156,14 +166,7 @@ export const HolidaysOverview = () => {
 								{productType.holidayStops.additionalHowAdvice}
 							</div>
 						)}
-						<div
-							css={css`
-								${textSans14};
-								margin: 10px;
-								display: flex;
-								align-items: top;
-							`}
-						>
+						<div css={infoItem}>
 							<InfoIcon />
 							<div>
 								<strong>
@@ -179,6 +182,19 @@ export const HolidaysOverview = () => {
 								suspend per year is reset on this date.
 							</div>
 						</div>
+						{isGuardianPrint && (
+							<div css={infoItem}>
+								<InfoIcon />
+								<div>
+									If you have arranged your own delivery with
+									your chosen retailer, you must contact this
+									retailer to suspend deliveries for the
+									duration of your holiday. Otherwise your
+									retailer may charge you for any copies they
+									deliver during your holiday.
+								</div>
+							</div>
+						)}
 						<HolidayQuestionsModal
 							annualIssueLimit={
 								holidayStopResponse.annualIssueLimit
