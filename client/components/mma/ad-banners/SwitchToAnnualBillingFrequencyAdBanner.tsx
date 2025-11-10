@@ -6,6 +6,7 @@ import {
 	textSansBold15,
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
+import { changeSubscriptionBillingFrequencyFetch } from '@/client/utilities/productUtils';
 import { standardSansText } from '../identity/sharedStyles';
 
 export const SwitchToAnnualBillingFrequencyAdBanner = () => {
@@ -54,7 +55,24 @@ export const SwitchToAnnualBillingFrequencyAdBanner = () => {
 					Save £XX per year by switching from monthly to annual
 					billing
 				</p>
-				<Button priority="primary" size="small">
+				<Button
+					priority="primary"
+					size="small"
+					onClick={() => {
+						// changeSubscriptionBillingFrequencyFetch(
+						// 	true,
+						// 	'A-S01024113',
+						// 	true,
+						// 	'Month',
+						// );
+						changeSubscriptionBillingFrequencyFetch(
+							true,
+							'A-S01041070',
+							true,
+							'Annual',
+						);
+					}}
+				>
 					Switch to annual billing
 				</Button>
 			</div>
