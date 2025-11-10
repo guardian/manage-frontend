@@ -8,7 +8,10 @@ import {
 	textSansBold20,
 } from '@guardian/source/foundations';
 import type { ReactElement } from 'react';
-import type { ProductDetail } from '@/shared/productResponse';
+import type {
+	ProductDetail,
+	SwitchBillingFrequency,
+} from '@/shared/productResponse';
 import { Button, LinkButton } from './Buttons';
 import type { LinkButtonState } from './Buttons';
 
@@ -16,7 +19,7 @@ export interface ProductDescriptionListRowAction {
 	text: string;
 	onClick?: () => void;
 	linkTo?: string;
-	state?: unknown;
+	state?: ProductDetail | LinkButtonState | SwitchBillingFrequency;
 	alert?: boolean;
 	promo?: string;
 }
@@ -81,12 +84,7 @@ const ProductDescriptionAction = ({
 						text={content.text}
 						to={content.linkTo}
 						alert={content.alert}
-						state={
-							content.state as
-								| ProductDetail
-								| LinkButtonState
-								| undefined
-						}
+						state={content.state}
 						width={{
 							initial: '100%',
 							fromMobileLandscape: 'auto',

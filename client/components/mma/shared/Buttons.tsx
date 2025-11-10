@@ -9,7 +9,10 @@ import {
 import Color from 'color';
 import type * as React from 'react';
 import { Link } from 'react-router-dom';
-import type { ProductDetail } from '../../../../shared/productResponse';
+import type {
+	ProductDetail,
+	SwitchBillingFrequency,
+} from '../../../../shared/productResponse';
 import { ArrowIcon } from './assets/ArrowIcon';
 import { ErrorIcon } from './assets/ErrorIcon';
 import { TickIcon } from './assets/TickIcon';
@@ -53,7 +56,7 @@ export interface LinkButtonState {
 
 export interface LinkButtonProps extends ButtonProps {
 	to: string;
-	state?: LinkButtonState | ProductDetail;
+	state?: LinkButtonState | ProductDetail | SwitchBillingFrequency;
 	ariaLabelText?: string;
 }
 

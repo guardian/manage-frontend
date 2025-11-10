@@ -5,13 +5,12 @@ import {
 	space,
 	until,
 } from '@guardian/source/foundations';
-import { useLocation } from 'react-router-dom';
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
+import type { FrequencyChangePreviewResponse } from '@/shared/frequencyChangeTypes';
 import {
 	type ProductType,
 	type WithProductType,
 } from '../../../../shared/productTypes';
-import type { LinkButtonState } from '../shared/Buttons';
 
 const subHeadingCss = css`
 	border-top: 1px solid ${palette.neutral['93']};
@@ -25,35 +24,27 @@ const subHeadingCss = css`
 `;
 
 export const BillingDetailUpdateSwitchFrequency = (
-	_props: WithProductType<ProductType>,
+	props: WithProductType<ProductType> & {
+		annualSwitchPreview?: FrequencyChangePreviewResponse;
+	},
 ) => {
-	const location = useLocation();
-	const state = location.state as
-		| (LinkButtonState & {
-				annualSwitchPreview?: {
-					savings?: {
-						amount?: number;
-						currency?: string;
-						period?: string;
-					};
-				};
-		  })
-		| undefined;
-	const savings = state?.annualSwitchPreview?.savings;
-	const savingsDisplay =
-		savings?.amount && savings?.currency
-			? `${
-					convertCurrencyToSymbol(savings.currency) ??
-					savings.currency
-			  }${savings.amount} a year`
-			: '£24 a year'; // fallback to existing static copy
+	const formatSavingsDisplay = (amount: number, currency: string) => {
+		const symbol = convertCurrencyToSymbol(currency);
+		// Amount from savings expected already in major units, display without trailing ISO for consistency with existing promo patterns
+		return symbol ? `${symbol}${amount}` : `${amount} ${currency}`;
+	};
 	return (
 		<h3
 			css={css`
 				${subHeadingCss}
 			`}
 		>
-			Switch to an annual plan and save {savingsDisplay}
+			Switch to an annual plan and save{' '}
+			{props.annualSwitchPreview &&
+				formatSavingsDisplay(
+					props.annualSwitchPreview.savings.amount,
+					props.annualSwitchPreview.savings.currency,
+				)}
 		</h3>
 	);
 };
