@@ -18,9 +18,10 @@ import type {
 	BillingFrequencySwitchPreview,
 	BillingFrequencySwitchPreviewState,
 } from '@/shared/billingFrequencySwitchTypes';
-import { type ProductDetail } from '@/shared/productResponse';
+import { getMainPlan, type ProductDetail } from '@/shared/productResponse';
 import type { ProductType, WithProductType } from '@/shared/productTypes';
 import { AsyncLoader } from '../shared/AsyncLoader';
+import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import type { BillingUpdateContextInterface } from './BillingDetailUpdateContainer';
 import { BillingUpdateContext } from './BillingDetailUpdateContainer';
 
@@ -40,6 +41,8 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 	const { productType, productDetail, isFromApp, preview } = useContext(
 		BillingDetailUpdateSwitchFrequencyContext,
 	) as BillingDetailUpdateSwitchFrequencyContextInterface;
+
+	const mainPlan = getMainPlan(productDetail.subscription);
 
 	const formatSavingsDisplay = (amount: number, currency: string) => {
 		const symbol = convertCurrencyToSymbol(currency);
@@ -69,6 +72,12 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 				Enjoy the same benefits and keep supporting independent
 				journalism.
 			</p>
+			<BenefitsToggle
+				productType={productType.productType}
+				subscriptionPlan={mainPlan}
+				showProductTypeShortFriendlyName={true}
+			/>
+
 			<p>
 				{productType.friendlyName} annual plans are billed once a year
 				{isFromApp ? ' through the app store' : ''}, giving you peace of
