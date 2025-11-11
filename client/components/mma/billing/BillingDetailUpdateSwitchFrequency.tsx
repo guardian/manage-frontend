@@ -286,6 +286,39 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 							{!isMonthlySub ? 'month' : 'year'}
 						</div>
 					</div>
+					<div
+						className="comparison-card-content-equivalence"
+						css={css`
+							display: flex;
+							${from.mobileLandscape} {
+								justify-content: flex-end;
+							}
+						`}
+					>
+						<div
+							className="comparison-card-content-equivalence-value"
+							css={css`
+								${textSans15};
+								color: ${palette.neutral['46']};
+								${from.mobileLandscape} {
+									margin-top: ${space[0]}px;
+								}
+							`}
+						>
+							Equivalent to{' '}
+							<span
+								css={css`
+									color: ${palette.brand['500']};
+								`}
+							>
+								{formatAmountDisplay(
+									preview.newPrice.amount / 12,
+									preview.newPrice.currency,
+								)}
+								/{isMonthlySub ? 'month' : 'year'}
+							</span>
+						</div>
+					</div>
 				</div>
 			</div>
 
