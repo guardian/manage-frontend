@@ -148,13 +148,11 @@ export const changeSubscriptionBillingFrequencyFetch = (
 	// applyDiscountIfAvailable?: boolean,
 	// chosenAmount?: number,
 ) =>
-	fetch(`/api/product-switch/frequency/${subscriptionId}`, {
+	fetch(`/api/product-switch/billing-frequency/${subscriptionId}`, {
 		method: 'POST',
 		body: JSON.stringify({
 			preview,
 			targetBillingPeriod,
-			// applyDiscountIfAvailable,
-			// newAmount: chosenAmount,
 		}),
 		headers: {
 			'Content-Type': 'application/json',

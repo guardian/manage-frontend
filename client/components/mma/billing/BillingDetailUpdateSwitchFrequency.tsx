@@ -1,24 +1,35 @@
 import { css } from '@emotion/react';
 import {
+	from,
+	headlineBold24,
 	headlineBold28,
 	palette,
 	space,
+	textSans15,
 	textSans17,
+	textSansBold17,
+	textSansBold20,
+	textSansBold24,
+	textSansBold28,
 	until,
 } from '@guardian/source/foundations';
 import type { Context } from 'react';
 import { createContext, useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
-import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
 import {
 	changeSubscriptionBillingFrequencyFetch,
 	isMonthlySubscription,
 } from '@/client/utilities/productUtils';
+import { formatAmount } from '@/client/utilities/utils';
 import type {
 	BillingFrequencySwitchPreview,
 	BillingFrequencySwitchPreviewState,
 } from '@/shared/billingFrequencySwitchTypes';
-import { getMainPlan, type ProductDetail } from '@/shared/productResponse';
+import {
+	getMainPlan,
+	isPaidSubscriptionPlan,
+	type ProductDetail,
+} from '@/shared/productResponse';
 import type { ProductType, WithProductType } from '@/shared/productTypes';
 import { AsyncLoader } from '../shared/AsyncLoader';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
@@ -34,20 +45,58 @@ const subHeadingCss = css`
 	${until.tablet} {
 		font-size: 1.25rem;
 		line-height: 1.6;
-	} ;
+	}
+	${until.mobileLandscape} {
+		${headlineBold24};
+		margin-top: 0px;
+		padding-top: ${space[4]}px;
+		border-top: none;
+	}
+`;
+
+const comparisonCardHeaderLabelCss = css`
+	${textSans15};
+`;
+const comparisonCardHeaderPlanCss = css`
+	${textSansBold17}
+	${from.mobileLandscape} {
+		${textSansBold20}
+	}
+`;
+const comparisonCardHeaderPriceCss = css`
+	${textSansBold24}
+	${from.mobileLandscape} {
+		${textSansBold28}
+	}
 `;
 
 const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 	const { productType, productDetail, isFromApp, preview } = useContext(
 		BillingDetailUpdateSwitchFrequencyContext,
 	) as BillingDetailUpdateSwitchFrequencyContextInterface;
-
+	const isMonthlySub = isMonthlySubscription(productDetail);
 	const mainPlan = getMainPlan(productDetail.subscription);
 
 	const formatSavingsDisplay = (amount: number, currency: string) => {
-		const symbol = convertCurrencyToSymbol(currency);
 		// Amount from savings expected already in major units, display without trailing ISO for consistency with existing promo patterns
-		return symbol ? `${symbol}${amount}` : `${amount} ${currency}`;
+		return `${currency}${amount}`;
+	};
+
+	const getCurrentPriceDisplay = () => {
+		if (
+			isPaidSubscriptionPlan(mainPlan) &&
+			mainPlan.price !== undefined &&
+			mainPlan.currency !== undefined
+		) {
+			// Price is stored in cents/pence, divide by 100 for display
+			const displayPrice = formatAmount(mainPlan.price / 100);
+			return `${mainPlan.currency}${displayPrice}`;
+		}
+		return '—'; // fallback if price data is not available
+	};
+
+	const getNewPriceDisplay = () => {
+		return `${preview.newPrice.currency}${preview.newPrice.amount}`;
 	};
 
 	return (
@@ -57,7 +106,7 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 					${subHeadingCss}
 				`}
 			>
-				Switch to an annual plan and save{' '}
+				Switch to an {isMonthlySub ? 'annual' : 'monthly'} plan and save{' '}
 				{formatSavingsDisplay(
 					preview.savings.amount,
 					preview.savings.currency,
@@ -77,6 +126,145 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 				subscriptionPlan={mainPlan}
 				showProductTypeShortFriendlyName={true}
 			/>
+
+			<div
+				className="comparison-card"
+				css={css`
+					margin-top: ${space[5]}px;
+					border-radius: ${space[2]}px;
+					padding: 0px;
+					${from.mobileLandscape} {
+						background-color: ${palette.brand['800']};
+						padding: ${space[4]}px;
+					}
+				`}
+			>
+				<div
+					className="comparison-card-header"
+					css={css`
+						display: flex;
+						flex-direction: column;
+						padding: ${space[5]}px;
+						gap: ${space[5]}px;
+						background-color: ${palette.brand['800']};
+						border-radius: ${space[2]}px;
+						position: relative;
+						z-index: 1;
+						${from.mobileLandscape} {
+							background-color: none;
+							border-radius: 0;
+							flex-direction: row;
+							align-items: flex-end;
+							padding: ${space[2]}px ${space[5]}px ${space[6]}px
+								${space[6]}px;
+							gap: ${space[4]}px;
+							position: static;
+							z-index: auto;
+						}
+					`}
+				>
+					<div
+						className="comparison-card-header-description"
+						css={css`
+							flex: 1;
+						`}
+					>
+						<div
+							css={css`
+								${comparisonCardHeaderLabelCss}
+							`}
+						>
+							Current
+						</div>
+						<div
+							css={css`
+								${comparisonCardHeaderPlanCss}
+							`}
+						>
+							{productType.productTitle()}
+							{` (${isMonthlySub ? 'monthly' : 'annual'})`}
+						</div>
+					</div>
+					<div
+						className="comparison-card-header-price"
+						css={css`
+							${comparisonCardHeaderPriceCss}
+						`}
+					>
+						{getCurrentPriceDisplay()}/
+						{isMonthlySub ? 'month' : 'year'}
+					</div>
+				</div>
+				<div
+					className="comparison-card-content"
+					css={css`
+						border-radius: ${space[2]}px;
+						border-top-left-radius: 0;
+						border-top-right-radius: 0;
+						border-left: 1px solid ${palette.neutral['73']};
+						border-right: 1px solid ${palette.neutral['73']};
+						border-bottom: 1px solid ${palette.neutral['73']};
+						padding: ${space[6] + 8}px ${space[5]}px ${space[5]}px
+							${space[5]}px;
+						position: relative;
+						top: -8px;
+						${from.mobileLandscape} {
+							background-color: ${palette.neutral['100']};
+							padding: ${space[4]}px;
+							border: none;
+							border-top-left-radius: ${space[2]}px;
+							border-top-right-radius: ${space[2]}px;
+							position: static;
+							top: 0;
+						}
+					`}
+				>
+					<div
+						className="comparison-card-content-header"
+						css={css`
+							display: flex;
+							flex-direction: column;
+							gap: ${space[5]}px;
+							${from.mobileLandscape} {
+								flex-direction: row;
+								gap: ${space[4]}px;
+							}
+						`}
+					>
+						<div
+							className="comparison-card-content-header-description"
+							css={css`
+								flex: 1;
+							`}
+						>
+							<div
+								css={css`
+									${comparisonCardHeaderLabelCss}
+								`}
+							>
+								New
+							</div>
+							<div
+								css={css`
+									${comparisonCardHeaderPlanCss}
+								`}
+							>
+								{productType.productTitle()}
+								{` (${!isMonthlySub ? 'monthly' : 'annual'})`}
+							</div>
+						</div>
+						<div
+							className="comparison-card-content-header-price"
+							css={css`
+								${comparisonCardHeaderPriceCss}
+							`}
+						>
+							{getNewPriceDisplay()}/
+							{!isMonthlySub ? 'month' : 'year'}
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<p>
 				{productType.friendlyName} annual plans are billed once a year
