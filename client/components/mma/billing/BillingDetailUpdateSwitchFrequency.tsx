@@ -8,6 +8,7 @@ import {
 	textSans15,
 	textSans17,
 	textSansBold12,
+	textSansBold15,
 	textSansBold17,
 	textSansBold20,
 	textSansBold24,
@@ -266,6 +267,7 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 										background: ${palette.brand['500']};
 										padding: ${space[0]}px ${space[1]}px;
 										border-radius: ${space[1]}px;
+										white-space: nowrap;
 									`}
 								>
 									Save{' '}
@@ -317,6 +319,30 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 								)}
 								/{isMonthlySub ? 'month' : 'year'}
 							</span>
+						</div>
+					</div>
+					<div
+						className="comparison-card-content-payment"
+						css={css`
+							margin-top: ${space[6]}px;
+						`}
+					>
+						<div
+							className="comparison-card-content-payment-start"
+							css={css`
+								${textSansBold15};
+							`}
+						>
+							Your new plan starts on: 1 Jan 2026
+						</div>
+						<div
+							className="comparison-card-content-payment-method"
+							css={css`
+								${textSansBold15};
+								margin-top: ${space[0]}px;
+							`}
+						>
+							Payment method: ending 4242
 						</div>
 					</div>
 				</div>
