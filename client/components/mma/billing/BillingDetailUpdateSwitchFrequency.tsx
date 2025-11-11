@@ -7,6 +7,7 @@ import {
 	space,
 	textSans15,
 	textSans17,
+	textSansBold12,
 	textSansBold17,
 	textSansBold20,
 	textSansBold24,
@@ -231,6 +232,7 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 							gap: ${space[5]}px;
 							${from.mobileLandscape} {
 								flex-direction: row;
+								align-items: flex-end;
 								gap: ${space[4]}px;
 							}
 						`}
@@ -257,7 +259,15 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 								{` (${
 									!isMonthlySub ? 'monthly' : 'annual'
 								})`}{' '}
-								<span>
+								<span
+									css={css`
+										${textSansBold12};
+										color: ${palette.sport['800']};
+										background: ${palette.brand['500']};
+										padding: ${space[0]}px ${space[1]}px;
+										border-radius: ${space[1]}px;
+									`}
+								>
 									Save{' '}
 									{formatAmountDisplay(
 										preview.savings.amount,
