@@ -3,6 +3,7 @@ import {
 	headlineBold28,
 	palette,
 	space,
+	textSans17,
 	until,
 } from '@guardian/source/foundations';
 import type { Context } from 'react';
@@ -28,6 +29,7 @@ const subHeadingCss = css`
 	padding-top: ${space[3]}px;
 	${headlineBold28};
 	margin-top: 50px;
+	margin-bottom: ${space[3]}px;
 	${until.tablet} {
 		font-size: 1.25rem;
 		line-height: 1.6;
@@ -59,6 +61,14 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 				)}{' '}
 				a year
 			</h3>
+			<p
+				css={css`
+					${textSans17}
+				`}
+			>
+				Enjoy the same benefits and keep supporting independent
+				journalism.
+			</p>
 			<p>
 				{productType.friendlyName} annual plans are billed once a year
 				{isFromApp ? ' through the app store' : ''}, giving you peace of
