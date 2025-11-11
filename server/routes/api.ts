@@ -228,10 +228,10 @@ router.post(
 );
 
 router.post(
-	'/product-switch/frequency/:subscriptionName',
+	'/product-switch/billing-frequency/:subscriptionName',
 	withOktaServerSideValidation,
 	productSwitchAPI(
-		'product-switch/frequency/:subscriptionName',
+		'product-switch/billing-frequency/:subscriptionName',
 		'MOVE_PRODUCT',
 		['subscriptionName'],
 	),
