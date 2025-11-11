@@ -35,8 +35,12 @@ import {
 	type ProductDetail,
 } from '@/shared/productResponse';
 import type { ProductType, WithProductType } from '@/shared/productTypes';
+import { PaypalLogo } from '../shared/assets/PaypalLogo';
 import { AsyncLoader } from '../shared/AsyncLoader';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
+import { CardDisplay } from '../shared/CardDisplay';
+import { DirectDebitDisplay } from '../shared/DirectDebitDisplay';
+import { SepaDisplay } from '../shared/SepaDisplay';
 import type { BillingUpdateContextInterface } from './BillingDetailUpdateContainer';
 import { BillingUpdateContext } from './BillingDetailUpdateContainer';
 
@@ -350,11 +354,58 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 						<div
 							className="comparison-card-content-payment-method"
 							css={css`
-								${textSansBold15};
 								margin-top: ${space[0]}px;
+								display: flex;
+								align-items: center;
 							`}
 						>
-							Payment method: ending 4242
+							<div
+								css={css`
+									${textSansBold15};
+									margin-right: ${space[1]}px;
+								`}
+							>
+								Payment method:
+							</div>
+							<div
+								css={css`
+									${textSans15};
+									display: flex;
+									align-items: center;
+									gap: 3px;
+								`}
+							>
+								{productDetail.subscription.card && (
+									<CardDisplay
+										cssOverrides={css`
+											margin: 0;
+										`}
+										inErrorState={!!productDetail.alertText}
+										{...productDetail.subscription.card}
+									/>
+								)}
+								{productDetail.subscription.payPalEmail && (
+									<PaypalLogo />
+								)}
+								{productDetail.subscription.mandate && (
+									<DirectDebitDisplay
+										inErrorState={!!productDetail.alertText}
+										onlyAccountEnding={true}
+										{...productDetail.subscription.mandate}
+									/>
+								)}
+								{productDetail.subscription.sepaMandate && (
+									<SepaDisplay
+										inline={true}
+										{...productDetail.subscription
+											.sepaMandate}
+									/>
+								)}
+								{productDetail.subscription
+									.stripePublicKeyForCardAddition && (
+									<span>No Payment Method</span>
+								)}
+							</div>
 						</div>
 					</div>
 				</div>
