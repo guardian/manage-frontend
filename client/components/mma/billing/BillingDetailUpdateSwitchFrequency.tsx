@@ -29,6 +29,7 @@ import type {
 	BillingFrequencySwitchPreviewState,
 } from '@/shared/billingFrequencySwitchTypes';
 import {
+	formatDate,
 	getMainPlan,
 	isPaidSubscriptionPlan,
 	type ProductDetail,
@@ -103,6 +104,10 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 			preview.newPrice.amount,
 			preview.newPrice.currency,
 		);
+	};
+
+	const getNewPlanStartDate = () => {
+		return formatDate(productDetail.subscription.renewalDate);
 	};
 
 	return (
@@ -333,7 +338,14 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 								${textSansBold15};
 							`}
 						>
-							Your new plan starts on: 1 Jan 2026
+							Your new plan starts on:{' '}
+							<span
+								css={css`
+									${textSans15};
+								`}
+							>
+								{getNewPlanStartDate()}
+							</span>
 						</div>
 						<div
 							className="comparison-card-content-payment-method"
