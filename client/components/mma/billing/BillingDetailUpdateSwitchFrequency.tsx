@@ -16,6 +16,7 @@ import {
 import type { Context } from 'react';
 import { createContext, useContext } from 'react';
 import { Navigate, useLocation } from 'react-router';
+import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
 import {
 	changeSubscriptionBillingFrequencyFetch,
 	isMonthlySubscription,
@@ -77,9 +78,9 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 	const isMonthlySub = isMonthlySubscription(productDetail);
 	const mainPlan = getMainPlan(productDetail.subscription);
 
-	const formatSavingsDisplay = (amount: number, currency: string) => {
-		// Amount from savings expected already in major units, display without trailing ISO for consistency with existing promo patterns
-		return `${currency}${amount}`;
+	const formatAmountDisplay = (amount: number, currency: string) => {
+		const symbol = convertCurrencyToSymbol(currency);
+		return symbol ? `${symbol}${amount}` : `${amount} ${currency}`;
 	};
 
 	const getCurrentPriceDisplay = () => {
@@ -96,7 +97,10 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 	};
 
 	const getNewPriceDisplay = () => {
-		return `${preview.newPrice.currency}${preview.newPrice.amount}`;
+		return formatAmountDisplay(
+			preview.newPrice.amount,
+			preview.newPrice.currency,
+		);
 	};
 
 	return (
@@ -107,7 +111,7 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 				`}
 			>
 				Switch to an {isMonthlySub ? 'annual' : 'monthly'} plan and save{' '}
-				{formatSavingsDisplay(
+				{formatAmountDisplay(
 					preview.savings.amount,
 					preview.savings.currency,
 				)}{' '}
@@ -210,7 +214,7 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 						top: -8px;
 						${from.mobileLandscape} {
 							background-color: ${palette.neutral['100']};
-							padding: ${space[4]}px;
+							padding: ${space[6]}px;
 							border: none;
 							border-top-left-radius: ${space[2]}px;
 							border-top-right-radius: ${space[2]}px;
@@ -250,7 +254,16 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 								`}
 							>
 								{productType.productTitle()}
-								{` (${!isMonthlySub ? 'monthly' : 'annual'})`}
+								{` (${
+									!isMonthlySub ? 'monthly' : 'annual'
+								})`}{' '}
+								<span>
+									Save{' '}
+									{formatAmountDisplay(
+										preview.savings.amount,
+										preview.savings.currency,
+									)}
+								</span>
 							</div>
 						</div>
 						<div
