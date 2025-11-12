@@ -186,7 +186,10 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 	};
 
 	const getNewPlanStartDate = () => {
-		return formatDate(productDetail.subscription.renewalDate);
+		return formatDate(
+			productDetail.subscription.nextPaymentDate ??
+				productDetail.subscription.renewalDate,
+		);
 	};
 
 	const processSwitch = () => {
