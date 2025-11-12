@@ -254,7 +254,7 @@ describe('Delivery records', () => {
 		cy.findByText(
 			'Your delivery problem report has been successfully submitted.',
 		).should('exist');
-		cy.findByText('Problem reported (Damaged delivery)').should('exist');
+		cy.findByText('Problem reported (Damaged paper)').should('exist');
 	});
 
 	it('allows you to report a problem with a delivery', () => {
@@ -292,7 +292,7 @@ describe('Delivery records', () => {
 		cy.findByText(
 			'Your delivery problem report has been successfully submitted.',
 		).should('exist');
-		cy.findByText('Problem reported (Damaged delivery)').should('exist');
+		cy.findByText('Problem reported (Damaged paper)').should('exist');
 	});
 
 	it('allows you to update delivery address before reporting a problem', () => {
