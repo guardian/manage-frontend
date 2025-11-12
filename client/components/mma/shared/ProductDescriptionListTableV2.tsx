@@ -37,8 +37,6 @@ export interface ProductDescriptionListRow {
 }
 
 interface ProductDescriptionListTableProps {
-	// tableHeading?: string;
-	// alternateRowBgColors?: true;
 	rows: ProductDescriptionListRow[];
 	separateEachRow?: true;
 }
@@ -170,6 +168,7 @@ export const ProductDescriptionRow = ({
 					padding: 0px ${space[4]}px;
 				}
 			`}
+			role="group"
 		>
 			<div
 				className="content-tiles"
@@ -196,6 +195,8 @@ export const ProductDescriptionRow = ({
 						align-items: center;
 						gap: ${space[3]}px;
 					`}
+					role="group"
+					aria-label="Actions"
 				>
 					{content.actions.map((item, index) => (
 						<ProductDescriptionAction key={index} content={item} />
@@ -217,6 +218,8 @@ export const ProductDescriptionListTableV2 = (
 				flex-direction: column;
 				gap: ${props.separateEachRow ? space[2] : 0}px;
 			`}
+			role="region"
+			aria-label="Product details"
 		>
 			{props.rows.map((row, rowIndex) => (
 				<ProductDescriptionRow key={rowIndex} content={row} />

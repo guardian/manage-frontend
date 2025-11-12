@@ -145,7 +145,13 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 										/>
 									)}
 									{props.productDetail.subscription
-										.payPalEmail && <PaypalLogo />}
+										.payPalEmail && (
+										<span
+											aria-label={`Payment method: PayPal ${props.productDetail.subscription.payPalEmail}`}
+										>
+											<PaypalLogo />
+										</span>
+									)}
 									{props.productDetail.subscription
 										.mandate && (
 										<DirectDebitDisplay

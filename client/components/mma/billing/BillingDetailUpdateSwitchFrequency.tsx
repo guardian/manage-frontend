@@ -103,6 +103,8 @@ const BillingDetailUpdateSwitchFrequencyDisplaySuccess = () => {
 				css={css`
 					${textSans17}
 				`}
+				role="status"
+				aria-live="polite"
 			>
 				You'll receive a confirmation email shortly. Your next billing
 				date will be {getNewPlanStartDate()}. You can cancel anytime.
@@ -123,6 +125,8 @@ const BillingDetailUpdateSwitchFrequencyDisplaySuccess = () => {
 					gap: ${space[3]}px;
 					justify-content: flex-end;
 				`}
+				role="group"
+				aria-label="Navigation buttons"
 			>
 				<Button priority="tertiary" onClick={() => navigate('/')}>
 					Back to account overview
@@ -132,6 +136,7 @@ const BillingDetailUpdateSwitchFrequencyDisplaySuccess = () => {
 					onClick={() => {
 						window.location.href = 'https://theguardian.com';
 					}}
+					aria-label="Continue reading The Guardian - opens new window"
 				>
 					Continue reading the Guardian
 				</Button>
@@ -229,6 +234,8 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 						padding: ${space[4]}px;
 					}
 				`}
+				role="region"
+				aria-label="Billing plan comparison"
 			>
 				<div
 					className="comparison-card-header"
@@ -264,6 +271,7 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 							css={css`
 								${comparisonCardHeaderLabelCss}
 							`}
+							aria-label="Current plan section"
 						>
 							Current
 						</div>
@@ -281,6 +289,9 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 						css={css`
 							${comparisonCardHeaderPriceCss}
 						`}
+						aria-label={`Current price: ${getCurrentPriceDisplay()}/${
+							isMonthlySub ? 'month' : 'year'
+						}`}
 					>
 						{getCurrentPriceDisplay()}/
 						{isMonthlySub ? 'month' : 'year'}
@@ -333,6 +344,7 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 								css={css`
 									${comparisonCardHeaderLabelCss}
 								`}
+								aria-label="New plan section"
 							>
 								New
 							</div>
@@ -354,6 +366,10 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 										border-radius: ${space[1]}px;
 										white-space: nowrap;
 									`}
+									aria-label={`Savings: ${formatAmountDisplay(
+										preview.savings.amount,
+										preview.savings.currency,
+									)}`}
 								>
 									Save{' '}
 									{formatAmountDisplay(
@@ -368,6 +384,9 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 							css={css`
 								${comparisonCardHeaderPriceCss}
 							`}
+							aria-label={`New price: ${getNewPriceDisplay()}/${
+								!isMonthlySub ? 'month' : 'year'
+							}`}
 						>
 							{getNewPriceDisplay()}/
 							{!isMonthlySub ? 'month' : 'year'}
@@ -397,6 +416,10 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 								css={css`
 									color: ${palette.brand['500']};
 								`}
+								aria-label={`Monthly equivalent: ${formatAmountDisplay(
+									preview.newPrice.amount / 12,
+									preview.newPrice.currency,
+								)}`}
 							>
 								{formatAmountDisplay(
 									preview.newPrice.amount / 12,
@@ -423,6 +446,7 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 								css={css`
 									${textSans15};
 								`}
+								aria-label={`Start date: ${getNewPlanStartDate()}`}
 							>
 								{getNewPlanStartDate()}
 							</span>
@@ -450,6 +474,8 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 									align-items: center;
 									gap: 3px;
 								`}
+								role="group"
+								aria-label="Payment method details"
 							>
 								{productDetail.subscription.card && (
 									<CardDisplay
@@ -461,7 +487,11 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 									/>
 								)}
 								{productDetail.subscription.payPalEmail && (
-									<PaypalLogo />
+									<span
+										aria-label={`PayPal payment method: ${productDetail.subscription.payPalEmail}`}
+									>
+										<PaypalLogo />
+									</span>
 								)}
 								{productDetail.subscription.mandate && (
 									<DirectDebitDisplay
@@ -496,6 +526,8 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 					${textSans15};
 					color: ${palette.neutral['7']};
 				`}
+				role="region"
+				aria-label="Terms and conditions"
 			>
 				<p>
 					By proceeding, you agree to switch to{' '}
@@ -530,6 +562,7 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 								state: { productDetail },
 							});
 						}}
+						aria-label="Cancel your subscription"
 					>
 						here
 					</button>
@@ -554,6 +587,8 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 							}
 						`}
 						target="_blank"
+						rel="noopener noreferrer"
+						aria-label="Terms and Conditions, opens in new window"
 					>
 						Terms and Conditions
 					</a>{' '}
@@ -571,6 +606,8 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 						flex-direction: column-reverse;
 					}
 				`}
+				role="group"
+				aria-label="Action buttons"
 			>
 				<Button
 					disabled={processingSwitch}
@@ -580,6 +617,9 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 							state: { productDetail },
 						});
 					}}
+					aria-label={`Stay with ${
+						isMonthlySub ? 'monthly' : 'annual'
+					} plan`}
 				>
 					Stay with {isMonthlySub ? 'monthly' : 'annual'} plan
 				</Button>
@@ -590,6 +630,12 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 					onClick={() => {
 						processSwitch();
 					}}
+					aria-label={`Confirm ${
+						!isMonthlySub ? 'monthly' : 'annual'
+					} plan - ${
+						processingSwitch ? 'processing' : 'ready to submit'
+					}`}
+					aria-busy={processingSwitch}
 				>
 					Confirm {!isMonthlySub ? 'monthly' : 'annual'} plan
 				</Button>
