@@ -17,7 +17,7 @@ import {
 } from '@guardian/source/foundations';
 import type { Context } from 'react';
 import { createContext, useContext } from 'react';
-import { Navigate, useLocation } from 'react-router';
+import { Navigate, useLocation, useNavigate } from 'react-router';
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
 import {
 	changeSubscriptionBillingFrequencyFetch,
@@ -80,6 +80,7 @@ const comparisonCardHeaderPriceCss = css`
 `;
 
 const BillingDetailUpdateSwitchFrequencyDisplay = () => {
+	const navigate = useNavigate();
 	const { productType, productDetail, preview } = useContext(
 		BillingDetailUpdateSwitchFrequencyContext,
 	) as BillingDetailUpdateSwitchFrequencyContextInterface;
@@ -431,11 +432,34 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 					you cancel.
 				</p>
 				<p>
-					Your first payment will be taken on XX(date). You will be
-					charged the subscription amount using your chosen payment
-					method at each renewal, at the rate then in effect, unless
-					you cancel before the renewal date. You can cancel at:
-					[insert].
+					Your first payment will be taken on {getNewPlanStartDate()}.
+					You will be charged the subscription amount using your
+					chosen payment method at each renewal, at the rate then in
+					effect, unless you cancel before the renewal date. You can
+					cancel{' '}
+					<button
+						css={css`
+							background: none;
+							border: none;
+							color: ${palette.brand['500']};
+							cursor: pointer;
+							text-decoration: underline;
+							padding: 0;
+							font: inherit;
+							&:hover,
+							&:focus {
+								text-decoration-line: underline;
+							}
+						`}
+						onClick={() => {
+							navigate(`/cancel/${productType.urlPart}`, {
+								state: { productDetail },
+							});
+						}}
+					>
+						here
+					</button>
+					.
 				</p>
 				<p
 					css={css`
