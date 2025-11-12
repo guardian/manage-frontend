@@ -140,7 +140,13 @@ const BillingDetailUpdateSwitchFrequencyDisplaySuccess = () => {
 	);
 };
 
-const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
+const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
+	onProcessingEnd,
+}: {
+	onProcessingEnd: (result: boolean) => void;
+}) => {
+	const [processingSwitch, setProcessingSwitch] = useState<boolean>(false);
+
 	const navigate = useNavigate();
 	const { productType, productDetail, preview } = useContext(
 		BillingDetailUpdateSwitchFrequencyContext,
@@ -175,6 +181,13 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 
 	const getNewPlanStartDate = () => {
 		return formatDate(productDetail.subscription.renewalDate);
+	};
+
+	const processSwitch = () => {
+		setProcessingSwitch(true);
+		setTimeout(() => {
+			onProcessingEnd(true);
+		}, 2000);
 	};
 
 	return (
@@ -554,19 +567,29 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 					margin-top: ${space[3]}px;
 					gap: ${space[3]}px;
 					justify-content: flex-end;
+					${until.mobileLandscape} {
+						flex-direction: column-reverse;
+					}
 				`}
 			>
 				<Button
-					// disabled={isValidating || !cardFormIsLoaded}
+					disabled={processingSwitch}
 					priority="tertiary"
-					onClick={() => {}}
+					onClick={() => {
+						navigate(`/${productType.urlPart}`, {
+							state: { productDetail },
+						});
+					}}
 				>
 					Stay with {isMonthlySub ? 'monthly' : 'annual'} plan
 				</Button>
 				<Button
-					// disabled={isValidating || !cardFormIsLoaded}
+					disabled={processingSwitch}
+					isLoading={processingSwitch}
 					priority="primary"
-					onClick={() => {}}
+					onClick={() => {
+						processSwitch();
+					}}
 				>
 					Confirm {!isMonthlySub ? 'monthly' : 'annual'} plan
 				</Button>
@@ -576,13 +599,19 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 };
 
 const BillingDetailUpdateSwitchFrequencyDisplay = () => {
-	const [state] = useState<'form' | 'success'>('success');
+	const [stage, setStage] = useState<'form' | 'success'>('form');
 	return (
 		<>
-			{state === 'form' && (
-				<BillingDetailUpdateSwitchFrequencyDisplayForm />
+			{stage === 'form' && (
+				<BillingDetailUpdateSwitchFrequencyDisplayForm
+					onProcessingEnd={(result: boolean) => {
+						if (result) {
+							setStage('success');
+						}
+					}}
+				/>
 			)}
-			{state === 'success' && (
+			{stage === 'success' && (
 				<BillingDetailUpdateSwitchFrequencyDisplaySuccess />
 			)}
 		</>
