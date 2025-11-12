@@ -161,7 +161,6 @@ export const ProductCard = ({
 		productDetail.subscription.nextPaymentDate !==
 			productDetail.subscription.potentialCancellationDate;
 
-	console.log('productDetail.subscription', productDetail.subscription);
 	const futurePlan = productDetail.subscription.futurePlans[0];
 	const isBillingFrequencySwitch =
 		futurePlan?.mmaProductKey === productDetail.mmaProductKey &&
