@@ -19,6 +19,7 @@ import type {
 	ProductDetail,
 	SingleProductDetail,
 } from '../../../../shared/productResponse';
+import { userHasGuardianEmail } from '../../../../shared/productResponse';
 import {
 	getSpecificProductTypeFromProductKey,
 	isPlusDigitalProductType,
@@ -241,6 +242,10 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		!hasDigiSubAndContribution &&
 		!hasNonServiceableCountry;
 
+	const hasGuardianEmail = mdapiResponse.user?.email
+		? userHasGuardianEmail(mdapiResponse.user?.email)
+		: false;
+
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
 	): GroupedProductTypeKeys => {
@@ -385,7 +390,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					</Fragment>
 				);
 			})}
-			{(hasDigitalPlusPrint || isPlusDigitalProduct) && (
+			{(hasDigitalPlusPrint ||
+				isPlusDigitalProduct ||
+				hasGuardianEmail) && (
 				<>
 					<h2 css={subHeadingCss}>
 						Get the most out of your benefits
