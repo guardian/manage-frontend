@@ -415,3 +415,6 @@ export const isVoucherOrSubscriptionCard = (
 		PRODUCT_TYPES.voucherobserver,
 	].includes(specificProductType);
 };
+
+export const userHasGuardianEmail = (email: string): boolean =>
+	email.endsWith('@theguardian.com') || email.endsWith('@guardian.co.uk');
