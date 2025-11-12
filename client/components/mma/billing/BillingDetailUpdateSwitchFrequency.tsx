@@ -37,6 +37,7 @@ import {
 	type ProductDetail,
 } from '@/shared/productResponse';
 import type { ProductType, WithProductType } from '@/shared/productTypes';
+import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { PaypalLogo } from '../shared/assets/PaypalLogo';
 import { AsyncLoader } from '../shared/AsyncLoader';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
@@ -190,9 +191,19 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 
 	const processSwitch = () => {
 		setProcessingSwitch(true);
-		setTimeout(() => {
-			onProcessingEnd(true);
-		}, 2000);
+		changeSubscriptionBillingFrequencyFetch(
+			productDetail.isTestUser,
+			productDetail.subscription.subscriptionId,
+			false,
+			isMonthlySub ? 'Annual' : 'Month',
+		)
+			.then(() => {
+				onProcessingEnd(true);
+			})
+			.catch(() => {
+				/* swallow errors: non-critical UI enhancement */
+				onProcessingEnd(false);
+			});
 	};
 
 	return (
@@ -645,7 +656,7 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 };
 
 const BillingDetailUpdateSwitchFrequencyDisplay = () => {
-	const [stage, setStage] = useState<'form' | 'success'>('form');
+	const [stage, setStage] = useState<'form' | 'success' | 'error'>('form');
 	return (
 		<>
 			{stage === 'form' && (
@@ -653,12 +664,17 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 					onProcessingEnd={(result: boolean) => {
 						if (result) {
 							setStage('success');
+						} else {
+							setStage('error');
 						}
 					}}
 				/>
 			)}
 			{stage === 'success' && (
 				<BillingDetailUpdateSwitchFrequencyDisplaySuccess />
+			)}
+			{stage === 'error' && (
+				<GenericErrorScreen loggingMessage="It was not possible to change billing frequency." />
 			)}
 		</>
 	);
