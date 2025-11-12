@@ -28,6 +28,7 @@ import type {
 	BillingFrequencySwitchPreview,
 	BillingFrequencySwitchPreviewState,
 } from '@/shared/billingFrequencySwitchTypes';
+import { getCorrectArticle } from '@/shared/generalTypes';
 import {
 	formatDate,
 	getMainPlan,
@@ -79,7 +80,7 @@ const comparisonCardHeaderPriceCss = css`
 `;
 
 const BillingDetailUpdateSwitchFrequencyDisplay = () => {
-	const { productType, productDetail, isFromApp, preview } = useContext(
+	const { productType, productDetail, preview } = useContext(
 		BillingDetailUpdateSwitchFrequencyContext,
 	) as BillingDetailUpdateSwitchFrequencyContextInterface;
 	const isMonthlySub = isMonthlySubscription(productDetail);
@@ -410,15 +411,48 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 					</div>
 				</div>
 			</div>
-
-			<p>
-				{productType.friendlyName} annual plans are billed once a year
-				{isFromApp ? ' through the app store' : ''}, giving you peace of
-				mind for the year ahead.
-				{productDetail.subscription.autoRenew
-					? ' Your current subscription is set to auto-renew, so switching to an annual plan will update your renewal settings.'
-					: ''}
-			</p>
+			<div
+				className="legal-information"
+				css={css`
+					margin-top: ${space[2]}px;
+					border-radius: ${space[2]}px;
+					padding: ${space[3]}px;
+					background-color: ${palette.neutral['97']};
+					${textSans15};
+					color: ${palette.neutral['7']};
+				`}
+			>
+				<p>
+					By proceeding, you agree to switch to{' '}
+					{getCorrectArticle(productType.shortFriendlyName ?? '')}{' '}
+					{productType.shortFriendlyName}{' '}
+					{!isMonthlySub ? 'monthly' : 'annual'} plan that will
+					auto-renew each {!isMonthlySub ? 'month' : 'year'}, unless
+					you cancel.
+				</p>
+				<p>
+					Your first payment will be taken on XX(date). You will be
+					charged the subscription amount using your chosen payment
+					method at each renewal, at the rate then in effect, unless
+					you cancel before the renewal date. You can cancel at:
+					[insert].
+				</p>
+				<p
+					css={css`
+						margin-bottom: 0px;
+					`}
+				>
+					Our{' '}
+					<span
+						css={css`
+							${textSansBold15}
+						`}
+					>
+						Terms and Conditions
+					</span>{' '}
+					continue to apply.
+				</p>
+			</div>
 		</>
 	);
 };
