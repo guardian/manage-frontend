@@ -17,7 +17,7 @@ import {
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import type { Context } from 'react';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
 import {
@@ -80,7 +80,67 @@ const comparisonCardHeaderPriceCss = css`
 	}
 `;
 
-const BillingDetailUpdateSwitchFrequencyDisplay = () => {
+const BillingDetailUpdateSwitchFrequencyDisplaySuccess = () => {
+	const navigate = useNavigate();
+	const { productDetail } = useContext(
+		BillingDetailUpdateSwitchFrequencyContext,
+	) as BillingDetailUpdateSwitchFrequencyContextInterface;
+
+	const getNewPlanStartDate = () => {
+		return formatDate(productDetail.subscription.renewalDate);
+	};
+
+	return (
+		<>
+			<h3
+				css={css`
+					${subHeadingCss}
+				`}
+			>
+				You've successfully updated your billing preferences
+			</h3>
+			<p
+				css={css`
+					${textSans17}
+				`}
+			>
+				You'll receive a confirmation email shortly. Your next billing
+				date will be {getNewPlanStartDate()}. You can cancel anytime.
+			</p>
+			<p
+				css={css`
+					${textSans17}
+				`}
+			>
+				Thank you! Your valued support helps power independent
+				journalism.
+			</p>
+			<div
+				className="actions"
+				css={css`
+					display: flex;
+					margin-top: ${space[3]}px;
+					gap: ${space[3]}px;
+					justify-content: flex-end;
+				`}
+			>
+				<Button priority="tertiary" onClick={() => navigate('/')}>
+					Back to account overview
+				</Button>
+				<Button
+					priority="primary"
+					onClick={() => {
+						window.location.href = 'https://theguardian.com';
+					}}
+				>
+					Continue reading the Guardian
+				</Button>
+			</div>
+		</>
+	);
+};
+
+const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 	const navigate = useNavigate();
 	const { productType, productDetail, preview } = useContext(
 		BillingDetailUpdateSwitchFrequencyContext,
@@ -511,6 +571,20 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 					Confirm {!isMonthlySub ? 'monthly' : 'annual'} plan
 				</Button>
 			</div>
+		</>
+	);
+};
+
+const BillingDetailUpdateSwitchFrequencyDisplay = () => {
+	const [state] = useState<'form' | 'success'>('success');
+	return (
+		<>
+			{state === 'form' && (
+				<BillingDetailUpdateSwitchFrequencyDisplayForm />
+			)}
+			{state === 'success' && (
+				<BillingDetailUpdateSwitchFrequencyDisplaySuccess />
+			)}
 		</>
 	);
 };
