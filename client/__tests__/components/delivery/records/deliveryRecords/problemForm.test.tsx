@@ -4,9 +4,9 @@ import type { DeliveryProblemType } from '../../../../../../shared/productTypes'
 import { DeliveryRecordProblemForm } from '../../../../../components/mma/delivery/records/DeliveryRecordsProblemForm';
 
 const guardianWeeklyProblemArr: DeliveryProblemType[] = [
-	{ label: 'Damaged paper', messageIsMandatory: true },
-	{ label: 'Delivered despite holiday', messageIsMandatory: false },
-	{ label: 'No delivery', messageIsMandatory: false },
+	{ label: 'Damaged Delivery', messageIsMandatory: true },
+	{ label: 'Delivered Despite Holiday Stop', messageIsMandatory: false },
+	{ label: 'Missing delivery', messageIsMandatory: false },
 	{ label: 'Other', messageIsMandatory: true },
 ];
 
