@@ -133,7 +133,11 @@ export const getOppositeBillingPeriod = (
 export const isMonthlySubscription = (
 	productDetail: ProductDetail,
 ): boolean => {
-	const mainPlan = productDetail.subscription.currentPlans?.[0];
+	const futurePlan = productDetail.subscription.futurePlans[0];
+	if (futurePlan && 'billingPeriod' in futurePlan) {
+		return futurePlan.billingPeriod === 'month';
+	}
+	const mainPlan = productDetail.subscription.currentPlans[0];
 	if (mainPlan && 'billingPeriod' in mainPlan) {
 		return mainPlan.billingPeriod === 'month';
 	}
