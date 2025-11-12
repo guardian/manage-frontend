@@ -161,13 +161,31 @@ export const ProductCard = ({
 		productDetail.subscription.nextPaymentDate !==
 			productDetail.subscription.potentialCancellationDate;
 
+	console.log('productDetail.subscription', productDetail.subscription);
+	const futurePlan = productDetail.subscription.futurePlans[0];
+	const isBillingFrequencySwitch =
+		futurePlan?.mmaProductKey === productDetail.mmaProductKey &&
+		isPaidSubscriptionPlan(mainPlan) &&
+		isPaidSubscriptionPlan(futurePlan) &&
+		mainPlan.billingPeriod !== futurePlan.billingPeriod;
+
 	const futureProductTitle =
-		productDetail.subscription.futurePlans[0]?.mmaProductKey &&
+		futurePlan?.mmaProductKey &&
 		productDetail.mmaProductKey &&
 		productDetail.subscription.currentPlans.length > 0
-			? getSpecificProductTypeFromProductKey(
-					productDetail.subscription.futurePlans[0].mmaProductKey,
-			  ).productTitle(mainPlan)
+			? isBillingFrequencySwitch
+				? `${getSpecificProductTypeFromProductKey(
+						futurePlan.mmaProductKey,
+				  ).productTitle(mainPlan)} ${
+						futurePlan.billingPeriod === 'year'
+							? '(annual)'
+							: futurePlan.billingPeriod === 'month'
+							? '(monthly)'
+							: futurePlan.billingPeriod
+				  }`
+				: getSpecificProductTypeFromProductKey(
+						futurePlan.mmaProductKey,
+				  ).productTitle(mainPlan)
 			: null;
 
 	return (
