@@ -45,8 +45,6 @@ export const getNextPaymentDetails = (
 				? planAfterMainPlan.billingPeriod
 				: mainPlan.billingPeriod;
 
-		const paymentKey = `Per ${paymentInterval}`;
-
 		const getPaymentValue = (shortVersion?: 'short') => {
 			if (subscription.readerType === 'Patron') {
 				return 'not applicable';
@@ -85,6 +83,16 @@ export const getNextPaymentDetails = (
 		)?.price
 			? (subscription.currentPlans[0] as PaidSubscriptionPlan)
 			: undefined;
+
+		// If it is a "isNewPaymentValue" check for a billing frequency switch and adjust the "paymentKey" accordingly
+		const hasBillingFrequencySwitch =
+			isNewPaymentValue &&
+			planAfterMainPlan &&
+			mainPlan.billingPeriod !== planAfterMainPlan.billingPeriod;
+
+		const paymentKey = hasBillingFrequencySwitch
+			? `Per ${planAfterMainPlan.billingPeriod}`
+			: `Per ${paymentInterval}`;
 
 		return {
 			paymentInterval,
