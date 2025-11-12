@@ -6,7 +6,7 @@ import { DeliveryRecordProblemForm } from '../../../../../components/mma/deliver
 const guardianWeeklyProblemArr: DeliveryProblemType[] = [
 	{ label: 'Damaged Delivery', messageIsMandatory: true },
 	{ label: 'Delivered Despite Holiday Stop', messageIsMandatory: false },
-	{ label: 'Missing delivery', messageIsMandatory: false },
+	{ label: 'Missing Delivery', messageIsMandatory: false },
 	{ label: 'Other', messageIsMandatory: true },
 ];
 
