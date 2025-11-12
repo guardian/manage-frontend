@@ -136,7 +136,7 @@ describe('Delivery records', () => {
 		cy.findByText(
 			'Step 1. What type of problem are you experiencing?',
 		).should('exist');
-		cy.findByRole('radio', { name: 'Damaged paper' }).click();
+		cy.findByRole('radio', { name: 'Damaged delivery' }).click();
 		cy.findByRole('textbox', { name: 'Please specify' }).type('Pages torn');
 		cy.findByRole('button', { name: 'Continue to Step 2 & 3' }).click();
 
@@ -193,7 +193,7 @@ describe('Delivery records', () => {
 			'Step 1. What type of problem are you experiencing?',
 		).should('exist');
 
-		cy.findByRole('radio', { name: 'Damaged paper' }).click();
+		cy.findByRole('radio', { name: 'Damaged delivery' }).click();
 		cy.findByRole('textbox', { name: 'Please specify' }).type('Pages torn');
 		cy.findByRole('button', { name: 'Continue to Step 2 & 3' }).click();
 
@@ -231,7 +231,7 @@ describe('Delivery records', () => {
 		cy.findByText(
 			'Step 1. What type of problem are you experiencing?',
 		).should('exist');
-		cy.findByRole('radio', { name: 'Damaged paper' }).click();
+		cy.findByRole('radio', { name: 'Damaged delivery' }).click();
 		cy.findByRole('textbox', { name: 'Please specify' }).type('Pages torn');
 		cy.findByRole('button', { name: 'Continue to Step 2 & 3' }).click();
 
@@ -254,7 +254,7 @@ describe('Delivery records', () => {
 		cy.findByText(
 			'Your delivery problem report has been successfully submitted.',
 		).should('exist');
-		cy.findByText('Problem reported (Damaged paper)').should('exist');
+		cy.findByText('Problem reported (Damaged delivery)').should('exist');
 	});
 
 	it('allows you to report a problem with a delivery', () => {
@@ -267,7 +267,7 @@ describe('Delivery records', () => {
 		cy.findByText(
 			'Step 1. What type of problem are you experiencing?',
 		).should('exist');
-		cy.findByRole('radio', { name: 'Damaged paper' }).click();
+		cy.findByRole('radio', { name: 'Damaged delivery' }).click();
 		cy.findByRole('textbox', { name: 'Please specify' }).type('Pages torn');
 		cy.findByRole('button', { name: 'Continue to Step 2 & 3' }).click();
 
@@ -292,7 +292,7 @@ describe('Delivery records', () => {
 		cy.findByText(
 			'Your delivery problem report has been successfully submitted.',
 		).should('exist');
-		cy.findByText('Problem reported (Damaged paper)').should('exist');
+		cy.findByText('Problem reported (Damaged delivery)').should('exist');
 	});
 
 	it('allows you to update delivery address before reporting a problem', () => {
@@ -315,7 +315,7 @@ describe('Delivery records', () => {
 		cy.findByText(
 			'Step 1. What type of problem are you experiencing?',
 		).should('exist');
-		cy.findByRole('radio', { name: 'Damaged paper' }).click();
+		cy.findByRole('radio', { name: 'Damaged delivery' }).click();
 		cy.findByRole('textbox', { name: 'Please specify' }).type('Pages torn');
 		cy.findByRole('button', { name: 'Continue to Step 2 & 3' }).click();
 
@@ -368,7 +368,7 @@ describe('Delivery records', () => {
 		cy.findByText(
 			'Step 1. What type of problem are you experiencing?',
 		).should('exist');
-		cy.findByRole('radio', { name: 'Damaged paper' }).click();
+		cy.findByRole('radio', { name: 'Damaged delivery' }).click();
 		cy.findByRole('textbox', { name: 'Please specify' }).type('Pages torn');
 		cy.findByRole('button', { name: 'Continue to Step 2 & 3' }).click();
 
