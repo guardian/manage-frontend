@@ -15,6 +15,7 @@ import {
 	textSansBold28,
 	until,
 } from '@guardian/source/foundations';
+import { Button } from '@guardian/source/react-components';
 import type { Context } from 'react';
 import { createContext, useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
@@ -485,6 +486,30 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 					</a>{' '}
 					continue to apply.
 				</p>
+			</div>
+			<div
+				className="actions"
+				css={css`
+					display: flex;
+					margin-top: ${space[3]}px;
+					gap: ${space[3]}px;
+					justify-content: flex-end;
+				`}
+			>
+				<Button
+					// disabled={isValidating || !cardFormIsLoaded}
+					priority="tertiary"
+					onClick={() => {}}
+				>
+					Stay with {isMonthlySub ? 'monthly' : 'annual'} plan
+				</Button>
+				<Button
+					// disabled={isValidating || !cardFormIsLoaded}
+					priority="primary"
+					onClick={() => {}}
+				>
+					Confirm {!isMonthlySub ? 'monthly' : 'annual'} plan
+				</Button>
 			</div>
 		</>
 	);
