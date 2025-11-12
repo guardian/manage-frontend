@@ -441,14 +441,14 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 						css={css`
 							background: none;
 							border: none;
-							color: ${palette.brand['500']};
 							cursor: pointer;
 							text-decoration: underline;
 							padding: 0;
 							font: inherit;
 							&:hover,
+							&:visited,
 							&:focus {
-								text-decoration-line: underline;
+								color: inherit;
 							}
 						`}
 						onClick={() => {
@@ -467,13 +467,22 @@ const BillingDetailUpdateSwitchFrequencyDisplay = () => {
 					`}
 				>
 					Our{' '}
-					<span
+					<a
+						href="https://www.theguardian.com/info/2022/oct/28/the-guardian-supporter-plus-terms-and-conditions"
 						css={css`
 							${textSansBold15}
+							text-decoration: underline;
+							color: inherit;
+							&:hover,
+							&:visited,
+							&:focus {
+								color: inherit;
+							}
 						`}
+						target="_blank"
 					>
 						Terms and Conditions
-					</span>{' '}
+					</a>{' '}
 					continue to apply.
 				</p>
 			</div>
