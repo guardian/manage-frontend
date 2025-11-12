@@ -149,8 +149,6 @@ export const changeSubscriptionBillingFrequencyFetch = (
 	subscriptionId: string,
 	preview: boolean,
 	targetBillingPeriod: 'Month' | 'Annual',
-	// applyDiscountIfAvailable?: boolean,
-	// chosenAmount?: number,
 ) =>
 	fetch(`/api/product-switch/billing-frequency/${subscriptionId}`, {
 		method: 'POST',
