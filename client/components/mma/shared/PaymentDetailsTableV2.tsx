@@ -1,10 +1,6 @@
 import { css } from '@emotion/react'; // external lib (style) first
-import { useEffect, useState } from 'react'; // external lib (react) second
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
-import {
-	changeSubscriptionBillingFrequencyFetch,
-	isMonthlySubscription,
-} from '@/client/utilities/productUtils'; // internal absolute value imports
+import { isMonthlySubscription } from '@/client/utilities/productUtils'; // internal absolute value imports
 import type { BillingFrequencySwitchPreview } from '@/shared/billingFrequencySwitchTypes';
 import type { ProductType } from '@/shared/productTypes'; // internal absolute type imports
 import type { ProductDetail } from '../../../../shared/productResponse'; // relative type imports (shared)
@@ -26,36 +22,7 @@ interface PaymentDetailsTableProps {
 	billingFrequencySwitchPreview?: BillingFrequencySwitchPreview;
 }
 export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
-	const [billingSwitchPreview, setBillingSwitchPreview] =
-		useState<BillingFrequencySwitchPreview | null>(
-			props.billingFrequencySwitchPreview ?? null,
-		);
-
-	useEffect(() => {
-		// Only fetch savings if it's a monthly subscription and we haven't fetched yet
-		if (
-			isMonthlySubscription(props.productDetail) &&
-			billingSwitchPreview === null
-		) {
-			changeSubscriptionBillingFrequencyFetch(
-				props.productDetail.isTestUser,
-				props.productDetail.subscription.subscriptionId,
-				true,
-				'Annual',
-			)
-				.then((res) => res.json())
-				.then((data: BillingFrequencySwitchPreview) => {
-					setBillingSwitchPreview(data);
-				})
-				.catch(() => {
-					/* swallow errors: non-critical UI enhancement */
-				});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps -- we intentionally only depend on testUser + subscriptionId to avoid refetch loops; monthly status won't change during session
-	}, [
-		props.productDetail.isTestUser,
-		props.productDetail.subscription.subscriptionId,
-	]);
+	const billingSwitchPreview = props.billingFrequencySwitchPreview ?? null;
 
 	const formatSavingsDisplay = (amount: number, currency: string) => {
 		const symbol = convertCurrencyToSymbol(currency);
