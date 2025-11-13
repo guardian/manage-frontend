@@ -28,12 +28,13 @@ interface PaymentDetailsTableProps {
 	hasCancellationPending: boolean;
 	tableHeading?: string;
 	specificProductType: ProductType;
+	billingFrequencySwitchPreview?: BillingFrequencySwitchPreview;
 }
 export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
-	// Store the FULL preview response so it can be passed via router state
-	// to the switch-frequency page for richer UX (dynamic savings messaging, etc.)
 	const [billingSwitchPreview, setBillingSwitchPreview] =
-		useState<BillingFrequencySwitchPreview | null>(null);
+		useState<BillingFrequencySwitchPreview | null>(
+			props.billingFrequencySwitchPreview ?? null,
+		);
 
 	useEffect(() => {
 		// Only fetch savings if it's a monthly subscription and we haven't fetched yet
