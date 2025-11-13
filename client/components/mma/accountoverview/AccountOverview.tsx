@@ -17,6 +17,7 @@ import type {
 	CancelledProductDetail,
 	MembersDataApiResponse,
 	ProductDetail,
+	ProductTier,
 	SingleProductDetail,
 } from '../../../../shared/productResponse';
 import { userHasGuardianEmail } from '../../../../shared/productResponse';
@@ -103,6 +104,43 @@ const subHeadingCss = css`
 		margin-top: ${space[8]}px;
 	}
 `;
+
+type BenefitsCtasProps = {
+	email: string;
+	productKeys?: ProductTier[];
+};
+export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
+	const hasDigitalPlusPrint = productKeys?.some((productKey) =>
+		isSpecificProductType(productKey, PRODUCT_TYPES.tierthree),
+	);
+
+	const isPlusDigitalProduct = productKeys?.some((productKey) =>
+		isPlusDigitalProductType(productKey),
+	);
+
+	const hasGuardianEmail = email ? userHasGuardianEmail(email) : false;
+
+	return (
+		<>
+			{(hasDigitalPlusPrint ||
+				isPlusDigitalProduct ||
+				hasGuardianEmail) && (
+				<>
+					<h2 css={subHeadingCss}>
+						Get the most out of your benefits
+					</h2>
+					<Stack space={6}>
+						{featureSwitches.digitalArchiveCta && (
+							<NewspaperArchiveCta />
+						)}
+						<DownloadAppCtaVariation1 />
+						<DownloadFeastAppCtaWithImage />
+					</Stack>
+				</>
+			)}
+		</>
+	);
+};
 
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const { data: accountOverviewResponse, loadingState } =
@@ -210,28 +248,28 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		appSubscriptions.length === 0 &&
 		singleContributions.length === 0
 	) {
-		return <EmptyAccountOverview />;
+		return (
+			<EmptyAccountOverview
+				email={mdapiResponse.user?.email ?? 'badMDAPIresponse1'}
+			/>
+		);
 	}
+
+	const allActiveProductKeys = allActiveProductDetails.map(
+		({ mmaProductKey }) => mmaProductKey,
+	);
 
 	const maybeFirstPaymentFailure = allActiveProductDetails.find(
 		(product) => product.alertText,
 	);
 
 	const hasDigiSubAndContribution =
-		allActiveProductDetails.some((productDetail) =>
+		allActiveProductKeys.some((productDetail) =>
 			isSpecificProductType(productDetail, PRODUCT_TYPES.contributions),
 		) &&
-		allActiveProductDetails.some((productDetail) =>
+		allActiveProductKeys.some((productDetail) =>
 			isSpecificProductType(productDetail, PRODUCT_TYPES.digipack),
 		);
-
-	const hasDigitalPlusPrint = allActiveProductDetails.some((productDetail) =>
-		isSpecificProductType(productDetail, PRODUCT_TYPES.tierthree),
-	);
-
-	const isPlusDigitalProduct = allActiveProductDetails.some((productDetail) =>
-		isPlusDigitalProductType(productDetail),
-	);
 
 	const hasNonServiceableCountry = nonServiceableCountries.includes(
 		allActiveProductDetails.find(isProduct)?.billingCountry as string,
@@ -241,10 +279,6 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		!maybeFirstPaymentFailure &&
 		!hasDigiSubAndContribution &&
 		!hasNonServiceableCountry;
-
-	const hasGuardianEmail = mdapiResponse.user?.email
-		? userHasGuardianEmail(mdapiResponse.user?.email)
-		: false;
 
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
@@ -390,21 +424,11 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					</Fragment>
 				);
 			})}
-			{(hasDigitalPlusPrint ||
-				isPlusDigitalProduct ||
-				hasGuardianEmail) && (
-				<>
-					<h2 css={subHeadingCss}>
-						Get the most out of your benefits
-					</h2>
-					<Stack space={6}>
-						{featureSwitches.digitalArchiveCta && (
-							<NewspaperArchiveCta />
-						)}
-						<DownloadAppCtaVariation1 />
-						<DownloadFeastAppCtaWithImage />
-					</Stack>
-				</>
+			{mdapiResponse.user && (
+				<BenefitsCtas
+					email={mdapiResponse.user.email}
+					productKeys={allActiveProductKeys}
+				/>
 			)}
 		</>
 	);
