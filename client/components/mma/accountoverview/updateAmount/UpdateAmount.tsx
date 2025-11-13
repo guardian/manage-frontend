@@ -4,7 +4,10 @@ import { capitalize } from 'lodash';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { parseDate } from '../../../../../shared/dates';
-import type { PaidSubscriptionPlan } from '../../../../../shared/productResponse';
+import type {
+	PaidSubscriptionPlan,
+	SubscriptionPlan,
+} from '../../../../../shared/productResponse';
 import { augmentBillingPeriod } from '../../../../../shared/productResponse';
 import type { ProductType } from '../../../../../shared/productTypes';
 import { SuccessMessage } from '../../delivery/address/DeliveryAddressConfirmation';
@@ -19,6 +22,7 @@ interface UpdateAmountProps {
 	nextPaymentDate: string | null;
 	amountUpdateStateChange: Dispatch<SetStateAction<number | null>>;
 	isTestUser: boolean;
+	futurePlan?: SubscriptionPlan | PaidSubscriptionPlan;
 }
 
 export const UpdateAmount = (props: UpdateAmountProps) => {
@@ -59,6 +63,11 @@ export const UpdateAmount = (props: UpdateAmountProps) => {
 		);
 	}
 
+	const isBillingFrequencySwitch =
+		props.futurePlan &&
+		'billingPeriod' in props.futurePlan &&
+		mainPlan.billingPeriod !== props.futurePlan.billingPeriod;
+
 	return (
 		<>
 			{status === Status.CONFIRMED && (
@@ -95,14 +104,16 @@ export const UpdateAmount = (props: UpdateAmountProps) => {
 								}`,
 							},
 						],
-						actions: [
-							{
-								text: 'Change amount',
-								onClick: () => {
-									setStatus(Status.EDITING);
-								},
-							},
-						],
+						actions: !isBillingFrequencySwitch
+							? [
+									{
+										text: 'Change amount',
+										onClick: () => {
+											setStatus(Status.EDITING);
+										},
+									},
+							  ]
+							: [],
 					},
 				]}
 				separateEachRow

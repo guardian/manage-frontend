@@ -179,6 +179,7 @@ const InnerContent = ({
 					nextPaymentDate={productDetail.subscription.nextPaymentDate}
 					amountUpdateStateChange={setOveriddenAmount}
 					isTestUser={productDetail.isTestUser}
+					futurePlan={productDetail.subscription.futurePlans[0]}
 				/>
 			) : (
 				<BasicProductInfoTable
