@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import * as currencyUtils from '@/client/utilities/currencyIso';
 import * as productUtils from '@/client/utilities/productUtils';
 import type { NextPaymentDetails } from '../NextPaymentDetails';
@@ -31,10 +31,6 @@ jest.mock('../NextPaymentDetails', () => ({
 const mockIsMonthlySubscription =
 	productUtils.isMonthlySubscription as jest.MockedFunction<
 		typeof productUtils.isMonthlySubscription
-	>;
-const mockChangeSubscriptionBillingFrequencyFetch =
-	productUtils.changeSubscriptionBillingFrequencyFetch as jest.MockedFunction<
-		typeof productUtils.changeSubscriptionBillingFrequencyFetch
 	>;
 const mockConvertCurrencyToSymbol =
 	currencyUtils.convertCurrencyToSymbol as jest.MockedFunction<
@@ -139,20 +135,28 @@ describe('PaymentDetailsTableV2', () => {
 		});
 	});
 
-	describe('Preview Fetch Logic', () => {
-		it('fetches preview for monthly subscriptions', async () => {
-			const mockResponse = {
-				json: jest.fn().mockResolvedValue({
-					previewInvoices: [],
-					newPrice: { amount: 100, currency: 'GBP', period: 'year' },
-					savings: { amount: 20, currency: 'GBP', period: 'year' },
-				}),
+	describe('Billing Frequency Switch', () => {
+		it('shows switch to annual button for monthly subscriptions with preview', () => {
+			const mockPreview = {
+				previewInvoices: [],
+				currentContribution: {
+					amount: 0,
+					currency: 'GBP',
+					period: 'month' as const,
+				},
+				newPrice: {
+					amount: 100,
+					currency: 'GBP',
+					period: 'year' as const,
+				},
+				savings: {
+					amount: 20,
+					currency: 'GBP',
+					period: 'year' as const,
+				},
 			};
 
 			mockIsMonthlySubscription.mockReturnValue(true);
-			mockChangeSubscriptionBillingFrequencyFetch.mockResolvedValue(
-				mockResponse as never as Response,
-			);
 
 			render(
 				<PaymentDetailsTableV2
@@ -160,17 +164,17 @@ describe('PaymentDetailsTableV2', () => {
 					specificProductType={mockProductType as never}
 					nextPaymentDetails={mockNextPaymentDetails}
 					hasCancellationPending={false}
+					billingFrequencySwitchPreview={mockPreview}
 				/>,
 			);
 
-			await waitFor(() => {
-				expect(
-					mockChangeSubscriptionBillingFrequencyFetch,
-				).toHaveBeenCalledWith(false, 'sub-123', true, 'Annual');
-			});
+			expect(
+				screen.getByText('Switch to annual plan'),
+			).toBeInTheDocument();
+			expect(screen.getByText('Switch and save £20')).toBeInTheDocument();
 		});
 
-		it('does not fetch preview for annual subscriptions', () => {
+		it('does not show switch button for annual subscriptions', () => {
 			mockIsMonthlySubscription.mockReturnValue(false);
 
 			render(
@@ -183,26 +187,62 @@ describe('PaymentDetailsTableV2', () => {
 			);
 
 			expect(
-				mockChangeSubscriptionBillingFrequencyFetch,
-			).not.toHaveBeenCalled();
+				screen.queryByText('Switch to annual plan'),
+			).not.toBeInTheDocument();
 		});
 
-		it('handles fetch errors gracefully', async () => {
+		it('does not show switch button when no preview provided', () => {
 			mockIsMonthlySubscription.mockReturnValue(true);
-			mockChangeSubscriptionBillingFrequencyFetch.mockRejectedValue(
-				new Error('API Error'),
+
+			render(
+				<PaymentDetailsTableV2
+					productDetail={mockProductDetail as never}
+					specificProductType={mockProductType as never}
+					nextPaymentDetails={mockNextPaymentDetails}
+					hasCancellationPending={false}
+				/>,
 			);
 
-			expect(() => {
-				render(
-					<PaymentDetailsTableV2
-						productDetail={mockProductDetail as never}
-						specificProductType={mockProductType as never}
-						nextPaymentDetails={mockNextPaymentDetails}
-						hasCancellationPending={false}
-					/>,
-				);
-			}).not.toThrow();
+			expect(
+				screen.queryByText('Switch to annual plan'),
+			).not.toBeInTheDocument();
+		});
+
+		it('does not show switch button when user has contribution', () => {
+			const mockPreview = {
+				previewInvoices: [],
+				currentContribution: {
+					amount: 5,
+					currency: 'GBP',
+					period: 'month' as const,
+				},
+				newPrice: {
+					amount: 100,
+					currency: 'GBP',
+					period: 'year' as const,
+				},
+				savings: {
+					amount: 20,
+					currency: 'GBP',
+					period: 'year' as const,
+				},
+			};
+
+			mockIsMonthlySubscription.mockReturnValue(true);
+
+			render(
+				<PaymentDetailsTableV2
+					productDetail={mockProductDetail as never}
+					specificProductType={mockProductType as never}
+					nextPaymentDetails={mockNextPaymentDetails}
+					hasCancellationPending={false}
+					billingFrequencySwitchPreview={mockPreview}
+				/>,
+			);
+
+			expect(
+				screen.queryByText('Switch to annual plan'),
+			).not.toBeInTheDocument();
 		});
 	});
 
