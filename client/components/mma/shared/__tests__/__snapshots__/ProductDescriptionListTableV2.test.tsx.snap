@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`ProductDescriptionListTableV2 Snapshot Testing matches snapshot with basic structure 1`] = `
 .emotion-0 {

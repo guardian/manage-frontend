@@ -34,8 +34,8 @@ import {
 	changeSubscriptionBillingFrequencyFetch,
 	createProductDetailFetcher,
 	hasDeliveryRecordsFlow,
+	isMonthlySubscription,
 	isNonServiceableCountry,
-	isSwitchBillingFrequencyFromMonthlyToAnnualPossible,
 	shouldHaveHolidayStopsFlow,
 } from '../../../utilities/productUtils';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';
@@ -481,7 +481,7 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 
 	const productDetail = data.products.filter(isProduct)[0];
 
-	if (isSwitchBillingFrequencyFromMonthlyToAnnualPossible(productDetail)) {
+	if (isMonthlySubscription(productDetail)) {
 		return (
 			<AsyncLoadedSwitchBillingFrequencyPreview
 				manageProductProps={props}
@@ -516,9 +516,7 @@ export const ManageProduct = (props: WithProductType<ProductType>) => {
 		>
 			{productDetail ? (
 				<>
-					{isSwitchBillingFrequencyFromMonthlyToAnnualPossible(
-						productDetail,
-					) ? (
+					{isMonthlySubscription(productDetail) ? (
 						<AsyncLoadedSwitchBillingFrequencyPreview
 							manageProductProps={props}
 							productDetail={productDetail}

@@ -141,6 +141,7 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 
 	const mockPreview: BillingFrequencySwitchPreview = {
 		previewInvoices: [],
+		currentContribution: { amount: 0, currency: 'GBP', period: 'month' },
 		newPrice: { amount: 120, currency: 'GBP', period: 'year' },
 		savings: { amount: 20, currency: 'GBP', period: 'year' },
 	};
@@ -709,6 +710,11 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 		it('handles zero savings correctly', () => {
 			const zeroSavingsPreview: BillingFrequencySwitchPreview = {
 				previewInvoices: [],
+				currentContribution: {
+					amount: 0,
+					currency: 'GBP',
+					period: 'month',
+				},
 				newPrice: { amount: 120, currency: 'GBP', period: 'year' },
 				savings: { amount: 0, currency: 'GBP', period: 'year' },
 			};

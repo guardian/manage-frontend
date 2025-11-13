@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'; // external lib (react) second
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
 import {
 	changeSubscriptionBillingFrequencyFetch,
-	isSwitchBillingFrequencyFromMonthlyToAnnualPossible,
+	isMonthlySubscription,
 } from '@/client/utilities/productUtils'; // internal absolute value imports
 import type { BillingFrequencySwitchPreview } from '@/shared/billingFrequencySwitchTypes';
 import type { ProductType } from '@/shared/productTypes'; // internal absolute type imports
@@ -34,9 +34,7 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 	useEffect(() => {
 		// Only fetch savings if it's a monthly subscription and we haven't fetched yet
 		if (
-			isSwitchBillingFrequencyFromMonthlyToAnnualPossible(
-				props.productDetail,
-			) &&
+			isMonthlySubscription(props.productDetail) &&
 			billingSwitchPreview === null
 		) {
 			changeSubscriptionBillingFrequencyFetch(
@@ -95,9 +93,9 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 							},
 						],
 						actions:
-							isSwitchBillingFrequencyFromMonthlyToAnnualPossible(
-								props.productDetail,
-							)
+							isMonthlySubscription(props.productDetail) &&
+							billingSwitchPreview?.currentContribution.amount ===
+								0
 								? [
 										{
 											text: 'Switch to annual plan',

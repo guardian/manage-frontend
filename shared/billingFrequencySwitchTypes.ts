@@ -18,6 +18,7 @@ export interface BillingFrequencySwitchPreview {
 	previewInvoices: ZuoraPreviewInvoice[];
 	savings: BillingFrequencySwitchPreviewValue;
 	newPrice: BillingFrequencySwitchPreviewValue;
+	currentContribution: BillingFrequencySwitchPreviewValue;
 }
 
 export interface BillingFrequencySwitchResult {

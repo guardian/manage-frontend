@@ -2,15 +2,8 @@ import {
 	getScopeFromRequestPathOrEmptyString,
 	X_GU_ID_FORWARDED_SCOPE,
 } from '../../shared/identity';
-import type {
-	ProductDetail,
-	SubscriptionPlan,
-} from '../../shared/productResponse';
-import {
-	getMainPlan,
-	isPaidSubscriptionPlan,
-	MDA_TEST_USER_HEADER,
-} from '../../shared/productResponse';
+import type { ProductDetail } from '../../shared/productResponse';
+import { MDA_TEST_USER_HEADER } from '../../shared/productResponse';
 import type {
 	AllProductsProductTypeFilterString,
 	ProductType,
@@ -20,7 +13,6 @@ import type {
 } from '../../shared/productTypes';
 import { nonServiceableCountries } from '../components/mma/shared/NonServiceableCountries';
 import { fetchWithDefaultParameters } from './fetch';
-import { getBenefitsThreshold } from './pricingConfig/supporterPlusPricing';
 
 export const shouldHaveHolidayStopsFlow = (
 	productType: ProductType,
@@ -150,29 +142,6 @@ export const isMonthlySubscription = (
 		return mainPlan.billingPeriod === 'month';
 	}
 	return false;
-};
-
-export const isReaderGivingAContribution = (
-	mainPlan: SubscriptionPlan,
-): boolean => {
-	return (
-		isPaidSubscriptionPlan(mainPlan) &&
-		['month', 'year'].includes(mainPlan.billingPeriod) &&
-		mainPlan.price / 100 >
-			getBenefitsThreshold(
-				mainPlan.currencyISO,
-				mainPlan.billingPeriod as 'month' | 'year',
-			)
-	);
-};
-
-export const isSwitchBillingFrequencyFromMonthlyToAnnualPossible = (
-	productDetail: ProductDetail,
-): boolean => {
-	return (
-		isMonthlySubscription(productDetail) &&
-		!isReaderGivingAContribution(getMainPlan(productDetail.subscription))
-	);
 };
 
 export const changeSubscriptionBillingFrequencyFetch = (

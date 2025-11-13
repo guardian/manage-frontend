@@ -209,6 +209,12 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 			});
 	};
 
+	if (preview.currentContribution.amount !== 0) {
+		// User has a current contribution amount, which means they are not eligible for a switch
+		// TODO: handle this case better in future - perhaps show an error message?
+		return <Navigate to="/" />;
+	}
+
 	return (
 		<>
 			<h3
