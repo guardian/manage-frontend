@@ -1,18 +1,14 @@
 import { css } from '@emotion/react'; // external lib (style) first
 import { useEffect, useState } from 'react'; // external lib (react) second
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
-import { getBenefitsThreshold } from '@/client/utilities/pricingConfig/supporterPlusPricing';
 import {
 	changeSubscriptionBillingFrequencyFetch,
 	isMonthlySubscription,
+	isSwitchBillingFrequencyFromMonthlyToAnnualPossible,
 } from '@/client/utilities/productUtils'; // internal absolute value imports
 import type { BillingFrequencySwitchPreview } from '@/shared/billingFrequencySwitchTypes';
 import type { ProductType } from '@/shared/productTypes'; // internal absolute type imports
 import type { ProductDetail } from '../../../../shared/productResponse'; // relative type imports (shared)
-import {
-	getMainPlan,
-	isPaidSubscriptionPlan,
-} from '../../../../shared/productResponse';
 import { PaypalLogo } from './assets/PaypalLogo'; // relative value imports
 import { CardDisplay } from './CardDisplay';
 import { DirectDebitDisplay } from './DirectDebitDisplay';
@@ -68,16 +64,6 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 		return symbol ? `${symbol}${amount}` : `${amount} ${currency}`;
 	};
 
-	const mainPlan = getMainPlan(props.productDetail.subscription);
-	const isReaderGivingAContribution: boolean =
-		isPaidSubscriptionPlan(mainPlan) &&
-		['month', 'year'].includes(mainPlan.billingPeriod) &&
-		mainPlan.price / 100 >
-			getBenefitsThreshold(
-				mainPlan.currencyISO,
-				mainPlan.billingPeriod as 'month' | 'year',
-			);
-
 	const paymentDetailRows: ProductDescriptionListRow[] =
 		props.nextPaymentDetails &&
 		props.productDetail.subscription.autoRenew &&
@@ -108,8 +94,9 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 							},
 						],
 						actions:
-							isMonthlySubscription(props.productDetail) &&
-							!isReaderGivingAContribution
+							isSwitchBillingFrequencyFromMonthlyToAnnualPossible(
+								props.productDetail,
+							)
 								? [
 										{
 											text: 'Switch to annual plan',
