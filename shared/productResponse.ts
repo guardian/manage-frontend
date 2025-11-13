@@ -375,21 +375,19 @@ export function getSpecificProductTypeFromProductKey(
 }
 
 export function isSpecificProductType(
-	productDetail: ProductDetail,
+	mmaProductKey: ProductTier,
 	targetProductType: ProductType,
 ): boolean {
-	const specificProductType = getSpecificProductTypeFromProductKey(
-		productDetail.mmaProductKey,
-	);
+	const specificProductType =
+		getSpecificProductTypeFromProductKey(mmaProductKey);
 	return specificProductType === targetProductType;
 }
 
 export const isPlusDigitalProductType = (
-	productDetail: ProductDetail,
+	mmaProductKey: ProductTier,
 ): boolean => {
-	const specificProductType = getSpecificProductTypeFromProductKey(
-		productDetail.mmaProductKey,
-	);
+	const specificProductType =
+		getSpecificProductTypeFromProductKey(mmaProductKey);
 
 	return [
 		PRODUCT_TYPES.nationaldeliveryplusdigital,
@@ -398,3 +396,23 @@ export const isPlusDigitalProductType = (
 		PRODUCT_TYPES.digitalvoucherplusdigital,
 	].includes(specificProductType);
 };
+
+export const isVoucherOrSubscriptionCard = (
+	productDetail: ProductDetail,
+): boolean => {
+	const specificProductType = getSpecificProductTypeFromProductKey(
+		productDetail.mmaProductKey,
+	);
+
+	return [
+		PRODUCT_TYPES.voucher,
+		PRODUCT_TYPES.voucherplusdigital,
+		PRODUCT_TYPES.digitalvoucher,
+		PRODUCT_TYPES.digitalvoucherplusdigital,
+		PRODUCT_TYPES.digitalvoucherobserver,
+		PRODUCT_TYPES.voucherobserver,
+	].includes(specificProductType);
+};
+
+export const userHasGuardianEmail = (email: string): boolean =>
+	email.endsWith('@theguardian.com') || email.endsWith('@guardian.co.uk');
