@@ -212,7 +212,9 @@ const InnerContent = ({
 				nextPaymentDetails={nextPaymentDetails}
 				hasCancellationPending={hasCancellationPending}
 				specificProductType={specificProductType}
-				billingFrequencySwitchPreview={billingFrequencySwitchPreview}
+				billingFrequencySwitchPreview={
+					!overiddenAmount ? billingFrequencySwitchPreview : undefined
+				}
 			/>
 
 			{specificProductType.delivery?.showAddress?.(
