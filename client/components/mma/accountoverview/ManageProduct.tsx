@@ -8,6 +8,7 @@ import {
 } from '@guardian/source/foundations';
 import { useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import type { BillingFrequencySwitchPreview } from '@/shared/billingFrequencySwitchTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {
@@ -30,9 +31,11 @@ import {
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
 import {
+	changeSubscriptionBillingFrequencyFetch,
 	createProductDetailFetcher,
 	hasDeliveryRecordsFlow,
 	isNonServiceableCountry,
+	isSwitchBillingFrequencyFromMonthlyToAnnualPossible,
 	shouldHaveHolidayStopsFlow,
 } from '../../../utilities/productUtils';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';
@@ -75,11 +78,13 @@ export const subHeadingCss = `
 interface InnerContentProps {
 	manageProductProps: WithProductType<ProductType>;
 	productDetail: ProductDetail;
+	billingFrequencySwitchPreview?: BillingFrequencySwitchPreview;
 }
 
 const InnerContent = ({
 	manageProductProps,
 	productDetail,
+	billingFrequencySwitchPreview,
 }: InnerContentProps) => {
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
@@ -207,6 +212,7 @@ const InnerContent = ({
 				nextPaymentDetails={nextPaymentDetails}
 				hasCancellationPending={hasCancellationPending}
 				specificProductType={specificProductType}
+				billingFrequencySwitchPreview={billingFrequencySwitchPreview}
 			/>
 
 			{specificProductType.delivery?.showAddress?.(
@@ -417,6 +423,41 @@ interface ManageProductRouterState {
 	productDetail: ProductDetail;
 }
 
+const AsyncLoadedSwitchBillingFrequencyPreview = ({
+	manageProductProps,
+	productDetail,
+}: {
+	manageProductProps: WithProductType<ProductType>;
+	productDetail: ProductDetail;
+}) => {
+	const { data, loadingState } =
+		useAsyncLoader<BillingFrequencySwitchPreview>(
+			() =>
+				changeSubscriptionBillingFrequencyFetch(
+					productDetail.isTestUser,
+					productDetail.subscription.subscriptionId,
+					true,
+					'Annual',
+				),
+			JsonResponseHandler,
+		);
+
+	if (loadingState == LoadingState.HasError) {
+		return <GenericErrorScreen />;
+	}
+	if (loadingState == LoadingState.IsLoading) {
+		return <DefaultLoadingView loadingMessage="Loading your product..." />;
+	}
+
+	return (
+		<InnerContent
+			manageProductProps={manageProductProps}
+			productDetail={productDetail}
+			billingFrequencySwitchPreview={data!}
+		/>
+	);
+};
+
 const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 	const request = createProductDetailFetcher(
 		props.productType.allProductsProductTypeFilterString,
@@ -439,6 +480,15 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 	}
 
 	const productDetail = data.products.filter(isProduct)[0];
+
+	if (isSwitchBillingFrequencyFromMonthlyToAnnualPossible(productDetail)) {
+		return (
+			<AsyncLoadedSwitchBillingFrequencyPreview
+				manageProductProps={props}
+				productDetail={productDetail}
+			/>
+		);
+	}
 
 	return (
 		<InnerContent
@@ -465,10 +515,21 @@ export const ManageProduct = (props: WithProductType<ProductType>) => {
 			minimalFooter
 		>
 			{productDetail ? (
-				<InnerContent
-					manageProductProps={props}
-					productDetail={productDetail}
-				/>
+				<>
+					{isSwitchBillingFrequencyFromMonthlyToAnnualPossible(
+						productDetail,
+					) ? (
+						<AsyncLoadedSwitchBillingFrequencyPreview
+							manageProductProps={props}
+							productDetail={productDetail}
+						/>
+					) : (
+						<InnerContent
+							manageProductProps={props}
+							productDetail={productDetail}
+						/>
+					)}
+				</>
 			) : (
 				<AsyncLoadedInnerContent {...props} />
 			)}
