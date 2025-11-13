@@ -8,6 +8,7 @@ import type {
 	SubscriptionPlan,
 } from '../../../../shared/productResponse';
 import {
+	augmentBillingPeriod,
 	isPaidSubscriptionPlan,
 	isSixForSix,
 } from '../../../../shared/productResponse';
@@ -84,15 +85,17 @@ export const getNextPaymentDetails = (
 			? (subscription.currentPlans[0] as PaidSubscriptionPlan)
 			: undefined;
 
-		// If it is a "isNewPaymentValue" check for a billing frequency switch and adjust the "paymentKey" accordingly
 		const hasBillingFrequencySwitch =
 			isNewPaymentValue &&
 			planAfterMainPlan &&
 			mainPlan.billingPeriod !== planAfterMainPlan.billingPeriod;
 
-		const paymentKey = hasBillingFrequencySwitch
-			? `Per ${planAfterMainPlan.billingPeriod}`
-			: `Per ${paymentInterval}`;
+		const paymentIntervalToUse = hasBillingFrequencySwitch
+			? planAfterMainPlan.billingPeriod
+			: paymentInterval;
+		const paymentKey = `Next ${augmentBillingPeriod(
+			paymentIntervalToUse,
+		)} payment`;
 
 		return {
 			paymentInterval,
