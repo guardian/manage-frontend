@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'; // external lib (react) second
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
 import {
 	changeSubscriptionBillingFrequencyFetch,
-	isMonthlySubscription,
 	isSwitchBillingFrequencyFromMonthlyToAnnualPossible,
 } from '@/client/utilities/productUtils'; // internal absolute value imports
 import type { BillingFrequencySwitchPreview } from '@/shared/billingFrequencySwitchTypes';
@@ -35,7 +34,9 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 	useEffect(() => {
 		// Only fetch savings if it's a monthly subscription and we haven't fetched yet
 		if (
-			isMonthlySubscription(props.productDetail) &&
+			isSwitchBillingFrequencyFromMonthlyToAnnualPossible(
+				props.productDetail,
+			) &&
 			billingSwitchPreview === null
 		) {
 			changeSubscriptionBillingFrequencyFetch(
