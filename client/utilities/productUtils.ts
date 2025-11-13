@@ -124,12 +124,6 @@ export function isNonServiceableCountry(productDetail: ProductDetail) {
 	return nonServiceableCountries.includes(productDetail.billingCountry ?? '');
 }
 
-export const getOppositeBillingPeriod = (
-	currentBillingPeriod: string | undefined,
-): 'Month' | 'Annual' => {
-	return currentBillingPeriod === 'month' ? 'Annual' : 'Month';
-};
-
 export const isMonthlySubscription = (
 	productDetail: ProductDetail,
 ): boolean => {
