@@ -443,7 +443,13 @@ const AsyncLoadedSwitchBillingFrequencyPreview = ({
 		);
 
 	if (loadingState == LoadingState.HasError) {
-		return <GenericErrorScreen />;
+		// If there's an error loading the preview, just show the regular manage product content
+		return (
+			<InnerContent
+				manageProductProps={manageProductProps}
+				productDetail={productDetail}
+			/>
+		);
 	}
 	if (loadingState == LoadingState.IsLoading) {
 		return <DefaultLoadingView loadingMessage="Loading your product..." />;
