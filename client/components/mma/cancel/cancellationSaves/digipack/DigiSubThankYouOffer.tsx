@@ -28,6 +28,7 @@ import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
 import { dateString } from '../../../../../../shared/dates';
 import { DefaultLoadingView } from '../../../shared/asyncComponents/DefaultLoadingView';
+import { benefitsConfiguration } from '../../../shared/benefits/BenefitsConfiguration';
 import { benefitsCss } from '../../../shared/benefits/BenefitsStyles';
 import { Heading } from '../../../shared/Heading';
 import type {
@@ -54,81 +55,80 @@ const DiscountOffer = ({
 	hasDiscountFailed,
 	handleDiscountOfferClick,
 	newPrice,
-}: DiscountOfferProps) => (
-	<Stack
-		space={4}
-		cssOverrides={css`
-			background-color: #f3f7fe;
-			border-radius: 4px;
-			padding: ${space[4]}px;
-		`}
-	>
-		<div>
-			<div
-				css={css`
-					${textSansBold20};
-					margin-bottom: ${space[2]}px;
-				`}
-			>
-				A subscription offer just for you
+}: DiscountOfferProps) => {
+	const benefits = benefitsConfiguration['digipack'];
+
+	return (
+		<Stack
+			space={4}
+			cssOverrides={css`
+				background-color: #f3f7fe;
+				border-radius: 4px;
+				padding: ${space[4]}px;
+			`}
+		>
+			<div>
+				<div
+					css={css`
+						${textSansBold20};
+						margin-bottom: ${space[2]}px;
+					`}
+				>
+					A subscription offer just for you
+				</div>
+				<ul css={benefitsCss}>
+					<li>
+						<SvgTickRound isAnnouncedByScreenReader size="medium" />
+						<span
+							css={css`
+								padding-top: ${space[1]}px;
+							`}
+						>
+							Get a 25% discount for {discountPeriod} (
+							{currencySymbol}
+							{formatAmount(discountedPrice)}, then{' '}
+							{currencySymbol}
+							{newPrice})
+						</span>
+					</li>
+
+					{benefits.map((benefit) => (
+						<li key={benefit.description}>
+							<SvgTickRound
+								isAnnouncedByScreenReader
+								size="medium"
+							/>{' '}
+							<span
+								css={css`
+									padding-top: ${space[1]}px;
+								`}
+							>
+								{benefit.description}
+							</span>
+						</li>
+					))}
+				</ul>
 			</div>
-			<ul css={benefitsCss}>
-				<li>
-					<SvgTickRound isAnnouncedByScreenReader size="medium" />
-					<span
-						css={css`
-							padding-top: ${space[1]}px;
-						`}
-					>
-						Get a 25% discount for {discountPeriod} (
-						{currencySymbol}
-						{formatAmount(discountedPrice)}, then {currencySymbol}
-						{newPrice})
-					</span>
-				</li>
-				<li>
-					<SvgTickRound isAnnouncedByScreenReader size="medium" />{' '}
-					<span
-						css={css`
-							padding-top: ${space[1]}px;
-						`}
-					>
-						Keep all your supporter extras, including unlimited,
-						ad-free reading
-					</span>
-				</li>
-				<li>
-					<SvgTickRound isAnnouncedByScreenReader size="medium" />{' '}
-					<span
-						css={css`
-							padding-top: ${space[1]}px;
-						`}
-					>
-						Exclusive access to the Editions app (our daily digital
-						newspaper)
-					</span>
-				</li>
-			</ul>
-		</div>
-		<div css={buttonContainerCss}>
-			<Button
-				theme={themeButtonReaderRevenueBrand}
-				cssOverrides={buttonCentredCss}
-				onClick={handleDiscountOfferClick}
-				isLoading={isDiscountLoading}
-			>
-				Keep support with discount
-			</Button>
-		</div>
-		{hasDiscountFailed && (
-			<ErrorSummary
-				message={
-					'We were unable to apply your discount. Please try again'
-				}
-			/>
-		)}
-	</Stack>
-);
+			<div css={buttonContainerCss}>
+				<Button
+					theme={themeButtonReaderRevenueBrand}
+					cssOverrides={buttonCentredCss}
+					onClick={handleDiscountOfferClick}
+					isLoading={isDiscountLoading}
+				>
+					Keep support with discount
+				</Button>
+			</div>
+			{hasDiscountFailed && (
+				<ErrorSummary
+					message={
+						'We were unable to apply your discount. Please try again'
+					}
+				/>
+			)}
+		</Stack>
+	);
+};
 
 function getDiscountPeriod(discountPreview: DiscountPreviewResponse): string {
 	return `${discountPreview.upToPeriods} ${appendCorrectPluralisation(
@@ -276,11 +276,10 @@ export const DigiSubThankYouOffer = () => {
 							${textSans17};
 						`}
 					>
-						Since you first joined as a Guardian supporter, we've
-						lived through some of the most important news events of
-						our times. Without you, our fearless, independent
-						journalism wouldn't have reached millions around the
-						world. We're so grateful.
+						You have helped to fund independent journalism. Thank
+						you for your ongoing support. Without you, our fiercely
+						independent journalism wouldn't have reached millions
+						around the world. We are so grateful.
 					</p>
 				</Stack>
 				{discountPreview && (

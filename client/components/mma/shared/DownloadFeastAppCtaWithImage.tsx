@@ -9,7 +9,7 @@ import {
 	textSansBold20,
 	until,
 } from '@guardian/source/foundations';
-import { androidFeastAppUrl, iosFeastAppUrl } from '@/shared/externalLinks';
+import { StoreLinksMapKey } from '@/shared/externalLinks';
 import { AndroidPlayStoreButton } from './assets/AndroidPlayStoreButton';
 import { AppleAppStoreButton } from './assets/AppleAppStoreButton';
 
@@ -99,14 +99,14 @@ export const DownloadFeastAppCtaWithImage = (
 					</p>
 					<div css={appStoreBtnsContainerCss}>
 						<AppleAppStoreButton
-							link={iosFeastAppUrl}
+							linkKey={StoreLinksMapKey.IosFeast}
 							overrideButtonHeight="36px"
 							additionalCss={css`
 								margin-right: ${space[3]}px;
 							`}
 						/>
 						<AndroidPlayStoreButton
-							link={androidFeastAppUrl}
+							linkKey={StoreLinksMapKey.AndroidFeast}
 							overrideButtonHeight="36px"
 						/>
 					</div>
@@ -114,7 +114,7 @@ export const DownloadFeastAppCtaWithImage = (
 				<div css={heroImageContainerCss}>
 					<img
 						css={heroImageCss}
-						src="https://i.guim.co.uk/img/media/acaeaf4cf9d5c51317be78a8927613ac6eb927cb/0_0_1360_740/1000.png?width=1000&quality=75&s=75ce87c89bcc216ed535833347064985"
+						src="https://i.guim.co.uk/img/media/14360f15029bbb112058ffd8686f17aba6eae576/0_0_1360_740/1360.png?width=800&quality=75&s=e103393253b8d8d003b7e5138dfbed5f"
 					/>
 				</div>
 			</div>

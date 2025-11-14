@@ -103,8 +103,7 @@ export const NewspaperArchiveCta = (props: NewspaperArchiveCtaProps) => {
 					<h4>The Guardian Newspaper archive</h4>
 					<p>
 						Journey through more than 200 years of the Guardian and
-						Observer and search through every page printed in our
-						newspapers.
+						search through every page printed in our newspapers.
 					</p>
 					<LinkButton
 						href={'/newspaperArchive/auth'}

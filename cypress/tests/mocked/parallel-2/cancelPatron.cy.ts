@@ -89,7 +89,7 @@ describe('Cancel patron', () => {
 		cy.get('button').contains('Continue to cancel').click();
 
 		cy.findByText(
-			'Please confirm to cancel your digital subscription',
+			'Please confirm to cancel your Digital plus subscription',
 		).should('exist');
 
 		cy.get('button').contains('Cancel subscription').click();

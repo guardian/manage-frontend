@@ -18,7 +18,7 @@ interface DownloadAppCtaVariation1Props {
 }
 
 const containerCss = css`
-	background-color: #e1eaf7;
+	background-color: #f3e6e9;
 	h4 {
 		${textSansBold17};
 		margin: 0 ${space[5]}px 0 0;
@@ -85,29 +85,29 @@ const heroImageCss = css`
 	}
 `;
 
-export const DownloadAppCtaVariation1 = (
+export const DownloadEditionsAppCtaWithImage = (
 	props: DownloadAppCtaVariation1Props,
 ) => {
 	return (
 		<div css={[containerCss, props.additionalCss]}>
 			<div css={inlineContentsCss}>
 				<div css={copyContainerCss}>
-					<h4>The Guardian News app</h4>
+					<h4>The Guardian Editions app</h4>
 					<p>
-						Never miss a story with unlimited access to our quality
-						news app, plus enjoy personalised recommendations and
-						offline reading.
+						Enjoy unlimited access to our full range of e-paper and
+						magazines, including the Guardian Weekly and Long Read,
+						available for mobile and tablet.
 					</p>
 					<div css={appStoreBtnsContainerCss}>
 						<AppleAppStoreButton
-							linkKey={StoreLinksMapKey.Ios}
+							linkKey={StoreLinksMapKey.IosEditions}
 							overrideButtonHeight="36px"
 							additionalCss={css`
 								margin-right: ${space[3]}px;
 							`}
 						/>
 						<AndroidPlayStoreButton
-							linkKey={StoreLinksMapKey.Android}
+							linkKey={StoreLinksMapKey.AndroidEditions}
 							overrideButtonHeight="36px"
 						/>
 					</div>
@@ -115,7 +115,7 @@ export const DownloadAppCtaVariation1 = (
 				<div css={heroImageContainerCss}>
 					<img
 						css={heroImageCss}
-						src="https://i.guim.co.uk/img/media/791a0ae1bad0623ee0f1d17fa0a96e2a5ea0f2fc/0_0_1360_740/1360.png?width=800&quality=75&s=662372d6dc60554a7970446351376715"
+						src="https://i.guim.co.uk/img/media/8b032a274becf6b3a46e6938a3fd774c70b25bfe/0_0_1360_740/1360.png?width=800&quality=75&s=198b5aa5471c0bf4ea49feda278535aa"
 					/>
 				</div>
 			</div>

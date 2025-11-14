@@ -1,10 +1,13 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import { trackEvent } from '@/client/utilities/analytics';
-import { iosAppUrl } from '@/shared/externalLinks';
+import {
+	type StoreLinksMapKey,
+	STORES_LINKS_MAP,
+} from '@/shared/externalLinks';
 
 interface AppleAppStoreButtonProps {
-	link: string;
+	linkKey: StoreLinksMapKey;
 	additionalCss?: SerializedStyles;
 	overrideButtonHeight?: string;
 }
@@ -19,13 +22,13 @@ export const AppleAppStoreButton = (props: AppleAppStoreButtonProps) => {
 
 	return (
 		<a
-			href={iosAppUrl}
+			href={STORES_LINKS_MAP[props.linkKey]}
 			target="blank"
 			onClick={() => {
 				trackEvent({
 					eventCategory: 'cancellation_offer_confirmation',
 					eventAction: 'click',
-					eventLabel: 'ios_app_cta_click',
+					eventLabel: `ios_app_cta_click_${props.linkKey}`,
 				});
 			}}
 			css={linkStyles}

@@ -28,10 +28,17 @@ type ExclusiveBenefitsSections =
 	| {
 			showBenefitsSection: true;
 			showDigitalBenefitsSection: false;
+			showUnlimitedDigitalBenefitsSection: false;
 	  }
 	| {
 			showBenefitsSection: false;
 			showDigitalBenefitsSection: true;
+			showUnlimitedDigitalBenefitsSection: false;
+	  }
+	| {
+			showBenefitsSection: false;
+			showDigitalBenefitsSection: false;
+			showUnlimitedDigitalBenefitsSection: true;
 	  };
 
 interface ProductCardBase {
@@ -72,6 +79,7 @@ export const productCardConfiguration: Record<
 	},
 	digipack: {
 		colour: productColour.digital,
+		showUnlimitedDigitalBenefitsSection: true,
 	},
 	digitalvoucher: {
 		colour: productColour.newspaper,

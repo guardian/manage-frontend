@@ -52,7 +52,7 @@ export const voucherCancellationFlowStart = ({
 
 			{isEligibleForFreeDigipackAccess && (
 				<p>
-					We have also made our digital subscription temporarily
+					We have also made our Digital plus subscription temporarily
 					available to all readers that hold a voucher subscription.
 					This means you can enjoy ad-free reading, and two innovative
 					Guardian apps -{' '}
