@@ -163,9 +163,18 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 	const isMonthlySub = isMonthlySubscription(productDetail);
 	const mainPlan = getMainPlan(productDetail.subscription);
 
+	let savingsAmount = 0;
+	if (preview) {
+		savingsAmount = preview.savings.amount - preview.currentDiscount.amount;
+	}
 	const formatAmountDisplay = (amount: number, currency: string) => {
 		const symbol = convertCurrencyToSymbol(currency);
-		return symbol ? `${symbol}${amount}` : `${amount} ${currency}`;
+		const formattedAmount = Number.isInteger(amount)
+			? amount.toString()
+			: amount.toFixed(2);
+		return symbol
+			? `${symbol}${formattedAmount}`
+			: `${formattedAmount} ${currency}`;
 	};
 
 	const getCurrentPriceDisplay = () => {
@@ -226,11 +235,8 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 				`}
 			>
 				Switch to an {isMonthlySub ? 'annual' : 'monthly'} plan and save{' '}
-				{formatAmountDisplay(
-					preview.savings.amount,
-					preview.savings.currency,
-				)}{' '}
-				a year
+				{formatAmountDisplay(savingsAmount, preview.savings.currency)}
+				{preview.currentDiscount.amount === 0 ? ' a year' : ''}
 			</h3>
 			<p
 				css={css`

@@ -144,6 +144,7 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 		currentContribution: { amount: 0, currency: 'GBP', period: 'month' },
 		newPrice: { amount: 120, currency: 'GBP', period: 'year' },
 		savings: { amount: 20, currency: 'GBP', period: 'year' },
+		currentDiscount: { amount: 0, currency: 'GBP', period: 'month' },
 	};
 
 	let mocks: ReturnType<typeof getMocks>;
@@ -717,6 +718,11 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 				},
 				newPrice: { amount: 120, currency: 'GBP', period: 'year' },
 				savings: { amount: 0, currency: 'GBP', period: 'year' },
+				currentDiscount: {
+					amount: 0,
+					currency: 'GBP',
+					period: 'month',
+				},
 			};
 			mocks.reactRouter.useLocation.mockReturnValue({
 				state: { preview: zeroSavingsPreview },

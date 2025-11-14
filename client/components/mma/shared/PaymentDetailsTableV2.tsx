@@ -24,10 +24,20 @@ interface PaymentDetailsTableProps {
 export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 	const billingSwitchPreview = props.billingFrequencySwitchPreview ?? null;
 
+	let savingsAmount = 0;
+	if (billingSwitchPreview) {
+		savingsAmount =
+			billingSwitchPreview.savings.amount -
+			billingSwitchPreview.currentDiscount.amount;
+	}
 	const formatSavingsDisplay = (amount: number, currency: string) => {
 		const symbol = convertCurrencyToSymbol(currency);
-		// Amount from savings expected already in major units, display without trailing ISO for consistency with existing promo patterns
-		return symbol ? `${symbol}${amount}` : `${amount} ${currency}`;
+		const formattedAmount = Number.isInteger(amount)
+			? amount.toString()
+			: amount.toFixed(2);
+		return symbol
+			? `${symbol}${formattedAmount}`
+			: `${formattedAmount} ${currency}`;
 	};
 
 	const paymentDetailRows: ProductDescriptionListRow[] =
@@ -75,12 +85,9 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 													undefined,
 											},
 											promo:
-												billingSwitchPreview &&
-												billingSwitchPreview.savings
-													.amount > 0
+												savingsAmount > 0
 													? `Switch and save ${formatSavingsDisplay(
-															billingSwitchPreview
-																.savings.amount,
+															savingsAmount,
 															billingSwitchPreview
 																.savings
 																.currency,

@@ -154,6 +154,11 @@ describe('PaymentDetailsTableV2', () => {
 					currency: 'GBP',
 					period: 'year' as const,
 				},
+				currentDiscount: {
+					amount: 0,
+					currency: 'GBP',
+					period: 'month' as const,
+				},
 			};
 
 			mockIsMonthlySubscription.mockReturnValue(true);
@@ -225,6 +230,11 @@ describe('PaymentDetailsTableV2', () => {
 					amount: 20,
 					currency: 'GBP',
 					period: 'year' as const,
+				},
+				currentDiscount: {
+					amount: 0,
+					currency: 'GBP',
+					period: 'month' as const,
 				},
 			};
 
