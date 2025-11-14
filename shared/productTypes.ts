@@ -820,7 +820,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 	},
 	digipack: {
-		productTitle: () => 'Digital Subscription',
+		productTitle: () => 'Digital Plus',
 		friendlyName: 'digital subscription',
 		productType: 'digipack',
 		groupedProductType: 'subscriptions',

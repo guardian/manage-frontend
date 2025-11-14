@@ -75,7 +75,7 @@ const tests = [
 			previousProductDetail: digitalPackPaidByDirectDebit(),
 		},
 		expectations: [
-			'Digital Subscription',
+			'Digital Plus',
 			'ending 911',
 			'20-00-00',
 			'£99.00 / annual',
