@@ -270,14 +270,13 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		(product) => product.alertText,
 	);
 
-	const hasDigitalPack = allActiveProductKeys.some((productDetail) =>
-		isSpecificProductType(productDetail, PRODUCT_TYPES.digipack),
-	);
-
 	const hasDigiSubAndContribution =
 		allActiveProductKeys.some((productDetail) =>
 			isSpecificProductType(productDetail, PRODUCT_TYPES.contributions),
-		) && hasDigitalPack;
+		) &&
+		allActiveProductKeys.some((productDetail) =>
+			isSpecificProductType(productDetail, PRODUCT_TYPES.digipack),
+		);
 
 	const hasNonServiceableCountry = nonServiceableCountries.includes(
 		allActiveProductDetails.find(isProduct)?.billingCountry as string,
