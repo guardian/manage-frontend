@@ -828,7 +828,6 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		urlPart: 'digital',
 		legacyUrlPart: 'digitalpack',
 		getOphanProductType: () => 'DIGITAL_SUBSCRIPTION',
-		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.DigitalSubscriberPreview,
