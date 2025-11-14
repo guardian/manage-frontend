@@ -75,6 +75,7 @@ export const productCardConfiguration: Record<
 	},
 	tierthree: {
 		colour: productColour.supporterPlus,
+		showBenefitsSection: true,
 	},
 	digipack: {
 		colour: productColour.digital,
