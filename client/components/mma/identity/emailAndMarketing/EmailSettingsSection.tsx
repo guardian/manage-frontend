@@ -57,15 +57,6 @@ export const EmailSettingsSection: FC<EmailSettingsSectionProps> = (props) => {
 			</p>
 			<p
 				css={css`
-					${text} margin-bottom: ${space[0]}px
-				`}
-			>
-				<a css={linkCss} href={IdentityLocations.CHANGE_EMAIL}>
-					Change your email address
-				</a>
-			</p>
-			<p
-				css={css`
 					${text} margin-bottom: ${space[5]}px
 				`}
 			>
