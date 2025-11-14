@@ -133,7 +133,7 @@ export const cardTypeToSVG = (
 export const CardDisplay = (props: CardDisplayProps) => {
 	const styles = css`
 		display: flex;
-		flex-wrap: wrap;
+		flex-wrap: no-wrap;
 		align-items: center;
 		margin: 10px;
 	`;
@@ -155,6 +155,7 @@ export const CardDisplay = (props: CardDisplayProps) => {
 			<span
 				css={css`
 					margin-left: 3px;
+					text-wrap: nowrap;
 					color: ${props.inErrorState
 						? palette.error[400]
 						: palette.neutral[7]};

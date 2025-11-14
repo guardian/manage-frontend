@@ -309,6 +309,15 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 
 	return (
 		<>
+			{/* <div
+				className="ad-banners-container"
+				css={css`
+					margin-top: ${space[5]}px;
+				`}
+			>
+				<SwitchToAnnualBillingFrequencyAdBanner />
+			</div> */}
+
 			<PersonalisedHeader
 				mdapiResponse={mdapiResponse}
 				mpapiResponse={mpapiResponse}
