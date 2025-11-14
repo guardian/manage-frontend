@@ -18,6 +18,8 @@ import { conf } from '../../../../server/config';
 import { DirectDebitGatewayOwner } from '../../../../shared/directDebit';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
+const cardExpiry = `12${(new Date().getFullYear() + 1).toString().slice(-2)}`;
+
 describe('Update payment details', () => {
 	beforeEach(() => {
 		signInAndAcceptCookies();
@@ -76,7 +78,7 @@ describe('Update payment details', () => {
 		});
 
 		cy.fillElementsInput('cardNumber', '4242424242424242');
-		cy.fillElementsInput('cardExpiry', '1025');
+		cy.fillElementsInput('cardExpiry', cardExpiry);
 		cy.fillElementsInput('cardCvc', '123');
 
 		cy.get('#recaptcha *> iframe').then(($iframe) => {
@@ -505,7 +507,7 @@ describe('Update payment details', () => {
 		});
 
 		cy.fillElementsInput('cardNumber', '4242424242424242');
-		cy.fillElementsInput('cardExpiry', '1025');
+		cy.fillElementsInput('cardExpiry', cardExpiry);
 		cy.fillElementsInput('cardCvc', '123');
 
 		cy.get('#recaptcha *> iframe').then(($iframe) => {
@@ -731,7 +733,7 @@ describe('Update payment details', () => {
 		});
 
 		cy.fillElementsInput('cardNumber', '4242424242424242');
-		cy.fillElementsInput('cardExpiry', '1025');
+		cy.fillElementsInput('cardExpiry', cardExpiry);
 		cy.fillElementsInput('cardCvc', '123');
 
 		cy.findByText('Update payment method').click();
@@ -799,7 +801,7 @@ describe('Update payment details', () => {
 		});
 
 		cy.fillElementsInput('cardNumber', '4242424242424242');
-		cy.fillElementsInput('cardExpiry', '1025');
+		cy.fillElementsInput('cardExpiry', cardExpiry);
 		cy.fillElementsInput('cardCvc', '123');
 
 		cy.get('#recaptcha *> iframe').then(($iframe) => {

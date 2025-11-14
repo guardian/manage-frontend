@@ -77,10 +77,10 @@ const getCaseUpdateWithCancelOutcomeFunc =
 			caseId,
 			isCancelled(productDetail.subscription)
 				? {
-						Journey__c: 'SV - Cancellation - MB',
 						Subject: 'Online Cancellation Completed',
 				  }
 				: {
+						Case_Journey__c: 'Assisted',
 						Subject: 'Online Cancellation Error',
 						Status: 'New',
 						Priority: 'High',
@@ -90,7 +90,7 @@ const getCaseUpdateWithCancelOutcomeFunc =
 const getCaseUpdateFuncForEscalation =
 	(caseId: string, escalationCauses: string[], isTestUser: boolean) => () =>
 		getUpdateCasePromise(isTestUser, '_ESCALATED', caseId, {
-			Journey__c: 'SV - Cancellation - MB',
+			Case_Journey__c: 'Assisted',
 			Subject: `Online Cancellation MANUAL INTERVENTION REQUIRED - ${escalationCauses.join(
 				' & ',
 			)}`,

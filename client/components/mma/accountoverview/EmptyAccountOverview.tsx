@@ -7,12 +7,13 @@ import {
 	until,
 } from '@guardian/source/foundations';
 import { useState } from 'react';
+import { BenefitsCtas } from '@/client/components/mma/accountoverview/AccountOverview';
 import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumbers';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { Users } from '../identity/identity';
 import { InfoIconDark } from '../shared/assets/InfoIconDark';
 
-export const EmptyAccountOverview = () => {
+export const EmptyAccountOverview = ({ email }: { email: string }) => {
 	const [userEmailAddress, setUserEmailAddress] = useState('-');
 	Users.getCurrentUser().then((info) =>
 		setUserEmailAddress(info.primaryEmailAddress),
@@ -142,6 +143,7 @@ export const EmptyAccountOverview = () => {
 					</div>
 				)}
 			</div>
+			{email && <BenefitsCtas email={email} />}
 		</>
 	);
 };
