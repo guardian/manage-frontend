@@ -7,7 +7,7 @@ import {
 	textSansBold17,
 } from '@guardian/source/foundations';
 import { SvgRoundelBrand } from '@guardian/source/react-components';
-import { androidAppUrl, iosAppUrl } from '@/shared/externalLinks';
+import { StoreLinksMapKey } from '@/shared/externalLinks';
 import { AndroidPlayStoreButton } from './assets/AndroidPlayStoreButton';
 import { AppleAppStoreButton } from './assets/AppleAppStoreButton';
 
@@ -67,14 +67,14 @@ export const DownloadAppCta = (props: DownloadAppCtaProps) => {
 			</div>
 			<div>
 				<AppleAppStoreButton
-					link={iosAppUrl}
+					linkKey={StoreLinksMapKey.Ios}
 					overrideButtonHeight="36px"
 					additionalCss={css`
 						margin-right: ${space[3]}px;
 					`}
 				/>
 				<AndroidPlayStoreButton
-					link={androidAppUrl}
+					linkKey={StoreLinksMapKey.Android}
 					overrideButtonHeight="36px"
 				/>
 			</div>

@@ -51,6 +51,7 @@ import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { DownloadAppCtaVariation1 } from '../shared/DownloadAppCtaVariation1';
+import { DownloadEditionsAppCtaWithImage } from '../shared/DownloadEditionsAppCtaWithImage';
 import { DownloadFeastAppCtaWithImage } from '../shared/DownloadFeastAppCtaWithImage';
 import type { IsFromAppProps } from '../shared/IsFromAppProps';
 import { NewspaperArchiveCta } from '../shared/NewspaperArchiveCta';
@@ -118,23 +119,29 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 		isPlusDigitalProductType(productKey),
 	);
 
+	const hasDigitalPack = productKeys?.some((productKey) =>
+		isSpecificProductType(productKey, PRODUCT_TYPES.digipack),
+	);
+
 	const hasGuardianEmail = email ? userHasGuardianEmail(email) : false;
 
 	return (
 		<>
 			{(hasDigitalPlusPrint ||
 				isPlusDigitalProduct ||
-				hasGuardianEmail) && (
+				hasGuardianEmail ||
+				hasDigitalPack) && (
 				<>
 					<h2 css={subHeadingCss}>
 						Get the most out of your benefits
 					</h2>
 					<Stack space={6}>
-						{featureSwitches.digitalArchiveCta && (
-							<NewspaperArchiveCta />
-						)}
 						<DownloadAppCtaVariation1 />
 						<DownloadFeastAppCtaWithImage />
+						<DownloadEditionsAppCtaWithImage />
+						{(hasDigitalPlusPrint || hasDigitalPack) && (
+							<NewspaperArchiveCta />
+						)}
 					</Stack>
 				</>
 			)}

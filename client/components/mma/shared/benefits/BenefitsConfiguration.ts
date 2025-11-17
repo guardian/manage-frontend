@@ -42,7 +42,7 @@ const partnerOffers: ProductBenefit = {
 	specificToRegions: ['AUD'],
 };
 
-const plusdigitalBenefits = [
+const productPlusdigitalBenefits = [
 	{
 		description:
 			'Unlimited access to the refreshed Guardian app and Guardian Feast app',
@@ -57,6 +57,23 @@ const plusdigitalBenefits = [
 			'Exclusive newsletter for supporters, sent every week from the Guardian newsroom',
 	},
 	{ description: 'Far fewer asks for support' },
+];
+
+const digitalPlusBenefits = [
+	{ description: 'Guardian Weekly e-magazine' },
+	{ description: 'The Long Read e-magazine' },
+	{
+		description:
+			"Digital access to the Guardian's 200 year newspaper archive",
+	},
+	{ description: 'Far fewer asks for support' },
+	{ description: 'Ad-free reading on all your devices' },
+	{ description: 'Unlimited access to the premium Guardian app' },
+	{
+		description:
+			'Exclusive newsletter for supporters, sent every week from the Guardian newsroom',
+	},
+	{ description: 'Unlimited access to the Guardian Feast app' },
 ];
 
 export interface ProductBenefit {
@@ -116,21 +133,21 @@ export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
 			partnerOffers,
 		],
 		membership: [newsApp, uninterruptedReading, supporterNewsletter],
-		digipack: [],
+		digipack: digitalPlusBenefits,
 		digitalvoucher: [],
 		newspaper: [],
 		homedelivery: [],
-		homedeliveryplusdigital: [...plusdigitalBenefits],
+		homedeliveryplusdigital: [...productPlusdigitalBenefits],
 		nationaldelivery: [],
-		nationaldeliveryplusdigital: [...plusdigitalBenefits],
+		nationaldeliveryplusdigital: [...productPlusdigitalBenefits],
 		voucher: [],
-		voucherplusdigital: [...plusdigitalBenefits],
+		voucherplusdigital: [...productPlusdigitalBenefits],
 		guardianweekly: [],
 		guardianadlite: [],
 		guardianpatron: [],
 		observer: [],
 		digitalvoucherobserver: [],
-		digitalvoucherplusdigital: [...plusdigitalBenefits],
+		digitalvoucherplusdigital: [...productPlusdigitalBenefits],
 		voucherobserver: [],
 	};
 
