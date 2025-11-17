@@ -269,17 +269,16 @@ export const DigiSubThankYouOffer = () => {
 				</h2>
 				<Stack space={1}>
 					<Heading sansSerif borderless level="3">
-						Your funding has played a vital role in our progress
+						You have helped fund independent journalism
 					</Heading>
 					<p
 						css={css`
 							${textSans17};
 						`}
 					>
-						You have helped to fund independent journalism. Thank
-						you for your ongoing support. Without you, our fiercely
-						independent journalism wouldn't have reached millions
-						around the world. We are so grateful.
+						Thank you for your continued support. Without you, our
+						fiercely independent reporting wouldn’t reach millions
+						around the world. We are deeply grateful.
 					</p>
 				</Stack>
 				{discountPreview && (
