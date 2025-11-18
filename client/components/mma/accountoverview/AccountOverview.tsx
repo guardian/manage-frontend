@@ -110,6 +110,7 @@ type BenefitsCtasProps = {
 	email: string;
 	productKeys?: ProductTier[];
 };
+
 export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 	const hasDigitalPlusPrint = productKeys?.some((productKey) =>
 		isSpecificProductType(productKey, PRODUCT_TYPES.tierthree),
@@ -123,14 +124,25 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 		isSpecificProductType(productKey, PRODUCT_TYPES.digipack),
 	);
 
+	const hasSupporterPlus = productKeys?.some((productKey) =>
+		isSpecificProductType(productKey, PRODUCT_TYPES.supporterplus),
+	);
+
 	const hasGuardianEmail = email ? userHasGuardianEmail(email) : false;
+
+	const hasEditionsAndArchiveAccess =
+		hasDigitalPlusPrint ||
+		isPlusDigitalProduct ||
+		hasDigitalPack ||
+		hasGuardianEmail;
 
 	return (
 		<>
 			{(hasDigitalPlusPrint ||
 				isPlusDigitalProduct ||
 				hasGuardianEmail ||
-				hasDigitalPack) && (
+				hasDigitalPack ||
+				hasSupporterPlus) && (
 				<>
 					<h2 css={subHeadingCss}>
 						Get the most out of your benefits
@@ -138,9 +150,11 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 					<Stack space={6}>
 						<DownloadAppCtaVariation1 />
 						<DownloadFeastAppCtaWithImage />
-						<DownloadEditionsAppCtaWithImage />
-						{(hasDigitalPlusPrint || hasDigitalPack) && (
-							<NewspaperArchiveCta />
+						{hasEditionsAndArchiveAccess && (
+							<>
+								<DownloadEditionsAppCtaWithImage />
+								<NewspaperArchiveCta />
+							</>
 						)}
 					</Stack>
 				</>
