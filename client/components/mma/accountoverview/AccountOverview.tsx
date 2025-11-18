@@ -130,7 +130,7 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 
 	const hasGuardianEmail = email ? userHasGuardianEmail(email) : false;
 
-	const hasEditionsArchiveAccess =
+	const hasEditionsAndArchiveAccess =
 		hasDigitalPlusPrint ||
 		isPlusDigitalProduct ||
 		hasDigitalPack ||
@@ -150,7 +150,7 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 					<Stack space={6}>
 						<DownloadAppCtaVariation1 />
 						<DownloadFeastAppCtaWithImage />
-						{hasEditionsArchiveAccess && (
+						{hasEditionsAndArchiveAccess && (
 							<>
 								<DownloadEditionsAppCtaWithImage />
 								<NewspaperArchiveCta />
