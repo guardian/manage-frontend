@@ -234,10 +234,20 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 					${subHeadingCss}
 				`}
 			>
-				Switch to an {isMonthlySub ? 'annual' : 'monthly'} plan and save{' '}
-				{formatAmountDisplay(savingsAmount, preview.savings.currency)}
-				{preview.currentDiscount.amount === 0 ? ' a year' : ''}
+				Switch to an {isMonthlySub ? 'annual' : 'monthly'} plan
+				{savingsAmount > 0 && (
+					<>
+						{' '}
+						and save{' '}
+						{formatAmountDisplay(
+							savingsAmount,
+							preview.savings.currency,
+						)}
+						{preview.currentDiscount.amount === 0 ? ' a year' : ''}
+					</>
+				)}
 			</h3>
+
 			<p
 				css={css`
 					${textSans17}
