@@ -123,3 +123,35 @@ export const hasDeliveryRecordsFlow = (
 export function isNonServiceableCountry(productDetail: ProductDetail) {
 	return nonServiceableCountries.includes(productDetail.billingCountry ?? '');
 }
+
+export const isMonthlySubscription = (
+	productDetail: ProductDetail,
+): boolean => {
+	const futurePlan = productDetail.subscription.futurePlans[0];
+	if (futurePlan && 'billingPeriod' in futurePlan) {
+		return futurePlan.billingPeriod === 'month';
+	}
+	const mainPlan = productDetail.subscription.currentPlans[0];
+	if (mainPlan && 'billingPeriod' in mainPlan) {
+		return mainPlan.billingPeriod === 'month';
+	}
+	return false;
+};
+
+export const changeSubscriptionBillingFrequencyFetch = (
+	isTestUser: boolean,
+	subscriptionId: string,
+	preview: boolean,
+	targetBillingPeriod: 'Month' | 'Annual',
+) =>
+	fetch(`/api/product-switch/billing-frequency/${subscriptionId}`, {
+		method: 'POST',
+		body: JSON.stringify({
+			preview,
+			targetBillingPeriod,
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+			[MDA_TEST_USER_HEADER]: `${isTestUser}`,
+		},
+	});
