@@ -162,23 +162,24 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 								? true
 								: undefined,
 						},
-						{
-							title: 'Expiry date',
-							...(props.productDetail.subscription.card
-								?.expiry && {
-								value: `${
-									props.productDetail.subscription.card.expiry
-										.month < 10
-										? '0'
-										: ''
-								}${
-									props.productDetail.subscription.card.expiry
-										.month
-								}
-								${' / '}
-								${props.productDetail.subscription.card.expiry.year}`,
-							}),
-						},
+						...(props.productDetail.subscription.card?.expiry
+							? [
+									{
+										title: 'Expiry date',
+										value: `${
+											props.productDetail.subscription
+												.card.expiry.month < 10
+												? '0'
+												: ''
+										}${
+											props.productDetail.subscription
+												.card.expiry.month
+										}
+										${' / '}
+										${props.productDetail.subscription.card.expiry.year}`,
+									},
+							  ]
+							: []),
 					],
 					actions:
 						props.productDetail.isPaidTier &&
