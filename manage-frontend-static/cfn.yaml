@@ -8,3 +8,8 @@ Resources:
       BucketName: manage-frontend-static
       MetricsConfigurations:
         - Id: EntireBucket
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireObjectsAfter1Year
+            Status: Enabled
+            ExpirationInDays: 365
