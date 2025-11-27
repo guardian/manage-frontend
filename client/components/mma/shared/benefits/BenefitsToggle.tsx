@@ -3,7 +3,10 @@ import { space } from '@guardian/source/foundations';
 import { useState } from 'react';
 import type { SubscriptionPlan } from '@/shared/productResponse';
 import { isPaidSubscriptionPlan } from '@/shared/productResponse';
-import type { ProductTypeKeys } from '../../../../../shared/productTypes';
+import {
+	PRODUCT_TYPES,
+	type ProductTypeKeys,
+} from '../../../../../shared/productTypes';
 import { expanderButtonCss } from '../../../shared/ExpanderButton';
 import {
 	benefitsConfiguration,
@@ -15,11 +18,13 @@ import { benefitsButtonCss } from './BenefitsStyles';
 type BenfitsToggleProps = {
 	productType: ProductTypeKeys;
 	subscriptionPlan: SubscriptionPlan;
+	showProductTypeShortFriendlyName?: boolean;
 };
 
 export const BenefitsToggle = ({
 	productType,
 	subscriptionPlan,
+	showProductTypeShortFriendlyName = false,
 }: BenfitsToggleProps) => {
 	const currencyIso = isPaidSubscriptionPlan(subscriptionPlan)
 		? subscriptionPlan.currencyISO
@@ -47,7 +52,10 @@ export const BenefitsToggle = ({
 				aria-controls="benefits"
 				onClick={() => setShowBenefits(!showBenefits)}
 			>
-				{showBenefits ? 'hide' : 'view'} benefits
+				{showBenefits ? 'hide' : 'view'}
+				{showProductTypeShortFriendlyName &&
+					` your ${PRODUCT_TYPES[productType].shortFriendlyName}`}{' '}
+				benefits
 			</button>
 		</>
 	);

@@ -23,7 +23,11 @@ import type { MonthsOrYears } from '@/shared/dates';
 import { dateString } from '@/shared/dates';
 import { getAppropriateReadableTimePeriod } from '@/shared/dates';
 import { appendCorrectPluralisation } from '@/shared/generalTypes';
-import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
+import {
+	getBillingPeriodForDiscount,
+	getMainPlan,
+	isPaidSubscriptionPlan,
+} from '@/shared/productResponse';
 import type { SwitchPreviewResponse } from '@/shared/productSwitchTypes';
 import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
@@ -179,6 +183,9 @@ export const CancelAlternativeSwitchReview = () => {
 	const productDetail = cancellationContext.productDetail;
 	const productType = cancellationContext.productType;
 	const mainPlan = getMainPlan(productDetail.subscription);
+	const billingPeriodForDiscount = getBillingPeriodForDiscount(
+		productDetail.subscription,
+	);
 	const offerPeriodType = appendCorrectPluralisation(
 		routerState.discount.upToPeriodsType,
 		1,
@@ -284,7 +291,8 @@ export const CancelAlternativeSwitchReview = () => {
 								>
 									{mainPlan.currency}
 									{routerState.supporterPlusPurchaseAmount}/
-									{mainPlan.billingPeriod}
+									{billingPeriodForDiscount ||
+										mainPlan.billingPeriod}
 								</span>{' '}
 								unless you cancel
 							</p>
