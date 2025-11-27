@@ -10,6 +10,11 @@ Resources:
         - Id: EntireBucket
       LifecycleConfiguration:
         Rules:
-          - Id: ExpireObjectsAfter1Year
+          - Id: ExpireObjectsAfter1YearPROD
             Status: Enabled
             ExpirationInDays: 365
+            Prefix: PROD/
+          - Id: ExpireObjectsAfter1YearCODE
+            Status: Enabled
+            ExpirationInDays: 365
+            Prefix: CODE/
