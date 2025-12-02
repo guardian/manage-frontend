@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (compact layout and contact options hidden) with live chat feature switches disabled shows email and phone contacts only 1`] = `
 [
