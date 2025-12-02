@@ -794,7 +794,7 @@ describe('Update payment details', () => {
 		cy.findByText('Manage subscription').click();
 		cy.wait('@cancelled');
 
-		cy.findByText('Update payment method').click();
+		cy.findByText('Update method').click();
 
 		cy.resolve('Stripe').should((value) => {
 			expect(value).to.be.ok;
