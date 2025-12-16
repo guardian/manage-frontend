@@ -165,7 +165,7 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 
 	let savingsAmount = 0;
 	if (preview) {
-		savingsAmount = preview.savings.amount - preview.currentDiscount.amount;
+		savingsAmount = preview.savings.amount;
 	}
 	const formatAmountDisplay = (amount: number, currency: string) => {
 		const symbol = convertCurrencyToSymbol(currency);
@@ -236,8 +236,8 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 					<>
 						{' '}
 						and save{' '}
-						{formatAmountDisplay(savingsAmount, preview.currency)}
-						{preview.currentDiscount.amount === 0 ? ' a year' : ''}
+						{formatAmountDisplay(savingsAmount, preview.currency)}a
+						year
 					</>
 				)}
 			</h3>

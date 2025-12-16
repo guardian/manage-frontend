@@ -152,10 +152,6 @@ describe('PaymentDetailsTableV2', () => {
 					amount: 20,
 					period: 'year' as const,
 				},
-				currentDiscount: {
-					amount: 0,
-					period: 'month' as const,
-				},
 			};
 
 			mockIsMonthlySubscription.mockReturnValue(true);
@@ -225,10 +221,6 @@ describe('PaymentDetailsTableV2', () => {
 				savings: {
 					amount: 20,
 					period: 'year' as const,
-				},
-				currentDiscount: {
-					amount: 0,
-					period: 'month' as const,
 				},
 			};
 

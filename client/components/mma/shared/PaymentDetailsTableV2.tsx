@@ -26,9 +26,7 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 
 	let savingsAmount = 0;
 	if (billingSwitchPreview) {
-		savingsAmount =
-			billingSwitchPreview.savings.amount -
-			billingSwitchPreview.currentDiscount.amount;
+		savingsAmount = billingSwitchPreview.savings.amount;
 	}
 
 	/**

@@ -19,7 +19,6 @@ export interface BillingFrequencySwitchPreview {
 	savings: BillingFrequencySwitchPreviewValue;
 	newPrice: BillingFrequencySwitchPreviewValue;
 	currentContribution: BillingFrequencySwitchPreviewValue;
-	currentDiscount: BillingFrequencySwitchPreviewValue;
 }
 
 export interface BillingFrequencySwitchResult {
