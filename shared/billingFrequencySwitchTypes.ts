@@ -7,7 +7,6 @@ export type BillingFrequencySwitchPeriod = 'year' | 'month';
 
 export interface BillingFrequencySwitchPreviewValue {
 	amount: number;
-	currency: string;
 	period: BillingFrequencySwitchPeriod;
 }
 
@@ -15,6 +14,7 @@ export interface BillingFrequencySwitchPreviewValue {
 export type ZuoraPreviewInvoice = Record<string, unknown>;
 
 export interface BillingFrequencySwitchPreview {
+	currency: string;
 	previewInvoices: ZuoraPreviewInvoice[];
 	savings: BillingFrequencySwitchPreviewValue;
 	newPrice: BillingFrequencySwitchPreviewValue;

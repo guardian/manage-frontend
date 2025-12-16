@@ -138,25 +138,22 @@ describe('PaymentDetailsTableV2', () => {
 	describe('Billing Frequency Switch', () => {
 		it('shows switch to annual button for monthly subscriptions with preview', () => {
 			const mockPreview = {
+				currency: 'GBP',
 				previewInvoices: [],
 				currentContribution: {
 					amount: 0,
-					currency: 'GBP',
 					period: 'month' as const,
 				},
 				newPrice: {
 					amount: 100,
-					currency: 'GBP',
 					period: 'year' as const,
 				},
 				savings: {
 					amount: 20,
-					currency: 'GBP',
 					period: 'year' as const,
 				},
 				currentDiscount: {
 					amount: 0,
-					currency: 'GBP',
 					period: 'month' as const,
 				},
 			};
@@ -215,25 +212,22 @@ describe('PaymentDetailsTableV2', () => {
 
 		it('does not show switch button when user has contribution', () => {
 			const mockPreview = {
+				currency: 'GBP',
 				previewInvoices: [],
 				currentContribution: {
 					amount: 5,
-					currency: 'GBP',
 					period: 'month' as const,
 				},
 				newPrice: {
 					amount: 100,
-					currency: 'GBP',
 					period: 'year' as const,
 				},
 				savings: {
 					amount: 20,
-					currency: 'GBP',
 					period: 'year' as const,
 				},
 				currentDiscount: {
 					amount: 0,
-					currency: 'GBP',
 					period: 'month' as const,
 				},
 			};

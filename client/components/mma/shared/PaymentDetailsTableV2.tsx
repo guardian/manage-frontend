@@ -88,9 +88,7 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 												savingsAmount > 0
 													? `Switch and save ${formatSavingsDisplay(
 															savingsAmount,
-															billingSwitchPreview
-																.savings
-																.currency,
+															billingSwitchPreview.currency,
 													  )}`
 													: undefined,
 										},

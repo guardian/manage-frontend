@@ -140,11 +140,12 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 	} as unknown as ProductType;
 
 	const mockPreview: BillingFrequencySwitchPreview = {
+		currency: 'GBP',
 		previewInvoices: [],
-		currentContribution: { amount: 0, currency: 'GBP', period: 'month' },
-		newPrice: { amount: 120, currency: 'GBP', period: 'year' },
-		savings: { amount: 20, currency: 'GBP', period: 'year' },
-		currentDiscount: { amount: 0, currency: 'GBP', period: 'month' },
+		currentContribution: { amount: 0, period: 'month' },
+		newPrice: { amount: 120, period: 'year' },
+		savings: { amount: 20, period: 'year' },
+		currentDiscount: { amount: 0, period: 'month' },
 	};
 
 	let mocks: ReturnType<typeof getMocks>;
@@ -710,17 +711,16 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 
 		it('handles zero savings correctly', () => {
 			const zeroSavingsPreview: BillingFrequencySwitchPreview = {
+				currency: 'GBP',
 				previewInvoices: [],
 				currentContribution: {
 					amount: 0,
-					currency: 'GBP',
 					period: 'month',
 				},
-				newPrice: { amount: 120, currency: 'GBP', period: 'year' },
-				savings: { amount: 0, currency: 'GBP', period: 'year' },
+				newPrice: { amount: 120, period: 'year' },
+				savings: { amount: 0, period: 'year' },
 				currentDiscount: {
 					amount: 0,
-					currency: 'GBP',
 					period: 'month',
 				},
 			};

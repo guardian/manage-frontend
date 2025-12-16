@@ -191,10 +191,7 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 	};
 
 	const getNewPriceDisplay = () => {
-		return formatAmountDisplay(
-			preview.newPrice.amount,
-			preview.newPrice.currency,
-		);
+		return formatAmountDisplay(preview.newPrice.amount, preview.currency);
 	};
 
 	const getNewPlanStartDate = () => {
@@ -239,10 +236,7 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 					<>
 						{' '}
 						and save{' '}
-						{formatAmountDisplay(
-							savingsAmount,
-							preview.savings.currency,
-						)}
+						{formatAmountDisplay(savingsAmount, preview.currency)}
 						{preview.currentDiscount.amount === 0 ? ' a year' : ''}
 					</>
 				)}
@@ -407,13 +401,13 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 									`}
 									aria-label={`Savings: ${formatAmountDisplay(
 										preview.savings.amount,
-										preview.savings.currency,
+										preview.currency,
 									)}`}
 								>
 									Save{' '}
 									{formatAmountDisplay(
 										preview.savings.amount,
-										preview.savings.currency,
+										preview.currency,
 									)}
 								</span>
 							</div>
@@ -457,12 +451,12 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 								`}
 								aria-label={`Monthly equivalent: ${formatAmountDisplay(
 									preview.newPrice.amount / 12,
-									preview.newPrice.currency,
+									preview.currency,
 								)}`}
 							>
 								{formatAmountDisplay(
 									preview.newPrice.amount / 12,
-									preview.newPrice.currency,
+									preview.currency,
 								)}
 								/{isMonthlySub ? 'month' : 'year'}
 							</span>
