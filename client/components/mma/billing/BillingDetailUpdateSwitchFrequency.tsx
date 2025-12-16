@@ -236,7 +236,7 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 					<>
 						{' '}
 						and save{' '}
-						{formatAmountDisplay(savingsAmount, preview.currency)}a
+						{formatAmountDisplay(savingsAmount, preview.currency)} a
 						year
 					</>
 				)}
