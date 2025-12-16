@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'; // external lib (style) first
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
-import { isMonthlySubscription } from '@/client/utilities/productUtils'; // internal absolute value imports
+import { hasSupporterPlusMonthlyRatePlan } from '@/client/utilities/productUtils'; // internal absolute value imports
 import type { BillingFrequencySwitchPreview } from '@/shared/billingFrequencySwitchTypes';
 import type { ProductType } from '@/shared/productTypes'; // internal absolute type imports
 import type { ProductDetail } from '../../../../shared/productResponse'; // relative type imports (shared)
@@ -30,6 +30,31 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 			billingSwitchPreview.savings.amount -
 			billingSwitchPreview.currentDiscount.amount;
 	}
+
+	/**
+	 * Validates whether to show the switch to annual plan button.
+	 * Returns true only if:
+	 * 1. The subscription is monthly
+	 * 2. It has a valid SupporterPlus Monthly rate plan
+	 * 3. The current contribution amount is 0
+	 */
+	const shouldShowSwitchToAnnualButton = (): boolean => {
+		try {
+			return (
+				hasSupporterPlusMonthlyRatePlan(props.productDetail) &&
+				(billingSwitchPreview?.currentContribution.amount ?? null) === 0
+			);
+		} catch (error) {
+			// If validation fails, don't show the button
+			if (
+				error instanceof Error &&
+				error.message === 'SupporterPlus Monthly rate plan not found'
+			) {
+				return false;
+			}
+			throw error;
+		}
+	};
 	const formatSavingsDisplay = (amount: number, currency: string) => {
 		const symbol = convertCurrencyToSymbol(currency);
 		const formattedAmount = Number.isInteger(amount)
@@ -69,31 +94,28 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 								),
 							},
 						],
-						actions:
-							isMonthlySubscription(props.productDetail) &&
-							billingSwitchPreview?.currentContribution.amount ===
-								0
-								? [
-										{
-											text: 'Switch to annual plan',
-											linkTo: `/billing/${props.specificProductType.urlPart}/switch-frequency?subscriptionId=${props.productDetail.subscription.subscriptionId}`,
-											state: {
-												productDetail:
-													props.productDetail,
-												preview:
-													billingSwitchPreview ??
-													undefined,
-											},
-											promo:
-												savingsAmount > 0
-													? `Switch and save ${formatSavingsDisplay(
-															savingsAmount,
-															billingSwitchPreview.currency,
-													  )}`
-													: undefined,
+						actions: shouldShowSwitchToAnnualButton()
+							? [
+									{
+										text: 'Switch to annual plan',
+										linkTo: `/billing/${props.specificProductType.urlPart}/switch-frequency?subscriptionId=${props.productDetail.subscription.subscriptionId}`,
+										state: {
+											productDetail: props.productDetail,
+											preview:
+												billingSwitchPreview ??
+												undefined,
 										},
-								  ]
-								: [],
+										promo:
+											savingsAmount > 0 &&
+											billingSwitchPreview
+												? `Switch and save ${formatSavingsDisplay(
+														savingsAmount,
+														billingSwitchPreview.currency,
+												  )}`
+												: undefined,
+									},
+							  ]
+							: [],
 					},
 			  ]
 			: [];

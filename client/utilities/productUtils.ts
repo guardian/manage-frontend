@@ -12,6 +12,7 @@ import type {
 	ProductTypeWithHolidayStopsFlow,
 } from '../../shared/productTypes';
 import { nonServiceableCountries } from '../components/mma/shared/NonServiceableCountries';
+import { baseSupporterPlus } from '../fixtures/productBuilder/baseProducts';
 import { fetchWithDefaultParameters } from './fetch';
 
 export const shouldHaveHolidayStopsFlow = (
@@ -136,6 +137,35 @@ export const isMonthlySubscription = (
 		return mainPlan.billingPeriod === 'month';
 	}
 	return false;
+};
+
+/**
+ * Validates that the subscription has a SupporterPlus Monthly rate plan.
+ * Throws an error if the rate plan is not found.
+ *
+ * @param productDetail The product detail to validate
+ * @throws Error with message "SupporterPlus Monthly rate plan not found" if validation fails
+ * @returns boolean - true if the subscription has a SupporterPlus Monthly rate plan
+ */
+export const hasSupporterPlusMonthlyRatePlan = (
+	productDetail: ProductDetail,
+): boolean => {
+	// Check if this is a monthly subscription
+	if (!isMonthlySubscription(productDetail)) {
+		throw new Error('SupporterPlus Monthly rate plan not found');
+	}
+
+	// Verify that active rate plans include a valid plan
+	const hasValidCurrentPlans =
+		productDetail.subscription.currentPlans.length > 0;
+	const hasValidFuturePlans =
+		productDetail.subscription.futurePlans.length > 0;
+
+	if (!hasValidCurrentPlans && !hasValidFuturePlans) {
+		throw new Error('Rate plan not found');
+	}
+
+	return productDetail.mmaProductKey === baseSupporterPlus().mmaProductKey;
 };
 
 export const changeSubscriptionBillingFrequencyFetch = (
