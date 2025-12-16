@@ -141,10 +141,8 @@ export const isMonthlySubscription = (
 
 /**
  * Validates that the subscription has a SupporterPlus Monthly rate plan.
- * Throws an error if the rate plan is not found.
  *
  * @param productDetail The product detail to validate
- * @throws Error with message "SupporterPlus Monthly rate plan not found" if validation fails
  * @returns boolean - true if the subscription has a SupporterPlus Monthly rate plan
  */
 export const hasSupporterPlusMonthlyRatePlan = (
@@ -162,7 +160,7 @@ export const hasSupporterPlusMonthlyRatePlan = (
 		productDetail.subscription.futurePlans.length > 0;
 
 	if (!hasValidCurrentPlans && !hasValidFuturePlans) {
-		throw new Error('Rate plan not found');
+		return false;
 	}
 
 	return productDetail.mmaProductKey === baseSupporterPlus().mmaProductKey;
