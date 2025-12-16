@@ -32,6 +32,10 @@ const mockIsMonthlySubscription =
 	productUtils.isMonthlySubscription as jest.MockedFunction<
 		typeof productUtils.isMonthlySubscription
 	>;
+const mockHasSupporterPlusMonthlyRatePlan =
+	productUtils.hasSupporterPlusMonthlyRatePlan as jest.MockedFunction<
+		typeof productUtils.hasSupporterPlusMonthlyRatePlan
+	>;
 const mockConvertCurrencyToSymbol =
 	currencyUtils.convertCurrencyToSymbol as jest.MockedFunction<
 		typeof currencyUtils.convertCurrencyToSymbol
@@ -50,7 +54,19 @@ describe('PaymentDetailsTableV2', () => {
 				stripePublicKeyForUpdate: 'pk_test_123',
 			},
 			renewalDate: '2025-12-31',
-			currentPlans: [],
+			currentPlans: [
+				{
+					name: 'Monthly Supporter Plus',
+					start: '2023-01-01',
+					end: '2026-01-01',
+					shouldBeVisible: true,
+					chargedThrough: '2025-12-31',
+					price: 1200,
+					currency: '£',
+					currencyISO: 'GBP',
+					billingPeriod: 'month',
+				},
+			],
 			futurePlans: [],
 		},
 		isPaidTier: true,
@@ -155,6 +171,7 @@ describe('PaymentDetailsTableV2', () => {
 			};
 
 			mockIsMonthlySubscription.mockReturnValue(true);
+			mockHasSupporterPlusMonthlyRatePlan.mockReturnValue(true);
 
 			render(
 				<PaymentDetailsTableV2
@@ -165,7 +182,6 @@ describe('PaymentDetailsTableV2', () => {
 					billingFrequencySwitchPreview={mockPreview}
 				/>,
 			);
-
 			expect(
 				screen.getByText('Switch to annual plan'),
 			).toBeInTheDocument();
@@ -225,6 +241,7 @@ describe('PaymentDetailsTableV2', () => {
 			};
 
 			mockIsMonthlySubscription.mockReturnValue(true);
+			mockHasSupporterPlusMonthlyRatePlan.mockReturnValue(true);
 
 			render(
 				<PaymentDetailsTableV2
