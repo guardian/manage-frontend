@@ -71,54 +71,80 @@ const initEnhancedChat = (identityID: string, email: string) => {
 				email,
 		);
 
-		// Check if script is already loaded
-		if (window.embeddedservice_bootstrap) {
+		// If API is already fully ready, return immediately
+		if (window.embeddedservice_bootstrap?.utilAPI) {
 			resolve(true);
 			return;
 		}
 
-		const script = document.createElement('script');
-		script.src = `${config.URL}/assets/js/bootstrap.min.js`;
-		script.onload = async () => {
-			try {
-				if (!window.embeddedservice_bootstrap) {
-					throw new Error(
-						'Embedded Service Bootstrap failed to load.',
-					);
-				}
-
-				// 1. Ensure the settings object exists (it usually does after script load)
-				window.embeddedservice_bootstrap.settings =
-					window.embeddedservice_bootstrap.settings || {};
-
-				// 2. Set the language explicitly (Use 'en_US', 'en_GB', etc.)
-				window.embeddedservice_bootstrap.settings.language = 'en_US';
-
-				await window.embeddedservice_bootstrap.init(
-					config.ORG_ID,
-					config.DEPLOYMENT_NAME,
-					config.URL,
-					{
-						scrt2URL: `https://gnmtouchpoint--dev1.sandbox.my.salesforce-scrt.com`, // Often required
-					},
-				);
-
-				// OPTIONAL: Hide the default floating button so only YOUR button works
-				// window.embeddedservice_bootstrap?.utilAPI.hideChatButton();
-
-				// AUTHENTICATION / PRE-CHAT MAPPING
-				// Unlike old chat, we don't pass entity maps here.
-				// If you have a JWT for User Verification, set it here:
-				// await window.embeddedservice_bootstrap.userVerificationAPI.setIdentityToken({ ... });
-
-				resolve(true);
-			} catch (error) {
-				console.error('MIAW Init Error', error);
-				reject(new Error(JSON.stringify(error))); //TO DO: fix prefer-promise-reject-errors properly
-			}
+		// Setup the "Ready" Listener
+		// This event fires when the chat is fully loaded and APIs are usable.
+		const onReadyHandler = () => {
+			console.log('MIAW Event: onEmbeddedMessagingReady fired.');
+			resolve(true);
+			// Clean up listener to avoid memory leaks
+			window.removeEventListener(
+				'onEmbeddedMessagingReady',
+				onReadyHandler,
+			);
 		};
-		script.onerror = reject;
-		document.body.appendChild(script);
+		window.addEventListener('onEmbeddedMessagingReady', onReadyHandler);
+
+		// Load Script if missing
+
+		if (!window.embeddedservice_bootstrap) {
+			const script = document.createElement('script');
+			script.src = `${config.URL}/assets/js/bootstrap.min.js`;
+			script.onload = async () => {
+				try {
+					if (!window.embeddedservice_bootstrap) {
+						//TODO: Is this the correct way to work around "'window.embeddedservice_bootstrap' is possibly 'undefined'" ?
+						throw new Error(
+							'Embedded Service Bootstrap failed to load.',
+						);
+					}
+
+					// Ensure settings exist
+					window.embeddedservice_bootstrap.settings =
+						window.embeddedservice_bootstrap.settings || {};
+					window.embeddedservice_bootstrap.settings.language =
+						'en_US';
+
+					await window.embeddedservice_bootstrap.init(
+						config.ORG_ID,
+						config.DEPLOYMENT_NAME,
+						config.URL,
+						{
+							scrt2URL: `https://gnmtouchpoint--dev1.sandbox.my.salesforce-scrt.com`,
+						},
+					);
+					// Note: We do NOT resolve here anymore.
+					// We wait for the 'onEmbeddedMessagingReady' event above.
+				} catch (error) {
+					console.error('MIAW Init Error', error);
+					reject(new Error(JSON.stringify(error))); //TO DO: fix prefer-promise-reject-errors properly
+				}
+			};
+			script.onerror = reject;
+			document.body.appendChild(script);
+		} else {
+			// If script exists but API wasn't ready in step 1, we just wait for the event.
+			// It might have already fired before we added the listener, so we add a fallback check:
+			console.log('fallback - waiting for event');
+			setTimeout(() => {
+				if (window.embeddedservice_bootstrap?.utilAPI) {
+					resolve(true);
+				}
+			}, 2000);
+		}
+
+		// OPTIONAL: Hide the default floating button so only YOUR button works
+		// window.embeddedservice_bootstrap?.utilAPI.hideChatButton();
+
+		// AUTHENTICATION / PRE-CHAT MAPPING
+		// Unlike old chat, we don't pass entity maps here.
+		// If you have a JWT for User Verification, set it here:
+		// await window.embeddedservice_bootstrap.userVerificationAPI.setIdentityToken({ ... });
 	});
 };
 
