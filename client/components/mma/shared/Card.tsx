@@ -13,24 +13,32 @@ Card.Header = (props: {
 }) => {
 	const headerCss = css`
 		position: relative;
-		padding: ${space[3]}px ${space[4]}px;
+		padding: ${space[3]}px;
+		padding-bottom: ${space[6]}px;
 		min-height: ${props.minHeightOverride ?? '64px'};
 		background-color: ${props.backgroundColor ?? palette.neutral[97]};
 		border-top-left-radius: 8px;
 		border-top-right-radius: 8px;
+
 		${from.tablet} {
-			border-radius: 0;
 			min-height: auto;
+			padding-bottom: ${space[8]}px;
 		}
 	`;
 
 	return <header css={headerCss}>{props.children}</header>;
 };
 
-Card.Section = (props: { children: ReactNode; backgroundColor?: string }) => {
+Card.Section = (props: {
+	children: ReactNode;
+	backgroundColor?: string;
+	removeBorders?: boolean;
+}) => {
 	const sectionCss = css`
-		padding: ${space[5]}px ${space[4]}px;
-		border: 1px solid ${palette.neutral[86]};
+		padding: ${space[4]}px ${space[3]}px;
+		border: ${props.removeBorders
+			? 'none'
+			: `1px solid ${palette.neutral[86]}`};
 		border-top: none;
 		:last-of-type {
 			border-bottom-left-radius: 8px;

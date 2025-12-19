@@ -3,7 +3,8 @@ import {
 	breakpoints,
 	from,
 	headlineBold24,
-	headlineBold42,
+	headlineLight24,
+	headlineLight42,
 	palette,
 	space,
 	textSansBold15,
@@ -93,11 +94,9 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 	`;
 
 	const titleCss = css`
-		${headlineBold24};
-		font-size: 1.4375rem;
+		${headlineLight24};
 		grid-column: 1 / -1;
-		margin-top: 28px;
-		margin-bottom: ${space[2]}px;
+		margin: ${space[4]}px 0;
 		color: ${palette.neutral['100']};
 
 		${props.compactTitle &&
@@ -121,12 +120,11 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 		}
 
 		${from.desktop} {
-			${headlineBold42};
+			${headlineLight42};
 			grid-column: 5 / span 8;
 			margin: 0;
 			padding: ${space[1]}px ${space[2]}px;
-			border: 1px solid ${palette.brand[600]};
-			border-bottom: 0;
+			margin-bottom: ${space[3]}px;
 		}
 
 		${from.wide} {

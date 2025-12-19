@@ -32,14 +32,6 @@ export const BenefitsToggle = ({
 
 	return (
 		<>
-			<div
-				css={css`
-					margin: ${space[5]}px 0 ${space[4]}px 0;
-				`}
-				hidden={!showBenefits}
-			>
-				<BenefitsSection benefits={benefits} />
-			</div>
 			<button
 				css={[expanderButtonCss()(showBenefits), benefitsButtonCss]}
 				type="button"
@@ -49,6 +41,15 @@ export const BenefitsToggle = ({
 			>
 				{showBenefits ? 'hide' : 'view'} benefits
 			</button>
+			<div
+				css={css`
+					margin: 0;
+					margin-top: ${space[4]}px;
+				`}
+				hidden={!showBenefits}
+			>
+				<BenefitsSection benefits={benefits} />
+			</div>
 		</>
 	);
 };

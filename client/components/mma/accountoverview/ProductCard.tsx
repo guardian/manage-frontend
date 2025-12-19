@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, textSans17 } from '@guardian/source/foundations';
+import { palette, space, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
@@ -146,7 +146,7 @@ export const ProductCard = ({
 	const benefitsTextCss = css`
 		${textSans17};
 		margin: 0;
-		max-width: 35ch;
+		margin-bottom: ${space[2]}px;
 	`;
 
 	const canBeInOfferPeriod =
@@ -269,7 +269,7 @@ export const ProductCard = ({
 					cardConfig.showDigitalBenefitsSection ||
 					cardConfig.showUnlimitedDigitalBenefitsSection) &&
 					nextPaymentDetails && (
-						<Card.Section backgroundColor="#edf5fA">
+						<Card.Section backgroundColor="#edf5fA" removeBorders>
 							<p css={benefitsTextCss}>
 								{cardConfig.showDigitalBenefitsSection
 									? `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have unlocked the full digital experience:`
@@ -420,6 +420,7 @@ export const ProductCard = ({
 									}`}
 									data-cy={`Manage ${groupedProductType.friendlyName}`}
 									size="small"
+									priority="tertiary"
 									cssOverrides={css`
 										justify-content: center;
 									`}
@@ -512,7 +513,7 @@ export const ProductCard = ({
 										cssOverrides={css`
 											justify-content: center;
 										`}
-										priority="primary"
+										priority="tertiary"
 										icon={
 											hasPaymentFailure ? (
 												<ErrorIcon
@@ -598,7 +599,7 @@ export const ProductCard = ({
 										cssOverrides={css`
 											justify-content: center;
 										`}
-										priority="primary"
+										priority="tertiary"
 										onClick={() => {
 											trackEvent({
 												eventCategory:

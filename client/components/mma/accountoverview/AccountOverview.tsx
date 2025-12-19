@@ -1,11 +1,10 @@
 import { css } from '@emotion/react';
 import {
 	from,
+	headlineBold24,
 	headlineBold28,
-	palette,
 	space,
 	textSans17,
-	until,
 } from '@guardian/source/foundations';
 import { Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
@@ -94,15 +93,25 @@ const productFetchPromisesAndRefs = () => {
 };
 
 const subHeadingCss = css`
-	margin: ${space[6]}px 0 ${space[6]}px;
-	border-top: 1px solid ${palette.neutral['86']};
-	${headlineBold28};
-	${until.tablet} {
-		font-size: 1.25rem;
-		line-height: 1.6;
+	${headlineBold24};
+	margin-top: ${space[8]}px;
+	margin-bottom: ${space[4]}px;
+
+	${from.tablet} {
+		${headlineBold28};
+		margin-top: ${space[10]}px;
+		margin-bottom: ${space[5]}px;
+	}
+`;
+
+const benefitsCtasContainerCss = css`
+	> * + * {
+		margin-top: ${space[4]}px;
 	}
 	${from.tablet} {
-		margin-top: ${space[8]}px;
+		> * + * {
+			margin-top: ${space[5]}px;
+		}
 	}
 `;
 
@@ -147,7 +156,7 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 					<h2 css={subHeadingCss}>
 						Get the most out of your benefits
 					</h2>
-					<Stack space={6}>
+					<div css={benefitsCtasContainerCss}>
 						<DownloadAppCtaVariation1 />
 						<DownloadFeastAppCtaWithImage />
 						{hasEditionsAndArchiveAccess && (
@@ -156,7 +165,7 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 								<NewspaperArchiveCta />
 							</>
 						)}
-					</Stack>
+					</div>
 				</>
 			)}
 		</>
@@ -459,6 +468,7 @@ export const AccountOverview = ({ isFromApp }: IsFromAppProps) => (
 	<PageContainer
 		selectedNavItem={NAV_LINKS.accountOverview}
 		pageTitle="Account overview"
+		minimalFooter
 	>
 		<AccountOverviewPage isFromApp={isFromApp} />
 	</PageContainer>
