@@ -36,7 +36,7 @@ declare global {
 					fields: Record<string, string>,
 				) => void;
 				setVisiblePrechatFields: (
-					fields: Record<string, string>,
+					fields: Record<string, object>,
 				) => void;
 			};
 			userVerificationAPI?: {
@@ -497,7 +497,10 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 							if (email) {
 								window.embeddedservice_bootstrap?.prechatAPI.setVisiblePrechatFields(
 									{
-										Email: email,
+										Email: {
+											value: email,
+											isEditableByEndUser: false,
+										},
 									},
 								);
 							}
