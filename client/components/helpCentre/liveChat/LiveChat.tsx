@@ -29,7 +29,7 @@ declare global {
 			) => Promise<void>;
 			utilAPI: {
 				launchChat: () => void;
-				hideChatButton: () => void; // Used to hide the default bubble
+				hideChatButton: () => void;
 			};
 			userVerificationAPI?: {
 				setIdentityToken: (token: object) => Promise<void>;
@@ -147,9 +147,6 @@ export const StartEnhancedChatButton = (props: StartLiveChatButtonProps) => {
 				window.guardian?.identityDetails.userId ?? '',
 				window.guardian?.identityDetails.email ?? '',
 			);
-
-			// Hide default chat button here?
-			// window.embeddedservice_bootstrap?.utilAPI.hideChatButton();
 
 			// Launch the Chat
 			window.embeddedservice_bootstrap?.utilAPI.launchChat();
@@ -485,9 +482,6 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 					// Sometimes the iframe needs a split second to register the message listener after init resolves
 					setTimeout(() => {
 						try {
-							// Hide default chat bubble here?
-							// window.embeddedservice_bootstrap?.utilAPI.hideChatButton();
-
 							window.embeddedservice_bootstrap?.utilAPI.launchChat();
 						} catch (launchError) {
 							console.error(
