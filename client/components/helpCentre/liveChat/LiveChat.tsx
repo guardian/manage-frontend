@@ -31,6 +31,14 @@ declare global {
 				launchChat: () => void;
 				hideChatButton: () => void;
 			};
+			prechatAPI: {
+				setHiddenPrechatFields: (
+					fields: Record<string, string>,
+				) => void;
+				setVisiblePrechatFields: (
+					fields: Record<string, string>,
+				) => void;
+			};
 			userVerificationAPI?: {
 				setIdentityToken: (token: object) => Promise<void>;
 			};
@@ -60,16 +68,11 @@ const getChatConfig = () => {
 };
 
 // Initialize function
-const initEnhancedChat = (identityID: string, email: string) => {
+const initEnhancedChat = () => {
 	return new Promise((resolve, reject) => {
 		const config = getChatConfig();
 
-		console.log(
-			'Starting init function, identityID: ' +
-				identityID +
-				', email: ' +
-				email,
-		);
+		console.log('Starting init function');
 
 		// If API is already fully ready, return immediately
 		if (window.embeddedservice_bootstrap?.utilAPI) {
@@ -143,10 +146,7 @@ export const StartEnhancedChatButton = (props: StartLiveChatButtonProps) => {
 		setIsLoading(true);
 		try {
 			// Init the library
-			await initEnhancedChat(
-				window.guardian?.identityDetails.userId ?? '',
-				window.guardian?.identityDetails.email ?? '',
-			);
+			await initEnhancedChat();
 
 			// Launch the Chat
 			window.embeddedservice_bootstrap?.utilAPI.launchChat();
@@ -473,17 +473,37 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 				console.log('Initializing Enhanced Chat...');
 
 				// Init the library
-				await initEnhancedChat(
-					window.guardian?.identityDetails.userId ?? '',
-					window.guardian?.identityDetails.email ?? '',
-				);
+				await initEnhancedChat();
 
-				// Safety Check: Ensure the API exists
+				// Ensure the API exists
 				if (window.embeddedservice_bootstrap?.utilAPI) {
 					// Launch the Chat with a slight safety delay
 					// Sometimes the iframe needs a split second to register the message listener after init resolves
+
+					const email =
+						window.guardian?.identityDetails.email ||
+						'empty@email.com';
+					const identityId =
+						window.guardian?.identityDetails.userId || '123456';
+
+					console.log(`email: ${email} - identityId: ${identityId}`);
+
 					setTimeout(() => {
 						try {
+							window.embeddedservice_bootstrap?.prechatAPI.setHiddenPrechatFields(
+								{
+									Identity_ID: identityId, // Replace with your exact Field API Name
+								},
+							);
+
+							if (email) {
+								window.embeddedservice_bootstrap?.prechatAPI.setVisiblePrechatFields(
+									{
+										Email: email,
+									},
+								);
+							}
+
 							window.embeddedservice_bootstrap?.utilAPI.launchChat();
 						} catch (launchError) {
 							console.error(
