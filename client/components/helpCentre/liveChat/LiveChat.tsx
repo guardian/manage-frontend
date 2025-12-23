@@ -406,7 +406,9 @@ interface StartLiveChatButtonProps {
 export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 	const [liveChatIsLoading, setLiveChatIsLoading] = useState<boolean>(false);
 
-	if (window.guardian.domain === 'theguardian.com') {
+	const domain = window.guardian?.domain || '';
+
+	if (domain === 'theguardian.com') {
 		const bootstrapChat = async () => {
 			setLiveChatIsLoading(true);
 			let canLoadLiveChat = true;
