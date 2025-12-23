@@ -480,11 +480,9 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 					// Launch the Chat with a slight safety delay
 					// Sometimes the iframe needs a split second to register the message listener after init resolves
 
-					const email =
-						window.guardian?.identityDetails.email ||
-						'empty@email.com';
+					const email = window.guardian?.identityDetails.email || '';
 					const identityId =
-						window.guardian?.identityDetails.userId || '123456';
+						window.guardian?.identityDetails.userId || '';
 
 					console.log(`email: ${email} - identityId: ${identityId}`);
 
