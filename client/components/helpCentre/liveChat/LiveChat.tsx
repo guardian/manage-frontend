@@ -161,6 +161,9 @@ export const StartEnhancedChatButton = (props: StartLiveChatButtonProps) => {
 				window.guardian?.identityDetails.email ?? '',
 			);
 
+			// Hide default chat button here?
+			// window.embeddedservice_bootstrap?.utilAPI.hideChatButton();
+
 			// Launch the Chat
 			window.embeddedservice_bootstrap?.utilAPI.launchChat();
 		} catch (error) {
@@ -332,46 +335,24 @@ const initESW = (
 		// tslint:disable-next-line:no-object-mutation
 		liveChatAPI.settings = { ...liveChatAPI.settings, ...liveChatConfig };
 
-		if (window.guardian.domain === 'theguardian.com') {
-			liveChatAPI.init(
-				'https://gnmtouchpoint.my.salesforce.com',
-				'https://gnmtouchpoint.my.salesforce-sites.com/liveagent',
-				gslbBaseUrl,
-				'00D20000000nq5g',
-				'Chat_Team',
-				{
-					baseLiveAgentContentURL:
-						'https://c.la2-c2-cdg.salesforceliveagent.com/content',
-					deploymentId: '5725I0000004RYv',
-					buttonId: '5735I0000004Rj7',
-					baseLiveAgentURL:
-						'https://d.la2-c2-cdg.salesforceliveagent.com/chat',
-					eswLiveAgentDevName:
-						'EmbeddedServiceLiveAgent_Parent04I5I0000004LLTUA2_1797a9534a2',
-					isOfflineSupportEnabled: false,
-				},
-			);
-		} else {
-			// Initialise live chat API for DEV1 test sandbox
-			liveChatAPI.init(
-				'https://gnmtouchpoint--livechat.sandbox.my.salesforce.com',
-				'https://gnmtouchpoint--livechat.sandbox.my.salesforce-sites.com/liveagent',
-				gslbBaseUrl,
-				'00DVc000003BA0j',
-				'Chat_Team',
-				{
-					baseLiveAgentContentURL:
-						'https://c.la12s-core1.sfdc-cehfhs.salesforceliveagent.com/content',
-					deploymentId: '5725I0000004RYv',
-					buttonId: '5735I0000004Rj7',
-					baseLiveAgentURL:
-						'https://d.la12s-core1.sfdc-cehfhs.salesforceliveagent.com/chat',
-					eswLiveAgentDevName:
-						'EmbeddedServiceLiveAgent_Parent04I5I0000004LLTUA2_1797a9534a2',
-					isOfflineSupportEnabled: false,
-				},
-			);
-		}
+		liveChatAPI.init(
+			'https://gnmtouchpoint.my.salesforce.com',
+			'https://gnmtouchpoint.my.salesforce-sites.com/liveagent',
+			gslbBaseUrl,
+			'00D20000000nq5g',
+			'Chat_Team',
+			{
+				baseLiveAgentContentURL:
+					'https://c.la2-c2-cdg.salesforceliveagent.com/content',
+				deploymentId: '5725I0000004RYv',
+				buttonId: '5735I0000004Rj7',
+				baseLiveAgentURL:
+					'https://d.la2-c2-cdg.salesforceliveagent.com/chat',
+				eswLiveAgentDevName:
+					'EmbeddedServiceLiveAgent_Parent04I5I0000004LLTUA2_1797a9534a2',
+				isOfflineSupportEnabled: false,
+			},
+		);
 	});
 };
 
@@ -404,7 +385,9 @@ const initLiveChat = (
 					resolve(true);
 				};
 			} else {
-				console.log('in CODE environment');
+				console.error(
+					'in CODE environment, Legacy Live Chat not available',
+				);
 			}
 
 			// tslint:disable-next-line:no-object-mutation
@@ -512,25 +495,28 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 				console.log('Init success. Attempting to launch...');
 
 				// Safety Check: Ensure the API exists
-				if (!window.embeddedservice_bootstrap?.utilAPI) {
+				if (window.embeddedservice_bootstrap?.utilAPI) {
+					// Launch the Chat with a slight safety delay
+					// Sometimes the iframe needs a split second to register the message listener after init resolves
+					setTimeout(() => {
+						try {
+							// Hide default chat bubble here?
+							// window.embeddedservice_bootstrap?.utilAPI.hideChatButton();
+
+							window.embeddedservice_bootstrap?.utilAPI.launchChat();
+							console.log('Launch command sent.');
+						} catch (launchError) {
+							console.error(
+								'Error specifically during launchChat:',
+								launchError,
+							);
+						}
+					}, 100);
+				} else {
 					throw new Error(
 						'Embedded Service Bootstrap API not found.',
 					);
 				}
-
-				// Launch the Chat with a slight safety delay
-				// Sometimes the iframe needs a split second to register the message listener after init resolves
-				setTimeout(() => {
-					try {
-						window.embeddedservice_bootstrap?.utilAPI.launchChat();
-						console.log('Launch command sent.');
-					} catch (launchError) {
-						console.error(
-							'Error specifically during launchChat:',
-							launchError,
-						);
-					}
-				}, 100);
 			} catch (error) {
 				console.error('StartLiveChatButton init failure:', error);
 				props.setIsLiveChatAvailable(false);
