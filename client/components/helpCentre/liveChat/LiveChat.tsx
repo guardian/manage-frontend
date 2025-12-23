@@ -14,7 +14,7 @@ import { liveChatCss } from './liveChatCssOverrides';
 
 let areAgentsAvailable = false;
 
-// New types for Enhanced Chat
+// Enhanced Chat types
 declare global {
 	interface Window {
 		embeddedservice_bootstrap?: {
@@ -80,9 +80,8 @@ const initEnhancedChat = (identityID: string, email: string) => {
 		// Setup the "Ready" Listener
 		// This event fires when the chat is fully loaded and APIs are usable.
 		const onReadyHandler = () => {
-			console.log('MIAW Event: onEmbeddedMessagingReady fired.');
 			resolve(true);
-			// Clean up listener to avoid memory leaks
+
 			window.removeEventListener(
 				'onEmbeddedMessagingReady',
 				onReadyHandler,
@@ -91,7 +90,6 @@ const initEnhancedChat = (identityID: string, email: string) => {
 		window.addEventListener('onEmbeddedMessagingReady', onReadyHandler);
 
 		// Load Script if missing
-
 		if (!window.embeddedservice_bootstrap) {
 			const script = document.createElement('script');
 			script.src = `${config.URL}/assets/js/bootstrap.min.js`;
@@ -118,8 +116,6 @@ const initEnhancedChat = (identityID: string, email: string) => {
 							scrt2URL: `https://gnmtouchpoint--dev1.sandbox.my.salesforce-scrt.com`,
 						},
 					);
-					// Note: We do NOT resolve here anymore.
-					// We wait for the 'onEmbeddedMessagingReady' event above.
 				} catch (error) {
 					console.error('MIAW Init Error', error);
 					reject(new Error(JSON.stringify(error))); //TO DO: fix prefer-promise-reject-errors properly
@@ -130,21 +126,12 @@ const initEnhancedChat = (identityID: string, email: string) => {
 		} else {
 			// If script exists but API wasn't ready in step 1, we just wait for the event.
 			// It might have already fired before we added the listener, so we add a fallback check:
-			console.log('fallback - waiting for event');
 			setTimeout(() => {
 				if (window.embeddedservice_bootstrap?.utilAPI) {
 					resolve(true);
 				}
 			}, 2000);
 		}
-
-		// OPTIONAL: Hide the default floating button so only YOUR button works
-		// window.embeddedservice_bootstrap?.utilAPI.hideChatButton();
-
-		// AUTHENTICATION / PRE-CHAT MAPPING
-		// Unlike old chat, we don't pass entity maps here.
-		// If you have a JWT for User Verification, set it here:
-		// await window.embeddedservice_bootstrap.userVerificationAPI.setIdentityToken({ ... });
 	});
 };
 
@@ -492,8 +479,6 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 					window.guardian?.identityDetails.email ?? '',
 				);
 
-				console.log('Init success. Attempting to launch...');
-
 				// Safety Check: Ensure the API exists
 				if (window.embeddedservice_bootstrap?.utilAPI) {
 					// Launch the Chat with a slight safety delay
@@ -504,7 +489,6 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 							// window.embeddedservice_bootstrap?.utilAPI.hideChatButton();
 
 							window.embeddedservice_bootstrap?.utilAPI.launchChat();
-							console.log('Launch command sent.');
 						} catch (launchError) {
 							console.error(
 								'Error specifically during launchChat:',
