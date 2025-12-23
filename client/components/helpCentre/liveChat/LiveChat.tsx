@@ -497,7 +497,7 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 							if (email) {
 								window.embeddedservice_bootstrap?.prechatAPI.setVisiblePrechatFields(
 									{
-										Email: {
+										_email: {
 											value: email,
 											isEditableByEndUser: false,
 										},
