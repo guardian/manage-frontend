@@ -79,11 +79,6 @@ const HelpCentreRouter = () => {
 
 	const knownIssues: KnownIssueObj[] = [
 		{
-			date: '24th Dec 2025 09:00 am',
-			message:
-				"Please note that our customer service contact centre will be closed on Christmas Day and New Year's Day. We will be open on Boxing Day for US customers only.",
-		},
-		{
 			date: '15th Oct 2025 11:00 am',
 			message:
 				'Due to strike action by Canada Post, the delivery of copies of the Guardian Weekly to Canadian subscribers may be subject to delays. Subscribers are welcome to pause subscriptions during the period of industrial action.',
