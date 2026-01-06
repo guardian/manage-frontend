@@ -23,7 +23,7 @@ declare global {
 			};
 			init: (
 				orgId: string,
-				serviceName: string, // The API Name of your deployment
+				serviceName: string,
 				siteUrl: string,
 				options?: object,
 			) => Promise<void>;
@@ -47,7 +47,7 @@ declare global {
 }
 
 // Configuration for Enhanced Chat environments
-const MIAW_CONFIG = {
+const CHAT_CONFIG = {
 	PROD: {
 		//not ready for production yet
 		URL: 'https://example.com/ESWDeployment',
@@ -63,8 +63,8 @@ const MIAW_CONFIG = {
 
 const getChatConfig = () => {
 	return window.guardian.domain === 'theguardian.com'
-		? MIAW_CONFIG.PROD
-		: MIAW_CONFIG.CODE;
+		? CHAT_CONFIG.PROD
+		: CHAT_CONFIG.CODE;
 };
 
 // Initialize function
@@ -99,7 +99,6 @@ const initEnhancedChat = () => {
 			script.onload = async () => {
 				try {
 					if (!window.embeddedservice_bootstrap) {
-						//TODO: Is this the correct way to work around "'window.embeddedservice_bootstrap' is possibly 'undefined'" ?
 						throw new Error(
 							'Embedded Service Bootstrap failed to load.',
 						);
@@ -121,7 +120,7 @@ const initEnhancedChat = () => {
 					);
 				} catch (error) {
 					console.error('MIAW Init Error', error);
-					reject(new Error(JSON.stringify(error))); //TO DO: fix prefer-promise-reject-errors properly
+					reject(new Error(JSON.stringify(error)));
 				}
 			};
 			script.onerror = reject;
@@ -490,7 +489,7 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 						try {
 							window.embeddedservice_bootstrap?.prechatAPI.setHiddenPrechatFields(
 								{
-									Identity_ID: identityId, // Replace with your exact Field API Name
+									Identity_ID: identityId,
 								},
 							);
 
@@ -508,7 +507,7 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 							window.embeddedservice_bootstrap?.utilAPI.launchChat();
 						} catch (launchError) {
 							console.error(
-								'Error specifically during launchChat:',
+								'Error during launchChat: ',
 								launchError,
 							);
 						}
