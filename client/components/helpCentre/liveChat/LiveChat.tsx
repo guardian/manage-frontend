@@ -72,8 +72,6 @@ const initEnhancedChat = () => {
 	return new Promise((resolve, reject) => {
 		const config = getChatConfig();
 
-		console.log('Starting init function');
-
 		// If API is already fully ready, return immediately
 		if (window.embeddedservice_bootstrap?.utilAPI) {
 			resolve(true);
@@ -119,7 +117,7 @@ const initEnhancedChat = () => {
 						},
 					);
 				} catch (error) {
-					console.error('MIAW Init Error', error);
+					console.error('Chat Init Error', error);
 					reject(new Error(JSON.stringify(error)));
 				}
 			};
@@ -469,8 +467,6 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 		const bootstrapChat = async () => {
 			setLiveChatIsLoading(true);
 			try {
-				console.log('Initializing Enhanced Chat...');
-
 				// Init the library
 				await initEnhancedChat();
 
@@ -483,34 +479,25 @@ export const StartLiveChatButton = (props: StartLiveChatButtonProps) => {
 					const identityId =
 						window.guardian?.identityDetails.userId || '';
 
-					console.log(`email: ${email} - identityId: ${identityId}`);
-
 					setTimeout(() => {
-						try {
-							window.embeddedservice_bootstrap?.prechatAPI.setHiddenPrechatFields(
+						window.embeddedservice_bootstrap?.prechatAPI.setHiddenPrechatFields(
+							{
+								Identity_ID: identityId,
+							},
+						);
+
+						if (email) {
+							window.embeddedservice_bootstrap?.prechatAPI.setVisiblePrechatFields(
 								{
-									Identity_ID: identityId,
+									_email: {
+										value: email,
+										isEditableByEndUser: false,
+									},
 								},
 							);
-
-							if (email) {
-								window.embeddedservice_bootstrap?.prechatAPI.setVisiblePrechatFields(
-									{
-										_email: {
-											value: email,
-											isEditableByEndUser: false,
-										},
-									},
-								);
-							}
-
-							window.embeddedservice_bootstrap?.utilAPI.launchChat();
-						} catch (launchError) {
-							console.error(
-								'Error during launchChat: ',
-								launchError,
-							);
 						}
+
+						window.embeddedservice_bootstrap?.utilAPI.launchChat();
 					}, 100);
 				} else {
 					throw new Error(
