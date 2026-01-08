@@ -93,6 +93,6 @@ export const wideButtonLayoutCss = css`
 	}
 
 	> * + * {
-		margin-top: ${space[3]}px;
+		margin-top: ${space[4]}px;
 	}
 `;

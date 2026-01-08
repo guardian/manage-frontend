@@ -122,6 +122,9 @@ export const ProductCard = ({
 		!hasCancellationPending &&
 		specificProductType.productType === 'contributions';
 
+	// TODO: Implement this button's eligibility logic
+	const showDigitalPlusUpsellButton = true;
+
 	const productBenefits =
 		specificProductType.productType === 'supporterplus'
 			? 'supporter benefits'
@@ -411,6 +414,36 @@ export const ProductCard = ({
 							</dl>
 						</div>
 						<div css={wideButtonLayoutCss}>
+							{showDigitalPlusUpsellButton && (
+								<Button
+									aria-label={`Product Card Digital Plus Upsell Button`}
+									data-cy={`digital-plus-upsell-button`}
+									size="small"
+									priority="primary"
+									theme={themeButtonReaderRevenueBrand}
+									cssOverrides={css`
+										justify-content: center;
+									`}
+									onClick={() => {
+										// trackEvent({
+										// 	eventCategory: 'account_overview',
+										// 	eventAction: 'click',
+										// 	eventLabel: `manage_${specificProductType.urlPart}`,
+										// });
+										navigate(
+											`/${specificProductType.urlPart}/upgrade-product/information`,
+											{
+												state: {
+													productDetail:
+														productDetail,
+												},
+											},
+										);
+									}}
+								>
+									{`Upgrade to Digital plus`}
+								</Button>
+							)}
 							{!isGifted && (
 								<Button
 									aria-label={`${specificProductType.productTitle(

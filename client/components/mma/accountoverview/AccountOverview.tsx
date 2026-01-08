@@ -1,14 +1,9 @@
 import { css } from '@emotion/react';
-import {
-	from,
-	headlineBold24,
-	headlineBold28,
-	space,
-	textSans17,
-} from '@guardian/source/foundations';
+import { from, space, textSans17 } from '@guardian/source/foundations';
 import { Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { Fragment } from 'react';
+import { subHeadingCss } from '@/client/styles/headings';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
@@ -91,18 +86,6 @@ const productFetchPromisesAndRefs = () => {
 		},
 	];
 };
-
-const subHeadingCss = css`
-	${headlineBold24};
-	margin-top: ${space[8]}px;
-	margin-bottom: ${space[4]}px;
-
-	${from.tablet} {
-		${headlineBold28};
-		margin-top: ${space[10]}px;
-		margin-bottom: ${space[5]}px;
-	}
-`;
 
 const benefitsCtasContainerCss = css`
 	> * + * {

@@ -123,7 +123,7 @@ const PageHeaderContainer = (props: PageHeaderContainerProps) => {
 			${headlineLight42};
 			grid-column: 5 / span 8;
 			margin: 0;
-			padding: ${space[1]}px ${space[2]}px;
+			padding: ${space[1]}px 0;
 			margin-bottom: ${space[3]}px;
 		}
 

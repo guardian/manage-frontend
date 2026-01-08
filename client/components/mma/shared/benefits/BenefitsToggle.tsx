@@ -15,32 +15,37 @@ import { benefitsButtonCss } from './BenefitsStyles';
 type BenfitsToggleProps = {
 	productType: ProductTypeKeys;
 	subscriptionPlan: SubscriptionPlan;
+	alwaysShowBenefits?: boolean;
 };
 
 export const BenefitsToggle = ({
 	productType,
 	subscriptionPlan,
+	alwaysShowBenefits = false,
 }: BenfitsToggleProps) => {
 	const currencyIso = isPaidSubscriptionPlan(subscriptionPlan)
 		? subscriptionPlan.currencyISO
 		: '';
 
-	const [showBenefits, setShowBenefits] = useState<boolean>(false);
+	const [showBenefits, setShowBenefits] =
+		useState<boolean>(alwaysShowBenefits);
 	const benefits = benefitsConfiguration[productType].filter((benefit) =>
 		filterBenefitByRegion(benefit, currencyIso),
 	);
 
 	return (
 		<>
-			<button
-				css={[expanderButtonCss()(showBenefits), benefitsButtonCss]}
-				type="button"
-				aria-expanded={showBenefits}
-				aria-controls="benefits"
-				onClick={() => setShowBenefits(!showBenefits)}
-			>
-				{showBenefits ? 'hide' : 'view'} benefits
-			</button>
+			{!alwaysShowBenefits && (
+				<button
+					css={[expanderButtonCss()(showBenefits), benefitsButtonCss]}
+					type="button"
+					aria-expanded={showBenefits}
+					aria-controls="benefits"
+					onClick={() => setShowBenefits(!showBenefits)}
+				>
+					{showBenefits ? 'hide' : 'view'} benefits
+				</button>
+			)}
 			<div
 				css={css`
 					margin: 0;
