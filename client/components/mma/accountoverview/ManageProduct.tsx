@@ -35,7 +35,6 @@ import {
 	createProductDetailFetcher,
 	hasDeliveryRecordsFlow,
 	hasSupporterPlusMonthlyRatePlan,
-	isMonthlySubscription,
 	isNonServiceableCountry,
 	shouldHaveHolidayStopsFlow,
 } from '../../../utilities/productUtils';
@@ -490,10 +489,7 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 
 	const productDetail = data.products.filter(isProduct)[0];
 
-	if (
-		isMonthlySubscription(productDetail) &&
-		hasSupporterPlusMonthlyRatePlan(productDetail)
-	) {
+	if (hasSupporterPlusMonthlyRatePlan(productDetail)) {
 		return (
 			<AsyncLoadedSwitchBillingFrequencyPreview
 				manageProductProps={props}
@@ -528,8 +524,7 @@ export const ManageProduct = (props: WithProductType<ProductType>) => {
 		>
 			{productDetail ? (
 				<>
-					{isMonthlySubscription(productDetail) &&
-					hasSupporterPlusMonthlyRatePlan(productDetail) ? (
+					{hasSupporterPlusMonthlyRatePlan(productDetail) ? (
 						<AsyncLoadedSwitchBillingFrequencyPreview
 							manageProductProps={props}
 							productDetail={productDetail}

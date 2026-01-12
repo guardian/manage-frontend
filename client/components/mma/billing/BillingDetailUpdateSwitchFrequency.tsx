@@ -757,10 +757,7 @@ export const BillingDetailUpdateSwitchFrequency = (
 	const routerState = state as BillingFrequencySwitchPreviewState | undefined;
 	const preview = routerState?.preview;
 
-	if (
-		!isMonthlySubscription(productDetail) ||
-		!hasSupporterPlusMonthlyRatePlan(productDetail)
-	) {
+	if (!hasSupporterPlusMonthlyRatePlan(productDetail)) {
 		// If not monthly, no switch preview to show, redirect to root
 		return <Navigate to="/" />;
 	}
