@@ -26,7 +26,11 @@ import {
 	parseDate,
 } from '@/shared/dates';
 import { number2words } from '@/shared/numberUtils';
-import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
+import {
+	getBillingPeriodForDiscount,
+	getMainPlan,
+	isPaidSubscriptionPlan,
+} from '@/shared/productResponse';
 import type { ProductTypeKeys } from '@/shared/productTypes';
 import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
@@ -210,6 +214,9 @@ export const CancelAlternativeOffer = () => {
 	const productDetail = cancellationContext.productDetail;
 	const productType = cancellationContext.productType;
 	const mainPlan = getMainPlan(productDetail.subscription);
+	const billingPeriodForDiscount = getBillingPeriodForDiscount(
+		productDetail.subscription,
+	);
 
 	const offerPeriodWord = number2words(routerState.upToPeriods);
 	const offerPeriodType = routerState.upToPeriodsType;
@@ -331,14 +338,16 @@ export const CancelAlternativeOffer = () => {
 							<s>
 								{mainPlan.currency}
 								{humanReadableStrikethroughPrice}/
-								{mainPlan.billingPeriod}
+								{billingPeriodForDiscount ||
+									mainPlan.billingPeriod}
 							</s>
 							{offerIsPercentageOrFree === 'percentage' && (
 								<span css={discountedPriceSpan}>
 									{' '}
 									{mainPlan.currency}
 									{routerState.discountedPrice}/
-									{mainPlan.billingPeriod}
+									{billingPeriodForDiscount ||
+										mainPlan.billingPeriod}
 								</span>
 							)}
 						</p>
@@ -417,7 +426,9 @@ export const CancelAlternativeOffer = () => {
 									routerState.nonDiscountedPayments,
 									true,
 								)}
-								/{mainPlan.billingPeriod}
+								/
+								{billingPeriodForDiscount ||
+									mainPlan.billingPeriod}
 							</p>
 						)}
 					{alternativeIsOffer && (
@@ -488,8 +499,8 @@ export const CancelAlternativeOffer = () => {
 			</div>
 			{isPaidSubscriptionPlan(mainPlan) && (
 				<p css={termsCss}>
-					Your {mainPlan.billingPeriod}ly payments of{' '}
-					{mainPlan.currency}
+					Your {billingPeriodForDiscount || mainPlan.billingPeriod}ly
+					payments of {mainPlan.currency}
 					{humanReadableStrikethroughPrice} will automatically resume
 					on {nextNonDiscountedPaymentDate} unless you cancel.
 					{alternativeIsOffer && (
