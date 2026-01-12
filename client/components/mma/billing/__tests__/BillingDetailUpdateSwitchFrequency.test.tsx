@@ -20,6 +20,7 @@ jest.mock('@/client/utilities/utils', () => ({
 }));
 
 jest.mock('@/client/utilities/productUtils', () => ({
+	hasSupporterPlusMonthlyRatePlan: jest.fn(),
 	isMonthlySubscription: jest.fn(),
 	changeSubscriptionBillingFrequencyFetch: jest.fn(),
 }));
@@ -153,6 +154,9 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 		jest.clearAllMocks();
 		mocks = getMocks();
 
+		mocks.productUtils.hasSupporterPlusMonthlyRatePlan.mockReturnValue(
+			true,
+		);
 		mocks.productUtils.isMonthlySubscription.mockReturnValue(true);
 		mocks.utils.formatAmount.mockImplementation((n: number) =>
 			n.toFixed(2),
@@ -172,9 +176,11 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 	});
 
 	describe('Redirect Logic', () => {
-		it('redirects to root when subscription is not monthly', () => {
+		it('redirects to root when subscription does not have SupporterPlus monthly rate plan', () => {
 			const mocks2 = getMocks();
-			mocks2.productUtils.isMonthlySubscription.mockReturnValue(false);
+			mocks2.productUtils.hasSupporterPlusMonthlyRatePlan.mockReturnValue(
+				false,
+			);
 
 			render(
 				<BillingUpdateContext.Provider

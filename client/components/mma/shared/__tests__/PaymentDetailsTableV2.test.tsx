@@ -28,10 +28,6 @@ jest.mock('../NextPaymentDetails', () => ({
 	NewPaymentPriceAlert: () => <span data-testid="new-price-alert">NEW</span>,
 }));
 
-const mockIsMonthlySubscription =
-	productUtils.isMonthlySubscription as jest.MockedFunction<
-		typeof productUtils.isMonthlySubscription
-	>;
 const mockHasSupporterPlusMonthlyRatePlan =
 	productUtils.hasSupporterPlusMonthlyRatePlan as jest.MockedFunction<
 		typeof productUtils.hasSupporterPlusMonthlyRatePlan
@@ -102,8 +98,6 @@ describe('PaymentDetailsTableV2', () => {
 
 	describe('Basic Rendering', () => {
 		it('renders payment details table', () => {
-			mockIsMonthlySubscription.mockReturnValue(false);
-
 			render(
 				<PaymentDetailsTableV2
 					productDetail={mockProductDetail as never}
@@ -119,8 +113,6 @@ describe('PaymentDetailsTableV2', () => {
 		});
 
 		it('renders payment method for paid tier', () => {
-			mockIsMonthlySubscription.mockReturnValue(false);
-
 			render(
 				<PaymentDetailsTableV2
 					productDetail={mockProductDetail as never}
@@ -134,8 +126,6 @@ describe('PaymentDetailsTableV2', () => {
 		});
 
 		it('renders FREE for non-paid tier', () => {
-			mockIsMonthlySubscription.mockReturnValue(false);
-
 			const nonPaidProduct = { ...mockProductDetail, isPaidTier: false };
 
 			render(
@@ -170,7 +160,6 @@ describe('PaymentDetailsTableV2', () => {
 				},
 			};
 
-			mockIsMonthlySubscription.mockReturnValue(true);
 			mockHasSupporterPlusMonthlyRatePlan.mockReturnValue(true);
 
 			render(
@@ -189,7 +178,7 @@ describe('PaymentDetailsTableV2', () => {
 		});
 
 		it('does not show switch button for annual subscriptions', () => {
-			mockIsMonthlySubscription.mockReturnValue(false);
+			mockHasSupporterPlusMonthlyRatePlan.mockReturnValue(false);
 
 			render(
 				<PaymentDetailsTableV2
@@ -206,7 +195,7 @@ describe('PaymentDetailsTableV2', () => {
 		});
 
 		it('does not show switch button when no preview provided', () => {
-			mockIsMonthlySubscription.mockReturnValue(true);
+			mockHasSupporterPlusMonthlyRatePlan.mockReturnValue(true);
 
 			render(
 				<PaymentDetailsTableV2
@@ -240,7 +229,6 @@ describe('PaymentDetailsTableV2', () => {
 				},
 			};
 
-			mockIsMonthlySubscription.mockReturnValue(true);
 			mockHasSupporterPlusMonthlyRatePlan.mockReturnValue(true);
 
 			render(
@@ -261,8 +249,6 @@ describe('PaymentDetailsTableV2', () => {
 
 	describe('Conditional Row Rendering', () => {
 		it('hides next payment row when autoRenew is false', () => {
-			mockIsMonthlySubscription.mockReturnValue(false);
-
 			const noAutoRenewProduct = {
 				...mockProductDetail,
 				subscription: {
@@ -286,8 +272,6 @@ describe('PaymentDetailsTableV2', () => {
 		});
 
 		it('hides next payment row when cancellation pending', () => {
-			mockIsMonthlySubscription.mockReturnValue(false);
-
 			render(
 				<PaymentDetailsTableV2
 					productDetail={mockProductDetail as never}
