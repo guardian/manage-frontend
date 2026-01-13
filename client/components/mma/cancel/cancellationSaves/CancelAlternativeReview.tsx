@@ -23,7 +23,11 @@ import { getMaxNonDiscountedPrice } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import { number2words } from '@/shared/numberUtils';
-import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
+import {
+	getBillingPeriodForDiscount,
+	getMainPlan,
+	isPaidSubscriptionPlan,
+} from '@/shared/productResponse';
 import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
 import { Heading } from '../../shared/Heading';
@@ -138,6 +142,9 @@ export const CancelAlternativeReview = () => {
 	const productDetail = cancellationContext.productDetail;
 	const productType = cancellationContext.productType;
 	const mainPlan = getMainPlan(productDetail.subscription);
+	const billingPeriodForDiscount = getBillingPeriodForDiscount(
+		productDetail.subscription,
+	);
 
 	const offerPeriodWord = number2words(routerState.upToPeriods);
 	const offerPeriodType = routerState.upToPeriodsType;
@@ -263,7 +270,8 @@ export const CancelAlternativeReview = () => {
 							<s>
 								{mainPlan.currency}
 								{humanReadableStrikethroughPrice}/
-								{mainPlan.billingPeriod}
+								{billingPeriodForDiscount ||
+									mainPlan.billingPeriod}
 							</s>
 						</p>
 					)}
@@ -279,7 +287,8 @@ export const CancelAlternativeReview = () => {
 								<>
 									{mainPlan.currency}
 									{routerState.discountedPrice}/
-									{mainPlan.billingPeriod}
+									{billingPeriodForDiscount ||
+										mainPlan.billingPeriod}
 								</>
 							)}
 						{alternativeIsPause &&
@@ -303,7 +312,7 @@ export const CancelAlternativeReview = () => {
 							routerState.nonDiscountedPayments,
 							true,
 						)}
-						/{mainPlan.billingPeriod}
+						/{billingPeriodForDiscount || mainPlan.billingPeriod}
 					</p>
 				)}
 			<h3 css={whatsNextTitleCss}>
@@ -331,6 +340,7 @@ export const CancelAlternativeReview = () => {
 									routerState.nonDiscountedPayments,
 									true,
 								)}/${
+									billingPeriodForDiscount ||
 									mainPlan.billingPeriod
 								} payment will automatically resume on ${nextNonDiscountedPaymentDate}`}
 						</li>
@@ -397,43 +407,52 @@ export const CancelAlternativeReview = () => {
 			</div>
 			{isPaidSubscriptionPlan(mainPlan) && (
 				<>
-					{alternativeIsOffer &&
-						offerIsPercentageOrFree === 'free' && (
-							<p css={termsCss}>
-								If you cancel during the free period, you will
-								lose access to your benefits on the day we
-								usually take payment. If you cancel after the
-								free period, your subscription will end at the
-								end of your current {mainPlan.billingPeriod}ly
-								payment period.
-							</p>
-						)}
+					{alternativeIsOffer && offerIsPercentageOrFree === 'free' && (
+						<p css={termsCss}>
+							If you cancel during the free period, you will lose
+							access to your benefits on the day we usually take
+							payment. If you cancel after the free period, your
+							subscription will end at the end of your current{' '}
+							{billingPeriodForDiscount || mainPlan.billingPeriod}
+							ly payment period.
+						</p>
+					)}
 					{alternativeIsOffer &&
 						offerIsPercentageOrFree === 'percentage' && (
 							<p css={termsCss}>
 								If you take up the{' '}
 								{routerState.discountPercentage}% off offer and
-								cancel during that {mainPlan.billingPeriod}, you
-								will lose access to your benefits at the end of
-								the {mainPlan.billingPeriod}. If you cancel
-								after the offer, when your {mainPlan.currency}
+								cancel during that{' '}
+								{billingPeriodForDiscount ||
+									mainPlan.billingPeriod}
+								, you will lose access to your benefits at the
+								end of the{' '}
+								{billingPeriodForDiscount ||
+									mainPlan.billingPeriod}
+								. If you cancel after the offer, when your{' '}
+								{mainPlan.currency}
 								{getMaxNonDiscountedPrice(
 									routerState.nonDiscountedPayments,
 									true,
 								)}
-								/{mainPlan.billingPeriod} payment automatically
-								resumes, your subscription will end at the end
-								of your current {mainPlan.billingPeriod}ly
-								payment period
+								/
+								{billingPeriodForDiscount ||
+									mainPlan.billingPeriod}{' '}
+								payment automatically resumes, your subscription
+								will end at the end of your current{' '}
+								{billingPeriodForDiscount ||
+									mainPlan.billingPeriod}
+								ly payment period
 							</p>
 						)}
 					{alternativeIsPause && (
 						<p css={termsCss}>
 							If you cancel during the paused period, your{' '}
-							{mainPlan.billingPeriod}ly payments will not
-							automatically resume. If you cancel after the paused
-							period, cancellation will take effect immediately
-							and you will not be charged again.
+							{billingPeriodForDiscount || mainPlan.billingPeriod}
+							ly payments will not automatically resume. If you
+							cancel after the paused period, cancellation will
+							take effect immediately and you will not be charged
+							again.
 						</p>
 					)}
 				</>

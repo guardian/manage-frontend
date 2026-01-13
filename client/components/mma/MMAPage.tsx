@@ -49,10 +49,25 @@ const AccountOverview = lazy(() =>
 		/* webpackChunkName: "AccountOverview" */ './accountoverview/AccountOverview'
 	).then(({ AccountOverview }) => ({ default: AccountOverview })),
 );
+
 const Billing = lazy(() =>
 	import(/* webpackChunkName: "Billing" */ './billing/Billing').then(
 		({ Billing }) => ({ default: Billing }),
 	),
+);
+const BillingDetailUpdateContainer = lazy(() =>
+	import(
+		/* webpackChunkName: "BillingDetailUpdate" */ './billing/BillingDetailUpdateContainer'
+	).then(({ BillingDetailUpdateContainer }) => ({
+		default: BillingDetailUpdateContainer,
+	})),
+);
+const BillingDetailUpdateSwitchFrequency = lazy(() =>
+	import(
+		/* webpackChunkName: "BillingDetailSwitchFrequencyUpdate" */ './billing/BillingDetailUpdateSwitchFrequency'
+	).then(({ BillingDetailUpdateSwitchFrequency }) => ({
+		default: BillingDetailUpdateSwitchFrequency,
+	})),
 );
 
 const DataPrivacy = lazy(() =>
@@ -549,7 +564,31 @@ const MMARouter = () => {
 							path="/app"
 							element={<AccountOverview isFromApp />}
 						/>
+
 						<Route path="/billing" element={<Billing />} />
+						{Object.values(PRODUCT_TYPES).map(
+							(productType: ProductType) => (
+								<Route
+									key={productType.urlPart}
+									path={`/billing/${productType.urlPart}`}
+									element={
+										<BillingDetailUpdateContainer
+											productType={productType}
+										/>
+									}
+								>
+									<Route
+										path="switch-frequency"
+										element={
+											<BillingDetailUpdateSwitchFrequency
+												productType={productType}
+											/>
+										}
+									/>
+								</Route>
+							),
+						)}
+
 						<Route path="/data-privacy" element={<DataPrivacy />} />
 						<Route
 							path="/email-prefs"
