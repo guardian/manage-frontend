@@ -48,7 +48,10 @@ export const BenefitsToggle = ({
 					aria-controls="benefits"
 					onClick={() => setShowBenefits(!showBenefits)}
 				>
-					{showBenefits ? 'hide' : 'view'} benefits
+					{showBenefits ? 'hide' : 'view'}
+					{showProductTypeShortFriendlyName &&
+						` your ${PRODUCT_TYPES[productType].shortFriendlyName}`}{' '}
+					benefits
 				</button>
 			)}
 			<div
@@ -60,18 +63,6 @@ export const BenefitsToggle = ({
 			>
 				<BenefitsSection benefits={benefits} />
 			</div>
-			<button
-				css={[expanderButtonCss()(showBenefits), benefitsButtonCss]}
-				type="button"
-				aria-expanded={showBenefits}
-				aria-controls="benefits"
-				onClick={() => setShowBenefits(!showBenefits)}
-			>
-				{showBenefits ? 'hide' : 'view'}
-				{showProductTypeShortFriendlyName &&
-					` your ${PRODUCT_TYPES[productType].shortFriendlyName}`}{' '}
-				benefits
-			</button>
 		</>
 	);
 };
