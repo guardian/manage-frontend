@@ -62,7 +62,7 @@ const termsAndConditionsTextCss = css`
 	margin: 0;
 `;
 
-export const UpgradeAllAccessConfirmation = () => {
+export const UpgradeProductConfirmation = () => {
 	const navigate = useNavigate();
 
 	const { mainPlan, specificProductType } = useUpgradeProductStore();
@@ -191,7 +191,7 @@ export const UpgradeAllAccessConfirmation = () => {
 					theme={themeButtonReaderRevenueBrand}
 					cssOverrides={css`
 						justify-content: center;
-=					`}
+					`}
 					onClick={() => {
 						trackEvent({
 							eventCategory: 'account_overview',

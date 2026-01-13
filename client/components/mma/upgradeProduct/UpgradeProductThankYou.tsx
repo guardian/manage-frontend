@@ -36,7 +36,7 @@ const whatHappensNowItemInformationBoldTextCss = css`
 	}
 `;
 
-export const UpgradeAllAccessThankYou = () => {
+export const UpgradeProductThankYou = () => {
 	const navigate = useNavigate();
 
 	const { mainPlan, specificProductType } = useUpgradeProductStore();

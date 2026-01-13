@@ -60,15 +60,11 @@ export const whatHappensNowItemInfoCss = css`
 	margin-left: ${space[2]}px;
 `;
 
-interface UpgradeAllAccessRouterState {
+interface UpgradeProductRouterState {
 	productDetail: ProductDetail;
 }
 
-const UpgradeAllAccessPageContainer = ({
-	children,
-}: {
-	children: ReactNode;
-}) => {
+const UpgradeProductPageContainer = ({ children }: { children: ReactNode }) => {
 	return (
 		<PageContainer
 			compactTitle
@@ -81,10 +77,10 @@ const UpgradeAllAccessPageContainer = ({
 	);
 };
 
-export const UpgradeAllAccessContainer = () => {
+export const UpgradeProductContainer = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const routerState = location.state as UpgradeAllAccessRouterState | null;
+	const routerState = location.state as UpgradeProductRouterState | null;
 	const { mainPlan, setMainPlan } = useUpgradeProductStore();
 
 	useEffect(() => {
@@ -107,8 +103,8 @@ export const UpgradeAllAccessContainer = () => {
 	}, [mainPlan, navigate, routerState, setMainPlan]);
 
 	return (
-		<UpgradeAllAccessPageContainer>
+		<UpgradeProductPageContainer>
 			<Outlet />
-		</UpgradeAllAccessPageContainer>
+		</UpgradeProductPageContainer>
 	);
 };

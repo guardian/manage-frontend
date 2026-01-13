@@ -26,7 +26,7 @@ const cardHeaderDivCss = css`
 	justify-content: space-between;
 `;
 
-export const UpgradeAllAccessInformation = () => {
+export const UpgradeProductInformation = () => {
 	const navigate = useNavigate();
 
 	const { mainPlan, specificProductType } = useUpgradeProductStore();

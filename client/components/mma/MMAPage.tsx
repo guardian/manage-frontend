@@ -480,32 +480,32 @@ const CreateReminder = lazy(() =>
 		/* webpackChunkName: "CreateReminder" */ './reminders/CreateReminder'
 	).then(({ CreateReminder }) => ({ default: CreateReminder })),
 );
-const UpgradeAllAccessInformation = lazy(() =>
+const UpgradeProductInformation = lazy(() =>
 	import(
-		/* webpackChunkName: "UpgradeAllAccessInformation" */ './upgradeProduct/UpgradeProductInformation'
-	).then(({ UpgradeAllAccessInformation }) => ({
-		default: UpgradeAllAccessInformation,
+		/* webpackChunkName: "UpgradeProductInformation" */ './upgradeProduct/UpgradeProductInformation'
+	).then(({ UpgradeProductInformation }) => ({
+		default: UpgradeProductInformation,
 	})),
 );
-const UpgradeAllAccessConfirmation = lazy(() =>
+const UpgradeProductConfirmation = lazy(() =>
 	import(
-		/* webpackChunkName: "UpgradeAllAccessInformation" */ './upgradeProduct/UpgradeProductConfirmation'
-	).then(({ UpgradeAllAccessConfirmation }) => ({
-		default: UpgradeAllAccessConfirmation,
+		/* webpackChunkName: "UpgradeProductConfirmation" */ './upgradeProduct/UpgradeProductConfirmation'
+	).then(({ UpgradeProductConfirmation }) => ({
+		default: UpgradeProductConfirmation,
 	})),
 );
-const UpgradeAllAccessThankYou = lazy(() =>
+const UpgradeProductThankYou = lazy(() =>
 	import(
-		/* webpackChunkName: "UpgradeAllAccessInformation" */ './upgradeProduct/UpgradeProductThankYou'
-	).then(({ UpgradeAllAccessThankYou }) => ({
-		default: UpgradeAllAccessThankYou,
+		/* webpackChunkName: "UpgradeProductThankYou" */ './upgradeProduct/UpgradeProductThankYou'
+	).then(({ UpgradeProductThankYou }) => ({
+		default: UpgradeProductThankYou,
 	})),
 );
-const UpgradeAllAccessContainer = lazy(() =>
+const UpgradeProductContainer = lazy(() =>
 	import(
-		/* webpackChunkName: "UpgradeAllAccessContainer" */ './upgradeProduct/UpgradeProductContainer'
-	).then(({ UpgradeAllAccessContainer }) => ({
-		default: UpgradeAllAccessContainer,
+		/* webpackChunkName: "UpgradeProductContainer" */ './upgradeProduct/UpgradeProductContainer'
+	).then(({ UpgradeProductContainer }) => ({
+		default: UpgradeProductContainer,
 	})),
 );
 const GenericErrorContainer = (props: { children: ReactNode }) => (
@@ -618,19 +618,19 @@ const MMARouter = () => {
 						</Route>
 						<Route
 							path={`${PRODUCT_TYPES.supporterplus.urlPart}/upgrade-product`}
-							element={<UpgradeAllAccessContainer />}
+							element={<UpgradeProductContainer />}
 						>
 							<Route
 								path="information"
-								element={<UpgradeAllAccessInformation />}
+								element={<UpgradeProductInformation />}
 							/>
 							<Route
 								path="confirmation"
-								element={<UpgradeAllAccessConfirmation />}
+								element={<UpgradeProductConfirmation />}
 							/>
 							<Route
 								path="thank-you"
-								element={<UpgradeAllAccessThankYou />}
+								element={<UpgradeProductThankYou />}
 							/>
 						</Route>
 						{[

@@ -1,14 +1,14 @@
 import type { Meta, StoryFn } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import { supporterPlus } from '../../../fixtures/productBuilder/testProducts';
-import { UpgradeAllAccessConfirmation } from './UpgradeProductConfirmation';
-import { UpgradeAllAccessContainer } from './UpgradeProductContainer';
-import { UpgradeAllAccessInformation } from './UpgradeProductInformation';
-import { UpgradeAllAccessThankYou } from './UpgradeProductThankYou';
+import { UpgradeProductConfirmation } from './UpgradeProductConfirmation';
+import { UpgradeProductContainer } from './UpgradeProductContainer';
+import { UpgradeProductInformation } from './UpgradeProductInformation';
+import { UpgradeProductThankYou } from './UpgradeProductThankYou';
 
 export default {
 	title: 'Pages/UpgradeProduct',
-	component: UpgradeAllAccessContainer,
+	component: UpgradeProductContainer,
 	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
@@ -16,21 +16,19 @@ export default {
 			state: {
 				productDetail: supporterPlus(),
 			},
-			container: <UpgradeAllAccessContainer />,
+			container: <UpgradeProductContainer />,
 		},
 	},
-} as Meta<typeof UpgradeAllAccessContainer>;
+} as Meta<typeof UpgradeProductContainer>;
 
-export const Information: StoryFn<typeof UpgradeAllAccessInformation> = () => {
-	return <UpgradeAllAccessInformation />;
+export const Information: StoryFn<typeof UpgradeProductInformation> = () => {
+	return <UpgradeProductInformation />;
 };
 
-export const Confirmation: StoryFn<
-	typeof UpgradeAllAccessConfirmation
-> = () => {
-	return <UpgradeAllAccessConfirmation />;
+export const Confirmation: StoryFn<typeof UpgradeProductConfirmation> = () => {
+	return <UpgradeProductConfirmation />;
 };
 
-export const ThankYou: StoryFn<typeof UpgradeAllAccessThankYou> = () => {
-	return <UpgradeAllAccessThankYou />;
+export const ThankYou: StoryFn<typeof UpgradeProductThankYou> = () => {
+	return <UpgradeProductThankYou />;
 };
