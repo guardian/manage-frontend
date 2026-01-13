@@ -34,7 +34,7 @@ import {
 	changeSubscriptionBillingFrequencyFetch,
 	createProductDetailFetcher,
 	hasDeliveryRecordsFlow,
-	isMonthlySubscription,
+	hasSupporterPlusMonthlyRatePlan,
 	isNonServiceableCountry,
 	shouldHaveHolidayStopsFlow,
 } from '../../../utilities/productUtils';
@@ -402,10 +402,16 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 				margin: ${space[10]}px 0 0 auto;
 				${textSans17};
 				color: ${palette.neutral[46]};
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: ${space[3]}px;
 			`}
 		>
-			{shouldContactUsToCancel &&
-				`Would you like to cancel your ${props.friendlyName}? `}
+			<div>
+				{shouldContactUsToCancel &&
+					`Would you like to cancel your ${props.friendlyName}? `}
+			</div>
 			<LinkButton
 				fontWeight={'bold'}
 				to={'/cancel/' + props.specificProductType.urlPart}
@@ -489,7 +495,7 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 
 	const productDetail = data.products.filter(isProduct)[0];
 
-	if (isMonthlySubscription(productDetail)) {
+	if (hasSupporterPlusMonthlyRatePlan(productDetail)) {
 		return (
 			<AsyncLoadedSwitchBillingFrequencyPreview
 				manageProductProps={props}
@@ -524,7 +530,7 @@ export const ManageProduct = (props: WithProductType<ProductType>) => {
 		>
 			{productDetail ? (
 				<>
-					{isMonthlySubscription(productDetail) ? (
+					{hasSupporterPlusMonthlyRatePlan(productDetail) ? (
 						<AsyncLoadedSwitchBillingFrequencyPreview
 							manageProductProps={props}
 							productDetail={productDetail}

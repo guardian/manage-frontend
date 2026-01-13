@@ -22,6 +22,7 @@ import { Navigate, useLocation, useNavigate } from 'react-router';
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
 import {
 	changeSubscriptionBillingFrequencyFetch,
+	hasSupporterPlusMonthlyRatePlan,
 	isMonthlySubscription,
 } from '@/client/utilities/productUtils';
 import { formatAmount } from '@/client/utilities/utils';
@@ -756,9 +757,8 @@ export const BillingDetailUpdateSwitchFrequency = (
 	const routerState = state as BillingFrequencySwitchPreviewState | undefined;
 	const preview = routerState?.preview;
 
-	if (!isMonthlySubscription(productDetail)) {
+	if (!hasSupporterPlusMonthlyRatePlan(productDetail)) {
 		// If not monthly, no switch preview to show, redirect to root
-		// TODO: handle this case better in future - perhaps show an error message?
 		return <Navigate to="/" />;
 	}
 

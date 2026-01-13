@@ -150,7 +150,7 @@ export const hasSupporterPlusMonthlyRatePlan = (
 ): boolean => {
 	// Check if this is a monthly subscription
 	if (!isMonthlySubscription(productDetail)) {
-		throw new Error('SupporterPlus Monthly rate plan not found');
+		return false;
 	}
 
 	// Verify that active rate plans include a valid plan
