@@ -18,6 +18,7 @@ import {
 	subHeadingInformationTextCss,
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
+import { trackEvent } from '@/client/utilities/analytics';
 import { DevicesSignInBanner } from '../shared/DevicesSignInBanner.tsx';
 import {
 	actionButtonsContainerCss,
@@ -129,11 +130,11 @@ export const UpgradeAllAccessThankYou = () => {
 						}
 					`}
 					onClick={() => {
-						// trackEvent({
-						// 	eventCategory: 'account_overview',
-						// 	eventAction: 'click',
-						// 	eventLabel: `manage_${PRODUCT_TYPES.supporterplus.urlPart}`,
-						// });
+						trackEvent({
+							eventCategory: 'account_overview',
+							eventAction: 'click',
+							eventLabel: `/`,
+						});
 						navigate(`/`);
 					}}
 				>

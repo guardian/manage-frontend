@@ -43,9 +43,6 @@ Card.Section = (props: {
 		:last-of-type {
 			border-bottom-left-radius: 8px;
 			border-bottom-right-radius: 8px;
-			${from.tablet} {
-				border-radius: 0;
-			}
 		}
 
 		${props.backgroundColor &&

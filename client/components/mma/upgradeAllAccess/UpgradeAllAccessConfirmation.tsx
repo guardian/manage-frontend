@@ -21,6 +21,7 @@ import {
 	subHeadingInformationTextCss,
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
+import { trackEvent } from '@/client/utilities/analytics';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { productCardConfiguration } from '../accountoverview/ProductCardConfiguration';
 import { productCardTitleCss } from '../accountoverview/ProductCardStyles';
@@ -52,12 +53,8 @@ const termsAndConditionsContainerCss = css`
 
 	${textSans15};
 	padding: ${space[3]}px;
-	border: 1px solid ${palette.neutral[46]};
-	border-radius: ${space[2]}px;
+	border: 4px solid ${palette.neutral[0]};
 	background-color: ${palette.neutral[97]};
-
-	${from.tablet} {
-	}
 `;
 
 const termsAndConditionsTextCss = css`
@@ -162,20 +159,15 @@ export const UpgradeAllAccessConfirmation = () => {
 
 			<div css={termsAndConditionsContainerCss}>
 				<p css={termsAndConditionsTextCss}>
-					The T&Cs wording to include is below. Just a thought also, I
-					assume there is a process in place to manage the 14 day
-					cooling off period refund? Operationally, is it right that
-					if the subscription is cancelled within 14 days the
-					subscriber will get a full refund?
-				</p>
-				<p css={termsAndConditionsTextCss}>
 					This subscription auto-renews. You'll be charged the
 					applicable monthly amount at each renewal unless you cancel.
 					You can cancel your subscription at any time before your
-					next renewal date. If you cancel within 14 days of signing
-					up, you'll receive a full refund. Cancellation after 14 days
-					will take effect at the end of your current monthly payment
-					period. To cancel, go to Manage My Account or see our Terms.
+					next renewal date. To cancel go to Manage My Account.
+					Cancellation will take effect at the end of your currently
+					monthly payment period. There is also a cooling off period
+					of 14 days from sign-up. You can cancel your subscription
+					within 14 days of sign-up by contacting Customer Service and
+					receive a full refund.
 				</p>
 				<p css={termsAndConditionsTextCss}>
 					If you want to change the payment method, please go to your
@@ -201,17 +193,17 @@ export const UpgradeAllAccessConfirmation = () => {
 						justify-content: center;
 =					`}
 					onClick={() => {
-						// trackEvent({
-						// 	eventCategory: 'account_overview',
-						// 	eventAction: 'click',
-						// 	eventLabel: `manage_${PRODUCT_TYPES.supporterplus.urlPart}`,
-						// });
+						trackEvent({
+							eventCategory: 'account_overview',
+							eventAction: 'click',
+							eventLabel: `/${specificProductType.urlPart}/upgrade-product/thank-you`,
+						});
 						navigate(
 							`/${specificProductType.urlPart}/upgrade-product/thank-you`,
 						);
 					}}
 				>
-					{`Confirm upgrade`}
+					{`Upgrade for £X per month`}
 				</Button>
 				<Button
 					aria-label={`Product Card Digital Plus Upsell Button`}
@@ -229,11 +221,11 @@ export const UpgradeAllAccessConfirmation = () => {
 						}
 					`}
 					onClick={() => {
-						// trackEvent({a
-						// 	eventCategory: 'account_overview',
-						// 	eventAction: 'click',
-						// 	eventLabel: `manage_${PRODUCT_TYPES.supporterplus.urlPart}`,
-						// });
+						trackEvent({
+							eventCategory: 'account_overview',
+							eventAction: 'click',
+							eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
+						});
 						navigate(
 							`/${specificProductType.urlPart}/upgrade-product/information`,
 						);

@@ -10,6 +10,7 @@ import {
 	subHeadingInformationTextCss,
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
+import { trackEvent } from '@/client/utilities/analytics';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { productCardConfiguration } from '../accountoverview/ProductCardConfiguration';
 import { productCardTitleCss } from '../accountoverview/ProductCardStyles';
@@ -109,11 +110,11 @@ export const UpgradeAllAccessInformation = () => {
 						justify-content: center;
 					`}
 					onClick={() => {
-						// trackEvent({
-						// 	eventCategory: 'account_overview',
-						// 	eventAction: 'click',
-						// 	eventLabel: `manage_${PRODUCT_TYPES.supporterplus.urlPart}`,
-						// });
+						trackEvent({
+							eventCategory: 'account_overview',
+							eventAction: 'click',
+							eventLabel: `/${specificProductType.urlPart}/upgrade-product/confirmation`,
+						});
 						navigate(
 							`/${specificProductType.urlPart}/upgrade-product/confirmation`,
 						);
