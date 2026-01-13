@@ -11,13 +11,12 @@ export const textColour = {
  * is included in the palette for future use.
  */
 
-// UPDATE ALL THESE
 export const productColour = {
 	inAppPurchase: palette.brand[800],
 	singleContribution: palette.sport[600],
 	supporterPlus: palette.brand[500],
 	membership: palette.sport[300],
-	recurringContribution: palette.brand[400],
+	recurringContribution: palette.brand[600],
 	newspaper: palette.brand[400],
 	digital: palette.brand[300],
 	guardianWeekly: '#cadbe8',

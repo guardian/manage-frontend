@@ -467,28 +467,28 @@ const CreateReminder = lazy(() =>
 );
 const UpgradeAllAccessInformation = lazy(() =>
 	import(
-		/* webpackChunkName: "UpgradeAllAccessInformation" */ './upgradeAllAccess/UpgradeAllAccessInformation'
+		/* webpackChunkName: "UpgradeAllAccessInformation" */ './upgradeProduct/UpgradeProductInformation'
 	).then(({ UpgradeAllAccessInformation }) => ({
 		default: UpgradeAllAccessInformation,
 	})),
 );
 const UpgradeAllAccessConfirmation = lazy(() =>
 	import(
-		/* webpackChunkName: "UpgradeAllAccessInformation" */ './upgradeAllAccess/UpgradeAllAccessConfirmation'
+		/* webpackChunkName: "UpgradeAllAccessInformation" */ './upgradeProduct/UpgradeProductConfirmation'
 	).then(({ UpgradeAllAccessConfirmation }) => ({
 		default: UpgradeAllAccessConfirmation,
 	})),
 );
 const UpgradeAllAccessThankYou = lazy(() =>
 	import(
-		/* webpackChunkName: "UpgradeAllAccessInformation" */ './upgradeAllAccess/UpgradeAllAccessThankYou'
+		/* webpackChunkName: "UpgradeAllAccessInformation" */ './upgradeProduct/UpgradeProductThankYou'
 	).then(({ UpgradeAllAccessThankYou }) => ({
 		default: UpgradeAllAccessThankYou,
 	})),
 );
 const UpgradeAllAccessContainer = lazy(() =>
 	import(
-		/* webpackChunkName: "UpgradeAllAccessContainer" */ './upgradeAllAccess/UpgradeAllAccessContainer'
+		/* webpackChunkName: "UpgradeAllAccessContainer" */ './upgradeProduct/UpgradeProductContainer'
 	).then(({ UpgradeAllAccessContainer }) => ({
 		default: UpgradeAllAccessContainer,
 	})),

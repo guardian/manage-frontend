@@ -15,7 +15,7 @@ import {
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
 import { useNavigate } from 'react-router-dom';
-import { useUpgradeAllAccessStore } from '@/client/stores/UpgradeAllAccessStore';
+import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
 import {
 	subHeadingCss,
 	subHeadingInformationTextCss,
@@ -34,7 +34,7 @@ import {
 	whatHappensNowItemInfoCss,
 	whatHappensNowItemInformationBorderCss,
 	whatHappensNowItemInformationTextCss,
-} from './UpgradeAllAccessContainer';
+} from './UpgradeProductContainer';
 
 const subheadingTextCss = css`
 	${textSansBold17};
@@ -65,7 +65,7 @@ const termsAndConditionsTextCss = css`
 export const UpgradeAllAccessConfirmation = () => {
 	const navigate = useNavigate();
 
-	const { mainPlan, specificProductType } = useUpgradeAllAccessStore();
+	const { mainPlan, specificProductType } = useUpgradeProductStore();
 
 	if (!mainPlan || !specificProductType) {
 		return null;

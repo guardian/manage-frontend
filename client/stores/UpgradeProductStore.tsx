@@ -7,24 +7,24 @@ import {
 	type SubscriptionPlan,
 } from '../../shared/productResponse';
 
-interface UpgradeAllAccessState {
+interface UpgradeProductState {
 	mainPlan: SubscriptionPlan | null;
 	specificProductType: ProductType | null;
 }
 
-interface UpgradeAllAccessActions {
+interface UpgradeProductActions {
 	setMainPlan: (plan: SubscriptionPlan) => void;
 	clearMainPlan: () => void;
 }
 
-type UpgradeAllAccessStore = UpgradeAllAccessState & UpgradeAllAccessActions;
+type UpgradeProductStore = UpgradeProductState & UpgradeProductActions;
 
-const initialState: UpgradeAllAccessState = {
+const initialState: UpgradeProductState = {
 	mainPlan: null,
 	specificProductType: null,
 };
 
-export const useUpgradeAllAccessStore = create<UpgradeAllAccessStore>()(
+export const useUpgradeProductStore = create<UpgradeProductStore>()(
 	devtools(
 		(set) => ({
 			...initialState,
@@ -43,6 +43,6 @@ export const useUpgradeAllAccessStore = create<UpgradeAllAccessStore>()(
 			clearMainPlan: () =>
 				set({ mainPlan: null }, false, 'clearMainPlan'),
 		}),
-		{ name: 'UpgradeAllAccessStore' },
+		{ name: 'UpgradeProductStore' },
 	),
 );

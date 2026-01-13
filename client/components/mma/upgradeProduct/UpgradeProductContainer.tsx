@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import { getMainPlan } from '../../../../shared/productResponse';
-import { useUpgradeAllAccessStore } from '../../../stores/UpgradeAllAccessStore';
+import { useUpgradeProductStore } from '../../../stores/UpgradeProductStore';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
 
@@ -85,7 +85,7 @@ export const UpgradeAllAccessContainer = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const routerState = location.state as UpgradeAllAccessRouterState | null;
-	const { mainPlan, setMainPlan } = useUpgradeAllAccessStore();
+	const { mainPlan, setMainPlan } = useUpgradeProductStore();
 
 	useEffect(() => {
 		if (!routerState && !mainPlan) {

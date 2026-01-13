@@ -11,7 +11,7 @@ import {
 	InfoSummary,
 	SuccessSummary,
 } from '@guardian/source-development-kitchen/react-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
 	cancellationFormatDate,
 	DATE_FNS_LONG_OUTPUT_FORMAT,
@@ -73,6 +73,7 @@ export const ProductCard = ({
 	user?: MembersDataApiUser;
 }) => {
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
@@ -122,8 +123,12 @@ export const ProductCard = ({
 		!hasCancellationPending &&
 		specificProductType.productType === 'contributions';
 
-	// TODO: Implement this button's eligibility logic
-	const showDigitalPlusUpsellButton = true;
+	// TODO: Implement this button's eligibility logic.
+	// Using a query param for now r testing purposes.
+	const showProductUpsellButton =
+		new URLSearchParams(location.search).get(
+			'showDigitalPlusUpsellButton',
+		) === 'TRUE';
 
 	const productBenefits =
 		specificProductType.productType === 'supporterplus'
@@ -414,7 +419,7 @@ export const ProductCard = ({
 							</dl>
 						</div>
 						<div css={wideButtonLayoutCss}>
-							{showDigitalPlusUpsellButton && (
+							{showProductUpsellButton && (
 								<Button
 									aria-label={`Product Card Digital Plus Upsell Button`}
 									data-cy={`digital-plus-upsell-button`}
@@ -425,11 +430,11 @@ export const ProductCard = ({
 										justify-content: center;
 									`}
 									onClick={() => {
-										// trackEvent({
-										// 	eventCategory: 'account_overview',
-										// 	eventAction: 'click',
-										// 	eventLabel: `manage_${specificProductType.urlPart}`,
-										// });
+										trackEvent({
+											eventCategory: 'account_overview',
+											eventAction: 'click',
+											eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
+										});
 										navigate(
 											`/${specificProductType.urlPart}/upgrade-product/information`,
 											{
