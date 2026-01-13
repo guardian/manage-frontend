@@ -402,10 +402,16 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 				margin: ${space[10]}px 0 0 auto;
 				${textSans17};
 				color: ${palette.neutral[46]};
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: ${space[3]}px;
 			`}
 		>
-			{shouldContactUsToCancel &&
-				`Would you like to cancel your ${props.friendlyName}? `}
+			<div>
+				{shouldContactUsToCancel &&
+					`Would you like to cancel your ${props.friendlyName}? `}
+			</div>
 			<LinkButton
 				fontWeight={'bold'}
 				to={'/cancel/' + props.specificProductType.urlPart}
