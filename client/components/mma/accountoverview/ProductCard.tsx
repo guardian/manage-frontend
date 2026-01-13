@@ -124,7 +124,7 @@ export const ProductCard = ({
 		specificProductType.productType === 'contributions';
 
 	// TODO: Implement this button's eligibility logic.
-	// Using a query param for now r testing purposes.
+	// Using a query param for now for testing and QA purposes.
 	const showProductUpsellButton =
 		new URLSearchParams(location.search).get(
 			'showDigitalPlusUpsellButton',
