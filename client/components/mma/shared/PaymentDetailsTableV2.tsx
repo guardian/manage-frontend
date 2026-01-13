@@ -32,26 +32,14 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 	/**
 	 * Validates whether to show the switch to annual plan button.
 	 * Returns true only if:
-	 * 1. The subscription is monthly
-	 * 2. It has a valid SupporterPlus Monthly rate plan
-	 * 3. The current contribution amount is 0
+	 * 1. It has a valid SupporterPlus Monthly rate plan
+	 * 2. The current contribution amount is 0
 	 */
 	const shouldShowSwitchToAnnualButton = (): boolean => {
-		try {
-			return (
-				hasSupporterPlusMonthlyRatePlan(props.productDetail) &&
-				(billingSwitchPreview?.currentContribution.amount ?? null) === 0
-			);
-		} catch (error) {
-			// If validation fails, don't show the button
-			if (
-				error instanceof Error &&
-				error.message === 'SupporterPlus Monthly rate plan not found'
-			) {
-				return false;
-			}
-			throw error;
-		}
+		return (
+			hasSupporterPlusMonthlyRatePlan(props.productDetail) &&
+			(billingSwitchPreview?.currentContribution.amount ?? null) === 0
+		);
 	};
 	const formatSavingsDisplay = (amount: number, currency: string) => {
 		const symbol = convertCurrencyToSymbol(currency);
