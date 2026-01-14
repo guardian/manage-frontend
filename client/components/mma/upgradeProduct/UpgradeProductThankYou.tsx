@@ -19,7 +19,13 @@ import {
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
-import { DevicesSignInBanner } from '../shared/DevicesSignInBanner.tsx';
+import {
+	signInContentContainerCss,
+	signInCss,
+	signInHeadingCss,
+	signInParaCss,
+} from '../../shared/SignIn';
+import { SwitchSignInImage } from '../switch/complete/SwitchSignInImage';
 import {
 	actionButtonsContainerCss,
 	whatHappensNowItemCss,
@@ -102,7 +108,16 @@ export const UpgradeProductThankYou = () => {
 				</div>
 			</div>
 
-			<DevicesSignInBanner />
+			<div css={signInCss}>
+				<SwitchSignInImage />
+				<div css={signInContentContainerCss}>
+					<h2 css={signInHeadingCss}>Sign in on all your devices</h2>
+					<p css={signInParaCss}>
+						To access your extras on all your digital devices,
+						please sign in. It takes less than a minute.
+					</p>
+				</div>
+			</div>
 
 			<div
 				css={[

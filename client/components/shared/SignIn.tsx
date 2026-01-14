@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import {
-	from,
 	palette,
 	space,
 	textSans17,
@@ -19,9 +18,6 @@ export const signInCss = css`
 		place-self: end;
 		height: 0;
 		min-height: 100%;
-	}
-	${from.tablet} {
-		border-radius: 0;
 	}
 `;
 
