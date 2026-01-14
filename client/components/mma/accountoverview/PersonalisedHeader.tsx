@@ -2,9 +2,10 @@ import { css } from '@emotion/react';
 import {
 	from,
 	headlineBold24,
-	headlineBold34,
-	headlineMedium17,
+	headlineBold28,
 	space,
+	textSans15,
+	textSans17,
 } from '@guardian/source/foundations';
 import { min } from 'date-fns';
 import { dateString } from '@/shared/dates';
@@ -16,18 +17,6 @@ import { isProduct } from '@/shared/productResponse';
 interface PersonalisedHeaderProps {
 	mdapiResponse: MembersDataApiResponse;
 	mpapiResponse?: MPAPIResponse;
-}
-
-function calculateTimeOfDay() {
-	const currentHour = new Date().getHours();
-
-	if (currentHour < 12) {
-		return 'Good morning';
-	}
-	if (currentHour < 18) {
-		return 'Good afternoon';
-	}
-	return 'Good evening';
 }
 
 export const PersonalisedHeader = ({
@@ -64,31 +53,41 @@ export const PersonalisedHeader = ({
 	return (
 		<hgroup
 			css={css`
-				margin-top: ${space[6]}px;
+				margin-top: ${space[5]}px;
+
 				${from.tablet} {
-					margin-top: ${space[8]}px;
+					margin-top: ${space[10]}px;
 				}
 			`}
 		>
 			<h2
 				css={css`
 					${headlineBold24};
+					margin: 0;
+
 					${from.tablet} {
-						${headlineBold34};
+						${headlineBold28};
 					}
-					margin-bottom: 0;
 				`}
 				data-qm-masking="blocklist"
 			>
-				{calculateTimeOfDay()}, {userDetails.firstName ?? 'supporter'}
+				Hi, {userDetails.firstName ?? 'supporter'}
 			</h2>
 			{!onlyHasObserverProducts && (
 				<p
 					css={css`
-						${headlineMedium17};
+						margin: 0;
+						margin-top: ${space[2]}px;
+						${textSans15}
+
+						${from.tablet} {
+							${textSans17};
+							margin-top: ${space[3]}px;
+						}
 					`}
 				>
-					Thank you for funding the Guardian since {supportStartYear}
+					Thank you for funding the Guardian's independent journalism
+					since {supportStartYear}
 				</p>
 			)}
 		</hgroup>

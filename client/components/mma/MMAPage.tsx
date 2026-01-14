@@ -480,7 +480,34 @@ const CreateReminder = lazy(() =>
 		/* webpackChunkName: "CreateReminder" */ './reminders/CreateReminder'
 	).then(({ CreateReminder }) => ({ default: CreateReminder })),
 );
-
+const UpgradeProductInformation = lazy(() =>
+	import(
+		/* webpackChunkName: "UpgradeProductInformation" */ './upgradeProduct/UpgradeProductInformation'
+	).then(({ UpgradeProductInformation }) => ({
+		default: UpgradeProductInformation,
+	})),
+);
+const UpgradeProductConfirmation = lazy(() =>
+	import(
+		/* webpackChunkName: "UpgradeProductConfirmation" */ './upgradeProduct/UpgradeProductConfirmation'
+	).then(({ UpgradeProductConfirmation }) => ({
+		default: UpgradeProductConfirmation,
+	})),
+);
+const UpgradeProductThankYou = lazy(() =>
+	import(
+		/* webpackChunkName: "UpgradeProductThankYou" */ './upgradeProduct/UpgradeProductThankYou'
+	).then(({ UpgradeProductThankYou }) => ({
+		default: UpgradeProductThankYou,
+	})),
+);
+const UpgradeProductContainer = lazy(() =>
+	import(
+		/* webpackChunkName: "UpgradeProductContainer" */ './upgradeProduct/UpgradeProductContainer'
+	).then(({ UpgradeProductContainer }) => ({
+		default: UpgradeProductContainer,
+	})),
+);
 const GenericErrorContainer = (props: { children: ReactNode }) => (
 	<section
 		css={css`
@@ -587,6 +614,23 @@ const MMARouter = () => {
 							<Route
 								path={'thank-you'}
 								element={<UpgradeSupportThankYou />}
+							/>
+						</Route>
+						<Route
+							path={`${PRODUCT_TYPES.supporterplus.urlPart}/upgrade-product`}
+							element={<UpgradeProductContainer />}
+						>
+							<Route
+								path="information"
+								element={<UpgradeProductInformation />}
+							/>
+							<Route
+								path="confirmation"
+								element={<UpgradeProductConfirmation />}
+							/>
+							<Route
+								path="thank-you"
+								element={<UpgradeProductThankYou />}
 							/>
 						</Route>
 						{[

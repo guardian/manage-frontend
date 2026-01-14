@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, textSans17 } from '@guardian/source/foundations';
+import { palette, space, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
@@ -11,7 +11,7 @@ import {
 	InfoSummary,
 	SuccessSummary,
 } from '@guardian/source-development-kitchen/react-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
 	cancellationFormatDate,
 	DATE_FNS_LONG_OUTPUT_FORMAT,
@@ -73,6 +73,7 @@ export const ProductCard = ({
 	user?: MembersDataApiUser;
 }) => {
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
@@ -122,6 +123,13 @@ export const ProductCard = ({
 		!hasCancellationPending &&
 		specificProductType.productType === 'contributions';
 
+	// TODO: Implement this button's eligibility logic.
+	// Using a query param for now for testing and QA purposes.
+	const showProductUpsellButton =
+		new URLSearchParams(location.search).get(
+			'showDigitalPlusUpsellButton',
+		) === 'TRUE';
+
 	const productBenefits =
 		specificProductType.productType === 'supporterplus'
 			? 'supporter benefits'
@@ -146,7 +154,7 @@ export const ProductCard = ({
 	const benefitsTextCss = css`
 		${textSans17};
 		margin: 0;
-		max-width: 35ch;
+		margin-bottom: ${space[2]}px;
 	`;
 
 	const canBeInOfferPeriod =
@@ -286,7 +294,7 @@ export const ProductCard = ({
 					cardConfig.showDigitalBenefitsSection ||
 					cardConfig.showUnlimitedDigitalBenefitsSection) &&
 					nextPaymentDetails && (
-						<Card.Section backgroundColor="#edf5fA">
+						<Card.Section backgroundColor="#edf5fA" removeBorders>
 							<p css={benefitsTextCss}>
 								{cardConfig.showDigitalBenefitsSection
 									? `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have unlocked the full digital experience:`
@@ -428,6 +436,36 @@ export const ProductCard = ({
 							</dl>
 						</div>
 						<div css={wideButtonLayoutCss}>
+							{showProductUpsellButton && (
+								<Button
+									aria-label={`Product Card Digital Plus Upsell Button`}
+									data-cy={`digital-plus-upsell-button`}
+									size="small"
+									priority="primary"
+									theme={themeButtonReaderRevenueBrand}
+									cssOverrides={css`
+										justify-content: center;
+									`}
+									onClick={() => {
+										trackEvent({
+											eventCategory: 'account_overview',
+											eventAction: 'click',
+											eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
+										});
+										navigate(
+											`/${specificProductType.urlPart}/upgrade-product/information`,
+											{
+												state: {
+													productDetail:
+														productDetail,
+												},
+											},
+										);
+									}}
+								>
+									{`Upgrade to Digital plus`}
+								</Button>
+							)}
 							{!isGifted && (
 								<Button
 									aria-label={`${specificProductType.productTitle(
@@ -437,6 +475,7 @@ export const ProductCard = ({
 									}`}
 									data-cy={`Manage ${groupedProductType.friendlyName}`}
 									size="small"
+									priority="tertiary"
 									cssOverrides={css`
 										justify-content: center;
 									`}
@@ -529,7 +568,7 @@ export const ProductCard = ({
 										cssOverrides={css`
 											justify-content: center;
 										`}
-										priority="primary"
+										priority="tertiary"
 										icon={
 											hasPaymentFailure ? (
 												<ErrorIcon
@@ -615,7 +654,7 @@ export const ProductCard = ({
 										cssOverrides={css`
 											justify-content: center;
 										`}
-										priority="primary"
+										priority="tertiary"
 										onClick={() => {
 											trackEvent({
 												eventCategory:

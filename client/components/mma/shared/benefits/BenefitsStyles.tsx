@@ -15,7 +15,7 @@ export const benefitsCss = css`
 	padding: 0;
 
 	li + li {
-		margin-top: ${space[2]}px;
+		margin-top: ${space[3]}px;
 	}
 
 	li {

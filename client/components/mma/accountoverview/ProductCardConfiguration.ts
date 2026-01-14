@@ -16,9 +16,9 @@ export const productColour = {
 	singleContribution: palette.sport[600],
 	supporterPlus: palette.brand[500],
 	membership: palette.sport[300],
-	recurringContribution: palette.brand[400],
+	recurringContribution: palette.brand[600],
 	newspaper: palette.brand[400],
-	digital: palette.sport[100],
+	digital: palette.brand[300],
 	guardianWeekly: '#cadbe8',
 	puzzleApp: palette.lifestyle[300],
 	feastApp: palette.brand[800], // Same color as Live app (inAppPurchase)

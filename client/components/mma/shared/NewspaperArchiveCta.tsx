@@ -22,6 +22,7 @@ interface NewspaperArchiveCtaProps {
 }
 
 const containerCss = css`
+	border-radius: ${space[2]}px;
 	background-color: #1e3e72;
 	color: ${palette.neutral[100]};
 	h4 {
@@ -33,7 +34,7 @@ const containerCss = css`
 		margin: ${space[1]}px ${space[5]}px 0 0;
 	}
 	${from.tablet} {
-		padding: ${space[6]}px 0 0 ${space[6]}px;
+		padding: ${space[3]}px 0 0 ${space[3]}px;
 		h4 {
 			${textSansBold20};
 		}
@@ -78,6 +79,7 @@ const heroImageContainerCss = css`
 `;
 
 const heroImageCss = css`
+	border-radius: 0 0 ${space[2]}px 0;
 	margin: 0 auto;
 	max-width: 450px;
 	${until.tablet} {
