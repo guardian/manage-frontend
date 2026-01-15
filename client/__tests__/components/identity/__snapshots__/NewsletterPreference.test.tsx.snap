@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NewsletterPreference component renders correctly and displays marketing information 1`] = `
 .emotion-0 {
@@ -212,71 +212,71 @@ html:not(.src-focus-disabled) .emotion-2:focus {
   fill: #DCDCDC;
 }
 
-<div
-  className="emotion-0"
->
+<div>
   <div
-    className="emotion-1"
+    class="emotion-0"
   >
-    <input
-      aria-invalid={false}
-      aria-label="Test title (Test frequency)"
-      checked={false}
-      className="emotion-2"
-      data-cy="13"
-      id=":r0:"
-      onChange={[Function]}
-      type="checkbox"
-    />
-    <span
-      className="emotion-3"
-    />
-    <label
-      className="emotion-4"
-      htmlFor=":r0:"
+    <div
+      class="emotion-1"
     >
-      <div>
-        <div
-          className="emotion-5"
-        >
-          <p
-            className="emotion-6"
+      <input
+        aria-invalid="false"
+        aria-label="Test title (Test frequency)"
+        class="emotion-2"
+        data-cy="13"
+        id=":r0:"
+        type="checkbox"
+      />
+      <span
+        class="emotion-3"
+      />
+      <label
+        class="emotion-4"
+        for=":r0:"
+      >
+        <div>
+          <div
+            class="emotion-5"
           >
-            Test title
-          </p>
-        </div>
-        <div
-          className="emotion-7"
-        >
-          <div>
             <p
-              className="emotion-8"
+              class="emotion-6"
             >
-              Test description
-            </p>
-            <p
-              className="emotion-9"
-            >
-              <span
-                className="emotion-10"
-              >
-                <svg
-                  className="emotion-11"
-                  height="11px"
-                  viewBox="0 0 11 11"
-                  width="11px"
-                >
-                  <path
-                    d="M5.4 0C2.4 0 0 2.4 0 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4S8.4 0 5.4 0zm3 6.8H4.7V1.7h.7L6 5.4l2.4.6v.8z"
-                  />
-                </svg>
-              </span>
-              Test frequency
+              Test title
             </p>
           </div>
+          <div
+            class="emotion-7"
+          >
+            <div>
+              <p
+                class="emotion-8"
+              >
+                Test description
+              </p>
+              <p
+                class="emotion-9"
+              >
+                <span
+                  class="emotion-10"
+                >
+                  <svg
+                    class="emotion-11"
+                    height="11px"
+                    viewBox="0 0 11 11"
+                    width="11px"
+                  >
+                    <path
+                      d="M5.4 0C2.4 0 0 2.4 0 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4S8.4 0 5.4 0zm3 6.8H4.7V1.7h.7L6 5.4l2.4.6v.8z"
+                    />
+                  </svg>
+                </span>
+                Test frequency
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-    </label>
+      </label>
+    </div>
   </div>
 </div>
 `;
@@ -493,71 +493,72 @@ html:not(.src-focus-disabled) .emotion-2:focus {
   fill: #DCDCDC;
 }
 
-<div
-  className="emotion-0"
->
+<div>
   <div
-    className="emotion-1"
+    class="emotion-0"
   >
-    <input
-      aria-invalid={false}
-      aria-label="Test title (Test frequency)"
-      checked={true}
-      className="emotion-2"
-      data-cy="13"
-      id=":r1:"
-      onChange={[Function]}
-      type="checkbox"
-    />
-    <span
-      className="emotion-3"
-    />
-    <label
-      className="emotion-4"
-      htmlFor=":r1:"
+    <div
+      class="emotion-1"
     >
-      <div>
-        <div
-          className="emotion-5"
-        >
-          <p
-            className="emotion-6"
+      <input
+        aria-invalid="false"
+        aria-label="Test title (Test frequency)"
+        checked=""
+        class="emotion-2"
+        data-cy="13"
+        id=":r1:"
+        type="checkbox"
+      />
+      <span
+        class="emotion-3"
+      />
+      <label
+        class="emotion-4"
+        for=":r1:"
+      >
+        <div>
+          <div
+            class="emotion-5"
           >
-            Test title
-          </p>
-        </div>
-        <div
-          className="emotion-7"
-        >
-          <div>
             <p
-              className="emotion-8"
+              class="emotion-6"
             >
-              Test description
-            </p>
-            <p
-              className="emotion-9"
-            >
-              <span
-                className="emotion-10"
-              >
-                <svg
-                  className="emotion-11"
-                  height="11px"
-                  viewBox="0 0 11 11"
-                  width="11px"
-                >
-                  <path
-                    d="M5.4 0C2.4 0 0 2.4 0 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4S8.4 0 5.4 0zm3 6.8H4.7V1.7h.7L6 5.4l2.4.6v.8z"
-                  />
-                </svg>
-              </span>
-              Test frequency
+              Test title
             </p>
           </div>
+          <div
+            class="emotion-7"
+          >
+            <div>
+              <p
+                class="emotion-8"
+              >
+                Test description
+              </p>
+              <p
+                class="emotion-9"
+              >
+                <span
+                  class="emotion-10"
+                >
+                  <svg
+                    class="emotion-11"
+                    height="11px"
+                    viewBox="0 0 11 11"
+                    width="11px"
+                  >
+                    <path
+                      d="M5.4 0C2.4 0 0 2.4 0 5.4s2.4 5.4 5.4 5.4 5.4-2.4 5.4-5.4S8.4 0 5.4 0zm3 6.8H4.7V1.7h.7L6 5.4l2.4.6v.8z"
+                    />
+                  </svg>
+                </span>
+                Test frequency
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-    </label>
+      </label>
+    </div>
   </div>
 </div>
 `;
