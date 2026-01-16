@@ -1,5 +1,4 @@
 import { cleanup, fireEvent, render } from '@testing-library/react';
-import { create } from 'react-test-renderer';
 import { NewsletterPreference } from '../../../components/mma/identity/NewsletterPreference';
 
 afterEach(cleanup);
@@ -14,7 +13,7 @@ describe('NewsletterPreference component', () => {
 		identityName: 'Test-13',
 	};
 	it('renders correctly and displays marketing information', () => {
-		const rendered = create(
+		const { container } = render(
 			<NewsletterPreference
 				id={input.id}
 				description={input.description}
@@ -24,11 +23,11 @@ describe('NewsletterPreference component', () => {
 				onClick={input.clickHandler}
 			/>,
 		);
-		expect(rendered.toJSON()).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('will select the checkbox when the selected prop is passed', () => {
-		const rendered = create(
+		const { container } = render(
 			<NewsletterPreference
 				id={input.id}
 				description={input.description}
@@ -39,7 +38,7 @@ describe('NewsletterPreference component', () => {
 				onClick={input.clickHandler}
 			/>,
 		);
-		expect(rendered.toJSON()).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('will call the click handler when it is clicked', () => {

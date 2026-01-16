@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DropMenu displays the text in the supplied color 1`] = `
 .emotion-0 {
@@ -49,25 +49,25 @@ exports[`DropMenu displays the text in the supplied color 1`] = `
   transform: rotate(225deg);
 }
 
-<div
-  className="emotion-0"
-  role="heading"
->
-  <a
-    aria-controls=":r0:"
-    aria-expanded={false}
-    className="emotion-1"
-    href="#"
-    id=":r0:"
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    role="button"
-  >
-    TEST DROPMENU
-  </a>
+<div>
   <div
-    id=":r0:"
-  />
+    class="emotion-0"
+    role="heading"
+  >
+    <a
+      aria-controls=":r3:"
+      aria-expanded="false"
+      class="emotion-1"
+      href="#"
+      id=":r3:"
+      role="button"
+    >
+      TEST DROPMENU
+    </a>
+    <div
+      id=":r3:"
+    />
+  </div>
 </div>
 `;
 

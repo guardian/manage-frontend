@@ -1,4 +1,4 @@
-import { create } from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import { Main } from '../components/shared/Main';
 
 // Mock ophan to return consistent viewId
@@ -36,12 +36,12 @@ describe('Main', () => {
 	});
 
 	it('renders something', () => {
-		const rendered = create(
+		const { container } = render(
 			<Main>
 				<p>hi</p>
 			</Main>,
 		);
 
-		expect(rendered.toJSON()).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 });
