@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { create } from 'react-test-renderer';
 import { HelpCentreContactOptions } from '../../../components/helpCentre/HelpCentreContactOptions';
 import {
 	isArticleLiveChatFeatureEnabled,
@@ -25,8 +24,8 @@ describe('HelpCentreContactOptions', () => {
 			});
 
 			it('shows email and phone contacts only', () => {
-				const rendered = create(<HelpCentreContactOptions />);
-				expect(rendered.toJSON()).toMatchSnapshot();
+				const { container } = render(<HelpCentreContactOptions />);
+				expect(container).toMatchSnapshot();
 			});
 		});
 
@@ -38,8 +37,8 @@ describe('HelpCentreContactOptions', () => {
 			});
 
 			it('shows the live chat contact box', () => {
-				const rendered = create(<HelpCentreContactOptions />);
-				expect(rendered.toJSON()).toMatchSnapshot();
+				const { container } = render(<HelpCentreContactOptions />);
+				expect(container).toMatchSnapshot();
 			});
 		});
 
@@ -55,13 +54,13 @@ describe('HelpCentreContactOptions', () => {
 				});
 
 				it('shows email and phone contacts only', () => {
-					const rendered = create(
+					const { container } = render(
 						<HelpCentreContactOptions
 							compactLayout={true}
 							hideContactOptions={true}
 						/>,
 					);
-					expect(rendered.toJSON()).toMatchSnapshot();
+					expect(container).toMatchSnapshot();
 				});
 			});
 

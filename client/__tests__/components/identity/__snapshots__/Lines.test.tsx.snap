@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Lines draws one line when n = 1 1`] = `
 .emotion-0 {
@@ -11,9 +11,11 @@ exports[`Lines draws one line when n = 1 1`] = `
   margin: 12px auto 6px;
 }
 
-<hr
-  className="emotion-0"
-/>
+<div>
+  <hr
+    class="emotion-0"
+  />
+</div>
 `;
 
 exports[`Lines draws one line when n = 2 1`] = `
@@ -27,7 +29,9 @@ exports[`Lines draws one line when n = 2 1`] = `
   margin: 12px auto 6px;
 }
 
-<hr
-  className="emotion-0"
-/>
+<div>
+  <hr
+    class="emotion-0"
+  />
+</div>
 `;
