@@ -21,6 +21,8 @@ export const Open: StoryObj = {
 		const canvas = within(canvasElement);
 		const button = canvas.getAllByText('Show')[0];
 		await userEvent.click(button);
+
+		canvas.getByText('Phone:');
 	},
 };
 
@@ -30,5 +32,7 @@ export const OpenHideEmail: StoryObj = {
 		const canvas = within(canvasElement);
 		const button = canvas.getAllByText('Show')[0];
 		await userEvent.click(button);
+
+		canvas.getByText('Phone:');
 	},
 };
