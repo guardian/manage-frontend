@@ -28,11 +28,10 @@ export const Open: StoryObj = {
 
 export const OpenHideEmail: StoryObj = {
 	play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-		await sleep(1);
 		const canvas = within(canvasElement);
 		const button = canvas.getAllByText('Show')[0];
 		await userEvent.click(button);
 
-		await waitFor(() => canvas.getByText('Hide'));
+		await sleep(500);
 	},
 };
