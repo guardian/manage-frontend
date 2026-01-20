@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ResponseProcessor } from '../../components/mma/shared/asyncComponents/ResponseProcessor';
 import { trackEvent } from '../analytics';
 
@@ -23,6 +23,7 @@ export function useAsyncLoader<T>(
 	const [loadingState, setLoadingState] = useState<LoadingState>(
 		LoadingState.IsLoading,
 	);
+	const isFetchingRef = useRef(false);
 
 	function handleError(error: Error | ErrorEvent | string): void {
 		setLoadingState(LoadingState.HasError);
@@ -37,14 +38,18 @@ export function useAsyncLoader<T>(
 	}
 
 	useEffect(() => {
-		if (loadingState == LoadingState.IsLoading) {
+		if (loadingState == LoadingState.IsLoading && !isFetchingRef.current) {
+			isFetchingRef.current = true;
 			asyncFetch()
 				.then((response) => responseProcessor(response))
 				.then((data) => {
 					setData(data);
 					setLoadingState(LoadingState.HasLoaded);
 				})
-				.catch((e) => handleError(e));
+				.catch((e) => handleError(e))
+				.finally(() => {
+					isFetchingRef.current = false;
+				});
 		}
 	}, [loadingState]); // eslint-disable-line react-hooks/exhaustive-deps -- disabling here to avoid the hook being run too many times - please refactor me I possibly don't want to use the useEffect hook here
 
