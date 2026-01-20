@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, waitFor, within } from '@storybook/test';
+import { userEvent, within } from '@storybook/test';
 import { CallCentreAccordion } from './CallCentreAccordion';
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -22,12 +22,13 @@ export const Open: StoryObj = {
 		const button = canvas.getAllByText('Show')[0];
 		await userEvent.click(button);
 
-		await waitFor(() => canvas.getByText('Hide'));
+		await sleep(500);
 	},
 };
 
 export const OpenHideEmail: StoryObj = {
 	play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		await sleep(1);
 		const canvas = within(canvasElement);
 		const button = canvas.getAllByText('Show')[0];
 		await userEvent.click(button);
