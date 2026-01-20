@@ -5,7 +5,6 @@ import {
 	waitFor,
 	waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { create } from 'react-test-renderer';
 import { DropMenu } from '../../../components/mma/identity/DropMenu';
 
 const ELEMENT_TEXT = {
@@ -44,7 +43,7 @@ describe('DropMenu', () => {
 		return promise;
 	});
 	it('displays the text in the supplied color', () => {
-		const container = create(
+		const { container } = render(
 			<DropMenu color="green" title={ELEMENT_TEXT.TITLE}>
 				{ELEMENT_TEXT.CONTENT}
 			</DropMenu>,
