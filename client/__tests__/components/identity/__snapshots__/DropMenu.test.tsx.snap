@@ -55,17 +55,17 @@ exports[`DropMenu displays the text in the supplied color 1`] = `
     role="heading"
   >
     <a
-      aria-controls=":r3:"
+      aria-controls="_r_3_"
       aria-expanded="false"
       class="emotion-1"
       href="#"
-      id=":r3:"
+      id="_r_3_"
       role="button"
     >
       TEST DROPMENU
     </a>
     <div
-      id=":r3:"
+      id="_r_3_"
     />
   </div>
 </div>
@@ -126,17 +126,17 @@ exports[`DropMenu if closed, opens and shows children on click 1`] = `
     role="heading"
   >
     <a
-      aria-controls=":r1:"
+      aria-controls="_r_1_"
       aria-expanded="true"
       class="open emotion-1"
       href="#"
-      id=":r1:"
+      id="_r_1_"
       role="button"
     >
       TEST DROPMENU
     </a>
     <div
-      id=":r1:"
+      id="_r_1_"
     >
       <p>
         TEST_CONTENT
@@ -201,17 +201,17 @@ exports[`DropMenu if open, closes and hides children on click 1`] = `
     role="heading"
   >
     <a
-      aria-controls=":r2:"
+      aria-controls="_r_2_"
       aria-expanded="false"
       class="emotion-1"
       href="#"
-      id=":r2:"
+      id="_r_2_"
       role="button"
     >
       TEST DROPMENU
     </a>
     <div
-      id=":r2:"
+      id="_r_2_"
     />
   </div>
 </div>
@@ -272,17 +272,17 @@ exports[`DropMenu initalises in the unopened state and displays the title 1`] = 
     role="heading"
   >
     <a
-      aria-controls=":r0:"
+      aria-controls="_r_0_"
       aria-expanded="false"
       class="emotion-1"
       href="#"
-      id=":r0:"
+      id="_r_0_"
       role="button"
     >
       TEST DROPMENU
     </a>
     <div
-      id=":r0:"
+      id="_r_0_"
     />
   </div>
 </div>

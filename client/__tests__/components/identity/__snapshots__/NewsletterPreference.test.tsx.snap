@@ -224,7 +224,7 @@ html:not(.src-focus-disabled) .emotion-2:focus {
         aria-label="Test title (Test frequency)"
         class="emotion-2"
         data-cy="13"
-        id=":r0:"
+        id="_r_0_"
         type="checkbox"
       />
       <span
@@ -232,7 +232,7 @@ html:not(.src-focus-disabled) .emotion-2:focus {
       />
       <label
         class="emotion-4"
-        for=":r0:"
+        for="_r_0_"
       >
         <div>
           <div
@@ -506,7 +506,7 @@ html:not(.src-focus-disabled) .emotion-2:focus {
         checked=""
         class="emotion-2"
         data-cy="13"
-        id=":r1:"
+        id="_r_1_"
         type="checkbox"
       />
       <span
@@ -514,7 +514,7 @@ html:not(.src-focus-disabled) .emotion-2:focus {
       />
       <label
         class="emotion-4"
-        for=":r1:"
+        for="_r_1_"
       >
         <div>
           <div
