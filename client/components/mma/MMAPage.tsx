@@ -1005,8 +1005,8 @@ const getMvtId = (): number => {
 
 const MMAPageComponent = () => {
 	const [ophanRecord, setOphanRecord] = useState<
-		((event: EventPayload, callback?: () => void) => void) | undefined
-	>();
+		(event: EventPayload, callback?: () => void) => void
+	>(() => () => {});
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
@@ -1024,6 +1024,8 @@ const MMAPageComponent = () => {
 			mvtMaxValue={1000000}
 			mvtId={getMvtId()}
 			ophanRecord={ophanRecord}
+			serverSideTests={{}}
+			errorReporter={(error) => console.error('AB test error:', error)}
 		>
 			<BrowserRouter>
 				<MMARouter />

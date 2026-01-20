@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { palette, textEgyptian14Object } from '@guardian/source/foundations';
-import type { Context, Dispatch, SetStateAction } from 'react';
+import type { Context, Dispatch, ReactNode, SetStateAction } from 'react';
 import { createContext, useState } from 'react';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { Footer } from './footer/Footer';
@@ -9,7 +9,7 @@ import { Header } from './Header';
 
 export interface MainProps {
 	signInStatus?: SignInStatus;
-	children: JSX.Element | JSX.Element[];
+	children: ReactNode;
 	isHelpCentrePage?: boolean;
 }
 
@@ -17,8 +17,9 @@ export interface HasMinimalFooterInterface {
 	setHasMinimalFooter: Dispatch<SetStateAction<boolean>>;
 }
 
-export const HasMinimalFooterContext: Context<HasMinimalFooterInterface | object> =
-	createContext({});
+export const HasMinimalFooterContext: Context<
+	HasMinimalFooterInterface | object
+> = createContext({});
 
 export const Main = ({
 	signInStatus = 'init',

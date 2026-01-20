@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { Component } from 'react';
 
 interface Props {
 	children: ReactNode;
-	fallback: JSX.Element | ((error: string) => JSX.Element);
+	fallback: ReactElement | ((error: string) => ReactElement);
 }
 
 interface State {
@@ -24,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
 		};
 	}
 
-	public render() {
+	public render(): ReactNode {
 		if (this.state.hasError) {
 			const fallback = this.props.fallback;
 			if (typeof fallback === 'function') {

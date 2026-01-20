@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import type { Decorator, Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { ContactUsForm } from './contactUsForm';
 
@@ -24,7 +24,7 @@ interface MockedGuardian {
 }
 
 // Mock the global guardian object and reCAPTCHA for Storybook
-const withMockedGlobals = (Story: StoryFn) => {
+const withMockedGlobals: Decorator = (Story) => {
 	if (typeof window !== 'undefined') {
 		const windowWithGuardian = window as typeof window & {
 			guardian?: MockedGuardian;

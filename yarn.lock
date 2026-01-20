@@ -2841,15 +2841,15 @@
   dependencies:
     levn "^0.4.1"
 
-"@guardian/ab-core@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/@guardian/ab-core/-/ab-core-2.0.0.tgz"
-  integrity sha512-E5p6l0l37hY0GNFaZmA5/22TlVuavzlMHR3OeweD5eDcY2gB3nGgzPK/d3M67dkbDAJkGjB4a0W84Z5N2YScvQ==
+"@guardian/ab-core@9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/ab-core/-/ab-core-9.0.0.tgz#66f663651bae7ff831db30d38684d652717954ab"
+  integrity sha512-3xzDd8+VMpsJiDiVnSpANcvqOaouTJwi+FGepoajEvPBzfDJqhv3rp2pIFdlMEEA3SXt8ejJ5RMtuvSFAt0rtQ==
 
-"@guardian/ab-react@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/@guardian/ab-react/-/ab-react-2.0.1.tgz"
-  integrity sha512-iOKbIxoLwRMv2eHddxL5l9mNBy/B9QaOOJgA3VUdo/jH5cUVzbF6W8yYDGcZJTolIVhSu5GPR8fitsOoup6Vww==
+"@guardian/ab-react@10.0.0":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/ab-react/-/ab-react-10.0.0.tgz#634b47b00341c89f722c3627f95802d16871d689"
+  integrity sha512-f3X648Zv/MzEUjwfHeJ8tTVs2et6/HkzdayesKn3QK/uiQ5Boy6VIuZwUA/63dhqQnUEUMK6O9t2Kq/S6Gwkcg==
 
 "@guardian/browserslist-config@6.1.2":
   version "6.1.2"
