@@ -39,8 +39,14 @@ export class AsyncLoader<
 	public state: AsyncLoaderState<T> = { loadingState: LoadingState.Loading };
 	private readerOnOK =
 		this.props.readerOnOK || ((resp: Response) => resp.json());
+	private isFetching = false;
 
 	public componentDidMount(): void {
+		if (this.isFetching) {
+			return;
+		}
+		this.isFetching = true;
+
 		this.props
 			.fetch()
 			.then((resp) =>
@@ -59,7 +65,10 @@ export class AsyncLoader<
 					this.setState({ data, loadingState: LoadingState.Loaded });
 				}
 			})
-			.catch((exception) => this.handleError(exception));
+			.catch((exception) => this.handleError(exception))
+			.finally(() => {
+				this.isFetching = false;
+			});
 	}
 
 	public render(): React.ReactNode {
