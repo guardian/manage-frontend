@@ -2,6 +2,7 @@ import { css, Global } from '@emotion/react';
 import { ABProvider, useAB } from '@guardian/ab-react';
 import type { EventPayload } from '@guardian/ophan-tracker-js/MMA';
 import { breakpoints, from, space } from '@guardian/source/foundations';
+import * as Sentry from '@sentry/browser';
 import type { ReactNode } from 'react';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
@@ -1005,8 +1006,8 @@ const getMvtId = (): number => {
 
 const MMAPageComponent = () => {
 	const [ophanRecord, setOphanRecord] = useState<
-		((event: EventPayload, callback?: () => void) => void) | undefined
-	>();
+		(event: EventPayload, callback?: () => void) => void
+	>(() => () => {});
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
@@ -1024,6 +1025,8 @@ const MMAPageComponent = () => {
 			mvtMaxValue={1000000}
 			mvtId={getMvtId()}
 			ophanRecord={ophanRecord}
+			serverSideTests={{}}
+			errorReporter={(error) => Sentry.captureException(error)}
 		>
 			<BrowserRouter>
 				<MMARouter />

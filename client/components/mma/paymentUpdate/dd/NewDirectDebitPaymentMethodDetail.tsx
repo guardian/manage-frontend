@@ -1,4 +1,5 @@
 import { from, until } from '@guardian/source/foundations';
+import type { ReactElement } from 'react';
 import type {
 	DirectDebitDetails,
 	Subscription,
@@ -55,7 +56,7 @@ export class NewDirectDebitPaymentMethodDetail
 			<DirectDebitDisplay {...this.ddDetail} showAccountName />
 		);
 
-	public readonly confirmButtonWrapper = (confirmButton: JSX.Element) => (
+	public readonly confirmButtonWrapper = (confirmButton: ReactElement) => (
 		<div
 			css={{
 				display: 'flex',

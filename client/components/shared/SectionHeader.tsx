@@ -9,11 +9,12 @@ import {
 	titlepiece42,
 } from '@guardian/source/foundations';
 import Color from 'color';
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { gridBase, gridItemPlacement } from '../../styles/grid';
 
 interface SectionHeaderProps {
-	title: string | JSX.Element;
+	title: ReactNode;
 	pageHasNav?: boolean;
 }
 
