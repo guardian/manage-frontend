@@ -3,7 +3,7 @@ import type { PaidSubscriptionPlan } from '../../../shared/productResponse';
 import { type CurrencyIso, CurrencyIsos } from '../currencyIso';
 
 /* 
-	Pricing for 2026 Membership Price Rise and Save Journey
+	Pricing for 2025 Membership Price Rise and Save Journey
 */
 const billingPeriods = ['month', 'year'] as const;
 
