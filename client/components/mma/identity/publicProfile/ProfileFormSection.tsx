@@ -55,7 +55,7 @@ const ProfileForm = (props: FormikProps<User> & ProfileFormSectionProps) => (
 			{usernameInput(props)}
 			<Button
 				onClick={() => props.submitForm()}
-				disabled={props.isSubmitting}
+				disabled={props.isSubmitting || !props.values.username?.trim()}
 			>
 				Save changes
 			</Button>
