@@ -181,10 +181,28 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
 					createPaymentMethodResult.paymentMethod.card.last4
 				)
 			) {
-				Sentry.captureException(
-					createPaymentMethodResult.error ||
-						'something missing from the createPaymentMethod response',
-				);
+				const stripeError = createPaymentMethodResult.error;
+				if (stripeError) {
+					Sentry.captureException(
+						new Error(
+							`Stripe createPaymentMethod failed: ${stripeError.message}`,
+						),
+						{
+							extra: {
+								code: stripeError.code,
+								decline_code: stripeError.decline_code,
+								type: stripeError.type,
+								doc_url: stripeError.doc_url,
+							},
+						},
+					);
+				} else {
+					Sentry.captureException(
+						new Error(
+							'Something missing from the createPaymentMethod response',
+						),
+					);
+				}
 				setError(
 					createPaymentMethodResult.error || {
 						message:
@@ -215,10 +233,28 @@ export const StripeCardInputForm = (props: StripeCardInputFormProps) => {
 				props.newPaymentMethodDetailUpdater(newPaymentMethodDetail);
 				props.executePaymentUpdate(newPaymentMethodDetail);
 			} else {
-				Sentry.captureException(
-					intentResult.error ||
-						'something missing from the SetupIntent response',
-				);
+				const stripeError = intentResult.error;
+				if (stripeError) {
+					Sentry.captureException(
+						new Error(
+							`Stripe confirmCardSetup failed: ${stripeError.message}`,
+						),
+						{
+							extra: {
+								code: stripeError.code,
+								decline_code: stripeError.decline_code,
+								type: stripeError.type,
+								doc_url: stripeError.doc_url,
+							},
+						},
+					);
+				} else {
+					Sentry.captureException(
+						new Error(
+							'Something missing from the SetupIntent response',
+						),
+					);
+				}
 				setError(
 					intentResult.error || {
 						message:
