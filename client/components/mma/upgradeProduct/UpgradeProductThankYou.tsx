@@ -105,8 +105,8 @@ export const UpgradeProductThankYou = () => {
 							new Date(previewResponse.nextPaymentDate),
 							'MMMM do',
 						)}
-						, your ongoing monthly payment will be{' '}
-						{mainPlan.currency}
+						, your ongoing {mainPlan.billingPeriod}ly payment will
+						be {mainPlan.currency}
 						{previewResponse.targetCatalogPrice}
 					</p>
 				</div>

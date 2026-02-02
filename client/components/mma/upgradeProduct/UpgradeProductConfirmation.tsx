@@ -257,15 +257,16 @@ export const UpgradeProductConfirmation = () => {
 						]}
 					>
 						We will charge you a smaller amount today, to offset the
-						payment you've already given us for the rest of the
-						month. After this, from{' '}
+						payment you've already given us for the rest of the{' '}
+						{nextPaymentDetails?.paymentInterval}. After this, from{' '}
 						{subscription.nextPaymentDate
 							? dateString(
 									new Date(subscription.nextPaymentDate),
 									'MMMM do',
 							  )
 							: nextPaymentDetails?.nextPaymentDateValue}
-						, your monthly payment will be {mainPlan.currency}
+						, your {nextPaymentDetails?.paymentInterval}ly payment
+						will be {mainPlan.currency}
 						{previewResponse?.targetCatalogPrice}
 					</p>
 				</div>
