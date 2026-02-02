@@ -12,6 +12,7 @@ import {
 	SvgStar,
 } from '@guardian/source/react-components';
 import { useNavigate } from 'react-router-dom';
+import { useAccountStore } from '@/client/stores/AccountStore';
 import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
 import {
 	subHeadingCss,
@@ -19,6 +20,7 @@ import {
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
+import { dateString } from '@/shared/dates';
 import {
 	signInContentContainerCss,
 	signInCss,
@@ -45,9 +47,17 @@ const whatHappensNowItemInformationBoldTextCss = css`
 export const UpgradeProductThankYou = () => {
 	const navigate = useNavigate();
 
-	const { mainPlan, specificProductType } = useUpgradeProductStore();
+	const { mainPlan, specificProductType, subscription, previewResponse } =
+		useUpgradeProductStore();
+	const { getUser } = useAccountStore();
+	const user = getUser();
 
-	if (!mainPlan || !specificProductType) {
+	if (
+		!mainPlan ||
+		!specificProductType ||
+		!subscription ||
+		!previewResponse
+	) {
 		return null;
 	}
 
@@ -72,7 +82,7 @@ export const UpgradeProductThankYou = () => {
 						<b css={whatHappensNowItemInformationBoldTextCss}>
 							You will receive a confirmation email
 						</b>{' '}
-						to EMAIL@gmail.com
+						to {user?.email ?? 'your registered email address'}
 					</p>
 				</div>
 			</div>
@@ -87,10 +97,17 @@ export const UpgradeProductThankYou = () => {
 						]}
 					>
 						<b css={whatHappensNowItemInformationBoldTextCss}>
-							Your first payment will be DATE.
+							Your first payment will be today.
 						</b>{' '}
-						You will be charged £X. From DAY MONTH, your ongoing
-						monthly payment will be £X
+						You will be charged {mainPlan.currency}
+						{previewResponse.amountPayableToday}. From{' '}
+						{dateString(
+							new Date(previewResponse.nextPaymentDate),
+							'MMMM do',
+						)}
+						, your ongoing monthly payment will be{' '}
+						{mainPlan.currency}
+						{previewResponse.targetCatalogPrice}
 					</p>
 				</div>
 			</div>

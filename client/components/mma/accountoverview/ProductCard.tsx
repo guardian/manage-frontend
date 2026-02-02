@@ -11,7 +11,7 @@ import {
 	InfoSummary,
 	SuccessSummary,
 } from '@guardian/source-development-kitchen/react-components';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
 	cancellationFormatDate,
 	DATE_FNS_LONG_OUTPUT_FORMAT,
@@ -66,15 +66,15 @@ const NewPriceAlert = () => {
 export const ProductCard = ({
 	productDetail,
 	isEligibleToSwitch,
+	isEligibleToUpsell,
 	user,
 }: {
 	productDetail: ProductDetail;
 	isEligibleToSwitch: boolean;
+	isEligibleToUpsell: boolean;
 	user?: MembersDataApiUser;
 }) => {
 	const navigate = useNavigate();
-	const location = useLocation();
-
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
 		throw new Error('mainPlan does not exist in ProductCard');
@@ -123,12 +123,15 @@ export const ProductCard = ({
 		!hasCancellationPending &&
 		specificProductType.productType === 'contributions';
 
-	// TODO: Implement this button's eligibility logic.
-	// Using a query param for now for testing and QA purposes.
 	const showProductUpsellButton =
+		// TODO: Remove this URLSearchParam flag
 		new URLSearchParams(location.search).get(
 			'showDigitalPlusUpsellButton',
-		) === 'TRUE';
+		) === 'TRUE' &&
+		// ------
+		isEligibleToUpsell &&
+		!hasCancellationPending &&
+		specificProductType.productType === 'supporterplus';
 
 	const productBenefits =
 		specificProductType.productType === 'supporterplus'

@@ -98,7 +98,7 @@ export function filterBenefitByRegion(
 	}
 
 	/*	If we don't have a valid currency
-	 	only show a benefit which is not region specific
+		  only show a benefit which is not region specific
 	*/
 	return benefit.specificToRegions === undefined;
 }
@@ -176,3 +176,27 @@ export function getUpgradeBenefits(
 		},
 	];
 }
+
+export const getUpsellBenefits = (
+	productType: ProductTypeKeys,
+): ProductBenefit[] => {
+	switch (productType) {
+		case 'supporterplus':
+		default:
+			return [
+				{
+					description: 'Guardian Weekly e-magazine',
+				},
+				{
+					description: 'The Long Read e-magazine',
+				},
+				{
+					description:
+						'Digital access to the Guardian’s 200 year newspaper archive',
+				},
+				{
+					description: 'Daily digital Guardian newspaper',
+				},
+			];
+	}
+};
