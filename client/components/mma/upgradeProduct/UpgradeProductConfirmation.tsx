@@ -176,11 +176,11 @@ export const UpgradeProductConfirmation = () => {
 		paymentMethodCopy = `We will take payment as before, from PayPal email ${subscription.payPalEmail}`;
 	} else if (subscription.mandate) {
 		paymentMethodCopy = `We will take payment as before, from Direct Debit account ending ${subscription.mandate.accountNumber.slice(
-			-5,
+			-4,
 		)}`;
 	} else if (subscription.sepaMandate) {
 		paymentMethodCopy = `We will take payment as before, from SEPA Direct Debit account ending ${subscription.sepaMandate.iban.slice(
-			-5,
+			-4,
 		)}`;
 	}
 
