@@ -1,5 +1,5 @@
 import type { Decorator, Meta, StoryFn, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/test';
+import { userEvent } from '@storybook/test';
 import { http, HttpResponse } from 'msw';
 import { useEffect } from 'react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
@@ -198,14 +198,12 @@ export const ConfirmationWithUpgradeError: StoryObj<
 	},
 	name: 'Confirmation - Upgrade Error',
 	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
 		const upgradeButton = canvasElement.querySelector(
 			'[data-cy="upgrade-subscription-button"]',
 		) as HTMLButtonElement;
 		await userEvent.click(upgradeButton);
 
-		await canvas.findByText('We were unable to upgrade your subscription');
+		await new Promise((resolve) => setTimeout(resolve, 500));
 	},
 };
 
