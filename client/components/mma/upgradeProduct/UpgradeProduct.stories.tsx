@@ -197,12 +197,35 @@ export const ConfirmationWithUpgradeError: StoryObj<
 	},
 	name: 'Confirmation - Upgrade Error',
 	play: async ({ canvasElement }) => {
+		const waitForElement = async (
+			selector: string,
+			timeout = 5000,
+		): Promise<Element | null> => {
+			const startTime = Date.now();
+			while (Date.now() - startTime < timeout) {
+				const element = canvasElement.querySelector(selector);
+				if (element) {
+					return element;
+				}
+				await new Promise((resolve) => setTimeout(resolve, 100));
+			}
+			return null;
+		};
+
+		await waitForElement(
+			'button[data-cy="upgrade-subscription-button"]:not([disabled])',
+		);
+
 		const upgradeButton = canvasElement.querySelector(
 			'button[data-cy="upgrade-subscription-button"]',
 		) as HTMLButtonElement;
 
 		if (upgradeButton) {
 			upgradeButton.click();
+
+			await waitForElement(
+				'[class*="ErrorSummary"], [id="errorMessage"]',
+			);
 		}
 	},
 };
