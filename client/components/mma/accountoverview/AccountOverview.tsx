@@ -2,7 +2,9 @@ import { css } from '@emotion/react';
 import { from, space, textSans17 } from '@guardian/source/foundations';
 import { Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+import { useAccountStore } from '@/client/stores/AccountStore';
+import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
 import { subHeadingCss } from '@/client/styles/headings';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
@@ -156,11 +158,54 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 };
 
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
+	const { setAllResponses } = useAccountStore();
+	const { previewError, setPreviewError } = useUpgradeProductStore();
+
 	const { data: accountOverviewResponse, loadingState } =
 		useAsyncLoaderAllSettled(
 			productFetchPromisesAndRefs,
 			JsonResponseHandler,
 		);
+
+	const {
+		mdapiResponse,
+		cancelledProductsResponse,
+		mpapiResponse,
+		singleContributionsResponse,
+	} = (accountOverviewResponse as Partial<ProductFetchResponse>) ?? {};
+
+	useEffect(() => {
+		return () => {
+			if (previewError) {
+				setPreviewError(null);
+			}
+		};
+	}, [previewError, setPreviewError]);
+
+	useEffect(() => {
+		if (
+			loadingState === LoadingState.HasLoaded &&
+			accountOverviewResponse
+		) {
+			setAllResponses({
+				mdapiResponse: mdapiResponse ?? undefined,
+				cancelledProductsResponse:
+					cancelledProductsResponse ?? undefined,
+				mpapiResponse: mpapiResponse ?? undefined,
+				singleContributionsResponse:
+					singleContributionsResponse ?? undefined,
+			});
+		}
+	}, [
+		loadingState,
+		accountOverviewResponse,
+		mdapiResponse,
+		cancelledProductsResponse,
+		mpapiResponse,
+		singleContributionsResponse,
+		setAllResponses,
+	]);
+
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
 	}
@@ -172,13 +217,6 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	if (accountOverviewResponse === null) {
 		return <GenericErrorScreen />;
 	}
-
-	const {
-		mdapiResponse,
-		cancelledProductsResponse,
-		mpapiResponse,
-		singleContributionsResponse,
-	} = accountOverviewResponse as Partial<ProductFetchResponse>;
 
 	const failedProductRequestMessages = [];
 	if (!cancelledProductsResponse) {
@@ -293,6 +331,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		!hasDigiSubAndContribution &&
 		!hasNonServiceableCountry;
 
+	const isEligibleToUpsell =
+		!maybeFirstPaymentFailure && !hasNonServiceableCountry;
+
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
 	): GroupedProductTypeKeys => {
@@ -344,6 +385,15 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					}
 				/>
 			)}
+			{previewError && (
+				<ProblemAlert
+					title="Unable to upgrade your subscription"
+					message="You are not currently eligible for this upgrade. Please contact our customer service team if you believe this is an error."
+					additionalcss={css`
+						margin-top: ${space[5]}px;
+					`}
+				/>
+			)}
 			{possiblyAffectedByCanadaPostStrike && <CanadaStrike />}
 			{uniqueProductCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
@@ -373,6 +423,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 									}
 									productDetail={productDetail}
 									isEligibleToSwitch={isEligibleToSwitch}
+									isEligibleToUpsell={isEligibleToUpsell}
 									user={mdapiResponse.user}
 								/>
 							))}

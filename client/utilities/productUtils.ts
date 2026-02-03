@@ -183,3 +183,93 @@ export const changeSubscriptionBillingFrequencyFetch = (
 			[MDA_TEST_USER_HEADER]: `${isTestUser}`,
 		},
 	});
+
+/**
+ * Change plan modes:
+ * - 'switchToBasePrice': Switch to the target product at its base/catalog price
+ * - 'switchWithPriceOverride': Switch to the target product with a custom price (requires newAmount)
+ * - 'save': Used for save/retention offers
+ */
+export type ChangePlanMode =
+	| 'switchToBasePrice'
+	| 'switchWithPriceOverride'
+	| 'save';
+
+/**
+ * Target products for change plan:
+ * - 'DigitalSubscription'
+ * - 'SupporterPlus'
+ */
+export type ChangePlanTargetProduct = 'DigitalSubscription' | 'SupporterPlus';
+
+export interface ChangePlanPayload {
+	mode: ChangePlanMode;
+	targetProduct: ChangePlanTargetProduct;
+	newAmount?: number;
+}
+
+export interface ChangePlanOptions {
+	subscriptionId: string;
+	isTestUser: boolean;
+	mode: ChangePlanMode;
+	targetProduct: ChangePlanTargetProduct;
+	preview?: boolean;
+	newAmount?: number;
+}
+
+/**
+ * Fetches change plan preview or executes the change plan.
+ * This is the unified endpoint for product switches/upgrades.
+ *
+ * @param options - The change plan options
+ * @returns Promise with the response
+ *
+ * @example
+ * // Preview upgrade to Digital Subscription
+ * await changePlanFetch({
+ *   subscriptionId: 'A-S12345',
+ *   isTestUser: false,
+ *   mode: 'switchToBasePrice',
+ *   targetProduct: 'DigitalSubscription',
+ *   preview: true,
+ * });
+ *
+ * @example
+ * // Execute switch to Supporter Plus with custom amount
+ * await changePlanFetch({
+ *   subscriptionId: 'A-S12345',
+ *   isTestUser: false,
+ *   mode: 'switchWithPriceOverride',
+ *   targetProduct: 'SupporterPlus',
+ *   newAmount: 15,
+ *   preview: false,
+ * });
+ */
+export const changePlanFetch = ({
+	subscriptionId,
+	isTestUser,
+	mode,
+	targetProduct,
+	preview = false,
+	newAmount,
+}: ChangePlanOptions) => {
+	const endpoint = preview
+		? `/api/subscriptions/${subscriptionId}/change-plan/preview`
+		: `/api/subscriptions/${subscriptionId}/change-plan`;
+
+	const payload: ChangePlanPayload = {
+		mode,
+		targetProduct,
+		...(newAmount !== undefined && { newAmount }),
+	};
+
+	return fetch(endpoint, {
+		method: 'POST',
+		body: JSON.stringify(payload),
+		headers: {
+			'Content-Type': 'application/json',
+			[MDA_TEST_USER_HEADER]: `${isTestUser}`,
+		},
+		credentials: 'include',
+	});
+};
