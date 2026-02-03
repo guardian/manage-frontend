@@ -1,4 +1,4 @@
-import type { Decorator, Meta, StoryFn, StoryObj } from '@storybook/react';
+import type { Decorator, Meta, StoryFn } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
 import { useEffect } from 'react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
@@ -66,18 +66,6 @@ const mswHandlersSuccess = (previewResponse: UpgradePreviewResponse) => [
 	}),
 	http.post('/api/subscriptions/*/change-plan', () => {
 		return HttpResponse.json({ success: true });
-	}),
-];
-
-const mswHandlersUpgradeError = (previewResponse: UpgradePreviewResponse) => [
-	http.post('/api/subscriptions/*/change-plan/preview', () => {
-		return HttpResponse.json(previewResponse);
-	}),
-	http.post('/api/subscriptions/*/change-plan', () => {
-		return HttpResponse.json(
-			{ message: 'Unable to process upgrade at this time' },
-			{ status: 500 },
-		);
 	}),
 ];
 
@@ -183,28 +171,6 @@ ConfirmationSepa.parameters = {
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
 ConfirmationSepa.storyName = 'Confirmation - SEPA';
-
-export const ConfirmationWithUpgradeError: StoryObj<
-	typeof UpgradeProductConfirmation
-> = {
-	render: () => <UpgradeProductConfirmation />,
-	parameters: {
-		reactRouter: {
-			state: { productDetail: supporterPlus() },
-			container: <UpgradeProductContainer />,
-		},
-		msw: mswHandlersUpgradeError(mockUpgradePreviewResponseMonthlyGBP),
-	},
-	name: 'Confirmation - Upgrade Error',
-	play: async ({ canvasElement }) => {
-		const upgradeButton = canvasElement.querySelector(
-			'[data-cy="upgrade-subscription-button"]',
-		) as HTMLButtonElement;
-		upgradeButton.click();
-
-		await new Promise((resolve) => setTimeout(resolve, 500));
-	},
-};
 
 export const ThankYouMonthly: StoryFn<typeof UpgradeProductThankYou> = () => {
 	return <UpgradeProductThankYou />;
