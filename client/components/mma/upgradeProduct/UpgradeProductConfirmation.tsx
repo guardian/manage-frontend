@@ -369,7 +369,7 @@ export const UpgradeProductConfirmation = () => {
 			<p css={termsAndConditionsFooterCss}>
 				If you want to change the payment method, please go to your
 				billing section and update your payment details. By proceeding,
-				you are agreeing to our
+				you are agreeing to our{' '}
 				<a href="https://www.theguardian.com/info/2025/oct/31/guardian-subscription-terms-and-conditions">
 					Terms and Conditions
 				</a>
