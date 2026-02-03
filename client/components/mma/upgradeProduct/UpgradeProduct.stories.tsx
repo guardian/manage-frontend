@@ -1,5 +1,4 @@
 import type { Decorator, Meta, StoryFn, StoryObj } from '@storybook/react';
-import { userEvent } from '@storybook/test';
 import { http, HttpResponse } from 'msw';
 import { useEffect } from 'react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
@@ -201,7 +200,7 @@ export const ConfirmationWithUpgradeError: StoryObj<
 		const upgradeButton = canvasElement.querySelector(
 			'[data-cy="upgrade-subscription-button"]',
 		) as HTMLButtonElement;
-		await userEvent.click(upgradeButton);
+		upgradeButton.click();
 
 		await new Promise((resolve) => setTimeout(resolve, 500));
 	},
