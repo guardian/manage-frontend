@@ -11,7 +11,7 @@ import {
 	InfoSummary,
 	SuccessSummary,
 } from '@guardian/source-development-kitchen/react-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
 	cancellationFormatDate,
 	DATE_FNS_LONG_OUTPUT_FORMAT,
@@ -75,6 +75,7 @@ export const ProductCard = ({
 	user?: MembersDataApiUser;
 }) => {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
 		throw new Error('mainPlan does not exist in ProductCard');
