@@ -143,7 +143,7 @@
     "@guardian/source-development-kitchen": "^7.0.0",
     "@okta/jwt-verifier": "^4.0.1",
     "@sentry/browser": "10.20.0",
-    "@sentry/node": "10.20.0",
+    "@sentry/node": "10.27.0",
     "@sentry/webpack-plugin": "4.5.0",
     "@stripe/react-stripe-js": "5.4.1",
     "@stripe/stripe-js": "8.6.1",
