@@ -560,6 +560,14 @@ const MMARouter = () => {
 					)}
 				>
 					<Routes>
+						<Route
+							path="*"
+							element={<Navigate to="/maintenance" replace />}
+						/>
+
+						{/*Does not require sign in*/}
+						<Route path="/maintenance" element={<Maintenance />} />
+
 						<Route path="/" element={<AccountOverview />} />
 						<Route
 							path="/app"
@@ -984,14 +992,13 @@ const MMARouter = () => {
 								<CreateReminder reminderType={'RECURRING'} />
 							}
 						/>
-						{/*Does not require sign in*/}
-						<Route path="/maintenance" element={<Maintenance />} />
+
 						{/*Does not require sign in*/}
 						<Route
 							path="/sign-in-error"
 							element={<SignInError />}
 						/>
-						<Route path="*" element={<Navigate to="/" />} />
+						{/* <Route path="*" element={<Navigate to="/" />} /> */}
 					</Routes>
 				</ErrorBoundary>
 			</Suspense>
