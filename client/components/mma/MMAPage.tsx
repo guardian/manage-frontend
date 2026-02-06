@@ -547,6 +547,39 @@ const MMARouter = () => {
 	useConsent();
 	useScrollToTop();
 
+	const maintenanceMode = true;
+	if (maintenanceMode) {
+		return (
+			<Main signInStatus={signInStatus}>
+				<Global styles={css(`${global}`)} />
+				<Global styles={css(`${fonts}`)} />
+				<Suspense fallback={<MMAPageSkeleton />}>
+					<ErrorBoundary
+						fallback={(error) => (
+							<GenericErrorContainer>
+								<GenericErrorScreen loggingMessage={error} />
+							</GenericErrorContainer>
+						)}
+					>
+						<Routes>
+							<Route
+								path="*"
+								element={<Navigate to="/maintenance" replace />}
+							/>
+
+							{/*Does not require sign in*/}
+							<Route
+								path="/maintenance"
+								element={<Maintenance />}
+							/>
+						</Routes>
+					</ErrorBoundary>
+				</Suspense>
+				<Maintenance />
+			</Main>
+		);
+	}
+
 	return (
 		<Main signInStatus={signInStatus}>
 			<Global styles={css(`${global}`)} />
@@ -984,8 +1017,7 @@ const MMARouter = () => {
 								<CreateReminder reminderType={'RECURRING'} />
 							}
 						/>
-						{/*Does not require sign in*/}
-						<Route path="/maintenance" element={<Maintenance />} />
+
 						{/*Does not require sign in*/}
 						<Route
 							path="/sign-in-error"
