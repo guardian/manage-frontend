@@ -547,6 +547,39 @@ const MMARouter = () => {
 	useConsent();
 	useScrollToTop();
 
+	const maintenanceMode = true;
+	if (maintenanceMode) {
+		return (
+			<Main signInStatus={signInStatus}>
+				<Global styles={css(`${global}`)} />
+				<Global styles={css(`${fonts}`)} />
+				<Suspense fallback={<MMAPageSkeleton />}>
+					<ErrorBoundary
+						fallback={(error) => (
+							<GenericErrorContainer>
+								<GenericErrorScreen loggingMessage={error} />
+							</GenericErrorContainer>
+						)}
+					>
+						<Routes>
+							<Route
+								path="*"
+								element={<Navigate to="/maintenance" replace />}
+							/>
+
+							{/*Does not require sign in*/}
+							<Route
+								path="/maintenance"
+								element={<Maintenance />}
+							/>
+						</Routes>
+					</ErrorBoundary>
+				</Suspense>
+				<Maintenance />
+			</Main>
+		);
+	}
+
 	return (
 		<Main signInStatus={signInStatus}>
 			<Global styles={css(`${global}`)} />
@@ -560,14 +593,6 @@ const MMARouter = () => {
 					)}
 				>
 					<Routes>
-						<Route
-							path="*"
-							element={<Navigate to="/maintenance" replace />}
-						/>
-
-						{/*Does not require sign in*/}
-						<Route path="/maintenance" element={<Maintenance />} />
-
 						<Route path="/" element={<AccountOverview />} />
 						<Route
 							path="/app"
@@ -998,7 +1023,7 @@ const MMARouter = () => {
 							path="/sign-in-error"
 							element={<SignInError />}
 						/>
-						{/* <Route path="*" element={<Navigate to="/" />} /> */}
+						<Route path="*" element={<Navigate to="/" />} />
 					</Routes>
 				</ErrorBoundary>
 			</Suspense>
