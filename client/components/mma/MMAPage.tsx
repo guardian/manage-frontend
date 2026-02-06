@@ -560,14 +560,6 @@ const MMARouter = () => {
 					)}
 				>
 					<Routes>
-						<Route
-							path="*"
-							element={<Navigate to="/maintenance" replace />}
-						/>
-
-						{/*Does not require sign in*/}
-						<Route path="/maintenance" element={<Maintenance />} />
-
 						<Route path="/" element={<AccountOverview />} />
 						<Route
 							path="/app"
@@ -998,8 +990,28 @@ const MMARouter = () => {
 							path="/sign-in-error"
 							element={<SignInError />}
 						/>
-						{/* <Route path="*" element={<Navigate to="/" />} /> */}
+						<Route path="*" element={<Navigate to="/" />} />
 					</Routes>
+				</ErrorBoundary>
+			</Suspense>
+		</Main>
+	);
+};
+
+const MaintenanceModePage = () => {
+	return (
+		<Main>
+			<Global styles={css(`${global}`)} />
+			<Global styles={css(`${fonts}`)} />
+			<Suspense fallback={<MMAPageSkeleton />}>
+				<ErrorBoundary
+					fallback={(error) => (
+						<GenericErrorContainer>
+							<GenericErrorScreen loggingMessage={error} />
+						</GenericErrorContainer>
+					)}
+				>
+					<Maintenance />
 				</ErrorBoundary>
 			</Suspense>
 		</Main>
@@ -1023,6 +1035,10 @@ const MMAPageComponent = () => {
 			});
 		}
 	}, []);
+
+	if (featureSwitches.maintenanceMode) {
+		return <MaintenanceModePage />;
+	}
 
 	return (
 		<ABProvider
