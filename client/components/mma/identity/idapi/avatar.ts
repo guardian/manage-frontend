@@ -11,6 +11,8 @@ export class AvatarError extends Error {
 		this.name = 'AvatarError';
 		this.type = type;
 		this.reportToSentry = reportToSentry;
+
+		Object.setPrototypeOf(this, AvatarError.prototype);
 	}
 }
 

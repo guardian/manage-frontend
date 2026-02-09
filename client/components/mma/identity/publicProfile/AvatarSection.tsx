@@ -80,24 +80,21 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 			}}
 			validate={(values: AvatarPayload) => {
 				const errors: { file?: string } = {};
-
-				if (!values.file) {
-					errors.file = 'Please select an image to upload.';
-					return errors;
-				}
-
 				const validation = validateAvatarFile(values.file);
 				if (!validation.valid) {
 					errors.file = validation.error;
 				}
-
 				return errors;
 			}}
 			onSubmit={async (values: AvatarPayload, formikBag) => {
-				if (!values.file) { return; }
-
-				await saveAvatar(values.file);
-				formikBag.setSubmitting(false);
+				try {
+					if (!values.file) {
+						return;
+					}
+					await saveAvatar(values.file);
+				} finally {
+					formikBag.setSubmitting(false);
+				}
 			}}
 		>
 			{(formikBag) => (
@@ -166,7 +163,7 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 	const getErrorMessage = (error: any) => {
 		const message =
 			error?.message ||
-			'An error occured trying to upload your avatar. Please try again.';
+			'An error occurred trying to upload your avatar. Please try again.';
 		return <div css={errorMessageCss}>{message}</div>;
 	};
 
