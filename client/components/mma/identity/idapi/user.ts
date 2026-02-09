@@ -192,9 +192,9 @@ export const write = async (user: Partial<User>): Promise<User> => {
 		).then((response) => response.json());
 		if (isErrorResponse(response)) {
 			const userErrorObj = toUserError(response);
-			throw new Error(`Error: ${userErrorObj.type}`, {
-				cause: userErrorObj.error,
-			});
+			throw new Error(
+				`Error: ${userErrorObj.type} - ${JSON.stringify(userErrorObj.error)}`,
+			);
 		}
 		return toUser(response);
 	} catch (e) {
@@ -224,9 +224,9 @@ export const setUsername = async (user: Partial<User>): Promise<User> => {
 		).then((response) => response.json());
 		if (isErrorResponse(response)) {
 			const userErrorObj = toUserError(response);
-			throw new Error(`Error: ${userErrorObj.type}`, {
-				cause: userErrorObj.error,
-			});
+			throw new Error(
+				`Error: ${userErrorObj.type} - ${JSON.stringify(userErrorObj.error)}`,
+			);
 		}
 		return toUser(response);
 	} catch (e) {

@@ -2,22 +2,35 @@ import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { base64FromFile } from '@/shared/fileUploadUtils';
 import { ErrorTypes } from '../models';
 
+export class AvatarError extends Error {
+	readonly type: ErrorTypes;
+	readonly reportToSentry: boolean;
+	readonly userMessage: string;
+
+	constructor(
+		type: ErrorTypes,
+		message: string,
+		userMessage: string,
+		reportToSentry = true,
+	) {
+		super(message);
+		this.name = 'AvatarError';
+		this.type = type;
+		this.userMessage = userMessage;
+		this.reportToSentry = reportToSentry;
+		Object.setPrototypeOf(this, AvatarError.prototype);
+	}
+}
+
 interface AvatarAPIErrorResponse {
 	message: string;
 	errors: string[];
 }
 
-interface AvatarValidationError {
-	type: ErrorTypes.VALIDATION;
+interface AvatarAPIErrorDetail {
+	type: ErrorTypes;
 	error: string[];
 }
-
-interface AvatarNotFoundError {
-	type: ErrorTypes.NOT_FOUND;
-	error: string[];
-}
-
-type AvatarError = AvatarValidationError | AvatarNotFoundError;
 
 const isAvatarAPIErrorResponse = (
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we rely on Avatar returning something; we check to see if it is an error response
@@ -33,7 +46,7 @@ const isAvatarNotFoundError = (error: AvatarAPIErrorResponse): boolean => {
 	return error.message === 'Avatar not found';
 };
 
-const toAvatarError = (e: AvatarAPIErrorResponse): AvatarError => {
+const toAvatarError = (e: AvatarAPIErrorResponse): AvatarAPIErrorDetail => {
 	const { NOT_FOUND, VALIDATION } = ErrorTypes;
 	let type;
 	if (isAvatarNotFoundError(e)) {
@@ -44,7 +57,7 @@ const toAvatarError = (e: AvatarAPIErrorResponse): AvatarError => {
 	return {
 		type,
 		error: e.errors,
-	} as AvatarError;
+	} as AvatarAPIErrorDetail;
 };
 
 export const read = async () => {
@@ -54,9 +67,12 @@ export const read = async () => {
 	);
 	if (isAvatarAPIErrorResponse(response)) {
 		const avatarErrorObj = toAvatarError(response);
-		throw new Error(`Error: ${avatarErrorObj.type}`, {
-			cause: avatarErrorObj.error,
-		});
+		throw new AvatarError(
+			avatarErrorObj.type,
+			`Error: ${avatarErrorObj.type} - ${JSON.stringify(avatarErrorObj.error)}`,
+			avatarErrorObj.error.join('. '),
+			avatarErrorObj.type !== ErrorTypes.NOT_FOUND,
+		);
 	}
 	return response;
 };
@@ -80,8 +96,10 @@ export const write = async (file: File) => {
 	}).then((res) => res.json());
 	if (isAvatarAPIErrorResponse(response)) {
 		const avatarErrorObj = toAvatarError(response);
-		throw new Error(`Error: ${avatarErrorObj.type}`, {
-			cause: avatarErrorObj.error,
-		});
+		throw new AvatarError(
+			avatarErrorObj.type,
+			`Error: ${avatarErrorObj.type} - ${JSON.stringify(avatarErrorObj.error)}`,
+			avatarErrorObj.error.join('. '),
+		);
 	}
 };
