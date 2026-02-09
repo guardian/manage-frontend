@@ -96,10 +96,11 @@ export const validateAvatarFile = (
 		file.name.toLowerCase().endsWith(ext),
 	);
 
-	const hasValidMimeType =
-		VALID_AVATAR_MIME_TYPES.includes(file.type) || hasValidExtension;
+	const isValidType = file.type
+		? VALID_AVATAR_MIME_TYPES.includes(file.type)
+		: hasValidExtension;
 
-	if (!hasValidMimeType) {
+	if (!isValidType) {
 		return {
 			valid: false,
 			error: `Only ${VALID_AVATAR_FILE_EXTENSIONS.join(', ')} files are accepted.`,

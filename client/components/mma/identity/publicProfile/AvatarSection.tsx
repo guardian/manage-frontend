@@ -8,9 +8,9 @@ import type { ChangeEvent, FC } from 'react';
 import { validateAvatarFile } from '@/shared/fileUploadUtils';
 import { trackEvent } from '../../../../utilities/analytics';
 import { Spinner } from '../../../shared/Spinner';
+import { AvatarError } from '../idapi/avatar';
 import * as AvatarAPI from '../idapi/avatar';
 import { IdentityLocations } from '../IdentityLocations';
-import { ErrorTypes } from '../models';
 import { PageSection } from '../PageSection';
 import { errorMessageCss, labelCss } from '../sharedStyles';
 import {
@@ -33,18 +33,11 @@ const imgCss = css`
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the argument object is an error object?
-const isNonReportableAvatarError = (e: any): boolean => {
-	return (
-		e?.message?.includes(ErrorTypes.NOT_FOUND) ||
-		e?.message?.includes('No file selected')
-	);
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the argument object is an error object?
 const errorHandler = (e: any) => {
-	if (isNonReportableAvatarError(e)) {
+	if (e instanceof AvatarError && !e.reportToSentry) {
 		return;
 	}
+
 	Sentry.captureException(e);
 	trackEvent({
 		eventCategory: 'publicProfileError',
@@ -115,6 +108,7 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 							aria-describedby={
 								formikBag.errors.file ? 'avatar-file-error' : undefined
 							}
+							aria-invalid={Boolean(formikBag.errors.file)}
 							disabled={formikBag.isSubmitting}
 							type="file"
 							name="file"
