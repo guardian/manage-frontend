@@ -984,7 +984,8 @@ const MMARouter = () => {
 								<CreateReminder reminderType={'RECURRING'} />
 							}
 						/>
-
+						{/*Does not require sign in*/}
+						<Route path="/maintenance" element={<Maintenance />} />
 						{/*Does not require sign in*/}
 						<Route
 							path="/sign-in-error"
