@@ -89,6 +89,10 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 			onSubmit={async (values: AvatarPayload, formikBag) => {
 				try {
 					if (!values.file) {
+						formikBag.setFieldError(
+							'file',
+							'Please select an image to upload.',
+						);
 						return;
 					}
 					await saveAvatar(values.file);
