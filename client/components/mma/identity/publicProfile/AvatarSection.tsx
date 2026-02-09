@@ -101,15 +101,7 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 				return errors;
 			}}
 			onSubmit={async (values: AvatarPayload, formikBag) => {
-				const validation = validateAvatarFile(values.file);
-				if (!validation.valid) {
-					formikBag.setFieldError('file', validation.error);
-					return;
-				}
-
-				if (!values.file) {
-					return;
-				}
+				if (!values.file) { return; }
 
 				await saveAvatar(values.file);
 				formikBag.setSubmitting(false);
