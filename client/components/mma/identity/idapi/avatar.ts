@@ -5,13 +5,19 @@ import { ErrorTypes } from '../models';
 export class AvatarError extends Error {
 	readonly type: ErrorTypes;
 	readonly reportToSentry: boolean;
+	readonly userMessage: string;
 
-	constructor(type: ErrorTypes, message: string, reportToSentry = true) {
+	constructor(
+		type: ErrorTypes,
+		message: string,
+		userMessage: string,
+		reportToSentry = true,
+	) {
 		super(message);
 		this.name = 'AvatarError';
 		this.type = type;
+		this.userMessage = userMessage;
 		this.reportToSentry = reportToSentry;
-
 		Object.setPrototypeOf(this, AvatarError.prototype);
 	}
 }
@@ -64,6 +70,7 @@ export const read = async () => {
 		throw new AvatarError(
 			avatarErrorObj.type,
 			`Error: ${avatarErrorObj.type} - ${JSON.stringify(avatarErrorObj.error)}`,
+			avatarErrorObj.error.join('. '),
 			avatarErrorObj.type !== ErrorTypes.NOT_FOUND,
 		);
 	}
@@ -92,6 +99,7 @@ export const write = async (file: File) => {
 		throw new AvatarError(
 			avatarErrorObj.type,
 			`Error: ${avatarErrorObj.type} - ${JSON.stringify(avatarErrorObj.error)}`,
+			avatarErrorObj.error.join('. '),
 		);
 	}
 };

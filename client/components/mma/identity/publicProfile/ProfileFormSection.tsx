@@ -20,6 +20,8 @@ interface ProfileFormSectionProps {
 
 const formValidationSchema = Yup.object().shape({
 	username: Yup.string()
+		.trim()
+		.required('Username is required')
 		.min(6, 'Must be 6 characters minimum')
 		.max(20, 'Must be 20 characters or less')
 		.matches(

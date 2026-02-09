@@ -166,7 +166,7 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the argument object might lack a message attribute
 	const getErrorMessage = (error: any) => {
 		const message =
-			error?.message ||
+			(error instanceof AvatarError ? error.userMessage : null) ||
 			'An error occurred trying to upload your avatar. Please try again.';
 		return <div css={errorMessageCss}>{message}</div>;
 	};
