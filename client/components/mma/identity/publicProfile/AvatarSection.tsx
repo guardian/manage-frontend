@@ -35,7 +35,7 @@ const imgCss = css`
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the argument object is an error object?
 const isNonReportableAvatarError = (e: any): boolean => {
 	return (
-		(e.type && e.type === ErrorTypes.NOT_FOUND) ||
+		e?.message?.includes(ErrorTypes.NOT_FOUND) ||
 		e?.message?.includes('No file selected')
 	);
 };
@@ -112,6 +112,9 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 					<label css={labelCss}>
 						{avatarDisplay()}
 						<input
+							aria-describedby={
+								formikBag.errors.file ? 'avatar-file-error' : undefined
+							}
 							disabled={formikBag.isSubmitting}
 							type="file"
 							name="file"
@@ -129,7 +132,13 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 						/>
 					</label>
 					{formikBag.errors.file && (
-						<div css={[errorMessageCss, css`margin-bottom: ${space[6]}px`]}>{formikBag.errors.file}</div>
+						<div
+							css={[errorMessageCss, css`margin-bottom: ${space[6]}px`]}
+							id="avatar-file-error"
+							role="alert"
+						>
+							{formikBag.errors.file}
+						</div>
 					)}
 					<Button
 						disabled={formikBag.isSubmitting}
@@ -163,7 +172,6 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 	const getErrorMessage = (error: any) => {
 		const message =
 			error?.message ||
-			(error?.type === ErrorTypes.VALIDATION ? error.error : null) ||
 			'An error occured trying to upload your avatar. Please try again.';
 		return <div css={errorMessageCss}>{message}</div>;
 	};

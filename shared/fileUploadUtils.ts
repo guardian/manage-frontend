@@ -102,16 +102,20 @@ export const validateAvatarFile = (
 	if (!hasValidMimeType) {
 		return {
 			valid: false,
-			error: 'Only .jpg, .png or .gif files are accepted.',
+			error: `Only ${VALID_AVATAR_FILE_EXTENSIONS.join(', ')} files are accepted.`,
 		};
 	}
 
 	const maxSizeBytes = MAX_AVATAR_FILE_SIZE_KB * 1024;
+	const maxSizeLabel =
+		MAX_AVATAR_FILE_SIZE_KB >= 1024
+			? `${Math.round(MAX_AVATAR_FILE_SIZE_KB / 1024)}MB`
+			: `${MAX_AVATAR_FILE_SIZE_KB}KB`;
 
 	if (file.size > maxSizeBytes) {
 		return {
 			valid: false,
-			error: `File must be 1MB or smaller. Your file is ${Math.round(file.size / 1024)}KB.`,
+			error: `File must be ${maxSizeLabel} or smaller. Your file is ${Math.round(file.size / 1024)}KB.`,
 		};
 	}
 
