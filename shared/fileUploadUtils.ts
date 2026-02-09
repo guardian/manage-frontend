@@ -43,6 +43,20 @@ export const VALID_IMAGE_FILE_EXTENSIONS: string[] = [
 	'.pdf',
 ];
 
+export const VALID_AVATAR_FILE_EXTENSIONS: string[] = [
+	'.png',
+	'.jpeg',
+	'.jpg',
+	'.gif',
+];
+
+export const VALID_AVATAR_MIME_TYPES: string[] = [
+	'image/png',
+	'image/jpeg',
+	'image/jpg',
+	'image/gif',
+];
+
 export type FileAttachment = {
 	name: string;
 	type: string;
@@ -70,6 +84,39 @@ export const validateImageFileExtension = (fileName: string) =>
 	VALID_IMAGE_FILE_EXTENSIONS.filter((validFileExtension) =>
 		fileName.endsWith(validFileExtension),
 	).length > 0;
+
+export const validateAvatarFile = (
+	file: File | null,
+): { valid: boolean; error?: string } => {
+	if (!file) {
+		return { valid: false, error: 'Please select an image to upload.' };
+	}
+
+	const hasValidExtension = VALID_AVATAR_FILE_EXTENSIONS.some((ext) =>
+		file.name.toLowerCase().endsWith(ext),
+	);
+
+	const hasValidMimeType =
+		VALID_AVATAR_MIME_TYPES.includes(file.type) || hasValidExtension;
+
+	if (!hasValidMimeType) {
+		return {
+			valid: false,
+			error: 'Only .jpg, .png or .gif files are accepted.',
+		};
+	}
+
+	const maxSizeBytes = MAX_AVATAR_FILE_SIZE_KB * 1024;
+
+	if (file.size > maxSizeBytes) {
+		return {
+			valid: false,
+			error: `File must be 1MB or smaller. Your file is ${Math.round(file.size / 1024)}KB.`,
+		};
+	}
+
+	return { valid: true };
+};
 
 const removeDataUrlDeclarationFromBase64 = (fileBase64: string) =>
 	fileBase64.replace(/data:(.*)base64,/m, '');

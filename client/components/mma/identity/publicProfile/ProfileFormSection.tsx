@@ -21,7 +21,11 @@ interface ProfileFormSectionProps {
 const formValidationSchema = Yup.object().shape({
 	username: Yup.string()
 		.min(6, 'Must be 6 characters minimum')
-		.max(20, 'Must be 20 characters or less'),
+		.max(20, 'Must be 20 characters or less')
+		.matches(
+			/^\w+$/,
+			'Username can only contain letters, numbers, and underscores',
+		),
 });
 
 const usernameInput = (formikProps: FormikProps<User>) => (
@@ -33,8 +37,8 @@ const usernameInput = (formikProps: FormikProps<User>) => (
 		/>
 		<p css={textSmall}>
 			You need to set a username before you can comment. You can only set
-			your username once. It must be 6-20 characters, letters and/or
-			numbers.
+			your username once. It must be 6-20 characters, using only letters,
+			numbers, and underscores.
 		</p>
 	</>
 );

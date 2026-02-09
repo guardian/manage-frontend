@@ -54,14 +54,17 @@ export const read = async () => {
 	);
 	if (isAvatarAPIErrorResponse(response)) {
 		const avatarErrorObj = toAvatarError(response);
-		throw new Error(`Error: ${avatarErrorObj.type}`, {
-			cause: avatarErrorObj.error,
-		});
+		throw new Error(
+			`Error: ${avatarErrorObj.type} - ${JSON.stringify(avatarErrorObj.error)}`,
+		);
 	}
 	return response;
 };
 
-export const write = async (file: File) => {
+export const write = async (file: File | null) => {
+	if (!file) {
+		throw new Error('No file selected. Please choose an image to upload.');
+	}
 	const url = '/aapi/avatar';
 	const payload = {
 		name: file.name,
@@ -80,8 +83,8 @@ export const write = async (file: File) => {
 	}).then((res) => res.json());
 	if (isAvatarAPIErrorResponse(response)) {
 		const avatarErrorObj = toAvatarError(response);
-		throw new Error(`Error: ${avatarErrorObj.type}`, {
-			cause: avatarErrorObj.error,
-		});
+		throw new Error(
+			`Error: ${avatarErrorObj.type} - ${JSON.stringify(avatarErrorObj.error)}`,
+		);
 	}
 };
