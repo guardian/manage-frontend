@@ -34,7 +34,7 @@ const supporterPlusSepa = () =>
 
 const ResetStoresDecorator: Decorator = (Story) => {
 	const clearUpgradeStore = useUpgradeProductStore(
-		(state) => state.clearMainPlan,
+		(state) => state.clearStore,
 	);
 	const clearAccountStore = useAccountStore((state) => state.clearAccount);
 

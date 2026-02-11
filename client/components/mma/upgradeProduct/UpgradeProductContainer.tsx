@@ -100,6 +100,7 @@ export const UpgradeProductContainer = () => {
 		setPreviewResponse,
 		setPreviewLoadingState,
 		setPreviewError,
+		clearStore,
 	} = useUpgradeProductStore();
 	const { getIsTestUser } = useAccountStore();
 
@@ -194,10 +195,10 @@ export const UpgradeProductContainer = () => {
 
 	useEffect(() => {
 		if (previewLoadingState === UpgradePreviewLoadingState.Error) {
-			setPreviewLoadingState(UpgradePreviewLoadingState.NotStarted);
+			clearStore();
 			navigate('/');
 		}
-	}, [previewLoadingState, setPreviewLoadingState, navigate]);
+	}, [previewLoadingState, setPreviewLoadingState, navigate, clearStore]);
 
 	return (
 		<UpgradeProductPageContainer>

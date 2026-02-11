@@ -30,7 +30,7 @@ interface UpgradeProductActions {
 	setPreviewResponse: (response: UpgradePreviewResponse) => void;
 	setPreviewLoadingState: (state: UpgradePreviewLoadingState) => void;
 	setPreviewError: (error: string | null) => void;
-	clearMainPlan: () => void;
+	clearStore: () => void;
 }
 
 type UpgradeProductStore = UpgradeProductState & UpgradeProductActions;
@@ -87,7 +87,7 @@ export const useUpgradeProductStore = create<UpgradeProductStore>()(
 					false,
 					'setPreviewError',
 				),
-			clearMainPlan: () => set(initialState, false, 'clearMainPlan'),
+			clearStore: () => set(initialState, false, 'clearMainPlan'),
 		}),
 		{ name: 'UpgradeProductStore' },
 	),
