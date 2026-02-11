@@ -999,6 +999,26 @@ const MMARouter = () => {
 	);
 };
 
+const MaintenanceModePage = () => {
+	return (
+		<Main>
+			<Global styles={css(`${global}`)} />
+			<Global styles={css(`${fonts}`)} />
+			<Suspense fallback={<MMAPageSkeleton />}>
+				<ErrorBoundary
+					fallback={(error) => (
+						<GenericErrorContainer>
+							<GenericErrorScreen loggingMessage={error} />
+						</GenericErrorContainer>
+					)}
+				>
+					<Maintenance />
+				</ErrorBoundary>
+			</Suspense>
+		</Main>
+	);
+};
+
 const getMvtId = (): number => {
 	const mvtId = getCookie('GU_mvt_id');
 	return mvtId ? parseInt(mvtId) : 0;
@@ -1016,6 +1036,10 @@ const MMAPageComponent = () => {
 			});
 		}
 	}, []);
+
+	if (featureSwitches.maintenanceMode) {
+		return <MaintenanceModePage />;
+	}
 
 	return (
 		<ABProvider
