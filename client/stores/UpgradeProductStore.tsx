@@ -35,19 +35,19 @@ interface UpgradeProductActions {
 
 type UpgradeProductStore = UpgradeProductState & UpgradeProductActions;
 
-const initialState: UpgradeProductState = {
+const initialState: Omit<UpgradeProductState, 'previewError'> = {
 	mainPlan: null,
 	specificProductType: null,
 	subscription: null,
 	previewResponse: null,
 	previewLoadingState: UpgradePreviewLoadingState.NotStarted,
-	previewError: null,
 };
 
 export const useUpgradeProductStore = create<UpgradeProductStore>()(
 	devtools(
 		(set) => ({
 			...initialState,
+			previewError: null,
 			setMainPlan: (plan) => {
 				const specificProductType =
 					getSpecificProductTypeFromProductKey(
@@ -87,7 +87,7 @@ export const useUpgradeProductStore = create<UpgradeProductStore>()(
 					false,
 					'setPreviewError',
 				),
-			clearStore: () => set(initialState, false, 'clearMainPlan'),
+			clearStore: () => set(initialState, false, 'clearStore'),
 		}),
 		{ name: 'UpgradeProductStore' },
 	),
