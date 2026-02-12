@@ -119,8 +119,7 @@ export const UpgradeProductThankYou = () => {
 						<b css={whatHappensNowItemInformationBoldTextCss}>
 							Your new support plan starts today.
 						</b>{' '}
-						It may take up to an hour for your full app access to
-						become available
+						You can start to enjoy your new rewards immediately.
 					</p>
 				</div>
 			</div>
@@ -165,9 +164,9 @@ export const UpgradeProductThankYou = () => {
 						trackEvent({
 							eventCategory: 'account_overview',
 							eventAction: 'click',
-							eventLabel: `/`,
+							eventLabel: `https://www.theguardian.com/`,
 						});
-						navigate(`/`);
+						navigate(`href="https://www.theguardian.com/`);
 					}}
 				>
 					{`Continue reading the Guardian`}
