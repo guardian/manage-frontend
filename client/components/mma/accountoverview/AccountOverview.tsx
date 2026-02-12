@@ -392,7 +392,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				<ProblemAlert
 					title="Unable to upgrade your subscription"
 					message={
-						<p css={subHeadingInformationTextCss}>
+						<p css={[subHeadingInformationTextCss, css`margin-bottom: 0; ${from.tablet} { margin-bottom: 0; }`]}>
 							You are not currently eligible for an upgrade
 							on this channel. Please find the customer care
 							contact to discuss your upgrade option:{' '}
