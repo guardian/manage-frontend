@@ -76,6 +76,16 @@ const deliveryRecordsLocationObjects: LocationObject[] = Object.values(
 		selectedNavItem: NAV_LINKS.accountOverview,
 	}));
 
+const upgradeProductLocationObjects: LocationObject[] = [
+	'information',
+	'confirmation',
+	'thank-you',
+].map((subPath) => ({
+	title: 'Upgrade your subscription',
+	path: `/${PRODUCT_TYPES.supporterplus.urlPart}/upgrade-product/${subPath}`,
+	selectedNavItem: NAV_LINKS.accountOverview,
+}));
+
 const MMALocationObjectArr: LocationObject[] = [
 	{
 		title: 'Account overview',
@@ -98,6 +108,7 @@ const MMALocationObjectArr: LocationObject[] = [
 	...holidaysOverviewLocationObjects,
 	...deliveryAddressFormLocationObjects,
 	...deliveryRecordsLocationObjects,
+	...upgradeProductLocationObjects,
 	{
 		title: 'Emails & marketing',
 		path: '/email-prefs',
