@@ -394,7 +394,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					message={
 						<p css={[subHeadingInformationTextCss, css`margin-bottom: 0; ${from.tablet} { margin-bottom: 0; }`]}>
 							You are not currently eligible for an upgrade
-							on this channel. Please find the customer care
+							online. Please find the customer care
 							contact to discuss your upgrade option:{' '}
 							<a href="https://manage.theguardian.com/help-centre">
 								https://manage.theguardian.com/help-centre
