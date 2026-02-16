@@ -2,8 +2,13 @@ import { css } from '@emotion/react';
 import { from, space, textSans17 } from '@guardian/source/foundations';
 import { Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
-import { Fragment } from 'react';
-import { subHeadingCss } from '@/client/styles/headings';
+import { Fragment, useEffect } from 'react';
+import { useAccountStore } from '@/client/stores/AccountStore';
+import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
+import {
+	subHeadingCss,
+	subHeadingInformationTextCss,
+} from '@/client/styles/headings';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
@@ -135,32 +140,75 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 				hasGuardianEmail ||
 				hasDigitalPack ||
 				hasSupporterPlus) && (
-				<>
-					<h2 css={subHeadingCss}>
-						Get the most out of your benefits
-					</h2>
-					<div css={benefitsCtasContainerCss}>
-						<DownloadAppCtaVariation1 />
-						<DownloadFeastAppCtaWithImage />
-						{hasEditionsAndArchiveAccess && (
-							<>
-								<DownloadEditionsAppCtaWithImage />
-								<NewspaperArchiveCta />
-							</>
-						)}
-					</div>
-				</>
-			)}
+					<>
+						<h2 css={subHeadingCss}>
+							Get the most out of your benefits
+						</h2>
+						<div css={benefitsCtasContainerCss}>
+							<DownloadAppCtaVariation1 />
+							<DownloadFeastAppCtaWithImage />
+							{hasEditionsAndArchiveAccess && (
+								<>
+									<DownloadEditionsAppCtaWithImage />
+									<NewspaperArchiveCta />
+								</>
+							)}
+						</div>
+					</>
+				)}
 		</>
 	);
 };
 
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
+	const { setAllResponses } = useAccountStore();
+	const { previewError, setPreviewError } = useUpgradeProductStore();
+
 	const { data: accountOverviewResponse, loadingState } =
 		useAsyncLoaderAllSettled(
 			productFetchPromisesAndRefs,
 			JsonResponseHandler,
 		);
+
+	const {
+		mdapiResponse,
+		cancelledProductsResponse,
+		mpapiResponse,
+		singleContributionsResponse,
+	} = (accountOverviewResponse as Partial<ProductFetchResponse>) ?? {};
+
+	useEffect(() => {
+		return () => {
+			if (previewError) {
+				setPreviewError(null);
+			}
+		};
+	}, [previewError, setPreviewError]);
+
+	useEffect(() => {
+		if (
+			loadingState === LoadingState.HasLoaded &&
+			accountOverviewResponse
+		) {
+			setAllResponses({
+				mdapiResponse: mdapiResponse ?? undefined,
+				cancelledProductsResponse:
+					cancelledProductsResponse ?? undefined,
+				mpapiResponse: mpapiResponse ?? undefined,
+				singleContributionsResponse:
+					singleContributionsResponse ?? undefined,
+			});
+		}
+	}, [
+		loadingState,
+		accountOverviewResponse,
+		mdapiResponse,
+		cancelledProductsResponse,
+		mpapiResponse,
+		singleContributionsResponse,
+		setAllResponses,
+	]);
+
 	if (loadingState == LoadingState.HasError) {
 		return <GenericErrorScreen />;
 	}
@@ -172,13 +220,6 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	if (accountOverviewResponse === null) {
 		return <GenericErrorScreen />;
 	}
-
-	const {
-		mdapiResponse,
-		cancelledProductsResponse,
-		mpapiResponse,
-		singleContributionsResponse,
-	} = accountOverviewResponse as Partial<ProductFetchResponse>;
 
 	const failedProductRequestMessages = [];
 	if (!cancelledProductsResponse) {
@@ -213,9 +254,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 
 	const allCancelledProductDetails = cancelledProductsResponse
 		? cancelledProductsResponse.sort(
-				(a: CancelledProductDetail, b: CancelledProductDetail) =>
-					b.subscription.start.localeCompare(a.subscription.start),
-		  )
+			(a: CancelledProductDetail, b: CancelledProductDetail) =>
+				b.subscription.start.localeCompare(a.subscription.start),
+		)
 		: [];
 
 	const allProductCategories = [
@@ -293,6 +334,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		!hasDigiSubAndContribution &&
 		!hasNonServiceableCountry;
 
+	const isEligibleToUpsell =
+		!maybeFirstPaymentFailure && !hasNonServiceableCountry;
+
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
 	): GroupedProductTypeKeys => {
@@ -344,6 +388,24 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					}
 				/>
 			)}
+			{previewError && (
+				<ProblemAlert
+					title="Unable to upgrade your subscription"
+					message={
+						<p css={[subHeadingInformationTextCss, css`margin-bottom: 0; ${from.tablet} { margin-bottom: 0; }`]}>
+							You are not currently eligible for an upgrade
+							online. Please find the customer care
+							contact to discuss your upgrade option:{' '}
+							<a href="https://manage.theguardian.com/help-centre">
+								https://manage.theguardian.com/help-centre
+							</a>
+						</p>
+					}
+					additionalcss={css`
+						margin-top: ${space[5]}px;
+					`}
+				/>
+			)}
 			{possiblyAffectedByCanadaPostStrike && <CanadaStrike />}
 			{uniqueProductCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
@@ -373,6 +435,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 									}
 									productDetail={productDetail}
 									isEligibleToSwitch={isEligibleToSwitch}
+									isEligibleToUpsell={isEligibleToUpsell}
 									user={mdapiResponse.user}
 								/>
 							))}
