@@ -31,6 +31,7 @@ import {
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
+import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
 import { Ribbon } from '../../shared/Ribbon';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
@@ -83,6 +84,10 @@ export const ProductCard = ({
 	const specificProductType = getSpecificProductTypeFromProductKey(
 		productDetail.mmaProductKey,
 	);
+
+	const { fetchUpgradePreview, isPreviewLoading, hasPreviewError } =
+		useUpgradeProduct();
+
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
 
@@ -92,8 +97,9 @@ export const ProductCard = ({
 		['Partner', 'Patron'].includes(productDetail.mmaProductKey) &&
 		(mainPlan as PaidSubscriptionPlan).features.includes('Events');
 
-	const productTitle = `${specificProductType.productTitle(mainPlan)}${isPatron ? ' — Patron' : ''
-		}`;
+	const productTitle = `${specificProductType.productTitle(mainPlan)}${
+		isPatron ? ' — Patron' : ''
+	}`;
 
 	const isGifted = isGift(productDetail.subscription);
 	const userIsGifter = isGifted && productDetail.isPaidTier;
@@ -164,7 +170,7 @@ export const ProductCard = ({
 		productDetail.subscription.nextPaymentDate &&
 		productDetail.subscription.potentialCancellationDate &&
 		productDetail.subscription.nextPaymentDate !==
-		productDetail.subscription.potentialCancellationDate;
+			productDetail.subscription.potentialCancellationDate;
 
 	const futurePlan = productDetail.subscription.futurePlans[0];
 	const isBillingFrequencySwitch =
@@ -175,20 +181,21 @@ export const ProductCard = ({
 
 	const futureProductTitle =
 		futurePlan?.mmaProductKey &&
-			productDetail.mmaProductKey &&
-			productDetail.subscription.currentPlans.length > 0
+		productDetail.mmaProductKey &&
+		productDetail.subscription.currentPlans.length > 0
 			? isBillingFrequencySwitch
 				? `${getSpecificProductTypeFromProductKey(
-					futurePlan.mmaProductKey,
-				).productTitle(mainPlan)} ${futurePlan.billingPeriod === 'year'
-					? '(annual)'
-					: futurePlan.billingPeriod === 'month'
-						? '(monthly)'
-						: futurePlan.billingPeriod
-				}`
+						futurePlan.mmaProductKey,
+				  ).productTitle(mainPlan)} ${
+						futurePlan.billingPeriod === 'year'
+							? '(annual)'
+							: futurePlan.billingPeriod === 'month'
+							? '(monthly)'
+							: futurePlan.billingPeriod
+				  }`
 				: getSpecificProductTypeFromProductKey(
-					futurePlan.mmaProductKey,
-				).productTitle(mainPlan)
+						futurePlan.mmaProductKey,
+				  ).productTitle(mainPlan)
 			: null;
 
 	return (
@@ -295,8 +302,8 @@ export const ProductCard = ({
 								{cardConfig.showDigitalBenefitsSection
 									? `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have unlocked the full digital experience:`
 									: cardConfig.showUnlimitedDigitalBenefitsSection
-										? `You’re subscribed to the Guardian for ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, unlocking unlimited digital benefits.`
-										: `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have access to exclusive extras.`}
+									? `You’re subscribed to the Guardian for ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, unlocking unlimited digital benefits.`
+									: `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have access to exclusive extras.`}
 							</p>
 							<BenefitsToggle
 								productType={specificProductType.productType}
@@ -372,21 +379,21 @@ export const ProductCard = ({
 								)}
 								{((isGifted && !userIsGifter) ||
 									!productDetail.subscription.autoRenew) && (
-										<div>
-											<dt>End date</dt>
-											<dd>
-												{parseDate(
-													subscriptionEndDate,
-												).dateStr()}
-											</dd>
-										</div>
-									)}
+									<div>
+										<dt>End date</dt>
+										<dd>
+											{parseDate(
+												subscriptionEndDate,
+											).dateStr()}
+										</dd>
+									</div>
+								)}
 								{specificProductType.showTrialRemainingIfApplicable &&
 									productDetail.subscription.trialLength >
-									0 &&
+										0 &&
 									!isGifted &&
 									productDetail.subscription.readerType !==
-									'Patron' && (
+										'Patron' && (
 										<div>
 											<dt>Trial remaining</dt>
 											<dd>
@@ -418,7 +425,7 @@ export const ProductCard = ({
 												{nextPaymentDetails.nextPaymentDateValue &&
 													productDetail.subscription
 														.readerType !==
-													'Patron' &&
+														'Patron' &&
 													` on ${nextPaymentDetails.nextPaymentDateValue}`}
 											</dd>
 										</div>
@@ -439,6 +446,10 @@ export const ProductCard = ({
 									size="small"
 									priority="primary"
 									theme={themeButtonReaderRevenueBrand}
+									isLoading={isPreviewLoading}
+									disabled={
+										isPreviewLoading || hasPreviewError
+									}
 									cssOverrides={css`
 										justify-content: center;
 									`}
@@ -448,15 +459,16 @@ export const ProductCard = ({
 											eventAction: 'click',
 											eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
 										});
-										navigate(
-											`/${specificProductType.urlPart}/upgrade-product/information`,
-											{
-												state: {
-													productDetail:
-														productDetail,
-												},
-											},
-										);
+										void fetchUpgradePreview({
+											subscriptionId:
+												productDetail.subscription
+													.subscriptionId,
+											subscription:
+												productDetail.subscription,
+											mainPlan:
+												mainPlan as PaidSubscriptionPlan,
+											navigationPath: `/${specificProductType.urlPart}/upgrade-product/information`,
+										});
 									}}
 								>
 									{`Upgrade to Digital plus`}
@@ -466,8 +478,9 @@ export const ProductCard = ({
 								<Button
 									aria-label={`${specificProductType.productTitle(
 										mainPlan,
-									)} : Manage ${groupedProductType.friendlyName
-										}`}
+									)} : Manage ${
+										groupedProductType.friendlyName
+									}`}
 									data-cy={`Manage ${groupedProductType.friendlyName}`}
 									size="small"
 									priority="tertiary"
@@ -622,8 +635,8 @@ export const ProductCard = ({
 									>
 										{!productDetail.subscription
 											.autoRenew &&
-											!productDetail.subscription
-												.nextPaymentDate ? (
+										!productDetail.subscription
+											.nextPaymentDate ? (
 											<>
 												This is a one-off payment and
 												will not renew. You’ll continue
