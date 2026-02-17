@@ -272,11 +272,16 @@ export const UpgradeProductConfirmation = () => {
 					cssOverrides={css`
 						justify-content: center;
 					`}
-					onClick={() =>
+					onClick={() => {
+						trackEvent({
+							eventCategory: 'account_overview',
+							eventAction: 'click',
+							eventLabel: `/${specificProductType.urlPart}/upgrade-product/thank-you`,
+						});
 						void executeUpgrade(
 							`/${specificProductType.urlPart}/upgrade-product/thank-you`,
-						)
-					}
+						);
+					}}
 				>
 					{`Upgrade for ${mainPlan.currency}${previewResponse?.targetCatalogPrice} per ${nextPaymentDetails?.paymentInterval}`}
 				</Button>

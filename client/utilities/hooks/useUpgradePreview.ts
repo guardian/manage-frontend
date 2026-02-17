@@ -11,7 +11,6 @@ import {
 	UpgradePreviewLoadingState,
 	useUpgradeProductStore,
 } from '../../stores/UpgradeProductStore';
-import { trackEvent } from '../analytics';
 import { changePlanFetch } from '../productUtils';
 
 interface FetchUpgradePreviewParams {
@@ -116,12 +115,6 @@ export const useUpgradeProduct = () => {
 					`Failed to upgrade subscription: ${response.status}`,
 				);
 			}
-
-			trackEvent({
-				eventCategory: 'account_overview',
-				eventAction: 'click',
-				eventLabel: navigationPath,
-			});
 
 			navigate(navigationPath);
 		} catch (error) {
