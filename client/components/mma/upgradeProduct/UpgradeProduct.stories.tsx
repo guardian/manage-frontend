@@ -2,6 +2,11 @@ import type { Decorator, Meta, StoryFn } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
 import { useEffect } from 'react';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import type {
+	PaidSubscriptionPlan,
+	ProductDetail,
+} from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import type { UpgradePreviewResponse } from '../../../../shared/productSwitchTypes';
 import { baseSupporterPlus } from '../../../fixtures/productBuilder/baseProducts';
 import { ProductBuilder } from '../../../fixtures/productBuilder/productBuilder';
@@ -46,6 +51,33 @@ const ResetStoresDecorator: Decorator = (Story) => {
 	return <Story />;
 };
 
+/**
+ * Decorator that pre-populates the UpgradeProductStore with mainPlan,
+ * subscription, and previewResponse. This simulates the state the store
+ * would be in after the ProductCard prefetch completes successfully.
+ */
+const createStorePopulatorDecorator = (
+	productDetail: ProductDetail,
+	previewResponse: UpgradePreviewResponse,
+): Decorator => {
+	const StorePopulator: Decorator = (Story) => {
+		const { setMainPlan, setSubscription, setPreviewResponse } =
+			useUpgradeProductStore();
+
+		useEffect(() => {
+			const mainPlan = getMainPlan(
+				productDetail.subscription,
+			) as PaidSubscriptionPlan;
+			setMainPlan(mainPlan);
+			setSubscription(productDetail.subscription);
+			setPreviewResponse(previewResponse);
+		}, [setMainPlan, setSubscription, setPreviewResponse]);
+
+		return <Story />;
+	};
+	return StorePopulator;
+};
+
 const mockUpgradePreviewResponseMonthlyGBP: UpgradePreviewResponse = {
 	amountPayableToday: 5.5,
 	proratedRefundAmount: 4.5,
@@ -83,12 +115,16 @@ export const InformationMonthly: StoryFn<
 > = () => {
 	return <UpgradeProductInformation />;
 };
+InformationMonthly.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlus(),
+		mockUpgradePreviewResponseMonthlyGBP,
+	),
+];
 InformationMonthly.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlus() },
 		container: <UpgradeProductContainer />,
 	},
-	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
 
 export const InformationAnnual: StoryFn<
@@ -96,12 +132,16 @@ export const InformationAnnual: StoryFn<
 > = () => {
 	return <UpgradeProductInformation />;
 };
+InformationAnnual.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusAnnual(),
+		mockUpgradePreviewResponseAnnualGBP,
+	),
+];
 InformationAnnual.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlusAnnual() },
 		container: <UpgradeProductContainer />,
 	},
-	msw: mswHandlersSuccess(mockUpgradePreviewResponseAnnualGBP),
 };
 
 export const ConfirmationMonthly: StoryFn<
@@ -109,9 +149,14 @@ export const ConfirmationMonthly: StoryFn<
 > = () => {
 	return <UpgradeProductConfirmation />;
 };
+ConfirmationMonthly.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlus(),
+		mockUpgradePreviewResponseMonthlyGBP,
+	),
+];
 ConfirmationMonthly.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlus() },
 		container: <UpgradeProductContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
@@ -122,9 +167,14 @@ export const ConfirmationAnnual: StoryFn<
 > = () => {
 	return <UpgradeProductConfirmation />;
 };
+ConfirmationAnnual.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusAnnual(),
+		mockUpgradePreviewResponseAnnualGBP,
+	),
+];
 ConfirmationAnnual.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlusAnnual() },
 		container: <UpgradeProductContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseAnnualGBP),
@@ -135,9 +185,14 @@ export const ConfirmationDirectDebit: StoryFn<
 > = () => {
 	return <UpgradeProductConfirmation />;
 };
+ConfirmationDirectDebit.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusDirectDebit(),
+		mockUpgradePreviewResponseMonthlyGBP,
+	),
+];
 ConfirmationDirectDebit.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlusDirectDebit() },
 		container: <UpgradeProductContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
@@ -149,9 +204,14 @@ export const ConfirmationPayPal: StoryFn<
 > = () => {
 	return <UpgradeProductConfirmation />;
 };
+ConfirmationPayPal.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusPayPal(),
+		mockUpgradePreviewResponseMonthlyGBP,
+	),
+];
 ConfirmationPayPal.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlusPayPal() },
 		container: <UpgradeProductContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
@@ -163,9 +223,14 @@ export const ConfirmationSepa: StoryFn<
 > = () => {
 	return <UpgradeProductConfirmation />;
 };
+ConfirmationSepa.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusSepa(),
+		mockUpgradePreviewResponseMonthlyGBP,
+	),
+];
 ConfirmationSepa.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlusSepa() },
 		container: <UpgradeProductContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
@@ -175,21 +240,29 @@ ConfirmationSepa.storyName = 'Confirmation - SEPA';
 export const ThankYouMonthly: StoryFn<typeof UpgradeProductThankYou> = () => {
 	return <UpgradeProductThankYou />;
 };
+ThankYouMonthly.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlus(),
+		mockUpgradePreviewResponseMonthlyGBP,
+	),
+];
 ThankYouMonthly.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlus() },
 		container: <UpgradeProductContainer />,
 	},
-	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
 
 export const ThankYouAnnual: StoryFn<typeof UpgradeProductThankYou> = () => {
 	return <UpgradeProductThankYou />;
 };
+ThankYouAnnual.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusAnnual(),
+		mockUpgradePreviewResponseAnnualGBP,
+	),
+];
 ThankYouAnnual.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlusAnnual() },
 		container: <UpgradeProductContainer />,
 	},
-	msw: mswHandlersSuccess(mockUpgradePreviewResponseAnnualGBP),
 };
