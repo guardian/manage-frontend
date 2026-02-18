@@ -16,10 +16,7 @@ import {
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
 import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
-import * as Sentry from '@sentry/browser';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAccountStore } from '@/client/stores/AccountStore';
 import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
 import { errorSummaryOverrideCss } from '@/client/styles/ErrorStyles';
 import {
@@ -28,7 +25,7 @@ import {
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
-import { changePlanFetch } from '@/client/utilities/productUtils';
+import { useUpgradeProduct } from '@/client/utilities/hooks/useUpgradePreview';
 import { dateString } from '@/shared/dates';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { productCardConfiguration } from '../accountoverview/ProductCardConfiguration';
@@ -97,10 +94,7 @@ export const UpgradeProductConfirmation = () => {
 
 	const { mainPlan, specificProductType, previewResponse, subscription } =
 		useUpgradeProductStore();
-	const { getIsTestUser } = useAccountStore();
-
-	const [isUpgrading, setIsUpgrading] = useState(false);
-	const [upgradeError, setUpgradeError] = useState<string | null>(null);
+	const { executeUpgrade, isUpgrading, upgradeError } = useUpgradeProduct();
 
 	if (!mainPlan || !specificProductType || !subscription) {
 		return null;
@@ -112,61 +106,6 @@ export const UpgradeProductConfirmation = () => {
 		null,
 		false,
 	);
-
-	const handleUpgradeClick = async () => {
-		if (isUpgrading) {
-			return;
-		}
-
-		setIsUpgrading(true);
-		setUpgradeError(null);
-
-		const isTestUser = getIsTestUser();
-
-		try {
-			const response = await changePlanFetch({
-				subscriptionId: subscription.subscriptionId,
-				isTestUser,
-				mode: 'switchToBasePrice',
-				targetProduct: 'DigitalSubscription',
-				preview: false,
-			});
-
-			if (!response.ok) {
-				throw new Error(
-					`Failed to upgrade subscription: ${response.status}`,
-				);
-			}
-
-			trackEvent({
-				eventCategory: 'account_overview',
-				eventAction: 'click',
-				eventLabel: `/${specificProductType.urlPart}/upgrade-product/thank-you`,
-			});
-
-			navigate(
-				`/${specificProductType.urlPart}/upgrade-product/thank-you`,
-			);
-		} catch (error) {
-			Sentry.captureException(
-				error instanceof Error
-					? error
-					: new Error('Failed to upgrade subscription'),
-				{
-					extra: {
-						subscriptionId: subscription.subscriptionId,
-						isTestUser,
-					},
-				},
-			);
-			setUpgradeError(
-				error instanceof Error
-					? error.message
-					: 'Something went wrong. Please try again.',
-			);
-			setIsUpgrading(false);
-		}
-	};
 
 	let paymentMethodCopy = `We will take payment as before`;
 
@@ -333,7 +272,16 @@ export const UpgradeProductConfirmation = () => {
 					cssOverrides={css`
 						justify-content: center;
 					`}
-					onClick={() => void handleUpgradeClick()}
+					onClick={() => {
+						trackEvent({
+							eventCategory: 'account_overview',
+							eventAction: 'click',
+							eventLabel: `/${specificProductType.urlPart}/upgrade-product/thank-you`,
+						});
+						void executeUpgrade(
+							`/${specificProductType.urlPart}/upgrade-product/thank-you`,
+						);
+					}}
 				>
 					{`Upgrade for ${mainPlan.currency}${previewResponse?.targetCatalogPrice} per ${nextPaymentDetails?.paymentInterval}`}
 				</Button>
