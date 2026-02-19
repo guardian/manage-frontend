@@ -16,7 +16,7 @@ import {
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
 import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
 import { errorSummaryOverrideCss } from '@/client/styles/ErrorStyles';
 import {
@@ -91,6 +91,7 @@ const termsAndConditionsFooterCss = css`
 
 export const UpgradeProductConfirmation = () => {
 	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
 
 	const { mainPlan, specificProductType, previewResponse, subscription } =
 		useUpgradeProductStore();
@@ -273,14 +274,16 @@ export const UpgradeProductConfirmation = () => {
 						justify-content: center;
 					`}
 					onClick={() => {
+						const thankYouPath = `/${
+							specificProductType.urlPart
+						}/upgrade-product/thank-you?${searchParams.toString()}`;
+
 						trackEvent({
 							eventCategory: 'account_overview',
 							eventAction: 'click',
 							eventLabel: `/${specificProductType.urlPart}/upgrade-product/thank-you`,
 						});
-						void executeUpgrade(
-							`/${specificProductType.urlPart}/upgrade-product/thank-you`,
-						);
+						void executeUpgrade(thankYouPath);
 					}}
 				>
 					{`Upgrade for ${mainPlan.currency}${previewResponse?.targetCatalogPrice} per ${nextPaymentDetails?.paymentInterval}`}
@@ -301,14 +304,16 @@ export const UpgradeProductConfirmation = () => {
 						}
 					`}
 					onClick={() => {
+						const informationPath = `/${
+							specificProductType.urlPart
+						}/upgrade-product/information?${searchParams.toString()}`;
+
 						trackEvent({
 							eventCategory: 'account_overview',
 							eventAction: 'click',
 							eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
 						});
-						navigate(
-							`/${specificProductType.urlPart}/upgrade-product/information`,
-						);
+						navigate(informationPath);
 					}}
 				>
 					{`Back`}
