@@ -32,8 +32,8 @@ const adFree = {
 };
 
 const guardianWeekly = {
-	name: 'Guardian Weekly.',
-	description: 'Print magazine delivered to your door every week',
+	name: 'The Guardian Weekly',
+	description: 'magazine, delivered to your door every week',
 };
 
 const partnerOffers: ProductBenefit = {
@@ -42,30 +42,34 @@ const partnerOffers: ProductBenefit = {
 	specificToRegions: ['AUD'],
 };
 
+const newspaperArchiveBenefit = {
+	description: "Digital access to the Guardian's 200-year newspaper archive",
+};
+
 const productPlusdigitalBenefits = [
 	{
+		name: 'Ad-free reading',
 		description:
-			'Unlimited access to the refreshed Guardian app and Guardian Feast app',
+			'and fewer asks of support on the Guardian app and website',
 	},
 	{
 		description:
-			'Unlimited access to the Guardian Editions app so you can enjoy newspapers on your mobile and tablet',
+			'Unlimited access to the Guardian app and Guardian Feast app',
 	},
-	{ description: 'Ad-free reading on all your devices' },
 	{
 		description:
-			'Exclusive newsletter for supporters, sent every week from the Guardian newsroom',
+			'Exclusive supporter newsletters, and a weekly newsletter from The Guardian Weekly editor',
 	},
-	{ description: 'Far fewer asks for support' },
+	{
+		description:
+			'Access to the Guardian Editions app, where you can enjoy digital versions of our newspapers and magazines on your phone or tablet',
+	},
 ];
 
 const digitalPlusBenefits = [
 	{ description: 'Guardian Weekly e-magazine' },
 	{ description: 'The Long Read e-magazine' },
-	{
-		description:
-			"Digital access to the Guardian's 200 year newspaper archive",
-	},
+	newspaperArchiveBenefit,
 	{ description: 'Far fewer asks for support' },
 	{ description: 'Ad-free reading on all your devices' },
 	{ description: 'Unlimited access to the premium Guardian app' },
@@ -142,7 +146,11 @@ export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
 		nationaldeliveryplusdigital: [...productPlusdigitalBenefits],
 		voucher: [],
 		voucherplusdigital: [...productPlusdigitalBenefits],
-		guardianweekly: [],
+		guardianweekly: [
+			guardianWeekly,
+			...productPlusdigitalBenefits,
+			newspaperArchiveBenefit,
+		],
 		guardianadlite: [],
 		guardianpatron: [],
 		observer: [],
@@ -190,10 +198,7 @@ export const getUpsellBenefits = (
 				{
 					description: 'The Long Read e-magazine',
 				},
-				{
-					description:
-						'Digital access to the Guardian’s 200 year newspaper archive',
-				},
+				newspaperArchiveBenefit,
 				{
 					description: 'Daily digital Guardian newspaper',
 				},
