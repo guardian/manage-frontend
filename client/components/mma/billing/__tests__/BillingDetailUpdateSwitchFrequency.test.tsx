@@ -50,6 +50,13 @@ jest.mock('@/shared/productResponse', () => ({
 }));
 
 jest.mock('@/shared/productTypes');
+
+// jest.mock() factories are hoisted above imports, so importing
+// BillingDetailUpdateSwitchFrequencyDisplayForm directly inside the factory
+// is not possible. A mock-prefixed variable is explicitly permitted by Jest's
+// hoisting check and is populated before any render occurs.
+let mockOutletComponent: React.ComponentType;
+
 jest.mock('react-router', () => ({
 	Navigate: ({ to }: { to: string }) => (
 		<div data-testid="navigate-component">{to}</div>
@@ -57,10 +64,8 @@ jest.mock('react-router', () => ({
 	useNavigate: jest.fn(),
 	useLocation: jest.fn(() => ({ state: null })),
 	Outlet: () => {
-		// Resolve at render time (module cache is populated by then) so that
-		// the form component shares the same BillingDetailUpdateSwitchFrequencyContext
-		// singleton and can read the context provided by the layout component.
-		return <BillingDetailUpdateSwitchFrequencyDisplayForm />;
+		const MockForm = mockOutletComponent;
+		return MockForm ? <MockForm /> : null;
 	},
 	useSearchParams: jest.fn(() => [new URLSearchParams()]),
 }));
@@ -161,6 +166,7 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mocks = getMocks();
+		mockOutletComponent = BillingDetailUpdateSwitchFrequencyDisplayForm;
 
 		mocks.productUtils.hasSupporterPlusMonthlyRatePlan.mockReturnValue(
 			true,
