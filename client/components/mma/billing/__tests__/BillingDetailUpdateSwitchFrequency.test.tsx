@@ -7,7 +7,10 @@ import type { ProductType } from '@/shared/productTypes';
 
 // Must come after other mocks to avoid circular dependencies
 import { BillingUpdateContext } from '../BillingDetailUpdateContainer';
-import { BillingDetailUpdateSwitchFrequency } from '../BillingDetailUpdateSwitchFrequency';
+import {
+	BillingDetailUpdateSwitchFrequency,
+	BillingDetailUpdateSwitchFrequencyDisplayForm,
+} from '../BillingDetailUpdateSwitchFrequency';
 
 // Setup mocks BEFORE importing component to prevent AsyncLoader dependency issues
 jest.mock('@/client/utilities/currencyIso', () => ({
@@ -53,7 +56,12 @@ jest.mock('react-router', () => ({
 	),
 	useNavigate: jest.fn(),
 	useLocation: jest.fn(() => ({ state: null })),
-	Outlet: () => <div data-testid="outlet" />,
+	Outlet: () => {
+		// Resolve at render time (module cache is populated by then) so that
+		// the form component shares the same BillingDetailUpdateSwitchFrequencyContext
+		// singleton and can read the context provided by the layout component.
+		return <BillingDetailUpdateSwitchFrequencyDisplayForm />;
+	},
 	useSearchParams: jest.fn(() => [new URLSearchParams()]),
 }));
 jest.mock('../../shared/benefits/BenefitsToggle', () => ({
