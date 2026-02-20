@@ -18,7 +18,7 @@ import {
 import { Button } from '@guardian/source/react-components';
 import type { Context } from 'react';
 import { createContext, useContext, useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router';
 import { convertCurrencyToSymbol } from '@/client/utilities/currencyIso';
 import {
 	changeSubscriptionBillingFrequencyFetch,
@@ -82,7 +82,7 @@ const comparisonCardHeaderPriceCss = css`
 	}
 `;
 
-const BillingDetailUpdateSwitchFrequencyDisplaySuccess = () => {
+export const BillingDetailUpdateSwitchFrequencyDisplaySuccess = () => {
 	const navigate = useNavigate();
 	const { productDetail } = useContext(
 		BillingDetailUpdateSwitchFrequencyContext,
@@ -150,11 +150,13 @@ const BillingDetailUpdateSwitchFrequencyDisplaySuccess = () => {
 	);
 };
 
-const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
-	onProcessingEnd,
-}: {
-	onProcessingEnd: (result: boolean) => void;
-}) => {
+export const BillingDetailUpdateSwitchFrequencyDisplayError = () => {
+	return (
+		<GenericErrorScreen loggingMessage="It was not possible to change billing frequency." />
+	);
+};
+
+export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 	const [processingSwitch, setProcessingSwitch] = useState<boolean>(false);
 
 	const navigate = useNavigate();
@@ -211,17 +213,23 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 			isMonthlySub ? 'Annual' : 'Month',
 		)
 			.then(() => {
-				onProcessingEnd(true);
+				navigate('success', {
+					replace: true,
+					state: { productDetail, preview },
+				});
 			})
 			.catch(() => {
 				/* swallow errors: non-critical UI enhancement */
-				onProcessingEnd(false);
+				navigate('error', {
+					replace: true,
+					state: { productDetail, preview },
+				});
 			});
 	};
 
 	if (preview.currentContribution.amount !== 0) {
 		// User has a current contribution amount, which means they are not eligible for a switch
-		// TODO: handle this case better in future - perhaps show an error message?
+		// Handle this case better in future - perhaps show an error message?
 		return <Navigate to="/" />;
 	}
 
@@ -678,31 +686,6 @@ const BillingDetailUpdateSwitchFrequencyDisplayForm = ({
 	);
 };
 
-const BillingDetailUpdateSwitchFrequencyDisplay = () => {
-	const [stage, setStage] = useState<'form' | 'success' | 'error'>('form');
-	return (
-		<>
-			{stage === 'form' && (
-				<BillingDetailUpdateSwitchFrequencyDisplayForm
-					onProcessingEnd={(result: boolean) => {
-						if (result) {
-							setStage('success');
-						} else {
-							setStage('error');
-						}
-					}}
-				/>
-			)}
-			{stage === 'success' && (
-				<BillingDetailUpdateSwitchFrequencyDisplaySuccess />
-			)}
-			{stage === 'error' && (
-				<GenericErrorScreen loggingMessage="It was not possible to change billing frequency." />
-			)}
-		</>
-	);
-};
-
 const renderContext =
 	(
 		productType: ProductType,
@@ -719,7 +702,7 @@ const renderContext =
 					preview,
 				}}
 			>
-				<BillingDetailUpdateSwitchFrequencyDisplay />
+				<Outlet />
 			</BillingDetailUpdateSwitchFrequencyContext.Provider>
 		);
 	};
@@ -773,7 +756,7 @@ export const BillingDetailUpdateSwitchFrequency = (
 						preview,
 					}}
 				>
-					<BillingDetailUpdateSwitchFrequencyDisplay />
+					<Outlet />
 				</BillingDetailUpdateSwitchFrequencyContext.Provider>
 			) : (
 				<BillingFrequencySwitchPreviewAsyncLoader

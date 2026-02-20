@@ -70,6 +70,27 @@ const BillingDetailUpdateSwitchFrequency = lazy(() =>
 		default: BillingDetailUpdateSwitchFrequency,
 	})),
 );
+const BillingDetailUpdateSwitchFrequencyDisplayForm = lazy(() =>
+	import(
+		/* webpackChunkName: "BillingDetailSwitchFrequencyUpdate" */ './billing/BillingDetailUpdateSwitchFrequency'
+	).then(({ BillingDetailUpdateSwitchFrequencyDisplayForm }) => ({
+		default: BillingDetailUpdateSwitchFrequencyDisplayForm,
+	})),
+);
+const BillingDetailUpdateSwitchFrequencyDisplaySuccess = lazy(() =>
+	import(
+		/* webpackChunkName: "BillingDetailSwitchFrequencyUpdate" */ './billing/BillingDetailUpdateSwitchFrequency'
+	).then(({ BillingDetailUpdateSwitchFrequencyDisplaySuccess }) => ({
+		default: BillingDetailUpdateSwitchFrequencyDisplaySuccess,
+	})),
+);
+const BillingDetailUpdateSwitchFrequencyDisplayError = lazy(() =>
+	import(
+		/* webpackChunkName: "BillingDetailSwitchFrequencyUpdate" */ './billing/BillingDetailUpdateSwitchFrequency'
+	).then(({ BillingDetailUpdateSwitchFrequencyDisplayError }) => ({
+		default: BillingDetailUpdateSwitchFrequencyDisplayError,
+	})),
+);
 
 const DataPrivacy = lazy(() =>
 	import(
@@ -585,7 +606,26 @@ const MMARouter = () => {
 												productType={productType}
 											/>
 										}
-									/>
+									>
+										<Route
+											index
+											element={
+												<BillingDetailUpdateSwitchFrequencyDisplayForm />
+											}
+										/>
+										<Route
+											path="success"
+											element={
+												<BillingDetailUpdateSwitchFrequencyDisplaySuccess />
+											}
+										/>
+										<Route
+											path="error"
+											element={
+												<BillingDetailUpdateSwitchFrequencyDisplayError />
+											}
+										/>
+									</Route>
 								</Route>
 							),
 						)}
