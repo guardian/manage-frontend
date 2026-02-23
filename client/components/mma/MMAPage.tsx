@@ -1032,9 +1032,14 @@ const MMAPageComponent = () => {
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
-			import('@guardian/ophan-tracker-js/MMA').then(({ record }) => {
-				setOphanRecord(() => record);
-			});
+			import('@guardian/ophan-tracker-js/MMA')
+				.then(({ record }) => {
+					setOphanRecord(() => record);
+				})
+				.catch(() => {
+					// Ophan tracking is non-critical; silently degrade
+					// when blocked by ad blockers or network issues
+				});
 		}
 	}, []);
 
