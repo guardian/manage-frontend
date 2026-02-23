@@ -37,11 +37,7 @@ export function lazyWithRetry<T extends ComponentType<any>>(
 ) {
 	return lazy(() =>
 		factory().catch((error: unknown) => {
-			if (
-				!isChunkLoadError(error) ||
-				typeof window === 'undefined' ||
-				typeof sessionStorage === 'undefined'
-			) {
+			if (!isChunkLoadError(error) || typeof window === 'undefined') {
 				throw error;
 			}
 
