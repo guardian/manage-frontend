@@ -219,7 +219,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 				});
 			})
 			.catch(() => {
-				/* swallow errors: non-critical UI enhancement */
+				/* handle errors by navigating to error page */
 				navigate('error', {
 					replace: true,
 					state: { productDetail, preview },
