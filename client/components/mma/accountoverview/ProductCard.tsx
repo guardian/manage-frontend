@@ -293,24 +293,19 @@ export const ProductCard = ({
 					)}
 				</Card.Header>
 
-				{(cardConfig.showBenefitsSection ||
-					cardConfig.showDigitalBenefitsSection ||
-					cardConfig.showUnlimitedDigitalBenefitsSection) &&
-					nextPaymentDetails && (
-						<Card.Section backgroundColor="#edf5fA" removeBorders>
-							<p css={benefitsTextCss}>
-								{cardConfig.showDigitalBenefitsSection
-									? `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have unlocked the full digital experience:`
-									: cardConfig.showUnlimitedDigitalBenefitsSection
-									? `You’re subscribed to the Guardian for ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, unlocking unlimited digital benefits.`
-									: `You’re supporting the Guardian with ${nextPaymentDetails.currentPriceValue} per ${nextPaymentDetails.paymentInterval}, and have access to exclusive extras.`}
-							</p>
-							<BenefitsToggle
-								productType={specificProductType.productType}
-								subscriptionPlan={mainPlan}
-							/>
-						</Card.Section>
-					)}
+				{cardConfig.getBenefitsSectionCopy && nextPaymentDetails && (
+					<Card.Section backgroundColor="#edf5fA" removeBorders>
+						<p css={benefitsTextCss}>
+							{cardConfig.getBenefitsSectionCopy(
+								nextPaymentDetails,
+							)}
+						</p>
+						<BenefitsToggle
+							productType={specificProductType.productType}
+							subscriptionPlan={mainPlan}
+						/>
+					</Card.Section>
+				)}
 				{specificProductType.productType === 'guardianadlite' &&
 					nextPaymentDetails && (
 						<Card.Section backgroundColor="#edf5fA">
