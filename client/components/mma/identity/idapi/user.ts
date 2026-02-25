@@ -5,8 +5,7 @@ import {
 	postRequest,
 	putRequest,
 } from '@/client/utilities/fetch';
-import type { User, UserError } from '../models';
-import { ErrorTypes } from '../models';
+import { type User, UserError } from '../models';
 
 type UserPublicFields = Partial<Pick<User, 'username'>> & {
 	displayName?: string;
@@ -174,12 +173,9 @@ const toUserError = (response: UserAPIErrorResponse): UserError => {
 			[getFieldNameFromContext(e.context)]:
 				userErrorMessageMap.get(e.context) || e.description,
 		};
-	}, {} as UserError['error']);
+	}, {} as Record<string, string>);
 
-	return {
-		type: ErrorTypes.VALIDATION,
-		error,
-	};
+	return new UserError(error);
 };
 
 export const write = async (user: Partial<User>): Promise<User> => {
@@ -191,10 +187,7 @@ export const write = async (user: Partial<User>): Promise<User> => {
 			addCSRFToken(putRequest(body)),
 		).then((response) => response.json());
 		if (isErrorResponse(response)) {
-			const userErrorObj = toUserError(response);
-			throw new Error(
-				`Error: ${userErrorObj.type} - ${JSON.stringify(userErrorObj.error)}`,
-			);
+			throw toUserError(response);
 		}
 		return toUser(response);
 	} catch (e) {
@@ -223,10 +216,7 @@ export const setUsername = async (user: Partial<User>): Promise<User> => {
 			addCSRFToken(postRequest(body)),
 		).then((response) => response.json());
 		if (isErrorResponse(response)) {
-			const userErrorObj = toUserError(response);
-			throw new Error(
-				`Error: ${userErrorObj.type} - ${JSON.stringify(userErrorObj.error)}`,
-			);
+			throw toUserError(response);
 		}
 		return toUser(response);
 	} catch (e) {
