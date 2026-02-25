@@ -1043,7 +1043,7 @@ const MMAPageComponent = () => {
 		}
 	}, []);
 
-	if (featureSwitches.maintenanceMode) {
+	if (featureSwitches.maintenanceMode && !window.Cypress) {
 		return <MaintenanceModePage />;
 	}
 
