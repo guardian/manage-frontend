@@ -58,7 +58,11 @@ export const whatHappensNowItemInfoCss = css`
 	margin-left: ${space[2]}px;
 `;
 
-const UpgradeProductPageContainer = ({ children }: { children: ReactNode }) => {
+export const UpgradeProductPageContainer = ({
+	children,
+}: {
+	children: ReactNode;
+}) => {
 	return (
 		<PageContainer
 			compactTitle
