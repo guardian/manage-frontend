@@ -7,7 +7,10 @@ import type { ProductType } from '@/shared/productTypes';
 
 // Must come after other mocks to avoid circular dependencies
 import { BillingUpdateContext } from '../BillingDetailUpdateContainer';
-import { BillingDetailUpdateSwitchFrequency } from '../BillingDetailUpdateSwitchFrequency';
+import {
+	BillingDetailUpdateSwitchFrequency,
+	BillingDetailUpdateSwitchFrequencyDisplayForm,
+} from '../BillingDetailUpdateSwitchFrequency';
 
 // Setup mocks BEFORE importing component to prevent AsyncLoader dependency issues
 jest.mock('@/client/utilities/currencyIso', () => ({
@@ -47,13 +50,23 @@ jest.mock('@/shared/productResponse', () => ({
 }));
 
 jest.mock('@/shared/productTypes');
+
+// jest.mock() factories are hoisted above imports, so importing
+// BillingDetailUpdateSwitchFrequencyDisplayForm directly inside the factory
+// is not possible. A mock-prefixed variable is explicitly permitted by Jest's
+// hoisting check and is populated before any render occurs.
+let mockOutletComponent: React.ComponentType;
+
 jest.mock('react-router', () => ({
 	Navigate: ({ to }: { to: string }) => (
 		<div data-testid="navigate-component">{to}</div>
 	),
 	useNavigate: jest.fn(),
 	useLocation: jest.fn(() => ({ state: null })),
-	Outlet: () => <div data-testid="outlet" />,
+	Outlet: () => {
+		const MockForm = mockOutletComponent;
+		return MockForm ? <MockForm /> : null;
+	},
 	useSearchParams: jest.fn(() => [new URLSearchParams()]),
 }));
 jest.mock('../../shared/benefits/BenefitsToggle', () => ({
@@ -153,6 +166,7 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		mocks = getMocks();
+		mockOutletComponent = BillingDetailUpdateSwitchFrequencyDisplayForm;
 
 		mocks.productUtils.hasSupporterPlusMonthlyRatePlan.mockReturnValue(
 			true,
