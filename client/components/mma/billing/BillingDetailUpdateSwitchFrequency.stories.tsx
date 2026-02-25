@@ -155,3 +155,17 @@ export const SwitchFrequencySuccess: StoryObj<
 		],
 	},
 };
+
+/**
+ * Story showing the error page when switching billing frequency fails.
+ */
+export const SwitchFrequencyError: StoryObj<
+	typeof BillingDetailUpdateSwitchFrequency
+> = {
+	render: () => (
+		<SwitchFrequencyStory
+			preview={mockPreviewWithSavings}
+			initialPath="error"
+		/>
+	),
+};
