@@ -71,21 +71,21 @@ const BillingDetailUpdateSwitchFrequency = lazyWithRetry(() =>
 		default: BillingDetailUpdateSwitchFrequency,
 	})),
 );
-const BillingDetailUpdateSwitchFrequencyDisplayForm = lazy(() =>
+const BillingDetailUpdateSwitchFrequencyDisplayForm = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "BillingDetailSwitchFrequencyUpdate" */ './billing/BillingDetailUpdateSwitchFrequency'
 	).then(({ BillingDetailUpdateSwitchFrequencyDisplayForm }) => ({
 		default: BillingDetailUpdateSwitchFrequencyDisplayForm,
 	})),
 );
-const BillingDetailUpdateSwitchFrequencyDisplaySuccess = lazy(() =>
+const BillingDetailUpdateSwitchFrequencyDisplaySuccess = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "BillingDetailSwitchFrequencyUpdate" */ './billing/BillingDetailUpdateSwitchFrequency'
 	).then(({ BillingDetailUpdateSwitchFrequencyDisplaySuccess }) => ({
 		default: BillingDetailUpdateSwitchFrequencyDisplaySuccess,
 	})),
 );
-const BillingDetailUpdateSwitchFrequencyDisplayError = lazy(() =>
+const BillingDetailUpdateSwitchFrequencyDisplayError = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "BillingDetailSwitchFrequencyUpdate" */ './billing/BillingDetailUpdateSwitchFrequency'
 	).then(({ BillingDetailUpdateSwitchFrequencyDisplayError }) => ({
