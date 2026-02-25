@@ -81,12 +81,6 @@ export const useUpgradeProductLoader = (): LoaderState => {
 					);
 				}
 
-				if (productDetail.mmaProductKey !== 'Supporter Plus') {
-					throw new Error(
-						`Product type "${productDetail.mmaProductKey}" is not eligible for upgrade`,
-					);
-				}
-
 				const fetchedMainPlan = getMainPlan(productDetail.subscription);
 
 				if (!isPaidSubscriptionPlan(fetchedMainPlan)) {
