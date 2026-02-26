@@ -3,7 +3,7 @@ import {
 	Button,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
 import {
 	subHeadingCss,
@@ -30,6 +30,7 @@ const cardHeaderDivCss = css`
 
 export const UpgradeProductInformation = () => {
 	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
 
 	const { mainPlan, specificProductType, subscription, previewResponse } =
 		useUpgradeProductStore();
@@ -133,14 +134,19 @@ export const UpgradeProductInformation = () => {
 						justify-content: center;
 					`}
 					onClick={() => {
+						const search = searchParams.toString();
+						const confirmationPath = `/${
+							specificProductType.urlPart
+						}/upgrade-product/confirmation${
+							search ? `?${search}` : ''
+						}`;
+
 						trackEvent({
 							eventCategory: 'account_overview',
 							eventAction: 'click',
 							eventLabel: `/${specificProductType.urlPart}/upgrade-product/confirmation`,
 						});
-						navigate(
-							`/${specificProductType.urlPart}/upgrade-product/confirmation`,
-						);
+						navigate(confirmationPath);
 					}}
 				>
 					{`Upgrade now`}

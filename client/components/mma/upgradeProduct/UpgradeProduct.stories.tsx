@@ -1,6 +1,7 @@
 import type { Decorator, Meta, StoryFn } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
 import { useRef } from 'react';
+import { Outlet } from 'react-router-dom';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
 import type {
 	PaidSubscriptionPlan,
@@ -16,9 +17,18 @@ import {
 } from '../../../fixtures/productBuilder/testProducts';
 import { useUpgradeProductStore } from '../../../stores/UpgradeProductStore';
 import { UpgradeProductConfirmation } from './UpgradeProductConfirmation';
-import { UpgradeProductContainer } from './UpgradeProductContainer';
+import {
+	UpgradeProductContainer,
+	UpgradeProductPageContainer,
+} from './UpgradeProductContainer';
 import { UpgradeProductInformation } from './UpgradeProductInformation';
 import { UpgradeProductThankYou } from './UpgradeProductThankYou';
+
+const StoryPageContainer = () => (
+	<UpgradeProductPageContainer>
+		<Outlet />
+	</UpgradeProductPageContainer>
+);
 
 // Payment method fixtures
 const supporterPlusDirectDebit = () =>
@@ -38,10 +48,8 @@ const supporterPlusSepa = () =>
 
 /**
  * Decorator that synchronously pre-populates the UpgradeProductStore before
- * child components render. This must be synchronous (not useEffect) because
- * the UpgradeProductContainer guards against missing data and redirects to '/'
- * in its own useEffect -- if we used useEffect here, the container's guard
- * would fire first and navigate away before the data is set.
+ * child components render. Stories use StoryPageContainer (layout only) instead
+ * of UpgradeProductContainer to bypass the deep-link loader/redirect logic.
  */
 const createStorePopulatorDecorator = (
 	productDetail: ProductDetail,
@@ -109,7 +117,7 @@ InformationMonthly.decorators = [
 ];
 InformationMonthly.parameters = {
 	reactRouter: {
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 };
 
@@ -126,7 +134,7 @@ InformationAnnual.decorators = [
 ];
 InformationAnnual.parameters = {
 	reactRouter: {
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 };
 
@@ -143,7 +151,7 @@ ConfirmationMonthly.decorators = [
 ];
 ConfirmationMonthly.parameters = {
 	reactRouter: {
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
@@ -161,7 +169,7 @@ ConfirmationAnnual.decorators = [
 ];
 ConfirmationAnnual.parameters = {
 	reactRouter: {
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseAnnualGBP),
 };
@@ -179,7 +187,7 @@ ConfirmationDirectDebit.decorators = [
 ];
 ConfirmationDirectDebit.parameters = {
 	reactRouter: {
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
@@ -198,7 +206,7 @@ ConfirmationPayPal.decorators = [
 ];
 ConfirmationPayPal.parameters = {
 	reactRouter: {
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
@@ -217,7 +225,7 @@ ConfirmationSepa.decorators = [
 ];
 ConfirmationSepa.parameters = {
 	reactRouter: {
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
@@ -234,7 +242,7 @@ ThankYouMonthly.decorators = [
 ];
 ThankYouMonthly.parameters = {
 	reactRouter: {
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 };
 
@@ -249,6 +257,6 @@ ThankYouAnnual.decorators = [
 ];
 ThankYouAnnual.parameters = {
 	reactRouter: {
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 };

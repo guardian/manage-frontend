@@ -462,7 +462,7 @@ export const ProductCard = ({
 												productDetail.subscription,
 											mainPlan:
 												mainPlan as PaidSubscriptionPlan,
-											navigationPath: `/${specificProductType.urlPart}/upgrade-product/information`,
+											navigationPath: `/${specificProductType.urlPart}/upgrade-product/information?subscriptionId=${productDetail.subscription.subscriptionId}`,
 										});
 									}}
 								>

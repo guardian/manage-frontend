@@ -7,10 +7,10 @@ import {
 	textSans17,
 } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
-import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router';
-import { useUpgradeProductStore } from '../../../stores/UpgradeProductStore';
+import { Navigate, Outlet } from 'react-router';
+import { useUpgradeProductLoader } from '../../../utilities/hooks/useUpgradeProductLoader';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
+import { Spinner } from '../../shared/Spinner';
 import { PageContainer } from '../Page';
 
 export const benefitsTextCss = css`
@@ -58,7 +58,11 @@ export const whatHappensNowItemInfoCss = css`
 	margin-left: ${space[2]}px;
 `;
 
-const UpgradeProductPageContainer = ({ children }: { children: ReactNode }) => {
+export const UpgradeProductPageContainer = ({
+	children,
+}: {
+	children: ReactNode;
+}) => {
 	return (
 		<PageContainer
 			compactTitle
@@ -72,18 +76,15 @@ const UpgradeProductPageContainer = ({ children }: { children: ReactNode }) => {
 };
 
 export const UpgradeProductContainer = () => {
-	const navigate = useNavigate();
-	const { mainPlan, subscription } = useUpgradeProductStore();
+	const { isLoading, shouldRedirect } = useUpgradeProductLoader();
 
-	useEffect(() => {
-		if (!mainPlan || !subscription) {
-			navigate('/');
-		}
-	}, [mainPlan, subscription, navigate]);
+	if (shouldRedirect) {
+		return <Navigate to="/" replace />;
+	}
 
 	return (
 		<UpgradeProductPageContainer>
-			<Outlet />
+			{isLoading ? <Spinner /> : <Outlet />}
 		</UpgradeProductPageContainer>
 	);
 };
