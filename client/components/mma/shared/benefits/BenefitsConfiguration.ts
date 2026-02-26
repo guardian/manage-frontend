@@ -32,8 +32,8 @@ const adFree = {
 };
 
 const guardianWeekly = {
-	name: 'The Guardian Weekly',
-	description: 'magazine, delivered to your door every week',
+	description:
+		'The Guardian Weekly magazine, delivered to your door every week',
 };
 
 const partnerOffers: ProductBenefit = {
@@ -48,9 +48,8 @@ const newspaperArchiveBenefit = {
 
 const productPlusdigitalBenefits = [
 	{
-		name: 'Ad-free reading',
 		description:
-			'and fewer asks of support on the Guardian app and website',
+			'Ad-free reading and fewer asks of support on the Guardian app and website',
 	},
 	{
 		description:

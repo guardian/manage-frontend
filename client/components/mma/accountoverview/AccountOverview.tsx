@@ -125,12 +125,17 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 		isSpecificProductType(productKey, PRODUCT_TYPES.supporterplus),
 	);
 
+	const hasWeeklyProduct = productKeys?.some((productKey) =>
+		isSpecificProductType(productKey, PRODUCT_TYPES.guardianweekly),
+	);
+
 	const hasGuardianEmail = email ? userHasGuardianEmail(email) : false;
 
 	const hasEditionsAndArchiveAccess =
 		hasDigitalPlusPrint ||
 		isPlusDigitalProduct ||
 		hasDigitalPack ||
+		hasWeeklyProduct ||
 		hasGuardianEmail;
 
 	return (
@@ -139,23 +144,24 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 				isPlusDigitalProduct ||
 				hasGuardianEmail ||
 				hasDigitalPack ||
-				hasSupporterPlus) && (
-					<>
-						<h2 css={subHeadingCss}>
-							Get the most out of your benefits
-						</h2>
-						<div css={benefitsCtasContainerCss}>
-							<DownloadAppCtaVariation1 />
-							<DownloadFeastAppCtaWithImage />
-							{hasEditionsAndArchiveAccess && (
-								<>
-									<DownloadEditionsAppCtaWithImage />
-									<NewspaperArchiveCta />
-								</>
-							)}
-						</div>
-					</>
-				)}
+				hasSupporterPlus ||
+				hasWeeklyProduct) && (
+				<>
+					<h2 css={subHeadingCss}>
+						Get the most out of your benefits
+					</h2>
+					<div css={benefitsCtasContainerCss}>
+						<DownloadAppCtaVariation1 />
+						<DownloadFeastAppCtaWithImage />
+						{hasEditionsAndArchiveAccess && (
+							<>
+								<DownloadEditionsAppCtaWithImage />
+								<NewspaperArchiveCta />
+							</>
+						)}
+					</div>
+				</>
+			)}
 		</>
 	);
 };
@@ -254,9 +260,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 
 	const allCancelledProductDetails = cancelledProductsResponse
 		? cancelledProductsResponse.sort(
-			(a: CancelledProductDetail, b: CancelledProductDetail) =>
-				b.subscription.start.localeCompare(a.subscription.start),
-		)
+				(a: CancelledProductDetail, b: CancelledProductDetail) =>
+					b.subscription.start.localeCompare(a.subscription.start),
+		  )
 		: [];
 
 	const allProductCategories = [
@@ -392,10 +398,20 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				<ProblemAlert
 					title="Unable to upgrade your subscription"
 					message={
-						<p css={[subHeadingInformationTextCss, css`margin-bottom: 0; ${from.tablet} { margin-bottom: 0; }`]}>
+						<p
+							css={[
+								subHeadingInformationTextCss,
+								css`
+									margin-bottom: 0;
+									${from.tablet} {
+										margin-bottom: 0;
+									}
+								`,
+							]}
+						>
 							You are not currently eligible for an upgrade
-							online. Please find the customer care
-							contact to discuss your upgrade option:{' '}
+							online. Please find the customer care contact to
+							discuss your upgrade option:{' '}
 							<a href="https://manage.theguardian.com/help-centre">
 								https://manage.theguardian.com/help-centre
 							</a>
