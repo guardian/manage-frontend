@@ -39,5 +39,5 @@ export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	digisubSave: true,
 	supporterplusCancellationOffer: true,
 	contributionCancellationPause: true,
-	maintenanceMode: true,
+	maintenanceMode: false,
 };
