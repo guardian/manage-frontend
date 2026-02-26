@@ -134,9 +134,12 @@ export const UpgradeProductInformation = () => {
 						justify-content: center;
 					`}
 					onClick={() => {
+						const search = searchParams.toString();
 						const confirmationPath = `/${
 							specificProductType.urlPart
-						}/upgrade-product/confirmation?${searchParams.toString()}`;
+						}/upgrade-product/confirmation${
+							search ? `?${search}` : ''
+						}`;
 
 						trackEvent({
 							eventCategory: 'account_overview',

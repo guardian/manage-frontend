@@ -274,9 +274,12 @@ export const UpgradeProductConfirmation = () => {
 						justify-content: center;
 					`}
 					onClick={() => {
+						const search = searchParams.toString();
 						const thankYouPath = `/${
 							specificProductType.urlPart
-						}/upgrade-product/thank-you?${searchParams.toString()}`;
+						}/upgrade-product/thank-you${
+							search ? `?${search}` : ''
+						}`;
 
 						trackEvent({
 							eventCategory: 'account_overview',
@@ -304,9 +307,12 @@ export const UpgradeProductConfirmation = () => {
 						}
 					`}
 					onClick={() => {
+						const search = searchParams.toString();
 						const informationPath = `/${
 							specificProductType.urlPart
-						}/upgrade-product/information?${searchParams.toString()}`;
+						}/upgrade-product/information${
+							search ? `?${search}` : ''
+						}`;
 
 						trackEvent({
 							eventCategory: 'account_overview',
