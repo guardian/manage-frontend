@@ -3,21 +3,17 @@ import { from, space, textSans17 } from '@guardian/source/foundations';
 import { Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { Fragment, useEffect } from 'react';
-import { useAccountStore } from '@/client/stores/AccountStore';
 import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
 import {
 	subHeadingCss,
 	subHeadingInformationTextCss,
 } from '@/client/styles/headings';
 import { featureSwitches } from '../../../../shared/featureSwitches';
-import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
-	MembersDataApiResponse,
 	ProductDetail,
 	ProductTier,
-	SingleProductDetail,
 } from '../../../../shared/productResponse';
 import { userHasGuardianEmail } from '../../../../shared/productResponse';
 import {
@@ -33,21 +29,12 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
-import { fetchWithDefaultParameters } from '../../../utilities/fetch';
-import {
-	LoadingState,
-	useAsyncLoaderAllSettled,
-} from '../../../utilities/hooks/useAsyncLoaderAllSettled';
-import {
-	allRecurringProductsDetailFetcher,
-	allSingleProductsDetailFetcher,
-} from '../../../utilities/productUtils';
+import { useAccountDataLoader } from '../../../utilities/hooks/useAccountDataLoader';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { DownloadAppCtaVariation1 } from '../shared/DownloadAppCtaVariation1';
 import { DownloadEditionsAppCtaWithImage } from '../shared/DownloadEditionsAppCtaWithImage';
@@ -64,33 +51,6 @@ import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 import { SingleContributionCard } from './SingleContributionCard';
-
-interface ProductFetchResponse {
-	mdapiResponse: MembersDataApiResponse;
-	cancelledProductsResponse: CancelledProductDetail[];
-	mpapiResponse: MPAPIResponse;
-	singleContributionsResponse: SingleProductDetail[];
-}
-
-const productFetchPromisesAndRefs = () => {
-	return [
-		{ promise: allRecurringProductsDetailFetcher(), ref: 'mdapiResponse' },
-		{
-			promise: fetchWithDefaultParameters('/api/cancelled/'),
-			ref: 'cancelledProductsResponse',
-		},
-		{
-			promise: fetchWithDefaultParameters(
-				'/mpapi/user/mobile-subscriptions',
-			),
-			ref: 'mpapiResponse',
-		},
-		{
-			promise: allSingleProductsDetailFetcher(),
-			ref: 'singleContributionsResponse',
-		},
-	];
-};
 
 const benefitsCtasContainerCss = css`
 	> * + * {
@@ -167,21 +127,21 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 };
 
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
-	const { setAllResponses } = useAccountStore();
 	const { previewError, setPreviewError } = useUpgradeProductStore();
 
-	const { data: accountOverviewResponse, loadingState } =
-		useAsyncLoaderAllSettled(
-			productFetchPromisesAndRefs,
-			JsonResponseHandler,
-		);
-
 	const {
+		loadAccountData,
+		isLoading,
+		hasError,
 		mdapiResponse,
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
-	} = (accountOverviewResponse as Partial<ProductFetchResponse>) ?? {};
+	} = useAccountDataLoader();
+
+	useEffect(() => {
+		void loadAccountData();
+	}, [loadAccountData]);
 
 	useEffect(() => {
 		return () => {
@@ -191,40 +151,13 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		};
 	}, [previewError, setPreviewError]);
 
-	useEffect(() => {
-		if (
-			loadingState === LoadingState.HasLoaded &&
-			accountOverviewResponse
-		) {
-			setAllResponses({
-				mdapiResponse: mdapiResponse ?? undefined,
-				cancelledProductsResponse:
-					cancelledProductsResponse ?? undefined,
-				mpapiResponse: mpapiResponse ?? undefined,
-				singleContributionsResponse:
-					singleContributionsResponse ?? undefined,
-			});
-		}
-	}, [
-		loadingState,
-		accountOverviewResponse,
-		mdapiResponse,
-		cancelledProductsResponse,
-		mpapiResponse,
-		singleContributionsResponse,
-		setAllResponses,
-	]);
-
-	if (loadingState == LoadingState.HasError) {
+	if (hasError) {
 		return <GenericErrorScreen />;
 	}
-	if (loadingState == LoadingState.IsLoading) {
+	if (isLoading || !mdapiResponse) {
 		return (
 			<DefaultLoadingView loadingMessage="Loading your account details..." />
 		);
-	}
-	if (accountOverviewResponse === null) {
-		return <GenericErrorScreen />;
 	}
 
 	const failedProductRequestMessages = [];
@@ -374,7 +307,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		<>
 			<PersonalisedHeader
 				mdapiResponse={mdapiResponse}
-				mpapiResponse={mpapiResponse}
+				mpapiResponse={mpapiResponse ?? undefined}
 			/>
 
 			<PaymentFailureAlertIfApplicable

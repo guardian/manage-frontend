@@ -1,15 +1,14 @@
 import * as Sentry from '@sentry/browser';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import type { MembersDataApiResponse } from '../../../shared/productResponse';
 import {
 	getMainPlan,
 	isPaidSubscriptionPlan,
 	isProduct,
 } from '../../../shared/productResponse';
-import type { UpgradePreviewResponse } from '../../../shared/productSwitchTypes';
 import { useUpgradeProductStore } from '../../stores/UpgradeProductStore';
-import { changePlanFetch } from '../productUtils';
+import { fetchUpgradePreviewData } from '../productUtils';
+import { useAccountDataLoader } from './useAccountDataLoader';
 
 interface LoaderState {
 	isLoading: boolean;
@@ -20,11 +19,15 @@ interface LoaderState {
  * Handles populating the UpgradeProductStore when the user deep-links
  * into the upgrade flow with a `subscriptionId` query parameter.
  *
+ * Uses `useAccountDataLoader` to get the account data (shared with
+ * AccountOverview), avoiding duplicate API calls when navigating from
+ * the overview page.
+ *
  * If the store already has data (normal navigation from account overview),
  * this hook is a no-op. If the store is empty and a valid `subscriptionId`
- * is present, it fetches the subscription details and upgrade preview,
- * then populates the store. On any failure or missing param, it signals
- * a redirect back to `/`.
+ * is present, it triggers account data loading, then extracts subscription
+ * details and fetches the upgrade preview. On any failure or missing param,
+ * it signals a redirect back to `/`.
  */
 export const useUpgradeProductLoader = (): LoaderState => {
 	const [searchParams] = useSearchParams();
@@ -40,6 +43,13 @@ export const useUpgradeProductLoader = (): LoaderState => {
 
 	const storeHasData = !!mainPlan && !!subscription;
 
+	const {
+		loadAccountData,
+		isLoading: isAccountLoading,
+		hasError: hasAccountError,
+		mdapiResponse,
+	} = useAccountDataLoader();
+
 	const [state, setState] = useState<LoaderState>({
 		isLoading: !storeHasData && !!subscriptionId,
 		shouldRedirect: !storeHasData && !subscriptionId,
@@ -52,23 +62,24 @@ export const useUpgradeProductLoader = (): LoaderState => {
 			return;
 		}
 
+		if (hasAccountError) {
+			setState({ isLoading: false, shouldRedirect: true });
+			return;
+		}
+
+		if (!mdapiResponse && !isAccountLoading) {
+			void loadAccountData();
+			return;
+		}
+
+		if (isAccountLoading || !mdapiResponse) {
+			return;
+		}
+
 		hasStartedLoading.current = true;
 
-		const loadData = async () => {
+		const loadUpgradeData = async () => {
 			try {
-				const response = await fetch(`/api/me/mma/${subscriptionId}`, {
-					credentials: 'include',
-				});
-
-				if (!response.ok) {
-					throw new Error(
-						`Failed to fetch subscription: ${response.status}`,
-					);
-				}
-
-				const mdapiResponse =
-					(await response.json()) as MembersDataApiResponse;
-
 				const productDetail = mdapiResponse.products
 					.filter(isProduct)
 					.find(
@@ -87,22 +98,10 @@ export const useUpgradeProductLoader = (): LoaderState => {
 					throw new Error('Subscription does not have a paid plan');
 				}
 
-				const previewResponse = await changePlanFetch({
+				const preview = await fetchUpgradePreviewData({
 					subscriptionId,
 					isTestUser: productDetail.isTestUser,
-					mode: 'switchToBasePrice',
-					targetProduct: 'DigitalSubscription',
-					preview: true,
 				});
-
-				if (!previewResponse.ok) {
-					throw new Error(
-						`Failed to fetch upgrade preview: ${previewResponse.status}`,
-					);
-				}
-
-				const preview =
-					(await previewResponse.json()) as UpgradePreviewResponse;
 
 				setMainPlan(fetchedMainPlan);
 				setSubscription(productDetail.subscription);
@@ -122,10 +121,14 @@ export const useUpgradeProductLoader = (): LoaderState => {
 			}
 		};
 
-		void loadData();
+		void loadUpgradeData();
 	}, [
 		storeHasData,
 		subscriptionId,
+		isAccountLoading,
+		hasAccountError,
+		mdapiResponse,
+		loadAccountData,
 		setMainPlan,
 		setSubscription,
 		setPreviewResponse,
