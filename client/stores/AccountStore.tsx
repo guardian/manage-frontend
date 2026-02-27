@@ -80,20 +80,12 @@ export const useAccountStore = create<AccountStore>()(
 			setAllResponses: (responses) =>
 				set(
 					{
-						...(responses.mdapiResponse && {
-							mdapiResponse: responses.mdapiResponse,
-						}),
-						...(responses.cancelledProductsResponse && {
-							cancelledProductsResponse:
-								responses.cancelledProductsResponse,
-						}),
-						...(responses.mpapiResponse && {
-							mpapiResponse: responses.mpapiResponse,
-						}),
-						...(responses.singleContributionsResponse && {
-							singleContributionsResponse:
-								responses.singleContributionsResponse,
-						}),
+						mdapiResponse: responses.mdapiResponse ?? null,
+						cancelledProductsResponse:
+							responses.cancelledProductsResponse ?? null,
+						mpapiResponse: responses.mpapiResponse ?? null,
+						singleContributionsResponse:
+							responses.singleContributionsResponse ?? null,
 						loadingState: AccountLoadingState.Loaded,
 						error: null,
 					},
