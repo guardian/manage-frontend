@@ -10,8 +10,8 @@ import type { ReactNode } from 'react';
 import { Navigate, Outlet } from 'react-router';
 import { useUpgradeProductLoader } from '../../../utilities/hooks/useUpgradeProductLoader';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
-import { Spinner } from '../../shared/Spinner';
 import { PageContainer } from '../Page';
+import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 
 export const benefitsTextCss = css`
 	${textSans17};
@@ -84,7 +84,11 @@ export const UpgradeProductContainer = () => {
 
 	return (
 		<UpgradeProductPageContainer>
-			{isLoading ? <Spinner /> : <Outlet />}
+			{isLoading ? (
+				<DefaultLoadingView loadingMessage="Loading your subscription details..." />
+			) : (
+				<Outlet />
+			)}
 		</UpgradeProductPageContainer>
 	);
 };

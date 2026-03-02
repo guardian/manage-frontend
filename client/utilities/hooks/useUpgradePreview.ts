@@ -5,13 +5,12 @@ import type {
 	PaidSubscriptionPlan,
 	Subscription,
 } from '../../../shared/productResponse';
-import type { UpgradePreviewResponse } from '../../../shared/productSwitchTypes';
 import { useAccountStore } from '../../stores/AccountStore';
 import {
 	UpgradePreviewLoadingState,
 	useUpgradeProductStore,
 } from '../../stores/UpgradeProductStore';
-import { changePlanFetch } from '../productUtils';
+import { changePlanFetch, fetchUpgradePreviewData } from '../productUtils';
 
 interface FetchUpgradePreviewParams {
 	subscriptionId: string;
@@ -50,22 +49,10 @@ export const useUpgradeProduct = () => {
 		const isTestUser = getIsTestUser();
 
 		try {
-			const response = await changePlanFetch({
+			const previewResponse = await fetchUpgradePreviewData({
 				subscriptionId,
 				isTestUser,
-				mode: 'switchToBasePrice',
-				targetProduct: 'DigitalSubscription',
-				preview: true,
 			});
-
-			if (!response.ok) {
-				throw new Error(
-					`Failed to fetch upgrade preview: ${response.status}`,
-				);
-			}
-
-			const previewResponse =
-				(await response.json()) as UpgradePreviewResponse;
 
 			setMainPlan(mainPlan);
 			setSubscription(subscription);
