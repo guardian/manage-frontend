@@ -16,7 +16,7 @@ import { isProduct } from '@/shared/productResponse';
 
 interface PersonalisedHeaderProps {
 	mdapiResponse: MembersDataApiResponse;
-	mpapiResponse?: MPAPIResponse;
+	mpapiResponse: MPAPIResponse | null;
 }
 
 export const PersonalisedHeader = ({

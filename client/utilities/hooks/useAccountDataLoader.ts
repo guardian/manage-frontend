@@ -18,31 +18,40 @@ import {
 	allSingleProductsDetailFetcher,
 } from '../productUtils';
 
-function extractFulfilled<T>(result: PromiseSettledResult<T>): T | undefined {
-	return result.status === 'fulfilled' ? result.value : undefined;
-}
-
 async function fetchAllAccountData() {
-	const results = await Promise.allSettled([
-		allRecurringProductsDetailFetcher().then(
-			(r) => JsonResponseHandler(r) as Promise<MembersDataApiResponse>,
-		),
-		fetchWithDefaultParameters('/api/cancelled/').then(
-			(r) => JsonResponseHandler(r) as Promise<CancelledProductDetail[]>,
-		),
-		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions').then(
-			(r) => JsonResponseHandler(r) as Promise<MPAPIResponse>,
-		),
-		allSingleProductsDetailFetcher().then(
-			(r) => JsonResponseHandler(r) as Promise<SingleProductDetail[]>,
-		),
+	const [
+		mdapiResponse,
+		cancelledProductsResponse,
+		mpapiResponse,
+		singleContributionsResponse,
+	] = await Promise.all([
+		allRecurringProductsDetailFetcher()
+			.then(
+				(r) =>
+					JsonResponseHandler(r) as Promise<MembersDataApiResponse>,
+			)
+			.catch((): null => null),
+		fetchWithDefaultParameters('/api/cancelled/')
+			.then(
+				(r) =>
+					JsonResponseHandler(r) as Promise<CancelledProductDetail[]>,
+			)
+			.catch((): null => null),
+		fetchWithDefaultParameters('/mpapi/user/mobile-subscriptions')
+			.then((r) => JsonResponseHandler(r) as Promise<MPAPIResponse>)
+			.catch((): null => null),
+		allSingleProductsDetailFetcher()
+			.then(
+				(r) => JsonResponseHandler(r) as Promise<SingleProductDetail[]>,
+			)
+			.catch((): null => null),
 	]);
 
 	return {
-		mdapiResponse: extractFulfilled(results[0]),
-		cancelledProductsResponse: extractFulfilled(results[1]),
-		mpapiResponse: extractFulfilled(results[2]),
-		singleContributionsResponse: extractFulfilled(results[3]),
+		mdapiResponse,
+		cancelledProductsResponse,
+		mpapiResponse,
+		singleContributionsResponse,
 	};
 }
 

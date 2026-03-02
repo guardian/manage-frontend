@@ -307,7 +307,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		<>
 			<PersonalisedHeader
 				mdapiResponse={mdapiResponse}
-				mpapiResponse={mpapiResponse ?? undefined}
+				mpapiResponse={mpapiResponse}
 			/>
 
 			<PaymentFailureAlertIfApplicable
