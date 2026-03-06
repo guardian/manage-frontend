@@ -315,7 +315,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			/>
 
 			{braze && banner && (
-				<BrazeBannersSystemDisplay meta={{ braze, banner }} />
+				<BrazeBannersSystemDisplay braze={braze} banner={banner} />
 			)}
 
 			<PaymentFailureAlertIfApplicable

@@ -17,7 +17,7 @@ import {
 	vertLineCss,
 	visuallyHiddenCss,
 } from './BrazeBannersSystemDisplayStyles';
-import { brazeBannersSystemLogger } from './brazeConfig';
+import { brazeBannersSystemLogger, isDevelopmentDomain } from './brazeConfig';
 import type { BrazeInstance } from './initialiseBraze';
 
 export type BrazeBannersSystemMeta = {
@@ -60,15 +60,29 @@ const runCssCheckerOnBrazeBanner = (
 	}
 
 	const styleElements = bzContainer.querySelectorAll('style');
+	const isGroupingRule = (r: CSSRule): r is CSSGroupingRule =>
+		typeof CSSGroupingRule !== 'undefined' && r instanceof CSSGroupingRule;
+
 	const checkRules = (rules: CSSRuleList): boolean => {
 		for (let i = 0; i < rules.length; i++) {
 			const rule = rules[i];
 			if (rule instanceof CSSStyleRule) {
 				const selector = rule.selectorText;
-				const matchedElements = doc.querySelectorAll(selector);
-				if (matchedElements.length === 0) {
+				try {
+					const matchedElements = doc.querySelectorAll(selector);
+					if (matchedElements.length === 0) {
+						brazeBannersSystemLogger.warn(
+							`CSS Checker: Selector "${selector}" did not match any elements.`,
+						);
+						isValid = false;
+						if (stopOnFirstProblem) {
+							return false;
+						}
+					}
+				} catch (e) {
 					brazeBannersSystemLogger.warn(
-						`CSS Checker: Selector "${selector}" did not match any elements.`,
+						`CSS Checker: Selector "${selector}" failed to evaluate:`,
+						e,
 					);
 					isValid = false;
 					if (stopOnFirstProblem) {
@@ -76,7 +90,7 @@ const runCssCheckerOnBrazeBanner = (
 					}
 				}
 			} else if (
-				rule instanceof CSSGroupingRule ||
+				isGroupingRule(rule) ||
 				(rule && 'cssRules' in rule && rule.cssRules)
 			) {
 				const nestedRules = (rule as CSSGroupingRule).cssRules;
@@ -103,9 +117,11 @@ const runCssCheckerOnBrazeBanner = (
 };
 
 export const BrazeBannersSystemDisplay = ({
-	meta,
+	braze,
+	banner,
 }: {
-	meta: BrazeBannersSystemMeta;
+	braze: BrazeInstance;
+	banner: Banner;
 }) => {
 	const navigate = useNavigate();
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -130,13 +146,13 @@ export const BrazeBannersSystemDisplay = ({
 		if (showBanner && containerRef.current) {
 			containerRef.current.innerHTML = '';
 
-			const metaMinHeight = meta.banner.getStringProperty('minHeight');
+			const metaMinHeight = banner.getStringProperty('minHeight');
 			if (metaMinHeight) {
 				setMinHeight(metaMinHeight);
 			}
 
 			const metaWrapperModeEnabled =
-				meta.banner.getBooleanProperty('wrapperModeEnabled');
+				banner.getBooleanProperty('wrapperModeEnabled');
 			if (
 				metaWrapperModeEnabled !== undefined &&
 				metaWrapperModeEnabled !== null
@@ -144,16 +160,19 @@ export const BrazeBannersSystemDisplay = ({
 				setWrapperModeEnabled(metaWrapperModeEnabled);
 			}
 
-			const metaWrapperModeBackgroundColor =
-				meta.banner.getStringProperty('wrapperModeBackgroundColor');
+			const metaWrapperModeBackgroundColor = banner.getStringProperty(
+				'wrapperModeBackgroundColor',
+			);
 			if (metaWrapperModeBackgroundColor) {
 				setWrapperModeColors(metaWrapperModeBackgroundColor);
 			}
 
-			meta.braze.insertBanner(meta.banner, containerRef.current);
-			runCssCheckerOnBrazeBanner(meta);
+			braze.insertBanner(banner, containerRef.current);
+			if (isDevelopmentDomain()) {
+				runCssCheckerOnBrazeBanner({ braze, banner });
+			}
 		}
-	}, [showBanner, meta, meta.banner, meta.braze, setWrapperModeColors]);
+	}, [showBanner, braze, banner, setWrapperModeColors]);
 
 	useEffect(() => {
 		const handleBrazeBannerMessage = (
@@ -163,24 +182,39 @@ export const BrazeBannersSystemDisplay = ({
 				target?: 'blank' | 'self';
 			}>,
 		) => {
+			if (event.origin !== window.location.origin) {
+				return;
+			}
+
 			const messageType = event.data?.type;
 			if (
-				event.origin === window.location.origin &&
-				Object.values(BrazeBannersSystemMessageType).includes(
+				!messageType ||
+				!Object.values(BrazeBannersSystemMessageType).includes(
 					messageType,
 				)
 			) {
-				brazeBannersSystemLogger.log(
-					'Received message from Braze Banner:',
-					event.data,
-				);
+				return;
 			}
+
+			const bannerIframe = containerRef.current?.querySelector('iframe');
+			if (
+				!bannerIframe?.contentWindow ||
+				event.source !== bannerIframe.contentWindow
+			) {
+				return;
+			}
+
+			brazeBannersSystemLogger.log(
+				'Received message from Braze Banner:',
+				event.data,
+			);
+
 			switch (messageType) {
 				case BrazeBannersSystemMessageType.NavigateToUrl: {
 					const { url, target } = event.data;
 					if (url) {
 						if (target === 'blank') {
-							window.open(url, '_blank');
+							window.open(url, '_blank', 'noopener,noreferrer');
 						} else {
 							navigate(url);
 						}
@@ -249,7 +283,6 @@ export const BrazeBannersSystemDisplay = ({
 							<button
 								onClick={() => dismissBanner()}
 								type="button"
-								aria-live="polite"
 								css={closeButtonCss(
 									wrapperModeBackgroundColor,
 									getContrastMix(wrapperModeBackgroundColor),

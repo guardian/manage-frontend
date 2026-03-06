@@ -93,11 +93,8 @@ export const bannerContentCss = css`
 		padding-right: 0;
 	}
 	${until.phablet} {
-		padding-top: 0;
-		padding-bottom: 0;
-	}
-	${until.phablet} {
 		padding-top: ${space[6]}px;
+		padding-bottom: 0;
 	}
 `;
 

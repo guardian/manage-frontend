@@ -1,6 +1,7 @@
 import type { Banner } from '@braze/web-sdk';
 import { getConsentFor, onConsentChange } from '@guardian/libs';
 import { useEffect, useState } from 'react';
+import { isSignedIn } from '../../utilities/signInStatus';
 import { brazeBannersSystemLogger, getBrazeApiKey } from './brazeConfig';
 import type { BrazeInstance } from './initialiseBraze';
 import { getInitialisedBraze } from './initialiseBraze';
@@ -105,9 +106,7 @@ export const useBrazeBanner = (placementId: string): UseBrazeBannerResult => {
 					return;
 				}
 
-				const signInStatus =
-					window.guardian?.identityDetails?.signInStatus;
-				if (signInStatus !== 'signedInRecently') {
+				if (!isSignedIn()) {
 					brazeBannersSystemLogger.info(
 						'User not signed in. Skipping Braze init.',
 					);
