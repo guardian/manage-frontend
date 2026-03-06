@@ -29,6 +29,9 @@ const getInitialisedBraze = (() => {
 	return (apiKey: string): Promise<typeof braze> => {
 		if (cache === undefined) {
 			cache = initialiseBraze(apiKey);
+			cache.catch(() => {
+				cache = undefined;
+			});
 		}
 		return cache;
 	};

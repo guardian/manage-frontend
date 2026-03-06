@@ -35,9 +35,13 @@ const getIdTokenClaims = (): Record<string, unknown> | null => {
 			return null;
 		}
 
-		return JSON.parse(
-			atob(payload.replace(/-/g, '+').replace(/_/g, '/')),
-		) as Record<string, unknown>;
+		let base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+		const pad = base64.length % 4;
+		if (pad) {
+			base64 += '='.repeat(4 - pad);
+		}
+
+		return JSON.parse(atob(base64)) as Record<string, unknown>;
 	} catch {
 		return null;
 	}
