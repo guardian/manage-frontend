@@ -3,6 +3,9 @@ import { from, space, textSans17 } from '@guardian/source/foundations';
 import { Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { Fragment, useEffect } from 'react';
+import { BrazeBannersSystemDisplay } from '@/client/lib/braze/BrazeBannersSystemDisplay';
+import { MANAGE_PLACEMENT_ID } from '@/client/lib/braze/brazeConfig';
+import { useBrazeBanner } from '@/client/lib/braze/useBrazeBanner';
 import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
 import {
 	subHeadingCss,
@@ -127,6 +130,7 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 };
 
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
+	const { braze, banner } = useBrazeBanner(MANAGE_PLACEMENT_ID);
 	const { previewError, setPreviewError } = useUpgradeProductStore();
 
 	const {
@@ -309,6 +313,10 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				mdapiResponse={mdapiResponse}
 				mpapiResponse={mpapiResponse}
 			/>
+
+			{braze && banner && (
+				<BrazeBannersSystemDisplay meta={{ braze, banner }} />
+			)}
 
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}
