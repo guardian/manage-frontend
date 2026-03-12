@@ -12,14 +12,27 @@ export const TextResponseHandler: ResponseProcessor = (
 	return handleResponses(response, (r: Response) => r.text());
 };
 
-export function handleResponses(
+export function handleResponses<T>(
 	response: Response | Response[],
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're assuming the transformResponse attribute's output can be of multiple types
-	transformResponse: (response: Response) => any,
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we don't know the final output of the promise?
-): Promise<any> {
+	transformResponse: (response: Response) => Promise<T> | T,
+): Promise<T | Array<T | null> | null> {
+	return handleResponsesAsync(response, transformResponse);
+}
+
+function hasBadResponse(responses: Response | Response[]) {
+	if (Array.isArray(responses)) {
+		return responses.some((response) => !response.ok);
+	}
+
+	return !responses.ok;
+}
+
+async function handleResponsesAsync<T>(
+	response: Response | Response[],
+	transformResponse: (response: Response) => Promise<T> | T,
+): Promise<T | Array<T | null> | null> {
 	if (hasBadResponse(response)) {
-		throw new Error('Invalid API response');
+		throw await buildInvalidApiResponseError(response);
 	}
 
 	if (Array.isArray(response)) {
@@ -31,16 +44,51 @@ export function handleResponses(
 	return handleSingleResponse(response, transformResponse);
 }
 
-function hasBadResponse(responses: Response | Response[]) {
-	if (Array.isArray(responses)) {
-		return responses.some((response) => !response.ok);
+async function buildInvalidApiResponseError(
+	response: Response | Response[],
+): Promise<Error> {
+	if (Array.isArray(response)) {
+		const badResponses = response.filter((r) => !r.ok);
+		const responseSummaries = await Promise.all(
+			badResponses.map(getResponseErrorSummary),
+		);
+		return new Error(
+			`Invalid API response: ${responseSummaries.join(' | ')}`,
+		);
 	}
 
-	return !responses.ok;
+	return new Error(
+		`Invalid API response: ${await getResponseErrorSummary(response)}`,
+	);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're assuming the transformResponse argument's output can be of multiple types
-function handleSingleResponse(response: Response, transformResponse: (r: Response) => any) {
+async function getResponseErrorSummary(response: Response): Promise<string> {
+	const statusText = response.statusText ? ` ${response.statusText}` : '';
+	const url = response.url || 'unknown URL';
+	const body = await readResponseBody(response);
+
+	return body
+		? `${response.status}${statusText} for ${url}. Body: ${body}`
+		: `${response.status}${statusText} for ${url}`;
+}
+
+async function readResponseBody(response: Response): Promise<string | null> {
+	try {
+		const body = (await response.clone().text()).trim();
+		if (!body) {
+			return null;
+		}
+
+		return body.length > 300 ? `${body.slice(0, 300)}...` : body;
+	} catch {
+		return null;
+	}
+}
+
+function handleSingleResponse<T>(
+	response: Response,
+	transformResponse: (r: Response) => Promise<T> | T,
+): Promise<T | null> | T {
 	const locationHeader = response.headers.get('Location');
 	if (response.status === 401 && locationHeader && window !== undefined) {
 		window.location.replace(locationHeader);

@@ -436,19 +436,19 @@ export const PaymentDetailUpdateConfirmation = () => {
 		paymentFailureRecoveryMessage: string;
 		subHasExpectedPaymentType: boolean;
 		newSubscriptionData: WithSubscription[];
-	};
+	} | null;
 
-	const newSubscriptionData = state.newSubscriptionData;
+	if (!state) {
+		return <Navigate to="/" />;
+	}
 
-	return state ? (
+	return (
 		<PaymentMethodUpdated
-			subs={newSubscriptionData}
+			subs={state.newSubscriptionData}
 			paymentFailureRecoveryMessage={state.paymentFailureRecoveryMessage}
 			subHasExpectedPaymentType={state.subHasExpectedPaymentType}
 			previousProductDetail={previousProductDetail}
 			isFromApp={isFromApp}
 		/>
-	) : (
-		<Navigate to="/" />
 	);
 };
