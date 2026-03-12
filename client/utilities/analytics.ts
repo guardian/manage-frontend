@@ -37,21 +37,26 @@ export const trackEvent = ({
 		...(MMA_AB_TEST_DIMENSION_VALUE ? [MMA_AB_TEST_DIMENSION_VALUE] : []),
 	];
 
-	import('@guardian/ophan-tracker-js/MMA').then(({ record }) => {
-		record({
-			componentEvent: {
-				component: {
-					componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
-					products: ophanProduct ? [ophanProduct] : undefined,
-					campaignCode: window.guardian?.INTCMP,
-					labels,
+	void import('@guardian/ophan-tracker-js/MMA')
+		.then(({ record }) => {
+			record({
+				componentEvent: {
+					component: {
+						componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
+						products: ophanProduct ? [ophanProduct] : undefined,
+						campaignCode: window.guardian?.INTCMP,
+						labels,
+					},
+					action: 'VIEW',
+					value:
+						eventValue !== undefined ? `${eventValue}` : undefined,
+					abTest: window.guardian?.abTest,
 				},
-				action: 'VIEW',
-				value: eventValue !== undefined ? `${eventValue}` : undefined,
-				abTest: window.guardian?.abTest,
-			},
+			});
+		})
+		.catch(() => {
+			// Tracking is non-critical; ignore blocked or failed Ophan loads.
 		});
-	});
 };
 
 export const trackEventInOphanOnly = (event: Event) => trackEvent(event);
