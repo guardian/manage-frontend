@@ -21,10 +21,13 @@ export function handleResponses<T>(
 
 function hasBadResponse(responses: Response | Response[]) {
 	if (Array.isArray(responses)) {
-		return responses.some((response) => !response.ok);
+		return responses.some(
+			(response) =>
+				!response.ok && !isHandledUnauthorizedRedirect(response),
+		);
 	}
 
-	return !responses.ok;
+	return !responses.ok && !isHandledUnauthorizedRedirect(responses);
 }
 
 async function handleResponsesAsync<T>(
@@ -48,7 +51,9 @@ async function buildInvalidApiResponseError(
 	response: Response | Response[],
 ): Promise<Error> {
 	if (Array.isArray(response)) {
-		const badResponses = response.filter((r) => !r.ok);
+		const badResponses = response.filter(
+			(r) => !r.ok && !isHandledUnauthorizedRedirect(r),
+		);
 		const responseSummaries = await Promise.all(
 			badResponses.map(getResponseErrorSummary),
 		);
@@ -65,24 +70,15 @@ async function buildInvalidApiResponseError(
 async function getResponseErrorSummary(response: Response): Promise<string> {
 	const statusText = response.statusText ? ` ${response.statusText}` : '';
 	const url = response.url || 'unknown URL';
-	const body = await readResponseBody(response);
-
-	return body
-		? `${response.status}${statusText} for ${url}. Body: ${body}`
-		: `${response.status}${statusText} for ${url}`;
+	return `${response.status}${statusText} for ${url}`;
 }
 
-async function readResponseBody(response: Response): Promise<string | null> {
-	try {
-		const body = (await response.clone().text()).trim();
-		if (!body) {
-			return null;
-		}
-
-		return body.length > 300 ? `${body.slice(0, 300)}...` : body;
-	} catch {
-		return null;
-	}
+function isHandledUnauthorizedRedirect(response: Response): boolean {
+	return (
+		response.status === 401 &&
+		Boolean(response.headers.get('Location')) &&
+		typeof window !== 'undefined'
+	);
 }
 
 function handleSingleResponse<T>(
@@ -90,7 +86,11 @@ function handleSingleResponse<T>(
 	transformResponse: (r: Response) => Promise<T> | T,
 ): Promise<T | null> | T {
 	const locationHeader = response.headers.get('Location');
-	if (response.status === 401 && locationHeader && window !== undefined) {
+	if (
+		response.status === 401 &&
+		locationHeader &&
+		typeof window !== 'undefined'
+	) {
 		window.location.replace(locationHeader);
 		return Promise.resolve(null);
 	} else {
