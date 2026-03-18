@@ -431,6 +431,19 @@ interface ManageProductRouterState {
 	productDetail: ProductDetail;
 }
 
+const billingFrequencyPreviewResponseHandler = (
+	response: Response | Response[],
+): Promise<BillingFrequencySwitchPreview | null> => {
+	const r = Array.isArray(response) ? response[0] : response;
+	// A 400 means the user is ineligible (e.g. non-zero contribution amount).
+	// Treat this as "no preview available" rather than an error to avoid
+	// spurious Sentry noise for an expected business condition.
+	if (r.status === 400) {
+		return Promise.resolve(null);
+	}
+	return JsonResponseHandler(response);
+};
+
 const AsyncLoadedSwitchBillingFrequencyPreview = ({
 	manageProductProps,
 	productDetail,
@@ -447,7 +460,7 @@ const AsyncLoadedSwitchBillingFrequencyPreview = ({
 					true,
 					'Annual',
 				),
-			JsonResponseHandler,
+			billingFrequencyPreviewResponseHandler,
 		);
 
 	if (loadingState == LoadingState.HasError) {
