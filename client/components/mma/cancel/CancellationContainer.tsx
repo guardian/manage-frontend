@@ -82,8 +82,9 @@ export interface CancellationContextInterface {
 	productType: ProductTypeWithCancellationFlow;
 }
 
-export const CancellationContext: Context<CancellationContextInterface | object> =
-	createContext({});
+export const CancellationContext: Context<
+	CancellationContextInterface | object
+> = createContext({});
 
 const contextAndOutletContainer = (
 	productDetail: ProductDetail,
@@ -105,6 +106,7 @@ export interface CancellationRouterState {
 	deliveryCredits?: DeliveryRecordDetail[];
 	updatedContributionAmount?: number;
 	selectedReason?: CancellationReason;
+	cancellationFeedback?: string;
 	dontShowOffer?: boolean;
 	journeyCompleted?: boolean;
 }
@@ -147,6 +149,7 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 			<PageContainer
 				selectedNavItem={NAV_LINKS.accountOverview}
 				pageTitle={pageTitle}
+				minimalFooter
 			>
 				{productDetail ? (
 					contextAndOutletContainer(productDetail, props.productType)

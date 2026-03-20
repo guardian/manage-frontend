@@ -1,9 +1,13 @@
 import { css } from '@emotion/react';
 import {
 	from,
+	headlineBold17,
+	headlineBold28,
 	palette,
 	space,
+	textSans17,
 	textSansBold17,
+	textSansBold24,
 	until,
 } from '@guardian/source/foundations';
 import {
@@ -11,12 +15,12 @@ import {
 	InlineError,
 	Radio,
 	RadioGroup,
+	SvgArrowLeftStraight,
 	SvgArrowRightStraight,
 } from '@guardian/source/react-components';
 import type { FormEvent } from 'react';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { featureSwitches } from '@/shared/featureSwitches';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	parseDate,
@@ -27,14 +31,21 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
+import { isPrintProduct } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
-import { ProgressIndicator } from '../shared/ProgressIndicator';
+import { Card } from '../shared/Card';
 import { ProgressStepper } from '../shared/ProgressStepper';
-import type { CancellationContextInterface } from './CancellationContainer';
-import { CancellationContext } from './CancellationContainer';
+import type {
+	CancellationContextInterface,
+	CancellationPageTitleInterface,
+} from './CancellationContainer';
+import {
+	CancellationContext,
+	CancellationPageTitleContext,
+} from './CancellationContainer';
 import {
 	cancellationEffectiveEndOfLastInvoicePeriod,
 	cancellationEffectiveToday,
@@ -45,33 +56,32 @@ import type { CancellationReason } from './cancellationReason';
 
 interface ReasonPickerProps {
 	productType: ProductTypeWithCancellationFlow;
-	productDetail: ProductDetail;
 	chargedThroughDateStr?: string;
 }
 
 const ReasonPicker = ({
 	productType,
-	productDetail,
 	chargedThroughDateStr,
 }: ReasonPickerProps) => {
 	const [selectedReasonId, setSelectedReasonId] = useState<string>('');
 	const [cancellationPolicy, setCancellationPolicy] = useState<string>('');
+	const [feedback, setFeedback] = useState<string>('');
 
 	const [inValidationErrorState, setInValidationErrorState] =
 		useState<boolean>(false);
 
 	const navigate = useNavigate();
 	const location = useLocation();
-	const routerState = location.state as {
-		productDetail: ProductDetail;
-		productType: ProductTypeWithCancellationFlow;
-	};
+	const routerState = location.state as Record<string, unknown>;
+	const pageTitleContext = useContext(
+		CancellationPageTitleContext,
+	) as CancellationPageTitleInterface;
 
-	const shouldUseProgressStepper =
-		(featureSwitches.supporterplusCancellationOffer &&
-			productType.productType === 'supporterplus') ||
-		(featureSwitches.contributionCancellationPause &&
-			productType.productType === 'contributions');
+	const characterLimit = 2500;
+
+	useEffect(() => {
+		pageTitleContext.setPageTitle('Manage my subscription');
+	}, [pageTitleContext]);
 
 	if (!productType.cancellation.reasons) {
 		return (
@@ -81,84 +91,121 @@ const ReasonPicker = ({
 
 	return (
 		<>
-			{shouldUseProgressStepper ? (
-				<ProgressStepper
-					steps={[{ isCurrentStep: true }, {}, {}, {}]}
-					additionalCSS={css`
-						margin: ${space[5]}px 0 ${space[12]}px;
-					`}
-				/>
-			) : (
-				<ProgressIndicator
-					steps={[
-						{ title: 'Reason', isCurrentStep: true },
-						{ title: 'Review' },
-						{ title: 'Confirmation' },
-					]}
-					additionalCSS={css`
-						margin: ${space[5]}px 0 ${space[12]}px;
-					`}
-				/>
-			)}
+			<ProgressStepper
+				steps={[{ isCurrentStep: true }, {}, {}]}
+				additionalCSS={css`
+					max-width: unset;
+					margin: ${space[5]}px 0;
+					margin-bottom: ${space[8]}px;
 
-			{productType.cancellation.startPageBody(productDetail)}
+					${from.tablet} {
+						margin: ${space[10]}px 0;
+					}
+				`}
+			/>
 			<WithStandardTopMargin>
-				<fieldset
-					onChange={(event: FormEvent<HTMLFieldSetElement>) => {
-						const target: HTMLInputElement =
-							event.target as HTMLInputElement;
-						setSelectedReasonId(target.value);
-					}}
+				<h2
 					css={css`
-						border: 1px solid ${palette.neutral[86]};
-						margin: 0 0 ${space[5]}px;
-						padding: 0;
+						${headlineBold28}
+						margin: 0 0 ${space[2]}px;
+
+						${from.tablet} {
+							margin: 0 0 ${space[3]}px;
+						}
 					`}
 				>
-					<legend
-						css={css`
-							display: block;
-							width: 100%;
-							margin: 0;
-							padding: ${space[3]}px;
-							float: left;
-							background-color: ${palette.neutral[97]};
-							border-bottom: 1px solid ${palette.neutral[86]};
-							${textSansBold17}
-							${from.tablet} {
-								padding: ${space[3]}px ${space[5]}px;
-							}
-						`}
-					>
-						Please select a reason
-					</legend>
-					<RadioGroup
-						name="issue_type"
-						orientation="vertical"
-						cssOverrides={css`
-							display: block;
-							padding: ${space[5]}px;
-						`}
-					>
-						{productType.cancellation.reasons.map(
-							(reason: CancellationReason) => (
-								<Radio
-									key={reason.reasonId}
-									name="cancellation-reason"
-									value={reason.reasonId}
-									label={reason.linkLabel}
+					We're sorry to see you go
+				</h2>
+				<p
+					css={css`
+						${textSans17}
+						margin: 0 0 ${space[5]}px;
+					`}
+				>
+					We value your feedback and review it regularly to improve
+					our services.
+				</p>
+				<div
+					css={css`
+						margin: 0 0 ${space[5]}px;
+					`}
+				>
+					<Card>
+						<Card.Header
+							backgroundColor={palette.brand[800]}
+							minHeightOverride="auto"
+						>
+							<h3
+								css={css`
+									${textSansBold24}
+									margin: 0;
+								`}
+							>
+								Please take a moment to tell us why you want to
+								cancel your subscription
+							</h3>
+						</Card.Header>
+						<Card.Section>
+							<fieldset
+								onChange={(
+									event: FormEvent<HTMLFieldSetElement>,
+								) => {
+									const target: HTMLInputElement =
+										event.target as HTMLInputElement;
+									setSelectedReasonId(target.value);
+								}}
+								css={css`
+									border: 0;
+									margin: 0;
+									padding: 0;
+								`}
+							>
+								<legend
+									css={css`
+										display: none;
+									`}
+								>
+									Please select a reason for cancelling
+								</legend>
+								<RadioGroup
+									name="issue_type"
+									orientation="vertical"
 									cssOverrides={css`
-										vertical-align: top;
-										text-transform: lowercase;
-										:checked + div label:first-of-type {
-											font-weight: bold;
+										display: block;
+
+										> div > div {
+											padding-top: 0;
+											padding-bottom: ${space[4]}px;
+										}
+
+										> div > div:last-of-type {
+											padding-bottom: ${space[3]}px;
 										}
 									`}
-								/>
-							),
-						)}
-					</RadioGroup>
-				</fieldset>
+								>
+									{productType.cancellation.reasons.map(
+										(reason: CancellationReason) => (
+											<Radio
+												key={reason.reasonId}
+												name="cancellation-reason"
+												value={reason.reasonId}
+												label={reason.linkLabel}
+												cssOverrides={css`
+													vertical-align: top;
+													:checked
+														+ div
+														label:first-of-type {
+														font-weight: bold;
+													}
+												`}
+											/>
+										),
+									)}
+								</RadioGroup>
+							</fieldset>
+						</Card.Section>
+					</Card>
+				</div>
 				{inValidationErrorState && !selectedReasonId.length && (
 					<InlineError
 						cssOverrides={css`
@@ -171,69 +218,116 @@ const ReasonPicker = ({
 						Please select a reason
 					</InlineError>
 				)}
+				<h3
+					css={css`
+						${headlineBold17}
+						margin: ${space[6]}px 0 ${space[1]}px;
+					`}
+				>
+					Leave us some feedback
+				</h3>
+				<textarea
+					rows={5}
+					maxLength={characterLimit}
+					css={{
+						width: '100%',
+						fontSize: 'inherit',
+						fontFamily: 'inherit',
+						border: `1px solid ${palette.neutral[86]}`,
+						borderRadius: `${space[1]}px`,
+						marginBottom: `${space[6]}px`,
+					}}
+					onChange={(event) => {
+						setFeedback(event.target.value);
+					}}
+				/>
 				{chargedThroughDateStr && (
 					<>
-						<fieldset
-							onChange={(
-								event: FormEvent<HTMLFieldSetElement>,
-							) => {
-								const target: HTMLInputElement =
-									event.target as HTMLInputElement;
-								if (target.value === 'EndOfLastInvoicePeriod') {
-									setCancellationPolicy(
-										cancellationEffectiveEndOfLastInvoicePeriod,
-									);
-								} else {
-									setCancellationPolicy(
-										cancellationEffectiveToday,
-									);
-								}
-							}}
+						<div
 							css={css`
-								border: 1px solid ${palette.neutral[86]};
-								margin: 0 0 ${space[5]}px;
-								padding: 0;
+								margin: 0 0 ${space[6]}px;
 							`}
 						>
-							<legend
-								css={css`
-									display: block;
-									width: 100%;
-									margin: 0;
-									padding: ${space[3]}px;
-									float: left;
-									background-color: ${palette.neutral[97]};
-									border-bottom: 1px solid
-										${palette.neutral[86]};
-									${textSansBold17}
-									${from.tablet} {
-										padding: ${space[3]}px ${space[5]}px;
-									}
-								`}
-							>
-								When would you like your cancellation to become
-								effective?
-							</legend>
-							<RadioGroup
-								name="issue_type"
-								orientation="vertical"
-								cssOverrides={css`
-									display: block;
-									padding: ${space[5]}px;
-								`}
-							>
-								<Radio
-									name="effective-date"
-									value="EndOfLastInvoicePeriod"
-									label={`On ${chargedThroughDateStr}, which is the end of your current billing period (you should not be charged again)`}
-								/>
-								<Radio
-									name="effective-date"
-									value="Today"
-									label="Today"
-								/>
-							</RadioGroup>
-						</fieldset>
+							<Card>
+								<Card.Header
+									backgroundColor={palette.neutral[97]}
+									minHeightOverride="auto"
+								>
+									<h3
+										css={css`
+											${textSansBold17}
+											margin: 0;
+										`}
+									>
+										When would you like your cancellation to
+										become effective?
+									</h3>
+								</Card.Header>
+								<Card.Section>
+									<fieldset
+										onChange={(
+											event: FormEvent<HTMLFieldSetElement>,
+										) => {
+											const target: HTMLInputElement =
+												event.target as HTMLInputElement;
+											if (
+												target.value ===
+												'EndOfLastInvoicePeriod'
+											) {
+												setCancellationPolicy(
+													cancellationEffectiveEndOfLastInvoicePeriod,
+												);
+											} else {
+												setCancellationPolicy(
+													cancellationEffectiveToday,
+												);
+											}
+										}}
+										css={css`
+											border: 0;
+											margin: 0;
+											padding: 0;
+										`}
+									>
+										<legend
+											css={css`
+												display: none;
+											`}
+										>
+											When would you like your
+											cancellation to become effective?
+										</legend>
+										<RadioGroup
+											name="issue_type"
+											orientation="vertical"
+											cssOverrides={css`
+												display: block;
+
+												> div > div {
+													padding-top: 0;
+													padding-bottom: ${space[4]}px;
+												}
+
+												> div > div:last-of-type {
+													padding-bottom: ${space[3]}px;
+												}
+											`}
+										>
+											<Radio
+												name="effective-date"
+												value="EndOfLastInvoicePeriod"
+												label={`On ${chargedThroughDateStr}, which is the end of your current billing period (you should not be charged again)`}
+											/>
+											<Radio
+												name="effective-date"
+												value="Today"
+												label="Today"
+											/>
+										</RadioGroup>
+									</fieldset>
+								</Card.Section>
+							</Card>
+						</div>
 						{inValidationErrorState && !cancellationPolicy.length && (
 							<InlineError
 								cssOverrides={css`
@@ -283,23 +377,26 @@ const ReasonPicker = ({
 											...routerState,
 											selectedReasonId,
 											cancellationPolicy,
+											cancellationFeedback: feedback,
 										},
 									});
 								}
 								setInValidationErrorState(!canContinue);
 							}}
 						>
-							Continue
+							Continue to Cancel
 						</Button>
 					</div>
 					<div>
 						<Button
 							priority="tertiary"
+							icon={<SvgArrowLeftStraight />}
+							iconSide="left"
 							onClick={() => {
 								navigate('/');
 							}}
 						>
-							Return to your account
+							Previous
 						</Button>
 					</div>
 				</div>
@@ -369,7 +466,6 @@ const ReasonPickerWithCancellationDate = ({
 	return (
 		<ReasonPicker
 			productType={productType}
-			productDetail={productDetail}
 			chargedThroughDateStr={chargedThroughDateStr}
 		/>
 	);
@@ -380,7 +476,10 @@ export const CancellationReasonSelection = () => {
 		CancellationContext,
 	) as CancellationContextInterface;
 
-	if (productType.cancellation.startPageOfferEffectiveDateOptions) {
+	if (
+		productType.cancellation.startPageOfferEffectiveDateOptions &&
+		!isPrintProduct(productType)
+	) {
 		return (
 			<ReasonPickerWithCancellationDate
 				productType={productType}
@@ -389,7 +488,5 @@ export const CancellationReasonSelection = () => {
 		);
 	}
 
-	return (
-		<ReasonPicker productType={productType} productDetail={productDetail} />
-	);
+	return <ReasonPicker productType={productType} />;
 };
