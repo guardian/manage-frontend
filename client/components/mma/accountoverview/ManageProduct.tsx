@@ -452,7 +452,7 @@ const AsyncLoadedSwitchBillingFrequencyPreview = ({
 	productDetail: ProductDetail;
 }) => {
 	const { data, loadingState } =
-		useAsyncLoader<BillingFrequencySwitchPreview>(
+		useAsyncLoader<BillingFrequencySwitchPreview | null>(
 			() =>
 				changeSubscriptionBillingFrequencyFetch(
 					productDetail.isTestUser,
@@ -480,7 +480,7 @@ const AsyncLoadedSwitchBillingFrequencyPreview = ({
 		<InnerContent
 			manageProductProps={manageProductProps}
 			productDetail={productDetail}
-			billingFrequencySwitchPreview={data!}
+			billingFrequencySwitchPreview={data ?? undefined}
 		/>
 	);
 };
