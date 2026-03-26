@@ -94,7 +94,6 @@ const ReasonPicker = ({
 			<ProgressStepper
 				steps={[{ isCurrentStep: true }, {}, {}]}
 				additionalCSS={css`
-					max-width: unset;
 					margin: ${space[5]}px 0;
 					margin-bottom: ${space[8]}px;
 
@@ -218,29 +217,33 @@ const ReasonPicker = ({
 						Please select a reason
 					</InlineError>
 				)}
-				<h3
-					css={css`
-						${headlineBold17}
-						margin: ${space[6]}px 0 ${space[1]}px;
-					`}
-				>
-					Leave us some feedback
-				</h3>
-				<textarea
-					rows={5}
-					maxLength={characterLimit}
-					css={{
-						width: '100%',
-						fontSize: 'inherit',
-						fontFamily: 'inherit',
-						border: `1px solid ${palette.neutral[86]}`,
-						borderRadius: `${space[1]}px`,
-						marginBottom: `${space[6]}px`,
-					}}
-					onChange={(event) => {
-						setFeedback(event.target.value);
-					}}
-				/>
+				{isPrintProduct(productType) && (
+					<>
+						<h3
+							css={css`
+								${headlineBold17}
+								margin: ${space[6]}px 0 ${space[1]}px;
+							`}
+						>
+							Leave us some feedback
+						</h3>
+						<textarea
+							rows={5}
+							maxLength={characterLimit}
+							css={{
+								width: '100%',
+								fontSize: 'inherit',
+								fontFamily: 'inherit',
+								border: `1px solid ${palette.neutral[86]}`,
+								borderRadius: `${space[1]}px`,
+								marginBottom: `${space[6]}px`,
+							}}
+							onChange={(event) => {
+								setFeedback(event.target.value);
+							}}
+						/>
+					</>
+				)}
 				{chargedThroughDateStr && (
 					<>
 						<div
