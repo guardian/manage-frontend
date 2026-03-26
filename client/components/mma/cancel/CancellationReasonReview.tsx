@@ -167,17 +167,6 @@ const printPauseBannerGraphicCss = css`
 	}
 `;
 
-const printStepTwoButtonRowCss = css`
-	display: flex;
-	justify-content: space-between;
-	flex-direction: row-reverse;
-	margin-top: ${space[6]}px;
-
-	${until.mobileLandscape} {
-		flex-direction: column;
-	}
-`;
-
 interface PrintCancellationStepTwoProps {
 	productType: ProductTypeWithCancellationFlowMandatoryReasons;
 	routerState: {
@@ -250,7 +239,11 @@ const PrintCancellationStepTwo = ({
 					<img src={pauseBannerImageSrc.mobile} alt="" />
 				</picture>
 			</section>
-			<section>
+			<section
+				css={css`
+					margin-bottom: ${space[6]}px;
+				`}
+			>
 				<h2
 					css={css`
 						${headlineBold28}
@@ -295,41 +288,44 @@ const PrintCancellationStepTwo = ({
 					Monday to Sunday
 				</p>
 			</section>
-			<div css={printStepTwoButtonRowCss}>
-				<div
-					css={css`
-						text-align: right;
-						margin-bottom: ${space[2]}px;
-					`}
+			<div
+				data-cy="cta_container"
+				css={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					flexDirection: 'column',
+					gap: `${space[3]}px`,
+
+					[from.tablet]: {
+						flexDirection: 'row',
+					},
+				}}
+			>
+				<Button
+					priority="tertiary"
+					icon={<SvgArrowLeftStraight />}
+					iconSide="left"
+					onClick={() => navigate('..', { state: routerState })}
 				>
-					<Button
-						icon={<SvgArrowRightStraight />}
-						iconSide="right"
-						onClick={() =>
-							navigate('../confirmed', {
-								state: {
-									...routerState,
-									eligibleForFreePeriodOffer: false,
-									caseId,
-									holidayStops,
-									deliveryCredits,
-								},
-							})
-						}
-					>
-						Continue to cancel
-					</Button>
-				</div>
-				<div>
-					<Button
-						priority="tertiary"
-						icon={<SvgArrowLeftStraight />}
-						iconSide="left"
-						onClick={() => navigate('..', { state: routerState })}
-					>
-						Previous
-					</Button>
-				</div>
+					Previous
+				</Button>
+				<Button
+					icon={<SvgArrowRightStraight />}
+					iconSide="right"
+					onClick={() =>
+						navigate('../confirm', {
+							state: {
+								...routerState,
+								eligibleForFreePeriodOffer: false,
+								caseId,
+								holidayStops,
+								deliveryCredits,
+							},
+						})
+					}
+				>
+					Continue to cancel
+				</Button>
 			</div>
 		</>
 	);
@@ -664,7 +660,7 @@ const ValidatedCancellationReasonReview = ({
 
 	useEffect(() => {
 		if (isPrintProductType) {
-			pageTitleContext.setPageTitle('Manage my subscription');
+			pageTitleContext.setPageTitle('Manage subscription');
 		}
 	}, [isPrintProductType, pageTitleContext]);
 
