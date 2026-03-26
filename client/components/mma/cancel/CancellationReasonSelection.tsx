@@ -28,6 +28,7 @@ import {
 } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
+import { usePrintCancellationStore } from '../../../stores/PrintCancellationStore';
 import {
 	LoadingState,
 	useAsyncLoader,
@@ -54,7 +55,10 @@ import {
 } from './cancellationContexts';
 import type { CancellationDateResponse } from './cancellationDateResponse';
 import { cancellationDateFetcher } from './cancellationDateResponse';
-import type { CancellationReason } from './cancellationReason';
+import type {
+	CancellationReason,
+	OptionalCancellationReasonId,
+} from './cancellationReason';
 
 interface ReasonPickerProps {
 	productType: ProductTypeWithCancellationFlow;
@@ -324,14 +328,22 @@ const PrintReasonPicker = ({
 }: {
 	productType: ProductTypeWithCancellationFlow;
 }) => {
-	const [selectedReasonId, setSelectedReasonId] = useState<string>('');
-	const [feedback, setFeedback] = useState<string>('');
+	const {
+		selectedReasonId: storedSelectedReasonId,
+		cancellationFeedback: storedFeedback,
+		setSelectedReasonId: setStoredSelectedReasonId,
+		setCancellationFeedback: setStoredCancellationFeedback,
+	} = usePrintCancellationStore();
+	const [selectedReasonId, setSelectedReasonId] =
+		useState<OptionalCancellationReasonId>(
+			storedSelectedReasonId ?? undefined,
+		);
+	const [feedback, setFeedback] = useState<string>(storedFeedback);
+	const selectedReasonIdValue = selectedReasonId ?? '';
 	const [inValidationErrorState, setInValidationErrorState] =
 		useState<boolean>(false);
 
 	const navigate = useNavigate();
-	const location = useLocation();
-	const routerState = location.state as Record<string, unknown>;
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
@@ -410,7 +422,9 @@ const PrintReasonPicker = ({
 								) => {
 									const target: HTMLInputElement =
 										event.target as HTMLInputElement;
-									setSelectedReasonId(target.value);
+									setSelectedReasonId(
+										target.value as OptionalCancellationReasonId,
+									);
 								}}
 								css={css`
 									border: 0;
@@ -464,7 +478,7 @@ const PrintReasonPicker = ({
 						</Card.Section>
 					</Card>
 				</div>
-				{inValidationErrorState && !selectedReasonId.length && (
+				{inValidationErrorState && !selectedReasonIdValue.length && (
 					<InlineError
 						cssOverrides={css`
 							padding: ${space[5]}px;
@@ -527,16 +541,12 @@ const PrintReasonPicker = ({
 						icon={<SvgArrowRightStraight />}
 						iconSide="right"
 						onClick={() => {
-							const canContinue = !!selectedReasonId.length;
+							const canContinue = !!selectedReasonIdValue.length;
 
 							if (canContinue) {
-								navigate('review', {
-									state: {
-										...routerState,
-										selectedReasonId,
-										cancellationFeedback: feedback,
-									},
-								});
+								setStoredSelectedReasonId(selectedReasonId);
+								setStoredCancellationFeedback(feedback);
+								navigate('review');
 							}
 							setInValidationErrorState(!canContinue);
 						}}

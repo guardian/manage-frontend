@@ -14,6 +14,7 @@ import {
 import { useContext, useEffect } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAccountStore } from '@/client/stores/AccountStore';
+import { usePrintCancellationStore } from '@/client/stores/PrintCancellationStore';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { isPrintProduct } from '@/client/utilities/productUtils';
@@ -125,6 +126,8 @@ export const ConfirmCancellation = () => {
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 	const { getUser } = useAccountStore();
+	const { selectedReasonId: printSelectedReasonId, caseId: printCaseId } =
+		usePrintCancellationStore();
 	const user = getUser();
 
 	const subscription = productDetail.subscription;
@@ -140,15 +143,22 @@ export const ConfirmCancellation = () => {
 	const progressStepperArray = [
 		{},
 		{},
-		{ isCurrentStep: !routerState.eligibleForFreePeriodOffer },
-		{ isCurrentStep: routerState.eligibleForFreePeriodOffer },
+		{ isCurrentStep: !routerState?.eligibleForFreePeriodOffer },
+		{ isCurrentStep: !!routerState?.eligibleForFreePeriodOffer },
 	];
 
 	const supportSinceDate = dateString(
 		new Date(productDetail.joinDate),
 		DATE_FNS_LONG_OUTPUT_FORMAT,
 	);
-	const supporterNamePrefix = user?.firstName ? `${user.firstName}, ` : '';
+	const fallbackFirstName = subscription.account?.accountName
+		?.trim()
+		.split(/\s+/)[0];
+	const supporterFirstName = user?.firstName || fallbackFirstName;
+	const supporterNamePrefix = supporterFirstName
+		? `${supporterFirstName}, `
+		: '';
+	const thankWord = supporterNamePrefix ? 'thank' : 'Thank';
 	const subscriptionEndDate = subscription.potentialCancellationDate
 		? parseDate(
 				subscription.potentialCancellationDate,
@@ -165,7 +175,7 @@ export const ConfirmCancellation = () => {
 	}, [groupedProductType.friendlyName, isPrintProductType, pageTitleContext]);
 
 	if (isPrintProductType) {
-		if (!routerState?.selectedReasonId || !routerState?.caseId) {
+		if (!printSelectedReasonId || !printCaseId) {
 			return <Navigate to="../review" />;
 		}
 
@@ -187,7 +197,7 @@ export const ConfirmCancellation = () => {
 						margin: 0 0 ${space[5]}px;
 					`}
 				>
-					{`${supporterNamePrefix}thank you for supporting the Guardian since ${supportSinceDate}. Is this really goodbye?`}
+					{`${supporterNamePrefix}${thankWord} you for supporting the Guardian since ${supportSinceDate}. Is this really goodbye?`}
 				</h2>
 				<div css={[printCopyCss]}>
 					<p>
@@ -230,18 +240,14 @@ export const ConfirmCancellation = () => {
 							icon={<SvgArrowLeftStraight />}
 							iconSide="left"
 							onClick={() => {
-								navigate('../review', {
-									state: routerState,
-								});
+								navigate('../review');
 							}}
 						>
 							Previous
 						</Button>
 						<Button
 							onClick={() => {
-								navigate('../confirmed', {
-									state: routerState,
-								});
+								navigate('../confirmed');
 							}}
 						>
 							Confirm cancellation

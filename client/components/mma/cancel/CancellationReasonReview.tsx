@@ -42,6 +42,7 @@ import type {
 	ProductTypeWithCancellationFlowMandatoryReasons,
 	WithProductType,
 } from '../../../../shared/productTypes';
+import { usePrintCancellationStore } from '../../../stores/PrintCancellationStore';
 import { measure } from '../../../styles/typography';
 import { useFetch } from '../../../utilities/hooks/useFetch';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
@@ -169,24 +170,13 @@ const printPauseBannerGraphicCss = css`
 
 interface PrintCancellationStepTwoProps {
 	productType: ProductTypeWithCancellationFlowMandatoryReasons;
-	routerState: {
-		selectedReasonId: OptionalCancellationReasonId;
-		cancellationPolicy: string;
-		cancellationFeedback?: string;
-	};
-	caseId: string;
-	holidayStops?: OutstandingHolidayStop[];
-	deliveryCredits?: DeliveryRecordDetail[];
 }
 
 const PrintCancellationStepTwo = ({
 	productType,
-	routerState,
-	caseId,
-	holidayStops,
-	deliveryCredits,
 }: PrintCancellationStepTwoProps) => {
 	const navigate = useNavigate();
+	const { setEligibleForFreePeriodOffer } = usePrintCancellationStore();
 	const pauseBannerImageSrc: { mobile: string; desktop: string } = {
 		mobile: 'https://i.guim.co.uk/img/media/203dbadbd6e0fcd4eed01370f94bf3a67d747ebd/0_0_204_162/204.png?width=204&quality=100&s=e69f374f6154453c7442d39b22efcb56',
 		desktop:
@@ -305,24 +295,17 @@ const PrintCancellationStepTwo = ({
 					priority="tertiary"
 					icon={<SvgArrowLeftStraight />}
 					iconSide="left"
-					onClick={() => navigate('..', { state: routerState })}
+					onClick={() => navigate('..')}
 				>
 					Previous
 				</Button>
 				<Button
 					icon={<SvgArrowRightStraight />}
 					iconSide="right"
-					onClick={() =>
-						navigate('../confirm', {
-							state: {
-								...routerState,
-								eligibleForFreePeriodOffer: false,
-								caseId,
-								holidayStops,
-								deliveryCredits,
-							},
-						})
-					}
+					onClick={() => {
+						setEligibleForFreePeriodOffer(false);
+						navigate('../confirm');
+					}}
 				>
 					Continue to cancel
 				</Button>
@@ -622,8 +605,13 @@ export const CancellationReasonReview = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
+	const { selectedReasonId: printSelectedReasonId } =
+		usePrintCancellationStore();
+	const selectedReasonId = isPrintProduct(productType)
+		? printSelectedReasonId
+		: routerState?.selectedReasonId;
 
-	if (!routerState?.selectedReasonId || !productType?.cancellation.reasons) {
+	if (!selectedReasonId || !productType?.cancellation.reasons) {
 		return <Navigate to=".." />;
 	}
 	return (
@@ -653,8 +641,22 @@ const ValidatedCancellationReasonReview = ({
 		setPageTitle: (title: string) => void;
 	};
 	const isPrintProductType = isPrintProduct(productType);
+	const {
+		selectedReasonId: printSelectedReasonId,
+		cancellationPolicy: printCancellationPolicy,
+		cancellationFeedback: printCancellationFeedback,
+		setCaseData,
+	} = usePrintCancellationStore();
+	const selectedReasonId = isPrintProductType
+		? printSelectedReasonId
+		: routerState.selectedReasonId;
+	const cancellationPolicy = isPrintProductType
+		? printCancellationPolicy
+		: routerState.cancellationPolicy;
 	const [reviewFeedback, setReviewFeedback] = useState(
-		routerState.cancellationFeedback ?? '',
+		isPrintProductType
+			? printCancellationFeedback
+			: routerState.cancellationFeedback ?? '',
 	);
 	const characterLimit = 2500;
 
@@ -663,8 +665,6 @@ const ValidatedCancellationReasonReview = ({
 			pageTitleContext.setPageTitle('Manage subscription');
 		}
 	}, [isPrintProductType, pageTitleContext]);
-
-	const { selectedReasonId, cancellationPolicy } = routerState;
 
 	const reason = productType.cancellation.reasons.find(
 		(reason) => reason.reasonId === selectedReasonId,
@@ -726,7 +726,7 @@ const ValidatedCancellationReasonReview = ({
 
 	const caseId = cancellationCaseFetch.data?.id || '';
 
-	const isLoading = () =>
+	const isDataLoading =
 		(productType.cancellation.checkForOutstandingCredits &&
 			(!holidayStopCreditFetch.data ||
 				!deliveryProblemCreditFetch.data)) ||
@@ -741,8 +741,27 @@ const ValidatedCancellationReasonReview = ({
 	const needsCancellationEscalation = requiresCancellationEscalation(
 		holidayStopCreditFetch.data?.publicationsToRefund,
 		deliveryProblemCreditFetch.data?.results,
-		routerState.cancellationPolicy,
+		cancellationPolicy,
 	);
+
+	useEffect(() => {
+		if (!isPrintProductType || isDataLoading || !caseId) {
+			return;
+		}
+
+		setCaseData({
+			caseId,
+			holidayStops: holidayStopCreditFetch.data?.publicationsToRefund,
+			deliveryCredits: deliveryProblemCreditFetch.data?.results,
+		});
+	}, [
+		caseId,
+		deliveryProblemCreditFetch.data?.results,
+		holidayStopCreditFetch.data?.publicationsToRefund,
+		isDataLoading,
+		isPrintProductType,
+		setCaseData,
+	]);
 
 	const renderSaveBody = (
 		saveBody: string[] | React.FC<SaveBodyProps>,
@@ -808,22 +827,12 @@ const ValidatedCancellationReasonReview = ({
 				/>
 			)}
 			<WithStandardTopMargin>
-				{isLoading() ? (
+				{isDataLoading ? (
 					!loadingHasFailed && (
 						<SpinnerWithMessage loadingMessage="Checking details" />
 					)
 				) : isPrintProductType ? (
-					<PrintCancellationStepTwo
-						productType={productType}
-						routerState={routerState}
-						caseId={caseId}
-						holidayStops={
-							holidayStopCreditFetch.data?.publicationsToRefund
-						}
-						deliveryCredits={
-							deliveryProblemCreditFetch.data?.results
-						}
-					/>
+					<PrintCancellationStepTwo productType={productType} />
 				) : (
 					<>
 						<Heading

@@ -14,8 +14,12 @@ import type {
 	ProductType,
 	ProductTypeWithCancellationFlow,
 } from '../../../../../shared/productTypes';
+import { usePrintCancellationStore } from '../../../../stores/PrintCancellationStore';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
-import { createProductDetailFetcher } from '../../../../utilities/productUtils';
+import {
+	createProductDetailFetcher,
+	isPrintProduct,
+} from '../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { AsyncLoader } from '../../shared/AsyncLoader';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
@@ -177,31 +181,49 @@ export const ExecuteCancellation = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
+	const {
+		selectedReasonId: printSelectedReasonId,
+		caseId: printCaseId,
+		cancellationPolicy: printCancellationPolicy,
+		holidayStops: printHolidayStops,
+		deliveryCredits: printDeliveryCredits,
+		eligibleForFreePeriodOffer: printEligibleForFreePeriodOffer,
+	} = usePrintCancellationStore();
+	const isPrintProductType = isPrintProduct(productType);
+	const selectedReasonId = isPrintProductType
+		? printSelectedReasonId
+		: routerState?.selectedReasonId;
+	const caseId = isPrintProductType ? printCaseId : routerState?.caseId;
+	const cancellationPolicy = isPrintProductType
+		? printCancellationPolicy
+		: routerState?.cancellationPolicy;
+	const holidayStops = isPrintProductType
+		? printHolidayStops
+		: routerState?.holidayStops;
+	const deliveryCredits = isPrintProductType
+		? printDeliveryCredits
+		: routerState?.deliveryCredits;
+	const eligibleForFreePeriodOffer = isPrintProductType
+		? printEligibleForFreePeriodOffer
+		: routerState?.eligibleForFreePeriodOffer;
+	const eligibleForPause = routerState?.eligibleForPause;
 
 	const cancellationReasonId = useContext(CancellationReasonContext);
 	const productHasReasonSelection = productType.cancellation.reasons?.length
 		? true
 		: false;
 
-	if (
-		productHasReasonSelection &&
-		(!routerState?.selectedReasonId || !routerState?.caseId)
-	) {
+	if (productHasReasonSelection && (!selectedReasonId || !caseId)) {
 		return <Navigate to="../" />;
 	}
-
-	const caseId = routerState.caseId;
 	const alternativeIsOffer = productType.productType === 'supporterplus';
 	const alternativeIsPause = productType.productType === 'contributions';
 
 	const escalationCauses = generateEscalationCausesList({
-		isEffectiveToday:
-			routerState.cancellationPolicy === cancellationEffectiveToday,
-		hasOutstandingHolidayStops:
-			!!routerState.holidayStops && routerState.holidayStops.length > 0,
+		isEffectiveToday: cancellationPolicy === cancellationEffectiveToday,
+		hasOutstandingHolidayStops: !!holidayStops && holidayStops.length > 0,
 		hasOutstandingDeliveryProblemCredits:
-			!!routerState.deliveryCredits &&
-			routerState.deliveryCredits.length > 0,
+			!!deliveryCredits && deliveryCredits.length > 0,
 	});
 
 	const useProgressStepper =
@@ -212,8 +234,8 @@ export const ExecuteCancellation = () => {
 
 	return (
 		<>
-			{(alternativeIsOffer && !routerState.eligibleForFreePeriodOffer) ||
-				(alternativeIsPause && !routerState.eligibleForPause && (
+			{(alternativeIsOffer && !eligibleForFreePeriodOffer) ||
+				(alternativeIsPause && !eligibleForPause && (
 					<>
 						{useProgressStepper ? (
 							<ProgressStepper
@@ -258,7 +280,7 @@ export const ExecuteCancellation = () => {
 						fetch={getCancelFunc(
 							productDetail.subscription.subscriptionId,
 							productType,
-							routerState.selectedReasonId,
+							selectedReasonId,
 							createProductDetailFetcher(
 								productType.allProductsProductTypeFilterString,
 								productDetail.subscription.subscriptionId,
@@ -267,8 +289,8 @@ export const ExecuteCancellation = () => {
 						render={getCaseUpdatingCancellationSummary(
 							productType,
 							productDetail,
-							routerState.eligibleForFreePeriodOffer,
-							routerState.eligibleForPause,
+							eligibleForFreePeriodOffer,
+							eligibleForPause,
 							cancellationReasonId,
 							caseId,
 						)}

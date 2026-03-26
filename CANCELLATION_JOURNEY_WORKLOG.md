@@ -75,13 +75,14 @@ Step 1 capture and pass-through:
 
 -   `client/components/mma/cancel/CancellationReasonSelection.tsx`
     -   Captures textarea input
-    -   Passes `cancellationFeedback` in router state when continuing
+    -   For print flow, stores `cancellationFeedback` in `PrintCancellationStore` when continuing
+    -   Non-print flow continues using existing router state behavior
 
 Review submission behavior:
 
 -   `client/components/mma/cancel/CancellationReasonReview.tsx`
     -   Removed embedded feedback form UI from review step
-    -   On confirm/continue, submits `routerState.cancellationFeedback` if present
+    -   On confirm/continue, non-print submits `routerState.cancellationFeedback` if present
 
 ### 5) Conditional rendering by product type (print-only behavior)
 
@@ -170,7 +171,7 @@ Notes:
 In `client/components/mma/cancel/CancellationReasonReview.tsx`:
 
 -   Updated print step-2 primary CTA (`Continue to cancel`) to navigate to `../confirm` (instead of `../confirmed`) so users see an explicit final confirmation screen before execution.
--   State payload passed forward remains intact (`selectedReasonId`, `caseId`, credits/stops, feedback data when present), so `ExecuteCancellation` still receives required data after confirm.
+-   Print step state is now read from/written to store during the journey (see Step 4 update below), rather than being passed forward as router payload.
 
 ### New print-only step 3 screen
 
@@ -192,9 +193,8 @@ In `client/components/mma/cancel/stages/ConfirmCancellation.tsx`:
 
 In `client/components/mma/cancel/stages/ConfirmCancellation.tsx`:
 
--   Switched supporter name lookup from router state to MDAPI user data via zustand:
-    -   Uses `useAccountStore().getUser()` for `firstName`
--   Removed now-unneeded `user` dependency from confirm-route state typing.
+-   Name lookup no longer depends on confirm-route state.
+-   Uses `useAccountStore().getUser()` as primary source and falls back to `subscription.account.accountName` first token when first name is missing.
 
 ### Skeleton/loading fix for confirm transition
 
@@ -217,3 +217,52 @@ In `client/components/mma/cancel/CancellationReasonSelection.tsx`:
 
 -   Lint checks were run on modified cancellation and MMA routing/skeleton files after changes.
 -   No linter errors were reported on the final touched files.
+
+## Step 4 update: print loader/store refactor
+
+### New print-only loader pattern (mirrors upgrade flow approach)
+
+Added:
+
+-   `client/utilities/hooks/usePrintCancellationLoader.ts`
+-   `client/stores/PrintCancellationStore.tsx`
+
+Behavior:
+
+-   Loader is scoped to `isPrintProduct` only.
+-   Returns guarded loader state (`isLoading`, `shouldRedirect`) in the same style as the upgrade loader.
+-   Seeds print store from router `productDetail` when present.
+-   If router `productDetail` is absent, fetches only required filtered MDAPI data via `createProductDetailFetcher(...)`.
+-   Hydrates `AccountStore` with MDAPI response when missing, so downstream components can access account user data.
+
+### Container wiring
+
+In `client/components/mma/cancel/CancellationContainer.tsx`:
+
+-   Added print-only container branch using the new loader.
+-   Kept existing non-print container logic unchanged.
+-   Fixed first-render redirect bug by resolving product detail from store **or** router state while loader hydration completes.
+
+### Print journey state migration from router payload to store
+
+Updated:
+
+-   `client/components/mma/cancel/CancellationReasonSelection.tsx`
+-   `client/components/mma/cancel/CancellationReasonReview.tsx`
+-   `client/components/mma/cancel/stages/ConfirmCancellation.tsx`
+-   `client/components/mma/cancel/stages/ExecuteCancellation.tsx`
+
+Behavior:
+
+-   Print flow no longer passes large router state payloads between steps.
+-   Step 1 stores selected reason and feedback in `PrintCancellationStore`.
+-   Step 2 stores `caseId` and credits/stops in `PrintCancellationStore` once loaded.
+-   Step 3/execute read required print state from store and keep existing non-print behavior intact.
+
+### Print heading copy fallback tweak
+
+In `client/components/mma/cancel/stages/ConfirmCancellation.tsx`:
+
+-   Added conditional capitalization for the heading lead-in:
+    -   with name: `<name>, thank you ...`
+    -   without name: `Thank you ...`
