@@ -4,17 +4,19 @@ import {
 	headlineBold28,
 	palette,
 	space,
+	textSans14,
 	textSans17,
 	textSansBold17,
 	until,
 } from '@guardian/source/foundations';
 import {
 	Button,
+	InlineError,
 	Spinner,
 	SvgArrowLeftStraight,
 	SvgArrowRightStraight,
 } from '@guardian/source/react-components';
-import type { FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
@@ -76,7 +78,7 @@ import {
 	allowCountrySwitchDiscount,
 	reasonIsEligibleForSwitch,
 } from './cancellationSaves/saveEligibilityCheck';
-import { getUpdateCasePromise } from './caseUpdate';
+import { CaseUpdateAsyncLoader, getUpdateCasePromise } from './caseUpdate';
 
 const getPatchUpdateCaseFunc =
 	(isTestUser: boolean, caseId: string, feedback: string) => async () =>
@@ -109,6 +111,163 @@ const ContactUs = (reason: CancellationReason) =>
 			.
 		</p>
 	);
+
+interface FeedbackFormProps
+	extends WithProductType<ProductTypeWithCancellationFlow> {
+	reason: CancellationReason;
+	characterLimit: number;
+	caseId: string;
+	isTestUser: boolean;
+	holidayStops?: OutstandingHolidayStop[];
+	deliveryCredits?: DeliveryRecordDetail[];
+}
+
+const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
+	const [feedback, setFeedback] = useState<string>('');
+	const [hasHitSubmit, setHasHitSubmit] = useState<boolean>(false);
+	const [inFeedbackValidationErrorState, setFeedbackValidationErrorState] =
+		useState<boolean>(false);
+
+	const getFeedbackThankYouRenderer = (reason: CancellationReason) => {
+		return () => (
+			<div
+				css={{
+					marginLeft: '15px',
+					marginTop: '30px',
+					paddingLeft: '15px',
+					borderLeft: '1px solid ' + palette.neutral[60],
+				}}
+			>
+				<p
+					css={{
+						fontSize: '1rem',
+						fontWeight: 500,
+					}}
+				>
+					{reason.alternateFeedbackThankYouTitle ||
+						'Thank you for your feedback.'}
+				</p>
+				<span>
+					{reason.alternateFeedbackThankYouBody ||
+						'The Guardian is dedicated to keeping our independent, investigative journalism open to all. We report on the facts, challenging the powerful and holding them to account. Support from our readers makes what we do possible and we appreciate hearing from you to help improve our service.'}
+				</span>
+			</div>
+		);
+	};
+
+	const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+		setFeedback(event.target.value);
+		setFeedbackValidationErrorState(false);
+	};
+
+	const submitFeedback = () => {
+		if (feedback.length) {
+			setHasHitSubmit(true);
+		}
+		setFeedbackValidationErrorState(!feedback.length);
+	};
+
+	return hasHitSubmit ? (
+		<>
+			<CaseUpdateAsyncLoader
+				loadingMessage="Storing your feedback..."
+				fetch={getPatchUpdateCaseFunc(
+					props.isTestUser,
+					props.caseId,
+					feedback,
+				)}
+				render={getFeedbackThankYouRenderer(props.reason)}
+			/>
+			<div css={{ height: '20px' }} />
+			<ConfirmCancellationAndReturnRow
+				hide={!!props.reason.hideSaveActions}
+				reasonId={props.reason.reasonId}
+				productType={props.productType}
+				caseId={props.caseId}
+				holidayStops={props.holidayStops}
+				deliveryCredits={props.deliveryCredits}
+			/>
+		</>
+	) : (
+		<>
+			<div>
+				{!props.reason.hideContactUs &&
+					!props.productType.cancellation
+						.swapFeedbackAndContactUs && (
+						<ContactUs {...props.reason} />
+					)}
+				<p>
+					{props.reason.alternateFeedbackIntro ||
+						'Alternatively provide feedback in the box below'}
+				</p>
+				<textarea
+					rows={5}
+					maxLength={props.characterLimit}
+					css={{
+						width: '100%',
+						fontSize: 'inherit',
+						fontFamily: 'inherit',
+						border: '1px black solid',
+					}}
+					onChange={handleChange}
+				/>
+				<div css={{ textAlign: 'right' }}>
+					<div
+						css={css`
+							${textSans14};
+							color: ${palette.neutral[46]};
+							padding-bottom: 10px;
+						`}
+					>
+						You have {props.characterLimit - feedback.length}{' '}
+						characters remaining
+					</div>
+					{inFeedbackValidationErrorState && (
+						<InlineError
+							cssOverrides={css`
+								padding: ${space[5]}px;
+								margin-bottom: ${space[4]}px;
+								border: 4px solid ${palette.error[400]};
+								text-align: left;
+							`}
+						>
+							Please insert your feedback into the textbox before
+							submitting. Otherwise select ‘Confirm cancellation’
+							to continue
+						</InlineError>
+					)}
+					<Button priority="secondary" onClick={submitFeedback}>
+						Submit feedback
+					</Button>
+					<ConfirmCancellationAndReturnRow
+						hide={!!props.reason.hideSaveActions}
+						reasonId={props.reason.reasonId}
+						productType={props.productType}
+						caseId={props.caseId}
+						holidayStops={props.holidayStops}
+						deliveryCredits={props.deliveryCredits}
+						onClick={() => {
+							if (feedback.length > 0) {
+								getPatchUpdateCaseFunc(
+									props.isTestUser,
+									props.caseId,
+									feedback,
+								)();
+							}
+						}}
+					/>
+					{!props.reason.hideContactUs &&
+						props.productType.cancellation
+							.swapFeedbackAndContactUs && (
+							<div css={{ marginTop: '20px' }}>
+								<ContactUs {...props.reason} />
+							</div>
+						)}
+				</div>
+			</div>
+		</>
+	);
+};
 
 const printPauseBannerCss = css`
 	background-color: ${palette.neutral[97]};
@@ -644,7 +803,6 @@ const ValidatedCancellationReasonReview = ({
 	const {
 		selectedReasonId: printSelectedReasonId,
 		cancellationPolicy: printCancellationPolicy,
-		cancellationFeedback: printCancellationFeedback,
 		setCaseData,
 	} = usePrintCancellationStore();
 	const selectedReasonId = isPrintProductType
@@ -653,12 +811,6 @@ const ValidatedCancellationReasonReview = ({
 	const cancellationPolicy = isPrintProductType
 		? printCancellationPolicy
 		: routerState.cancellationPolicy;
-	const [reviewFeedback, setReviewFeedback] = useState(
-		isPrintProductType
-			? printCancellationFeedback
-			: routerState.cancellationFeedback ?? '',
-	);
-	const characterLimit = 2500;
 
 	useEffect(() => {
 		if (isPrintProductType) {
@@ -874,46 +1026,9 @@ const ValidatedCancellationReasonReview = ({
 									?.publicationsToRefund,
 								deliveryProblemCreditFetch.data?.results,
 							)}
-						<h3
-							css={css`
-								${textSansBold17};
-								margin: ${space[6]}px 0 ${space[1]}px;
-							`}
-						>
-							Leave us some feedback
-						</h3>
-						<textarea
-							rows={5}
-							maxLength={characterLimit}
-							value={reviewFeedback}
-							css={css`
-								width: 100%;
-								font-size: inherit;
-								font-family: inherit;
-								border: 1px solid ${palette.neutral[86]};
-								border-radius: ${space[1]}px;
-								margin-bottom: ${space[6]}px;
-							`}
-							onChange={(event) =>
-								setReviewFeedback(event.target.value)
-							}
-						/>
-
-						<div
-							css={{
-								display: 'flex',
-								flexDirection:
-									productType.cancellation
-										.swapFeedbackAndContactUs && caseId
-										? 'column-reverse'
-										: 'column',
-							}}
-						>
-							<ContactUs {...reason} />
-							<ConfirmCancellationAndReturnRow
-								hide={!!reason.hideSaveActions}
-								reasonId={reason.reasonId}
-								productType={productType}
+						{caseId && !reason.skipFeedback ? (
+							<FeedbackFormAndContactUs
+								characterLimit={2500}
 								caseId={caseId}
 								holidayStops={
 									holidayStopCreditFetch.data
@@ -922,21 +1037,37 @@ const ValidatedCancellationReasonReview = ({
 								deliveryCredits={
 									deliveryProblemCreditFetch.data?.results
 								}
-								onClick={() => {
-									const feedback = reviewFeedback.trim()
-										.length
-										? reviewFeedback.trim()
-										: routerState.cancellationFeedback?.trim();
-									if (feedback) {
-										void getPatchUpdateCaseFunc(
-											productDetail.isTestUser,
-											caseId,
-											feedback,
-										)();
-									}
-								}}
+								reason={reason}
+								productType={productType}
+								isTestUser={productDetail.isTestUser}
 							/>
-						</div>
+						) : (
+							<div
+								css={{
+									display: 'flex',
+									flexDirection:
+										productType.cancellation
+											.swapFeedbackAndContactUs && caseId
+											? 'column-reverse'
+											: 'column',
+								}}
+							>
+								<ContactUs {...reason} />
+								<ConfirmCancellationAndReturnRow
+									hide={!!reason.hideSaveActions}
+									reasonId={reason.reasonId}
+									productType={productType}
+									caseId={caseId}
+									holidayStops={
+										holidayStopCreditFetch.data
+											?.publicationsToRefund
+									}
+									deliveryCredits={
+										deliveryProblemCreditFetch.data?.results
+									}
+								/>
+							</div>
+						)}
 					</>
 				)}
 				{loadingHasFailed && (
