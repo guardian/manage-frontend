@@ -12,14 +12,17 @@ import {
 	guardianAdLite,
 	guardianAdLiteCancelled,
 	guardianAdLiteInTrialPeriod,
+	guardianWeeklyCancelled,
 	guardianWeeklyPaidByCard,
 	supporterPlus,
 	supporterPlusAnnual,
 	supporterPlusCancelled,
 	supporterPlusMonthlyAllAccessDigital,
 } from '../../../fixtures/productBuilder/testProducts';
+import { usePrintCancellationStore } from '../../../stores/PrintCancellationStore';
 import { CancellationContainer } from './CancellationContainer';
 import { CancellationJourneyFunnel } from './CancellationJourneyFunnel';
+import type { OptionalCancellationReasonId } from './cancellationReason';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { CancelAlternativeConfirmed } from './cancellationSaves/CancelAlternativeConfirmed';
@@ -75,6 +78,139 @@ export const ContactCustomerService: StoryObj<typeof CancellationContainer> = {
 		},
 	},
 };
+
+const seedGuardianWeeklyPrintStore = ({
+	selectedReasonId = 'mma_editorial',
+	cancellationPolicy = '',
+	caseId = 'caseId',
+}: {
+	selectedReasonId?: OptionalCancellationReasonId;
+	cancellationPolicy?: string;
+	caseId?: string;
+} = {}) => {
+	const productDetail = guardianWeeklyPaidByCard();
+	usePrintCancellationStore.getState().clearAll();
+	usePrintCancellationStore.setState({
+		productDetail,
+		selectedReasonId,
+		cancellationFeedback: '',
+		cancellationPolicy,
+		caseId,
+		holidayStops: [],
+		deliveryCredits: [],
+		eligibleForFreePeriodOffer: false,
+	});
+};
+
+export const PrintGuardianWeeklySelectReason: StoryObj<
+	typeof CancellationReasonSelection
+> = {
+	render: () => {
+		usePrintCancellationStore.getState().clearAll();
+		return <CancellationReasonSelection />;
+	},
+	parameters: {
+		reactRouter: {
+			state: { productDetail: guardianWeeklyPaidByCard() },
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.guardianweekly}
+				/>
+			),
+		},
+	},
+};
+
+export const PrintGuardianWeeklyReview: StoryObj<typeof CancellationContainer> =
+	{
+		render: () => {
+			seedGuardianWeeklyPrintStore({
+				selectedReasonId: 'mma_editorial',
+				cancellationPolicy: '',
+			});
+			return <CancellationReasonReview />;
+		},
+		parameters: {
+			msw: [
+				http.post('/api/case', () =>
+					HttpResponse.json({ id: 'caseId' }),
+				),
+				http.get('/api/holidays/**', () =>
+					HttpResponse.json({ publicationsToRefund: [] }),
+				),
+				http.get('/api/delivery-records/**', () =>
+					HttpResponse.json({ results: [] }),
+				),
+			],
+			reactRouter: {
+				state: { productDetail: guardianWeeklyPaidByCard() },
+				container: (
+					<CancellationContainer
+						productType={PRODUCT_TYPES.guardianweekly}
+					/>
+				),
+			},
+		},
+	};
+
+export const PrintGuardianWeeklyConfirm: StoryObj<
+	typeof CancellationContainer
+> = {
+	render: () => {
+		seedGuardianWeeklyPrintStore({
+			selectedReasonId: 'mma_editorial',
+			cancellationPolicy: '',
+			caseId: 'caseId',
+		});
+		return <ConfirmCancellation />;
+	},
+	parameters: {
+		reactRouter: {
+			state: { productDetail: guardianWeeklyPaidByCard() },
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.guardianweekly}
+				/>
+			),
+		},
+	},
+};
+
+export const PrintGuardianWeeklyExecute: StoryObj<typeof ExecuteCancellation> =
+	{
+		render: () => {
+			seedGuardianWeeklyPrintStore({
+				selectedReasonId: 'mma_editorial',
+				cancellationPolicy: '',
+				caseId: 'caseId',
+			});
+			return <ExecuteCancellation />;
+		},
+		parameters: {
+			msw: [
+				http.get('/api/me/mma/**', () =>
+					HttpResponse.json(
+						toMembersDataApiResponse(guardianWeeklyCancelled()),
+					),
+				),
+				http.post(
+					'/api/cancel/**',
+					() =>
+						new HttpResponse(null, {
+							status: 201,
+						}),
+				),
+			],
+			reactRouter: {
+				state: { productDetail: guardianWeeklyPaidByCard() },
+				container: (
+					<CancellationContainer
+						productType={PRODUCT_TYPES.guardianweekly}
+					/>
+				),
+			},
+		},
+	};
 
 export const Review: StoryObj<typeof CancellationContainer> = {
 	render: () => {
