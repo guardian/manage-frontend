@@ -101,8 +101,8 @@ const ContactUs = (reason: CancellationReason) =>
 		</p>
 	);
 
-const isContributionsSwitchSaveBody = (
-	saveBody?: string[] | React.FC<SaveBodyProps>,
+const isFinancialSaveAttemptSaveBody = (
+	saveBody?: CancellationReason['saveBody'],
 ): boolean => saveBody === ContributionsCancellationFlowFinancialSaveAttempt;
 
 interface FeedbackFormProps
@@ -172,7 +172,7 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 				render={getFeedbackThankYouRenderer(props.reason)}
 			/>
 			<div css={{ height: '20px' }} />
-			{!isContributionsSwitchSaveBody(props.reason.saveBody) && (
+			{!isFinancialSaveAttemptSaveBody(props.reason.saveBody) && (
 				<ConfirmCancellationAndReturnRow
 					hide={!!props.reason.hideSaveActions}
 					reasonId={props.reason.reasonId}
@@ -234,7 +234,7 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 					<Button priority="secondary" onClick={submitFeedback}>
 						Submit feedback
 					</Button>
-					{!isContributionsSwitchSaveBody(props.reason.saveBody) && (
+					{!isFinancialSaveAttemptSaveBody(props.reason.saveBody) && (
 						<ConfirmCancellationAndReturnRow
 							hide={!!props.reason.hideSaveActions}
 							reasonId={props.reason.reasonId}
@@ -787,7 +787,7 @@ const ValidatedCancellationReasonReview = ({
 								}}
 							>
 								<ContactUs {...reason} />
-								{!isContributionsSwitchSaveBody(
+								{!isFinancialSaveAttemptSaveBody(
 									reason.saveBody,
 								) && (
 									<ConfirmCancellationAndReturnRow
