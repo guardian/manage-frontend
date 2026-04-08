@@ -172,14 +172,16 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 				render={getFeedbackThankYouRenderer(props.reason)}
 			/>
 			<div css={{ height: '20px' }} />
-			<ConfirmCancellationAndReturnRow
-				hide={!!props.reason.hideSaveActions}
-				reasonId={props.reason.reasonId}
-				productType={props.productType}
-				caseId={props.caseId}
-				holidayStops={props.holidayStops}
-				deliveryCredits={props.deliveryCredits}
-			/>
+			{!isContributionsSwitchSaveBody(props.reason.saveBody) && (
+				<ConfirmCancellationAndReturnRow
+					hide={!!props.reason.hideSaveActions}
+					reasonId={props.reason.reasonId}
+					productType={props.productType}
+					caseId={props.caseId}
+					holidayStops={props.holidayStops}
+					deliveryCredits={props.deliveryCredits}
+				/>
+			)}
 		</>
 	) : (
 		<>
