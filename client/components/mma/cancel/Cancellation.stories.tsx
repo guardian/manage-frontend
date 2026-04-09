@@ -40,6 +40,11 @@ contributionWithSortedReasons.cancellation!.reasons?.sort((a, b) =>
 	a.reasonId.localeCompare(b.reasonId),
 );
 
+const guardianWeeklyWithSortedReasons = PRODUCT_TYPES.guardianweekly;
+guardianWeeklyWithSortedReasons.cancellation!.reasons?.sort((a, b) =>
+	a.reasonId.localeCompare(b.reasonId),
+);
+
 export default {
 	title: 'Pages/Cancellation',
 	component: CancellationContainer,
@@ -114,7 +119,7 @@ export const PrintGuardianWeeklySelectReason: StoryObj<
 			state: { productDetail: guardianWeeklyPaidByCard() },
 			container: (
 				<CancellationContainer
-					productType={PRODUCT_TYPES.guardianweekly}
+					productType={guardianWeeklyWithSortedReasons}
 				/>
 			),
 		},
@@ -146,7 +151,7 @@ export const PrintGuardianWeeklyReview: StoryObj<typeof CancellationContainer> =
 				state: { productDetail: guardianWeeklyPaidByCard() },
 				container: (
 					<CancellationContainer
-						productType={PRODUCT_TYPES.guardianweekly}
+						productType={guardianWeeklyWithSortedReasons}
 					/>
 				),
 			},
@@ -169,7 +174,7 @@ export const PrintGuardianWeeklyConfirm: StoryObj<
 			state: { productDetail: guardianWeeklyPaidByCard() },
 			container: (
 				<CancellationContainer
-					productType={PRODUCT_TYPES.guardianweekly}
+					productType={guardianWeeklyWithSortedReasons}
 				/>
 			),
 		},
@@ -205,7 +210,7 @@ export const PrintGuardianWeeklyExecute: StoryObj<typeof ExecuteCancellation> =
 				state: { productDetail: guardianWeeklyPaidByCard() },
 				container: (
 					<CancellationContainer
-						productType={PRODUCT_TYPES.guardianweekly}
+						productType={guardianWeeklyWithSortedReasons}
 					/>
 				),
 			},
