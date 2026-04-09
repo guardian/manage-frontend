@@ -79,6 +79,7 @@ import {
 	reasonIsEligibleForSwitch,
 } from './cancellationSaves/saveEligibilityCheck';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from './caseUpdate';
+import { ContributionsCancellationFlowFinancialSaveAttempt } from './contributions/ContributionsCancellationFlowFinancialSaveAttempt';
 
 const getPatchUpdateCaseFunc =
 	(isTestUser: boolean, caseId: string, feedback: string) => async () =>
@@ -111,6 +112,10 @@ const ContactUs = (reason: CancellationReason) =>
 			.
 		</p>
 	);
+
+const isFinancialSaveAttemptSaveBody = (
+	saveBody?: CancellationReason['saveBody'],
+): boolean => saveBody === ContributionsCancellationFlowFinancialSaveAttempt;
 
 interface FeedbackFormProps
 	extends WithProductType<ProductTypeWithCancellationFlow> {
@@ -179,14 +184,16 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 				render={getFeedbackThankYouRenderer(props.reason)}
 			/>
 			<div css={{ height: '20px' }} />
-			<ConfirmCancellationAndReturnRow
-				hide={!!props.reason.hideSaveActions}
-				reasonId={props.reason.reasonId}
-				productType={props.productType}
-				caseId={props.caseId}
-				holidayStops={props.holidayStops}
-				deliveryCredits={props.deliveryCredits}
-			/>
+			{!isFinancialSaveAttemptSaveBody(props.reason.saveBody) && (
+				<ConfirmCancellationAndReturnRow
+					hide={!!props.reason.hideSaveActions}
+					reasonId={props.reason.reasonId}
+					productType={props.productType}
+					caseId={props.caseId}
+					holidayStops={props.holidayStops}
+					deliveryCredits={props.deliveryCredits}
+				/>
+			)}
 		</>
 	) : (
 		<>
@@ -239,23 +246,25 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 					<Button priority="secondary" onClick={submitFeedback}>
 						Submit feedback
 					</Button>
-					<ConfirmCancellationAndReturnRow
-						hide={!!props.reason.hideSaveActions}
-						reasonId={props.reason.reasonId}
-						productType={props.productType}
-						caseId={props.caseId}
-						holidayStops={props.holidayStops}
-						deliveryCredits={props.deliveryCredits}
-						onClick={() => {
-							if (feedback.length > 0) {
-								getPatchUpdateCaseFunc(
-									props.isTestUser,
-									props.caseId,
-									feedback,
-								)();
-							}
-						}}
-					/>
+					{!isFinancialSaveAttemptSaveBody(props.reason.saveBody) && (
+						<ConfirmCancellationAndReturnRow
+							hide={!!props.reason.hideSaveActions}
+							reasonId={props.reason.reasonId}
+							productType={props.productType}
+							caseId={props.caseId}
+							holidayStops={props.holidayStops}
+							deliveryCredits={props.deliveryCredits}
+							onClick={() => {
+								if (feedback.length > 0) {
+									getPatchUpdateCaseFunc(
+										props.isTestUser,
+										props.caseId,
+										feedback,
+									)();
+								}
+							}}
+						/>
+					)}
 					{!props.reason.hideContactUs &&
 						props.productType.cancellation
 							.swapFeedbackAndContactUs && (
@@ -1053,19 +1062,24 @@ const ValidatedCancellationReasonReview = ({
 								}}
 							>
 								<ContactUs {...reason} />
-								<ConfirmCancellationAndReturnRow
-									hide={!!reason.hideSaveActions}
-									reasonId={reason.reasonId}
-									productType={productType}
-									caseId={caseId}
-									holidayStops={
-										holidayStopCreditFetch.data
-											?.publicationsToRefund
-									}
-									deliveryCredits={
-										deliveryProblemCreditFetch.data?.results
-									}
-								/>
+								{!isFinancialSaveAttemptSaveBody(
+									reason.saveBody,
+								) && (
+									<ConfirmCancellationAndReturnRow
+										hide={!!reason.hideSaveActions}
+										reasonId={reason.reasonId}
+										productType={productType}
+										caseId={caseId}
+										holidayStops={
+											holidayStopCreditFetch.data
+												?.publicationsToRefund
+										}
+										deliveryCredits={
+											deliveryProblemCreditFetch.data
+												?.results
+										}
+									/>
+								)}
 							</div>
 						)}
 					</>
