@@ -18,7 +18,15 @@ export const base64FromFile = async (file: File): Promise<string> => {
 			reader.addEventListener(
 				'error',
 				() => {
-					reject(new Error('base64FromFile error'));
+					const readerError = reader.error;
+					const details = readerError
+						? `: ${readerError.name}${
+								readerError.message
+									? ` - ${readerError.message}`
+									: ''
+						  }`
+						: '';
+					reject(new Error(`base64FromFile read error${details}`));
 				},
 				false,
 			);
