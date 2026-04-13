@@ -161,20 +161,26 @@ const getConsentedTo = (response: UserAPIResponse) => {
 	}
 };
 
-const getFieldNameFromContext = (context?: string): string => {
+const getFieldNameFromContext = (
+	context?: string,
+	fallbackField = 'general',
+): string => {
 	if (!context) {
-		return 'general';
+		return fallbackField;
 	}
 
 	const fieldname = context.split('.').pop();
 	if (!fieldname) {
-		return 'general';
+		return fallbackField;
 	}
 
 	return fieldname === 'telephoneNumber' ? 'localNumber' : fieldname;
 };
 
-const toUserError = (response: UserAPIErrorResponse): UserError => {
+const toUserError = (
+	response: UserAPIErrorResponse,
+	fallbackField = 'general',
+): UserError => {
 	const error = response.errors.reduce((a, e) => {
 		const context = e.context;
 		const defaultDescription =
@@ -182,7 +188,7 @@ const toUserError = (response: UserAPIErrorResponse): UserError => {
 
 		return {
 			...a,
-			[getFieldNameFromContext(context)]:
+			[getFieldNameFromContext(context, fallbackField)]:
 				(context && userErrorMessageMap.get(context)) ||
 				defaultDescription,
 		};
@@ -229,10 +235,10 @@ export const setUsername = async (user: Partial<User>): Promise<User> => {
 			addCSRFToken(postRequest(body)),
 		).then((response) => response.json());
 		if (isErrorResponse(response)) {
-			throw toUserError(response);
+			throw toUserError(response, 'username');
 		}
 		return toUser(response);
 	} catch (e) {
-		throw isErrorResponse(e) ? toUserError(e) : e;
+		throw isErrorResponse(e) ? toUserError(e, 'username') : e;
 	}
 };
