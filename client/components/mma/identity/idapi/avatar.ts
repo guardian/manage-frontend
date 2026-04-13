@@ -69,7 +69,9 @@ export const read = async () => {
 		const avatarErrorObj = toAvatarError(response);
 		throw new AvatarError(
 			avatarErrorObj.type,
-			`Error: ${avatarErrorObj.type} - ${JSON.stringify(avatarErrorObj.error)}`,
+			`Error: ${avatarErrorObj.type} - ${JSON.stringify(
+				avatarErrorObj.error,
+			)}`,
 			avatarErrorObj.error.join('. '),
 			avatarErrorObj.type !== ErrorTypes.NOT_FOUND,
 		);
@@ -82,7 +84,7 @@ export const write = async (file: File) => {
 	const payload = {
 		name: file.name,
 		type: file.type,
-		contents: (await base64FromFile(file)) as string,
+		contents: await base64FromFile(file),
 	};
 	// We send the request as a text/plain to avoid triggering the Express JSON parser
 	// which would try to parse the payload as JSON and fail. We instead parse the body
@@ -98,7 +100,9 @@ export const write = async (file: File) => {
 		const avatarErrorObj = toAvatarError(response);
 		throw new AvatarError(
 			avatarErrorObj.type,
-			`Error: ${avatarErrorObj.type} - ${JSON.stringify(avatarErrorObj.error)}`,
+			`Error: ${avatarErrorObj.type} - ${JSON.stringify(
+				avatarErrorObj.error,
+			)}`,
 			avatarErrorObj.error.join('. '),
 		);
 	}
