@@ -75,9 +75,9 @@ interface UserAPIRequest {
 interface UserAPIErrorResponse {
 	status: string;
 	errors: Array<{
-		context: string;
-		description: string;
-		[key: string]: string;
+		context?: string;
+		description?: string;
+		[key: string]: string | undefined;
 	}>;
 }
 
@@ -161,17 +161,36 @@ const getConsentedTo = (response: UserAPIResponse) => {
 	}
 };
 
-const getFieldNameFromContext = (context: string): string => {
-	const fieldname = context.split('.').pop() as string;
+const getFieldNameFromContext = (
+	context?: string,
+	fallbackField = 'general',
+): string => {
+	if (!context) {
+		return fallbackField;
+	}
+
+	const fieldname = context.split('.').pop();
+	if (!fieldname) {
+		return fallbackField;
+	}
+
 	return fieldname === 'telephoneNumber' ? 'localNumber' : fieldname;
 };
 
-const toUserError = (response: UserAPIErrorResponse): UserError => {
+const toUserError = (
+	response: UserAPIErrorResponse,
+	fallbackField = 'general',
+): UserError => {
 	const error = response.errors.reduce((a, e) => {
+		const context = e.context;
+		const defaultDescription =
+			e.description || 'Something went wrong, please try again.';
+
 		return {
 			...a,
-			[getFieldNameFromContext(e.context)]:
-				userErrorMessageMap.get(e.context) || e.description,
+			[getFieldNameFromContext(context, fallbackField)]:
+				(context && userErrorMessageMap.get(context)) ||
+				defaultDescription,
 		};
 	}, {} as Record<string, string>);
 
@@ -216,10 +235,10 @@ export const setUsername = async (user: Partial<User>): Promise<User> => {
 			addCSRFToken(postRequest(body)),
 		).then((response) => response.json());
 		if (isErrorResponse(response)) {
-			throw toUserError(response);
+			throw toUserError(response, 'username');
 		}
 		return toUser(response);
 	} catch (e) {
-		throw isErrorResponse(e) ? toUserError(e) : e;
+		throw isErrorResponse(e) ? toUserError(e, 'username') : e;
 	}
 };
