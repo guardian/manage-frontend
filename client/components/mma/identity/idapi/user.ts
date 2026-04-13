@@ -75,9 +75,9 @@ interface UserAPIRequest {
 interface UserAPIErrorResponse {
 	status: string;
 	errors: Array<{
-		context: string;
-		description: string;
-		[key: string]: string;
+		context?: string;
+		description?: string;
+		[key: string]: string | undefined;
 	}>;
 }
 
@@ -161,17 +161,30 @@ const getConsentedTo = (response: UserAPIResponse) => {
 	}
 };
 
-const getFieldNameFromContext = (context: string): string => {
-	const fieldname = context.split('.').pop() as string;
+const getFieldNameFromContext = (context?: string): string => {
+	if (!context) {
+		return 'general';
+	}
+
+	const fieldname = context.split('.').pop();
+	if (!fieldname) {
+		return 'general';
+	}
+
 	return fieldname === 'telephoneNumber' ? 'localNumber' : fieldname;
 };
 
 const toUserError = (response: UserAPIErrorResponse): UserError => {
 	const error = response.errors.reduce((a, e) => {
+		const context = e.context;
+		const defaultDescription =
+			e.description || 'Something went wrong, please try again.';
+
 		return {
 			...a,
-			[getFieldNameFromContext(e.context)]:
-				userErrorMessageMap.get(e.context) || e.description,
+			[getFieldNameFromContext(context)]:
+				(context && userErrorMessageMap.get(context)) ||
+				defaultDescription,
 		};
 	}, {} as Record<string, string>);
 

@@ -40,14 +40,21 @@ const renderConfirmation = (props: ProductType) => () =>
 
 const AddressConfirmation = (props: ProductType) => {
 	const location = useLocation();
-	const productDetail = location.state as ProductDetail;
+	const productDetail = location.state as ProductDetail | null;
 
 	const addressContext = useContext(NewDeliveryAddressContext);
 	const addressChangedInformationContext = useContext(
 		AddressChangedInformationContext,
 	);
 
+	const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
+		useState<boolean>(false);
+
 	const productName = props.friendlyName;
+
+	if (!productDetail) {
+		return <Navigate to=".." replace />;
+	}
 
 	if (isAddress(addressContext.addressStateObject)) {
 		productDetail.subscription.deliveryAddress = {
@@ -55,9 +62,6 @@ const AddressConfirmation = (props: ProductType) => {
 			...addressContext.addressStateObject,
 		};
 	}
-
-	const [showTopCallCentreNumbers, setTopCallCentreNumbersVisibility] =
-		useState<boolean>(false);
 
 	const subHeadingCss = `
     border-top: 1px solid ${palette.neutral['86']};
