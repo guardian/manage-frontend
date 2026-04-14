@@ -96,6 +96,14 @@ describe('Cancel guardian weekly', () => {
 
 		cy.wait('@get_case');
 
+		cy.findAllByRole('button').then(($buttons) => {
+			const continueButton = [...$buttons].find((button) =>
+				button.textContent?.match(/Continue to cancel/i),
+			);
+			if (continueButton) {
+				cy.wrap(continueButton).click();
+			}
+		});
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
 		cy.wait('@cancel_gw_holidays');
@@ -128,6 +136,14 @@ describe('Cancel guardian weekly', () => {
 
 		cy.wait('@get_case');
 
+		cy.findAllByRole('button').then(($buttons) => {
+			const continueButton = [...$buttons].find((button) =>
+				button.textContent?.match(/Continue to cancel/i),
+			);
+			if (continueButton) {
+				cy.wrap(continueButton).click();
+			}
+		});
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
 		cy.wait('@cancel_gw_holidays');
