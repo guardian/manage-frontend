@@ -1,5 +1,5 @@
-import { tierThree } from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
+import { tierThree } from '../../../../client/fixtures/productBuilder/testProducts';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Cancel tier three', () => {
@@ -95,14 +95,12 @@ describe('Cancel tier three', () => {
 			name: 'Cancel subscription',
 		}).click();
 
-		cy.findByText(
-			'We’re sorry to hear you’re thinking of cancelling your digital + print subscription',
-		).should('exist');
+		cy.findByRole('heading', {
+			name: /thinking of cancelling your digital \+ print subscription/i,
+		}).should('exist');
 
-		cy.findAllByRole('radio').eq(6).click();
-
-		cy.findAllByRole('radio').check('Today');
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.get('input[name="cancellation-reason"][value="mma_time"]').check();
+		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
 
 		cy.wait('@get_case');
 
@@ -115,7 +113,5 @@ describe('Cancel tier three', () => {
 		cy.findByText(
 			'Your cancellation request has been successfully submitted. Our customer service team will try their best to contact you as soon as possible to confirm the cancellation and refund any credit you are owed.',
 		).should('exist');
-
-		cy.get('@get_cancellation_date.all').should('have.length', 1);
 	});
 });

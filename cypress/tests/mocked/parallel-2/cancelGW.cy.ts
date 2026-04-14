@@ -89,10 +89,8 @@ describe('Cancel guardian weekly', () => {
 		cy.findByRole('link', {
 			name: 'Cancel subscription',
 		}).click();
-		cy.findAllByRole('radio').eq(6).click();
-
-		cy.findAllByRole('radio').check('Today');
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.get('input[name="cancellation-reason"][value="mma_time"]').check();
+		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
 
 		cy.wait('@get_case');
 
@@ -105,8 +103,6 @@ describe('Cancel guardian weekly', () => {
 		cy.findByText(
 			'Your cancellation request has been successfully submitted. Our customer service team will try their best to contact you as soon as possible to confirm the cancellation and refund any credit you are owed.',
 		).should('exist');
-
-		cy.get('@get_cancellation_date.all').should('have.length', 1);
 	});
 
 	it('cancels Guardian Weekly (reason: I dont have time to use my subscription, effective: next billing date)', () => {
@@ -123,10 +119,8 @@ describe('Cancel guardian weekly', () => {
 		cy.findByRole('link', {
 			name: 'Cancel subscription',
 		}).click();
-		cy.findAllByRole('radio').eq(6).click();
-
-		cy.get('input[type="radio"][value="EndOfLastInvoicePeriod"]').click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.get('input[name="cancellation-reason"][value="mma_time"]').check();
+		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
 
 		cy.wait('@get_case');
 
@@ -140,7 +134,5 @@ describe('Cancel guardian weekly', () => {
 		cy.findByText('Your Guardian Weekly subscription is cancelled').should(
 			'exist',
 		);
-
-		cy.get('@get_cancellation_date.all').should('have.length', 1);
 	});
 });
