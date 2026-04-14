@@ -26,15 +26,15 @@ export const SavedCancellation = () => {
 
 	const location = useLocation();
 
-	const routerState = location.state as CancellationRouterState;
+	const routerState = location.state as CancellationRouterState | null;
 	const { productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
 
-	const updatedAmount = routerState.updatedContributionAmount;
-	const selectedReasonId = routerState.selectedReasonId;
+	const updatedAmount = routerState?.updatedContributionAmount;
+	const selectedReasonId = routerState?.selectedReasonId;
 
-	if (!updatedAmount || !selectedReasonId || !productType) {
+	if (updatedAmount == null || !selectedReasonId || !productType) {
 		Sentry.captureMessage(
 			'Updated amount and/or cancellation reason not passed to SavedCancellation',
 		);
@@ -50,7 +50,7 @@ export const SavedCancellation = () => {
 		navigate('/');
 	};
 
-	return updatedAmount && reason ? (
+	return reason ? (
 		<>
 			<ProgressIndicator
 				steps={[

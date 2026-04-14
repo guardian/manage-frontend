@@ -46,14 +46,14 @@ export const DigiSubDiscountConfirmed = () => {
 	) as CancellationContextInterface;
 
 	const location = useLocation();
-	const routerState = location.state as DigisubCancellationRouterState;
+	const routerState = location.state as DigisubCancellationRouterState | null;
 	const digiSub = cancellationContext.productDetail;
 
 	const mainPlan = getMainPlan(digiSub.subscription) as PaidSubscriptionPlan;
 
 	const currencySymbol = mainPlan.currency;
-	const discountPeriod = routerState.discountPeriod;
-	const discountedPrice = routerState.discountedPrice;
+	const discountPeriod = routerState?.discountPeriod;
+	const discountedPrice = routerState?.discountedPrice;
 	const newPrice =
 		(digiSub.subscription.nextPaymentPrice ?? mainPlan.price) / 100;
 
@@ -67,8 +67,9 @@ export const DigiSubDiscountConfirmed = () => {
 		pageTitleContext.setPageTitle('Your subscription');
 	}, [pageTitleContext]);
 
-	if (!discountedPrice) {
-		const message = 'No discounted price found in router state';
+	if (!discountPeriod || discountedPrice == null) {
+		const message =
+			'No discount details found in router state for DigiSubDiscountConfirmed';
 		captureException(message);
 		return <GenericErrorScreen loggingMessage={message} />;
 	}
