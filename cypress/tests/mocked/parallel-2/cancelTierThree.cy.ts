@@ -95,31 +95,27 @@ describe('Cancel tier three', () => {
 			name: 'Cancel subscription',
 		}).click();
 
-		cy.findByRole('heading', { name: /we're sorry to see you go/i }).should(
-			'exist',
-		);
-		cy.findByRole('radio', {
-			name: /I no longer engage with the content as I used to/i,
-		}).click();
+		cy.findByText("We're sorry to see you go").should('exist');
+
+		cy.findAllByRole('radio').eq(6).click();
+
 		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
 
 		cy.wait('@get_case');
 
-		cy.findAllByRole('button').then(($buttons) => {
-			const continueButton = [...$buttons].find((button) =>
-				button.textContent?.match(/Continue to cancel/i),
-			);
-			if (continueButton) {
-				cy.wrap(continueButton).click();
-			}
-		});
-		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
+		cy.findByText('Pause your subscription').should('exist');
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@cancel_gw_holidays');
 		cy.wait('@cancel_gw_deliveryrecords');
 
 		cy.findByText(
-			'Your cancellation request has been successfully submitted. Our customer service team will try their best to contact you as soon as possible to confirm the cancellation and refund any credit you are owed.',
+			'test, thank you for supporting the Guardian since 29 November 2021. Is this really goodbye?',
+		).should('exist');
+		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
+
+		cy.findByText(
+			'Your subscription to Digital + Print has been cancelled.',
 		).should('exist');
 	});
 });
