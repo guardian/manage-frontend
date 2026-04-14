@@ -95,11 +95,12 @@ describe('Cancel tier three', () => {
 			name: 'Cancel subscription',
 		}).click();
 
-		cy.findByRole('heading', {
-			name: /thinking of cancelling your digital \+ print subscription/i,
-		}).should('exist');
-
-		cy.get('input[name="cancellation-reason"][value="mma_time"]').check();
+		cy.findByRole('heading', { name: /we're sorry to see you go/i }).should(
+			'exist',
+		);
+		cy.findByRole('radio', {
+			name: /I no longer engage with the content as I used to/i,
+		}).click();
 		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
 
 		cy.wait('@get_case');

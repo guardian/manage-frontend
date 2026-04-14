@@ -89,7 +89,9 @@ describe('Cancel guardian weekly', () => {
 		cy.findByRole('link', {
 			name: 'Cancel subscription',
 		}).click();
-		cy.get('input[name="cancellation-reason"][value="mma_time"]').check();
+		cy.findByRole('radio', {
+			name: /I no longer engage with the content as I used to/i,
+		}).click();
 		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
 
 		cy.wait('@get_case');
@@ -119,7 +121,9 @@ describe('Cancel guardian weekly', () => {
 		cy.findByRole('link', {
 			name: 'Cancel subscription',
 		}).click();
-		cy.get('input[name="cancellation-reason"][value="mma_time"]').check();
+		cy.findByRole('radio', {
+			name: /I no longer engage with the content as I used to/i,
+		}).click();
 		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
 
 		cy.wait('@get_case');
