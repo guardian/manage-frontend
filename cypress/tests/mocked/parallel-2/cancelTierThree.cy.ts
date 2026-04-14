@@ -117,7 +117,6 @@ describe('Cancel tier three', () => {
 
 		cy.wait('@cancel_gw_holidays');
 		cy.wait('@cancel_gw_deliveryrecords');
-		cy.wait('@create_case_in_salesforce');
 
 		cy.findByText(
 			'Your cancellation request has been successfully submitted. Our customer service team will try their best to contact you as soon as possible to confirm the cancellation and refund any credit you are owed.',

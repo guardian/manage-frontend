@@ -108,7 +108,6 @@ describe('Cancel guardian weekly', () => {
 
 		cy.wait('@cancel_gw_holidays');
 		cy.wait('@cancel_gw_deliveryrecords');
-		cy.wait('@create_case_in_salesforce');
 
 		cy.findByText(
 			'Your cancellation request has been successfully submitted. Our customer service team will try their best to contact you as soon as possible to confirm the cancellation and refund any credit you are owed.',
@@ -148,7 +147,6 @@ describe('Cancel guardian weekly', () => {
 
 		cy.wait('@cancel_gw_holidays');
 		cy.wait('@cancel_gw_deliveryrecords');
-		cy.wait('@create_case_in_salesforce');
 		cy.wait('@new_product_detail');
 
 		cy.findByText('Your Guardian Weekly subscription is cancelled').should(
