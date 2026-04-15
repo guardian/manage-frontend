@@ -39,7 +39,7 @@ export const printedProductsCancellationReasons: CancellationReason[] = [
 	{
 		reasonId: 'mma_duplicate_subscription',
 		linkLabel:
-			'I realised I have a duplicate subscription or am already covered by a multiple/multiple account plan',
+			'I realised I have a duplicate subscription or am already covered by a multiple account plan',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{

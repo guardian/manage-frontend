@@ -263,13 +263,22 @@ const PrintCancellationSuccess = ({
 
 const getPrintCancellationSuccessSummary =
 	(productType: ProductType, productDetail: ProductDetail) =>
-	(_: MembersDataApiResponse) =>
-		(
+	(mdapiResponse: MembersDataApiResponse) => {
+		const updatedProductDetail =
+			mdapiResponse.products.find(
+				(product): product is ProductDetail =>
+					isProduct(product) &&
+					product.subscription.subscriptionId ===
+						productDetail.subscription.subscriptionId,
+			) ?? productDetail;
+
+		return (
 			<PrintCancellationSuccess
 				productType={productType}
-				productDetail={productDetail}
+				productDetail={updatedProductDetail}
 			/>
 		);
+	};
 
 const ReturnToAccountButton = () => {
 	const navigate = useNavigate();

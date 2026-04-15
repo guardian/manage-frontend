@@ -86,6 +86,9 @@ describe('Cancel tier three', () => {
 	});
 
 	it('cancels tier three (reason: I dont have time to use my subscription, effective: next billing date)', () => {
+		const feedback =
+			'I still value the journalism, but this no longer fits my budget right now.';
+
 		cy.visit('/');
 
 		cy.findByText('Manage subscription').click();
@@ -96,14 +99,22 @@ describe('Cancel tier three', () => {
 		}).click();
 
 		cy.findByText("We're sorry to see you go").should('exist');
+		cy.contains('multiple/multiple').should('not.exist');
+		cy.contains('multiple account plan').should('exist');
 
 		cy.findAllByRole('radio').eq(6).click();
+		cy.findByRole('textbox').type(feedback);
 
 		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
 
 		cy.wait('@get_case');
 
 		cy.findByText('Pause your subscription').should('exist');
+		cy.findByRole('button', { name: 'Previous' }).click();
+		cy.findAllByRole('radio').eq(6).should('be.checked');
+		cy.findByRole('textbox').should('have.value', feedback);
+		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
+
 		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@cancel_gw_holidays');
@@ -116,6 +127,9 @@ describe('Cancel tier three', () => {
 
 		cy.findByText(
 			'Your subscription to Digital + Print has been cancelled.',
+		).should('exist');
+		cy.findByText(
+			'Your cancellation will take effect on 25 Jul 2024.',
 		).should('exist');
 	});
 });

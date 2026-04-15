@@ -461,6 +461,10 @@ const PrintReasonPicker = ({
 												key={reason.reasonId}
 												name="cancellation-reason"
 												value={reason.reasonId}
+												checked={
+													selectedReasonIdValue ===
+													reason.reasonId
+												}
 												label={reason.linkLabel}
 												cssOverrides={css`
 													vertical-align: top;
@@ -501,6 +505,7 @@ const PrintReasonPicker = ({
 				<textarea
 					rows={5}
 					maxLength={characterLimit}
+					value={feedback}
 					css={{
 						width: '100%',
 						fontSize: 'inherit',
