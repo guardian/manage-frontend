@@ -117,6 +117,21 @@ export const hasCancellationFlow = (
 export const hasDeliveryFlow = (productType: ProductType) =>
 	productType.delivery?.showAddress;
 
+export const isPrintProduct = (productType: ProductType): boolean => {
+	return [
+		'guardianweekly',
+		'homedelivery',
+		'homedeliveryplusdigital',
+		'nationaldelivery',
+		'nationaldeliveryplusdigital',
+		'voucher',
+		'voucherplusdigital',
+		'digitalvoucher',
+		'digitalvoucherplusdigital',
+		'tierthree',
+	].includes(productType.productType);
+};
+
 export const hasDeliveryRecordsFlow = (
 	productType: ProductType,
 ): productType is ProductTypeWithDeliveryRecordsProperties =>

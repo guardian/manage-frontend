@@ -91,56 +91,23 @@ describe('Cancel guardian weekly', () => {
 		}).click();
 		cy.findAllByRole('radio').eq(6).click();
 
-		cy.findAllByRole('radio').check('Today');
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
 
 		cy.wait('@get_case');
 
-		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
+		cy.findByText('Pause your subscription').should('exist');
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@cancel_gw_holidays');
 		cy.wait('@cancel_gw_deliveryrecords');
-		cy.wait('@create_case_in_salesforce');
 
 		cy.findByText(
-			'Your cancellation request has been successfully submitted. Our customer service team will try their best to contact you as soon as possible to confirm the cancellation and refund any credit you are owed.',
+			'test, thank you for supporting the Guardian since 29 November 2021. Is this really goodbye?',
 		).should('exist');
-
-		cy.get('@get_cancellation_date.all').should('have.length', 1);
-	});
-
-	it('cancels Guardian Weekly (reason: I dont have time to use my subscription, effective: next billing date)', () => {
-		cy.intercept('GET', '/api/me/mma/**', {
-			statusCode: 200,
-			body: toMembersDataApiResponse(GWSelfCancelEnabledAndCancelled),
-		}).as('new_product_detail');
-
-		cy.visit('/');
-
-		cy.findByText('Manage subscription').click();
-		cy.wait('@cancelled');
-
-		cy.findByRole('link', {
-			name: 'Cancel subscription',
-		}).click();
-		cy.findAllByRole('radio').eq(6).click();
-
-		cy.get('input[type="radio"][value="EndOfLastInvoicePeriod"]').click();
-		cy.findByRole('button', { name: 'Continue' }).click();
-
-		cy.wait('@get_case');
-
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
-		cy.wait('@cancel_gw_holidays');
-		cy.wait('@cancel_gw_deliveryrecords');
-		cy.wait('@create_case_in_salesforce');
-		cy.wait('@new_product_detail');
-
-		cy.findByText('Your Guardian Weekly subscription is cancelled').should(
-			'exist',
-		);
-
-		cy.get('@get_cancellation_date.all').should('have.length', 1);
+		cy.findByText(
+			'Your subscription to Guardian Weekly has been cancelled.',
+		).should('exist');
 	});
 });

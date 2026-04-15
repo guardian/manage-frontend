@@ -1,9 +1,13 @@
 import { css } from '@emotion/react';
 import {
 	from,
+	headlineBold17,
+	headlineBold28,
 	palette,
 	space,
+	textSans17,
 	textSansBold17,
+	textSansBold24,
 	until,
 } from '@guardian/source/foundations';
 import {
@@ -11,10 +15,11 @@ import {
 	InlineError,
 	Radio,
 	RadioGroup,
+	SvgArrowLeftStraight,
 	SvgArrowRightStraight,
 } from '@guardian/source/react-components';
 import type { FormEvent } from 'react';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
@@ -23,25 +28,37 @@ import {
 } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
+import { usePrintCancellationStore } from '../../../stores/PrintCancellationStore';
 import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
+import { isPrintProduct } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import { Card } from '../shared/Card';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
 import { ProgressStepper } from '../shared/ProgressStepper';
-import type { CancellationContextInterface } from './CancellationContainer';
-import { CancellationContext } from './CancellationContainer';
+import type {
+	CancellationContextInterface,
+	CancellationPageTitleInterface,
+} from './CancellationContainer';
+import {
+	CancellationContext,
+	CancellationPageTitleContext,
+} from './CancellationContainer';
 import {
 	cancellationEffectiveEndOfLastInvoicePeriod,
 	cancellationEffectiveToday,
 } from './cancellationContexts';
 import type { CancellationDateResponse } from './cancellationDateResponse';
 import { cancellationDateFetcher } from './cancellationDateResponse';
-import type { CancellationReason } from './cancellationReason';
+import type {
+	CancellationReason,
+	OptionalCancellationReasonId,
+} from './cancellationReason';
 
 interface ReasonPickerProps {
 	productType: ProductTypeWithCancellationFlow;
@@ -100,7 +117,6 @@ const ReasonPicker = ({
 					`}
 				/>
 			)}
-
 			{productType.cancellation.startPageBody(productDetail)}
 			<WithStandardTopMargin>
 				<fieldset
@@ -249,7 +265,6 @@ const ReasonPicker = ({
 						)}
 					</>
 				)}
-
 				<div
 					data-cy="cta_container"
 					css={{
@@ -302,6 +317,247 @@ const ReasonPicker = ({
 							Return to your account
 						</Button>
 					</div>
+				</div>
+			</WithStandardTopMargin>
+		</>
+	);
+};
+
+const PrintReasonPicker = ({
+	productType,
+}: {
+	productType: ProductTypeWithCancellationFlow;
+}) => {
+	const {
+		selectedReasonId: storedSelectedReasonId,
+		cancellationFeedback: storedFeedback,
+		setSelectedReasonId: setStoredSelectedReasonId,
+		setCancellationFeedback: setStoredCancellationFeedback,
+	} = usePrintCancellationStore();
+	const [selectedReasonId, setSelectedReasonId] =
+		useState<OptionalCancellationReasonId>(
+			storedSelectedReasonId ?? undefined,
+		);
+	const [feedback, setFeedback] = useState<string>(storedFeedback);
+	const selectedReasonIdValue = selectedReasonId ?? '';
+	const [inValidationErrorState, setInValidationErrorState] =
+		useState<boolean>(false);
+
+	const navigate = useNavigate();
+	const pageTitleContext = useContext(
+		CancellationPageTitleContext,
+	) as CancellationPageTitleInterface;
+
+	const characterLimit = 2500;
+
+	useEffect(() => {
+		pageTitleContext.setPageTitle('Manage subscription');
+	}, [pageTitleContext]);
+
+	if (!productType.cancellation.reasons) {
+		return (
+			<GenericErrorScreen loggingMessage="Got to the cancellation reasons selection page with a productType that doesn't have any cancellation reasons." />
+		);
+	}
+
+	return (
+		<>
+			<ProgressStepper
+				steps={[{ isCurrentStep: true }, {}, {}]}
+				additionalCSS={css`
+					margin: ${space[5]}px 0;
+					margin-bottom: ${space[8]}px;
+
+					${from.tablet} {
+						margin: ${space[10]}px 0;
+					}
+				`}
+			/>
+			<WithStandardTopMargin>
+				<h2
+					css={css`
+						${headlineBold28}
+						margin: 0 0 ${space[2]}px;
+
+						${from.tablet} {
+							margin: 0 0 ${space[3]}px;
+						}
+					`}
+				>
+					We're sorry to see you go
+				</h2>
+				<p
+					css={css`
+						${textSans17}
+						margin: 0 0 ${space[5]}px;
+					`}
+				>
+					We value your feedback and review it regularly to improve
+					our services.
+				</p>
+				<div
+					css={css`
+						margin: 0 0 ${space[5]}px;
+					`}
+				>
+					<Card>
+						<Card.Header
+							backgroundColor={palette.brand[800]}
+							minHeightOverride="auto"
+						>
+							<h3
+								css={css`
+									${textSansBold24}
+									margin: 0;
+								`}
+							>
+								Please take a moment to tell us why you want to
+								cancel your subscription
+							</h3>
+						</Card.Header>
+						<Card.Section>
+							<fieldset
+								onChange={(
+									event: FormEvent<HTMLFieldSetElement>,
+								) => {
+									const target: HTMLInputElement =
+										event.target as HTMLInputElement;
+									setSelectedReasonId(
+										target.value as OptionalCancellationReasonId,
+									);
+								}}
+								css={css`
+									border: 0;
+									margin: 0;
+									padding: 0;
+								`}
+							>
+								<legend
+									css={css`
+										display: none;
+									`}
+								>
+									Please select a reason for cancelling
+								</legend>
+								<RadioGroup
+									name="issue_type"
+									orientation="vertical"
+									cssOverrides={css`
+										display: block;
+
+										> div > div {
+											padding-top: 0;
+											padding-bottom: ${space[4]}px;
+										}
+
+										> div > div:last-of-type {
+											padding-bottom: ${space[3]}px;
+										}
+									`}
+								>
+									{productType.cancellation.reasons.map(
+										(reason: CancellationReason) => (
+											<Radio
+												key={reason.reasonId}
+												name="cancellation-reason"
+												value={reason.reasonId}
+												checked={
+													selectedReasonIdValue ===
+													reason.reasonId
+												}
+												label={reason.linkLabel}
+												cssOverrides={css`
+													vertical-align: top;
+													:checked
+														+ div
+														label:first-of-type {
+														font-weight: bold;
+													}
+												`}
+											/>
+										),
+									)}
+								</RadioGroup>
+							</fieldset>
+						</Card.Section>
+					</Card>
+				</div>
+				{inValidationErrorState && !selectedReasonIdValue.length && (
+					<InlineError
+						cssOverrides={css`
+							padding: ${space[5]}px;
+							margin-bottom: ${space[4]}px;
+							border: 4px solid ${palette.error[400]};
+							text-align: left;
+						`}
+					>
+						Please select a reason
+					</InlineError>
+				)}
+				<h3
+					css={css`
+						${headlineBold17}
+						margin: ${space[6]}px 0 ${space[1]}px;
+					`}
+				>
+					Leave us some feedback
+				</h3>
+				<textarea
+					rows={5}
+					maxLength={characterLimit}
+					value={feedback}
+					css={{
+						width: '100%',
+						fontSize: 'inherit',
+						fontFamily: 'inherit',
+						border: `1px solid ${palette.neutral[86]}`,
+						borderRadius: `${space[1]}px`,
+						marginBottom: `${space[6]}px`,
+					}}
+					onChange={(event) => {
+						setFeedback(event.target.value);
+					}}
+				/>
+
+				<div
+					data-cy="cta_container"
+					css={{
+						display: 'flex',
+						justifyContent: 'space-between',
+						flexDirection: 'column',
+						gap: `${space[3]}px`,
+
+						[from.tablet]: {
+							flexDirection: 'row',
+						},
+					}}
+				>
+					<Button
+						priority="tertiary"
+						icon={<SvgArrowLeftStraight />}
+						iconSide="left"
+						onClick={() => {
+							navigate('/');
+						}}
+					>
+						Previous
+					</Button>
+					<Button
+						icon={<SvgArrowRightStraight />}
+						iconSide="right"
+						onClick={() => {
+							const canContinue = !!selectedReasonIdValue.length;
+
+							if (canContinue) {
+								setStoredSelectedReasonId(selectedReasonId);
+								setStoredCancellationFeedback(feedback);
+								navigate('review');
+							}
+							setInValidationErrorState(!canContinue);
+						}}
+					>
+						Continue to Cancel
+					</Button>
 				</div>
 			</WithStandardTopMargin>
 		</>
@@ -379,6 +635,10 @@ export const CancellationReasonSelection = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
+
+	if (isPrintProduct(productType)) {
+		return <PrintReasonPicker productType={productType} />;
+	}
 
 	if (productType.cancellation.startPageOfferEffectiveDateOptions) {
 		return (

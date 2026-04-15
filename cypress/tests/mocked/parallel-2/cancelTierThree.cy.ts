@@ -1,5 +1,5 @@
-import { tierThree } from '../../../../client/fixtures/productBuilder/testProducts';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
+import { tierThree } from '../../../../client/fixtures/productBuilder/testProducts';
 import { signInAndAcceptCookies } from '../../../lib/signInAndAcceptCookies';
 
 describe('Cancel tier three', () => {
@@ -86,6 +86,9 @@ describe('Cancel tier three', () => {
 	});
 
 	it('cancels tier three (reason: I dont have time to use my subscription, effective: next billing date)', () => {
+		const feedback =
+			'I still value the journalism, but this no longer fits my budget right now.';
+
 		cy.visit('/');
 
 		cy.findByText('Manage subscription').click();
@@ -95,27 +98,38 @@ describe('Cancel tier three', () => {
 			name: 'Cancel subscription',
 		}).click();
 
-		cy.findByText(
-			'We’re sorry to hear you’re thinking of cancelling your digital + print subscription',
-		).should('exist');
+		cy.findByText("We're sorry to see you go").should('exist');
+		cy.contains('multiple/multiple').should('not.exist');
+		cy.contains('multiple account plan').should('exist');
 
 		cy.findAllByRole('radio').eq(6).click();
+		cy.findByRole('textbox').type(feedback);
 
-		cy.findAllByRole('radio').check('Today');
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
 
 		cy.wait('@get_case');
 
-		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
+		cy.findByText('Pause your subscription').should('exist');
+		cy.findByRole('button', { name: 'Previous' }).click();
+		cy.findAllByRole('radio').eq(6).should('be.checked');
+		cy.findByRole('textbox').should('have.value', feedback);
+		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
+
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@cancel_gw_holidays');
 		cy.wait('@cancel_gw_deliveryrecords');
-		cy.wait('@create_case_in_salesforce');
 
 		cy.findByText(
-			'Your cancellation request has been successfully submitted. Our customer service team will try their best to contact you as soon as possible to confirm the cancellation and refund any credit you are owed.',
+			'test, thank you for supporting the Guardian since 29 November 2021. Is this really goodbye?',
 		).should('exist');
+		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
-		cy.get('@get_cancellation_date.all').should('have.length', 1);
+		cy.findByText(
+			'Your subscription to Digital + Print has been cancelled.',
+		).should('exist');
+		cy.findByText(
+			'Your cancellation will take effect on 25 Jul 2024.',
+		).should('exist');
 	});
 });

@@ -13,11 +13,16 @@ import type {
 	ProductTypeWithCancellationFlow,
 	WithProductType,
 } from '../../../../shared/productTypes';
+import { usePrintCancellationStore } from '../../../stores/PrintCancellationStore';
 import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { createProductDetailFetcher } from '../../../utilities/productUtils';
+import { usePrintCancellationLoader } from '../../../utilities/hooks/usePrintCancellationLoader';
+import {
+	createProductDetailFetcher,
+	isPrintProduct,
+} from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
@@ -77,13 +82,47 @@ const AsyncLoadedCancellationContainer = (
 	);
 };
 
+const PrintLoadedCancellationContainer = ({
+	productType,
+	routerProductDetail,
+}: {
+	productType: ProductType;
+	routerProductDetail?: ProductDetail;
+}) => {
+	const { isLoading, shouldRedirect } = usePrintCancellationLoader({
+		productType,
+		routerProductDetail,
+	});
+	const { productDetail } = usePrintCancellationStore();
+	const resolvedProductDetail = productDetail ?? routerProductDetail;
+
+	if (shouldRedirect) {
+		return <Navigate to="/" />;
+	}
+
+	if (isLoading) {
+		return (
+			<DefaultLoadingView
+				loadingMessage={`Checking the status of your ${productType.friendlyName}...`}
+			/>
+		);
+	}
+
+	if (!resolvedProductDetail) {
+		return <Navigate to="/" />;
+	}
+
+	return contextAndOutletContainer(resolvedProductDetail, productType);
+};
+
 export interface CancellationContextInterface {
 	productDetail: ProductDetail;
 	productType: ProductTypeWithCancellationFlow;
 }
 
-export const CancellationContext: Context<CancellationContextInterface | object> =
-	createContext({});
+export const CancellationContext: Context<
+	CancellationContextInterface | object
+> = createContext({});
 
 const contextAndOutletContainer = (
 	productDetail: ProductDetail,
@@ -105,6 +144,7 @@ export interface CancellationRouterState {
 	deliveryCredits?: DeliveryRecordDetail[];
 	updatedContributionAmount?: number;
 	selectedReason?: CancellationReason;
+	cancellationFeedback?: string;
 	dontShowOffer?: boolean;
 	journeyCompleted?: boolean;
 }
@@ -121,6 +161,7 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const productDetail = routerState?.productDetail;
+	const printProductType = isPrintProduct(props.productType);
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[props.productType.groupedProductType];
 
@@ -147,8 +188,14 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 			<PageContainer
 				selectedNavItem={NAV_LINKS.accountOverview}
 				pageTitle={pageTitle}
+				minimalFooter
 			>
-				{productDetail ? (
+				{printProductType ? (
+					<PrintLoadedCancellationContainer
+						productType={props.productType}
+						routerProductDetail={productDetail}
+					/>
+				) : productDetail ? (
 					contextAndOutletContainer(productDetail, props.productType)
 				) : (
 					<AsyncLoadedCancellationContainer

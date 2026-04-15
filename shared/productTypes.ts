@@ -1,7 +1,7 @@
 import type { Product } from '@guardian/ophan-tracker-js/MMA';
 import type { ReactNode } from 'react';
+import { shuffledPrintedProductsCancellationReasons } from '@/client/components/mma/cancel/PrintedProductsCancellationReasons';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
-import { shuffledTierThreeCancellationReasons } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationReasons';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import { convertCurrencyIsoToSymbol } from '@/client/utilities/currencyIso';
 import type {
@@ -13,7 +13,6 @@ import { shuffledContributionsCancellationReasons } from '../client/components/m
 import { digipackCancellationFlowStart } from '../client/components/mma/cancel/digipack/DigipackCancellationFlowStart';
 import { shuffledDigipackCancellationReasons } from '../client/components/mma/cancel/digipack/DigipackCancellationReasons';
 import { gwCancellationFlowStart } from '../client/components/mma/cancel/gw/GwCancellationFlowStart';
-import { shuffledGWCancellationReasons } from '../client/components/mma/cancel/gw/GwCancellationReasons';
 import { membershipCancellationFlowStart } from '../client/components/mma/cancel/membership/MembershipCancellationFlowStart';
 import { shuffledMembershipCancellationReasons } from '../client/components/mma/cancel/membership/MembershipCancellationReasons';
 import type { RestOfCancellationFlow } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
@@ -21,7 +20,6 @@ import { physicalSubsCancellationFlowWrapper } from '../client/components/mma/ca
 import { supporterplusCancellationFlowStart } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationFlowStart';
 import { shuffledSupporterPlusCancellationReasons } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationReasons';
 import { voucherCancellationFlowStart } from '../client/components/mma/cancel/voucher/VoucherCancellationFlowStart';
-import { shuffledVoucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
 import type { SupportTheGuardianButtonProps } from '../client/components/shared/SupportTheGuardianButton';
 import type {
 	BillingPeriod,
@@ -339,6 +337,19 @@ const baseHomedeliveryProduct: ProductType = {
 	fulfilmentDateCalculator: {
 		productFilenamePart: 'Newspaper - Home Delivery',
 	},
+	cancellation: {
+		reasons: shuffledPrintedProductsCancellationReasons,
+		sfCaseProduct: 'Voucher Subscriptions',
+		checkForOutstandingCredits: true,
+		flowWrapper: physicalSubsCancellationFlowWrapper,
+		startPageBody: gwCancellationFlowStart,
+		startPageOfferEffectiveDateOptions: true,
+		summaryReasonSpecificPara: () => undefined,
+		onlyShowSupportSectionIfAlternateText: false,
+		alternateSupportButtonText: () => undefined,
+		alternateSupportButtonUrlSuffix: () => undefined,
+		swapFeedbackAndContactUs: true,
+	},
 };
 
 const baseNationaldeliveryProduct: ProductType = {
@@ -381,6 +392,19 @@ const baseNationaldeliveryProduct: ProductType = {
 	fulfilmentDateCalculator: {
 		productFilenamePart: 'Newspaper - National Delivery',
 	},
+	cancellation: {
+		reasons: shuffledPrintedProductsCancellationReasons,
+		sfCaseProduct: 'Voucher Subscriptions',
+		checkForOutstandingCredits: true,
+		flowWrapper: physicalSubsCancellationFlowWrapper,
+		startPageBody: gwCancellationFlowStart,
+		startPageOfferEffectiveDateOptions: true,
+		summaryReasonSpecificPara: () => undefined,
+		onlyShowSupportSectionIfAlternateText: false,
+		alternateSupportButtonText: () => undefined,
+		alternateSupportButtonUrlSuffix: () => undefined,
+		swapFeedbackAndContactUs: true,
+	},
 };
 
 const baseVoucherProduct: ProductType = {
@@ -417,7 +441,7 @@ const baseVoucherProduct: ProductType = {
 		enableDeliveryInstructionsUpdate: true,
 	},
 	cancellation: {
-		reasons: shuffledVoucherCancellationReasons,
+		reasons: shuffledPrintedProductsCancellationReasons,
 		sfCaseProduct: 'Voucher Subscriptions',
 		checkForOutstandingCredits: true,
 		flowWrapper: physicalSubsCancellationFlowWrapper,
@@ -456,6 +480,19 @@ const baseDigitalvoucherProduct: ProductType = {
 	},
 	delivery: {
 		showAddress: showDeliveryAddressCheck,
+	},
+	cancellation: {
+		reasons: shuffledPrintedProductsCancellationReasons,
+		sfCaseProduct: 'Voucher Subscriptions',
+		checkForOutstandingCredits: true,
+		flowWrapper: physicalSubsCancellationFlowWrapper,
+		startPageBody: gwCancellationFlowStart,
+		startPageOfferEffectiveDateOptions: true,
+		summaryReasonSpecificPara: () => undefined,
+		onlyShowSupportSectionIfAlternateText: false,
+		alternateSupportButtonText: () => undefined,
+		alternateSupportButtonUrlSuffix: () => undefined,
+		swapFeedbackAndContactUs: true,
 	},
 };
 
@@ -622,6 +659,19 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		fulfilmentDateCalculator: {
 			productFilenamePart: 'Newspaper - Home Delivery',
 		},
+		cancellation: {
+			reasons: shuffledPrintedProductsCancellationReasons,
+			sfCaseProduct: 'Voucher Subscriptions',
+			checkForOutstandingCredits: true,
+			flowWrapper: physicalSubsCancellationFlowWrapper,
+			startPageBody: gwCancellationFlowStart,
+			startPageOfferEffectiveDateOptions: true,
+			summaryReasonSpecificPara: () => undefined,
+			onlyShowSupportSectionIfAlternateText: false,
+			alternateSupportButtonText: () => undefined,
+			alternateSupportButtonUrlSuffix: () => undefined,
+			swapFeedbackAndContactUs: true,
+		},
 	},
 	nationaldelivery: {
 		...baseNationaldeliveryProduct,
@@ -672,7 +722,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			enableDeliveryInstructionsUpdate: true,
 		},
 		cancellation: {
-			reasons: shuffledVoucherCancellationReasons,
+			reasons: shuffledPrintedProductsCancellationReasons,
 			sfCaseProduct: 'Voucher Subscriptions',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
@@ -715,6 +765,19 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		delivery: {
 			showAddress: showDeliveryAddressCheck,
 		},
+		cancellation: {
+			reasons: shuffledPrintedProductsCancellationReasons,
+			sfCaseProduct: 'Voucher Subscriptions',
+			checkForOutstandingCredits: true,
+			flowWrapper: physicalSubsCancellationFlowWrapper,
+			startPageBody: gwCancellationFlowStart,
+			startPageOfferEffectiveDateOptions: true,
+			summaryReasonSpecificPara: () => undefined,
+			onlyShowSupportSectionIfAlternateText: false,
+			alternateSupportButtonText: () => undefined,
+			alternateSupportButtonUrlSuffix: () => undefined,
+			swapFeedbackAndContactUs: true,
+		},
 	},
 	guardianweekly: {
 		productTitle: () => 'Guardian Weekly',
@@ -751,7 +814,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			},
 		},
 		cancellation: {
-			reasons: shuffledGWCancellationReasons,
+			reasons: shuffledPrintedProductsCancellationReasons,
 			sfCaseProduct: 'Guardian Weekly',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
@@ -797,7 +860,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			},
 		},
 		cancellation: {
-			reasons: shuffledTierThreeCancellationReasons,
+			reasons: shuffledPrintedProductsCancellationReasons,
 			sfCaseProduct: 'Tier Three',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,

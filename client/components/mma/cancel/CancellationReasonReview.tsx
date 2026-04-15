@@ -1,14 +1,19 @@
 import { css } from '@emotion/react';
 import {
+	from,
+	headlineBold28,
 	palette,
 	space,
 	textSans14,
+	textSans17,
+	textSansBold17,
 	until,
 } from '@guardian/source/foundations';
 import {
 	Button,
 	InlineError,
 	Spinner,
+	SvgArrowLeftStraight,
 	SvgArrowRightStraight,
 } from '@guardian/source/react-components';
 import type { ChangeEvent, FC } from 'react';
@@ -17,7 +22,10 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { getBenefitsThreshold } from '@/client/utilities/pricingConfig/supporterPlusPricing';
-import { contribToSupporterPlusFetch } from '@/client/utilities/productUtils';
+import {
+	contribToSupporterPlusFetch,
+	isPrintProduct,
+} from '@/client/utilities/productUtils';
 import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
 import type { TrueFalsePending } from '@/shared/generalTypes';
@@ -36,6 +44,7 @@ import type {
 	ProductTypeWithCancellationFlowMandatoryReasons,
 	WithProductType,
 } from '../../../../shared/productTypes';
+import { usePrintCancellationStore } from '../../../stores/PrintCancellationStore';
 import { measure } from '../../../styles/typography';
 import { useFetch } from '../../../utilities/hooks/useFetch';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
@@ -53,7 +62,10 @@ import { Heading } from '../shared/Heading';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
 import { ProgressStepper } from '../shared/ProgressStepper';
 import type { CancellationContextInterface } from './CancellationContainer';
-import { CancellationContext } from './CancellationContainer';
+import {
+	CancellationContext,
+	CancellationPageTitleContext,
+} from './CancellationContainer';
 import { cancellationEffectiveToday } from './cancellationContexts';
 import { requiresCancellationEscalation } from './cancellationFlowEscalationCheck';
 import type {
@@ -266,6 +278,210 @@ const FeedbackFormAndContactUs = (props: FeedbackFormProps) => {
 	);
 };
 
+const printPauseBannerCss = css`
+	background-color: ${palette.neutral[97]};
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: stretch;
+	margin-bottom: ${space[6]}px;
+
+	${from.tablet} {
+		flex-direction: row;
+		margin-bottom: ${space[10]}px;
+	}
+`;
+
+const printPauseBannerContentCss = css`
+	flex: 1;
+	padding: ${space[3]}px;
+	padding-bottom: ${space[6]}px;
+`;
+
+const printPauseBannerHeadingCss = css`
+	${textSansBold17};
+	margin: 0 0 ${space[1]}px;
+`;
+
+const printPauseBannerBodyCss = css`
+	${textSans17};
+	max-width: 54ch;
+	margin: 0 0 ${space[4]}px;
+
+	${from.tablet} {
+		margin: 0 0 ${space[6]}px;
+		max-width: unset;
+	}
+`;
+
+const printPauseBannerGraphicCss = css`
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	padding: ${space[3]}px ${space[3]}px ${space[3]}px;
+
+	${from.tablet} {
+		padding-top: 0;
+	}
+
+	img {
+		height: auto;
+		display: block;
+		width: 100%;
+		max-width: 350px;
+		margin: auto;
+
+		${from.tablet} {
+			width: 204px;
+		}
+	}
+`;
+
+interface PrintCancellationStepTwoProps {
+	productType: ProductTypeWithCancellationFlowMandatoryReasons;
+}
+
+const PrintCancellationStepTwo = ({
+	productType,
+}: PrintCancellationStepTwoProps) => {
+	const navigate = useNavigate();
+	const { setEligibleForFreePeriodOffer } = usePrintCancellationStore();
+	const pauseBannerImageSrc: { mobile: string; desktop: string } = {
+		mobile: 'https://i.guim.co.uk/img/media/203dbadbd6e0fcd4eed01370f94bf3a67d747ebd/0_0_204_162/204.png?width=204&quality=100&s=e69f374f6154453c7442d39b22efcb56',
+		desktop:
+			'https://i.guim.co.uk/img/media/203dbadbd6e0fcd4eed01370f94bf3a67d747ebd/0_0_204_162/204.png?width=204&quality=100&s=e69f374f6154453c7442d39b22efcb56',
+	};
+
+	return (
+		<>
+			<h2
+				css={css`
+					${headlineBold28}
+					margin: 0 0 ${space[5]}px;
+				`}
+			>
+				Pause your subscription
+			</h2>
+			<section css={printPauseBannerCss}>
+				<div css={printPauseBannerContentCss}>
+					<h3 css={printPauseBannerHeadingCss}>
+						Do you need a break?
+					</h3>
+					<p css={printPauseBannerBodyCss}>
+						Put your print deliveries on hold for up to five weeks
+						and we will apply a credit for the suspended issues to
+						your next bill date. If you have digital benefits you
+						will still receive and be charged for those during this
+						time.
+					</p>
+					<Button
+						priority="secondary"
+						onClick={() =>
+							navigate(`/suspend/${productType.urlPart}`)
+						}
+						cssOverrides={css`
+							width: 100%;
+
+							${from.tablet} {
+								width: auto;
+							}
+						`}
+					>
+						Pause subscription
+					</Button>
+				</div>
+				<picture css={printPauseBannerGraphicCss}>
+					<source
+						srcSet={pauseBannerImageSrc.desktop}
+						media="(min-width: 740px)"
+					/>
+					<img src={pauseBannerImageSrc.mobile} alt="" />
+				</picture>
+			</section>
+			<section
+				css={css`
+					margin-bottom: ${space[6]}px;
+				`}
+			>
+				<h2
+					css={css`
+						${headlineBold28}
+						margin: 0 0 ${space[2]}px;
+
+						${from.tablet} {
+							margin: 0 0 ${space[3]}px;
+						}
+					`}
+				>
+					Speak with an advisor
+				</h2>
+				<p
+					css={css`
+						${textSans17};
+						margin: 0 0 ${space[4]}px;
+					`}
+				>
+					Get in touch with our customer care team if you require any
+					assistance or simply wish to discuss other subscription
+					options.
+				</p>
+				<p
+					css={css`
+						${textSans17};
+						margin: 0;
+					`}
+				>
+					Email{' '}
+					<strong>
+						<a
+							href="mailto:customer.help@theguardian.com"
+							css={css`
+								color: ${palette.neutral[7]};
+							`}
+						>
+							customer.help@theguardian.com
+						</a>
+					</strong>
+					<br />
+					Call us at <strong>+44 (0) 330 333 6767</strong> 9am to 6pm,
+					Monday to Sunday
+				</p>
+			</section>
+			<div
+				data-cy="cta_container"
+				css={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					flexDirection: 'column',
+					gap: `${space[3]}px`,
+
+					[from.tablet]: {
+						flexDirection: 'row',
+					},
+				}}
+			>
+				<Button
+					priority="tertiary"
+					icon={<SvgArrowLeftStraight />}
+					iconSide="left"
+					onClick={() => navigate('..')}
+				>
+					Previous
+				</Button>
+				<Button
+					icon={<SvgArrowRightStraight />}
+					iconSide="right"
+					onClick={() => {
+						setEligibleForFreePeriodOffer(false);
+						navigate('../confirm');
+					}}
+				>
+					Continue to cancel
+				</Button>
+			</div>
+		</>
+	);
+};
+
 interface ConfirmCancellationAndReturnRowProps
 	extends WithProductType<ProductTypeWithCancellationFlow> {
 	onClick?: () => void;
@@ -283,6 +499,7 @@ const ConfirmCancellationAndReturnRow = (
 	const routerState = location.state as {
 		selectedReasonId: OptionalCancellationReasonId;
 		cancellationPolicy: string;
+		cancellationFeedback?: string;
 	};
 
 	const navigate = useNavigate();
@@ -550,13 +767,19 @@ export const CancellationReasonReview = () => {
 	const routerState = location.state as {
 		selectedReasonId: OptionalCancellationReasonId;
 		cancellationPolicy: string;
+		cancellationFeedback?: string;
 	};
 
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
+	const { selectedReasonId: printSelectedReasonId } =
+		usePrintCancellationStore();
+	const selectedReasonId = isPrintProduct(productType)
+		? printSelectedReasonId
+		: routerState?.selectedReasonId;
 
-	if (!routerState?.selectedReasonId || !productType?.cancellation.reasons) {
+	if (!selectedReasonId || !productType?.cancellation.reasons) {
 		return <Navigate to=".." />;
 	}
 	return (
@@ -580,9 +803,29 @@ const ValidatedCancellationReasonReview = ({
 	const routerState = location.state as {
 		selectedReasonId: OptionalCancellationReasonId;
 		cancellationPolicy: string;
+		cancellationFeedback?: string;
 	};
+	const pageTitleContext = useContext(CancellationPageTitleContext) as {
+		setPageTitle: (title: string) => void;
+	};
+	const isPrintProductType = isPrintProduct(productType);
+	const {
+		selectedReasonId: printSelectedReasonId,
+		cancellationPolicy: printCancellationPolicy,
+		setCaseData,
+	} = usePrintCancellationStore();
+	const selectedReasonId = isPrintProductType
+		? printSelectedReasonId
+		: routerState.selectedReasonId;
+	const cancellationPolicy = isPrintProductType
+		? printCancellationPolicy
+		: routerState.cancellationPolicy;
 
-	const { selectedReasonId, cancellationPolicy } = routerState;
+	useEffect(() => {
+		if (isPrintProductType) {
+			pageTitleContext.setPageTitle('Manage subscription');
+		}
+	}, [isPrintProductType, pageTitleContext]);
 
 	const reason = productType.cancellation.reasons.find(
 		(reason) => reason.reasonId === selectedReasonId,
@@ -644,7 +887,7 @@ const ValidatedCancellationReasonReview = ({
 
 	const caseId = cancellationCaseFetch.data?.id || '';
 
-	const isLoading = () =>
+	const isDataLoading =
 		(productType.cancellation.checkForOutstandingCredits &&
 			(!holidayStopCreditFetch.data ||
 				!deliveryProblemCreditFetch.data)) ||
@@ -659,8 +902,27 @@ const ValidatedCancellationReasonReview = ({
 	const needsCancellationEscalation = requiresCancellationEscalation(
 		holidayStopCreditFetch.data?.publicationsToRefund,
 		deliveryProblemCreditFetch.data?.results,
-		routerState.cancellationPolicy,
+		cancellationPolicy,
 	);
+
+	useEffect(() => {
+		if (!isPrintProductType || isDataLoading || !caseId) {
+			return;
+		}
+
+		setCaseData({
+			caseId,
+			holidayStops: holidayStopCreditFetch.data?.publicationsToRefund,
+			deliveryCredits: deliveryProblemCreditFetch.data?.results,
+		});
+	}, [
+		caseId,
+		deliveryProblemCreditFetch.data?.results,
+		holidayStopCreditFetch.data?.publicationsToRefund,
+		isDataLoading,
+		isPrintProductType,
+		setCaseData,
+	]);
 
 	const renderSaveBody = (
 		saveBody: string[] | React.FC<SaveBodyProps>,
@@ -694,7 +956,19 @@ const ValidatedCancellationReasonReview = ({
 
 	return (
 		<>
-			{shouldUseProgressStepper ? (
+			{isPrintProductType ? (
+				<ProgressStepper
+					steps={[{}, { isCurrentStep: true }, {}]}
+					additionalCSS={css`
+						margin: ${space[5]}px 0;
+						margin-bottom: ${space[8]}px;
+
+						${from.tablet} {
+							margin: ${space[10]}px 0;
+						}
+					`}
+				/>
+			) : shouldUseProgressStepper ? (
 				<ProgressStepper
 					steps={[{}, { isCurrentStep: true }, {}, {}]}
 					additionalCSS={css`
@@ -714,10 +988,12 @@ const ValidatedCancellationReasonReview = ({
 				/>
 			)}
 			<WithStandardTopMargin>
-				{isLoading() ? (
+				{isDataLoading ? (
 					!loadingHasFailed && (
 						<SpinnerWithMessage loadingMessage="Checking details" />
 					)
+				) : isPrintProductType ? (
+					<PrintCancellationStepTwo productType={productType} />
 				) : (
 					<>
 						<Heading
@@ -759,7 +1035,6 @@ const ValidatedCancellationReasonReview = ({
 									?.publicationsToRefund,
 								deliveryProblemCreditFetch.data?.results,
 							)}
-
 						{caseId && !reason.skipFeedback ? (
 							<FeedbackFormAndContactUs
 								characterLimit={2500}
