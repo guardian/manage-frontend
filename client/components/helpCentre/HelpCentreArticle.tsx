@@ -39,8 +39,11 @@ export const HelpCentreArticle = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		const normalizedArticleCode = articleCode ?? '';
+		const requestPath = `/api/help-centre/article/${normalizedArticleCode}`;
+
 		setArticle(undefined);
-		fetch(`/api/help-centre/article/${articleCode}`)
+		fetch(requestPath)
 			.then((response) => {
 				if (response.ok) {
 					return response.json();
@@ -53,11 +56,9 @@ export const HelpCentreArticle = () => {
 							helpCentreFetch: {
 								contentType: 'article',
 								reason: 'non_ok_response',
-								articleCode: articleCode ?? 'unknown',
+								articleCode: normalizedArticleCode,
 								status: response.status,
-								requestPath: `/api/help-centre/article/${
-									articleCode ?? ''
-								}`,
+								requestPath,
 							},
 						},
 						extra: {
@@ -84,10 +85,8 @@ export const HelpCentreArticle = () => {
 						helpCentreFetch: {
 							contentType: 'article',
 							reason: 'request_error',
-							articleCode: articleCode ?? 'unknown',
-							requestPath: `/api/help-centre/article/${
-								articleCode ?? ''
-							}`,
+							articleCode: normalizedArticleCode,
+							requestPath,
 						},
 					},
 					extra: {

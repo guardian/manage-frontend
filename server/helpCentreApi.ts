@@ -18,6 +18,20 @@ const captureHelpCentreFetchFailure = ({
 	filePath: string;
 	error?: unknown;
 }) => {
+	const errorMetadata =
+		error instanceof Error
+			? {
+					errorName: error.name,
+					errorMessage: error.message,
+					errorCode:
+						typeof (error as { code?: unknown }).code ===
+							'string' ||
+						typeof (error as { code?: unknown }).code === 'number'
+							? String((error as { code?: unknown }).code)
+							: undefined,
+			  }
+			: undefined;
+
 	captureMessage(`Help centre ${contentType} fetch failed.`, {
 		fingerprint: [`help-centre-${contentType}-fetch-${reason}`],
 		contexts: {
@@ -27,9 +41,7 @@ const captureHelpCentreFetchFailure = ({
 				filePath,
 			},
 		},
-		extra: {
-			errorValue: error === undefined ? undefined : String(error),
-		},
+		extra: errorMetadata,
 	});
 };
 
