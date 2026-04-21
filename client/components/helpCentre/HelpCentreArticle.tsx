@@ -45,18 +45,57 @@ export const HelpCentreArticle = () => {
 				if (response.ok) {
 					return response.json();
 				} else {
-					captureMessage(
-						`Fetching article ${articleCode} returned ${response.status}.`,
-					);
+					captureMessage('Help centre article fetch failed.', {
+						fingerprint: [
+							'help-centre-article-fetch-non_ok_response',
+						],
+						contexts: {
+							helpCentreFetch: {
+								contentType: 'article',
+								reason: 'non_ok_response',
+								articleCode: articleCode ?? 'unknown',
+								status: response.status,
+								requestPath: `/api/help-centre/article/${
+									articleCode ?? ''
+								}`,
+							},
+						},
+						extra: {
+							failureType: 'non_ok_response',
+						},
+					});
 					navigate('/help-centre');
+					return undefined;
 				}
 			})
-			.then((articleData) => setArticle(articleData as Article))
-			.catch((error) =>
-				captureException(
-					`Failed to fetch article ${articleCode}. Error: ${error}`,
-				),
-			);
+			.then((articleData) => {
+				if (articleData) {
+					setArticle(articleData as Article);
+				}
+			})
+			.catch((error) => {
+				const normalizedError =
+					error instanceof Error
+						? error
+						: new Error('Help centre article fetch failed');
+				captureException(normalizedError, {
+					fingerprint: ['help-centre-article-fetch-request_error'],
+					contexts: {
+						helpCentreFetch: {
+							contentType: 'article',
+							reason: 'request_error',
+							articleCode: articleCode ?? 'unknown',
+							requestPath: `/api/help-centre/article/${
+								articleCode ?? ''
+							}`,
+						},
+					},
+					extra: {
+						failureType: 'request_error',
+						errorValue: String(error),
+					},
+				});
+			});
 	}, [articleCode, navigate]);
 
 	const setSelectedTopicId = React.useContext(SelectedTopicObjectContext);
