@@ -29,6 +29,9 @@
     "typescript": "~4.7.4"
   },
   "prettier": "@guardian/prettier",
+  "resolutions": {
+    "picomatch": "2.3.2"
+  },
   "jest": {
     "testMatch": [
       "<rootDir>/lib/**/*.test.ts"
