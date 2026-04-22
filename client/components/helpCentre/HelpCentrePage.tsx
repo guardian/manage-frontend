@@ -83,7 +83,7 @@ const HelpCentreRouter = () => {
 			date: '21st April 2026 2:15 pm',
 			message:
 				'The London Marathon will take place on Sunday 26th of April, 2026 and road closures may impact newspaper delivery routes in the surrounding area. Subscribers affected can pause their delivery here.',
-			link: 'manage.theguardian.com',
+			link: 'https://manage.theguardian.com',
 		},
 	];
 
