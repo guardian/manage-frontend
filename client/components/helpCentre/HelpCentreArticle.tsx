@@ -39,24 +39,62 @@ export const HelpCentreArticle = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		const normalizedArticleCode = articleCode ?? '';
+		const requestPath = `/api/help-centre/article/${normalizedArticleCode}`;
+
 		setArticle(undefined);
-		fetch(`/api/help-centre/article/${articleCode}`)
+		fetch(requestPath)
 			.then((response) => {
 				if (response.ok) {
 					return response.json();
 				} else {
-					captureMessage(
-						`Fetching article ${articleCode} returned ${response.status}.`,
-					);
+					captureMessage('Help centre article fetch failed.', {
+						fingerprint: [
+							'help-centre-article-fetch-non_ok_response',
+						],
+						contexts: {
+							helpCentreFetch: {
+								contentType: 'article',
+								reason: 'non_ok_response',
+								articleCode: normalizedArticleCode,
+								status: response.status,
+								requestPath,
+							},
+						},
+						extra: {
+							failureType: 'non_ok_response',
+						},
+					});
 					navigate('/help-centre');
+					return undefined;
 				}
 			})
-			.then((articleData) => setArticle(articleData as Article))
-			.catch((error) =>
-				captureException(
-					`Failed to fetch article ${articleCode}. Error: ${error}`,
-				),
-			);
+			.then((articleData) => {
+				if (articleData) {
+					setArticle(articleData as Article);
+				}
+			})
+			.catch((error) => {
+				const normalizedError =
+					error instanceof Error
+						? error
+						: new Error('Help centre article fetch failed');
+				captureException(normalizedError, {
+					fingerprint: ['help-centre-article-fetch-request_error'],
+					contexts: {
+						helpCentreFetch: {
+							contentType: 'article',
+							reason: 'request_error',
+							articleCode: normalizedArticleCode,
+							requestPath,
+						},
+					},
+					extra: {
+						failureType: 'request_error',
+						errorValue: String(error),
+					},
+				});
+			});
 	}, [articleCode, navigate]);
 
 	const setSelectedTopicId = React.useContext(SelectedTopicObjectContext);
