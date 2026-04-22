@@ -157,7 +157,7 @@ export const KnownIssues = (props: KnownIssuesProp) => {
 										rel="noreferrer"
 										target="_blank"
 									>
-										Click here for more information
+										Click here to go to Manage My Account
 									</a>
 								)}
 							</div>
