@@ -75,13 +75,12 @@ export const setAnalyticsUserFromIdentity = (
 		return;
 	}
 
-	if (!identityDetails.userId && !identityDetails.email) {
+	if (!identityDetails.userId) {
 		Sentry.setUser(null);
 		return;
 	}
 
 	Sentry.setUser({
 		id: identityDetails.userId,
-		email: identityDetails.email,
 	});
 };
