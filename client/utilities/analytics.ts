@@ -1,5 +1,8 @@
+import * as Sentry from '@sentry/browser';
+import type { IdentityDetails } from '@/shared/globals';
 import type { ProductDetail } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
+import { isSignedIn } from './signInStatus';
 
 interface Event {
 	eventCategory: string;
@@ -60,3 +63,22 @@ export const trackEvent = ({
 };
 
 export const trackEventInOphanOnly = (event: Event) => trackEvent(event);
+
+export const setAnalyticsUserFromIdentity = (
+	identityDetails: IdentityDetails | undefined,
+) => {
+	if (!isSignedIn() || !identityDetails) {
+		Sentry.setUser(null);
+		return;
+	}
+
+	if (!identityDetails.userId && !identityDetails.email) {
+		Sentry.setUser(null);
+		return;
+	}
+
+	Sentry.setUser({
+		id: identityDetails.userId,
+		email: identityDetails.email,
+	});
+};
