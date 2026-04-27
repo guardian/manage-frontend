@@ -41,6 +41,25 @@ describe('identityLocalState Sentry binding', () => {
 		});
 	});
 
+	it('sets user with id and email when sign-in is not recent', () => {
+		const res = {
+			locals: {},
+		} as unknown as Response;
+		const identityLocalState: IdentityDetails = {
+			signInStatus: 'signedInNotRecently',
+			userId: 'xyz987',
+			email: 'notrecent@example.com',
+		};
+
+		setIdentityLocalState(res, identityLocalState);
+
+		expect(res.locals.identity).toEqual(identityLocalState);
+		expect(mockedSetUser).toHaveBeenCalledWith({
+			id: 'xyz987',
+			email: 'notrecent@example.com',
+		});
+	});
+
 	it('clears user when signed out identity is set', () => {
 		const res = {
 			locals: {},

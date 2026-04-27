@@ -2,7 +2,6 @@ import * as Sentry from '@sentry/browser';
 import type { IdentityDetails } from '@/shared/globals';
 import type { ProductDetail } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
-import { isSignedIn } from './signInStatus';
 
 interface Event {
 	eventCategory: string;
@@ -67,7 +66,11 @@ export const trackEventInOphanOnly = (event: Event) => trackEvent(event);
 export const setAnalyticsUserFromIdentity = (
 	identityDetails: IdentityDetails | undefined,
 ) => {
-	if (!isSignedIn() || !identityDetails) {
+	if (
+		!identityDetails ||
+		(identityDetails.signInStatus !== 'signedInRecently' &&
+			identityDetails.signInStatus !== 'signedInNotRecently')
+	) {
 		Sentry.setUser(null);
 		return;
 	}
