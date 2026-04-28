@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/browser';
-import type { IdentityDetails } from '@/shared/globals';
 import type { ProductDetail } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
+import { getCookie } from './cookies';
 
 interface Event {
 	eventCategory: string;
@@ -63,24 +63,14 @@ export const trackEvent = ({
 
 export const trackEventInOphanOnly = (event: Event) => trackEvent(event);
 
-export const setAnalyticsUserFromIdentity = (
-	identityDetails: IdentityDetails | undefined,
-) => {
-	if (
-		!identityDetails ||
-		(identityDetails.signInStatus !== 'signedInRecently' &&
-			identityDetails.signInStatus !== 'signedInNotRecently')
-	) {
-		Sentry.setUser(null);
-		return;
-	}
-
-	if (!identityDetails.userId) {
+export const setAnalyticsUserFromBrowserId = () => {
+	const browserId = getCookie('bwid');
+	if (!browserId) {
 		Sentry.setUser(null);
 		return;
 	}
 
 	Sentry.setUser({
-		id: identityDetails.userId,
+		id: browserId,
 	});
 };
