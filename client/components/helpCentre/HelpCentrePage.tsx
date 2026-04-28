@@ -78,14 +78,7 @@ const HelpCentreRouter = () => {
 	]
 	*/
 
-	const knownIssues: KnownIssueObj[] = [
-		{
-			date: '21st April 2026 2:15 pm',
-			message:
-				'The London Marathon will take place on Sunday 26th of April, 2026 and road closures may impact newspaper delivery routes in the surrounding area. Subscribers affected can pause their delivery in Manage My Account.',
-			link: 'https://manage.theguardian.com',
-		},
-	];
+	const knownIssues: KnownIssueObj[] = [];
 
 	return (
 		<Main signInStatus={signInStatus} isHelpCentrePage>
