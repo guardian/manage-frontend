@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { space, textSans17 } from '@guardian/source/foundations';
 import { Button, Stack } from '@guardian/source/react-components';
 import { InfoSummary } from '@guardian/source-development-kitchen/react-components';
+import { isValid } from 'date-fns';
 import { capitalize } from 'lodash';
 import { useNavigate } from 'react-router';
 import { dateString } from '../../../../shared/dates';
@@ -57,12 +58,17 @@ export const InAppPurchaseCard = ({
 	}
 
 	const appStore = determineAppStore(subscription);
+	const cancellationDate = subscription.cancellationTimestamp
+		? new Date(subscription.cancellationTimestamp)
+		: null;
+	const hasValidCancellationDate =
+		!!cancellationDate && isValid(cancellationDate);
 	return (
 		<Stack space={4}>
-			{subscription.cancellationTimestamp && (
+			{hasValidCancellationDate && (
 				<InfoSummary
 					message={`Your app subscription was cancelled in ${dateString(
-						new Date(subscription.cancellationTimestamp),
+						cancellationDate,
 						'MMMM yyyy',
 					)}.`}
 					context={cancelledAppSubscriptionMessage()}
