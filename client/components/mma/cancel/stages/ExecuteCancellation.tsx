@@ -172,7 +172,7 @@ const escalatedConfirmationBody = (
 
 export const ExecuteCancellation = () => {
 	const location = useLocation();
-	const routerState = location.state as RouterState;
+	const routerState = location.state as RouterState | null;
 
 	const { productDetail, productType } = useContext(
 		CancellationContext,
@@ -184,8 +184,9 @@ export const ExecuteCancellation = () => {
 		: false;
 
 	if (
-		productHasReasonSelection &&
-		(!routerState?.selectedReasonId || !routerState?.caseId)
+		!routerState ||
+		(productHasReasonSelection &&
+			(!routerState.selectedReasonId || !routerState.caseId))
 	) {
 		return <Navigate to="../" />;
 	}
