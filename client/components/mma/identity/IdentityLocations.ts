@@ -25,7 +25,7 @@ const getIdentityLocations = (domain: string) => ({
 		'/help-centre/article/i-need-to-change-my-delivery-address',
 	),
 	CHANGE_EMAIL: url('profile', domain, '/account/edit'),
-	RESET_PASSWORD: url('profile', domain, '/reset'),
+	RESET_PASSWORD: url('profile', domain, '/reset?clientId=web'),
 	MANAGE_JOB_ALERTS: url('jobs', domain, '/your-jobs/?ActiveSection=JbeList'),
 	VERIFY_EMAIL: url('profile', domain, '/verify-email'),
 	IDAPI: IDAPI_URL,
