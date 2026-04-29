@@ -63,7 +63,7 @@ export const trackEvent = ({
 
 export const trackEventInOphanOnly = (event: Event) => trackEvent(event);
 
-export const setAnalyticsUserFromBrowserId = () => {
+export const setAnalyticsUserFromConsentDate = () => {
 	const consentDate = getCookie('consentDate');
 	if (!consentDate) {
 		Sentry.setUser(null);

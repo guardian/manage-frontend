@@ -3,7 +3,7 @@ import 'regenerator-runtime/runtime';
 import * as Sentry from '@sentry/browser';
 import { createRoot } from 'react-dom/client';
 import { MMAPage } from './components/mma/MMAPage';
-import { setAnalyticsUserFromBrowserId } from './utilities/analytics';
+import { setAnalyticsUserFromConsentDate } from './utilities/analytics';
 import { initOphan } from './utilities/initOphan';
 import { registerBfCacheTracking } from './utilities/registerBfCacheTracking';
 
@@ -19,7 +19,7 @@ if (typeof window !== 'undefined' && window.guardian && window.guardian.dsn) {
 		release: WEBPACK_BUILD || 'local',
 		environment: window.guardian.domain,
 	});
-	setAnalyticsUserFromBrowserId();
+	setAnalyticsUserFromConsentDate();
 }
 
 const container = document.getElementById('app');
