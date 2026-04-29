@@ -18,19 +18,19 @@ describe('setAnalyticsUserFromBrowserId', () => {
 		jest.clearAllMocks();
 	});
 
-	it('sets null when browser id is missing', () => {
+	it('sets null when consentDate is missing', () => {
 		mockedGetCookie.mockReturnValue(null);
 
 		setAnalyticsUserFromBrowserId();
 		expect(mockedSetUser).toHaveBeenCalledWith(null);
 	});
 
-	it('sets browser id when cookie is present', () => {
-		mockedGetCookie.mockReturnValue('browser-id-123');
+	it('sets consentDate when cookie is present', () => {
+		mockedGetCookie.mockReturnValue('2026-02-25T10:51:50.552Z');
 
 		setAnalyticsUserFromBrowserId();
 		expect(mockedSetUser).toHaveBeenCalledWith({
-			id: 'browser-id-123',
+			id: '2026-02-25T10:51:50.552Z',
 		});
 	});
 });

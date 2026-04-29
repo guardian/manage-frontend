@@ -64,13 +64,13 @@ export const trackEvent = ({
 export const trackEventInOphanOnly = (event: Event) => trackEvent(event);
 
 export const setAnalyticsUserFromBrowserId = () => {
-	const browserId = getCookie('bwid');
-	if (!browserId) {
+	const consentDate = getCookie('consentDate');
+	if (!consentDate) {
 		Sentry.setUser(null);
 		return;
 	}
 
 	Sentry.setUser({
-		id: browserId,
+		id: consentDate,
 	});
 };
