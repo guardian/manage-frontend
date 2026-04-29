@@ -7,7 +7,7 @@ import {
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { useContext, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
@@ -89,7 +89,7 @@ const ctaBtnCss = css`
 
 export const ConfirmCancellation = () => {
 	const location = useLocation();
-	const routerState = location.state as RouterSate;
+	const routerState = location.state as RouterSate | null;
 	const navigate = useNavigate();
 
 	const cancellationContext = useContext(
@@ -114,18 +114,22 @@ export const ConfirmCancellation = () => {
 
 	const isInTrialPeriod = subscription.trialLength > 0;
 
+	useEffect(() => {
+		pageTitleContext.setPageTitle(
+			`Cancel ${groupedProductType.friendlyName}`,
+		);
+	}, [groupedProductType.friendlyName, pageTitleContext]);
+
+	if (!routerState) {
+		return <Navigate to="../" />;
+	}
+
 	const progressStepperArray = [
 		{},
 		{},
 		{ isCurrentStep: !routerState.eligibleForFreePeriodOffer },
 		{ isCurrentStep: routerState.eligibleForFreePeriodOffer },
 	];
-
-	useEffect(() => {
-		pageTitleContext.setPageTitle(
-			`Cancel ${groupedProductType.friendlyName}`,
-		);
-	}, [groupedProductType.friendlyName, pageTitleContext]);
 
 	return (
 		<>
