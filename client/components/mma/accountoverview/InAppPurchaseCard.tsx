@@ -58,6 +58,8 @@ export const InAppPurchaseCard = ({
 	}
 
 	const appStore = determineAppStore(subscription);
+	// Date construction can still yield an "Invalid Date" object for malformed
+	// timestamps, so we validate immediately and only use the value when valid.
 	const cancellationDate = subscription.cancellationTimestamp
 		? new Date(subscription.cancellationTimestamp)
 		: null;
