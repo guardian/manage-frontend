@@ -7,7 +7,7 @@ import {
 	textSans15,
 	textSans17,
 } from '@guardian/source/foundations';
-import { min } from 'date-fns';
+import { isValid, min } from 'date-fns';
 import { dateString } from '@/shared/dates';
 import type { AppSubscription, MPAPIResponse } from '@/shared/mpapiResponse';
 import type { MembersDataApiResponse } from '@/shared/productResponse';
@@ -28,22 +28,26 @@ export const PersonalisedHeader = ({
 	if (
 		!userDetails ||
 		(mdapiResponse.products.length === 0 &&
-			mpapiResponse?.subscriptions.length === 0)
+			(!mpapiResponse || mpapiResponse.subscriptions.length === 0))
 	) {
 		return null;
 	}
 
 	const productDetails = mdapiResponse.products.filter(isProduct);
-
-	const oldestDate = min([
+	const oldestDateCandidates = [
 		...productDetails.map((p) => new Date(p.joinDate)),
 		...(mpapiResponse
 			? mpapiResponse.subscriptions.map(
 					(s: AppSubscription) => new Date(s.from),
 			  )
 			: []),
-	]);
+	].filter((date) => isValid(date));
 
+	if (oldestDateCandidates.length === 0) {
+		return null;
+	}
+
+	const oldestDate = min(oldestDateCandidates);
 	const supportStartYear = dateString(oldestDate, 'MMMM yyyy');
 
 	const onlyHasObserverProducts =
