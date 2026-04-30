@@ -118,18 +118,9 @@ export const hasDeliveryFlow = (productType: ProductType) =>
 	productType.delivery?.showAddress;
 
 export const isPrintProduct = (productType: ProductType): boolean => {
-	return [
-		'guardianweekly',
-		'homedelivery',
-		'homedeliveryplusdigital',
-		'nationaldelivery',
-		'nationaldeliveryplusdigital',
-		'voucher',
-		'voucherplusdigital',
-		'digitalvoucher',
-		'digitalvoucherplusdigital',
-		'tierthree',
-	].includes(productType.productType);
+	// Release gate for the new Print Cancellation flow.
+	// Any product type applicable to the new flow should be added to the list.
+	return ['guardianweekly'].includes(productType.productType);
 };
 
 export const hasDeliveryRecordsFlow = (
