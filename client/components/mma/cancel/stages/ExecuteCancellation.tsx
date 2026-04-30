@@ -372,54 +372,106 @@ const escalatedConfirmationBody = (
 	</p>
 );
 
-export const ExecuteCancellation = () => {
-	const location = useLocation();
-	const routerState = location.state as RouterState | null;
+interface ExecuteCancellationProps {
+	productDetail: CancellationContextInterface['productDetail'];
+	productType: CancellationContextInterface['productType'];
+}
 
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+const PrintExecuteCancellation = ({
+	productDetail,
+	productType,
+}: ExecuteCancellationProps) => {
 	const {
 		selectedReasonId: printSelectedReasonId,
 		caseId: printCaseId,
 		cancellationPolicy: printCancellationPolicy,
 		holidayStops: printHolidayStops,
 		deliveryCredits: printDeliveryCredits,
-		eligibleForFreePeriodOffer: printEligibleForFreePeriodOffer,
 	} = usePrintCancellationStore();
-	const isPrintProductType = isPrintProduct(productType);
-	const selectedReasonId = isPrintProductType
-		? printSelectedReasonId
-		: routerState?.selectedReasonId;
-	const caseId = isPrintProductType ? printCaseId : routerState?.caseId;
-	const cancellationPolicy = isPrintProductType
-		? printCancellationPolicy
-		: routerState?.cancellationPolicy;
-	const holidayStops = isPrintProductType
-		? printHolidayStops
-		: routerState?.holidayStops;
-	const deliveryCredits = isPrintProductType
-		? printDeliveryCredits
-		: routerState?.deliveryCredits;
-	const eligibleForFreePeriodOffer = isPrintProductType
-		? printEligibleForFreePeriodOffer
-		: routerState?.eligibleForFreePeriodOffer;
-	const eligibleForPause = routerState?.eligibleForPause;
-
-	const cancellationReasonId = useContext(CancellationReasonContext);
+	const selectedReasonId = printSelectedReasonId;
+	const caseId = printCaseId;
+	const cancellationPolicy = printCancellationPolicy;
+	const holidayStops = printHolidayStops;
+	const deliveryCredits = printDeliveryCredits;
 	const productHasReasonSelection = productType.cancellation.reasons?.length
 		? true
 		: false;
 
-	if (
-		(!isPrintProductType && !routerState) ||
-		(productHasReasonSelection && (!selectedReasonId || !caseId))
-	) {
+	if (productHasReasonSelection && (!selectedReasonId || !caseId)) {
 		return <Navigate to="../" />;
 	}
+
+	const escalationCauses = generateEscalationCausesList({
+		isEffectiveToday: cancellationPolicy === cancellationEffectiveToday,
+		hasOutstandingHolidayStops: !!holidayStops && holidayStops.length > 0,
+		hasOutstandingDeliveryProblemCredits:
+			!!deliveryCredits && deliveryCredits.length > 0,
+	});
+
+	return isProduct(productDetail) ? (
+		escalationCauses.length > 0 && caseId ? (
+			<CaseUpdateAsyncLoader
+				fetch={getCaseUpdateFuncForEscalation(
+					caseId,
+					escalationCauses,
+					productDetail.isTestUser,
+				)}
+				render={getCancellationSummaryWithReturnButton(
+					escalatedConfirmationBody,
+				)}
+				loadingMessage="Requesting your cancellation..."
+			/>
+		) : (
+			<PerformCancelAsyncLoader
+				fetch={getCancelFunc(
+					productDetail.subscription.subscriptionId,
+					productType,
+					selectedReasonId,
+					createProductDetailFetcher(
+						productType.allProductsProductTypeFilterString,
+						productDetail.subscription.subscriptionId,
+					),
+				)}
+				render={getPrintCancellationSuccessSummary(
+					productType,
+					productDetail,
+				)}
+				loadingMessage="Performing your cancellation..."
+			/>
+		)
+	) : (
+		<GenericErrorScreen loggingMessage="invalid product detail to cancel" />
+	);
+};
+
+interface NonPrintExecuteCancellationProps extends ExecuteCancellationProps {
+	routerState: RouterState;
+	cancellationReasonId?: CancellationReasonId;
+}
+
+const NonPrintExecuteCancellation = ({
+	productDetail,
+	productType,
+	routerState,
+	cancellationReasonId,
+}: NonPrintExecuteCancellationProps) => {
+	const selectedReasonId = routerState.selectedReasonId;
+	const caseId = routerState.caseId;
+	const cancellationPolicy = routerState.cancellationPolicy;
+	const holidayStops = routerState.holidayStops;
+	const deliveryCredits = routerState.deliveryCredits;
+	const eligibleForFreePeriodOffer = routerState.eligibleForFreePeriodOffer;
+	const eligibleForPause = routerState.eligibleForPause;
+	const productHasReasonSelection = productType.cancellation.reasons?.length
+		? true
+		: false;
+
+	if (productHasReasonSelection && (!selectedReasonId || !caseId)) {
+		return <Navigate to="../" />;
+	}
+
 	const alternativeIsOffer = productType.productType === 'supporterplus';
 	const alternativeIsPause = productType.productType === 'contributions';
-
 	const escalationCauses = generateEscalationCausesList({
 		isEffectiveToday: cancellationPolicy === cancellationEffectiveToday,
 		hasOutstandingHolidayStops: !!holidayStops && holidayStops.length > 0,
@@ -487,21 +539,14 @@ export const ExecuteCancellation = () => {
 								productDetail.subscription.subscriptionId,
 							),
 						)}
-						render={
-							isPrintProductType
-								? getPrintCancellationSuccessSummary(
-										productType,
-										productDetail,
-								  )
-								: getCaseUpdatingCancellationSummary(
-										productType,
-										productDetail,
-										eligibleForFreePeriodOffer,
-										eligibleForPause,
-										cancellationReasonId,
-										caseId,
-								  )
-						}
+						render={getCaseUpdatingCancellationSummary(
+							productType,
+							productDetail,
+							eligibleForFreePeriodOffer,
+							eligibleForPause,
+							cancellationReasonId,
+							caseId,
+						)}
 						loadingMessage="Performing your cancellation..."
 					/>
 				)
@@ -509,5 +554,36 @@ export const ExecuteCancellation = () => {
 				<GenericErrorScreen loggingMessage="invalid product detail to cancel" />
 			)}
 		</>
+	);
+};
+
+export const ExecuteCancellation = () => {
+	const location = useLocation();
+	const routerState = location.state as RouterState | null;
+	const { productDetail, productType } = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+	const cancellationReasonId = useContext(CancellationReasonContext);
+
+	if (isPrintProduct(productType)) {
+		return (
+			<PrintExecuteCancellation
+				productDetail={productDetail}
+				productType={productType}
+			/>
+		);
+	}
+
+	if (!routerState) {
+		return <Navigate to="../" />;
+	}
+
+	return (
+		<NonPrintExecuteCancellation
+			productDetail={productDetail}
+			productType={productType}
+			routerState={routerState}
+			cancellationReasonId={cancellationReasonId}
+		/>
 	);
 };
