@@ -180,6 +180,7 @@ const printSuccessBannerGraphicCss = css`
 
 	${from.tablet} {
 		padding: ${space[3]}px ${space[10]}px ${space[1]}px ${space[10]}px;
+		max-width: 245px;
 	}
 `;
 

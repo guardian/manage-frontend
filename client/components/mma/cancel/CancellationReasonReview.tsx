@@ -808,58 +808,115 @@ export const CancellationReasonReview = () => {
 		selectedReasonId: OptionalCancellationReasonId;
 		cancellationPolicy: string;
 		cancellationFeedback?: string;
-	};
+	} | null;
 
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
-	const { selectedReasonId: printSelectedReasonId } =
-		usePrintCancellationStore();
-	const selectedReasonId = isPrintProduct(productType)
-		? printSelectedReasonId
-		: routerState?.selectedReasonId;
+	const isPrintProductType = isPrintProduct(productType);
 
-	if (!selectedReasonId || !productType?.cancellation.reasons) {
+	if (
+		!productType?.cancellation.reasons ||
+		(!isPrintProductType && !routerState?.selectedReasonId)
+	) {
 		return <Navigate to=".." />;
 	}
+
+	if (isPrintProductType) {
+		return (
+			<PrintCancellationReasonReview
+				productDetail={productDetail}
+				productType={
+					productType as ProductTypeWithCancellationFlowMandatoryReasons
+				}
+			/>
+		);
+	}
+
+	if (!routerState) {
+		return <Navigate to=".." />;
+	}
+
 	return (
-		<ValidatedCancellationReasonReview
+		<NonPrintCancellationReasonReview
 			productDetail={productDetail}
 			productType={
 				productType as ProductTypeWithCancellationFlowMandatoryReasons
 			}
+			selectedReasonId={routerState.selectedReasonId}
+			cancellationPolicy={routerState.cancellationPolicy}
 		/>
 	);
 };
 
-const ValidatedCancellationReasonReview = ({
+const PrintCancellationReasonReview = ({
 	productDetail,
 	productType,
 }: {
 	productDetail: ProductDetail;
 	productType: ProductTypeWithCancellationFlowMandatoryReasons;
 }) => {
-	const location = useLocation();
-	const routerState = location.state as {
-		selectedReasonId: OptionalCancellationReasonId;
-		cancellationPolicy: string;
-		cancellationFeedback?: string;
-	};
+	const { selectedReasonId, cancellationPolicy, setCaseData } =
+		usePrintCancellationStore();
+
+	if (!selectedReasonId) {
+		return <Navigate to=".." />;
+	}
+
+	return (
+		<ValidatedCancellationReasonReview
+			productDetail={productDetail}
+			productType={productType}
+			selectedReasonId={selectedReasonId}
+			cancellationPolicy={cancellationPolicy}
+			isPrintProductType
+			setCaseData={setCaseData}
+		/>
+	);
+};
+
+const NonPrintCancellationReasonReview = ({
+	productDetail,
+	productType,
+	selectedReasonId,
+	cancellationPolicy,
+}: {
+	productDetail: ProductDetail;
+	productType: ProductTypeWithCancellationFlowMandatoryReasons;
+	selectedReasonId: OptionalCancellationReasonId;
+	cancellationPolicy: string;
+}) => (
+	<ValidatedCancellationReasonReview
+		productDetail={productDetail}
+		productType={productType}
+		selectedReasonId={selectedReasonId}
+		cancellationPolicy={cancellationPolicy}
+		isPrintProductType={false}
+	/>
+);
+
+const ValidatedCancellationReasonReview = ({
+	productDetail,
+	productType,
+	selectedReasonId,
+	cancellationPolicy,
+	isPrintProductType,
+	setCaseData,
+}: {
+	productDetail: ProductDetail;
+	productType: ProductTypeWithCancellationFlowMandatoryReasons;
+	selectedReasonId: OptionalCancellationReasonId;
+	cancellationPolicy: string;
+	isPrintProductType: boolean;
+	setCaseData?: (data: {
+		caseId: string;
+		holidayStops?: OutstandingHolidayStop[];
+		deliveryCredits?: DeliveryRecordDetail[];
+	}) => void;
+}) => {
 	const pageTitleContext = useContext(CancellationPageTitleContext) as {
 		setPageTitle: (title: string) => void;
 	};
-	const isPrintProductType = isPrintProduct(productType);
-	const {
-		selectedReasonId: printSelectedReasonId,
-		cancellationPolicy: printCancellationPolicy,
-		setCaseData,
-	} = usePrintCancellationStore();
-	const selectedReasonId = isPrintProductType
-		? printSelectedReasonId
-		: routerState.selectedReasonId;
-	const cancellationPolicy = isPrintProductType
-		? printCancellationPolicy
-		: routerState.cancellationPolicy;
 
 	useEffect(() => {
 		if (isPrintProductType) {
@@ -946,7 +1003,7 @@ const ValidatedCancellationReasonReview = ({
 	);
 
 	useEffect(() => {
-		if (!isPrintProductType || isDataLoading || !caseId) {
+		if (!isPrintProductType || isDataLoading || !caseId || !setCaseData) {
 			return;
 		}
 
