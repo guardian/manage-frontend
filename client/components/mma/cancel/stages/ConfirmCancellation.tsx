@@ -110,7 +110,7 @@ const ctaBtnCss = css`
 
 export const ConfirmCancellation = () => {
 	const location = useLocation();
-	const routerState = location.state as RouterSate;
+	const routerState = location.state as RouterSate | null;
 	const navigate = useNavigate();
 
 	const cancellationContext = useContext(
@@ -140,6 +140,24 @@ export const ConfirmCancellation = () => {
 
 	const isInTrialPeriod = subscription.trialLength > 0;
 
+	useEffect(() => {
+		pageTitleContext.setPageTitle(
+			`Cancel ${groupedProductType.friendlyName}`,
+		);
+	}, [groupedProductType.friendlyName, pageTitleContext]);
+
+	useEffect(() => {
+		pageTitleContext.setPageTitle(
+			isPrintProductType
+				? 'Manage subscription'
+				: `Cancel ${groupedProductType.friendlyName}`,
+		);
+	}, [groupedProductType.friendlyName, isPrintProductType, pageTitleContext]);
+
+	if (!routerState) {
+		return <Navigate to="../" />;
+	}
+
 	const progressStepperArray = [
 		{},
 		{},
@@ -165,14 +183,6 @@ export const ConfirmCancellation = () => {
 				'yyyy-MM-dd',
 		  ).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)
 		: undefined;
-
-	useEffect(() => {
-		pageTitleContext.setPageTitle(
-			isPrintProductType
-				? 'Manage subscription'
-				: `Cancel ${groupedProductType.friendlyName}`,
-		);
-	}, [groupedProductType.friendlyName, isPrintProductType, pageTitleContext]);
 
 	if (isPrintProductType) {
 		if (!printSelectedReasonId || !printCaseId) {

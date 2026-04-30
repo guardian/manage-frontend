@@ -354,7 +354,7 @@ const escalatedConfirmationBody = (
 
 export const ExecuteCancellation = () => {
 	const location = useLocation();
-	const routerState = location.state as RouterState;
+	const routerState = location.state as RouterState | null;
 
 	const { productDetail, productType } = useContext(
 		CancellationContext,
@@ -391,7 +391,10 @@ export const ExecuteCancellation = () => {
 		? true
 		: false;
 
-	if (productHasReasonSelection && (!selectedReasonId || !caseId)) {
+	if (
+		!routerState ||
+		(productHasReasonSelection && (!selectedReasonId || !caseId))
+	) {
 		return <Navigate to="../" />;
 	}
 	const alternativeIsOffer = productType.productType === 'supporterplus';
