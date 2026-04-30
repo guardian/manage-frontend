@@ -346,13 +346,18 @@ const printPauseBannerGraphicCss = css`
 
 interface PrintCancellationStepTwoProps {
 	productType: ProductTypeWithCancellationFlowMandatoryReasons;
+	isTestUser: boolean;
 }
 
 const PrintCancellationStepTwo = ({
 	productType,
+	isTestUser,
 }: PrintCancellationStepTwoProps) => {
 	const navigate = useNavigate();
-	const { setEligibleForFreePeriodOffer } = usePrintCancellationStore();
+	const [isSubmittingFeedback, setIsSubmittingFeedback] =
+		useState<boolean>(false);
+	const { setEligibleForFreePeriodOffer, cancellationFeedback, caseId } =
+		usePrintCancellationStore();
 	const pauseBannerImageSrc: { mobile: string; desktop: string } = {
 		mobile: 'https://i.guim.co.uk/img/media/203dbadbd6e0fcd4eed01370f94bf3a67d747ebd/0_0_204_162/204.png?width=204&quality=100&s=e69f374f6154453c7442d39b22efcb56',
 		desktop:
@@ -510,8 +515,23 @@ const PrintCancellationStepTwo = ({
 				<Button
 					icon={<SvgArrowRightStraight />}
 					iconSide="right"
-					onClick={() => {
+					disabled={isSubmittingFeedback}
+					onClick={async () => {
 						setEligibleForFreePeriodOffer(false);
+						if (cancellationFeedback.trim().length > 0 && caseId) {
+							setIsSubmittingFeedback(true);
+							try {
+								await getPatchUpdateCaseFunc(
+									isTestUser,
+									caseId,
+									cancellationFeedback,
+								)();
+							} catch {
+								// Continue the journey even if feedback storage fails.
+							} finally {
+								setIsSubmittingFeedback(false);
+							}
+						}
 						navigate('../confirm');
 					}}
 				>
@@ -1090,7 +1110,10 @@ const ValidatedCancellationReasonReview = ({
 						<SpinnerWithMessage loadingMessage="Checking details" />
 					)
 				) : isPrintProductType ? (
-					<PrintCancellationStepTwo productType={productType} />
+					<PrintCancellationStepTwo
+						productType={productType}
+						isTestUser={productDetail.isTestUser}
+					/>
 				) : (
 					<>
 						<Heading

@@ -36,6 +36,7 @@ export const usePrintCancellationLoader = ({
 		shouldRedirect: false,
 	});
 	const hasStartedLoading = useRef(false);
+	const hydratedSubscriptionId = useRef<string | null>(null);
 
 	useEffect(() => {
 		if (routerProductDetail) {
@@ -44,9 +45,14 @@ export const usePrintCancellationLoader = ({
 			const routeSubscriptionId =
 				routerProductDetail.subscription.subscriptionId;
 
-			if (storeSubscriptionId !== routeSubscriptionId) {
+			// Reset per entry into the print journey so stale reason/case data
+			// from previous attempts is not reused for the same subscription.
+			if (hydratedSubscriptionId.current !== routeSubscriptionId) {
 				setProductDetail(routerProductDetail);
 				resetJourneyState();
+				hydratedSubscriptionId.current = routeSubscriptionId;
+			} else if (storeSubscriptionId !== routeSubscriptionId) {
+				setProductDetail(routerProductDetail);
 			}
 
 			setState({ isLoading: false, shouldRedirect: false });
@@ -84,6 +90,8 @@ export const usePrintCancellationLoader = ({
 
 				setProductDetail(activeProducts[0]);
 				resetJourneyState();
+				hydratedSubscriptionId.current =
+					activeProducts[0].subscription.subscriptionId;
 				setState({ isLoading: false, shouldRedirect: false });
 			} catch (error) {
 				Sentry.captureException(

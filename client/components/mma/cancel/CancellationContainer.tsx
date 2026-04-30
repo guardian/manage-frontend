@@ -161,7 +161,7 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const productDetail = routerState?.productDetail;
-	const printProductType = isPrintProduct(props.productType);
+	const isPrintProductType = isPrintProduct(props.productType);
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[props.productType.groupedProductType];
 
@@ -188,9 +188,9 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 			<PageContainer
 				selectedNavItem={NAV_LINKS.accountOverview}
 				pageTitle={pageTitle}
-				minimalFooter
+				minimalFooter={isPrintProductType}
 			>
-				{printProductType ? (
+				{isPrintProductType ? (
 					<PrintLoadedCancellationContainer
 						productType={props.productType}
 						routerProductDetail={productDetail}
