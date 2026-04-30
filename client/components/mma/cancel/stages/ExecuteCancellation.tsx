@@ -382,17 +382,12 @@ const PrintExecuteCancellation = ({
 	productType,
 }: ExecuteCancellationProps) => {
 	const {
-		selectedReasonId: printSelectedReasonId,
-		caseId: printCaseId,
-		cancellationPolicy: printCancellationPolicy,
-		holidayStops: printHolidayStops,
-		deliveryCredits: printDeliveryCredits,
+		selectedReasonId,
+		caseId,
+		cancellationPolicy,
+		holidayStops,
+		deliveryCredits,
 	} = usePrintCancellationStore();
-	const selectedReasonId = printSelectedReasonId;
-	const caseId = printCaseId;
-	const cancellationPolicy = printCancellationPolicy;
-	const holidayStops = printHolidayStops;
-	const deliveryCredits = printDeliveryCredits;
 	const productHasReasonSelection = productType.cancellation.reasons?.length
 		? true
 		: false;
