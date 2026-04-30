@@ -1,10 +1,14 @@
 import { css } from '@emotion/react';
 import {
 	from,
+	headlineBold24,
 	headlineBold28,
 	palette,
 	space,
+	textSans15,
 	textSans17,
+	textSansBold15,
+	textSansBold17,
 	textSansBold20,
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
@@ -112,7 +116,7 @@ const getCaseUpdateFuncForEscalation =
 		});
 
 const printSuccessBodyCss = css`
-	${textSans17};
+	${textSans15};
 
 	margin: 0;
 	margin-bottom: ${space[8]}px;
@@ -126,6 +130,7 @@ const printSuccessBodyCss = css`
 	}
 
 	${from.tablet} {
+		${textSans17};
 		margin-bottom: ${space[10]}px;
 	}
 `;
@@ -147,15 +152,20 @@ const printSuccessBannerContentCss = css`
 `;
 
 const printSuccessBannerHeadingCss = css`
-	${textSansBold20};
+	${textSansBold17};
 	margin: 0 0 ${space[1]}px;
+
+	${from.tablet} {
+		${textSansBold20};
+	}
 `;
 
 const printSuccessBannerBodyCss = css`
-	${textSans17};
+	${textSans15};
 	margin: 0 0 ${space[4]}px;
 
 	${from.tablet} {
+		${textSans17};
 		margin: 0 0 ${space[6]}px;
 	}
 `;
@@ -166,7 +176,7 @@ const printSuccessBannerGraphicCss = css`
 	justify-content: center;
 	align-self: center;
 	padding: ${space[3]}px;
-	max-width: 245px;
+	max-width: 191px;
 
 	${from.tablet} {
 		padding: ${space[3]}px ${space[10]}px ${space[1]}px ${space[10]}px;
@@ -178,6 +188,7 @@ interface PrintCancellationSuccessProps {
 	productDetail: ProductDetail;
 }
 
+//
 const PrintCancellationSuccess = ({
 	productType,
 	productDetail,
@@ -199,10 +210,11 @@ const PrintCancellationSuccess = ({
 			<section>
 				<h2
 					css={css`
-						${headlineBold28}
+						${headlineBold24}
 						margin: ${space[5]}px 0 ${space[2]}px;
 
 						${from.tablet} {
+							${headlineBold28}
 							margin: ${space[10]}px 0 ${space[3]}px;
 						}
 					`}
@@ -212,8 +224,16 @@ const PrintCancellationSuccess = ({
 				</h2>
 				<div css={printSuccessBodyCss}>
 					<p>
-						<strong>
-							Your cancellation will take effect on{' '}
+						Your cancellation will take effect on{' '}
+						<strong
+							css={css`
+								${textSansBold15};
+
+								${from.tablet} {
+									${textSansBold17};
+								}
+							`}
+						>
 							{cancellationDate}.
 						</strong>
 					</p>
@@ -392,7 +412,7 @@ export const ExecuteCancellation = () => {
 		: false;
 
 	if (
-		!routerState ||
+		(!isPrintProductType && !routerState) ||
 		(productHasReasonSelection && (!selectedReasonId || !caseId))
 	) {
 		return <Navigate to="../" />;

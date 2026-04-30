@@ -1,11 +1,15 @@
 import { css } from '@emotion/react';
 import {
 	from,
+	headlineBold24,
 	headlineBold28,
 	palette,
 	space,
 	textEgyptian17,
+	textSans15,
 	textSans17,
+	textSansBold15,
+	textSansBold17,
 } from '@guardian/source/foundations';
 import {
 	Button,
@@ -59,7 +63,11 @@ const copyCss = css`
 `;
 
 const printCopyCss = css`
-	${textSans17};
+	${textSans15};
+
+	${from.tablet} {
+		${textSans17};
+	}
 
 	p + p {
 		margin-top: ${space[4]}px;
@@ -154,7 +162,7 @@ export const ConfirmCancellation = () => {
 		);
 	}, [groupedProductType.friendlyName, isPrintProductType, pageTitleContext]);
 
-	if (!routerState) {
+	if (!isPrintProductType && !routerState) {
 		return <Navigate to="../" />;
 	}
 
@@ -203,8 +211,12 @@ export const ConfirmCancellation = () => {
 				/>
 				<h2
 					css={css`
-						${headlineBold28}
+						${headlineBold24}
 						margin: 0 0 ${space[5]}px;
+
+						${from.tablet} {
+							${headlineBold28}
+						}
 					`}
 				>
 					{`${supporterNamePrefix}${thankWord} you for supporting the Guardian since ${supportSinceDate}. Is this really goodbye?`}
@@ -222,7 +234,15 @@ export const ConfirmCancellation = () => {
 						journalism.
 					</p>
 					<p>
-						<strong>
+						<strong
+							css={css`
+								${textSansBold15};
+
+								${from.tablet} {
+									${textSansBold17};
+								}
+							`}
+						>
 							{subscriptionEndDate
 								? `Your subscription ends on ${subscriptionEndDate}.`
 								: 'Your subscription will end at the end of your current billing period.'}

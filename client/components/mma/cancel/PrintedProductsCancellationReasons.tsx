@@ -32,11 +32,6 @@ export const printedProductsCancellationReasons: CancellationReason[] = [
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
 	{
-		reasonId: 'mma_other',
-		linkLabel: 'Other (please specify)',
-		alternateFeedbackIntro: standardAlternateFeedbackIntro,
-	},
-	{
 		reasonId: 'mma_duplicate_subscription',
 		linkLabel:
 			'I realised I have a duplicate subscription or am already covered by a multiple account plan',
@@ -49,5 +44,18 @@ export const printedProductsCancellationReasons: CancellationReason[] = [
 	},
 ];
 
+export const otherCancellationReason: CancellationReason[] = [
+	{
+		reasonId: 'mma_other',
+		linkLabel: 'Other (please specify)',
+		alternateFeedbackIntro: standardAlternateFeedbackIntro,
+	},
+];
+
 export const shuffledPrintedProductsCancellationReasons: CancellationReason[] =
-	shuffleArray(printedProductsCancellationReasons) as CancellationReason[];
+	[
+		...(shuffleArray(
+			printedProductsCancellationReasons,
+		) as CancellationReason[]),
+		...otherCancellationReason,
+	];

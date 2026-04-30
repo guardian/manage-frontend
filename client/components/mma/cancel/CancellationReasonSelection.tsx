@@ -1,12 +1,15 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	headlineBold17,
+	headlineBold24,
 	headlineBold28,
 	palette,
 	space,
+	textSans15,
 	textSans17,
+	textSansBold15,
 	textSansBold17,
+	textSansBold20,
 	textSansBold24,
 	until,
 } from '@guardian/source/foundations';
@@ -28,6 +31,7 @@ import {
 } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../shared/productTypes';
+import { useAccountStore } from '../../../stores/AccountStore';
 import { usePrintCancellationStore } from '../../../stores/PrintCancellationStore';
 import {
 	LoadingState,
@@ -328,12 +332,18 @@ const PrintReasonPicker = ({
 }: {
 	productType: ProductTypeWithCancellationFlow;
 }) => {
+	const cancellationContext = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+	const productDetail = cancellationContext.productDetail;
 	const {
 		selectedReasonId: storedSelectedReasonId,
 		cancellationFeedback: storedFeedback,
 		setSelectedReasonId: setStoredSelectedReasonId,
 		setCancellationFeedback: setStoredCancellationFeedback,
 	} = usePrintCancellationStore();
+	const { getUser } = useAccountStore();
+	const user = getUser();
 	const [selectedReasonId, setSelectedReasonId] =
 		useState<OptionalCancellationReasonId>(
 			storedSelectedReasonId ?? undefined,
@@ -349,6 +359,14 @@ const PrintReasonPicker = ({
 	) as CancellationPageTitleInterface;
 
 	const characterLimit = 2500;
+	const fallbackFirstName = productDetail.subscription.account?.accountName
+		?.trim()
+		.split(/\s+/)[0];
+	const supporterFirstName = user?.firstName || fallbackFirstName;
+	const supporterNamePrefix = supporterFirstName
+		? `${supporterFirstName}, `
+		: '';
+	const sorryWord = supporterNamePrefix ? "we're" : "We're";
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle('Manage subscription');
@@ -376,24 +394,42 @@ const PrintReasonPicker = ({
 			<WithStandardTopMargin>
 				<h2
 					css={css`
-						${headlineBold28}
+						${headlineBold24}
 						margin: 0 0 ${space[2]}px;
 
 						${from.tablet} {
+							${headlineBold28}
 							margin: 0 0 ${space[3]}px;
 						}
 					`}
 				>
-					We're sorry to see you go
+					{`${supporterNamePrefix}${sorryWord} sorry to see you go`}
 				</h2>
 				<p
 					css={css`
-						${textSans17}
+						${textSans15}
 						margin: 0 0 ${space[5]}px;
+
+						${from.tablet} {
+							${textSans17}
+						}
 					`}
 				>
-					We value your feedback and review it regularly to improve
-					our services.
+					As a reader-funded organisation, we rely on the generous
+					support from those who are in a position to pay for news.{' '}
+					<span
+						css={css`
+							${textSansBold15}
+							text-decoration: underline;
+
+							${from.tablet} {
+								${textSansBold17}
+							}
+						`}
+					>
+						Would you take a moment to tell us why you&apos;d like
+						to cancel?
+					</span>
 				</p>
 				<div
 					css={css`
@@ -407,12 +443,15 @@ const PrintReasonPicker = ({
 						>
 							<h3
 								css={css`
-									${textSansBold24}
+									${textSansBold20}
 									margin: 0;
+
+									${from.tablet} {
+										${textSansBold24}
+									}
 								`}
 							>
-								Please take a moment to tell us why you want to
-								cancel your subscription
+								Please select a reason for cancelling
 							</h3>
 						</Card.Header>
 						<Card.Section>
@@ -453,6 +492,24 @@ const PrintReasonPicker = ({
 										> div > div:last-of-type {
 											padding-bottom: ${space[3]}px;
 										}
+
+										input + label > div {
+											${textSans15}
+										}
+
+										input:checked + label > div {
+											${textSansBold15}
+										}
+
+										${from.tablet} {
+											input + label > div {
+												${textSans17}
+											}
+
+											input:checked + label > div {
+												${textSansBold17}
+											}
+										}
 									`}
 								>
 									{productType.cancellation.reasons.map(
@@ -468,11 +525,6 @@ const PrintReasonPicker = ({
 												label={reason.linkLabel}
 												cssOverrides={css`
 													vertical-align: top;
-													:checked
-														+ div
-														label:first-of-type {
-														font-weight: bold;
-													}
 												`}
 											/>
 										),
@@ -496,11 +548,11 @@ const PrintReasonPicker = ({
 				)}
 				<h3
 					css={css`
-						${headlineBold17}
+						${textSansBold17}
 						margin: ${space[6]}px 0 ${space[1]}px;
 					`}
 				>
-					Leave us some feedback
+					Help us improve by sharing more detail
 				</h3>
 				<textarea
 					rows={5}

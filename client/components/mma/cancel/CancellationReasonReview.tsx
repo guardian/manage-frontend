@@ -1,12 +1,16 @@
 import { css } from '@emotion/react';
 import {
 	from,
+	headlineBold24,
 	headlineBold28,
 	palette,
 	space,
 	textSans14,
+	textSans15,
 	textSans17,
+	textSansBold15,
 	textSansBold17,
+	textSansBold20,
 	until,
 } from '@guardian/source/foundations';
 import {
@@ -298,12 +302,16 @@ const printPauseBannerContentCss = css`
 `;
 
 const printPauseBannerHeadingCss = css`
-	${textSansBold17};
+	${textSansBold20};
 	margin: 0 0 ${space[1]}px;
+
+	${from.tablet} {
+		${textSansBold17};
+	}
 `;
 
 const printPauseBannerBodyCss = css`
-	${textSans17};
+	${textSans15};
 	max-width: 54ch;
 	margin: 0 0 ${space[4]}px;
 
@@ -327,7 +335,7 @@ const printPauseBannerGraphicCss = css`
 		height: auto;
 		display: block;
 		width: 100%;
-		max-width: 350px;
+		max-width: 237px;
 		margin: auto;
 
 		${from.tablet} {
@@ -355,8 +363,12 @@ const PrintCancellationStepTwo = ({
 		<>
 			<h2
 				css={css`
-					${headlineBold28}
+					${headlineBold24}
 					margin: 0 0 ${space[5]}px;
+
+					${from.tablet} {
+						${headlineBold28}
+					}
 				`}
 			>
 				Pause your subscription
@@ -404,10 +416,11 @@ const PrintCancellationStepTwo = ({
 			>
 				<h2
 					css={css`
-						${headlineBold28}
+						${headlineBold24}
 						margin: 0 0 ${space[2]}px;
 
 						${from.tablet} {
+							${headlineBold28}
 							margin: 0 0 ${space[3]}px;
 						}
 					`}
@@ -416,8 +429,12 @@ const PrintCancellationStepTwo = ({
 				</h2>
 				<p
 					css={css`
-						${textSans17};
+						${textSans15};
 						margin: 0 0 ${space[4]}px;
+
+						${from.tablet} {
+							${textSans17};
+						}
 					`}
 				>
 					Get in touch with our customer care team if you require any
@@ -426,12 +443,24 @@ const PrintCancellationStepTwo = ({
 				</p>
 				<p
 					css={css`
-						${textSans17};
+						${textSans15};
 						margin: 0;
+
+						${from.tablet} {
+							${textSans17};
+						}
 					`}
 				>
 					Email{' '}
-					<strong>
+					<strong
+						css={css`
+							${textSansBold15};
+
+							${from.tablet} {
+								${textSansBold17};
+							}
+						`}
+					>
 						<a
 							href="mailto:customer.help@theguardian.com"
 							css={css`
@@ -442,8 +471,19 @@ const PrintCancellationStepTwo = ({
 						</a>
 					</strong>
 					<br />
-					Call us at <strong>+44 (0) 330 333 6767</strong> 9am to 6pm,
-					Monday to Sunday
+					Call us at{' '}
+					<strong
+						css={css`
+							${textSansBold15};
+
+							${from.tablet} {
+								${textSansBold17};
+							}
+						`}
+					>
+						+44 (0) 330 333 6767
+					</strong>{' '}
+					9am to 6pm, Monday to Sunday
 				</p>
 			</section>
 			<div
