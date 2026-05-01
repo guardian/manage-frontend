@@ -44,6 +44,7 @@ export type CancellationReasonId =
 	| 'mma_break_from_news'
 	| 'mma_values'
 	| 'mma_other'
+	| 'mma_duplicate_subscription'
 	| 'mma_cancellation_default'
 	| 'mma_membership_cancellation_default';
 

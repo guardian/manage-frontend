@@ -17,7 +17,10 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { createProductDetailFetcher } from '../../../utilities/productUtils';
+import {
+	createProductDetailFetcher,
+	isPrintProduct,
+} from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
@@ -25,6 +28,7 @@ import type { OutstandingHolidayStop } from '../holiday/HolidayStopApi';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import { PrintLoadedCancellationContainer } from './cancellationPrint/printLoadedCancellationContainer';
 import type {
 	CancellationReason,
 	OptionalCancellationReasonId,
@@ -82,8 +86,9 @@ export interface CancellationContextInterface {
 	productType: ProductTypeWithCancellationFlow;
 }
 
-export const CancellationContext: Context<CancellationContextInterface | object> =
-	createContext({});
+export const CancellationContext: Context<
+	CancellationContextInterface | object
+> = createContext({});
 
 const contextAndOutletContainer = (
 	productDetail: ProductDetail,
@@ -105,6 +110,7 @@ export interface CancellationRouterState {
 	deliveryCredits?: DeliveryRecordDetail[];
 	updatedContributionAmount?: number;
 	selectedReason?: CancellationReason;
+	cancellationFeedback?: string;
 	dontShowOffer?: boolean;
 	journeyCompleted?: boolean;
 }
@@ -121,6 +127,7 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const productDetail = routerState?.productDetail;
+	const isPrintProductType = isPrintProduct(props.productType);
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[props.productType.groupedProductType];
 
@@ -147,8 +154,14 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 			<PageContainer
 				selectedNavItem={NAV_LINKS.accountOverview}
 				pageTitle={pageTitle}
+				minimalFooter={isPrintProductType}
 			>
-				{productDetail ? (
+				{isPrintProductType ? (
+					<PrintLoadedCancellationContainer
+						productType={props.productType}
+						routerProductDetail={productDetail}
+					/>
+				) : productDetail ? (
 					contextAndOutletContainer(productDetail, props.productType)
 				) : (
 					<AsyncLoadedCancellationContainer

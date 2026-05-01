@@ -10,6 +10,7 @@ import { useContext, useEffect } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
+import { isPrintProduct } from '@/client/utilities/productUtils';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
@@ -24,6 +25,7 @@ import {
 	CancellationContext,
 	CancellationPageTitleContext,
 } from '../CancellationContainer';
+import { PrintConfirmCancellation } from '../cancellationPrint/printConfirmCancellation';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 
 interface RouterSate extends DiscountPreviewResponse {
@@ -72,6 +74,7 @@ const buttonsCtaHolder = css`
 	display: flex;
 	flex-direction: column;
 	gap: ${space[2]}px;
+
 	${from.phablet} {
 		flex-direction: row;
 		gap: ${space[6]}px;
@@ -106,6 +109,7 @@ export const ConfirmCancellation = () => {
 	) as CancellationPageTitleInterface;
 
 	const subscription = productDetail.subscription;
+	const isPrintProductType = isPrintProduct(productType);
 
 	const productIsSubscription = productType.productType === 'supporterplus'; // will we migrate other product like Guardian weekly over to this cancellation flow at some point?
 	const productIsContribution = productType.productType === 'contributions';
@@ -120,16 +124,33 @@ export const ConfirmCancellation = () => {
 		);
 	}, [groupedProductType.friendlyName, pageTitleContext]);
 
-	if (!routerState) {
+	useEffect(() => {
+		pageTitleContext.setPageTitle(
+			isPrintProductType
+				? 'Manage subscription'
+				: `Cancel ${groupedProductType.friendlyName}`,
+		);
+	}, [groupedProductType.friendlyName, isPrintProductType, pageTitleContext]);
+
+	if (!isPrintProductType && !routerState) {
 		return <Navigate to="../" />;
 	}
 
 	const progressStepperArray = [
 		{},
 		{},
-		{ isCurrentStep: !routerState.eligibleForFreePeriodOffer },
-		{ isCurrentStep: routerState.eligibleForFreePeriodOffer },
+		{ isCurrentStep: !routerState?.eligibleForFreePeriodOffer },
+		{ isCurrentStep: !!routerState?.eligibleForFreePeriodOffer },
 	];
+
+	if (isPrintProductType) {
+		return (
+			<PrintConfirmCancellation
+				productDetail={productDetail}
+				productType={productType}
+			/>
+		);
+	}
 
 	return (
 		<>

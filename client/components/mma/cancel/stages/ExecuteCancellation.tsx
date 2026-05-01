@@ -15,7 +15,10 @@ import type {
 	ProductTypeWithCancellationFlow,
 } from '../../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
-import { createProductDetailFetcher } from '../../../../utilities/productUtils';
+import {
+	createProductDetailFetcher,
+	isPrintProduct,
+} from '../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { AsyncLoader } from '../../shared/AsyncLoader';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
@@ -30,6 +33,7 @@ import {
 	CancellationReasonContext,
 } from '../cancellationContexts';
 import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
+import { PrintExecuteCancellation } from '../cancellationPrint/printExecuteCancellation';
 import type {
 	CancellationReasonId,
 	OptionalCancellationReasonId,
@@ -170,39 +174,44 @@ const escalatedConfirmationBody = (
 	</p>
 );
 
-export const ExecuteCancellation = () => {
-	const location = useLocation();
-	const routerState = location.state as RouterState | null;
+interface ExecuteCancellationProps {
+	productDetail: CancellationContextInterface['productDetail'];
+	productType: CancellationContextInterface['productType'];
+}
 
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+interface NonPrintExecuteCancellationProps extends ExecuteCancellationProps {
+	routerState: RouterState;
+	cancellationReasonId?: CancellationReasonId;
+}
 
-	const cancellationReasonId = useContext(CancellationReasonContext);
+const NonPrintExecuteCancellation = ({
+	productDetail,
+	productType,
+	routerState,
+	cancellationReasonId,
+}: NonPrintExecuteCancellationProps) => {
+	const selectedReasonId = routerState.selectedReasonId;
+	const caseId = routerState.caseId;
+	const cancellationPolicy = routerState.cancellationPolicy;
+	const holidayStops = routerState.holidayStops;
+	const deliveryCredits = routerState.deliveryCredits;
+	const eligibleForFreePeriodOffer = routerState.eligibleForFreePeriodOffer;
+	const eligibleForPause = routerState.eligibleForPause;
 	const productHasReasonSelection = productType.cancellation.reasons?.length
 		? true
 		: false;
 
-	if (
-		!routerState ||
-		(productHasReasonSelection &&
-			(!routerState.selectedReasonId || !routerState.caseId))
-	) {
+	if (productHasReasonSelection && (!selectedReasonId || !caseId)) {
 		return <Navigate to="../" />;
 	}
 
-	const caseId = routerState.caseId;
 	const alternativeIsOffer = productType.productType === 'supporterplus';
 	const alternativeIsPause = productType.productType === 'contributions';
-
 	const escalationCauses = generateEscalationCausesList({
-		isEffectiveToday:
-			routerState.cancellationPolicy === cancellationEffectiveToday,
-		hasOutstandingHolidayStops:
-			!!routerState.holidayStops && routerState.holidayStops.length > 0,
+		isEffectiveToday: cancellationPolicy === cancellationEffectiveToday,
+		hasOutstandingHolidayStops: !!holidayStops && holidayStops.length > 0,
 		hasOutstandingDeliveryProblemCredits:
-			!!routerState.deliveryCredits &&
-			routerState.deliveryCredits.length > 0,
+			!!deliveryCredits && deliveryCredits.length > 0,
 	});
 
 	const useProgressStepper =
@@ -213,8 +222,8 @@ export const ExecuteCancellation = () => {
 
 	return (
 		<>
-			{(alternativeIsOffer && !routerState.eligibleForFreePeriodOffer) ||
-				(alternativeIsPause && !routerState.eligibleForPause && (
+			{(alternativeIsOffer && !eligibleForFreePeriodOffer) ||
+				(alternativeIsPause && !eligibleForPause && (
 					<>
 						{useProgressStepper ? (
 							<ProgressStepper
@@ -259,7 +268,7 @@ export const ExecuteCancellation = () => {
 						fetch={getCancelFunc(
 							productDetail.subscription.subscriptionId,
 							productType,
-							routerState.selectedReasonId,
+							selectedReasonId,
 							createProductDetailFetcher(
 								productType.allProductsProductTypeFilterString,
 								productDetail.subscription.subscriptionId,
@@ -268,8 +277,8 @@ export const ExecuteCancellation = () => {
 						render={getCaseUpdatingCancellationSummary(
 							productType,
 							productDetail,
-							routerState.eligibleForFreePeriodOffer,
-							routerState.eligibleForPause,
+							eligibleForFreePeriodOffer,
+							eligibleForPause,
 							cancellationReasonId,
 							caseId,
 						)}
@@ -280,5 +289,36 @@ export const ExecuteCancellation = () => {
 				<GenericErrorScreen loggingMessage="invalid product detail to cancel" />
 			)}
 		</>
+	);
+};
+
+export const ExecuteCancellation = () => {
+	const location = useLocation();
+	const routerState = location.state as RouterState | null;
+	const { productDetail, productType } = useContext(
+		CancellationContext,
+	) as CancellationContextInterface;
+	const cancellationReasonId = useContext(CancellationReasonContext);
+
+	if (isPrintProduct(productType)) {
+		return (
+			<PrintExecuteCancellation
+				productDetail={productDetail}
+				productType={productType}
+			/>
+		);
+	}
+
+	if (!routerState) {
+		return <Navigate to="../" />;
+	}
+
+	return (
+		<NonPrintExecuteCancellation
+			productDetail={productDetail}
+			productType={productType}
+			routerState={routerState}
+			cancellationReasonId={cancellationReasonId}
+		/>
 	);
 };

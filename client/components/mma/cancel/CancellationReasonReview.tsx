@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import {
+	from,
 	palette,
 	space,
 	textSans14,
@@ -17,7 +18,10 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { getBenefitsThreshold } from '@/client/utilities/pricingConfig/supporterPlusPricing';
-import { contribToSupporterPlusFetch } from '@/client/utilities/productUtils';
+import {
+	contribToSupporterPlusFetch,
+	isPrintProduct,
+} from '@/client/utilities/productUtils';
 import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
 import type { TrueFalsePending } from '@/shared/generalTypes';
@@ -53,9 +57,14 @@ import { Heading } from '../shared/Heading';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
 import { ProgressStepper } from '../shared/ProgressStepper';
 import type { CancellationContextInterface } from './CancellationContainer';
-import { CancellationContext } from './CancellationContainer';
+import {
+	CancellationContext,
+	CancellationPageTitleContext,
+} from './CancellationContainer';
 import { cancellationEffectiveToday } from './cancellationContexts';
 import { requiresCancellationEscalation } from './cancellationFlowEscalationCheck';
+import { PrintCancellationAlternatives } from './cancellationPrint/printCancellationAlternatives';
+import { PrintCancellationReasonReview } from './cancellationPrint/printCancellationReasonReview';
 import type {
 	CancellationReason,
 	CancellationReasonId,
@@ -283,6 +292,7 @@ const ConfirmCancellationAndReturnRow = (
 	const routerState = location.state as {
 		selectedReasonId: OptionalCancellationReasonId;
 		cancellationPolicy: string;
+		cancellationFeedback?: string;
 	};
 
 	const navigate = useNavigate();
@@ -550,39 +560,99 @@ export const CancellationReasonReview = () => {
 	const routerState = location.state as {
 		selectedReasonId: OptionalCancellationReasonId;
 		cancellationPolicy: string;
-	};
+		cancellationFeedback?: string;
+	} | null;
 
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
+	const isPrintProductType = isPrintProduct(productType);
 
-	if (!routerState?.selectedReasonId || !productType?.cancellation.reasons) {
+	if (
+		!productType?.cancellation.reasons ||
+		(!isPrintProductType && !routerState?.selectedReasonId)
+	) {
 		return <Navigate to=".." />;
 	}
+
+	if (isPrintProductType) {
+		return (
+			<PrintCancellationReasonReview
+				productDetail={productDetail}
+				productType={
+					productType as ProductTypeWithCancellationFlowMandatoryReasons
+				}
+				renderValidatedReview={(props) => (
+					<ValidatedCancellationReasonReview {...props} />
+				)}
+			/>
+		);
+	}
+
+	if (!routerState) {
+		return <Navigate to=".." />;
+	}
+
 	return (
-		<ValidatedCancellationReasonReview
+		<NonPrintCancellationReasonReview
 			productDetail={productDetail}
 			productType={
 				productType as ProductTypeWithCancellationFlowMandatoryReasons
 			}
+			selectedReasonId={routerState.selectedReasonId}
+			cancellationPolicy={routerState.cancellationPolicy}
 		/>
 	);
 };
 
-const ValidatedCancellationReasonReview = ({
+const NonPrintCancellationReasonReview = ({
 	productDetail,
 	productType,
+	selectedReasonId,
+	cancellationPolicy,
 }: {
 	productDetail: ProductDetail;
 	productType: ProductTypeWithCancellationFlowMandatoryReasons;
+	selectedReasonId: OptionalCancellationReasonId;
+	cancellationPolicy: string;
+}) => (
+	<ValidatedCancellationReasonReview
+		productDetail={productDetail}
+		productType={productType}
+		selectedReasonId={selectedReasonId}
+		cancellationPolicy={cancellationPolicy}
+		isPrintProductType={false}
+	/>
+);
+
+const ValidatedCancellationReasonReview = ({
+	productDetail,
+	productType,
+	selectedReasonId,
+	cancellationPolicy,
+	isPrintProductType,
+	setCaseData,
+}: {
+	productDetail: ProductDetail;
+	productType: ProductTypeWithCancellationFlowMandatoryReasons;
+	selectedReasonId: OptionalCancellationReasonId;
+	cancellationPolicy: string;
+	isPrintProductType: boolean;
+	setCaseData?: (data: {
+		caseId: string;
+		holidayStops?: OutstandingHolidayStop[];
+		deliveryCredits?: DeliveryRecordDetail[];
+	}) => void;
 }) => {
-	const location = useLocation();
-	const routerState = location.state as {
-		selectedReasonId: OptionalCancellationReasonId;
-		cancellationPolicy: string;
+	const pageTitleContext = useContext(CancellationPageTitleContext) as {
+		setPageTitle: (title: string) => void;
 	};
 
-	const { selectedReasonId, cancellationPolicy } = routerState;
+	useEffect(() => {
+		if (isPrintProductType) {
+			pageTitleContext.setPageTitle('Manage subscription');
+		}
+	}, [isPrintProductType, pageTitleContext]);
 
 	const reason = productType.cancellation.reasons.find(
 		(reason) => reason.reasonId === selectedReasonId,
@@ -644,7 +714,7 @@ const ValidatedCancellationReasonReview = ({
 
 	const caseId = cancellationCaseFetch.data?.id || '';
 
-	const isLoading = () =>
+	const isDataLoading =
 		(productType.cancellation.checkForOutstandingCredits &&
 			(!holidayStopCreditFetch.data ||
 				!deliveryProblemCreditFetch.data)) ||
@@ -659,8 +729,27 @@ const ValidatedCancellationReasonReview = ({
 	const needsCancellationEscalation = requiresCancellationEscalation(
 		holidayStopCreditFetch.data?.publicationsToRefund,
 		deliveryProblemCreditFetch.data?.results,
-		routerState.cancellationPolicy,
+		cancellationPolicy,
 	);
+
+	useEffect(() => {
+		if (!isPrintProductType || isDataLoading || !caseId || !setCaseData) {
+			return;
+		}
+
+		setCaseData({
+			caseId,
+			holidayStops: holidayStopCreditFetch.data?.publicationsToRefund,
+			deliveryCredits: deliveryProblemCreditFetch.data?.results,
+		});
+	}, [
+		caseId,
+		deliveryProblemCreditFetch.data?.results,
+		holidayStopCreditFetch.data?.publicationsToRefund,
+		isDataLoading,
+		isPrintProductType,
+		setCaseData,
+	]);
 
 	const renderSaveBody = (
 		saveBody: string[] | React.FC<SaveBodyProps>,
@@ -694,7 +783,19 @@ const ValidatedCancellationReasonReview = ({
 
 	return (
 		<>
-			{shouldUseProgressStepper ? (
+			{isPrintProductType ? (
+				<ProgressStepper
+					steps={[{}, { isCurrentStep: true }, {}]}
+					additionalCSS={css`
+						margin: ${space[5]}px 0;
+						margin-bottom: ${space[8]}px;
+
+						${from.tablet} {
+							margin: ${space[10]}px 0;
+						}
+					`}
+				/>
+			) : shouldUseProgressStepper ? (
 				<ProgressStepper
 					steps={[{}, { isCurrentStep: true }, {}, {}]}
 					additionalCSS={css`
@@ -714,10 +815,15 @@ const ValidatedCancellationReasonReview = ({
 				/>
 			)}
 			<WithStandardTopMargin>
-				{isLoading() ? (
+				{isDataLoading ? (
 					!loadingHasFailed && (
 						<SpinnerWithMessage loadingMessage="Checking details" />
 					)
+				) : isPrintProductType ? (
+					<PrintCancellationAlternatives
+						productType={productType}
+						isTestUser={productDetail.isTestUser}
+					/>
 				) : (
 					<>
 						<Heading
@@ -759,7 +865,6 @@ const ValidatedCancellationReasonReview = ({
 									?.publicationsToRefund,
 								deliveryProblemCreditFetch.data?.results,
 							)}
-
 						{caseId && !reason.skipFeedback ? (
 							<FeedbackFormAndContactUs
 								characterLimit={2500}

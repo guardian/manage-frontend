@@ -27,6 +27,7 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
+import { isPrintProduct } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
@@ -41,6 +42,7 @@ import {
 } from './cancellationContexts';
 import type { CancellationDateResponse } from './cancellationDateResponse';
 import { cancellationDateFetcher } from './cancellationDateResponse';
+import { PrintReasonPicker } from './cancellationPrint/printReasonPicker';
 import type { CancellationReason } from './cancellationReason';
 
 interface ReasonPickerProps {
@@ -100,7 +102,6 @@ const ReasonPicker = ({
 					`}
 				/>
 			)}
-
 			{productType.cancellation.startPageBody(productDetail)}
 			<WithStandardTopMargin>
 				<fieldset
@@ -249,7 +250,6 @@ const ReasonPicker = ({
 						)}
 					</>
 				)}
-
 				<div
 					data-cy="cta_container"
 					css={{
@@ -379,6 +379,10 @@ export const CancellationReasonSelection = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
+
+	if (isPrintProduct(productType)) {
+		return <PrintReasonPicker productType={productType} />;
+	}
 
 	if (productType.cancellation.startPageOfferEffectiveDateOptions) {
 		return (
