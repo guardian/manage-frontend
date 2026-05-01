@@ -31,6 +31,55 @@ interface PrintConfirmCancellationProps {
 	productType: ProductTypeWithCancellationFlow;
 }
 
+const stepperCss = css`
+	margin: ${space[5]}px 0;
+	margin-bottom: ${space[8]}px;
+
+	${from.tablet} {
+		margin: ${space[10]}px 0;
+	}
+`;
+
+const titleCss = css`
+	${headlineBold24}
+	margin: 0 0 ${space[5]}px;
+
+	${from.tablet} {
+		${headlineBold28}
+	}
+`;
+
+const bodyCss = css`
+	${textSans15};
+
+	${from.tablet} {
+		${textSans17};
+	}
+
+	p + p {
+		margin-top: ${space[4]}px;
+	}
+`;
+
+const endDateTextCss = css`
+	${textSansBold15};
+
+	${from.tablet} {
+		${textSansBold17};
+	}
+`;
+
+const ctaContainerCss = css`
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	gap: ${space[3]}px;
+
+	${from.tablet} {
+		flex-direction: row;
+	}
+`;
+
 export const PrintConfirmCancellation = ({
 	productDetail,
 	productType,
@@ -71,39 +120,12 @@ export const PrintConfirmCancellation = ({
 		<>
 			<ProgressStepper
 				steps={[{}, {}, { isCurrentStep: true }]}
-				additionalCSS={css`
-					margin: ${space[5]}px 0;
-					margin-bottom: ${space[8]}px;
-					${from.tablet} {
-						margin: ${space[10]}px 0;
-					}
-				`}
+				additionalCSS={stepperCss}
 			/>
-			<h2
-				css={css`
-					${headlineBold24}
-					margin: 0 0 ${space[5]}px;
-
-					${from.tablet} {
-						${headlineBold28}
-					}
-				`}
-			>
+			<h2 css={titleCss}>
 				{`${supporterNamePrefix}${thankWord} you for supporting the Guardian since ${supportSinceDate}. Is this really goodbye?`}
 			</h2>
-			<div
-				css={css`
-					${textSans15};
-
-					${from.tablet} {
-						${textSans17};
-					}
-
-					p + p {
-						margin-top: ${space[4]}px;
-					}
-				`}
-			>
+			<div css={bodyCss}>
 				<p>
 					Your continued support has ensured that our independent
 					journalism remains open to all. We couldn&apos;t do what we
@@ -116,15 +138,7 @@ export const PrintConfirmCancellation = ({
 					journalism.
 				</p>
 				<p>
-					<strong
-						css={css`
-							${textSansBold15};
-
-							${from.tablet} {
-								${textSansBold17};
-							}
-						`}
-					>
+					<strong css={endDateTextCss}>
 						{subscriptionEndDate
 							? `Your subscription ends on ${subscriptionEndDate}.`
 							: 'Your subscription will end at the end of your current billing period.'}
@@ -134,19 +148,7 @@ export const PrintConfirmCancellation = ({
 					Until then, you will retain all your current subscription
 					benefits.
 				</p>
-				<div
-					data-cy="cta_container"
-					css={{
-						display: 'flex',
-						justifyContent: 'space-between',
-						flexDirection: 'column',
-						gap: `${space[3]}px`,
-
-						[from.tablet]: {
-							flexDirection: 'row',
-						},
-					}}
-				>
+				<div data-cy="cta_container" css={ctaContainerCss}>
 					<Button
 						priority="tertiary"
 						icon={<SvgArrowLeftStraight />}

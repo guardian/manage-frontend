@@ -20,7 +20,7 @@ import {
 	SvgArrowLeftStraight,
 	SvgArrowRightStraight,
 } from '@guardian/source/react-components';
-import type { FormEvent } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
@@ -43,6 +43,133 @@ import type {
 interface PrintReasonPickerProps {
 	productType: ProductTypeWithCancellationFlow;
 }
+
+const stepperCss = css`
+	margin: ${space[5]}px 0;
+	margin-bottom: ${space[8]}px;
+
+	${from.tablet} {
+		margin: ${space[10]}px 0;
+	}
+`;
+
+const titleCss = css`
+	${headlineBold24}
+	margin: 0 0 ${space[2]}px;
+
+	${from.tablet} {
+		${headlineBold28}
+		margin: 0 0 ${space[3]}px;
+	}
+`;
+
+const introCss = css`
+	${textSans15}
+	margin: 0 0 ${space[5]}px;
+
+	${from.tablet} {
+		${textSans17}
+	}
+`;
+
+const introEmphasisCss = css`
+	${textSansBold15}
+	text-decoration: underline;
+
+	${from.tablet} {
+		${textSansBold17}
+	}
+`;
+
+const cardWrapperCss = css`
+	margin: 0 0 ${space[5]}px;
+`;
+
+const cardTitleCss = css`
+	${textSansBold20}
+	margin: 0;
+
+	${from.tablet} {
+		${textSansBold24}
+	}
+`;
+
+const reasonFieldsetCss = css`
+	border: 0;
+	margin: 0;
+	padding: 0;
+`;
+
+const hiddenLegendCss = css`
+	display: none;
+`;
+
+const reasonRadioGroupCss = css`
+	display: block;
+
+	> div > div {
+		padding-top: 0;
+		padding-bottom: ${space[4]}px;
+	}
+
+	> div > div:last-of-type {
+		padding-bottom: ${space[3]}px;
+	}
+
+	input + label > div {
+		${textSans15}
+	}
+
+	input:checked + label > div {
+		${textSansBold15}
+	}
+
+	${from.tablet} {
+		input + label > div {
+			${textSans17}
+		}
+
+		input:checked + label > div {
+			${textSansBold17}
+		}
+	}
+`;
+
+const reasonRadioCss = css`
+	vertical-align: top;
+`;
+
+const inlineErrorCss = css`
+	padding: ${space[5]}px;
+	margin-bottom: ${space[4]}px;
+	border: 4px solid ${palette.error[400]};
+	text-align: left;
+`;
+
+const feedbackTitleCss = css`
+	${textSansBold17}
+	margin: ${space[6]}px 0 ${space[1]}px;
+`;
+
+const feedbackTextareaCss = css`
+	width: 100%;
+	font-size: inherit;
+	font-family: inherit;
+	border: 1px solid ${palette.neutral[86]};
+	border-radius: ${space[1]}px;
+	margin-bottom: ${space[6]}px;
+`;
+
+const ctaContainerCss = css`
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	gap: ${space[3]}px;
+
+	${from.tablet} {
+		flex-direction: row;
+	}
+`;
 
 export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 	const cancellationContext = useContext(
@@ -89,75 +216,27 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 		<>
 			<ProgressStepper
 				steps={[{ isCurrentStep: true }, {}, {}]}
-				additionalCSS={css`
-					margin: ${space[5]}px 0;
-					margin-bottom: ${space[8]}px;
-
-					${from.tablet} {
-						margin: ${space[10]}px 0;
-					}
-				`}
+				additionalCSS={stepperCss}
 			/>
 			<WithStandardTopMargin>
-				<h2
-					css={css`
-						${headlineBold24}
-						margin: 0 0 ${space[2]}px;
-
-						${from.tablet} {
-							${headlineBold28}
-							margin: 0 0 ${space[3]}px;
-						}
-					`}
-				>
+				<h2 css={titleCss}>
 					{`${supporterNamePrefix}${sorryWord} sorry to see you go`}
 				</h2>
-				<p
-					css={css`
-						${textSans15}
-						margin: 0 0 ${space[5]}px;
-
-						${from.tablet} {
-							${textSans17}
-						}
-					`}
-				>
+				<p css={introCss}>
 					As a reader-funded organisation, we rely on the generous
 					support from those who are in a position to pay for news.{' '}
-					<span
-						css={css`
-							${textSansBold15}
-							text-decoration: underline;
-
-							${from.tablet} {
-								${textSansBold17}
-							}
-						`}
-					>
+					<span css={introEmphasisCss}>
 						Would you take a moment to tell us why you&apos;d like
 						to cancel?
 					</span>
 				</p>
-				<div
-					css={css`
-						margin: 0 0 ${space[5]}px;
-					`}
-				>
+				<div css={cardWrapperCss}>
 					<Card>
 						<Card.Header
 							backgroundColor={palette.brand[800]}
 							minHeightOverride="auto"
 						>
-							<h3
-								css={css`
-									${textSansBold20}
-									margin: 0;
-
-									${from.tablet} {
-										${textSansBold24}
-									}
-								`}
-							>
+							<h3 css={cardTitleCss}>
 								Please select a reason for cancelling
 							</h3>
 						</Card.Header>
@@ -172,52 +251,15 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 										target.value as OptionalCancellationReasonId,
 									);
 								}}
-								css={css`
-									border: 0;
-									margin: 0;
-									padding: 0;
-								`}
+								css={reasonFieldsetCss}
 							>
-								<legend
-									css={css`
-										display: none;
-									`}
-								>
+								<legend css={hiddenLegendCss}>
 									Please select a reason for cancelling
 								</legend>
 								<RadioGroup
 									name="issue_type"
 									orientation="vertical"
-									cssOverrides={css`
-										display: block;
-
-										> div > div {
-											padding-top: 0;
-											padding-bottom: ${space[4]}px;
-										}
-
-										> div > div:last-of-type {
-											padding-bottom: ${space[3]}px;
-										}
-
-										input + label > div {
-											${textSans15}
-										}
-
-										input:checked + label > div {
-											${textSansBold15}
-										}
-
-										${from.tablet} {
-											input + label > div {
-												${textSans17}
-											}
-
-											input:checked + label > div {
-												${textSansBold17}
-											}
-										}
-									`}
+									cssOverrides={reasonRadioGroupCss}
 								>
 									{productType.cancellation.reasons?.map(
 										(reason: CancellationReason) => (
@@ -230,9 +272,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 													reason.reasonId
 												}
 												label={reason.linkLabel}
-												cssOverrides={css`
-													vertical-align: top;
-												`}
+												cssOverrides={reasonRadioCss}
 											/>
 										),
 									)}
@@ -242,55 +282,24 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 					</Card>
 				</div>
 				{inValidationErrorState && !selectedReasonIdValue.length && (
-					<InlineError
-						cssOverrides={css`
-							padding: ${space[5]}px;
-							margin-bottom: ${space[4]}px;
-							border: 4px solid ${palette.error[400]};
-							text-align: left;
-						`}
-					>
+					<InlineError cssOverrides={inlineErrorCss}>
 						Please select a reason
 					</InlineError>
 				)}
-				<h3
-					css={css`
-						${textSansBold17}
-						margin: ${space[6]}px 0 ${space[1]}px;
-					`}
-				>
+				<h3 css={feedbackTitleCss}>
 					Help us improve by sharing more detail
 				</h3>
 				<textarea
 					rows={5}
 					maxLength={characterLimit}
 					value={feedback}
-					css={{
-						width: '100%',
-						fontSize: 'inherit',
-						fontFamily: 'inherit',
-						border: `1px solid ${palette.neutral[86]}`,
-						borderRadius: `${space[1]}px`,
-						marginBottom: `${space[6]}px`,
-					}}
-					onChange={(event) => {
+					css={feedbackTextareaCss}
+					onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
 						setFeedback(event.target.value);
 					}}
 				/>
 
-				<div
-					data-cy="cta_container"
-					css={{
-						display: 'flex',
-						justifyContent: 'space-between',
-						flexDirection: 'column',
-						gap: `${space[3]}px`,
-
-						[from.tablet]: {
-							flexDirection: 'row',
-						},
-					}}
-				>
+				<div data-cy="cta_container" css={ctaContainerCss}>
 					<Button
 						priority="tertiary"
 						icon={<SvgArrowLeftStraight />}

@@ -96,6 +96,78 @@ interface PrintCancellationAlternativesProps {
 	isTestUser: boolean;
 }
 
+const pauseTitleCss = css`
+	${headlineBold24}
+	margin: 0 0 ${space[5]}px;
+
+	${from.tablet} {
+		${headlineBold28}
+	}
+`;
+
+const PauseCtaButtonCss = css`
+	width: 100%;
+
+	${from.tablet} {
+		width: auto;
+	}
+`;
+
+const contactSectionCss = css`
+	margin-bottom: ${space[6]}px;
+`;
+
+const contactTitleCss = css`
+	${headlineBold24}
+	margin: 0 0 ${space[2]}px;
+
+	${from.tablet} {
+		${headlineBold28}
+		margin: 0 0 ${space[3]}px;
+	}
+`;
+
+const contactBodyCss = css`
+	${textSans15};
+	margin: 0 0 ${space[4]}px;
+
+	${from.tablet} {
+		${textSans17};
+	}
+`;
+
+const contactDetailsCss = css`
+	${textSans15};
+	margin: 0;
+
+	${from.tablet} {
+		${textSans17};
+	}
+`;
+
+const contactStrongCss = css`
+	${textSansBold15};
+
+	${from.tablet} {
+		${textSansBold17};
+	}
+`;
+
+const contactEmailLinkCss = css`
+	color: ${palette.neutral[7]};
+`;
+
+const ctaContainerCss = css`
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	gap: ${space[3]}px;
+
+	${from.tablet} {
+		flex-direction: row;
+	}
+`;
+
 export const PrintCancellationAlternatives = ({
 	productType,
 	isTestUser,
@@ -113,18 +185,7 @@ export const PrintCancellationAlternatives = ({
 
 	return (
 		<>
-			<h2
-				css={css`
-					${headlineBold24}
-					margin: 0 0 ${space[5]}px;
-
-					${from.tablet} {
-						${headlineBold28}
-					}
-				`}
-			>
-				Pause your subscription
-			</h2>
+			<h2 css={pauseTitleCss}>Pause your subscription</h2>
 			<section css={printPauseBannerCss}>
 				<div css={printPauseBannerContentCss}>
 					<h3 css={printPauseBannerHeadingCss}>
@@ -142,13 +203,7 @@ export const PrintCancellationAlternatives = ({
 						onClick={() =>
 							navigate(`/suspend/${productType.urlPart}`)
 						}
-						cssOverrides={css`
-							width: 100%;
-
-							${from.tablet} {
-								width: auto;
-							}
-						`}
+						cssOverrides={PauseCtaButtonCss}
 					>
 						Pause subscription
 					</Button>
@@ -161,96 +216,32 @@ export const PrintCancellationAlternatives = ({
 					<img src={pauseBannerImageSrc.mobile} alt="" />
 				</picture>
 			</section>
-			<section
-				css={css`
-					margin-bottom: ${space[6]}px;
-				`}
-			>
-				<h2
-					css={css`
-						${headlineBold24}
-						margin: 0 0 ${space[2]}px;
-
-						${from.tablet} {
-							${headlineBold28}
-							margin: 0 0 ${space[3]}px;
-						}
-					`}
-				>
-					Speak with an advisor
-				</h2>
-				<p
-					css={css`
-						${textSans15};
-						margin: 0 0 ${space[4]}px;
-
-						${from.tablet} {
-							${textSans17};
-						}
-					`}
-				>
+			<section css={contactSectionCss}>
+				<h2 css={contactTitleCss}>Speak with an advisor</h2>
+				<p css={contactBodyCss}>
 					Get in touch with our customer care team if you require any
 					assistance or simply wish to discuss other subscription
 					options.
 				</p>
-				<p
-					css={css`
-						${textSans15};
-						margin: 0;
-
-						${from.tablet} {
-							${textSans17};
-						}
-					`}
-				>
+				<p css={contactDetailsCss}>
 					Email{' '}
-					<strong
-						css={css`
-							${textSansBold15};
-
-							${from.tablet} {
-								${textSansBold17};
-							}
-						`}
-					>
+					<strong css={contactStrongCss}>
 						<a
 							href="mailto:customer.help@theguardian.com"
-							css={css`
-								color: ${palette.neutral[7]};
-							`}
+							css={contactEmailLinkCss}
 						>
 							customer.help@theguardian.com
 						</a>
 					</strong>
 					<br />
 					Call us at{' '}
-					<strong
-						css={css`
-							${textSansBold15};
-
-							${from.tablet} {
-								${textSansBold17};
-							}
-						`}
-					>
+					<strong css={contactStrongCss}>
 						+44 (0) 330 333 6767
 					</strong>{' '}
 					9am to 6pm, Monday to Sunday
 				</p>
 			</section>
-			<div
-				data-cy="cta_container"
-				css={{
-					display: 'flex',
-					justifyContent: 'space-between',
-					flexDirection: 'column',
-					gap: `${space[3]}px`,
-
-					[from.tablet]: {
-						flexDirection: 'row',
-					},
-				}}
-			>
+			<div data-cy="cta_container" css={ctaContainerCss}>
 				<Button
 					priority="tertiary"
 					icon={<SvgArrowLeftStraight />}
