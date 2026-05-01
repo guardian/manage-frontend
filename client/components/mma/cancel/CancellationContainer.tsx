@@ -13,12 +13,10 @@ import type {
 	ProductTypeWithCancellationFlow,
 	WithProductType,
 } from '../../../../shared/productTypes';
-import { usePrintCancellationStore } from '../../../stores/PrintCancellationStore';
 import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { usePrintCancellationLoader } from '../../../utilities/hooks/usePrintCancellationLoader';
 import {
 	createProductDetailFetcher,
 	isPrintProduct,
@@ -30,6 +28,7 @@ import type { OutstandingHolidayStop } from '../holiday/HolidayStopApi';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import { PrintLoadedCancellationContainer } from './cancellationPrint/printLoadedCancellationContainer';
 import type {
 	CancellationReason,
 	OptionalCancellationReasonId,
@@ -80,39 +79,6 @@ const AsyncLoadedCancellationContainer = (
 	return renderSingleProductOrReturnToAccountOverview(props.productType)(
 		data,
 	);
-};
-
-const PrintLoadedCancellationContainer = ({
-	productType,
-	routerProductDetail,
-}: {
-	productType: ProductType;
-	routerProductDetail?: ProductDetail;
-}) => {
-	const { isLoading, shouldRedirect } = usePrintCancellationLoader({
-		productType,
-		routerProductDetail,
-	});
-	const { productDetail } = usePrintCancellationStore();
-	const resolvedProductDetail = productDetail ?? routerProductDetail;
-
-	if (shouldRedirect) {
-		return <Navigate to="/" />;
-	}
-
-	if (isLoading) {
-		return (
-			<DefaultLoadingView
-				loadingMessage={`Checking the status of your ${productType.friendlyName}...`}
-			/>
-		);
-	}
-
-	if (!resolvedProductDetail) {
-		return <Navigate to="/" />;
-	}
-
-	return contextAndOutletContainer(resolvedProductDetail, productType);
 };
 
 export interface CancellationContextInterface {
