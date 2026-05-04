@@ -15,11 +15,13 @@ import {
 	Button,
 	SvgArrowLeftStraight,
 	SvgArrowRightStraight,
+	SvgChevronLeftSingle,
 } from '@guardian/source/react-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { ProductTypeWithCancellationFlowMandatoryReasons } from '../../../../../shared/productTypes';
 import { usePrintCancellationStore } from '../../../../stores/PrintCancellationStore';
+import { ProgressStepper } from '../../shared/ProgressStepper';
 import { getUpdateCasePromise } from '../caseUpdate';
 
 const getPatchUpdateCaseFunc =
@@ -168,6 +170,32 @@ const ctaContainerCss = css`
 	}
 `;
 
+const stepperCss = css`
+	margin: ${space[2]}px 0;
+	margin-bottom: ${space[8]}px;
+
+	${from.tablet} {
+		margin: ${space[10]}px 0;
+	}
+`;
+
+const mobileOnlyPreviousButtonCss = css`
+	margin-top: 0;
+	text-decoration: none;
+
+	${from.tablet} {
+		display: none;
+	}
+`;
+
+const tabletAndUpPreviousButtonCss = css`
+	display: none;
+
+	${from.tablet} {
+		display: flex;
+	}
+`;
+
 export const PrintCancellationAlternatives = ({
 	productType,
 	isTestUser,
@@ -185,6 +213,19 @@ export const PrintCancellationAlternatives = ({
 
 	return (
 		<>
+			<Button
+				priority="subdued"
+				cssOverrides={mobileOnlyPreviousButtonCss}
+				icon={<SvgChevronLeftSingle />}
+				iconSide="left"
+				onClick={() => navigate('..')}
+			>
+				Previous
+			</Button>
+			<ProgressStepper
+				steps={[{}, { isCurrentStep: true }, {}]}
+				additionalCSS={stepperCss}
+			/>
 			<h2 css={pauseTitleCss}>Pause your subscription</h2>
 			<section css={printPauseBannerCss}>
 				<div css={printPauseBannerContentCss}>
@@ -246,6 +287,7 @@ export const PrintCancellationAlternatives = ({
 					priority="tertiary"
 					icon={<SvgArrowLeftStraight />}
 					iconSide="left"
+					cssOverrides={tabletAndUpPreviousButtonCss}
 					onClick={() => navigate('..')}
 				>
 					Previous

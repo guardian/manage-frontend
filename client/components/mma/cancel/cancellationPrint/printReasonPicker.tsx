@@ -19,6 +19,7 @@ import {
 	RadioGroup,
 	SvgArrowLeftStraight,
 	SvgArrowRightStraight,
+	SvgChevronLeftSingle,
 } from '@guardian/source/react-components';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useContext, useEffect, useState } from 'react';
@@ -44,8 +45,17 @@ interface PrintReasonPickerProps {
 	productType: ProductTypeWithCancellationFlow;
 }
 
+const mobileOnlyPreviousButtonCss = css`
+	margin-top: ${space[5]}px;
+	text-decoration: none;
+
+	${from.tablet} {
+		display: none;
+	}
+`;
+
 const stepperCss = css`
-	margin: ${space[5]}px 0;
+	margin: ${space[2]}px 0;
 	margin-bottom: ${space[8]}px;
 
 	${from.tablet} {
@@ -171,6 +181,14 @@ const ctaContainerCss = css`
 	}
 `;
 
+const tabletAndUpPreviousButtonCss = css`
+	display: none;
+
+	${from.tablet} {
+		display: flex;
+	}
+`;
+
 export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 	const cancellationContext = useContext(
 		CancellationContext,
@@ -214,6 +232,17 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 
 	return (
 		<>
+			<Button
+				priority="subdued"
+				cssOverrides={mobileOnlyPreviousButtonCss}
+				icon={<SvgChevronLeftSingle />}
+				iconSide="left"
+				onClick={() => {
+					navigate('../review');
+				}}
+			>
+				Previous
+			</Button>
 			<ProgressStepper
 				steps={[{ isCurrentStep: true }, {}, {}]}
 				additionalCSS={stepperCss}
@@ -304,6 +333,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 						priority="tertiary"
 						icon={<SvgArrowLeftStraight />}
 						iconSide="left"
+						cssOverrides={tabletAndUpPreviousButtonCss}
 						onClick={() => {
 							navigate('/');
 						}}

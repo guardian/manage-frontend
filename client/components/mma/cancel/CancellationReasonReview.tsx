@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import {
-	from,
 	palette,
 	space,
 	textSans14,
@@ -783,36 +782,28 @@ const ValidatedCancellationReasonReview = ({
 
 	return (
 		<>
-			{isPrintProductType ? (
-				<ProgressStepper
-					steps={[{}, { isCurrentStep: true }, {}]}
-					additionalCSS={css`
-						margin: ${space[5]}px 0;
-						margin-bottom: ${space[8]}px;
-
-						${from.tablet} {
-							margin: ${space[10]}px 0;
-						}
-					`}
-				/>
-			) : shouldUseProgressStepper ? (
-				<ProgressStepper
-					steps={[{}, { isCurrentStep: true }, {}, {}]}
-					additionalCSS={css`
-						margin: ${space[5]}px 0 ${space[12]}px;
-					`}
-				/>
-			) : (
-				<ProgressIndicator
-					steps={[
-						{ title: 'Reason' },
-						{ title: 'Review', isCurrentStep: true },
-						{ title: 'Confirmation' },
-					]}
-					additionalCSS={css`
-						margin: ${space[5]}px 0 ${space[12]}px;
-					`}
-				/>
+			{!isPrintProductType && (
+				<>
+					{shouldUseProgressStepper ? (
+						<ProgressStepper
+							steps={[{}, { isCurrentStep: true }, {}, {}]}
+							additionalCSS={css`
+								margin: ${space[5]}px 0 ${space[12]}px;
+							`}
+						/>
+					) : (
+						<ProgressIndicator
+							steps={[
+								{ title: 'Reason' },
+								{ title: 'Review', isCurrentStep: true },
+								{ title: 'Confirmation' },
+							]}
+							additionalCSS={css`
+								margin: ${space[5]}px 0 ${space[12]}px;
+							`}
+						/>
+					)}
+				</>
 			)}
 			<WithStandardTopMargin>
 				{isDataLoading ? (

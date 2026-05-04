@@ -12,6 +12,7 @@ import {
 import {
 	Button,
 	SvgArrowLeftStraight,
+	SvgChevronLeftSingle,
 } from '@guardian/source/react-components';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAccountStore } from '@/client/stores/AccountStore';
@@ -42,10 +43,11 @@ const stepperCss = css`
 
 const titleCss = css`
 	${headlineBold24}
-	margin: 0 0 ${space[5]}px;
+	margin: 0 0 ${space[2]}px;
 
 	${from.tablet} {
 		${headlineBold28}
+		margin-bottom: ${space[5]}px;
 	}
 `;
 
@@ -77,6 +79,23 @@ const ctaContainerCss = css`
 
 	${from.tablet} {
 		flex-direction: row;
+	}
+`;
+
+const mobileOnlyPreviousButtonCss = css`
+	margin-top: ${space[5]}px;
+	text-decoration: none;
+
+	${from.tablet} {
+		display: none;
+	}
+`;
+
+const tabletAndUpPreviousButtonCss = css`
+	display: none;
+
+	${from.tablet} {
+		display: flex;
 	}
 `;
 
@@ -118,6 +137,17 @@ export const PrintConfirmCancellation = ({
 
 	return (
 		<>
+			<Button
+				priority="subdued"
+				cssOverrides={mobileOnlyPreviousButtonCss}
+				icon={<SvgChevronLeftSingle />}
+				iconSide="left"
+				onClick={() => {
+					navigate('../review');
+				}}
+			>
+				Previous
+			</Button>
 			<ProgressStepper
 				steps={[{}, {}, { isCurrentStep: true }]}
 				additionalCSS={stepperCss}
@@ -153,6 +183,7 @@ export const PrintConfirmCancellation = ({
 						priority="tertiary"
 						icon={<SvgArrowLeftStraight />}
 						iconSide="left"
+						cssOverrides={tabletAndUpPreviousButtonCss}
 						onClick={() => {
 							navigate('../review');
 						}}
