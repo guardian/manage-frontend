@@ -193,6 +193,9 @@ export const PrintGuardianWeeklyExecute: StoryObj<typeof ExecuteCancellation> =
 		},
 		parameters: {
 			msw: [
+				http.patch('/api/case/**', () =>
+					HttpResponse.json({ id: 'caseId' }),
+				),
 				http.get('/api/me/mma/**', () =>
 					HttpResponse.json(
 						toMembersDataApiResponse(guardianWeeklyCancelled()),
