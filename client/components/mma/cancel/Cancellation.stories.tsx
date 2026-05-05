@@ -220,6 +220,34 @@ export const PrintGuardianWeeklyExecute: StoryObj<typeof ExecuteCancellation> =
 		},
 	};
 
+export const PrintGuardianWeeklyExecuteEscalated: StoryObj<
+	typeof ExecuteCancellation
+> = {
+	render: () => {
+		seedGuardianWeeklyPrintStore({
+			selectedReasonId: 'mma_editorial',
+			cancellationPolicy: 'Today',
+			caseId: 'caseId',
+		});
+		return <ExecuteCancellation />;
+	},
+	parameters: {
+		msw: [
+			http.patch('/api/case/**', () =>
+				HttpResponse.json({ id: 'caseId' }),
+			),
+		],
+		reactRouter: {
+			state: { productDetail: guardianWeeklyPaidByCard() },
+			container: (
+				<CancellationContainer
+					productType={guardianWeeklyWithSortedReasons}
+				/>
+			),
+		},
+	},
+};
+
 export const Review: StoryObj<typeof CancellationContainer> = {
 	render: () => {
 		return <CancellationReasonReview />;

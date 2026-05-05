@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
-import { space } from '@guardian/source/foundations';
+import { space, textSans17 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
-import type { ReactNode } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import type {
 	MembersDataApiResponse,
@@ -80,29 +79,14 @@ const getCaseUpdateWithCancelOutcomeFunc =
 				  },
 		);
 
-const ReturnToAccountButton = () => {
-	const navigate = useNavigate();
-	return (
-		<Button
-			cssOverrides={css`
-				margin-top: ${space[5]}px;
-			`}
-			priority="tertiary"
-			onClick={() => navigate('/')}
-		>
-			Return to your account
-		</Button>
-	);
-};
+const escalatedConfirmationBodyCss = css`
+	${textSans17};
+	margin: ${space[10]}px 0 0;
+`;
 
-const getCancellationSummaryWithReturnButton =
-	(body: ReactNode, excludeReturnButton?: boolean) => () =>
-		(
-			<div>
-				{body}
-				{!excludeReturnButton && <ReturnToAccountButton />}
-			</div>
-		);
+const returnToAccountButtonCss = css`
+	margin-top: ${space[6]}px;
+`;
 
 const getCaseUpdatingPrintCancellationSummary =
 	(
@@ -120,11 +104,11 @@ const getCaseUpdatingPrintCancellationSummary =
 							.subscriptionId,
 			) ?? productDetailBeforeCancelling;
 
-		const render = getCancellationSummaryWithReturnButton(
+		const render = () => (
 			<PrintCancellationSuccess
 				productType={productType}
 				productDetail={updatedProductDetail}
-			/>,
+			/>
 		);
 
 		return caseId ? (
@@ -141,14 +125,6 @@ const getCaseUpdatingPrintCancellationSummary =
 		);
 	};
 
-const escalatedConfirmationBody = (
-	<p>
-		Your cancellation request has been successfully submitted. Our customer
-		service team will try their best to contact you as soon as possible to
-		confirm the cancellation and refund any credit you are owed.
-	</p>
-);
-
 interface PrintExecuteCancellationProps {
 	productDetail: ProductDetail;
 	productType: ProductTypeWithCancellationFlow;
@@ -158,6 +134,7 @@ export const PrintExecuteCancellation = ({
 	productDetail,
 	productType,
 }: PrintExecuteCancellationProps) => {
+	const navigate = useNavigate();
 	const {
 		selectedReasonId,
 		caseId,
@@ -187,8 +164,22 @@ export const PrintExecuteCancellation = ({
 					escalationCauses,
 					productDetail.isTestUser,
 				)}
-				render={getCancellationSummaryWithReturnButton(
-					escalatedConfirmationBody,
+				render={() => (
+					<div>
+						<p css={escalatedConfirmationBodyCss}>
+							Your cancellation request has been successfully
+							submitted. Our customer service team will try their
+							best to contact you as soon as possible to confirm
+							the cancellation and refund any credit you are owed.
+						</p>
+						<Button
+							cssOverrides={returnToAccountButtonCss}
+							priority="tertiary"
+							onClick={() => navigate('/')}
+						>
+							Return to your account
+						</Button>
+					</div>
 				)}
 				loadingMessage="Requesting your cancellation..."
 			/>
