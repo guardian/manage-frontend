@@ -120,12 +120,6 @@ export const ConfirmCancellation = () => {
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle(
-			`Cancel ${groupedProductType.friendlyName}`,
-		);
-	}, [groupedProductType.friendlyName, pageTitleContext]);
-
-	useEffect(() => {
-		pageTitleContext.setPageTitle(
 			isPrintProductType
 				? 'Manage subscription'
 				: `Cancel ${groupedProductType.friendlyName}`,

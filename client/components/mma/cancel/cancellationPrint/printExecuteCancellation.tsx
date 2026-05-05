@@ -20,6 +20,7 @@ import { AsyncLoader } from '../../shared/AsyncLoader';
 import { cancellationEffectiveToday } from '../cancellationContexts';
 import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
+import { isCancelled } from '../CancellationSummary';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
 import { PrintCancellationSuccess } from './printCancellationSuccess';
 
@@ -61,6 +62,24 @@ const getCaseUpdateFuncForEscalation =
 			Priority: 'High',
 		});
 
+const getCaseUpdateWithCancelOutcomeFunc =
+	(caseId: string, productDetail: ProductDetail) => () =>
+		getUpdateCasePromise(
+			productDetail.isTestUser,
+			isCancelled(productDetail.subscription) ? '_CANCELLED' : '_ERROR',
+			caseId,
+			isCancelled(productDetail.subscription)
+				? {
+						Subject: 'Online Cancellation Completed',
+				  }
+				: {
+						Case_Journey__c: 'Assisted',
+						Subject: 'Online Cancellation Error',
+						Status: 'New',
+						Priority: 'High',
+				  },
+		);
+
 const ReturnToAccountButton = () => {
 	const navigate = useNavigate();
 	return (
@@ -85,22 +104,40 @@ const getCancellationSummaryWithReturnButton =
 			</div>
 		);
 
-const getPrintCancellationSuccessSummary =
-	(productType: ProductType, productDetail: ProductDetail) =>
+const getCaseUpdatingPrintCancellationSummary =
+	(
+		productType: ProductType,
+		productDetailBeforeCancelling: ProductDetail,
+		caseId?: string,
+	) =>
 	(mdapiResponse: MembersDataApiResponse) => {
 		const updatedProductDetail =
 			mdapiResponse.products.find(
 				(product): product is ProductDetail =>
 					isProduct(product) &&
 					product.subscription.subscriptionId ===
-						productDetail.subscription.subscriptionId,
-			) ?? productDetail;
+						productDetailBeforeCancelling.subscription
+							.subscriptionId,
+			) ?? productDetailBeforeCancelling;
 
-		return (
+		const render = getCancellationSummaryWithReturnButton(
 			<PrintCancellationSuccess
 				productType={productType}
 				productDetail={updatedProductDetail}
+			/>,
+		);
+
+		return caseId ? (
+			<CaseUpdateAsyncLoader
+				fetch={getCaseUpdateWithCancelOutcomeFunc(
+					caseId,
+					updatedProductDetail,
+				)}
+				render={render}
+				loadingMessage="Finalising your cancellation..."
 			/>
+		) : (
+			render()
 		);
 	};
 
@@ -166,9 +203,10 @@ export const PrintExecuteCancellation = ({
 						productDetail.subscription.subscriptionId,
 					),
 				)}
-				render={getPrintCancellationSuccessSummary(
+				render={getCaseUpdatingPrintCancellationSummary(
 					productType,
 					productDetail,
+					caseId,
 				)}
 				loadingMessage="Performing your cancellation..."
 			/>

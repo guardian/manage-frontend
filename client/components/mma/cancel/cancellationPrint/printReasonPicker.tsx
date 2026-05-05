@@ -238,7 +238,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 				icon={<SvgChevronLeftSingle />}
 				iconSide="left"
 				onClick={() => {
-					navigate('../review');
+					navigate('/');
 				}}
 			>
 				Previous
