@@ -194,12 +194,18 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 		CancellationContext,
 	) as CancellationContextInterface;
 	const productDetail = cancellationContext.productDetail;
-	const {
-		selectedReasonId: storedSelectedReasonId,
-		cancellationFeedback: storedFeedback,
-		setSelectedReasonId: setStoredSelectedReasonId,
-		setCancellationFeedback: setStoredCancellationFeedback,
-	} = usePrintCancellationStore();
+	const storedSelectedReasonId = usePrintCancellationStore(
+		(state) => state.selectedReasonId,
+	);
+	const storedFeedback = usePrintCancellationStore(
+		(state) => state.cancellationFeedback,
+	);
+	const setStoredSelectedReasonId = usePrintCancellationStore(
+		(state) => state.setSelectedReasonId,
+	);
+	const setStoredCancellationFeedback = usePrintCancellationStore(
+		(state) => state.setCancellationFeedback,
+	);
 	const { getUser } = useAccountStore();
 	const user = getUser();
 	const [selectedReasonId, setSelectedReasonId] =
@@ -315,13 +321,14 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 						Please select a reason
 					</InlineError>
 				)}
-				<h3 css={feedbackTitleCss}>
+				<h3 id="print-feedback-label" css={feedbackTitleCss}>
 					Help us improve by sharing more detail
 				</h3>
 				<textarea
 					rows={5}
 					maxLength={characterLimit}
 					value={feedback}
+					aria-labelledby="print-feedback-label"
 					css={feedbackTextareaCss}
 					onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
 						setFeedback(event.target.value);

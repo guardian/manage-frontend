@@ -27,7 +27,7 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { isPrintProduct } from '../../../utilities/productUtils';
+import { usesPrintCancellationFlow } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
@@ -380,7 +380,7 @@ export const CancellationReasonSelection = () => {
 		CancellationContext,
 	) as CancellationContextInterface;
 
-	if (isPrintProduct(productType)) {
+	if (usesPrintCancellationFlow(productType)) {
 		return <PrintReasonPicker productType={productType} />;
 	}
 

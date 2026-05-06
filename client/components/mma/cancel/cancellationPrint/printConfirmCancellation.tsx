@@ -105,11 +105,11 @@ export const PrintConfirmCancellation = ({
 }: PrintConfirmCancellationProps) => {
 	const navigate = useNavigate();
 	const { getUser } = useAccountStore();
-	const {
-		selectedReasonId: printSelectedReasonId,
-		caseId: printCaseId,
-	}: { selectedReasonId: OptionalCancellationReasonId; caseId: string } =
-		usePrintCancellationStore();
+	const printSelectedReasonId: OptionalCancellationReasonId =
+		usePrintCancellationStore((state) => state.selectedReasonId);
+	const printCaseId: string = usePrintCancellationStore(
+		(state) => state.caseId,
+	);
 	const user = getUser();
 	const subscription = productDetail.subscription;
 	const supportSinceDate = dateString(

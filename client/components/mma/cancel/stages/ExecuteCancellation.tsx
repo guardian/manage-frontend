@@ -17,7 +17,7 @@ import type {
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import {
 	createProductDetailFetcher,
-	isPrintProduct,
+	usesPrintCancellationFlow,
 } from '../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { AsyncLoader } from '../../shared/AsyncLoader';
@@ -300,7 +300,7 @@ export const ExecuteCancellation = () => {
 	) as CancellationContextInterface;
 	const cancellationReasonId = useContext(CancellationReasonContext);
 
-	if (isPrintProduct(productType)) {
+	if (usesPrintCancellationFlow(productType)) {
 		return (
 			<PrintExecuteCancellation
 				productDetail={productDetail}

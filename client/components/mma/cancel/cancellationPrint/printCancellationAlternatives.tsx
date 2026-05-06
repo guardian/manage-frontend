@@ -203,8 +203,10 @@ export const PrintCancellationAlternatives = ({
 	const navigate = useNavigate();
 	const [isSubmittingFeedback, setIsSubmittingFeedback] =
 		useState<boolean>(false);
-	const { setEligibleForFreePeriodOffer, cancellationFeedback, caseId } =
-		usePrintCancellationStore();
+	const cancellationFeedback = usePrintCancellationStore(
+		(state) => state.cancellationFeedback,
+	);
+	const caseId = usePrintCancellationStore((state) => state.caseId);
 	const pauseBannerImageSrc: { mobile: string; desktop: string } = {
 		mobile: 'https://i.guim.co.uk/img/media/203dbadbd6e0fcd4eed01370f94bf3a67d747ebd/0_0_204_162/204.png?width=204&quality=100&s=e69f374f6154453c7442d39b22efcb56',
 		desktop:
@@ -297,7 +299,6 @@ export const PrintCancellationAlternatives = ({
 					iconSide="right"
 					disabled={isSubmittingFeedback}
 					onClick={async () => {
-						setEligibleForFreePeriodOffer(false);
 						if (cancellationFeedback.trim().length > 0 && caseId) {
 							setIsSubmittingFeedback(true);
 							try {

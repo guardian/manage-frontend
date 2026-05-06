@@ -16,7 +16,6 @@ import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import { createProductDetailFetcher } from '../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { AsyncLoader } from '../../shared/AsyncLoader';
-import { cancellationEffectiveToday } from '../cancellationContexts';
 import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 import { isCancelled } from '../CancellationSummary';
@@ -135,13 +134,16 @@ export const PrintExecuteCancellation = ({
 	productType,
 }: PrintExecuteCancellationProps) => {
 	const navigate = useNavigate();
-	const {
-		selectedReasonId,
-		caseId,
-		cancellationPolicy,
-		holidayStops,
-		deliveryCredits,
-	} = usePrintCancellationStore();
+	const selectedReasonId = usePrintCancellationStore(
+		(state) => state.selectedReasonId,
+	);
+	const caseId = usePrintCancellationStore((state) => state.caseId);
+	const holidayStops = usePrintCancellationStore(
+		(state) => state.holidayStops,
+	);
+	const deliveryCredits = usePrintCancellationStore(
+		(state) => state.deliveryCredits,
+	);
 	const productHasReasonSelection =
 		!!productType.cancellation.reasons?.length;
 
@@ -149,8 +151,10 @@ export const PrintExecuteCancellation = ({
 		return <Navigate to="../" />;
 	}
 
+	// Print products do not surface an effective-date selector, so the journey
+	// always uses the end-of-billing-period policy.
 	const escalationCauses = generateEscalationCausesList({
-		isEffectiveToday: cancellationPolicy === cancellationEffectiveToday,
+		isEffectiveToday: false,
 		hasOutstandingHolidayStops: !!holidayStops && holidayStops.length > 0,
 		hasOutstandingDeliveryProblemCredits:
 			!!deliveryCredits && deliveryCredits.length > 0,

@@ -25,8 +25,15 @@ export const usePrintCancellationLoader = ({
 	productType,
 	routerProductDetail,
 }: UsePrintCancellationLoaderProps): LoaderState => {
-	const { productDetail, setProductDetail, resetJourneyState } =
-		usePrintCancellationStore();
+	const productDetail = usePrintCancellationStore(
+		(state) => state.productDetail,
+	);
+	const setProductDetail = usePrintCancellationStore(
+		(state) => state.setProductDetail,
+	);
+	const resetJourneyState = usePrintCancellationStore(
+		(state) => state.resetJourneyState,
+	);
 	const { mdapiResponse: accountMdapiResponse, setMdapiResponse } =
 		useAccountStore();
 

@@ -14,12 +14,13 @@ import {
 import type { ChangeEvent, FC } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { usePrintCancellationStore } from '@/client/stores/PrintCancellationStore';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { getBenefitsThreshold } from '@/client/utilities/pricingConfig/supporterPlusPricing';
 import {
 	contribToSupporterPlusFetch,
-	isPrintProduct,
+	usesPrintCancellationFlow,
 } from '@/client/utilities/productUtils';
 import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
@@ -63,7 +64,6 @@ import {
 import { cancellationEffectiveToday } from './cancellationContexts';
 import { requiresCancellationEscalation } from './cancellationFlowEscalationCheck';
 import { PrintCancellationAlternatives } from './cancellationPrint/printCancellationAlternatives';
-import { PrintCancellationReasonReview } from './cancellationPrint/printCancellationReasonReview';
 import type {
 	CancellationReason,
 	CancellationReasonId,
@@ -565,64 +565,53 @@ export const CancellationReasonReview = () => {
 	const { productDetail, productType } = useContext(
 		CancellationContext,
 	) as CancellationContextInterface;
-	const isPrintProductType = isPrintProduct(productType);
+	const isPrintProductType = usesPrintCancellationFlow(productType);
 
-	if (
-		!productType?.cancellation.reasons ||
-		(!isPrintProductType && !routerState?.selectedReasonId)
-	) {
+	const printSelectedReasonId = usePrintCancellationStore(
+		(state) => state.selectedReasonId,
+	);
+	const printSetCaseData = usePrintCancellationStore(
+		(state) => state.setCaseData,
+	);
+
+	if (!productType?.cancellation.reasons) {
 		return <Navigate to=".." />;
 	}
 
 	if (isPrintProductType) {
+		if (!printSelectedReasonId) {
+			return <Navigate to=".." />;
+		}
 		return (
-			<PrintCancellationReasonReview
+			<ValidatedCancellationReasonReview
 				productDetail={productDetail}
 				productType={
 					productType as ProductTypeWithCancellationFlowMandatoryReasons
 				}
-				renderValidatedReview={(props) => (
-					<ValidatedCancellationReasonReview {...props} />
-				)}
+				selectedReasonId={printSelectedReasonId}
+				cancellationPolicy=""
+				isPrintProductType
+				setCaseData={printSetCaseData}
 			/>
 		);
 	}
 
-	if (!routerState) {
+	if (!routerState?.selectedReasonId) {
 		return <Navigate to=".." />;
 	}
 
 	return (
-		<NonPrintCancellationReasonReview
+		<ValidatedCancellationReasonReview
 			productDetail={productDetail}
 			productType={
 				productType as ProductTypeWithCancellationFlowMandatoryReasons
 			}
 			selectedReasonId={routerState.selectedReasonId}
 			cancellationPolicy={routerState.cancellationPolicy}
+			isPrintProductType={false}
 		/>
 	);
 };
-
-const NonPrintCancellationReasonReview = ({
-	productDetail,
-	productType,
-	selectedReasonId,
-	cancellationPolicy,
-}: {
-	productDetail: ProductDetail;
-	productType: ProductTypeWithCancellationFlowMandatoryReasons;
-	selectedReasonId: OptionalCancellationReasonId;
-	cancellationPolicy: string;
-}) => (
-	<ValidatedCancellationReasonReview
-		productDetail={productDetail}
-		productType={productType}
-		selectedReasonId={selectedReasonId}
-		cancellationPolicy={cancellationPolicy}
-		isPrintProductType={false}
-	/>
-);
 
 const ValidatedCancellationReasonReview = ({
 	productDetail,

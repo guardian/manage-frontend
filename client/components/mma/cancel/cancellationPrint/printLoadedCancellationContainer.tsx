@@ -22,7 +22,9 @@ export const PrintLoadedCancellationContainer = ({
 		productType,
 		routerProductDetail,
 	});
-	const { productDetail } = usePrintCancellationStore();
+	const productDetail = usePrintCancellationStore(
+		(state) => state.productDetail,
+	);
 	const resolvedProductDetail = productDetail ?? routerProductDetail;
 
 	if (shouldRedirect) {

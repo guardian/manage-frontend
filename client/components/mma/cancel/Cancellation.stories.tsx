@@ -86,11 +86,9 @@ export const ContactCustomerService: StoryObj<typeof CancellationContainer> = {
 
 const seedGuardianWeeklyPrintStore = ({
 	selectedReasonId = 'mma_editorial',
-	cancellationPolicy = '',
 	caseId = 'caseId',
 }: {
 	selectedReasonId?: OptionalCancellationReasonId;
-	cancellationPolicy?: string;
 	caseId?: string;
 } = {}) => {
 	const productDetail = guardianWeeklyPaidByCard();
@@ -99,11 +97,9 @@ const seedGuardianWeeklyPrintStore = ({
 		productDetail,
 		selectedReasonId,
 		cancellationFeedback: '',
-		cancellationPolicy,
 		caseId,
 		holidayStops: [],
 		deliveryCredits: [],
-		eligibleForFreePeriodOffer: false,
 	});
 };
 
@@ -131,7 +127,6 @@ export const PrintGuardianWeeklyReview: StoryObj<typeof CancellationContainer> =
 		render: () => {
 			seedGuardianWeeklyPrintStore({
 				selectedReasonId: 'mma_editorial',
-				cancellationPolicy: '',
 			});
 			return <CancellationReasonReview />;
 		},
@@ -164,7 +159,6 @@ export const PrintGuardianWeeklyConfirm: StoryObj<
 	render: () => {
 		seedGuardianWeeklyPrintStore({
 			selectedReasonId: 'mma_editorial',
-			cancellationPolicy: '',
 			caseId: 'caseId',
 		});
 		return <ConfirmCancellation />;
@@ -186,7 +180,6 @@ export const PrintGuardianWeeklyExecute: StoryObj<typeof ExecuteCancellation> =
 		render: () => {
 			seedGuardianWeeklyPrintStore({
 				selectedReasonId: 'mma_editorial',
-				cancellationPolicy: '',
 				caseId: 'caseId',
 			});
 			return <ExecuteCancellation />;
@@ -224,10 +217,17 @@ export const PrintGuardianWeeklyExecuteEscalated: StoryObj<
 	typeof ExecuteCancellation
 > = {
 	render: () => {
-		seedGuardianWeeklyPrintStore({
+		const productDetail = guardianWeeklyPaidByCard();
+		usePrintCancellationStore.getState().clearAll();
+		usePrintCancellationStore.setState({
+			productDetail,
 			selectedReasonId: 'mma_editorial',
-			cancellationPolicy: 'Today',
+			cancellationFeedback: '',
 			caseId: 'caseId',
+			// Outstanding holiday stops trigger the escalation branch in the
+			// print execute step.
+			holidayStops: [{}],
+			deliveryCredits: [],
 		});
 		return <ExecuteCancellation />;
 	},

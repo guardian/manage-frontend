@@ -80,7 +80,7 @@ describe('Cancel guardian weekly', () => {
 		}).as('cancel_gw_deliveryrecords');
 	});
 
-	it('cancels Guardian Weekly (reason: I dont have time to use my subscription, effective: today)', () => {
+	it('cancels Guardian Weekly through the print cancellation journey', () => {
 		cy.visit('/');
 
 		cy.findByText('Manage subscription').click();
@@ -105,6 +105,9 @@ describe('Cancel guardian weekly', () => {
 			'test, thank you for supporting the Guardian since 29 November 2021. Is this really goodbye?',
 		).should('exist');
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
+
+		cy.wait('@cancel_gw');
+		cy.wait('@create_case_in_salesforce');
 
 		cy.findByText(
 			'Your subscription to Guardian Weekly has been cancelled.',

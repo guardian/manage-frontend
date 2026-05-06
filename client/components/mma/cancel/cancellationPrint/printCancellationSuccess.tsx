@@ -11,7 +11,7 @@ import {
 	textSansBold17,
 	textSansBold20,
 } from '@guardian/source/foundations';
-import { Button } from '@guardian/source/react-components';
+import { LinkButton } from '@guardian/source/react-components';
 import { useAccountStore } from '@/client/stores/AccountStore';
 import { cancellationFormatDate } from '@/shared/dates';
 import type { ProductDetail } from '../../../../../shared/productResponse';
@@ -154,10 +154,8 @@ export const PrintCancellationSuccess = ({
 						Your support has played a vital role in keeping
 						independent journalism open to all.
 					</p>
-					<Button
-						onClick={() => {
-							window.location.href = 'https://theguardian.com';
-						}}
+					<LinkButton
+						href="https://theguardian.com"
 						cssOverrides={css`
 							width: 100%;
 
@@ -167,7 +165,7 @@ export const PrintCancellationSuccess = ({
 						`}
 					>
 						Continue reading the Guardian
-					</Button>
+					</LinkButton>
 				</div>
 				<picture css={printSuccessBannerGraphicCss}>
 					<source

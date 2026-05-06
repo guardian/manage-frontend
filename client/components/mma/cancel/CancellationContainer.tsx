@@ -19,7 +19,7 @@ import {
 } from '../../../utilities/hooks/useAsyncLoader';
 import {
 	createProductDetailFetcher,
-	isPrintProduct,
+	usesPrintCancellationFlow,
 } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
@@ -127,7 +127,7 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const productDetail = routerState?.productDetail;
-	const isPrintProductType = isPrintProduct(props.productType);
+	const isPrintProductType = usesPrintCancellationFlow(props.productType);
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[props.productType.groupedProductType];
 

@@ -10,7 +10,7 @@ import { useContext, useEffect } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
-import { isPrintProduct } from '@/client/utilities/productUtils';
+import { usesPrintCancellationFlow } from '@/client/utilities/productUtils';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
@@ -101,15 +101,16 @@ export const ConfirmCancellation = () => {
 
 	const productDetail = cancellationContext.productDetail;
 	const productType = cancellationContext.productType;
-	const groupedProductType =
-		GROUPED_PRODUCT_TYPES[productType.groupedProductType];
 
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
 	const subscription = productDetail.subscription;
-	const isPrintProductType = isPrintProduct(productType);
+	const isPrintProductType = usesPrintCancellationFlow(productType);
+	const groupedFriendlyName = isPrintProductType
+		? null
+		: GROUPED_PRODUCT_TYPES[productType.groupedProductType].friendlyName;
 
 	const productIsSubscription = productType.productType === 'supporterplus'; // will we migrate other product like Guardian weekly over to this cancellation flow at some point?
 	const productIsContribution = productType.productType === 'contributions';
@@ -122,20 +123,9 @@ export const ConfirmCancellation = () => {
 		pageTitleContext.setPageTitle(
 			isPrintProductType
 				? 'Manage subscription'
-				: `Cancel ${groupedProductType.friendlyName}`,
+				: `Cancel ${groupedFriendlyName}`,
 		);
-	}, [groupedProductType.friendlyName, isPrintProductType, pageTitleContext]);
-
-	if (!isPrintProductType && !routerState) {
-		return <Navigate to="../" />;
-	}
-
-	const progressStepperArray = [
-		{},
-		{},
-		{ isCurrentStep: !routerState?.eligibleForFreePeriodOffer },
-		{ isCurrentStep: !!routerState?.eligibleForFreePeriodOffer },
-	];
+	}, [groupedFriendlyName, isPrintProductType, pageTitleContext]);
 
 	if (isPrintProductType) {
 		return (
@@ -145,6 +135,17 @@ export const ConfirmCancellation = () => {
 			/>
 		);
 	}
+
+	if (!routerState) {
+		return <Navigate to="../" />;
+	}
+
+	const progressStepperArray = [
+		{},
+		{},
+		{ isCurrentStep: !routerState.eligibleForFreePeriodOffer },
+		{ isCurrentStep: !!routerState.eligibleForFreePeriodOffer },
+	];
 
 	return (
 		<>

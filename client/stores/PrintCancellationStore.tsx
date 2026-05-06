@@ -9,11 +9,9 @@ interface PrintCancellationState {
 	productDetail: ProductDetail | null;
 	selectedReasonId: OptionalCancellationReasonId;
 	cancellationFeedback: string;
-	cancellationPolicy: string;
 	caseId: string;
 	holidayStops?: OutstandingHolidayStop[];
 	deliveryCredits?: DeliveryRecordDetail[];
-	eligibleForFreePeriodOffer: boolean;
 }
 
 interface PrintCancellationActions {
@@ -22,13 +20,11 @@ interface PrintCancellationActions {
 		selectedReasonId: OptionalCancellationReasonId,
 	) => void;
 	setCancellationFeedback: (feedback: string) => void;
-	setCancellationPolicy: (policy: string) => void;
 	setCaseData: (data: {
 		caseId: string;
 		holidayStops?: OutstandingHolidayStop[];
 		deliveryCredits?: DeliveryRecordDetail[];
 	}) => void;
-	setEligibleForFreePeriodOffer: (eligible: boolean) => void;
 	resetJourneyState: () => void;
 	clearAll: () => void;
 }
@@ -38,11 +34,9 @@ type PrintCancellationStore = PrintCancellationState & PrintCancellationActions;
 const initialJourneyState = {
 	selectedReasonId: undefined,
 	cancellationFeedback: '',
-	cancellationPolicy: '',
 	caseId: '',
 	holidayStops: undefined,
 	deliveryCredits: undefined,
-	eligibleForFreePeriodOffer: false,
 };
 
 const initialState: PrintCancellationState = {
@@ -60,19 +54,11 @@ export const usePrintCancellationStore = create<PrintCancellationStore>()(
 				set({ selectedReasonId }, false, 'setSelectedReasonId'),
 			setCancellationFeedback: (cancellationFeedback) =>
 				set({ cancellationFeedback }, false, 'setCancellationFeedback'),
-			setCancellationPolicy: (cancellationPolicy) =>
-				set({ cancellationPolicy }, false, 'setCancellationPolicy'),
 			setCaseData: ({ caseId, holidayStops, deliveryCredits }) =>
 				set(
 					{ caseId, holidayStops, deliveryCredits },
 					false,
 					'setCaseData',
-				),
-			setEligibleForFreePeriodOffer: (eligibleForFreePeriodOffer) =>
-				set(
-					{ eligibleForFreePeriodOffer },
-					false,
-					'setEligibleForFreePeriodOffer',
 				),
 			resetJourneyState: () =>
 				set(
