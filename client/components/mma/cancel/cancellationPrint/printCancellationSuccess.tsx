@@ -12,7 +12,6 @@ import {
 	textSansBold20,
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
-import { useNavigate } from 'react-router-dom';
 import { useAccountStore } from '@/client/stores/AccountStore';
 import { cancellationFormatDate } from '@/shared/dates';
 import type { ProductDetail } from '../../../../../shared/productResponse';
@@ -96,7 +95,6 @@ export const PrintCancellationSuccess = ({
 	productType,
 	productDetail,
 }: PrintCancellationSuccessProps) => {
-	const navigate = useNavigate();
 	const { getUser } = useAccountStore();
 	const user = getUser();
 	const supporterName = user?.firstName?.trim() || 'supporter';
@@ -157,7 +155,9 @@ export const PrintCancellationSuccess = ({
 						independent journalism open to all.
 					</p>
 					<Button
-						onClick={() => navigate('/')}
+						onClick={() => {
+							window.location.href = 'https://theguardian.com';
+						}}
 						cssOverrides={css`
 							width: 100%;
 
