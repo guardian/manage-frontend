@@ -1,6 +1,6 @@
 import type { Product } from '@guardian/ophan-tracker-js/MMA';
 import type { ReactNode } from 'react';
-import { shuffledPrintedProductsCancellationReasons } from '@/client/components/mma/cancel/PrintedProductsCancellationReasons';
+import { shuffledPrintProductsCancellationReasons } from '@/client/components/mma/cancel/PrintProductsCancellationReasons';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
 import { shuffledTierThreeCancellationReasons } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationReasons';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
@@ -102,6 +102,11 @@ interface CancellationFlowProperties {
 	reasons?: CancellationReason[];
 	sfCaseProduct: SfCaseProduct;
 	checkForOutstandingCredits?: true;
+	// Opts the product into the dedicated print cancellation journey
+	// (PrintReasonPicker, PrintCancellationAlternatives, PrintConfirmCancellation,
+	// PrintExecuteCancellation, PrintCancellationStore). When undefined the
+	// product uses the legacy/default cancellation journey.
+	usesPrintCancellationFlow?: true;
 	flowWrapper?: (
 		productDetail: ProductDetail,
 		productType: ProductType,
@@ -751,9 +756,10 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			},
 		},
 		cancellation: {
-			reasons: shuffledPrintedProductsCancellationReasons,
+			reasons: shuffledPrintProductsCancellationReasons,
 			sfCaseProduct: 'Guardian Weekly',
 			checkForOutstandingCredits: true,
+			usesPrintCancellationFlow: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
 			startPageBody: gwCancellationFlowStart,
 			startPageOfferEffectiveDateOptions: true,

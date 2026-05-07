@@ -117,14 +117,6 @@ export const hasCancellationFlow = (
 export const hasDeliveryFlow = (productType: ProductType) =>
 	productType.delivery?.showAddress;
 
-// Release gate for the new Print Cancellation flow. Returns true only for
-// products that should enter the print-specific cancellation journey
-// (dedicated reason picker, alternatives, confirm and execute pages plus
-// the PrintCancellationStore). Any product type applicable to the new
-// flow should be added to the list.
-export const usesPrintCancellationFlow = (productType: ProductType): boolean =>
-	['guardianweekly'].includes(productType.productType);
-
 export const hasDeliveryRecordsFlow = (
 	productType: ProductType,
 ): productType is ProductTypeWithDeliveryRecordsProperties =>

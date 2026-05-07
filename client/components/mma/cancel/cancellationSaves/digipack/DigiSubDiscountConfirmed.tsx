@@ -10,13 +10,10 @@ import {
 import { captureException } from '@sentry/browser';
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router';
-import type {
-	CancellationContextInterface,
-	CancellationPageTitleInterface,
-} from '@/client/components/mma/cancel/CancellationContainer';
+import type { CancellationPageTitleInterface } from '@/client/components/mma/cancel/CancellationContainer';
 import {
-	CancellationContext,
 	CancellationPageTitleContext,
+	useCancellationContext,
 } from '@/client/components/mma/cancel/CancellationContainer';
 import { linkCss } from '@/client/components/mma/upgrade/UpgradeSupportStyles';
 import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
@@ -41,9 +38,7 @@ export const DigiSubDiscountConfirmed = () => {
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 
 	const location = useLocation();
 	const routerState = location.state as DigisubCancellationRouterState | null;

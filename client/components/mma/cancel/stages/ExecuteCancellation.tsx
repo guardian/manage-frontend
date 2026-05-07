@@ -15,10 +15,7 @@ import type {
 	ProductTypeWithCancellationFlow,
 } from '../../../../../shared/productTypes';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
-import {
-	createProductDetailFetcher,
-	usesPrintCancellationFlow,
-} from '../../../../utilities/productUtils';
+import { createProductDetailFetcher } from '../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { AsyncLoader } from '../../shared/AsyncLoader';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
@@ -27,7 +24,7 @@ import type {
 	CancellationContextInterface,
 	CancellationRouterState,
 } from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
+import { useCancellationContext } from '../CancellationContainer';
 import {
 	cancellationEffectiveToday,
 	CancellationReasonContext,
@@ -295,12 +292,10 @@ const NonPrintExecuteCancellation = ({
 export const ExecuteCancellation = () => {
 	const location = useLocation();
 	const routerState = location.state as RouterState | null;
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const { productDetail, productType } = useCancellationContext();
 	const cancellationReasonId = useContext(CancellationReasonContext);
 
-	if (usesPrintCancellationFlow(productType)) {
+	if (productType.cancellation.usesPrintCancellationFlow) {
 		return (
 			<PrintExecuteCancellation
 				productDetail={productDetail}

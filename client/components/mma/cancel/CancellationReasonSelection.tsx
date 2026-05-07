@@ -14,7 +14,7 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source/react-components';
 import type { FormEvent } from 'react';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
@@ -27,15 +27,13 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import { usesPrintCancellationFlow } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../shared/WithStandardTopMargin';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
 import { ProgressStepper } from '../shared/ProgressStepper';
-import type { CancellationContextInterface } from './CancellationContainer';
-import { CancellationContext } from './CancellationContainer';
+import { useCancellationContext } from './CancellationContainer';
 import {
 	cancellationEffectiveEndOfLastInvoicePeriod,
 	cancellationEffectiveToday,
@@ -376,11 +374,9 @@ const ReasonPickerWithCancellationDate = ({
 };
 
 export const CancellationReasonSelection = () => {
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const { productDetail, productType } = useCancellationContext();
 
-	if (usesPrintCancellationFlow(productType)) {
+	if (productType.cancellation.usesPrintCancellationFlow) {
 		return <PrintReasonPicker productType={productType} />;
 	}
 

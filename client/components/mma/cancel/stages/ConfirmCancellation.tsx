@@ -10,20 +10,16 @@ import { useContext, useEffect } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
-import { usesPrintCancellationFlow } from '@/client/utilities/productUtils';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
 import { Heading } from '../../shared/Heading';
 import { ProgressStepper } from '../../shared/ProgressStepper';
-import type {
-	CancellationContextInterface,
-	CancellationPageTitleInterface,
-} from '../CancellationContainer';
+import type { CancellationPageTitleInterface } from '../CancellationContainer';
 import {
-	CancellationContext,
 	CancellationPageTitleContext,
+	useCancellationContext,
 } from '../CancellationContainer';
 import { PrintConfirmCancellation } from '../cancellationPrint/printConfirmCancellation';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
@@ -95,9 +91,7 @@ export const ConfirmCancellation = () => {
 	const routerState = location.state as RouterSate | null;
 	const navigate = useNavigate();
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 
 	const productDetail = cancellationContext.productDetail;
 	const productType = cancellationContext.productType;
@@ -107,7 +101,8 @@ export const ConfirmCancellation = () => {
 	) as CancellationPageTitleInterface;
 
 	const subscription = productDetail.subscription;
-	const isPrintProductType = usesPrintCancellationFlow(productType);
+	const isPrintProductType =
+		!!productType.cancellation.usesPrintCancellationFlow;
 	const groupedFriendlyName = isPrintProductType
 		? null
 		: GROUPED_PRODUCT_TYPES[productType.groupedProductType].friendlyName;

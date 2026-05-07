@@ -1,5 +1,5 @@
 import type { Context, Dispatch, SetStateAction } from 'react';
-import { createContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import type {
 	MembersDataApiResponse,
@@ -17,10 +17,7 @@ import {
 	LoadingState,
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
-import {
-	createProductDetailFetcher,
-	usesPrintCancellationFlow,
-} from '../../../utilities/productUtils';
+import { createProductDetailFetcher } from '../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
@@ -87,14 +84,29 @@ export interface CancellationContextInterface {
 }
 
 export const CancellationContext: Context<
-	CancellationContextInterface | object
-> = createContext({});
+	CancellationContextInterface | undefined
+> = createContext<CancellationContextInterface | undefined>(undefined);
+
+export const useCancellationContext = (): CancellationContextInterface => {
+	const context = useContext(CancellationContext);
+	if (!context) {
+		throw new Error(
+			'useCancellationContext must be used inside a CancellationContext.Provider',
+		);
+	}
+	return context;
+};
 
 const contextAndOutletContainer = (
 	productDetail: ProductDetail,
 	productType: ProductType,
 ) => (
-	<CancellationContext.Provider value={{ productDetail, productType }}>
+	<CancellationContext.Provider
+		value={{
+			productDetail,
+			productType: productType as ProductTypeWithCancellationFlow,
+		}}
+	>
 		<Outlet />
 	</CancellationContext.Provider>
 );
@@ -127,7 +139,8 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const productDetail = routerState?.productDetail;
-	const isPrintProductType = usesPrintCancellationFlow(props.productType);
+	const isPrintProductType =
+		!!props.productType.cancellation?.usesPrintCancellationFlow;
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[props.productType.groupedProductType];
 

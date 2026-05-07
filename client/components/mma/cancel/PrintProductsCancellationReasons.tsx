@@ -2,7 +2,7 @@ import { shuffleArray } from '@/client/utilities/utils';
 import { standardAlternateFeedbackIntro } from './cancellationConstants';
 import type { CancellationReason } from './cancellationReason';
 
-const printedProductsCancellationReasons: CancellationReason[] = [
+const printProductsCancellationReasons: CancellationReason[] = [
 	{
 		reasonId: 'mma_dont_read_enough',
 		linkLabel: "I don't use the subscription enough to justify the cost",
@@ -52,10 +52,7 @@ const otherCancellationReason: CancellationReason[] = [
 	},
 ];
 
-export const shuffledPrintedProductsCancellationReasons: CancellationReason[] =
-	[
-		...(shuffleArray(
-			printedProductsCancellationReasons,
-		) as CancellationReason[]),
-		...otherCancellationReason,
-	];
+export const shuffledPrintProductsCancellationReasons: CancellationReason[] = [
+	...(shuffleArray(printProductsCancellationReasons) as CancellationReason[]),
+	...otherCancellationReason,
+];

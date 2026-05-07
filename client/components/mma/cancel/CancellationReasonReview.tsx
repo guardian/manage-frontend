@@ -18,10 +18,7 @@ import { usePrintCancellationStore } from '@/client/stores/PrintCancellationStor
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { getBenefitsThreshold } from '@/client/utilities/pricingConfig/supporterPlusPricing';
-import {
-	contribToSupporterPlusFetch,
-	usesPrintCancellationFlow,
-} from '@/client/utilities/productUtils';
+import { contribToSupporterPlusFetch } from '@/client/utilities/productUtils';
 import { cancelAlternativeUrlPartLookup } from '@/shared/cancellationUtilsAndTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
 import type { TrueFalsePending } from '@/shared/generalTypes';
@@ -56,10 +53,9 @@ import type {
 import { Heading } from '../shared/Heading';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
 import { ProgressStepper } from '../shared/ProgressStepper';
-import type { CancellationContextInterface } from './CancellationContainer';
 import {
-	CancellationContext,
 	CancellationPageTitleContext,
+	useCancellationContext,
 } from './CancellationContainer';
 import { cancellationEffectiveToday } from './cancellationContexts';
 import { requiresCancellationEscalation } from './cancellationFlowEscalationCheck';
@@ -295,9 +291,7 @@ const ConfirmCancellationAndReturnRow = (
 	};
 
 	const navigate = useNavigate();
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const { productDetail, productType } = useCancellationContext();
 	const isSupporterPlusAndFreePeriodOfferIsActive =
 		featureSwitches.supporterplusCancellationOffer &&
 		productType.productType === 'supporterplus';
@@ -562,10 +556,9 @@ export const CancellationReasonReview = () => {
 		cancellationFeedback?: string;
 	} | null;
 
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
-	const isPrintProductType = usesPrintCancellationFlow(productType);
+	const { productDetail, productType } = useCancellationContext();
+	const isPrintProductType =
+		!!productType?.cancellation?.usesPrintCancellationFlow;
 
 	const printSelectedReasonId = usePrintCancellationStore(
 		(state) => state.selectedReasonId,

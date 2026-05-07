@@ -31,10 +31,9 @@ import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
 import { Card } from '../../shared/Card';
 import { ProgressStepper } from '../../shared/ProgressStepper';
 import {
-	CancellationContext,
-	type CancellationContextInterface,
 	CancellationPageTitleContext,
 	type CancellationPageTitleInterface,
+	useCancellationContext,
 } from '../CancellationContainer';
 import type {
 	CancellationReason,
@@ -190,9 +189,7 @@ const tabletAndUpPreviousButtonCss = css`
 `;
 
 export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 	const productDetail = cancellationContext.productDetail;
 	const storedSelectedReasonId = usePrintCancellationStore(
 		(state) => state.selectedReasonId,
