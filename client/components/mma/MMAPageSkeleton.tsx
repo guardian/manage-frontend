@@ -133,10 +133,16 @@ const MMALocationObjectArr: LocationObject[] = [
 
 export const MMAPageSkeleton = () => {
 	const location = useLocation();
-	const isPathMatch = (pathname: string, basePath: string) =>
-		pathname === basePath ||
-		pathname === `${basePath}/` ||
-		(basePath !== '/' && pathname.startsWith(`${basePath}/`));
+	const isPathMatch = (pathname: string, basePath: string) => {
+		const normalizedPath =
+			pathname.length > 1 && pathname.endsWith('/')
+				? pathname.slice(0, -1)
+				: pathname;
+		return (
+			normalizedPath === basePath ||
+			(basePath !== '/' && normalizedPath.startsWith(`${basePath}/`))
+		);
+	};
 
 	const selectedMMALocationObject = MMALocationObjectArr.find(
 		(currentObject) => isPathMatch(location.pathname, currentObject.path),
