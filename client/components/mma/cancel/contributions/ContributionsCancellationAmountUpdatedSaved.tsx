@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/browser';
 import type * as React from 'react';
-import { useContext } from 'react';
 import { parseDate } from '../../../../../shared/dates';
 import {
 	getMainPlan,
@@ -8,16 +7,13 @@ import {
 	isProduct,
 } from '../../../../../shared/productResponse';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
-import type { CancellationContextInterface } from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
+import { useCancellationContext } from '../CancellationContainer';
 import type { SavedBodyProps } from '../stages/SavedCancellation';
 
 export const ContributionsCancellationAmountUpdatedSaved: React.FC<
 	SavedBodyProps
 > = ({ amount }: SavedBodyProps) => {
-	const { productDetail } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const { productDetail } = useCancellationContext();
 	if (!isProduct(productDetail)) {
 		Sentry.captureMessage(
 			'MembersDataApiItem is not a productDetail in ContributionsCancellationAmountUpdateSaved',

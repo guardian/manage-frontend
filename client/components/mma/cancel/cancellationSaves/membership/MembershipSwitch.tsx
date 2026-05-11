@@ -41,13 +41,12 @@ import { Card } from '../../../shared/Card';
 import { Heading } from '../../../shared/Heading';
 import { PaymentDetails } from '../../../shared/PaymentDetails';
 import type {
-	CancellationContextInterface,
 	CancellationPageTitleInterface,
 	CancellationRouterState,
 } from '../../CancellationContainer';
 import {
-	CancellationContext,
 	CancellationPageTitleContext,
+	useCancellationContext,
 } from '../../CancellationContainer';
 import { newAmountCss } from './SaveStyles';
 
@@ -179,9 +178,7 @@ export const MembershipSwitch = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 	const membership = cancellationContext.productDetail;
 
 	const [isSwitching, setIsSwitching] = useState<boolean>(false);

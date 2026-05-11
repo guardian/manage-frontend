@@ -12,14 +12,17 @@ import {
 	guardianAdLite,
 	guardianAdLiteCancelled,
 	guardianAdLiteInTrialPeriod,
+	guardianWeeklyCancelled,
 	guardianWeeklyPaidByCard,
 	supporterPlus,
 	supporterPlusAnnual,
 	supporterPlusCancelled,
 	supporterPlusMonthlyAllAccessDigital,
 } from '../../../fixtures/productBuilder/testProducts';
+import { usePrintCancellationStore } from '../../../stores/PrintCancellationStore';
 import { CancellationContainer } from './CancellationContainer';
 import { CancellationJourneyFunnel } from './CancellationJourneyFunnel';
+import type { OptionalCancellationReasonId } from './cancellationReason';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { CancelAlternativeConfirmed } from './cancellationSaves/CancelAlternativeConfirmed';
@@ -34,6 +37,11 @@ import { ExecuteCancellation } from './stages/ExecuteCancellation';
 
 const contributionWithSortedReasons = PRODUCT_TYPES.contributions;
 contributionWithSortedReasons.cancellation!.reasons?.sort((a, b) =>
+	a.reasonId.localeCompare(b.reasonId),
+);
+
+const guardianWeeklyWithSortedReasons = PRODUCT_TYPES.guardianweekly;
+guardianWeeklyWithSortedReasons.cancellation!.reasons?.sort((a, b) =>
 	a.reasonId.localeCompare(b.reasonId),
 );
 
@@ -70,6 +78,170 @@ export const ContactCustomerService: StoryObj<typeof CancellationContainer> = {
 			container: (
 				<CancellationContainer
 					productType={PRODUCT_TYPES.guardianweekly}
+				/>
+			),
+		},
+	},
+};
+
+const seedGuardianWeeklyPrintStore = ({
+	selectedReasonId = 'mma_editorial',
+	caseId = 'caseId',
+}: {
+	selectedReasonId?: OptionalCancellationReasonId;
+	caseId?: string;
+} = {}) => {
+	const productDetail = guardianWeeklyPaidByCard();
+	usePrintCancellationStore.getState().clearAll();
+	usePrintCancellationStore.setState({
+		productDetail,
+		selectedReasonId,
+		cancellationFeedback: '',
+		caseId,
+		holidayStops: [],
+		deliveryCredits: [],
+	});
+};
+
+export const PrintGuardianWeeklySelectReason: StoryObj<
+	typeof CancellationReasonSelection
+> = {
+	render: () => {
+		usePrintCancellationStore.getState().clearAll();
+		return <CancellationReasonSelection />;
+	},
+	parameters: {
+		reactRouter: {
+			state: { productDetail: guardianWeeklyPaidByCard() },
+			container: (
+				<CancellationContainer
+					productType={guardianWeeklyWithSortedReasons}
+				/>
+			),
+		},
+	},
+};
+
+export const PrintGuardianWeeklyReview: StoryObj<typeof CancellationContainer> =
+	{
+		render: () => {
+			seedGuardianWeeklyPrintStore({
+				selectedReasonId: 'mma_editorial',
+			});
+			return <CancellationReasonReview />;
+		},
+		parameters: {
+			msw: [
+				http.post('/api/case', () =>
+					HttpResponse.json({ id: 'caseId' }),
+				),
+				http.get('/api/holidays/**', () =>
+					HttpResponse.json({ publicationsToRefund: [] }),
+				),
+				http.get('/api/delivery-records/**', () =>
+					HttpResponse.json({ results: [] }),
+				),
+			],
+			reactRouter: {
+				state: { productDetail: guardianWeeklyPaidByCard() },
+				container: (
+					<CancellationContainer
+						productType={guardianWeeklyWithSortedReasons}
+					/>
+				),
+			},
+		},
+	};
+
+export const PrintGuardianWeeklyConfirm: StoryObj<
+	typeof CancellationContainer
+> = {
+	render: () => {
+		seedGuardianWeeklyPrintStore({
+			selectedReasonId: 'mma_editorial',
+			caseId: 'caseId',
+		});
+		return <ConfirmCancellation />;
+	},
+	parameters: {
+		reactRouter: {
+			state: { productDetail: guardianWeeklyPaidByCard() },
+			container: (
+				<CancellationContainer
+					productType={guardianWeeklyWithSortedReasons}
+				/>
+			),
+		},
+	},
+};
+
+export const PrintGuardianWeeklyExecute: StoryObj<typeof ExecuteCancellation> =
+	{
+		render: () => {
+			seedGuardianWeeklyPrintStore({
+				selectedReasonId: 'mma_editorial',
+				caseId: 'caseId',
+			});
+			return <ExecuteCancellation />;
+		},
+		parameters: {
+			msw: [
+				http.patch('/api/case/**', () =>
+					HttpResponse.json({ id: 'caseId' }),
+				),
+				http.get('/api/me/mma/**', () =>
+					HttpResponse.json(
+						toMembersDataApiResponse(guardianWeeklyCancelled()),
+					),
+				),
+				http.post(
+					'/api/cancel/**',
+					() =>
+						new HttpResponse(null, {
+							status: 201,
+						}),
+				),
+			],
+			reactRouter: {
+				state: { productDetail: guardianWeeklyPaidByCard() },
+				container: (
+					<CancellationContainer
+						productType={guardianWeeklyWithSortedReasons}
+					/>
+				),
+			},
+		},
+	};
+
+export const PrintGuardianWeeklyExecuteEscalated: StoryObj<
+	typeof ExecuteCancellation
+> = {
+	render: () => {
+		const productDetail = guardianWeeklyPaidByCard();
+		usePrintCancellationStore.getState().clearAll();
+		usePrintCancellationStore.setState({
+			productDetail,
+			selectedReasonId: 'mma_editorial',
+			cancellationFeedback: '',
+			caseId: 'caseId',
+			// Outstanding holiday stops trigger the escalation branch in the
+			// print execute step.
+			holidayStops: [{}],
+			deliveryCredits: [],
+		});
+		return <ExecuteCancellation />;
+	},
+	parameters: {
+		msw: [
+			http.patch('/api/case/**', () =>
+				HttpResponse.json({ id: 'caseId' }),
+			),
+		],
+		reactRouter: {
+			state: { productDetail: guardianWeeklyPaidByCard() },
+			container: (
+				<CancellationContainer
+					productType={guardianWeeklyWithSortedReasons}
 				/>
 			),
 		},

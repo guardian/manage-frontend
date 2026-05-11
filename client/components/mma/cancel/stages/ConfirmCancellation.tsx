@@ -16,14 +16,12 @@ import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecord
 import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
 import { Heading } from '../../shared/Heading';
 import { ProgressStepper } from '../../shared/ProgressStepper';
-import type {
-	CancellationContextInterface,
-	CancellationPageTitleInterface,
-} from '../CancellationContainer';
+import type { CancellationPageTitleInterface } from '../CancellationContainer';
 import {
-	CancellationContext,
 	CancellationPageTitleContext,
+	useCancellationContext,
 } from '../CancellationContainer';
+import { PrintConfirmCancellation } from '../cancellationPrint/printConfirmCancellation';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 
 interface RouterSate extends DiscountPreviewResponse {
@@ -72,6 +70,7 @@ const buttonsCtaHolder = css`
 	display: flex;
 	flex-direction: column;
 	gap: ${space[2]}px;
+
 	${from.phablet} {
 		flex-direction: row;
 		gap: ${space[6]}px;
@@ -92,20 +91,21 @@ export const ConfirmCancellation = () => {
 	const routerState = location.state as RouterSate | null;
 	const navigate = useNavigate();
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 
 	const productDetail = cancellationContext.productDetail;
 	const productType = cancellationContext.productType;
-	const groupedProductType =
-		GROUPED_PRODUCT_TYPES[productType.groupedProductType];
 
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
 	const subscription = productDetail.subscription;
+	const isPrintProductType =
+		!!productType.cancellation.usesPrintCancellationFlow;
+	const groupedFriendlyName = isPrintProductType
+		? null
+		: GROUPED_PRODUCT_TYPES[productType.groupedProductType].friendlyName;
 
 	const productIsSubscription = productType.productType === 'supporterplus'; // will we migrate other product like Guardian weekly over to this cancellation flow at some point?
 	const productIsContribution = productType.productType === 'contributions';
@@ -116,9 +116,20 @@ export const ConfirmCancellation = () => {
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle(
-			`Cancel ${groupedProductType.friendlyName}`,
+			isPrintProductType
+				? 'Manage subscription'
+				: `Cancel ${groupedFriendlyName}`,
 		);
-	}, [groupedProductType.friendlyName, pageTitleContext]);
+	}, [groupedFriendlyName, isPrintProductType, pageTitleContext]);
+
+	if (isPrintProductType) {
+		return (
+			<PrintConfirmCancellation
+				productDetail={productDetail}
+				productType={productType}
+			/>
+		);
+	}
 
 	if (!routerState) {
 		return <Navigate to="../" />;
@@ -128,7 +139,7 @@ export const ConfirmCancellation = () => {
 		{},
 		{},
 		{ isCurrentStep: !routerState.eligibleForFreePeriodOffer },
-		{ isCurrentStep: routerState.eligibleForFreePeriodOffer },
+		{ isCurrentStep: !!routerState.eligibleForFreePeriodOffer },
 	];
 
 	return (

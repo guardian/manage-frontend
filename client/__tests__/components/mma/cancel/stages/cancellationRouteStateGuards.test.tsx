@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Outlet, Route, Routes } from 'react-router-dom';
+import type { ProductTypeWithCancellationFlow } from '../../../../../../shared/productTypes';
 import { PRODUCT_TYPES } from '../../../../../../shared/productTypes';
 import {
 	CancellationContext,
@@ -13,7 +14,8 @@ import { monthlyContributionPaidByCard } from '../../../../../fixtures/productBu
 
 const renderWithCancellationContext = (initialPath: string) => {
 	const productDetail = monthlyContributionPaidByCard();
-	const productType = PRODUCT_TYPES.contributions;
+	const productType =
+		PRODUCT_TYPES.contributions as ProductTypeWithCancellationFlow;
 
 	return render(
 		<MemoryRouter initialEntries={[initialPath]}>
