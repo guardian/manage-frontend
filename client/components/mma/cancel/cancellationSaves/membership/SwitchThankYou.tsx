@@ -26,13 +26,12 @@ import {
 import { getOldMembershipPrice } from '../../../../../utilities/pricingConfig/membershipPriceRise';
 import { Heading } from '../../../shared/Heading';
 import type {
-	CancellationContextInterface,
 	CancellationPageTitleInterface,
 	CancellationRouterState,
 } from '../../CancellationContainer';
 import {
-	CancellationContext,
 	CancellationPageTitleContext,
+	useCancellationContext,
 } from '../../CancellationContainer';
 
 export const SwitchThankYou = () => {
@@ -44,9 +43,7 @@ export const SwitchThankYou = () => {
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 	const membership = cancellationContext.productDetail;
 	const userEmailAddress = routerState?.user?.email;
 

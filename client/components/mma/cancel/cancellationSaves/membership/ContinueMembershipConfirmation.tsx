@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import { from, space, textSans17 } from '@guardian/source/foundations';
 import { Button, LinkButton, Stack } from '@guardian/source/react-components';
-import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { cancellationFormatDate } from '../../../../../../shared/dates';
 import type { PaidSubscriptionPlan } from '../../../../../../shared/productResponse';
@@ -13,14 +12,11 @@ import {
 import { headingCss } from '../../../../../styles/GenericStyles';
 import { getNewMembershipPrice } from '../../../../../utilities/pricingConfig/membershipPriceRise';
 import { ProgressStepper } from '../../../shared/ProgressStepper';
-import type { CancellationContextInterface } from '../../CancellationContainer';
-import { CancellationContext } from '../../CancellationContainer';
+import { useCancellationContext } from '../../CancellationContainer';
 
 export const ContinueMembershipConfirmation = () => {
 	const navigate = useNavigate();
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 	const membership = cancellationContext.productDetail;
 
 	const mainPlan = getMainPlan(

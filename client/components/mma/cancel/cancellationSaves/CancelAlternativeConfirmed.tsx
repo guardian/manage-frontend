@@ -25,13 +25,10 @@ import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
 import { DownloadAppCta } from '../../shared/DownloadAppCta';
 import { DownloadFeastAppCtaWithIcon } from '../../shared/DownloadFeastAppCtaWithIcon';
 import { Heading } from '../../shared/Heading';
-import type {
-	CancellationContextInterface,
-	CancellationPageTitleInterface,
-} from '../CancellationContainer';
+import type { CancellationPageTitleInterface } from '../CancellationContainer';
 import {
-	CancellationContext,
 	CancellationPageTitleContext,
+	useCancellationContext,
 } from '../CancellationContainer';
 import { getUpdateCasePromise } from '../caseUpdate';
 
@@ -188,9 +185,7 @@ export const CancelAlternativeConfirmed = () => {
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 
 	const productDetail = cancellationContext.productDetail;
 	const productType = cancellationContext.productType;
