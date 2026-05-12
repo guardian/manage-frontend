@@ -70,7 +70,7 @@ const digitalPlusBenefits = [
 	{ description: 'The Long Read e-magazine' },
 	newspaperArchiveBenefit,
 	{ description: 'Far fewer asks for support' },
-	{ description: 'Ad-free reading on all your devices' },
+	{ description: 'Ad-free reading on the Guardian app and website' },
 	{ description: 'Unlimited access to the premium Guardian app' },
 	{
 		description:
