@@ -72,7 +72,6 @@ export const useUpgradeProductStore = create<UpgradeProductStore>()(
 						previewError: null,
 						isDiscountedOffer:
 							!!response.discount?.discountPercentage &&
-							!!response.discount?.discountedPrice &&
 							response.discount?.discountPercentage > 0,
 					},
 					false,
