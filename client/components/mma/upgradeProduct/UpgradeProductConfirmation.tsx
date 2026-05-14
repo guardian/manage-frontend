@@ -146,7 +146,6 @@ export const UpgradeProductConfirmation = () => {
 		: nextPaymentDetails?.nextPaymentDateValue;
 
 	if (isDiscountedOffer) {
-		console.debug(nextPaymentDetails);
 		paymentConditionsText += `From ${nextPaymentDate}, your ${
 			nextPaymentDetails?.paymentInterval
 		}ly payment will be ${previewResponse?.discount?.discountedPrice} for ${
