@@ -1,3 +1,4 @@
+import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import { from, palette, space } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
@@ -10,6 +11,7 @@ Card.Header = (props: {
 	children: ReactNode;
 	backgroundColor?: string;
 	minHeightOverride?: string;
+	cssOverrides?: SerializedStyles;
 }) => {
 	const headerCss = css`
 		position: relative;
@@ -26,7 +28,9 @@ Card.Header = (props: {
 		}
 	`;
 
-	return <header css={headerCss}>{props.children}</header>;
+	return (
+		<header css={[headerCss, props.cssOverrides]}>{props.children}</header>
+	);
 };
 
 Card.Section = (props: {

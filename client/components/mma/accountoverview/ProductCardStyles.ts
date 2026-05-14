@@ -5,6 +5,8 @@ import {
 	headlineBold24,
 	space,
 	textSans17,
+	textSansBold12,
+	textSansBold15,
 	textSansBold17,
 } from '@guardian/source/foundations';
 import { textColour } from './ProductCardConfiguration';
@@ -14,7 +16,6 @@ export const productCardTitleCss = (dark?: boolean) => css`
 	color: ${dark ? textColour.dark : textColour.light};
 	margin-top: 0;
 	margin-bottom: ${space[1]}px;
-	max-width: calc(100% - 97px); // Leave space for gift ribbon
 
 	${from.tablet} {
 		${headlineBold24};
@@ -69,5 +70,15 @@ export const keyValueCss = css`
 	dd {
 		display: inline-block;
 		margin-left: 0;
+	}
+`;
+
+export const promoPillCss = css`
+	${textSansBold12};
+	margin-top: 0;
+
+	${from.tablet} {
+		${textSansBold15};
+		margin-top: ${space[0]}px;
 	}
 `;

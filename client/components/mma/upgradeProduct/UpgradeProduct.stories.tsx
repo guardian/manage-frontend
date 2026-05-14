@@ -86,6 +86,19 @@ const mockUpgradePreviewResponseAnnualGBP: UpgradePreviewResponse = {
 	nextPaymentDate: '2027-01-15',
 };
 
+const mockUpgradePreviewResponseMonthlyDiscountGBP: UpgradePreviewResponse = {
+	amountPayableToday: 3.0,
+	proratedRefundAmount: 4.5,
+	targetCatalogPrice: 14.99,
+	nextPaymentDate: '2026-03-15',
+	discount: {
+		discountedPrice: 7.5,
+		discountPercentage: 50,
+		upToPeriods: 3,
+		upToPeriodsType: 'Months',
+	},
+};
+
 const mswHandlersSuccess = (previewResponse: UpgradePreviewResponse) => [
 	http.post('/api/subscriptions/*/change-plan/preview', () => {
 		return HttpResponse.json(previewResponse);
@@ -138,6 +151,24 @@ InformationAnnual.parameters = {
 	},
 };
 
+export const InformationMonthlyDiscount: StoryFn<
+	typeof UpgradeProductInformation
+> = () => {
+	return <UpgradeProductInformation />;
+};
+InformationMonthlyDiscount.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlus(),
+		mockUpgradePreviewResponseMonthlyDiscountGBP,
+	),
+];
+InformationMonthlyDiscount.parameters = {
+	reactRouter: {
+		container: <StoryPageContainer />,
+	},
+};
+InformationMonthlyDiscount.storyName = 'Information Monthly - Discount';
+
 export const ConfirmationMonthly: StoryFn<
 	typeof UpgradeProductConfirmation
 > = () => {
@@ -173,6 +204,25 @@ ConfirmationAnnual.parameters = {
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseAnnualGBP),
 };
+
+export const ConfirmationMonthlyDiscount: StoryFn<
+	typeof UpgradeProductConfirmation
+> = () => {
+	return <UpgradeProductConfirmation />;
+};
+ConfirmationMonthlyDiscount.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlus(),
+		mockUpgradePreviewResponseMonthlyDiscountGBP,
+	),
+];
+ConfirmationMonthlyDiscount.parameters = {
+	reactRouter: {
+		container: <StoryPageContainer />,
+	},
+	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyDiscountGBP),
+};
+ConfirmationMonthlyDiscount.storyName = 'Confirmation Monthly - Discount';
 
 export const ConfirmationDirectDebit: StoryFn<
 	typeof UpgradeProductConfirmation

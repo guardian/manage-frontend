@@ -5,6 +5,8 @@ import {
 	space,
 	textSans12,
 	textSans15,
+	textSans17,
+	textSans20,
 	textSansBold17,
 	textSansBold20,
 } from '@guardian/source/foundations';
@@ -28,8 +30,12 @@ import { trackEvent } from '@/client/utilities/analytics';
 import { useUpgradeProduct } from '@/client/utilities/hooks/useUpgradePreview';
 import { dateString } from '@/shared/dates';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
+import { Pill } from '../../shared/Pill';
 import { productCardConfiguration } from '../accountoverview/ProductCardConfiguration';
-import { productCardTitleCss } from '../accountoverview/ProductCardStyles';
+import {
+	productCardTitleCss,
+	promoPillCss,
+} from '../accountoverview/ProductCardStyles';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
@@ -42,12 +48,12 @@ import {
 	whatHappensNowItemInformationTextCss,
 } from './UpgradeProductContainer';
 
-const subheadingTextCss = css`
-	${textSansBold17};
+const subheadingTextCss = (isDiscountedOffer: boolean) => css`
+	${isDiscountedOffer ? textSans17 : textSansBold17};
 	margin: 0;
 
 	${from.tablet} {
-		${textSansBold20};
+		${isDiscountedOffer ? textSans20 : textSansBold20};
 	}
 `;
 
@@ -89,12 +95,27 @@ const termsAndConditionsFooterCss = css`
 	}
 `;
 
+const promoPillContainerCss = css`
+	display: flex;
+	align-items: flex-start;
+	gap: ${space[1]}px;
+
+	${from.tablet} {
+		gap: ${space[3]}px;
+	}
+`;
+
 export const UpgradeProductConfirmation = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 
-	const { mainPlan, specificProductType, previewResponse, subscription } =
-		useUpgradeProductStore();
+	const {
+		mainPlan,
+		specificProductType,
+		previewResponse,
+		subscription,
+		isDiscountedOffer,
+	} = useUpgradeProductStore();
 	const { executeUpgrade, isUpgrading, upgradeError } = useUpgradeProduct();
 
 	if (!mainPlan || !specificProductType || !subscription) {
@@ -107,6 +128,37 @@ export const UpgradeProductConfirmation = () => {
 		null,
 		false,
 	);
+
+	const discountConditionsText = isDiscountedOffer
+		? ` ${mainPlan.currency}${previewResponse?.discount?.discountedPrice}/${
+				nextPaymentDetails?.paymentInterval
+		  } for ${
+				previewResponse?.discount?.upToPeriods
+		  } ${previewResponse?.discount?.upToPeriodsType.toLowerCase()}`
+		: '';
+
+	let paymentConditionsText = `We will charge you a smaller amount today, to offset the payment you've already given us for the rest of the ${nextPaymentDetails?.paymentInterval}. `;
+	const nextPaymentDate = subscription.nextPaymentDate
+		? dateString(new Date(subscription.nextPaymentDate), 'MMMM do')
+		: nextPaymentDetails?.nextPaymentDateValue;
+	const nextPaymentDateDay = subscription.nextPaymentDate
+		? dateString(new Date(subscription.nextPaymentDate), 'do')
+		: nextPaymentDetails?.nextPaymentDateValue;
+
+	if (isDiscountedOffer) {
+		console.debug(nextPaymentDetails);
+		paymentConditionsText += `From ${nextPaymentDate}, your ${
+			nextPaymentDetails?.paymentInterval
+		}ly payment will be ${previewResponse?.discount?.discountedPrice} for ${
+			previewResponse?.discount?.upToPeriods
+		} ${previewResponse?.discount?.upToPeriodsType.toLowerCase()} and then ${
+			mainPlan.currency
+		}${previewResponse?.targetCatalogPrice} per ${
+			nextPaymentDetails?.paymentInterval
+		}. The ${nextPaymentDateDay} will be your next payment date.`;
+	} else {
+		paymentConditionsText += `After this, from ${nextPaymentDate}, your ${nextPaymentDetails?.paymentInterval}ly payment will be ${mainPlan.currency}${previewResponse?.targetCatalogPrice}`;
+	}
 
 	let paymentMethodCopy = `We will take payment as before`;
 
@@ -139,10 +191,18 @@ export const UpgradeProductConfirmation = () => {
 					}
 					minHeightOverride="auto"
 				>
-					<div>
+					<div css={promoPillContainerCss}>
 						<h3 css={productCardTitleCss(false)}>
 							{PRODUCT_TYPES.digipack.productTitle()}
 						</h3>
+						{isDiscountedOffer && (
+							<Pill
+								copy="Limited offer"
+								colour={palette.sport['800']}
+								copyColour={palette.sport['300']}
+								additionalCss={promoPillCss}
+							/>
+						)}
 					</div>
 				</Card.Header>
 				<Card.Section>
@@ -156,10 +216,33 @@ export const UpgradeProductConfirmation = () => {
 					/>
 				</Card.Section>
 				<Card.Section>
-					<p css={subheadingTextCss}>
-						{mainPlan.currency}
-						{previewResponse?.targetCatalogPrice}/
-						{nextPaymentDetails?.paymentInterval}
+					<p css={subheadingTextCss(isDiscountedOffer)}>
+						<span
+							css={css`
+								text-decoration: ${isDiscountedOffer
+									? 'line-through'
+									: 'none'};
+							`}
+						>
+							{mainPlan.currency}
+							{previewResponse?.targetCatalogPrice}
+						</span>
+						{isDiscountedOffer ? (
+							<span
+								css={[
+									subheadingTextCss(false),
+									css`
+										color: ${palette.brand[500]};
+									`,
+								]}
+							>
+								{discountConditionsText}
+							</span>
+						) : (
+							<span>
+								{'/' + nextPaymentDetails?.paymentInterval}
+							</span>
+						)}
 					</p>
 				</Card.Section>
 			</Card>
@@ -169,7 +252,7 @@ export const UpgradeProductConfirmation = () => {
 			<div css={whatHappensNowItemCss}>
 				<SvgClock size="medium" />
 				<div css={whatHappensNowItemInfoCss}>
-					<h3 css={subheadingTextCss}>
+					<h3 css={subheadingTextCss(false)}>
 						This change will happen today
 					</h3>
 					<p
@@ -186,7 +269,7 @@ export const UpgradeProductConfirmation = () => {
 			<div css={whatHappensNowItemCss}>
 				<SvgReload size="medium" />
 				<div css={whatHappensNowItemInfoCss}>
-					<h3 css={subheadingTextCss}>
+					<h3 css={subheadingTextCss(false)}>
 						Your first payment will be {mainPlan.currency}
 						{previewResponse?.amountPayableToday}
 					</h3>
@@ -196,18 +279,7 @@ export const UpgradeProductConfirmation = () => {
 							whatHappensNowItemInformationBorderCss,
 						]}
 					>
-						We will charge you a smaller amount today, to offset the
-						payment you've already given us for the rest of the{' '}
-						{nextPaymentDetails?.paymentInterval}. After this, from{' '}
-						{subscription.nextPaymentDate
-							? dateString(
-									new Date(subscription.nextPaymentDate),
-									'MMMM do',
-							  )
-							: nextPaymentDetails?.nextPaymentDateValue}
-						, your {nextPaymentDetails?.paymentInterval}ly payment
-						will be {mainPlan.currency}
-						{previewResponse?.targetCatalogPrice}
+						{paymentConditionsText}
 					</p>
 				</div>
 			</div>
@@ -215,7 +287,7 @@ export const UpgradeProductConfirmation = () => {
 			<div css={whatHappensNowItemCss}>
 				<SvgCreditCard size="medium" />
 				<div css={whatHappensNowItemInfoCss}>
-					<h3 css={subheadingTextCss}>Your payment method</h3>
+					<h3 css={subheadingTextCss(false)}>Your payment method</h3>
 					<p css={whatHappensNowItemInformationTextCss}>
 						{paymentMethodCopy}
 					</p>
