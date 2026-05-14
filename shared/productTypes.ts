@@ -46,6 +46,7 @@ type ProductFriendlyName =
 	| 'newspaper home delivery plus digital subscription'
 	| 'digital plus'
 	| 'all-access digital subscription'
+	| 'Guardian Weekly gift subscription'
 	| 'Guardian Weekly subscription'
 	| 'digital + print subscription'
 	| 'subscription'
@@ -288,6 +289,7 @@ export type ProductTypeKeys =
 	| 'voucherplusdigital'
 	| 'digitalvoucher'
 	| 'digitalvoucherplusdigital'
+	| 'guardianweeklygift'
 	| 'guardianweekly'
 	| 'digipack'
 	| 'supporterplus'
@@ -719,6 +721,50 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 		delivery: {
 			showAddress: showDeliveryAddressCheck,
+		},
+	},
+	guardianweeklygift: {
+		// TODO Double check with someone in the team.
+		productTitle: () => 'Guardian Weekly - Gift',
+		friendlyName: 'Guardian Weekly gift subscription',
+		shortFriendlyName: 'Guardian Weekly - Gift',
+		productType: 'guardianweeklygift',
+		groupedProductType: 'subscriptions',
+		allProductsProductTypeFilterString: 'Weekly',
+		urlPart: 'guardianweekly',
+		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
+		softOptInIDs: [
+			SoftOptInIDs.SupportOnboarding,
+			SoftOptInIDs.GuardianWeeklyNewsletter,
+		],
+		getOphanProductType: () => 'PRINT_SUBSCRIPTION', // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
+		// Is this also considered a print subscription in Ophan or should it be digital/separate?
+		renewalMetadata: {
+			alternateButtonText: 'Subscribe here',
+			urlSuffix: 'subscribe/weekly',
+			supportReferer: 'gw_renewal',
+		},
+		holidayStops: {
+			issueKeyword: 'issue',
+			alternateNoticeString:
+				'notice by the Tuesday of the week before your issue is due',
+		},
+		cancellation: {
+			reasons: shuffledPrintProductsCancellationReasons,
+			sfCaseProduct: 'Guardian Weekly',
+			checkForOutstandingCredits: true,
+			flowWrapper: physicalSubsCancellationFlowWrapper,
+			startPageBody: gwCancellationFlowStart,
+			startPageOfferEffectiveDateOptions: true,
+			summaryReasonSpecificPara: () => undefined,
+			onlyShowSupportSectionIfAlternateText: false,
+			alternateSupportButtonText: () => undefined,
+			alternateSupportButtonUrlSuffix: () => undefined,
+			swapFeedbackAndContactUs: true,
+		},
+		fulfilmentDateCalculator: {
+			productFilenamePart: 'Guardian Weekly',
+			explicitSingleDayOfWeek: 'Friday',
 		},
 	},
 	guardianweekly: {

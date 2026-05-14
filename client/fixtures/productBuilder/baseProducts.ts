@@ -197,6 +197,62 @@ export function baseGuardianWeekly(): ProductDetail {
 	};
 }
 
+export function baseGuardianWeeklyGift(): ProductDetail {
+	return {
+		mmaProductKey: 'Guardian Weekly - Gift',
+		isPaidTier: true,
+		selfServiceCancellation: {
+			isAllowed: false, // Is this allowed?
+			shouldDisplayEmail: false,
+			phoneRegionsToDisplay: ['UK & ROW'],
+		},
+		joinDate: '2021-11-29',
+		optIn: true,
+		subscription: {
+			contactId: '0039E00001KA26BQAT',
+			deliveryAddress: {
+				addressLine1: 'Kings Place',
+				addressLine2: '90 York Way',
+				town: 'London',
+				postcode: 'N1 9GU',
+				country: 'United Kingdom',
+			},
+			safeToUpdatePaymentMethod: true,
+			start: '2021-12-24',
+			end: '2022-12-15',
+			nextPaymentPrice: 13500,
+			nextPaymentDate: '2021-12-10',
+			lastPaymentDate: null,
+			potentialCancellationDate: null,
+			chargedThroughDate: null,
+			renewalDate: '2022-12-15',
+			anniversaryDate: '2022-12-24',
+			cancelledAt: false,
+			subscriptionId: 'A-S00286635',
+			trialLength: 9,
+			autoRenew: true,
+			currentPlans: [],
+			futurePlans: [
+				{
+					name: null,
+					start: '2021-12-10',
+					end: '2022-11-29',
+					shouldBeVisible: true,
+					chargedThrough: null,
+					price: 15000,
+					currency: '£',
+					currencyISO: 'GBP',
+					billingPeriod: 'year',
+				},
+			],
+			readerType: 'Direct',
+			accountId: '8ad0965d7d585497017d6ce786026089',
+			deliveryAddressChangeEffectiveDate: '2021-12-10',
+		},
+		isTestUser: false,
+	};
+}
+
 export function baseDigitalPack(): ProductDetail {
 	return {
 		mmaProductKey: 'Digital Pack',

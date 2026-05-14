@@ -145,6 +145,10 @@ export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
 		nationaldeliveryplusdigital: [...productPlusdigitalBenefits],
 		voucher: [],
 		voucherplusdigital: [...productPlusdigitalBenefits],
+		guardianweeklygift: [
+			...productPlusdigitalBenefits,
+			newspaperArchiveBenefit,
+		],
 		guardianweekly: [
 			guardianWeekly,
 			...productPlusdigitalBenefits,

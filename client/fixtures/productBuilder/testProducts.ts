@@ -7,6 +7,7 @@ import {
 	baseDigitalVoucherPlus,
 	baseGuardianAdLite,
 	baseGuardianWeekly,
+	baseGuardianWeeklyGift,
 	baseHomeDelivery,
 	baseHomeDeliverySaturdayPlus,
 	baseMembership,
@@ -35,19 +36,20 @@ export function voucherPlusPaidByCard() {
 }
 
 export function guardianWeeklyPaidByCard() {
-	return new ProductBuilder(baseGuardianWeekly())
+	return new ProductBuilder(baseGuardianWeeklyGift())
 		.payByCard()
 		.getProductDetailObject();
 }
 
 export function guardianWeeklyGiftPurchase() {
-	return new ProductBuilder(baseGuardianWeekly())
+	return new ProductBuilder(baseGuardianWeeklyGift())
 		.payByCard()
 		.gift(false)
 		.getProductDetailObject();
 }
 
 export function guardianWeeklyGiftRecipient() {
+	// TODO Who does this actually show to if the recipients do not need accounts?
 	return new ProductBuilder(baseGuardianWeekly())
 		.gift(true)
 		.getProductDetailObject();
