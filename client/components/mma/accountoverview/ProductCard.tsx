@@ -274,7 +274,7 @@ export const ProductCard = ({
 					minHeightOverride="auto"
 				>
 					<h3 css={productCardTitleCss(cardConfig.invertText)}>
-						{productTitle} {productDetail.mmaProductKey}
+						{productTitle}
 					</h3>
 					{isGifted && (
 						<Ribbon
