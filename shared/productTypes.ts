@@ -749,6 +749,17 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			alternateNoticeString:
 				'notice by the Tuesday of the week before your issue is due',
 		},
+		delivery: {
+			// TODO should this be included in the gift subscription or just the standard one?
+			showAddress: showDeliveryAddressCheck,
+			enableDeliveryInstructionsUpdate: false,
+			records: {
+				productNameForProblemReport: 'Guardian Weekly',
+				numberOfProblemRecordsToShow: 4,
+				contactUserOnExistingProblemReport: false,
+				availableProblemTypes: commonDeliveryProblemTypes,
+			},
+		},
 		cancellation: {
 			reasons: shuffledPrintProductsCancellationReasons,
 			sfCaseProduct: 'Guardian Weekly',
