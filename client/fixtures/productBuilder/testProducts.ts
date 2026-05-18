@@ -36,7 +36,7 @@ export function voucherPlusPaidByCard() {
 }
 
 export function guardianWeeklyPaidByCard() {
-	return new ProductBuilder(baseGuardianWeeklyGift())
+	return new ProductBuilder(baseGuardianWeekly())
 		.payByCard()
 		.getProductDetailObject();
 }

@@ -46,8 +46,8 @@ type ProductFriendlyName =
 	| 'newspaper home delivery plus digital subscription'
 	| 'digital plus'
 	| 'all-access digital subscription'
-	| 'Guardian Weekly gift subscription'
 	| 'Guardian Weekly subscription'
+	| 'Guardian Weekly gift subscription'
 	| 'digital + print subscription'
 	| 'subscription'
 	| 'support'
@@ -68,6 +68,7 @@ type ProductUrlPart =
 	| 'digital'
 	| 'support'
 	| 'guardianweekly'
+	| 'guardianweeklygift'
 	| 'digital+print'
 	| 'subscriptions'
 	| 'recurringsupport'
@@ -78,6 +79,7 @@ type SfCaseProduct =
 	| 'Recurring - Contributions'
 	| 'Voucher Subscriptions'
 	| 'Guardian Weekly'
+	| 'Guardian Weekly - Gift'
 	| 'Digital Pack Subscriptions'
 	| 'Supporter Plus'
 	| 'Tier Three'
@@ -731,7 +733,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		productType: 'guardianweeklygift',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Weekly',
-		urlPart: 'guardianweekly',
+		urlPart: 'guardianweeklygift',
 		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
@@ -741,7 +743,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		// Is this also considered a print subscription in Ophan or should it be digital/separate?
 		renewalMetadata: {
 			alternateButtonText: 'Subscribe here',
-			urlSuffix: 'subscribe/weekly',
+			urlSuffix: 'subscribe/weekly-gift', // TODO confirm this is the correct URL suffix for gift subscription renewal (is there a flow for this?)
 			supportReferer: 'gw_renewal',
 		},
 		holidayStops: {
@@ -754,7 +756,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			showAddress: showDeliveryAddressCheck,
 			enableDeliveryInstructionsUpdate: false,
 			records: {
-				productNameForProblemReport: 'Guardian Weekly',
+				productNameForProblemReport: 'Guardian Weekly - Gift',
 				numberOfProblemRecordsToShow: 4,
 				contactUserOnExistingProblemReport: false,
 				availableProblemTypes: commonDeliveryProblemTypes,
@@ -762,10 +764,10 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 		cancellation: {
 			reasons: shuffledPrintProductsCancellationReasons,
-			sfCaseProduct: 'Guardian Weekly',
+			sfCaseProduct: 'Guardian Weekly - Gift',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
-			startPageBody: gwCancellationFlowStart,
+			startPageBody: gwCancellationFlowStart, // TODO should this be different too for the gift subscription?
 			startPageOfferEffectiveDateOptions: true,
 			summaryReasonSpecificPara: () => undefined,
 			onlyShowSupportSectionIfAlternateText: false,
@@ -774,7 +776,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			swapFeedbackAndContactUs: true,
 		},
 		fulfilmentDateCalculator: {
-			productFilenamePart: 'Guardian Weekly',
+			productFilenamePart: 'Guardian Weekly - Gift',
 			explicitSingleDayOfWeek: 'Friday',
 		},
 	},
