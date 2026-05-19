@@ -34,11 +34,15 @@ import { trackEvent } from '../../../utilities/analytics';
 import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
 import { Ribbon } from '../../shared/Ribbon';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
+import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { PaymentMethoDisplay } from '../shared/PaymentMethodDisplay';
-import { productCardConfiguration } from './ProductCardConfiguration';
+import {
+	getGuardianWeeklyGiftBenefitsCopy,
+	productCardConfiguration,
+} from './ProductCardConfiguration';
 import {
 	keyValueCss,
 	productCardTitleCss,
@@ -138,8 +142,9 @@ export const ProductCard = ({
 			? 'supporter benefits'
 			: groupedProductType.friendlyName;
 
-	const cardConfig =
-		productCardConfiguration[specificProductType.productType];
+	const cardConfig = isGifted
+		? getGuardianWeeklyGiftBenefitsCopy
+		: productCardConfiguration[specificProductType.productType];
 
 	const giftRibbonColour = cardConfig.invertText
 		? palette.brand[400]
@@ -303,6 +308,11 @@ export const ProductCard = ({
 						<BenefitsToggle
 							productType={specificProductType.productType}
 							subscriptionPlan={mainPlan}
+							overrideBenefits={
+								isGifted
+									? getGuardianWeeklyGiftBenefits()
+									: null
+							}
 						/>
 					</Card.Section>
 				)}

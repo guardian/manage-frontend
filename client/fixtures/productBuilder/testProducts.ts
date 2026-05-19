@@ -44,13 +44,6 @@ export function guardianWeeklyPaidByCard() {
 export function guardianWeeklyGiftPurchase() {
 	return new ProductBuilder(baseGuardianWeeklyGift())
 		.payByCard()
-		.gift(false)
-		.getProductDetailObject();
-}
-
-export function guardianWeeklyGiftRecipient() {
-	// TODO Who does this actually show to if the recipients do not need accounts?
-	return new ProductBuilder(baseGuardianWeekly())
 		.gift(true)
 		.getProductDetailObject();
 }

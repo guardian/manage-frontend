@@ -133,3 +133,8 @@ export const productCardConfiguration: Record<
 		colour: productColour.newspaper,
 	},
 };
+
+export const getGuardianWeeklyGiftBenefitsCopy: ProductCardConfiguration = {
+	colour: productColour.guardianWeekly,
+	getBenefitsSectionCopy: guardianWeeklyGiftBenefitsCopy,
+};

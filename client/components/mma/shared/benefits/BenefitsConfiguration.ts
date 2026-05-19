@@ -208,3 +208,7 @@ export const getUpsellBenefits = (
 			];
 	}
 };
+
+export const getGuardianWeeklyGiftBenefits = (): ProductBenefit[] => {
+	return [...productPlusdigitalBenefits, newspaperArchiveBenefit];
+};
