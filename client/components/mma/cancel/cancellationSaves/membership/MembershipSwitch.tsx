@@ -3,7 +3,7 @@ import { palette, space, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
-	SvgClock,
+	SvgClockOutlined,
 	SvgCreditCard,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
@@ -107,7 +107,7 @@ const WhatHappensNext = (props: {
 				<Heading sansSerif>What happens next?</Heading>
 				<ul css={[iconListCss, listWithDividersCss]}>
 					<li>
-						<SvgClock size="medium" />
+						<SvgClockOutlined size="medium" />
 						<span>
 							<strong>
 								Your new support will start at the end of your

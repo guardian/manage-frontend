@@ -14,7 +14,7 @@ import {
 	LinkButton,
 	Stack,
 	SvgCalendar,
-	SvgClock,
+	SvgClockOutlined,
 	SvgEnvelope,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
@@ -212,7 +212,7 @@ const WhatHappensNext = (props: {
 				</li>
 				{!props.isFromApp && (
 					<li>
-						<SvgClock size="medium" />
+						<SvgClockOutlined size="medium" />
 						<span>
 							Your new support will start today. It can take up to
 							an hour for your support to be activated

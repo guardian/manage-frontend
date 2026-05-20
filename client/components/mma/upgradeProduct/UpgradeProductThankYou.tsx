@@ -7,7 +7,7 @@ import {
 } from '@guardian/source/foundations';
 import {
 	Button,
-	SvgClock,
+	SvgClockOutlined,
 	SvgEnvelope,
 	SvgStar,
 } from '@guardian/source/react-components';
@@ -88,7 +88,7 @@ export const UpgradeProductThankYou = () => {
 			</div>
 
 			<div css={whatHappensNowItemCss}>
-				<SvgClock size="medium" />
+				<SvgClockOutlined size="medium" />
 				<div css={whatHappensNowItemInfoCss}>
 					<p
 						css={[

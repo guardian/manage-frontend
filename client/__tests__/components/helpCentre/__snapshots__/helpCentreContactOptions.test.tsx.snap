@@ -311,7 +311,6 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
               <span
                 class="emotion-21"
               >
-                 
                 (within Australia)
               </span>
             </span>
@@ -322,7 +321,6 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
               <span
                 class="emotion-21"
               >
-                 
                 (outside Australia)
               </span>
             </span>
@@ -374,7 +372,6 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
               <span
                 class="emotion-21"
               >
-                 
                 (toll free CAN/USA)
               </span>
             </span>
@@ -385,7 +382,6 @@ exports[`HelpCentreContactOptions Help Centre landing page Help Centre article (
               <span
                 class="emotion-21"
               >
-                 
                 (outside CAN/USA)
               </span>
             </span>
@@ -713,7 +709,6 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
               <span
                 class="emotion-21"
               >
-                 
                 (within Australia)
               </span>
             </span>
@@ -724,7 +719,6 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
               <span
                 class="emotion-21"
               >
-                 
                 (outside Australia)
               </span>
             </span>
@@ -776,7 +770,7 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
               <span
                 class="emotion-21"
               >
-                 
+
                 (toll free CAN/USA)
               </span>
             </span>
@@ -787,7 +781,6 @@ exports[`HelpCentreContactOptions Help Centre landing page with live chat featur
               <span
                 class="emotion-21"
               >
-                 
                 (outside CAN/USA)
               </span>
             </span>
@@ -1043,7 +1036,7 @@ html:not(.src-focus-disabled) .emotion-9:focus {
 }
 
 .emotion-9:hover {
-  background-color: #ACC9F7;
+  background-color: #9EC1FA;
 }
 
 .emotion-9 svg {
@@ -1607,7 +1600,6 @@ html:not(.src-focus-disabled) .emotion-9:focus {
                 <span
                   class="emotion-34"
                 >
-                   
                   (within Australia)
                 </span>
               </span>
@@ -1618,7 +1610,6 @@ html:not(.src-focus-disabled) .emotion-9:focus {
                 <span
                   class="emotion-34"
                 >
-                   
                   (outside Australia)
                 </span>
               </span>
@@ -1655,7 +1646,6 @@ html:not(.src-focus-disabled) .emotion-9:focus {
                 <span
                   class="emotion-34"
                 >
-                   
                   (toll free CAN/USA)
                 </span>
               </span>
@@ -1666,7 +1656,6 @@ html:not(.src-focus-disabled) .emotion-9:focus {
                 <span
                   class="emotion-34"
                 >
-                   
                   (outside CAN/USA)
                 </span>
               </span>
@@ -1693,14 +1682,13 @@ html:not(.src-focus-disabled) .emotion-9:focus {
         class="emotion-49"
       >
         We use a type of cookie technology called an SDK (Software Development Kit) to ensure that our live chat services work correctly and meet your expectations. It cannot be switched off but it is removed at the end of the chat. If you do not wish for this cookie to be dropped on your device, please email or phone us instead. Live chats and phone calls will be recorded for monitoring and training purposes. Please do not disclose personal data of a sensitive nature in the live chat, such as health or financial information. A copy of the chat transcript will be emailed to you unless the chat contains payment card information, in which case no transcript will be sent. Click to find out more in our
-         
         <a
           href="https://thegulocal.com/info/privacy"
         >
           privacy policy
         </a>
-         
-        and 
+
+        and
         <a
           href="https://thegulocal.com/info/cookies"
         >

@@ -9,7 +9,7 @@ import {
 import {
 	Button,
 	Stack,
-	SvgClock,
+	SvgClockOutlined,
 	SvgCreditCard,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
@@ -237,7 +237,7 @@ export const SwitchReview = () => {
 					<Heading sansSerif>What happens next?</Heading>
 					<ul css={[iconListCss, listWithDividersCss]}>
 						<li>
-							<SvgClock size="medium" />
+							<SvgClockOutlined size="medium" />
 							<span>
 								<strong>This change will happen today</strong>
 								<br />
