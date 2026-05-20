@@ -173,7 +173,9 @@ export const UpgradeProductInformation = () => {
 						].colour
 					}
 					minHeightOverride="auto"
-					cssOverrides={cardHeaderOverrideCss}
+					cssOverrides={
+						isDiscountedOffer ? cardHeaderOverrideCss : undefined
+					}
 				>
 					<div css={cardHeaderDivCss}>
 						<div css={promoPillContainerCss}>

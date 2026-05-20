@@ -425,6 +425,34 @@ export const WithSupporterPlusDuringOffer: StoryObj<typeof AccountOverview> = {
 	},
 };
 
+export const WithAllAccessDigitalDiscount: StoryObj<typeof AccountOverview> = {
+	render: () => {
+		return <AccountOverview />;
+	},
+
+	parameters: {
+		msw: [
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
+			}),
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
+			}),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(supporterPlus()),
+				);
+			}),
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
+			}),
+			http.get('/api/discounts/digital-plus-upgrade', () => {
+				return HttpResponse.json({ eligible: true });
+			}),
+		],
+	},
+};
+
 export const WithGuardianAdLite: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;

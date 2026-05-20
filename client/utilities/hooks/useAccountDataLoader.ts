@@ -7,6 +7,7 @@ import type {
 	SingleProductDetail,
 } from '../../../shared/productResponse';
 import { JsonResponseHandler } from '../../components/mma/shared/asyncComponents/DefaultApiResponseHandler';
+import type { AccountOverviewLambdaLoaderResponse } from '../../stores/AccountStore';
 import {
 	AccountLoadingState,
 	useAccountStore,
@@ -24,6 +25,8 @@ async function fetchAllAccountData() {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
+		accountOverviewLambdaLoaderResponse,
+		,
 	] = await Promise.all([
 		allRecurringProductsDetailFetcher()
 			.then(
@@ -45,6 +48,15 @@ async function fetchAllAccountData() {
 				(r) => JsonResponseHandler(r) as Promise<SingleProductDetail[]>,
 			)
 			.catch((): null => null),
+		// TODO: Replace placeholder endpoint with real lambda for Digital plus upgrade eligibility
+		fetchWithDefaultParameters('/api/discounts/digital-plus-upgrade')
+			.then(
+				(r) =>
+					JsonResponseHandler(
+						r,
+					) as Promise<AccountOverviewLambdaLoaderResponse>,
+			)
+			.catch((): null => null),
 	]);
 
 	return {
@@ -52,6 +64,7 @@ async function fetchAllAccountData() {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
+		accountOverviewLambdaLoaderResponse,
 	};
 }
 
@@ -62,6 +75,7 @@ export const useAccountDataLoader = () => {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
+		accountOverviewLambdaLoaderResponse,
 		setAllResponses,
 		setLoadingState,
 		setError,
@@ -107,5 +121,6 @@ export const useAccountDataLoader = () => {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
+		accountOverviewLambdaLoaderResponse,
 	};
 };

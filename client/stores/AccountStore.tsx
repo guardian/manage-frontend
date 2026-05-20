@@ -16,11 +16,17 @@ export enum AccountLoadingState {
 	Error = 'Error',
 }
 
+// TODO: Replace with real shape once the lambda for Digital plus upgrade eligibility lands
+export interface AccountOverviewLambdaLoaderResponse {
+	eligible: boolean;
+}
+
 interface AccountState {
 	mdapiResponse: MembersDataApiResponse | null;
 	cancelledProductsResponse: CancelledProductDetail[] | null;
 	mpapiResponse: MPAPIResponse | null;
 	singleContributionsResponse: SingleProductDetail[] | null;
+	accountOverviewLambdaLoaderResponse: AccountOverviewLambdaLoaderResponse | null;
 	loadingState: AccountLoadingState;
 	error: string | null;
 }
@@ -30,11 +36,15 @@ interface AccountActions {
 	setCancelledProductsResponse: (response: CancelledProductDetail[]) => void;
 	setMpapiResponse: (response: MPAPIResponse) => void;
 	setSingleContributionsResponse: (response: SingleProductDetail[]) => void;
+	setDigitalPlusUpgradeResponse: (
+		response: AccountOverviewLambdaLoaderResponse,
+	) => void;
 	setAllResponses: (responses: {
 		mdapiResponse: MembersDataApiResponse | null;
 		cancelledProductsResponse: CancelledProductDetail[] | null;
 		mpapiResponse: MPAPIResponse | null;
 		singleContributionsResponse: SingleProductDetail[] | null;
+		accountOverviewLambdaLoaderResponse: AccountOverviewLambdaLoaderResponse | null;
 	}) => void;
 	setLoadingState: (state: AccountLoadingState) => void;
 	setError: (error: string | null) => void;
@@ -53,6 +63,7 @@ const initialState: AccountState = {
 	cancelledProductsResponse: null,
 	mpapiResponse: null,
 	singleContributionsResponse: null,
+	accountOverviewLambdaLoaderResponse: null,
 	loadingState: AccountLoadingState.NotStarted,
 	error: null,
 };
@@ -77,6 +88,12 @@ export const useAccountStore = create<AccountStore>()(
 					false,
 					'setSingleContributionsResponse',
 				),
+			setDigitalPlusUpgradeResponse: (response) =>
+				set(
+					{ accountOverviewLambdaLoaderResponse: response },
+					false,
+					'setDigitalPlusUpgradeResponse',
+				),
 			setAllResponses: (responses) =>
 				set(
 					{
@@ -86,6 +103,8 @@ export const useAccountStore = create<AccountStore>()(
 						mpapiResponse: responses.mpapiResponse,
 						singleContributionsResponse:
 							responses.singleContributionsResponse,
+						accountOverviewLambdaLoaderResponse:
+							responses.accountOverviewLambdaLoaderResponse,
 						loadingState: AccountLoadingState.Loaded,
 						error: null,
 					},
