@@ -100,6 +100,7 @@ const imageSlotCss = css`
 		${palette.labs[400]};
 
 	${from.tablet} {
+		min-width: 0;
 		background: none;
 		align-self: flex-end;
 		padding: ${space[3]}px ${space[9]}px 0 ${space[9]}px;
