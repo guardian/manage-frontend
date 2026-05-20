@@ -78,7 +78,14 @@ const HelpCentreRouter = () => {
 	]
 	*/
 
-	const knownIssues: KnownIssueObj[] = [];
+	const knownIssues: KnownIssueObj[] = [
+		{
+			date: '26 May 2026 12:00',
+			message:
+				'We are updating our app experience. From 26th May, you will be required to sign in to access the Editions app. Access is included with Digital Plus, Print, and Guardian Weekly subscriptions, or those with a direct app store subscription.',
+			link: 'https://manage.theguardian.com/help-centre/article/guardian-editions-app',
+		},
+	];
 
 	return (
 		<Main signInStatus={signInStatus} isHelpCentrePage>
