@@ -4,6 +4,7 @@ import {
 } from '../../shared/identity';
 import type { ProductDetail } from '../../shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '../../shared/productResponse';
+import type { UpgradePreviewResponse } from '../../shared/productSwitchTypes';
 import type {
 	AllProductsProductTypeFilterString,
 	ProductType,
@@ -272,4 +273,23 @@ export const changePlanFetch = ({
 		},
 		credentials: 'include',
 	});
+};
+
+export const fetchUpgradePreviewData = async (params: {
+	subscriptionId: string;
+	isTestUser: boolean;
+}): Promise<UpgradePreviewResponse> => {
+	const response = await changePlanFetch({
+		subscriptionId: params.subscriptionId,
+		isTestUser: params.isTestUser,
+		mode: 'switchToBasePrice',
+		targetProduct: 'DigitalSubscription',
+		preview: true,
+	});
+
+	if (!response.ok) {
+		throw new Error(`Failed to fetch upgrade preview: ${response.status}`);
+	}
+
+	return (await response.json()) as UpgradePreviewResponse;
 };

@@ -21,29 +21,37 @@ export const useAnalytics = () => {
 		};
 
 		const initialiseOphen = async () => {
-			const { sendInitialEvent } = await import(
-				'@guardian/ophan-tracker-js/MMA'
-			);
+			try {
+				const { sendInitialEvent } = await import(
+					'@guardian/ophan-tracker-js/MMA'
+				);
 
-			if (window.guardian.spaTransition) {
-				sendInitialEvent(window.location.href);
-			} else {
-				// tslint:disable-next-line:no-object-mutation
-				window.guardian.spaTransition = true;
+				if (window.guardian.spaTransition) {
+					sendInitialEvent(window.location.href);
+				} else {
+					// tslint:disable-next-line:no-object-mutation
+					window.guardian.spaTransition = true;
+				}
+			} catch {
+				// Ophan is non-critical; ignore blocked or failed loads.
 			}
 		};
 
-		import('@guardian/libs').then(({ onConsentChange, getConsentFor }) => {
-			onConsentChange((consentState) => {
-				const qmConsentState = getConsentFor('qm', consentState);
+		void import('@guardian/libs')
+			.then(({ onConsentChange, getConsentFor }) => {
+				onConsentChange((consentState) => {
+					const qmConsentState = getConsentFor('qm', consentState);
 
-				if (qmConsentState && !qmIsInitialised.current) {
-					initialiseQm();
-					qmIsInitialised.current = true;
-				}
+					if (qmConsentState && !qmIsInitialised.current) {
+						initialiseQm();
+						qmIsInitialised.current = true;
+					}
 
-				initialiseOphen();
+					void initialiseOphen();
+				});
+			})
+			.catch(() => {
+				// Analytics dependencies are non-critical; ignore failed imports.
 			});
-		});
 	}, []);
 };

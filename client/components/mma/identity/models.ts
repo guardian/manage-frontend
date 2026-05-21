@@ -46,11 +46,15 @@ export interface User {
 	registrationLocationState: RegistrationLocationState;
 }
 
-export interface UserError {
-	type: ErrorTypes.VALIDATION;
-	error: {
-		username: string;
-	};
+export class UserError extends Error {
+	type = ErrorTypes.VALIDATION;
+	error: Record<string, string>;
+
+	constructor(error: Record<string, string>) {
+		super(`Validation error: ${JSON.stringify(error)}`);
+		this.name = 'UserError';
+		this.error = error;
+	}
 }
 
 export interface UserCollection {

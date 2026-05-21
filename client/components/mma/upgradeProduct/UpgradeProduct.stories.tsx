@@ -1,7 +1,13 @@
 import type { Decorator, Meta, StoryFn } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
-import { useEffect } from 'react';
+import { useRef } from 'react';
+import { Outlet } from 'react-router-dom';
 import { ReactRouterDecorator } from '../../../../.storybook/ReactRouterDecorator';
+import type {
+	PaidSubscriptionPlan,
+	ProductDetail,
+} from '../../../../shared/productResponse';
+import { getMainPlan } from '../../../../shared/productResponse';
 import type { UpgradePreviewResponse } from '../../../../shared/productSwitchTypes';
 import { baseSupporterPlus } from '../../../fixtures/productBuilder/baseProducts';
 import { ProductBuilder } from '../../../fixtures/productBuilder/productBuilder';
@@ -9,12 +15,20 @@ import {
 	supporterPlus,
 	supporterPlusAnnual,
 } from '../../../fixtures/productBuilder/testProducts';
-import { useAccountStore } from '../../../stores/AccountStore';
 import { useUpgradeProductStore } from '../../../stores/UpgradeProductStore';
 import { UpgradeProductConfirmation } from './UpgradeProductConfirmation';
-import { UpgradeProductContainer } from './UpgradeProductContainer';
+import {
+	UpgradeProductContainer,
+	UpgradeProductPageContainer,
+} from './UpgradeProductContainer';
 import { UpgradeProductInformation } from './UpgradeProductInformation';
 import { UpgradeProductThankYou } from './UpgradeProductThankYou';
+
+const StoryPageContainer = () => (
+	<UpgradeProductPageContainer>
+		<Outlet />
+	</UpgradeProductPageContainer>
+);
 
 // Payment method fixtures
 const supporterPlusDirectDebit = () =>
@@ -32,18 +46,30 @@ const supporterPlusSepa = () =>
 		.payBySepa()
 		.getProductDetailObject();
 
-const ResetStoresDecorator: Decorator = (Story) => {
-	const clearUpgradeStore = useUpgradeProductStore(
-		(state) => state.clearStore,
-	);
-	const clearAccountStore = useAccountStore((state) => state.clearAccount);
-
-	useEffect(() => {
-		clearUpgradeStore();
-		clearAccountStore();
-	}, [clearUpgradeStore, clearAccountStore]);
-
-	return <Story />;
+/**
+ * Decorator that synchronously pre-populates the UpgradeProductStore before
+ * child components render. Stories use StoryPageContainer (layout only) instead
+ * of UpgradeProductContainer to bypass the deep-link loader/redirect logic.
+ */
+const createStorePopulatorDecorator = (
+	productDetail: ProductDetail,
+	previewResponse: UpgradePreviewResponse,
+): Decorator => {
+	return (Story) => {
+		const initialized = useRef(false);
+		if (!initialized.current) {
+			const store = useUpgradeProductStore.getState();
+			store.clearStore();
+			const mainPlan = getMainPlan(
+				productDetail.subscription,
+			) as PaidSubscriptionPlan;
+			store.setMainPlan(mainPlan);
+			store.setSubscription(productDetail.subscription);
+			store.setPreviewResponse(previewResponse);
+			initialized.current = true;
+		}
+		return <Story />;
+	};
 };
 
 const mockUpgradePreviewResponseMonthlyGBP: UpgradePreviewResponse = {
@@ -72,7 +98,7 @@ const mswHandlersSuccess = (previewResponse: UpgradePreviewResponse) => [
 export default {
 	title: 'Pages/UpgradeProduct',
 	component: UpgradeProductContainer,
-	decorators: [ResetStoresDecorator, ReactRouterDecorator],
+	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
@@ -83,12 +109,16 @@ export const InformationMonthly: StoryFn<
 > = () => {
 	return <UpgradeProductInformation />;
 };
+InformationMonthly.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlus(),
+		mockUpgradePreviewResponseMonthlyGBP,
+	),
+];
 InformationMonthly.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlus() },
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
-	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
 
 export const InformationAnnual: StoryFn<
@@ -96,12 +126,16 @@ export const InformationAnnual: StoryFn<
 > = () => {
 	return <UpgradeProductInformation />;
 };
+InformationAnnual.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusAnnual(),
+		mockUpgradePreviewResponseAnnualGBP,
+	),
+];
 InformationAnnual.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlusAnnual() },
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
-	msw: mswHandlersSuccess(mockUpgradePreviewResponseAnnualGBP),
 };
 
 export const ConfirmationMonthly: StoryFn<
@@ -109,10 +143,15 @@ export const ConfirmationMonthly: StoryFn<
 > = () => {
 	return <UpgradeProductConfirmation />;
 };
+ConfirmationMonthly.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlus(),
+		mockUpgradePreviewResponseMonthlyGBP,
+	),
+];
 ConfirmationMonthly.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlus() },
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
@@ -122,10 +161,15 @@ export const ConfirmationAnnual: StoryFn<
 > = () => {
 	return <UpgradeProductConfirmation />;
 };
+ConfirmationAnnual.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusAnnual(),
+		mockUpgradePreviewResponseAnnualGBP,
+	),
+];
 ConfirmationAnnual.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlusAnnual() },
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseAnnualGBP),
 };
@@ -135,10 +179,15 @@ export const ConfirmationDirectDebit: StoryFn<
 > = () => {
 	return <UpgradeProductConfirmation />;
 };
+ConfirmationDirectDebit.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusDirectDebit(),
+		mockUpgradePreviewResponseMonthlyGBP,
+	),
+];
 ConfirmationDirectDebit.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlusDirectDebit() },
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
@@ -149,10 +198,15 @@ export const ConfirmationPayPal: StoryFn<
 > = () => {
 	return <UpgradeProductConfirmation />;
 };
+ConfirmationPayPal.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusPayPal(),
+		mockUpgradePreviewResponseMonthlyGBP,
+	),
+];
 ConfirmationPayPal.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlusPayPal() },
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
@@ -163,10 +217,15 @@ export const ConfirmationSepa: StoryFn<
 > = () => {
 	return <UpgradeProductConfirmation />;
 };
+ConfirmationSepa.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusSepa(),
+		mockUpgradePreviewResponseMonthlyGBP,
+	),
+];
 ConfirmationSepa.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlusSepa() },
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
@@ -175,21 +234,29 @@ ConfirmationSepa.storyName = 'Confirmation - SEPA';
 export const ThankYouMonthly: StoryFn<typeof UpgradeProductThankYou> = () => {
 	return <UpgradeProductThankYou />;
 };
+ThankYouMonthly.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlus(),
+		mockUpgradePreviewResponseMonthlyGBP,
+	),
+];
 ThankYouMonthly.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlus() },
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
-	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyGBP),
 };
 
 export const ThankYouAnnual: StoryFn<typeof UpgradeProductThankYou> = () => {
 	return <UpgradeProductThankYou />;
 };
+ThankYouAnnual.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusAnnual(),
+		mockUpgradePreviewResponseAnnualGBP,
+	),
+];
 ThankYouAnnual.parameters = {
 	reactRouter: {
-		state: { productDetail: supporterPlusAnnual() },
-		container: <UpgradeProductContainer />,
+		container: <StoryPageContainer />,
 	},
-	msw: mswHandlersSuccess(mockUpgradePreviewResponseAnnualGBP),
 };

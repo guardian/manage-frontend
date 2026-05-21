@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { from, space } from '@guardian/source/foundations';
 import { Button, LinkButton, Spinner } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
@@ -20,11 +20,8 @@ import { PRODUCT_TYPES } from '../../../../../shared/productTypes';
 import { trackEventInOphanOnly } from '../../../../utilities/analytics';
 import { ContributionUpdateAmountForm } from '../../accountoverview/updateAmount/ContributionUpdateAmountForm';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
-import type {
-	CancellationContextInterface,
-	CancellationRouterState,
-} from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
+import type { CancellationRouterState } from '../CancellationContainer';
+import { useCancellationContext } from '../CancellationContainer';
 import type { SaveBodyProps } from '../cancellationReason';
 import {
 	allowCountrySwitchDiscount,
@@ -64,9 +61,7 @@ export const ContributionsCancellationFlowFinancialSaveAttempt: React.FC<
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const navigate = useNavigate();
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const { productDetail, productType } = useCancellationContext();
 	const mainPlan = getMainPlan(productDetail.subscription);
 	const isAnnualBilling =
 		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'year';

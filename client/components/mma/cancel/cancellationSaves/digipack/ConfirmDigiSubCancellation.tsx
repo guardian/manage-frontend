@@ -9,10 +9,9 @@ import {
 	textSansBold20,
 } from '@guardian/source/foundations';
 import { Button, Stack } from '@guardian/source/react-components';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import type { CancellationContextInterface } from '@/client/components/mma/cancel/CancellationContainer';
-import { CancellationContext } from '@/client/components/mma/cancel/CancellationContainer';
+import { useCancellationContext } from '@/client/components/mma/cancel/CancellationContainer';
 import type { OptionalCancellationReasonId } from '@/client/components/mma/cancel/cancellationReason';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import { benefitsCss } from '@/client/components/mma/shared/benefits/BenefitsStyles';
@@ -83,9 +82,7 @@ const BenefitsNotAvailable = () => {
 export const ConfirmDigiSubCancellation = () => {
 	const navigate = useNavigate();
 
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const { productDetail, productType } = useCancellationContext();
 
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const [loadingFailed, setLoadingFailed] = useState<boolean>(false);

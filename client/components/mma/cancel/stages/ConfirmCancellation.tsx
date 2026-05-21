@@ -7,7 +7,7 @@ import {
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { useContext, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, parseDate } from '@/shared/dates';
@@ -16,14 +16,12 @@ import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecord
 import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
 import { Heading } from '../../shared/Heading';
 import { ProgressStepper } from '../../shared/ProgressStepper';
-import type {
-	CancellationContextInterface,
-	CancellationPageTitleInterface,
-} from '../CancellationContainer';
+import type { CancellationPageTitleInterface } from '../CancellationContainer';
 import {
-	CancellationContext,
 	CancellationPageTitleContext,
+	useCancellationContext,
 } from '../CancellationContainer';
+import { PrintConfirmCancellation } from '../cancellationPrint/printConfirmCancellation';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 
 interface RouterSate extends DiscountPreviewResponse {
@@ -72,6 +70,7 @@ const buttonsCtaHolder = css`
 	display: flex;
 	flex-direction: column;
 	gap: ${space[2]}px;
+
 	${from.phablet} {
 		flex-direction: row;
 		gap: ${space[6]}px;
@@ -89,23 +88,24 @@ const ctaBtnCss = css`
 
 export const ConfirmCancellation = () => {
 	const location = useLocation();
-	const routerState = location.state as RouterSate;
+	const routerState = location.state as RouterSate | null;
 	const navigate = useNavigate();
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 
 	const productDetail = cancellationContext.productDetail;
 	const productType = cancellationContext.productType;
-	const groupedProductType =
-		GROUPED_PRODUCT_TYPES[productType.groupedProductType];
 
 	const pageTitleContext = useContext(
 		CancellationPageTitleContext,
 	) as CancellationPageTitleInterface;
 
 	const subscription = productDetail.subscription;
+	const isPrintProductType =
+		!!productType.cancellation.usesPrintCancellationFlow;
+	const groupedFriendlyName = isPrintProductType
+		? null
+		: GROUPED_PRODUCT_TYPES[productType.groupedProductType].friendlyName;
 
 	const productIsSubscription = productType.productType === 'supporterplus'; // will we migrate other product like Guardian weekly over to this cancellation flow at some point?
 	const productIsContribution = productType.productType === 'contributions';
@@ -114,18 +114,33 @@ export const ConfirmCancellation = () => {
 
 	const isInTrialPeriod = subscription.trialLength > 0;
 
+	useEffect(() => {
+		pageTitleContext.setPageTitle(
+			isPrintProductType
+				? 'Manage subscription'
+				: `Cancel ${groupedFriendlyName}`,
+		);
+	}, [groupedFriendlyName, isPrintProductType, pageTitleContext]);
+
+	if (isPrintProductType) {
+		return (
+			<PrintConfirmCancellation
+				productDetail={productDetail}
+				productType={productType}
+			/>
+		);
+	}
+
+	if (!routerState) {
+		return <Navigate to="../" />;
+	}
+
 	const progressStepperArray = [
 		{},
 		{},
 		{ isCurrentStep: !routerState.eligibleForFreePeriodOffer },
-		{ isCurrentStep: routerState.eligibleForFreePeriodOffer },
+		{ isCurrentStep: !!routerState.eligibleForFreePeriodOffer },
 	];
-
-	useEffect(() => {
-		pageTitleContext.setPageTitle(
-			`Cancel ${groupedProductType.friendlyName}`,
-		);
-	}, [groupedProductType.friendlyName, pageTitleContext]);
 
 	return (
 		<>

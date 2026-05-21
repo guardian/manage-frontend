@@ -31,10 +31,10 @@ interface AccountActions {
 	setMpapiResponse: (response: MPAPIResponse) => void;
 	setSingleContributionsResponse: (response: SingleProductDetail[]) => void;
 	setAllResponses: (responses: {
-		mdapiResponse?: MembersDataApiResponse;
-		cancelledProductsResponse?: CancelledProductDetail[];
-		mpapiResponse?: MPAPIResponse;
-		singleContributionsResponse?: SingleProductDetail[];
+		mdapiResponse: MembersDataApiResponse | null;
+		cancelledProductsResponse: CancelledProductDetail[] | null;
+		mpapiResponse: MPAPIResponse | null;
+		singleContributionsResponse: SingleProductDetail[] | null;
 	}) => void;
 	setLoadingState: (state: AccountLoadingState) => void;
 	setError: (error: string | null) => void;
@@ -80,20 +80,12 @@ export const useAccountStore = create<AccountStore>()(
 			setAllResponses: (responses) =>
 				set(
 					{
-						...(responses.mdapiResponse && {
-							mdapiResponse: responses.mdapiResponse,
-						}),
-						...(responses.cancelledProductsResponse && {
-							cancelledProductsResponse:
-								responses.cancelledProductsResponse,
-						}),
-						...(responses.mpapiResponse && {
-							mpapiResponse: responses.mpapiResponse,
-						}),
-						...(responses.singleContributionsResponse && {
-							singleContributionsResponse:
-								responses.singleContributionsResponse,
-						}),
+						mdapiResponse: responses.mdapiResponse,
+						cancelledProductsResponse:
+							responses.cancelledProductsResponse,
+						mpapiResponse: responses.mpapiResponse,
+						singleContributionsResponse:
+							responses.singleContributionsResponse,
 						loadingState: AccountLoadingState.Loaded,
 						error: null,
 					},

@@ -133,6 +133,7 @@
     "whatwg-fetch": "2.0.4"
   },
   "dependencies": {
+    "@braze/web-sdk": "6.5.0",
     "@emotion/react": "11.14.0",
     "@guardian/ab-core": "9.0.0",
     "@guardian/ab-react": "10.0.0",
@@ -179,7 +180,10 @@
   },
   "resolutions": {
     "http-proxy-middleware": "^2.0.7",
-    "cross-spawn": "^7.0.5"
+    "cross-spawn": "^7.0.5",
+    "picomatch": "2.3.2",
+    "@stylistic/eslint-plugin/picomatch": "4.0.4",
+    "tinyglobby/picomatch": "4.0.4"
   },
   "license": "UNLICENSED",
   "msw": {

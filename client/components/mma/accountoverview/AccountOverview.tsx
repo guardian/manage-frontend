@@ -3,21 +3,20 @@ import { from, space, textSans17 } from '@guardian/source/foundations';
 import { Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
 import { Fragment, useEffect } from 'react';
-import { useAccountStore } from '@/client/stores/AccountStore';
+import { BrazeBannersSystemDisplay } from '@/client/lib/braze/BrazeBannersSystemDisplay';
+import { MANAGE_PLACEMENT_ID } from '@/client/lib/braze/brazeConfig';
+import { useBrazeBanner } from '@/client/lib/braze/useBrazeBanner';
 import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
 import {
 	subHeadingCss,
 	subHeadingInformationTextCss,
 } from '@/client/styles/headings';
 import { featureSwitches } from '../../../../shared/featureSwitches';
-import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
-	MembersDataApiResponse,
 	ProductDetail,
 	ProductTier,
-	SingleProductDetail,
 } from '../../../../shared/productResponse';
 import { userHasGuardianEmail } from '../../../../shared/productResponse';
 import {
@@ -33,21 +32,12 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
-import { fetchWithDefaultParameters } from '../../../utilities/fetch';
-import {
-	LoadingState,
-	useAsyncLoaderAllSettled,
-} from '../../../utilities/hooks/useAsyncLoaderAllSettled';
-import {
-	allRecurringProductsDetailFetcher,
-	allSingleProductsDetailFetcher,
-} from '../../../utilities/productUtils';
+import { useAccountDataLoader } from '../../../utilities/hooks/useAccountDataLoader';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { DownloadAppCtaVariation1 } from '../shared/DownloadAppCtaVariation1';
 import { DownloadEditionsAppCtaWithImage } from '../shared/DownloadEditionsAppCtaWithImage';
@@ -64,33 +54,6 @@ import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 import { SingleContributionCard } from './SingleContributionCard';
-
-interface ProductFetchResponse {
-	mdapiResponse: MembersDataApiResponse;
-	cancelledProductsResponse: CancelledProductDetail[];
-	mpapiResponse: MPAPIResponse;
-	singleContributionsResponse: SingleProductDetail[];
-}
-
-const productFetchPromisesAndRefs = () => {
-	return [
-		{ promise: allRecurringProductsDetailFetcher(), ref: 'mdapiResponse' },
-		{
-			promise: fetchWithDefaultParameters('/api/cancelled/'),
-			ref: 'cancelledProductsResponse',
-		},
-		{
-			promise: fetchWithDefaultParameters(
-				'/mpapi/user/mobile-subscriptions',
-			),
-			ref: 'mpapiResponse',
-		},
-		{
-			promise: allSingleProductsDetailFetcher(),
-			ref: 'singleContributionsResponse',
-		},
-	];
-};
 
 const benefitsCtasContainerCss = css`
 	> * + * {
@@ -125,12 +88,17 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 		isSpecificProductType(productKey, PRODUCT_TYPES.supporterplus),
 	);
 
+	const hasWeeklyProduct = productKeys?.some((productKey) =>
+		isSpecificProductType(productKey, PRODUCT_TYPES.guardianweekly),
+	);
+
 	const hasGuardianEmail = email ? userHasGuardianEmail(email) : false;
 
 	const hasEditionsAndArchiveAccess =
 		hasDigitalPlusPrint ||
 		isPlusDigitalProduct ||
 		hasDigitalPack ||
+		hasWeeklyProduct ||
 		hasGuardianEmail;
 
 	return (
@@ -139,43 +107,45 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 				isPlusDigitalProduct ||
 				hasGuardianEmail ||
 				hasDigitalPack ||
-				hasSupporterPlus) && (
-					<>
-						<h2 css={subHeadingCss}>
-							Get the most out of your benefits
-						</h2>
-						<div css={benefitsCtasContainerCss}>
-							<DownloadAppCtaVariation1 />
-							<DownloadFeastAppCtaWithImage />
-							{hasEditionsAndArchiveAccess && (
-								<>
-									<DownloadEditionsAppCtaWithImage />
-									<NewspaperArchiveCta />
-								</>
-							)}
-						</div>
-					</>
-				)}
+				hasSupporterPlus ||
+				hasWeeklyProduct) && (
+				<>
+					<h2 css={subHeadingCss}>
+						Get the most out of your benefits
+					</h2>
+					<div css={benefitsCtasContainerCss}>
+						<DownloadAppCtaVariation1 />
+						<DownloadFeastAppCtaWithImage />
+						{hasEditionsAndArchiveAccess && (
+							<>
+								<DownloadEditionsAppCtaWithImage />
+								<NewspaperArchiveCta />
+							</>
+						)}
+					</div>
+				</>
+			)}
 		</>
 	);
 };
 
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
-	const { setAllResponses } = useAccountStore();
+	const { braze, banner } = useBrazeBanner(MANAGE_PLACEMENT_ID);
 	const { previewError, setPreviewError } = useUpgradeProductStore();
 
-	const { data: accountOverviewResponse, loadingState } =
-		useAsyncLoaderAllSettled(
-			productFetchPromisesAndRefs,
-			JsonResponseHandler,
-		);
-
 	const {
+		loadAccountData,
+		isLoading,
+		hasError,
 		mdapiResponse,
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
-	} = (accountOverviewResponse as Partial<ProductFetchResponse>) ?? {};
+	} = useAccountDataLoader();
+
+	useEffect(() => {
+		void loadAccountData();
+	}, [loadAccountData]);
 
 	useEffect(() => {
 		return () => {
@@ -185,40 +155,13 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		};
 	}, [previewError, setPreviewError]);
 
-	useEffect(() => {
-		if (
-			loadingState === LoadingState.HasLoaded &&
-			accountOverviewResponse
-		) {
-			setAllResponses({
-				mdapiResponse: mdapiResponse ?? undefined,
-				cancelledProductsResponse:
-					cancelledProductsResponse ?? undefined,
-				mpapiResponse: mpapiResponse ?? undefined,
-				singleContributionsResponse:
-					singleContributionsResponse ?? undefined,
-			});
-		}
-	}, [
-		loadingState,
-		accountOverviewResponse,
-		mdapiResponse,
-		cancelledProductsResponse,
-		mpapiResponse,
-		singleContributionsResponse,
-		setAllResponses,
-	]);
-
-	if (loadingState == LoadingState.HasError) {
+	if (hasError) {
 		return <GenericErrorScreen />;
 	}
-	if (loadingState == LoadingState.IsLoading) {
+	if (isLoading || !mdapiResponse) {
 		return (
 			<DefaultLoadingView loadingMessage="Loading your account details..." />
 		);
-	}
-	if (accountOverviewResponse === null) {
-		return <GenericErrorScreen />;
 	}
 
 	const failedProductRequestMessages = [];
@@ -254,9 +197,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 
 	const allCancelledProductDetails = cancelledProductsResponse
 		? cancelledProductsResponse.sort(
-			(a: CancelledProductDetail, b: CancelledProductDetail) =>
-				b.subscription.start.localeCompare(a.subscription.start),
-		)
+				(a: CancelledProductDetail, b: CancelledProductDetail) =>
+					b.subscription.start.localeCompare(a.subscription.start),
+		  )
 		: [];
 
 	const allProductCategories = [
@@ -371,6 +314,10 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				mpapiResponse={mpapiResponse}
 			/>
 
+			{braze && banner && (
+				<BrazeBannersSystemDisplay braze={braze} banner={banner} />
+			)}
+
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}
 				isFromApp={isFromApp}
@@ -392,10 +339,20 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				<ProblemAlert
 					title="Unable to upgrade your subscription"
 					message={
-						<p css={[subHeadingInformationTextCss, css`margin-bottom: 0; ${from.tablet} { margin-bottom: 0; }`]}>
+						<p
+							css={[
+								subHeadingInformationTextCss,
+								css`
+									margin-bottom: 0;
+									${from.tablet} {
+										margin-bottom: 0;
+									}
+								`,
+							]}
+						>
 							You are not currently eligible for an upgrade
-							online. Please find the customer care
-							contact to discuss your upgrade option:{' '}
+							online. Please find the customer care contact to
+							discuss your upgrade option:{' '}
 							<a href="https://manage.theguardian.com/help-centre">
 								https://manage.theguardian.com/help-centre
 							</a>

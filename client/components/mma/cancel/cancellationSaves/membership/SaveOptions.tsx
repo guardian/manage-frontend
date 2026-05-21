@@ -12,7 +12,6 @@ import {
 	Stack,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
-import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../../shared/productResponse';
@@ -38,11 +37,8 @@ import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
 import { Card } from '../../../shared/Card';
 import { Heading } from '../../../shared/Heading';
 import { ProgressStepper } from '../../../shared/ProgressStepper';
-import type {
-	CancellationContextInterface,
-	CancellationRouterState,
-} from '../../CancellationContainer';
-import { CancellationContext } from '../../CancellationContainer';
+import type { CancellationRouterState } from '../../CancellationContainer';
+import { useCancellationContext } from '../../CancellationContainer';
 import {
 	cardHeaderDivCss,
 	cardSectionCss,
@@ -77,9 +73,7 @@ export const SaveOptions = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 	const membership = cancellationContext.productDetail;
 
 	if (!membership) {
