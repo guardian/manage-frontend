@@ -1,10 +1,13 @@
 import { css } from '@emotion/react';
 import type { SerializedStyles } from '@emotion/react';
 import { trackEvent } from '@/client/utilities/analytics';
-import { androidAppUrl } from '@/shared/externalLinks';
+import {
+	type StoreLinksMapKey,
+	STORES_LINKS_MAP,
+} from '@/shared/externalLinks';
 
 interface AndroidPlayStoreButtonProps {
-	link: string;
+	linkKey: StoreLinksMapKey;
 	additionalCss?: SerializedStyles;
 	overrideButtonHeight?: string;
 }
@@ -19,13 +22,13 @@ export const AndroidPlayStoreButton = (props: AndroidPlayStoreButtonProps) => {
 
 	return (
 		<a
-			href={androidAppUrl}
+			href={STORES_LINKS_MAP[props.linkKey]}
 			target="blank"
 			onClick={() => {
 				trackEvent({
 					eventCategory: 'cancellation_offer_confirmation',
 					eventAction: 'click',
-					eventLabel: 'android_app_cta_click',
+					eventLabel: `android_app_cta_click_${props.linkKey}`,
 				});
 			}}
 			css={linkStyles}

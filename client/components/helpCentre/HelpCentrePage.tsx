@@ -1,5 +1,5 @@
 import { css, Global } from '@emotion/react';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { fonts } from '@/client/styles/fonts';
 import { initFeatureSwitchUrlParamOverride } from '../../../shared/featureSwitches';
@@ -8,6 +8,7 @@ import { useAnalytics } from '../../utilities/hooks/useAnalytics';
 import { useConsent } from '../../utilities/hooks/useConsent';
 import { useScrollToHashElement } from '../../utilities/hooks/useScrollToHashElement';
 import { useScrollToTop } from '../../utilities/hooks/useScrollToTop';
+import { lazyWithRetry } from '../../utilities/lazyWithRetry';
 import { setPageTitle } from '../../utilities/pageTitle';
 import type { SignInStatus } from '../../utilities/signInStatus';
 import { isSignedIn } from '../../utilities/signInStatus';
@@ -25,30 +26,30 @@ initFeatureSwitchUrlParamOverride();
 // how to name the chunks these dynamic imports produce
 // More information: https://webpack.js.org/api/module-methods/#magic-comments
 
-const HelpCentre = lazy(() =>
+const HelpCentre = lazyWithRetry(() =>
 	import(/* webpackChunkName: "HelpCentre" */ './HelpCentre').then(
 		({ HelpCentre }) => ({ default: HelpCentre }),
 	),
 );
 
-const HelpCentreArticle = lazy(() =>
+const HelpCentreArticle = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "HelpCentreArticle" */ './HelpCentreArticle'
 	).then(({ HelpCentreArticle }) => ({ default: HelpCentreArticle })),
 );
 
-const HelpCentreTopic = lazy(() =>
+const HelpCentreTopic = lazyWithRetry(() =>
 	import(/* webpackChunkName: "HelpCentreTopic" */ './HelpCentreTopic').then(
 		({ HelpCentreTopic }) => ({ default: HelpCentreTopic }),
 	),
 );
 
-const ContactUs = lazy(() =>
+const ContactUs = lazyWithRetry(() =>
 	import(/* webpackChunkName: "ContactUs" */ './contactUs/ContactUs').then(
 		({ ContactUs }) => ({ default: ContactUs }),
 	),
 );
-const DiagnosticInformation = lazy(() =>
+const DiagnosticInformation = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "DiagnosticInformation" */ './diagnosticInformation/DiagnosticInformation'
 	).then(({ DiagnosticInformation }) => ({ default: DiagnosticInformation })),
@@ -77,7 +78,14 @@ const HelpCentreRouter = () => {
 	]
 	*/
 
-	const knownIssues: KnownIssueObj[] = [];
+	const knownIssues: KnownIssueObj[] = [
+		{
+			date: '26 May 2026 12:00',
+			message:
+				'We are updating our app experience. From 26th May, you will be required to sign in to access the Editions app. Access is included with Digital Plus, Print, and Guardian Weekly subscriptions, or those with a direct app store subscription.',
+			link: 'https://manage.theguardian.com/help-centre/article/guardian-editions-app',
+		},
+	];
 
 	return (
 		<Main signInStatus={signInStatus} isHelpCentrePage>
@@ -122,6 +130,10 @@ const HelpCentreRouter = () => {
 							<Route
 								path="/help-centre/contact-us/:urlTopicId/:urlSubTopicId/:urlSubSubTopicId/:urlSuccess"
 								element={<ContactUs />}
+							/>
+							<Route
+								path="/help-centre/public-diagnostic-information"
+								element={<DiagnosticInformation />}
 							/>
 							<Route
 								path="/help-centre/diagnostic-information"

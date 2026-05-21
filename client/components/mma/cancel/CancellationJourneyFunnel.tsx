@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { hasCancellationFlow } from '@/client/utilities/productUtils';
 import { featureSwitches } from '@/shared/featureSwitches';
@@ -8,11 +7,8 @@ import {
 } from '@/shared/productResponse';
 import type { ProductTypeKeys } from '@/shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
-import { CancellationContext } from './CancellationContainer';
-import type {
-	CancellationContextInterface,
-	CancellationRouterState,
-} from './CancellationContainer';
+import { useCancellationContext } from './CancellationContainer';
+import type { CancellationRouterState } from './CancellationContainer';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { ContactUsToCancel } from './ContactUsToCancel';
 
@@ -27,9 +23,7 @@ export const CancellationJourneyFunnel = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 
 	const productDetail = cancellationContext.productDetail;
 	if (!productDetail) {

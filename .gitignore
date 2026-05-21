@@ -32,3 +32,5 @@ cypress.env.json
 cypress/downloads/downloads.html
 
 .yarn
+
+.env.sentry-build-plugin

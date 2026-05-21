@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import { space, textSans17 } from '@guardian/source/foundations';
 import { Button, Stack } from '@guardian/source/react-components';
-import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { CallCentreAccordion } from '@/client/components/shared/CallCentreAccordion';
 import type {
@@ -19,11 +18,8 @@ import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
 import { Heading } from '../../shared/Heading';
-import type {
-	CancellationContextInterface,
-	CancellationRouterState,
-} from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
+import type { CancellationRouterState } from '../CancellationContainer';
+import { useCancellationContext } from '../CancellationContainer';
 import { ineligibleForSave } from './saveEligibilityCheck';
 
 function getNextRoute(productToCancel: ProductDetail): string {
@@ -49,9 +45,7 @@ export const CancellationLanding = () => {
 	const routerState = location.state as CancellationRouterState;
 
 	const navigate = useNavigate();
-	const { productDetail: productToCancel } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const { productDetail: productToCancel } = useCancellationContext();
 
 	const {
 		data,

@@ -86,8 +86,13 @@ export const wideButtonLayoutCss = css`
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
+	margin-bottom: ${space[2]}px;
+
+	${from.tablet} {
+		margin-bottom: 0;
+	}
 
 	> * + * {
-		margin-top: ${space[3]}px;
+		margin-top: ${space[4]}px;
 	}
 `;

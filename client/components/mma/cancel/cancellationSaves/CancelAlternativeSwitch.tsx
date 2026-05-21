@@ -15,7 +15,6 @@ import {
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
-import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Pill } from '@/client/components/shared/Pill';
 import { measure } from '@/client/styles/typography';
@@ -28,8 +27,7 @@ import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
 import { Heading } from '../../shared/Heading';
 import { ProgressStepper } from '../../shared/ProgressStepper';
-import type { CancellationContextInterface } from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
+import { useCancellationContext } from '../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 import { reasonIsEligibleForSwitch } from './saveEligibilityCheck';
 
@@ -247,9 +245,7 @@ export const CancelAlternativeSwitch = () => {
 	const routerState = location.state as RouterSate;
 	const navigate = useNavigate();
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 
 	const productDetail = cancellationContext.productDetail;
 	const mainPlan = getMainPlan(productDetail.subscription);

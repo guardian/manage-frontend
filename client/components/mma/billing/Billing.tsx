@@ -424,7 +424,11 @@ const BillingPage = () => {
 		(allProductDetails.length === 0 && appSubscriptions.length === 0) ||
 		(allProductDetails.length === 0 && !featureSwitches.appSubscriptions)
 	) {
-		return <EmptyAccountOverview />;
+		return (
+			<EmptyAccountOverview
+				email={mdapiResponse.user?.email ?? 'badMDAPIresponse2'}
+			/>
+		);
 	}
 
 	return (

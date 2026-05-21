@@ -1,24 +1,24 @@
 import { css } from '@emotion/react';
-import {
-	from,
-	headlineBold28,
-	palette,
-	space,
-	textSans17,
-	until,
-} from '@guardian/source/foundations';
+import { from, space, textSans17 } from '@guardian/source/foundations';
 import { Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+import { BrazeBannersSystemDisplay } from '@/client/lib/braze/BrazeBannersSystemDisplay';
+import { MANAGE_PLACEMENT_ID } from '@/client/lib/braze/brazeConfig';
+import { useBrazeBanner } from '@/client/lib/braze/useBrazeBanner';
+import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
+import {
+	subHeadingCss,
+	subHeadingInformationTextCss,
+} from '@/client/styles/headings';
 import { featureSwitches } from '../../../../shared/featureSwitches';
-import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
-	MembersDataApiResponse,
 	ProductDetail,
-	SingleProductDetail,
+	ProductTier,
 } from '../../../../shared/productResponse';
+import { userHasGuardianEmail } from '../../../../shared/productResponse';
 import {
 	getSpecificProductTypeFromProductKey,
 	isPlusDigitalProductType,
@@ -32,29 +32,22 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
-import { fetchWithDefaultParameters } from '../../../utilities/fetch';
-import {
-	LoadingState,
-	useAsyncLoaderAllSettled,
-} from '../../../utilities/hooks/useAsyncLoaderAllSettled';
-import {
-	allRecurringProductsDetailFetcher,
-	allSingleProductsDetailFetcher,
-} from '../../../utilities/productUtils';
+import { useAccountDataLoader } from '../../../utilities/hooks/useAccountDataLoader';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { DownloadAppCtaVariation1 } from '../shared/DownloadAppCtaVariation1';
+import { DownloadEditionsAppCtaWithImage } from '../shared/DownloadEditionsAppCtaWithImage';
 import { DownloadFeastAppCtaWithImage } from '../shared/DownloadFeastAppCtaWithImage';
 import type { IsFromAppProps } from '../shared/IsFromAppProps';
 import { NewspaperArchiveCta } from '../shared/NewspaperArchiveCta';
 import { nonServiceableCountries } from '../shared/NonServiceableCountries';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { ProblemAlert } from '../shared/ProblemAlert';
+import { CanadaStrike } from './CanadaStrike';
 import { CancelledProductCard } from './CancelledProductCard';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
@@ -62,70 +55,114 @@ import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 import { SingleContributionCard } from './SingleContributionCard';
 
-interface ProductFetchResponse {
-	mdapiResponse: MembersDataApiResponse;
-	cancelledProductsResponse: CancelledProductDetail[];
-	mpapiResponse: MPAPIResponse;
-	singleContributionsResponse: SingleProductDetail[];
-}
-
-const productFetchPromisesAndRefs = () => {
-	return [
-		{ promise: allRecurringProductsDetailFetcher(), ref: 'mdapiResponse' },
-		{
-			promise: fetchWithDefaultParameters('/api/cancelled/'),
-			ref: 'cancelledProductsResponse',
-		},
-		{
-			promise: fetchWithDefaultParameters(
-				'/mpapi/user/mobile-subscriptions',
-			),
-			ref: 'mpapiResponse',
-		},
-		{
-			promise: allSingleProductsDetailFetcher(),
-			ref: 'singleContributionsResponse',
-		},
-	];
-};
-
-const subHeadingCss = css`
-	margin: ${space[6]}px 0 ${space[6]}px;
-	border-top: 1px solid ${palette.neutral['86']};
-	${headlineBold28};
-	${until.tablet} {
-		font-size: 1.25rem;
-		line-height: 1.6;
+const benefitsCtasContainerCss = css`
+	> * + * {
+		margin-top: ${space[4]}px;
 	}
 	${from.tablet} {
-		margin-top: ${space[8]}px;
+		> * + * {
+			margin-top: ${space[5]}px;
+		}
 	}
 `;
 
+type BenefitsCtasProps = {
+	email: string;
+	productKeys?: ProductTier[];
+};
+
+export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
+	const hasDigitalPlusPrint = productKeys?.some((productKey) =>
+		isSpecificProductType(productKey, PRODUCT_TYPES.tierthree),
+	);
+
+	const isPlusDigitalProduct = productKeys?.some((productKey) =>
+		isPlusDigitalProductType(productKey),
+	);
+
+	const hasDigitalPack = productKeys?.some((productKey) =>
+		isSpecificProductType(productKey, PRODUCT_TYPES.digipack),
+	);
+
+	const hasSupporterPlus = productKeys?.some((productKey) =>
+		isSpecificProductType(productKey, PRODUCT_TYPES.supporterplus),
+	);
+
+	const hasWeeklyProduct = productKeys?.some((productKey) =>
+		isSpecificProductType(productKey, PRODUCT_TYPES.guardianweekly),
+	);
+
+	const hasGuardianEmail = email ? userHasGuardianEmail(email) : false;
+
+	const hasEditionsAndArchiveAccess =
+		hasDigitalPlusPrint ||
+		isPlusDigitalProduct ||
+		hasDigitalPack ||
+		hasWeeklyProduct ||
+		hasGuardianEmail;
+
+	return (
+		<>
+			{(hasDigitalPlusPrint ||
+				isPlusDigitalProduct ||
+				hasGuardianEmail ||
+				hasDigitalPack ||
+				hasSupporterPlus ||
+				hasWeeklyProduct) && (
+				<>
+					<h2 css={subHeadingCss}>
+						Get the most out of your benefits
+					</h2>
+					<div css={benefitsCtasContainerCss}>
+						<DownloadAppCtaVariation1 />
+						<DownloadFeastAppCtaWithImage />
+						{hasEditionsAndArchiveAccess && (
+							<>
+								<DownloadEditionsAppCtaWithImage />
+								<NewspaperArchiveCta />
+							</>
+						)}
+					</div>
+				</>
+			)}
+		</>
+	);
+};
+
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
-	const { data: accountOverviewResponse, loadingState } =
-		useAsyncLoaderAllSettled(
-			productFetchPromisesAndRefs,
-			JsonResponseHandler,
-		);
-	if (loadingState == LoadingState.HasError) {
-		return <GenericErrorScreen />;
-	}
-	if (loadingState == LoadingState.IsLoading) {
-		return (
-			<DefaultLoadingView loadingMessage="Loading your account details..." />
-		);
-	}
-	if (accountOverviewResponse === null) {
-		return <GenericErrorScreen />;
-	}
+	const { braze, banner } = useBrazeBanner(MANAGE_PLACEMENT_ID);
+	const { previewError, setPreviewError } = useUpgradeProductStore();
 
 	const {
+		loadAccountData,
+		isLoading,
+		hasError,
 		mdapiResponse,
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
-	} = accountOverviewResponse as Partial<ProductFetchResponse>;
+	} = useAccountDataLoader();
+
+	useEffect(() => {
+		void loadAccountData();
+	}, [loadAccountData]);
+
+	useEffect(() => {
+		return () => {
+			if (previewError) {
+				setPreviewError(null);
+			}
+		};
+	}, [previewError, setPreviewError]);
+
+	if (hasError) {
+		return <GenericErrorScreen />;
+	}
+	if (isLoading || !mdapiResponse) {
+		return (
+			<DefaultLoadingView loadingMessage="Loading your account details..." />
+		);
+	}
 
 	const failedProductRequestMessages = [];
 	if (!cancelledProductsResponse) {
@@ -208,28 +245,28 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		appSubscriptions.length === 0 &&
 		singleContributions.length === 0
 	) {
-		return <EmptyAccountOverview />;
+		return (
+			<EmptyAccountOverview
+				email={mdapiResponse.user?.email ?? 'badMDAPIresponse1'}
+			/>
+		);
 	}
+
+	const allActiveProductKeys = allActiveProductDetails.map(
+		({ mmaProductKey }) => mmaProductKey,
+	);
 
 	const maybeFirstPaymentFailure = allActiveProductDetails.find(
 		(product) => product.alertText,
 	);
 
 	const hasDigiSubAndContribution =
-		allActiveProductDetails.some((productDetail) =>
+		allActiveProductKeys.some((productDetail) =>
 			isSpecificProductType(productDetail, PRODUCT_TYPES.contributions),
 		) &&
-		allActiveProductDetails.some((productDetail) =>
+		allActiveProductKeys.some((productDetail) =>
 			isSpecificProductType(productDetail, PRODUCT_TYPES.digipack),
 		);
-
-	const hasDigitalPlusPrint = allActiveProductDetails.some((productDetail) =>
-		isSpecificProductType(productDetail, PRODUCT_TYPES.tierthree),
-	);
-
-	const isPlusDigitalProduct = allActiveProductDetails.some((productDetail) =>
-		isPlusDigitalProductType(productDetail),
-	);
 
 	const hasNonServiceableCountry = nonServiceableCountries.includes(
 		allActiveProductDetails.find(isProduct)?.billingCountry as string,
@@ -239,6 +276,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		!maybeFirstPaymentFailure &&
 		!hasDigiSubAndContribution &&
 		!hasNonServiceableCountry;
+
+	const isEligibleToUpsell =
+		!maybeFirstPaymentFailure && !hasNonServiceableCountry;
 
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
@@ -255,12 +295,28 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		return specificProductType.groupedProductType;
 	};
 
+	const possiblyAffectedByCanadaPostStrike = allActiveProductDetails.some(
+		(product) => {
+			const deliveryCountry =
+				product.subscription.deliveryAddress?.country?.toUpperCase();
+			return (
+				(product.mmaProductKey === 'Tier Three' ||
+					product.mmaProductKey === 'Guardian Weekly - ROW') &&
+				(deliveryCountry === 'CANADA' || deliveryCountry === 'CA')
+			);
+		},
+	);
+
 	return (
 		<>
 			<PersonalisedHeader
 				mdapiResponse={mdapiResponse}
 				mpapiResponse={mpapiResponse}
 			/>
+
+			{braze && banner && (
+				<BrazeBannersSystemDisplay braze={braze} banner={banner} />
+			)}
 
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}
@@ -279,6 +335,35 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					}
 				/>
 			)}
+			{previewError && (
+				<ProblemAlert
+					title="Unable to upgrade your subscription"
+					message={
+						<p
+							css={[
+								subHeadingInformationTextCss,
+								css`
+									margin-bottom: 0;
+									${from.tablet} {
+										margin-bottom: 0;
+									}
+								`,
+							]}
+						>
+							You are not currently eligible for an upgrade
+							online. Please find the customer care contact to
+							discuss your upgrade option:{' '}
+							<a href="https://manage.theguardian.com/help-centre">
+								https://manage.theguardian.com/help-centre
+							</a>
+						</p>
+					}
+					additionalcss={css`
+						margin-top: ${space[5]}px;
+					`}
+				/>
+			)}
+			{possiblyAffectedByCanadaPostStrike && <CanadaStrike />}
 			{uniqueProductCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
@@ -307,6 +392,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 									}
 									productDetail={productDetail}
 									isEligibleToSwitch={isEligibleToSwitch}
+									isEligibleToUpsell={isEligibleToUpsell}
 									user={mdapiResponse.user}
 								/>
 							))}
@@ -371,19 +457,11 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					</Fragment>
 				);
 			})}
-			{(hasDigitalPlusPrint || isPlusDigitalProduct) && (
-				<>
-					<h2 css={subHeadingCss}>
-						Get the most out of your benefits
-					</h2>
-					<Stack space={6}>
-						{featureSwitches.digitalArchiveCta && (
-							<NewspaperArchiveCta />
-						)}
-						<DownloadAppCtaVariation1 />
-						<DownloadFeastAppCtaWithImage />
-					</Stack>
-				</>
+			{mdapiResponse.user && (
+				<BenefitsCtas
+					email={mdapiResponse.user.email}
+					productKeys={allActiveProductKeys}
+				/>
 			)}
 		</>
 	);
@@ -393,6 +471,7 @@ export const AccountOverview = ({ isFromApp }: IsFromAppProps) => (
 	<PageContainer
 		selectedNavItem={NAV_LINKS.accountOverview}
 		pageTitle="Account overview"
+		minimalFooter
 	>
 		<AccountOverviewPage isFromApp={isFromApp} />
 	</PageContainer>

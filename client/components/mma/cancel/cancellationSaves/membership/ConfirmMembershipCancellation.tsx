@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { palette, space, textSans17 } from '@guardian/source/foundations';
 import { Button, Stack } from '@guardian/source/react-components';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { MDA_TEST_USER_HEADER } from '../../../../../../shared/productResponse';
 import type {
@@ -16,19 +16,14 @@ import { GenericErrorScreen } from '../../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../../shared/asyncComponents/DefaultApiResponseHandler';
 import { Heading } from '../../../shared/Heading';
 import { ProgressStepper } from '../../../shared/ProgressStepper';
-import type {
-	CancellationContextInterface,
-	CancellationRouterState,
-} from '../../CancellationContainer';
-import { CancellationContext } from '../../CancellationContainer';
+import type { CancellationRouterState } from '../../CancellationContainer';
+import { useCancellationContext } from '../../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../../cancellationReason';
 
 export const ConfirmMembershipCancellation = () => {
 	const navigate = useNavigate();
 
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const { productDetail, productType } = useCancellationContext();
 
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const [loadingFailed, setLoadingFailed] = useState<boolean>(false);
