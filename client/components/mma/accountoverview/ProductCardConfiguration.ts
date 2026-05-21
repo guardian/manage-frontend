@@ -108,10 +108,6 @@ export const productCardConfiguration: Record<
 		colour: productColour.newspaper,
 		getBenefitsSectionCopy: digitalBenefitsCopy,
 	},
-	guardianweeklygift: {
-		colour: productColour.guardianWeekly,
-		getBenefitsSectionCopy: guardianWeeklyGiftBenefitsCopy,
-	},
 	guardianweekly: {
 		colour: productColour.guardianWeekly,
 		getBenefitsSectionCopy: guardianWeeklyBenefitsCopy,

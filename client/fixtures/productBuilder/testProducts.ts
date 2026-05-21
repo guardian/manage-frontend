@@ -7,7 +7,6 @@ import {
 	baseDigitalVoucherPlus,
 	baseGuardianAdLite,
 	baseGuardianWeekly,
-	baseGuardianWeeklyGift,
 	baseHomeDelivery,
 	baseHomeDeliverySaturdayPlus,
 	baseMembership,
@@ -42,7 +41,7 @@ export function guardianWeeklyPaidByCard() {
 }
 
 export function guardianWeeklyGiftPurchase() {
-	return new ProductBuilder(baseGuardianWeeklyGift())
+	return new ProductBuilder(baseGuardianWeekly())
 		.payByCard()
 		.gift(true)
 		.getProductDetailObject();

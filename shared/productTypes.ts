@@ -47,7 +47,6 @@ type ProductFriendlyName =
 	| 'digital plus'
 	| 'all-access digital subscription'
 	| 'Guardian Weekly subscription'
-	| 'Guardian Weekly gift subscription'
 	| 'digital + print subscription'
 	| 'subscription'
 	| 'support'
@@ -68,7 +67,6 @@ type ProductUrlPart =
 	| 'digital'
 	| 'support'
 	| 'guardianweekly'
-	| 'guardianweeklygift'
 	| 'digital+print'
 	| 'subscriptions'
 	| 'recurringsupport'
@@ -79,7 +77,6 @@ type SfCaseProduct =
 	| 'Recurring - Contributions'
 	| 'Voucher Subscriptions'
 	| 'Guardian Weekly'
-	| 'Guardian Weekly - Gift'
 	| 'Digital Pack Subscriptions'
 	| 'Supporter Plus'
 	| 'Tier Three'
@@ -291,7 +288,6 @@ export type ProductTypeKeys =
 	| 'voucherplusdigital'
 	| 'digitalvoucher'
 	| 'digitalvoucherplusdigital'
-	| 'guardianweeklygift'
 	| 'guardianweekly'
 	| 'digipack'
 	| 'supporterplus'
@@ -723,61 +719,6 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 		delivery: {
 			showAddress: showDeliveryAddressCheck,
-		},
-	},
-	guardianweeklygift: {
-		// TODO Double check with someone in the team.
-		productTitle: () => 'Guardian Weekly - Gift',
-		friendlyName: 'Guardian Weekly gift subscription',
-		shortFriendlyName: 'Guardian Weekly - Gift',
-		productType: 'guardianweeklygift',
-		groupedProductType: 'subscriptions',
-		allProductsProductTypeFilterString: 'Weekly',
-		urlPart: 'guardianweeklygift',
-		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
-		softOptInIDs: [
-			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.GuardianWeeklyNewsletter,
-		],
-		getOphanProductType: () => 'PRINT_SUBSCRIPTION', // TODO create a GUARDIAN_WEEKLY Product in Ophan data model
-		// Is this also considered a print subscription in Ophan or should it be digital/separate?
-		renewalMetadata: {
-			alternateButtonText: 'Subscribe here',
-			urlSuffix: 'subscribe/weekly-gift', // TODO confirm this is the correct URL suffix for gift subscription renewal (is there a flow for this?)
-			supportReferer: 'gw_renewal',
-		},
-		holidayStops: {
-			issueKeyword: 'issue',
-			alternateNoticeString:
-				'notice by the Tuesday of the week before your issue is due',
-		},
-		delivery: {
-			// TODO should this be included in the gift subscription or just the standard one?
-			showAddress: showDeliveryAddressCheck,
-			enableDeliveryInstructionsUpdate: false,
-			records: {
-				productNameForProblemReport: 'Guardian Weekly - Gift',
-				numberOfProblemRecordsToShow: 4,
-				contactUserOnExistingProblemReport: false,
-				availableProblemTypes: commonDeliveryProblemTypes,
-			},
-		},
-		cancellation: {
-			reasons: shuffledPrintProductsCancellationReasons,
-			sfCaseProduct: 'Guardian Weekly - Gift',
-			checkForOutstandingCredits: true,
-			flowWrapper: physicalSubsCancellationFlowWrapper,
-			startPageBody: gwCancellationFlowStart, // TODO should this be different too for the gift subscription?
-			startPageOfferEffectiveDateOptions: true,
-			summaryReasonSpecificPara: () => undefined,
-			onlyShowSupportSectionIfAlternateText: false,
-			alternateSupportButtonText: () => undefined,
-			alternateSupportButtonUrlSuffix: () => undefined,
-			swapFeedbackAndContactUs: true,
-		},
-		fulfilmentDateCalculator: {
-			productFilenamePart: 'Guardian Weekly - Gift',
-			explicitSingleDayOfWeek: 'Friday',
 		},
 	},
 	guardianweekly: {

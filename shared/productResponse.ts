@@ -82,7 +82,6 @@ const productKeys = [
 	'Newspaper Digital Voucher',
 	'Newspaper Digital Voucher + Digital',
 	'Contributor',
-	'Guardian Weekly - Gift',
 	'Guardian Weekly Zone A',
 	'Guardian Weekly Zone B',
 	'Guardian Weekly Zone C',
@@ -385,9 +384,6 @@ export function getSpecificProductTypeFromProductKey(
 			break;
 		case 'guardianpatron':
 			productType = PRODUCT_TYPES.guardianpatron;
-			break;
-		case 'Guardian Weekly - Gift':
-			productType = PRODUCT_TYPES.guardianweeklygift;
 			break;
 		case 'Guardian Weekly Zone A':
 		case 'Guardian Weekly Zone B':

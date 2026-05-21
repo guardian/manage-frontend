@@ -107,6 +107,8 @@ export const ProductCard = ({
 
 	const isGifted = isGift(productDetail.subscription);
 	const userIsGifter = isGifted && productDetail.isPaidTier;
+	const gwGiftSubscription =
+		isGifted && specificProductType.productType === 'guardianweekly';
 	const giftPurchaseDate = productDetail.subscription.lastPaymentDate;
 	const shouldShowJoinDateNotStartDate =
 		groupedProductType.shouldShowJoinDateNotStartDate;
@@ -142,7 +144,7 @@ export const ProductCard = ({
 			? 'supporter benefits'
 			: groupedProductType.friendlyName;
 
-	const cardConfig = isGifted
+	const cardConfig = gwGiftSubscription
 		? getGuardianWeeklyGiftBenefitsCopy
 		: productCardConfiguration[specificProductType.productType];
 
@@ -309,7 +311,7 @@ export const ProductCard = ({
 							productType={specificProductType.productType}
 							subscriptionPlan={mainPlan}
 							overrideBenefits={
-								isGifted
+								gwGiftSubscription
 									? getGuardianWeeklyGiftBenefits()
 									: null
 							}
