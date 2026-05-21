@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { conf } from '../../../../server/config';
 import { AccountOverviewIcon } from '../../mma/shared/assets/AccountOverviewIcon';
 import { CreditCardIcon } from '../../mma/shared/assets/CreditCardIcon';
@@ -16,7 +17,7 @@ export interface NavItem {
 	title: string;
 	link: string;
 	local?: boolean;
-	icon?: (props: NavIconProps) => JSX.Element;
+	icon?: (props: NavIconProps) => ReactElement;
 }
 
 export interface MenuSpecificNavItem extends NavItem {

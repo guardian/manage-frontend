@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import {
 	from,
 	headlineBold20,
-	headlineBold28,
+	headlineBold24,
 	space,
 	textSans17,
 	textSansBold17,
@@ -17,24 +17,26 @@ export const productCardTitleCss = (dark?: boolean) => css`
 	max-width: calc(100% - 97px); // Leave space for gift ribbon
 
 	${from.tablet} {
-		${headlineBold28};
+		${headlineBold24};
 	}
 `;
 
 export const sectionHeadingCss = css`
 	${textSansBold17};
 	margin-top: 0;
-	margin-bottom: ${space[2]}px;
+	margin-bottom: ${space[1]}px;
 `;
 
 export const productDetailLayoutCss = css`
 	> * + * {
-		margin-top: ${space[5]}px;
+		margin-top: ${space[6]}px;
 	}
 
 	${from.tablet} {
 		display: flex;
 		flex-direction: row;
+		margin-bottom: ${space[2]}px;
+
 		> * + * {
 			margin-top: 0;
 			margin-left: auto;
@@ -46,6 +48,11 @@ export const productDetailLayoutCss = css`
 export const keyValueCss = css`
 	${textSans17};
 	margin: 0;
+	margin-bottom: ${space[2]}px;
+
+	${from.tablet} {
+		margin-bottom: 0;
+	}
 
 	div + div {
 		margin-top: ${space[1]}px;

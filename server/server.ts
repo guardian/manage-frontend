@@ -24,13 +24,6 @@ if (conf.SERVER_DSN) {
 		release: WEBPACK_BUILD || 'local',
 		environment: conf.DOMAIN,
 	});
-	server.use(
-		Sentry.Handlers.requestHandler({
-			ip: false,
-			user: false,
-			request: ['method', 'query_string', 'url'], // this list is explicit, to avoid sending cookies
-		}),
-	);
 }
 
 if (conf.DOMAIN === 'thegulocal.com') {
@@ -146,7 +139,8 @@ server.use('/help-centre', routes.helpcentre);
 server.use(routes.frontend);
 
 if (conf.SERVER_DSN) {
-	server.use(Sentry.Handlers.errorHandler());
+	Sentry.setupExpressErrorHandler(server);
 }
+
 server.listen(port);
 log.info(`Serving at http://localhost:${port}`);

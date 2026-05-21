@@ -1,6 +1,7 @@
-import type { OphanProduct } from '../../shared/ophanTypes';
+import * as Sentry from '@sentry/browser';
 import type { ProductDetail } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
+import { getCookie } from './cookies';
 
 interface Event {
 	eventCategory: string;
@@ -22,33 +23,54 @@ export const trackEvent = ({
 	eventLabel,
 	eventValue,
 }: Event) => {
-	if (window.guardian && window.guardian.ophan) {
-		const ophanProduct: OphanProduct | undefined =
-			product &&
-			product.productType.getOphanProductType &&
-			product.productType.getOphanProductType(product.productDetail);
-
-		window.guardian.ophan.record({
-			componentEvent: {
-				component: {
-					componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
-					products: ophanProduct ? [ophanProduct] : undefined,
-					campaignCode: window.guardian.INTCMP,
-					labels: [
-						eventCategory.toUpperCase(),
-						eventAction.toUpperCase(),
-						...(eventLabel ? [eventLabel.toUpperCase()] : []),
-						...(MMA_AB_TEST_DIMENSION_VALUE
-							? [MMA_AB_TEST_DIMENSION_VALUE]
-							: []),
-					],
-				},
-				action: 'VIEW',
-				value: eventValue !== undefined ? `${eventValue}` : undefined,
-				abTest: window.guardian.abTest,
-			},
-		});
+	if (typeof window === 'undefined') {
+		return;
 	}
+
+	const ophanProduct =
+		product &&
+		product.productType.getOphanProductType &&
+		product.productType.getOphanProductType(product.productDetail);
+
+	const labels = [
+		eventCategory.toUpperCase(),
+		eventAction.toUpperCase(),
+		...(eventLabel ? [eventLabel.toUpperCase()] : []),
+		...(MMA_AB_TEST_DIMENSION_VALUE ? [MMA_AB_TEST_DIMENSION_VALUE] : []),
+	];
+
+	void import('@guardian/ophan-tracker-js/MMA')
+		.then(({ record }) => {
+			record({
+				componentEvent: {
+					component: {
+						componentType: 'ACQUISITIONS_MANAGE_MY_ACCOUNT',
+						products: ophanProduct ? [ophanProduct] : undefined,
+						campaignCode: window.guardian?.INTCMP,
+						labels,
+					},
+					action: 'VIEW',
+					value:
+						eventValue !== undefined ? `${eventValue}` : undefined,
+					abTest: window.guardian?.abTest,
+				},
+			});
+		})
+		.catch(() => {
+			// Tracking is non-critical; ignore blocked or failed Ophan loads.
+		});
 };
 
 export const trackEventInOphanOnly = (event: Event) => trackEvent(event);
+
+export const setAnalyticsUserFromConsentDate = () => {
+	const consentDate = getCookie('consentDate');
+	if (!consentDate) {
+		Sentry.setUser(null);
+		return;
+	}
+
+	Sentry.setUser({
+		id: consentDate,
+	});
+};

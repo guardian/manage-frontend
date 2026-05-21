@@ -32,6 +32,64 @@ export function formatAmount(amount: number) {
 	return Number.isInteger(amount) ? amount : amount.toFixed(2);
 }
 
+/**
+ * Validates if a string represents a valid decimal amount input.
+ * Allows whole numbers, numbers with decimal or comma as decimal separator,
+ * and up to 2 decimal places (e.g., '2', '2.', '2,', '2.5', '2,50').
+ */
+export function isValidDecimalInput(input: string): boolean {
+	return /^\d+(?:[.,]\d{0,2})?$/.test(input);
+}
+
+/**
+ * Removes leading zeros from a numeric string while preserving the number's value.
+ * Keeps at least one digit if the string represents zero.
+ * Examples: '007' → '7', '000' → '0', '0123' → '123'
+ */
+export function removeLeadingZeros(input: string): string {
+	if (input === '' || input === '0') {
+		return input;
+	}
+	return input.replace(/^0+(?=\d)/, '');
+}
+
+/**
+ * Processes user input for decimal amounts by trimming, validating, and normalizing.
+ * Returns the normalized value if valid, null if invalid.
+ * Normalizes comma decimal separators to periods (e.g., '1,5' → '1.5').
+ * Examples: ' 1,5 ' → '1.5', '123.45' → '123.45', 'abc' → null
+ */
+export function processDecimalInput(input: string): string | null {
+	const trimmed = input.trim();
+
+	if (trimmed === '') {
+		return '';
+	}
+
+	if (isValidDecimalInput(trimmed)) {
+		return trimmed.replace(',', '.');
+	}
+
+	return null;
+}
+
+/**
+ * Processes decimal input on blur by removing trailing periods and leading zeros.
+ * Returns the cleaned value or null if the input becomes empty.
+ * Examples: '1.' → '1', '007.5' → '7.5', '00' → '0', '' → null
+ */
+export function processDecimalInputOnBlur(input: string): string | null {
+	let processed = input;
+
+	if (processed.endsWith('.')) {
+		processed = processed.slice(0, -1);
+	}
+
+	processed = removeLeadingZeros(processed);
+
+	return processed === '' ? null : processed;
+}
+
 export const processResponse = <T>(resp: Response): Promise<T | null> => {
 	const locationHeader = resp.headers.get('Location');
 	const allResponsesAreOK = [resp].filter((res) => !res.ok).length === 0;

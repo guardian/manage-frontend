@@ -69,4 +69,4 @@ export const reasonIsEligibleForSwitch = (
 
 export const allowCountrySwitchDiscount = (
 	billingCountry: string | undefined,
-) => billingCountry === 'United Kingdom';
+) => ['United Kingdom', 'United States'].includes(billingCountry || '');

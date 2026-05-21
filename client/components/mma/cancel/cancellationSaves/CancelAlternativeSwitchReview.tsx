@@ -15,7 +15,7 @@ import {
 import { Button, Spinner } from '@guardian/source/react-components';
 import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import type { ReactElement } from 'react';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { measure } from '@/client/styles/typography';
 import { contribToSupporterPlusFetch } from '@/client/utilities/productUtils';
@@ -23,14 +23,17 @@ import type { MonthsOrYears } from '@/shared/dates';
 import { dateString } from '@/shared/dates';
 import { getAppropriateReadableTimePeriod } from '@/shared/dates';
 import { appendCorrectPluralisation } from '@/shared/generalTypes';
-import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
+import {
+	getBillingPeriodForDiscount,
+	getMainPlan,
+	isPaidSubscriptionPlan,
+} from '@/shared/productResponse';
 import type { SwitchPreviewResponse } from '@/shared/productSwitchTypes';
 import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
 import { Heading } from '../../shared/Heading';
 import { ProgressStepper } from '../../shared/ProgressStepper';
-import type { CancellationContextInterface } from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
+import { useCancellationContext } from '../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 
 interface RouterSate extends Required<SwitchPreviewResponse> {
@@ -172,13 +175,14 @@ export const CancelAlternativeSwitchReview = () => {
 	const routerState = location.state as RouterSate;
 	const navigate = useNavigate();
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 
 	const productDetail = cancellationContext.productDetail;
 	const productType = cancellationContext.productType;
 	const mainPlan = getMainPlan(productDetail.subscription);
+	const billingPeriodForDiscount = getBillingPeriodForDiscount(
+		productDetail.subscription,
+	);
 	const offerPeriodType = appendCorrectPluralisation(
 		routerState.discount.upToPeriodsType,
 		1,
@@ -284,7 +288,8 @@ export const CancelAlternativeSwitchReview = () => {
 								>
 									{mainPlan.currency}
 									{routerState.supporterPlusPurchaseAmount}/
-									{mainPlan.billingPeriod}
+									{billingPeriodForDiscount ||
+										mainPlan.billingPeriod}
 								</span>{' '}
 								unless you cancel
 							</p>
@@ -363,9 +368,10 @@ export const CancelAlternativeSwitchReview = () => {
 							Your payment of {mainPlan.currency}
 							{routerState.amountPayableToday} will be taken on{' '}
 							{humanReadableNextPaymentDate} for the next 12
-							months then {mainPlan.currency}
-							{routerState.supporterPlusPurchaseAmount}/year. Auto
-							renews every year until you cancel.
+							months. After that, you will be charged the standard
+							pricing, using your chosen payment method at each
+							renewal, at the rate then in effect, unless you
+							cancel.
 						</li>
 						<li>You may cancel your subscription at any time.</li>
 					</ul>

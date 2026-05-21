@@ -1,4 +1,6 @@
+import type { Product } from '@guardian/ophan-tracker-js/MMA';
 import type { ReactNode } from 'react';
+import { shuffledPrintProductsCancellationReasons } from '@/client/components/mma/cancel/PrintProductsCancellationReasons';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
 import { shuffledTierThreeCancellationReasons } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationReasons';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
@@ -12,7 +14,6 @@ import { shuffledContributionsCancellationReasons } from '../client/components/m
 import { digipackCancellationFlowStart } from '../client/components/mma/cancel/digipack/DigipackCancellationFlowStart';
 import { shuffledDigipackCancellationReasons } from '../client/components/mma/cancel/digipack/DigipackCancellationReasons';
 import { gwCancellationFlowStart } from '../client/components/mma/cancel/gw/GwCancellationFlowStart';
-import { shuffledGWCancellationReasons } from '../client/components/mma/cancel/gw/GwCancellationReasons';
 import { membershipCancellationFlowStart } from '../client/components/mma/cancel/membership/MembershipCancellationFlowStart';
 import { shuffledMembershipCancellationReasons } from '../client/components/mma/cancel/membership/MembershipCancellationReasons';
 import type { RestOfCancellationFlow } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
@@ -22,7 +23,6 @@ import { shuffledSupporterPlusCancellationReasons } from '../client/components/m
 import { voucherCancellationFlowStart } from '../client/components/mma/cancel/voucher/VoucherCancellationFlowStart';
 import { shuffledVoucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
 import type { SupportTheGuardianButtonProps } from '../client/components/shared/SupportTheGuardianButton';
-import type { OphanProduct } from './ophanTypes';
 import type {
 	BillingPeriod,
 	PaidSubscriptionPlan,
@@ -44,7 +44,7 @@ type ProductFriendlyName =
 	| 'newspaper subscription card plus digital'
 	| 'newspaper home delivery subscription'
 	| 'newspaper home delivery plus digital subscription'
-	| 'digital subscription'
+	| 'digital plus'
 	| 'all-access digital subscription'
 	| 'Guardian Weekly subscription'
 	| 'digital + print subscription'
@@ -102,6 +102,11 @@ interface CancellationFlowProperties {
 	reasons?: CancellationReason[];
 	sfCaseProduct: SfCaseProduct;
 	checkForOutstandingCredits?: true;
+	// Opts the product into the dedicated print cancellation journey
+	// (PrintReasonPicker, PrintCancellationAlternatives, PrintConfirmCancellation,
+	// PrintExecuteCancellation, PrintCancellationStore). When undefined the
+	// product uses the legacy/default cancellation journey.
+	usesPrintCancellationFlow?: true;
 	flowWrapper?: (
 		productDetail: ProductDetail,
 		productType: ProductType,
@@ -149,13 +154,13 @@ export interface DeliveryProblemType {
 	messageIsMandatory: boolean;
 }
 export const holidaySuspensionDeliveryProblem: DeliveryProblemType = {
-	label: 'Delivered despite suspension',
+	label: 'Delivered Despite Holiday Stop',
 	messageIsMandatory: false,
 };
 
 const commonDeliveryProblemTypes: DeliveryProblemType[] = [
-	{ label: 'Damaged Paper', messageIsMandatory: true },
-	{ label: 'No Delivery', messageIsMandatory: false },
+	{ label: 'Damaged Delivery', messageIsMandatory: true },
+	{ label: 'Missing Delivery', messageIsMandatory: false },
 	{ label: 'Other', messageIsMandatory: true },
 	// {...holidaySuspensionDeliveryProblem}
 ];
@@ -187,9 +192,7 @@ export interface ProductType {
 	urlPart: ProductUrlPart;
 	softOptInIDs: string[];
 	legacyUrlPart?: string; // could easily adapt to be string[] if multiple were required in future
-	getOphanProductType?: (
-		productDetail: ProductDetail,
-	) => OphanProduct | undefined;
+	getOphanProductType?: (productDetail: ProductDetail) => Product | undefined;
 	showSupporterId?: boolean;
 	tierLabel?: string;
 	renewalMetadata?: SupportTheGuardianButtonProps;
@@ -753,9 +756,10 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			},
 		},
 		cancellation: {
-			reasons: shuffledGWCancellationReasons,
+			reasons: shuffledPrintProductsCancellationReasons,
 			sfCaseProduct: 'Guardian Weekly',
 			checkForOutstandingCredits: true,
+			usesPrintCancellationFlow: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
 			startPageBody: gwCancellationFlowStart,
 			startPageOfferEffectiveDateOptions: true,
@@ -822,15 +826,14 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 	},
 	digipack: {
-		productTitle: () => 'Digital Subscription',
-		friendlyName: 'digital subscription',
+		productTitle: () => 'Digital plus',
+		friendlyName: 'digital plus',
 		productType: 'digipack',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Digipack',
 		urlPart: 'digital',
 		legacyUrlPart: 'digitalpack',
 		getOphanProductType: () => 'DIGITAL_SUBSCRIPTION',
-		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.DigitalSubscriberPreview,
@@ -886,7 +889,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'GuardianPatron',
 		urlPart: 'guardianpatron',
-		getOphanProductType: () => 'GUARDIAN_PATRON', //TODO: This value doesn't exist in Ophan yet
+		getOphanProductType: () => 'GUARDIAN_PATRON',
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
@@ -902,7 +905,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		allProductsProductTypeFilterString: 'GuardianAdLite',
 		urlPart: 'guardianadlite',
 		checkoutUrlPart: '/guardian-ad-lite', // https://support.theguardian.com/uk/guardian-ad-lite
-		getOphanProductType: () => 'GUARDIAN_AD_LITE',
+		getOphanProductType: () => undefined, // Ad Lite not tracked in Ophan
 		softOptInIDs: [SoftOptInIDs.SupportOnboarding],
 		cancellation: {
 			sfCaseProduct: 'Guardian Ad-Lite',

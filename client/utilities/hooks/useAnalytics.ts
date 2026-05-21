@@ -20,34 +20,38 @@ export const useAnalytics = () => {
 			});
 		};
 
-		const initialiseOphen = () => {
-			if (
-				window.guardian &&
-				window.guardian.ophan &&
-				window.guardian.ophan.sendInitialEvent
-			) {
+		const initialiseOphen = async () => {
+			try {
+				const { sendInitialEvent } = await import(
+					'@guardian/ophan-tracker-js/MMA'
+				);
+
 				if (window.guardian.spaTransition) {
-					window.guardian.ophan.sendInitialEvent(
-						window.location.href,
-					);
+					sendInitialEvent(window.location.href);
 				} else {
 					// tslint:disable-next-line:no-object-mutation
 					window.guardian.spaTransition = true;
 				}
+			} catch {
+				// Ophan is non-critical; ignore blocked or failed loads.
 			}
 		};
 
-		import('@guardian/libs').then(({ onConsentChange, getConsentFor }) => {
-			onConsentChange((consentState) => {
-				const qmConsentState = getConsentFor('qm', consentState);
+		void import('@guardian/libs')
+			.then(({ onConsentChange, getConsentFor }) => {
+				onConsentChange((consentState) => {
+					const qmConsentState = getConsentFor('qm', consentState);
 
-				if (qmConsentState && !qmIsInitialised.current) {
-					initialiseQm();
-					qmIsInitialised.current = true;
-				}
+					if (qmConsentState && !qmIsInitialised.current) {
+						initialiseQm();
+						qmIsInitialised.current = true;
+					}
 
-				initialiseOphen();
+					void initialiseOphen();
+				});
+			})
+			.catch(() => {
+				// Analytics dependencies are non-critical; ignore failed imports.
 			});
-		});
 	}, []);
 };

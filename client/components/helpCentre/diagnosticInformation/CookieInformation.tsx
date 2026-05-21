@@ -4,6 +4,7 @@ const cookieNames = [
 	'gu_hide_support_messaging',
 	'GU_AF1',
 	'gu_allow_reject_all',
+	'consentUUID',
 	'gu_user_benefits_expiry',
 ];
 
