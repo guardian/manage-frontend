@@ -24,8 +24,31 @@
           ]
         }
       }
+    ],
+    "^.+\\.jsx?$": [
+      "babel-jest",
+      {
+        "presets": [
+          ["@babel/preset-env", { "targets": { "node": "current" } }],
+          [
+            "@babel/preset-react",
+            {
+              "runtime": "automatic",
+              "importSource": "@emotion/react"
+            }
+          ]
+        ],
+        "plugins": [
+          "@babel/proposal-class-properties",
+          "@babel/proposal-object-rest-spread",
+          "@babel/plugin-proposal-optional-chaining",
+          "lodash",
+          "@emotion/babel-plugin"
+        ]
+      }
     ]
   },
+  "transformIgnorePatterns": ["node_modules/(?!@guardian/ophan-tracker-js/)"],
   "moduleFileExtensions": ["js", "json", "jsx", "node", "ts", "tsx"],
   "snapshotSerializers": ["@emotion/jest/serializer"],
   "globals": {

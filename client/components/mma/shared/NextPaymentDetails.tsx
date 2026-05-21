@@ -46,10 +46,6 @@ export const getNextPaymentDetails = (
 				? planAfterMainPlan.billingPeriod
 				: mainPlan.billingPeriod;
 
-		const paymentKey = `Next ${augmentBillingPeriod(
-			paymentInterval,
-		)} payment`;
-
 		const getPaymentValue = (shortVersion?: 'short') => {
 			if (subscription.readerType === 'Patron') {
 				return 'not applicable';
@@ -89,13 +85,25 @@ export const getNextPaymentDetails = (
 			? (subscription.currentPlans[0] as PaidSubscriptionPlan)
 			: undefined;
 
+		const hasBillingFrequencySwitch =
+			isNewPaymentValue &&
+			planAfterMainPlan &&
+			mainPlan.billingPeriod !== planAfterMainPlan.billingPeriod;
+
+		const paymentIntervalToUse = hasBillingFrequencySwitch
+			? planAfterMainPlan.billingPeriod
+			: paymentInterval;
+		const paymentKey = `Next ${augmentBillingPeriod(
+			paymentIntervalToUse,
+		)} payment`;
+
 		return {
 			paymentInterval,
 			paymentKey,
 			paymentValue: getPaymentValue(),
 			paymentValueShort: getPaymentValue('short'),
 			isNewPaymentValue,
-			nextPaymentDateKey: 'Next payment date',
+			nextPaymentDateKey: 'Next payment due',
 			nextPaymentDateValue,
 			currentPriceValue: currentPaidSubscriptionPlan
 				? `${currentPaidSubscriptionPlan.currency}${(

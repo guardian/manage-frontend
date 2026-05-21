@@ -247,7 +247,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 						<Input
 							label={'Address line 1'}
 							width={30}
-							value={newAddress.addressLine1}
+							value={newAddress.addressLine1 || ''}
 							changeSetState={(value: string) =>
 								deliveryAddressContext.setAddress?.({
 									...newAddress,
@@ -303,7 +303,7 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 						<Input
 							label="Postcode/Zipcode"
 							width={11}
-							value={newAddress.postcode}
+							value={newAddress.postcode || ''}
 							changeSetState={(value: string) =>
 								deliveryAddressContext.setAddress?.({
 									...newAddress,
@@ -332,7 +332,9 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 								COUNTRIES.find(
 									(country) =>
 										newAddress.country === country.iso,
-								)?.name || newAddress.country
+								)?.name ||
+								newAddress.country ||
+								''
 							}
 							changeSetState={(value: string) =>
 								deliveryAddressContext.setAddress?.({

@@ -200,12 +200,12 @@ export function isPaidSubscriptionPlan(
 }
 
 export interface DeliveryAddress {
-	addressLine1: string;
+	addressLine1?: string;
 	addressLine2?: string;
 	town?: string;
 	region?: string;
-	postcode: string;
-	country: string;
+	postcode?: string;
+	country?: string;
 	instructions?: string;
 	addressChangeInformation?: string;
 }
@@ -296,6 +296,43 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	};
 };
 
+/**
+ * Get the billing period that will apply after any pending billing frequency change.
+ * Returns the future plan's billing period if it differs from the current plan,
+ * otherwise returns the current plan's billing period.
+ * This is useful for displaying the correct billing period when a user has switched billing frequency.
+ */
+export const getBillingPeriodForDiscount: (
+	subscription: Subscription,
+) => string | undefined = (subscription: Subscription) => {
+	const currentPlan =
+		subscription.currentPlans.length > 0
+			? subscription.currentPlans[0]
+			: null;
+	const futurePlan =
+		subscription.futurePlans.length > 0
+			? subscription.futurePlans[0]
+			: null;
+
+	// If there's a future plan with a different billing period, use that (indicates a pending frequency change)
+	if (
+		futurePlan &&
+		isPaidSubscriptionPlan(futurePlan) &&
+		currentPlan &&
+		isPaidSubscriptionPlan(currentPlan) &&
+		currentPlan.billingPeriod !== futurePlan.billingPeriod
+	) {
+		return futurePlan.billingPeriod;
+	}
+
+	// Otherwise return the current plan's billing period
+	if (currentPlan && isPaidSubscriptionPlan(currentPlan)) {
+		return currentPlan.billingPeriod;
+	}
+
+	return undefined;
+};
+
 // As of 07/04/25 we have added + Digital variations of the following Newspaper products
 // - Newspaper - National Delivery
 // - Newspaper Digital Voucher
@@ -319,22 +356,28 @@ export function getSpecificProductTypeFromProductKey(
 			productType = PRODUCT_TYPES.tierthree;
 			break;
 		case 'Newspaper Voucher':
-		case 'Newspaper Voucher + Digital':
 			productType = PRODUCT_TYPES.voucher;
+			break;
+		case 'Newspaper Voucher + Digital':
+			productType = PRODUCT_TYPES.voucherplusdigital;
 			break;
 		case 'Digital Pack':
 			productType = PRODUCT_TYPES.digipack;
 			break;
 		case 'Newspaper Delivery':
-		case 'Newspaper Delivery + Digital':
 			productType = PRODUCT_TYPES.homedelivery;
+			break;
+		case 'Newspaper Delivery + Digital':
+			productType = PRODUCT_TYPES.homedeliveryplusdigital;
 			break;
 		case 'Supporter Plus':
 			productType = PRODUCT_TYPES.supporterplus;
 			break;
 		case 'Newspaper Digital Voucher':
-		case 'Newspaper Digital Voucher + Digital':
 			productType = PRODUCT_TYPES.digitalvoucher;
+			break;
+		case 'Newspaper Digital Voucher + Digital':
+			productType = PRODUCT_TYPES.digitalvoucherplusdigital;
 			break;
 		case 'Guardian Ad-Lite':
 			productType = PRODUCT_TYPES.guardianadlite;
@@ -350,8 +393,10 @@ export function getSpecificProductTypeFromProductKey(
 			productType = PRODUCT_TYPES.guardianweekly;
 			break;
 		case 'Newspaper - National Delivery':
-		case 'Newspaper - National Delivery + Digital':
 			productType = PRODUCT_TYPES.nationaldelivery;
+			break;
+		case 'Newspaper - National Delivery + Digital':
+			productType = PRODUCT_TYPES.nationaldeliveryplusdigital;
 			break;
 		case 'Newspaper Delivery - Observer':
 			productType = PRODUCT_TYPES.observer;
@@ -367,11 +412,44 @@ export function getSpecificProductTypeFromProductKey(
 }
 
 export function isSpecificProductType(
-	productDetail: ProductDetail,
+	mmaProductKey: ProductTier,
 	targetProductType: ProductType,
 ): boolean {
+	const specificProductType =
+		getSpecificProductTypeFromProductKey(mmaProductKey);
+	return specificProductType === targetProductType;
+}
+
+export const isPlusDigitalProductType = (
+	mmaProductKey: ProductTier,
+): boolean => {
+	const specificProductType =
+		getSpecificProductTypeFromProductKey(mmaProductKey);
+
+	return [
+		PRODUCT_TYPES.nationaldeliveryplusdigital,
+		PRODUCT_TYPES.voucherplusdigital,
+		PRODUCT_TYPES.homedeliveryplusdigital,
+		PRODUCT_TYPES.digitalvoucherplusdigital,
+	].includes(specificProductType);
+};
+
+export const isVoucherOrSubscriptionCard = (
+	productDetail: ProductDetail,
+): boolean => {
 	const specificProductType = getSpecificProductTypeFromProductKey(
 		productDetail.mmaProductKey,
 	);
-	return specificProductType === targetProductType;
-}
+
+	return [
+		PRODUCT_TYPES.voucher,
+		PRODUCT_TYPES.voucherplusdigital,
+		PRODUCT_TYPES.digitalvoucher,
+		PRODUCT_TYPES.digitalvoucherplusdigital,
+		PRODUCT_TYPES.digitalvoucherobserver,
+		PRODUCT_TYPES.voucherobserver,
+	].includes(specificProductType);
+};
+
+export const userHasGuardianEmail = (email: string): boolean =>
+	email.endsWith('@theguardian.com') || email.endsWith('@guardian.co.uk');

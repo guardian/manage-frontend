@@ -1,4 +1,6 @@
+import type { Product } from '@guardian/ophan-tracker-js/MMA';
 import type { ReactNode } from 'react';
+import { shuffledPrintProductsCancellationReasons } from '@/client/components/mma/cancel/PrintProductsCancellationReasons';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
 import { shuffledTierThreeCancellationReasons } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationReasons';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
@@ -12,7 +14,6 @@ import { shuffledContributionsCancellationReasons } from '../client/components/m
 import { digipackCancellationFlowStart } from '../client/components/mma/cancel/digipack/DigipackCancellationFlowStart';
 import { shuffledDigipackCancellationReasons } from '../client/components/mma/cancel/digipack/DigipackCancellationReasons';
 import { gwCancellationFlowStart } from '../client/components/mma/cancel/gw/GwCancellationFlowStart';
-import { shuffledGWCancellationReasons } from '../client/components/mma/cancel/gw/GwCancellationReasons';
 import { membershipCancellationFlowStart } from '../client/components/mma/cancel/membership/MembershipCancellationFlowStart';
 import { shuffledMembershipCancellationReasons } from '../client/components/mma/cancel/membership/MembershipCancellationReasons';
 import type { RestOfCancellationFlow } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
@@ -22,7 +23,6 @@ import { shuffledSupporterPlusCancellationReasons } from '../client/components/m
 import { voucherCancellationFlowStart } from '../client/components/mma/cancel/voucher/VoucherCancellationFlowStart';
 import { shuffledVoucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
 import type { SupportTheGuardianButtonProps } from '../client/components/shared/SupportTheGuardianButton';
-import type { OphanProduct } from './ophanTypes';
 import type {
 	BillingPeriod,
 	PaidSubscriptionPlan,
@@ -39,9 +39,12 @@ type ProductFriendlyName =
 	| 'recurring contribution' // TODO use payment frequency instead of 'recurring' e.g. monthly annual etc
 	| 'newspaper subscription'
 	| 'newspaper voucher subscription'
+	| 'newspaper voucher plus digital subscription'
 	| 'newspaper subscription card'
+	| 'newspaper subscription card plus digital'
 	| 'newspaper home delivery subscription'
-	| 'digital subscription'
+	| 'newspaper home delivery plus digital subscription'
+	| 'digital plus'
 	| 'all-access digital subscription'
 	| 'Guardian Weekly subscription'
 	| 'digital + print subscription'
@@ -85,6 +88,7 @@ export type AllProductsProductTypeFilterString =
 	| 'Voucher'
 	| 'DigitalVoucher'
 	| 'HomeDelivery'
+	| 'HomeDeliveryPlusDigital'
 	| 'Contribution'
 	| 'Membership'
 	| 'Digipack'
@@ -98,6 +102,11 @@ interface CancellationFlowProperties {
 	reasons?: CancellationReason[];
 	sfCaseProduct: SfCaseProduct;
 	checkForOutstandingCredits?: true;
+	// Opts the product into the dedicated print cancellation journey
+	// (PrintReasonPicker, PrintCancellationAlternatives, PrintConfirmCancellation,
+	// PrintExecuteCancellation, PrintCancellationStore). When undefined the
+	// product uses the legacy/default cancellation journey.
+	usesPrintCancellationFlow?: true;
 	flowWrapper?: (
 		productDetail: ProductDetail,
 		productType: ProductType,
@@ -145,13 +154,13 @@ export interface DeliveryProblemType {
 	messageIsMandatory: boolean;
 }
 export const holidaySuspensionDeliveryProblem: DeliveryProblemType = {
-	label: 'Delivered despite suspension',
+	label: 'Delivered Despite Holiday Stop',
 	messageIsMandatory: false,
 };
 
 const commonDeliveryProblemTypes: DeliveryProblemType[] = [
-	{ label: 'Damaged Paper', messageIsMandatory: true },
-	{ label: 'No Delivery', messageIsMandatory: false },
+	{ label: 'Damaged Delivery', messageIsMandatory: true },
+	{ label: 'Missing Delivery', messageIsMandatory: false },
 	{ label: 'Other', messageIsMandatory: true },
 	// {...holidaySuspensionDeliveryProblem}
 ];
@@ -183,9 +192,7 @@ export interface ProductType {
 	urlPart: ProductUrlPart;
 	softOptInIDs: string[];
 	legacyUrlPart?: string; // could easily adapt to be string[] if multiple were required in future
-	getOphanProductType?: (
-		productDetail: ProductDetail,
-	) => OphanProduct | undefined;
+	getOphanProductType?: (productDetail: ProductDetail) => Product | undefined;
 	showSupporterId?: boolean;
 	tierLabel?: string;
 	renewalMetadata?: SupportTheGuardianButtonProps;
@@ -274,9 +281,13 @@ export type ProductTypeKeys =
 	| 'contributions'
 	| 'newspaper'
 	| 'homedelivery'
+	| 'homedeliveryplusdigital'
 	| 'nationaldelivery'
+	| 'nationaldeliveryplusdigital'
 	| 'voucher'
+	| 'voucherplusdigital'
 	| 'digitalvoucher'
+	| 'digitalvoucherplusdigital'
 	| 'guardianweekly'
 	| 'digipack'
 	| 'supporterplus'
@@ -292,6 +303,166 @@ export type GroupedProductTypeKeys =
 	| 'recurringSupport'
 	| 'recurringSupportWithBenefits'
 	| 'subscriptions';
+
+const baseHomedeliveryProduct: ProductType = {
+	productTitle: calculateProductTitle('Newspaper Delivery'),
+	friendlyName: 'newspaper home delivery subscription',
+	shortFriendlyName: 'newspaper home delivery',
+	productType: 'homedelivery',
+	groupedProductType: 'subscriptions',
+	allProductsProductTypeFilterString: 'HomeDelivery',
+	urlPart: 'homedelivery',
+	checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
+	getOphanProductType: () => 'PRINT_SUBSCRIPTION',
+	productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+	softOptInIDs: [
+		SoftOptInIDs.SupportOnboarding,
+		SoftOptInIDs.SubscriberPreview,
+		SoftOptInIDs.SupporterNewsletter,
+	],
+	holidayStops: {
+		issueKeyword: 'paper',
+		alternateNoticeString: "two working days' notice",
+	},
+	delivery: {
+		showAddress: showDeliveryAddressCheck,
+		enableDeliveryInstructionsUpdate: true,
+		records: {
+			productNameForProblemReport: 'Home Delivery',
+			showDeliveryInstructions: true,
+			numberOfProblemRecordsToShow: 14,
+			contactUserOnExistingProblemReport: true,
+			availableProblemTypes: [
+				{
+					label: 'Instructions Not Followed',
+					messageIsMandatory: true,
+				},
+				...commonDeliveryProblemTypes,
+			],
+		},
+	},
+	fulfilmentDateCalculator: {
+		productFilenamePart: 'Newspaper - Home Delivery',
+	},
+};
+
+const baseNationaldeliveryProduct: ProductType = {
+	productTitle: calculateProductTitle('Newspaper Delivery'),
+	friendlyName: 'newspaper home delivery subscription',
+	shortFriendlyName: 'newspaper home delivery',
+	productType: 'nationaldelivery',
+	groupedProductType: 'subscriptions',
+	allProductsProductTypeFilterString: 'HomeDelivery',
+	urlPart: 'nationaldelivery',
+	checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
+	getOphanProductType: () => 'PRINT_SUBSCRIPTION',
+	productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+	softOptInIDs: [
+		SoftOptInIDs.SupportOnboarding,
+		SoftOptInIDs.SubscriberPreview,
+		SoftOptInIDs.SupporterNewsletter,
+	],
+	holidayStops: {
+		issueKeyword: 'paper',
+		alternateNoticeString: "three days' notice",
+	},
+	delivery: {
+		showAddress: showDeliveryAddressCheck,
+		enableDeliveryInstructionsUpdate: true,
+		records: {
+			productNameForProblemReport: 'National Delivery',
+			showDeliveryInstructions: true,
+			numberOfProblemRecordsToShow: 14,
+			contactUserOnExistingProblemReport: true,
+			availableProblemTypes: [
+				{
+					label: 'Instructions Not Followed',
+					messageIsMandatory: true,
+				},
+				...commonDeliveryProblemTypes,
+			],
+		},
+	},
+	fulfilmentDateCalculator: {
+		productFilenamePart: 'Newspaper - National Delivery',
+	},
+};
+
+const baseVoucherProduct: ProductType = {
+	productTitle: calculateProductTitle('Newspaper Voucher'),
+	friendlyName: 'newspaper voucher subscription',
+	shortFriendlyName: 'newspaper voucher booklet',
+	productType: 'voucher',
+	groupedProductType: 'subscriptions',
+	allProductsProductTypeFilterString: 'Voucher',
+	urlPart: 'voucher',
+	checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
+	getOphanProductType: () => 'PRINT_SUBSCRIPTION',
+	productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+	softOptInIDs: [
+		SoftOptInIDs.SupportOnboarding,
+		SoftOptInIDs.SubscriberPreview,
+		SoftOptInIDs.SupporterNewsletter,
+	],
+	holidayStops: {
+		issueKeyword: 'voucher',
+		alternateNoticeString: "one day's notice",
+		additionalHowAdvice:
+			'Please discard suspended vouchers before the voucher dates. Please note that historical suspensions may not appear here.',
+		hideDeliveryRedirectionHelpBullet: true,
+		explicitConfirmationRequired: {
+			checkboxLabel: 'I confirm that I will destroy suspended vouchers.',
+			explainerModalTitle: 'Destroying your vouchers',
+			explainerModalBody:
+				'We monitor voucher usage and reserve the right to cancel credits where vouchers have been used during the suspension period.',
+		},
+	},
+	delivery: {
+		showAddress: showDeliveryAddressCheck,
+		enableDeliveryInstructionsUpdate: true,
+	},
+	cancellation: {
+		reasons: shuffledVoucherCancellationReasons,
+		sfCaseProduct: 'Voucher Subscriptions',
+		checkForOutstandingCredits: true,
+		flowWrapper: physicalSubsCancellationFlowWrapper,
+		startPageBody: voucherCancellationFlowStart,
+		startPageOfferEffectiveDateOptions: true,
+		summaryReasonSpecificPara: () => undefined,
+		onlyShowSupportSectionIfAlternateText: false,
+		alternateSupportButtonText: () => undefined,
+		alternateSupportButtonUrlSuffix: () => undefined,
+		swapFeedbackAndContactUs: true,
+	},
+};
+
+const baseDigitalvoucherProduct: ProductType = {
+	productTitle: calculateProductTitle('Newspaper Subscription Card'),
+	friendlyName: 'newspaper subscription card',
+	productType: 'digitalvoucher',
+	groupedProductType: 'subscriptions',
+	allProductsProductTypeFilterString: 'DigitalVoucher',
+	urlPart: 'subscriptioncard',
+	checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
+	legacyUrlPart: 'digitalvoucher',
+	getOphanProductType: () => 'PRINT_SUBSCRIPTION',
+	productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
+	softOptInIDs: [
+		SoftOptInIDs.SupportOnboarding,
+		SoftOptInIDs.SubscriberPreview,
+		SoftOptInIDs.SupporterNewsletter,
+	],
+	holidayStops: {
+		issueKeyword: 'issue',
+		alternateNoticeString: "one day's notice",
+		additionalHowAdvice:
+			'Please note you will not be able to redeem your paper on any days that you have a suspension in place.',
+		hideDeliveryRedirectionHelpBullet: true,
+	},
+	delivery: {
+		showAddress: showDeliveryAddressCheck,
+	},
+};
 
 export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 	membership: {
@@ -411,46 +582,15 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		],
 	},
 	homedelivery: {
-		productTitle: calculateProductTitle('Newspaper Delivery'),
-		friendlyName: 'newspaper home delivery subscription',
-		shortFriendlyName: 'newspaper home delivery',
-		productType: 'homedelivery',
-		groupedProductType: 'subscriptions',
-		allProductsProductTypeFilterString: 'HomeDelivery',
-		urlPart: 'homedelivery',
-		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
-		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
-		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
-		softOptInIDs: [
-			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SupporterNewsletter,
-		],
-		holidayStops: {
-			issueKeyword: 'paper',
-			alternateNoticeString: "two working days' notice",
-		},
-		delivery: {
-			showAddress: showDeliveryAddressCheck,
-			enableDeliveryInstructionsUpdate: true,
-			records: {
-				productNameForProblemReport: 'Home Delivery',
-				showDeliveryInstructions: true,
-				numberOfProblemRecordsToShow: 14,
-				contactUserOnExistingProblemReport: true,
-				availableProblemTypes: [
-					{
-						label: 'Instructions Not Followed',
-						messageIsMandatory: true,
-					},
-					...commonDeliveryProblemTypes,
-				],
-			},
-		},
-		fulfilmentDateCalculator: {
-			productFilenamePart: 'Newspaper - Home Delivery',
-		},
+		...baseHomedeliveryProduct,
 	},
+	homedeliveryplusdigital: {
+		...baseHomedeliveryProduct,
+		friendlyName: 'newspaper home delivery plus digital subscription',
+		shortFriendlyName: 'newspaper home delivery + digital',
+		productType: 'homedeliveryplusdigital',
+	},
+
 	observer: {
 		productTitle: () => 'Newspaper Delivery - Observer Subscription',
 		friendlyName: 'newspaper delivery - Observer subscription',
@@ -489,93 +629,22 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 	},
 	nationaldelivery: {
-		productTitle: calculateProductTitle('Newspaper Delivery'),
-		friendlyName: 'newspaper home delivery subscription',
-		shortFriendlyName: 'newspaper home delivery',
-		productType: 'nationaldelivery',
-		groupedProductType: 'subscriptions',
-		allProductsProductTypeFilterString: 'HomeDelivery',
-		urlPart: 'nationaldelivery',
-		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
-		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
-		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
-		softOptInIDs: [
-			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SupporterNewsletter,
-		],
-		holidayStops: {
-			issueKeyword: 'paper',
-			alternateNoticeString: "three days' notice",
-		},
-		delivery: {
-			showAddress: showDeliveryAddressCheck,
-			enableDeliveryInstructionsUpdate: true,
-			records: {
-				productNameForProblemReport: 'National Delivery',
-				showDeliveryInstructions: true,
-				numberOfProblemRecordsToShow: 14,
-				contactUserOnExistingProblemReport: true,
-				availableProblemTypes: [
-					{
-						label: 'Instructions Not Followed',
-						messageIsMandatory: true,
-					},
-					...commonDeliveryProblemTypes,
-				],
-			},
-		},
-		fulfilmentDateCalculator: {
-			productFilenamePart: 'Newspaper - National Delivery',
-		},
+		...baseNationaldeliveryProduct,
+	},
+	nationaldeliveryplusdigital: {
+		...baseNationaldeliveryProduct,
+		friendlyName: 'newspaper home delivery plus digital subscription',
+		shortFriendlyName: 'newspaper home delivery + digital',
+		productType: 'nationaldeliveryplusdigital',
 	},
 	voucher: {
-		productTitle: calculateProductTitle('Newspaper Voucher'),
-		friendlyName: 'newspaper voucher subscription',
-		shortFriendlyName: 'newspaper voucher booklet',
-		productType: 'voucher',
-		groupedProductType: 'subscriptions',
-		allProductsProductTypeFilterString: 'Voucher',
-		urlPart: 'voucher',
-		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
-		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
-		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
-		softOptInIDs: [
-			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SupporterNewsletter,
-		],
-		holidayStops: {
-			issueKeyword: 'voucher',
-			alternateNoticeString: "one day's notice",
-			additionalHowAdvice:
-				'Please discard suspended vouchers before the voucher dates. Please note that historical suspensions may not appear here.',
-			hideDeliveryRedirectionHelpBullet: true,
-			explicitConfirmationRequired: {
-				checkboxLabel:
-					'I confirm that I will destroy suspended vouchers.',
-				explainerModalTitle: 'Destroying your vouchers',
-				explainerModalBody:
-					'We monitor voucher usage and reserve the right to cancel credits where vouchers have been used during the suspension period.',
-			},
-		},
-		delivery: {
-			showAddress: showDeliveryAddressCheck,
-			enableDeliveryInstructionsUpdate: true,
-		},
-		cancellation: {
-			reasons: shuffledVoucherCancellationReasons,
-			sfCaseProduct: 'Voucher Subscriptions',
-			checkForOutstandingCredits: true,
-			flowWrapper: physicalSubsCancellationFlowWrapper,
-			startPageBody: voucherCancellationFlowStart,
-			startPageOfferEffectiveDateOptions: true,
-			summaryReasonSpecificPara: () => undefined,
-			onlyShowSupportSectionIfAlternateText: false,
-			alternateSupportButtonText: () => undefined,
-			alternateSupportButtonUrlSuffix: () => undefined,
-			swapFeedbackAndContactUs: true,
-		},
+		...baseVoucherProduct,
+	},
+	voucherplusdigital: {
+		...baseVoucherProduct,
+		friendlyName: 'newspaper voucher plus digital subscription',
+		shortFriendlyName: 'newspaper voucher booklet + digital',
+		productType: 'voucherplusdigital',
 	},
 	voucherobserver: {
 		productTitle: () => 'Newspaper Voucher - Observer',
@@ -622,31 +691,12 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 	},
 	digitalvoucher: {
-		productTitle: calculateProductTitle('Newspaper Subscription Card'),
-		friendlyName: 'newspaper subscription card',
-		productType: 'digitalvoucher',
-		groupedProductType: 'subscriptions',
-		allProductsProductTypeFilterString: 'DigitalVoucher',
-		urlPart: 'subscriptioncard',
-		checkoutUrlPart: '/subscribe', // https://support.theguardian.com/uk/subscribe
-		legacyUrlPart: 'digitalvoucher',
-		getOphanProductType: () => 'PRINT_SUBSCRIPTION',
-		productPageNewsletterIDs: [FRONT_PAGE_NEWSLETTER_ID],
-		softOptInIDs: [
-			SoftOptInIDs.SupportOnboarding,
-			SoftOptInIDs.SubscriberPreview,
-			SoftOptInIDs.SupporterNewsletter,
-		],
-		holidayStops: {
-			issueKeyword: 'issue',
-			alternateNoticeString: "one day's notice",
-			additionalHowAdvice:
-				'Please note you will not be able to redeem your paper on any days that you have a suspension in place.',
-			hideDeliveryRedirectionHelpBullet: true,
-		},
-		delivery: {
-			showAddress: showDeliveryAddressCheck,
-		},
+		...baseDigitalvoucherProduct,
+	},
+	digitalvoucherplusdigital: {
+		...baseDigitalvoucherProduct,
+		friendlyName: 'newspaper subscription card plus digital',
+		productType: 'digitalvoucherplusdigital',
 	},
 	digitalvoucherobserver: {
 		productTitle: () => 'Newspaper Subscription Card - Observer',
@@ -706,9 +756,10 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			},
 		},
 		cancellation: {
-			reasons: shuffledGWCancellationReasons,
+			reasons: shuffledPrintProductsCancellationReasons,
 			sfCaseProduct: 'Guardian Weekly',
 			checkForOutstandingCredits: true,
+			usesPrintCancellationFlow: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
 			startPageBody: gwCancellationFlowStart,
 			startPageOfferEffectiveDateOptions: true,
@@ -775,15 +826,14 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 	},
 	digipack: {
-		productTitle: () => 'Digital Subscription',
-		friendlyName: 'digital subscription',
+		productTitle: () => 'Digital plus',
+		friendlyName: 'digital plus',
 		productType: 'digipack',
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'Digipack',
 		urlPart: 'digital',
 		legacyUrlPart: 'digitalpack',
 		getOphanProductType: () => 'DIGITAL_SUBSCRIPTION',
-		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
 			SoftOptInIDs.DigitalSubscriberPreview,
@@ -839,7 +889,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		groupedProductType: 'subscriptions',
 		allProductsProductTypeFilterString: 'GuardianPatron',
 		urlPart: 'guardianpatron',
-		getOphanProductType: () => 'GUARDIAN_PATRON', //TODO: This value doesn't exist in Ophan yet
+		getOphanProductType: () => 'GUARDIAN_PATRON',
 		showTrialRemainingIfApplicable: true,
 		softOptInIDs: [
 			SoftOptInIDs.SupportOnboarding,
@@ -855,7 +905,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		allProductsProductTypeFilterString: 'GuardianAdLite',
 		urlPart: 'guardianadlite',
 		checkoutUrlPart: '/guardian-ad-lite', // https://support.theguardian.com/uk/guardian-ad-lite
-		getOphanProductType: () => 'GUARDIAN_AD_LITE',
+		getOphanProductType: () => undefined, // Ad Lite not tracked in Ophan
 		softOptInIDs: [SoftOptInIDs.SupportOnboarding],
 		cancellation: {
 			sfCaseProduct: 'Guardian Ad-Lite',
@@ -869,6 +919,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 	},
 };
+
 export const GROUPED_PRODUCT_TYPES: Record<
 	GroupedProductTypeKeys,
 	GroupedProductType

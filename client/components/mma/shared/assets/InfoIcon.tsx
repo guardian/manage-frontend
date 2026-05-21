@@ -8,6 +8,7 @@ export const InfoIcon = () => (
 			position: 'relative',
 			top: '2.5px',
 			marginRight: '5px',
+			minWidth: '16px',
 		}}
 	>
 		<g fill="none" fillRule="evenodd" transform="translate(1 1)">

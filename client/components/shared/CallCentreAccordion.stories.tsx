@@ -16,8 +16,8 @@ export const Open: StoryObj = {
 	play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		// There is a useEffect within AccordionRow that sets 'isBrowser' and renders a NoJS version first
 		// Due to a bug the useEffect isn't being run in Storybook/Chromatic before we try to find the button
-		// We use sleep(1) to ensure the useEffect runs, if  this works without the sleep, please remove it
-		await sleep(1);
+		// We use sleep(500) to ensure the useEffect runs, if  this works without the sleep, please remove it
+		await sleep(500);
 		const canvas = within(canvasElement);
 		const button = canvas.getAllByText('Show')[0];
 		await userEvent.click(button);
@@ -26,7 +26,7 @@ export const Open: StoryObj = {
 
 export const OpenHideEmail: StoryObj = {
 	play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-		await sleep(1);
+		await sleep(500);
 		const canvas = within(canvasElement);
 		const button = canvas.getAllByText('Show')[0];
 		await userEvent.click(button);

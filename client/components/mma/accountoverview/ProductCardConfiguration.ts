@@ -1,5 +1,6 @@
 import { palette } from '@guardian/source/foundations';
 import type { ProductTypeKeys } from '@/shared/productTypes';
+import type { NextPaymentDetails } from '../shared/NextPaymentDetails';
 
 export const textColour = {
 	light: palette.neutral[100],
@@ -16,18 +17,31 @@ export const productColour = {
 	singleContribution: palette.sport[600],
 	supporterPlus: palette.brand[500],
 	membership: palette.sport[300],
-	recurringContribution: palette.brand[400],
+	recurringContribution: palette.brand[600],
 	newspaper: palette.brand[400],
-	digital: palette.sport[100],
-	guardianWeekly: '#cadbe8',
+	digital: palette.brand[300],
+	guardianWeekly: palette.brand[500],
 	puzzleApp: palette.lifestyle[300],
+	feastApp: palette.brand[800], // Same color as Live app (inAppPurchase)
 };
 
 interface ProductCardConfiguration {
 	colour: string;
 	invertText?: boolean;
-	showBenefitsSection?: boolean;
+	getBenefitsSectionCopy?: (nextPaymentDetails: NextPaymentDetails) => string;
 }
+
+const supporterBenefitsCopy = (npd: NextPaymentDetails) =>
+	`You're supporting the Guardian with ${npd.currentPriceValue} per ${npd.paymentInterval}, and have access to exclusive extras.`;
+
+const digitalBenefitsCopy = (npd: NextPaymentDetails) =>
+	`You're supporting the Guardian with ${npd.currentPriceValue} per ${npd.paymentInterval}, and have unlocked the full digital experience:`;
+
+const unlimitedDigitalBenefitsCopy = (npd: NextPaymentDetails) =>
+	`You're subscribed to the Guardian for ${npd.currentPriceValue} per ${npd.paymentInterval}, unlocking unlimited digital benefits.`;
+
+const guardianWeeklyBenefitsCopy = (npd: NextPaymentDetails) =>
+	`You're subscribed to The Guardian Weekly for ${npd.currentPriceValue} per ${npd.paymentInterval} and receive a curated news magazine featuring our best global journalism in print, as well as unlimited access to our full suite of digital benefits.`;
 
 /**
  * In-app purchases have their own dedicated product card component so are not
@@ -47,20 +61,25 @@ export const productCardConfiguration: Record<
 	},
 	supporterplus: {
 		colour: productColour.supporterPlus,
-		showBenefitsSection: true,
+		getBenefitsSectionCopy: supporterBenefitsCopy,
 	},
 	guardianadlite: {
 		colour: productColour.supporterPlus,
 	},
 	tierthree: {
 		colour: productColour.supporterPlus,
-		showBenefitsSection: true,
+		getBenefitsSectionCopy: supporterBenefitsCopy,
 	},
 	digipack: {
 		colour: productColour.digital,
+		getBenefitsSectionCopy: unlimitedDigitalBenefitsCopy,
 	},
 	digitalvoucher: {
 		colour: productColour.newspaper,
+	},
+	digitalvoucherplusdigital: {
+		colour: productColour.newspaper,
+		getBenefitsSectionCopy: digitalBenefitsCopy,
 	},
 	newspaper: {
 		colour: productColour.newspaper,
@@ -68,19 +87,31 @@ export const productCardConfiguration: Record<
 	homedelivery: {
 		colour: productColour.newspaper,
 	},
+	homedeliveryplusdigital: {
+		colour: productColour.newspaper,
+		getBenefitsSectionCopy: digitalBenefitsCopy,
+	},
 	nationaldelivery: {
 		colour: productColour.newspaper,
+	},
+	nationaldeliveryplusdigital: {
+		colour: productColour.newspaper,
+		getBenefitsSectionCopy: digitalBenefitsCopy,
 	},
 	voucher: {
 		colour: productColour.newspaper,
 	},
+	voucherplusdigital: {
+		colour: productColour.newspaper,
+		getBenefitsSectionCopy: digitalBenefitsCopy,
+	},
 	guardianweekly: {
 		colour: productColour.guardianWeekly,
-		invertText: true,
+		getBenefitsSectionCopy: guardianWeeklyBenefitsCopy,
 	},
 	membership: {
 		colour: productColour.membership,
-		showBenefitsSection: true,
+		getBenefitsSectionCopy: supporterBenefitsCopy,
 	},
 	guardianpatron: {
 		colour: productColour.membership,

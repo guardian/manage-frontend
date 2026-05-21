@@ -22,14 +22,17 @@ const stripePaymentMethod: Partial<PaymentMethod> = {
 	created: 0,
 	card: {
 		brand: 'brand',
+		display_brand: 'brand',
 		last4: '4242',
 		exp_month: 12,
 		exp_year: 25,
 		country: 'GB',
 		checks: null,
 		three_d_secure_usage: null,
-		funding: '',
+		funding: 'credit',
 		wallet: null,
+		networks: null,
+		regulated_status: 'unregulated',
 	},
 };
 

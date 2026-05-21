@@ -1,4 +1,4 @@
-import type * as React from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import type { Subscription } from '../../../../shared/productResponse';
 
 type PaymentUpdateTypeName = 'card' | 'direct_debit';
@@ -13,9 +13,11 @@ export interface NewPaymentMethodDetail {
 	readonly subHasExpectedPaymentType: (
 		subscription?: Subscription,
 	) => boolean;
-	readonly render: (subscription?: Subscription) => React.ReactNode;
+	readonly render: (subscription?: Subscription) => ReactNode;
 	readonly friendlyName: string;
 	readonly paymentFailureRecoveryMessage?: string;
-	readonly confirmButtonWrapper: (confirmButton: JSX.Element) => JSX.Element;
-	readonly updatedSuccessExtras?: JSX.Element;
+	readonly confirmButtonWrapper: (
+		confirmButton: ReactElement,
+	) => ReactElement;
+	readonly updatedSuccessExtras?: ReactElement;
 }

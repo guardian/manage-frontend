@@ -12,7 +12,7 @@ export const useAnalytics = () => {
 				{
 					async: true,
 					integrity:
-						'sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb',
+						'sha384-VMLIC70VzACtZAEkPaL+7xW+v0+UjkIUuGxlArtIG+Pzqlp5DkbfVG9tRm75Liwx',
 					crossOrigin: 'anonymous',
 				},
 			).catch(() => {
@@ -20,34 +20,38 @@ export const useAnalytics = () => {
 			});
 		};
 
-		const initialiseOphen = () => {
-			if (
-				window.guardian &&
-				window.guardian.ophan &&
-				window.guardian.ophan.sendInitialEvent
-			) {
+		const initialiseOphen = async () => {
+			try {
+				const { sendInitialEvent } = await import(
+					'@guardian/ophan-tracker-js/MMA'
+				);
+
 				if (window.guardian.spaTransition) {
-					window.guardian.ophan.sendInitialEvent(
-						window.location.href,
-					);
+					sendInitialEvent(window.location.href);
 				} else {
 					// tslint:disable-next-line:no-object-mutation
 					window.guardian.spaTransition = true;
 				}
+			} catch {
+				// Ophan is non-critical; ignore blocked or failed loads.
 			}
 		};
 
-		import('@guardian/libs').then(({ onConsentChange, getConsentFor }) => {
-			onConsentChange((consentState) => {
-				const qmConsentState = getConsentFor('qm', consentState);
+		void import('@guardian/libs')
+			.then(({ onConsentChange, getConsentFor }) => {
+				onConsentChange((consentState) => {
+					const qmConsentState = getConsentFor('qm', consentState);
 
-				if (qmConsentState && !qmIsInitialised.current) {
-					initialiseQm();
-					qmIsInitialised.current = true;
-				}
+					if (qmConsentState && !qmIsInitialised.current) {
+						initialiseQm();
+						qmIsInitialised.current = true;
+					}
 
-				initialiseOphen();
+					void initialiseOphen();
+				});
+			})
+			.catch(() => {
+				// Analytics dependencies are non-critical; ignore failed imports.
 			});
-		});
 	}, []);
 };

@@ -1,4 +1,5 @@
 import type { PaymentMethod } from '@stripe/stripe-js';
+import type { ReactElement } from 'react';
 import type { Card, Subscription } from '../../../../../shared/productResponse';
 import { CardDisplay } from '../../shared/CardDisplay';
 import type { NewPaymentMethodDetail } from '../NewPaymentMethodDetail';
@@ -66,6 +67,6 @@ export class NewCardPaymentMethodDetail implements NewPaymentMethodDetail {
 			/>
 		);
 
-	public readonly confirmButtonWrapper = (confirmButton: JSX.Element) =>
+	public readonly confirmButtonWrapper = (confirmButton: ReactElement) =>
 		confirmButton;
 }

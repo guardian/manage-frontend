@@ -173,7 +173,7 @@ const Form = (props: FormProps) => {
 					<Input
 						label={'Address line 1'}
 						width={30}
-						value={addressStateObject.addressLine1}
+						value={addressStateObject.addressLine1 || ''}
 						changeSetState={addressSetStateObject.setAddressLine1}
 						inErrorState={
 							props.formStatus === formStates.VALIDATION_ERROR &&
@@ -209,7 +209,7 @@ const Form = (props: FormProps) => {
 					<Input
 						label="Postcode/Zipcode"
 						width={11}
-						value={addressStateObject.postcode}
+						value={addressStateObject.postcode || ''}
 						changeSetState={addressSetStateObject.setPostcode}
 						inErrorState={
 							props.formStatus === formStates.VALIDATION_ERROR &&
@@ -229,7 +229,7 @@ const Form = (props: FormProps) => {
 						additionalCSS={css`
 							margin-top: 14px;
 						`}
-						value={addressStateObject.country}
+						value={addressStateObject.country || ''}
 						changeSetState={addressSetStateObject.setCountry}
 						inErrorState={
 							props.formStatus === formStates.VALIDATION_ERROR &&
@@ -439,7 +439,10 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 	)
 		.flatMap(flattenEquivalent)
 		.some(({ productType }) => {
-			return productType.productType === 'nationaldelivery';
+			return (
+				productType.productType === 'nationaldelivery' ||
+				productType.productType === 'nationaldeliveryplusdigital'
+			);
 		});
 
 	if (hasNationalDelivery) {

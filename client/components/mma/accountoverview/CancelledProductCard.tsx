@@ -99,7 +99,7 @@ export const CancelledProductCard = ({
 						<div css={wideButtonLayoutCss}>
 							{showSubscribeAgainButton && (
 								<LinkButton
-									href={`https://support.theguardian.com/${specificProductType.checkoutUrlPart}`}
+									href={`https://support.theguardian.com${specificProductType.checkoutUrlPart}`}
 									size="small"
 									cssOverrides={css`
 										justify-content: center;

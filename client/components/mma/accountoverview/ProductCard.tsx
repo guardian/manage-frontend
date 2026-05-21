@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, textSans17 } from '@guardian/source/foundations';
+import { palette, space, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
@@ -31,6 +31,7 @@ import {
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
+import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
 import { Ribbon } from '../../shared/Ribbon';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
@@ -66,14 +67,15 @@ const NewPriceAlert = () => {
 export const ProductCard = ({
 	productDetail,
 	isEligibleToSwitch,
+	isEligibleToUpsell,
 	user,
 }: {
 	productDetail: ProductDetail;
 	isEligibleToSwitch: boolean;
+	isEligibleToUpsell: boolean;
 	user?: MembersDataApiUser;
 }) => {
 	const navigate = useNavigate();
-
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
 		throw new Error('mainPlan does not exist in ProductCard');
@@ -82,6 +84,10 @@ export const ProductCard = ({
 	const specificProductType = getSpecificProductTypeFromProductKey(
 		productDetail.mmaProductKey,
 	);
+
+	const { fetchUpgradePreview, isPreviewLoading, hasPreviewError } =
+		useUpgradeProduct();
+
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[specificProductType.groupedProductType];
 
@@ -122,6 +128,11 @@ export const ProductCard = ({
 		!hasCancellationPending &&
 		specificProductType.productType === 'contributions';
 
+	const showProductUpsellButton =
+		isEligibleToUpsell &&
+		!hasCancellationPending &&
+		specificProductType.productType === 'supporterplus';
+
 	const productBenefits =
 		specificProductType.productType === 'supporterplus'
 			? 'supporter benefits'
@@ -146,7 +157,7 @@ export const ProductCard = ({
 	const benefitsTextCss = css`
 		${textSans17};
 		margin: 0;
-		max-width: 35ch;
+		margin-bottom: ${space[2]}px;
 	`;
 
 	const canBeInOfferPeriod =
@@ -161,13 +172,30 @@ export const ProductCard = ({
 		productDetail.subscription.nextPaymentDate !==
 			productDetail.subscription.potentialCancellationDate;
 
+	const futurePlan = productDetail.subscription.futurePlans[0];
+	const isBillingFrequencySwitch =
+		futurePlan?.mmaProductKey === productDetail.mmaProductKey &&
+		isPaidSubscriptionPlan(mainPlan) &&
+		isPaidSubscriptionPlan(futurePlan) &&
+		mainPlan.billingPeriod !== futurePlan.billingPeriod;
+
 	const futureProductTitle =
-		productDetail.subscription.futurePlans[0]?.mmaProductKey &&
+		futurePlan?.mmaProductKey &&
 		productDetail.mmaProductKey &&
 		productDetail.subscription.currentPlans.length > 0
-			? getSpecificProductTypeFromProductKey(
-					productDetail.subscription.futurePlans[0].mmaProductKey,
-			  ).productTitle(mainPlan)
+			? isBillingFrequencySwitch
+				? `${getSpecificProductTypeFromProductKey(
+						futurePlan.mmaProductKey,
+				  ).productTitle(mainPlan)} ${
+						futurePlan.billingPeriod === 'year'
+							? '(annual)'
+							: futurePlan.billingPeriod === 'month'
+							? '(monthly)'
+							: futurePlan.billingPeriod
+				  }`
+				: getSpecificProductTypeFromProductKey(
+						futurePlan.mmaProductKey,
+				  ).productTitle(mainPlan)
 			: null;
 
 	return (
@@ -265,13 +293,12 @@ export const ProductCard = ({
 					)}
 				</Card.Header>
 
-				{cardConfig.showBenefitsSection && nextPaymentDetails && (
-					<Card.Section backgroundColor="#edf5fA">
+				{cardConfig.getBenefitsSectionCopy && nextPaymentDetails && (
+					<Card.Section backgroundColor="#edf5fA" removeBorders>
 						<p css={benefitsTextCss}>
-							You’re supporting the Guardian with{' '}
-							{nextPaymentDetails.currentPriceValue} per{' '}
-							{nextPaymentDetails.paymentInterval}, and have
-							access to exclusive extras.
+							{cardConfig.getBenefitsSectionCopy(
+								nextPaymentDetails,
+							)}
 						</p>
 						<BenefitsToggle
 							productType={specificProductType.productType}
@@ -345,7 +372,8 @@ export const ProductCard = ({
 										</dd>
 									</div>
 								)}
-								{isGifted && !userIsGifter && (
+								{((isGifted && !userIsGifter) ||
+									!productDetail.subscription.autoRenew) && (
 									<div>
 										<dt>End date</dt>
 										<dd>
@@ -406,6 +434,41 @@ export const ProductCard = ({
 							</dl>
 						</div>
 						<div css={wideButtonLayoutCss}>
+							{showProductUpsellButton && (
+								<Button
+									aria-label={`Product Card Digital Plus Upsell Button`}
+									data-cy={`digital-plus-upsell-button`}
+									size="small"
+									priority="primary"
+									theme={themeButtonReaderRevenueBrand}
+									isLoading={isPreviewLoading}
+									disabled={
+										isPreviewLoading || hasPreviewError
+									}
+									cssOverrides={css`
+										justify-content: center;
+									`}
+									onClick={() => {
+										trackEvent({
+											eventCategory: 'account_overview',
+											eventAction: 'click',
+											eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
+										});
+										void fetchUpgradePreview({
+											subscriptionId:
+												productDetail.subscription
+													.subscriptionId,
+											subscription:
+												productDetail.subscription,
+											mainPlan:
+												mainPlan as PaidSubscriptionPlan,
+											navigationPath: `/${specificProductType.urlPart}/upgrade-product/information?subscriptionId=${productDetail.subscription.subscriptionId}`,
+										});
+									}}
+								>
+									{`Upgrade to Digital plus`}
+								</Button>
+							)}
 							{!isGifted && (
 								<Button
 									aria-label={`${specificProductType.productTitle(
@@ -415,6 +478,7 @@ export const ProductCard = ({
 									}`}
 									data-cy={`Manage ${groupedProductType.friendlyName}`}
 									size="small"
+									priority="tertiary"
 									cssOverrides={css`
 										justify-content: center;
 									`}
@@ -507,7 +571,7 @@ export const ProductCard = ({
 										cssOverrides={css`
 											justify-content: center;
 										`}
-										priority="primary"
+										priority="tertiary"
 										icon={
 											hasPaymentFailure ? (
 												<ErrorIcon
@@ -564,8 +628,24 @@ export const ProductCard = ({
 											max-width: 350px;
 										`}
 									>
-										Stop your recurring payment, at the end
-										of current billing period.
+										{!productDetail.subscription
+											.autoRenew &&
+										!productDetail.subscription
+											.nextPaymentDate ? (
+											<>
+												This is a one-off payment and
+												will not renew. You’ll continue
+												to enjoy your benefits until the
+												end of the current billing
+												period.
+											</>
+										) : (
+											<>
+												Stop your recurring payment, at
+												the end of current billing
+												period.
+											</>
+										)}
 									</p>
 								</div>
 								<div css={wideButtonLayoutCss}>
@@ -577,7 +657,7 @@ export const ProductCard = ({
 										cssOverrides={css`
 											justify-content: center;
 										`}
-										priority="primary"
+										priority="tertiary"
 										onClick={() => {
 											trackEvent({
 												eventCategory:

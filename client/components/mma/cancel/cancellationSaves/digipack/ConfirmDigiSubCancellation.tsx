@@ -9,10 +9,9 @@ import {
 	textSansBold20,
 } from '@guardian/source/foundations';
 import { Button, Stack } from '@guardian/source/react-components';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import type { CancellationContextInterface } from '@/client/components/mma/cancel/CancellationContainer';
-import { CancellationContext } from '@/client/components/mma/cancel/CancellationContainer';
+import { useCancellationContext } from '@/client/components/mma/cancel/CancellationContainer';
 import type { OptionalCancellationReasonId } from '@/client/components/mma/cancel/cancellationReason';
 import { JsonResponseHandler } from '@/client/components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import { benefitsCss } from '@/client/components/mma/shared/benefits/BenefitsStyles';
@@ -26,6 +25,7 @@ import type {
 } from '@/shared/productResponse';
 import { MDA_TEST_USER_HEADER } from '@/shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '@/shared/productTypes';
+import { benefitsConfiguration } from '../../../shared/benefits/BenefitsConfiguration';
 import type { DigisubCancellationRouterState } from './DigiSubThankYouOffer';
 
 function GreyBulletpoint() {
@@ -45,55 +45,44 @@ function GreyBulletpoint() {
 	);
 }
 
-const BenefitsNotAvailable = () => (
-	<Stack
-		space={4}
-		cssOverrides={css`
-			background-color: #f3f7fe;
-			border-radius: 4px;
-			padding: ${space[4]}px;
-		`}
-	>
-		<div>
-			<div
-				css={css`
-					${textSansBold20};
-					margin-bottom: ${space[2]}px;
-				`}
-			>
-				Extras you'll lose:
+const BenefitsNotAvailable = () => {
+	const benefits = benefitsConfiguration['digipack'];
+
+	return (
+		<Stack
+			space={4}
+			cssOverrides={css`
+				background-color: #f3f7fe;
+				border-radius: 4px;
+				padding: ${space[4]}px;
+			`}
+		>
+			<div>
+				<div
+					css={css`
+						${textSansBold20};
+						margin-bottom: ${space[2]}px;
+					`}
+				>
+					Benefits you'll lose:
+				</div>
+				<ul css={benefitsCss}>
+					{benefits.map((benefit) => (
+						<li key={benefit.description}>
+							<GreyBulletpoint />
+							{benefit.description}
+						</li>
+					))}
+				</ul>
 			</div>
-			<ul css={benefitsCss}>
-				<li>
-					<GreyBulletpoint />
-					Funding independent journalism
-				</li>
-				<li>
-					<GreyBulletpoint />A regular supporter newsletter
-				</li>
-				<li>
-					<GreyBulletpoint />
-					Unlimited access in our app
-				</li>
-				<li>
-					<GreyBulletpoint />
-					Ad-free reading
-				</li>
-				<li>
-					<GreyBulletpoint />
-					Offline reading
-				</li>
-			</ul>
-		</div>
-	</Stack>
-);
+		</Stack>
+	);
+};
 
 export const ConfirmDigiSubCancellation = () => {
 	const navigate = useNavigate();
 
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const { productDetail, productType } = useCancellationContext();
 
 	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 	const [loadingFailed, setLoadingFailed] = useState<boolean>(false);
@@ -219,7 +208,7 @@ export const ConfirmDigiSubCancellation = () => {
 						}
 					`}
 				>
-					Losing your supporter extras
+					Losing your benefits
 				</h1>
 				<div
 					css={css`
@@ -244,7 +233,7 @@ export const ConfirmDigiSubCancellation = () => {
 					margin-bottom: ${space[4]}px;
 				`}
 			>
-				Please confirm to cancel your digital subscription
+				Please confirm to cancel your Digital plus subscription
 			</div>
 			<div css={stackedButtonLayoutCss}>
 				<Button

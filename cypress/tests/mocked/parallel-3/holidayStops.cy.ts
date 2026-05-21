@@ -1,13 +1,13 @@
-import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
-	potentialDeliveries,
-	noPotentialDeliveries,
 	existingHolidays,
+	existingHolidaysFirstIssueDecember,
 	existingHolidaysWithDeletion,
 	multiplePotentialDeliveries,
-	existingHolidaysFirstIssueDecember,
+	noPotentialDeliveries,
+	potentialDeliveries,
 	yearSpanningPotentialDeliveries,
 } from '../../../../client/fixtures/holidays';
+import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import {
 	guardianWeeklyPaidByCard,
 	tierThree,
