@@ -1,4 +1,5 @@
 import {
+	formatAmount,
 	isValidDecimalInput,
 	processDecimalInput,
 	processDecimalInputOnBlur,
@@ -15,6 +16,39 @@ describe('shuffleArray', () => {
 				shuffleArray([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).toString(),
 			).not.toEqual(inputArrString);
 		}
+	});
+});
+
+describe('formatAmount', () => {
+	it('returns integers unchanged as numbers', () => {
+		expect(formatAmount(0)).toBe(0);
+		expect(formatAmount(5)).toBe(5);
+		expect(formatAmount(120)).toBe(120);
+		expect(formatAmount(-7)).toBe(-7);
+	});
+
+	it('formats non-integer numbers to two decimal places as strings', () => {
+		expect(formatAmount(1.5)).toBe('1.50');
+		expect(formatAmount(12.34)).toBe('12.34');
+		expect(formatAmount(0.1)).toBe('0.10');
+		expect(formatAmount(-2.5)).toBe('-2.50');
+	});
+
+	it('rounds to two decimal places', () => {
+		expect(formatAmount(1.005)).toBe('1.00');
+		expect(formatAmount(1.006)).toBe('1.01');
+		expect(formatAmount(1.999)).toBe('2.00');
+	});
+
+	it('returns an empty string for undefined or null', () => {
+		expect(formatAmount(undefined)).toBe('');
+		expect(formatAmount(null)).toBe('');
+	});
+
+	it('returns an empty string for non-finite numbers', () => {
+		expect(formatAmount(NaN)).toBe('');
+		expect(formatAmount(Infinity)).toBe('');
+		expect(formatAmount(-Infinity)).toBe('');
 	});
 });
 
