@@ -238,9 +238,7 @@ export const ContactUsForm = (props: ContactUsFormProps) => {
 							captchaToken,
 							attachment: fileAttachment && {
 								name: fileAttachment.name,
-								contents: (await base64FromFile(
-									fileAttachment,
-								)) as string,
+								contents: await base64FromFile(fileAttachment),
 							},
 						})
 						.then((success) => {

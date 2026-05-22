@@ -1,27 +1,46 @@
-export const base64FromFile = (file: File) => {
-	return new Promise((resolve, reject) => {
-		const reader = new FileReader();
+export const base64FromFile = async (file: File): Promise<string> => {
+	if (typeof FileReader !== 'undefined') {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
 
-		reader.addEventListener(
-			'load',
-			() => {
-				resolve(
-					removeDataUrlDeclarationFromBase64(reader.result as string),
-				);
-			},
-			false,
-		);
+			reader.addEventListener(
+				'load',
+				() => {
+					resolve(
+						removeDataUrlDeclarationFromBase64(
+							reader.result as string,
+						),
+					);
+				},
+				false,
+			);
 
-		reader.addEventListener(
-			'error',
-			() => {
-				reject(new Error('base64FromFile error'));
-			},
-			false,
-		);
+			reader.addEventListener(
+				'error',
+				() => {
+					const readerError = reader.error;
+					const details = readerError
+						? `: ${readerError.name}${
+								readerError.message
+									? ` - ${readerError.message}`
+									: ''
+						  }`
+						: '';
+					reject(new Error(`base64FromFile read error${details}`));
+				},
+				false,
+			);
 
-		reader.readAsDataURL(file);
-	});
+			reader.readAsDataURL(file);
+		});
+	}
+
+	if (typeof file.arrayBuffer === 'function') {
+		const buffer = await file.arrayBuffer();
+		return arrayBufferToBase64(buffer);
+	}
+
+	throw new Error('This browser does not support reading uploaded files.');
 };
 
 export const MAX_FILE_ATTACHMENT_SIZE_KB = 5000;
@@ -41,6 +60,20 @@ export const VALID_IMAGE_FILE_EXTENSIONS: string[] = [
 	'.jpg',
 	'.gif',
 	'.pdf',
+];
+
+export const VALID_AVATAR_FILE_EXTENSIONS: string[] = [
+	'.png',
+	'.jpeg',
+	'.jpg',
+	'.gif',
+];
+
+export const VALID_AVATAR_MIME_TYPES: string[] = [
+	'image/png',
+	'image/jpeg',
+	'image/jpg',
+	'image/gif',
 ];
 
 export type FileAttachment = {
@@ -71,8 +104,71 @@ export const validateImageFileExtension = (fileName: string) =>
 		fileName.endsWith(validFileExtension),
 	).length > 0;
 
+export const validateAvatarFile = (
+	file: File | null,
+): { valid: boolean; error?: string } => {
+	if (!file) {
+		return { valid: false, error: 'Please select an image to upload.' };
+	}
+
+	const hasValidExtension = VALID_AVATAR_FILE_EXTENSIONS.some((ext) =>
+		file.name.toLowerCase().endsWith(ext),
+	);
+
+	const isValidType = file.type
+		? VALID_AVATAR_MIME_TYPES.includes(file.type)
+		: hasValidExtension;
+
+	if (!isValidType) {
+		return {
+			valid: false,
+			error: `Only ${VALID_AVATAR_FILE_EXTENSIONS.join(
+				', ',
+			)} files are accepted.`,
+		};
+	}
+
+	const maxSizeBytes = MAX_AVATAR_FILE_SIZE_KB * 1024;
+	const maxSizeLabel =
+		MAX_AVATAR_FILE_SIZE_KB >= 1024
+			? `${Math.round(MAX_AVATAR_FILE_SIZE_KB / 1024)}MB`
+			: `${MAX_AVATAR_FILE_SIZE_KB}KB`;
+
+	if (file.size > maxSizeBytes) {
+		return {
+			valid: false,
+			error: `File must be ${maxSizeLabel} or smaller. Your file is ${Math.round(
+				file.size / 1024,
+			)}KB.`,
+		};
+	}
+
+	return { valid: true };
+};
+
 const removeDataUrlDeclarationFromBase64 = (fileBase64: string) =>
 	fileBase64.replace(/data:(.*)base64,/m, '');
+
+const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
+	if (typeof Buffer !== 'undefined') {
+		return Buffer.from(buffer).toString('base64');
+	}
+
+	if (typeof btoa === 'undefined') {
+		throw new Error('No available base64 encoder in this browser.');
+	}
+
+	let binary = '';
+	const bytes = new Uint8Array(buffer);
+	const chunkSize = 0x8000;
+
+	for (let i = 0; i < bytes.length; i += chunkSize) {
+		const chunk = bytes.subarray(i, i + chunkSize);
+		binary += String.fromCharCode(...chunk);
+	}
+
+	return btoa(binary);
+};
 
 export const base64ToBlob = (base64: string) =>
 	new Blob([Buffer.from(base64, 'base64')]);

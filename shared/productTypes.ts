@@ -1,5 +1,6 @@
 import type { Product } from '@guardian/ophan-tracker-js/MMA';
 import type { ReactNode } from 'react';
+import { shuffledPrintProductsCancellationReasons } from '@/client/components/mma/cancel/PrintProductsCancellationReasons';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
 import { shuffledTierThreeCancellationReasons } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationReasons';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
@@ -13,7 +14,6 @@ import { shuffledContributionsCancellationReasons } from '../client/components/m
 import { digipackCancellationFlowStart } from '../client/components/mma/cancel/digipack/DigipackCancellationFlowStart';
 import { shuffledDigipackCancellationReasons } from '../client/components/mma/cancel/digipack/DigipackCancellationReasons';
 import { gwCancellationFlowStart } from '../client/components/mma/cancel/gw/GwCancellationFlowStart';
-import { shuffledGWCancellationReasons } from '../client/components/mma/cancel/gw/GwCancellationReasons';
 import { membershipCancellationFlowStart } from '../client/components/mma/cancel/membership/MembershipCancellationFlowStart';
 import { shuffledMembershipCancellationReasons } from '../client/components/mma/cancel/membership/MembershipCancellationReasons';
 import type { RestOfCancellationFlow } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
@@ -102,6 +102,11 @@ interface CancellationFlowProperties {
 	reasons?: CancellationReason[];
 	sfCaseProduct: SfCaseProduct;
 	checkForOutstandingCredits?: true;
+	// Opts the product into the dedicated print cancellation journey
+	// (PrintReasonPicker, PrintCancellationAlternatives, PrintConfirmCancellation,
+	// PrintExecuteCancellation, PrintCancellationStore). When undefined the
+	// product uses the legacy/default cancellation journey.
+	usesPrintCancellationFlow?: true;
 	flowWrapper?: (
 		productDetail: ProductDetail,
 		productType: ProductType,
@@ -751,9 +756,10 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			},
 		},
 		cancellation: {
-			reasons: shuffledGWCancellationReasons,
+			reasons: shuffledPrintProductsCancellationReasons,
 			sfCaseProduct: 'Guardian Weekly',
 			checkForOutstandingCredits: true,
+			usesPrintCancellationFlow: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
 			startPageBody: gwCancellationFlowStart,
 			startPageOfferEffectiveDateOptions: true,

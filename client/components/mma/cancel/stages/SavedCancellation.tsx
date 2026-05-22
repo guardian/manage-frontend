@@ -5,16 +5,12 @@ import {
 	SvgArrowLeftStraight,
 } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
-import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
 import { GenericErrorMessage } from '../../identity/GenericErrorMessage';
 import { ProgressIndicator } from '../../shared/ProgressIndicator';
-import type {
-	CancellationContextInterface,
-	CancellationRouterState,
-} from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
+import type { CancellationRouterState } from '../CancellationContainer';
+import { useCancellationContext } from '../CancellationContainer';
 import type { CancellationReason } from '../cancellationReason';
 
 export interface SavedBodyProps {
@@ -26,15 +22,13 @@ export const SavedCancellation = () => {
 
 	const location = useLocation();
 
-	const routerState = location.state as CancellationRouterState;
-	const { productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const routerState = location.state as CancellationRouterState | null;
+	const { productType } = useCancellationContext();
 
-	const updatedAmount = routerState.updatedContributionAmount;
-	const selectedReasonId = routerState.selectedReasonId;
+	const updatedAmount = routerState?.updatedContributionAmount;
+	const selectedReasonId = routerState?.selectedReasonId;
 
-	if (!updatedAmount || !selectedReasonId || !productType) {
+	if (updatedAmount == null || !selectedReasonId || !productType) {
 		Sentry.captureMessage(
 			'Updated amount and/or cancellation reason not passed to SavedCancellation',
 		);
@@ -50,7 +44,7 @@ export const SavedCancellation = () => {
 		navigate('/');
 	};
 
-	return updatedAmount && reason ? (
+	return reason ? (
 		<>
 			<ProgressIndicator
 				steps={[

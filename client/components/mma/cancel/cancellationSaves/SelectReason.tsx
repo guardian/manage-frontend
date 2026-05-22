@@ -14,7 +14,7 @@ import {
 	Stack,
 } from '@guardian/source/react-components';
 import type { FormEvent } from 'react';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
@@ -40,11 +40,8 @@ import {
 import { headingCss, sectionSpacing } from '../../../../styles/GenericStyles';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { JsonResponseHandler } from '../../shared/asyncComponents/DefaultApiResponseHandler';
-import type {
-	CancellationContextInterface,
-	CancellationRouterState,
-} from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
+import type { CancellationRouterState } from '../CancellationContainer';
+import { useCancellationContext } from '../CancellationContainer';
 import type { CancellationReason } from '../cancellationReason';
 
 const paragraphListCss = css`
@@ -196,9 +193,7 @@ export const SelectReason = () => {
 	const [selectedReasonId, setSelectedReasonId] = useState<string>('');
 	const [inValidationErrorState, setInValidationErrorState] =
 		useState<boolean>(false);
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const { productDetail, productType } = useCancellationContext();
 
 	const mainPlan = getMainPlan(
 		productDetail.subscription,

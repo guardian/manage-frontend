@@ -23,7 +23,8 @@ interface AsyncLoaderProps<T> extends LoadingProps {
 }
 
 enum LoadingState {
-	Loading,
+	Initial, // Ready to fetch
+	Fetching, // Currently fetching
 	Loaded,
 	Error,
 }
@@ -36,34 +37,46 @@ interface AsyncLoaderState<T> {
 export class AsyncLoader<
 	T extends NonNullable<unknown>,
 > extends React.Component<AsyncLoaderProps<T>, AsyncLoaderState<T>> {
-	public state: AsyncLoaderState<T> = { loadingState: LoadingState.Loading };
+	public state: AsyncLoaderState<T> = { loadingState: LoadingState.Initial };
 	private readerOnOK =
 		this.props.readerOnOK || ((resp: Response) => resp.json());
 
 	public componentDidMount(): void {
-		this.props
-			.fetch()
-			.then((resp) =>
-				Array.isArray(resp)
-					? Promise.all(resp.map(this.processResponse))
-					: this.processResponse(resp),
-			)
-			.then((data) => {
-				if (
-					!(
-						this.props.shouldPreventRender &&
-						this.props.shouldPreventRender(data)
-					) &&
-					data !== null
-				) {
-					this.setState({ data, loadingState: LoadingState.Loaded });
-				}
-			})
-			.catch((exception) => this.handleError(exception));
+		if (this.state.loadingState !== LoadingState.Initial) {
+			return;
+		}
+
+		this.setState({ loadingState: LoadingState.Fetching }, () => {
+			this.props
+				.fetch()
+				.then((resp) =>
+					Array.isArray(resp)
+						? Promise.all(resp.map(this.processResponse))
+						: this.processResponse(resp),
+				)
+				.then((data) => {
+					if (
+						!(
+							this.props.shouldPreventRender &&
+							this.props.shouldPreventRender(data)
+						) &&
+						data !== null
+					) {
+						this.setState({
+							data,
+							loadingState: LoadingState.Loaded,
+						});
+					}
+				})
+				.catch((exception) => this.handleError(exception));
+		});
 	}
 
 	public render(): React.ReactNode {
-		if (this.state.loadingState === LoadingState.Loading) {
+		if (
+			this.state.loadingState === LoadingState.Initial ||
+			this.state.loadingState === LoadingState.Fetching
+		) {
 			return this.props.inline ? (
 				<Spinner
 					loadingMessage={this.props.loadingMessage}
@@ -81,7 +94,7 @@ export class AsyncLoader<
 		) {
 			return this.props.render(this.state.data, () =>
 				this.setState(
-					{ loadingState: LoadingState.Loading },
+					{ loadingState: LoadingState.Initial },
 					// eslint-disable-next-line -- supress @typescript-eslint/unbound-method on this line
 					this.componentDidMount,
 				),

@@ -19,8 +19,8 @@ export interface FieldChangeEvent extends React.ChangeEvent<HTMLInputElement> {
 interface FieldWrapperProps {
 	label: string;
 	width: string;
-	children: JSX.Element;
-	cornerHint?: JSX.Element;
+	children: React.ReactElement;
+	cornerHint?: React.ReactElement;
 	onChange?: (event: FieldChangeEvent) => void;
 }
 
@@ -49,11 +49,11 @@ export class FieldWrapper extends React.Component<
 		const hydratedChildren = React.Children.map(
 			this.props.children,
 			(child) => {
-				return React.cloneElement(child as React.ReactElement, {
+				return React.cloneElement(child, {
 					onChange: this.validateField(this.props.onChange),
 					onFocus: this.toggleFocus,
 					onBlur: this.toggleFocus,
-				});
+				} as React.Attributes);
 			},
 		);
 

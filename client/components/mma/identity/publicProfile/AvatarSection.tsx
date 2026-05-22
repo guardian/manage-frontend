@@ -1,15 +1,16 @@
 import { css } from '@emotion/react';
-import { palette, textSans14 } from '@guardian/source/foundations';
+import { palette, space, textSans14 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import * as Sentry from '@sentry/browser';
 import { Form, Formik } from 'formik';
 import { useCallback } from 'react';
 import type { ChangeEvent, FC } from 'react';
+import { validateAvatarFile } from '@/shared/fileUploadUtils';
 import { trackEvent } from '../../../../utilities/analytics';
 import { Spinner } from '../../../shared/Spinner';
+import { AvatarError } from '../idapi/avatar';
 import * as AvatarAPI from '../idapi/avatar';
 import { IdentityLocations } from '../IdentityLocations';
-import { ErrorTypes } from '../models';
 import { PageSection } from '../PageSection';
 import { errorMessageCss, labelCss } from '../sharedStyles';
 import {
@@ -32,15 +33,11 @@ const imgCss = css`
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the argument object is an error object?
-const isEmptyAvatarError = (e: any): boolean => {
-	return e.type && e.type === ErrorTypes.NOT_FOUND;
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the argument object is an error object?
 const errorHandler = (e: any) => {
-	if (isEmptyAvatarError(e)) {
+	if (e instanceof AvatarError && !e.reportToSentry) {
 		return;
 	}
+
 	Sentry.captureException(e);
 	trackEvent({
 		eventCategory: 'publicProfileError',
@@ -81,9 +78,27 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 			initialValues={{
 				file: null,
 			}}
+			validate={(values: AvatarPayload) => {
+				const errors: { file?: string } = {};
+				const validation = validateAvatarFile(values.file);
+				if (!validation.valid) {
+					errors.file = validation.error;
+				}
+				return errors;
+			}}
 			onSubmit={async (values: AvatarPayload, formikBag) => {
-				await saveAvatar(values.file);
-				formikBag.setSubmitting(false);
+				try {
+					if (!values.file) {
+						formikBag.setFieldError(
+							'file',
+							'Please select an image to upload.',
+						);
+						return;
+					}
+					await saveAvatar(values.file);
+				} finally {
+					formikBag.setSubmitting(false);
+				}
 			}}
 		>
 			{(formikBag) => (
@@ -91,6 +106,10 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 					<label css={labelCss}>
 						{avatarDisplay()}
 						<input
+							aria-describedby={
+								formikBag.errors.file ? 'avatar-file-error' : undefined
+							}
+							aria-invalid={Boolean(formikBag.errors.file)}
 							disabled={formikBag.isSubmitting}
 							type="file"
 							name="file"
@@ -107,6 +126,15 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 							}}
 						/>
 					</label>
+					{formikBag.errors.file && (
+						<div
+							css={[errorMessageCss, css`margin-bottom: ${space[6]}px`]}
+							id="avatar-file-error"
+							role="alert"
+						>
+							{formikBag.errors.file}
+						</div>
+					)}
 					<Button
 						disabled={formikBag.isSubmitting}
 						onClick={() => formikBag.submitForm()}
@@ -137,13 +165,9 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the argument object might lack a message attribute
 	const getErrorMessage = (error: any) => {
-		let message;
-		if (error.type && error.type === ErrorTypes.VALIDATION) {
-			message = error.error;
-		} else {
-			message =
-				'An error occured trying to upload your avatar. Please try again.';
-		}
+		const message =
+			(error instanceof AvatarError ? error.userMessage : null) ||
+			'An error occurred trying to upload your avatar. Please try again.';
 		return <div css={errorMessageCss}>{message}</div>;
 	};
 
