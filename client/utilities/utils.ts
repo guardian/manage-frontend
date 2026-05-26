@@ -28,7 +28,10 @@ export const shuffleArray = (array: unknown[]) => {
 	return array;
 };
 
-export function formatAmount(amount: number) {
+export function formatAmount(amount: number | null | undefined) {
+	if (typeof amount !== 'number' || !Number.isFinite(amount)) {
+		return '';
+	}
 	return Number.isInteger(amount) ? amount : amount.toFixed(2);
 }
 
