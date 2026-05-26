@@ -43,12 +43,6 @@ export function guardianWeeklyPaidByCard() {
 export function guardianWeeklyGiftPurchase() {
 	return new ProductBuilder(baseGuardianWeekly())
 		.payByCard()
-		.gift(false)
-		.getProductDetailObject();
-}
-
-export function guardianWeeklyGiftRecipient() {
-	return new ProductBuilder(baseGuardianWeekly())
 		.gift(true)
 		.getProductDetailObject();
 }
