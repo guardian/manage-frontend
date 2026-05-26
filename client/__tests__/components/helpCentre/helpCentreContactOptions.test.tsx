@@ -14,7 +14,7 @@ jest.mock(
 	}),
 );
 
-describe.only('HelpCentreContactOptions', () => {
+describe('HelpCentreContactOptions', () => {
 	describe('Help Centre landing page', () => {
 		describe('with live chat feature switch disabled', () => {
 			beforeAll(() => {
