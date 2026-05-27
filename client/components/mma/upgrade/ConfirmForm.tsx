@@ -12,7 +12,7 @@ import {
 import {
 	Button,
 	Stack,
-	SvgClockOutlined,
+	SvgClockFilled,
 	SvgCreditCard,
 	SvgReload,
 	themeButtonReaderRevenueBrand,
@@ -106,7 +106,7 @@ const WhatHappensNext = ({
 					]}
 				>
 					<li>
-						<SvgClockOutlined size="medium" />
+						<SvgClockFilled size="medium" />
 						<span>
 							<strong
 								css={css`
