@@ -23,7 +23,6 @@ import {
 	guardianAdLiteCancelled,
 	guardianWeeklyCancelled,
 	guardianWeeklyGiftPurchase,
-	guardianWeeklyGiftRecipient,
 	guardianWeeklyPaidByCard,
 	homeDelivery,
 	homeDeliverySaturdayPlus,
@@ -334,10 +333,7 @@ export const WithGiftSubscriptions: StoryObj<typeof AccountOverview> = {
 			}),
 			http.get('/api/me/mma', () => {
 				return HttpResponse.json(
-					toMembersDataApiResponse(
-						guardianWeeklyGiftRecipient(),
-						guardianWeeklyGiftPurchase(),
-					),
+					toMembersDataApiResponse(guardianWeeklyGiftPurchase()),
 				);
 			}),
 			http.get('/api/me/one-off-contributions', () => {
