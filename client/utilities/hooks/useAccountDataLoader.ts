@@ -6,8 +6,9 @@ import type {
 	MembersDataApiResponse,
 	SingleProductDetail,
 } from '../../../shared/productResponse';
+import { isProduct } from '../../../shared/productResponse';
 import { JsonResponseHandler } from '../../components/mma/shared/asyncComponents/DefaultApiResponseHandler';
-import type { AccountOverviewLambdaLoaderResponse } from '../../stores/AccountStore';
+import type { UserSubscriptionsResponse } from '../../stores/AccountStore';
 import {
 	AccountLoadingState,
 	useAccountStore,
@@ -25,8 +26,7 @@ async function fetchAllAccountData() {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
-		accountOverviewLambdaLoaderResponse,
-		,
+		userSubscriptionsResponse,
 	] = await Promise.all([
 		allRecurringProductsDetailFetcher()
 			.then(
@@ -48,23 +48,41 @@ async function fetchAllAccountData() {
 				(r) => JsonResponseHandler(r) as Promise<SingleProductDetail[]>,
 			)
 			.catch((): null => null),
-		// TODO: Replace placeholder endpoint with real lambda for Digital plus upgrade eligibility
-		fetchWithDefaultParameters('/api/discounts/digital-plus-upgrade')
+		fetchWithDefaultParameters('/api/user-subscriptions/me')
 			.then(
 				(r) =>
 					JsonResponseHandler(
 						r,
-					) as Promise<AccountOverviewLambdaLoaderResponse>,
+					) as Promise<UserSubscriptionsResponse>,
 			)
 			.catch((): null => null),
 	]);
+
+	if (mdapiResponse && userSubscriptionsResponse) {
+		const availableActionsBySubscriptionId = new Map(
+			userSubscriptionsResponse.subscriptions.map((s) => [
+				s.name,
+				s.availableActions,
+			]),
+		);
+		mdapiResponse.products = mdapiResponse.products.map((p) =>
+			isProduct(p)
+				? {
+						...p,
+						availableActions: availableActionsBySubscriptionId.get(
+							p.subscription.subscriptionId,
+						),
+				  }
+				: p,
+		);
+	}
 
 	return {
 		mdapiResponse,
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
-		accountOverviewLambdaLoaderResponse,
+		userSubscriptionsResponse,
 	};
 }
 
@@ -75,7 +93,7 @@ export const useAccountDataLoader = () => {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
-		accountOverviewLambdaLoaderResponse,
+		userSubscriptionsResponse,
 		setAllResponses,
 		setLoadingState,
 		setError,
@@ -121,6 +139,6 @@ export const useAccountDataLoader = () => {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
-		accountOverviewLambdaLoaderResponse,
+		userSubscriptionsResponse,
 	};
 };

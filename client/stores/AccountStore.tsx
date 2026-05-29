@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { MPAPIResponse } from '../../shared/mpapiResponse';
 import type {
+	AvailableAction,
 	CancelledProductDetail,
 	MembersDataApiResponse,
 	MembersDataApiUser,
@@ -16,9 +17,15 @@ export enum AccountLoadingState {
 	Error = 'Error',
 }
 
-// TODO: Replace with real shape once the lambda for Digital plus upgrade eligibility lands
-export interface AccountOverviewLambdaLoaderResponse {
-	eligible: boolean;
+export interface UserSubscriptionsApiSubscription {
+	name: string;
+	productKey: string;
+	productRatePlanKey: string;
+	availableActions: AvailableAction[];
+}
+
+export interface UserSubscriptionsResponse {
+	subscriptions: UserSubscriptionsApiSubscription[];
 }
 
 interface AccountState {
@@ -26,7 +33,7 @@ interface AccountState {
 	cancelledProductsResponse: CancelledProductDetail[] | null;
 	mpapiResponse: MPAPIResponse | null;
 	singleContributionsResponse: SingleProductDetail[] | null;
-	accountOverviewLambdaLoaderResponse: AccountOverviewLambdaLoaderResponse | null;
+	userSubscriptionsResponse: UserSubscriptionsResponse | null;
 	loadingState: AccountLoadingState;
 	error: string | null;
 }
@@ -36,15 +43,13 @@ interface AccountActions {
 	setCancelledProductsResponse: (response: CancelledProductDetail[]) => void;
 	setMpapiResponse: (response: MPAPIResponse) => void;
 	setSingleContributionsResponse: (response: SingleProductDetail[]) => void;
-	setDigitalPlusUpgradeResponse: (
-		response: AccountOverviewLambdaLoaderResponse,
-	) => void;
+	setUserSubscriptionsResponse: (response: UserSubscriptionsResponse) => void;
 	setAllResponses: (responses: {
 		mdapiResponse: MembersDataApiResponse | null;
 		cancelledProductsResponse: CancelledProductDetail[] | null;
 		mpapiResponse: MPAPIResponse | null;
 		singleContributionsResponse: SingleProductDetail[] | null;
-		accountOverviewLambdaLoaderResponse: AccountOverviewLambdaLoaderResponse | null;
+		userSubscriptionsResponse: UserSubscriptionsResponse | null;
 	}) => void;
 	setLoadingState: (state: AccountLoadingState) => void;
 	setError: (error: string | null) => void;
@@ -63,7 +68,7 @@ const initialState: AccountState = {
 	cancelledProductsResponse: null,
 	mpapiResponse: null,
 	singleContributionsResponse: null,
-	accountOverviewLambdaLoaderResponse: null,
+	userSubscriptionsResponse: null,
 	loadingState: AccountLoadingState.NotStarted,
 	error: null,
 };
@@ -88,11 +93,11 @@ export const useAccountStore = create<AccountStore>()(
 					false,
 					'setSingleContributionsResponse',
 				),
-			setDigitalPlusUpgradeResponse: (response) =>
+			setUserSubscriptionsResponse: (response) =>
 				set(
-					{ accountOverviewLambdaLoaderResponse: response },
+					{ userSubscriptionsResponse: response },
 					false,
-					'setDigitalPlusUpgradeResponse',
+					'setUserSubscriptionsResponse',
 				),
 			setAllResponses: (responses) =>
 				set(
@@ -103,8 +108,8 @@ export const useAccountStore = create<AccountStore>()(
 						mpapiResponse: responses.mpapiResponse,
 						singleContributionsResponse:
 							responses.singleContributionsResponse,
-						accountOverviewLambdaLoaderResponse:
-							responses.accountOverviewLambdaLoaderResponse,
+						userSubscriptionsResponse:
+							responses.userSubscriptionsResponse,
 						loadingState: AccountLoadingState.Loaded,
 						error: null,
 					},

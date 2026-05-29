@@ -144,11 +144,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
-		accountOverviewLambdaLoaderResponse,
 	} = useAccountDataLoader();
-
-	const showDigitalPlusUpgradeBanner =
-		!!accountOverviewLambdaLoaderResponse?.eligible;
 
 	useEffect(() => {
 		void loadAccountData();
@@ -286,6 +282,20 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 
 	const isEligibleToUpsell =
 		!maybeFirstPaymentFailure && !hasNonServiceableCountry;
+
+	const showDigitalPlusUpgradeBanner = allActiveProductDetails.some(
+		(product) =>
+			isSpecificProductType(
+				product.mmaProductKey,
+				PRODUCT_TYPES.supporterplus,
+			) &&
+			product.availableActions?.some(
+				(availableAction) =>
+					availableAction.action === 'upsell' &&
+					availableAction.target?.productKey ===
+						'DigitalSubscription',
+			),
+	);
 
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,

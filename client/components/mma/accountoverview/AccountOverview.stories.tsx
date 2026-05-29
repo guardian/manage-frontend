@@ -442,8 +442,26 @@ export const WithAllAccessDigitalDiscount: StoryObj<typeof AccountOverview> = {
 			http.get('/api/me/one-off-contributions', () => {
 				return HttpResponse.json([]);
 			}),
-			http.get('/api/discounts/digital-plus-upgrade', () => {
-				return HttpResponse.json({ eligible: true });
+			http.get('/api/user-subscriptions/me', () => {
+				return HttpResponse.json({
+					subscriptions: [
+						{
+							name: supporterPlus().subscription.subscriptionId,
+							productKey: 'SupporterPlus',
+							productRatePlanKey: 'Annual',
+							availableActions: [
+								{
+									action: 'upsell',
+									target: {
+										productKey: 'DigitalSubscription',
+										productRatePlanKey: 'Annual',
+									},
+								},
+								{ action: 'cancel' },
+							],
+						},
+					],
+				});
 			}),
 		],
 	},
