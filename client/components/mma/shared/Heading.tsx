@@ -34,7 +34,9 @@ export const Heading = (props: HeadingProps) => {
 		} ;
 	`;
 
-	const HeadingElement: keyof JSX.IntrinsicElements = `h${props.level ?? 2}`;
+	const HeadingElement: keyof React.JSX.IntrinsicElements = `h${
+		props.level ?? 2
+	}`;
 
 	return (
 		<div css={dividerStyles}>
