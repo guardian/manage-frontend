@@ -1043,7 +1043,7 @@ html:not(.src-focus-disabled) .emotion-9:focus {
 }
 
 .emotion-9:hover {
-  background-color: #ACC9F7;
+  background-color: #9EC1FA;
 }
 
 .emotion-9 svg {
