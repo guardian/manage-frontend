@@ -187,7 +187,8 @@
     "tinyglobby/picomatch": "4.0.4",
     "flatted": "^3.4.2",
     "follow-redirects": "^1.16.0",
-    "serialize-javascript": "^7.0.3"
+    "serialize-javascript": "^7.0.3",
+    "tmp": "^0.2.7"
   },
   "license": "UNLICENSED",
   "msw": {
