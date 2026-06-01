@@ -185,7 +185,8 @@
     "picomatch": "2.3.2",
     "@stylistic/eslint-plugin/picomatch": "4.0.4",
     "tinyglobby/picomatch": "4.0.4",
-    "flatted": "^3.4.2"
+    "flatted": "^3.4.2",
+    "follow-redirects": "^1.16.0"
   },
   "license": "UNLICENSED",
   "msw": {
