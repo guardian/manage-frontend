@@ -39,6 +39,7 @@ import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { PaymentMethoDisplay } from '../shared/PaymentMethodDisplay';
+import { TaxExclusiveNotice } from '../shared/TaxExclusiveNotice';
 import {
 	getGuardianWeeklyGiftBenefitsCopy,
 	productCardConfiguration,
@@ -612,6 +613,9 @@ export const ProductCard = ({
 								</div>
 							)}
 						</div>
+						<TaxExclusiveNotice
+							taxExclusive={productDetail.taxExclusive}
+						/>
 					</Card.Section>
 				)}
 				{!productDetail.isPaidTier && (
