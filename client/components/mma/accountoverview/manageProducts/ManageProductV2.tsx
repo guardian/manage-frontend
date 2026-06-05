@@ -13,7 +13,7 @@ import {
 	LinkButton,
 	Stack,
 	SvgCalendar,
-	SvgClock,
+	SvgClockFilled,
 	SvgCreditCard,
 } from '@guardian/source/react-components';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -180,7 +180,7 @@ const InnerContent = ({
 						]}
 					>
 						<li>
-							<SvgClock size="medium" />
+							<SvgClockFilled size="medium" />
 							<span>
 								<>
 									<strong

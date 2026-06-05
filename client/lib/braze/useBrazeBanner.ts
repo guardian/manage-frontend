@@ -1,5 +1,5 @@
 import type { Banner } from '@braze/web-sdk';
-import { getConsentFor, onConsentChange } from '@guardian/libs';
+import { getConsentFor, onConsentChange } from '@guardian/consent-manager';
 import { useEffect, useState } from 'react';
 import { isSignedIn } from '../../utilities/signInStatus';
 import { brazeBannersSystemLogger, getBrazeApiKey } from './brazeConfig';

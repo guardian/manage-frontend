@@ -137,11 +137,12 @@
     "@emotion/react": "11.14.0",
     "@guardian/ab-core": "9.0.0",
     "@guardian/ab-react": "10.0.0",
-    "@guardian/commercial": "^23.7.5",
-    "@guardian/libs": "^26.0.0",
+    "@guardian/commercial-core": "34.0.0",
+    "@guardian/consent-manager": "1.0.0",
+    "@guardian/libs": "32.0.0",
     "@guardian/ophan-tracker-js": "2.6.1",
-    "@guardian/source": "^8.0.1",
-    "@guardian/source-development-kitchen": "^7.0.0",
+    "@guardian/source": "12.2.1",
+    "@guardian/source-development-kitchen": "28.1.0",
     "@okta/jwt-verifier": "^4.0.1",
     "@sentry/browser": "10.20.0",
     "@sentry/node": "10.20.0",
@@ -159,7 +160,7 @@
     "formik": "2.4.9",
     "helmet": "8.1.0",
     "jest-environment-jsdom": "29.7.0",
-    "js-cookie": "2.2.1",
+    "js-cookie": "3.0.7",
     "lodash": "4.18.1",
     "ms": "2.1.3",
     "node-fetch": "2.6.7",
@@ -183,10 +184,15 @@
     "cross-spawn": "^7.0.5",
     "picomatch": "2.3.2",
     "@stylistic/eslint-plugin/picomatch": "4.0.4",
-    "tinyglobby/picomatch": "4.0.4"
+    "tinyglobby/picomatch": "4.0.4",
+    "flatted": "^3.4.2",
+    "follow-redirects": "^1.16.0",
+    "serialize-javascript": "^7.0.3",
+    "tmp": "^0.2.7"
   },
   "license": "UNLICENSED",
   "msw": {
     "workerDirectory": ".storybook/static"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
