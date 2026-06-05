@@ -421,6 +421,52 @@ export const WithSupporterPlusDuringOffer: StoryObj<typeof AccountOverview> = {
 	},
 };
 
+export const WithAllAccessDigitalDiscount: StoryObj<typeof AccountOverview> = {
+	render: () => {
+		return <AccountOverview />;
+	},
+
+	parameters: {
+		msw: [
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
+			}),
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
+			}),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(supporterPlus()),
+				);
+			}),
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
+			}),
+			http.get('/api/user-subscriptions/me', () => {
+				return HttpResponse.json({
+					subscriptions: [
+						{
+							name: supporterPlus().subscription.subscriptionId,
+							productKey: 'SupporterPlus',
+							productRatePlanKey: 'Annual',
+							availableActions: [
+								{
+									action: 'upsell',
+									target: {
+										productKey: 'DigitalSubscription',
+										productRatePlanKey: 'Annual',
+									},
+								},
+								{ action: 'cancel' },
+							],
+						},
+					],
+				});
+			}),
+		],
+	},
+};
+
 export const WithGuardianAdLite: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;

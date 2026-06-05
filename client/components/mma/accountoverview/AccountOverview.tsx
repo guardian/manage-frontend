@@ -33,12 +33,14 @@ import {
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
 import { useAccountDataLoader } from '../../../utilities/hooks/useAccountDataLoader';
+import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import { DigitalPlusUpgradeBanner } from '../shared/DigitalPlusUpgradeBanner';
 import { DownloadAppCtaVariation1 } from '../shared/DownloadAppCtaVariation1';
 import { DownloadEditionsAppCtaWithImage } from '../shared/DownloadEditionsAppCtaWithImage';
 import { DownloadFeastAppCtaWithImage } from '../shared/DownloadFeastAppCtaWithImage';
@@ -132,6 +134,7 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const { braze, banner } = useBrazeBanner(MANAGE_PLACEMENT_ID);
 	const { previewError, setPreviewError } = useUpgradeProductStore();
+	const { isPreviewLoading, hasPreviewError } = useUpgradeProduct();
 
 	const {
 		loadAccountData,
@@ -280,6 +283,20 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const isEligibleToUpsell =
 		!maybeFirstPaymentFailure && !hasNonServiceableCountry;
 
+	const showDigitalPlusUpgradeBanner = allActiveProductDetails.some(
+		(product) =>
+			isSpecificProductType(
+				product.mmaProductKey,
+				PRODUCT_TYPES.supporterplus,
+			) &&
+			product.availableActions?.some(
+				(availableAction) =>
+					availableAction.action === 'upsell' &&
+					availableAction.target?.productKey ===
+						'DigitalSubscription',
+			),
+	);
+
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
 	): GroupedProductTypeKeys => {
@@ -316,6 +333,28 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 
 			{braze && banner && (
 				<BrazeBannersSystemDisplay braze={braze} banner={banner} />
+			)}
+
+			{showDigitalPlusUpgradeBanner && (
+				<DigitalPlusUpgradeBanner
+					isLoading={isPreviewLoading}
+					disabled={hasPreviewError}
+					onUpgradeClick={() => {
+						// trackEvent({
+						// 	eventCategory: 'account_overview',
+						// 	eventAction: 'click',
+						// 	eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
+						// });
+						// void fetchUpgradePreview({
+						// 	subscriptionId,
+						// 	subscription:
+						// 		supporterPlusProductForUpgrade.subscription,
+						// 	mainPlan:
+						// 		supporterPlusMainPlan as PaidSubscriptionPlan,
+						// 	navigationPath: `/${specificProductType.urlPart}/upgrade-product/information?subscriptionId=${subscriptionId}`,
+						// });
+					}}
+				/>
 			)}
 
 			<PaymentFailureAlertIfApplicable

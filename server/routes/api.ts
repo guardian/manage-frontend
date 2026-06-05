@@ -11,6 +11,7 @@ import {
 	productMoveAPI,
 	productSwitchAPI,
 	updateSupporterPlusAmountAPI,
+	userSubscriptionsAPI,
 } from '../apiGatewayDiscovery';
 import {
 	customMembersDataApiHandler,
@@ -363,6 +364,11 @@ router.get(
 		'user-attributes/me/cancelled-subscriptions',
 		'MDA_CANCELLED_SUBSCRIPTIONS',
 	),
+);
+
+router.get(
+	'/user-subscriptions/me',
+	userSubscriptionsAPI('me', 'USER_SUBSCRIPTIONS_GET'),
 );
 
 router.get('/known-issues', async (_, response) => {
