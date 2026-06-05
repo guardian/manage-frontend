@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import { space, textSans14 } from '@guardian/source/foundations';
+import { Modal } from '@/client/components/shared/Modal';
 import type { HolidayStopFlowProperties } from '../../../../shared/productTypes';
 import { CallCentreNumbers } from '../../shared/CallCentreNumbers';
 import { InfoIcon } from '../shared/assets/InfoIcon';
-import { Modal } from './Modal';
 
 export const creditExplainerSentence = (issueKeyword: string) =>
 	`You will be credited for each suspended ${issueKeyword} on your next bill after the ${issueKeyword} date.`;

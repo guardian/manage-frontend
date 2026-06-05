@@ -2,7 +2,9 @@ import { css } from '@emotion/react';
 import { from, neutral, palette, space } from '@guardian/source/foundations';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAccountStore } from '../../../stores/AccountStore';
 import { gridItemPlacement } from '../../../styles/grid';
+import { isExtraAccountsEnabled } from '../../../utilities/extraAccounts';
 import { ProfileIcon } from '../../mma/shared/assets/ProfileIcon';
 import { expanderButtonCss } from '../ExpanderButton';
 import type { MenuSpecificNavItem } from './NavConfig';
@@ -138,6 +140,8 @@ export const DropdownNav = (props: { isHelpCentrePage: boolean }) => {
 	const [showMenu, setShowMenu] = useState(false);
 	const wrapperRef = useRef<HTMLElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
+	const mdapiResponse = useAccountStore((state) => state.mdapiResponse);
+	const showExtraAccounts = isExtraAccountsEnabled(mdapiResponse);
 
 	useEffect(() => {
 		addListeners();
@@ -238,8 +242,13 @@ export const DropdownNav = (props: { isHelpCentrePage: boolean }) => {
 			</button>
 
 			<ul css={dropdownNavCss(showMenu)}>
-				{Object.values(NAV_LINKS).map(
-					(navItem: MenuSpecificNavItem) => (
+				{Object.values(NAV_LINKS)
+					.filter(
+						(navItem) =>
+							navItem !== NAV_LINKS.extraAccounts ||
+							showExtraAccounts,
+					)
+					.map((navItem: MenuSpecificNavItem) => (
 						<li key={navItem.title}>
 							{navItem.local && !props.isHelpCentrePage ? (
 								<Link
@@ -255,8 +264,7 @@ export const DropdownNav = (props: { isHelpCentrePage: boolean }) => {
 								</a>
 							)}
 						</li>
-					),
-				)}
+					))}
 			</ul>
 		</nav>
 	);

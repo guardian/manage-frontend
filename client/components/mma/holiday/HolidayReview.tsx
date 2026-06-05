@@ -7,6 +7,7 @@ import {
 } from '@guardian/source/react-components';
 import { useContext, useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
+import { Modal } from '@/client/components/shared/Modal';
 import type { DateRange } from '../../../../shared/dates';
 import { DATE_FNS_INPUT_FORMAT, dateString } from '../../../../shared/dates';
 import type { ProductDetail } from '../../../../shared/productResponse';
@@ -36,7 +37,6 @@ import type {
 	HolidayStopsRouterState,
 } from './HolidayStopsContainer';
 import { HolidayStopsContext } from './HolidayStopsContainer';
-import { Modal } from './Modal';
 import { SummaryTable } from './SummaryTable';
 
 const getPerformCreateOrAmendFetcher =

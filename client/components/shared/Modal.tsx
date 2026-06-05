@@ -1,8 +1,24 @@
+import type { SerializedStyles } from '@emotion/react';
+import { css } from '@emotion/react';
 import { palette } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { useState } from 'react';
 
 export type HideFunction = () => void;
+
+const containerCss = css`
+	background: ${palette.neutral[100]};
+	padding: 15px;
+	font-size: 16px;
+	max-width: 600px;
+	max-height: calc(100vh - 20px);
+	overflow: auto;
+	margin: 10px;
+	border-radius: 5px;
+	position: relative;
+	color: initial;
+	font-weight: initial;
+`;
 
 interface ModalProps {
 	instigator: React.ReactNode;
@@ -11,6 +27,8 @@ interface ModalProps {
 	additionalButton?: (hideFunction: HideFunction) => React.ReactElement;
 	alternateOkText?: string;
 	extraOnHideFunctionality?: () => void;
+	containerCssOverrides?: SerializedStyles;
+	hideCloseButton?: boolean;
 }
 
 export const Modal = (props: ModalProps) => {
@@ -49,34 +67,24 @@ export const Modal = (props: ModalProps) => {
 					onClick={hide}
 				>
 					<div
-						css={{
-							background: palette.neutral[100],
-							padding: '15px',
-							fontSize: '16px',
-							maxWidth: '600px',
-							maxHeight: 'calc(100vh - 20px)',
-							overflow: 'auto',
-							margin: '10px',
-							borderRadius: '5px',
-							position: 'relative',
-							color: 'initial',
-							fontWeight: 'initial',
-						}}
+						css={[containerCss, props.containerCssOverrides]}
 						onClick={(e) => e.stopPropagation()}
 					>
-						<span
-							onClick={hide}
-							css={{
-								position: 'absolute',
-								top: '5px',
-								right: '5px',
-								cursor: 'pointer',
-							}}
-						>
-							<svg width="30" height="30">
-								<path d="M21 9.8l-.8-.8-5.2 4.8-5.2-4.8-.8.8 4.8 5.2-4.8 5.2.8.8 5.2-4.8 5.2 4.8.8-.8-4.8-5.2 4.8-5.2" />
-							</svg>
-						</span>
+						{!props.hideCloseButton && (
+							<span
+								onClick={hide}
+								css={{
+									position: 'absolute',
+									top: '5px',
+									right: '5px',
+									cursor: 'pointer',
+								}}
+							>
+								<svg width="30" height="30">
+									<path d="M21 9.8l-.8-.8-5.2 4.8-5.2-4.8-.8.8 4.8 5.2-4.8 5.2.8.8 5.2-4.8 5.2 4.8.8-.8-4.8-5.2 4.8-5.2" />
+								</svg>
+							</span>
+						)}
 						<h2 css={{ fontWeight: 900, marginTop: 0 }}>
 							{props.title}
 						</h2>
