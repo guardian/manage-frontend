@@ -12,7 +12,7 @@ import {
 	LinkButton,
 	Stack,
 	SvgCalendar,
-	SvgClock,
+	SvgClockFilled,
 	SvgEnvelope,
 } from '@guardian/source/react-components';
 import { useContext } from 'react';
@@ -163,7 +163,7 @@ export const UpgradeSupportSwitchThankYou = () => {
 							</span>
 						</li>
 						<li>
-							<SvgClock size="medium" />
+							<SvgClockFilled size="medium" />
 							<span>
 								<strong
 									css={css`

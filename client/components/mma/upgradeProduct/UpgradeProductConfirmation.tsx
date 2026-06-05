@@ -12,7 +12,7 @@ import {
 } from '@guardian/source/foundations';
 import {
 	Button,
-	SvgClock,
+	SvgClockFilled,
 	SvgCreditCard,
 	SvgReload,
 	themeButtonReaderRevenueBrand,
@@ -249,7 +249,7 @@ export const UpgradeProductConfirmation = () => {
 			<h2 css={subHeadingCss}>What happens now?</h2>
 
 			<div css={whatHappensNowItemCss}>
-				<SvgClock size="medium" />
+				<SvgClockFilled size="medium" />
 				<div css={whatHappensNowItemInfoCss}>
 					<h3 css={subheadingTextCss(false)}>
 						This change will happen today
