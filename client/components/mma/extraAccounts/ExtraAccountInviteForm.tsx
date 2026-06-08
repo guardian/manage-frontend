@@ -1,7 +1,13 @@
 import { css } from '@emotion/react';
 import { palette, space, textSans17 } from '@guardian/source/foundations';
-import { Button, Checkbox, TextInput } from '@guardian/source/react-components';
+import {
+	Button,
+	Checkbox,
+	CheckboxGroup,
+	TextInput,
+} from '@guardian/source/react-components';
 import { useState } from 'react';
+import { isEmail } from '../../../../shared/validationUtils';
 
 const formCss = css`
 	margin: ${space[5]}px 0 ${space[4]}px 0;
@@ -40,35 +46,71 @@ export const ExtraAccountInviteForm = ({
 }: ExtraAccountInviteFormProps) => {
 	const [email, setEmail] = useState('');
 	const [confirmedConsent, setConfirmedConsent] = useState(false);
+	const [emailError, setEmailError] = useState<string | undefined>();
+	const [consentError, setConsentError] = useState<string | undefined>();
 
 	const handleSend = async () => {
-		const ok = await sendInvitation(email);
+		const trimmedEmail = email.trim();
+		const isEmailValid = !!trimmedEmail && isEmail(trimmedEmail);
+		const isConsentValid = confirmedConsent;
+
+		setEmailError(
+			isEmailValid
+				? undefined
+				: trimmedEmail
+				? 'Please enter a valid email address.'
+				: 'Please enter an email address.',
+		);
+		setConsentError(
+			isConsentValid
+				? undefined
+				: 'Please tick this box to confirm before sending the invitation.',
+		);
+
+		if (!isEmailValid || !isConsentValid) {
+			return;
+		}
+
+		const ok = await sendInvitation(trimmedEmail);
 		if (ok) {
-			onSent(email);
+			onSent(trimmedEmail);
 		}
 	};
 
 	return (
 		<div css={formCss}>
 			<p css={introCss}>
-				Enter the email address of the persons you'd like to invite.
+				Enter the email address of the people you'd like to invite.
 			</p>
 
 			<TextInput
 				label="Recipient's email address"
 				type="email"
 				value={email}
-				onChange={(e) => setEmail(e.target.value)}
+				error={emailError}
+				onChange={(e) => {
+					setEmail(e.target.value);
+					if (emailError) {
+						setEmailError(undefined);
+					}
+				}}
 			/>
 
 			<div css={checkboxBoxCss}>
-				<Checkbox
-					checked={confirmedConsent}
-					onChange={(e) => setConfirmedConsent(e.target.checked)}
-					label="By ticking this box you're confirming that the person receiving this invitation is happy for the Guardian to email them."
-					name="consentConfirmation"
-					value="consentConfirmation"
-				/>
+				<CheckboxGroup name="consentConfirmation" error={consentError}>
+					<Checkbox
+						checked={confirmedConsent}
+						onChange={(e) => {
+							setConfirmedConsent(e.target.checked);
+							if (e.target.checked && consentError) {
+								setConsentError(undefined);
+							}
+						}}
+						label="By ticking this box you're confirming that the person receiving this invitation is happy for the Guardian to email them."
+						name="consentConfirmation"
+						value="consentConfirmation"
+					/>
+				</CheckboxGroup>
 			</div>
 
 			<div css={actionsCss}>
@@ -76,7 +118,7 @@ export const ExtraAccountInviteForm = ({
 					priority="primary"
 					size="small"
 					isLoading={isSubmitting}
-					disabled={!email || !confirmedConsent || isSubmitting}
+					disabled={isSubmitting}
 					onClick={() => void handleSend()}
 				>
 					Send invitation

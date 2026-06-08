@@ -4,10 +4,17 @@ import { PRODUCT_TYPES } from '../../shared/productTypes';
 
 // TODO: remove this query-param check once the Extra accounts feature ships.
 // The long-term gate is the Digital plus product check only.
-export const isExtraAccountsFlagEnabled = (): boolean =>
-	new URLSearchParams(window.location.search).get(
-		'TEST_EXTRA_ACCOUNTS_FLAG',
-	) === 'true';
+export const isExtraAccountsFlagEnabled = (): boolean => {
+	if (typeof window === 'undefined') {
+		return false;
+	}
+
+	return (
+		new URLSearchParams(window.location.search).get(
+			'TEST_EXTRA_ACCOUNTS_FLAG',
+		) === 'true'
+	);
+};
 
 export const hasDigitalPlus = (
 	mdapiResponse: MembersDataApiResponse | null,
