@@ -32,6 +32,7 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
+import { isExtraAccountsFlagEnabled } from '../../../utilities/extraAccounts';
 import { useAccountDataLoader } from '../../../utilities/hooks/useAccountDataLoader';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
@@ -42,6 +43,7 @@ import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView
 import { DownloadAppCtaVariation1 } from '../shared/DownloadAppCtaVariation1';
 import { DownloadEditionsAppCtaWithImage } from '../shared/DownloadEditionsAppCtaWithImage';
 import { DownloadFeastAppCtaWithImage } from '../shared/DownloadFeastAppCtaWithImage';
+import { ExtraAccountsBanner } from '../shared/ExtraAccountsBanner';
 import type { IsFromAppProps } from '../shared/IsFromAppProps';
 import { NewspaperArchiveCta } from '../shared/NewspaperArchiveCta';
 import { nonServiceableCountries } from '../shared/NonServiceableCountries';
@@ -103,6 +105,11 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 
 	return (
 		<>
+			{/* TODO: remove the isExtraAccountsFlagEnabled() query-param check
+			   once the Extra accounts feature ships; gate on Digital plus only. */}
+			{hasDigitalPack && isExtraAccountsFlagEnabled() && (
+				<ExtraAccountsBanner />
+			)}
 			{(hasDigitalPlusPrint ||
 				isPlusDigitalProduct ||
 				hasGuardianEmail ||

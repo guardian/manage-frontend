@@ -52,6 +52,12 @@ const AccountOverview = lazyWithRetry(() =>
 	).then(({ AccountOverview }) => ({ default: AccountOverview })),
 );
 
+const ExtraAccounts = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "ExtraAccounts" */ './extraAccounts/ExtraAccounts'
+	).then(({ ExtraAccounts }) => ({ default: ExtraAccounts })),
+);
+
 const Billing = lazyWithRetry(() =>
 	import(/* webpackChunkName: "Billing" */ './billing/Billing').then(
 		({ Billing }) => ({ default: Billing }),
@@ -586,6 +592,11 @@ const MMARouter = () => {
 						<Route
 							path="/app"
 							element={<AccountOverview isFromApp />}
+						/>
+
+						<Route
+							path="/extra-accounts"
+							element={<ExtraAccounts />}
 						/>
 
 						<Route path="/billing" element={<Billing />} />
