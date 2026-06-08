@@ -216,7 +216,8 @@ export const ProductCard = ({
 							<strong>
 								{cancellationFormatDate(
 									productDetail.subscription
-										.cancellationEffectiveDate,
+										.cancellationEffectiveDate ||
+										productDetail.subscription.end,
 									DATE_FNS_LONG_OUTPUT_FORMAT,
 								)}
 							</strong>
