@@ -29,8 +29,6 @@ const invoicePaymentMethods = {
 
 interface InvoiceInfo extends InvoiceDataApiItem {
 	productUrlPart?: string;
-	currencyISO: string;
-	currency: string;
 }
 
 interface InvoicesTableProps {
@@ -47,7 +45,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 
 	const [currentPage, setCurrentPage] = useState<number>(initialPage);
 
-	const tableHeadings = ['Date', 'Payment method', 'Price', ''];
+	const tableHeadings = ['Date', 'Payment method', ''];
 	const invoiceYears = [
 		...new Set(
 			[...props.invoiceData].map(
@@ -232,16 +230,6 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 								}
 							`}
 						/>
-						<div
-							css={css`
-								display: none;
-								background-color: ${palette.neutral[97]};
-								border-bottom: 1px solid ${palette.neutral[86]};
-								${from.tablet} {
-									display: table-cell;
-								}
-							`}
-						/>
 						<div css={invoiceYearSelectCss}>
 							<InvoiceTableYearSelect
 								years={invoiceYears}
@@ -332,15 +320,6 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 													</span>
 												)}
 										</div>
-									</div>
-									<div css={tdCss2(index, tableHeadings[2])}>
-										{tableRow.hasMultipleSubs
-											? 'Multiple prices'
-											: `${tableRow.currency}${Number(
-													tableRow.price,
-											  ).toFixed(2)} ${
-													tableRow.currencyISO
-											  }`}
 									</div>
 									<div css={tdCss2(index)}>
 										<a
