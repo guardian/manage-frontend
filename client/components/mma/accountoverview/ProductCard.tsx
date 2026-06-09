@@ -138,7 +138,7 @@ export const ProductCard = ({
 	const showProductUpsellButton =
 		isEligibleToUpsell &&
 		!hasCancellationPending &&
-		!productDetail.taxExclusive &&
+		!productDetail.extraTaxApplies &&
 		specificProductType.productType === 'supporterplus';
 
 	const productBenefits =
@@ -615,7 +615,7 @@ export const ProductCard = ({
 							)}
 						</div>
 						<TaxExclusiveNotice
-							taxExclusive={productDetail.taxExclusive}
+							extraTaxApplies={productDetail.extraTaxApplies}
 						/>
 					</Card.Section>
 				)}

@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { palette, space, textSans15 } from '@guardian/source/foundations';
 
 interface TaxExclusiveNoticeProps {
-	taxExclusive?: boolean;
+	extraTaxApplies?: boolean;
 }
 
 const noticeCss = css`
@@ -12,9 +12,9 @@ const noticeCss = css`
 `;
 
 export const TaxExclusiveNotice = ({
-	taxExclusive,
+	extraTaxApplies,
 }: TaxExclusiveNoticeProps) => {
-	if (!taxExclusive) {
+	if (!extraTaxApplies) {
 		return null;
 	}
 
