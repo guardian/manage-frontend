@@ -10,6 +10,7 @@ import {
 	getSpecificProductTypeFromProductKey,
 	isGift,
 	isPaidSubscriptionPlan,
+	isSecondarySubscriber,
 } from '@/shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
@@ -76,6 +77,10 @@ export const ProductCard = ({
 	}`;
 
 	const isGifted = isGift(productDetail.subscription);
+	const isSecondary =
+		isSecondarySubscriber(productDetail.subscription) &&
+		productDetail.subscription.primarySubscriber;
+	const primarySubscriber = productDetail.subscription.primarySubscriber!;
 	const userIsGifter = isGifted && productDetail.isPaidTier;
 	const gwGiftSubscription =
 		isGifted && specificProductType.productType === 'guardianweekly';
