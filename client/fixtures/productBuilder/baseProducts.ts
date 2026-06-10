@@ -261,6 +261,25 @@ export function baseDigitalPack(): ProductDetail {
 	};
 }
 
+export function baseSecondaryDigitalPack(): ProductDetail {
+	const baseProduct = baseDigitalPack();
+
+	return {
+		...baseProduct,
+		isPaidTier: false,
+		// TODO Self-service cancellation override needed too?
+		subscription: {
+			...baseProduct.subscription,
+			readerType: 'Secondary',
+			primarySubscriber: {
+				firstName: 'Primary',
+				lastName: 'Subscriber',
+				email: 'primary.subscriber@example.com',
+			},
+		},
+	};
+}
+
 export function baseContribution(): ProductDetail {
 	return {
 		mmaProductKey: 'Contributor',

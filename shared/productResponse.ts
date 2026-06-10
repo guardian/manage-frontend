@@ -221,7 +221,13 @@ export interface DeliveryAddress {
 	addressChangeInformation?: string;
 }
 
-type ReaderType = 'Gift' | 'Direct' | 'Agent' | 'Complementary' | 'Patron';
+type ReaderType =
+	| 'Gift'
+	| 'Direct'
+	| 'Agent'
+	| 'Complementary'
+	| 'Patron'
+	| 'Secondary';
 
 export interface Subscription {
 	accountId?: string;
@@ -258,6 +264,7 @@ export interface Subscription {
 	account?: {
 		accountName: string;
 	};
+	primarySubscriber?: MembersDataApiUser;
 	// THIS IS NOT PART OF THE members-data-api RESPONSE (it's injected server-side - see server/routes/api.ts)
 	deliveryAddressChangeEffectiveDate?: string;
 	cancellationEffectiveDate?: string;
@@ -282,6 +289,9 @@ export interface WithSubscription {
 
 export const isGift = (subscription: { readerType: string }) =>
 	subscription.readerType === 'Gift';
+
+export const isSecondarySubscriber = (subscription: { readerType: string }) =>
+	subscription.readerType === 'Secondary';
 
 export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	subscription: Subscription,
