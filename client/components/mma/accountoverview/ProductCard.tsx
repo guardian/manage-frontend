@@ -27,6 +27,7 @@ import {
 	getSpecificProductTypeFromProductKey,
 	isGift,
 	isPaidSubscriptionPlan,
+	isSecondarySubscriber,
 } from '@/shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
@@ -107,6 +108,8 @@ export const ProductCard = ({
 	}`;
 
 	const isGifted = isGift(productDetail.subscription);
+	const isSecondary = isSecondarySubscriber(productDetail.subscription);
+	const primarySubscriber = productDetail.subscription.primarySubscriber;
 	const userIsGifter = isGifted && productDetail.isPaidTier;
 	const gwGiftSubscription =
 		isGifted && specificProductType.productType === 'guardianweekly';
@@ -167,6 +170,11 @@ export const ProductCard = ({
 		${textSans17};
 		margin: 0;
 		margin-bottom: ${space[2]}px;
+	`;
+
+	const sharedMembershipTextCss = css`
+		${textSans17};
+		margin: 0;
 	`;
 
 	const canBeInOfferPeriod =
@@ -305,9 +313,11 @@ export const ProductCard = ({
 				{cardConfig.getBenefitsSectionCopy && nextPaymentDetails && (
 					<Card.Section backgroundColor="#edf5fA" removeBorders>
 						<p css={benefitsTextCss}>
-							{cardConfig.getBenefitsSectionCopy(
-								nextPaymentDetails,
-							)}
+							{isSecondary && primarySubscriber // TODO should probably find a better way to do this too.
+								? `You're enjoying ${mainPlan.name} as part of a shared subscription.`
+								: cardConfig.getBenefitsSectionCopy(
+										nextPaymentDetails,
+								  )}
 						</p>
 						<BenefitsToggle
 							productType={specificProductType.productType}
@@ -332,212 +342,302 @@ export const ProductCard = ({
 							</p>
 						</Card.Section>
 					)}
-				<Card.Section>
-					<div css={productDetailLayoutCss}>
-						<div>
-							<h4 css={sectionHeadingCss}>Billing and payment</h4>
-							<dl css={keyValueCss}>
-								<div>
-									<dt>
-										{groupedProductType.showSupporterId
-											? 'Supporter ID'
-											: 'Subscription ID'}
-									</dt>
-									<dd data-qm-masking="blocklist">
-										{
-											productDetail.subscription
-												.subscriptionId
-										}
-									</dd>
+				{isSecondary &&
+					primarySubscriber && ( // TODO Separate more properly.
+						<>
+							<Card.Section>
+								<div css={productDetailLayoutCss}>
+									<div>
+										<h4 css={sectionHeadingCss}>
+											Subscription details
+										</h4>
+										<p css={sharedMembershipTextCss}>
+											Subscription:{' '}
+											{specificProductType.productTitle(
+												mainPlan,
+											)}{' '}
+											shared subscription <br />
+											Owner: {
+												primarySubscriber.firstName
+											}{' '}
+											{primarySubscriber.lastName}
+											<br /> <br />
+											You’ve been given access by{' '}
+											{primarySubscriber.firstName}{' '}
+											{primarySubscriber.lastName} (
+											{primarySubscriber.email}). To
+											access your benefits, sign in on
+											your devices and the Guardian app.
+											Your account and activity are
+											private and not shared with the
+											subscription owner.
+										</p>
+									</div>
 								</div>
-								{groupedProductType.tierLabel && (
+							</Card.Section>
+							<Card.Section>
+								<div css={productDetailLayoutCss}>
 									<div>
-										<dt>{groupedProductType.tierLabel}</dt>
-										<dd>{productDetail.mmaProductKey}</dd>
+										<h4 css={sectionHeadingCss}>
+											Manage your access
+										</h4>
+										<p css={sharedMembershipTextCss}>
+											You can leave this shared
+											subscription at any time. If you
+											leave, you’ll lose your access to
+											Digital plus benefits.
+										</p>
 									</div>
-								)}
-								{subscriptionStartDate && shouldShowStartDate && (
+									<div
+										css={css`
+											display: flex;
+											justify-content: center;
+										`}
+									>
+										<Button
+											aria-label={`${specificProductType.productTitle(
+												mainPlan,
+											)} : Leave shared subscription`}
+											size="small"
+											priority="tertiary"
+											cssOverrides={css`
+												justify-content: center;
+												border: none;
+												background: transparent;
+												text-decoration: underline;
+											`}
+											onClick={() => undefined}
+										>
+											{`Leave subscription`}
+										</Button>
+									</div>
+								</div>
+							</Card.Section>
+						</>
+					)}
+				{!isSecondary && (
+					<Card.Section>
+						<div css={productDetailLayoutCss}>
+							<div>
+								<h4 css={sectionHeadingCss}>
+									Billing and payment
+								</h4>
+								<dl css={keyValueCss}>
 									<div>
-										<dt>Start date</dt>
-										<dd>
-											{parseDate(
-												subscriptionStartDate,
-											).dateStr()}
+										<dt>
+											{groupedProductType.showSupporterId
+												? 'Supporter ID'
+												: 'Subscription ID'}
+										</dt>
+										<dd data-qm-masking="blocklist">
+											{
+												productDetail.subscription
+													.subscriptionId
+											}
 										</dd>
 									</div>
-								)}
-								{shouldShowJoinDateNotStartDate && (
-									<div>
-										<dt>Join date</dt>
-										<dd>
-											{parseDate(
-												productDetail.joinDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
-								{userIsGifter && giftPurchaseDate && (
-									<div>
-										<dt>Purchase date</dt>
-										<dd>
-											{parseDate(
-												giftPurchaseDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
-								{((isGifted && !userIsGifter) ||
-									!productDetail.subscription.autoRenew) && (
-									<div>
-										<dt>End date</dt>
-										<dd>
-											{parseDate(
-												subscriptionEndDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
-								{specificProductType.showTrialRemainingIfApplicable &&
-									productDetail.subscription.trialLength >
-										0 &&
-									!isGifted &&
-									productDetail.subscription.readerType !==
-										'Patron' && (
-										<div>
-											<dt>Trial remaining</dt>
-											<dd>
-												{
-													productDetail.subscription
-														.trialLength
-												}{' '}
-												{productDetail.subscription
-													.trialLength !== 1
-													? 'days'
-													: 'day'}
-											</dd>
-										</div>
-									)}
-								{nextPaymentDetails &&
-									productDetail.subscription.autoRenew &&
-									!hasCancellationPending && (
+									{groupedProductType.tierLabel && (
 										<div>
 											<dt>
-												{nextPaymentDetails.paymentKey}
+												{groupedProductType.tierLabel}
 											</dt>
 											<dd>
-												{nextPaymentDetails.isNewPaymentValue && (
-													<NewPriceAlert />
-												)}
-												{
-													nextPaymentDetails.paymentValue
-												}
-												{nextPaymentDetails.nextPaymentDateValue &&
-													productDetail.subscription
-														.readerType !==
-														'Patron' &&
-													` on ${nextPaymentDetails.nextPaymentDateValue}`}
+												{productDetail.mmaProductKey}
 											</dd>
 										</div>
 									)}
-								{futureProductTitle && (
-									<div>
-										<dt>Switching to</dt>
-										<dd>{futureProductTitle}</dd>
-									</div>
+									{subscriptionStartDate &&
+										shouldShowStartDate && (
+											<div>
+												<dt>Start date</dt>
+												<dd>
+													{parseDate(
+														subscriptionStartDate,
+													).dateStr()}
+												</dd>
+											</div>
+										)}
+									{shouldShowJoinDateNotStartDate && (
+										<div>
+											<dt>Join date</dt>
+											<dd>
+												{parseDate(
+													productDetail.joinDate,
+												).dateStr()}
+											</dd>
+										</div>
+									)}
+									{userIsGifter && giftPurchaseDate && (
+										<div>
+											<dt>Purchase date</dt>
+											<dd>
+												{parseDate(
+													giftPurchaseDate,
+												).dateStr()}
+											</dd>
+										</div>
+									)}
+									{((isGifted && !userIsGifter) ||
+										!productDetail.subscription
+											.autoRenew) && (
+										<div>
+											<dt>End date</dt>
+											<dd>
+												{parseDate(
+													subscriptionEndDate,
+												).dateStr()}
+											</dd>
+										</div>
+									)}
+									{specificProductType.showTrialRemainingIfApplicable &&
+										productDetail.subscription.trialLength >
+											0 &&
+										!isGifted &&
+										productDetail.subscription
+											.readerType !== 'Patron' && (
+											<div>
+												<dt>Trial remaining</dt>
+												<dd>
+													{
+														productDetail
+															.subscription
+															.trialLength
+													}{' '}
+													{productDetail.subscription
+														.trialLength !== 1
+														? 'days'
+														: 'day'}
+												</dd>
+											</div>
+										)}
+									{nextPaymentDetails &&
+										productDetail.subscription.autoRenew &&
+										!hasCancellationPending && (
+											<div>
+												<dt>
+													{
+														nextPaymentDetails.paymentKey
+													}
+												</dt>
+												<dd>
+													{nextPaymentDetails.isNewPaymentValue && (
+														<NewPriceAlert />
+													)}
+													{
+														nextPaymentDetails.paymentValue
+													}
+													{nextPaymentDetails.nextPaymentDateValue &&
+														productDetail
+															.subscription
+															.readerType !==
+															'Patron' &&
+														` on ${nextPaymentDetails.nextPaymentDateValue}`}
+												</dd>
+											</div>
+										)}
+									{futureProductTitle && (
+										<div>
+											<dt>Switching to</dt>
+											<dd>{futureProductTitle}</dd>
+										</div>
+									)}
+								</dl>
+							</div>
+							<div css={wideButtonLayoutCss}>
+								{showProductUpsellButton && (
+									<Button
+										aria-label={`Product Card Digital Plus Upsell Button`}
+										data-cy={`digital-plus-upsell-button`}
+										size="small"
+										priority="primary"
+										theme={themeButtonReaderRevenueBrand}
+										isLoading={isPreviewLoading}
+										disabled={
+											isPreviewLoading || hasPreviewError
+										}
+										cssOverrides={css`
+											justify-content: center;
+										`}
+										onClick={() => {
+											trackEvent({
+												eventCategory:
+													'account_overview',
+												eventAction: 'click',
+												eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
+											});
+											void fetchUpgradePreview({
+												subscriptionId:
+													productDetail.subscription
+														.subscriptionId,
+												subscription:
+													productDetail.subscription,
+												mainPlan:
+													mainPlan as PaidSubscriptionPlan,
+												navigationPath: `/${specificProductType.urlPart}/upgrade-product/information?subscriptionId=${productDetail.subscription.subscriptionId}`,
+											});
+										}}
+									>
+										{`Upgrade to Digital plus`}
+									</Button>
 								)}
-							</dl>
-						</div>
-						<div css={wideButtonLayoutCss}>
-							{showProductUpsellButton && (
-								<Button
-									aria-label={`Product Card Digital Plus Upsell Button`}
-									data-cy={`digital-plus-upsell-button`}
-									size="small"
-									priority="primary"
-									theme={themeButtonReaderRevenueBrand}
-									isLoading={isPreviewLoading}
-									disabled={
-										isPreviewLoading || hasPreviewError
-									}
-									cssOverrides={css`
-										justify-content: center;
-									`}
-									onClick={() => {
-										trackEvent({
-											eventCategory: 'account_overview',
-											eventAction: 'click',
-											eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
-										});
-										void fetchUpgradePreview({
-											subscriptionId:
-												productDetail.subscription
-													.subscriptionId,
-											subscription:
-												productDetail.subscription,
-											mainPlan:
-												mainPlan as PaidSubscriptionPlan,
-											navigationPath: `/${specificProductType.urlPart}/upgrade-product/information?subscriptionId=${productDetail.subscription.subscriptionId}`,
-										});
-									}}
-								>
-									{`Upgrade to Digital plus`}
-								</Button>
-							)}
-							{!isGifted && (
-								<Button
-									aria-label={`${specificProductType.productTitle(
-										mainPlan,
-									)} : Manage ${
-										groupedProductType.friendlyName
-									}`}
-									data-cy={`Manage ${groupedProductType.friendlyName}`}
-									size="small"
-									priority="tertiary"
-									cssOverrides={css`
-										justify-content: center;
-									`}
-									onClick={() => {
-										trackEvent({
-											eventCategory: 'account_overview',
-											eventAction: 'click',
-											eventLabel: `manage_${specificProductType.urlPart}`,
-										});
-										navigate(
-											`/${specificProductType.urlPart}`,
-											{
+								{!isGifted && (
+									<Button
+										aria-label={`${specificProductType.productTitle(
+											mainPlan,
+										)} : Manage ${
+											groupedProductType.friendlyName
+										}`}
+										data-cy={`Manage ${groupedProductType.friendlyName}`}
+										size="small"
+										priority="tertiary"
+										cssOverrides={css`
+											justify-content: center;
+										`}
+										onClick={() => {
+											trackEvent({
+												eventCategory:
+													'account_overview',
+												eventAction: 'click',
+												eventLabel: `manage_${specificProductType.urlPart}`,
+											});
+											navigate(
+												`/${specificProductType.urlPart}`,
+												{
+													state: {
+														productDetail:
+															productDetail,
+													},
+												},
+											);
+										}}
+									>
+										{`Manage ${groupedProductType.friendlyName}`}
+									</Button>
+								)}
+								{showSwitchButton && (
+									<Button
+										theme={themeButtonReaderRevenueBrand}
+										size="small"
+										cssOverrides={css`
+											justify-content: center;
+										`}
+										onClick={() =>
+											navigate(`/switch`, {
 												state: {
 													productDetail:
 														productDetail,
+													user: user,
 												},
-											},
-										);
-									}}
-								>
-									{`Manage ${groupedProductType.friendlyName}`}
-								</Button>
-							)}
-							{showSwitchButton && (
-								<Button
-									theme={themeButtonReaderRevenueBrand}
-									size="small"
-									cssOverrides={css`
-										justify-content: center;
-									`}
-									onClick={() =>
-										navigate(`/switch`, {
-											state: {
-												productDetail: productDetail,
-												user: user,
-											},
-										})
-									}
-								>
-									Change to all-access digital
-								</Button>
-							)}
+											})
+										}
+									>
+										Change to all-access digital
+									</Button>
+								)}
+							</div>
 						</div>
-					</div>
-				</Card.Section>
+					</Card.Section>
+				)}
 				{entitledToEvents && (
 					<Card.Section>
 						<div>
@@ -619,19 +719,20 @@ export const ProductCard = ({
 						/>
 					</Card.Section>
 				)}
-				{!productDetail.isPaidTier && (
-					<Card.Section>
-						<h4 css={sectionHeadingCss}>Payment</h4>
-						<p
-							css={css`
-								${textSans17};
-								margin: 0;
-							`}
-						>
-							{isGifted ? 'Gift redemption' : 'Free'}
-						</p>
-					</Card.Section>
-				)}
+				{!productDetail.isPaidTier &&
+					!isSecondary && ( // TODO Is this actually ever called? Giftees don't get accounts and are there free subscriptions that would require a payment information to be shown?
+						<Card.Section>
+							<h4 css={sectionHeadingCss}>Payment</h4>
+							<p
+								css={css`
+									${textSans17};
+									margin: 0;
+								`}
+							>
+								{isGifted ? 'Gift redemption' : 'Free'}
+							</p>
+						</Card.Section>
+					)}
 				{productDetail.billingCountry === 'United States' &&
 					!hasCancellationPending && (
 						<Card.Section>
