@@ -35,6 +35,7 @@ import {
 	observerDelivery,
 	observerVoucherPaidByCard,
 	patronMembership,
+	secondaryDigitalPackSharedMembership,
 	supporterPlus,
 	supporterPlusAnnualCancelled,
 	supporterPlusCancelled,
@@ -112,6 +113,7 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 					toMembersDataApiResponse(
 						guardianWeeklyPaidByCard(),
 						digitalPackPaidByDirectDebit(),
+						secondaryDigitalPackSharedMembership(),
 						newspaperDigitalVoucherPaidByPaypal(),
 						newspaperdigitalVoucherPlusPaidByCard(),
 						membershipSupporter(),
