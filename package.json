@@ -182,6 +182,7 @@
   "resolutions": {
     "http-proxy-middleware": "^2.0.7",
     "cross-spawn": "^7.0.5",
+    "launch-editor": "^2.14.1",
     "picomatch": "2.3.2",
     "@stylistic/eslint-plugin/picomatch": "4.0.4",
     "tinyglobby/picomatch": "4.0.4",
