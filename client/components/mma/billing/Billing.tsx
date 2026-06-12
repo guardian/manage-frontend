@@ -181,8 +181,6 @@ function renderProductBillingInfo([productGrouping, productDetails]: [
 						(invoice) => ({
 							...invoice,
 							pdfPath: `/api/${invoice.pdfPath}`,
-							currency: paidPlan.currency,
-							currencyISO: paidPlan.currencyISO,
 							productUrlPart: specificProductType.urlPart,
 						}),
 					);
