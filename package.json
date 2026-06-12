@@ -168,7 +168,7 @@
     "openid-client": "5.6.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-router": "6.30.3",
+    "react-router": "6.30.4",
     "react-router-dom": "6.30.3",
     "regenerator-runtime": "0.13.9",
     "source-map-support": "0.5.21",
