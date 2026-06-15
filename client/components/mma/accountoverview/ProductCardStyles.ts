@@ -87,23 +87,6 @@ export const benefitsTextCss = css`
 	margin-bottom: ${space[2]}px;
 `;
 
-export const sharedMembershipTextCss = css`
-	${textSans17};
-	margin: 0;
-`;
-
-export const centeredActionCss = css`
-	display: flex;
-	justify-content: center;
-`;
-
-export const leaveButtonCss = css`
-	justify-content: center;
-	border: none;
-	background: transparent;
-	text-decoration: underline;
-`;
-
 export const giftRibbonColour = (cardConfig: ProductCardConfiguration) =>
 	cardConfig.invertText ? palette.brand[400] : palette.brandAlt[400];
 export const giftRibbonCopyColour = (cardConfig: ProductCardConfiguration) =>
