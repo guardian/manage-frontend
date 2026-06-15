@@ -21,6 +21,7 @@ import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { TaxExclusiveNotice } from '../shared/TaxExclusiveNotice';
 import {
 	getGuardianWeeklyGiftBenefitsCopy,
+	getSecondaryUserBenefitsCopy,
 	productCardConfiguration,
 } from './ProductCardConfiguration';
 import {
@@ -123,8 +124,10 @@ export const ProductCard = ({
 			? 'supporter benefits'
 			: groupedProductType.friendlyName;
 
-	const cardConfig = gwGiftSubscription
+	const cardConfig = gwGiftSubscription // to getCardConfig
 		? getGuardianWeeklyGiftBenefitsCopy
+		: isSecondary
+		? getSecondaryUserBenefitsCopy
 		: productCardConfiguration[specificProductType.productType];
 
 	const canBeInOfferPeriod =
