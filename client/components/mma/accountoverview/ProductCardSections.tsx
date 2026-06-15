@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { css } from '@emotion/react';
 import { palette, textSans17 } from '@guardian/source/foundations';
 import {
@@ -729,3 +730,93 @@ export const UsCancellationSection = ({
 			</div>
 		</Card.Section>
 	);
+=======
+import { Button } from '@guardian/source/react-components';
+import { Card } from '../shared/Card';
+import {
+	centeredActionCss,
+	keyValueCss,
+	leaveButtonCss,
+	productDetailLayoutCss,
+	sectionHeadingCss,
+	sharedMembershipTextCss,
+} from './ProductCardStyles';
+
+type SharedSubscriptionOwner = {
+	firstName: string;
+	lastName: string;
+	email: string;
+};
+
+export const SecondaryUserSections = ({
+	subscriptionName,
+	primarySubscriber,
+}: {
+	subscriptionName: string;
+	primarySubscriber: SharedSubscriptionOwner;
+}) => (
+	<>
+		<Card.Section>
+			<CardSectionSubscriptionDetails
+				subscriptionName={subscriptionName}
+				primarySubscriber={primarySubscriber}
+			/>
+		</Card.Section>
+		<Card.Section>
+			<CardSectionManageAccess subscriptionName={subscriptionName} />
+		</Card.Section>
+	</>
+);
+
+const CardSectionSubscriptionDetails = ({
+	subscriptionName,
+	primarySubscriber,
+}: {
+	subscriptionName: string;
+	primarySubscriber: SharedSubscriptionOwner;
+}) => (
+	<div css={productDetailLayoutCss}>
+		<div>
+			<h4 css={sectionHeadingCss}>Subscription details</h4>
+			<p css={sharedMembershipTextCss}>
+				Subscription: {subscriptionName} shared subscription <br />
+				Owner: {primarySubscriber.firstName}{' '}
+				{primarySubscriber.lastName}
+				<br /> <br />
+				You’ve been given access by {primarySubscriber.firstName}{' '}
+				{primarySubscriber.lastName} ({primarySubscriber.email}). To
+				access your benefits, sign in on your devices and the Guardian
+				app. Your account and activity are private and not shared with
+				the subscription owner.
+			</p>
+		</div>
+	</div>
+);
+
+const CardSectionManageAccess = ({
+	subscriptionName,
+}: {
+	subscriptionName: string;
+}) => (
+	<div css={keyValueCss}>
+		<div>
+			<h4 css={sectionHeadingCss}>Manage your access</h4>
+			<p css={sharedMembershipTextCss}>
+				You can leave this shared subscription at any time. If you
+				leave, you’ll lose your access to Digital plus benefits.
+			</p>
+		</div>
+		<div css={centeredActionCss}>
+			<Button
+				aria-label={`${subscriptionName} : Leave shared subscription`}
+				size="small"
+				priority="primary"
+				cssOverrides={leaveButtonCss}
+				onClick={() => undefined}
+			>
+				{`Leave subscription`}
+			</Button>
+		</div>
+	</div>
+);
+>>>>>>> a756302b9 (Moved Secondary Account product card sections to a separate file)
