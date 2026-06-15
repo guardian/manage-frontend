@@ -1,9 +1,8 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans17 } from '@guardian/source/foundations';
+import { palette, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
-	SvgGift,
 	SvgInfoRound,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
@@ -32,7 +31,6 @@ import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
 import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
-import { Ribbon } from '../../shared/Ribbon';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
@@ -44,9 +42,10 @@ import {
 	getGuardianWeeklyGiftBenefitsCopy,
 	productCardConfiguration,
 } from './ProductCardConfiguration';
+import { ProductCardHeader } from './ProductCardSections';
 import {
+	benefitsTextCss,
 	keyValueCss,
-	productCardTitleCss,
 	productDetailLayoutCss,
 	sectionHeadingCss,
 } from './ProductCardStyles';
@@ -149,25 +148,6 @@ export const ProductCard = ({
 	const cardConfig = gwGiftSubscription
 		? getGuardianWeeklyGiftBenefitsCopy
 		: productCardConfiguration[specificProductType.productType];
-
-	const giftRibbonColour = cardConfig.invertText
-		? palette.brand[400]
-		: palette.brandAlt[400];
-	const giftRibbonCopyColour = cardConfig.invertText
-		? palette.brandAlt[400]
-		: palette.brand[400];
-	const giftRibbonCss = css`
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-		right: 0;
-	`;
-
-	const benefitsTextCss = css`
-		${textSans17};
-		margin: 0;
-		margin-bottom: ${space[2]}px;
-	`;
 
 	const canBeInOfferPeriod =
 		specificProductType.productType === 'supporterplus';
@@ -278,29 +258,11 @@ export const ProductCard = ({
 				/>
 			)}
 			<Card>
-				<Card.Header
-					backgroundColor={cardConfig.colour}
-					minHeightOverride="auto"
-				>
-					<h3 css={productCardTitleCss(cardConfig.invertText)}>
-						{productTitle}
-					</h3>
-					{isGifted && (
-						<Ribbon
-							copy="Gift"
-							ribbonColour={giftRibbonColour}
-							copyColour={giftRibbonCopyColour}
-							icon={
-								<SvgGift
-									isAnnouncedByScreenReader
-									size="small"
-									theme={{ fill: giftRibbonCopyColour }}
-								/>
-							}
-							additionalCss={giftRibbonCss}
-						/>
-					)}
-				</Card.Header>
+				<ProductCardHeader
+					cardConfig={cardConfig}
+					productTitle={productTitle}
+					isGifted={isGifted}
+				/>
 
 				{cardConfig.getBenefitsSectionCopy && nextPaymentDetails && (
 					<Card.Section backgroundColor="#edf5fA" removeBorders>
