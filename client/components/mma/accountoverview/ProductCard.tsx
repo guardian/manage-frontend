@@ -32,8 +32,6 @@ import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
 import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
-import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
-import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { PaymentMethoDisplay } from '../shared/PaymentMethodDisplay';
@@ -42,7 +40,7 @@ import {
 	getGuardianWeeklyGiftBenefitsCopy,
 	productCardConfiguration,
 } from './ProductCardConfiguration';
-import { ProductCardHeader } from './ProductCardSections';
+import { BenefitsCopy, ProductCardHeader } from './ProductCardSections';
 import {
 	benefitsTextCss,
 	keyValueCss,
@@ -264,24 +262,14 @@ export const ProductCard = ({
 					isGifted={isGifted}
 				/>
 
-				{cardConfig.getBenefitsSectionCopy && nextPaymentDetails && (
-					<Card.Section backgroundColor="#edf5fA" removeBorders>
-						<p css={benefitsTextCss}>
-							{cardConfig.getBenefitsSectionCopy(
-								nextPaymentDetails,
-							)}
-						</p>
-						<BenefitsToggle
-							productType={specificProductType.productType}
-							subscriptionPlan={mainPlan}
-							overrideBenefits={
-								gwGiftSubscription
-									? getGuardianWeeklyGiftBenefits()
-									: null
-							}
-						/>
-					</Card.Section>
-				)}
+				<BenefitsCopy
+					cardConfig={cardConfig}
+					nextPaymentDetails={nextPaymentDetails}
+					specificProductType={specificProductType}
+					mainPlan={mainPlan}
+					gwGiftSubscription={gwGiftSubscription}
+				/>
+
 				{specificProductType.productType === 'guardianadlite' &&
 					nextPaymentDetails && (
 						<Card.Section backgroundColor="#edf5fA">
