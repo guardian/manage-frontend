@@ -44,7 +44,7 @@ export const ProductCardHeader = ({
 	</Card.Header>
 );
 
-export const BenefitsCopy = ({
+export const BenefitsCopyAndToggle = ({
 	cardConfig,
 	nextPaymentDetails,
 	specificProductType,
@@ -70,5 +70,24 @@ export const BenefitsCopy = ({
 					gwGiftSubscription ? getGuardianWeeklyGiftBenefits() : null
 				}
 			/>
+		</Card.Section>
+	);
+
+export const GuardianAdLiteCopy = ({
+	nextPaymentDetails,
+	specificProductType,
+}: {
+	nextPaymentDetails: NextPaymentDetails | undefined;
+	specificProductType: ProductType;
+}) =>
+	specificProductType.productType === 'guardianadlite' &&
+	nextPaymentDetails && (
+		<Card.Section backgroundColor="#edf5fA">
+			<p css={benefitsTextCss}>
+				You’re subscribed to {specificProductType.productTitle()} and
+				pay {nextPaymentDetails.paymentValueShort} a{' '}
+				{nextPaymentDetails.paymentInterval} for non-personalised
+				advertising.
+			</p>
 		</Card.Section>
 	);
