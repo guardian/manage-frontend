@@ -1,5 +1,9 @@
 import { SvgGift } from '@guardian/source/react-components';
-import type { SubscriptionPlan } from '../../../../shared/productResponse';
+import { parseDate } from '@/shared/dates';
+import type {
+	ProductDetail,
+	SubscriptionPlan,
+} from '../../../../shared/productResponse';
 import type { ProductType } from '../../../../shared/productTypes';
 import { Ribbon } from '../../shared/Ribbon';
 import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
@@ -90,4 +94,66 @@ export const GuardianAdLiteCopy = ({
 				advertising.
 			</p>
 		</Card.Section>
+	);
+
+export const StartDateRow = ({
+	subscriptionStartDate,
+	shouldShowStartDate,
+}: {
+	subscriptionStartDate: string | undefined;
+	shouldShowStartDate: boolean;
+}) =>
+	subscriptionStartDate &&
+	shouldShowStartDate && (
+		<div>
+			<dt>Start date</dt>
+			<dd>{parseDate(subscriptionStartDate).dateStr()}</dd>
+		</div>
+	);
+
+export const JoinDateRow = ({
+	productDetail,
+	shouldShowJoinDateNotStartDate,
+}: {
+	productDetail: ProductDetail;
+	shouldShowJoinDateNotStartDate: true | undefined;
+}) =>
+	shouldShowJoinDateNotStartDate && (
+		<div>
+			<dt>Join date</dt>
+			<dd>{parseDate(productDetail.joinDate).dateStr()}</dd>
+		</div>
+	);
+
+export const GiftPurchaseDateRow = ({
+	userIsGifter,
+	giftPurchaseDate,
+}: {
+	userIsGifter: boolean;
+	giftPurchaseDate: string | null;
+}) =>
+	userIsGifter &&
+	giftPurchaseDate && (
+		<div>
+			<dt>Purchase date</dt>
+			<dd>{parseDate(giftPurchaseDate).dateStr()}</dd>
+		</div>
+	);
+
+export const EndDateRow = ({
+	subscriptionEndDate,
+	isGifted,
+	userIsGifter,
+	productDetail,
+}: {
+	subscriptionEndDate: string | undefined;
+	isGifted: boolean;
+	userIsGifter: boolean;
+	productDetail: ProductDetail;
+}) =>
+	((isGifted && !userIsGifter) || !productDetail.subscription.autoRenew) && (
+		<div>
+			<dt>End date</dt>
+			<dd>{parseDate(subscriptionEndDate).dateStr()}</dd>
+		</div>
 	);
