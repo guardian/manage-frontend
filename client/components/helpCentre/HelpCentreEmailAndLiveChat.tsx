@@ -216,7 +216,16 @@ export const HelpCentreEmailAndLiveChat = (
 					compactLayout={props.compactLayout}
 				>
 					<p css={emailAndLiveChatPCss}>
-						customer.help@theguardian.com
+						<a
+							href="mailto:customer.help@theguardian.com"
+							css={{
+								textDecoration: 'underline',
+								color: palette.sport[300],
+								':visited': { color: palette.sport[300] },
+							}}
+						>
+							customer.help@theguardian.com
+						</a>
 					</p>
 				</HelpCentreContactBox>
 			</div>

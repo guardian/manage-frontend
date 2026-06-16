@@ -110,6 +110,7 @@ export interface ProductDetail extends WithSubscription {
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
 	billingCountry?: string;
+	taxExclusive?: boolean;
 }
 
 export interface CancelledProductDetail {
