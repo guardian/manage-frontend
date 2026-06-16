@@ -40,9 +40,12 @@ import {
 	getGuardianWeeklyGiftBenefitsCopy,
 	productCardConfiguration,
 } from './ProductCardConfiguration';
-import { BenefitsCopy, ProductCardHeader } from './ProductCardSections';
 import {
-	benefitsTextCss,
+	BenefitsCopyAndToggle,
+	GuardianAdLiteCopy,
+	ProductCardHeader,
+} from './ProductCardSections';
+import {
 	keyValueCss,
 	productDetailLayoutCss,
 	sectionHeadingCss,
@@ -262,7 +265,7 @@ export const ProductCard = ({
 					isGifted={isGifted}
 				/>
 
-				<BenefitsCopy
+				<BenefitsCopyAndToggle
 					cardConfig={cardConfig}
 					nextPaymentDetails={nextPaymentDetails}
 					specificProductType={specificProductType}
@@ -270,18 +273,11 @@ export const ProductCard = ({
 					gwGiftSubscription={gwGiftSubscription}
 				/>
 
-				{specificProductType.productType === 'guardianadlite' &&
-					nextPaymentDetails && (
-						<Card.Section backgroundColor="#edf5fA">
-							<p css={benefitsTextCss}>
-								You’re subscribed to{' '}
-								{specificProductType.productTitle()} and pay{' '}
-								{nextPaymentDetails.paymentValueShort} a{' '}
-								{nextPaymentDetails.paymentInterval} for
-								non-personalised advertising.
-							</p>
-						</Card.Section>
-					)}
+				<GuardianAdLiteCopy
+					nextPaymentDetails={nextPaymentDetails}
+					specificProductType={specificProductType}
+				/>
+
 				<Card.Section>
 					<div css={productDetailLayoutCss}>
 						<div>
