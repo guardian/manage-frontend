@@ -151,6 +151,7 @@ export const EndDateRow = ({
 	userIsGifter: boolean;
 	productDetail: ProductDetail;
 }) =>
+	subscriptionEndDate &&
 	((isGifted && !userIsGifter) || !productDetail.subscription.autoRenew) && (
 		<div>
 			<dt>End date</dt>
