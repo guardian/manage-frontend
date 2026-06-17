@@ -1,10 +1,15 @@
-import { SvgGift } from '@guardian/source/react-components';
+import { css } from '@emotion/react';
+import { palette } from '@guardian/source/foundations';
+import { SvgGift, SvgInfoRound } from '@guardian/source/react-components';
 import { parseDate } from '@/shared/dates';
 import type {
 	ProductDetail,
 	SubscriptionPlan,
 } from '../../../../shared/productResponse';
-import type { ProductType } from '../../../../shared/productTypes';
+import type {
+	GroupedProductType,
+	ProductType,
+} from '../../../../shared/productTypes';
 import { Ribbon } from '../../shared/Ribbon';
 import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
@@ -18,6 +23,24 @@ import {
 	giftRibbonCss,
 	productCardTitleCss,
 } from './ProductCardStyles';
+
+const NewPriceAlert = () => {
+	const iconCss = css`
+		svg {
+			position: relative;
+			top: 7px;
+			margin-left: -4px;
+			fill: ${palette.brand[500]};
+		}
+	`;
+
+	return (
+		<span css={iconCss}>
+			<SvgInfoRound size="small" />
+			New price |{' '}
+		</span>
+	);
+};
 
 export const ProductCardHeader = ({
 	cardConfig,
@@ -156,5 +179,96 @@ export const EndDateRow = ({
 		<div>
 			<dt>End date</dt>
 			<dd>{parseDate(subscriptionEndDate).dateStr()}</dd>
+		</div>
+	);
+
+export const UserIdRow = ({
+	groupedProductType,
+	productDetail,
+}: {
+	groupedProductType: GroupedProductType;
+	productDetail: ProductDetail;
+}) => (
+	<div>
+		<dt>
+			{groupedProductType.showSupporterId
+				? 'Supporter ID'
+				: 'Subscription ID'}
+		</dt>
+		<dd data-qm-masking="blocklist">
+			{productDetail.subscription.subscriptionId}
+		</dd>
+	</div>
+);
+
+export const MembershipTierLabelRow = ({
+	groupedProductType,
+	productDetail,
+}: {
+	groupedProductType: GroupedProductType;
+	productDetail: ProductDetail;
+}) =>
+	groupedProductType.tierLabel && (
+		<div>
+			<dt>{groupedProductType.tierLabel}</dt>
+			<dd>{productDetail.mmaProductKey}</dd>
+		</div>
+	);
+
+export const TrialRemainingRow = ({
+	specificProductType,
+	productDetail,
+	isGifted,
+}: {
+	specificProductType: ProductType;
+	productDetail: ProductDetail;
+	isGifted: boolean;
+}) =>
+	specificProductType.showTrialRemainingIfApplicable &&
+	productDetail.subscription.trialLength > 0 &&
+	!isGifted &&
+	productDetail.subscription.readerType !== 'Patron' && (
+		<div>
+			<dt>Trial remaining</dt>
+			<dd>
+				{productDetail.subscription.trialLength}{' '}
+				{productDetail.subscription.trialLength !== 1 ? 'days' : 'day'}
+			</dd>
+		</div>
+	);
+
+export const NextPaymentRow = ({
+	nextPaymentDetails,
+	productDetail,
+	hasCancellationPending,
+}: {
+	nextPaymentDetails: NextPaymentDetails | undefined;
+	productDetail: ProductDetail;
+	hasCancellationPending: boolean;
+}) =>
+	nextPaymentDetails &&
+	productDetail.subscription.autoRenew &&
+	!hasCancellationPending && (
+		<div>
+			<dt>{nextPaymentDetails.paymentKey}</dt>
+			<dd>
+				{nextPaymentDetails.isNewPaymentValue && <NewPriceAlert />}
+				{nextPaymentDetails.paymentValue}
+				{nextPaymentDetails.nextPaymentDateValue &&
+					productDetail.subscription.readerType !== 'Patron' &&
+					` on ${nextPaymentDetails.nextPaymentDateValue}`}
+			</dd>
+		</div>
+	);
+
+export const FutureProductRow = ({
+	futureProductTitle,
+}: {
+	futureProductTitle: string | null;
+}) =>
+	futureProductTitle && (
+		<div>
+			<dt>Switching to</dt>
+			<dd>{futureProductTitle}</dd>
 		</div>
 	);
