@@ -3,7 +3,6 @@ import { palette, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
-	SvgInfoRound,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
 import {
@@ -42,35 +41,22 @@ import {
 import {
 	BenefitsCopyAndToggle,
 	EndDateRow,
+	FutureProductRow,
 	GiftPurchaseDateRow,
 	GuardianAdLiteCopy,
 	JoinDateRow,
+	MembershipTierLabelRow,
+	NextPaymentRow,
 	ProductCardHeader,
 	StartDateRow,
+	TrialRemainingRow,
+	UserIdRow,
 } from './ProductCardSections';
 import {
 	keyValueCss,
 	productDetailLayoutCss,
 	sectionHeadingCss,
 } from './ProductCardStyles';
-
-const NewPriceAlert = () => {
-	const iconCss = css`
-		svg {
-			position: relative;
-			top: 7px;
-			margin-left: -4px;
-			fill: ${palette.brand[500]};
-		}
-	`;
-
-	return (
-		<span css={iconCss}>
-			<SvgInfoRound size="small" />
-			New price |{' '}
-		</span>
-	);
-};
 
 export const ProductCard = ({
 	productDetail,
@@ -286,25 +272,14 @@ export const ProductCard = ({
 						<div>
 							<h4 css={sectionHeadingCss}>Billing and payment</h4>
 							<dl css={keyValueCss}>
-								<div>
-									<dt>
-										{groupedProductType.showSupporterId
-											? 'Supporter ID'
-											: 'Subscription ID'}
-									</dt>
-									<dd data-qm-masking="blocklist">
-										{
-											productDetail.subscription
-												.subscriptionId
-										}
-									</dd>
-								</div>
-								{groupedProductType.tierLabel && (
-									<div>
-										<dt>{groupedProductType.tierLabel}</dt>
-										<dd>{productDetail.mmaProductKey}</dd>
-									</div>
-								)}
+								<UserIdRow
+									groupedProductType={groupedProductType}
+									productDetail={productDetail}
+								/>
+								<MembershipTierLabelRow
+									groupedProductType={groupedProductType}
+									productDetail={productDetail}
+								/>
 								<StartDateRow
 									subscriptionStartDate={
 										subscriptionStartDate
@@ -327,54 +302,21 @@ export const ProductCard = ({
 									userIsGifter={userIsGifter}
 									productDetail={productDetail}
 								/>
-								{specificProductType.showTrialRemainingIfApplicable &&
-									productDetail.subscription.trialLength >
-										0 &&
-									!isGifted &&
-									productDetail.subscription.readerType !==
-										'Patron' && (
-										<div>
-											<dt>Trial remaining</dt>
-											<dd>
-												{
-													productDetail.subscription
-														.trialLength
-												}{' '}
-												{productDetail.subscription
-													.trialLength !== 1
-													? 'days'
-													: 'day'}
-											</dd>
-										</div>
-									)}
-								{nextPaymentDetails &&
-									productDetail.subscription.autoRenew &&
-									!hasCancellationPending && (
-										<div>
-											<dt>
-												{nextPaymentDetails.paymentKey}
-											</dt>
-											<dd>
-												{nextPaymentDetails.isNewPaymentValue && (
-													<NewPriceAlert />
-												)}
-												{
-													nextPaymentDetails.paymentValue
-												}
-												{nextPaymentDetails.nextPaymentDateValue &&
-													productDetail.subscription
-														.readerType !==
-														'Patron' &&
-													` on ${nextPaymentDetails.nextPaymentDateValue}`}
-											</dd>
-										</div>
-									)}
-								{futureProductTitle && (
-									<div>
-										<dt>Switching to</dt>
-										<dd>{futureProductTitle}</dd>
-									</div>
-								)}
+								<TrialRemainingRow
+									specificProductType={specificProductType}
+									productDetail={productDetail}
+									isGifted={isGifted}
+								/>
+								<NextPaymentRow
+									nextPaymentDetails={nextPaymentDetails}
+									productDetail={productDetail}
+									hasCancellationPending={
+										hasCancellationPending
+									}
+								/>
+								<FutureProductRow
+									futureProductTitle={futureProductTitle}
+								/>
 							</dl>
 						</div>
 						<div css={wideButtonLayoutCss}>
