@@ -1,15 +1,22 @@
 import { css } from '@emotion/react';
 import { palette } from '@guardian/source/foundations';
-import { SvgGift, SvgInfoRound } from '@guardian/source/react-components';
+import {
+	Button,
+	SvgGift,
+	SvgInfoRound,
+	themeButtonReaderRevenueBrand,
+} from '@guardian/source/react-components';
+import type { NavigateFunction } from 'react-router-dom';
+import type { Event } from '@/client/utilities/analytics';
+import type { FetchUpgradePreviewParams } from '@/client/utilities/hooks/useUpgradePreview';
 import { parseDate } from '@/shared/dates';
 import type {
+	MembersDataApiUser,
+	PaidSubscriptionPlan,
 	ProductDetail,
 	SubscriptionPlan,
-} from '../../../../shared/productResponse';
-import type {
-	GroupedProductType,
-	ProductType,
-} from '../../../../shared/productTypes';
+} from '@/shared/productResponse';
+import type { GroupedProductType, ProductType } from '@/shared/productTypes';
 import { Ribbon } from '../../shared/Ribbon';
 import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
@@ -17,7 +24,9 @@ import { Card } from '../shared/Card';
 import type { NextPaymentDetails } from '../shared/NextPaymentDetails';
 import type { ProductCardConfiguration } from './ProductCardConfiguration';
 import {
+	benefitsSectionBackgroundColour,
 	benefitsTextCss,
+	centeredButtonCss,
 	giftRibbonColour,
 	giftRibbonCopyColour,
 	giftRibbonCss,
@@ -86,7 +95,10 @@ export const BenefitsCopyAndToggle = ({
 }) =>
 	cardConfig.getBenefitsSectionCopy &&
 	nextPaymentDetails && (
-		<Card.Section backgroundColor="#edf5fA" removeBorders>
+		<Card.Section
+			backgroundColor={benefitsSectionBackgroundColour}
+			removeBorders
+		>
 			<p css={benefitsTextCss}>
 				{cardConfig.getBenefitsSectionCopy(nextPaymentDetails)}
 			</p>
@@ -109,7 +121,7 @@ export const GuardianAdLiteCopy = ({
 }) =>
 	specificProductType.productType === 'guardianadlite' &&
 	nextPaymentDetails && (
-		<Card.Section backgroundColor="#edf5fA">
+		<Card.Section backgroundColor={benefitsSectionBackgroundColour}>
 			<p css={benefitsTextCss}>
 				You’re subscribed to {specificProductType.productTitle()} and
 				pay {nextPaymentDetails.paymentValueShort} a{' '}
@@ -271,4 +283,121 @@ export const FutureProductRow = ({
 			<dt>Switching to</dt>
 			<dd>{futureProductTitle}</dd>
 		</div>
+	);
+
+export const ProductUpsellButton = ({
+	isPreviewLoading,
+	hasPreviewError,
+	productDetail,
+	specificProductType,
+	mainPlan,
+	showProductUpsellButton,
+	trackEvent,
+	fetchUpgradePreview,
+}: {
+	isPreviewLoading: boolean;
+	hasPreviewError: boolean;
+	productDetail: ProductDetail;
+	specificProductType: ProductType;
+	mainPlan: SubscriptionPlan;
+	showProductUpsellButton: boolean;
+	trackEvent: (trackEventArgs: Event) => void;
+	fetchUpgradePreview: (
+		fetchUpgradePreviewArgs: FetchUpgradePreviewParams,
+	) => Promise<void>;
+}) =>
+	showProductUpsellButton && (
+		<Button
+			aria-label="Product Card Digital Plus Upsell Button"
+			data-cy="digital-plus-upsell-button"
+			size="small"
+			priority="primary"
+			theme={themeButtonReaderRevenueBrand}
+			isLoading={isPreviewLoading}
+			disabled={isPreviewLoading || hasPreviewError}
+			cssOverrides={centeredButtonCss}
+			onClick={() => {
+				trackEvent({
+					eventCategory: 'account_overview',
+					eventAction: 'click',
+					eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
+				});
+				void fetchUpgradePreview({
+					subscriptionId: productDetail.subscription.subscriptionId,
+					subscription: productDetail.subscription,
+					mainPlan: mainPlan as PaidSubscriptionPlan,
+					navigationPath: `/${specificProductType.urlPart}/upgrade-product/information?subscriptionId=${productDetail.subscription.subscriptionId}`,
+				});
+			}}
+		>
+			Upgrade to Digital plus
+		</Button>
+	);
+
+export const ProductManageButton = ({
+	isGifted,
+	specificProductType,
+	mainPlan,
+	groupedProductType,
+	productDetail,
+	navigate,
+	trackEvent,
+}: {
+	isGifted: boolean;
+	specificProductType: ProductType;
+	mainPlan: SubscriptionPlan;
+	groupedProductType: GroupedProductType;
+	productDetail: ProductDetail;
+	navigate: NavigateFunction;
+	trackEvent: (trackEventArgs: Event) => void;
+}) =>
+	!isGifted && (
+		<Button
+			aria-label={`${specificProductType.productTitle(
+				mainPlan,
+			)} : Manage ${groupedProductType.friendlyName}`}
+			data-cy={`Manage ${groupedProductType.friendlyName}`}
+			size="small"
+			priority="tertiary"
+			cssOverrides={centeredButtonCss}
+			onClick={() => {
+				trackEvent({
+					eventCategory: 'account_overview',
+					eventAction: 'click',
+					eventLabel: `manage_${specificProductType.urlPart}`,
+				});
+				navigate(`/${specificProductType.urlPart}`, {
+					state: { productDetail },
+				});
+			}}
+		>
+			{`Manage ${groupedProductType.friendlyName}`}
+		</Button>
+	);
+
+export const ProductSwitchButton = ({
+	showSwitchButton,
+	productDetail,
+	user,
+	navigate,
+}: {
+	showSwitchButton: boolean;
+	productDetail: ProductDetail;
+	user: MembersDataApiUser | undefined;
+	navigate: NavigateFunction;
+}) =>
+	showSwitchButton &&
+	user && (
+		<Button
+			theme={themeButtonReaderRevenueBrand}
+			size="small"
+			cssOverrides={centeredButtonCss}
+			onClick={() =>
+				navigate(`/switch`, {
+					state: { productDetail, user },
+				})
+			}
+		>
+			Change to all-access digital
+		</Button>
 	);
