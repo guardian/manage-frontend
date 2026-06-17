@@ -14,7 +14,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
 	cancellationFormatDate,
 	DATE_FNS_LONG_OUTPUT_FORMAT,
-	parseDate,
 } from '@/shared/dates';
 import type {
 	MembersDataApiUser,
@@ -42,8 +41,12 @@ import {
 } from './ProductCardConfiguration';
 import {
 	BenefitsCopyAndToggle,
+	EndDateRow,
+	GiftPurchaseDateRow,
 	GuardianAdLiteCopy,
+	JoinDateRow,
 	ProductCardHeader,
+	StartDateRow,
 } from './ProductCardSections';
 import {
 	keyValueCss,
@@ -302,47 +305,28 @@ export const ProductCard = ({
 										<dd>{productDetail.mmaProductKey}</dd>
 									</div>
 								)}
-								{subscriptionStartDate && shouldShowStartDate && (
-									<div>
-										<dt>Start date</dt>
-										<dd>
-											{parseDate(
-												subscriptionStartDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
-								{shouldShowJoinDateNotStartDate && (
-									<div>
-										<dt>Join date</dt>
-										<dd>
-											{parseDate(
-												productDetail.joinDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
-								{userIsGifter && giftPurchaseDate && (
-									<div>
-										<dt>Purchase date</dt>
-										<dd>
-											{parseDate(
-												giftPurchaseDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
-								{((isGifted && !userIsGifter) ||
-									!productDetail.subscription.autoRenew) && (
-									<div>
-										<dt>End date</dt>
-										<dd>
-											{parseDate(
-												subscriptionEndDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
+								<StartDateRow
+									subscriptionStartDate={
+										subscriptionStartDate
+									}
+									shouldShowStartDate={shouldShowStartDate}
+								/>
+								<JoinDateRow
+									productDetail={productDetail}
+									shouldShowJoinDateNotStartDate={
+										shouldShowJoinDateNotStartDate
+									}
+								/>
+								<GiftPurchaseDateRow
+									userIsGifter={userIsGifter}
+									giftPurchaseDate={giftPurchaseDate}
+								/>
+								<EndDateRow
+									subscriptionEndDate={subscriptionEndDate}
+									isGifted={isGifted}
+									userIsGifter={userIsGifter}
+									productDetail={productDetail}
+								/>
 								{specificProductType.showTrialRemainingIfApplicable &&
 									productDetail.subscription.trialLength >
 										0 &&
