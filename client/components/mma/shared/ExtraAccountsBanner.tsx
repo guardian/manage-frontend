@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
 import {
+	from,
 	palette,
 	space,
 	textSans17,
 	textSansBold20,
+	until,
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { useNavigate } from 'react-router-dom';
@@ -13,10 +15,14 @@ const containerCss = css`
 
 	display: flex;
 	gap: ${space[3]}px;
-	flex-direction: row;
+	flex-direction: column-reverse;
 	justify-content: space-between;
 	border-radius: ${space[2]}px;
 	background-color: ${palette.neutral[97]};
+
+	${from.tablet} {
+		flex-direction: row;
+	}
 `;
 
 const copyContainerCss = css`
@@ -36,18 +42,26 @@ const copyContainerCss = css`
 
 const buttonCss = css`
 	margin-top: ${space[5]}px;
+
+	${until.tablet} {
+		width: 100%;
+	}
 `;
 
 // Placeholder image slot - a correctly sized div to be replaced with the
 // final asset later.
 const imagePlaceholderCss = css`
-	width: 160px;
-	height: auto;
-	aspect-ratio: 3 / 2;
-	margin: ${space[3]}px;
+	width: 100%;
+	aspect-ratio: 5 / 3;
 	background-color: ${palette.neutral[86]};
 	border-radius: ${space[2]}px;
 	align-self: center;
+
+	${from.tablet} {
+		flex: 1;
+		max-width: 250px;
+		aspect-ratio: 4 / 3;
+	}
 `;
 
 export const ExtraAccountsBanner = () => {

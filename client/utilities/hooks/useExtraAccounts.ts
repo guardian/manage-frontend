@@ -12,7 +12,7 @@ import { useAccountDataLoader } from './useAccountDataLoader';
 const HARDCODED_ACCOUNTS: ExtraAccount[] = [
 	{ status: 'empty' },
 	{ status: 'pending', email: 'sam.taylor@gmail.com' },
-	{ status: 'active', email: 'sam.taylor@gmail.com' },
+	{ status: 'active', email: 'jontho.ruda@gmail.com', name: 'Jontho Ruda' },
 ];
 
 // TODO: replace with a real endpoint call once the API exists.

@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { palette, space, textSans17 } from '@guardian/source/foundations';
+import { from, palette, space, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	Checkbox,
@@ -7,11 +7,20 @@ import {
 	TextInput,
 } from '@guardian/source/react-components';
 import { useState } from 'react';
+import { useWindowWidth } from '@/client/utilities/hooks/useWindowWidth';
 import { isEmail } from '../../../../shared/validationUtils';
 
 const formCss = css`
 	margin: ${space[5]}px 0 ${space[4]}px 0;
-	max-width: 70%;
+	width: 100%;
+
+	${from.tablet} {
+		max-width: 70%;
+	}
+`;
+
+const formCssOverrides = css`
+	margin-top: 0;
 `;
 
 const introCss = css`
@@ -29,9 +38,21 @@ const checkboxBoxCss = css`
 const actionsCss = css`
 	display: flex;
 	gap: ${space[4]}px;
+	flex-direction: column;
+
+	${from.tablet} {
+		flex-direction: row;
+	}
+`;
+
+const sendInvitationCss = css`
+	color: ${palette.brand[500]};
+	font-weight: normal;
 `;
 
 interface ExtraAccountInviteFormProps {
+	isFormOpen: boolean;
+	onOpen: () => void;
 	onCancel: () => void;
 	onSent: (email: string) => void;
 	sendInvitation: (email: string) => Promise<boolean>;
@@ -39,6 +60,8 @@ interface ExtraAccountInviteFormProps {
 }
 
 export const ExtraAccountInviteForm = ({
+	isFormOpen,
+	onOpen,
 	onCancel,
 	onSent,
 	sendInvitation,
@@ -48,6 +71,12 @@ export const ExtraAccountInviteForm = ({
 	const [confirmedConsent, setConfirmedConsent] = useState(false);
 	const [emailError, setEmailError] = useState<string | undefined>();
 	const [consentError, setConsentError] = useState<string | undefined>();
+
+	const { windowWidthIsGreaterThan, windowWidthIsLessThan } =
+		useWindowWidth();
+	const isFormOpenOnDesktop =
+		isFormOpen && windowWidthIsGreaterThan('tablet');
+	const isFormOpenOnTablet = isFormOpen && windowWidthIsLessThan('tablet');
 
 	const handleSend = async () => {
 		const trimmedEmail = email.trim();
@@ -77,11 +106,26 @@ export const ExtraAccountInviteForm = ({
 		}
 	};
 
+	if (!isFormOpen) {
+		return (
+			<Button
+				priority="subdued"
+				size="small"
+				cssOverrides={sendInvitationCss}
+				onClick={onOpen}
+			>
+				Send invitation
+			</Button>
+		);
+	}
+
 	return (
-		<div css={formCss}>
-			<p css={introCss}>
-				Enter the email address of the people you'd like to invite.
-			</p>
+		<div css={[formCss, isFormOpenOnTablet ? formCssOverrides : undefined]}>
+			{isFormOpenOnDesktop && (
+				<p css={introCss}>
+					Enter the email address of the people you'd like to invite.
+				</p>
+			)}
 
 			<TextInput
 				label="Recipient's email address"

@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import {
+	from,
 	headlineBold28,
 	palette,
 	space,
@@ -10,12 +11,11 @@ import {
 	SvgPersonRoundOutlined,
 	SvgTickRound,
 } from '@guardian/source/react-components';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useExtraAccounts } from '../../../utilities/hooks/useExtraAccounts';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
-import { SuccessMessage } from '../delivery/address/DeliveryAddressConfirmation';
 import { PageContainer } from '../Page';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { ProblemAlert } from '../shared/ProblemAlert';
@@ -36,17 +36,29 @@ const cardCss = css`
 `;
 
 const introCss = css`
+	display: flex;
+	flex-direction: column-reverse;
+	justify-content: space-between;
+	gap: ${space[3]}px;
 	background-color: ${palette.neutral[97]};
-	padding: ${space[3]}px;
-	padding-bottom: ${space[9]}px;
+
+	${from.tablet} {
+		flex-direction: row;
+	}
+`;
+
+const introTextCss = css`
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	gap: ${space[2]}px;
+	flex: 2;
+	margin: ${space[3]}px;
+	margin-bottom: ${space[9]}px;
 
 	p {
 		${textSans17};
 		margin: 0;
-	}
-
-	p + p {
-		margin-top: ${space[3]}px;
 	}
 `;
 
@@ -77,6 +89,20 @@ const dividerCss = css`
 	border-top: 1px solid ${palette.neutral[86]};
 `;
 
+const imagePlaceholderCss = css`
+	width: 100%;
+	aspect-ratio: 25 / 9;
+	background-color: ${palette.neutral[86]};
+	border-radius: ${space[2]}px;
+	align-self: center;
+
+	${from.tablet} {
+		flex: 1;
+		max-width: 200px;
+		aspect-ratio: 5 / 3;
+	}
+`;
+
 export const ExtraAccounts = () => {
 	const {
 		accounts,
@@ -89,7 +115,6 @@ export const ExtraAccounts = () => {
 		isSubmitting,
 		submitError,
 	} = useExtraAccounts();
-	const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
 	if (shouldRedirect) {
 		return <Navigate to="/" replace />;
@@ -106,15 +131,6 @@ export const ExtraAccounts = () => {
 			minimalFooter
 		>
 			<h2 css={subHeadingCss}>Manage extra accounts</h2>
-
-			{successMessage && (
-				<SuccessMessage
-					message={successMessage}
-					additionalCss={css`
-						margin-bottom: ${space[5]}px;
-					`}
-				/>
-			)}
 
 			{submitError && (
 				<ProblemAlert
@@ -133,12 +149,18 @@ export const ExtraAccounts = () => {
 			) : (
 				<div css={cardCss}>
 					<div css={introCss}>
-						<p>
-							You can share your subscription with up to{' '}
-							{MAX_ACCOUNTS} people. Each account is individual.
-							Your account data or billing information are not
-							shared with the people you invite.
-						</p>
+						<div css={introTextCss}>
+							<p>
+								You can share your subscription with up to{' '}
+								{MAX_ACCOUNTS} people.
+							</p>
+							<p>
+								Each account is individual. Your account data or
+								billing information are not shared with the
+								people you invite.
+							</p>
+						</div>
+						<div css={imagePlaceholderCss} />
 					</div>
 
 					<div css={bodyCss}>
@@ -177,7 +199,6 @@ export const ExtraAccounts = () => {
 									cancelInvitation={cancelInvitation}
 									removeAccess={removeAccess}
 									isSubmitting={isSubmitting}
-									onSuccessfulAction={setSuccessMessage}
 								/>
 							</Fragment>
 						))}

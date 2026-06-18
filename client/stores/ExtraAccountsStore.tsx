@@ -3,10 +3,25 @@ import { devtools } from 'zustand/middleware';
 
 export type ExtraAccountStatus = 'empty' | 'pending' | 'active';
 
-export interface ExtraAccount {
-	status: ExtraAccountStatus;
-	email?: string;
+interface ExtraAccountEmpty {
+	status: 'empty';
 }
+
+interface ExtraAccountPending {
+	status: 'pending';
+	email: string;
+}
+
+interface ExtraAccountActive {
+	status: 'active';
+	email: string;
+	name: string;
+}
+
+export type ExtraAccount =
+	| ExtraAccountEmpty
+	| ExtraAccountPending
+	| ExtraAccountActive;
 
 export enum ExtraAccountsLoadingState {
 	NotStarted = 'NotStarted',
