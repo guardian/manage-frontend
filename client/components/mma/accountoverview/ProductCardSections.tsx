@@ -7,6 +7,7 @@ import {
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
 import type { NavigateFunction } from 'react-router-dom';
+import { wideButtonLayoutCss } from '@/client/styles/ButtonStyles';
 import type { Event } from '@/client/utilities/analytics';
 import type { FetchUpgradePreviewParams } from '@/client/utilities/hooks/useUpgradePreview';
 import { parseDate } from '@/shared/dates';
@@ -18,10 +19,13 @@ import type {
 } from '@/shared/productResponse';
 import type { GroupedProductType, ProductType } from '@/shared/productTypes';
 import { Ribbon } from '../../shared/Ribbon';
+import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
 import type { NextPaymentDetails } from '../shared/NextPaymentDetails';
+import { PaymentMethodDisplay } from '../shared/PaymentMethodDisplay';
+import { TaxExclusiveNotice } from '../shared/TaxExclusiveNotice';
 import type { ProductCardConfiguration } from './ProductCardConfiguration';
 import {
 	benefitsSectionBackgroundColour,
@@ -30,7 +34,10 @@ import {
 	giftRibbonColour,
 	giftRibbonCopyColour,
 	giftRibbonCss,
+	keyValueCss,
 	productCardTitleCss,
+	productDetailLayoutCss,
+	sectionHeadingCss,
 } from './ProductCardStyles';
 
 const NewPriceAlert = () => {
@@ -400,4 +407,101 @@ export const ProductSwitchButton = ({
 		>
 			Change to all-access digital
 		</Button>
+	);
+
+export const LiveEventsSection = ({
+	entitledToEvents,
+}: {
+	entitledToEvents: boolean;
+}) =>
+	entitledToEvents && (
+		<Card.Section>
+			<div>
+				<h4 css={sectionHeadingCss}>
+					Guardian Live - Ticket Tailor promo codes
+				</h4>
+				<div>
+					<dl css={keyValueCss}>
+						<dt>{window.atob('TFBQRlJFRTZHTFRY')}</dt>
+						<dd>
+							gives you 6 free tickets each year (1 per event)
+						</dd>
+					</dl>
+				</div>
+				<div>
+					<dl css={keyValueCss}>
+						<dt>{window.atob('TFBQMjAyR0xUWA==')}</dt>
+						<dd>gives you 20% off an extra 2 tickets per event</dd>
+					</dl>
+				</div>
+			</div>
+		</Card.Section>
+	);
+
+export const PaymentSection = ({
+	productDetail,
+	specificProductType,
+	hasPaymentFailure,
+	isGifted,
+	isSafeToUpdatePaymentMethod,
+	mainPlan,
+	navigate,
+	trackEvent,
+}: {
+	productDetail: ProductDetail;
+	specificProductType: ProductType;
+	hasPaymentFailure: boolean;
+	isGifted: boolean;
+	isSafeToUpdatePaymentMethod: boolean;
+	mainPlan: SubscriptionPlan;
+	navigate: NavigateFunction;
+	trackEvent: (trackEventArgs: Event) => void;
+}) =>
+	productDetail.isPaidTier && (
+		<Card.Section>
+			<div css={productDetailLayoutCss}>
+				<div>
+					<h4 css={sectionHeadingCss}>Payment method</h4>
+					<PaymentMethodDisplay
+						subscription={productDetail.subscription}
+						inPaymentFailure={hasPaymentFailure}
+					/>
+				</div>
+				{!isGifted && isSafeToUpdatePaymentMethod && (
+					<div css={wideButtonLayoutCss}>
+						<Button
+							aria-label={`${specificProductType.productTitle(
+								mainPlan,
+							)} : Update payment method`}
+							size="small"
+							cssOverrides={css`
+								justify-content: center;
+							`}
+							priority="tertiary"
+							icon={
+								hasPaymentFailure ? (
+									<ErrorIcon fill={palette.neutral[100]} />
+								) : undefined
+							}
+							onClick={() => {
+								trackEvent({
+									eventCategory: 'account_overview',
+									eventAction: 'click',
+									eventLabel: 'manage_payment_method',
+								});
+								navigate(
+									`/payment/${specificProductType.urlPart}`,
+									{
+										state: { productDetail },
+									},
+								);
+							}}
+						>
+							Update payment method
+						</Button>
+					</div>
+				)}
+			</div>
+			<TaxExclusiveNotice taxExclusive={productDetail.taxExclusive} />
+		</Card.Section>
 	);

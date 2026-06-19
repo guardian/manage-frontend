@@ -25,11 +25,8 @@ import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
 import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
-import { ErrorIcon } from '../shared/assets/ErrorIcon';
 import { Card } from '../shared/Card';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
-import { PaymentMethoDisplay } from '../shared/PaymentMethodDisplay';
-import { TaxExclusiveNotice } from '../shared/TaxExclusiveNotice';
 import {
 	getGuardianWeeklyGiftBenefitsCopy,
 	productCardConfiguration,
@@ -41,8 +38,10 @@ import {
 	GiftPurchaseDateRow,
 	GuardianAdLiteCopy,
 	JoinDateRow,
+	LiveEventsSection,
 	MembershipTierLabelRow,
 	NextPaymentRow,
+	PaymentSection,
 	ProductCardHeader,
 	ProductManageButton,
 	ProductSwitchButton,
@@ -349,87 +348,20 @@ export const ProductCard = ({
 						</div>
 					</div>
 				</Card.Section>
-				{entitledToEvents && (
-					<Card.Section>
-						<div>
-							<h4 css={sectionHeadingCss}>
-								Guardian Live - Ticket Tailor promo codes
-							</h4>
-							<div>
-								<dl css={keyValueCss}>
-									<dt>{window.atob('TFBQRlJFRTZHTFRY')}</dt>
-									<dd>
-										gives you 6 free tickets each year (1
-										per event)
-									</dd>
-								</dl>
-							</div>
-							<div>
-								<dl css={keyValueCss}>
-									<dt>{window.atob('TFBQMjAyR0xUWA==')}</dt>
-									<dd>
-										gives you 20% off an extra 2 tickets per
-										event
-									</dd>
-								</dl>
-							</div>
-						</div>
-					</Card.Section>
-				)}
-				{productDetail.isPaidTier && (
-					<Card.Section>
-						<div css={productDetailLayoutCss}>
-							<div>
-								<h4 css={sectionHeadingCss}>Payment method</h4>
-								<PaymentMethoDisplay
-									subscription={productDetail.subscription}
-									inPaymentFailure={hasPaymentFailure}
-								/>
-							</div>
-							{!isGifted && isSafeToUpdatePaymentMethod && (
-								<div css={wideButtonLayoutCss}>
-									<Button
-										aria-label={`${specificProductType.productTitle(
-											mainPlan,
-										)} : Update payment method`}
-										size="small"
-										cssOverrides={css`
-											justify-content: center;
-										`}
-										priority="tertiary"
-										icon={
-											hasPaymentFailure ? (
-												<ErrorIcon
-													fill={palette.neutral[100]}
-												/>
-											) : undefined
-										}
-										onClick={() => {
-											trackEvent({
-												eventCategory:
-													'account_overview',
-												eventAction: 'click',
-												eventLabel:
-													'manage_payment_method',
-											});
-											navigate(
-												`/payment/${specificProductType.urlPart}`,
-												{
-													state: { productDetail },
-												},
-											);
-										}}
-									>
-										Update payment method
-									</Button>
-								</div>
-							)}
-						</div>
-						<TaxExclusiveNotice
-							taxExclusive={productDetail.taxExclusive}
-						/>
-					</Card.Section>
-				)}
+
+				<LiveEventsSection entitledToEvents={entitledToEvents} />
+
+				<PaymentSection
+					productDetail={productDetail}
+					specificProductType={specificProductType}
+					hasPaymentFailure={hasPaymentFailure}
+					isGifted={isGifted}
+					isSafeToUpdatePaymentMethod={isSafeToUpdatePaymentMethod}
+					mainPlan={mainPlan}
+					navigate={navigate}
+					trackEvent={trackEvent}
+				/>
+
 				{!productDetail.isPaidTier && (
 					<Card.Section>
 						<h4 css={sectionHeadingCss}>Payment</h4>
