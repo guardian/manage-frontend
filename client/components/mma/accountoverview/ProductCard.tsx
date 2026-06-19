@@ -1,10 +1,6 @@
 import { css } from '@emotion/react';
 import { palette, textSans17 } from '@guardian/source/foundations';
-import {
-	Button,
-	Stack,
-	themeButtonReaderRevenueBrand,
-} from '@guardian/source/react-components';
+import { Button, Stack } from '@guardian/source/react-components';
 import {
 	InfoSummary,
 	SuccessSummary,
@@ -48,6 +44,9 @@ import {
 	MembershipTierLabelRow,
 	NextPaymentRow,
 	ProductCardHeader,
+	ProductManageButton,
+	ProductSwitchButton,
+	ProductUpsellButton,
 	StartDateRow,
 	TrialRemainingRow,
 	UserIdRow,
@@ -320,93 +319,33 @@ export const ProductCard = ({
 							</dl>
 						</div>
 						<div css={wideButtonLayoutCss}>
-							{showProductUpsellButton && (
-								<Button
-									aria-label={`Product Card Digital Plus Upsell Button`}
-									data-cy={`digital-plus-upsell-button`}
-									size="small"
-									priority="primary"
-									theme={themeButtonReaderRevenueBrand}
-									isLoading={isPreviewLoading}
-									disabled={
-										isPreviewLoading || hasPreviewError
-									}
-									cssOverrides={css`
-										justify-content: center;
-									`}
-									onClick={() => {
-										trackEvent({
-											eventCategory: 'account_overview',
-											eventAction: 'click',
-											eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
-										});
-										void fetchUpgradePreview({
-											subscriptionId:
-												productDetail.subscription
-													.subscriptionId,
-											subscription:
-												productDetail.subscription,
-											mainPlan:
-												mainPlan as PaidSubscriptionPlan,
-											navigationPath: `/${specificProductType.urlPart}/upgrade-product/information?subscriptionId=${productDetail.subscription.subscriptionId}`,
-										});
-									}}
-								>
-									{`Upgrade to Digital plus`}
-								</Button>
-							)}
-							{!isGifted && (
-								<Button
-									aria-label={`${specificProductType.productTitle(
-										mainPlan,
-									)} : Manage ${
-										groupedProductType.friendlyName
-									}`}
-									data-cy={`Manage ${groupedProductType.friendlyName}`}
-									size="small"
-									priority="tertiary"
-									cssOverrides={css`
-										justify-content: center;
-									`}
-									onClick={() => {
-										trackEvent({
-											eventCategory: 'account_overview',
-											eventAction: 'click',
-											eventLabel: `manage_${specificProductType.urlPart}`,
-										});
-										navigate(
-											`/${specificProductType.urlPart}`,
-											{
-												state: {
-													productDetail:
-														productDetail,
-												},
-											},
-										);
-									}}
-								>
-									{`Manage ${groupedProductType.friendlyName}`}
-								</Button>
-							)}
-							{showSwitchButton && (
-								<Button
-									theme={themeButtonReaderRevenueBrand}
-									size="small"
-									cssOverrides={css`
-										justify-content: center;
-									`}
-									onClick={() =>
-										navigate(`/switch`, {
-											state: {
-												productDetail: productDetail,
-												user: user,
-											},
-										})
-									}
-								>
-									Change to all-access digital
-								</Button>
-							)}
+							<ProductUpsellButton
+								isPreviewLoading={isPreviewLoading}
+								hasPreviewError={hasPreviewError}
+								productDetail={productDetail}
+								specificProductType={specificProductType}
+								mainPlan={mainPlan}
+								showProductUpsellButton={
+									showProductUpsellButton
+								}
+								fetchUpgradePreview={fetchUpgradePreview}
+								trackEvent={trackEvent}
+							/>
+							<ProductManageButton
+								isGifted={isGifted}
+								specificProductType={specificProductType}
+								mainPlan={mainPlan}
+								groupedProductType={groupedProductType}
+								productDetail={productDetail}
+								navigate={navigate}
+								trackEvent={trackEvent}
+							/>
+							<ProductSwitchButton
+								showSwitchButton={showSwitchButton}
+								productDetail={productDetail}
+								user={user}
+								navigate={navigate}
+							/>
 						</div>
 					</div>
 				</Card.Section>
