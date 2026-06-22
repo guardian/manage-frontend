@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import { palette, textSans17 } from '@guardian/source/foundations';
-import { Button, Stack } from '@guardian/source/react-components';
+import { palette } from '@guardian/source/foundations';
+import { Stack } from '@guardian/source/react-components';
 import {
 	InfoSummary,
 	SuccessSummary,
@@ -35,6 +35,7 @@ import {
 	BenefitsCopyAndToggle,
 	EndDateRow,
 	FutureProductRow,
+	GiftPaymentSection,
 	GiftPurchaseDateRow,
 	GuardianAdLiteCopy,
 	JoinDateRow,
@@ -48,6 +49,7 @@ import {
 	ProductUpsellButton,
 	StartDateRow,
 	TrialRemainingRow,
+	UsCancellationSection,
 	UserIdRow,
 } from './ProductCardSections';
 import {
@@ -362,83 +364,20 @@ export const ProductCard = ({
 					trackEvent={trackEvent}
 				/>
 
-				{!productDetail.isPaidTier && (
-					<Card.Section>
-						<h4 css={sectionHeadingCss}>Payment</h4>
-						<p
-							css={css`
-								${textSans17};
-								margin: 0;
-							`}
-						>
-							{isGifted ? 'Gift redemption' : 'Free'}
-						</p>
-					</Card.Section>
-				)}
-				{productDetail.billingCountry === 'United States' &&
-					!hasCancellationPending && (
-						<Card.Section>
-							<div css={productDetailLayoutCss}>
-								<div>
-									<h4 css={sectionHeadingCss}>
-										Cancel {groupedProductType.friendlyName}
-									</h4>
-									<p
-										css={css`
-											max-width: 350px;
-										`}
-									>
-										{!productDetail.subscription
-											.autoRenew &&
-										!productDetail.subscription
-											.nextPaymentDate ? (
-											<>
-												This is a one-off payment and
-												will not renew. You’ll continue
-												to enjoy your benefits until the
-												end of the current billing
-												period.
-											</>
-										) : (
-											<>
-												Stop your recurring payment, at
-												the end of current billing
-												period.
-											</>
-										)}
-									</p>
-								</div>
-								<div css={wideButtonLayoutCss}>
-									<Button
-										aria-label={`Cancel ${specificProductType.productTitle(
-											mainPlan,
-										)}`}
-										size="small"
-										cssOverrides={css`
-											justify-content: center;
-										`}
-										priority="tertiary"
-										onClick={() => {
-											trackEvent({
-												eventCategory:
-													'account_overview',
-												eventAction: 'click',
-												eventLabel: 'cancel_product',
-											});
-											navigate(
-												`/cancel/${specificProductType.urlPart}`,
-												{
-													state: { productDetail },
-												},
-											);
-										}}
-									>
-										Cancel {groupedProductType.friendlyName}
-									</Button>
-								</div>
-							</div>
-						</Card.Section>
-					)}
+				<GiftPaymentSection
+					productDetail={productDetail}
+					isGifted={isGifted}
+				/>
+
+				<UsCancellationSection
+					productDetail={productDetail}
+					groupedProductType={groupedProductType}
+					specificProductType={specificProductType}
+					mainPlan={mainPlan}
+					hasCancellationPending={hasCancellationPending}
+					navigate={navigate}
+					trackEvent={trackEvent}
+				/>
 			</Card>
 		</Stack>
 	);
