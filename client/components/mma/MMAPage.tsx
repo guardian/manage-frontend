@@ -1,6 +1,6 @@
 import { css, Global } from '@emotion/react';
 import { ABProvider, useAB } from '@guardian/ab-react';
-import type { EventPayload } from '@guardian/ophan-tracker-js/MMA';
+import type { EventPayload } from '@guardian/ophan-tracker-js';
 import { breakpoints, from, space } from '@guardian/source/foundations';
 import * as Sentry from '@sentry/browser';
 import type { ReactNode } from 'react';
@@ -1072,7 +1072,7 @@ const MMAPageComponent = () => {
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
-			import('@guardian/ophan-tracker-js/MMA')
+			import('@guardian/ophan-tracker-js')
 				.then(({ record }) => {
 					setOphanRecord(() => record);
 				})
