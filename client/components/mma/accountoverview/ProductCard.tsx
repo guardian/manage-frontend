@@ -322,6 +322,7 @@ export const ProductCard = ({
 					specificProductType={specificProductType}
 					mainPlan={mainPlan}
 					hasCancellationPending={hasCancellationPending}
+					isGifted={isGifted}
 					navigate={navigate}
 					trackEvent={trackEvent}
 				/>
