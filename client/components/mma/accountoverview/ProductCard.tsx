@@ -1,15 +1,5 @@
-import { css } from '@emotion/react';
-import { palette } from '@guardian/source/foundations';
 import { Stack } from '@guardian/source/react-components';
-import {
-	InfoSummary,
-	SuccessSummary,
-} from '@guardian/source-development-kitchen/react-components';
-import { Link, useNavigate } from 'react-router-dom';
-import {
-	cancellationFormatDate,
-	DATE_FNS_LONG_OUTPUT_FORMAT,
-} from '@/shared/dates';
+import { useNavigate } from 'react-router-dom';
 import type {
 	MembersDataApiUser,
 	PaidSubscriptionPlan,
@@ -31,6 +21,11 @@ import {
 	getGuardianWeeklyGiftBenefitsCopy,
 	productCardConfiguration,
 } from './ProductCardConfiguration';
+import {
+	CancellationInfoRow,
+	OfferActiveInfoRow,
+	OfferPauseInfoRow,
+} from './ProductCardInfoSummaries';
 import {
 	BenefitsCopyAndToggle,
 	EndDateRow,
@@ -179,74 +174,26 @@ export const ProductCard = ({
 
 	return (
 		<Stack space={4}>
-			{hasCancellationPending && productDetail.subscription.end && (
-				<InfoSummary
-					message={`Your ${groupedProductType.friendlyName} has been cancelled`}
-					context={
-						<>
-							You are able to access your {productBenefits} until{' '}
-							<strong>
-								{cancellationFormatDate(
-									productDetail.subscription
-										.cancellationEffectiveDate,
-									DATE_FNS_LONG_OUTPUT_FORMAT,
-								)}
-							</strong>
-						</>
-					}
-				/>
-			)}
-			{canBeInOfferPeriod &&
-				isInOfferOrPausePeriod &&
-				isPaidSubscriptionPlan(mainPlan) &&
-				mainPlan.billingPeriod === 'month' && (
-					<SuccessSummary
-						message="Your offer is active"
-						context={
-							<>
-								Your free offer is active until{' '}
-								{nextPaymentDetails?.nextPaymentDateValue}. If
-								you have any questions, feel free to{' '}
-								{
-									<Link
-										to="/help-centre#contact-options"
-										css={css`
-											text-decoration: underline;
-											color: ${palette.brand[500]};
-										`}
-									>
-										contact our support team
-									</Link>
-								}
-								.
-							</>
-						}
-					/>
-				)}
-			{canBeInPausePeriod && isInOfferOrPausePeriod && (
-				<SuccessSummary
-					message="You have paused your support"
-					context={
-						<>
-							Your support is now paused until{' '}
-							{nextPaymentDetails?.nextPaymentDateValue}. If you
-							have any questions, feel free to{' '}
-							{
-								<Link
-									to="/help-centre#contact-options"
-									css={css`
-										text-decoration: underline;
-										color: ${palette.brand[500]};
-									`}
-								>
-									contact our support team
-								</Link>
-							}
-							.
-						</>
-					}
-				/>
-			)}
+			<CancellationInfoRow
+				hasCancellationPending={hasCancellationPending}
+				productDetail={productDetail}
+				groupedProductType={groupedProductType}
+				productBenefits={productBenefits}
+			/>
+
+			<OfferActiveInfoRow
+				canBeInOfferPeriod={canBeInOfferPeriod}
+				isInOfferOrPausePeriod={isInOfferOrPausePeriod}
+				nextPaymentDetails={nextPaymentDetails}
+				mainPlan={mainPlan}
+			/>
+
+			<OfferPauseInfoRow
+				canBeInPausePeriod={canBeInPausePeriod}
+				isInOfferOrPausePeriod={isInOfferOrPausePeriod}
+				nextPaymentDetails={nextPaymentDetails}
+			/>
+
 			<Card>
 				<ProductCardHeader
 					cardConfig={cardConfig}
