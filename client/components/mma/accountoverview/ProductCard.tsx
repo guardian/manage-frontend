@@ -10,7 +10,6 @@ import {
 	getSpecificProductTypeFromProductKey,
 	isGift,
 	isPaidSubscriptionPlan,
-	isSecondarySubscriber,
 } from '@/shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
@@ -35,6 +34,8 @@ import {
 	LiveEventsSection,
 	PaymentSection,
 	ProductCardHeader,
+	SecondaryUserLeaveSubscriptionSection,
+	SecondaryUserSubscriptionDetails,
 	UsCancellationSection,
 } from './ProductCardSections';
 
@@ -43,11 +44,13 @@ export const ProductCard = ({
 	isEligibleToSwitch,
 	isEligibleToUpsell,
 	user,
+	primaryUser,
 }: {
 	productDetail: ProductDetail;
 	isEligibleToSwitch: boolean;
 	isEligibleToUpsell: boolean;
 	user?: MembersDataApiUser;
+	primaryUser?: MembersDataApiUser;
 }) => {
 	const navigate = useNavigate();
 	const mainPlan = getMainPlan(productDetail.subscription);
@@ -76,10 +79,6 @@ export const ProductCard = ({
 	}`;
 
 	const isGifted = isGift(productDetail.subscription);
-	const isSecondary =
-		isSecondarySubscriber(productDetail.subscription) &&
-		productDetail.subscription.primarySubscriber;
-	const primarySubscriber = productDetail.subscription.primarySubscriber!;
 	const userIsGifter = isGifted && productDetail.isPaidTier;
 	const gwGiftSubscription =
 		isGifted && specificProductType.productType === 'guardianweekly';
@@ -121,7 +120,7 @@ export const ProductCard = ({
 
 	const cardConfig = gwGiftSubscription // to getCardConfig
 		? getGuardianWeeklyGiftBenefitsCopy
-		: isSecondary
+		: primaryUser
 		? getSecondaryUserBenefitsCopy
 		: productCardConfiguration[specificProductType.productType];
 
@@ -205,6 +204,16 @@ export const ProductCard = ({
 					specificProductType={specificProductType}
 				/>
 
+				<SecondaryUserSubscriptionDetails
+					subscriptionName={productTitle}
+					primarySubscriber={primaryUser}
+				/>
+
+				<SecondaryUserLeaveSubscriptionSection
+					subscriptionName={productTitle}
+					primarySubscriber={primaryUser}
+				/>
+
 				<BillingAndPaymentSection
 					groupedProductType={groupedProductType}
 					productDetail={productDetail}
@@ -227,6 +236,7 @@ export const ProductCard = ({
 					showProductUpsellButton={showProductUpsellButton}
 					showSwitchButton={showSwitchButton}
 					user={user}
+					primaryUser={primaryUser}
 					navigate={navigate}
 					trackEvent={trackEvent}
 					fetchUpgradePreview={fetchUpgradePreview}
@@ -248,6 +258,7 @@ export const ProductCard = ({
 				<GiftPaymentSection
 					productDetail={productDetail}
 					isGifted={isGifted}
+					primaryUser={primaryUser}
 				/>
 
 				<UsCancellationSection

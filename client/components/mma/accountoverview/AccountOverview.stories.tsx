@@ -118,6 +118,7 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 						newspaperdigitalVoucherPlusPaidByCard(),
 						membershipSupporter(),
 						patronMembership(),
+						secondaryDigitalPackSharedMembership(), // TODO move to a different api call
 						supporterPlus(),
 						tierThree(),
 						homeDelivery(),

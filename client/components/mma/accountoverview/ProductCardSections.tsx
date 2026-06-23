@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { css } from '@emotion/react';
 import { palette, textSans17 } from '@guardian/source/foundations';
 import {
@@ -31,6 +30,7 @@ import type { ProductCardConfiguration } from './ProductCardConfiguration';
 import {
 	benefitsSectionBackgroundColour,
 	benefitsTextCss,
+	centeredActionCss,
 	centeredButtonCss,
 	giftRibbonColour,
 	giftRibbonCopyColour,
@@ -39,6 +39,8 @@ import {
 	productCardTitleCss,
 	productDetailLayoutCss,
 	sectionHeadingCss,
+	sharedMembershipLeaveButtonCss,
+	sharedMembershipTextCss,
 } from './ProductCardStyles';
 
 const NewPriceAlert = () => {
@@ -136,6 +138,77 @@ export const GuardianAdLiteCopy = ({
 				{nextPaymentDetails.paymentInterval} for non-personalised
 				advertising.
 			</p>
+		</Card.Section>
+	);
+
+export const SecondaryUserSubscriptionDetails = ({
+	subscriptionName,
+	primarySubscriber,
+}: {
+	subscriptionName: string;
+	primarySubscriber: MembersDataApiUser | undefined;
+}) =>
+	primarySubscriber && (
+		<Card.Section>
+			<div css={productDetailLayoutCss}>
+				<div>
+					<h4 css={sectionHeadingCss}>Subscription details</h4>
+					<p css={sharedMembershipTextCss}>
+						Subscription: {subscriptionName} shared subscription{' '}
+						<br />
+						<br />
+						You’ve been given access by{' '}
+						{primarySubscriber.firstName}{' '}
+						{primarySubscriber.lastName} ({primarySubscriber.email}
+						). Your account and activity are private and not shared
+						with the subscription owner.
+					</p>
+				</div>
+				<div css={centeredActionCss}>
+					<Button
+						aria-label={`${subscriptionName} : Leave shared subscription`}
+						size="small"
+						priority="tertiary"
+						cssOverrides={sharedMembershipLeaveButtonCss}
+						onClick={() => undefined}
+					>
+						Manage support
+					</Button>
+				</div>
+			</div>
+		</Card.Section>
+	);
+
+export const SecondaryUserLeaveSubscriptionSection = ({
+	subscriptionName,
+	primarySubscriber,
+}: {
+	subscriptionName: string;
+	primarySubscriber: MembersDataApiUser | undefined;
+}) =>
+	primarySubscriber && ( // TODO remove
+		<Card.Section>
+			<div css={keyValueCss}>
+				<div>
+					<h4 css={sectionHeadingCss}>Manage your access</h4>
+					<p css={sharedMembershipTextCss}>
+						You can leave this shared subscription at any time. If
+						you leave, you’ll lose your access to Digital plus
+						benefits.
+					</p>
+				</div>
+				<div css={centeredActionCss}>
+					<Button
+						aria-label={`${subscriptionName} : Leave shared subscription`}
+						size="small"
+						priority="tertiary"
+						cssOverrides={sharedMembershipLeaveButtonCss}
+						onClick={() => undefined}
+					>
+						{`Leave subscription`}
+					</Button>
+				</div>
+			</div>
 		</Card.Section>
 	);
 
@@ -430,6 +503,7 @@ export const BillingAndPaymentSection = ({
 	showProductUpsellButton,
 	showSwitchButton,
 	user,
+	primaryUser,
 	navigate,
 	trackEvent,
 	fetchUpgradePreview,
@@ -453,88 +527,92 @@ export const BillingAndPaymentSection = ({
 	showProductUpsellButton: boolean;
 	showSwitchButton: boolean;
 	user: MembersDataApiUser | undefined;
+	primaryUser: MembersDataApiUser | undefined;
 	navigate: NavigateFunction;
 	trackEvent: (trackEventArgs: Event) => void;
 	fetchUpgradePreview: (
 		fetchUpgradePreviewArgs: FetchUpgradePreviewParams,
 	) => Promise<void>;
-}) => (
-	<Card.Section>
-		<div css={productDetailLayoutCss}>
-			<div>
-				<h4 css={sectionHeadingCss}>Billing and payment</h4>
-				<dl css={keyValueCss}>
-					<UserIdRow
-						groupedProductType={groupedProductType}
+}) =>
+	!primaryUser && (
+		<Card.Section>
+			<div css={productDetailLayoutCss}>
+				<div>
+					<h4 css={sectionHeadingCss}>Billing and payment</h4>
+					<dl css={keyValueCss}>
+						<UserIdRow
+							groupedProductType={groupedProductType}
+							productDetail={productDetail}
+						/>
+						<MembershipTierLabelRow
+							groupedProductType={groupedProductType}
+							productDetail={productDetail}
+						/>
+						<StartDateRow
+							subscriptionStartDate={subscriptionStartDate}
+							shouldShowStartDate={shouldShowStartDate}
+						/>
+						<JoinDateRow
+							productDetail={productDetail}
+							shouldShowJoinDateNotStartDate={
+								shouldShowJoinDateNotStartDate
+							}
+						/>
+						<GiftPurchaseDateRow
+							userIsGifter={userIsGifter}
+							giftPurchaseDate={giftPurchaseDate}
+						/>
+						<EndDateRow
+							subscriptionEndDate={subscriptionEndDate}
+							isGifted={isGifted}
+							userIsGifter={userIsGifter}
+							productDetail={productDetail}
+						/>
+						<TrialRemainingRow
+							specificProductType={specificProductType}
+							productDetail={productDetail}
+							isGifted={isGifted}
+						/>
+						<NextPaymentRow
+							nextPaymentDetails={nextPaymentDetails}
+							productDetail={productDetail}
+							hasCancellationPending={hasCancellationPending}
+						/>
+						<FutureProductRow
+							futureProductTitle={futureProductTitle}
+						/>
+					</dl>
+				</div>
+				<div css={wideButtonLayoutCss}>
+					<ProductUpsellButton
+						isPreviewLoading={isPreviewLoading}
+						hasPreviewError={hasPreviewError}
 						productDetail={productDetail}
-					/>
-					<MembershipTierLabelRow
-						groupedProductType={groupedProductType}
-						productDetail={productDetail}
-					/>
-					<StartDateRow
-						subscriptionStartDate={subscriptionStartDate}
-						shouldShowStartDate={shouldShowStartDate}
-					/>
-					<JoinDateRow
-						productDetail={productDetail}
-						shouldShowJoinDateNotStartDate={
-							shouldShowJoinDateNotStartDate
-						}
-					/>
-					<GiftPurchaseDateRow
-						userIsGifter={userIsGifter}
-						giftPurchaseDate={giftPurchaseDate}
-					/>
-					<EndDateRow
-						subscriptionEndDate={subscriptionEndDate}
-						isGifted={isGifted}
-						userIsGifter={userIsGifter}
-						productDetail={productDetail}
-					/>
-					<TrialRemainingRow
 						specificProductType={specificProductType}
-						productDetail={productDetail}
+						mainPlan={mainPlan}
+						showProductUpsellButton={showProductUpsellButton}
+						fetchUpgradePreview={fetchUpgradePreview}
+						trackEvent={trackEvent}
+					/>
+					<ProductManageButton
 						isGifted={isGifted}
-					/>
-					<NextPaymentRow
-						nextPaymentDetails={nextPaymentDetails}
+						specificProductType={specificProductType}
+						mainPlan={mainPlan}
+						groupedProductType={groupedProductType}
 						productDetail={productDetail}
-						hasCancellationPending={hasCancellationPending}
+						navigate={navigate}
+						trackEvent={trackEvent}
 					/>
-					<FutureProductRow futureProductTitle={futureProductTitle} />
-				</dl>
+					<ProductSwitchButton
+						showSwitchButton={showSwitchButton}
+						productDetail={productDetail}
+						user={user}
+						navigate={navigate}
+					/>
+				</div>
 			</div>
-			<div css={wideButtonLayoutCss}>
-				<ProductUpsellButton
-					isPreviewLoading={isPreviewLoading}
-					hasPreviewError={hasPreviewError}
-					productDetail={productDetail}
-					specificProductType={specificProductType}
-					mainPlan={mainPlan}
-					showProductUpsellButton={showProductUpsellButton}
-					fetchUpgradePreview={fetchUpgradePreview}
-					trackEvent={trackEvent}
-				/>
-				<ProductManageButton
-					isGifted={isGifted}
-					specificProductType={specificProductType}
-					mainPlan={mainPlan}
-					groupedProductType={groupedProductType}
-					productDetail={productDetail}
-					navigate={navigate}
-					trackEvent={trackEvent}
-				/>
-				<ProductSwitchButton
-					showSwitchButton={showSwitchButton}
-					productDetail={productDetail}
-					user={user}
-					navigate={navigate}
-				/>
-			</div>
-		</div>
-	</Card.Section>
-);
+		</Card.Section>
+	);
 
 export const LiveEventsSection = ({
 	entitledToEvents,
@@ -637,11 +715,14 @@ export const PaymentSection = ({
 export const GiftPaymentSection = ({
 	productDetail,
 	isGifted,
+	primaryUser,
 }: {
 	productDetail: ProductDetail;
 	isGifted: boolean;
+	primaryUser: MembersDataApiUser | undefined;
 }) =>
-	!productDetail.isPaidTier && (
+	!productDetail.isPaidTier &&
+	!primaryUser && (
 		<Card.Section>
 			<h4 css={sectionHeadingCss}>Payment</h4>
 			<p
@@ -730,93 +811,3 @@ export const UsCancellationSection = ({
 			</div>
 		</Card.Section>
 	);
-=======
-import { Button } from '@guardian/source/react-components';
-import { Card } from '../shared/Card';
-import {
-	centeredActionCss,
-	keyValueCss,
-	leaveButtonCss,
-	productDetailLayoutCss,
-	sectionHeadingCss,
-	sharedMembershipTextCss,
-} from './ProductCardStyles';
-
-type SharedSubscriptionOwner = {
-	firstName: string;
-	lastName: string;
-	email: string;
-};
-
-export const SecondaryUserSections = ({
-	subscriptionName,
-	primarySubscriber,
-}: {
-	subscriptionName: string;
-	primarySubscriber: SharedSubscriptionOwner;
-}) => (
-	<>
-		<Card.Section>
-			<CardSectionSubscriptionDetails
-				subscriptionName={subscriptionName}
-				primarySubscriber={primarySubscriber}
-			/>
-		</Card.Section>
-		<Card.Section>
-			<CardSectionManageAccess subscriptionName={subscriptionName} />
-		</Card.Section>
-	</>
-);
-
-const CardSectionSubscriptionDetails = ({
-	subscriptionName,
-	primarySubscriber,
-}: {
-	subscriptionName: string;
-	primarySubscriber: SharedSubscriptionOwner;
-}) => (
-	<div css={productDetailLayoutCss}>
-		<div>
-			<h4 css={sectionHeadingCss}>Subscription details</h4>
-			<p css={sharedMembershipTextCss}>
-				Subscription: {subscriptionName} shared subscription <br />
-				Owner: {primarySubscriber.firstName}{' '}
-				{primarySubscriber.lastName}
-				<br /> <br />
-				You’ve been given access by {primarySubscriber.firstName}{' '}
-				{primarySubscriber.lastName} ({primarySubscriber.email}). To
-				access your benefits, sign in on your devices and the Guardian
-				app. Your account and activity are private and not shared with
-				the subscription owner.
-			</p>
-		</div>
-	</div>
-);
-
-const CardSectionManageAccess = ({
-	subscriptionName,
-}: {
-	subscriptionName: string;
-}) => (
-	<div css={keyValueCss}>
-		<div>
-			<h4 css={sectionHeadingCss}>Manage your access</h4>
-			<p css={sharedMembershipTextCss}>
-				You can leave this shared subscription at any time. If you
-				leave, you’ll lose your access to Digital plus benefits.
-			</p>
-		</div>
-		<div css={centeredActionCss}>
-			<Button
-				aria-label={`${subscriptionName} : Leave shared subscription`}
-				size="small"
-				priority="primary"
-				cssOverrides={leaveButtonCss}
-				onClick={() => undefined}
-			>
-				{`Leave subscription`}
-			</Button>
-		</div>
-	</div>
-);
->>>>>>> a756302b9 (Moved Secondary Account product card sections to a separate file)

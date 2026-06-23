@@ -97,3 +97,19 @@ export const giftRibbonColour = (cardConfig: ProductCardConfiguration) =>
 	cardConfig.invertText ? palette.brand[400] : palette.brandAlt[400];
 export const giftRibbonCopyColour = (cardConfig: ProductCardConfiguration) =>
 	cardConfig.invertText ? palette.brandAlt[400] : palette.brand[400];
+
+export const sharedMembershipTextCss = css`
+	${textSans17};
+	margin: 0;
+`;
+
+export const centeredActionCss = css`
+	display: flex;
+	justify-content: flex-end;
+`;
+
+export const sharedMembershipLeaveButtonCss = css`
+	justify-content: flex-end;
+	background: transparent;
+	text-decoration: underline;
+`;
