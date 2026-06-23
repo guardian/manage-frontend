@@ -1,68 +1,101 @@
+import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import {
 	from,
 	palette,
 	space,
-	textSans17,
 	textSansBold17,
 } from '@guardian/source/foundations';
-import { SvgCross, SvgTickRound } from '@guardian/source/react-components';
+import {
+	SvgAlertRound,
+	SvgCross,
+	SvgInfoRound,
+	SvgTickRound,
+} from '@guardian/source/react-components';
+import type { ReactNode } from 'react';
+import type { ToastSeverity } from '../../stores/ToastStore';
 import { useToastStore } from '../../stores/ToastStore';
+
+interface ToastVariant {
+	icon: ReactNode;
+	accentColour: string;
+	textColour: string;
+}
+
+const toastVariants: Record<ToastSeverity, ToastVariant> = {
+	success: {
+		icon: <SvgTickRound />,
+		accentColour: palette.success[400],
+		textColour: palette.success[400],
+	},
+	error: {
+		icon: <SvgAlertRound />,
+		accentColour: palette.error[400],
+		textColour: palette.error[400],
+	},
+	info: {
+		icon: <SvgInfoRound />,
+		accentColour: palette.brand[500],
+		textColour: palette.neutral[7],
+	},
+};
 
 const containerCss = css`
 	position: fixed;
-	left: ${space[4]}px;
-	bottom: ${space[24]}px;
+	left: 22px;
+	bottom: 53px;
 	z-index: 9999;
-	min-width: unset;
 	max-width: 80%;
 	width: 100%;
 
 	${from.tablet} {
-		left: 80px;
-		bottom: 140px;
-		max-width: unset;
+		left: 71px;
 		min-width: 622px;
 		width: unset;
 	}
 `;
 
-const toastCss = css`
+const toastCss = (variant: ToastVariant) => css`
 	display: flex;
 	align-items: center;
 	gap: ${space[1]}px;
 	padding: ${space[4]}px;
 	border-radius: ${space[2]}px;
-	border: 1px solid ${palette.success[400]};
-	background-color: #e9f3ed;
+	border: 1px solid ${variant.accentColour};
+	background-color: ${palette.neutral[100]};
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
 `;
 
-const iconWrapperCss = css`
+const iconWrapperCss = (variant: ToastVariant) => css`
 	display: flex;
 	align-items: center;
 	justify-content: center;
 
 	svg {
-		fill: ${palette.success[400]};
+		fill: ${variant.accentColour};
 		width: ${space[8]}px;
 		height: ${space[8]}px;
 	}
 `;
 
-const bodyCss = css`
+const bodyCss = (variant: ToastVariant) => css`
 	flex: 1;
-	${textSans17};
+	${textSansBold17};
 	line-height: 1.35;
+	color: ${variant.textColour};
 
 	strong {
 		${textSansBold17};
 	}
 `;
 
-const ToastBody = ({ children }: { children: string }) => (
-	<div css={bodyCss}>{children}</div>
-);
+const ToastBody = ({
+	children,
+	cssOverrides,
+}: {
+	children: string;
+	cssOverrides: SerializedStyles;
+}) => <div css={cssOverrides}>{children}</div>;
 
 const closeButtonCss = css`
 	border: none;
@@ -87,15 +120,16 @@ export const ToastContainer = () => {
 		return null;
 	}
 
-	// Currently only success is styled, other severities can be added when needed.
-	const icon = <SvgTickRound />;
+	const variant = toastVariants[current.severity];
 
 	return (
 		<div css={containerCss} aria-live="polite">
-			<div css={toastCss} role="status">
-				<div css={iconWrapperCss}>{icon}</div>
+			<div css={toastCss(variant)} role="status">
+				<div css={iconWrapperCss(variant)}>{variant.icon}</div>
 				{typeof current.message === 'string' ? (
-					<ToastBody>{current.message}</ToastBody>
+					<ToastBody cssOverrides={bodyCss(variant)}>
+						{current.message}
+					</ToastBody>
 				) : (
 					current.message
 				)}

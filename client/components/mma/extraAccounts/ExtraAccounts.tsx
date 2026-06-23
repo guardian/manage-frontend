@@ -65,6 +65,7 @@ const introTextCss = css`
 const bodyCss = css`
 	background-color: ${palette.neutral[100]};
 	padding: ${space[3]}px;
+	padding-bottom: 0;
 `;
 
 const dotsRowCss = css`
@@ -98,7 +99,6 @@ const imagePlaceholderCss = css`
 
 	${from.tablet} {
 		flex: 1;
-		max-width: 200px;
 		aspect-ratio: 5 / 3;
 	}
 `;
@@ -170,7 +170,13 @@ export const ExtraAccounts = () => {
 									index < usedCount ? (
 										<SvgTickRound
 											key={index}
-											theme={{ fill: palette.brand[400] }}
+											theme={{
+												fill:
+													index % 2 !== 0
+														? palette.success[400]
+														: palette
+																.specialReportAlt[300],
+											}}
 										/>
 									) : (
 										<SvgPersonRoundOutlined

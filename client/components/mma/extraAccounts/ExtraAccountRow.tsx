@@ -8,7 +8,6 @@ import {
 	textSansBold17,
 } from '@guardian/source/foundations';
 import {
-	Button,
 	SvgPersonPlus,
 	SvgPersonRoundFilled,
 } from '@guardian/source/react-components';
@@ -71,7 +70,7 @@ const identityCss = css`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	gap: ${space[1]}px;
+	gap: ${space[2]}px;
 	width: 100%;
 	margin-top: ${space[3]}px;
 
@@ -83,20 +82,11 @@ const identityCss = css`
 	}
 `;
 
-// Styles for right-aligned status pills
-// const identityCss = css`
-// 	display: flex;
-// 	flex-direction: row;
-// 	align-items: center;
-// 	justify-content: space-between;
-// 	width: 100%;
-// 	gap: ${space[2]}px;
-// `;
-
 const piiContainerCss = css`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	margin-right: auto;
 `;
 
 const piiCss = css`
@@ -107,21 +97,15 @@ const piiCssBold = css`
 	${textSansBold17};
 `;
 
+const spacerCss = css`
+	height: ${space[6]}px;
+	border-right: 1px solid ${palette.neutral[86]};
+	margin: 0 ${space[5]}px;
+`;
+
 const introCss = css`
 	${textSans17};
 	margin: 0;
-`;
-
-const sendInvitationCss = css`
-	color: ${palette.brand[500]};
-	font-weight: normal;
-	ali
-`;
-
-const actionCss = css`
-	${from.tablet} {
-		margin-left: auto;
-	}
 `;
 
 interface ExtraAccountRowProps {
@@ -171,7 +155,8 @@ export const ExtraAccountRow = ({
 	const [isFormOpen, setIsFormOpen] = useState(false);
 	const { showToast } = useToastStore();
 
-	const { windowWidthIsLessThan } = useWindowWidth();
+	const { windowWidthIsLessThan, windowWidthIsGreaterThan } =
+		useWindowWidth();
 	const isFormOpenOnTablet = isFormOpen && windowWidthIsLessThan('tablet');
 
 	const avatarContainerCss = css`
@@ -235,57 +220,15 @@ export const ExtraAccountRow = ({
 					}
 					copyColour={palette.neutral[97]}
 				/>
-				{isActive ? (
-					<ExtraAccountCancelInvitationModal
-						email={account.email}
-						title="Remove access?"
-						confirmLabel="Remove access"
-						onConfirm={removeAccess}
-						isSubmitting={isSubmitting}
-						cssOverrides={actionCss}
-						onSuccess={() =>
-							showToast({
-								message: `Access removed for ${account.email}`,
-							})
-						}
-						instigator={
-							<Button
-								priority="subdued"
-								size="small"
-								cssOverrides={sendInvitationCss}
-							>
-								Remove access
-							</Button>
-						}
-					>
-						Lorem Ipsum
-					</ExtraAccountCancelInvitationModal>
-				) : (
-					<ExtraAccountCancelInvitationModal
-						email={account.email}
-						title="Cancel this invitation?"
-						confirmLabel="Cancel invitation"
-						onConfirm={cancelInvitation}
-						isSubmitting={isSubmitting}
-						cssOverrides={actionCss}
-						onSuccess={() =>
-							showToast({
-								message: `Invitation cancelled for ${account.email}`,
-							})
-						}
-						instigator={
-							<Button
-								priority="subdued"
-								size="small"
-								cssOverrides={sendInvitationCss}
-							>
-								Cancel invitation
-							</Button>
-						}
-					>
-						Lorem Ipsum
-					</ExtraAccountCancelInvitationModal>
-				)}
+
+				{windowWidthIsGreaterThan('tablet') && <div css={spacerCss} />}
+				<ExtraAccountCancelInvitationModal
+					account={account}
+					cancelInvitation={cancelInvitation}
+					removeAccess={removeAccess}
+					isSubmitting={isSubmitting}
+					remainingInvitations={1}
+				/>
 			</div>
 		</div>
 	);

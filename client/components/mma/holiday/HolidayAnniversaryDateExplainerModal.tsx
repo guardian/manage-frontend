@@ -1,6 +1,6 @@
 import { palette } from '@guardian/source/foundations';
 import type { ReactElement } from 'react';
-import { Modal } from '@/client/components/shared/Modal';
+import { Modal } from './Modal';
 
 interface HolidayAnniversaryDateExplainerModalProps {
 	dateElement: ReactElement;

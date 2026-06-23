@@ -1,8 +1,6 @@
 import { Button } from '@guardian/source/react-components';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import type { HideFunction } from '@/client/components/shared/Modal';
-import { Modal } from '@/client/components/shared/Modal';
 import { DATE_FNS_LONG_OUTPUT_FORMAT } from '../../../../shared/dates';
 import { MDA_TEST_USER_HEADER } from '../../../../shared/productResponse';
 import {
@@ -16,6 +14,8 @@ import type {
 	MinimalHolidayStopRequest,
 } from './HolidayStopApi';
 import type { HolidayStopsRouterState } from './HolidayStopsContainer';
+import { Modal } from './Modal';
+import type { HideFunction } from './Modal';
 import { formatDateRangeAsFriendly } from './SummaryTable';
 
 interface ExistingHolidayStopActionsProps extends MinimalHolidayStopRequest {
