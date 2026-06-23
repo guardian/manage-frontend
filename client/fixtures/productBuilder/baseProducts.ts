@@ -261,6 +261,7 @@ export function baseDigitalPack(): ProductDetail {
 	};
 }
 
+// TODO format still to be decided?
 export function baseSecondaryDigitalPack(): ProductDetail {
 	const baseProduct = baseDigitalPack();
 
@@ -268,14 +269,10 @@ export function baseSecondaryDigitalPack(): ProductDetail {
 		...baseProduct,
 		isPaidTier: false,
 		// TODO Self-service cancellation override needed too?
-		subscription: {
-			...baseProduct.subscription,
-			readerType: 'Secondary',
-			primarySubscriber: {
-				firstName: 'Primary',
-				lastName: 'Subscriber',
-				email: 'primary.subscriber@example.com',
-			},
+		primaryUser: {
+			firstName: 'Primary',
+			lastName: 'Subscriber',
+			email: 'primary.subscriber@example.com',
 		},
 	};
 }
