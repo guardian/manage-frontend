@@ -138,7 +138,7 @@ export const GuardianAdLiteCopy = ({
 		</Card.Section>
 	);
 
-export const StartDateRow = ({
+const StartDateRow = ({
 	subscriptionStartDate,
 	shouldShowStartDate,
 }: {
@@ -153,7 +153,7 @@ export const StartDateRow = ({
 		</div>
 	);
 
-export const JoinDateRow = ({
+const JoinDateRow = ({
 	productDetail,
 	shouldShowJoinDateNotStartDate,
 }: {
@@ -167,7 +167,7 @@ export const JoinDateRow = ({
 		</div>
 	);
 
-export const GiftPurchaseDateRow = ({
+const GiftPurchaseDateRow = ({
 	userIsGifter,
 	giftPurchaseDate,
 }: {
@@ -182,7 +182,7 @@ export const GiftPurchaseDateRow = ({
 		</div>
 	);
 
-export const EndDateRow = ({
+const EndDateRow = ({
 	subscriptionEndDate,
 	isGifted,
 	userIsGifter,
@@ -201,7 +201,7 @@ export const EndDateRow = ({
 		</div>
 	);
 
-export const UserIdRow = ({
+const UserIdRow = ({
 	groupedProductType,
 	productDetail,
 }: {
@@ -220,7 +220,7 @@ export const UserIdRow = ({
 	</div>
 );
 
-export const MembershipTierLabelRow = ({
+const MembershipTierLabelRow = ({
 	groupedProductType,
 	productDetail,
 }: {
@@ -234,7 +234,7 @@ export const MembershipTierLabelRow = ({
 		</div>
 	);
 
-export const TrialRemainingRow = ({
+const TrialRemainingRow = ({
 	specificProductType,
 	productDetail,
 	isGifted,
@@ -256,7 +256,7 @@ export const TrialRemainingRow = ({
 		</div>
 	);
 
-export const NextPaymentRow = ({
+const NextPaymentRow = ({
 	nextPaymentDetails,
 	productDetail,
 	hasCancellationPending,
@@ -280,7 +280,7 @@ export const NextPaymentRow = ({
 		</div>
 	);
 
-export const FutureProductRow = ({
+const FutureProductRow = ({
 	futureProductTitle,
 }: {
 	futureProductTitle: string | null;
@@ -292,7 +292,7 @@ export const FutureProductRow = ({
 		</div>
 	);
 
-export const ProductUpsellButton = ({
+const ProductUpsellButton = ({
 	isPreviewLoading,
 	hasPreviewError,
 	productDetail,
@@ -341,7 +341,7 @@ export const ProductUpsellButton = ({
 		</Button>
 	);
 
-export const ProductManageButton = ({
+const ProductManageButton = ({
 	isGifted,
 	specificProductType,
 	mainPlan,
@@ -382,7 +382,7 @@ export const ProductManageButton = ({
 		</Button>
 	);
 
-export const ProductSwitchButton = ({
+const ProductSwitchButton = ({
 	showSwitchButton,
 	productDetail,
 	user,
@@ -408,6 +408,132 @@ export const ProductSwitchButton = ({
 			Change to all-access digital
 		</Button>
 	);
+
+export const BillingAndPaymentSection = ({
+	groupedProductType,
+	productDetail,
+	specificProductType,
+	shouldShowStartDate,
+	subscriptionStartDate,
+	subscriptionEndDate,
+	shouldShowJoinDateNotStartDate,
+	userIsGifter,
+	giftPurchaseDate,
+	isGifted,
+	nextPaymentDetails,
+	hasCancellationPending,
+	futureProductTitle,
+	isPreviewLoading,
+	hasPreviewError,
+	mainPlan,
+	showProductUpsellButton,
+	showSwitchButton,
+	user,
+	navigate,
+	trackEvent,
+	fetchUpgradePreview,
+}: {
+	groupedProductType: GroupedProductType;
+	productDetail: ProductDetail;
+	specificProductType: ProductType;
+	shouldShowStartDate: boolean;
+	subscriptionStartDate: string | undefined;
+	subscriptionEndDate: string | undefined;
+	shouldShowJoinDateNotStartDate: true | undefined;
+	userIsGifter: boolean;
+	giftPurchaseDate: string | null;
+	isGifted: boolean;
+	nextPaymentDetails: NextPaymentDetails | undefined;
+	hasCancellationPending: boolean;
+	futureProductTitle: string | null;
+	isPreviewLoading: boolean;
+	hasPreviewError: boolean;
+	mainPlan: SubscriptionPlan;
+	showProductUpsellButton: boolean;
+	showSwitchButton: boolean;
+	user: MembersDataApiUser | undefined;
+	navigate: NavigateFunction;
+	trackEvent: (trackEventArgs: Event) => void;
+	fetchUpgradePreview: (
+		fetchUpgradePreviewArgs: FetchUpgradePreviewParams,
+	) => Promise<void>;
+}) => (
+	<Card.Section>
+		<div css={productDetailLayoutCss}>
+			<div>
+				<h4 css={sectionHeadingCss}>Billing and payment</h4>
+				<dl css={keyValueCss}>
+					<UserIdRow
+						groupedProductType={groupedProductType}
+						productDetail={productDetail}
+					/>
+					<MembershipTierLabelRow
+						groupedProductType={groupedProductType}
+						productDetail={productDetail}
+					/>
+					<StartDateRow
+						subscriptionStartDate={subscriptionStartDate}
+						shouldShowStartDate={shouldShowStartDate}
+					/>
+					<JoinDateRow
+						productDetail={productDetail}
+						shouldShowJoinDateNotStartDate={
+							shouldShowJoinDateNotStartDate
+						}
+					/>
+					<GiftPurchaseDateRow
+						userIsGifter={userIsGifter}
+						giftPurchaseDate={giftPurchaseDate}
+					/>
+					<EndDateRow
+						subscriptionEndDate={subscriptionEndDate}
+						isGifted={isGifted}
+						userIsGifter={userIsGifter}
+						productDetail={productDetail}
+					/>
+					<TrialRemainingRow
+						specificProductType={specificProductType}
+						productDetail={productDetail}
+						isGifted={isGifted}
+					/>
+					<NextPaymentRow
+						nextPaymentDetails={nextPaymentDetails}
+						productDetail={productDetail}
+						hasCancellationPending={hasCancellationPending}
+					/>
+					<FutureProductRow futureProductTitle={futureProductTitle} />
+				</dl>
+			</div>
+			<div css={wideButtonLayoutCss}>
+				<ProductUpsellButton
+					isPreviewLoading={isPreviewLoading}
+					hasPreviewError={hasPreviewError}
+					productDetail={productDetail}
+					specificProductType={specificProductType}
+					mainPlan={mainPlan}
+					showProductUpsellButton={showProductUpsellButton}
+					fetchUpgradePreview={fetchUpgradePreview}
+					trackEvent={trackEvent}
+				/>
+				<ProductManageButton
+					isGifted={isGifted}
+					specificProductType={specificProductType}
+					mainPlan={mainPlan}
+					groupedProductType={groupedProductType}
+					productDetail={productDetail}
+					navigate={navigate}
+					trackEvent={trackEvent}
+				/>
+				<ProductSwitchButton
+					showSwitchButton={showSwitchButton}
+					productDetail={productDetail}
+					user={user}
+					navigate={navigate}
+				/>
+			</div>
+		</div>
+	</Card.Section>
+);
 
 export const LiveEventsSection = ({
 	entitledToEvents,
