@@ -534,6 +534,7 @@ export const UsCancellationSection = ({
 	specificProductType,
 	mainPlan,
 	hasCancellationPending,
+	isGifted,
 	navigate,
 	trackEvent,
 }: {
@@ -542,11 +543,13 @@ export const UsCancellationSection = ({
 	specificProductType: ProductType;
 	mainPlan: SubscriptionPlan;
 	hasCancellationPending: boolean;
+	isGifted: boolean;
 	navigate: NavigateFunction;
 	trackEvent: (trackEventArgs: Event) => void;
 }) =>
 	productDetail.billingCountry === 'United States' &&
-	!hasCancellationPending && (
+	!hasCancellationPending &&
+	!isGifted && (
 		<Card.Section>
 			<div css={productDetailLayoutCss}>
 				<div>
