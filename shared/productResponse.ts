@@ -120,7 +120,12 @@ export interface ProductDetail extends WithSubscription {
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
 	billingCountry?: string;
+<<<<<<< HEAD
 	extraTaxApplies?: boolean;
+=======
+	taxExclusive?: boolean;
+	primaryUser?: MembersDataApiUser;
+>>>>>>> c56eee1b4 (Fixed missed git rebase issues)
 }
 
 export interface CancelledProductDetail {
@@ -221,13 +226,7 @@ export interface DeliveryAddress {
 	addressChangeInformation?: string;
 }
 
-type ReaderType =
-	| 'Gift'
-	| 'Direct'
-	| 'Agent'
-	| 'Complementary'
-	| 'Patron'
-	| 'Secondary';
+type ReaderType = 'Gift' | 'Direct' | 'Agent' | 'Complementary' | 'Patron';
 
 export interface Subscription {
 	accountId?: string;
@@ -289,9 +288,6 @@ export interface WithSubscription {
 
 export const isGift = (subscription: { readerType: string }) =>
 	subscription.readerType === 'Gift';
-
-export const isSecondarySubscriber = (subscription: { readerType: string }) =>
-	subscription.readerType === 'Secondary';
 
 export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 	subscription: Subscription,
