@@ -25,7 +25,7 @@ export const productColour = {
 	feastApp: palette.brand[800], // Same color as Live app (inAppPurchase)
 };
 
-interface ProductCardConfiguration {
+export interface ProductCardConfiguration {
 	colour: string;
 	invertText?: boolean;
 	getBenefitsSectionCopy?: (nextPaymentDetails: NextPaymentDetails) => string;

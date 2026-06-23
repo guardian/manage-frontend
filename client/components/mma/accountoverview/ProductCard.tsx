@@ -1,22 +1,5 @@
-import { css } from '@emotion/react';
-import { palette, space, textSans17 } from '@guardian/source/foundations';
-import {
-	Button,
-	Stack,
-	SvgGift,
-	SvgInfoRound,
-	themeButtonReaderRevenueBrand,
-} from '@guardian/source/react-components';
-import {
-	InfoSummary,
-	SuccessSummary,
-} from '@guardian/source-development-kitchen/react-components';
-import { Link, useNavigate } from 'react-router-dom';
-import {
-	cancellationFormatDate,
-	DATE_FNS_LONG_OUTPUT_FORMAT,
-	parseDate,
-} from '@/shared/dates';
+import { Stack } from '@guardian/source/react-components';
+import { useNavigate } from 'react-router-dom';
 import type {
 	MembersDataApiUser,
 	PaidSubscriptionPlan,
@@ -32,41 +15,43 @@ import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
 import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
-import { Ribbon } from '../../shared/Ribbon';
-import { ErrorIcon } from '../shared/assets/ErrorIcon';
-import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
-import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
-import { PaymentMethoDisplay } from '../shared/PaymentMethodDisplay';
 import {
 	getGuardianWeeklyGiftBenefitsCopy,
 	productCardConfiguration,
 } from './ProductCardConfiguration';
 import {
+	CancellationInfoRow,
+	OfferActiveInfoRow,
+	OfferPauseInfoRow,
+} from './ProductCardInfoSummaries';
+import {
+	BenefitsCopyAndToggle,
+	EndDateRow,
+	FutureProductRow,
+	GiftPaymentSection,
+	GiftPurchaseDateRow,
+	GuardianAdLiteCopy,
+	JoinDateRow,
+	LiveEventsSection,
+	MembershipTierLabelRow,
+	NextPaymentRow,
+	PaymentSection,
+	ProductCardHeader,
+	ProductManageButton,
+	ProductSwitchButton,
+	ProductUpsellButton,
+	StartDateRow,
+	TrialRemainingRow,
+	UsCancellationSection,
+	UserIdRow,
+} from './ProductCardSections';
+import {
 	keyValueCss,
-	productCardTitleCss,
 	productDetailLayoutCss,
 	sectionHeadingCss,
 } from './ProductCardStyles';
-
-const NewPriceAlert = () => {
-	const iconCss = css`
-		svg {
-			position: relative;
-			top: 7px;
-			margin-left: -4px;
-			fill: ${palette.brand[500]};
-		}
-	`;
-
-	return (
-		<span css={iconCss}>
-			<SvgInfoRound size="small" />
-			New price |{' '}
-		</span>
-	);
-};
 
 export const ProductCard = ({
 	productDetail,
@@ -137,6 +122,7 @@ export const ProductCard = ({
 	const showProductUpsellButton =
 		isEligibleToUpsell &&
 		!hasCancellationPending &&
+		!productDetail.taxExclusive &&
 		specificProductType.productType === 'supporterplus';
 
 	const productBenefits =
@@ -147,25 +133,6 @@ export const ProductCard = ({
 	const cardConfig = gwGiftSubscription
 		? getGuardianWeeklyGiftBenefitsCopy
 		: productCardConfiguration[specificProductType.productType];
-
-	const giftRibbonColour = cardConfig.invertText
-		? palette.brand[400]
-		: palette.brandAlt[400];
-	const giftRibbonCopyColour = cardConfig.invertText
-		? palette.brandAlt[400]
-		: palette.brand[400];
-	const giftRibbonCss = css`
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-		right: 0;
-	`;
-
-	const benefitsTextCss = css`
-		${textSans17};
-		margin: 0;
-		margin-bottom: ${space[2]}px;
-	`;
 
 	const canBeInOfferPeriod =
 		specificProductType.productType === 'supporterplus';
@@ -207,490 +174,158 @@ export const ProductCard = ({
 
 	return (
 		<Stack space={4}>
-			{hasCancellationPending && productDetail.subscription.end && (
-				<InfoSummary
-					message={`Your ${groupedProductType.friendlyName} has been cancelled`}
-					context={
-						<>
-							You are able to access your {productBenefits} until{' '}
-							<strong>
-								{cancellationFormatDate(
-									productDetail.subscription
-										.cancellationEffectiveDate,
-									DATE_FNS_LONG_OUTPUT_FORMAT,
-								)}
-							</strong>
-						</>
-					}
-				/>
-			)}
-			{canBeInOfferPeriod &&
-				isInOfferOrPausePeriod &&
-				isPaidSubscriptionPlan(mainPlan) &&
-				mainPlan.billingPeriod === 'month' && (
-					<SuccessSummary
-						message="Your offer is active"
-						context={
-							<>
-								Your free offer is active until{' '}
-								{nextPaymentDetails?.nextPaymentDateValue}. If
-								you have any questions, feel free to{' '}
-								{
-									<Link
-										to="/help-centre#contact-options"
-										css={css`
-											text-decoration: underline;
-											color: ${palette.brand[500]};
-										`}
-									>
-										contact our support team
-									</Link>
-								}
-								.
-							</>
-						}
-					/>
-				)}
-			{canBeInPausePeriod && isInOfferOrPausePeriod && (
-				<SuccessSummary
-					message="You have paused your support"
-					context={
-						<>
-							Your support is now paused until{' '}
-							{nextPaymentDetails?.nextPaymentDateValue}. If you
-							have any questions, feel free to{' '}
-							{
-								<Link
-									to="/help-centre#contact-options"
-									css={css`
-										text-decoration: underline;
-										color: ${palette.brand[500]};
-									`}
-								>
-									contact our support team
-								</Link>
-							}
-							.
-						</>
-					}
-				/>
-			)}
-			<Card>
-				<Card.Header
-					backgroundColor={cardConfig.colour}
-					minHeightOverride="auto"
-				>
-					<h3 css={productCardTitleCss(cardConfig.invertText)}>
-						{productTitle}
-					</h3>
-					{isGifted && (
-						<Ribbon
-							copy="Gift"
-							ribbonColour={giftRibbonColour}
-							copyColour={giftRibbonCopyColour}
-							icon={
-								<SvgGift
-									isAnnouncedByScreenReader
-									size="small"
-									theme={{ fill: giftRibbonCopyColour }}
-								/>
-							}
-							additionalCss={giftRibbonCss}
-						/>
-					)}
-				</Card.Header>
+			<CancellationInfoRow
+				hasCancellationPending={hasCancellationPending}
+				productDetail={productDetail}
+				groupedProductType={groupedProductType}
+				productBenefits={productBenefits}
+			/>
 
-				{cardConfig.getBenefitsSectionCopy && nextPaymentDetails && (
-					<Card.Section backgroundColor="#edf5fA" removeBorders>
-						<p css={benefitsTextCss}>
-							{cardConfig.getBenefitsSectionCopy(
-								nextPaymentDetails,
-							)}
-						</p>
-						<BenefitsToggle
-							productType={specificProductType.productType}
-							subscriptionPlan={mainPlan}
-							overrideBenefits={
-								gwGiftSubscription
-									? getGuardianWeeklyGiftBenefits()
-									: null
-							}
-						/>
-					</Card.Section>
-				)}
-				{specificProductType.productType === 'guardianadlite' &&
-					nextPaymentDetails && (
-						<Card.Section backgroundColor="#edf5fA">
-							<p css={benefitsTextCss}>
-								You’re subscribed to{' '}
-								{specificProductType.productTitle()} and pay{' '}
-								{nextPaymentDetails.paymentValueShort} a{' '}
-								{nextPaymentDetails.paymentInterval} for
-								non-personalised advertising.
-							</p>
-						</Card.Section>
-					)}
+			<OfferActiveInfoRow
+				canBeInOfferPeriod={canBeInOfferPeriod}
+				isInOfferOrPausePeriod={isInOfferOrPausePeriod}
+				nextPaymentDetails={nextPaymentDetails}
+				mainPlan={mainPlan}
+			/>
+
+			<OfferPauseInfoRow
+				canBeInPausePeriod={canBeInPausePeriod}
+				isInOfferOrPausePeriod={isInOfferOrPausePeriod}
+				nextPaymentDetails={nextPaymentDetails}
+			/>
+
+			<Card>
+				<ProductCardHeader
+					cardConfig={cardConfig}
+					productTitle={productTitle}
+					isGifted={isGifted}
+				/>
+
+				<BenefitsCopyAndToggle
+					cardConfig={cardConfig}
+					nextPaymentDetails={nextPaymentDetails}
+					specificProductType={specificProductType}
+					mainPlan={mainPlan}
+					gwGiftSubscription={gwGiftSubscription}
+				/>
+
+				<GuardianAdLiteCopy
+					nextPaymentDetails={nextPaymentDetails}
+					specificProductType={specificProductType}
+				/>
+
 				<Card.Section>
 					<div css={productDetailLayoutCss}>
 						<div>
 							<h4 css={sectionHeadingCss}>Billing and payment</h4>
 							<dl css={keyValueCss}>
-								<div>
-									<dt>
-										{groupedProductType.showSupporterId
-											? 'Supporter ID'
-											: 'Subscription ID'}
-									</dt>
-									<dd data-qm-masking="blocklist">
-										{
-											productDetail.subscription
-												.subscriptionId
-										}
-									</dd>
-								</div>
-								{groupedProductType.tierLabel && (
-									<div>
-										<dt>{groupedProductType.tierLabel}</dt>
-										<dd>{productDetail.mmaProductKey}</dd>
-									</div>
-								)}
-								{subscriptionStartDate && shouldShowStartDate && (
-									<div>
-										<dt>Start date</dt>
-										<dd>
-											{parseDate(
-												subscriptionStartDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
-								{shouldShowJoinDateNotStartDate && (
-									<div>
-										<dt>Join date</dt>
-										<dd>
-											{parseDate(
-												productDetail.joinDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
-								{userIsGifter && giftPurchaseDate && (
-									<div>
-										<dt>Purchase date</dt>
-										<dd>
-											{parseDate(
-												giftPurchaseDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
-								{((isGifted && !userIsGifter) ||
-									!productDetail.subscription.autoRenew) && (
-									<div>
-										<dt>End date</dt>
-										<dd>
-											{parseDate(
-												subscriptionEndDate,
-											).dateStr()}
-										</dd>
-									</div>
-								)}
-								{specificProductType.showTrialRemainingIfApplicable &&
-									productDetail.subscription.trialLength >
-										0 &&
-									!isGifted &&
-									productDetail.subscription.readerType !==
-										'Patron' && (
-										<div>
-											<dt>Trial remaining</dt>
-											<dd>
-												{
-													productDetail.subscription
-														.trialLength
-												}{' '}
-												{productDetail.subscription
-													.trialLength !== 1
-													? 'days'
-													: 'day'}
-											</dd>
-										</div>
-									)}
-								{nextPaymentDetails &&
-									productDetail.subscription.autoRenew &&
-									!hasCancellationPending && (
-										<div>
-											<dt>
-												{nextPaymentDetails.paymentKey}
-											</dt>
-											<dd>
-												{nextPaymentDetails.isNewPaymentValue && (
-													<NewPriceAlert />
-												)}
-												{
-													nextPaymentDetails.paymentValue
-												}
-												{nextPaymentDetails.nextPaymentDateValue &&
-													productDetail.subscription
-														.readerType !==
-														'Patron' &&
-													` on ${nextPaymentDetails.nextPaymentDateValue}`}
-											</dd>
-										</div>
-									)}
-								{futureProductTitle && (
-									<div>
-										<dt>Switching to</dt>
-										<dd>{futureProductTitle}</dd>
-									</div>
-								)}
+								<UserIdRow
+									groupedProductType={groupedProductType}
+									productDetail={productDetail}
+								/>
+								<MembershipTierLabelRow
+									groupedProductType={groupedProductType}
+									productDetail={productDetail}
+								/>
+								<StartDateRow
+									subscriptionStartDate={
+										subscriptionStartDate
+									}
+									shouldShowStartDate={shouldShowStartDate}
+								/>
+								<JoinDateRow
+									productDetail={productDetail}
+									shouldShowJoinDateNotStartDate={
+										shouldShowJoinDateNotStartDate
+									}
+								/>
+								<GiftPurchaseDateRow
+									userIsGifter={userIsGifter}
+									giftPurchaseDate={giftPurchaseDate}
+								/>
+								<EndDateRow
+									subscriptionEndDate={subscriptionEndDate}
+									isGifted={isGifted}
+									userIsGifter={userIsGifter}
+									productDetail={productDetail}
+								/>
+								<TrialRemainingRow
+									specificProductType={specificProductType}
+									productDetail={productDetail}
+									isGifted={isGifted}
+								/>
+								<NextPaymentRow
+									nextPaymentDetails={nextPaymentDetails}
+									productDetail={productDetail}
+									hasCancellationPending={
+										hasCancellationPending
+									}
+								/>
+								<FutureProductRow
+									futureProductTitle={futureProductTitle}
+								/>
 							</dl>
 						</div>
 						<div css={wideButtonLayoutCss}>
-							{showProductUpsellButton && (
-								<Button
-									aria-label={`Product Card Digital Plus Upsell Button`}
-									data-cy={`digital-plus-upsell-button`}
-									size="small"
-									priority="primary"
-									theme={themeButtonReaderRevenueBrand}
-									isLoading={isPreviewLoading}
-									disabled={
-										isPreviewLoading || hasPreviewError
-									}
-									cssOverrides={css`
-										justify-content: center;
-									`}
-									onClick={() => {
-										trackEvent({
-											eventCategory: 'account_overview',
-											eventAction: 'click',
-											eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
-										});
-										void fetchUpgradePreview({
-											subscriptionId:
-												productDetail.subscription
-													.subscriptionId,
-											subscription:
-												productDetail.subscription,
-											mainPlan:
-												mainPlan as PaidSubscriptionPlan,
-											navigationPath: `/${specificProductType.urlPart}/upgrade-product/information?subscriptionId=${productDetail.subscription.subscriptionId}`,
-										});
-									}}
-								>
-									{`Upgrade to Digital plus`}
-								</Button>
-							)}
-							{!isGifted && (
-								<Button
-									aria-label={`${specificProductType.productTitle(
-										mainPlan,
-									)} : Manage ${
-										groupedProductType.friendlyName
-									}`}
-									data-cy={`Manage ${groupedProductType.friendlyName}`}
-									size="small"
-									priority="tertiary"
-									cssOverrides={css`
-										justify-content: center;
-									`}
-									onClick={() => {
-										trackEvent({
-											eventCategory: 'account_overview',
-											eventAction: 'click',
-											eventLabel: `manage_${specificProductType.urlPart}`,
-										});
-										navigate(
-											`/${specificProductType.urlPart}`,
-											{
-												state: {
-													productDetail:
-														productDetail,
-												},
-											},
-										);
-									}}
-								>
-									{`Manage ${groupedProductType.friendlyName}`}
-								</Button>
-							)}
-							{showSwitchButton && (
-								<Button
-									theme={themeButtonReaderRevenueBrand}
-									size="small"
-									cssOverrides={css`
-										justify-content: center;
-									`}
-									onClick={() =>
-										navigate(`/switch`, {
-											state: {
-												productDetail: productDetail,
-												user: user,
-											},
-										})
-									}
-								>
-									Change to all-access digital
-								</Button>
-							)}
+							<ProductUpsellButton
+								isPreviewLoading={isPreviewLoading}
+								hasPreviewError={hasPreviewError}
+								productDetail={productDetail}
+								specificProductType={specificProductType}
+								mainPlan={mainPlan}
+								showProductUpsellButton={
+									showProductUpsellButton
+								}
+								fetchUpgradePreview={fetchUpgradePreview}
+								trackEvent={trackEvent}
+							/>
+							<ProductManageButton
+								isGifted={isGifted}
+								specificProductType={specificProductType}
+								mainPlan={mainPlan}
+								groupedProductType={groupedProductType}
+								productDetail={productDetail}
+								navigate={navigate}
+								trackEvent={trackEvent}
+							/>
+							<ProductSwitchButton
+								showSwitchButton={showSwitchButton}
+								productDetail={productDetail}
+								user={user}
+								navigate={navigate}
+							/>
 						</div>
 					</div>
 				</Card.Section>
-				{entitledToEvents && (
-					<Card.Section>
-						<div>
-							<h4 css={sectionHeadingCss}>
-								Guardian Live - Ticket Tailor promo codes
-							</h4>
-							<div>
-								<dl css={keyValueCss}>
-									<dt>{window.atob('TFBQRlJFRTZHTFRY')}</dt>
-									<dd>
-										gives you 6 free tickets each year (1
-										per event)
-									</dd>
-								</dl>
-							</div>
-							<div>
-								<dl css={keyValueCss}>
-									<dt>{window.atob('TFBQMjAyR0xUWA==')}</dt>
-									<dd>
-										gives you 20% off an extra 2 tickets per
-										event
-									</dd>
-								</dl>
-							</div>
-						</div>
-					</Card.Section>
-				)}
-				{productDetail.isPaidTier && (
-					<Card.Section>
-						<div css={productDetailLayoutCss}>
-							<div>
-								<h4 css={sectionHeadingCss}>Payment method</h4>
-								<PaymentMethoDisplay
-									subscription={productDetail.subscription}
-									inPaymentFailure={hasPaymentFailure}
-								/>
-							</div>
-							{!isGifted && isSafeToUpdatePaymentMethod && (
-								<div css={wideButtonLayoutCss}>
-									<Button
-										aria-label={`${specificProductType.productTitle(
-											mainPlan,
-										)} : Update payment method`}
-										size="small"
-										cssOverrides={css`
-											justify-content: center;
-										`}
-										priority="tertiary"
-										icon={
-											hasPaymentFailure ? (
-												<ErrorIcon
-													fill={palette.neutral[100]}
-												/>
-											) : undefined
-										}
-										onClick={() => {
-											trackEvent({
-												eventCategory:
-													'account_overview',
-												eventAction: 'click',
-												eventLabel:
-													'manage_payment_method',
-											});
-											navigate(
-												`/payment/${specificProductType.urlPart}`,
-												{
-													state: { productDetail },
-												},
-											);
-										}}
-									>
-										Update payment method
-									</Button>
-								</div>
-							)}
-						</div>
-					</Card.Section>
-				)}
-				{!productDetail.isPaidTier && (
-					<Card.Section>
-						<h4 css={sectionHeadingCss}>Payment</h4>
-						<p
-							css={css`
-								${textSans17};
-								margin: 0;
-							`}
-						>
-							{isGifted ? 'Gift redemption' : 'Free'}
-						</p>
-					</Card.Section>
-				)}
-				{productDetail.billingCountry === 'United States' &&
-					!hasCancellationPending && (
-						<Card.Section>
-							<div css={productDetailLayoutCss}>
-								<div>
-									<h4 css={sectionHeadingCss}>
-										Cancel {groupedProductType.friendlyName}
-									</h4>
-									<p
-										css={css`
-											max-width: 350px;
-										`}
-									>
-										{!productDetail.subscription
-											.autoRenew &&
-										!productDetail.subscription
-											.nextPaymentDate ? (
-											<>
-												This is a one-off payment and
-												will not renew. You’ll continue
-												to enjoy your benefits until the
-												end of the current billing
-												period.
-											</>
-										) : (
-											<>
-												Stop your recurring payment, at
-												the end of current billing
-												period.
-											</>
-										)}
-									</p>
-								</div>
-								<div css={wideButtonLayoutCss}>
-									<Button
-										aria-label={`Cancel ${specificProductType.productTitle(
-											mainPlan,
-										)}`}
-										size="small"
-										cssOverrides={css`
-											justify-content: center;
-										`}
-										priority="tertiary"
-										onClick={() => {
-											trackEvent({
-												eventCategory:
-													'account_overview',
-												eventAction: 'click',
-												eventLabel: 'cancel_product',
-											});
-											navigate(
-												`/cancel/${specificProductType.urlPart}`,
-												{
-													state: { productDetail },
-												},
-											);
-										}}
-									>
-										Cancel {groupedProductType.friendlyName}
-									</Button>
-								</div>
-							</div>
-						</Card.Section>
-					)}
+
+				<LiveEventsSection entitledToEvents={entitledToEvents} />
+
+				<PaymentSection
+					productDetail={productDetail}
+					specificProductType={specificProductType}
+					hasPaymentFailure={hasPaymentFailure}
+					isGifted={isGifted}
+					isSafeToUpdatePaymentMethod={isSafeToUpdatePaymentMethod}
+					mainPlan={mainPlan}
+					navigate={navigate}
+					trackEvent={trackEvent}
+				/>
+
+				<GiftPaymentSection
+					productDetail={productDetail}
+					isGifted={isGifted}
+				/>
+
+				<UsCancellationSection
+					productDetail={productDetail}
+					groupedProductType={groupedProductType}
+					specificProductType={specificProductType}
+					mainPlan={mainPlan}
+					hasCancellationPending={hasCancellationPending}
+					isGifted={isGifted}
+					navigate={navigate}
+					trackEvent={trackEvent}
+				/>
 			</Card>
 		</Stack>
 	);

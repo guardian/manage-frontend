@@ -121,6 +121,7 @@ export interface ProductDetail extends WithSubscription {
 	selfServiceCancellation: SelfServiceCancellation;
 	billingCountry?: string;
 	availableActions?: AvailableAction[]; // populated client-side from user-subscriptions-api by matching subscription.subscriptionId
+	taxExclusive?: boolean;
 }
 
 export interface CancelledProductDetail {

@@ -3,12 +3,14 @@ import {
 	from,
 	headlineBold20,
 	headlineBold24,
+	palette,
 	space,
 	textSans17,
 	textSansBold12,
 	textSansBold15,
 	textSansBold17,
 } from '@guardian/source/foundations';
+import type { ProductCardConfiguration } from './ProductCardConfiguration';
 import { textColour } from './ProductCardConfiguration';
 
 export const productCardTitleCss = (dark?: boolean) => css`
@@ -82,3 +84,26 @@ export const promoPillCss = css`
 		margin-top: ${space[0]}px;
 	}
 `;
+export const giftRibbonCss = css`
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 0;
+`;
+
+export const benefitsTextCss = css`
+	${textSans17};
+	margin: 0;
+	margin-bottom: ${space[2]}px;
+`;
+
+export const benefitsSectionBackgroundColour = '#edf5fa';
+
+export const centeredButtonCss = css`
+	justify-content: center;
+`;
+
+export const giftRibbonColour = (cardConfig: ProductCardConfiguration) =>
+	cardConfig.invertText ? palette.brand[400] : palette.brandAlt[400];
+export const giftRibbonCopyColour = (cardConfig: ProductCardConfiguration) =>
+	cardConfig.invertText ? palette.brandAlt[400] : palette.brand[400];

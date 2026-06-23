@@ -25,6 +25,7 @@ import { getNextPaymentDetails } from '@/client/components/mma/shared/NextPaymen
 import { PaymentDetails } from '@/client/components/mma/shared/PaymentDetails';
 import { PaymentFailureAlertIfApplicable } from '@/client/components/mma/shared/PaymentFailureAlertIfApplicable';
 import { ProductInfoTableV2 } from '@/client/components/mma/shared/ProductInfoTableV2';
+import { TaxExclusiveNotice } from '@/client/components/mma/shared/TaxExclusiveNotice';
 import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
 import { NAV_LINKS } from '@/client/components/shared/nav/NavConfig';
 import {
@@ -230,6 +231,8 @@ const InnerContent = ({
 					</ul>
 				</Stack>
 			</section>
+
+			<TaxExclusiveNotice taxExclusive={productDetail.taxExclusive} />
 
 			<section
 				css={css`

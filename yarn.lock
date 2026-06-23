@@ -2180,17 +2180,17 @@
     yaml "^1.7.2"
     yargs "^15.4.1"
 
-"@guardian/ophan-tracker-js@2.6.1":
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-2.6.1.tgz#f29555a58f403df9182815c99f122a764e7c3fee"
-  integrity sha512-YTBL/PDUTs6jGf9nN7EY7l9xM64pHWGKkf+TEYrXYQI/1vHaLO4wVEW5Ss5g6dNOHNDibELJy+MEZBm6zTzgGw==
-  dependencies:
-    "@guardian/tsconfig" "^1.0.0"
-
 "@guardian/ophan-tracker-js@2.8.0":
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-2.8.0.tgz#18c428ef75f8b6b573368c96feb867bddd0a09b0"
   integrity sha512-RPoyxPPKaT1em1LZiD1LKsTYzoXBG8Zjs4OzyP5dhEmfoXD99qK48JI4oGUPlq3wOOB0ZT8UrbtbWDKzeMSBHA==
+  dependencies:
+    "@guardian/tsconfig" "^1.0.0"
+
+"@guardian/ophan-tracker-js@4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-4.0.2.tgz#93617a4e134b8bb9f297f3b463b641f3ff20a5a9"
+  integrity sha512-sqgJG7G8zxHn9FlqcZGBF+gimu5lVa0CHAUs5fJicdf4xjjtnvpKuNfgKKpQaBFvhK686wtkur8zwhO+nm6BpQ==
   dependencies:
     "@guardian/tsconfig" "^1.0.0"
 
@@ -10284,12 +10284,12 @@ language-tags@^1.0.9:
     language-subtag-registry "^0.3.20"
 
 launch-editor@^2.6.1:
-  version "2.8.0"
-  resolved "https://registry.npmjs.org/launch-editor/-/launch-editor-2.8.0.tgz"
-  integrity sha512-vJranOAJrI/llyWGRQqiDM+adrw+k83fvmmx3+nV47g3+36xM15jE+zyZ6Ffel02+xSvuM0b2GDRosXZkbb6wA==
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/launch-editor/-/launch-editor-2.14.1.tgz#f7e0da3f58aaea03fea01074d840b5f739ed7ddc"
+  integrity sha512-QWBrQsMpH7gPr965dsKD/3cKWiNoTjpATQf++Xq63N6sKRGMwlVXz41O1IZTMfZQgBctD/K5Zt06+/I6pP6+HA==
   dependencies:
-    picocolors "^1.0.0"
-    shell-quote "^1.8.1"
+    picocolors "^1.1.1"
+    shell-quote "^1.8.4"
 
 lazy-ass@^1.6.0:
   version "1.6.0"
@@ -12717,10 +12717,10 @@ shebang-regex@^3.0.0:
   resolved "https://registry.npmjs.org/shebang-regex/-/shebang-regex-3.0.0.tgz"
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
-shell-quote@^1.8.1:
-  version "1.8.1"
-  resolved "https://registry.npmjs.org/shell-quote/-/shell-quote-1.8.1.tgz"
-  integrity sha512-6j1W9l1iAs/4xYBI1SYOVZyFcCis9b4KCLQ8fgAGG07QvzaRLVVRQvAy85yNmmZSjYjg4MWh4gNvlPujU/5LpA==
+shell-quote@^1.8.4:
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.8.4.tgz#2edd9a4dcefc96649e2e2cb12f637b1f1d92a190"
+  integrity sha512-VsC6n6vz1ihYYyZZwX7YZSF5l5x36ca17OC+a69h94YqB7X6XLwf+5MOgynYir2SLFUbl8gIYvBo8K8RoNQ6bQ==
 
 shimmer@^1.2.1:
   version "1.2.1"
