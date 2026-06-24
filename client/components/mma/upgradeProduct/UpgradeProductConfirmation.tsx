@@ -3,30 +3,36 @@ import {
 	from,
 	palette,
 	space,
+	textSans12,
 	textSans15,
 	textSansBold17,
 	textSansBold20,
 } from '@guardian/source/foundations';
 import {
 	Button,
-	SvgClock,
+	SvgClockFilled,
 	SvgCreditCard,
 	SvgReload,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
-import { useNavigate } from 'react-router-dom';
+import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
+import { errorSummaryOverrideCss } from '@/client/styles/ErrorStyles';
 import {
 	subHeadingCss,
 	subHeadingInformationTextCss,
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
+import { useUpgradeProduct } from '@/client/utilities/hooks/useUpgradePreview';
+import { dateString } from '@/shared/dates';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { productCardConfiguration } from '../accountoverview/ProductCardConfiguration';
 import { productCardTitleCss } from '../accountoverview/ProductCardStyles';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
+import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import {
 	actionButtonsContainerCss,
 	benefitsTextCss,
@@ -53,22 +59,69 @@ const termsAndConditionsContainerCss = css`
 
 	${textSans15};
 	padding: ${space[3]}px;
-	border: 4px solid ${palette.neutral[0]};
+	border-radius: ${space[2]}px;
+	border: 2px solid ${palette.neutral[38]};
 	background-color: ${palette.neutral[97]};
 `;
 
 const termsAndConditionsTextCss = css`
 	${textSans15};
 	margin: 0;
+
+	a {
+		color: ${palette.brand[500]};
+		text-decoration: underline;
+	}
+`;
+
+const termsAndConditionsFooterCss = css`
+	${textSans12};
+	margin: 0;
+	margin-top: ${space[5]}px;
+
+	${from.tablet} {
+		margin-top: ${space[6]}px;
+	}
+
+	a {
+		color: ${palette.neutral[7]};
+		text-decoration: underline;
+	}
 `;
 
 export const UpgradeProductConfirmation = () => {
 	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
 
-	const { mainPlan, specificProductType } = useUpgradeProductStore();
+	const { mainPlan, specificProductType, previewResponse, subscription } =
+		useUpgradeProductStore();
+	const { executeUpgrade, isUpgrading, upgradeError } = useUpgradeProduct();
 
-	if (!mainPlan || !specificProductType) {
+	if (!mainPlan || !specificProductType || !subscription) {
 		return null;
+	}
+
+	const nextPaymentDetails = getNextPaymentDetails(
+		mainPlan,
+		subscription,
+		null,
+		false,
+	);
+
+	let paymentMethodCopy = `We will take payment as before`;
+
+	if (subscription.card) {
+		paymentMethodCopy = `We will take payment as before, from ${subscription.card.type} card ending ${subscription.card.last4}`;
+	} else if (subscription.payPalEmail) {
+		paymentMethodCopy = `We will take payment as before, from PayPal email ${subscription.payPalEmail}`;
+	} else if (subscription.mandate) {
+		paymentMethodCopy = `We will take payment as before, from Direct Debit account ending ${subscription.mandate.accountNumber.slice(
+			-4,
+		)}`;
+	} else if (subscription.sepaMandate) {
+		paymentMethodCopy = `We will take payment as before, from SEPA Direct Debit account ending ${subscription.sepaMandate.iban.slice(
+			-4,
+		)}`;
 	}
 
 	return (
@@ -103,14 +156,18 @@ export const UpgradeProductConfirmation = () => {
 					/>
 				</Card.Section>
 				<Card.Section>
-					<p css={subheadingTextCss}>£X/month</p>
+					<p css={subheadingTextCss}>
+						{mainPlan.currency}
+						{previewResponse?.targetCatalogPrice}/
+						{nextPaymentDetails?.paymentInterval}
+					</p>
 				</Card.Section>
 			</Card>
 
 			<h2 css={subHeadingCss}>What happens now?</h2>
 
 			<div css={whatHappensNowItemCss}>
-				<SvgClock size="medium" />
+				<SvgClockFilled size="medium" />
 				<div css={whatHappensNowItemInfoCss}>
 					<h3 css={subheadingTextCss}>
 						This change will happen today
@@ -130,7 +187,8 @@ export const UpgradeProductConfirmation = () => {
 				<SvgReload size="medium" />
 				<div css={whatHappensNowItemInfoCss}>
 					<h3 css={subheadingTextCss}>
-						Your first payment will be £X
+						Your first payment will be {mainPlan.currency}
+						{previewResponse?.amountPayableToday}
 					</h3>
 					<p
 						css={[
@@ -139,9 +197,17 @@ export const UpgradeProductConfirmation = () => {
 						]}
 					>
 						We will charge you a smaller amount today, to offset the
-						payment you've already given us for the rest of the
-						month. After this, from DAY MONTH, your monthly payment
-						will be £X
+						payment you've already given us for the rest of the{' '}
+						{nextPaymentDetails?.paymentInterval}. After this, from{' '}
+						{subscription.nextPaymentDate
+							? dateString(
+									new Date(subscription.nextPaymentDate),
+									'MMMM do',
+							  )
+							: nextPaymentDetails?.nextPaymentDateValue}
+						, your {nextPaymentDetails?.paymentInterval}ly payment
+						will be {mainPlan.currency}
+						{previewResponse?.targetCatalogPrice}
 					</p>
 				</div>
 			</div>
@@ -151,8 +217,7 @@ export const UpgradeProductConfirmation = () => {
 				<div css={whatHappensNowItemInfoCss}>
 					<h3 css={subheadingTextCss}>Your payment method</h3>
 					<p css={whatHappensNowItemInformationTextCss}>
-						We will take payment as before, from Visa card ending
-						4242
+						{paymentMethodCopy}
 					</p>
 				</div>
 			</div>
@@ -162,48 +227,69 @@ export const UpgradeProductConfirmation = () => {
 					This subscription auto-renews. You'll be charged the
 					applicable monthly amount at each renewal unless you cancel.
 					You can cancel your subscription at any time before your
-					next renewal date. To cancel go to Manage My Account.
-					Cancellation will take effect at the end of your currently
-					monthly payment period. There is also a cooling off period
-					of 14 days from sign-up. You can cancel your subscription
-					within 14 days of sign-up by contacting Customer Service and
+					next renewal date. To cancel go to{' '}
+					<a href="/">Manage My Account</a>. Cancellation will take
+					effect at the end of your currently monthly payment period.
+					There is also a cooling off period of 14 days from sign-up.
+					You can cancel your subscription within 14 days of sign-up
+					by <a href="/help-centre#call-us">contacting us</a> and
 					receive a full refund.
-				</p>
-				<p css={termsAndConditionsTextCss}>
-					If you want to change the payment method, please go to your
-					billing section and update your payment details.
-				</p>
-				<p css={termsAndConditionsTextCss}>
-					By proceeding, you are agreeing to our Terms and Conditions.
-				</p>
-				<p css={termsAndConditionsTextCss}>
-					To find out what personal data we collect and how we use it,
-					please visit our Privacy Policy.
 				</p>
 			</div>
 
-			<div css={actionButtonsContainerCss}>
+			{upgradeError && (
+				<ErrorSummary
+					message="We were unable to upgrade your subscription"
+					context="Please try again. If the problem persists, contact customer.help@theguardian.com"
+					cssOverrides={[
+						errorSummaryOverrideCss,
+						css`
+							margin-top: ${space[5]}px;
+						`,
+					]}
+				/>
+			)}
+
+			<div
+				css={[
+					actionButtonsContainerCss,
+					css`
+						margin-top: ${space[5]}px;
+
+						${from.tablet} {
+							margin-top: ${space[6]}px;
+						}
+					`,
+				]}
+			>
 				<Button
-					aria-label={`Product Card Digital Plus Upsell Button`}
-					data-cy={`digital-plus-upsell-button`}
+					aria-label={`Upgrade subscription button`}
+					data-cy={`upgrade-subscription-button`}
 					size="small"
 					priority="primary"
 					theme={themeButtonReaderRevenueBrand}
+					isLoading={isUpgrading}
+					disabled={isUpgrading}
 					cssOverrides={css`
 						justify-content: center;
 					`}
 					onClick={() => {
+						const search = searchParams.toString();
+						const thankYouPath = `/${
+							specificProductType.urlPart
+						}/upgrade-product/thank-you${
+							search ? `?${search}` : ''
+						}`;
+
 						trackEvent({
 							eventCategory: 'account_overview',
 							eventAction: 'click',
 							eventLabel: `/${specificProductType.urlPart}/upgrade-product/thank-you`,
 						});
-						navigate(
-							`/${specificProductType.urlPart}/upgrade-product/thank-you`,
-						);
+						void executeUpgrade(thankYouPath);
 					}}
 				>
-					{`Upgrade for £X per month`}
+					{`Upgrade for ${mainPlan.currency}${previewResponse?.targetCatalogPrice} per ${nextPaymentDetails?.paymentInterval}`}
 				</Button>
 				<Button
 					aria-label={`Product Card Digital Plus Upsell Button`}
@@ -221,19 +307,34 @@ export const UpgradeProductConfirmation = () => {
 						}
 					`}
 					onClick={() => {
+						const search = searchParams.toString();
+						const informationPath = `/${
+							specificProductType.urlPart
+						}/upgrade-product/information${
+							search ? `?${search}` : ''
+						}`;
+
 						trackEvent({
 							eventCategory: 'account_overview',
 							eventAction: 'click',
 							eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
 						});
-						navigate(
-							`/${specificProductType.urlPart}/upgrade-product/information`,
-						);
+						navigate(informationPath);
 					}}
 				>
 					{`Back`}
 				</Button>
 			</div>
+			<p css={termsAndConditionsFooterCss}>
+				If you want to change the payment method, please go to your
+				billing section and update your payment details. By proceeding,
+				you are agreeing to our{' '}
+				<a href="https://www.theguardian.com/info/2025/oct/31/guardian-subscription-terms-and-conditions">
+					Terms and Conditions
+				</a>
+				. To find out what personal data we collect and how we use it,
+				please visit our <a href="/data-privacy">Privacy Policy</a>.
+			</p>
 		</>
 	);
 };

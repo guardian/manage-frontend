@@ -1,16 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
-import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import type { BillingFrequencySwitchPreview } from '@/shared/billingFrequencySwitchTypes';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { supporterPlus } from '../../../fixtures/productBuilder/testProducts';
 import { BillingUpdateContext } from './BillingDetailUpdateContainer';
-import { BillingDetailUpdateSwitchFrequency } from './BillingDetailUpdateSwitchFrequency';
+import {
+	BillingDetailUpdateSwitchFrequency,
+	BillingDetailUpdateSwitchFrequencyDisplayError,
+	BillingDetailUpdateSwitchFrequencyDisplayForm,
+	BillingDetailUpdateSwitchFrequencyDisplaySuccess,
+} from './BillingDetailUpdateSwitchFrequency';
 
 export default {
 	title: 'Pages/Billing/SwitchFrequency',
 	component: BillingDetailUpdateSwitchFrequency,
-	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
 	},
@@ -51,129 +55,117 @@ const mockPreviewZeroSavings: BillingFrequencySwitchPreview = {
 };
 
 /**
- * Story showing the switch billing frequency screen with savings
+ * Helper: renders the switch-frequency nested route tree inside a MemoryRouter.
+ * `initialPath` controls which child route is rendered (e.g. "" for the form,
+ * "success" for the success route, "error" for the error route).
+ * `state` is placed on the initial history entry so `useLocation().state` works
+ * inside the component.
+ */
+const SwitchFrequencyStory = ({
+	preview,
+	initialPath = '',
+}: {
+	preview: BillingFrequencySwitchPreview;
+	initialPath?: 'success' | 'error' | '';
+}) => {
+	const productDetail = supporterPlus();
+	const basePath = '/billing/support/switch-frequency';
+	const fullPath = initialPath ? `${basePath}/${initialPath}` : basePath;
+
+	return (
+		<BillingUpdateContext.Provider
+			value={{ productDetail, isFromApp: false }}
+		>
+			<MemoryRouter
+				initialEntries={[{ pathname: fullPath, state: { preview } }]}
+			>
+				<Routes>
+					<Route
+						path="/billing/support/switch-frequency"
+						element={
+							<BillingDetailUpdateSwitchFrequency
+								productType={PRODUCT_TYPES.supporterplus}
+							/>
+						}
+					>
+						<Route
+							index
+							element={
+								<BillingDetailUpdateSwitchFrequencyDisplayForm />
+							}
+						/>
+						<Route
+							path="success"
+							element={
+								<BillingDetailUpdateSwitchFrequencyDisplaySuccess />
+							}
+						/>
+						<Route
+							path="error"
+							element={
+								<BillingDetailUpdateSwitchFrequencyDisplayError />
+							}
+						/>
+					</Route>
+				</Routes>
+			</MemoryRouter>
+		</BillingUpdateContext.Provider>
+	);
+};
+
+/**
+ * Story showing the switch billing frequency form with savings
  * for a monthly Supporter Plus subscription with zero contributions.
  */
 export const SwitchFrequencyFormWithSavings: StoryObj<
 	typeof BillingDetailUpdateSwitchFrequency
 > = {
-	render: () => {
-		// supporterPlus() already returns a monthly subscription by default
-		const productDetail = supporterPlus();
-
-		return (
-			<BillingUpdateContext.Provider
-				value={{
-					productDetail,
-					isFromApp: false,
-				}}
-			>
-				<BillingDetailUpdateSwitchFrequency
-					productType={PRODUCT_TYPES.supporterplus}
-				/>
-			</BillingUpdateContext.Provider>
-		);
-	},
-
-	parameters: {
-		reactRouter: {
-			state: {
-				preview: mockPreviewWithSavings,
-			},
-		},
-	},
+	render: () => <SwitchFrequencyStory preview={mockPreviewWithSavings} />,
 };
 
 /**
- * Story showing the switch billing frequency screen with zero savings
+ * Story showing the switch billing frequency form with zero savings
  * for a monthly Supporter Plus subscription with zero contributions.
  */
 export const SwitchFrequencyFormZeroSavings: StoryObj<
 	typeof BillingDetailUpdateSwitchFrequency
 > = {
-	render: () => {
-		// supporterPlus() already returns a monthly subscription by default
-		const productDetail = supporterPlus();
-
-		return (
-			<BillingUpdateContext.Provider
-				value={{
-					productDetail,
-					isFromApp: false,
-				}}
-			>
-				<BillingDetailUpdateSwitchFrequency
-					productType={PRODUCT_TYPES.supporterplus}
-				/>
-			</BillingUpdateContext.Provider>
-		);
-	},
-
-	parameters: {
-		reactRouter: {
-			state: {
-				preview: mockPreviewZeroSavings,
-			},
-		},
-	},
+	render: () => <SwitchFrequencyStory preview={mockPreviewZeroSavings} />,
 };
 
 /**
- * Story showing the success message after successfully switching
+ * Story showing the success page after successfully switching
  * billing frequency from monthly to annual.
  */
 export const SwitchFrequencySuccess: StoryObj<
 	typeof BillingDetailUpdateSwitchFrequency
 > = {
-	render: () => {
-		// supporterPlus() already returns a monthly subscription by default
-		const productDetail = supporterPlus();
-
-		return (
-			<BillingUpdateContext.Provider
-				value={{
-					productDetail,
-					isFromApp: false,
-				}}
-			>
-				<BillingDetailUpdateSwitchFrequency
-					productType={PRODUCT_TYPES.supporterplus}
-				/>
-			</BillingUpdateContext.Provider>
-		);
-	},
-
+	render: () => (
+		<SwitchFrequencyStory
+			preview={mockPreviewWithSavings}
+			initialPath="success"
+		/>
+	),
 	parameters: {
-		reactRouter: {
-			state: {
-				preview: mockPreviewWithSavings,
-			},
-		},
 		msw: [
-			// Mock successful switch API call
 			http.post(
 				'/api/product-switch/billing-frequency/:subscriptionId',
-				() => {
-					return HttpResponse.json({
-						invoiceIds: ['INV-123'],
-					});
-				},
+				() => HttpResponse.json({ invoiceIds: ['INV-123'] }),
 			),
 		],
 	},
+};
 
-	play: async ({ canvasElement }) => {
-		// Auto-click the confirm button to show success state
-		const canvas = canvasElement;
-		// Wait a bit for the component to render
-		await new Promise((resolve) => setTimeout(resolve, 500));
-
-		const confirmButton = canvas.querySelector(
-			'button[aria-label*="Confirm annual plan"]',
-		) as HTMLButtonElement;
-
-		if (confirmButton) {
-			confirmButton.click();
-		}
-	},
+/**
+ * Story showing the error page when switching billing frequency fails.
+ */
+export const SwitchFrequencyError: StoryObj<
+	typeof BillingDetailUpdateSwitchFrequency
+> = {
+	render: () => (
+		<SwitchFrequencyStory
+			preview={mockPreviewWithSavings}
+			initialPath="error"
+		/>
+	),
 };

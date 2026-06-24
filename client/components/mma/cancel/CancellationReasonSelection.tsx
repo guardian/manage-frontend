@@ -14,7 +14,7 @@ import {
 	SvgArrowRightStraight,
 } from '@guardian/source/react-components';
 import type { FormEvent } from 'react';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
@@ -33,14 +33,14 @@ import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiRespons
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { ProgressIndicator } from '../shared/ProgressIndicator';
 import { ProgressStepper } from '../shared/ProgressStepper';
-import type { CancellationContextInterface } from './CancellationContainer';
-import { CancellationContext } from './CancellationContainer';
+import { useCancellationContext } from './CancellationContainer';
 import {
 	cancellationEffectiveEndOfLastInvoicePeriod,
 	cancellationEffectiveToday,
 } from './cancellationContexts';
 import type { CancellationDateResponse } from './cancellationDateResponse';
 import { cancellationDateFetcher } from './cancellationDateResponse';
+import { PrintReasonPicker } from './cancellationPrint/printReasonPicker';
 import type { CancellationReason } from './cancellationReason';
 
 interface ReasonPickerProps {
@@ -100,7 +100,6 @@ const ReasonPicker = ({
 					`}
 				/>
 			)}
-
 			{productType.cancellation.startPageBody(productDetail)}
 			<WithStandardTopMargin>
 				<fieldset
@@ -249,7 +248,6 @@ const ReasonPicker = ({
 						)}
 					</>
 				)}
-
 				<div
 					data-cy="cta_container"
 					css={{
@@ -376,9 +374,11 @@ const ReasonPickerWithCancellationDate = ({
 };
 
 export const CancellationReasonSelection = () => {
-	const { productDetail, productType } = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const { productDetail, productType } = useCancellationContext();
+
+	if (productType.cancellation.usesPrintCancellationFlow) {
+		return <PrintReasonPicker productType={productType} />;
+	}
 
 	if (productType.cancellation.startPageOfferEffectiveDateOptions) {
 		return (

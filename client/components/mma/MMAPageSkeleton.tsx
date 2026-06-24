@@ -76,6 +76,16 @@ const deliveryRecordsLocationObjects: LocationObject[] = Object.values(
 		selectedNavItem: NAV_LINKS.accountOverview,
 	}));
 
+const upgradeProductLocationObjects: LocationObject[] = [
+	'information',
+	'confirmation',
+	'thank-you',
+].map((subPath) => ({
+	title: 'Upgrade your subscription',
+	path: `/${PRODUCT_TYPES.supporterplus.urlPart}/upgrade-product/${subPath}`,
+	selectedNavItem: NAV_LINKS.accountOverview,
+}));
+
 const MMALocationObjectArr: LocationObject[] = [
 	{
 		title: 'Account overview',
@@ -98,6 +108,7 @@ const MMALocationObjectArr: LocationObject[] = [
 	...holidaysOverviewLocationObjects,
 	...deliveryAddressFormLocationObjects,
 	...deliveryRecordsLocationObjects,
+	...upgradeProductLocationObjects,
 	{
 		title: 'Emails & marketing',
 		path: '/email-prefs',
@@ -122,12 +133,20 @@ const MMALocationObjectArr: LocationObject[] = [
 
 export const MMAPageSkeleton = () => {
 	const location = useLocation();
+	const isPathMatch = (pathname: string, basePath: string) => {
+		const normalizedPath =
+			pathname.length > 1 && pathname.endsWith('/')
+				? pathname.slice(0, -1)
+				: pathname;
+		return (
+			normalizedPath === basePath ||
+			(basePath !== '/' && normalizedPath.startsWith(`${basePath}/`))
+		);
+	};
 
-	const selectedMMALocationObject = MMALocationObjectArr.filter(
-		(currentObject) =>
-			location.pathname === currentObject.path ||
-			location.pathname === currentObject.path + '/',
-	)[0];
+	const selectedMMALocationObject = MMALocationObjectArr.find(
+		(currentObject) => isPathMatch(location.pathname, currentObject.path),
+	);
 
 	if (!selectedMMALocationObject) {
 		return null;

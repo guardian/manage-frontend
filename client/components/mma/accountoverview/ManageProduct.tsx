@@ -54,6 +54,7 @@ import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { PaymentDetailsTableV2 } from '../shared/PaymentDetailsTableV2';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTable';
+import { TaxExclusiveNotice } from '../shared/TaxExclusiveNotice';
 import { NewsletterOptinSection } from './NewsletterOptinSection';
 import { SixForSixExplainerIfApplicable } from './SixForSixExplainer';
 import { UpdateAmount } from './updateAmount/UpdateAmount';
@@ -216,6 +217,8 @@ const InnerContent = ({
 					!overiddenAmount ? billingFrequencySwitchPreview : undefined
 				}
 			/>
+
+			<TaxExclusiveNotice taxExclusive={productDetail.taxExclusive} />
 
 			{specificProductType.delivery?.showAddress?.(
 				productDetail.subscription,
@@ -431,6 +434,24 @@ interface ManageProductRouterState {
 	productDetail: ProductDetail;
 }
 
+const billingFrequencyPreviewResponseHandler = (
+	response: Response | Response[],
+): Promise<BillingFrequencySwitchPreview | null> => {
+	const r = Array.isArray(response) ? response[0] : response;
+	if (!r) {
+		return Promise.reject(
+			new Error('Expected billing frequency preview response'),
+		);
+	}
+	// A 400 means the user is ineligible (e.g. non-zero contribution amount).
+	// Treat this as "no preview available" rather than an error to avoid
+	// spurious Sentry noise for an expected business condition.
+	if (r.status === 400) {
+		return Promise.resolve(null);
+	}
+	return JsonResponseHandler(r);
+};
+
 const AsyncLoadedSwitchBillingFrequencyPreview = ({
 	manageProductProps,
 	productDetail,
@@ -439,7 +460,7 @@ const AsyncLoadedSwitchBillingFrequencyPreview = ({
 	productDetail: ProductDetail;
 }) => {
 	const { data, loadingState } =
-		useAsyncLoader<BillingFrequencySwitchPreview>(
+		useAsyncLoader<BillingFrequencySwitchPreview | null>(
 			() =>
 				changeSubscriptionBillingFrequencyFetch(
 					productDetail.isTestUser,
@@ -447,7 +468,7 @@ const AsyncLoadedSwitchBillingFrequencyPreview = ({
 					true,
 					'Annual',
 				),
-			JsonResponseHandler,
+			billingFrequencyPreviewResponseHandler,
 		);
 
 	if (loadingState == LoadingState.HasError) {
@@ -467,7 +488,7 @@ const AsyncLoadedSwitchBillingFrequencyPreview = ({
 		<InnerContent
 			manageProductProps={manageProductProps}
 			productDetail={productDetail}
-			billingFrequencySwitchPreview={data!}
+			billingFrequencySwitchPreview={data ?? undefined}
 		/>
 	);
 };

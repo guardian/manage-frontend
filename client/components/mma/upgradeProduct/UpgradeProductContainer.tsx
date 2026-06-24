@@ -7,13 +7,11 @@ import {
 	textSans17,
 } from '@guardian/source/foundations';
 import type { ReactNode } from 'react';
-import { useEffect } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router';
-import type { ProductDetail } from '../../../../shared/productResponse';
-import { getMainPlan } from '../../../../shared/productResponse';
-import { useUpgradeProductStore } from '../../../stores/UpgradeProductStore';
+import { Navigate, Outlet } from 'react-router';
+import { useUpgradeProductLoader } from '../../../utilities/hooks/useUpgradeProductLoader';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
+import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 
 export const benefitsTextCss = css`
 	${textSans17};
@@ -60,11 +58,11 @@ export const whatHappensNowItemInfoCss = css`
 	margin-left: ${space[2]}px;
 `;
 
-interface UpgradeProductRouterState {
-	productDetail: ProductDetail;
-}
-
-const UpgradeProductPageContainer = ({ children }: { children: ReactNode }) => {
+export const UpgradeProductPageContainer = ({
+	children,
+}: {
+	children: ReactNode;
+}) => {
 	return (
 		<PageContainer
 			compactTitle
@@ -78,33 +76,19 @@ const UpgradeProductPageContainer = ({ children }: { children: ReactNode }) => {
 };
 
 export const UpgradeProductContainer = () => {
-	const navigate = useNavigate();
-	const location = useLocation();
-	const routerState = location.state as UpgradeProductRouterState | null;
-	const { mainPlan, setMainPlan } = useUpgradeProductStore();
+	const { isLoading, shouldRedirect } = useUpgradeProductLoader();
 
-	useEffect(() => {
-		if (!routerState && !mainPlan) {
-			navigate('/');
-			return;
-		}
-
-		if (mainPlan) {
-			return;
-		}
-
-		if (routerState) {
-			const mainPlanState = getMainPlan(
-				routerState.productDetail.subscription,
-			);
-
-			setMainPlan(mainPlanState);
-		}
-	}, [mainPlan, navigate, routerState, setMainPlan]);
+	if (shouldRedirect) {
+		return <Navigate to="/" replace />;
+	}
 
 	return (
 		<UpgradeProductPageContainer>
-			<Outlet />
+			{isLoading ? (
+				<DefaultLoadingView loadingMessage="Loading your subscription details..." />
+			) : (
+				<Outlet />
+			)}
 		</UpgradeProductPageContainer>
 	);
 };

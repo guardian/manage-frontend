@@ -8,6 +8,7 @@ import {
 	type ProductTypeKeys,
 } from '../../../../../shared/productTypes';
 import { expanderButtonCss } from '../../../shared/ExpanderButton';
+import type { ProductBenefit } from './BenefitsConfiguration';
 import {
 	benefitsConfiguration,
 	filterBenefitByRegion,
@@ -20,6 +21,7 @@ type BenfitsToggleProps = {
 	subscriptionPlan: SubscriptionPlan;
 	alwaysShowBenefits?: boolean;
 	showProductTypeShortFriendlyName?: boolean;
+	overrideBenefits?: ProductBenefit[] | null;
 };
 
 export const BenefitsToggle = ({
@@ -27,6 +29,7 @@ export const BenefitsToggle = ({
 	subscriptionPlan,
 	alwaysShowBenefits = false,
 	showProductTypeShortFriendlyName = false,
+	overrideBenefits = null,
 }: BenfitsToggleProps) => {
 	const currencyIso = isPaidSubscriptionPlan(subscriptionPlan)
 		? subscriptionPlan.currencyISO
@@ -61,7 +64,7 @@ export const BenefitsToggle = ({
 				`}
 				hidden={!showBenefits}
 			>
-				<BenefitsSection benefits={benefits} />
+				<BenefitsSection benefits={overrideBenefits ?? benefits} />
 			</div>
 		</>
 	);

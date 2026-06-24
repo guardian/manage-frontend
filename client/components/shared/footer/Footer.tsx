@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import type { CMP } from '@guardian/libs';
+import type { CMP } from '@guardian/consent-manager';
 import { from, headlineBold24, palette } from '@guardian/source/foundations';
 import { BackToTop } from '@guardian/source/react-components';
 import type { SyntheticEvent } from 'react';
@@ -175,7 +175,7 @@ export const Footer = ({ hideSupport }: { hideSupport?: boolean }) => {
 	const [importedCmp, setImportedCmp] = useState<CMP | null>(null);
 
 	useEffect(() => {
-		import('@guardian/libs').then(({ cmp }) => {
+		import('@guardian/consent-manager').then(({ cmp }) => {
 			setImportedCmp(cmp);
 		});
 	}, []);

@@ -238,6 +238,26 @@ router.post(
 );
 
 router.post(
+	'/subscriptions/:subscriptionName/change-plan/preview',
+	withOktaServerSideValidation,
+	productSwitchAPI(
+		'subscriptions/:subscriptionName/change-plan/preview',
+		'UPGRADE_PREVIEW',
+		['subscriptionName'],
+	),
+);
+
+router.post(
+	'/subscriptions/:subscriptionName/change-plan',
+	withOktaServerSideValidation,
+	productSwitchAPI(
+		'subscriptions/:subscriptionName/change-plan',
+		'UPGRADE_EXECUTE',
+		['subscriptionName'],
+	),
+);
+
+router.post(
 	'/update-supporter-plus-amount/:subscriptionName',
 	withOktaServerSideValidation,
 	updateSupporterPlusAmountAPI(

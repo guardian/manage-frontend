@@ -3,7 +3,7 @@ import {
 	Button,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
 import {
 	subHeadingCss,
@@ -14,8 +14,10 @@ import { trackEvent } from '@/client/utilities/analytics';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { productCardConfiguration } from '../accountoverview/ProductCardConfiguration';
 import { productCardTitleCss } from '../accountoverview/ProductCardStyles';
+import { getUpsellBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
+import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import {
 	actionButtonsContainerCss,
 	benefitsTextCss,
@@ -28,16 +30,26 @@ const cardHeaderDivCss = css`
 
 export const UpgradeProductInformation = () => {
 	const navigate = useNavigate();
+	const [searchParams] = useSearchParams();
 
-	const { mainPlan, specificProductType } = useUpgradeProductStore();
+	const { mainPlan, specificProductType, subscription, previewResponse } =
+		useUpgradeProductStore();
 
-	if (!mainPlan || !specificProductType) {
+	if (!mainPlan || !specificProductType || !subscription) {
 		return null;
 	}
+
+	const nextPaymentDetails = getNextPaymentDetails(
+		mainPlan,
+		subscription,
+		null,
+		false,
+	);
 
 	return (
 		<>
 			<h2 css={subHeadingCss}>Your current subscription</h2>
+
 			<Card>
 				<Card.Header
 					backgroundColor={
@@ -51,12 +63,17 @@ export const UpgradeProductInformation = () => {
 						<h3 css={productCardTitleCss(false)}>
 							{PRODUCT_TYPES.supporterplus.productTitle()}
 						</h3>
-						<h3 css={productCardTitleCss(false)}>£X/month</h3>
+						<h3 css={productCardTitleCss(false)}>
+							{nextPaymentDetails?.paymentValueShort}/
+							{nextPaymentDetails?.paymentInterval}
+						</h3>
 					</div>
 				</Card.Header>
 				<Card.Section>
 					<p css={benefitsTextCss}>
-						You pay £X on a recurring basis every month
+						You pay {nextPaymentDetails?.paymentValueShort} on a
+						recurring basis every{' '}
+						{nextPaymentDetails?.paymentInterval}
 					</p>
 					<BenefitsToggle
 						productType={PRODUCT_TYPES.supporterplus.productType}
@@ -83,7 +100,11 @@ export const UpgradeProductInformation = () => {
 						<h3 css={productCardTitleCss(false)}>
 							{PRODUCT_TYPES.digipack.productTitle()}
 						</h3>
-						<h3 css={productCardTitleCss(false)}>£X/month</h3>
+						<h3 css={productCardTitleCss(false)}>
+							{mainPlan.currency}
+							{previewResponse?.targetCatalogPrice}/
+							{nextPaymentDetails?.paymentInterval}
+						</h3>
 					</div>
 				</Card.Header>
 				<Card.Section>
@@ -92,9 +113,12 @@ export const UpgradeProductInformation = () => {
 						<strong>All-access digital plus</strong>:
 					</p>
 					<BenefitsToggle
-						productType={PRODUCT_TYPES.tierthree.productType}
+						productType={PRODUCT_TYPES.digipack.productType}
 						subscriptionPlan={mainPlan}
 						alwaysShowBenefits
+						overrideBenefits={getUpsellBenefits(
+							PRODUCT_TYPES.supporterplus.productType,
+						)}
 					/>
 				</Card.Section>
 			</Card>
@@ -110,14 +134,19 @@ export const UpgradeProductInformation = () => {
 						justify-content: center;
 					`}
 					onClick={() => {
+						const search = searchParams.toString();
+						const confirmationPath = `/${
+							specificProductType.urlPart
+						}/upgrade-product/confirmation${
+							search ? `?${search}` : ''
+						}`;
+
 						trackEvent({
 							eventCategory: 'account_overview',
 							eventAction: 'click',
 							eventLabel: `/${specificProductType.urlPart}/upgrade-product/confirmation`,
 						});
-						navigate(
-							`/${specificProductType.urlPart}/upgrade-product/confirmation`,
-						);
+						navigate(confirmationPath);
 					}}
 				>
 					{`Upgrade now`}
