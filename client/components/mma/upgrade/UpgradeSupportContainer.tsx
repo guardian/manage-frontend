@@ -60,12 +60,18 @@ const UpgradeSupportPageContainer = ({
 	);
 };
 
-function userIsNavigatingBackFromThankYouPage(hasCompleted: boolean) {
-	return (
-		hasCompleted &&
-		!location.pathname.includes('thank-you') &&
-		!location.pathname.includes('switch-thank-you')
-	);
+function userShouldBeRedirectedFromUpgradeFlow(
+	hasCompleted: boolean,
+	hasJourneyState: boolean,
+) {
+	const onThankYouPath =
+		location.pathname.includes('thank-you') ||
+		location.pathname.includes('switch-thank-you');
+
+	// Journey already completed but user navigated off the thank-you page,
+	// or landed on a thank-you page without any journey state at all
+	// (e.g. direct URL, refresh, or back navigation from a cross-origin page).
+	return hasCompleted ? !onThankYouPath : onThankYouPath && !hasJourneyState;
 }
 
 export const UpgradeSupportContainer = () => {
@@ -106,8 +112,13 @@ export const UpgradeSupportContainer = () => {
 		setJourneyCompleted(true);
 	}
 
-	if (userIsNavigatingBackFromThankYouPage(journeyCompleted)) {
-		return <Navigate to="/" />;
+	if (
+		userShouldBeRedirectedFromUpgradeFlow(
+			journeyCompleted,
+			!!routerState?.journeyCompleted,
+		)
+	) {
+		return <Navigate to="/" replace />;
 	}
 
 	const contribution = data.products.filter(isProduct)[0];
