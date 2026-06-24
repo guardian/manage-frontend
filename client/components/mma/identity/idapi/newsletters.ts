@@ -1,3 +1,4 @@
+import { getCookie } from '@/client/utilities/cookies';
 import {
 	addCSRFToken,
 	fetchWithDefaultParameters,
@@ -58,13 +59,20 @@ export const readRestricted = async (): Promise<ConsentOption[]> => {
 
 export const update = async (id: string, subscribed: boolean = true) => {
 	const url = '/idapi/user/newsletters';
-	await fetchWithDefaultParameters(
-		url,
-		addCSRFToken(
-			patchRequest({
-				id,
-				subscribed,
-			}),
-		),
-	);
+
+	const browserId = getCookie('bwid');
+
+	import('@guardian/ophan-tracker-js/MMA').then( async ({ viewId }) => {
+		await fetchWithDefaultParameters(
+			url,
+			addCSRFToken(
+				patchRequest({
+					id,
+					subscribed,
+					refViewId: viewId,
+					browserId
+				}),
+			),
+		);
+	});
 };

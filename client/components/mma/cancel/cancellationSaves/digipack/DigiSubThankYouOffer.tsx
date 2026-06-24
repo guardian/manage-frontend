@@ -14,7 +14,7 @@ import {
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
 import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import {
 	buttonCentredCss,
@@ -31,11 +31,8 @@ import { DefaultLoadingView } from '../../../shared/asyncComponents/DefaultLoadi
 import { benefitsConfiguration } from '../../../shared/benefits/BenefitsConfiguration';
 import { benefitsCss } from '../../../shared/benefits/BenefitsStyles';
 import { Heading } from '../../../shared/Heading';
-import type {
-	CancellationContextInterface,
-	CancellationRouterState,
-} from '../../CancellationContainer';
-import { CancellationContext } from '../../CancellationContainer';
+import type { CancellationRouterState } from '../../CancellationContainer';
+import { useCancellationContext } from '../../CancellationContainer';
 
 type DiscountOfferProps = {
 	currencySymbol: string;
@@ -146,9 +143,7 @@ export interface DigisubCancellationRouterState
 
 export const DigiSubThankYouOffer = () => {
 	const navigate = useNavigate();
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 	const productDetail = cancellationContext.productDetail;
 
 	const location = useLocation();

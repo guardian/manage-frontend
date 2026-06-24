@@ -1,24 +1,22 @@
 import { css } from '@emotion/react';
-import {
-	from,
-	headlineBold28,
-	palette,
-	space,
-	textSans17,
-	until,
-} from '@guardian/source/foundations';
+import { from, space, textSans17 } from '@guardian/source/foundations';
 import { Stack } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+import { BrazeBannersSystemDisplay } from '@/client/lib/braze/BrazeBannersSystemDisplay';
+import { MANAGE_PLACEMENT_ID } from '@/client/lib/braze/brazeConfig';
+import { useBrazeBanner } from '@/client/lib/braze/useBrazeBanner';
+import { useUpgradeProductStore } from '@/client/stores/UpgradeProductStore';
+import {
+	subHeadingCss,
+	subHeadingInformationTextCss,
+} from '@/client/styles/headings';
 import { featureSwitches } from '../../../../shared/featureSwitches';
-import type { MPAPIResponse } from '../../../../shared/mpapiResponse';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
-	MembersDataApiResponse,
 	ProductDetail,
 	ProductTier,
-	SingleProductDetail,
 } from '../../../../shared/productResponse';
 import { userHasGuardianEmail } from '../../../../shared/productResponse';
 import {
@@ -34,21 +32,12 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
-import { fetchWithDefaultParameters } from '../../../utilities/fetch';
-import {
-	LoadingState,
-	useAsyncLoaderAllSettled,
-} from '../../../utilities/hooks/useAsyncLoaderAllSettled';
-import {
-	allRecurringProductsDetailFetcher,
-	allSingleProductsDetailFetcher,
-} from '../../../utilities/productUtils';
+import { useAccountDataLoader } from '../../../utilities/hooks/useAccountDataLoader';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
-import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { DownloadAppCtaVariation1 } from '../shared/DownloadAppCtaVariation1';
 import { DownloadEditionsAppCtaWithImage } from '../shared/DownloadEditionsAppCtaWithImage';
@@ -66,43 +55,14 @@ import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 import { SingleContributionCard } from './SingleContributionCard';
 
-interface ProductFetchResponse {
-	mdapiResponse: MembersDataApiResponse;
-	cancelledProductsResponse: CancelledProductDetail[];
-	mpapiResponse: MPAPIResponse;
-	singleContributionsResponse: SingleProductDetail[];
-}
-
-const productFetchPromisesAndRefs = () => {
-	return [
-		{ promise: allRecurringProductsDetailFetcher(), ref: 'mdapiResponse' },
-		{
-			promise: fetchWithDefaultParameters('/api/cancelled/'),
-			ref: 'cancelledProductsResponse',
-		},
-		{
-			promise: fetchWithDefaultParameters(
-				'/mpapi/user/mobile-subscriptions',
-			),
-			ref: 'mpapiResponse',
-		},
-		{
-			promise: allSingleProductsDetailFetcher(),
-			ref: 'singleContributionsResponse',
-		},
-	];
-};
-
-const subHeadingCss = css`
-	margin: ${space[6]}px 0 ${space[6]}px;
-	border-top: 1px solid ${palette.neutral['86']};
-	${headlineBold28};
-	${until.tablet} {
-		font-size: 1.25rem;
-		line-height: 1.6;
+const benefitsCtasContainerCss = css`
+	> * + * {
+		margin-top: ${space[4]}px;
 	}
 	${from.tablet} {
-		margin-top: ${space[8]}px;
+		> * + * {
+			margin-top: ${space[5]}px;
+		}
 	}
 `;
 
@@ -128,12 +88,17 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 		isSpecificProductType(productKey, PRODUCT_TYPES.supporterplus),
 	);
 
+	const hasWeeklyProduct = productKeys?.some((productKey) =>
+		isSpecificProductType(productKey, PRODUCT_TYPES.guardianweekly),
+	);
+
 	const hasGuardianEmail = email ? userHasGuardianEmail(email) : false;
 
 	const hasEditionsAndArchiveAccess =
 		hasDigitalPlusPrint ||
 		isPlusDigitalProduct ||
 		hasDigitalPack ||
+		hasWeeklyProduct ||
 		hasGuardianEmail;
 
 	return (
@@ -142,12 +107,13 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 				isPlusDigitalProduct ||
 				hasGuardianEmail ||
 				hasDigitalPack ||
-				hasSupporterPlus) && (
+				hasSupporterPlus ||
+				hasWeeklyProduct) && (
 				<>
 					<h2 css={subHeadingCss}>
 						Get the most out of your benefits
 					</h2>
-					<Stack space={6}>
+					<div css={benefitsCtasContainerCss}>
 						<DownloadAppCtaVariation1 />
 						<DownloadFeastAppCtaWithImage />
 						{hasEditionsAndArchiveAccess && (
@@ -156,7 +122,7 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 								<NewspaperArchiveCta />
 							</>
 						)}
-					</Stack>
+					</div>
 				</>
 			)}
 		</>
@@ -164,29 +130,39 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 };
 
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
-	const { data: accountOverviewResponse, loadingState } =
-		useAsyncLoaderAllSettled(
-			productFetchPromisesAndRefs,
-			JsonResponseHandler,
-		);
-	if (loadingState == LoadingState.HasError) {
-		return <GenericErrorScreen />;
-	}
-	if (loadingState == LoadingState.IsLoading) {
-		return (
-			<DefaultLoadingView loadingMessage="Loading your account details..." />
-		);
-	}
-	if (accountOverviewResponse === null) {
-		return <GenericErrorScreen />;
-	}
+	const { braze, banner } = useBrazeBanner(MANAGE_PLACEMENT_ID);
+	const { previewError, setPreviewError } = useUpgradeProductStore();
 
 	const {
+		loadAccountData,
+		isLoading,
+		hasError,
 		mdapiResponse,
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
-	} = accountOverviewResponse as Partial<ProductFetchResponse>;
+	} = useAccountDataLoader();
+
+	useEffect(() => {
+		void loadAccountData();
+	}, [loadAccountData]);
+
+	useEffect(() => {
+		return () => {
+			if (previewError) {
+				setPreviewError(null);
+			}
+		};
+	}, [previewError, setPreviewError]);
+
+	if (hasError) {
+		return <GenericErrorScreen />;
+	}
+	if (isLoading || !mdapiResponse) {
+		return (
+			<DefaultLoadingView loadingMessage="Loading your account details..." />
+		);
+	}
 
 	const failedProductRequestMessages = [];
 	if (!cancelledProductsResponse) {
@@ -301,6 +277,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		!hasDigiSubAndContribution &&
 		!hasNonServiceableCountry;
 
+	const isEligibleToUpsell =
+		!maybeFirstPaymentFailure && !hasNonServiceableCountry;
+
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
 	): GroupedProductTypeKeys => {
@@ -335,6 +314,10 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				mpapiResponse={mpapiResponse}
 			/>
 
+			{braze && banner && (
+				<BrazeBannersSystemDisplay braze={braze} banner={banner} />
+			)}
+
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}
 				isFromApp={isFromApp}
@@ -350,6 +333,34 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 							)}
 						</>
 					}
+				/>
+			)}
+			{previewError && (
+				<ProblemAlert
+					title="Unable to upgrade your subscription"
+					message={
+						<p
+							css={[
+								subHeadingInformationTextCss,
+								css`
+									margin-bottom: 0;
+									${from.tablet} {
+										margin-bottom: 0;
+									}
+								`,
+							]}
+						>
+							You are not currently eligible for an upgrade
+							online. Please find the customer care contact to
+							discuss your upgrade option:{' '}
+							<a href="https://manage.theguardian.com/help-centre">
+								https://manage.theguardian.com/help-centre
+							</a>
+						</p>
+					}
+					additionalcss={css`
+						margin-top: ${space[5]}px;
+					`}
 				/>
 			)}
 			{possiblyAffectedByCanadaPostStrike && <CanadaStrike />}
@@ -381,6 +392,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 									}
 									productDetail={productDetail}
 									isEligibleToSwitch={isEligibleToSwitch}
+									isEligibleToUpsell={isEligibleToUpsell}
 									user={mdapiResponse.user}
 								/>
 							))}
@@ -459,6 +471,7 @@ export const AccountOverview = ({ isFromApp }: IsFromAppProps) => (
 	<PageContainer
 		selectedNavItem={NAV_LINKS.accountOverview}
 		pageTitle="Account overview"
+		minimalFooter
 	>
 		<AccountOverviewPage isFromApp={isFromApp} />
 	</PageContainer>

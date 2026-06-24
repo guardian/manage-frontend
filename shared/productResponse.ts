@@ -110,6 +110,7 @@ export interface ProductDetail extends WithSubscription {
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
 	billingCountry?: string;
+	taxExclusive?: boolean;
 }
 
 export interface CancelledProductDetail {
@@ -294,6 +295,43 @@ export const getMainPlan: (subscription: Subscription) => SubscriptionPlan = (
 		currencyISO: subscription.plan?.currencyISO,
 		billingPeriod: subscription.plan?.billingPeriod,
 	};
+};
+
+/**
+ * Get the billing period that will apply after any pending billing frequency change.
+ * Returns the future plan's billing period if it differs from the current plan,
+ * otherwise returns the current plan's billing period.
+ * This is useful for displaying the correct billing period when a user has switched billing frequency.
+ */
+export const getBillingPeriodForDiscount: (
+	subscription: Subscription,
+) => string | undefined = (subscription: Subscription) => {
+	const currentPlan =
+		subscription.currentPlans.length > 0
+			? subscription.currentPlans[0]
+			: null;
+	const futurePlan =
+		subscription.futurePlans.length > 0
+			? subscription.futurePlans[0]
+			: null;
+
+	// If there's a future plan with a different billing period, use that (indicates a pending frequency change)
+	if (
+		futurePlan &&
+		isPaidSubscriptionPlan(futurePlan) &&
+		currentPlan &&
+		isPaidSubscriptionPlan(currentPlan) &&
+		currentPlan.billingPeriod !== futurePlan.billingPeriod
+	) {
+		return futurePlan.billingPeriod;
+	}
+
+	// Otherwise return the current plan's billing period
+	if (currentPlan && isPaidSubscriptionPlan(currentPlan)) {
+		return currentPlan.billingPeriod;
+	}
+
+	return undefined;
 };
 
 // As of 07/04/25 we have added + Digital variations of the following Newspaper products

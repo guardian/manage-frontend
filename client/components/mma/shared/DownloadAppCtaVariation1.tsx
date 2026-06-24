@@ -18,6 +18,7 @@ interface DownloadAppCtaVariation1Props {
 }
 
 const containerCss = css`
+	border-radius: ${space[2]}px;
 	background-color: #e1eaf7;
 	h4 {
 		${textSansBold17};
@@ -28,7 +29,7 @@ const containerCss = css`
 		margin: ${space[1]}px ${space[5]}px 0 0;
 	}
 	${from.tablet} {
-		padding: ${space[6]}px 0 0 ${space[6]}px;
+		padding: ${space[3]}px 0 0 ${space[3]}px;
 		h4 {
 			${textSansBold20};
 		}

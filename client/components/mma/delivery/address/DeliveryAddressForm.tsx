@@ -439,7 +439,10 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 	)
 		.flatMap(flattenEquivalent)
 		.some(({ productType }) => {
-			return productType.productType === 'nationaldelivery';
+			return (
+				productType.productType === 'nationaldelivery' ||
+				productType.productType === 'nationaldeliveryplusdigital'
+			);
 		});
 
 	if (hasNationalDelivery) {

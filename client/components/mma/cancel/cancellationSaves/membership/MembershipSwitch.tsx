@@ -3,7 +3,7 @@ import { palette, space, textSans17 } from '@guardian/source/foundations';
 import {
 	Button,
 	Stack,
-	SvgClock,
+	SvgClockFilled,
 	SvgCreditCard,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
@@ -41,13 +41,12 @@ import { Card } from '../../../shared/Card';
 import { Heading } from '../../../shared/Heading';
 import { PaymentDetails } from '../../../shared/PaymentDetails';
 import type {
-	CancellationContextInterface,
 	CancellationPageTitleInterface,
 	CancellationRouterState,
 } from '../../CancellationContainer';
 import {
-	CancellationContext,
 	CancellationPageTitleContext,
+	useCancellationContext,
 } from '../../CancellationContainer';
 import { newAmountCss } from './SaveStyles';
 
@@ -108,7 +107,7 @@ const WhatHappensNext = (props: {
 				<Heading sansSerif>What happens next?</Heading>
 				<ul css={[iconListCss, listWithDividersCss]}>
 					<li>
-						<SvgClock size="medium" />
+						<SvgClockFilled size="medium" />
 						<span>
 							<strong>
 								Your new support will start at the end of your
@@ -179,9 +178,7 @@ export const MembershipSwitch = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 	const membership = cancellationContext.productDetail;
 
 	const [isSwitching, setIsSwitching] = useState<boolean>(false);
