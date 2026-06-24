@@ -12,7 +12,6 @@ import {
 	isPaidSubscriptionPlan,
 } from '@/shared/productResponse';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
-import { wideButtonLayoutCss } from '../../../styles/ButtonStyles';
 import { trackEvent } from '../../../utilities/analytics';
 import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
 import { Card } from '../shared/Card';
@@ -28,30 +27,14 @@ import {
 } from './ProductCardInfoSummaries';
 import {
 	BenefitsCopyAndToggle,
-	EndDateRow,
-	FutureProductRow,
+	BillingAndPaymentSection,
 	GiftPaymentSection,
-	GiftPurchaseDateRow,
 	GuardianAdLiteCopy,
-	JoinDateRow,
 	LiveEventsSection,
-	MembershipTierLabelRow,
-	NextPaymentRow,
 	PaymentSection,
 	ProductCardHeader,
-	ProductManageButton,
-	ProductSwitchButton,
-	ProductUpsellButton,
-	StartDateRow,
-	TrialRemainingRow,
 	UsCancellationSection,
-	UserIdRow,
 } from './ProductCardSections';
-import {
-	keyValueCss,
-	productDetailLayoutCss,
-	sectionHeadingCss,
-} from './ProductCardStyles';
 
 export const ProductCard = ({
 	productDetail,
@@ -214,89 +197,32 @@ export const ProductCard = ({
 					specificProductType={specificProductType}
 				/>
 
-				<Card.Section>
-					<div css={productDetailLayoutCss}>
-						<div>
-							<h4 css={sectionHeadingCss}>Billing and payment</h4>
-							<dl css={keyValueCss}>
-								<UserIdRow
-									groupedProductType={groupedProductType}
-									productDetail={productDetail}
-								/>
-								<MembershipTierLabelRow
-									groupedProductType={groupedProductType}
-									productDetail={productDetail}
-								/>
-								<StartDateRow
-									subscriptionStartDate={
-										subscriptionStartDate
-									}
-									shouldShowStartDate={shouldShowStartDate}
-								/>
-								<JoinDateRow
-									productDetail={productDetail}
-									shouldShowJoinDateNotStartDate={
-										shouldShowJoinDateNotStartDate
-									}
-								/>
-								<GiftPurchaseDateRow
-									userIsGifter={userIsGifter}
-									giftPurchaseDate={giftPurchaseDate}
-								/>
-								<EndDateRow
-									subscriptionEndDate={subscriptionEndDate}
-									isGifted={isGifted}
-									userIsGifter={userIsGifter}
-									productDetail={productDetail}
-								/>
-								<TrialRemainingRow
-									specificProductType={specificProductType}
-									productDetail={productDetail}
-									isGifted={isGifted}
-								/>
-								<NextPaymentRow
-									nextPaymentDetails={nextPaymentDetails}
-									productDetail={productDetail}
-									hasCancellationPending={
-										hasCancellationPending
-									}
-								/>
-								<FutureProductRow
-									futureProductTitle={futureProductTitle}
-								/>
-							</dl>
-						</div>
-						<div css={wideButtonLayoutCss}>
-							<ProductUpsellButton
-								isPreviewLoading={isPreviewLoading}
-								hasPreviewError={hasPreviewError}
-								productDetail={productDetail}
-								specificProductType={specificProductType}
-								mainPlan={mainPlan}
-								showProductUpsellButton={
-									showProductUpsellButton
-								}
-								fetchUpgradePreview={fetchUpgradePreview}
-								trackEvent={trackEvent}
-							/>
-							<ProductManageButton
-								isGifted={isGifted}
-								specificProductType={specificProductType}
-								mainPlan={mainPlan}
-								groupedProductType={groupedProductType}
-								productDetail={productDetail}
-								navigate={navigate}
-								trackEvent={trackEvent}
-							/>
-							<ProductSwitchButton
-								showSwitchButton={showSwitchButton}
-								productDetail={productDetail}
-								user={user}
-								navigate={navigate}
-							/>
-						</div>
-					</div>
-				</Card.Section>
+				<BillingAndPaymentSection
+					groupedProductType={groupedProductType}
+					productDetail={productDetail}
+					specificProductType={specificProductType}
+					shouldShowStartDate={shouldShowStartDate}
+					subscriptionStartDate={subscriptionStartDate}
+					subscriptionEndDate={subscriptionEndDate}
+					shouldShowJoinDateNotStartDate={
+						shouldShowJoinDateNotStartDate
+					}
+					userIsGifter={userIsGifter}
+					giftPurchaseDate={giftPurchaseDate}
+					isGifted={isGifted}
+					nextPaymentDetails={nextPaymentDetails}
+					hasCancellationPending={hasCancellationPending}
+					futureProductTitle={futureProductTitle}
+					isPreviewLoading={isPreviewLoading}
+					hasPreviewError={hasPreviewError}
+					mainPlan={mainPlan}
+					showProductUpsellButton={showProductUpsellButton}
+					showSwitchButton={showSwitchButton}
+					user={user}
+					navigate={navigate}
+					trackEvent={trackEvent}
+					fetchUpgradePreview={fetchUpgradePreview}
+				/>
 
 				<LiveEventsSection entitledToEvents={entitledToEvents} />
 
