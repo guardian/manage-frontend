@@ -1,41 +1,156 @@
 import * as Sentry from '@sentry/browser';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { MDA_TEST_USER_HEADER } from '../../../shared/productResponse';
 import type { ExtraAccount } from '../../stores/ExtraAccountsStore';
 import {
 	ExtraAccountsLoadingState,
 	useExtraAccountsStore,
 } from '../../stores/ExtraAccountsStore';
+import { useToastStore } from '../../stores/ToastStore';
 import { trackEvent } from '../analytics';
-import { hasDigitalPlus } from '../extraAccounts';
+import { getDigitalPlusProduct } from '../extraAccounts';
+import { fetchWithDefaultParameters } from '../fetch';
 import { useAccountDataLoader } from './useAccountDataLoader';
 
-const HARDCODED_ACCOUNTS: ExtraAccount[] = [
-	{ status: 'empty' },
-	{ status: 'pending', email: 'sam.taylor@gmail.com' },
-	{ status: 'active', email: 'jontho.ruda@gmail.com', name: 'Jontho Ruda' },
-];
+const MAX_ACCOUNTS = 3;
+const EXTRA_ACCOUNTS_BASE = '/api/extra-accounts';
 
-// TODO: replace with a real endpoint call once the API exists.
-export const fetchExtraAccounts = (): Promise<ExtraAccount[]> =>
-	Promise.resolve(HARDCODED_ACCOUNTS);
+const requestHeaders = (isTestUser: boolean) => ({
+	'Content-Type': 'application/json',
+	[MDA_TEST_USER_HEADER]: `${isTestUser}`,
+});
 
-// TODO: replace with a real endpoint call once the API exists.
-export const sendInvitationRequest = (_email: string): Promise<void> =>
-	new Promise((resolve) => {
-		setTimeout(resolve, 2000);
-	});
+interface InvitationResponseItem {
+	subscriptionName: string;
+	invitationCode: string;
+	primaryIdentityId: string;
+	secondaryIdentityId: string;
+	invitedDate: string;
+	expiryDate: number;
+}
 
-// TODO: replace with a real endpoint call once the API exists.
-export const cancelInvitationRequest = (_email: string): Promise<void> =>
-	new Promise((resolve) => {
-		setTimeout(resolve, 2000);
-	});
+interface SecondaryUserResponseItem {
+	subscriptionName: string;
+	secondaryIdentityId: string;
+	primaryIdentityId: string;
+	acceptedDate: string;
+	// Added by the backend so we can target a secondary user when removing access.
+	invitationCode: string;
+}
 
-// TODO: replace with a real endpoint call once the API exists.
-export const removeAccessRequest = (_email: string): Promise<void> =>
-	new Promise((resolve) => {
-		setTimeout(resolve, 2000);
-	});
+const fetchInvitations = async (
+	subscriptionName: string,
+	isTestUser: boolean,
+): Promise<InvitationResponseItem[]> => {
+	const response = await fetchWithDefaultParameters(
+		`${EXTRA_ACCOUNTS_BASE}/${subscriptionName}/invitations`,
+		{ headers: requestHeaders(isTestUser) },
+	);
+	if (!response.ok) {
+		throw new Error(`Failed to load invitations (${response.status})`);
+	}
+	const body = (await response.json()) as {
+		invitations: InvitationResponseItem[];
+	};
+	return body.invitations ?? [];
+};
+
+const fetchSecondaryUsers = async (
+	subscriptionName: string,
+	isTestUser: boolean,
+): Promise<SecondaryUserResponseItem[]> => {
+	const response = await fetchWithDefaultParameters(
+		`${EXTRA_ACCOUNTS_BASE}/${subscriptionName}/secondary-users`,
+		{ headers: requestHeaders(isTestUser) },
+	);
+	if (!response.ok) {
+		throw new Error(`Failed to load secondary users (${response.status})`);
+	}
+	const body = (await response.json()) as {
+		secondaryUsers: SecondaryUserResponseItem[];
+	};
+	return body.secondaryUsers ?? [];
+};
+
+export const fetchExtraAccounts = async (
+	subscriptionName: string,
+	isTestUser: boolean,
+): Promise<ExtraAccount[]> => {
+	const [secondaryUsers, invitations] = await Promise.all([
+		fetchSecondaryUsers(subscriptionName, isTestUser),
+		fetchInvitations(subscriptionName, isTestUser),
+	]);
+
+	// Identity IDs are used as placeholder name/email until the backend
+	// returns real contact details.
+	const activeAccounts: ExtraAccount[] = secondaryUsers.map(
+		(user): ExtraAccount => ({
+			status: 'active',
+			name: user.secondaryIdentityId,
+			email: user.secondaryIdentityId,
+			invitationCode: user.invitationCode,
+		}),
+	);
+
+	const pendingAccounts: ExtraAccount[] = invitations.map(
+		(invitation): ExtraAccount => ({
+			status: 'pending',
+			email: invitation.secondaryIdentityId,
+			invitationCode: invitation.invitationCode,
+		}),
+	);
+
+	const usedAccounts = [...activeAccounts, ...pendingAccounts];
+	const emptySlots: ExtraAccount[] = Array.from(
+		{ length: Math.max(0, MAX_ACCOUNTS - usedAccounts.length) },
+		() => ({ status: 'empty' as const }),
+	);
+
+	return [...usedAccounts, ...emptySlots];
+};
+
+export const sendInvitationRequest = async (
+	subscriptionName: string,
+	email: string,
+	isTestUser: boolean,
+): Promise<void> => {
+	const response = await fetchWithDefaultParameters(
+		`${EXTRA_ACCOUNTS_BASE}/invitation`,
+		{
+			method: 'POST',
+			headers: requestHeaders(isTestUser),
+			body: JSON.stringify({
+				subscriptionName,
+				secondaryUserEmail: email,
+			}),
+		},
+	);
+	if (!response.ok) {
+		const message = await response.text().catch(() => '');
+		throw new Error(
+			message || `Failed to send invitation (${response.status})`,
+		);
+	}
+};
+
+export const deleteInvitationRequest = async (
+	invitationCode: string,
+	isTestUser: boolean,
+): Promise<void> => {
+	const response = await fetchWithDefaultParameters(
+		`${EXTRA_ACCOUNTS_BASE}/invitation/${invitationCode}`,
+		{
+			method: 'DELETE',
+			headers: requestHeaders(isTestUser),
+		},
+	);
+	if (!response.ok) {
+		const message = await response.text().catch(() => '');
+		throw new Error(
+			message || `Failed to delete invitation (${response.status})`,
+		);
+	}
+};
 
 interface UseExtraAccountsReturn {
 	accounts: ExtraAccount[] | null;
@@ -43,15 +158,15 @@ interface UseExtraAccountsReturn {
 	hasError: boolean;
 	shouldRedirect: boolean;
 	sendInvitation: (email: string) => Promise<boolean>;
-	cancelInvitation: (email: string) => Promise<boolean>;
-	removeAccess: (email: string) => Promise<boolean>;
+	cancelInvitation: (invitationCode: string) => Promise<boolean>;
+	removeAccess: (invitationCode: string) => Promise<boolean>;
 	isSubmitting: boolean;
-	submitError: string | null;
 }
 
 export const useExtraAccounts = (): UseExtraAccountsReturn => {
 	const { accounts, loadingState, setAccounts, setLoadingState, setError } =
 		useExtraAccountsStore();
+	const { showToast } = useToastStore();
 
 	const {
 		loadAccountData,
@@ -62,8 +177,12 @@ export const useExtraAccounts = (): UseExtraAccountsReturn => {
 
 	const [shouldRedirect, setShouldRedirect] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [submitError, setSubmitError] = useState<string | null>(null);
 	const hasStartedLoading = useRef(false);
+
+	const digitalPlusProduct = getDigitalPlusProduct(mdapiResponse);
+	const subscriptionName =
+		digitalPlusProduct?.subscription.subscriptionId ?? null;
+	const isTestUser = digitalPlusProduct?.isTestUser ?? false;
 
 	const storeHasData = loadingState === ExtraAccountsLoadingState.Loaded;
 
@@ -93,7 +212,7 @@ export const useExtraAccounts = (): UseExtraAccountsReturn => {
 
 		hasStartedLoading.current = true;
 
-		if (!hasDigitalPlus(mdapiResponse)) {
+		if (!subscriptionName) {
 			setShouldRedirect(true);
 			return;
 		}
@@ -101,7 +220,10 @@ export const useExtraAccounts = (): UseExtraAccountsReturn => {
 		const loadExtraAccounts = async () => {
 			setLoadingState(ExtraAccountsLoadingState.Loading);
 			try {
-				const data = await fetchExtraAccounts();
+				const data = await fetchExtraAccounts(
+					subscriptionName,
+					isTestUser,
+				);
 				setAccounts(data);
 			} catch (error) {
 				const message =
@@ -124,109 +246,112 @@ export const useExtraAccounts = (): UseExtraAccountsReturn => {
 		isAccountLoading,
 		hasAccountError,
 		mdapiResponse,
+		subscriptionName,
+		isTestUser,
 		loadAccountData,
 		setAccounts,
 		setLoadingState,
 		setError,
 	]);
 
+	const refreshAccounts = useCallback(async () => {
+		if (!subscriptionName) {
+			return;
+		}
+		const data = await fetchExtraAccounts(subscriptionName, isTestUser);
+		setAccounts(data);
+	}, [subscriptionName, isTestUser, setAccounts]);
+
+	const handleActionError = useCallback(
+		(error: unknown, fallbackMessage: string) => {
+			Sentry.captureException(
+				error instanceof Error ? error : new Error(fallbackMessage),
+			);
+			showToast({
+				message:
+					error instanceof Error && error.message
+						? error.message
+						: 'Something went wrong. Please try again.',
+				severity: 'error',
+			});
+		},
+		[showToast],
+	);
+
 	const sendInvitation = useCallback(
 		async (email: string): Promise<boolean> => {
-			if (isSubmitting) {
+			if (isSubmitting || !subscriptionName) {
 				return false;
 			}
 
 			setIsSubmitting(true);
-			setSubmitError(null);
 
 			try {
-				await sendInvitationRequest(email);
-				const data = await fetchExtraAccounts();
-				setAccounts(data);
+				await sendInvitationRequest(
+					subscriptionName,
+					email,
+					isTestUser,
+				);
+				await refreshAccounts();
 				return true;
 			} catch (error) {
-				Sentry.captureException(
-					error instanceof Error
-						? error
-						: new Error('Failed to send invitation'),
-				);
-				setSubmitError(
-					error instanceof Error
-						? error.message
-						: 'Something went wrong. Please try again.',
-				);
+				handleActionError(error, 'Failed to send invitation');
 				return false;
 			} finally {
 				setIsSubmitting(false);
 			}
 		},
-		[setAccounts, isSubmitting],
+		[
+			subscriptionName,
+			isTestUser,
+			isSubmitting,
+			refreshAccounts,
+			handleActionError,
+		],
 	);
 
 	const cancelInvitation = useCallback(
-		async (email: string): Promise<boolean> => {
+		async (invitationCode: string): Promise<boolean> => {
 			if (isSubmitting) {
 				return false;
 			}
 
 			setIsSubmitting(true);
-			setSubmitError(null);
 
 			try {
-				await cancelInvitationRequest(email);
-				const data = await fetchExtraAccounts();
-				setAccounts(data);
+				await deleteInvitationRequest(invitationCode, isTestUser);
+				await refreshAccounts();
 				return true;
 			} catch (error) {
-				Sentry.captureException(
-					error instanceof Error
-						? error
-						: new Error('Failed to cancel invitation'),
-				);
-				setSubmitError(
-					error instanceof Error
-						? error.message
-						: 'Something went wrong. Please try again.',
-				);
+				handleActionError(error, 'Failed to cancel invitation');
 				return false;
 			} finally {
 				setIsSubmitting(false);
 			}
 		},
-		[setAccounts, isSubmitting],
+		[isTestUser, isSubmitting, refreshAccounts, handleActionError],
 	);
 
 	const removeAccess = useCallback(
-		async (email: string): Promise<boolean> => {
+		async (invitationCode: string): Promise<boolean> => {
 			if (isSubmitting) {
 				return false;
 			}
 
 			setIsSubmitting(true);
-			setSubmitError(null);
 
 			try {
-				await removeAccessRequest(email);
-				const data = await fetchExtraAccounts();
-				setAccounts(data);
+				await deleteInvitationRequest(invitationCode, isTestUser);
+				await refreshAccounts();
 				return true;
 			} catch (error) {
-				Sentry.captureException(
-					error instanceof Error
-						? error
-						: new Error('Failed to remove access'),
-				);
-				setSubmitError(
-					error instanceof Error
-						? error.message
-						: 'Something went wrong. Please try again.',
-				);
+				handleActionError(error, 'Failed to remove access');
 				return false;
 			} finally {
 				setIsSubmitting(false);
 			}
 		},
-		[setAccounts, isSubmitting],
+		[isTestUser, isSubmitting, refreshAccounts, handleActionError],
 	);
 
 	return {
@@ -241,6 +366,5 @@ export const useExtraAccounts = (): UseExtraAccountsReturn => {
 		cancelInvitation,
 		removeAccess,
 		isSubmitting,
-		submitError,
 	};
 };

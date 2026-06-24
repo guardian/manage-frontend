@@ -8,6 +8,7 @@ import {
 	discountAPI,
 	holidayStopAPI,
 	invoicingAPI,
+	multipleAccountAPI,
 	productMoveAPI,
 	productSwitchAPI,
 	updateSupporterPlusAmountAPI,
@@ -405,6 +406,35 @@ router.post('/csp-audit-report-endpoint', (req, res) => {
 router.get(
 	'/benefits/me',
 	userBenefitsApiHandler('benefits/me', 'USER_BENEFITS'),
+);
+
+router.get(
+	'/extra-accounts/:subscriptionName/invitations',
+	multipleAccountAPI(
+		'subscriptions/:subscriptionName/invitations',
+		'LIST_INVITATIONS',
+		['subscriptionName'],
+	),
+);
+router.get(
+	'/extra-accounts/:subscriptionName/secondary-users',
+	multipleAccountAPI(
+		'subscriptions/:subscriptionName/secondary-users',
+		'LIST_SECONDARY_USERS',
+		['subscriptionName'],
+	),
+);
+router.post(
+	'/extra-accounts/invitation',
+	withOktaServerSideValidation,
+	multipleAccountAPI('invitation', 'CREATE_INVITATION'),
+);
+router.delete(
+	'/extra-accounts/invitation/:invitationCode',
+	withOktaServerSideValidation,
+	multipleAccountAPI('invitation/:invitationCode', 'DELETE_INVITATION', [
+		'invitationCode',
+	]),
 );
 
 export { router };

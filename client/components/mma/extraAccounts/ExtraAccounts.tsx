@@ -18,7 +18,6 @@ import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
-import { ProblemAlert } from '../shared/ProblemAlert';
 import { ExtraAccountRow } from './ExtraAccountRow';
 
 const MAX_ACCOUNTS = 3;
@@ -113,7 +112,6 @@ export const ExtraAccounts = () => {
 		cancelInvitation,
 		removeAccess,
 		isSubmitting,
-		submitError,
 	} = useExtraAccounts();
 
 	if (shouldRedirect) {
@@ -131,16 +129,6 @@ export const ExtraAccounts = () => {
 			minimalFooter
 		>
 			<h2 css={subHeadingCss}>Manage extra accounts</h2>
-
-			{submitError && (
-				<ProblemAlert
-					title="Something went wrong"
-					message={submitError}
-					additionalcss={css`
-						margin-bottom: ${space[5]}px;
-					`}
-				/>
-			)}
 
 			{hasError ? (
 				<GenericErrorScreen />
@@ -205,6 +193,9 @@ export const ExtraAccounts = () => {
 									cancelInvitation={cancelInvitation}
 									removeAccess={removeAccess}
 									isSubmitting={isSubmitting}
+									remainingInvitations={
+										MAX_ACCOUNTS - usedCount
+									}
 								/>
 							</Fragment>
 						))}

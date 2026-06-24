@@ -10,12 +10,14 @@ interface ExtraAccountEmpty {
 interface ExtraAccountPending {
 	status: 'pending';
 	email: string;
+	invitationCode: string;
 }
 
 interface ExtraAccountActive {
 	status: 'active';
 	email: string;
 	name: string;
+	invitationCode: string;
 }
 
 export type ExtraAccount =

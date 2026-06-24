@@ -122,7 +122,7 @@ interface ModalCopy {
 	dismissLabel: string;
 	instigatorLabel: string;
 	successMessage: string;
-	confirm: (email: string) => Promise<boolean>;
+	confirm: (invitationCode: string) => Promise<boolean>;
 }
 
 const ModalBody = ({
@@ -163,8 +163,8 @@ const ModalBody = ({
 
 interface ExtraAccountCancelInvitationModalProps {
 	account: ExtraAccountWithEmail;
-	cancelInvitation: (email: string) => Promise<boolean>;
-	removeAccess: (email: string) => Promise<boolean>;
+	cancelInvitation: (invitationCode: string) => Promise<boolean>;
+	removeAccess: (invitationCode: string) => Promise<boolean>;
 	isSubmitting: boolean;
 	remainingInvitations: number;
 }
@@ -202,7 +202,7 @@ export const ExtraAccountCancelInvitationModal = ({
 	const close = () => setIsOpen(false);
 
 	const handleConfirm = () => {
-		void copy.confirm(account.email).then((ok) => {
+		void copy.confirm(account.invitationCode).then((ok) => {
 			if (ok) {
 				close();
 				showToast({ message: copy.successMessage });

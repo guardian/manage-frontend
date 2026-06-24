@@ -1,4 +1,7 @@
-import type { MembersDataApiResponse } from '../../shared/productResponse';
+import type {
+	MembersDataApiResponse,
+	ProductDetail,
+} from '../../shared/productResponse';
 import { isProduct, isSpecificProductType } from '../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../shared/productTypes';
 
@@ -16,12 +19,12 @@ export const isExtraAccountsFlagEnabled = (): boolean => {
 	);
 };
 
-export const hasDigitalPlus = (
+export const getDigitalPlusProduct = (
 	mdapiResponse: MembersDataApiResponse | null,
-): boolean =>
-	!!mdapiResponse?.products
+): ProductDetail | undefined =>
+	mdapiResponse?.products
 		.filter(isProduct)
-		.some(
+		.find(
 			(product) =>
 				!product.subscription.cancelledAt &&
 				isSpecificProductType(
@@ -29,6 +32,10 @@ export const hasDigitalPlus = (
 					PRODUCT_TYPES.digipack,
 				),
 		);
+
+export const hasDigitalPlus = (
+	mdapiResponse: MembersDataApiResponse | null,
+): boolean => !!getDigitalPlusProduct(mdapiResponse);
 
 // TODO: Remove this query-param check once the Extra accounts feature ships.
 // The long-term gate is the Digital plus product check only.

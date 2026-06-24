@@ -111,9 +111,10 @@ const introCss = css`
 interface ExtraAccountRowProps {
 	account: ExtraAccount;
 	sendInvitation: (email: string) => Promise<boolean>;
-	cancelInvitation: (email: string) => Promise<boolean>;
-	removeAccess: (email: string) => Promise<boolean>;
+	cancelInvitation: (invitationCode: string) => Promise<boolean>;
+	removeAccess: (invitationCode: string) => Promise<boolean>;
 	isSubmitting: boolean;
+	remainingInvitations: number;
 }
 
 const Avatar = ({
@@ -151,6 +152,7 @@ export const ExtraAccountRow = ({
 	cancelInvitation,
 	removeAccess,
 	isSubmitting,
+	remainingInvitations,
 }: ExtraAccountRowProps) => {
 	const [isFormOpen, setIsFormOpen] = useState(false);
 	const { showToast } = useToastStore();
@@ -227,7 +229,7 @@ export const ExtraAccountRow = ({
 					cancelInvitation={cancelInvitation}
 					removeAccess={removeAccess}
 					isSubmitting={isSubmitting}
-					remainingInvitations={1}
+					remainingInvitations={remainingInvitations}
 				/>
 			</div>
 		</div>
