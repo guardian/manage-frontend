@@ -93,7 +93,6 @@ const mockUpgradePreviewResponseMonthlyDiscountGBP: UpgradePreviewResponse = {
 	nextPaymentDate: '2026-03-15',
 	discount: {
 		discountedPrice: 7.5,
-		discountPercentage: 50,
 		upToPeriods: 3,
 		upToPeriodsType: 'Months',
 	},

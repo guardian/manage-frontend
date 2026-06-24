@@ -71,8 +71,8 @@ export const useUpgradeProductStore = create<UpgradeProductStore>()(
 						previewLoadingState: UpgradePreviewLoadingState.Loaded,
 						previewError: null,
 						isDiscountedOffer:
-							!!response.discount?.discountPercentage &&
-							response.discount?.discountPercentage > 0,
+							!!response.discount?.discountedPrice &&
+							response.discount.discountedPrice > 0,
 					},
 					false,
 					'setPreviewResponse',
