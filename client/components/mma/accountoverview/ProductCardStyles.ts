@@ -87,6 +87,12 @@ export const benefitsTextCss = css`
 	margin-bottom: ${space[2]}px;
 `;
 
+export const benefitsSectionBackgroundColour = '#edf5fa';
+
+export const centeredButtonCss = css`
+	justify-content: center;
+`;
+
 export const giftRibbonColour = (cardConfig: ProductCardConfiguration) =>
 	cardConfig.invertText ? palette.brand[400] : palette.brandAlt[400];
 export const giftRibbonCopyColour = (cardConfig: ProductCardConfiguration) =>

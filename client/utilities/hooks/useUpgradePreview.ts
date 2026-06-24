@@ -12,7 +12,7 @@ import {
 } from '../../stores/UpgradeProductStore';
 import { changePlanFetch, fetchUpgradePreviewData } from '../productUtils';
 
-interface FetchUpgradePreviewParams {
+export interface FetchUpgradePreviewParams {
 	subscriptionId: string;
 	subscription: Subscription;
 	mainPlan: PaidSubscriptionPlan;
