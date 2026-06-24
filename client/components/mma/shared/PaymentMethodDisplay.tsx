@@ -6,7 +6,7 @@ import { DirectDebitDisplay } from './DirectDebitDisplay';
 import { PaypalDisplay } from './PaypalDisplay';
 import { SepaDisplay } from './SepaDisplay';
 
-export const PaymentMethoDisplay = ({
+export const PaymentMethodDisplay = ({
 	subscription,
 	inPaymentFailure,
 }: {

@@ -54,6 +54,7 @@ import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { PaymentDetailsTableV2 } from '../shared/PaymentDetailsTableV2';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTable';
+import { TaxExclusiveNotice } from '../shared/TaxExclusiveNotice';
 import { NewsletterOptinSection } from './NewsletterOptinSection';
 import { SixForSixExplainerIfApplicable } from './SixForSixExplainer';
 import { UpdateAmount } from './updateAmount/UpdateAmount';
@@ -216,6 +217,8 @@ const InnerContent = ({
 					!overiddenAmount ? billingFrequencySwitchPreview : undefined
 				}
 			/>
+
+			<TaxExclusiveNotice taxExclusive={productDetail.taxExclusive} />
 
 			{specificProductType.delivery?.showAddress?.(
 				productDetail.subscription,

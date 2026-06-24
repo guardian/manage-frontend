@@ -1,4 +1,4 @@
-import type { CMP } from '@guardian/libs';
+import type { CMP } from '@guardian/consent-manager';
 import { from } from '@guardian/source/foundations';
 import { useEffect, useState } from 'react';
 import { gridItemPlacement } from '../../../styles/grid';
@@ -16,7 +16,7 @@ export const DataPrivacyPage = () => {
 	 *
 	 */
 	const loadCMP = () => {
-		import('@guardian/libs').then(({ cmp }) => {
+		import('@guardian/consent-manager').then(({ cmp }) => {
 			setImportedCmp(cmp);
 		});
 	};

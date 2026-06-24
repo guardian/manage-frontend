@@ -37,7 +37,7 @@ export const useAnalytics = () => {
 			}
 		};
 
-		void import('@guardian/libs')
+		void import('@guardian/consent-manager')
 			.then(({ onConsentChange, getConsentFor }) => {
 				onConsentChange((consentState) => {
 					const qmConsentState = getConsentFor('qm', consentState);
