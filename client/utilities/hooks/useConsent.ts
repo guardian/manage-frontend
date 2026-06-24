@@ -4,7 +4,7 @@ import { getGeoLocation } from '../geolocation';
 
 export const useConsent = () => {
 	useEffect(() => {
-		void import('@guardian/libs')
+		void import('@guardian/consent-manager')
 			.then(({ cmp }) => {
 				cmp.init({
 					// Default to GB so it works when no geolocation
