@@ -12,7 +12,6 @@ import {
 	Stack,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
-import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import type { PaidSubscriptionPlan } from '../../../../../../shared/productResponse';
 import { getMainPlan } from '../../../../../../shared/productResponse';
@@ -38,11 +37,8 @@ import { BenefitsSection } from '../../../shared/benefits/BenefitsSection';
 import { Card } from '../../../shared/Card';
 import { Heading } from '../../../shared/Heading';
 import { ProgressStepper } from '../../../shared/ProgressStepper';
-import type {
-	CancellationContextInterface,
-	CancellationRouterState,
-} from '../../CancellationContainer';
-import { CancellationContext } from '../../CancellationContainer';
+import type { CancellationRouterState } from '../../CancellationContainer';
+import { useCancellationContext } from '../../CancellationContainer';
 import {
 	cardHeaderDivCss,
 	cardSectionCss,
@@ -77,9 +73,7 @@ export const SaveOptions = () => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 	const membership = cancellationContext.productDetail;
 
 	if (!membership) {
@@ -173,57 +167,64 @@ export const SaveOptions = () => {
 						</section>
 					</Card.Section>
 				</Card>
-				<section css={sectionSpacing}>
-					<Heading sansSerif>
-						Stay a supporter at no extra cost
-					</Heading>
-				</section>
-				<p
-					css={css`
-						${textSans17};
-					`}
-				>
-					You will lose access to some of your benefits, but will keep
-					funding Guardian journalism.
-				</p>
-				<Card>
-					<Card.Header backgroundColor={palette.brand[400]}>
-						<div css={cardHeaderDivCss}>
-							<h3 css={productTitleCss}>
-								{monthlyOrAnnual} contribution
-							</h3>
-							<p css={productSubtitleCss}>
-								{oldPriceDisplay}/{billingPeriod}
-							</p>
-						</div>
-					</Card.Header>
-					<Card.Section>
-						<BenefitsSection
-							benefits={benefitsConfiguration[
-								'contributions'
-							].filter((benefit) =>
-								filterBenefitByRegion(
-									benefit,
-									mainPlan.currencyISO,
-								),
-							)}
-						/>
-						<section css={[cardSectionCss, buttonContainerCss]}>
-							<Button
-								theme={themeButtonReaderRevenueBrand}
-								cssOverrides={buttonCentredCss}
-								size="small"
-								onClick={() =>
-									navigate('../switch-offer', {
-										state: { ...routerState },
-									})
-								}
-							>
-								Become a recurring contributor
-							</Button>
+				{membership.subscription.futurePlans[0]?.mmaProductKey !==
+					'Contributor' && (
+					<>
+						<section css={sectionSpacing}>
+							<Heading sansSerif>
+								Stay a supporter at no extra cost
+							</Heading>
 						</section>
-					</Card.Section>
-				</Card>
+						<p
+							css={css`
+								${textSans17};
+							`}
+						>
+							You will lose access to some of your benefits, but
+							will keep funding Guardian journalism.
+						</p>
+						<Card>
+							<Card.Header backgroundColor={palette.brand[400]}>
+								<div css={cardHeaderDivCss}>
+									<h3 css={productTitleCss}>
+										{monthlyOrAnnual} contribution
+									</h3>
+									<p css={productSubtitleCss}>
+										{oldPriceDisplay}/{billingPeriod}
+									</p>
+								</div>
+							</Card.Header>
+							<Card.Section>
+								<BenefitsSection
+									benefits={benefitsConfiguration[
+										'contributions'
+									].filter((benefit) =>
+										filterBenefitByRegion(
+											benefit,
+											mainPlan.currencyISO,
+										),
+									)}
+								/>
+								<section
+									css={[cardSectionCss, buttonContainerCss]}
+								>
+									<Button
+										theme={themeButtonReaderRevenueBrand}
+										cssOverrides={buttonCentredCss}
+										size="small"
+										onClick={() =>
+											navigate('../switch-offer', {
+												state: { ...routerState },
+											})
+										}
+									>
+										Become a recurring contributor
+									</Button>
+								</section>
+							</Card.Section>
+						</Card>
+					</>
+				)}
 				<section css={sectionSpacing}>
 					<Heading sansSerif>Cancel your Membership</Heading>
 					<p

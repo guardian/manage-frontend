@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {http, HttpResponse} from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '../../../../../.storybook/ReactRouterDecorator';
 import {
 	annualContributionPaidByCardWithCurrency,
@@ -23,7 +23,7 @@ export default {
 		},
 		msw: [
 			http.post('/api/product-move/*', () => {
-				return HttpResponse.json(productMovePreviewResponse)
+				return HttpResponse.json(productMovePreviewResponse);
 			}),
 		],
 	},
@@ -75,7 +75,10 @@ export const YearlyOtherCurrency: StoryObj<typeof SwitchReview> = {
 	parameters: {
 		reactRouter: {
 			state: {
-				productDetail: annualContributionPaidByCardWithCurrency('NZD'),
+				productDetail: annualContributionPaidByCardWithCurrency(
+					'NZD',
+					'New Zealand',
+				),
 			},
 		},
 	},

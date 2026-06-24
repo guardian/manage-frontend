@@ -1,11 +1,22 @@
-export type ProductSwitchType =
-	| 'to-recurring-contribution'
-	| 'recurring-contribution-to-supporter-plus';
+export interface SwitchDiscountResponse {
+	discountedPrice: number;
+	discountPercentage: number;
+	upToPeriods: number;
+	upToPeriodsType: 'Years' | 'Months' | 'Weeks' | 'Days';
+}
 
-export interface PreviewResponse {
+export interface SwitchPreviewResponse {
 	amountPayableToday: number;
 	supporterPlusPurchaseAmount: number;
 	contributionRefundAmount: number;
 	nextPaymentDate: string;
-	checkChargeAmountBeforeUpdate: boolean;
+	discount?: SwitchDiscountResponse;
+}
+
+export interface UpgradePreviewResponse {
+	amountPayableToday: number;
+	proratedRefundAmount: number;
+	targetCatalogPrice: number;
+	nextPaymentDate: string;
+	discount?: SwitchDiscountResponse;
 }

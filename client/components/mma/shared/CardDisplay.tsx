@@ -1,6 +1,7 @@
 import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import { palette } from '@guardian/source/foundations';
+import type { ReactElement } from 'react';
 import type { Inlineable } from './inlineable';
 
 interface CardExpiryDetails {
@@ -33,7 +34,7 @@ export const cardTypeToSVG = (
 ) => {
 	const styles = { ...svgStyles, ...styleOverrides };
 
-	const backgroundImage: JSX.Element | undefined | null = (() => {
+	const backgroundImage: ReactElement | null = (() => {
 		switch (cardType.toLowerCase().replace(/\s/g, '')) {
 			case 'mastercard':
 				return (
@@ -124,6 +125,8 @@ export const cardTypeToSVG = (
 						/>
 					</svg>
 				);
+			default:
+				return null;
 		}
 	})();
 
@@ -133,7 +136,7 @@ export const cardTypeToSVG = (
 export const CardDisplay = (props: CardDisplayProps) => {
 	const styles = css`
 		display: flex;
-		flex-wrap: wrap;
+		flex-wrap: no-wrap;
 		align-items: center;
 		margin: 10px;
 	`;
@@ -146,10 +149,16 @@ export const CardDisplay = (props: CardDisplayProps) => {
 				${props.cssOverrides}
 			`}
 		>
-			{cardTypeToSVG(props.type)}{' '}
+			{cardTypeToSVG(
+				props.type,
+				css`
+					transform: translateY(2px);
+				`,
+			)}{' '}
 			<span
 				css={css`
 					margin-left: 3px;
+					text-wrap: nowrap;
 					color: ${props.inErrorState
 						? palette.error[400]
 						: palette.neutral[7]};

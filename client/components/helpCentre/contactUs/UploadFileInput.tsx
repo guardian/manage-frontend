@@ -10,7 +10,7 @@ import {
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import Color from 'color';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type * as React from 'react';
 import { ErrorIcon } from '../../mma/shared/assets/ErrorIcon';
 
@@ -23,13 +23,23 @@ interface UploadFileUploadProps {
 	inErrorState?: boolean;
 	errorMessage?: string;
 	additionalCss?: SerializedStyles;
+	setFocus?: boolean;
 }
 
 export const UploadFileInput = (props: UploadFileUploadProps) => {
 	const [selectedFile, setSelectedFile] = useState<File | undefined>();
+	const inputRef = useRef<HTMLInputElement>(null);
+
 	useEffect(() => {
 		props.changeSetState?.(selectedFile);
 	}, [selectedFile, props]);
+
+	useEffect(() => {
+		if (props.setFocus) {
+			inputRef.current?.focus();
+		}
+	}, [props.setFocus]);
+
 	return (
 		<label
 			css={css`
@@ -84,8 +94,13 @@ export const UploadFileInput = (props: UploadFileUploadProps) => {
 				name="imageAttachment"
 				accept={props.allowedFileFormats.join()}
 				multiple={false}
+				ref={inputRef}
 				css={css`
-					display: none;
+					position: absolute;
+					width: 1px;
+					height: 1px;
+					opacity: 0;
+					pointer-events: none;
 				`}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					const file = e.target.files?.[0];

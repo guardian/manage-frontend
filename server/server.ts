@@ -24,13 +24,6 @@ if (conf.SERVER_DSN) {
 		release: WEBPACK_BUILD || 'local',
 		environment: conf.DOMAIN,
 	});
-	server.use(
-		Sentry.Handlers.requestHandler({
-			ip: false,
-			user: false,
-			request: ['method', 'query_string', 'url'], // this list is explicit, to avoid sending cookies
-		}),
-	);
 }
 
 if (conf.DOMAIN === 'thegulocal.com') {
@@ -38,7 +31,19 @@ if (conf.DOMAIN === 'thegulocal.com') {
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 
-server.use(helmet());
+server.use(
+	helmet({
+		// REQUIRED: We need dynamic CSP per route
+		// All other security headers are enabled by default:
+		// - crossOriginOpenerPolicy: 'same-origin'
+		// - crossOriginResourcePolicy: 'same-origin'
+		// - strictTransportSecurity: max-age=31536000
+		// - xContentTypeOptions: 'nosniff'
+		// - xFrameOptions: 'SAMEORIGIN'
+		// etc.
+		contentSecurityPolicy: false,
+	}),
+);
 
 export const createCsp = (hashes: string[]) => {
 	const prefixedHashes = hashes.map((hash) => `'sha256-${hash}'`);
@@ -46,6 +51,7 @@ export const createCsp = (hashes: string[]) => {
 		`script-src ${prefixedHashes.join(' ')} 'strict-dynamic'`,
 		`style-src 'unsafe-inline'`,
 		`object-src 'none'`,
+		`report-uri /api/csp-audit-report-endpoint`,
 	];
 	return csp.join('; ');
 };
@@ -133,7 +139,8 @@ server.use('/help-centre', routes.helpcentre);
 server.use(routes.frontend);
 
 if (conf.SERVER_DSN) {
-	server.use(Sentry.Handlers.errorHandler());
+	Sentry.setupExpressErrorHandler(server);
 }
+
 server.listen(port);
 log.info(`Serving at http://localhost:${port}`);

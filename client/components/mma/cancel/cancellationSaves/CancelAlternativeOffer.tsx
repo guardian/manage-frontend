@@ -14,7 +14,6 @@ import {
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { capitalize } from 'lodash';
-import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Pill } from '@/client/components/shared/Pill';
 import { measure } from '@/client/styles/typography';
@@ -26,15 +25,18 @@ import {
 	parseDate,
 } from '@/shared/dates';
 import { number2words } from '@/shared/numberUtils';
-import { getMainPlan, isPaidSubscriptionPlan } from '@/shared/productResponse';
+import {
+	getBillingPeriodForDiscount,
+	getMainPlan,
+	isPaidSubscriptionPlan,
+} from '@/shared/productResponse';
 import type { ProductTypeKeys } from '@/shared/productTypes';
 import type { DeliveryRecordDetail } from '../../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../../holiday/HolidayStopApi';
 import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
 import { Heading } from '../../shared/Heading';
 import { ProgressStepper } from '../../shared/ProgressStepper';
-import type { CancellationContextInterface } from '../CancellationContainer';
-import { CancellationContext } from '../CancellationContainer';
+import { useCancellationContext } from '../CancellationContainer';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 
 interface RouterSate extends DiscountPreviewResponse {
@@ -203,13 +205,14 @@ export const CancelAlternativeOffer = () => {
 	const routerState = location.state as RouterSate;
 	const navigate = useNavigate();
 
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 
 	const productDetail = cancellationContext.productDetail;
 	const productType = cancellationContext.productType;
 	const mainPlan = getMainPlan(productDetail.subscription);
+	const billingPeriodForDiscount = getBillingPeriodForDiscount(
+		productDetail.subscription,
+	);
 
 	const offerPeriodWord = number2words(routerState.upToPeriods);
 	const offerPeriodType = routerState.upToPeriodsType;
@@ -331,14 +334,16 @@ export const CancelAlternativeOffer = () => {
 							<s>
 								{mainPlan.currency}
 								{humanReadableStrikethroughPrice}/
-								{mainPlan.billingPeriod}
+								{billingPeriodForDiscount ||
+									mainPlan.billingPeriod}
 							</s>
 							{offerIsPercentageOrFree === 'percentage' && (
 								<span css={discountedPriceSpan}>
 									{' '}
 									{mainPlan.currency}
 									{routerState.discountedPrice}/
-									{mainPlan.billingPeriod}
+									{billingPeriodForDiscount ||
+										mainPlan.billingPeriod}
 								</span>
 							)}
 						</p>
@@ -417,7 +422,9 @@ export const CancelAlternativeOffer = () => {
 									routerState.nonDiscountedPayments,
 									true,
 								)}
-								/{mainPlan.billingPeriod}
+								/
+								{billingPeriodForDiscount ||
+									mainPlan.billingPeriod}
 							</p>
 						)}
 					{alternativeIsOffer && (
@@ -439,7 +446,7 @@ export const CancelAlternativeOffer = () => {
 										},
 										{
 											description:
-												'Unlimited access to the Guardian Feast App',
+												'Unlimited access to the Guardian Feast app',
 										},
 										{
 											description:
@@ -488,8 +495,8 @@ export const CancelAlternativeOffer = () => {
 			</div>
 			{isPaidSubscriptionPlan(mainPlan) && (
 				<p css={termsCss}>
-					Your {mainPlan.billingPeriod}ly payments of{' '}
-					{mainPlan.currency}
+					Your {billingPeriodForDiscount || mainPlan.billingPeriod}ly
+					payments of {mainPlan.currency}
 					{humanReadableStrikethroughPrice} will automatically resume
 					on {nextNonDiscountedPaymentDate} unless you cancel.
 					{alternativeIsOffer && (

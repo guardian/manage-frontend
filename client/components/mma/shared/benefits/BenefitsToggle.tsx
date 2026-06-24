@@ -3,8 +3,12 @@ import { space } from '@guardian/source/foundations';
 import { useState } from 'react';
 import type { SubscriptionPlan } from '@/shared/productResponse';
 import { isPaidSubscriptionPlan } from '@/shared/productResponse';
-import type { ProductTypeKeys } from '../../../../../shared/productTypes';
+import {
+	PRODUCT_TYPES,
+	type ProductTypeKeys,
+} from '../../../../../shared/productTypes';
 import { expanderButtonCss } from '../../../shared/ExpanderButton';
+import type { ProductBenefit } from './BenefitsConfiguration';
 import {
 	benefitsConfiguration,
 	filterBenefitByRegion,
@@ -15,40 +19,53 @@ import { benefitsButtonCss } from './BenefitsStyles';
 type BenfitsToggleProps = {
 	productType: ProductTypeKeys;
 	subscriptionPlan: SubscriptionPlan;
+	alwaysShowBenefits?: boolean;
+	showProductTypeShortFriendlyName?: boolean;
+	overrideBenefits?: ProductBenefit[] | null;
 };
 
 export const BenefitsToggle = ({
 	productType,
 	subscriptionPlan,
+	alwaysShowBenefits = false,
+	showProductTypeShortFriendlyName = false,
+	overrideBenefits = null,
 }: BenfitsToggleProps) => {
 	const currencyIso = isPaidSubscriptionPlan(subscriptionPlan)
 		? subscriptionPlan.currencyISO
 		: '';
 
-	const [showBenefits, setShowBenefits] = useState<boolean>(false);
+	const [showBenefits, setShowBenefits] =
+		useState<boolean>(alwaysShowBenefits);
 	const benefits = benefitsConfiguration[productType].filter((benefit) =>
 		filterBenefitByRegion(benefit, currencyIso),
 	);
 
 	return (
 		<>
+			{!alwaysShowBenefits && (
+				<button
+					css={[expanderButtonCss()(showBenefits), benefitsButtonCss]}
+					type="button"
+					aria-expanded={showBenefits}
+					aria-controls="benefits"
+					onClick={() => setShowBenefits(!showBenefits)}
+				>
+					{showBenefits ? 'hide' : 'view'}
+					{showProductTypeShortFriendlyName &&
+						` your ${PRODUCT_TYPES[productType].shortFriendlyName}`}{' '}
+					benefits
+				</button>
+			)}
 			<div
 				css={css`
-					margin: ${space[5]}px 0 ${space[4]}px 0;
+					margin: 0;
+					margin-top: ${space[4]}px;
 				`}
 				hidden={!showBenefits}
 			>
-				<BenefitsSection benefits={benefits} />
+				<BenefitsSection benefits={overrideBenefits ?? benefits} />
 			</div>
-			<button
-				css={[expanderButtonCss()(showBenefits), benefitsButtonCss]}
-				type="button"
-				aria-expanded={showBenefits}
-				aria-controls="benefits"
-				onClick={() => setShowBenefits(!showBenefits)}
-			>
-				{showBenefits ? 'hide' : 'view'} benefits
-			</button>
 		</>
 	);
 };

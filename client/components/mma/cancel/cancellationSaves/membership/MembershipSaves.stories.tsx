@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import { ReactRouterDecorator } from '../../../../../../.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '../../../../../../shared/productTypes';
 import { membershipSupporterCurrencyUSD } from '../../../../../fixtures/productBuilder/testProducts';
@@ -10,6 +10,11 @@ import { MembershipSwitch } from './MembershipSwitch';
 import { SaveOptions } from './SaveOptions';
 import { SwitchThankYou } from './SwitchThankYou';
 import { ValueOfSupport } from './ValueOfSupport';
+
+const membershipWithSortedReasons = PRODUCT_TYPES.membership;
+membershipWithSortedReasons.cancellation!.reasons?.sort((a, b) =>
+	a.reasonId.localeCompare(b.reasonId),
+);
 
 export default {
 	title: 'Pages/MembershipSave',
@@ -41,8 +46,19 @@ export const SwitchOptions: StoryFn<typeof SaveOptions> = () => {
 	return <SaveOptions />;
 };
 
-export const Reasons: StoryFn<typeof SelectReason> = () => {
-	return <SelectReason />;
+export const Reasons: StoryObj<typeof SelectReason> = {
+	render: () => <SelectReason />,
+
+	parameters: {
+		reactRouter: {
+			state: { productDetail: membershipSupporterCurrencyUSD() },
+			container: (
+				<CancellationContainer
+					productType={membershipWithSortedReasons}
+				/>
+			),
+		},
+	},
 };
 
 export const ContinueMembership: StoryFn<

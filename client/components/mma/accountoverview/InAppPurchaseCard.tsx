@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { space, textSans17 } from '@guardian/source/foundations';
 import { Button, Stack } from '@guardian/source/react-components';
 import { InfoSummary } from '@guardian/source-development-kitchen/react-components';
+import { isValid } from 'date-fns';
 import { capitalize } from 'lodash';
 import { useNavigate } from 'react-router';
 import { dateString } from '../../../../shared/dates';
@@ -9,6 +10,7 @@ import type { AppSubscription } from '../../../../shared/mpapiResponse';
 import {
 	AppStore,
 	determineAppStore,
+	isFeast,
 	isPuzzle,
 } from '../../../../shared/mpapiResponse';
 import { Card } from '../shared/Card';
@@ -42,14 +44,33 @@ export const InAppPurchaseCard = ({
 	const navigate = useNavigate();
 
 	const isPuzzleApp = isPuzzle(subscription);
-	const puzzleOrNews = isPuzzleApp ? 'puzzle' : 'news';
+	const isFeastApp = isFeast(subscription);
+
+	let appType = 'news';
+	let appDescription = 'news';
+
+	if (isPuzzleApp) {
+		appType = 'puzzle';
+		appDescription = 'puzzle';
+	} else if (isFeastApp) {
+		appType = 'Feast';
+		appDescription = 'Feast';
+	}
+
 	const appStore = determineAppStore(subscription);
+	// Date construction can still yield an "Invalid Date" object for malformed
+	// timestamps, so we validate immediately and only use the value when valid.
+	const cancellationDate = subscription.cancellationTimestamp
+		? new Date(subscription.cancellationTimestamp)
+		: null;
+	const hasValidCancellationDate =
+		!!cancellationDate && isValid(cancellationDate);
 	return (
 		<Stack space={4}>
-			{subscription.cancellationTimestamp && (
+			{hasValidCancellationDate && (
 				<InfoSummary
 					message={`Your app subscription was cancelled in ${dateString(
-						new Date(subscription.cancellationTimestamp),
+						cancellationDate,
 						'MMMM yyyy',
 					)}.`}
 					context={cancelledAppSubscriptionMessage()}
@@ -60,11 +81,14 @@ export const InAppPurchaseCard = ({
 					backgroundColor={
 						isPuzzleApp
 							? productColour.puzzleApp
+							: isFeastApp
+							? productColour.feastApp ||
+							  productColour.inAppPurchase
 							: productColour.inAppPurchase
 					}
 				>
 					<h3 css={productCardTitleCss(!isPuzzleApp)}>
-						{capitalize(puzzleOrNews)} app
+						{capitalize(appType)} app
 					</h3>
 				</Card.Header>
 				<Card.Section>
@@ -83,8 +107,8 @@ export const InAppPurchaseCard = ({
 						>
 							You have unlimited access to the Guardian{' '}
 							{appStore === AppStore.ANDROID && 'Android'}
-							{appStore === AppStore.IOS && 'iOS'} {puzzleOrNews}{' '}
-							app.
+							{appStore === AppStore.IOS && 'iOS'}{' '}
+							{appDescription} app.
 						</div>
 						<div
 							css={css`

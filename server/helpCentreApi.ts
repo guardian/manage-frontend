@@ -4,6 +4,47 @@ import { s3FilePromise } from './awsIntegration';
 import { conf } from './config';
 import { log } from './log';
 
+type HelpCentreContentType = 'article' | 'topic';
+type HelpCentreFailureReason = 'empty_file' | 'file_not_found';
+
+const captureHelpCentreFetchFailure = ({
+	contentType,
+	reason,
+	filePath,
+	error,
+}: {
+	contentType: HelpCentreContentType;
+	reason: HelpCentreFailureReason;
+	filePath: string;
+	error?: unknown;
+}) => {
+	const errorMetadata =
+		error instanceof Error
+			? {
+					errorName: error.name,
+					errorMessage: error.message,
+					errorCode:
+						typeof (error as { code?: unknown }).code ===
+							'string' ||
+						typeof (error as { code?: unknown }).code === 'number'
+							? String((error as { code?: unknown }).code)
+							: undefined,
+			  }
+			: undefined;
+
+	captureMessage(`Help centre ${contentType} fetch failed.`, {
+		fingerprint: [`help-centre-${contentType}-fetch-${reason}`],
+		contexts: {
+			helpCentreFetch: {
+				contentType,
+				reason,
+				filePath,
+			},
+		},
+		extra: errorMetadata,
+	});
+};
+
 export const getArticleHandler = async (req: Request, res: Response) => {
 	const { article } = req.params;
 	const bucketName = 'manage-help-content';
@@ -13,7 +54,11 @@ export const getArticleHandler = async (req: Request, res: Response) => {
 			if (!data) {
 				const errorMessage = `File ${filePath} was empty`;
 				log.error(errorMessage);
-				captureMessage(errorMessage);
+				captureHelpCentreFetchFailure({
+					contentType: 'article',
+					reason: 'empty_file',
+					filePath,
+				});
 			}
 			const statusCode = data ? 200 : 404;
 			res.status(statusCode).json(data || []);
@@ -21,7 +66,12 @@ export const getArticleHandler = async (req: Request, res: Response) => {
 		.catch((error) => {
 			const errorMessage = `File ${filePath} not found`;
 			log.error(errorMessage, error);
-			captureMessage(errorMessage);
+			captureHelpCentreFetchFailure({
+				contentType: 'article',
+				reason: 'file_not_found',
+				filePath,
+				error,
+			});
 			res.status(404).send();
 		});
 };
@@ -35,7 +85,11 @@ export const getTopicHandler = async (req: Request, res: Response) => {
 			if (!data) {
 				const errorMessage = `File ${filePath} was empty`;
 				log.error(errorMessage);
-				captureMessage(errorMessage);
+				captureHelpCentreFetchFailure({
+					contentType: 'topic',
+					reason: 'empty_file',
+					filePath,
+				});
 			}
 			const statusCode = data ? 200 : 404;
 			res.status(statusCode).json(data || []);
@@ -43,7 +97,12 @@ export const getTopicHandler = async (req: Request, res: Response) => {
 		.catch((error) => {
 			const errorMessage = `File ${filePath} not found`;
 			log.error(errorMessage, error);
-			captureMessage(errorMessage);
+			captureHelpCentreFetchFailure({
+				contentType: 'topic',
+				reason: 'file_not_found',
+				filePath,
+				error,
+			});
 			res.status(404).send();
 		});
 };

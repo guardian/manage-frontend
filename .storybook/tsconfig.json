@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@emotion/react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["../client/**/*", "../shared/**/*", "../types/**/*", "./**/*"],
+  "exclude": ["../node_modules", "../dist", "../cypress"]
+}

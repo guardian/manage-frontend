@@ -7,7 +7,8 @@ import {
 	until,
 } from '@guardian/source/foundations';
 import { useState } from 'react';
-import { Link, Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
+import type { BillingFrequencySwitchPreview } from '@/shared/billingFrequencySwitchTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
 import type {
@@ -30,8 +31,10 @@ import {
 	useAsyncLoader,
 } from '../../../utilities/hooks/useAsyncLoader';
 import {
+	changeSubscriptionBillingFrequencyFetch,
 	createProductDetailFetcher,
 	hasDeliveryRecordsFlow,
+	hasSupporterPlusMonthlyRatePlan,
 	isNonServiceableCountry,
 	shouldHaveHolidayStopsFlow,
 } from '../../../utilities/productUtils';
@@ -48,9 +51,10 @@ import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView
 import { BasicProductInfoTable } from '../shared/BasicProductInfoTable';
 import { LinkButton } from '../shared/Buttons';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
-import { PaymentDetailsTable } from '../shared/PaymentDetailsTable';
+import { PaymentDetailsTableV2 } from '../shared/PaymentDetailsTableV2';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
 import { ProductDescriptionListTable } from '../shared/ProductDescriptionListTable';
+import { TaxExclusiveNotice } from '../shared/TaxExclusiveNotice';
 import { NewsletterOptinSection } from './NewsletterOptinSection';
 import { SixForSixExplainerIfApplicable } from './SixForSixExplainer';
 import { UpdateAmount } from './updateAmount/UpdateAmount';
@@ -64,7 +68,8 @@ const subHeadingTitleCss = `
   `;
 const subHeadingBorderTopCss = `
     border-top: 1px solid ${palette.neutral['86']};
-    margin: ${space[10]}px 0 ${space[5]}px;
+    margin: 50px 0 ${space[5]}px;
+	padding-top: ${space[3]}px;
   `;
 export const subHeadingCss = `
     ${subHeadingBorderTopCss}
@@ -74,11 +79,13 @@ export const subHeadingCss = `
 interface InnerContentProps {
 	manageProductProps: WithProductType<ProductType>;
 	productDetail: ProductDetail;
+	billingFrequencySwitchPreview?: BillingFrequencySwitchPreview;
 }
 
 const InnerContent = ({
 	manageProductProps,
 	productDetail,
+	billingFrequencySwitchPreview,
 }: InnerContentProps) => {
 	const mainPlan = getMainPlan(productDetail.subscription);
 	if (!mainPlan) {
@@ -110,7 +117,8 @@ const InnerContent = ({
 	const showSupporterPlusUpdateAmount =
 		specificProductType.productType === 'supporterplus' &&
 		featureSwitches.supporterPlusUpdateAmount &&
-		!hasCancellationPending;
+		!hasCancellationPending &&
+		productDetail.subscription.autoRenew;
 
 	return (
 		<>
@@ -177,6 +185,7 @@ const InnerContent = ({
 					nextPaymentDate={productDetail.subscription.nextPaymentDate}
 					amountUpdateStateChange={setOveriddenAmount}
 					isTestUser={productDetail.isTestUser}
+					futurePlan={productDetail.subscription.futurePlans[0]}
 				/>
 			) : (
 				<BasicProductInfoTable
@@ -199,32 +208,17 @@ const InnerContent = ({
 				mainPlan={mainPlan}
 				hasCancellationPending={hasCancellationPending}
 			/>
-			<PaymentDetailsTable
+			<PaymentDetailsTableV2
 				productDetail={productDetail}
 				nextPaymentDetails={nextPaymentDetails}
 				hasCancellationPending={hasCancellationPending}
+				specificProductType={specificProductType}
+				billingFrequencySwitchPreview={
+					!overiddenAmount ? billingFrequencySwitchPreview : undefined
+				}
 			/>
-			{productDetail.isPaidTier &&
-				productDetail.subscription.safeToUpdatePaymentMethod &&
-				!productDetail.subscription.payPalEmail && (
-					<LinkButton
-						colour={
-							productDetail.alertText
-								? palette.brand[400]
-								: palette.brand[800]
-						}
-						textColour={
-							productDetail.alertText
-								? palette.neutral[100]
-								: palette.brand[400]
-						}
-						fontWeight={'bold'}
-						alert={!!productDetail.alertText}
-						text="Update payment method"
-						to={`/payment/${specificProductType.urlPart}`}
-						state={{ productDetail: productDetail }}
-					/>
-				)}
+
+			<TaxExclusiveNotice taxExclusive={productDetail.taxExclusive} />
 
 			{specificProductType.delivery?.showAddress?.(
 				productDetail.subscription,
@@ -408,24 +402,30 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 	return (
 		<div
 			css={css`
-				margin: ${space[24]}px 0 0 auto;
+				margin: ${space[10]}px 0 0 auto;
 				${textSans17};
 				color: ${palette.neutral[46]};
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: ${space[3]}px;
 			`}
 		>
-			{shouldContactUsToCancel &&
-				`Would you like to cancel your ${props.friendlyName}? `}
-			<Link
-				css={css`
-					color: ${palette.brand['500']};
-				`}
+			<div>
+				{shouldContactUsToCancel &&
+					`Would you like to cancel your ${props.friendlyName}? `}
+			</div>
+			<LinkButton
+				fontWeight={'bold'}
 				to={'/cancel/' + props.specificProductType.urlPart}
 				state={{ productDetail: props.productDetail }}
-			>
-				{shouldContactUsToCancel
-					? 'Contact us'
-					: `Cancel ${props.friendlyName}`}
-			</Link>
+				text={
+					shouldContactUsToCancel
+						? 'Contact us'
+						: `Cancel ${props.friendlyName}`
+				}
+				hollow
+			/>
 		</div>
 	);
 };
@@ -433,6 +433,65 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 interface ManageProductRouterState {
 	productDetail: ProductDetail;
 }
+
+const billingFrequencyPreviewResponseHandler = (
+	response: Response | Response[],
+): Promise<BillingFrequencySwitchPreview | null> => {
+	const r = Array.isArray(response) ? response[0] : response;
+	if (!r) {
+		return Promise.reject(
+			new Error('Expected billing frequency preview response'),
+		);
+	}
+	// A 400 means the user is ineligible (e.g. non-zero contribution amount).
+	// Treat this as "no preview available" rather than an error to avoid
+	// spurious Sentry noise for an expected business condition.
+	if (r.status === 400) {
+		return Promise.resolve(null);
+	}
+	return JsonResponseHandler(r);
+};
+
+const AsyncLoadedSwitchBillingFrequencyPreview = ({
+	manageProductProps,
+	productDetail,
+}: {
+	manageProductProps: WithProductType<ProductType>;
+	productDetail: ProductDetail;
+}) => {
+	const { data, loadingState } =
+		useAsyncLoader<BillingFrequencySwitchPreview | null>(
+			() =>
+				changeSubscriptionBillingFrequencyFetch(
+					productDetail.isTestUser,
+					productDetail.subscription.subscriptionId,
+					true,
+					'Annual',
+				),
+			billingFrequencyPreviewResponseHandler,
+		);
+
+	if (loadingState == LoadingState.HasError) {
+		// If there's an error loading the preview, just show the regular manage product content
+		return (
+			<InnerContent
+				manageProductProps={manageProductProps}
+				productDetail={productDetail}
+			/>
+		);
+	}
+	if (loadingState == LoadingState.IsLoading) {
+		return <DefaultLoadingView loadingMessage="Loading your product..." />;
+	}
+
+	return (
+		<InnerContent
+			manageProductProps={manageProductProps}
+			productDetail={productDetail}
+			billingFrequencySwitchPreview={data ?? undefined}
+		/>
+	);
+};
 
 const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 	const request = createProductDetailFetcher(
@@ -456,6 +515,15 @@ const AsyncLoadedInnerContent = (props: WithProductType<ProductType>) => {
 	}
 
 	const productDetail = data.products.filter(isProduct)[0];
+
+	if (hasSupporterPlusMonthlyRatePlan(productDetail)) {
+		return (
+			<AsyncLoadedSwitchBillingFrequencyPreview
+				manageProductProps={props}
+				productDetail={productDetail}
+			/>
+		);
+	}
 
 	return (
 		<InnerContent
@@ -482,10 +550,19 @@ export const ManageProduct = (props: WithProductType<ProductType>) => {
 			minimalFooter
 		>
 			{productDetail ? (
-				<InnerContent
-					manageProductProps={props}
-					productDetail={productDetail}
-				/>
+				<>
+					{hasSupporterPlusMonthlyRatePlan(productDetail) ? (
+						<AsyncLoadedSwitchBillingFrequencyPreview
+							manageProductProps={props}
+							productDetail={productDetail}
+						/>
+					) : (
+						<InnerContent
+							manageProductProps={props}
+							productDetail={productDetail}
+						/>
+					)}
+				</>
 			) : (
 				<AsyncLoadedInnerContent {...props} />
 			)}

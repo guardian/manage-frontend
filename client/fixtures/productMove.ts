@@ -1,11 +1,10 @@
-import type { PreviewResponse } from '../../shared/productSwitchTypes';
+import type { SwitchPreviewResponse } from '../../shared/productSwitchTypes';
 
-export const productMovePreviewResponse: PreviewResponse = {
+export const productMovePreviewResponse: SwitchPreviewResponse = {
 	amountPayableToday: 5.0,
 	supporterPlusPurchaseAmount: 12.0,
 	contributionRefundAmount: -5,
 	nextPaymentDate: '2023-03-20',
-	checkChargeAmountBeforeUpdate: false,
 };
 
 export const productMoveSuccessfulResponse = {

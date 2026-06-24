@@ -46,11 +46,11 @@ export const phoneData: PhoneRegion[] = [
 		phoneNumbers: [
 			{
 				phoneNumber: '1-844-632-2010',
-				suffix: '(toll free USA)',
+				suffix: '(toll free CAN/USA)',
 			},
 			{
 				phoneNumber: '+1 917-900-4663',
-				suffix: '(outside USA)',
+				suffix: '(outside CAN/USA)',
 			},
 		],
 	},

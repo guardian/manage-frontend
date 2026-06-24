@@ -297,7 +297,7 @@ export const HolidayReview = () => {
 	};
 
 	return isHolidayStopsResponse(holidayStopResponse) &&
-		productDetail?.tier &&
+		productDetail?.mmaProductKey &&
 		selectedRange &&
 		publicationsImpacted ? (
 		buildActualRenderer(

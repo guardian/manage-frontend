@@ -1,4 +1,5 @@
 # Welcome to [manage.theguardian.com](https://manage.theguardian.com) repo!
+
 🤝 This code is owned by the SR Value team, please feel free to [join our chat room](https://mail.google.com/mail/u/0/#chat/space/AAAAuotUxTg) for advice 🤝
 
 💡 This README contains mainly set-up information. 💡
@@ -42,6 +43,7 @@ NOTE: nginx proxies CODE instances of [`gateway`] for sign-in and [`members-data
 
 1. Install Yarn if you don't already have it.
 1. Follow the [Nginx steps for manage-frontend](https://github.com/guardian/manage-frontend/blob/master/nginx/README.md)
+1. Install AWS CLI `brew install awscli`
 1. Ensure you have a Node.js version manager installed. We recommend using [`fnm`](https://github.com/Schniz/fnm).
 1. Run `fnm use` (or equivalent)
 1. Run `yarn` to install dependencies

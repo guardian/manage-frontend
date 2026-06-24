@@ -33,6 +33,8 @@ import {
 	publicCreateReminderHandler,
 	reactivateReminderHandler,
 } from '../reminders/reminderApi';
+import { stripeCreateCheckoutSessionHandler } from '../stripeCreateCheckoutSessionHandler';
+import { stripeGetCheckoutSessionHandler } from '../stripeGetCheckoutSessionHandler';
 import { stripeSetupIntentHandler } from '../stripeSetupIntentsHandler';
 
 const router = Router();
@@ -159,6 +161,16 @@ router.post(
 		['subscriptionName'],
 	),
 );
+router.post(
+	'/payment/checkout-session',
+	withOktaServerSideValidation,
+	stripeCreateCheckoutSessionHandler,
+);
+router.get(
+	'/payment/checkout-session/:id',
+	withOktaServerSideValidation,
+	stripeGetCheckoutSessionHandler,
+);
 
 router.post(
 	'/validate/payment/dd',
@@ -211,6 +223,36 @@ router.post(
 	productSwitchAPI(
 		'product-move/recurring-contribution-to-supporter-plus/:subscriptionName',
 		'MOVE_PRODUCT',
+		['subscriptionName'],
+	),
+);
+
+router.post(
+	'/product-switch/billing-frequency/:subscriptionName',
+	withOktaServerSideValidation,
+	productSwitchAPI(
+		'product-switch/billing-frequency/:subscriptionName',
+		'MOVE_PRODUCT',
+		['subscriptionName'],
+	),
+);
+
+router.post(
+	'/subscriptions/:subscriptionName/change-plan/preview',
+	withOktaServerSideValidation,
+	productSwitchAPI(
+		'subscriptions/:subscriptionName/change-plan/preview',
+		'UPGRADE_PREVIEW',
+		['subscriptionName'],
+	),
+);
+
+router.post(
+	'/subscriptions/:subscriptionName/change-plan',
+	withOktaServerSideValidation,
+	productSwitchAPI(
+		'subscriptions/:subscriptionName/change-plan',
+		'UPGRADE_EXECUTE',
 		['subscriptionName'],
 	),
 );
@@ -356,7 +398,7 @@ router.post('/reminders/reactivate', reactivateReminderHandler);
 
 router.post('/csp-audit-report-endpoint', (req, res) => {
 	const parsedBody = JSON.parse(req.body.toString());
-	log.warn(JSON.stringify(parsedBody));
+	log.warn(`CSP Violation Report: ${JSON.stringify(parsedBody)}`);
 	res.status(204).end();
 });
 

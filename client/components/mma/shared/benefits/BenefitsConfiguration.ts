@@ -22,7 +22,7 @@ const newsApp = {
 };
 
 const feastApp = {
-	name: 'Unlimited access to the Guardian Feast App',
+	name: 'Unlimited access to the Guardian Feast app',
 	description: 'Make a feast out of anything with the Guardian’s recipe app',
 };
 
@@ -32,8 +32,8 @@ const adFree = {
 };
 
 const guardianWeekly = {
-	name: 'Guardian Weekly.',
-	description: 'Print magazine delivered to your door every week',
+	description:
+		'The Guardian Weekly magazine, delivered to your door every week',
 };
 
 const partnerOffers: ProductBenefit = {
@@ -41,6 +41,43 @@ const partnerOffers: ProductBenefit = {
 	description: 'Opportunities to access to discounts and tickets',
 	specificToRegions: ['AUD'],
 };
+
+const newspaperArchiveBenefit = {
+	description: "Digital access to the Guardian's 200-year newspaper archive",
+};
+
+const productPlusdigitalBenefits = [
+	{
+		description:
+			'Ad-free reading and fewer asks of support on the Guardian app and website',
+	},
+	{
+		description:
+			'Unlimited access to the Guardian app and Guardian Feast app',
+	},
+	{
+		description:
+			'Exclusive supporter newsletters, and a weekly newsletter from The Guardian Weekly editor',
+	},
+	{
+		description:
+			'Access to the Guardian Editions app, where you can enjoy digital versions of our newspapers and magazines on your phone or tablet',
+	},
+];
+
+const digitalPlusBenefits = [
+	{ description: 'Guardian Weekly e-magazine' },
+	{ description: 'The Long Read e-magazine' },
+	newspaperArchiveBenefit,
+	{ description: 'Far fewer asks for support' },
+	{ description: 'Ad-free reading on the Guardian app and website' },
+	{ description: 'Unlimited access to the premium Guardian app' },
+	{
+		description:
+			'Exclusive newsletter for supporters, sent every week from the Guardian newsroom',
+	},
+	{ description: 'Unlimited access to the Guardian Feast app' },
+];
 
 export interface ProductBenefit {
 	name?: string;
@@ -64,7 +101,7 @@ export function filterBenefitByRegion(
 	}
 
 	/*	If we don't have a valid currency
-	 	only show a benefit which is not region specific
+		  only show a benefit which is not region specific
 	*/
 	return benefit.specificToRegions === undefined;
 }
@@ -99,15 +136,26 @@ export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
 			partnerOffers,
 		],
 		membership: [newsApp, uninterruptedReading, supporterNewsletter],
-		digipack: [],
+		digipack: digitalPlusBenefits,
 		digitalvoucher: [],
 		newspaper: [],
 		homedelivery: [],
+		homedeliveryplusdigital: [...productPlusdigitalBenefits],
 		nationaldelivery: [],
+		nationaldeliveryplusdigital: [...productPlusdigitalBenefits],
 		voucher: [],
-		guardianweekly: [],
+		voucherplusdigital: [...productPlusdigitalBenefits],
+		guardianweekly: [
+			guardianWeekly,
+			...productPlusdigitalBenefits,
+			newspaperArchiveBenefit,
+		],
 		guardianadlite: [],
 		guardianpatron: [],
+		observer: [],
+		digitalvoucherobserver: [],
+		digitalvoucherplusdigital: [...productPlusdigitalBenefits],
+		voucherobserver: [],
 	};
 
 export function getUpgradeBenefits(
@@ -135,3 +183,28 @@ export function getUpgradeBenefits(
 		},
 	];
 }
+
+export const getUpsellBenefits = (
+	productType: ProductTypeKeys,
+): ProductBenefit[] => {
+	switch (productType) {
+		case 'supporterplus':
+		default:
+			return [
+				{
+					description: 'Guardian Weekly e-magazine',
+				},
+				{
+					description: 'The Long Read e-magazine',
+				},
+				newspaperArchiveBenefit,
+				{
+					description: 'Daily digital Guardian newspaper',
+				},
+			];
+	}
+};
+
+export const getGuardianWeeklyGiftBenefits = (): ProductBenefit[] => {
+	return [...productPlusdigitalBenefits, newspaperArchiveBenefit];
+};

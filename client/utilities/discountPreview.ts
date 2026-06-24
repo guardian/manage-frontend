@@ -1,15 +1,15 @@
+import type { MonthsOrYears } from '@/shared/dates';
+
 interface NonDiscountedPayments {
 	date: string;
 	amount: number;
 }
 
-export type DiscountPeriodType = `month${'s' | ''}` | `year${'s' | ''}`;
-
 export type DiscountPreviewResponse = {
 	discountedPrice: number;
 	discountPercentage: number; // if this figure is anything other than 100 then you know your dealing with a percentage style offer
 	upToPeriods: number;
-	upToPeriodsType: DiscountPeriodType;
+	upToPeriodsType: MonthsOrYears;
 	firstDiscountedPaymentDate: string;
 	nextNonDiscountedPaymentDate: string;
 	nonDiscountedPayments: NonDiscountedPayments[];

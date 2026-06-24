@@ -46,8 +46,8 @@ export class ProductBuilder {
 		return this.productToBuild;
 	}
 
-	tier(tier: string) {
-		this.productToBuild.tier = tier;
+	product(productKey: string) {
+		this.productToBuild.mmaProductKey = productKey;
 		return this;
 	}
 
@@ -103,6 +103,14 @@ export class ProductBuilder {
 		return this;
 	}
 
+	withDeliveryInstructions(instructions: string) {
+		if (this.productToBuild.subscription.deliveryAddress) {
+			this.productToBuild.subscription.deliveryAddress.instructions =
+				instructions;
+		}
+		return this;
+	}
+
 	cancel() {
 		this.productToBuild.subscription.cancelledAt = true;
 		this.productToBuild.subscription.cancellationEffectiveDate =
@@ -134,7 +142,7 @@ export class ProductBuilder {
 	}
 
 	asPatronTier() {
-		this.productToBuild.tier = 'Patron';
+		this.productToBuild.mmaProductKey = 'Patron';
 		return this;
 	}
 
@@ -145,6 +153,11 @@ export class ProductBuilder {
 				currentPlan.features = 'Fancy Events';
 			}
 		}
+		return this;
+	}
+
+	inBillingCountry(country: string) {
+		this.productToBuild.billingCountry = country;
 		return this;
 	}
 

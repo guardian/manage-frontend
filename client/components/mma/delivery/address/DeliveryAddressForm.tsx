@@ -21,7 +21,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { addressChangeAffectedInfo } from '@/client/utilities/deliveryAddress';
 import { flattenEquivalent } from '@/client/utilities/utils';
 import type { DeliveryAddress } from '@/shared/productResponse';
-import { getSpecificProductTypeFromTier } from '@/shared/productResponse';
+import { getSpecificProductTypeFromProductKey } from '@/shared/productResponse';
 import type { ProductType, WithProductType } from '@/shared/productTypes';
 import { CallCentreEmailAndNumbers } from '../../../shared/CallCenterEmailAndNumbers';
 import { CallCentreNumbers } from '../../../shared/CallCentreNumbers';
@@ -100,8 +100,8 @@ const Form = (props: FormProps) => {
 	)
 		.flatMap(flattenEquivalent)
 		.map(({ productDetail }) => {
-			const specificProductType = getSpecificProductTypeFromTier(
-				productDetail.tier,
+			const specificProductType = getSpecificProductTypeFromProductKey(
+				productDetail.mmaProductKey,
 			);
 			const friendlyProductName = specificProductType.friendlyName;
 			return `${friendlyProductName}`;
@@ -173,7 +173,7 @@ const Form = (props: FormProps) => {
 					<Input
 						label={'Address line 1'}
 						width={30}
-						value={addressStateObject.addressLine1}
+						value={addressStateObject.addressLine1 || ''}
 						changeSetState={addressSetStateObject.setAddressLine1}
 						inErrorState={
 							props.formStatus === formStates.VALIDATION_ERROR &&
@@ -209,7 +209,7 @@ const Form = (props: FormProps) => {
 					<Input
 						label="Postcode/Zipcode"
 						width={11}
-						value={addressStateObject.postcode}
+						value={addressStateObject.postcode || ''}
 						changeSetState={addressSetStateObject.setPostcode}
 						inErrorState={
 							props.formStatus === formStates.VALIDATION_ERROR &&
@@ -229,7 +229,7 @@ const Form = (props: FormProps) => {
 						additionalCSS={css`
 							margin-top: 14px;
 						`}
-						value={addressStateObject.country}
+						value={addressStateObject.country || ''}
 						changeSetState={addressSetStateObject.setCountry}
 						inErrorState={
 							props.formStatus === formStates.VALIDATION_ERROR &&
@@ -439,7 +439,10 @@ export const DeliveryAddressUpdate = (props: WithProductType<ProductType>) => {
 	)
 		.flatMap(flattenEquivalent)
 		.some(({ productType }) => {
-			return productType.productType === 'nationaldelivery';
+			return (
+				productType.productType === 'nationaldelivery' ||
+				productType.productType === 'nationaldeliveryplusdigital'
+			);
 		});
 
 	if (hasNationalDelivery) {

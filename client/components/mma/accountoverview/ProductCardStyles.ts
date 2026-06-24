@@ -2,11 +2,13 @@ import { css } from '@emotion/react';
 import {
 	from,
 	headlineBold20,
-	headlineBold28,
+	headlineBold24,
+	palette,
 	space,
 	textSans17,
 	textSansBold17,
 } from '@guardian/source/foundations';
+import type { ProductCardConfiguration } from './ProductCardConfiguration';
 import { textColour } from './ProductCardConfiguration';
 
 export const productCardTitleCss = (dark?: boolean) => css`
@@ -17,24 +19,26 @@ export const productCardTitleCss = (dark?: boolean) => css`
 	max-width: calc(100% - 97px); // Leave space for gift ribbon
 
 	${from.tablet} {
-		${headlineBold28};
+		${headlineBold24};
 	}
 `;
 
 export const sectionHeadingCss = css`
 	${textSansBold17};
 	margin-top: 0;
-	margin-bottom: ${space[2]}px;
+	margin-bottom: ${space[1]}px;
 `;
 
 export const productDetailLayoutCss = css`
 	> * + * {
-		margin-top: ${space[5]}px;
+		margin-top: ${space[6]}px;
 	}
 
 	${from.tablet} {
 		display: flex;
 		flex-direction: row;
+		margin-bottom: ${space[2]}px;
+
 		> * + * {
 			margin-top: 0;
 			margin-left: auto;
@@ -46,6 +50,11 @@ export const productDetailLayoutCss = css`
 export const keyValueCss = css`
 	${textSans17};
 	margin: 0;
+	margin-bottom: ${space[2]}px;
+
+	${from.tablet} {
+		margin-bottom: 0;
+	}
 
 	div + div {
 		margin-top: ${space[1]}px;
@@ -64,3 +73,27 @@ export const keyValueCss = css`
 		margin-left: 0;
 	}
 `;
+
+export const giftRibbonCss = css`
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 0;
+`;
+
+export const benefitsTextCss = css`
+	${textSans17};
+	margin: 0;
+	margin-bottom: ${space[2]}px;
+`;
+
+export const benefitsSectionBackgroundColour = '#edf5fa';
+
+export const centeredButtonCss = css`
+	justify-content: center;
+`;
+
+export const giftRibbonColour = (cardConfig: ProductCardConfiguration) =>
+	cardConfig.invertText ? palette.brand[400] : palette.brandAlt[400];
+export const giftRibbonCopyColour = (cardConfig: ProductCardConfiguration) =>
+	cardConfig.invertText ? palette.brandAlt[400] : palette.brand[400];

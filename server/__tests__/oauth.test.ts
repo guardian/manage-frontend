@@ -60,7 +60,7 @@ describe('verifyOAuthCookiesLocally', () => {
 				GU_ACCESS_TOKEN: 'access-token',
 				GU_ID_TOKEN: 'id-token',
 			},
-		} as Request;
+		} as unknown as Request;
 
 		const spyOnVerifyAccessToken = jest
 			.spyOn(oauth, 'verifyAccessToken')
@@ -96,7 +96,7 @@ describe('verifyOAuthCookiesLocally', () => {
 				GU_ACCESS_TOKEN: 'invalid-access-token',
 				GU_ID_TOKEN: 'id-token',
 			},
-		} as Request;
+		} as unknown as Request;
 
 		const spyOnVerifyAccessToken = jest
 			.spyOn(oauth, 'verifyAccessToken')
@@ -162,7 +162,7 @@ describe('setLocalStateFromIdTokenOrUserCookie', () => {
 				GU_U: 'gu_u',
 				SC_GU_U: 'sc_gu_u',
 			},
-		} as Request;
+		} as unknown as Request;
 		const res = {} as Response;
 		const spyOnSetIdentityLocalState = jest
 			.spyOn(identityLocalState, 'setIdentityLocalState')
@@ -211,7 +211,7 @@ describe('setLocalStateFromIdTokenOrUserCookie', () => {
 				GU_U: 'gu_u',
 				SC_GU_U: 'sc_gu_u',
 			},
-		} as Request;
+		} as unknown as Request;
 		const res = {} as Response;
 		const spyOnSetIdentityLocalState = jest
 			.spyOn(identityLocalState, 'setIdentityLocalState')
@@ -238,7 +238,7 @@ describe('setLocalStateFromIdTokenOrUserCookie', () => {
 			cookies: {
 				SC_GU_U: 'sc_gu_u',
 			},
-		} as Request;
+		} as unknown as Request;
 		const res = {} as Response;
 		const spyOnSetIdentityLocalState = jest
 			.spyOn(identityLocalState, 'setIdentityLocalState')

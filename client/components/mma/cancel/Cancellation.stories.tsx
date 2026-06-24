@@ -4,47 +4,45 @@ import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
+	annualContributionPaidByCardUSA,
+	annualContributionPaidByCardWithCurrency,
 	contributionCancelled,
 	contributionPaidByCard,
 	contributionPaidByPayPal,
 	guardianAdLite,
 	guardianAdLiteCancelled,
 	guardianAdLiteInTrialPeriod,
+	guardianWeeklyCancelled,
 	guardianWeeklyPaidByCard,
 	supporterPlus,
 	supporterPlusAnnual,
 	supporterPlusCancelled,
 	supporterPlusMonthlyAllAccessDigital,
 } from '../../../fixtures/productBuilder/testProducts';
+import { usePrintCancellationStore } from '../../../stores/PrintCancellationStore';
 import { CancellationContainer } from './CancellationContainer';
 import { CancellationJourneyFunnel } from './CancellationJourneyFunnel';
+import type { OptionalCancellationReasonId } from './cancellationReason';
 import { CancellationReasonReview } from './CancellationReasonReview';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { CancelAlternativeConfirmed } from './cancellationSaves/CancelAlternativeConfirmed';
+import { CancelAlternativeContactUs } from './cancellationSaves/CancelAlternativeContactUs';
 import { CancelAlternativeOffer } from './cancellationSaves/CancelAlternativeOffer';
 import { CancelAlternativeReview } from './cancellationSaves/CancelAlternativeReview';
-import { contributionsCancellationReasons } from './contributions/ContributionsCancellationReasons';
-import { gwCancellationReasons } from './gw/GwCancellationReasons';
+import { CancelAlternativeSwitch } from './cancellationSaves/CancelAlternativeSwitch';
+import { CancelAlternativeSwitchReview } from './cancellationSaves/CancelAlternativeSwitchReview';
+import { CancelSwitchConfirmed } from './cancellationSaves/CancelSwitchConfirmed';
 import { ConfirmCancellation } from './stages/ConfirmCancellation';
 import { ExecuteCancellation } from './stages/ExecuteCancellation';
-import {
-	otherCancellationReason,
-	supporterplusCancellationReasons,
-} from './supporterplus/SupporterplusCancellationReasons';
 
-const contributions = PRODUCT_TYPES.contributions;
-contributions.cancellation!.reasons = contributionsCancellationReasons.concat(
-	otherCancellationReason,
+const contributionWithSortedReasons = PRODUCT_TYPES.contributions;
+contributionWithSortedReasons.cancellation!.reasons?.sort((a, b) =>
+	a.reasonId.localeCompare(b.reasonId),
 );
 
-const guardianweekly = PRODUCT_TYPES.guardianweekly;
-guardianweekly.cancellation!.reasons = gwCancellationReasons.concat(
-	otherCancellationReason,
-);
-
-const supporterplus = PRODUCT_TYPES.supporterplus;
-supporterplus.cancellation!.reasons = supporterplusCancellationReasons.concat(
-	otherCancellationReason,
+const guardianWeeklyWithSortedReasons = PRODUCT_TYPES.guardianweekly;
+guardianWeeklyWithSortedReasons.cancellation!.reasons?.sort((a, b) =>
+	a.reasonId.localeCompare(b.reasonId),
 );
 
 export default {
@@ -53,9 +51,6 @@ export default {
 	decorators: [ReactRouterDecorator],
 	parameters: {
 		layout: 'fullscreen',
-		reactRouter: {
-			state: { productDetail: contributionPaidByPayPal() },
-		},
 	},
 } as Meta<typeof CancellationContainer>;
 
@@ -64,24 +59,191 @@ export const SelectReason: StoryObj<typeof CancellationReasonSelection> = {
 
 	parameters: {
 		reactRouter: {
+			state: { productDetail: contributionPaidByPayPal() },
 			container: (
 				<CancellationContainer
-					productType={PRODUCT_TYPES.contributions}
+					productType={contributionWithSortedReasons}
 				/>
 			),
 		},
 	},
 };
 
-export const ContactCustomerService: StoryObj<
-	typeof CancellationReasonSelection
-> = {
+export const ContactCustomerService: StoryObj<typeof CancellationContainer> = {
 	render: () => <CancellationJourneyFunnel />,
 
 	parameters: {
 		reactRouter: {
 			state: { productDetail: guardianWeeklyPaidByCard() },
-			container: <CancellationContainer productType={guardianweekly} />,
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.guardianweekly}
+				/>
+			),
+		},
+	},
+};
+
+const seedGuardianWeeklyPrintStore = ({
+	selectedReasonId = 'mma_editorial',
+	caseId = 'caseId',
+}: {
+	selectedReasonId?: OptionalCancellationReasonId;
+	caseId?: string;
+} = {}) => {
+	const productDetail = guardianWeeklyPaidByCard();
+	usePrintCancellationStore.getState().clearAll();
+	usePrintCancellationStore.setState({
+		productDetail,
+		selectedReasonId,
+		cancellationFeedback: '',
+		caseId,
+		holidayStops: [],
+		deliveryCredits: [],
+	});
+};
+
+export const PrintGuardianWeeklySelectReason: StoryObj<
+	typeof CancellationReasonSelection
+> = {
+	render: () => {
+		usePrintCancellationStore.getState().clearAll();
+		return <CancellationReasonSelection />;
+	},
+	parameters: {
+		reactRouter: {
+			state: { productDetail: guardianWeeklyPaidByCard() },
+			container: (
+				<CancellationContainer
+					productType={guardianWeeklyWithSortedReasons}
+				/>
+			),
+		},
+	},
+};
+
+export const PrintGuardianWeeklyReview: StoryObj<typeof CancellationContainer> =
+	{
+		render: () => {
+			seedGuardianWeeklyPrintStore({
+				selectedReasonId: 'mma_editorial',
+			});
+			return <CancellationReasonReview />;
+		},
+		parameters: {
+			msw: [
+				http.post('/api/case', () =>
+					HttpResponse.json({ id: 'caseId' }),
+				),
+				http.get('/api/holidays/**', () =>
+					HttpResponse.json({ publicationsToRefund: [] }),
+				),
+				http.get('/api/delivery-records/**', () =>
+					HttpResponse.json({ results: [] }),
+				),
+			],
+			reactRouter: {
+				state: { productDetail: guardianWeeklyPaidByCard() },
+				container: (
+					<CancellationContainer
+						productType={guardianWeeklyWithSortedReasons}
+					/>
+				),
+			},
+		},
+	};
+
+export const PrintGuardianWeeklyConfirm: StoryObj<
+	typeof CancellationContainer
+> = {
+	render: () => {
+		seedGuardianWeeklyPrintStore({
+			selectedReasonId: 'mma_editorial',
+			caseId: 'caseId',
+		});
+		return <ConfirmCancellation />;
+	},
+	parameters: {
+		reactRouter: {
+			state: { productDetail: guardianWeeklyPaidByCard() },
+			container: (
+				<CancellationContainer
+					productType={guardianWeeklyWithSortedReasons}
+				/>
+			),
+		},
+	},
+};
+
+export const PrintGuardianWeeklyExecute: StoryObj<typeof ExecuteCancellation> =
+	{
+		render: () => {
+			seedGuardianWeeklyPrintStore({
+				selectedReasonId: 'mma_editorial',
+				caseId: 'caseId',
+			});
+			return <ExecuteCancellation />;
+		},
+		parameters: {
+			msw: [
+				http.patch('/api/case/**', () =>
+					HttpResponse.json({ id: 'caseId' }),
+				),
+				http.get('/api/me/mma/**', () =>
+					HttpResponse.json(
+						toMembersDataApiResponse(guardianWeeklyCancelled()),
+					),
+				),
+				http.post(
+					'/api/cancel/**',
+					() =>
+						new HttpResponse(null, {
+							status: 201,
+						}),
+				),
+			],
+			reactRouter: {
+				state: { productDetail: guardianWeeklyPaidByCard() },
+				container: (
+					<CancellationContainer
+						productType={guardianWeeklyWithSortedReasons}
+					/>
+				),
+			},
+		},
+	};
+
+export const PrintGuardianWeeklyExecuteEscalated: StoryObj<
+	typeof ExecuteCancellation
+> = {
+	render: () => {
+		const productDetail = guardianWeeklyPaidByCard();
+		usePrintCancellationStore.getState().clearAll();
+		usePrintCancellationStore.setState({
+			productDetail,
+			selectedReasonId: 'mma_editorial',
+			cancellationFeedback: '',
+			caseId: 'caseId',
+			// Outstanding holiday stops trigger the escalation branch in the
+			// print execute step.
+			holidayStops: [{}],
+			deliveryCredits: [],
+		});
+		return <ExecuteCancellation />;
+	},
+	parameters: {
+		msw: [
+			http.patch('/api/case/**', () =>
+				HttpResponse.json({ id: 'caseId' }),
+			),
+		],
+		reactRouter: {
+			state: { productDetail: guardianWeeklyPaidByCard() },
+			container: (
+				<CancellationContainer
+					productType={guardianWeeklyWithSortedReasons}
+				/>
+			),
 		},
 	},
 };
@@ -235,7 +397,11 @@ export const OfferMonthly: StoryObj<typeof CancellationContainer> = {
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
-			container: <CancellationContainer productType={supporterplus} />,
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
 		},
 	},
 };
@@ -262,7 +428,107 @@ export const OfferYearly: StoryObj<typeof CancellationContainer> = {
 				nextNonDiscountedPaymentDate: '2025-05-30',
 				nonDiscountedPayments: [{ date: '2025-05-30', amount: 120 }],
 			},
-			container: <CancellationContainer productType={supporterplus} />,
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
+		},
+	},
+};
+
+export const SwitchYearly: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeSwitch />;
+	},
+
+	parameters: {
+		msw: [
+			http.post('/api/case', () => {
+				return HttpResponse.json({ id: 'caseId' });
+			}),
+		],
+		reactRouter: {
+			state: {
+				productDetail: annualContributionPaidByCardWithCurrency(
+					'GBP',
+					'United Kingdom',
+					6000,
+				),
+				selectedReasonId: 'mma_break_from_news',
+				supporterPlusPurchaseAmount: 120,
+				nextPaymentDate: '2025-05-30',
+				amountPayableToday: 58.39,
+				contributionRefundAmount: -1.61,
+				discount: {
+					discountedPrice: 60,
+					discountPercentage: 50,
+					upToPeriods: 1,
+					upToPeriodsType: 'Years',
+				},
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
+		},
+	},
+};
+
+export const SwitchYearlyOutsideUK: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeSwitch />;
+	},
+
+	parameters: {
+		msw: [
+			http.post('/api/case', () => {
+				return HttpResponse.json({ id: 'caseId' });
+			}),
+		],
+		reactRouter: {
+			state: {
+				productDetail: annualContributionPaidByCardUSA(6000),
+				supporterPlusPurchaseAmount: 120,
+				nextPaymentDate: '2025-05-30',
+				amountPayableToday: 58.39,
+				contributionRefundAmount: -1.61,
+				discount: {
+					discountedPrice: 60,
+					discountPercentage: 50,
+					upToPeriods: 1,
+					upToPeriodsType: 'Years',
+				},
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
+		},
+	},
+};
+
+export const SwitchContactUs: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeContactUs />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: annualContributionPaidByCardWithCurrency(
+					'GBP',
+					'United Kingdom',
+					6000,
+				),
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
 		},
 	},
 };
@@ -284,7 +550,11 @@ export const OfferReviewMonthly: StoryObj<typeof CancellationContainer> = {
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
-			container: <CancellationContainer productType={supporterplus} />,
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
 		},
 		msw: [
 			http.post('/api/discounts/apply-discount', () => {
@@ -313,7 +583,51 @@ export const OfferReviewYearly: StoryObj<typeof CancellationContainer> = {
 				nextNonDiscountedPaymentDate: '2025-05-30',
 				nonDiscountedPayments: [{ date: '2025-05-30', amount: 120 }],
 			},
-			container: <CancellationContainer productType={supporterplus} />,
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
+		},
+		msw: [
+			http.post('/api/discounts/apply-discount', () => {
+				return new HttpResponse(null, {
+					status: 201,
+				});
+			}),
+		],
+	},
+};
+
+export const SwitchReviewYearly: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelAlternativeSwitchReview />;
+	},
+
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: annualContributionPaidByCardWithCurrency(
+					'GBP',
+					'United Kingdom',
+					6000,
+				),
+				supporterPlusPurchaseAmount: 120,
+				nextPaymentDate: '2025-05-30',
+				amountPayableToday: 58.39,
+				contributionRefundAmount: -1.61,
+				discount: {
+					discountedPrice: 60,
+					discountPercentage: 50,
+					upToPeriods: 1,
+					upToPeriodsType: 'Years',
+				},
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
 		},
 		msw: [
 			http.post('/api/discounts/apply-discount', () => {
@@ -332,12 +646,17 @@ export const OfferConfirmedMonthly: StoryObj<typeof CancellationContainer> = {
 	parameters: {
 		reactRouter: {
 			state: {
+				productDetail: contributionPaidByPayPal(),
 				upToPeriods: 2,
 				upToPeriodsType: 'months',
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
-			container: <CancellationContainer productType={supporterplus} />,
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
 		},
 	},
 };
@@ -358,7 +677,11 @@ export const OfferConfirmedYearly: StoryObj<typeof CancellationContainer> = {
 				nextNonDiscountedPaymentDate: '2025-05-30',
 				nonDiscountedPayments: [{ date: '2025-05-30', amount: 120 }],
 			},
-			container: <CancellationContainer productType={supporterplus} />,
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.supporterplus}
+				/>
+			),
 		},
 	},
 };
@@ -376,6 +699,7 @@ export const Pause: StoryObj<typeof CancellationContainer> = {
 		],
 		reactRouter: {
 			state: {
+				productDetail: contributionPaidByPayPal(),
 				discountedPrice: 0,
 				discountPercentage: 100,
 				upToPeriods: 2,
@@ -384,7 +708,11 @@ export const Pause: StoryObj<typeof CancellationContainer> = {
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
-			container: <CancellationContainer productType={contributions} />,
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
 		},
 	},
 };
@@ -397,6 +725,7 @@ export const PauseReview: StoryObj<typeof CancellationContainer> = {
 	parameters: {
 		reactRouter: {
 			state: {
+				productDetail: contributionPaidByPayPal(),
 				discountedPrice: 0,
 				discountPercentage: 100,
 				upToPeriods: 2,
@@ -405,7 +734,11 @@ export const PauseReview: StoryObj<typeof CancellationContainer> = {
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
-			container: <CancellationContainer productType={contributions} />,
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
 		},
 		msw: [
 			http.post('/api/discounts/apply-discount', () => {
@@ -424,12 +757,17 @@ export const PauseConfirmed: StoryObj<typeof CancellationContainer> = {
 	parameters: {
 		reactRouter: {
 			state: {
+				productDetail: contributionPaidByPayPal(),
 				upToPeriods: 2,
 				upToPeriodsType: 'months',
 				nextNonDiscountedPaymentDate: '2024-07-30',
 				nonDiscountedPayments: [{ date: '2024-07-30', amount: 14.99 }],
 			},
-			container: <CancellationContainer productType={contributions} />,
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
 		},
 	},
 };
@@ -461,6 +799,38 @@ export const SupportplusCancelConfirm: StoryObj<typeof CancellationContainer> =
 			},
 		},
 	};
+
+export const SwitchYearlyConfirmed: StoryObj<typeof CancellationContainer> = {
+	render: () => {
+		return <CancelSwitchConfirmed />;
+	},
+	parameters: {
+		reactRouter: {
+			state: {
+				productDetail: annualContributionPaidByCardWithCurrency(
+					'GBP',
+					'United Kingdom',
+					6000,
+				),
+				supporterPlusPurchaseAmount: 120,
+				nextPaymentDate: '2025-05-30',
+				amountPayableToday: 58.39,
+				contributionRefundAmount: -1.61,
+				discount: {
+					discountedPrice: 60,
+					discountPercentage: 50,
+					upToPeriods: 1,
+					upToPeriodsType: 'Years',
+				},
+			},
+			container: (
+				<CancellationContainer
+					productType={PRODUCT_TYPES.contributions}
+				/>
+			),
+		},
+	},
+};
 
 export const ConfirmationContribution: StoryObj<typeof ExecuteCancellation> = {
 	render: () => {

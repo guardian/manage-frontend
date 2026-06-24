@@ -9,7 +9,7 @@ import {
 	textSansBold20,
 	until,
 } from '@guardian/source/foundations';
-import { androidAppUrl, iosAppUrl } from '@/shared/externalLinks';
+import { StoreLinksMapKey } from '@/shared/externalLinks';
 import { AndroidPlayStoreButton } from './assets/AndroidPlayStoreButton';
 import { AppleAppStoreButton } from './assets/AppleAppStoreButton';
 
@@ -18,6 +18,7 @@ interface DownloadAppCtaVariation1Props {
 }
 
 const containerCss = css`
+	border-radius: ${space[2]}px;
 	background-color: #e1eaf7;
 	h4 {
 		${textSansBold17};
@@ -28,7 +29,7 @@ const containerCss = css`
 		margin: ${space[1]}px ${space[5]}px 0 0;
 	}
 	${from.tablet} {
-		padding: ${space[6]}px 0 0 ${space[6]}px;
+		padding: ${space[3]}px 0 0 ${space[3]}px;
 		h4 {
 			${textSansBold20};
 		}
@@ -100,14 +101,14 @@ export const DownloadAppCtaVariation1 = (
 					</p>
 					<div css={appStoreBtnsContainerCss}>
 						<AppleAppStoreButton
-							link={iosAppUrl}
+							linkKey={StoreLinksMapKey.Ios}
 							overrideButtonHeight="36px"
 							additionalCss={css`
 								margin-right: ${space[3]}px;
 							`}
 						/>
 						<AndroidPlayStoreButton
-							link={androidAppUrl}
+							linkKey={StoreLinksMapKey.Android}
 							overrideButtonHeight="36px"
 						/>
 					</div>
@@ -115,7 +116,7 @@ export const DownloadAppCtaVariation1 = (
 				<div css={heroImageContainerCss}>
 					<img
 						css={heroImageCss}
-						src="https://i.guim.co.uk/img/media/b78dc3cead7cdb7c2b31367a156ae34335239757/0_0_5440_2960/1000.png?width=1000&quality=75&s=74b7b2b58c094ef7534bb3e08a8e848c"
+						src="https://i.guim.co.uk/img/media/791a0ae1bad0623ee0f1d17fa0a96e2a5ea0f2fc/0_0_1360_740/1360.png?width=800&quality=75&s=662372d6dc60554a7970446351376715"
 					/>
 				</div>
 			</div>

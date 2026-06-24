@@ -1,5 +1,5 @@
 import type { StripePublicKeySet } from '../server/stripeSetupIntentConfig';
-import type { AbTest, OphanComponentEvent } from './ophanTypes';
+import type { AbTest } from './ophanTypes';
 
 interface CommonGlobals {
 	domain: string;
@@ -16,16 +16,12 @@ export interface IdentityDetails {
 export interface Globals extends CommonGlobals {
 	spaTransition?: true;
 	INTCMP?: string;
-	ophan?: {
-		viewId: string;
-		record: (payload: { componentEvent: OphanComponentEvent }) => void;
-		sendInitialEvent: (url?: string, referer?: string) => void;
-	};
 	abTest?: AbTest;
 	identityDetails: IdentityDetails;
 	recaptchaPublicKey?: string;
 	stripeKeyAustralia?: StripePublicKeySet;
 	stripeKeyDefaultCurrencies?: StripePublicKeySet;
+	stripeKeyTortoiseMedia?: StripePublicKeySet;
 }
 interface QuantumMetricAPIPartial {
 	sendEvent: (
@@ -38,6 +34,7 @@ interface QuantumMetricAPIPartial {
 declare global {
 	interface Window {
 		guardian: Globals;
+		Cypress: unknown;
 		QuantumMetricAPI: QuantumMetricAPIPartial;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- assume we don't know the range of possible types for the embedded_svc attribute?
 		embedded_svc: any;

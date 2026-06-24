@@ -7,6 +7,7 @@ import {
 } from '@guardian/source/react-components';
 import { ErrorSummary } from '@guardian/source-development-kitchen/react-components';
 import { useState } from 'react';
+import type { DirectDebitGatewayOwner } from '@/shared/directDebit';
 import { processResponse } from '../../../../utilities/utils';
 import { cleanSortCode } from '../../shared/DirectDebitDisplay';
 import type { FieldChangeEvent } from '../FieldWrapper';
@@ -50,6 +51,7 @@ interface DirectDebitUpdateFormProps {
 	executePaymentUpdate: (
 		newPaymentMethodDetail: NewPaymentMethodDetail,
 	) => Promise<unknown>;
+	gatewayOwner?: DirectDebitGatewayOwner;
 }
 
 export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
@@ -112,6 +114,7 @@ export const DirectDebitInputForm = (props: DirectDebitUpdateFormProps) => {
 			accountName,
 			accountNumber,
 			sortCode,
+			gatewayOwner: props.gatewayOwner,
 		});
 
 		props.newPaymentMethodDetailUpdater(newPaymentMethod);

@@ -3,6 +3,7 @@ import { palette, space } from '@guardian/source/foundations';
 import { parseDate } from '../../../../shared/dates';
 import type {
 	BillingPeriod,
+	PaidSubscriptionPlan,
 	Subscription,
 	SubscriptionPlan,
 } from '../../../../shared/productResponse';
@@ -21,6 +22,7 @@ export interface NextPaymentDetails {
 	isNewPaymentValue?: boolean;
 	nextPaymentDateKey: string;
 	nextPaymentDateValue?: string;
+	currentPriceValue?: string;
 }
 
 export const getNextPaymentDetails = (
@@ -44,17 +46,13 @@ export const getNextPaymentDetails = (
 				? planAfterMainPlan.billingPeriod
 				: mainPlan.billingPeriod;
 
-		const paymentKey = `Next ${augmentBillingPeriod(
-			paymentInterval,
-		)} payment`;
-
 		const getPaymentValue = (shortVersion?: 'short') => {
 			if (subscription.readerType === 'Patron') {
 				return 'not applicable';
 			}
 			const amount =
 				overiddenAmount ||
-				(subscription.nextPaymentPrice ?? mainPlan.price) / 100;
+				(subscription.nextPaymentPrice ?? mainPlan.price) / 100; // we have kept the null coalessing check in here incase MDAPI returns a null value for nextPaymentPrice (not expected)
 			if (shortVersion === 'short') {
 				return `${mainPlan.currency}${
 					Number.isInteger(amount) ? amount : amount.toFixed(2)
@@ -81,14 +79,37 @@ export const getNextPaymentDetails = (
 			mainPlan.price !== planAfterMainPlan.price &&
 			!isSixForSix(mainPlan.name);
 
+		const currentPaidSubscriptionPlan: PaidSubscriptionPlan | undefined = (
+			subscription.currentPlans[0] as PaidSubscriptionPlan
+		)?.price
+			? (subscription.currentPlans[0] as PaidSubscriptionPlan)
+			: undefined;
+
+		const hasBillingFrequencySwitch =
+			isNewPaymentValue &&
+			planAfterMainPlan &&
+			mainPlan.billingPeriod !== planAfterMainPlan.billingPeriod;
+
+		const paymentIntervalToUse = hasBillingFrequencySwitch
+			? planAfterMainPlan.billingPeriod
+			: paymentInterval;
+		const paymentKey = `Next ${augmentBillingPeriod(
+			paymentIntervalToUse,
+		)} payment`;
+
 		return {
 			paymentInterval,
 			paymentKey,
 			paymentValue: getPaymentValue(),
 			paymentValueShort: getPaymentValue('short'),
 			isNewPaymentValue,
-			nextPaymentDateKey: 'Next payment date',
+			nextPaymentDateKey: 'Next payment due',
 			nextPaymentDateValue,
+			currentPriceValue: currentPaidSubscriptionPlan
+				? `${currentPaidSubscriptionPlan.currency}${(
+						currentPaidSubscriptionPlan.price / 100
+				  ).toFixed(2)} ${currentPaidSubscriptionPlan.currencyISO}`
+				: getPaymentValue(),
 		};
 	}
 };

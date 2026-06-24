@@ -19,6 +19,7 @@ export const user = {
 			firstName: 'Test',
 			secondName: 'User',
 			registrationLocation: 'Other',
+			registrationLocationState: 'Other',
 			legacyPackages: 'CRE,RCO',
 			legacyProducts: 'CRE,RCO',
 		},

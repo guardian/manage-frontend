@@ -76,7 +76,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 				GU_SO: '2000',
 			},
 			originalUrl: '/profile',
-		} as Request;
+		} as unknown as Request;
 
 		const res = {
 			clearCookie: jest.fn(),
@@ -129,7 +129,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 				GU_SO: '1000',
 			},
 			originalUrl: '/profile',
-		} as Request;
+		} as unknown as Request;
 
 		const res = {
 			clearCookie: jest.fn(),
@@ -177,7 +177,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 			},
 			cookies: {},
 			originalUrl: '/profile',
-		} as Request;
+		} as unknown as Request;
 		const res = {
 			clearCookie: jest.fn(),
 		};
@@ -218,7 +218,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 			},
 			cookies: {},
 			originalUrl: '/profile',
-		} as Request;
+		} as unknown as Request;
 		const res = {
 			clearCookie: jest.fn(),
 		};
@@ -267,7 +267,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 				SC_GU_U: 'sc_gu_u',
 			},
 			originalUrl: '/profile',
-		} as Request;
+		} as unknown as Request;
 		const res = {
 			clearCookie: jest.fn(),
 		};
@@ -313,7 +313,7 @@ describe('authenticateWithOAuth middleware - route requires signin', () => {
 				GU_SO: '1000',
 			},
 			originalUrl: '/profile',
-		} as Request;
+		} as unknown as Request;
 
 		const res = {
 			clearCookie: jest.fn(),
@@ -364,7 +364,7 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 				GU_SO: '2000',
 			},
 			originalUrl: '/help-centre',
-		} as Request;
+		} as unknown as Request;
 
 		const res = {
 			clearCookie: jest.fn(),
@@ -408,7 +408,7 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 				GU_SO: '1000',
 			},
 			originalUrl: '/help-centre',
-		} as Request;
+		} as unknown as Request;
 
 		const res = {
 			clearCookie: jest.fn(),
@@ -443,7 +443,7 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 				GU_U: 'gu_u',
 			},
 			originalUrl: '/help-centre',
-		} as Request;
+		} as unknown as Request;
 
 		const res = {};
 
@@ -472,7 +472,7 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 			cookies: {},
 			signedCookies: {},
 			originalUrl: '/help-centre',
-		} as Request;
+		} as unknown as Request;
 
 		const next = jest.fn();
 
@@ -493,7 +493,7 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 				SC_GU_U: 'sc_gu_u',
 			},
 			originalUrl: '/help-centre',
-		} as Request;
+		} as unknown as Request;
 		const res = {
 			clearCookie: jest.fn(),
 		};
@@ -539,7 +539,7 @@ describe('authenticateWithOAuth middleware - route does not require signin', () 
 				GU_SO: '1000',
 			},
 			originalUrl: '/profile',
-		} as Request;
+		} as unknown as Request;
 
 		const res = {
 			clearCookie: jest.fn(),

@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import { space, textSans17 } from '@guardian/source/foundations';
 import { Button, Stack } from '@guardian/source/react-components';
-import { useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router';
 import { dateString } from '../../../../../../shared/dates';
 import {
@@ -10,17 +9,12 @@ import {
 } from '../../../../../styles/ButtonStyles';
 import { headingCss } from '../../../../../styles/GenericStyles';
 import { ProgressStepper } from '../../../shared/ProgressStepper';
-import type {
-	CancellationContextInterface,
-	CancellationRouterState,
-} from '../../CancellationContainer';
-import { CancellationContext } from '../../CancellationContainer';
+import type { CancellationRouterState } from '../../CancellationContainer';
+import { useCancellationContext } from '../../CancellationContainer';
 
 export const ValueOfSupport = () => {
 	const navigate = useNavigate();
-	const cancellationContext = useContext(
-		CancellationContext,
-	) as CancellationContextInterface;
+	const cancellationContext = useCancellationContext();
 	const productDetail = cancellationContext.productDetail;
 
 	const location = useLocation();

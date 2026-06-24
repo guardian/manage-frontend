@@ -8,6 +8,7 @@ export interface StripePublicKeySet {
 export interface StripePublicKeys {
 	stripeKeyAustralia: StripePublicKeySet;
 	stripeKeyDefaultCurrencies: StripePublicKeySet;
+	stripeKeyTortoiseMedia: StripePublicKeySet;
 }
 
 // The first key from this object is the Australian/AUD one, the second key is for rest of the world

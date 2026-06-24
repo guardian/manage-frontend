@@ -37,12 +37,14 @@ describe('Settings Form', () => {
 
 		// Check form correctly submits text field and dropdown value
 		cy.findAllByLabelText('Last Name').type('NewSurname');
-		cy.findByLabelText('Location').select('Prefer not to say');
+		cy.findByLabelText('Location').select('United States');
+		cy.findByLabelText('State/Territory').select('California');
 		cy.findAllByText('Save changes').click();
 		cy.wait('@updatedUserResponse')
 			.its('request.body')
 			.should('have.deep.property', 'privateFields', {
-				registrationLocation: 'Prefer not to say',
+				registrationLocation: 'United States',
+				registrationLocationState: 'California',
 				secondName: 'UserNewSurname',
 			});
 

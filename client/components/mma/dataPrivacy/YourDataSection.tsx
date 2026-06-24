@@ -66,19 +66,18 @@ export const YourDataSection = (props: YourDataSectionProps) => {
 			<p css={dataPrivacyParagraphCss}>We do this by:</p>
 			<ul css={dataPrivacyUnorderedListCss}>
 				<li>
-					Analysing your account data to predict what you might be
-					interested in
-				</li>
-				<li>
 					Checking if you are already a customer of other trusted
 					partners
+				</li>
+				<li>
+					Generating random identifiers based on your email address
+					for advertising and marketing
 				</li>
 			</ul>
 
 			<p css={dataPrivacyParagraphCss}>
 				Advertising is a crucial source of our funding. You won't see
-				more ads, but your advertising may be more relevant. We don’t
-				share your email with third parties.
+				more ads, but your advertising may be more relevant.
 			</p>
 		</>
 	);

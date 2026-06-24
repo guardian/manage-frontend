@@ -1,8 +1,10 @@
 import { css, Global } from '@emotion/react';
 import { ABProvider, useAB } from '@guardian/ab-react';
+import type { EventPayload } from '@guardian/ophan-tracker-js/MMA';
 import { breakpoints, from, space } from '@guardian/source/foundations';
+import * as Sentry from '@sentry/browser';
 import type { ReactNode } from 'react';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { fonts } from '@/client/styles/fonts';
 import {
@@ -22,6 +24,7 @@ import { getCookie } from '../../utilities/cookies';
 import { useAnalytics } from '../../utilities/hooks/useAnalytics';
 import { useConsent } from '../../utilities/hooks/useConsent';
 import { useScrollToTop } from '../../utilities/hooks/useScrollToTop';
+import { lazyWithRetry } from '../../utilities/lazyWithRetry';
 import {
 	hasDeliveryFlow,
 	hasDeliveryRecordsFlow,
@@ -37,52 +40,81 @@ import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
 import { SignInError } from './signInError/SignInError';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Ophan events are diverse (and unguessable?)
-const record = (event: any) => {
-	if (window.guardian?.ophan?.record) {
-		window.guardian.ophan.record(event);
-	}
-};
-
 initFeatureSwitchUrlParamOverride();
 
 // The code below uses magic comments to instruct Webpack on
 // how to name the chunks these dynamic imports produce
 // More information: https://webpack.js.org/api/module-methods/#magic-comments
 
-const AccountOverview = lazy(() =>
+const AccountOverview = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "AccountOverview" */ './accountoverview/AccountOverview'
 	).then(({ AccountOverview }) => ({ default: AccountOverview })),
 );
-const Billing = lazy(() =>
+
+const Billing = lazyWithRetry(() =>
 	import(/* webpackChunkName: "Billing" */ './billing/Billing').then(
 		({ Billing }) => ({ default: Billing }),
 	),
 );
+const BillingDetailUpdateContainer = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "BillingDetailUpdate" */ './billing/BillingDetailUpdateContainer'
+	).then(({ BillingDetailUpdateContainer }) => ({
+		default: BillingDetailUpdateContainer,
+	})),
+);
+const BillingDetailUpdateSwitchFrequency = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "BillingDetailSwitchFrequencyUpdate" */ './billing/BillingDetailUpdateSwitchFrequency'
+	).then(({ BillingDetailUpdateSwitchFrequency }) => ({
+		default: BillingDetailUpdateSwitchFrequency,
+	})),
+);
+const BillingDetailUpdateSwitchFrequencyDisplayForm = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "BillingDetailSwitchFrequencyUpdate" */ './billing/BillingDetailUpdateSwitchFrequency'
+	).then(({ BillingDetailUpdateSwitchFrequencyDisplayForm }) => ({
+		default: BillingDetailUpdateSwitchFrequencyDisplayForm,
+	})),
+);
+const BillingDetailUpdateSwitchFrequencyDisplaySuccess = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "BillingDetailSwitchFrequencyUpdate" */ './billing/BillingDetailUpdateSwitchFrequency'
+	).then(({ BillingDetailUpdateSwitchFrequencyDisplaySuccess }) => ({
+		default: BillingDetailUpdateSwitchFrequencyDisplaySuccess,
+	})),
+);
+const BillingDetailUpdateSwitchFrequencyDisplayError = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "BillingDetailSwitchFrequencyUpdate" */ './billing/BillingDetailUpdateSwitchFrequency'
+	).then(({ BillingDetailUpdateSwitchFrequencyDisplayError }) => ({
+		default: BillingDetailUpdateSwitchFrequencyDisplayError,
+	})),
+);
 
-const DataPrivacy = lazy(() =>
+const DataPrivacy = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "DataPrivacy" */ './dataPrivacy/DataPrivacy'
 	).then(({ DataPrivacy }) => ({ default: DataPrivacy })),
 );
-const ManageProduct = lazy(() =>
+const ManageProduct = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "ManageProduct" */ './accountoverview/ManageProduct'
 	).then(({ ManageProduct }) => ({ default: ManageProduct })),
 );
-const ManageProductV2 = lazy(() =>
+const ManageProductV2 = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "ManageProduct" */ './accountoverview/manageProducts/ManageProductV2'
 	).then(({ ManageProductV2 }) => ({ default: ManageProductV2 })),
 );
-const CancellationContainer = lazy(() =>
+const CancellationContainer = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/CancellationContainer'
 	).then(({ CancellationContainer }) => ({ default: CancellationContainer })),
 );
 
-const CancellationJourneyFunnel = lazy(() =>
+const CancellationJourneyFunnel = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/CancellationJourneyFunnel'
 	).then(({ CancellationJourneyFunnel }) => ({
@@ -90,7 +122,7 @@ const CancellationJourneyFunnel = lazy(() =>
 	})),
 );
 
-const CancellationReasonReview = lazy(() =>
+const CancellationReasonReview = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/CancellationReasonReview'
 	).then(({ CancellationReasonReview }) => ({
@@ -98,25 +130,25 @@ const CancellationReasonReview = lazy(() =>
 	})),
 );
 
-const SavedCancellation = lazy(() =>
+const SavedCancellation = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/stages/SavedCancellation'
 	).then(({ SavedCancellation }) => ({ default: SavedCancellation })),
 );
 
-const ConfirmCancellation = lazy(() =>
+const ConfirmCancellation = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/stages/ConfirmCancellation'
 	).then(({ ConfirmCancellation }) => ({ default: ConfirmCancellation })),
 );
 
-const ExecuteCancellation = lazy(() =>
+const ExecuteCancellation = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/stages/ExecuteCancellation'
 	).then(({ ExecuteCancellation }) => ({ default: ExecuteCancellation })),
 );
 
-const MembershipCancellationLanding = lazy(() =>
+const MembershipCancellationLanding = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancellationLanding'
 	).then(({ CancellationLanding: MembershipCancellationLanding }) => ({
@@ -124,7 +156,7 @@ const MembershipCancellationLanding = lazy(() =>
 	})),
 );
 
-const ValueOfSupport = lazy(() =>
+const ValueOfSupport = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/ValueOfSupport'
 	).then(({ ValueOfSupport }) => ({
@@ -132,7 +164,7 @@ const ValueOfSupport = lazy(() =>
 	})),
 );
 
-const CancelAlternativeOffer = lazy(() =>
+const CancelAlternativeOffer = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeOffer'
 	).then(({ CancelAlternativeOffer }) => ({
@@ -140,7 +172,23 @@ const CancelAlternativeOffer = lazy(() =>
 	})),
 );
 
-const CancelAlternativeReview = lazy(() =>
+const CancelAlternativeSwitch = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeSwitch'
+	).then(({ CancelAlternativeSwitch }) => ({
+		default: CancelAlternativeSwitch,
+	})),
+);
+
+const CancelAlternativeContactUs = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeContactUs'
+	).then(({ CancelAlternativeContactUs }) => ({
+		default: CancelAlternativeContactUs,
+	})),
+);
+
+const CancelAlternativeReview = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeReview'
 	).then(({ CancelAlternativeReview }) => ({
@@ -148,7 +196,23 @@ const CancelAlternativeReview = lazy(() =>
 	})),
 );
 
-const CancelAlternativeConfirmed = lazy(() =>
+const CancelAlternativeSwitchReview = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeSwitchReview'
+	).then(({ CancelAlternativeSwitchReview }) => ({
+		default: CancelAlternativeSwitchReview,
+	})),
+);
+
+const CancelAlternativeSwitchConfirmed = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelSwitchConfirmed'
+	).then(({ CancelSwitchConfirmed }) => ({
+		default: CancelSwitchConfirmed,
+	})),
+);
+
+const CancelAlternativeConfirmed = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/CancelAlternativeConfirmed'
 	).then(({ CancelAlternativeConfirmed }) => ({
@@ -156,7 +220,7 @@ const CancelAlternativeConfirmed = lazy(() =>
 	})),
 );
 
-const SaveOptions = lazy(() =>
+const SaveOptions = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/SaveOptions'
 	).then(({ SaveOptions }) => ({
@@ -164,7 +228,7 @@ const SaveOptions = lazy(() =>
 	})),
 );
 
-const MembershipSwitch = lazy(() =>
+const MembershipSwitch = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/MembershipSwitch'
 	).then(({ MembershipSwitch }) => ({
@@ -172,7 +236,7 @@ const MembershipSwitch = lazy(() =>
 	})),
 );
 
-const SelectReason = lazy(() =>
+const SelectReason = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/SelectReason'
 	).then(({ SelectReason }) => ({
@@ -180,7 +244,7 @@ const SelectReason = lazy(() =>
 	})),
 );
 
-const ContinueMembershipConfirmation = lazy(() =>
+const ContinueMembershipConfirmation = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/ContinueMembershipConfirmation'
 	).then(({ ContinueMembershipConfirmation }) => ({
@@ -188,7 +252,7 @@ const ContinueMembershipConfirmation = lazy(() =>
 	})),
 );
 
-const ConfirmMembershipCancellation = lazy(() =>
+const ConfirmMembershipCancellation = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/ConfirmMembershipCancellation'
 	).then(({ ConfirmMembershipCancellation }) => ({
@@ -196,7 +260,7 @@ const ConfirmMembershipCancellation = lazy(() =>
 	})),
 );
 
-const SwitchThankYou = lazy(() =>
+const SwitchThankYou = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/membership/SwitchThankYou'
 	).then(({ SwitchThankYou }) => ({
@@ -204,7 +268,7 @@ const SwitchThankYou = lazy(() =>
 	})),
 );
 
-const ConfirmDigiSubCancellation = lazy(() =>
+const ConfirmDigiSubCancellation = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/ConfirmDigiSubCancellation'
 	).then(({ ConfirmDigiSubCancellation: ConfirmDigiSubCancellation }) => ({
@@ -212,7 +276,7 @@ const ConfirmDigiSubCancellation = lazy(() =>
 	})),
 );
 
-const DigiSubThankYouOffer = lazy(() =>
+const DigiSubThankYouOffer = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/DigiSubThankYouOffer'
 	).then(({ DigiSubThankYouOffer: DigiSubThankYouOffer }) => ({
@@ -220,7 +284,7 @@ const DigiSubThankYouOffer = lazy(() =>
 	})),
 );
 
-const DigiSubDiscountConfirmed = lazy(() =>
+const DigiSubDiscountConfirmed = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Cancellation" */ './cancel/cancellationSaves/digipack/DigiSubDiscountConfirmed'
 	).then(({ DigiSubDiscountConfirmed: DigiSubDiscountConfirmed }) => ({
@@ -228,20 +292,28 @@ const DigiSubDiscountConfirmed = lazy(() =>
 	})),
 );
 
-const PaymentDetailUpdateContainer = lazy(() =>
+const PaymentDetailUpdateContainer = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateContainer'
 	).then(({ PaymentDetailUpdateContainer }) => ({
 		default: PaymentDetailUpdateContainer,
 	})),
 );
-const PaymentDetailUpdate = lazy(() =>
+const PaymentDetailUpdate = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdate'
 	).then(({ PaymentDetailUpdate }) => ({ default: PaymentDetailUpdate })),
 );
 
-const PaymentDetailUpdateConfirmation = lazy(() =>
+const PaymentDetailUpdateCheckoutSessionReturn = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateCheckoutSessionReturn'
+	).then(({ PaymentDetailUpdateCheckoutSessionReturn }) => ({
+		default: PaymentDetailUpdateCheckoutSessionReturn,
+	})),
+);
+
+const PaymentDetailUpdateConfirmation = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentDetailUpdateConfirmation'
 	).then(({ PaymentDetailUpdateConfirmation }) => ({
@@ -249,43 +321,43 @@ const PaymentDetailUpdateConfirmation = lazy(() =>
 	})),
 );
 
-const PaymentFailed = lazy(() =>
+const PaymentFailed = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "PaymentDetailUpdate" */ './paymentUpdate/PaymentFailed'
 	).then(({ PaymentFailed }) => ({ default: PaymentFailed })),
 );
 
-const HolidayStopsContainer = lazy(() =>
+const HolidayStopsContainer = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "HolidayStops" */ './holiday/HolidayStopsContainer'
 	).then(({ HolidayStopsContainer }) => ({ default: HolidayStopsContainer })),
 );
 
-const HolidaysOverview = lazy(() =>
+const HolidaysOverview = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "HolidayStops" */ './holiday/HolidaysOverview'
 	).then(({ HolidaysOverview }) => ({ default: HolidaysOverview })),
 );
 
-const HolidayDateChooser = lazy(() =>
+const HolidayDateChooser = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "HolidayStops" */ './holiday/HolidayDateChooser'
 	).then(({ HolidayDateChooser }) => ({ default: HolidayDateChooser })),
 );
 
-const HolidayReview = lazy(() =>
+const HolidayReview = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "HolidayStops" */ './holiday/HolidayReview'
 	).then(({ HolidayReview }) => ({ default: HolidayReview })),
 );
 
-const HolidayConfirmed = lazy(() =>
+const HolidayConfirmed = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "HolidayStops" */ './holiday/HolidayConfirmed'
 	).then(({ HolidayConfirmed }) => ({ default: HolidayConfirmed })),
 );
 
-const DeliveryAddressChangeContainer = lazy(() =>
+const DeliveryAddressChangeContainer = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "DeliveryAddress" */ './delivery/address/DeliveryAddressChangeContainer'
 	).then(({ DeliveryAddressChangeContainer }) => ({
@@ -293,13 +365,13 @@ const DeliveryAddressChangeContainer = lazy(() =>
 	})),
 );
 
-const DeliveryAddressReview = lazy(() =>
+const DeliveryAddressReview = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "DeliveryAddress" */ './delivery/address/DeliveryAddressReview'
 	).then(({ DeliveryAddressReview }) => ({ default: DeliveryAddressReview })),
 );
 
-const DeliveryAddressConfirmation = lazy(() =>
+const DeliveryAddressConfirmation = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "DeliveryAddress" */ './delivery/address/DeliveryAddressConfirmation'
 	).then(({ DeliveryAddressConfirmation }) => ({
@@ -307,7 +379,7 @@ const DeliveryAddressConfirmation = lazy(() =>
 	})),
 );
 
-const DeliveryRecordsContainer = lazy(() =>
+const DeliveryRecordsContainer = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecordsContainer'
 	).then(({ DeliveryRecordsContainer }) => ({
@@ -315,13 +387,13 @@ const DeliveryRecordsContainer = lazy(() =>
 	})),
 );
 
-const DeliveryRecords = lazy(() =>
+const DeliveryRecords = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecords'
 	).then(({ DeliveryRecords }) => ({ default: DeliveryRecords })),
 );
 
-const DeliveryRecordsProblemReview = lazy(() =>
+const DeliveryRecordsProblemReview = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecordsProblemReview'
 	).then(({ DeliveryRecordsProblemReview }) => ({
@@ -329,7 +401,7 @@ const DeliveryRecordsProblemReview = lazy(() =>
 	})),
 );
 
-const DeliveryRecordsProblemConfirmation = lazy(() =>
+const DeliveryRecordsProblemConfirmation = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "DeliveryRecords" */ './delivery/records/DeliveryRecordsProblemConfirmation'
 	).then(({ DeliveryRecordsProblemConfirmation }) => ({
@@ -337,7 +409,7 @@ const DeliveryRecordsProblemConfirmation = lazy(() =>
 	})),
 );
 
-const SwitchContainer = lazy(() =>
+const SwitchContainer = lazyWithRetry(() =>
 	import(/* webpackChunkName: "Switch" */ './switch/SwitchContainer').then(
 		({ SwitchContainer }) => ({
 			default: SwitchContainer,
@@ -345,7 +417,7 @@ const SwitchContainer = lazy(() =>
 	),
 );
 
-const SwitchOptions = lazy(() =>
+const SwitchOptions = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Switch" */ './switch/options/SwitchOptions'
 	).then(({ SwitchOptions }) => ({
@@ -353,7 +425,7 @@ const SwitchOptions = lazy(() =>
 	})),
 );
 
-const SwitchReview = lazy(() =>
+const SwitchReview = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Switch" */ './switch/review/SwitchReview'
 	).then(({ SwitchReview }) => ({
@@ -361,7 +433,7 @@ const SwitchReview = lazy(() =>
 	})),
 );
 
-const UpgradeSupportContainer = lazy(() =>
+const UpgradeSupportContainer = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "UpgradeSupport" */ './upgrade/UpgradeSupportContainer'
 	).then(({ UpgradeSupportContainer }) => ({
@@ -369,7 +441,7 @@ const UpgradeSupportContainer = lazy(() =>
 	})),
 );
 
-const UpgradeSupport = lazy(() =>
+const UpgradeSupport = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "UpgradeSupport" */ './upgrade/UpgradeSupport'
 	).then(({ UpgradeSupport }) => ({
@@ -377,7 +449,7 @@ const UpgradeSupport = lazy(() =>
 	})),
 );
 
-const UpgradeSupportThankYou = lazy(() =>
+const UpgradeSupportThankYou = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "UpgradeSupport" */ './upgrade/UpgradeSupportThankYou'
 	).then(({ UpgradeSupportThankYou }) => ({
@@ -385,7 +457,7 @@ const UpgradeSupportThankYou = lazy(() =>
 	})),
 );
 
-const UpgradeSupportSwitchThankYou = lazy(() =>
+const UpgradeSupportSwitchThankYou = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "UpgradeSupport" */ './upgrade/UpgradeSupportSwitchThankYou'
 	).then(({ UpgradeSupportSwitchThankYou }) => ({
@@ -393,7 +465,7 @@ const UpgradeSupportSwitchThankYou = lazy(() =>
 	})),
 );
 
-const SwitchComplete = lazy(() =>
+const SwitchComplete = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Switch" */ './switch/complete/SwitchComplete'
 	).then(({ SwitchComplete }) => ({
@@ -401,37 +473,64 @@ const SwitchComplete = lazy(() =>
 	})),
 );
 
-const EmailAndMarketing = lazy(() =>
+const EmailAndMarketing = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "EmailAndMarketing" */ './identity/emailAndMarketing/EmailAndMarketing'
 	).then(({ EmailAndMarketing }) => ({ default: EmailAndMarketing })),
 );
-const PublicProfile = lazy(() =>
+const PublicProfile = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "PublicProfile" */ './identity/publicProfile/PublicProfile'
 	).then(({ PublicProfile }) => ({ default: PublicProfile })),
 );
-const Settings = lazy(() =>
+const Settings = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "Settings" */ './identity/settings/Settings'
 	).then(({ Settings }) => ({ default: Settings })),
 );
-const Help = lazy(() =>
+const Help = lazyWithRetry(() =>
 	import(/* webpackChunkName: "Help" */ './help/Help').then(({ Help }) => ({
 		default: Help,
 	})),
 );
-const CancelReminders = lazy(() =>
+const CancelReminders = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "CancelReminders" */ './cancelReminders/CancelReminders'
 	).then(({ CancelReminders }) => ({ default: CancelReminders })),
 );
-const CreateReminder = lazy(() =>
+const CreateReminder = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "CreateReminder" */ './reminders/CreateReminder'
 	).then(({ CreateReminder }) => ({ default: CreateReminder })),
 );
-
+const UpgradeProductInformation = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "UpgradeProductInformation" */ './upgradeProduct/UpgradeProductInformation'
+	).then(({ UpgradeProductInformation }) => ({
+		default: UpgradeProductInformation,
+	})),
+);
+const UpgradeProductConfirmation = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "UpgradeProductConfirmation" */ './upgradeProduct/UpgradeProductConfirmation'
+	).then(({ UpgradeProductConfirmation }) => ({
+		default: UpgradeProductConfirmation,
+	})),
+);
+const UpgradeProductThankYou = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "UpgradeProductThankYou" */ './upgradeProduct/UpgradeProductThankYou'
+	).then(({ UpgradeProductThankYou }) => ({
+		default: UpgradeProductThankYou,
+	})),
+);
+const UpgradeProductContainer = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "UpgradeProductContainer" */ './upgradeProduct/UpgradeProductContainer'
+	).then(({ UpgradeProductContainer }) => ({
+		default: UpgradeProductContainer,
+	})),
+);
 const GenericErrorContainer = (props: { children: ReactNode }) => (
 	<section
 		css={css`
@@ -488,7 +587,50 @@ const MMARouter = () => {
 							path="/app"
 							element={<AccountOverview isFromApp />}
 						/>
+
 						<Route path="/billing" element={<Billing />} />
+						{Object.values(PRODUCT_TYPES).map(
+							(productType: ProductType) => (
+								<Route
+									key={productType.urlPart}
+									path={`/billing/${productType.urlPart}`}
+									element={
+										<BillingDetailUpdateContainer
+											productType={productType}
+										/>
+									}
+								>
+									<Route
+										path="switch-frequency"
+										element={
+											<BillingDetailUpdateSwitchFrequency
+												productType={productType}
+											/>
+										}
+									>
+										<Route
+											index
+											element={
+												<BillingDetailUpdateSwitchFrequencyDisplayForm />
+											}
+										/>
+										<Route
+											path="success"
+											element={
+												<BillingDetailUpdateSwitchFrequencyDisplaySuccess />
+											}
+										/>
+										<Route
+											path="error"
+											element={
+												<BillingDetailUpdateSwitchFrequencyDisplayError />
+											}
+										/>
+									</Route>
+								</Route>
+							),
+						)}
+
 						<Route path="/data-privacy" element={<DataPrivacy />} />
 						<Route
 							path="/email-prefs"
@@ -514,6 +656,23 @@ const MMARouter = () => {
 							<Route
 								path={'thank-you'}
 								element={<UpgradeSupportThankYou />}
+							/>
+						</Route>
+						<Route
+							path={`${PRODUCT_TYPES.supporterplus.urlPart}/upgrade-product`}
+							element={<UpgradeProductContainer />}
+						>
+							<Route
+								path="information"
+								element={<UpgradeProductInformation />}
+							/>
+							<Route
+								path="confirmation"
+								element={<UpgradeProductConfirmation />}
+							/>
+							<Route
+								path="thank-you"
+								element={<UpgradeProductThankYou />}
 							/>
 						</Route>
 						{[
@@ -621,6 +780,12 @@ const MMARouter = () => {
 										}
 									/>
 									<Route
+										path="checkout-session-return"
+										element={
+											<PaymentDetailUpdateCheckoutSessionReturn />
+										}
+									/>
+									<Route
 										path="updated"
 										element={
 											<PaymentDetailUpdateConfirmation />
@@ -713,12 +878,26 @@ const MMARouter = () => {
 										element={<CancelAlternativeOffer />}
 									/>
 									<Route
+										path="switch"
+										element={<CancelAlternativeSwitch />}
+									/>
+									<Route
+										path="contact-us"
+										element={<CancelAlternativeContactUs />}
+									/>
+									<Route
 										path="pause-review"
 										element={<CancelAlternativeReview />}
 									/>
 									<Route
 										path="offer-review"
 										element={<CancelAlternativeReview />}
+									/>
+									<Route
+										path="switch-review"
+										element={
+											<CancelAlternativeSwitchReview />
+										}
 									/>
 									<Route
 										path="offer-confirmed"
@@ -728,7 +907,12 @@ const MMARouter = () => {
 										path="pause-confirmed"
 										element={<CancelAlternativeConfirmed />}
 									/>
-
+									<Route
+										path="switch-confirmed"
+										element={
+											<CancelAlternativeSwitchConfirmed />
+										}
+									/>
 									<Route
 										path="offers"
 										element={<SaveOptions />}
@@ -856,22 +1040,69 @@ const MMARouter = () => {
 	);
 };
 
+const MaintenanceModePage = () => {
+	return (
+		<Main>
+			<Global styles={css(`${global}`)} />
+			<Global styles={css(`${fonts}`)} />
+			<Suspense fallback={<MMAPageSkeleton />}>
+				<ErrorBoundary
+					fallback={(error) => (
+						<GenericErrorContainer>
+							<GenericErrorScreen loggingMessage={error} />
+						</GenericErrorContainer>
+					)}
+				>
+					<Maintenance />
+				</ErrorBoundary>
+			</Suspense>
+		</Main>
+	);
+};
+
 const getMvtId = (): number => {
 	const mvtId = getCookie('GU_mvt_id');
 	return mvtId ? parseInt(mvtId) : 0;
 };
 
-export const MMAPage = (
-	<ABProvider
-		arrayOfTestObjects={tests}
-		abTestSwitches={abSwitches}
-		pageIsSensitive={false}
-		mvtMaxValue={1000000}
-		mvtId={getMvtId()}
-		ophanRecord={record}
-	>
-		<BrowserRouter>
-			<MMARouter />
-		</BrowserRouter>
-	</ABProvider>
-);
+const MMAPageComponent = () => {
+	const [ophanRecord, setOphanRecord] = useState<
+		(event: EventPayload, callback?: () => void) => void
+	>(() => () => {});
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			import('@guardian/ophan-tracker-js/MMA')
+				.then(({ record }) => {
+					setOphanRecord(() => record);
+				})
+				.catch(() => {
+					// Ophan tracking is non-critical; silently degrade
+					// when blocked by ad blockers or network issues
+				});
+		}
+	}, []);
+
+	if (featureSwitches.maintenanceMode && !window.Cypress) {
+		return <MaintenanceModePage />;
+	}
+
+	return (
+		<ABProvider
+			arrayOfTestObjects={tests}
+			abTestSwitches={abSwitches}
+			pageIsSensitive={false}
+			mvtMaxValue={1000000}
+			mvtId={getMvtId()}
+			ophanRecord={ophanRecord}
+			serverSideTests={{}}
+			errorReporter={(error) => Sentry.captureException(error)}
+		>
+			<BrowserRouter>
+				<MMARouter />
+			</BrowserRouter>
+		</ABProvider>
+	);
+};
+
+export const MMAPage = <MMAPageComponent />;
