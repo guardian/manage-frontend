@@ -20,6 +20,7 @@ import {
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
+import { formatAmount } from '@/client/utilities/utils';
 import { dateString } from '@/shared/dates';
 import {
 	signInContentContainerCss,
@@ -82,9 +83,9 @@ export const UpgradeProductThankYou = () => {
 			previewResponse.amountPayableToday
 		} today. From ${nextPaymentDateLong}, your ongoing ${
 			mainPlan.billingPeriod
-		}ly payment will be ${mainPlan.currency}${
-			previewResponse.discount?.discountedPrice
-		} for ${
+		}ly payment will be ${mainPlan.currency}${formatAmount(
+			previewResponse.discount?.discountedPrice,
+		)} for ${
 			previewResponse.discount?.upToPeriods
 		} ${previewResponse.discount?.upToPeriodsType.toLowerCase()}, then you will be charged ${
 			mainPlan.currency

@@ -28,6 +28,7 @@ import {
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
 import { useUpgradeProduct } from '@/client/utilities/hooks/useUpgradePreview';
+import { formatAmount } from '@/client/utilities/utils';
 import { dateString } from '@/shared/dates';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { Pill } from '../../shared/Pill';
@@ -276,7 +277,7 @@ export const UpgradeProductConfirmation = () => {
 				<div css={whatHappensNowItemInfoCss}>
 					<h3 css={subheadingTextCss(false)}>
 						Your first payment will be {mainPlan.currency}
-						{previewResponse?.amountPayableToday}
+						{formatAmount(previewResponse?.amountPayableToday)}
 					</h3>
 					<p
 						css={[

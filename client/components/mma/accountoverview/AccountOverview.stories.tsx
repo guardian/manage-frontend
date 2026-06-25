@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { HttpResponseResolver } from 'msw';
 import { http, HttpResponse } from 'msw';
+import type { ReactElement } from 'react';
+import { useEffect } from 'react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
@@ -421,10 +423,31 @@ export const WithSupporterPlusDuringOffer: StoryObj<typeof AccountOverview> = {
 	},
 };
 
+const DigitalPlusUpgradeBannerFlagDecorator = (Story: () => ReactElement) => {
+	const flagParam = 'DIGITAL_PLUS_UPGRADE_BANNER_SHOW';
+	const url = new URL(window.location.href);
+	if (url.searchParams.get(flagParam) !== 'true') {
+		url.searchParams.set(flagParam, 'true');
+		window.history.replaceState({}, '', url);
+	}
+
+	useEffect(() => {
+		return () => {
+			const cleanupUrl = new URL(window.location.href);
+			cleanupUrl.searchParams.delete(flagParam);
+			window.history.replaceState({}, '', cleanupUrl);
+		};
+	}, []);
+
+	return <Story />;
+};
+
 export const WithAllAccessDigitalDiscount: StoryObj<typeof AccountOverview> = {
 	render: () => {
 		return <AccountOverview />;
 	},
+
+	decorators: [DigitalPlusUpgradeBannerFlagDecorator],
 
 	parameters: {
 		msw: [
