@@ -17,6 +17,7 @@
     "@guardian/prettier": "1.0.0",
     "@types/jest": "^29.5.0",
     "@types/node": "18.7.14",
+    "@types/parse-path": "7.1.0",
     "aws-cdk": "2.1007.0",
     "aws-cdk-lib": "2.246.0",
     "constructs": "10.4.3",
@@ -30,14 +31,17 @@
   },
   "prettier": "@guardian/prettier",
   "resolutions": {
+    "aws-cdk": "2.1007.0",
+    "aws-cdk-lib": "2.246.0",
+    "constructs": "10.4.3",
+    "@guardian/cdk/**/aws-cdk-lib": "2.246.0",
+    "@guardian/cdk/**/constructs": "10.4.3",
+    "**/aws-cdk-lib": "2.246.0",
+    "**/constructs": "10.4.3",
+    "picomatch": "^4.0.4",
     "flatted": "^3.4.2",
     "lodash": "^4.18.0",
-    "minimatch": "^9.0.7",
-    "aws-cdk": "2.1007.0",
-    "aws-cdk-lib": "2.172.0",
-    "constructs": "10.4.3",
-    "**/aws-cdk-lib": "2.172.0",
-    "**/constructs": "10.4.3"
+    "minimatch": "^5.1.8"
   },
   "jest": {
     "testMatch": [
