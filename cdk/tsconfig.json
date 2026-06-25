@@ -31,11 +31,6 @@
     "resolveJsonModule": true,
     "types": ["node", "jest"]
   },
-  "include": ["lib/**/*", "bin/**/*", "lib/**/*.test.ts"],
-  "exclude": [
-    "node_modules",
-    "cdk.out",
-    "lib/**/__snapshots__/**",
-    "**/*.test.ts"
-  ]
+  "include": ["lib/**/*", "bin/**/*"],
+  "exclude": ["node_modules", "cdk.out", "lib/**/__snapshots__/**"]
 }
