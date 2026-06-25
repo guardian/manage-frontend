@@ -75,7 +75,7 @@ export const UpgradeProductThankYou = () => {
 		'do',
 	);
 
-	let paymentConditionsText = `You will be charged ${mainPlan.currency}${previewResponse.amountPayableToday}. From ${nextPaymentDateLong}, your ongoing ${mainPlan.billingPeriod}ly payment will be ${mainPlan.currency}${previewResponse.targetCatalogPrice}`;
+	let paymentConditionsText = `You will be charged ${mainPlan.currency}${previewResponse.amountPayableToday}. From ${nextPaymentDateLong}, your ongoing ${mainPlan.billingPeriod}ly payment will be ${mainPlan.currency}${previewResponse.targetCatalogPrice}.`;
 
 	if (isDiscountedOffer) {
 		paymentConditionsText = `You will be charged ${mainPlan.currency}${

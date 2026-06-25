@@ -269,5 +269,3 @@ export const UpgradeProductInformation = () => {
 		</>
 	);
 };
-
-// padding bottom 12
