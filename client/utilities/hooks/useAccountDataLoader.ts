@@ -6,7 +6,6 @@ import type {
 	MembersDataApiResponse,
 	SingleProductDetail,
 } from '../../../shared/productResponse';
-import { isProduct } from '../../../shared/productResponse';
 import { JsonResponseHandler } from '../../components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import type { UserSubscriptionsResponse } from '../../stores/AccountStore';
 import {
@@ -57,25 +56,6 @@ async function fetchAllAccountData() {
 			)
 			.catch((): null => null),
 	]);
-
-	if (mdapiResponse && userSubscriptionsResponse) {
-		const availableActionsBySubscriptionId = new Map(
-			userSubscriptionsResponse.subscriptions.map((s) => [
-				s.name,
-				s.availableActions,
-			]),
-		);
-		mdapiResponse.products = mdapiResponse.products.map((p) =>
-			isProduct(p)
-				? {
-						...p,
-						availableActions: availableActionsBySubscriptionId.get(
-							p.subscription.subscriptionId,
-						),
-				  }
-				: p,
-		);
-	}
 
 	return {
 		mdapiResponse,

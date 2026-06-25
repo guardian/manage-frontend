@@ -141,20 +141,26 @@ export const UpgradeProductConfirmation = () => {
 	const nextPaymentDate = subscription.nextPaymentDate
 		? dateString(new Date(subscription.nextPaymentDate), 'MMMM do')
 		: nextPaymentDetails?.nextPaymentDateValue;
-	const nextPaymentDateDay = subscription.nextPaymentDate
-		? dateString(new Date(subscription.nextPaymentDate), 'do')
-		: nextPaymentDetails?.nextPaymentDateValue;
 
 	if (isDiscountedOffer) {
-		paymentConditionsText += `From ${nextPaymentDate}, your ${
+		const nextPaymentDateDiscounted = previewResponse?.nextPaymentDate
+			? dateString(new Date(previewResponse.nextPaymentDate), 'MMMM do')
+			: nextPaymentDetails?.nextPaymentDateValue;
+		const nextPaymentDateDayDiscounted = previewResponse?.nextPaymentDate
+			? dateString(new Date(previewResponse.nextPaymentDate), 'do')
+			: nextPaymentDetails?.nextPaymentDateValue;
+
+		paymentConditionsText += `From ${nextPaymentDateDiscounted}, your ${
 			nextPaymentDetails?.paymentInterval
-		}ly payment will be ${previewResponse?.discount?.discountedPrice} for ${
+		}ly payment will be ${mainPlan.currency}${
+			previewResponse?.discount?.discountedPrice
+		} for ${
 			previewResponse?.discount?.upToPeriods
 		} ${previewResponse?.discount?.upToPeriodsType.toLowerCase()} and then ${
 			mainPlan.currency
 		}${previewResponse?.targetCatalogPrice} per ${
 			nextPaymentDetails?.paymentInterval
-		}. The ${nextPaymentDateDay} will be your next payment date.`;
+		}. The ${nextPaymentDateDayDiscounted} will be your next payment date.`;
 	} else {
 		paymentConditionsText += `After this, from ${nextPaymentDate}, your ${nextPaymentDetails?.paymentInterval}ly payment will be ${mainPlan.currency}${previewResponse?.targetCatalogPrice}`;
 	}
@@ -360,7 +366,7 @@ export const UpgradeProductConfirmation = () => {
 						void executeUpgrade(thankYouPath);
 					}}
 				>
-					{`Upgrade for ${mainPlan.currency}${previewResponse?.targetCatalogPrice} per ${nextPaymentDetails?.paymentInterval}`}
+					Confirm upgrade
 				</Button>
 				<Button
 					aria-label={`Product Card Digital Plus Upsell Button`}
@@ -393,7 +399,7 @@ export const UpgradeProductConfirmation = () => {
 						navigate(informationPath);
 					}}
 				>
-					{`Back`}
+					Back
 				</Button>
 			</div>
 			<p css={termsAndConditionsFooterCss}>

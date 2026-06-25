@@ -120,7 +120,6 @@ export interface ProductDetail extends WithSubscription {
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
 	billingCountry?: string;
-	availableActions?: AvailableAction[]; // populated client-side from user-subscriptions-api by matching subscription.subscriptionId
 	taxExclusive?: boolean;
 }
 

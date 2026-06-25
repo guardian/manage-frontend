@@ -11,15 +11,18 @@ import {
 	subHeadingCss,
 	subHeadingInformationTextCss,
 } from '@/client/styles/headings';
+import { trackEvent } from '@/client/utilities/analytics';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
+	PaidSubscriptionPlan,
 	ProductDetail,
 	ProductTier,
 } from '../../../../shared/productResponse';
 import { userHasGuardianEmail } from '../../../../shared/productResponse';
 import {
+	getMainPlan,
 	getSpecificProductTypeFromProductKey,
 	isPlusDigitalProductType,
 	isProduct,
@@ -134,7 +137,8 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const { braze, banner } = useBrazeBanner(MANAGE_PLACEMENT_ID);
 	const { previewError, setPreviewError } = useUpgradeProductStore();
-	const { isPreviewLoading, hasPreviewError } = useUpgradeProduct();
+	const { isPreviewLoading, hasPreviewError, fetchUpgradePreview } =
+		useUpgradeProduct();
 
 	const {
 		loadAccountData,
@@ -144,6 +148,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
+		userSubscriptionsResponse,
 	} = useAccountDataLoader();
 
 	useEffect(() => {
@@ -283,17 +288,27 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const isEligibleToUpsell =
 		!maybeFirstPaymentFailure && !hasNonServiceableCountry;
 
-	const showDigitalPlusUpgradeBanner = allActiveProductDetails.some(
+	const upsellToDigitalSubscriptionNames = new Set(
+		userSubscriptionsResponse?.subscriptions
+			.filter((subscription) =>
+				subscription.availableActions.some(
+					(availableAction) =>
+						availableAction.action === 'upsell' &&
+						availableAction.target?.productKey ===
+							'DigitalSubscription',
+				),
+			)
+			.map((subscription) => subscription.name) ?? [],
+	);
+
+	const digitalPlusUpgradeProduct = allActiveProductDetails.find(
 		(product) =>
 			isSpecificProductType(
 				product.mmaProductKey,
 				PRODUCT_TYPES.supporterplus,
 			) &&
-			product.availableActions?.some(
-				(availableAction) =>
-					availableAction.action === 'upsell' &&
-					availableAction.target?.productKey ===
-						'DigitalSubscription',
+			upsellToDigitalSubscriptionNames.has(
+				product.subscription.subscriptionId,
 			),
 	);
 
@@ -335,24 +350,35 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				<BrazeBannersSystemDisplay braze={braze} banner={banner} />
 			)}
 
-			{showDigitalPlusUpgradeBanner && (
+			{digitalPlusUpgradeProduct && (
 				<DigitalPlusUpgradeBanner
 					isLoading={isPreviewLoading}
 					disabled={hasPreviewError}
 					onUpgradeClick={() => {
-						// trackEvent({
-						// 	eventCategory: 'account_overview',
-						// 	eventAction: 'click',
-						// 	eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
-						// });
-						// void fetchUpgradePreview({
-						// 	subscriptionId,
-						// 	subscription:
-						// 		supporterPlusProductForUpgrade.subscription,
-						// 	mainPlan:
-						// 		supporterPlusMainPlan as PaidSubscriptionPlan,
-						// 	navigationPath: `/${specificProductType.urlPart}/upgrade-product/information?subscriptionId=${subscriptionId}`,
-						// });
+						const mainPlan = getMainPlan(
+							digitalPlusUpgradeProduct.subscription,
+						);
+						if (!mainPlan) {
+							return;
+						}
+						const specificProductType =
+							getSpecificProductTypeFromProductKey(
+								digitalPlusUpgradeProduct.mmaProductKey,
+							);
+						trackEvent({
+							eventCategory: 'account_overview_banner',
+							eventAction: 'click',
+							eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
+						});
+						void fetchUpgradePreview({
+							subscriptionId:
+								digitalPlusUpgradeProduct.subscription
+									.subscriptionId,
+							subscription:
+								digitalPlusUpgradeProduct.subscription,
+							mainPlan: mainPlan as PaidSubscriptionPlan,
+							navigationPath: `/${specificProductType.urlPart}/upgrade-product/information?subscriptionId=${digitalPlusUpgradeProduct.subscription.subscriptionId}`,
+						});
 					}}
 				/>
 			)}
