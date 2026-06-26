@@ -46,7 +46,8 @@ const guardianWeeklyGiftBenefitsCopy = (npd: NextPaymentDetails) =>
 const guardianWeeklyBenefitsCopy = (npd: NextPaymentDetails) =>
 	`You're subscribed to The Guardian Weekly for ${npd.currentPriceValue} per ${npd.paymentInterval} and receive a curated news magazine featuring our best global journalism in print, as well as unlimited access to our full suite of digital benefits.`;
 
-const secondaryUserBenefitsCopy = () =>
+// TODO This not having npd has been quite a problem. Current solution is a bit hacky.
+export const secondaryUserBenefitsCopy = () =>
 	`You're enjoying Digital plus as part of a shared subscription.`; // TODO make Digital plus part dynamic rather than hardcoded.
 
 /**

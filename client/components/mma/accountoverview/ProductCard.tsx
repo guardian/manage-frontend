@@ -35,7 +35,6 @@ import {
 	LiveEventsSection,
 	PaymentSection,
 	ProductCardHeader,
-	SecondaryUserLeaveSubscriptionSection,
 	SecondaryUserSubscriptionDetails,
 	UsCancellationSection,
 } from './ProductCardSections';
@@ -209,11 +208,6 @@ export const ProductCard = ({
 				/>
 
 				<SecondaryUserSubscriptionDetails
-					subscriptionName={productTitle}
-					primarySubscriber={primaryUser}
-				/>
-
-				<SecondaryUserLeaveSubscriptionSection
 					subscriptionName={productTitle}
 					primarySubscriber={primaryUser}
 				/>

@@ -124,6 +124,13 @@ export interface ProductDetail extends WithSubscription {
 	primaryUser?: MembersDataApiUser;
 }
 
+// TODO this is still to be finalised
+export interface MultipleAccountsApiResponse {
+	subscriptionName: string;
+	productName: string;
+	primaryUser: MembersDataApiUser;
+}
+
 export interface CancelledProductDetail {
 	mmaProductKey: ProductTier;
 	joinDate: string;

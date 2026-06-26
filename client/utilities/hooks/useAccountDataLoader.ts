@@ -4,6 +4,7 @@ import type { MPAPIResponse } from '../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
 	MembersDataApiResponse,
+	MultipleAccountsApiResponse,
 	SingleProductDetail,
 } from '../../../shared/productResponse';
 import { JsonResponseHandler } from '../../components/mma/shared/asyncComponents/DefaultApiResponseHandler';
@@ -17,6 +18,7 @@ import { fetchWithDefaultParameters } from '../fetch';
 import {
 	allRecurringProductsDetailFetcher,
 	allSingleProductsDetailFetcher,
+	secondaryAccountFetcher,
 } from '../productUtils';
 
 async function fetchAllAccountData() {
@@ -26,6 +28,7 @@ async function fetchAllAccountData() {
 		mpapiResponse,
 		singleContributionsResponse,
 		userSubscriptionsResponse,
+		maapiResponse,
 	] = await Promise.all([
 		allRecurringProductsDetailFetcher()
 			.then(
@@ -53,9 +56,12 @@ async function fetchAllAccountData() {
 					JsonResponseHandler(
 						r,
 					) as Promise<UserSubscriptionsResponse>,
-			)
+				)
+				.catch((): null => null),
+		secondaryAccountFetcher()
+			.then((r) => JsonResponseHandler(r) as Promise<MultipleAccountsApiResponse>)
 			.catch((): null => null),
-	]);
+			]);
 
 	return {
 		mdapiResponse,
@@ -63,6 +69,7 @@ async function fetchAllAccountData() {
 		mpapiResponse,
 		singleContributionsResponse,
 		userSubscriptionsResponse,
+		maapiResponse,
 	};
 }
 
@@ -74,6 +81,7 @@ export const useAccountDataLoader = () => {
 		mpapiResponse,
 		singleContributionsResponse,
 		userSubscriptionsResponse,
+		maapiResponse,
 		setAllResponses,
 		setLoadingState,
 		setError,
@@ -120,5 +128,6 @@ export const useAccountDataLoader = () => {
 		mpapiResponse,
 		singleContributionsResponse,
 		userSubscriptionsResponse,
+		maapiResponse,
 	};
 };
