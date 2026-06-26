@@ -121,5 +121,4 @@ export const centeredActionCss = css`
 export const sharedMembershipLeaveButtonCss = css`
 	justify-content: flex-end;
 	background: transparent;
-	text-decoration: underline;
 `;
