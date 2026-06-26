@@ -128,6 +128,13 @@ export interface ProductDetail extends WithSubscription {
 >>>>>>> c56eee1b4 (Fixed missed git rebase issues)
 }
 
+// TODO this is still to be finalised
+export interface MultipleAccountsApiResponse {
+	subscriptionName: string;
+	productName: string;
+	primaryUser: MembersDataApiUser;
+}
+
 export interface CancelledProductDetail {
 	mmaProductKey: ProductTier;
 	joinDate: string;
