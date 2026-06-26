@@ -12,6 +12,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      pull-requests: write #required by guardian/actions-riff-raff
     name: manage-frontend build
     runs-on: ubuntu-latest
     steps:
@@ -42,8 +43,10 @@ jobs:
         run: ./script/cfn.sh
 
       - name: Upload to Riff-Raff
-        uses: guardian/actions-riff-raff@v2
+        uses: guardian/actions-riff-raff@v4
         with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          roleArn: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
           app: manage-frontend
           configPath: ./riff-raff.yaml
           contentDirectories: |

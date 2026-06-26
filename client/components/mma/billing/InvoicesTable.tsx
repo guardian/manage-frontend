@@ -47,7 +47,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => {
 
 	const [currentPage, setCurrentPage] = useState<number>(initialPage);
 
-	const tableHeadings = ['Date', 'Payment method', 'Price', ''];
+	const tableHeadings = ['Date', 'Payment method', 'Total amount', ''];
 	const invoiceYears = [
 		...new Set(
 			[...props.invoiceData].map(

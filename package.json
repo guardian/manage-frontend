@@ -123,11 +123,11 @@
     "ts-jest": "^29.1.2",
     "typescript": "5.8.3",
     "utility-types": "3.10.0",
-    "uuid": "8.3.2",
+    "uuid": "14.0.0",
     "webpack": "5.92.1",
     "webpack-bundle-analyzer": "4.5.0",
     "webpack-cli": "5.1.1",
-    "webpack-dev-server": "5.1.0",
+    "webpack-dev-server": "5.2.5",
     "webpack-merge": "5.8.0",
     "webpack-node-externals": "3.0.0",
     "whatwg-fetch": "2.0.4"
@@ -188,7 +188,9 @@
     "flatted": "^3.4.2",
     "follow-redirects": "^1.16.0",
     "serialize-javascript": "^7.0.3",
-    "tmp": "^0.2.7"
+    "tmp": "^0.2.7",
+    "ws": "^8.21.0",
+    "eslint-visitor-keys": "^4.0.0"
   },
   "license": "UNLICENSED",
   "msw": {

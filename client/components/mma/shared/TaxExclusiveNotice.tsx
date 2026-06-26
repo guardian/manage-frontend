@@ -18,7 +18,5 @@ export const TaxExclusiveNotice = ({
 		return null;
 	}
 
-	return (
-		<p css={noticeCss}>All prices shown exclude Tax. Taxes may apply.</p>
-	);
+	return <p css={noticeCss}>Taxes may apply to future payments.</p>;
 };
