@@ -20,7 +20,6 @@ import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { TaxExclusiveNotice } from '../shared/TaxExclusiveNotice';
 import {
 	getGuardianWeeklyGiftBenefitsCopy,
-	getSecondaryUserBenefitsCopy,
 	productCardConfiguration,
 } from './ProductCardConfiguration';
 import {
@@ -36,7 +35,6 @@ import {
 	LiveEventsSection,
 	PaymentSection,
 	ProductCardHeader,
-	SecondaryUserSubscriptionDetails,
 	UsCancellationSection,
 } from './ProductCardSections';
 
@@ -122,10 +120,8 @@ export const ProductCard = ({
 			? 'supporter benefits'
 			: groupedProductType.friendlyName;
 
-	const cardConfig = gwGiftSubscription // to getCardConfig
+	const cardConfig = gwGiftSubscription
 		? getGuardianWeeklyGiftBenefitsCopy
-		: primaryUser
-		? getSecondaryUserBenefitsCopy
 		: productCardConfiguration[specificProductType.productType];
 
 	const canBeInOfferPeriod =
@@ -206,11 +202,6 @@ export const ProductCard = ({
 				<GuardianAdLiteCopy
 					nextPaymentDetails={nextPaymentDetails}
 					specificProductType={specificProductType}
-				/>
-
-				<SecondaryUserSubscriptionDetails
-					subscriptionName={productTitle}
-					primarySubscriber={primaryUser}
 				/>
 
 				<BillingAndPaymentSection
