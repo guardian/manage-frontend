@@ -309,3 +309,21 @@ ThankYouAnnual.parameters = {
 		container: <StoryPageContainer />,
 	},
 };
+
+export const ThankYouMonthlyDiscount: StoryFn<
+	typeof UpgradeProductThankYou
+> = () => {
+	return <UpgradeProductThankYou />;
+};
+ThankYouMonthlyDiscount.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlus(),
+		mockUpgradePreviewResponseMonthlyDiscountGBP,
+	),
+];
+ThankYouMonthlyDiscount.parameters = {
+	reactRouter: {
+		container: <StoryPageContainer />,
+	},
+};
+ThankYouMonthlyDiscount.storyName = 'Thank You Monthly - Discount';

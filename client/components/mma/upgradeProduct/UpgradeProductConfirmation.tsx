@@ -156,7 +156,10 @@ export const UpgradeProductConfirmation = () => {
 		}ly payment will be ${mainPlan.currency}${
 			previewResponse?.discount?.discountedPrice
 		} for ${
-			previewResponse?.discount?.upToPeriods
+			previewResponse?.discount?.upToPeriods &&
+			previewResponse?.discount?.upToPeriods > 0
+				? previewResponse?.discount?.upToPeriods - 1
+				: 0
 		} ${previewResponse?.discount?.upToPeriodsType.toLowerCase()} and then ${
 			mainPlan.currency
 		}${previewResponse?.targetCatalogPrice} per ${
@@ -217,7 +220,7 @@ export const UpgradeProductConfirmation = () => {
 						uninterrupted, ad-free reading and more
 					</p>
 					<BenefitsToggle
-						productType={PRODUCT_TYPES.tierthree.productType}
+						productType={PRODUCT_TYPES.digipack.productType}
 						subscriptionPlan={mainPlan}
 					/>
 				</Card.Section>

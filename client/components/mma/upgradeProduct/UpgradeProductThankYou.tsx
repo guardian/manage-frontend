@@ -86,7 +86,10 @@ export const UpgradeProductThankYou = () => {
 		}ly payment will be ${mainPlan.currency}${formatAmount(
 			previewResponse.discount?.discountedPrice,
 		)} for ${
-			previewResponse.discount?.upToPeriods
+			previewResponse?.discount?.upToPeriods &&
+			previewResponse?.discount?.upToPeriods > 0
+				? previewResponse?.discount?.upToPeriods - 1
+				: 0
 		} ${previewResponse.discount?.upToPeriodsType.toLowerCase()}, then you will be charged ${
 			mainPlan.currency
 		}${previewResponse.targetCatalogPrice} per ${mainPlan.billingPeriod}.`;
