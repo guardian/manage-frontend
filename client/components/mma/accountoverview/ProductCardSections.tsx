@@ -65,7 +65,7 @@ export const ProductCardHeader = ({
 }: {
 	cardConfig: ProductCardConfiguration;
 	productTitle: string;
-	isGifted: boolean;
+	isGifted?: boolean;
 }) => (
 	<Card.Header backgroundColor={cardConfig.colour} minHeightOverride="auto">
 		<h3 css={productCardTitleCss(cardConfig.invertText)}>{productTitle}</h3>
