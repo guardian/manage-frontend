@@ -95,21 +95,25 @@ export const BenefitsCopyAndToggle = ({
 	mainPlan,
 	nextPaymentDetails,
 	overrideBenefits,
+	overrideBenefitsText,
 }: {
 	cardConfig: ProductCardConfiguration;
 	specificProductType: ProductType;
 	mainPlan: SubscriptionPlan;
-	nextPaymentDetails?: NextPaymentDetails | undefined;
+	nextPaymentDetails?: NextPaymentDetails;
 	overrideBenefits?: ProductBenefit[];
+	overrideBenefitsText?: string;
 }) =>
 	cardConfig.getBenefitsSectionCopy &&
-	nextPaymentDetails && (
+	(nextPaymentDetails || overrideBenefitsText) && (
 		<Card.Section
 			backgroundColor={benefitsSectionBackgroundColour}
 			removeBorders
 		>
 			<p css={benefitsTextCss}>
-				{cardConfig.getBenefitsSectionCopy(nextPaymentDetails)}
+				{nextPaymentDetails
+					? cardConfig.getBenefitsSectionCopy(nextPaymentDetails)
+					: overrideBenefitsText}
 			</p>
 			<BenefitsToggle
 				productType={specificProductType.productType}

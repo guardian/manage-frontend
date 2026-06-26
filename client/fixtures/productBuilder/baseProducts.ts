@@ -1,4 +1,7 @@
-import type { ProductDetail } from '../../../shared/productResponse';
+import type {
+	MultipleAccountsApiResponse,
+	ProductDetail,
+} from '../../../shared/productResponse';
 
 // Base ProductTypes to support
 // 	| 'membership'
@@ -1274,5 +1277,17 @@ export function baseTierThree(): ProductDetail {
 			accountId: '8ad08f069010dd31019011e437574822',
 		},
 		isTestUser: false,
+	};
+}
+
+export function baseSecondaryUser(): MultipleAccountsApiResponse {
+	return {
+		subscriptionName: 'Digital Pack',
+		productName: 'Digital Pack',
+		primaryUser: {
+			firstName: 'John',
+			lastName: 'Doe',
+			email: 'j.doe@example.com',
+		},
 	};
 }

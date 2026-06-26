@@ -6,6 +6,7 @@ import type {
 	CancelledProductDetail,
 	MembersDataApiResponse,
 	MembersDataApiUser,
+	MultipleAccountsApiResponse,
 	SingleProductDetail,
 } from '../../shared/productResponse';
 import { isProduct } from '../../shared/productResponse';
@@ -34,6 +35,7 @@ interface AccountState {
 	mpapiResponse: MPAPIResponse | null;
 	singleContributionsResponse: SingleProductDetail[] | null;
 	userSubscriptionsResponse: UserSubscriptionsResponse | null;
+	maapiResponse: MultipleAccountsApiResponse | null;
 	loadingState: AccountLoadingState;
 	error: string | null;
 }
@@ -44,12 +46,14 @@ interface AccountActions {
 	setMpapiResponse: (response: MPAPIResponse) => void;
 	setSingleContributionsResponse: (response: SingleProductDetail[]) => void;
 	setUserSubscriptionsResponse: (response: UserSubscriptionsResponse) => void;
+	setMaapiResponse: (response: MultipleAccountsApiResponse) => void;
 	setAllResponses: (responses: {
 		mdapiResponse: MembersDataApiResponse | null;
 		cancelledProductsResponse: CancelledProductDetail[] | null;
 		mpapiResponse: MPAPIResponse | null;
 		singleContributionsResponse: SingleProductDetail[] | null;
 		userSubscriptionsResponse: UserSubscriptionsResponse | null;
+		maapiResponse: MultipleAccountsApiResponse | null;
 	}) => void;
 	setLoadingState: (state: AccountLoadingState) => void;
 	setError: (error: string | null) => void;
@@ -69,6 +73,7 @@ const initialState: AccountState = {
 	mpapiResponse: null,
 	singleContributionsResponse: null,
 	userSubscriptionsResponse: null,
+	maapiResponse: null,
 	loadingState: AccountLoadingState.NotStarted,
 	error: null,
 };
@@ -99,6 +104,8 @@ export const useAccountStore = create<AccountStore>()(
 					false,
 					'setUserSubscriptionsResponse',
 				),
+			setMaapiResponse: (response) =>
+				set({ maapiResponse: response }, false, 'setMaapiResponse'),
 			setAllResponses: (responses) =>
 				set(
 					{
@@ -110,6 +117,7 @@ export const useAccountStore = create<AccountStore>()(
 							responses.singleContributionsResponse,
 						userSubscriptionsResponse:
 							responses.userSubscriptionsResponse,
+						maapiResponse: responses.maapiResponse,
 						loadingState: AccountLoadingState.Loaded,
 						error: null,
 					},
