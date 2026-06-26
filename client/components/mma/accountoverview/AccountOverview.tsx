@@ -53,6 +53,7 @@ import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
+import { SecondaryAccountProductCard } from './SecondaryAccountCard';
 import { SingleContributionCard } from './SingleContributionCard';
 
 const benefitsCtasContainerCss = css`
@@ -141,6 +142,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
+		maapiResponse,
 	} = useAccountDataLoader();
 
 	useEffect(() => {
@@ -190,6 +192,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const allActiveProductDetails = mdapiResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
+
+	const secondaryAccountDetails = maapiResponse || null;
 
 	const activeProductsNotPendingCancellation = allActiveProductDetails.filter(
 		(product: ProductDetail) => !product.subscription.cancelledAt,
@@ -397,6 +401,11 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 									primaryUser={productDetail.primaryUser}
 								/>
 							))}
+							{secondaryAccountDetails && (
+								<SecondaryAccountProductCard
+									maapiResponse={secondaryAccountDetails}
+								/>
+							)}
 							{cancelledProductsInCategory.map(
 								(cancelledProductDetail) => (
 									<CancelledProductCard

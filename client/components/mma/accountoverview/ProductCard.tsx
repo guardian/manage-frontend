@@ -14,6 +14,7 @@ import {
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
 import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
+import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { Card } from '../shared/Card';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import {
@@ -34,7 +35,6 @@ import {
 	LiveEventsSection,
 	PaymentSection,
 	ProductCardHeader,
-	SecondaryUserLeaveSubscriptionSection,
 	SecondaryUserSubscriptionDetails,
 	UsCancellationSection,
 } from './ProductCardSections';
@@ -82,6 +82,9 @@ export const ProductCard = ({
 	const userIsGifter = isGifted && productDetail.isPaidTier;
 	const gwGiftSubscription =
 		isGifted && specificProductType.productType === 'guardianweekly';
+	const benefitsOverrideForGWGift = gwGiftSubscription
+		? getGuardianWeeklyGiftBenefits()
+		: undefined;
 	const giftPurchaseDate = productDetail.subscription.lastPaymentDate;
 	const shouldShowJoinDateNotStartDate =
 		groupedProductType.shouldShowJoinDateNotStartDate;
@@ -196,7 +199,7 @@ export const ProductCard = ({
 					nextPaymentDetails={nextPaymentDetails}
 					specificProductType={specificProductType}
 					mainPlan={mainPlan}
-					gwGiftSubscription={gwGiftSubscription}
+					overrideBenefits={benefitsOverrideForGWGift}
 				/>
 
 				<GuardianAdLiteCopy
@@ -205,11 +208,6 @@ export const ProductCard = ({
 				/>
 
 				<SecondaryUserSubscriptionDetails
-					subscriptionName={productTitle}
-					primarySubscriber={primaryUser}
-				/>
-
-				<SecondaryUserLeaveSubscriptionSection
 					subscriptionName={productTitle}
 					primarySubscriber={primaryUser}
 				/>

@@ -113,12 +113,10 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 					toMembersDataApiResponse(
 						guardianWeeklyPaidByCard(),
 						digitalPackPaidByDirectDebit(),
-						secondaryDigitalPackSharedMembership(),
 						newspaperDigitalVoucherPaidByPaypal(),
 						newspaperdigitalVoucherPlusPaidByCard(),
 						membershipSupporter(),
 						patronMembership(),
-						secondaryDigitalPackSharedMembership(), // TODO move to a different api call
 						supporterPlus(),
 						tierThree(),
 						homeDelivery(),
@@ -134,6 +132,11 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 			}),
 			http.get('/api/me/one-off-contributions', () => {
 				return HttpResponse.json([]);
+			}),
+			http.get('/api/me/secondary-account', () => {
+				return HttpResponse.json(
+					secondaryDigitalPackSharedMembership(),
+				);
 			}),
 		],
 	},
