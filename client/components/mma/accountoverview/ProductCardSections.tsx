@@ -180,39 +180,6 @@ export const SecondaryUserSubscriptionDetails = ({
 		</Card.Section>
 	);
 
-export const SecondaryUserLeaveSubscriptionSection = ({
-	subscriptionName,
-	primarySubscriber,
-}: {
-	subscriptionName: string;
-	primarySubscriber: MembersDataApiUser | undefined;
-}) =>
-	primarySubscriber && ( // TODO remove
-		<Card.Section>
-			<div css={keyValueCss}>
-				<div>
-					<h4 css={sectionHeadingCss}>Manage your access</h4>
-					<p css={sharedMembershipTextCss}>
-						You can leave this shared subscription at any time. If
-						you leave, you’ll lose your access to Digital plus
-						benefits.
-					</p>
-				</div>
-				<div css={centeredActionCss}>
-					<Button
-						aria-label={`${subscriptionName} : Leave shared subscription`}
-						size="small"
-						priority="tertiary"
-						cssOverrides={sharedMembershipLeaveButtonCss}
-						onClick={() => undefined}
-					>
-						{`Leave subscription`}
-					</Button>
-				</div>
-			</div>
-		</Card.Section>
-	);
-
 const StartDateRow = ({
 	subscriptionStartDate,
 	shouldShowStartDate,
