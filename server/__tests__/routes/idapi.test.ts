@@ -32,6 +32,7 @@ jest.mock('@/server/util', () => ({
 
 describe('idapi routes', () => {
 	beforeEach(() => {
+		jest.resetModules();
 		jest.clearAllMocks();
 	});
 
@@ -46,6 +47,22 @@ describe('idapi routes', () => {
 		expect(mockIdapiProxyHandler).toHaveBeenCalledWith(
 			expect.objectContaining({
 				url: '/newsletters-v2',
+				sendAuthHeader: false,
+			}),
+		);
+	});
+
+	it('proxies GET /newsletters/restricted to Identity /newsletters-v2/restricted', async () => {
+		await import('@/server/routes/idapi');
+
+		expect(mockRouter.get).toHaveBeenCalledWith(
+			'/newsletters/restricted',
+			'csrfValidateMiddleware',
+			'proxyHandler',
+		);
+		expect(mockIdapiProxyHandler).toHaveBeenCalledWith(
+			expect.objectContaining({
+				url: '/newsletters-v2/restricted',
 				sendAuthHeader: false,
 			}),
 		);

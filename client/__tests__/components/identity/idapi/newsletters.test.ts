@@ -1,6 +1,7 @@
 import {
 	newsletterToConsentOption,
 	read,
+	readRestricted,
 } from '@/client/components/mma/identity/idapi/newsletters';
 
 describe('newsletters idapi client', () => {
@@ -89,6 +90,46 @@ describe('newsletters idapi client', () => {
 				id: '4120',
 				description: "Covering women's football across the world.",
 				identityName: 'moving-the-goalposts',
+			}),
+		]);
+	});
+
+	it('reads from /idapi/newsletters/restricted and maps response items', async () => {
+		const fetchMock = globalThis.fetch as jest.Mock;
+		fetchMock.mockResolvedValue({
+			json: () =>
+				Promise.resolve([
+					{
+						id: 'morning-briefing-uk',
+						name: 'Morning Briefing',
+						status: 'live',
+						theme: 'news',
+						group: 'News',
+						signUpDescription: null,
+						signUpEmbedDescription:
+							'Start your day with the top stories from the Guardian.',
+						frequency: 'Every weekday',
+						exactTargetListId: null,
+						listId: 4151,
+					},
+				]),
+		});
+
+		const options = await readRestricted();
+
+		expect(fetchMock).toHaveBeenCalledWith(
+			'/idapi/newsletters/restricted',
+			{
+				credentials: 'include',
+				mode: 'same-origin',
+			},
+		);
+		expect(options).toEqual([
+			expect.objectContaining({
+				id: '4151',
+				description:
+					'Start your day with the top stories from the Guardian.',
+				identityName: 'morning-briefing-uk',
 			}),
 		]);
 	});

@@ -55,7 +55,7 @@ router.get(
 	'/newsletters/restricted',
 	csrfValidateMiddleware,
 	idapiProxyHandler<NewsletterAPIResponse[]>({
-		url: '/newsletters/restricted',
+		url: '/newsletters-v2/restricted',
 		sendAuthHeader: false,
 	}),
 );
