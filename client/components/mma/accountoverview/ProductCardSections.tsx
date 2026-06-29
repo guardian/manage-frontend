@@ -20,7 +20,7 @@ import type {
 import type { GroupedProductType, ProductType } from '@/shared/productTypes';
 import { Ribbon } from '../../shared/Ribbon';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
-import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
+import type { ProductBenefit } from '../shared/benefits/BenefitsConfiguration';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
 import type { NextPaymentDetails } from '../shared/NextPaymentDetails';
@@ -65,7 +65,7 @@ export const ProductCardHeader = ({
 }: {
 	cardConfig: ProductCardConfiguration;
 	productTitle: string;
-	isGifted: boolean;
+	isGifted?: boolean;
 }) => (
 	<Card.Header backgroundColor={cardConfig.colour} minHeightOverride="auto">
 		<h3 css={productCardTitleCss(cardConfig.invertText)}>{productTitle}</h3>
@@ -89,16 +89,16 @@ export const ProductCardHeader = ({
 
 export const BenefitsCopyAndToggle = ({
 	cardConfig,
-	nextPaymentDetails,
 	specificProductType,
 	mainPlan,
-	gwGiftSubscription,
+	nextPaymentDetails,
+	overrideBenefits,
 }: {
 	cardConfig: ProductCardConfiguration;
-	nextPaymentDetails: NextPaymentDetails | undefined;
 	specificProductType: ProductType;
 	mainPlan: SubscriptionPlan;
-	gwGiftSubscription: boolean;
+	nextPaymentDetails?: NextPaymentDetails | undefined;
+	overrideBenefits?: ProductBenefit[];
 }) =>
 	cardConfig.getBenefitsSectionCopy &&
 	nextPaymentDetails && (
@@ -112,9 +112,7 @@ export const BenefitsCopyAndToggle = ({
 			<BenefitsToggle
 				productType={specificProductType.productType}
 				subscriptionPlan={mainPlan}
-				overrideBenefits={
-					gwGiftSubscription ? getGuardianWeeklyGiftBenefits() : null
-				}
+				overrideBenefits={overrideBenefits}
 			/>
 		</Card.Section>
 	);
