@@ -20,7 +20,7 @@ import type {
 import type { GroupedProductType, ProductType } from '@/shared/productTypes';
 import { Ribbon } from '../../shared/Ribbon';
 import { ErrorIcon } from '../shared/assets/ErrorIcon';
-import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
+import type { ProductBenefit } from '../shared/benefits/BenefitsConfiguration';
 import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
 import type { NextPaymentDetails } from '../shared/NextPaymentDetails';
@@ -30,6 +30,7 @@ import type { ProductCardConfiguration } from './ProductCardConfiguration';
 import {
 	benefitsSectionBackgroundColour,
 	benefitsTextCss,
+	centeredActionCss,
 	centeredButtonCss,
 	giftRibbonColour,
 	giftRibbonCopyColour,
@@ -38,6 +39,8 @@ import {
 	productCardTitleCss,
 	productDetailLayoutCss,
 	sectionHeadingCss,
+	sharedMembershipLeaveButtonCss,
+	sharedMembershipTextCss,
 } from './ProductCardStyles';
 
 const NewPriceAlert = () => {
@@ -65,7 +68,7 @@ export const ProductCardHeader = ({
 }: {
 	cardConfig: ProductCardConfiguration;
 	productTitle: string;
-	isGifted: boolean;
+	isGifted?: boolean;
 }) => (
 	<Card.Header backgroundColor={cardConfig.colour} minHeightOverride="auto">
 		<h3 css={productCardTitleCss(cardConfig.invertText)}>{productTitle}</h3>
@@ -89,32 +92,34 @@ export const ProductCardHeader = ({
 
 export const BenefitsCopyAndToggle = ({
 	cardConfig,
-	nextPaymentDetails,
 	specificProductType,
 	mainPlan,
-	gwGiftSubscription,
+	nextPaymentDetails,
+	overrideBenefits,
+	overrideBenefitsText,
 }: {
 	cardConfig: ProductCardConfiguration;
-	nextPaymentDetails: NextPaymentDetails | undefined;
 	specificProductType: ProductType;
 	mainPlan: SubscriptionPlan;
-	gwGiftSubscription: boolean;
+	nextPaymentDetails?: NextPaymentDetails;
+	overrideBenefits?: ProductBenefit[];
+	overrideBenefitsText?: string;
 }) =>
 	cardConfig.getBenefitsSectionCopy &&
-	nextPaymentDetails && (
+	(nextPaymentDetails || overrideBenefitsText) && (
 		<Card.Section
 			backgroundColor={benefitsSectionBackgroundColour}
 			removeBorders
 		>
 			<p css={benefitsTextCss}>
-				{cardConfig.getBenefitsSectionCopy(nextPaymentDetails)}
+				{nextPaymentDetails
+					? cardConfig.getBenefitsSectionCopy(nextPaymentDetails)
+					: overrideBenefitsText}
 			</p>
 			<BenefitsToggle
 				productType={specificProductType.productType}
 				subscriptionPlan={mainPlan}
-				overrideBenefits={
-					gwGiftSubscription ? getGuardianWeeklyGiftBenefits() : null
-				}
+				overrideBenefits={overrideBenefits}
 			/>
 		</Card.Section>
 	);
@@ -135,6 +140,44 @@ export const GuardianAdLiteCopy = ({
 				{nextPaymentDetails.paymentInterval} for non-personalised
 				advertising.
 			</p>
+		</Card.Section>
+	);
+
+export const SecondaryUserSubscriptionDetails = ({
+	subscriptionName,
+	primarySubscriber,
+}: {
+	subscriptionName: string;
+	primarySubscriber: MembersDataApiUser | undefined;
+}) =>
+	primarySubscriber && (
+		<Card.Section>
+			<div css={productDetailLayoutCss}>
+				<div>
+					<h4 css={sectionHeadingCss}>Subscription details</h4>
+					<p css={sharedMembershipTextCss}>
+						Subscription: {subscriptionName} shared subscription{' '}
+						<br />
+						<br />
+						You’ve been given access by{' '}
+						{primarySubscriber.firstName}{' '}
+						{primarySubscriber.lastName} ({primarySubscriber.email}
+						). Your account and activity are private and not shared
+						with the subscription owner.
+					</p>
+				</div>
+				<div css={centeredActionCss}>
+					<Button
+						aria-label={`${subscriptionName} : Leave shared subscription`}
+						size="small"
+						priority="tertiary"
+						cssOverrides={sharedMembershipLeaveButtonCss}
+						onClick={() => undefined}
+					>
+						Manage support
+					</Button>
+				</div>
+			</div>
 		</Card.Section>
 	);
 
@@ -429,6 +472,7 @@ export const BillingAndPaymentSection = ({
 	showProductUpsellButton,
 	showSwitchButton,
 	user,
+	primaryUser,
 	navigate,
 	trackEvent,
 	fetchUpgradePreview,
@@ -452,88 +496,92 @@ export const BillingAndPaymentSection = ({
 	showProductUpsellButton: boolean;
 	showSwitchButton: boolean;
 	user: MembersDataApiUser | undefined;
+	primaryUser: MembersDataApiUser | undefined;
 	navigate: NavigateFunction;
 	trackEvent: (trackEventArgs: Event) => void;
 	fetchUpgradePreview: (
 		fetchUpgradePreviewArgs: FetchUpgradePreviewParams,
 	) => Promise<void>;
-}) => (
-	<Card.Section>
-		<div css={productDetailLayoutCss}>
-			<div>
-				<h4 css={sectionHeadingCss}>Billing and payment</h4>
-				<dl css={keyValueCss}>
-					<UserIdRow
-						groupedProductType={groupedProductType}
+}) =>
+	!primaryUser && (
+		<Card.Section>
+			<div css={productDetailLayoutCss}>
+				<div>
+					<h4 css={sectionHeadingCss}>Billing and payment</h4>
+					<dl css={keyValueCss}>
+						<UserIdRow
+							groupedProductType={groupedProductType}
+							productDetail={productDetail}
+						/>
+						<MembershipTierLabelRow
+							groupedProductType={groupedProductType}
+							productDetail={productDetail}
+						/>
+						<StartDateRow
+							subscriptionStartDate={subscriptionStartDate}
+							shouldShowStartDate={shouldShowStartDate}
+						/>
+						<JoinDateRow
+							productDetail={productDetail}
+							shouldShowJoinDateNotStartDate={
+								shouldShowJoinDateNotStartDate
+							}
+						/>
+						<GiftPurchaseDateRow
+							userIsGifter={userIsGifter}
+							giftPurchaseDate={giftPurchaseDate}
+						/>
+						<EndDateRow
+							subscriptionEndDate={subscriptionEndDate}
+							isGifted={isGifted}
+							userIsGifter={userIsGifter}
+							productDetail={productDetail}
+						/>
+						<TrialRemainingRow
+							specificProductType={specificProductType}
+							productDetail={productDetail}
+							isGifted={isGifted}
+						/>
+						<NextPaymentRow
+							nextPaymentDetails={nextPaymentDetails}
+							productDetail={productDetail}
+							hasCancellationPending={hasCancellationPending}
+						/>
+						<FutureProductRow
+							futureProductTitle={futureProductTitle}
+						/>
+					</dl>
+				</div>
+				<div css={wideButtonLayoutCss}>
+					<ProductUpsellButton
+						isPreviewLoading={isPreviewLoading}
+						hasPreviewError={hasPreviewError}
 						productDetail={productDetail}
-					/>
-					<MembershipTierLabelRow
-						groupedProductType={groupedProductType}
-						productDetail={productDetail}
-					/>
-					<StartDateRow
-						subscriptionStartDate={subscriptionStartDate}
-						shouldShowStartDate={shouldShowStartDate}
-					/>
-					<JoinDateRow
-						productDetail={productDetail}
-						shouldShowJoinDateNotStartDate={
-							shouldShowJoinDateNotStartDate
-						}
-					/>
-					<GiftPurchaseDateRow
-						userIsGifter={userIsGifter}
-						giftPurchaseDate={giftPurchaseDate}
-					/>
-					<EndDateRow
-						subscriptionEndDate={subscriptionEndDate}
-						isGifted={isGifted}
-						userIsGifter={userIsGifter}
-						productDetail={productDetail}
-					/>
-					<TrialRemainingRow
 						specificProductType={specificProductType}
-						productDetail={productDetail}
+						mainPlan={mainPlan}
+						showProductUpsellButton={showProductUpsellButton}
+						fetchUpgradePreview={fetchUpgradePreview}
+						trackEvent={trackEvent}
+					/>
+					<ProductManageButton
 						isGifted={isGifted}
-					/>
-					<NextPaymentRow
-						nextPaymentDetails={nextPaymentDetails}
+						specificProductType={specificProductType}
+						mainPlan={mainPlan}
+						groupedProductType={groupedProductType}
 						productDetail={productDetail}
-						hasCancellationPending={hasCancellationPending}
+						navigate={navigate}
+						trackEvent={trackEvent}
 					/>
-					<FutureProductRow futureProductTitle={futureProductTitle} />
-				</dl>
+					<ProductSwitchButton
+						showSwitchButton={showSwitchButton}
+						productDetail={productDetail}
+						user={user}
+						navigate={navigate}
+					/>
+				</div>
 			</div>
-			<div css={wideButtonLayoutCss}>
-				<ProductUpsellButton
-					isPreviewLoading={isPreviewLoading}
-					hasPreviewError={hasPreviewError}
-					productDetail={productDetail}
-					specificProductType={specificProductType}
-					mainPlan={mainPlan}
-					showProductUpsellButton={showProductUpsellButton}
-					fetchUpgradePreview={fetchUpgradePreview}
-					trackEvent={trackEvent}
-				/>
-				<ProductManageButton
-					isGifted={isGifted}
-					specificProductType={specificProductType}
-					mainPlan={mainPlan}
-					groupedProductType={groupedProductType}
-					productDetail={productDetail}
-					navigate={navigate}
-					trackEvent={trackEvent}
-				/>
-				<ProductSwitchButton
-					showSwitchButton={showSwitchButton}
-					productDetail={productDetail}
-					user={user}
-					navigate={navigate}
-				/>
-			</div>
-		</div>
-	</Card.Section>
-);
+		</Card.Section>
+	);
 
 export const LiveEventsSection = ({
 	entitledToEvents,
@@ -636,11 +684,14 @@ export const PaymentSection = ({
 export const GiftPaymentSection = ({
 	productDetail,
 	isGifted,
+	primaryUser,
 }: {
 	productDetail: ProductDetail;
 	isGifted: boolean;
+	primaryUser: MembersDataApiUser | undefined;
 }) =>
-	!productDetail.isPaidTier && (
+	!productDetail.isPaidTier &&
+	!primaryUser && (
 		<Card.Section>
 			<h4 css={sectionHeadingCss}>Payment</h4>
 			<p

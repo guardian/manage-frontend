@@ -109,6 +109,9 @@ export const allRecurringProductsDetailFetcher = () =>
 export const allSingleProductsDetailFetcher = () =>
 	fetchWithDefaultParameters('/api/me/one-off-contributions');
 
+export const secondaryAccountFetcher = () =>
+	fetchWithDefaultParameters('/api/me/secondary-account');
+
 export const hasCancellationFlow = (
 	productType: ProductType,
 ): productType is ProductTypeWithCancellationFlow =>

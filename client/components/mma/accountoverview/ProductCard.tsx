@@ -14,6 +14,7 @@ import {
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { trackEvent } from '../../../utilities/analytics';
 import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
+import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { Card } from '../shared/Card';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import {
@@ -41,11 +42,13 @@ export const ProductCard = ({
 	isEligibleToSwitch,
 	isEligibleToUpsell,
 	user,
+	primaryUser,
 }: {
 	productDetail: ProductDetail;
 	isEligibleToSwitch: boolean;
 	isEligibleToUpsell: boolean;
 	user?: MembersDataApiUser;
+	primaryUser?: MembersDataApiUser;
 }) => {
 	const navigate = useNavigate();
 	const mainPlan = getMainPlan(productDetail.subscription);
@@ -77,6 +80,9 @@ export const ProductCard = ({
 	const userIsGifter = isGifted && productDetail.isPaidTier;
 	const gwGiftSubscription =
 		isGifted && specificProductType.productType === 'guardianweekly';
+	const benefitsOverrideForGWGift = gwGiftSubscription
+		? getGuardianWeeklyGiftBenefits()
+		: undefined;
 	const giftPurchaseDate = productDetail.subscription.lastPaymentDate;
 	const shouldShowJoinDateNotStartDate =
 		groupedProductType.shouldShowJoinDateNotStartDate;
@@ -189,7 +195,7 @@ export const ProductCard = ({
 					nextPaymentDetails={nextPaymentDetails}
 					specificProductType={specificProductType}
 					mainPlan={mainPlan}
-					gwGiftSubscription={gwGiftSubscription}
+					overrideBenefits={benefitsOverrideForGWGift}
 				/>
 
 				<GuardianAdLiteCopy
@@ -219,6 +225,7 @@ export const ProductCard = ({
 					showProductUpsellButton={showProductUpsellButton}
 					showSwitchButton={showSwitchButton}
 					user={user}
+					primaryUser={primaryUser}
 					navigate={navigate}
 					trackEvent={trackEvent}
 					fetchUpgradePreview={fetchUpgradePreview}
@@ -240,6 +247,7 @@ export const ProductCard = ({
 				<GiftPaymentSection
 					productDetail={productDetail}
 					isGifted={isGifted}
+					primaryUser={primaryUser}
 				/>
 
 				<UsCancellationSection

@@ -1,4 +1,7 @@
-import type { ProductDetail } from '../../../shared/productResponse';
+import type {
+	MultipleAccountsApiResponse,
+	ProductDetail,
+} from '../../../shared/productResponse';
 
 // Base ProductTypes to support
 // 	| 'membership'
@@ -258,6 +261,22 @@ export function baseDigitalPack(): ProductDetail {
 			readerType: 'Direct',
 		},
 		isTestUser: false,
+	};
+}
+
+// TODO format still to be decided?
+export function baseSecondaryDigitalPack(): ProductDetail {
+	const baseProduct = baseDigitalPack();
+
+	return {
+		...baseProduct,
+		isPaidTier: false,
+		// TODO Self-service cancellation override needed too?
+		primaryUser: {
+			firstName: 'Primary',
+			lastName: 'Subscriber',
+			email: 'primary.subscriber@example.com',
+		},
 	};
 }
 
@@ -1258,5 +1277,17 @@ export function baseTierThree(): ProductDetail {
 			accountId: '8ad08f069010dd31019011e437574822',
 		},
 		isTestUser: false,
+	};
+}
+
+export function baseSecondaryUser(): MultipleAccountsApiResponse {
+	return {
+		subscriptionName: 'Digital Pack',
+		productName: 'Digital Pack',
+		primaryUser: {
+			firstName: 'John',
+			lastName: 'Doe',
+			email: 'j.doe@example.com',
+		},
 	};
 }

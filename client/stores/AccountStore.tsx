@@ -5,6 +5,7 @@ import type {
 	CancelledProductDetail,
 	MembersDataApiResponse,
 	MembersDataApiUser,
+	MultipleAccountsApiResponse,
 	SingleProductDetail,
 } from '../../shared/productResponse';
 import { isProduct } from '../../shared/productResponse';
@@ -21,6 +22,7 @@ interface AccountState {
 	cancelledProductsResponse: CancelledProductDetail[] | null;
 	mpapiResponse: MPAPIResponse | null;
 	singleContributionsResponse: SingleProductDetail[] | null;
+	maapiResponse: MultipleAccountsApiResponse | null;
 	loadingState: AccountLoadingState;
 	error: string | null;
 }
@@ -30,11 +32,13 @@ interface AccountActions {
 	setCancelledProductsResponse: (response: CancelledProductDetail[]) => void;
 	setMpapiResponse: (response: MPAPIResponse) => void;
 	setSingleContributionsResponse: (response: SingleProductDetail[]) => void;
+	setMaapiResponse: (response: MultipleAccountsApiResponse) => void;
 	setAllResponses: (responses: {
 		mdapiResponse: MembersDataApiResponse | null;
 		cancelledProductsResponse: CancelledProductDetail[] | null;
 		mpapiResponse: MPAPIResponse | null;
 		singleContributionsResponse: SingleProductDetail[] | null;
+		maapiResponse: MultipleAccountsApiResponse | null;
 	}) => void;
 	setLoadingState: (state: AccountLoadingState) => void;
 	setError: (error: string | null) => void;
@@ -53,6 +57,7 @@ const initialState: AccountState = {
 	cancelledProductsResponse: null,
 	mpapiResponse: null,
 	singleContributionsResponse: null,
+	maapiResponse: null,
 	loadingState: AccountLoadingState.NotStarted,
 	error: null,
 };
@@ -77,6 +82,8 @@ export const useAccountStore = create<AccountStore>()(
 					false,
 					'setSingleContributionsResponse',
 				),
+			setMaapiResponse: (response) =>
+				set({ maapiResponse: response }, false, 'setMaapiResponse'),
 			setAllResponses: (responses) =>
 				set(
 					{
@@ -86,6 +93,7 @@ export const useAccountStore = create<AccountStore>()(
 						mpapiResponse: responses.mpapiResponse,
 						singleContributionsResponse:
 							responses.singleContributionsResponse,
+						maapiResponse: responses.maapiResponse,
 						loadingState: AccountLoadingState.Loaded,
 						error: null,
 					},

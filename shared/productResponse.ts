@@ -111,6 +111,14 @@ export interface ProductDetail extends WithSubscription {
 	selfServiceCancellation: SelfServiceCancellation;
 	billingCountry?: string;
 	taxExclusive?: boolean;
+	primaryUser?: MembersDataApiUser;
+}
+
+// TODO this is still to be finalised
+export interface MultipleAccountsApiResponse {
+	subscriptionName: string;
+	productName: string;
+	primaryUser: MembersDataApiUser;
 }
 
 export interface CancelledProductDetail {
@@ -248,6 +256,7 @@ export interface Subscription {
 	account?: {
 		accountName: string;
 	};
+	primarySubscriber?: MembersDataApiUser;
 	// THIS IS NOT PART OF THE members-data-api RESPONSE (it's injected server-side - see server/routes/api.ts)
 	deliveryAddressChangeEffectiveDate?: string;
 	cancellationEffectiveDate?: string;
