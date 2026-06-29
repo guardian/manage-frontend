@@ -1,7 +1,7 @@
 import { user as userResponse } from '../../../../client/fixtures/user';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
-import { newsletters } from '../../../../client/fixtures/newsletters';
+import { newslettersV2 } from '../../../../client/fixtures/newslettersV2';
 import { consents } from '../../../../client/fixtures/consents';
 import { newsletterSubscriptions } from '../../../../client/fixtures/newsletterSubscriptions';
 import { InAppPurchase } from '../../../../client/fixtures/inAppPurchase';
@@ -22,7 +22,7 @@ describe('Email and Marketing page', () => {
 
 		cy.intercept('GET', '/idapi/newsletters', {
 			statusCode: 200,
-			body: newsletters,
+			body: newslettersV2,
 		}).as('newsletters');
 
 		cy.intercept('GET', '/idapi/user/newsletters', {
@@ -66,6 +66,9 @@ describe('Email and Marketing page', () => {
 		cy.get('[data-cy="similar_guardian_products"]');
 		cy.findByText('Your subscription/support');
 		cy.findByText('Supporter newsletter');
+		cy.findByText(
+			'Archie Bland and Nimo Omer take you through the top stories and what they mean, free every weekday morning.',
+		);
 	});
 
 	it("displays correct SOI's for IAP owners", () => {
@@ -93,5 +96,8 @@ describe('Email and Marketing page', () => {
 		cy.get('[data-cy="similar_guardian_products"]');
 		cy.findByText('Your subscription/support');
 		cy.findByText('Supporter newsletter');
+		cy.findByText(
+			'Archie Bland and Nimo Omer take you through the top stories and what they mean, free every weekday morning.',
+		);
 	});
 });

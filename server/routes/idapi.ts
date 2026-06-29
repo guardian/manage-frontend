@@ -46,7 +46,7 @@ router.get(
 	'/newsletters',
 	csrfValidateMiddleware,
 	idapiProxyHandler<NewsletterAPIResponse[]>({
-		url: '/newsletters',
+		url: '/newsletters-v2',
 		sendAuthHeader: false,
 	}),
 );
