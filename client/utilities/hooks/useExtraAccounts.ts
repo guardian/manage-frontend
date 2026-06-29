@@ -24,6 +24,7 @@ interface InvitationResponseItem {
 	subscriptionName: string;
 	invitationCode: string;
 	primaryIdentityId: string;
+	secondaryUserEmail: string;
 	secondaryIdentityId: string;
 	invitedDate: string;
 	expiryDate: number;
@@ -34,68 +35,60 @@ interface SecondaryUserResponseItem {
 	secondaryIdentityId: string;
 	primaryIdentityId: string;
 	acceptedDate: string;
-	// Added by the backend so we can target a secondary user when removing access.
-	invitationCode: string;
+	email: string;
+	displayName: string;
+	firstName?: string;
+	lastName?: string;
 }
 
-const fetchInvitations = async (
-	subscriptionName: string,
-	isTestUser: boolean,
-): Promise<InvitationResponseItem[]> => {
-	const response = await fetchWithDefaultParameters(
-		`${EXTRA_ACCOUNTS_BASE}/${subscriptionName}/invitations`,
-		{ headers: requestHeaders(isTestUser) },
-	);
-	if (!response.ok) {
-		throw new Error(`Failed to load invitations (${response.status})`);
-	}
-	const body = (await response.json()) as {
-		invitations: InvitationResponseItem[];
-	};
-	return body.invitations ?? [];
-};
+interface MmaPrimaryResponse {
+	invitations: InvitationResponseItem[];
+	secondaryUsers: SecondaryUserResponseItem[];
+}
 
-const fetchSecondaryUsers = async (
+const fetchMmaPrimary = async (
 	subscriptionName: string,
 	isTestUser: boolean,
-): Promise<SecondaryUserResponseItem[]> => {
+): Promise<MmaPrimaryResponse> => {
 	const response = await fetchWithDefaultParameters(
-		`${EXTRA_ACCOUNTS_BASE}/${subscriptionName}/secondary-users`,
+		`${EXTRA_ACCOUNTS_BASE}/${subscriptionName}/mma-primary`,
 		{ headers: requestHeaders(isTestUser) },
 	);
 	if (!response.ok) {
-		throw new Error(`Failed to load secondary users (${response.status})`);
+		throw new Error(`Failed to load extra accounts (${response.status})`);
 	}
-	const body = (await response.json()) as {
-		secondaryUsers: SecondaryUserResponseItem[];
+	const body = (await response.json()) as Partial<MmaPrimaryResponse>;
+	return {
+		invitations: body.invitations ?? [],
+		secondaryUsers: body.secondaryUsers ?? [],
 	};
-	return body.secondaryUsers ?? [];
 };
 
 export const fetchExtraAccounts = async (
 	subscriptionName: string,
 	isTestUser: boolean,
 ): Promise<ExtraAccount[]> => {
-	const [secondaryUsers, invitations] = await Promise.all([
-		fetchSecondaryUsers(subscriptionName, isTestUser),
-		fetchInvitations(subscriptionName, isTestUser),
-	]);
+	const { secondaryUsers, invitations } = await fetchMmaPrimary(
+		subscriptionName,
+		isTestUser,
+	);
 
-	// Identity IDs are used as placeholder name/email until the backend
-	// returns real contact details.
 	const activeAccounts: ExtraAccount[] = secondaryUsers.map(
 		(user): ExtraAccount => ({
 			status: 'active',
-			name: user.secondaryIdentityId,
-			email: user.secondaryIdentityId,
-			invitationCode: user.invitationCode,
+			name: user.displayName,
+			email: user.email,
+			// The mma-primary endpoint does not return an invitationCode for
+			// active secondary users, so remove-access cannot currently target
+			// them until the backend exposes a way to do so.
+			invitationCode: '',
 		}),
 	);
 
 	const pendingAccounts: ExtraAccount[] = invitations.map(
 		(invitation): ExtraAccount => ({
 			status: 'pending',
-			email: invitation.secondaryIdentityId,
+			email: invitation.secondaryUserEmail,
 			invitationCode: invitation.invitationCode,
 		}),
 	);

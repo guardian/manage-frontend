@@ -409,18 +409,10 @@ router.get(
 );
 
 router.get(
-	'/extra-accounts/:subscriptionName/invitations',
+	'/extra-accounts/:subscriptionName/mma-primary',
 	multipleAccountAPI(
-		'subscriptions/:subscriptionName/invitations',
-		'LIST_INVITATIONS',
-		['subscriptionName'],
-	),
-);
-router.get(
-	'/extra-accounts/:subscriptionName/secondary-users',
-	multipleAccountAPI(
-		'subscriptions/:subscriptionName/secondary-users',
-		'LIST_SECONDARY_USERS',
+		'subscriptions/:subscriptionName/mma-primary',
+		'GET_MMA_PRIMARY_SUMMARY',
 		['subscriptionName'],
 	),
 );
