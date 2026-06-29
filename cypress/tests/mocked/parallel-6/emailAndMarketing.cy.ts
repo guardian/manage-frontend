@@ -58,7 +58,13 @@ describe('Email and Marketing page', () => {
 		cy.wait('@product_detail');
 		cy.wait('@mobile_subscriptions');
 		cy.wait('@single_contributions');
-		cy.wait('@newsletters');
+		cy.wait('@newsletters')
+			.its('response.body.0')
+			.should((newsletter) => {
+				expect(newsletter).to.have.property('signUpDescription');
+				expect(newsletter).to.have.property('signUpEmbedDescription');
+				expect(newsletter).to.not.have.property('description');
+			});
 		cy.wait('@newsletter_subscriptions');
 		cy.wait('@consents');
 		cy.wait('@reminders');
@@ -66,9 +72,6 @@ describe('Email and Marketing page', () => {
 		cy.get('[data-cy="similar_guardian_products"]');
 		cy.findByText('Your subscription/support');
 		cy.findByText('Supporter newsletter');
-		cy.findByText(
-			'Archie Bland and Nimo Omer take you through the top stories and what they mean, free every weekday morning.',
-		);
 	});
 
 	it("displays correct SOI's for IAP owners", () => {
@@ -88,7 +91,13 @@ describe('Email and Marketing page', () => {
 		cy.wait('@product_detail');
 		cy.wait('@mobile_subscriptions');
 		cy.wait('@single_contributions');
-		cy.wait('@newsletters');
+		cy.wait('@newsletters')
+			.its('response.body.0')
+			.should((newsletter) => {
+				expect(newsletter).to.have.property('signUpDescription');
+				expect(newsletter).to.have.property('signUpEmbedDescription');
+				expect(newsletter).to.not.have.property('description');
+			});
 		cy.wait('@newsletter_subscriptions');
 		cy.wait('@consents');
 		cy.wait('@reminders');
@@ -96,8 +105,5 @@ describe('Email and Marketing page', () => {
 		cy.get('[data-cy="similar_guardian_products"]');
 		cy.findByText('Your subscription/support');
 		cy.findByText('Supporter newsletter');
-		cy.findByText(
-			'Archie Bland and Nimo Omer take you through the top stories and what they mean, free every weekday morning.',
-		);
 	});
 });
