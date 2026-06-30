@@ -62,14 +62,14 @@ export const update = async (id: string, subscribed: boolean = true) => {
 
 	const browserId = getCookie('bwid');
 
-	import('@guardian/ophan-tracker-js/MMA').then( async ({ viewId }) => {
+	import('@guardian/ophan-tracker-js').then( async ({ getViewId }) => {
 		await fetchWithDefaultParameters(
 			url,
 			addCSRFToken(
 				patchRequest({
 					id,
 					subscribed,
-					refViewId: viewId,
+					refViewId: getViewId(),
 					browserId
 				}),
 			),

@@ -93,7 +93,7 @@ export const NewsletterPreference: FC<NewsletterPreferenceProps> = (props) => {
 		// If we have an identityName id then this is a newsletter subscription event
 		// and we want to log it in Ophan
 		if (identityName && typeof window !== 'undefined') {
-			import('@guardian/ophan-tracker-js/MMA').then(({ record }) => {
+			import('@guardian/ophan-tracker-js').then(({ record }) => {
 				record({
 					componentEvent: {
 						component: {

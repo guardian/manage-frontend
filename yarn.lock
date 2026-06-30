@@ -2180,17 +2180,17 @@
     yaml "^1.7.2"
     yargs "^15.4.1"
 
+"@guardian/ophan-tracker-js@0.0.0-canary-20260622142809":
+  version "0.0.0-canary-20260622142809"
+  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-0.0.0-canary-20260622142809.tgz#4d19974d12479e7d0f98e081fb231bfb219a8d1c"
+  integrity sha512-pTORQe4S7axSxAlLWjhwYGDKCMea00uo7a3VryUSknoKH61mUI7EdHM72nmBJdWbGvXFdAP4NnQNlzgcZLk1TQ==
+  dependencies:
+    "@guardian/tsconfig" "^1.0.0"
+
 "@guardian/ophan-tracker-js@2.8.0":
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-2.8.0.tgz#18c428ef75f8b6b573368c96feb867bddd0a09b0"
   integrity sha512-RPoyxPPKaT1em1LZiD1LKsTYzoXBG8Zjs4OzyP5dhEmfoXD99qK48JI4oGUPlq3wOOB0ZT8UrbtbWDKzeMSBHA==
-  dependencies:
-    "@guardian/tsconfig" "^1.0.0"
-
-"@guardian/ophan-tracker-js@4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-4.0.2.tgz#93617a4e134b8bb9f297f3b463b641f3ff20a5a9"
-  integrity sha512-sqgJG7G8zxHn9FlqcZGBF+gimu5lVa0CHAUs5fJicdf4xjjtnvpKuNfgKKpQaBFvhK686wtkur8zwhO+nm6BpQ==
   dependencies:
     "@guardian/tsconfig" "^1.0.0"
 
