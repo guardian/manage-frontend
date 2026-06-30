@@ -21,7 +21,14 @@ export const Default: StoryObj<typeof NewsletterOptinSection> = {
 				return HttpResponse.json(newslettersV2);
 			}),
 			http.get('/idapi/user/newsletters', () => {
-				return HttpResponse.json(['4151']);
+				return HttpResponse.json({
+					status: 'ok',
+					result: {
+						htmlPreference: 'HTML',
+						subscriptions: [{ listId: 4151 }],
+						globalSubscriptionStatus: 'subscribed',
+					},
+				});
 			}),
 		],
 	},
