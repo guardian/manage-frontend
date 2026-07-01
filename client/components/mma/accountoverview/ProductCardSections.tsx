@@ -471,7 +471,6 @@ export const BillingAndPaymentSection = ({
 	showProductUpsellButton,
 	showSwitchButton,
 	user,
-	primaryUser,
 	navigate,
 	trackEvent,
 	fetchUpgradePreview,
@@ -495,92 +494,88 @@ export const BillingAndPaymentSection = ({
 	showProductUpsellButton: boolean;
 	showSwitchButton: boolean;
 	user: MembersDataApiUser | undefined;
-	primaryUser: MembersDataApiUser | undefined;
 	navigate: NavigateFunction;
 	trackEvent: (trackEventArgs: Event) => void;
 	fetchUpgradePreview: (
 		fetchUpgradePreviewArgs: FetchUpgradePreviewParams,
 	) => Promise<void>;
-}) =>
-	!primaryUser && (
-		<Card.Section>
-			<div css={productDetailLayoutCss}>
-				<div>
-					<h4 css={sectionHeadingCss}>Billing and payment</h4>
-					<dl css={keyValueCss}>
-						<UserIdRow
-							groupedProductType={groupedProductType}
-							productDetail={productDetail}
-						/>
-						<MembershipTierLabelRow
-							groupedProductType={groupedProductType}
-							productDetail={productDetail}
-						/>
-						<StartDateRow
-							subscriptionStartDate={subscriptionStartDate}
-							shouldShowStartDate={shouldShowStartDate}
-						/>
-						<JoinDateRow
-							productDetail={productDetail}
-							shouldShowJoinDateNotStartDate={
-								shouldShowJoinDateNotStartDate
-							}
-						/>
-						<GiftPurchaseDateRow
-							userIsGifter={userIsGifter}
-							giftPurchaseDate={giftPurchaseDate}
-						/>
-						<EndDateRow
-							subscriptionEndDate={subscriptionEndDate}
-							isGifted={isGifted}
-							userIsGifter={userIsGifter}
-							productDetail={productDetail}
-						/>
-						<TrialRemainingRow
-							specificProductType={specificProductType}
-							productDetail={productDetail}
-							isGifted={isGifted}
-						/>
-						<NextPaymentRow
-							nextPaymentDetails={nextPaymentDetails}
-							productDetail={productDetail}
-							hasCancellationPending={hasCancellationPending}
-						/>
-						<FutureProductRow
-							futureProductTitle={futureProductTitle}
-						/>
-					</dl>
-				</div>
-				<div css={wideButtonLayoutCss}>
-					<ProductUpsellButton
-						isPreviewLoading={isPreviewLoading}
-						hasPreviewError={hasPreviewError}
-						productDetail={productDetail}
-						specificProductType={specificProductType}
-						mainPlan={mainPlan}
-						showProductUpsellButton={showProductUpsellButton}
-						fetchUpgradePreview={fetchUpgradePreview}
-						trackEvent={trackEvent}
-					/>
-					<ProductManageButton
-						isGifted={isGifted}
-						specificProductType={specificProductType}
-						mainPlan={mainPlan}
+}) => (
+	<Card.Section>
+		<div css={productDetailLayoutCss}>
+			<div>
+				<h4 css={sectionHeadingCss}>Billing and payment</h4>
+				<dl css={keyValueCss}>
+					<UserIdRow
 						groupedProductType={groupedProductType}
 						productDetail={productDetail}
-						navigate={navigate}
-						trackEvent={trackEvent}
 					/>
-					<ProductSwitchButton
-						showSwitchButton={showSwitchButton}
+					<MembershipTierLabelRow
+						groupedProductType={groupedProductType}
 						productDetail={productDetail}
-						user={user}
-						navigate={navigate}
 					/>
-				</div>
+					<StartDateRow
+						subscriptionStartDate={subscriptionStartDate}
+						shouldShowStartDate={shouldShowStartDate}
+					/>
+					<JoinDateRow
+						productDetail={productDetail}
+						shouldShowJoinDateNotStartDate={
+							shouldShowJoinDateNotStartDate
+						}
+					/>
+					<GiftPurchaseDateRow
+						userIsGifter={userIsGifter}
+						giftPurchaseDate={giftPurchaseDate}
+					/>
+					<EndDateRow
+						subscriptionEndDate={subscriptionEndDate}
+						isGifted={isGifted}
+						userIsGifter={userIsGifter}
+						productDetail={productDetail}
+					/>
+					<TrialRemainingRow
+						specificProductType={specificProductType}
+						productDetail={productDetail}
+						isGifted={isGifted}
+					/>
+					<NextPaymentRow
+						nextPaymentDetails={nextPaymentDetails}
+						productDetail={productDetail}
+						hasCancellationPending={hasCancellationPending}
+					/>
+					<FutureProductRow futureProductTitle={futureProductTitle} />
+				</dl>
 			</div>
-		</Card.Section>
-	);
+			<div css={wideButtonLayoutCss}>
+				<ProductUpsellButton
+					isPreviewLoading={isPreviewLoading}
+					hasPreviewError={hasPreviewError}
+					productDetail={productDetail}
+					specificProductType={specificProductType}
+					mainPlan={mainPlan}
+					showProductUpsellButton={showProductUpsellButton}
+					fetchUpgradePreview={fetchUpgradePreview}
+					trackEvent={trackEvent}
+				/>
+				<ProductManageButton
+					isGifted={isGifted}
+					specificProductType={specificProductType}
+					mainPlan={mainPlan}
+					groupedProductType={groupedProductType}
+					productDetail={productDetail}
+					navigate={navigate}
+					trackEvent={trackEvent}
+				/>
+				<ProductSwitchButton
+					showSwitchButton={showSwitchButton}
+					productDetail={productDetail}
+					user={user}
+					navigate={navigate}
+				/>
+			</div>
+		</div>
+	</Card.Section>
+);
 
 export const LiveEventsSection = ({
 	entitledToEvents,
@@ -682,14 +677,11 @@ export const PaymentSection = ({
 export const GiftPaymentSection = ({
 	productDetail,
 	isGifted,
-	primaryUser,
 }: {
 	productDetail: ProductDetail;
 	isGifted: boolean;
-	primaryUser: MembersDataApiUser | undefined;
 }) =>
-	!productDetail.isPaidTier &&
-	!primaryUser && (
+	!productDetail.isPaidTier && (
 		<Card.Section>
 			<h4 css={sectionHeadingCss}>Payment</h4>
 			<p
