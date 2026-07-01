@@ -109,8 +109,15 @@ export const allRecurringProductsDetailFetcher = () =>
 export const allSingleProductsDetailFetcher = () =>
 	fetchWithDefaultParameters('/api/me/one-off-contributions');
 
-export const secondaryAccountFetcher = () =>
-	fetchWithDefaultParameters('/api/me/secondary-account');
+export const secondaryAccountFetcher = () => {
+	const mockKey = new URLSearchParams(window.location.search).get(
+		'mockSecondaryUser',
+	);
+	const url =
+		'/api/me/secondary-user' +
+		(mockKey ? `?mockSecondaryUser=${mockKey}` : '');
+	return fetchWithDefaultParameters(url);
+};
 
 export const hasCancellationFlow = (
 	productType: ProductType,
