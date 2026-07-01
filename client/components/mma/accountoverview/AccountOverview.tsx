@@ -412,7 +412,6 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 									isEligibleToSwitch={isEligibleToSwitch}
 									isEligibleToUpsell={isEligibleToUpsell}
 									user={mdapiResponse.user}
-									primaryUser={productDetail.primaryUser}
 								/>
 							))}
 							{cancelledProductsInCategory.map(
