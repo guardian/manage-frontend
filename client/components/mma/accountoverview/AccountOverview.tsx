@@ -256,6 +256,11 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		uniqueProductCategories.push('subscriptions');
 	}
 
+	// TODO we can add secondary user product card to subscriptions but will need to update the type definition to make it work.
+	// if (secondaryAccountDetails && !uniqueProductCategories.includes('subscriptions')) {
+	// 	uniqueProductCategories.push('subscriptions');
+	// }
+
 	if (
 		singleContributions.length > 0 &&
 		!uniqueProductCategories.includes('subscriptions')
@@ -449,6 +454,15 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				/>
 			)}
 			{possiblyAffectedByCanadaPostStrike && <CanadaStrike />}
+			{/* TODO This is also a bit of a guesswork. Will it fit together with existing subscriptions? */}
+			{secondaryAccountDetails && (
+				<Fragment>
+					<h2 css={subHeadingCss}>Shared with you</h2>
+					<SecondaryAccountProductCard
+						maapiResponse={secondaryAccountDetails}
+					/>
+				</Fragment>
+			)}
 			{uniqueProductCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
@@ -482,11 +496,6 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 									primaryUser={productDetail.primaryUser}
 								/>
 							))}
-							{secondaryAccountDetails && (
-								<SecondaryAccountProductCard
-									maapiResponse={secondaryAccountDetails}
-								/>
-							)}
 							{cancelledProductsInCategory.map(
 								(cancelledProductDetail) => (
 									<CancelledProductCard
