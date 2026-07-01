@@ -43,13 +43,11 @@ export const ProductCard = ({
 	isEligibleToSwitch,
 	isEligibleToUpsell,
 	user,
-	primaryUser,
 }: {
 	productDetail: ProductDetail;
 	isEligibleToSwitch: boolean;
 	isEligibleToUpsell: boolean;
 	user?: MembersDataApiUser;
-	primaryUser?: MembersDataApiUser;
 }) => {
 	const navigate = useNavigate();
 	const mainPlan = getMainPlan(productDetail.subscription);
@@ -226,7 +224,6 @@ export const ProductCard = ({
 					showProductUpsellButton={showProductUpsellButton}
 					showSwitchButton={showSwitchButton}
 					user={user}
-					primaryUser={primaryUser}
 					navigate={navigate}
 					trackEvent={trackEvent}
 					fetchUpgradePreview={fetchUpgradePreview}
@@ -248,7 +245,6 @@ export const ProductCard = ({
 				<GiftPaymentSection
 					productDetail={productDetail}
 					isGifted={isGifted}
-					primaryUser={primaryUser}
 				/>
 
 				<UsCancellationSection
