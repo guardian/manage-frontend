@@ -124,8 +124,11 @@ export interface ProductDetail extends WithSubscription {
 	extraTaxApplies?: boolean;
 =======
 	taxExclusive?: boolean;
+<<<<<<< HEAD
 	primaryUser?: MembersDataApiUser;
 >>>>>>> c56eee1b4 (Fixed missed git rebase issues)
+=======
+>>>>>>> de700316e (Removed primaryUser from ProductDetail)
 }
 
 // TODO this is still to be finalised

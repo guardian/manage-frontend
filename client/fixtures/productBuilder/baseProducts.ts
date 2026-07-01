@@ -265,13 +265,11 @@ export function baseDigitalPack(): ProductDetail {
 }
 
 // TODO format still to be decided?
-export function baseSecondaryDigitalPack(): ProductDetail {
-	const baseProduct = baseDigitalPack();
-
+export function baseSecondaryDigitalPack(): MultipleAccountsApiResponse {
 	return {
-		...baseProduct,
-		isPaidTier: false,
-		// TODO Self-service cancellation override needed too?
+		// Response format TBD, placeholder for now.
+		productName: 'Digital plus shared subscription',
+		subscriptionName: 'A-S12345678',
 		primaryUser: {
 			firstName: 'Primary',
 			lastName: 'Subscriber',
