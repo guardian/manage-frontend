@@ -188,9 +188,7 @@
     "flatted": "^3.4.2",
     "follow-redirects": "^1.16.0",
     "serialize-javascript": "^7.0.3",
-    "tmp": "^0.2.7",
-    "ws": "^8.21.0",
-    "eslint-visitor-keys": "^4.0.0"
+    "tmp": "^0.2.7"
   },
   "license": "UNLICENSED",
   "msw": {
