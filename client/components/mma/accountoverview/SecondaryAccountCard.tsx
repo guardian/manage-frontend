@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import type { MultipleAccountsApiResponse } from '@/shared/productResponse';
 import { getSpecificProductTypeFromProductKey } from '@/shared/productResponse';
 import { Card } from '../shared/Card';
@@ -16,6 +17,8 @@ export const SecondaryAccountProductCard = ({
 }: {
 	maapiResponse: MultipleAccountsApiResponse;
 }) => {
+	const navigate = useNavigate();
+
 	// TODO: This is a placeholder. We will likely need to adjust this.
 	const mainPlan = { name: maapiResponse.productName, shouldBeVisible: true };
 	if (!mainPlan) {
@@ -46,6 +49,7 @@ export const SecondaryAccountProductCard = ({
 			<SecondaryUserSubscriptionDetails
 				subscriptionName={productTitle}
 				primarySubscriber={maapiResponse.primaryUser}
+				navigate={navigate}
 			/>
 		</Card>
 	);
