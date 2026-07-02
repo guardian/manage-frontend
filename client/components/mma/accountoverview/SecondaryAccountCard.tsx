@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import type { MultipleAccountsApiResponse } from '@/shared/productResponse';
 import { getSpecificProductTypeFromProductKey } from '@/shared/productResponse';
 import { Card } from '../shared/Card';
@@ -16,6 +17,8 @@ export const SecondaryAccountProductCard = ({
 }: {
 	maapiResponse: MultipleAccountsApiResponse;
 }) => {
+	const navigate = useNavigate();
+
 	// TODO: This is a placeholder. We will likely need to adjust this.
 
 	// TODO Hard-coded atm
@@ -52,6 +55,7 @@ export const SecondaryAccountProductCard = ({
 					<SecondaryUserSubscriptionDetails
 						subscriptionName={productTitle}
 						primarySubscriber={primaryUser}
+						navigate={navigate}
 					/>
 				</Card>
 			))}

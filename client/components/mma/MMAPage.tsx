@@ -92,6 +92,11 @@ const DataPrivacy = lazyWithRetry(() =>
 		/* webpackChunkName: "DataPrivacy" */ './dataPrivacy/DataPrivacy'
 	).then(({ DataPrivacy }) => ({ default: DataPrivacy })),
 );
+const DigitalShared = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "DigitalShared" */ './digitalShared/DigitalShared'
+	).then(({ DigitalShared }) => ({ default: DigitalShared })),
+);
 const ManageProduct = lazyWithRetry(() =>
 	import(
 		/* webpackChunkName: "ManageProduct" */ './accountoverview/ManageProduct'
@@ -620,6 +625,10 @@ const MMARouter = () => {
 						)}
 
 						<Route path="/data-privacy" element={<DataPrivacy />} />
+						<Route
+							path="/digital-shared"
+							element={<DigitalShared />}
+						/>
 						<Route
 							path="/email-prefs"
 							element={<EmailAndMarketing />}
