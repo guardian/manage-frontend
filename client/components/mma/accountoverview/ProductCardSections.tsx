@@ -147,9 +147,11 @@ export const GuardianAdLiteCopy = ({
 export const SecondaryUserSubscriptionDetails = ({
 	subscriptionName,
 	primarySubscriber,
+	navigate,
 }: {
 	subscriptionName: string;
 	primarySubscriber: MultipleAccountsPrimaryUser | undefined;
+	navigate: NavigateFunction;
 }) =>
 	primarySubscriber && (
 		<Card.Section>
@@ -171,7 +173,12 @@ export const SecondaryUserSubscriptionDetails = ({
 						size="small"
 						priority="tertiary"
 						cssOverrides={sharedMembershipLeaveButtonCss}
-						onClick={() => undefined}
+						onClick={() => {
+							// TODO Tracking
+							navigate(`/digital-shared`, {
+								state: { subscriptionName, primarySubscriber },
+							});
+						}}
 					>
 						Manage support
 					</Button>
