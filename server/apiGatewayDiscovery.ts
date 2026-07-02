@@ -24,7 +24,8 @@ type ApiName =
 	| 'product-move-api'
 	| 'discount-api'
 	| 'product-switch-api'
-	| 'update-supporter-plus-amount';
+	| 'update-supporter-plus-amount'
+	| 'multiple-account-api';
 
 const isProd = conf.STAGE.toUpperCase() === 'PROD';
 const normalUserApiStage = isProd ? 'PROD' : 'CODE';
@@ -247,6 +248,13 @@ const invoicingAPIGateway = getApiGateway(
 	generateAwsSignatureHeaders,
 );
 export const invoicingAPI = invoicingAPIGateway.authorisedExpressCallback;
+
+const multipleAccountAPIGateway = getApiGateway(
+	'support',
+	'multiple-account-api',
+);
+export const multipleAccountAPI =
+	multipleAccountAPIGateway.authorisedExpressCallback;
 
 // not sure why this doesn't follow the pattern above
 export const getContactUsAPIHostAndKey = async () => {

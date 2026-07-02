@@ -1,6 +1,8 @@
 import { css } from '@emotion/react';
 import { from, palette, space, textSans20 } from '@guardian/source/foundations';
 import { Link } from 'react-router-dom';
+import { useAccountStore } from '../../../stores/AccountStore';
+import { isExtraAccountsEnabled } from '../../../utilities/extraAccounts';
 import type { MenuSpecificNavItem, NavItem } from './NavConfig';
 import { NAV_LINKS, PROFILE_HOST_NAME } from './NavConfig';
 
@@ -78,45 +80,55 @@ export interface LeftSideNavProps {
 	selectedNavItem?: NavItem;
 }
 
-export const LeftSideNav = (props: LeftSideNavProps) => (
-	<ul css={leftNavCss}>
-		{Object.values(NAV_LINKS)
-			.filter((navItem) => !navItem.isDropDownExclusive)
-			.map((navItem: MenuSpecificNavItem) => (
-				<li
-					css={leftNavItemCss(props.selectedNavItem === navItem)}
-					key={navItem.title}
-				>
-					{navItem.local ? (
-						<Link
-							css={leftNavLinkCss(
-								props.selectedNavItem === navItem,
-							)}
-							aria-current={
-								props.selectedNavItem === navItem
-									? 'page'
-									: undefined
-							}
-							to={navItem.link}
-						>
-							{navItem.icon && (
-								<i css={leftNavIconCss}>
-									<navItem.icon />
-								</i>
-							)}
-							{navItem.title}
-						</Link>
-					) : (
-						<a
-							css={leftNavLinkCss(
-								props.selectedNavItem === navItem,
-							)}
-							href={`${PROFILE_HOST_NAME}${navItem.link}`}
-						>
-							{navItem.title}
-						</a>
-					)}
-				</li>
-			))}
-	</ul>
-);
+export const LeftSideNav = (props: LeftSideNavProps) => {
+	const mdapiResponse = useAccountStore((state) => state.mdapiResponse);
+	const showExtraAccounts = isExtraAccountsEnabled(mdapiResponse);
+
+	return (
+		<ul css={leftNavCss}>
+			{Object.values(NAV_LINKS)
+				.filter((navItem) => !navItem.isDropDownExclusive)
+				.filter(
+					(navItem) =>
+						navItem !== NAV_LINKS.extraAccounts ||
+						showExtraAccounts,
+				)
+				.map((navItem: MenuSpecificNavItem) => (
+					<li
+						css={leftNavItemCss(props.selectedNavItem === navItem)}
+						key={navItem.title}
+					>
+						{navItem.local ? (
+							<Link
+								css={leftNavLinkCss(
+									props.selectedNavItem === navItem,
+								)}
+								aria-current={
+									props.selectedNavItem === navItem
+										? 'page'
+										: undefined
+								}
+								to={navItem.link}
+							>
+								{navItem.icon && (
+									<i css={leftNavIconCss}>
+										<navItem.icon />
+									</i>
+								)}
+								{navItem.title}
+							</Link>
+						) : (
+							<a
+								css={leftNavLinkCss(
+									props.selectedNavItem === navItem,
+								)}
+								href={`${PROFILE_HOST_NAME}${navItem.link}`}
+							>
+								{navItem.title}
+							</a>
+						)}
+					</li>
+				))}
+		</ul>
+	);
+};
