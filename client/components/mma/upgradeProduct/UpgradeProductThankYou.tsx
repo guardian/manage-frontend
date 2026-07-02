@@ -20,6 +20,7 @@ import {
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
+import { formatAmount } from '@/client/utilities/utils';
 import { dateString } from '@/shared/dates';
 import {
 	signInContentContainerCss,
@@ -47,8 +48,13 @@ const whatHappensNowItemInformationBoldTextCss = css`
 export const UpgradeProductThankYou = () => {
 	const navigate = useNavigate();
 
-	const { mainPlan, specificProductType, subscription, previewResponse } =
-		useUpgradeProductStore();
+	const {
+		mainPlan,
+		specificProductType,
+		subscription,
+		previewResponse,
+		isDiscountedOffer,
+	} = useUpgradeProductStore();
 	const { getUser } = useAccountStore();
 	const user = getUser();
 
@@ -59,6 +65,34 @@ export const UpgradeProductThankYou = () => {
 		!previewResponse
 	) {
 		return null;
+	}
+
+	const nextPaymentDateLong = dateString(
+		new Date(previewResponse.nextPaymentDate),
+		'MMMM do',
+	);
+	const nextPaymentDateDay = dateString(
+		new Date(previewResponse.nextPaymentDate),
+		'do',
+	);
+
+	let paymentConditionsText = `You will be charged ${mainPlan.currency}${previewResponse.amountPayableToday}. From ${nextPaymentDateLong}, your ongoing ${mainPlan.billingPeriod}ly payment will be ${mainPlan.currency}${previewResponse.targetCatalogPrice}.`;
+
+	if (isDiscountedOffer) {
+		paymentConditionsText = `You will be charged ${mainPlan.currency}${
+			previewResponse.amountPayableToday
+		} today. From ${nextPaymentDateLong}, your ongoing ${
+			mainPlan.billingPeriod
+		}ly payment will be ${mainPlan.currency}${formatAmount(
+			previewResponse.discount?.discountedPrice,
+		)} for ${
+			previewResponse?.discount?.upToPeriods &&
+			previewResponse?.discount?.upToPeriods > 0
+				? previewResponse?.discount?.upToPeriods - 1
+				: 0
+		} ${previewResponse.discount?.upToPeriodsType.toLowerCase()}, then you will be charged ${
+			mainPlan.currency
+		}${previewResponse.targetCatalogPrice} per ${mainPlan.billingPeriod}.`;
 	}
 
 	return (
@@ -97,17 +131,11 @@ export const UpgradeProductThankYou = () => {
 						]}
 					>
 						<b css={whatHappensNowItemInformationBoldTextCss}>
-							Your first payment will be today.
+							{isDiscountedOffer
+								? `Your new payment date will be the ${nextPaymentDateDay}.`
+								: 'Your first payment will be today.'}
 						</b>{' '}
-						You will be charged {mainPlan.currency}
-						{previewResponse.amountPayableToday}. From{' '}
-						{dateString(
-							new Date(previewResponse.nextPaymentDate),
-							'MMMM do',
-						)}
-						, your ongoing {mainPlan.billingPeriod}ly payment will
-						be {mainPlan.currency}
-						{previewResponse.targetCatalogPrice}
+						{paymentConditionsText}
 					</p>
 				</div>
 			</div>

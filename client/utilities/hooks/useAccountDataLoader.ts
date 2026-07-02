@@ -7,6 +7,7 @@ import type {
 	SingleProductDetail,
 } from '../../../shared/productResponse';
 import { JsonResponseHandler } from '../../components/mma/shared/asyncComponents/DefaultApiResponseHandler';
+import type { UserSubscriptionsResponse } from '../../stores/AccountStore';
 import {
 	AccountLoadingState,
 	useAccountStore,
@@ -24,6 +25,7 @@ async function fetchAllAccountData() {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
+		userSubscriptionsResponse,
 	] = await Promise.all([
 		allRecurringProductsDetailFetcher()
 			.then(
@@ -45,6 +47,14 @@ async function fetchAllAccountData() {
 				(r) => JsonResponseHandler(r) as Promise<SingleProductDetail[]>,
 			)
 			.catch((): null => null),
+		fetchWithDefaultParameters('/api/user-subscriptions/me')
+			.then(
+				(r) =>
+					JsonResponseHandler(
+						r,
+					) as Promise<UserSubscriptionsResponse>,
+			)
+			.catch((): null => null),
 	]);
 
 	return {
@@ -52,6 +62,7 @@ async function fetchAllAccountData() {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
+		userSubscriptionsResponse,
 	};
 }
 
@@ -62,6 +73,7 @@ export const useAccountDataLoader = () => {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
+		userSubscriptionsResponse,
 		setAllResponses,
 		setLoadingState,
 		setError,
@@ -107,5 +119,6 @@ export const useAccountDataLoader = () => {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
+		userSubscriptionsResponse,
 	};
 };

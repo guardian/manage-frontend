@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { HttpResponseResolver } from 'msw';
 import { http, HttpResponse } from 'msw';
+import type { ReactElement } from 'react';
+import { useEffect } from 'react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { featureSwitches } from '@/shared/featureSwitches';
 import {
@@ -416,6 +418,73 @@ export const WithSupporterPlusDuringOffer: StoryObj<typeof AccountOverview> = {
 			}),
 			http.get('/api/me/one-off-contributions', () => {
 				return HttpResponse.json([]);
+			}),
+		],
+	},
+};
+
+const DigitalPlusUpgradeBannerFlagDecorator = (Story: () => ReactElement) => {
+	const flagParam = 'DIGITAL_PLUS_UPGRADE_BANNER_SHOW';
+	const url = new URL(window.location.href);
+	if (url.searchParams.get(flagParam) !== 'true') {
+		url.searchParams.set(flagParam, 'true');
+		window.history.replaceState({}, '', url);
+	}
+
+	useEffect(() => {
+		return () => {
+			const cleanupUrl = new URL(window.location.href);
+			cleanupUrl.searchParams.delete(flagParam);
+			window.history.replaceState({}, '', cleanupUrl);
+		};
+	}, []);
+
+	return <Story />;
+};
+
+export const WithAllAccessDigitalDiscount: StoryObj<typeof AccountOverview> = {
+	render: () => {
+		return <AccountOverview />;
+	},
+
+	decorators: [DigitalPlusUpgradeBannerFlagDecorator],
+
+	parameters: {
+		msw: [
+			http.get('/api/cancelled/', () => {
+				return HttpResponse.json([]);
+			}),
+			http.get('/mpapi/user/mobile-subscriptions', () => {
+				return HttpResponse.json({ subscriptions: [] });
+			}),
+			http.get('/api/me/mma', () => {
+				return HttpResponse.json(
+					toMembersDataApiResponse(supporterPlus()),
+				);
+			}),
+			http.get('/api/me/one-off-contributions', () => {
+				return HttpResponse.json([]);
+			}),
+			http.get('/api/user-subscriptions/me', () => {
+				return HttpResponse.json({
+					subscriptions: [
+						{
+							name: supporterPlus().subscription.subscriptionId,
+							productKey: 'SupporterPlus',
+							productRatePlanKey: 'Annual',
+							availableActions: [
+								{
+									action: 'upsell',
+									target: {
+										productKey: 'DigitalSubscription',
+										productRatePlanKey: 'Annual',
+									},
+								},
+								{ action: 'cancel' },
+							],
+						},
+					],
+				});
 			}),
 		],
 	},

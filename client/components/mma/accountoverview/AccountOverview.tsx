@@ -11,6 +11,7 @@ import {
 	subHeadingCss,
 	subHeadingInformationTextCss,
 } from '@/client/styles/headings';
+import { trackEvent } from '@/client/utilities/analytics';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
@@ -20,7 +21,9 @@ import type {
 } from '../../../../shared/productResponse';
 import { userHasGuardianEmail } from '../../../../shared/productResponse';
 import {
+	getMainPlan,
 	getSpecificProductTypeFromProductKey,
+	isPaidSubscriptionPlan,
 	isPlusDigitalProductType,
 	isProduct,
 	isProductResponse,
@@ -33,12 +36,14 @@ import {
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
 import { useAccountDataLoader } from '../../../utilities/hooks/useAccountDataLoader';
+import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { isCancelled } from '../cancel/CancellationSummary';
 import { PageContainer } from '../Page';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import { DigitalPlusUpgradeBanner } from '../shared/DigitalPlusUpgradeBanner';
 import { DownloadAppCtaVariation1 } from '../shared/DownloadAppCtaVariation1';
 import { DownloadEditionsAppCtaWithImage } from '../shared/DownloadEditionsAppCtaWithImage';
 import { DownloadFeastAppCtaWithImage } from '../shared/DownloadFeastAppCtaWithImage';
@@ -54,6 +59,18 @@ import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 import { SingleContributionCard } from './SingleContributionCard';
+
+export const isDigitalPlusUpgradeBannerFlagEnabled = (): boolean => {
+	if (typeof window === 'undefined') {
+		return false;
+	}
+
+	return (
+		new URLSearchParams(window.location.search).get(
+			'DIGITAL_PLUS_UPGRADE_BANNER_SHOW',
+		) === 'true'
+	);
+};
 
 const benefitsCtasContainerCss = css`
 	> * + * {
@@ -132,6 +149,8 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const { braze, banner } = useBrazeBanner(MANAGE_PLACEMENT_ID);
 	const { previewError, setPreviewError } = useUpgradeProductStore();
+	const { isPreviewLoading, hasPreviewError, fetchUpgradePreview } =
+		useUpgradeProduct();
 
 	const {
 		loadAccountData,
@@ -141,6 +160,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		cancelledProductsResponse,
 		mpapiResponse,
 		singleContributionsResponse,
+		userSubscriptionsResponse,
 	} = useAccountDataLoader();
 
 	useEffect(() => {
@@ -280,6 +300,30 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const isEligibleToUpsell =
 		!maybeFirstPaymentFailure && !hasNonServiceableCountry;
 
+	const upsellToDigitalSubscriptionNames = new Set(
+		userSubscriptionsResponse?.subscriptions
+			.filter((subscription) =>
+				subscription.availableActions.some(
+					(availableAction) =>
+						availableAction.action === 'upsell' &&
+						availableAction.target?.productKey ===
+							'DigitalSubscription',
+				),
+			)
+			.map((subscription) => subscription.name) ?? [],
+	);
+
+	const digitalPlusUpgradeProduct = allActiveProductDetails.find(
+		(product) =>
+			isSpecificProductType(
+				product.mmaProductKey,
+				PRODUCT_TYPES.supporterplus,
+			) &&
+			upsellToDigitalSubscriptionNames.has(
+				product.subscription.subscriptionId,
+			),
+	);
+
 	const visualProductGroupingCategory = (
 		product: ProductDetail | CancelledProductDetail,
 	): GroupedProductTypeKeys => {
@@ -317,6 +361,43 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			{braze && banner && (
 				<BrazeBannersSystemDisplay braze={braze} banner={banner} />
 			)}
+
+			{isDigitalPlusUpgradeBannerFlagEnabled() &&
+				digitalPlusUpgradeProduct && (
+					<DigitalPlusUpgradeBanner
+						isLoading={isPreviewLoading}
+						disabled={hasPreviewError}
+						onUpgradeClick={() => {
+							const mainPlan = getMainPlan(
+								digitalPlusUpgradeProduct.subscription,
+							);
+							if (
+								!mainPlan ||
+								!isPaidSubscriptionPlan(mainPlan)
+							) {
+								return;
+							}
+							const specificProductType =
+								getSpecificProductTypeFromProductKey(
+									digitalPlusUpgradeProduct.mmaProductKey,
+								);
+							trackEvent({
+								eventCategory: 'account_overview_banner',
+								eventAction: 'click',
+								eventLabel: `/${specificProductType.urlPart}/upgrade-product/information`,
+							});
+							void fetchUpgradePreview({
+								subscriptionId:
+									digitalPlusUpgradeProduct.subscription
+										.subscriptionId,
+								subscription:
+									digitalPlusUpgradeProduct.subscription,
+								mainPlan,
+								navigationPath: `/${specificProductType.urlPart}/upgrade-product/information?subscriptionId=${digitalPlusUpgradeProduct.subscription.subscriptionId}`,
+							});
+						}}
+					/>
+				)}
 
 			<PaymentFailureAlertIfApplicable
 				productDetails={allActiveProductDetails}
