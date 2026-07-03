@@ -22,6 +22,7 @@ export interface FetchUpgradePreviewParams {
 export const useUpgradeProduct = () => {
 	const navigate = useNavigate();
 	const {
+		mainPlan,
 		subscription: storeSubscription,
 		previewLoadingState,
 		previewError,
@@ -80,7 +81,7 @@ export const useUpgradeProduct = () => {
 	};
 
 	const executeUpgrade = async (navigationPath: string) => {
-		if (!storeSubscription || isUpgrading) {
+		if (!storeSubscription || !mainPlan || isUpgrading) {
 			return;
 		}
 
@@ -96,6 +97,7 @@ export const useUpgradeProduct = () => {
 				mode: 'switchToBasePrice',
 				targetProduct: 'DigitalSubscription',
 				preview: false,
+				discountSwitchEnabled: mainPlan.billingPeriod === 'month',
 			});
 
 			if (!response.ok) {
