@@ -188,7 +188,9 @@
     "flatted": "^3.4.2",
     "follow-redirects": "^1.16.0",
     "serialize-javascript": "^7.0.3",
-    "tmp": "^0.2.7"
+    "tmp": "^0.2.7",
+    "express/path-to-regexp": "0.1.13",
+    "webpack-dev-server/path-to-regexp": "0.1.13"
   },
   "license": "UNLICENSED",
   "msw": {
