@@ -1,6 +1,6 @@
 export interface SwitchDiscountResponse {
 	discountedPrice: number;
-	discountPercentage: number;
+	discountPercentage?: number;
 	upToPeriods: number;
 	upToPeriodsType: 'Years' | 'Months' | 'Weeks' | 'Days';
 }

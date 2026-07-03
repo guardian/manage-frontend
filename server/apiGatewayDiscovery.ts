@@ -24,7 +24,8 @@ type ApiName =
 	| 'product-move-api'
 	| 'discount-api'
 	| 'product-switch-api'
-	| 'update-supporter-plus-amount';
+	| 'update-supporter-plus-amount'
+	| 'user-subscriptions-api';
 
 const isProd = conf.STAGE.toUpperCase() === 'PROD';
 const normalUserApiStage = isProd ? 'PROD' : 'CODE';
@@ -200,6 +201,13 @@ const getApiGateway = (
 
 const discountAPIGateway = getApiGateway('support', 'discount-api');
 export const discountAPI = discountAPIGateway.authorisedExpressCallback;
+
+const userSubscriptionsAPIGateway = getApiGateway(
+	'support',
+	'user-subscriptions-api',
+);
+export const userSubscriptionsAPI =
+	userSubscriptionsAPIGateway.authorisedExpressCallback;
 
 const cancellationSfCasesAPIGateway = getApiGateway(
 	'membership',
