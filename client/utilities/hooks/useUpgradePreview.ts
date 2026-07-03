@@ -52,6 +52,7 @@ export const useUpgradeProduct = () => {
 			const previewResponse = await fetchUpgradePreviewData({
 				subscriptionId,
 				isTestUser,
+				discountEnabled: mainPlan.billingPeriod === 'month',
 			});
 
 			setMainPlan(mainPlan);
