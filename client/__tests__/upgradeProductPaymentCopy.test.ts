@@ -285,7 +285,7 @@ describe('copy builders', () => {
 				paymentInterval: 'year',
 			}),
 		).toBe(
-			"We will charge you a smaller amount today, to offset the payment you've already given us for the rest of the year. After this, from 06 July 2027, your payment will be £200 every year. Your next payment date will be 06 July 2027.",
+			"We will charge you a smaller amount today, to offset the payment you've already given us for the rest of the year. After this, from 06 July 2027, your payment will be £200 every year. Your next payment date will be the 6th of July.",
 		);
 	});
 

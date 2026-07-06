@@ -24,6 +24,12 @@ function formatYearlyDiscountNextPaymentDate(nextPaymentDate: string): string {
 	return dateString(new Date(nextPaymentDate), 'dd MMMM yyyy');
 }
 
+/** Day label for yearly next payment date copy. @example "the 6th of July" */
+function formatYearlyNextPaymentDayLabel(nextPaymentDate: string): string {
+	const date = new Date(nextPaymentDate);
+	return `the ${dateString(date, 'do')} of ${dateString(date, 'MMMM')}`;
+}
+
 /** @example formatUpgradeNextPaymentDate('2026-03-15', 'month') // "March 15th" */
 export function formatUpgradeNextPaymentDate(
 	nextPaymentDate: string,
@@ -37,7 +43,7 @@ export function formatUpgradeNextPaymentDayLabel(
 	billingPeriod: BillingPeriod,
 ): string {
 	return isYearlyBilling(billingPeriod)
-		? formatYearlyDiscountNextPaymentDate(nextPaymentDate)
+		? formatYearlyNextPaymentDayLabel(nextPaymentDate)
 		: dateString(new Date(nextPaymentDate), 'do');
 }
 
@@ -162,10 +168,13 @@ export function getConfirmationPaymentConditionsText({
 		if (isYearlyBilling(paymentInterval)) {
 			const yearlyDiscountPaymentDate =
 				formatYearlyDiscountNextPaymentDate(preview.nextPaymentDate);
+			const yearlyNextPaymentDayLabel = formatYearlyNextPaymentDayLabel(
+				preview.nextPaymentDate,
+			);
 			paymentConditionsText += `After this, from ${yearlyDiscountPaymentDate}, your payment will be ${formatCurrency(
 				currency,
 				targetCatalogPrice,
-			)} every year. Your next payment date will be ${yearlyDiscountPaymentDate}.`;
+			)} every year. Your next payment date will be ${yearlyNextPaymentDayLabel}.`;
 		} else {
 			paymentConditionsText += `From ${nextPaymentDateLong}, your ${paymentInterval}ly payment will be ${formatCurrency(
 				currency,
