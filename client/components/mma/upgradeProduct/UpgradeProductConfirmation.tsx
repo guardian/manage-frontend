@@ -35,7 +35,6 @@ import {
 	isDiscountedPreview,
 } from '@/client/utilities/upgradeProductPaymentCopy';
 import { formatAmount } from '@/client/utilities/utils';
-import { dateString } from '@/shared/dates';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { Pill } from '../../shared/Pill';
 import { productCardConfiguration } from '../accountoverview/ProductCardConfiguration';
@@ -152,27 +151,11 @@ export const UpgradeProductConfirmation = () => {
 			  )
 			: '';
 
-	const nextPaymentDate = subscription.nextPaymentDate
-		? dateString(new Date(subscription.nextPaymentDate), 'MMMM do')
-		: nextPaymentDetails?.nextPaymentDateValue;
-
-	const nextPaymentDateDiscounted = dateString(
-		new Date(previewResponse.nextPaymentDate),
-		'MMMM do',
-	);
-	const nextPaymentDateDayDiscounted = dateString(
-		new Date(previewResponse.nextPaymentDate),
-		'do',
-	);
-
 	const paymentConditionsText = getConfirmationPaymentConditionsText({
 		preview: previewResponse,
 		isDiscountedOffer,
 		currency: mainPlan.currency,
 		paymentInterval,
-		nextPaymentDate,
-		nextPaymentDateDiscounted,
-		nextPaymentDateDayDiscounted,
 	});
 
 	let paymentMethodCopy = `We will take payment as before`;

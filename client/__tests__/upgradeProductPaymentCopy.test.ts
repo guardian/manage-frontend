@@ -1,3 +1,4 @@
+import { dateString } from '@/shared/dates';
 import type { UpgradePreviewResponse } from '@/shared/productSwitchTypes';
 import {
 	type DiscountedUpgradePreview,
@@ -111,15 +112,19 @@ describe('copy builders', () => {
 	});
 
 	it('formats confirmation payment text with remaining promo duration', () => {
+		const nextPaymentDateLong = dateString(
+			new Date(
+				mockUpgradePreviewResponseMonthlyDiscountGBP.nextPaymentDate,
+			),
+			'MMMM do',
+		);
+
 		expect(
 			getConfirmationPaymentConditionsText({
 				preview: mockUpgradePreviewResponseMonthlyDiscountGBP,
 				isDiscountedOffer: true,
 				currency: '£',
 				paymentInterval: 'month',
-				nextPaymentDate: 'April 1st',
-				nextPaymentDateDiscounted: 'March 15th',
-				nextPaymentDateDayDiscounted: '15th',
 			}),
 		).toContain('£7.50');
 		expect(
@@ -128,11 +133,16 @@ describe('copy builders', () => {
 				isDiscountedOffer: true,
 				currency: '£',
 				paymentInterval: 'month',
-				nextPaymentDate: 'April 1st',
-				nextPaymentDateDiscounted: 'March 15th',
-				nextPaymentDateDayDiscounted: '15th',
 			}),
 		).toContain('for 2 months');
+		expect(
+			getConfirmationPaymentConditionsText({
+				preview: mockUpgradePreviewResponseMonthlyDiscountGBP,
+				isDiscountedOffer: true,
+				currency: '£',
+				paymentInterval: 'month',
+			}),
+		).toContain(`From ${nextPaymentDateLong}`);
 	});
 
 	it('uses unknown when promo duration is missing in confirmation payment text', () => {
@@ -151,11 +161,50 @@ describe('copy builders', () => {
 				isDiscountedOffer: true,
 				currency: '£',
 				paymentInterval: 'month',
-				nextPaymentDate: 'April 1st',
-				nextPaymentDateDiscounted: 'March 15th',
-				nextPaymentDateDayDiscounted: '15th',
 			}),
 		).toContain('for unknown');
+	});
+
+	it('singularises remaining period label when count is one', () => {
+		const preview: DiscountedUpgradePreview = {
+			...mockUpgradePreviewResponseMonthlyDiscountGBP,
+			discount: {
+				discountedPrice: 7.5,
+				upToPeriods: 2,
+				upToPeriodsType: 'Months',
+			},
+		};
+
+		expect(
+			getConfirmationPaymentConditionsText({
+				preview,
+				isDiscountedOffer: true,
+				currency: '£',
+				paymentInterval: 'month',
+			}),
+		).toContain('for 1 month');
+	});
+
+	it('uses preview next payment date for non-discounted confirmation payment text', () => {
+		const preview: UpgradePreviewResponse = {
+			amountPayableToday: 5.5,
+			proratedRefundAmount: 4.5,
+			targetCatalogPrice: 14.99,
+			nextPaymentDate: '2026-03-15',
+		};
+		const nextPaymentDateLong = dateString(
+			new Date(preview.nextPaymentDate),
+			'MMMM do',
+		);
+
+		expect(
+			getConfirmationPaymentConditionsText({
+				preview,
+				isDiscountedOffer: false,
+				currency: '£',
+				paymentInterval: 'month',
+			}),
+		).toContain(`from ${nextPaymentDateLong}`);
 	});
 
 	it('formats thank-you payment text with remaining promo duration', () => {

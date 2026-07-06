@@ -1,4 +1,5 @@
 import { formatAmount } from '@/client/utilities/utils';
+import { dateString } from '@/shared/dates';
 import { appendCorrectPluralisation } from '@/shared/generalTypes';
 import type {
 	SwitchDiscountResponse,
@@ -54,7 +55,10 @@ function formatRemainingDiscountPeriodLabel(
 	if (remaining === 'unknown') {
 		return 'unknown';
 	}
-	return `${remaining} ${upToPeriodsType.toLowerCase()}`;
+	return `${remaining} ${appendCorrectPluralisation(
+		upToPeriodsType,
+		remaining,
+	).toLowerCase()}`;
 }
 
 export function getInformationDiscountHelperText(
@@ -89,23 +93,26 @@ export function getConfirmationPaymentConditionsText({
 	isDiscountedOffer,
 	currency,
 	paymentInterval,
-	nextPaymentDate,
-	nextPaymentDateDiscounted,
-	nextPaymentDateDayDiscounted,
 }: {
 	preview: UpgradePreviewResponse;
 	isDiscountedOffer: boolean;
 	currency: string;
 	paymentInterval: string;
-	nextPaymentDate: string | undefined;
-	nextPaymentDateDiscounted: string;
-	nextPaymentDateDayDiscounted: string;
 }): string {
+	const nextPaymentDateLong = dateString(
+		new Date(preview.nextPaymentDate),
+		'MMMM do',
+	);
+	const nextPaymentDateDay = dateString(
+		new Date(preview.nextPaymentDate),
+		'do',
+	);
+
 	let paymentConditionsText = `We will charge you a smaller amount today, to offset the payment you've already given us for the rest of the ${paymentInterval}. `;
 
 	if (isDiscountedOffer && isDiscountedPreview(preview)) {
 		const { discount, targetCatalogPrice } = preview;
-		paymentConditionsText += `From ${nextPaymentDateDiscounted}, your ${paymentInterval}ly payment will be ${formatCurrency(
+		paymentConditionsText += `From ${nextPaymentDateLong}, your ${paymentInterval}ly payment will be ${formatCurrency(
 			currency,
 			discount.discountedPrice,
 		)} for ${formatRemainingDiscountPeriodLabel(
@@ -114,9 +121,9 @@ export function getConfirmationPaymentConditionsText({
 		)} and then ${formatCurrency(
 			currency,
 			targetCatalogPrice,
-		)} per ${paymentInterval}. The ${nextPaymentDateDayDiscounted} will be your next payment date.`;
+		)} per ${paymentInterval}. The ${nextPaymentDateDay} will be your next payment date.`;
 	} else {
-		paymentConditionsText += `After this, from ${nextPaymentDate}, your ${paymentInterval}ly payment will be ${formatCurrency(
+		paymentConditionsText += `After this, from ${nextPaymentDateLong}, your ${paymentInterval}ly payment will be ${formatCurrency(
 			currency,
 			preview.targetCatalogPrice,
 		)}`;
