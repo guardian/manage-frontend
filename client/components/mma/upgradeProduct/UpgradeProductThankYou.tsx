@@ -20,8 +20,10 @@ import {
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
-import { formatAmount } from '@/client/utilities/utils';
-import { dateString } from '@/shared/dates';
+import {
+	formatUpgradeNextPaymentDayLabel,
+	getThankYouPaymentConditionsText,
+} from '@/client/utilities/upgradeProductPaymentCopy';
 import {
 	signInContentContainerCss,
 	signInCss,
@@ -67,33 +69,17 @@ export const UpgradeProductThankYou = () => {
 		return null;
 	}
 
-	const nextPaymentDateLong = dateString(
-		new Date(previewResponse.nextPaymentDate),
-		'MMMM do',
-	);
-	const nextPaymentDateDay = dateString(
-		new Date(previewResponse.nextPaymentDate),
-		'do',
+	const nextPaymentDateDayLabel = formatUpgradeNextPaymentDayLabel(
+		previewResponse.nextPaymentDate,
+		mainPlan.billingPeriod,
 	);
 
-	let paymentConditionsText = `You will be charged ${mainPlan.currency}${previewResponse.amountPayableToday}. From ${nextPaymentDateLong}, your ongoing ${mainPlan.billingPeriod}ly payment will be ${mainPlan.currency}${previewResponse.targetCatalogPrice}.`;
-
-	if (isDiscountedOffer) {
-		paymentConditionsText = `You will be charged ${mainPlan.currency}${
-			previewResponse.amountPayableToday
-		} today. From ${nextPaymentDateLong}, your ongoing ${
-			mainPlan.billingPeriod
-		}ly payment will be ${mainPlan.currency}${formatAmount(
-			previewResponse.discount?.discountedPrice,
-		)} for ${
-			previewResponse?.discount?.upToPeriods &&
-			previewResponse?.discount?.upToPeriods > 0
-				? previewResponse?.discount?.upToPeriods - 1
-				: 0
-		} ${previewResponse.discount?.upToPeriodsType.toLowerCase()}, then you will be charged ${
-			mainPlan.currency
-		}${previewResponse.targetCatalogPrice} per ${mainPlan.billingPeriod}.`;
-	}
+	const paymentConditionsText = getThankYouPaymentConditionsText({
+		preview: previewResponse,
+		isDiscountedOffer,
+		currency: mainPlan.currency,
+		billingPeriod: mainPlan.billingPeriod,
+	});
 
 	return (
 		<>
@@ -132,7 +118,9 @@ export const UpgradeProductThankYou = () => {
 					>
 						<b css={whatHappensNowItemInformationBoldTextCss}>
 							{isDiscountedOffer
-								? `Your new payment date will be the ${nextPaymentDateDay}.`
+								? mainPlan.billingPeriod === 'year'
+									? `Your new payment date will be ${nextPaymentDateDayLabel}.`
+									: `Your new payment date will be the ${nextPaymentDateDayLabel}.`
 								: 'Your first payment will be today.'}
 						</b>{' '}
 						{paymentConditionsText}

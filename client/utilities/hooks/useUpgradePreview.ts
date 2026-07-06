@@ -53,7 +53,6 @@ export const useUpgradeProduct = () => {
 			const previewResponse = await fetchUpgradePreviewData({
 				subscriptionId,
 				isTestUser,
-				discountSwitchEnabled: mainPlan.billingPeriod === 'month',
 			});
 
 			setMainPlan(mainPlan);
@@ -97,7 +96,6 @@ export const useUpgradeProduct = () => {
 				mode: 'switchToBasePrice',
 				targetProduct: 'DigitalSubscription',
 				preview: false,
-				discountSwitchEnabled: mainPlan.billingPeriod === 'month',
 			});
 
 			if (!response.ok) {
