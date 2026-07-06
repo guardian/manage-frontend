@@ -20,8 +20,10 @@ import {
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
-import { getThankYouPaymentConditionsText } from '@/client/utilities/upgradeProductPaymentCopy';
-import { dateString } from '@/shared/dates';
+import {
+	formatUpgradeNextPaymentDayLabel,
+	getThankYouPaymentConditionsText,
+} from '@/client/utilities/upgradeProductPaymentCopy';
 import {
 	signInContentContainerCss,
 	signInCss,
@@ -67,13 +69,9 @@ export const UpgradeProductThankYou = () => {
 		return null;
 	}
 
-	const nextPaymentDateLong = dateString(
-		new Date(previewResponse.nextPaymentDate),
-		'MMMM do',
-	);
-	const nextPaymentDateDay = dateString(
-		new Date(previewResponse.nextPaymentDate),
-		'do',
+	const nextPaymentDateDayLabel = formatUpgradeNextPaymentDayLabel(
+		previewResponse.nextPaymentDate,
+		mainPlan.billingPeriod,
 	);
 
 	const paymentConditionsText = getThankYouPaymentConditionsText({
@@ -81,7 +79,6 @@ export const UpgradeProductThankYou = () => {
 		isDiscountedOffer,
 		currency: mainPlan.currency,
 		billingPeriod: mainPlan.billingPeriod,
-		nextPaymentDateLong,
 	});
 
 	return (
@@ -121,7 +118,9 @@ export const UpgradeProductThankYou = () => {
 					>
 						<b css={whatHappensNowItemInformationBoldTextCss}>
 							{isDiscountedOffer
-								? `Your new payment date will be the ${nextPaymentDateDay}.`
+								? mainPlan.billingPeriod === 'year'
+									? `Your new payment date will be ${nextPaymentDateDayLabel}.`
+									: `Your new payment date will be the ${nextPaymentDateDayLabel}.`
 								: 'Your first payment will be today.'}
 						</b>{' '}
 						{paymentConditionsText}

@@ -1,8 +1,8 @@
-import { dateString } from '@/shared/dates';
 import type { UpgradePreviewResponse } from '@/shared/productSwitchTypes';
 import {
 	type DiscountedUpgradePreview,
 	formatDiscountPeriodLabel,
+	formatUpgradeNextPaymentDate,
 	getConfirmationDiscountHeaderText,
 	getConfirmationPaymentConditionsText,
 	getInformationDiscountHelperText,
@@ -112,11 +112,9 @@ describe('copy builders', () => {
 	});
 
 	it('formats confirmation payment text with remaining promo duration', () => {
-		const nextPaymentDateLong = dateString(
-			new Date(
-				mockUpgradePreviewResponseMonthlyDiscountGBP.nextPaymentDate,
-			),
-			'MMMM do',
+		const nextPaymentDateLong = formatUpgradeNextPaymentDate(
+			mockUpgradePreviewResponseMonthlyDiscountGBP.nextPaymentDate,
+			'month',
 		);
 
 		expect(
@@ -192,9 +190,9 @@ describe('copy builders', () => {
 			targetCatalogPrice: 14.99,
 			nextPaymentDate: '2026-03-15',
 		};
-		const nextPaymentDateLong = dateString(
-			new Date(preview.nextPaymentDate),
-			'MMMM do',
+		const nextPaymentDateLong = formatUpgradeNextPaymentDate(
+			preview.nextPaymentDate,
+			'month',
 		);
 
 		expect(
@@ -214,7 +212,6 @@ describe('copy builders', () => {
 				isDiscountedOffer: true,
 				currency: '£',
 				billingPeriod: 'month',
-				nextPaymentDateLong: 'March 15th',
 			}),
 		).toContain('£7.50');
 		expect(
@@ -223,9 +220,81 @@ describe('copy builders', () => {
 				isDiscountedOffer: true,
 				currency: '£',
 				billingPeriod: 'month',
-				nextPaymentDateLong: 'March 15th',
 			}),
 		).toContain('for 2 months');
+	});
+
+	it('formats yearly non-discounted confirmation payment text', () => {
+		const preview: UpgradePreviewResponse = {
+			amountPayableToday: 50,
+			proratedRefundAmount: 45,
+			targetCatalogPrice: 200,
+			nextPaymentDate: '2027-07-06',
+		};
+
+		expect(
+			getConfirmationPaymentConditionsText({
+				preview,
+				isDiscountedOffer: false,
+				currency: '€',
+				paymentInterval: 'year',
+			}),
+		).toBe(
+			"We will charge you a smaller amount today, to offset the payment you've already given us for the rest of the year. After this, from 06 July 2027, your payment will be €200 every year.",
+		);
+	});
+
+	it('formats yearly non-discounted thank-you payment text', () => {
+		const preview: UpgradePreviewResponse = {
+			amountPayableToday: 50,
+			proratedRefundAmount: 45,
+			targetCatalogPrice: 200,
+			nextPaymentDate: '2027-07-06',
+		};
+
+		expect(
+			getThankYouPaymentConditionsText({
+				preview,
+				isDiscountedOffer: false,
+				currency: '€',
+				billingPeriod: 'year',
+			}),
+		).toBe(
+			'You will be charged €50. After this, from 06 July 2027, your payment will be €200 every year.',
+		);
+	});
+
+	it('formats yearly discounted confirmation payment text with every year wording', () => {
+		const preview: DiscountedUpgradePreview = {
+			amountPayableToday: 50,
+			proratedRefundAmount: 45,
+			targetCatalogPrice: 200,
+			nextPaymentDate: '2027-07-06',
+			discount: {
+				discountedPrice: 120,
+				upToPeriods: 1,
+				upToPeriodsType: 'Years',
+			},
+		};
+
+		expect(
+			getConfirmationPaymentConditionsText({
+				preview,
+				isDiscountedOffer: true,
+				currency: '€',
+				paymentInterval: 'year',
+			}),
+		).toContain(
+			'After this, from 06 July 2027, your payment will be €120 every year for 0 years',
+		);
+		expect(
+			getConfirmationPaymentConditionsText({
+				preview,
+				isDiscountedOffer: true,
+				currency: '€',
+				paymentInterval: 'year',
+			}),
+		).toContain('then €200 every year');
 	});
 
 	it('formats non-discounted thank-you payment text', () => {
@@ -242,7 +311,6 @@ describe('copy builders', () => {
 				isDiscountedOffer: false,
 				currency: '£',
 				billingPeriod: 'month',
-				nextPaymentDateLong: 'March 15th',
 			}),
 		).toBe(
 			'You will be charged £5.50. From March 15th, your ongoing monthly payment will be £14.99.',

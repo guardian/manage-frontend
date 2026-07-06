@@ -1,6 +1,7 @@
 import { formatAmount } from '@/client/utilities/utils';
 import { dateString } from '@/shared/dates';
 import { appendCorrectPluralisation } from '@/shared/generalTypes';
+import type { BillingPeriod } from '@/shared/productResponse';
 import type {
 	SwitchDiscountResponse,
 	UpgradePreviewResponse,
@@ -9,6 +10,30 @@ import type {
 export type DiscountedUpgradePreview = UpgradePreviewResponse & {
 	discount: SwitchDiscountResponse;
 };
+
+function isYearlyBilling(billingPeriod: string): billingPeriod is 'year' {
+	return billingPeriod === 'year';
+}
+
+/** @example formatUpgradeNextPaymentDate('2027-07-06', 'year') // "06 July 2027" */
+export function formatUpgradeNextPaymentDate(
+	nextPaymentDate: string,
+	billingPeriod: BillingPeriod,
+): string {
+	return dateString(
+		new Date(nextPaymentDate),
+		isYearlyBilling(billingPeriod) ? 'dd MMMM yyyy' : 'MMMM do',
+	);
+}
+
+export function formatUpgradeNextPaymentDayLabel(
+	nextPaymentDate: string,
+	billingPeriod: BillingPeriod,
+): string {
+	return isYearlyBilling(billingPeriod)
+		? formatUpgradeNextPaymentDate(nextPaymentDate, billingPeriod)
+		: dateString(new Date(nextPaymentDate), 'do');
+}
 
 export function isDiscountedPreview(
 	preview: UpgradePreviewResponse | null | undefined,
@@ -20,7 +45,12 @@ export function isDiscountedPreview(
 	);
 }
 
-/** Payment-paragraph periods: API total minus the first discounted period already in flight. */
+/**
+ * Converts API promo length to remaining billing periods for payment copy.
+ * The first discounted period is counted separately in the upgrade flow.
+ *
+ * @example getRemainingDiscountPeriods(3) // 2
+ */
 export function getRemainingDiscountPeriods(
 	upToPeriods?: number,
 ): number | 'unknown' {
@@ -34,6 +64,11 @@ export function formatCurrency(currency: string, amount?: number) {
 	return `${currency}${formatAmount(amount)}`;
 }
 
+/**
+ * Formats the full promo duration for header/helper copy.
+ *
+ * @example formatDiscountPeriodLabel(3, 'Months') // "3 months"
+ */
 export function formatDiscountPeriodLabel(
 	upToPeriods: number | undefined,
 	upToPeriodsType: SwitchDiscountResponse['upToPeriodsType'],
@@ -47,6 +82,12 @@ export function formatDiscountPeriodLabel(
 	).toLowerCase()}`;
 }
 
+/**
+ * Formats remaining promo duration for payment-paragraph copy (after the first period).
+ *
+ * @example formatRemainingDiscountPeriodLabel(3, 'Months') // "2 months"
+ * @example formatRemainingDiscountPeriodLabel(2, 'Months') // "1 month"
+ */
 function formatRemainingDiscountPeriodLabel(
 	upToPeriods: number | undefined,
 	upToPeriodsType: SwitchDiscountResponse['upToPeriodsType'],
@@ -97,31 +138,50 @@ export function getConfirmationPaymentConditionsText({
 	preview: UpgradePreviewResponse;
 	isDiscountedOffer: boolean;
 	currency: string;
-	paymentInterval: string;
+	paymentInterval: BillingPeriod;
 }): string {
-	const nextPaymentDateLong = dateString(
-		new Date(preview.nextPaymentDate),
-		'MMMM do',
+	const nextPaymentDateLong = formatUpgradeNextPaymentDate(
+		preview.nextPaymentDate,
+		paymentInterval,
 	);
-	const nextPaymentDateDay = dateString(
-		new Date(preview.nextPaymentDate),
-		'do',
+	const nextPaymentDateDay = formatUpgradeNextPaymentDayLabel(
+		preview.nextPaymentDate,
+		paymentInterval,
 	);
 
 	let paymentConditionsText = `We will charge you a smaller amount today, to offset the payment you've already given us for the rest of the ${paymentInterval}. `;
 
 	if (isDiscountedOffer && isDiscountedPreview(preview)) {
 		const { discount, targetCatalogPrice } = preview;
-		paymentConditionsText += `From ${nextPaymentDateLong}, your ${paymentInterval}ly payment will be ${formatCurrency(
+
+		if (isYearlyBilling(paymentInterval)) {
+			paymentConditionsText += `After this, from ${nextPaymentDateLong}, your payment will be ${formatCurrency(
+				currency,
+				discount.discountedPrice,
+			)} every year for ${formatRemainingDiscountPeriodLabel(
+				discount.upToPeriods,
+				discount.upToPeriodsType,
+			)} and then ${formatCurrency(
+				currency,
+				targetCatalogPrice,
+			)} every year. Your next payment date will be ${nextPaymentDateLong}.`;
+		} else {
+			paymentConditionsText += `From ${nextPaymentDateLong}, your ${paymentInterval}ly payment will be ${formatCurrency(
+				currency,
+				discount.discountedPrice,
+			)} for ${formatRemainingDiscountPeriodLabel(
+				discount.upToPeriods,
+				discount.upToPeriodsType,
+			)} and then ${formatCurrency(
+				currency,
+				targetCatalogPrice,
+			)} per ${paymentInterval}. The ${nextPaymentDateDay} will be your next payment date.`;
+		}
+	} else if (isYearlyBilling(paymentInterval)) {
+		paymentConditionsText += `After this, from ${nextPaymentDateLong}, your payment will be ${formatCurrency(
 			currency,
-			discount.discountedPrice,
-		)} for ${formatRemainingDiscountPeriodLabel(
-			discount.upToPeriods,
-			discount.upToPeriodsType,
-		)} and then ${formatCurrency(
-			currency,
-			targetCatalogPrice,
-		)} per ${paymentInterval}. The ${nextPaymentDateDay} will be your next payment date.`;
+			preview.targetCatalogPrice,
+		)} every year.`;
 	} else {
 		paymentConditionsText += `After this, from ${nextPaymentDateLong}, your ${paymentInterval}ly payment will be ${formatCurrency(
 			currency,
@@ -137,16 +197,36 @@ export function getThankYouPaymentConditionsText({
 	isDiscountedOffer,
 	currency,
 	billingPeriod,
-	nextPaymentDateLong,
 }: {
 	preview: UpgradePreviewResponse;
 	isDiscountedOffer: boolean;
 	currency: string;
-	billingPeriod: string;
-	nextPaymentDateLong: string;
+	billingPeriod: BillingPeriod;
 }): string {
+	const nextPaymentDateLong = formatUpgradeNextPaymentDate(
+		preview.nextPaymentDate,
+		billingPeriod,
+	);
+
 	if (isDiscountedOffer && isDiscountedPreview(preview)) {
 		const { discount, targetCatalogPrice, amountPayableToday } = preview;
+
+		if (isYearlyBilling(billingPeriod)) {
+			return `You will be charged ${formatCurrency(
+				currency,
+				amountPayableToday,
+			)} today. After this, from ${nextPaymentDateLong}, your payment will be ${formatCurrency(
+				currency,
+				discount.discountedPrice,
+			)} every year for ${formatRemainingDiscountPeriodLabel(
+				discount.upToPeriods,
+				discount.upToPeriodsType,
+			)}, then ${formatCurrency(
+				currency,
+				targetCatalogPrice,
+			)} every year.`;
+		}
+
 		return `You will be charged ${formatCurrency(
 			currency,
 			amountPayableToday,
@@ -160,6 +240,16 @@ export function getThankYouPaymentConditionsText({
 			currency,
 			targetCatalogPrice,
 		)} per ${billingPeriod}.`;
+	}
+
+	if (isYearlyBilling(billingPeriod)) {
+		return `You will be charged ${formatCurrency(
+			currency,
+			preview.amountPayableToday,
+		)}. After this, from ${nextPaymentDateLong}, your payment will be ${formatCurrency(
+			currency,
+			preview.targetCatalogPrice,
+		)} every year.`;
 	}
 
 	return `You will be charged ${formatCurrency(

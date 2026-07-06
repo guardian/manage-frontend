@@ -140,7 +140,11 @@ export const UpgradeProductConfirmation = () => {
 		false,
 	);
 
-	const paymentInterval = nextPaymentDetails?.paymentInterval ?? 'month';
+	if (!nextPaymentDetails) {
+		return null;
+	}
+
+	const { paymentInterval } = nextPaymentDetails;
 
 	const discountConditionsText =
 		isDiscountedOffer && isDiscountedPreview(previewResponse)
@@ -239,9 +243,7 @@ export const UpgradeProductConfirmation = () => {
 								{discountConditionsText}
 							</span>
 						) : (
-							<span>
-								{'/' + nextPaymentDetails?.paymentInterval}
-							</span>
+							<span>{'/' + paymentInterval}</span>
 						)}
 					</p>
 				</Card.Section>
@@ -297,16 +299,16 @@ export const UpgradeProductConfirmation = () => {
 			<div css={termsAndConditionsContainerCss}>
 				<p css={termsAndConditionsTextCss}>
 					This subscription auto-renews. You'll be charged the
-					applicable {nextPaymentDetails?.paymentInterval}ly amount at
-					each renewal unless you cancel. You can cancel your
-					subscription at any time before your next renewal date. To
-					cancel go to <a href="/">Manage My Account</a>. Cancellation
-					will take effect at the end of your current{' '}
-					{nextPaymentDetails?.paymentInterval}ly payment period.
-					There is also a cooling off period of 14 days from sign-up.
-					You can cancel your subscription within 14 days of sign-up
-					by <a href="/help-centre#call-us">contacting us</a> and
-					receive a full refund.
+					applicable {paymentInterval}ly amount at each renewal unless
+					you cancel. You can cancel your subscription at any time
+					before your next renewal date. To cancel go to{' '}
+					<a href="/">Manage My Account</a>. Cancellation will take
+					effect at the end of your current {paymentInterval}ly
+					payment period. There is also a cooling off period of 14
+					days from sign-up. You can cancel your subscription within
+					14 days of sign-up by{' '}
+					<a href="/help-centre#call-us">contacting us</a> and receive
+					a full refund.
 				</p>
 			</div>
 
