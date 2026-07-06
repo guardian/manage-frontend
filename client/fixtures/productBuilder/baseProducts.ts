@@ -272,7 +272,6 @@ export function baseSecondaryDigitalPack(): MultipleAccountsApiResponse {
 		subscriptionName: 'A-S12345678',
 		primaryUser: {
 			firstName: 'Primary',
-			lastName: 'Subscriber',
 			email: 'primary.subscriber@example.com',
 		},
 	};
@@ -1284,7 +1283,6 @@ export function baseSecondaryUser(): MultipleAccountsApiResponse {
 		productName: 'Digital Pack',
 		primaryUser: {
 			firstName: 'John',
-			lastName: 'Doe',
 			email: 'j.doe@example.com',
 		},
 	};

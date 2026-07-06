@@ -13,6 +13,7 @@ import type { FetchUpgradePreviewParams } from '@/client/utilities/hooks/useUpgr
 import { parseDate } from '@/shared/dates';
 import type {
 	MembersDataApiUser,
+	MultipleAccountsPrimaryUser,
 	PaidSubscriptionPlan,
 	ProductDetail,
 	SubscriptionPlan,
@@ -148,7 +149,7 @@ export const SecondaryUserSubscriptionDetails = ({
 	primarySubscriber,
 }: {
 	subscriptionName: string;
-	primarySubscriber: MembersDataApiUser | undefined;
+	primarySubscriber: MultipleAccountsPrimaryUser | undefined;
 }) =>
 	primarySubscriber && (
 		<Card.Section>
@@ -160,10 +161,8 @@ export const SecondaryUserSubscriptionDetails = ({
 						<br />
 						<br />
 						You’ve been given access by{' '}
-						{primarySubscriber.firstName}{' '}
-						{primarySubscriber.lastName} ({primarySubscriber.email}
-						). Your account and activity are private and not shared
-						with the subscription owner.
+						{primarySubscriber.firstName}. Your account and activity
+						are private and not shared with the subscription owner.
 					</p>
 				</div>
 				<div css={centeredActionCss}>
