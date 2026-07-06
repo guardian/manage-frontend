@@ -28,6 +28,12 @@ import {
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
 import { useUpgradeProduct } from '@/client/utilities/hooks/useUpgradePreview';
+import {
+	formatCurrency,
+	getConfirmationDiscountHeaderText,
+	getConfirmationPaymentConditionsText,
+	isDiscountedPreview,
+} from '@/client/utilities/upgradeProductPaymentCopy';
 import { formatAmount } from '@/client/utilities/utils';
 import { dateString } from '@/shared/dates';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
@@ -119,7 +125,12 @@ export const UpgradeProductConfirmation = () => {
 	} = useUpgradeProductStore();
 	const { executeUpgrade, isUpgrading, upgradeError } = useUpgradeProduct();
 
-	if (!mainPlan || !specificProductType || !subscription) {
+	if (
+		!mainPlan ||
+		!specificProductType ||
+		!subscription ||
+		!previewResponse
+	) {
 		return null;
 	}
 
@@ -130,44 +141,39 @@ export const UpgradeProductConfirmation = () => {
 		false,
 	);
 
-	const discountConditionsText = isDiscountedOffer
-		? ` ${mainPlan.currency}${previewResponse?.discount?.discountedPrice}/${
-				nextPaymentDetails?.paymentInterval
-		  } for ${
-				previewResponse?.discount?.upToPeriods
-		  } ${previewResponse?.discount?.upToPeriodsType.toLowerCase()}`
-		: '';
+	const paymentInterval = nextPaymentDetails?.paymentInterval ?? 'month';
 
-	let paymentConditionsText = `We will charge you a smaller amount today, to offset the payment you've already given us for the rest of the ${nextPaymentDetails?.paymentInterval}. `;
+	const discountConditionsText =
+		isDiscountedOffer && isDiscountedPreview(previewResponse)
+			? getConfirmationDiscountHeaderText(
+					previewResponse,
+					mainPlan.currency,
+					paymentInterval,
+			  )
+			: '';
+
 	const nextPaymentDate = subscription.nextPaymentDate
 		? dateString(new Date(subscription.nextPaymentDate), 'MMMM do')
 		: nextPaymentDetails?.nextPaymentDateValue;
 
-	if (isDiscountedOffer) {
-		const nextPaymentDateDiscounted = previewResponse?.nextPaymentDate
-			? dateString(new Date(previewResponse.nextPaymentDate), 'MMMM do')
-			: nextPaymentDetails?.nextPaymentDateValue;
-		const nextPaymentDateDayDiscounted = previewResponse?.nextPaymentDate
-			? dateString(new Date(previewResponse.nextPaymentDate), 'do')
-			: nextPaymentDetails?.nextPaymentDateValue;
+	const nextPaymentDateDiscounted = dateString(
+		new Date(previewResponse.nextPaymentDate),
+		'MMMM do',
+	);
+	const nextPaymentDateDayDiscounted = dateString(
+		new Date(previewResponse.nextPaymentDate),
+		'do',
+	);
 
-		paymentConditionsText += `From ${nextPaymentDateDiscounted}, your ${
-			nextPaymentDetails?.paymentInterval
-		}ly payment will be ${mainPlan.currency}${
-			previewResponse?.discount?.discountedPrice
-		} for ${
-			previewResponse?.discount?.upToPeriods &&
-			previewResponse?.discount?.upToPeriods > 0
-				? previewResponse?.discount?.upToPeriods - 1
-				: 0
-		} ${previewResponse?.discount?.upToPeriodsType.toLowerCase()} and then ${
-			mainPlan.currency
-		}${previewResponse?.targetCatalogPrice} per ${
-			nextPaymentDetails?.paymentInterval
-		}. The ${nextPaymentDateDayDiscounted} will be your next payment date.`;
-	} else {
-		paymentConditionsText += `After this, from ${nextPaymentDate}, your ${nextPaymentDetails?.paymentInterval}ly payment will be ${mainPlan.currency}${previewResponse?.targetCatalogPrice}`;
-	}
+	const paymentConditionsText = getConfirmationPaymentConditionsText({
+		preview: previewResponse,
+		isDiscountedOffer,
+		currency: mainPlan.currency,
+		paymentInterval,
+		nextPaymentDate,
+		nextPaymentDateDiscounted,
+		nextPaymentDateDayDiscounted,
+	});
 
 	let paymentMethodCopy = `We will take payment as before`;
 
@@ -233,8 +239,10 @@ export const UpgradeProductConfirmation = () => {
 									: 'none'};
 							`}
 						>
-							{mainPlan.currency}
-							{previewResponse?.targetCatalogPrice}
+							{formatCurrency(
+								mainPlan.currency,
+								previewResponse.targetCatalogPrice,
+							)}
 						</span>
 						{isDiscountedOffer ? (
 							<span
@@ -280,7 +288,7 @@ export const UpgradeProductConfirmation = () => {
 				<div css={whatHappensNowItemInfoCss}>
 					<h3 css={subheadingTextCss(false)}>
 						Your first payment will be {mainPlan.currency}
-						{formatAmount(previewResponse?.amountPayableToday)}
+						{formatAmount(previewResponse.amountPayableToday)}
 					</h3>
 					<p
 						css={[

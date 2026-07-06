@@ -20,6 +20,11 @@ import {
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
+import {
+	formatCurrency,
+	getInformationDiscountHelperText,
+	isDiscountedPreview,
+} from '@/client/utilities/upgradeProductPaymentCopy';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { Pill } from '../../shared/Pill';
 import {
@@ -103,7 +108,12 @@ export const UpgradeProductInformation = () => {
 		isDiscountedOffer,
 	} = useUpgradeProductStore();
 
-	if (!mainPlan || !specificProductType || !subscription) {
+	if (
+		!mainPlan ||
+		!specificProductType ||
+		!subscription ||
+		!previewResponse
+	) {
 		return null;
 	}
 
@@ -114,15 +124,14 @@ export const UpgradeProductInformation = () => {
 		false,
 	);
 
-	const discountConditionsText = isDiscountedOffer
-		? `For the next ${
-				previewResponse?.discount?.upToPeriods
-		  } ${previewResponse?.discount?.upToPeriodsType.toLowerCase()} then ${
-				mainPlan.currency
-		  }${previewResponse?.targetCatalogPrice}/${
-				nextPaymentDetails?.paymentInterval
-		  }`
-		: '';
+	const discountConditionsText =
+		isDiscountedOffer && isDiscountedPreview(previewResponse)
+			? getInformationDiscountHelperText(
+					previewResponse,
+					mainPlan.currency,
+					nextPaymentDetails?.paymentInterval ?? 'month',
+			  )
+			: '';
 
 	return (
 		<>
@@ -203,14 +212,23 @@ export const UpgradeProductInformation = () => {
 							>
 								{isDiscountedOffer && (
 									<span css={discountedPriceCss}>
-										{mainPlan.currency}
-										{previewResponse?.targetCatalogPrice}
+										{formatCurrency(
+											mainPlan.currency,
+											previewResponse.targetCatalogPrice,
+										)}
 									</span>
 								)}
-								{mainPlan.currency}
-								{isDiscountedOffer
-									? previewResponse?.discount?.discountedPrice
-									: previewResponse?.targetCatalogPrice}
+								{isDiscountedOffer &&
+								isDiscountedPreview(previewResponse)
+									? formatCurrency(
+											mainPlan.currency,
+											previewResponse.discount
+												.discountedPrice,
+									  )
+									: formatCurrency(
+											mainPlan.currency,
+											previewResponse.targetCatalogPrice,
+									  )}
 								/{nextPaymentDetails?.paymentInterval}
 							</h3>
 							{isDiscountedOffer && (
