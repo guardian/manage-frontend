@@ -114,7 +114,6 @@ const sharedSubscriptionMocks: Record<string, MultipleAccountsApiResponse> = {
 		productName: 'Secondary User',
 		primaryUser: {
 			firstName: 'Pepe',
-			lastName: 'Piri Piri',
 			email: 'pepe.piri@chicken.com',
 		},
 	},
