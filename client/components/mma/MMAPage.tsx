@@ -100,8 +100,29 @@ const DataPrivacy = lazyWithRetry(() =>
 );
 const DigitalShared = lazyWithRetry(() =>
 	import(
-		/* webpackChunkName: "DigitalShared" */ './digitalShared/DigitalShared'
+		/* webpackChunkName: "DigitalShared" */ './accountoverview/manageProducts/DigitalShared'
 	).then(({ DigitalShared }) => ({ default: DigitalShared })),
+);
+const LeaveSharedSubscription = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "DigitalShared" */ './digitalShared/LeaveSharedSubscription'
+	).then(({ LeaveSharedSubscription }) => ({
+		default: LeaveSharedSubscription,
+	})),
+);
+const LeaveSharedSubConfirmation = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "DigitalShared" */ './digitalShared/LeaveSharedSubConfirmation'
+	).then(({ LeaveSharedSubConfirmation }) => ({
+		default: LeaveSharedSubConfirmation,
+	})),
+);
+const LeaveSharedSubscriptionContainer = lazyWithRetry(() =>
+	import(
+		/* webpackChunkName: "DigitalShared" */ './digitalShared/LeaveSharedSubscriptionContainer'
+	).then(({ LeaveSharedSubscriptionContainer }) => ({
+		default: LeaveSharedSubscriptionContainer,
+	})),
 );
 const ManageProduct = lazyWithRetry(() =>
 	import(
@@ -641,6 +662,19 @@ const MMARouter = () => {
 							path="/digital-shared"
 							element={<DigitalShared />}
 						/>
+						<Route
+							path="/digital-shared/leave"
+							element={<LeaveSharedSubscriptionContainer />}
+						>
+							<Route
+								index
+								element={<LeaveSharedSubscription />}
+							/>
+							<Route
+								path="confirmation"
+								element={<LeaveSharedSubConfirmation />}
+							/>
+						</Route>
 						<Route
 							path="/email-prefs"
 							element={<EmailAndMarketing />}

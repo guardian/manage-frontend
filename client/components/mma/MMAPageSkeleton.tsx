@@ -108,6 +108,11 @@ const MMALocationObjectArr: LocationObject[] = [
 		path: '/digital-shared',
 		selectedNavItem: NAV_LINKS.accountOverview,
 	},
+	{
+		title: 'Leave shared subscription',
+		path: '/digital-shared/leave',
+		selectedNavItem: NAV_LINKS.accountOverview,
+	},
 	...manageProductLocationObjects,
 	...cancellationFlowLocationObjects,
 	...paymentUpdateFlowLocationObjects,
