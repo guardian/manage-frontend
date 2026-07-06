@@ -131,11 +131,16 @@ export interface ProductDetail extends WithSubscription {
 >>>>>>> de700316e (Removed primaryUser from ProductDetail)
 }
 
+export interface MultipleAccountsPrimaryUser {
+	firstName: string;
+	email: string;
+}
+
 // TODO this is still to be finalised
 export interface MultipleAccountsApiResponse {
 	subscriptionName: string;
 	productName: string;
-	primaryUser: MembersDataApiUser;
+	primaryUser: MultipleAccountsPrimaryUser;
 }
 
 export interface CancelledProductDetail {
