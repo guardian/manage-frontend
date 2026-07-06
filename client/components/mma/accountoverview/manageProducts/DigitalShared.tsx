@@ -1,20 +1,20 @@
 import { css } from '@emotion/react';
 import { palette, space } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { subHeadingCss } from '@/client/styles/headings';
 import type {
 	MembersDataApiUser,
 	SubscriptionPlan,
 } from '@/shared/productResponse';
 import { getSpecificProductTypeFromProductKey } from '@/shared/productResponse';
-import { NAV_LINKS } from '../../shared/nav/NavConfig';
+import { NAV_LINKS } from '../../../shared/nav/NavConfig';
+import { PageContainer } from '../../Page';
+import { BenefitsToggle } from '../../shared/benefits/BenefitsToggle';
 import {
 	sectionHeadingCss,
 	sharedMembershipTextCss,
-} from '../accountoverview/ProductCardStyles';
-import { PageContainer } from '../Page';
-import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
+} from '../ProductCardStyles';
 
 export interface DigitalSharedRouterState {
 	subscriptionName: string;
@@ -39,6 +39,7 @@ const leaveButtonCss = css`
 
 export const DigitalShared = () => {
 	const location = useLocation();
+	const navigate = useNavigate();
 	const routerState = location.state as DigitalSharedRouterState | null;
 
 	if (!routerState?.primarySubscriber) {
@@ -93,8 +94,8 @@ export const DigitalShared = () => {
 					<div css={greySectionCss}>
 						<p css={sharedMembershipTextCss}>
 							You been given access to this subscription by{' '}
-							{primarySubscriber.firstName}. (
-							{primarySubscriber.email})
+							{primarySubscriber.firstName} (
+							{primarySubscriber.email}).
 						</p>
 						<p>
 							You can leave this shared subscription at any time.
@@ -106,6 +107,14 @@ export const DigitalShared = () => {
 							size="small"
 							priority="tertiary"
 							cssOverrides={leaveButtonCss}
+							onClick={() => {
+								navigate(`/digital-shared/leave`, {
+									state: {
+										subscriptionName,
+										primarySubscriber,
+									},
+								});
+							}}
 						>
 							Leave subscription
 						</Button>

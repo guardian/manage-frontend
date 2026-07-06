@@ -58,7 +58,7 @@ import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
-import { SecondaryAccountProductCard } from './SecondaryAccountCard';
+import { SecondaryAccountProductCard } from './ProductCardSecondaryUser';
 import { SingleContributionCard } from './SingleContributionCard';
 
 export const isDigitalPlusUpgradeBannerFlagEnabled = (): boolean => {
