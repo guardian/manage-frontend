@@ -15,15 +15,21 @@ function isYearlyBilling(billingPeriod: string): billingPeriod is 'year' {
 	return billingPeriod === 'year';
 }
 
-/** @example formatUpgradeNextPaymentDate('2027-07-06', 'year') // "06 July 2027" */
+function formatStandardNextPaymentDate(nextPaymentDate: string): string {
+	return dateString(new Date(nextPaymentDate), 'MMMM do');
+}
+
+/** Long date for yearly discounted payment copy. @example "06 July 2027" */
+function formatYearlyDiscountNextPaymentDate(nextPaymentDate: string): string {
+	return dateString(new Date(nextPaymentDate), 'dd MMMM yyyy');
+}
+
+/** @example formatUpgradeNextPaymentDate('2026-03-15', 'month') // "March 15th" */
 export function formatUpgradeNextPaymentDate(
 	nextPaymentDate: string,
-	billingPeriod: BillingPeriod,
+	_billingPeriod: BillingPeriod,
 ): string {
-	return dateString(
-		new Date(nextPaymentDate),
-		isYearlyBilling(billingPeriod) ? 'dd MMMM yyyy' : 'MMMM do',
-	);
+	return formatStandardNextPaymentDate(nextPaymentDate);
 }
 
 export function formatUpgradeNextPaymentDayLabel(
@@ -31,7 +37,7 @@ export function formatUpgradeNextPaymentDayLabel(
 	billingPeriod: BillingPeriod,
 ): string {
 	return isYearlyBilling(billingPeriod)
-		? formatUpgradeNextPaymentDate(nextPaymentDate, billingPeriod)
+		? formatYearlyDiscountNextPaymentDate(nextPaymentDate)
 		: dateString(new Date(nextPaymentDate), 'do');
 }
 
@@ -140,9 +146,8 @@ export function getConfirmationPaymentConditionsText({
 	currency: string;
 	paymentInterval: BillingPeriod;
 }): string {
-	const nextPaymentDateLong = formatUpgradeNextPaymentDate(
+	const nextPaymentDateLong = formatStandardNextPaymentDate(
 		preview.nextPaymentDate,
-		paymentInterval,
 	);
 	const nextPaymentDateDay = formatUpgradeNextPaymentDayLabel(
 		preview.nextPaymentDate,
@@ -155,7 +160,9 @@ export function getConfirmationPaymentConditionsText({
 		const { discount, targetCatalogPrice } = preview;
 
 		if (isYearlyBilling(paymentInterval)) {
-			paymentConditionsText += `After this, from ${nextPaymentDateLong}, your payment will be ${formatCurrency(
+			const yearlyDiscountPaymentDate =
+				formatYearlyDiscountNextPaymentDate(preview.nextPaymentDate);
+			paymentConditionsText += `After this, from ${yearlyDiscountPaymentDate}, your payment will be ${formatCurrency(
 				currency,
 				discount.discountedPrice,
 			)} every year for ${formatRemainingDiscountPeriodLabel(
@@ -164,7 +171,7 @@ export function getConfirmationPaymentConditionsText({
 			)} and then ${formatCurrency(
 				currency,
 				targetCatalogPrice,
-			)} every year. Your next payment date will be ${nextPaymentDateLong}.`;
+			)} every year. Your next payment date will be ${yearlyDiscountPaymentDate}.`;
 		} else {
 			paymentConditionsText += `From ${nextPaymentDateLong}, your ${paymentInterval}ly payment will be ${formatCurrency(
 				currency,
@@ -177,11 +184,6 @@ export function getConfirmationPaymentConditionsText({
 				targetCatalogPrice,
 			)} per ${paymentInterval}. The ${nextPaymentDateDay} will be your next payment date.`;
 		}
-	} else if (isYearlyBilling(paymentInterval)) {
-		paymentConditionsText += `After this, from ${nextPaymentDateLong}, your payment will be ${formatCurrency(
-			currency,
-			preview.targetCatalogPrice,
-		)} every year.`;
 	} else {
 		paymentConditionsText += `After this, from ${nextPaymentDateLong}, your ${paymentInterval}ly payment will be ${formatCurrency(
 			currency,
@@ -203,19 +205,20 @@ export function getThankYouPaymentConditionsText({
 	currency: string;
 	billingPeriod: BillingPeriod;
 }): string {
-	const nextPaymentDateLong = formatUpgradeNextPaymentDate(
+	const nextPaymentDateLong = formatStandardNextPaymentDate(
 		preview.nextPaymentDate,
-		billingPeriod,
 	);
 
 	if (isDiscountedOffer && isDiscountedPreview(preview)) {
 		const { discount, targetCatalogPrice, amountPayableToday } = preview;
 
 		if (isYearlyBilling(billingPeriod)) {
+			const yearlyDiscountPaymentDate =
+				formatYearlyDiscountNextPaymentDate(preview.nextPaymentDate);
 			return `You will be charged ${formatCurrency(
 				currency,
 				amountPayableToday,
-			)} today. After this, from ${nextPaymentDateLong}, your payment will be ${formatCurrency(
+			)} today. After this, from ${yearlyDiscountPaymentDate}, your payment will be ${formatCurrency(
 				currency,
 				discount.discountedPrice,
 			)} every year for ${formatRemainingDiscountPeriodLabel(
@@ -240,16 +243,6 @@ export function getThankYouPaymentConditionsText({
 			currency,
 			targetCatalogPrice,
 		)} per ${billingPeriod}.`;
-	}
-
-	if (isYearlyBilling(billingPeriod)) {
-		return `You will be charged ${formatCurrency(
-			currency,
-			preview.amountPayableToday,
-		)}. After this, from ${nextPaymentDateLong}, your payment will be ${formatCurrency(
-			currency,
-			preview.targetCatalogPrice,
-		)} every year.`;
 	}
 
 	return `You will be charged ${formatCurrency(

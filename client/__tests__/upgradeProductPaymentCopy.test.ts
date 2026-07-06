@@ -226,41 +226,41 @@ describe('copy builders', () => {
 
 	it('formats yearly non-discounted confirmation payment text', () => {
 		const preview: UpgradePreviewResponse = {
-			amountPayableToday: 50,
+			amountPayableToday: 55,
 			proratedRefundAmount: 45,
-			targetCatalogPrice: 200,
-			nextPaymentDate: '2027-07-06',
+			targetCatalogPrice: 149,
+			nextPaymentDate: '2027-01-15',
 		};
 
 		expect(
 			getConfirmationPaymentConditionsText({
 				preview,
 				isDiscountedOffer: false,
-				currency: '€',
+				currency: '£',
 				paymentInterval: 'year',
 			}),
 		).toBe(
-			"We will charge you a smaller amount today, to offset the payment you've already given us for the rest of the year. After this, from 06 July 2027, your payment will be €200 every year.",
+			"We will charge you a smaller amount today, to offset the payment you've already given us for the rest of the year. After this, from January 15th, your yearly payment will be £149",
 		);
 	});
 
 	it('formats yearly non-discounted thank-you payment text', () => {
 		const preview: UpgradePreviewResponse = {
-			amountPayableToday: 50,
+			amountPayableToday: 55,
 			proratedRefundAmount: 45,
-			targetCatalogPrice: 200,
-			nextPaymentDate: '2027-07-06',
+			targetCatalogPrice: 149,
+			nextPaymentDate: '2027-01-15',
 		};
 
 		expect(
 			getThankYouPaymentConditionsText({
 				preview,
 				isDiscountedOffer: false,
-				currency: '€',
+				currency: '£',
 				billingPeriod: 'year',
 			}),
 		).toBe(
-			'You will be charged €50. After this, from 06 July 2027, your payment will be €200 every year.',
+			'You will be charged £55. From January 15th, your ongoing yearly payment will be £149.',
 		);
 	});
 
