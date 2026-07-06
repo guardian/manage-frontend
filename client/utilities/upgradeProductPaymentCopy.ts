@@ -164,12 +164,6 @@ export function getConfirmationPaymentConditionsText({
 				formatYearlyDiscountNextPaymentDate(preview.nextPaymentDate);
 			paymentConditionsText += `After this, from ${yearlyDiscountPaymentDate}, your payment will be ${formatCurrency(
 				currency,
-				discount.discountedPrice,
-			)} every year for ${formatRemainingDiscountPeriodLabel(
-				discount.upToPeriods,
-				discount.upToPeriodsType,
-			)} and then ${formatCurrency(
-				currency,
 				targetCatalogPrice,
 			)} every year. Your next payment date will be ${yearlyDiscountPaymentDate}.`;
 		} else {
@@ -219,12 +213,6 @@ export function getThankYouPaymentConditionsText({
 				currency,
 				amountPayableToday,
 			)} today. After this, from ${yearlyDiscountPaymentDate}, your payment will be ${formatCurrency(
-				currency,
-				discount.discountedPrice,
-			)} every year for ${formatRemainingDiscountPeriodLabel(
-				discount.upToPeriods,
-				discount.upToPeriodsType,
-			)}, then ${formatCurrency(
 				currency,
 				targetCatalogPrice,
 			)} every year.`;
