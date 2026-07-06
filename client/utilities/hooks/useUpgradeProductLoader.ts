@@ -101,6 +101,8 @@ export const useUpgradeProductLoader = (): LoaderState => {
 				const preview = await fetchUpgradePreviewData({
 					subscriptionId,
 					isTestUser: productDetail.isTestUser,
+					discountSwitchEnabled:
+						fetchedMainPlan.billingPeriod === 'month',
 				});
 
 				setMainPlan(fetchedMainPlan);

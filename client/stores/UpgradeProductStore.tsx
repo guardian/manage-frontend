@@ -22,6 +22,7 @@ interface UpgradeProductState {
 	previewResponse: UpgradePreviewResponse | null;
 	previewLoadingState: UpgradePreviewLoadingState;
 	previewError: string | null;
+	isDiscountedOffer: boolean;
 }
 
 interface UpgradeProductActions {
@@ -41,6 +42,7 @@ const initialState: Omit<UpgradeProductState, 'previewError'> = {
 	subscription: null,
 	previewResponse: null,
 	previewLoadingState: UpgradePreviewLoadingState.NotStarted,
+	isDiscountedOffer: false,
 };
 
 export const useUpgradeProductStore = create<UpgradeProductStore>()(
@@ -68,6 +70,9 @@ export const useUpgradeProductStore = create<UpgradeProductStore>()(
 						previewResponse: response,
 						previewLoadingState: UpgradePreviewLoadingState.Loaded,
 						previewError: null,
+						isDiscountedOffer:
+							!!response.discount?.discountedPrice &&
+							response.discount.discountedPrice > 0,
 					},
 					false,
 					'setPreviewResponse',

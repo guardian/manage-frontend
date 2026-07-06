@@ -9,12 +9,8 @@ import {
 	cancellationFormatDate,
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 } from '@/shared/dates';
-import type {
-	ProductDetail,
-	SubscriptionPlan} from '@/shared/productResponse';
-import {
-	isPaidSubscriptionPlan
-} from '@/shared/productResponse';
+import type { ProductDetail, SubscriptionPlan } from '@/shared/productResponse';
+import { isPaidSubscriptionPlan } from '@/shared/productResponse';
 import type { GroupedProductType } from '@/shared/productTypes';
 import type { NextPaymentDetails } from '../shared/NextPaymentDetails';
 
