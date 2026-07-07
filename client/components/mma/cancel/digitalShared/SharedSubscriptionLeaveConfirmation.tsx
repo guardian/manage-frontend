@@ -1,25 +1,9 @@
-import { css } from '@emotion/react';
-import {
-	from,
-	space,
-	textSans15,
-	textSans17,
-} from '@guardian/source/foundations';
 import { Button, Stack } from '@guardian/source/react-components';
 import { useNavigate } from 'react-router-dom';
 import { DATE_FNS_LONG_OUTPUT_FORMAT, dateString } from '@/shared/dates';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { Heading } from '../../shared/Heading';
-import { ctaContainerCss, titleCss } from '../cancellationConstants';
-
-const bodyCss = css`
-	${textSans15};
-	margin: ${space[2]}px 0;
-
-	${from.tablet} {
-		${textSans17};
-	}
-`;
+import { bodyCss, ctaContainerCss, titleCss } from '../cancellationConstants';
 
 export const LeaveSharedSubConfirmation = () => {
 	const navigate = useNavigate();
