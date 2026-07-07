@@ -309,7 +309,7 @@ function renderProductBillingInfo([productGrouping, productDetails]: [
 								</div>
 							)}
 							<TaxExclusiveNotice
-								taxExclusive={productDetail.taxExclusive}
+								taxExclusive={productDetail.extraTaxApplies}
 							/>
 						</Fragment>
 					);

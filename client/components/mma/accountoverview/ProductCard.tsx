@@ -109,7 +109,7 @@ export const ProductCard = ({
 	const showProductUpsellButton =
 		isEligibleToUpsell &&
 		!hasCancellationPending &&
-		!productDetail.taxExclusive &&
+		!productDetail.extraTaxApplies &&
 		specificProductType.productType === 'supporterplus';
 
 	const productBenefits =

@@ -218,7 +218,7 @@ const InnerContent = ({
 				}
 			/>
 
-			<TaxExclusiveNotice taxExclusive={productDetail.taxExclusive} />
+			<TaxExclusiveNotice taxExclusive={productDetail.extraTaxApplies} />
 
 			{specificProductType.delivery?.showAddress?.(
 				productDetail.subscription,
