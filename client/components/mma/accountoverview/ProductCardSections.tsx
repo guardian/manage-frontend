@@ -147,9 +147,11 @@ export const GuardianAdLiteCopy = ({
 export const SecondaryUserSubscriptionDetails = ({
 	subscriptionName,
 	primarySubscriber,
+	navigate,
 }: {
 	subscriptionName: string;
 	primarySubscriber: MultipleAccountsPrimaryUser | undefined;
+	navigate: NavigateFunction;
 }) =>
 	primarySubscriber && (
 		<Card.Section>
@@ -157,12 +159,11 @@ export const SecondaryUserSubscriptionDetails = ({
 				<div>
 					<h4 css={sectionHeadingCss}>Subscription details</h4>
 					<p css={sharedMembershipTextCss}>
-						Subscription: {subscriptionName} shared subscription{' '}
+						You’ve been given access to Digital plus by{' '}
+						{primarySubscriber.firstName}.
 						<br />
-						<br />
-						You’ve been given access by{' '}
-						{primarySubscriber.firstName}. Your account and activity
-						are private and not shared with the subscription owner.
+						Your account and activity are private and not shared
+						with the subscription owner.
 					</p>
 				</div>
 				<div css={centeredActionCss}>
@@ -171,7 +172,12 @@ export const SecondaryUserSubscriptionDetails = ({
 						size="small"
 						priority="tertiary"
 						cssOverrides={sharedMembershipLeaveButtonCss}
-						onClick={() => undefined}
+						onClick={() => {
+							// TODO Tracking
+							navigate(`/digital-shared`, {
+								state: { subscriptionName, primarySubscriber },
+							});
+						}}
 					>
 						Manage support
 					</Button>

@@ -102,6 +102,17 @@ const MMALocationObjectArr: LocationObject[] = [
 		path: '/data-privacy',
 		selectedNavItem: NAV_LINKS.dataPrivacy,
 	},
+	// TODO not sure if this is right?
+	{
+		title: 'Manage shared subscription',
+		path: '/digital-shared',
+		selectedNavItem: NAV_LINKS.accountOverview,
+	},
+	{
+		title: 'Leave shared subscription',
+		path: '/digital-shared/leave',
+		selectedNavItem: NAV_LINKS.accountOverview,
+	},
 	...manageProductLocationObjects,
 	...cancellationFlowLocationObjects,
 	...paymentUpdateFlowLocationObjects,
