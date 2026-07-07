@@ -255,7 +255,7 @@ export const changePlanFetch = ({
 	targetProduct,
 	preview = false,
 	newAmount,
-	discountSwitchEnabled,
+	discountSwitchEnabled = true,
 }: ChangePlanOptions) => {
 	const endpoint = preview
 		? `/api/subscriptions/${subscriptionId}/change-plan/preview`
@@ -264,8 +264,8 @@ export const changePlanFetch = ({
 	const payload: ChangePlanPayload = {
 		mode,
 		targetProduct,
+		discountSwitchEnabled,
 		...(newAmount !== undefined && { newAmount }),
-		...(discountSwitchEnabled !== undefined && { discountSwitchEnabled }),
 	};
 
 	return fetch(endpoint, {
@@ -282,7 +282,6 @@ export const changePlanFetch = ({
 export const fetchUpgradePreviewData = async (params: {
 	subscriptionId: string;
 	isTestUser: boolean;
-	discountSwitchEnabled?: boolean;
 }): Promise<UpgradePreviewResponse> => {
 	const response = await changePlanFetch({
 		subscriptionId: params.subscriptionId,
@@ -290,7 +289,6 @@ export const fetchUpgradePreviewData = async (params: {
 		mode: 'switchToBasePrice',
 		targetProduct: 'DigitalSubscription',
 		preview: true,
-		discountSwitchEnabled: params.discountSwitchEnabled,
 	});
 
 	if (!response.ok) {
