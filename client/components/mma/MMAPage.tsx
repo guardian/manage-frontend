@@ -105,21 +105,21 @@ const DigitalShared = lazyWithRetry(() =>
 );
 const LeaveSharedSubscription = lazyWithRetry(() =>
 	import(
-		/* webpackChunkName: "DigitalShared" */ './digitalShared/LeaveSharedSubscription'
+		/* webpackChunkName: "DigitalShared" */ './cancel/digitalShared/SharedSubscriptionLeaveFlowStart'
 	).then(({ LeaveSharedSubscription }) => ({
 		default: LeaveSharedSubscription,
 	})),
 );
 const LeaveSharedSubConfirmation = lazyWithRetry(() =>
 	import(
-		/* webpackChunkName: "DigitalShared" */ './digitalShared/LeaveSharedSubConfirmation'
+		/* webpackChunkName: "DigitalShared" */ './cancel/digitalShared/SharedSubscriptionLeaveConfirmation'
 	).then(({ LeaveSharedSubConfirmation }) => ({
 		default: LeaveSharedSubConfirmation,
 	})),
 );
 const LeaveSharedSubscriptionContainer = lazyWithRetry(() =>
 	import(
-		/* webpackChunkName: "DigitalShared" */ './digitalShared/LeaveSharedSubscriptionContainer'
+		/* webpackChunkName: "DigitalShared" */ './cancel/digitalShared/SharedSubscriptionLeaveContainer'
 	).then(({ LeaveSharedSubscriptionContainer }) => ({
 		default: LeaveSharedSubscriptionContainer,
 	})),
