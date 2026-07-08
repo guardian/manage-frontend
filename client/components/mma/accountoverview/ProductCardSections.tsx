@@ -626,7 +626,7 @@ export const PaymentSection = ({
 					</div>
 				)}
 			</div>
-			<TaxExclusiveNotice taxExclusive={productDetail.taxExclusive} />
+			<TaxExclusiveNotice taxExclusive={productDetail.extraTaxApplies} />
 		</Card.Section>
 	);
 
