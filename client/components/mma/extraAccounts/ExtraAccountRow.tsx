@@ -72,6 +72,7 @@ const identityCss = css`
 	align-items: flex-start;
 	gap: ${space[2]}px;
 	width: 100%;
+	min-width: 0;
 	margin-top: ${space[3]}px;
 
 	${from.tablet} {
@@ -79,6 +80,7 @@ const identityCss = css`
 		align-items: center;
 		margin-top: 0;
 		gap: ${space[3]}px;
+		flex: 1;
 	}
 `;
 
@@ -87,14 +89,17 @@ const piiContainerCss = css`
 	flex-direction: column;
 	align-items: flex-start;
 	margin-right: auto;
+	min-width: 0;
 `;
 
 const piiCss = css`
 	${textSans17};
+	overflow-wrap: anywhere;
 `;
 
 const piiCssBold = css`
 	${textSansBold17};
+	overflow-wrap: anywhere;
 `;
 
 const spacerCss = css`
