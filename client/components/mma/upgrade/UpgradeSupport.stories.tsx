@@ -25,10 +25,12 @@ export default {
 		},
 		msw: [
 			http.get('/api/me/mma', () => {
-				return HttpResponse.json(toMembersDataApiResponse(contributionPaidByCard()))
+				return HttpResponse.json(
+					toMembersDataApiResponse(contributionPaidByCard()),
+				);
 			}),
 			http.post('/api/product-move/*', () => {
-				return HttpResponse.json(productMovePreviewResponse)
+				return HttpResponse.json(productMovePreviewResponse);
 			}),
 		],
 	},

@@ -24,7 +24,9 @@ export default {
 		},
 		msw: [
 			http.get('/api/me/mma', () => {
-				return HttpResponse.json(toMembersDataApiResponse(guardianWeeklyPaidByCard()))
+				return HttpResponse.json(
+					toMembersDataApiResponse(guardianWeeklyPaidByCard()),
+				);
 			}),
 		],
 	},
@@ -52,12 +54,14 @@ export const Confirmation: StoryObj<typeof DeliveryAddressConfirmation> = {
 	parameters: {
 		msw: [
 			http.get('/api/me/mma', () => {
-				return HttpResponse.json(toMembersDataApiResponse(guardianWeeklyPaidByCard()))
+				return HttpResponse.json(
+					toMembersDataApiResponse(guardianWeeklyPaidByCard()),
+				);
 			}),
 			http.put('/api/delivery/address/update/*', () => {
 				return new HttpResponse(null, {
 					status: 200,
-				})
+				});
 			}),
 		],
 	},

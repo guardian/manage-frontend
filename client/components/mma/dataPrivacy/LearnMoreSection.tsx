@@ -22,7 +22,8 @@ export const LearnMoreSection = () => {
 					rel="noreferrer"
 				>
 					privacy policy
-				</a>.
+				</a>
+				.
 			</p>
 		</>
 	);

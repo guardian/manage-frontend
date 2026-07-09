@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {http, HttpResponse} from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import { existingHolidays } from '../../../fixtures/holidays';
@@ -42,10 +42,10 @@ export const ManageTierThree: StoryObj<typeof HolidaysOverview> = {
 	parameters: {
 		msw: [
 			http.get('/api/me/mma', () => {
-				return HttpResponse.json(toMembersDataApiResponse(tierThree()))
+				return HttpResponse.json(toMembersDataApiResponse(tierThree()));
 			}),
 			http.get('/api/holidays/*', () => {
-				return HttpResponse.json(existingHolidays)
+				return HttpResponse.json(existingHolidays);
 			}),
 		],
 	},
@@ -59,10 +59,12 @@ export const CreateTierThree: StoryObj<typeof HolidayDateChooser> = {
 	parameters: {
 		msw: [
 			http.get('/api/me/mma', () => {
-				return HttpResponse.json(toMembersDataApiResponse(guardianWeeklyPaidByCard()))
+				return HttpResponse.json(
+					toMembersDataApiResponse(guardianWeeklyPaidByCard()),
+				);
 			}),
 			http.get('/api/holidays/*', () => {
-				return HttpResponse.json(existingHolidays)
+				return HttpResponse.json(existingHolidays);
 			}),
 		],
 	},
