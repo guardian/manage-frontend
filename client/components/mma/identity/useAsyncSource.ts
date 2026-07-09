@@ -76,7 +76,7 @@ export const useAsyncSource = (
 	getter: (...args: any[]) => Promise<any>,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the errorHandler function's argument is an error object?
 	errorHandler?: (e: any) => void,
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the array can contain a range of differently typed things?
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the array can contain a range of differently typed things?
 ): [ApiFetchState, (...args: any[]) => Promise<ApiFetchState>] => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- we're only assuming the doFetch function's argument can contain a range of differently typed things?

@@ -107,7 +107,9 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 						{avatarDisplay()}
 						<input
 							aria-describedby={
-								formikBag.errors.file ? 'avatar-file-error' : undefined
+								formikBag.errors.file
+									? 'avatar-file-error'
+									: undefined
 							}
 							aria-invalid={Boolean(formikBag.errors.file)}
 							disabled={formikBag.isSubmitting}
@@ -128,7 +130,12 @@ export const AvatarSection: FC<AvatarSectionProps> = (props) => {
 					</label>
 					{formikBag.errors.file && (
 						<div
-							css={[errorMessageCss, css`margin-bottom: ${space[6]}px`]}
+							css={[
+								errorMessageCss,
+								css`
+									margin-bottom: ${space[6]}px;
+								`,
+							]}
 							id="avatar-file-error"
 							role="alert"
 						>

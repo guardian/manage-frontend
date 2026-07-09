@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {http, HttpResponse} from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { consents } from '../../../fixtures/consents';
 import { user } from '../../../fixtures/user';
@@ -22,10 +22,10 @@ export const Default: StoryObj<typeof DataPrivacy> = {
 	parameters: {
 		msw: [
 			http.get('/idapi/consents', () => {
-				return HttpResponse.json(consents)
+				return HttpResponse.json(consents);
 			}),
 			http.get('/idapi/user', () => {
-				return HttpResponse.json(user)
+				return HttpResponse.json(user);
 			}),
 		],
 	},
