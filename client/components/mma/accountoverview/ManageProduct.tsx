@@ -186,6 +186,7 @@ const InnerContent = ({
 					amountUpdateStateChange={setOveriddenAmount}
 					isTestUser={productDetail.isTestUser}
 					futurePlan={productDetail.subscription.futurePlans[0]}
+					extraTaxApplies={productDetail.extraTaxApplies}
 				/>
 			) : (
 				<BasicProductInfoTable
