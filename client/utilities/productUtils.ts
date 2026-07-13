@@ -207,7 +207,6 @@ export interface ChangePlanPayload {
 	mode: ChangePlanMode;
 	targetProduct: ChangePlanTargetProduct;
 	newAmount?: number;
-	discountSwitchEnabled?: boolean;
 }
 
 export interface ChangePlanOptions {
@@ -217,7 +216,6 @@ export interface ChangePlanOptions {
 	targetProduct: ChangePlanTargetProduct;
 	preview?: boolean;
 	newAmount?: number;
-	discountSwitchEnabled?: boolean;
 }
 
 /**
@@ -255,7 +253,6 @@ export const changePlanFetch = ({
 	targetProduct,
 	preview = false,
 	newAmount,
-	discountSwitchEnabled = true,
 }: ChangePlanOptions) => {
 	const endpoint = preview
 		? `/api/subscriptions/${subscriptionId}/change-plan/preview`
@@ -264,7 +261,6 @@ export const changePlanFetch = ({
 	const payload: ChangePlanPayload = {
 		mode,
 		targetProduct,
-		discountSwitchEnabled,
 		...(newAmount !== undefined && { newAmount }),
 	};
 
