@@ -17,7 +17,7 @@ interface ExtraAccountActive {
 	status: 'active';
 	email: string;
 	name: string;
-	invitationCode: string;
+	secondaryIdentityId: string;
 }
 
 export type ExtraAccount =

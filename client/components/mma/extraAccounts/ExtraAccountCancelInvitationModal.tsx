@@ -122,7 +122,7 @@ interface ModalCopy {
 	dismissLabel: string;
 	instigatorLabel: string;
 	successMessage: string;
-	confirm: (invitationCode: string) => Promise<boolean>;
+	confirm: () => Promise<boolean>;
 }
 
 const ModalBody = ({
@@ -164,7 +164,7 @@ const ModalBody = ({
 interface ExtraAccountCancelInvitationModalProps {
 	account: ExtraAccountWithEmail;
 	cancelInvitation: (invitationCode: string) => Promise<boolean>;
-	removeAccess: (invitationCode: string) => Promise<boolean>;
+	removeAccess: (secondaryIdentityId: string) => Promise<boolean>;
 	isSubmitting: boolean;
 	remainingInvitations: number;
 }
@@ -188,7 +188,7 @@ export const ExtraAccountCancelInvitationModal = ({
 				dismissLabel: 'Cancel',
 				instigatorLabel: 'Remove access',
 				successMessage: `Access removed for ${account.email}`,
-				confirm: removeAccess,
+				confirm: () => removeAccess(account.secondaryIdentityId),
 		  }
 		: {
 				title: 'Cancel invitation?',
@@ -196,13 +196,13 @@ export const ExtraAccountCancelInvitationModal = ({
 				dismissLabel: 'Keep invitation',
 				instigatorLabel: 'Cancel invitation',
 				successMessage: `Invitation cancelled for ${account.email}`,
-				confirm: cancelInvitation,
+				confirm: () => cancelInvitation(account.invitationCode),
 		  };
 
 	const close = () => setIsOpen(false);
 
 	const handleConfirm = () => {
-		void copy.confirm(account.invitationCode).then((ok) => {
+		void copy.confirm().then((ok) => {
 			if (ok) {
 				close();
 				showToast({ message: copy.successMessage });

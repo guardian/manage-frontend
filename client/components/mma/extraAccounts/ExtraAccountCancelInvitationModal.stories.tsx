@@ -22,7 +22,7 @@ const activeAccount: ExtraAccount = {
 	status: 'active',
 	email: 'active@example.com',
 	name: 'Alex Active',
-	invitationCode: '',
+	secondaryIdentityId: 'secondary-active',
 };
 
 const mockCancelInvitation = fn(async () => true);

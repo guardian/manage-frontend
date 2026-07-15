@@ -117,7 +117,7 @@ interface ExtraAccountRowProps {
 	account: ExtraAccount;
 	sendInvitation: (email: string) => Promise<boolean>;
 	cancelInvitation: (invitationCode: string) => Promise<boolean>;
-	removeAccess: (invitationCode: string) => Promise<boolean>;
+	removeAccess: (secondaryIdentityId: string) => Promise<boolean>;
 	isSubmitting: boolean;
 	remainingInvitations: number;
 }

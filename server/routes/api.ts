@@ -434,5 +434,14 @@ router.delete(
 		'invitationCode',
 	]),
 );
+router.delete(
+	'/extra-accounts/:subscriptionName/secondary-users/:secondaryIdentityId',
+	withOktaServerSideValidation,
+	multipleAccountAPI(
+		'subscriptions/:subscriptionName/secondary-users/:secondaryIdentityId',
+		'DELETE_SECONDARY_USER',
+		['subscriptionName', 'secondaryIdentityId'],
+	),
+);
 
 export { router };

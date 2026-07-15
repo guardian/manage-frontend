@@ -78,10 +78,7 @@ export const fetchExtraAccounts = async (
 			status: 'active',
 			name: user.displayName,
 			email: user.email,
-			// The mma-primary endpoint does not return an invitationCode for
-			// active secondary users, so remove-access cannot currently target
-			// them until the backend exposes a way to do so.
-			invitationCode: '',
+			secondaryIdentityId: user.secondaryIdentityId,
 		}),
 	);
 
@@ -145,6 +142,26 @@ export const deleteInvitationRequest = async (
 	}
 };
 
+export const deleteSecondaryUserRequest = async (
+	subscriptionName: string,
+	secondaryIdentityId: string,
+	isTestUser: boolean,
+): Promise<void> => {
+	const response = await fetchWithDefaultParameters(
+		`${EXTRA_ACCOUNTS_BASE}/${subscriptionName}/secondary-users/${secondaryIdentityId}`,
+		{
+			method: 'DELETE',
+			headers: requestHeaders(isTestUser),
+		},
+	);
+	if (!response.ok) {
+		const message = await response.text().catch(() => '');
+		throw new Error(
+			message || `Failed to remove access (${response.status})`,
+		);
+	}
+};
+
 interface UseExtraAccountsReturn {
 	accounts: ExtraAccount[] | null;
 	isLoading: boolean;
@@ -152,7 +169,7 @@ interface UseExtraAccountsReturn {
 	shouldRedirect: boolean;
 	sendInvitation: (email: string) => Promise<boolean>;
 	cancelInvitation: (invitationCode: string) => Promise<boolean>;
-	removeAccess: (invitationCode: string) => Promise<boolean>;
+	removeAccess: (secondaryIdentityId: string) => Promise<boolean>;
 	isSubmitting: boolean;
 }
 
@@ -326,15 +343,19 @@ export const useExtraAccounts = (): UseExtraAccountsReturn => {
 	);
 
 	const removeAccess = useCallback(
-		async (invitationCode: string): Promise<boolean> => {
-			if (isSubmitting) {
+		async (secondaryIdentityId: string): Promise<boolean> => {
+			if (isSubmitting || !subscriptionName) {
 				return false;
 			}
 
 			setIsSubmitting(true);
 
 			try {
-				await deleteInvitationRequest(invitationCode, isTestUser);
+				await deleteSecondaryUserRequest(
+					subscriptionName,
+					secondaryIdentityId,
+					isTestUser,
+				);
 				await refreshAccounts();
 				return true;
 			} catch (error) {
@@ -344,7 +365,13 @@ export const useExtraAccounts = (): UseExtraAccountsReturn => {
 				setIsSubmitting(false);
 			}
 		},
-		[isTestUser, isSubmitting, refreshAccounts, handleActionError],
+		[
+			subscriptionName,
+			isTestUser,
+			isSubmitting,
+			refreshAccounts,
+			handleActionError,
+		],
 	);
 
 	return {

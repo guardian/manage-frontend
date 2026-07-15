@@ -84,4 +84,8 @@ export const extraAccountsMswHandlers = (
 		'/api/extra-accounts/invitation/:invitationCode',
 		() => new HttpResponse(null, { status: 200 }),
 	),
+	http.delete(
+		'/api/extra-accounts/:subscriptionName/secondary-users/:secondaryIdentityId',
+		() => new HttpResponse(null, { status: 200 }),
+	),
 ];
