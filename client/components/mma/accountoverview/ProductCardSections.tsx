@@ -25,7 +25,6 @@ import { BenefitsToggle } from '../shared/benefits/BenefitsToggle';
 import { Card } from '../shared/Card';
 import type { NextPaymentDetails } from '../shared/NextPaymentDetails';
 import { PaymentMethodDisplay } from '../shared/PaymentMethodDisplay';
-import { TaxExclusiveNotice } from '../shared/TaxExclusiveNotice';
 import type { ProductCardConfiguration } from './ProductCardConfiguration';
 import {
 	benefitsSectionBackgroundColour,
@@ -626,7 +625,6 @@ export const PaymentSection = ({
 					</div>
 				)}
 			</div>
-			<TaxExclusiveNotice taxExclusive={productDetail.extraTaxApplies} />
 		</Card.Section>
 	);
 

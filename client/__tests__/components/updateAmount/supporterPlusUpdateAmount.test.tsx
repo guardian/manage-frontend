@@ -215,3 +215,21 @@ it('updates amount is valid value is input', async () => {
 	expect(await screen.findByText(/Updating/)).toBeTruthy();
 	expect(await screen.findByText(/successfully updated/)).toBeTruthy();
 });
+
+it('hides the change amount button for tax exclusive plans', () => {
+	render(
+		<UpdateAmount
+			subscriptionId="A-123"
+			mainPlan={mainPlan('month')}
+			amountUpdateStateChange={jest.fn()}
+			nextPaymentDate="2050-10-29"
+			productType={productType}
+			isTestUser={false}
+			extraTaxApplies={true}
+		/>,
+	);
+
+	expect(screen.queryByText('Change amount')).not.toBeInTheDocument();
+	expect(screen.getByText('A-123')).toBeInTheDocument();
+	expect(screen.getByText('£5.00 GBP')).toBeInTheDocument();
+});

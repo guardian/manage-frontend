@@ -17,6 +17,7 @@ import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
 import { getGuardianWeeklyGiftBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { Card } from '../shared/Card';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
+import { TaxExclusiveNotice } from '../shared/TaxExclusiveNotice';
 import {
 	getGuardianWeeklyGiftBenefitsCopy,
 	productCardConfiguration,
@@ -257,6 +258,12 @@ export const ProductCard = ({
 					trackEvent={trackEvent}
 				/>
 			</Card>
+
+			{productDetail.isPaidTier && (
+				<TaxExclusiveNotice
+					taxExclusive={productDetail.extraTaxApplies}
+				/>
+			)}
 		</Stack>
 	);
 };
