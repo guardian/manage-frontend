@@ -7,7 +7,7 @@ interface TaxExclusiveNoticeProps {
 
 const noticeCss = css`
 	${textSans15};
-	color: ${palette.neutral[46]};
+	color: ${palette.neutral[7]};
 	margin: ${space[5]}px 0 0;
 `;
 
