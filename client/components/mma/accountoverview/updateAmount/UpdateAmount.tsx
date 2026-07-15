@@ -23,6 +23,7 @@ interface UpdateAmountProps {
 	amountUpdateStateChange: Dispatch<SetStateAction<number | null>>;
 	isTestUser: boolean;
 	futurePlan?: SubscriptionPlan | PaidSubscriptionPlan;
+	extraTaxApplies?: boolean;
 }
 
 export const UpdateAmount = (props: UpdateAmountProps) => {
@@ -104,16 +105,17 @@ export const UpdateAmount = (props: UpdateAmountProps) => {
 								}`,
 							},
 						],
-						actions: !isBillingFrequencySwitch
-							? [
-									{
-										text: 'Change amount',
-										onClick: () => {
-											setStatus(Status.EDITING);
+						actions:
+							!isBillingFrequencySwitch && !props.extraTaxApplies
+								? [
+										{
+											text: 'Change amount',
+											onClick: () => {
+												setStatus(Status.EDITING);
+											},
 										},
-									},
-							  ]
-							: [],
+								  ]
+								: [],
 					},
 				]}
 				separateEachRow
