@@ -4,8 +4,8 @@ import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { consents } from '@/client/fixtures/consents';
 import { InAppPurchase } from '@/client/fixtures/inAppPurchase';
 import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
-import { newsletters } from '@/client/fixtures/newsletters';
 import { newsletterSubscriptions } from '@/client/fixtures/newsletterSubscriptions';
+import { newslettersV2 } from '@/client/fixtures/newslettersV2';
 import {
 	digitalPackPaidByDirectDebit,
 	guardianWeeklyPaidByCard,
@@ -45,7 +45,7 @@ export const Default: StoryObj<typeof EmailAndMarketing> = {
 				return HttpResponse.json(user);
 			}),
 			http.get('/idapi/newsletters', () => {
-				return HttpResponse.json(newsletters);
+				return HttpResponse.json(newslettersV2);
 			}),
 			http.get('/idapi/user/newsletters', () => {
 				return HttpResponse.json(newsletterSubscriptions);
@@ -80,7 +80,7 @@ export const WithNoProducts: StoryObj<typeof EmailAndMarketing> = {
 				return HttpResponse.json(user);
 			}),
 			http.get('/idapi/newsletters', () => {
-				return HttpResponse.json(newsletters);
+				return HttpResponse.json(newslettersV2);
 			}),
 			http.get('/idapi/user/newsletters', () => {
 				return HttpResponse.json(newsletterSubscriptions);
@@ -117,7 +117,7 @@ export const WithIAP: StoryObj<typeof EmailAndMarketing> = {
 				return HttpResponse.json(user);
 			}),
 			http.get('/idapi/newsletters', () => {
-				return HttpResponse.json(newsletters);
+				return HttpResponse.json(newslettersV2);
 			}),
 			http.get('/idapi/user/newsletters', () => {
 				return HttpResponse.json(newsletterSubscriptions);
@@ -152,7 +152,7 @@ export const WithSingleContribution: StoryObj<typeof EmailAndMarketing> = {
 				return HttpResponse.json(user);
 			}),
 			http.get('/idapi/newsletters', () => {
-				return HttpResponse.json(newsletters);
+				return HttpResponse.json(newslettersV2);
 			}),
 			http.get('/idapi/user/newsletters', () => {
 				return HttpResponse.json(newsletterSubscriptions);

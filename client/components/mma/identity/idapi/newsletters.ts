@@ -9,13 +9,15 @@ import { ConsentOptionType } from '../models';
 
 export interface NewsletterAPIResponse {
 	id: string;
+	status: string;
 	theme: string;
 	group: string;
 	name: string;
-	description: string;
+	signUpDescription?: string | null;
+	signUpEmbedDescription?: string | null;
 	frequency: string;
-	subscribed: boolean;
-	exactTargetListId: number;
+	exactTargetListId?: number | null;
+	listId?: number | null;
 }
 
 export const newsletterToConsentOption = (
@@ -26,12 +28,16 @@ export const newsletterToConsentOption = (
 		theme,
 		name,
 		group,
-		description,
+		signUpDescription,
+		signUpEmbedDescription,
 		frequency,
 		exactTargetListId,
+		listId,
 	} = newsletter;
+	const description = signUpDescription ?? signUpEmbedDescription ?? '';
+	const consentId = exactTargetListId ?? listId ?? identityName;
 	return {
-		id: exactTargetListId.toString(),
+		id: consentId.toString(),
 		description,
 		theme,
 		type: ConsentOptionType.NEWSLETTER,
@@ -62,7 +68,7 @@ export const update = async (id: string, subscribed: boolean = true) => {
 
 	const browserId = getCookie('bwid');
 
-	import('@guardian/ophan-tracker-js').then( async ({ getViewId }) => {
+	import('@guardian/ophan-tracker-js').then(async ({ getViewId }) => {
 		await fetchWithDefaultParameters(
 			url,
 			addCSRFToken(
@@ -70,7 +76,7 @@ export const update = async (id: string, subscribed: boolean = true) => {
 					id,
 					subscribed,
 					refViewId: getViewId(),
-					browserId
+					browserId,
 				}),
 			),
 		);

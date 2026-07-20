@@ -56,6 +56,7 @@ import { LinkButton } from '../shared/Buttons';
 import { getNextPaymentDetails } from '../shared/NextPaymentDetails';
 import { PaymentDetailsTable } from '../shared/PaymentDetailsTable';
 import { PaymentFailureAlertIfApplicable } from '../shared/PaymentFailureAlertIfApplicable';
+import { TaxExclusiveNotice } from '../shared/TaxExclusiveNotice';
 import { InvoicesTable } from './InvoicesTable';
 
 interface ProductDetailWithInvoice extends ProductDetail {
@@ -307,6 +308,9 @@ function renderProductBillingInfo([productGrouping, productDetails]: [
 									/>
 								</div>
 							)}
+							<TaxExclusiveNotice
+								taxExclusive={productDetail.extraTaxApplies}
+							/>
 						</Fragment>
 					);
 				})}

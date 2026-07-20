@@ -21,7 +21,7 @@ export const Default: StoryObj<typeof PublicProfile> = {
 	parameters: {
 		msw: [
 			http.get('/idapi/user', () => {
-				return HttpResponse.json(user)
+				return HttpResponse.json(user);
 			}),
 		],
 	},

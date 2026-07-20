@@ -1,8 +1,5 @@
 import { css, Global } from '@emotion/react';
-import { ABProvider, useAB } from '@guardian/ab-react';
-import type { EventPayload } from '@guardian/ophan-tracker-js';
 import { breakpoints, from, space } from '@guardian/source/foundations';
-import * as Sentry from '@sentry/browser';
 import type { ReactNode } from 'react';
 import { Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
@@ -17,10 +14,7 @@ import type {
 	ProductTypeWithHolidayStopsFlow,
 } from '../../../shared/productTypes';
 import { PRODUCT_TYPES } from '../../../shared/productTypes';
-import { abSwitches } from '../../experiments/abSwitches';
-import { tests } from '../../experiments/abTests';
 import { global } from '../../styles/global';
-import { getCookie } from '../../utilities/cookies';
 import { useAnalytics } from '../../utilities/hooks/useAnalytics';
 import { useConsent } from '../../utilities/hooks/useConsent';
 import { useScrollToTop } from '../../utilities/hooks/useScrollToTop';
@@ -555,15 +549,9 @@ const GenericErrorContainer = (props: { children: ReactNode }) => (
 const MMARouter = () => {
 	const [signInStatus, setSignInStatus] = useState<SignInStatus>('init');
 
-	const ABTestAPI = useAB();
-
 	useEffect(() => {
 		setSignInStatus(isSignedIn() ? 'signedIn' : 'signedOut');
-
-		const allRunnableTests = ABTestAPI.allRunnableTests(tests);
-		ABTestAPI.registerImpressionEvents(allRunnableTests);
-		ABTestAPI.registerCompleteEvents(allRunnableTests);
-	}, [ABTestAPI]);
+	}, []);
 
 	useAnalytics();
 	useConsent();
@@ -1060,48 +1048,15 @@ const MaintenanceModePage = () => {
 	);
 };
 
-const getMvtId = (): number => {
-	const mvtId = getCookie('GU_mvt_id');
-	return mvtId ? parseInt(mvtId) : 0;
-};
-
 const MMAPageComponent = () => {
-	const [ophanRecord, setOphanRecord] = useState<
-		(event: EventPayload, callback?: () => void) => void
-	>(() => () => {});
-
-	useEffect(() => {
-		if (typeof window !== 'undefined') {
-			import('@guardian/ophan-tracker-js')
-				.then(({ record }) => {
-					setOphanRecord(() => record);
-				})
-				.catch(() => {
-					// Ophan tracking is non-critical; silently degrade
-					// when blocked by ad blockers or network issues
-				});
-		}
-	}, []);
-
 	if (featureSwitches.maintenanceMode && !window.Cypress) {
 		return <MaintenanceModePage />;
 	}
 
 	return (
-		<ABProvider
-			arrayOfTestObjects={tests}
-			abTestSwitches={abSwitches}
-			pageIsSensitive={false}
-			mvtMaxValue={1000000}
-			mvtId={getMvtId()}
-			ophanRecord={ophanRecord}
-			serverSideTests={{}}
-			errorReporter={(error) => Sentry.captureException(error)}
-		>
-			<BrowserRouter>
-				<MMARouter />
-			</BrowserRouter>
-		</ABProvider>
+		<BrowserRouter>
+			<MMARouter />
+		</BrowserRouter>
 	);
 };
 

@@ -66,17 +66,18 @@ const productPlusdigitalBenefits = [
 ];
 
 const digitalPlusBenefits = [
-	{ description: 'Guardian Weekly e-magazine' },
-	{ description: 'The Long Read e-magazine' },
-	newspaperArchiveBenefit,
 	{ description: 'Far fewer asks for support' },
-	{ description: 'Ad-free reading on the Guardian app and website' },
-	{ description: 'Unlimited access to the premium Guardian app' },
+	{ description: 'Ad-free reading on all your devices' },
+	{ description: 'Unlimited access to the premium Guardian and Feast apps' },
 	{
 		description:
 			'Exclusive newsletter for supporters, sent every week from the Guardian newsroom',
 	},
-	{ description: 'Unlimited access to the Guardian Feast app' },
+	newspaperArchiveBenefit,
+	{
+		description:
+			'Access to the daily digital newspaper and our suite of e-magazines, including Guardian Weekly and The Long Read',
+	},
 ];
 
 export interface ProductBenefit {

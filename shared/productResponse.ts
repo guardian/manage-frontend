@@ -99,6 +99,16 @@ const productKeys = [
 
 export type ProductTier = typeof productKeys[number];
 
+export type AvailableActionType = 'upsell' | 'cancel';
+
+export interface AvailableAction {
+	action: AvailableActionType;
+	target?: {
+		productKey: string;
+		productRatePlanKey: string;
+	};
+}
+
 export interface ProductDetail extends WithSubscription {
 	isTestUser: boolean; // THIS IS NOT PART OF THE members-data-api RESPONSE (but inferred from a header)
 	isPaidTier: boolean;
@@ -110,7 +120,7 @@ export interface ProductDetail extends WithSubscription {
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
 	billingCountry?: string;
-	taxExclusive?: boolean;
+	extraTaxApplies?: boolean;
 }
 
 export interface CancelledProductDetail {

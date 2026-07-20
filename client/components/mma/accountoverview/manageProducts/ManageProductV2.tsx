@@ -232,7 +232,7 @@ const InnerContent = ({
 				</Stack>
 			</section>
 
-			<TaxExclusiveNotice taxExclusive={productDetail.taxExclusive} />
+			<TaxExclusiveNotice taxExclusive={productDetail.extraTaxApplies} />
 
 			<section
 				css={css`

@@ -86,6 +86,30 @@ const mockUpgradePreviewResponseAnnualGBP: UpgradePreviewResponse = {
 	nextPaymentDate: '2027-01-15',
 };
 
+const mockUpgradePreviewResponseMonthlyDiscountGBP: UpgradePreviewResponse = {
+	amountPayableToday: 3.0,
+	proratedRefundAmount: 4.5,
+	targetCatalogPrice: 14.99,
+	nextPaymentDate: '2026-03-15',
+	discount: {
+		discountedPrice: 7.5,
+		upToPeriods: 3,
+		upToPeriodsType: 'Months',
+	},
+};
+
+const mockUpgradePreviewResponseAnnualDiscountGBP: UpgradePreviewResponse = {
+	amountPayableToday: 50.0,
+	proratedRefundAmount: 45.0,
+	targetCatalogPrice: 200,
+	nextPaymentDate: '2027-07-06',
+	discount: {
+		discountedPrice: 120,
+		upToPeriods: 2,
+		upToPeriodsType: 'Years',
+	},
+};
+
 const mswHandlersSuccess = (previewResponse: UpgradePreviewResponse) => [
 	http.post('/api/subscriptions/*/change-plan/preview', () => {
 		return HttpResponse.json(previewResponse);
@@ -138,6 +162,42 @@ InformationAnnual.parameters = {
 	},
 };
 
+export const InformationMonthlyDiscount: StoryFn<
+	typeof UpgradeProductInformation
+> = () => {
+	return <UpgradeProductInformation />;
+};
+InformationMonthlyDiscount.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlus(),
+		mockUpgradePreviewResponseMonthlyDiscountGBP,
+	),
+];
+InformationMonthlyDiscount.parameters = {
+	reactRouter: {
+		container: <StoryPageContainer />,
+	},
+};
+InformationMonthlyDiscount.storyName = 'Information Monthly - Discount';
+
+export const InformationAnnualDiscount: StoryFn<
+	typeof UpgradeProductInformation
+> = () => {
+	return <UpgradeProductInformation />;
+};
+InformationAnnualDiscount.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusAnnual(),
+		mockUpgradePreviewResponseAnnualDiscountGBP,
+	),
+];
+InformationAnnualDiscount.parameters = {
+	reactRouter: {
+		container: <StoryPageContainer />,
+	},
+};
+InformationAnnualDiscount.storyName = 'Information Annual - Discount';
+
 export const ConfirmationMonthly: StoryFn<
 	typeof UpgradeProductConfirmation
 > = () => {
@@ -173,6 +233,44 @@ ConfirmationAnnual.parameters = {
 	},
 	msw: mswHandlersSuccess(mockUpgradePreviewResponseAnnualGBP),
 };
+
+export const ConfirmationMonthlyDiscount: StoryFn<
+	typeof UpgradeProductConfirmation
+> = () => {
+	return <UpgradeProductConfirmation />;
+};
+ConfirmationMonthlyDiscount.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlus(),
+		mockUpgradePreviewResponseMonthlyDiscountGBP,
+	),
+];
+ConfirmationMonthlyDiscount.parameters = {
+	reactRouter: {
+		container: <StoryPageContainer />,
+	},
+	msw: mswHandlersSuccess(mockUpgradePreviewResponseMonthlyDiscountGBP),
+};
+ConfirmationMonthlyDiscount.storyName = 'Confirmation Monthly - Discount';
+
+export const ConfirmationAnnualDiscount: StoryFn<
+	typeof UpgradeProductConfirmation
+> = () => {
+	return <UpgradeProductConfirmation />;
+};
+ConfirmationAnnualDiscount.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusAnnual(),
+		mockUpgradePreviewResponseAnnualDiscountGBP,
+	),
+];
+ConfirmationAnnualDiscount.parameters = {
+	reactRouter: {
+		container: <StoryPageContainer />,
+	},
+	msw: mswHandlersSuccess(mockUpgradePreviewResponseAnnualDiscountGBP),
+};
+ConfirmationAnnualDiscount.storyName = 'Confirmation Annual - Discount';
 
 export const ConfirmationDirectDebit: StoryFn<
 	typeof UpgradeProductConfirmation
@@ -260,3 +358,39 @@ ThankYouAnnual.parameters = {
 		container: <StoryPageContainer />,
 	},
 };
+
+export const ThankYouMonthlyDiscount: StoryFn<
+	typeof UpgradeProductThankYou
+> = () => {
+	return <UpgradeProductThankYou />;
+};
+ThankYouMonthlyDiscount.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlus(),
+		mockUpgradePreviewResponseMonthlyDiscountGBP,
+	),
+];
+ThankYouMonthlyDiscount.parameters = {
+	reactRouter: {
+		container: <StoryPageContainer />,
+	},
+};
+ThankYouMonthlyDiscount.storyName = 'Thank You Monthly - Discount';
+
+export const ThankYouAnnualDiscount: StoryFn<
+	typeof UpgradeProductThankYou
+> = () => {
+	return <UpgradeProductThankYou />;
+};
+ThankYouAnnualDiscount.decorators = [
+	createStorePopulatorDecorator(
+		supporterPlusAnnual(),
+		mockUpgradePreviewResponseAnnualDiscountGBP,
+	),
+];
+ThankYouAnnualDiscount.parameters = {
+	reactRouter: {
+		container: <StoryPageContainer />,
+	},
+};
+ThankYouAnnualDiscount.storyName = 'Thank You Annual - Discount';

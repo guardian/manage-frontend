@@ -20,7 +20,10 @@ import {
 	subHeadingWithInformationCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
-import { dateString } from '@/shared/dates';
+import {
+	formatUpgradeNextPaymentDayLabel,
+	getThankYouPaymentConditionsText,
+} from '@/client/utilities/upgradeProductPaymentCopy';
 import {
 	signInContentContainerCss,
 	signInCss,
@@ -47,8 +50,13 @@ const whatHappensNowItemInformationBoldTextCss = css`
 export const UpgradeProductThankYou = () => {
 	const navigate = useNavigate();
 
-	const { mainPlan, specificProductType, subscription, previewResponse } =
-		useUpgradeProductStore();
+	const {
+		mainPlan,
+		specificProductType,
+		subscription,
+		previewResponse,
+		isDiscountedOffer,
+	} = useUpgradeProductStore();
 	const { getUser } = useAccountStore();
 	const user = getUser();
 
@@ -60,6 +68,18 @@ export const UpgradeProductThankYou = () => {
 	) {
 		return null;
 	}
+
+	const nextPaymentDateDayLabel = formatUpgradeNextPaymentDayLabel(
+		previewResponse.nextPaymentDate,
+		mainPlan.billingPeriod,
+	);
+
+	const paymentConditionsText = getThankYouPaymentConditionsText({
+		preview: previewResponse,
+		isDiscountedOffer,
+		currency: mainPlan.currency,
+		billingPeriod: mainPlan.billingPeriod,
+	});
 
 	return (
 		<>
@@ -97,17 +117,13 @@ export const UpgradeProductThankYou = () => {
 						]}
 					>
 						<b css={whatHappensNowItemInformationBoldTextCss}>
-							Your first payment will be today.
+							{isDiscountedOffer
+								? mainPlan.billingPeriod === 'year'
+									? `Your new payment date will be ${nextPaymentDateDayLabel}.`
+									: `Your new payment date will be the ${nextPaymentDateDayLabel}.`
+								: 'Your first payment will be today.'}
 						</b>{' '}
-						You will be charged {mainPlan.currency}
-						{previewResponse.amountPayableToday}. From{' '}
-						{dateString(
-							new Date(previewResponse.nextPaymentDate),
-							'MMMM do',
-						)}
-						, your ongoing {mainPlan.billingPeriod}ly payment will
-						be {mainPlan.currency}
-						{previewResponse.targetCatalogPrice}
+						{paymentConditionsText}
 					</p>
 				</div>
 			</div>

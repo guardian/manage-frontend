@@ -186,6 +186,7 @@ const InnerContent = ({
 					amountUpdateStateChange={setOveriddenAmount}
 					isTestUser={productDetail.isTestUser}
 					futurePlan={productDetail.subscription.futurePlans[0]}
+					extraTaxApplies={productDetail.extraTaxApplies}
 				/>
 			) : (
 				<BasicProductInfoTable
@@ -218,7 +219,7 @@ const InnerContent = ({
 				}
 			/>
 
-			<TaxExclusiveNotice taxExclusive={productDetail.taxExclusive} />
+			<TaxExclusiveNotice taxExclusive={productDetail.extraTaxApplies} />
 
 			{specificProductType.delivery?.showAddress?.(
 				productDetail.subscription,

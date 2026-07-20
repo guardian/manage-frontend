@@ -1,7 +1,7 @@
 import { user as userResponse } from '../../../../client/fixtures/user';
 import { toMembersDataApiResponse } from '../../../../client/fixtures/mdapiResponse';
 import { singleContributionsAPIResponse } from '../../../../client/fixtures/singleContribution';
-import { newsletters } from '../../../../client/fixtures/newsletters';
+import { newslettersV2 } from '../../../../client/fixtures/newslettersV2';
 import { consents } from '../../../../client/fixtures/consents';
 import { newsletterSubscriptions } from '../../../../client/fixtures/newsletterSubscriptions';
 import { InAppPurchase } from '../../../../client/fixtures/inAppPurchase';
@@ -22,7 +22,7 @@ describe('Email and Marketing page', () => {
 
 		cy.intercept('GET', '/idapi/newsletters', {
 			statusCode: 200,
-			body: newsletters,
+			body: newslettersV2,
 		}).as('newsletters');
 
 		cy.intercept('GET', '/idapi/user/newsletters', {
@@ -58,7 +58,13 @@ describe('Email and Marketing page', () => {
 		cy.wait('@product_detail');
 		cy.wait('@mobile_subscriptions');
 		cy.wait('@single_contributions');
-		cy.wait('@newsletters');
+		cy.wait('@newsletters')
+			.its('response.body.0')
+			.should((newsletter) => {
+				expect(newsletter).to.have.property('signUpDescription');
+				expect(newsletter).to.have.property('signUpEmbedDescription');
+				expect(newsletter).to.not.have.property('description');
+			});
 		cy.wait('@newsletter_subscriptions');
 		cy.wait('@consents');
 		cy.wait('@reminders');
@@ -85,7 +91,13 @@ describe('Email and Marketing page', () => {
 		cy.wait('@product_detail');
 		cy.wait('@mobile_subscriptions');
 		cy.wait('@single_contributions');
-		cy.wait('@newsletters');
+		cy.wait('@newsletters')
+			.its('response.body.0')
+			.should((newsletter) => {
+				expect(newsletter).to.have.property('signUpDescription');
+				expect(newsletter).to.have.property('signUpEmbedDescription');
+				expect(newsletter).to.not.have.property('description');
+			});
 		cy.wait('@newsletter_subscriptions');
 		cy.wait('@consents');
 		cy.wait('@reminders');

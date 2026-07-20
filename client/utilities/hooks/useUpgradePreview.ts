@@ -12,7 +12,7 @@ import {
 } from '../../stores/UpgradeProductStore';
 import { changePlanFetch, fetchUpgradePreviewData } from '../productUtils';
 
-interface FetchUpgradePreviewParams {
+export interface FetchUpgradePreviewParams {
 	subscriptionId: string;
 	subscription: Subscription;
 	mainPlan: PaidSubscriptionPlan;
@@ -22,6 +22,7 @@ interface FetchUpgradePreviewParams {
 export const useUpgradeProduct = () => {
 	const navigate = useNavigate();
 	const {
+		mainPlan,
 		subscription: storeSubscription,
 		previewLoadingState,
 		previewError,
@@ -79,7 +80,7 @@ export const useUpgradeProduct = () => {
 	};
 
 	const executeUpgrade = async (navigationPath: string) => {
-		if (!storeSubscription || isUpgrading) {
+		if (!storeSubscription || !mainPlan || isUpgrading) {
 			return;
 		}
 

@@ -3,7 +3,7 @@ import type { ProductDetail } from '../../shared/productResponse';
 import type { ProductType } from '../../shared/productTypes';
 import { getCookie } from './cookies';
 
-interface Event {
+export interface Event {
 	eventCategory: string;
 	eventAction: string;
 	product?: {

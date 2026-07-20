@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import {http, HttpResponse} from 'msw';
+import { http, HttpResponse } from 'msw';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
 import {
@@ -36,9 +36,9 @@ export const Membership: StoryObj<typeof CancellationLanding> = {
 		},
 		msw: [
 			http.get('/api/me/mma', () => {
-				return HttpResponse.json(toMembersDataApiResponse(
-					membershipSupporterCurrencyUSD(),
-				))
+				return HttpResponse.json(
+					toMembersDataApiResponse(membershipSupporterCurrencyUSD()),
+				);
 			}),
 		],
 	},
@@ -61,9 +61,9 @@ export const DigiPack: StoryObj<typeof CancellationLanding> = {
 		},
 		msw: [
 			http.get('/api/me/mma', () => {
-				return HttpResponse.json(toMembersDataApiResponse(
-					digitalPackPaidByDirectDebit(),
-				))
+				return HttpResponse.json(
+					toMembersDataApiResponse(digitalPackPaidByDirectDebit()),
+				);
 			}),
 		],
 	},

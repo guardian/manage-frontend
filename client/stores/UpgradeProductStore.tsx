@@ -7,6 +7,7 @@ import {
 	type PaidSubscriptionPlan,
 } from '../../shared/productResponse';
 import type { UpgradePreviewResponse } from '../../shared/productSwitchTypes';
+import { isDiscountedPreview } from '../utilities/upgradeProductPaymentCopy';
 
 export enum UpgradePreviewLoadingState {
 	NotStarted = 'NotStarted',
@@ -22,6 +23,7 @@ interface UpgradeProductState {
 	previewResponse: UpgradePreviewResponse | null;
 	previewLoadingState: UpgradePreviewLoadingState;
 	previewError: string | null;
+	isDiscountedOffer: boolean;
 }
 
 interface UpgradeProductActions {
@@ -41,6 +43,7 @@ const initialState: Omit<UpgradeProductState, 'previewError'> = {
 	subscription: null,
 	previewResponse: null,
 	previewLoadingState: UpgradePreviewLoadingState.NotStarted,
+	isDiscountedOffer: false,
 };
 
 export const useUpgradeProductStore = create<UpgradeProductStore>()(
@@ -68,6 +71,7 @@ export const useUpgradeProductStore = create<UpgradeProductStore>()(
 						previewResponse: response,
 						previewLoadingState: UpgradePreviewLoadingState.Loaded,
 						previewError: null,
+						isDiscountedOffer: isDiscountedPreview(response),
 					},
 					false,
 					'setPreviewResponse',
