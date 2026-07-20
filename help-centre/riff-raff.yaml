@@ -1,0 +1,15 @@
+regions:
+  - eu-west-1
+stacks:
+  - support
+allowedStages:
+  - CODE
+  - PROD
+deployments:
+  cfn:
+    type: cloud-formation
+    app: help-centre
+    parameters:
+      templateStagePaths:
+        CODE: HelpCentre-CODE.template.json
+        PROD: HelpCentre-PROD.template.json
