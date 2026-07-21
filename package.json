@@ -189,7 +189,8 @@
     "tmp": "^0.2.7",
     "express/path-to-regexp": "^0.1.13",
     "webpack-dev-server/path-to-regexp": "^0.1.13",
-    "websocket-driver": "^0.7.5"
+    "websocket-driver": "^0.7.5",
+    "brace-expansion": "^2.1.2"
   },
   "license": "UNLICENSED",
   "msw": {
