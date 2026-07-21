@@ -103,7 +103,7 @@ export const useUpgradeProductLoader = (): LoaderState => {
 					isTestUser: productDetail.isTestUser,
 				});
 
-				if (!preview) {
+				if (preview === null) {
 					setState({ isLoading: false, shouldRedirect: true });
 					return;
 				}

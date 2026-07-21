@@ -55,8 +55,10 @@ export const useUpgradeProduct = () => {
 				isTestUser,
 			});
 
-			if (!previewResponse) {
-				setPreviewError('Failed to fetch upgrade preview: 400');
+			if (previewResponse === null) {
+				setPreviewError(
+					'You are not currently eligible for an upgrade online. Please contact customer care to discuss your options.',
+				);
 				return;
 			}
 
