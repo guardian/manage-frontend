@@ -188,7 +188,8 @@
     "serialize-javascript": "^7.0.3",
     "tmp": "^0.2.7",
     "express/path-to-regexp": "^0.1.13",
-    "webpack-dev-server/path-to-regexp": "^0.1.13"
+    "webpack-dev-server/path-to-regexp": "^0.1.13",
+    "websocket-driver": "^0.7.5"
   },
   "license": "UNLICENSED",
   "msw": {
