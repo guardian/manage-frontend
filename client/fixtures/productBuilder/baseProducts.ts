@@ -267,13 +267,13 @@ export function baseDigitalPack(): ProductDetail {
 // TODO format still to be decided?
 export function baseSecondaryDigitalPack(): MultipleAccountsApiResponse {
 	return {
-		// Response format TBD, placeholder for now.
-		productName: 'Digital plus shared subscription',
-		subscriptionName: 'A-S12345678',
-		primaryUser: {
-			firstName: 'Primary',
-			email: 'primary.subscriber@example.com',
-		},
+		primaryUsers: [
+			{
+				firstName: 'John',
+				lastName: 'Doe',
+				email: 'john.doe@example.com',
+			},
+		],
 	};
 }
 
@@ -1279,11 +1279,12 @@ export function baseTierThree(): ProductDetail {
 
 export function baseSecondaryUser(): MultipleAccountsApiResponse {
 	return {
-		subscriptionName: 'Digital Pack',
-		productName: 'Digital Pack',
-		primaryUser: {
-			firstName: 'John',
-			email: 'j.doe@example.com',
-		},
+		primaryUsers: [
+			{
+				firstName: 'John',
+				lastName: 'Doe',
+				email: 'j.doe@example.com',
+			},
+		],
 	};
 }

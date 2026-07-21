@@ -120,27 +120,20 @@ export interface ProductDetail extends WithSubscription {
 	alertText?: string;
 	selfServiceCancellation: SelfServiceCancellation;
 	billingCountry?: string;
-<<<<<<< HEAD
 	extraTaxApplies?: boolean;
-=======
 	taxExclusive?: boolean;
-<<<<<<< HEAD
 	primaryUser?: MembersDataApiUser;
->>>>>>> c56eee1b4 (Fixed missed git rebase issues)
-=======
->>>>>>> de700316e (Removed primaryUser from ProductDetail)
 }
 
 export interface MultipleAccountsPrimaryUser {
 	firstName: string;
+	lastName: string;
 	email: string;
 }
 
 // TODO this is still to be finalised
 export interface MultipleAccountsApiResponse {
-	subscriptionName: string;
-	productName: string;
-	primaryUser: MultipleAccountsPrimaryUser;
+	primaryUsers: MultipleAccountsPrimaryUser[];
 }
 
 export interface CancelledProductDetail {

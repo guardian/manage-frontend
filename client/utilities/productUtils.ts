@@ -114,7 +114,7 @@ export const secondaryAccountFetcher = () => {
 		'mockSecondaryUser',
 	);
 	const url =
-		'/api/me/secondary-user' +
+		'/api/secondary-user/me' +
 		(mockKey ? `?mockSecondaryUser=${mockKey}` : '');
 	return fetchWithDefaultParameters(url);
 };
