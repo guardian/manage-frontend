@@ -55,6 +55,11 @@ export const useUpgradeProduct = () => {
 				isTestUser,
 			});
 
+			if (!previewResponse) {
+				setPreviewError('Failed to fetch upgrade preview: 400');
+				return;
+			}
+
 			setMainPlan(mainPlan);
 			setSubscription(subscription);
 			setPreviewResponse(previewResponse);
