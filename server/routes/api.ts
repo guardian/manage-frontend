@@ -109,36 +109,32 @@ router.get(
 );
 
 const sharedSubscriptionMocks: Record<string, MultipleAccountsApiResponse> = {
-	'secondary-user': {
-		subscriptionName: 'secondary-user',
-		productName: 'Secondary User',
-		primaryUser: {
-			firstName: 'Pepe',
-			email: 'pepe.piri@chicken.com',
-		},
+	'/secondary-user/me': {
+		primaryUsers: [
+			{
+				firstName: 'Pepe',
+				lastName: 'Piri',
+				email: 'pepe.piri@chicken.com',
+			},
+		],
 	},
 };
 
-router.get(
-	'/me/secondary-user',
-	(req, res) => {
-		const mockKey = req.query.mockSecondaryUser;
-		if (conf.STAGE !== 'PROD' && typeof mockKey === 'string') {
-			const mock: MultipleAccountsApiResponse =
-				sharedSubscriptionMocks[mockKey];
-			if (mock) {
-				return res.json(mock);
-			}
+router.get('/secondary-user/me', (req, res) => {
+	const mockKey = req.query.mockSecondaryUser;
+	if (conf.STAGE !== 'PROD' && typeof mockKey === 'string') {
+		const mock: MultipleAccountsApiResponse =
+			sharedSubscriptionMocks['/secondary-user/me'];
+		if (mock) {
+			return res.json(mock);
 		}
-		return multipleAccountsApiHandler(
-			'secondary-user',
-			'MULTIPLE_ACCOUNTS',
-			[],
-		)(req, res);
-	},
-	// multipleAccountsApiHandler(
-	// 	'secondary-user', 'MULTIPLE_ACCOUNTS', []),
-);
+	}
+	return multipleAccountsApiHandler(
+		'secondary-user/me',
+		'MULTIPLE_ACCOUNTS',
+		[],
+	)(req, res);
+});
 
 router.get(
 	'/cancellation-date/:subscriptionName',

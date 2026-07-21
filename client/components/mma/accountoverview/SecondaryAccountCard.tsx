@@ -17,36 +17,43 @@ export const SecondaryAccountProductCard = ({
 	maapiResponse: MultipleAccountsApiResponse;
 }) => {
 	// TODO: This is a placeholder. We will likely need to adjust this.
-	const mainPlan = { name: maapiResponse.productName, shouldBeVisible: true };
-	if (!mainPlan) {
-		throw new Error('mainPlan does not exist in SecondaryAccountCard');
-	}
 
 	// TODO Hard-coded atm
 	const specificProductType =
 		getSpecificProductTypeFromProductKey('Digital Pack');
+	const mainPlan = {
+		name: specificProductType.friendlyName,
+		shouldBeVisible: true,
+	};
+	if (!mainPlan) {
+		throw new Error('mainPlan does not exist in SecondaryAccountCard');
+	}
 	const productTitle = specificProductType.productTitle(mainPlan);
 	const cardConfig = getSecondaryUserBenefitsCopy;
 	const overrideBenefitsText = secondaryUserBenefitsCopy();
 
 	return (
-		<Card>
-			<ProductCardHeader
-				cardConfig={cardConfig}
-				productTitle={productTitle}
-			/>
+		<>
+			{maapiResponse.primaryUsers.map((primaryUser, index) => (
+				<Card key={index}>
+					<ProductCardHeader
+						cardConfig={cardConfig}
+						productTitle={productTitle}
+					/>
 
-			<BenefitsCopyAndToggle
-				cardConfig={cardConfig}
-				specificProductType={specificProductType}
-				mainPlan={mainPlan}
-				overrideBenefitsText={overrideBenefitsText}
-			/>
+					<BenefitsCopyAndToggle
+						cardConfig={cardConfig}
+						specificProductType={specificProductType}
+						mainPlan={mainPlan}
+						overrideBenefitsText={overrideBenefitsText}
+					/>
 
-			<SecondaryUserSubscriptionDetails
-				subscriptionName={productTitle}
-				primarySubscriber={maapiResponse.primaryUser}
-			/>
-		</Card>
+					<SecondaryUserSubscriptionDetails
+						subscriptionName={productTitle}
+						primarySubscriber={primaryUser}
+					/>
+				</Card>
+			))}
+		</>
 	);
 };
