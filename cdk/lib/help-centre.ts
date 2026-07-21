@@ -23,7 +23,7 @@ export class HelpCentre extends GuStack {
 			app,
 			domainName,
 			resourceRecord,
-			ttl: Duration.minutes(5),
+			ttl: Duration.hours(1),
 		});
 	}
 }
