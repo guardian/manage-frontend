@@ -11,8 +11,8 @@ export class HelpCentre extends GuStack {
 		const mappings = {
 			CODE: {
 				domainName: 'help.code.dev-theguardian.com',
-				resourceRecord: 'guardian.map.fastly.net.',
-				//	'help.code.dev-theguardian.com.00d20000000nq5geaa.live.siteforce.com', // temp
+				resourceRecord:
+					'help.code.dev-theguardian.com.00d20000000nq5geaa.live.siteforce.com', // temp
 			},
 			PROD: {
 				domainName: 'help.theguardian.com',
@@ -25,7 +25,7 @@ export class HelpCentre extends GuStack {
 			app,
 			domainName,
 			resourceRecord,
-			ttl: Duration.hours(1),
+			ttl: Duration.minutes(5),
 		});
 	}
 }
