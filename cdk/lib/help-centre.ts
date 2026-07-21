@@ -10,8 +10,8 @@ export class HelpCentre extends GuStack {
 		const app = 'help-centre';
 		const mappings = {
 			CODE: {
-				domainName: 'guardian.map.fastly.net.',
-				resourceRecord: '',
+				domainName: 'help.code.dev-theguardian.com',
+				resourceRecord: 'guardian.map.fastly.net.',
 				//	'help.code.dev-theguardian.com.00d20000000nq5geaa.live.siteforce.com', // temp
 			},
 			PROD: {
