@@ -138,7 +138,7 @@
     "@guardian/commercial-core": "34.0.0",
     "@guardian/consent-manager": "1.0.0",
     "@guardian/libs": "32.0.0",
-    "@guardian/ophan-tracker-js": "4.0.2",
+    "@guardian/ophan-tracker-js": "5.0.0",
     "@guardian/source": "12.2.1",
     "@guardian/source-development-kitchen": "28.1.0",
     "@okta/jwt-verifier": "^4.0.1",

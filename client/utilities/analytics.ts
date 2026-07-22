@@ -39,7 +39,7 @@ export const trackEvent = ({
 		...(MMA_AB_TEST_DIMENSION_VALUE ? [MMA_AB_TEST_DIMENSION_VALUE] : []),
 	];
 
-	void import('@guardian/ophan-tracker-js/MMA')
+	void import('@guardian/ophan-tracker-js')
 		.then(({ record }) => {
 			record({
 				componentEvent: {

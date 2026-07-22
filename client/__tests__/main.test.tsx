@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { Main } from '../components/shared/Main';
 
 // Mock ophan to return consistent viewId
-jest.mock('@guardian/ophan-tracker-js/MMA', () => ({
+jest.mock('@guardian/ophan-tracker-js', () => ({
 	init: jest.fn(),
 	record: jest.fn(),
 	sendInitialEvent: jest.fn(),

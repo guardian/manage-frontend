@@ -32,8 +32,8 @@ const buildAcquisitionData = async (componentId: string) => {
 
 	if (hasWindow) {
 		try {
-			const { viewId } = await import('@guardian/ophan-tracker-js/MMA');
-			referrerPageviewId = viewId;
+			const { getViewId } = await import('@guardian/ophan-tracker-js');
+			referrerPageviewId = getViewId();
 		} catch {
 			referrerPageviewId = undefined;
 		}
