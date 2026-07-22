@@ -177,21 +177,7 @@
     "zod": "3.22.4",
     "zustand": "5.0.9"
   },
-  "resolutions": {
-    "http-proxy-middleware": "^2.0.7",
-    "cross-spawn": "^7.0.5",
-    "picomatch": "2.3.2",
-    "@stylistic/eslint-plugin/picomatch": "4.0.4",
-    "tinyglobby/picomatch": "4.0.4",
-    "flatted": "^3.4.2",
-    "follow-redirects": "^1.16.0",
-    "serialize-javascript": "^7.0.3",
-    "tmp": "^0.2.7",
-    "express/path-to-regexp": "^0.1.13",
-    "webpack-dev-server/path-to-regexp": "^0.1.13",
-    "websocket-driver": "^0.7.5",
-    "brace-expansion": "^2.1.2"
-  },
+  "resolutions": {},
   "license": "UNLICENSED",
   "msw": {
     "workerDirectory": ".storybook/static"
