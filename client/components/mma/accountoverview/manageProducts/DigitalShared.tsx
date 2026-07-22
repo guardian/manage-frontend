@@ -69,9 +69,7 @@ export const DigitalShared = () => {
 							Subscription details
 						</p>
 						{/* TODO Fix CSS for padding/margins at the bottom */}
-						<h3 css={sectionHeadingCss}>
-							{subscriptionName} shared subscription
-						</h3>
+						<h3 css={sectionHeadingCss}>{subscriptionName}</h3>
 					</div>
 				</div>
 
