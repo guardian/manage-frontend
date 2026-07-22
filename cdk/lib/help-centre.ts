@@ -11,13 +11,11 @@ export class HelpCentre extends GuStack {
 		const mappings = {
 			CODE: {
 				domainName: 'help.code.dev-theguardian.com',
-				resourceRecord:
-					'help.code.dev-theguardian.com.00d20000000nq5geaa.live.siteforce.com', // temp
+				resourceRecord: 'guardian.map.fastly.net.',
 			},
 			PROD: {
 				domainName: 'help.theguardian.com',
-				resourceRecord:
-					'help.theguardian.com.00d20000000nq5geaa.live.siteforce.com', // temp
+				resourceRecord: 'guardian.map.fastly.net.',
 			},
 		};
 		const { domainName, resourceRecord } = mappings[stage];
@@ -25,7 +23,7 @@ export class HelpCentre extends GuStack {
 			app,
 			domainName,
 			resourceRecord,
-			ttl: Duration.minutes(5),
+			ttl: Duration.hours(1),
 		});
 	}
 }
