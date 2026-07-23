@@ -57,9 +57,7 @@ export const proxyApiHandler =
 				(evolvingPath: string, urlParamName: string) =>
 					evolvingPath.replace(
 						':' + urlParamName,
-						Array.isArray(req.params[urlParamName])
-							? req.params[urlParamName].join('/')
-							: req.params[urlParamName] || '',
+						req.params[urlParamName].toString() || '',
 					),
 				path,
 			)
