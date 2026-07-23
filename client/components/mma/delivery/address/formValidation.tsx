@@ -19,15 +19,6 @@ export const isFormValid = (
 	formData: DeliveryAddress,
 	subscriptionsNames: string[],
 ): FormValidationResponse => {
-	const addressLine1 = {
-		isValid: formData.addressLine1?.length ?? 0 > 0,
-		message: 'Please enter an address',
-	};
-	const town = {
-		isValid: !!(formData.town && formData.town.length > 0),
-		message: 'Please enter a town/city',
-	};
-
 	const postcodeEnteredCheck =
 		(formData.postcode?.length ?? 0 > 0) &&
 		(formData.postcode?.length ?? 0 < 20);
@@ -37,9 +28,69 @@ export const isFormValid = (
 		!isPostcodeOptional('GB') &&
 		isPostcodeInM25(formData.postcode || '');
 
+	const countryIsGB =
+		formData.country === 'GB' || formData.country === 'United Kingdom';
+
+	// Most restrictive, if this is the case the user shouldn't be able to change their address.
+	const userHasNationalDeliverySubscription =
+		subscriptionsNames.includes(
+			PRODUCT_TYPES.nationaldelivery.friendlyName,
+		) ||
+		subscriptionsNames.includes(
+			PRODUCT_TYPES.nationaldeliveryplusdigital.friendlyName,
+		);
+
+	// The user should be able to change within the M25.
+	const userHasHomeDeliverySubscription =
+		subscriptionsNames.includes(PRODUCT_TYPES.homedelivery.friendlyName) ||
+		subscriptionsNames.includes(
+			PRODUCT_TYPES.homedeliveryplusdigital.friendlyName,
+		);
+
+	// The user should be able to change within the UK. (Channel/Isle of Man?)
+	const userHasVoucherSubscription = subscriptionsNames.includes(
+		PRODUCT_TYPES.voucher.friendlyName,
+	);
+
+	/**
+	 * For validity checks we go as follows:
+	 * 1. If the user has a national delivery subscription, they cannot change their address through the form.
+	 * 2. If the user has a home delivery subscription, they can change their address within the M25.
+	 * 3. If the user has a voucher subscription, they can change their address within the UK.
+	 * 4. IGNORE FOR NOW — If the user has a Guardian Weekly subscription, they can change their address anywhere in the world.
+	 *
+	 * The most restrictive rule is applied first, so if the user has multiple subscriptions, the most restrictive rule will apply.
+	 */
+	const activeSubscriptionRule = userHasNationalDeliverySubscription
+		? 'NATIONAL'
+		: userHasHomeDeliverySubscription
+		? 'HOME'
+		: userHasVoucherSubscription
+		? 'VOUCHER'
+		: 'NONE';
+
 	const enteredPostcodeIsInValidArea =
-		!subscriptionsNames.includes(PRODUCT_TYPES.homedelivery.friendlyName) ||
-		enteredPostcodeIsInM25;
+		activeSubscriptionRule === 'HOME' && enteredPostcodeIsInM25;
+
+	const countryIsInValidArea =
+		activeSubscriptionRule === 'HOME' ||
+		activeSubscriptionRule === 'VOUCHER'
+			? countryIsGB
+			: true;
+
+	const addressLine1 = {
+		isValid:
+			(formData.addressLine1?.length ?? 0 > 0) ||
+			userHasNationalDeliverySubscription,
+		message: userHasNationalDeliverySubscription
+			? `You cannot change your address online for this subscription. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
+			: 'Please enter an address',
+	};
+
+	const town = {
+		isValid: !!(formData.town && formData.town.length > 0),
+		message: 'Please enter a town/city',
+	};
 
 	const postcode = {
 		isValid: postcodeEnteredCheck && enteredPostcodeIsInValidArea,
@@ -49,17 +100,13 @@ export const isFormValid = (
 				: 'Please enter a postcode',
 	};
 
-	const userHasVoucherSubscription = subscriptionsNames.includes(
-		PRODUCT_TYPES.voucher.friendlyName,
-	);
-
 	const country = {
-		isValid: userHasVoucherSubscription
-			? formData.country === 'GB' || formData.country === 'United Kingdom'
-			: true,
+		isValid: countryIsInValidArea,
 		message:
-			userHasVoucherSubscription && (formData.country?.length ?? 0) > 0
-				? `Voucher subscriptions must be delivered in the UK. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
+			(activeSubscriptionRule === 'HOME' ||
+				activeSubscriptionRule === 'VOUCHER') &&
+			(formData.country?.length ?? 0) > 0
+				? `This subscription must be delivered in the UK. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
 				: 'Please select a country',
 	};
 
