@@ -55,6 +55,13 @@ export const useUpgradeProduct = () => {
 				isTestUser,
 			});
 
+			if (previewResponse === null) {
+				setPreviewError(
+					'You are not currently eligible for an upgrade online. Please contact customer care to discuss your options.',
+				);
+				return;
+			}
+
 			setMainPlan(mainPlan);
 			setSubscription(subscription);
 			setPreviewResponse(previewResponse);
