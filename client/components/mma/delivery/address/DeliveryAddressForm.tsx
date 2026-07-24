@@ -103,8 +103,8 @@ const Form = (props: FormProps) => {
 			const specificProductType = getSpecificProductTypeFromProductKey(
 				productDetail.mmaProductKey,
 			);
-			const friendlyProductName = specificProductType.friendlyName;
-			return `${friendlyProductName}`;
+			const productType = specificProductType.productType;
+			return `${productType}`;
 		});
 
 	const handleFormSubmit = (e: FormEvent) => {
@@ -123,6 +123,7 @@ const Form = (props: FormProps) => {
 
 		const isFormValidResponse = isFormValid(formData, subscriptionsNames);
 
+		console.log('isFormValidResponse', isFormValidResponse);
 		props.setFormErrors({
 			addressLine1: isFormValidResponse.addressLine1,
 			town: isFormValidResponse.town,

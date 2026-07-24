@@ -28,63 +28,33 @@ export const isFormValid = (
 		!isPostcodeOptional('GB') &&
 		isPostcodeInM25(formData.postcode || '');
 
-	const countryIsGB =
-		formData.country === 'GB' || formData.country === 'United Kingdom';
-
-	// Most restrictive, if this is the case the user shouldn't be able to change their address.
-	const userHasNationalDeliverySubscription =
+	const userHasHomeDeliverySubscription =
+		subscriptionsNames.includes(PRODUCT_TYPES.homedelivery.productType) ||
 		subscriptionsNames.includes(
-			PRODUCT_TYPES.nationaldelivery.friendlyName,
+			PRODUCT_TYPES.homedeliveryplusdigital.productType,
+		);
+
+	const userHasVoucherSubscription =
+		subscriptionsNames.includes(PRODUCT_TYPES.voucher.productType) ||
+		subscriptionsNames.includes(
+			PRODUCT_TYPES.voucherplusdigital.productType,
 		) ||
 		subscriptionsNames.includes(
-			PRODUCT_TYPES.nationaldeliveryplusdigital.friendlyName,
+			PRODUCT_TYPES.digitalvoucherplusdigital.productType,
 		);
 
-	// The user should be able to change within the M25.
-	const userHasHomeDeliverySubscription =
-		subscriptionsNames.includes(PRODUCT_TYPES.homedelivery.friendlyName) ||
-		subscriptionsNames.includes(
-			PRODUCT_TYPES.homedeliveryplusdigital.friendlyName,
-		);
-
-	// The user should be able to change within the UK. (Channel/Isle of Man?)
-	const userHasVoucherSubscription = subscriptionsNames.includes(
-		PRODUCT_TYPES.voucher.friendlyName,
-	);
-
-	/**
-	 * For validity checks we go as follows:
-	 * 1. If the user has a national delivery subscription, they cannot change their address through the form.
-	 * 2. If the user has a home delivery subscription, they can change their address within the M25.
-	 * 3. If the user has a voucher subscription, they can change their address within the UK.
-	 * 4. IGNORE FOR NOW — If the user has a Guardian Weekly subscription, they can change their address anywhere in the world.
-	 *
-	 * The most restrictive rule is applied first, so if the user has multiple subscriptions, the most restrictive rule will apply.
-	 */
-	const activeSubscriptionRule = userHasNationalDeliverySubscription
-		? 'NATIONAL'
-		: userHasHomeDeliverySubscription
+	const mostRestrictiveSubscription = userHasHomeDeliverySubscription
 		? 'HOME'
 		: userHasVoucherSubscription
 		? 'VOUCHER'
 		: 'NONE';
 
 	const enteredPostcodeIsInValidArea =
-		activeSubscriptionRule === 'HOME' && enteredPostcodeIsInM25;
-
-	const countryIsInValidArea =
-		activeSubscriptionRule === 'HOME' ||
-		activeSubscriptionRule === 'VOUCHER'
-			? countryIsGB
-			: true;
+		mostRestrictiveSubscription !== 'HOME' || enteredPostcodeIsInM25;
 
 	const addressLine1 = {
-		isValid:
-			(formData.addressLine1?.length ?? 0 > 0) ||
-			userHasNationalDeliverySubscription,
-		message: userHasNationalDeliverySubscription
-			? `You cannot change your address online for this subscription. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
-			: 'Please enter an address',
+		isValid: formData.addressLine1?.length ?? 0 > 0,
+		message: 'Please enter an address',
 	};
 
 	const town = {
@@ -93,7 +63,7 @@ export const isFormValid = (
 	};
 
 	const postcode = {
-		isValid: postcodeEnteredCheck && enteredPostcodeIsInValidArea,
+		isValid: enteredPostcodeIsInValidArea && postcodeEnteredCheck,
 		message:
 			!enteredPostcodeIsInValidArea && postcodeEnteredCheck
 				? `This postcode is outside of our home delivery area of Greater London. If you have moved, you can still subscribe to our newspaper using our voucher scheme. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
@@ -101,10 +71,14 @@ export const isFormValid = (
 	};
 
 	const country = {
-		isValid: countryIsInValidArea,
+		isValid:
+			userHasHomeDeliverySubscription || userHasVoucherSubscription
+				? formData.country === 'GB' ||
+				  formData.country === 'United Kingdom'
+				: true, // Possible Guardian Weekly subscription or a plan that doesn't require an address.
 		message:
-			(activeSubscriptionRule === 'HOME' ||
-				activeSubscriptionRule === 'VOUCHER') &&
+			(mostRestrictiveSubscription === 'HOME' ||
+				mostRestrictiveSubscription === 'VOUCHER') &&
 			(formData.country?.length ?? 0) > 0
 				? `This subscription must be delivered in the UK. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
 				: 'Please select a country',
