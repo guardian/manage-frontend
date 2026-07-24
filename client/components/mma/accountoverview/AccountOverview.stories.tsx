@@ -37,6 +37,7 @@ import {
 	observerDelivery,
 	observerVoucherPaidByCard,
 	patronMembership,
+	secondaryDigitalPackSharedMembership,
 	supporterPlus,
 	supporterPlusAnnualCancelled,
 	supporterPlusCancelled,
@@ -133,6 +134,11 @@ export const WithSubscriptions: StoryObj<typeof AccountOverview> = {
 			}),
 			http.get('/api/me/one-off-contributions', () => {
 				return HttpResponse.json([]);
+			}),
+			http.get('/api/secondary-user/me', () => {
+				return HttpResponse.json(
+					secondaryDigitalPackSharedMembership(),
+				);
 			}),
 		],
 	},

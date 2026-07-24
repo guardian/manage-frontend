@@ -1,6 +1,9 @@
 import * as Sentry from '@sentry/node';
 import { Router } from 'express';
-import type { MembersDataApiResponse } from '@/shared/productResponse';
+import type {
+	MembersDataApiResponse,
+	MultipleAccountsApiResponse,
+} from '@/shared/productResponse';
 import { isProduct, MDA_TEST_USER_HEADER } from '@/shared/productResponse';
 import {
 	cancellationSfCasesAPI,
@@ -16,6 +19,7 @@ import {
 import {
 	customMembersDataApiHandler,
 	membersDataApiHandler,
+	multipleAccountsApiHandler,
 	proxyApiHandler,
 	straightThroughBodyHandler,
 	userBenefitsApiHandler,
@@ -103,6 +107,34 @@ router.get(
 	'/me/user-attributes',
 	membersDataApiHandler('user-attributes/me', 'MDA_DETAIL', []),
 );
+
+const sharedSubscriptionMocks: Record<string, MultipleAccountsApiResponse> = {
+	'/secondary-user/me': {
+		primaryUsers: [
+			{
+				firstName: 'Pepe',
+				lastName: 'Piri',
+				email: 'pepe.piri@chicken.com',
+			},
+		],
+	},
+};
+
+router.get('/secondary-user/me', (req, res) => {
+	const mockKey = req.query.mockSecondaryUser;
+	if (conf.STAGE !== 'PROD' && typeof mockKey === 'string') {
+		const mock: MultipleAccountsApiResponse =
+			sharedSubscriptionMocks['/secondary-user/me'];
+		if (mock) {
+			return res.json(mock);
+		}
+	}
+	return multipleAccountsApiHandler(
+		'secondary-user/me',
+		'MULTIPLE_ACCOUNTS',
+		[],
+	)(req, res);
+});
 
 router.get(
 	'/cancellation-date/:subscriptionName',

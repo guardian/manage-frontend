@@ -13,6 +13,7 @@ import type { FetchUpgradePreviewParams } from '@/client/utilities/hooks/useUpgr
 import { parseDate } from '@/shared/dates';
 import type {
 	MembersDataApiUser,
+	MultipleAccountsPrimaryUser,
 	PaidSubscriptionPlan,
 	ProductDetail,
 	SubscriptionPlan,
@@ -29,6 +30,7 @@ import type { ProductCardConfiguration } from './ProductCardConfiguration';
 import {
 	benefitsSectionBackgroundColour,
 	benefitsTextCss,
+	centeredActionCss,
 	centeredButtonCss,
 	giftRibbonColour,
 	giftRibbonCopyColour,
@@ -37,6 +39,8 @@ import {
 	productCardTitleCss,
 	productDetailLayoutCss,
 	sectionHeadingCss,
+	sharedMembershipLeaveButtonCss,
+	sharedMembershipTextCss,
 } from './ProductCardStyles';
 
 const NewPriceAlert = () => {
@@ -92,21 +96,25 @@ export const BenefitsCopyAndToggle = ({
 	mainPlan,
 	nextPaymentDetails,
 	overrideBenefits,
+	overrideBenefitsText,
 }: {
 	cardConfig: ProductCardConfiguration;
 	specificProductType: ProductType;
 	mainPlan: SubscriptionPlan;
-	nextPaymentDetails?: NextPaymentDetails | undefined;
+	nextPaymentDetails?: NextPaymentDetails;
 	overrideBenefits?: ProductBenefit[];
+	overrideBenefitsText?: string;
 }) =>
 	cardConfig.getBenefitsSectionCopy &&
-	nextPaymentDetails && (
+	(nextPaymentDetails || overrideBenefitsText) && (
 		<Card.Section
 			backgroundColor={benefitsSectionBackgroundColour}
 			removeBorders
 		>
 			<p css={benefitsTextCss}>
-				{cardConfig.getBenefitsSectionCopy(nextPaymentDetails)}
+				{nextPaymentDetails
+					? cardConfig.getBenefitsSectionCopy(nextPaymentDetails)
+					: overrideBenefitsText}
 			</p>
 			<BenefitsToggle
 				productType={specificProductType.productType}
@@ -132,6 +140,42 @@ export const GuardianAdLiteCopy = ({
 				{nextPaymentDetails.paymentInterval} for non-personalised
 				advertising.
 			</p>
+		</Card.Section>
+	);
+
+export const SecondaryUserSubscriptionDetails = ({
+	subscriptionName,
+	primarySubscriber,
+}: {
+	subscriptionName: string;
+	primarySubscriber: MultipleAccountsPrimaryUser | undefined;
+}) =>
+	primarySubscriber && (
+		<Card.Section>
+			<div css={productDetailLayoutCss}>
+				<div>
+					<h4 css={sectionHeadingCss}>Subscription details</h4>
+					<p css={sharedMembershipTextCss}>
+						Subscription: {subscriptionName} shared subscription{' '}
+						<br />
+						<br />
+						You’ve been given access by{' '}
+						{primarySubscriber.firstName}. Your account and activity
+						are private and not shared with the subscription owner.
+					</p>
+				</div>
+				<div css={centeredActionCss}>
+					<Button
+						aria-label={`${subscriptionName} : Leave shared subscription`}
+						size="small"
+						priority="tertiary"
+						cssOverrides={sharedMembershipLeaveButtonCss}
+						onClick={() => undefined}
+					>
+						Manage support
+					</Button>
+				</div>
+			</div>
 		</Card.Section>
 	);
 

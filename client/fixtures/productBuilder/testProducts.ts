@@ -14,6 +14,7 @@ import {
 	baseNationalDeliveryPlus,
 	baseObserverDelivery,
 	basePatron,
+	baseSecondaryUser,
 	baseSupporterPlus,
 	baseTierThree,
 	baseVoucher,
@@ -67,6 +68,10 @@ export function digitalPackPaidByDirectDebit() {
 	return new ProductBuilder(baseDigitalPack())
 		.payByDirectDebit()
 		.getProductDetailObject();
+}
+
+export function secondaryDigitalPackSharedMembership() {
+	return baseSecondaryUser();
 }
 
 export function digitalPackWithPaymentFailure() {
