@@ -6,6 +6,7 @@ import type { SignInStatus } from '../../utilities/signInStatus';
 import { Footer } from './footer/Footer';
 import { MinimalFooter } from './footer/MinimalFooter';
 import { Header } from './Header';
+import { ToastContainer } from './ToastContainer';
 
 export interface MainProps {
 	signInStatus?: SignInStatus;
@@ -81,6 +82,7 @@ export const Main = ({
 				) : (
 					<Footer hideSupport={!!isHelpCentrePage} />
 				)}
+				<ToastContainer />
 			</div>
 		</HasMinimalFooterContext.Provider>
 	);
