@@ -52,12 +52,16 @@ export const proxyApiHandler =
 		shouldNotLogBody?: boolean,
 	) =>
 	async (req: Request, res: Response) => {
+		const urlParams: Record<string, string> = req.params as Record<
+			string,
+			string
+		>;
 		const parameterisedPath = urlParamNamesToReplace
 			.reduce(
 				(evolvingPath: string, urlParamName: string) =>
 					evolvingPath.replace(
 						':' + urlParamName,
-						req.params[urlParamName] || '',
+						urlParams[urlParamName] || '',
 					),
 				path,
 			)
