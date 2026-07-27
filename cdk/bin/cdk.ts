@@ -1,6 +1,5 @@
 import 'source-map-support/register';
 import { App } from 'aws-cdk-lib';
-import { HelpCentre } from '../lib/help-centre';
 import { ManageFrontend } from '../lib/manage-frontend';
 
 const app = new App();
@@ -23,7 +22,3 @@ new ManageFrontend(app, 'ManageFrontend-PROD', {
 	domain: 'manage.theguardian.com.origin.membership.guardianapis.com',
 	cloudFormationStackName: 'support-PROD-manage-frontend',
 });
-
-new HelpCentre(app, 'HelpCentre-CODE', 'CODE');
-
-new HelpCentre(app, 'HelpCentre-PROD', 'PROD');
