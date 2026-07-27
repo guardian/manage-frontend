@@ -58,5 +58,14 @@ jobs:
             manage-frontend:
               - ./manage-frontend.zip
 
-
-
+      - name: Upload help centre domain to Riff-Raff
+        uses: guardian/actions-riff-raff@v4
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          roleArn: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
+          app: help-centre
+          configPath: ./help-centre/riff-raff.yaml
+          contentDirectories: |
+            cfn:
+              - ./cdk/cdk.out/HelpCentre-CODE.template.json
+              - ./cdk/cdk.out/HelpCentre-PROD.template.json
