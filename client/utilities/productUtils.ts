@@ -278,7 +278,7 @@ export const changePlanFetch = ({
 export const fetchUpgradePreviewData = async (params: {
 	subscriptionId: string;
 	isTestUser: boolean;
-}): Promise<UpgradePreviewResponse> => {
+}): Promise<UpgradePreviewResponse | null> => {
 	const response = await changePlanFetch({
 		subscriptionId: params.subscriptionId,
 		isTestUser: params.isTestUser,
@@ -286,6 +286,13 @@ export const fetchUpgradePreviewData = async (params: {
 		targetProduct: 'DigitalSubscription',
 		preview: true,
 	});
+
+	// A 400 means the user is ineligible for an online upgrade.
+	// Treat as "no preview available" rather than an error to avoid
+	// spurious Sentry noise for an expected business condition.
+	if (response.status === 400) {
+		return null;
+	}
 
 	if (!response.ok) {
 		throw new Error(`Failed to fetch upgrade preview: ${response.status}`);
