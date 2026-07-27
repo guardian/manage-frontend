@@ -52,6 +52,9 @@ export const proxyApiHandler =
 		shouldNotLogBody?: boolean,
 	) =>
 	async (req: Request, res: Response) => {
+		// Casting to make typescript happy. Without this TS expects string | string[]
+		// by Express conventions req.params can be Rec<string , string | string[] >
+		// Here casting to Rec<string,string> ensure that replace inside the reduce works.
 		const urlParams: Record<string, string> = req.params as Record<
 			string,
 			string
