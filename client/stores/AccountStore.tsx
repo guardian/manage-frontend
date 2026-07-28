@@ -6,7 +6,7 @@ import type {
 	CancelledProductDetail,
 	MembersDataApiResponse,
 	MembersDataApiUser,
-	MultipleAccountsApiResponse,
+	MultipleAccountApiResponse,
 	SingleProductDetail,
 } from '../../shared/productResponse';
 import { isProduct } from '../../shared/productResponse';
@@ -35,7 +35,7 @@ interface AccountState {
 	mpapiResponse: MPAPIResponse | null;
 	singleContributionsResponse: SingleProductDetail[] | null;
 	userSubscriptionsResponse: UserSubscriptionsResponse | null;
-	maapiResponse: MultipleAccountsApiResponse | null;
+	maapiResponse: MultipleAccountApiResponse | null;
 	loadingState: AccountLoadingState;
 	error: string | null;
 }
@@ -46,14 +46,14 @@ interface AccountActions {
 	setMpapiResponse: (response: MPAPIResponse) => void;
 	setSingleContributionsResponse: (response: SingleProductDetail[]) => void;
 	setUserSubscriptionsResponse: (response: UserSubscriptionsResponse) => void;
-	setMaapiResponse: (response: MultipleAccountsApiResponse) => void;
+	setMaapiResponse: (response: MultipleAccountApiResponse) => void;
 	setAllResponses: (responses: {
 		mdapiResponse: MembersDataApiResponse | null;
 		cancelledProductsResponse: CancelledProductDetail[] | null;
 		mpapiResponse: MPAPIResponse | null;
 		singleContributionsResponse: SingleProductDetail[] | null;
 		userSubscriptionsResponse: UserSubscriptionsResponse | null;
-		maapiResponse: MultipleAccountsApiResponse | null;
+		maapiResponse: MultipleAccountApiResponse | null;
 	}) => void;
 	setLoadingState: (state: AccountLoadingState) => void;
 	setError: (error: string | null) => void;

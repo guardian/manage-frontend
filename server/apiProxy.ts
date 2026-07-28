@@ -206,7 +206,7 @@ export const userBenefitsApiHandler = proxyApiHandler(
 	'user-benefits.' + conf.API_DOMAIN,
 )(straightThroughBodyHandler);
 
-// export const multipleAccountsApiHandler = proxyApiHandler(
+// export const multipleAccountApiHandler = proxyApiHandler(
 // 	conf.STAGE === 'PROD'
 // 		? 'multiple-account-api.support.guardianapis.com'
 // 		: 'multiple-account-api-code.support.guardianapis.com',

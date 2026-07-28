@@ -1,4 +1,4 @@
-import type { MultipleAccountsApiResponse } from '@/shared/productResponse';
+import type { MultipleAccountApiResponse } from '@/shared/productResponse';
 import { getSpecificProductTypeFromProductKey } from '@/shared/productResponse';
 import { Card } from '../shared/Card';
 import {
@@ -14,7 +14,7 @@ import {
 export const SecondaryAccountProductCard = ({
 	maapiResponse,
 }: {
-	maapiResponse: MultipleAccountsApiResponse;
+	maapiResponse: MultipleAccountApiResponse;
 }) => {
 	// TODO: This is a placeholder. We will likely need to adjust this.
 
