@@ -270,7 +270,6 @@ export const invoicingAPI = invoicingAPIGateway.authorisedExpressCallback;
 const multipleAccountAPIGateway = getApiGateway(
 	'support',
 	'multiple-account-api',
-	generateAwsSignatureHeaders,
 );
 export const multipleAccountAPI =
 	(
