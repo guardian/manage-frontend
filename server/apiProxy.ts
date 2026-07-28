@@ -57,9 +57,7 @@ export const proxyApiHandler =
 				(evolvingPath: string, urlParamName: string) =>
 					evolvingPath.replace(
 						':' + urlParamName,
-						Array.isArray(req.params[urlParamName])
-							? req.params[urlParamName].join('/')
-							: req.params[urlParamName] || '',
+						req.params[urlParamName] || '',
 					),
 				path,
 			)
@@ -205,9 +203,3 @@ export const membersDataApiHandler = customMembersDataApiHandler(
 export const userBenefitsApiHandler = proxyApiHandler(
 	'user-benefits.' + conf.API_DOMAIN,
 )(straightThroughBodyHandler);
-
-// export const multipleAccountApiHandler = proxyApiHandler(
-// 	conf.STAGE === 'PROD'
-// 		? 'multiple-account-api.support.guardianapis.com'
-// 		: 'multiple-account-api-code.support.guardianapis.com',
-// )(straightThroughBodyHandler);
