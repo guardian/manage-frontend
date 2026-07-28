@@ -167,7 +167,7 @@ export const proxyApiHandler =
 				});
 				Sentry.captureException(error);
 				putMetric(res.locals.loggingDetail);
-				res.status(500).send('Something broke!');
+				res.status(500).send(error);
 			});
 	};
 
@@ -206,9 +206,8 @@ export const userBenefitsApiHandler = proxyApiHandler(
 	'user-benefits.' + conf.API_DOMAIN,
 )(straightThroughBodyHandler);
 
-export const multipleAccountsApiHandler = proxyApiHandler(
-	// TODO format differs from other API hosts?
-	conf.STAGE === 'PROD'
-		? 'multiple-accounts-api.support.guardianapis.com'
-		: 'multiple-accounts-api-code.support.guardianapis.com',
-)(straightThroughBodyHandler);
+// export const multipleAccountsApiHandler = proxyApiHandler(
+// 	conf.STAGE === 'PROD'
+// 		? 'multiple-account-api.support.guardianapis.com'
+// 		: 'multiple-account-api-code.support.guardianapis.com',
+// )(straightThroughBodyHandler);
