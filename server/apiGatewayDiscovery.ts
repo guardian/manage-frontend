@@ -14,6 +14,7 @@ import {
 } from './awsIntegration';
 import { conf } from './config';
 import { log } from './log';
+import { OAuthAccessTokenCookieName } from './oauthConfig';
 
 type ApiName =
 	| 'cancellation-sf-cases-api'
@@ -25,7 +26,8 @@ type ApiName =
 	| 'discount-api'
 	| 'product-switch-api'
 	| 'update-supporter-plus-amount'
-	| 'user-subscriptions-api';
+	| 'user-subscriptions-api'
+	| 'multiple-account-api';
 
 const isProd = conf.STAGE.toUpperCase() === 'PROD';
 const normalUserApiStage = isProd ? 'PROD' : 'CODE';
@@ -168,15 +170,24 @@ const getApiGateway = (
 					: normalUserApiStage;
 				if (!apiKey) {
 					log.error(`Missing API Key for ${stage} ${apiName}`);
-					res.status(500).send();
+					res.status(500).send(
+						`Missing API Key for ${stage} ${apiName}`,
+					);
 				} else if (!host) {
 					log.error(`Missing host for ${stage} ${apiName}`);
-					res.status(500).send();
+					res.status(500).send(
+						`Missing host for ${stage} ${apiName}`,
+					);
 				} else if (!res.locals.identity?.userId) {
 					log.error(`Missing identity ID on the request object`);
-					res.status(500).send();
+					res.status(500).send(
+						`Missing identity ID on the request object`,
+					);
 				} else {
 					const shouldForwardQueryArgs = true;
+					console.log(
+						`Forwarding request to ${stage} ${apiName} for ${req.originalUrl} with logging code ${loggingCode}`,
+					);
 					return proxyApiHandler(
 						host,
 						{
@@ -255,6 +266,37 @@ const invoicingAPIGateway = getApiGateway(
 	generateAwsSignatureHeaders,
 );
 export const invoicingAPI = invoicingAPIGateway.authorisedExpressCallback;
+
+const multipleAccountAPIGateway = getApiGateway(
+	'support',
+	'multiple-account-api',
+	generateAwsSignatureHeaders,
+);
+export const multipleAccountAPI =
+	(
+		path: string,
+		loggingCode: string,
+		urlParamNamesToReplace: string[] = [],
+		headers: Headers = {},
+		shouldNotLogBody?: boolean,
+	) =>
+	async (req: express.Request, res: express.Response) => {
+		const accessToken = req.signedCookies[OAuthAccessTokenCookieName] as
+			| string
+			| undefined;
+		return multipleAccountAPIGateway.authorisedExpressCallback(
+			path,
+			loggingCode,
+			urlParamNamesToReplace,
+			{
+				...headers,
+				...(accessToken
+					? { Authorization: `Bearer ${accessToken}` }
+					: {}),
+			},
+			shouldNotLogBody,
+		)(req, res);
+	};
 
 // not sure why this doesn't follow the pattern above
 export const getContactUsAPIHostAndKey = async () => {
