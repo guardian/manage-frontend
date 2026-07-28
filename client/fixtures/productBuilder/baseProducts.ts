@@ -1,5 +1,5 @@
 import type {
-	MultipleAccountsApiResponse,
+	MultipleAccountApiResponse,
 	ProductDetail,
 } from '../../../shared/productResponse';
 
@@ -265,7 +265,7 @@ export function baseDigitalPack(): ProductDetail {
 }
 
 // TODO format still to be decided?
-export function baseSecondaryDigitalPack(): MultipleAccountsApiResponse {
+export function baseSecondaryDigitalPack(): MultipleAccountApiResponse {
 	return {
 		primaryUsers: [
 			{
@@ -1277,7 +1277,7 @@ export function baseTierThree(): ProductDetail {
 	};
 }
 
-export function baseSecondaryUser(): MultipleAccountsApiResponse {
+export function baseSecondaryUser(): MultipleAccountApiResponse {
 	return {
 		primaryUsers: [
 			{

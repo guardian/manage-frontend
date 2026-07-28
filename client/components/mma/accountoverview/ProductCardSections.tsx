@@ -13,7 +13,7 @@ import type { FetchUpgradePreviewParams } from '@/client/utilities/hooks/useUpgr
 import { parseDate } from '@/shared/dates';
 import type {
 	MembersDataApiUser,
-	MultipleAccountsPrimaryUser,
+	MultipleAccountPrimaryUser,
 	PaidSubscriptionPlan,
 	ProductDetail,
 	SubscriptionPlan,
@@ -149,7 +149,7 @@ export const SecondaryUserSubscriptionDetails = ({
 	navigate,
 }: {
 	subscriptionName: string;
-	primarySubscriber: MultipleAccountsPrimaryUser | undefined;
+	primarySubscriber: MultipleAccountPrimaryUser | undefined;
 	navigate: NavigateFunction;
 }) =>
 	primarySubscriber && (

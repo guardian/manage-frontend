@@ -1,9 +1,6 @@
 import * as Sentry from '@sentry/node';
 import { Router } from 'express';
-import type {
-	MembersDataApiResponse,
-	MultipleAccountsApiResponse,
-} from '@/shared/productResponse';
+import type { MembersDataApiResponse } from '@/shared/productResponse';
 import { isProduct, MDA_TEST_USER_HEADER } from '@/shared/productResponse';
 import {
 	cancellationSfCasesAPI,
@@ -11,6 +8,7 @@ import {
 	discountAPI,
 	holidayStopAPI,
 	invoicingAPI,
+	multipleAccountAPI,
 	productMoveAPI,
 	productSwitchAPI,
 	updateSupporterPlusAmountAPI,
@@ -19,7 +17,6 @@ import {
 import {
 	customMembersDataApiHandler,
 	membersDataApiHandler,
-	multipleAccountsApiHandler,
 	proxyApiHandler,
 	straightThroughBodyHandler,
 	userBenefitsApiHandler,
@@ -108,33 +105,22 @@ router.get(
 	membersDataApiHandler('user-attributes/me', 'MDA_DETAIL', []),
 );
 
-const sharedSubscriptionMocks: Record<string, MultipleAccountsApiResponse> = {
-	'/secondary-user/me': {
-		primaryUsers: [
-			{
-				firstName: 'Pepe',
-				lastName: 'Piri',
-				email: 'pepe.piri@chicken.com',
-			},
-		],
-	},
-};
+// const sharedSubscriptionMocks: Record<string, MultipleAccountApiResponse> = {
+// 	'/secondary-user/me': {
+// 		primaryUsers: [
+// 			{
+// 				firstName: 'Pepe',
+// 				lastName: 'Piri',
+// 				email: 'pepe.piri@chicken.com',
+// 			},
+// 		],
+// 	},
+// };
 
-router.get('/secondary-user/me', (req, res) => {
-	const mockKey = req.query.mockSecondaryUser;
-	if (conf.STAGE !== 'PROD' && typeof mockKey === 'string') {
-		const mock: MultipleAccountsApiResponse =
-			sharedSubscriptionMocks['/secondary-user/me'];
-		if (mock) {
-			return res.json(mock);
-		}
-	}
-	return multipleAccountsApiHandler(
-		'secondary-user/me',
-		'MULTIPLE_ACCOUNTS',
-		[],
-	)(req, res);
-});
+router.get(
+	'/secondary-user/me',
+	multipleAccountAPI('secondary-user/me', 'MULTIPLE_ACCOUNTS', []),
+);
 
 router.get(
 	'/cancellation-date/:subscriptionName',

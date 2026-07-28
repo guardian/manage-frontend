@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import type { MultipleAccountsApiResponse } from '@/shared/productResponse';
+import { useNavigate } from 'react-router';
+import type { MultipleAccountApiResponse } from '@/shared/productResponse';
 import { getSpecificProductTypeFromProductKey } from '@/shared/productResponse';
 import { Card } from '../shared/Card';
 import {
@@ -15,7 +15,7 @@ import {
 export const SecondaryAccountProductCard = ({
 	maapiResponse,
 }: {
-	maapiResponse: MultipleAccountsApiResponse;
+	maapiResponse: MultipleAccountApiResponse;
 }) => {
 	const navigate = useNavigate();
 
