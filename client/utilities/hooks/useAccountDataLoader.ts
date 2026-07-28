@@ -4,7 +4,7 @@ import type { MPAPIResponse } from '../../../shared/mpapiResponse';
 import type {
 	CancelledProductDetail,
 	MembersDataApiResponse,
-	MultipleAccountsApiResponse,
+	MultipleAccountApiResponse,
 	SingleProductDetail,
 } from '../../../shared/productResponse';
 import { JsonResponseHandler } from '../../components/mma/shared/asyncComponents/DefaultApiResponseHandler';
@@ -56,12 +56,17 @@ async function fetchAllAccountData() {
 					JsonResponseHandler(
 						r,
 					) as Promise<UserSubscriptionsResponse>,
-				)
-				.catch((): null => null),
-		secondaryAccountFetcher()
-			.then((r) => JsonResponseHandler(r) as Promise<MultipleAccountsApiResponse>)
+			)
 			.catch((): null => null),
-			]);
+		secondaryAccountFetcher()
+			.then(
+				(r) =>
+					JsonResponseHandler(
+						r,
+					) as Promise<MultipleAccountApiResponse>,
+			)
+			.catch((): null => null),
+	]);
 
 	return {
 		mdapiResponse,

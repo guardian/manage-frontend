@@ -105,7 +105,7 @@ router.get(
 	membersDataApiHandler('user-attributes/me', 'MDA_DETAIL', []),
 );
 
-// const sharedSubscriptionMocks: Record<string, MultipleAccountsApiResponse> = {
+// const sharedSubscriptionMocks: Record<string, MultipleAccountApiResponse> = {
 // 	'/secondary-user/me': {
 // 		primaryUsers: [
 // 			{
