@@ -123,7 +123,6 @@ const Form = (props: FormProps) => {
 
 		const isFormValidResponse = isFormValid(formData, subscriptionsNames);
 
-		console.log('isFormValidResponse', isFormValidResponse);
 		props.setFormErrors({
 			addressLine1: isFormValidResponse.addressLine1,
 			town: isFormValidResponse.town,

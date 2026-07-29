@@ -60,7 +60,7 @@ export const isFormValid = (
 	};
 
 	const postcode = {
-		isValid: enteredPostcodeIsInValidArea && postcodeEnteredCheck,
+		isValid: postcodeEnteredCheck && enteredPostcodeIsInValidArea,
 		message:
 			!enteredPostcodeIsInValidArea && postcodeEnteredCheck
 				? `This postcode is outside of our home delivery area of Greater London. If you have moved, you can still subscribe to our newspaper using our voucher scheme. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
