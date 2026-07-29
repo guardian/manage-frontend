@@ -103,6 +103,11 @@ export const useUpgradeProductLoader = (): LoaderState => {
 					isTestUser: productDetail.isTestUser,
 				});
 
+				if (preview === null) {
+					setState({ isLoading: false, shouldRedirect: true });
+					return;
+				}
+
 				setMainPlan(fetchedMainPlan);
 				setSubscription(productDetail.subscription);
 				setPreviewResponse(preview);
