@@ -26,11 +26,7 @@ describe('update delivery address form validation', () => {
 		'homedeliveryplusdigital',
 		'homedelivery',
 	];
-	const voucherSubscription = [
-		'voucher',
-		'voucherplusdigital',
-		'digitalvoucherplusdigital',
-	];
+	const voucherSubscription = ['voucher', 'voucherplusdigital'];
 	const homeAndVoucherSubscription = ['homedeliveryplusdigital', 'voucher'];
 
 	test(`isFormValid returns 'isValid' true given valid UK address. Subscriptions: ${guardianWeeklySubscription}`, () => {

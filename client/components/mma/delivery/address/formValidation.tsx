@@ -38,10 +38,6 @@ export const isFormValid = (
 		subscriptionsNames.includes(PRODUCT_TYPES.voucher.productType) ||
 		subscriptionsNames.includes(
 			PRODUCT_TYPES.voucherplusdigital.productType,
-		) ||
-		subscriptionsNames.includes(PRODUCT_TYPES.digitalvoucher.productType) ||
-		subscriptionsNames.includes(
-			PRODUCT_TYPES.digitalvoucherplusdigital.productType,
 		);
 
 	const mostRestrictiveSubscription = userHasHomeDeliverySubscription
