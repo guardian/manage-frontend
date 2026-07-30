@@ -264,14 +264,13 @@ export function baseDigitalPack(): ProductDetail {
 	};
 }
 
-// TODO format still to be decided?
-export function baseSecondaryDigitalPack(): MultipleAccountApiResponse {
+export function baseSecondaryUser(): MultipleAccountApiResponse {
 	return {
 		primaryUsers: [
 			{
 				firstName: 'John',
 				lastName: 'Doe',
-				email: 'john.doe@example.com',
+				workEmail: 'j.doe@example.com',
 			},
 		],
 	};
@@ -1274,17 +1273,5 @@ export function baseTierThree(): ProductDetail {
 			accountId: '8ad08f069010dd31019011e437574822',
 		},
 		isTestUser: false,
-	};
-}
-
-export function baseSecondaryUser(): MultipleAccountApiResponse {
-	return {
-		primaryUsers: [
-			{
-				firstName: 'John',
-				lastName: 'Doe',
-				email: 'j.doe@example.com',
-			},
-		],
 	};
 }

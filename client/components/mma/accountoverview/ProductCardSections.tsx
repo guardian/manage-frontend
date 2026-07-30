@@ -101,7 +101,7 @@ export const BenefitsCopyAndToggle = ({
 	cardConfig: ProductCardConfiguration;
 	specificProductType: ProductType;
 	mainPlan: SubscriptionPlan;
-	nextPaymentDetails?: NextPaymentDetails;
+	nextPaymentDetails?: NextPaymentDetails | undefined;
 	overrideBenefits?: ProductBenefit[];
 	overrideBenefitsText?: string;
 }) =>

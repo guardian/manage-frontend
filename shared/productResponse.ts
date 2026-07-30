@@ -121,14 +121,13 @@ export interface ProductDetail extends WithSubscription {
 	selfServiceCancellation: SelfServiceCancellation;
 	billingCountry?: string;
 	extraTaxApplies?: boolean;
-	taxExclusive?: boolean;
 	primaryUser?: MembersDataApiUser;
 }
 
 export interface MultipleAccountPrimaryUser {
 	firstName: string;
 	lastName: string;
-	email: string;
+	workEmail: string;
 }
 
 // TODO this is still to be finalised
