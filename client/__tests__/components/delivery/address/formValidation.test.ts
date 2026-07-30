@@ -78,7 +78,7 @@ describe('update delivery address form validation', () => {
 		).toBeFalsy();
 	});
 
-	test(`isFormValid returns 'isValid' false given valid UK address with voucher AND home subscriptions. Subscriptions: ${voucherSubscription}`, () => {
+	test(`isFormValid returns 'isValid' false given valid UK address with voucher AND home subscriptions. Subscriptions: ${homeAndVoucherSubscription}`, () => {
 		expect(
 			isFormValid(outsideLondonAddress, homeAndVoucherSubscription)
 				.isValid,
