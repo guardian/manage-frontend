@@ -165,7 +165,7 @@ export const proxyApiHandler =
 				});
 				Sentry.captureException(error);
 				putMetric(res.locals.loggingDetail);
-				res.status(500).send(error);
+				res.status(500).send('Something broke!');
 			});
 	};
 
