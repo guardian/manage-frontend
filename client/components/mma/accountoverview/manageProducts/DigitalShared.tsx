@@ -4,7 +4,7 @@ import { Button } from '@guardian/source/react-components';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { subHeadingCss } from '@/client/styles/headings';
 import type {
-	MembersDataApiUser,
+	MultipleAccountPrimaryUser,
 	SubscriptionPlan,
 } from '@/shared/productResponse';
 import { getSpecificProductTypeFromProductKey } from '@/shared/productResponse';
@@ -18,7 +18,7 @@ import {
 
 export interface DigitalSharedRouterState {
 	subscriptionName: string;
-	primarySubscriber: MembersDataApiUser;
+	primarySubscriber: MultipleAccountPrimaryUser;
 }
 
 const sectionsContainerCss = css`
@@ -90,10 +90,10 @@ export const DigitalShared = () => {
 				<div css={sectionsContainerCss} key={'manage-access'}>
 					<h2 css={subHeadingCss}>Manage access</h2>
 					<div css={greySectionCss}>
-						<p css={sharedMembershipTextCss}>
-							You been given access to this subscription by{' '}
+						<p>
+							You have been given access to this subscription by{' '}
 							{primarySubscriber.firstName} (
-							{primarySubscriber.email}).
+							{primarySubscriber.workEmail}).
 						</p>
 						<p>
 							You can leave this shared subscription at any time.
