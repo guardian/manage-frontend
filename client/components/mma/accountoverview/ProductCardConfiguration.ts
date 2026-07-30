@@ -47,7 +47,7 @@ const guardianWeeklyBenefitsCopy = (npd: NextPaymentDetails) =>
 	`You're subscribed to The Guardian Weekly for ${npd.currentPriceValue} per ${npd.paymentInterval} and receive a curated news magazine featuring our best global journalism in print, as well as unlimited access to our full suite of digital benefits.`;
 
 export const secondaryUserBenefitsCopy = () =>
-	`You're enjoying Digital plus as part of a shared subscription.`; // TODO make Digital plus part dynamic rather than hardcoded.
+	`You're enjoying Digital plus as part of a shared subscription.`;
 
 /**
  * In-app purchases have their own dedicated product card component so are not

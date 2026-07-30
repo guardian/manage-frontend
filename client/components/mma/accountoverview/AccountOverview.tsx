@@ -452,9 +452,11 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			{secondaryAccountDetails && (
 				<Fragment>
 					<h2 css={subHeadingCss}>Shared with you</h2>
-					<SecondaryAccountProductCard
-						maapiResponse={secondaryAccountDetails}
-					/>
+					{secondaryAccountDetails.primaryUsers.map((primaryUser) => (
+						<SecondaryAccountProductCard
+							primaryUser={primaryUser}
+						/>
+					))}
 				</Fragment>
 			)}
 			{uniqueProductCategories.map((category) => {

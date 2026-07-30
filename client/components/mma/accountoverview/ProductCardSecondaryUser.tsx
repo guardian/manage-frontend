@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import type { MultipleAccountApiResponse } from '@/shared/productResponse';
+import type { MultipleAccountPrimaryUser } from '@/shared/productResponse';
 import { getSpecificProductTypeFromProductKey } from '@/shared/productResponse';
 import { Card } from '../shared/Card';
 import {
@@ -13,15 +13,12 @@ import {
 } from './ProductCardSections';
 
 export const SecondaryAccountProductCard = ({
-	maapiResponse,
+	primaryUser,
 }: {
-	maapiResponse: MultipleAccountApiResponse;
+	primaryUser: MultipleAccountPrimaryUser;
 }) => {
 	const navigate = useNavigate();
 
-	// TODO: This is a placeholder. We will likely need to adjust this.
-
-	// TODO Hard-coded atm
 	const specificProductType =
 		getSpecificProductTypeFromProductKey('Digital Pack');
 	const mainPlan = {
@@ -37,28 +34,24 @@ export const SecondaryAccountProductCard = ({
 	const overrideBenefitsText = secondaryUserBenefitsCopy();
 
 	return (
-		<>
-			{maapiResponse.primaryUsers.map((primaryUser, index) => (
-				<Card key={index}>
-					<ProductCardHeader
-						cardConfig={cardConfig}
-						productTitle={productTitle}
-					/>
+		<Card>
+			<ProductCardHeader
+				cardConfig={cardConfig}
+				productTitle={productTitle}
+			/>
 
-					<BenefitsCopyAndToggle
-						cardConfig={cardConfig}
-						specificProductType={specificProductType}
-						mainPlan={mainPlan}
-						overrideBenefitsText={overrideBenefitsText}
-					/>
+			<BenefitsCopyAndToggle
+				cardConfig={cardConfig}
+				specificProductType={specificProductType}
+				mainPlan={mainPlan}
+				overrideBenefitsText={overrideBenefitsText}
+			/>
 
-					<SecondaryUserSubscriptionDetails
-						subscriptionName={productTitle}
-						primarySubscriber={primaryUser}
-						navigate={navigate}
-					/>
-				</Card>
-			))}
-		</>
+			<SecondaryUserSubscriptionDetails
+				subscriptionName={productTitle}
+				primarySubscriber={primaryUser}
+				navigate={navigate}
+			/>
+		</Card>
 	);
 };

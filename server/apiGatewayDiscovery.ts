@@ -170,24 +170,15 @@ const getApiGateway = (
 					: normalUserApiStage;
 				if (!apiKey) {
 					log.error(`Missing API Key for ${stage} ${apiName}`);
-					res.status(500).send(
-						`Missing API Key for ${stage} ${apiName}`,
-					);
+					res.status(500).send();
 				} else if (!host) {
 					log.error(`Missing host for ${stage} ${apiName}`);
-					res.status(500).send(
-						`Missing host for ${stage} ${apiName}`,
-					);
+					res.status(500).send();
 				} else if (!res.locals.identity?.userId) {
 					log.error(`Missing identity ID on the request object`);
-					res.status(500).send(
-						`Missing identity ID on the request object`,
-					);
+					res.status(500).send();
 				} else {
 					const shouldForwardQueryArgs = true;
-					console.log(
-						`Forwarding request to ${stage} ${apiName} for ${req.originalUrl} with logging code ${loggingCode}`,
-					);
 					return proxyApiHandler(
 						host,
 						{
@@ -272,30 +263,33 @@ const multipleAccountAPIGateway = getApiGateway(
 	'multiple-account-api',
 );
 export const multipleAccountAPI =
-	(
-		path: string,
-		loggingCode: string,
-		urlParamNamesToReplace: string[] = [],
-		headers: Headers = {},
-		shouldNotLogBody?: boolean,
-	) =>
-	async (req: express.Request, res: express.Response) => {
-		const accessToken = req.signedCookies[OAuthAccessTokenCookieName] as
-			| string
-			| undefined;
-		return multipleAccountAPIGateway.authorisedExpressCallback(
-			path,
-			loggingCode,
-			urlParamNamesToReplace,
-			{
-				...headers,
-				...(accessToken
-					? { Authorization: `Bearer ${accessToken}` }
-					: {}),
-			},
-			shouldNotLogBody,
-		)(req, res);
-	};
+	// multipleAccountAPIGateway.authorisedExpressCallback;
+
+
+		(
+			path: string,
+			loggingCode: string,
+			urlParamNamesToReplace: string[] = [],
+			headers: Headers = {},
+			shouldNotLogBody?: boolean,
+		) =>
+		async (req: express.Request, res: express.Response) => {
+			const accessToken = req.signedCookies[
+				OAuthAccessTokenCookieName
+			] as string | undefined;
+			return multipleAccountAPIGateway.authorisedExpressCallback(
+				path,
+				loggingCode,
+				urlParamNamesToReplace,
+				{
+					...headers,
+					...(accessToken
+						? { Authorization: `Bearer ${accessToken}` }
+						: {}),
+				},
+				shouldNotLogBody,
+			)(req, res);
+		};
 
 // not sure why this doesn't follow the pattern above
 export const getContactUsAPIHostAndKey = async () => {
