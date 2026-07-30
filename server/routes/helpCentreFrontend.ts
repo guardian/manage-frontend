@@ -1,7 +1,11 @@
 import { Router } from 'express';
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { DEFAULT_PAGE_TITLE } from '../../shared/helpCentreConfig';
 import { conf } from '../config';
+import {
+	NEW_HELP_CENTRE_HOME,
+	shouldRetainHelpCentrePath,
+} from '../helpCentreRedirect';
 import { htmlAndScriptHashes } from '../html';
 import { withIdentity } from '../middleware/identityMiddleware';
 import { createCsp } from '../server';
@@ -14,6 +18,14 @@ import {
 const router = Router();
 
 router.use(withIdentity());
+
+router.use((req: Request, res: Response, next: NextFunction) => {
+	if (shouldRetainHelpCentrePath(req.path)) {
+		return next();
+	}
+
+	return res.redirect(301, NEW_HELP_CENTRE_HOME);
+});
 
 router.use(async (_: Request, res: Response) => {
 	const title = DEFAULT_PAGE_TITLE;
