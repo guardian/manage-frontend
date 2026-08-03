@@ -50,7 +50,7 @@ describe('shouldRetainHelpCentrePath', () => {
 	});
 });
 
-describe('redirectForPath redirects to custom urls where specified', () => {
+test('redirectForPath redirects to custom urls where specified', () => {
 	expect(redirectForPath('/asdf')).toBe(
 		'https://help.code.dev-theguardian.com/',
 	);
