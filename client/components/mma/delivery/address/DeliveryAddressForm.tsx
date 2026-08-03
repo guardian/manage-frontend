@@ -103,8 +103,8 @@ const Form = (props: FormProps) => {
 			const specificProductType = getSpecificProductTypeFromProductKey(
 				productDetail.mmaProductKey,
 			);
-			const friendlyProductName = specificProductType.friendlyName;
-			return `${friendlyProductName}`;
+			const productType = specificProductType.productType;
+			return `${productType}`;
 		});
 
 	const handleFormSubmit = (e: FormEvent) => {

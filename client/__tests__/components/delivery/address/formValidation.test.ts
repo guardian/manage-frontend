@@ -21,9 +21,13 @@ describe('update delivery address form validation', () => {
 		postcode: '17033',
 		country: 'US',
 	};
-	const guardianWeeklySubscription = ['Guardian Weekly subscription'];
-	const homeDeliverySubscription = ['newspaper home delivery subscription'];
-	const voucherSubscription = ['newspaper voucher subscription'];
+	const guardianWeeklySubscription = ['guardianweekly'];
+	const homeDeliverySubscription = [
+		'homedeliveryplusdigital',
+		'homedelivery',
+	];
+	const voucherSubscription = ['voucher', 'voucherplusdigital'];
+	const homeAndVoucherSubscription = ['homedeliveryplusdigital', 'voucher'];
 
 	test(`isFormValid returns 'isValid' true given valid UK address. Subscriptions: ${guardianWeeklySubscription}`, () => {
 		expect(
@@ -56,6 +60,12 @@ describe('update delivery address form validation', () => {
 		).toBeFalsy();
 	});
 
+	test(`isFormValid returns 'isValid' false given valid outside UK address with home delivery subscription. Subscriptions: ${homeDeliverySubscription}`, () => {
+		expect(
+			isFormValid(outsideUKAddress, homeDeliverySubscription).isValid,
+		).toBeFalsy();
+	});
+
 	test(`isFormValid returns 'isValid' true given valid UK address with voucher subscription. Subscriptions: ${voucherSubscription}`, () => {
 		expect(
 			isFormValid(outsideLondonAddress, voucherSubscription).isValid,
@@ -65,6 +75,13 @@ describe('update delivery address form validation', () => {
 	test(`isFormValid returns 'isValid' false given valid outside UK address with voucher subscription. Subscriptions: ${voucherSubscription}`, () => {
 		expect(
 			isFormValid(outsideUKAddress, voucherSubscription).isValid,
+		).toBeFalsy();
+	});
+
+	test(`isFormValid returns 'isValid' false given valid UK address with voucher AND home subscriptions. Subscriptions: ${homeAndVoucherSubscription}`, () => {
+		expect(
+			isFormValid(outsideLondonAddress, homeAndVoucherSubscription)
+				.isValid,
 		).toBeFalsy();
 	});
 });
