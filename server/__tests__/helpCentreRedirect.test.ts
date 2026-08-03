@@ -1,5 +1,6 @@
 import {
 	helpCentreHomeForStage,
+	redirectForPath,
 	shouldRetainHelpCentrePath,
 } from '../helpCentreRedirect';
 
@@ -47,4 +48,13 @@ describe('shouldRetainHelpCentrePath', () => {
 	])('does not retain %s', (path) => {
 		expect(shouldRetainHelpCentrePath(path)).toBe(false);
 	});
+});
+
+describe('redirectForPath redirects to custom urls where specified', () => {
+	expect(redirectForPath('/asdf')).toBe(
+		'https://help.code.dev-theguardian.com/',
+	);
+	expect(redirectForPath('/article/i-need-to-pause-my-delivery')).toBe(
+		'https://help.code.dev-theguardian.com/article/how-do-i-pause-my-delivery-for-a-holiday',
+	);
 });
