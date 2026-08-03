@@ -7,7 +7,7 @@ import {
 describe('helpCentreHomeForStage', () => {
 	test('returns the prod help centre for PROD', () => {
 		expect(helpCentreHomeForStage('PROD')).toBe(
-			'https://help.theguardian.com/',
+			'https://help.theguardian.com',
 		);
 	});
 
@@ -15,7 +15,7 @@ describe('helpCentreHomeForStage', () => {
 		'returns the code help centre for non-PROD stage %s',
 		(stage) => {
 			expect(helpCentreHomeForStage(stage)).toBe(
-				'https://help.code.dev-theguardian.com/',
+				'https://help.code.dev-theguardian.com',
 			);
 		},
 	);
