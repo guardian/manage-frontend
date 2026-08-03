@@ -1,4 +1,24 @@
-import { shouldRetainHelpCentrePath } from '../helpCentreRedirect';
+import {
+	helpCentreHomeForStage,
+	shouldRetainHelpCentrePath,
+} from '../helpCentreRedirect';
+
+describe('helpCentreHomeForStage', () => {
+	test('returns the prod help centre for PROD', () => {
+		expect(helpCentreHomeForStage('PROD')).toBe(
+			'https://help.theguardian.com/',
+		);
+	});
+
+	test.each(['CODE', 'DEV', 'code', ''])(
+		'returns the code help centre for non-PROD stage %s',
+		(stage) => {
+			expect(helpCentreHomeForStage(stage)).toBe(
+				'https://help.code.dev-theguardian.com/',
+			);
+		},
+	);
+});
 
 describe('shouldRetainHelpCentrePath', () => {
 	test.each([

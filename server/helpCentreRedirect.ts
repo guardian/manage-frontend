@@ -1,4 +1,11 @@
-export const NEW_HELP_CENTRE_HOME = 'https://help.theguardian.com/';
+import { conf } from './config';
+
+export const helpCentreHomeForStage = (stage: string): string =>
+	stage === 'PROD'
+		? 'https://help.theguardian.com/'
+		: 'https://help.code.dev-theguardian.com/';
+
+export const NEW_HELP_CENTRE_HOME = helpCentreHomeForStage(conf.STAGE);
 
 /**
  * Paths under the `/help-centre` Express mount that should continue to be
