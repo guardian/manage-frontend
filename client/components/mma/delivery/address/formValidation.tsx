@@ -19,15 +19,6 @@ export const isFormValid = (
 	formData: DeliveryAddress,
 	subscriptionsNames: string[],
 ): FormValidationResponse => {
-	const addressLine1 = {
-		isValid: formData.addressLine1?.length ?? 0 > 0,
-		message: 'Please enter an address',
-	};
-	const town = {
-		isValid: !!(formData.town && formData.town.length > 0),
-		message: 'Please enter a town/city',
-	};
-
 	const postcodeEnteredCheck =
 		(formData.postcode?.length ?? 0 > 0) &&
 		(formData.postcode?.length ?? 0 < 20);
@@ -37,9 +28,36 @@ export const isFormValid = (
 		!isPostcodeOptional('GB') &&
 		isPostcodeInM25(formData.postcode || '');
 
+	const userHasHomeDeliverySubscription =
+		subscriptionsNames.includes(PRODUCT_TYPES.homedelivery.productType) ||
+		subscriptionsNames.includes(
+			PRODUCT_TYPES.homedeliveryplusdigital.productType,
+		);
+
+	const userHasVoucherSubscription =
+		subscriptionsNames.includes(PRODUCT_TYPES.voucher.productType) ||
+		subscriptionsNames.includes(
+			PRODUCT_TYPES.voucherplusdigital.productType,
+		);
+
+	const mostRestrictiveSubscription = userHasHomeDeliverySubscription
+		? 'HOME'
+		: userHasVoucherSubscription
+		? 'VOUCHER'
+		: 'NONE';
+
 	const enteredPostcodeIsInValidArea =
-		!subscriptionsNames.includes(PRODUCT_TYPES.homedelivery.friendlyName) ||
-		enteredPostcodeIsInM25;
+		mostRestrictiveSubscription !== 'HOME' || enteredPostcodeIsInM25;
+
+	const addressLine1 = {
+		isValid: formData.addressLine1?.length ?? 0 > 0,
+		message: 'Please enter an address',
+	};
+
+	const town = {
+		isValid: !!(formData.town && formData.town.length > 0),
+		message: 'Please enter a town/city',
+	};
 
 	const postcode = {
 		isValid: postcodeEnteredCheck && enteredPostcodeIsInValidArea,
@@ -49,17 +67,17 @@ export const isFormValid = (
 				: 'Please enter a postcode',
 	};
 
-	const userHasVoucherSubscription = subscriptionsNames.includes(
-		PRODUCT_TYPES.voucher.friendlyName,
-	);
-
 	const country = {
-		isValid: userHasVoucherSubscription
-			? formData.country === 'GB' || formData.country === 'United Kingdom'
-			: true,
+		isValid:
+			userHasHomeDeliverySubscription || userHasVoucherSubscription
+				? formData.country === 'GB' ||
+				  formData.country === 'United Kingdom'
+				: true, // Possible Guardian Weekly subscription or a plan that doesn't require an address.
 		message:
-			userHasVoucherSubscription && (formData.country?.length ?? 0) > 0
-				? `Voucher subscriptions must be delivered in the UK. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
+			(mostRestrictiveSubscription === 'HOME' ||
+				mostRestrictiveSubscription === 'VOUCHER') &&
+			(formData.country?.length ?? 0) > 0
+				? `This subscription must be delivered in the UK. Please contact us to discuss further: ${ukPhoneNumberWithoutPrefix}`
 				: 'Please select a country',
 	};
 

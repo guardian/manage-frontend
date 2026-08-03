@@ -185,8 +185,8 @@ export const DeliveryAddressStep = (props: DeliveryAddressStepProps) => {
 					getSpecificProductTypeFromProductKey(
 						productDetail.mmaProductKey,
 					);
-				const friendlyProductName = specificProductType.friendlyName;
-				return `${friendlyProductName}`;
+				const productType = specificProductType.productType;
+				return `${productType}`;
 			});
 
 		const hasNationalDelivery = Object.values(
