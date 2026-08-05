@@ -1,5 +1,11 @@
 import { conf } from '../../server/config';
-import { helpCentreHomeForStage } from '../../server/helpCentreRedirect';
+import { helpCentreHomeForDomain } from '../../shared/helpCentreConfig';
 
-export const getHelpCentreHomeUrl = (): string =>
-	helpCentreHomeForStage(conf.STAGE);
+export const getHelpCentreHomeUrl = (): string => {
+	const domain =
+		typeof window !== 'undefined' && window.guardian
+			? window.guardian.domain
+			: conf.DOMAIN;
+
+	return helpCentreHomeForDomain(domain);
+};
