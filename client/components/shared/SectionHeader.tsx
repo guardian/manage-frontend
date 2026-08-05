@@ -10,8 +10,8 @@ import {
 } from '@guardian/source/foundations';
 import Color from 'color';
 import type { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
 import { gridBase, gridItemPlacement } from '../../styles/grid';
+import { getHelpCentreHomeUrl } from '../../utilities/helpCentreHome';
 
 interface SectionHeaderProps {
 	title: ReactNode;
@@ -107,7 +107,7 @@ export const SectionHeader = (props: SectionHeaderProps) => {
 		<header css={headerCss}>
 			<div css={containerCss}>
 				<div css={divCss}>
-					<Link to="/help-centre" css={linkCss}>
+					<a href={getHelpCentreHomeUrl()} css={linkCss}>
 						{isLandingPage ? (
 							<span css={spanCss}>Help Centre</span>
 						) : (
@@ -116,7 +116,7 @@ export const SectionHeader = (props: SectionHeaderProps) => {
 								Back to Help Centre
 							</span>
 						)}
-					</Link>
+					</a>
 				</div>
 				<h1 css={h1Css(props.pageHasNav)}>{props.title}</h1>
 			</div>
