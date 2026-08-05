@@ -32,7 +32,7 @@
   "prettier": "@guardian/prettier",
   "resolutions": {
     "aws-cdk": "2.1007.0",
-    "aws-cdk-lib": "2.246.0",
+    "aws-cdk-lib": "^2.246.0",
     "constructs": "10.4.3",
     "@guardian/cdk/**/aws-cdk-lib": "2.246.0",
     "@guardian/cdk/**/constructs": "10.4.3",
