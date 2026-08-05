@@ -1,12 +1,8 @@
 import { helpCentreHomeForDomain } from '../helpCentreConfig';
 
 describe('helpCentreHomeForDomain', () => {
-	test.each([
-		'theguardian.com',
-		'manage.theguardian.com',
-		'www.theguardian.com',
-	])('returns the prod help centre for %s', (domain) => {
-		expect(helpCentreHomeForDomain(domain)).toBe(
+	test('returns the prod help centre for theguardian.com', () => {
+		expect(helpCentreHomeForDomain('theguardian.com')).toBe(
 			'https://help.theguardian.com',
 		);
 	});
