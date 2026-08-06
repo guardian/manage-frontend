@@ -37,6 +37,7 @@ const articleRedirects: Record<string, string> = {
 	'im-a-print-subscriber-where-can-i-pick-up-my-papers': 'how-do-i-redeem-my-newspaper-vouchers',
 	'guardian-editions-app': 'how-do-i-access-and-use-the-guardian-editions-app',
 	'submit-an-idea-for-a-story': 'how-do-i-contact-the-newsroom-or-pitch-a-story',
+	'why-am-i-still-seeing-adsbanners': 'why-am-i-still-seeing-ads-or-banners',
 };
 
 const customRedirects = Object.fromEntries(
