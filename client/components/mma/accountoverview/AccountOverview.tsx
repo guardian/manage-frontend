@@ -58,7 +58,7 @@ import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
-import { SecondaryAccountProductCard } from './ProductCardSecondaryUser';
+import { SecondaryAccountProductCard } from './SecondaryAccountCard';
 import { SingleContributionCard } from './SingleContributionCard';
 
 export const isDigitalPlusUpgradeBannerFlagEnabled = (): boolean => {
@@ -452,11 +452,13 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			{secondaryAccountDetails && (
 				<Fragment>
 					<h2 css={subHeadingCss}>Shared with you</h2>
-					{secondaryAccountDetails.primaryUsers.map((primaryUser) => (
-						<SecondaryAccountProductCard
-							primaryUser={primaryUser}
-						/>
-					))}
+					{secondaryAccountDetails.subscriptions.map(
+						(subscription) => (
+							<SecondaryAccountProductCard
+								subscription={subscription}
+							/>
+						),
+					)}
 				</Fragment>
 			)}
 			{uniqueProductCategories.map((category) => {

@@ -6,7 +6,7 @@ import {
 	SvgInfoRound,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
-import type { NavigateFunction } from 'react-router-dom';
+import { type NavigateFunction } from 'react-router-dom';
 import { wideButtonLayoutCss } from '@/client/styles/ButtonStyles';
 import type { Event } from '@/client/utilities/analytics';
 import type { FetchUpgradePreviewParams } from '@/client/utilities/hooks/useUpgradePreview';
@@ -172,7 +172,7 @@ export const SecondaryUserSubscriptionDetails = ({
 						priority="tertiary"
 						cssOverrides={sharedMembershipLeaveButtonCss}
 						onClick={() => {
-							// TODO Tracking
+							// TODO Tracking?
 							navigate(`/digital-shared`, {
 								state: { subscriptionName, primarySubscriber },
 							});
