@@ -125,14 +125,14 @@ export interface ProductDetail extends WithSubscription {
 }
 
 export interface MultipleAccountPrimaryUser {
+	subscriptionName: string;
 	firstName: string;
 	lastName: string;
 	workEmail: string;
 }
 
-// TODO this is still to be finalised
 export interface MultipleAccountApiResponse {
-	primaryUsers: MultipleAccountPrimaryUser[];
+	subscriptions: MultipleAccountPrimaryUser[];
 }
 
 export interface CancelledProductDetail {

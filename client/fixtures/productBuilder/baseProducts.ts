@@ -266,8 +266,9 @@ export function baseDigitalPack(): ProductDetail {
 
 export function baseSecondaryUser(): MultipleAccountApiResponse {
 	return {
-		primaryUsers: [
+		subscriptions: [
 			{
+				subscriptionName: 'A-S01234567',
 				firstName: 'John',
 				lastName: 'Doe',
 				workEmail: 'j.doe@example.com',

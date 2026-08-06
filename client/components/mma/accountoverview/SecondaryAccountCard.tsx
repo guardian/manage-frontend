@@ -12,9 +12,9 @@ import {
 } from './ProductCardSections';
 
 export const SecondaryAccountProductCard = ({
-	primaryUser,
+	subscription,
 }: {
-	primaryUser: MultipleAccountPrimaryUser;
+	subscription: MultipleAccountPrimaryUser;
 }) => {
 	const specificProductType =
 		getSpecificProductTypeFromProductKey('Digital Pack');
@@ -46,7 +46,7 @@ export const SecondaryAccountProductCard = ({
 
 			<SecondaryUserSubscriptionDetails
 				subscriptionName={productTitle}
-				primarySubscriber={primaryUser}
+				primarySubscriber={subscription}
 			/>
 		</Card>
 	);
