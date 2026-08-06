@@ -14,7 +14,11 @@ import type {
 } from '../../shared/productTypes';
 import { nonServiceableCountries } from '../components/mma/shared/NonServiceableCountries';
 import { baseSupporterPlus } from '../fixtures/productBuilder/baseProducts';
-import { fetchWithDefaultParameters } from './fetch';
+import {
+	addCSRFToken,
+	deleteRequest,
+	fetchWithDefaultParameters,
+} from './fetch';
 
 export const shouldHaveHolidayStopsFlow = (
 	productType: ProductType,
@@ -111,6 +115,15 @@ export const allSingleProductsDetailFetcher = () =>
 
 export const secondaryAccountFetcher = () =>
 	fetchWithDefaultParameters('/api/secondary-user/me');
+
+export const leaveSharedSubscriptionFetch = (
+	subscriptionName: string,
+	secondaryIdentityId: string,
+) =>
+	fetchWithDefaultParameters(
+		`/api/subscriptions/${subscriptionName}/secondary-user/${secondaryIdentityId}`,
+		addCSRFToken(deleteRequest()),
+	);
 
 export const hasCancellationFlow = (
 	productType: ProductType,

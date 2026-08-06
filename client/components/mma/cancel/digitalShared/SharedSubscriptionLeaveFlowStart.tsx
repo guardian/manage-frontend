@@ -3,12 +3,55 @@ import {
 	Stack,
 	SvgArrowLeftStraight,
 } from '@guardian/source/react-components';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
+import { leaveSharedSubscriptionFetch } from '@/client/utilities/productUtils';
+import type { DigitalSharedRouterState } from '../../accountoverview/manageProducts/DigitalShared';
 import { Heading } from '../../shared/Heading';
 import { bodyCss, ctaContainerCss, titleCss } from '../cancellationConstants';
 
 export const LeaveSharedSubscription = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const routerState = location.state as DigitalSharedRouterState | null;
+
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [loadingFailed, setLoadingFailed] = useState(false);
+
+	if (!routerState?.primarySubscriber) {
+		return <Navigate to="/" />;
+	}
+
+	const { primarySubscriber } = routerState;
+
+	const leaveSharedSubscription = async () => {
+		// TODO tracking
+		const secondaryIdentityId =
+			window.guardian?.identityDetails?.userId ?? '';
+		setIsSubmitting(true);
+		try {
+			const response = await leaveSharedSubscriptionFetch(
+				primarySubscriber.subscriptionName,
+				secondaryIdentityId,
+			);
+			if (!response.ok) {
+				throw new Error(
+					`Leave shared subscription request failed: ${response.status}`,
+				);
+			}
+			navigate('/digital-shared/leave/confirmation');
+		} catch {
+			setIsSubmitting(false);
+			setLoadingFailed(true);
+		}
+	};
+
+	if (loadingFailed) {
+		return (
+			<GenericErrorScreen loggingMessage="Failed to leave shared (secondary user) subscription" />
+		);
+	}
 
 	return (
 		<Stack space={3}>
@@ -42,11 +85,8 @@ export const LeaveSharedSubscription = () => {
 				</Button>
 				<Button
 					priority="primary"
-					onClick={() => {
-						// TODO tracking
-						// TODO API call to leave shared subscription
-						navigate('/digital-shared/leave/confirmation');
-					}}
+					isLoading={isSubmitting}
+					onClick={leaveSharedSubscription}
 				>
 					Yes, leave subscription
 				</Button>

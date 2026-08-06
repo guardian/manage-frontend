@@ -110,6 +110,16 @@ router.get(
 	multipleAccountAPI('secondary-user/me', 'MULTIPLE_ACCOUNTS', []),
 );
 
+router.delete(
+	'/subscriptions/:subscriptionName/secondary-user/:secondaryIdentityId',
+	withOktaServerSideValidation,
+	multipleAccountAPI(
+		'/subscriptions/:subscriptionName/secondary-user/:secondaryIdentityId',
+		'MULTIPLE_ACCOUNTS',
+		['subscriptionName', 'secondaryIdentityId'],
+	),
+);
+
 router.get(
 	'/cancellation-date/:subscriptionName',
 	membersDataApiHandler(
