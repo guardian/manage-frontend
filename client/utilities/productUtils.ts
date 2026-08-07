@@ -121,10 +121,10 @@ export const leaveSharedSubscriptionFetch = (
 	secondaryIdentityId: string,
 ) => {
 	console.log(
-		`[leaveSharedSubscriptionFetch] /api/subscriptions/${subscriptionName}/secondary-user/${secondaryIdentityId}`,
+		`[leaveSharedSubscriptionFetch] /api/subscriptions/${subscriptionName}/secondary-users/${secondaryIdentityId}`,
 	);
 	return fetchWithDefaultParameters(
-		`/api/subscriptions/${subscriptionName}/secondary-user/${secondaryIdentityId}`,
+		`/api/subscriptions/${subscriptionName}/secondary-users/${secondaryIdentityId}`,
 		addCSRFToken(deleteRequest()),
 	);
 };
