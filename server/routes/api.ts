@@ -111,10 +111,9 @@ router.get(
 );
 
 router.delete(
-	'/subscriptions/:subscriptionName/secondary-user/:secondaryIdentityId',
-	withOktaServerSideValidation,
+	'/subscriptions/:subscriptionName/secondary-users/:secondaryIdentityId',
 	multipleAccountAPI(
-		'/subscriptions/:subscriptionName/secondary-user/:secondaryIdentityId',
+		'/subscriptions/:subscriptionName/secondary-users/:secondaryIdentityId',
 		'MULTIPLE_ACCOUNTS',
 		['subscriptionName', 'secondaryIdentityId'],
 	),
