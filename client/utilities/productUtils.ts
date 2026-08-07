@@ -119,11 +119,15 @@ export const secondaryAccountFetcher = () =>
 export const leaveSharedSubscriptionFetch = (
 	subscriptionName: string,
 	secondaryIdentityId: string,
-) =>
-	fetchWithDefaultParameters(
+) => {
+	console.log(
+		`[leaveSharedSubscriptionFetch] /api/subscriptions/${subscriptionName}/secondary-user/${secondaryIdentityId}`,
+	);
+	return fetchWithDefaultParameters(
 		`/api/subscriptions/${subscriptionName}/secondary-user/${secondaryIdentityId}`,
 		addCSRFToken(deleteRequest()),
 	);
+};
 
 export const hasCancellationFlow = (
 	productType: ProductType,

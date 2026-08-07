@@ -40,6 +40,9 @@ export const LeaveSharedSubscription = () => {
 					`Leave shared subscription request failed: ${response.status}`,
 				);
 			}
+			console.log(
+				`[leaveSharedSubscription] Successfully left shared subscription: ${primarySubscriber.subscriptionName}`,
+			);
 			navigate('/digital-shared/leave/confirmation');
 		} catch {
 			setIsSubmitting(false);
