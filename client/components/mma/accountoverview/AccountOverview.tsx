@@ -449,18 +449,19 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				/>
 			)}
 			{possiblyAffectedByCanadaPostStrike && <CanadaStrike />}
-			{secondaryAccountDetails && (
-				<Fragment>
-					<h2 css={subHeadingCss}>Shared with you</h2>
-					{secondaryAccountDetails.subscriptions.map(
-						(subscription) => (
-							<SecondaryAccountProductCard
-								subscription={subscription}
-							/>
-						),
-					)}
-				</Fragment>
-			)}
+			{secondaryAccountDetails?.subscriptions &&
+				secondaryAccountDetails.subscriptions.length > 0 && (
+					<Fragment>
+						<h2 css={subHeadingCss}>Shared with you</h2>
+						{secondaryAccountDetails.subscriptions.map(
+							(subscription) => (
+								<SecondaryAccountProductCard
+									subscription={subscription}
+								/>
+							),
+						)}
+					</Fragment>
+				)}
 			{uniqueProductCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(
