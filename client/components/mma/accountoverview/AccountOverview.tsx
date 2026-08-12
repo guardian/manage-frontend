@@ -267,7 +267,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		allActiveProductDetails.length === 0 &&
 		allCancelledProductDetails.length === 0 &&
 		appSubscriptions.length === 0 &&
-		singleContributions.length === 0
+		singleContributions.length === 0 &&
+		secondaryAccountDetails?.subscriptions.length === 0
 	) {
 		return (
 			<EmptyAccountOverview
