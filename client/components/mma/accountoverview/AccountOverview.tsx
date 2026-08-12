@@ -361,6 +361,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			<PersonalisedHeader
 				mdapiResponse={mdapiResponse}
 				mpapiResponse={mpapiResponse}
+				maapiResponse={maapiResponse}
 			/>
 
 			{braze && banner && (
