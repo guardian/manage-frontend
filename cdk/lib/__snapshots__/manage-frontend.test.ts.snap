@@ -1494,6 +1494,24 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
 }
 ",
         "DashboardName": "manage-frontend",
+        "Tags": [
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
       },
       "Type": "AWS::CloudWatch::Dashboard",
     },

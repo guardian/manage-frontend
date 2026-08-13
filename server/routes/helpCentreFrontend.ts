@@ -1,9 +1,9 @@
-import { Router } from 'express';
 import type { NextFunction, Request, Response } from 'express';
+import { Router } from 'express';
 import { DEFAULT_PAGE_TITLE } from '../../shared/helpCentreConfig';
 import { conf } from '../config';
 import {
-	NEW_HELP_CENTRE_HOME,
+	redirectForPath,
 	shouldRetainHelpCentrePath,
 } from '../helpCentreRedirect';
 import { htmlAndScriptHashes } from '../html';
@@ -24,7 +24,7 @@ router.use((req: Request, res: Response, next: NextFunction) => {
 		return next();
 	}
 
-	return res.redirect(301, NEW_HELP_CENTRE_HOME);
+	return res.redirect(301, redirectForPath(req.path));
 });
 
 router.use(async (_: Request, res: Response) => {
