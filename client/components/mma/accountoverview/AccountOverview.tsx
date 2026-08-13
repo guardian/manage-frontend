@@ -460,6 +460,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 							(subscription) => (
 								<SecondaryAccountProductCard
 									subscription={subscription}
+									key={subscription.subscriptionName}
 								/>
 							),
 						)}
