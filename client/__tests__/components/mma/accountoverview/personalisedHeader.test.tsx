@@ -14,6 +14,7 @@ describe('PersonalisedHeader', () => {
 				<PersonalisedHeader
 					mdapiResponse={mdapiResponse}
 					mpapiResponse={null}
+					maapiResponse={null}
 				/>,
 			),
 		).not.toThrow();
@@ -40,6 +41,7 @@ describe('PersonalisedHeader', () => {
 			<PersonalisedHeader
 				mdapiResponse={toMembersDataApiResponse(product)}
 				mpapiResponse={mpapiResponse}
+				maapiResponse={null}
 			/>,
 		);
 

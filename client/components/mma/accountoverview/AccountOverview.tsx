@@ -58,6 +58,7 @@ import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
+import { SecondaryAccountProductCard } from './SecondaryAccountCard';
 import { SingleContributionCard } from './SingleContributionCard';
 
 export const isDigitalPlusUpgradeBannerFlagEnabled = (): boolean => {
@@ -161,6 +162,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		mpapiResponse,
 		singleContributionsResponse,
 		userSubscriptionsResponse,
+		maapiResponse,
 	} = useAccountDataLoader();
 
 	useEffect(() => {
@@ -210,6 +212,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const allActiveProductDetails = mdapiResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
+
+	const secondaryAccountDetails = maapiResponse || null;
 
 	const activeProductsNotPendingCancellation = allActiveProductDetails.filter(
 		(product: ProductDetail) => !product.subscription.cancelledAt,
@@ -263,7 +267,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		allActiveProductDetails.length === 0 &&
 		allCancelledProductDetails.length === 0 &&
 		appSubscriptions.length === 0 &&
-		singleContributions.length === 0
+		singleContributions.length === 0 &&
+		(!secondaryAccountDetails ||
+			secondaryAccountDetails.subscriptions.length === 0)
 	) {
 		return (
 			<EmptyAccountOverview
@@ -356,6 +362,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			<PersonalisedHeader
 				mdapiResponse={mdapiResponse}
 				mpapiResponse={mpapiResponse}
+				maapiResponse={maapiResponse}
 			/>
 
 			{braze && banner && (
@@ -445,6 +452,20 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				/>
 			)}
 			{possiblyAffectedByCanadaPostStrike && <CanadaStrike />}
+			{secondaryAccountDetails?.subscriptions &&
+				secondaryAccountDetails.subscriptions.length > 0 && (
+					<Fragment key="secondary-accounts">
+						<h2 css={subHeadingCss}>Shared with you</h2>
+						{secondaryAccountDetails.subscriptions.map(
+							(subscription) => (
+								<SecondaryAccountProductCard
+									subscription={subscription}
+									key={subscription.subscriptionName}
+								/>
+							),
+						)}
+					</Fragment>
+				)}
 			{uniqueProductCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(

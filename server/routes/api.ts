@@ -8,6 +8,7 @@ import {
 	discountAPI,
 	holidayStopAPI,
 	invoicingAPI,
+	multipleAccountAPI,
 	productMoveAPI,
 	productSwitchAPI,
 	updateSupporterPlusAmountAPI,
@@ -102,6 +103,11 @@ router.get(
 router.get(
 	'/me/user-attributes',
 	membersDataApiHandler('user-attributes/me', 'MDA_DETAIL', []),
+);
+
+router.get(
+	'/secondary-user/me',
+	multipleAccountAPI('secondary-user/me', 'MULTIPLE_ACCOUNTS', []),
 );
 
 router.get(
