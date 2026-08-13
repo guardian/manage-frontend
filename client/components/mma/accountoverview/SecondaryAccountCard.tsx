@@ -24,9 +24,6 @@ export const SecondaryAccountProductCard = ({
 		name: specificProductType.friendlyName,
 		shouldBeVisible: true,
 	};
-	if (!mainPlan) {
-		throw new Error('mainPlan does not exist in SecondaryAccountCard');
-	}
 	const productTitle =
 		specificProductType.productTitle(mainPlan) + ' shared subscription';
 	const cardConfig = getSecondaryUserBenefitsCopy;

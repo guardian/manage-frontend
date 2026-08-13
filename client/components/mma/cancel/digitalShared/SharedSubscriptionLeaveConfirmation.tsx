@@ -1,15 +1,11 @@
 import { Button, Stack } from '@guardian/source/react-components';
 import { useNavigate } from 'react-router-dom';
-import { DATE_FNS_LONG_OUTPUT_FORMAT, dateString } from '@/shared/dates';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { Heading } from '../../shared/Heading';
 import { bodyCss, ctaContainerCss, titleCss } from '../cancellationConstants';
 
 export const LeaveSharedSubConfirmation = () => {
 	const navigate = useNavigate();
-
-	// TODO: This is not needed. Access will end immediately.
-	const accessEndDate = dateString(new Date(), DATE_FNS_LONG_OUTPUT_FORMAT);
 
 	return (
 		<Stack space={3}>
@@ -18,9 +14,8 @@ export const LeaveSharedSubConfirmation = () => {
 			</Heading>
 
 			<p css={bodyCss}>
-				You can continue to enjoy Digital plus benefits until{' '}
-				{accessEndDate}. After this date, you’ll no longer have access
-				to Digital plus benefits through this shared subscription.
+				You've left this shared subscription, so you no longer have
+				access to Digital Plus benefits.
 			</p>
 
 			<p css={bodyCss}>

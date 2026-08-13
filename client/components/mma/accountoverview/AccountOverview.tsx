@@ -268,7 +268,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		allCancelledProductDetails.length === 0 &&
 		appSubscriptions.length === 0 &&
 		singleContributions.length === 0 &&
-		secondaryAccountDetails?.subscriptions.length === 0
+		(!secondaryAccountDetails ||
+			secondaryAccountDetails.subscriptions.length === 0)
 	) {
 		return (
 			<EmptyAccountOverview
@@ -453,7 +454,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			{possiblyAffectedByCanadaPostStrike && <CanadaStrike />}
 			{secondaryAccountDetails?.subscriptions &&
 				secondaryAccountDetails.subscriptions.length > 0 && (
-					<Fragment>
+					<Fragment key="secondary-accounts">
 						<h2 css={subHeadingCss}>Shared with you</h2>
 						{secondaryAccountDetails.subscriptions.map(
 							(subscription) => (
