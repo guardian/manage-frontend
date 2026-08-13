@@ -168,7 +168,7 @@ export const SecondaryUserSubscriptionDetails = ({
 						size="small"
 						priority="tertiary"
 						cssOverrides={sharedMembershipLeaveButtonCss}
-						onClick={() => undefined}
+						disabled={true}
 					>
 						Manage support
 					</Button>
