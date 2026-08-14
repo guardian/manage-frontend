@@ -14,6 +14,7 @@ import {
 } from './awsIntegration';
 import { conf } from './config';
 import { log } from './log';
+import { OAuthAccessTokenCookieName } from './oauthConfig';
 
 type ApiName =
 	| 'cancellation-sf-cases-api'
@@ -25,8 +26,8 @@ type ApiName =
 	| 'discount-api'
 	| 'product-switch-api'
 	| 'update-supporter-plus-amount'
-	| 'multiple-account-api'
-	| 'user-subscriptions-api';
+	| 'user-subscriptions-api'
+	| 'multiple-account-api';
 
 const isProd = conf.STAGE.toUpperCase() === 'PROD';
 const normalUserApiStage = isProd ? 'PROD' : 'CODE';
@@ -262,7 +263,30 @@ const multipleAccountAPIGateway = getApiGateway(
 	'multiple-account-api',
 );
 export const multipleAccountAPI =
-	multipleAccountAPIGateway.authorisedExpressCallback;
+	(
+		path: string,
+		loggingCode: string,
+		urlParamNamesToReplace: string[] = [],
+		headers: Headers = {},
+		shouldNotLogBody?: boolean,
+	) =>
+	async (req: express.Request, res: express.Response) => {
+		const accessToken = req.signedCookies[OAuthAccessTokenCookieName] as
+			| string
+			| undefined;
+		return multipleAccountAPIGateway.authorisedExpressCallback(
+			path,
+			loggingCode,
+			urlParamNamesToReplace,
+			{
+				...headers,
+				...(accessToken
+					? { Authorization: `Bearer ${accessToken}` }
+					: {}),
+			},
+			shouldNotLogBody,
+		)(req, res);
+	};
 
 // not sure why this doesn't follow the pattern above
 export const getContactUsAPIHostAndKey = async () => {

@@ -106,6 +106,11 @@ router.get(
 );
 
 router.get(
+	'/secondary-user/me',
+	multipleAccountAPI('secondary-user/me', 'MULTIPLE_ACCOUNTS', []),
+);
+
+router.get(
 	'/cancellation-date/:subscriptionName',
 	membersDataApiHandler(
 		'user-attributes/me/cancellation-date/:subscriptionName',
