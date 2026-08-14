@@ -425,6 +425,8 @@ router.get(
 		'subscriptions/:subscriptionName/mma-primary',
 		'GET_MMA_PRIMARY_SUMMARY',
 		['subscriptionName'],
+		{},
+		true,
 	),
 );
 router.post(
