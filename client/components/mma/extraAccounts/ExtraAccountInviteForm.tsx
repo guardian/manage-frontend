@@ -163,7 +163,7 @@ export const ExtraAccountInviteForm = ({
 					size="small"
 					isLoading={isSubmitting}
 					disabled={isSubmitting}
-					onClick={() => void handleSend()}
+					onClick={handleSend}
 				>
 					Send invitation
 				</Button>
