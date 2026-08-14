@@ -4,7 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAccountStore } from '../../../stores/AccountStore';
 import { gridItemPlacement } from '../../../styles/grid';
-import { isExtraAccountsEnabled } from '../../../utilities/extraAccounts';
+import {
+	extraAccountsPath,
+	isExtraAccountsEnabled,
+} from '../../../utilities/extraAccounts';
 import { ProfileIcon } from '../../mma/shared/assets/ProfileIcon';
 import { expanderButtonCss } from '../ExpanderButton';
 import type { MenuSpecificNavItem } from './NavConfig';
@@ -252,14 +255,25 @@ export const DropdownNav = (props: { isHelpCentrePage: boolean }) => {
 						<li key={navItem.title}>
 							{navItem.local && !props.isHelpCentrePage ? (
 								<Link
-									to={navItem.link}
+									to={
+										navItem === NAV_LINKS.extraAccounts
+											? extraAccountsPath()
+											: navItem.link
+									}
 									css={dropdownNavItemCss}
 									onClick={() => setShowMenu(false)}
 								>
 									<DropdownNavItem navItem={navItem} />
 								</Link>
 							) : (
-								<a href={navItem.link} css={dropdownNavItemCss}>
+								<a
+									href={
+										navItem === NAV_LINKS.extraAccounts
+											? extraAccountsPath()
+											: navItem.link
+									}
+									css={dropdownNavItemCss}
+								>
 									<DropdownNavItem navItem={navItem} />
 								</a>
 							)}

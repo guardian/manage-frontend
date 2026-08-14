@@ -134,8 +134,9 @@ const ModalBody = ({
 	email: string;
 	remainingInvitations: number;
 }) => {
-	const invitationsLabel = `${remainingInvitations} invitation${
-		remainingInvitations === 1 ? '' : 's'
+	const remainingAfterCancel = remainingInvitations + 1;
+	const invitationsLabel = `${remainingAfterCancel} invitation${
+		remainingAfterCancel === 1 ? '' : 's'
 	} remaining`;
 
 	return (

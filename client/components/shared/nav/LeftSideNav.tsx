@@ -2,7 +2,10 @@ import { css } from '@emotion/react';
 import { from, palette, space, textSans20 } from '@guardian/source/foundations';
 import { Link } from 'react-router-dom';
 import { useAccountStore } from '../../../stores/AccountStore';
-import { isExtraAccountsEnabled } from '../../../utilities/extraAccounts';
+import {
+	extraAccountsPath,
+	isExtraAccountsEnabled,
+} from '../../../utilities/extraAccounts';
 import type { MenuSpecificNavItem, NavItem } from './NavConfig';
 import { NAV_LINKS, PROFILE_HOST_NAME } from './NavConfig';
 
@@ -108,7 +111,11 @@ export const LeftSideNav = (props: LeftSideNavProps) => {
 										? 'page'
 										: undefined
 								}
-								to={navItem.link}
+								to={
+									navItem === NAV_LINKS.extraAccounts
+										? extraAccountsPath()
+										: navItem.link
+								}
 							>
 								{navItem.icon && (
 									<i css={leftNavIconCss}>

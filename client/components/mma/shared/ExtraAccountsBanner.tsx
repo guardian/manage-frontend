@@ -9,6 +9,7 @@ import {
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { useNavigate } from 'react-router-dom';
+import { extraAccountsPath } from '../../../utilities/extraAccounts';
 
 const containerCss = css`
 	margin-top: ${space[10]}px;
@@ -79,7 +80,7 @@ export const ExtraAccountsBanner = () => {
 					size="small"
 					priority="primary"
 					cssOverrides={buttonCss}
-					onClick={() => navigate('/extra-accounts')}
+					onClick={() => navigate(extraAccountsPath())}
 				>
 					Start sharing
 				</Button>
