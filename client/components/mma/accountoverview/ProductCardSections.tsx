@@ -167,7 +167,7 @@ export const SecondaryUserSubscriptionDetails = ({
 				</div>
 				<div css={centeredActionCss}>
 					<Button
-						aria-label={`${subscriptionName} : Leave shared subscription`}
+						aria-label={`Manage shared subscription`}
 						size="small"
 						priority="tertiary"
 						cssOverrides={sharedMembershipLeaveButtonCss}
@@ -178,7 +178,7 @@ export const SecondaryUserSubscriptionDetails = ({
 							});
 						}}
 					>
-						Manage support
+						Manage subscription
 					</Button>
 				</div>
 			</div>

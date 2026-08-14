@@ -26,7 +26,6 @@ export const LeaveSharedSubscription = () => {
 	const { primarySubscriber } = routerState;
 
 	const leaveSharedSubscription = async () => {
-		// TODO tracking
 		const secondaryIdentityId =
 			window.guardian?.identityDetails?.userId ?? '';
 		setIsSubmitting(true);
@@ -74,6 +73,7 @@ export const LeaveSharedSubscription = () => {
 
 			<div css={ctaContainerCss}>
 				<Button
+					aria-label={`Previous page`}
 					priority="tertiary"
 					icon={<SvgArrowLeftStraight />}
 					iconSide="left"
@@ -84,6 +84,7 @@ export const LeaveSharedSubscription = () => {
 					Previous
 				</Button>
 				<Button
+					aria-label={`Confirm leave shared subscription`}
 					priority="primary"
 					isLoading={isSubmitting}
 					onClick={leaveSharedSubscription}

@@ -33,10 +33,6 @@ const greySectionCss = css`
 	padding: ${space[5]}px ${space[4]}px;
 `;
 
-const leaveButtonCss = css`
-	display: flex-end;
-`;
-
 export const DigitalShared = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -104,7 +100,6 @@ export const DigitalShared = () => {
 						<Button
 							size="small"
 							priority="tertiary"
-							cssOverrides={leaveButtonCss}
 							onClick={() => {
 								navigate(`/digital-shared/leave`, {
 									state: {
