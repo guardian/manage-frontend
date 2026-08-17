@@ -93,6 +93,11 @@ const MMALocationObjectArr: LocationObject[] = [
 		selectedNavItem: NAV_LINKS.accountOverview,
 	},
 	{
+		title: 'Extra accounts',
+		path: '/extra-accounts',
+		selectedNavItem: NAV_LINKS.extraAccounts,
+	},
+	{
 		title: 'Billing',
 		path: '/billing',
 		selectedNavItem: NAV_LINKS.billing,

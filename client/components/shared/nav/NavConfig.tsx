@@ -3,6 +3,7 @@ import { conf } from '../../../../server/config';
 import { AccountOverviewIcon } from '../../mma/shared/assets/AccountOverviewIcon';
 import { CreditCardIcon } from '../../mma/shared/assets/CreditCardIcon';
 import { EmailPrefsIcon } from '../../mma/shared/assets/EmailPrefIcon';
+import { ExtraAccountsIcon } from '../../mma/shared/assets/ExtraAccountsIcon';
 import { HelpIcon } from '../../mma/shared/assets/HelpIcon';
 import { ProfileIcon } from '../../mma/shared/assets/ProfileIcon';
 import { SettingsIcon } from '../../mma/shared/assets/SettingsIcon';
@@ -26,6 +27,7 @@ export interface MenuSpecificNavItem extends NavItem {
 
 interface NavLinks {
 	accountOverview: MenuSpecificNavItem;
+	extraAccounts: MenuSpecificNavItem;
 	billing: MenuSpecificNavItem;
 	dataPrivacy: MenuSpecificNavItem;
 	profile: MenuSpecificNavItem;
@@ -50,6 +52,12 @@ export const NAV_LINKS: NavLinks = {
 		link: '/',
 		local: true,
 		icon: AccountOverviewIcon,
+	},
+	extraAccounts: {
+		title: 'Extra accounts',
+		link: '/extra-accounts',
+		local: true,
+		icon: ExtraAccountsIcon,
 	},
 	billing: {
 		title: 'Billing',
