@@ -15,6 +15,7 @@ import {
 import { Fragment } from 'react';
 import { Navigate } from 'react-router-dom';
 import { gridBase, gridItemPlacement } from '../../../styles/grid';
+import { MAX_EXTRA_ACCOUNTS } from '../../../utilities/extraAccounts';
 import { useExtraAccounts } from '../../../utilities/hooks/useExtraAccounts';
 import type { FaqItem } from '../../shared/Faqs';
 import { Faqs } from '../../shared/Faqs';
@@ -23,8 +24,6 @@ import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { ExtraAccountRow } from './ExtraAccountRow';
-
-const MAX_ACCOUNTS = 3;
 
 const extraAccountsFaqItems: FaqItem[] = [
 	{
@@ -208,7 +207,7 @@ export const ExtraAccounts = () => {
 							<div css={introTextCss}>
 								<p>
 									You can share your subscription with up to{' '}
-									{MAX_ACCOUNTS} people.
+									{MAX_EXTRA_ACCOUNTS} people.
 								</p>
 								<p>
 									Each account is individual. Your account
@@ -250,7 +249,7 @@ export const ExtraAccounts = () => {
 
 							<p css={usageCss}>
 								<strong>
-									{usedCount}/{MAX_ACCOUNTS} invitation
+									{usedCount}/{MAX_EXTRA_ACCOUNTS} invitation
 								</strong>{' '}
 								being used
 							</p>
@@ -265,7 +264,7 @@ export const ExtraAccounts = () => {
 										removeAccess={removeAccess}
 										isSubmitting={isSubmitting}
 										remainingInvitations={
-											MAX_ACCOUNTS - usedCount
+											MAX_EXTRA_ACCOUNTS - usedCount
 										}
 									/>
 								</Fragment>

@@ -8,11 +8,10 @@ import {
 } from '../../stores/ExtraAccountsStore';
 import { useToastStore } from '../../stores/ToastStore';
 import { trackEvent } from '../analytics';
-import { getDigitalPlusProduct } from '../extraAccounts';
+import { getDigitalPlusProduct, MAX_EXTRA_ACCOUNTS } from '../extraAccounts';
 import { fetchWithDefaultParameters } from '../fetch';
 import { useAccountDataLoader } from './useAccountDataLoader';
 
-const MAX_ACCOUNTS = 3;
 const EXTRA_ACCOUNTS_BASE = '/api/extra-accounts';
 
 const requestHeaders = (isTestUser: boolean) => ({
@@ -92,7 +91,7 @@ export const fetchExtraAccounts = async (
 
 	const usedAccounts = [...activeAccounts, ...pendingAccounts];
 	const emptySlots: ExtraAccount[] = Array.from(
-		{ length: Math.max(0, MAX_ACCOUNTS - usedAccounts.length) },
+		{ length: Math.max(0, MAX_EXTRA_ACCOUNTS - usedAccounts.length) },
 		() => ({ status: 'empty' as const }),
 	);
 

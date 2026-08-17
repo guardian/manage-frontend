@@ -5,6 +5,8 @@ import type {
 import { isProduct, isSpecificProductType } from '../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../shared/productTypes';
 
+export const MAX_EXTRA_ACCOUNTS = 3;
+
 // TODO: remove this query-param check once the Extra accounts feature ships.
 // The long-term gate is the Digital plus product check only.
 export const EXTRA_ACCOUNTS_PATH = '/extra-accounts';
