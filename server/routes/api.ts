@@ -110,15 +110,6 @@ router.get(
 	multipleAccountAPI('secondary-user/me', 'MULTIPLE_ACCOUNTS', []),
 );
 
-router.delete(
-	'/subscriptions/:subscriptionName/secondary-users/:secondaryIdentityId',
-	multipleAccountAPI(
-		'/subscriptions/:subscriptionName/secondary-users/:secondaryIdentityId',
-		'MULTIPLE_ACCOUNTS',
-		['subscriptionName', 'secondaryIdentityId'],
-	),
-);
-
 router.get(
 	'/cancellation-date/:subscriptionName',
 	membersDataApiHandler(

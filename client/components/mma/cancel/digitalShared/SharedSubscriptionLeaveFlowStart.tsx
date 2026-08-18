@@ -39,7 +39,7 @@ export const LeaveSharedSubscription = () => {
 					`Leave shared subscription request failed: ${response.status}`,
 				);
 			}
-			navigate('/digital-shared/leave/confirmation');
+			navigate('/digital-shared/leave/confirmation', { replace: true });
 		} catch {
 			setIsSubmitting(false);
 			setLoadingFailed(true);
