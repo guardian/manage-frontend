@@ -263,33 +263,30 @@ const multipleAccountAPIGateway = getApiGateway(
 	'multiple-account-api',
 );
 export const multipleAccountAPI =
-	// multipleAccountAPIGateway.authorisedExpressCallback;
-
-
-		(
-			path: string,
-			loggingCode: string,
-			urlParamNamesToReplace: string[] = [],
-			headers: Headers = {},
-			shouldNotLogBody?: boolean,
-		) =>
-		async (req: express.Request, res: express.Response) => {
-			const accessToken = req.signedCookies[
-				OAuthAccessTokenCookieName
-			] as string | undefined;
-			return multipleAccountAPIGateway.authorisedExpressCallback(
-				path,
-				loggingCode,
-				urlParamNamesToReplace,
-				{
-					...headers,
-					...(accessToken
-						? { Authorization: `Bearer ${accessToken}` }
-						: {}),
-				},
-				shouldNotLogBody,
-			)(req, res);
-		};
+	(
+		path: string,
+		loggingCode: string,
+		urlParamNamesToReplace: string[] = [],
+		headers: Headers = {},
+		shouldNotLogBody?: boolean,
+	) =>
+	async (req: express.Request, res: express.Response) => {
+		const accessToken = req.signedCookies[OAuthAccessTokenCookieName] as
+			| string
+			| undefined;
+		return multipleAccountAPIGateway.authorisedExpressCallback(
+			path,
+			loggingCode,
+			urlParamNamesToReplace,
+			{
+				...headers,
+				...(accessToken
+					? { Authorization: `Bearer ${accessToken}` }
+					: {}),
+			},
+			shouldNotLogBody,
+		)(req, res);
+	};
 
 // not sure why this doesn't follow the pattern above
 export const getContactUsAPIHostAndKey = async () => {

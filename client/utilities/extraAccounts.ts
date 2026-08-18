@@ -1,0 +1,56 @@
+import type {
+	MembersDataApiResponse,
+	ProductDetail,
+} from '../../shared/productResponse';
+import { isProduct, isSpecificProductType } from '../../shared/productResponse';
+import { PRODUCT_TYPES } from '../../shared/productTypes';
+
+export const MAX_EXTRA_ACCOUNTS = 3;
+
+// TODO: remove this query-param check once the Extra accounts feature ships.
+// The long-term gate is the Digital plus product check only.
+export const EXTRA_ACCOUNTS_PATH = '/extra-accounts';
+export const EXTRA_ACCOUNTS_FLAG_PARAM = 'TEST_EXTRA_ACCOUNTS_FLAG';
+
+export const isExtraAccountsFlagEnabled = (): boolean => {
+	if (typeof window === 'undefined') {
+		return false;
+	}
+
+	return (
+		new URLSearchParams(window.location.search).get(
+			EXTRA_ACCOUNTS_FLAG_PARAM,
+		) === 'true'
+	);
+};
+
+export const extraAccountsPath = (): string => {
+	if (isExtraAccountsFlagEnabled()) {
+		return `${EXTRA_ACCOUNTS_PATH}?${EXTRA_ACCOUNTS_FLAG_PARAM}=true`;
+	}
+	return EXTRA_ACCOUNTS_PATH;
+};
+
+export const getDigitalPlusProduct = (
+	mdapiResponse: MembersDataApiResponse | null,
+): ProductDetail | undefined =>
+	mdapiResponse?.products
+		.filter(isProduct)
+		.find(
+			(product) =>
+				!product.subscription.cancelledAt &&
+				isSpecificProductType(
+					product.mmaProductKey,
+					PRODUCT_TYPES.digipack,
+				),
+		);
+
+export const hasDigitalPlus = (
+	mdapiResponse: MembersDataApiResponse | null,
+): boolean => !!getDigitalPlusProduct(mdapiResponse);
+
+// TODO: Remove this query-param check once the Extra accounts feature ships.
+// The long-term gate is the Digital plus product check only.
+export const isExtraAccountsEnabled = (
+	mdapiResponse: MembersDataApiResponse | null,
+): boolean => hasDigitalPlus(mdapiResponse) && isExtraAccountsFlagEnabled();
