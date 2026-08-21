@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { palette, space, textSans17 } from '@guardian/source/foundations';
 import { SvgChevronLeftSingle } from '@guardian/source/react-components';
-import { Link } from 'react-router-dom';
+import { getHelpCentreHomeUrl } from '../../utilities/helpCentreHome';
 
 const dividerCss = css`
 	margin-top: ${space[12]}px;
@@ -31,11 +31,11 @@ const linkIconCss = css`
 
 export const BackToHelpCentreLink = () => (
 	<div css={dividerCss}>
-		<Link to="/help-centre" css={linkCss}>
+		<a href={getHelpCentreHomeUrl()} css={linkCss}>
 			<span css={linkIconCss}>
 				<SvgChevronLeftSingle />
 			</span>
 			Back to Help Centre
-		</Link>
+		</a>
 	</div>
 );

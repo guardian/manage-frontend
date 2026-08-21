@@ -35,6 +35,7 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
+import { isExtraAccountsFlagEnabled } from '../../../utilities/extraAccounts';
 import { useAccountDataLoader } from '../../../utilities/hooks/useAccountDataLoader';
 import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
@@ -47,6 +48,7 @@ import { DigitalPlusUpgradeBanner } from '../shared/DigitalPlusUpgradeBanner';
 import { DownloadAppCtaVariation1 } from '../shared/DownloadAppCtaVariation1';
 import { DownloadEditionsAppCtaWithImage } from '../shared/DownloadEditionsAppCtaWithImage';
 import { DownloadFeastAppCtaWithImage } from '../shared/DownloadFeastAppCtaWithImage';
+import { ExtraAccountsBanner } from '../shared/ExtraAccountsBanner';
 import type { IsFromAppProps } from '../shared/IsFromAppProps';
 import { NewspaperArchiveCta } from '../shared/NewspaperArchiveCta';
 import { nonServiceableCountries } from '../shared/NonServiceableCountries';
@@ -58,6 +60,7 @@ import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
+import { SecondaryAccountProductCard } from './SecondaryAccountCard';
 import { SingleContributionCard } from './SingleContributionCard';
 
 export const isDigitalPlusUpgradeBannerFlagEnabled = (): boolean => {
@@ -120,6 +123,11 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 
 	return (
 		<>
+			{/* TODO: remove the isExtraAccountsFlagEnabled() query-param check
+			   once the Extra accounts feature ships; gate on Digital plus only. */}
+			{hasDigitalPack && isExtraAccountsFlagEnabled() && (
+				<ExtraAccountsBanner />
+			)}
 			{(hasDigitalPlusPrint ||
 				isPlusDigitalProduct ||
 				hasGuardianEmail ||
@@ -161,6 +169,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		mpapiResponse,
 		singleContributionsResponse,
 		userSubscriptionsResponse,
+		maapiResponse,
 	} = useAccountDataLoader();
 
 	useEffect(() => {
@@ -210,6 +219,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 	const allActiveProductDetails = mdapiResponse.products
 		.filter(isProduct)
 		.sort(sortByJoinDate);
+
+	const secondaryAccountDetails = maapiResponse || null;
 
 	const activeProductsNotPendingCancellation = allActiveProductDetails.filter(
 		(product: ProductDetail) => !product.subscription.cancelledAt,
@@ -263,7 +274,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 		allActiveProductDetails.length === 0 &&
 		allCancelledProductDetails.length === 0 &&
 		appSubscriptions.length === 0 &&
-		singleContributions.length === 0
+		singleContributions.length === 0 &&
+		(!secondaryAccountDetails ||
+			secondaryAccountDetails.subscriptions.length === 0)
 	) {
 		return (
 			<EmptyAccountOverview
@@ -356,6 +369,7 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 			<PersonalisedHeader
 				mdapiResponse={mdapiResponse}
 				mpapiResponse={mpapiResponse}
+				maapiResponse={maapiResponse}
 			/>
 
 			{braze && banner && (
@@ -445,6 +459,20 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				/>
 			)}
 			{possiblyAffectedByCanadaPostStrike && <CanadaStrike />}
+			{secondaryAccountDetails?.subscriptions &&
+				secondaryAccountDetails.subscriptions.length > 0 && (
+					<Fragment key="secondary-accounts">
+						<h2 css={subHeadingCss}>Shared with you</h2>
+						{secondaryAccountDetails.subscriptions.map(
+							(subscription) => (
+								<SecondaryAccountProductCard
+									subscription={subscription}
+									key={subscription.subscriptionName}
+								/>
+							),
+						)}
+					</Fragment>
+				)}
 			{uniqueProductCategories.map((category) => {
 				const groupedProductType = GROUPED_PRODUCT_TYPES[category];
 				const activeProductsInCategory = allActiveProductDetails.filter(

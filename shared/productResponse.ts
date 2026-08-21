@@ -121,6 +121,18 @@ export interface ProductDetail extends WithSubscription {
 	selfServiceCancellation: SelfServiceCancellation;
 	billingCountry?: string;
 	extraTaxApplies?: boolean;
+	primaryUser?: MembersDataApiUser;
+}
+
+export interface MultipleAccountPrimaryUser {
+	subscriptionName: string;
+	firstName: string;
+	lastName: string;
+	workEmail: string;
+}
+
+export interface MultipleAccountApiResponse {
+	subscriptions: MultipleAccountPrimaryUser[];
 }
 
 export interface CancelledProductDetail {

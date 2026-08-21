@@ -10,25 +10,31 @@ import {
 import { isValid, min } from 'date-fns';
 import { dateString } from '@/shared/dates';
 import type { AppSubscription, MPAPIResponse } from '@/shared/mpapiResponse';
-import type { MembersDataApiResponse } from '@/shared/productResponse';
+import type {
+	MembersDataApiResponse,
+	MultipleAccountApiResponse,
+} from '@/shared/productResponse';
 import { isObserverProduct } from '@/shared/productResponse';
 import { isProduct } from '@/shared/productResponse';
 
 interface PersonalisedHeaderProps {
 	mdapiResponse: MembersDataApiResponse;
 	mpapiResponse: MPAPIResponse | null;
+	maapiResponse: MultipleAccountApiResponse | null;
 }
 
 export const PersonalisedHeader = ({
 	mdapiResponse,
 	mpapiResponse,
+	maapiResponse,
 }: PersonalisedHeaderProps) => {
 	const userDetails = mdapiResponse.user;
 
 	if (
 		!userDetails ||
 		(mdapiResponse.products.length === 0 &&
-			(!mpapiResponse || mpapiResponse.subscriptions.length === 0))
+			(!mpapiResponse || mpapiResponse.subscriptions.length === 0) &&
+			(!maapiResponse || maapiResponse.subscriptions.length === 0))
 	) {
 		return null;
 	}
@@ -42,15 +48,16 @@ export const PersonalisedHeader = ({
 			  )
 			: []),
 	].filter((date) => isValid(date));
+	const onlyHasSecondary = oldestDateCandidates.length === 0;
 
-	if (oldestDateCandidates.length === 0) {
-		return null;
+	let supportStartYear = '';
+	if (!onlyHasSecondary) {
+		const oldestDate = min(oldestDateCandidates);
+		supportStartYear = dateString(oldestDate, 'MMMM yyyy');
 	}
 
-	const oldestDate = min(oldestDateCandidates);
-	const supportStartYear = dateString(oldestDate, 'MMMM yyyy');
-
 	const onlyHasObserverProducts =
+		!onlyHasSecondary &&
 		(!mpapiResponse || mpapiResponse.subscriptions.length === 0) &&
 		productDetails.every(isObserverProduct);
 
@@ -90,8 +97,9 @@ export const PersonalisedHeader = ({
 						}
 					`}
 				>
-					Thank you for funding the Guardian's independent journalism
-					since {supportStartYear}
+					{!onlyHasSecondary
+						? `Thank you for funding the Guardian's independent journalism since ${supportStartYear}`
+						: `Thank you for funding the Guardian's independent journalism`}
 				</p>
 			)}
 		</hgroup>

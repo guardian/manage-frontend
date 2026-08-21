@@ -38,7 +38,7 @@ export const footerlinks: FooterLink[][] = [
 		},
 		{
 			title: 'Privacy settings',
-			titleUSA: 'California resident – Do Not Sell',
+			titleUSA: 'US resident - Do Not Sell or Share',
 			cmp: true,
 		},
 		{

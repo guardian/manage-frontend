@@ -1,4 +1,7 @@
-import type { ProductDetail } from '../../../shared/productResponse';
+import type {
+	MultipleAccountApiResponse,
+	ProductDetail,
+} from '../../../shared/productResponse';
 
 // Base ProductTypes to support
 // 	| 'membership'
@@ -258,6 +261,19 @@ export function baseDigitalPack(): ProductDetail {
 			readerType: 'Direct',
 		},
 		isTestUser: false,
+	};
+}
+
+export function baseSecondaryUser(): MultipleAccountApiResponse {
+	return {
+		subscriptions: [
+			{
+				subscriptionName: 'A-S01234567',
+				firstName: 'John',
+				lastName: 'Doe',
+				workEmail: 'j.doe@example.com',
+			},
+		],
 	};
 }
 

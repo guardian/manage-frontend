@@ -8,6 +8,7 @@ import {
 	discountAPI,
 	holidayStopAPI,
 	invoicingAPI,
+	multipleAccountAPI,
 	productMoveAPI,
 	productSwitchAPI,
 	updateSupporterPlusAmountAPI,
@@ -102,6 +103,11 @@ router.get(
 router.get(
 	'/me/user-attributes',
 	membersDataApiHandler('user-attributes/me', 'MDA_DETAIL', []),
+);
+
+router.get(
+	'/secondary-user/me',
+	multipleAccountAPI('secondary-user/me', 'MULTIPLE_ACCOUNTS', []),
 );
 
 router.get(
@@ -411,6 +417,38 @@ router.post('/csp-audit-report-endpoint', (req, res) => {
 router.get(
 	'/benefits/me',
 	userBenefitsApiHandler('benefits/me', 'USER_BENEFITS'),
+);
+
+router.get(
+	'/extra-accounts/:subscriptionName/mma-primary',
+	multipleAccountAPI(
+		'subscriptions/:subscriptionName/mma-primary',
+		'GET_MMA_PRIMARY_SUMMARY',
+		['subscriptionName'],
+		{},
+		true,
+	),
+);
+router.post(
+	'/extra-accounts/invitation',
+	withOktaServerSideValidation,
+	multipleAccountAPI('invitation', 'CREATE_INVITATION'),
+);
+router.delete(
+	'/extra-accounts/invitation/:invitationCode',
+	withOktaServerSideValidation,
+	multipleAccountAPI('invitation/:invitationCode', 'DELETE_INVITATION', [
+		'invitationCode',
+	]),
+);
+router.delete(
+	'/extra-accounts/:subscriptionName/secondary-users/:secondaryIdentityId',
+	withOktaServerSideValidation,
+	multipleAccountAPI(
+		'subscriptions/:subscriptionName/secondary-users/:secondaryIdentityId',
+		'DELETE_SECONDARY_USER',
+		['subscriptionName', 'secondaryIdentityId'],
+	),
 );
 
 export { router };
