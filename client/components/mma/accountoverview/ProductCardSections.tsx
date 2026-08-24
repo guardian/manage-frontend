@@ -6,7 +6,7 @@ import {
 	SvgInfoRound,
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
-import type { NavigateFunction } from 'react-router-dom';
+import { type NavigateFunction } from 'react-router-dom';
 import { wideButtonLayoutCss } from '@/client/styles/ButtonStyles';
 import type { Event } from '@/client/utilities/analytics';
 import type { FetchUpgradePreviewParams } from '@/client/utilities/hooks/useUpgradePreview';
@@ -146,31 +146,39 @@ export const GuardianAdLiteCopy = ({
 export const SecondaryUserSubscriptionDetails = ({
 	subscriptionName,
 	primarySubscriber,
+	navigate,
 }: {
 	subscriptionName: string;
 	primarySubscriber: MultipleAccountPrimaryUser | undefined;
+	navigate: NavigateFunction;
 }) =>
 	primarySubscriber && (
 		<Card.Section>
 			<div css={productDetailLayoutCss}>
 				<div>
-					<h4 css={sectionHeadingCss}>Details</h4>
+					<h4 css={sectionHeadingCss}>Subscription details</h4>
 					<p css={sharedMembershipTextCss}>
 						You’ve been given access to Digital plus by{' '}
-						{primarySubscriber.firstName}. <br /> Your account and
-						activity are private and not shared with the
-						subscription owner.
+						{primarySubscriber.firstName}.
+						<br />
+						Your account and activity are private and not shared
+						with the subscription owner.
 					</p>
 				</div>
 				<div css={centeredActionCss}>
 					<Button
-						aria-label={`${subscriptionName} : Leave shared subscription`}
+						aria-label={`Manage shared subscription`}
 						size="small"
 						priority="tertiary"
 						cssOverrides={sharedMembershipLeaveButtonCss}
-						disabled={true}
+						onClick={() => {
+							// TODO Tracking?
+							navigate(`/digital-shared`, {
+								state: { subscriptionName, primarySubscriber },
+							});
+						}}
 					>
-						Manage support
+						Manage subscription
 					</Button>
 				</div>
 			</div>

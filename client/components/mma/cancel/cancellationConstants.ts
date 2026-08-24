@@ -1,4 +1,13 @@
-import { palette } from '@guardian/source/foundations';
+import { css } from '@emotion/react';
+import {
+	from,
+	headlineBold24,
+	headlineBold28,
+	palette,
+	space,
+	textSans15,
+	textSans17,
+} from '@guardian/source/foundations';
 
 export const standardAlternateFeedbackIntro =
 	'Please share any further thoughts you have about cancelling — you can help us improve. Thank you.';
@@ -15,3 +24,33 @@ export const hrefStyle = {
 	color: palette.sport[300],
 	':visited': { color: palette.sport[300] },
 };
+
+export const titleCss = css`
+	${headlineBold24};
+	margin: ${space[3]}px;
+
+	${from.tablet} {
+		${headlineBold28};
+		margin: ${space[6]}px 0 ${space[3]}px;
+	}
+`;
+
+export const bodyCss = css`
+	${textSans15};
+	margin: ${space[2]}px 0;
+
+	${from.tablet} {
+		${textSans17};
+	}
+`;
+
+export const ctaContainerCss = css`
+	display: flex;
+	flex-direction: column;
+	gap: ${space[3]}px;
+	margin-top: ${space[6]}px;
+
+	${from.tablet} {
+		flex-direction: row;
+	}
+`;

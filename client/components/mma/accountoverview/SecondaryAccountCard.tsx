@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import type { MultipleAccountPrimaryUser } from '@/shared/productResponse';
 import { getSpecificProductTypeFromProductKey } from '@/shared/productResponse';
 import { Card } from '../shared/Card';
@@ -16,6 +17,7 @@ export const SecondaryAccountProductCard = ({
 }: {
 	subscription: MultipleAccountPrimaryUser;
 }) => {
+	const navigate = useNavigate();
 	const specificProductType =
 		getSpecificProductTypeFromProductKey('Digital Pack');
 	const mainPlan = {
@@ -44,6 +46,7 @@ export const SecondaryAccountProductCard = ({
 			<SecondaryUserSubscriptionDetails
 				subscriptionName={productTitle}
 				primarySubscriber={subscription}
+				navigate={navigate}
 			/>
 		</Card>
 	);
