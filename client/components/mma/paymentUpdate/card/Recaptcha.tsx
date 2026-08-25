@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import {
 	space,
-	textSans14,
 	textSansBold17,
 } from '@guardian/source/foundations';
 import type { Stripe } from '@stripe/stripe-js';
