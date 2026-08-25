@@ -66,17 +66,6 @@ export function Recaptcha({
 				}}
 				id="recaptcha"
 			/>
-
-			<p
-				css={css`
-					width: 300px;
-					margin-top: ${space[3]}px;
-					${textSans14};
-				`}
-			>
-				By ticking this box, you agree to let Google perform a security
-				check to confirm you are a human.
-			</p>
 		</div>
 	);
 }
