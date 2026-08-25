@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import {
 	space,
-	textSans14,
 	textSansBold17,
 } from '@guardian/source/foundations';
 import type { Stripe } from '@stripe/stripe-js';
@@ -12,12 +11,6 @@ declare let window: Window & {
 	Stripe: Stripe;
 	grecaptcha: Grecaptcha;
 	v2ReCaptchaOnLoadCallback: () => void;
-};
-
-const hrefStyle = {
-	textDecoration: 'underline',
-	color: 'inherit',
-	':visited': { color: 'inherit' },
 };
 
 export interface RecaptchaProps {
@@ -72,35 +65,6 @@ export function Recaptcha({
 				}}
 				id="recaptcha"
 			/>
-
-			<p
-				css={css`
-					width: 300px;
-					margin-top: ${space[3]}px;
-					${textSans14};
-				`}
-			>
-				By ticking this box, you agree to let Google perform a security
-				check to confirm you are a human. Please refer to their{' '}
-				<a
-					href="https://policies.google.com/terms"
-					rel="noreferrer"
-					target="_blank"
-					css={hrefStyle}
-				>
-					terms
-				</a>{' '}
-				and{' '}
-				<a
-					href="https://policies.google.com/privacy"
-					rel="noreferrer"
-					target="_blank"
-					css={hrefStyle}
-				>
-					privacy
-				</a>{' '}
-				policies.
-			</p>
 		</div>
 	);
 }
