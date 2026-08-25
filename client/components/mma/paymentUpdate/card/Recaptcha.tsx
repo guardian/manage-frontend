@@ -81,25 +81,7 @@ export function Recaptcha({
 				`}
 			>
 				By ticking this box, you agree to let Google perform a security
-				check to confirm you are a human. Please refer to their{' '}
-				<a
-					href="https://policies.google.com/terms"
-					rel="noreferrer"
-					target="_blank"
-					css={hrefStyle}
-				>
-					terms
-				</a>{' '}
-				and{' '}
-				<a
-					href="https://policies.google.com/privacy"
-					rel="noreferrer"
-					target="_blank"
-					css={hrefStyle}
-				>
-					privacy
-				</a>{' '}
-				policies.
+				check to confirm you are a human.
 			</p>
 		</div>
 	);
