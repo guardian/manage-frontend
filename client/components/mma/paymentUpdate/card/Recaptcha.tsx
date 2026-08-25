@@ -14,12 +14,6 @@ declare let window: Window & {
 	v2ReCaptchaOnLoadCallback: () => void;
 };
 
-const hrefStyle = {
-	textDecoration: 'underline',
-	color: 'inherit',
-	':visited': { color: 'inherit' },
-};
-
 export interface RecaptchaProps {
 	setStripeSetupIntent: (_: null) => void;
 	setRecaptchaToken: (_: string | undefined) => void;
