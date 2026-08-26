@@ -1,4 +1,4 @@
-import type { EventPayload } from '@guardian/ophan-tracker-js/MMA';
+import type { EventPayload } from '@guardian/ophan-tracker-js';
 
 export type OphanRecord = (event: EventPayload, callback?: () => void) => void;
 
@@ -14,9 +14,9 @@ export const initOphan = (): Promise<OphanRecord | undefined> => {
 	}
 
 	if (!initPromise) {
-		initPromise = import('@guardian/ophan-tracker-js/MMA')
+		initPromise = import('@guardian/ophan-tracker-js')
 			.then(({ init, record }) => {
-				init();
+				init('manage-my-account');
 				return record;
 			})
 			.catch((error) => {

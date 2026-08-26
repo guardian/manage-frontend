@@ -23,7 +23,7 @@ export const useAnalytics = () => {
 		const initialiseOphen = async () => {
 			try {
 				const { sendInitialEvent } = await import(
-					'@guardian/ophan-tracker-js/MMA'
+					'@guardian/ophan-tracker-js'
 				);
 
 				if (window.guardian.spaTransition) {

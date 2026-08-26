@@ -2163,10 +2163,10 @@
   dependencies:
     "@guardian/tsconfig" "^1.0.0"
 
-"@guardian/ophan-tracker-js@4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-4.0.2.tgz#93617a4e134b8bb9f297f3b463b641f3ff20a5a9"
-  integrity sha512-sqgJG7G8zxHn9FlqcZGBF+gimu5lVa0CHAUs5fJicdf4xjjtnvpKuNfgKKpQaBFvhK686wtkur8zwhO+nm6BpQ==
+"@guardian/ophan-tracker-js@5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-5.1.2.tgz#a541c835c2f7895dbb66a187826cae2bde23065c"
+  integrity sha512-cXGYrsjWYoUsqR3X4oKmgZU6Vrk42xEwy+n3oTSTwQX4oljcu3r+CnFQ9UFcwKcL5fBRNj4jAtkAPMS3WOen6Q==
   dependencies:
     "@guardian/tsconfig" "^1.0.0"
 
