@@ -11,11 +11,6 @@ const supporterNewsletter = {
 	description: 'Get exclusive insight from our newsroom',
 };
 
-const multipleAccounts = {
-	name: 'Share your account with others.',
-	description: 'Invite up to 3 people to share your account benefits',
-};
-
 const uninterruptedReading = {
 	name: 'Uninterrupted reading.',
 	description: 'See far fewer asks for support',
