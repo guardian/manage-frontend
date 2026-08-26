@@ -11,6 +11,11 @@ const supporterNewsletter = {
 	description: 'Get exclusive insight from our newsroom',
 };
 
+const multipleAccounts = {
+	name: 'Share your account with others.',
+	description: 'Invite up to 3 people to share your account benefits',
+};
+
 const uninterruptedReading = {
 	name: 'Uninterrupted reading.',
 	description: 'See far fewer asks for support',
@@ -65,7 +70,7 @@ const productPlusdigitalBenefits = [
 	},
 ];
 
-const digitalPlusBenefits = [
+const digitalPlusBenefitsSecondary = [
 	{ description: 'Far fewer asks for support' },
 	{ description: 'Ad-free reading on all your devices' },
 	{ description: 'Unlimited access to the premium Guardian and Feast apps' },
@@ -78,6 +83,11 @@ const digitalPlusBenefits = [
 		description:
 			'Access to the daily digital newspaper and our suite of e-magazines, including Guardian Weekly and The Long Read',
 	},
+];
+
+const digitalPlusBenefitsPrimary = [
+	...digitalPlusBenefitsSecondary,
+	multipleAccounts,
 ];
 
 export interface ProductBenefit {
@@ -137,7 +147,7 @@ export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
 			partnerOffers,
 		],
 		membership: [newsApp, uninterruptedReading, supporterNewsletter],
-		digipack: digitalPlusBenefits,
+		digipack: digitalPlusBenefitsPrimary,
 		digitalvoucher: [],
 		newspaper: [],
 		homedelivery: [],
@@ -202,6 +212,7 @@ export const getUpsellBenefits = (
 				{
 					description: 'Daily digital Guardian newspaper',
 				},
+				multipleAccounts,
 			];
 	}
 };
