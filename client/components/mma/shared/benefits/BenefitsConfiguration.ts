@@ -87,7 +87,7 @@ const digitalPlusBenefitsSecondary = [
 
 const digitalPlusBenefitsPrimary = [
 	...digitalPlusBenefitsSecondary,
-	multipleAccounts,
+	{ description: 'Invite up to 3 people to share your account benefits' },
 ];
 
 export interface ProductBenefit {
