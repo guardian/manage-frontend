@@ -212,7 +212,9 @@ export const getUpsellBenefits = (
 				{
 					description: 'Daily digital Guardian newspaper',
 				},
-				multipleAccounts,
+				{
+					description: 'Share your access with up to 3 others',
+				},
 			];
 	}
 };
