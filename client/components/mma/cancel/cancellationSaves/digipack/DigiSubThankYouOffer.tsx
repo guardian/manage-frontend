@@ -28,7 +28,7 @@ import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
 import { dateString } from '../../../../../../shared/dates';
 import { DefaultLoadingView } from '../../../shared/asyncComponents/DefaultLoadingView';
-import { benefitsConfiguration } from '../../../shared/benefits/BenefitsConfiguration';
+import { digipackSaveOfferBenefits } from '../../../shared/benefits/BenefitsConfiguration';
 import { benefitsCss } from '../../../shared/benefits/BenefitsStyles';
 import { Heading } from '../../../shared/Heading';
 import type { CancellationRouterState } from '../../CancellationContainer';
@@ -53,7 +53,7 @@ const DiscountOffer = ({
 	handleDiscountOfferClick,
 	newPrice,
 }: DiscountOfferProps) => {
-	const benefits = benefitsConfiguration['digipack'];
+	const benefits = digipackSaveOfferBenefits;
 
 	return (
 		<Stack

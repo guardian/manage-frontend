@@ -64,7 +64,7 @@ const BenefitsNotAvailable = () => {
 						margin-bottom: ${space[2]}px;
 					`}
 				>
-					Benefits you'll lose:
+					You'll lose access to:
 				</div>
 				<ul css={benefitsCss}>
 					{benefits.map((benefit) => (
@@ -208,15 +208,16 @@ export const ConfirmDigiSubCancellation = () => {
 						}
 					`}
 				>
-					Losing your benefits
+					Before you go...
 				</h1>
 				<div
 					css={css`
 						${textSans17};
 					`}
 				>
-					Please keep in mind that you will be losing access to your
-					supporter extras if you cancel today.
+					If you cancel your Digital plus subscription, you and
+					everyone you've invited to share your subscription will lose
+					access to your supporter extras when your subscription ends.
 				</div>
 			</Stack>
 			<section

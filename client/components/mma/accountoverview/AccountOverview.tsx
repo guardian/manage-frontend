@@ -35,7 +35,6 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
-import { isExtraAccountsFlagEnabled } from '../../../utilities/extraAccounts';
 import { useAccountDataLoader } from '../../../utilities/hooks/useAccountDataLoader';
 import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
@@ -123,11 +122,7 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 
 	return (
 		<>
-			{/* TODO: remove the isExtraAccountsFlagEnabled() query-param check
-			   once the Extra accounts feature ships; gate on Digital plus only. */}
-			{hasDigitalPack && isExtraAccountsFlagEnabled() && (
-				<ExtraAccountsBanner />
-			)}
+			{hasDigitalPack && <ExtraAccountsBanner />}
 			{(hasDigitalPlusPrint ||
 				isPlusDigitalProduct ||
 				hasGuardianEmail ||
