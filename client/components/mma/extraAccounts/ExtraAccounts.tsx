@@ -8,10 +8,7 @@ import {
 	textSans17,
 	textSansBold17,
 } from '@guardian/source/foundations';
-import {
-	SvgPersonRoundOutlined,
-	SvgTickRound,
-} from '@guardian/source/react-components';
+import { SvgTickRound } from '@guardian/source/react-components';
 import { Fragment } from 'react';
 import { Navigate } from 'react-router-dom';
 import { gridBase, gridItemPlacement } from '../../../styles/grid';
@@ -22,6 +19,8 @@ import { Faqs } from '../../shared/Faqs';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
+import { InvitationAvailableIcon } from '../shared/assets/InvitationAvailableIcon';
+import { InvitationSentIcon } from '../shared/assets/InvitationSentIcon';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { ExtraAccountRow } from './ExtraAccountRow';
 
@@ -187,6 +186,7 @@ export const ExtraAccounts = () => {
 	const usedCount = (accounts ?? []).filter(
 		(account) => account.status !== 'empty',
 	).length;
+	const allInvitesUsed = usedCount === MAX_EXTRA_ACCOUNTS;
 
 	return (
 		<>
@@ -205,15 +205,36 @@ export const ExtraAccounts = () => {
 					<div css={cardCss}>
 						<div css={introCss}>
 							<div css={introTextCss}>
-								<p>
-									You can share your subscription with up to{' '}
-									{MAX_EXTRA_ACCOUNTS} people.
-								</p>
-								<p>
-									Each account is individual. Your account
-									data or billing information are not shared
-									with the people you invite.
-								</p>
+								{allInvitesUsed ? (
+									<>
+										<p>
+											Nice, you're sharing all your extra
+											accounts!
+										</p>
+										<p>
+											Each account is individual. Your
+											account data or billing information
+											are not shared with the people you
+											invite.
+										</p>
+										<p>You can remove access at anytime.</p>
+									</>
+								) : (
+									<>
+										<p>
+											You have up to {MAX_EXTRA_ACCOUNTS}{' '}
+											extra accounts to share.
+										</p>
+										<p>
+											Each person gets their own account
+											and login. Your account data and
+											billing information are not shared
+											with the people you invite, and your
+											reading experience is completely
+											personal to you.
+										</p>
+									</>
+								)}
 							</div>
 							<div css={imagePlaceholderCss} />
 						</div>
@@ -223,12 +244,15 @@ export const ExtraAccounts = () => {
 								{accounts.map((account, index) => {
 									if (account.status === 'empty') {
 										return (
-											<SvgPersonRoundOutlined
+											<InvitationAvailableIcon
 												key={index}
-												theme={{
-													fill: palette.neutral[60],
-												}}
 											/>
+										);
+									}
+
+									if (account.status === 'pending') {
+										return (
+											<InvitationSentIcon key={index} />
 										);
 									}
 
@@ -236,11 +260,7 @@ export const ExtraAccounts = () => {
 										<SvgTickRound
 											key={index}
 											theme={{
-												fill:
-													account.status === 'active'
-														? palette.success[400]
-														: palette
-																.specialReportAlt[300],
+												fill: palette.success[400],
 											}}
 										/>
 									);
@@ -263,9 +283,6 @@ export const ExtraAccounts = () => {
 										cancelInvitation={cancelInvitation}
 										removeAccess={removeAccess}
 										isSubmitting={isSubmitting}
-										remainingInvitations={
-											MAX_EXTRA_ACCOUNTS - usedCount
-										}
 									/>
 								</Fragment>
 							))}

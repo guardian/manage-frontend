@@ -92,9 +92,8 @@ export const DigitalShared = () => {
 							{primarySubscriber.workEmail}).
 						</p>
 						<p>
-							You can leave this shared subscription at any time.
-							If you leave, you’ll lose access to Digital plus
-							benefits.
+							If you leave this subscription, you will lose access
+							to Digital plus benefits with immediate effect.
 						</p>
 						{/* TODO: implement leave shared subscription flow */}
 						<Button

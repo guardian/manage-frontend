@@ -6,6 +6,7 @@ import {
 import { useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { GenericErrorScreen } from '@/client/components/shared/GenericErrorScreen';
+import { useAccountStore } from '@/client/stores/AccountStore';
 import { leaveSharedSubscriptionFetch } from '@/client/utilities/productUtils';
 import type { DigitalSharedRouterState } from '../../accountoverview/manageProducts/DigitalShared';
 import { Heading } from '../../shared/Heading';
@@ -15,6 +16,9 @@ export const LeaveSharedSubscription = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const routerState = location.state as DigitalSharedRouterState | null;
+	const setJustLeftSharedAccount = useAccountStore(
+		(state) => state.setJustLeftSharedAccount,
+	);
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [loadingFailed, setLoadingFailed] = useState(false);
@@ -39,6 +43,7 @@ export const LeaveSharedSubscription = () => {
 					`Leave shared subscription request failed: ${response.status}`,
 				);
 			}
+			setJustLeftSharedAccount(true);
 			navigate('/digital-shared/leave/confirmation', { replace: true });
 		} catch {
 			setIsSubmitting(false);
@@ -57,18 +62,12 @@ export const LeaveSharedSubscription = () => {
 			<Heading borderless={true} cssOverrides={titleCss} level={'2'}>
 				We’re sorry to see you go.
 				<br />
-				Are you sure you want to leave this subscription?
+				Are you sure you want to leave?
 			</Heading>
 
 			<p css={bodyCss}>
-				If you leave this shared subscription, you’ll lose access to
-				Guardian premium benefits provided through it.
-			</p>
-			<p css={bodyCss}>
-				The person who invited you will be notified that you’ve left.
-			</p>
-			<p css={bodyCss}>
-				You’ll need a new invitation if you want to rejoin later.
+				If you leave, you’ll lose access to all the supporter extras of
+				Digital plus. You can come back anytime with a new invitation.
 			</p>
 
 			<div css={ctaContainerCss}>

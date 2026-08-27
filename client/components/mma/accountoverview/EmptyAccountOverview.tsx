@@ -12,6 +12,7 @@ import { CallCentreEmailAndNumbers } from '../../shared/CallCenterEmailAndNumber
 import { SupportTheGuardianButton } from '../../shared/SupportTheGuardianButton';
 import { Users } from '../identity/identity';
 import { InfoIconDark } from '../shared/assets/InfoIconDark';
+import { LeftSharedSubscriptionBanner } from './LeftSharedSubscriptionBanner';
 
 export const EmptyAccountOverview = ({ email }: { email: string }) => {
 	const [userEmailAddress, setUserEmailAddress] = useState('-');
@@ -36,6 +37,7 @@ export const EmptyAccountOverview = ({ email }: { email: string }) => {
 			>
 				Welcome to your Guardian account
 			</h2>
+			<LeftSharedSubscriptionBanner />
 			<p
 				css={css`
 					${textSans17};
