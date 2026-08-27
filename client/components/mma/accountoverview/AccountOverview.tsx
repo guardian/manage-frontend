@@ -57,6 +57,7 @@ import { CanadaStrike } from './CanadaStrike';
 import { CancelledProductCard } from './CancelledProductCard';
 import { EmptyAccountOverview } from './EmptyAccountOverview';
 import { InAppPurchaseCard } from './InAppPurchaseCard';
+import { LeftSharedSubscriptionBanner } from './LeftSharedSubscriptionBanner';
 import { PersonalisedHeader } from './PersonalisedHeader';
 import { ProductCard } from './ProductCard';
 import { SecondaryAccountProductCard } from './SecondaryAccountCard';
@@ -366,6 +367,8 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				mpapiResponse={mpapiResponse}
 				maapiResponse={maapiResponse}
 			/>
+
+			<LeftSharedSubscriptionBanner />
 
 			{braze && banner && (
 				<BrazeBannersSystemDisplay braze={braze} banner={banner} />

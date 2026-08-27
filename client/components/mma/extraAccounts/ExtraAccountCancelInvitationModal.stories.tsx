@@ -36,7 +36,6 @@ export default {
 		cancelInvitation: mockCancelInvitation,
 		removeAccess: mockRemoveAccess,
 		isSubmitting: false,
-		remainingInvitations: 1,
 	},
 } as Meta<typeof ExtraAccountCancelInvitationModal>;
 

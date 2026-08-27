@@ -7,10 +7,7 @@ import {
 	textSans17,
 	textSansBold17,
 } from '@guardian/source/foundations';
-import {
-	SvgPersonPlus,
-	SvgPersonRoundFilled,
-} from '@guardian/source/react-components';
+import { SvgPersonRoundFilled } from '@guardian/source/react-components';
 import { useState } from 'react';
 import { useWindowWidth } from '@/client/utilities/hooks/useWindowWidth';
 import type {
@@ -19,6 +16,8 @@ import type {
 } from '../../../stores/ExtraAccountsStore';
 import { useToastStore } from '../../../stores/ToastStore';
 import { Pill } from '../../shared/Pill';
+import { InvitationAvailableIcon } from '../shared/assets/InvitationAvailableIcon';
+import { InvitationSentIcon } from '../shared/assets/InvitationSentIcon';
 import { ExtraAccountCancelInvitationModal } from './ExtraAccountCancelInvitationModal';
 import { ExtraAccountInviteForm } from './ExtraAccountInviteForm';
 
@@ -52,17 +51,6 @@ const avatarCss = css`
 	svg {
 		width: ${space[14]}px;
 		height: ${space[14]}px;
-	}
-`;
-
-const emptyAvatarCss = css`
-	border: 2px solid ${palette.neutral[60]};
-	border-radius: 50%;
-	margin: ${space[2]}px;
-
-	svg {
-		width: ${space[9]}px;
-		height: ${space[9]}px;
 	}
 `;
 
@@ -119,7 +107,6 @@ interface ExtraAccountRowProps {
 	cancelInvitation: (invitationCode: string) => Promise<boolean>;
 	removeAccess: (secondaryIdentityId: string) => Promise<boolean>;
 	isSubmitting: boolean;
-	remainingInvitations: number;
 }
 
 const Avatar = ({
@@ -131,8 +118,16 @@ const Avatar = ({
 }) => {
 	if (status === 'empty') {
 		return (
-			<span css={[avatarCss, emptyAvatarCss, cssOverrides]}>
-				<SvgPersonPlus theme={{ fill: palette.neutral[46] }} />
+			<span css={[avatarCss, cssOverrides]}>
+				<InvitationAvailableIcon />
+			</span>
+		);
+	}
+
+	if (status === 'pending') {
+		return (
+			<span css={[avatarCss, cssOverrides]}>
+				<InvitationSentIcon />
 			</span>
 		);
 	}
@@ -141,10 +136,7 @@ const Avatar = ({
 		<span css={[avatarCss, cssOverrides]}>
 			<SvgPersonRoundFilled
 				theme={{
-					fill:
-						status === 'active'
-							? palette.brand[400]
-							: palette.neutral[60],
+					fill: palette.brand[400],
 				}}
 			/>
 		</span>
@@ -157,7 +149,6 @@ export const ExtraAccountRow = ({
 	cancelInvitation,
 	removeAccess,
 	isSubmitting,
-	remainingInvitations,
 }: ExtraAccountRowProps) => {
 	const [isFormOpen, setIsFormOpen] = useState(false);
 	const { showToast } = useToastStore();
@@ -234,7 +225,6 @@ export const ExtraAccountRow = ({
 					cancelInvitation={cancelInvitation}
 					removeAccess={removeAccess}
 					isSubmitting={isSubmitting}
-					remainingInvitations={remainingInvitations}
 				/>
 			</div>
 		</div>
