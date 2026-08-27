@@ -2,20 +2,32 @@ export const InvitationAvailableIcon = () => (
 	<svg
 		width="24"
 		height="24"
-		viewBox="-3 -3 30 30"
+		viewBox="-14 -14 84 84"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
 	>
-		<circle cx="12" cy="12" r="10" fill="#FFFFFF" />
-		<g clipPath="url(#invitationAvailableClip)" fill="#999999">
-			<path d="M4 11.25h6.25v1.5H4zM6.375 9h1.5v6h-1.5z" />
-			<circle cx="13.75" cy="8.75" r="2.6" />
-			<path d="M8.6 19.85c.55-2.85 2.45-4.4 5.15-4.4 2.7 0 4.6 1.55 5.15 4.4C17.85 21.4 16 22 13.75 22S9.65 21.4 8.6 19.85Z" />
-		</g>
-		<defs>
-			<clipPath id="invitationAvailableClip">
-				<circle cx="12" cy="12" r="10" />
-			</clipPath>
-		</defs>
+		<rect
+			x="0.75"
+			y="0.75"
+			width="54.5"
+			height="54.5"
+			rx="27.25"
+			fill="white"
+		/>
+		<rect
+			x="0.75"
+			y="0.75"
+			width="54.5"
+			height="54.5"
+			rx="27.25"
+			stroke="#BABABA"
+			strokeWidth="1.5"
+		/>
+		<path
+			fillRule="evenodd"
+			clipRule="evenodd"
+			d="M30.8976 23.107C28.2577 23.107 25.1478 20.1418 25.1478 16.5256C25.1478 12.9094 27.2814 10.812 30.8976 10.812C34.5137 10.812 36.6111 12.9094 36.6111 16.5256C36.6111 20.1418 33.2481 23.107 30.8976 23.107ZM16.7985 31.0554H18.9464V26.3505H23.6513V24.2026H18.9464V19.4976H16.7985V24.2026H12.0935V26.3505H16.7985V31.0554ZM30.8919 26C29.3369 26 27.8543 26.1085 26.5163 26.3616C26.1185 30.1225 23.1533 33.1601 19.4648 33.811L17.8736 39.7415L19.3563 41.188H42.4998L43.9102 39.7415L41.0534 28.893L39.5707 27.4103C36.6778 26.434 34.0741 26 30.8919 26Z"
+			fill="#BABABA"
+		/>
 	</svg>
 );
