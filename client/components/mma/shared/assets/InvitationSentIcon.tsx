@@ -5,6 +5,8 @@ export const InvitationSentIcon = () => (
 		viewBox="-3 -3 30 30"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
+		aria-hidden="true"
+		focusable="false"
 	>
 		<path
 			fillRule="evenodd"
