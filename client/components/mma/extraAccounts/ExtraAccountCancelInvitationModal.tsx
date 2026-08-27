@@ -128,36 +128,36 @@ interface ModalCopy {
 const ModalBody = ({
 	isActive,
 	email,
-	remainingInvitations,
 }: {
 	isActive: boolean;
 	email: string;
-	remainingInvitations: number;
 }) => {
-	const remainingAfterCancel = remainingInvitations + 1;
-	const invitationsLabel = `${remainingAfterCancel} invitation${
-		remainingAfterCancel === 1 ? '' : 's'
-	} remaining`;
-
 	return (
 		<div css={bodyCss}>
-			<p css={paragraphCss}>
-				If you {isActive ? 'remove access' : 'cancel this invitation'},{' '}
-				<span css={emailCss}>{email}</span> won't be able to{' '}
-				{isActive ? 'use ' : 'accept it or access '}Guardian premium
-				benefits through your subscription.
-			</p>
-			<p css={paragraphCss}>
-				We'll let them know by email that their{' '}
-				{isActive
-					? 'access has been removed'
-					: 'invitation has been cancelled'}
-				. You can re-invite them at any time.
-			</p>
-			<p css={paragraphCss}>
-				If you proceed, this invitation slot will become available again
-				and you'll have {invitationsLabel}.
-			</p>
+			{isActive ? (
+				<>
+					<p css={paragraphCss}>
+						If you remove <span css={emailCss}>{email}</span> from
+						your shared subscription, they will no longer have
+						access to Digital plus benefits.
+					</p>
+					<p css={paragraphCss}>
+						We'll notify them that their access has been removed.
+						You can re-invite them at any time.
+					</p>
+				</>
+			) : (
+				<>
+					<p css={paragraphCss}>
+						If you cancel this invitation,{' '}
+						<span css={emailCss}>{email}</span> will not be able to
+						redeem access to your shared subscription.
+					</p>
+					<p css={paragraphCss}>
+						You can re-invite them at any time.
+					</p>
+				</>
+			)}
 		</div>
 	);
 };
@@ -167,7 +167,6 @@ interface ExtraAccountCancelInvitationModalProps {
 	cancelInvitation: (invitationCode: string) => Promise<boolean>;
 	removeAccess: (secondaryIdentityId: string) => Promise<boolean>;
 	isSubmitting: boolean;
-	remainingInvitations: number;
 }
 
 export const ExtraAccountCancelInvitationModal = ({
@@ -175,7 +174,6 @@ export const ExtraAccountCancelInvitationModal = ({
 	cancelInvitation,
 	removeAccess,
 	isSubmitting,
-	remainingInvitations,
 }: ExtraAccountCancelInvitationModalProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { showToast } = useToastStore();
@@ -184,16 +182,16 @@ export const ExtraAccountCancelInvitationModal = ({
 
 	const copy: ModalCopy = isActive
 		? {
-				title: 'Remove access?',
-				confirmLabel: 'Remove access',
-				dismissLabel: 'Cancel',
+				title: 'Remove access',
+				confirmLabel: 'Confirm removal',
+				dismissLabel: 'Keep access',
 				instigatorLabel: 'Remove access',
 				successMessage: `Access removed for ${account.email}`,
 				confirm: () => removeAccess(account.secondaryIdentityId),
 		  }
 		: {
-				title: 'Cancel invitation?',
-				confirmLabel: 'Yes, cancel invitation',
+				title: 'Cancel invitation',
+				confirmLabel: 'Confirm cancellation',
 				dismissLabel: 'Keep invitation',
 				instigatorLabel: 'Cancel invitation',
 				successMessage: `Invitation cancelled for ${account.email}`,
@@ -244,11 +242,7 @@ export const ExtraAccountCancelInvitationModal = ({
 
 						<h2 css={titleCss}>{copy.title}</h2>
 
-						<ModalBody
-							isActive={isActive}
-							email={account.email}
-							remainingInvitations={remainingInvitations}
-						/>
+						<ModalBody isActive={isActive} email={account.email} />
 
 						<div css={footerCss}>
 							<Button

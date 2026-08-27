@@ -38,6 +38,7 @@ interface AccountState {
 	maapiResponse: MultipleAccountApiResponse | null;
 	loadingState: AccountLoadingState;
 	error: string | null;
+	justLeftSharedAccount: boolean;
 }
 
 interface AccountActions {
@@ -58,6 +59,7 @@ interface AccountActions {
 	setLoadingState: (state: AccountLoadingState) => void;
 	setError: (error: string | null) => void;
 	clearAccount: () => void;
+	setJustLeftSharedAccount: (justLeftSharedAccount: boolean) => void;
 }
 
 interface AccountSelectors {
@@ -76,6 +78,7 @@ const initialState: AccountState = {
 	maapiResponse: null,
 	loadingState: AccountLoadingState.NotStarted,
 	error: null,
+	justLeftSharedAccount: false,
 };
 
 export const useAccountStore = create<AccountStore>()(
@@ -136,6 +139,12 @@ export const useAccountStore = create<AccountStore>()(
 					'setError',
 				),
 			clearAccount: () => set(initialState, false, 'clearAccount'),
+			setJustLeftSharedAccount: (justLeftSharedAccount) =>
+				set(
+					{ justLeftSharedAccount },
+					false,
+					'setJustLeftSharedAccount',
+				),
 
 			// Selectors
 			getUser: () => get().mdapiResponse?.user,

@@ -156,13 +156,13 @@ export const SecondaryUserSubscriptionDetails = ({
 		<Card.Section>
 			<div css={productDetailLayoutCss}>
 				<div>
-					<h4 css={sectionHeadingCss}>Subscription details</h4>
+					<h4 css={sectionHeadingCss}>Details</h4>
 					<p css={sharedMembershipTextCss}>
 						You’ve been given access to Digital plus by{' '}
 						{primarySubscriber.firstName}.
 						<br />
-						Your account and activity are private and not shared
-						with the subscription owner.
+						Your account and activity is not shared - your reading
+						experience is completely personal to you.
 					</p>
 				</div>
 				<div css={centeredActionCss}>
