@@ -65,8 +65,7 @@ const productPlusdigitalBenefits = [
 	},
 ];
 
-const digitalPlusBenefits = [
-	{ description: '3 Extra accounts to share' },
+export const digitalPlusSecondaryUserBenefits = [
 	{
 		description:
 			'Unlimited access to the premium Guardian app and Feast app',
@@ -82,6 +81,11 @@ const digitalPlusBenefits = [
 		description:
 			'Exclusive newsletter for supporters, sent every week from the Guardian newsroom',
 	},
+];
+
+const digitalPlusBenefits = [
+	{ description: '3 Extra accounts to share' },
+	...digitalPlusSecondaryUserBenefits,
 ];
 
 export const digipackSaveOfferBenefits = [
