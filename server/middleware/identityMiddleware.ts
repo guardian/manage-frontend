@@ -75,6 +75,8 @@ export const withIdentity: (
 			return next();
 		}
 
+		res.redirect('/maintenance');
+
 		try {
 			const oktaConfigOverride =
 				process.env.RUNNING_IN_CYPRESS === 'true' &&
