@@ -143,7 +143,7 @@ const ModalBody = ({
 					</p>
 					<p css={paragraphCss}>
 						We'll notify them that their access has been removed.
-						You can re-invite them at any time.
+						You can reinvite them at any time.
 					</p>
 				</>
 			) : (
@@ -153,9 +153,7 @@ const ModalBody = ({
 						<span css={emailCss}>{email}</span> will not be able to
 						redeem access to your shared subscription.
 					</p>
-					<p css={paragraphCss}>
-						You can re-invite them at any time.
-					</p>
+					<p css={paragraphCss}>You can reinvite them at any time.</p>
 				</>
 			)}
 		</div>

@@ -73,7 +73,7 @@ export const digitalPlusSecondaryUserBenefits = [
 	newspaperArchiveBenefit,
 	{ description: 'Daily digital Guardian newspaper' },
 	{
-		description: 'Guardian Weekly e-magazine and the Long Read e-magazine',
+		description: 'Guardian Weekly and Long Read digital magazines',
 	},
 	{ description: 'Far fewer asks for support' },
 	{ description: 'Ad-free reading on all your devices' },
@@ -84,7 +84,7 @@ export const digitalPlusSecondaryUserBenefits = [
 ];
 
 const digitalPlusBenefits = [
-	{ description: '3 Extra accounts to share' },
+	{ description: 'Three extra accounts to share' },
 	...digitalPlusSecondaryUserBenefits,
 ];
 

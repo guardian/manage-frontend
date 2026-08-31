@@ -217,7 +217,7 @@ export const ConfirmDigiSubCancellation = () => {
 				>
 					If you cancel your Digital plus subscription, you and
 					everyone you've invited to share your subscription will lose
-					access to your supporter extras when your subscription ends.
+					access to your supporter extras.
 				</div>
 			</Stack>
 			<section

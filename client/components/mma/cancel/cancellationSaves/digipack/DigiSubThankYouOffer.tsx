@@ -24,6 +24,7 @@ import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { formatAmount } from '@/client/utilities/utils';
 import { appendCorrectPluralisation } from '@/shared/generalTypes';
+import { number2words } from '@/shared/numberUtils';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
 import { dateString } from '../../../../../../shared/dates';
@@ -128,7 +129,9 @@ const DiscountOffer = ({
 };
 
 function getDiscountPeriod(discountPreview: DiscountPreviewResponse): string {
-	return `${discountPreview.upToPeriods} ${appendCorrectPluralisation(
+	return `${number2words(
+		discountPreview.upToPeriods,
+	)} ${appendCorrectPluralisation(
 		discountPreview.upToPeriodsType,
 		discountPreview.upToPeriods,
 	)}`;
