@@ -172,7 +172,6 @@ export const SecondaryUserSubscriptionDetails = ({
 						priority="tertiary"
 						cssOverrides={sharedMembershipLeaveButtonCss}
 						onClick={() => {
-							// TODO Tracking?
 							navigate(`/digital-shared`, {
 								state: { subscriptionName, primarySubscriber },
 							});
