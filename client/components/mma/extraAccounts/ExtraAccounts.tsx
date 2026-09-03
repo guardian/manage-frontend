@@ -217,13 +217,15 @@ export const ExtraAccounts = () => {
 											are not shared with the people you
 											invite.
 										</p>
-										<p>You can remove access at anytime.</p>
+										<p>
+											You can remove access at any time.
+										</p>
 									</>
 								) : (
 									<>
 										<p>
-											You have up to {MAX_EXTRA_ACCOUNTS}{' '}
-											extra accounts to share.
+											You have up to three extra accounts
+											to share.
 										</p>
 										<p>
 											Each person gets their own account
@@ -269,7 +271,7 @@ export const ExtraAccounts = () => {
 
 							<p css={usageCss}>
 								<strong>
-									{usedCount}/{MAX_EXTRA_ACCOUNTS} invitation
+									{usedCount}/{MAX_EXTRA_ACCOUNTS} invitations
 								</strong>{' '}
 								being used
 							</p>

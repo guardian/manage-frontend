@@ -12,6 +12,7 @@ import {
 	subHeadingInformationTextCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
+import { isEligibleForExtraAccounts } from '@/client/utilities/extraAccounts';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
@@ -35,7 +36,6 @@ import {
 	GROUPED_PRODUCT_TYPES,
 	PRODUCT_TYPES,
 } from '../../../../shared/productTypes';
-import { isExtraAccountsFlagEnabled } from '../../../utilities/extraAccounts';
 import { useAccountDataLoader } from '../../../utilities/hooks/useAccountDataLoader';
 import { useUpgradeProduct } from '../../../utilities/hooks/useUpgradePreview';
 import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
@@ -105,6 +105,10 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 		isSpecificProductType(productKey, PRODUCT_TYPES.digipack),
 	);
 
+	const hasExtraAccountsAccess = productKeys?.some(
+		isEligibleForExtraAccounts,
+	);
+
 	const hasSupporterPlus = productKeys?.some((productKey) =>
 		isSpecificProductType(productKey, PRODUCT_TYPES.supporterplus),
 	);
@@ -124,11 +128,7 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 
 	return (
 		<>
-			{/* TODO: remove the isExtraAccountsFlagEnabled() query-param check
-			   once the Extra accounts feature ships; gate on Digital plus only. */}
-			{hasDigitalPack && isExtraAccountsFlagEnabled() && (
-				<ExtraAccountsBanner />
-			)}
+			{hasExtraAccountsAccess && <ExtraAccountsBanner />}
 			{(hasDigitalPlusPrint ||
 				isPlusDigitalProduct ||
 				hasGuardianEmail ||

@@ -1,37 +1,24 @@
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
+	ProductTier,
 } from '../../shared/productResponse';
-import { isProduct, isSpecificProductType } from '../../shared/productResponse';
+import {
+	isPlusDigitalProductType,
+	isProduct,
+	isSpecificProductType,
+} from '../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../shared/productTypes';
 
 export const MAX_EXTRA_ACCOUNTS = 3;
 
-// TODO: remove this query-param check once the Extra accounts feature ships.
-// The long-term gate is the Digital plus product check only.
-export const EXTRA_ACCOUNTS_PATH = '/extra-accounts';
-export const EXTRA_ACCOUNTS_FLAG_PARAM = 'TEST_EXTRA_ACCOUNTS_FLAG';
+export const isEligibleForExtraAccounts = (
+	mmaProductKey: ProductTier,
+): boolean =>
+	isSpecificProductType(mmaProductKey, PRODUCT_TYPES.digipack) ||
+	isPlusDigitalProductType(mmaProductKey);
 
-export const isExtraAccountsFlagEnabled = (): boolean => {
-	if (typeof window === 'undefined') {
-		return false;
-	}
-
-	return (
-		new URLSearchParams(window.location.search).get(
-			EXTRA_ACCOUNTS_FLAG_PARAM,
-		) === 'true'
-	);
-};
-
-export const extraAccountsPath = (): string => {
-	if (isExtraAccountsFlagEnabled()) {
-		return `${EXTRA_ACCOUNTS_PATH}?${EXTRA_ACCOUNTS_FLAG_PARAM}=true`;
-	}
-	return EXTRA_ACCOUNTS_PATH;
-};
-
-export const getDigitalPlusProduct = (
+export const getExtraAccountsProduct = (
 	mdapiResponse: MembersDataApiResponse | null,
 ): ProductDetail | undefined =>
 	mdapiResponse?.products
@@ -39,18 +26,9 @@ export const getDigitalPlusProduct = (
 		.find(
 			(product) =>
 				!product.subscription.cancelledAt &&
-				isSpecificProductType(
-					product.mmaProductKey,
-					PRODUCT_TYPES.digipack,
-				),
+				isEligibleForExtraAccounts(product.mmaProductKey),
 		);
 
-export const hasDigitalPlus = (
+export const hasExtraAccountsAccess = (
 	mdapiResponse: MembersDataApiResponse | null,
-): boolean => !!getDigitalPlusProduct(mdapiResponse);
-
-// TODO: Remove this query-param check once the Extra accounts feature ships.
-// The long-term gate is the Digital plus product check only.
-export const isExtraAccountsEnabled = (
-	mdapiResponse: MembersDataApiResponse | null,
-): boolean => hasDigitalPlus(mdapiResponse) && isExtraAccountsFlagEnabled();
+): boolean => !!getExtraAccountsProduct(mdapiResponse);
