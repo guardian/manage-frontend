@@ -59,6 +59,11 @@ export const supporterplusCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’m dealing with personal or health matters',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
+	{
+		reasonId: 'mma_shared_subscription_recipient',
+		linkLabel: 'I joined a Digital plus shared subscription',
+		skipFeedback: true,
+	},
 ];
 
 export const otherCancellationReason: CancellationReason[] = [
