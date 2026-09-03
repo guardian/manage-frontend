@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAccountStore } from '../../../stores/AccountStore';
 import { gridItemPlacement } from '../../../styles/grid';
-import { hasDigitalPlus } from '../../../utilities/extraAccounts';
+import { hasExtraAccountsAccess } from '../../../utilities/extraAccounts';
 import { ProfileIcon } from '../../mma/shared/assets/ProfileIcon';
 import { expanderButtonCss } from '../ExpanderButton';
 import type { MenuSpecificNavItem } from './NavConfig';
@@ -141,7 +141,7 @@ export const DropdownNav = (props: { isHelpCentrePage: boolean }) => {
 	const wrapperRef = useRef<HTMLElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const mdapiResponse = useAccountStore((state) => state.mdapiResponse);
-	const showExtraAccounts = hasDigitalPlus(mdapiResponse);
+	const showExtraAccounts = hasExtraAccountsAccess(mdapiResponse);
 
 	useEffect(() => {
 		addListeners();

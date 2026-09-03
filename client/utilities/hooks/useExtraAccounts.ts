@@ -8,7 +8,7 @@ import {
 } from '../../stores/ExtraAccountsStore';
 import { useToastStore } from '../../stores/ToastStore';
 import { trackEvent } from '../analytics';
-import { getDigitalPlusProduct, MAX_EXTRA_ACCOUNTS } from '../extraAccounts';
+import { getExtraAccountsProduct, MAX_EXTRA_ACCOUNTS } from '../extraAccounts';
 import { fetchWithDefaultParameters } from '../fetch';
 import { useAccountDataLoader } from './useAccountDataLoader';
 
@@ -188,10 +188,10 @@ export const useExtraAccounts = (): UseExtraAccountsReturn => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const hasStartedLoading = useRef(false);
 
-	const digitalPlusProduct = getDigitalPlusProduct(mdapiResponse);
+	const extraAccountsProduct = getExtraAccountsProduct(mdapiResponse);
 	const subscriptionName =
-		digitalPlusProduct?.subscription.subscriptionId ?? null;
-	const isTestUser = digitalPlusProduct?.isTestUser ?? false;
+		extraAccountsProduct?.subscription.subscriptionId ?? null;
+	const isTestUser = extraAccountsProduct?.isTestUser ?? false;
 
 	const storeHasData = loadingState === ExtraAccountsLoadingState.Loaded;
 

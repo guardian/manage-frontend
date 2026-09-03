@@ -1,13 +1,24 @@
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
+	ProductTier,
 } from '../../shared/productResponse';
-import { isProduct, isSpecificProductType } from '../../shared/productResponse';
+import {
+	isPlusDigitalProductType,
+	isProduct,
+	isSpecificProductType,
+} from '../../shared/productResponse';
 import { PRODUCT_TYPES } from '../../shared/productTypes';
 
 export const MAX_EXTRA_ACCOUNTS = 3;
 
-export const getDigitalPlusProduct = (
+export const isEligibleForExtraAccounts = (
+	mmaProductKey: ProductTier,
+): boolean =>
+	isSpecificProductType(mmaProductKey, PRODUCT_TYPES.digipack) ||
+	isPlusDigitalProductType(mmaProductKey);
+
+export const getExtraAccountsProduct = (
 	mdapiResponse: MembersDataApiResponse | null,
 ): ProductDetail | undefined =>
 	mdapiResponse?.products
@@ -15,12 +26,9 @@ export const getDigitalPlusProduct = (
 		.find(
 			(product) =>
 				!product.subscription.cancelledAt &&
-				isSpecificProductType(
-					product.mmaProductKey,
-					PRODUCT_TYPES.digipack,
-				),
+				isEligibleForExtraAccounts(product.mmaProductKey),
 		);
 
-export const hasDigitalPlus = (
+export const hasExtraAccountsAccess = (
 	mdapiResponse: MembersDataApiResponse | null,
-): boolean => !!getDigitalPlusProduct(mdapiResponse);
+): boolean => !!getExtraAccountsProduct(mdapiResponse);
