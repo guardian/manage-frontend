@@ -11,14 +11,13 @@ import {
 	textSansBold20,
 } from '@guardian/source/foundations';
 import { SvgChevronDownSingle } from '@guardian/source/react-components';
-import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export type FaqItem = {
 	id: string;
 	title: string;
-	content: ReactNode;
+	content: string[];
 };
 
 export type FaqsProps = {
@@ -111,9 +110,16 @@ const chevronCss = (isOpen: boolean) => css`
 `;
 
 const panelCss = css`
+	display: flex;
+	flex-direction: column;
+	gap: ${space[3]}px;
 	${textSans17};
 	color: ${palette.neutral[7]};
 	padding: 0 0 ${space[4]}px 0;
+	margin: 0;
+`;
+
+const paragraphCss = css`
 	margin: 0;
 `;
 
@@ -159,7 +165,11 @@ export const Faqs = ({
 							</button>
 							{isOpen && (
 								<div css={panelCss} id={panelId} role="region">
-									{item.content}
+									{item.content.map((paragraph) => (
+										<p key={paragraph} css={paragraphCss}>
+											{paragraph}
+										</p>
+									))}
 								</div>
 							)}
 						</li>
