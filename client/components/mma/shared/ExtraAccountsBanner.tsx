@@ -10,8 +10,10 @@ import {
 import { Button } from '@guardian/source/react-components';
 import { useNavigate } from 'react-router-dom';
 import { subHeadingCss } from '@/client/styles/headings';
-import { MAX_EXTRA_ACCOUNTS } from '../../../utilities/extraAccounts';
-import { NAV_LINKS } from '../../shared/nav/NavConfig';
+import {
+	extraAccountsPath,
+	MAX_EXTRA_ACCOUNTS,
+} from '../../../utilities/extraAccounts';
 
 const containerCss = css`
 	display: flex;
@@ -85,7 +87,9 @@ export const ExtraAccountsBanner = () => {
 						size="small"
 						priority="primary"
 						cssOverrides={buttonCss}
-						onClick={() => navigate(NAV_LINKS.extraAccounts.link)}
+						// onClick={() => navigate(NAV_LINKS.extraAccounts.link)}
+						// TODO: remove this once the Extra accounts feature ships.
+						onClick={() => navigate(extraAccountsPath())}
 					>
 						Start sharing
 					</Button>
