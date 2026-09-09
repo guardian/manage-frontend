@@ -49,7 +49,7 @@ const extraAccountsFaqItems: FaqItem[] = [
 		id: 'what-information-can-people-see',
 		title: 'What information can people I invite see?',
 		content: [
-			'People you invite will not be able to see your account data, billing information or payment details.',
+			'People you invite will not be able to see your account data, billing information or payment details, only your email address and first name',
 			'Each invited member will have their own individual Guardian account and login. Their account, reading history, activity and preferences will remain separate from yours.',
 		],
 	},
@@ -57,7 +57,7 @@ const extraAccountsFaqItems: FaqItem[] = [
 		id: 'cancel-or-change',
 		title: 'What happens if I cancel or change my subscription?',
 		content: [
-			'If you cancel your Digital plus subscription or change to a different subscription, you will no longer be able to access extra accounts and all invited members will automatically have their access cancelled. Invited members will be notified of this via email.',
+			'If you cancel your subscription or change to a subscription that doesn’t include extra accounts, all invited members will automatically have their access cancelled. Invited members will be notified of this via email.',
 		],
 	},
 ];
@@ -331,7 +331,7 @@ export const ExtraAccounts = () => {
 					<div css={faqsContentCss}>
 						<Faqs
 							items={extraAccountsFaqItems}
-							viewMoreHref="/help-centre"
+							viewMoreHref="https://help.theguardian.com/article/what-are-extra-accounts-and-how-do-i-use-them"
 							viewMoreLabel="See our full FAQs"
 						/>
 					</div>
