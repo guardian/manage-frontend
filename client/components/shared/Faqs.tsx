@@ -32,7 +32,7 @@ const headerCss = css`
 	align-items: baseline;
 	justify-content: space-between;
 	gap: ${space[3]}px;
-	margin-bottom: ${space[3]}px;
+	margin-bottom: ${space[5]}px;
 `;
 
 const headingCss = css`
@@ -59,7 +59,7 @@ const viewMoreCss = css`
 const listCss = css`
 	list-style: none;
 	margin: 0;
-	padding: 0 ${space[3]}px;
+	padding: 0 ${space[4]}px;
 	border: 1px solid ${palette.neutral[86]};
 	border-radius: ${space[2]}px;
 `;
@@ -78,6 +78,7 @@ const toggleCss = css`
 	justify-content: space-between;
 	gap: ${space[3]}px;
 	width: 100%;
+	min-height: ${space[16]}px;
 	padding: ${space[4]}px 0;
 	border: none;
 	background: transparent;
@@ -102,9 +103,12 @@ const chevronCss = (isOpen: boolean) => css`
 	transform: ${isOpen ? 'rotate(180deg)' : 'none'};
 	transition: transform 0.2s ease;
 
+	/* Source's chevron has 3px of padding on each side of its viewBox, so it is
+	   rendered at 30px and inset by the difference to keep a 24px footprint. */
 	svg {
-		width: ${space[5]}px;
-		height: ${space[5]}px;
+		width: 30px;
+		height: 30px;
+		margin: -3px;
 		fill: ${palette.neutral[7]};
 	}
 `;
@@ -129,10 +133,14 @@ export const Faqs = ({
 	heading = 'FAQs',
 	viewMoreLabel = 'view more FAQs',
 }: FaqsProps) => {
-	const [openId, setOpenId] = useState<string | null>(null);
+	const [openIds, setOpenIds] = useState<string[]>([]);
 
 	const toggleItem = (id: string) => {
-		setOpenId((current) => (current === id ? null : id));
+		setOpenIds((current) =>
+			current.includes(id)
+				? current.filter((openId) => openId !== id)
+				: [...current, id],
+		);
 	};
 
 	return (
@@ -146,7 +154,7 @@ export const Faqs = ({
 
 			<ul css={listCss}>
 				{items.map((item) => {
-					const isOpen = openId === item.id;
+					const isOpen = openIds.includes(item.id);
 					const panelId = `faq-panel-${item.id}`;
 
 					return (

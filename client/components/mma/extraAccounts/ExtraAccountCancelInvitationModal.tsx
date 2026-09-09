@@ -8,6 +8,7 @@ import {
 	textSansBold17,
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
+import type { ReactNode } from 'react';
 import { useState } from 'react';
 import type { ExtraAccount } from '../../../stores/ExtraAccountsStore';
 import { useToastStore } from '../../../stores/ToastStore';
@@ -52,7 +53,7 @@ const containerCss = css`
 	color: ${palette.neutral[7]};
 
 	${from.tablet} {
-		max-width: 60%;
+		max-width: 680px;
 		padding: ${space[3]}px ${space[5]}px ${space[6]}px ${space[5]}px;
 	}
 `;
@@ -67,8 +68,8 @@ const closeButtonCss = css`
 	margin-left: auto;
 
 	svg {
-		width: 30px;
-		height: 30px;
+		width: 36px;
+		height: 36px;
 		fill: currentColor;
 	}
 `;
@@ -121,7 +122,7 @@ interface ModalCopy {
 	confirmLabel: string;
 	dismissLabel: string;
 	instigatorLabel: string;
-	successMessage: string;
+	successMessage: ReactNode;
 	confirm: () => Promise<boolean>;
 }
 
@@ -184,7 +185,11 @@ export const ExtraAccountCancelInvitationModal = ({
 				confirmLabel: 'Confirm removal',
 				dismissLabel: 'Keep access',
 				instigatorLabel: 'Remove access',
-				successMessage: `Access removed for ${account.email}`,
+				successMessage: (
+					<>
+						Access removed for <strong>{account.email}</strong>
+					</>
+				),
 				confirm: () => removeAccess(account.secondaryIdentityId),
 		  }
 		: {
@@ -192,7 +197,12 @@ export const ExtraAccountCancelInvitationModal = ({
 				confirmLabel: 'Confirm cancellation',
 				dismissLabel: 'Keep invitation',
 				instigatorLabel: 'Cancel invitation',
-				successMessage: `Invitation cancelled for ${account.email}`,
+				successMessage: (
+					<>
+						Invitation cancelled for{' '}
+						<strong>{account.email}</strong>
+					</>
+				),
 				confirm: () => cancelInvitation(account.invitationCode),
 		  };
 

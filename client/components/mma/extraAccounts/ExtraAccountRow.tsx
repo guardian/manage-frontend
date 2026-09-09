@@ -24,8 +24,8 @@ import { ExtraAccountInviteForm } from './ExtraAccountInviteForm';
 const rowCss = css`
 	display: flex;
 	align-items: center;
-	gap: ${space[2]}px;
-	padding: ${space[3]}px 0;
+	gap: ${space[4]}px;
+	padding: ${space[4]}px 0;
 `;
 
 const rowCssOverrides = css`
@@ -35,8 +35,8 @@ const rowCssOverrides = css`
 const userRowCss = css`
 	display: flex;
 	align-items: flex-start;
-	gap: ${space[2]}px;
-	padding: ${space[3]}px 0;
+	gap: ${space[4]}px;
+	padding: ${space[4]}px 0;
 
 	${from.tablet} {
 		align-items: center;
@@ -54,6 +54,14 @@ const avatarCss = css`
 	}
 `;
 
+const sourceAvatarCss = css`
+	svg {
+		width: 84px;
+		height: 84px;
+		margin: -14px;
+	}
+`;
+
 const identityCss = css`
 	display: flex;
 	flex-direction: column;
@@ -67,6 +75,7 @@ const identityCss = css`
 		flex-direction: row;
 		align-items: center;
 		margin-top: 0;
+		margin-right: ${space[5]}px;
 		gap: ${space[3]}px;
 		flex: 1;
 	}
@@ -133,7 +142,7 @@ const Avatar = ({
 	}
 
 	return (
-		<span css={[avatarCss, cssOverrides]}>
+		<span css={[avatarCss, sourceAvatarCss, cssOverrides]}>
 			<SvgPersonRoundFilled
 				theme={{
 					fill: palette.brand[400],
@@ -191,7 +200,12 @@ export const ExtraAccountRow = ({
 					onSent={(email) => {
 						setIsFormOpen(false);
 						showToast({
-							message: `Invitation successfully sent to ${email}`,
+							message: (
+								<>
+									Invitation successfully sent to{' '}
+									<strong>{email}</strong>
+								</>
+							),
 						});
 					}}
 				/>

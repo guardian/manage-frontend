@@ -10,19 +10,18 @@ import {
 import { Button } from '@guardian/source/react-components';
 import { useNavigate } from 'react-router-dom';
 import { subHeadingCss } from '@/client/styles/headings';
-import {
-	extraAccountsPath,
-	MAX_EXTRA_ACCOUNTS,
-} from '../../../utilities/extraAccounts';
+import { extraAccountsPath } from '../../../utilities/extraAccounts';
 
 const containerCss = css`
 	display: flex;
 	flex-direction: column-reverse;
 	border-radius: ${space[2]}px;
 	background-color: ${palette.neutral[97]};
+	overflow: hidden;
 
 	${from.tablet} {
-		flex-direction: row;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 40%;
 	}
 `;
 
@@ -53,17 +52,35 @@ const buttonCss = css`
 // final asset later.
 const imagePlaceholderCss = css`
 	display: block;
-	align-self: center;
 	width: 100%;
-	aspect-ratio: 5 / 3;
-	background-color: ${palette.neutral[86]};
-	border-radius: 0 ${space[2]}px ${space[2]}px 0;
+	height: auto;
 
 	${from.tablet} {
-		height: 100%;
-		aspect-ratio: 4 / 3;
+		justify-self: end;
+		width: auto;
+		max-width: 100%;
+		height: 0;
+		min-height: 100%;
 	}
 `;
+
+const ExtraAccountsBannerPlaceholder = () => (
+	<svg
+		css={imagePlaceholderCss}
+		width="400"
+		height="300"
+		viewBox="0 0 400 300"
+		preserveAspectRatio="xMidYMid slice"
+		xmlns="http://www.w3.org/2000/svg"
+		aria-hidden="true"
+		focusable="false"
+	>
+		<rect width="400" height="300" fill={palette.neutral[86]} />
+		<text x="16" y="32" fill={palette.neutral[7]} fontSize="16">
+			Placeholder
+		</text>
+	</svg>
+);
 
 export const ExtraAccountsBanner = () => {
 	const navigate = useNavigate();
@@ -77,7 +94,7 @@ export const ExtraAccountsBanner = () => {
 					<p>
 						As part of your Digital plus rewards, you can start
 						sharing your subscription with up to{' '}
-						<strong>{MAX_EXTRA_ACCOUNTS} other people</strong>.
+						<strong>three other people</strong>.
 					</p>
 					<p>
 						Each person can enjoy full access to our supporter
@@ -94,7 +111,7 @@ export const ExtraAccountsBanner = () => {
 						Start sharing
 					</Button>
 				</div>
-				<div css={imagePlaceholderCss}>Placeholder</div>
+				<ExtraAccountsBannerPlaceholder />
 			</div>
 		</>
 	);

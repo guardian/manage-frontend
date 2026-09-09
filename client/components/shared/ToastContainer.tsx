@@ -1,4 +1,3 @@
-import type { SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import {
 	breakpoints,
@@ -28,7 +27,7 @@ const toastVariants: Record<ToastSeverity, ToastVariant> = {
 	success: {
 		icon: <SvgTickRound />,
 		accentColour: palette.success[400],
-		backgroundColour: '#C2F0D5',
+		backgroundColour: '#EFFBF4',
 	},
 	error: {
 		icon: <SvgAlertRound />,
@@ -61,7 +60,7 @@ const containerCss = css`
 const toastCss = (variant: ToastVariant) => css`
 	display: flex;
 	align-items: center;
-	gap: ${space[1]}px;
+	gap: ${space[2]}px;
 	padding: ${space[4]}px;
 	border-radius: ${space[2]}px;
 	background-color: ${variant.backgroundColour};
@@ -77,16 +76,22 @@ const iconWrapperCss = (variant: ToastVariant) => css`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-shrink: 0;
 
+	/* Source's round icons only fill two thirds of their viewBox, so they are
+	   rendered at 1.5x and inset by the difference to keep a 24px footprint. */
 	svg {
 		fill: ${variant.accentColour};
-		width: ${space[8]}px;
-		height: ${space[8]}px;
+		width: 36px;
+		height: 36px;
+		margin: -6px;
 	}
 `;
 
 const bodyCss = css`
 	flex: 1;
+	min-width: 0;
+	overflow-wrap: anywhere;
 	${textSans17};
 	line-height: 1.35;
 	color: ${palette.neutral[0]};
@@ -95,14 +100,6 @@ const bodyCss = css`
 		${textSansBold17};
 	}
 `;
-
-const ToastBody = ({
-	children,
-	cssOverrides,
-}: {
-	children: string;
-	cssOverrides: SerializedStyles;
-}) => <div css={cssOverrides}>{children}</div>;
 
 const closeButtonCss = css`
 	border: none;
@@ -133,13 +130,7 @@ export const ToastContainer = () => {
 		<div css={containerCss} aria-live="polite">
 			<div css={toastCss(variant)} role="status">
 				<div css={iconWrapperCss(variant)}>{variant.icon}</div>
-				{typeof current.message === 'string' ? (
-					<ToastBody cssOverrides={bodyCss}>
-						{current.message}
-					</ToastBody>
-				) : (
-					current.message
-				)}
+				<div css={bodyCss}>{current.message}</div>
 				<button
 					type="button"
 					css={closeButtonCss}

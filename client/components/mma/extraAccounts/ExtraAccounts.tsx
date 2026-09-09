@@ -20,7 +20,6 @@ import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
 import { InvitationAvailableIcon } from '../shared/assets/InvitationAvailableIcon';
-import { InvitationSentIcon } from '../shared/assets/InvitationSentIcon';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { ExtraAccountRow } from './ExtraAccountRow';
 
@@ -110,10 +109,25 @@ const bodyCss = css`
 
 const dotsRowCss = css`
 	display: flex;
+	align-items: center;
+	gap: ${space[1]}px;
+	margin: ${space[1]}px 0;
+`;
+
+const dotCss = css`
+	display: flex;
 
 	svg {
 		width: ${space[6]}px;
 		height: ${space[6]}px;
+	}
+`;
+
+const sourceDotCss = css`
+	svg {
+		width: 36px;
+		height: 36px;
+		margin: -6px;
 	}
 `;
 
@@ -143,15 +157,18 @@ const imagePlaceholderCss = css`
 	}
 `;
 
+const GAP_ABOVE_FAQS = 72;
+
 const faqsBandCss = css`
 	width: 100%;
 	background-color: ${palette.neutral[97]};
 
+	margin-top: calc(${GAP_ABOVE_FAQS}px - ${space[12]}px);
 	padding-top: ${space[9]}px;
 	padding-bottom: ${space[12]}px;
 
 	${from.desktop} {
-		margin-top: -${space[10]}px;
+		margin-top: calc(${GAP_ABOVE_FAQS}px - ${space[24]}px);
 		padding-top: ${space[14]}px;
 		padding-bottom: ${space[24]}px;
 	}
@@ -258,25 +275,29 @@ export const ExtraAccounts = () => {
 								{accounts.map((account, index) => {
 									if (account.status === 'empty') {
 										return (
-											<InvitationAvailableIcon
-												key={index}
-											/>
-										);
-									}
-
-									if (account.status === 'pending') {
-										return (
-											<InvitationSentIcon key={index} />
+											<span key={index} css={dotCss}>
+												<InvitationAvailableIcon />
+											</span>
 										);
 									}
 
 									return (
-										<SvgTickRound
+										<span
 											key={index}
-											theme={{
-												fill: palette.success[400],
-											}}
-										/>
+											css={[dotCss, sourceDotCss]}
+										>
+											<SvgTickRound
+												theme={{
+													fill:
+														account.status ===
+														'pending'
+															? palette
+																	.specialReportAlt[300]
+															: palette
+																	.success[400],
+												}}
+											/>
+										</span>
 									);
 								})}
 							</div>
