@@ -40,6 +40,7 @@ export const isEligibleForExtraAccounts = (
 	mmaProductKey: ProductTier,
 ): boolean =>
 	isSpecificProductType(mmaProductKey, PRODUCT_TYPES.digipack) ||
+	isSpecificProductType(mmaProductKey, PRODUCT_TYPES.guardianweekly) ||
 	isPlusDigitalProductType(mmaProductKey);
 
 export const getExtraAccountsProduct = (

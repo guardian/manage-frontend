@@ -78,8 +78,6 @@ const iconWrapperCss = (variant: ToastVariant) => css`
 	justify-content: center;
 	flex-shrink: 0;
 
-	/* Source's round icons only fill two thirds of their viewBox, so they are
-	   rendered at 1.5x and inset by the difference to keep a 24px footprint. */
 	svg {
 		fill: ${variant.accentColour};
 		width: 36px;

@@ -3,6 +3,7 @@ import { baseDigitalPack } from '../../fixtures/productBuilder/baseProducts';
 import { ProductBuilder } from '../../fixtures/productBuilder/productBuilder';
 import {
 	digitalPackPaidByDirectDebit,
+	guardianWeeklyPaidByCard,
 	homeDelivery,
 	homeDeliverySaturdayPlus,
 	nationalDeliveryPlus,
@@ -17,7 +18,7 @@ import {
 } from '../../utilities/extraAccounts';
 
 describe('isEligibleForExtraAccounts', () => {
-	it('includes Digital plus and newspaper + Digital products', () => {
+	it('includes Digital plus, newspaper + Digital, and Guardian Weekly products', () => {
 		expect(isEligibleForExtraAccounts('Digital Pack')).toBe(true);
 		expect(isEligibleForExtraAccounts('Newspaper Delivery + Digital')).toBe(
 			true,
@@ -33,6 +34,10 @@ describe('isEligibleForExtraAccounts', () => {
 		expect(
 			isEligibleForExtraAccounts('Newspaper Digital Voucher + Digital'),
 		).toBe(true);
+		expect(isEligibleForExtraAccounts('Guardian Weekly - Domestic')).toBe(
+			true,
+		);
+		expect(isEligibleForExtraAccounts('Guardian Weekly Zone A')).toBe(true);
 	});
 
 	it('excludes products without extra accounts', () => {
@@ -79,6 +84,13 @@ describe('getExtraAccountsProduct', () => {
 		);
 
 		expect(getExtraAccountsProduct(response)).toEqual(plusDigital);
+	});
+
+	it('returns an active Guardian Weekly subscription', () => {
+		const guardianWeekly = guardianWeeklyPaidByCard();
+		const response = toMembersDataApiResponse(guardianWeekly);
+
+		expect(getExtraAccountsProduct(response)).toEqual(guardianWeekly);
 	});
 
 	it('returns a digital voucher + Digital subscription', () => {
