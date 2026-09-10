@@ -24,11 +24,12 @@ import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { formatAmount } from '@/client/utilities/utils';
 import { appendCorrectPluralisation } from '@/shared/generalTypes';
+import { number2words } from '@/shared/numberUtils';
 import type { PaidSubscriptionPlan } from '@/shared/productResponse';
 import { getMainPlan } from '@/shared/productResponse';
 import { dateString } from '../../../../../../shared/dates';
 import { DefaultLoadingView } from '../../../shared/asyncComponents/DefaultLoadingView';
-import { benefitsConfiguration } from '../../../shared/benefits/BenefitsConfiguration';
+import { digipackSaveOfferBenefits } from '../../../shared/benefits/BenefitsConfiguration';
 import { benefitsCss } from '../../../shared/benefits/BenefitsStyles';
 import { Heading } from '../../../shared/Heading';
 import type { CancellationRouterState } from '../../CancellationContainer';
@@ -53,7 +54,7 @@ const DiscountOffer = ({
 	handleDiscountOfferClick,
 	newPrice,
 }: DiscountOfferProps) => {
-	const benefits = benefitsConfiguration['digipack'];
+	const benefits = digipackSaveOfferBenefits;
 
 	return (
 		<Stack
@@ -128,7 +129,9 @@ const DiscountOffer = ({
 };
 
 function getDiscountPeriod(discountPreview: DiscountPreviewResponse): string {
-	return `${discountPreview.upToPeriods} ${appendCorrectPluralisation(
+	return `${number2words(
+		discountPreview.upToPeriods,
+	)} ${appendCorrectPluralisation(
 		discountPreview.upToPeriodsType,
 		discountPreview.upToPeriods,
 	)}`;

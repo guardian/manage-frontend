@@ -8,11 +8,40 @@ import {
 } from '../../stores/ExtraAccountsStore';
 import { useToastStore } from '../../stores/ToastStore';
 import { trackEvent } from '../analytics';
-import { getDigitalPlusProduct, MAX_EXTRA_ACCOUNTS } from '../extraAccounts';
+import { getExtraAccountsProduct, MAX_EXTRA_ACCOUNTS } from '../extraAccounts';
 import { fetchWithDefaultParameters } from '../fetch';
 import { useAccountDataLoader } from './useAccountDataLoader';
 
 const EXTRA_ACCOUNTS_BASE = '/api/extra-accounts';
+
+const errorMessageFromResponseBody = (
+	body: string,
+	fallback: string,
+): string => {
+	const trimmed = body.trim();
+	if (!trimmed) {
+		return fallback;
+	}
+
+	try {
+		const parsed: unknown = JSON.parse(trimmed);
+		if (
+			typeof parsed === 'object' &&
+			parsed !== null &&
+			'message' in parsed &&
+			typeof parsed.message === 'string'
+		) {
+			const message = parsed.message.trim();
+			if (message) {
+				return message;
+			}
+		}
+	} catch {
+		// Not JSON; use the raw body.
+	}
+
+	return trimmed;
+};
 
 const requestHeaders = (isTestUser: boolean) => ({
 	'Content-Type': 'application/json',
@@ -115,9 +144,12 @@ export const sendInvitationRequest = async (
 		},
 	);
 	if (!response.ok) {
-		const message = await response.text().catch(() => '');
+		const body = await response.text().catch(() => '');
 		throw new Error(
-			message || `Failed to send invitation (${response.status})`,
+			errorMessageFromResponseBody(
+				body,
+				`Failed to send invitation (${response.status})`,
+			),
 		);
 	}
 };
@@ -134,9 +166,12 @@ export const deleteInvitationRequest = async (
 		},
 	);
 	if (!response.ok) {
-		const message = await response.text().catch(() => '');
+		const body = await response.text().catch(() => '');
 		throw new Error(
-			message || `Failed to delete invitation (${response.status})`,
+			errorMessageFromResponseBody(
+				body,
+				`Failed to delete invitation (${response.status})`,
+			),
 		);
 	}
 };
@@ -154,9 +189,12 @@ export const deleteSecondaryUserRequest = async (
 		},
 	);
 	if (!response.ok) {
-		const message = await response.text().catch(() => '');
+		const body = await response.text().catch(() => '');
 		throw new Error(
-			message || `Failed to remove access (${response.status})`,
+			errorMessageFromResponseBody(
+				body,
+				`Failed to remove access (${response.status})`,
+			),
 		);
 	}
 };
@@ -188,10 +226,10 @@ export const useExtraAccounts = (): UseExtraAccountsReturn => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const hasStartedLoading = useRef(false);
 
-	const digitalPlusProduct = getDigitalPlusProduct(mdapiResponse);
+	const extraAccountsProduct = getExtraAccountsProduct(mdapiResponse);
 	const subscriptionName =
-		digitalPlusProduct?.subscription.subscriptionId ?? null;
-	const isTestUser = digitalPlusProduct?.isTestUser ?? false;
+		extraAccountsProduct?.subscription.subscriptionId ?? null;
+	const isTestUser = extraAccountsProduct?.isTestUser ?? false;
 
 	const storeHasData = loadingState === ExtraAccountsLoadingState.Loaded;
 

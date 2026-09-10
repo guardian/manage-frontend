@@ -161,7 +161,7 @@ export const SecondaryUserSubscriptionDetails = ({
 						You’ve been given access to Digital plus by{' '}
 						{primarySubscriber.firstName}.
 						<br />
-						Your account and activity is not shared - your reading
+						Your account and activity is not shared and your reading
 						experience is completely personal to you.
 					</p>
 				</div>
@@ -172,7 +172,6 @@ export const SecondaryUserSubscriptionDetails = ({
 						priority="tertiary"
 						cssOverrides={sharedMembershipLeaveButtonCss}
 						onClick={() => {
-							// TODO Tracking?
 							navigate(`/digital-shared`, {
 								state: { subscriptionName, primarySubscriber },
 							});

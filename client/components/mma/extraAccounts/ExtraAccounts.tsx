@@ -20,34 +20,45 @@ import { GenericErrorScreen } from '../../shared/GenericErrorScreen';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 import { PageContainer } from '../Page';
 import { InvitationAvailableIcon } from '../shared/assets/InvitationAvailableIcon';
-import { InvitationSentIcon } from '../shared/assets/InvitationSentIcon';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
 import { ExtraAccountRow } from './ExtraAccountRow';
 
 const extraAccountsFaqItems: FaqItem[] = [
 	{
-		id: 'what-is-extra-accounts',
-		title: 'What is Extra accounts?',
-		content:
-			'Multiple accounts is a subscription benefit that allows Digital Plus subscribers to share their subscription access with up to three other people.',
+		id: 'what-are-extra-accounts',
+		title: 'What are extra accounts?',
+		content: [
+			'Extra accounts is a subscription benefit that allows eligible subscribers to share their Guardian access with up to three other people.',
+		],
 	},
 	{
 		id: 'who-can-i-invite',
-		title: 'Who can I invite to join Extra accounts?',
-		content:
-			'You can invite friends, family, or anyone you choose. Each person needs their own Guardian account to accept the invitation.',
+		title: 'Who can I invite to join?',
+		content: [
+			'You can invite friends to join your subscription. They must be aged 18 or older and have a valid email address.',
+		],
 	},
 	{
 		id: 'what-benefits',
 		title: 'What benefits will invited members receive?',
-		content:
-			'Invited members get access to the same Digital Plus benefits as you, including ad-free reading and exclusive features.',
+		content: [
+			'Each invited member will have an individual account with their own login. Invited users will receive the same access to the Guardian as the primary account holder, including the Guardian app, Feast, Editions, ad-free reading and more.',
+		],
+	},
+	{
+		id: 'what-information-can-people-see',
+		title: 'What information can people I invite see?',
+		content: [
+			'People you invite will not be able to see your account data, billing information or payment details, only your email address and first name',
+			'Each invited member will have their own individual Guardian account and login. Their account, reading history, activity and preferences will remain separate from yours.',
+		],
 	},
 	{
 		id: 'cancel-or-change',
 		title: 'What happens if I cancel or change my subscription?',
-		content:
-			'If you cancel or change your subscription, invited members will lose access when your Extra accounts benefit ends.',
+		content: [
+			'If you cancel your subscription or change to a subscription that doesn’t include extra accounts, all invited members will automatically have their access cancelled. Invited members will be notified of this via email.',
+		],
 	},
 ];
 
@@ -98,10 +109,25 @@ const bodyCss = css`
 
 const dotsRowCss = css`
 	display: flex;
+	align-items: center;
+	gap: ${space[1]}px;
+	margin: ${space[1]}px 0;
+`;
+
+const dotCss = css`
+	display: flex;
 
 	svg {
 		width: ${space[6]}px;
 		height: ${space[6]}px;
+	}
+`;
+
+const sourceDotCss = css`
+	svg {
+		width: 36px;
+		height: 36px;
+		margin: -6px;
 	}
 `;
 
@@ -131,15 +157,18 @@ const imagePlaceholderCss = css`
 	}
 `;
 
+const GAP_ABOVE_FAQS = 72;
+
 const faqsBandCss = css`
 	width: 100%;
 	background-color: ${palette.neutral[97]};
 
+	margin-top: calc(${GAP_ABOVE_FAQS}px - ${space[12]}px);
 	padding-top: ${space[9]}px;
 	padding-bottom: ${space[12]}px;
 
 	${from.desktop} {
-		margin-top: -${space[10]}px;
+		margin-top: calc(${GAP_ABOVE_FAQS}px - ${space[24]}px);
 		padding-top: ${space[14]}px;
 		padding-bottom: ${space[24]}px;
 	}
@@ -217,13 +246,15 @@ export const ExtraAccounts = () => {
 											are not shared with the people you
 											invite.
 										</p>
-										<p>You can remove access at anytime.</p>
+										<p>
+											You can remove access at any time.
+										</p>
 									</>
 								) : (
 									<>
 										<p>
-											You have up to {MAX_EXTRA_ACCOUNTS}{' '}
-											extra accounts to share.
+											You have up to three extra accounts
+											to share.
 										</p>
 										<p>
 											Each person gets their own account
@@ -244,32 +275,36 @@ export const ExtraAccounts = () => {
 								{accounts.map((account, index) => {
 									if (account.status === 'empty') {
 										return (
-											<InvitationAvailableIcon
-												key={index}
-											/>
-										);
-									}
-
-									if (account.status === 'pending') {
-										return (
-											<InvitationSentIcon key={index} />
+											<span key={index} css={dotCss}>
+												<InvitationAvailableIcon />
+											</span>
 										);
 									}
 
 									return (
-										<SvgTickRound
+										<span
 											key={index}
-											theme={{
-												fill: palette.success[400],
-											}}
-										/>
+											css={[dotCss, sourceDotCss]}
+										>
+											<SvgTickRound
+												theme={{
+													fill:
+														account.status ===
+														'pending'
+															? palette
+																	.specialReportAlt[300]
+															: palette
+																	.success[400],
+												}}
+											/>
+										</span>
 									);
 								})}
 							</div>
 
 							<p css={usageCss}>
 								<strong>
-									{usedCount}/{MAX_EXTRA_ACCOUNTS} invitation
+									{usedCount}/{MAX_EXTRA_ACCOUNTS} invitations
 								</strong>{' '}
 								being used
 							</p>
@@ -296,7 +331,8 @@ export const ExtraAccounts = () => {
 					<div css={faqsContentCss}>
 						<Faqs
 							items={extraAccountsFaqItems}
-							viewMoreHref="/help-centre"
+							viewMoreHref="https://help.theguardian.com/article/what-are-extra-accounts-and-how-do-i-use-them"
+							viewMoreLabel="See our full FAQs"
 						/>
 					</div>
 				</div>

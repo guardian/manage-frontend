@@ -78,6 +78,18 @@ export const ExtraAccountInviteForm = ({
 		isFormOpen && windowWidthIsGreaterThan('tablet');
 	const isFormOpenOnTablet = isFormOpen && windowWidthIsLessThan('tablet');
 
+	const resetForm = () => {
+		setEmail('');
+		setConfirmedConsent(false);
+		setEmailError(undefined);
+		setConsentError(undefined);
+	};
+
+	const handleCancel = () => {
+		resetForm();
+		onCancel();
+	};
+
 	const handleSend = async () => {
 		const trimmedEmail = email.trim();
 		const isEmailValid = !!trimmedEmail && isEmail(trimmedEmail);
@@ -102,6 +114,7 @@ export const ExtraAccountInviteForm = ({
 
 		const ok = await sendInvitation(trimmedEmail);
 		if (ok) {
+			resetForm();
 			onSent(trimmedEmail);
 		}
 	};
@@ -167,7 +180,7 @@ export const ExtraAccountInviteForm = ({
 				>
 					Send invitation
 				</Button>
-				<Button priority="tertiary" size="small" onClick={onCancel}>
+				<Button priority="tertiary" size="small" onClick={handleCancel}>
 					Cancel
 				</Button>
 			</div>

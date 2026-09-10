@@ -1,4 +1,5 @@
 import type { Decorator, Meta, StoryObj } from '@storybook/react';
+import type { ReactNode } from 'react';
 import type { ToastSeverity } from '../../stores/ToastStore';
 import { useToastStore } from '../../stores/ToastStore';
 import { ToastContainer } from './ToastContainer';
@@ -15,7 +16,7 @@ const resetToastStore = () => {
 	});
 };
 
-const showStaticToast = (message: string, severity: ToastSeverity) => {
+const showStaticToast = (message: ReactNode, severity: ToastSeverity) => {
 	resetToastStore();
 	useToastStore.setState({
 		isOpen: true,
@@ -41,7 +42,10 @@ export default {
 export const Success: StoryObj<typeof ToastContainer> = {
 	render: () => {
 		showStaticToast(
-			'Invitation successfully sent to pending@example.com',
+			<>
+				Invitation successfully sent to{' '}
+				<strong>pending@example.com</strong>
+			</>,
 			'success',
 		);
 		return <ToastContainer />;

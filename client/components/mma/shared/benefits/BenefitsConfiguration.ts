@@ -65,18 +65,37 @@ const productPlusdigitalBenefits = [
 	},
 ];
 
-const digitalPlusBenefits = [
+export const digitalPlusSecondaryUserBenefits = [
+	{
+		description:
+			'Unlimited access to the premium Guardian app and Feast app',
+	},
+	newspaperArchiveBenefit,
+	{ description: 'Daily digital Guardian newspaper' },
+	{
+		description: 'Guardian Weekly and Long Read digital magazines',
+	},
 	{ description: 'Far fewer asks for support' },
 	{ description: 'Ad-free reading on all your devices' },
-	{ description: 'Unlimited access to the premium Guardian and Feast apps' },
 	{
 		description:
 			'Exclusive newsletter for supporters, sent every week from the Guardian newsroom',
 	},
-	newspaperArchiveBenefit,
+];
+
+const digitalPlusBenefits = [
+	{ description: 'Three extra accounts to share' },
+	...digitalPlusSecondaryUserBenefits,
+];
+
+export const digipackSaveOfferBenefits = [
 	{
 		description:
-			'Access to the daily digital newspaper and our suite of e-magazines, including Guardian Weekly and The Long Read',
+			'Continue to share your extra accounts and keep giving access to your friends and family',
+	},
+	{
+		description:
+			'Keep all your supporter extras, including unlimited and uninterrupted ad-free reading',
 	},
 ];
 

@@ -9,21 +9,19 @@ import {
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
 import { useNavigate } from 'react-router-dom';
-import {
-	extraAccountsPath,
-	MAX_EXTRA_ACCOUNTS,
-} from '../../../utilities/extraAccounts';
+import { subHeadingCss } from '@/client/styles/headings';
+import { extraAccountsPath } from '../../../utilities/extraAccounts';
 
 const containerCss = css`
-	margin-top: ${space[10]}px;
-
 	display: flex;
 	flex-direction: column-reverse;
 	border-radius: ${space[2]}px;
 	background-color: ${palette.neutral[97]};
+	overflow: hidden;
 
 	${from.tablet} {
-		flex-direction: row;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 40%;
 	}
 `;
 
@@ -54,44 +52,67 @@ const buttonCss = css`
 // final asset later.
 const imagePlaceholderCss = css`
 	display: block;
-	align-self: center;
 	width: 100%;
-	aspect-ratio: 5 / 3;
-	background-color: ${palette.neutral[86]};
-	border-radius: 0 ${space[2]}px ${space[2]}px 0;
+	height: auto;
 
 	${from.tablet} {
-		height: 100%;
-		aspect-ratio: 4 / 3;
+		justify-self: end;
+		width: auto;
+		max-width: 100%;
+		height: 0;
+		min-height: 100%;
 	}
 `;
+
+const ExtraAccountsBannerPlaceholder = () => (
+	<svg
+		css={imagePlaceholderCss}
+		width="400"
+		height="300"
+		viewBox="0 0 400 300"
+		preserveAspectRatio="xMidYMid slice"
+		xmlns="http://www.w3.org/2000/svg"
+		aria-hidden="true"
+		focusable="false"
+	>
+		<rect width="400" height="300" fill={palette.neutral[86]} />
+		<text x="16" y="32" fill={palette.neutral[7]} fontSize="16">
+			Placeholder
+		</text>
+	</svg>
+);
 
 export const ExtraAccountsBanner = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div css={containerCss}>
-			<div css={copyContainerCss}>
-				<h4>Extra accounts</h4>
-				<p>
-					As part of your Digital plus rewards, you can start sharing
-					your subscription with up to{' '}
-					<strong>{MAX_EXTRA_ACCOUNTS} other people</strong>.
-				</p>
-				<p>
-					Each person can enjoy full access to our supporter extras
-					through their own individual account.
-				</p>
-				<Button
-					size="small"
-					priority="primary"
-					cssOverrides={buttonCss}
-					onClick={() => navigate(extraAccountsPath())}
-				>
-					Start sharing
-				</Button>
+		<>
+			<h2 css={subHeadingCss}>Share your digital plus access</h2>
+			<div css={containerCss}>
+				<div css={copyContainerCss}>
+					<h4>Extra accounts</h4>
+					<p>
+						As part of your Digital plus rewards, you can start
+						sharing your subscription with up to{' '}
+						<strong>three other people</strong>.
+					</p>
+					<p>
+						Each person can enjoy full access to our supporter
+						extras through their own individual account.
+					</p>
+					<Button
+						size="small"
+						priority="primary"
+						cssOverrides={buttonCss}
+						// onClick={() => navigate(NAV_LINKS.extraAccounts.link)}
+						// TODO: remove this once the Extra accounts feature ships.
+						onClick={() => navigate(extraAccountsPath())}
+					>
+						Start sharing
+					</Button>
+				</div>
+				<ExtraAccountsBannerPlaceholder />
 			</div>
-			<div css={imagePlaceholderCss}>Placeholder</div>
-		</div>
+		</>
 	);
 };

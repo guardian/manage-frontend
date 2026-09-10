@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import type { MultipleAccountPrimaryUser } from '@/shared/productResponse';
 import { getSpecificProductTypeFromProductKey } from '@/shared/productResponse';
+import { digitalPlusSecondaryUserBenefits } from '../shared/benefits/BenefitsConfiguration';
 import { Card } from '../shared/Card';
 import {
 	getSecondaryUserBenefitsCopy,
@@ -40,6 +41,7 @@ export const SecondaryAccountProductCard = ({
 				cardConfig={cardConfig}
 				specificProductType={specificProductType}
 				mainPlan={mainPlan}
+				overrideBenefits={digitalPlusSecondaryUserBenefits}
 				overrideBenefitsText={overrideBenefitsText}
 			/>
 

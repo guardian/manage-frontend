@@ -10,6 +10,7 @@ import type {
 import { getSpecificProductTypeFromProductKey } from '@/shared/productResponse';
 import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { PageContainer } from '../../Page';
+import { digitalPlusSecondaryUserBenefits } from '../../shared/benefits/BenefitsConfiguration';
 import { BenefitsToggle } from '../../shared/benefits/BenefitsToggle';
 import {
 	sectionHeadingCss,
@@ -78,6 +79,7 @@ export const DigitalShared = () => {
 						<BenefitsToggle
 							productType={specificProductType.productType}
 							subscriptionPlan={mainPlan}
+							overrideBenefits={digitalPlusSecondaryUserBenefits}
 							alwaysShowBenefits
 						/>
 					</div>

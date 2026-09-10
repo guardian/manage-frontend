@@ -46,7 +46,7 @@ export const DiscountConfirmed: StoryObj<typeof DigiSubDiscountConfirmed> = {
 				user: { email: 'test@test.com' },
 				eligibleForDiscount: true,
 				discountedPrice: 111.75,
-				discountPeriod: '12 months',
+				discountPeriod: 'twelve months',
 			},
 		},
 	},
@@ -61,7 +61,7 @@ export const EligibleForDiscount: StoryObj<typeof DigiSubThankYouOffer> = {
 			http.post('/api/discounts/preview-discount', () => {
 				return HttpResponse.json({
 					discountedPrice: 111.75,
-					upToPeriods: '12',
+					upToPeriods: 12,
 					upToPeriodsType: 'month',
 					firstDiscountedPaymentDate: '2024-05-30',
 					nextNonDiscountedPaymentDate: '2024-07-30',
