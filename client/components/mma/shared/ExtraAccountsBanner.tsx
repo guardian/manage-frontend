@@ -48,14 +48,11 @@ const buttonCss = css`
 	}
 `;
 
-// Placeholder image slot - a correctly sized SVG to be replaced with the
-// final asset later.
 const imagePlaceholderCss = css`
-	display: block;
-	width: 100%;
-	height: auto;
+	display: none;
 
 	${from.tablet} {
+		display: block;
 		justify-self: end;
 		width: auto;
 		max-width: 100%;
@@ -63,6 +60,34 @@ const imagePlaceholderCss = css`
 		min-height: 100%;
 	}
 `;
+
+const mobileImagePlaceholderCss = css`
+	display: block;
+	width: 100%;
+	height: auto;
+
+	${from.tablet} {
+		display: none;
+	}
+`;
+
+const ExtraAccountsBannerPlaceholderMobile = () => (
+	<svg
+		css={mobileImagePlaceholderCss}
+		width="500"
+		height="300"
+		viewBox="0 0 500 300"
+		preserveAspectRatio="xMidYMid slice"
+		xmlns="http://www.w3.org/2000/svg"
+		aria-hidden="true"
+		focusable="false"
+	>
+		<rect width="500" height="300" fill={palette.neutral[86]} />
+		<text x="16" y="32" fill={palette.neutral[7]} fontSize="16">
+			Placeholder mobile
+		</text>
+	</svg>
+);
 
 const ExtraAccountsBannerPlaceholder = () => (
 	<svg
@@ -109,6 +134,7 @@ export const ExtraAccountsBanner = () => {
 						Start sharing
 					</Button>
 				</div>
+				<ExtraAccountsBannerPlaceholderMobile />
 				<ExtraAccountsBannerPlaceholder />
 			</div>
 		</>
