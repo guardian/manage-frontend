@@ -215,9 +215,12 @@ export const ConfirmDigiSubCancellation = () => {
 						${textSans17};
 					`}
 				>
-					If you cancel your Digital plus subscription, you and
+					{/* TODO: Uncomment for Extra Accounts launch */}
+					{/* If you cancel your Digital plus subscription, you and
 					everyone you've invited to share your subscription will lose
-					access to your supporter extras.
+					access to your supporter extras. */}
+					Please keep in mind that you will be losing access to your
+					supporter extras if you cancel today.
 				</div>
 			</Stack>
 			<section
