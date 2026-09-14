@@ -84,17 +84,15 @@ export const digitalPlusSecondaryUserBenefits = [
 ];
 
 const digitalPlusBenefits = [
-	// TODO: Uncomment for Extra Accounts launch
-	// { description: 'Three extra accounts to share' },
+	{ description: 'Three extra accounts to share' },
 	...digitalPlusSecondaryUserBenefits,
 ];
 
 export const digipackSaveOfferBenefits = [
-	// TODO: Uncomment for Extra Accounts launch
-	// {
-	// 	description:
-	// 		'Continue to share your extra accounts and keep giving access to your friends and family',
-	// },
+	{
+		description:
+			'Continue to share your extra accounts and keep giving access to your friends and family',
+	},
 	{
 		description:
 			'Keep all your supporter extras, including unlimited and uninterrupted ad-free reading',
