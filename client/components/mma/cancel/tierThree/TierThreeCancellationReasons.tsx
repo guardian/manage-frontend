@@ -90,6 +90,7 @@ export const tierThreeCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I don’t want an auto-renewing subscription',
 		skipFeedback: true,
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [
@@ -104,5 +105,4 @@ export const otherCancellationReason: CancellationReason[] = [
 export const shuffledTierThreeCancellationReasons: CancellationReason[] = [
 	...(shuffleArray(tierThreeCancellationReasons) as CancellationReason[]),
 	...otherCancellationReason,
-	sharedSubscriptionCancellationReason,
 ];

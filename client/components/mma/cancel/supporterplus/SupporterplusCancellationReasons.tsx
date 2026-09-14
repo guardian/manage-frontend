@@ -62,6 +62,7 @@ export const supporterplusCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’m dealing with personal or health matters',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [
@@ -79,5 +80,4 @@ const shuffledArray = [...supporterplusCancellationReasons].sort(
 export const shuffledSupporterPlusCancellationReasons: CancellationReason[] = [
 	...shuffledArray,
 	...otherCancellationReason,
-	sharedSubscriptionCancellationReason,
 ];

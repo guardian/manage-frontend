@@ -85,6 +85,7 @@ export const digipackCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’ve been experiencing technical or service problems',
 		alternateFeedbackIntro: inOrderToImproveSubs,
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [
@@ -99,5 +100,4 @@ export const otherCancellationReason: CancellationReason[] = [
 export const shuffledDigipackCancellationReasons: CancellationReason[] = [
 	...(shuffleArray(digipackCancellationReasons) as CancellationReason[]),
 	...otherCancellationReason,
-	sharedSubscriptionCancellationReason,
 ];

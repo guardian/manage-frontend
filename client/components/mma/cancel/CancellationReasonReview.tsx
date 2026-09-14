@@ -770,8 +770,7 @@ const ValidatedCancellationReasonReview = ({
 					{shouldUseProgressStepper ? (
 						<ProgressStepper
 							steps={
-								reason.reasonId ===
-								'mma_shared_subscription_recipient'
+								reason.skipSaveOffer
 									? [{}, { isCurrentStep: true }, {}]
 									: [{}, { isCurrentStep: true }, {}, {}]
 							}
@@ -780,7 +779,7 @@ const ValidatedCancellationReasonReview = ({
 							`}
 						/>
 					) : (
-						<ProgressIndicator
+						<ProgressIndicator // TODO Test how this works with a non-supporter or contribution subscription.
 							steps={[
 								{ title: 'Reason' },
 								{ title: 'Review', isCurrentStep: true },

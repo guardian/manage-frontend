@@ -45,6 +45,7 @@ const printProductsCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I am unhappy with some editorial decisions',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 const otherCancellationReason: CancellationReason[] = [
@@ -58,5 +59,4 @@ const otherCancellationReason: CancellationReason[] = [
 export const shuffledPrintProductsCancellationReasons: CancellationReason[] = [
 	...(shuffleArray(printProductsCancellationReasons) as CancellationReason[]),
 	...otherCancellationReason,
-	sharedSubscriptionCancellationReason,
 ];

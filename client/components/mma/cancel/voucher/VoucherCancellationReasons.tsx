@@ -90,6 +90,7 @@ export const voucherCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’ve had problems redeeming my vouchers',
 		alternateFeedbackIntro: inOrderToImproveSubs,
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [
@@ -104,5 +105,4 @@ export const otherCancellationReason: CancellationReason[] = [
 export const shuffledVoucherCancellationReasons: CancellationReason[] = [
 	...(shuffleArray(voucherCancellationReasons) as CancellationReason[]),
 	...otherCancellationReason,
-	sharedSubscriptionCancellationReason,
 ];

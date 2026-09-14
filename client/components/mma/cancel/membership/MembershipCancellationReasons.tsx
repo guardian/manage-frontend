@@ -85,6 +85,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
 			'If there’s anything we can do differently please take a moment to give us some feedback',
 		],
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [
@@ -102,5 +103,4 @@ export const otherCancellationReason: CancellationReason[] = [
 export const shuffledMembershipCancellationReasons: CancellationReason[] = [
 	...(shuffleArray(membershipCancellationReasons) as CancellationReason[]),
 	...otherCancellationReason,
-	sharedSubscriptionCancellationReason,
 ];

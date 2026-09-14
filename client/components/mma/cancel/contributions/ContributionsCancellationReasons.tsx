@@ -75,6 +75,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’m dealing with personal or health matters',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [
@@ -88,5 +89,4 @@ export const otherCancellationReason: CancellationReason[] = [
 export const shuffledContributionsCancellationReasons: CancellationReason[] = [
 	...(shuffleArray(contributionsCancellationReasons) as CancellationReason[]),
 	...otherCancellationReason,
-	sharedSubscriptionCancellationReason,
 ];

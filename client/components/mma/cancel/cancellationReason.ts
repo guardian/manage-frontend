@@ -55,6 +55,7 @@ export const sharedSubscriptionCancellationReason: CancellationReason = {
 	linkLabel: 'I joined a Digital plus shared subscription',
 	saveBody: ['Thank you for your ongoing support.'],
 	skipFeedback: true,
+	skipSaveOffer: true,
 };
 
 export type OptionalCancellationReasonId = CancellationReasonId | undefined;
