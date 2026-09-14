@@ -84,7 +84,8 @@ export const digitalPlusSecondaryUserBenefits = [
 ];
 
 const digitalPlusBenefits = [
-	{ description: 'Three extra accounts to share' },
+	// TODO: Uncomment for Extra Accounts launch
+	// { description: 'Three extra accounts to share' },
 	...digitalPlusSecondaryUserBenefits,
 ];
 
