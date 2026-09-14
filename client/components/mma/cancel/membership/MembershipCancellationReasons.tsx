@@ -1,5 +1,8 @@
 import { shuffleArray } from '@/client/utilities/utils';
-import type { CancellationReason } from '../cancellationReason';
+import {
+	type CancellationReason,
+	sharedSubscriptionCancellationReason,
+} from '../cancellationReason';
 import { BreakFromNewsWithGW, PaymentIssue } from '../GenericSaveBodyResponses';
 
 export const membershipCancellationReasons: CancellationReason[] = [
@@ -18,6 +21,12 @@ export const membershipCancellationReasons: CancellationReason[] = [
 		saveTitle: 'We are sorry that you have been charged again',
 		saveBody: PaymentIssue,
 		alternateFeedbackIntro: '',
+	},
+	{
+		reasonId: 'mma_shared_subscription_recipient',
+		linkLabel: 'I joined a Digital plus shared subscription',
+		saveBody: ['Thank you for your ongoing support.'],
+		skipFeedback: true,
 	},
 	{
 		reasonId: 'mma_editorial',
@@ -76,6 +85,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
 			'If there’s anything we can do differently please take a moment to give us some feedback',
 		],
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [

@@ -1,6 +1,9 @@
 import { shuffleArray } from '@/client/utilities/utils';
 import { standardAlternateFeedbackIntro } from '../cancellationConstants';
-import type { CancellationReason } from '../cancellationReason';
+import {
+	type CancellationReason,
+	sharedSubscriptionCancellationReason,
+} from '../cancellationReason';
 import { ContributionsCancellationAmountUpdatedSaved } from './ContributionsCancellationAmountUpdatedSaved';
 import { ContributionsCancellationFlowFinancialSaveAttempt } from './ContributionsCancellationFlowFinancialSaveAttempt';
 
@@ -72,6 +75,7 @@ export const contributionsCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’m dealing with personal or health matters',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [
