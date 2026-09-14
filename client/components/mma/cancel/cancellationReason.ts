@@ -21,6 +21,7 @@ export interface CancellationReason {
 	alternateFeedbackThankYouBody?: string;
 	hideContactUs?: boolean;
 	skipFeedback?: boolean;
+	skipSaveOffer?: boolean;
 	savedBody?: React.FC<SavedBodyProps>;
 }
 
@@ -48,5 +49,12 @@ export type CancellationReasonId =
 	| 'mma_duplicate_subscription'
 	| 'mma_cancellation_default'
 	| 'mma_membership_cancellation_default';
+
+export const sharedSubscriptionCancellationReason: CancellationReason = {
+	reasonId: 'mma_shared_subscription_recipient',
+	linkLabel: 'I joined a Digital plus shared subscription',
+	saveBody: ['Thank you for your ongoing support.'],
+	skipFeedback: true,
+};
 
 export type OptionalCancellationReasonId = CancellationReasonId | undefined;

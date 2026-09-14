@@ -1,6 +1,9 @@
 import { shuffleArray } from '@/client/utilities/utils';
 import { standardAlternateFeedbackIntro } from './cancellationConstants';
-import type { CancellationReason } from './cancellationReason';
+import {
+	type CancellationReason,
+	sharedSubscriptionCancellationReason,
+} from './cancellationReason';
 
 const printProductsCancellationReasons: CancellationReason[] = [
 	{
@@ -55,4 +58,5 @@ const otherCancellationReason: CancellationReason[] = [
 export const shuffledPrintProductsCancellationReasons: CancellationReason[] = [
 	...(shuffleArray(printProductsCancellationReasons) as CancellationReason[]),
 	...otherCancellationReason,
+	sharedSubscriptionCancellationReason,
 ];

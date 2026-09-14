@@ -2,7 +2,10 @@ import {
 	financialCircumstances,
 	standardAlternateFeedbackIntro,
 } from '../cancellationConstants';
-import type { CancellationReason } from '../cancellationReason';
+import {
+	type CancellationReason,
+	sharedSubscriptionCancellationReason,
+} from '../cancellationReason';
 
 export const supporterplusCancellationReasons: CancellationReason[] = [
 	{
@@ -59,11 +62,6 @@ export const supporterplusCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’m dealing with personal or health matters',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
-	{
-		reasonId: 'mma_shared_subscription_recipient',
-		linkLabel: 'I joined a Digital plus shared subscription',
-		skipFeedback: true,
-	},
 ];
 
 export const otherCancellationReason: CancellationReason[] = [
@@ -81,4 +79,5 @@ const shuffledArray = [...supporterplusCancellationReasons].sort(
 export const shuffledSupporterPlusCancellationReasons: CancellationReason[] = [
 	...shuffledArray,
 	...otherCancellationReason,
+	sharedSubscriptionCancellationReason,
 ];

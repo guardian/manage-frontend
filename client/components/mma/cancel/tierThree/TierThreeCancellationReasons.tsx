@@ -3,7 +3,10 @@ import {
 	inOrderToImproveSubs,
 	standardAlternateFeedbackIntro,
 } from '../cancellationConstants';
-import type { CancellationReason } from '../cancellationReason';
+import {
+	type CancellationReason,
+	sharedSubscriptionCancellationReason,
+} from '../cancellationReason';
 import { BreakFromNewsWithAlternative } from '../GenericSaveBodyResponses';
 
 export const tierThreeCancellationReasons: CancellationReason[] = [
@@ -101,4 +104,5 @@ export const otherCancellationReason: CancellationReason[] = [
 export const shuffledTierThreeCancellationReasons: CancellationReason[] = [
 	...(shuffleArray(tierThreeCancellationReasons) as CancellationReason[]),
 	...otherCancellationReason,
+	sharedSubscriptionCancellationReason,
 ];

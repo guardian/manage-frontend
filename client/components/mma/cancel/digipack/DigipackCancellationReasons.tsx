@@ -3,7 +3,10 @@ import {
 	inOrderToImproveSubs,
 	standardAlternateFeedbackIntro,
 } from '../cancellationConstants';
-import type { CancellationReason } from '../cancellationReason';
+import {
+	type CancellationReason,
+	sharedSubscriptionCancellationReason,
+} from '../cancellationReason';
 import { BreakFromNews } from '../GenericSaveBodyResponses';
 
 export const digipackCancellationReasons: CancellationReason[] = [
@@ -96,4 +99,5 @@ export const otherCancellationReason: CancellationReason[] = [
 export const shuffledDigipackCancellationReasons: CancellationReason[] = [
 	...(shuffleArray(digipackCancellationReasons) as CancellationReason[]),
 	...otherCancellationReason,
+	sharedSubscriptionCancellationReason,
 ];

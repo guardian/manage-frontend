@@ -335,8 +335,9 @@ const ConfirmCancellationAndReturnRow = (
 		useState<SwitchPreviewResponse | null>(null);
 
 	const productHasAlternativeRecommendation =
-		productType.productType === 'supporterplus' ||
-		productType.productType === 'contributions';
+		(productType.productType === 'supporterplus' ||
+			productType.productType === 'contributions') &&
+		!(props.reasonId === 'mma_shared_subscription_recipient');
 
 	const sanitizeOfferData = (
 		offerData: DiscountPreviewResponse,
@@ -768,7 +769,12 @@ const ValidatedCancellationReasonReview = ({
 				<>
 					{shouldUseProgressStepper ? (
 						<ProgressStepper
-							steps={[{}, { isCurrentStep: true }, {}, {}]}
+							steps={
+								reason.reasonId ===
+								'mma_shared_subscription_recipient'
+									? [{}, { isCurrentStep: true }, {}]
+									: [{}, { isCurrentStep: true }, {}, {}]
+							}
 							additionalCSS={css`
 								margin: ${space[5]}px 0 ${space[12]}px;
 							`}
