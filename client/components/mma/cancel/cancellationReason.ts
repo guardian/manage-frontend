@@ -482,4 +482,11 @@ export const reasonSharedSubscriptionCancellation: CancellationReason = {
 	skipSaveOffer: true,
 };
 
+// Notes:
+// Should add delivery issues to print subscription cancellations?
+// Financial Circumstances copy is very similar to the inline one.
+// reasonFinancialCircumstances5 combines financial circumstances and taking a break from the news.
+// Empty alternateFeedbackIntro in reasonPaymentIssue for Membership.
+// Support another way for lower amounts and different subscriptions.
+
 export type OptionalCancellationReasonId = CancellationReasonId | undefined;
