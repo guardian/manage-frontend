@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import {
 	from,
-	palette,
 	space,
 	textSans17,
 	textSansBold20,
@@ -10,13 +9,14 @@ import {
 import { Button } from '@guardian/source/react-components';
 import { useNavigate } from 'react-router-dom';
 import { subHeadingCss } from '@/client/styles/headings';
+import { useWindowWidth } from '@/client/utilities/hooks/useWindowWidth';
 import { NAV_LINKS } from '../../shared/nav/NavConfig';
 
 const containerCss = css`
 	display: flex;
 	flex-direction: column-reverse;
 	border-radius: ${space[2]}px;
-	background-color: ${palette.neutral[97]};
+	background-color: #e8f2ef;
 	overflow: hidden;
 
 	${from.tablet} {
@@ -48,67 +48,22 @@ const buttonCss = css`
 	}
 `;
 
-const imagePlaceholderCss = css`
-	display: none;
-
-	${from.tablet} {
-		display: block;
-		justify-self: end;
-		width: auto;
-		max-width: 100%;
-		height: 0;
-		min-height: 100%;
-	}
-`;
-
-const mobileImagePlaceholderCss = css`
+const imageCss = css`
 	display: block;
 	width: 100%;
 	height: auto;
 
 	${from.tablet} {
-		display: none;
+		justify-self: end;
+		align-self: center;
 	}
 `;
 
-const ExtraAccountsBannerPlaceholderMobile = () => (
-	<svg
-		css={mobileImagePlaceholderCss}
-		width="500"
-		height="300"
-		viewBox="0 0 500 300"
-		preserveAspectRatio="xMidYMid slice"
-		xmlns="http://www.w3.org/2000/svg"
-		aria-hidden="true"
-		focusable="false"
-	>
-		<rect width="500" height="300" fill={palette.neutral[86]} />
-		<text x="16" y="32" fill={palette.neutral[7]} fontSize="16">
-			Placeholder mobile
-		</text>
-	</svg>
-);
-
-const ExtraAccountsBannerPlaceholder = () => (
-	<svg
-		css={imagePlaceholderCss}
-		width="400"
-		height="300"
-		viewBox="0 0 400 300"
-		preserveAspectRatio="xMidYMid slice"
-		xmlns="http://www.w3.org/2000/svg"
-		aria-hidden="true"
-		focusable="false"
-	>
-		<rect width="400" height="300" fill={palette.neutral[86]} />
-		<text x="16" y="32" fill={palette.neutral[7]} fontSize="16">
-			Placeholder
-		</text>
-	</svg>
-);
-
 export const ExtraAccountsBanner = () => {
 	const navigate = useNavigate();
+	const { windowWidthIsGreaterThan } = useWindowWidth();
+
+	const isTablet = windowWidthIsGreaterThan('tablet');
 
 	return (
 		<>
@@ -134,8 +89,14 @@ export const ExtraAccountsBanner = () => {
 						Start sharing
 					</Button>
 				</div>
-				<ExtraAccountsBannerPlaceholderMobile />
-				<ExtraAccountsBannerPlaceholder />
+				<img
+					css={imageCss}
+					src={
+						isTablet
+							? 'https://i.guim.co.uk/img/media/1f23d2c2d0859f71c8ff64f294a4e08382550128/0_0_1228_920/1228.png?width=1228&quality=100&s=1d33811b97b975851bc9f78f12d87996'
+							: 'https://i.guim.co.uk/img/media/3800c848df194784ad2350f12b41add46fed3c6d/0_0_1472_848/1472.png?width=1228&quality=100&s=618f6024688f0cf68cb18e0425c7bb11'
+					}
+				/>
 			</div>
 		</>
 	);

@@ -11,6 +11,7 @@ import {
 import { SvgTickRound } from '@guardian/source/react-components';
 import { Fragment } from 'react';
 import { Navigate } from 'react-router-dom';
+import { useWindowWidth } from '@/client/utilities/hooks/useWindowWidth';
 import { gridBase, gridItemPlacement } from '../../../styles/grid';
 import { MAX_EXTRA_ACCOUNTS } from '../../../utilities/extraAccounts';
 import { useExtraAccounts } from '../../../utilities/hooks/useExtraAccounts';
@@ -79,7 +80,7 @@ const introCss = css`
 	flex-direction: column-reverse;
 	justify-content: space-between;
 	gap: ${space[3]}px;
-	background-color: ${palette.neutral[97]};
+	background-color: #e8f2ef;
 
 	${from.tablet} {
 		flex-direction: row;
@@ -144,16 +145,17 @@ const dividerCss = css`
 	border-top: 1px solid ${palette.neutral[86]};
 `;
 
-const imagePlaceholderCss = css`
+const imageCss = css`
+	display: block;
 	width: 100%;
+	height: auto;
 	aspect-ratio: 25 / 9;
-	background-color: ${palette.neutral[86]};
-	border-radius: ${space[2]}px;
 	align-self: center;
 
 	${from.tablet} {
 		flex: 1;
 		aspect-ratio: 5 / 3;
+		justify-self: end;
 	}
 `;
 
@@ -161,7 +163,7 @@ const GAP_ABOVE_FAQS = 72;
 
 const faqsBandCss = css`
 	width: 100%;
-	background-color: ${palette.neutral[97]};
+	background-color: #e8f2ef;
 
 	margin-top: calc(${GAP_ABOVE_FAQS}px - ${space[12]}px);
 	padding-top: ${space[9]}px;
@@ -207,6 +209,9 @@ export const ExtraAccounts = () => {
 		removeAccess,
 		isSubmitting,
 	} = useExtraAccounts();
+	const { windowWidthIsGreaterThan } = useWindowWidth();
+
+	const isTablet = windowWidthIsGreaterThan('tablet');
 
 	if (shouldRedirect) {
 		return <Navigate to="/" replace />;
@@ -267,7 +272,14 @@ export const ExtraAccounts = () => {
 									</>
 								)}
 							</div>
-							<div css={imagePlaceholderCss} />
+							<img
+								css={imageCss}
+								src={
+									isTablet
+										? 'https://i.guim.co.uk/img/media/ef75953ab4e21383a586de9ade3fa9e5c3541f8d/0_0_1000_600/1000.png?width=1000&quality=100&s=0aecb83fcec12715054084280d1e23c1'
+										: 'https://i.guim.co.uk/img/media/6945fe82e4ff5d2dc0a34bb46d73bb6bf2e61315/0_0_1480_559/1480.png?width=1000&quality=100&s=8a2a6c3732abce17d9a0c13db7bd5bda'
+								}
+							/>
 						</div>
 
 						<div css={bodyCss}>
