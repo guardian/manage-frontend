@@ -12,10 +12,7 @@ import {
 	subHeadingInformationTextCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
-import {
-	isEligibleForExtraAccounts,
-	isExtraAccountsFlagEnabled,
-} from '@/client/utilities/extraAccounts';
+import { isEligibleForExtraAccounts } from '@/client/utilities/extraAccounts';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
@@ -131,10 +128,7 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 
 	return (
 		<>
-			{/* TODO: remove this check once the Extra accounts feature ships. */}
-			{hasExtraAccountsAccess && isExtraAccountsFlagEnabled() && (
-				<ExtraAccountsBanner />
-			)}
+			{hasExtraAccountsAccess && <ExtraAccountsBanner />}
 			{(hasDigitalPlusPrint ||
 				isPlusDigitalProduct ||
 				hasGuardianEmail ||
