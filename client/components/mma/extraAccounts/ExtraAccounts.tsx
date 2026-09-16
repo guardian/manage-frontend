@@ -93,6 +93,7 @@ const introTextCss = css`
 	justify-content: flex-start;
 	gap: ${space[2]}px;
 	flex: 2;
+	min-width: 0;
 	margin: ${space[3]}px;
 	margin-bottom: ${space[9]}px;
 
@@ -148,9 +149,12 @@ const dividerCss = css`
 const imageCss = css`
 	display: block;
 	width: 100%;
+	max-width: 100%;
 	height: auto;
+	min-width: 0;
 	aspect-ratio: 25 / 9;
 	align-self: center;
+	object-fit: cover;
 
 	${from.tablet} {
 		flex: 1;
