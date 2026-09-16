@@ -5,6 +5,8 @@ import { isSignedIn } from '../../utilities/signInStatus';
 import { brazeBannersSystemLogger, getBrazeApiKey } from './brazeConfig';
 import type { BrazeInstance } from './initialiseBraze';
 import { getInitialisedBraze } from './initialiseBraze';
+import type { BrazeBannerSession } from './startBrazeBannerSession';
+import { startBrazeBannerSession } from './startBrazeBannerSession';
 
 const hasRequiredConsents = (): Promise<boolean> =>
 	new Promise((resolve) => {
@@ -53,38 +55,6 @@ const getBrazeUuid = (): string | null => {
 	return typeof uuid === 'string' ? uuid : null;
 };
 
-function refreshBanners(
-	braze: BrazeInstance,
-	placementIds: string[],
-): Promise<void> {
-	let timeoutId: ReturnType<typeof setTimeout>;
-
-	const timeout = new Promise<void>((resolve) => {
-		timeoutId = setTimeout(() => {
-			brazeBannersSystemLogger.warn('Refresh timed out. Proceeding.');
-			resolve();
-		}, 2000);
-	});
-
-	const brazeRequest = new Promise<void>((resolve) => {
-		braze.requestBannersRefresh(
-			placementIds,
-			() => {
-				brazeBannersSystemLogger.info('Refresh completed.');
-				clearTimeout(timeoutId);
-				resolve();
-			},
-			() => {
-				brazeBannersSystemLogger.warn('Refresh failed.');
-				clearTimeout(timeoutId);
-				resolve();
-			},
-		);
-	});
-
-	return Promise.race([brazeRequest, timeout]);
-}
-
 interface UseBrazeBannerResult {
 	braze: BrazeInstance | null;
 	banner: Banner | null;
@@ -98,6 +68,7 @@ export const useBrazeBanner = (placementId: string): UseBrazeBannerResult => {
 
 	useEffect(() => {
 		let cancelled = false;
+		let session: BrazeBannerSession | undefined;
 
 		const init = async () => {
 			try {
@@ -144,27 +115,25 @@ export const useBrazeBanner = (placementId: string): UseBrazeBannerResult => {
 					return;
 				}
 
-				brazeInstance.changeUser(brazeUuid);
+				setBraze(brazeInstance);
+				session = startBrazeBannerSession(brazeInstance, {
+					userId: brazeUuid,
+					placementId,
+					onBanner: (nextBanner) => {
+						if (cancelled) {
+							return;
+						}
+						setBanner(nextBanner);
+						if (nextBanner) {
+							brazeBannersSystemLogger.info(
+								`Banner found for "${placementId}".`,
+							);
+						}
+					},
+				});
 
-				await refreshBanners(brazeInstance, [placementId]);
 				if (cancelled) {
-					return;
-				}
-
-				brazeInstance.openSession();
-
-				const fetchedBanner = brazeInstance.getBanner(placementId);
-
-				if (fetchedBanner) {
-					brazeBannersSystemLogger.info(
-						`Banner found for "${placementId}".`,
-					);
-					setBraze(brazeInstance);
-					setBanner(fetchedBanner);
-				} else {
-					brazeBannersSystemLogger.info(
-						`No banner for "${placementId}".`,
-					);
+					session.unsubscribe();
 				}
 			} catch (error) {
 				brazeBannersSystemLogger.error('Braze init failed:', error);
@@ -179,6 +148,7 @@ export const useBrazeBanner = (placementId: string): UseBrazeBannerResult => {
 
 		return () => {
 			cancelled = true;
+			session?.unsubscribe();
 		};
 	}, [placementId]);
 
