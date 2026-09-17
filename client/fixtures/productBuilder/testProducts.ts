@@ -169,7 +169,7 @@ export function contributionWithPaymentFailure() {
 	return new ProductBuilder(baseContribution())
 		.payByCard()
 		.withAlertText('Payment failed')
-		.withPrice(1200)
+		.withPrice(1400)
 		.getProductDetailObject();
 }
 
