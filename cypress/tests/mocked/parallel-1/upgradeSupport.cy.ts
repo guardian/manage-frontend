@@ -38,7 +38,7 @@ describe('upgrade support', () => {
 		cy.findByText(/Confirm support increase/).should('exist');
 
 		cy.get(
-			'[data-cy="contribution-amount-choices"] label:nth-of-type(2)',
+			'[data-cy="contribution-amount-choices"] label:nth-of-type(3)',
 		).click();
 
 		cy.findByText(/Confirm support increase/).should('not.exist');
