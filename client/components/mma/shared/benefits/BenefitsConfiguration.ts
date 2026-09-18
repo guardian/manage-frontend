@@ -46,6 +46,12 @@ const newspaperArchiveBenefit = {
 	description: "Digital access to the Guardian's 200-year newspaper archive",
 };
 
+const extraAccountsBenefit = { description: 'Three extra accounts to share' };
+
+const extraDigitalPlusAccountsBenefit = {
+	description: 'Three extra Digital plus accounts to share',
+};
+
 const productPlusdigitalBenefits = [
 	{
 		description:
@@ -84,17 +90,15 @@ export const digitalPlusSecondaryUserBenefits = [
 ];
 
 const digitalPlusBenefits = [
-	// TODO: Uncomment for Extra Accounts launch
-	// { description: 'Three extra accounts to share' },
+	extraAccountsBenefit,
 	...digitalPlusSecondaryUserBenefits,
 ];
 
 export const digipackSaveOfferBenefits = [
-	// TODO: Uncomment for Extra Accounts launch
-	// {
-	// 	description:
-	// 		'Continue to share your extra accounts and keep giving access to your friends and family',
-	// },
+	{
+		description:
+			'Continue to share your extra accounts and keep giving access to your friends and family',
+	},
 	{
 		description:
 			'Keep all your supporter extras, including unlimited and uninterrupted ad-free reading',
@@ -162,13 +166,23 @@ export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
 		digitalvoucher: [],
 		newspaper: [],
 		homedelivery: [],
-		homedeliveryplusdigital: [...productPlusdigitalBenefits],
+		homedeliveryplusdigital: [
+			extraDigitalPlusAccountsBenefit,
+			...productPlusdigitalBenefits,
+		],
 		nationaldelivery: [],
-		nationaldeliveryplusdigital: [...productPlusdigitalBenefits],
+		nationaldeliveryplusdigital: [
+			extraDigitalPlusAccountsBenefit,
+			...productPlusdigitalBenefits,
+		],
 		voucher: [],
-		voucherplusdigital: [...productPlusdigitalBenefits],
+		voucherplusdigital: [
+			extraDigitalPlusAccountsBenefit,
+			...productPlusdigitalBenefits,
+		],
 		guardianweekly: [
 			guardianWeekly,
+			extraDigitalPlusAccountsBenefit,
 			...productPlusdigitalBenefits,
 			newspaperArchiveBenefit,
 		],
@@ -176,7 +190,10 @@ export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
 		guardianpatron: [],
 		observer: [],
 		digitalvoucherobserver: [],
-		digitalvoucherplusdigital: [...productPlusdigitalBenefits],
+		digitalvoucherplusdigital: [
+			extraDigitalPlusAccountsBenefit,
+			...productPlusdigitalBenefits,
+		],
 		voucherobserver: [],
 	};
 

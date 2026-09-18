@@ -31,7 +31,7 @@ const initialState: ToastState = {
 	timeoutId: null,
 };
 
-const AUTO_DISMISS_MS = 5000;
+const AUTO_DISMISS_MS = 10 * 1000; // 10 seconds
 
 export const useToastStore = create<ToastStore>()(
 	devtools(
