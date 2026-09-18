@@ -292,7 +292,13 @@ const ConfirmCancellationAndReturnRow = (
 
 	const navigate = useNavigate();
 	const { productDetail, productType } = useCancellationContext();
+
+	const skipSaveOffer = !!productType.cancellation.reasons?.find(
+		(reason) => reason.reasonId === props.reasonId,
+	)?.skipSaveOffer;
+
 	const isSupporterPlusAndFreePeriodOfferIsActive =
+		!skipSaveOffer &&
 		featureSwitches.supporterplusCancellationOffer &&
 		productType.productType === 'supporterplus';
 
@@ -303,12 +309,14 @@ const ConfirmCancellationAndReturnRow = (
 		isPaidSubscriptionPlan(mainPlan) && mainPlan.billingPeriod === 'month';
 
 	const isAnnualContributionAndDiscountIsActive =
+		!skipSaveOffer &&
 		productType.productType === 'contributions' &&
 		allowCountrySwitchDiscount(productDetail.billingCountry) &&
 		isAnnualBilling &&
 		reasonIsEligibleForSwitch(routerState.selectedReasonId);
 
 	const isContributionAndBreakFeatureIsActive =
+		!skipSaveOffer &&
 		!isAnnualContributionAndDiscountIsActive &&
 		featureSwitches.contributionCancellationPause &&
 		productType.productType === 'contributions' &&
