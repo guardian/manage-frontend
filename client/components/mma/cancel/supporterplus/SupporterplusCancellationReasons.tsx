@@ -2,7 +2,10 @@ import {
 	financialCircumstances,
 	standardAlternateFeedbackIntro,
 } from '../cancellationConstants';
-import type { CancellationReason } from '../cancellationReason';
+import {
+	type CancellationReason,
+	sharedSubscriptionCancellationReason,
+} from '../cancellationReason';
 
 export const supporterplusCancellationReasons: CancellationReason[] = [
 	{
@@ -59,6 +62,7 @@ export const supporterplusCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’m dealing with personal or health matters',
 		alternateFeedbackIntro: standardAlternateFeedbackIntro,
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [

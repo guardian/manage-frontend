@@ -3,7 +3,10 @@ import {
 	inOrderToImproveSubs,
 	standardAlternateFeedbackIntro,
 } from '../cancellationConstants';
-import type { CancellationReason } from '../cancellationReason';
+import {
+	type CancellationReason,
+	sharedSubscriptionCancellationReason,
+} from '../cancellationReason';
 import { BreakFromNewsWithAlternative } from '../GenericSaveBodyResponses';
 
 export const tierThreeCancellationReasons: CancellationReason[] = [
@@ -87,6 +90,7 @@ export const tierThreeCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I don’t want an auto-renewing subscription',
 		skipFeedback: true,
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [

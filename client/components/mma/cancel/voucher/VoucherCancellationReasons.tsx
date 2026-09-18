@@ -3,7 +3,10 @@ import {
 	inOrderToImproveSubs,
 	standardAlternateFeedbackIntro,
 } from '../cancellationConstants';
-import type { CancellationReason } from '../cancellationReason';
+import {
+	type CancellationReason,
+	sharedSubscriptionCancellationReason,
+} from '../cancellationReason';
 import { BreakFromNewsWithAlternative } from '../GenericSaveBodyResponses';
 
 export const voucherCancellationReasons: CancellationReason[] = [
@@ -87,6 +90,7 @@ export const voucherCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’ve had problems redeeming my vouchers',
 		alternateFeedbackIntro: inOrderToImproveSubs,
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [
