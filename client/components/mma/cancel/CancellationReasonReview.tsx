@@ -335,8 +335,9 @@ const ConfirmCancellationAndReturnRow = (
 		useState<SwitchPreviewResponse | null>(null);
 
 	const productHasAlternativeRecommendation =
-		productType.productType === 'supporterplus' ||
-		productType.productType === 'contributions';
+		(productType.productType === 'supporterplus' ||
+			productType.productType === 'contributions') &&
+		!(props.reasonId === 'mma_shared_subscription_recipient');
 
 	const sanitizeOfferData = (
 		offerData: DiscountPreviewResponse,
@@ -768,13 +769,17 @@ const ValidatedCancellationReasonReview = ({
 				<>
 					{shouldUseProgressStepper ? (
 						<ProgressStepper
-							steps={[{}, { isCurrentStep: true }, {}, {}]}
+							steps={
+								reason.skipSaveOffer
+									? [{}, { isCurrentStep: true }, {}]
+									: [{}, { isCurrentStep: true }, {}, {}]
+							}
 							additionalCSS={css`
 								margin: ${space[5]}px 0 ${space[12]}px;
 							`}
 						/>
 					) : (
-						<ProgressIndicator
+						<ProgressIndicator // TODO Test how this works with a non-supporter or contribution subscription.
 							steps={[
 								{ title: 'Reason' },
 								{ title: 'Review', isCurrentStep: true },
