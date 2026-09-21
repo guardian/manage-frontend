@@ -23,12 +23,6 @@ export const membershipCancellationReasons: CancellationReason[] = [
 		alternateFeedbackIntro: '',
 	},
 	{
-		reasonId: 'mma_shared_subscription_recipient',
-		linkLabel: 'I joined a Digital plus shared subscription',
-		saveBody: ['Thank you for your ongoing support.'],
-		skipFeedback: true,
-	},
-	{
 		reasonId: 'mma_editorial',
 		linkLabel: 'I am unhappy with Guardian journalism',
 		saveTitle:
