@@ -1,5 +1,8 @@
 import { shuffleArray } from '@/client/utilities/utils';
-import type { CancellationReason } from '../cancellationReason';
+import {
+	type CancellationReason,
+	sharedSubscriptionCancellationReason,
+} from '../cancellationReason';
 import { BreakFromNewsWithGW, PaymentIssue } from '../GenericSaveBodyResponses';
 
 export const membershipCancellationReasons: CancellationReason[] = [
@@ -76,6 +79,7 @@ export const membershipCancellationReasons: CancellationReason[] = [
 			'If there’s anything we can do differently please take a moment to give us some feedback',
 		],
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [

@@ -3,7 +3,10 @@ import {
 	inOrderToImproveSubs,
 	standardAlternateFeedbackIntro,
 } from '../cancellationConstants';
-import type { CancellationReason } from '../cancellationReason';
+import {
+	type CancellationReason,
+	sharedSubscriptionCancellationReason,
+} from '../cancellationReason';
 import { BreakFromNews } from '../GenericSaveBodyResponses';
 
 export const digipackCancellationReasons: CancellationReason[] = [
@@ -82,6 +85,7 @@ export const digipackCancellationReasons: CancellationReason[] = [
 		linkLabel: 'I’ve been experiencing technical or service problems',
 		alternateFeedbackIntro: inOrderToImproveSubs,
 	},
+	sharedSubscriptionCancellationReason,
 ];
 
 export const otherCancellationReason: CancellationReason[] = [

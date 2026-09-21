@@ -198,6 +198,10 @@ const NonPrintExecuteCancellation = ({
 		? true
 		: false;
 
+	const skipSaveOffer = !!productType.cancellation.reasons?.find(
+		(reason) => reason.reasonId === selectedReasonId,
+	)?.skipSaveOffer;
+
 	if (productHasReasonSelection && (!selectedReasonId || !caseId)) {
 		return <Navigate to="../" />;
 	}
@@ -224,7 +228,11 @@ const NonPrintExecuteCancellation = ({
 					<>
 						{useProgressStepper ? (
 							<ProgressStepper
-								steps={[{}, {}, {}, { isCurrentStep: true }]}
+								steps={
+									!skipSaveOffer
+										? [{}, {}, {}, { isCurrentStep: true }]
+										: [{}, {}, { isCurrentStep: true }]
+								}
 								additionalCSS={css`
 									margin: ${space[5]}px 0 ${space[12]}px;
 								`}
