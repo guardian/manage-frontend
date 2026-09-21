@@ -129,7 +129,7 @@ export function contributionPaidByCard() {
 export function contributionAboveSupporterPlusThreshold() {
 	return new ProductBuilder(baseContribution())
 		.payByCard()
-		.withPrice(1200)
+		.withPrice(1400)
 		.getProductDetailObject();
 }
 
@@ -142,7 +142,7 @@ export function contributionPaidByPayPal() {
 export function contributionPaidByPayPalAboveSupporterPlusThreshold() {
 	return new ProductBuilder(baseContribution())
 		.payByPayPal()
-		.withPrice(1200)
+		.withPrice(1400)
 		.getProductDetailObject();
 }
 
@@ -169,7 +169,7 @@ export function contributionWithPaymentFailure() {
 	return new ProductBuilder(baseContribution())
 		.payByCard()
 		.withAlertText('Payment failed')
-		.withPrice(1200)
+		.withPrice(1400)
 		.getProductDetailObject();
 }
 
@@ -292,7 +292,7 @@ export function supporterPlusUSA() {
 export function supporterPlusMonthlyAllAccessDigital() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()
-		.withPrice(1200)
+		.withPrice(1400)
 		.withBillingPeriod('month')
 		.getProductDetailObject();
 }
@@ -308,7 +308,7 @@ export function supporterPlusMonthlyAllAccessDigitalBeforePriceRise() {
 export function supporterPlusAnnual() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()
-		.withPrice(12000)
+		.withPrice(14000)
 		.withBillingPeriod('year')
 		.getProductDetailObject();
 }
@@ -316,7 +316,7 @@ export function supporterPlusAnnual() {
 export function supporterPlusAnnualCancelled() {
 	return new ProductBuilder(baseSupporterPlus())
 		.payByCard()
-		.withPrice(12000)
+		.withPrice(14000)
 		.withBillingPeriod('year')
 		.cancel()
 		.getProductDetailObject();
