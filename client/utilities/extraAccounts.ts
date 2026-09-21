@@ -27,7 +27,8 @@ export const getExtraAccountsProduct = (
 		.find(
 			(product) =>
 				!product.subscription.cancelledAt &&
-				isEligibleForExtraAccounts(product.mmaProductKey),
+				isEligibleForExtraAccounts(product.mmaProductKey) &&
+				product.subscription.readerType != 'Gift',
 		);
 
 export const hasExtraAccountsAccess = (
