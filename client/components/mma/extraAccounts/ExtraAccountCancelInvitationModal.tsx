@@ -4,6 +4,7 @@ import {
 	headlineBold24,
 	palette,
 	space,
+	textSans15,
 	textSans17,
 	textSansBold17,
 } from '@guardian/source/foundations';
@@ -21,6 +22,7 @@ type ExtraAccountWithEmail = Extract<
 const instigatorCss = css`
 	color: ${palette.brand[500]};
 	font-weight: normal;
+	${textSans15};
 `;
 
 const overlayCss = css`
