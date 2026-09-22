@@ -109,6 +109,7 @@ export const LeftSideNav = (props: LeftSideNavProps) => {
 										: undefined
 								}
 								to={navItem.link}
+								target={navItem.target}
 							>
 								{navItem.icon && (
 									<i css={leftNavIconCss}>
