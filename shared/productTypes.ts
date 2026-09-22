@@ -1,27 +1,21 @@
 import type { Product } from '@guardian/ophan-tracker-js';
 import type { ReactNode } from 'react';
-import { shuffledPrintProductsCancellationReasons } from '@/client/components/mma/cancel/PrintProductsCancellationReasons';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
-import { shuffledTierThreeCancellationReasons } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationReasons';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import { convertCurrencyIsoToSymbol } from '@/client/utilities/currencyIso';
-import type {
-	CancellationReason,
-	OptionalCancellationReasonId,
+import {
+	CANCELLATION_REASONS,
+	type CancellationReason,
+	type OptionalCancellationReasonId,
 } from '../client/components/mma/cancel/cancellationReason';
 import { contributionsCancellationFlowStart } from '../client/components/mma/cancel/contributions/ContributionsCancellationFlowStart';
-import { shuffledContributionsCancellationReasons } from '../client/components/mma/cancel/contributions/ContributionsCancellationReasons';
 import { digipackCancellationFlowStart } from '../client/components/mma/cancel/digipack/DigipackCancellationFlowStart';
-import { shuffledDigipackCancellationReasons } from '../client/components/mma/cancel/digipack/DigipackCancellationReasons';
 import { gwCancellationFlowStart } from '../client/components/mma/cancel/gw/GwCancellationFlowStart';
 import { membershipCancellationFlowStart } from '../client/components/mma/cancel/membership/MembershipCancellationFlowStart';
-import { shuffledMembershipCancellationReasons } from '../client/components/mma/cancel/membership/MembershipCancellationReasons';
 import type { RestOfCancellationFlow } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
 import { physicalSubsCancellationFlowWrapper } from '../client/components/mma/cancel/PhysicalSubsCancellationFlowWrapper';
 import { supporterplusCancellationFlowStart } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationFlowStart';
-import { shuffledSupporterPlusCancellationReasons } from '../client/components/mma/cancel/supporterplus/SupporterplusCancellationReasons';
 import { voucherCancellationFlowStart } from '../client/components/mma/cancel/voucher/VoucherCancellationFlowStart';
-import { shuffledVoucherCancellationReasons } from '../client/components/mma/cancel/voucher/VoucherCancellationReasons';
 import type { SupportTheGuardianButtonProps } from '../client/components/shared/SupportTheGuardianButton';
 import type {
 	BillingPeriod,
@@ -422,7 +416,7 @@ const baseVoucherProduct: ProductType = {
 		enableDeliveryInstructionsUpdate: true,
 	},
 	cancellation: {
-		reasons: shuffledVoucherCancellationReasons,
+		reasons: CANCELLATION_REASONS.voucher,
 		sfCaseProduct: 'Voucher Subscriptions',
 		checkForOutstandingCredits: true,
 		flowWrapper: physicalSubsCancellationFlowWrapper,
@@ -483,7 +477,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			}
 		},
 		cancellation: {
-			reasons: shuffledMembershipCancellationReasons,
+			reasons: CANCELLATION_REASONS.membership,
 			sfCaseProduct: 'Membership',
 			startPageBody: membershipCancellationFlowStart,
 			hideReasonTitlePrefix: true,
@@ -527,7 +521,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		cancellation: {
 			alternateSummaryMainPara:
 				'This is immediate and you will not be charged again.',
-			reasons: shuffledContributionsCancellationReasons,
+			reasons: CANCELLATION_REASONS.contributions,
 			sfCaseProduct: 'Recurring - Contributions',
 			startPageBody: contributionsCancellationFlowStart,
 			shouldHideSummaryMainPara: true,
@@ -677,7 +671,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			enableDeliveryInstructionsUpdate: true,
 		},
 		cancellation: {
-			reasons: shuffledVoucherCancellationReasons,
+			reasons: CANCELLATION_REASONS.voucher,
 			sfCaseProduct: 'Voucher Subscriptions',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
@@ -756,7 +750,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			},
 		},
 		cancellation: {
-			reasons: shuffledPrintProductsCancellationReasons,
+			reasons: CANCELLATION_REASONS.printProducts,
 			sfCaseProduct: 'Guardian Weekly',
 			checkForOutstandingCredits: true,
 			usesPrintCancellationFlow: true,
@@ -803,7 +797,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			},
 		},
 		cancellation: {
-			reasons: shuffledTierThreeCancellationReasons,
+			reasons: CANCELLATION_REASONS.tierThree,
 			sfCaseProduct: 'Tier Three',
 			checkForOutstandingCredits: true,
 			flowWrapper: physicalSubsCancellationFlowWrapper,
@@ -840,7 +834,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			SoftOptInIDs.SupporterNewsletter,
 		],
 		cancellation: {
-			reasons: shuffledDigipackCancellationReasons,
+			reasons: CANCELLATION_REASONS.digipack,
 			sfCaseProduct: 'Digital Pack Subscriptions',
 			startPageBody: digipackCancellationFlowStart,
 			summaryReasonSpecificPara: () => undefined,
@@ -871,7 +865,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		cancellation: {
 			alternateSummaryMainPara:
 				"This is immediate and you will not be charged again. If you've cancelled within the first 14 days, we'll send you a full refund.",
-			reasons: shuffledSupporterPlusCancellationReasons,
+			reasons: CANCELLATION_REASONS.supporterplus,
 			sfCaseProduct: 'Supporter Plus',
 			startPageBody: supporterplusCancellationFlowStart,
 			summaryReasonSpecificPara: () => undefined,
