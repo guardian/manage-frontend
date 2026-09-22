@@ -109,6 +109,7 @@ export const LeftSideNav = (props: LeftSideNavProps) => {
 										: undefined
 								}
 								to={navItem.link}
+								target={navItem.target}
 							>
 								{navItem.icon && (
 									<i css={leftNavIconCss}>
@@ -123,6 +124,7 @@ export const LeftSideNav = (props: LeftSideNavProps) => {
 									props.selectedNavItem === navItem,
 								)}
 								href={`${PROFILE_HOST_NAME}${navItem.link}`}
+								target={navItem.target}
 							>
 								{navItem.title}
 							</a>
