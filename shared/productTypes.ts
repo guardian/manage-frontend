@@ -1,10 +1,10 @@
 import type { Product } from '@guardian/ophan-tracker-js';
 import type { ReactNode } from 'react';
+import { CANCELLATION_REASONS } from '@/client/components/mma/cancel/cancellationReasonsCatalogue';
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import { convertCurrencyIsoToSymbol } from '@/client/utilities/currencyIso';
 import {
-	CANCELLATION_REASONS,
 	type CancellationReason,
 	type OptionalCancellationReasonId,
 } from '../client/components/mma/cancel/cancellationReason';
