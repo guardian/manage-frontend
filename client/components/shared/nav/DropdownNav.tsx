@@ -255,6 +255,7 @@ export const DropdownNav = (props: { isHelpCentrePage: boolean }) => {
 									to={navItem.link}
 									css={dropdownNavItemCss}
 									onClick={() => setShowMenu(false)}
+									target={navItem.target}
 								>
 									<DropdownNavItem navItem={navItem} />
 								</Link>

@@ -18,6 +18,7 @@ export interface NavItem {
 	title: string;
 	link: string;
 	local?: boolean;
+	target?: string;
 	icon?: (props: NavIconProps) => ReactElement;
 }
 
@@ -45,6 +46,7 @@ if (typeof window !== 'undefined' && window.guardian) {
 	domain = conf.DOMAIN;
 }
 export const PROFILE_HOST_NAME = `https://profile.${domain}`;
+export const HELP_CENTRE = `https://help.theguardian.com`;
 
 export const NAV_LINKS: NavLinks = {
 	accountOverview: {
@@ -91,8 +93,9 @@ export const NAV_LINKS: NavLinks = {
 	},
 	help: {
 		title: 'Help',
-		link: '/help',
+		link: HELP_CENTRE,
 		local: true,
+		target: '_blank',
 		icon: HelpIcon,
 	},
 	comments: {
