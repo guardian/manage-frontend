@@ -61,7 +61,7 @@ const tests = [
 			previousProductDetail: guardianWeeklyPaidByCard(),
 		},
 		expectations: [
-			'Guardian Weekly',
+			'Guardian Weekly + Digital plus',
 			'ending 4242',
 			'4 / 2024',
 			'£135.00 / annual',
