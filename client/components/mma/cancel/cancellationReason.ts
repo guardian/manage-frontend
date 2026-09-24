@@ -1,3 +1,4 @@
+import { shuffleArray } from '@/client/utilities/utils';
 import type { DeliveryRecordDetail } from '../delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../holiday/HolidayStopApi';
 import {
@@ -62,6 +63,16 @@ export type CancellationReasonId =
 	| 'mma_shared_subscription_recipient'
 	| 'mma_cancellation_default'
 	| 'mma_membership_cancellation_default';
+
+const shuffleCancellationReasons: (
+	reasons: CancellationReason[],
+	otherReason: CancellationReason,
+) => CancellationReason[] = (
+	reasons: CancellationReason[],
+	otherReason: CancellationReason,
+): CancellationReason[] => {
+	return [...(shuffleArray(reasons) as CancellationReason[]), otherReason];
+};
 
 // ----- Auto Renew -----
 // T3 Only
@@ -482,4 +493,141 @@ export const reasonSharedSubscriptionCancellation: CancellationReason = {
 	skipSaveOffer: true,
 };
 
+// Notes:
+// Should add delivery issues to print subscription cancellations?
+// Financial Circumstances copy is very similar to the inline one.
+// reasonFinancialCircumstances5 combines financial circumstances and taking a break from the news.
+// Empty alternateFeedbackIntro in reasonPaymentIssue for Membership.
+// Support another way for lower amounts and different subscriptions.
+
 export type OptionalCancellationReasonId = CancellationReasonId | undefined;
+
+// ------------------- Cancellation Reasons Catalogue -------------------
+const membershipCancellationReasons: CancellationReason[] = [
+	reasonPaymentIssue,
+	reasonEditorial3,
+	reasonFinancialCircumstances3,
+	reasonBenefits2,
+	reasonSupportAnotherWay3,
+	reasonHealth3,
+	reasonBreakFromNews3,
+	reasonValues3,
+	reasonSharedSubscriptionCancellation,
+];
+
+const supporterplusCancellationReasons: CancellationReason[] = [
+	reasonEditorial1,
+	reasonDontReadEnough1,
+	reasonIssue2,
+	reasonFinancialCircumstances2,
+	reasonPriceIncrease1,
+	reasonBenefits1,
+	reasonSupportAnotherWay2,
+	reasonHealth2,
+	reasonBreakFromNews2,
+	reasonValues2,
+	reasonSharedSubscriptionCancellation,
+];
+
+const tierThreeCancellationReasons: CancellationReason[] = [
+	reasonValueForMoney,
+	reasonBetterOffer,
+	reasonCovid,
+	reasonEditorial2,
+	reasonAutoRenew,
+	reasonDeliveryIssue,
+	reasonTime1,
+	reasonFinancialCircumstances1,
+	reasonSupportAnotherWay1,
+	reasonHealth1,
+	reasonBreakFromNews1,
+	reasonValues1,
+	reasonSharedSubscriptionCancellation,
+];
+
+const voucherCancellationReasons: CancellationReason[] = [
+	reasonRedemptionIssue,
+	reasonValueForMoney,
+	reasonBetterOffer,
+	reasonCovid,
+	reasonEditorial2,
+	reasonDeliveryIssue,
+	reasonTime1,
+	reasonFinancialCircumstances1,
+	reasonSupportAnotherWay1,
+	reasonHealth1,
+	reasonBreakFromNews1,
+	reasonValues1,
+	reasonSharedSubscriptionCancellation,
+];
+
+const digipackCancellationReasons: CancellationReason[] = [
+	reasonValueForMoney,
+	reasonBetterOffer,
+	reasonEditorial2,
+	reasonTime1,
+	reasonIssue3,
+	reasonFinancialCircumstances1,
+	reasonBenefits3,
+	reasonSupportAnotherWay1,
+	reasonHealth1,
+	reasonBreakFromNews4,
+	reasonValues1,
+	reasonSharedSubscriptionCancellation,
+];
+
+const contributionsCancellationReasons: CancellationReason[] = [
+	reasonEditorial1,
+	reasonIssue2,
+	reasonFinancialCircumstances4,
+	reasonPriceIncrease2,
+	reasonDontReadEnough1,
+	reasonBenefits4,
+	reasonSupportAnotherWay4,
+	reasonHealth2,
+	reasonBreakFromNews2,
+	reasonValues2,
+	reasonSharedSubscriptionCancellation,
+];
+
+const printProductsCancellationReasons: CancellationReason[] = [
+	reasonEditorial1,
+	reasonTime2,
+	reasonDontReadEnough2,
+	reasonIssue1,
+	reasonFinancialCircumstances5,
+	reasonBenefits5,
+	reasonDuplicateSubscription,
+	reasonSharedSubscriptionCancellation,
+];
+
+export const CANCELLATION_REASONS: Record<string, CancellationReason[]> = {
+	supporterplus: shuffleCancellationReasons(
+		supporterplusCancellationReasons,
+		otherCancellationReason2,
+	),
+	tierThree: shuffleCancellationReasons(
+		tierThreeCancellationReasons,
+		otherCancellationReason1,
+	),
+	voucher: shuffleCancellationReasons(
+		voucherCancellationReasons,
+		otherCancellationReason1,
+	),
+	digipack: shuffleCancellationReasons(
+		digipackCancellationReasons,
+		otherCancellationReason1,
+	),
+	contributions: shuffleCancellationReasons(
+		contributionsCancellationReasons,
+		otherCancellationReason2,
+	),
+	membership: shuffleCancellationReasons(
+		membershipCancellationReasons,
+		otherCancellationReason3,
+	),
+	printProducts: shuffleCancellationReasons(
+		printProductsCancellationReasons,
+		otherCancellationReason4,
+	),
+};
