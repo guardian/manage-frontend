@@ -110,7 +110,7 @@ describe('Cancel guardian weekly', () => {
 		cy.wait('@create_case_in_salesforce');
 
 		cy.findByText(
-			'Your subscription to Guardian Weekly + Digital plus has been cancelled.',
+			'Your subscription to Guardian Weekly has been cancelled.',
 		).should('exist');
 	});
 });
