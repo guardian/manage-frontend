@@ -13,7 +13,7 @@ describe('currentPaymentDetails.tsx', () => {
 			<CurrentPaymentDetails {...guardianWeeklyPaidByCard()} />,
 		);
 
-		expect(getByText('Guardian Weekly + Digital plus')).toBeDefined();
+		expect(getByText('Guardian Weekly')).toBeDefined();
 	});
 
 	describe('For Card', () => {
