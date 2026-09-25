@@ -38,12 +38,12 @@ describe('isEligibleForExtraAccounts', () => {
 			true,
 		);
 		expect(isEligibleForExtraAccounts('Guardian Weekly Zone A')).toBe(true);
+		expect(isEligibleForExtraAccounts('Tier Three')).toBe(true);
 	});
 
 	it('excludes products without extra accounts', () => {
 		expect(isEligibleForExtraAccounts('Newspaper Delivery')).toBe(false);
 		expect(isEligibleForExtraAccounts('Supporter Plus')).toBe(false);
-		expect(isEligibleForExtraAccounts('Tier Three')).toBe(false);
 	});
 });
 
