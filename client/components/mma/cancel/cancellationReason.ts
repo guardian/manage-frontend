@@ -28,7 +28,6 @@ export interface CancellationReason {
 	saveBody?: string[] | React.FC<SaveBodyProps>;
 	hideSaveActions?: boolean;
 	escalationSaveBody?: string[] | React.FC<SaveBodyProps>;
-	alternateCallUsPrefix?: string;
 	alternateFeedbackIntro?: string;
 	alternateFeedbackThankYouTitle?: string;
 	alternateFeedbackThankYouBody?: string;
@@ -330,8 +329,6 @@ export const reasonSupportAnotherWay3: CancellationReason = {
 		'I am going to support The Guardian in another way, eg. by subscribing',
 	saveTitle: 'Thank you for your ongoing support.',
 	saveBody: ['Please confirm your membership cancellation below.'],
-	alternateCallUsPrefix:
-		'If you’re not sure what’s best for you or would like help, to contact us',
 	alternateFeedbackIntro:
 		"Alternatively if you'd like to give us feedback, please enter in the box the below.",
 };
