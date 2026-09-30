@@ -722,7 +722,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		},
 	},
 	guardianweekly: {
-		productTitle: () => 'Guardian Weekly',
+		productTitle: () => 'Guardian Weekly + Digital plus',
 		friendlyName: 'Guardian Weekly subscription',
 		shortFriendlyName: 'Guardian Weekly',
 		productType: 'guardianweekly',
