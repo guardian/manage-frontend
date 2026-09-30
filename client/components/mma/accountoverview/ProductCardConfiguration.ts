@@ -41,7 +41,7 @@ const unlimitedDigitalBenefitsCopy = (npd: NextPaymentDetails) =>
 	`You're subscribed to the Guardian for ${npd.currentPriceValue} per ${npd.paymentInterval}, unlocking unlimited digital benefits.`;
 
 const guardianWeeklyGiftBenefitsCopy = (npd: NextPaymentDetails) =>
-	`You've purchased Guardian Weekly as a gift for ${npd.currentPriceValue} for ${npd.paymentInterval} months. As the purchaser, you receive the digital benefits listed below. Your gift recipient receives the print magazine only and does not receive digital benefits, unless they purchase their own subscription.`;
+	`You've purchased Guardian Weekly as a gift for ${npd.currentPriceValue} for ${npd.paymentInterval}. As the purchaser, you receive the digital benefits listed below. Your gift recipient receives the print magazine only and does not receive digital benefits, unless they purchase their own subscription.`;
 
 const guardianWeeklyBenefitsCopy = (npd: NextPaymentDetails) =>
 	`You're subscribed to The Guardian Weekly for ${npd.currentPriceValue} per ${npd.paymentInterval} and receive a curated news magazine featuring our best global journalism in print, as well as unlimited access to our full suite of digital benefits.`;
