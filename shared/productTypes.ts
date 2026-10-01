@@ -4,9 +4,9 @@ import { CANCELLATION_REASONS } from '@/client/components/mma/cancel/cancellatio
 import { tierThreeCancellationFlowStart } from '@/client/components/mma/cancel/tierThree/TierThreeCancellationFlowStart';
 import type { CurrencyIso } from '@/client/utilities/currencyIso';
 import { convertCurrencyIsoToSymbol } from '@/client/utilities/currencyIso';
-import {
-	type CancellationReason,
-	type OptionalCancellationReasonId,
+import type {
+	CancellationReason,
+	OptionalCancellationReasonId,
 } from '../client/components/mma/cancel/cancellationReason';
 import { contributionsCancellationFlowStart } from '../client/components/mma/cancel/contributions/ContributionsCancellationFlowStart';
 import { digipackCancellationFlowStart } from '../client/components/mma/cancel/digipack/DigipackCancellationFlowStart';
