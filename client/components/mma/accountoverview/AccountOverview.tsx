@@ -12,7 +12,7 @@ import {
 	subHeadingInformationTextCss,
 } from '@/client/styles/headings';
 import { trackEvent } from '@/client/utilities/analytics';
-import { isEligibleForExtraAccounts } from '@/client/utilities/extraAccounts';
+import { hasExtraAccountsAccess } from '@/client/utilities/extraAccounts';
 import { featureSwitches } from '../../../../shared/featureSwitches';
 import { isValidAppSubscription } from '../../../../shared/mpapiResponse';
 import type {
@@ -90,9 +90,14 @@ const benefitsCtasContainerCss = css`
 type BenefitsCtasProps = {
 	email: string;
 	productKeys?: ProductTier[];
+	showExtraAccountsBanner?: boolean;
 };
 
-export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
+export const BenefitsCtas = ({
+	email,
+	productKeys,
+	showExtraAccountsBanner,
+}: BenefitsCtasProps) => {
 	const hasDigitalPlusPrint = productKeys?.some((productKey) =>
 		isSpecificProductType(productKey, PRODUCT_TYPES.tierthree),
 	);
@@ -103,10 +108,6 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 
 	const hasDigitalPack = productKeys?.some((productKey) =>
 		isSpecificProductType(productKey, PRODUCT_TYPES.digipack),
-	);
-
-	const hasExtraAccountsAccess = productKeys?.some(
-		isEligibleForExtraAccounts,
 	);
 
 	const hasSupporterPlus = productKeys?.some((productKey) =>
@@ -128,7 +129,7 @@ export const BenefitsCtas = ({ email, productKeys }: BenefitsCtasProps) => {
 
 	return (
 		<>
-			{hasExtraAccountsAccess && <ExtraAccountsBanner />}
+			{showExtraAccountsBanner && <ExtraAccountsBanner />}
 			{(hasDigitalPlusPrint ||
 				isPlusDigitalProduct ||
 				hasGuardianEmail ||
@@ -573,6 +574,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 				<BenefitsCtas
 					email={mdapiResponse.user.email}
 					productKeys={allActiveProductKeys}
+					showExtraAccountsBanner={hasExtraAccountsAccess(
+						mdapiResponse,
+					)}
 				/>
 			)}
 		</>
