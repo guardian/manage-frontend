@@ -126,7 +126,7 @@ describe('Cancel patron', () => {
 
 		cy.findByLabelText('A change in my financial circumstances').click();
 
-		cy.findByText(/Continue/).click();
+		cy.findByRole('button', { name: 'Skip to cancel' }).click();
 		cy.findByText('Confirm cancellation').click();
 
 		cy.findByText('Your Membership is cancelled').should('exist');
@@ -154,7 +154,7 @@ describe('Cancel patron', () => {
 			'exist',
 		);
 
-		cy.get('a[href="/cancel/guardianpatron"]').click();
+		cy.findByRole('button', { name: 'Contact us' }).click();
 
 		cy.findByText('Contact us to cancel').should('exist');
 		cy.findByText(

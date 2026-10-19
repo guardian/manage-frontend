@@ -91,7 +91,7 @@ describe('Cancel tier three', () => {
 		cy.findByText('Manage subscription').click();
 		cy.wait('@cancelled');
 
-		cy.findByRole('link', {
+		cy.findByRole('button', {
 			name: 'Cancel subscription',
 		}).click();
 
@@ -102,7 +102,7 @@ describe('Cancel tier three', () => {
 		cy.findAllByRole('radio').eq(6).click();
 
 		cy.findAllByRole('radio').check('Today');
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Skip to cancel' }).click();
 
 		cy.wait('@get_case');
 

@@ -86,12 +86,12 @@ describe('Cancel guardian weekly', () => {
 		cy.findByText('Manage subscription').click();
 		cy.wait('@cancelled');
 
-		cy.findByRole('link', {
+		cy.findByRole('button', {
 			name: 'Cancel subscription',
 		}).click();
 		cy.findAllByRole('radio').eq(6).click();
 
-		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
+		cy.findByRole('button', { name: 'Skip to cancel' }).click();
 
 		cy.wait('@get_case');
 
