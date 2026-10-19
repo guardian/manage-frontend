@@ -300,7 +300,9 @@ export const DigiSubThankYouOffer = () => {
 						Still want to cancel?
 					</h3>
 					<Button
-						priority="subdued"
+						cssOverrides={css`
+							margin-top: ${space[4]}px;
+						`}
 						onClick={() =>
 							navigate('../confirm-cancel', {
 								state: { ...newRouterState },

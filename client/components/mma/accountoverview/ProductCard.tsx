@@ -30,12 +30,12 @@ import {
 import {
 	BenefitsCopyAndToggle,
 	BillingAndPaymentSection,
+	CancellationSection,
 	GiftPaymentSection,
 	GuardianAdLiteCopy,
 	LiveEventsSection,
 	PaymentSection,
 	ProductCardHeader,
-	UsCancellationSection,
 } from './ProductCardSections';
 
 export const ProductCard = ({
@@ -247,7 +247,7 @@ export const ProductCard = ({
 					isGifted={isGifted}
 				/>
 
-				<UsCancellationSection
+				<CancellationSection
 					productDetail={productDetail}
 					groupedProductType={groupedProductType}
 					specificProductType={specificProductType}

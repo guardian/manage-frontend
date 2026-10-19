@@ -287,7 +287,7 @@ const ReasonPicker = ({
 								setInValidationErrorState(!canContinue);
 							}}
 						>
-							Continue
+							Skip to cancel
 						</Button>
 					</div>
 					<div>

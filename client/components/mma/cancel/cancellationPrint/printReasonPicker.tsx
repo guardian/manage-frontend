@@ -358,7 +358,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 							setInValidationErrorState(!canContinue);
 						}}
 					>
-						Continue to Cancel
+						Skip to cancel
 					</Button>
 				</div>
 			</WithStandardTopMargin>
