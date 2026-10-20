@@ -41,7 +41,11 @@ import {
 import type { CancellationDateResponse } from './cancellationDateResponse';
 import { cancellationDateFetcher } from './cancellationDateResponse';
 import { PrintReasonPicker } from './cancellationPrint/printReasonPicker';
-import type { CancellationReason } from './cancellationReason';
+import {
+	type CancellationReason,
+	type OptionalCancellationReasonId,
+	reasonIdOrOther,
+} from './cancellationReason';
 
 interface ReasonPickerProps {
 	productType: ProductTypeWithCancellationFlow;
@@ -54,7 +58,8 @@ const ReasonPicker = ({
 	productDetail,
 	chargedThroughDateStr,
 }: ReasonPickerProps) => {
-	const [selectedReasonId, setSelectedReasonId] = useState<string>('');
+	const [selectedReasonId, setSelectedReasonId] =
+		useState<OptionalCancellationReasonId>(undefined);
 	const [cancellationPolicy, setCancellationPolicy] = useState<string>('');
 
 	const [inValidationErrorState, setInValidationErrorState] =
@@ -106,7 +111,9 @@ const ReasonPicker = ({
 					onChange={(event: FormEvent<HTMLFieldSetElement>) => {
 						const target: HTMLInputElement =
 							event.target as HTMLInputElement;
-						setSelectedReasonId(target.value);
+						setSelectedReasonId(
+							target.value as OptionalCancellationReasonId,
+						);
 					}}
 					css={css`
 						border: 1px solid ${palette.neutral[86]};
@@ -158,18 +165,6 @@ const ReasonPicker = ({
 						)}
 					</RadioGroup>
 				</fieldset>
-				{inValidationErrorState && !selectedReasonId.length && (
-					<InlineError
-						cssOverrides={css`
-							padding: ${space[5]}px;
-							margin-bottom: ${space[4]}px;
-							border: 4px solid ${palette.error[400]};
-							text-align: left;
-						`}
-					>
-						Please select a reason
-					</InlineError>
-				)}
 				{chargedThroughDateStr && (
 					<>
 						<fieldset
@@ -269,25 +264,30 @@ const ReasonPicker = ({
 							icon={<SvgArrowRightStraight />}
 							iconSide="right"
 							onClick={() => {
-								const canContinue =
-									!!selectedReasonId.length &&
-									(chargedThroughDateStr
-										? !!cancellationPolicy.length
-										: true);
+								const hasRequiredDate =
+									!chargedThroughDateStr ||
+									!!cancellationPolicy.length;
 
-								if (canContinue) {
-									navigate('review', {
-										state: {
-											...routerState,
-											selectedReasonId,
-											cancellationPolicy,
-										},
-									});
+								if (!hasRequiredDate) {
+									setInValidationErrorState(true);
+									return;
 								}
-								setInValidationErrorState(!canContinue);
+
+								navigate('review', {
+									state: {
+										...routerState,
+										selectedReasonId: reasonIdOrOther(
+											selectedReasonId,
+											productType.cancellation.reasons,
+										),
+										cancellationPolicy,
+									},
+								});
 							}}
 						>
-							Skip to cancel
+							{selectedReasonId
+								? 'Continue to cancel'
+								: 'Skip to cancel'}
 						</Button>
 					</div>
 					<div>

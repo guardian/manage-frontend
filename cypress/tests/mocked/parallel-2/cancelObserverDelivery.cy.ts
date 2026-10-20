@@ -46,7 +46,7 @@ describe('Cancel Observer delivery (inside M25)', () => {
 			'exist',
 		);
 
-		cy.findByRole('button', { name: 'Contact us' }).click();
+		cy.get('a[href="/cancel/homedelivery"]').click();
 
 		cy.findByText('Contact us to cancel').should('exist');
 		cy.findByText(

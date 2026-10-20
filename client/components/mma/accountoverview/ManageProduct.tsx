@@ -6,9 +6,8 @@ import {
 	textSans17,
 	until,
 } from '@guardian/source/foundations';
-import { Button } from '@guardian/source/react-components';
 import { useState } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import type { BillingFrequencySwitchPreview } from '@/shared/billingFrequencySwitchTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
@@ -398,7 +397,6 @@ interface CancellationCTAProps {
 }
 
 const CancellationCTA = (props: CancellationCTAProps) => {
-	const navigate = useNavigate();
 	const shouldContactUsToCancel =
 		!props.productDetail.selfServiceCancellation.isAllowed ||
 		!props.specificProductType.cancellation;
@@ -418,17 +416,18 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 				{shouldContactUsToCancel &&
 					`Would you like to cancel your ${props.friendlyName}? `}
 			</div>
-			<Button
-				onClick={() =>
-					navigate('/cancel/' + props.specificProductType.urlPart, {
-						state: { productDetail: props.productDetail },
-					})
+			<LinkButton
+				colour={palette.brand[400]}
+				textColour={palette.neutral[100]}
+				fontWeight="bold"
+				to={'/cancel/' + props.specificProductType.urlPart}
+				state={{ productDetail: props.productDetail }}
+				text={
+					shouldContactUsToCancel
+						? 'Contact us'
+						: `Cancel ${props.friendlyName}`
 				}
-			>
-				{shouldContactUsToCancel
-					? 'Contact us'
-					: `Cancel ${props.friendlyName}`}
-			</Button>
+			/>
 		</div>
 	);
 };

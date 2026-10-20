@@ -16,7 +16,7 @@ describe('Cancel Guardian Ad-Lite', () => {
 
 		cy.findByText('Manage subscription').click();
 
-		cy.findByRole('button', {
+		cy.findByRole('link', {
 			name: 'Cancel subscription',
 		}).click();
 	};

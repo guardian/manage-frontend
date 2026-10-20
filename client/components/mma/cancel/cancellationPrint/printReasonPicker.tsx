@@ -14,7 +14,6 @@ import {
 } from '@guardian/source/foundations';
 import {
 	Button,
-	InlineError,
 	Radio,
 	RadioGroup,
 	SvgArrowLeftStraight,
@@ -35,9 +34,10 @@ import {
 	type CancellationPageTitleInterface,
 	useCancellationContext,
 } from '../CancellationContainer';
-import type {
-	CancellationReason,
-	OptionalCancellationReasonId,
+import {
+	type CancellationReason,
+	type OptionalCancellationReasonId,
+	reasonIdOrOther,
 } from '../cancellationReason';
 
 interface PrintReasonPickerProps {
@@ -148,13 +148,6 @@ const reasonRadioCss = css`
 	vertical-align: top;
 `;
 
-const inlineErrorCss = css`
-	padding: ${space[5]}px;
-	margin-bottom: ${space[4]}px;
-	border: 4px solid ${palette.error[400]};
-	text-align: left;
-`;
-
 const feedbackTitleCss = css`
 	${textSansBold17}
 	margin: ${space[6]}px 0 ${space[1]}px;
@@ -211,8 +204,6 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 		);
 	const [feedback, setFeedback] = useState<string>(storedFeedback);
 	const selectedReasonIdValue = selectedReasonId ?? '';
-	const [inValidationErrorState, setInValidationErrorState] =
-		useState<boolean>(false);
 
 	const navigate = useNavigate();
 	const pageTitleContext = useContext(
@@ -313,11 +304,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 						</Card.Section>
 					</Card>
 				</div>
-				{inValidationErrorState && !selectedReasonIdValue.length && (
-					<InlineError cssOverrides={inlineErrorCss}>
-						Please select a reason
-					</InlineError>
-				)}
+
 				<h3 id="print-feedback-label" css={feedbackTitleCss}>
 					Help us improve by sharing more detail
 				</h3>
@@ -348,17 +335,19 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 						icon={<SvgArrowRightStraight />}
 						iconSide="right"
 						onClick={() => {
-							const canContinue = !!selectedReasonIdValue.length;
-
-							if (canContinue) {
-								setStoredSelectedReasonId(selectedReasonId);
-								setStoredCancellationFeedback(feedback);
-								navigate('review');
-							}
-							setInValidationErrorState(!canContinue);
+							setStoredSelectedReasonId(
+								reasonIdOrOther(
+									selectedReasonId,
+									productType.cancellation.reasons,
+								),
+							);
+							setStoredCancellationFeedback(feedback);
+							navigate('review');
 						}}
 					>
-						Skip to cancel
+						{selectedReasonId
+							? 'Continue to cancel'
+							: 'Skip to cancel'}
 					</Button>
 				</div>
 			</WithStandardTopMargin>
