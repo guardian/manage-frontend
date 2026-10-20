@@ -159,7 +159,19 @@ const printProductsCancellationReasons: CancellationReason[] = [
 	reasonSharedSubscriptionCancellation,
 ];
 
-export const CANCELLATION_REASONS: Record<string, CancellationReason[]> = {
+type CancellationReasonsCatalogueKey =
+	| 'supporterplus'
+	| 'tierThree'
+	| 'voucher'
+	| 'digipack'
+	| 'contributions'
+	| 'membership'
+	| 'printProducts';
+
+export const CANCELLATION_REASONS: Record<
+	CancellationReasonsCatalogueKey,
+	CancellationReason[]
+> = {
 	supporterplus: shuffleCancellationReasons(
 		supporterplusCancellationReasons,
 		otherCancellationReason2,
