@@ -44,7 +44,7 @@ import { PrintReasonPicker } from './cancellationPrint/printReasonPicker';
 import {
 	type CancellationReason,
 	type OptionalCancellationReasonId,
-	reasonIdOrOther,
+	reasonIdOrDefault,
 } from './cancellationReason';
 
 interface ReasonPickerProps {
@@ -276,10 +276,8 @@ const ReasonPicker = ({
 								navigate('review', {
 									state: {
 										...routerState,
-										selectedReasonId: reasonIdOrOther(
-											selectedReasonId,
-											productType.cancellation.reasons,
-										),
+										selectedReasonId:
+											reasonIdOrDefault(selectedReasonId),
 										cancellationPolicy,
 									},
 								});

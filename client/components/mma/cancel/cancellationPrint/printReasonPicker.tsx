@@ -37,7 +37,7 @@ import {
 import {
 	type CancellationReason,
 	type OptionalCancellationReasonId,
-	reasonIdOrOther,
+	reasonIdOrDefault,
 } from '../cancellationReason';
 
 interface PrintReasonPickerProps {
@@ -336,10 +336,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 						iconSide="right"
 						onClick={() => {
 							setStoredSelectedReasonId(
-								reasonIdOrOther(
-									selectedReasonId,
-									productType.cancellation.reasons,
-								),
+								reasonIdOrDefault(selectedReasonId),
 							);
 							setStoredCancellationFeedback(feedback);
 							navigate('review');

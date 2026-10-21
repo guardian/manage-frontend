@@ -481,9 +481,6 @@ export const reasonSharedSubscriptionCancellation: CancellationReason = {
 
 export type OptionalCancellationReasonId = CancellationReasonId | undefined;
 
-export const reasonIdOrOther = (
+export const reasonIdOrDefault = (
 	selectedReasonId: OptionalCancellationReasonId,
-	reasons: CancellationReason[] | undefined,
-): OptionalCancellationReasonId =>
-	selectedReasonId ||
-	reasons?.find((reason) => reason.reasonId === 'mma_other')?.reasonId;
+): CancellationReasonId => selectedReasonId || 'mma_cancellation_default';
