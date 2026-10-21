@@ -47,7 +47,7 @@ jobs:
           sudo dev-nginx restart-nginx
 
       - name: Cypress run
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7.4.6
         env:
           CYPRESS_IDAPI_CLIENT_ACCESS_TOKEN: ${{ secrets.IDAPI_CLIENT_ACCESS_TOKEN }}
           # This env variable prevents Node from rejecting self-signed TLS certificates. It's
