@@ -56,8 +56,10 @@ jobs:
           NODE_TLS_REJECT_UNAUTHORIZED: 0
         with:
           start: yarn cypress:e2e:server
-          wait-on: 'https://manage.thegulocal.com'
-          wait-on-timeout: 30
+          # The action's own URL check uses got@16, which rejects the mkcert
+          # certificate even with NODE_TLS_REJECT_UNAUTHORIZED=0. The wait-on
+          # CLI still honours that variable.
+          wait-on: 'npx --yes wait-on@7.2.0 --timeout 60000 https://manage.thegulocal.com'
           quiet: true
           browser: chrome
           spec: cypress/tests/e2e/*.cy.ts
