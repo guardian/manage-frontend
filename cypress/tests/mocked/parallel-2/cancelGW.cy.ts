@@ -91,7 +91,7 @@ describe('Cancel guardian weekly', () => {
 		}).click();
 		cy.findAllByRole('radio').eq(6).click();
 
-		cy.findByRole('button', { name: 'Continue to Cancel' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@get_case');
 

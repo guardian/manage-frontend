@@ -126,7 +126,7 @@ describe('Cancel patron', () => {
 
 		cy.findByLabelText('A change in my financial circumstances').click();
 
-		cy.findByText(/Continue/).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 		cy.findByText('Confirm cancellation').click();
 
 		cy.findByText('Your Membership is cancelled').should('exist');

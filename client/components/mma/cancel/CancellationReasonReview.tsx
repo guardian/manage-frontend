@@ -644,8 +644,13 @@ const ValidatedCancellationReasonReview = ({
 		}
 	}, [isPrintProductType, pageTitleContext]);
 
+	const displayedReasonId =
+		selectedReasonId === 'mma_cancellation_default'
+			? 'mma_other'
+			: selectedReasonId;
+
 	const reason = productType.cancellation.reasons.find(
-		(reason) => reason.reasonId === selectedReasonId,
+		(reason) => reason.reasonId === displayedReasonId,
 	) as CancellationReason;
 
 	const effectiveCancellationDate =

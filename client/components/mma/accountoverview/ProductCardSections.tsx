@@ -699,7 +699,7 @@ export const GiftPaymentSection = ({
 		</Card.Section>
 	);
 
-export const UsCancellationSection = ({
+export const CancellationSection = ({
 	productDetail,
 	groupedProductType,
 	specificProductType,
@@ -718,7 +718,6 @@ export const UsCancellationSection = ({
 	navigate: NavigateFunction;
 	trackEvent: (trackEventArgs: Event) => void;
 }) =>
-	productDetail.billingCountry === 'United States' &&
 	!hasCancellationPending &&
 	!isGifted && (
 		<Card.Section>
@@ -756,7 +755,6 @@ export const UsCancellationSection = ({
 						cssOverrides={css`
 							justify-content: center;
 						`}
-						priority="tertiary"
 						onClick={() => {
 							trackEvent({
 								eventCategory: 'account_overview',

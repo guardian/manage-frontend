@@ -30,7 +30,7 @@ jobs:
           cache: yarn
 
       - name: Cypress run
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7.4.6
         with:
           start: yarn cypress:mocked:server
           wait-on: 'http://localhost:9234, http://localhost:9233'

@@ -469,7 +469,6 @@ export const CancelAlternativeOffer = () => {
 			</div>
 			<div css={cancelBtnHolderCss}>
 				<Button
-					priority="tertiary"
 					cssOverrides={cancelButtonCss}
 					onClick={() => {
 						navigate('../confirm', {

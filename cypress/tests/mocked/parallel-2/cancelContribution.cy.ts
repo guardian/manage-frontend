@@ -113,7 +113,7 @@ describe('Cancel contribution', () => {
 			cy.findByRole('radio', {
 				name: 'I am unhappy with some editorial decisions',
 			}).click();
-			cy.findByRole('button', { name: 'Continue' }).click();
+			cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 			cy.wait('@get_case');
 			cy.wait('@preview_discount');
@@ -142,7 +142,7 @@ describe('Cancel contribution', () => {
 			cy.findByRole('radio', {
 				name: 'I am unhappy with some editorial decisions',
 			}).click();
-			cy.findByRole('button', { name: 'Continue' }).click();
+			cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 			cy.wait('@get_case');
 			cy.wait('@preview_discount');
@@ -176,7 +176,7 @@ describe('Cancel contribution', () => {
 		cy.findByRole('radio', {
 			name: 'I am unhappy with some editorial decisions',
 		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@get_case');
 
@@ -205,7 +205,7 @@ describe('Cancel contribution', () => {
 		cy.findAllByRole('radio', {
 			name: 'I am unhappy with some editorial decisions',
 		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@get_case').its('response.statusCode').should('equal', 500);
 
@@ -219,7 +219,7 @@ describe('Cancel contribution', () => {
 		cy.findByRole('radio', {
 			name: 'I can no longer afford to support you',
 		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@get_case');
 
@@ -245,7 +245,7 @@ describe('Cancel contribution', () => {
 		cy.findAllByRole('radio', {
 			name: 'I’m not fully satisfied with the product features or benefits',
 		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@get_case');
 
@@ -278,7 +278,7 @@ describe('Cancel contribution', () => {
 		cy.findAllByRole('radio', {
 			name: 'I can no longer afford to support you',
 		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@get_case');
 
@@ -302,7 +302,7 @@ describe('Cancel contribution', () => {
 		cy.findAllByRole('radio', {
 			name: 'I am unhappy with some editorial decisions',
 		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@get_case');
 
@@ -372,7 +372,7 @@ describe('Cancel contribution', () => {
 		cy.findByRole('radio', {
 			name: 'I can no longer afford to support you',
 		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@get_case');
 		cy.wait('@switch_discount');
@@ -443,7 +443,7 @@ describe('Cancel contribution', () => {
 		cy.findByRole('radio', {
 			name: 'I’m taking a break from news',
 		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@get_case');
 		cy.wait('@switch_discount');
@@ -485,7 +485,7 @@ describe('Cancel contribution', () => {
 		cy.findByRole('radio', {
 			name: 'I am unhappy with some editorial decisions',
 		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.findByRole('button', {
 			name: 'Continue to cancellation',
@@ -520,7 +520,7 @@ describe('Cancel contribution', () => {
 		cy.findByRole('radio', {
 			name: 'I can no longer afford to support you',
 		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.findByRole('button', {
 			name: 'I still want to cancel',

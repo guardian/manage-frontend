@@ -102,7 +102,7 @@ describe('Cancel tier three', () => {
 		cy.findAllByRole('radio').eq(6).click();
 
 		cy.findAllByRole('radio').check('Today');
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@get_case');
 

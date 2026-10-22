@@ -417,7 +417,9 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 					`Would you like to cancel your ${props.friendlyName}? `}
 			</div>
 			<LinkButton
-				fontWeight={'bold'}
+				colour={palette.brand[400]}
+				textColour={palette.neutral[100]}
+				fontWeight="bold"
 				to={'/cancel/' + props.specificProductType.urlPart}
 				state={{ productDetail: props.productDetail }}
 				text={
@@ -425,7 +427,6 @@ const CancellationCTA = (props: CancellationCTAProps) => {
 						? 'Contact us'
 						: `Cancel ${props.friendlyName}`
 				}
-				hollow
 			/>
 		</div>
 	);

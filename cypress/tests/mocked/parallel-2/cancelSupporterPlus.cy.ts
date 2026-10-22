@@ -106,7 +106,7 @@ describe('Cancel Supporter Plus', () => {
 		cy.findByRole('radio', {
 			name: 'I am unhappy with some editorial decisions',
 		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@get_case');
 
@@ -136,7 +136,7 @@ describe('Cancel Supporter Plus', () => {
 		cy.findByRole('radio', {
 			name: 'I am unhappy with some editorial decisions',
 		}).click();
-		cy.findByRole('button', { name: 'Continue' }).click();
+		cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 		cy.wait('@get_case');
 
@@ -201,7 +201,7 @@ describe('Cancel Supporter Plus', () => {
 			cy.findByRole('radio', {
 				name: 'I am unhappy with some editorial decisions',
 			}).click();
-			cy.findByRole('button', { name: 'Continue' }).click();
+			cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 			cy.wait('@get_case');
 			cy.wait('@preview_discount');
@@ -243,7 +243,7 @@ describe('Cancel Supporter Plus', () => {
 			cy.findByRole('radio', {
 				name: 'I am unhappy with some editorial decisions',
 			}).click();
-			cy.findByRole('button', { name: 'Continue' }).click();
+			cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 			cy.wait('@get_case');
 			cy.wait('@preview_discount');
@@ -286,7 +286,7 @@ describe('Cancel Supporter Plus', () => {
 			cy.findByRole('radio', {
 				name: 'I am unhappy with some editorial decisions',
 			}).click();
-			cy.findByRole('button', { name: 'Continue' }).click();
+			cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 			cy.wait('@get_case');
 			cy.wait('@preview_discount');
@@ -393,7 +393,7 @@ describe('Cancel Supporter Plus', () => {
 				cy.findByRole('radio', {
 					name: 'I am unhappy with some editorial decisions',
 				}).click();
-				cy.findByRole('button', { name: 'Continue' }).click();
+				cy.findByRole('button', { name: 'Continue to cancel' }).click();
 
 				cy.wait('@get_case');
 				cy.wait('@preview_discount');

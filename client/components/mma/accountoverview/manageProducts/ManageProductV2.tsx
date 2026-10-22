@@ -255,7 +255,6 @@ const InnerContent = ({
 						isSelfServeCancellationAllowed &&
 						productDetail.billingCountry !== 'United States' && (
 							<Button
-								priority="subdued"
 								onClick={() => {
 									navigate(
 										'/cancel/' +
