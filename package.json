@@ -174,7 +174,7 @@
     "ua-parser-js": "1.0.34",
     "winston": "3.2.1",
     "yup": "0.28.5",
-    "zod": "3.22.4",
+    "zod": "4.6.6",
     "zustand": "5.0.9"
   },
   "resolutions": {
