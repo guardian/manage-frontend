@@ -19,7 +19,7 @@ jobs:
         group: [1, 2, 3, 4, 5, 6]
 
     steps:
-      - uses: aws-actions/configure-aws-credentials@v2
+      - uses: aws-actions/configure-aws-credentials@v6.3.0
         with:
           role-to-assume: ${{ secrets.MANAGE_FRONTEND_IAM_ROLE }}
           aws-region: eu-west-1
