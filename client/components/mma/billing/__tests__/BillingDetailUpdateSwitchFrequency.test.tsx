@@ -262,7 +262,9 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 			);
 
 			expect(
-				screen.getByText(/Switch to an annual plan and save.*a year/i),
+				screen.getByText(
+					/Switch to an annual billing and save.*a year/i,
+				),
 			).toBeInTheDocument();
 		});
 
@@ -686,7 +688,7 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 			);
 
 			expect(
-				screen.getByText(/Switch to an annual plan/i),
+				screen.getByText(/Switch to an annual billing/i),
 			).toBeInTheDocument();
 		});
 
