@@ -172,7 +172,7 @@ export const UpgradeProductInformation = () => {
 			<h2 css={subHeadingWithInformationCss}>Upgrade to Digital plus</h2>
 			<p css={subHeadingInformationTextCss}>
 				Get more from your subscription and enjoy new benefits and
-				complete access with Digital plus.
+				complete access by changing to Digital Plus
 			</p>
 			<Card>
 				<Card.Header

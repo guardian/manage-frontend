@@ -30,7 +30,6 @@ import type {
 	BillingFrequencySwitchPreview,
 	BillingFrequencySwitchPreviewState,
 } from '@/shared/billingFrequencySwitchTypes';
-import { getCorrectArticle } from '@/shared/generalTypes';
 import {
 	formatDate,
 	getMainPlan,
@@ -112,7 +111,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplaySuccess = () => {
 				aria-live="polite"
 			>
 				You'll receive a confirmation email shortly. Your next billing
-				date will be {getNewPlanStartDate()}. You can cancel anytime.
+				date will be {getNewPlanStartDate()}.
 			</p>
 			<p
 				css={css`
@@ -164,6 +163,9 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 		BillingDetailUpdateSwitchFrequencyContext,
 	) as BillingDetailUpdateSwitchFrequencyContextInterface;
 	const isMonthlySub = isMonthlySubscription(productDetail);
+	const currentBillingFrequency = isMonthlySub ? 'monthly' : 'annual';
+	const newBillingFrequency = isMonthlySub ? 'annual' : 'monthly';
+	const newRenewalPeriod = isMonthlySub ? 'year' : 'month';
 	const mainPlan = getMainPlan(productDetail.subscription);
 
 	let savingsAmount = 0;
@@ -240,7 +242,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 					${subHeadingCss}
 				`}
 			>
-				Switch to an {isMonthlySub ? 'annual' : 'monthly'} plan
+				Switch to an {isMonthlySub ? 'annual' : 'monthly'} billing
 				{savingsAmount > 0 && (
 					<>
 						{' '}
@@ -483,7 +485,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 								${textSansBold15};
 							`}
 						>
-							Your new plan starts on:{' '}
+							Your change to annual billing takes effect from:{' '}
 							<span
 								css={css`
 									${textSans15};
@@ -572,43 +574,22 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 				aria-label="Terms and conditions"
 			>
 				<p>
-					By proceeding, you agree to switch to{' '}
-					{getCorrectArticle(productType.shortFriendlyName ?? '')}{' '}
-					{productType.shortFriendlyName}{' '}
-					{!isMonthlySub ? 'monthly' : 'annual'} plan that will
-					auto-renew each {!isMonthlySub ? 'month' : 'year'}, unless
-					you cancel.
+					By proceeding, you agree to switch your{' '}
+					{productType.shortFriendlyName} plan from{' '}
+					{currentBillingFrequency} to {newBillingFrequency} billing.
+					Your subscription will auto-renew each {newRenewalPeriod},
+					unless you cancel.
 				</p>
 				<p>
-					Your first payment will be taken on {getNewPlanStartDate()}.
-					You will be charged the subscription amount using your
-					chosen payment method at each renewal, at the rate then in
-					effect, unless you cancel before the renewal date. You can
-					cancel{' '}
-					<button
-						css={css`
-							background: none;
-							border: none;
-							cursor: pointer;
-							text-decoration: underline;
-							padding: 0;
-							font: inherit;
-							&:hover,
-							&:visited,
-							&:focus {
-								color: inherit;
-							}
-						`}
-						onClick={() => {
-							navigate(`/cancel/${productType.urlPart}`, {
-								state: { productDetail },
-							});
-						}}
-						aria-label="Cancel your subscription"
-					>
-						here
-					</button>
-					.
+					You will be charged the {newBillingFrequency} subscription
+					amount using your chosen payment method at each renewal, at
+					the rate then in effect, unless you cancel before the
+					renewal date.
+				</p>
+				<p>
+					Your first {newBillingFrequency} payment will be taken on{' '}
+					{getNewPlanStartDate()}. You can cancel within 14 days of
+					this payment and receive a full refund.
 				</p>
 				<p
 					css={css`
@@ -663,7 +644,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 						isMonthlySub ? 'monthly' : 'annual'
 					} plan`}
 				>
-					Stay with {isMonthlySub ? 'monthly' : 'annual'} plan
+					Stay with {isMonthlySub ? 'monthly' : 'annual'} billing
 				</Button>
 				<Button
 					disabled={processingSwitch}
@@ -679,7 +660,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 					}`}
 					aria-busy={processingSwitch}
 				>
-					Confirm {!isMonthlySub ? 'monthly' : 'annual'} plan
+					Confirm {!isMonthlySub ? 'monthly' : 'annual'} billing
 				</Button>
 			</div>
 		</>

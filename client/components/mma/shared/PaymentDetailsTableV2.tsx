@@ -30,7 +30,7 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 	}
 
 	/**
-	 * Validates whether to show the switch to annual plan button.
+	 * Validates whether to show the Switch to annual billing button.
 	 * Returns true only if:
 	 * 1. It has a valid SupporterPlus Monthly rate plan
 	 * 2. The current contribution amount is 0
@@ -83,7 +83,7 @@ export const PaymentDetailsTableV2 = (props: PaymentDetailsTableProps) => {
 						actions: shouldShowSwitchToAnnualButton()
 							? [
 									{
-										text: 'Switch to annual plan',
+										text: 'Switch to annual billing',
 										linkTo: `/billing/${props.specificProductType.urlPart}/switch-frequency?subscriptionId=${props.productDetail.subscription.subscriptionId}`,
 										state: {
 											productDetail: props.productDetail,
