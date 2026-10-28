@@ -395,7 +395,7 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 
 			expect(
 				screen.getByText(
-					/switch your support plan from monthly to annual billing/i,
+					/switch your Support plan from monthly to annual billing/,
 				),
 			).toBeInTheDocument();
 			expect(

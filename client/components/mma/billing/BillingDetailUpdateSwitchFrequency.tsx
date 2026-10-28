@@ -16,6 +16,7 @@ import {
 	until,
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
+import { capitalize } from 'lodash';
 import type { Context } from 'react';
 import { createContext, useContext, useState } from 'react';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router';
@@ -570,7 +571,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 			>
 				<p>
 					By proceeding, you agree to switch your{' '}
-					{productType.shortFriendlyName} plan from{' '}
+					{capitalize(productType.shortFriendlyName)} plan from{' '}
 					{currentBillingFrequency} to {newBillingFrequency} billing.
 					Your subscription will auto-renew each {newRenewalPeriod},
 					unless you cancel.
