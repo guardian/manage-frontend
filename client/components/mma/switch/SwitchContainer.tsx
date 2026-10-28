@@ -11,6 +11,7 @@ import { getMainPlan, isProduct } from '../../../../shared/productResponse';
 import {
 	getBillingPeriodAdjective,
 	PRODUCT_TYPES,
+	type ProductTypeKeys,
 } from '../../../../shared/productTypes';
 import {
 	LoadingState,
@@ -41,6 +42,7 @@ export interface SwitchContextInterface {
 	user?: MembersDataApiUser;
 	mainPlan: PaidSubscriptionPlan;
 	monthlyOrAnnual: 'Monthly' | 'Annual';
+	productType: ProductTypeKeys;
 	supporterPlusTitle: string;
 	thresholds: Thresholds;
 }
@@ -159,6 +161,7 @@ const RenderedPage = (props: {
 					user: props.user,
 					mainPlan,
 					monthlyOrAnnual,
+					productType: PRODUCT_TYPES.supporterplus.productType,
 					supporterPlusTitle:
 						PRODUCT_TYPES.supporterplus.productTitle(),
 					thresholds: getThresholds(

@@ -16,6 +16,7 @@ import {
 	until,
 } from '@guardian/source/foundations';
 import { Button } from '@guardian/source/react-components';
+import { capitalize } from 'lodash';
 import type { Context } from 'react';
 import { createContext, useContext, useState } from 'react';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router';
@@ -30,7 +31,6 @@ import type {
 	BillingFrequencySwitchPreview,
 	BillingFrequencySwitchPreviewState,
 } from '@/shared/billingFrequencySwitchTypes';
-import { getCorrectArticle } from '@/shared/generalTypes';
 import {
 	formatDate,
 	getMainPlan,
@@ -112,7 +112,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplaySuccess = () => {
 				aria-live="polite"
 			>
 				You'll receive a confirmation email shortly. Your next billing
-				date will be {getNewPlanStartDate()}. You can cancel anytime.
+				date will be {getNewPlanStartDate()}.
 			</p>
 			<p
 				css={css`
@@ -164,6 +164,9 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 		BillingDetailUpdateSwitchFrequencyContext,
 	) as BillingDetailUpdateSwitchFrequencyContextInterface;
 	const isMonthlySub = isMonthlySubscription(productDetail);
+	const currentBillingFrequency = isMonthlySub ? 'monthly' : 'annual';
+	const newBillingFrequency = isMonthlySub ? 'annual' : 'monthly';
+	const newRenewalPeriod = isMonthlySub ? 'year' : 'month';
 	const mainPlan = getMainPlan(productDetail.subscription);
 
 	let savingsAmount = 0;
@@ -240,7 +243,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 					${subHeadingCss}
 				`}
 			>
-				Switch to an {isMonthlySub ? 'annual' : 'monthly'} plan
+				Switch to {newBillingFrequency} billing
 				{savingsAmount > 0 && (
 					<>
 						{' '}
@@ -323,7 +326,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 							`}
 						>
 							{productType.productTitle()}
-							{` (${isMonthlySub ? 'monthly' : 'annual'})`}
+							{` (${currentBillingFrequency})`}
 						</div>
 					</div>
 					<div
@@ -396,9 +399,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 								`}
 							>
 								{productType.productTitle()}
-								{` (${
-									!isMonthlySub ? 'monthly' : 'annual'
-								})`}{' '}
+								{` (${newBillingFrequency})`}{' '}
 								<span
 									css={css`
 										${textSansBold12};
@@ -426,12 +427,9 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 							css={css`
 								${comparisonCardHeaderPriceCss}
 							`}
-							aria-label={`New price: ${getNewPriceDisplay()}/${
-								!isMonthlySub ? 'month' : 'year'
-							}`}
+							aria-label={`New price: ${getNewPriceDisplay()}/${newRenewalPeriod}`}
 						>
-							{getNewPriceDisplay()}/
-							{!isMonthlySub ? 'month' : 'year'}
+							{getNewPriceDisplay()}/{newRenewalPeriod}
 						</div>
 					</div>
 					<div
@@ -483,7 +481,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 								${textSansBold15};
 							`}
 						>
-							Your new plan starts on:{' '}
+							Your change to annual billing takes effect from:{' '}
 							<span
 								css={css`
 									${textSans15};
@@ -572,43 +570,22 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 				aria-label="Terms and conditions"
 			>
 				<p>
-					By proceeding, you agree to switch to{' '}
-					{getCorrectArticle(productType.shortFriendlyName ?? '')}{' '}
-					{productType.shortFriendlyName}{' '}
-					{!isMonthlySub ? 'monthly' : 'annual'} plan that will
-					auto-renew each {!isMonthlySub ? 'month' : 'year'}, unless
-					you cancel.
+					By proceeding, you agree to switch your{' '}
+					{capitalize(productType.shortFriendlyName)} plan from{' '}
+					{currentBillingFrequency} to {newBillingFrequency} billing.
+					Your subscription will auto-renew each {newRenewalPeriod},
+					unless you cancel.
 				</p>
 				<p>
-					Your first payment will be taken on {getNewPlanStartDate()}.
-					You will be charged the subscription amount using your
-					chosen payment method at each renewal, at the rate then in
-					effect, unless you cancel before the renewal date. You can
-					cancel{' '}
-					<button
-						css={css`
-							background: none;
-							border: none;
-							cursor: pointer;
-							text-decoration: underline;
-							padding: 0;
-							font: inherit;
-							&:hover,
-							&:visited,
-							&:focus {
-								color: inherit;
-							}
-						`}
-						onClick={() => {
-							navigate(`/cancel/${productType.urlPart}`, {
-								state: { productDetail },
-							});
-						}}
-						aria-label="Cancel your subscription"
-					>
-						here
-					</button>
-					.
+					You will be charged the {newBillingFrequency} subscription
+					amount using your chosen payment method at each renewal, at
+					the rate then in effect, unless you cancel before the
+					renewal date.
+				</p>
+				<p>
+					Your first {newBillingFrequency} payment will be taken on{' '}
+					{getNewPlanStartDate()}. You can cancel within 14 days of
+					this payment and receive a full refund.
 				</p>
 				<p
 					css={css`
@@ -659,11 +636,9 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 							state: { productDetail },
 						});
 					}}
-					aria-label={`Stay with ${
-						isMonthlySub ? 'monthly' : 'annual'
-					} plan`}
+					aria-label={`Stay with ${currentBillingFrequency} plan`}
 				>
-					Stay with {isMonthlySub ? 'monthly' : 'annual'} plan
+					Stay with {currentBillingFrequency} billing
 				</Button>
 				<Button
 					disabled={processingSwitch}
@@ -672,14 +647,12 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 					onClick={() => {
 						processSwitch();
 					}}
-					aria-label={`Confirm ${
-						!isMonthlySub ? 'monthly' : 'annual'
-					} plan - ${
+					aria-label={`Confirm ${newBillingFrequency} plan - ${
 						processingSwitch ? 'processing' : 'ready to submit'
 					}`}
 					aria-busy={processingSwitch}
 				>
-					Confirm {!isMonthlySub ? 'monthly' : 'annual'} plan
+					Confirm {newBillingFrequency} billing
 				</Button>
 			</div>
 		</>

@@ -172,7 +172,7 @@ describe('PaymentDetailsTableV2', () => {
 				/>,
 			);
 			expect(
-				screen.getByText('Switch to annual plan'),
+				screen.getByText('Switch to annual billing'),
 			).toBeInTheDocument();
 			expect(screen.getByText('Switch and save £20')).toBeInTheDocument();
 		});
@@ -190,7 +190,7 @@ describe('PaymentDetailsTableV2', () => {
 			);
 
 			expect(
-				screen.queryByText('Switch to annual plan'),
+				screen.queryByText('Switch to annual billing'),
 			).not.toBeInTheDocument();
 		});
 
@@ -207,7 +207,7 @@ describe('PaymentDetailsTableV2', () => {
 			);
 
 			expect(
-				screen.queryByText('Switch to annual plan'),
+				screen.queryByText('Switch to annual billing'),
 			).not.toBeInTheDocument();
 		});
 
@@ -242,7 +242,7 @@ describe('PaymentDetailsTableV2', () => {
 			);
 
 			expect(
-				screen.queryByText('Switch to annual plan'),
+				screen.queryByText('Switch to annual billing'),
 			).not.toBeInTheDocument();
 		});
 	});

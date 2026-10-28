@@ -133,9 +133,9 @@ export const UpgradeProductThankYou = () => {
 				<div css={whatHappensNowItemInfoCss}>
 					<p css={whatHappensNowItemInformationTextCss}>
 						<b css={whatHappensNowItemInformationBoldTextCss}>
-							Your new support plan starts today.
+							The changes to your subscription start today.
 						</b>{' '}
-						You can start to enjoy your new rewards immediately.
+						You can start to enjoy your new benefits immediately.
 					</p>
 				</div>
 			</div>

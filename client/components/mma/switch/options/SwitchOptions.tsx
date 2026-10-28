@@ -25,10 +25,12 @@ import {
 import {
 	productTitleCss,
 	sectionSpacing,
-	smallPrintCss,
 } from '../../../../styles/GenericStyles';
 import { formatAmount } from '../../../../utilities/utils';
-import { supporterPlusSwitchBenefits } from '../../shared/benefits/BenefitsConfiguration';
+import {
+	benefitsConfiguration,
+	filterBenefitByRegion,
+} from '../../shared/benefits/BenefitsConfiguration';
 import { BenefitsSection } from '../../shared/benefits/BenefitsSection';
 import { Card } from '../../shared/Card';
 import { Heading } from '../../shared/Heading';
@@ -89,18 +91,18 @@ export const SwitchOptions = () => {
 		contributionToSwitch,
 		mainPlan,
 		monthlyOrAnnual,
+		productType,
 		supporterPlusTitle,
 		thresholds,
 	} = switchContext;
 
-	const {
-		monthlyThreshold,
-		annualThreshold,
-		thresholdForBillingPeriod: threshold,
-		isAboveThreshold,
-	} = thresholds;
+	const { thresholdForBillingPeriod: threshold, isAboveThreshold } =
+		thresholds;
 
 	const currentAmount = mainPlan.price / 100;
+	const benefits = benefitsConfiguration[productType].filter((benefit) =>
+		filterBenefitByRegion(benefit, mainPlan.currencyISO),
+	);
 
 	const buttonContainerRef = useRef(null);
 	const [buttonIsStuck, setButtonIsStuck] = useState(false);
@@ -281,9 +283,7 @@ export const SwitchOptions = () => {
 							</div>
 						</Card.Header>
 						<Card.Section>
-							<BenefitsSection
-								benefits={supporterPlusSwitchBenefits}
-							/>
+							<BenefitsSection benefits={benefits} />
 						</Card.Section>
 					</Card>
 				</Stack>
@@ -307,16 +307,6 @@ export const SwitchOptions = () => {
 						? 'Add extras'
 						: `Upgrade to ${mainPlan.currency}${threshold} per ${mainPlan.billingPeriod}`}
 				</Button>
-			</section>
-
-			<section>
-				<p css={smallPrintCss}>
-					These extras are exclusively available for supporters who
-					give a minimum of {mainPlan.currency}
-					{formatAmount(monthlyThreshold)} per month, or{' '}
-					{mainPlan.currency}
-					{formatAmount(annualThreshold)} per year.
-				</p>
 			</section>
 		</>
 	);
