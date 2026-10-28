@@ -242,7 +242,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 					${subHeadingCss}
 				`}
 			>
-				Switch to an {isMonthlySub ? 'annual' : 'monthly'} billing
+				Switch to {newBillingFrequency} billing
 				{savingsAmount > 0 && (
 					<>
 						{' '}
@@ -325,7 +325,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 							`}
 						>
 							{productType.productTitle()}
-							{` (${isMonthlySub ? 'monthly' : 'annual'})`}
+							{` (${currentBillingFrequency})`}
 						</div>
 					</div>
 					<div
@@ -398,9 +398,7 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 								`}
 							>
 								{productType.productTitle()}
-								{` (${
-									!isMonthlySub ? 'monthly' : 'annual'
-								})`}{' '}
+								{` (${newBillingFrequency})`}{' '}
 								<span
 									css={css`
 										${textSansBold12};
@@ -428,12 +426,9 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 							css={css`
 								${comparisonCardHeaderPriceCss}
 							`}
-							aria-label={`New price: ${getNewPriceDisplay()}/${
-								!isMonthlySub ? 'month' : 'year'
-							}`}
+							aria-label={`New price: ${getNewPriceDisplay()}/${newRenewalPeriod}`}
 						>
-							{getNewPriceDisplay()}/
-							{!isMonthlySub ? 'month' : 'year'}
+							{getNewPriceDisplay()}/{newRenewalPeriod}
 						</div>
 					</div>
 					<div
@@ -640,11 +635,9 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 							state: { productDetail },
 						});
 					}}
-					aria-label={`Stay with ${
-						isMonthlySub ? 'monthly' : 'annual'
-					} plan`}
+					aria-label={`Stay with ${currentBillingFrequency} plan`}
 				>
-					Stay with {isMonthlySub ? 'monthly' : 'annual'} billing
+					Stay with {currentBillingFrequency} billing
 				</Button>
 				<Button
 					disabled={processingSwitch}
@@ -653,14 +646,12 @@ export const BillingDetailUpdateSwitchFrequencyDisplayForm = () => {
 					onClick={() => {
 						processSwitch();
 					}}
-					aria-label={`Confirm ${
-						!isMonthlySub ? 'monthly' : 'annual'
-					} plan - ${
+					aria-label={`Confirm ${newBillingFrequency} plan - ${
 						processingSwitch ? 'processing' : 'ready to submit'
 					}`}
 					aria-busy={processingSwitch}
 				>
-					Confirm {!isMonthlySub ? 'monthly' : 'annual'} billing
+					Confirm {newBillingFrequency} billing
 				</Button>
 			</div>
 		</>
