@@ -8,6 +8,7 @@ import {
 } from '@guardian/source/foundations';
 import { useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { isCancellationEntryOpen } from '@/client/components/mma/cancel/cancellationPrint/printCancellationFeature';
 import type { BillingFrequencySwitchPreview } from '@/shared/billingFrequencySwitchTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
@@ -399,7 +400,8 @@ interface CancellationCTAProps {
 const CancellationCTA = (props: CancellationCTAProps) => {
 	const shouldContactUsToCancel =
 		!props.productDetail.selfServiceCancellation.isAllowed ||
-		!props.specificProductType.cancellation;
+		!props.specificProductType.cancellation ||
+		!isCancellationEntryOpen(props.specificProductType);
 	return (
 		<div
 			css={css`

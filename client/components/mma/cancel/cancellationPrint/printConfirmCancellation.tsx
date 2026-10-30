@@ -26,6 +26,7 @@ import type { ProductDetail } from '../../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
 import { ProgressStepper } from '../../shared/ProgressStepper';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
+import { getConfirmCopy } from './printCancellationCopy';
 
 interface PrintConfirmCancellationProps {
 	productDetail: ProductDetail;
@@ -124,6 +125,7 @@ export const PrintConfirmCancellation = ({
 		? `${supporterFirstName}, `
 		: '';
 	const thankWord = supporterNamePrefix ? 'thank' : 'Thank';
+	const copy = getConfirmCopy(productDetail);
 	const subscriptionEndDate = subscription.potentialCancellationDate
 		? parseDate(
 				subscription.potentialCancellationDate,
@@ -146,38 +148,28 @@ export const PrintConfirmCancellation = ({
 					navigate('../review');
 				}}
 			>
-				Previous
+				{copy.previous}
 			</Button>
 			<ProgressStepper
 				steps={[{}, {}, { isCurrentStep: true }]}
 				additionalCSS={stepperCss}
 			/>
 			<h2 css={titleCss}>
-				{`${supporterNamePrefix}${thankWord} you for supporting the Guardian since ${supportSinceDate}. Is this really goodbye?`}
+				{copy.title(supporterNamePrefix, thankWord, supportSinceDate)}
 			</h2>
 			<div css={bodyCss}>
+				<p>{copy.supportParagraph}</p>
 				<p>
-					Your continued support has ensured that our independent
-					journalism remains open to all. We couldn&apos;t do what we
-					do without you. Please consider remaining a supporter.
-				</p>
-				<p>
-					By confirming the cancellation of the renewal of your{' '}
-					{productType.productTitle()} subscription, you will no
-					longer be supporting the Guardian&apos;s reader-funded
-					journalism.
+					{copy.confirmCancellationBody(productType.productTitle())}
 				</p>
 				<p>
 					<strong css={endDateTextCss}>
 						{subscriptionEndDate
-							? `Your subscription ends on ${subscriptionEndDate}.`
-							: 'Your subscription will end at the end of your current billing period.'}
+							? copy.subscriptionEndsOn(subscriptionEndDate)
+							: copy.subscriptionEndsAtBillingPeriod}
 					</strong>
 				</p>
-				<p>
-					Until then, you will retain all your current subscription
-					benefits.
-				</p>
+				<p>{copy.retainBenefits}</p>
 				<div data-cy="cta_container" css={ctaContainerCss}>
 					<Button
 						priority="tertiary"
@@ -188,14 +180,14 @@ export const PrintConfirmCancellation = ({
 							navigate('../review');
 						}}
 					>
-						Previous
+						{copy.previous}
 					</Button>
 					<Button
 						onClick={() => {
 							navigate('../confirmed');
 						}}
 					>
-						Confirm cancellation
+						{copy.confirmCta}
 					</Button>
 				</div>
 			</div>

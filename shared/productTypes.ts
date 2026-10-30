@@ -70,6 +70,8 @@ type SfCaseProduct =
 	| 'Membership'
 	| 'Recurring - Contributions'
 	| 'Voucher Subscriptions'
+	| 'Newspaper - Home Delivery'
+	| 'Newspaper Subscription Card'
 	| 'Guardian Weekly'
 	| 'Digital Pack Subscriptions'
 	| 'Supporter Plus'
@@ -298,6 +300,24 @@ export type GroupedProductTypeKeys =
 	| 'recurringSupportWithBenefits'
 	| 'subscriptions';
 
+const printCancellationFlow = (
+	sfCaseProduct: SfCaseProduct,
+	startPageBody: CancellationFlowProperties['startPageBody'] = gwCancellationFlowStart,
+): CancellationFlowProperties => ({
+	reasons: CANCELLATION_REASONS.printProducts,
+	sfCaseProduct,
+	checkForOutstandingCredits: true,
+	usesPrintCancellationFlow: true,
+	flowWrapper: physicalSubsCancellationFlowWrapper,
+	startPageBody,
+	startPageOfferEffectiveDateOptions: true,
+	summaryReasonSpecificPara: () => undefined,
+	onlyShowSupportSectionIfAlternateText: false,
+	alternateSupportButtonText: () => undefined,
+	alternateSupportButtonUrlSuffix: () => undefined,
+	swapFeedbackAndContactUs: true,
+});
+
 const baseHomedeliveryProduct: ProductType = {
 	productTitle: calculateProductTitle('Newspaper Delivery'),
 	friendlyName: 'newspaper home delivery subscription',
@@ -338,6 +358,7 @@ const baseHomedeliveryProduct: ProductType = {
 	fulfilmentDateCalculator: {
 		productFilenamePart: 'Newspaper - Home Delivery',
 	},
+	cancellation: printCancellationFlow('Newspaper - Home Delivery'),
 };
 
 const baseNationaldeliveryProduct: ProductType = {
@@ -380,6 +401,7 @@ const baseNationaldeliveryProduct: ProductType = {
 	fulfilmentDateCalculator: {
 		productFilenamePart: 'Newspaper - National Delivery',
 	},
+	cancellation: printCancellationFlow('Newspaper - Home Delivery'),
 };
 
 const baseVoucherProduct: ProductType = {
@@ -415,19 +437,10 @@ const baseVoucherProduct: ProductType = {
 		showAddress: showDeliveryAddressCheck,
 		enableDeliveryInstructionsUpdate: true,
 	},
-	cancellation: {
-		reasons: CANCELLATION_REASONS.voucher,
-		sfCaseProduct: 'Voucher Subscriptions',
-		checkForOutstandingCredits: true,
-		flowWrapper: physicalSubsCancellationFlowWrapper,
-		startPageBody: voucherCancellationFlowStart,
-		startPageOfferEffectiveDateOptions: true,
-		summaryReasonSpecificPara: () => undefined,
-		onlyShowSupportSectionIfAlternateText: false,
-		alternateSupportButtonText: () => undefined,
-		alternateSupportButtonUrlSuffix: () => undefined,
-		swapFeedbackAndContactUs: true,
-	},
+	cancellation: printCancellationFlow(
+		'Voucher Subscriptions',
+		voucherCancellationFlowStart,
+	),
 };
 
 const baseDigitalvoucherProduct: ProductType = {
@@ -456,6 +469,7 @@ const baseDigitalvoucherProduct: ProductType = {
 	delivery: {
 		showAddress: showDeliveryAddressCheck,
 	},
+	cancellation: printCancellationFlow('Newspaper Subscription Card'),
 };
 
 export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
@@ -621,6 +635,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		fulfilmentDateCalculator: {
 			productFilenamePart: 'Newspaper - Home Delivery',
 		},
+		cancellation: printCancellationFlow('Newspaper - Home Delivery'),
 	},
 	nationaldelivery: {
 		...baseNationaldeliveryProduct,
@@ -670,19 +685,10 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			showAddress: showDeliveryAddressCheck,
 			enableDeliveryInstructionsUpdate: true,
 		},
-		cancellation: {
-			reasons: CANCELLATION_REASONS.voucher,
-			sfCaseProduct: 'Voucher Subscriptions',
-			checkForOutstandingCredits: true,
-			flowWrapper: physicalSubsCancellationFlowWrapper,
-			startPageBody: voucherCancellationFlowStart,
-			startPageOfferEffectiveDateOptions: true,
-			summaryReasonSpecificPara: () => undefined,
-			onlyShowSupportSectionIfAlternateText: false,
-			alternateSupportButtonText: () => undefined,
-			alternateSupportButtonUrlSuffix: () => undefined,
-			swapFeedbackAndContactUs: true,
-		},
+		cancellation: printCancellationFlow(
+			'Voucher Subscriptions',
+			voucherCancellationFlowStart,
+		),
 	},
 	digitalvoucher: {
 		...baseDigitalvoucherProduct,
@@ -714,6 +720,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		delivery: {
 			showAddress: showDeliveryAddressCheck,
 		},
+		cancellation: printCancellationFlow('Newspaper Subscription Card'),
 	},
 	guardianweekly: {
 		productTitle: () => 'Guardian Weekly + Digital plus',
@@ -749,20 +756,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 				availableProblemTypes: commonDeliveryProblemTypes,
 			},
 		},
-		cancellation: {
-			reasons: CANCELLATION_REASONS.printProducts,
-			sfCaseProduct: 'Guardian Weekly',
-			checkForOutstandingCredits: true,
-			usesPrintCancellationFlow: true,
-			flowWrapper: physicalSubsCancellationFlowWrapper,
-			startPageBody: gwCancellationFlowStart,
-			startPageOfferEffectiveDateOptions: true,
-			summaryReasonSpecificPara: () => undefined,
-			onlyShowSupportSectionIfAlternateText: false,
-			alternateSupportButtonText: () => undefined,
-			alternateSupportButtonUrlSuffix: () => undefined,
-			swapFeedbackAndContactUs: true,
-		},
+		cancellation: printCancellationFlow('Guardian Weekly'),
 		fulfilmentDateCalculator: {
 			productFilenamePart: 'Guardian Weekly',
 			explicitSingleDayOfWeek: 'Friday',

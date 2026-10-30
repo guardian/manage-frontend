@@ -20,6 +20,7 @@ import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 import { isCancelled } from '../CancellationSummary';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
+import { getProgressCopy } from './printCancellationCopy';
 import { PrintCancellationSuccess } from './printCancellationSuccess';
 
 class PerformCancelAsyncLoader extends AsyncLoader<MembersDataApiResponse> {}
@@ -109,6 +110,7 @@ const getCaseUpdatingPrintCancellationSummary =
 				productDetail={updatedProductDetail}
 			/>
 		);
+		const progressCopy = getProgressCopy(productDetailBeforeCancelling);
 
 		return caseId ? (
 			<CaseUpdateAsyncLoader
@@ -117,7 +119,7 @@ const getCaseUpdatingPrintCancellationSummary =
 					updatedProductDetail,
 				)}
 				render={render}
-				loadingMessage="Finalising your cancellation..."
+				loadingMessage={progressCopy.finalisingCancellation}
 			/>
 		) : (
 			render()
@@ -146,6 +148,7 @@ export const PrintExecuteCancellation = ({
 	);
 	const productHasReasonSelection =
 		!!productType.cancellation.reasons?.length;
+	const progressCopy = getProgressCopy(productDetail);
 
 	if (productHasReasonSelection && (!selectedReasonId || !caseId)) {
 		return <Navigate to="../" />;
@@ -171,21 +174,18 @@ export const PrintExecuteCancellation = ({
 				render={() => (
 					<div>
 						<p css={escalatedConfirmationBodyCss}>
-							Your cancellation request has been successfully
-							submitted. Our customer service team will try their
-							best to contact you as soon as possible to confirm
-							the cancellation and refund any credit you are owed.
+							{progressCopy.escalationBody}
 						</p>
 						<Button
 							cssOverrides={returnToAccountButtonCss}
 							priority="tertiary"
 							onClick={() => navigate('/')}
 						>
-							Return to your account
+							{progressCopy.returnToAccount}
 						</Button>
 					</div>
 				)}
-				loadingMessage="Requesting your cancellation..."
+				loadingMessage={progressCopy.requestingCancellation}
 			/>
 		) : (
 			<PerformCancelAsyncLoader
@@ -203,7 +203,7 @@ export const PrintExecuteCancellation = ({
 					productDetail,
 					caseId,
 				)}
-				loadingMessage="Performing your cancellation..."
+				loadingMessage={progressCopy.performingCancellation}
 			/>
 		)
 	) : (

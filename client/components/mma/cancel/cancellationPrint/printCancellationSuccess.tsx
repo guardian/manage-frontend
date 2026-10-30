@@ -16,6 +16,7 @@ import { useAccountStore } from '@/client/stores/AccountStore';
 import { cancellationFormatDate } from '@/shared/dates';
 import type { ProductDetail } from '../../../../../shared/productResponse';
 import type { ProductType } from '../../../../../shared/productTypes';
+import { getSuccessCopy } from './printCancellationCopy';
 
 const printSuccessBodyCss = css`
 	${textSans15};
@@ -97,14 +98,15 @@ export const PrintCancellationSuccess = ({
 }: PrintCancellationSuccessProps) => {
 	const { getUser } = useAccountStore();
 	const user = getUser();
-	const supporterName = user?.firstName?.trim() || 'supporter';
+	const copy = getSuccessCopy(productDetail);
+	const supporterName = user?.firstName?.trim() || copy.fallbackSupporterName;
 	const cancellationDate = productDetail.subscription
 		.cancellationEffectiveDate
 		? cancellationFormatDate(
 				productDetail.subscription.cancellationEffectiveDate,
 		  )
-		: 'the end of your current billing period';
-	const confirmationEmail = user?.email || 'your registered email address';
+		: copy.fallbackCancellationDate;
+	const confirmationEmail = user?.email || copy.fallbackEmail;
 
 	return (
 		<>
@@ -120,12 +122,11 @@ export const PrintCancellationSuccess = ({
 						}
 					`}
 				>
-					Your subscription to {productType.productTitle()} has been
-					cancelled.
+					{copy.heading(productType.productTitle())}
 				</h2>
 				<div css={printSuccessBodyCss}>
 					<p>
-						Your cancellation will take effect on{' '}
+						{copy.effectiveLeadIn}{' '}
 						<strong
 							css={css`
 								${textSansBold15};
@@ -139,8 +140,8 @@ export const PrintCancellationSuccess = ({
 						</strong>
 					</p>
 					<p>
-						You will receive a confirmation email to{' '}
-						{confirmationEmail} in the next 24 hours.
+						{copy.confirmationEmailLeadIn} {confirmationEmail}{' '}
+						{copy.confirmationEmailTail}
 					</p>
 				</div>
 			</section>
@@ -148,12 +149,9 @@ export const PrintCancellationSuccess = ({
 			<section css={printSuccessBannerCss}>
 				<div css={printSuccessBannerContentCss}>
 					<h3 css={printSuccessBannerHeadingCss}>
-						Thank you, {supporterName}
+						{copy.thankYou(supporterName)}
 					</h3>
-					<p css={printSuccessBannerBodyCss}>
-						Your support has played a vital role in keeping
-						independent journalism open to all.
-					</p>
+					<p css={printSuccessBannerBodyCss}>{copy.thankYouBody}</p>
 					<LinkButton
 						href="https://theguardian.com"
 						cssOverrides={css`
@@ -164,7 +162,7 @@ export const PrintCancellationSuccess = ({
 							}
 						`}
 					>
-						Continue reading the Guardian
+						{copy.continueReading}
 					</LinkButton>
 				</div>
 				<picture css={printSuccessBannerGraphicCss}>

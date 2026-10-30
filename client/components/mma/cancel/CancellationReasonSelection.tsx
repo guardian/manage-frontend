@@ -40,6 +40,7 @@ import {
 } from './cancellationContexts';
 import type { CancellationDateResponse } from './cancellationDateResponse';
 import { cancellationDateFetcher } from './cancellationDateResponse';
+import { isPrintCancellationJourneyEnabled } from './cancellationPrint/printCancellationFeature';
 import { PrintReasonPicker } from './cancellationPrint/printReasonPicker';
 import {
 	type CancellationReason,
@@ -374,7 +375,7 @@ const ReasonPickerWithCancellationDate = ({
 export const CancellationReasonSelection = () => {
 	const { productDetail, productType } = useCancellationContext();
 
-	if (productType.cancellation.usesPrintCancellationFlow) {
+	if (isPrintCancellationJourneyEnabled(productType)) {
 		return <PrintReasonPicker productType={productType} />;
 	}
 

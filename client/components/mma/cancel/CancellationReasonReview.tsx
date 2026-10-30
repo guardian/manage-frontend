@@ -60,6 +60,8 @@ import {
 import { cancellationEffectiveToday } from './cancellationContexts';
 import { requiresCancellationEscalation } from './cancellationFlowEscalationCheck';
 import { PrintCancellationAlternatives } from './cancellationPrint/printCancellationAlternatives';
+import { getProgressCopy } from './cancellationPrint/printCancellationCopy';
+import { isPrintCancellationJourneyEnabled } from './cancellationPrint/printCancellationFeature';
 import type {
 	CancellationReason,
 	CancellationReasonId,
@@ -566,8 +568,7 @@ export const CancellationReasonReview = () => {
 	} | null;
 
 	const { productDetail, productType } = useCancellationContext();
-	const isPrintProductType =
-		!!productType?.cancellation?.usesPrintCancellationFlow;
+	const isPrintProductType = isPrintCancellationJourneyEnabled(productType);
 
 	const printSelectedReasonId = usePrintCancellationStore(
 		(state) => state.selectedReasonId,
@@ -808,7 +809,14 @@ const ValidatedCancellationReasonReview = ({
 			<WithStandardTopMargin>
 				{isDataLoading ? (
 					!loadingHasFailed && (
-						<SpinnerWithMessage loadingMessage="Checking details" />
+						<SpinnerWithMessage
+							loadingMessage={
+								isPrintProductType
+									? getProgressCopy(productDetail)
+											.checkingDetails
+									: 'Checking details'
+							}
+						/>
 					)
 				) : isPrintProductType ? (
 					<PrintCancellationAlternatives
