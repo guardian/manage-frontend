@@ -28,10 +28,6 @@ jest.mock('@/client/utilities/productUtils', () => ({
 	changeSubscriptionBillingFrequencyFetch: jest.fn(),
 }));
 
-jest.mock('@/shared/generalTypes', () => ({
-	getCorrectArticle: jest.fn(),
-}));
-
 // Mock AsyncLoader at the base level to prevent class extension issues
 jest.mock('../../shared/AsyncLoader', () => {
 	return {
@@ -97,14 +93,12 @@ const getMocks = () => {
 	const utils = jest.requireMock('@/client/utilities/utils');
 	const currencyIso = jest.requireMock('@/client/utilities/currencyIso');
 	const productResponse = jest.requireMock('@/shared/productResponse');
-	const generalTypes = jest.requireMock('@/shared/generalTypes');
 	const reactRouter = jest.requireMock('react-router');
 	return {
 		productUtils,
 		utils,
 		currencyIso,
 		productResponse,
-		generalTypes,
 		reactRouter,
 	};
 };
@@ -178,7 +172,6 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 		mocks.currencyIso.convertCurrencyToSymbol.mockReturnValue('£');
 		mocks.productResponse.formatDate.mockReturnValue('31 Dec 2025');
 		mocks.productResponse.isPaidSubscriptionPlan.mockReturnValue(true);
-		mocks.generalTypes.getCorrectArticle.mockReturnValue('a');
 
 		const mockPlan = {
 			name: 'Monthly Plan',
@@ -269,7 +262,7 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 			);
 
 			expect(
-				screen.getByText(/Switch to an annual plan and save.*a year/i),
+				screen.getByText(/Switch to annual billing and save.*a year/i),
 			).toBeInTheDocument();
 		});
 
@@ -386,7 +379,7 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 			).toBeInTheDocument();
 		});
 
-		it('displays auto-renewal information', () => {
+		it('displays the switch agreement, charge, and refund terms', () => {
 			render(
 				<BillingUpdateContext.Provider
 					value={{
@@ -400,60 +393,29 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 				</BillingUpdateContext.Provider>,
 			);
 
+			expect(
+				screen.getByText(
+					/switch your Support plan from monthly to annual billing/,
+				),
+			).toBeInTheDocument();
 			expect(
 				screen.getByText(/auto-renew each year/i),
 			).toBeInTheDocument();
-		});
-
-		it('displays cancel subscription button in terms', () => {
-			render(
-				<BillingUpdateContext.Provider
-					value={{
-						productDetail: mockProductDetail,
-						isFromApp: false,
-					}}
-				>
-					<BillingDetailUpdateSwitchFrequency
-						productType={mockProductType}
-					/>
-				</BillingUpdateContext.Provider>,
-			);
-
 			expect(
-				screen.getByRole('button', {
-					name: /Cancel your subscription/i,
-				}),
+				screen.getByText(
+					/charged the annual subscription amount using your chosen payment method/i,
+				),
 			).toBeInTheDocument();
-		});
-
-		it('navigates to cancel page when cancel button clicked', () => {
-			const mockNavigate = jest.fn();
-			mocks.reactRouter.useNavigate.mockReturnValue(mockNavigate);
-
-			render(
-				<BillingUpdateContext.Provider
-					value={{
-						productDetail: mockProductDetail,
-						isFromApp: false,
-					}}
-				>
-					<BillingDetailUpdateSwitchFrequency
-						productType={mockProductType}
-					/>
-				</BillingUpdateContext.Provider>,
-			);
-
-			const cancelButton = screen.getByRole('button', {
-				name: /Cancel your subscription/i,
-			});
-			fireEvent.click(cancelButton);
-
-			expect(mockNavigate).toHaveBeenCalledWith(
-				'/cancel/support',
-				expect.objectContaining({
-					state: { productDetail: mockProductDetail },
-				}),
-			);
+			expect(
+				screen.getByText(
+					/first annual payment will be taken on 31 Dec 2025/i,
+				),
+			).toBeInTheDocument();
+			expect(
+				screen.getByText(
+					/cancel within 14 days of this payment and receive a full refund/i,
+				),
+			).toBeInTheDocument();
 		});
 	});
 
@@ -724,7 +686,7 @@ describe('BillingDetailUpdateSwitchFrequency', () => {
 			);
 
 			expect(
-				screen.getByText(/Switch to an annual plan/i),
+				screen.getByText(/Switch to annual billing/i),
 			).toBeInTheDocument();
 		});
 

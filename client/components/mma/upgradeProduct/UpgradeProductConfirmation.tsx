@@ -298,17 +298,10 @@ export const UpgradeProductConfirmation = () => {
 
 			<div css={termsAndConditionsContainerCss}>
 				<p css={termsAndConditionsTextCss}>
-					This subscription auto-renews. You'll be charged the
-					applicable {paymentInterval}ly amount at each renewal unless
-					you cancel. You can cancel your subscription at any time
-					before your next renewal date. To cancel go to{' '}
-					<a href="/">Manage My Account</a>. Cancellation will take
-					effect at the end of your current {paymentInterval}ly
-					payment period. There is also a cooling off period of 14
-					days from sign-up. You can cancel your subscription within
-					14 days of sign-up by{' '}
-					<a href="/help-centre#call-us">contacting us</a> and receive
-					a full refund.
+					By proceeding, you are changing your subscription to Digital
+					Plus. Your subscription will continue to auto-renew each
+					month as before, unless you cancel. You can cancel your
+					subscription at any time before your next renewal date.
 				</p>
 			</div>
 
@@ -402,13 +395,13 @@ export const UpgradeProductConfirmation = () => {
 			</div>
 			<p css={termsAndConditionsFooterCss}>
 				If you want to change the payment method, please go to your
-				billing section and update your payment details. By proceeding,
-				you are agreeing to our{' '}
+				billing section and update your payment details. Our
 				<a href="https://www.theguardian.com/info/2025/oct/31/guardian-subscription-terms-and-conditions">
 					Terms and Conditions
-				</a>
-				. To find out what personal data we collect and how we use it,
-				please visit our <a href="/data-privacy">Privacy Policy</a>.
+				</a>{' '}
+				continue to apply. To find out what personal data we collect and
+				how we use it, please visit our{' '}
+				<a href="/data-privacy">Privacy Policy</a>.
 			</p>
 		</>
 	);

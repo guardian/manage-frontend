@@ -132,8 +132,6 @@ export function filterBenefitByRegion(
 	return benefit.specificToRegions === undefined;
 }
 
-export const supporterPlusSwitchBenefits = [newsApp, feastApp, adFree];
-
 export const benefitsConfiguration: Record<ProductTypeKeys, ProductBenefit[]> =
 	{
 		contributions: [

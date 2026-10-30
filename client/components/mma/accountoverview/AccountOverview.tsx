@@ -91,12 +91,14 @@ type BenefitsCtasProps = {
 	email: string;
 	productKeys?: ProductTier[];
 	showExtraAccountsBanner?: boolean;
+	isSecondaryAccount?: boolean;
 };
 
 export const BenefitsCtas = ({
 	email,
 	productKeys,
 	showExtraAccountsBanner,
+	isSecondaryAccount,
 }: BenefitsCtasProps) => {
 	const hasDigitalPlusPrint = productKeys?.some((productKey) =>
 		isSpecificProductType(productKey, PRODUCT_TYPES.tierthree),
@@ -125,17 +127,15 @@ export const BenefitsCtas = ({
 		isPlusDigitalProduct ||
 		hasDigitalPack ||
 		hasWeeklyProduct ||
-		hasGuardianEmail;
+		hasGuardianEmail ||
+		!!isSecondaryAccount;
+
+	const showBenefits = hasEditionsAndArchiveAccess || hasSupporterPlus;
 
 	return (
 		<>
 			{showExtraAccountsBanner && <ExtraAccountsBanner />}
-			{(hasDigitalPlusPrint ||
-				isPlusDigitalProduct ||
-				hasGuardianEmail ||
-				hasDigitalPack ||
-				hasSupporterPlus ||
-				hasWeeklyProduct) && (
+			{showBenefits && (
 				<>
 					<h2 css={subHeadingCss}>
 						Get the most out of your benefits
@@ -577,6 +577,9 @@ const AccountOverviewPage = ({ isFromApp }: IsFromAppProps) => {
 					showExtraAccountsBanner={hasExtraAccountsAccess(
 						mdapiResponse,
 					)}
+					isSecondaryAccount={
+						!!secondaryAccountDetails?.subscriptions.length
+					}
 				/>
 			)}
 		</>
