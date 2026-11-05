@@ -20,6 +20,13 @@ export const isPrintCancellationJourneyEnabled = (
 	(productType.urlPart === 'guardianweekly' ||
 		featureSwitches.printProductCancellation);
 
+// Members-data-api still returns selfServiceCancellation.isAllowed false for
+// these newspaper products. The print journey is their cancellation path, so
+// that flag does not decide whether they can continue.
+export const cancelsWithoutSelfServeFlag = (
+	productType: ProductType,
+): boolean => !!productType.cancellation?.usesPrintCancellationFlow;
+
 // True when account overview and manage your account should offer cancellation.
 // Gated products stay on Contact us until the feature param is present.
 export const isCancellationEntryOpen = (productType: ProductType): boolean => {

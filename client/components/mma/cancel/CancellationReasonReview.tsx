@@ -576,6 +576,9 @@ export const CancellationReasonReview = () => {
 	const printSetCaseData = usePrintCancellationStore(
 		(state) => state.setCaseData,
 	);
+	const printCancellationMode = usePrintCancellationStore(
+		(state) => state.cancellationMode,
+	);
 
 	if (!productType?.cancellation.reasons) {
 		return <Navigate to=".." />;
@@ -592,7 +595,11 @@ export const CancellationReasonReview = () => {
 					productType as ProductTypeWithCancellationFlowMandatoryReasons
 				}
 				selectedReasonId={printSelectedReasonId}
-				cancellationPolicy=""
+				cancellationPolicy={
+					printCancellationMode === 'hard'
+						? cancellationEffectiveToday
+						: ''
+				}
 				isPrintProductType
 				setCaseData={printSetCaseData}
 			/>

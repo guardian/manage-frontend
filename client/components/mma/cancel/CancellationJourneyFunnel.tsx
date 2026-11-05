@@ -9,7 +9,10 @@ import type { ProductTypeKeys } from '@/shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { useCancellationContext } from './CancellationContainer';
 import type { CancellationRouterState } from './CancellationContainer';
-import { isCancellationEntryOpen } from './cancellationPrint/printCancellationFeature';
+import {
+	cancelsWithoutSelfServeFlag,
+	isCancellationEntryOpen,
+} from './cancellationPrint/printCancellationFeature';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { ContactUsToCancel } from './ContactUsToCancel';
 
@@ -58,8 +61,12 @@ export const CancellationJourneyFunnel = () => {
 		return <Navigate to="./landing" state={{ ...routerState }} />;
 	}
 
+	const blockedBySelfServeFlag =
+		!productDetail.selfServiceCancellation.isAllowed &&
+		!cancelsWithoutSelfServeFlag(productType);
+
 	if (
-		!productDetail.selfServiceCancellation.isAllowed ||
+		blockedBySelfServeFlag ||
 		!hasCancellationFlow(productType) ||
 		!isCancellationEntryOpen(productType)
 	) {

@@ -102,15 +102,13 @@ describe('Cancel guardian weekly', () => {
 		cy.wait('@cancel_gw_deliveryrecords');
 
 		cy.findByText(
-			'test, thank you for supporting the Guardian since 29 November 2021. Is this really goodbye?',
+			'Thank you for supporting the Guardian since 29 November 2021. Is this really goodbye, test?',
 		).should('exist');
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
 		cy.wait('@cancel_gw');
 		cy.wait('@create_case_in_salesforce');
 
-		cy.findByText(
-			'Your subscription to Guardian Weekly + Digital plus has been cancelled.',
-		).should('exist');
+		cy.findByText('Your subscription has been cancelled.').should('exist');
 	});
 });

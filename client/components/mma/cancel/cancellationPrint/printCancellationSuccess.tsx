@@ -13,6 +13,7 @@ import {
 } from '@guardian/source/foundations';
 import { LinkButton } from '@guardian/source/react-components';
 import { useAccountStore } from '@/client/stores/AccountStore';
+import { usePrintCancellationStore } from '@/client/stores/PrintCancellationStore';
 import { cancellationFormatDate } from '@/shared/dates';
 import type { ProductDetail } from '../../../../../shared/productResponse';
 import type { ProductType } from '../../../../../shared/productTypes';
@@ -93,19 +94,23 @@ interface PrintCancellationSuccessProps {
 }
 
 export const PrintCancellationSuccess = ({
-	productType,
 	productDetail,
 }: PrintCancellationSuccessProps) => {
 	const { getUser } = useAccountStore();
 	const user = getUser();
-	const copy = getSuccessCopy(productDetail);
+	const cancellationMode =
+		usePrintCancellationStore((state) => state.cancellationMode) ?? 'hard';
+	const cancellationEffectiveDate = usePrintCancellationStore(
+		(state) => state.cancellationEffectiveDate,
+	);
+	const copy = getSuccessCopy(productDetail, cancellationMode);
 	const supporterName = user?.firstName?.trim() || copy.fallbackSupporterName;
-	const cancellationDate = productDetail.subscription
-		.cancellationEffectiveDate
-		? cancellationFormatDate(
-				productDetail.subscription.cancellationEffectiveDate,
-		  )
-		: copy.fallbackCancellationDate;
+	const cancellationDate =
+		cancellationMode === 'soft' &&
+		cancellationEffectiveDate &&
+		cancellationEffectiveDate !== 'now'
+			? cancellationFormatDate(cancellationEffectiveDate)
+			: copy.fallbackCancellationDate;
 	const confirmationEmail = user?.email || copy.fallbackEmail;
 
 	return (
@@ -122,22 +127,28 @@ export const PrintCancellationSuccess = ({
 						}
 					`}
 				>
-					{copy.heading(productType.productTitle())}
+					{copy.heading}
 				</h2>
 				<div css={printSuccessBodyCss}>
 					<p>
-						{copy.effectiveLeadIn}{' '}
-						<strong
-							css={css`
-								${textSansBold15};
+						{cancellationMode === 'hard' ? (
+							copy.effectiveImmediately
+						) : (
+							<>
+								{copy.effectiveLeadIn}{' '}
+								<strong
+									css={css`
+										${textSansBold15};
 
-								${from.tablet} {
-									${textSansBold17};
-								}
-							`}
-						>
-							{cancellationDate}.
-						</strong>
+										${from.tablet} {
+											${textSansBold17};
+										}
+									`}
+								>
+									{cancellationDate}.
+								</strong>
+							</>
+						)}
 					</p>
 					<p>
 						{copy.confirmationEmailLeadIn} {confirmationEmail}{' '}

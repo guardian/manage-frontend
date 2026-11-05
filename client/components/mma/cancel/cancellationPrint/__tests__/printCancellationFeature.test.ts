@@ -1,6 +1,7 @@
 import { featureSwitches } from '@/shared/featureSwitches';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
+	cancelsWithoutSelfServeFlag,
 	isCancellationEntryOpen,
 	isPrintCancellationJourneyEnabled,
 } from '../printCancellationFeature';
@@ -62,6 +63,26 @@ describe('print product cancellation feature flag', () => {
 			expect(isPrintCancellationJourneyEnabled(productType)).toBe(true);
 		},
 	);
+
+	it('ignores the members-data-api self-serve flag for print products', () => {
+		expect(cancelsWithoutSelfServeFlag(PRODUCT_TYPES.homedelivery)).toBe(
+			true,
+		);
+		expect(
+			cancelsWithoutSelfServeFlag(PRODUCT_TYPES.homedeliveryplusdigital),
+		).toBe(true);
+		expect(cancelsWithoutSelfServeFlag(PRODUCT_TYPES.voucher)).toBe(true);
+		expect(cancelsWithoutSelfServeFlag(PRODUCT_TYPES.digitalvoucher)).toBe(
+			true,
+		);
+		expect(cancelsWithoutSelfServeFlag(PRODUCT_TYPES.guardianweekly)).toBe(
+			true,
+		);
+		expect(cancelsWithoutSelfServeFlag(PRODUCT_TYPES.tierthree)).toBe(
+			false,
+		);
+		expect(cancelsWithoutSelfServeFlag(PRODUCT_TYPES.digipack)).toBe(false);
+	});
 
 	it('does not gate products outside the print rollout', () => {
 		featureSwitches.printProductCancellation = false;

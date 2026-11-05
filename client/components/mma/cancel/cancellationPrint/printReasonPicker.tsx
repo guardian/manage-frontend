@@ -217,10 +217,6 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 		?.trim()
 		.split(/\s+/)[0];
 	const supporterFirstName = user?.firstName || fallbackFirstName;
-	const supporterNamePrefix = supporterFirstName
-		? `${supporterFirstName}, `
-		: '';
-	const sorryWord = supporterNamePrefix ? "we're" : "We're";
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle(copy.pageTitle);
@@ -244,9 +240,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 				additionalCSS={stepperCss}
 			/>
 			<WithStandardTopMargin>
-				<h2 css={titleCss}>
-					{copy.title(supporterNamePrefix, sorryWord)}
-				</h2>
+				<h2 css={titleCss}>{copy.title(supporterFirstName)}</h2>
 				<p css={introCss}>
 					{copy.introBeforeEmphasis}{' '}
 					<span css={introEmphasisCss}>{copy.introEmphasis}</span>

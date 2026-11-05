@@ -146,6 +146,9 @@ export const PrintExecuteCancellation = ({
 	const deliveryCredits = usePrintCancellationStore(
 		(state) => state.deliveryCredits,
 	);
+	const cancellationMode = usePrintCancellationStore(
+		(state) => state.cancellationMode,
+	);
 	const productHasReasonSelection =
 		!!productType.cancellation.reasons?.length;
 	const progressCopy = getProgressCopy(productDetail);
@@ -154,10 +157,9 @@ export const PrintExecuteCancellation = ({
 		return <Navigate to="../" />;
 	}
 
-	// Print products do not surface an effective-date selector, so the journey
-	// always uses the end-of-billing-period policy.
+	// Members-data-api applies the effective date. Hard means it is today.
 	const escalationCauses = generateEscalationCausesList({
-		isEffectiveToday: false,
+		isEffectiveToday: cancellationMode === 'hard',
 		hasOutstandingHolidayStops: !!holidayStops && holidayStops.length > 0,
 		hasOutstandingDeliveryProblemCredits:
 			!!deliveryCredits && deliveryCredits.length > 0,

@@ -7,12 +7,33 @@ import {
 	getProgressCopy,
 	getReasonPickerCopy,
 	getSuccessCopy,
+	reviewVariantFor,
 } from '../printCancellationCopy';
+import { cancellationModeFromEffectiveDate } from '../printCancellationTiming';
 
-const product = (mmaProductKey: ProductTier) =>
-	({ mmaProductKey } as ProductDetail);
+const product = (mmaProductKey: ProductTier, country?: string) =>
+	({
+		mmaProductKey,
+		billingCountry: country,
+		subscription: {
+			deliveryAddress: country ? { country } : undefined,
+		},
+	} as ProductDetail);
 
 const guardianWeekly = product('Guardian Weekly - Domestic');
+
+describe('cancellationModeFromEffectiveDate', () => {
+	it.each([undefined, null, '', '   ', 'now'])(
+		'treats %p as a hard cancellation',
+		(value) => {
+			expect(cancellationModeFromEffectiveDate(value)).toBe('hard');
+		},
+	);
+
+	it('treats a future date as a soft cancellation', () => {
+		expect(cancellationModeFromEffectiveDate('2026-06-01')).toBe('soft');
+	});
+});
 
 describe('getPrintCancellationCopyFamily', () => {
 	it.each<ProductTier>([
@@ -68,41 +89,124 @@ describe('getPrintCancellationCopyFamily', () => {
 	});
 });
 
-describe('print cancellation copy fallback', () => {
-	const families = [
-		product('Newspaper Delivery'),
-		product('Newspaper Voucher'),
-		product('Newspaper Digital Voucher'),
-	];
+describe('print cancellation copy', () => {
+	const homeDelivery = product('Newspaper Delivery');
+	const voucher = product('Newspaper Voucher');
+	const subscriptionCard = product('Newspaper Digital Voucher');
 
-	it('uses the current Guardian Weekly sentences for every family', () => {
-		for (const familyProduct of families) {
-			expect(getReasonPickerCopy(familyProduct)).toEqual(
-				getReasonPickerCopy(guardianWeekly),
-			);
-			expect(getAlternativesCopy(familyProduct)).toEqual(
-				getAlternativesCopy(guardianWeekly),
-			);
-			expect(getConfirmCopy(familyProduct)).toEqual(
-				getConfirmCopy(guardianWeekly),
-			);
-			expect(getSuccessCopy(familyProduct)).toEqual(
-				getSuccessCopy(guardianWeekly),
-			);
-			expect(getProgressCopy(familyProduct)).toEqual(
-				getProgressCopy(guardianWeekly),
-			);
-		}
-	});
-
-	it('keeps the Guardian Weekly reason step wording', () => {
+	it('uses one reason step for every family', () => {
 		const copy = getReasonPickerCopy(guardianWeekly);
+		expect(getReasonPickerCopy(homeDelivery)).toEqual(copy);
 		expect(copy.pageTitle).toBe('Manage subscription');
 		expect(copy.introEmphasis).toBe(
-			"Would you take a moment to tell us why you'd like to cancel?",
+			"Would you mind taking a moment to tell us why you'd like to cancel?",
 		);
-		expect(copy.title('test, ', "we're")).toBe(
-			"test, we're sorry to see you go",
+		expect(copy.title('test')).toBe("We're sorry to see you go, test.");
+		expect(copy.title()).toBe("We're sorry to see you go.");
+	});
+
+	it('changes the pause sentence by product family', () => {
+		expect(getAlternativesCopy(homeDelivery).pauseBody).toContain(
+			'print deliveries on hold for up to 5 weeks',
+		);
+		expect(getAlternativesCopy(voucher).pauseBody).toContain(
+			'voucher subscription on hold for up to 5 weeks',
+		);
+		expect(getAlternativesCopy(subscriptionCard).pauseBody).toContain(
+			'subscription card on hold for up to 5 weeks',
+		);
+		expect(getAlternativesCopy(guardianWeekly).pauseBody).toContain(
+			'Guardian Weekly deliveries on hold for up to 6 weeks',
+		);
+	});
+
+	it('uses the UK phone number unless Guardian Weekly is in another region', () => {
+		expect(getAlternativesCopy(homeDelivery).callUs).toContain(
+			'+44 (0) 330 333 6765',
+		);
+		expect(
+			getAlternativesCopy(product('Newspaper Delivery', 'Australia'))
+				.callUs,
+		).toContain('+44 (0) 330 333 6765');
+		expect(
+			getAlternativesCopy(
+				product('Guardian Weekly - ROW', 'United States'),
+			).callUs,
+		).toContain('1-844-632-2010');
+		expect(
+			getAlternativesCopy(product('Guardian Weekly - ROW', 'Australia'))
+				.chatCta,
+		).toBe('Chat with us');
+	});
+
+	it('uses the soft review sentences outside the cooling-off period', () => {
+		expect(
+			getConfirmCopy(guardianWeekly, 'soft').title(
+				'test',
+				'29 November 2021',
+			),
+		).toBe(
+			'Thank you for supporting the Guardian since 29 November 2021. Is this really goodbye, test?',
+		);
+		expect(
+			getConfirmCopy(homeDelivery, 'soft').subscriptionEndsOn(
+				'1 June 2026',
+			),
+		).toBe('Your subscription ends on 1 June 2026.');
+		expect(
+			getConfirmCopy(homeDelivery, 'soft').detailParagraphs().join(' '),
+		).toContain('newspaper deliveries');
+		expect(
+			getConfirmCopy(voucher, 'soft').detailParagraphs().join(' '),
+		).toContain('discontinue use of remaining vouchers');
+		expect(
+			getConfirmCopy(subscriptionCard, 'soft')
+				.detailParagraphs('1 June 2026')
+				.join(' '),
+		).toContain('From 1 June 2026, your card will no longer be active');
+	});
+
+	it('uses the immediate cooling-off sentences for a hard cancellation', () => {
+		expect(getConfirmCopy(guardianWeekly, 'hard').title('test', '')).toBe(
+			'Is this really goodbye, test?',
+		);
+		expect(
+			getConfirmCopy(homeDelivery, 'hard').subscriptionEndsImmediately,
+		).toBe('Your subscription will end immediately.');
+		expect(
+			getConfirmCopy(voucher, 'hard').detailParagraphs().join(' '),
+		).toContain('cooling-off period');
+		expect(getConfirmCopy(voucher, 'hard').confirmCta).toBe(
+			'Confirm cancellation',
+		);
+	});
+
+	it('uses the unused-credit sentences when a hard cancellation has credit', () => {
+		expect(reviewVariantFor('hard', true)).toBe('hardWithCredit');
+		expect(reviewVariantFor('hard', false)).toBe('hard');
+		expect(reviewVariantFor('soft', true)).toBe('soft');
+		expect(
+			getConfirmCopy(homeDelivery, 'hardWithCredit')
+				.detailParagraphs()
+				.join(' '),
+		).toContain('you will not be charged for this subscription');
+		expect(
+			getConfirmCopy(subscriptionCard, 'hardWithCredit').confirmCta,
+		).toBe('Continue to cancel');
+	});
+
+	it('confirms a completed cancellation without naming the product', () => {
+		expect(getSuccessCopy(homeDelivery, 'soft').heading).toBe(
+			'Your subscription has been cancelled.',
+		);
+		expect(getSuccessCopy(guardianWeekly, 'soft').effectiveLeadIn).toBe(
+			'Your cancellation will take effect on',
+		);
+		expect(getSuccessCopy(voucher, 'hard').effectiveImmediately).toBe(
+			'Cancellation will take effect immediately.',
+		);
+		expect(getProgressCopy(subscriptionCard)).toEqual(
+			getProgressCopy(guardianWeekly),
 		);
 	});
 });

@@ -41,5 +41,5 @@ export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	supporterplusCancellationOffer: true,
 	contributionCancellationPause: true,
 	maintenanceMode: false,
-	printProductCancellation: false,
+	printProductCancellation: true,
 };

@@ -260,21 +260,34 @@ export const PrintCancellationAlternatives = ({
 			</section>
 			<section css={contactSectionCss}>
 				<h2 css={contactTitleCss}>{copy.advisorTitle}</h2>
+				<p css={contactBodyCss}>{copy.advisorIntro}</p>
 				<p css={contactBodyCss}>{copy.advisorBody}</p>
 				<p css={contactDetailsCss}>
-					{copy.emailLabel}{' '}
-					<strong css={contactStrongCss}>
-						<a
-							href={`mailto:${copy.emailAddress}`}
-							css={contactEmailLinkCss}
-						>
-							{copy.emailAddress}
-						</a>
-					</strong>
-					<br />
-					{copy.callUsLeadIn}{' '}
-					<strong css={contactStrongCss}>{copy.phoneNumber}</strong>{' '}
-					{copy.phoneHours}
+					<a href={copy.emailHref} css={contactEmailLinkCss}>
+						<strong css={contactStrongCss}>{copy.emailCta}</strong>
+					</a>
+					{copy.callUs && (
+						<>
+							<br />
+							{copy.callUs}
+						</>
+					)}
+					{copy.chatHours && (
+						<>
+							<br />
+							{copy.chatHours}
+						</>
+					)}
+					{copy.chatCta && copy.chatHref && (
+						<>
+							<br />
+							<a href={copy.chatHref} css={contactEmailLinkCss}>
+								<strong css={contactStrongCss}>
+									{copy.chatCta}
+								</strong>
+							</a>
+						</>
+					)}
 				</p>
 			</section>
 			<div data-cy="cta_container" css={ctaContainerCss}>
