@@ -2116,6 +2116,14 @@
     "@guardian/libs" "32.0.0"
     "@guardian/ophan-tracker-js" "2.8.0"
 
+"@guardian/consent-manager@2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@guardian/consent-manager/-/consent-manager-2.3.0.tgz#2563354269e23b2fedff1c648f5228608e840f44"
+  integrity sha512-mydX/MrvCGglT4QeGcmnsQve08hP9psBXMxC+hyUqUztNj+izu9CpqBPwNlYwB3zLyjefFb8caUBTXBByhemhg==
+  dependencies:
+    "@guardian/libs" "33.0.0"
+    "@guardian/ophan-tracker-js" "3.1.0"
+
 "@guardian/eslint-config@10.0.0":
   version "10.0.0"
   resolved "https://registry.npmjs.org/@guardian/eslint-config/-/eslint-config-10.0.0.tgz"
@@ -2142,6 +2150,13 @@
   dependencies:
     "@guardian/ophan-tracker-js" "2.8.0"
 
+"@guardian/libs@33.0.0":
+  version "33.0.0"
+  resolved "https://registry.yarnpkg.com/@guardian/libs/-/libs-33.0.0.tgz#3680431e8327aa21b65d5d02c1d1ea20ef14704d"
+  integrity sha512-k3O/q3lsejs7ygs9an676g/NWfOazFcSWQqn7TKae9jf8NtVGv6w6njXnHaUhIQy9vt6fQDMVfmlRwm6TGxsxQ==
+  dependencies:
+    "@guardian/ophan-tracker-js" "3.1.0"
+
 "@guardian/node-riffraff-artifact@0.2.2":
   version "0.2.2"
   resolved "https://registry.npmjs.org/@guardian/node-riffraff-artifact/-/node-riffraff-artifact-0.2.2.tgz"
@@ -2160,6 +2175,13 @@
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-2.8.0.tgz#18c428ef75f8b6b573368c96feb867bddd0a09b0"
   integrity sha512-RPoyxPPKaT1em1LZiD1LKsTYzoXBG8Zjs4OzyP5dhEmfoXD99qK48JI4oGUPlq3wOOB0ZT8UrbtbWDKzeMSBHA==
+  dependencies:
+    "@guardian/tsconfig" "^1.0.0"
+
+"@guardian/ophan-tracker-js@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@guardian/ophan-tracker-js/-/ophan-tracker-js-3.1.0.tgz#77177a1bc6c1a1e0e572007718be93ee72d8ae38"
+  integrity sha512-3KCZ9leh1171Q6kdiBWRb0f+Nb8Ab5uweMehjTM7OMGvLY+9kUjATNBSeIYvHwrDlqqi1nR+657wckXK4b0MUQ==
   dependencies:
     "@guardian/tsconfig" "^1.0.0"
 
