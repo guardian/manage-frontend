@@ -204,7 +204,8 @@ const reasonPickerCopy: PrintReasonPickerCopy = {
 	introEmphasis:
 		"Would you mind taking a moment to tell us why you'd like to cancel?",
 	reasonHeading: 'Please select a reason for cancelling:',
-	feedbackPrompt: 'Help us improve by sharing more detail',
+	feedbackPrompt:
+		'Help us improve by sharing more detail (please do not share personal data)',
 	continueToCancel: 'Continue to cancel',
 	skipToCancel: 'Skip to cancel',
 };
