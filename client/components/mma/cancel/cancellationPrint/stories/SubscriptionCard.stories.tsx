@@ -1,9 +1,11 @@
+import type { Meta } from '@storybook/react';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
 import { newspaperDigitalVoucherPaidByPaypal } from '@/client/fixtures/productBuilder/testProducts';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
 	confirmedStory,
 	pauseStory,
-	printCancellationMeta,
 	reasonsStory,
 	reviewStory,
 	withReader,
@@ -17,9 +19,14 @@ const product = {
 	),
 };
 
-export default printCancellationMeta(
-	'Pages/Cancellation/Print/Subscription card',
-);
+export default {
+	title: 'Pages/Cancellation/Print/Subscription card',
+	component: CancellationContainer,
+	decorators: [ReactRouterDecorator],
+	parameters: {
+		layout: 'fullscreen',
+	},
+} as Meta<typeof CancellationContainer>;
 
 export const Reasons = reasonsStory(product);
 export const Pause = pauseStory(product);

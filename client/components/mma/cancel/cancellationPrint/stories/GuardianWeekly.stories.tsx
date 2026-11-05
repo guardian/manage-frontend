@@ -1,10 +1,12 @@
+import type { Meta } from '@storybook/react';
+import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
+import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
 import { guardianWeeklyPaidByCard } from '@/client/fixtures/productBuilder/testProducts';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
 	confirmedStory,
 	escalatedStory,
 	pauseStory,
-	printCancellationMeta,
 	reasonsStory,
 	reviewStory,
 	withReader,
@@ -27,9 +29,14 @@ const australia = {
 	productDetail: withReader(weekly, 'Australia'),
 };
 
-export default printCancellationMeta(
-	'Pages/Cancellation/Print/Guardian Weekly',
-);
+export default {
+	title: 'Pages/Cancellation/Print/Guardian Weekly',
+	component: CancellationContainer,
+	decorators: [ReactRouterDecorator],
+	parameters: {
+		layout: 'fullscreen',
+	},
+} as Meta<typeof CancellationContainer>;
 
 export const Reasons = reasonsStory(product);
 export const Pause = pauseStory(product, 'Pause, United Kingdom');

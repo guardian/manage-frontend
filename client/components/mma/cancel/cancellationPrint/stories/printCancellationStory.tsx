@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
-import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
 import { CancellationReasonReview } from '@/client/components/mma/cancel/CancellationReasonReview';
 import { CancellationReasonSelection } from '@/client/components/mma/cancel/CancellationReasonSelection';
@@ -94,15 +93,6 @@ const containerParameters = ({
 	reactRouter: {
 		state: { productDetail },
 		container: <CancellationContainer productType={productType} />,
-	},
-});
-
-export const printCancellationMeta = (title: string): Meta => ({
-	title,
-	component: CancellationContainer,
-	decorators: [ReactRouterDecorator],
-	parameters: {
-		layout: 'fullscreen',
 	},
 });
 
