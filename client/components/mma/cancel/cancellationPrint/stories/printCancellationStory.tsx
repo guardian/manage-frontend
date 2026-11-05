@@ -10,10 +10,15 @@ import { useAccountStore } from '@/client/stores/AccountStore';
 import { usePrintCancellationStore } from '@/client/stores/PrintCancellationStore';
 import { featureSwitches } from '@/shared/featureSwitches';
 import type { ProductDetail } from '@/shared/productResponse';
-import type { ProductType } from '@/shared/productTypes';
+import { PRODUCT_TYPES, type ProductType } from '@/shared/productTypes';
 
 // Storybook has no URL param, so turn the print journey on for these stories.
 featureSwitches.printProductCancellation = true;
+
+// Print products share one shuffled reasons list. Sort it so Chromatic snapshots stay stable.
+PRODUCT_TYPES.homedelivery.cancellation!.reasons?.sort((a, b) =>
+	a.reasonId.localeCompare(b.reasonId),
+);
 
 export interface PrintCancellationStoryProduct {
 	productType: ProductType;
