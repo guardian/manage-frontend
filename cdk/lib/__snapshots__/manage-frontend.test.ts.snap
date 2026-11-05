@@ -96,6 +96,25 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
     },
   },
   "Resources": {
+    "AlbSsmParam485C1D52": {
+      "Properties": {
+        "DataType": "text",
+        "Description": "The ARN of the ALB for manage-frontend-PROD. This parameter is created via CDK.",
+        "Name": "/infosec/waf/services/PROD/manage-frontend-alb-arn",
+        "Tags": {
+          "Stack": "support",
+          "Stage": "PROD",
+          "gu:cdk:version": "TEST",
+          "gu:repo": "guardian/manage-frontend",
+        },
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Ref": "LoadBalancerManagefrontend184BCE6C",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
     "AliasRecord": {
       "Properties": {
         "AliasTarget": {
