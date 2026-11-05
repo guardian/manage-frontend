@@ -24,6 +24,11 @@ import type { CfnListener } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { Protocol, SslPolicy } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnRecordSet } from 'aws-cdk-lib/aws-route53';
+import {
+	ParameterDataType,
+	ParameterTier,
+	StringParameter,
+} from 'aws-cdk-lib/aws-ssm';
 
 interface ManageGuStackProps extends GuStackProps {
 	scaling: GuAsgCapacity;
@@ -234,6 +239,16 @@ systemctl start manage-frontend
 
 		(nodeApp.listener.node.defaultChild as CfnListener).sslPolicy =
 			SslPolicy.TLS13_RES;
+
+		// This parameter is used by https://github.com/guardian/waf
+		new StringParameter(this, 'AlbSsmParam', {
+			parameterName: `/infosec/waf/services/${this.stage}/manage-frontend-alb-arn`,
+			description: `The ARN of the ALB for manage-frontend-${this.stage}. This parameter is created via CDK.`,
+			simpleName: false,
+			stringValue: nodeApp.loadBalancer.loadBalancerArn,
+			tier: ParameterTier.STANDARD,
+			dataType: ParameterDataType.TEXT,
+		});
 
 		new CfnRecordSet(this, 'AliasRecord', {
 			name: props.domain,
