@@ -146,9 +146,6 @@ export const PrintExecuteCancellation = ({
 	const deliveryCredits = usePrintCancellationStore(
 		(state) => state.deliveryCredits,
 	);
-	const cancellationMode = usePrintCancellationStore(
-		(state) => state.cancellationMode,
-	);
 	const productHasReasonSelection =
 		!!productType.cancellation.reasons?.length;
 	const progressCopy = getProgressCopy(productDetail);
@@ -157,9 +154,10 @@ export const PrintExecuteCancellation = ({
 		return <Navigate to="../" />;
 	}
 
-	// Members-data-api applies the effective date. Hard means it is today.
+	// A hard cancellation still completes in this flow. Escalate only when
+	// holiday stops or delivery credits need a refund arranged by customer service.
 	const escalationCauses = generateEscalationCausesList({
-		isEffectiveToday: cancellationMode === 'hard',
+		isEffectiveToday: false,
 		hasOutstandingHolidayStops: !!holidayStops && holidayStops.length > 0,
 		hasOutstandingDeliveryProblemCredits:
 			!!deliveryCredits && deliveryCredits.length > 0,

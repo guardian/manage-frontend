@@ -133,10 +133,17 @@ describe('print cancellation copy', () => {
 				product('Guardian Weekly - ROW', 'United States'),
 			).callUs,
 		).toContain('1-844-632-2010');
+		expect(getAlternativesCopy(homeDelivery).emailHref).toBe(
+			'https://manage.theguardian.com/help-centre/contact-us/',
+		);
 		expect(
 			getAlternativesCopy(product('Guardian Weekly - ROW', 'Australia'))
 				.chatCta,
 		).toBe('Chat with us');
+		expect(
+			getAlternativesCopy(product('Guardian Weekly - ROW', 'Australia'))
+				.chatHref,
+		).toBe('https://manage.theguardian.com/help-centre/contact-us/');
 	});
 
 	it('uses the soft review sentences outside the cooling-off period', () => {

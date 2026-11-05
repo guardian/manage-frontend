@@ -79,8 +79,8 @@ const asiaPacificCountries = new Set([
 	'viet nam',
 ]);
 
-const helpCentreContactHref = '/help-centre/contact-us';
-const helpCentreChatHref = '/help-centre';
+const helpCentreContactHref =
+	'https://manage.theguardian.com/help-centre/contact-us/';
 
 export interface PrintReasonPickerCopy {
 	pageTitle: string;
@@ -237,7 +237,7 @@ const contactByRegion: Record<
 	asiaPacific: {
 		chatHours: 'Chat with us, 9am to 5pm, Monday to Friday',
 		chatCta: 'Chat with us',
-		chatHref: helpCentreChatHref,
+		chatHref: helpCentreContactHref,
 	},
 };
 
