@@ -8,6 +8,7 @@ import {
 	CancellationContext,
 	type CancellationContextInterface,
 } from '../CancellationContainer';
+import { getProgressCopy } from './printCancellationCopy';
 
 interface PrintLoadedCancellationContainerProps {
 	productType: ProductType;
@@ -34,7 +35,9 @@ export const PrintLoadedCancellationContainer = ({
 	if (isLoading) {
 		return (
 			<DefaultLoadingView
-				loadingMessage={`Checking the status of your ${productType.friendlyName}...`}
+				loadingMessage={getProgressCopy(
+					resolvedProductDetail,
+				).checkingStatus(productType.friendlyName)}
 			/>
 		);
 	}

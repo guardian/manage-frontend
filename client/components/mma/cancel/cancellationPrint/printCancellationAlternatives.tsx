@@ -23,6 +23,7 @@ import type { ProductTypeWithCancellationFlowMandatoryReasons } from '../../../.
 import { usePrintCancellationStore } from '../../../../stores/PrintCancellationStore';
 import { ProgressStepper } from '../../shared/ProgressStepper';
 import { getUpdateCasePromise } from '../caseUpdate';
+import { getAlternativesCopy } from './printCancellationCopy';
 
 const getPatchUpdateCaseFunc =
 	(isTestUser: boolean, caseId: string, feedback: string) => async () =>
@@ -203,6 +204,10 @@ export const PrintCancellationAlternatives = ({
 	const navigate = useNavigate();
 	const [isSubmittingFeedback, setIsSubmittingFeedback] =
 		useState<boolean>(false);
+	const productDetail = usePrintCancellationStore(
+		(state) => state.productDetail,
+	);
+	const copy = getAlternativesCopy(productDetail);
 	const cancellationFeedback = usePrintCancellationStore(
 		(state) => state.cancellationFeedback,
 	);
@@ -222,25 +227,19 @@ export const PrintCancellationAlternatives = ({
 				iconSide="left"
 				onClick={() => navigate('..')}
 			>
-				Previous
+				{copy.previous}
 			</Button>
 			<ProgressStepper
 				steps={[{}, { isCurrentStep: true }, {}]}
 				additionalCSS={stepperCss}
 			/>
-			<h2 css={pauseTitleCss}>Pause your subscription</h2>
+			<h2 css={pauseTitleCss}>{copy.pauseTitle}</h2>
 			<section css={printPauseBannerCss}>
 				<div css={printPauseBannerContentCss}>
 					<h3 css={printPauseBannerHeadingCss}>
-						Do you need a break?
+						{copy.pauseHeading}
 					</h3>
-					<p css={printPauseBannerBodyCss}>
-						Put your print deliveries on hold for up to five weeks
-						and we will apply a credit for the suspended issues to
-						your next bill date. If you have digital benefits you
-						will still receive and be charged for those during this
-						time.
-					</p>
+					<p css={printPauseBannerBodyCss}>{copy.pauseBody}</p>
 					<Button
 						priority="secondary"
 						onClick={() =>
@@ -248,7 +247,7 @@ export const PrintCancellationAlternatives = ({
 						}
 						cssOverrides={PauseCtaButtonCss}
 					>
-						Pause subscription
+						{copy.pauseCta}
 					</Button>
 				</div>
 				<picture css={printPauseBannerGraphicCss}>
@@ -260,28 +259,35 @@ export const PrintCancellationAlternatives = ({
 				</picture>
 			</section>
 			<section css={contactSectionCss}>
-				<h2 css={contactTitleCss}>Speak with an advisor</h2>
-				<p css={contactBodyCss}>
-					Get in touch with our customer care team if you require any
-					assistance or simply wish to discuss other subscription
-					options.
-				</p>
+				<h2 css={contactTitleCss}>{copy.advisorTitle}</h2>
+				<p css={contactBodyCss}>{copy.advisorIntro}</p>
+				<p css={contactBodyCss}>{copy.advisorBody}</p>
 				<p css={contactDetailsCss}>
-					Email{' '}
-					<strong css={contactStrongCss}>
-						<a
-							href="mailto:customer.help@theguardian.com"
-							css={contactEmailLinkCss}
-						>
-							customer.help@theguardian.com
-						</a>
-					</strong>
-					<br />
-					Call us at{' '}
-					<strong css={contactStrongCss}>
-						+44 (0) 330 333 6767
-					</strong>{' '}
-					9am to 6pm, Monday to Sunday
+					<a href={copy.emailHref} css={contactEmailLinkCss}>
+						<strong css={contactStrongCss}>{copy.emailCta}</strong>
+					</a>
+					{copy.callUs && (
+						<>
+							<br />
+							{copy.callUs}
+						</>
+					)}
+					{copy.chatHours && (
+						<>
+							<br />
+							{copy.chatHours}
+						</>
+					)}
+					{copy.chatCta && copy.chatHref && (
+						<>
+							<br />
+							<a href={copy.chatHref} css={contactEmailLinkCss}>
+								<strong css={contactStrongCss}>
+									{copy.chatCta}
+								</strong>
+							</a>
+						</>
+					)}
 				</p>
 			</section>
 			<div data-cy="cta_container" css={ctaContainerCss}>
@@ -292,7 +298,7 @@ export const PrintCancellationAlternatives = ({
 					cssOverrides={tabletAndUpPreviousButtonCss}
 					onClick={() => navigate('..')}
 				>
-					Previous
+					{copy.previous}
 				</Button>
 				<Button
 					icon={<SvgArrowRightStraight />}
@@ -316,7 +322,7 @@ export const PrintCancellationAlternatives = ({
 						navigate('../confirm');
 					}}
 				>
-					Continue to cancel
+					{copy.continueToCancel}
 				</Button>
 			</div>
 		</>

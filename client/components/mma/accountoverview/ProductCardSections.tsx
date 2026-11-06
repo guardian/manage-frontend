@@ -7,6 +7,7 @@ import {
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
 import { type NavigateFunction } from 'react-router-dom';
+import { isCancellationEntryOpen } from '@/client/components/mma/cancel/cancellationPrint/printCancellationFeature';
 import { wideButtonLayoutCss } from '@/client/styles/ButtonStyles';
 import type { Event } from '@/client/utilities/analytics';
 import type { FetchUpgradePreviewParams } from '@/client/utilities/hooks/useUpgradePreview';
@@ -719,7 +720,8 @@ export const CancellationSection = ({
 	trackEvent: (trackEventArgs: Event) => void;
 }) =>
 	!hasCancellationPending &&
-	!isGifted && (
+	!isGifted &&
+	isCancellationEntryOpen(specificProductType) && (
 		<Card.Section>
 			<div css={productDetailLayoutCss}>
 				<div>

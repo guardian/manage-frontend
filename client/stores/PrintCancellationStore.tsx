@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { ProductDetail } from '../../shared/productResponse';
+import type { PrintCancellationMode } from '../components/mma/cancel/cancellationPrint/printCancellationTiming';
 import type { OptionalCancellationReasonId } from '../components/mma/cancel/cancellationReason';
 import type { DeliveryRecordDetail } from '../components/mma/delivery/records/deliveryRecordsApi';
 import type { OutstandingHolidayStop } from '../components/mma/holiday/HolidayStopApi';
@@ -12,6 +13,8 @@ interface PrintCancellationState {
 	caseId: string;
 	holidayStops?: OutstandingHolidayStop[];
 	deliveryCredits?: DeliveryRecordDetail[];
+	cancellationMode: PrintCancellationMode | null;
+	cancellationEffectiveDate: string | null;
 }
 
 interface PrintCancellationActions {
@@ -25,6 +28,10 @@ interface PrintCancellationActions {
 		holidayStops?: OutstandingHolidayStop[];
 		deliveryCredits?: DeliveryRecordDetail[];
 	}) => void;
+	setCancellationTiming: (timing: {
+		cancellationMode: PrintCancellationMode;
+		cancellationEffectiveDate: string | null;
+	}) => void;
 	resetJourneyState: () => void;
 	clearAll: () => void;
 }
@@ -37,6 +44,8 @@ const initialJourneyState = {
 	caseId: '',
 	holidayStops: undefined,
 	deliveryCredits: undefined,
+	cancellationMode: null,
+	cancellationEffectiveDate: null,
 };
 
 const initialState: PrintCancellationState = {
@@ -59,6 +68,15 @@ export const usePrintCancellationStore = create<PrintCancellationStore>()(
 					{ caseId, holidayStops, deliveryCredits },
 					false,
 					'setCaseData',
+				),
+			setCancellationTiming: ({
+				cancellationMode,
+				cancellationEffectiveDate,
+			}) =>
+				set(
+					{ cancellationMode, cancellationEffectiveDate },
+					false,
+					'setCancellationTiming',
 				),
 			resetJourneyState: () =>
 				set(

@@ -39,6 +39,7 @@ import {
 	type OptionalCancellationReasonId,
 	reasonIdOrDefault,
 } from '../cancellationReason';
+import { getReasonPickerCopy } from './printCancellationCopy';
 
 interface PrintReasonPickerProps {
 	productType: ProductTypeWithCancellationFlow;
@@ -211,18 +212,15 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 	) as CancellationPageTitleInterface;
 
 	const characterLimit = 2500;
+	const copy = getReasonPickerCopy(productDetail);
 	const fallbackFirstName = productDetail.subscription.account?.accountName
 		?.trim()
 		.split(/\s+/)[0];
 	const supporterFirstName = user?.firstName || fallbackFirstName;
-	const supporterNamePrefix = supporterFirstName
-		? `${supporterFirstName}, `
-		: '';
-	const sorryWord = supporterNamePrefix ? "we're" : "We're";
 
 	useEffect(() => {
-		pageTitleContext.setPageTitle('Manage subscription');
-	}, [pageTitleContext]);
+		pageTitleContext.setPageTitle(copy.pageTitle);
+	}, [pageTitleContext, copy.pageTitle]);
 
 	return (
 		<>
@@ -235,23 +233,17 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 					navigate('/');
 				}}
 			>
-				Previous
+				{copy.previous}
 			</Button>
 			<ProgressStepper
 				steps={[{ isCurrentStep: true }, {}, {}]}
 				additionalCSS={stepperCss}
 			/>
 			<WithStandardTopMargin>
-				<h2 css={titleCss}>
-					{`${supporterNamePrefix}${sorryWord} sorry to see you go`}
-				</h2>
+				<h2 css={titleCss}>{copy.title(supporterFirstName)}</h2>
 				<p css={introCss}>
-					As a reader-funded organisation, we rely on the generous
-					support from those who are in a position to pay for news.{' '}
-					<span css={introEmphasisCss}>
-						Would you take a moment to tell us why you&apos;d like
-						to cancel?
-					</span>
+					{copy.introBeforeEmphasis}{' '}
+					<span css={introEmphasisCss}>{copy.introEmphasis}</span>
 				</p>
 				<div css={cardWrapperCss}>
 					<Card>
@@ -259,9 +251,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 							backgroundColor={palette.brand[800]}
 							minHeightOverride="auto"
 						>
-							<h3 css={cardTitleCss}>
-								Please select a reason for cancelling
-							</h3>
+							<h3 css={cardTitleCss}>{copy.reasonHeading}</h3>
 						</Card.Header>
 						<Card.Section>
 							<fieldset
@@ -277,7 +267,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 								css={reasonFieldsetCss}
 							>
 								<legend css={hiddenLegendCss}>
-									Please select a reason for cancelling
+									{copy.reasonHeading}
 								</legend>
 								<RadioGroup
 									name="issue_type"
@@ -306,7 +296,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 				</div>
 
 				<h3 id="print-feedback-label" css={feedbackTitleCss}>
-					Help us improve by sharing more detail
+					{copy.feedbackPrompt}
 				</h3>
 				<textarea
 					rows={5}
@@ -329,7 +319,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 							navigate('/');
 						}}
 					>
-						Previous
+						{copy.previous}
 					</Button>
 					<Button
 						icon={<SvgArrowRightStraight />}
@@ -343,8 +333,8 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 						}}
 					>
 						{selectedReasonId
-							? 'Continue to cancel'
-							: 'Skip to cancel'}
+							? copy.continueToCancel
+							: copy.skipToCancel}
 					</Button>
 				</div>
 			</WithStandardTopMargin>

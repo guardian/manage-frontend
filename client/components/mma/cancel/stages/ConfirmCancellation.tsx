@@ -21,6 +21,7 @@ import {
 	CancellationPageTitleContext,
 	useCancellationContext,
 } from '../CancellationContainer';
+import { isPrintCancellationJourneyEnabled } from '../cancellationPrint/printCancellationFeature';
 import { PrintConfirmCancellation } from '../cancellationPrint/printConfirmCancellation';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 
@@ -101,8 +102,7 @@ export const ConfirmCancellation = () => {
 	) as CancellationPageTitleInterface;
 
 	const subscription = productDetail.subscription;
-	const isPrintProductType =
-		!!productType.cancellation.usesPrintCancellationFlow;
+	const isPrintProductType = isPrintCancellationJourneyEnabled(productType);
 	const groupedFriendlyName = isPrintProductType
 		? null
 		: GROUPED_PRODUCT_TYPES[productType.groupedProductType].friendlyName;

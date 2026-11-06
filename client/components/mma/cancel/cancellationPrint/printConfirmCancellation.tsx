@@ -26,6 +26,7 @@ import type { ProductDetail } from '../../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
 import { ProgressStepper } from '../../shared/ProgressStepper';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
+import { getConfirmCopy, reviewVariantFor } from './printCancellationCopy';
 
 interface PrintConfirmCancellationProps {
 	productDetail: ProductDetail;
@@ -101,7 +102,6 @@ const tabletAndUpPreviousButtonCss = css`
 
 export const PrintConfirmCancellation = ({
 	productDetail,
-	productType,
 }: PrintConfirmCancellationProps) => {
 	const navigate = useNavigate();
 	const { getUser } = useAccountStore();
@@ -109,6 +109,17 @@ export const PrintConfirmCancellation = ({
 		usePrintCancellationStore((state) => state.selectedReasonId);
 	const printCaseId: string = usePrintCancellationStore(
 		(state) => state.caseId,
+	);
+	const cancellationMode =
+		usePrintCancellationStore((state) => state.cancellationMode) ?? 'hard';
+	const cancellationEffectiveDate = usePrintCancellationStore(
+		(state) => state.cancellationEffectiveDate,
+	);
+	const holidayStops = usePrintCancellationStore(
+		(state) => state.holidayStops,
+	);
+	const deliveryCredits = usePrintCancellationStore(
+		(state) => state.deliveryCredits,
 	);
 	const user = getUser();
 	const subscription = productDetail.subscription;
@@ -120,16 +131,21 @@ export const PrintConfirmCancellation = ({
 		?.trim()
 		.split(/\s+/)[0];
 	const supporterFirstName = user?.firstName || fallbackFirstName;
-	const supporterNamePrefix = supporterFirstName
-		? `${supporterFirstName}, `
-		: '';
-	const thankWord = supporterNamePrefix ? 'thank' : 'Thank';
-	const subscriptionEndDate = subscription.potentialCancellationDate
-		? parseDate(
-				subscription.potentialCancellationDate,
-				'yyyy-MM-dd',
-		  ).dateStr(DATE_FNS_LONG_OUTPUT_FORMAT)
-		: undefined;
+	const hasOutstandingCredit =
+		(holidayStops?.length ?? 0) > 0 || (deliveryCredits?.length ?? 0) > 0;
+	const reviewVariant = reviewVariantFor(
+		cancellationMode,
+		hasOutstandingCredit,
+	);
+	const copy = getConfirmCopy(productDetail, reviewVariant);
+	const subscriptionEndDate =
+		cancellationMode === 'soft' &&
+		cancellationEffectiveDate &&
+		cancellationEffectiveDate !== 'now'
+			? parseDate(cancellationEffectiveDate).dateStr(
+					DATE_FNS_LONG_OUTPUT_FORMAT,
+			  )
+			: undefined;
 
 	if (!printSelectedReasonId || !printCaseId) {
 		return <Navigate to="../review" />;
@@ -146,38 +162,28 @@ export const PrintConfirmCancellation = ({
 					navigate('../review');
 				}}
 			>
-				Previous
+				{copy.previous}
 			</Button>
 			<ProgressStepper
 				steps={[{}, {}, { isCurrentStep: true }]}
 				additionalCSS={stepperCss}
 			/>
 			<h2 css={titleCss}>
-				{`${supporterNamePrefix}${thankWord} you for supporting the Guardian since ${supportSinceDate}. Is this really goodbye?`}
+				{copy.title(supporterFirstName, supportSinceDate)}
 			</h2>
 			<div css={bodyCss}>
-				<p>
-					Your continued support has ensured that our independent
-					journalism remains open to all. We couldn&apos;t do what we
-					do without you. Please consider remaining a supporter.
-				</p>
-				<p>
-					By confirming the cancellation of the renewal of your{' '}
-					{productType.productTitle()} subscription, you will no
-					longer be supporting the Guardian&apos;s reader-funded
-					journalism.
-				</p>
+				<p>{copy.supportParagraph}</p>
+				<p>{copy.confirmCancellationBody}</p>
 				<p>
 					<strong css={endDateTextCss}>
-						{subscriptionEndDate
-							? `Your subscription ends on ${subscriptionEndDate}.`
-							: 'Your subscription will end at the end of your current billing period.'}
+						{reviewVariant === 'soft' && subscriptionEndDate
+							? copy.subscriptionEndsOn(subscriptionEndDate)
+							: copy.subscriptionEndsImmediately}
 					</strong>
 				</p>
-				<p>
-					Until then, you will retain all your current subscription
-					benefits.
-				</p>
+				{copy.detailParagraphs(subscriptionEndDate).map((paragraph) => (
+					<p key={paragraph}>{paragraph}</p>
+				))}
 				<div data-cy="cta_container" css={ctaContainerCss}>
 					<Button
 						priority="tertiary"
@@ -188,14 +194,14 @@ export const PrintConfirmCancellation = ({
 							navigate('../review');
 						}}
 					>
-						Previous
+						{copy.previous}
 					</Button>
 					<Button
 						onClick={() => {
 							navigate('../confirmed');
 						}}
 					>
-						Confirm cancellation
+						{copy.confirmCta}
 					</Button>
 				</div>
 			</div>

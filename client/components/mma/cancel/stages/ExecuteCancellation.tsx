@@ -30,6 +30,7 @@ import {
 	CancellationReasonContext,
 } from '../cancellationContexts';
 import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
+import { isPrintCancellationJourneyEnabled } from '../cancellationPrint/printCancellationFeature';
 import { PrintExecuteCancellation } from '../cancellationPrint/printExecuteCancellation';
 import type {
 	CancellationReasonId,
@@ -303,7 +304,7 @@ export const ExecuteCancellation = () => {
 	const { productDetail, productType } = useCancellationContext();
 	const cancellationReasonId = useContext(CancellationReasonContext);
 
-	if (productType.cancellation.usesPrintCancellationFlow) {
+	if (isPrintCancellationJourneyEnabled(productType)) {
 		return (
 			<PrintExecuteCancellation
 				productDetail={productDetail}

@@ -6,10 +6,55 @@ import type {
 } from '../../../shared/productResponse';
 import { isProduct } from '../../../shared/productResponse';
 import type { ProductType } from '../../../shared/productTypes';
+import type { CancellationDateResponse } from '../../components/mma/cancel/cancellationDateResponse';
+import { cancellationDateFetcher } from '../../components/mma/cancel/cancellationDateResponse';
+import { cancellationModeFromEffectiveDate } from '../../components/mma/cancel/cancellationPrint/printCancellationTiming';
 import { JsonResponseHandler } from '../../components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import { useAccountStore } from '../../stores/AccountStore';
 import { usePrintCancellationStore } from '../../stores/PrintCancellationStore';
 import { createProductDetailFetcher } from '../productUtils';
+
+const resolveCancellationTiming = async (subscriptionId: string) => {
+	try {
+		const response = await cancellationDateFetcher(subscriptionId)();
+		const data = (await JsonResponseHandler(
+			response,
+		)) as CancellationDateResponse | null;
+		const cancellationEffectiveDate =
+			data?.cancellationEffectiveDate ?? null;
+		const currentSubscriptionId =
+			usePrintCancellationStore.getState().productDetail?.subscription
+				.subscriptionId;
+		if (currentSubscriptionId !== subscriptionId) {
+			return;
+		}
+		usePrintCancellationStore.getState().setCancellationTiming({
+			cancellationMode: cancellationModeFromEffectiveDate(
+				cancellationEffectiveDate,
+			),
+			cancellationEffectiveDate,
+		});
+	} catch (error) {
+		Sentry.captureException(
+			error instanceof Error
+				? error
+				: new Error('Failed to load print cancellation date'),
+			{
+				extra: { subscriptionId },
+			},
+		);
+		const currentSubscriptionId =
+			usePrintCancellationStore.getState().productDetail?.subscription
+				.subscriptionId;
+		if (currentSubscriptionId !== subscriptionId) {
+			return;
+		}
+		usePrintCancellationStore.getState().setCancellationTiming({
+			cancellationMode: 'hard',
+			cancellationEffectiveDate: null,
+		});
+	}
+};
 
 interface LoaderState {
 	isLoading: boolean;
@@ -33,6 +78,9 @@ export const usePrintCancellationLoader = ({
 	);
 	const resetJourneyState = usePrintCancellationStore(
 		(state) => state.resetJourneyState,
+	);
+	const cancellationMode = usePrintCancellationStore(
+		(state) => state.cancellationMode,
 	);
 	const { mdapiResponse: accountMdapiResponse, setMdapiResponse } =
 		useAccountStore();
@@ -58,11 +106,11 @@ export const usePrintCancellationLoader = ({
 				setProductDetail(routerProductDetail);
 				resetJourneyState();
 				hydratedSubscriptionId.current = routeSubscriptionId;
+				void resolveCancellationTiming(routeSubscriptionId);
 			} else if (storeSubscriptionId !== routeSubscriptionId) {
 				setProductDetail(routerProductDetail);
 			}
 
-			setState({ isLoading: false, shouldRedirect: false });
 			return;
 		}
 
@@ -99,6 +147,9 @@ export const usePrintCancellationLoader = ({
 				resetJourneyState();
 				hydratedSubscriptionId.current =
 					activeProducts[0].subscription.subscriptionId;
+				await resolveCancellationTiming(
+					activeProducts[0].subscription.subscriptionId,
+				);
 				setState({ isLoading: false, shouldRedirect: false });
 			} catch (error) {
 				Sentry.captureException(
@@ -130,9 +181,13 @@ export const usePrintCancellationLoader = ({
 		storeHasProduct,
 	]);
 
-	if (routerProductDetail || storeHasProduct) {
-		return { isLoading: false, shouldRedirect: false };
+	if (state.shouldRedirect) {
+		return { isLoading: false, shouldRedirect: true };
 	}
 
-	return state;
+	if (!cancellationMode) {
+		return { isLoading: true, shouldRedirect: false };
+	}
+
+	return { isLoading: false, shouldRedirect: false };
 };

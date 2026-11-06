@@ -1,7 +1,8 @@
 import '@testing-library/jest-dom';
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import type { ProductDetail } from '@/shared/productResponse';
 import type { ProductType } from '@/shared/productTypes';
+import { cancellationDateFetcher } from '../../components/mma/cancel/cancellationDateResponse';
 import { useAccountStore } from '../../stores/AccountStore';
 import { usePrintCancellationStore } from '../../stores/PrintCancellationStore';
 import { usePrintCancellationLoader } from '../../utilities/hooks/usePrintCancellationLoader';
@@ -9,6 +10,21 @@ import { usePrintCancellationLoader } from '../../utilities/hooks/usePrintCancel
 jest.mock('@sentry/browser', () => ({
 	captureException: jest.fn(),
 }));
+
+jest.mock('../../components/mma/cancel/cancellationDateResponse', () => ({
+	cancellationDateFetcher: jest.fn(),
+}));
+
+const mockCancellationDate = (cancellationEffectiveDate: string | null) => {
+	(cancellationDateFetcher as jest.Mock).mockImplementation(
+		() => async () =>
+			({
+				ok: true,
+				headers: { get: () => null },
+				json: async () => ({ cancellationEffectiveDate }),
+			} as unknown as Response),
+	);
+};
 
 const productType = {
 	productType: 'guardianweekly',
@@ -23,10 +39,19 @@ const productDetail = (subscriptionId: string) =>
 beforeEach(() => {
 	usePrintCancellationStore.getState().clearAll();
 	useAccountStore.getState().clearAccount();
+	mockCancellationDate('2026-06-01');
 });
 
+const waitForTiming = async () => {
+	await waitFor(() => {
+		expect(usePrintCancellationStore.getState().cancellationMode).not.toBe(
+			null,
+		);
+	});
+};
+
 describe('usePrintCancellationLoader', () => {
-	it('hydrates the print store from routerProductDetail and resets the journey on first entry', () => {
+	it('hydrates the print store from routerProductDetail and resets the journey on first entry', async () => {
 		const { setSelectedReasonId } = usePrintCancellationStore.getState();
 		// Pretend a previous journey left state behind.
 		setSelectedReasonId('mma_editorial');
@@ -39,6 +64,8 @@ describe('usePrintCancellationLoader', () => {
 			}),
 		);
 
+		await waitForTiming();
+
 		expect(result.current).toEqual({
 			isLoading: false,
 			shouldRedirect: false,
@@ -47,9 +74,28 @@ describe('usePrintCancellationLoader', () => {
 		expect(state.productDetail).toBe(route);
 		// Stale journey data was cleared on entry.
 		expect(state.selectedReasonId).toBeUndefined();
+		expect(state.cancellationMode).toBe('soft');
+		expect(state.cancellationEffectiveDate).toBe('2026-06-01');
 	});
 
-	it('does not re-reset journey state on re-render with the same subscription', () => {
+	it('treats an immediate cancellation date as a hard cancellation', async () => {
+		mockCancellationDate('now');
+		const route = productDetail('A-S0001');
+		renderHook(() =>
+			usePrintCancellationLoader({
+				productType,
+				routerProductDetail: route,
+			}),
+		);
+
+		await waitForTiming();
+
+		const state = usePrintCancellationStore.getState();
+		expect(state.cancellationMode).toBe('hard');
+		expect(state.cancellationEffectiveDate).toBe('now');
+	});
+
+	it('does not re-reset journey state on re-render with the same subscription', async () => {
 		const route = productDetail('A-S0001');
 		const { rerender } = renderHook(
 			(props: { routerProductDetail: ProductDetail }) =>
@@ -61,6 +107,8 @@ describe('usePrintCancellationLoader', () => {
 				initialProps: { routerProductDetail: route },
 			},
 		);
+
+		await waitForTiming();
 
 		// Simulate progress through the journey after initial hydration.
 		act(() => {
@@ -76,7 +124,7 @@ describe('usePrintCancellationLoader', () => {
 		);
 	});
 
-	it('resets the journey when the routerProductDetail subscription changes', () => {
+	it('resets the journey when the routerProductDetail subscription changes', async () => {
 		const initial = productDetail('A-S0001');
 		const next = productDetail('A-S0002');
 
@@ -91,13 +139,21 @@ describe('usePrintCancellationLoader', () => {
 			},
 		);
 
+		await waitForTiming();
+
 		act(() => {
 			usePrintCancellationStore
 				.getState()
 				.setSelectedReasonId('mma_editorial');
 		});
 
+		mockCancellationDate('2026-07-01');
 		rerender({ routerProductDetail: next });
+		await waitFor(() => {
+			expect(
+				usePrintCancellationStore.getState().cancellationEffectiveDate,
+			).toBe('2026-07-01');
+		});
 
 		const state = usePrintCancellationStore.getState();
 		expect(state.productDetail).toBe(next);

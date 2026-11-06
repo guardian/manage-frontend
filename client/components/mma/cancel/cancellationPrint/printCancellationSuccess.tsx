@@ -13,9 +13,11 @@ import {
 } from '@guardian/source/foundations';
 import { LinkButton } from '@guardian/source/react-components';
 import { useAccountStore } from '@/client/stores/AccountStore';
+import { usePrintCancellationStore } from '@/client/stores/PrintCancellationStore';
 import { cancellationFormatDate } from '@/shared/dates';
 import type { ProductDetail } from '../../../../../shared/productResponse';
 import type { ProductType } from '../../../../../shared/productTypes';
+import { getSuccessCopy } from './printCancellationCopy';
 
 const printSuccessBodyCss = css`
 	${textSans15};
@@ -92,19 +94,24 @@ interface PrintCancellationSuccessProps {
 }
 
 export const PrintCancellationSuccess = ({
-	productType,
 	productDetail,
 }: PrintCancellationSuccessProps) => {
 	const { getUser } = useAccountStore();
 	const user = getUser();
-	const supporterName = user?.firstName?.trim() || 'supporter';
-	const cancellationDate = productDetail.subscription
-		.cancellationEffectiveDate
-		? cancellationFormatDate(
-				productDetail.subscription.cancellationEffectiveDate,
-		  )
-		: 'the end of your current billing period';
-	const confirmationEmail = user?.email || 'your registered email address';
+	const cancellationMode =
+		usePrintCancellationStore((state) => state.cancellationMode) ?? 'hard';
+	const cancellationEffectiveDate = usePrintCancellationStore(
+		(state) => state.cancellationEffectiveDate,
+	);
+	const copy = getSuccessCopy(productDetail, cancellationMode);
+	const supporterName = user?.firstName?.trim() || copy.fallbackSupporterName;
+	const cancellationDate =
+		cancellationMode === 'soft' &&
+		cancellationEffectiveDate &&
+		cancellationEffectiveDate !== 'now'
+			? cancellationFormatDate(cancellationEffectiveDate)
+			: copy.fallbackCancellationDate;
+	const confirmationEmail = user?.email || copy.fallbackEmail;
 
 	return (
 		<>
@@ -120,27 +127,32 @@ export const PrintCancellationSuccess = ({
 						}
 					`}
 				>
-					Your subscription to {productType.productTitle()} has been
-					cancelled.
+					{copy.heading}
 				</h2>
 				<div css={printSuccessBodyCss}>
 					<p>
-						Your cancellation will take effect on{' '}
-						<strong
-							css={css`
-								${textSansBold15};
+						{cancellationMode === 'hard' ? (
+							copy.effectiveImmediately
+						) : (
+							<>
+								{copy.effectiveLeadIn}{' '}
+								<strong
+									css={css`
+										${textSansBold15};
 
-								${from.tablet} {
-									${textSansBold17};
-								}
-							`}
-						>
-							{cancellationDate}.
-						</strong>
+										${from.tablet} {
+											${textSansBold17};
+										}
+									`}
+								>
+									{cancellationDate}.
+								</strong>
+							</>
+						)}
 					</p>
 					<p>
-						You will receive a confirmation email to{' '}
-						{confirmationEmail} in the next 24 hours.
+						{copy.confirmationEmailLeadIn} {confirmationEmail}{' '}
+						{copy.confirmationEmailTail}
 					</p>
 				</div>
 			</section>
@@ -148,12 +160,9 @@ export const PrintCancellationSuccess = ({
 			<section css={printSuccessBannerCss}>
 				<div css={printSuccessBannerContentCss}>
 					<h3 css={printSuccessBannerHeadingCss}>
-						Thank you, {supporterName}
+						{copy.thankYou(supporterName)}
 					</h3>
-					<p css={printSuccessBannerBodyCss}>
-						Your support has played a vital role in keeping
-						independent journalism open to all.
-					</p>
+					<p css={printSuccessBannerBodyCss}>{copy.thankYouBody}</p>
 					<LinkButton
 						href="https://theguardian.com"
 						cssOverrides={css`
@@ -164,7 +173,7 @@ export const PrintCancellationSuccess = ({
 							}
 						`}
 					>
-						Continue reading the Guardian
+						{copy.continueReading}
 					</LinkButton>
 				</div>
 				<picture css={printSuccessBannerGraphicCss}>

@@ -22,6 +22,8 @@ describe('PrintCancellationStore', () => {
 		expect(state.caseId).toBe('');
 		expect(state.holidayStops).toBeUndefined();
 		expect(state.deliveryCredits).toBeUndefined();
+		expect(state.cancellationMode).toBeNull();
+		expect(state.cancellationEffectiveDate).toBeNull();
 	});
 
 	it('updates journey fields through their setters', () => {
@@ -73,6 +75,19 @@ describe('PrintCancellationStore', () => {
 		expect(state.caseId).toBe('');
 		expect(state.holidayStops).toBeUndefined();
 		expect(state.deliveryCredits).toBeUndefined();
+		expect(state.cancellationMode).toBeNull();
+		expect(state.cancellationEffectiveDate).toBeNull();
+	});
+
+	it('records whether cancellation is immediate or end of period', () => {
+		usePrintCancellationStore.getState().setCancellationTiming({
+			cancellationMode: 'soft',
+			cancellationEffectiveDate: '2026-06-01',
+		});
+
+		const state = usePrintCancellationStore.getState();
+		expect(state.cancellationMode).toBe('soft');
+		expect(state.cancellationEffectiveDate).toBe('2026-06-01');
 	});
 
 	it('clearAll resets every field including productDetail', () => {

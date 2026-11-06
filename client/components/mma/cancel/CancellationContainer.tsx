@@ -25,6 +25,7 @@ import type { OutstandingHolidayStop } from '../holiday/HolidayStopApi';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
+import { isPrintCancellationJourneyEnabled } from './cancellationPrint/printCancellationFeature';
 import { PrintLoadedCancellationContainer } from './cancellationPrint/printLoadedCancellationContainer';
 import type {
 	CancellationReason,
@@ -139,8 +140,9 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const productDetail = routerState?.productDetail;
-	const isPrintProductType =
-		!!props.productType.cancellation?.usesPrintCancellationFlow;
+	const isPrintProductType = isPrintCancellationJourneyEnabled(
+		props.productType,
+	);
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[props.productType.groupedProductType];
 
