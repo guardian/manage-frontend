@@ -24,3 +24,9 @@ read-only temporary AWS credentials inside it.
 
 This directory on `main` is only a signpost to that setup. Maintain container
 configuration on `devcontainer`, rather than adding a second setup here.
+
+The launcher runs `bash script/setup-devcontainer.sh` from the application
+checkout after creation. This installs the application's mise tools and Yarn
+dependencies without starting the app or configuring AWS credentials. To retry
+after resolving a setup error, run the same command inside the container as
+`vscode`; the script must not be run on the host.
