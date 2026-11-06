@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# This script is run inside the devcontainer as a postCreateCommand
+# It gets the basic setup done in one script, ready to run the app.
+
 set -euo pipefail
 
 trap 'printf "Devcontainer setup failed at line %s. Resolve the error and rerun bash script/setup-devcontainer.sh.\n" "$LINENO" >&2' ERR
