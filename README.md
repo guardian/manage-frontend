@@ -31,7 +31,32 @@ DEV only Dependencies
 -   Stripe
 -   Google ReCaptcha
 
-## Basic DEV environment
+## Local development: always use a dev container
+
+**Everyone should use a dev container for all local application development,
+including editing, running the application, and running tests. Do not develop
+directly in a host application checkout.**
+
+Start with the [devcontainer setup instructions](.devcontainer/README.md), which
+direct you to the `devcontainer` branch. The container must clone its own
+application sources into a Docker volume, rather than mount a host checkout.
+Use dedicated read-only temporary AWS credentials configured inside the container;
+do not share host AWS credentials.
+
+For background, see Guardian devenv's
+[containerised development guide](https://github.com/guardian/devenv/blob/main/docs/containerised-development/containerised-development.md)
+and its guides for
+[IntelliJ](https://github.com/guardian/devenv/blob/main/docs/containerised-development/containerised-development-in-intellij.md)
+and [VS Code](https://github.com/guardian/devenv/blob/main/docs/containerised-development/containerised-development-in-vscode.md).
+Follow this project's instructions where they differ: host source mounts are not
+supported. Host-side launcher and nginx setup are the exceptions to running
+development tooling inside the container.
+
+**The launcher branch is still being prepared.** The required container workflow
+is not yet available; the instructions below are retained as a legacy reference,
+not the recommended onboarding path.
+
+### Legacy native setup reference
 
 NOTE: nginx proxies CODE instances of [`gateway`] for sign-in and [`members-data-api`](https://github.com/guardian/members-data-api) **if they're not running locally**. See sections further down if you need to actually develop either of those services in parallel with `manage-frontend`.
 
@@ -47,6 +72,11 @@ NOTE: nginx proxies CODE instances of [`gateway`] for sign-in and [`members-data
 1. Ensure you have a Node.js version manager installed. We recommend using [`fnm`](https://github.com/Schniz/fnm).
 1. Run `fnm use` (or equivalent)
 1. Run `yarn` to install dependencies
+
+Alternatively, [mise](https://mise.jdx.dev/) can install Node and AWS CLI:
+run `mise trust` and `mise install` from the repository root. Node is selected
+from `.nvmrc`; AWS CLI is pinned in `mise.toml`. This does not install Yarn:
+keep the existing Yarn setup above.
 
 #### Running locally (each day you need use it)
 
