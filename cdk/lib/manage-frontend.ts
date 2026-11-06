@@ -160,6 +160,7 @@ systemctl start manage-frontend
 			},
 			accessLogging: {
 				enabled: true,
+				prefix: `application-load-balancer/${this.stage}/${this.stack}/${app}`,
 			},
 			scaling: props.scaling,
 			userData,
