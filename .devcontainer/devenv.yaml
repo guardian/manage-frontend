@@ -23,7 +23,7 @@ modules:
 # Optional: Ports to forward
 forwardPorts:
   - 9233 # Express
-  # Webpack uses a fixed loopback-only Docker port mapping for host nginx.
+  - 9234 # Webpack
   - 6006 # Storybook
 #   - 8080  # same port on host and container
 #   - "8000:9000"  # hostPort:containerPort
@@ -38,7 +38,6 @@ forwardPorts:
 
 runArgs:
   - "--name=manage-frontend-devcontainer"
-  - "--publish=127.0.0.1:9234:9234"
   - "--add-host=profile.thegulocal.com:host-gateway"
   - "--add-host=members-data-api.thegulocal.com:host-gateway"
 
@@ -48,8 +47,6 @@ containerEnv:
     value: "${containerWorkspaceFolder}"
   - name: NODE_EXTRA_CA_CERTS
     value: "/etc/ssl/certs/ca-certificates.crt"
-  - name: WEBPACK_DEV_SERVER_HOST
-    value: "0.0.0.0"
   - name: AWS_PROFILE
     value: membership
   - name: AWS_REGION

@@ -27,6 +27,7 @@
   },
   "forwardPorts" : [
     9233,
+    9234,
     6006
   ],
   "image" : "mcr.microsoft.com/devcontainers/base:ubuntu26.04",
@@ -34,13 +35,11 @@
   "containerEnv" : {
     "MISE_TRUSTED_CONFIG_PATHS" : "${containerWorkspaceFolder}",
     "NODE_EXTRA_CA_CERTS" : "/etc/ssl/certs/ca-certificates.crt",
-    "WEBPACK_DEV_SERVER_HOST" : "0.0.0.0",
     "AWS_PROFILE" : "membership",
     "AWS_REGION" : "eu-west-1"
   },
   "runArgs" : [
     "--name=manage-frontend-devcontainer",
-    "--publish=127.0.0.1:9234:9234",
     "--add-host=profile.thegulocal.com:host-gateway",
     "--add-host=members-data-api.thegulocal.com:host-gateway",
     "--shm-size=512m"

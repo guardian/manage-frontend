@@ -80,14 +80,11 @@ means the wrong application branch was cloned.
 ### The app is unreachable or nginx returns 502
 
 Check that `yarn watch` is running in the container and nginx is running on the
-host. On the host, verify the port mapping:
-
-```bash
-docker port manage-frontend-devcontainer 9234
-```
-
-Expect `127.0.0.1:9234`. Stop any native webpack server using that port.
-If the mapping is missing, rebuild using the current launcher configuration.
+host. Check the IDE's forwarded ports and ensure container port 9234 is forwarded
+to host port 9234, where nginx expects it. Stop any native webpack server using
+that port. In VS Code, use the **Ports** panel to inspect or add the forwarding.
+If the port is missing, forward it or recreate using the current launcher
+configuration.
 
 ### Certificate or connection errors
 
