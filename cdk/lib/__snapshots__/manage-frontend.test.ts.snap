@@ -1970,7 +1970,7 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
           },
           {
             "Key": "access_logs.s3.prefix",
-            "Value": "",
+            "Value": "application-load-balancer/PROD/support/manage-frontend",
           },
         ],
         "Scheme": "internet-facing",
