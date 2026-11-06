@@ -30,7 +30,6 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
       "GuParameterStoreReadPolicy",
       "GuAmiParameter",
       "GuHttpsEgressSecurityGroup",
-      "GuWazuhAccess",
       "GuAutoScalingGroup",
       "GuApplicationLoadBalancer",
       "GuAccessLoggingBucketParameter",
@@ -2069,27 +2068,6 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
       },
       "Type": "AWS::EC2::SecurityGroupEgress",
     },
-    "LoadBalancerManagefrontendSecurityGrouptoManageFrontendWazuhSecurityGroup21F140CF923324CB9496": {
-      "Properties": {
-        "Description": "Load balancer to target",
-        "DestinationSecurityGroupId": {
-          "Fn::GetAtt": [
-            "WazuhSecurityGroup",
-            "GroupId",
-          ],
-        },
-        "FromPort": 9233,
-        "GroupId": {
-          "Fn::GetAtt": [
-            "LoadBalancerManagefrontendSecurityGroupED621ABF",
-            "GroupId",
-          ],
-        },
-        "IpProtocol": "tcp",
-        "ToPort": 9233,
-      },
-      "Type": "AWS::EC2::SecurityGroupEgress",
-    },
     "ManageFrontendLogGroup": {
       "DeletionPolicy": "Retain",
       "Properties": {
@@ -2483,27 +2461,6 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
       },
       "Type": "AWS::EC2::SecurityGroupEgress",
     },
-    "RestrictedIngressSecurityGroupManagefrontendtoManageFrontendWazuhSecurityGroup21F140CF923346E65829": {
-      "Properties": {
-        "Description": "Load balancer to target",
-        "DestinationSecurityGroupId": {
-          "Fn::GetAtt": [
-            "WazuhSecurityGroup",
-            "GroupId",
-          ],
-        },
-        "FromPort": 9233,
-        "GroupId": {
-          "Fn::GetAtt": [
-            "RestrictedIngressSecurityGroupManagefrontend3AE7C2B0",
-            "GroupId",
-          ],
-        },
-        "IpProtocol": "tcp",
-        "ToPort": 9233,
-      },
-      "Type": "AWS::EC2::SecurityGroupEgress",
-    },
     "SsmSshPolicy4CFC977E": {
       "Properties": {
         "PolicyDocument": {
@@ -2632,48 +2589,6 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "WazuhSecurityGroupfromManageFrontendLoadBalancerManagefrontendSecurityGroup4DBBACB9923356374CB4": {
-      "Properties": {
-        "Description": "Load balancer to target",
-        "FromPort": 9233,
-        "GroupId": {
-          "Fn::GetAtt": [
-            "WazuhSecurityGroup",
-            "GroupId",
-          ],
-        },
-        "IpProtocol": "tcp",
-        "SourceSecurityGroupId": {
-          "Fn::GetAtt": [
-            "LoadBalancerManagefrontendSecurityGroupED621ABF",
-            "GroupId",
-          ],
-        },
-        "ToPort": 9233,
-      },
-      "Type": "AWS::EC2::SecurityGroupIngress",
-    },
-    "WazuhSecurityGroupfromManageFrontendRestrictedIngressSecurityGroupManagefrontend421982CD92331F581780": {
-      "Properties": {
-        "Description": "Load balancer to target",
-        "FromPort": 9233,
-        "GroupId": {
-          "Fn::GetAtt": [
-            "WazuhSecurityGroup",
-            "GroupId",
-          ],
-        },
-        "IpProtocol": "tcp",
-        "SourceSecurityGroupId": {
-          "Fn::GetAtt": [
-            "RestrictedIngressSecurityGroupManagefrontend3AE7C2B0",
-            "GroupId",
-          ],
-        },
-        "ToPort": 9233,
-      },
-      "Type": "AWS::EC2::SecurityGroupIngress",
-    },
     "supportPRODmanagefrontend8911518E": {
       "DependsOn": [
         "InstanceRoleManagefrontendC8EBF20D",
@@ -2696,16 +2611,13 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
             "HttpTokens": "required",
             "InstanceMetadataTags": "enabled",
           },
+          "Monitoring": {
+            "Enabled": false,
+          },
           "SecurityGroupIds": [
             {
               "Fn::GetAtt": [
                 "GuHttpsEgressSecurityGroupManagefrontend8E53A220",
-                "GroupId",
-              ],
-            },
-            {
-              "Fn::GetAtt": [
-                "WazuhSecurityGroup",
                 "GroupId",
               ],
             },

@@ -18,6 +18,8 @@ import {
 	InstanceSize,
 	InstanceType,
 	Peer,
+	Port,
+	SecurityGroup,
 	UserData,
 } from 'aws-cdk-lib/aws-ec2';
 import type { CfnListener } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
@@ -155,12 +157,9 @@ systemctl start manage-frontend
 				InstanceClass.T4G,
 				InstanceSize.SMALL,
 			),
+			instanceMetricGranularity: '5Minute',
 			monitoringConfiguration: {
 				noMonitoring: true,
-			},
-			accessLogging: {
-				enabled: true,
-				prefix: `application-load-balancer/${this.stage}/${this.stack}/${app}`,
 			},
 			scaling: props.scaling,
 			userData,
@@ -233,6 +232,32 @@ systemctl start manage-frontend
 					}),
 				],
 			},
+		});
+
+		// Retain until Riff-Raff has rotated instances without this group, then remove in a separate deployment.
+		const legacyWazuhSecurityGroup = new SecurityGroup(
+			this,
+			'WazuhSecurityGroup',
+			{
+				vpc: nodeApp.vpc,
+				description:
+					'Allow outbound traffic from wazuh agent to manager',
+				allowAllOutbound: false,
+			},
+		);
+		legacyWazuhSecurityGroup.addEgressRule(
+			Peer.anyIpv4(),
+			Port.tcp(1514),
+			'Wazuh event logging',
+		);
+		legacyWazuhSecurityGroup.addEgressRule(
+			Peer.anyIpv4(),
+			Port.tcp(1515),
+			'Wazuh agent registration',
+		);
+		this.overrideLogicalId(legacyWazuhSecurityGroup, {
+			logicalId: 'WazuhSecurityGroup',
+			reason: 'Retain legacy group during the first stage of the GuCDK Wazuh migration',
 		});
 
 		nodeApp.targetGroup.configureHealthCheck({
