@@ -8,7 +8,6 @@ module.exports = merge(client, {
 	plugins: createSentryPlugin('manage-frontend-client'),
 	devServer: {
 		host: 'manage.thegulocal.com',
-		allowedHosts: ['manage.thegulocal.com', 'localhost'],
 		port: 9234,
 		devMiddleware: {
 			index: '/', // specify to enable root proxying
