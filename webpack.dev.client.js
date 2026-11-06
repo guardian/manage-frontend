@@ -7,7 +7,9 @@ module.exports = merge(client, {
 	mode: 'development',
 	plugins: createSentryPlugin('manage-frontend-client'),
 	devServer: {
-		host: 'manage.thegulocal.com',
+		// Containers override this to 0.0.0.0 as Docker can't access 127.0.0.1
+		host: process.env.WEBPACK_DEV_SERVER_HOST || 'manage.thegulocal.com',
+		allowedHosts: ['manage.thegulocal.com', 'localhost'],
 		port: 9234,
 		devMiddleware: {
 			index: '/', // specify to enable root proxying
