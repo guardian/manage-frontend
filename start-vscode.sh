@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# This script creates a devcontainer from a clone of the repo, ready
+# for use with vscode.
+# Creating from within vscode seems to fail as it expects you to mount the same branch.
+
 set -euo pipefail
 
 if [[ $# -gt 1 || "${1:-}" == --help ]]; then

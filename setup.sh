@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# This script gets all the basic requirements installed on your host machine, ready
+# to create the container in your IDE.
+
 set -euo pipefail
 
 confirm() {
