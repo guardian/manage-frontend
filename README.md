@@ -37,24 +37,12 @@ DEV only Dependencies
 including editing, running the application, and running tests. Do not develop
 directly in a host application checkout.**
 
-Start with the [devcontainer setup instructions](.devcontainer/README.md), which
-direct you to the `devcontainer` branch. The container must clone its own
-application sources into a Docker volume, rather than mount a host checkout.
-Use dedicated read-only temporary AWS credentials configured inside the container;
-do not share host AWS credentials.
+The setup for **IntelliJ and VS Code lives on the
+[`devcontainer` branch](https://github.com/guardian/manage-frontend/tree/devcontainer)**.
+See [how to get there](.devcontainer/README.md), then follow that branch's README.
+It covers host setup, creating the isolated application checkout, and credentials.
 
-For background, see Guardian devenv's
-[containerised development guide](https://github.com/guardian/devenv/blob/main/docs/containerised-development/containerised-development.md)
-and its guides for
-[IntelliJ](https://github.com/guardian/devenv/blob/main/docs/containerised-development/containerised-development-in-intellij.md)
-and [VS Code](https://github.com/guardian/devenv/blob/main/docs/containerised-development/containerised-development-in-vscode.md).
-Follow this project's instructions where they differ: host source mounts are not
-supported. Host-side launcher and nginx setup are the exceptions to running
-development tooling inside the container.
-
-**The launcher branch is still being prepared.** The required container workflow
-is not yet available; the instructions below are retained as a legacy reference,
-not the recommended onboarding path.
+The instructions below are retained as a legacy native setup reference.
 
 ### Legacy native setup reference
 
