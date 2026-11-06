@@ -382,20 +382,17 @@
     "@eslint/core" "^0.13.0"
     levn "^0.4.1"
 
-"@guardian/cdk@61.1.0":
-  version "61.1.0"
-  resolved "https://registry.yarnpkg.com/@guardian/cdk/-/cdk-61.1.0.tgz#f08233776927f585c3ef5615455ed131c3d9d176"
-  integrity sha512-4PEyzJuD3Us1XzEIO5wdWdnThK2rqv/8IJOdOc9+oqCoGaC4rvBVAOajHcGRJ2XBrD/YTnZDfSVFH4kIwb+7Tg==
+"@guardian/cdk@62.0.1":
+  version "62.0.1"
+  resolved "https://registry.yarnpkg.com/@guardian/cdk/-/cdk-62.0.1.tgz#f6c9e605295c53ec4f9977c00955fd5636d3e803"
+  integrity sha512-scDdsd/dLlRWn/GrLgGhXvBoowQRGrt2mCF+gNJq2oF+thINOF7eJtIuRpUwoKSHrjkN59eyjdYKbX8w3rUl0g==
   dependencies:
     "@oclif/core" "3.26.6"
     aws-sdk "^2.1692.0"
     chalk "^4.1.2"
-    codemaker "^1.106.0"
-    git-url-parse "^16.0.0"
+    codemaker "^1.114.1"
+    git-url-parse "^16.0.1"
     js-yaml "^4.1.0"
-    lodash.camelcase "^4.3.0"
-    lodash.kebabcase "^4.1.1"
-    lodash.upperfirst "^4.3.1"
     read-pkg-up "7.0.1"
     yargs "^17.7.2"
 
@@ -1496,10 +1493,10 @@ co@^4.6.0:
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
   integrity sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==
 
-codemaker@^1.106.0:
-  version "1.139.0"
-  resolved "https://registry.yarnpkg.com/codemaker/-/codemaker-1.139.0.tgz#708560424f1d1feb73e6c22cf0ebbd3c97616e22"
-  integrity sha512-v93CwWcepdmHDENEJuPepaOzo2J8SZ5HKNVgH/+6vPrvLOoDDfVXEkBMr6KUu4trHN7QvZjFwxJBpjCYCBG9+g==
+codemaker@^1.114.1:
+  version "1.142.0"
+  resolved "https://registry.yarnpkg.com/codemaker/-/codemaker-1.142.0.tgz#40f9ec15fb56b86df4d393d107ef7ad808a1e4b9"
+  integrity sha512-mip7+WZ1bqt0SA6k1u0vjp7PzsifHRLmrwWqnz+ZHCFMDT8+ctbdMOUkjMtF2G4RASEExJrrjfM8cC7cl2bd6Q==
   dependencies:
     camelcase "^6.3.0"
     decamelize "^5.0.1"
@@ -2306,7 +2303,7 @@ git-up@^8.1.0:
     is-ssh "^1.4.0"
     parse-url "^9.2.0"
 
-git-url-parse@^16.0.0:
+git-url-parse@^16.0.1:
   version "16.1.0"
   resolved "https://registry.yarnpkg.com/git-url-parse/-/git-url-parse-16.1.0.tgz#3bb6f378a2ba2903c4d8b1cdec004aa85a7ab66f"
   integrity sha512-cPLz4HuK86wClEW7iDdeAKcCVlWXmrLpb2L+G9goW0Z1dtpNS6BXXSOckUTlJT/LDQViE1QZKstNORzHsLnobw==
@@ -3319,16 +3316,6 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-lodash.camelcase@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
-  integrity sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==
-
-lodash.kebabcase@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/lodash.kebabcase/-/lodash.kebabcase-4.1.1.tgz#8489b1cb0d29ff88195cceca448ff6d6cc295c36"
-  integrity sha512-N8XRTIMMqqDgSy4VLKPnJ/+hpGZN+PHQiJnSenYqPaVV/NCqEogTnAdZLQiGKhxX+JCs8waWq2t1XHWKOmlY8g==
-
 lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
@@ -3338,11 +3325,6 @@ lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
-
-lodash.upperfirst@^4.3.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/lodash.upperfirst/-/lodash.upperfirst-4.3.1.tgz#1365edf431480481ef0d1c68957a5ed99d49f7ce"
-  integrity sha512-sReKOYJIJf74dhJONhU4e0/shzi1trVbSWDOhKYE5XV2O+H7Sb2Dihwuc7xWxVl+DgFPyTqIN3zMfT9cq5iWDg==
 
 lodash@^4.18.0:
   version "4.18.1"
