@@ -1,4 +1,6 @@
 {
+  "workspaceMount" : "source=manage-frontend-devcontainer-vscode-sources,target=/workspaces/manage-frontend,type=volume",
+  "workspaceFolder" : "/workspaces/manage-frontend",
   "mounts" : [
     "source=${localEnv:HOME}/Library/Application Support/mkcert/rootCA.pem,target=/usr/local/share/ca-certificates/manage-frontend-mkcert.crt,type=bind,readonly"
   ],

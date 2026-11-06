@@ -29,19 +29,9 @@ git check-ref-format --branch "$branch" >/dev/null
 docker info >/dev/null
 mise exec -- devenv generate
 
-config="$PWD/.devcontainer/user/vscode/devcontainer.json"
+config="$PWD/.devcontainer/user/devcontainer.json"
 volume=manage-frontend-devcontainer-vscode-sources
 container=manage-frontend-devcontainer
-
-# Keep the standard generated configuration; override only the workspace mount.
-node <<'NODE'
-const fs = require('fs');
-const config = JSON.parse(fs.readFileSync('.devcontainer/user/devcontainer.json', 'utf8'));
-config.workspaceMount = 'source=manage-frontend-devcontainer-vscode-sources,target=/workspaces/manage-frontend,type=volume';
-config.workspaceFolder = '/workspaces/manage-frontend';
-fs.mkdirSync('.devcontainer/user/vscode', {recursive: true});
-fs.writeFileSync('.devcontainer/user/vscode/devcontainer.json', JSON.stringify(config, null, 2) + '\n');
-NODE
 
 if docker container inspect "$container" >/dev/null 2>&1; then
 	existing_config=$(docker inspect "$container" --format '{{index .Config.Labels "devcontainer.config_file"}}')
@@ -51,7 +41,7 @@ if docker container inspect "$container" >/dev/null 2>&1; then
 	fi
 fi
 
-image=$(node -p 'require("./.devcontainer/user/vscode/devcontainer.json").image')
+image=$(node -p 'require("./.devcontainer/user/devcontainer.json").image')
 
 # The clone runs inside Docker. No host files, credentials, or Git objects are mounted.
 docker run --rm --user root \

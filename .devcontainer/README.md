@@ -6,7 +6,7 @@ For creating and using the container, follow the [setup guide](../README.md).
 
 1. Create a working branch from `devcontainer`, not `main`.
 2. Edit `devenv.yaml` for modules, ports, environment variables, and setup commands.
-   Edit `escapehatch.json` for the public CA mount and certificate trust setup.
+   Edit `escapehatch.json` for workspace mounts and certificate trust setup.
 3. From the launcher repository root, regenerate and check:
 
    ```bash
