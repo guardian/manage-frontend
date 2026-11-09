@@ -8,7 +8,7 @@
  *
  * The value is remembered for the browser tab. Navigation that drops the
  * query param does not turn the switch off, and the param is put back on
- * the URL from one router-level component.
+ * the browser URL without a second navigation.
  *
  * if the url param doesn't exist or its value does not match the feature
  * name provided then the function will return false and the feature switch
@@ -24,7 +24,7 @@ type FeatureSwitchName =
 	| 'maintenanceMode'
 	| 'contributionCancellationPause';
 
-export const featureSwitches: Record<FeatureSwitchName, boolean> = {
+const defaultFeatureSwitches: Record<FeatureSwitchName, boolean> = {
 	exampleFeature: false,
 	appSubscriptions: true,
 	supporterPlusUpdateAmount: true,
@@ -32,6 +32,10 @@ export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	supporterplusCancellationOffer: true,
 	contributionCancellationPause: true,
 	maintenanceMode: false,
+};
+
+export const featureSwitches: Record<FeatureSwitchName, boolean> = {
+	...defaultFeatureSwitches,
 };
 
 export const FEATURE_SWITCH_QUERY_PARAM = 'withFeature';
@@ -54,11 +58,11 @@ const writeStoredFeatureSwitchParam = (param: string) => {
 	}
 };
 
-const enableFeatureSwitch = (param: string) => {
-	for (const [key, value] of Object.entries(featureSwitches)) {
-		if (!value) {
-			featureSwitches[key as FeatureSwitchName] = param === key;
-		}
+const applyFeatureSwitchOverride = (param: string) => {
+	for (const key of Object.keys(
+		defaultFeatureSwitches,
+	) as FeatureSwitchName[]) {
+		featureSwitches[key] = defaultFeatureSwitches[key] || param === key;
 	}
 };
 
@@ -71,7 +75,7 @@ export const storedFeatureSwitchParam = (): string | null => {
 
 export const rememberFeatureSwitchParam = (param: string) => {
 	writeStoredFeatureSwitchParam(param);
-	enableFeatureSwitch(param);
+	applyFeatureSwitchOverride(param);
 };
 
 export const initFeatureSwitchUrlParamOverride = () => {
@@ -87,6 +91,6 @@ export const initFeatureSwitchUrlParamOverride = () => {
 	}
 	const stored = readStoredFeatureSwitchParam();
 	if (stored) {
-		enableFeatureSwitch(stored);
+		applyFeatureSwitchOverride(stored);
 	}
 };

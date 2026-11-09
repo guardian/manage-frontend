@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
 	FEATURE_SWITCH_QUERY_PARAM,
 	rememberFeatureSwitchParam,
 	storedFeatureSwitchParam,
 } from '@/shared/featureSwitches';
 
-// Keeps ?withFeature= on the URL after client-side navigations drop it.
+// Keeps ?withFeature= on the browser URL after client-side navigations drop
+// it. replaceState avoids a second React Router navigation, which would copy
+// route state and can repeat work that depends on that state.
 export const PersistFeatureSwitchQueryParam = () => {
 	const location = useLocation();
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		const params = new URLSearchParams(location.search);
@@ -24,16 +25,15 @@ export const PersistFeatureSwitchQueryParam = () => {
 			return;
 		}
 
+		rememberFeatureSwitchParam(stored);
 		params.set(FEATURE_SWITCH_QUERY_PARAM, stored);
-		navigate(
-			{
-				pathname: location.pathname,
-				search: params.toString(),
-				hash: location.hash,
-			},
-			{ replace: true, state: location.state },
+		const hash = location.hash;
+		window.history.replaceState(
+			window.history.state,
+			'',
+			`${location.pathname}?${params.toString()}${hash}`,
 		);
-	}, [location, navigate]);
+	}, [location]);
 
 	return null;
 };
