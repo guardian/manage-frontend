@@ -23,7 +23,6 @@ import {
 import type { ChangeEvent, FormEvent } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
 import { useAccountStore } from '../../../../stores/AccountStore';
 import { usePrintCancellationStore } from '../../../../stores/PrintCancellationStore';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
@@ -39,11 +38,8 @@ import {
 	type OptionalCancellationReasonId,
 	reasonIdOrDefault,
 } from '../cancellationReason';
+import { CANCELLATION_REASONS } from '../cancellationReasonsCatalogue';
 import { getReasonPickerCopy } from './printCancellationCopy';
-
-interface PrintReasonPickerProps {
-	productType: ProductTypeWithCancellationFlow;
-}
 
 const mobileOnlyPreviousButtonCss = css`
 	margin-top: ${space[5]}px;
@@ -182,7 +178,7 @@ const tabletAndUpPreviousButtonCss = css`
 	}
 `;
 
-export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
+export const PrintReasonPicker = () => {
 	const cancellationContext = useCancellationContext();
 	const productDetail = cancellationContext.productDetail;
 	const storedSelectedReasonId = usePrintCancellationStore(
@@ -274,7 +270,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 									orientation="vertical"
 									cssOverrides={reasonRadioGroupCss}
 								>
-									{productType.cancellation.reasons?.map(
+									{CANCELLATION_REASONS.printProducts.map(
 										(reason: CancellationReason) => (
 											<Radio
 												key={reason.reasonId}

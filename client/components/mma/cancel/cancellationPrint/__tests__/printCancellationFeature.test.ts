@@ -1,5 +1,6 @@
 import { featureSwitches } from '@/shared/featureSwitches';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
+import { CANCELLATION_REASONS } from '../../cancellationReasonsCatalogue';
 import {
 	cancelsWithoutSelfServeFlag,
 	isCancellationEntryOpen,
@@ -36,6 +37,18 @@ describe('print product cancellation feature flag', () => {
 		featureSwitches.printProductCancellation = true;
 		expect(isPrintCancellationJourneyEnabled(PRODUCT_TYPES.voucher)).toBe(
 			true,
+		);
+		expect(PRODUCT_TYPES.voucher.cancellation?.reasons).toBe(
+			CANCELLATION_REASONS.voucher,
+		);
+		expect(PRODUCT_TYPES.voucherplusdigital.cancellation?.reasons).toBe(
+			CANCELLATION_REASONS.voucher,
+		);
+		expect(PRODUCT_TYPES.voucherobserver.cancellation?.reasons).toBe(
+			CANCELLATION_REASONS.voucher,
+		);
+		expect(PRODUCT_TYPES.homedelivery.cancellation?.reasons).toBe(
+			CANCELLATION_REASONS.printProducts,
 		);
 	});
 

@@ -559,6 +559,16 @@ const ConfirmCancellationAndReturnRow = (
 	);
 };
 
+// A hard cancellation is effective today. A soft cancellation uses the date
+// from the cancellation-date endpoint, not the next billing date.
+const creditCheckDate = (cancellationEffectiveDate: string | null) => {
+	const value = cancellationEffectiveDate?.trim();
+	if (!value || value === 'now') {
+		return undefined;
+	}
+	return value;
+};
+
 export const CancellationReasonReview = () => {
 	const location = useLocation();
 	const routerState = location.state as {
@@ -661,11 +671,15 @@ const ValidatedCancellationReasonReview = ({
 		(reason) => reason.reasonId === displayedReasonId,
 	) as CancellationReason;
 
-	const effectiveCancellationDate =
-		!productDetail.subscription?.chargedThroughDate ||
-		cancellationPolicy === cancellationEffectiveToday
-			? parseDate()
-			: parseDate(productDetail.subscription.chargedThroughDate);
+	const storedCancellationEffectiveDate = usePrintCancellationStore(
+		(state) => state.cancellationEffectiveDate,
+	);
+	const effectiveCancellationDate = isPrintProductType
+		? parseDate(creditCheckDate(storedCancellationEffectiveDate))
+		: !productDetail.subscription?.chargedThroughDate ||
+		  cancellationPolicy === cancellationEffectiveToday
+		? parseDate()
+		: parseDate(productDetail.subscription.chargedThroughDate);
 
 	const holidayStopCreditApiUrl =
 		productType.cancellation.checkForOutstandingCredits &&

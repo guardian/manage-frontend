@@ -17,18 +17,18 @@ const homeDeliveryProductKeys: readonly ProductTier[] = [
 	'Newspaper - National Delivery',
 	'Newspaper - National Delivery + Digital',
 	'Newspaper Delivery - Observer',
-	'Newspaper Voucher - Observer',
-	'Newspaper Digital Voucher - Observer',
 ];
 
 const voucherProductKeys: readonly ProductTier[] = [
 	'Newspaper Voucher',
 	'Newspaper Voucher + Digital',
+	'Newspaper Voucher - Observer',
 ];
 
 const subscriptionCardProductKeys: readonly ProductTier[] = [
 	'Newspaper Digital Voucher',
 	'Newspaper Digital Voucher + Digital',
+	'Newspaper Digital Voucher - Observer',
 ];
 
 const guardianWeeklyProductKeys: readonly ProductTier[] = [

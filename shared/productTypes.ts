@@ -303,8 +303,9 @@ export type GroupedProductTypeKeys =
 const printCancellationFlow = (
 	sfCaseProduct: SfCaseProduct,
 	startPageBody: CancellationFlowProperties['startPageBody'] = gwCancellationFlowStart,
+	reasons: CancellationFlowProperties['reasons'] = CANCELLATION_REASONS.printProducts,
 ): CancellationFlowProperties => ({
-	reasons: CANCELLATION_REASONS.printProducts,
+	reasons,
 	sfCaseProduct,
 	checkForOutstandingCredits: true,
 	usesPrintCancellationFlow: true,
@@ -440,6 +441,7 @@ const baseVoucherProduct: ProductType = {
 	cancellation: printCancellationFlow(
 		'Voucher Subscriptions',
 		voucherCancellationFlowStart,
+		CANCELLATION_REASONS.voucher,
 	),
 };
 
@@ -688,6 +690,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		cancellation: printCancellationFlow(
 			'Voucher Subscriptions',
 			voucherCancellationFlowStart,
+			CANCELLATION_REASONS.voucher,
 		),
 	},
 	digitalvoucher: {

@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
 	MembersDataApiResponse,
 	ProductDetail,
@@ -14,26 +14,30 @@ import { useAccountStore } from '../../stores/AccountStore';
 import { usePrintCancellationStore } from '../../stores/PrintCancellationStore';
 import { createProductDetailFetcher } from '../productUtils';
 
-const resolveCancellationTiming = async (subscriptionId: string) => {
+const resolveCancellationTiming = async (
+	subscriptionId: string,
+): Promise<boolean> => {
+	const stillCurrent = () =>
+		usePrintCancellationStore.getState().productDetail?.subscription
+			.subscriptionId === subscriptionId;
+
 	try {
 		const response = await cancellationDateFetcher(subscriptionId)();
 		const data = (await JsonResponseHandler(
 			response,
 		)) as CancellationDateResponse | null;
+		if (!stillCurrent()) {
+			return true;
+		}
 		const cancellationEffectiveDate =
 			data?.cancellationEffectiveDate ?? null;
-		const currentSubscriptionId =
-			usePrintCancellationStore.getState().productDetail?.subscription
-				.subscriptionId;
-		if (currentSubscriptionId !== subscriptionId) {
-			return;
-		}
 		usePrintCancellationStore.getState().setCancellationTiming({
 			cancellationMode: cancellationModeFromEffectiveDate(
 				cancellationEffectiveDate,
 			),
 			cancellationEffectiveDate,
 		});
+		return true;
 	} catch (error) {
 		Sentry.captureException(
 			error instanceof Error
@@ -43,22 +47,18 @@ const resolveCancellationTiming = async (subscriptionId: string) => {
 				extra: { subscriptionId },
 			},
 		);
-		const currentSubscriptionId =
-			usePrintCancellationStore.getState().productDetail?.subscription
-				.subscriptionId;
-		if (currentSubscriptionId !== subscriptionId) {
-			return;
-		}
-		usePrintCancellationStore.getState().setCancellationTiming({
-			cancellationMode: 'hard',
-			cancellationEffectiveDate: null,
-		});
+		return !stillCurrent();
 	}
 };
 
 interface LoaderState {
 	isLoading: boolean;
 	shouldRedirect: boolean;
+	hasTimingError: boolean;
+}
+
+interface PrintCancellationLoaderResult extends LoaderState {
+	retryTiming: () => void;
 }
 
 interface UsePrintCancellationLoaderProps {
@@ -69,7 +69,7 @@ interface UsePrintCancellationLoaderProps {
 export const usePrintCancellationLoader = ({
 	productType,
 	routerProductDetail,
-}: UsePrintCancellationLoaderProps): LoaderState => {
+}: UsePrintCancellationLoaderProps): PrintCancellationLoaderResult => {
 	const productDetail = usePrintCancellationStore(
 		(state) => state.productDetail,
 	);
@@ -89,9 +89,30 @@ export const usePrintCancellationLoader = ({
 	const [state, setState] = useState<LoaderState>({
 		isLoading: !storeHasProduct && !routerProductDetail,
 		shouldRedirect: false,
+		hasTimingError: false,
 	});
 	const hasStartedLoading = useRef(false);
 	const hydratedSubscriptionId = useRef<string | null>(null);
+
+	const loadTiming = useCallback((subscriptionId: string) => {
+		setState((current) => ({
+			...current,
+			hasTimingError: false,
+		}));
+		void resolveCancellationTiming(subscriptionId).then((loaded) => {
+			const currentSubscriptionId =
+				usePrintCancellationStore.getState().productDetail?.subscription
+					.subscriptionId;
+			if (currentSubscriptionId !== subscriptionId) {
+				return;
+			}
+			setState((current) => ({
+				...current,
+				isLoading: false,
+				hasTimingError: !loaded,
+			}));
+		});
+	}, []);
 
 	useEffect(() => {
 		if (routerProductDetail) {
@@ -106,7 +127,7 @@ export const usePrintCancellationLoader = ({
 				setProductDetail(routerProductDetail);
 				resetJourneyState();
 				hydratedSubscriptionId.current = routeSubscriptionId;
-				void resolveCancellationTiming(routeSubscriptionId);
+				loadTiming(routeSubscriptionId);
 			} else if (storeSubscriptionId !== routeSubscriptionId) {
 				setProductDetail(routerProductDetail);
 			}
@@ -147,10 +168,14 @@ export const usePrintCancellationLoader = ({
 				resetJourneyState();
 				hydratedSubscriptionId.current =
 					activeProducts[0].subscription.subscriptionId;
-				await resolveCancellationTiming(
+				const timingLoaded = await resolveCancellationTiming(
 					activeProducts[0].subscription.subscriptionId,
 				);
-				setState({ isLoading: false, shouldRedirect: false });
+				setState({
+					isLoading: false,
+					shouldRedirect: false,
+					hasTimingError: !timingLoaded,
+				});
 			} catch (error) {
 				Sentry.captureException(
 					error instanceof Error
@@ -164,7 +189,11 @@ export const usePrintCancellationLoader = ({
 						},
 					},
 				);
-				setState({ isLoading: false, shouldRedirect: true });
+				setState({
+					isLoading: false,
+					shouldRedirect: true,
+					hasTimingError: false,
+				});
 			}
 		};
 
@@ -179,15 +208,47 @@ export const usePrintCancellationLoader = ({
 		setMdapiResponse,
 		setProductDetail,
 		storeHasProduct,
+		loadTiming,
 	]);
 
 	if (state.shouldRedirect) {
-		return { isLoading: false, shouldRedirect: true };
+		return {
+			isLoading: false,
+			shouldRedirect: true,
+			hasTimingError: false,
+			retryTiming: () => undefined,
+		};
+	}
+
+	const subscriptionId = productDetail?.subscription.subscriptionId;
+	const retryTiming = () => {
+		if (subscriptionId) {
+			loadTiming(subscriptionId);
+		}
+	};
+
+	if (state.hasTimingError) {
+		return {
+			isLoading: false,
+			shouldRedirect: false,
+			hasTimingError: true,
+			retryTiming,
+		};
 	}
 
 	if (!cancellationMode) {
-		return { isLoading: true, shouldRedirect: false };
+		return {
+			isLoading: true,
+			shouldRedirect: false,
+			hasTimingError: false,
+			retryTiming,
+		};
 	}
 
-	return { isLoading: false, shouldRedirect: false };
+	return {
+		isLoading: false,
+		shouldRedirect: false,
+		hasTimingError: false,
+		retryTiming,
+	};
 };

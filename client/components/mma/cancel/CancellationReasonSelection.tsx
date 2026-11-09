@@ -376,7 +376,7 @@ export const CancellationReasonSelection = () => {
 	const { productDetail, productType } = useCancellationContext();
 
 	if (isPrintCancellationJourneyEnabled(productType)) {
-		return <PrintReasonPicker productType={productType} />;
+		return <PrintReasonPicker />;
 	}
 
 	if (productType.cancellation.startPageOfferEffectiveDateOptions) {

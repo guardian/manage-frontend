@@ -69,6 +69,8 @@ describe('usePrintCancellationLoader', () => {
 		expect(result.current).toEqual({
 			isLoading: false,
 			shouldRedirect: false,
+			hasTimingError: false,
+			retryTiming: expect.any(Function),
 		});
 		const state = usePrintCancellationStore.getState();
 		expect(state.productDetail).toBe(route);
@@ -93,6 +95,40 @@ describe('usePrintCancellationLoader', () => {
 		const state = usePrintCancellationStore.getState();
 		expect(state.cancellationMode).toBe('hard');
 		expect(state.cancellationEffectiveDate).toBe('now');
+	});
+
+	it('does not treat a failed cancellation date as a hard cancellation', async () => {
+		(cancellationDateFetcher as jest.Mock).mockImplementation(
+			() => async () => {
+				throw new Error('cancellation date failed');
+			},
+		);
+		const { result } = renderHook(() =>
+			usePrintCancellationLoader({
+				productType,
+				routerProductDetail: productDetail('A-S0001'),
+			}),
+		);
+
+		await waitFor(() => {
+			expect(result.current.hasTimingError).toBe(true);
+		});
+
+		expect(
+			usePrintCancellationStore.getState().cancellationMode,
+		).toBeNull();
+		expect(result.current.isLoading).toBe(false);
+
+		mockCancellationDate('2026-06-01');
+		act(() => {
+			result.current.retryTiming();
+		});
+
+		await waitForTiming();
+		expect(result.current.hasTimingError).toBe(false);
+		expect(usePrintCancellationStore.getState().cancellationMode).toBe(
+			'soft',
+		);
 	});
 
 	it('does not re-reset journey state on re-render with the same subscription', async () => {

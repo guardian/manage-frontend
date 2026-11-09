@@ -42,26 +42,26 @@ describe('getPrintCancellationCopyFamily', () => {
 		'Newspaper - National Delivery',
 		'Newspaper - National Delivery + Digital',
 		'Newspaper Delivery - Observer',
-		'Newspaper Voucher - Observer',
-		'Newspaper Digital Voucher - Observer',
 	])('maps %s to home delivery copy', (mmaProductKey) => {
 		expect(getPrintCancellationCopyFamily(product(mmaProductKey))).toBe(
 			'homeDelivery',
 		);
 	});
 
-	it.each<ProductTier>(['Newspaper Voucher', 'Newspaper Voucher + Digital'])(
-		'maps %s to voucher copy',
-		(mmaProductKey) => {
-			expect(getPrintCancellationCopyFamily(product(mmaProductKey))).toBe(
-				'voucher',
-			);
-		},
-	);
+	it.each<ProductTier>([
+		'Newspaper Voucher',
+		'Newspaper Voucher + Digital',
+		'Newspaper Voucher - Observer',
+	])('maps %s to voucher copy', (mmaProductKey) => {
+		expect(getPrintCancellationCopyFamily(product(mmaProductKey))).toBe(
+			'voucher',
+		);
+	});
 
 	it.each<ProductTier>([
 		'Newspaper Digital Voucher',
 		'Newspaper Digital Voucher + Digital',
+		'Newspaper Digital Voucher - Observer',
 	])('maps %s to subscription card copy', (mmaProductKey) => {
 		expect(getPrintCancellationCopyFamily(product(mmaProductKey))).toBe(
 			'subscriptionCard',
