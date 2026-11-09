@@ -61,15 +61,23 @@ export const SelectReason: StoryObj<typeof CancellationReasonSelection> = {
 	},
 };
 
+// Guardian Weekly now has its own cancellation journey. Patron has no
+// self-serve flow, so this story stays on the contact page. The contact
+// details match the previous Guardian Weekly snapshot.
+const contactCustomerServiceProduct = {
+	...guardianWeeklyPaidByCard(),
+	mmaProductKey: 'guardianpatron' as const,
+};
+
 export const ContactCustomerService: StoryObj<typeof CancellationContainer> = {
 	render: () => <CancellationJourneyFunnel />,
 
 	parameters: {
 		reactRouter: {
-			state: { productDetail: guardianWeeklyPaidByCard() },
+			state: { productDetail: contactCustomerServiceProduct },
 			container: (
 				<CancellationContainer
-					productType={PRODUCT_TYPES.guardianweekly}
+					productType={PRODUCT_TYPES.guardianpatron}
 				/>
 			),
 		},
