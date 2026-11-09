@@ -1,15 +1,3 @@
-export const initFeatureSwitchUrlParamOverride = () => {
-	const searchParams = new URLSearchParams(window?.location.search);
-	const param = searchParams.get('withFeature');
-	if (param) {
-		for (const [key, value] of Object.entries(featureSwitches)) {
-			if (!value) {
-				featureSwitches[key as FeatureSwitchName] = param === key;
-			}
-		}
-	}
-};
-
 /*
  * you can add feature switches into this object and set the property value
  * to true or false, or use the 'featureSwitchUrlParamOveride' function
@@ -17,6 +5,10 @@ export const initFeatureSwitchUrlParamOverride = () => {
  * present and has a value of the feature switch object key name eg
  *
  * https://manage.theguardian.com/?withFeature=exampleFeature
+ *
+ * The value is remembered for the browser tab. Navigation that drops the
+ * query param does not turn the switch off, and the param is put back on
+ * the URL from one router-level component.
  *
  * if the url param doesn't exist or its value does not match the feature
  * name provided then the function will return false and the feature switch
@@ -40,4 +32,61 @@ export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	supporterplusCancellationOffer: true,
 	contributionCancellationPause: true,
 	maintenanceMode: false,
+};
+
+export const FEATURE_SWITCH_QUERY_PARAM = 'withFeature';
+
+const FEATURE_SWITCH_STORAGE_KEY = 'manage-frontend.withFeature';
+
+const readStoredFeatureSwitchParam = (): string | null => {
+	try {
+		return window.sessionStorage.getItem(FEATURE_SWITCH_STORAGE_KEY);
+	} catch {
+		return null;
+	}
+};
+
+const writeStoredFeatureSwitchParam = (param: string) => {
+	try {
+		window.sessionStorage.setItem(FEATURE_SWITCH_STORAGE_KEY, param);
+	} catch {
+		// sessionStorage is unavailable in some browsers.
+	}
+};
+
+const enableFeatureSwitch = (param: string) => {
+	for (const [key, value] of Object.entries(featureSwitches)) {
+		if (!value) {
+			featureSwitches[key as FeatureSwitchName] = param === key;
+		}
+	}
+};
+
+export const storedFeatureSwitchParam = (): string | null => {
+	if (typeof window === 'undefined') {
+		return null;
+	}
+	return readStoredFeatureSwitchParam();
+};
+
+export const rememberFeatureSwitchParam = (param: string) => {
+	writeStoredFeatureSwitchParam(param);
+	enableFeatureSwitch(param);
+};
+
+export const initFeatureSwitchUrlParamOverride = () => {
+	if (typeof window === 'undefined') {
+		return;
+	}
+	const param = new URLSearchParams(window.location.search).get(
+		FEATURE_SWITCH_QUERY_PARAM,
+	);
+	if (param) {
+		rememberFeatureSwitchParam(param);
+		return;
+	}
+	const stored = readStoredFeatureSwitchParam();
+	if (stored) {
+		enableFeatureSwitch(stored);
+	}
 };

@@ -15,6 +15,7 @@ import { isSignedIn } from '../../utilities/signInStatus';
 import { ErrorBoundary } from '../shared/ErrorBoundary';
 import { GenericErrorScreen } from '../shared/GenericErrorScreen';
 import { Main } from '../shared/Main';
+import { PersistFeatureSwitchQueryParam } from '../shared/PersistFeatureSwitchQueryParam';
 import { HelpCenterContentWrapper } from './HelpCenterContentWrapper';
 import { HelpCentreLoadingContent } from './HelpCentreLoadingContent';
 import type { KnownIssueObj } from './KnownIssues';
@@ -147,6 +148,7 @@ const HelpCentreRouter = () => {
 
 export const HelpCentrePage = (
 	<BrowserRouter>
+		<PersistFeatureSwitchQueryParam />
 		<HelpCentreRouter />
 	</BrowserRouter>
 );
