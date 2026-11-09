@@ -18,12 +18,19 @@ import {
 	InstanceSize,
 	InstanceType,
 	Peer,
+	Port,
+	SecurityGroup,
 	UserData,
 } from 'aws-cdk-lib/aws-ec2';
 import type { CfnListener } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { Protocol, SslPolicy } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnRecordSet } from 'aws-cdk-lib/aws-route53';
+import {
+	ParameterDataType,
+	ParameterTier,
+	StringParameter,
+} from 'aws-cdk-lib/aws-ssm';
 
 interface ManageGuStackProps extends GuStackProps {
 	scaling: GuAsgCapacity;
@@ -31,7 +38,10 @@ interface ManageGuStackProps extends GuStackProps {
 }
 export class ManageFrontend extends GuStack {
 	constructor(scope: App, id: string, props: ManageGuStackProps) {
-		super(scope, id, props);
+		super(scope, id, {
+			...props,
+			env: { ...props.env, region: 'eu-west-1' },
+		});
 
 		const app = 'manage-frontend';
 
@@ -147,6 +157,7 @@ systemctl start manage-frontend
 				InstanceClass.T4G,
 				InstanceSize.SMALL,
 			),
+			instanceMetricGranularity: '5Minute',
 			monitoringConfiguration: {
 				noMonitoring: true,
 			},
@@ -223,6 +234,32 @@ systemctl start manage-frontend
 			},
 		});
 
+		// Retain until Riff-Raff has rotated instances without this group, then remove in a separate deployment.
+		const legacyWazuhSecurityGroup = new SecurityGroup(
+			this,
+			'WazuhSecurityGroup',
+			{
+				vpc: nodeApp.vpc,
+				description:
+					'Allow outbound traffic from wazuh agent to manager',
+				allowAllOutbound: false,
+			},
+		);
+		legacyWazuhSecurityGroup.addEgressRule(
+			Peer.anyIpv4(),
+			Port.tcp(1514),
+			'Wazuh event logging',
+		);
+		legacyWazuhSecurityGroup.addEgressRule(
+			Peer.anyIpv4(),
+			Port.tcp(1515),
+			'Wazuh agent registration',
+		);
+		this.overrideLogicalId(legacyWazuhSecurityGroup, {
+			logicalId: 'WazuhSecurityGroup',
+			reason: 'Retain legacy group during the first stage of the GuCDK Wazuh migration',
+		});
+
 		nodeApp.targetGroup.configureHealthCheck({
 			path: '/_healthcheck',
 			healthyThresholdCount: 5,
@@ -234,6 +271,16 @@ systemctl start manage-frontend
 
 		(nodeApp.listener.node.defaultChild as CfnListener).sslPolicy =
 			SslPolicy.TLS13_RES;
+
+		// This parameter is used by https://github.com/guardian/waf
+		new StringParameter(this, 'AlbSsmParam', {
+			parameterName: `/infosec/waf/services/${this.stage}/manage-frontend-alb-arn`,
+			description: `The ARN of the ALB for manage-frontend-${this.stage}. This parameter is created via CDK.`,
+			simpleName: false,
+			stringValue: nodeApp.loadBalancer.loadBalancerArn,
+			tier: ParameterTier.STANDARD,
+			dataType: ParameterDataType.TEXT,
+		});
 
 		new CfnRecordSet(this, 'AliasRecord', {
 			name: props.domain,
