@@ -31,7 +31,26 @@ DEV only Dependencies
 -   Stripe
 -   Google ReCaptcha
 
-## Basic DEV environment
+## Local development: always use a dev container
+
+**Everyone should use a dev container for all local application development,
+including editing, running the application, and running tests. Do not develop
+directly in a host application checkout.**
+
+The setup for **IntelliJ and VS Code lives on the
+[`devcontainer` branch](https://github.com/guardian/manage-frontend/tree/devcontainer)**.
+
+To set up a dev container, switch to the
+[`devcontainer` branch](https://github.com/guardian/manage-frontend/tree/devcontainer)
+and follow its setup instructions.
+
+Follow that branch's README for host setup and container creation in **IntelliJ
+or VS Code**. The application sources are cloned independently inside the
+container, not mounted from your host checkout.
+
+The instructions below are retained as a legacy native setup reference.
+
+### Legacy native setup reference
 
 NOTE: nginx proxies CODE instances of [`gateway`] for sign-in and [`members-data-api`](https://github.com/guardian/members-data-api) **if they're not running locally**. See sections further down if you need to actually develop either of those services in parallel with `manage-frontend`.
 
@@ -47,6 +66,11 @@ NOTE: nginx proxies CODE instances of [`gateway`] for sign-in and [`members-data
 1. Ensure you have a Node.js version manager installed. We recommend using [`fnm`](https://github.com/Schniz/fnm).
 1. Run `fnm use` (or equivalent)
 1. Run `yarn` to install dependencies
+
+Alternatively, [mise](https://mise.jdx.dev/) can install Node and AWS CLI:
+run `mise trust` and `mise install` from the repository root. Node is selected
+from `.nvmrc`; AWS CLI is pinned in `mise.toml`. This does not install Yarn:
+keep the existing Yarn setup above.
 
 #### Running locally (each day you need use it)
 
