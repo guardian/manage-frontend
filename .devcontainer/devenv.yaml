@@ -52,6 +52,19 @@ containerEnv:
   - name: AWS_REGION
     value: eu-west-1
 
+onCreateCommand:
+  - workingDirectory: "."
+    logLine: "trust_host_certificate"
+    cmd: |-
+      bash -euo pipefail -c '
+      ca=/usr/local/share/ca-certificates/manage-frontend-mkcert.crt
+      if [[ ! -f "$ca" ]] || grep -q "PRIVATE KEY" "$ca"; then
+        printf "Expected only the public mkcert rootCA.pem certificate\n" >&2
+        exit 1
+      fi
+      openssl x509 -in "$ca" -noout
+      sudo update-ca-certificates
+      '
 postCreateCommand:
   - workingDirectory: "."
     logLine: "install_application_dependencies"

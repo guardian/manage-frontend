@@ -6,7 +6,9 @@ For creating and using the container, follow the [setup guide](../README.md).
 
 1. Create a working branch from `devcontainer`, not `main`.
 2. Edit `devenv.yaml` for modules, ports, environment variables, and setup commands.
-   Edit `escapehatch.json` for workspace mounts and certificate trust setup.
+   Edit `escapehatch.json` for workspace mounts and the public certificate mount.
+   Keep VS Code-only cloning and launch logic in `start-vscode.sh` at the
+   repository root; IntelliJ handles its own clone.
 3. From the launcher repository root, regenerate and check:
 
    ```bash
@@ -14,7 +16,8 @@ For creating and using the container, follow the [setup guide](../README.md).
    mise exec -- devenv check
    ```
 
-4. Test with the IDE creation method described in the setup guide. Recreate the
+4. Test both IDE creation methods described in the setup guide after shared
+   configuration changes. Recreate the
    container when changing ports, mounts, or environment; preserve the source
    volume and any unpushed work.
 5. Commit the source configuration and generated `shared/devcontainer.json`.

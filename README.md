@@ -34,30 +34,62 @@ You also need host Node.js and the Dev Containers CLI
 (`npm install -g @devcontainers/cli`). From this launcher checkout:
 
 ```bash
-bash start-vscode.sh <optional branch name>
+bash start-vscode.sh
+# Or select an application branch for a new checkout:
+bash start-vscode.sh jd/my-application-branch
 ```
 
-In VS Code, run **Dev Containers: Attach to Running Container…**, select
-`manage-frontend-devcontainer`, and open `/home/vscode/project`.
-Do not use the clone wizard: it looks for configuration on the application
-branch rather than in this launcher checkout.
+The script clones the application into the source volume if it is empty,
+before starting the devcontainer.
+Existing checkouts keep their branch and uncommitted work.
+
+1. Open a new VS Code window (**File → New Window**), without opening the
+   launcher folder.
+2. Press **Shift–Command–P** and choose
+   **Dev Containers: Attach to Running Container…**.
+3. Select `manage-frontend-devcontainer`. The first connection installs VS Code
+   tooling inside the container and can take a few minutes.
+4. Once attached, choose **File → Open Folder…** and open `/home/vscode/project`.
+
+Do not use the clone wizard or the launcher's **Open in Container** entry in
+Remote Explorer; neither uses this attachment workflow.
 
 You can alternatively connect to an IntelliJ created container - VSCode
 will add the relevant programs to the container automatically.
 
+## Opening the existing container
+
+Use the recent projects menu in either IntelliJ or VSCode to reopen the project.
+The container will automatically be started if necessary.
+
 ## Running manage-frontend in the container
 
-1. Add fresh **read-only Janus credentials** inside the container for the
-   `membership` profile, including the session token.
+1. Add fresh "Local Development" membership Janus credentials inside the container.
 2. Run `yarn watch` in the container's application checkout.
 3. Open **https://manage.thegulocal.com/** in your host browser.
 
 ## Troubleshooting
 
+### VS Code reports no devcontainer configuration or asks to add one
+
+You have opened the launcher or application folder through the wrong workflow.
+Open a new window and use **Shift–Command–P → Dev Containers: Attach to Running
+Container…**, then open `/home/vscode/project` inside it. Do not select
+**Reopen in Container** or Remote Explorer's **Open in Container** launcher entry.
+
+### The container is missing from VS Code's attach list
+
+Ensure Docker Desktop is running. If the container exists but is stopped, run
+`docker start manage-frontend-devcontainer` on the host, then try attaching again.
+If it has been deleted, recreate it with `bash start-vscode.sh`.
+An existing source volume retains its checkout and unpushed work; do not delete
+it to resolve an attachment problem.
+
 ### Setup says complete, but tools or dependencies are missing
 
 The pinned devenv version can print `Setup complete` after a command failed.
-Inspect `/var/log/post-create.log` for `Errored!` and the preceding error. After
+Inspect `/var/log/on-create.log` (certificate trust) and
+`/var/log/post-create.log` (tools and dependencies) for `Errored!` and the preceding error. After
 resolving it, retry inside the container:
 
 ```bash
@@ -139,5 +171,3 @@ Edit the YAML or escape hatch, then regenerate:
 mise exec -- devenv generate
 mise exec -- devenv check
 ```
-
-Commit `shared/devcontainer.json`; keep `user/` ignored.

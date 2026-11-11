@@ -14,7 +14,7 @@ fi
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-for tool in docker git mise node devcontainer; do
+for tool in docker mise node devcontainer; do
 	if ! command -v "$tool" >/dev/null; then
 		printf 'Missing command: %s\n' "$tool" >&2
 		if [[ "$tool" == devcontainer ]]; then
@@ -25,12 +25,10 @@ for tool in docker git mise node devcontainer; do
 done
 
 branch="${1:-main}"
-git check-ref-format --branch "$branch" >/dev/null
 docker info >/dev/null
 mise exec -- devenv generate
 
 config="$PWD/.devcontainer/user/devcontainer.json"
-volume=manage-frontend-devcontainer-vscode-sources
 container=manage-frontend-devcontainer
 
 if docker container inspect "$container" >/dev/null 2>&1; then
@@ -41,33 +39,45 @@ if docker container inspect "$container" >/dev/null 2>&1; then
 	fi
 fi
 
-image=$(node -p 'require("./.devcontainer/user/devcontainer.json").image')
+image=$(node -p 'require(process.argv[1]).image' "$config")
+workspace_mount=$(node -p 'require(process.argv[1]).workspaceMount' "$config")
+workspace=$(node -p 'require(process.argv[1]).workspaceFolder' "$config")
 
-# The clone runs inside Docker. No host files, credentials, or Git objects are mounted.
-docker run --rm --user root \
-	--mount "source=$volume,target=/workspaces/manage-frontend,type=volume" \
-	--entrypoint bash "$image" -euo pipefail -c '
-sudo chown vscode:vscode /workspaces/manage-frontend
-exec sudo -u vscode bash -euo pipefail -c '\''
-cd /workspaces/manage-frontend
-if [[ -d .git ]]; then
-	test ! -L .git
-	test "$(git rev-parse --show-toplevel)" = "$PWD"
-	test "$(git remote get-url origin)" = https://github.com/guardian/manage-frontend.git
-	test ! -e .git/objects/info/alternates
-	printf "Reusing existing checkout on branch %s; requested branch applies only to a new clone.\n" "$(git branch --show-current)"
+# Clone inside the source volume without mounting host files or credentials.
+docker run --rm -i --user root \
+	--mount "$workspace_mount" --workdir "$workspace" \
+	--env "MANAGE_FRONTEND_BRANCH=$branch" \
+	--entrypoint bash "$image" -euo pipefail <<'BASH'
+chown vscode:vscode "$PWD"
+exec sudo -u vscode --preserve-env=MANAGE_FRONTEND_BRANCH bash -euo pipefail <<'CLONE'
+git check-ref-format --branch "$MANAGE_FRONTEND_BRANCH" >/dev/null
+if [[ -e .git || -L .git ]]; then
+	if [[ ! -d .git || -L .git ]] ||
+	   [[ "$(git rev-parse --show-toplevel)" != "$PWD" ]] ||
+	   [[ -e .git/objects/info/alternates ]]; then
+		printf 'Expected an independent manage-frontend checkout; refusing to change this workspace.\n' >&2
+		exit 1
+	fi
+	case "$(git remote get-url origin)" in
+		https://github.com/guardian/manage-frontend.git|git@github.com:guardian/manage-frontend.git)
+			;;
+		*)
+			printf 'Expected the guardian/manage-frontend origin over HTTPS or SSH.\n' >&2
+			exit 1
+			;;
+	esac
+	printf 'Reusing existing checkout on branch %s; requested branch applies only to a new clone.\n' "$(git branch --show-current)"
 else
-	git clone --branch "$1" -- https://github.com/guardian/manage-frontend.git .
+	git clone --branch "$MANAGE_FRONTEND_BRANCH" -- https://github.com/guardian/manage-frontend.git .
 fi
-'\'' clone "$1"
-' clone "$branch"
+CLONE
+BASH
 
-devcontainer up --workspace-folder "$PWD" --config "$config" \
-	--mount-workspace-git-root false
+devcontainer up --workspace-folder "$PWD" --config "$config"
 
 docker exec --user vscode "$container" \
 	test -f /home/vscode/.manage-frontend-setup-complete
 
 printf '\nIn VS Code, run Dev Containers: Attach to Running Container...\n'
 printf 'Select %s, then open /home/vscode/project.\n' "$container"
-printf 'Source volume: %s. Do not delete it unless you intend to delete the checkout and all unpushed work.\n' "$volume"
+printf 'Do not delete the source volume unless you intend to delete the checkout and all unpushed work.\n'
