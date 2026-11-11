@@ -36,7 +36,10 @@ interface ManageGuStackProps extends GuStackProps {
 }
 export class ManageFrontend extends GuStack {
 	constructor(scope: App, id: string, props: ManageGuStackProps) {
-		super(scope, id, props);
+		super(scope, id, {
+			...props,
+			env: { ...props.env, region: 'eu-west-1' },
+		});
 
 		const app = 'manage-frontend';
 
@@ -152,6 +155,7 @@ systemctl start manage-frontend
 				InstanceClass.T4G,
 				InstanceSize.SMALL,
 			),
+			instanceMetricGranularity: '5Minute',
 			monitoringConfiguration: {
 				noMonitoring: true,
 			},
