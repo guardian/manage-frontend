@@ -1,0 +1,74 @@
+# Devenv project configuration
+# Edit this file to configure your project's devcontainer
+# and then run `devenv generate` to create the devcontainer.json files
+
+name: "manage-frontend"
+
+# Modules: Built-in functionality
+# - mise: Install and configure mise for dev tools management (https://mise.jdx.dev/)
+# - docker-in-docker: Enable running Docker containers within the devcontainer
+# - scala: Add IDE plugins and jar caching for Scala development
+# - node: Add IDE plugins for Node.js development
+# - github-copilot: Sets up GitHub Copilot for IDE and CLI use (requires the mise module)
+# - agentsy: Install Agentsy for managing agentic AI tooling (experimental)
+# To disable, comment out or remove items from this list
+modules:
+  - mise
+  # - docker-in-docker  # (disabled by default)
+  # - scala  # (disabled by default)
+  - node
+  - github-copilot
+  # - agentsy  # (experimental)
+
+# Optional: Ports to forward
+forwardPorts:
+  - 9233 # Express
+  - 9234 # Webpack
+  - 6006 # Storybook
+#   - 8080  # same port on host and container
+#   - "8000:9000"  # hostPort:containerPort
+
+# The escape hatch mounts only the public CA certificate read-only.
+# This generator version drops readonly from YAML mount objects.
+
+# Optional: IDE plugins - shared project plugins like language support
+# plugins:
+#   vscode: []
+#   intellij: []
+
+runArgs:
+  - "--name=manage-frontend-devcontainer"
+  - "--add-host=profile.thegulocal.com:host-gateway"
+  - "--add-host=members-data-api.thegulocal.com:host-gateway"
+
+containerEnv:
+  # The mise module updates plugins before its explicit trust step.
+  - name: MISE_TRUSTED_CONFIG_PATHS
+    value: "${containerWorkspaceFolder}"
+  - name: NODE_EXTRA_CA_CERTS
+    value: "/etc/ssl/certs/ca-certificates.crt"
+  - name: AWS_PROFILE
+    value: membership
+  - name: AWS_REGION
+    value: eu-west-1
+
+onCreateCommand:
+  - workingDirectory: "."
+    logLine: "trust_host_certificate"
+    cmd: |-
+      bash -euo pipefail -c '
+      ca=/usr/local/share/ca-certificates/manage-frontend-mkcert.crt
+      if [[ ! -f "$ca" ]] || grep -q "PRIVATE KEY" "$ca"; then
+        printf "Expected only the public mkcert rootCA.pem certificate\n" >&2
+        exit 1
+      fi
+      openssl x509 -in "$ca" -noout
+      sudo update-ca-certificates
+      '
+postCreateCommand:
+  - workingDirectory: "."
+    logLine: "install_application_dependencies"
+    cmd: "bash script/setup-devcontainer.sh"
+# postStartCommand:
+#   - cmd: "echo 'Container started successfully'"
+#     workingDirectory: "."
