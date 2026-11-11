@@ -143,12 +143,6 @@ running. Certificate verification errors mean the mounted CA may not match the
 nginx certificates; check its path and rebuild after correcting it or rotating
 the CA. Do not disable TLS verification.
 
-### AWS credentials have expired
-
-Replace the in-container Janus credentials with fresh dedicated read-only
-credentials, including the session token. Read-only permissions may prevent
-features that write data; do not substitute more privileged host credentials.
-
 ### Social login redirects to CODE
 
 Use username/password login instead. Social login through the CODE proxy has
