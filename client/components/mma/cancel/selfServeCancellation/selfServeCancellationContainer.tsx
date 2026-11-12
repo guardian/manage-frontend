@@ -4,8 +4,8 @@ import { Button } from '@guardian/source/react-components';
 import { Navigate, Outlet } from 'react-router-dom';
 import type { ProductDetail } from '../../../../../shared/productResponse';
 import type { ProductType } from '../../../../../shared/productTypes';
-import { usePrintCancellationStore } from '../../../../stores/PrintCancellationStore';
-import { usePrintCancellationLoader } from '../../../../utilities/hooks/usePrintCancellationLoader';
+import { useSelfServeCancellationStore } from '../../../../stores/SelfServeCancellationStore';
+import { useSelfServeCancellationLoader } from '../../../../utilities/hooks/useSelfServeCancellationLoader';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
 import { DefaultLoadingView } from '../../shared/asyncComponents/DefaultLoadingView';
@@ -13,23 +13,23 @@ import {
 	CancellationContext,
 	type CancellationContextInterface,
 } from '../CancellationContainer';
-import { getProgressCopy } from './printCancellationCopy';
+import { getProgressCopy } from './selfServeCancellationCopy';
 
-interface PrintLoadedCancellationContainerProps {
+interface SelfServeCancellationContainerProps {
 	productType: ProductType;
 	routerProductDetail?: ProductDetail;
 }
 
-export const PrintLoadedCancellationContainer = ({
+export const SelfServeCancellationContainer = ({
 	productType,
 	routerProductDetail,
-}: PrintLoadedCancellationContainerProps) => {
+}: SelfServeCancellationContainerProps) => {
 	const { isLoading, shouldRedirect, hasTimingError, retryTiming } =
-		usePrintCancellationLoader({
+		useSelfServeCancellationLoader({
 			productType,
 			routerProductDetail,
 		});
-	const productDetail = usePrintCancellationStore(
+	const productDetail = useSelfServeCancellationStore(
 		(state) => state.productDetail,
 	);
 	const resolvedProductDetail = productDetail ?? routerProductDetail;
@@ -41,7 +41,7 @@ export const PrintLoadedCancellationContainer = ({
 	if (hasTimingError) {
 		return (
 			<>
-				<GenericErrorScreen loggingMessage="Failed to load the print cancellation date" />
+				<GenericErrorScreen loggingMessage="Failed to load the cancellation date" />
 				<WithStandardTopMargin>
 					<Button
 						cssOverrides={css`

@@ -4,8 +4,8 @@ import type { ProductDetail } from '@/shared/productResponse';
 import type { ProductType } from '@/shared/productTypes';
 import { cancellationDateFetcher } from '../../components/mma/cancel/cancellationDateResponse';
 import { useAccountStore } from '../../stores/AccountStore';
-import { usePrintCancellationStore } from '../../stores/PrintCancellationStore';
-import { usePrintCancellationLoader } from '../../utilities/hooks/usePrintCancellationLoader';
+import { useSelfServeCancellationStore } from '../../stores/SelfServeCancellationStore';
+import { useSelfServeCancellationLoader } from '../../utilities/hooks/useSelfServeCancellationLoader';
 
 jest.mock('@sentry/browser', () => ({
 	captureException: jest.fn(),
@@ -37,28 +37,29 @@ const productDetail = (subscriptionId: string) =>
 	} as unknown as ProductDetail);
 
 beforeEach(() => {
-	usePrintCancellationStore.getState().clearAll();
+	useSelfServeCancellationStore.getState().clearAll();
 	useAccountStore.getState().clearAccount();
 	mockCancellationDate('2026-06-01');
 });
 
 const waitForTiming = async () => {
 	await waitFor(() => {
-		expect(usePrintCancellationStore.getState().cancellationMode).not.toBe(
-			null,
-		);
+		expect(
+			useSelfServeCancellationStore.getState().cancellationMode,
+		).not.toBe(null);
 	});
 };
 
-describe('usePrintCancellationLoader', () => {
-	it('hydrates the print store from routerProductDetail and resets the journey on first entry', async () => {
-		const { setSelectedReasonId } = usePrintCancellationStore.getState();
+describe('useSelfServeCancellationLoader', () => {
+	it('hydrates the store from routerProductDetail and resets the journey on first entry', async () => {
+		const { setSelectedReasonId } =
+			useSelfServeCancellationStore.getState();
 		// Pretend a previous journey left state behind.
 		setSelectedReasonId('mma_editorial');
 
 		const route = productDetail('A-S0001');
 		const { result } = renderHook(() =>
-			usePrintCancellationLoader({
+			useSelfServeCancellationLoader({
 				productType,
 				routerProductDetail: route,
 			}),
@@ -72,7 +73,7 @@ describe('usePrintCancellationLoader', () => {
 			hasTimingError: false,
 			retryTiming: expect.any(Function),
 		});
-		const state = usePrintCancellationStore.getState();
+		const state = useSelfServeCancellationStore.getState();
 		expect(state.productDetail).toBe(route);
 		// Stale journey data was cleared on entry.
 		expect(state.selectedReasonId).toBeUndefined();
@@ -84,7 +85,7 @@ describe('usePrintCancellationLoader', () => {
 		mockCancellationDate('now');
 		const route = productDetail('A-S0001');
 		renderHook(() =>
-			usePrintCancellationLoader({
+			useSelfServeCancellationLoader({
 				productType,
 				routerProductDetail: route,
 			}),
@@ -92,7 +93,7 @@ describe('usePrintCancellationLoader', () => {
 
 		await waitForTiming();
 
-		const state = usePrintCancellationStore.getState();
+		const state = useSelfServeCancellationStore.getState();
 		expect(state.cancellationMode).toBe('hard');
 		expect(state.cancellationEffectiveDate).toBe('now');
 	});
@@ -104,7 +105,7 @@ describe('usePrintCancellationLoader', () => {
 			},
 		);
 		const { result } = renderHook(() =>
-			usePrintCancellationLoader({
+			useSelfServeCancellationLoader({
 				productType,
 				routerProductDetail: productDetail('A-S0001'),
 			}),
@@ -115,7 +116,7 @@ describe('usePrintCancellationLoader', () => {
 		});
 
 		expect(
-			usePrintCancellationStore.getState().cancellationMode,
+			useSelfServeCancellationStore.getState().cancellationMode,
 		).toBeNull();
 		expect(result.current.isLoading).toBe(false);
 
@@ -126,7 +127,7 @@ describe('usePrintCancellationLoader', () => {
 
 		await waitForTiming();
 		expect(result.current.hasTimingError).toBe(false);
-		expect(usePrintCancellationStore.getState().cancellationMode).toBe(
+		expect(useSelfServeCancellationStore.getState().cancellationMode).toBe(
 			'soft',
 		);
 	});
@@ -135,7 +136,7 @@ describe('usePrintCancellationLoader', () => {
 		const route = productDetail('A-S0001');
 		const { rerender } = renderHook(
 			(props: { routerProductDetail: ProductDetail }) =>
-				usePrintCancellationLoader({
+				useSelfServeCancellationLoader({
 					productType,
 					routerProductDetail: props.routerProductDetail,
 				}),
@@ -148,14 +149,14 @@ describe('usePrintCancellationLoader', () => {
 
 		// Simulate progress through the journey after initial hydration.
 		act(() => {
-			usePrintCancellationStore
+			useSelfServeCancellationStore
 				.getState()
 				.setSelectedReasonId('mma_editorial');
 		});
 
 		rerender({ routerProductDetail: route });
 
-		expect(usePrintCancellationStore.getState().selectedReasonId).toBe(
+		expect(useSelfServeCancellationStore.getState().selectedReasonId).toBe(
 			'mma_editorial',
 		);
 	});
@@ -166,7 +167,7 @@ describe('usePrintCancellationLoader', () => {
 
 		const { rerender } = renderHook(
 			(props: { routerProductDetail: ProductDetail }) =>
-				usePrintCancellationLoader({
+				useSelfServeCancellationLoader({
 					productType,
 					routerProductDetail: props.routerProductDetail,
 				}),
@@ -178,7 +179,7 @@ describe('usePrintCancellationLoader', () => {
 		await waitForTiming();
 
 		act(() => {
-			usePrintCancellationStore
+			useSelfServeCancellationStore
 				.getState()
 				.setSelectedReasonId('mma_editorial');
 		});
@@ -187,11 +188,12 @@ describe('usePrintCancellationLoader', () => {
 		rerender({ routerProductDetail: next });
 		await waitFor(() => {
 			expect(
-				usePrintCancellationStore.getState().cancellationEffectiveDate,
+				useSelfServeCancellationStore.getState()
+					.cancellationEffectiveDate,
 			).toBe('2026-07-01');
 		});
 
-		const state = usePrintCancellationStore.getState();
+		const state = useSelfServeCancellationStore.getState();
 		expect(state.productDetail).toBe(next);
 		expect(state.selectedReasonId).toBeUndefined();
 	});

@@ -11,7 +11,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import {
 	cancelsWithoutSelfServeFlag,
 	isCancellationEntryOpen,
-} from '@/client/components/mma/cancel/cancellationPrint/printCancellationFeature';
+} from '@/client/components/mma/cancel/selfServeCancellation/selfServeCancellationFeature';
 import type { BillingFrequencySwitchPreview } from '@/shared/billingFrequencySwitchTypes';
 import { featureSwitches } from '@/shared/featureSwitches';
 import { cancellationFormatDate } from '../../../../shared/dates';
@@ -403,7 +403,10 @@ interface CancellationCTAProps {
 const CancellationCTA = (props: CancellationCTAProps) => {
 	const shouldContactUsToCancel =
 		(!props.productDetail.selfServiceCancellation.isAllowed &&
-			!cancelsWithoutSelfServeFlag(props.specificProductType)) ||
+			!cancelsWithoutSelfServeFlag(
+				props.specificProductType,
+				props.productDetail,
+			)) ||
 		!props.specificProductType.cancellation ||
 		!isCancellationEntryOpen(props.specificProductType);
 	return (

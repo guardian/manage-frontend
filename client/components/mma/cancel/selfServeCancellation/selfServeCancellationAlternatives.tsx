@@ -20,10 +20,10 @@ import {
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { ProductTypeWithCancellationFlowMandatoryReasons } from '../../../../../shared/productTypes';
-import { usePrintCancellationStore } from '../../../../stores/PrintCancellationStore';
+import { useSelfServeCancellationStore } from '../../../../stores/SelfServeCancellationStore';
 import { ProgressStepper } from '../../shared/ProgressStepper';
 import { getUpdateCasePromise } from '../caseUpdate';
-import { getAlternativesCopy } from './printCancellationCopy';
+import { getAlternativesCopy } from './selfServeCancellationCopy';
 
 const getPatchUpdateCaseFunc =
 	(isTestUser: boolean, caseId: string, feedback: string) => async () =>
@@ -32,7 +32,7 @@ const getPatchUpdateCaseFunc =
 			Subject: 'Online Cancellation Query',
 		});
 
-const printPauseBannerCss = css`
+const pauseBannerCss = css`
 	background-color: ${palette.neutral[97]};
 	display: flex;
 	flex-direction: column-reverse;
@@ -45,13 +45,13 @@ const printPauseBannerCss = css`
 	}
 `;
 
-const printPauseBannerContentCss = css`
+const pauseBannerContentCss = css`
 	flex: 1;
 	padding: ${space[3]}px;
 	padding-bottom: ${space[6]}px;
 `;
 
-const printPauseBannerHeadingCss = css`
+const pauseBannerHeadingCss = css`
 	${textSansBold20};
 	margin: 0 0 ${space[1]}px;
 
@@ -60,7 +60,7 @@ const printPauseBannerHeadingCss = css`
 	}
 `;
 
-const printPauseBannerBodyCss = css`
+const pauseBannerBodyCss = css`
 	${textSans15};
 	max-width: 54ch;
 	margin: 0 0 ${space[4]}px;
@@ -71,7 +71,7 @@ const printPauseBannerBodyCss = css`
 	}
 `;
 
-const printPauseBannerGraphicCss = css`
+const pauseBannerGraphicCss = css`
 	display: flex;
 	align-items: flex-end;
 	justify-content: center;
@@ -94,7 +94,7 @@ const printPauseBannerGraphicCss = css`
 	}
 `;
 
-interface PrintCancellationAlternativesProps {
+interface SelfServeCancellationAlternativesProps {
 	productType: ProductTypeWithCancellationFlowMandatoryReasons;
 	isTestUser: boolean;
 }
@@ -197,21 +197,21 @@ const tabletAndUpPreviousButtonCss = css`
 	}
 `;
 
-export const PrintCancellationAlternatives = ({
+export const SelfServeCancellationAlternatives = ({
 	productType,
 	isTestUser,
-}: PrintCancellationAlternativesProps) => {
+}: SelfServeCancellationAlternativesProps) => {
 	const navigate = useNavigate();
 	const [isSubmittingFeedback, setIsSubmittingFeedback] =
 		useState<boolean>(false);
-	const productDetail = usePrintCancellationStore(
+	const productDetail = useSelfServeCancellationStore(
 		(state) => state.productDetail,
 	);
 	const copy = getAlternativesCopy(productDetail);
-	const cancellationFeedback = usePrintCancellationStore(
+	const cancellationFeedback = useSelfServeCancellationStore(
 		(state) => state.cancellationFeedback,
 	);
-	const caseId = usePrintCancellationStore((state) => state.caseId);
+	const caseId = useSelfServeCancellationStore((state) => state.caseId);
 	const pauseBannerImageSrc: { mobile: string; desktop: string } = {
 		mobile: 'https://i.guim.co.uk/img/media/203dbadbd6e0fcd4eed01370f94bf3a67d747ebd/0_0_204_162/204.png?width=204&quality=100&s=e69f374f6154453c7442d39b22efcb56',
 		desktop:
@@ -234,12 +234,10 @@ export const PrintCancellationAlternatives = ({
 				additionalCSS={stepperCss}
 			/>
 			<h2 css={pauseTitleCss}>{copy.pauseTitle}</h2>
-			<section css={printPauseBannerCss}>
-				<div css={printPauseBannerContentCss}>
-					<h3 css={printPauseBannerHeadingCss}>
-						{copy.pauseHeading}
-					</h3>
-					<p css={printPauseBannerBodyCss}>{copy.pauseBody}</p>
+			<section css={pauseBannerCss}>
+				<div css={pauseBannerContentCss}>
+					<h3 css={pauseBannerHeadingCss}>{copy.pauseHeading}</h3>
+					<p css={pauseBannerBodyCss}>{copy.pauseBody}</p>
 					<Button
 						priority="secondary"
 						onClick={() =>
@@ -250,7 +248,7 @@ export const PrintCancellationAlternatives = ({
 						{copy.pauseCta}
 					</Button>
 				</div>
-				<picture css={printPauseBannerGraphicCss}>
+				<picture css={pauseBannerGraphicCss}>
 					<source
 						srcSet={pauseBannerImageSrc.desktop}
 						media="(min-width: 740px)"

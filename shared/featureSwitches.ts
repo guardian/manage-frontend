@@ -31,7 +31,7 @@ type FeatureSwitchName =
 	| 'supporterplusCancellationOffer'
 	| 'maintenanceMode'
 	| 'contributionCancellationPause'
-	| 'printProductCancellation';
+	| 'selfServeCancellation';
 
 export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	exampleFeature: false,
@@ -41,5 +41,5 @@ export const featureSwitches: Record<FeatureSwitchName, boolean> = {
 	supporterplusCancellationOffer: true,
 	contributionCancellationPause: true,
 	maintenanceMode: false,
-	printProductCancellation: false,
+	selfServeCancellation: false,
 };

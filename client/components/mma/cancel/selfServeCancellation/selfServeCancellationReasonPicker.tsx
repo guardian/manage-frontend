@@ -24,7 +24,7 @@ import type { ChangeEvent, FormEvent } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccountStore } from '../../../../stores/AccountStore';
-import { usePrintCancellationStore } from '../../../../stores/PrintCancellationStore';
+import { useSelfServeCancellationStore } from '../../../../stores/SelfServeCancellationStore';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
 import { Card } from '../../shared/Card';
 import { ProgressStepper } from '../../shared/ProgressStepper';
@@ -39,7 +39,7 @@ import {
 	reasonIdOrDefault,
 } from '../cancellationReason';
 import { CANCELLATION_REASONS } from '../cancellationReasonsCatalogue';
-import { getReasonPickerCopy } from './printCancellationCopy';
+import { getReasonPickerCopy } from './selfServeCancellationCopy';
 
 const mobileOnlyPreviousButtonCss = css`
 	margin-top: ${space[5]}px;
@@ -178,19 +178,19 @@ const tabletAndUpPreviousButtonCss = css`
 	}
 `;
 
-export const PrintReasonPicker = () => {
+export const SelfServeCancellationReasonPicker = () => {
 	const cancellationContext = useCancellationContext();
 	const productDetail = cancellationContext.productDetail;
-	const storedSelectedReasonId = usePrintCancellationStore(
+	const storedSelectedReasonId = useSelfServeCancellationStore(
 		(state) => state.selectedReasonId,
 	);
-	const storedFeedback = usePrintCancellationStore(
+	const storedFeedback = useSelfServeCancellationStore(
 		(state) => state.cancellationFeedback,
 	);
-	const setStoredSelectedReasonId = usePrintCancellationStore(
+	const setStoredSelectedReasonId = useSelfServeCancellationStore(
 		(state) => state.setSelectedReasonId,
 	);
-	const setStoredCancellationFeedback = usePrintCancellationStore(
+	const setStoredCancellationFeedback = useSelfServeCancellationStore(
 		(state) => state.setCancellationFeedback,
 	);
 	const { getUser } = useAccountStore();
@@ -291,14 +291,14 @@ export const PrintReasonPicker = () => {
 					</Card>
 				</div>
 
-				<h3 id="print-feedback-label" css={feedbackTitleCss}>
+				<h3 id="feedback-label" css={feedbackTitleCss}>
 					{copy.feedbackPrompt}
 				</h3>
 				<textarea
 					rows={5}
 					maxLength={characterLimit}
 					value={feedback}
-					aria-labelledby="print-feedback-label"
+					aria-labelledby="feedback-label"
 					css={feedbackTextareaCss}
 					onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
 						setFeedback(event.target.value);

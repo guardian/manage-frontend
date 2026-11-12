@@ -1,7 +1,7 @@
 import type { Meta } from '@storybook/react';
 import { ReactRouterDecorator } from '@/.storybook/ReactRouterDecorator';
 import { CancellationContainer } from '@/client/components/mma/cancel/CancellationContainer';
-import { newspaperDigitalVoucherPaidByPaypal } from '@/client/fixtures/productBuilder/testProducts';
+import { voucherPaidByCard } from '@/client/fixtures/productBuilder/testProducts';
 import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
 	confirmedStory,
@@ -9,18 +9,15 @@ import {
 	reasonsStory,
 	reviewStory,
 	withReader,
-} from './printCancellationStory';
+} from './selfServeCancellationStory';
 
 const product = {
-	productType: PRODUCT_TYPES.digitalvoucher,
-	productDetail: withReader(
-		newspaperDigitalVoucherPaidByPaypal(),
-		'United Kingdom',
-	),
+	productType: PRODUCT_TYPES.voucher,
+	productDetail: withReader(voucherPaidByCard(), 'United Kingdom'),
 };
 
 export default {
-	title: 'Pages/Cancellation/Print/Subscription card',
+	title: 'Pages/Cancellation/Voucher',
 	component: CancellationContainer,
 	decorators: [ReactRouterDecorator],
 	parameters: {

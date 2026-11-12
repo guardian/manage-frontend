@@ -3,13 +3,13 @@ import { PRODUCT_TYPES } from '@/shared/productTypes';
 import {
 	getAlternativesCopy,
 	getConfirmCopy,
-	getPrintCancellationCopyFamily,
 	getProgressCopy,
 	getReasonPickerCopy,
+	getSelfServeCancellationCopyFamily,
 	getSuccessCopy,
 	reviewVariantFor,
-} from '../printCancellationCopy';
-import { cancellationModeFromEffectiveDate } from '../printCancellationTiming';
+} from '../selfServeCancellationCopy';
+import { cancellationModeFromEffectiveDate } from '../selfServeCancellationTiming';
 
 const product = (mmaProductKey: ProductTier, country?: string) =>
 	({
@@ -35,7 +35,7 @@ describe('cancellationModeFromEffectiveDate', () => {
 	});
 });
 
-describe('getPrintCancellationCopyFamily', () => {
+describe('getSelfServeCancellationCopyFamily', () => {
 	it.each<ProductTier>([
 		'Newspaper Delivery',
 		'Newspaper Delivery + Digital',
@@ -43,7 +43,7 @@ describe('getPrintCancellationCopyFamily', () => {
 		'Newspaper - National Delivery + Digital',
 		'Newspaper Delivery - Observer',
 	])('maps %s to home delivery copy', (mmaProductKey) => {
-		expect(getPrintCancellationCopyFamily(product(mmaProductKey))).toBe(
+		expect(getSelfServeCancellationCopyFamily(product(mmaProductKey))).toBe(
 			'homeDelivery',
 		);
 	});
@@ -53,7 +53,7 @@ describe('getPrintCancellationCopyFamily', () => {
 		'Newspaper Voucher + Digital',
 		'Newspaper Voucher - Observer',
 	])('maps %s to voucher copy', (mmaProductKey) => {
-		expect(getPrintCancellationCopyFamily(product(mmaProductKey))).toBe(
+		expect(getSelfServeCancellationCopyFamily(product(mmaProductKey))).toBe(
 			'voucher',
 		);
 	});
@@ -63,7 +63,7 @@ describe('getPrintCancellationCopyFamily', () => {
 		'Newspaper Digital Voucher + Digital',
 		'Newspaper Digital Voucher - Observer',
 	])('maps %s to subscription card copy', (mmaProductKey) => {
-		expect(getPrintCancellationCopyFamily(product(mmaProductKey))).toBe(
+		expect(getSelfServeCancellationCopyFamily(product(mmaProductKey))).toBe(
 			'subscriptionCard',
 		);
 	});
@@ -75,21 +75,21 @@ describe('getPrintCancellationCopyFamily', () => {
 		'Guardian Weekly Zone B',
 		'Guardian Weekly Zone C',
 	])('maps %s to Guardian Weekly copy', (mmaProductKey) => {
-		expect(getPrintCancellationCopyFamily(product(mmaProductKey))).toBe(
+		expect(getSelfServeCancellationCopyFamily(product(mmaProductKey))).toBe(
 			'guardianWeekly',
 		);
 	});
 
 	it('uses Guardian Weekly copy when the product key is unknown', () => {
 		expect(
-			getPrintCancellationCopyFamily(
+			getSelfServeCancellationCopyFamily(
 				product('Supporter Plus' as ProductTier),
 			),
 		).toBe('guardianWeekly');
 	});
 });
 
-describe('print cancellation copy', () => {
+describe('self-serve cancellation copy', () => {
 	const homeDelivery = product('Newspaper Delivery');
 	const voucher = product('Newspaper Voucher');
 	const subscriptionCard = product('Newspaper Digital Voucher');
@@ -218,8 +218,8 @@ describe('print cancellation copy', () => {
 	});
 });
 
-describe('print cancellation product config', () => {
-	it('opens the print cancellation journey for newspaper products', () => {
+describe('self-serve cancellation product config', () => {
+	it('opens the self-serve cancellation journey for newspaper products', () => {
 		const printProducts = [
 			PRODUCT_TYPES.homedelivery,
 			PRODUCT_TYPES.homedeliveryplusdigital,
@@ -236,9 +236,9 @@ describe('print cancellation product config', () => {
 		];
 
 		for (const productType of printProducts) {
-			expect(productType.cancellation?.usesPrintCancellationFlow).toBe(
-				true,
-			);
+			expect(
+				productType.cancellation?.usesSelfServeCancellationFlow,
+			).toBe(true);
 			expect(productType.cancellation?.reasons?.length).toBeGreaterThan(
 				0,
 			);
@@ -274,7 +274,7 @@ describe('print cancellation product config', () => {
 
 	it('leaves Digital + Print and deprecated paper on their current flows', () => {
 		expect(
-			PRODUCT_TYPES.tierthree.cancellation?.usesPrintCancellationFlow,
+			PRODUCT_TYPES.tierthree.cancellation?.usesSelfServeCancellationFlow,
 		).toBeUndefined();
 		expect(PRODUCT_TYPES.newspaper.cancellation).toBeUndefined();
 	});

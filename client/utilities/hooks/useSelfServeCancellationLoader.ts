@@ -8,17 +8,17 @@ import { isProduct } from '../../../shared/productResponse';
 import type { ProductType } from '../../../shared/productTypes';
 import type { CancellationDateResponse } from '../../components/mma/cancel/cancellationDateResponse';
 import { cancellationDateFetcher } from '../../components/mma/cancel/cancellationDateResponse';
-import { cancellationModeFromEffectiveDate } from '../../components/mma/cancel/cancellationPrint/printCancellationTiming';
+import { cancellationModeFromEffectiveDate } from '../../components/mma/cancel/selfServeCancellation/selfServeCancellationTiming';
 import { JsonResponseHandler } from '../../components/mma/shared/asyncComponents/DefaultApiResponseHandler';
 import { useAccountStore } from '../../stores/AccountStore';
-import { usePrintCancellationStore } from '../../stores/PrintCancellationStore';
+import { useSelfServeCancellationStore } from '../../stores/SelfServeCancellationStore';
 import { createProductDetailFetcher } from '../productUtils';
 
 const resolveCancellationTiming = async (
 	subscriptionId: string,
 ): Promise<boolean> => {
 	const stillCurrent = () =>
-		usePrintCancellationStore.getState().productDetail?.subscription
+		useSelfServeCancellationStore.getState().productDetail?.subscription
 			.subscriptionId === subscriptionId;
 
 	try {
@@ -31,7 +31,7 @@ const resolveCancellationTiming = async (
 		}
 		const cancellationEffectiveDate =
 			data?.cancellationEffectiveDate ?? null;
-		usePrintCancellationStore.getState().setCancellationTiming({
+		useSelfServeCancellationStore.getState().setCancellationTiming({
 			cancellationMode: cancellationModeFromEffectiveDate(
 				cancellationEffectiveDate,
 			),
@@ -42,7 +42,7 @@ const resolveCancellationTiming = async (
 		Sentry.captureException(
 			error instanceof Error
 				? error
-				: new Error('Failed to load print cancellation date'),
+				: new Error('Failed to load the cancellation date'),
 			{
 				extra: { subscriptionId },
 			},
@@ -57,29 +57,29 @@ interface LoaderState {
 	hasTimingError: boolean;
 }
 
-interface PrintCancellationLoaderResult extends LoaderState {
+interface SelfServeCancellationLoaderResult extends LoaderState {
 	retryTiming: () => void;
 }
 
-interface UsePrintCancellationLoaderProps {
+interface UseSelfServeCancellationLoaderProps {
 	productType: ProductType;
 	routerProductDetail?: ProductDetail;
 }
 
-export const usePrintCancellationLoader = ({
+export const useSelfServeCancellationLoader = ({
 	productType,
 	routerProductDetail,
-}: UsePrintCancellationLoaderProps): PrintCancellationLoaderResult => {
-	const productDetail = usePrintCancellationStore(
+}: UseSelfServeCancellationLoaderProps): SelfServeCancellationLoaderResult => {
+	const productDetail = useSelfServeCancellationStore(
 		(state) => state.productDetail,
 	);
-	const setProductDetail = usePrintCancellationStore(
+	const setProductDetail = useSelfServeCancellationStore(
 		(state) => state.setProductDetail,
 	);
-	const resetJourneyState = usePrintCancellationStore(
+	const resetJourneyState = useSelfServeCancellationStore(
 		(state) => state.resetJourneyState,
 	);
-	const cancellationMode = usePrintCancellationStore(
+	const cancellationMode = useSelfServeCancellationStore(
 		(state) => state.cancellationMode,
 	);
 	const { mdapiResponse: accountMdapiResponse, setMdapiResponse } =
@@ -101,8 +101,8 @@ export const usePrintCancellationLoader = ({
 		}));
 		void resolveCancellationTiming(subscriptionId).then((loaded) => {
 			const currentSubscriptionId =
-				usePrintCancellationStore.getState().productDetail?.subscription
-					.subscriptionId;
+				useSelfServeCancellationStore.getState().productDetail
+					?.subscription.subscriptionId;
 			if (currentSubscriptionId !== subscriptionId) {
 				return;
 			}
@@ -121,7 +121,7 @@ export const usePrintCancellationLoader = ({
 			const routeSubscriptionId =
 				routerProductDetail.subscription.subscriptionId;
 
-			// Reset per entry into the print journey so stale reason/case data
+			// Reset per entry into the self-serve journey so stale reason/case data
 			// from previous attempts is not reused for the same subscription.
 			if (hydratedSubscriptionId.current !== routeSubscriptionId) {
 				setProductDetail(routerProductDetail);
@@ -180,9 +180,7 @@ export const usePrintCancellationLoader = ({
 				Sentry.captureException(
 					error instanceof Error
 						? error
-						: new Error(
-								'Failed to load print cancellation product',
-						  ),
+						: new Error('Failed to load the cancellation product'),
 					{
 						extra: {
 							productType: productType.productType,

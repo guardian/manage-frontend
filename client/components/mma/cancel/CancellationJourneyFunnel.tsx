@@ -9,12 +9,12 @@ import type { ProductTypeKeys } from '@/shared/productTypes';
 import { GROUPED_PRODUCT_TYPES } from '@/shared/productTypes';
 import { useCancellationContext } from './CancellationContainer';
 import type { CancellationRouterState } from './CancellationContainer';
+import { CancellationReasonSelection } from './CancellationReasonSelection';
+import { ContactUsToCancel } from './ContactUsToCancel';
 import {
 	cancelsWithoutSelfServeFlag,
 	isCancellationEntryOpen,
-} from './cancellationPrint/printCancellationFeature';
-import { CancellationReasonSelection } from './CancellationReasonSelection';
-import { ContactUsToCancel } from './ContactUsToCancel';
+} from './selfServeCancellation/selfServeCancellationFeature';
 
 function productHasEarlySaveJourney(productTypeKey: ProductTypeKeys): boolean {
 	return (
@@ -63,7 +63,7 @@ export const CancellationJourneyFunnel = () => {
 
 	const blockedBySelfServeFlag =
 		!productDetail.selfServiceCancellation.isAllowed &&
-		!cancelsWithoutSelfServeFlag(productType);
+		!cancelsWithoutSelfServeFlag(productType, productDetail);
 
 	if (
 		blockedBySelfServeFlag ||

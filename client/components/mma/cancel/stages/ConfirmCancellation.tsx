@@ -21,9 +21,9 @@ import {
 	CancellationPageTitleContext,
 	useCancellationContext,
 } from '../CancellationContainer';
-import { isPrintCancellationJourneyEnabled } from '../cancellationPrint/printCancellationFeature';
-import { PrintConfirmCancellation } from '../cancellationPrint/printConfirmCancellation';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
+import { SelfServeCancellationConfirm } from '../selfServeCancellation/selfServeCancellationConfirm';
+import { isSelfServeCancellationJourneyEnabled } from '../selfServeCancellation/selfServeCancellationFeature';
 
 interface RouterSate extends DiscountPreviewResponse {
 	selectedReasonId: OptionalCancellationReasonId;
@@ -102,8 +102,11 @@ export const ConfirmCancellation = () => {
 	) as CancellationPageTitleInterface;
 
 	const subscription = productDetail.subscription;
-	const isPrintProductType = isPrintCancellationJourneyEnabled(productType);
-	const groupedFriendlyName = isPrintProductType
+	const isSelfServeCancellation = isSelfServeCancellationJourneyEnabled(
+		productType,
+		productDetail,
+	);
+	const groupedFriendlyName = isSelfServeCancellation
 		? null
 		: GROUPED_PRODUCT_TYPES[productType.groupedProductType].friendlyName;
 
@@ -116,15 +119,15 @@ export const ConfirmCancellation = () => {
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle(
-			isPrintProductType
+			isSelfServeCancellation
 				? 'Manage subscription'
 				: `Cancel ${groupedFriendlyName}`,
 		);
-	}, [groupedFriendlyName, isPrintProductType, pageTitleContext]);
+	}, [groupedFriendlyName, isSelfServeCancellation, pageTitleContext]);
 
-	if (isPrintProductType) {
+	if (isSelfServeCancellation) {
 		return (
-			<PrintConfirmCancellation
+			<SelfServeCancellationConfirm
 				productDetail={productDetail}
 				productType={productType}
 			/>

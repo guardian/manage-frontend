@@ -14,7 +14,7 @@ import {
 import type { ChangeEvent, FC } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { usePrintCancellationStore } from '@/client/stores/PrintCancellationStore';
+import { useSelfServeCancellationStore } from '@/client/stores/SelfServeCancellationStore';
 import type { DiscountPreviewResponse } from '@/client/utilities/discountPreview';
 import { fetchWithDefaultParameters } from '@/client/utilities/fetch';
 import { getBenefitsThreshold } from '@/client/utilities/pricingConfig/supporterPlusPricing';
@@ -59,9 +59,6 @@ import {
 } from './CancellationContainer';
 import { cancellationEffectiveToday } from './cancellationContexts';
 import { requiresCancellationEscalation } from './cancellationFlowEscalationCheck';
-import { PrintCancellationAlternatives } from './cancellationPrint/printCancellationAlternatives';
-import { getProgressCopy } from './cancellationPrint/printCancellationCopy';
-import { isPrintCancellationJourneyEnabled } from './cancellationPrint/printCancellationFeature';
 import type {
 	CancellationReason,
 	CancellationReasonId,
@@ -74,6 +71,9 @@ import {
 } from './cancellationSaves/saveEligibilityCheck';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from './caseUpdate';
 import { ContributionsCancellationFlowFinancialSaveAttempt } from './contributions/ContributionsCancellationFlowFinancialSaveAttempt';
+import { SelfServeCancellationAlternatives } from './selfServeCancellation/selfServeCancellationAlternatives';
+import { getProgressCopy } from './selfServeCancellation/selfServeCancellationCopy';
+import { isSelfServeCancellationJourneyEnabled } from './selfServeCancellation/selfServeCancellationFeature';
 
 const getPatchUpdateCaseFunc =
 	(isTestUser: boolean, caseId: string, feedback: string) => async () =>
@@ -578,15 +578,18 @@ export const CancellationReasonReview = () => {
 	} | null;
 
 	const { productDetail, productType } = useCancellationContext();
-	const isPrintProductType = isPrintCancellationJourneyEnabled(productType);
+	const isSelfServeCancellation = isSelfServeCancellationJourneyEnabled(
+		productType,
+		productDetail,
+	);
 
-	const printSelectedReasonId = usePrintCancellationStore(
+	const selectedReasonId = useSelfServeCancellationStore(
 		(state) => state.selectedReasonId,
 	);
-	const printSetCaseData = usePrintCancellationStore(
+	const setCaseData = useSelfServeCancellationStore(
 		(state) => state.setCaseData,
 	);
-	const printCancellationMode = usePrintCancellationStore(
+	const cancellationMode = useSelfServeCancellationStore(
 		(state) => state.cancellationMode,
 	);
 
@@ -594,8 +597,8 @@ export const CancellationReasonReview = () => {
 		return <Navigate to=".." />;
 	}
 
-	if (isPrintProductType) {
-		if (!printSelectedReasonId) {
+	if (isSelfServeCancellation) {
+		if (!selectedReasonId) {
 			return <Navigate to=".." />;
 		}
 		return (
@@ -604,14 +607,14 @@ export const CancellationReasonReview = () => {
 				productType={
 					productType as ProductTypeWithCancellationFlowMandatoryReasons
 				}
-				selectedReasonId={printSelectedReasonId}
+				selectedReasonId={selectedReasonId}
 				cancellationPolicy={
-					printCancellationMode === 'hard'
+					cancellationMode === 'hard'
 						? cancellationEffectiveToday
 						: ''
 				}
-				isPrintProductType
-				setCaseData={printSetCaseData}
+				isSelfServeCancellation
+				setCaseData={setCaseData}
 			/>
 		);
 	}
@@ -628,7 +631,7 @@ export const CancellationReasonReview = () => {
 			}
 			selectedReasonId={routerState.selectedReasonId}
 			cancellationPolicy={routerState.cancellationPolicy}
-			isPrintProductType={false}
+			isSelfServeCancellation={false}
 		/>
 	);
 };
@@ -638,14 +641,14 @@ const ValidatedCancellationReasonReview = ({
 	productType,
 	selectedReasonId,
 	cancellationPolicy,
-	isPrintProductType,
+	isSelfServeCancellation,
 	setCaseData,
 }: {
 	productDetail: ProductDetail;
 	productType: ProductTypeWithCancellationFlowMandatoryReasons;
 	selectedReasonId: OptionalCancellationReasonId;
 	cancellationPolicy: string;
-	isPrintProductType: boolean;
+	isSelfServeCancellation: boolean;
 	setCaseData?: (data: {
 		caseId: string;
 		holidayStops?: OutstandingHolidayStop[];
@@ -657,10 +660,10 @@ const ValidatedCancellationReasonReview = ({
 	};
 
 	useEffect(() => {
-		if (isPrintProductType) {
+		if (isSelfServeCancellation) {
 			pageTitleContext.setPageTitle('Manage subscription');
 		}
-	}, [isPrintProductType, pageTitleContext]);
+	}, [isSelfServeCancellation, pageTitleContext]);
 
 	const displayedReasonId =
 		selectedReasonId === 'mma_cancellation_default'
@@ -671,10 +674,10 @@ const ValidatedCancellationReasonReview = ({
 		(reason) => reason.reasonId === displayedReasonId,
 	) as CancellationReason;
 
-	const storedCancellationEffectiveDate = usePrintCancellationStore(
+	const storedCancellationEffectiveDate = useSelfServeCancellationStore(
 		(state) => state.cancellationEffectiveDate,
 	);
-	const effectiveCancellationDate = isPrintProductType
+	const effectiveCancellationDate = isSelfServeCancellation
 		? parseDate(creditCheckDate(storedCancellationEffectiveDate))
 		: !productDetail.subscription?.chargedThroughDate ||
 		  cancellationPolicy === cancellationEffectiveToday
@@ -750,7 +753,12 @@ const ValidatedCancellationReasonReview = ({
 	);
 
 	useEffect(() => {
-		if (!isPrintProductType || isDataLoading || !caseId || !setCaseData) {
+		if (
+			!isSelfServeCancellation ||
+			isDataLoading ||
+			!caseId ||
+			!setCaseData
+		) {
 			return;
 		}
 
@@ -764,7 +772,7 @@ const ValidatedCancellationReasonReview = ({
 		deliveryProblemCreditFetch.data?.results,
 		holidayStopCreditFetch.data?.publicationsToRefund,
 		isDataLoading,
-		isPrintProductType,
+		isSelfServeCancellation,
 		setCaseData,
 	]);
 
@@ -800,7 +808,7 @@ const ValidatedCancellationReasonReview = ({
 
 	return (
 		<>
-			{!isPrintProductType && (
+			{!isSelfServeCancellation && (
 				<>
 					{shouldUseProgressStepper ? (
 						<ProgressStepper
@@ -832,15 +840,15 @@ const ValidatedCancellationReasonReview = ({
 					!loadingHasFailed && (
 						<SpinnerWithMessage
 							loadingMessage={
-								isPrintProductType
+								isSelfServeCancellation
 									? getProgressCopy(productDetail)
 											.checkingDetails
 									: 'Checking details'
 							}
 						/>
 					)
-				) : isPrintProductType ? (
-					<PrintCancellationAlternatives
+				) : isSelfServeCancellation ? (
+					<SelfServeCancellationAlternatives
 						productType={productType}
 						isTestUser={productDetail.isTestUser}
 					/>

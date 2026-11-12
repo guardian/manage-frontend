@@ -7,20 +7,20 @@ import { ConfirmCancellation } from '@/client/components/mma/cancel/stages/Confi
 import { ExecuteCancellation } from '@/client/components/mma/cancel/stages/ExecuteCancellation';
 import { toMembersDataApiResponse } from '@/client/fixtures/mdapiResponse';
 import { useAccountStore } from '@/client/stores/AccountStore';
-import { usePrintCancellationStore } from '@/client/stores/PrintCancellationStore';
+import { useSelfServeCancellationStore } from '@/client/stores/SelfServeCancellationStore';
 import { featureSwitches } from '@/shared/featureSwitches';
 import type { ProductDetail } from '@/shared/productResponse';
 import { PRODUCT_TYPES, type ProductType } from '@/shared/productTypes';
 
-// Storybook has no URL param, so turn the print journey on for these stories.
-featureSwitches.printProductCancellation = true;
+// Storybook has no URL param, so turn the self-serve journey on for these stories.
+featureSwitches.selfServeCancellation = true;
 
-// Print products share one shuffled reasons list. Sort it so Chromatic snapshots stay stable.
+// These products share one shuffled reasons list. Sort it so Chromatic snapshots stay stable.
 PRODUCT_TYPES.homedelivery.cancellation!.reasons?.sort((a, b) =>
 	a.reasonId.localeCompare(b.reasonId),
 );
 
-export interface PrintCancellationStoryProduct {
+export interface SelfServeCancellationStoryProduct {
 	productType: ProductType;
 	productDetail: ProductDetail;
 }
@@ -61,7 +61,7 @@ const seedReader = (productDetail: ProductDetail) => {
 };
 
 const seedJourney = (hasOutstandingCredit: boolean) => {
-	const state = usePrintCancellationStore.getState();
+	const state = useSelfServeCancellationStore.getState();
 	if (!state.cancellationMode) {
 		return false;
 	}
@@ -71,7 +71,7 @@ const seedJourney = (hasOutstandingCredit: boolean) => {
 	if (state.caseId === 'caseId' && creditIsReady) {
 		return true;
 	}
-	usePrintCancellationStore.setState({
+	useSelfServeCancellationStore.setState({
 		selectedReasonId: 'mma_editorial',
 		cancellationFeedback: '',
 		caseId: 'caseId',
@@ -94,7 +94,7 @@ const dateHandler = (variant: ReviewVariant | 'soft' | 'hard') =>
 const containerParameters = ({
 	productType,
 	productDetail,
-}: PrintCancellationStoryProduct) => ({
+}: SelfServeCancellationStoryProduct) => ({
 	reactRouter: {
 		state: { productDetail },
 		container: <CancellationContainer productType={productType} />,
@@ -102,7 +102,7 @@ const containerParameters = ({
 });
 
 export const reasonsStory = (
-	product: PrintCancellationStoryProduct,
+	product: SelfServeCancellationStoryProduct,
 ): StoryObj<typeof CancellationReasonSelection> => ({
 	name: 'Reasons',
 	render: () => {
@@ -116,7 +116,7 @@ export const reasonsStory = (
 });
 
 export const pauseStory = (
-	product: PrintCancellationStoryProduct,
+	product: SelfServeCancellationStoryProduct,
 	name = 'Pause',
 ): StoryObj<typeof CancellationReasonReview> => ({
 	name,
@@ -141,7 +141,7 @@ export const pauseStory = (
 });
 
 export const reviewStory = (
-	product: PrintCancellationStoryProduct,
+	product: SelfServeCancellationStoryProduct,
 	variant: ReviewVariant,
 ): StoryObj<typeof ConfirmCancellation> => ({
 	name:
@@ -164,7 +164,7 @@ export const reviewStory = (
 });
 
 export const confirmedStory = (
-	product: PrintCancellationStoryProduct,
+	product: SelfServeCancellationStoryProduct,
 	mode: 'soft' | 'hard',
 ): StoryObj<typeof ExecuteCancellation> => ({
 	name: mode === 'soft' ? 'Confirmed, soft' : 'Confirmed, hard',
@@ -196,7 +196,7 @@ export const confirmedStory = (
 });
 
 export const escalatedStory = (
-	product: PrintCancellationStoryProduct,
+	product: SelfServeCancellationStoryProduct,
 ): StoryObj<typeof ExecuteCancellation> => ({
 	name: 'Confirmed, escalated',
 	render: () => {

@@ -25,12 +25,12 @@ import type { OutstandingHolidayStop } from '../holiday/HolidayStopApi';
 import { PageContainer } from '../Page';
 import { JsonResponseHandler } from '../shared/asyncComponents/DefaultApiResponseHandler';
 import { DefaultLoadingView } from '../shared/asyncComponents/DefaultLoadingView';
-import { isPrintCancellationJourneyEnabled } from './cancellationPrint/printCancellationFeature';
-import { PrintLoadedCancellationContainer } from './cancellationPrint/printLoadedCancellationContainer';
 import type {
 	CancellationReason,
 	OptionalCancellationReasonId,
 } from './cancellationReason';
+import { SelfServeCancellationContainer } from './selfServeCancellation/selfServeCancellationContainer';
+import { isSelfServeCancellationJourneyEnabled } from './selfServeCancellation/selfServeCancellationFeature';
 
 const renderSingleProductOrReturnToAccountOverview =
 	(productType: ProductType) => (mdapiResponse: MembersDataApiResponse) => {
@@ -39,7 +39,7 @@ const renderSingleProductOrReturnToAccountOverview =
 			.filter((productDetail) => !productDetail.subscription.cancelledAt);
 
 		if (filteredProductDetails.length === 1) {
-			return contextAndOutletContainer(
+			return loadedCancellationContainer(
 				filteredProductDetails[0],
 				productType,
 			);
@@ -98,6 +98,19 @@ export const useCancellationContext = (): CancellationContextInterface => {
 	return context;
 };
 
+const loadedCancellationContainer = (
+	productDetail: ProductDetail,
+	productType: ProductType,
+) =>
+	isSelfServeCancellationJourneyEnabled(productType, productDetail) ? (
+		<SelfServeCancellationContainer
+			productType={productType}
+			routerProductDetail={productDetail}
+		/>
+	) : (
+		contextAndOutletContainer(productDetail, productType)
+	);
+
 const contextAndOutletContainer = (
 	productDetail: ProductDetail,
 	productType: ProductType,
@@ -140,8 +153,9 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
 	const productDetail = routerState?.productDetail;
-	const isPrintProductType = isPrintCancellationJourneyEnabled(
+	const isSelfServeCancellation = isSelfServeCancellationJourneyEnabled(
 		props.productType,
+		productDetail,
 	);
 	const groupedProductType =
 		GROUPED_PRODUCT_TYPES[props.productType.groupedProductType];
@@ -169,15 +183,13 @@ export const CancellationContainer = (props: WithProductType<ProductType>) => {
 			<PageContainer
 				selectedNavItem={NAV_LINKS.accountOverview}
 				pageTitle={pageTitle}
-				minimalFooter={isPrintProductType}
+				minimalFooter={isSelfServeCancellation}
 			>
-				{isPrintProductType ? (
-					<PrintLoadedCancellationContainer
-						productType={props.productType}
-						routerProductDetail={productDetail}
-					/>
-				) : productDetail ? (
-					contextAndOutletContainer(productDetail, props.productType)
+				{productDetail ? (
+					loadedCancellationContainer(
+						productDetail,
+						props.productType,
+					)
 				) : (
 					<AsyncLoadedCancellationContainer
 						productType={props.productType}

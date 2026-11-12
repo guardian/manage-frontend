@@ -1,15 +1,20 @@
 import type { ProductDetail, ProductTier } from '@/shared/productResponse';
-import type { PrintCancellationMode } from './printCancellationTiming';
+import type { SelfServeCancellationMode } from './selfServeCancellationTiming';
 
-export type PrintCancellationCopyFamily =
+export type SelfServeCancellationCopyFamily =
 	| 'guardianWeekly'
 	| 'homeDelivery'
 	| 'voucher'
 	| 'subscriptionCard';
 
-export type PrintContactRegion = 'uk' | 'usCanada' | 'asiaPacific';
+export type SelfServeCancellationContactRegion =
+	| 'uk'
+	| 'usCanada'
+	| 'asiaPacific';
 
-export type PrintReviewVariant = PrintCancellationMode | 'hardWithCredit';
+export type SelfServeCancellationReviewVariant =
+	| SelfServeCancellationMode
+	| 'hardWithCredit';
 
 const homeDeliveryProductKeys: readonly ProductTier[] = [
 	'Newspaper Delivery',
@@ -82,7 +87,7 @@ const asiaPacificCountries = new Set([
 const helpCentreContactHref =
 	'https://manage.theguardian.com/help-centre/contact-us/';
 
-export interface PrintReasonPickerCopy {
+export interface SelfServeCancellationReasonPickerCopy {
 	pageTitle: string;
 	previous: string;
 	title: (supporterName?: string) => string;
@@ -94,7 +99,7 @@ export interface PrintReasonPickerCopy {
 	skipToCancel: string;
 }
 
-export interface PrintAlternativesCopy {
+export interface SelfServeCancellationAlternativesCopy {
 	previous: string;
 	pauseTitle: string;
 	pauseHeading: string;
@@ -112,7 +117,7 @@ export interface PrintAlternativesCopy {
 	continueToCancel: string;
 }
 
-export interface PrintConfirmCopy {
+export interface SelfServeCancellationConfirmCopy {
 	previous: string;
 	title: (
 		supporterName: string | undefined,
@@ -126,7 +131,7 @@ export interface PrintConfirmCopy {
 	confirmCta: string;
 }
 
-export interface PrintSuccessCopy {
+export interface SelfServeCancellationSuccessCopy {
 	heading: string;
 	effectiveLeadIn: string;
 	effectiveImmediately: string;
@@ -140,7 +145,7 @@ export interface PrintSuccessCopy {
 	fallbackEmail: string;
 }
 
-export interface PrintProgressCopy {
+export interface SelfServeCancellationProgressCopy {
 	checkingStatus: (friendlyName: string) => string;
 	checkingDetails: string;
 	requestingCancellation: string;
@@ -192,7 +197,7 @@ const unusedCreditRefund =
 const retainBenefits =
 	'Until then, you will retain all your current subscription benefits.';
 
-const reasonPickerCopy: PrintReasonPickerCopy = {
+const reasonPickerCopy: SelfServeCancellationReasonPickerCopy = {
 	pageTitle: 'Manage subscription',
 	previous: 'Previous',
 	title: (supporterName) =>
@@ -225,8 +230,11 @@ const sharedAlternatives = {
 };
 
 const contactByRegion: Record<
-	PrintContactRegion,
-	Pick<PrintAlternativesCopy, 'callUs' | 'chatHours' | 'chatCta' | 'chatHref'>
+	SelfServeCancellationContactRegion,
+	Pick<
+		SelfServeCancellationAlternativesCopy,
+		'callUs' | 'chatHours' | 'chatCta' | 'chatHref'
+	>
 > = {
 	uk: {
 		callUs: 'Call us at +44 (0) 330 333 6765, 9am to 5pm, Monday to Sunday',
@@ -241,7 +249,7 @@ const contactByRegion: Record<
 	},
 };
 
-const pauseBodyByFamily: Record<PrintCancellationCopyFamily, string> = {
+const pauseBodyByFamily: Record<SelfServeCancellationCopyFamily, string> = {
 	homeDelivery:
 		'Put your print deliveries on hold for up to 5 weeks and we will apply a credit for the suspended issues to your next bill date. If you have digital benefits you will still receive and be charged for those during this time.',
 	voucher:
@@ -280,7 +288,10 @@ const confirmCopy = (
 	softDetails: (subscriptionEndDate?: string) => string[],
 	hardDetails: string[],
 	hardWithCreditDetails: string[],
-): Record<PrintReviewVariant, PrintConfirmCopy> => ({
+): Record<
+	SelfServeCancellationReviewVariant,
+	SelfServeCancellationConfirmCopy
+> => ({
 	soft: {
 		previous: 'Previous',
 		title: softGoodbyeTitle,
@@ -315,8 +326,8 @@ const confirmCopy = (
 });
 
 const confirmCopyByFamily: Record<
-	PrintCancellationCopyFamily,
-	Record<PrintReviewVariant, PrintConfirmCopy>
+	SelfServeCancellationCopyFamily,
+	Record<SelfServeCancellationReviewVariant, SelfServeCancellationConfirmCopy>
 > = {
 	homeDelivery: confirmCopy(
 		'print subscription',
@@ -362,7 +373,7 @@ const confirmCopyByFamily: Record<
 	),
 };
 
-const successCopy: PrintSuccessCopy = {
+const successCopy: SelfServeCancellationSuccessCopy = {
 	heading: 'Your subscription has been cancelled.',
 	effectiveLeadIn: 'Your cancellation will take effect on',
 	effectiveImmediately: 'Cancellation will take effect immediately.',
@@ -377,7 +388,7 @@ const successCopy: PrintSuccessCopy = {
 	fallbackEmail: 'your registered email address',
 };
 
-const progressCopy: PrintProgressCopy = {
+const progressCopy: SelfServeCancellationProgressCopy = {
 	checkingStatus: (friendlyName) =>
 		`Checking the status of your ${friendlyName}...`,
 	checkingDetails: 'Checking details',
@@ -394,9 +405,9 @@ const includesProductKey = (
 	productKey: ProductTier,
 ) => keys.includes(productKey);
 
-export const getPrintCancellationCopyFamily = (
+export const getSelfServeCancellationCopyFamily = (
 	productDetail: ProductDetail,
-): PrintCancellationCopyFamily => {
+): SelfServeCancellationCopyFamily => {
 	const productKey = productDetail.mmaProductKey;
 	if (includesProductKey(homeDeliveryProductKeys, productKey)) {
 		return 'homeDelivery';
@@ -419,7 +430,7 @@ const contactCountry = (productDetail?: ProductDetail | null) =>
 
 export const contactRegionFor = (
 	productDetail?: ProductDetail | null,
-): PrintContactRegion => {
+): SelfServeCancellationContactRegion => {
 	const country = contactCountry(productDetail)?.trim().toLowerCase() ?? '';
 	if (usAndCanadaCountries.has(country)) {
 		return 'usCanada';
@@ -431,9 +442,9 @@ export const contactRegionFor = (
 };
 
 export const reviewVariantFor = (
-	mode: PrintCancellationMode,
+	mode: SelfServeCancellationMode,
 	hasOutstandingCredit: boolean,
-): PrintReviewVariant => {
+): SelfServeCancellationReviewVariant => {
 	if (mode === 'hard' && hasOutstandingCredit) {
 		return 'hardWithCredit';
 	}
@@ -442,13 +453,13 @@ export const reviewVariantFor = (
 
 export const getReasonPickerCopy = (
 	_productDetail?: ProductDetail | null,
-): PrintReasonPickerCopy => reasonPickerCopy;
+): SelfServeCancellationReasonPickerCopy => reasonPickerCopy;
 
 export const getAlternativesCopy = (
 	productDetail?: ProductDetail | null,
-): PrintAlternativesCopy => {
+): SelfServeCancellationAlternativesCopy => {
 	const family = productDetail
-		? getPrintCancellationCopyFamily(productDetail)
+		? getSelfServeCancellationCopyFamily(productDetail)
 		: 'guardianWeekly';
 	const region =
 		family === 'guardianWeekly' ? contactRegionFor(productDetail) : 'uk';
@@ -462,19 +473,19 @@ export const getAlternativesCopy = (
 
 export const getConfirmCopy = (
 	productDetail: ProductDetail | undefined,
-	variant: PrintReviewVariant,
-): PrintConfirmCopy => {
+	variant: SelfServeCancellationReviewVariant,
+): SelfServeCancellationConfirmCopy => {
 	const family = productDetail
-		? getPrintCancellationCopyFamily(productDetail)
+		? getSelfServeCancellationCopyFamily(productDetail)
 		: 'guardianWeekly';
 	return confirmCopyByFamily[family][variant];
 };
 
 export const getSuccessCopy = (
 	_productDetail?: ProductDetail | null,
-	_mode?: PrintCancellationMode,
-): PrintSuccessCopy => successCopy;
+	_mode?: SelfServeCancellationMode,
+): SelfServeCancellationSuccessCopy => successCopy;
 
 export const getProgressCopy = (
 	_productDetail?: ProductDetail | null,
-): PrintProgressCopy => progressCopy;
+): SelfServeCancellationProgressCopy => progressCopy;

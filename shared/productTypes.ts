@@ -98,11 +98,11 @@ interface CancellationFlowProperties {
 	reasons?: CancellationReason[];
 	sfCaseProduct: SfCaseProduct;
 	checkForOutstandingCredits?: true;
-	// Opts the product into the dedicated print cancellation journey
-	// (PrintReasonPicker, PrintCancellationAlternatives, PrintConfirmCancellation,
-	// PrintExecuteCancellation, PrintCancellationStore). When undefined the
+	// Opts the product into the self-serve cancellation journey
+	// (SelfServeCancellationReasonPicker, SelfServeCancellationAlternatives, SelfServeCancellationConfirm,
+	// SelfServeCancellationExecute, SelfServeCancellationStore). When undefined the
 	// product uses the legacy/default cancellation journey.
-	usesPrintCancellationFlow?: true;
+	usesSelfServeCancellationFlow?: true;
 	flowWrapper?: (
 		productDetail: ProductDetail,
 		productType: ProductType,
@@ -300,7 +300,7 @@ export type GroupedProductTypeKeys =
 	| 'recurringSupportWithBenefits'
 	| 'subscriptions';
 
-const printCancellationFlow = (
+const selfServeCancellationFlow = (
 	sfCaseProduct: SfCaseProduct,
 	startPageBody: CancellationFlowProperties['startPageBody'] = gwCancellationFlowStart,
 	reasons: CancellationFlowProperties['reasons'] = CANCELLATION_REASONS.printProducts,
@@ -308,7 +308,7 @@ const printCancellationFlow = (
 	reasons,
 	sfCaseProduct,
 	checkForOutstandingCredits: true,
-	usesPrintCancellationFlow: true,
+	usesSelfServeCancellationFlow: true,
 	flowWrapper: physicalSubsCancellationFlowWrapper,
 	startPageBody,
 	startPageOfferEffectiveDateOptions: true,
@@ -359,7 +359,7 @@ const baseHomedeliveryProduct: ProductType = {
 	fulfilmentDateCalculator: {
 		productFilenamePart: 'Newspaper - Home Delivery',
 	},
-	cancellation: printCancellationFlow('Newspaper - Home Delivery'),
+	cancellation: selfServeCancellationFlow('Newspaper - Home Delivery'),
 };
 
 const baseNationaldeliveryProduct: ProductType = {
@@ -402,7 +402,7 @@ const baseNationaldeliveryProduct: ProductType = {
 	fulfilmentDateCalculator: {
 		productFilenamePart: 'Newspaper - National Delivery',
 	},
-	cancellation: printCancellationFlow('Newspaper - Home Delivery'),
+	cancellation: selfServeCancellationFlow('Newspaper - Home Delivery'),
 };
 
 const baseVoucherProduct: ProductType = {
@@ -438,7 +438,7 @@ const baseVoucherProduct: ProductType = {
 		showAddress: showDeliveryAddressCheck,
 		enableDeliveryInstructionsUpdate: true,
 	},
-	cancellation: printCancellationFlow(
+	cancellation: selfServeCancellationFlow(
 		'Voucher Subscriptions',
 		voucherCancellationFlowStart,
 		CANCELLATION_REASONS.voucher,
@@ -471,7 +471,7 @@ const baseDigitalvoucherProduct: ProductType = {
 	delivery: {
 		showAddress: showDeliveryAddressCheck,
 	},
-	cancellation: printCancellationFlow('Newspaper Subscription Card'),
+	cancellation: selfServeCancellationFlow('Newspaper Subscription Card'),
 };
 
 export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
@@ -637,7 +637,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		fulfilmentDateCalculator: {
 			productFilenamePart: 'Newspaper - Home Delivery',
 		},
-		cancellation: printCancellationFlow('Newspaper - Home Delivery'),
+		cancellation: selfServeCancellationFlow('Newspaper - Home Delivery'),
 	},
 	nationaldelivery: {
 		...baseNationaldeliveryProduct,
@@ -687,7 +687,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 			showAddress: showDeliveryAddressCheck,
 			enableDeliveryInstructionsUpdate: true,
 		},
-		cancellation: printCancellationFlow(
+		cancellation: selfServeCancellationFlow(
 			'Voucher Subscriptions',
 			voucherCancellationFlowStart,
 			CANCELLATION_REASONS.voucher,
@@ -723,7 +723,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 		delivery: {
 			showAddress: showDeliveryAddressCheck,
 		},
-		cancellation: printCancellationFlow('Newspaper Subscription Card'),
+		cancellation: selfServeCancellationFlow('Newspaper Subscription Card'),
 	},
 	guardianweekly: {
 		productTitle: () => 'Guardian Weekly + Digital plus',
@@ -759,7 +759,7 @@ export const PRODUCT_TYPES: Record<ProductTypeKeys, ProductType> = {
 				availableProblemTypes: commonDeliveryProblemTypes,
 			},
 		},
-		cancellation: printCancellationFlow('Guardian Weekly'),
+		cancellation: selfServeCancellationFlow('Guardian Weekly'),
 		fulfilmentDateCalculator: {
 			productFilenamePart: 'Guardian Weekly',
 			explicitSingleDayOfWeek: 'Friday',

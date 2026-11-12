@@ -80,8 +80,8 @@ describe('Cancel guardian weekly', () => {
 		}).as('cancel_gw_deliveryrecords');
 	});
 
-	it('cancels Guardian Weekly through the print cancellation journey', () => {
-		cy.visit('/');
+	it('cancels Guardian Weekly through the self-serve cancellation journey', () => {
+		cy.visit('/?withFeature=selfServeCancellation');
 
 		cy.findByText('Manage subscription').click();
 		cy.wait('@cancelled');

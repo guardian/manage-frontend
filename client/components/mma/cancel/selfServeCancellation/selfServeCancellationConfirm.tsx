@@ -16,7 +16,7 @@ import {
 } from '@guardian/source/react-components';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAccountStore } from '@/client/stores/AccountStore';
-import { usePrintCancellationStore } from '@/client/stores/PrintCancellationStore';
+import { useSelfServeCancellationStore } from '@/client/stores/SelfServeCancellationStore';
 import {
 	DATE_FNS_LONG_OUTPUT_FORMAT,
 	dateString,
@@ -26,9 +26,9 @@ import type { ProductDetail } from '../../../../../shared/productResponse';
 import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
 import { ProgressStepper } from '../../shared/ProgressStepper';
 import type { OptionalCancellationReasonId } from '../cancellationReason';
-import { getConfirmCopy, reviewVariantFor } from './printCancellationCopy';
+import { getConfirmCopy, reviewVariantFor } from './selfServeCancellationCopy';
 
-interface PrintConfirmCancellationProps {
+interface SelfServeCancellationConfirmProps {
 	productDetail: ProductDetail;
 	productType: ProductTypeWithCancellationFlow;
 }
@@ -100,25 +100,26 @@ const tabletAndUpPreviousButtonCss = css`
 	}
 `;
 
-export const PrintConfirmCancellation = ({
+export const SelfServeCancellationConfirm = ({
 	productDetail,
-}: PrintConfirmCancellationProps) => {
+}: SelfServeCancellationConfirmProps) => {
 	const navigate = useNavigate();
 	const { getUser } = useAccountStore();
-	const printSelectedReasonId: OptionalCancellationReasonId =
-		usePrintCancellationStore((state) => state.selectedReasonId);
-	const printCaseId: string = usePrintCancellationStore(
+	const selectedReasonId: OptionalCancellationReasonId =
+		useSelfServeCancellationStore((state) => state.selectedReasonId);
+	const caseId: string = useSelfServeCancellationStore(
 		(state) => state.caseId,
 	);
 	const cancellationMode =
-		usePrintCancellationStore((state) => state.cancellationMode) ?? 'hard';
-	const cancellationEffectiveDate = usePrintCancellationStore(
+		useSelfServeCancellationStore((state) => state.cancellationMode) ??
+		'hard';
+	const cancellationEffectiveDate = useSelfServeCancellationStore(
 		(state) => state.cancellationEffectiveDate,
 	);
-	const holidayStops = usePrintCancellationStore(
+	const holidayStops = useSelfServeCancellationStore(
 		(state) => state.holidayStops,
 	);
-	const deliveryCredits = usePrintCancellationStore(
+	const deliveryCredits = useSelfServeCancellationStore(
 		(state) => state.deliveryCredits,
 	);
 	const user = getUser();
@@ -147,7 +148,7 @@ export const PrintConfirmCancellation = ({
 			  )
 			: undefined;
 
-	if (!printSelectedReasonId || !printCaseId) {
+	if (!selectedReasonId || !caseId) {
 		return <Navigate to="../review" />;
 	}
 

@@ -7,7 +7,7 @@ import {
 	themeButtonReaderRevenueBrand,
 } from '@guardian/source/react-components';
 import { type NavigateFunction } from 'react-router-dom';
-import { isCancellationEntryOpen } from '@/client/components/mma/cancel/cancellationPrint/printCancellationFeature';
+import { isCancellationEntryOpen } from '@/client/components/mma/cancel/selfServeCancellation/selfServeCancellationFeature';
 import { wideButtonLayoutCss } from '@/client/styles/ButtonStyles';
 import type { Event } from '@/client/utilities/analytics';
 import type { FetchUpgradePreviewParams } from '@/client/utilities/hooks/useUpgradePreview';
