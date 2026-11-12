@@ -30,11 +30,12 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
       "GuParameterStoreReadPolicy",
       "GuAmiParameter",
       "GuHttpsEgressSecurityGroup",
-      "GuWazuhAccess",
       "GuAutoScalingGroup",
       "GuApplicationLoadBalancer",
+      "GuAccessLoggingBucketParameter",
       "GuApplicationTargetGroup",
       "GuHttpsApplicationListener",
+      "GuSecurityGroup",
     ],
     "gu:cdk:version": "TEST",
   },
@@ -53,6 +54,11 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
     "AMIManagefrontend": {
       "Description": "Amazon Machine Image ID for the app manage-frontend. Use this in conjunction with AMIgo to keep AMIs up to date.",
       "Type": "AWS::EC2::Image::Id",
+    },
+    "AccessLoggingBucket": {
+      "Default": "/account/services/access-logging/bucket",
+      "Description": "S3 bucket to store your access logs",
+      "Type": "AWS::SSM::Parameter::Value<String>",
     },
     "DistributionBucketName": {
       "Default": "/account/services/artifact.bucket",
@@ -95,6 +101,25 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
     },
   },
   "Resources": {
+    "AlbSsmParam485C1D52": {
+      "Properties": {
+        "DataType": "text",
+        "Description": "The ARN of the ALB for manage-frontend-PROD. This parameter is created via CDK.",
+        "Name": "/infosec/waf/services/PROD/manage-frontend-alb-arn",
+        "Tags": {
+          "Stack": "support",
+          "Stage": "PROD",
+          "gu:cdk:version": "TEST",
+          "gu:repo": "guardian/manage-frontend",
+        },
+        "Tier": "Standard",
+        "Type": "String",
+        "Value": {
+          "Ref": "LoadBalancerManagefrontend184BCE6C",
+        },
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
     "AliasRecord": {
       "Properties": {
         "AliasTarget": {
@@ -1548,18 +1573,7 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
             {
               "Action": "apigateway:GET",
               "Effect": "Allow",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:aws:apigateway:",
-                    {
-                      "Ref": "AWS::Region",
-                    },
-                    "::/apikeys/*",
-                  ],
-                ],
-              },
+              "Resource": "arn:aws:apigateway:eu-west-1::/apikeys/*",
             },
           ],
           "Version": "2012-10-17",
@@ -1585,11 +1599,7 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:cloudformation:",
-                      {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
+                      "arn:aws:cloudformation:eu-west-1:",
                       {
                         "Ref": "AWS::AccountId",
                       },
@@ -1601,11 +1611,7 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:cloudformation:",
-                      {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
+                      "arn:aws:cloudformation:eu-west-1:",
                       {
                         "Ref": "AWS::AccountId",
                       },
@@ -1617,11 +1623,7 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:cloudformation:",
-                      {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
+                      "arn:aws:cloudformation:eu-west-1:",
                       {
                         "Ref": "AWS::AccountId",
                       },
@@ -1633,11 +1635,7 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:cloudformation:",
-                      {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
+                      "arn:aws:cloudformation:eu-west-1:",
                       {
                         "Ref": "AWS::AccountId",
                       },
@@ -1752,6 +1750,27 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
       },
       "Type": "AWS::EC2::SecurityGroupIngress",
     },
+    "GuHttpsEgressSecurityGroupManagefrontendfromManageFrontendRestrictedIngressSecurityGroupManagefrontend421982CD92330130A1A5": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 9233,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupManagefrontend8E53A220",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "RestrictedIngressSecurityGroupManagefrontend3AE7C2B0",
+            "GroupId",
+          ],
+        },
+        "ToPort": 9233,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
     "GuLogShippingPolicy981BFE5A": {
       "Properties": {
         "PolicyDocument": {
@@ -1766,11 +1785,7 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:kinesis:",
-                    {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
+                    "arn:aws:kinesis:eu-west-1:",
                     {
                       "Ref": "AWS::AccountId",
                     },
@@ -1867,11 +1882,7 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:execute-api:",
-                      {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
+                      "arn:aws:execute-api:eu-west-1:",
                       {
                         "Ref": "AWS::AccountId",
                       },
@@ -1883,11 +1894,7 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:execute-api:",
-                      {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
+                      "arn:aws:execute-api:eu-west-1:",
                       {
                         "Ref": "AWS::AccountId",
                       },
@@ -1950,12 +1957,32 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
             "Key": "routing.http.drop_invalid_header_fields.enabled",
             "Value": "true",
           },
+          {
+            "Key": "access_logs.s3.enabled",
+            "Value": "true",
+          },
+          {
+            "Key": "access_logs.s3.bucket",
+            "Value": {
+              "Ref": "AccessLoggingBucket",
+            },
+          },
+          {
+            "Key": "access_logs.s3.prefix",
+            "Value": "application-load-balancer/PROD/support/manage-frontend",
+          },
         ],
         "Scheme": "internet-facing",
         "SecurityGroups": [
           {
             "Fn::GetAtt": [
               "LoadBalancerManagefrontendSecurityGroupED621ABF",
+              "GroupId",
+            ],
+          },
+          {
+            "Fn::GetAtt": [
+              "RestrictedIngressSecurityGroupManagefrontend3AE7C2B0",
               "GroupId",
             ],
           },
@@ -1992,15 +2019,6 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
     "LoadBalancerManagefrontendSecurityGroupED621ABF": {
       "Properties": {
         "GroupDescription": "Automatically created Security Group for ELB ManageFrontendLoadBalancerManagefrontend0170C9E2",
-        "SecurityGroupIngress": [
-          {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Allow from anyone on port 443",
-            "FromPort": 443,
-            "IpProtocol": "tcp",
-            "ToPort": 443,
-          },
-        ],
         "Tags": [
           {
             "Key": "App",
@@ -2035,27 +2053,6 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
         "DestinationSecurityGroupId": {
           "Fn::GetAtt": [
             "GuHttpsEgressSecurityGroupManagefrontend8E53A220",
-            "GroupId",
-          ],
-        },
-        "FromPort": 9233,
-        "GroupId": {
-          "Fn::GetAtt": [
-            "LoadBalancerManagefrontendSecurityGroupED621ABF",
-            "GroupId",
-          ],
-        },
-        "IpProtocol": "tcp",
-        "ToPort": 9233,
-      },
-      "Type": "AWS::EC2::SecurityGroupEgress",
-    },
-    "LoadBalancerManagefrontendSecurityGrouptoManageFrontendWazuhSecurityGroup21F140CF923324CB9496": {
-      "Properties": {
-        "Description": "Load balancer to target",
-        "DestinationSecurityGroupId": {
-          "Fn::GetAtt": [
-            "WazuhSecurityGroup",
             "GroupId",
           ],
         },
@@ -2109,11 +2106,7 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:ssm:",
-                    {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
+                    "arn:aws:ssm:eu-west-1:",
                     {
                       "Ref": "AWS::AccountId",
                     },
@@ -2132,11 +2125,7 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:ssm:",
-                    {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
+                    "arn:aws:ssm:eu-west-1:",
                     {
                       "Ref": "AWS::AccountId",
                     },
@@ -2250,6 +2239,228 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
       },
       "Type": "AWS::IAM::Policy",
     },
+    "RestrictedIngressSecurityGroupManagefrontend3AE7C2B0": {
+      "Properties": {
+        "GroupDescription": "Allow restricted ingress from CIDR ranges",
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "23.235.32.0/20",
+            "Description": "Allow access on port 443 from 23.235.32.0/20",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "43.249.72.0/22",
+            "Description": "Allow access on port 443 from 43.249.72.0/22",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "90.98.0.0/17",
+            "Description": "Allow access on port 443 from 90.98.0.0/17",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "90.98.128.0/18",
+            "Description": "Allow access on port 443 from 90.98.128.0/18",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "103.244.50.0/24",
+            "Description": "Allow access on port 443 from 103.244.50.0/24",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "103.245.222.0/23",
+            "Description": "Allow access on port 443 from 103.245.222.0/23",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "103.245.224.0/24",
+            "Description": "Allow access on port 443 from 103.245.224.0/24",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "104.156.80.0/20",
+            "Description": "Allow access on port 443 from 104.156.80.0/20",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "140.248.64.0/18",
+            "Description": "Allow access on port 443 from 140.248.64.0/18",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "140.248.128.0/17",
+            "Description": "Allow access on port 443 from 140.248.128.0/17",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "146.75.0.0/17",
+            "Description": "Allow access on port 443 from 146.75.0.0/17",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "151.101.0.0/16",
+            "Description": "Allow access on port 443 from 151.101.0.0/16",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "157.52.64.0/18",
+            "Description": "Allow access on port 443 from 157.52.64.0/18",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "167.82.0.0/17",
+            "Description": "Allow access on port 443 from 167.82.0.0/17",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "167.82.128.0/20",
+            "Description": "Allow access on port 443 from 167.82.128.0/20",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "167.82.160.0/20",
+            "Description": "Allow access on port 443 from 167.82.160.0/20",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "167.82.224.0/20",
+            "Description": "Allow access on port 443 from 167.82.224.0/20",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "172.111.64.0/18",
+            "Description": "Allow access on port 443 from 172.111.64.0/18",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "185.31.16.0/22",
+            "Description": "Allow access on port 443 from 185.31.16.0/22",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "199.27.72.0/21",
+            "Description": "Allow access on port 443 from 199.27.72.0/21",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIp": "199.232.0.0/16",
+            "Description": "Allow access on port 443 from 199.232.0.0/16",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIpv6": "2a04:4e40::/32",
+            "Description": "Allow access on port 443 from 2a04:4e40::/32",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIpv6": "2a04:4e42::/32",
+            "Description": "Allow access on port 443 from 2a04:4e42::/32",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+          {
+            "CidrIpv6": "2a04:4e44::/32",
+            "Description": "Allow access on port 443 from 2a04:4e44::/32",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "manage-frontend",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/manage-frontend",
+          },
+          {
+            "Key": "Stack",
+            "Value": "support",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+        "VpcId": {
+          "Ref": "VpcId",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "RestrictedIngressSecurityGroupManagefrontendtoManageFrontendGuHttpsEgressSecurityGroupManagefrontendD45FBEBD923371CDD019": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "DestinationSecurityGroupId": {
+          "Fn::GetAtt": [
+            "GuHttpsEgressSecurityGroupManagefrontend8E53A220",
+            "GroupId",
+          ],
+        },
+        "FromPort": 9233,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "RestrictedIngressSecurityGroupManagefrontend3AE7C2B0",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "ToPort": 9233,
+      },
+      "Type": "AWS::EC2::SecurityGroupEgress",
+    },
     "SsmSshPolicy4CFC977E": {
       "Properties": {
         "PolicyDocument": {
@@ -2335,70 +2546,6 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
       },
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
     },
-    "WazuhSecurityGroup": {
-      "Properties": {
-        "GroupDescription": "Allow outbound traffic from wazuh agent to manager",
-        "SecurityGroupEgress": [
-          {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Wazuh event logging",
-            "FromPort": 1514,
-            "IpProtocol": "tcp",
-            "ToPort": 1514,
-          },
-          {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Wazuh agent registration",
-            "FromPort": 1515,
-            "IpProtocol": "tcp",
-            "ToPort": 1515,
-          },
-        ],
-        "Tags": [
-          {
-            "Key": "gu:cdk:version",
-            "Value": "TEST",
-          },
-          {
-            "Key": "gu:repo",
-            "Value": "guardian/manage-frontend",
-          },
-          {
-            "Key": "Stack",
-            "Value": "support",
-          },
-          {
-            "Key": "Stage",
-            "Value": "PROD",
-          },
-        ],
-        "VpcId": {
-          "Ref": "VpcId",
-        },
-      },
-      "Type": "AWS::EC2::SecurityGroup",
-    },
-    "WazuhSecurityGroupfromManageFrontendLoadBalancerManagefrontendSecurityGroup4DBBACB9923356374CB4": {
-      "Properties": {
-        "Description": "Load balancer to target",
-        "FromPort": 9233,
-        "GroupId": {
-          "Fn::GetAtt": [
-            "WazuhSecurityGroup",
-            "GroupId",
-          ],
-        },
-        "IpProtocol": "tcp",
-        "SourceSecurityGroupId": {
-          "Fn::GetAtt": [
-            "LoadBalancerManagefrontendSecurityGroupED621ABF",
-            "GroupId",
-          ],
-        },
-        "ToPort": 9233,
-      },
-      "Type": "AWS::EC2::SecurityGroupIngress",
-    },
     "supportPRODmanagefrontend8911518E": {
       "DependsOn": [
         "InstanceRoleManagefrontendC8EBF20D",
@@ -2421,16 +2568,13 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
             "HttpTokens": "required",
             "InstanceMetadataTags": "enabled",
           },
+          "Monitoring": {
+            "Enabled": false,
+          },
           "SecurityGroupIds": [
             {
               "Fn::GetAtt": [
                 "GuHttpsEgressSecurityGroupManagefrontend8E53A220",
-                "GroupId",
-              ],
-            },
-            {
-              "Fn::GetAtt": [
-                "WazuhSecurityGroup",
                 "GroupId",
               ],
             },
@@ -2502,11 +2646,7 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
                 [
                   "#!/bin/bash -ev
 # get runnable tar from S3
-aws --region ",
-                  {
-                    "Ref": "AWS::Region",
-                  },
-                  " s3 cp s3://membership-dist/support/PROD/manage-frontend/manage-frontend.zip /tmp
+aws --region eu-west-1 s3 cp s3://membership-dist/support/PROD/manage-frontend/manage-frontend.zip /tmp
 mkdir /etc/gu
 unzip /tmp/manage-frontend.zip -d /etc/gu/dist/
 # add user

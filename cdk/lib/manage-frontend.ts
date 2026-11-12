@@ -17,12 +17,18 @@ import {
 	InstanceClass,
 	InstanceSize,
 	InstanceType,
+	Peer,
 	UserData,
 } from 'aws-cdk-lib/aws-ec2';
-import type { CfnListener } from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import type { CfnListener } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { Protocol, SslPolicy } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { CfnRecordSet } from 'aws-cdk-lib/aws-route53';
+import {
+	ParameterDataType,
+	ParameterTier,
+	StringParameter,
+} from 'aws-cdk-lib/aws-ssm';
 
 interface ManageGuStackProps extends GuStackProps {
 	scaling: GuAsgCapacity;
@@ -30,7 +36,10 @@ interface ManageGuStackProps extends GuStackProps {
 }
 export class ManageFrontend extends GuStack {
 	constructor(scope: App, id: string, props: ManageGuStackProps) {
-		super(scope, id, props);
+		super(scope, id, {
+			...props,
+			env: { ...props.env, region: 'eu-west-1' },
+		});
 
 		const app = 'manage-frontend';
 
@@ -95,9 +104,45 @@ systemctl start manage-frontend
 			reason: 'Retain logicalId previously defined in yaml',
 		});
 
+		// Date: 3rd Nov 2026
+		// Fetched from https://api.fastly.com/public-ip-list
+		// Note: Ideally we should verify requests to our origin services are
+		//       only coming from their respective Fastly service - not just
+		//       the global Fastly IP range.
+
+		const fastlyCIDR = [
+			Peer.ipv4('23.235.32.0/20'),
+			Peer.ipv4('43.249.72.0/22'),
+			Peer.ipv4('90.98.0.0/17'),
+			Peer.ipv4('90.98.128.0/18'),
+			Peer.ipv4('103.244.50.0/24'),
+			Peer.ipv4('103.245.222.0/23'),
+			Peer.ipv4('103.245.224.0/24'),
+			Peer.ipv4('104.156.80.0/20'),
+			Peer.ipv4('140.248.64.0/18'),
+			Peer.ipv4('140.248.128.0/17'),
+			Peer.ipv4('146.75.0.0/17'),
+			Peer.ipv4('151.101.0.0/16'),
+			Peer.ipv4('157.52.64.0/18'),
+			Peer.ipv4('167.82.0.0/17'),
+			Peer.ipv4('167.82.128.0/20'),
+			Peer.ipv4('167.82.160.0/20'),
+			Peer.ipv4('167.82.224.0/20'),
+			Peer.ipv4('172.111.64.0/18'),
+			Peer.ipv4('185.31.16.0/22'),
+			Peer.ipv4('199.27.72.0/21'),
+			Peer.ipv4('199.232.0.0/16'),
+			Peer.ipv6('2a04:4e40::/32'),
+			Peer.ipv6('2a04:4e42::/32'),
+			Peer.ipv6('2a04:4e44::/32'),
+		];
+
 		// docs https://guardian.github.io/cdk/classes/patterns.GuEc2App.html
 		const nodeApp = new GuEc2App(this, {
-			access: { scope: AccessScope.PUBLIC },
+			access: {
+				scope: AccessScope.RESTRICTED,
+				cidrRanges: [...fastlyCIDR],
+			},
 			applicationPort: 9233, // TODO: why has this number been choosen?
 			app,
 			certificateProps: {
@@ -110,6 +155,7 @@ systemctl start manage-frontend
 				InstanceClass.T4G,
 				InstanceSize.SMALL,
 			),
+			instanceMetricGranularity: '5Minute',
 			monitoringConfiguration: {
 				noMonitoring: true,
 			},
@@ -195,7 +241,18 @@ systemctl start manage-frontend
 			protocol: Protocol.HTTP,
 		});
 
-		(nodeApp.listener.node.defaultChild as CfnListener).sslPolicy = SslPolicy.TLS13_RES;
+		(nodeApp.listener.node.defaultChild as CfnListener).sslPolicy =
+			SslPolicy.TLS13_RES;
+
+		// This parameter is used by https://github.com/guardian/waf
+		new StringParameter(this, 'AlbSsmParam', {
+			parameterName: `/infosec/waf/services/${this.stage}/manage-frontend-alb-arn`,
+			description: `The ARN of the ALB for manage-frontend-${this.stage}. This parameter is created via CDK.`,
+			simpleName: false,
+			stringValue: nodeApp.loadBalancer.loadBalancerArn,
+			tier: ParameterTier.STANDARD,
+			dataType: ParameterDataType.TEXT,
+		});
 
 		new CfnRecordSet(this, 'AliasRecord', {
 			name: props.domain,
