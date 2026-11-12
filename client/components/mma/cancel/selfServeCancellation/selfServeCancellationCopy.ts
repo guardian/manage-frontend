@@ -90,12 +90,11 @@ const helpCentreContactHref =
 export interface SelfServeCancellationReasonPickerCopy {
 	pageTitle: string;
 	previous: string;
-	title: (supporterName?: string) => string;
+	title: string;
 	introBeforeEmphasis: string;
 	introEmphasis: string;
 	reasonHeading: string;
 	feedbackPrompt: string;
-	continueToCancel: string;
 	skipToCancel: string;
 }
 
@@ -155,18 +154,16 @@ export interface SelfServeCancellationProgressCopy {
 	returnToAccount: string;
 }
 
-const goodbyeTitle = (supporterName?: string) =>
-	supporterName
-		? `Is this really goodbye, ${supporterName}?`
-		: 'Is this really goodbye?';
+const goodbyeTitle = 'Is this really goodbye?';
+
+const goodbyeTitleWithName = (supporterName?: string) =>
+	supporterName ? `Is this really goodbye, ${supporterName}?` : goodbyeTitle;
 
 const softGoodbyeTitle = (
-	supporterName: string | undefined,
+	_supporterName: string | undefined,
 	supportSinceDate: string,
 ) =>
-	`Thank you for supporting the Guardian since ${supportSinceDate}. ${goodbyeTitle(
-		supporterName,
-	)}`;
+	`Thank you for supporting the Guardian since ${supportSinceDate}. ${goodbyeTitle}`;
 
 const softSupportParagraph =
 	"Your continued support has ensured that our independent journalism remains open to all. We couldn't do what we do without you. Please consider remaining a supporter.";
@@ -200,18 +197,13 @@ const retainBenefits =
 const reasonPickerCopy: SelfServeCancellationReasonPickerCopy = {
 	pageTitle: 'Manage subscription',
 	previous: 'Previous',
-	title: (supporterName) =>
-		supporterName
-			? `We're sorry to see you go, ${supporterName}.`
-			: "We're sorry to see you go.",
+	title: "We're sorry to see you go.",
 	introBeforeEmphasis:
 		'As a reader-funded organisation, we rely on the generous support from those who are in a position to pay for news.',
 	introEmphasis:
 		"Would you mind taking a moment to tell us why you'd like to cancel?",
 	reasonHeading: 'Please select a reason for cancelling:',
-	feedbackPrompt:
-		'Help us improve by sharing more detail (please do not share personal data)',
-	continueToCancel: 'Continue to cancel',
+	feedbackPrompt: 'Help us improve by sharing more detail',
 	skipToCancel: 'Skip to cancel',
 };
 
@@ -221,10 +213,10 @@ const sharedAlternatives = {
 	pauseHeading: 'Do you need a break?',
 	pauseCta: 'Pause subscription',
 	advisorTitle: 'Speak with an advisor before you leave',
-	advisorIntro: 'Get in touch to explore exclusive offers',
+	advisorIntro: 'Review your subscription with one of our experts',
 	advisorBody:
-		'Contact our customer service team to see if you are eligible for a price freeze or discount, or to find a plan that better fits your needs.',
-	emailCta: 'Send us an email',
+		'Get in touch with our customer services team to explore pricing options, or to find a plan that better fits your needs.',
+	emailCta: 'Get in touch with us',
 	emailHref: helpCentreContactHref,
 	continueToCancel: 'Continue to cancel',
 };
@@ -305,7 +297,7 @@ const confirmCopy = (
 	},
 	hard: {
 		previous: 'Previous',
-		title: (supporterName) => goodbyeTitle(supporterName),
+		title: () => goodbyeTitle,
 		supportParagraph: hardSupportParagraph,
 		confirmCancellationBody: immediateCancellation(subscriptionNoun),
 		subscriptionEndsOn: () => subscriptionEndsImmediately,
@@ -315,7 +307,7 @@ const confirmCopy = (
 	},
 	hardWithCredit: {
 		previous: 'Previous',
-		title: (supporterName) => goodbyeTitle(supporterName),
+		title: (supporterName) => goodbyeTitleWithName(supporterName),
 		supportParagraph: hardSupportParagraph,
 		confirmCancellationBody: immediateCancellation(subscriptionNoun),
 		subscriptionEndsOn: () => subscriptionEndsImmediately,
@@ -379,7 +371,7 @@ const successCopy: SelfServeCancellationSuccessCopy = {
 	effectiveImmediately: 'Cancellation will take effect immediately.',
 	confirmationEmailLeadIn: 'A confirmation email will be sent to',
 	confirmationEmailTail: 'in the next 24 hours.',
-	thankYou: (supporterName) => `Thank you, ${supporterName}`,
+	thankYou: (supporterName) => `Thank you, ${supporterName}.`,
 	thankYouBody:
 		'Your support has played a vital role in keeping independent journalism open to all.',
 	continueReading: 'Continue reading the Guardian',
@@ -439,6 +431,19 @@ export const contactRegionFor = (
 		return 'asiaPacific';
 	}
 	return 'uk';
+};
+
+export const pauseLinksToHolidayStop = (
+	productDetail?: ProductDetail | null,
+): boolean => {
+	if (
+		!productDetail ||
+		getSelfServeCancellationCopyFamily(productDetail) !== 'guardianWeekly'
+	) {
+		return false;
+	}
+	const region = contactRegionFor(productDetail);
+	return region === 'usCanada' || region === 'asiaPacific';
 };
 
 export const reviewVariantFor = (

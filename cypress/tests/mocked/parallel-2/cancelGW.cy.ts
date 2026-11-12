@@ -91,7 +91,7 @@ describe('Cancel guardian weekly', () => {
 		}).click();
 		cy.findAllByRole('radio').eq(6).click();
 
-		cy.findByRole('button', { name: 'Continue to cancel' }).click();
+		cy.findByRole('button', { name: 'Skip to cancel' }).click();
 
 		cy.wait('@get_case');
 
@@ -102,7 +102,7 @@ describe('Cancel guardian weekly', () => {
 		cy.wait('@cancel_gw_deliveryrecords');
 
 		cy.findByText(
-			'Thank you for supporting the Guardian since 29 November 2021. Is this really goodbye, test?',
+			'Thank you for supporting the Guardian since 29 November 2021. Is this really goodbye?',
 		).should('exist');
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 

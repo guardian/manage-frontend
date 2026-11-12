@@ -7,6 +7,7 @@ import {
 	getReasonPickerCopy,
 	getSelfServeCancellationCopyFamily,
 	getSuccessCopy,
+	pauseLinksToHolidayStop,
 	reviewVariantFor,
 } from '../selfServeCancellationCopy';
 import { cancellationModeFromEffectiveDate } from '../selfServeCancellationTiming';
@@ -101,8 +102,11 @@ describe('self-serve cancellation copy', () => {
 		expect(copy.introEmphasis).toBe(
 			"Would you mind taking a moment to tell us why you'd like to cancel?",
 		);
-		expect(copy.title('test')).toBe("We're sorry to see you go, test.");
-		expect(copy.title()).toBe("We're sorry to see you go.");
+		expect(copy.title).toBe("We're sorry to see you go.");
+		expect(copy.feedbackPrompt).toBe(
+			'Help us improve by sharing more detail',
+		);
+		expect(copy.skipToCancel).toBe('Skip to cancel');
 	});
 
 	it('changes the pause sentence by product family', () => {
@@ -121,6 +125,12 @@ describe('self-serve cancellation copy', () => {
 	});
 
 	it('uses the UK phone number unless Guardian Weekly is in another region', () => {
+		expect(getAlternativesCopy(homeDelivery).advisorIntro).toBe(
+			'Review your subscription with one of our experts',
+		);
+		expect(getAlternativesCopy(homeDelivery).emailCta).toBe(
+			'Get in touch with us',
+		);
 		expect(getAlternativesCopy(homeDelivery).callUs).toContain(
 			'+44 (0) 330 333 6765',
 		);
@@ -153,7 +163,7 @@ describe('self-serve cancellation copy', () => {
 				'29 November 2021',
 			),
 		).toBe(
-			'Thank you for supporting the Guardian since 29 November 2021. Is this really goodbye, test?',
+			'Thank you for supporting the Guardian since 29 November 2021. Is this really goodbye?',
 		);
 		expect(
 			getConfirmCopy(homeDelivery, 'soft').subscriptionEndsOn(
@@ -175,7 +185,7 @@ describe('self-serve cancellation copy', () => {
 
 	it('uses the immediate cooling-off sentences for a hard cancellation', () => {
 		expect(getConfirmCopy(guardianWeekly, 'hard').title('test', '')).toBe(
-			'Is this really goodbye, test?',
+			'Is this really goodbye?',
 		);
 		expect(
 			getConfirmCopy(homeDelivery, 'hard').subscriptionEndsImmediately,
@@ -198,6 +208,12 @@ describe('self-serve cancellation copy', () => {
 				.join(' '),
 		).toContain('you will not be charged for this subscription');
 		expect(
+			getConfirmCopy(subscriptionCard, 'hardWithCredit').title(
+				'test',
+				'',
+			),
+		).toBe('Is this really goodbye, test?');
+		expect(
 			getConfirmCopy(subscriptionCard, 'hardWithCredit').confirmCta,
 		).toBe('Continue to cancel');
 	});
@@ -212,6 +228,24 @@ describe('self-serve cancellation copy', () => {
 		expect(getSuccessCopy(voucher, 'hard').effectiveImmediately).toBe(
 			'Cancellation will take effect immediately.',
 		);
+		expect(getSuccessCopy(homeDelivery, 'soft').thankYou('test')).toBe(
+			'Thank you, test.',
+		);
+		expect(pauseLinksToHolidayStop(homeDelivery)).toBe(false);
+		expect(pauseLinksToHolidayStop(guardianWeekly)).toBe(false);
+		expect(
+			pauseLinksToHolidayStop(
+				product('Guardian Weekly - ROW', 'United States'),
+			),
+		).toBe(true);
+		expect(
+			pauseLinksToHolidayStop(
+				product('Guardian Weekly - ROW', 'Australia'),
+			),
+		).toBe(true);
+		expect(
+			pauseLinksToHolidayStop(product('Newspaper Delivery', 'Australia')),
+		).toBe(false);
 		expect(getProgressCopy(subscriptionCard)).toEqual(
 			getProgressCopy(guardianWeekly),
 		);

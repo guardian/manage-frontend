@@ -21,9 +21,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { ProductTypeWithCancellationFlowMandatoryReasons } from '../../../../../shared/productTypes';
 import { useSelfServeCancellationStore } from '../../../../stores/SelfServeCancellationStore';
+import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { ProgressStepper } from '../../shared/ProgressStepper';
 import { getUpdateCasePromise } from '../caseUpdate';
-import { getAlternativesCopy } from './selfServeCancellationCopy';
+import {
+	getAlternativesCopy,
+	pauseLinksToHolidayStop,
+} from './selfServeCancellationCopy';
 
 const getPatchUpdateCaseFunc =
 	(isTestUser: boolean, caseId: string, feedback: string) => async () =>
@@ -208,6 +212,9 @@ export const SelfServeCancellationAlternatives = ({
 		(state) => state.productDetail,
 	);
 	const copy = getAlternativesCopy(productDetail);
+	const pauseDestination = pauseLinksToHolidayStop(productDetail)
+		? `/suspend/${productType.urlPart}`
+		: NAV_LINKS.accountOverview.link;
 	const cancellationFeedback = useSelfServeCancellationStore(
 		(state) => state.cancellationFeedback,
 	);
@@ -233,29 +240,6 @@ export const SelfServeCancellationAlternatives = ({
 				steps={[{}, { isCurrentStep: true }, {}]}
 				additionalCSS={stepperCss}
 			/>
-			<h2 css={pauseTitleCss}>{copy.pauseTitle}</h2>
-			<section css={pauseBannerCss}>
-				<div css={pauseBannerContentCss}>
-					<h3 css={pauseBannerHeadingCss}>{copy.pauseHeading}</h3>
-					<p css={pauseBannerBodyCss}>{copy.pauseBody}</p>
-					<Button
-						priority="secondary"
-						onClick={() =>
-							navigate(`/suspend/${productType.urlPart}`)
-						}
-						cssOverrides={PauseCtaButtonCss}
-					>
-						{copy.pauseCta}
-					</Button>
-				</div>
-				<picture css={pauseBannerGraphicCss}>
-					<source
-						srcSet={pauseBannerImageSrc.desktop}
-						media="(min-width: 740px)"
-					/>
-					<img src={pauseBannerImageSrc.mobile} alt="" />
-				</picture>
-			</section>
 			<section css={contactSectionCss}>
 				<h2 css={contactTitleCss}>{copy.advisorTitle}</h2>
 				<p css={contactBodyCss}>{copy.advisorIntro}</p>
@@ -287,6 +271,27 @@ export const SelfServeCancellationAlternatives = ({
 						</>
 					)}
 				</p>
+			</section>
+			<h2 css={pauseTitleCss}>{copy.pauseTitle}</h2>
+			<section css={pauseBannerCss}>
+				<div css={pauseBannerContentCss}>
+					<h3 css={pauseBannerHeadingCss}>{copy.pauseHeading}</h3>
+					<p css={pauseBannerBodyCss}>{copy.pauseBody}</p>
+					<Button
+						priority="secondary"
+						onClick={() => navigate(pauseDestination)}
+						cssOverrides={PauseCtaButtonCss}
+					>
+						{copy.pauseCta}
+					</Button>
+				</div>
+				<picture css={pauseBannerGraphicCss}>
+					<source
+						srcSet={pauseBannerImageSrc.desktop}
+						media="(min-width: 740px)"
+					/>
+					<img src={pauseBannerImageSrc.mobile} alt="" />
+				</picture>
 			</section>
 			<div data-cy="cta_container" css={ctaContainerCss}>
 				<Button

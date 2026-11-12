@@ -23,7 +23,6 @@ import {
 import type { ChangeEvent, FormEvent } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAccountStore } from '../../../../stores/AccountStore';
 import { useSelfServeCancellationStore } from '../../../../stores/SelfServeCancellationStore';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
 import { Card } from '../../shared/Card';
@@ -193,8 +192,6 @@ export const SelfServeCancellationReasonPicker = () => {
 	const setStoredCancellationFeedback = useSelfServeCancellationStore(
 		(state) => state.setCancellationFeedback,
 	);
-	const { getUser } = useAccountStore();
-	const user = getUser();
 	const [selectedReasonId, setSelectedReasonId] =
 		useState<OptionalCancellationReasonId>(
 			storedSelectedReasonId ?? undefined,
@@ -209,10 +206,6 @@ export const SelfServeCancellationReasonPicker = () => {
 
 	const characterLimit = 2500;
 	const copy = getReasonPickerCopy(productDetail);
-	const fallbackFirstName = productDetail.subscription.account?.accountName
-		?.trim()
-		.split(/\s+/)[0];
-	const supporterFirstName = user?.firstName || fallbackFirstName;
 
 	useEffect(() => {
 		pageTitleContext.setPageTitle(copy.pageTitle);
@@ -236,7 +229,7 @@ export const SelfServeCancellationReasonPicker = () => {
 				additionalCSS={stepperCss}
 			/>
 			<WithStandardTopMargin>
-				<h2 css={titleCss}>{copy.title(supporterFirstName)}</h2>
+				<h2 css={titleCss}>{copy.title}</h2>
 				<p css={introCss}>
 					{copy.introBeforeEmphasis}{' '}
 					<span css={introEmphasisCss}>{copy.introEmphasis}</span>
@@ -328,9 +321,7 @@ export const SelfServeCancellationReasonPicker = () => {
 							navigate('review');
 						}}
 					>
-						{selectedReasonId
-							? copy.continueToCancel
-							: copy.skipToCancel}
+						{copy.skipToCancel}
 					</Button>
 				</div>
 			</WithStandardTopMargin>
