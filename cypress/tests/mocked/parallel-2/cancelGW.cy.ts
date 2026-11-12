@@ -28,7 +28,7 @@ describe('Cancel guardian weekly', () => {
 			body: { message: 'success' },
 		}).as('create_case_in_salesforce');
 
-		cy.intercept('GET', '/api/me/mma?productType=GuardianWeekly', {
+		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(GWwithSelfCancelEnabled),
 		});

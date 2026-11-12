@@ -152,7 +152,16 @@ export const CancellationPageTitleContext: Context<
 export const CancellationContainer = (props: WithProductType<ProductType>) => {
 	const location = useLocation();
 	const routerState = location.state as CancellationRouterState;
-	const productDetail = routerState?.productDetail;
+	const locationProductDetail = routerState?.productDetail;
+	// Later steps navigate without copying location state. Keep the product from
+	// the cancel entry so those steps do not refetch and clear the chosen reason.
+	const [entryProductDetail, setEntryProductDetail] = useState(
+		locationProductDetail,
+	);
+	if (locationProductDetail && locationProductDetail !== entryProductDetail) {
+		setEntryProductDetail(locationProductDetail);
+	}
+	const productDetail = locationProductDetail ?? entryProductDetail;
 	const isSelfServeCancellation = isSelfServeCancellationJourneyEnabled(
 		props.productType,
 		productDetail,
