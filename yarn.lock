@@ -2116,10 +2116,10 @@
     "@guardian/libs" "32.0.0"
     "@guardian/ophan-tracker-js" "2.8.0"
 
-"@guardian/consent-manager@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@guardian/consent-manager/-/consent-manager-2.3.0.tgz#2563354269e23b2fedff1c648f5228608e840f44"
-  integrity sha512-mydX/MrvCGglT4QeGcmnsQve08hP9psBXMxC+hyUqUztNj+izu9CpqBPwNlYwB3zLyjefFb8caUBTXBByhemhg==
+"@guardian/consent-manager@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@guardian/consent-manager/-/consent-manager-2.3.1.tgz#f5341405a1e4cfbd849b7ced72317ace615a67e4"
+  integrity sha512-QOZmsMETG9YMsg92/p4i78YCiZO8qUxvFf8EggSkccCyX6WnGZS1G8Q9PlNGFCNB8rRRP68V4ink6L4ETjLnfg==
   dependencies:
     "@guardian/libs" "33.0.0"
     "@guardian/ophan-tracker-js" "3.1.0"
