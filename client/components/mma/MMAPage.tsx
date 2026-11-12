@@ -29,6 +29,7 @@ import { isSignedIn } from '../../utilities/signInStatus';
 import { ErrorBoundary } from '../shared/ErrorBoundary';
 import { GenericErrorScreen } from '../shared/GenericErrorScreen';
 import { Main } from '../shared/Main';
+import { PersistFeatureSwitchQueryParam } from '../shared/PersistFeatureSwitchQueryParam';
 import { DeliveryAddressUpdate } from './delivery/address/DeliveryAddressForm';
 import { Maintenance } from './maintenance/Maintenance';
 import { MMAPageSkeleton } from './MMAPageSkeleton';
@@ -1109,6 +1110,7 @@ const MMAPageComponent = () => {
 
 	return (
 		<BrowserRouter>
+			<PersistFeatureSwitchQueryParam />
 			<MMARouter />
 		</BrowserRouter>
 	);
