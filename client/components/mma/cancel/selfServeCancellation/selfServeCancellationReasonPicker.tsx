@@ -23,9 +23,7 @@ import {
 import type { ChangeEvent, FormEvent } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { ProductTypeWithCancellationFlow } from '../../../../../shared/productTypes';
-import { useAccountStore } from '../../../../stores/AccountStore';
-import { usePrintCancellationStore } from '../../../../stores/PrintCancellationStore';
+import { useSelfServeCancellationStore } from '../../../../stores/SelfServeCancellationStore';
 import { WithStandardTopMargin } from '../../../shared/WithStandardTopMargin';
 import { Card } from '../../shared/Card';
 import { ProgressStepper } from '../../shared/ProgressStepper';
@@ -39,10 +37,8 @@ import {
 	type OptionalCancellationReasonId,
 	reasonIdOrDefault,
 } from '../cancellationReason';
-
-interface PrintReasonPickerProps {
-	productType: ProductTypeWithCancellationFlow;
-}
+import { CANCELLATION_REASONS } from '../cancellationReasonsCatalogue';
+import { getReasonPickerCopy } from './selfServeCancellationCopy';
 
 const mobileOnlyPreviousButtonCss = css`
 	margin-top: ${space[5]}px;
@@ -181,23 +177,21 @@ const tabletAndUpPreviousButtonCss = css`
 	}
 `;
 
-export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
+export const SelfServeCancellationReasonPicker = () => {
 	const cancellationContext = useCancellationContext();
 	const productDetail = cancellationContext.productDetail;
-	const storedSelectedReasonId = usePrintCancellationStore(
+	const storedSelectedReasonId = useSelfServeCancellationStore(
 		(state) => state.selectedReasonId,
 	);
-	const storedFeedback = usePrintCancellationStore(
+	const storedFeedback = useSelfServeCancellationStore(
 		(state) => state.cancellationFeedback,
 	);
-	const setStoredSelectedReasonId = usePrintCancellationStore(
+	const setStoredSelectedReasonId = useSelfServeCancellationStore(
 		(state) => state.setSelectedReasonId,
 	);
-	const setStoredCancellationFeedback = usePrintCancellationStore(
+	const setStoredCancellationFeedback = useSelfServeCancellationStore(
 		(state) => state.setCancellationFeedback,
 	);
-	const { getUser } = useAccountStore();
-	const user = getUser();
 	const [selectedReasonId, setSelectedReasonId] =
 		useState<OptionalCancellationReasonId>(
 			storedSelectedReasonId ?? undefined,
@@ -211,18 +205,11 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 	) as CancellationPageTitleInterface;
 
 	const characterLimit = 2500;
-	const fallbackFirstName = productDetail.subscription.account?.accountName
-		?.trim()
-		.split(/\s+/)[0];
-	const supporterFirstName = user?.firstName || fallbackFirstName;
-	const supporterNamePrefix = supporterFirstName
-		? `${supporterFirstName}, `
-		: '';
-	const sorryWord = supporterNamePrefix ? "we're" : "We're";
+	const copy = getReasonPickerCopy(productDetail);
 
 	useEffect(() => {
-		pageTitleContext.setPageTitle('Manage subscription');
-	}, [pageTitleContext]);
+		pageTitleContext.setPageTitle(copy.pageTitle);
+	}, [pageTitleContext, copy.pageTitle]);
 
 	return (
 		<>
@@ -235,23 +222,17 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 					navigate('/');
 				}}
 			>
-				Previous
+				{copy.previous}
 			</Button>
 			<ProgressStepper
 				steps={[{ isCurrentStep: true }, {}, {}]}
 				additionalCSS={stepperCss}
 			/>
 			<WithStandardTopMargin>
-				<h2 css={titleCss}>
-					{`${supporterNamePrefix}${sorryWord} sorry to see you go`}
-				</h2>
+				<h2 css={titleCss}>{copy.title}</h2>
 				<p css={introCss}>
-					As a reader-funded organisation, we rely on the generous
-					support from those who are in a position to pay for news.{' '}
-					<span css={introEmphasisCss}>
-						Would you take a moment to tell us why you&apos;d like
-						to cancel?
-					</span>
+					{copy.introBeforeEmphasis}{' '}
+					<span css={introEmphasisCss}>{copy.introEmphasis}</span>
 				</p>
 				<div css={cardWrapperCss}>
 					<Card>
@@ -259,9 +240,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 							backgroundColor={palette.brand[800]}
 							minHeightOverride="auto"
 						>
-							<h3 css={cardTitleCss}>
-								Please select a reason for cancelling
-							</h3>
+							<h3 css={cardTitleCss}>{copy.reasonHeading}</h3>
 						</Card.Header>
 						<Card.Section>
 							<fieldset
@@ -277,14 +256,14 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 								css={reasonFieldsetCss}
 							>
 								<legend css={hiddenLegendCss}>
-									Please select a reason for cancelling
+									{copy.reasonHeading}
 								</legend>
 								<RadioGroup
 									name="issue_type"
 									orientation="vertical"
 									cssOverrides={reasonRadioGroupCss}
 								>
-									{productType.cancellation.reasons?.map(
+									{CANCELLATION_REASONS.printProducts.map(
 										(reason: CancellationReason) => (
 											<Radio
 												key={reason.reasonId}
@@ -305,14 +284,14 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 					</Card>
 				</div>
 
-				<h3 id="print-feedback-label" css={feedbackTitleCss}>
-					Help us improve by sharing more detail
+				<h3 id="feedback-label" css={feedbackTitleCss}>
+					{copy.feedbackPrompt}
 				</h3>
 				<textarea
 					rows={5}
 					maxLength={characterLimit}
 					value={feedback}
-					aria-labelledby="print-feedback-label"
+					aria-labelledby="feedback-label"
 					css={feedbackTextareaCss}
 					onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
 						setFeedback(event.target.value);
@@ -329,7 +308,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 							navigate('/');
 						}}
 					>
-						Previous
+						{copy.previous}
 					</Button>
 					<Button
 						icon={<SvgArrowRightStraight />}
@@ -342,9 +321,7 @@ export const PrintReasonPicker = ({ productType }: PrintReasonPickerProps) => {
 							navigate('review');
 						}}
 					>
-						{selectedReasonId
-							? 'Continue to cancel'
-							: 'Skip to cancel'}
+						{copy.skipToCancel}
 					</Button>
 				</div>
 			</WithStandardTopMargin>

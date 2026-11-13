@@ -30,13 +30,14 @@ import {
 	CancellationReasonContext,
 } from '../cancellationContexts';
 import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck';
-import { PrintExecuteCancellation } from '../cancellationPrint/printExecuteCancellation';
 import type {
 	CancellationReasonId,
 	OptionalCancellationReasonId,
 } from '../cancellationReason';
 import { getCancellationSummary, isCancelled } from '../CancellationSummary';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
+import { SelfServeCancellationExecute } from '../selfServeCancellation/selfServeCancellationExecute';
+import { isSelfServeCancellationJourneyEnabled } from '../selfServeCancellation/selfServeCancellationFeature';
 
 interface RouterState extends CancellationRouterState {
 	eligibleForFreePeriodOffer?: boolean;
@@ -176,17 +177,17 @@ interface ExecuteCancellationProps {
 	productType: CancellationContextInterface['productType'];
 }
 
-interface NonPrintExecuteCancellationProps extends ExecuteCancellationProps {
+interface LegacyExecuteCancellationProps extends ExecuteCancellationProps {
 	routerState: RouterState;
 	cancellationReasonId?: CancellationReasonId;
 }
 
-const NonPrintExecuteCancellation = ({
+const LegacyExecuteCancellation = ({
 	productDetail,
 	productType,
 	routerState,
 	cancellationReasonId,
-}: NonPrintExecuteCancellationProps) => {
+}: LegacyExecuteCancellationProps) => {
 	const selectedReasonId = routerState.selectedReasonId;
 	const caseId = routerState.caseId;
 	const cancellationPolicy = routerState.cancellationPolicy;
@@ -303,9 +304,9 @@ export const ExecuteCancellation = () => {
 	const { productDetail, productType } = useCancellationContext();
 	const cancellationReasonId = useContext(CancellationReasonContext);
 
-	if (productType.cancellation.usesPrintCancellationFlow) {
+	if (isSelfServeCancellationJourneyEnabled(productType, productDetail)) {
 		return (
-			<PrintExecuteCancellation
+			<SelfServeCancellationExecute
 				productDetail={productDetail}
 				productType={productType}
 			/>
@@ -317,7 +318,7 @@ export const ExecuteCancellation = () => {
 	}
 
 	return (
-		<NonPrintExecuteCancellation
+		<LegacyExecuteCancellation
 			productDetail={productDetail}
 			productType={productType}
 			routerState={routerState}

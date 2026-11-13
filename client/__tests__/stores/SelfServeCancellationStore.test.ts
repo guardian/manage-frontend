@@ -1,5 +1,5 @@
 import type { ProductDetail } from '@/shared/productResponse';
-import { usePrintCancellationStore } from '../../stores/PrintCancellationStore';
+import { useSelfServeCancellationStore } from '../../stores/SelfServeCancellationStore';
 
 const productDetail = {
 	subscription: { subscriptionId: 'A-S00000001' },
@@ -10,18 +10,20 @@ const otherProductDetail = {
 } as unknown as ProductDetail;
 
 beforeEach(() => {
-	usePrintCancellationStore.getState().clearAll();
+	useSelfServeCancellationStore.getState().clearAll();
 });
 
-describe('PrintCancellationStore', () => {
+describe('SelfServeCancellationStore', () => {
 	it('starts in the initial state', () => {
-		const state = usePrintCancellationStore.getState();
+		const state = useSelfServeCancellationStore.getState();
 		expect(state.productDetail).toBeNull();
 		expect(state.selectedReasonId).toBeUndefined();
 		expect(state.cancellationFeedback).toBe('');
 		expect(state.caseId).toBe('');
 		expect(state.holidayStops).toBeUndefined();
 		expect(state.deliveryCredits).toBeUndefined();
+		expect(state.cancellationMode).toBeNull();
+		expect(state.cancellationEffectiveDate).toBeNull();
 	});
 
 	it('updates journey fields through their setters', () => {
@@ -30,7 +32,7 @@ describe('PrintCancellationStore', () => {
 			setSelectedReasonId,
 			setCancellationFeedback,
 			setCaseData,
-		} = usePrintCancellationStore.getState();
+		} = useSelfServeCancellationStore.getState();
 
 		setProductDetail(productDetail);
 		setSelectedReasonId('mma_editorial');
@@ -41,7 +43,7 @@ describe('PrintCancellationStore', () => {
 			deliveryCredits: [],
 		});
 
-		const state = usePrintCancellationStore.getState();
+		const state = useSelfServeCancellationStore.getState();
 		expect(state.productDetail).toBe(productDetail);
 		expect(state.selectedReasonId).toBe('mma_editorial');
 		expect(state.cancellationFeedback).toBe('Reason text');
@@ -57,7 +59,7 @@ describe('PrintCancellationStore', () => {
 			setCancellationFeedback,
 			setCaseData,
 			resetJourneyState,
-		} = usePrintCancellationStore.getState();
+		} = useSelfServeCancellationStore.getState();
 
 		setProductDetail(productDetail);
 		setSelectedReasonId('mma_editorial');
@@ -66,25 +68,38 @@ describe('PrintCancellationStore', () => {
 
 		resetJourneyState();
 
-		const state = usePrintCancellationStore.getState();
+		const state = useSelfServeCancellationStore.getState();
 		expect(state.productDetail).toBe(productDetail);
 		expect(state.selectedReasonId).toBeUndefined();
 		expect(state.cancellationFeedback).toBe('');
 		expect(state.caseId).toBe('');
 		expect(state.holidayStops).toBeUndefined();
 		expect(state.deliveryCredits).toBeUndefined();
+		expect(state.cancellationMode).toBeNull();
+		expect(state.cancellationEffectiveDate).toBeNull();
+	});
+
+	it('records whether cancellation is immediate or end of period', () => {
+		useSelfServeCancellationStore.getState().setCancellationTiming({
+			cancellationMode: 'soft',
+			cancellationEffectiveDate: '2026-06-01',
+		});
+
+		const state = useSelfServeCancellationStore.getState();
+		expect(state.cancellationMode).toBe('soft');
+		expect(state.cancellationEffectiveDate).toBe('2026-06-01');
 	});
 
 	it('clearAll resets every field including productDetail', () => {
 		const { setProductDetail, setSelectedReasonId, clearAll } =
-			usePrintCancellationStore.getState();
+			useSelfServeCancellationStore.getState();
 
 		setProductDetail(otherProductDetail);
 		setSelectedReasonId('mma_editorial');
 
 		clearAll();
 
-		const state = usePrintCancellationStore.getState();
+		const state = useSelfServeCancellationStore.getState();
 		expect(state.productDetail).toBeNull();
 		expect(state.selectedReasonId).toBeUndefined();
 	});
