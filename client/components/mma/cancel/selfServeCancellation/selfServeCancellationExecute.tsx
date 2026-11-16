@@ -11,7 +11,7 @@ import type {
 	ProductType,
 	ProductTypeWithCancellationFlow,
 } from '../../../../../shared/productTypes';
-import { usePrintCancellationStore } from '../../../../stores/PrintCancellationStore';
+import { useSelfServeCancellationStore } from '../../../../stores/SelfServeCancellationStore';
 import { fetchWithDefaultParameters } from '../../../../utilities/fetch';
 import { createProductDetailFetcher } from '../../../../utilities/productUtils';
 import { GenericErrorScreen } from '../../../shared/GenericErrorScreen';
@@ -20,7 +20,8 @@ import { generateEscalationCausesList } from '../cancellationFlowEscalationCheck
 import type { OptionalCancellationReasonId } from '../cancellationReason';
 import { isCancelled } from '../CancellationSummary';
 import { CaseUpdateAsyncLoader, getUpdateCasePromise } from '../caseUpdate';
-import { PrintCancellationSuccess } from './printCancellationSuccess';
+import { getProgressCopy } from './selfServeCancellationCopy';
+import { SelfServeCancellationSuccess } from './selfServeCancellationSuccess';
 
 class PerformCancelAsyncLoader extends AsyncLoader<MembersDataApiResponse> {}
 
@@ -87,7 +88,7 @@ const returnToAccountButtonCss = css`
 	margin-top: ${space[6]}px;
 `;
 
-const getCaseUpdatingPrintCancellationSummary =
+const getCaseUpdatingSelfServeCancellationSummary =
 	(
 		productType: ProductType,
 		productDetailBeforeCancelling: ProductDetail,
@@ -104,11 +105,12 @@ const getCaseUpdatingPrintCancellationSummary =
 			) ?? productDetailBeforeCancelling;
 
 		const render = () => (
-			<PrintCancellationSuccess
+			<SelfServeCancellationSuccess
 				productType={productType}
 				productDetail={updatedProductDetail}
 			/>
 		);
+		const progressCopy = getProgressCopy(productDetailBeforeCancelling);
 
 		return caseId ? (
 			<CaseUpdateAsyncLoader
@@ -117,42 +119,43 @@ const getCaseUpdatingPrintCancellationSummary =
 					updatedProductDetail,
 				)}
 				render={render}
-				loadingMessage="Finalising your cancellation..."
+				loadingMessage={progressCopy.finalisingCancellation}
 			/>
 		) : (
 			render()
 		);
 	};
 
-interface PrintExecuteCancellationProps {
+interface SelfServeCancellationExecuteProps {
 	productDetail: ProductDetail;
 	productType: ProductTypeWithCancellationFlow;
 }
 
-export const PrintExecuteCancellation = ({
+export const SelfServeCancellationExecute = ({
 	productDetail,
 	productType,
-}: PrintExecuteCancellationProps) => {
+}: SelfServeCancellationExecuteProps) => {
 	const navigate = useNavigate();
-	const selectedReasonId = usePrintCancellationStore(
+	const selectedReasonId = useSelfServeCancellationStore(
 		(state) => state.selectedReasonId,
 	);
-	const caseId = usePrintCancellationStore((state) => state.caseId);
-	const holidayStops = usePrintCancellationStore(
+	const caseId = useSelfServeCancellationStore((state) => state.caseId);
+	const holidayStops = useSelfServeCancellationStore(
 		(state) => state.holidayStops,
 	);
-	const deliveryCredits = usePrintCancellationStore(
+	const deliveryCredits = useSelfServeCancellationStore(
 		(state) => state.deliveryCredits,
 	);
 	const productHasReasonSelection =
 		!!productType.cancellation.reasons?.length;
+	const progressCopy = getProgressCopy(productDetail);
 
 	if (productHasReasonSelection && (!selectedReasonId || !caseId)) {
 		return <Navigate to="../" />;
 	}
 
-	// Print products do not surface an effective-date selector, so the journey
-	// always uses the end-of-billing-period policy.
+	// A hard cancellation still completes in this flow. Escalate only when
+	// holiday stops or delivery credits need a refund arranged by customer service.
 	const escalationCauses = generateEscalationCausesList({
 		isEffectiveToday: false,
 		hasOutstandingHolidayStops: !!holidayStops && holidayStops.length > 0,
@@ -171,21 +174,18 @@ export const PrintExecuteCancellation = ({
 				render={() => (
 					<div>
 						<p css={escalatedConfirmationBodyCss}>
-							Your cancellation request has been successfully
-							submitted. Our customer service team will try their
-							best to contact you as soon as possible to confirm
-							the cancellation and refund any credit you are owed.
+							{progressCopy.escalationBody}
 						</p>
 						<Button
 							cssOverrides={returnToAccountButtonCss}
 							priority="tertiary"
 							onClick={() => navigate('/')}
 						>
-							Return to your account
+							{progressCopy.returnToAccount}
 						</Button>
 					</div>
 				)}
-				loadingMessage="Requesting your cancellation..."
+				loadingMessage={progressCopy.requestingCancellation}
 			/>
 		) : (
 			<PerformCancelAsyncLoader
@@ -198,12 +198,12 @@ export const PrintExecuteCancellation = ({
 						productDetail.subscription.subscriptionId,
 					),
 				)}
-				render={getCaseUpdatingPrintCancellationSummary(
+				render={getCaseUpdatingSelfServeCancellationSummary(
 					productType,
 					productDetail,
 					caseId,
 				)}
-				loadingMessage="Performing your cancellation..."
+				loadingMessage={progressCopy.performingCancellation}
 			/>
 		)
 	) : (

@@ -20,9 +20,14 @@ import {
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { ProductTypeWithCancellationFlowMandatoryReasons } from '../../../../../shared/productTypes';
-import { usePrintCancellationStore } from '../../../../stores/PrintCancellationStore';
+import { useSelfServeCancellationStore } from '../../../../stores/SelfServeCancellationStore';
+import { NAV_LINKS } from '../../../shared/nav/NavConfig';
 import { ProgressStepper } from '../../shared/ProgressStepper';
 import { getUpdateCasePromise } from '../caseUpdate';
+import {
+	getAlternativesCopy,
+	pauseLinksToHolidayStop,
+} from './selfServeCancellationCopy';
 
 const getPatchUpdateCaseFunc =
 	(isTestUser: boolean, caseId: string, feedback: string) => async () =>
@@ -31,7 +36,7 @@ const getPatchUpdateCaseFunc =
 			Subject: 'Online Cancellation Query',
 		});
 
-const printPauseBannerCss = css`
+const pauseBannerCss = css`
 	background-color: ${palette.neutral[97]};
 	display: flex;
 	flex-direction: column-reverse;
@@ -44,13 +49,13 @@ const printPauseBannerCss = css`
 	}
 `;
 
-const printPauseBannerContentCss = css`
+const pauseBannerContentCss = css`
 	flex: 1;
 	padding: ${space[3]}px;
 	padding-bottom: ${space[6]}px;
 `;
 
-const printPauseBannerHeadingCss = css`
+const pauseBannerHeadingCss = css`
 	${textSansBold20};
 	margin: 0 0 ${space[1]}px;
 
@@ -59,7 +64,7 @@ const printPauseBannerHeadingCss = css`
 	}
 `;
 
-const printPauseBannerBodyCss = css`
+const pauseBannerBodyCss = css`
 	${textSans15};
 	max-width: 54ch;
 	margin: 0 0 ${space[4]}px;
@@ -70,7 +75,7 @@ const printPauseBannerBodyCss = css`
 	}
 `;
 
-const printPauseBannerGraphicCss = css`
+const pauseBannerGraphicCss = css`
 	display: flex;
 	align-items: flex-end;
 	justify-content: center;
@@ -93,7 +98,7 @@ const printPauseBannerGraphicCss = css`
 	}
 `;
 
-interface PrintCancellationAlternativesProps {
+interface SelfServeCancellationAlternativesProps {
 	productType: ProductTypeWithCancellationFlowMandatoryReasons;
 	isTestUser: boolean;
 }
@@ -196,17 +201,24 @@ const tabletAndUpPreviousButtonCss = css`
 	}
 `;
 
-export const PrintCancellationAlternatives = ({
+export const SelfServeCancellationAlternatives = ({
 	productType,
 	isTestUser,
-}: PrintCancellationAlternativesProps) => {
+}: SelfServeCancellationAlternativesProps) => {
 	const navigate = useNavigate();
 	const [isSubmittingFeedback, setIsSubmittingFeedback] =
 		useState<boolean>(false);
-	const cancellationFeedback = usePrintCancellationStore(
+	const productDetail = useSelfServeCancellationStore(
+		(state) => state.productDetail,
+	);
+	const copy = getAlternativesCopy(productDetail);
+	const pauseDestination = pauseLinksToHolidayStop(productDetail)
+		? `/suspend/${productType.urlPart}`
+		: NAV_LINKS.accountOverview.link;
+	const cancellationFeedback = useSelfServeCancellationStore(
 		(state) => state.cancellationFeedback,
 	);
-	const caseId = usePrintCancellationStore((state) => state.caseId);
+	const caseId = useSelfServeCancellationStore((state) => state.caseId);
 	const pauseBannerImageSrc: { mobile: string; desktop: string } = {
 		mobile: 'https://i.guim.co.uk/img/media/203dbadbd6e0fcd4eed01370f94bf3a67d747ebd/0_0_204_162/204.png?width=204&quality=100&s=e69f374f6154453c7442d39b22efcb56',
 		desktop:
@@ -222,67 +234,64 @@ export const PrintCancellationAlternatives = ({
 				iconSide="left"
 				onClick={() => navigate('..')}
 			>
-				Previous
+				{copy.previous}
 			</Button>
 			<ProgressStepper
 				steps={[{}, { isCurrentStep: true }, {}]}
 				additionalCSS={stepperCss}
 			/>
-			<h2 css={pauseTitleCss}>Pause your subscription</h2>
-			<section css={printPauseBannerCss}>
-				<div css={printPauseBannerContentCss}>
-					<h3 css={printPauseBannerHeadingCss}>
-						Do you need a break?
-					</h3>
-					<p css={printPauseBannerBodyCss}>
-						Put your print deliveries on hold for up to five weeks
-						and we will apply a credit for the suspended issues to
-						your next bill date. If you have digital benefits you
-						will still receive and be charged for those during this
-						time.
-					</p>
+			<section css={contactSectionCss}>
+				<h2 css={contactTitleCss}>{copy.advisorTitle}</h2>
+				<p css={contactBodyCss}>{copy.advisorIntro}</p>
+				<p css={contactBodyCss}>{copy.advisorBody}</p>
+				<p css={contactDetailsCss}>
+					<a href={copy.emailHref} css={contactEmailLinkCss}>
+						<strong css={contactStrongCss}>{copy.emailCta}</strong>
+					</a>
+					{copy.callUs && (
+						<>
+							<br />
+							{copy.callUs}
+						</>
+					)}
+					{copy.chatHours && (
+						<>
+							<br />
+							{copy.chatHours}
+						</>
+					)}
+					{copy.chatCta && copy.chatHref && (
+						<>
+							<br />
+							<a href={copy.chatHref} css={contactEmailLinkCss}>
+								<strong css={contactStrongCss}>
+									{copy.chatCta}
+								</strong>
+							</a>
+						</>
+					)}
+				</p>
+			</section>
+			<h2 css={pauseTitleCss}>{copy.pauseTitle}</h2>
+			<section css={pauseBannerCss}>
+				<div css={pauseBannerContentCss}>
+					<h3 css={pauseBannerHeadingCss}>{copy.pauseHeading}</h3>
+					<p css={pauseBannerBodyCss}>{copy.pauseBody}</p>
 					<Button
 						priority="secondary"
-						onClick={() =>
-							navigate(`/suspend/${productType.urlPart}`)
-						}
+						onClick={() => navigate(pauseDestination)}
 						cssOverrides={PauseCtaButtonCss}
 					>
-						Pause subscription
+						{copy.pauseCta}
 					</Button>
 				</div>
-				<picture css={printPauseBannerGraphicCss}>
+				<picture css={pauseBannerGraphicCss}>
 					<source
 						srcSet={pauseBannerImageSrc.desktop}
 						media="(min-width: 740px)"
 					/>
 					<img src={pauseBannerImageSrc.mobile} alt="" />
 				</picture>
-			</section>
-			<section css={contactSectionCss}>
-				<h2 css={contactTitleCss}>Speak with an advisor</h2>
-				<p css={contactBodyCss}>
-					Get in touch with our customer care team if you require any
-					assistance or simply wish to discuss other subscription
-					options.
-				</p>
-				<p css={contactDetailsCss}>
-					Email{' '}
-					<strong css={contactStrongCss}>
-						<a
-							href="mailto:customer.help@theguardian.com"
-							css={contactEmailLinkCss}
-						>
-							customer.help@theguardian.com
-						</a>
-					</strong>
-					<br />
-					Call us at{' '}
-					<strong css={contactStrongCss}>
-						+44 (0) 330 333 6767
-					</strong>{' '}
-					9am to 6pm, Monday to Sunday
-				</p>
 			</section>
 			<div data-cy="cta_container" css={ctaContainerCss}>
 				<Button
@@ -292,7 +301,7 @@ export const PrintCancellationAlternatives = ({
 					cssOverrides={tabletAndUpPreviousButtonCss}
 					onClick={() => navigate('..')}
 				>
-					Previous
+					{copy.previous}
 				</Button>
 				<Button
 					icon={<SvgArrowRightStraight />}
@@ -316,7 +325,7 @@ export const PrintCancellationAlternatives = ({
 						navigate('../confirm');
 					}}
 				>
-					Continue to cancel
+					{copy.continueToCancel}
 				</Button>
 			</div>
 		</>

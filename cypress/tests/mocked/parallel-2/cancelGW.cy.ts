@@ -28,7 +28,7 @@ describe('Cancel guardian weekly', () => {
 			body: { message: 'success' },
 		}).as('create_case_in_salesforce');
 
-		cy.intercept('GET', '/api/me/mma?productType=GuardianWeekly', {
+		cy.intercept('GET', '/api/me/mma?productType=Weekly', {
 			statusCode: 200,
 			body: toMembersDataApiResponse(GWwithSelfCancelEnabled),
 		});
@@ -80,8 +80,8 @@ describe('Cancel guardian weekly', () => {
 		}).as('cancel_gw_deliveryrecords');
 	});
 
-	it('cancels Guardian Weekly through the print cancellation journey', () => {
-		cy.visit('/');
+	it('cancels Guardian Weekly through the self-serve cancellation journey', () => {
+		cy.visit('/?withFeature=selfServeCancellation');
 
 		cy.findByText('Manage subscription').click();
 		cy.wait('@cancelled');
@@ -91,7 +91,7 @@ describe('Cancel guardian weekly', () => {
 		}).click();
 		cy.findAllByRole('radio').eq(6).click();
 
-		cy.findByRole('button', { name: 'Continue to cancel' }).click();
+		cy.findByRole('button', { name: 'Skip to cancel' }).click();
 
 		cy.wait('@get_case');
 
@@ -102,15 +102,13 @@ describe('Cancel guardian weekly', () => {
 		cy.wait('@cancel_gw_deliveryrecords');
 
 		cy.findByText(
-			'test, thank you for supporting the Guardian since 29 November 2021. Is this really goodbye?',
+			'Thank you for supporting the Guardian since 29 November 2021. Is this really goodbye?',
 		).should('exist');
 		cy.findByRole('button', { name: 'Confirm cancellation' }).click();
 
 		cy.wait('@cancel_gw');
 		cy.wait('@create_case_in_salesforce');
 
-		cy.findByText(
-			'Your subscription to Guardian Weekly + Digital plus has been cancelled.',
-		).should('exist');
+		cy.findByText('Your subscription has been cancelled.').should('exist');
 	});
 });
