@@ -48,7 +48,7 @@ server.use(
 export const createCsp = (hashes: string[]) => {
 	const prefixedHashes = hashes.map((hash) => `'sha256-${hash}'`);
 	const csp = [
-		`script-src ${prefixedHashes.join(' ')} 'strict-dynamic'`,
+		`script-src ${prefixedHashes.join(' ')} 'strict-dynamic' 'unsafe-eval'`,
 		`style-src 'unsafe-inline'`,
 		`object-src 'none'`,
 		`report-uri /api/csp-audit-report-endpoint`,
@@ -66,7 +66,7 @@ server.use(function (_: Request, res: Response, next: NextFunction) {
 	res.set({
 		'Report-To':
 			'{ "group": "csp-endpoint", "endpoints": [ { "url": "/api/csp-audit-report-endpoint" } ] }',
-		'Content-Security-Policy-Report-Only': createCsp([]),
+		'Content-Security-Policy': createCsp([]),
 	});
 	next();
 });
