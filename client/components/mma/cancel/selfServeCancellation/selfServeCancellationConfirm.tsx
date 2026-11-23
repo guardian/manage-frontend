@@ -147,6 +147,11 @@ export const SelfServeCancellationConfirm = ({
 					DATE_FNS_LONG_OUTPUT_FORMAT,
 			  )
 			: undefined;
+	const reviewEndDate =
+		subscriptionEndDate ??
+		(cancellationMode === 'hard'
+			? dateString(new Date(), DATE_FNS_LONG_OUTPUT_FORMAT)
+			: undefined);
 
 	if (!selectedReasonId || !caseId) {
 		return <Navigate to="../review" />;
@@ -174,7 +179,7 @@ export const SelfServeCancellationConfirm = ({
 			</h2>
 			<div css={bodyCss}>
 				<p>{copy.supportParagraph}</p>
-				<p>{copy.confirmCancellationBody}</p>
+				<p>{copy.confirmCancellationBody(reviewEndDate)}</p>
 				<p>
 					<strong css={endDateTextCss}>
 						{reviewVariant === 'soft' && subscriptionEndDate
@@ -182,7 +187,7 @@ export const SelfServeCancellationConfirm = ({
 							: copy.subscriptionEndsImmediately}
 					</strong>
 				</p>
-				{copy.detailParagraphs(subscriptionEndDate).map((paragraph) => (
+				{copy.detailParagraphs(reviewEndDate).map((paragraph) => (
 					<p key={paragraph}>{paragraph}</p>
 				))}
 				<div data-cy="cta_container" css={ctaContainerCss}>

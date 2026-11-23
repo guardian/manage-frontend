@@ -160,6 +160,23 @@ const contactStrongCss = css`
 	}
 `;
 
+const renderCallUs = (text: string, phone?: string) => {
+	if (!phone) {
+		return text;
+	}
+	const phoneIndex = text.indexOf(phone);
+	if (phoneIndex === -1) {
+		return text;
+	}
+	return (
+		<>
+			{text.slice(0, phoneIndex)}
+			<strong css={contactStrongCss}>{phone}</strong>
+			{text.slice(phoneIndex + phone.length)}
+		</>
+	);
+};
+
 const contactEmailLinkCss = css`
 	color: ${palette.neutral[7]};
 `;
@@ -242,16 +259,28 @@ export const SelfServeCancellationAlternatives = ({
 			/>
 			<section css={contactSectionCss}>
 				<h2 css={contactTitleCss}>{copy.advisorTitle}</h2>
-				<p css={contactBodyCss}>{copy.advisorIntro}</p>
+				<p
+					css={
+						copy.advisorIntroBold
+							? [contactBodyCss, contactStrongCss]
+							: contactBodyCss
+					}
+				>
+					{copy.advisorIntro}
+				</p>
 				<p css={contactBodyCss}>{copy.advisorBody}</p>
 				<p css={contactDetailsCss}>
-					<a href={copy.emailHref} css={contactEmailLinkCss}>
-						<strong css={contactStrongCss}>{copy.emailCta}</strong>
-					</a>
+					{copy.emailCta && (
+						<a href={copy.emailHref} css={contactEmailLinkCss}>
+							<strong css={contactStrongCss}>
+								{copy.emailCta}
+							</strong>
+						</a>
+					)}
 					{copy.callUs && (
 						<>
-							<br />
-							{copy.callUs}
+							{copy.emailCta && <br />}
+							{renderCallUs(copy.callUs, copy.callUsPhone)}
 						</>
 					)}
 					{copy.chatHours && (

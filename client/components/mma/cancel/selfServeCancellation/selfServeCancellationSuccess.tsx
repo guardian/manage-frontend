@@ -151,8 +151,11 @@ export const SelfServeCancellationSuccess = ({
 							</>
 						)}
 					</p>
+					{copy.followOnParagraphs?.map((paragraph) => (
+						<p key={paragraph}>{paragraph}</p>
+					))}
 					<p>
-						{copy.confirmationEmailLeadIn} {confirmationEmail}{' '}
+						{copy.confirmationEmailLeadIn} {confirmationEmail}
 						{copy.confirmationEmailTail}
 					</p>
 				</div>
@@ -165,7 +168,7 @@ export const SelfServeCancellationSuccess = ({
 					</h3>
 					<p css={successBannerBodyCss}>{copy.thankYouBody}</p>
 					<LinkButton
-						href="https://theguardian.com"
+						href={copy.continueReadingHref}
 						cssOverrides={css`
 							width: 100%;
 

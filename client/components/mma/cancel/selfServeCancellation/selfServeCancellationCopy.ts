@@ -5,7 +5,9 @@ export type SelfServeCancellationCopyFamily =
 	| 'guardianWeekly'
 	| 'homeDelivery'
 	| 'voucher'
-	| 'subscriptionCard';
+	| 'subscriptionCard'
+	| 'observerDelivery'
+	| 'observerSubscriptionCard';
 
 export type SelfServeCancellationContactRegion =
 	| 'uk'
@@ -21,18 +23,24 @@ const homeDeliveryProductKeys: readonly ProductTier[] = [
 	'Newspaper Delivery + Digital',
 	'Newspaper - National Delivery',
 	'Newspaper - National Delivery + Digital',
-	'Newspaper Delivery - Observer',
 ];
 
 const voucherProductKeys: readonly ProductTier[] = [
 	'Newspaper Voucher',
 	'Newspaper Voucher + Digital',
-	'Newspaper Voucher - Observer',
 ];
 
 const subscriptionCardProductKeys: readonly ProductTier[] = [
 	'Newspaper Digital Voucher',
 	'Newspaper Digital Voucher + Digital',
+];
+
+const observerDeliveryProductKeys: readonly ProductTier[] = [
+	'Newspaper Delivery - Observer',
+	'Newspaper Voucher - Observer',
+];
+
+const observerSubscriptionCardProductKeys: readonly ProductTier[] = [
 	'Newspaper Digital Voucher - Observer',
 ];
 
@@ -96,6 +104,7 @@ export interface SelfServeCancellationReasonPickerCopy {
 	reasonHeading: string;
 	feedbackPrompt: string;
 	skipToCancel: string;
+	continueToCancel: string;
 }
 
 export interface SelfServeCancellationAlternativesCopy {
@@ -106,10 +115,12 @@ export interface SelfServeCancellationAlternativesCopy {
 	pauseCta: string;
 	advisorTitle: string;
 	advisorIntro: string;
+	advisorIntroBold?: boolean;
 	advisorBody: string;
 	emailCta: string;
 	emailHref: string;
 	callUs?: string;
+	callUsPhone?: string;
 	chatHours?: string;
 	chatCta?: string;
 	chatHref?: string;
@@ -123,7 +134,7 @@ export interface SelfServeCancellationConfirmCopy {
 		supportSinceDate: string,
 	) => string;
 	supportParagraph: string;
-	confirmCancellationBody: string;
+	confirmCancellationBody: (subscriptionEndDate?: string) => string;
 	subscriptionEndsOn: (subscriptionEndDate: string) => string;
 	subscriptionEndsImmediately: string;
 	detailParagraphs: (subscriptionEndDate?: string) => string[];
@@ -134,11 +145,13 @@ export interface SelfServeCancellationSuccessCopy {
 	heading: string;
 	effectiveLeadIn: string;
 	effectiveImmediately: string;
+	followOnParagraphs?: string[];
 	confirmationEmailLeadIn: string;
 	confirmationEmailTail: string;
 	thankYou: (supporterName: string) => string;
 	thankYouBody: string;
 	continueReading: string;
+	continueReadingHref: string;
 	fallbackSupporterName: string;
 	fallbackCancellationDate: string;
 	fallbackEmail: string;
@@ -203,8 +216,10 @@ const reasonPickerCopy: SelfServeCancellationReasonPickerCopy = {
 	introEmphasis:
 		"Would you mind taking a moment to tell us why you'd like to cancel?",
 	reasonHeading: 'Please select a reason for cancelling:',
-	feedbackPrompt: 'Help us improve by sharing more detail',
+	feedbackPrompt:
+		'Help us improve by sharing more detail (please do not share any personal data)',
 	skipToCancel: 'Skip to cancel',
+	continueToCancel: 'Continue to cancel',
 };
 
 const sharedAlternatives = {
@@ -214,6 +229,7 @@ const sharedAlternatives = {
 	pauseCta: 'Pause subscription',
 	advisorTitle: 'Speak with an advisor before you leave',
 	advisorIntro: 'Review your subscription with one of our experts',
+	advisorIntroBold: true,
 	advisorBody:
 		'Get in touch with our customer services team to explore pricing options, or to find a plan that better fits your needs.',
 	emailCta: 'Get in touch with us',
@@ -225,14 +241,16 @@ const contactByRegion: Record<
 	SelfServeCancellationContactRegion,
 	Pick<
 		SelfServeCancellationAlternativesCopy,
-		'callUs' | 'chatHours' | 'chatCta' | 'chatHref'
+		'callUs' | 'callUsPhone' | 'chatHours' | 'chatCta' | 'chatHref'
 	>
 > = {
 	uk: {
 		callUs: 'Call us at +44 (0) 330 333 6765, 9am to 5pm, Monday to Sunday',
+		callUsPhone: '+44 (0) 330 333 6765',
 	},
 	usCanada: {
 		callUs: 'Call us at 1-844-632-2010, 9am to 5pm Monday to Friday, 9am to 1pm Saturday and Sunday',
+		callUsPhone: '1-844-632-2010',
 	},
 	asiaPacific: {
 		chatHours: 'Chat with us, 9am to 5pm, Monday to Friday',
@@ -250,7 +268,42 @@ const pauseBodyByFamily: Record<SelfServeCancellationCopyFamily, string> = {
 		'Put your subscription card on hold for up to 5 weeks and we will apply a credit for the suspended issues to your next bill date. If you have digital benefits you will still receive and be charged for those during this time.',
 	guardianWeekly:
 		'Put your Guardian Weekly deliveries on hold for up to 6 weeks and we will apply credit for the suspended issues to your next bill date. You will still receive and be charged for your digital benefits during this time.',
+	observerDelivery:
+		"You can pause your newspaper delivery on hold for up to five Sundays. We'll credit the issues you miss to your next bill. Any digital access continues as normal during the pause.",
+	observerSubscriptionCard:
+		"You can pause your newspaper delivery on hold for up to five Sundays. We'll credit the issues you miss to your next bill. Any digital access continues as normal during the pause.",
 };
+
+const observerContactIntro =
+	'Our customer care team are ready to help and discuss other subscription options that might work for you.';
+
+const observerPhoneParagraph =
+	'Your print products are cancellable via the Guardian Customer Support team. Please get in touch via +44 (0) 330 333 6765, 9 am to 5 pm, Monday to Sunday, to hear about our latest offers and alternative subscription plans.';
+
+const observerEmailParagraph = (withColon: boolean) =>
+	`Please email${
+		withColon ? ':' : ''
+	} subscribers@observer.co.uk to hear about our latest offers and alternative subscription plans`;
+
+const observerConfirmTitle = () =>
+	'Are you sure you want to cancel your Observer subscription?';
+
+const observerSupportParagraph =
+	'Your subscription supports our original, independent newsroom.';
+
+const observerKeepAccess =
+	"You'll keep your newspaper and digital access and all subscription benefits until the end date.";
+
+const observerLastNewspaper = (subscriptionEndDate?: string) =>
+	`You will receive your last newspaper on ${
+		subscriptionEndDate ?? 'your cancellation date'
+	}.`;
+
+const observerCoolingOffRefund =
+	"You'll be getting a full refund to your original payment method within 14 days.";
+
+const observerProcessedPaymentRefund =
+	'If the payment for your next billing period has already been processed, we will issue a full refund. Please allow up to five working days for it to reach you.';
 
 const renewalCancellation = (subscriptionNoun: string) =>
 	`By confirming the cancellation of the renewal of your ${subscriptionNoun}, you will no longer be supporting the Guardian's reader-funded journalism.`;
@@ -288,7 +341,7 @@ const confirmCopy = (
 		previous: 'Previous',
 		title: softGoodbyeTitle,
 		supportParagraph: softSupportParagraph,
-		confirmCancellationBody: renewalCancellation(subscriptionNoun),
+		confirmCancellationBody: () => renewalCancellation(subscriptionNoun),
 		subscriptionEndsOn,
 		subscriptionEndsImmediately:
 			'Your subscription ends at the end of your current billing period.',
@@ -299,7 +352,7 @@ const confirmCopy = (
 		previous: 'Previous',
 		title: () => goodbyeTitle,
 		supportParagraph: hardSupportParagraph,
-		confirmCancellationBody: immediateCancellation(subscriptionNoun),
+		confirmCancellationBody: () => immediateCancellation(subscriptionNoun),
 		subscriptionEndsOn: () => subscriptionEndsImmediately,
 		subscriptionEndsImmediately,
 		detailParagraphs: () => hardDetails,
@@ -309,7 +362,7 @@ const confirmCopy = (
 		previous: 'Previous',
 		title: (supporterName) => goodbyeTitleWithName(supporterName),
 		supportParagraph: hardSupportParagraph,
-		confirmCancellationBody: immediateCancellation(subscriptionNoun),
+		confirmCancellationBody: () => immediateCancellation(subscriptionNoun),
 		subscriptionEndsOn: () => subscriptionEndsImmediately,
 		subscriptionEndsImmediately,
 		detailParagraphs: () => hardWithCreditDetails,
@@ -363,6 +416,108 @@ const confirmCopyByFamily: Record<
 		[coolingOffIntro, coolingOffRefund],
 		[unusedCreditIntro, unusedCreditRefund],
 	),
+	observerDelivery: {
+		soft: {
+			previous: 'Previous',
+			title: observerConfirmTitle,
+			supportParagraph: observerSupportParagraph,
+			confirmCancellationBody: (subscriptionEndDate) =>
+				`If you confirm, your subscription will end on ${
+					subscriptionEndDate ?? 'the end date'
+				}, and you won't be charged again.`,
+			subscriptionEndsOn,
+			subscriptionEndsImmediately,
+			detailParagraphs: (subscriptionEndDate) => [
+				observerKeepAccess,
+				observerLastNewspaper(subscriptionEndDate),
+			],
+			confirmCta: 'Confirm cancellation',
+		},
+		hard: {
+			previous: 'Previous',
+			title: observerConfirmTitle,
+			supportParagraph: observerSupportParagraph,
+			confirmCancellationBody: (subscriptionEndDate) =>
+				`You are within your cooling-off period; If you confirm, your subscription will end on ${
+					subscriptionEndDate ?? 'the end date'
+				}, and you won't be charged again.`,
+			subscriptionEndsOn: () => subscriptionEndsImmediately,
+			subscriptionEndsImmediately,
+			detailParagraphs: (subscriptionEndDate) => [
+				observerCoolingOffRefund,
+				observerKeepAccess,
+				observerLastNewspaper(subscriptionEndDate),
+			],
+			confirmCta: 'Confirm cancellation',
+		},
+		hardWithCredit: {
+			previous: 'Previous',
+			title: observerConfirmTitle,
+			supportParagraph: observerSupportParagraph,
+			confirmCancellationBody: (subscriptionEndDate) =>
+				`You are within your cooling-off period; If you confirm, your subscription will end on ${
+					subscriptionEndDate ?? 'the end date'
+				}, and you won't be charged again.`,
+			subscriptionEndsOn: () => subscriptionEndsImmediately,
+			subscriptionEndsImmediately,
+			detailParagraphs: (subscriptionEndDate) => [
+				observerCoolingOffRefund,
+				observerKeepAccess,
+				observerLastNewspaper(subscriptionEndDate),
+			],
+			confirmCta: 'Continue to cancel',
+		},
+	},
+	observerSubscriptionCard: {
+		soft: {
+			previous: 'Previous',
+			title: observerConfirmTitle,
+			supportParagraph: observerSupportParagraph,
+			confirmCancellationBody: (subscriptionEndDate) =>
+				`If you confirm, your subscription will end on ${
+					subscriptionEndDate ?? 'the end date'
+				}, and you won't be charged again.`,
+			subscriptionEndsOn,
+			subscriptionEndsImmediately,
+			detailParagraphs: () => [
+				observerKeepAccess,
+				observerProcessedPaymentRefund,
+			],
+			confirmCta: 'Confirm cancellation',
+		},
+		hard: {
+			previous: 'Previous',
+			title: observerConfirmTitle,
+			supportParagraph: observerSupportParagraph,
+			confirmCancellationBody: (subscriptionEndDate) =>
+				`You are within your cooling-off period; If you confirm, your subscription will end on ${
+					subscriptionEndDate ?? 'the end date'
+				}, and you won't be charged again.`,
+			subscriptionEndsOn: () => subscriptionEndsImmediately,
+			subscriptionEndsImmediately,
+			detailParagraphs: () => [
+				observerCoolingOffRefund,
+				observerKeepAccess,
+			],
+			confirmCta: 'Confirm cancellation',
+		},
+		hardWithCredit: {
+			previous: 'Previous',
+			title: observerConfirmTitle,
+			supportParagraph: observerSupportParagraph,
+			confirmCancellationBody: (subscriptionEndDate) =>
+				`You are within your cooling-off period; If you confirm, your subscription will end on ${
+					subscriptionEndDate ?? 'the end date'
+				}, and you won't be charged again.`,
+			subscriptionEndsOn: () => subscriptionEndsImmediately,
+			subscriptionEndsImmediately,
+			detailParagraphs: () => [
+				observerCoolingOffRefund,
+				observerKeepAccess,
+			],
+			confirmCta: 'Continue to cancel',
+		},
+	},
 };
 
 const successCopy: SelfServeCancellationSuccessCopy = {
@@ -370,15 +525,43 @@ const successCopy: SelfServeCancellationSuccessCopy = {
 	effectiveLeadIn: 'Your cancellation will take effect on',
 	effectiveImmediately: 'Cancellation will take effect immediately.',
 	confirmationEmailLeadIn: 'A confirmation email will be sent to',
-	confirmationEmailTail: 'in the next 24 hours.',
+	confirmationEmailTail: ' in the next 24 hours.',
 	thankYou: (supporterName) => `Thank you, ${supporterName}.`,
 	thankYouBody:
 		'Your support has played a vital role in keeping independent journalism open to all.',
 	continueReading: 'Continue reading the Guardian',
+	continueReadingHref: 'https://theguardian.com',
 	fallbackSupporterName: 'supporter',
 	fallbackCancellationDate: 'the end of your current billing period',
 	fallbackEmail: 'your registered email address',
 };
+
+const observerSuccessHeading =
+	"We're sorry to see you go. Your subscription to The Observer has now been cancelled.";
+
+const observerSuccessCopy = (
+	mode?: SelfServeCancellationMode,
+): SelfServeCancellationSuccessCopy => ({
+	heading: observerSuccessHeading,
+	effectiveLeadIn: 'Your subscription ends on',
+	effectiveImmediately:
+		"Your subscription will end immediately. You won't be charged again.",
+	followOnParagraphs:
+		mode === 'hard'
+			? [
+					'You should receive your full refund within 14 days to your original payment method depending on your bank.',
+			  ]
+			: ["You won't be charged again."],
+	confirmationEmailLeadIn: "We've sent you a confirmation email to",
+	confirmationEmailTail: '. Please keep it as your record of cancellation.',
+	thankYou: () => 'Thank you for reading The Observer and for your support.',
+	thankYouBody: 'You can resubscribe at any time at observer.co.uk/subscribe',
+	continueReading: 'Keep reading The Observer',
+	continueReadingHref: 'https://observer.co.uk/',
+	fallbackSupporterName: 'supporter',
+	fallbackCancellationDate: 'the end of your current billing period',
+	fallbackEmail: 'your registered email address',
+});
 
 const progressCopy: SelfServeCancellationProgressCopy = {
 	checkingStatus: (friendlyName) =>
@@ -401,6 +584,12 @@ export const getSelfServeCancellationCopyFamily = (
 	productDetail: ProductDetail,
 ): SelfServeCancellationCopyFamily => {
 	const productKey = productDetail.mmaProductKey;
+	if (includesProductKey(observerDeliveryProductKeys, productKey)) {
+		return 'observerDelivery';
+	}
+	if (includesProductKey(observerSubscriptionCardProductKeys, productKey)) {
+		return 'observerSubscriptionCard';
+	}
 	if (includesProductKey(homeDeliveryProductKeys, productKey)) {
 		return 'homeDelivery';
 	}
@@ -466,6 +655,25 @@ export const getAlternativesCopy = (
 	const family = productDetail
 		? getSelfServeCancellationCopyFamily(productDetail)
 		: 'guardianWeekly';
+	if (
+		family === 'observerDelivery' ||
+		family === 'observerSubscriptionCard'
+	) {
+		return {
+			...sharedAlternatives,
+			advisorTitle: 'Speak to us',
+			advisorIntro: observerContactIntro,
+			advisorBody: observerEmailParagraph(
+				family === 'observerSubscriptionCard',
+			),
+			emailCta: '',
+			advisorIntroBold: false,
+			callUs: observerPhoneParagraph,
+			callUsPhone: '+44 (0) 330 333 6765',
+			pauseHeading: 'Need a break?',
+			pauseBody: pauseBodyByFamily[family],
+		};
+	}
 	const region =
 		family === 'guardianWeekly' ? contactRegionFor(productDetail) : 'uk';
 
@@ -487,9 +695,20 @@ export const getConfirmCopy = (
 };
 
 export const getSuccessCopy = (
-	_productDetail?: ProductDetail | null,
-	_mode?: SelfServeCancellationMode,
-): SelfServeCancellationSuccessCopy => successCopy;
+	productDetail?: ProductDetail | null,
+	mode?: SelfServeCancellationMode,
+): SelfServeCancellationSuccessCopy => {
+	const family = productDetail
+		? getSelfServeCancellationCopyFamily(productDetail)
+		: 'guardianWeekly';
+	if (
+		family === 'observerDelivery' ||
+		family === 'observerSubscriptionCard'
+	) {
+		return observerSuccessCopy(mode);
+	}
+	return successCopy;
+};
 
 export const getProgressCopy = (
 	_productDetail?: ProductDetail | null,

@@ -42,27 +42,24 @@ describe('getSelfServeCancellationCopyFamily', () => {
 		'Newspaper Delivery + Digital',
 		'Newspaper - National Delivery',
 		'Newspaper - National Delivery + Digital',
-		'Newspaper Delivery - Observer',
 	])('maps %s to home delivery copy', (mmaProductKey) => {
 		expect(getSelfServeCancellationCopyFamily(product(mmaProductKey))).toBe(
 			'homeDelivery',
 		);
 	});
 
-	it.each<ProductTier>([
-		'Newspaper Voucher',
-		'Newspaper Voucher + Digital',
-		'Newspaper Voucher - Observer',
-	])('maps %s to voucher copy', (mmaProductKey) => {
-		expect(getSelfServeCancellationCopyFamily(product(mmaProductKey))).toBe(
-			'voucher',
-		);
-	});
+	it.each<ProductTier>(['Newspaper Voucher', 'Newspaper Voucher + Digital'])(
+		'maps %s to voucher copy',
+		(mmaProductKey) => {
+			expect(
+				getSelfServeCancellationCopyFamily(product(mmaProductKey)),
+			).toBe('voucher');
+		},
+	);
 
 	it.each<ProductTier>([
 		'Newspaper Digital Voucher',
 		'Newspaper Digital Voucher + Digital',
-		'Newspaper Digital Voucher - Observer',
 	])('maps %s to subscription card copy', (mmaProductKey) => {
 		expect(getSelfServeCancellationCopyFamily(product(mmaProductKey))).toBe(
 			'subscriptionCard',
@@ -79,6 +76,27 @@ describe('getSelfServeCancellationCopyFamily', () => {
 		expect(getSelfServeCancellationCopyFamily(product(mmaProductKey))).toBe(
 			'guardianWeekly',
 		);
+	});
+
+	it('maps Observer home delivery and newspaper voucher onto the same copy', () => {
+		expect(
+			getSelfServeCancellationCopyFamily(
+				product('Newspaper Delivery - Observer'),
+			),
+		).toBe('observerDelivery');
+		expect(
+			getSelfServeCancellationCopyFamily(
+				product('Newspaper Voucher - Observer'),
+			),
+		).toBe('observerDelivery');
+	});
+
+	it('maps the Observer subscription card onto its own copy', () => {
+		expect(
+			getSelfServeCancellationCopyFamily(
+				product('Newspaper Digital Voucher - Observer'),
+			),
+		).toBe('observerSubscriptionCard');
 	});
 
 	it('uses Guardian Weekly copy when the product key is unknown', () => {
@@ -104,9 +122,10 @@ describe('self-serve cancellation copy', () => {
 		);
 		expect(copy.title).toBe("We're sorry to see you go.");
 		expect(copy.feedbackPrompt).toBe(
-			'Help us improve by sharing more detail',
+			'Help us improve by sharing more detail (please do not share any personal data)',
 		);
 		expect(copy.skipToCancel).toBe('Skip to cancel');
+		expect(copy.continueToCancel).toBe('Continue to cancel');
 	});
 
 	it('changes the pause sentence by product family', () => {
@@ -127,6 +146,10 @@ describe('self-serve cancellation copy', () => {
 	it('uses the UK phone number unless Guardian Weekly is in another region', () => {
 		expect(getAlternativesCopy(homeDelivery).advisorIntro).toBe(
 			'Review your subscription with one of our experts',
+		);
+		expect(getAlternativesCopy(homeDelivery).advisorIntroBold).toBe(true);
+		expect(getAlternativesCopy(homeDelivery).callUsPhone).toBe(
+			'+44 (0) 330 333 6765',
 		);
 		expect(getAlternativesCopy(homeDelivery).emailCta).toBe(
 			'Get in touch with us',
@@ -249,6 +272,59 @@ describe('self-serve cancellation copy', () => {
 		expect(getProgressCopy(subscriptionCard)).toEqual(
 			getProgressCopy(guardianWeekly),
 		);
+	});
+
+	it('uses the Observer home delivery copy for newspaper delivery and vouchers', () => {
+		const delivery = product('Newspaper Delivery - Observer');
+		const voucherObserver = product('Newspaper Voucher - Observer');
+		const deliveryCopy = getAlternativesCopy(delivery);
+
+		expect(getAlternativesCopy(voucherObserver)).toEqual(deliveryCopy);
+		expect(deliveryCopy.advisorTitle).toBe('Speak to us');
+		expect(deliveryCopy.advisorBody).toBe(
+			'Please email subscribers@observer.co.uk to hear about our latest offers and alternative subscription plans',
+		);
+		expect(deliveryCopy.callUs).toContain('9 am to 5 pm, Monday to Sunday');
+		expect(deliveryCopy.pauseHeading).toBe('Need a break?');
+		expect(deliveryCopy.pauseBody).toContain('five Sundays');
+		expect(deliveryCopy.emailCta).toBe('');
+
+		const soft = getConfirmCopy(delivery, 'soft');
+		expect(soft.title('test', '29 November 2021')).toBe(
+			'Are you sure you want to cancel your Observer subscription?',
+		);
+		expect(soft.confirmCancellationBody('1 June 2026')).toContain(
+			'end on 1 June 2026',
+		);
+		expect(soft.detailParagraphs('7 June 2026').join(' ')).toContain(
+			'last newspaper on 7 June 2026',
+		);
+		expect(getConfirmCopy(voucherObserver, 'soft')).toEqual(soft);
+
+		const success = getSuccessCopy(delivery, 'soft');
+		expect(success.heading).toContain('The Observer');
+		expect(success.thankYou('test')).toBe(
+			'Thank you for reading The Observer and for your support.',
+		);
+		expect(success.continueReadingHref).toBe('https://observer.co.uk/');
+		expect(
+			getSuccessCopy(voucherObserver, 'hard').followOnParagraphs,
+		).toEqual([
+			'You should receive your full refund within 14 days to your original payment method depending on your bank.',
+		]);
+	});
+
+	it('uses the Observer subscription card copy', () => {
+		const card = product('Newspaper Digital Voucher - Observer');
+		expect(getAlternativesCopy(card).advisorBody).toBe(
+			'Please email: subscribers@observer.co.uk to hear about our latest offers and alternative subscription plans',
+		);
+		expect(
+			getConfirmCopy(card, 'soft').detailParagraphs().join(' '),
+		).toContain('five working days');
+		expect(
+			getConfirmCopy(card, 'hard').detailParagraphs().join(' '),
+		).not.toContain('last newspaper');
 	});
 });
 

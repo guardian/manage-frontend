@@ -321,7 +321,9 @@ export const SelfServeCancellationReasonPicker = () => {
 							navigate('review');
 						}}
 					>
-						{copy.skipToCancel}
+						{selectedReasonId
+							? copy.continueToCancel
+							: copy.skipToCancel}
 					</Button>
 				</div>
 			</WithStandardTopMargin>

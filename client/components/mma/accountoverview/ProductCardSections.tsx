@@ -742,8 +742,8 @@ export const CancellationSection = ({
 							</>
 						) : (
 							<>
-								Stop your recurring payment, at the end of
-								current billing period.
+								Turn off your auto-renewal and end your
+								subscription
 							</>
 						)}
 					</p>
