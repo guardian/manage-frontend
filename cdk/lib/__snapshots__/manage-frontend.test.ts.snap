@@ -2546,49 +2546,6 @@ exports[`The ManageFrontend stack matches the snapshot 1`] = `
       },
       "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
     },
-    "WazuhSecurityGroup": {
-      "Properties": {
-        "GroupDescription": "Allow outbound traffic from wazuh agent to manager",
-        "SecurityGroupEgress": [
-          {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Wazuh event logging",
-            "FromPort": 1514,
-            "IpProtocol": "tcp",
-            "ToPort": 1514,
-          },
-          {
-            "CidrIp": "0.0.0.0/0",
-            "Description": "Wazuh agent registration",
-            "FromPort": 1515,
-            "IpProtocol": "tcp",
-            "ToPort": 1515,
-          },
-        ],
-        "Tags": [
-          {
-            "Key": "gu:cdk:version",
-            "Value": "TEST",
-          },
-          {
-            "Key": "gu:repo",
-            "Value": "guardian/manage-frontend",
-          },
-          {
-            "Key": "Stack",
-            "Value": "support",
-          },
-          {
-            "Key": "Stage",
-            "Value": "PROD",
-          },
-        ],
-        "VpcId": {
-          "Ref": "VpcId",
-        },
-      },
-      "Type": "AWS::EC2::SecurityGroup",
-    },
     "supportPRODmanagefrontend8911518E": {
       "DependsOn": [
         "InstanceRoleManagefrontendC8EBF20D",
