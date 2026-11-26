@@ -46,9 +46,7 @@ router.use(async (_: Request, res: Response) => {
 	res.set({
 		'Report-To':
 			'{ "group": "csp-endpoint", "endpoints": [ { "url": "/api/csp-audit-report-endpoint" } ] }',
-		'Content-Security-Policy-Report-Only': createCsp(
-			htmlStrAndScriptHashes.hashes,
-		),
+		'Content-Security-Policy': createCsp(htmlStrAndScriptHashes.hashes),
 	});
 
 	res.send(htmlStrAndScriptHashes.body);
