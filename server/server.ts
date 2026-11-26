@@ -58,10 +58,10 @@ export const createCsp = (hashes: string[]) => {
 
 server.use(function (_: Request, res: Response, next: NextFunction) {
 	/*
-	 * This sets a default csp header, this is overriden in:
-	 * - mmaFrontend.ts
-	 * - helpcentreFrontend.ts
-	 * Where a more specific policy with script hashes can be added
+	 * Default enforcing policy for routes that do not serve the app shell.
+	 * HTML documents replace it:
+	 * - mmaFrontend.ts sets Content-Security-Policy again, with script hashes
+	 * - helpCentreFrontend.ts does the same for the help centre document
 	 */
 	res.set({
 		'Report-To':
