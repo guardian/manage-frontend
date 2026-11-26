@@ -40,12 +40,13 @@ import {
 } from './cancellationContexts';
 import type { CancellationDateResponse } from './cancellationDateResponse';
 import { cancellationDateFetcher } from './cancellationDateResponse';
-import { PrintReasonPicker } from './cancellationPrint/printReasonPicker';
 import {
 	type CancellationReason,
 	type OptionalCancellationReasonId,
 	reasonIdOrDefault,
 } from './cancellationReason';
+import { isSelfServeCancellationJourneyEnabled } from './selfServeCancellation/selfServeCancellationFeature';
+import { SelfServeCancellationReasonPicker } from './selfServeCancellation/selfServeCancellationReasonPicker';
 
 interface ReasonPickerProps {
 	productType: ProductTypeWithCancellationFlow;
@@ -374,8 +375,8 @@ const ReasonPickerWithCancellationDate = ({
 export const CancellationReasonSelection = () => {
 	const { productDetail, productType } = useCancellationContext();
 
-	if (productType.cancellation.usesPrintCancellationFlow) {
-		return <PrintReasonPicker productType={productType} />;
+	if (isSelfServeCancellationJourneyEnabled(productType, productDetail)) {
+		return <SelfServeCancellationReasonPicker />;
 	}
 
 	if (productType.cancellation.startPageOfferEffectiveDateOptions) {

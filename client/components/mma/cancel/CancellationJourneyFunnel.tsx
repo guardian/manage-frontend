@@ -11,6 +11,10 @@ import { useCancellationContext } from './CancellationContainer';
 import type { CancellationRouterState } from './CancellationContainer';
 import { CancellationReasonSelection } from './CancellationReasonSelection';
 import { ContactUsToCancel } from './ContactUsToCancel';
+import {
+	cancelsWithoutSelfServeFlag,
+	isCancellationEntryOpen,
+} from './selfServeCancellation/selfServeCancellationFeature';
 
 function productHasEarlySaveJourney(productTypeKey: ProductTypeKeys): boolean {
 	return (
@@ -57,9 +61,14 @@ export const CancellationJourneyFunnel = () => {
 		return <Navigate to="./landing" state={{ ...routerState }} />;
 	}
 
+	const blockedBySelfServeFlag =
+		!productDetail.selfServiceCancellation.isAllowed &&
+		!cancelsWithoutSelfServeFlag(productType, productDetail);
+
 	if (
-		!productDetail.selfServiceCancellation.isAllowed ||
-		!hasCancellationFlow(productType)
+		blockedBySelfServeFlag ||
+		!hasCancellationFlow(productType) ||
+		!isCancellationEntryOpen(productType)
 	) {
 		return (
 			<ContactUsToCancel
